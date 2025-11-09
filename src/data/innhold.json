@@ -1,0 +1,337 @@
+{
+  "oppdrag": [
+    {
+      "dag": 1,
+      "tittel": "Nissens Første Melding",
+      "beskrivelse": "Velkommen til NisseKomm! Vi trenger din hjelp. Finn den hemmelige koden skjult i dette oppdraget. Hint: Antall bokstaver i 'JULEKALENDER' minus fire.",
+      "kode": "KALENDER",
+      "dagbokinnlegg": "Dag 1 - Det Begynner!\n\nEndelig! Desember er her! Har sendt Rampenissen ned til barna for å starte årets julekalender. Håper han klarer seg. Han har en tendens til å spise for mye godteri.\n\nHer på Nordpolen har vi startet produksjonen for fullt. Nissene jobber dag og natt. Jeg fant Rudolf sovende i gavesekken i morges. Typisk.\n\nNissemor insisterer på at jeg må spise sunnere i år. Prøvde å bytte ut pepperkakene med gulrøtter. Det gikk ikke bra.\n\n- Julenissen"
+    },
+    {
+      "dag": 2,
+      "tittel": "Den Krypterte Pakkelisten",
+      "beskrivelse": "Nissens pakkeliste er blitt kryptert! Vi har funnet et hint: Hva får du når du legger sammen 5 + 3 + 1 + 1? Skriv svaret som tall.",
+      "kode": "10",
+      "dagbokinnlegg": "Dag 2 - Mattekaos\n\nPrøvde å telle alle gavene vi har produsert så langt. Kom til 3.847 før jeg mistet tellingen. Nissene lo av meg. Måtte starte på nytt.\n\nFikk melding fra Rampenissen. Han har allerede spist seg gjennom halvparten av godteriet hjemme hos barna. Sendte beskjed om moderasjon. Vet at han ikke lytter.\n\nReinsdyrene krangler om hvem som får gå fremst. Rudolf mener det er hans tur siden han har den røde nesen. De andre er uenige. Må holde krisemøte senere.\n\n- Julenissen"
+    },
+    {
+      "dag": 3,
+      "tittel": "Mistet i Snøen",
+      "beskrivelse": "En viktig melding ble mistet i snøstormen. Vi fant bare dette: '_ I _ _ E'. Det handler om hvem vi er. Fyll inn de manglende bokstavene.",
+      "kode": "NISSE",
+      "dagbokinnlegg": "Dag 3 - Snøstorm\n\nVoldsom snøstorm på Nordpolen i dag! Kunne knapt se hånden foran meg. En av nissene ble funnet i snøen tre timer etter lunsj. Han hadde gått seg vill på vei til dass. Det er 10 meter unna.\n\nRampenissen rapporterer at barna jobber hardt med oppgavene. Bra! Må huske å gi ham en pause fra all pepperkakespisingen. Eller kanskje ikke. Han virker fornøyd.\n\nNissemor laget varm kakao til alle. Glitret litt ekstra magisk i dag. Mistenker at hun har puttet noe hemmelig i den. Nissene danser nå rundt juletreet.\n\n- Julenissen"
+    },
+    {
+      "dag": 4,
+      "tittel": "Slåtten Sikkerhetskode",
+      "beskrivelse": "Verkstedet er låst! Koden er navnet på den røde reinsdyret i spann. Hvem er det som har den røde nesen?",
+      "kode": "RUDOLF",
+      "hendelse": "Teater - En Julefortelling",
+      "dagbokinnlegg": "Dag 4 - Rudolf-Drama\n\nRudolf har fått stjerneallerurer. Insisterer nå på egen garderobe og personlig assistent. Forklarte at vi bare er en gjeng nisser på Nordpolen, ikke Hollywood. Han sultet resten av dagen.\n\nMen må innrømme at den røde nesen hans er praktisk. Brukte den som lykt da strømmen gikk. Nissene applauderte. Rudolf smilte selvtilfreds.\n\nRampenissen melder at barna synes oppgavene er morsomme. Godt! Har investert mye tid i disse gåtene. Vel, egentlig var det nisseverkstedet som lagde dem. Men jeg godkjente dem!\n\n- Julenissen"
+    },
+    {
+      "dag": 5,
+      "tittel": "Magisk Tall",
+      "beskrivelse": "Hvor mange reinsdyr trekker nissens slede? Dobbel dette tallet og legg til én. Skriv tallet du får.",
+      "kode": "17",
+      "dagbokinnlegg": "Dag 5 - Telleproblemer\n\nHar prøvd å telle reinsdyr hele dagen. Får forskjellige tall hver gang. Enten har vi 8, 9, eller 12. Mistenker at noen gjemmer seg for å slippe trening.\n\nFant Dasher sovende i halmloftet. Han hadde spist seg mett på reinsdyrfor og var helt utslått. Måtte bære ham ut. Han veier mer enn jeg trodde.\n\nRampenissen sender bilder av seg selv med barna. De virker å ha det gøy. Litt sjalu. Skulle ønske jeg også kunne ta juleferie, men noen må jo holde produksjonen i gang her.\n\n- Julenissen"
+    },
+    {
+      "dag": 6,
+      "tittel": "St. Nikolaus Mysterium",
+      "beskrivelse": "I dag feirer vi St. Nikolaus! Hans hellige by begynner med M og slutter med A. Fem bokstaver totalt. Hvilken by?",
+      "kode": "MYRA",
+      "hendelse": "Speidertur til Turnerhytten",
+      "dagbokinnlegg": "Dag 6 - Historietimen\n\nSt. Nikolaus-dagen! Min gamle kollega fra Myra. God mann. Vi møttes på julenissekonferansen i 324. Han hadde bedre skjegg enn meg. Fortsatt bitter.\n\nLærte nissene om juletradisjonene rundt om i verden. De ble mest interessert i de landene med mest godteri. Typisk.\n\nRampenissen rapporterer at barna er nysgjerrige og lærevillige. Flott! Det er akkurat sånn vi vil ha det. Kanskje de lærer mer enn Rampenissen gjør...\n\n- Julenissen"
+    },
+    {
+      "dag": 7,
+      "tittel": "Nordpol Koordinater",
+      "beskrivelse": "Vi trenger å bekrefte vår posisjon. Skriv inn graden nord for Nordpolen (bare tallet).",
+      "kode": "90",
+      "hendelse": "Speidertur til Turnerhytten",
+      "dagbokinnlegg": "Dag 7 - Geografilektion\n\n90 grader nord! Det er her jeg bor! En av de yngre nissene spurte i dag hvorfor vi ikke bare flytter sørover hvor det er varmere. Måtte forklare hele 'magisk julested'-konseptet.\n\nPrøvde å vise nissene på globus hvor Nordpolen er. Globusen vår er fra 1823 og mange land har skiftet navn siden den gang. Ble litt forvirrende.\n\nRampenissen sender selfies foran peisen. Ser koselig ut. Her er det minus 40 grader. Begynner å vurdere hans jobb fremfor min egen.\n\n- Julenissen"
+    },
+    {
+      "dag": 8,
+      "tittel": "Den Glemte Gavesekken",
+      "beskrivelse": "En gavesekk står alene. På lappen står: 'JEG ER HVA NISSEN BÆRER PÅ RYGGEN'. Hva er jeg? (5 bokstaver)",
+      "kode": "SEKK",
+      "dagbokinnlegg": "Dag 8 - Sekkproblemer\n\nGavesekken min trenger reparasjon. Igjen. Nissene syr på den nå. Spurte hvor mye vekt den kan bære. De bare lo nervøst. Ikke betryggende.\n\nTeste den nye magiske sekken ved å putte inn 500 gaver. Den holdt! Men så kom jeg ikke ut av verkstedet fordi sekken ikke passet gjennom døren. Måtte rive veggen. Nissene var ikke imponert.\n\nRampenissen melder at alt går bra med barna. De er flinke til å løse oppgavene. Muligens flinkere enn noen av nissene mine her...\n\n- Julenissen"
+    },
+    {
+      "dag": 9,
+      "tittel": "Snøfnuggkode",
+      "beskrivelse": "Hver snøfnugg har 6 sider. Hvis vi har 3 snøfnugg, hvor mange sider har vi totalt?",
+      "kode": "18",
+      "dagbokinnlegg": "Dag 9 - Snøfnugg-Forskning\n\nBrukte hele formiddagen på å studere snøfnugg under mikroskop. Alle er unike! Fantastisk! Nissemor minnet meg på at jeg egentlig skulle kvalitetssjekke leker. Ups.\n\nNissene laget 15.000 leker i dag. Rekord! Feiret med varm sjokolade for alle. En av nissene drakk syv kopper og var oppe til klokken fire om natten. Han synger fortsatt julesanger.\n\nRampenissen rapporterer om god fremgang. Barna er kreative og intelligente. Perfekt! Det er sånne barn vi trenger mer av.\n\n- Julenissen"
+    },
+    {
+      "dag": 10,
+      "tittel": "Juletrefargene",
+      "beskrivelse": "Hvilket ord beskriver både treet vi pynter OG fargen på mange nisseluer? Skriv fargen.",
+      "kode": "GRØNN",
+      "dagbokinnlegg": "Dag 10 - Grønn Dag\n\nNissemor har bestemt at hele Nordpolen skal være mer miljøvennlig. Nissene får nå sykle til verkstedet. Det er snø. Overalt. Det går ikke så bra.\n\nPrøvde å male verkstedet grønt for å 'passe temaet'. Nissene sa at rødt er julenissens farge. Ble diskusjon. Endte med kompromiss: grønt OG rødt. Ser ut som en italiensk restaurant nå.\n\nRampenissen sender bilder av barna i grønne nisseluer. Søtt! De ser ut som små nisser. Kanskje de kan komme og jobbe her når de blir større?\n\n- Julenissen"
+    },
+    {
+      "dag": 11,
+      "tittel": "Klokkespillet",
+      "beskrivelse": "Klokken ringer ved midnatt på julaften. Hvor mange slag gir klokken? Skriv tallet.",
+      "kode": "12",
+      "dagbokinnlegg": "Dag 11 - Tidsforvirring\n\nVår store klokke på Nordpolen sluttet å virke ved midnatt. En nisse prøvde å reparere den. Nå viser den 87 o'clock. Vet ikke engang at det eksisterer.\n\nBestemte at vi bare følger solen. Problemet er at solen ikke går ned her på Nordpolen om vinteren. Nissene vet ikke når de skal sove. Kaos.\n\nRampenissen klager på at han er trøtt. Forteller ham at her jobber vi 25 timer i døgnet. (Ja, jeg vet at det bare er 24. Men på Nordpolen er reglene annerledes.)\n\n- Julenissen"
+    },
+    {
+      "dag": 12,
+      "tittel": "Julesangmysteriet",
+      "beskrivelse": "I sangen synger vi: 'Deilig er _____'. Hvilket norsk ord mangler? (6 bokstaver)",
+      "kode": "JORDEN",
+      "dagbokinnlegg": "Dag 12 - Sangdag\n\nStartet morgenen med å synge 'Deilig er jorden' for nissene. De elsket det! Eller late som. Vanskelig å si.\n\nFant ut at rudolf kan synge. Vel, mer som muling. Men han prøver. Det er det som teller. De andre reinsdyrene nekter å være med i kor. Sier det er uprofesjonelt.\n\nRampenissen sier at barna synger julesanger hjemme. Herlig! Det er det julen handler om. Glede, sang, og gaveproduksjon i industriell skala.\n\n- Julenissen"
+    },
+    {
+      "dag": 13,
+      "tittel": "Lucia-lyset",
+      "beskrivelse": "I dag er det Luciadagen! Lucia bærer en krans med lys på hodet. Hva heter disse lysene?",
+      "kode": "LYS",
+      "hendelse": "Luciadagen",
+      "dagbokinnlegg": "Dag 13 - Lucia-Kaos\n\nLussi-dagen! Nissene ville pynte hele Nordpolen med levende lys. Måtte forklare brannfare. Kompromisset: LED-lys formet som levende lys. De sultet i 10 minutter, men ga seg.\n\nNissemor bakte lussekatter. 500 stykker. Nissene spiste dem på 20 minutter. Rekord! Eller et problem. Vet ikke helt.\n\nRampenissen sender bilder av Lucia-prosesjon hjemme hos barna. Vakkert! Minner meg om hvorfor vi gjør dette. For barna. Og kattene. Lussekattene, altså.\n\n- Julenissen"
+    },
+    {
+      "dag": 14,
+      "tittel": "Gavepapir Gåten",
+      "beskrivelse": "Hva pakker vi gavene i? Det har mange farger og mønstre. (6 bokstaver)",
+      "kode": "PAPIR",
+      "hendelse": "Lystenning på Fløyen",
+      "dagbokinnlegg": "Dag 14 - Innpakkingsdag\n\nKvalitetskontroll av gavepapir. Vi har 847 forskjellige design. Hvorfor? Ingen vet. En nisse foreslo å bare bruke ett design. Han ble utvist fra møtet.\n\nPrøvde å pakke inn en gave selv for å vise nissene hvordan det skal gjøres. Brukte for mye tape. Gaven er nå en tape-ball. Nissene applauderte 'ironisk'. Frekke nisser.\n\nRampenissen melder at barna lærer om julepynt og pakkepapir. Fint! De blir flinkere enn meg til å pakke. Det er ikke vanskelig.\n\n- Julenissen"
+    },
+    {
+      "dag": 15,
+      "tittel": "Risgrøt og Mandel",
+      "beskrivelse": "Hvilken spesiell ingrediens skjuler vi i risgrøten på julaften?",
+      "kode": "MANDEL",
+      "dagbokinnlegg": "Dag 15 - Grøtdag\n\nNissemor laget risgrøt til alle på Nordpolen. 250 nisser + 8 reinsdyr + 1 julenisse = MYE grøt. Hun skjulte mandelen. Konkurransen er i gang!\n\nNissene spiser som om livet står på spill. Rudolf prøvde å jukse ved å sniffe seg frem til mandelen. Ble disket. Reinsdyr har ikke lov å delta uansett.\n\nJeg fant mandelen! I MIN tredje bolle! Nissemor smilte mistenksomt. Tror hun lot meg vinne. Men tar æren uansett.\n\n- Julenissen"
+    },
+    {
+      "dag": 16,
+      "tittel": "Adventskalender",
+      "beskrivelse": "Hvor mange luker har en tradisjonell julekalender? Skriv tallet.",
+      "kode": "24",
+      "dagbokinnlegg": "Dag 16 - Halvveis!\n\nHalvveis gjennom desember! Nissene feiret med kake. Stor kake. Veldig stor kake. For stor kake. Den dekket halve verkstedet. Måtte spise oss ut. Tok tre timer.\n\nGjennomgang av fremgangen: 48.392 leker produsert! 2.847 ønskelister behandlet! Rudolf fortsatt vanskelig! Alt går etter planen!\n\nRampenissen sender halvveis-rapport fra barna. De er dedikerte og ivrige. Akkurat som nissene mine. Bare at barna sannsynligvis ikke spiser like mye godteri.\n\n- Julenissen"
+    },
+    {
+      "dag": 17,
+      "tittel": "Juletrepynt",
+      "beskrivelse": "Hva henger på toppen av juletreet? Begynner med S, 5 bokstaver.",
+      "kode": "STJERNE",
+      "dagbokinnlegg": "Dag 17 - Stressuke\n\nBare én uke igjen! PANIKK! Ikke virkelig panikk, men litt bekymret. Skjuler det bak ho-ho-ho-ing. Nissene tror jeg er rolig. Nissemor vet bedre.\n\nTreningsmøte med reinsdyrene. De skal fly jorden rundt på åtte timer. Rudolf insisterer på flere pauser for selfies. Forklarte at julen ikke venter. Han sultet.\n\nRampenissen rapporterer at barna er spente. Godt! Jeg også. Og nervøs. Mest spent. Litt nervøs.\n\n- Julenissen"
+    },
+    {
+      "dag": 18,
+      "tittel": "Hvit Desember",
+      "beskrivelse": "Hva faller fra himmelen og gjør julen hvit? (3 bokstaver)",
+      "kode": "SNØ",
+      "dagbokinnlegg": "Dag 18 - Gavetelling\n\nInventar-dag. Teller gaver. Mister tellingen. Starter på nytt. Mister tellingen igjen. Gir opp. Ber nissene telle. De kommer til tre forskjellige tall. Bestemmer at vi bare tar med alt vi har.\n\nProblemet med slede-størrelse oppstår. Gavene passer ikke. Nissene foreslår større slede. Rudolf foreslår færre gaver. Nissene ser surt på Rudolf. Bygger større slede.\n\nRampenissen sender bilder av gaveønsker fra barna. Søtt! Og håndterbart. Ikke som den ungen som ønsket seg en ekte dinosaur i fjor.\n\n- Julenissen"
+    },
+    {
+      "dag": 19,
+      "tittel": "Julens Dyr",
+      "beskrivelse": "Hvilket dyr trekker nissens slede? De har gevir. (8 bokstaver)",
+      "kode": "REINSDYR",
+      "dagbokinnlegg": "Dag 19 - Tretthetsdag\n\nTrøtteste dag så langt. Falt i søvn tre ganger. En gang midt i setning til nissene. De lo. Ikke artig. Vel, litt artig.\n\nNissemor insisterer på at jeg tar pauser. Forklarer at julenissen ikke tar pauser. Hun bare pekte på godteristabelen og smilte. Tok en pause.\n\nRampenissen klager også over trettet. Sendte ham oppskrift på Nissemor sin magiske energi-kakao. Han takket. 5 minutter senere sendte han bilde av seg dansende på bordet. Kakao virker.\n\n- Julenissen"
+    },
+    {
+      "dag": 20,
+      "tittel": "Nissens Transport",
+      "beskrivelse": "Hva reiser nissen med på julenatten? Den blir trukket av reinsdyr. (5 bokstaver)",
+      "kode": "SLEDE",
+      "dagbokinnlegg": "Dag 20 - Fire Dager\n\nBare fire dager igjen! Alt eskalerer nå. Nissene jobber døgnet rundt. Vi serverer kaffe på intravenøs drypp. (Spøk. Mest spøk.)\n\nReinsdyrene har fått siste treningsøkt. Rudolf klaget på muskelsmerter. Fortalte ham om barna som venter på gaver. Han sluttet å klage. Til og med Rudolf har hjerte. Noen ganger.\n\nSjefen (Nissemor) forsikrer meg om at alt går bra. Hun har alltid rett. Puster lettere. Litt. Veldig litt.\n\n- Julenissen"
+    },
+    {
+      "dag": 21,
+      "tittel": "Julenattens Stjerne",
+      "beskrivelse": "Hvor mange spisser har julestjernen? Skriv tallet.",
+      "kode": "5",
+      "dagbokinnlegg": "Dag 21 - Tre Dager!\n\nTRE DAGER TIL JULAFTEN! Nissene er i høygir. En av dem festet vinger på ryggen og hoppet fra taket. Han sa han 'øvet på å fly'. Vi har ikke flyvende nisser. Han har nå gips på beinet.\n\nSiste sjekk av gavesekken. Den er magisk, så alt passer inn. Men måtte teste. Puttet en nisse inn. Han passet. Så puttet vi inn en til. De passet. Sluttet på 12 nisser. Ikke rom for flere. Eller kanskje vi skal ikke putte nisser i sekken.\n\nRampenissen melder om høy spenning hos barna. Samme her! Vi klarer dette! Sannsynligvis!\n\n- Julenissen"
+    },
+    {
+      "dag": 22,
+      "tittel": "Julesokken",
+      "beskrivelse": "Hva henger vi ved peisen for å få små gaver? (5 bokstaver)",
+      "kode": "SOKK",
+      "dagbokinnlegg": "Dag 22 - To Dager!\n\nTO DAGER! Ser lyset i tunelen! Det var Rudolf. Han gikk inn i tunnelen. Måtte hente ham ut.\n\nGeneralprøve med slede og reinsdyr. Alt gikk perfekt! Helt til en nisse nøs og skremte reinsdyrene. De løp av gårde med sleda. Fant dem tre timer senere i et snødrev. Rudolf sa \"Jeg sa det\". Ingen sa noe.\n\nRampenissen sender siste rapport. Barna har vært fantastiske! Har løst alle oppgavene! Stolt! Kanskje de kan få ekstragaver? Nissemor sa nei. Hun har alltid rett.\n\n- Julenissen"
+    },
+    {
+      "dag": 23,
+      "tittel": "Lille Julaften",
+      "beskrivelse": "I morgen er det julaften! Men hva kalles dagen FØR julaften? (to ord sammen, 16 bokstaver)",
+      "kode": "LILLEJULAFTEN",
+      "dagbokinnlegg": "Dag 23 - Lillejulaften\n\nLillejulaften! I MORGEN er det JULAFTEN! Klarer knapt å tro det! År nummer 1752 som julenisse, og jeg er fortsatt nervøs hver gang!\n\nSiste forberedelser. Vasket sleda. Børstet reinsdyrene. Telte gavene én siste gang. Kom til et nytt tall. Gir opp telling. Tar bare med alt.\n\nRampenissen sender juleønsker fra barna. Vakkert! Dette er hvorfor vi gjør det vi gjør. For gleden. For magien. For... venter, Rudolf spiste seletøyet. RUDOLF!\n\n- Julenissen"
+    },
+    {
+      "dag": 24,
+      "tittel": "Den Store Dagen",
+      "beskrivelse": "Gratulerer! Du har fullført alle oppdragene! Skriv dagens spesielle ord med 3 bokstaver.",
+      "kode": "JUL",
+      "dagbokinnlegg": "Dag 24 - JULAFTEN!\n\nDET ER I DAG! JULAFTEN! Reinsdyrene står klare! Sleda er lastet! Gavesekken er FULL (og tross alt magisk)! Jeg har på meg den røde drakten (nyvasket av Nissemor)!\n\nBarna har fullført alle oppgavene! De var fantastiske! Rampenissen har gjort en strålende jobb! (Selv om han spiste for mye godteri.)\n\nNissene applauderer. Nissemor gråter litt (av glede). Rudolf poserer for kamera (selvfølgelig). Alt er perfekt!\n\nSnart letter jeg. Jorden venter. Barna venter. Magien venter!\n\nGOD JUL TIL ALLE SAMMEN!\n\n- Julenissen\n\nPS: Neste år gjør vi dette igjen. Same time, same place, more gaver!"
+    }
+  ],
+  "varsler": [
+    {
+      "id": "v1",
+      "tekst": "JULESIGNAL: USTABIL",
+      "type": "advarsel",
+      "tidspunkt": "23:45"
+    },
+    {
+      "id": "v2",
+      "tekst": "INCOMING TRANSMISSION FRA NORDPOLEN",
+      "type": "info",
+      "tidspunkt": "23:52"
+    },
+    {
+      "id": "v3",
+      "tekst": "GAVEPRODUKSJON: BAK SKJEMA",
+      "type": "kritisk",
+      "tidspunkt": "00:12"
+    },
+    {
+      "id": "v4",
+      "tekst": "REINSDYR TELEMETRI: NORMAL",
+      "type": "info",
+      "tidspunkt": "01:05"
+    },
+    {
+      "id": "v5",
+      "tekst": "SNØSTORM DETEKTERT: SEKTOR 7",
+      "type": "advarsel",
+      "tidspunkt": "02:30"
+    },
+    {
+      "id": "v6",
+      "tekst": "VERKSTED TEMPERATUR: KRITISK LAV",
+      "type": "kritisk",
+      "tidspunkt": "03:15"
+    },
+    {
+      "id": "v7",
+      "tekst": "NISSEKRAFT: OPTIMAL NIVÅ",
+      "type": "info",
+      "tidspunkt": "04:22"
+    },
+    {
+      "id": "v8",
+      "tekst": "PAKKELISTE OPPDATERT",
+      "type": "info",
+      "tidspunkt": "05:00"
+    },
+    {
+      "id": "v9",
+      "tekst": "SIKKERHETSSYSTEM: AKTIVERT",
+      "type": "advarsel",
+      "tidspunkt": "06:45"
+    },
+    {
+      "id": "v10",
+      "tekst": "GOD JUL MELDING SENDT",
+      "type": "info",
+      "tidspunkt": "07:00"
+    }
+  ],
+  "filer": [
+    {
+      "navn": "OPPGAVER",
+      "type": "mappe",
+      "barn": [
+        {
+          "navn": "dagens_oppdrag.txt",
+          "type": "fil",
+          "innhold": "Se NISSEMAIL vinduet for å finne dagens utfordring.\n\nNår du har løsningen, bruk KODETERMINAL for å sende inn svaret.\n\nHusk: Noen hint kan være skjult i andre filer!"
+        },
+        {
+          "navn": "hint_arkiv.txt",
+          "type": "fil",
+          "innhold": "HINT ARKIV\n==========\n\nDag 1: Tenk på ordet selv.\nDag 2: Matematikk er nøkkelen.\nDag 3: Hvem er vi?\nDag 4: Rød nese, lysende vei.\nDag 5: 8 reinsdyr, men hva med Rudolf?\n\nMer hint kommer hver dag!"
+        }
+      ]
+    },
+    {
+      "navn": "LOGGER",
+      "type": "mappe",
+      "barn": [
+        {
+          "navn": "system.log",
+          "type": "fil",
+          "innhold": "[23:45] SYSTEM START\n[23:46] Laster juledata...\n[23:47] Nordpol koordinater verifisert\n[23:48] Reinsdyr status: KLAR\n[23:49] Gaveproduksjon: 87% fullført\n[23:50] Alle systemer GO!"
+        },
+        {
+          "navn": "sikkerhet.log",
+          "type": "fil",
+          "innhold": "[SIKKERHET] Tilgangskontroll aktiv\n[SIKKERHET] Passord verifisert\n[SIKKERHET] Bruker autentisert\n[SIKKERHET] Alle porter sikret\n[SIKKERHET] Ingen trusler detektert"
+        }
+      ]
+    },
+    {
+      "navn": "SYSTEM",
+      "type": "mappe",
+      "barn": [
+        {
+          "navn": "config.sys",
+          "type": "fil",
+          "innhold": "ENISSEKJERNE 3.8]\n\nKONFIGURASJON:\n- Språk: Norsk\n- Tidssone: GMT+1\n- Tema: Retro CRT\n- Sikkerhet: HØYESTE\n\nALLE SYSTEMER OPERATIONAL"
+        },
+        {
+          "navn": "readme.txt",
+          "type": "fil",
+          "innhold": "Velkommen til NisseKomm!\n\nDette er Nissens kommandosenter.\n\nBruk KODETERMINAL til å sende inn koder.\nBruk KALENDER for å se alle oppdrag.\n\nLykke til!"
+        }
+      ]
+    },
+    {
+      "navn": "HEMMELIGHETER",
+      "type": "mappe",
+      "barn": [
+        {
+          "navn": "nissens_dagbok.txt",
+          "type": "fil",
+          "innhold": "NISSENS DAGBOK\n\nDag 1: Julekalender-prosjektet er i gang!\nDag 2: Barn over hele verden deltar.\nDag 3: Julefølelsen sprer seg.\nDag 4: Rudolf trener ekstra hardt.\nDag 5: Gaveproduksjonen går som planlagt.\n\n... fortsetter hver dag ..."
+        },
+        {
+          "navn": "snill_slem_liste.txt",
+          "type": "fil",
+          "innhold": "🎄 NISSENS OFFISIELLE SNILL & SLEM LISTE 🎄\n\n[ADVARSEL: SKRIVEBESKYTTET - ADMIN TILGANG PÅKREVD]\n[SIKKERHETSNIVÅ: MAKSIMUM]\n\n═══════════════════════════════════════════════════\n\n✨ SNILL LISTE ✨\n\n1. Georg - Hjulpet mamma hver dag\n2. Viljar - Delt leker med søsken\n3. Marcus - Ryddet rommet uten å bli bedt\n4. Amund - Passet på lillebror\n5. Elias - Leste for bestemor\n6. Brage - Hjalp nabo med snømåking\n7. Sverre - Laget kort til venner\n8. Kees - Gjorde lekser uten klag\n\n... [PLASS TIL FLERE NAVN] ...\n\n═══════════════════════════════════════════════════\n\n⚠️ SLEM LISTE ⚠️\n\n1. [KLASSIFISERT]\n2. [KLASSIFISERT]\n3. [KLASSIFISERT]\n\n[Merk: Listen er heldigvis veldig kort i år!]\n\n═══════════════════════════════════════════════════\n\nSist oppdatert: 1. Desember\nNeste gjennomgang: 24. Desember kl 23:59\n\n💡 HINT: Kanskje det finnes en måte å få tilgang til\nredigeringsmodus? Hold utkikk etter HACKINGVERKTØY..."
+        },
+        {
+          "navn": "hemmelig_kode.txt",
+          "type": "fil",
+          "innhold": "⭐ HEMMELIG FIL ⭐\n\nDenne filen inneholder ingen koder.\nMen den viser at du er en god utforsker!\n\nFortsett å lete i alle mapper.\nNoen filer har hint til oppdragene."
+        }
+      ]
+    }
+  ],
+  "systemMetrikker": [
+    {
+      "navn": "JULESIGNAL",
+      "verdi": 87,
+      "maks": 100,
+      "status": "normal"
+    },
+    {
+      "navn": "NISSEKRAFT",
+      "verdi": 94,
+      "maks": 100,
+      "status": "normal"
+    },
+    {
+      "navn": "GAVEPRODUKSJON",
+      "verdi": 12,
+      "maks": 24,
+      "status": "advarsel"
+    },
+    {
+      "navn": "SLEDE ENERGI",
+      "verdi": 78,
+      "maks": 100,
+      "status": "normal"
+    }
+  ],
+  "kalender": []
+}
