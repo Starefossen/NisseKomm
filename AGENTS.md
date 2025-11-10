@@ -104,7 +104,7 @@
 
 **Content Files** (in `src/data/`):
 
-- **`oppdrag.json`** - All 24 daily missions with codes, descriptions, and diary entries
+- **`uke1_oppdrag.json`** through **`uke4_oppdrag.json`** - All 24 daily missions split across 4 weeks with codes, physical clues, and diary entries
 - **`statisk_innhold.json`** - File system, alerts, system metrics (non-mission content)
 
 **Mission Structure**:
@@ -148,9 +148,11 @@
 ### Styling
 
 - **Tailwind utility classes only** (no custom CSS in components)
+- **Use Tailwind CSS v4 syntax**: `bg-(--neon-green)`, `text-(--gold)`, `border-(--christmas-red)` instead of `bg-[var(--neon-green)]`, etc.
 - Use CSS custom properties from `globals.css` for colors
 - Apply animations via Tailwind classes referencing keyframes
 - Use `className` composition for conditional styles
+- **Contrast rule**: Use `text-black` on bright backgrounds (neon green, gold) for readability
 
 ### Norwegian Language
 
@@ -227,7 +229,8 @@ Consistent terms used throughout the application:
 - Co-locate related components (windows/, modules/, ui/)
 - Keep utility functions in lib/
 - Centralize types in types/
-- Single source of truth for content (data/oppdrag.json and data/statisk_innhold.json)
+- Single source of truth for content (data/uke1-4_oppdrag.json and data/statisk_innhold.json)
+- Load and validate quest data through oppdrag-loader.ts
 
 ## Animation System
 

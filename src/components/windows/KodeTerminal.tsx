@@ -12,6 +12,7 @@ interface KodeTerminalProps {
   expectedCode: string;
   currentDay: number;
   allMissions: Oppdrag[];
+  onCodeSubmitted?: () => void;
 }
 
 export function KodeTerminal({
@@ -19,6 +20,7 @@ export function KodeTerminal({
   expectedCode,
   currentDay,
   allMissions,
+  onCodeSubmitted,
 }: KodeTerminalProps) {
   const [code, setCode] = useState("");
   const [processing, setProcessing] = useState(false);
@@ -67,6 +69,11 @@ export function KodeTerminal({
       setSubmittedCodes(updated);
 
       setCode("");
+
+      // Notify parent of code submission (for module unlocks)
+      if (onCodeSubmitted) {
+        onCodeSubmitted();
+      }
     } else {
       // Error
       setFeedback("error");

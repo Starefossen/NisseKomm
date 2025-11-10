@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CRTFrame } from "@/components/ui/CRTFrame";
 import { BootSequence } from "@/components/ui/BootSequence";
 import { PasswordPrompt } from "@/components/ui/PasswordPrompt";
@@ -14,17 +14,16 @@ import { NisseMail } from "@/components/windows/NisseMail";
 import { KodeTerminal } from "@/components/windows/KodeTerminal";
 import { NisseNetUtforsker } from "@/components/windows/NisseNetUtforsker";
 import { Kalender } from "@/components/windows/Kalender";
-import oppdragData from "@/data/oppdrag.json";
+import { NisseMusikk } from "@/components/windows/NisseMusikk";
+import { NordpolTV } from "@/components/windows/NordpolTV";
+import { NisseBrev } from "@/components/windows/NisseBrev";
+import { NisseStats } from "@/components/windows/NisseStats";
+import { GrandFinaleModal } from "@/components/ui/GrandFinaleModal";
+import { getAllOppdrag, getCompletionCount } from "@/lib/oppdrag-loader";
 import statiskInnholdData from "@/data/statisk_innhold.json";
-import {
-  Oppdrag,
-  Varsel,
-  FilNode,
-  SystemMetrikk,
-  KalenderDag,
-} from "@/types/innhold";
+import { Varsel, FilNode, SystemMetrikk, KalenderDag } from "@/types/innhold";
 
-const oppdrag = oppdragData as Oppdrag[];
+const oppdrag = getAllOppdrag();
 const { varsler, filer, systemMetrikker } = statiskInnholdData as {
   varsler: Varsel[];
   filer: FilNode[];
@@ -32,11 +31,31 @@ const { varsler, filer, systemMetrikker } = statiskInnholdData as {
   kalender: KalenderDag[];
 };
 
-function getCurrentDay() {
+/**
+ * Get current calendar day (1-31)
+ */
+function getCurrentDay(): number {
   return new Date().getDate();
 }
 
-function getUnreadEmailCount() {
+/**
+ * Check if current date is within the calendar period (December 1-24)
+ * @param testMode - If true, bypass date restrictions for development
+ */
+function isCalendarActive(testMode: boolean): boolean {
+  if (testMode) return true;
+
+  const now = new Date();
+  const month = now.getMonth() + 1; // 1-based
+  const day = now.getDate();
+
+  return month === 12 && day >= 1 && day <= 24;
+}
+
+/**
+ * Get count of unread emails for current day
+ */
+function getUnreadEmailCount(): number {
   if (typeof window === "undefined") return 0;
   const currentDay = getCurrentDay();
   return StorageManager.getUnreadEmailCount(currentDay, oppdrag.length);
@@ -58,6 +77,13 @@ export default function Home() {
   const [openWindow, setOpenWindow] = useState<string | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [unreadCount, setUnreadCount] = useState(() => getUnreadEmailCount());
+  const [unlockedModules, setUnlockedModules] = useState<string[]>(() => {
+    if (typeof window !== "undefined") {
+      return StorageManager.getUnlockedModules();
+    }
+    return [];
+  });
+  const [showGrandFinale, setShowGrandFinale] = useState(false);
   const { playSound, playJingle } = useSounds();
 
   const bootPassword = process.env.NEXT_PUBLIC_BOOT_PASSWORD || "NISSEKODE2025";
@@ -66,16 +92,49 @@ export default function Home() {
   );
   const testMode = process.env.NEXT_PUBLIC_TEST_MODE === "true";
 
-  // Date validation for production mode
-  const isDateValid = () => {
-    if (testMode) return true;
+  // Check for module unlocks and crisis triggers when component mounts or codes change
+  useEffect(() => {
+    if (typeof window === "undefined") return;
 
-    const now = new Date();
-    const month = now.getMonth() + 1; // 1-based
-    const day = now.getDate();
+    const codes = StorageManager.getSubmittedCodes();
+    const completedCount = getCompletionCount(codes.map((c) => c.kode));
 
-    return month === 12 && day >= 1 && day <= 24;
+    // Module unlock thresholds
+    const MODULE_UNLOCK_DAYS = [
+      { day: 7, module: "NISSEMUSIKK" },
+      { day: 10, module: "NORDPOL_TV" },
+      { day: 14, module: "NISSEBREV" },
+      { day: 16, module: "NISSESTATS" },
+    ] as const;
+
+    MODULE_UNLOCK_DAYS.forEach(({ day, module }) => {
+      if (completedCount >= day && !StorageManager.isModuleUnlocked(module)) {
+        StorageManager.unlockModule(module);
+        // TODO: Show celebration animation when module unlocks
+      }
+    });
+
+    // Note: Crisis state is checked within the respective module components
+    // (NordpolTV for antenna, NisseStats for inventory) to keep crisis logic
+    // co-located with the UI that displays it
+  }, []);
+
+  // Update unlocked modules when codes are submitted
+  const handleCodeSubmitted = () => {
+    setUnlockedModules(StorageManager.getUnlockedModules());
+    setUnreadCount(getUnreadEmailCount());
+
+    // Check if Day 24 just completed for grand finale
+    const codes = StorageManager.getSubmittedCodes();
+    const completedCount = getCompletionCount(codes.map((c) => c.kode));
+    if (completedCount === 24) {
+      // Delay to let success animation play
+      setTimeout(() => setShowGrandFinale(true), 2000);
+    }
   };
+
+  // Date validation for production mode
+  const isDateValid = () => isCalendarActive(testMode);
 
   const handleBootComplete = () => {
     setBootComplete(true);
@@ -200,20 +259,90 @@ export default function Home() {
                     color="gold"
                     onClick={() => handleIconClick("kalender")}
                   />
-                  <DesktopIcon
-                    icon="lock"
-                    label="LÅST"
-                    color="gray"
-                    disabled
-                    onClick={() => {}}
-                  />
-                  <DesktopIcon
-                    icon="lock"
-                    label="LÅST"
-                    color="gray"
-                    disabled
-                    onClick={() => {}}
-                  />
+
+                  {/* Unlockable modules - show first unlocked module */}
+                  {unlockedModules.includes("NISSESTATS") ? (
+                    <DesktopIcon
+                      icon="chart"
+                      label="NISSESTATS"
+                      color="blue"
+                      onClick={() => handleIconClick("nissestats")}
+                    />
+                  ) : unlockedModules.includes("NISSEBREV") ? (
+                    <DesktopIcon
+                      icon="mail"
+                      label="NISSEBREV"
+                      color="gold"
+                      onClick={() => handleIconClick("nissebrev")}
+                    />
+                  ) : unlockedModules.includes("NORDPOL_TV") ? (
+                    <DesktopIcon
+                      icon="image"
+                      label="NORDPOL TV"
+                      color="green"
+                      onClick={() => handleIconClick("nordpol_tv")}
+                    />
+                  ) : unlockedModules.includes("NISSEMUSIKK") ? (
+                    <DesktopIcon
+                      icon="music"
+                      label="NISSEMUSIKK"
+                      color="blue"
+                      onClick={() => handleIconClick("nissemusikk")}
+                    />
+                  ) : (
+                    <DesktopIcon
+                      icon="lock"
+                      label="LÅST"
+                      color="gray"
+                      disabled
+                      onClick={() => {}}
+                    />
+                  )}
+
+                  {/* Second unlockable slot - show second unlocked module */}
+                  {unlockedModules.length >= 2 ? (
+                    unlockedModules.includes("NISSESTATS") &&
+                    unlockedModules.includes("NISSEBREV") ? (
+                      <DesktopIcon
+                        icon="chart"
+                        label="NISSESTATS"
+                        color="blue"
+                        onClick={() => handleIconClick("nissestats")}
+                      />
+                    ) : unlockedModules.includes("NISSEBREV") &&
+                      unlockedModules.includes("NORDPOL_TV") ? (
+                      <DesktopIcon
+                        icon="mail"
+                        label="NISSEBREV"
+                        color="gold"
+                        onClick={() => handleIconClick("nissebrev")}
+                      />
+                    ) : unlockedModules.includes("NORDPOL_TV") &&
+                      unlockedModules.includes("NISSEMUSIKK") ? (
+                      <DesktopIcon
+                        icon="image"
+                        label="NORDPOL TV"
+                        color="green"
+                        onClick={() => handleIconClick("nordpol_tv")}
+                      />
+                    ) : (
+                      <DesktopIcon
+                        icon="lock"
+                        label="LÅST"
+                        color="gray"
+                        disabled
+                        onClick={() => {}}
+                      />
+                    )
+                  ) : (
+                    <DesktopIcon
+                      icon="lock"
+                      label="LÅST"
+                      color="gray"
+                      disabled
+                      onClick={() => {}}
+                    />
+                  )}
                 </div>
               </div>
             ) : (
@@ -234,6 +363,7 @@ export default function Home() {
                     expectedCode={getCurrentMission().kode}
                     currentDay={selectedDay || getCurrentDay()}
                     allMissions={oppdrag}
+                    onCodeSubmitted={handleCodeSubmitted}
                   />
                 )}
                 {openWindow === "nissenet" && (
@@ -251,10 +381,33 @@ export default function Home() {
                     onSelectDay={handleSelectDay}
                   />
                 )}
+                {openWindow === "nissemusikk" && (
+                  <NisseMusikk onClose={handleCloseWindow} />
+                )}
+                {openWindow === "nordpol_tv" && (
+                  <NordpolTV
+                    onClose={handleCloseWindow}
+                    currentDay={getCurrentDay()}
+                  />
+                )}
+                {openWindow === "nissebrev" && (
+                  <NisseBrev onClose={handleCloseWindow} />
+                )}
+                {openWindow === "nissestats" && (
+                  <NisseStats
+                    onClose={handleCloseWindow}
+                    currentDay={getCurrentDay()}
+                  />
+                )}
               </>
             )}
           </div>
         </div>
+      )}
+
+      {/* Grand Finale Modal */}
+      {showGrandFinale && (
+        <GrandFinaleModal onClose={() => setShowGrandFinale(false)} />
       )}
     </CRTFrame>
   );

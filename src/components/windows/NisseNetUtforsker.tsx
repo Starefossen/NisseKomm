@@ -4,6 +4,8 @@ import { useState, useMemo } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { FilNode, Oppdrag } from "@/types/innhold";
+import { StorageManager } from "@/lib/storage";
+import { isDayCompleted } from "@/lib/oppdrag-loader";
 
 interface NisseNetUtforskerProps {
   files: FilNode[];
@@ -45,7 +47,7 @@ export function NisseNetUtforsker({
     return diary;
   }, [missions, currentDay]);
 
-  // Process files and inject dynamic content for nissens_dagbok.txt
+  // Process files and inject dynamic content for nissens_dagbok.txt and snill_slem_liste.txt
   const processedFiles = useMemo(() => {
     const processNode = (node: FilNode): FilNode => {
       if (node.type === "fil" && node.navn === "nissens_dagbok.txt") {
@@ -54,6 +56,57 @@ export function NisseNetUtforsker({
           innhold: generateDiaryContent,
         };
       }
+
+      // Day 23: Update Nice List with player names
+      if (node.type === "fil" && node.navn === "snill_slem_liste.txt") {
+        const completedCodes = StorageManager.getSubmittedCodes().map(
+          (c) => c.kode,
+        );
+        const day23Completed = isDayCompleted(23, completedCodes);
+
+        if (day23Completed) {
+          // Get player names from environment variable
+          const playerNames =
+            process.env.NEXT_PUBLIC_PLAYER_NAMES || "Georg,Viljar,Marcus,Amund";
+          const names = playerNames.split(",").map((n) => n.trim());
+
+          // Generate updated Nice List with player names at top
+          let updatedList = node.innhold || "";
+
+          // Find the SNILL LISTE section and inject names
+          const snillSection = updatedList.indexOf("✨ SNILL LISTE ✨");
+          if (snillSection !== -1) {
+            const listStart = updatedList.indexOf("\n\n", snillSection) + 2;
+            const existingList = updatedList.substring(listStart);
+
+            // Create new entries for players
+            const playerEntries = names
+              .map(
+                (name, i) =>
+                  `${i + 1}. ${name} - ⭐ FULLFØRT NISSEKOMM JULEKALENDER! ⭐`,
+              )
+              .join("\n");
+
+            updatedList =
+              updatedList.substring(0, listStart) +
+              playerEntries +
+              "\n" +
+              existingList;
+
+            // Update last modified date
+            updatedList = updatedList.replace(
+              /Sist oppdatert: .*\n/,
+              `Sist oppdatert: 23. Desember ✓\n`,
+            );
+          }
+
+          return {
+            ...node,
+            innhold: updatedList,
+          };
+        }
+      }
+
       if (node.type === "mappe" && node.barn) {
         return {
           ...node,

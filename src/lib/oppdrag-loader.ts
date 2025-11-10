@@ -1,0 +1,202 @@
+/**
+ * Oppdrag Loader - Validates and merges all weekly quest files
+ *
+ * This module imports all 4 weekly quest files (uke1-4_oppdrag.json),
+ * validates the data structure, and exports a single sorted array of all 24 days.
+ *
+ * Build-time validation ensures:
+ * - Exactly 24 days present (1-24)
+ * - All codes are unique
+ * - All required fields are populated
+ * - No duplicate day numbers
+ */
+
+import type { Oppdrag } from "@/types/innhold";
+import uke1 from "@/data/uke1_oppdrag.json";
+import uke2 from "@/data/uke2_oppdrag.json";
+import uke3 from "@/data/uke3_oppdrag.json";
+import uke4 from "@/data/uke4_oppdrag.json";
+
+// Type assertion for imported JSON
+const week1 = uke1 as Oppdrag[];
+const week2 = uke2 as Oppdrag[];
+const week3 = uke3 as Oppdrag[];
+const week4 = uke4 as Oppdrag[];
+
+/**
+ * Validates a single quest (oppdrag) has all required fields
+ */
+function validateOppdrag(oppdrag: Oppdrag, weekNumber: number): void {
+  const requiredFields: (keyof Oppdrag)[] = [
+    "dag",
+    "tittel",
+    "beskrivelse",
+    "kode",
+    "dagbokinnlegg",
+    "rampenissen_rampestrek",
+    "fysisk_ledetekst",
+    "oppsett_tid",
+    "materialer_nødvendig",
+    "beste_rom",
+    "hint_type",
+  ];
+
+  for (const field of requiredFields) {
+    if (
+      oppdrag[field] === undefined ||
+      oppdrag[field] === null ||
+      oppdrag[field] === ""
+    ) {
+      throw new Error(
+        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - Missing required field: ${field}`,
+      );
+    }
+  }
+
+  // Validate materialer_nødvendig is an array
+  if (!Array.isArray(oppdrag.materialer_nødvendig)) {
+    throw new Error(
+      `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - materialer_nødvendig must be an array`,
+    );
+  }
+
+  // Validate oppsett_tid is valid value
+  const validOppsettTid = ["enkel", "moderat", "avansert"];
+  if (!validOppsettTid.includes(oppdrag.oppsett_tid)) {
+    throw new Error(
+      `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - oppsett_tid must be one of: ${validOppsettTid.join(", ")}`,
+    );
+  }
+
+  // Validate hint_type is valid value
+  const validHintTypes = [
+    "skrevet",
+    "visuell",
+    "gjemt_objekt",
+    "arrangement",
+    "spor",
+    "lyd",
+    "kombinasjon",
+  ] as const;
+  if (
+    !validHintTypes.includes(
+      oppdrag.hint_type as (typeof validHintTypes)[number],
+    )
+  ) {
+    throw new Error(
+      `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - hint_type must be one of: ${validHintTypes.join(", ")}`,
+    );
+  }
+}
+
+/**
+ * Merges and validates all weekly quest files
+ */
+function mergeAndValidate(): Oppdrag[] {
+  // Validate each week's quests
+  week1.forEach((oppdrag) => validateOppdrag(oppdrag, 1));
+  week2.forEach((oppdrag) => validateOppdrag(oppdrag, 2));
+  week3.forEach((oppdrag) => validateOppdrag(oppdrag, 3));
+  week4.forEach((oppdrag) => validateOppdrag(oppdrag, 4));
+
+  // Merge all weeks
+  const allOppdrag = [...week1, ...week2, ...week3, ...week4];
+
+  // Validate we have exactly 24 days
+  if (allOppdrag.length !== 24) {
+    throw new Error(
+      `Validation Error: Expected 24 quests, found ${allOppdrag.length}. ` +
+        `Week counts: W1=${week1.length}, W2=${week2.length}, W3=${week3.length}, W4=${week4.length}`,
+    );
+  }
+
+  // Validate all day numbers 1-24 are present (no duplicates, no gaps)
+  const dayNumbers = allOppdrag.map((o) => o.dag).sort((a, b) => a - b);
+  for (let expectedDay = 1; expectedDay <= 24; expectedDay++) {
+    if (!dayNumbers.includes(expectedDay)) {
+      throw new Error(`Validation Error: Missing day ${expectedDay}`);
+    }
+  }
+
+  // Check for duplicate day numbers
+  const daySet = new Set(dayNumbers);
+  if (daySet.size !== 24) {
+    const duplicates = dayNumbers.filter(
+      (day, index) => dayNumbers.indexOf(day) !== index,
+    );
+    throw new Error(
+      `Validation Error: Duplicate day numbers found: ${duplicates.join(", ")}`,
+    );
+  }
+
+  // Validate all codes are unique (case-insensitive)
+  const codes = allOppdrag.map((o) => o.kode.toUpperCase());
+  const codeSet = new Set(codes);
+  if (codeSet.size !== allOppdrag.length) {
+    const duplicateCodes: string[] = [];
+    codes.forEach((code, index) => {
+      if (codes.indexOf(code) !== index && !duplicateCodes.includes(code)) {
+        duplicateCodes.push(code);
+      }
+    });
+    throw new Error(
+      `Validation Error: Duplicate codes found: ${duplicateCodes.join(", ")}. ` +
+        `All 24 codes must be unique.`,
+    );
+  }
+
+  // Sort by day number
+  return allOppdrag.sort((a, b) => a.dag - b.dag);
+}
+
+// Build-time validation and export
+const allOppdrag = mergeAndValidate();
+
+/**
+ * Get all 24 quests (oppdrag) in day order
+ */
+export function getAllOppdrag(): Oppdrag[] {
+  return allOppdrag;
+}
+
+/**
+ * Get a specific quest by day number (1-24)
+ */
+export function getOppdragByDay(day: number): Oppdrag | undefined {
+  return allOppdrag.find((o) => o.dag === day);
+}
+
+/**
+ * Get all quests up to and including a specific day
+ */
+export function getOppdragUpToDay(day: number): Oppdrag[] {
+  return allOppdrag.filter((o) => o.dag <= day);
+}
+
+/**
+ * Get all completed quests based on submitted codes
+ */
+export function getCompletedOppdrag(completedCodes: string[]): Oppdrag[] {
+  const upperCodes = completedCodes.map((c) => c.toUpperCase());
+  return allOppdrag.filter((o) => upperCodes.includes(o.kode.toUpperCase()));
+}
+
+/**
+ * Check if a specific day is completed
+ */
+export function isDayCompleted(day: number, completedCodes: string[]): boolean {
+  const oppdrag = getOppdragByDay(day);
+  if (!oppdrag) return false;
+  return completedCodes.some(
+    (code) => code.toUpperCase() === oppdrag.kode.toUpperCase(),
+  );
+}
+
+/**
+ * Get total number of completed quests
+ */
+export function getCompletionCount(completedCodes: string[]): number {
+  return getCompletedOppdrag(completedCodes).length;
+}
+
+export default allOppdrag;

@@ -49,12 +49,12 @@ export function PasswordPrompt({
   };
 
   return (
-    <div className="fixed inset-0 bg-[var(--crt-bg)] flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-(--crt-bg) flex items-center justify-center z-50">
       <div
         className={`w-[600px] max-w-[90%] space-y-6 ${isShaking ? "animate-[crt-shake_0.3s_ease-in-out]" : ""}`}
       >
         {/* Header */}
-        <div className="text-[var(--neon-green)] text-2xl tracking-wider font-mono text-center mb-8">
+        <div className="text-(--neon-green) text-2xl tracking-wider font-mono text-center mb-8">
           <div>TILGANGSKONTROLL</div>
           <div className="text-sm mt-2 opacity-70">SKRIV INN PASSORD</div>
         </div>
@@ -66,7 +66,7 @@ export function PasswordPrompt({
               type="text"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-black border-4 border-[var(--neon-green)] text-[var(--neon-green)] text-xl tracking-widest font-mono focus:outline-none focus:shadow-[0_0_20px_rgba(0,255,0,0.5)] uppercase"
+              className="w-full px-4 py-3 bg-black border-4 border-(--neon-green) text-(--neon-green) text-xl tracking-widest font-mono focus:outline-none focus:shadow-[0_0_20px_rgba(0,255,0,0.5)] uppercase"
               placeholder="_ _ _ _ _ _ _ _"
               autoFocus
               style={{ caretColor: "var(--neon-green)" }}
@@ -75,7 +75,7 @@ export function PasswordPrompt({
 
           <button
             type="submit"
-            className="w-full px-6 py-3 bg-[var(--neon-green)] text-black text-xl tracking-wider font-bold border-4 border-[var(--neon-green)] hover:bg-transparent hover:text-[var(--neon-green)] transition-colors"
+            className="w-full px-6 py-3 bg-(--neon-green) text-black text-xl tracking-wider font-bold border-4 border-(--neon-green) hover:bg-transparent hover:text-(--neon-green) transition-colors"
           >
             LOGG INN
           </button>
@@ -84,7 +84,7 @@ export function PasswordPrompt({
         {/* Error message */}
         {error && (
           <div
-            className="text-[var(--christmas-red)] text-center text-lg tracking-wider border-2 border-[var(--christmas-red)] py-3 px-4"
+            className="text-(--christmas-red)-center text-lg tracking-wider border-2 border-(--christmas-red) px-4"
             style={{ animation: "error-pulse 0.5s ease-in-out" }}
           >
             {error}
@@ -93,7 +93,7 @@ export function PasswordPrompt({
 
         {/* Attempt counter */}
         {attemptCount > 0 && (
-          <div className="text-[var(--gold)] text-center text-sm opacity-70">
+          <div className="text-(--gold) text-center text-sm opacity-70">
             Forsøk: {attemptCount}
           </div>
         )}

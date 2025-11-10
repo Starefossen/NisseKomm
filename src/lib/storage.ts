@@ -203,6 +203,117 @@ export class StorageManager {
     Object.values(KEYS).forEach((key) => {
       localStorage.removeItem(key);
     });
+    // Also clear module/crisis data
+    localStorage.removeItem("nissekomm-unlocked-modules");
+    localStorage.removeItem("nissekomm-crisis-completed");
+    localStorage.removeItem("nissekomm-santa-letters");
+  }
+
+  // ============================================================
+  // Unlockable Modules
+  // ============================================================
+
+  static getUnlockedModules(): string[] {
+    if (typeof window === "undefined") return [];
+    try {
+      const data = localStorage.getItem("nissekomm-unlocked-modules");
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  static unlockModule(moduleId: string): void {
+    if (typeof window === "undefined") return;
+    const modules = this.getUnlockedModules();
+    if (!modules.includes(moduleId)) {
+      modules.push(moduleId);
+      localStorage.setItem(
+        "nissekomm-unlocked-modules",
+        JSON.stringify(modules),
+      );
+    }
+  }
+
+  static isModuleUnlocked(moduleId: string): boolean {
+    return this.getUnlockedModules().includes(moduleId);
+  }
+
+  // ============================================================
+  // Crisis Management
+  // ============================================================
+
+  static getCrisisStatus(): { antenna: boolean; inventory: boolean } {
+    if (typeof window === "undefined")
+      return { antenna: false, inventory: false };
+    try {
+      const data = localStorage.getItem("nissekomm-crisis-completed");
+      if (!data) return { antenna: false, inventory: false };
+
+      const parsed = JSON.parse(data);
+      // Validate structure to prevent corruption issues
+      return {
+        antenna: parsed.antenna === true,
+        inventory: parsed.inventory === true,
+      };
+    } catch (error) {
+      console.error("Failed to parse crisis status:", error);
+      return { antenna: false, inventory: false };
+    }
+  }
+
+  static resolveCrisis(crisisType: "antenna" | "inventory"): void {
+    if (typeof window === "undefined") return;
+    const status = this.getCrisisStatus();
+    status[crisisType] = true;
+    localStorage.setItem("nissekomm-crisis-completed", JSON.stringify(status));
+  }
+
+  static isCrisisResolved(crisisType: "antenna" | "inventory"): boolean {
+    return this.getCrisisStatus()[crisisType];
+  }
+
+  // ============================================================
+  // Santa Letters (NISSEBREV Module)
+  // ============================================================
+
+  static getSantaLetters(): Array<{ day: number; content: string }> {
+    if (typeof window === "undefined") return [];
+    try {
+      const data = localStorage.getItem("nissekomm-santa-letters");
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  static saveSantaLetters(
+    letters: Array<{ day: number; content: string }>,
+  ): void {
+    if (typeof window === "undefined") return;
+    localStorage.setItem("nissekomm-santa-letters", JSON.stringify(letters));
+  }
+
+  static addSantaLetter(day: number, content: string): void {
+    if (typeof window === "undefined") return;
+
+    // Validate input
+    if (day < 1 || day > 24) {
+      console.error(`Invalid day number: ${day}. Must be between 1 and 24.`);
+      return;
+    }
+    if (!content || content.trim().length === 0) {
+      console.error("Cannot add empty letter content");
+      return;
+    }
+
+    const letters = this.getSantaLetters();
+    // Remove existing letter for this day if present
+    const filtered = letters.filter((l) => l.day !== day);
+    filtered.push({ day, content: content.trim() });
+    // Sort by day
+    filtered.sort((a, b) => a.day - b.day);
+    this.saveSantaLetters(filtered);
   }
 
   /**

@@ -36,26 +36,26 @@ export function BootSequence({ onComplete, duration = 2 }: BootSequenceProps) {
 
   return (
     <div
-      className="fixed inset-0 bg-[var(--crt-bg)] flex items-center justify-center z-50"
+      className="fixed inset-0 bg-(--crt-bg) flex items-center justify-center z-50"
       style={{ animation: "flicker-in 1s ease-out" }}
     >
       <div className="w-[600px] max-w-[90%] space-y-6">
         {/* Boot message */}
-        <div className="text-[var(--neon-green)] text-2xl tracking-wider font-mono text-center">
+        <div className="text-(--neon-green) text-2xl tracking-wider font-mono text-center">
           <div className="mb-2">ENISSEKJERNE 3.8]</div>
           <div className="text-lg">LASTER...</div>
         </div>
 
         {/* Progress bar */}
-        <div className="w-full h-8 border-4 border-[var(--neon-green)] bg-black">
+        <div className="w-full h-8 border-4 border-(--neon-green) bg-black">
           <div
-            className="h-full bg-[var(--neon-green)] transition-all duration-100"
+            className="h-full bg-(--neon-green) transition-all duration-100"
             style={{ width: `${progress}%` }}
           />
         </div>
 
         {/* Progress percentage */}
-        <div className="text-[var(--neon-green)] text-xl text-center tracking-wider">
+        <div className="text-(--neon-green) text-xl text-center tracking-wider">
           {Math.floor(progress)}%
         </div>
       </div>

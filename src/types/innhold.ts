@@ -5,7 +5,20 @@ export interface Oppdrag {
   beskrivelse: string;
   kode: string;
   hendelse?: string; // Optional public event description
-  dagbokinnlegg?: string; // Santa's diary entry for this day
+  dagbokinnlegg: string; // Santa's diary entry for this day (required)
+  rampenissen_rampestrek: string; // Description of physical mischief scene for parent setup
+  fysisk_ledetekst: string; // Physical clue location hint (e.g., "Sjekk skoene i gangen")
+  oppsett_tid: "enkel" | "moderat" | "avansert"; // Setup time: 5min | 15min | 30min+
+  materialer_nødvendig: string[]; // Items parents need to acquire
+  beste_rom: string; // Suggested room/location for mischief
+  hint_type:
+    | "skrevet" // Written clue
+    | "visuell" // Visual clue
+    | "gjemt_objekt" // Hidden object
+    | "arrangement" // Physical arrangement/scene
+    | "spor" // Trail/tracks
+    | "lyd" // Sound/audio clue
+    | "kombinasjon"; // Combination of types
 }
 
 // Alert/warning message

@@ -1,0 +1,112 @@
+[
+  {
+    "dag": 8,
+    "tittel": "Toalettpapir-labyrint",
+    "beskrivelse": "Rampenissen har fylt badet med toalettpapir! I midten av kaoset ligger det en rull med en gåte: 'Jeg er stor og rund, og Nissen bærer meg på ryggen. 5 bokstaver. Hva er jeg?'",
+    "kode": "SEKK",
+    "dagbokinnlegg": "Dag 8 - Sekkproblemer\n\nGavesekken min trenger reparasjon. Igjen. Nissene syr på den nå. Spurte hvor mye vekt den kan bære. De bare lo nervøst. Ikke betryggende.\n\nTeste den nye magiske sekken ved å putte inn 500 gaver. Den holdt! Men så kom jeg ikke ut av verkstedet fordi sekken ikke passet gjennom døren. Måtte rive veggen. Nissene var ikke imponert.\n\nRampenissen melder at alt går bra med barna. De er flinke til å løse oppgavene. Muligens flinkere enn noen av nissene mine her...\n\n- Julenissen",
+    "rampenissen_rampestrek": "Toalettpapir er hengt rundt badet som en labyrint. I midten ligger Rampenissen med en rull som har gåten skrevet på.",
+    "fysisk_ledetekst": "Sjekk badet - Rampenissen har laget kaos! Les gåten på rullen.",
+    "oppsett_tid": "moderat",
+    "materialer_nødvendig": ["3-5 toalettruller", "Lapp med gåte", "Tape"],
+    "beste_rom": "Bad",
+    "hint_type": "skrevet"
+  },
+  {
+    "dag": 9,
+    "tittel": "Snøfnugg-matematikk",
+    "beskrivelse": "Rampenissen har hengt opp papir-snøfnugg rundt i huset! På 3 av dem står det tall: en har '6 sider', en annen '× 3', og den tredje '= ?'. Hva blir svaret?",
+    "kode": "18",
+    "dagbokinnlegg": "Dag 9 - Snøfnugg-Forskning\n\nBrukte hele formiddagen på å studere snøfnugg under mikroskop. Alle er unike! Fantastisk! Nissemor minnet meg på at jeg egentlig skulle kvalitetssjekke leker. Ups.\n\nNissene laget 15.000 leker i dag. Rekord! Feiret med varm sjokolade for alle. En av nissene drakk syv kopper og var oppe til klokken fire om natten. Han synger fortsatt julesanger.\n\nRampenissen rapporterer om god fremgang. Barna er kreative og intelligente. Perfekt! Det er sånne barn vi trenger mer av.\n\n- Julenissen",
+    "rampenissen_rampestrek": "6-10 papir-snøfnugg hengt rundt i huset. 3 av dem har tall/symboler: '6 sider per snøfnugg', '× 3 snøfnugg', '= ?'. Rampenissen holder en lupe.",
+    "fysisk_ledetekst": "Finn snøfnuggene Rampenissen har hengt opp - de skjuler et regnestykke!",
+    "oppsett_tid": "moderat",
+    "materialer_nødvendig": [
+      "6-10 papir-snøfnugg (klipp ut eller print)",
+      "3 lapper med tall",
+      "Snor/tape"
+    ],
+    "beste_rom": "Flere rom",
+    "hint_type": "spor"
+  },
+  {
+    "dag": 10,
+    "tittel": "Grønn Samling",
+    "beskrivelse": "Rampenissen har samlet alle grønne ting i huset til en haug! Det står en lapp: 'Jeg er fargen på juletreet OG mange nisseluer. 5 bokstaver. Hvilket ord?'",
+    "kode": "GRØNN",
+    "dagbokinnlegg": "Dag 10 - Grønn Dag\n\nNissemor har bestemt at hele Nordpolen skal være mer miljøvennlig. Nissene får nå sykle til verkstedet. Det er snø. Overalt. Det går ikke så bra.\n\nPrøvde å male verkstedet grønt for å 'passe temaet'. Nissene sa at rødt er julenissens farge. Ble diskusjon. Endte med kompromiss: grønt OG rødt. Ser ut som en italiensk restaurant nå.\n\nRampenissen sender bilder av barna i grønne nisseluer. Søtt! De ser ut som små nisser. Kanskje de kan komme og jobbe her når de blir større?\n\n- Julenissen",
+    "rampenissen_rampestrek": "Alle grønne gjenstander samlet på ett sted: grønne leker, klær, bøker, etc. Rampenissen sitter på toppen med skiltet.",
+    "fysisk_ledetekst": "Wow! Rampenissen har samlet ALT som er grønt! Hva er den felles fargen?",
+    "oppsett_tid": "moderat",
+    "materialer_nødvendig": ["Grønne gjenstander fra huset", "Lapp med gåte"],
+    "beste_rom": "Stue",
+    "hint_type": "arrangement"
+  },
+  {
+    "dag": 11,
+    "tittel": "Tids-kaos",
+    "beskrivelse": "Rampenissen har stilt alle klokkene i huset feil! Men det står en lapp: 'Når klokken ringer ved midnatt på julaften - hvor mange slag? Finn tallet.'",
+    "kode": "12",
+    "dagbokinnlegg": "Dag 11 - Tidsforvirring\n\nVår store klokke på Nordpolen sluttet å virke ved midnatt. En nisse prøvde å reparere den. Nå viser den 87 o'clock. Vet ikke engang at det eksisterer.\n\nBestemte at vi bare følger solen. Problemet er at solen ikke går ned her på Nordpolen om vinteren. Nissene vet ikke når de skal sove. Kaos.\n\nRampenissen klager på at han er trøtt. Forteller ham at her jobber vi 25 timer i døgnet. (Ja, jeg vet at det bare er 24. Men på Nordpolen er reglene annerledes.)\n\n- Julenissen",
+    "rampenissen_rampestrek": "Alle veggklokker, armbåndsur, kjøkkenur viser forskjellige (feil) tider. Rampenissen står med gåten om midnatt.",
+    "fysisk_ledetekst": "Klokkene viser feil tid! Les Rampenissens lapp om midnatt.",
+    "oppsett_tid": "enkel",
+    "materialer_nødvendig": ["Tilgang til klokker i huset", "Lapp med gåte"],
+    "beste_rom": "Flere rom",
+    "hint_type": "arrangement"
+  },
+  {
+    "dag": 12,
+    "tittel": "Sang-mysteriet",
+    "beskrivelse": "Rampenissen har funnet sangboken! En julesang er markert: 'Deilig er _____'. Det mangler et ord. På NisseKomm står det: 'Ordet har 6 bokstaver og handler om planeten vår.'",
+    "kode": "JORDEN",
+    "dagbokinnlegg": "Dag 12 - Sangdag\n\nStartet morgenen med å synge 'Deilig er jorden' for nissene. De elsket det! Eller late som. Vanskelig å si.\n\nFant ut at rudolf kan synge. Vel, mer som muling. Men han prøver. Det er det som teller. De andre reinsdyrene nekter å være med i kor. Sier det er uprofesjonelt.\n\nRampenissen sier at barna synger julesanger hjemme. Herlig! Det er det julen handler om. Glede, sang, og gaveproduksjon i industriell skala.\n\n- Julenissen",
+    "rampenissen_rampestrek": "Sangbok ligger åpen med 'Deilig er jorden'. Ordet JORDEN er dekket med en lapp. Rampenissen har mikrofon (leker-mikrofon).",
+    "fysisk_ledetekst": "Finn sangboken - Rampenissen har markert en sang!",
+    "oppsett_tid": "enkel",
+    "materialer_nødvendig": [
+      "Sangbok eller utskrift av sangtekst",
+      "Liten lapp til å dekke ordet",
+      "Leke-mikrofon (valgfritt)"
+    ],
+    "beste_rom": "Stue",
+    "hint_type": "gjemt_objekt"
+  },
+  {
+    "dag": 13,
+    "tittel": "Lucia-lyset",
+    "beskrivelse": "I dag er Luciadagen! Rampenissen har laget en krans av LED-lys. Det står en lapp: 'Lucia bærer disse på hodet. 3 bokstaver. Hva heter de?'",
+    "kode": "LYS",
+    "hendelse": "Luciadagen",
+    "dagbokinnlegg": "Dag 13 - Lucia-Kaos\n\nLussi-dagen! Nissene ville pynte hele Nordpolen med levende lys. Måtte forklare brannfare. Kompromisset: LED-lys formet som levende lys. De sultet i 10 minutter, men ga seg.\n\nNissemor bakte lussekatter. 500 stykker. Nissene spiste dem på 20 minutter. Rekord! Eller et problem. Vet ikke helt.\n\nRampenissen sender bilder av Lucia-prosesjon hjemme hos barna. Vakkert! Minner meg om hvorfor vi gjør dette. For barna. Og kattene. Lussekattene, altså.\n\n- Julenissen",
+    "rampenissen_rampestrek": "LED-lys eller lommelykter arrangert i en sirkel (som Lucia-krans). Rampenissen har hvitt stoff som 'Lucia-kjole'. Lussekatter på fat.",
+    "fysisk_ledetekst": "Rampenissen feirer Lucia! Se på lyskransen - hva heter de?",
+    "oppsett_tid": "moderat",
+    "materialer_nødvendig": [
+      "LED-lys eller lommelykter (4-6 stk)",
+      "Hvitt stoff/klede",
+      "Lussekatter (valgfritt)",
+      "Lapp med gåte"
+    ],
+    "beste_rom": "Kjøkken/spisestue",
+    "hint_type": "arrangement"
+  },
+  {
+    "dag": 14,
+    "tittel": "Pakke-gåten",
+    "beskrivelse": "Rampenissen har pakket inn alt! Leker, bøker, til og med dørhåndtak! På tape-bitene står det bokstaver: P-A-P-I-R. Hva bruker vi til å pakke inn gaver?",
+    "kode": "PAPIR",
+    "hendelse": "Lystenning på Fløyen",
+    "dagbokinnlegg": "Dag 14 - Innpakkingsdag\n\nKvalitetskontroll av gavepapir. Vi har 847 forskjellige design. Hvorfor? Ingen vet. En nisse foreslo å bare bruke ett design. Han ble utvist fra møtet.\n\nPrøvde å pakke inn en gave selv for å vise nissene hvordan det skal gjøres. Brukte for mye tape. Gaven er nå en tape-ball. Nissene applauderte 'ironisk'. Frekke nisser.\n\nRampenissen melder at barna lærer om julepynt og pakkepapir. Fint! De blir flinkere enn meg til å pakke. Det er ikke vanskelig.\n\n- Julenissen",
+    "rampenissen_rampestrek": "Diverse gjenstander innpakket i julepapir. På hver pakke er det teip-biter med én bokstav: P, A, P, I, R spredt rundt. Rampenissen omgitt av pakker.",
+    "fysisk_ledetekst": "Rampenissen har pakket inn ALT! Se på tape-bitene - de skjuler et ord!",
+    "oppsett_tid": "avansert",
+    "materialer_nødvendig": [
+      "Julepapir",
+      "Tape med bokstaver (P, A, P, I, R)",
+      "5-8 gjenstander å pakke inn"
+    ],
+    "beste_rom": "Stue",
+    "hint_type": "visuell"
+  }
+]

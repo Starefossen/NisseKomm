@@ -79,4 +79,15 @@ export const Icons = {
     <Icon name="audio-device" {...props} />
   ),
   Music: (props: Omit<IconProps, "name">) => <Icon name="music" {...props} />,
+  Mail: (props: Omit<IconProps, "name">) => <Icon name="mail" {...props} />,
+  Tv: (props: Omit<IconProps, "name">) => <Icon name="image" {...props} />,
+  Chart: (props: Omit<IconProps, "name">) => <Icon name="chart" {...props} />,
+  Play: (props: Omit<IconProps, "name">) => <Icon name="play" {...props} />,
+  Pause: (props: Omit<IconProps, "name">) => <Icon name="pause" {...props} />,
+  SkipForward: (props: Omit<IconProps, "name">) => (
+    <Icon name="skip-forward" {...props} />
+  ),
+  SkipBack: (props: Omit<IconProps, "name">) => (
+    <Icon name="skip-back" {...props} />
+  ),
 } as const;

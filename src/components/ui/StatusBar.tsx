@@ -27,7 +27,7 @@ export function StatusBar({
           {value}/{max}
         </span>
       </div>
-      <div className="w-full h-4 border-2 border-[var(--neon-green)] bg-black">
+      <div className="w-full h-4 border-2 border-(--neon-green) bg-black">
         <div
           className="h-full transition-all duration-300"
           style={{

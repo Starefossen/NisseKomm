@@ -71,10 +71,7 @@ export class SoundManager {
         const now = this.audioContext.currentTime;
         gainNode.gain.setValueAtTime(0, now);
         gainNode.gain.linearRampToValueAtTime(this.sfxVolume * 0.3, now + 0.01);
-        gainNode.gain.linearRampToValueAtTime(
-          0,
-          now + config.duration / 1000,
-        );
+        gainNode.gain.linearRampToValueAtTime(0, now + config.duration / 1000);
 
         oscillator.start(now);
         oscillator.stop(now + config.duration / 1000);

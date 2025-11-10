@@ -92,14 +92,14 @@ export function NisseMail({
     <RetroWindow title="NISSEMAIL" onClose={onClose}>
       <div className="flex h-full gap-4 p-6">
         {/* Inbox List - Left 30% */}
-        <div className="w-[30%] border-r-4 border-[var(--neon-green)]/30 pr-4 flex flex-col overflow-hidden">
+        <div className="w-[30%] border-r-4 border-(--neon-green)/30 flex flex-col overflow-hidden">
           <div className="flex flex-col h-full">
             {/* Inbox header */}
-            <div className="flex items-center gap-2 pb-2 border-b-2 border-[var(--neon-green)]/30 shrink-0">
+            <div className="flex items-center gap-2 pb-2 border-b-2 border-(--neon-green)/30 shrink-0">
               <Icons.File size={20} color="green" />
               <span className="text-xl font-bold">INNBOKS</span>
               {getUnreadCount() > 0 && (
-                <span className="ml-auto px-2 py-1 text-sm bg-[var(--christmas-red)] text-white border-2 border-[var(--christmas-red)]">
+                <span className="ml-auto px-2 py-1 text-sm bg-(--christmas-red) text-white border-2 border-(--christmas-red)">
                   {getUnreadCount()} NY
                 </span>
               )}
@@ -119,24 +119,24 @@ export function NisseMail({
                       w-full text-left p-3 border-2 transition-all
                       ${
                         isSelected
-                          ? "border-[var(--neon-green)] bg-[var(--neon-green)]/20"
-                          : "border-[var(--neon-green)]/30 hover:border-[var(--neon-green)] hover:bg-black/30"
+                          ? "border-(--neon-green) bg-(--neon-green)/20"
+                          : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-black/30"
                       }
                       ${isUnread ? "font-bold" : "opacity-70"}
                     `}
                   >
                     <div className="flex items-start gap-2">
                       {isUnread && (
-                        <div className="w-2 h-2 mt-2 bg-[var(--christmas-red)] rounded-full flex-shrink-0" />
+                        <div className="w-2 h-2 mt-2 bg-(--christmas-red) rounded-full shrink-0" />
                       )}
                       <div className="flex-1 min-w-0">
                         <div
-                          className={`text-sm ${isUnread ? "text-[var(--gold)]" : ""}`}
+                          className={`text-sm ${isUnread ? "text-(--gold)" : ""}`}
                         >
                           RAMPENISSEN 🎅
                         </div>
                         <div
-                          className={`text-base truncate ${isUnread ? "text-[var(--neon-green)]" : ""}`}
+                          className={`text-base truncate ${isUnread ? "text-(--neon-green)" : ""}`}
                         >
                           {mission.tittel}
                         </div>
@@ -157,7 +157,7 @@ export function NisseMail({
           {selectedMission ? (
             <div className="flex-1 flex flex-col">
               {/* Email Header */}
-              <div className="space-y-3 pb-4 border-b-4 border-[var(--neon-green)]/30 mb-4">
+              <div className="space-y-3 pb-4 border-b-4 border-(--neon-green)/30 mb-4">
                 <div className="flex items-center justify-between">
                   <div className="text-2xl font-bold tracking-wider">
                     {selectedMission.tittel}
@@ -171,7 +171,7 @@ export function NisseMail({
                 <div className="space-y-1 text-sm">
                   <div className="flex gap-3">
                     <span className="opacity-70 w-16">FRA:</span>
-                    <span className="text-[var(--gold)]">RAMPENISSEN 🎅</span>
+                    <span className="text-(--gold)">RAMPENISSEN 🎅</span>
                   </div>
                   <div className="flex gap-3">
                     <span className="opacity-70 w-16">TIL:</span>
@@ -191,7 +191,7 @@ export function NisseMail({
               {/* Email Body - Scrollable */}
               <div className="flex-1 overflow-y-auto space-y-4">
                 {/* Mission description */}
-                <div className="p-4 border-2 border-[var(--neon-green)]/50 bg-black/30">
+                <div className="p-4 border-2 border-(--neon-green)/50 bg-black/30">
                   <div className="text-lg leading-relaxed whitespace-pre-wrap">
                     {selectedMission.beskrivelse}
                   </div>
@@ -199,24 +199,24 @@ export function NisseMail({
 
                 {/* Public event if exists */}
                 {selectedMission.hendelse && (
-                  <div className="p-4 border-2 border-[var(--cold-blue)] bg-[var(--cold-blue)]/10">
+                  <div className="p-4 border-2 border-(--cold-blue) bg-(--cold-blue)/10">
                     <div className="flex items-center gap-2 mb-2">
                       <Icons.Alert size={20} color="blue" />
-                      <span className="text-sm font-bold text-[var(--cold-blue)]">
+                      <span className="text-sm font-bold text-(--cold-blue)">
                         OFFENTLIG HENDELSE
                       </span>
                     </div>
-                    <div className="text-sm text-[var(--cold-blue)]">
+                    <div className="text-sm text-(--cold-blue)">
                       {selectedMission.hendelse}
                     </div>
                   </div>
                 )}
 
                 {/* Mission instructions */}
-                <div className="p-4 border-2 border-[var(--gold)]/30 bg-[var(--gold)]/5">
+                <div className="p-4 border-2 border-(--gold)/30 bg-(--gold)/5">
                   <div className="flex items-center gap-2 mb-2">
                     <Icons.Help size={16} color="gold" />
-                    <span className="text-sm font-bold text-[var(--gold)]">
+                    <span className="text-sm font-bold text-(--gold)">
                       INSTRUKSJONER:
                     </span>
                   </div>
@@ -228,13 +228,13 @@ export function NisseMail({
               </div>
 
               {/* Open KODETERMINAL button */}
-              <div className="mt-4 pt-4 border-t-4 border-[var(--neon-green)]/30">
+              <div className="mt-4 pt-4 border-t-4 border-(--neon-green)/30">
                 <button
                   onClick={() => {
                     SoundManager.playSound("click");
                     onOpenKodeTerminal();
                   }}
-                  className="w-full px-6 py-3 bg-[var(--cold-blue)] text-black text-xl tracking-wider font-bold border-4 border-[var(--cold-blue)] hover:bg-transparent hover:text-[var(--cold-blue)] transition-colors flex items-center justify-center gap-3"
+                  className="w-full px-6 py-3 bg-(--cold-blue) text-black text-xl tracking-wider font-bold border-4 border-(--cold-blue) hover:bg-transparent hover:text-(--cold-blue) transition-colors flex items-center justify-center gap-3"
                 >
                   <Icons.Code size={24} color="blue" />
                   <span>ÅPNE KODETERMINAL</span>
