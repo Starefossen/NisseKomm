@@ -52,18 +52,17 @@ export function NisseBrev({ onClose }: NisseBrevProps) {
           <div className="flex items-center gap-2 px-3 py-1 border-2 border-(--gold) bg-(--gold)/20">
             <div className="w-2 h-2 bg-(--gold) rounded-full animate-pulse-led"></div>
             <span className="text-(--gold) text-xs tracking-wider">
-              UNLÅST DAG 14
+              LÅST OPP DAG 14
             </span>
           </div>
         </div>
 
         {/* Status Banner */}
         <div
-          className={`p-4 border-2 ${
-            status === "processed"
+          className={`p-4 border-2 ${status === "processed"
               ? "border-(--neon-green) bg-(--neon-green)/10"
               : "border-(--gold) bg-(--gold)/10"
-          }`}
+            }`}
         >
           <div className="flex items-center gap-3">
             {status === "processed" ? (
@@ -119,10 +118,9 @@ export function NisseBrev({ onClose }: NisseBrevProps) {
                   onClick={() => setSelectedLetter(letter.day)}
                   className={`
                     w-full p-3 text-left border-2 transition-all
-                    ${
-                      selectedLetter === letter.day
-                        ? "border-(--gold) bg-(--gold)/20"
-                        : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-(--neon-green)/10"
+                    ${selectedLetter === letter.day
+                      ? "border-(--gold) bg-(--gold)/20"
+                      : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-(--neon-green)/10"
                     }
                   `}
                 >

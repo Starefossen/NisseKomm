@@ -15,6 +15,14 @@ interface KodeTerminalProps {
   onCodeSubmitted?: () => void;
 }
 
+// Module unlock thresholds
+const MODULE_UNLOCK_DAYS = [
+  { day: 7, module: "NISSEMUSIKK", label: "Nissemusikk" },
+  { day: 10, module: "NORDPOL_TV", label: "Nordpol TV" },
+  { day: 14, module: "NISSEBREV", label: "Nissebrev" },
+  { day: 16, module: "NISSESTATS", label: "Nissestats" },
+] as const;
+
 export function KodeTerminal({
   onClose,
   expectedCode,
@@ -25,24 +33,36 @@ export function KodeTerminal({
   const [code, setCode] = useState("");
   const [processing, setProcessing] = useState(false);
   const [feedback, setFeedback] = useState<"success" | "error" | null>(null);
+  const [unlockedModule, setUnlockedModule] = useState<string | null>(null);
   const [submittedCodes, setSubmittedCodes] = useState<InnsendelseLog[]>(() => {
     if (typeof window !== "undefined") {
       return StorageManager.getSubmittedCodes();
     }
     return [];
   });
-  const isAlreadySolved = (() => {
+  const [isAlreadySolved, setIsAlreadySolved] = useState(() => {
     if (typeof window !== "undefined") {
       const codes = StorageManager.getSubmittedCodes();
       const dayMission = allMissions.find((m) => m.dag === currentDay);
       return codes.some((c) => c.kode === dayMission?.kode);
     }
     return false;
+  });
+
+  // Get the solved code for display if already solved
+  const solvedCode = (() => {
+    if (typeof window !== "undefined" && isAlreadySolved) {
+      const codes = StorageManager.getSubmittedCodes();
+      const dayMission = allMissions.find((m) => m.dag === currentDay);
+      const entry = codes.find((c) => c.kode === dayMission?.kode);
+      return entry?.kode || "";
+    }
+    return "";
   })();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!code.trim() || processing) return;
+    if (!code.trim() || processing || isAlreadySolved) return;
 
     setProcessing(true);
     setFeedback(null);
@@ -68,7 +88,23 @@ export function KodeTerminal({
       const updated = [...submittedCodes, newEntry];
       setSubmittedCodes(updated);
 
+      // Mark as solved
+      setIsAlreadySolved(true);
+
       setCode("");
+
+      // Check if this unlocks a module
+      const totalCompleted = updated.length;
+      const moduleUnlock = MODULE_UNLOCK_DAYS.find(
+        ({ day }) => day === totalCompleted
+      );
+
+      if (moduleUnlock && !StorageManager.isModuleUnlocked(moduleUnlock.module)) {
+        StorageManager.unlockModule(moduleUnlock.module);
+        setUnlockedModule(moduleUnlock.label);
+        // Keep module unlock message longer
+        setTimeout(() => setUnlockedModule(null), 4000);
+      }
 
       // Notify parent of code submission (for module unlocks)
       if (onCodeSubmitted) {
@@ -113,19 +149,22 @@ export function KodeTerminal({
           <div className="relative">
             <input
               type="text"
-              value={code}
+              value={isAlreadySolved ? solvedCode : code}
               onChange={(e) => setCode(e.target.value)}
-              disabled={processing}
+              disabled={processing || isAlreadySolved}
+              readOnly={isAlreadySolved}
               className={`
                 w-full px-4 py-3 bg-black border-4 text-2xl tracking-widest font-mono
                 focus:outline-none uppercase
-                ${
-                  feedback === "success"
+                ${isAlreadySolved
+                  ? "border-(--gold) text-(--gold)"
+                  : feedback === "success"
                     ? "border-(--gold)"
                     : feedback === "error"
                       ? "border-(--christmas-red)"
                       : "border-(--neon-green) focus:shadow-[0_0_20px_rgba(0,255,0,0.5)]"
                 }
+                ${isAlreadySolved ? "cursor-not-allowed" : ""}
               `}
               style={{
                 animation:
@@ -144,28 +183,60 @@ export function KodeTerminal({
 
           <button
             type="submit"
-            disabled={processing || !code.trim()}
-            className="w-full px-6 py-3 bg-(--cold-blue) text-black text-xl tracking-wider font-bold border-4 border-(--cold-blue) hover:bg-transparent hover:text-(--cold-blue) transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={processing || !code.trim() || isAlreadySolved}
+            className={`
+              w-full px-6 py-3 text-xl tracking-wider font-bold border-4 transition-colors
+              ${feedback === "success"
+                ? "bg-(--gold) border-(--gold) text-black"
+                : feedback === "error"
+                  ? "bg-(--christmas-red) border-(--christmas-red) text-white"
+                  : "bg-(--cold-blue) border-(--cold-blue) text-black hover:bg-transparent hover:text-(--cold-blue)"
+              }
+              disabled:opacity-50 disabled:cursor-not-allowed
+            `}
+            style={{
+              animation:
+                feedback === "success"
+                  ? "gold-flash 0.5s ease-out"
+                  : feedback === "error"
+                    ? "red-shake 0.5s ease-out"
+                    : "none",
+            }}
           >
-            {processing ? "BEHANDLER..." : "SEND"}
+            {processing ? (
+              "BEHANDLER..."
+            ) : isAlreadySolved ? (
+              "RIKTIG LØSNING"
+            ) : feedback === "success" ? (
+              <span className="flex items-center justify-center gap-2">
+                <Icons.CheckCircle size={24} color="gray" />
+                KODE AKSEPTERT!
+              </span>
+            ) : feedback === "error" ? (
+              <span className="flex items-center justify-center gap-2">
+                <Icons.Alert size={24} color="gray" />
+                FEIL KODE - PRØV IGJEN
+              </span>
+            ) : (
+              "SEND"
+            )}
           </button>
         </form>
 
-        {/* Feedback messages */}
-        {feedback === "success" && (
-          <div className="p-4 border-2 border-(--gold) bg-(--gold)/20 text-(--gold) text-center font-bold">
-            <div className="flex items-center justify-center gap-2">
-              <Icons.CheckCircle size={24} color="gold" />
-              <span>KODE AKSEPTERT!</span>
-            </div>
-          </div>
-        )}
-
-        {feedback === "error" && (
-          <div className="p-4 border-2 border-(--christmas-red) bg-(--christmas-red)/20 text-(--christmas-red) text-center font-bold">
-            <div className="flex items-center justify-center gap-2">
-              <Icons.Alert size={24} color="red" />
-              <span>FEIL KODE - PRØV IGJEN</span>
+        {/* Module unlock notification */}
+        {unlockedModule && (
+          <div className="p-4 border-4 border-(--gold) bg-(--gold)/20 text-(--gold) text-center font-bold animate-[gold-flash_0.5s_ease-out]">
+            <div className="space-y-2">
+              <div className="flex items-center justify-center gap-2 text-xl">
+                <Icons.CheckCircle size={28} color="gold" />
+                <span>NY MODUL LÅST OPP!</span>
+              </div>
+              <div className="text-2xl tracking-wider">
+                🎉 {unlockedModule.toUpperCase()} 🎉
+              </div>
+              <div className="text-sm opacity-90">
+                Sjekk skrivebordet for den nye appen!
+              </div>
             </div>
           </div>
         )}

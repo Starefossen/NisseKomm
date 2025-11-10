@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { RetroModal } from "../ui/RetroModal";
 import { Icons } from "@/lib/icons";
@@ -15,12 +15,35 @@ interface KalenderProps {
 
 export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const [completedDays] = useState<Set<number>>(() => {
+  const [completedDays, setCompletedDays] = useState<Set<number>>(() => {
     if (typeof window !== "undefined") {
-      return StorageManager.getCompletedDays();
+      return StorageManager.getCompletedDaysForMissions(missions);
     }
     return new Set();
   });
+
+  // Refresh completed days when window regains focus or on mount
+  useEffect(() => {
+    const updateCompletedDays = () => {
+      if (typeof window !== "undefined") {
+        setCompletedDays(StorageManager.getCompletedDaysForMissions(missions));
+      }
+    };
+
+    // Update on mount
+    updateCompletedDays();
+
+    // Update when window regains focus (e.g., after closing KodeTerminal)
+    window.addEventListener("focus", updateCompletedDays);
+
+    // Also poll every 2 seconds while calendar is open
+    const interval = setInterval(updateCompletedDays, 2000);
+
+    return () => {
+      window.removeEventListener("focus", updateCompletedDays);
+      clearInterval(interval);
+    };
+  }, [missions]);
 
   const getCurrentDate = () => {
     const now = new Date();
@@ -92,12 +115,11 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
                   className={`
                     aspect-square flex flex-col items-center justify-center p-2
                     border-4 font-bold text-xl transition-all relative
-                    ${
-                      status === "locked"
-                        ? "border-(--gray) bg-black/30 opacity-50 cursor-not-allowed"
-                        : status === "completed"
-                          ? "border-(--gold) bg-(--gold)/30 text-(--gold) shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] cursor-pointer"
-                          : "border-(--neon-green) bg-(--neon-green)/10 text-(--neon-green) hover:shadow-[0_0_20px_rgba(0,255,0,0.4)] cursor-pointer"
+                    ${status === "locked"
+                      ? "border-(--gray) bg-black/30 opacity-50 cursor-not-allowed"
+                      : status === "completed"
+                        ? "border-(--gold) bg-(--gold)/30 text-(--gold) shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] cursor-pointer"
+                        : "border-(--neon-green) bg-(--neon-green)/10 text-(--neon-green) hover:shadow-[0_0_20px_rgba(0,255,0,0.4)] cursor-pointer"
                     }
                   `}
                 >

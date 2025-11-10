@@ -73,7 +73,7 @@ export function NisseMusikk({ onClose }: NisseMusikkProps) {
           <div className="flex items-center gap-2 px-3 py-1 border-2 border-(--gold) bg-(--gold)/20">
             <div className="w-2 h-2 bg-(--gold) rounded-full animate-pulse-led"></div>
             <span className="text-(--gold) text-xs tracking-wider">
-              UNLÅST DAG 7
+              LÅST OPP DAG 7
             </span>
           </div>
         </div>
@@ -169,10 +169,9 @@ export function NisseMusikk({ onClose }: NisseMusikkProps) {
                 className={`
                   w-full p-3 text-left flex items-center justify-between
                   border-b border-(--neon-green)/10 transition-all
-                  ${
-                    index === currentTrack
-                      ? "bg-(--neon-green)/20 text-(--neon-green)"
-                      : "hover:bg-(--neon-green)/10 text-(--neon-green)/70 hover:text-(--neon-green)"
+                  ${index === currentTrack
+                    ? "bg-(--neon-green)/20 text-(--neon-green)"
+                    : "hover:bg-(--neon-green)/10 text-(--neon-green)/70 hover:text-(--neon-green)"
                   }
                 `}
               >

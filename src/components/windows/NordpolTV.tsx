@@ -78,7 +78,7 @@ export function NordpolTV({ onClose, currentDay }: NordpolTVProps) {
           <div className="flex items-center gap-2 px-3 py-1 border-2 border-(--gold) bg-(--gold)/20">
             <div className="w-2 h-2 bg-(--gold) rounded-full animate-pulse-led"></div>
             <span className="text-(--gold) text-xs tracking-wider">
-              UNLÅST DAG 10
+              LÅST OPP DAG 10
             </span>
           </div>
         </div>
@@ -114,11 +114,10 @@ export function NordpolTV({ onClose, currentDay }: NordpolTVProps) {
             <>
               {/* Background - Workshop */}
               <div
-                className={`absolute inset-0 transition-all duration-1000 ${
-                  isDaytime
+                className={`absolute inset-0 transition-all duration-1000 ${isDaytime
                     ? "bg-linear-to-b from-blue-400 to-blue-200"
                     : "bg-linear-to-b from-slate-900 to-slate-700"
-                }`}
+                  }`}
               >
                 {/* Snowfall particles */}
                 {weather !== "clear" && (

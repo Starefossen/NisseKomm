@@ -152,11 +152,11 @@ export function NisseMail({
         </div>
 
         {/* Email Content - Right 70% */}
-        <div className="w-[70%] flex flex-col">
+        <div className="w-[70%] flex flex-col min-h-0">
           {selectedMission ? (
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col min-h-0">
               {/* Email Header */}
-              <div className="space-y-3 pb-4 border-b-4 border-(--neon-green)/30 mb-4">
+              <div className="space-y-3 pb-4 border-b-4 border-(--neon-green)/30 mb-4 shrink-0">
                 <div className="flex items-center justify-between">
                   <div className="text-2xl font-bold tracking-wider">
                     {selectedMission.tittel}
@@ -188,7 +188,7 @@ export function NisseMail({
               </div>
 
               {/* Email Body - Scrollable */}
-              <div className="flex-1 overflow-y-auto space-y-4">
+              <div className="flex-1 overflow-y-auto space-y-4 min-h-0 pr-2">
                 {/* Mission description */}
                 <div className="p-4 border-2 border-(--neon-green)/50 bg-black/30">
                   <div className="text-lg leading-relaxed whitespace-pre-wrap">
@@ -227,7 +227,7 @@ export function NisseMail({
               </div>
 
               {/* Open KODETERMINAL button */}
-              <div className="mt-4 pt-4 border-t-4 border-(--neon-green)/30">
+              <div className="mt-4 pt-4 border-t-4 border-(--neon-green)/30 shrink-0">
                 <button
                   onClick={() => {
                     SoundManager.playSound("click");

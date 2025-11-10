@@ -86,17 +86,29 @@ export class StorageManager {
   }
 
   static getCompletedDays(): Set<number> {
+    // Deprecated: Use getCompletedDaysForMissions() instead
+    // This is kept for backwards compatibility
     const codes = this.getSubmittedCodes();
     const days = new Set<number>();
 
-    // Parse day from dato string (assuming format like "2025-12-03")
-    codes.forEach((code, index) => {
-      // Simple approach: use index + 1 as day number
-      // TODO: Parse actual date when dato format is defined
-      days.add(index + 1);
+    // Return empty set - caller should use getCompletedDaysForMissions
+    return days;
+  }
+
+  static getCompletedDaysForMissions(missions: Array<{ dag: number; kode: string }>): Set<number> {
+    if (typeof window === "undefined") return new Set();
+
+    const submittedCodes = this.getSubmittedCodes().map((c) => c.kode.toUpperCase());
+    const completedDays = new Set<number>();
+
+    // Match submitted codes against missions
+    missions.forEach((mission) => {
+      if (submittedCodes.includes(mission.kode.toUpperCase())) {
+        completedDays.add(mission.dag);
+      }
     });
 
-    return days;
+    return completedDays;
   }
 
   static clearSubmittedCodes(): void {

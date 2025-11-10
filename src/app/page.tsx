@@ -356,7 +356,8 @@ export default function Home() {
                     onClose={handleCloseWindow}
                     onOpenKodeTerminal={(day) => {
                       setSelectedDay(day);
-                      handleIconClick("kodeterminal");
+                      setOpenWindow("kodeterminal");
+                      playSound("open");
                     }}
                   />
                 )}

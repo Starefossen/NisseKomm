@@ -85,9 +85,9 @@ export const Icons = {
   Play: (props: Omit<IconProps, "name">) => <Icon name="play" {...props} />,
   Pause: (props: Omit<IconProps, "name">) => <Icon name="pause" {...props} />,
   SkipForward: (props: Omit<IconProps, "name">) => (
-    <Icon name="skip-forward" {...props} />
+    <Icon name="next" {...props} />
   ),
   SkipBack: (props: Omit<IconProps, "name">) => (
-    <Icon name="skip-back" {...props} />
+    <Icon name="prev" {...props} />
   ),
 } as const;
