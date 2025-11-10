@@ -6,9 +6,10 @@ import { StorageManager as Storage } from "./storage";
 // Sound effects wrapper using Web Audio API
 export class SoundManager {
   private static jingleAudio: HTMLAudioElement | null = null;
+  private static audioContext: AudioContext | null = null;
   private static enabled: boolean = true;
   private static musicEnabled: boolean = false;
-  private static musicVolume: number = 0.3;
+  private static musicVolume: number = 0.1;
   private static sfxVolume: number = 0.5;
 
   // Sound effect configurations
@@ -26,6 +27,13 @@ export class SoundManager {
     if (typeof window === "undefined") return;
     if (this.jingleAudio) return; // Already initialized
 
+    // Initialize shared AudioContext for all sound effects
+    const AudioContextClass =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext })
+        .webkitAudioContext;
+    this.audioContext = new AudioContextClass();
+
     // Initialize jingle audio (HTML5 Audio for music)
     this.jingleAudio = new Audio(
       "/music/christmas-dreams-jingle-bells-268299.mp3",
@@ -37,40 +45,45 @@ export class SoundManager {
     this.enabled = Storage.isSoundsEnabled();
     this.musicEnabled = Storage.isMusicEnabled();
   }
+
   static playSound(soundName: keyof typeof SoundManager.soundConfigs) {
     if (!this.enabled || typeof window === "undefined") return;
 
     try {
       const config = this.soundConfigs[soundName];
-      if (config) {
-        // Use Web Audio API to generate beep sound
-        const AudioContextClass =
-          window.AudioContext ||
-          (window as unknown as { webkitAudioContext: typeof AudioContext })
-            .webkitAudioContext;
-        const audioContext = new AudioContextClass();
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
+      if (config && this.audioContext) {
+        // Resume AudioContext if suspended (browser autoplay policy)
+        if (this.audioContext.state === "suspended") {
+          this.audioContext.resume();
+        }
+
+        // Reuse shared AudioContext
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
 
         oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
+        gainNode.connect(this.audioContext.destination);
 
         oscillator.type = config.waveType;
         oscillator.frequency.value = config.frequency;
 
         // Apply envelope
-        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-        gainNode.gain.linearRampToValueAtTime(
-          this.sfxVolume * 0.3,
-          audioContext.currentTime + 0.01,
-        );
+        const now = this.audioContext.currentTime;
+        gainNode.gain.setValueAtTime(0, now);
+        gainNode.gain.linearRampToValueAtTime(this.sfxVolume * 0.3, now + 0.01);
         gainNode.gain.linearRampToValueAtTime(
           0,
-          audioContext.currentTime + config.duration / 1000,
+          now + config.duration / 1000,
         );
 
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + config.duration / 1000);
+        oscillator.start(now);
+        oscillator.stop(now + config.duration / 1000);
+
+        // Clean up oscillator after it's done
+        oscillator.onended = () => {
+          oscillator.disconnect();
+          gainNode.disconnect();
+        };
       }
     } catch (e) {
       console.error("Error playing sound:", e);
