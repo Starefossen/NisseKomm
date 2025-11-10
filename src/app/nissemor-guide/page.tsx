@@ -185,11 +185,28 @@ function NissemorGuideContent() {
                         {/* Rampenissen Setup */}
                         <div>
                           <h3 className="text-lg font-bold text-(--gold) mb-2">
-                            🎭 RAMPENISSEN-OPPSETT:
+                            🎭 OPPSETT AV RAMPENISSEN-SCENE:
                           </h3>
                           <p className="mb-2">{dag.rampenissen_rampestrek}</p>
-                          <p className="text-(--cold-blue) italic">
-                            💡 Ledetekst: &quot;{dag.fysisk_ledetekst}&quot;
+                        </div>
+
+                        {/* Physical Note - What to write */}
+                        <div className="border-2 border-(--cold-blue)/50 p-3">
+                          <h3 className="text-sm font-bold text-(--cold-blue) mb-2">
+                            📝 FYSISK LAPP (Skriv dette på lappen):
+                          </h3>
+                          <p className="text-(--cold-blue) text-sm italic">
+                            &quot;{dag.fysisk_ledetekst}&quot;
+                          </p>
+                        </div>
+
+                        {/* Digital Quest (shown in app) */}
+                        <div className="border-2 border-(--neon-green)/30 p-3">
+                          <h3 className="text-sm font-bold text-(--neon-green)/70 mb-2">
+                            💻 VISES DIGITALT I APPEN:
+                          </h3>
+                          <p className="text-(--neon-green)/80 text-sm italic">
+                            {dag.beskrivelse}
                           </p>
                         </div>
 
@@ -377,32 +394,19 @@ function NissemorGuideContent() {
           </div>
         </div>
 
-        {/* Print Template */}
-        <div className="border-4 border-(--neon-green) p-6 print:border-black">
-          <h2 className="text-3xl font-bold mb-4 print:text-black">
-            🖨️ UTSKRIFTS-MALER
+        {/* Printout Link */}
+        <div className="border-4 border-(--neon-green) bg-(--neon-green)/10 p-6">
+          <h2 className="text-3xl font-bold text-(--neon-green) mb-4">
+            🖨️ UTSKRIFTER
           </h2>
-          <p className="mb-4 print:text-black">
-            Disse kan skrives ut og brukes som fysiske ledetråder:
+          <p className="text-xl mb-4">
+            Alle fysiske ledetekster for hele desember, klare for utskrift!
           </p>
-          <div className="space-y-4 print:space-y-8">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="p-4 border-2 border-dashed border-(--neon-green) print:border-black print:break-inside-avoid"
-              >
-                <div className="text-center text-2xl font-bold mb-2 print:text-black">
-                  [ NISSEKOMM MELDING #{i} ]
-                </div>
-                <div className="h-32 border border-(--neon-green)/30 print:border-gray-400"></div>
-              </div>
-            ))}
-          </div>
           <button
-            onClick={() => window.print()}
-            className="mt-4 px-6 py-3 bg-(--neon-green) border-4 border-(--neon-green) text-black font-bold text-xl hover:opacity-80 print:hidden"
+            onClick={() => router.push(`/nissemor-guide/printout?key=${key}`)}
+            className="px-6 py-3 bg-(--neon-green) border-4 border-(--neon-green) text-black font-bold text-xl hover:opacity-80"
           >
-            SKRIV UT MALER
+            GÅ TIL UTSKRIFTSSIDE
           </button>
         </div>
       </div>

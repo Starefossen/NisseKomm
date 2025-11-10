@@ -106,7 +106,7 @@ function mergeAndValidate(): Oppdrag[] {
   if (allOppdrag.length !== 24) {
     throw new Error(
       `Validation Error: Expected 24 quests, found ${allOppdrag.length}. ` +
-      `Week counts: W1=${week1.length}, W2=${week2.length}, W3=${week3.length}, W4=${week4.length}`,
+        `Week counts: W1=${week1.length}, W2=${week2.length}, W3=${week3.length}, W4=${week4.length}`,
     );
   }
 
@@ -141,7 +141,7 @@ function mergeAndValidate(): Oppdrag[] {
     });
     throw new Error(
       `Validation Error: Duplicate codes found: ${duplicateCodes.join(", ")}. ` +
-      `All 24 codes must be unique.`,
+        `All 24 codes must be unique.`,
     );
   }
 
