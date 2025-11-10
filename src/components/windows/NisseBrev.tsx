@@ -59,10 +59,11 @@ export function NisseBrev({ onClose }: NisseBrevProps) {
 
         {/* Status Banner */}
         <div
-          className={`p-4 border-2 ${status === "processed"
+          className={`p-4 border-2 ${
+            status === "processed"
               ? "border-(--neon-green) bg-(--neon-green)/10"
               : "border-(--gold) bg-(--gold)/10"
-            }`}
+          }`}
         >
           <div className="flex items-center gap-3">
             {status === "processed" ? (
@@ -118,9 +119,10 @@ export function NisseBrev({ onClose }: NisseBrevProps) {
                   onClick={() => setSelectedLetter(letter.day)}
                   className={`
                     w-full p-3 text-left border-2 transition-all
-                    ${selectedLetter === letter.day
-                      ? "border-(--gold) bg-(--gold)/20"
-                      : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-(--neon-green)/10"
+                    ${
+                      selectedLetter === letter.day
+                        ? "border-(--gold) bg-(--gold)/20"
+                        : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-(--neon-green)/10"
                     }
                   `}
                 >

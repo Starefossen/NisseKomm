@@ -49,11 +49,42 @@ export function NisseNetUtforsker({
 
   // Process files and inject dynamic content for nissens_dagbok.txt and snill_slem_liste.txt
   const processedFiles = useMemo(() => {
+    const generateHintsContent = (maxDay: number): string => {
+      let content =
+        "🔍 HINT ARKIV\n========================================\n\n";
+      content += "Her finner du hint til alle oppdragene!\n";
+      content += "Hintene låses opp etter hvert som du fullfører dagene.\n\n";
+      content += "---\n\n";
+
+      // Generate hints for each day up to maxDay
+      for (let day = 1; day <= Math.min(maxDay, 24); day++) {
+        const mission = missions.find((m) => m.dag === day);
+        if (mission && mission.fysisk_ledetekst) {
+          content += `Dag ${day}: ${mission.fysisk_ledetekst}\n`;
+        }
+      }
+
+      if (maxDay < 24) {
+        content +=
+          "\n[Flere hint låses opp etter hvert som dere fullfører flere dager]";
+      }
+
+      return content;
+    };
+
     const processNode = (node: FilNode): FilNode => {
       if (node.type === "fil" && node.navn === "nissens_dagbok.txt") {
         return {
           ...node,
           innhold: generateDiaryContent,
+        };
+      }
+
+      // Generate hint content dynamically up to current day
+      if (node.type === "fil" && node.navn === "hint_arkiv.txt") {
+        return {
+          ...node,
+          innhold: generateHintsContent(currentDay),
         };
       }
 
@@ -117,7 +148,7 @@ export function NisseNetUtforsker({
     };
 
     return files.map(processNode);
-  }, [files, generateDiaryContent]);
+  }, [files, generateDiaryContent, currentDay, missions]);
 
   const toggleFolder = (path: string) => {
     const newExpanded = new Set(expandedFolders);

@@ -281,10 +281,11 @@ function NissemorGuideContent() {
             <button
               onClick={handleAntennaCrisisConfirm}
               disabled={antennaConfirmed}
-              className={`px-6 py-3 text-xl font-bold border-4 ${antennaConfirmed
+              className={`px-6 py-3 text-xl font-bold border-4 ${
+                antennaConfirmed
                   ? "bg-(--gold) border-(--gold) text-black cursor-not-allowed"
                   : "bg-(--neon-green) border-(--neon-green) text-black hover:opacity-80"
-                }`}
+              }`}
             >
               {antennaConfirmed ? "✓ ANTENNE FIKSET" : "BEKREFT ANTENNE FIKSET"}
             </button>
@@ -311,10 +312,11 @@ function NissemorGuideContent() {
             <button
               onClick={handleInventoryCrisisConfirm}
               disabled={inventoryConfirmed}
-              className={`px-6 py-3 text-xl font-bold border-4 ${inventoryConfirmed
+              className={`px-6 py-3 text-xl font-bold border-4 ${
+                inventoryConfirmed
                   ? "bg-(--gold) border-(--gold) text-black cursor-not-allowed"
                   : "bg-(--neon-green) border-(--neon-green) text-black hover:opacity-80"
-                }`}
+              }`}
             >
               {inventoryConfirmed
                 ? "✓ INVENTAR FIKSET"

@@ -117,9 +117,10 @@ export function NisseMail({
                     onClick={() => handleSelectMission(mission)}
                     className={`
                       w-full text-left p-3 border-2 transition-all
-                      ${isSelected
-                        ? "border-(--neon-green) bg-(--neon-green)/20"
-                        : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-black/30"
+                      ${
+                        isSelected
+                          ? "border-(--neon-green) bg-(--neon-green)/20"
+                          : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-black/30"
                       }
                       ${isUnread ? "font-bold" : "opacity-70"}
                     `}

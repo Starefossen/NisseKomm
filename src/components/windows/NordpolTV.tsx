@@ -114,10 +114,11 @@ export function NordpolTV({ onClose, currentDay }: NordpolTVProps) {
             <>
               {/* Background - Workshop */}
               <div
-                className={`absolute inset-0 transition-all duration-1000 ${isDaytime
+                className={`absolute inset-0 transition-all duration-1000 ${
+                  isDaytime
                     ? "bg-linear-to-b from-blue-400 to-blue-200"
                     : "bg-linear-to-b from-slate-900 to-slate-700"
-                  }`}
+                }`}
               >
                 {/* Snowfall particles */}
                 {weather !== "clear" && (

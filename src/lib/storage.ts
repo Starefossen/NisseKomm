@@ -85,20 +85,14 @@ export class StorageManager {
     return this.getSubmittedCodes().some((c) => c.kode === kode);
   }
 
-  static getCompletedDays(): Set<number> {
-    // Deprecated: Use getCompletedDaysForMissions() instead
-    // This is kept for backwards compatibility
-    const codes = this.getSubmittedCodes();
-    const days = new Set<number>();
-
-    // Return empty set - caller should use getCompletedDaysForMissions
-    return days;
-  }
-
-  static getCompletedDaysForMissions(missions: Array<{ dag: number; kode: string }>): Set<number> {
+  static getCompletedDaysForMissions(
+    missions: Array<{ dag: number; kode: string }>,
+  ): Set<number> {
     if (typeof window === "undefined") return new Set();
 
-    const submittedCodes = this.getSubmittedCodes().map((c) => c.kode.toUpperCase());
+    const submittedCodes = this.getSubmittedCodes().map((c) =>
+      c.kode.toUpperCase(),
+    );
     const completedDays = new Set<number>();
 
     // Match submitted codes against missions

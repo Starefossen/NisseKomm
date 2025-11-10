@@ -169,9 +169,10 @@ export function NisseMusikk({ onClose }: NisseMusikkProps) {
                 className={`
                   w-full p-3 text-left flex items-center justify-between
                   border-b border-(--neon-green)/10 transition-all
-                  ${index === currentTrack
-                    ? "bg-(--neon-green)/20 text-(--neon-green)"
-                    : "hover:bg-(--neon-green)/10 text-(--neon-green)/70 hover:text-(--neon-green)"
+                  ${
+                    index === currentTrack
+                      ? "bg-(--neon-green)/20 text-(--neon-green)"
+                      : "hover:bg-(--neon-green)/10 text-(--neon-green)/70 hover:text-(--neon-green)"
                   }
                 `}
               >

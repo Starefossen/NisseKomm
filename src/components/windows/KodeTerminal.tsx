@@ -96,10 +96,13 @@ export function KodeTerminal({
       // Check if this unlocks a module
       const totalCompleted = updated.length;
       const moduleUnlock = MODULE_UNLOCK_DAYS.find(
-        ({ day }) => day === totalCompleted
+        ({ day }) => day === totalCompleted,
       );
 
-      if (moduleUnlock && !StorageManager.isModuleUnlocked(moduleUnlock.module)) {
+      if (
+        moduleUnlock &&
+        !StorageManager.isModuleUnlocked(moduleUnlock.module)
+      ) {
         StorageManager.unlockModule(moduleUnlock.module);
         setUnlockedModule(moduleUnlock.label);
         // Keep module unlock message longer
@@ -156,13 +159,14 @@ export function KodeTerminal({
               className={`
                 w-full px-4 py-3 bg-black border-4 text-2xl tracking-widest font-mono
                 focus:outline-none uppercase
-                ${isAlreadySolved
-                  ? "border-(--gold) text-(--gold)"
-                  : feedback === "success"
-                    ? "border-(--gold)"
-                    : feedback === "error"
-                      ? "border-(--christmas-red)"
-                      : "border-(--neon-green) focus:shadow-[0_0_20px_rgba(0,255,0,0.5)]"
+                ${
+                  isAlreadySolved
+                    ? "border-(--gold) text-(--gold)"
+                    : feedback === "success"
+                      ? "border-(--gold)"
+                      : feedback === "error"
+                        ? "border-(--christmas-red)"
+                        : "border-(--neon-green) focus:shadow-[0_0_20px_rgba(0,255,0,0.5)]"
                 }
                 ${isAlreadySolved ? "cursor-not-allowed" : ""}
               `}
@@ -186,11 +190,12 @@ export function KodeTerminal({
             disabled={processing || !code.trim() || isAlreadySolved}
             className={`
               w-full px-6 py-3 text-xl tracking-wider font-bold border-4 transition-colors
-              ${feedback === "success"
-                ? "bg-(--gold) border-(--gold) text-black"
-                : feedback === "error"
-                  ? "bg-(--christmas-red) border-(--christmas-red) text-white"
-                  : "bg-(--cold-blue) border-(--cold-blue) text-black hover:bg-transparent hover:text-(--cold-blue)"
+              ${
+                feedback === "success"
+                  ? "bg-(--gold) border-(--gold) text-black"
+                  : feedback === "error"
+                    ? "bg-(--christmas-red) border-(--christmas-red) text-white"
+                    : "bg-(--cold-blue) border-(--cold-blue) text-black hover:bg-transparent hover:text-(--cold-blue)"
               }
               disabled:opacity-50 disabled:cursor-not-allowed
             `}

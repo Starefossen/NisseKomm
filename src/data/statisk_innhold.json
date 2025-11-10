@@ -74,12 +74,7 @@
         {
           "navn": "hint_arkiv.txt",
           "type": "fil",
-          "innhold": "HINT ARKIV - Progressive Nivåer\n========================================\n\n🔍 NIVÅ 1: SUBTILE HINT (Dag 1-8)\n\nDag 1: QR-koden starter med 'J'\nDag 2: Fibonacci + Fibonacci = ?\nDag 3: Vi trekker noe rødt og tungt\nDag 4: Rudolf har noe spesielt\nDag 5: Tell alle! Ikke glem Rudolf!\nDag 6: X markerer stedet\nDag 7: Se på kartet - hva mangler?\nDag 8: Følg snoren hele veien\n\n🔍 NIVÅ 2: TYDELIGERE HINT (Dag 9-16)\n\nDag 9: Legg sammen alle tallene du finner\nDag 10: Grønne ting har bokstaver - sorter alfabetisk\nDag 11: Timeviseren peker - følg rekkefølgen\nDag 12: Lytt til ordene - første bokstav teller\nDag 13: Tell lysene - det er et mønster\nDag 14: Finn bokstavene på tapen\nDag 15: 3. bolle = nummer 3\nDag 16: Tell lukene på kalenderen\n\n🔍 NIVÅ 3: DIREKTE HINT (Dag 17-24)\n\nDag 17: Følg stjernekartet - S-T-J-E-R-N-E\nDag 18: Ordet er: SNØ\nDag 19: Reinsdyr har 8 bokstaver: R-E-I-N-S-D-Y-R\nDag 20: Nissens kjøretøy: SLEDE (5 bokstaver)\nDag 21: Stjerner har 5 spisser\nDag 22: JUL + E + AFTEN = JULEAFTEN\nDag 23: Norsk julekake med 7 lag: KRANSEKAKE\nDag 24: Dagens høytid: JULAFTEN\n\n💡 Trenger du mer hjelp? Sjekk backup_hint.txt!"
-        },
-        {
-          "navn": "backup_hint.txt",
-          "type": "fil",
-          "innhold": "🆘 BACKUP HINT - Digitale Løsningsveier\n==========================================\n\n[For de som ikke har tilgang til fysiske ledetråder]\n\nDag 1: Koden starter med J, har 8 bokstaver\nDag 2: Fibonacci-rekken: 1,1,2,3,5,8,13,21,34...\nDag 3: Vi trekker slede - SLEDE\nDag 4: Rudolf har rød nese - RUDOLF\nDag 5: 8 reinsdyr + Rudolf = 9\nDag 6: Skattekart med X - SKATT\nDag 7: Finn det som mangler på kartet\nDag 8: Følg snoren til enden - GAVE\nDag 9: Legg sammen alle snøfnugg-tall\nDag 10: Grønne ting bokstaver alfabetisk\nDag 11: Klokker viser tid - les rekkefølgen\nDag 12: Sanglinjer - første bokstav i hver linje\nDag 13: Tell lys i mønster - Lucia\nDag 14: Gavepapir-bokstaver: P-A-K-K-E\nDag 15: Tredje bolle har mandel - MANDEL\nDag 16: Julekalender har 24 luker\nDag 17: Stjerner staver: STJERNE\nDag 18: Hvit fra himmelen: SNØ\nDag 19: Dyret med gevir: REINSDYR\nDag 20: Nissens transport: SLEDE\nDag 21: Julestjerne har 5 spisser\nDag 22: Tre sokker: JUL-E-AFTEN\nDag 23: Kake med 7 lag: KRANSEKAKE\nDag 24: Høytiden i dag: JULAFTEN"
+          "innhold": "DYNAMISK_HINTS"
         }
       ]
     },

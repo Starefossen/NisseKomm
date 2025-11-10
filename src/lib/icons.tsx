@@ -87,7 +87,5 @@ export const Icons = {
   SkipForward: (props: Omit<IconProps, "name">) => (
     <Icon name="next" {...props} />
   ),
-  SkipBack: (props: Omit<IconProps, "name">) => (
-    <Icon name="prev" {...props} />
-  ),
+  SkipBack: (props: Omit<IconProps, "name">) => <Icon name="prev" {...props} />,
 } as const;

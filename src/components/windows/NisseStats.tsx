@@ -116,17 +116,19 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
         <div className="grid grid-cols-2 gap-4">
           {/* Gave Produksjon */}
           <div
-            className={`p-4 border-4 ${isInventoryBroken
+            className={`p-4 border-4 ${
+              isInventoryBroken
                 ? "border-(--christmas-red) bg-(--christmas-red)/10"
                 : "border-(--neon-green) bg-(--neon-green)/10"
-              }`}
+            }`}
           >
             <div className="text-xs opacity-70 mb-2">GAVEPRODUKSJON</div>
             <div
-              className={`text-3xl font-bold tracking-wider ${isInventoryBroken
+              className={`text-3xl font-bold tracking-wider ${
+                isInventoryBroken
                   ? "text-(--christmas-red)"
                   : "text-(--neon-green)"
-                }`}
+              }`}
             >
               {isInventoryBroken ? "OFFLINE" : gaveProduksjon.toLocaleString()}
             </div>
