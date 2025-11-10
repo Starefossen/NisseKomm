@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 interface BootSequenceProps {
   onComplete: () => void;
@@ -23,7 +23,7 @@ export function BootSequence({ onComplete, duration = 2 }: BootSequenceProps) {
           setTimeout(onComplete, 300);
           return 100;
         }
-        return prev + (100 / (duration * 10));
+        return prev + 100 / (duration * 10);
       });
     }, 100);
 
@@ -37,7 +37,7 @@ export function BootSequence({ onComplete, duration = 2 }: BootSequenceProps) {
   return (
     <div
       className="fixed inset-0 bg-[var(--crt-bg)] flex items-center justify-center z-50"
-      style={{ animation: 'flicker-in 1s ease-out' }}
+      style={{ animation: "flicker-in 1s ease-out" }}
     >
       <div className="w-[600px] max-w-[90%] space-y-6">
         {/* Boot message */}

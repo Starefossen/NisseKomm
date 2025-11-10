@@ -1,437 +1,391 @@
-# NisseKomm - Agents Development Guide
+# NisseKomm - Development Guide for AI Agents
 
-## Project Context
+> **Important**: Keep this document updated when making changes to the project. Always run `npm run check` at the end of coding sessions to verify code quality. Assume the dev server is already running at <http://localhost:3000>.
+>
+> **Do NOT create new markdown files** (like SUMMARY.md, CHANGES.md, etc.) to document your work unless explicitly requested by the user.
 
-**NisseKomm** is a playful Christmas-themed riddle application for children, designed as a retro CRT command center interface. The application runs throughout December (1-24) with daily riddles/missions that children solve by entering codes. The aesthetic is inspired by fictional in-game computer terminals found in video games like GTA, with a nostalgic low-tech, pixelated look.
+## Project Overview
+
+**NisseKomm** is a playful Christmas calendar app for children (ages 6-12) that runs December 1-24. Kids solve daily riddles by entering codes, unlocking Santa's diary and exploring a retro CRT-style terminal interface. The aesthetic is inspired by fictional in-game computer terminals (like GTA) with a nostalgic, pixelated look.
+
+**Core Experience**: Boot up a password-protected "command center" → receive daily emails from Rampenissen → solve riddles → enter codes in terminal → unlock content → track progress on calendar.
 
 ## Tech Stack
 
-- **Next.js 16** (App Router)
-- **React 19**
-- **TypeScript** (strict mode)
-- **Tailwind CSS v4** (utility-first styling)
-- **Pixelarticons** (retro pixel-art icon library)
+- **Next.js 16** (App Router) + **React 19** + **TypeScript** (strict)
+- **Tailwind CSS v4** (utility-first, custom properties for colors)
+- **Pixelarticons** (retro icon set)
+- **Web Audio API** (sound effects)
+- **localStorage** (persistence layer via StorageManager)
 
-## Design Principles
+## Design Philosophy
 
-### Visual Aesthetic
-- **Retro CRT Terminal**: Fake monitor frame, scanline effects, pixel borders, vignette overlay
-- **Christmas Color Palette**:
-  - Primary: Neon Green `#00ff00` (main UI, text, success states)
-  - Alerts: Christmas Red `#ff0000` (errors, warnings, critical alerts)
-  - Success: Gold `#ffd700` (completed tasks, achievements)
-  - Info: Cold Blue `#00ddff` (secondary information, hints)
-  - Background: Dark CRT `#0a1a0a` (deep dark green-black)
-  - Disabled: Gray `#666666` (locked elements)
+### Visual Language
 
-### Typography
-- **Font**: VT323 (Google Fonts) - monospace pixel font
-- All text in **Norwegian language**
-- Terminal-style presentation with typing animations
+**Retro CRT Terminal** - Think 1980s computer monitor:
 
-### UI Elements
-- **Thick pixel borders** on all windows and panels
-- **Blinking LED indicators** for status displays
-- **Scanline overlay** for authentic CRT effect
-- **Animated transitions**: flicker-in, scale-in, glitch effects
-- **No anti-aliasing**: `image-rendering: pixelated` for icons
+- Fake monitor frame with thick bezels
+- Animated scanlines and CRT glow effects
+- Pixelated borders and vignette overlay
+- No smooth edges: `image-rendering: pixelated`
 
-### Interaction Style
-- **Playful and exaggerated**: Not realistic, styled for fun
-- **Visual feedback**: Animations for every interaction (clicks, hovers, state changes)
-- **Sound-implied visuals**: UI suggests noises without actual audio
-- **Responsive feedback delays**: Fake processing animations (1.5s) for realism
+**Christmas Color System**:
 
-## Architecture
+- **Neon Green** `#00ff00` - Primary (UI, text, success)
+- **Christmas Red** `#ff0000` - Errors and warnings
+- **Gold** `#ffd700` - Achievements and completed states
+- **Cold Blue** `#00ddff` - Secondary info and hints
+- **Dark CRT** `#0a1a0a` - Background (deep green-black)
+- **Gray** `#666666` - Disabled/locked elements
 
-### Layout Structure
-```
-┌─────────────────────────────────────────────┐
-│  CRT Frame (fullscreen with scanlines)     │
-│  ┌────────────┬───────────────────────────┐ │
-│  │  SIDEBAR   │   MAIN WORKSPACE         │ │
-│  │  (25%)     │   (75%)                  │ │
-│  │            │                           │ │
-│  │ System     │   Desktop Icons (2×3)    │ │
-│  │ Status     │   or                     │ │
-│  │            │   Active Window (modal)  │ │
-│  │ Varsel     │                           │ │
-│  │ Konsoll    │                           │ │
-│  │            │                           │ │
-│  └────────────┴───────────────────────────┘ │
-└─────────────────────────────────────────────┘
+**Typography**: VT323 monospace pixel font (Google Fonts) for authentic terminal feel
+
+### Interaction Principles
+
+- **Playful, not realistic**: Exaggerated animations and visual feedback
+- **Every action has feedback**: Clicks trigger sounds and animations
+- **Fake processing delays**: 1.5s delays simulate "system thinking"
+- **Blinking LEDs and scanlines**: Constant motion for retro atmosphere
+- **Norwegian language**: All UI text, errors, and content
+
+## Architecture Concepts
+
+### Layout Pattern
+
+```text
+┌─ CRT Frame (fullscreen) ───────────────┐
+│ ┌─ Sidebar (25%) ─┬─ Main (75%) ─────┐ │
+│ │ System Status   │ Desktop Icons    │ │
+│ │ Alert Feed      │ or Active Window │ │
+│ └─────────────────┴──────────────────┘ │
+└─────────────────────────────────────────┘
 ```
 
-### Window Management
-- **Single window at a time**: Only one module window can be open
-- **Modal overlay**: Active window appears centered over desktop
-- **Close returns to desktop**: Closing window shows icon grid again
-- **Desktop icons**: 2×3 grid (4 active modules + 2 locked slots)
+**Key Concepts**:
 
-### Module Icons (Desktop)
-1. **NisseMail** (green with unread badge) - Email inbox with daily missions from Rampenissen
-2. **KodeTerminal** (blue) - Terminal for code submission
-3. **NisseNet Utforsker** (green) - File explorer with hints/content
-4. **Kalender** (gold) - December 1-24 calendar grid
-5. **LÅST** (gray) - Locked placeholder with shake animation
-6. **LÅST** (gray) - Locked placeholder with shake animation
+- **Single window paradigm**: Only one app window open at a time (desktop icons hide when window opens)
+- **Persistent sidebar**: Always shows system metrics and scrolling alerts
+- **Modal windows**: Centered overlays with retro window chrome
+- **Desktop grid**: 2×3 icon layout (4 active modules + 2 locked slots)
 
-### Sidebar Widgets (Always Visible)
-1. **SystemStatus**: Christmas-themed metrics (JULESIGNAL, NISSEKRAFT, GAVEPRODUKSJON)
-2. **VarselKonsoll**: Auto-scrolling alert feed
+### Application Modules
 
-## State Management
+1. **NisseMail** - Email inbox showing daily missions from Rampenissen (unread badge on icon)
+2. **KodeTerminal** - Code submission interface with validation and history
+3. **NisseNet Utforsker** - File browser with Santa's diary and hint files
+4. **Kalender** - 24-day grid showing locked/available/completed states
+5. **LÅST** (2 slots) - Locked placeholders that shake when clicked
 
-### StorageManager (`lib/storage.ts`)
-Centralized data layer for all localStorage operations. Designed for easy migration to backend persistence.
+### State Management Philosophy
 
-**Key Methods:**
-- `isAuthenticated()` / `setAuthenticated(value: boolean)`
-- `getSubmittedCodes()` / `addSubmittedCode(code: InnsendelseLog)`
-- `getCompletedDays()` - Returns Set<number> of days with correct codes
-- `getViewedEmails()` / `markEmailAsViewed(day: number)` / `isEmailViewed(day: number)`
-- `getUnreadEmailCount(currentDay: number, totalMissions: number)` - Calculate unread emails
-- `isSoundsEnabled()` / `setSoundsEnabled(enabled: boolean)`
-- `isMusicEnabled()` / `setMusicEnabled(enabled: boolean)`
-- `getAllData()` / `clearAll()` / `exportData()` / `importData(data: string)`
+**StorageManager Pattern** (`lib/storage.ts`):
 
-**Benefits:**
-- Type-safe interface for all storage operations
-- Single source of truth for data access
-- Easy to swap localStorage for backend API
-- Consistent error handling
-- All components use StorageManager instead of direct localStorage
+- Centralized localStorage abstraction
+- All persistence goes through StorageManager (no direct localStorage calls)
+- Type-safe methods for each data type
+- Easy to swap for backend API later
 
-### LocalStorage Schema
-```typescript
-// Authentication
-'nissekomm-authenticated': 'true' | null
+**Key State Types**:
 
-// Submitted correct codes only
-'nissekomm-codes': InnsendelseLog[]
-// Interface: {kode: string, dato: string}[]
+- **Authentication**: Boot password verification (persistent)
+- **Progress**: Completed day codes (persistent)
+- **Read Status**: Viewed emails per day (persistent)
+- **Preferences**: Sound/music toggles (persistent)
+- **UI State**: Open window, selected day (session-only in React state)
 
-// Viewed emails (read status)
-'nissekomm-viewed-emails': number[] // Array of day numbers
+**React State Usage** (in `page.tsx`):
 
-// Sound preferences
-'nissekomm-sounds-enabled': 'true' | 'false'
-'nissekomm-music-enabled': 'true' | 'false'
+- Keep minimal state in components
+- Load persistent data from StorageManager on mount
+- Update both StorageManager and local state together
+- Use lazy initialization to avoid loading flashes
 
-// Managed via StorageManager class in lib/storage.ts
-```
+## Data Architecture
 
-### React State (in page.tsx)
-```typescript
-authenticated: boolean          // Password entered successfully
-openWindow: string | null       // Currently active window ID ('nissemail', 'kodeterminal', 'nissenet', 'kalender')
-selectedDay: number | null      // Day selected from calendar to open in NisseMail
-bootComplete: boolean           // Boot sequence finished
-attemptCount: number            // Failed password attempts
-submittedCodes: InnsendelseLog[] // Correct codes from localStorage
-unreadCount: number             // Unread email count for badge display
-```
+**Content Files** (in `src/data/`):
 
-## Environment Variables
+- **`oppdrag.json`** - All 24 daily missions with codes, descriptions, and diary entries
+- **`statisk_innhold.json`** - File system, alerts, system metrics (non-mission content)
 
-Create `.env.local` file:
-```bash
-# Set to 'true' to bypass date restrictions and skip boot animation
-NEXT_PUBLIC_TEST_MODE=false
-
-# Boot password (case-insensitive)
-NEXT_PUBLIC_BOOT_PASSWORD=NISSEKODE2025
-
-# Boot animation duration in seconds (0 = skip animation)
-NEXT_PUBLIC_BOOT_ANIMATION_DURATION=2
-```
-
-### Test Mode Behavior
-When `NEXT_PUBLIC_TEST_MODE=true`:
-- All dates are accessible (not limited to December 1-24)
-- Boot animation can be skipped by setting duration to 0
-
-### Production Mode
-When `NEXT_PUBLIC_TEST_MODE=false`:
-- Only December 1-24 dates are accessible
-- Outside this range shows: "TILGANG NEKTET - SYSTEMET ER STENGT UTENFOR JULESONEN"
-- Boot animation always plays (unless duration is 0)
-
-## Component Structure
-
-```
-src/
-├── app/
-│   ├── layout.tsx          # Root layout with VT323 font
-│   ├── globals.css         # CRT theming, animations, colors
-│   └── page.tsx            # Main application with boot flow
-├── components/
-│   ├── ui/                 # Reusable UI primitives
-│   │   ├── CRTFrame.tsx
-│   │   ├── RetroWindow.tsx
-│   │   ├── RetroModal.tsx
-│   │   ├── DesktopIcon.tsx    # Now supports unreadCount badge
-│   │   ├── BootSequence.tsx
-│   │   ├── PasswordPrompt.tsx
-│   │   ├── SidebarWidget.tsx
-│   │   ├── SoundToggle.tsx    # Separate MUSIKK/EFFEKTER buttons
-│   │   └── TerminalText.tsx
-│   ├── modules/            # Sidebar widgets
-│   │   ├── SystemStatus.tsx
-│   │   └── VarselKonsoll.tsx
-│   └── windows/            # Main application windows
-│       ├── NisseMail.tsx        # Email client (replaces DagensOppdrag)
-│       ├── KodeTerminal.tsx     # Code submission terminal
-│       ├── NisseNetUtforsker.tsx # File explorer
-│       └── Kalender.tsx         # Calendar grid
-├── lib/
-│   ├── icons.tsx           # Pixelarticons wrapper
-│   ├── sounds.tsx          # SoundManager class with Web Audio API
-│   └── storage.ts          # StorageManager centralized data layer
-├── types/
-│   └── innhold.ts          # TypeScript interfaces
-└── data/
-    └── innhold.json        # All content (missions, alerts, files)
-```
-
-## Data Format (innhold.json)
+**Mission Structure**:
 
 ```typescript
 {
-  "oppdrag": Oppdrag[],      // 24 daily missions
-  "varsler": Varsel[],        // Alert feed messages
-  "filer": FilNode[],         // File tree structure
-  "systemMetrikker": SystemMetrikk[], // System status metrics
-  "kalender": KalenderDag[]   // Calendar configuration
+  dag: number,              // Day 1-24
+  tittel: string,           // Mission title
+  beskrivelse: string,      // Riddle/puzzle description
+  kode: string,             // Expected answer code
+  dagbokinnlegg?: string,   // Santa's diary entry (shown when day ≤ current)
+  hendelse?: string         // Optional calendar event label
 }
 ```
+
+**Content Principles**:
+
+- Mission content drives diary unlocking (diary shows all entries up to current day)
+- File system includes hints and flavor text in Norwegian
+- Santa's diary written from North Pole perspective (mentions Rampenissen with kids)
+- All content stored in JSON for easy editing without code changes
+
+## Development Practices
 
 ## Coding Conventions
 
 ### TypeScript
+
 - Use **strict mode**
 - Define interfaces for all data structures
 - Prefer `interface` over `type` for objects
 - Use proper typing for props (no `any`)
 
 ### React
+
 - Functional components with hooks
 - Use `'use client'` directive when needed (state, effects, browser APIs)
 - Keep components small and focused
 - Extract reusable logic into custom hooks if needed
 
 ### Styling
+
 - **Tailwind utility classes only** (no custom CSS in components)
 - Use CSS custom properties from `globals.css` for colors
 - Apply animations via Tailwind classes referencing keyframes
 - Use `className` composition for conditional styles
 
 ### Norwegian Language
+
 - All UI text, labels, and messages in Norwegian
 - File/folder names in Norwegian (e.g., "OPPGAVER", "LOGGER")
 - Error messages in Norwegian
 - Comments in English (for code clarity)
+- **Use the vocabulary list below** to ensure consistency
+
+#### Norwegian Vocabulary (Ordliste)
+
+Consistent terms used throughout the application:
+
+**UI Elements:**
+
+- **Åpne** - Open
+- **Lukk** - Close
+- **Send** - Submit/Send
+- **Tilbake** - Back
+- **Avbryt** - Cancel
+- **Bekreft** - Confirm
+- **Behandler...** - Processing...
+- **Laster...** - Loading...
+- **Låst** - Locked
+- **Fullført** - Completed
+- **Ny** - New
+
+**Application Modules:**
+
+- **NisseMail** - Santa's email system (don't translate)
+- **KodeTerminal** - Code Terminal
+- **NisseNet Utforsker** - Santa Net Explorer
+- **Kalender** - Calendar
+- **Julenissens Dagbok** - Santa's Diary
+
+**Characters:**
+
+- **Julenissen** - Santa Claus
+- **Nissemor** - Mrs. Claus
+- **Rampenissen** - The Mischievous Elf (Santa's assistant stationed with children)
+- **Nordpolen** - The North Pole
+
+**Actions & States:**
+
+- **Oppdrag** - Mission/Quest
+- **Gåte** - Riddle/Puzzle
+- **Kode** - Code
+- **Hendelse** - Event
+- **Beskrivelse** - Description
+- **Innhold** - Content
+- **Dagbokinnlegg** - Diary Entry
+
+**System Terms:**
+
+- **System** - System (keep in English in terminal context)
+- **Varsel** - Alert/Warning
+- **Kritisk** - Critical
+- **Advarsel** - Warning
+- **Info** - Info
+- **Status** - Status
+- **Måling** - Metric
+
+**Error Messages:**
+
+- **Feil kode** - Wrong code
+- **Tilgang nektet** - Access denied
+- **Ugyldig passord** - Invalid password
+- **Prøv igjen** - Try again
+- **Ikke tilgjengelig ennå** - Not available yet
 
 ### File Organization
+
 - One component per file
 - Co-locate related components (windows/, modules/, ui/)
 - Keep utility functions in lib/
 - Centralize types in types/
-- Single source of truth for content (data/innhold.json)
+- Single source of truth for content (data/oppdrag.json and data/statisk_innhold.json)
 
-## Animation Keyframes
+## Animation System
 
-Available animations defined in `globals.css`:
-- `scanline` - Moving horizontal scanline effect
-- `pulse-led` - Blinking LED indicator
-- `flicker-in` - CRT power-on flicker
-- `scale-in` - Window opening animation
-- `glitch` - Screen glitch distortion
-- `blink-cursor` - Terminal cursor blink
-- `crt-shake` - Screen shake on error
-- `gold-flash` - Success feedback flash
-- `red-shake` - Error feedback shake
-- `error-pulse` - Escalating error pulse
-- `lock-shake` - Locked icon shake on click
+**Available Effects** (defined in `globals.css`):
 
-## Boot Sequence Flow
+- `scanline` - Moving CRT scanline
+- `pulse-led` - Blinking status lights
+- `flicker-in` - Power-on screen flicker
+- `scale-in` - Window opening zoom
+- `glitch` - Screen distortion effect
+- `blink-cursor` - Terminal text cursor
+- `crt-shake` - Error screen shake
+- `gold-flash` - Success feedback
+- `red-shake` - Error shake
+- `lock-shake` - Locked icon wiggle
 
-1. **BootSequence Component** (configurable duration)
-   - Display "ENISSEKJERNE 3.8] LASTER..."
-   - Animated progress bar 0-100%
-   - Duration from `NEXT_PUBLIC_BOOT_ANIMATION_DURATION`
-   - Skip entirely if duration is 0
+**Usage Pattern**: Apply via Tailwind classes: `animate-[keyframe-name]`
 
-2. **PasswordPrompt Component**
+## Sound Design
+
+**Audio Strategy**:
+
+- **Background Music**: Christmas jingle (loops, default off, 30% volume)
+- **UI Effects**: Oscillator-based beeps (default on, 50% volume)
+- **User Control**: Separate toggles for music and effects (top-right)
+
+**Sound Events**:
+
+- Boot success → success beep + start jingle
+- Window open/close → UI beeps
+- Code validation → success/error beep
+- Icon clicks → click beep
+- Locked icon → error beep
+
+**Implementation**: `SoundManager` class in `lib/sounds.tsx` with `useSounds()` hook
+
+## Boot Flow Sequence
+
+1. **Boot Animation** (configurable duration)
+   - Shows "ENISSEKJERNE 3.8] LASTER..." progress bar
+   - Duration set in env: `NEXT_PUBLIC_BOOT_ANIMATION_DURATION` (default 2s)
+   - Set to 0 to skip entirely
+
+2. **Password Challenge**
    - Terminal-style password input
-   - Validate against `NEXT_PUBLIC_BOOT_PASSWORD` (case-insensitive)
-   - Escalating error messages on failed attempts:
-     - Attempt 1: "FEIL PASSORD"
-     - Attempt 2: "TILGANG NEKTET - PRØV IGJEN"
-     - Attempt 3+: "ADVARSEL: SIKKERHETSBRUDD REGISTRERT"
-   - Store success in localStorage 'nissekomm-authenticated'
+   - Validates against env: `NEXT_PUBLIC_BOOT_PASSWORD`
+   - Case-insensitive matching
+   - Escalating error messages (attempt 1, 2, 3+)
+   - Success persisted in localStorage
 
-3. **Desktop View**
-   - Fade in sidebar widgets + icon grid
-   - Play Christmas jingle (if sounds enabled)
-   - Ready for interaction
+3. **Desktop Launch**
+   - Fade in sidebar and icon grid
+   - Play jingle if sounds enabled
+   - Ready for user interaction
 
-## Sound System
+## Validation Logic
 
-### Audio Files
-- **Christmas Jingle**: `/public/music/christmas-dreams-jingle-bells-268299.mp3` (loops in background)
-- **Sound Effects**: Simple beep tones generated for UI interactions
+**Code Submission Flow** (in `KodeTerminal.tsx`):
 
-### Sound Manager (`lib/sounds.tsx`)
-- **SoundManager class**: Singleton managing all audio
-- **Sounds**:
-  - `jingle` - Christmas background music (loops)
-  - `click` - Button/icon clicks
-  - `success` - Code validation success
-  - `error` - Code validation error or locked icon
-  - `open` - Window opening
-  - `close` - Window closing
-  - `type` - Keyboard typing (placeholder)
-  - `boot` - Boot sequence (placeholder)
+1. User types code and clicks "SEND"
+2. Show 1.5s "BEHANDLER..." processing animation
+3. Compare input to `oppdrag[day].kode` (case-insensitive)
+4. **Correct**: Gold flash + persist to localStorage + show in history
+5. **Incorrect**: Red shake + error message + do NOT persist
 
-### Usage
-- **useSounds() hook**: React hook for sound control
-- **SoundToggle component**: Two separate buttons (top-right)
-  - **MUSIKK**: Toggle Christmas jingle on/off (default: off)
-  - **EFFEKTER**: Toggle sound effects on/off (default: on)
-- **State persistence**: Preferences stored via StorageManager
-  - `nissekomm-sounds-enabled` - Sound effects
-  - `nissekomm-music-enabled` - Background music
-- **Volume control**: Separate music (30%) and SFX (50%) volumes
-- **Autoplay handling**: Gracefully handles browser autoplay restrictions
-- **Web Audio API**: Oscillator-based beeps for UI sounds (frequency/duration/waveType configurations)
+**Important**: Only correct codes are stored. This keeps localStorage clean and progress tracking simple.
 
-### Integration Points
-- **Authentication success**: Play success sound + start jingle
-- **Window open/close**: Play open/close sounds
-- **Desktop icons**: Click sound or error sound (if locked)
-- **Code submission**: Success or error sound based on validation
-- **All buttons**: Click sounds on interaction
+## Email System
 
-## Code Validation Logic
+**NisseMail Behavior** (in `NisseMail.tsx`):
 
-In `KodeTerminal.tsx`:
-1. User enters code and clicks "SEND"
-2. Show 1.5s processing animation: "BEHANDLER..."
-3. Compare against expected code from `innhold.json` for current date
-4. **If correct**:
-   - Show gold background flash animation
-   - Persist to localStorage: `{kode: string, dato: string}`
-   - Add to submitted codes list display
-5. **If incorrect**:
-   - Show red border shake animation
-   - Do NOT persist to localStorage
-   - Show error message (brief)
+- **Split view**: 30% inbox list | 70% email content
+- **Read tracking**: Mark email as viewed when selected
+- **Unread indicators**: Red dot + "NY" badge + gold sender text
+- **Inbox sorting**: Newest first (day 24 at top)
+- **Selection priority**:
+  1. Calendar-selected day (if opened from calendar)
+  2. Current day's mission
+  3. First unread email
+  4. First mission (fallback)
+- **Integration**: "ÅPNE TERMINAL" button opens KodeTerminal for that day
 
-## NisseMail Email Client
+## Calendar Behavior
 
-In `NisseMail.tsx`:
-- **Split-view layout**: 30% inbox list | 70% email content
-- **Email from Rampenissen**: All daily missions presented as emails
-- **Read/Unread tracking**:
-  - Emails marked as viewed when selected
-  - Unread emails show: red dot indicator, bold "NY", gold sender text
-  - Read emails: no indicator, normal weight
-  - Badge on desktop icon shows unread count
-- **Inbox sorting**: Newest emails at top (reversed chronological)
-- **Mission selection priority**:
-  1. If `initialDay` prop provided (from calendar), show that day
-  2. Otherwise show today's mission
-  3. Otherwise show first unread email
-  4. Otherwise show first mission
-- **State management**:
-  - Uses `StorageManager.getViewedEmails()` for read status
-  - Lazy initialization to load state immediately (no empty Set flash)
-  - `markAsViewed()` updates both StorageManager and local state
-- **Integration**: "ÅPNE TERMINAL" button opens KodeTerminal with expected code
-- **Scrolling**: Inbox list scrolls independently, email content scrolls separately
+**Day States** (in `Kalender.tsx`):
 
-## Calendar Logic
+- **Locked**: Future dates (gray with lock icon)
+- **Available**: Current/past dates without codes (green glow)
+- **Completed**: Dates with submitted codes (gold with checkmark, golden glow)
 
-In `Kalender.tsx`:
-- Display all 24 days (December 1-24) in 6×4 grid
-- **Locked state**: Future dates (gray with lock icon, 12px)
-- **Available state**: Current/past dates not completed (green glow)
-- **Completed state**: Dates with correct codes in localStorage (gold with checkmark 16px, golden glow shadow)
-- Click unlocked day → opens `RetroModal` with event details
-- "VIS OPPDRAG" button → closes modal and opens `NisseMail` window with that day's mission selected
-- Uses `StorageManager.getCompletedDays()` to determine status
-- Scrollable content to ensure all days visible
+**Interaction**: Click available day → modal with mission details → "VIS OPPDRAG" button → opens NisseMail for that day
 
-## Future Enhancements (Phase 2+)
+## Environment Configuration
 
-- **Nice/Naughty List Editing**: Interactive feature in NISSENET
-  - `snill_slem_liste.txt` file in HEMMELIGHETER folder
-  - Shows read-only list initially with warning: "SKRIVEBESKYTTET - ADMIN TILGANG PÅKREVD"
-  - One daily mission involves finding "HACKINGVERKTØY" code
-  - After solving that mission, list becomes editable
-  - Kids can add their names to the "Snill" (Nice) section
-  - Changes persist in localStorage
-  - Visual feedback: green flash animation when name is added
-- Full-screen glitch effect for code validation feedback
-- Backend state persistence (replace localStorage)
-- Sidebar widget reactivity to code submissions
-- Additional unlockable modules (replace LÅST slots)
-- More complex file tree interactions in NisseNet
-- Multiplayer/shared progress features
-- **Messages App**: Communications between Julenissen and Rampenissen (postponed)
-
-## Development Commands
+**`.env.local` Settings**:
 
 ```bash
-# Install dependencies
-npm install
+# Development mode (bypasses date restrictions)
+NEXT_PUBLIC_TEST_MODE=false
 
-# Run development server
-npm run dev
+# Boot password
+NEXT_PUBLIC_BOOT_PASSWORD=NISSEKODE2025
 
-# Build for production
-npm run build
-
-# Start production server
-npm start
-
-# Lint code
-npm run lint
+# Boot animation duration (0 = skip)
+NEXT_PUBLIC_BOOT_ANIMATION_DURATION=2
 ```
 
-## Testing Recommendations
+**Test Mode Effects**:
 
-1. Test with `NEXT_PUBLIC_TEST_MODE=true` for rapid development
-2. Test all 24 daily missions sequentially
-3. Verify localStorage persistence across page reloads
-4. Test password protection and escalating errors
-5. Test date validation (access outside December 1-24)
-6. Test all animations and visual feedback
-7. Verify Norwegian text throughout application
-8. Test locked icon interactions (shake animation)
-9. Test calendar modal and day selection
-10. Test code validation (correct and incorrect codes)
+- All dates accessible (not limited to Dec 1-24)
+- Boot animation can be skipped
+- Use for rapid development and testing
 
-## Design Consistency Checklist
+## Quality Checklist
 
-- [ ] All text in Norwegian
-- [ ] VT323 font throughout
-- [ ] Christmas color palette applied consistently
-- [ ] Thick pixel borders on all windows
-- [ ] Scanline overlay visible
-- [ ] Icons use `image-rendering: pixelated`
-- [ ] LED indicators pulse/blink
+**Before Committing**:
+
+- [ ] Run `npm run check` (type checking + linting)
+- [ ] All text in Norwegian (except code comments)
+- [ ] VT323 font used consistently
+- [ ] Thick pixel borders on windows
 - [ ] Animations on all interactions
-- [ ] Terminal-style text input with cursor
-- [ ] Green as primary UI color
-- [ ] Red for errors/alerts
-- [ ] Gold for success/completion
-- [ ] Blue for secondary info
-- [ ] Gray for locked/disabled states
+- [ ] Colors from CSS custom properties
+- [ ] StorageManager for all persistence
+- [ ] TypeScript strict mode compliance
+- [ ] Update this AGENTS.md if architecture changed
+
+**Design Consistency**:
+
+- [ ] Green = primary UI
+- [ ] Red = errors
+- [ ] Gold = success/completion
+- [ ] Blue = info/hints
+- [ ] Gray = locked/disabled
+
+## Development Workflow
+
+1. **Assume dev server is running** at <http://localhost:3000>
+2. Make changes to components/content
+3. Browser auto-reloads on save
+4. Test in browser (use `NEXT_PUBLIC_TEST_MODE=true` for testing all days)
+5. Run `npm run check` before finishing session
+6. Update this document if you changed architecture/patterns
+
+## Future Enhancements
+
+**Planned Features** (Phase 2+):
+
+- Editable Nice/Naughty list in NISSENET (unlock via "HACKINGVERKTØY" mission)
+- Backend persistence (replace localStorage with API)
+- Reactive sidebar widgets (update on code submissions)
+- Additional unlockable modules (replace LÅST slots)
+- Full-screen glitch effects for dramatic feedback
+- Multiplayer progress sharing
 
 ---
 
 **Version**: Phase 1
 **Last Updated**: November 2025
-**Target Audience**: Children (December calendar riddle experience)
+**Target Audience**: Children ages 6-12 (Norwegian-speaking)
+**Maintained By**: AI Coding Agents (keep this doc in sync with code!)

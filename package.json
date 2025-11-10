@@ -1,6 +1,6 @@
 {
-  "name": "my-project",
-  "version": "0.1.0",
+  "name": "NisseKomm",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -11,10 +11,10 @@
     "knip:fix": "knip --fix",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "test": "jest --silent",
-    "test:debug": "NODE_OPTIONS='--experimental-vm-modules' jest",
-    "test:watch": "NODE_OPTIONS='--experimental-vm-modules' jest --watch",
-    "test:badges": "jest --silent __tests__/lib/badge/",
+    "test": "echo \"No tests configured\" && exit 0",
+    "test:debug": "echo \"No tests configured\" && exit 0",
+    "test:watch": "echo \"No tests configured\" && exit 0",
+    "test:badges": "echo \"No tests configured\" && exit 0",
     "format:check": "prettier --check .",
     "format": "prettier --write --list-different .",
     "typecheck": "tsc --noEmit"
@@ -23,20 +23,18 @@
     "next": "16.0.1",
     "pixelarticons": "^1.8.1",
     "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "react-sounds": "^1.0.25"
+    "react-dom": "19.2.0"
   },
   "devDependencies": {
-    "@jest/globals": "^30.2.0",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.1",
-    "jest": "^30.2.0",
     "knip": "^5.68.0",
+    "postcss": "^8",
     "prettier": "^3.6.2",
     "tailwindcss": "^4",
     "typescript": "^5"

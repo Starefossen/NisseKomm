@@ -28,32 +28,65 @@ En leken julekalender med gåter for barn, designet som et retro CRT-kommandosen
 
 ## Komme i gang
 
-1. Installer avhengigheter:
+1. **Installer avhengigheter:**
+
+   ```bash
+   npm install
+   ```
+
+2. **Opprett `.env.local`-fil** (valgfritt for utvikling):
+
+   ```bash
+   # Sett til 'true' for utvikling (omgår datobegrensninger)
+   NEXT_PUBLIC_TEST_MODE=true
+
+   # Oppstartspassord (standard: NISSEKODE2025)
+   NEXT_PUBLIC_BOOT_PASSWORD=NISSEKODE2025
+
+   # Oppstartsanimasjonens varighet i sekunder (0 = hopp over)
+   NEXT_PUBLIC_BOOT_ANIMATION_DURATION=0
+   ```
+
+3. **Kjør utviklingsserver:**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Åpne [http://localhost:3000](http://localhost:3000)**
+
+   Bruk passordet `NISSEKODE2025` (eller ditt eget hvis du endret det).
+
+## Utvikling
+
+### Kvalitetskontroll
+
+Kjør alle sjekker før du committer:
 
 ```bash
-npm install
+npm run check
 ```
 
-2. Opprett `.env.local`-fil:
+Dette kjører:
 
-```bash
-# Sett til 'true' for utvikling (omgår datobegrensninger)
-NEXT_PUBLIC_TEST_MODE=false
+- TypeScript type-sjekking
+- ESLint linting
+- Knip (ubrukte avhengigheter)
+- Prettier formatering
 
-# Oppstartspassord
-NEXT_PUBLIC_BOOT_PASSWORD=NISSEKODE2025
+### Utviklingsmodus
 
-# Oppstartsanimasjonens varighet i sekunder (0 = hopp over)
-NEXT_PUBLIC_BOOT_ANIMATION_DURATION=2
-```
+Når `NEXT_PUBLIC_TEST_MODE=true`:
 
-3. Kjør utviklingsserver:
+- Alle 24 dager er tilgjengelige (ikke begrenset til desember)
+- Perfekt for testing og utvikling
 
-```bash
-npm run dev
-```
+### Rediger innhold
 
-4. Åpne [http://localhost:3000](http://localhost:3000)
+- **Oppdrag og gåter:** `src/data/oppdrag.json`
+- **Statisk innhold:** `src/data/statisk_innhold.json`
+
+Alle endringer lastes automatisk når du lagrer.
 
 ## Prosjektstruktur
 

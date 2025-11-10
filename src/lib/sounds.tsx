@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import { StorageManager as Storage } from './storage';
+import { useEffect, useRef } from "react";
+import { StorageManager as Storage } from "./storage";
 
 // Sound effects wrapper using Web Audio API
 export class SoundManager {
@@ -13,35 +13,41 @@ export class SoundManager {
 
   // Sound effect configurations
   private static soundConfigs = {
-    click: { frequency: 800, duration: 100, waveType: 'square' as const },
-    success: { frequency: 1200, duration: 150, waveType: 'sine' as const },
-    error: { frequency: 300, duration: 200, waveType: 'sawtooth' as const },
-    open: { frequency: 600, duration: 150, waveType: 'sine' as const },
-    close: { frequency: 400, duration: 100, waveType: 'sine' as const },
-    type: { frequency: 1000, duration: 50, waveType: 'square' as const },
-    boot: { frequency: 500, duration: 300, waveType: 'triangle' as const },
+    click: { frequency: 800, duration: 100, waveType: "square" as const },
+    success: { frequency: 1200, duration: 150, waveType: "sine" as const },
+    error: { frequency: 300, duration: 200, waveType: "sawtooth" as const },
+    open: { frequency: 600, duration: 150, waveType: "sine" as const },
+    close: { frequency: 400, duration: 100, waveType: "sine" as const },
+    type: { frequency: 1000, duration: 50, waveType: "square" as const },
+    boot: { frequency: 500, duration: 300, waveType: "triangle" as const },
   };
 
   static initialize() {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     if (this.jingleAudio) return; // Already initialized
 
     // Initialize jingle audio (HTML5 Audio for music)
-    this.jingleAudio = new Audio('/music/christmas-dreams-jingle-bells-268299.mp3');
+    this.jingleAudio = new Audio(
+      "/music/christmas-dreams-jingle-bells-268299.mp3",
+    );
     this.jingleAudio.volume = this.musicVolume;
     this.jingleAudio.loop = true;
 
     // Get saved preferences
     this.enabled = Storage.isSoundsEnabled();
     this.musicEnabled = Storage.isMusicEnabled();
-  } static playSound(soundName: keyof typeof SoundManager.soundConfigs) {
-    if (!this.enabled || typeof window === 'undefined') return;
+  }
+  static playSound(soundName: keyof typeof SoundManager.soundConfigs) {
+    if (!this.enabled || typeof window === "undefined") return;
 
     try {
       const config = this.soundConfigs[soundName];
       if (config) {
         // Use Web Audio API to generate beep sound
-        const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        const AudioContextClass =
+          window.AudioContext ||
+          (window as unknown as { webkitAudioContext: typeof AudioContext })
+            .webkitAudioContext;
         const audioContext = new AudioContextClass();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
@@ -54,33 +60,39 @@ export class SoundManager {
 
         // Apply envelope
         gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-        gainNode.gain.linearRampToValueAtTime(this.sfxVolume * 0.3, audioContext.currentTime + 0.01);
-        gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + config.duration / 1000);
+        gainNode.gain.linearRampToValueAtTime(
+          this.sfxVolume * 0.3,
+          audioContext.currentTime + 0.01,
+        );
+        gainNode.gain.linearRampToValueAtTime(
+          0,
+          audioContext.currentTime + config.duration / 1000,
+        );
 
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + config.duration / 1000);
       }
     } catch (e) {
-      console.error('Error playing sound:', e);
+      console.error("Error playing sound:", e);
     }
   }
 
   static playJingle() {
-    if (!this.musicEnabled || typeof window === 'undefined') return;
+    if (!this.musicEnabled || typeof window === "undefined") return;
 
     try {
       if (this.jingleAudio) {
-        this.jingleAudio.play().catch(e => {
-          console.log('Jingle play prevented:', e.message);
+        this.jingleAudio.play().catch((e) => {
+          console.log("Jingle play prevented:", e.message);
         });
       }
     } catch (e) {
-      console.error('Error playing jingle:', e);
+      console.error("Error playing jingle:", e);
     }
   }
 
   static stopJingle() {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     try {
       if (this.jingleAudio) {
@@ -88,7 +100,7 @@ export class SoundManager {
         this.jingleAudio.currentTime = 0;
       }
     } catch (e) {
-      console.error('Error stopping jingle:', e);
+      console.error("Error stopping jingle:", e);
     }
   }
 
@@ -159,22 +171,4 @@ export function useSounds() {
     setMusicVolume: (volume: number) => SoundManager.setMusicVolume(volume),
     setSFXVolume: (volume: number) => SoundManager.setSFXVolume(volume),
   };
-}
-
-// Simple click sound component
-export function ClickSound({ children, onClick, disabled, ...props }: React.HTMLAttributes<HTMLDivElement> & { disabled?: boolean }) {
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!disabled) {
-      SoundManager.playSound('click');
-    }
-    if (onClick) {
-      onClick(e);
-    }
-  };
-
-  return (
-    <div onClick={handleClick} {...props}>
-      {children}
-    </div>
-  );
 }

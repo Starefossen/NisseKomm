@@ -11,15 +11,15 @@
  * - Easy migration path: replace localStorage calls with API calls
  */
 
-import { InnsendelseLog } from '@/types/innhold';
+import { InnsendelseLog } from "@/types/innhold";
 
 // Storage keys
 const KEYS = {
-  AUTHENTICATED: 'nissekomm-authenticated',
-  SUBMITTED_CODES: 'nissekomm-codes',
-  VIEWED_EMAILS: 'nissekomm-viewed-emails',
-  SOUNDS_ENABLED: 'nissekomm-sounds-enabled',
-  MUSIC_ENABLED: 'nissekomm-music-enabled',
+  AUTHENTICATED: "nissekomm-authenticated",
+  SUBMITTED_CODES: "nissekomm-codes",
+  VIEWED_EMAILS: "nissekomm-viewed-emails",
+  SOUNDS_ENABLED: "nissekomm-sounds-enabled",
+  MUSIC_ENABLED: "nissekomm-music-enabled",
 } as const;
 
 // Type-safe storage interface
@@ -41,17 +41,17 @@ export class StorageManager {
   // ============================================================
 
   static isAuthenticated(): boolean {
-    if (typeof window === 'undefined') return false;
-    return localStorage.getItem(KEYS.AUTHENTICATED) === 'true';
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem(KEYS.AUTHENTICATED) === "true";
   }
 
   static setAuthenticated(value: boolean): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     localStorage.setItem(KEYS.AUTHENTICATED, String(value));
   }
 
   static clearAuthentication(): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     localStorage.removeItem(KEYS.AUTHENTICATED);
   }
 
@@ -60,29 +60,29 @@ export class StorageManager {
   // ============================================================
 
   static getSubmittedCodes(): InnsendelseLog[] {
-    if (typeof window === 'undefined') return [];
+    if (typeof window === "undefined") return [];
     try {
       const stored = localStorage.getItem(KEYS.SUBMITTED_CODES);
       return stored ? JSON.parse(stored) : [];
     } catch (e) {
-      console.error('Failed to parse submitted codes:', e);
+      console.error("Failed to parse submitted codes:", e);
       return [];
     }
   }
 
   static addSubmittedCode(code: InnsendelseLog): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     const codes = this.getSubmittedCodes();
 
     // Avoid duplicates
-    if (!codes.some(c => c.kode === code.kode && c.dato === code.dato)) {
+    if (!codes.some((c) => c.kode === code.kode && c.dato === code.dato)) {
       codes.push(code);
       localStorage.setItem(KEYS.SUBMITTED_CODES, JSON.stringify(codes));
     }
   }
 
   static isCodeSubmitted(kode: string): boolean {
-    return this.getSubmittedCodes().some(c => c.kode === kode);
+    return this.getSubmittedCodes().some((c) => c.kode === kode);
   }
 
   static getCompletedDays(): Set<number> {
@@ -100,7 +100,7 @@ export class StorageManager {
   }
 
   static clearSubmittedCodes(): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     localStorage.removeItem(KEYS.SUBMITTED_CODES);
   }
 
@@ -109,19 +109,19 @@ export class StorageManager {
   // ============================================================
 
   static getViewedEmails(): Set<number> {
-    if (typeof window === 'undefined') return new Set();
+    if (typeof window === "undefined") return new Set();
     try {
       const stored = localStorage.getItem(KEYS.VIEWED_EMAILS);
       const array = stored ? JSON.parse(stored) : [];
       return new Set(array);
     } catch (e) {
-      console.error('Failed to parse viewed emails:', e);
+      console.error("Failed to parse viewed emails:", e);
       return new Set();
     }
   }
 
   static markEmailAsViewed(day: number): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     const viewed = this.getViewedEmails();
     viewed.add(day);
     localStorage.setItem(KEYS.VIEWED_EMAILS, JSON.stringify([...viewed]));
@@ -131,7 +131,10 @@ export class StorageManager {
     return this.getViewedEmails().has(day);
   }
 
-  static getUnreadEmailCount(currentDay: number, totalMissions: number): number {
+  static getUnreadEmailCount(
+    currentDay: number,
+    totalMissions: number,
+  ): number {
     const viewed = this.getViewedEmails();
     let unreadCount = 0;
 
@@ -145,7 +148,7 @@ export class StorageManager {
   }
 
   static clearViewedEmails(): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     localStorage.removeItem(KEYS.VIEWED_EMAILS);
   }
 
@@ -154,24 +157,24 @@ export class StorageManager {
   // ============================================================
 
   static isSoundsEnabled(): boolean {
-    if (typeof window === 'undefined') return true;
+    if (typeof window === "undefined") return true;
     const stored = localStorage.getItem(KEYS.SOUNDS_ENABLED);
-    return stored === null ? true : stored === 'true';
+    return stored === null ? true : stored === "true";
   }
 
   static setSoundsEnabled(value: boolean): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     localStorage.setItem(KEYS.SOUNDS_ENABLED, String(value));
   }
 
   static isMusicEnabled(): boolean {
-    if (typeof window === 'undefined') return false;
+    if (typeof window === "undefined") return false;
     const stored = localStorage.getItem(KEYS.MUSIC_ENABLED);
-    return stored === null ? false : stored === 'true';
+    return stored === null ? false : stored === "true";
   }
 
   static setMusicEnabled(value: boolean): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     localStorage.setItem(KEYS.MUSIC_ENABLED, String(value));
   }
 
@@ -196,8 +199,8 @@ export class StorageManager {
    * Clear all application data
    */
   static clearAll(): void {
-    if (typeof window === 'undefined') return;
-    Object.values(KEYS).forEach(key => {
+    if (typeof window === "undefined") return;
+    Object.values(KEYS).forEach((key) => {
       localStorage.removeItem(key);
     });
   }
@@ -217,44 +220,21 @@ export class StorageManager {
       const data: StorageData = JSON.parse(jsonData);
 
       this.setAuthenticated(data.authenticated);
-      localStorage.setItem(KEYS.SUBMITTED_CODES, JSON.stringify(data.submittedCodes));
-      localStorage.setItem(KEYS.VIEWED_EMAILS, JSON.stringify(data.viewedEmails));
+      localStorage.setItem(
+        KEYS.SUBMITTED_CODES,
+        JSON.stringify(data.submittedCodes),
+      );
+      localStorage.setItem(
+        KEYS.VIEWED_EMAILS,
+        JSON.stringify(data.viewedEmails),
+      );
       this.setSoundsEnabled(data.soundsEnabled);
       this.setMusicEnabled(data.musicEnabled);
 
       return true;
     } catch (e) {
-      console.error('Failed to import data:', e);
+      console.error("Failed to import data:", e);
       return false;
     }
   }
 }
-
-/**
- * React Hook for reactive storage access
- *
- * Usage:
- * const { viewedEmails, markAsViewed } = useStorage();
- */
-export function useStorageSync() {
-  if (typeof window === 'undefined') {
-    return {
-      authenticated: false,
-      submittedCodes: [],
-      viewedEmails: new Set<number>(),
-      soundsEnabled: true,
-      musicEnabled: false,
-    };
-  }
-
-  return {
-    authenticated: StorageManager.isAuthenticated(),
-    submittedCodes: StorageManager.getSubmittedCodes(),
-    viewedEmails: StorageManager.getViewedEmails(),
-    soundsEnabled: StorageManager.isSoundsEnabled(),
-    musicEnabled: StorageManager.isMusicEnabled(),
-  };
-}
-
-// Export constants for external use
-export { KEYS };

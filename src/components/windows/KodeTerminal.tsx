@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { RetroWindow } from '../ui/RetroWindow';
-import { Icons } from '@/lib/icons';
-import { Oppdrag, InnsendelseLog } from '@/types/innhold';
-import { SoundManager } from '@/lib/sounds';
-import { StorageManager } from '@/lib/storage';
+import { useState } from "react";
+import { RetroWindow } from "../ui/RetroWindow";
+import { Icons } from "@/lib/icons";
+import { Oppdrag, InnsendelseLog } from "@/types/innhold";
+import { SoundManager } from "@/lib/sounds";
+import { StorageManager } from "@/lib/storage";
 
 interface KodeTerminalProps {
   onClose: () => void;
@@ -14,24 +14,29 @@ interface KodeTerminalProps {
   allMissions: Oppdrag[];
 }
 
-export function KodeTerminal({ onClose, expectedCode, currentDay, allMissions }: KodeTerminalProps) {
-  const [code, setCode] = useState('');
+export function KodeTerminal({
+  onClose,
+  expectedCode,
+  currentDay,
+  allMissions,
+}: KodeTerminalProps) {
+  const [code, setCode] = useState("");
   const [processing, setProcessing] = useState(false);
-  const [feedback, setFeedback] = useState<'success' | 'error' | null>(null);
-  const [submittedCodes, setSubmittedCodes] = useState<InnsendelseLog[]>([]);
-  const [isAlreadySolved, setIsAlreadySolved] = useState(false);
-
-  // Load submitted codes from localStorage
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const codes = StorageManager.getSubmittedCodes();
-      setSubmittedCodes(codes);
-      // Check if current day is already solved
-      const dayMission = allMissions.find(m => m.dag === currentDay);
-      const alreadySolved = codes.some(c => c.kode === dayMission?.kode);
-      setIsAlreadySolved(alreadySolved);
+  const [feedback, setFeedback] = useState<"success" | "error" | null>(null);
+  const [submittedCodes, setSubmittedCodes] = useState<InnsendelseLog[]>(() => {
+    if (typeof window !== "undefined") {
+      return StorageManager.getSubmittedCodes();
     }
-  }, [currentDay, allMissions]);
+    return [];
+  });
+  const isAlreadySolved = (() => {
+    if (typeof window !== "undefined") {
+      const codes = StorageManager.getSubmittedCodes();
+      const dayMission = allMissions.find((m) => m.dag === currentDay);
+      return codes.some((c) => c.kode === dayMission?.kode);
+    }
+    return false;
+  })();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,15 +46,15 @@ export function KodeTerminal({ onClose, expectedCode, currentDay, allMissions }:
     setFeedback(null);
 
     // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     // Check if code is correct
     const isCorrect = code.trim().toUpperCase() === expectedCode.toUpperCase();
 
     if (isCorrect) {
       // Success!
-      setFeedback('success');
-      SoundManager.playSound('success');
+      setFeedback("success");
+      SoundManager.playSound("success");
 
       // Save to localStorage (only correct codes)
       const newEntry: InnsendelseLog = {
@@ -61,11 +66,11 @@ export function KodeTerminal({ onClose, expectedCode, currentDay, allMissions }:
       const updated = [...submittedCodes, newEntry];
       setSubmittedCodes(updated);
 
-      setCode('');
+      setCode("");
     } else {
       // Error
-      setFeedback('error');
-      SoundManager.playSound('error');
+      setFeedback("error");
+      SoundManager.playSound("error");
     }
 
     setProcessing(false);
@@ -81,8 +86,12 @@ export function KodeTerminal({ onClose, expectedCode, currentDay, allMissions }:
         <div className="flex items-center gap-4 pb-4 border-b-4 border-(--neon-green)/30">
           <Icons.Code size={32} color="blue" />
           <div className="flex-1">
-            <div className="text-2xl font-bold tracking-wider">TERMINAL TILGANG</div>
-            <div className="text-sm opacity-70">SKRIV INN KODE FOR DAG {currentDay}</div>
+            <div className="text-2xl font-bold tracking-wider">
+              TERMINAL TILGANG
+            </div>
+            <div className="text-sm opacity-70">
+              SKRIV INN KODE FOR DAG {currentDay}
+            </div>
           </div>
           {isAlreadySolved && (
             <div className="flex items-center gap-2 px-4 py-2 border-2 border-(--gold) bg-(--gold)/20 text-(--gold)">
@@ -103,15 +112,23 @@ export function KodeTerminal({ onClose, expectedCode, currentDay, allMissions }:
               className={`
                 w-full px-4 py-3 bg-black border-4 text-2xl tracking-widest font-mono
                 focus:outline-none uppercase
-                ${feedback === 'success' ? 'border-(--gold)' :
-                  feedback === 'error' ? 'border-(--christmas-red)' :
-                    'border-(--neon-green) focus:shadow-[0_0_20px_rgba(0,255,0,0.5)]'}
+                ${
+                  feedback === "success"
+                    ? "border-(--gold)"
+                    : feedback === "error"
+                      ? "border-(--christmas-red)"
+                      : "border-(--neon-green) focus:shadow-[0_0_20px_rgba(0,255,0,0.5)]"
+                }
               `}
               style={{
-                animation: feedback === 'success' ? 'gold-flash 0.5s ease-out' :
-                  feedback === 'error' ? 'red-shake 0.5s ease-out' : 'none',
-                color: 'var(--neon-green)',
-                caretColor: 'var(--neon-green)',
+                animation:
+                  feedback === "success"
+                    ? "gold-flash 0.5s ease-out"
+                    : feedback === "error"
+                      ? "red-shake 0.5s ease-out"
+                      : "none",
+                color: "var(--neon-green)",
+                caretColor: "var(--neon-green)",
               }}
               placeholder="_ _ _ _ _ _ _ _"
               autoFocus
@@ -123,12 +140,12 @@ export function KodeTerminal({ onClose, expectedCode, currentDay, allMissions }:
             disabled={processing || !code.trim()}
             className="w-full px-6 py-3 bg-(--cold-blue) text-black text-xl tracking-wider font-bold border-4 border-(--cold-blue) hover:bg-transparent hover:text-(--cold-blue) transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {processing ? 'BEHANDLER...' : 'SEND'}
+            {processing ? "BEHANDLER..." : "SEND"}
           </button>
         </form>
 
         {/* Feedback messages */}
-        {feedback === 'success' && (
+        {feedback === "success" && (
           <div className="p-4 border-2 border-(--gold) bg-(--gold)/20 text-(--gold) text-center font-bold">
             <div className="flex items-center justify-center gap-2">
               <Icons.CheckCircle size={24} color="gold" />
@@ -137,7 +154,7 @@ export function KodeTerminal({ onClose, expectedCode, currentDay, allMissions }:
           </div>
         )}
 
-        {feedback === 'error' && (
+        {feedback === "error" && (
           <div className="p-4 border-2 border-(--christmas-red) bg-(--christmas-red)/20 text-(--christmas-red) text-center font-bold">
             <div className="flex items-center justify-center gap-2">
               <Icons.Alert size={24} color="red" />
@@ -165,12 +182,14 @@ export function KodeTerminal({ onClose, expectedCode, currentDay, allMissions }:
                 >
                   <div className="flex items-center gap-2">
                     <Icons.CheckCircle size={16} color="gold" />
-                    <span className="font-mono text-lg text-(--gold)">{entry.kode}</span>
+                    <span className="font-mono text-lg text-(--gold)">
+                      {entry.kode}
+                    </span>
                   </div>
                   <span className="text-xs opacity-70">
-                    {new Date(entry.dato).toLocaleDateString('no-NO', {
-                      day: 'numeric',
-                      month: 'short'
+                    {new Date(entry.dato).toLocaleDateString("no-NO", {
+                      day: "numeric",
+                      month: "short",
                     })}
                   </span>
                 </div>

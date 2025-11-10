@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { SidebarWidget } from '../ui/SidebarWidget';
-import { StatusBar } from '../ui/StatusBar';
-import { LEDIndicator } from '../ui/LEDIndicator';
-import { Icons } from '@/lib/icons';
-import { SystemMetrikk } from '@/types/innhold';
+import { SidebarWidget } from "../ui/SidebarWidget";
+import { StatusBar } from "../ui/StatusBar";
+import { LEDIndicator } from "../ui/LEDIndicator";
+import { Icons } from "@/lib/icons";
+import { SystemMetrikk } from "@/types/innhold";
 
 interface SystemStatusProps {
   metrics: SystemMetrikk[];

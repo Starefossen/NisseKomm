@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useMemo } from 'react';
-import { RetroWindow } from '../ui/RetroWindow';
-import { Icons } from '@/lib/icons';
-import { FilNode, Oppdrag } from '@/types/innhold';
-import { StorageManager } from '@/lib/storage';
+import { useState, useMemo } from "react";
+import { RetroWindow } from "../ui/RetroWindow";
+import { Icons } from "@/lib/icons";
+import { FilNode, Oppdrag } from "@/types/innhold";
 
 interface NisseNetUtforskerProps {
   files: FilNode[];
@@ -13,21 +12,29 @@ interface NisseNetUtforskerProps {
   onClose: () => void;
 }
 
-export function NisseNetUtforsker({ files, missions, currentDay, onClose }: NisseNetUtforskerProps) {
-  const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set(['root']));
+export function NisseNetUtforsker({
+  files,
+  missions,
+  currentDay,
+  onClose,
+}: NisseNetUtforskerProps) {
+  const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
+    new Set(["root"]),
+  );
   const [selectedFile, setSelectedFile] = useState<FilNode | null>(null);
 
   // Generate dynamic diary content based on current day
   const generateDiaryContent = useMemo(() => {
     if (currentDay < 1 || currentDay > 24) {
-      return "JULENISSENS DAGBOK\n==================\n\nDag 0 - Før Julen Starter\n\nHei! Dette er Julenissen som skriver fra Nordpolen. Jeg har bestemt meg for å føre dagbok over desember måned. Rampenissen har reist ned til barna for å hjelpe dem med årets julekalender.\n\nHer oppe forbereder vi oss på den travleste tiden på året. Nissene er klare, reinsdyrene er (mer eller mindre) motiverte, og Fru Claus har bakt nok pepperkaker til å fø en hær.\n\nSnart begynner den magiske tiden. Gleder meg!\n\n- Julenissen\n\nPS: Rudolf har allerede begynt å klage. Det er ikke engang desember ennå.";
+      return "JULENISSENS DAGBOK\n==================\n\nDag 0 - Før Julen Starter\n\nHei! Dette er Julenissen som skriver fra Nordpolen. Jeg har bestemt meg for å føre dagbok over desember måned. Rampenissen har reist ned til barna for å hjelpe dem med årets julekalender.\n\nHer oppe forbereder vi oss på den travleste tiden på året. Nissene er klare, reinsdyrene er (mer eller mindre) motiverte, og Nissemor har bakt nok pepperkaker til å fø en hær.\n\nSnart begynner den magiske tiden. Gleder meg!\n\n- Julenissen\n\nPS: Rudolf har allerede begynt å klage. Det er ikke engang desember ennå.";
     }
 
-    let diary = "JULENISSENS DAGBOK\n==================\n\nSkrevet av Julenissen fra Nordpolen\n\n";
+    let diary =
+      "JULENISSENS DAGBOK\n==================\n\nSkrevet av Julenissen fra Nordpolen\n\n";
 
     // Show all entries up to current day
     for (let day = 1; day <= currentDay; day++) {
-      const mission = missions.find(m => m.dag === day);
+      const mission = missions.find((m) => m.dag === day);
       if (mission && mission.dagbokinnlegg) {
         diary += "\n" + mission.dagbokinnlegg + "\n\n---\n";
       }
@@ -41,16 +48,16 @@ export function NisseNetUtforsker({ files, missions, currentDay, onClose }: Niss
   // Process files and inject dynamic content for nissens_dagbok.txt
   const processedFiles = useMemo(() => {
     const processNode = (node: FilNode): FilNode => {
-      if (node.type === 'fil' && node.navn === 'nissens_dagbok.txt') {
+      if (node.type === "fil" && node.navn === "nissens_dagbok.txt") {
         return {
           ...node,
-          innhold: generateDiaryContent
+          innhold: generateDiaryContent,
         };
       }
-      if (node.type === 'mappe' && node.barn) {
+      if (node.type === "mappe" && node.barn) {
         return {
           ...node,
-          barn: node.barn.map(processNode)
+          barn: node.barn.map(processNode),
         };
       }
       return node;
@@ -69,12 +76,12 @@ export function NisseNetUtforsker({ files, missions, currentDay, onClose }: Niss
     setExpandedFolders(newExpanded);
   };
 
-  const renderFileTree = (nodes: FilNode[], parentPath = 'root', depth = 0) => {
+  const renderFileTree = (nodes: FilNode[], parentPath = "root", depth = 0) => {
     return nodes.map((node) => {
       const path = `${parentPath}/${node.navn}`;
       const isExpanded = expandedFolders.has(path);
 
-      if (node.type === 'mappe') {
+      if (node.type === "mappe") {
         return (
           <div key={path}>
             <button
@@ -95,9 +102,7 @@ export function NisseNetUtforsker({ files, missions, currentDay, onClose }: Niss
               <span className="font-bold">{node.navn}</span>
             </button>
             {isExpanded && node.barn && (
-              <div>
-                {renderFileTree(node.barn, path, depth + 1)}
-              </div>
+              <div>{renderFileTree(node.barn, path, depth + 1)}</div>
             )}
           </div>
         );
@@ -108,9 +113,10 @@ export function NisseNetUtforsker({ files, missions, currentDay, onClose }: Niss
             onClick={() => setSelectedFile(node)}
             className={`
               flex items-center gap-2 w-full text-left py-1 px-2 transition-colors
-              ${selectedFile?.navn === node.navn
-                ? 'bg-(--cold-blue)/20 border-l-2 border-(--cold-blue)'
-                : 'hover:bg-(--neon-green)/10'
+              ${
+                selectedFile?.navn === node.navn
+                  ? "bg-(--cold-blue)/20 border-l-2 border-(--cold-blue)"
+                  : "hover:bg-(--neon-green)/10"
               }
             `}
             style={{ paddingLeft: `${depth * 16 + 8}px` }}
@@ -149,10 +155,12 @@ export function NisseNetUtforsker({ files, missions, currentDay, onClose }: Niss
               <div className="space-y-4">
                 <div className="flex items-center gap-2 pb-2 border-b-2 border-(--cold-blue)">
                   <Icons.File size={20} color="blue" />
-                  <span className="font-bold text-(--cold-blue)">{selectedFile.navn}</span>
+                  <span className="font-bold text-(--cold-blue)">
+                    {selectedFile.navn}
+                  </span>
                 </div>
                 <div className="text-sm leading-relaxed whitespace-pre-wrap">
-                  {selectedFile.innhold || 'Ingen innhold tilgjengelig'}
+                  {selectedFile.innhold || "Ingen innhold tilgjengelig"}
                 </div>
               </div>
             ) : (

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "ignore": [
+    "**/*.test.{ts,tsx}",
+    "**/*.spec.{ts,tsx}",
+    "__tests__/**",
+    "jest.config.js"
+  ],
+  "ignoreDependencies": ["pixelarticons"],
+  "next": {
+    "entry": [
+      "next.config.{js,ts,cjs,mjs}",
+      "src/app/layout.{ts,tsx}",
+      "src/app/**/layout.{ts,tsx}",
+      "src/app/page.{ts,tsx}",
+      "src/app/**/page.{ts,tsx}",
+      "src/middleware.{ts,tsx}"
+    ]
+  }
+}

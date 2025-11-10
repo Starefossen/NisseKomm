@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { ReactNode } from 'react';
-import { Icons } from '@/lib/icons';
+import { ReactNode } from "react";
+import { Icons } from "@/lib/icons";
 
 interface RetroModalProps {
   title: string;
@@ -14,7 +14,7 @@ export function RetroModal({ title, children, onClose }: RetroModalProps) {
     <div className="fixed inset-0 flex items-center justify-center z-40 bg-black/70">
       <div
         className="relative w-[500px] max-w-[90%] bg-[var(--crt-bg)] border-4 border-[var(--cold-blue)] shadow-[0_0_20px_rgba(0,221,255,0.3)]"
-        style={{ animation: 'scale-in 0.2s ease-out' }}
+        style={{ animation: "scale-in 0.2s ease-out" }}
       >
         {/* Title bar */}
         <div className="flex items-center justify-between px-4 py-2 bg-[var(--cold-blue)] text-black border-b-4 border-[var(--cold-blue)]">
@@ -29,9 +29,7 @@ export function RetroModal({ title, children, onClose }: RetroModalProps) {
         </div>
 
         {/* Modal content */}
-        <div className="p-6 text-[var(--neon-green)]">
-          {children}
-        </div>
+        <div className="p-6 text-[var(--neon-green)]">{children}</div>
       </div>
     </div>
   );

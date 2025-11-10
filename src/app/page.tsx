@@ -1,48 +1,70 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { CRTFrame } from '@/components/ui/CRTFrame';
-import { BootSequence } from '@/components/ui/BootSequence';
-import { PasswordPrompt } from '@/components/ui/PasswordPrompt';
-import { SoundToggle } from '@/components/ui/SoundToggle';
-import { useSounds } from '@/lib/sounds';
-import { StorageManager } from '@/lib/storage';
-import { DesktopIcon } from '@/components/ui/DesktopIcon';
-import { SystemStatus } from '@/components/modules/SystemStatus';
-import { VarselKonsoll } from '@/components/modules/VarselKonsoll';
-import { PixelKart } from '@/components/modules/PixelKart';
-import { NisseMail } from '@/components/windows/NisseMail';
-import { KodeTerminal } from '@/components/windows/KodeTerminal';
-import { NisseNetUtforsker } from '@/components/windows/NisseNetUtforsker';
-import { Kalender } from '@/components/windows/Kalender';
-import innholdData from '@/data/innhold.json';
-import { Innhold } from '@/types/innhold';
+import { useState } from "react";
+import { CRTFrame } from "@/components/ui/CRTFrame";
+import { BootSequence } from "@/components/ui/BootSequence";
+import { PasswordPrompt } from "@/components/ui/PasswordPrompt";
+import { SoundToggle } from "@/components/ui/SoundToggle";
+import { useSounds } from "@/lib/sounds";
+import { StorageManager } from "@/lib/storage";
+import { DesktopIcon } from "@/components/ui/DesktopIcon";
+import { SystemStatus } from "@/components/modules/SystemStatus";
+import { VarselKonsoll } from "@/components/modules/VarselKonsoll";
+import { NisseMail } from "@/components/windows/NisseMail";
+import { KodeTerminal } from "@/components/windows/KodeTerminal";
+import { NisseNetUtforsker } from "@/components/windows/NisseNetUtforsker";
+import { Kalender } from "@/components/windows/Kalender";
+import oppdragData from "@/data/oppdrag.json";
+import statiskInnholdData from "@/data/statisk_innhold.json";
+import {
+  Oppdrag,
+  Varsel,
+  FilNode,
+  SystemMetrikk,
+  KalenderDag,
+} from "@/types/innhold";
 
-const innhold = innholdData as Innhold;
+const oppdrag = oppdragData as Oppdrag[];
+const { varsler, filer, systemMetrikker } = statiskInnholdData as {
+  varsler: Varsel[];
+  filer: FilNode[];
+  systemMetrikker: SystemMetrikk[];
+  kalender: KalenderDag[];
+};
+
+function getCurrentDay() {
+  return new Date().getDate();
+}
+
+function getUnreadEmailCount() {
+  if (typeof window === "undefined") return 0;
+  const currentDay = getCurrentDay();
+  return StorageManager.getUnreadEmailCount(currentDay, oppdrag.length);
+}
 
 export default function Home() {
-  const [bootComplete, setBootComplete] = useState(false);
-  const [authenticated, setAuthenticated] = useState(false);
+  const [bootComplete, setBootComplete] = useState(() => {
+    if (typeof window !== "undefined") {
+      return StorageManager.isAuthenticated();
+    }
+    return false;
+  });
+  const [authenticated, setAuthenticated] = useState(() => {
+    if (typeof window !== "undefined") {
+      return StorageManager.isAuthenticated();
+    }
+    return false;
+  });
   const [openWindow, setOpenWindow] = useState<string | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [unreadCount, setUnreadCount] = useState(() => getUnreadEmailCount());
   const { playSound, playJingle } = useSounds();
 
-  const bootPassword = process.env.NEXT_PUBLIC_BOOT_PASSWORD || 'NISSEKODE2025';
-  const bootDuration = parseInt(process.env.NEXT_PUBLIC_BOOT_ANIMATION_DURATION || '2');
-  const testMode = process.env.NEXT_PUBLIC_TEST_MODE === 'true';
-
-  // Check authentication from localStorage
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (StorageManager.isAuthenticated()) {
-        setAuthenticated(true);
-        setBootComplete(true);
-      }
-      // Update unread count
-      setUnreadCount(getUnreadEmailCount());
-    }
-  }, []);
+  const bootPassword = process.env.NEXT_PUBLIC_BOOT_PASSWORD || "NISSEKODE2025";
+  const bootDuration = parseInt(
+    process.env.NEXT_PUBLIC_BOOT_ANIMATION_DURATION || "2",
+  );
+  const testMode = process.env.NEXT_PUBLIC_TEST_MODE === "true";
 
   // Date validation for production mode
   const isDateValid = () => {
@@ -62,7 +84,7 @@ export default function Home() {
   const handleAuthSuccess = () => {
     setAuthenticated(true);
     StorageManager.setAuthenticated(true);
-    playSound('success');
+    playSound("success");
     // Play jingle after a short delay
     setTimeout(() => playJingle(), 500);
   };
@@ -70,42 +92,32 @@ export default function Home() {
   const handleIconClick = (windowId: string) => {
     if (openWindow === windowId) {
       setOpenWindow(null);
-      playSound('close');
+      playSound("close");
     } else {
       setOpenWindow(windowId);
       setSelectedDay(null);
-      playSound('open');
+      playSound("open");
     }
   };
 
   const handleCloseWindow = () => {
     setOpenWindow(null);
     setSelectedDay(null);
-    playSound('close');
+    playSound("close");
     // Refresh unread count when closing NisseMail
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       setUnreadCount(getUnreadEmailCount());
     }
   };
 
   const handleSelectDay = (day: number) => {
     setSelectedDay(day);
-    setOpenWindow('nissemail');
-  };
-
-  const getCurrentDay = () => {
-    return new Date().getDate();
-  };
-
-  const getUnreadEmailCount = () => {
-    if (typeof window === 'undefined') return 0;
-    const currentDay = getCurrentDay();
-    return StorageManager.getUnreadEmailCount(currentDay, innhold.oppdrag.length);
+    setOpenWindow("nissemail");
   };
 
   const getCurrentMission = () => {
     const day = selectedDay || getCurrentDay();
-    return innhold.oppdrag.find(m => m.dag === day) || innhold.oppdrag[0];
+    return oppdrag.find((m) => m.dag === day) || oppdrag[0];
   };
 
   // Show access denied if outside December 1-24 in production mode
@@ -142,7 +154,10 @@ export default function Home() {
 
       {/* Password prompt */}
       {bootComplete && !authenticated && (
-        <PasswordPrompt onSuccess={handleAuthSuccess} expectedPassword={bootPassword} />
+        <PasswordPrompt
+          onSuccess={handleAuthSuccess}
+          expectedPassword={bootPassword}
+        />
       )}
 
       {/* Main application */}
@@ -150,8 +165,8 @@ export default function Home() {
         <div className="flex h-full">
           {/* Sidebar - 25% */}
           <div className="w-1/4 p-4 flex flex-col gap-4 border-r-4 border-(--neon-green)/30 overflow-hidden">
-            <SystemStatus metrics={innhold.systemMetrikker} />
-            <VarselKonsoll alerts={innhold.varsler} />
+            <SystemStatus metrics={systemMetrikker} />
+            <VarselKonsoll alerts={varsler} />
           </div>
 
           {/* Main workspace - 75% */}
@@ -165,73 +180,73 @@ export default function Home() {
                     label="NISSEMAIL"
                     color="green"
                     unreadCount={unreadCount}
-                    onClick={() => handleIconClick('nissemail')}
+                    onClick={() => handleIconClick("nissemail")}
                   />
                   <DesktopIcon
                     icon="code"
                     label="KODETERMINAL"
                     color="blue"
-                    onClick={() => handleIconClick('kodeterminal')}
+                    onClick={() => handleIconClick("kodeterminal")}
                   />
                   <DesktopIcon
                     icon="folder"
                     label="NISSENET"
                     color="green"
-                    onClick={() => handleIconClick('nissenet')}
+                    onClick={() => handleIconClick("nissenet")}
                   />
                   <DesktopIcon
                     icon="calendar"
                     label="KALENDER"
                     color="gold"
-                    onClick={() => handleIconClick('kalender')}
+                    onClick={() => handleIconClick("kalender")}
                   />
                   <DesktopIcon
                     icon="lock"
                     label="LÅST"
                     color="gray"
                     disabled
-                    onClick={() => { }}
+                    onClick={() => {}}
                   />
                   <DesktopIcon
                     icon="lock"
                     label="LÅST"
                     color="gray"
                     disabled
-                    onClick={() => { }}
+                    onClick={() => {}}
                   />
                 </div>
               </div>
             ) : (
               // Active window
               <>
-                {openWindow === 'nissemail' && (
+                {openWindow === "nissemail" && (
                   <NisseMail
-                    missions={innhold.oppdrag}
+                    missions={oppdrag}
                     currentDay={getCurrentDay()}
                     initialDay={selectedDay}
                     onClose={handleCloseWindow}
-                    onOpenKodeTerminal={() => handleIconClick('kodeterminal')}
+                    onOpenKodeTerminal={() => handleIconClick("kodeterminal")}
                   />
                 )}
-                {openWindow === 'kodeterminal' && (
+                {openWindow === "kodeterminal" && (
                   <KodeTerminal
                     onClose={handleCloseWindow}
                     expectedCode={getCurrentMission().kode}
                     currentDay={selectedDay || getCurrentDay()}
-                    allMissions={innhold.oppdrag}
+                    allMissions={oppdrag}
                   />
                 )}
-                {openWindow === 'nissenet' && (
+                {openWindow === "nissenet" && (
                   <NisseNetUtforsker
-                    files={innhold.filer}
-                    missions={innhold.oppdrag}
+                    files={filer}
+                    missions={oppdrag}
                     currentDay={getCurrentDay()}
                     onClose={handleCloseWindow}
                   />
                 )}
-                {openWindow === 'kalender' && (
+                {openWindow === "kalender" && (
                   <Kalender
-                    missions={innhold.oppdrag}
+                    missions={oppdrag}
                     onClose={handleCloseWindow}
                     onSelectDay={handleSelectDay}
                   />

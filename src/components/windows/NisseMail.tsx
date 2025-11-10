@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { RetroWindow } from '../ui/RetroWindow';
-import { Icons } from '@/lib/icons';
-import { Oppdrag } from '@/types/innhold';
-import { SoundManager } from '@/lib/sounds';
-import { StorageManager } from '@/lib/storage';
+import { useState, useCallback, useMemo } from "react";
+import { RetroWindow } from "../ui/RetroWindow";
+import { Icons } from "@/lib/icons";
+import { Oppdrag } from "@/types/innhold";
+import { SoundManager } from "@/lib/sounds";
+import { StorageManager } from "@/lib/storage";
 
 interface NisseMailProps {
   missions: Oppdrag[];
@@ -15,66 +15,68 @@ interface NisseMailProps {
   initialDay?: number | null;
 }
 
-export function NisseMail({ missions, onClose, onOpenKodeTerminal, currentDay, initialDay }: NisseMailProps) {
-  const [selectedMission, setSelectedMission] = useState<Oppdrag | null>(null);
+export function NisseMail({
+  missions,
+  onClose,
+  onOpenKodeTerminal,
+  currentDay,
+  initialDay,
+}: NisseMailProps) {
   const [viewedEmails, setViewedEmails] = useState<Set<number>>(() => {
     // Initialize with data from storage immediately
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return StorageManager.getViewedEmails();
     }
     return new Set();
   });
-  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load viewed emails from localStorage
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
-
-  // Default to today's mission or first unread
-  useEffect(() => {
-    if (missions.length > 0 && !selectedMission && isLoaded) {
-      // If initialDay is provided (from calendar), use that
-      if (initialDay) {
-        const dayMission = missions.find(m => m.dag === initialDay);
-        if (dayMission) {
-          setSelectedMission(dayMission);
-          markAsViewed(dayMission.dag);
-          return;
-        }
+  const markAsViewed = useCallback(
+    (dag: number) => {
+      if (!viewedEmails.has(dag)) {
+        StorageManager.markEmailAsViewed(dag);
+        const updated = new Set(viewedEmails);
+        updated.add(dag);
+        setViewedEmails(updated);
       }
+    },
+    [viewedEmails],
+  );
 
-      // Otherwise try to find today's mission
-      const todayMission = missions.find(m => m.dag === currentDay);
-      if (todayMission) {
-        setSelectedMission(todayMission);
-        markAsViewed(todayMission.dag);
-      } else {
-        // Find first unread mission
-        const unreadMission = missions.find(m => !viewedEmails.has(m.dag));
-        if (unreadMission) {
-          setSelectedMission(unreadMission);
-          markAsViewed(unreadMission.dag);
-        } else {
-          // Default to first mission
-          setSelectedMission(missions[0]);
-          markAsViewed(missions[0].dag);
-        }
+  // Calculate initial mission selection
+  const initialMission = useMemo(() => {
+    if (missions.length === 0) return null;
+
+    // If initialDay is provided (from calendar), use that
+    if (initialDay) {
+      const dayMission = missions.find((m) => m.dag === initialDay);
+      if (dayMission) return dayMission;
+    }
+
+    // Otherwise try to find today's mission
+    const todayMission = missions.find((m) => m.dag === currentDay);
+    if (todayMission) return todayMission;
+
+    // Find first unread mission
+    const unreadMission = missions.find((m) => !viewedEmails.has(m.dag));
+    if (unreadMission) return unreadMission;
+
+    // Default to first mission
+    return missions[0];
+  }, [missions, currentDay, initialDay, viewedEmails]);
+
+  const [selectedMission, setSelectedMission] = useState<Oppdrag | null>(() => {
+    if (initialMission) {
+      // Mark as viewed on initial render
+      if (typeof window !== "undefined") {
+        StorageManager.markEmailAsViewed(initialMission.dag);
       }
+      return initialMission;
     }
-  }, [missions, currentDay, selectedMission, viewedEmails, initialDay, isLoaded]);
-
-  const markAsViewed = (dag: number) => {
-    if (!viewedEmails.has(dag)) {
-      StorageManager.markEmailAsViewed(dag);
-      const updated = new Set(viewedEmails);
-      updated.add(dag);
-      setViewedEmails(updated);
-    }
-  };
+    return null;
+  });
 
   const handleSelectMission = (mission: Oppdrag) => {
-    SoundManager.playSound('click');
+    SoundManager.playSound("click");
     setSelectedMission(mission);
     markAsViewed(mission.dag);
   };
@@ -84,7 +86,7 @@ export function NisseMail({ missions, onClose, onOpenKodeTerminal, currentDay, i
   };
 
   // Filter missions up to current day
-  const availableMissions = missions.filter(m => m.dag <= currentDay);
+  const availableMissions = missions.filter((m) => m.dag <= currentDay);
 
   return (
     <RetroWindow title="NISSEMAIL" onClose={onClose}>
@@ -115,11 +117,12 @@ export function NisseMail({ missions, onClose, onOpenKodeTerminal, currentDay, i
                     onClick={() => handleSelectMission(mission)}
                     className={`
                       w-full text-left p-3 border-2 transition-all
-                      ${isSelected
-                        ? 'border-[var(--neon-green)] bg-[var(--neon-green)]/20'
-                        : 'border-[var(--neon-green)]/30 hover:border-[var(--neon-green)] hover:bg-black/30'
+                      ${
+                        isSelected
+                          ? "border-[var(--neon-green)] bg-[var(--neon-green)]/20"
+                          : "border-[var(--neon-green)]/30 hover:border-[var(--neon-green)] hover:bg-black/30"
                       }
-                      ${isUnread ? 'font-bold' : 'opacity-70'}
+                      ${isUnread ? "font-bold" : "opacity-70"}
                     `}
                   >
                     <div className="flex items-start gap-2">
@@ -127,10 +130,14 @@ export function NisseMail({ missions, onClose, onOpenKodeTerminal, currentDay, i
                         <div className="w-2 h-2 mt-2 bg-[var(--christmas-red)] rounded-full flex-shrink-0" />
                       )}
                       <div className="flex-1 min-w-0">
-                        <div className={`text-sm ${isUnread ? 'text-[var(--gold)]' : ''}`}>
+                        <div
+                          className={`text-sm ${isUnread ? "text-[var(--gold)]" : ""}`}
+                        >
                           RAMPENISSEN 🎅
                         </div>
-                        <div className={`text-base truncate ${isUnread ? 'text-[var(--neon-green)]' : ''}`}>
+                        <div
+                          className={`text-base truncate ${isUnread ? "text-[var(--neon-green)]" : ""}`}
+                        >
                           {mission.tittel}
                         </div>
                         <div className="text-xs opacity-50 mt-1">
@@ -152,7 +159,9 @@ export function NisseMail({ missions, onClose, onOpenKodeTerminal, currentDay, i
               {/* Email Header */}
               <div className="space-y-3 pb-4 border-b-4 border-[var(--neon-green)]/30 mb-4">
                 <div className="flex items-center justify-between">
-                  <div className="text-2xl font-bold tracking-wider">{selectedMission.tittel}</div>
+                  <div className="text-2xl font-bold tracking-wider">
+                    {selectedMission.tittel}
+                  </div>
                   <div className="flex items-center gap-2 text-sm opacity-70">
                     <Icons.Calendar size={16} color="green" />
                     <span>DAG {selectedMission.dag}</span>
@@ -193,9 +202,13 @@ export function NisseMail({ missions, onClose, onOpenKodeTerminal, currentDay, i
                   <div className="p-4 border-2 border-[var(--cold-blue)] bg-[var(--cold-blue)]/10">
                     <div className="flex items-center gap-2 mb-2">
                       <Icons.Alert size={20} color="blue" />
-                      <span className="text-sm font-bold text-[var(--cold-blue)]">OFFENTLIG HENDELSE</span>
+                      <span className="text-sm font-bold text-[var(--cold-blue)]">
+                        OFFENTLIG HENDELSE
+                      </span>
                     </div>
-                    <div className="text-sm text-[var(--cold-blue)]">{selectedMission.hendelse}</div>
+                    <div className="text-sm text-[var(--cold-blue)]">
+                      {selectedMission.hendelse}
+                    </div>
                   </div>
                 )}
 
@@ -203,10 +216,13 @@ export function NisseMail({ missions, onClose, onOpenKodeTerminal, currentDay, i
                 <div className="p-4 border-2 border-[var(--gold)]/30 bg-[var(--gold)]/5">
                   <div className="flex items-center gap-2 mb-2">
                     <Icons.Help size={16} color="gold" />
-                    <span className="text-sm font-bold text-[var(--gold)]">INSTRUKSJONER:</span>
+                    <span className="text-sm font-bold text-[var(--gold)]">
+                      INSTRUKSJONER:
+                    </span>
                   </div>
                   <div className="text-sm opacity-90">
-                    Når du har løst oppdraget og funnet koden, klikk på knappen under for å sende inn svaret i KODETERMINAL.
+                    Når du har løst oppdraget og funnet koden, klikk på knappen
+                    under for å sende inn svaret i KODETERMINAL.
                   </div>
                 </div>
               </div>
@@ -215,7 +231,7 @@ export function NisseMail({ missions, onClose, onOpenKodeTerminal, currentDay, i
               <div className="mt-4 pt-4 border-t-4 border-[var(--neon-green)]/30">
                 <button
                   onClick={() => {
-                    SoundManager.playSound('click');
+                    SoundManager.playSound("click");
                     onOpenKodeTerminal();
                   }}
                   className="w-full px-6 py-3 bg-[var(--cold-blue)] text-black text-xl tracking-wider font-bold border-4 border-[var(--cold-blue)] hover:bg-transparent hover:text-[var(--cold-blue)] transition-colors flex items-center justify-center gap-3"

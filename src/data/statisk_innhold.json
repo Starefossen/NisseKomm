@@ -1,0 +1,162 @@
+{
+  "varsler": [
+    {
+      "id": "v1",
+      "tekst": "JULESIGNAL: USTABIL",
+      "type": "advarsel",
+      "tidspunkt": "23:45"
+    },
+    {
+      "id": "v2",
+      "tekst": "INCOMING TRANSMISSION FRA NORDPOLEN",
+      "type": "info",
+      "tidspunkt": "23:52"
+    },
+    {
+      "id": "v3",
+      "tekst": "GAVEPRODUKSJON: BAK SKJEMA",
+      "type": "kritisk",
+      "tidspunkt": "00:12"
+    },
+    {
+      "id": "v4",
+      "tekst": "REINSDYR TELEMETRI: NORMAL",
+      "type": "info",
+      "tidspunkt": "01:05"
+    },
+    {
+      "id": "v5",
+      "tekst": "SNØSTORM DETEKTERT: SEKTOR 7",
+      "type": "advarsel",
+      "tidspunkt": "02:30"
+    },
+    {
+      "id": "v6",
+      "tekst": "VERKSTED TEMPERATUR: KRITISK LAV",
+      "type": "kritisk",
+      "tidspunkt": "03:15"
+    },
+    {
+      "id": "v7",
+      "tekst": "NISSEKRAFT: OPTIMAL NIVÅ",
+      "type": "info",
+      "tidspunkt": "04:22"
+    },
+    {
+      "id": "v8",
+      "tekst": "PAKKELISTE OPPDATERT",
+      "type": "info",
+      "tidspunkt": "05:00"
+    },
+    {
+      "id": "v9",
+      "tekst": "SIKKERHETSSYSTEM: AKTIVERT",
+      "type": "advarsel",
+      "tidspunkt": "06:45"
+    },
+    {
+      "id": "v10",
+      "tekst": "GOD JUL MELDING SENDT",
+      "type": "info",
+      "tidspunkt": "07:00"
+    }
+  ],
+  "filer": [
+    {
+      "navn": "OPPGAVER",
+      "type": "mappe",
+      "barn": [
+        {
+          "navn": "dagens_oppdrag.txt",
+          "type": "fil",
+          "innhold": "Se NISSEMAIL vinduet for å finne dagens utfordring.\n\nNår du har løsningen, bruk KODETERMINAL for å sende inn svaret.\n\nHusk: Noen hint kan være skjult i andre filer!"
+        },
+        {
+          "navn": "hint_arkiv.txt",
+          "type": "fil",
+          "innhold": "HINT ARKIV\n==========\n\nDag 1: Tenk på ordet selv.\nDag 2: Matematikk er nøkkelen.\nDag 3: Hvem er vi?\nDag 4: Rød nese, lysende vei.\nDag 5: 8 reinsdyr, men hva med Rudolf?\n\nMer hint kommer hver dag!"
+        }
+      ]
+    },
+    {
+      "navn": "LOGGER",
+      "type": "mappe",
+      "barn": [
+        {
+          "navn": "system.log",
+          "type": "fil",
+          "innhold": "[23:45] SYSTEM START\n[23:46] Laster juledata...\n[23:47] Nordpol koordinater verifisert\n[23:48] Reinsdyr status: KLAR\n[23:49] Gaveproduksjon: 87% fullført\n[23:50] Alle systemer GO!"
+        },
+        {
+          "navn": "sikkerhet.log",
+          "type": "fil",
+          "innhold": "[SIKKERHET] Tilgangskontroll aktiv\n[SIKKERHET] Passord verifisert\n[SIKKERHET] Bruker autentisert\n[SIKKERHET] Alle porter sikret\n[SIKKERHET] Ingen trusler detektert"
+        }
+      ]
+    },
+    {
+      "navn": "SYSTEM",
+      "type": "mappe",
+      "barn": [
+        {
+          "navn": "config.sys",
+          "type": "fil",
+          "innhold": "ENISSEKJERNE 3.8]\n\nKONFIGURASJON:\n- Språk: Norsk\n- Tidssone: GMT+1\n- Tema: Retro CRT\n- Sikkerhet: HØYESTE\n\nALLE SYSTEMER OPERATIONAL"
+        },
+        {
+          "navn": "readme.txt",
+          "type": "fil",
+          "innhold": "Velkommen til NisseKomm!\n\nDette er Nissens kommandosenter.\n\nBruk KODETERMINAL til å sende inn koder.\nBruk KALENDER for å se alle oppdrag.\n\nLykke til!"
+        }
+      ]
+    },
+    {
+      "navn": "HEMMELIGHETER",
+      "type": "mappe",
+      "barn": [
+        {
+          "navn": "nissens_dagbok.txt",
+          "type": "fil",
+          "innhold": "NISSENS DAGBOK\n\nDag 1: Julekalender-prosjektet er i gang!\nDag 2: Barn over hele verden deltar.\nDag 3: Julefølelsen sprer seg.\nDag 4: Rudolf trener ekstra hardt.\nDag 5: Gaveproduksjonen går som planlagt.\n\n... fortsetter hver dag ..."
+        },
+        {
+          "navn": "snill_slem_liste.txt",
+          "type": "fil",
+          "innhold": "🎄 NISSENS OFFISIELLE SNILL & SLEM LISTE 🎄\n\n[ADVARSEL: SKRIVEBESKYTTET - ADMIN TILGANG PÅKREVD]\n[SIKKERHETSNIVÅ: MAKSIMUM]\n\n═══════════════════════════════════════════════════\n\n✨ SNILL LISTE ✨\n\n1. Georg - Hjulpet mamma hver dag\n2. Viljar - Delt leker med søsken\n3. Marcus - Ryddet rommet uten å bli bedt\n4. Amund - Passet på lillebror\n5. Elias - Leste for bestemor\n6. Brage - Hjalp nabo med snømåking\n7. Sverre - Laget kort til venner\n8. Kees - Gjorde lekser uten klag\n\n... [PLASS TIL FLERE NAVN] ...\n\n═══════════════════════════════════════════════════\n\n⚠️ SLEM LISTE ⚠️\n\n1. [KLASSIFISERT]\n2. [KLASSIFISERT]\n3. [KLASSIFISERT]\n\n[Merk: Listen er heldigvis veldig kort i år!]\n\n═══════════════════════════════════════════════════\n\nSist oppdatert: 1. Desember\nNeste gjennomgang: 24. Desember kl 23:59\n\n💡 HINT: Kanskje det finnes en måte å få tilgang til\nredigeringsmodus? Hold utkikk etter HACKINGVERKTØY..."
+        },
+        {
+          "navn": "hemmelig_kode.txt",
+          "type": "fil",
+          "innhold": "⭐ HEMMELIG FIL ⭐\n\nDenne filen inneholder ingen koder.\nMen den viser at du er en god utforsker!\n\nFortsett å lete i alle mapper.\nNoen filer har hint til oppdragene."
+        }
+      ]
+    }
+  ],
+  "systemMetrikker": [
+    {
+      "navn": "JULESIGNAL",
+      "verdi": 87,
+      "maks": 100,
+      "status": "normal"
+    },
+    {
+      "navn": "NISSEKRAFT",
+      "verdi": 94,
+      "maks": 100,
+      "status": "normal"
+    },
+    {
+      "navn": "GAVEPRODUKSJON",
+      "verdi": 12,
+      "maks": 24,
+      "status": "advarsel"
+    },
+    {
+      "navn": "SLEDE ENERGI",
+      "verdi": 78,
+      "maks": 100,
+      "status": "normal"
+    }
+  ],
+  "kalender": []
+}

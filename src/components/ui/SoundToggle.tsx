@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Icons } from '@/lib/icons';
-import { SoundManager } from '@/lib/sounds';
+import { useState } from "react";
+import { Icons } from "@/lib/icons";
+import { SoundManager } from "@/lib/sounds";
 
 export function SoundToggle() {
   const [enabled, setEnabled] = useState(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       SoundManager.initialize();
       return SoundManager.isEnabled();
     }
     return true;
   });
   const [musicEnabled, setMusicEnabled] = useState(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return SoundManager.isMusicEnabled();
     }
     return false;
@@ -22,13 +22,13 @@ export function SoundToggle() {
   const handleToggle = () => {
     const newState = SoundManager.toggle();
     setEnabled(newState);
-    SoundManager.playSound('click');
+    SoundManager.playSound("click");
   };
 
   const handleMusicToggle = () => {
     const newState = SoundManager.toggleMusic();
     setMusicEnabled(newState);
-    SoundManager.playSound('click');
+    SoundManager.playSound("click");
   };
 
   return (
@@ -37,11 +37,13 @@ export function SoundToggle() {
       <button
         onClick={handleMusicToggle}
         className="flex items-center gap-2 px-3 py-2 bg-(--crt-bg) border-2 border-(--neon-green) hover:bg-(--neon-green)/20 transition-colors"
-        title={musicEnabled ? 'Skru av musikk' : 'Skru på musikk'}
+        title={musicEnabled ? "Skru av musikk" : "Skru på musikk"}
       >
-        <Icons.Music size={20} color={musicEnabled ? 'green' : 'gray'} />
-        <span className={`text-sm font-bold tracking-wider ${musicEnabled ? 'text-(--neon-green)' : 'text-(--gray)'}`}>
-          {musicEnabled ? 'MUSIKK' : 'MUSIKK'}
+        <Icons.Music size={20} color={musicEnabled ? "green" : "gray"} />
+        <span
+          className={`text-sm font-bold tracking-wider ${musicEnabled ? "text-(--neon-green)" : "text-(--gray)"}`}
+        >
+          {musicEnabled ? "MUSIKK" : "MUSIKK"}
         </span>
       </button>
 
@@ -49,11 +51,13 @@ export function SoundToggle() {
       <button
         onClick={handleToggle}
         className="flex items-center gap-2 px-3 py-2 bg-(--crt-bg) border-2 border-(--neon-green) hover:bg-(--neon-green)/20 transition-colors"
-        title={enabled ? 'Skru av lydeffekter' : 'Skru på lydeffekter'}
+        title={enabled ? "Skru av lydeffekter" : "Skru på lydeffekter"}
       >
-        <Icons.Volume size={20} color={enabled ? 'green' : 'gray'} />
-        <span className={`text-sm font-bold tracking-wider ${enabled ? 'text-(--neon-green)' : 'text-(--gray)'}`}>
-          {enabled ? 'EFFEKTER' : 'EFFEKTER'}
+        <Icons.Volume size={20} color={enabled ? "green" : "gray"} />
+        <span
+          className={`text-sm font-bold tracking-wider ${enabled ? "text-(--neon-green)" : "text-(--gray)"}`}
+        >
+          {enabled ? "EFFEKTER" : "EFFEKTER"}
         </span>
       </button>
     </div>

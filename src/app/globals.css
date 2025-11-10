@@ -32,7 +32,8 @@
 }
 
 @keyframes pulse-led {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -94,16 +95,19 @@
 }
 
 @keyframes blink-cursor {
-  0%, 49% {
+  0%,
+  49% {
     opacity: 1;
   }
-  50%, 100% {
+  50%,
+  100% {
     opacity: 0;
   }
 }
 
 @keyframes crt-shake {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(0, 0);
   }
   10% {
@@ -136,7 +140,8 @@
 }
 
 @keyframes gold-flash {
-  0%, 100% {
+  0%,
+  100% {
     background-color: transparent;
   }
   50% {
@@ -145,22 +150,31 @@
 }
 
 @keyframes red-shake {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
     border-color: var(--neon-green);
   }
-  10%, 30%, 50%, 70%, 90% {
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
     transform: translateX(-4px);
     border-color: var(--christmas-red);
   }
-  20%, 40%, 60%, 80% {
+  20%,
+  40%,
+  60%,
+  80% {
     transform: translateX(4px);
     border-color: var(--christmas-red);
   }
 }
 
 @keyframes error-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
   }
   50% {
@@ -169,7 +183,8 @@
 }
 
 @keyframes lock-shake {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg);
   }
   25% {
@@ -192,23 +207,20 @@
 }
 
 .scanline-overlay::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    rgba(18, 16, 16, 0) 50%,
-    rgba(0, 0, 0, 0.25) 50%
-  );
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
   background-size: 100% 4px;
   pointer-events: none;
   z-index: 10;
 }
 
 .scanline-overlay::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -225,14 +237,15 @@
 }
 
 .vignette::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5),
-              inset 0 0 200px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 0 100px rgba(0, 0, 0, 0.5),
+    inset 0 0 200px rgba(0, 0, 0, 0.3);
   pointer-events: none;
   z-index: 12;
 }
@@ -240,7 +253,7 @@
 body {
   background: var(--crt-bg);
   color: var(--neon-green);
-  font-family: 'VT323', monospace;
+  font-family: "VT323", monospace;
   font-size: 20px;
   overflow: hidden;
 }

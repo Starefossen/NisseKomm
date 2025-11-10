@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 interface PasswordPromptProps {
   onSuccess: () => void;
@@ -8,15 +8,18 @@ interface PasswordPromptProps {
 }
 
 const errorMessages = [
-  'FEIL PASSORD',
-  'TILGANG NEKTET - PRØV IGJEN',
-  'ADVARSEL: SIKKERHETSBRUDD REGISTRERT',
+  "FEIL PASSORD",
+  "TILGANG NEKTET - PRØV IGJEN",
+  "ADVARSEL: SIKKERHETSBRUDD REGISTRERT",
 ];
 
-export function PasswordPrompt({ onSuccess, expectedPassword }: PasswordPromptProps) {
-  const [password, setPassword] = useState('');
+export function PasswordPrompt({
+  onSuccess,
+  expectedPassword,
+}: PasswordPromptProps) {
+  const [password, setPassword] = useState("");
   const [attemptCount, setAttemptCount] = useState(0);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isShaking, setIsShaking] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -30,7 +33,10 @@ export function PasswordPrompt({ onSuccess, expectedPassword }: PasswordPromptPr
       const newAttemptCount = attemptCount + 1;
       setAttemptCount(newAttemptCount);
 
-      const errorIndex = Math.min(newAttemptCount - 1, errorMessages.length - 1);
+      const errorIndex = Math.min(
+        newAttemptCount - 1,
+        errorMessages.length - 1,
+      );
       setError(errorMessages[errorIndex]);
 
       // Trigger shake animation
@@ -38,14 +44,14 @@ export function PasswordPrompt({ onSuccess, expectedPassword }: PasswordPromptPr
       setTimeout(() => setIsShaking(false), 300);
 
       // Clear password
-      setPassword('');
+      setPassword("");
     }
   };
 
   return (
     <div className="fixed inset-0 bg-[var(--crt-bg)] flex items-center justify-center z-50">
       <div
-        className={`w-[600px] max-w-[90%] space-y-6 ${isShaking ? 'animate-[crt-shake_0.3s_ease-in-out]' : ''}`}
+        className={`w-[600px] max-w-[90%] space-y-6 ${isShaking ? "animate-[crt-shake_0.3s_ease-in-out]" : ""}`}
       >
         {/* Header */}
         <div className="text-[var(--neon-green)] text-2xl tracking-wider font-mono text-center mb-8">
@@ -63,7 +69,7 @@ export function PasswordPrompt({ onSuccess, expectedPassword }: PasswordPromptPr
               className="w-full px-4 py-3 bg-black border-4 border-[var(--neon-green)] text-[var(--neon-green)] text-xl tracking-widest font-mono focus:outline-none focus:shadow-[0_0_20px_rgba(0,255,0,0.5)] uppercase"
               placeholder="_ _ _ _ _ _ _ _"
               autoFocus
-              style={{ caretColor: 'var(--neon-green)' }}
+              style={{ caretColor: "var(--neon-green)" }}
             />
           </div>
 
@@ -79,7 +85,7 @@ export function PasswordPrompt({ onSuccess, expectedPassword }: PasswordPromptPr
         {error && (
           <div
             className="text-[var(--christmas-red)] text-center text-lg tracking-wider border-2 border-[var(--christmas-red)] py-3 px-4"
-            style={{ animation: 'error-pulse 0.5s ease-in-out' }}
+            style={{ animation: "error-pulse 0.5s ease-in-out" }}
           >
             {error}
           </div>
