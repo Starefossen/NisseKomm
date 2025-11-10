@@ -106,7 +106,7 @@ function mergeAndValidate(): Oppdrag[] {
   if (allOppdrag.length !== 24) {
     throw new Error(
       `Validation Error: Expected 24 quests, found ${allOppdrag.length}. ` +
-        `Week counts: W1=${week1.length}, W2=${week2.length}, W3=${week3.length}, W4=${week4.length}`,
+      `Week counts: W1=${week1.length}, W2=${week2.length}, W3=${week3.length}, W4=${week4.length}`,
     );
   }
 
@@ -141,7 +141,7 @@ function mergeAndValidate(): Oppdrag[] {
     });
     throw new Error(
       `Validation Error: Duplicate codes found: ${duplicateCodes.join(", ")}. ` +
-        `All 24 codes must be unique.`,
+      `All 24 codes must be unique.`,
     );
   }
 
@@ -160,32 +160,10 @@ export function getAllOppdrag(): Oppdrag[] {
 }
 
 /**
- * Get a specific quest by day number (1-24)
- */
-export function getOppdragByDay(day: number): Oppdrag | undefined {
-  return allOppdrag.find((o) => o.dag === day);
-}
-
-/**
- * Get all quests up to and including a specific day
- */
-export function getOppdragUpToDay(day: number): Oppdrag[] {
-  return allOppdrag.filter((o) => o.dag <= day);
-}
-
-/**
- * Get all completed quests based on submitted codes
- */
-export function getCompletedOppdrag(completedCodes: string[]): Oppdrag[] {
-  const upperCodes = completedCodes.map((c) => c.toUpperCase());
-  return allOppdrag.filter((o) => upperCodes.includes(o.kode.toUpperCase()));
-}
-
-/**
  * Check if a specific day is completed
  */
 export function isDayCompleted(day: number, completedCodes: string[]): boolean {
-  const oppdrag = getOppdragByDay(day);
+  const oppdrag = allOppdrag.find((o) => o.dag === day);
   if (!oppdrag) return false;
   return completedCodes.some(
     (code) => code.toUpperCase() === oppdrag.kode.toUpperCase(),
@@ -196,7 +174,7 @@ export function isDayCompleted(day: number, completedCodes: string[]): boolean {
  * Get total number of completed quests
  */
 export function getCompletionCount(completedCodes: string[]): number {
-  return getCompletedOppdrag(completedCodes).length;
+  const upperCodes = completedCodes.map((c) => c.toUpperCase());
+  return allOppdrag.filter((o) => upperCodes.includes(o.kode.toUpperCase()))
+    .length;
 }
-
-export default allOppdrag;

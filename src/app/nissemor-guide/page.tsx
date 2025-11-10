@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getAllOppdrag } from "@/lib/oppdrag-loader";
 import { StorageManager } from "@/lib/storage";
@@ -12,7 +12,7 @@ if (allOppdrag.length !== 24) {
   console.error(`Expected 24 quests, got ${allOppdrag.length}`);
 }
 
-export default function NissemorGuide() {
+function NissemorGuideContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [expandedWeeks, setExpandedWeeks] = useState<number[]>([1]);
@@ -413,5 +413,19 @@ export default function NissemorGuide() {
         <p>Hold denne siden hemmelig fra barna! 🤫</p>
       </div>
     </div>
+  );
+}
+
+export default function NissemorGuide() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] flex items-center justify-center">
+          <div className="text-2xl">Laster...</div>
+        </div>
+      }
+    >
+      <NissemorGuideContent />
+    </Suspense>
   );
 }
