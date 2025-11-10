@@ -295,14 +295,14 @@ export default function Home() {
                       label="LÅST"
                       color="gray"
                       disabled
-                      onClick={() => {}}
+                      onClick={() => { }}
                     />
                   )}
 
                   {/* Second unlockable slot - show second unlocked module */}
                   {unlockedModules.length >= 2 ? (
                     unlockedModules.includes("NISSESTATS") &&
-                    unlockedModules.includes("NISSEBREV") ? (
+                      unlockedModules.includes("NISSEBREV") ? (
                       <DesktopIcon
                         icon="chart"
                         label="NISSESTATS"
@@ -331,7 +331,7 @@ export default function Home() {
                         label="LÅST"
                         color="gray"
                         disabled
-                        onClick={() => {}}
+                        onClick={() => { }}
                       />
                     )
                   ) : (
@@ -340,7 +340,7 @@ export default function Home() {
                       label="LÅST"
                       color="gray"
                       disabled
-                      onClick={() => {}}
+                      onClick={() => { }}
                     />
                   )}
                 </div>
@@ -354,7 +354,10 @@ export default function Home() {
                     currentDay={getCurrentDay()}
                     initialDay={selectedDay}
                     onClose={handleCloseWindow}
-                    onOpenKodeTerminal={() => handleIconClick("kodeterminal")}
+                    onOpenKodeTerminal={(day) => {
+                      setSelectedDay(day);
+                      handleIconClick("kodeterminal");
+                    }}
                   />
                 )}
                 {openWindow === "kodeterminal" && (

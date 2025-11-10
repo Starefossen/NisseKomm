@@ -10,7 +10,7 @@ import { StorageManager } from "@/lib/storage";
 interface NisseMailProps {
   missions: Oppdrag[];
   onClose: () => void;
-  onOpenKodeTerminal: () => void;
+  onOpenKodeTerminal: (day: number) => void;
   currentDay: number;
   initialDay?: number | null;
 }
@@ -117,10 +117,9 @@ export function NisseMail({
                     onClick={() => handleSelectMission(mission)}
                     className={`
                       w-full text-left p-3 border-2 transition-all
-                      ${
-                        isSelected
-                          ? "border-(--neon-green) bg-(--neon-green)/20"
-                          : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-black/30"
+                      ${isSelected
+                        ? "border-(--neon-green) bg-(--neon-green)/20"
+                        : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-black/30"
                       }
                       ${isUnread ? "font-bold" : "opacity-70"}
                     `}
@@ -232,7 +231,7 @@ export function NisseMail({
                 <button
                   onClick={() => {
                     SoundManager.playSound("click");
-                    onOpenKodeTerminal();
+                    onOpenKodeTerminal(selectedMission.dag);
                   }}
                   className="w-full px-6 py-3 bg-(--cold-blue) text-black text-xl tracking-wider font-bold border-4 border-(--cold-blue) hover:bg-transparent hover:text-(--cold-blue) transition-colors flex items-center justify-center gap-3"
                 >
