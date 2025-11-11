@@ -4,8 +4,7 @@ import { useState, useMemo } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { FilNode, Oppdrag } from "@/types/innhold";
-import { StorageManager } from "@/lib/storage";
-import { isDayCompleted } from "@/lib/oppdrag";
+import { GameEngine } from "@/lib/game-engine";
 
 interface NisseNetUtforskerProps {
   files: FilNode[];
@@ -90,10 +89,8 @@ export function NisseNetUtforsker({
 
       // Day 23: Update Nice List with player names
       if (node.type === "fil" && node.navn === "snill_slem_liste.txt") {
-        const completedCodes = StorageManager.getSubmittedCodes().map(
-          (c) => c.kode,
-        );
-        const day23Completed = isDayCompleted(23, completedCodes);
+        const gameState = GameEngine.loadGameState();
+        const day23Completed = gameState.completedQuests.has(23);
 
         if (day23Completed) {
           // Get player names from environment variable

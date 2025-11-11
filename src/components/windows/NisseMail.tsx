@@ -5,9 +5,7 @@ import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { Oppdrag } from "@/types/innhold";
 import { SoundManager } from "@/lib/sounds";
-import { StorageManager } from "@/lib/storage";
-import { isSideQuestAccessible } from "@/lib/oppdrag";
-import { isSideQuestCompleted } from "@/lib/sideoppdrag";
+import { GameEngine } from "@/lib/game-engine";
 
 /**
  * Email types for inbox display
@@ -38,14 +36,16 @@ export function NisseMail({
   const [viewedEmails, setViewedEmails] = useState<Set<number>>(() => {
     // Initialize with data from storage immediately
     if (typeof window !== "undefined") {
-      return StorageManager.getViewedEmails();
+      const state = GameEngine.loadGameState();
+      return state.viewedMainEmails;
     }
     return new Set();
   });
 
   const [viewedSideQuests, setViewedSideQuests] = useState<Set<number>>(() => {
     if (typeof window !== "undefined") {
-      return StorageManager.getViewedSideQuestEmails();
+      const state = GameEngine.loadGameState();
+      return state.viewedSideQuestEmails;
     }
     return new Set();
   });
@@ -56,14 +56,14 @@ export function NisseMail({
     (dag: number, isSideQuest: boolean = false) => {
       if (isSideQuest) {
         if (!viewedSideQuests.has(dag)) {
-          StorageManager.markSideQuestEmailAsViewed(dag);
+          GameEngine.markEmailAsViewed(dag, true);
           const updated = new Set(viewedSideQuests);
           updated.add(dag);
           setViewedSideQuests(updated);
         }
       } else {
         if (!viewedEmails.has(dag)) {
-          StorageManager.markEmailAsViewed(dag);
+          GameEngine.markEmailAsViewed(dag, false);
           const updated = new Set(viewedEmails);
           updated.add(dag);
           setViewedEmails(updated);
@@ -79,7 +79,8 @@ export function NisseMail({
     if (missions.length === 0) return null;
 
     // Get completed days for side-quest check
-    const completedDays = StorageManager.getCompletedDaysForMissions(missions);
+    const gameState = GameEngine.loadGameState();
+    const completedDays = gameState.completedQuests;
 
     // If initialDay is provided (from calendar), use that
     if (initialDay) {
@@ -120,7 +121,7 @@ export function NisseMail({
       // Mark as viewed on initial render
       if (typeof window !== "undefined") {
         if (initialEmail.type === "main") {
-          StorageManager.markEmailAsViewed(initialEmail.day);
+          GameEngine.markEmailAsViewed(initialEmail.day, false);
         }
       }
       return initialEmail.mission;
@@ -139,11 +140,7 @@ export function NisseMail({
   };
 
   const getUnreadCount = () => {
-    return StorageManager.getUnreadEmailCount(
-      currentDay,
-      missions.length,
-      missions,
-    );
+    return GameEngine.getUnreadEmailCount(currentDay);
   };
 
   // Filter missions up to current day and build email list
@@ -151,17 +148,13 @@ export function NisseMail({
 
   // Build combined email list (main + side-quests)
   const emails: Email[] = [];
-  const completedCodes = StorageManager.getSubmittedCodes().map((c) => c.kode);
 
   for (const mission of availableMissions) {
     // Always add main email
     emails.push({ type: "main", mission, day: mission.dag });
 
     // Add side-quest email if main quest completed and has side-quest
-    if (
-      mission.sideoppdrag &&
-      isSideQuestAccessible(mission.dag, completedCodes)
-    ) {
+    if (mission.sideoppdrag && GameEngine.isSideQuestAccessible(mission.dag)) {
       emails.push({ type: "side-quest", mission, day: mission.dag });
     }
   }
@@ -406,8 +399,9 @@ export function NisseMail({
 
                   {/* Action button */}
                   {(() => {
-                    // Use centralized utility to check completion
-                    const isCompleted = isSideQuestCompleted(selectedMission);
+                    // Use GameEngine to check completion
+                    const isCompleted =
+                      GameEngine.isSideQuestCompleted(selectedMission);
 
                     if (
                       selectedMission.sideoppdrag?.validering === "forelder"

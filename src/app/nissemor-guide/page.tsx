@@ -2,11 +2,10 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getAllOppdrag } from "@/lib/oppdrag";
+import { GameEngine } from "@/lib/game-engine";
 import { StorageManager } from "@/lib/storage";
-import { getSideQuestDefinition } from "@/lib/sideoppdrag";
 
-const allOppdrag = getAllOppdrag();
+const allOppdrag = GameEngine.getAllQuests();
 
 // Validate that quest data loaded correctly
 if (allOppdrag.length !== 24) {
@@ -20,13 +19,13 @@ function NissemorGuideContent() {
   const [expandedDays, setExpandedDays] = useState<number[]>([]);
   const [antennaConfirmed, setAntennaConfirmed] = useState(() => {
     if (typeof window !== "undefined") {
-      return StorageManager.getCrisisStatus().antenna;
+      return GameEngine.isCrisisResolved("antenna");
     }
     return false;
   });
   const [inventoryConfirmed, setInventoryConfirmed] = useState(() => {
     if (typeof window !== "undefined") {
-      return StorageManager.getCrisisStatus().inventory;
+      return GameEngine.isCrisisResolved("inventory");
     }
     return false;
   });
@@ -60,24 +59,12 @@ function NissemorGuideContent() {
   };
 
   const handleAntennaCrisisConfirm = () => {
-    const def = getSideQuestDefinition("antenna");
-    StorageManager.resolveCrisis("antenna");
-    StorageManager.addSideQuestBadge(
-      def.badgeDay,
-      def.badgeIcon,
-      def.badgeName,
-    );
+    GameEngine.awardBadge("antenna");
     setAntennaConfirmed(true);
   };
 
   const handleInventoryCrisisConfirm = () => {
-    const def = getSideQuestDefinition("inventory");
-    StorageManager.resolveCrisis("inventory");
-    StorageManager.addSideQuestBadge(
-      def.badgeDay,
-      def.badgeIcon,
-      def.badgeName,
-    );
+    GameEngine.awardBadge("inventory");
     setInventoryConfirmed(true);
   };
 

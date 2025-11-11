@@ -254,15 +254,16 @@ Consistent terms used throughout the application:
 - Keep utility functions in lib/
 - Centralize types in types/
 - Single source of truth for content (data/uke1-4_oppdrag.json and data/statisk_innhold.json)
-- Load and validate quest data through oppdrag.ts
-- **Side-quest utilities** in sideoppdrag.ts for consistent completion tracking
+- **All quest loading, validation, and game logic centralized in game-engine.ts**
 
 ## Side-Quest System
 
-**Centralized Utilities** (`lib/sideoppdrag.ts`):
+**Centralized in GameEngine** (`lib/game-engine.ts`):
 
-- `isSideQuestCompleted(mission)` - Check if any side-quest is completed (handles both code and parent validation)
-- `getSideQuestDefinition(crisisType)` - Get badge details for Nissemor Guide integration
+- `GameEngine.isSideQuestCompleted(day)` - Check if a side-quest is completed (handles both code and parent validation)
+- `GameEngine.isSideQuestAccessible(day)` - Check if side-quest is accessible (main quest completed first)
+- `GameEngine.awardBadge(crisisType)` - Award crisis resolution badges and resolve crises
+- `GameEngine.getCrisisStatus()` - Get current status of all crises (antenna, inventory)
 
 **Current Side-Quests** (derived from oppdrag JSON files - source of truth):
 
@@ -270,7 +271,7 @@ Consistent terms used throughout the application:
 - **Day 16: Inventar-kaos** (Inventory chaos) - Parent validation, awards "INVENTAR-EKSPERT" badge
 - **Day 14: TODO** - Consider adding a new side-quest here
 
-**Important Design Principle**: ALL side-quest data is derived from the oppdrag JSON files. The utilities have NO hardcoded day numbers or badge information - they load data dynamically from the mission definitions.
+**Important Design Principle**: ALL quest data (main and side-quests) is loaded and validated at build-time by GameEngine from the JSON files (uke1-4_oppdrag.json). The GameEngine has NO hardcoded day numbers or badge information - everything is data-driven.
 
 ## Animation System
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { CRTFrame } from "@/components/ui/CRTFrame";
 import { BootSequence } from "@/components/ui/BootSequence";
 import { PasswordPrompt } from "@/components/ui/PasswordPrompt";
@@ -20,11 +20,11 @@ import { Brevfugler } from "@/components/windows/Brevfugler";
 import { NisseStats } from "@/components/windows/NisseStats";
 import { GrandFinaleModal } from "@/components/ui/GrandFinaleModal";
 import { BadgeRow } from "@/components/ui/BadgeRow";
-import { getAllOppdrag, getCompletionCount } from "@/lib/oppdrag";
+import { GameEngine } from "@/lib/game-engine";
 import statiskInnholdData from "@/data/statisk_innhold.json";
 import { Varsel, FilNode, SystemMetrikk, KalenderDag } from "@/types/innhold";
 
-const oppdrag = getAllOppdrag();
+const oppdrag = GameEngine.getAllQuests();
 const { varsler, filer, systemMetrikker } = statiskInnholdData as {
   varsler: Varsel[];
   filer: FilNode[];
@@ -70,11 +70,7 @@ function isCalendarActive(testMode: boolean): boolean {
 function getUnreadEmailCount(): number {
   if (typeof window === "undefined") return 0;
   const currentDay = getCurrentDay();
-  return StorageManager.getUnreadEmailCount(
-    currentDay,
-    oppdrag.length,
-    oppdrag,
-  );
+  return GameEngine.getUnreadEmailCount(currentDay);
 }
 
 export default function Home() {
@@ -95,7 +91,7 @@ export default function Home() {
   const [unreadCount, setUnreadCount] = useState(() => getUnreadEmailCount());
   const [unlockedModules, setUnlockedModules] = useState<string[]>(() => {
     if (typeof window !== "undefined") {
-      return StorageManager.getUnlockedModules();
+      return GameEngine.getUnlockedModules();
     }
     return [];
   });
@@ -108,42 +104,18 @@ export default function Home() {
   );
   const testMode = process.env.NEXT_PUBLIC_TEST_MODE === "true";
 
-  // Check for module unlocks and crisis triggers when component mounts or codes change
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const codes = StorageManager.getSubmittedCodes();
-    const completedCount = getCompletionCount(codes.map((c) => c.kode));
-
-    // Module unlock thresholds
-    const MODULE_UNLOCK_DAYS = [
-      { day: 7, module: "NISSEMUSIKK" },
-      { day: 10, module: "SNØFALL_TV" },
-      { day: 14, module: "BREVFUGLER" },
-      { day: 16, module: "NISSESTATS" },
-    ] as const;
-
-    MODULE_UNLOCK_DAYS.forEach(({ day, module }) => {
-      if (completedCount >= day && !StorageManager.isModuleUnlocked(module)) {
-        StorageManager.unlockModule(module);
-        // TODO: Show celebration animation when module unlocks
-      }
-    });
-
-    // Note: Crisis state is checked within the respective module components
-    // (SnøfallTV for antenna, NisseStats for inventory) to keep crisis logic
-    // co-located with the UI that displays it
-  }, []);
+  // Note: Module unlocks are now handled by GameEngine automatically on code submission
+  // The unlockedModules state is initialized from GameEngine and updated via handleCodeSubmitted
+  // Crisis state is checked within the respective module components
+  // (SnøfallTV for antenna, NisseStats for inventory) to keep crisis logic co-located with UI
 
   // Update unlocked modules when codes are submitted
   const handleCodeSubmitted = () => {
-    setUnlockedModules(StorageManager.getUnlockedModules());
+    setUnlockedModules(GameEngine.getUnlockedModules());
     setUnreadCount(getUnreadEmailCount());
 
-    // Check if Day 24 just completed for grand finale
-    const codes = StorageManager.getSubmittedCodes();
-    const completedCount = getCompletionCount(codes.map((c) => c.kode));
-    if (completedCount === 24) {
+    // Check if all 24 quests completed for grand finale
+    if (GameEngine.isGameComplete()) {
       // Delay to let success animation play
       setTimeout(() => setShowGrandFinale(true), 2000);
     }

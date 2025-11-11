@@ -6,6 +6,7 @@ import { Icons } from "@/lib/icons";
 import { Oppdrag, InnsendelseLog } from "@/types/innhold";
 import { SoundManager } from "@/lib/sounds";
 import { StorageManager } from "@/lib/storage";
+import { GameEngine } from "@/lib/game-engine";
 
 interface KodeTerminalProps {
   onClose: () => void;
@@ -14,14 +15,6 @@ interface KodeTerminalProps {
   allMissions: Oppdrag[];
   onCodeSubmitted?: () => void;
 }
-
-// Module unlock thresholds
-const MODULE_UNLOCK_DAYS = [
-  { day: 7, module: "NISSEMUSIKK", label: "Nissemusikk" },
-  { day: 10, module: "SNØFALL_TV", label: "Snøfall TV" },
-  { day: 14, module: "BREVFUGLER", label: "Brevfugler" },
-  { day: 16, module: "NISSESTATS", label: "Nissestats" },
-] as const;
 
 export function KodeTerminal({
   onClose,
@@ -42,9 +35,7 @@ export function KodeTerminal({
   });
   const [isAlreadySolved, setIsAlreadySolved] = useState(() => {
     if (typeof window !== "undefined") {
-      const codes = StorageManager.getSubmittedCodes();
-      const dayMission = allMissions.find((m) => m.dag === currentDay);
-      return codes.some((c) => c.kode === dayMission?.kode);
+      return GameEngine.isQuestCompleted(currentDay);
     }
     return false;
   });
@@ -70,58 +61,40 @@ export function KodeTerminal({
     // Simulate processing delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    // Check if code is correct
-    const isCorrect = code.trim().toUpperCase() === expectedCode.toUpperCase();
+    // Submit code through GameEngine
+    const result = GameEngine.submitCode(code, expectedCode, currentDay);
 
-    if (isCorrect) {
+    if (result.success) {
       // Success!
       setFeedback("success");
       SoundManager.playSound("success");
 
-      // Save to localStorage (only correct codes)
-      const newEntry: InnsendelseLog = {
-        kode: code.trim().toUpperCase(),
-        dato: new Date().toISOString(),
-      };
+      if (result.isNewCompletion) {
+        // Update local state
+        const newEntry: InnsendelseLog = {
+          kode: code.trim().toUpperCase(),
+          dato: new Date().toISOString(),
+        };
+        const updated = [...submittedCodes, newEntry];
+        setSubmittedCodes(updated);
 
-      StorageManager.addSubmittedCode(newEntry);
-      const updated = [...submittedCodes, newEntry];
-      setSubmittedCodes(updated);
+        // Mark as solved
+        setIsAlreadySolved(true);
 
-      // Mark as solved
-      setIsAlreadySolved(true);
+        // Check for module unlock
+        if (result.unlockedModule) {
+          setUnlockedModule(result.unlockedModule.label);
+          // Keep module unlock message longer
+          setTimeout(() => setUnlockedModule(null), 4000);
+        }
 
-      // Unlock cross-reference topic if this quest has one
-      const completedQuest = allMissions.find((m) => m.dag === currentDay);
-      if (completedQuest?.cross_reference_topic) {
-        StorageManager.unlockTopic(
-          completedQuest.cross_reference_topic,
-          currentDay,
-        );
+        // Notify parent of code submission
+        if (onCodeSubmitted) {
+          onCodeSubmitted();
+        }
       }
 
       setCode("");
-
-      // Check if this unlocks a module
-      const totalCompleted = updated.length;
-      const moduleUnlock = MODULE_UNLOCK_DAYS.find(
-        ({ day }) => day === totalCompleted,
-      );
-
-      if (
-        moduleUnlock &&
-        !StorageManager.isModuleUnlocked(moduleUnlock.module)
-      ) {
-        StorageManager.unlockModule(moduleUnlock.module);
-        setUnlockedModule(moduleUnlock.label);
-        // Keep module unlock message longer
-        setTimeout(() => setUnlockedModule(null), 4000);
-      }
-
-      // Notify parent of code submission (for module unlocks)
-      if (onCodeSubmitted) {
-        onCodeSubmitted();
-      }
     } else {
       // Error
       setFeedback("error");

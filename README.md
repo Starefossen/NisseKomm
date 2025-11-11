@@ -83,7 +83,7 @@ Når `NEXT_PUBLIC_TEST_MODE=true`:
 
 ### Rediger innhold
 
-- **Oppdrag og gåter:** `src/data/uke1_oppdrag.json` through `uke4_oppdrag.json` (loaded via `src/lib/oppdrag.ts`)
+- **Oppdrag og gåter:** `src/data/uke1_oppdrag.json` through `uke4_oppdrag.json` (loaded and validated by `src/lib/game-engine.ts`)
 - **Statisk innhold:** `src/data/statisk_innhold.json`
 
 Alle endringer lastes automatisk når du lagrer.

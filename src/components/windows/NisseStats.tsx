@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
-import { StorageManager } from "@/lib/storage";
-import { getCompletionCount } from "@/lib/oppdrag";
+import { GameEngine } from "@/lib/game-engine";
 
 interface NisseStatsProps {
   onClose: () => void;
@@ -12,7 +11,7 @@ interface NisseStatsProps {
 }
 
 export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
-  const crisisStatus = StorageManager.getCrisisStatus();
+  const crisisStatus = GameEngine.getCrisisStatus();
   const isInventoryBroken = currentDay >= 17 && !crisisStatus.inventory;
 
   const [gaveProduksjon, setGaveProduksjon] = useState(() => {
@@ -26,8 +25,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
   });
   const [workshopTemp, setWorkshopTemp] = useState(-2);
 
-  const codes = StorageManager.getSubmittedCodes();
-  const completionCount = getCompletionCount(codes.map((c) => c.kode));
+  const completionCount = GameEngine.getCompletedQuestCount();
   const completionPercent = Math.round((completionCount / 24) * 100);
 
   // Animate counters

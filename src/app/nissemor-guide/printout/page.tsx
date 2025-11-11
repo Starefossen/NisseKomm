@@ -2,9 +2,9 @@
 
 import { useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getAllOppdrag } from "@/lib/oppdrag";
+import { GameEngine } from "@/lib/game-engine";
 
-const allOppdrag = getAllOppdrag();
+const allOppdrag = GameEngine.getAllQuests();
 
 // Generate checkpoint cards for multi-stage quests
 interface CheckpointCard {

@@ -187,23 +187,14 @@ export function getAllOppdrag(): Oppdrag[] {
 }
 
 /**
- * Check if a specific day is completed
+ * Check if a specific day is completed (internal helper)
  */
-export function isDayCompleted(day: number, completedCodes: string[]): boolean {
+function isDayCompleted(day: number, completedCodes: string[]): boolean {
   const oppdrag = allOppdrag.find((o) => o.dag === day);
   if (!oppdrag) return false;
   return completedCodes.some(
     (code) => code.toUpperCase() === oppdrag.kode.toUpperCase(),
   );
-}
-
-/**
- * Get total number of completed quests
- */
-export function getCompletionCount(completedCodes: string[]): number {
-  const upperCodes = completedCodes.map((c) => c.toUpperCase());
-  return allOppdrag.filter((o) => upperCodes.includes(o.kode.toUpperCase()))
-    .length;
 }
 
 /**
