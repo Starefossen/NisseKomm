@@ -87,6 +87,33 @@ function validateOppdrag(oppdrag: Oppdrag, weekNumber: number): void {
       `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - hint_type must be one of: ${validHintTypes.join(", ")}`,
     );
   }
+
+  // Validate side-quest structure if present
+  if (oppdrag.sideoppdrag) {
+    const sideoppdrag = oppdrag.sideoppdrag;
+    if (
+      !sideoppdrag.tittel ||
+      !sideoppdrag.beskrivelse ||
+      !sideoppdrag.validering ||
+      !sideoppdrag.badge_icon ||
+      !sideoppdrag.badge_navn
+    ) {
+      throw new Error(
+        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - sideoppdrag missing required fields`,
+      );
+    }
+    if (sideoppdrag.validering === "kode" && !sideoppdrag.kode) {
+      throw new Error(
+        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - sideoppdrag with validering="kode" must have kode field`,
+      );
+    }
+    const validBadgeIcons = ["coin", "heart", "zap", "trophy", "gift", "star"];
+    if (!validBadgeIcons.includes(sideoppdrag.badge_icon)) {
+      throw new Error(
+        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - sideoppdrag.badge_icon must be one of: ${validBadgeIcons.join(", ")}`,
+      );
+    }
+  }
 }
 
 /**
@@ -177,4 +204,38 @@ export function getCompletionCount(completedCodes: string[]): number {
   const upperCodes = completedCodes.map((c) => c.toUpperCase());
   return allOppdrag.filter((o) => upperCodes.includes(o.kode.toUpperCase()))
     .length;
+}
+
+/**
+ * Check if a side-quest is accessible (main quest must be completed first)
+ * @public - Used by NisseMail component for sidequest visibility
+ */
+export function isSideQuestAccessible(
+  day: number,
+  completedCodes: string[],
+): boolean {
+  return isDayCompleted(day, completedCodes);
+}
+
+/**
+ * Get all quests with cross-reference topics
+ * @public - Reserved for Phase 2: Cross-day hint unlocking feature
+ */
+export function getQuestsWithTopics(): Array<{ dag: number; topic: string }> {
+  return allOppdrag
+    .filter((o) => o.cross_reference_topic)
+    .map((o) => ({ dag: o.dag, topic: o.cross_reference_topic! }));
+}
+
+/**
+ * Check if a topic should be unlocked (quest completed)
+ * @public - Reserved for Phase 2: Cross-day hint unlocking feature
+ */
+export function shouldUnlockTopic(
+  topic: string,
+  completedCodes: string[],
+): boolean {
+  const quest = allOppdrag.find((o) => o.cross_reference_topic === topic);
+  if (!quest) return false;
+  return isDayCompleted(quest.dag, completedCodes);
 }

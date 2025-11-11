@@ -60,11 +60,15 @@ function NissemorGuideContent() {
 
   const handleAntennaCrisisConfirm = () => {
     StorageManager.resolveCrisis("antenna");
+    // Award badge for Day 11 side-quest
+    StorageManager.addSideQuestBadge(11, "zap", "ANTENNE-INGENIØR");
     setAntennaConfirmed(true);
   };
 
   const handleInventoryCrisisConfirm = () => {
     StorageManager.resolveCrisis("inventory");
+    // Award badge for Day 16 side-quest
+    StorageManager.addSideQuestBadge(16, "coin", "INVENTAR-EKSPERT");
     setInventoryConfirmed(true);
   };
 
@@ -121,6 +125,75 @@ function NissemorGuideContent() {
         <p className="text-center text-xl opacity-70">
           Oppsett og gjennomføring av julekalenderen
         </p>
+      </div>
+
+      {/* Progression Overview */}
+      <div className="max-w-4xl mx-auto mb-6">
+        <div className="border-4 border-(--gold) bg-(--gold)/10 p-6">
+          <h2 className="text-3xl font-bold text-(--gold) mb-4 text-center">
+            📅 FREMDRIFTS-OVERSIKT
+          </h2>
+
+          {/* Module Unlocks */}
+          <div className="mb-6">
+            <h3 className="text-2xl font-bold text-(--cold-blue) mb-3">
+              🔓 Modul-Opplåsinger
+            </h3>
+            <div className="space-y-2 pl-4">
+              <div className="flex items-center gap-3 p-2 bg-black/30 border-2 border-(--neon-green)/30">
+                <span className="text-xl font-bold text-(--gold)">Dag 7:</span>
+                <span className="text-lg">
+                  🎵 NISSEMUSIKK låses opp (julesanger)
+                </span>
+              </div>
+              <div className="flex items-center gap-3 p-2 bg-black/30 border-2 border-(--neon-green)/30">
+                <span className="text-xl font-bold text-(--gold)">Dag 10:</span>
+                <span className="text-lg">
+                  📺 NORDPOL TV låses opp (video-dagbok)
+                </span>
+              </div>
+              <div className="flex items-center gap-3 p-2 bg-black/30 border-2 border-(--neon-green)/30">
+                <span className="text-xl font-bold text-(--gold)">Dag 14:</span>
+                <span className="text-lg">
+                  ✉️ NISSEBREV låses opp (brev fra julenissen)
+                </span>
+              </div>
+              <div className="flex items-center gap-3 p-2 bg-black/30 border-2 border-(--neon-green)/30">
+                <span className="text-xl font-bold text-(--gold)">Dag 16:</span>
+                <span className="text-lg">
+                  📊 NISSESTATS låses opp (statistikk fra verkstedet)
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Side-Quests and Badges */}
+          <div>
+            <h3 className="text-2xl font-bold text-(--cold-blue) mb-3">
+              🏅 Sideoppdrag og Merker
+            </h3>
+            <div className="space-y-2 pl-4">
+              <div className="flex items-center gap-3 p-2 bg-(--gold)/20 border-2 border-(--gold)/50">
+                <span className="text-xl font-bold text-(--gold)">Dag 11:</span>
+                <span className="text-lg">
+                  ⚡ ANTENNE-KRISE → Merke: &quot;ANTENNE-INGENIØR&quot;
+                  (forelder-validert)
+                </span>
+              </div>
+              <div className="flex items-center gap-3 p-2 bg-(--gold)/20 border-2 border-(--gold)/50">
+                <span className="text-xl font-bold text-(--gold)">Dag 16:</span>
+                <span className="text-lg">
+                  💰 INVENTAR-KRISE → Merke: &quot;INVENTAR-EKSPERT&quot;
+                  (forelder-validert)
+                </span>
+              </div>
+            </div>
+            <p className="mt-3 text-sm italic opacity-80">
+              💡 Sideoppdrag-e-poster vises først ETTER at hovedoppdraget er
+              fullført. Merkene vises som trofeer nederst på startskjermen.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Weekly Sections */}
@@ -246,6 +319,331 @@ function NissemorGuideContent() {
                           </span>{" "}
                           <span className="text-2xl font-bold">{dag.kode}</span>
                         </div>
+
+                        {/* Advanced Multi-Room Setup for specific days */}
+                        {[9, 10, 11, 19, 20].includes(dag.dag) && (
+                          <details className="border-4 border-(--gold) bg-(--gold)/10 p-4">
+                            <summary className="text-xl font-bold text-(--gold) cursor-pointer mb-3">
+                              🗺️ AVANSERT OPPSETT (Flerromsoppdrag) - Klikk for
+                              detaljer
+                            </summary>
+                            <div className="space-y-3 text-sm">
+                              {/* Day 9: Snowflake Hunt */}
+                              {dag.dag === 9 && (
+                                <>
+                                  <p className="font-bold text-lg mb-2">
+                                    10 Snøfnugg - Spredt over 3 rom
+                                  </p>
+                                  <div className="space-y-2">
+                                    <div className="pl-4 border-l-4 border-(--cold-blue)">
+                                      <p className="font-bold text-(--cold-blue)">
+                                        🚽 BAD (3 snøfnugg, 2 med blå bakside):
+                                      </p>
+                                      <ul className="list-disc ml-6 mt-1">
+                                        <li>
+                                          Snøfnugg #1: På speilet (blå bakside:
+                                          "3")
+                                        </li>
+                                        <li>
+                                          Snøfnugg #2: Bak dusj-gardin (vanlig)
+                                        </li>
+                                        <li>
+                                          Snøfnugg #3: På toalettet (blå
+                                          bakside: "x")
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <div className="pl-4 border-l-4 border-(--cold-blue)">
+                                      <p className="font-bold text-(--cold-blue)">
+                                        🛋️ STUE (4 snøfnugg, 2 med blå bakside):
+                                      </p>
+                                      <ul className="list-disc ml-6 mt-1">
+                                        <li>
+                                          Snøfnugg #4: På TV (blå bakside: "2")
+                                        </li>
+                                        <li>
+                                          Snøfnugg #5: Under pute (vanlig)
+                                        </li>
+                                        <li>
+                                          Snøfnugg #6: Bak sofa (blå bakside:
+                                          "=")
+                                        </li>
+                                        <li>Snøfnugg #7: På vindu (vanlig)</li>
+                                      </ul>
+                                    </div>
+                                    <div className="pl-4 border-l-4 border-(--cold-blue)">
+                                      <p className="font-bold text-(--cold-blue)">
+                                        🍽️ KJØKKEN (3 snøfnugg, 2 med blå
+                                        bakside):
+                                      </p>
+                                      <ul className="list-disc ml-6 mt-1">
+                                        <li>
+                                          Snøfnugg #8: I kjøleskap (blå bakside:
+                                          "2")
+                                        </li>
+                                        <li>
+                                          Snøfnugg #9: På kaffemaskin (vanlig)
+                                        </li>
+                                        <li>
+                                          Snøfnugg #10: Under skål (blå bakside:
+                                          "6")
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <p className="italic text-(--gold) mt-3">
+                                      💡 Barna må snu alle snøfnuggene for å
+                                      finne de 6 med blå bakside. Tallene blir:
+                                      3 x 2 = 2 6 → Kode: 326
+                                    </p>
+                                  </div>
+                                </>
+                              )}
+
+                              {/* Day 10: Letter Collection */}
+                              {dag.dag === 10 && (
+                                <>
+                                  <p className="font-bold text-lg mb-2">
+                                    5 Grønne Gjenstander med Bokstaver
+                                  </p>
+                                  <div className="space-y-2">
+                                    <div className="pl-4 border-l-4 border-(--neon-green)">
+                                      <p className="font-bold text-(--neon-green)">
+                                        📍 Plassering (valgfritt hvilke rom):
+                                      </p>
+                                      <ul className="list-disc ml-6 mt-1">
+                                        <li>
+                                          Grønn gjenstand #1 (G): Under en
+                                          pute/på sofa
+                                        </li>
+                                        <li>
+                                          Grønn gjenstand #2 (R): På
+                                          kjøkkenbenk/i kjøleskap
+                                        </li>
+                                        <li>
+                                          Grønn gjenstand #3 (Ø): Bak et
+                                          bilde/på hylle
+                                        </li>
+                                        <li>
+                                          Grønn gjenstand #4 (N): I et
+                                          skap/skuff
+                                        </li>
+                                        <li>
+                                          Grønn gjenstand #5 (N): Ved vindu/på
+                                          dør
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <p className="italic text-(--gold) mt-3">
+                                      💡 Bruk små lapper festet til grønne
+                                      gjenstander dere allerede har (eple, grønn
+                                      kopp, etc.). Eller print ut grønne
+                                      firkanter. Bokstavene G-R-Ø-N-N = GRØNN
+                                    </p>
+                                  </div>
+                                </>
+                              )}
+
+                              {/* Day 11: Three Clocks */}
+                              {dag.dag === 11 && (
+                                <>
+                                  <p className="font-bold text-lg mb-2">
+                                    3 Analoge Klokker - Forskjellige Rom
+                                  </p>
+                                  <div className="space-y-2">
+                                    <div className="pl-4 border-l-4 border-(--neon-green)">
+                                      <p className="font-bold text-(--neon-green)">
+                                        ⏰ Plassering:
+                                      </p>
+                                      <ul className="list-disc ml-6 mt-1">
+                                        <li>
+                                          Klokke #1 (3:00): På kjøkkenbenk eller
+                                          bord
+                                        </li>
+                                        <li>
+                                          Klokke #2 (5:00): På nattbord i
+                                          soverom
+                                        </li>
+                                        <li>
+                                          Klokke #3 (4:00): På hylle i stue/bad
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <p className="italic text-(--gold) mt-3">
+                                      💡 Bruk eksisterende veggklokker eller lag
+                                      klokker av papptallerkener med visere.
+                                      Still dem til 3:00, 5:00 og 4:00. Summen
+                                      blir 3+5+4=12
+                                    </p>
+                                  </div>
+                                </>
+                              )}
+
+                              {/* Day 19: Checkpoint Course */}
+                              {dag.dag === 19 && (
+                                <>
+                                  <p className="font-bold text-lg mb-2">
+                                    4-Roms Checkpoint-Løype med Miniutfordringer
+                                  </p>
+                                  <div className="space-y-2">
+                                    <div className="pl-4 border-l-4 border-(--gold)">
+                                      <p className="font-bold text-(--gold)">
+                                        🏁 Checkpoint 1: SOVEROM
+                                      </p>
+                                      <ul className="list-disc ml-6 mt-1">
+                                        <li>
+                                          Utfordring: Tell reinsdyrbeina (bruk
+                                          små leker eller bilder) → Svar: 4
+                                        </li>
+                                        <li>
+                                          Bokstav: <strong>R</strong>
+                                        </li>
+                                        <li>
+                                          Lapp: "Tell reinsdyrbeina. Husk
+                                          svaret! Bokstav: R"
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <div className="pl-4 border-l-4 border-(--gold)">
+                                      <p className="font-bold text-(--gold)">
+                                        🏁 Checkpoint 2: KJØKKEN
+                                      </p>
+                                      <ul className="list-disc ml-6 mt-1">
+                                        <li>
+                                          Utfordring: Tell røde gjenstander →
+                                          Svar: 4
+                                        </li>
+                                        <li>
+                                          Bokstaver: <strong>E, I</strong>
+                                        </li>
+                                        <li>
+                                          Lapp: "Tell røde ting. Finn
+                                          bokstavene: E, I"
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <div className="pl-4 border-l-4 border-(--gold)">
+                                      <p className="font-bold text-(--gold)">
+                                        🏁 Checkpoint 3: BAD
+                                      </p>
+                                      <ul className="list-disc ml-6 mt-1">
+                                        <li>
+                                          Utfordring: Gåte "Hvit og kald, faller
+                                          fra skyene" → Svar: SNØ
+                                        </li>
+                                        <li>
+                                          Bokstaver: <strong>N, S</strong>
+                                        </li>
+                                        <li>
+                                          Lapp: "Hvit og kald, faller fra
+                                          skyene? Bokstaver: N, S"
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <div className="pl-4 border-l-4 border-(--gold)">
+                                      <p className="font-bold text-(--gold)">
+                                        🏁 Checkpoint 4: STUE
+                                      </p>
+                                      <ul className="list-disc ml-6 mt-1">
+                                        <li>
+                                          Utfordring: Finn den siste bokstaven
+                                        </li>
+                                        <li>
+                                          Bokstaver: <strong>D, Y</strong>
+                                        </li>
+                                        <li>
+                                          Lapp: "Siste stopp! Bokstaver: D, Y"
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <p className="italic text-(--gold) mt-3">
+                                      💡 Barna må besøke alle 4 rom i
+                                      rekkefølge. R-E-I-N-S-D-Y-R → Svar på
+                                      siste gåte er 4 (reinsdyrbein). Kode:
+                                      REIN4
+                                    </p>
+                                  </div>
+                                </>
+                              )}
+
+                              {/* Day 20: Obstacle Course */}
+                              {dag.dag === 20 && (
+                                <>
+                                  <p className="font-bold text-lg mb-2">
+                                    5-Checkpoint Hinderbane med Skjulte
+                                    Bokstaver
+                                  </p>
+                                  <div className="space-y-2">
+                                    <div className="pl-4 border-l-4 border-(--cold-blue)">
+                                      <p className="font-bold text-(--cold-blue)">
+                                        📍 Checkpoint-plassering:
+                                      </p>
+                                      <ul className="list-disc ml-6 mt-1">
+                                        <li>
+                                          Checkpoint 1: UNDER kjøkkenbord
+                                          (Bokstav: S)
+                                        </li>
+                                        <li>
+                                          Checkpoint 2: BAK soveromsdør
+                                          (Bokstav: L)
+                                        </li>
+                                        <li>
+                                          Checkpoint 3: I bokhylle (Bokstav: E)
+                                        </li>
+                                        <li>
+                                          Checkpoint 4: UNDER putepute på sofa
+                                          (Bokstav: D)
+                                        </li>
+                                        <li>
+                                          Checkpoint 5: VED vindu i stue
+                                          (Bokstav: E)
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <p className="italic text-(--gold) mt-3">
+                                      💡 Print ut checkpoint-kort (se
+                                      utskrift-siden) og fest dem på stedene.
+                                      Barna må fysisk bevege seg til hvert sted.
+                                      S-L-E-D-E = SLEDE
+                                    </p>
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          </details>
+                        )}
+
+                        {/* Side-quest display */}
+                        {dag.sideoppdrag && (
+                          <div className="border-4 border-(--gold) bg-(--gold)/10 p-4">
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className="text-2xl">⚠️</span>
+                              <h3 className="text-xl font-bold text-(--gold)">
+                                SIDEOPPDRAG: {dag.sideoppdrag.tittel}
+                              </h3>
+                            </div>
+                            <p className="mb-2 text-(--gold)/90">
+                              {dag.sideoppdrag.beskrivelse}
+                            </p>
+                            <div className="flex items-center gap-2 mt-3 p-2 bg-black/30 border-2 border-(--gold)/30">
+                              <span className="text-sm font-bold">
+                                VALIDERING:
+                              </span>
+                              <span className="text-sm">
+                                {dag.sideoppdrag.validering === "forelder"
+                                  ? "👤 Bekreft når barna har fullført (se Krise-Håndtering seksjon)"
+                                  : "💻 Send kode i terminal"}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2 mt-2 p-2 bg-(--gold)/20 border-2 border-(--gold)">
+                              <span className="text-sm font-bold">
+                                BELØNNING:
+                              </span>
+                              <span className="text-sm">
+                                🏅 {dag.sideoppdrag.badge_navn}
+                              </span>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

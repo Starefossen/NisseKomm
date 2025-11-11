@@ -20,6 +20,8 @@ const KEYS = {
   VIEWED_EMAILS: "nissekomm-viewed-emails",
   SOUNDS_ENABLED: "nissekomm-sounds-enabled",
   MUSIC_ENABLED: "nissekomm-music-enabled",
+  SIDE_QUEST_BADGES: "nissekomm-side-quest-badges",
+  TOPIC_UNLOCKS: "nissekomm-topic-unlocks",
 } as const;
 
 // Type-safe storage interface
@@ -209,10 +211,12 @@ export class StorageManager {
     Object.values(KEYS).forEach((key) => {
       localStorage.removeItem(key);
     });
-    // Also clear module/crisis data
+    // Also clear module/crisis/badge data
     localStorage.removeItem("nissekomm-unlocked-modules");
     localStorage.removeItem("nissekomm-crisis-completed");
     localStorage.removeItem("nissekomm-santa-letters");
+    localStorage.removeItem(KEYS.SIDE_QUEST_BADGES);
+    localStorage.removeItem(KEYS.TOPIC_UNLOCKS);
   }
 
   // ============================================================
@@ -320,6 +324,72 @@ export class StorageManager {
     // Sort by day
     filtered.sort((a, b) => a.day - b.day);
     this.saveSantaLetters(filtered);
+  }
+
+  // ============================================================
+  // Side-Quest Badges
+  // ============================================================
+
+  static getSideQuestBadges(): Array<{
+    day: number;
+    icon: string;
+    navn: string;
+  }> {
+    if (typeof window === "undefined") return [];
+    try {
+      const data = localStorage.getItem(KEYS.SIDE_QUEST_BADGES);
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  static addSideQuestBadge(day: number, icon: string, navn: string): void {
+    if (typeof window === "undefined") return;
+    const badges = this.getSideQuestBadges();
+
+    // Avoid duplicates
+    if (!badges.some((b) => b.day === day)) {
+      badges.push({ day, icon, navn });
+      badges.sort((a, b) => a.day - b.day);
+      localStorage.setItem(KEYS.SIDE_QUEST_BADGES, JSON.stringify(badges));
+    }
+  }
+
+  static hasSideQuestBadge(day: number): boolean {
+    return this.getSideQuestBadges().some((b) => b.day === day);
+  }
+
+  // ============================================================
+  // Topic Unlocks (for cross-references)
+  // ============================================================
+
+  static getUnlockedTopics(): Map<string, number> {
+    if (typeof window === "undefined") return new Map();
+    try {
+      const data = localStorage.getItem(KEYS.TOPIC_UNLOCKS);
+      if (!data) return new Map();
+      const obj = JSON.parse(data);
+      return new Map(Object.entries(obj).map(([k, v]) => [k, v as number]));
+    } catch {
+      return new Map();
+    }
+  }
+
+  static unlockTopic(topic: string, day: number): void {
+    if (typeof window === "undefined") return;
+    const topics = this.getUnlockedTopics();
+    topics.set(topic, day);
+    const obj = Object.fromEntries(topics);
+    localStorage.setItem(KEYS.TOPIC_UNLOCKS, JSON.stringify(obj));
+  }
+
+  static isTopicUnlocked(topic: string): boolean {
+    return this.getUnlockedTopics().has(topic);
+  }
+
+  static getTopicUnlockDay(topic: string): number | null {
+    return this.getUnlockedTopics().get(topic) || null;
   }
 
   /**

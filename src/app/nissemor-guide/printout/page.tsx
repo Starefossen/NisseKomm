@@ -6,6 +6,109 @@ import { getAllOppdrag } from "@/lib/oppdrag-loader";
 
 const allOppdrag = getAllOppdrag();
 
+// Generate checkpoint cards for multi-stage quests
+interface CheckpointCard {
+  dag: number;
+  tittel: string;
+  checkpoint: number;
+  totalCheckpoints: number;
+  location: string;
+  challenge?: string;
+  letter: string;
+}
+
+const checkpointCards: CheckpointCard[] = [
+  // Day 19: 4-room checkpoint course
+  {
+    dag: 19,
+    tittel: "Dag 19 - Checkpoint 1",
+    checkpoint: 1,
+    totalCheckpoints: 4,
+    location: "SOVEROM",
+    challenge: "Tell reinsdyrbeina",
+    letter: "R",
+  },
+  {
+    dag: 19,
+    tittel: "Dag 19 - Checkpoint 2",
+    checkpoint: 2,
+    totalCheckpoints: 4,
+    location: "KJØKKEN",
+    challenge: "Tell røde ting",
+    letter: "E, I",
+  },
+  {
+    dag: 19,
+    tittel: "Dag 19 - Checkpoint 3",
+    checkpoint: 3,
+    totalCheckpoints: 4,
+    location: "BAD",
+    challenge: "Hvit og kald, faller fra skyene?",
+    letter: "N, S",
+  },
+  {
+    dag: 19,
+    tittel: "Dag 19 - Checkpoint 4",
+    checkpoint: 4,
+    totalCheckpoints: 4,
+    location: "STUE",
+    challenge: "Siste stopp!",
+    letter: "D, Y",
+  },
+
+  // Day 20: 5-checkpoint obstacle course
+  {
+    dag: 20,
+    tittel: "Dag 20 - Checkpoint 1",
+    checkpoint: 1,
+    totalCheckpoints: 5,
+    location: "UNDER kjøkkenbord",
+    letter: "S",
+  },
+  {
+    dag: 20,
+    tittel: "Dag 20 - Checkpoint 2",
+    checkpoint: 2,
+    totalCheckpoints: 5,
+    location: "BAK soveromsdør",
+    letter: "L",
+  },
+  {
+    dag: 20,
+    tittel: "Dag 20 - Checkpoint 3",
+    checkpoint: 3,
+    totalCheckpoints: 5,
+    location: "I bokhylle",
+    letter: "E",
+  },
+  {
+    dag: 20,
+    tittel: "Dag 20 - Checkpoint 4",
+    checkpoint: 4,
+    totalCheckpoints: 5,
+    location: "UNDER pute på sofa",
+    letter: "D",
+  },
+  {
+    dag: 20,
+    tittel: "Dag 20 - Checkpoint 5",
+    checkpoint: 5,
+    totalCheckpoints: 5,
+    location: "VED vindu i stue",
+    letter: "E",
+  },
+];
+
+// Build full card list with checkpoints inserted after their main quest
+type Card = (typeof allOppdrag)[0] | CheckpointCard;
+const allCards: Card[] = [];
+allOppdrag.forEach((oppdrag) => {
+  allCards.push(oppdrag);
+  // Add checkpoint cards for this day if they exist
+  const dayCheckpoints = checkpointCards.filter((c) => c.dag === oppdrag.dag);
+  allCards.push(...dayCheckpoints);
+});
+
 function PrintoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -26,10 +129,15 @@ function PrintoutContent() {
 
   // Split into pages of 6 cards each (2 columns × 3 rows)
   const cardsPerPage = 6;
-  const pages: (typeof allOppdrag)[] = [];
-  for (let i = 0; i < allOppdrag.length; i += cardsPerPage) {
-    pages.push(allOppdrag.slice(i, i + cardsPerPage));
+  const pages: Card[][] = [];
+  for (let i = 0; i < allCards.length; i += cardsPerPage) {
+    pages.push(allCards.slice(i, i + cardsPerPage));
   }
+
+  // Type guard to check if card is a checkpoint
+  const isCheckpoint = (card: Card): card is CheckpointCard => {
+    return "checkpoint" in card;
+  };
 
   return (
     <>
@@ -93,49 +201,76 @@ function PrintoutContent() {
                 SIDE {pageIndex + 1} av {pages.length}
               </div>
               <div className="grid grid-cols-2 gap-6">
-                {pageCards.map((dag) => (
-                  <div
-                    key={dag.dag}
-                    className="border-4 border-dashed border-(--neon-green) p-4 bg-(--dark-crt)"
-                  >
-                    {/* Parent info - outside the final note */}
-                    <div className="text-center mb-3">
-                      <div className="text-lg font-bold uppercase text-(--gold) py-1">
-                        {dag.tittel}
-                      </div>
-                    </div>
+                {pageCards.map((card, cardIndex) => {
+                  const isCheckpointCard = isCheckpoint(card);
+                  const dag = isCheckpointCard ? card.dag : card.dag;
+                  const tittel = isCheckpointCard ? card.tittel : card.tittel;
 
-                    {/* THE FINAL NOTE FOR KIDS - solid border */}
-                    <div className="border-4 border-solid border-(--neon-green) p-3 bg-(--neon-green)/5 relative mb-3">
-                      {/* Day number badge - smaller, inside note */}
-                      <div className="absolute top-2 right-2 w-8 h-8 bg-(--christmas-red) border-2 border-(--neon-green) flex items-center justify-center">
-                        <span className="text-lg font-bold text-(--gold)">
-                          {dag.dag}
-                        </span>
-                      </div>
-
-                      {/* NisseKomm branding header */}
-                      <div className="text-center mb-3 pb-2 border-b-2 border-(--neon-green)">
-                        <div className="text-base font-bold text-(--neon-green) tracking-wider">
-                          ▬▬ NISSEKOMM ▬▬
-                        </div>
-                        <div className="text-[10px] text-(--cold-blue) font-mono">
-                          [NORDPOL KOMMUNIKASJONSSYSTEM]
+                  return (
+                    <div
+                      key={`${dag}-${cardIndex}`}
+                      className="border-4 border-dashed border-(--neon-green) p-4 bg-(--dark-crt)"
+                    >
+                      {/* Parent info - outside the final note */}
+                      <div className="text-center mb-3">
+                        <div className="text-lg font-bold uppercase text-(--gold) py-1">
+                          {tittel}
                         </div>
                       </div>
 
-                      {/* Message only */}
-                      <div className="text-center text-base leading-snug font-bold">
-                        &quot;{dag.fysisk_ledetekst}&quot;
+                      {/* THE FINAL NOTE FOR KIDS - solid border */}
+                      <div className="border-4 border-solid border-(--neon-green) p-3 bg-(--neon-green)/5 relative mb-3">
+                        {/* Day number badge - smaller, inside note */}
+                        <div className="absolute top-2 right-2 w-8 h-8 bg-(--christmas-red) border-2 border-(--neon-green) flex items-center justify-center">
+                          <span className="text-lg font-bold text-(--gold)">
+                            {dag}
+                          </span>
+                        </div>
+
+                        {/* NisseKomm branding header */}
+                        <div className="text-center mb-3 pb-2 border-b-2 border-(--neon-green)">
+                          <div className="text-base font-bold text-(--neon-green) tracking-wider">
+                            ▬▬ NISSEKOMM ▬▬
+                          </div>
+                          <div className="text-[10px] text-(--cold-blue) font-mono">
+                            [NORDPOL KOMMUNIKASJONSSYSTEM]
+                          </div>
+                        </div>
+
+                        {/* Message content */}
+                        {isCheckpointCard ? (
+                          <div className="space-y-2">
+                            <div className="text-center text-lg font-bold text-(--gold)">
+                              CHECKPOINT {card.checkpoint}/
+                              {card.totalCheckpoints}
+                            </div>
+                            {card.challenge && (
+                              <div className="text-center text-sm mb-2 text-(--cold-blue)">
+                                {card.challenge}
+                              </div>
+                            )}
+                            <div className="text-center text-2xl font-bold text-(--neon-green)">
+                              BOKSTAV: {card.letter}
+                            </div>
+                            <div className="text-center text-xs mt-2 opacity-70">
+                              → Gå til neste checkpoint
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-center text-base leading-snug font-bold">
+                            &quot;{card.fysisk_ledetekst}&quot;
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Parent reference - outside the final note */}
+                      <div className="text-center text-xs opacity-70 pt-2 border-t border-(--neon-green)/30">
+                        📍 Gjemt i:{" "}
+                        {isCheckpointCard ? card.location : card.beste_rom}
                       </div>
                     </div>
-
-                    {/* Parent reference - outside the final note */}
-                    <div className="text-center text-xs opacity-70 pt-2 border-t border-(--neon-green)/30">
-                      📍 Gjemt i: {dag.beste_rom}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -147,51 +282,77 @@ function PrintoutContent() {
         {pages.map((pageCards, pageIndex) => (
           <div key={pageIndex} className="print:break-after-page print:p-8">
             <div className="print:grid print:grid-cols-2 print:gap-6">
-              {pageCards.map((dag) => (
-                <div
-                  key={dag.dag}
-                  className="print:border-4 print:border-dashed print:border-gray-400 print:p-3 print:h-64 print:flex print:flex-col"
-                >
-                  {/* Parent info - outside the final note */}
-                  <div className="print:text-center print:mb-2">
-                    <div className="print:text-sm print:font-bold print:uppercase">
-                      {dag.tittel}
-                    </div>
-                  </div>
+              {pageCards.map((card, cardIndex) => {
+                const isCheckpointCard = isCheckpoint(card);
+                const dag = isCheckpointCard ? card.dag : card.dag;
+                const tittel = isCheckpointCard ? card.tittel : card.tittel;
 
-                  {/* THE FINAL NOTE FOR KIDS - solid border */}
-                  <div className="print:border-4 print:border-solid print:border-black print:p-3 print:bg-gray-50 print:flex-1 print:flex print:flex-col print:relative">
-                    {/* Day number badge - smaller, inside note */}
-                    <div className="print:absolute print:top-2 print:right-2 print:w-8 print:h-8 print:bg-red-600 print:border-2 print:border-black print:flex print:items-center print:justify-center">
-                      <span className="print:text-lg print:font-bold print:text-yellow-400">
-                        {dag.dag}
-                      </span>
-                    </div>
-
-                    {/* NisseKomm branding header */}
-                    <div className="print:text-center print:mb-3 print:pb-2 print:border-b-2 print:border-black">
-                      <div className="print:text-sm print:font-bold print:tracking-wider">
-                        ▬▬ NISSEKOMM ▬▬
-                      </div>
-                      <div className="print:text-[8px] print:font-mono print:text-gray-600">
-                        [NORDPOL KOMMUNIKASJONSSYSTEM]
+                return (
+                  <div
+                    key={`${dag}-${cardIndex}-print`}
+                    className="print:border-4 print:border-dashed print:border-gray-400 print:p-3 print:h-64 print:flex print:flex-col"
+                  >
+                    {/* Parent info - outside the final note */}
+                    <div className="print:text-center print:mb-2">
+                      <div className="print:text-sm print:font-bold print:uppercase">
+                        {tittel}
                       </div>
                     </div>
 
-                    {/* Message only */}
-                    <div className="print:text-center print:flex-1 print:flex print:items-center print:justify-center">
-                      <div className="print:text-base print:leading-snug print:font-bold">
-                        &quot;{dag.fysisk_ledetekst}&quot;
+                    {/* THE FINAL NOTE FOR KIDS - solid border */}
+                    <div className="print:border-4 print:border-solid print:border-black print:p-3 print:bg-gray-50 print:flex-1 print:flex print:flex-col print:relative">
+                      {/* Day number badge - smaller, inside note */}
+                      <div className="print:absolute print:top-2 print:right-2 print:w-8 print:h-8 print:bg-red-600 print:border-2 print:border-black print:flex print:items-center print:justify-center">
+                        <span className="print:text-lg print:font-bold print:text-yellow-400">
+                          {dag}
+                        </span>
                       </div>
+
+                      {/* NisseKomm branding header */}
+                      <div className="print:text-center print:mb-3 print:pb-2 print:border-b-2 print:border-black">
+                        <div className="print:text-sm print:font-bold print:tracking-wider">
+                          ▬▬ NISSEKOMM ▬▬
+                        </div>
+                        <div className="print:text-[8px] print:font-mono print:text-gray-600">
+                          [NORDPOL KOMMUNIKASJONSSYSTEM]
+                        </div>
+                      </div>
+
+                      {/* Message content */}
+                      {isCheckpointCard ? (
+                        <div className="print:text-center print:flex-1 print:flex print:flex-col print:justify-center print:space-y-2">
+                          <div className="print:text-lg print:font-bold">
+                            CHECKPOINT {card.checkpoint}/{card.totalCheckpoints}
+                          </div>
+                          {card.challenge && (
+                            <div className="print:text-sm print:text-gray-600">
+                              {card.challenge}
+                            </div>
+                          )}
+                          <div className="print:text-xl print:font-bold">
+                            BOKSTAV: {card.letter}
+                          </div>
+                          <div className="print:text-xs print:text-gray-500 print:mt-1">
+                            → Gå til neste checkpoint
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="print:text-center print:flex-1 print:flex print:items-center print:justify-center">
+                          <div className="print:text-base print:leading-snug print:font-bold">
+                            &quot;{card.fysisk_ledetekst}&quot;
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Parent reference - outside the final note */}
+                    <div className="print:text-center print:text-xs print:text-gray-600 print:mt-2 print:pt-1 print:border-t print:border-gray-300">
+                      📍 Gjemt i:{" "}
+                      {isCheckpointCard ? card.location : card.beste_rom}
                     </div>
                   </div>
-
-                  {/* Parent reference - outside the final note */}
-                  <div className="print:text-center print:text-xs print:text-gray-600 print:mt-2 print:pt-1 print:border-t print:border-gray-300">
-                    📍 Gjemt i: {dag.beste_rom}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         ))}

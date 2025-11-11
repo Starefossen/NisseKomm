@@ -14,46 +14,64 @@
   },
   {
     "dag": 9,
-    "tittel": "Snøfnugg-matematikk",
-    "beskrivelse": "Rampenissen har hengt opp papir-snøfnugg rundt i huset! På 3 av dem står det tall: en har '6 sider', en annen '× 3', og den tredje '= ?'. Hva blir svaret?",
+    "tittel": "Snøfnugg-jakten",
+    "beskrivelse": "Rampenissen har gjemt snøfnugg over hele huset! Finn ALLE de spesielle snøfnuggene (hint: de lyser annerledes). Når du har funnet dem, se hva som står på baksiden...",
     "kode": "18",
+    "cross_reference_topic": "frosne-mønster",
     "dagbokinnlegg": "Dag 9 - Snøfnugg-Forskning\n\nBrukte hele formiddagen på å studere snøfnugg under mikroskop. Alle er unike! Fantastisk! Nissemor minnet meg på at jeg egentlig skulle kvalitetssjekke leker. Ups.\n\nNissene laget 15.000 leker i dag. Rekord! Feiret med varm sjokolade for alle. En av nissene drakk syv kopper og var oppe til klokken fire om natten. Han synger fortsatt julesanger.\n\nRampenissen rapporterer om god fremgang. Barna er kreative og intelligente. Perfekt! Det er sånne barn vi trenger mer av.\n\n- Julenissen",
-    "rampenissen_rampestrek": "6-10 papir-snøfnugg hengt rundt i huset. 3 av dem har tall/symboler: '6 sider per snøfnugg', '× 3 snøfnugg', '= ?'. Rampenissen holder en lupe.",
-    "fysisk_ledetekst": "Finn snøfnuggene Rampenissen har hengt opp - de skjuler et regnestykke!",
-    "oppsett_tid": "moderat",
+    "rampenissen_rampestrek": "10 papir-snøfnugg hengt rundt i FLERE rom. 6 av dem har blå/sølv bakside med tall/symboler: 3 snøfnugg merket '6 kanter', 3 merket '× 3 snøfnugg', på ett står '= ?'. De må finnes i riktig rekkefølge: bad (2 stk - på speil og i dusj), stue (2 stk - bak pute og ved vindu), kjøkken (2 stk - på kjøleskap og under bord). Rampenissen holder forstørrelsesglass.",
+    "fysisk_ledetekst": "Snøfnugg er gjemt OVER ALT! Finn de som lyser magisk (blå bakside). Speilet ser rart ut... og hva er det bak puta? Kjøleskapet også?",
+    "oppsett_tid": "avansert",
     "materialer_nødvendig": [
-      "6-10 papir-snøfnugg (klipp ut eller print)",
-      "3 lapper med tall",
-      "Snor/tape"
+      "10 papir-snøfnugg (6 med blå/sølv bakside)",
+      "Nummererte lapper: '6 kanter', '× 3', '= ?'",
+      "Snor/tape",
+      "forstørrelsesglass (valgfritt)"
+    ],
+    "beste_rom": "Flere rom (bad, stue, kjøkken)",
+    "hint_type": "spor"
+  },
+  {
+    "dag": 10,
+    "tittel": "Fargesamleren",
+    "beskrivelse": "Rampenissen trenger hjelp! Han har mistet bokstaver rundt om i huset. De ligger gjemt på ting som har en spesiell farge... Finn 5 gjenstander, samle bokstavene. Hvilken farge?",
+    "kode": "GRØNN",
+    "cross_reference_topic": "farge-mysteriet",
+    "dagbokinnlegg": "Dag 10 - Grønn Dag\n\nNissemor har bestemt at hele Nordpolen skal være mer miljøvennlig. Nissene får nå sykle til verkstedet. Det er snø. Overalt. Det går ikke så bra.\n\nPrøvde å male verkstedet grønt for å 'passe temaet'. Nissene sa at rødt er julenissens farge. Ble diskusjon. Endte med kompromiss: grønt OG rødt. Ser ut som en italiensk restaurant nå.\n\nRampenissen sender bilder av barna i grønne nisseluer. Søtt! De ser ut som små nisser. Kanskje de kan komme og jobbe her når de blir større?\n\n- Julenissen",
+    "rampenissen_rampestrek": "5 grønne gjenstander plassert rundt i huset (grønn bok, grønn kopp, grønn leke, grønt klesplagg, grønn plante). På hver er det limt en lapp med EN bokstav: G, R, Ø, N, N. Barna må finne dem og sette bokstavene i riktig rekkefølge (alfabetisk eller etter gjenstand-størrelse). Rampenissen har 'detektiv'-hatt.",
+    "fysisk_ledetekst": "Rampenissen leter etter noe! Finn ting som har en SPESIELL farge. På hver ting er det en bokstav. Sjekk bokhylla, skapet, lekekassen...",
+    "oppsett_tid": "avansert",
+    "materialer_nødvendig": [
+      "5 grønne gjenstander fra huset",
+      "5 lapper med bokstaver: G, R, Ø, N, N",
+      "Tape/lim"
     ],
     "beste_rom": "Flere rom",
     "hint_type": "spor"
   },
   {
-    "dag": 10,
-    "tittel": "Grønn Samling",
-    "beskrivelse": "Rampenissen har samlet alle grønne ting i huset til en haug! Det står en lapp: 'Jeg er fargen på juletreet OG mange nisseluer. 5 bokstaver. Hvilket ord?'",
-    "kode": "GRØNN",
-    "dagbokinnlegg": "Dag 10 - Grønn Dag\n\nNissemor har bestemt at hele Nordpolen skal være mer miljøvennlig. Nissene får nå sykle til verkstedet. Det er snø. Overalt. Det går ikke så bra.\n\nPrøvde å male verkstedet grønt for å 'passe temaet'. Nissene sa at rødt er julenissens farge. Ble diskusjon. Endte med kompromiss: grønt OG rødt. Ser ut som en italiensk restaurant nå.\n\nRampenissen sender bilder av barna i grønne nisseluer. Søtt! De ser ut som små nisser. Kanskje de kan komme og jobbe her når de blir større?\n\n- Julenissen",
-    "rampenissen_rampestrek": "Alle grønne gjenstander samlet på ett sted: grønne leker, klær, bøker, etc. Rampenissen sitter på toppen med skiltet.",
-    "fysisk_ledetekst": "Wow! Rampenissen har samlet ALT som er grønt! Hva er den felles fargen?",
-    "oppsett_tid": "moderat",
-    "materialer_nødvendig": ["Grønne gjenstander fra huset", "Lapp med gåte"],
-    "beste_rom": "Stue",
-    "hint_type": "arrangement"
-  },
-  {
     "dag": 11,
-    "tittel": "Tids-kaos",
-    "beskrivelse": "Rampenissen har stilt alle klokkene i huset feil! Men det står en lapp: 'Når klokken ringer ved midnatt på julaften - hvor mange slag? Finn tallet.'",
+    "tittel": "Tids-mysteriet",
+    "beskrivelse": "Noe rart har skjedd! Tre klokker viser forskjellige tider, og ingen av dem stemmer... Men sammen skjuler de et hemmelig tall. Legg sammen timene!",
     "kode": "12",
     "dagbokinnlegg": "Dag 11 - Tidsforvirring\n\nVår store klokke på Nordpolen sluttet å virke ved midnatt. En nisse prøvde å reparere den. Nå viser den 87 o'clock. Vet ikke engang at det eksisterer.\n\nBestemte at vi bare følger solen. Problemet er at solen ikke går ned her på Nordpolen om vinteren. Nissene vet ikke når de skal sove. Kaos.\n\nRampenissen klager på at han er trøtt. Forteller ham at her jobber vi 25 timer i døgnet. (Ja, jeg vet at det bare er 24. Men på Nordpolen er reglene annerledes.)\n\n- Julenissen",
-    "rampenissen_rampestrek": "Alle veggklokker, armbåndsur, kjøkkenur viser forskjellige (feil) tider. Rampenissen står med gåten om midnatt.",
-    "fysisk_ledetekst": "Klokkene viser feil tid! Les Rampenissens lapp om midnatt.",
-    "oppsett_tid": "enkel",
-    "materialer_nødvendig": ["Tilgang til klokker i huset", "Lapp med gåte"],
-    "beste_rom": "Flere rom",
-    "hint_type": "arrangement"
+    "rampenissen_rampestrek": "3 analoge klokker (eller tegninger av klokker) viser: 3:00, 5:00, og 4:00. De er plassert i forskjellige rom. På hver klokke er det en lapp: 'FØRSTE TALL', 'ANDRE TALL', 'TREDJE TALL'. Rampenissen står med kalkulator.",
+    "fysisk_ledetekst": "Klokkene er gale! Finn TRE klokker rundt i huset. Hva viser de? Legg sammen!",
+    "oppsett_tid": "moderat",
+    "materialer_nødvendig": [
+      "3 analoge klokker eller tegninger",
+      "3 lapper: 'FØRSTE', 'ANDRE', 'TREDJE'",
+      "Papir med addisjon-symbol '+'"
+    ],
+    "beste_rom": "Flere rom (gang, stue, kjøkken)",
+    "hint_type": "arrangement",
+    "sideoppdrag": {
+      "tittel": "KRITISK: Signal-krise",
+      "beskrivelse": "NORDPOL TV har mistet signalet! Antenne-systemet er ødelagt. Rampenissen trenger AKUTT hjelp til å bygge en nød-antenne. Bruk tinfolie og tape for å lage en antenne (ca 20cm høy). Fest den på toppen av TV-en. La den stå over natten - signalet vil automatisk gjenopprettes neste morgen når systemet har kalibrert den nye antennen.",
+      "validering": "forelder",
+      "badge_icon": "zap",
+      "badge_navn": "Antenne-Ingeniør"
+    }
   },
   {
     "dag": 12,
@@ -107,6 +125,13 @@
       "5-8 gjenstander å pakke inn"
     ],
     "beste_rom": "Stue",
-    "hint_type": "visuell"
+    "hint_type": "visuell",
+    "sideoppdrag": {
+      "tittel": "KRITISK: Signal-krise",
+      "beskrivelse": "NORDPOL TV har mistet signalet! Antenne-systemet er ødelagt. Rampenissen trenger AKUTT hjelp til å bygge en nød-antenne. Bruk tinfolie og tape for å lage en antenne (ca 20cm høy). Fest den på toppen av TV-en. La den stå over natten - signalet vil automatisk gjenopprettes neste morgen når systemet har kalibrert den nye antennen.",
+      "validering": "forelder",
+      "badge_icon": "zap",
+      "badge_navn": "Antenne-Ingeniør"
+    }
   }
 ]

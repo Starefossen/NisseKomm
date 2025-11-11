@@ -2,20 +2,22 @@
   {
     "dag": 15,
     "tittel": "Sjokolade-mysteriet",
-    "beskrivelse": "Rampenissen har laget 'sjokolade-bæsj' på kjøkkenbordet! Under én av dem er det skjult en mandel. Tellingen på bæsjene viser: 3. bolle × 1 = ? Finn mandelen i riktig 'bæsj'!",
+    "beskrivelse": "Rampenissen har laget 'sjokolade-bæsj' på kjøkkenbordet! Under én av dem er det skjult en mandel. Tellingen på bæsjene viser: 3. bolle × 1 = ? Finn mandelen! Men vent... fargesamleren vet noe mer...",
     "kode": "MANDEL",
+    "cross_reference_topic": "farge-mysteriet",
     "dagbokinnlegg": "Dag 15 - Grøtdag\n\nNissemor laget risgrøt til alle på Nordpolen. 250 nisser + 8 reinsdyr + 1 julenisse = MYE grøt. Hun skjulte mandelen. Konkurransen er i gang!\n\nNissene spiser som om livet står på spill. Rudolf prøvde å jukse ved å sniffe seg frem til mandelen. Ble disket. Reinsdyr har ikke lov å delta uansett.\n\nJeg fant mandelen! I MIN tredje bolle! Nissemor smilte mistenksomt. Tror hun lot meg vinne. Men tar æren uansett.\n\n- Julenissen",
-    "rampenissen_rampestrek": "5-6 'sjokolade-bæsj' (sjokoladekaker formet som spiraler) på kjøkkenbordet. Nummererte 1-6. Mandel gjemt under nummer 3. Rampenissen har 'rumpeproblem'-ansikt.",
-    "fysisk_ledetekst": "OJ! Rampenissen har hatt et uhell på bordet! Finn mandelen ved å løse gåten.",
+    "rampenissen_rampestrek": "5-6 'sjokolade-bæsj' (sjokoladekaker formet som spiraler) på kjøkkenbordet. Nummererte 1-6. I bolle #3 ligger en lapp med gåten: 'Jeg er hvit og skjult i grøt. Fargesamleren kjenner min hemmelighet.' Mandel gjemt UNDER lappen. Rampenissen har 'rumpeproblem'-ansikt.",
+    "fysisk_ledetekst": "OJ! Rampenissen har hatt et uhell på bordet! Løs regnestykket først, deretter finn gåten inni...",
     "oppsett_tid": "moderat",
     "materialer_nødvendig": [
       "Sjokoladekaker/cookies (5-6 stk)",
       "Mandel",
       "Nummererte lapper",
+      "Lapp med gåte",
       "Fat"
     ],
     "beste_rom": "Kjøkken",
-    "hint_type": "gjemt_objekt"
+    "hint_type": "kombinasjon"
   },
   {
     "dag": 16,
@@ -23,30 +25,38 @@
     "beskrivelse": "Rampenissen studerer julekalenderen! Han spør: 'Hvor mange luker har en vanlig julekalender? Sjekk kalenderen på veggen og tell!' Hint: Det er samme antall som dager i desember før julaften.",
     "kode": "24",
     "dagbokinnlegg": "Dag 16 - Halvveis!\n\nHalvveis gjennom desember! Nissene feiret med kake. Stor kake. Veldig stor kake. For stor kake. Den dekket halve verkstedet. Måtte spise oss ut. Tok tre timer.\n\nGjennomgang av fremgangen: 48.392 leker produsert! 2.847 ønskelister behandlet! Rudolf fortsatt vanskelig! Alt går etter planen!\n\nRampenissen sender halvveis-rapport fra barna. De er dedikerte og ivrige. Akkurat som nissene mine. Bare at barna sannsynligvis ikke spiser like mye godteri.\n\n- Julenissen",
-    "rampenissen_rampestrek": "Rampenissen sitter foran julekalenderen med kalkulator og lupe, later som han teller. Har laget en stor '?' på en lapp.",
+    "rampenissen_rampestrek": "Rampenissen sitter foran julekalenderen med kalkulator og forstørrelsesglass, later som han teller. Har laget en stor '?' på en lapp.",
     "fysisk_ledetekst": "Rampenissen prøver å telle! Hjelp ham med å finne ut hvor mange luker det er.",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
       "Julekalender (deres egen)",
-      "Lupe (valgfritt)",
+      "forstørrelsesglass (valgfritt)",
       "Lapp med spørsmål"
     ],
     "beste_rom": "Der kalenderen henger",
-    "hint_type": "skrevet"
+    "hint_type": "skrevet",
+    "sideoppdrag": {
+      "tittel": "KRITISK: Inventar-kaos",
+      "beskrivelse": "NISSESTATS viser feil! Inventar-systemet har krasjet. Rampenissen trenger hjelp til å telle og organisere. Tell leker i én kategori (biler, dukker, klosser, etc.) og rapporter totalen. La systemet kjøre gjenoppbygging over natten - NISSESTATS vil automatisk starte opp igjen neste morgen.",
+      "validering": "forelder",
+      "badge_icon": "coin",
+      "badge_navn": "Inventar-Ekspert"
+    }
   },
   {
     "dag": 17,
     "tittel": "Stjerne-konstellasjon",
-    "beskrivelse": "Rampenissen har hengt opp stjerner over hele huset! På noen står det bokstaver: S-T-J-E-R-N-E. Følg stjernekartet på kjøleskapet for å finne dem i riktig rekkefølge. Hva henger på toppen av juletreet?",
+    "beskrivelse": "Rampenissen har hengt opp stjerner over hele huset! På noen står det bokstaver: S-T-J-E-R-N-E. Følg stjernekartet på kjøleskapet for å finne dem i riktig rekkefølge. Hint: De frosne mønstrene kjenner veien...",
     "kode": "STJERNE",
+    "cross_reference_topic": "frosne-mønster",
     "dagbokinnlegg": "Dag 17 - Stressuke\n\nBare én uke igjen! PANIKK! Ikke virkelig panikk, men litt bekymret. Skjuler det bak ho-ho-ho-ing. Nissene tror jeg er rolig. Nissemor vet bedre.\n\nTreningsmøte med reinsdyrene. De skal fly jorden rundt på åtte timer. Rudolf insisterer på flere pauser for selfies. Forklarte at julen ikke venter. Han sultet.\n\nRampenissen rapporterer at barna er spente. Godt! Jeg også. Og nervøs. Mest spent. Litt nervøs.\n\n- Julenissen",
-    "rampenissen_rampestrek": "Papir-stjerner hengt i ulike rom. 7 stjerner har bokstaver (S,T,J,E,R,N,E). På kjøleskapet: 'kart' som viser romrekkefølge. Rampenissen har teleskop (leker-kikkert).",
-    "fysisk_ledetekst": "Følg stjernekartet! Rampenissen har lagt ut et spor av stjerner.",
+    "rampenissen_rampestrek": "Papir-stjerner hengt i ulike rom. 7 stjerner har bokstaver (S,T,J,E,R,N,E). På kjøleskapet: 'kart' som viser romrekkefølge med 6-kantede symboler (referanse til snøfnugg-mønsteret fra dag 9). Rampenissen har teleskop (leker-kikkert).",
+    "fysisk_ledetekst": "Følg stjernekartet! Rampenissen har lagt ut et spor av stjerner. Mønsteret fra den kalde jakten viser veien...",
     "oppsett_tid": "avansert",
     "materialer_nødvendig": [
       "7 papir-stjerner med bokstaver",
       "Ekstrastjerner uten bokstaver",
-      "Stjernekart (tegning)",
+      "Stjernekart med 6-kantede symboler (tegning)",
       "Snor/tape"
     ],
     "beste_rom": "Flere rom",
@@ -72,50 +82,53 @@
   {
     "dag": 19,
     "tittel": "Reinsdyr-ruten",
-    "beskrivelse": "Rampenissen har tegnet en flyrute! Leke-reinsdyr står plassert som viser: Start → Barnerom → Kjøkken → Stue → Mål. I mål-boksen står: 'Vi har gevir og trekker sleda. 8 bokstaver.' Hva heter vi?",
+    "beskrivelse": "Rampenissen har tegnet en flyrute! Leke-reinsdyr står plassert som viser veien. Ved hvert stopp er det en UTFORDRING du må løse før du går videre. Fullfør alle tre for å finne koden!",
     "kode": "REINSDYR",
     "dagbokinnlegg": "Dag 19 - Tretthetsdag\n\nTrøtteste dag så langt. Falt i søvn tre ganger. En gang midt i setning til nissene. De lo. Ikke artig. Vel, litt artig.\n\nNissemor insisterer på at jeg tar pauser. Forklarer at julenissen ikke tar pauser. Hun bare pekte på godteristabelen og smilte. Tok en pause.\n\nRampenissen klager også over trettet. Sendte ham oppskrift på Nissemor sin magiske energi-kakao. Han takket. 5 minutter senere sendte han bilde av seg dansende på bordet. Kakao virker.\n\n- Julenissen",
-    "rampenissen_rampestrek": "Leke-reinsdyr plassert i ulike rom som 'rutemarkører'. Piler laget av papir viser retning. I siste rom: 'MÅL'-skilt med gåten. Rampenissen som 'flygeleder'.",
-    "fysisk_ledetekst": "Følg reinsdyr-ruten Rampenissen har lagt ut! Start i gangen.",
-    "oppsett_tid": "moderat",
+    "rampenissen_rampestrek": "Leke-reinsdyr plassert i 4 rom som 'rutemarkører'. Ved hvert reinsdyr: Sjekkpunkt 1 (barnerom): 'Tell bein på et reinsdyr', Sjekkpunkt 2 (kjøkken): 'Finn noe RØDT', Sjekkpunkt 3 (stue): 'Hva trekker sleda?' = R-E-I-N-S-D-Y-R på lappene. Ved siste reinsdyr: 'MÅL'-skilt med alle bokstavene samlet. Rampenissen som 'flygeleder'.",
+    "fysisk_ledetekst": "Følg reinsdyr-ruten! Hvert stopp har en utfordring. Løs dem alle for å samle bokstavene.",
+    "oppsett_tid": "avansert",
     "materialer_nødvendig": [
-      "Leke-reinsdyr (4-6 stk)",
-      "Papir-piler",
-      "MÅL-skilt med gåte"
+      "Leke-reinsdyr (4 stk)",
+      "4 sjekkpunkt-lapper med utfordringer",
+      "Bokstav-lapper: R,E,I,N,S,D,Y,R",
+      "MÅL-skilt",
+      "Papir-piler for retning"
     ],
     "beste_rom": "Flere rom",
-    "hint_type": "spor"
+    "hint_type": "kombinasjon"
   },
   {
     "dag": 20,
     "tittel": "Slede-løpet",
-    "beskrivelse": "Rampenissen har laget et sløyfeløp! Små sleder (eller biler) står på start. Det står: 'Målingen viser 5 bokstaver. Nissens transport trukket av reinsdyr. Hva heter den?'",
+    "beskrivelse": "Rampenissen har laget et hinderbane-løp! På 5 sjekkpunkter er det gjemt bokstaver. Finn dem ALLE for å stave ordet. Hva er Nissens transport?",
     "kode": "SLEDE",
     "dagbokinnlegg": "Dag 20 - Fire Dager\n\nBare fire dager igjen! Alt eskalerer nå. Nissene jobber døgnet rundt. Vi serverer kaffe på intravenøs drypp. (Spøk. Mest spøk.)\n\nReinsdyrene har fått siste treningsøkt. Rudolf klaget på muskelsmerter. Fortalte ham om barna som venter på gaver. Han sluttet å klage. Til og med Rudolf har hjerte. Noen ganger.\n\nSjefen (Nissemor) forsikrer meg om at alt går bra. Hun har alltid rett. Puster lettere. Litt. Veldig litt.\n\n- Julenissen",
-    "rampenissen_rampestrek": "Lekeløype laget av puter/bøker. Små sleder eller biler på 'startstreken'. Målskilt med gåten. Rampenissen holder stoppeklokke.",
-    "fysisk_ledetekst": "Rampenissen har laget et løp! Hva er kjøretøyet som vinner?",
-    "oppsett_tid": "moderat",
+    "rampenissen_rampestrek": "5 sjekkpunkter plassert rundt i huset: 1) UNDER bordet (S), 2) BAK døra (L), 3) I bokhylla (E), 4) UNDER puta (D), 5) VED vinduet (E). Ved hvert punkt: liten leke-slede eller bil og en bokstav-lapp. Rampenissen holder stoppeklokke.",
+    "fysisk_ledetekst": "Rampenissen har laget et løp! Finn ALLE sjekkpunktene og samle bokstavene. De er gjemt HØYT og LAVT!",
+    "oppsett_tid": "avansert",
     "materialer_nødvendig": [
-      "Små sleder/biler (3-4 stk)",
-      "Puter eller bokstabelbane",
-      "START/MÅL-skilt",
-      "Lapp med gåte"
+      "5 bokstav-lapper: S, L, E, D, E",
+      "5 små sleder/biler",
+      "Sjekkpunkt-skilt (1-5)",
+      "Papir-piler (valgfritt)"
     ],
-    "beste_rom": "Gang eller stue",
-    "hint_type": "arrangement"
+    "beste_rom": "Flere rom",
+    "hint_type": "spor"
   },
   {
     "dag": 21,
     "tittel": "Femspiss-jakten",
     "beskrivelse": "Rampenissen vil vite hvor mange spisser en julestjerne har! Han har gjemt stjerner over hele huset. Finn én stjerne og tell spissene. Hva er tallet?",
     "kode": "5",
+    "hendelse": "Juletog til hytten",
     "dagbokinnlegg": "Dag 21 - Tre Dager!\n\nTRE DAGER TIL JULAFTEN! Nissene er i høygir. En av dem festet vinger på ryggen og hoppet fra taket. Han sa han 'øvet på å fly'. Vi har ikke flyvende nisser. Han har nå gips på beinet.\n\nSiste sjekk av gavesekken. Den er magisk, så alt passer inn. Men måtte teste. Puttet en nisse inn. Han passet. Så puttet vi inn en til. De passet. Sluttet på 12 nisser. Ikke rom for flere. Eller kanskje vi skal ikke putte nisser i sekken.\n\nRampenissen melder om høy spenning hos barna. Samme her! Vi klarer dette! Sannsynligvis!\n\n- Julenissen",
-    "rampenissen_rampestrek": "5-spisset stjerner gjemt rundt i huset: bak puter, i bokhyller, på vinduskarmer. Rampenissen med lupe og 'detektiv-hatt'. En stjerne lett tilgjengelig for telling.",
+    "rampenissen_rampestrek": "5-spisset stjerner gjemt rundt i huset: bak puter, i bokhyller, på vinduskarmer. Rampenissen med forstørrelsesglass og 'detektiv-hatt'. En stjerne lett tilgjengelig for telling.",
     "fysisk_ledetekst": "Finn stjernene Rampenissen har gjemt - hvor mange spisser har de?",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
       "5-10 papir-stjerner (5-spisset)",
-      "Lupe (valgfritt)"
+      "forstørrelsesglass (valgfritt)"
     ],
     "beste_rom": "Flere rom",
     "hint_type": "gjemt_objekt"

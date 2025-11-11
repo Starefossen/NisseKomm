@@ -19,6 +19,7 @@ import { NordpolTV } from "@/components/windows/NordpolTV";
 import { NisseBrev } from "@/components/windows/NisseBrev";
 import { NisseStats } from "@/components/windows/NisseStats";
 import { GrandFinaleModal } from "@/components/ui/GrandFinaleModal";
+import { BadgeRow } from "@/components/ui/BadgeRow";
 import { getAllOppdrag, getCompletionCount } from "@/lib/oppdrag-loader";
 import statiskInnholdData from "@/data/statisk_innhold.json";
 import { Varsel, FilNode, SystemMetrikk, KalenderDag } from "@/types/innhold";
@@ -33,8 +34,19 @@ const { varsler, filer, systemMetrikker } = statiskInnholdData as {
 
 /**
  * Get current calendar day (1-31)
+ * In test mode, can be overridden with NEXT_PUBLIC_MOCK_DAY env variable
  */
 function getCurrentDay(): number {
+  const testMode = process.env.NEXT_PUBLIC_TEST_MODE === "true";
+  const mockDay = process.env.NEXT_PUBLIC_MOCK_DAY;
+
+  if (testMode && mockDay) {
+    const day = parseInt(mockDay, 10);
+    if (!isNaN(day) && day >= 1 && day <= 24) {
+      return day;
+    }
+  }
+
   return new Date().getDate();
 }
 
@@ -229,182 +241,180 @@ export default function Home() {
           </div>
 
           {/* Main workspace - 75% */}
-          <div className="flex-1 relative">
-            {!openWindow ? (
-              // Desktop with icons
-              <div className="flex items-center justify-center h-full p-8">
-                <div className="grid grid-cols-3 gap-8 max-w-3xl">
-                  <DesktopIcon
-                    icon="file"
-                    label="NISSEMAIL"
-                    color="green"
-                    unreadCount={unreadCount}
-                    onClick={() => handleIconClick("nissemail")}
-                  />
-                  <DesktopIcon
-                    icon="code"
-                    label="KODETERMINAL"
-                    color="blue"
-                    onClick={() => handleIconClick("kodeterminal")}
-                  />
-                  <DesktopIcon
-                    icon="folder"
-                    label="NISSENET"
-                    color="green"
-                    onClick={() => handleIconClick("nissenet")}
-                  />
-                  <DesktopIcon
-                    icon="calendar"
-                    label="KALENDER"
-                    color="gold"
-                    onClick={() => handleIconClick("kalender")}
-                  />
-
-                  {/* Unlockable modules - show first unlocked module */}
-                  {unlockedModules.includes("NISSESTATS") ? (
+          <div className="flex-1 relative flex flex-col">
+            <div className="flex-1 overflow-auto">
+              {!openWindow ? (
+                // Desktop with icons
+                <div className="flex items-center justify-center h-full p-8">
+                  <div className="grid grid-cols-3 gap-8 max-w-3xl">
                     <DesktopIcon
-                      icon="chart"
-                      label="NISSESTATS"
-                      color="blue"
-                      onClick={() => handleIconClick("nissestats")}
-                    />
-                  ) : unlockedModules.includes("NISSEBREV") ? (
-                    <DesktopIcon
-                      icon="mail"
-                      label="NISSEBREV"
-                      color="gold"
-                      onClick={() => handleIconClick("nissebrev")}
-                    />
-                  ) : unlockedModules.includes("NORDPOL_TV") ? (
-                    <DesktopIcon
-                      icon="image"
-                      label="NORDPOL TV"
+                      icon="file"
+                      label="NISSEMAIL"
                       color="green"
-                      onClick={() => handleIconClick("nordpol_tv")}
+                      unreadCount={unreadCount}
+                      onClick={() => handleIconClick("nissemail")}
                     />
-                  ) : unlockedModules.includes("NISSEMUSIKK") ? (
                     <DesktopIcon
-                      icon="music"
-                      label="NISSEMUSIKK"
+                      icon="code"
+                      label="KODETERMINAL"
                       color="blue"
-                      onClick={() => handleIconClick("nissemusikk")}
+                      onClick={() => handleIconClick("kodeterminal")}
                     />
-                  ) : (
                     <DesktopIcon
-                      icon="lock"
-                      label="LÅST"
-                      color="gray"
-                      disabled
-                      onClick={() => {}}
+                      icon="folder"
+                      label="NISSENET"
+                      color="green"
+                      onClick={() => handleIconClick("nissenet")}
                     />
-                  )}
+                    <DesktopIcon
+                      icon="calendar"
+                      label="KALENDER"
+                      color="gold"
+                      onClick={() => handleIconClick("kalender")}
+                    />
 
-                  {/* Second unlockable slot - show second unlocked module */}
-                  {unlockedModules.length >= 2 ? (
-                    unlockedModules.includes("NISSESTATS") &&
-                    unlockedModules.includes("NISSEBREV") ? (
-                      <DesktopIcon
-                        icon="chart"
-                        label="NISSESTATS"
-                        color="blue"
-                        onClick={() => handleIconClick("nissestats")}
-                      />
-                    ) : unlockedModules.includes("NISSEBREV") &&
-                      unlockedModules.includes("NORDPOL_TV") ? (
-                      <DesktopIcon
-                        icon="mail"
-                        label="NISSEBREV"
-                        color="gold"
-                        onClick={() => handleIconClick("nissebrev")}
-                      />
-                    ) : unlockedModules.includes("NORDPOL_TV") &&
-                      unlockedModules.includes("NISSEMUSIKK") ? (
-                      <DesktopIcon
-                        icon="image"
-                        label="NORDPOL TV"
-                        color="green"
-                        onClick={() => handleIconClick("nordpol_tv")}
-                      />
-                    ) : (
-                      <DesktopIcon
-                        icon="lock"
-                        label="LÅST"
-                        color="gray"
-                        disabled
-                        onClick={() => {}}
-                      />
-                    )
-                  ) : (
-                    <DesktopIcon
-                      icon="lock"
-                      label="LÅST"
-                      color="gray"
-                      disabled
-                      onClick={() => {}}
+                    {/* Unlockable modules - display in unlock order */}
+                    {(() => {
+                      const moduleOrder = [
+                        {
+                          key: "NISSEMUSIKK",
+                          icon: "music" as const,
+                          label: "NISSEMUSIKK",
+                          color: "blue" as const,
+                        },
+                        {
+                          key: "NORDPOL_TV",
+                          icon: "image" as const,
+                          label: "NORDPOL TV",
+                          color: "green" as const,
+                        },
+                        {
+                          key: "NISSEBREV",
+                          icon: "mail" as const,
+                          label: "NISSEBREV",
+                          color: "gold" as const,
+                        },
+                        {
+                          key: "NISSESTATS",
+                          icon: "chart" as const,
+                          label: "NISSESTATS",
+                          color: "blue" as const,
+                        },
+                      ];
+
+                      const unlockedInOrder = moduleOrder.filter((m) =>
+                        unlockedModules.includes(m.key),
+                      );
+                      const slot1 = unlockedInOrder[0];
+                      const slot2 = unlockedInOrder[1];
+
+                      return (
+                        <>
+                          {slot1 ? (
+                            <DesktopIcon
+                              icon={slot1.icon}
+                              label={slot1.label}
+                              color={slot1.color}
+                              onClick={() =>
+                                handleIconClick(slot1.key.toLowerCase())
+                              }
+                            />
+                          ) : (
+                            <DesktopIcon
+                              icon="lock"
+                              label="LÅST"
+                              color="gray"
+                              disabled
+                              onClick={() => {}}
+                            />
+                          )}
+                          {slot2 ? (
+                            <DesktopIcon
+                              icon={slot2.icon}
+                              label={slot2.label}
+                              color={slot2.color}
+                              onClick={() =>
+                                handleIconClick(slot2.key.toLowerCase())
+                              }
+                            />
+                          ) : (
+                            <DesktopIcon
+                              icon="lock"
+                              label="LÅST"
+                              color="gray"
+                              disabled
+                              onClick={() => {}}
+                            />
+                          )}
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
+              ) : (
+                // Active window
+                <>
+                  {openWindow === "nissemail" && (
+                    <NisseMail
+                      missions={oppdrag}
+                      currentDay={getCurrentDay()}
+                      initialDay={selectedDay}
+                      onClose={handleCloseWindow}
+                      onOpenKodeTerminal={(day) => {
+                        setSelectedDay(day);
+                        setOpenWindow("kodeterminal");
+                        playSound("open");
+                      }}
                     />
                   )}
-                </div>
-              </div>
-            ) : (
-              // Active window
-              <>
-                {openWindow === "nissemail" && (
-                  <NisseMail
-                    missions={oppdrag}
-                    currentDay={getCurrentDay()}
-                    initialDay={selectedDay}
-                    onClose={handleCloseWindow}
-                    onOpenKodeTerminal={(day) => {
-                      setSelectedDay(day);
-                      setOpenWindow("kodeterminal");
-                      playSound("open");
-                    }}
-                  />
-                )}
-                {openWindow === "kodeterminal" && (
-                  <KodeTerminal
-                    onClose={handleCloseWindow}
-                    expectedCode={getCurrentMission().kode}
-                    currentDay={selectedDay || getCurrentDay()}
-                    allMissions={oppdrag}
-                    onCodeSubmitted={handleCodeSubmitted}
-                  />
-                )}
-                {openWindow === "nissenet" && (
-                  <NisseNetUtforsker
-                    files={filer}
-                    missions={oppdrag}
-                    currentDay={getCurrentDay()}
-                    onClose={handleCloseWindow}
-                  />
-                )}
-                {openWindow === "kalender" && (
-                  <Kalender
-                    missions={oppdrag}
-                    onClose={handleCloseWindow}
-                    onSelectDay={handleSelectDay}
-                  />
-                )}
-                {openWindow === "nissemusikk" && (
-                  <NisseMusikk onClose={handleCloseWindow} />
-                )}
-                {openWindow === "nordpol_tv" && (
-                  <NordpolTV
-                    onClose={handleCloseWindow}
-                    currentDay={getCurrentDay()}
-                  />
-                )}
-                {openWindow === "nissebrev" && (
-                  <NisseBrev onClose={handleCloseWindow} />
-                )}
-                {openWindow === "nissestats" && (
-                  <NisseStats
-                    onClose={handleCloseWindow}
-                    currentDay={getCurrentDay()}
-                  />
-                )}
-              </>
-            )}
+                  {openWindow === "kodeterminal" && (
+                    <KodeTerminal
+                      onClose={handleCloseWindow}
+                      expectedCode={getCurrentMission().kode}
+                      currentDay={selectedDay || getCurrentDay()}
+                      allMissions={oppdrag}
+                      onCodeSubmitted={handleCodeSubmitted}
+                    />
+                  )}
+                  {openWindow === "nissenet" && (
+                    <NisseNetUtforsker
+                      files={filer}
+                      missions={oppdrag}
+                      currentDay={getCurrentDay()}
+                      onClose={handleCloseWindow}
+                    />
+                  )}
+                  {openWindow === "kalender" && (
+                    <Kalender
+                      missions={oppdrag}
+                      onClose={handleCloseWindow}
+                      onSelectDay={handleSelectDay}
+                    />
+                  )}
+                  {openWindow === "nissemusikk" && (
+                    <NisseMusikk onClose={handleCloseWindow} />
+                  )}
+                  {openWindow === "nordpol_tv" && (
+                    <NordpolTV
+                      onClose={handleCloseWindow}
+                      currentDay={getCurrentDay()}
+                    />
+                  )}
+                  {openWindow === "nissebrev" && (
+                    <NisseBrev onClose={handleCloseWindow} />
+                  )}
+                  {openWindow === "nissestats" && (
+                    <NisseStats
+                      onClose={handleCloseWindow}
+                      currentDay={getCurrentDay()}
+                    />
+                  )}
+                </>
+              )}
+            </div>
+
+            {/* Badge row at bottom of main workspace */}
+            {!openWindow && <BadgeRow />}
           </div>
         </div>
       )}

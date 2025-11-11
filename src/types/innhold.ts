@@ -1,3 +1,16 @@
+/**
+ * Side-quest (bonus challenge unlocked after main quest)
+ * @public - Used in Oppdrag interface and mission data files
+ */
+export interface Sideoppdrag {
+  tittel: string;
+  beskrivelse: string;
+  validering: "kode" | "forelder"; // Code submission or parent validation
+  kode?: string; // Only required if validering is "kode"
+  badge_icon: "coin" | "heart" | "zap" | "trophy" | "gift" | "star";
+  badge_navn: string; // Badge title (e.g., "Antenne-ekspert")
+}
+
 // Daily mission/riddle
 export interface Oppdrag {
   dag: number;
@@ -19,6 +32,9 @@ export interface Oppdrag {
     | "spor" // Trail/tracks
     | "lyd" // Sound/audio clue
     | "kombinasjon"; // Combination of types
+  cross_reference_topic?: string; // Cryptic topic keyword for cross-day references
+  sideoppdrag?: Sideoppdrag; // Optional bonus challenge
+  badge_icon?: "coin" | "heart" | "zap" | "trophy" | "gift" | "star"; // Badge for main quest completion
 }
 
 // Alert/warning message

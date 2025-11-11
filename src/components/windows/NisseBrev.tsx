@@ -185,9 +185,9 @@ export function NisseBrev({ onClose }: NisseBrevProps) {
         <div className="p-4 border-2 border-(--cold-blue)/30 bg-(--cold-blue)/5 text-(--cold-blue) text-xs">
           <div className="font-bold mb-1">✉️ PERSONLIGE MELDINGER</div>
           <div className="opacity-80">
-            Julenissen sender spesielle brev til dere! Foreldre kan legge til
-            egne meldinger via Nissemor-guiden. Disse brevene vises her etter
-            hvert som dere fullfører oppdrag.
+            Julenissen sender spesielle brev til dere! Nye meldinger kan legges
+            til via Nissemor-guiden. Disse brevene vises her etter hvert som
+            dere fullfører oppdrag.
           </div>
         </div>
       </div>

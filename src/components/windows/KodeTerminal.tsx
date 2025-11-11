@@ -91,6 +91,15 @@ export function KodeTerminal({
       // Mark as solved
       setIsAlreadySolved(true);
 
+      // Unlock cross-reference topic if this quest has one
+      const completedQuest = allMissions.find((m) => m.dag === currentDay);
+      if (completedQuest?.cross_reference_topic) {
+        StorageManager.unlockTopic(
+          completedQuest.cross_reference_topic,
+          currentDay,
+        );
+      }
+
       setCode("");
 
       // Check if this unlocks a module

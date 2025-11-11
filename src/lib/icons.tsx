@@ -88,4 +88,36 @@ export const Icons = {
     <Icon name="next" {...props} />
   ),
   SkipBack: (props: Omit<IconProps, "name">) => <Icon name="prev" {...props} />,
+  // Weather icons
+  Sun: (props: Omit<IconProps, "name">) => <Icon name="sun" {...props} />,
+  Moon: (props: Omit<IconProps, "name">) => <Icon name="moon" {...props} />,
+  Cloud: (props: Omit<IconProps, "name">) => <Icon name="cloud" {...props} />,
+  Snow: (props: Omit<IconProps, "name">) => <Icon name="pin" {...props} />,
+  // Camera/video icons
+  Video: (props: Omit<IconProps, "name">) => <Icon name="video" {...props} />,
+  Camera: (props: Omit<IconProps, "name">) => <Icon name="image" {...props} />,
+  // Signal strength icons
+  Signal0: (props: Omit<IconProps, "name">) => (
+    <Icon name="cellular-signal-0" {...props} />
+  ),
+  Signal1: (props: Omit<IconProps, "name">) => (
+    <Icon name="cellular-signal-1" {...props} />
+  ),
+  Signal2: (props: Omit<IconProps, "name">) => (
+    <Icon name="cellular-signal-2" {...props} />
+  ),
+  Signal3: (props: Omit<IconProps, "name">) => (
+    <Icon name="cellular-signal-3" {...props} />
+  ),
+  SignalOff: (props: Omit<IconProps, "name">) => (
+    <Icon name="cellular-signal-off" {...props} />
+  ),
+  // Badge icons
+  Coin: (props: Omit<IconProps, "name">) => <Icon name="coin" {...props} />,
+  Heart: (props: Omit<IconProps, "name">) => (
+    <Icon name="mood-happy" {...props} />
+  ),
+  Zap: (props: Omit<IconProps, "name">) => <Icon name="zap" {...props} />,
+  Trophy: (props: Omit<IconProps, "name">) => <Icon name="trophy" {...props} />,
+  Star: (props: Omit<IconProps, "name">) => <Icon name="star" {...props} />,
 } as const;
