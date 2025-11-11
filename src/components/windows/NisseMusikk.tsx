@@ -64,7 +64,7 @@ export function NisseMusikk({ onClose }: NisseMusikkProps) {
           <Icons.Music size={32} color="blue" />
           <div className="flex-1">
             <div className="text-2xl font-bold tracking-wider">
-              NORDPOL RADIO
+              SNØFALL RADIO
             </div>
             <div className="text-sm opacity-70">
               KLASSISKE JULESANGER - RETRO EDITION

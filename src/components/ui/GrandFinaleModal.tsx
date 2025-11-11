@@ -79,8 +79,8 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
                 <br />
                 ✓ Alle moduler låst opp
                 <br />
-                ✓ Nordpolen reddet
-                <br />✓ Julenissen imponert
+                ✓ Snøfall reddet
+                <br />✓ Julius imponert
               </div>
             </div>
           )}
@@ -93,12 +93,12 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
                 <div className="mb-2">🎮 Christmas Buff +100</div>
                 <div className="mb-2">✨ Sigma Level: MAX</div>
                 <div className="text-lg italic">
-                  &quot;Julenissen approved fr fr no cap&quot; 💯
+                  &quot;Julius approved fr fr no cap&quot; 💯
                 </div>
               </div>
 
               <div className="text-lg text-(--neon-green)/70 space-y-2">
-                <p>Nordpol TV viser Julenissen som vinker</p>
+                <p>Snøfall TV viser Julius som vinker</p>
                 <p>med navnene deres på tavla bak ham!</p>
                 <p className="text-(--gold) font-bold">
                   100% Gaveproduksjon oppnådd! 🎁

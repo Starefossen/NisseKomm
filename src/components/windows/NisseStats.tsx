@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { StorageManager } from "@/lib/storage";
-import { getCompletionCount } from "@/lib/oppdrag-loader";
+import { getCompletionCount } from "@/lib/oppdrag";
 
 interface NisseStatsProps {
   onClose: () => void;
@@ -81,7 +81,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
               PRODUKSJONSDATA
             </div>
             <div className="text-sm opacity-70">
-              LIVE STATISTIKK FRA NORDPOLEN
+              LIVE STATISTIKK FRA SNØFALL
             </div>
           </div>
           <div className="flex items-center gap-2 px-3 py-1 border-2 border-(--gold) bg-(--gold)/20">
@@ -217,7 +217,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
             <div className="text-lg font-bold text-(--neon-green)">KLAR</div>
           </div>
           <div className="p-3 border-2 border-(--neon-green)/30 text-center">
-            <div className="text-xs text-(--neon-green)/70">JULENISSEN</div>
+            <div className="text-xs text-(--neon-green)/70">JULIUS</div>
             <div className="text-lg font-bold text-(--neon-green)">
               {completionPercent === 100 ? "FLYR!" : "VENTER"}
             </div>
@@ -251,8 +251,8 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
         <div className="p-4 border-2 border-(--cold-blue)/30 bg-(--cold-blue)/5 text-(--cold-blue) text-xs">
           <div className="font-bold mb-1">📊 SANNTIDSDATA</div>
           <div className="opacity-80">
-            Live statistikk fra Nordpolen! Tallene oppdateres automatisk. Hold
-            øye med gaveproduksjonen og følg med på fremdriften deres.
+            Live statistikk fra Snøfall! Tallene oppdateres automatisk. Hold øye
+            med gaveproduksjonen og følg med på fremdriften deres.
           </div>
         </div>
       </div>

@@ -15,12 +15,12 @@ import { KodeTerminal } from "@/components/windows/KodeTerminal";
 import { NisseNetUtforsker } from "@/components/windows/NisseNetUtforsker";
 import { Kalender } from "@/components/windows/Kalender";
 import { NisseMusikk } from "@/components/windows/NisseMusikk";
-import { NordpolTV } from "@/components/windows/NordpolTV";
-import { NisseBrev } from "@/components/windows/NisseBrev";
+import { SnøfallTV } from "@/components/windows/SnøfallTV";
+import { Brevfugler } from "@/components/windows/Brevfugler";
 import { NisseStats } from "@/components/windows/NisseStats";
 import { GrandFinaleModal } from "@/components/ui/GrandFinaleModal";
 import { BadgeRow } from "@/components/ui/BadgeRow";
-import { getAllOppdrag, getCompletionCount } from "@/lib/oppdrag-loader";
+import { getAllOppdrag, getCompletionCount } from "@/lib/oppdrag";
 import statiskInnholdData from "@/data/statisk_innhold.json";
 import { Varsel, FilNode, SystemMetrikk, KalenderDag } from "@/types/innhold";
 
@@ -70,7 +70,11 @@ function isCalendarActive(testMode: boolean): boolean {
 function getUnreadEmailCount(): number {
   if (typeof window === "undefined") return 0;
   const currentDay = getCurrentDay();
-  return StorageManager.getUnreadEmailCount(currentDay, oppdrag.length);
+  return StorageManager.getUnreadEmailCount(
+    currentDay,
+    oppdrag.length,
+    oppdrag,
+  );
 }
 
 export default function Home() {
@@ -114,8 +118,8 @@ export default function Home() {
     // Module unlock thresholds
     const MODULE_UNLOCK_DAYS = [
       { day: 7, module: "NISSEMUSIKK" },
-      { day: 10, module: "NORDPOL_TV" },
-      { day: 14, module: "NISSEBREV" },
+      { day: 10, module: "SNØFALL_TV" },
+      { day: 14, module: "BREVFUGLER" },
       { day: 16, module: "NISSESTATS" },
     ] as const;
 
@@ -127,7 +131,7 @@ export default function Home() {
     });
 
     // Note: Crisis state is checked within the respective module components
-    // (NordpolTV for antenna, NisseStats for inventory) to keep crisis logic
+    // (SnøfallTV for antenna, NisseStats for inventory) to keep crisis logic
     // co-located with the UI that displays it
   }, []);
 
@@ -285,13 +289,13 @@ export default function Home() {
                         {
                           key: "NORDPOL_TV",
                           icon: "image" as const,
-                          label: "NORDPOL TV",
+                          label: "SNØFALL TV",
                           color: "green" as const,
                         },
                         {
-                          key: "NISSEBREV",
+                          key: "BREVFUGLER",
                           icon: "mail" as const,
-                          label: "NISSEBREV",
+                          label: "BREVFUGLER",
                           color: "gold" as const,
                         },
                         {
@@ -395,13 +399,13 @@ export default function Home() {
                     <NisseMusikk onClose={handleCloseWindow} />
                   )}
                   {openWindow === "nordpol_tv" && (
-                    <NordpolTV
+                    <SnøfallTV
                       onClose={handleCloseWindow}
                       currentDay={getCurrentDay()}
                     />
                   )}
-                  {openWindow === "nissebrev" && (
-                    <NisseBrev onClose={handleCloseWindow} />
+                  {openWindow === "brevfugler" && (
+                    <Brevfugler onClose={handleCloseWindow} />
                   )}
                   {openWindow === "nissestats" && (
                     <NisseStats

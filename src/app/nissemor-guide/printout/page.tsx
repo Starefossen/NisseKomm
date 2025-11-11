@@ -2,7 +2,7 @@
 
 import { useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getAllOppdrag } from "@/lib/oppdrag-loader";
+import { getAllOppdrag } from "@/lib/oppdrag";
 
 const allOppdrag = getAllOppdrag();
 

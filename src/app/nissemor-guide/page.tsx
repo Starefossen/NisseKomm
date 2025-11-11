@@ -2,8 +2,9 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getAllOppdrag } from "@/lib/oppdrag-loader";
+import { getAllOppdrag } from "@/lib/oppdrag";
 import { StorageManager } from "@/lib/storage";
+import { getSideQuestDefinition } from "@/lib/sideoppdrag";
 
 const allOppdrag = getAllOppdrag();
 
@@ -59,16 +60,24 @@ function NissemorGuideContent() {
   };
 
   const handleAntennaCrisisConfirm = () => {
+    const def = getSideQuestDefinition("antenna");
     StorageManager.resolveCrisis("antenna");
-    // Award badge for Day 11 side-quest
-    StorageManager.addSideQuestBadge(11, "zap", "ANTENNE-INGENIØR");
+    StorageManager.addSideQuestBadge(
+      def.badgeDay,
+      def.badgeIcon,
+      def.badgeName,
+    );
     setAntennaConfirmed(true);
   };
 
   const handleInventoryCrisisConfirm = () => {
+    const def = getSideQuestDefinition("inventory");
     StorageManager.resolveCrisis("inventory");
-    // Award badge for Day 16 side-quest
-    StorageManager.addSideQuestBadge(16, "coin", "INVENTAR-EKSPERT");
+    StorageManager.addSideQuestBadge(
+      def.badgeDay,
+      def.badgeIcon,
+      def.badgeName,
+    );
     setInventoryConfirmed(true);
   };
 
@@ -149,13 +158,13 @@ function NissemorGuideContent() {
               <div className="flex items-center gap-3 p-2 bg-black/30 border-2 border-(--neon-green)/30">
                 <span className="text-xl font-bold text-(--gold)">Dag 10:</span>
                 <span className="text-lg">
-                  📺 NORDPOL TV låses opp (video-dagbok)
+                  📺 SNØFALL TV låses opp (video-dagbok)
                 </span>
               </div>
               <div className="flex items-center gap-3 p-2 bg-black/30 border-2 border-(--neon-green)/30">
                 <span className="text-xl font-bold text-(--gold)">Dag 14:</span>
                 <span className="text-lg">
-                  ✉️ NISSEBREV låses opp (brev fra julenissen)
+                  ✉️ BREVFUGLER låses opp (brev fra Julius)
                 </span>
               </div>
               <div className="flex items-center gap-3 p-2 bg-black/30 border-2 border-(--neon-green)/30">
@@ -668,7 +677,7 @@ function NissemorGuideContent() {
               <strong>Når:</strong> Dag 11 morgen (etter Dag 10 fullført)
             </p>
             <p className="mb-3">
-              <strong>Beskrivelse:</strong> NORDPOL TV viser &quot;SIGNAL LOST -
+              <strong>Beskrivelse:</strong> SNØFALL TV viser &quot;SIGNAL LOST -
               ANTENNA MALFUNCTION&quot;. Barna må bygge en tinfolie-antenne og
               sette den på toppen av TV-en/skjermen.
             </p>
@@ -726,11 +735,11 @@ function NissemorGuideContent() {
         {/* Santa Letters Section */}
         <div className="border-4 border-(--gold) bg-(--gold)/10 p-6">
           <h2 className="text-3xl font-bold text-(--gold) mb-4">
-            ✉️ NISSEBREV (Låses opp Dag 14)
+            ✉️ BREVFUGLER (Låses opp Dag 14)
           </h2>
           <p className="mb-4">
-            Skriv personlige brev fra Julenissen som barna kan lese i
-            NISSEBREV-modulen. Brevene lagres i nettleseren.
+            Skriv personlige brev fra Julius som barna kan lese i
+            BREVFUGLER-modulen. Brevene lagres i nettleseren.
           </p>
 
           <div className="space-y-3">
@@ -751,7 +760,7 @@ function NissemorGuideContent() {
                 value={letterInput}
                 onChange={(e) => setLetterInput(e.target.value)}
                 rows={6}
-                placeholder="Kjære [barnets navn],\n\nJeg har sett at du...\n\n- Julenissen"
+                placeholder="Kjære [barnets navn],\n\nJeg har sett at du...\n\n- Julius"
                 className="w-full p-3 bg-(--dark-crt) border-2 border-(--gold) text-(--gold) text-lg font-mono"
               />
             </div>

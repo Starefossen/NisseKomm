@@ -6,14 +6,14 @@ En leken julekalender med gåter for barn, designet som et retro CRT-kommandosen
 
 ## Oversikt
 
-**NisseKomm** har en nostalgisk lav-tech, pixelert estetikk inspirert av fiktive dataterminaler fra videospill. Barn løser daglige oppdrag ved å skrive inn koder i et terminalgrensesnitt, låser opp julenissens dagbok og utforsker et juletema filsystem.
+**NisseKomm** har en nostalgisk lav-tech, pixelert estetikk inspirert av fiktive dataterminaler fra videospill. Barn løser daglige oppdrag ved å skrive inn koder i et terminalgrensesnitt, låser opp Julius' dagbok og utforsker et juletema filsystem.
 
 ## Funksjoner
 
 - **Retro CRT-terminal**: Autentiske skannelinjeeffekter, pixelkanter og vignettoverlegg
 - **Daglige oppdrag**: 24 gåter/oppdrag (1-24. desember) levert via NisseMail
 - **Kodeterminal**: Send inn koder for å låse opp innhold og komme videre i kalenderen
-- **Julenissens dagbok**: Dynamisk dagbok som oppdateres daglig med julenissens perspektiv fra Nordpolen
+- **Julius' dagbok**: Dynamisk dagbok som oppdateres daglig med Julius' perspektiv fra Snøfall
 - **Filutforsker**: Bla gjennom juletemafiler og -mapper for å finne hint
 - **Kalendervisning**: Visuell fremdriftssporing som viser fullførte dager
 - **Oppstartssekvens**: Passordbeskyttet system med autentisk terminal-oppstartsanimasjon
@@ -83,7 +83,7 @@ Når `NEXT_PUBLIC_TEST_MODE=true`:
 
 ### Rediger innhold
 
-- **Oppdrag og gåter:** `src/data/uke1_oppdrag.json` through `uke4_oppdrag.json` (loaded via `src/lib/oppdrag-loader.ts`)
+- **Oppdrag og gåter:** `src/data/uke1_oppdrag.json` through `uke4_oppdrag.json` (loaded via `src/lib/oppdrag.ts`)
 - **Statisk innhold:** `src/data/statisk_innhold.json`
 
 Alle endringer lastes automatisk når du lagrer.

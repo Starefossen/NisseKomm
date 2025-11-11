@@ -18,6 +18,7 @@ const KEYS = {
   AUTHENTICATED: "nissekomm-authenticated",
   SUBMITTED_CODES: "nissekomm-codes",
   VIEWED_EMAILS: "nissekomm-viewed-emails",
+  VIEWED_SIDE_QUEST_EMAILS: "nissekomm-viewed-side-quest-emails",
   SOUNDS_ENABLED: "nissekomm-sounds-enabled",
   MUSIC_ENABLED: "nissekomm-music-enabled",
   SIDE_QUEST_BADGES: "nissekomm-side-quest-badges",
@@ -142,13 +143,33 @@ export class StorageManager {
   static getUnreadEmailCount(
     currentDay: number,
     totalMissions: number,
+    missions?: Array<{ dag: number; sideoppdrag?: { kode?: string } }>,
   ): number {
     const viewed = this.getViewedEmails();
+    const viewedSideQuests = this.getViewedSideQuestEmails();
+    const completedCodes = this.getSubmittedCodes().map((c) => c.kode);
     let unreadCount = 0;
 
     for (let day = 1; day <= Math.min(currentDay, totalMissions); day++) {
+      // Count unread main emails
       if (!viewed.has(day)) {
         unreadCount++;
+      }
+
+      // Count unread side-quest emails if missions data provided
+      if (missions) {
+        const mission = missions.find((m) => m.dag === day);
+        if (mission?.sideoppdrag) {
+          // Check if main quest is completed (to know if side-quest is accessible)
+          const mainCode = missions.find((m) => m.dag === day);
+          const isMainCompleted =
+            mainCode && completedCodes.includes(mission.sideoppdrag.kode || "");
+
+          // Side-quest is accessible if main mission is completed
+          if (isMainCompleted && !viewedSideQuests.has(day)) {
+            unreadCount++;
+          }
+        }
       }
     }
 
@@ -158,6 +179,39 @@ export class StorageManager {
   static clearViewedEmails(): void {
     if (typeof window === "undefined") return;
     localStorage.removeItem(KEYS.VIEWED_EMAILS);
+  }
+
+  // ============================================================
+  // Side-Quest Email Read Status
+  // ============================================================
+
+  static getViewedSideQuestEmails(): Set<number> {
+    if (typeof window === "undefined") return new Set();
+    try {
+      const stored = localStorage.getItem(KEYS.VIEWED_SIDE_QUEST_EMAILS);
+      if (stored) {
+        const arr = JSON.parse(stored) as number[];
+        return new Set(arr);
+      }
+    } catch {
+      // Fallback to empty set on parse error
+    }
+    return new Set();
+  }
+
+  static markSideQuestEmailAsViewed(day: number): void {
+    if (typeof window === "undefined") return;
+    const viewed = this.getViewedSideQuestEmails();
+    viewed.add(day);
+    localStorage.setItem(
+      KEYS.VIEWED_SIDE_QUEST_EMAILS,
+      JSON.stringify([...viewed]),
+    );
+  }
+
+  static clearViewedSideQuestEmails(): void {
+    if (typeof window === "undefined") return;
+    localStorage.removeItem(KEYS.VIEWED_SIDE_QUEST_EMAILS);
   }
 
   // ============================================================
@@ -217,6 +271,7 @@ export class StorageManager {
     localStorage.removeItem("nissekomm-santa-letters");
     localStorage.removeItem(KEYS.SIDE_QUEST_BADGES);
     localStorage.removeItem(KEYS.TOPIC_UNLOCKS);
+    localStorage.removeItem(KEYS.VIEWED_SIDE_QUEST_EMAILS);
   }
 
   // ============================================================
@@ -284,7 +339,7 @@ export class StorageManager {
   }
 
   // ============================================================
-  // Santa Letters (NISSEBREV Module)
+  // Santa Letters (BREVFUGLER Module)
   // ============================================================
 
   static getSantaLetters(): Array<{ day: number; content: string }> {
@@ -357,7 +412,11 @@ export class StorageManager {
   }
 
   static hasSideQuestBadge(day: number): boolean {
-    return this.getSideQuestBadges().some((b) => b.day === day);
+    const badges = this.getSideQuestBadges();
+    const result = badges.some((b) => {
+      return b.day === day;
+    });
+    return result;
   }
 
   // ============================================================

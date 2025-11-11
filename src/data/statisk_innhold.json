@@ -85,7 +85,7 @@
         {
           "navn": "system.log",
           "type": "fil",
-          "innhold": "[23:45] SYSTEM START\n[23:46] Laster juledata...\n[23:47] Nordpol koordinater verifisert\n[23:48] Reinsdyr status: KLAR\n[23:49] Gaveproduksjon: 87% fullført\n[23:50] Alle systemer GO!\n[00:15] Skibidi Sleigh Mode: ENABLED 🛷\n[01:22] Elf_04: 'I am not an NPC' 🤖\n[02:30] Christmas Buff +1 Applied 🎄"
+          "innhold": "[23:45] SYSTEM START\n[23:46] Laster juledata...\n[23:47] Snøfall koordinater verifisert\n[23:48] Reinsdyr status: KLAR\n[23:49] Gaveproduksjon: 87% fullført\n[23:50] Alle systemer GO!\n[00:15] Skibidi Sleigh Mode: ENABLED 🛷\n[01:22] Elf_04: 'I am not an NPC' 🤖\n[02:30] Christmas Buff +1 Applied 🎄"
         },
         {
           "navn": "sikkerhet.log",
@@ -106,7 +106,7 @@
         {
           "navn": "readme.txt",
           "type": "fil",
-          "innhold": "Velkommen til NisseKomm!\n\nDette er Nissens kommandosenter.\n\nBruk KODETERMINAL til å sende inn koder.\nBruk KALENDER for å se alle oppdrag.\n\nLykke til!"
+          "innhold": "Velkommen til NisseKomm!\n\nDette er Julius' kommandosenter i Snøfall.\n\nBruk KODETERMINAL til å sende inn koder.\nBruk KALENDER for å se alle oppdrag.\n\nBrevfuglene flyr mellom deg og oss!\n\nLykke til!"
         }
       ]
     },
@@ -115,14 +115,14 @@
       "type": "mappe",
       "barn": [
         {
-          "navn": "nissens_dagbok.txt",
+          "navn": "julius_dagbok.txt",
           "type": "fil",
-          "innhold": "NISSENS DAGBOK\n\nDag 1: Julekalender-prosjektet er i gang!\nDag 2: Barn over hele verden deltar.\nDag 3: Julefølelsen sprer seg.\nDag 4: Rudolf trener ekstra hardt.\nDag 5: Gaveproduksjonen går som planlagt.\n\n... fortsetter hver dag ..."
+          "innhold": "JULIUS' DAGBOK\n\nDag 1: Julekalender-prosjektet er i gang!\nDag 2: Barn over hele verden deltar.\nDag 3: Julefølelsen sprer seg.\nDag 4: Rudolf trener ekstra hardt.\nDag 5: Gaveproduksjonen går som planlagt.\nDag 6: Pil og Winter hjelper til.\nDag 7: IQ har laget nye oppfinnelser.\nDag 8: Trixter leder reinsdyr-treningen.\nDag 9: Orakelet advarer om utfordringer.\nDag 10: Julekuleblåsing går bra!\n\n... fortsetter hver dag ..."
         },
         {
           "navn": "snill_slem_liste.txt",
           "type": "fil",
-          "innhold": "🎄 NISSENS OFFISIELLE SNILL & SLEM LISTE 🎄\n\n[ADVARSEL: SKRIVEBESKYTTET - ADMIN TILGANG PÅKREVD]\n[SIKKERHETSNIVÅ: MAKSIMUM]\n\n═══════════════\n\n✨ SNILL LISTE ✨\n\n1. Georg - Hjulpet mamma hver dag\n2. Viljar - Delt leker med søsken\n3. Marcus - Ryddet rommet uten å bli bedt\n4. Amund - Passet på lillebror\n5. Elias - Leste for bestemor\n6. Brage - Hjalp nabo med snømåking\n7. Sverre - Laget kort til venner\n8. Kees - Gjorde lekser uten klag\n\n... [PLASS TIL FLERE NAVN] ...\n\n═══════════════\n\n⚠️ SLEM LISTE ⚠️\n\n1. [KLASSIFISERT]\n2. [KLASSIFISERT]\n3. [KLASSIFISERT]\n\n[Merk: Listen er heldigvis veldig kort i år!]\n\n═══════════════\n\nSist oppdatert: 1. Desember\nNeste gjennomgang: 24. Desember kl 23:59\n\n💡 HINT: Kanskje det finnes en måte å få tilgang til\nredigeringsmodus? Hold utkikk etter HACKINGVERKTØY..."
+          "innhold": "🎄 JULIUS' OFFISIELLE SNILL & SLEM LISTE 🎄\n\n[ADVARSEL: SKRIVEBESKYTTET - ADMIN TILGANG PÅKREVD]\n[SIKKERHETSNIVÅ: MAKSIMUM]\n\n═══════════════\n\n✨ SNILL LISTE ✨\n\n1. Georg - Hjulpet mamma hver dag\n2. Viljar - Delt leker med søsken\n3. Marcus - Ryddet rommet uten å bli bedt\n4. Amund - Passet på lillebror\n5. Elias - Leste for bestemor\n6. Brage - Hjalp nabo med snømåking\n7. Sverre - Laget kort til venner\n8. Kees - Gjorde lekser uten klag\n\n... [PLASS TIL FLERE NAVN] ...\n\n═══════════════\n\n⚠️ SLEM LISTE ⚠️\n\n1. [KLASSIFISERT]\n2. [KLASSIFISERT]\n3. [KLASSIFISERT]\n\n[Merk: Listen er heldigvis veldig kort i år!]\n\n═══════════════\n\nSist oppdatert: 1. Desember\nNeste gjennomgang: 24. Desember kl 23:59\n\n💡 HINT: Kanskje det finnes en måte å få tilgang til\nredigeringsmodus? Hold utkikk etter HACKINGVERKTØY..."
         },
         {
           "navn": "reinsdyr_GYATT.log",

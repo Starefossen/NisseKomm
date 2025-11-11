@@ -10,11 +10,11 @@ interface Letter {
   content: string;
 }
 
-interface NisseBrevProps {
+interface BrevfuglerProps {
   onClose: () => void;
 }
 
-export function NisseBrev({ onClose }: NisseBrevProps) {
+export function Brevfugler({ onClose }: BrevfuglerProps) {
   const [letters] = useState<Letter[]>(() => {
     if (typeof window !== "undefined") {
       return StorageManager.getSantaLetters();
@@ -35,10 +35,7 @@ export function NisseBrev({ onClose }: NisseBrevProps) {
     : null;
 
   return (
-    <RetroWindow
-      title="NISSEBREV - DIREKTEPOST FRA JULENISSEN"
-      onClose={onClose}
-    >
+    <RetroWindow title="BREVFUGLER - DIREKTEPOST FRA JULIUS" onClose={onClose}>
       <div className="p-6 h-full overflow-y-auto space-y-6">
         {/* Header */}
         <div className="flex items-center gap-4 pb-4 border-b-4 border-(--neon-green)/30">
@@ -47,7 +44,7 @@ export function NisseBrev({ onClose }: NisseBrevProps) {
             <div className="text-2xl font-bold tracking-wider">
               PERSONLIGE MELDINGER
             </div>
-            <div className="text-sm opacity-70">BREV FRA NORDPOLEN TIL DEG</div>
+            <div className="text-sm opacity-70">BREV FRA SNØFALL TIL DEG</div>
           </div>
           <div className="flex items-center gap-2 px-3 py-1 border-2 border-(--gold) bg-(--gold)/20">
             <div className="w-2 h-2 bg-(--gold) rounded-full animate-pulse-led"></div>
@@ -86,7 +83,7 @@ export function NisseBrev({ onClose }: NisseBrevProps) {
                     UNDER BEHANDLING...
                   </div>
                   <div className="text-xs text-(--gold)/70">
-                    Julenissen skriver fortsatt brev
+                    Julius skriver fortsatt brev
                   </div>
                 </div>
               </>
@@ -101,8 +98,8 @@ export function NisseBrev({ onClose }: NisseBrevProps) {
             <div className="text-center space-y-2">
               <div className="text-lg text-(--neon-green)">Ingen brev ennå</div>
               <div className="text-sm text-(--neon-green)/70 max-w-md">
-                Julenissen vil sende personlige brev til dere etter hvert som
-                dere løser oppdrag. Hold utkikk!
+                Julius vil sende personlige brev til dere etter hvert som dere
+                løser oppdrag. Hold utkikk!
               </div>
             </div>
           </div>
@@ -133,7 +130,7 @@ export function NisseBrev({ onClose }: NisseBrevProps) {
                     </div>
                   </div>
                   <div className="text-xs text-(--neon-green)/70 mt-1">
-                    Fra: Julenissen
+                    Fra: Julius
                   </div>
                 </button>
               ))}
@@ -147,7 +144,7 @@ export function NisseBrev({ onClose }: NisseBrevProps) {
                   <div className="pb-4 border-b-2 border-(--gold)/30">
                     <div className="text-xs text-(--gold)/70">FRA:</div>
                     <div className="text-lg font-bold text-(--gold)">
-                      🎅 Julenissen, Nordpolen
+                      🎅 Julius, Snøfall
                     </div>
                     <div className="text-xs text-(--gold)/70 mt-2">
                       DAG {selectedLetterData.day}
@@ -165,7 +162,7 @@ export function NisseBrev({ onClose }: NisseBrevProps) {
                       Med vennlig hilsen,
                     </div>
                     <div className="text-sm text-(--gold) font-bold mt-1">
-                      Julenissen 🎄
+                      Julius 🎄
                     </div>
                   </div>
                 </div>
@@ -185,9 +182,9 @@ export function NisseBrev({ onClose }: NisseBrevProps) {
         <div className="p-4 border-2 border-(--cold-blue)/30 bg-(--cold-blue)/5 text-(--cold-blue) text-xs">
           <div className="font-bold mb-1">✉️ PERSONLIGE MELDINGER</div>
           <div className="opacity-80">
-            Julenissen sender spesielle brev til dere! Nye meldinger kan legges
-            til via Nissemor-guiden. Disse brevene vises her etter hvert som
-            dere fullfører oppdrag.
+            Julius sender spesielle brev til dere! Nye meldinger kan legges til
+            via Nissemor-guiden. Disse brevene vises her etter hvert som dere
+            fullfører oppdrag.
           </div>
         </div>
       </div>

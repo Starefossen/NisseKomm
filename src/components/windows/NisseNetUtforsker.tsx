@@ -5,7 +5,7 @@ import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { FilNode, Oppdrag } from "@/types/innhold";
 import { StorageManager } from "@/lib/storage";
-import { isDayCompleted } from "@/lib/oppdrag-loader";
+import { isDayCompleted } from "@/lib/oppdrag";
 
 interface NisseNetUtforskerProps {
   files: FilNode[];
@@ -28,11 +28,11 @@ export function NisseNetUtforsker({
   // Generate dynamic diary content based on current day
   const generateDiaryContent = useMemo(() => {
     if (currentDay < 1 || currentDay > 24) {
-      return "JULENISSENS DAGBOK\n==================\n\nDag 0 - Før Julen Starter\n\nHei! Dette er Julenissen som skriver fra Nordpolen. Jeg har bestemt meg for å føre dagbok over desember måned. Rampenissen har reist ned til barna for å hjelpe dem med årets julekalender.\n\nHer oppe forbereder vi oss på den travleste tiden på året. Nissene er klare, reinsdyrene er (mer eller mindre) motiverte, og Nissemor har bakt nok pepperkaker til å fø en hær.\n\nSnart begynner den magiske tiden. Gleder meg!\n\n- Julenissen\n\nPS: Rudolf har allerede begynt å klage. Det er ikke engang desember ennå.";
+      return "JULIUS' DAGBOK\n==================\n\nDag 0 - Før Julen Starter\n\nHei! Dette er Julius som skriver fra Snøfall. Jeg har bestemt meg for å føre dagbok over desember måned. Rampenissen har reist ned til barna for å hjelpe dem med årets julekalender.\n\nHer i Snøfall forbereder vi oss på den travleste tiden på året. Nissene er klare, reinsdyrene er (mer eller mindre) motiverte, og Nissemor har bakt nok pepperkaker til å fø en hær.\n\nSnart begynner den magiske tiden. Gleder meg!\n\n- Julius\n\nPS: Rudolf har allerede begynt å klage. Det er ikke engang desember ennå.";
     }
 
     let diary =
-      "JULENISSENS DAGBOK\n==================\n\nSkrevet av Julenissen fra Nordpolen\n\n";
+      "JULIUS' DAGBOK\n==================\n\nSkrevet av Julius fra Snøfall\n\n";
 
     // Show all entries up to current day
     for (let day = 1; day <= currentDay; day++) {

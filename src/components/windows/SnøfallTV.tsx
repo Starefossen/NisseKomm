@@ -6,14 +6,14 @@ import { Icons } from "@/lib/icons";
 import { StorageManager } from "@/lib/storage";
 import Image from "next/image";
 
-interface NordpolTVProps {
+interface SnøfallTVProps {
   onClose: () => void;
   currentDay: number;
 }
 
 type CameraView = "cam1" | "cam2" | "cam3" | "static";
 
-export function NordpolTV({ onClose, currentDay }: NordpolTVProps) {
+export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
   const [weather, setWeather] = useState<"clear" | "snow" | "storm">("clear");
   const [currentCamera, setCurrentCamera] = useState<CameraView>("cam1");
   const [staticNoise, setStaticNoise] = useState(0);
@@ -70,14 +70,14 @@ export function NordpolTV({ onClose, currentDay }: NordpolTVProps) {
   };
 
   return (
-    <RetroWindow title="NORDPOL TV - LIVE VERKSTED" onClose={onClose}>
+    <RetroWindow title="SNØFALL TV - LIVE VERKSTED" onClose={onClose}>
       <div className="p-6 h-full overflow-y-auto space-y-6">
         {/* Header */}
         <div className="flex items-center gap-4 pb-4 border-b-4 border-(--neon-green)/30">
           <Icons.Video size={32} color="green" />
           <div className="flex-1">
             <div className="text-2xl font-bold tracking-wider">
-              NORDPOL OVERVÅKING
+              SNØFALL OVERVÅKING
             </div>
             <div className="text-sm opacity-70">
               SIKKERHETSKAMERA - LIVE FEED
@@ -155,7 +155,7 @@ export function NordpolTV({ onClose, currentDay }: NordpolTVProps) {
                   ANTENNA MALFUNCTION
                 </div>
                 <div className="text-sm text-(--neon-green)/70 max-w-md">
-                  Signalet fra Nordpolen er brutt! Sjekk NISSEMAIL for
+                  Signalet fra Snøfall er brutt! Sjekk NISSEMAIL for
                   instruksjoner om hvordan du kan reparere antennen.
                 </div>
                 <div className="mt-4 p-3 border-2 border-(--christmas-red)/50 bg-(--christmas-red)/10">
@@ -175,7 +175,7 @@ export function NordpolTV({ onClose, currentDay }: NordpolTVProps) {
                   <div className="absolute inset-0">
                     <Image
                       src="/village-day.jpg"
-                      alt="Nordpol village"
+                      alt="Snøfall village"
                       fill
                       className="object-cover"
                       style={{ imageRendering: "auto" }}
@@ -600,7 +600,7 @@ export function NordpolTV({ onClose, currentDay }: NordpolTVProps) {
         <div className="p-4 border-2 border-(--cold-blue)/30 bg-(--cold-blue)/5 text-(--cold-blue) text-xs">
           <div className="font-bold mb-1">📹 SIKKERHETSKAMERA SYSTEM</div>
           <div className="opacity-80">
-            Overvåk Nordpolen gjennom vårt retro sikkerhetskamera-system. Prøv
+            Overvåk Snøfall gjennom vårt retro sikkerhetskamera-system. Prøv
             ulike kameraer - noen fungerer bedre enn andre! Vær og
             dag/natt-syklus oppdateres automatisk.
           </div>

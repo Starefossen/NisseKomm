@@ -6,9 +6,18 @@
 
 ## Project Overview
 
-**NisseKomm** is a playful Christmas calendar app for children (ages 6-12) that runs December 1-24. Kids solve daily riddles by entering codes, unlocking Santa's diary and exploring a retro CRT-style terminal interface. The aesthetic is inspired by fictional in-game computer terminals (like GTA) with a nostalgic, pixelated look.
+**NisseKomm** is a playful Christmas calendar app for children (ages 6-12) that runs December 1-24. Kids solve daily riddles by entering codes, unlocking Julius' diary and exploring a retro CRT-style terminal interface. The aesthetic is inspired by fictional in-game computer terminals (like GTA) with a nostalgic, pixelated look.
 
 **Core Experience**: Boot up a password-protected "command center" → receive daily emails from Rampenissen → solve riddles → enter codes in terminal → unlock content → track progress on calendar.
+
+**Universe**: Based on the Snøfall TV series universe - Julius (Santa) lives in Snøfall with Nissemor and the elves, sending missions to children through Rampenissen.
+
+**Key Snøfall Elements**:
+
+- **Julekuleblåsing** - Making Christmas ornaments by glass blowing
+- **Brevfugler** - Paper birds that carry letters from children (can be folded origami-style)
+- **Themes**: Magic, friendship, and overcoming dangers together
+- **Characters**: Pil (apprentice), Winter (secretary), IQ (inventor), Trixter (reindeer), Orakelet (oracle), Mørket (the darkness)
 
 ## Tech Stack
 
@@ -66,15 +75,23 @@
 - **Single window paradigm**: Only one app window open at a time (desktop icons hide when window opens)
 - **Persistent sidebar**: Always shows system metrics and scrolling alerts
 - **Modal windows**: Centered overlays with retro window chrome
-- **Desktop grid**: 2×3 icon layout (4 active modules + 2 locked slots)
+- **Desktop grid**: 2×3 icon layout (4 core modules + 4 unlockable modules)
 
 ### Application Modules
 
+**Core Desktop (Always Available)**:
+
 1. **NisseMail** - Email inbox showing daily missions from Rampenissen (unread badge on icon)
 2. **KodeTerminal** - Code submission interface with validation and history
-3. **NisseNet Utforsker** - File browser with Santa's diary and hint files
+3. **NisseNet Utforsker** - File browser with Julius' diary and hint files
 4. **Kalender** - 24-day grid showing locked/available/completed states
-5. **LÅST** (2 slots) - Locked placeholders that shake when clicked
+
+**Unlockable Modules** (appear in slots as codes are completed):
+
+1. **NisseMusikk** - Christmas music player (Snøfall Radio)
+2. **Snøfall TV** - Live camera feed from workshop
+3. **Brevfugler** - Personal letters from Julius (unlocks day 14)
+4. **NisseStats** - Live statistics dashboard from Snøfall
 
 ### State Management Philosophy
 
@@ -115,7 +132,7 @@
   tittel: string,           // Mission title
   beskrivelse: string,      // Riddle/puzzle description
   kode: string,             // Expected answer code
-  dagbokinnlegg?: string,   // Santa's diary entry (shown when day ≤ current)
+  dagbokinnlegg?: string,   // Julius' diary entry (shown when day ≤ current)
   hendelse?: string         // Optional calendar event label
 }
 ```
@@ -124,7 +141,7 @@
 
 - Mission content drives diary unlocking (diary shows all entries up to current day)
 - File system includes hints and flavor text in Norwegian
-- Santa's diary written from North Pole perspective (mentions Rampenissen with kids)
+- Julius' diary written from Snøfall perspective (mentions Rampenissen with kids)
 - All content stored in JSON for easy editing without code changes
 
 ## Development Practices
@@ -186,14 +203,21 @@ Consistent terms used throughout the application:
 - **KodeTerminal** - Code Terminal
 - **NisseNet Utforsker** - Santa Net Explorer
 - **Kalender** - Calendar
-- **Julenissens Dagbok** - Santa's Diary
+- **Brevfugler** - Paper Bird Letters (don't translate - from Snøfall universe)
+- **Julius Dagbok** - Santa's Diary
 
 **Characters:**
 
-- **Julenissen** - Santa Claus
-- **Nissemor** - Mrs. Claus
-- **Rampenissen** - The Mischievous Elf (Santa's assistant stationed with children)
-- **Nordpolen** - The North Pole
+- **Julius** - Santa Claus (from Snøfall)
+- **Nissemor** - Julius' wife
+- **Rampenissen** - The Mischievous Elf (Julius' assistant stationed with children)
+- **Pil** - Julius' apprentice (eager and helpful)
+- **Winter (Ole Winter)** - Julius' secretary (organizes everything)
+- **IQ** - Inventor (creates gadgets and contraptions)
+- **Trixter** - Julius' favorite reindeer
+- **Orakelet** - The Oracle (warns of dangers and anomalies)
+- **Mørket** - The Darkness (represents danger and challenges)
+- **Snøfall** - The magical place where Julius lives
 
 **Actions & States:**
 
@@ -230,7 +254,23 @@ Consistent terms used throughout the application:
 - Keep utility functions in lib/
 - Centralize types in types/
 - Single source of truth for content (data/uke1-4_oppdrag.json and data/statisk_innhold.json)
-- Load and validate quest data through oppdrag-loader.ts
+- Load and validate quest data through oppdrag.ts
+- **Side-quest utilities** in sideoppdrag.ts for consistent completion tracking
+
+## Side-Quest System
+
+**Centralized Utilities** (`lib/sideoppdrag.ts`):
+
+- `isSideQuestCompleted(mission)` - Check if any side-quest is completed (handles both code and parent validation)
+- `getSideQuestDefinition(crisisType)` - Get badge details for Nissemor Guide integration
+
+**Current Side-Quests** (derived from oppdrag JSON files - source of truth):
+
+- **Day 11: Antenne-krise** (Signal crisis) - Parent validation, awards "ANTENNE-INGENIØR" badge
+- **Day 16: Inventar-kaos** (Inventory chaos) - Parent validation, awards "INVENTAR-EKSPERT" badge
+- **Day 14: TODO** - Consider adding a new side-quest here
+
+**Important Design Principle**: ALL side-quest data is derived from the oppdrag JSON files. The utilities have NO hardcoded day numbers or badge information - they load data dynamically from the mission definitions.
 
 ## Animation System
 

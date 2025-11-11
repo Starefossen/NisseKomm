@@ -6,7 +6,8 @@ import { Icons } from "@/lib/icons";
 import { Oppdrag } from "@/types/innhold";
 import { SoundManager } from "@/lib/sounds";
 import { StorageManager } from "@/lib/storage";
-import { isSideQuestAccessible } from "@/lib/oppdrag-loader";
+import { isSideQuestAccessible } from "@/lib/oppdrag";
+import { isSideQuestCompleted } from "@/lib/sideoppdrag";
 
 /**
  * Email types for inbox display
@@ -44,11 +45,7 @@ export function NisseMail({
 
   const [viewedSideQuests, setViewedSideQuests] = useState<Set<number>>(() => {
     if (typeof window !== "undefined") {
-      const viewed = new Set<number>();
-      // Mark as viewed if badge earned
-      const badges = StorageManager.getSideQuestBadges();
-      badges.forEach((b) => viewed.add(b.day));
-      return viewed;
+      return StorageManager.getViewedSideQuestEmails();
     }
     return new Set();
   });
@@ -59,6 +56,7 @@ export function NisseMail({
     (dag: number, isSideQuest: boolean = false) => {
       if (isSideQuest) {
         if (!viewedSideQuests.has(dag)) {
+          StorageManager.markSideQuestEmailAsViewed(dag);
           const updated = new Set(viewedSideQuests);
           updated.add(dag);
           setViewedSideQuests(updated);
@@ -141,7 +139,11 @@ export function NisseMail({
   };
 
   const getUnreadCount = () => {
-    return StorageManager.getUnreadEmailCount(currentDay, missions.length);
+    return StorageManager.getUnreadEmailCount(
+      currentDay,
+      missions.length,
+      missions,
+    );
   };
 
   // Filter missions up to current day and build email list
@@ -342,7 +344,7 @@ export function NisseMail({
                       <div className="flex items-center gap-3 mb-3">
                         <Icons.Trophy size={20} color="gold" />
                         <span className="text-sm font-bold text-(--gold)">
-                          MERKE-BELØNNING:
+                          MERKER & BELØNNING:
                         </span>
                       </div>
                       <div className="flex items-center gap-4 p-3 bg-(--gold)/5 border-2 border-(--gold)/30">
@@ -403,30 +405,54 @@ export function NisseMail({
                   </div>
 
                   {/* Action button */}
-                  {selectedMission.sideoppdrag.validering === "forelder" ? (
-                    <div className="mt-4 pt-4 border-t-4 border-(--gold) shrink-0">
-                      <button
-                        disabled
-                        className="w-full px-6 py-3 bg-(--gray) text-black text-xl tracking-wider font-bold border-4 border-(--gray) opacity-50 cursor-not-allowed flex items-center justify-center gap-3"
-                      >
-                        <Icons.Lock size={24} color="gray" />
-                        <span>VENTER PÅ GODKJENNING</span>
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="mt-4 pt-4 border-t-4 border-(--gold) shrink-0">
-                      <button
-                        onClick={() => {
-                          SoundManager.playSound("click");
-                          onOpenKodeTerminal(selectedMission.dag);
-                        }}
-                        className="w-full px-6 py-3 bg-(--gold) text-black text-xl tracking-wider font-bold border-4 border-(--gold) hover:bg-transparent hover:text-(--gold) transition-colors flex items-center justify-center gap-3"
-                      >
-                        <Icons.Code size={24} color="gold" />
-                        <span>ÅPNE KODETERMINAL</span>
-                      </button>
-                    </div>
-                  )}
+                  {(() => {
+                    // Use centralized utility to check completion
+                    const isCompleted = isSideQuestCompleted(selectedMission);
+
+                    if (
+                      selectedMission.sideoppdrag?.validering === "forelder"
+                    ) {
+                      return (
+                        <div className="mt-4 pt-4 border-t-4 border-(--gold) shrink-0">
+                          <button
+                            disabled
+                            className={`w-full px-6 py-3 text-xl tracking-wider font-bold border-4 flex items-center justify-center gap-3 ${
+                              isCompleted
+                                ? "bg-(--neon-green) border-(--neon-green) text-black opacity-100 cursor-default"
+                                : "bg-(--gray) border-(--gray) text-black opacity-50 cursor-not-allowed"
+                            }`}
+                          >
+                            {isCompleted ? (
+                              <>
+                                <Icons.CheckCircle size={24} color="green" />
+                                <span>FULLFØRT</span>
+                              </>
+                            ) : (
+                              <>
+                                <Icons.Lock size={24} color="gray" />
+                                <span>VENTER PÅ VERIFIKASJON</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <div className="mt-4 pt-4 border-t-4 border-(--gold) shrink-0">
+                        <button
+                          onClick={() => {
+                            SoundManager.playSound("click");
+                            onOpenKodeTerminal(selectedMission.dag);
+                          }}
+                          className="w-full px-6 py-3 bg-(--gold) text-black text-xl tracking-wider font-bold border-4 border-(--gold) hover:bg-transparent hover:text-(--gold) transition-colors flex items-center justify-center gap-3"
+                        >
+                          <Icons.Code size={24} color="gold" />
+                          <span>ÅPNE KODETERMINAL</span>
+                        </button>
+                      </div>
+                    );
+                  })()}
                 </>
               ) : (
                 /* Regular mission email */
@@ -478,7 +504,7 @@ export function NisseMail({
                         <div className="flex items-center gap-2 mb-2">
                           <Icons.Alert size={20} color="blue" />
                           <span className="text-sm font-bold text-(--cold-blue)">
-                            OFFENTLIG HENDELSE
+                            DETTE SKJER I DAG
                           </span>
                         </div>
                         <div className="text-sm text-(--cold-blue)">

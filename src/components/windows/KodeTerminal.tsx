@@ -18,8 +18,8 @@ interface KodeTerminalProps {
 // Module unlock thresholds
 const MODULE_UNLOCK_DAYS = [
   { day: 7, module: "NISSEMUSIKK", label: "Nissemusikk" },
-  { day: 10, module: "NORDPOL_TV", label: "Nordpol TV" },
-  { day: 14, module: "NISSEBREV", label: "Nissebrev" },
+  { day: 10, module: "SNØFALL_TV", label: "Snøfall TV" },
+  { day: 14, module: "BREVFUGLER", label: "Brevfugler" },
   { day: 16, module: "NISSESTATS", label: "Nissestats" },
 ] as const;
 
