@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
-import { StorageManager } from "@/lib/storage";
+import { GameEngine } from "@/lib/game-engine";
+import { getCurrentDate } from "@/lib/date-utils";
 import Image from "next/image";
 
 interface SnøfallTVProps {
@@ -17,22 +18,22 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
   const [weather, setWeather] = useState<"clear" | "snow" | "storm">("clear");
   const [currentCamera, setCurrentCamera] = useState<CameraView>("cam1");
   const [staticNoise, setStaticNoise] = useState(0);
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState(getCurrentDate());
 
-  const crisisStatus = StorageManager.getCrisisStatus();
+  const crisisStatus = GameEngine.getCrisisStatus();
   const isAntennaBroken = currentDay >= 11 && !crisisStatus.antenna;
 
   // Calculate daytime based on real time (6am-6pm = day)
   const hour = currentTime.getHours();
   const isDaytime = hour >= 6 && hour < 18;
 
-  // Update current time every minute
+  // Update time every second for clock display
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 60000); // Update every minute
+    const timer = setInterval(() => {
+      setCurrentTime(getCurrentDate());
+    }, 1000);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(timer);
   }, []);
 
   // Static noise animation for grainy security cam effect

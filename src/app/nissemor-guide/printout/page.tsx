@@ -1,12 +1,21 @@
 "use client";
 
-import { useEffect, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter } from "next/navigation";
+import { GuideAuth, useGuideAuth } from "@/components/nissemor/GuideAuth";
+import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { GameEngine } from "@/lib/game-engine";
+import {
+  getAllEventyr,
+  getEventyrDays,
+  getEventyrProgress,
+  isEventyrComplete,
+} from "@/lib/historier";
+import type { Oppdrag, PrintMaterial } from "@/types/innhold";
 
 const allOppdrag = GameEngine.getAllQuests();
 
-// Generate checkpoint cards for multi-stage quests
+// Generate checkpoint cards dynamically from print_materials
 interface CheckpointCard {
   dag: number;
   tittel: string;
@@ -14,90 +23,62 @@ interface CheckpointCard {
   totalCheckpoints: number;
   location: string;
   challenge?: string;
-  letter: string;
+  letters: string;
 }
 
-const checkpointCards: CheckpointCard[] = [
-  // Day 19: 4-room checkpoint course
-  {
-    dag: 19,
-    tittel: "Dag 19 - Checkpoint 1",
-    checkpoint: 1,
-    totalCheckpoints: 4,
-    location: "SOVEROM",
-    challenge: "Tell reinsdyrbeina",
-    letter: "R",
-  },
-  {
-    dag: 19,
-    tittel: "Dag 19 - Checkpoint 2",
-    checkpoint: 2,
-    totalCheckpoints: 4,
-    location: "KJØKKEN",
-    challenge: "Tell røde ting",
-    letter: "E, I",
-  },
-  {
-    dag: 19,
-    tittel: "Dag 19 - Checkpoint 3",
-    checkpoint: 3,
-    totalCheckpoints: 4,
-    location: "BAD",
-    challenge: "Hvit og kald, faller fra skyene?",
-    letter: "N, S",
-  },
-  {
-    dag: 19,
-    tittel: "Dag 19 - Checkpoint 4",
-    checkpoint: 4,
-    totalCheckpoints: 4,
-    location: "STUE",
-    challenge: "Siste stopp!",
-    letter: "D, Y",
-  },
+/**
+ * Parse checkpoint information from print_materials
+ * Looks for "checkpoint_cards" type materials with structured checkpoint data
+ */
+function generateCheckpointCards(quest: Oppdrag): CheckpointCard[] {
+  if (!quest.print_materials) return [];
 
-  // Day 20: 5-checkpoint obstacle course
-  {
-    dag: 20,
-    tittel: "Dag 20 - Checkpoint 1",
-    checkpoint: 1,
-    totalCheckpoints: 5,
-    location: "UNDER kjøkkenbord",
-    letter: "S",
-  },
-  {
-    dag: 20,
-    tittel: "Dag 20 - Checkpoint 2",
-    checkpoint: 2,
-    totalCheckpoints: 5,
-    location: "BAK soveromsdør",
-    letter: "L",
-  },
-  {
-    dag: 20,
-    tittel: "Dag 20 - Checkpoint 3",
-    checkpoint: 3,
-    totalCheckpoints: 5,
-    location: "I bokhylle",
-    letter: "E",
-  },
-  {
-    dag: 20,
-    tittel: "Dag 20 - Checkpoint 4",
-    checkpoint: 4,
-    totalCheckpoints: 5,
-    location: "UNDER pute på sofa",
-    letter: "D",
-  },
-  {
-    dag: 20,
-    tittel: "Dag 20 - Checkpoint 5",
-    checkpoint: 5,
-    totalCheckpoints: 5,
-    location: "VED vindu i stue",
-    letter: "E",
-  },
-];
+  const checkpoints: CheckpointCard[] = [];
+
+  // Type for checkpoint_cards material (extension of PrintMaterial)
+  type CheckpointMaterial = {
+    type: string;
+    checkpoints: Array<{
+      checkpoint: number;
+      location: string;
+      challenge: string;
+      letters: string;
+    }>;
+  };
+
+  // Find checkpoint material - use type assertion since TypeScript can't infer the extended type
+  const materials = quest.print_materials as Array<
+    PrintMaterial | CheckpointMaterial
+  >;
+  const checkpointMaterial = materials.find(
+    (m): m is CheckpointMaterial =>
+      "type" in m && "checkpoints" in m && m.type === "checkpoint_cards",
+  );
+
+  if (checkpointMaterial) {
+    const checkpointData = checkpointMaterial.checkpoints;
+    const totalCheckpoints = checkpointData.length;
+
+    checkpointData.forEach((cp) => {
+      checkpoints.push({
+        dag: quest.dag,
+        tittel: `Dag ${quest.dag} - Checkpoint ${cp.checkpoint}`,
+        checkpoint: cp.checkpoint,
+        totalCheckpoints,
+        location: cp.location,
+        challenge: cp.challenge,
+        letters: cp.letters,
+      });
+    });
+  }
+
+  return checkpoints;
+}
+
+// Build checkpoint cards from all quests
+const checkpointCards: CheckpointCard[] = allOppdrag.flatMap(
+  generateCheckpointCards,
+);
 
 // Build full card list with checkpoints inserted after their main quest
 type Card = (typeof allOppdrag)[0] | CheckpointCard;
@@ -111,21 +92,15 @@ allOppdrag.forEach((oppdrag) => {
 
 function PrintoutContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const expectedKey = process.env.NEXT_PUBLIC_PARENT_GUIDE_KEY || "NORDPOL2025";
-  const key = searchParams.get("key");
-  const authenticated = key === expectedKey;
-
-  useEffect(() => {
-    if (!authenticated) {
-      router.push("/");
+  const { kode } = useGuideAuth();
+  const [completedDays] = useState<Set<number>>(() => {
+    // Lazy initialization - only runs once
+    if (typeof window !== "undefined") {
+      const state = GameEngine.loadGameState();
+      return state.completedQuests;
     }
-  }, [authenticated, router]);
-
-  if (!authenticated) {
-    return null;
-  }
+    return new Set<number>();
+  });
 
   // Split into pages of 6 cards each (2 columns × 3 rows)
   const cardsPerPage = 6;
@@ -139,11 +114,22 @@ function PrintoutContent() {
     return "checkpoint" in card;
   };
 
+  // Get story arc progress for display
+  const allEventyr = getAllEventyr();
+  const eventyrProgress = allEventyr.map((arc) => ({
+    arc,
+    days: getEventyrDays(arc.id),
+    progress: getEventyrProgress(arc.id, completedDays),
+    complete: isEventyrComplete(arc.id, completedDays),
+  }));
+
   return (
     <>
       {/* Screen-only header */}
       <div className="print:hidden min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-8">
         <div className="max-w-6xl mx-auto">
+          <GuideNavigation currentPage="printout" />
+
           <h1 className="text-4xl font-bold text-center mb-4">
             🖨️ NISSEMOR UTSKRIFTER
           </h1>
@@ -158,7 +144,7 @@ function PrintoutContent() {
               SKRIV UT ALLE ({pages.length} SIDER)
             </button>
             <button
-              onClick={() => router.push(`/nissemor-guide?key=${key}`)}
+              onClick={() => router.push(`/nissemor-guide?kode=${kode}`)}
               className="px-6 py-3 border-4 border-(--neon-green) text-(--neon-green) font-bold text-xl hover:bg-(--neon-green)/10"
             >
               TILBAKE TIL GUIDE
@@ -189,6 +175,68 @@ function PrintoutContent() {
               Slik vil kortene se ut når de er printet (scrolle ned for å se
               alle):
             </p>
+          </div>
+
+          {/* Eventy Progress Summary */}
+          <div className="border-4 border-(--gold) bg-(--gold)/10 p-6 mb-8">
+            <h2 className="text-2xl font-bold text-(--gold) mb-4">
+              📖 STORY ARC FREMGANG
+            </h2>
+            <p className="text-lg mb-4 opacity-80">
+              Oversikt over hvordan barna dine ligger an med historiene:
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {eventyrProgress.map(({ arc, days, progress, complete }) => (
+                <div
+                  key={arc.id}
+                  className="border-2 p-4 bg-black/30"
+                  style={{ borderColor: arc.farge }}
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-2xl">{arc.ikon}</span>
+                    <div className="flex-1">
+                      <div
+                        className="text-xl font-bold"
+                        style={{ color: arc.farge }}
+                      >
+                        {arc.navn}
+                      </div>
+                      <div className="text-sm text-(--gray)">
+                        Dager: {days.join(", ")}
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div
+                        className="text-3xl font-bold"
+                        style={{ color: complete ? "var(--gold)" : arc.farge }}
+                      >
+                        {progress}%
+                      </div>
+                      {complete && (
+                        <div className="text-xs text-(--gold)">✓ FULLFØRT</div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="h-2 bg-black border border-(--neon-green)/30">
+                    <div
+                      className="h-full transition-all"
+                      style={{
+                        width: `${progress}%`,
+                        backgroundColor: complete ? "var(--gold)" : arc.farge,
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 text-center">
+              <a
+                href={`/historier?kode=${kode}`}
+                className="inline-block px-6 py-2 border-4 border-(--gold) text-(--gold) font-bold text-xl hover:bg-(--gold)/10"
+              >
+                SE FULL HISTORIER-OVERSIKT →
+              </a>
+            </div>
           </div>
 
           {/* Screen Preview */}
@@ -250,7 +298,7 @@ function PrintoutContent() {
                               </div>
                             )}
                             <div className="text-center text-2xl font-bold text-(--neon-green)">
-                              BOKSTAV: {card.letter}
+                              BOKSTAV: {card.letters}
                             </div>
                             <div className="text-center text-xs mt-2 opacity-70">
                               → Gå til neste checkpoint
@@ -258,7 +306,7 @@ function PrintoutContent() {
                           </div>
                         ) : (
                           <div className="text-center text-base leading-snug font-bold">
-                            &quot;{card.fysisk_ledetekst}&quot;
+                            &quot;{card.fysisk_hint}&quot;
                           </div>
                         )}
                       </div>
@@ -330,7 +378,7 @@ function PrintoutContent() {
                             </div>
                           )}
                           <div className="print:text-xl print:font-bold">
-                            BOKSTAV: {card.letter}
+                            BOKSTAV: {card.letters}
                           </div>
                           <div className="print:text-xs print:text-gray-500 print:mt-1">
                             → Gå til neste checkpoint
@@ -339,7 +387,7 @@ function PrintoutContent() {
                       ) : (
                         <div className="print:text-center print:flex-1 print:flex print:items-center print:justify-center">
                           <div className="print:text-base print:leading-snug print:font-bold">
-                            &quot;{card.fysisk_ledetekst}&quot;
+                            &quot;{card.fysisk_hint}&quot;
                           </div>
                         </div>
                       )}
@@ -392,6 +440,29 @@ function PrintoutContent() {
               </ul>
             </div>
 
+            <div className="print:border-4 print:border-black print:p-4 print:bg-gray-100 print:mb-6">
+              <h2 className="print:text-xl print:font-bold print:mb-2">
+                📖 EVENTYR I KALENDEREN:
+              </h2>
+              <p className="print:text-sm print:mb-2">
+                Barna vil oppdage 6 sammenhengende historier gjennom desember:
+              </p>
+              <ul className="print:space-y-1 print:text-sm print:list-disc print:list-inside">
+                {allEventyr.map((arc) => {
+                  const days = getEventyrDays(arc.id);
+                  return (
+                    <li key={arc.id}>
+                      <strong>{arc.navn}</strong> - Dager: {days.join(", ")}
+                    </li>
+                  );
+                })}
+              </ul>
+              <p className="print:text-xs print:mt-2 print:text-gray-600">
+                Se full historier-oversikt på /historier i appen
+                (foreldreguiden)
+              </p>
+            </div>
+
             <div className="print:border-4 print:border-black print:p-4 print:bg-gray-100">
               <h2 className="print:text-xl print:font-bold print:mb-2">
                 ⚠️ VIKTIG PÅMINNELSE:
@@ -423,7 +494,9 @@ export default function PrintoutPage() {
         </div>
       }
     >
-      <PrintoutContent />
+      <GuideAuth>
+        <PrintoutContent />
+      </GuideAuth>
     </Suspense>
   );
 }

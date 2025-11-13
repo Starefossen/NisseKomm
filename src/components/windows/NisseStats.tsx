@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { GameEngine } from "@/lib/game-engine";
+import { getCurrentDate } from "@/lib/date-utils";
 
 interface NisseStatsProps {
   onClose: () => void;
@@ -50,10 +51,10 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [isInventoryBroken, crisisStatus.inventory, gaveProduksjon]);
+  }, [isInventoryBroken, crisisStatus.inventory]);
 
   const dagerTilJul = (() => {
-    const now = new Date();
+    const now = getCurrentDate();
     const christmas = new Date(now.getFullYear(), 11, 24);
     if (now > christmas) {
       christmas.setFullYear(christmas.getFullYear() + 1);
@@ -239,7 +240,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
               "Security: Alle systemer operational",
             ].map((update, i) => (
               <div key={i} className="p-2 text-xs text-(--neon-green)/70">
-                [{new Date().toLocaleTimeString("no-NO")}] {update}
+                [{getCurrentDate().toLocaleTimeString("no-NO")}] {update}
               </div>
             ))}
           </div>

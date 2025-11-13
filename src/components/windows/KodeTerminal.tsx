@@ -7,6 +7,7 @@ import { Oppdrag, InnsendelseLog } from "@/types/innhold";
 import { SoundManager } from "@/lib/sounds";
 import { StorageManager } from "@/lib/storage";
 import { GameEngine } from "@/lib/game-engine";
+import { getISOString } from "@/lib/date-utils";
 
 interface KodeTerminalProps {
   onClose: () => void;
@@ -26,7 +27,15 @@ export function KodeTerminal({
   const [code, setCode] = useState("");
   const [processing, setProcessing] = useState(false);
   const [feedback, setFeedback] = useState<"success" | "error" | null>(null);
-  const [unlockedModule, setUnlockedModule] = useState<string | null>(null);
+  const [unlockedContent, setUnlockedContent] = useState<{
+    files: string[];
+    symbols: Array<{
+      symbolId: string;
+      symbolIcon: string;
+      description: string;
+    }>;
+    topics: string[];
+  } | null>(null);
   const [submittedCodes, setSubmittedCodes] = useState<InnsendelseLog[]>(() => {
     if (typeof window !== "undefined") {
       return StorageManager.getSubmittedCodes();
@@ -39,6 +48,12 @@ export function KodeTerminal({
     }
     return false;
   });
+  const [failedAttempts, setFailedAttempts] = useState(() => {
+    if (typeof window !== "undefined") {
+      return StorageManager.getFailedAttempts(currentDay);
+    }
+    return 0;
+  });
 
   // Get the solved code for display if already solved
   const solvedCode = (() => {
@@ -49,6 +64,19 @@ export function KodeTerminal({
       return entry?.kode || "";
     }
     return "";
+  })();
+
+  // Get available progressive hints for current attempt count
+  const availableHints = (() => {
+    const dayMission = allMissions.find((m) => m.dag === currentDay);
+    if (!dayMission?.progressive_hints || failedAttempts === 0) {
+      return [];
+    }
+
+    // Return hints where afterAttempts <= current failed attempts
+    return dayMission.progressive_hints
+      .filter((hint) => hint.afterAttempts <= failedAttempts)
+      .sort((a, b) => a.afterAttempts - b.afterAttempts);
   })();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -73,7 +101,7 @@ export function KodeTerminal({
         // Update local state
         const newEntry: InnsendelseLog = {
           kode: code.trim().toUpperCase(),
-          dato: new Date().toISOString(),
+          dato: getISOString(),
         };
         const updated = [...submittedCodes, newEntry];
         setSubmittedCodes(updated);
@@ -81,11 +109,18 @@ export function KodeTerminal({
         // Mark as solved
         setIsAlreadySolved(true);
 
-        // Check for module unlock
-        if (result.unlockedModule) {
-          setUnlockedModule(result.unlockedModule.label);
-          // Keep module unlock message longer
-          setTimeout(() => setUnlockedModule(null), 4000);
+        // Reset failed attempts
+        setFailedAttempts(0);
+
+        // Check for content unlocks
+        const newContent = GameEngine.getNewlyUnlockedContent(currentDay);
+        if (
+          newContent.files.length > 0 ||
+          newContent.symbols.length > 0 ||
+          newContent.topics.length > 0
+        ) {
+          setUnlockedContent(newContent);
+          // No timeout - let user dismiss by closing terminal or submitting again
         }
 
         // Notify parent of code submission
@@ -96,9 +131,12 @@ export function KodeTerminal({
 
       setCode("");
     } else {
-      // Error
+      // Error - update failed attempts
       setFeedback("error");
       SoundManager.playSound("error");
+      if (typeof window !== "undefined") {
+        setFailedAttempts(StorageManager.getFailedAttempts(currentDay));
+      }
     }
 
     setProcessing(false);
@@ -191,7 +229,7 @@ export function KodeTerminal({
             }}
           >
             {processing ? (
-              "BEHANDLER..."
+              "SJEKKER......"
             ) : isAlreadySolved ? (
               "RIKTIG LØSNING"
             ) : feedback === "success" ? (
@@ -210,20 +248,98 @@ export function KodeTerminal({
           </button>
         </form>
 
-        {/* Module unlock notification */}
-        {unlockedModule && (
-          <div className="p-4 border-4 border-(--gold) bg-(--gold)/20 text-(--gold) text-center font-bold animate-[gold-flash_0.5s_ease-out]">
-            <div className="space-y-2">
-              <div className="flex items-center justify-center gap-2 text-xl">
-                <Icons.CheckCircle size={28} color="gold" />
-                <span>NY MODUL LÅST OPP!</span>
+        {/* Progressive hints section */}
+        {availableHints.length > 0 && !isAlreadySolved && (
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-sm font-bold text-(--cold-blue) border-b-2 border-(--cold-blue)/30 pb-2">
+              <Icons.Info size={16} color="blue" />
+              <span>HINT ({availableHints.length} tilgjengelig)</span>
+              <span className="text-xs opacity-70 ml-auto">
+                Forsøk: {failedAttempts}
+              </span>
+            </div>
+            {availableHints.map((hint, index) => (
+              <div
+                key={index}
+                className="p-3 border-2 border-(--cold-blue) bg-(--cold-blue)/10 text-(--cold-blue)"
+              >
+                <div className="flex items-start gap-2">
+                  <Icons.Info
+                    size={16}
+                    color="blue"
+                    className="mt-1 shrink-0"
+                  />
+                  <div className="space-y-1">
+                    <div className="text-xs font-bold opacity-70">
+                      HINT {index + 1}/{availableHints.length} (etter{" "}
+                      {hint.afterAttempts} forsøk)
+                    </div>
+                    <div className="text-sm leading-relaxed">{hint.text}</div>
+                  </div>
+                </div>
               </div>
-              <div className="text-2xl tracking-wider">
-                🎉 {unlockedModule.toUpperCase()} 🎉
+            ))}
+          </div>
+        )}
+
+        {/* Content unlock notification */}
+        {unlockedContent && (
+          <div className="p-4 border-4 border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green) space-y-3 animate-[gold-flash_0.5s_ease-out]">
+            <div className="flex items-center gap-2 text-lg font-bold border-b-2 border-(--neon-green)/30 pb-2">
+              <Icons.CheckCircle size={24} color="green" />
+              <span>NYTT INNHOLD LÅST OPP!</span>
+            </div>
+
+            {unlockedContent.files.length > 0 && (
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-sm font-bold">
+                  <Icons.File size={16} color="green" />
+                  <span>FILER I NISSENET:</span>
+                </div>
+                <div className="pl-6 space-y-1">
+                  {unlockedContent.files.map((file, i) => (
+                    <div key={i} className="text-sm">
+                      • {file}
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="text-sm opacity-90">
-                Sjekk skrivebordet for den nye appen!
+            )}
+
+            {unlockedContent.symbols.length > 0 && (
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-sm font-bold">
+                  <Icons.Key size={16} color="green" />
+                  <span>KRYPTO-SYMBOLER:</span>
+                </div>
+                <div className="pl-6 space-y-1">
+                  {unlockedContent.symbols.map((symbol, i) => (
+                    <div key={i} className="text-sm">
+                      • {symbol.symbolIcon.toUpperCase()} - {symbol.description}
+                    </div>
+                  ))}
+                </div>
               </div>
+            )}
+
+            {unlockedContent.topics.length > 0 && (
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-sm font-bold">
+                  <Icons.BookOpen size={16} color="green" />
+                  <span>EMNER:</span>
+                </div>
+                <div className="pl-6 space-y-1">
+                  {unlockedContent.topics.map((topic, i) => (
+                    <div key={i} className="text-sm">
+                      • {topic}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="text-xs opacity-90 pt-2 border-t-2 border-(--neon-green)/30">
+              Sjekk NISSENET eller NISSEKRYPTO for å se det nye innholdet!
             </div>
           </div>
         )}

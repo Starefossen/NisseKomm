@@ -1,56 +1,74 @@
 "use client";
 
+import Image from "next/image";
 import { Icons } from "@/lib/icons";
-import { StorageManager } from "@/lib/storage";
-
-interface BadgeSlot {
-  icon: keyof typeof Icons;
-  name: string;
-  unlocked: boolean;
-}
+import { BadgeManager } from "@/lib/badge-system";
+import { useEffect, useState } from "react";
+import type { Badge } from "@/types/innhold";
 
 /**
- * Horizontal badge row showing locked/unlocked side-quest achievements
- * Displayed at bottom of home screen as collectibles
+ * Horizontal badge row showing locked/unlocked achievements
+ * - Bonusoppdrag badges: Side-quest resolutions (antenna, inventory)
+ * - Eventyr badges: Story arc completions (Mørket, IQ, etc.)
+ * - Decryption badges: Crypto challenges and symbol collection
+ *
+ * Badges are loaded dynamically from merker.json via BadgeManager
  */
 export function BadgeRow() {
-  // Compute badges directly from storage
-  const earnedBadges =
-    typeof window !== "undefined" ? StorageManager.getSideQuestBadges() : [];
+  const [badges, setBadges] = useState<Badge[]>([]);
+  const [earnedBadgeIds, setEarnedBadgeIds] = useState<Set<string>>(
+    new Set<string>(),
+  );
+  const [newlyEarnedBadge, setNewlyEarnedBadge] = useState<string | null>(null);
 
-  // Define all 6 badge slots (2 active, 4 future)
-  const badges: BadgeSlot[] = [
-    {
-      icon: "Zap",
-      name: "ANTENNE-INGENIØR",
-      unlocked: earnedBadges.some((b) => b.icon === "zap"),
-    },
-    {
-      icon: "Coin",
-      name: "INVENTAR-EKSPERT",
-      unlocked: earnedBadges.some((b) => b.icon === "coin"),
-    },
-    {
-      icon: "Heart",
-      name: "???",
-      unlocked: false,
-    },
-    {
-      icon: "Trophy",
-      name: "???",
-      unlocked: false,
-    },
-    {
-      icon: "Gift",
-      name: "???",
-      unlocked: false,
-    },
-    {
-      icon: "Star",
-      name: "???",
-      unlocked: false,
-    },
-  ];
+  // Load badges and earned status on mount and when storage changes
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const loadBadges = () => {
+      const allBadges = BadgeManager.getAllBadges();
+      const earned = BadgeManager.getEarnedBadges();
+      const earnedIds = new Set(earned.map((b) => b.badgeId));
+
+      setBadges(allBadges);
+      setEarnedBadgeIds(earnedIds);
+    };
+
+    // Load initially
+    loadBadges();
+
+    // Subscribe to badge award notifications for animations
+    const handleBadgeAwarded = (badge: Badge) => {
+      setNewlyEarnedBadge(badge.id);
+      setEarnedBadgeIds((prev) => new Set([...prev, badge.id]));
+
+      // Clear animation after 3 seconds
+      setTimeout(() => {
+        setNewlyEarnedBadge(null);
+      }, 3000);
+    };
+
+    BadgeManager.onBadgeAwarded(handleBadgeAwarded);
+
+    // Listen for storage changes (for Nissemor Guide updates)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "nissekomm-earned-badges") {
+        loadBadges();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    // Cleanup
+    return () => {
+      BadgeManager.offBadgeAwarded(handleBadgeAwarded);
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  if (badges.length === 0) {
+    return null; // Don't render until badges loaded
+  }
 
   return (
     <div className="flex items-center justify-center gap-3 py-3 px-6 bg-(--dark-crt)/50 border-t-4 border-(--neon-green)/30">
@@ -61,34 +79,49 @@ export function BadgeRow() {
       </div>
 
       {/* Badge slots */}
-      {badges.map((badge, index) => {
-        const IconComponent = Icons[badge.icon];
+      {badges.map((badge) => {
+        const isEarned = earnedBadgeIds.has(badge.id);
+        const isNewlyEarned = newlyEarnedBadge === badge.id;
+
         return (
           <div
-            key={index}
+            key={badge.id}
             className={`
               relative flex items-center justify-center w-12 h-12 border-2
               transition-all duration-300
               ${
-                badge.unlocked
-                  ? "border-(--gold) bg-(--gold)/10 animate-[gold-flash_2s_ease-in-out_infinite]"
+                isEarned
+                  ? "border-(--gold) bg-(--gold)/10"
                   : "border-(--gray)/50 bg-(--gray)/5 opacity-30 grayscale"
               }
+              ${isNewlyEarned ? "animate-[scale-in_0.5s_ease-out]" : ""}
+              ${isEarned && !isNewlyEarned ? "animate-[gold-flash_2s_ease-in-out_infinite]" : ""}
             `}
-            title={badge.unlocked ? badge.name : "LÅST"}
+            title={isEarned ? `${badge.navn} - ${badge.beskrivelse}` : "LÅST"}
           >
-            {/* Icon */}
-            <IconComponent
-              className={`w-8 h-8 ${
-                badge.unlocked ? "text-(--gold)" : "text-(--gray)"
+            {/* SVG Badge Icon */}
+            <Image
+              src={`/badges/${badge.ikon}`}
+              alt={badge.navn}
+              width={40}
+              height={40}
+              className={`transition-all duration-300 ${
+                isEarned ? "" : "opacity-50"
               }`}
+              style={{ imageRendering: "pixelated" }}
+              unoptimized
             />
 
             {/* Lock overlay for locked badges */}
-            {!badge.unlocked && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Icons.Lock className="w-5 h-5 text-(--gray) opacity-50" />
+            {!isEarned && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                <Icons.Lock className="w-5 h-5 text-(--gray) opacity-80" />
               </div>
+            )}
+
+            {/* Shine effect for newly earned badges */}
+            {isNewlyEarned && (
+              <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent animate-[shimmer_1s_ease-in-out]" />
             )}
           </div>
         );

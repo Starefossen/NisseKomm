@@ -1,0 +1,17 @@
+- NisseKrypto
+  - scan lukker vinduet automatisk
+  - scan avslutter ikke kamera
+  - tester?
+  - Finne et bedre navn?
+- Hjem
+  - Alle badges vises ikke på hjemskjermen (Badge subsystem)
+  - Stats og logs er ikke riktig for julaften
+  - Glitching / kjerneenergi?
+- Brevfugler:
+  - Må testes og fullføres
+- Nissestats
+  - Må testes og fullføres
+- Eventyr
+  - Hvordan integrerer vi dette bedre?
+- Merker
+  - Finne et bedre navn?

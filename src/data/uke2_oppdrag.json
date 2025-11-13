@@ -2,25 +2,58 @@
   {
     "dag": 8,
     "tittel": "Toalettpapir-labyrint",
-    "beskrivelse": "Rampenissen har fylt badet med toalettpapir! I midten av kaoset ligger det en rull med en gåte: 'Jeg er stor og rund, og Nissen bærer meg på ryggen. 4 bokstaver. Hva er jeg?'",
+    "nissemail_tekst": "Rampenissen har fylt badet med toalettpapir! I midten av kaoset ligger det en rull med en gåte: 'Jeg er stor og rund, og Nissen bærer meg på ryggen. 4 bokstaver. Hva er jeg?'",
     "kode": "SEKK",
+    "eventyr": {
+      "id": "iqs-oppfinnelser",
+      "phase": 2
+    },
     "dagbokinnlegg": "Dag 8 - Sekkproblemer\n\nGavesekken min trenger reparasjon. Igjen. Nissene syr på den nå. Spurte hvor mye vekt den kan bære. De bare lo nervøst. Ikke betryggende.\n\nTeste den nye magiske sekken ved å putte inn 500 gaver. Den holdt! Men så kom jeg ikke ut av verkstedet fordi sekken ikke passet gjennom døren. Måtte rive veggen. Nissene var ikke imponert.\n\nRampenissen melder at alt går bra med barna. De er flinke til å løse oppgavene. Muligens flinkere enn noen av nissene mine her...\n\n- Julius",
     "rampenissen_rampestrek": "Toalettpapir er hengt rundt badet som en labyrint. I midten ligger Rampenissen med en rull som har gåten skrevet på.",
-    "fysisk_ledetekst": "Sjekk badet - Rampenissen har laget kaos! Les gåten på rullen.",
+    "fysisk_hint": "Sjekk badet - Rampenissen har laget kaos! Les gåten på rullen.",
     "oppsett_tid": "moderat",
     "materialer_nødvendig": ["3-5 toalettruller", "Lapp med gåte", "Tape"],
     "beste_rom": "Bad",
-    "hint_type": "skrevet"
+    "hint_type": "skrevet",
+    "requires": {
+      "topics": ["iq-oppfinnelser"]
+    },
+    "reveals": {
+      "files": ["magisk-sekk-test.txt"]
+    },
+    "progressive_hints": [
+      {
+        "afterAttempts": 2,
+        "text": "Hint: Julius bærer gaver i noe stort på ryggen. 4 bokstaver."
+      },
+      {
+        "afterAttempts": 4,
+        "text": "Hint: Det begynner med S og slutter med K."
+      },
+      {
+        "afterAttempts": 6,
+        "text": "Hint: Svaret er SEKK."
+      }
+    ],
+
+    "system_status_override": {
+      "metricName": "SEKKVEKT",
+      "value": 85,
+      "status": "normal"
+    }
   },
   {
     "dag": 9,
     "tittel": "Snøfnugg-jakten",
-    "beskrivelse": "Rampenissen har gjemt snøfnugg over hele huset! Finn ALLE de spesielle snøfnuggene (hint: de lyser annerledes). Når du har funnet dem, se hva som står på baksiden...",
+    "nissemail_tekst": "Rampenissen har gjemt snøfnugg over hele huset! Finn ALLE de spesielle snøfnuggene (hint: de lyser annerledes). Når du har funnet dem, se hva som står på baksiden...",
     "kode": "18",
-    "cross_reference_topic": "frosne-mønster",
+    "eventyr": {
+      "id": "frosne-monster",
+      "phase": 2
+    },
     "dagbokinnlegg": "Dag 9 - Snøfnugg-Forskning\n\nBrukte hele formiddagen på å studere snøfnugg under mikroskop. Alle er unike! Fantastisk! Nissemor minnet meg på at jeg egentlig skulle kvalitetssjekke leker. Ups.\n\nNissene laget 15.000 leker i dag. Rekord! IQ og Pil jobbet på julekuleblåsingsutstyret. De blåste 200 glasskuler - alle perfekte!\n\nRampenissen rapporterer om god fremgang. Barna er kreative og intelligente. Magien virker!\n\n- Julius",
     "rampenissen_rampestrek": "10 papir-snøfnugg hengt rundt i FLERE rom. 6 av dem har blå/sølv bakside med tall/symboler: 3 snøfnugg merket '6 kanter', 3 merket '× 3 snøfnugg', på ett står '= ?'. De må finnes i riktig rekkefølge: bad (2 stk - på speil og i dusj), stue (2 stk - bak pute og ved vindu), kjøkken (2 stk - på kjøleskap og under bord). Rampenissen holder forstørrelsesglass.",
-    "fysisk_ledetekst": "Snøfnugg er gjemt OVER ALT! Finn de som lyser magisk (blå bakside). Speilet ser rart ut... og hva er det bak puta? Kjøleskapet også?",
+    "fysisk_hint": "Snøfnugg er gjemt OVER ALT! Finn de som lyser magisk (blå bakside). Speilet ser rart ut... og hva er det bak puta? Kjøleskapet også?",
     "oppsett_tid": "avansert",
     "materialer_nødvendig": [
       "10 papir-snøfnugg (6 med blå/sølv bakside)",
@@ -29,17 +62,55 @@
       "forstørrelsesglass (valgfritt)"
     ],
     "beste_rom": "Flere rom (bad, stue, kjøkken)",
-    "hint_type": "spor"
+    "hint_type": "spor",
+    "requires": {
+      "topics": ["snostorm-snøfall"],
+      "completedDays": [3]
+    },
+    "reveals": {
+      "files": ["snowflake-patterns.txt", "julekuleblasing.txt"],
+      "topics": ["frosne-mønster"]
+    },
+    "progressive_hints": [
+      {
+        "afterAttempts": 2,
+        "text": "Hint: Hvert snøfnugg har 6 kanter. Hvor mange snøfnugg er det?"
+      },
+      {
+        "afterAttempts": 4,
+        "text": "Hint: 6 kanter × 3 snøfnugg = ?"
+      },
+      {
+        "afterAttempts": 6,
+        "text": "Hint: Svaret er 18 (6×3=18)."
+      }
+    ],
+    "symbol_clue": {
+      "symbolId": "heart-blue",
+      "symbolIcon": "heart",
+      "symbolColor": "blue",
+      "description": "Blått hjerte fra snøfnugg-forskning"
+    },
+    "print_materials": [
+      {
+        "type": "symbol",
+        "title": "Snøfnugg-mal",
+        "content": "[Print 10 snøfnugg-maler. 6 av dem merkes med blå bakside og matematiske hint: '6 kanter', '× 3', '= ?']"
+      }
+    ]
   },
   {
     "dag": 10,
     "tittel": "Fargesamleren",
-    "beskrivelse": "Rampenissen trenger hjelp! Han har mistet bokstaver rundt om i huset. De ligger gjemt på ting som har en spesiell farge... Finn 5 gjenstander, samle bokstavene. Hvilken farge?",
+    "nissemail_tekst": "Rampenissen trenger hjelp! Han har mistet bokstaver rundt om i huset. De ligger gjemt på ting som har en spesiell farge... Finn 5 gjenstander, samle bokstavene. Hvilken farge?",
     "kode": "GRØNN",
-    "cross_reference_topic": "farge-mysteriet",
+    "eventyr": {
+      "id": "farge-mysteriet",
+      "phase": 1
+    },
     "dagbokinnlegg": "Dag 10 - Grønn Dag\n\nNissemor har bestemt at hele Snøfall skal være mer miljøvennlig. Nissene får nå sykle til verkstedet. Det er snø. Overalt. Det går ikke så bra.\n\nPrøvde å male verkstedet grønt for å 'passe temaet'. Nissene sa at rødt er julenissens farge. Ble diskusjon. Endte med kompromiss: grønt OG rødt. Ser ut som en italiensk restaurant nå.\n\nRampenissen sender bilder av barna i grønne nisseluer. Søtt! De ser ut som små nisser. Kanskje de kan komme og jobbe her når de blir større?\n\n- Julius",
     "rampenissen_rampestrek": "5 grønne gjenstander plassert rundt i huset (grønn bok, grønn kopp, grønn leke, grønt klesplagg, grønn plante). På hver er det limt en lapp med EN bokstav: G, R, Ø, N, N. Barna må finne dem og sette bokstavene i riktig rekkefølge (alfabetisk eller etter gjenstand-størrelse). Rampenissen har 'detektiv'-hatt.",
-    "fysisk_ledetekst": "Rampenissen leter etter noe! Finn ting som har en SPESIELL farge. På hver ting er det en bokstav. Sjekk bokhylla, skapet, lekekassen...",
+    "fysisk_hint": "Rampenissen leter etter noe! Finn ting som har en SPESIELL farge. På hver ting er det en bokstav. Sjekk bokhylla, skapet, lekekassen...",
     "oppsett_tid": "avansert",
     "materialer_nødvendig": [
       "5 grønne gjenstander fra huset",
@@ -47,16 +118,45 @@
       "Tape/lim"
     ],
     "beste_rom": "Flere rom",
-    "hint_type": "spor"
+    "hint_type": "spor",
+    "reveals": {
+      "files": ["farge-koder.txt"],
+      "topics": ["farge-mysteriet"],
+      "modules": ["SNØFALL_TV"]
+    },
+    "progressive_hints": [
+      {
+        "afterAttempts": 2,
+        "text": "Hint: Alle gjenstandene har samme farge. Hvilken farge er det?"
+      },
+      {
+        "afterAttempts": 4,
+        "text": "Hint: Bokstavene staver en farge: G-R-Ø-N-N."
+      },
+      {
+        "afterAttempts": 6,
+        "text": "Hint: Svaret er GRØNN."
+      }
+    ],
+
+    "system_status_override": {
+      "metricName": "FARGEKODER",
+      "value": 33,
+      "status": "normal"
+    }
   },
   {
     "dag": 11,
     "tittel": "Tids-mysteriet",
-    "beskrivelse": "Noe rart har skjedd! Tre klokker viser forskjellige tider, og ingen av dem stemmer... Men sammen skjuler de et hemmelig tall. Legg sammen timene!",
+    "nissemail_tekst": "Noe rart har skjedd! Tre klokker viser forskjellige tider, og ingen av dem stemmer... Men sammen skjuler de et hemmelig tall. Legg sammen timene!",
     "kode": "12",
+    "eventyr": {
+      "id": "morkets-trussel",
+      "phase": 2
+    },
     "dagbokinnlegg": "Dag 11 - Tidsforvirring\n\nVår store klokke i Snøfall sluttet å virke ved midnatt. En nisse prøvde å reparere den. Nå viser den 87 o'clock. Vet ikke engang at det eksisterer.\n\nOrakelet advarte om tidsanomalier. Kanskje det er Mørket som prøver å forstyrre oss? Men vennskapet og magien holder oss sterke.\n\nRampenissen klager på at han er trøtt. Forteller ham at her jobber vi 25 timer i døgnet!\n\n- Julius",
     "rampenissen_rampestrek": "3 analoge klokker (eller tegninger av klokker) viser: 3:00, 5:00, og 4:00. De er plassert i forskjellige rom. På hver klokke er det en lapp: 'FØRSTE TALL', 'ANDRE TALL', 'TREDJE TALL'. Rampenissen står med kalkulator.",
-    "fysisk_ledetekst": "Klokkene er gale! Finn TRE klokker rundt i huset. Hva viser de? Legg sammen!",
+    "fysisk_hint": "Klokkene er gale! Finn TRE klokker rundt i huset. Hva viser de? Legg sammen!",
     "oppsett_tid": "moderat",
     "materialer_nødvendig": [
       "3 analoge klokker eller tegninger",
@@ -65,22 +165,58 @@
     ],
     "beste_rom": "Flere rom (gang, stue, kjøkken)",
     "hint_type": "arrangement",
-    "sideoppdrag": {
+    "requires": {
+      "topics": ["morkets-trussel"]
+    },
+    "reveals": {
+      "files": ["tidsanomalier.txt", "antenna-crisis.txt"],
+      "topics": ["morket-tidsanomali"]
+    },
+    "progressive_hints": [
+      {
+        "afterAttempts": 2,
+        "text": "Hint: Klokkene viser 3, 5 og 4. Legg tallene sammen!"
+      },
+      {
+        "afterAttempts": 4,
+        "text": "Hint: 3 + 5 + 4 = ?"
+      },
+      {
+        "afterAttempts": 6,
+        "text": "Hint: Svaret er 12."
+      }
+    ],
+
+    "system_status_override": {
+      "metricName": "JULESIGNAL",
+      "value": 45,
+      "status": "kritisk"
+    },
+    "alert_override": {
+      "text": "KRITISK: TIDSANOMALIER DETEKTERT ⏰",
+      "type": "kritisk"
+    },
+    "bonusoppdrag": {
       "tittel": "KRITISK: Signal-krise",
       "beskrivelse": "SNØFALL TV har mistet signalet! Antenne-systemet er ødelagt. Rampenissen trenger AKUTT hjelp til å bygge en nød-antenne. Bruk tinfolie og tape for å lage en antenne (ca 20cm høy). Fest den på toppen av TV-en. La den stå over natten - signalet vil automatisk gjenopprettes neste morgen når systemet har kalibrert den nye antennen.",
       "validering": "forelder",
-      "badge_icon": "zap",
-      "badge_navn": "Antenne-Ingeniør"
+      "badge_id": "antenne-ingenior",
+      "badge_navn": "Antenne-ingeniør",
+      "badge_icon": "zap"
     }
   },
   {
     "dag": 12,
     "tittel": "Sang-mysteriet",
-    "beskrivelse": "Rampenissen har funnet sangboken! En julesang er markert: 'Deilig er _____'. Det mangler et ord. På NisseKomm står det: 'Ordet har 6 bokstaver og handler om planeten vår.'",
+    "nissemail_tekst": "Hei hei! 🎵 Jeg fant en gammel sangbok i verkstedet! Det står 'Deilig er _____' på siden, men noen har dekket over det siste ordet... Julius sier det er 6 bokstaver og navnet på planeten vår. Hjelp meg å finne ut hva som skal stå der! 🌍",
     "kode": "JORDEN",
+    "eventyr": {
+      "id": "brevfugl-mysteriet",
+      "phase": 3
+    },
     "dagbokinnlegg": "Dag 12 - Sangdag\n\nStartet morgenen med å synge 'Deilig er jorden' for nissene. De elsket det! Eller late som. Vanskelig å si.\n\nFant ut at rudolf kan synge. Vel, mer som muling. Men han prøver. Det er det som teller. De andre reinsdyrene nekter å være med i kor. Sier det er uprofesjonelt.\n\nRampenissen sier at barna synger julesanger hjemme. Herlig! Det er det julen handler om. Glede, sang, og gaveproduksjon i industriell skala.\n\n- Julius",
     "rampenissen_rampestrek": "Sangbok ligger åpen med 'Deilig er jorden'. Ordet JORDEN er dekket med en lapp. Rampenissen har mikrofon (leker-mikrofon).",
-    "fysisk_ledetekst": "Finn sangboken - Rampenissen har markert en sang!",
+    "fysisk_hint": "Finn sangboken - Rampenissen har markert en sang!",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
       "Sangbok eller utskrift av sangtekst",
@@ -88,17 +224,60 @@
       "Leke-mikrofon (valgfritt)"
     ],
     "beste_rom": "Stue",
-    "hint_type": "gjemt_objekt"
+    "hint_type": "gjemt_objekt",
+    "requires": {
+      "topics": ["brevfugl-organisering"]
+    },
+    "reveals": {
+      "files": ["julesanger-samling.txt"],
+      "topics": ["julesanger"]
+    },
+    "progressive_hints": [
+      {
+        "afterAttempts": 2,
+        "text": "Hint: 'Deilig er _____' - 6 bokstaver, vår planet."
+      },
+      {
+        "afterAttempts": 4,
+        "text": "Hint: Planeten vi bor på heter ______?"
+      },
+      {
+        "afterAttempts": 6,
+        "text": "Hint: Svaret er JORDEN."
+      }
+    ],
+    "symbol_clue": {
+      "symbolId": "sun-green",
+      "symbolIcon": "sun-alt",
+      "symbolColor": "green",
+      "description": "Grønn sol fra sangboken"
+    },
+    "decryption_challenge": {
+      "challengeId": "frosne-koder",
+      "requiredSymbols": ["heart-green", "heart-red", "heart-blue"],
+      "correctSequence": [1, 0, 2],
+      "messageWhenSolved": "❄️ FROSNE KODER DEKRYPTERT! ❄️\n\nGratulerer! Dere har låst opp det første hemmelige nivået i NisseKrypto-systemet. Julius' notater om de frosne kodene fra snøstormen er nå tilgjengelige i NISSENET under HEMMELIG-mappen.\n\nDisse symbolene representerer hjertenes tre farger - grønn for vekst, rød for varme, blå for kulde. Sammen former de den perfekte balansen i Snøfall.\n\nVel gjort, krypto-agenter! 🔓",
+      "unlocksFiles": ["frosne-koder.txt"]
+    },
+    "system_status_override": {
+      "metricName": "NISSEKRAFT",
+      "value": 88,
+      "status": "normal"
+    }
   },
   {
     "dag": 13,
     "tittel": "Lucia-lyset",
-    "beskrivelse": "I dag er Luciadagen! Rampenissen har laget en krans av LED-lys. Det står en lapp: 'Lucia bærer disse på hodet. 3 bokstaver. Hva heter de?'",
+    "nissemail_tekst": "I dag er Luciadagen! Rampenissen har laget en krans av LED-lys. Det står en lapp: 'Lucia bærer disse på hodet. 3 bokstaver. Hva heter de?'",
     "kode": "LYS",
+    "eventyr": {
+      "id": "frosne-monster",
+      "phase": 3
+    },
     "hendelse": "Luciadagen",
     "dagbokinnlegg": "Dag 13 - Lucia-Kaos\n\nLussi-dagen! Nissene ville pynte hele Snøfall med levende lys. Måtte forklare brannfare. Kompromisset: LED-lys formet som levende lys. De sultet i 10 minutter, men ga seg.\n\nNissemor bakte lussekatter. 500 stykker. Nissene spiste dem på 20 minutter. Rekord! Eller et problem. Vet ikke helt.\n\nRampenissen sender bilder av Lucia-prosesjon hjemme hos barna. Vakkert! Minner meg om hvorfor vi gjør dette. For barna. Og kattene. Lussekattene, altså.\n\n- Julius",
     "rampenissen_rampestrek": "LED-lys eller lommelykter arrangert i en sirkel (som Lucia-krans). Rampenissen har hvitt stoff som 'Lucia-kjole'. Lussekatter på fat.",
-    "fysisk_ledetekst": "Rampenissen feirer Lucia! Se på lyskransen - hva heter de?",
+    "fysisk_hint": "Rampenissen feirer Lucia! Se på lyskransen - hva heter de?",
     "oppsett_tid": "moderat",
     "materialer_nødvendig": [
       "LED-lys eller lommelykter (4-6 stk)",
@@ -107,17 +286,48 @@
       "Lapp med gåte"
     ],
     "beste_rom": "Kjøkken/spisestue",
-    "hint_type": "arrangement"
+    "hint_type": "arrangement",
+    "requires": {
+      "topics": ["frosne-mønster"],
+      "completedDays": [9]
+    },
+    "reveals": {
+      "files": ["lucia-tradisjon.txt"]
+    },
+    "progressive_hints": [
+      {
+        "afterAttempts": 2,
+        "text": "Hint: Lucia bærer brennende ____ på hodet (3 bokstaver)."
+      },
+      {
+        "afterAttempts": 4,
+        "text": "Hint: Det lyser og er det motsatte av mørke."
+      },
+      {
+        "afterAttempts": 6,
+        "text": "Hint: Svaret er LYS."
+      }
+    ],
+
+    "system_status_override": {
+      "metricName": "NISSEKRAFT",
+      "value": 92,
+      "status": "normal"
+    }
   },
   {
     "dag": 14,
     "tittel": "Pakke-gåten",
-    "beskrivelse": "Rampenissen har pakket inn alt! Leker, bøker, til og med dørhåndtak! På tape-bitene står det bokstaver: P-A-P-I-R. Hva bruker vi til å pakke inn gaver?",
+    "nissemail_tekst": "Rampenissen har pakket inn alt! Leker, bøker, til og med dørhåndtak! På tape-bitene står det bokstaver: P-A-P-I-R. Hva bruker vi til å pakke inn gaver?",
     "kode": "PAPIR",
+    "eventyr": {
+      "id": "brevfugl-mysteriet",
+      "phase": 4
+    },
     "hendelse": "Lystenning på Fløyen",
     "dagbokinnlegg": "Dag 14 - Innpakkingsdag\n\nKvalitetskontroll av gavepapir. Vi har 847 forskjellige design. Hvorfor? Ingen vet. En nisse foreslo å bare bruke étt design. Han ble utvist fra møtet.\n\nPrøvde å pakke inn en gave selv for å vise nissene hvordan det skal gjøres. Brukte for mye tape. Gaven er nå en tape-ball. Nissene applauderte 'ironisk'. Frekke nisser.\n\nRampenissen melder at barna lærer om julepynt og pakkepapir. Fint! De blir flinkere enn meg til å pakke. Det er ikke vanskelig.\n\n- Julius",
     "rampenissen_rampestrek": "Diverse gjenstander innpakket i julepapir. På hver pakke er det teip-biter med én bokstav: P, A, P, I, R spredt rundt. Rampenissen omgitt av pakker.",
-    "fysisk_ledetekst": "Rampenissen har pakket inn ALT! Se på tape-bitene - de skjuler et ord!",
+    "fysisk_hint": "Rampenissen har pakket inn ALT! Se på tape-bitene - de skjuler et ord!",
     "oppsett_tid": "avansert",
     "materialer_nødvendig": [
       "Julepapir",
@@ -125,6 +335,45 @@
       "5-8 gjenstander å pakke inn"
     ],
     "beste_rom": "Stue",
-    "hint_type": "visuell"
+    "hint_type": "visuell",
+    "requires": {
+      "topics": ["julesanger"]
+    },
+    "reveals": {
+      "files": ["brevfugl-finale.txt", "personlige-brev-intro.txt"],
+      "topics": ["brevfugl-fullfort"],
+      "modules": ["BREVFUGLER"]
+    },
+    "progressive_hints": [
+      {
+        "afterAttempts": 2,
+        "text": "Hint: Samle alle bokstavene fra tape-bitene."
+      },
+      {
+        "afterAttempts": 4,
+        "text": "Hint: Bokstavene er P, A, P, I, R - sett dem sammen!"
+      },
+      {
+        "afterAttempts": 6,
+        "text": "Hint: Svaret er PAPIR."
+      }
+    ],
+
+    "system_status_override": {
+      "metricName": "BREVFUGL-SYSTEM",
+      "value": 100,
+      "status": "normal"
+    },
+    "alert_override": {
+      "text": "SUKSESS: BREVFUGL-MYSTERIET LØST! 🕊️",
+      "type": "normal"
+    },
+    "print_materials": [
+      {
+        "type": "note",
+        "title": "Brevfugl-mysteriet fullført!",
+        "content": "Gratulerer! Brevfugl-mysteriet er løst! Dere har fulgt brevfuglene gjennom hele desember og hjulpet Winter med å organisere alle ønskene. Julius er stolt av dere! 🕊️"
+      }
+    ]
   }
 ]

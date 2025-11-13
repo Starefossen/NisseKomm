@@ -18,14 +18,22 @@ import { NisseMusikk } from "@/components/windows/NisseMusikk";
 import { SnøfallTV } from "@/components/windows/SnøfallTV";
 import { Brevfugler } from "@/components/windows/Brevfugler";
 import { NisseStats } from "@/components/windows/NisseStats";
+import { NisseKrypto } from "@/components/windows/NisseKrypto";
+import { SymbolScanner } from "@/components/windows/SymbolScanner";
+import { EventyrOversikt } from "@/components/windows/EventyrOversikt";
 import { GrandFinaleModal } from "@/components/ui/GrandFinaleModal";
 import { BadgeRow } from "@/components/ui/BadgeRow";
+import { NameEntryModal } from "@/components/ui/NameEntryModal";
 import { GameEngine } from "@/lib/game-engine";
+import {
+  getCurrentDay,
+  isCalendarActive as isDateCalendarActive,
+} from "@/lib/date-utils";
 import statiskInnholdData from "@/data/statisk_innhold.json";
 import { Varsel, FilNode, SystemMetrikk, KalenderDag } from "@/types/innhold";
 
 const oppdrag = GameEngine.getAllQuests();
-const { varsler, filer, systemMetrikker } = statiskInnholdData as {
+const { varsler, filer } = statiskInnholdData as {
   varsler: Varsel[];
   filer: FilNode[];
   systemMetrikker: SystemMetrikk[];
@@ -33,35 +41,11 @@ const { varsler, filer, systemMetrikker } = statiskInnholdData as {
 };
 
 /**
- * Get current calendar day (1-31)
- * In test mode, can be overridden with NEXT_PUBLIC_MOCK_DAY env variable
- */
-function getCurrentDay(): number {
-  const testMode = process.env.NEXT_PUBLIC_TEST_MODE === "true";
-  const mockDay = process.env.NEXT_PUBLIC_MOCK_DAY;
-
-  if (testMode && mockDay) {
-    const day = parseInt(mockDay, 10);
-    if (!isNaN(day) && day >= 1 && day <= 24) {
-      return day;
-    }
-  }
-
-  return new Date().getDate();
-}
-
-/**
  * Check if current date is within the calendar period (December 1-24)
- * @param testMode - If true, bypass date restrictions for development
+ * Delegates to centralized date utility
  */
 function isCalendarActive(testMode: boolean): boolean {
-  if (testMode) return true;
-
-  const now = new Date();
-  const month = now.getMonth() + 1; // 1-based
-  const day = now.getDate();
-
-  return month === 12 && day >= 1 && day <= 24;
+  return isDateCalendarActive(testMode);
 }
 
 /**
@@ -71,6 +55,14 @@ function getUnreadEmailCount(): number {
   if (typeof window === "undefined") return 0;
   const currentDay = getCurrentDay();
   return GameEngine.getUnreadEmailCount(currentDay);
+}
+
+/**
+ * Get count of unread files in NisseNet
+ */
+function getUnreadFileCount(): number {
+  if (typeof window === "undefined") return 0;
+  return GameEngine.getUnreadFileCount();
 }
 
 export default function Home() {
@@ -89,6 +81,9 @@ export default function Home() {
   const [openWindow, setOpenWindow] = useState<string | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [unreadCount, setUnreadCount] = useState(() => getUnreadEmailCount());
+  const [unreadFileCount, setUnreadFileCount] = useState(() =>
+    getUnreadFileCount(),
+  );
   const [unlockedModules, setUnlockedModules] = useState<string[]>(() => {
     if (typeof window !== "undefined") {
       return GameEngine.getUnlockedModules();
@@ -96,6 +91,7 @@ export default function Home() {
     return [];
   });
   const [showGrandFinale, setShowGrandFinale] = useState(false);
+  const [showNameEntry, setShowNameEntry] = useState(false);
   const { playSound, playJingle } = useSounds();
 
   const bootPassword = process.env.NEXT_PUBLIC_BOOT_PASSWORD || "NISSEKODE2025";
@@ -113,6 +109,15 @@ export default function Home() {
   const handleCodeSubmitted = () => {
     setUnlockedModules(GameEngine.getUnlockedModules());
     setUnreadCount(getUnreadEmailCount());
+
+    // Check if Day 23 just completed and names not yet entered
+    if (
+      GameEngine.isQuestCompleted(23) &&
+      StorageManager.getPlayerNames().length === 0
+    ) {
+      // Delay to let success animation play
+      setTimeout(() => setShowNameEntry(true), 2000);
+    }
 
     // Check if all 24 quests completed for grand finale
     if (GameEngine.isGameComplete()) {
@@ -144,6 +149,11 @@ export default function Home() {
       setOpenWindow(windowId);
       setSelectedDay(null);
       playSound("open");
+
+      // Reset NisseNet unread count when opening
+      if (windowId === "nissenet" && typeof window !== "undefined") {
+        setUnreadFileCount(0);
+      }
     }
   };
 
@@ -151,9 +161,10 @@ export default function Home() {
     setOpenWindow(null);
     setSelectedDay(null);
     playSound("close");
-    // Refresh unread count when closing NisseMail
+    // Refresh unread counts when closing windows
     if (typeof window !== "undefined") {
       setUnreadCount(getUnreadEmailCount());
+      setUnreadFileCount(getUnreadFileCount());
     }
   };
 
@@ -165,6 +176,12 @@ export default function Home() {
   const getCurrentMission = () => {
     const day = selectedDay || getCurrentDay();
     return oppdrag.find((m) => m.dag === day) || oppdrag[0];
+  };
+
+  const handleNameEntryComplete = (names: string[]) => {
+    StorageManager.setPlayerNames(names);
+    setShowNameEntry(false);
+    playSound("success");
   };
 
   // Show access denied if outside December 1-24 in production mode
@@ -212,8 +229,22 @@ export default function Home() {
         <div className="flex h-full">
           {/* Sidebar - 25% */}
           <div className="w-1/4 p-4 flex flex-col gap-4 border-r-4 border-(--neon-green)/30 overflow-hidden">
-            <SystemStatus metrics={systemMetrikker} />
-            <VarselKonsoll alerts={varsler} />
+            <SystemStatus currentDay={getCurrentDay()} />
+            <VarselKonsoll alerts={varsler} currentDay={getCurrentDay()} />
+
+            {/* Story Progress Button */}
+            <div className="mt-3">
+              <button
+                onClick={() => {
+                  setOpenWindow("eventyr-oversikt");
+                  playSound("open");
+                }}
+                className="w-full p-3 border-2 border-(--cold-blue) bg-(--cold-blue)/10 text-(--cold-blue) hover:bg-(--cold-blue)/20 transition-all flex items-center gap-2 justify-center font-bold tracking-wider text-sm"
+              >
+                <span>📖</span>
+                <span>HISTORIENE DINE</span>
+              </button>
+            </div>
           </div>
 
           {/* Main workspace - 75% */}
@@ -240,6 +271,7 @@ export default function Home() {
                       icon="folder"
                       label="NISSENET"
                       color="green"
+                      unreadCount={unreadFileCount}
                       onClick={() => handleIconClick("nissenet")}
                     />
                     <DesktopIcon
@@ -253,77 +285,81 @@ export default function Home() {
                     {(() => {
                       const moduleOrder = [
                         {
+                          key: "NISSEKRYPTO",
+                          icon: "lock" as const,
+                          label: "NISSEKRYPTO",
+                          color: "gold" as const,
+                          windowKey: "nissekrypto",
+                        },
+                        {
+                          key: "SYMBOLSKANNER",
+                          icon: "key" as const,
+                          label: "SYMBOLSKANNER",
+                          color: "green" as const,
+                          windowKey: "symbolskanner",
+                        },
+                        {
                           key: "NISSEMUSIKK",
                           icon: "music" as const,
                           label: "NISSEMUSIKK",
                           color: "blue" as const,
+                          windowKey: "nissemusikk",
                         },
                         {
-                          key: "NORDPOL_TV",
+                          key: "SNØFALL_TV",
                           icon: "image" as const,
                           label: "SNØFALL TV",
                           color: "green" as const,
+                          windowKey: "nordpol_tv",
                         },
                         {
                           key: "BREVFUGLER",
                           icon: "mail" as const,
                           label: "BREVFUGLER",
                           color: "gold" as const,
+                          windowKey: "brevfugler",
                         },
                         {
                           key: "NISSESTATS",
                           icon: "chart" as const,
                           label: "NISSESTATS",
                           color: "blue" as const,
+                          windowKey: "nissestats",
                         },
                       ];
 
                       const unlockedInOrder = moduleOrder.filter((m) =>
                         unlockedModules.includes(m.key),
                       );
-                      const slot1 = unlockedInOrder[0];
-                      const slot2 = unlockedInOrder[1];
 
-                      return (
-                        <>
-                          {slot1 ? (
+                      // Show all unlocked modules or locked placeholders
+                      return moduleOrder.slice(0, 5).map((module, index) => {
+                        const unlockedModule = unlockedInOrder[index];
+                        if (unlockedModule) {
+                          return (
                             <DesktopIcon
-                              icon={slot1.icon}
-                              label={slot1.label}
-                              color={slot1.color}
+                              key={unlockedModule.key}
+                              icon={unlockedModule.icon}
+                              label={unlockedModule.label}
+                              color={unlockedModule.color}
                               onClick={() =>
-                                handleIconClick(slot1.key.toLowerCase())
+                                handleIconClick(unlockedModule.windowKey)
                               }
                             />
-                          ) : (
+                          );
+                        } else {
+                          return (
                             <DesktopIcon
+                              key={`locked-${index}`}
                               icon="lock"
                               label="LÅST"
                               color="gray"
                               disabled
                               onClick={() => {}}
                             />
-                          )}
-                          {slot2 ? (
-                            <DesktopIcon
-                              icon={slot2.icon}
-                              label={slot2.label}
-                              color={slot2.color}
-                              onClick={() =>
-                                handleIconClick(slot2.key.toLowerCase())
-                              }
-                            />
-                          ) : (
-                            <DesktopIcon
-                              icon="lock"
-                              label="LÅST"
-                              color="gray"
-                              disabled
-                              onClick={() => {}}
-                            />
-                          )}
-                        </>
-                      );
+                          );
+                        }
+                      });
                     })()}
                   </div>
                 </div>
@@ -370,6 +406,12 @@ export default function Home() {
                   {openWindow === "nissemusikk" && (
                     <NisseMusikk onClose={handleCloseWindow} />
                   )}
+                  {openWindow === "nissekrypto" && (
+                    <NisseKrypto onClose={handleCloseWindow} />
+                  )}
+                  {openWindow === "symbolskanner" && (
+                    <SymbolScanner onClose={handleCloseWindow} />
+                  )}
                   {openWindow === "nordpol_tv" && (
                     <SnøfallTV
                       onClose={handleCloseWindow}
@@ -385,6 +427,9 @@ export default function Home() {
                       currentDay={getCurrentDay()}
                     />
                   )}
+                  {openWindow === "eventyr-oversikt" && (
+                    <EventyrOversikt onClose={handleCloseWindow} />
+                  )}
                 </>
               )}
             </div>
@@ -395,10 +440,13 @@ export default function Home() {
         </div>
       )}
 
-      {/* Grand Finale Modal */}
+      {/* Grand finale modal */}
       {showGrandFinale && (
         <GrandFinaleModal onClose={() => setShowGrandFinale(false)} />
       )}
+
+      {/* Day 23 name entry modal */}
+      {showNameEntry && <NameEntryModal onComplete={handleNameEntryComplete} />}
     </CRTFrame>
   );
 }

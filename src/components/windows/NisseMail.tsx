@@ -42,24 +42,26 @@ export function NisseMail({
     return new Set();
   });
 
-  const [viewedSideQuests, setViewedSideQuests] = useState<Set<number>>(() => {
-    if (typeof window !== "undefined") {
-      const state = GameEngine.loadGameState();
-      return state.viewedSideQuestEmails;
-    }
-    return new Set();
-  });
+  const [viewedBonusOppdrag, setViewedBonusOppdrag] = useState<Set<number>>(
+    () => {
+      if (typeof window !== "undefined") {
+        const state = GameEngine.loadGameState();
+        return state.viewedBonusOppdragEmails;
+      }
+      return new Set();
+    },
+  );
 
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
 
   const markAsViewed = useCallback(
-    (dag: number, isSideQuest: boolean = false) => {
-      if (isSideQuest) {
-        if (!viewedSideQuests.has(dag)) {
+    (dag: number, isBonusOppdrag: boolean = false) => {
+      if (isBonusOppdrag) {
+        if (!viewedBonusOppdrag.has(dag)) {
           GameEngine.markEmailAsViewed(dag, true);
-          const updated = new Set(viewedSideQuests);
+          const updated = new Set(viewedBonusOppdrag);
           updated.add(dag);
-          setViewedSideQuests(updated);
+          setViewedBonusOppdrag(updated);
         }
       } else {
         if (!viewedEmails.has(dag)) {
@@ -70,7 +72,7 @@ export function NisseMail({
         }
       }
     },
-    [viewedEmails, viewedSideQuests],
+    [viewedEmails, viewedBonusOppdrag],
   );
 
   // Calculate initial mission selection
@@ -104,9 +106,9 @@ export function NisseMail({
       }
       // Check side-quest email if main is completed and has side-quest
       if (
-        mission.sideoppdrag &&
+        mission.bonusoppdrag &&
         completedDays.has(mission.dag) &&
-        !viewedSideQuests.has(mission.dag)
+        !viewedBonusOppdrag.has(mission.dag)
       ) {
         return { type: "side-quest", mission, day: mission.dag };
       }
@@ -114,7 +116,7 @@ export function NisseMail({
 
     // Default to first mission
     return { type: "main", mission: missions[0], day: missions[0].dag };
-  }, [missions, currentDay, initialDay, viewedEmails, viewedSideQuests]);
+  }, [missions, currentDay, initialDay, viewedEmails, viewedBonusOppdrag]);
 
   const [selectedMission, setSelectedMission] = useState<Oppdrag | null>(() => {
     if (initialEmail) {
@@ -154,7 +156,10 @@ export function NisseMail({
     emails.push({ type: "main", mission, day: mission.dag });
 
     // Add side-quest email if main quest completed and has side-quest
-    if (mission.sideoppdrag && GameEngine.isSideQuestAccessible(mission.dag)) {
+    if (
+      mission.bonusoppdrag &&
+      GameEngine.isBonusOppdragAccessible(mission.dag)
+    ) {
       emails.push({ type: "side-quest", mission, day: mission.dag });
     }
   }
@@ -179,9 +184,9 @@ export function NisseMail({
             {/* Email list */}
             <div className="space-y-2 overflow-y-auto flex-1 mt-2 pb-2">
               {[...emails].reverse().map((email, index) => {
-                const isSideQuest = email.type === "side-quest";
-                const isUnread = isSideQuest
-                  ? !viewedSideQuests.has(email.day)
+                const isBonusOppdrag = email.type === "side-quest";
+                const isUnread = isBonusOppdrag
+                  ? !viewedBonusOppdrag.has(email.day)
                   : !viewedEmails.has(email.day);
                 const isSelected =
                   selectedEmail?.type === email.type &&
@@ -189,12 +194,12 @@ export function NisseMail({
 
                 // Get badge icon for side-quests
                 const BadgeIcon =
-                  isSideQuest && email.mission.sideoppdrag
+                  isBonusOppdrag && email.mission.bonusoppdrag
                     ? Icons[
-                        (email.mission.sideoppdrag.badge_icon
+                        (email.mission.bonusoppdrag.badge_icon
                           .charAt(0)
                           .toUpperCase() +
-                          email.mission.sideoppdrag.badge_icon.slice(
+                          email.mission.bonusoppdrag.badge_icon.slice(
                             1,
                           )) as keyof typeof Icons
                       ]
@@ -209,7 +214,7 @@ export function NisseMail({
                     className={`
                       w-full text-left p-3 border-2 transition-all
                       ${
-                        isSideQuest
+                        isBonusOppdrag
                           ? isSelected
                             ? "border-(--gold) bg-(--gold)/20"
                             : "border-(--gold)/50 hover:border-(--gold) hover:bg-black/30"
@@ -226,10 +231,12 @@ export function NisseMail({
                       )}
                       <div className="flex-1 min-w-0">
                         <div
-                          className={`text-sm flex items-center gap-1 ${isUnread ? (isSideQuest ? "text-(--gold)" : "text-(--gold)") : ""}`}
+                          className={`text-sm flex items-center gap-1 ${isUnread ? (isBonusOppdrag ? "text-(--gold)" : "text-(--gold)") : ""}`}
                         >
                           <span>
-                            {isSideQuest ? "KRISE-VARSEL ⚠️" : "RAMPENISSEN 🎅"}
+                            {isBonusOppdrag
+                              ? "KRISE-VARSEL ⚠️"
+                              : "RAMPENISSEN 🎅"}
                           </span>
                           {BadgeIcon && (
                             <BadgeIcon className="w-4 h-4 inline-block" />
@@ -238,19 +245,19 @@ export function NisseMail({
                         <div
                           className={`text-base truncate ${
                             isUnread
-                              ? isSideQuest
+                              ? isBonusOppdrag
                                 ? "text-(--gold)"
                                 : "text-(--neon-green)"
                               : ""
                           }`}
                         >
-                          {isSideQuest && email.mission.sideoppdrag
-                            ? email.mission.sideoppdrag.tittel
+                          {isBonusOppdrag && email.mission.bonusoppdrag
+                            ? email.mission.bonusoppdrag.tittel
                             : email.mission.tittel}
                         </div>
                         <div className="text-xs opacity-50 mt-1">
                           DAG {email.day}
-                          {isSideQuest && " • SIDEOPPDRAG"}
+                          {isBonusOppdrag && " • BONUSOPPDRAG"}
                         </div>
                       </div>
                     </div>
@@ -267,23 +274,25 @@ export function NisseMail({
             <div className="flex-1 flex flex-col min-h-0">
               {/* Render side-quest email */}
               {selectedEmail.type === "side-quest" &&
-              selectedMission.sideoppdrag ? (
+              selectedMission.bonusoppdrag ? (
                 <>
-                  {/* Side-Quest Email Header */}
+                  {/* Bonusoppdrag Email Header */}
                   <div className="space-y-3 pb-4 border-b-4 border-(--gold) mb-4 shrink-0">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="text-2xl font-bold tracking-wider text-(--gold)">
-                          {selectedMission.sideoppdrag.tittel}
+                          {selectedMission.bonusoppdrag.tittel}
                         </div>
-                        {selectedMission.sideoppdrag.badge_icon && (
+                        {selectedMission.bonusoppdrag.badge_icon && (
                           <>
                             {(() => {
                               const iconKey =
-                                selectedMission.sideoppdrag.badge_icon
+                                selectedMission.bonusoppdrag.badge_icon
                                   .charAt(0)
                                   .toUpperCase() +
-                                selectedMission.sideoppdrag.badge_icon.slice(1);
+                                selectedMission.bonusoppdrag.badge_icon.slice(
+                                  1,
+                                );
                               const BadgeIcon =
                                 Icons[iconKey as keyof typeof Icons];
                               return (
@@ -313,7 +322,7 @@ export function NisseMail({
                       <div className="flex gap-3">
                         <span className="opacity-70 w-16">EMNE:</span>
                         <span className="text-(--gold)">
-                          {selectedMission.sideoppdrag.tittel}
+                          {selectedMission.bonusoppdrag.tittel}
                         </span>
                       </div>
                       <div className="flex gap-3">
@@ -323,12 +332,12 @@ export function NisseMail({
                     </div>
                   </div>
 
-                  {/* Side-Quest Body */}
+                  {/* Bonusoppdrag Body */}
                   <div className="flex-1 overflow-y-auto space-y-4 min-h-0 pr-2">
                     {/* Crisis description */}
                     <div className="p-4 border-2 border-(--gold) bg-(--gold)/10">
                       <div className="text-lg leading-relaxed whitespace-pre-wrap text-(--gold)">
-                        {selectedMission.sideoppdrag.beskrivelse}
+                        {selectedMission.bonusoppdrag.beskrivelse}
                       </div>
                     </div>
 
@@ -341,14 +350,16 @@ export function NisseMail({
                         </span>
                       </div>
                       <div className="flex items-center gap-4 p-3 bg-(--gold)/5 border-2 border-(--gold)/30">
-                        {selectedMission.sideoppdrag.badge_icon && (
+                        {selectedMission.bonusoppdrag.badge_icon && (
                           <>
                             {(() => {
                               const iconKey =
-                                selectedMission.sideoppdrag.badge_icon
+                                selectedMission.bonusoppdrag.badge_icon
                                   .charAt(0)
                                   .toUpperCase() +
-                                selectedMission.sideoppdrag.badge_icon.slice(1);
+                                selectedMission.bonusoppdrag.badge_icon.slice(
+                                  1,
+                                );
                               const BadgeIcon =
                                 Icons[iconKey as keyof typeof Icons];
                               return (
@@ -359,7 +370,7 @@ export function NisseMail({
                         )}
                         <div>
                           <div className="text-lg font-bold text-(--gold)">
-                            {selectedMission.sideoppdrag.badge_navn}
+                            {selectedMission.bonusoppdrag.badge_navn}
                           </div>
                           <div className="text-sm opacity-70">
                             Låses opp ved fullføring
@@ -369,7 +380,7 @@ export function NisseMail({
                     </div>
 
                     {/* Validation instructions */}
-                    {selectedMission.sideoppdrag.validering === "forelder" ? (
+                    {selectedMission.bonusoppdrag.validering === "forelder" ? (
                       <div className="p-4 border-2 border-(--cold-blue) bg-(--cold-blue)/10">
                         <div className="flex items-center gap-2 mb-2">
                           <Icons.Help size={16} color="blue" />
@@ -401,10 +412,10 @@ export function NisseMail({
                   {(() => {
                     // Use GameEngine to check completion
                     const isCompleted =
-                      GameEngine.isSideQuestCompleted(selectedMission);
+                      GameEngine.isBonusOppdragCompleted(selectedMission);
 
                     if (
-                      selectedMission.sideoppdrag?.validering === "forelder"
+                      selectedMission.bonusoppdrag?.validering === "forelder"
                     ) {
                       return (
                         <div className="mt-4 pt-4 border-t-4 border-(--gold) shrink-0">
@@ -488,7 +499,7 @@ export function NisseMail({
                     {/* Mission description */}
                     <div className="p-4 border-2 border-(--neon-green)/50 bg-black/30">
                       <div className="text-lg leading-relaxed whitespace-pre-wrap">
-                        {selectedMission.beskrivelse}
+                        {selectedMission.nissemail_tekst}
                       </div>
                     </div>
 

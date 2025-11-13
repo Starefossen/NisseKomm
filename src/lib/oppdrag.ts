@@ -16,6 +16,7 @@ import uke1 from "@/data/uke1_oppdrag.json";
 import uke2 from "@/data/uke2_oppdrag.json";
 import uke3 from "@/data/uke3_oppdrag.json";
 import uke4 from "@/data/uke4_oppdrag.json";
+import merkerData from "@/data/merker.json";
 
 // Type assertion for imported JSON
 const week1 = uke1 as Oppdrag[];
@@ -30,11 +31,11 @@ function validateOppdrag(oppdrag: Oppdrag, weekNumber: number): void {
   const requiredFields: (keyof Oppdrag)[] = [
     "dag",
     "tittel",
-    "beskrivelse",
+    "nissemail_tekst",
     "kode",
     "dagbokinnlegg",
     "rampenissen_rampestrek",
-    "fysisk_ledetekst",
+    "fysisk_hint",
     "oppsett_tid",
     "materialer_nødvendig",
     "beste_rom",
@@ -89,28 +90,54 @@ function validateOppdrag(oppdrag: Oppdrag, weekNumber: number): void {
   }
 
   // Validate side-quest structure if present
-  if (oppdrag.sideoppdrag) {
-    const sideoppdrag = oppdrag.sideoppdrag;
+  if (oppdrag.bonusoppdrag) {
+    const bonusoppdrag = oppdrag.bonusoppdrag;
     if (
-      !sideoppdrag.tittel ||
-      !sideoppdrag.beskrivelse ||
-      !sideoppdrag.validering ||
-      !sideoppdrag.badge_icon ||
-      !sideoppdrag.badge_navn
+      !bonusoppdrag.tittel ||
+      !bonusoppdrag.beskrivelse ||
+      !bonusoppdrag.validering ||
+      !bonusoppdrag.badge_id ||
+      !bonusoppdrag.badge_icon ||
+      !bonusoppdrag.badge_navn
     ) {
       throw new Error(
-        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - sideoppdrag missing required fields`,
+        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - bonusoppdrag missing required fields (including badge_id)`,
       );
     }
-    if (sideoppdrag.validering === "kode" && !sideoppdrag.kode) {
+    if (bonusoppdrag.validering === "kode" && !bonusoppdrag.kode) {
       throw new Error(
-        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - sideoppdrag with validering="kode" must have kode field`,
+        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - bonusoppdrag with validering="kode" must have kode field`,
       );
     }
     const validBadgeIcons = ["coin", "heart", "zap", "trophy", "gift", "star"];
-    if (!validBadgeIcons.includes(sideoppdrag.badge_icon)) {
+    if (!validBadgeIcons.includes(bonusoppdrag.badge_icon)) {
       throw new Error(
-        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - sideoppdrag.badge_icon must be one of: ${validBadgeIcons.join(", ")}`,
+        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - bonusoppdrag.badge_icon must be one of: ${validBadgeIcons.join(", ")}`,
+      );
+    }
+
+    // Validate badge_id exists in merker.json
+    const badge = merkerData.merker.find((m) => m.id === bonusoppdrag.badge_id);
+    if (!badge) {
+      throw new Error(
+        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - bonusoppdrag.badge_id "${bonusoppdrag.badge_id}" not found in merker.json`,
+      );
+    }
+
+    // Validate badge type is "bonusoppdrag"
+    if (badge.type !== "bonusoppdrag") {
+      throw new Error(
+        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - badge "${bonusoppdrag.badge_id}" has type "${badge.type}", expected "bonusoppdrag"`,
+      );
+    }
+
+    // Validate badge unlock condition matches this day
+    if (
+      badge.unlockCondition.type === "bonusoppdrag" &&
+      badge.unlockCondition.day !== oppdrag.dag
+    ) {
+      throw new Error(
+        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - badge "${bonusoppdrag.badge_id}" unlock condition specifies day ${badge.unlockCondition.day}, but bonusoppdrag is on day ${oppdrag.dag}`,
       );
     }
   }
@@ -201,32 +228,9 @@ function isDayCompleted(day: number, completedCodes: string[]): boolean {
  * Check if a side-quest is accessible (main quest must be completed first)
  * @public - Used by NisseMail component for sidequest visibility
  */
-export function isSideQuestAccessible(
+export function isBonusOppdragAccessible(
   day: number,
   completedCodes: string[],
 ): boolean {
   return isDayCompleted(day, completedCodes);
-}
-
-/**
- * Get all quests with cross-reference topics
- * @public - Reserved for Phase 2: Cross-day hint unlocking feature
- */
-export function getQuestsWithTopics(): Array<{ dag: number; topic: string }> {
-  return allOppdrag
-    .filter((o) => o.cross_reference_topic)
-    .map((o) => ({ dag: o.dag, topic: o.cross_reference_topic! }));
-}
-
-/**
- * Check if a topic should be unlocked (quest completed)
- * @public - Reserved for Phase 2: Cross-day hint unlocking feature
- */
-export function shouldUnlockTopic(
-  topic: string,
-  completedCodes: string[],
-): boolean {
-  const quest = allOppdrag.find((o) => o.cross_reference_topic === topic);
-  if (!quest) return false;
-  return isDayCompleted(quest.dag, completedCodes);
 }

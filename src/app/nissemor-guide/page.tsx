@@ -1,50 +1,65 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo, useState, useEffect, Suspense } from "react";
+import Link from "next/link";
 import { GameEngine } from "@/lib/game-engine";
-import { StorageManager } from "@/lib/storage";
+import { GuideAuth, useGuideAuth } from "@/components/nissemor/GuideAuth";
+import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
+import { TimelineView } from "@/components/nissemor/TimelineView";
+import { Icon } from "@/lib/icons";
+import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 
 const allOppdrag = GameEngine.getAllQuests();
 
-// Validate that quest data loaded correctly
-if (allOppdrag.length !== 24) {
-  console.error(`Expected 24 quests, got ${allOppdrag.length}`);
-}
-
 function NissemorGuideContent() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [expandedWeeks, setExpandedWeeks] = useState<number[]>([1]);
+  const { kode } = useGuideAuth();
+
+  // Get current date context (for Dec 1-24 relevance)
+  const currentDay = getCurrentDay();
+  const currentMonth = getCurrentMonth();
+  const isDecember = currentMonth === 12; // December is month 12 (1-based)
+  const relevantDay =
+    isDecember && currentDay >= 1 && currentDay <= 24 ? currentDay : 1;
+
+  // Calculate which week contains the relevant day
+  const relevantWeek = Math.ceil(relevantDay / 7);
+
+  const [expandedWeeks, setExpandedWeeks] = useState<number[]>([relevantWeek]);
   const [expandedDays, setExpandedDays] = useState<number[]>([]);
-  const [antennaConfirmed, setAntennaConfirmed] = useState(() => {
-    if (typeof window !== "undefined") {
-      return GameEngine.isCrisisResolved("antenna");
-    }
-    return false;
-  });
-  const [inventoryConfirmed, setInventoryConfirmed] = useState(() => {
-    if (typeof window !== "undefined") {
-      return GameEngine.isCrisisResolved("inventory");
-    }
-    return false;
-  });
-  const [letterInput, setLetterInput] = useState("");
-  const [currentLetterDay, setCurrentLetterDay] = useState(1);
+  const [selectedDay, setSelectedDay] = useState<number>(relevantDay);
 
-  const expectedKey = process.env.NEXT_PUBLIC_PARENT_GUIDE_KEY || "NORDPOL2025";
-  const key = searchParams.get("key");
-  const authenticated = key === expectedKey;
-
+  // Listen for storage changes to auto-update progression stats
   useEffect(() => {
-    if (!authenticated) {
-      router.push("/");
-    }
-  }, [authenticated, router]);
+    if (typeof window === "undefined") return;
 
-  if (!authenticated) {
-    return null;
-  }
+    const handleStorageChange = (e: StorageEvent) => {
+      // Trigger re-render when any game-related storage changes
+      if (e.key?.startsWith("nissekomm-")) {
+        setSelectedDay((prev) => prev); // Force re-render
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  // Group quests by week
+  const weeks = useMemo(
+    () => [
+      { num: 1, days: allOppdrag.slice(0, 7), title: "Uke 1: Oppdagelse" },
+      {
+        num: 2,
+        days: allOppdrag.slice(7, 14),
+        title: "Uke 2: Etterforskning",
+      },
+      { num: 3, days: allOppdrag.slice(14, 21), title: "Uke 3: Detektiv" },
+      { num: 4, days: allOppdrag.slice(21, 24), title: "Uke 4: Finale" },
+    ],
+    [],
+  );
+
+  // Calculate progression summary (refreshes when storage changes)
+  const progression = useMemo(() => GameEngine.getProgressionSummary(), []);
 
   const toggleWeek = (week: number) => {
     setExpandedWeeks((prev) =>
@@ -58,45 +73,67 @@ function NissemorGuideContent() {
     );
   };
 
-  const handleAntennaCrisisConfirm = () => {
-    GameEngine.awardBadge("antenna");
-    setAntennaConfirmed(true);
-  };
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input field
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement
+      ) {
+        return;
+      }
 
-  const handleInventoryCrisisConfirm = () => {
-    GameEngine.awardBadge("inventory");
-    setInventoryConfirmed(true);
-  };
+      switch (e.key) {
+        case "ArrowLeft":
+        case "h":
+          // Previous day
+          e.preventDefault();
+          setSelectedDay((prev) => Math.max(1, prev - 1));
+          break;
+        case "ArrowRight":
+        case "l":
+          // Next day
+          e.preventDefault();
+          setSelectedDay((prev) => Math.min(24, prev + 1));
+          break;
+        case "Home":
+        case "g":
+          // Go to first day
+          e.preventDefault();
+          setSelectedDay(1);
+          break;
+        case "End":
+        case "G":
+          // Go to last day
+          e.preventDefault();
+          setSelectedDay(24);
+          break;
+        case "t":
+        case "T":
+          // Go to today
+          e.preventDefault();
+          setSelectedDay(relevantDay);
+          break;
+        case "?":
+          // Show keyboard shortcuts help
+          e.preventDefault();
+          alert(
+            "⌨️ TASTATURSNARVEIER:\n\n" +
+              "← / h : Forrige dag\n" +
+              "→ / l : Neste dag\n" +
+              "Home / g : Første dag\n" +
+              "End / G : Siste dag\n" +
+              "t : Gå til dagens dato\n" +
+              "? : Vis denne hjelpen",
+          );
+          break;
+      }
+    };
 
-  const handleAddLetter = () => {
-    const content = letterInput.trim();
-
-    if (!content) {
-      alert("Brevet kan ikke være tomt!");
-      return;
-    }
-
-    if (currentLetterDay < 1 || currentLetterDay > 24) {
-      alert("Dag må være mellom 1 og 24!");
-      return;
-    }
-
-    try {
-      StorageManager.addSantaLetter(currentLetterDay, content);
-      setLetterInput("");
-      alert(`✓ Brev for dag ${currentLetterDay} lagret!`);
-    } catch (error) {
-      console.error("Failed to save letter:", error);
-      alert("Kunne ikke lagre brevet. Prøv igjen.");
-    }
-  };
-
-  const weeks = [
-    { num: 1, days: allOppdrag.slice(0, 7), title: "Uke 1: Oppdagelse" },
-    { num: 2, days: allOppdrag.slice(7, 14), title: "Uke 2: Etterforskning" },
-    { num: 3, days: allOppdrag.slice(14, 21), title: "Uke 3: Detektiv" },
-    { num: 4, days: allOppdrag.slice(21, 24), title: "Uke 4: Finale" },
-  ];
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [relevantDay]);
 
   const getSetupBadgeColor = (tid: string) => {
     switch (tid) {
@@ -111,89 +148,471 @@ function NissemorGuideContent() {
     }
   };
 
+  // Get selected day's quest details
+  const selectedQuest = allOppdrag.find((q) => q.dag === selectedDay);
+
   return (
-    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8 pt-8">
+    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8">
+      <GuideNavigation currentPage="hovedside" />
+
       {/* Header */}
-      <div className="max-w-4xl mx-auto mb-8 mt-4">
+      <div className="max-w-7xl mx-auto mb-8">
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-2 tracking-wider">
           🎄 NISSEMOR GUIDE 🎄
         </h1>
         <p className="text-center text-xl opacity-70">
-          Oppsett og gjennomføring av julekalenderen
+          Planleggings- og oversiktspanel for NisseKomm-kalenderen
         </p>
       </div>
 
-      {/* Progression Overview */}
-      <div className="max-w-4xl mx-auto mb-6">
-        <div className="border-4 border-(--gold) bg-(--gold)/10 p-6">
-          <h2 className="text-3xl font-bold text-(--gold) mb-4 text-center">
-            📅 FREMDRIFTS-OVERSIKT
-          </h2>
-
-          {/* Module Unlocks */}
-          <div className="mb-6">
-            <h3 className="text-2xl font-bold text-(--cold-blue) mb-3">
-              🔓 Modul-Opplåsinger
-            </h3>
-            <div className="space-y-2 pl-4">
-              <div className="flex items-center gap-3 p-2 bg-black/30 border-2 border-(--neon-green)/30">
-                <span className="text-xl font-bold text-(--gold)">Dag 7:</span>
-                <span className="text-lg">
-                  🎵 NISSEMUSIKK låses opp (julesanger)
-                </span>
+      {/* Quick Stats */}
+      <div className="max-w-7xl mx-auto mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* Main Quests */}
+          <div className="border-4 border-(--neon-green) bg-(--neon-green)/10 p-4">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-(--neon-green) mb-2">
+                {progression.mainQuests.completed}/
+                {progression.mainQuests.total}
               </div>
-              <div className="flex items-center gap-3 p-2 bg-black/30 border-2 border-(--neon-green)/30">
-                <span className="text-xl font-bold text-(--gold)">Dag 10:</span>
-                <span className="text-lg">
-                  📺 SNØFALL TV låses opp (video-dagbok)
-                </span>
-              </div>
-              <div className="flex items-center gap-3 p-2 bg-black/30 border-2 border-(--neon-green)/30">
-                <span className="text-xl font-bold text-(--gold)">Dag 14:</span>
-                <span className="text-lg">
-                  ✉️ BREVFUGLER låses opp (brev fra Julius)
-                </span>
-              </div>
-              <div className="flex items-center gap-3 p-2 bg-black/30 border-2 border-(--neon-green)/30">
-                <span className="text-xl font-bold text-(--gold)">Dag 16:</span>
-                <span className="text-lg">
-                  📊 NISSESTATS låses opp (statistikk fra verkstedet)
-                </span>
-              </div>
+              <div className="text-lg">Hovedoppdrag</div>
             </div>
           </div>
 
-          {/* Side-Quests and Badges */}
-          <div>
-            <h3 className="text-2xl font-bold text-(--cold-blue) mb-3">
-              🏅 Sideoppdrag og Merker
-            </h3>
-            <div className="space-y-2 pl-4">
-              <div className="flex items-center gap-3 p-2 bg-(--gold)/20 border-2 border-(--gold)/50">
-                <span className="text-xl font-bold text-(--gold)">Dag 11:</span>
-                <span className="text-lg">
-                  ⚡ ANTENNE-KRISE → Merke: &quot;ANTENNE-INGENIØR&quot;
-                  (forelder-validert)
-                </span>
+          {/* Bonus Quests */}
+          <div className="border-4 border-(--gold) bg-(--gold)/10 p-4">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-(--gold) mb-2">
+                {progression.bonusOppdrag.completed}/
+                {progression.bonusOppdrag.available}
               </div>
-              <div className="flex items-center gap-3 p-2 bg-(--gold)/20 border-2 border-(--gold)/50">
-                <span className="text-xl font-bold text-(--gold)">Dag 16:</span>
-                <span className="text-lg">
-                  💰 INVENTAR-KRISE → Merke: &quot;INVENTAR-EKSPERT&quot;
-                  (forelder-validert)
-                </span>
-              </div>
+              <div className="text-lg">Bonusoppdrag</div>
             </div>
-            <p className="mt-3 text-sm italic opacity-80">
-              💡 Sideoppdrag-e-poster vises først ETTER at hovedoppdraget er
-              fullført. Merkene vises som trofeer nederst på startskjermen.
-            </p>
+          </div>
+
+          {/* Modules */}
+          <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-4">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-(--cold-blue) mb-2">
+                {progression.modules.unlocked}/{progression.modules.total}
+              </div>
+              <div className="text-lg">Moduler Låst Opp</div>
+            </div>
+          </div>
+
+          {/* Badges */}
+          <div className="border-4 border-(--christmas-red) bg-(--christmas-red)/10 p-4">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-(--christmas-red) mb-2">
+                {progression.badges.earned}/{progression.badges.total}
+              </div>
+              <div className="text-lg">Badges Tildelt</div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Weekly Sections */}
-      <div className="max-w-4xl mx-auto space-y-6 pb-8">
+      {/* MAIN CONTENT GRID: Timeline + Planning Sections */}
+      <div className="max-w-7xl mx-auto mb-6">
+        <div className="hidden lg:grid lg:grid-cols-[380px_1fr] gap-6">
+          {/* Left Column: Timeline */}
+          <TimelineView
+            selectedDay={selectedDay}
+            onSelectDay={setSelectedDay}
+          />
+
+          {/* Right Column: Rest of content */}
+          <div className="space-y-6">
+            {/* TODAY'S PLANNING SECTION */}
+            <div className="border-4 border-(--gold) bg-(--gold)/10 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-3xl font-bold text-(--gold) flex items-center gap-2">
+                  <Icon name="calendar" size={32} />
+                  DAGENS OPPDRAG (Dag {selectedDay})
+                </h2>
+                <button
+                  onClick={() =>
+                    alert(
+                      "⌨️ TASTATURSNARVEIER:\n\n" +
+                        "← / h : Forrige dag\n" +
+                        "→ / l : Neste dag\n" +
+                        "Home / g : Første dag\n" +
+                        "End / G : Siste dag\n" +
+                        "t : Gå til dagens dato\n" +
+                        "? : Vis denne hjelpen",
+                    )
+                  }
+                  className="text-sm px-4 py-2 border-2 border-(--gold) text-(--gold) hover:bg-(--gold)/20 transition-colors"
+                  title="Vis tastatursnarveier"
+                >
+                  ⌨️ Snarveier (?)
+                </button>
+              </div>
+
+              {selectedQuest ? (
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Left Column: Setup Instructions */}
+                  <div className="space-y-4">
+                    {/* Rampenissen Scene */}
+                    <div className="border-2 border-(--neon-green) bg-black/50 p-4">
+                      <h3 className="text-xl font-bold text-(--neon-green) mb-2">
+                        🎭 RAMPESTREK-SCENE:
+                      </h3>
+                      <p className="text-lg">
+                        {selectedQuest.rampenissen_rampestrek}
+                      </p>
+                    </div>
+
+                    {/* Physical Note */}
+                    <div className="border-2 border-(--cold-blue) bg-black/50 p-4">
+                      <h3 className="text-xl font-bold text-(--cold-blue) mb-2">
+                        📝 FYSISK LAPP:
+                      </h3>
+                      <p className="text-lg italic">
+                        &quot;{selectedQuest.fysisk_hint}&quot;
+                      </p>
+                    </div>
+
+                    {/* Materials */}
+                    <div className="border-2 border-(--gold) bg-black/50 p-4">
+                      <h3 className="text-xl font-bold text-(--gold) mb-2">
+                        📦 MATERIALER:
+                      </h3>
+                      <ul className="list-disc list-inside space-y-1">
+                        {selectedQuest.materialer_nødvendig.map((mat, i) => (
+                          <li key={i} className="text-lg">
+                            {mat}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Symbol Clue - Physical Card to Hide */}
+                    {selectedQuest.symbol_clue && (
+                      <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/20 p-4">
+                        <h3 className="text-xl font-bold text-(--cold-blue) mb-2 flex items-center gap-2">
+                          💎 SYMBOL Å GJEMME:
+                        </h3>
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-3">
+                            <Icon
+                              name={selectedQuest.symbol_clue.symbolIcon}
+                              size={32}
+                              className={`text-(--${selectedQuest.symbol_clue.symbolColor === "green" ? "neon-green" : selectedQuest.symbol_clue.symbolColor === "red" ? "christmas-red" : selectedQuest.symbol_clue.symbolColor === "blue" ? "cold-blue" : "gold"})`}
+                            />
+                            <div>
+                              <p className="text-xl font-bold">
+                                {selectedQuest.symbol_clue.description}
+                              </p>
+                              <p className="text-sm opacity-70">
+                                Kode: {selectedQuest.symbol_clue.symbolId}
+                              </p>
+                            </div>
+                          </div>
+                          <p className="text-sm italic opacity-80 mt-2">
+                            🎯 Gjem dette symbolkortet et sted barnet kan finne
+                            det i dag. De skanner QR-koden eller skriver inn
+                            koden manuelt.
+                          </p>
+                          <Link
+                            href={`/nissemor-guide/symboler?kode=${kode}`}
+                            className="inline-block mt-2 px-4 py-2 bg-(--cold-blue) text-black font-bold text-sm hover:opacity-80"
+                          >
+                            Print symbolkort →
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Right Column: Context & Code */}
+                  <div className="space-y-4">
+                    {/* Digital Quest */}
+                    <div className="border-2 border-(--neon-green)/50 bg-black/50 p-4">
+                      <h3 className="text-xl font-bold text-(--neon-green)/70 mb-2">
+                        💻 VISES I APPEN:
+                      </h3>
+                      <p className="text-lg italic opacity-80">
+                        {selectedQuest.nissemail_tekst}
+                      </p>
+                    </div>
+
+                    {/* Setup Details */}
+                    <div className="border-2 border-(--gray) bg-black/50 p-4">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <span className="text-(--gold) font-bold">
+                            📍 ROM:
+                          </span>
+                          <br />
+                          {selectedQuest.beste_rom}
+                        </div>
+                        <div>
+                          <span className="text-(--gold) font-bold">
+                            🔍 HINT:
+                          </span>
+                          <br />
+                          {selectedQuest.hint_type}
+                        </div>
+                        <div>
+                          <span className="text-(--gold) font-bold">
+                            ⏱️ TID:
+                          </span>
+                          <br />
+                          <span
+                            className={`${getSetupBadgeColor(selectedQuest.oppsett_tid)} px-2 py-1 text-white text-sm`}
+                          >
+                            {selectedQuest.oppsett_tid.toUpperCase()}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Expected Code */}
+                    <div className="border-4 border-(--christmas-red) bg-(--christmas-red)/20 p-4">
+                      <h3 className="text-2xl font-bold text-(--christmas-red) mb-2">
+                        🔐 RIKTIG KODE:
+                      </h3>
+                      <p className="text-4xl font-bold text-center">
+                        {selectedQuest.kode}
+                      </p>
+                    </div>
+
+                    {/* Bonus Quest */}
+                    {selectedQuest.bonusoppdrag && (
+                      <div className="border-4 border-(--gold) bg-(--gold)/20 p-4">
+                        <h3 className="text-xl font-bold text-(--gold) mb-2">
+                          🏅 BONUSOPPDRAG:
+                        </h3>
+                        <p className="font-bold text-lg mb-1">
+                          {selectedQuest.bonusoppdrag.tittel}
+                        </p>
+                        <p className="text-sm italic mb-3">
+                          {selectedQuest.bonusoppdrag.beskrivelse}
+                        </p>
+                        <Link
+                          href={`/nissemor-guide/bonusoppdrag?kode=${kode}`}
+                          className="inline-block px-4 py-2 bg-(--gold) text-black font-bold text-sm hover:opacity-80"
+                        >
+                          Gå til validering →
+                        </Link>
+                      </div>
+                    )}
+
+                    {/* Special Features */}
+                    {(selectedQuest.reveals?.modules ||
+                      selectedQuest.decryption_challenge) && (
+                      <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/20 p-4">
+                        <h3 className="text-xl font-bold text-(--cold-blue) mb-2">
+                          ⭐ SPESIELLE FUNKSJONER:
+                        </h3>
+                        <div className="space-y-2">
+                          {selectedQuest.reveals?.modules?.map((module) => (
+                            <div
+                              key={module}
+                              className="flex items-center gap-2"
+                            >
+                              <span className="text-lg">🔓</span>
+                              <span className="text-lg">
+                                Låser opp: <strong>{module}</strong>
+                              </span>
+                            </div>
+                          ))}
+                          {selectedQuest.decryption_challenge && (
+                            <div className="flex items-center gap-2">
+                              <span className="text-lg">🔐</span>
+                              <span className="text-lg">
+                                Dekrypterings-utfordring
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <p className="text-center text-2xl">
+                  Velg en dag for å se detaljer
+                </p>
+              )}
+
+              {/* Day Selector */}
+              <div className="mt-6 border-t-2 border-(--gold)/30 pt-4">
+                <h3 className="text-xl font-bold text-(--gold) mb-3 text-center">
+                  Velg dag å vise:
+                </h3>
+                <div className="grid grid-cols-6 md:grid-cols-12 gap-2">
+                  {allOppdrag.map((quest) => {
+                    const hasBonus = !!quest.bonusoppdrag;
+                    const hasModule = !!quest.reveals?.modules?.length;
+                    const hasDecryption = !!quest.decryption_challenge;
+
+                    return (
+                      <button
+                        key={quest.dag}
+                        onClick={() => setSelectedDay(quest.dag)}
+                        className={`relative p-2 text-lg font-bold border-2 transition-all ${
+                          selectedDay === quest.dag
+                            ? "bg-(--gold) text-black border-(--gold) scale-110"
+                            : "bg-black text-(--neon-green) border-(--neon-green) hover:bg-(--neon-green)/20"
+                        }`}
+                      >
+                        {quest.dag}
+                        {/* Indicators */}
+                        {(hasBonus || hasModule || hasDecryption) && (
+                          <div className="absolute -top-1 -right-1 flex gap-0.5">
+                            {hasBonus && (
+                              <span className="text-xs" title="Bonusoppdrag">
+                                🏅
+                              </span>
+                            )}
+                            {hasModule && (
+                              <span className="text-xs" title="Låser opp modul">
+                                🔓
+                              </span>
+                            )}
+                            {hasDecryption && (
+                              <span className="text-xs" title="Dekryptering">
+                                🔐
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Links Navigation Grid */}
+            <div>
+              <h2 className="text-3xl font-bold text-center mb-4">
+                🔗 HURTIGLENKER
+              </h2>
+
+              {/* First Row */}
+              <div className="grid md:grid-cols-3 gap-4 mb-4">
+                {/* Shopping List */}
+                <Link
+                  href={`/nissemor-guide/handleliste?kode=${kode}`}
+                  className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-6 hover:bg-(--cold-blue)/20 transition-colors"
+                >
+                  <h3 className="text-2xl font-bold text-(--cold-blue) mb-2 text-center">
+                    🛒 HANDLEKURV-LISTE
+                  </h3>
+                  <p className="text-center text-sm">
+                    Alle materialer som trengs for desember
+                  </p>
+                </Link>
+
+                {/* Printout */}
+                <Link
+                  href={`/nissemor-guide/printout?kode=${kode}`}
+                  className="border-4 border-(--neon-green) bg-(--neon-green)/10 p-6 hover:bg-(--neon-green)/20 transition-colors"
+                >
+                  <h3 className="text-2xl font-bold text-(--neon-green) mb-2 text-center">
+                    🖨️ UTSKRIFTER
+                  </h3>
+                  <p className="text-center text-sm">
+                    Alle fysiske ledetekster for hele desember, klare for
+                    utskrift!
+                  </p>
+                </Link>
+
+                {/* Symbols */}
+                <Link
+                  href={`/nissemor-guide/symboler?kode=${kode}`}
+                  className="border-4 border-purple-600 bg-purple-600/10 p-6 hover:bg-purple-600/20 transition-colors"
+                >
+                  <h3 className="text-2xl font-bold text-purple-400 mb-2 text-center">
+                    🎁 SYMBOLER
+                  </h3>
+                  <p className="text-center text-sm">
+                    QR-kort for symbolsamling og dekryptering
+                  </p>
+                </Link>
+              </div>
+
+              {/* Second Row */}
+              <div className="grid md:grid-cols-4 gap-4">
+                {/* Eventyr */}
+                <Link
+                  href={`/nissemor-guide/eventyr?kode=${kode}`}
+                  className="border-4 border-(--gold) bg-(--gold)/10 p-6 hover:bg-(--gold)/20 transition-colors"
+                >
+                  <h3 className="text-2xl font-bold text-(--gold) mb-2 text-center">
+                    📖 EVENTYR
+                  </h3>
+                  <p className="text-center text-sm">
+                    Oversikt over alle 6 eventyr og deres fremdrift
+                  </p>
+                </Link>
+
+                {/* Merker */}
+                <Link
+                  href={`/nissemor-guide/merker?kode=${kode}`}
+                  className="border-4 border-(--gold) bg-(--gold)/10 p-6 hover:bg-(--gold)/20 transition-colors"
+                >
+                  <h3 className="text-2xl font-bold text-(--gold) mb-2 text-center">
+                    🏆 MERKER
+                  </h3>
+                  <p className="text-center text-sm">
+                    Oversikt og administrasjon av merkesystemet
+                  </p>
+                </Link>
+
+                {/* Development/Testing */}
+                <Link
+                  href={`/nissemor-guide/utvikling?kode=${kode}`}
+                  className="border-4 border-(--christmas-red) bg-(--christmas-red)/10 p-6 hover:bg-(--christmas-red)/20 transition-colors"
+                >
+                  <h3 className="text-2xl font-bold text-(--christmas-red) mb-2 text-center">
+                    ⚙️ UTVIKLING
+                  </h3>
+                  <p className="text-center text-sm">
+                    Test-verktøy og admin-funksjoner (kun for testing)
+                  </p>
+                </Link>
+
+                {/* Brevfugler */}
+                <Link
+                  href={`/nissemor-guide/brevfugler?kode=${kode}`}
+                  className="border-4 border-pink-600 bg-pink-600/10 p-6 hover:bg-pink-600/20 transition-colors"
+                >
+                  <h3 className="text-2xl font-bold text-pink-400 mb-2 text-center">
+                    ✉️ BREVFUGLER
+                  </h3>
+                  <p className="text-center text-sm">
+                    Skriv personlige brev fra Julius til barnet
+                  </p>
+                </Link>
+
+                {/* Bonusoppdrag */}
+                <Link
+                  href={`/nissemor-guide/bonusoppdrag?kode=${kode}`}
+                  className="border-4 border-orange-600 bg-orange-600/10 p-6 hover:bg-orange-600/20 transition-colors"
+                >
+                  <h3 className="text-2xl font-bold text-orange-400 mb-2 text-center">
+                    🏅 BONUSOPPDRAG
+                  </h3>
+                  <p className="text-center text-sm">
+                    Valider kriseløsninger og tildel merker
+                  </p>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Weekly Breakdown (Collapsible) */}
+      <div className="max-w-7xl mx-auto space-y-6 pb-8">
+        <h2 className="text-3xl font-bold text-center mb-4">
+          📅 UKEOVERSIKT (Kronologisk)
+        </h2>
+
         {weeks.map((week) => (
           <div key={week.num} className="border-4 border-(--neon-green)">
             {/* Week Header */}
@@ -210,7 +629,6 @@ function NissemorGuideContent() {
             {/* Week Content */}
             {expandedWeeks.includes(week.num) && (
               <div className="p-4 space-y-4">
-                {/* Days */}
                 {week.days.map((dag) => (
                   <div
                     key={dag.dag}
@@ -236,22 +654,11 @@ function NissemorGuideContent() {
                           </span>
                         </div>
                       </div>
-                      <div className="flex flex-wrap gap-2 text-sm">
-                        {dag.materialer_nødvendig.map((materiale, i) => (
-                          <span
-                            key={i}
-                            className="px-2 py-1 bg-(--neon-green)/20 border border-(--neon-green)/50"
-                          >
-                            {materiale}
-                          </span>
-                        ))}
-                      </div>
                     </button>
 
-                    {/* Day Content */}
+                    {/* Day Details */}
                     {expandedDays.includes(dag.dag) && (
                       <div className="p-4 space-y-4 bg-(--dark-crt)/50">
-                        {/* Rampenissen Setup */}
                         <div>
                           <h3 className="text-lg font-bold text-(--gold) mb-2">
                             🎭 OPPSETT AV RAMPENISSEN-SCENE:
@@ -259,56 +666,15 @@ function NissemorGuideContent() {
                           <p className="mb-2">{dag.rampenissen_rampestrek}</p>
                         </div>
 
-                        {/* Physical Note - What to write */}
                         <div className="border-2 border-(--cold-blue)/50 p-3">
                           <h3 className="text-sm font-bold text-(--cold-blue) mb-2">
                             📝 FYSISK LAPP (Skriv dette på lappen):
                           </h3>
                           <p className="text-(--cold-blue) text-sm italic">
-                            &quot;{dag.fysisk_ledetekst}&quot;
+                            &quot;{dag.fysisk_hint}&quot;
                           </p>
                         </div>
 
-                        {/* Digital Quest (shown in app) */}
-                        <div className="border-2 border-(--neon-green)/30 p-3">
-                          <h3 className="text-sm font-bold text-(--neon-green)/70 mb-2">
-                            💻 VISES DIGITALT I APPEN:
-                          </h3>
-                          <p className="text-(--neon-green)/80 text-sm italic">
-                            {dag.beskrivelse}
-                          </p>
-                        </div>
-
-                        {/* Materials */}
-                        <div>
-                          <h3 className="text-lg font-bold text-(--gold) mb-2">
-                            📦 MATERIALER:
-                          </h3>
-                          <div className="flex flex-wrap gap-2">
-                            {dag.materialer_nødvendig.map((materiale, i) => (
-                              <span
-                                key={i}
-                                className="px-3 py-1 bg-(--neon-green)/20 border border-(--neon-green)"
-                              >
-                                {materiale}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Room & Hint Type */}
-                        <div className="flex gap-4">
-                          <div>
-                            <span className="text-(--gold)">📍 ROM:</span>{" "}
-                            {dag.beste_rom}
-                          </div>
-                          <div>
-                            <span className="text-(--gold)">🔍 HINT-TYPE:</span>{" "}
-                            {dag.hint_type}
-                          </div>
-                        </div>
-
-                        {/* Expected Code */}
                         <div className="border-2 border-(--christmas-red) p-3 bg-(--christmas-red)/10">
                           <span className="text-(--christmas-red) font-bold">
                             🔐 RIKTIG KODE:
@@ -316,328 +682,14 @@ function NissemorGuideContent() {
                           <span className="text-2xl font-bold">{dag.kode}</span>
                         </div>
 
-                        {/* Advanced Multi-Room Setup for specific days */}
-                        {[9, 10, 11, 19, 20].includes(dag.dag) && (
-                          <details className="border-4 border-(--gold) bg-(--gold)/10 p-4">
-                            <summary className="text-xl font-bold text-(--gold) cursor-pointer mb-3">
-                              🗺️ AVANSERT OPPSETT (Flerromsoppdrag) - Klikk for
-                              detaljer
-                            </summary>
-                            <div className="space-y-3 text-sm">
-                              {/* Day 9: Snowflake Hunt */}
-                              {dag.dag === 9 && (
-                                <>
-                                  <p className="font-bold text-lg mb-2">
-                                    10 Snøfnugg - Spredt over 3 rom
-                                  </p>
-                                  <div className="space-y-2">
-                                    <div className="pl-4 border-l-4 border-(--cold-blue)">
-                                      <p className="font-bold text-(--cold-blue)">
-                                        🚽 BAD (3 snøfnugg, 2 med blå bakside):
-                                      </p>
-                                      <ul className="list-disc ml-6 mt-1">
-                                        <li>
-                                          Snøfnugg #1: På speilet (blå bakside:
-                                          "3")
-                                        </li>
-                                        <li>
-                                          Snøfnugg #2: Bak dusj-gardin (vanlig)
-                                        </li>
-                                        <li>
-                                          Snøfnugg #3: På toalettet (blå
-                                          bakside: "x")
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <div className="pl-4 border-l-4 border-(--cold-blue)">
-                                      <p className="font-bold text-(--cold-blue)">
-                                        🛋️ STUE (4 snøfnugg, 2 med blå bakside):
-                                      </p>
-                                      <ul className="list-disc ml-6 mt-1">
-                                        <li>
-                                          Snøfnugg #4: På TV (blå bakside: "2")
-                                        </li>
-                                        <li>
-                                          Snøfnugg #5: Under pute (vanlig)
-                                        </li>
-                                        <li>
-                                          Snøfnugg #6: Bak sofa (blå bakside:
-                                          "=")
-                                        </li>
-                                        <li>Snøfnugg #7: På vindu (vanlig)</li>
-                                      </ul>
-                                    </div>
-                                    <div className="pl-4 border-l-4 border-(--cold-blue)">
-                                      <p className="font-bold text-(--cold-blue)">
-                                        🍽️ KJØKKEN (3 snøfnugg, 2 med blå
-                                        bakside):
-                                      </p>
-                                      <ul className="list-disc ml-6 mt-1">
-                                        <li>
-                                          Snøfnugg #8: I kjøleskap (blå bakside:
-                                          "2")
-                                        </li>
-                                        <li>
-                                          Snøfnugg #9: På kaffemaskin (vanlig)
-                                        </li>
-                                        <li>
-                                          Snøfnugg #10: Under skål (blå bakside:
-                                          "6")
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <p className="italic text-(--gold) mt-3">
-                                      💡 Barna må snu alle snøfnuggene for å
-                                      finne de 6 med blå bakside. Tallene blir:
-                                      3 x 2 = 2 6 → Kode: 326
-                                    </p>
-                                  </div>
-                                </>
-                              )}
-
-                              {/* Day 10: Letter Collection */}
-                              {dag.dag === 10 && (
-                                <>
-                                  <p className="font-bold text-lg mb-2">
-                                    5 Grønne Gjenstander med Bokstaver
-                                  </p>
-                                  <div className="space-y-2">
-                                    <div className="pl-4 border-l-4 border-(--neon-green)">
-                                      <p className="font-bold text-(--neon-green)">
-                                        📍 Plassering (valgfritt hvilke rom):
-                                      </p>
-                                      <ul className="list-disc ml-6 mt-1">
-                                        <li>
-                                          Grønn gjenstand #1 (G): Under en
-                                          pute/på sofa
-                                        </li>
-                                        <li>
-                                          Grønn gjenstand #2 (R): På
-                                          kjøkkenbenk/i kjøleskap
-                                        </li>
-                                        <li>
-                                          Grønn gjenstand #3 (Ø): Bak et
-                                          bilde/på hylle
-                                        </li>
-                                        <li>
-                                          Grønn gjenstand #4 (N): I et
-                                          skap/skuff
-                                        </li>
-                                        <li>
-                                          Grønn gjenstand #5 (N): Ved vindu/på
-                                          dør
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <p className="italic text-(--gold) mt-3">
-                                      💡 Bruk små lapper festet til grønne
-                                      gjenstander dere allerede har (eple, grønn
-                                      kopp, etc.). Eller print ut grønne
-                                      firkanter. Bokstavene G-R-Ø-N-N = GRØNN
-                                    </p>
-                                  </div>
-                                </>
-                              )}
-
-                              {/* Day 11: Three Clocks */}
-                              {dag.dag === 11 && (
-                                <>
-                                  <p className="font-bold text-lg mb-2">
-                                    3 Analoge Klokker - Forskjellige Rom
-                                  </p>
-                                  <div className="space-y-2">
-                                    <div className="pl-4 border-l-4 border-(--neon-green)">
-                                      <p className="font-bold text-(--neon-green)">
-                                        ⏰ Plassering:
-                                      </p>
-                                      <ul className="list-disc ml-6 mt-1">
-                                        <li>
-                                          Klokke #1 (3:00): På kjøkkenbenk eller
-                                          bord
-                                        </li>
-                                        <li>
-                                          Klokke #2 (5:00): På nattbord i
-                                          soverom
-                                        </li>
-                                        <li>
-                                          Klokke #3 (4:00): På hylle i stue/bad
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <p className="italic text-(--gold) mt-3">
-                                      💡 Bruk eksisterende veggklokker eller lag
-                                      klokker av papptallerkener med visere.
-                                      Still dem til 3:00, 5:00 og 4:00. Summen
-                                      blir 3+5+4=12
-                                    </p>
-                                  </div>
-                                </>
-                              )}
-
-                              {/* Day 19: Checkpoint Course */}
-                              {dag.dag === 19 && (
-                                <>
-                                  <p className="font-bold text-lg mb-2">
-                                    4-Roms Checkpoint-Løype med Miniutfordringer
-                                  </p>
-                                  <div className="space-y-2">
-                                    <div className="pl-4 border-l-4 border-(--gold)">
-                                      <p className="font-bold text-(--gold)">
-                                        🏁 Checkpoint 1: SOVEROM
-                                      </p>
-                                      <ul className="list-disc ml-6 mt-1">
-                                        <li>
-                                          Utfordring: Tell reinsdyrbeina (bruk
-                                          små leker eller bilder) → Svar: 4
-                                        </li>
-                                        <li>
-                                          Bokstav: <strong>R</strong>
-                                        </li>
-                                        <li>
-                                          Lapp: "Tell reinsdyrbeina. Husk
-                                          svaret! Bokstav: R"
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <div className="pl-4 border-l-4 border-(--gold)">
-                                      <p className="font-bold text-(--gold)">
-                                        🏁 Checkpoint 2: KJØKKEN
-                                      </p>
-                                      <ul className="list-disc ml-6 mt-1">
-                                        <li>
-                                          Utfordring: Tell røde gjenstander →
-                                          Svar: 4
-                                        </li>
-                                        <li>
-                                          Bokstaver: <strong>E, I</strong>
-                                        </li>
-                                        <li>
-                                          Lapp: "Tell røde ting. Finn
-                                          bokstavene: E, I"
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <div className="pl-4 border-l-4 border-(--gold)">
-                                      <p className="font-bold text-(--gold)">
-                                        🏁 Checkpoint 3: BAD
-                                      </p>
-                                      <ul className="list-disc ml-6 mt-1">
-                                        <li>
-                                          Utfordring: Gåte "Hvit og kald, faller
-                                          fra skyene" → Svar: SNØ
-                                        </li>
-                                        <li>
-                                          Bokstaver: <strong>N, S</strong>
-                                        </li>
-                                        <li>
-                                          Lapp: "Hvit og kald, faller fra
-                                          skyene? Bokstaver: N, S"
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <div className="pl-4 border-l-4 border-(--gold)">
-                                      <p className="font-bold text-(--gold)">
-                                        🏁 Checkpoint 4: STUE
-                                      </p>
-                                      <ul className="list-disc ml-6 mt-1">
-                                        <li>
-                                          Utfordring: Finn den siste bokstaven
-                                        </li>
-                                        <li>
-                                          Bokstaver: <strong>D, Y</strong>
-                                        </li>
-                                        <li>
-                                          Lapp: "Siste stopp! Bokstaver: D, Y"
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <p className="italic text-(--gold) mt-3">
-                                      💡 Barna må besøke alle 4 rom i
-                                      rekkefølge. R-E-I-N-S-D-Y-R → Svar på
-                                      siste gåte er 4 (reinsdyrbein). Kode:
-                                      REIN4
-                                    </p>
-                                  </div>
-                                </>
-                              )}
-
-                              {/* Day 20: Obstacle Course */}
-                              {dag.dag === 20 && (
-                                <>
-                                  <p className="font-bold text-lg mb-2">
-                                    5-Checkpoint Hinderbane med Skjulte
-                                    Bokstaver
-                                  </p>
-                                  <div className="space-y-2">
-                                    <div className="pl-4 border-l-4 border-(--cold-blue)">
-                                      <p className="font-bold text-(--cold-blue)">
-                                        📍 Checkpoint-plassering:
-                                      </p>
-                                      <ul className="list-disc ml-6 mt-1">
-                                        <li>
-                                          Checkpoint 1: UNDER kjøkkenbord
-                                          (Bokstav: S)
-                                        </li>
-                                        <li>
-                                          Checkpoint 2: BAK soveromsdør
-                                          (Bokstav: L)
-                                        </li>
-                                        <li>
-                                          Checkpoint 3: I bokhylle (Bokstav: E)
-                                        </li>
-                                        <li>
-                                          Checkpoint 4: UNDER putepute på sofa
-                                          (Bokstav: D)
-                                        </li>
-                                        <li>
-                                          Checkpoint 5: VED vindu i stue
-                                          (Bokstav: E)
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <p className="italic text-(--gold) mt-3">
-                                      💡 Print ut checkpoint-kort (se
-                                      utskrift-siden) og fest dem på stedene.
-                                      Barna må fysisk bevege seg til hvert sted.
-                                      S-L-E-D-E = SLEDE
-                                    </p>
-                                  </div>
-                                </>
-                              )}
-                            </div>
-                          </details>
-                        )}
-
-                        {/* Side-quest display */}
-                        {dag.sideoppdrag && (
+                        {dag.bonusoppdrag && (
                           <div className="border-4 border-(--gold) bg-(--gold)/10 p-4">
-                            <div className="flex items-center gap-2 mb-2">
-                              <span className="text-2xl">⚠️</span>
-                              <h3 className="text-xl font-bold text-(--gold)">
-                                SIDEOPPDRAG: {dag.sideoppdrag.tittel}
-                              </h3>
-                            </div>
-                            <p className="mb-2 text-(--gold)/90">
-                              {dag.sideoppdrag.beskrivelse}
+                            <h3 className="text-xl font-bold text-(--gold)">
+                              ⚠️ BONUSOPPDRAG: {dag.bonusoppdrag.tittel}
+                            </h3>
+                            <p className="text-(--gold)/90">
+                              {dag.bonusoppdrag.beskrivelse}
                             </p>
-                            <div className="flex items-center gap-2 mt-3 p-2 bg-black/30 border-2 border-(--gold)/30">
-                              <span className="text-sm font-bold">
-                                VALIDERING:
-                              </span>
-                              <span className="text-sm">
-                                {dag.sideoppdrag.validering === "forelder"
-                                  ? "👤 Bekreft når barna har fullført (se Krise-Håndtering seksjon)"
-                                  : "💻 Send kode i terminal"}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-2 mt-2 p-2 bg-(--gold)/20 border-2 border-(--gold)">
-                              <span className="text-sm font-bold">
-                                BELØNNING:
-                              </span>
-                              <span className="text-sm">
-                                🏅 {dag.sideoppdrag.badge_navn}
-                              </span>
-                            </div>
                           </div>
                         )}
                       </div>
@@ -648,165 +700,10 @@ function NissemorGuideContent() {
             )}
           </div>
         ))}
-
-        {/* Crisis Management Section */}
-        <div className="border-4 border-(--christmas-red) bg-(--christmas-red)/10 p-6">
-          <h2 className="text-3xl font-bold text-(--christmas-red) mb-4">
-            ⚠️ KRISE-HÅNDTERING
-          </h2>
-
-          {/* Antenna Crisis */}
-          <div className="mb-6 p-4 border-2 border-(--christmas-red)">
-            <h3 className="text-xl font-bold mb-2">
-              📡 ANTENNE-KRISE (Dag 11-12)
-            </h3>
-            <p className="mb-3">
-              <strong>Når:</strong> Dag 11 morgen (etter Dag 10 fullført)
-            </p>
-            <p className="mb-3">
-              <strong>Beskrivelse:</strong> SNØFALL TV viser &quot;SIGNAL LOST -
-              ANTENNA MALFUNCTION&quot;. Barna må bygge en tinfolie-antenne og
-              sette den på toppen av TV-en/skjermen.
-            </p>
-            <p className="mb-3">
-              <strong>Løsning:</strong> La barna lage en antenne av tinfoil og
-              tape. Når de er ferdige, trykk bekreft nedenfor.
-            </p>
-            <button
-              onClick={handleAntennaCrisisConfirm}
-              disabled={antennaConfirmed}
-              className={`px-6 py-3 text-xl font-bold border-4 ${
-                antennaConfirmed
-                  ? "bg-(--gold) border-(--gold) text-black cursor-not-allowed"
-                  : "bg-(--neon-green) border-(--neon-green) text-black hover:opacity-80"
-              }`}
-            >
-              {antennaConfirmed ? "✓ ANTENNE FIKSET" : "BEKREFT ANTENNE FIKSET"}
-            </button>
-          </div>
-
-          {/* Inventory Crisis */}
-          <div className="p-4 border-2 border-(--christmas-red)">
-            <h3 className="text-xl font-bold mb-2">
-              📊 INVENTAR-KRISE (Dag 17-18)
-            </h3>
-            <p className="mb-3">
-              <strong>Når:</strong> Dag 17 morgen (etter Dag 16 fullført)
-            </p>
-            <p className="mb-3">
-              <strong>Beskrivelse:</strong> NISSESTATS viser &quot;CRITICAL
-              ERROR - INVENTORY SYSTEM OFFLINE&quot;. Barna må telle og
-              organisere lekene sine.
-            </p>
-            <p className="mb-3">
-              <strong>Løsning:</strong> La barna telle leker i en kategori
-              (biler, dukker, etc.) og rapportere totalen. Når de er ferdige,
-              trykk bekreft.
-            </p>
-            <button
-              onClick={handleInventoryCrisisConfirm}
-              disabled={inventoryConfirmed}
-              className={`px-6 py-3 text-xl font-bold border-4 ${
-                inventoryConfirmed
-                  ? "bg-(--gold) border-(--gold) text-black cursor-not-allowed"
-                  : "bg-(--neon-green) border-(--neon-green) text-black hover:opacity-80"
-              }`}
-            >
-              {inventoryConfirmed
-                ? "✓ INVENTAR FIKSET"
-                : "BEKREFT INVENTAR FIKSET"}
-            </button>
-          </div>
-        </div>
-
-        {/* Santa Letters Section */}
-        <div className="border-4 border-(--gold) bg-(--gold)/10 p-6">
-          <h2 className="text-3xl font-bold text-(--gold) mb-4">
-            ✉️ BREVFUGLER (Låses opp Dag 14)
-          </h2>
-          <p className="mb-4">
-            Skriv personlige brev fra Julius som barna kan lese i
-            BREVFUGLER-modulen. Brevene lagres i nettleseren.
-          </p>
-
-          <div className="space-y-3">
-            <div>
-              <label className="block mb-2 font-bold">DAG:</label>
-              <input
-                type="number"
-                min="1"
-                max="24"
-                value={currentLetterDay}
-                onChange={(e) => setCurrentLetterDay(parseInt(e.target.value))}
-                className="w-full p-2 bg-(--dark-crt) border-2 border-(--gold) text-(--gold) text-xl"
-              />
-            </div>
-            <div>
-              <label className="block mb-2 font-bold">BREV-INNHOLD:</label>
-              <textarea
-                value={letterInput}
-                onChange={(e) => setLetterInput(e.target.value)}
-                rows={6}
-                placeholder="Kjære [barnets navn],\n\nJeg har sett at du...\n\n- Julius"
-                className="w-full p-3 bg-(--dark-crt) border-2 border-(--gold) text-(--gold) text-lg font-mono"
-              />
-            </div>
-            <button
-              onClick={handleAddLetter}
-              className="px-6 py-3 bg-(--gold) border-4 border-(--gold) text-black font-bold text-xl hover:opacity-80"
-            >
-              LAGRE BREV
-            </button>
-          </div>
-        </div>
-
-        {/* Shopping Checklist */}
-        <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-6">
-          <h2 className="text-3xl font-bold text-(--cold-blue) mb-4">
-            🛒 HANDLEKURV-LISTE
-          </h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <h3 className="text-xl font-bold mb-2">🎨 GENERELT:</h3>
-              <ul className="space-y-1 list-disc list-inside">
-                <li>QR-kode til boot passord (dag 1)</li>
-                <li>Tinfolie (antenne-krise)</li>
-                <li>Tape (flere dager)</li>
-                <li>Sjokoladekaker (dag 15)</li>
-                <li>Mandel (dag 15)</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-2">🎄 JULEPYNT:</h3>
-              <ul className="space-y-1 list-disc list-inside">
-                <li>Papir-stjerner (dag 17, 21)</li>
-                <li>Julesokker (dag 22)</li>
-                <li>Lys/LED (dag 13)</li>
-                <li>Gavepapir (dag 14)</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Printout Link */}
-        <div className="border-4 border-(--neon-green) bg-(--neon-green)/10 p-6">
-          <h2 className="text-3xl font-bold text-(--neon-green) mb-4">
-            🖨️ UTSKRIFTER
-          </h2>
-          <p className="text-xl mb-4">
-            Alle fysiske ledetekster for hele desember, klare for utskrift!
-          </p>
-          <button
-            onClick={() => router.push(`/nissemor-guide/printout?key=${key}`)}
-            className="px-6 py-3 bg-(--neon-green) border-4 border-(--neon-green) text-black font-bold text-xl hover:opacity-80"
-          >
-            GÅ TIL UTSKRIFTSSIDE
-          </button>
-        </div>
       </div>
 
       {/* Footer */}
-      <div className="max-w-4xl mx-auto mt-8 text-center opacity-70 text-sm">
+      <div className="max-w-7xl mx-auto text-center opacity-70 text-sm pb-8">
         <p>NisseKomm v1.0 - Nissemor Control Panel</p>
         <p>Hold denne siden hemmelig fra barna! 🤫</p>
       </div>
@@ -823,7 +720,9 @@ export default function NissemorGuide() {
         </div>
       }
     >
-      <NissemorGuideContent />
+      <GuideAuth>
+        <NissemorGuideContent />
+      </GuideAuth>
     </Suspense>
   );
 }

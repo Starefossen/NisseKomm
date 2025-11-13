@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { FilNode, Oppdrag } from "@/types/innhold";
 import { GameEngine } from "@/lib/game-engine";
+import { StorageManager } from "@/lib/storage";
 
 interface NisseNetUtforskerProps {
   files: FilNode[];
@@ -23,6 +24,17 @@ export function NisseNetUtforsker({
     new Set(["root"]),
   );
   const [selectedFile, setSelectedFile] = useState<FilNode | null>(null);
+  const [stats, setStats] = useState({
+    totalFiles: 0,
+    accessibleFiles: 0,
+    secretFiles: 0,
+    accessibleSecrets: 0,
+  });
+
+  // Track visit time when component mounts
+  useEffect(() => {
+    StorageManager.setNisseNetLastVisit(currentDay);
+  }, [currentDay]);
 
   // Generate dynamic diary content based on current day
   const generateDiaryContent = useMemo(() => {
@@ -46,6 +58,24 @@ export function NisseNetUtforsker({
     return diary;
   }, [missions, currentDay]);
 
+  // Check if file was newly unlocked today
+  const isFileNew = (fileName: string): boolean => {
+    const lastVisit = StorageManager.getNisseNetLastVisit();
+    const completedQuests = GameEngine.loadGameState().completedQuests;
+
+    // Check if any quest completed since last visit unlocked this file
+    for (const quest of missions) {
+      if (
+        completedQuests.has(quest.dag) &&
+        quest.dag > lastVisit &&
+        quest.reveals?.files?.includes(fileName)
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   // Process files and inject dynamic content for nissens_dagbok.txt and snill_slem_liste.txt
   const processedFiles = useMemo(() => {
     const generateHintsContent = (maxDay: number): string => {
@@ -58,8 +88,8 @@ export function NisseNetUtforsker({
       // Generate hints for each day up to maxDay
       for (let day = 1; day <= Math.min(maxDay, 24); day++) {
         const mission = missions.find((m) => m.dag === day);
-        if (mission && mission.fysisk_ledetekst) {
-          content += `Dag ${day}: ${mission.fysisk_ledetekst}\n`;
+        if (mission && mission.fysisk_hint) {
+          content += `Dag ${day}: ${mission.fysisk_hint}\n`;
         }
       }
 
@@ -93,45 +123,46 @@ export function NisseNetUtforsker({
         const day23Completed = gameState.completedQuests.has(23);
 
         if (day23Completed) {
-          // Get player names from environment variable
-          const playerNames =
-            process.env.NEXT_PUBLIC_PLAYER_NAMES || "Georg,Viljar,Marcus,Amund";
-          const names = playerNames.split(",").map((n) => n.trim());
+          // Get player names from StorageManager
+          const playerNames = StorageManager.getPlayerNames();
 
-          // Generate updated Nice List with player names at top
-          let updatedList = node.innhold || "";
+          // Only update if names were entered
+          if (playerNames.length > 0) {
+            // Generate updated Nice List with player names at top
+            let updatedList = node.innhold || "";
 
-          // Find the SNILL LISTE section and inject names
-          const snillSection = updatedList.indexOf("✨ SNILL LISTE ✨");
-          if (snillSection !== -1) {
-            const listStart = updatedList.indexOf("\n\n", snillSection) + 2;
-            const existingList = updatedList.substring(listStart);
+            // Find the SNILL LISTE section and inject names
+            const snillSection = updatedList.indexOf("✨ SNILL LISTE ✨");
+            if (snillSection !== -1) {
+              const listStart = updatedList.indexOf("\n\n", snillSection) + 2;
+              const existingList = updatedList.substring(listStart);
 
-            // Create new entries for players
-            const playerEntries = names
-              .map(
-                (name, i) =>
-                  `${i + 1}. ${name} - ⭐ FULLFØRT NISSEKOMM JULEKALENDER! ⭐`,
-              )
-              .join("\n");
+              // Create new entries for players
+              const playerEntries = playerNames
+                .map(
+                  (name, i) =>
+                    `${i + 1}. ${name} - ⭐ FULLFØRT NISSEKOMM JULEKALENDER! ⭐`,
+                )
+                .join("\n");
 
-            updatedList =
-              updatedList.substring(0, listStart) +
-              playerEntries +
-              "\n" +
-              existingList;
+              updatedList =
+                updatedList.substring(0, listStart) +
+                playerEntries +
+                "\n" +
+                existingList;
 
-            // Update last modified date
-            updatedList = updatedList.replace(
-              /Sist oppdatert: .*\n/,
-              `Sist oppdatert: 23. Desember ✓\n`,
-            );
+              // Update last modified date
+              updatedList = updatedList.replace(
+                /Sist oppdatert: .*\n/,
+                `Sist oppdatert: 23. Desember ✓\n`,
+              );
+
+              return {
+                ...node,
+                innhold: updatedList,
+              };
+            }
           }
-
-          return {
-            ...node,
-            innhold: updatedList,
-          };
         }
       }
 
@@ -146,6 +177,67 @@ export function NisseNetUtforsker({
 
     return files.map(processNode);
   }, [files, generateDiaryContent, currentDay, missions]);
+
+  // Filter files based on unlock status and calculate stats
+  const { filteredFiles, fileStats } = useMemo(() => {
+    let totalFiles = 0;
+    let accessibleFiles = 0;
+    let secretFiles = 0;
+    let accessibleSecrets = 0;
+
+    const filterNode = (node: FilNode): FilNode | null => {
+      if (node.type === "fil") {
+        totalFiles++;
+        const isSecret =
+          node.navn.includes("hemmel") || node.navn.includes("dagbok");
+        if (isSecret) secretFiles++;
+
+        // Check if file is unlocked
+        const isUnlocked = GameEngine.isFileUnlocked(node.navn, currentDay);
+        if (isUnlocked) {
+          accessibleFiles++;
+          if (isSecret) accessibleSecrets++;
+          return node;
+        }
+        return null; // File is locked, don't show it
+      }
+
+      if (node.type === "mappe" && node.barn) {
+        const filteredChildren = node.barn
+          .map(filterNode)
+          .filter((child): child is FilNode => child !== null);
+
+        // Only show folder if it has accessible children
+        if (filteredChildren.length > 0) {
+          return {
+            ...node,
+            barn: filteredChildren,
+          };
+        }
+      }
+
+      return null;
+    };
+
+    const filtered = processedFiles
+      .map(filterNode)
+      .filter((node): node is FilNode => node !== null);
+
+    return {
+      filteredFiles: filtered,
+      fileStats: {
+        totalFiles,
+        accessibleFiles,
+        secretFiles,
+        accessibleSecrets,
+      },
+    };
+  }, [processedFiles, currentDay]);
+
+  // Update stats when they change
+  useEffect(() => {
+    setStats(fileStats);
+  }, [fileStats]);
 
   const toggleFolder = (path: string) => {
     const newExpanded = new Set(expandedFolders);
@@ -188,6 +280,7 @@ export function NisseNetUtforsker({
           </div>
         );
       } else {
+        const isNew = isFileNew(node.navn);
         return (
           <button
             key={path}
@@ -203,7 +296,10 @@ export function NisseNetUtforsker({
             style={{ paddingLeft: `${depth * 16 + 8}px` }}
           >
             <Icons.File size={16} color="blue" />
-            <span>{node.navn}</span>
+            <span className={isNew ? "text-(--gold) font-bold" : ""}>
+              {node.navn}
+              {isNew && " (NY!)"}
+            </span>
           </button>
         );
       }
@@ -211,14 +307,25 @@ export function NisseNetUtforsker({
   };
 
   return (
-    <RetroWindow title="NISSENET UTFORSKER" onClose={onClose}>
+    <RetroWindow
+      title={`NISSENET (${stats.accessibleFiles}/${stats.totalFiles} filer | ${stats.accessibleSecrets}/${stats.secretFiles} hemmeligheter)`}
+      onClose={onClose}
+    >
       <div className="p-6 flex flex-col h-full space-y-6">
         {/* Header */}
         <div className="flex items-center gap-4 pb-4 border-b-4 border-(--neon-green)/30">
           <Icons.Folder size={32} color="green" />
-          <div>
+          <div className="flex-1">
             <div className="text-2xl font-bold tracking-wider">FILSYSTEM</div>
             <div className="text-sm opacity-70">UTFORSK NISSENETTVERKET</div>
+          </div>
+          <div className="text-right text-sm">
+            <div className="text-(--neon-green)">
+              {stats.accessibleFiles} / {stats.totalFiles} FILER
+            </div>
+            <div className="text-(--gold)">
+              {stats.accessibleSecrets} / {stats.secretFiles} HEMMELIGHETER
+            </div>
           </div>
         </div>
 
@@ -227,7 +334,7 @@ export function NisseNetUtforsker({
           {/* File tree */}
           <div className="border-2 border-(--neon-green) bg-black/50 overflow-y-auto p-2">
             <div className="text-xs font-bold mb-2 opacity-70">FILTRE</div>
-            {renderFileTree(processedFiles)}
+            {renderFileTree(filteredFiles)}
           </div>
 
           {/* File content viewer */}
@@ -259,7 +366,10 @@ export function NisseNetUtforsker({
         <div className="text-xs opacity-70 p-3 border-2 border-(--neon-green)/30">
           <div className="flex items-center gap-2">
             <Icons.Help size={12} />
-            <span>Tips: Noen filer kan inneholde hint til dagens oppdrag!</span>
+            <span>
+              Tips: Filer låses opp etter hvert som du fullfører oppdrag! Nye
+              filer merkes med (NY!)
+            </span>
           </div>
         </div>
       </div>

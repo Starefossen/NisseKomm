@@ -1,0 +1,272 @@
+{
+  "eventyr": [
+    {
+      "id": "morkets-trussel",
+      "navn": "Mørkets Trussel",
+      "beskrivelse": "En mystisk kraft, Mørket, truer Snøfall og juleproduksjonen. Orakelet advarer om tidsanomalier, faresignaler og polarnatten som skjuler farer. Barna må hjelpe Julius med å beskytte magien i Snøfall gjennom vennskap og mot.",
+      "tema": [
+        "Vennskap og samhold",
+        "Mot i farlige situasjoner",
+        "Magisk beskyttelse"
+      ],
+      "farge": "#8b0000",
+      "ikon": "alert",
+      "vanskelighetsgrad": "middels",
+      "belønning": {
+        "type": "badge",
+        "badge_id": "morket-beseirer",
+        "badge_navn": "Mørket-Beseirer",
+        "beskrivelse": "Beseiret Mørkets trusler og beskyttet Snøfall"
+      },
+      "foreldreveiledning": {
+        "sammendrag": "Denne historien introduserer en antagonist (Mørket) som skaper utfordringer. Den lærer barna om å møte farer med mot og vennskap.",
+        "pedagogisk_fokus": [
+          "Samarbeid i vanskelige situasjoner",
+          "Å ikke gi opp når ting blir vanskelig",
+          "Betydningen av vennskap"
+        ],
+        "tips": [
+          "Snakk om hvordan Julius og nissene jobber sammen for å løse problemer",
+          "Fremhev hvordan barna hjelper til med å redde situasjonen",
+          "Diskuter hvordan vennskap gir styrke i tøffe tider"
+        ]
+      }
+    },
+    {
+      "id": "iqs-oppfinnelser",
+      "navn": "IQs Oppfinnelser",
+      "beskrivelse": "IQ, nissenes oppfinner, lager fantastiske gadgets og maskiner - men de eksploderer ofte! Fra tellemaskiner som spyr konfetti til magiske sekker og energidrikker av snø. Barna følger IQs kreative (og kaotiske) oppfinnerprosess.",
+      "tema": [
+        "Kreativitet og innovasjon",
+        "Å lære av feil",
+        "Vitenskap og teknologi"
+      ],
+      "farge": "#ffa500",
+      "ikon": "zap",
+      "vanskelighetsgrad": "lett",
+      "belønning": {
+        "type": "badge",
+        "badge_id": "oppfinner-assistent",
+        "badge_navn": "Oppfinner-Assistent",
+        "beskrivelse": "Hjalp IQ med alle oppfinnelsene hans"
+      },
+      "foreldreveiledning": {
+        "sammendrag": "En humoristisk historie om innovasjon og kreativitet, der feil er en naturlig del av læringsprosessen.",
+        "pedagogisk_fokus": [
+          "Kreativ problemløsning",
+          "At det er greit å feile",
+          "Utholdenhet og fortsette å prøve"
+        ],
+        "tips": [
+          "Snakk om hvordan IQ ikke gir opp selv om oppfinnelsene eksploderer",
+          "Fremhev den kreative prosessen og eksperimentering",
+          "Relatér til egne prosjekter der barn må prøve flere ganger"
+        ]
+      }
+    },
+    {
+      "id": "brevfugl-mysteriet",
+      "navn": "Brevfugl-Mysteriet",
+      "beskrivelse": "Brevfuglene - magiske papirfugler som bærer barnas ønsker til Snøfall - flyr inn gjennom vinduene hele desember. Winter og Pil organiserer alle brevene, og kommunikasjonen mellom barna og Julius styrkes gjennom disse magiske budbringerne.",
+      "tema": [
+        "Kommunikasjon og ønsker",
+        "Håp og drømmer",
+        "Magisk forbindelse"
+      ],
+      "farge": "#4169e1",
+      "ikon": "mail",
+      "vanskelighetsgrad": "lett",
+      "belønning": {
+        "type": "module_unlock",
+        "module_id": "BREVFUGLER",
+        "beskrivelse": "Låser opp Brevfugler-modulen med personlige brev fra Julius"
+      },
+      "foreldreveiledning": {
+        "sammendrag": "En vakker historie om kommunikasjon og drømmer, der barnas ønsker når frem til julenissen.",
+        "pedagogisk_fokus": [
+          "Viktigheten av å uttrykke ønsker og følelser",
+          "Kommunikasjon over avstand",
+          "Håp og tro på magiske øyeblikk"
+        ],
+        "tips": [
+          "La barna lage sine egne 'brevfugler' (origami)",
+          "Snakk om hvordan budskap reiser mellom mennesker",
+          "Diskuter viktigheten av å lytte til andres ønsker"
+        ]
+      }
+    },
+    {
+      "id": "frosne-monster",
+      "navn": "Frosne Mønster",
+      "beskrivelse": "I polarnatten rundt Snøfall dannes mystiske mønstre i snø og is. Hvert snøfnugg er unikt, og sammen skjuler de hemmelige koder. Julius studerer disse mønstrene under mikroskop for å finne skjulte budskap.",
+      "tema": [
+        "Naturens skjønnhet",
+        "Mønstre og matematikk",
+        "Detaljer og oppdagelse"
+      ],
+      "farge": "#00ced1",
+      "ikon": "pin",
+      "vanskelighetsgrad": "middels",
+      "belønning": {
+        "type": "symbol_collection",
+        "symbol_id": "snowflake",
+        "beskrivelse": "Samler unike snøfnugg-symboler for dekryptering"
+      },
+      "foreldreveiledning": {
+        "sammendrag": "En vitenskapelig inspirert historie om å se skjønnhet i detaljer og mønstre i naturen.",
+        "pedagogisk_fokus": [
+          "Observasjon og oppdagelse",
+          "Matematiske mønstre i naturen",
+          "Tålmodighet og nøyaktighet"
+        ],
+        "tips": [
+          "Se på ekte snøfnugg sammen (mikroskop eller bilder)",
+          "Diskuter hvordan alle snøfnugg er unike",
+          "Finn mønstre i hverdagen (i planter, arkitektur, etc.)"
+        ]
+      }
+    },
+    {
+      "id": "farge-mysteriet",
+      "navn": "Farge-Mysteriet",
+      "beskrivelse": "En mystisk forbindelse mellom farger og hemmeligheter i Snøfall. Fra den grønne miljødagen til sjokolademysteriet - farger skjuler ledetråder. 'Fargesamleren' vet noe mer...",
+      "tema": ["Fargelære", "Sammenhenger og koblinger", "Mysterier og gåter"],
+      "farge": "#32cd32",
+      "ikon": "eye",
+      "vanskelighetsgrad": "lett",
+      "belønning": {
+        "type": "secret_unlock",
+        "file": "HEMMELIGHETER/farge-mysteriet/fargesamlerens_notat.txt",
+        "beskrivelse": "Låser opp Fargesamlerens hemmelige notater"
+      },
+      "foreldreveiledning": {
+        "sammendrag": "En kort men fargerik mysterie-historie som lærer barna å se etter mønstre og sammenhenger.",
+        "pedagogisk_fokus": [
+          "Fargegjenkjenning og kategorisering",
+          "Å finne sammenhenger",
+          "Observasjonsferdigheter"
+        ],
+        "tips": [
+          "Finn gjenstander i forskjellige farger hjemme",
+          "Snakk om hvordan farger kan symbolisere ting (grønn = miljø, rød = kjærlighet)",
+          "Lag et fargebasert skattejakt"
+        ]
+      }
+    },
+    {
+      "id": "countdown-julaften",
+      "navn": "Nedtelling til Julaften",
+      "beskrivelse": "De siste dagene før julaften! Alt intensiveres når Julius og nissene gjør siste forberedelser. Panikk, stress, men også glede og samhold når de nærmer seg det magiske øyeblikket.",
+      "tema": [
+        "Spenning og forventning",
+        "Stresshåndtering",
+        "Samarbeid under press"
+      ],
+      "farge": "#ffd700",
+      "ikon": "calendar",
+      "vanskelighetsgrad": "lett",
+      "belønning": {
+        "type": "grand_finale",
+        "beskrivelse": "Fullfører julekalenderen og låser opp Grand Finale"
+      },
+      "foreldreveiledning": {
+        "sammendrag": "Klimakset i fortellingen hvor alle trådene møtes og julemagi blir virkelighet.",
+        "pedagogisk_fokus": [
+          "Å håndtere spenning og forventning",
+          "Betydningen av forberedelse",
+          "Glede ved å nå et mål"
+        ],
+        "tips": [
+          "Snakk om hvordan Julius føler både stress og glede",
+          "Diskuter egne forberedelser til jul",
+          "Fremhev viktigheten av å feire når man når et mål"
+        ]
+      }
+    },
+    {
+      "id": "juletradisjon",
+      "navn": "Juletradisjoner",
+      "beskrivelse": "Julius deler historier om juletradisjoner fra hele verden. Fra St. Nikolaus i Myra til norske skikker - barna lærer om julen gjennom tidene og kulturer.",
+      "tema": ["Kulturell forståelse", "Historie", "Tradisjoner"],
+      "farge": "#cd853f",
+      "ikon": "book",
+      "vanskelighetsgrad": "lett",
+      "belønning": {
+        "type": "knowledge",
+        "beskrivelse": "Lærer om juletradisjoner rundt om i verden"
+      },
+      "foreldreveiledning": {
+        "sammendrag": "En pedagogisk mini-historie om juletradisjoner som gir kulturell innsikt.",
+        "pedagogisk_fokus": [
+          "Kulturell bevissthet",
+          "Historisk perspektiv",
+          "Respekt for tradisjoner"
+        ],
+        "tips": [
+          "Diskuter deres egen families juletradisjoner",
+          "Snakk om hvordan tradisjoner varierer mellom land",
+          "Koble til andre kulturer barna kjenner"
+        ]
+      }
+    },
+    {
+      "id": "halvveis-milepæl",
+      "navn": "Halvveis-Milepæl",
+      "beskrivelse": "16. desember - halvveis gjennom kalenderen! En dag for refleksjon og feiring. Julius og nissene tar pause for å se tilbake på hva som er oppnådd så langt.",
+      "tema": ["Refleksjon", "Feiring av fremgang", "Takknemlighet"],
+      "farge": "#ff69b4",
+      "ikon": "award",
+      "vanskelighetsgrad": "lett",
+      "belønning": {
+        "type": "milestone",
+        "beskrivelse": "Halvveis-diplom og oppmuntring"
+      },
+      "foreldreveiledning": {
+        "sammendrag": "En milepæl-historie som feirer fremgang og motiverer til å fortsette.",
+        "pedagogisk_fokus": [
+          "Å feire små seire",
+          "Refleksjon over fremgang",
+          "Motivasjon til å fullføre"
+        ],
+        "tips": [
+          "Ta en pause og snakk om favorittoppdragene så langt",
+          "Fei at dere har kommet halvveis",
+          "Bygg motivasjon for siste halvdel"
+        ]
+      }
+    },
+    {
+      "id": "slede-forberedelser",
+      "navn": "Slede-Forberedelser",
+      "beskrivelse": "Sleda må være klar til julaften! Julius sjekker vekt, størrelse og magiske egenskaper. Reinsdyrene må trene, og alt må være perfekt for den store reisen.",
+      "tema": ["Forberedelse", "Ansvar", "Planlegging"],
+      "farge": "#4682b4",
+      "ikon": "truck",
+      "vanskelighetsgrad": "lett",
+      "belønning": {
+        "type": "preparation_complete",
+        "beskrivelse": "Sleda er klar for julaften!"
+      },
+      "foreldreveiledning": {
+        "sammendrag": "En praktisk historie om betydningen av grundig forberedelse.",
+        "pedagogisk_fokus": [
+          "Planlegging og organisering",
+          "Ansvar for viktige oppgaver",
+          "Betydningen av forberedelse"
+        ],
+        "tips": [
+          "Snakk om hvordan dere forbereder dere til jul",
+          "Diskuter viktigheten av å sjekke at alt er klart",
+          "Koble til egne opplevelser med forberedelser"
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "versjon": "1.0",
+    "total_eventyr": 9,
+    "hoved_eventyr": 5,
+    "mini_eventyr": 4,
+    "beskrivelse": "NisseKomm-kalenderens overordnede narrative struktur. Hvert eventyr vever seg gjennom utvalgte dager i desember og gir dybde til opplevelsen."
+  }
+}

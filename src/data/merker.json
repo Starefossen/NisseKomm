@@ -1,0 +1,75 @@
+{
+  "merker": [
+    {
+      "id": "antenne-ingenior",
+      "navn": "Antenne-ingeniør",
+      "beskrivelse": "Løste antenne-krisen og gjenopprettet signalet til Snøfall TV",
+      "ikon": "cloud-sharing.svg",
+      "type": "bonusoppdrag",
+      "unlockCondition": {
+        "type": "bonusoppdrag",
+        "day": 11
+      }
+    },
+    {
+      "id": "inventar-ekspert",
+      "navn": "Inventar-ekspert",
+      "beskrivelse": "Hjalp Rampenissen med å telle og organisere inventaret i Snøfall",
+      "ikon": "loupe-and-bill.svg",
+      "type": "bonusoppdrag",
+      "unlockCondition": {
+        "type": "bonusoppdrag",
+        "day": 16
+      }
+    },
+    {
+      "id": "morket-beseirer",
+      "navn": "Mørket-Beseirer",
+      "beskrivelse": "Beseiret Mørkets trusler og beskyttet Snøfall gjennom vennskap og mot",
+      "ikon": "gift-box.svg",
+      "type": "eventyr",
+      "unlockCondition": {
+        "type": "eventyr",
+        "eventyrId": "morkets-trussel"
+      }
+    },
+    {
+      "id": "oppfinner-assistent",
+      "navn": "Oppfinner-Assistent",
+      "beskrivelse": "Hjalp IQ med alle hans fantastiske (og eksploderende) oppfinnelser",
+      "ikon": "chemistry.svg",
+      "type": "eventyr",
+      "unlockCondition": {
+        "type": "eventyr",
+        "eventyrId": "iqs-oppfinnelser"
+      }
+    },
+    {
+      "id": "kode-mester",
+      "navn": "Kode-Mester",
+      "beskrivelse": "Dekrypterte alle hemmelige koder i NisseKrypto-systemet",
+      "ikon": "key.svg",
+      "type": "decryption",
+      "unlockCondition": {
+        "type": "allDecryptionsSolved",
+        "challengeIds": ["frosne-koder", "stjernetegn", "hjertets-hemmelighet"]
+      }
+    },
+    {
+      "id": "symbol-mester",
+      "navn": "Symbol-Mester",
+      "beskrivelse": "Samlet alle 9 dekrypteringssymboler i julekalenderen",
+      "ikon": "guarantee.svg",
+      "type": "collection",
+      "unlockCondition": {
+        "type": "allSymbolsCollected",
+        "requiredCount": 9
+      }
+    }
+  ],
+  "metadata": {
+    "versjon": "1.0",
+    "total_merker": 6,
+    "beskrivelse": "Badge system for NisseKomm - Merker (badges) tildeles når spillere fullfører bonusoppdrag, eventyr, dekrypteringer og samlinger."
+  }
+}

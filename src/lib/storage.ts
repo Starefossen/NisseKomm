@@ -11,18 +11,28 @@
  * - Easy migration path: replace localStorage calls with API calls
  */
 
-import { InnsendelseLog } from "@/types/innhold";
+import { InnsendelseLog, DecryptionSymbol } from "@/types/innhold";
 
 // Storage keys
 const KEYS = {
   AUTHENTICATED: "nissekomm-authenticated",
   SUBMITTED_CODES: "nissekomm-codes",
   VIEWED_EMAILS: "nissekomm-viewed-emails",
-  VIEWED_SIDE_QUEST_EMAILS: "nissekomm-viewed-side-quest-emails",
+  VIEWED_BONUSOPPDRAG_EMAILS: "nissekomm-viewed-bonusoppdrag-emails",
   SOUNDS_ENABLED: "nissekomm-sounds-enabled",
   MUSIC_ENABLED: "nissekomm-music-enabled",
-  SIDE_QUEST_BADGES: "nissekomm-side-quest-badges",
+  BONUSOPPDRAG_BADGES: "nissekomm-bonusoppdrag-badges",
+  EVENTYR_BADGES: "nissekomm-eventyr-badges",
+  EARNED_BADGES: "nissekomm-earned-badges",
   TOPIC_UNLOCKS: "nissekomm-topic-unlocks",
+  // NEW: Multi-day narrative system keys
+  UNLOCKED_FILES: "nissekomm-unlocked-files",
+  COLLECTED_SYMBOLS: "nissekomm-collected-symbols",
+  SOLVED_DECRYPTIONS: "nissekomm-solved-decryptions",
+  DECRYPTION_ATTEMPTS: "nissekomm-decryption-attempts",
+  FAILED_ATTEMPTS: "nissekomm-failed-attempts",
+  NISSENET_LAST_VISIT: "nissekomm-nissenet-last-visit",
+  PLAYER_NAMES: "nissekomm-player-names",
 } as const;
 
 // Type-safe storage interface
@@ -34,11 +44,97 @@ interface StorageData {
   musicEnabled: boolean;
 }
 
+// In-memory fallback storage (used when localStorage unavailable)
+const inMemoryStorage = new Map<string, string>();
+
 /**
  * Storage Manager Class
  * Handles all persistence operations with type safety
  */
 export class StorageManager {
+  // ============================================================
+  // Generic Helper Methods (with error handling)
+  // ============================================================
+
+  /**
+   * Generic set item with error handling and in-memory fallback
+   */
+  private static setItem<T>(key: string, value: T): void {
+    if (typeof window === "undefined") {
+      inMemoryStorage.set(key, JSON.stringify(value));
+      return;
+    }
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.warn(`Failed to write to localStorage (${key}):`, error);
+      inMemoryStorage.set(key, JSON.stringify(value));
+    }
+  }
+
+  /**
+   * Generic get item with error handling and in-memory fallback
+   */
+  private static getItem<T>(key: string, defaultValue: T): T {
+    if (typeof window === "undefined") {
+      const stored = inMemoryStorage.get(key);
+      if (stored) {
+        try {
+          return JSON.parse(stored) as T;
+        } catch {
+          return defaultValue;
+        }
+      }
+      return defaultValue;
+    }
+    try {
+      const stored = localStorage.getItem(key);
+      if (stored === null) return defaultValue;
+      return JSON.parse(stored) as T;
+    } catch (error) {
+      console.warn(`Failed to read from localStorage (${key}):`, error);
+      const stored = inMemoryStorage.get(key);
+      if (stored) {
+        try {
+          return JSON.parse(stored) as T;
+        } catch {
+          return defaultValue;
+        }
+      }
+      return defaultValue;
+    }
+  }
+
+  /**
+   * Remove item from storage
+   */
+  private static removeItem(key: string): void {
+    if (typeof window === "undefined") {
+      inMemoryStorage.delete(key);
+      return;
+    }
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.warn(`Failed to remove from localStorage (${key}):`, error);
+    }
+    inMemoryStorage.delete(key);
+  }
+
+  /**
+   * Check if item exists in storage
+   */
+  private static hasItem(key: string): boolean {
+    if (typeof window === "undefined") {
+      return inMemoryStorage.has(key);
+    }
+    try {
+      return localStorage.getItem(key) !== null;
+    } catch {
+      return inMemoryStorage.has(key);
+    }
+  }
+
   // ============================================================
   // Authentication
   // ============================================================
@@ -143,10 +239,10 @@ export class StorageManager {
   static getUnreadEmailCount(
     currentDay: number,
     totalMissions: number,
-    missions?: Array<{ dag: number; sideoppdrag?: { kode?: string } }>,
+    missions?: Array<{ dag: number; bonusoppdrag?: { kode?: string } }>,
   ): number {
     const viewed = this.getViewedEmails();
-    const viewedSideQuests = this.getViewedSideQuestEmails();
+    const viewedBonusOppdrag = this.getViewedBonusOppdragEmails();
     const completedCodes = this.getSubmittedCodes().map((c) => c.kode);
     let unreadCount = 0;
 
@@ -156,17 +252,18 @@ export class StorageManager {
         unreadCount++;
       }
 
-      // Count unread side-quest emails if missions data provided
+      // Count unread bonus quest emails if missions data provided
       if (missions) {
         const mission = missions.find((m) => m.dag === day);
-        if (mission?.sideoppdrag) {
-          // Check if main quest is completed (to know if side-quest is accessible)
+        if (mission?.bonusoppdrag) {
+          // Check if main quest is completed (to know if bonus quest is accessible)
           const mainCode = missions.find((m) => m.dag === day);
           const isMainCompleted =
-            mainCode && completedCodes.includes(mission.sideoppdrag.kode || "");
+            mainCode &&
+            completedCodes.includes(mission.bonusoppdrag.kode || "");
 
           // Side-quest is accessible if main mission is completed
-          if (isMainCompleted && !viewedSideQuests.has(day)) {
+          if (isMainCompleted && !viewedBonusOppdrag.has(day)) {
             unreadCount++;
           }
         }
@@ -182,13 +279,13 @@ export class StorageManager {
   }
 
   // ============================================================
-  // Side-Quest Email Read Status
+  // Bonusoppdrag Email Read Status
   // ============================================================
 
-  static getViewedSideQuestEmails(): Set<number> {
+  static getViewedBonusOppdragEmails(): Set<number> {
     if (typeof window === "undefined") return new Set();
     try {
-      const stored = localStorage.getItem(KEYS.VIEWED_SIDE_QUEST_EMAILS);
+      const stored = localStorage.getItem(KEYS.VIEWED_BONUSOPPDRAG_EMAILS);
       if (stored) {
         const arr = JSON.parse(stored) as number[];
         return new Set(arr);
@@ -199,19 +296,19 @@ export class StorageManager {
     return new Set();
   }
 
-  static markSideQuestEmailAsViewed(day: number): void {
+  static markBonusOppdragEmailAsViewed(day: number): void {
     if (typeof window === "undefined") return;
-    const viewed = this.getViewedSideQuestEmails();
+    const viewed = this.getViewedBonusOppdragEmails();
     viewed.add(day);
     localStorage.setItem(
-      KEYS.VIEWED_SIDE_QUEST_EMAILS,
+      KEYS.VIEWED_BONUSOPPDRAG_EMAILS,
       JSON.stringify([...viewed]),
     );
   }
 
-  static clearViewedSideQuestEmails(): void {
+  static clearViewedBonusOppdragEmails(): void {
     if (typeof window === "undefined") return;
-    localStorage.removeItem(KEYS.VIEWED_SIDE_QUEST_EMAILS);
+    localStorage.removeItem(KEYS.VIEWED_BONUSOPPDRAG_EMAILS);
   }
 
   // ============================================================
@@ -269,9 +366,8 @@ export class StorageManager {
     localStorage.removeItem("nissekomm-unlocked-modules");
     localStorage.removeItem("nissekomm-crisis-completed");
     localStorage.removeItem("nissekomm-santa-letters");
-    localStorage.removeItem(KEYS.SIDE_QUEST_BADGES);
-    localStorage.removeItem(KEYS.TOPIC_UNLOCKS);
-    localStorage.removeItem(KEYS.VIEWED_SIDE_QUEST_EMAILS);
+    // Clear in-memory storage as well
+    inMemoryStorage.clear();
   }
 
   // ============================================================
@@ -382,41 +478,115 @@ export class StorageManager {
   }
 
   // ============================================================
-  // Side-Quest Badges
+  // Bonusoppdrag Badges
   // ============================================================
 
-  static getSideQuestBadges(): Array<{
+  static getBonusOppdragBadges(): Array<{
     day: number;
     icon: string;
     navn: string;
   }> {
     if (typeof window === "undefined") return [];
     try {
-      const data = localStorage.getItem(KEYS.SIDE_QUEST_BADGES);
+      const data = localStorage.getItem(KEYS.BONUSOPPDRAG_BADGES);
       return data ? JSON.parse(data) : [];
     } catch {
       return [];
     }
   }
 
-  static addSideQuestBadge(day: number, icon: string, navn: string): void {
+  static addBonusOppdragBadge(day: number, icon: string, navn: string): void {
     if (typeof window === "undefined") return;
-    const badges = this.getSideQuestBadges();
+    const badges = this.getBonusOppdragBadges();
 
     // Avoid duplicates
     if (!badges.some((b) => b.day === day)) {
       badges.push({ day, icon, navn });
       badges.sort((a, b) => a.day - b.day);
-      localStorage.setItem(KEYS.SIDE_QUEST_BADGES, JSON.stringify(badges));
+      localStorage.setItem(KEYS.BONUSOPPDRAG_BADGES, JSON.stringify(badges));
     }
   }
 
-  static hasSideQuestBadge(day: number): boolean {
-    const badges = this.getSideQuestBadges();
+  static hasBonusOppdragBadge(day: number): boolean {
+    const badges = this.getBonusOppdragBadges();
     const result = badges.some((b) => {
       return b.day === day;
     });
     return result;
+  }
+
+  // ============================================================
+  // Eventyr Badges (Story Arc Completion)
+  // ============================================================
+
+  static getEventyrBadges(): Array<{
+    eventyrId: string;
+    icon: string;
+    navn: string;
+  }> {
+    if (typeof window === "undefined") return [];
+    try {
+      const data = localStorage.getItem(KEYS.EVENTYR_BADGES);
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  static addEventyrBadge(eventyrId: string, icon: string, navn: string): void {
+    if (typeof window === "undefined") return;
+    const badges = this.getEventyrBadges();
+
+    // Avoid duplicates
+    if (!badges.some((b) => b.eventyrId === eventyrId)) {
+      badges.push({ eventyrId, icon, navn });
+      localStorage.setItem(KEYS.EVENTYR_BADGES, JSON.stringify(badges));
+    }
+  }
+
+  static hasEventyrBadge(eventyrId: string): boolean {
+    const badges = this.getEventyrBadges();
+    return badges.some((b) => b.eventyrId === eventyrId);
+  }
+
+  // ============================================================
+  // Unified Badge System (NEW - replaces separate badge storage)
+  // ============================================================
+
+  static getEarnedBadges(): Array<{ badgeId: string; timestamp: number }> {
+    if (typeof window === "undefined") return [];
+    try {
+      const data = localStorage.getItem(KEYS.EARNED_BADGES);
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  static addEarnedBadge(badgeId: string): void {
+    if (typeof window === "undefined") return;
+    const badges = this.getEarnedBadges();
+
+    // Avoid duplicates
+    if (!badges.some((b) => b.badgeId === badgeId)) {
+      badges.push({ badgeId, timestamp: Date.now() });
+      localStorage.setItem(KEYS.EARNED_BADGES, JSON.stringify(badges));
+    }
+  }
+
+  static hasEarnedBadge(badgeId: string): boolean {
+    return this.getEarnedBadges().some((b) => b.badgeId === badgeId);
+  }
+
+  static removeEarnedBadge(badgeId: string): void {
+    if (typeof window === "undefined") return;
+    const badges = this.getEarnedBadges().filter((b) => b.badgeId !== badgeId);
+    localStorage.setItem(KEYS.EARNED_BADGES, JSON.stringify(badges));
+  }
+
+  static clearEarnedBadges(): void {
+    if (typeof window === "undefined") return;
+    localStorage.removeItem(KEYS.EARNED_BADGES);
   }
 
   // ============================================================
@@ -449,6 +619,165 @@ export class StorageManager {
 
   static getTopicUnlockDay(topic: string): number | null {
     return this.getUnlockedTopics().get(topic) || null;
+  }
+
+  // ============================================================
+  // NEW: Symbol Collection System
+  // ============================================================
+
+  static getCollectedSymbols(): DecryptionSymbol[] {
+    return this.getItem<DecryptionSymbol[]>(KEYS.COLLECTED_SYMBOLS, []);
+  }
+
+  static addCollectedSymbol(symbol: DecryptionSymbol): void {
+    const symbols = this.getCollectedSymbols();
+    // Avoid duplicates based on symbolId
+    if (!symbols.some((s) => s.symbolId === symbol.symbolId)) {
+      symbols.push(symbol);
+      this.setItem(KEYS.COLLECTED_SYMBOLS, symbols);
+    }
+  }
+
+  static hasSymbol(symbolId: string): boolean {
+    return this.getCollectedSymbols().some((s) => s.symbolId === symbolId);
+  }
+
+  static clearCollectedSymbols(): void {
+    this.removeItem(KEYS.COLLECTED_SYMBOLS);
+  }
+
+  // ============================================================
+  // NEW: Decryption Challenge System
+  // ============================================================
+
+  static getSolvedDecryptions(): string[] {
+    return this.getItem<string[]>(KEYS.SOLVED_DECRYPTIONS, []);
+  }
+
+  static addSolvedDecryption(challengeId: string): void {
+    const solved = this.getSolvedDecryptions();
+    if (!solved.includes(challengeId)) {
+      solved.push(challengeId);
+      this.setItem(KEYS.SOLVED_DECRYPTIONS, solved);
+    }
+  }
+
+  static isDecryptionSolved(challengeId: string): boolean {
+    return this.getSolvedDecryptions().includes(challengeId);
+  }
+
+  static getDecryptionAttempts(challengeId: string): number {
+    const attempts = this.getItem<Record<string, number>>(
+      KEYS.DECRYPTION_ATTEMPTS,
+      {},
+    );
+    return attempts[challengeId] || 0;
+  }
+
+  static incrementDecryptionAttempts(challengeId: string): void {
+    const attempts = this.getItem<Record<string, number>>(
+      KEYS.DECRYPTION_ATTEMPTS,
+      {},
+    );
+    attempts[challengeId] = (attempts[challengeId] || 0) + 1;
+    this.setItem(KEYS.DECRYPTION_ATTEMPTS, attempts);
+  }
+
+  static clearDecryptionAttempts(): void {
+    this.removeItem(KEYS.DECRYPTION_ATTEMPTS);
+    this.removeItem(KEYS.SOLVED_DECRYPTIONS);
+  }
+
+  // ============================================================
+  // NEW: File Unlock System
+  // ============================================================
+
+  static getUnlockedFiles(): string[] {
+    return this.getItem<string[]>(KEYS.UNLOCKED_FILES, []);
+  }
+
+  static addUnlockedFile(fileId: string): void {
+    const files = this.getUnlockedFiles();
+    if (!files.includes(fileId)) {
+      files.push(fileId);
+      this.setItem(KEYS.UNLOCKED_FILES, files);
+    }
+  }
+
+  static isFileUnlocked(fileId: string): boolean {
+    return this.getUnlockedFiles().includes(fileId);
+  }
+
+  static clearUnlockedFiles(): void {
+    this.removeItem(KEYS.UNLOCKED_FILES);
+  }
+
+  // ============================================================
+  // NEW: Progressive Hints System
+  // ============================================================
+
+  static getFailedAttempts(day: number): number {
+    const attempts = this.getItem<Record<number, number>>(
+      KEYS.FAILED_ATTEMPTS,
+      {},
+    );
+    return attempts[day] || 0;
+  }
+
+  static incrementFailedAttempts(day: number): void {
+    const attempts = this.getItem<Record<number, number>>(
+      KEYS.FAILED_ATTEMPTS,
+      {},
+    );
+    attempts[day] = (attempts[day] || 0) + 1;
+    this.setItem(KEYS.FAILED_ATTEMPTS, attempts);
+  }
+
+  static resetFailedAttempts(day: number): void {
+    const attempts = this.getItem<Record<number, number>>(
+      KEYS.FAILED_ATTEMPTS,
+      {},
+    );
+    delete attempts[day];
+    this.setItem(KEYS.FAILED_ATTEMPTS, attempts);
+  }
+
+  static clearAllFailedAttempts(): void {
+    this.removeItem(KEYS.FAILED_ATTEMPTS);
+  }
+
+  // ============================================================
+  // NEW: NisseNet Badge System (unread file tracking)
+  // ============================================================
+
+  static getNisseNetLastVisit(): number {
+    return this.getItem<number>(KEYS.NISSENET_LAST_VISIT, 0);
+  }
+
+  static setNisseNetLastVisit(day: number): void {
+    this.setItem(KEYS.NISSENET_LAST_VISIT, day);
+  }
+
+  // ============================================================
+  // NEW: Player Names (for Day 23 nice list)
+  // ============================================================
+
+  static getPlayerNames(): string[] {
+    return this.getItem<string[]>(KEYS.PLAYER_NAMES, []);
+  }
+
+  static setPlayerNames(names: string[]): void {
+    // Filter empty strings and trim whitespace
+    const cleanNames = names.map((n) => n.trim()).filter((n) => n.length > 0);
+    this.setItem(KEYS.PLAYER_NAMES, cleanNames);
+  }
+
+  static hasPlayerNames(): boolean {
+    return this.getPlayerNames().length > 0;
+  }
+
+  static clearPlayerNames(): void {
+    this.removeItem(KEYS.PLAYER_NAMES);
   }
 
   /**

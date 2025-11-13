@@ -1,16 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SidebarWidget } from "../ui/SidebarWidget";
 import { Icons } from "@/lib/icons";
 import { Varsel } from "@/types/innhold";
+import { GameEngine } from "@/lib/game-engine";
 
 interface VarselKonsollProps {
-  alerts: Varsel[];
+  alerts: Varsel[]; // Base alerts (fallback)
+  currentDay?: number; // Optional: to trigger refresh on day change
 }
 
-export function VarselKonsoll({ alerts }: VarselKonsollProps) {
+export function VarselKonsoll({ alerts, currentDay }: VarselKonsollProps) {
   const [selectedAlert, setSelectedAlert] = useState<string | null>(null);
+  const [dynamicAlerts, setDynamicAlerts] = useState<Varsel[]>(() => {
+    if (typeof window !== "undefined") {
+      return GameEngine.getCurrentAlerts();
+    }
+    return alerts;
+  });
+
+  useEffect(() => {
+    // Refresh alerts when day changes - use requestAnimationFrame to defer setState
+    if (typeof window !== "undefined") {
+      requestAnimationFrame(() => {
+        setDynamicAlerts(GameEngine.getCurrentAlerts());
+      });
+    }
+  }, [currentDay]); // Only run when day changes, not on mount
 
   const handleAlertClick = (id: string) => {
     setSelectedAlert(selectedAlert === id ? null : id);
@@ -30,7 +47,7 @@ export function VarselKonsoll({ alerts }: VarselKonsollProps) {
   return (
     <SidebarWidget title="VARSLER">
       <div className="space-y-2 flex-1 overflow-y-auto">
-        {alerts.slice(0, 8).map((alert) => (
+        {dynamicAlerts.slice(0, 8).map((alert) => (
           <button
             key={alert.id}
             onClick={() => handleAlertClick(alert.id)}

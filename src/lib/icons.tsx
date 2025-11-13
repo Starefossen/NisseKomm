@@ -119,5 +119,26 @@ export const Icons = {
   ),
   Zap: (props: Omit<IconProps, "name">) => <Icon name="zap" {...props} />,
   Trophy: (props: Omit<IconProps, "name">) => <Icon name="trophy" {...props} />,
-  Star: (props: Omit<IconProps, "name">) => <Icon name="star" {...props} />,
+  Star: (props: Omit<IconProps, "name">) => (
+    <Icon name="moon-star" {...props} />
+  ),
+  Antenna: (props: Omit<IconProps, "name">) => (
+    <Icon name="cellular-signal-3" {...props} />
+  ),
+  Box: (props: Omit<IconProps, "name">) => <Icon name="archive" {...props} />,
+  // Symbol decryption icons
+  Snowflake: (props: Omit<IconProps, "name">) => <Icon name="pin" {...props} />,
+  Tree: (props: Omit<IconProps, "name">) => (
+    <Icon name="mood-happy" {...props} />
+  ),
+  Bell: (props: Omit<IconProps, "name">) => (
+    <Icon name="notification" {...props} />
+  ),
+  LockClosed: (props: Omit<IconProps, "name">) => (
+    <Icon name="lock" {...props} />
+  ),
+  Key: (props: Omit<IconProps, "name">) => <Icon name="lock" {...props} />,
+  // Additional utility icons
+  Info: (props: Omit<IconProps, "name">) => <Icon name="info" {...props} />,
+  BookOpen: (props: Omit<IconProps, "name">) => <Icon name="book" {...props} />,
 } as const;

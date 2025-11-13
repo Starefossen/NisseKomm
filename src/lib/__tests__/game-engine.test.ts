@@ -12,6 +12,8 @@
 
 import { describe, it, expect, beforeEach } from "@jest/globals";
 import { GameEngine } from "../game-engine";
+import { BadgeManager } from "../badge-system";
+import * as historier from "../historier";
 
 // Get actual quest codes from data for testing
 const allQuests = GameEngine.getAllQuests();
@@ -109,7 +111,15 @@ describe("GameEngine", () => {
   });
 
   describe("Module Unlocks", () => {
-    it("should unlock NISSEMUSIKK at 7 completed quests", () => {
+    it("should unlock NISSEKRYPTO on day 4 completion", () => {
+      expect(GameEngine.isModuleUnlocked("NISSEKRYPTO")).toBe(false);
+
+      const code4 = getQuestCode(4);
+      GameEngine.submitCode(code4, code4, 4);
+      expect(GameEngine.isModuleUnlocked("NISSEKRYPTO")).toBe(true);
+    });
+
+    it("should unlock NISSEMUSIKK on day 7 completion", () => {
       // Complete 6 quests - no unlock yet
       for (let i = 1; i <= 6; i++) {
         const code = getQuestCode(i);
@@ -117,62 +127,45 @@ describe("GameEngine", () => {
       }
       expect(GameEngine.isModuleUnlocked("NISSEMUSIKK")).toBe(false);
 
-      // Complete 7th quest - should unlock
+      // Complete day 7 quest - should unlock NISSEMUSIKK
       const code7 = getQuestCode(7);
-      const result = GameEngine.submitCode(code7, code7, 7);
-      expect(result.unlockedModule).toBeDefined();
-      expect(result.unlockedModule?.moduleId).toBe("NISSEMUSIKK");
+      GameEngine.submitCode(code7, code7, 7);
       expect(GameEngine.isModuleUnlocked("NISSEMUSIKK")).toBe(true);
     });
 
-    it("should unlock SNØFALL_TV at 10 completed quests", () => {
-      for (let i = 1; i <= 9; i++) {
-        const code = getQuestCode(i);
-        GameEngine.submitCode(code, code, i);
-      }
+    it("should unlock SNØFALL_TV on day 10 completion", () => {
       expect(GameEngine.isModuleUnlocked("SNØFALL_TV")).toBe(false);
 
       const code10 = getQuestCode(10);
-      const result = GameEngine.submitCode(code10, code10, 10);
-      expect(result.unlockedModule?.moduleId).toBe("SNØFALL_TV");
+      GameEngine.submitCode(code10, code10, 10);
       expect(GameEngine.isModuleUnlocked("SNØFALL_TV")).toBe(true);
     });
 
-    it("should unlock BREVFUGLER at 14 completed quests", () => {
-      for (let i = 1; i <= 13; i++) {
-        const code = getQuestCode(i);
-        GameEngine.submitCode(code, code, i);
-      }
+    it("should unlock BREVFUGLER on day 14 completion", () => {
+      expect(GameEngine.isModuleUnlocked("BREVFUGLER")).toBe(false);
 
       const code14 = getQuestCode(14);
-      const result = GameEngine.submitCode(code14, code14, 14);
-      expect(result.unlockedModule?.moduleId).toBe("BREVFUGLER");
+      GameEngine.submitCode(code14, code14, 14);
       expect(GameEngine.isModuleUnlocked("BREVFUGLER")).toBe(true);
     });
 
-    it("should unlock NISSESTATS at 16 completed quests", () => {
-      for (let i = 1; i <= 15; i++) {
-        const code = getQuestCode(i);
-        GameEngine.submitCode(code, code, i);
-      }
+    it("should unlock NISSESTATS on day 16 completion", () => {
+      expect(GameEngine.isModuleUnlocked("NISSESTATS")).toBe(false);
 
       const code16 = getQuestCode(16);
-      const result = GameEngine.submitCode(code16, code16, 16);
-      expect(result.unlockedModule?.moduleId).toBe("NISSESTATS");
+      GameEngine.submitCode(code16, code16, 16);
       expect(GameEngine.isModuleUnlocked("NISSESTATS")).toBe(true);
     });
 
     it("should not unlock module on duplicate submission", () => {
-      for (let i = 1; i <= 7; i++) {
-        const code = getQuestCode(i);
-        GameEngine.submitCode(code, code, i);
-      }
+      const code7 = getQuestCode(7);
+      GameEngine.submitCode(code7, code7, 7);
       expect(GameEngine.isModuleUnlocked("NISSEMUSIKK")).toBe(true);
 
-      // Submit duplicate
-      const code7 = getQuestCode(7);
+      // Submit duplicate - module stays unlocked but no duplicate unlock
       const result = GameEngine.submitCode(code7, code7, 7);
-      expect(result.unlockedModule).toBeUndefined();
+      expect(result.isNewCompletion).toBe(false);
+      expect(GameEngine.isModuleUnlocked("NISSEMUSIKK")).toBe(true);
     });
 
     it("should return all unlocked modules", () => {
@@ -184,46 +177,45 @@ describe("GameEngine", () => {
       }
 
       const unlocked = GameEngine.getUnlockedModules();
+      expect(unlocked).toContain("NISSEKRYPTO");
       expect(unlocked).toContain("NISSEMUSIKK");
       expect(unlocked).toContain("SNØFALL_TV");
-      expect(unlocked.length).toBe(2);
+      expect(unlocked.length).toBe(3);
     });
   });
 
   describe("Badge System", () => {
     it("should award antenna crisis badge", () => {
-      const { success, badge } = GameEngine.awardBadge("antenna");
+      const result = BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
 
-      expect(success).toBe(true);
-      expect(badge.icon).toBe("zap");
-      expect(badge.name).toBe("Antenne-Ingeniør");
-      expect(badge.crisisType).toBe("antenna");
+      expect(result.success).toBe(true);
+      expect(result.badge.ikon).toBe("cloud-sharing.svg");
+      expect(result.badge.navn).toBe("Antenne-ingeniør");
     });
 
     it("should award inventory crisis badge", () => {
-      const { success, badge } = GameEngine.awardBadge("inventory");
+      const result = BadgeManager.checkAndAwardBadge("inventar-ekspert", true);
 
-      expect(success).toBe(true);
-      expect(badge.icon).toBe("coin");
-      expect(badge.name).toBe("Inventar-Ekspert");
-      expect(badge.crisisType).toBe("inventory");
+      expect(result.success).toBe(true);
+      expect(result.badge.ikon).toBe("loupe-and-bill.svg");
+      expect(result.badge.navn).toBe("Inventar-ekspert");
     });
 
     it("should persist badges across reloads", () => {
-      GameEngine.awardBadge("antenna");
-      GameEngine.awardBadge("inventory");
+      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
+      BadgeManager.checkAndAwardBadge("inventar-ekspert", true);
 
-      const badges = GameEngine.getEarnedBadges();
+      const badges = BadgeManager.getEarnedBadges();
       expect(badges.length).toBe(2);
-      expect(badges.some((b) => b.icon === "zap")).toBe(true);
-      expect(badges.some((b) => b.icon === "coin")).toBe(true);
+      expect(badges.some((b) => b.badgeId === "antenne-ingenior")).toBe(true);
+      expect(badges.some((b) => b.badgeId === "inventar-ekspert")).toBe(true);
     });
 
     it("should not duplicate badges", () => {
-      GameEngine.awardBadge("antenna");
-      GameEngine.awardBadge("antenna"); // Try to award again
+      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
+      BadgeManager.checkAndAwardBadge("antenne-ingenior", true); // Try to award again
 
-      const badges = GameEngine.getEarnedBadges();
+      const badges = BadgeManager.getEarnedBadges();
       expect(badges.length).toBe(1);
     });
   });
@@ -238,18 +230,18 @@ describe("GameEngine", () => {
     it("should resolve crisis when badge is awarded", () => {
       expect(GameEngine.isCrisisResolved("antenna")).toBe(false);
 
-      GameEngine.awardBadge("antenna");
+      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
 
       expect(GameEngine.isCrisisResolved("antenna")).toBe(true);
     });
 
     it("should resolve multiple crises independently", () => {
-      GameEngine.awardBadge("antenna");
+      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
 
       expect(GameEngine.isCrisisResolved("antenna")).toBe(true);
       expect(GameEngine.isCrisisResolved("inventory")).toBe(false);
 
-      GameEngine.awardBadge("inventory");
+      BadgeManager.checkAndAwardBadge("inventar-ekspert", true);
 
       expect(GameEngine.isCrisisResolved("antenna")).toBe(true);
       expect(GameEngine.isCrisisResolved("inventory")).toBe(true);
@@ -268,7 +260,7 @@ describe("GameEngine", () => {
       GameEngine.markEmailAsViewed(11, true);
 
       const state = GameEngine.loadGameState();
-      expect(state.viewedSideQuestEmails.has(11)).toBe(true);
+      expect(state.viewedBonusOppdragEmails.has(11)).toBe(true);
     });
 
     it("should calculate unread count correctly", () => {
@@ -285,16 +277,16 @@ describe("GameEngine", () => {
     });
   });
 
-  describe("Side-Quest System", () => {
+  describe("Bonusoppdrag System", () => {
     it("should check side-quest accessibility based on main quest", () => {
       // Day 11 side-quest not accessible without main quest
-      expect(GameEngine.isSideQuestAccessible(11)).toBe(false);
+      expect(GameEngine.isBonusOppdragAccessible(11)).toBe(false);
 
       // Complete day 11 main quest
       GameEngine.submitCode("12", "12", 11);
 
       // Now side-quest should be accessible
-      expect(GameEngine.isSideQuestAccessible(11)).toBe(true);
+      expect(GameEngine.isBonusOppdragAccessible(11)).toBe(true);
     });
   });
 
@@ -306,8 +298,8 @@ describe("GameEngine", () => {
         GameEngine.submitCode(code, code, i);
       }
 
-      // Award one badge
-      GameEngine.awardBadge("antenna");
+      // Award one bonus badge manually
+      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
 
       const summary = GameEngine.getProgressionSummary();
 
@@ -315,9 +307,12 @@ describe("GameEngine", () => {
       expect(summary.mainQuests.total).toBe(24);
       expect(summary.mainQuests.percentage).toBe(42); // 10/24 rounded
 
-      expect(summary.badges.earned).toBe(1);
+      // Badge count includes automatically awarded badges from eventyr completion
+      // Day 1-10 completes multiple eventyr arcs which award badges automatically
+      expect(summary.badges.earned).toBeGreaterThanOrEqual(1);
+      expect(summary.badges.total).toBe(6); // Total badges available in merker.json
 
-      expect(summary.modules.unlocked).toBe(2); // NISSEMUSIKK + SNØFALL_TV
+      expect(summary.modules.unlocked).toBe(3); // NISSEKRYPTO + NISSEMUSIKK + SNØFALL_TV
 
       expect(summary.isComplete).toBe(false);
     });
@@ -344,7 +339,7 @@ describe("GameEngine", () => {
       GameEngine.submitCode("18", "18", 9);
 
       // Award a badge
-      GameEngine.awardBadge("antenna");
+      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
 
       // Mark email as viewed
       GameEngine.markEmailAsViewed(1, false);
@@ -407,6 +402,172 @@ describe("GameEngine", () => {
       expect(GameEngine.isQuestCompleted(5)).toBe(true);
       expect(GameEngine.isQuestCompleted(10)).toBe(true);
       expect(GameEngine.isQuestCompleted(15)).toBe(true);
+    });
+  });
+
+  describe("Eventy System", () => {
+    it("should load all story arcs from historier.json", () => {
+      const arcs = historier.getAllEventyr();
+
+      expect(arcs.length).toBeGreaterThan(0);
+      expect(arcs.length).toBe(9); // 5 major + 4 mini eventyr
+    });
+
+    it("should validate story arc structure", () => {
+      const arcs = historier.getAllEventyr();
+
+      arcs.forEach((arc) => {
+        // Check required fields
+        expect(arc.id).toBeDefined();
+        expect(arc.navn).toBeDefined();
+        expect(arc.beskrivelse).toBeDefined();
+        expect(arc.tema).toBeInstanceOf(Array);
+        expect(arc.farge).toMatch(/^#[0-9a-f]{6}$/i);
+        expect(arc.ikon).toBeDefined();
+        expect(["lett", "middels", "vanskelig"]).toContain(
+          arc.vanskelighetsgrad,
+        );
+        expect(arc.belønning).toBeDefined();
+        expect(arc.foreldreveiledning).toBeDefined();
+      });
+    });
+
+    it("should derive days from oppdrag files correctly", () => {
+      // Check brevfugl-mysteriet (Days 1, 5, 12, 14)
+      const brevfuglDays = historier.getEventyrDays("brevfugl-mysteriet");
+      expect(brevfuglDays).toEqual([1, 5, 12, 14]);
+
+      // Check morkets-trussel (Days 7, 11, 17, 21)
+      const morketDays = historier.getEventyrDays("morkets-trussel");
+      expect(morketDays).toEqual([7, 11, 17, 21]);
+
+      // Check farge-mysteriet (Days 10, 15)
+      const fargeDays = historier.getEventyrDays("farge-mysteriet");
+      expect(fargeDays).toEqual([10, 15]);
+    });
+
+    it("should identify arcs for a specific day", () => {
+      // Day 1 should have brevfugl-mysteriet
+      const day1Eventyr = historier.getEventyrForDay(1);
+      expect(day1Eventyr.length).toBe(1);
+      expect(day1Eventyr[0].id).toBe("brevfugl-mysteriet");
+
+      // Day 17 might have multiple arcs (cross-reference)
+      const day17Eventyr = historier.getEventyrForDay(17);
+      expect(day17Eventyr.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it("should track arc completion based on completed quests", () => {
+      // Complete all brevfugl-mysteriet days
+      GameEngine.submitCode(getQuestCode(1), getQuestCode(1), 1);
+      GameEngine.submitCode(getQuestCode(5), getQuestCode(5), 5);
+      GameEngine.submitCode(getQuestCode(12), getQuestCode(12), 12);
+      GameEngine.submitCode(getQuestCode(14), getQuestCode(14), 14);
+
+      const completedDays = new Set([1, 5, 12, 14]);
+      expect(
+        historier.isEventyrComplete("brevfugl-mysteriet", completedDays),
+      ).toBe(true);
+    });
+
+    it("should calculate arc progress correctly", () => {
+      // Complete 2 out of 4 days for brevfugl-mysteriet
+      GameEngine.submitCode(getQuestCode(1), getQuestCode(1), 1);
+      GameEngine.submitCode(getQuestCode(5), getQuestCode(5), 5);
+
+      const completedDays = new Set([1, 5]);
+      const percentage = historier.getEventyrProgress(
+        "brevfugl-mysteriet",
+        completedDays,
+      );
+
+      // getEventyrProgress returns a percentage directly, not an object
+      expect(percentage).toBe(50);
+    });
+
+    it("should distinguish between major and mini arcs", () => {
+      const majorEventyr = historier.getMajorEventyr();
+      const miniEventyr = historier.getMiniEventyr();
+
+      // Major arcs have 3+ days
+      majorEventyr.forEach((arc) => {
+        expect(historier.getEventyrDays(arc.id).length).toBeGreaterThanOrEqual(
+          3,
+        );
+      });
+
+      // Mini arcs have < 3 days
+      miniEventyr.forEach((arc) => {
+        expect(historier.getEventyrDays(arc.id).length).toBeLessThan(3);
+      });
+    });
+
+    it("should provide parent guidance for each arc", () => {
+      const arcs = historier.getAllEventyr();
+
+      arcs.forEach((arc) => {
+        const guidance = historier.getParentGuidance(arc.id);
+
+        expect(guidance).toBeDefined();
+        if (guidance) {
+          expect(guidance.sammendrag).toBeDefined();
+          expect(guidance.pedagogisk_fokus).toBeInstanceOf(Array);
+          expect(guidance.tips).toBeInstanceOf(Array);
+          expect(guidance.pedagogisk_fokus.length).toBeGreaterThan(0);
+          expect(guidance.tips.length).toBeGreaterThan(0);
+        }
+      });
+    });
+
+    it("should validate all quest eventyr references", () => {
+      // This is already validated at build time, but test it works
+      const quests = GameEngine.getAllQuests();
+
+      const validEventyrIds = new Set(
+        historier.getAllEventyr().map((arc) => arc.id),
+      );
+
+      quests.forEach((quest) => {
+        if (quest.eventyr) {
+          expect(validEventyrIds.has(quest.eventyr.id)).toBe(true);
+          expect(quest.eventyr.phase).toBeGreaterThanOrEqual(1);
+          expect(quest.eventyr.phase).toBeLessThanOrEqual(5);
+        }
+      });
+    });
+
+    it("should have sequential phases within each arc", () => {
+      const quests = GameEngine.getAllQuests();
+      const arcs = historier.getAllEventyr();
+
+      arcs.forEach((arc) => {
+        const arcQuests = quests
+          .filter((q) => q.eventyr?.id === arc.id)
+          .sort((a, b) => a.dag - b.dag);
+
+        const phases = arcQuests.map((q) => q.eventyr!.phase);
+
+        // Phases should be sequential: 1, 2, 3, 4...
+        for (let i = 0; i < phases.length; i++) {
+          expect(phases[i]).toBe(i + 1);
+        }
+      });
+    });
+
+    it("should return arc metadata (color, icon)", () => {
+      // Test known arcs
+      const morketColor = historier.getEventyrColor("morkets-trussel");
+      expect(morketColor).toBe("#8b0000"); // Dark red
+
+      const iqIcon = historier.getEventyrIcon("iqs-oppfinnelser");
+      expect(iqIcon).toBe("zap"); // Lightning bolt
+    });
+
+    it("should handle invalid arc IDs gracefully", () => {
+      // Functions return undefined for invalid IDs
+      expect(historier.getEventyr("nonexistent-arc")).toBeUndefined();
+      expect(historier.getEventyrDays("nonexistent-arc")).toEqual([]);
+      expect(historier.getParentGuidance("nonexistent-arc")).toBeUndefined();
     });
   });
 });

@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { RetroModal } from "../ui/RetroModal";
 import { Icons } from "@/lib/icons";
-import { Oppdrag } from "@/types/innhold";
 import { StorageManager } from "@/lib/storage";
+import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
+import type { Oppdrag } from "@/types/innhold";
 
 interface KalenderProps {
   missions: Oppdrag[];
@@ -45,16 +46,9 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
     };
   }, [missions]);
 
-  const getCurrentDate = () => {
-    const now = new Date();
-    return {
-      day: now.getDate(),
-      month: now.getMonth() + 1, // 1-based
-    };
-  };
-
   const isDayLocked = (day: number) => {
-    const { day: currentDay, month } = getCurrentDate();
+    const currentDay = getCurrentDay();
+    const month = getCurrentMonth();
 
     // In test mode, allow all days
     if (process.env.NEXT_PUBLIC_TEST_MODE === "true") {
@@ -190,7 +184,7 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
 
             {/* Mission preview */}
             <div className="text-sm">
-              {selectedMission.beskrivelse.substring(0, 150)}...
+              {selectedMission.nissemail_tekst.substring(0, 150)}...
             </div>
 
             {/* Action buttons */}

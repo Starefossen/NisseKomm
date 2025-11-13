@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { Icons } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
+import { GameEngine } from "@/lib/game-engine";
+import { StorageManager } from "@/lib/storage";
+import { getEventyr } from "@/lib/historier";
 
 interface GrandFinaleModalProps {
   onClose: () => void;
@@ -10,12 +13,49 @@ interface GrandFinaleModalProps {
 
 export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
   const [stage, setStage] = useState(1);
-  const playerNames =
-    process.env.NEXT_PUBLIC_PLAYER_NAMES || "Georg,Viljar,Marcus,Amund";
-  const names = playerNames
-    .split(",")
-    .map((n) => n.trim())
-    .join(", ");
+
+  // Get player names from storage
+  const playerNames = StorageManager.getPlayerNames();
+  const names =
+    playerNames.length > 0
+      ? playerNames.join(", ")
+      : "Georg, Viljar, Marcus, Amund";
+
+  // Calculate game statistics
+  const completedEventyr = GameEngine.getCompletedEventyr();
+  const totalEventyr = GameEngine.getTotalEventyr();
+  const solvedDecryptions = StorageManager.getSolvedDecryptions();
+  const collectedSymbols = StorageManager.getCollectedSymbols();
+
+  // Generate eventyr completion messages dynamically from historier.json
+  const eventyrMessages = completedEventyr
+    .map((eventyrId) => {
+      const eventyr = getEventyr(eventyrId);
+      if (!eventyr) return null;
+
+      // Rotate through player names for personalization
+      const nameIndex =
+        completedEventyr.indexOf(eventyrId) % Math.max(playerNames.length, 1);
+      const playerName = playerNames[nameIndex] || "Barna";
+
+      return {
+        id: eventyrId,
+        icon:
+          eventyr.ikon === "alert"
+            ? "🌑"
+            : eventyr.ikon === "zap"
+              ? "⚙️"
+              : eventyr.ikon === "mail"
+                ? "🕊️"
+                : eventyr.ikon === "pin"
+                  ? "❄️"
+                  : eventyr.ikon === "eye"
+                    ? "🌈"
+                    : "✨",
+        message: `${eventyr.navn} fullført! ${playerName} gjorde en fantastisk jobb!`,
+      };
+    })
+    .filter(Boolean);
 
   useEffect(() => {
     // Play celebration sound
@@ -68,20 +108,58 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
             </div>
           )}
 
-          {/* Stage 3: Achievement unlocked */}
+          {/* Stage 3: Achievement unlocked + Eventy completions */}
           {stage >= 3 && (
-            <div className="animate-[scale-in_0.5s_ease-out] space-y-3 border-4 border-(--christmas-red) p-6 bg-(--christmas-red)/10">
-              <div className="text-2xl text-(--christmas-red) font-bold">
-                🏆 ACHIEVEMENT UNLOCKED 🏆
+            <div className="animate-[scale-in_0.5s_ease-out] space-y-4">
+              {/* Main achievements */}
+              <div className="border-4 border-(--christmas-red) p-6 bg-(--christmas-red)/10 space-y-3">
+                <div className="text-2xl text-(--christmas-red) font-bold">
+                  🏆 ACHIEVEMENT UNLOCKED 🏆
+                </div>
+                <div className="text-lg text-(--neon-green)">
+                  ✓ 24/24 Oppdrag fullført
+                  <br />
+                  ✓ Alle moduler låst opp
+                  <br />
+                  ✓ Snøfall reddet
+                  <br />✓ Julius imponert
+                </div>
               </div>
-              <div className="text-lg text-(--neon-green)">
-                ✓ 24/24 Oppdrag fullført
-                <br />
-                ✓ Alle moduler låst opp
-                <br />
-                ✓ Snøfall reddet
-                <br />✓ Julius imponert
-              </div>
+
+              {/* Eventy completions */}
+              {eventyrMessages.length > 0 && (
+                <div className="border-4 border-(--cold-blue) p-4 bg-(--cold-blue)/10 space-y-2">
+                  <div className="text-xl text-(--cold-blue) font-bold">
+                    📖 HISTORIER FULLFØRT ({completedEventyr.length}/
+                    {totalEventyr})
+                  </div>
+                  <div className="text-sm text-(--neon-green) space-y-1">
+                    {eventyrMessages.map((arc) => (
+                      <div key={arc?.id}>
+                        {arc?.icon} {arc?.message}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Decryption & Symbol stats */}
+              {(solvedDecryptions.length > 0 ||
+                collectedSymbols.length > 0) && (
+                <div className="border-4 border-(--gold) p-4 bg-(--gold)/10 space-y-2">
+                  <div className="text-xl text-(--gold) font-bold">
+                    🔐 DEKRYPTERING & SYMBOLER
+                  </div>
+                  <div className="text-sm text-black space-y-1">
+                    {collectedSymbols.length > 0 && (
+                      <div>✓ {collectedSymbols.length} symboler samlet</div>
+                    )}
+                    {solvedDecryptions.length > 0 && (
+                      <div>✓ {solvedDecryptions.length} koder dekryptert</div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
