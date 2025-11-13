@@ -13,7 +13,7 @@
 import { describe, it, expect, beforeEach } from "@jest/globals";
 import { GameEngine } from "../game-engine";
 import { BadgeManager } from "../badge-system";
-import * as historier from "../historier";
+import * as eventyr from "../eventyr";
 
 // Get actual quest codes from data for testing
 const allQuests = GameEngine.getAllQuests();
@@ -406,15 +406,15 @@ describe("GameEngine", () => {
   });
 
   describe("Eventy System", () => {
-    it("should load all story arcs from historier.json", () => {
-      const arcs = historier.getAllEventyr();
+    it("should load all story arcs from eventyr.json", () => {
+      const arcs = eventyr.getAllEventyr();
 
       expect(arcs.length).toBeGreaterThan(0);
       expect(arcs.length).toBe(9); // 5 major + 4 mini eventyr
     });
 
     it("should validate story arc structure", () => {
-      const arcs = historier.getAllEventyr();
+      const arcs = eventyr.getAllEventyr();
 
       arcs.forEach((arc) => {
         // Check required fields
@@ -434,26 +434,26 @@ describe("GameEngine", () => {
 
     it("should derive days from oppdrag files correctly", () => {
       // Check brevfugl-mysteriet (Days 1, 5, 12, 14)
-      const brevfuglDays = historier.getEventyrDays("brevfugl-mysteriet");
+      const brevfuglDays = eventyr.getEventyrDays("brevfugl-mysteriet");
       expect(brevfuglDays).toEqual([1, 5, 12, 14]);
 
       // Check morkets-trussel (Days 7, 11, 17, 21)
-      const morketDays = historier.getEventyrDays("morkets-trussel");
+      const morketDays = eventyr.getEventyrDays("morkets-trussel");
       expect(morketDays).toEqual([7, 11, 17, 21]);
 
       // Check farge-mysteriet (Days 10, 15)
-      const fargeDays = historier.getEventyrDays("farge-mysteriet");
+      const fargeDays = eventyr.getEventyrDays("farge-mysteriet");
       expect(fargeDays).toEqual([10, 15]);
     });
 
     it("should identify arcs for a specific day", () => {
       // Day 1 should have brevfugl-mysteriet
-      const day1Eventyr = historier.getEventyrForDay(1);
+      const day1Eventyr = eventyr.getEventyrForDay(1);
       expect(day1Eventyr.length).toBe(1);
       expect(day1Eventyr[0].id).toBe("brevfugl-mysteriet");
 
       // Day 17 might have multiple arcs (cross-reference)
-      const day17Eventyr = historier.getEventyrForDay(17);
+      const day17Eventyr = eventyr.getEventyrForDay(17);
       expect(day17Eventyr.length).toBeGreaterThanOrEqual(1);
     });
 
@@ -466,7 +466,7 @@ describe("GameEngine", () => {
 
       const completedDays = new Set([1, 5, 12, 14]);
       expect(
-        historier.isEventyrComplete("brevfugl-mysteriet", completedDays),
+        eventyr.isEventyrComplete("brevfugl-mysteriet", completedDays),
       ).toBe(true);
     });
 
@@ -476,7 +476,7 @@ describe("GameEngine", () => {
       GameEngine.submitCode(getQuestCode(5), getQuestCode(5), 5);
 
       const completedDays = new Set([1, 5]);
-      const percentage = historier.getEventyrProgress(
+      const percentage = eventyr.getEventyrProgress(
         "brevfugl-mysteriet",
         completedDays,
       );
@@ -486,27 +486,25 @@ describe("GameEngine", () => {
     });
 
     it("should distinguish between major and mini arcs", () => {
-      const majorEventyr = historier.getMajorEventyr();
-      const miniEventyr = historier.getMiniEventyr();
+      const majorEventyr = eventyr.getMajorEventyr();
+      const miniEventyr = eventyr.getMiniEventyr();
 
       // Major arcs have 3+ days
       majorEventyr.forEach((arc) => {
-        expect(historier.getEventyrDays(arc.id).length).toBeGreaterThanOrEqual(
-          3,
-        );
+        expect(eventyr.getEventyrDays(arc.id).length).toBeGreaterThanOrEqual(3);
       });
 
       // Mini arcs have < 3 days
       miniEventyr.forEach((arc) => {
-        expect(historier.getEventyrDays(arc.id).length).toBeLessThan(3);
+        expect(eventyr.getEventyrDays(arc.id).length).toBeLessThan(3);
       });
     });
 
     it("should provide parent guidance for each arc", () => {
-      const arcs = historier.getAllEventyr();
+      const arcs = eventyr.getAllEventyr();
 
       arcs.forEach((arc) => {
-        const guidance = historier.getParentGuidance(arc.id);
+        const guidance = eventyr.getParentGuidance(arc.id);
 
         expect(guidance).toBeDefined();
         if (guidance) {
@@ -524,7 +522,7 @@ describe("GameEngine", () => {
       const quests = GameEngine.getAllQuests();
 
       const validEventyrIds = new Set(
-        historier.getAllEventyr().map((arc) => arc.id),
+        eventyr.getAllEventyr().map((arc) => arc.id),
       );
 
       quests.forEach((quest) => {
@@ -538,7 +536,7 @@ describe("GameEngine", () => {
 
     it("should have sequential phases within each arc", () => {
       const quests = GameEngine.getAllQuests();
-      const arcs = historier.getAllEventyr();
+      const arcs = eventyr.getAllEventyr();
 
       arcs.forEach((arc) => {
         const arcQuests = quests
@@ -556,18 +554,18 @@ describe("GameEngine", () => {
 
     it("should return arc metadata (color, icon)", () => {
       // Test known arcs
-      const morketColor = historier.getEventyrColor("morkets-trussel");
+      const morketColor = eventyr.getEventyrColor("morkets-trussel");
       expect(morketColor).toBe("#8b0000"); // Dark red
 
-      const iqIcon = historier.getEventyrIcon("iqs-oppfinnelser");
+      const iqIcon = eventyr.getEventyrIcon("iqs-oppfinnelser");
       expect(iqIcon).toBe("zap"); // Lightning bolt
     });
 
     it("should handle invalid arc IDs gracefully", () => {
       // Functions return undefined for invalid IDs
-      expect(historier.getEventyr("nonexistent-arc")).toBeUndefined();
-      expect(historier.getEventyrDays("nonexistent-arc")).toEqual([]);
-      expect(historier.getParentGuidance("nonexistent-arc")).toBeUndefined();
+      expect(eventyr.getEventyr("nonexistent-arc")).toBeUndefined();
+      expect(eventyr.getEventyrDays("nonexistent-arc")).toEqual([]);
+      expect(eventyr.getParentGuidance("nonexistent-arc")).toBeUndefined();
     });
   });
 });

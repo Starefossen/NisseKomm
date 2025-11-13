@@ -186,7 +186,7 @@
     {
       "id": "juletradisjon",
       "navn": "Juletradisjoner",
-      "beskrivelse": "Julius deler historier om juletradisjoner fra hele verden. Fra St. Nikolaus i Myra til norske skikker - barna lærer om julen gjennom tidene og kulturer.",
+      "beskrivelse": "Julius deler eventyr om juletradisjoner fra hele verden. Fra St. Nikolaus i Myra til norske skikker - barna lærer om julen gjennom tidene og kulturer.",
       "tema": ["Kulturell forståelse", "Historie", "Tradisjoner"],
       "farge": "#cd853f",
       "ikon": "book",

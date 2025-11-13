@@ -1,19 +1,19 @@
 /**
  * Eventy Management System
  *
- * Loads and provides access to story arc metadata from historier.json.
+ * Loads and provides access to story arc metadata from eventyr.json.
  * This separates narrative structure from mission data, making both more manageable.
  *
  * Days are derived from oppdrag files (single source of truth) rather than duplicated.
  */
 
-import historierData from "@/data/historier.json";
+import eventyrData from "@/data/eventyr.json";
 import merkerData from "@/data/merker.json";
 import type { EventyrData, Eventyr } from "@/types/innhold";
 import { getAllOppdrag } from "@/lib/oppdrag";
 
 // Load eventyr data at build time
-const EVENTYR: EventyrData = historierData as EventyrData;
+const EVENTYR: EventyrData = eventyrData as EventyrData;
 
 // Cache for derived eventyr-to-days mapping (computed once at module load)
 const EVENTYR_DAYS_CACHE = new Map<string, number[]>();

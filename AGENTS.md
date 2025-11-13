@@ -250,7 +250,7 @@
 
 **Technical Implementation**:
 
-- Story data: `src/data/historier.json`
+- Story data: `src/data/eventyr.json`
 - Progress tracking: `GameEngine.getEventyrProgress(eventyrId)`
 - Badge awarding: Automatic on final phase completion
 - UI: **EventyrOversikt** module (desktop icon unlocks day 8)

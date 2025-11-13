@@ -8,7 +8,7 @@ import {
   getEventyrProgress,
   isEventyrComplete,
   getRewardIcon,
-} from "@/lib/historier";
+} from "@/lib/eventyr";
 import { GameEngine } from "@/lib/game-engine";
 import { Icon } from "@/lib/icons";
 import { GuideAuth, useGuideAuth } from "@/components/nissemor/GuideAuth";

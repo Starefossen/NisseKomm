@@ -10,7 +10,7 @@ import {
   getEventyrDays,
   getEventyrProgress,
   isEventyrComplete,
-} from "@/lib/historier";
+} from "@/lib/eventyr";
 import type { Oppdrag, PrintMaterial } from "@/types/innhold";
 
 const allOppdrag = GameEngine.getAllQuests();
@@ -231,7 +231,7 @@ function PrintoutContent() {
             </div>
             <div className="mt-4 text-center">
               <a
-                href={`/historier?kode=${kode}`}
+                href={`/eventyr?kode=${kode}`}
                 className="inline-block px-6 py-2 border-4 border-(--gold) text-(--gold) font-bold text-xl hover:bg-(--gold)/10"
               >
                 SE FULL HISTORIER-OVERSIKT →
@@ -445,7 +445,7 @@ function PrintoutContent() {
                 📖 EVENTYR I KALENDEREN:
               </h2>
               <p className="print:text-sm print:mb-2">
-                Barna vil oppdage 6 sammenhengende historier gjennom desember:
+                Barna vil oppdage 6 sammenhengende eventyr gjennom desember:
               </p>
               <ul className="print:space-y-1 print:text-sm print:list-disc print:list-inside">
                 {allEventyr.map((arc) => {
@@ -458,8 +458,7 @@ function PrintoutContent() {
                 })}
               </ul>
               <p className="print:text-xs print:mt-2 print:text-gray-600">
-                Se full historier-oversikt på /historier i appen
-                (foreldreguiden)
+                Se full eventyr-oversikt på /eventyr i appen (foreldreguiden)
               </p>
             </div>
 

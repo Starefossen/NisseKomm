@@ -20,7 +20,7 @@ import {
   getEventyr,
   getEventyrDays,
   getEventyrForDay,
-} from "./historier";
+} from "./eventyr";
 import {
   getCurrentDay,
   getCurrentMonth,
@@ -275,7 +275,7 @@ function validateTopicDependencies(quests: Oppdrag[]): void {
 }
 
 /**
- * Validate that eventyr IDs in oppdrag reference valid eventyr in historier.json
+ * Validate that eventyr IDs in oppdrag reference valid eventyr in eventyr.json
  */
 function validateEventyrReferences(quests: Oppdrag[]): void {
   const validEventyrIds = new Set(getAllEventyr().map((eventyr) => eventyr.id));
@@ -450,7 +450,7 @@ function mergeAndValidate(): Oppdrag[] {
     // Run comprehensive validation
     validateFileReferences(allOppdrag, availableFiles);
     validateTopicDependencies(allOppdrag);
-    validateEventyrReferences(allOppdrag); // Validate eventyr IDs exist in historier.json
+    validateEventyrReferences(allOppdrag); // Validate eventyr IDs exist in eventyr.json
     validateEventyr(allOppdrag);
     validateProgressiveHints(allOppdrag);
     validateSymbolReferences(allOppdrag);

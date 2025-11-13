@@ -231,20 +231,6 @@ export default function Home() {
           <div className="w-1/4 p-4 flex flex-col gap-4 border-r-4 border-(--neon-green)/30 overflow-hidden">
             <SystemStatus currentDay={getCurrentDay()} />
             <VarselKonsoll alerts={varsler} currentDay={getCurrentDay()} />
-
-            {/* Story Progress Button */}
-            <div className="mt-3">
-              <button
-                onClick={() => {
-                  setOpenWindow("eventyr-oversikt");
-                  playSound("open");
-                }}
-                className="w-full p-3 border-2 border-(--cold-blue) bg-(--cold-blue)/10 text-(--cold-blue) hover:bg-(--cold-blue)/20 transition-all flex items-center gap-2 justify-center font-bold tracking-wider text-sm"
-              >
-                <span>📖</span>
-                <span>HISTORIENE DINE</span>
-              </button>
-            </div>
           </div>
 
           {/* Main workspace - 75% */}
@@ -279,6 +265,12 @@ export default function Home() {
                       label="KALENDER"
                       color="gold"
                       onClick={() => handleIconClick("kalender")}
+                    />
+                    <DesktopIcon
+                      icon="script-text"
+                      label="EVENTYR"
+                      color="blue"
+                      onClick={() => handleIconClick("eventyr-oversikt")}
                     />
 
                     {/* Unlockable modules - display in unlock order */}
@@ -355,7 +347,7 @@ export default function Home() {
                               label="LÅST"
                               color="gray"
                               disabled
-                              onClick={() => {}}
+                              onClick={() => { }}
                             />
                           );
                         }

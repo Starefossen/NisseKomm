@@ -60,7 +60,7 @@ export interface BadgeData {
 }
 
 // ============================================================
-// Eventy System (from historier.json)
+// Eventy System (from eventyr.json)
 // ============================================================
 
 interface Foreldreveiledning {

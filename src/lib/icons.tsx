@@ -141,4 +141,7 @@ export const Icons = {
   // Additional utility icons
   Info: (props: Omit<IconProps, "name">) => <Icon name="info" {...props} />,
   BookOpen: (props: Omit<IconProps, "name">) => <Icon name="book" {...props} />,
+  ScriptText: (props: Omit<IconProps, "name">) => (
+    <Icon name="script-text" {...props} />
+  ),
 } as const;

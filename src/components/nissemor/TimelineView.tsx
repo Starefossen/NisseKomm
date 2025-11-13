@@ -3,7 +3,7 @@
 import { useMemo, useEffect, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { StorageManager } from "@/lib/storage";
-import { getAllEventyr, getEventyrDays, getEventyr } from "@/lib/historier";
+import { getAllEventyr, getEventyrDays, getEventyr } from "@/lib/eventyr";
 
 interface TimelineViewProps {
   selectedDay: number;

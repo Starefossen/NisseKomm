@@ -6,6 +6,7 @@ import { RetroModal } from "../ui/RetroModal";
 import { Icons } from "@/lib/icons";
 import { StorageManager } from "@/lib/storage";
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
+import { getEventyr } from "@/lib/eventyr";
 import type { Oppdrag } from "@/types/innhold";
 
 interface KalenderProps {
@@ -109,15 +110,29 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
                   className={`
                     aspect-square flex flex-col items-center justify-center p-2
                     border-4 font-bold text-xl transition-all relative
-                    ${
-                      status === "locked"
-                        ? "border-(--gray) bg-black/30 opacity-50 cursor-not-allowed"
-                        : status === "completed"
-                          ? "border-(--gold) bg-(--gold)/30 text-(--gold) shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] cursor-pointer"
-                          : "border-(--neon-green) bg-(--neon-green)/10 text-(--neon-green) hover:shadow-[0_0_20px_rgba(0,255,0,0.4)] cursor-pointer"
+                    ${status === "locked"
+                      ? "border-(--gray) bg-black/30 opacity-50 cursor-not-allowed"
+                      : status === "completed"
+                        ? "border-(--gold) bg-(--gold)/30 text-(--gold) shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] cursor-pointer"
+                        : "border-(--neon-green) bg-(--neon-green)/10 text-(--neon-green) hover:shadow-[0_0_20px_rgba(0,255,0,0.4)] cursor-pointer"
                     }
                   `}
                 >
+                  {/* Eventyr indicators (colored dots) */}
+                  {mission?.eventyr &&
+                    status !== "locked" &&
+                    (() => {
+                      const eventyr = getEventyr(mission.eventyr.id);
+                      if (!eventyr) return null;
+                      return (
+                        <div
+                          className="absolute top-1 left-1 w-2 h-2 rounded-full"
+                          style={{ backgroundColor: eventyr.farge }}
+                          title={eventyr.navn}
+                        />
+                      );
+                    })()}
+
                   {/* Day number */}
                   <span className="text-2xl">{day}</span>
 
@@ -167,6 +182,40 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
           onClose={() => setSelectedDay(null)}
         >
           <div className="space-y-4">
+            {/* Eventyr story arc info */}
+            {selectedMission.eventyr &&
+              (() => {
+                const eventyr = getEventyr(selectedMission.eventyr.id);
+                if (!eventyr) return null;
+
+                return (
+                  <div
+                    className="p-3 border-2"
+                    style={{
+                      borderColor: eventyr.farge,
+                      backgroundColor: `${eventyr.farge}15`,
+                    }}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <Icons.ScriptText
+                        size={20}
+                        style={{ color: eventyr.farge }}
+                      />
+                      <span
+                        className="text-sm font-bold"
+                        style={{ color: eventyr.farge }}
+                      >
+                        {eventyr.navn.toUpperCase()}
+                      </span>
+                    </div>
+                    <div className="text-xs opacity-80">
+                      Dette oppdraget er en del av eventyret "{eventyr.navn}"
+                      (Fase {selectedMission.eventyr.phase})
+                    </div>
+                  </div>
+                );
+              })()}
+
             {/* Public event */}
             {selectedMission.hendelse && (
               <div className="p-3 border-2 border-(--cold-blue) bg-(--cold-blue)/10">

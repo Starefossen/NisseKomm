@@ -3,7 +3,7 @@
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons, Icon } from "@/lib/icons";
 import { GameEngine } from "@/lib/game-engine";
-import { getAllEventyr, getEventyrDays } from "@/lib/historier";
+import { getAllEventyr, getEventyrDays } from "@/lib/eventyr";
 import { BadgeManager } from "@/lib/badge-system";
 import { useState, useEffect } from "react";
 import type { Eventyr } from "@/types/innhold";
@@ -98,14 +98,14 @@ export function EventyrOversikt({ onClose }: EventyrOversiktProps) {
   };
 
   return (
-    <RetroWindow title="EVENTYR-OVERSIKT - HISTORIENE DINE" onClose={onClose}>
+    <RetroWindow title="EVENTYR-OVERSIKT" onClose={onClose}>
       <div className="p-6 h-full overflow-y-auto space-y-6">
         {/* Header */}
         <div className="flex items-center gap-4 pb-4 border-b-4 border-(--neon-green)/30">
-          <Icons.BookOpen size={32} color="green" />
+          <Icons.ScriptText size={32} color="green" />
           <div className="flex-1">
             <div className="text-2xl font-bold tracking-wider">
-              HISTORIENE I SNØFALL
+              EVENTYRENE I SNØFALL
             </div>
             <div className="text-sm opacity-70">
               Følg med på eventyrene gjennom desember
@@ -121,10 +121,13 @@ export function EventyrOversikt({ onClose }: EventyrOversiktProps) {
 
         {/* Info Box */}
         <div className="p-4 border-2 border-(--cold-blue)/50 bg-(--cold-blue)/10 text-(--cold-blue) text-sm">
-          <div className="font-bold mb-2">📖 OM EVENTYRENE</div>
+          <div className="font-bold mb-2 flex items-center gap-2">
+            <Icons.ScriptText size={16} color="blue" />
+            <span>OM EVENTYRENE</span>
+          </div>
           <div className="opacity-90">
-            Hver historie i Snøfall strekker seg over flere dager i kalenderen.
-            Fullfør alle dagene i en historie for å låse opp merker og bonuser!
+            Hvert eventyr i Snøfall strekker seg over flere dager i kalenderen.
+            Fullfør alle dagene i et eventyr for å låse opp merker og bonuser!
           </div>
         </div>
 
@@ -141,12 +144,11 @@ export function EventyrOversikt({ onClose }: EventyrOversiktProps) {
                 key={eventyr.id}
                 className={`
                   border-4 p-4 transition-all
-                  ${
-                    isComplete
-                      ? "border-(--gold) bg-(--gold)/10 shadow-[0_0_20px_rgba(255,215,0,0.3)]"
-                      : progress.completed > 0
-                        ? "border-(--neon-green) bg-(--neon-green)/5"
-                        : "border-(--gray)/30 bg-(--gray)/5"
+                  ${isComplete
+                    ? "border-(--gold) bg-(--gold)/10 shadow-[0_0_20px_rgba(255,215,0,0.3)]"
+                    : progress.completed > 0
+                      ? "border-(--neon-green) bg-(--neon-green)/5"
+                      : "border-(--gray)/30 bg-(--gray)/5"
                   }
                 `}
               >
@@ -156,12 +158,11 @@ export function EventyrOversikt({ onClose }: EventyrOversiktProps) {
                   <div
                     className={`
                       flex items-center justify-center w-16 h-16 border-2
-                      ${
-                        isComplete
-                          ? "border-(--gold) bg-(--gold)/20"
-                          : progress.completed > 0
-                            ? "border-(--neon-green) bg-(--neon-green)/10"
-                            : "border-(--gray) bg-(--gray)/5"
+                      ${isComplete
+                        ? "border-(--gold) bg-(--gold)/20"
+                        : progress.completed > 0
+                          ? "border-(--neon-green) bg-(--neon-green)/10"
+                          : "border-(--gray) bg-(--gray)/5"
                       }
                     `}
                   >
@@ -263,10 +264,9 @@ export function EventyrOversikt({ onClose }: EventyrOversiktProps) {
                     <div
                       className={`
                         h-full transition-all duration-500
-                        ${
-                          isComplete
-                            ? "bg-(--gold) animate-[gold-flash_2s_ease-in-out_infinite]"
-                            : "bg-(--neon-green)"
+                        ${isComplete
+                          ? "bg-(--gold) animate-[gold-flash_2s_ease-in-out_infinite]"
+                          : "bg-(--neon-green)"
                         }
                       `}
                       style={{ width: `${progress.percentage}%` }}
@@ -286,10 +286,9 @@ export function EventyrOversikt({ onClose }: EventyrOversiktProps) {
                         key={day}
                         className={`
                           w-8 h-8 flex items-center justify-center text-xs font-bold border-2
-                          ${
-                            isDayCompleted
-                              ? "border-(--gold) bg-(--gold)/20 text-(--gold)"
-                              : "border-(--gray)/30 bg-(--gray)/5 text-(--gray)"
+                          ${isDayCompleted
+                            ? "border-(--gold) bg-(--gold)/20 text-(--gold)"
+                            : "border-(--gray)/30 bg-(--gray)/5 text-(--gray)"
                           }
                         `}
                         title={`Dag ${day}`}
@@ -326,7 +325,7 @@ export function EventyrOversikt({ onClose }: EventyrOversiktProps) {
         {/* Bottom Summary */}
         <div className="pt-4 border-t-4 border-(--neon-green)/30 text-center">
           <div className="text-(--cold-blue) text-sm opacity-80">
-            💫 Fortsett å løse oppdrag for å fullføre alle historiene! 💫
+            💫 Fortsett å løse oppdrag for å fullføre alle eventyrene! 💫
           </div>
         </div>
       </div>

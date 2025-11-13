@@ -5,7 +5,7 @@ import { Icons } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import { StorageManager } from "@/lib/storage";
-import { getEventyr } from "@/lib/historier";
+import { getEventyr } from "@/lib/eventyr";
 
 interface GrandFinaleModalProps {
   onClose: () => void;
@@ -27,7 +27,7 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
   const solvedDecryptions = StorageManager.getSolvedDecryptions();
   const collectedSymbols = StorageManager.getCollectedSymbols();
 
-  // Generate eventyr completion messages dynamically from historier.json
+  // Generate eventyr completion messages dynamically from eventyr.json
   const eventyrMessages = completedEventyr
     .map((eventyrId) => {
       const eventyr = getEventyr(eventyrId);

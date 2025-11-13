@@ -6,6 +6,7 @@ import { Icons } from "@/lib/icons";
 import { FilNode, Oppdrag } from "@/types/innhold";
 import { GameEngine } from "@/lib/game-engine";
 import { StorageManager } from "@/lib/storage";
+import { getEventyr } from "@/lib/eventyr";
 
 interface NisseNetUtforskerProps {
   files: FilNode[];
@@ -49,7 +50,17 @@ export function NisseNetUtforsker({
     for (let day = 1; day <= currentDay; day++) {
       const mission = missions.find((m) => m.dag === day);
       if (mission && mission.dagbokinnlegg) {
-        diary += "\n" + mission.dagbokinnlegg + "\n\n---\n";
+        // Add eventyr header if this entry is part of a story
+        if (mission.eventyr) {
+          const eventyr = getEventyr(mission.eventyr.id);
+          if (eventyr) {
+            diary += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            diary += `📜 Del av eventyret: ${eventyr.navn.toUpperCase()}\n`;
+            diary += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+          }
+        }
+
+        diary += mission.dagbokinnlegg + "\n\n---\n";
       }
     }
 
@@ -287,10 +298,9 @@ export function NisseNetUtforsker({
             onClick={() => setSelectedFile(node)}
             className={`
               flex items-center gap-2 w-full text-left py-1 px-2 transition-colors
-              ${
-                selectedFile?.navn === node.navn
-                  ? "bg-(--cold-blue)/20 border-l-2 border-(--cold-blue)"
-                  : "hover:bg-(--neon-green)/10"
+              ${selectedFile?.navn === node.navn
+                ? "bg-(--cold-blue)/20 border-l-2 border-(--cold-blue)"
+                : "hover:bg-(--neon-green)/10"
               }
             `}
             style={{ paddingLeft: `${depth * 16 + 8}px` }}
