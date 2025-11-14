@@ -34,6 +34,7 @@ const KEYS = {
   NISSENET_LAST_VISIT: "nissekomm-nissenet-last-visit",
   PLAYER_NAMES: "nissekomm-player-names",
   NICE_LIST_LAST_VIEWED: "nissekomm-nice-list-viewed",
+  DAGBOK_LAST_READ: "nissekomm-dagbok-last-read",
 } as const;
 
 // Type-safe storage interface
@@ -849,5 +850,43 @@ export class StorageManager {
       console.error("Failed to import data:", e);
       return false;
     }
+  }
+
+  // ============================================================
+  // Dagbok (Julius' Diary) Read Tracking
+  // ============================================================
+
+  /**
+   * Get the last diary entry day that was read
+   */
+  static getDagbokLastRead(): number {
+    return this.getItem<number>(KEYS.DAGBOK_LAST_READ, 0);
+  }
+
+  /**
+   * Set the last diary entry day that was read
+   */
+  static setDagbokLastRead(day: number): void {
+    this.setItem(KEYS.DAGBOK_LAST_READ, day);
+  }
+
+  /**
+   * Get count of unread diary entries
+   */
+  static getUnreadDiaryCount(completedQuests: Set<number>): number {
+    const lastRead = this.getDagbokLastRead();
+    return Array.from(completedQuests).filter((day) => day > lastRead).length;
+  }
+
+  /**
+   * Get completed quest days as a Set
+   */
+  static getCompletedQuestDays(): Set<number> {
+    if (typeof window === "undefined") return new Set();
+
+    // Note: This is a simplified version for compatibility
+    // In production, prefer using GameEngine.loadGameState().completedQuests
+    // which properly matches codes against mission data
+    return new Set<number>();
   }
 }

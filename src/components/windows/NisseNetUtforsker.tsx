@@ -6,7 +6,6 @@ import { Icons } from "@/lib/icons";
 import { FilNode, Oppdrag } from "@/types/innhold";
 import { GameEngine } from "@/lib/game-engine";
 import { StorageManager } from "@/lib/storage";
-import { getEventyr } from "@/lib/eventyr";
 
 interface NisseNetUtforskerProps {
   files: FilNode[];
@@ -37,38 +36,6 @@ export function NisseNetUtforsker({
     StorageManager.setNisseNetLastVisit(currentDay);
   }, [currentDay]);
 
-  // Generate dynamic diary content based on current day
-  const generateDiaryContent = useMemo(() => {
-    if (currentDay < 1 || currentDay > 24) {
-      return "JULIUS' DAGBOK\n==================\n\nDag 0 - Før Julen Starter\n\nHei! Dette er Julius som skriver fra Snøfall. Jeg har bestemt meg for å føre dagbok over desember måned. Rampenissen har reist ned til barna for å hjelpe dem med årets julekalender.\n\nHer i Snøfall forbereder vi oss på den travleste tiden på året. Nissene er klare, reinsdyrene er (mer eller mindre) motiverte, og vi har bakt nok pepperkaker til å fø en hær.\n\nSnart begynner den magiske tiden. Gleder meg!\n\n- Julius\n\nPS: Rudolf har allerede begynt å klage. Det er ikke engang desember ennå.";
-    }
-
-    let diary =
-      "JULIUS' DAGBOK\n==================\n\nSkrevet av Julius fra Snøfall\n\n";
-
-    // Show all entries up to current day
-    for (let day = 1; day <= currentDay; day++) {
-      const mission = missions.find((m) => m.dag === day);
-      if (mission && mission.dagbokinnlegg) {
-        // Add eventyr header if this entry is part of a story
-        if (mission.eventyr) {
-          const eventyr = getEventyr(mission.eventyr.id);
-          if (eventyr) {
-            diary += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            diary += `📜 Del av eventyret: ${eventyr.navn.toUpperCase()}\n`;
-            diary += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-          }
-        }
-
-        diary += mission.dagbokinnlegg + "\n\n---\n";
-      }
-    }
-
-    diary += "\n\n[Dagboken oppdateres hver dag gjennom desember]";
-
-    return diary;
-  }, [missions, currentDay]);
-
   // Check if file was newly unlocked today
   const isFileNew = (fileName: string): boolean => {
     const lastVisit = StorageManager.getNisseNetLastVisit();
@@ -87,7 +54,8 @@ export function NisseNetUtforsker({
     return false;
   };
 
-  // Process files and inject dynamic content for nissens_dagbok.txt and snill_slem_liste.txt
+  // Process files and inject dynamic content for snill_slem_liste.txt
+  // Note: nissens_dagbok.txt is now handled by standalone DAGBOK module
   const processedFiles = useMemo(() => {
     const generateHintsContent = (maxDay: number): string => {
       let content =
@@ -113,10 +81,12 @@ export function NisseNetUtforsker({
     };
 
     const processNode = (node: FilNode): FilNode => {
+      // Diary is now handled by standalone DAGBOK module - hide from NisseNet
       if (node.type === "fil" && node.navn === "nissens_dagbok.txt") {
         return {
           ...node,
-          innhold: generateDiaryContent,
+          innhold:
+            "DENNE FILEN ER FLYTTET\n\nJulius' dagbok er nå tilgjengelig som egen modul på skrivebordet.\nÅpne DAGBOK-ikonet for å lese innleggene!\n\n- NisseNet Administrator",
         };
       }
 
@@ -239,7 +209,7 @@ export function NisseNetUtforsker({
     };
 
     return files.map(processNode);
-  }, [files, generateDiaryContent, currentDay, missions]);
+  }, [files, currentDay, missions]);
 
   // Filter files based on unlock status and calculate stats
   const { filteredFiles, fileStats } = useMemo(() => {
@@ -360,10 +330,9 @@ export function NisseNetUtforsker({
             }}
             className={`
               flex items-center gap-2 w-full text-left py-1 px-2 transition-colors
-              ${
-                selectedFile?.navn === node.navn
-                  ? "bg-(--cold-blue)/20 border-l-2 border-(--cold-blue)"
-                  : "hover:bg-(--neon-green)/10"
+              ${selectedFile?.navn === node.navn
+                ? "bg-(--cold-blue)/20 border-l-2 border-(--cold-blue)"
+                : "hover:bg-(--neon-green)/10"
               }
             `}
             style={{ paddingLeft: `${depth * 16 + 8}px` }}

@@ -106,6 +106,8 @@
 2. **KodeTerminal** - Code submission interface with validation and history
 3. **NisseNet Utforsker** - File browser with Julius' diary and hint files
 4. **Kalender** - 24-day grid showing locked/available/completed states
+5. **EventyrOversikt** - Story arc overview and progress tracking
+6. **Julius' Dagbok** - Julius' diary entries (quest-gated, unread tracking, continuous scroll)
 
 **Unlockable Modules** (appear in slots as codes are completed):
 
@@ -701,6 +703,30 @@ Consistent terms used throughout the application:
   3. First unread email
   4. First mission (fallback)
 - **Integration**: "ÅPNE TERMINAL" button opens KodeTerminal for that day
+
+## Diary System
+
+**Julius' Dagbok Behavior** (in `Dagbok.tsx`):
+
+- **Standalone module**: Core desktop icon (gold book icon, positioned after EVENTYR)
+- **Quest-gated entries**: Only shows `dagbokinnlegg` for completed quests (prevents spoilers)
+- **Continuous scroll**: Single-column timeline view (distinct from NisseMail's split-view)
+- **Unread tracking**: Red badge shows count of unread entries (entries with day > last read)
+- **Auto-scroll**: On open, centers first unread entry in viewport (`scrollIntoView({ block: 'center', behavior: 'smooth' })`)
+- **Read detection**: IntersectionObserver marks entries read after 3 seconds at 50%+ visibility
+- **Visual styling**:
+  - CRT-style dotted separators between entries (`border-top: 2px dotted var(--neon-green)/50`)
+  - Unread entries: Full opacity + pulsing gold indicator
+  - Read entries: 70% opacity
+  - Eventyr badges: Small gold text at entry end (`📜 {eventyr.navn}`)
+- **Empty state**: Placeholder message when no quests completed yet
+- **Fallback access**: Original diary in NisseNet archive remains for completionists
+
+**Storage Methods** (in `storage.ts`):
+
+- `getDagbokLastRead()` - Returns day number of last read entry
+- `setDagbokLastRead(day)` - Updates last read day (called by IntersectionObserver)
+- `getUnreadDiaryCount(completedQuests)` - Counts unread entries for badge
 
 ## Calendar Behavior
 

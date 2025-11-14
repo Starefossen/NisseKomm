@@ -21,6 +21,7 @@ import { NisseStats } from "@/components/windows/NisseStats";
 import { NisseKrypto } from "@/components/windows/NisseKrypto";
 import { SymbolScanner } from "@/components/windows/SymbolScanner";
 import { EventyrOversikt } from "@/components/windows/EventyrOversikt";
+import { Dagbok } from "@/components/windows/Dagbok";
 import { GrandFinaleModal } from "@/components/ui/GrandFinaleModal";
 import { BadgeRow } from "@/components/ui/BadgeRow";
 import { NameEntryModal } from "@/components/ui/NameEntryModal";
@@ -64,6 +65,15 @@ function getUnreadFileCount(): number {
   return GameEngine.getUnreadFileCount();
 }
 
+/**
+ * Get count of unread diary entries
+ */
+function getUnreadDiaryCount(): number {
+  if (typeof window === "undefined") return 0;
+  const completedQuests = GameEngine.loadGameState().completedQuests;
+  return StorageManager.getUnreadDiaryCount(completedQuests);
+}
+
 export default function Home() {
   const [bootComplete, setBootComplete] = useState(() => {
     if (typeof window !== "undefined") {
@@ -82,6 +92,9 @@ export default function Home() {
   const [unreadCount, setUnreadCount] = useState(() => getUnreadEmailCount());
   const [unreadFileCount, setUnreadFileCount] = useState(() =>
     getUnreadFileCount(),
+  );
+  const [unreadDiaryCount, setUnreadDiaryCount] = useState(() =>
+    getUnreadDiaryCount(),
   );
   const [unlockedModules, setUnlockedModules] = useState<string[]>(() => {
     if (typeof window !== "undefined") {
@@ -165,6 +178,7 @@ export default function Home() {
     if (typeof window !== "undefined") {
       setUnreadCount(getUnreadEmailCount());
       setUnreadFileCount(getUnreadFileCount());
+      setUnreadDiaryCount(getUnreadDiaryCount());
     }
   };
 
@@ -300,6 +314,13 @@ export default function Home() {
                       color="blue"
                       onClick={() => handleIconClick("eventyr-oversikt")}
                     />
+                    <DesktopIcon
+                      icon="book"
+                      label="DAGBOK"
+                      color="gold"
+                      unreadCount={unreadDiaryCount}
+                      onClick={() => handleIconClick("dagbok")}
+                    />
 
                     {/* Unlockable modules - display in unlock order */}
                     {(() => {
@@ -375,7 +396,7 @@ export default function Home() {
                               label="LÅST"
                               color="gray"
                               disabled
-                              onClick={() => {}}
+                              onClick={() => { }}
                             />
                           );
                         }
@@ -449,6 +470,9 @@ export default function Home() {
                   )}
                   {openWindow === "eventyr-oversikt" && (
                     <EventyrOversikt onClose={handleCloseWindow} />
+                  )}
+                  {openWindow === "dagbok" && (
+                    <Dagbok missions={oppdrag} onClose={handleCloseWindow} />
                   )}
                 </>
               )}
