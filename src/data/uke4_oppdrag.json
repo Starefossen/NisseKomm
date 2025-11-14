@@ -2,7 +2,7 @@
   {
     "dag": 22,
     "tittel": "Julesokk-mysteriet",
-    "nissemail_tekst": "Rampenissen har hengt opp sokker! I hver sokk er det lapper: Sokk 1: 'JUL', Sokk 2: 'E', Sokk 3: 'AFTEN'. Kombinér ordene - hva får du?",
+    "nissemail_tekst": "Rampenissen har hengt opp sokker! I hver sokk er det lapper: Sokk 1: 'JUL', Sokk 2: 'E', Sokk 3: 'AFTEN'. Kombinér ordene - hva får du?\n\n🔴 I julesokken skjuler seg en RØD MÅNE! Julius forteller at den røde månen symboliserer forventning og spenning - som nattens magiske tid når juleaften nærmer seg!",
     "kode": "JULEAFTEN",
     "eventyr": {
       "id": "countdown-julaften",
@@ -53,7 +53,7 @@
         "content": "Julius og nissene forbereder den store reisen! Reinsdyrene har trent, sleda er klar, og gavene er pakket. Snart kommer Julius med gaver til alle snille barn!"
       }
     ],
-    "dagbokinnlegg": "Dag 22 - To Dager!\n\nTO DAGER! BARE TO! Panikken er reell nå. Men kontrollert panikk. Organisert kaos. Nissemor kaller det 'tradisjonell julestress'. Hun ler. Jeg svetter.\n\nGeneralprøve med reinsdyrene. De flyr perfekt! Rudolf gjorde en looping for å vise seg. Flott, men ikke nødvendig. Sleda klarte prøveturen. Alt fungerer!\n\nVerkstedet er rent. Gavene er pakket. Listen er sjekket to ganger. (Egentlig 47 ganger, men hvem teller?) Vi er klare. Nesten. Veldig nesten.\n\nRampenissen sender siste rapport fra barna. De har vært fantastiske! Jeg gleder meg til å se dem på julaften. Gjennom vinduet. Når de sover. Som vanlig.\n\n- Julius",
+    "dagbokinnlegg": "Dag 22 - To Dager!\n\nTO DAGER! BARE TO! Panikken er reell nå. Men kontrollert panikk. Organisert kaos. Nissemor kaller det 'tradisjonell julestress'. Hun ler. Jeg svetter.\n\nGeneralprøve med reinsdyrene. De flyr perfekt! Rudolf gjorde en looping for å vise seg. Flott, men ikke nødvendig. Sleda klarte prøveturen. Alt fungerer!\n\nVerkstedet er rent. Gavene er pakket. Listen er sjekket to ganger. (Egentlig 47 ganger, men hvem teller?) Vi er klare. Nesten. Veldig nesten.\n\nRampenissen sender siste rapport fra barna. De har vært fantastiske! Han skriver: 'Julius, jeg kom som en kaotisk nisse, men barna lærte meg hva ansvar og vennskap virkelig betyr. Takk for at du ga meg denne sjansen.' Er så stolt av ham.\n\n- Julius",
     "rampenissen_rampestrek": "3 julesokker hengt på rad. I hver sokk: sammenbrettet lapp med ord. Rampenissen har 'pakke-papir' rundt seg som toga.",
     "fysisk_hint": "Rampenissen har forberedt sokkene! Sjekk hva som er inni hver enkelt.",
     "oppsett_tid": "enkel",
@@ -68,7 +68,7 @@
   {
     "dag": 23,
     "tittel": "Lillejulaften-fest",
-    "nissemail_tekst": "Rampenissen feirer Lillejulaften! På bordet ligger et bilde av en tradisjonell norsk julekake. Det står: 'Jeg har 7 lag og er rund som et tårn. Hva heter jeg? Hint: Starter på K.'",
+    "nissemail_tekst": "Rampenissen feirer Lillejulaften! På bordet ligger et bilde av en tradisjonell norsk julekake. Det står: 'Jeg har 7 lag og er rund som et tårn. Hva heter jeg? Hint: Starter på K.'\n\n🌙 Ved kransekaken finner du den siste BLÅ MÅNEN! Julius smiler og sier at den blå månen representerer visdom og fullføring - du har nå samlet alle ni symbolene! Den ultimate dekrypteringen venter...",
     "kode": "KRANSEKAKE",
     "eventyr": {
       "id": "countdown-julaften",

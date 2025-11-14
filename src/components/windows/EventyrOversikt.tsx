@@ -144,11 +144,12 @@ export function EventyrOversikt({ onClose }: EventyrOversiktProps) {
                 key={eventyr.id}
                 className={`
                   border-4 p-4 transition-all
-                  ${isComplete
-                    ? "border-(--gold) bg-(--gold)/10 shadow-[0_0_20px_rgba(255,215,0,0.3)]"
-                    : progress.completed > 0
-                      ? "border-(--neon-green) bg-(--neon-green)/5"
-                      : "border-(--gray)/30 bg-(--gray)/5"
+                  ${
+                    isComplete
+                      ? "border-(--gold) bg-(--gold)/10 shadow-[0_0_20px_rgba(255,215,0,0.3)]"
+                      : progress.completed > 0
+                        ? "border-(--neon-green) bg-(--neon-green)/5"
+                        : "border-(--gray)/30 bg-(--gray)/5"
                   }
                 `}
               >
@@ -158,11 +159,12 @@ export function EventyrOversikt({ onClose }: EventyrOversiktProps) {
                   <div
                     className={`
                       flex items-center justify-center w-16 h-16 border-2
-                      ${isComplete
-                        ? "border-(--gold) bg-(--gold)/20"
-                        : progress.completed > 0
-                          ? "border-(--neon-green) bg-(--neon-green)/10"
-                          : "border-(--gray) bg-(--gray)/5"
+                      ${
+                        isComplete
+                          ? "border-(--gold) bg-(--gold)/20"
+                          : progress.completed > 0
+                            ? "border-(--neon-green) bg-(--neon-green)/10"
+                            : "border-(--gray) bg-(--gray)/5"
                       }
                     `}
                   >
@@ -264,9 +266,10 @@ export function EventyrOversikt({ onClose }: EventyrOversiktProps) {
                     <div
                       className={`
                         h-full transition-all duration-500
-                        ${isComplete
-                          ? "bg-(--gold) animate-[gold-flash_2s_ease-in-out_infinite]"
-                          : "bg-(--neon-green)"
+                        ${
+                          isComplete
+                            ? "bg-(--gold) animate-[gold-flash_2s_ease-in-out_infinite]"
+                            : "bg-(--neon-green)"
                         }
                       `}
                       style={{ width: `${progress.percentage}%` }}
@@ -286,9 +289,10 @@ export function EventyrOversikt({ onClose }: EventyrOversiktProps) {
                         key={day}
                         className={`
                           w-8 h-8 flex items-center justify-center text-xs font-bold border-2
-                          ${isDayCompleted
-                            ? "border-(--gold) bg-(--gold)/20 text-(--gold)"
-                            : "border-(--gray)/30 bg-(--gray)/5 text-(--gray)"
+                          ${
+                            isDayCompleted
+                              ? "border-(--gold) bg-(--gold)/20 text-(--gold)"
+                              : "border-(--gray)/30 bg-(--gray)/5 text-(--gray)"
                           }
                         `}
                         title={`Dag ${day}`}

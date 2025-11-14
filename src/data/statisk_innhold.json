@@ -107,6 +107,11 @@
           "navn": "readme.txt",
           "type": "fil",
           "innhold": "Velkommen til NisseKomm!\n\nDette er Julius' kommandosenter i Snøfall.\n\nBruk KODETERMINAL til å sende inn koder.\nBruk KALENDER for å se alle oppdrag.\n\nBrevfuglene flyr mellom deg og oss!\n\nLykke til!"
+        },
+        {
+          "navn": "om-snofall.txt",
+          "type": "fil",
+          "innhold": "🎄 OM SNØFALL - VELKOMMEN TIL JULENISSENS VERDEN 🎄\n\nHVA ER SNØFALL?\nSnøfall er det magiske stedet hvor Julius (julenissen) bor med Nissemor og alle nissene. Det ligger helt på Nordpolen - 90 grader nord - det nordligste punktet på jorden!\n\nHER BOR:\n👴 JULIUS - Julenissen selv (det er meg!)\n👵 NISSEMOR - Min kjære kone\n🧝 RAMPENISSEN - Min assistent som er hos DERE nå!\n🧝 PIL - Min ivrige lærling\n📋 WINTER (Ole Winter) - Sekretæren som holder orden\n⚙️ IQ - Oppfinneren (ting eksploderer ofte)\n🦌 TRIXTER - Mitt favoritt-reinsdyr\n🦌 RUDOLF - Reinsdyret med rød nese (og stort ego)\n🔮 ORAKELET - Ser fremtiden og advarer oss\n\nMAGISKE ELEMENTER:\n🕊️ BREVFUGLER - Papirfugler som bærer barnas ønsker til oss\n❄️ JULEKULEBLÅSING - Vi lager glasskuler til juletrærne\n⚡ JULEMAGI - Holder alt i gang!\n🌑 MØRKET - Farlig kraft som truer oss i polarnatten\n\nHVORDAN FUNGERER DET?\nBarn (som dere!) folder brevfugler og sender ønsker.\nBrevfuglene flyr magisk til Snøfall.\nWinter organiserer alle ønskene.\nNissene produserer gaver døgnet rundt.\nJulius pakker alt i den magiske sekken.\nPå julenatten flyr vi ut med reinsdyrene!\n\nRAMPENISSENS OPPDRAG:\nJeg har sendt Rampenissen til dere for å bygge bro mellom våre verdener. Han lager oppgaver, gjemmer koder, og holder kontakt med Snøfall gjennom hele desember.\n\nSAMMEN ER VI STERKE!\nVennskap mellom dere og oss gir julemagi. Uten barna ville julen ikke eksistert. Dere er en viktig del av Snøfall!\n\nVelkommen til eventyret!\n- Julius og hele Snøfall-teamet 🎅✨"
         }
       ]
     },
@@ -192,6 +197,11 @@
           "navn": "farge-koder.txt",
           "type": "fil",
           "innhold": "🎨 FARGE-MYSTERIET 🎨\n\nDag 10 - Grønn dag\n\nFargekoding i Snøfall:\n🔴 RØD - Julenissens klassiske farge\n🟢 GRØNN - Juletrær og miljø\n🔵 BLÅ - Is og snø\n🟡 GULL - Stjerner og magi\n⚪ HVIT - Snø og renhet\n\nG-R-Ø-N-N = GRØNN\n\nNissemors miljøprosjekt:\n- Sykkel til verkstedet\n- Resirkulering av gavepapir\n- Økologiske gulrøtter til reinsdyr\n\nJulius' kommentar:\n'Grønt og rødt sammen = italiensk restaurant'\n\nUnlocked by: Day 10"
+        },
+        {
+          "navn": "fargesamleren.txt",
+          "type": "fil",
+          "innhold": "🎨 HVEM ER FARGESAMLEREN? 🎨\n\n[HEMMELIG FIL - Oppdaget av nysgjerrige utforskere]\n\nFargesamleren er en eldgammel nisse som levde i Snøfall for mange hundre år siden.\n\nHVEM:\nNavn: Egentlig navn glemt, kalt 'Fargesamleren'\nAlder: Ukjent (veldig gammel)\nRolle: Studerte fargers magiske egenskaper\n\nHVA HAN GJORDE:\n- Samlet farger fra hele verden\n- Oppdaget at farger inneholder magi\n- Lærte Julius om fargesymboler\n- Skrev nedtekninger om hjerte-sol-måne symbolene\n\nDETTE VISSTE HAN:\n'Farger er ikke bare vakre - de bærer magi.\nGrønt for vekst, rødt for varme, blått for ro.\nHjertene, solene, månene - alle har sine farger.\nSamle dem riktig, og magien åpenbares.'\n\nHANS HEMMELIGHET:\nFargesamleren oppdaget de 9 symbolene (3 hjerter, 3 soler, 3 måner) og deres farger. Han skrev ned dekrypteringskodene som Julius bruker i dag.\n\nHVOR ER HAN NÅ?\nNoen sier han forsvant inn i nordlyset.\nAndre sier han ble ett med fargene selv.\nJulius sier: 'Han lever videre i hver farge vi ser.'\n\nMandelen i risgrøten? Hans favorittradisjon!\nHan sa: 'Hvit mandel skjult i hvit grøt - magien i det skjulte.'\n\n- Fra Julius' hemmelige arkiv"
         },
         {
           "navn": "tidsanomalier.txt",

@@ -2,7 +2,7 @@
   {
     "dag": 15,
     "tittel": "Sjokolade-mysteriet",
-    "nissemail_tekst": "Rampenissen har laget 'sjokolade-bæsj' på kjøkkenbordet! Under én av dem er det skjult en mandel. Tellingen på bæsjene viser: 3. bolle × 1 = ? Finn mandelen! Men vent... fargesamleren vet noe mer...",
+    "nissemail_tekst": "Rampenissen har laget 'sjokolade-bæsj' på kjøkkenbordet! Under én av dem er det skjult en mandel. Tellingen på bæsjene viser: 3. bolle × 1 = ? Finn mandelen! Men vent... fargesamleren vet noe mer...\n\n🌅 I mandelen skjuler seg en RØD SOL! Julius forteller at den røde solen representerer energi og glede - akkurat som gleden ved å finne mandelen i grøten! Fargesamleren nikker anerkjennende.",
     "kode": "MANDEL",
     "eventyr": {
       "id": "farge-mysteriet",
@@ -102,8 +102,8 @@
     "print_materials": [
       {
         "type": "activity",
-        "title": "Inventar-telling",
-        "content": "Hjelp Rampenissen med å telle leker! Velg EN kategori (biler, dukker, klosser) og tell hvor mange dere har. Skriv ned totalen og rapporter til systemet."
+        "title": "Inventar-organisering",
+        "content": "Hjelp Rampenissen med å organisere leker!\n\nWINTER-GODKJENTE KATEGORIER:\n✅ TRANSPORTMIDLER - Biler, fly, båter, tog\n✅ KOSEDYR - Bamser, dukker, plysjdyr\n✅ BYGGEKLOSSER - Lego, klosser, puslespill\n✅ KREATIVT - Tegnesaker, bøker, spill\n\nVelg ÉN kategori:\n1. Finn minst 5 leker som passer\n2. Ordne dem etter størrelse (minst → størst)\n3. Rapporter til forelder:\n   - Kategorinavn\n   - Antall funnet\n\nWinters motto: 'Alt har sin plass, og alle har sin tid!'"
       },
       {
         "type": "guide",
@@ -113,7 +113,7 @@
     ],
     "bonusoppdrag": {
       "tittel": "KRITISK: Inventar-kaos",
-      "beskrivelse": "NISSESTATS viser feil! Inventar-systemet har krasjet. Rampenissen trenger hjelp til å telle og organisere. Tell leker i én kategori (biler, dukker, klosser, etc.) og rapporter totalen. La systemet kjøre gjenoppbygging over natten - NISSESTATS vil automatisk starte opp igjen neste morgen.",
+      "beskrivelse": "NISSESTATS viser feil! Inventar-systemet har krasjet og alle kategoriene er blandet sammen. Rampenissen trenger hjelp til å ORGANISERE leker i Winter-godkjente kategorier:\n\n1. TRANSPORTMIDLER (biler, fly, båter)\n2. KOSEDYR (bamser, dukker, plysjdyr)\n3. BYGGEKLOSSER (Lego, klosser, puslespill)\n4. KREATIVT (tegnesaker, bøker, spill)\n\nVelg EN kategori og:\n- Finn minst 5 leker som passer\n- Ordne dem etter størrelse (minst til størst)\n- Rapporter kategorinavn + antall funnet\n\nWinters motto: 'Alt har sin plass!' La systemet kjøre gjenoppbygging over natten - NISSESTATS vil automatisk starte opp igjen neste morgen.",
       "validering": "forelder",
       "badge_id": "inventar-ekspert",
       "badge_navn": "Inventar-ekspert",
@@ -203,7 +203,7 @@
   {
     "dag": 18,
     "tittel": "Snø-sporet",
-    "nissemail_tekst": "Rampenissen har laget snøengler utenfor (eller mel-engler inne)! I snøen/melet står det skrevet: 'Jeg faller fra himmelen og gjør julen hvit. 3 bokstaver.' Finn ordet!",
+    "nissemail_tekst": "Rampenissen har laget snøengler utenfor (eller mel-engler inne)! I snøen/melet står det skrevet: 'Jeg faller fra himmelen og gjør julen hvit. 3 bokstaver.' Finn ordet!\n\n❄️ I snøsporet finner du en BLÅ SOL! Julius forklarer at den blå solen symboliserer klarhet og retning - som stjernesolen som viser Julius veien gjennom vinterhimmelen. Du har nå alle tre solsymbolene!",
     "kode": "SNØ",
     "eventyr": {
       "id": "slede-forberedelser",
@@ -354,7 +354,7 @@
         ]
       }
     ],
-    "dagbokinnlegg": "Dag 19 - Tretthetsdag\n\nTrøtteste dag så langt. Falt i søvn tre ganger. En gang midt i setning til nissene. De lo. Ikke artig. Vel, litt artig.\n\nNissemor insisterer på at jeg tar pauser. Forklarer at jeg ikke tar pauser. Hun bare pekte på godteristabelen og smilte. Tok en pause.\n\nRampenissen klager også over trettet. Sendte ham oppskrift på Nissemor sin magiske energi-kakao. Han takket. 5 minutter senere sendte han bilde av seg dansende på bordet. Kakao virker.\n\n- Julius",
+    "dagbokinnlegg": "Dag 19 - Tretthetsdag\n\nTrøtteste dag så langt. Falt i søvn tre ganger. En gang midt i setning til nissene. De lo. Ikke artig. Vel, litt artig.\n\nNissemor insisterer på at jeg tar pauser. Forklarer at jeg ikke tar pauser. Hun bare pekte på godteristabelen og smilte. Tok en pause.\n\nRampenissen klager også over trettet. Men så sier han noe som overrasker meg: 'Julius, jeg skjønner nå hvor hardt du jobber. Og hvor viktig det er å ikke gi opp når man er ansvarlig for andres glede.' Hvem er denne modne nissingen?! Nissemors energi-kakao virker underverker!\n\n- Julius",
     "rampenissen_rampestrek": "Leke-reinsdyr plassert i 4 rom som 'rutemarkører'. Ved hvert reinsdyr: Sjekkpunkt 1 (barnerom): 'Tell bein på et reinsdyr', Sjekkpunkt 2 (kjøkken): 'Finn noe RØDT', Sjekkpunkt 3 (stue): 'Hva trekker sleda?' = R-E-I-N-S-D-Y-R på lappene. Ved siste reinsdyr: 'MÅL'-skilt med alle bokstavene samlet. Rampenissen som 'flygeleder'.",
     "fysisk_hint": "Følg reinsdyr-ruten! Hvert stopp har en utfordring. Løs dem alle for å samle bokstavene.",
     "oppsett_tid": "avansert",
@@ -371,7 +371,7 @@
   {
     "dag": 20,
     "tittel": "Slede-løpet",
-    "nissemail_tekst": "Rampenissen har laget et hinderbane-løp! På 5 sjekkpunkter er det gjemt bokstaver. Finn dem ALLE for å stave ordet. Hva er Nissens transport?",
+    "nissemail_tekst": "Rampenissen har laget et hinderbane-løp! På 5 sjekkpunkter er det gjemt bokstaver. Finn dem ALLE for å stave ordet. Hva er Nissens transport?\n\n🌙 Ved målet finner du en GRØNN MÅNE! Julius forteller at den grønne månen symboliserer fred og harmoni - som den rolige natten når sleda glir stille over hustakene. Dette er den første av månesymbolene!",
     "kode": "SLEDE",
     "eventyr": {
       "id": "iqs-oppfinnelser",
@@ -457,7 +457,7 @@
         "content": "Gratulerer! Dere har hjulpet IQ med å teste alle oppfinnelsene hans. Energidrikken og slede-oppgraderingen er klare for julaften!"
       }
     ],
-    "dagbokinnlegg": "Dag 20 - Fire Dager\n\nBare fire dager igjen! Alt eskalerer nå. Nissene jobber døgnet rundt. IQ har laget energidrikk av magisk snø. Den virker! Kanskje for godt...\n\nTrixter og reinsdyrene har fått siste treningsøkt. De er klare! Pil og Winter dobbeltsjekker alle lister.\n\nVennskapet og magien i Snøfall gir oss styrke. Sammen klarer vi dette!\n\n- Julius",
+    "dagbokinnlegg": "Dag 20 - Fire Dager\n\nBare fire dager igjen! Alt eskalerer nå. Nissene jobber døgnet rundt. IQ har laget energidrikk av magisk snø. Den virker! Kanskje for godt...\n\nTrixter og reinsdyrene har fått siste treningsøkt. De er klare! Men Rudolf virker nervøs. Han kom til meg i kveld og sa: 'Hva om nesen min ikke lyser sterkt nok? Hva om Mørket er for sterkt?' Første gang jeg har sett ham usikker. Fortalte ham at hans lys har reddet oss før, og vil gjøre det igjen.\n\nPil og Winter dobbeltsjekker alle lister. Vennskapet og magien i Snøfall gir oss styrke. Sammen klarer vi dette!\n\n- Julius",
     "rampenissen_rampestrek": "5 sjekkpunkter plassert rundt i huset: 1) UNDER bordet (S), 2) BAK døra (L), 3) I bokhylla (E), 4) UNDER puta (D), 5) VED vinduet (E). Ved hvert punkt: liten leke-slede eller bil og en bokstav-lapp. Rampenissen holder stoppeklokke.",
     "fysisk_hint": "Rampenissen har laget et løp! Finn ALLE sjekkpunktene og samle bokstavene. De er gjemt HØYT og LAVT!",
     "oppsett_tid": "avansert",
@@ -524,7 +524,7 @@
         "content": "Gratulerer! Dere har hjulpet Julius og nissene med å beseire Mørket. Sammen er dere sterkere, og vennskapet har seiert! Julen er reddet!"
       }
     ],
-    "dagbokinnlegg": "Dag 21 - Tre Dager!\n\nTRE DAGER TIL JULAFTEN! Nissene er i høygir. En av dem festet vinger på ryggen og hoppet fra taket. Han sa han 'øvet på å fly'. Vi har ikke flyvende nisser. Han har nå gips på beinet.\n\nSiste sjekk av gavesekken. Den er magisk, så alt passer inn. Men måtte teste. Puttet en nisse inn. Han passet. Så puttet vi inn en til. De passet. Sluttet på 12 nisser. Ikke rom for flere. Eller kanskje vi skal ikke putte nisser i sekken.\n\nRampenissen melder om høy spenning hos barna. Samme her! Vi klarer dette! Sannsynligvis!\n\n- Julius",
+    "dagbokinnlegg": "Dag 21 - Tre Dager!\n\nTRE DAGER TIL JULAFTEN! Nissene er i høygir. En av dem festet vinger på ryggen og hoppet fra taket. Han sa han 'øvde på å fly'. Vi har ikke flyvende nisser. Han har nå gips på beinet.\n\nSiste sjekk av gavesekken. Den er magisk, så alt passer inn. Men måtte teste. Puttet en nisse inn. Han passet. Så puttet vi inn en til. De passet. Sluttet på 12 nisser. Ikke rom for flere. Eller kanskje vi skal ikke putte nisser i sekken.\n\nSTORE NYHETER: Rudolf reddet dagen! Når Mørket nærmet seg i kveld, lyste Rudolf sin røde nese kraftigere enn noen gang. Lyset spredte Mørket fullstendig! Han sto der, hode høyt, og sa: 'Dette er hva jeg ble født til.' Alle reinsdyrene applauderte. Jeg må innrømme - Rudolf er en helt. Og han har endelig skjønt det selv.\n\nRampenissen melder om høy spenning hos barna. Samme her! Vi klarer dette!\n\n- Julius",
     "rampenissen_rampestrek": "5-spisset stjerner gjemt rundt i huset: bak puter, i bokhyller, på vinduskarmer. Rampenissen med forstørrelsesglass og 'detektiv-hatt'. En stjerne lett tilgjengelig for telling.",
     "fysisk_hint": "Finn stjernene Rampenissen har gjemt - hvor mange spisser har de?",
     "oppsett_tid": "enkel",

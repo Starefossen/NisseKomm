@@ -8,7 +8,7 @@
       "id": "iqs-oppfinnelser",
       "phase": 2
     },
-    "dagbokinnlegg": "Dag 8 - Sekkproblemer\n\nGavesekken min trenger reparasjon. Igjen. Nissene syr på den nå. Spurte hvor mye vekt den kan bære. De bare lo nervøst. Ikke betryggende.\n\nTeste den nye magiske sekken ved å putte inn 500 gaver. Den holdt! Men så kom jeg ikke ut av verkstedet fordi sekken ikke passet gjennom døren. Måtte rive veggen. Nissene var ikke imponert.\n\nRampenissen melder at alt går bra med barna. De er flinke til å løse oppgavene. Muligens flinkere enn noen av nissene mine her...\n\n- Julius",
+    "dagbokinnlegg": "Dag 8 - Sekkproblemer\n\nGavesekken min trenger reparasjon. Igjen. Nissene syr på den nå. Spurte hvor mye vekt den kan bære. De bare lo nervøst. Ikke betryggende.\n\nTeste den nye magiske sekken ved å putte inn 500 gaver. Den holdt! Men så kom jeg ikke ut av verkstedet fordi sekken ikke passet gjennom døren. Måtte rive veggen. Nissene var ikke imponert.\n\nRampenissen melder at alt går bra med barna. De er flinke til å løse oppgavene. Han spør om han kan lage ENKLERE oppgaver fordi han er bekymret for at barna blir frustrerte. Hvem er denne nissingen og hva gjorde han med den gamle Rampenissen?\n\n- Julius",
     "rampenissen_rampestrek": "Toalettpapir er hengt rundt badet som en labyrint. I midten ligger Rampenissen med en rull som har gåten skrevet på.",
     "fysisk_hint": "Sjekk badet - Rampenissen har laget kaos! Les gåten på rullen.",
     "oppsett_tid": "moderat",
@@ -45,7 +45,7 @@
   {
     "dag": 9,
     "tittel": "Snøfnugg-jakten",
-    "nissemail_tekst": "Rampenissen har gjemt snøfnugg over hele huset! Finn ALLE de spesielle snøfnuggene (hint: de lyser annerledes). Når du har funnet dem, se hva som står på baksiden...",
+    "nissemail_tekst": "Rampenissen har gjemt snøfnugg over hele huset! Finn ALLE de spesielle snøfnuggene (hint: de lyser annerledes). Når du har funnet dem, se hva som står på baksiden...\n\n💙 Blant snøfnuggene finner du et BLÅTT HJERTE! Julius forklarer at det blå hjertet representerer kulde og ro - den magiske stillheten i Snøfalls vinternatt når snøfnuggene danser. Nå har du samlet alle tre hjertesymbolene!",
     "kode": "18",
     "eventyr": {
       "id": "frosne-monster",
@@ -208,7 +208,7 @@
   {
     "dag": 12,
     "tittel": "Sang-mysteriet",
-    "nissemail_tekst": "Hei hei! 🎵 Jeg fant en gammel sangbok i verkstedet! Det står 'Deilig er _____' på siden, men noen har dekket over det siste ordet... Julius sier det er 6 bokstaver og navnet på planeten vår. Hjelp meg å finne ut hva som skal stå der! 🌍",
+    "nissemail_tekst": "Hei hei! 🎵 Jeg fant en gammel sangbok i verkstedet! Det står 'Deilig er _____' på siden, men noen har dekket over det siste ordet... Julius sier det er 6 bokstaver og navnet på planeten vår. Hjelp meg å finne ut hva som skal stå der! 🌍\n\n🌞 Du finner en GRØNN SOL i sangboken! Julius smiler og forteller at den grønne solen symboliserer liv og fornyelse - som julesangene som vekker glede år etter år. Med denne har du startet å samle solsymbolene!",
     "kode": "JORDEN",
     "eventyr": {
       "id": "brevfugl-mysteriet",
@@ -325,7 +325,7 @@
       "phase": 4
     },
     "hendelse": "Lystenning på Fløyen",
-    "dagbokinnlegg": "Dag 14 - Innpakkingsdag\n\nKvalitetskontroll av gavepapir. Vi har 847 forskjellige design. Hvorfor? Ingen vet. En nisse foreslo å bare bruke étt design. Han ble utvist fra møtet.\n\nPrøvde å pakke inn en gave selv for å vise nissene hvordan det skal gjøres. Brukte for mye tape. Gaven er nå en tape-ball. Nissene applauderte 'ironisk'. Frekke nisser.\n\nRampenissen melder at barna lærer om julepynt og pakkepapir. Fint! De blir flinkere enn meg til å pakke. Det er ikke vanskelig.\n\n- Julius",
+    "dagbokinnlegg": "Dag 14 - Pakke-gåten\n\nKvalitetskontroll av gavepapir. Vi har 847 forskjellige design. Hvorfor? Ingen vet. En nisse foreslo å bare bruke étt design. Han ble utvist fra møtet.\n\nPrøvde å pakke inn en gave selv for å vise nissene hvordan det skal gjøres. Brukte for mye tape. Gaven er nå en tape-ball. Nissene applauderte 'ironisk'. Frekke nisser.\n\nRampenissen sender en rørende melding om hvor mye barna betyr for ham. Skrev at han kommer til å savne dem når julekalenderen er over. Nissemor fikk tårer i øynene da hun leste det. Rampenissen har vokst utrolig mye!\n\n- Julius",
     "rampenissen_rampestrek": "Diverse gjenstander innpakket i julepapir. På hver pakke er det teip-biter med én bokstav: P, A, P, I, R spredt rundt. Rampenissen omgitt av pakker.",
     "fysisk_hint": "Rampenissen har pakket inn ALT! Se på tape-bitene - de skjuler et ord!",
     "oppsett_tid": "avansert",

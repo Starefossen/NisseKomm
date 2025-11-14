@@ -83,21 +83,39 @@ export function BadgeRow() {
         const isEarned = earnedBadgeIds.has(badge.id);
         const isNewlyEarned = newlyEarnedBadge === badge.id;
 
+        // Determine tooltip text based on badge type
+        const getLockedTooltip = () => {
+          if (badge.unlockCondition.type === "bonusoppdrag") {
+            return `🔒 ${badge.navn} - Løs bonusoppdraget på dag ${badge.unlockCondition.day}`;
+          } else if (badge.unlockCondition.type === "eventyr") {
+            return `🔒 ${badge.navn} - Fullfør ${badge.unlockCondition.eventyrId.replace(/-/g, " ")} eventyret`;
+          } else if (badge.unlockCondition.type === "allDecryptionsSolved") {
+            return `🔒 ${badge.navn} - Løs alle dekrypteringsutfordringer`;
+          } else if (badge.unlockCondition.type === "allSymbolsCollected") {
+            return `🔒 ${badge.navn} - Samle alle 9 symbolene`;
+          }
+          return `🔒 ${badge.navn} - Låst`;
+        };
+
         return (
           <div
             key={badge.id}
             className={`
               relative flex items-center justify-center w-12 h-12 border-2
               transition-all duration-300
-              ${
-                isEarned
-                  ? "border-(--gold) bg-(--gold)/10"
-                  : "border-(--gray)/50 bg-(--gray)/5 opacity-30 grayscale"
+              ${isEarned
+                ? "border-(--gold) bg-(--gold)/10"
+                : "border-(--gray)/50 bg-(--gray)/5 opacity-30 grayscale"
               }
               ${isNewlyEarned ? "animate-[scale-in_0.5s_ease-out]" : ""}
               ${isEarned && !isNewlyEarned ? "animate-[gold-flash_2s_ease-in-out_infinite]" : ""}
+              hover:opacity-100 hover:scale-105
             `}
-            title={isEarned ? `${badge.navn} - ${badge.beskrivelse}` : "LÅST"}
+            title={
+              isEarned
+                ? `✨ ${badge.navn} - ${badge.beskrivelse}`
+                : getLockedTooltip()
+            }
           >
             {/* SVG Badge Icon */}
             <Image
@@ -105,9 +123,8 @@ export function BadgeRow() {
               alt={badge.navn}
               width={40}
               height={40}
-              className={`transition-all duration-300 ${
-                isEarned ? "" : "opacity-50"
-              }`}
+              className={`transition-all duration-300 ${isEarned ? "" : "opacity-50"
+                }`}
               style={{ imageRendering: "pixelated" }}
               unoptimized
             />

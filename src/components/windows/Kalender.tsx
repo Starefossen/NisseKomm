@@ -110,11 +110,12 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
                   className={`
                     aspect-square flex flex-col items-center justify-center p-2
                     border-4 font-bold text-xl transition-all relative
-                    ${status === "locked"
-                      ? "border-(--gray) bg-black/30 opacity-50 cursor-not-allowed"
-                      : status === "completed"
-                        ? "border-(--gold) bg-(--gold)/30 text-(--gold) shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] cursor-pointer"
-                        : "border-(--neon-green) bg-(--neon-green)/10 text-(--neon-green) hover:shadow-[0_0_20px_rgba(0,255,0,0.4)] cursor-pointer"
+                    ${
+                      status === "locked"
+                        ? "border-(--gray) bg-black/30 opacity-50 cursor-not-allowed"
+                        : status === "completed"
+                          ? "border-(--gold) bg-(--gold)/30 text-(--gold) shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] cursor-pointer"
+                          : "border-(--neon-green) bg-(--neon-green)/10 text-(--neon-green) hover:shadow-[0_0_20px_rgba(0,255,0,0.4)] cursor-pointer"
                     }
                   `}
                 >

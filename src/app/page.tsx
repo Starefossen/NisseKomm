@@ -347,7 +347,7 @@ export default function Home() {
                               label="LÅST"
                               color="gray"
                               disabled
-                              onClick={() => { }}
+                              onClick={() => {}}
                             />
                           );
                         }

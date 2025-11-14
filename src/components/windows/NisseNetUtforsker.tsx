@@ -298,9 +298,10 @@ export function NisseNetUtforsker({
             onClick={() => setSelectedFile(node)}
             className={`
               flex items-center gap-2 w-full text-left py-1 px-2 transition-colors
-              ${selectedFile?.navn === node.navn
-                ? "bg-(--cold-blue)/20 border-l-2 border-(--cold-blue)"
-                : "hover:bg-(--neon-green)/10"
+              ${
+                selectedFile?.navn === node.navn
+                  ? "bg-(--cold-blue)/20 border-l-2 border-(--cold-blue)"
+                  : "hover:bg-(--neon-green)/10"
               }
             `}
             style={{ paddingLeft: `${depth * 16 + 8}px` }}
