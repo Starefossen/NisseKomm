@@ -310,7 +310,7 @@ describe("GameEngine", () => {
       // Badge count includes automatically awarded badges from eventyr completion
       // Day 1-10 completes multiple eventyr arcs which award badges automatically
       expect(summary.badges.earned).toBeGreaterThanOrEqual(1);
-      expect(summary.badges.total).toBe(6); // Total badges available in merker.json
+      expect(summary.badges.total).toBe(7); // Total badges available in merker.json
 
       expect(summary.modules.unlocked).toBe(3); // NISSEKRYPTO + NISSEMUSIKK + SNØFALL_TV
 

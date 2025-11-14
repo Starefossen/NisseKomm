@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, DragEvent } from "react";
+import { useState, useEffect, DragEvent, TouchEvent } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons, Icon } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
@@ -68,6 +68,10 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
   const [draggedSymbol, setDraggedSymbol] = useState<DecryptionSymbol | null>(
     null,
   );
+  const [touchedSymbol, setTouchedSymbol] = useState<DecryptionSymbol | null>(
+    null,
+  );
+  const [touchIdentifier, setTouchIdentifier] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<string>("");
   const [attemptCount, setAttemptCount] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -151,6 +155,60 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
     setDraggedSymbol(null);
     setPositionFeedback([]);
     SoundManager.playSound("click");
+  };
+
+  // Touch event handlers for mobile/tablet support
+  const handleTouchStart = (
+    e: TouchEvent<HTMLDivElement>,
+    symbol: DecryptionSymbol,
+  ) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    if (touch) {
+      setTouchedSymbol(symbol);
+      setTouchIdentifier(touch.identifier);
+      SoundManager.playSound("click");
+    }
+  };
+
+  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    // Touch move is handled to prevent scrolling during drag
+  };
+
+  const handleTouchEnd = (e: TouchEvent<HTMLDivElement>) => {
+    if (!touchedSymbol || !selectedChallenge || touchIdentifier === null)
+      return;
+
+    const touch = e.changedTouches[0];
+    if (touch && touch.identifier === touchIdentifier) {
+      // Check if touch ended over a valid drop zone
+      const element = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (element && element.hasAttribute("data-drop-zone")) {
+        const dropPosition = parseInt(
+          element.getAttribute("data-drop-zone") || "-1",
+          10,
+        );
+        if (
+          dropPosition >= 0 &&
+          dropPosition < selectedChallenge.sequenceLength
+        ) {
+          const newGrid = [...challengeGrid];
+          newGrid[dropPosition] = touchedSymbol;
+          setChallengeGrid(newGrid);
+          setPositionFeedback([]);
+          SoundManager.playSound("click");
+        }
+      }
+    }
+
+    setTouchedSymbol(null);
+    setTouchIdentifier(null);
+  };
+
+  const handleTouchCancel = () => {
+    setTouchedSymbol(null);
+    setTouchIdentifier(null);
   };
 
   const handleClearGrid = () => {
@@ -288,10 +346,9 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                     disabled={challenge.isSolved}
                     className={`
                       w-full p-4 text-left border-2 transition-all
-                      ${
-                        challenge.isSolved
-                          ? "border-(--gold) bg-(--gold)/10 text-(--gold) cursor-not-allowed"
-                          : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-(--neon-green)/10 text-(--neon-green)"
+                      ${challenge.isSolved
+                        ? "border-(--gold) bg-(--gold)/10 text-(--gold) cursor-not-allowed"
+                        : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-(--neon-green)/10 text-(--neon-green)"
                       }
                     `}
                   >
@@ -363,11 +420,10 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                   return (
                     <div
                       key={i}
-                      className={`aspect-square border flex items-center justify-center ${
-                        symbol
+                      className={`aspect-square border flex items-center justify-center ${symbol
                           ? "border-(--neon-green) bg-(--neon-green)/10"
                           : "border-(--gray)/30 bg-(--gray)/5"
-                      }`}
+                        }`}
                     >
                       {symbol ? (
                         <Icon
@@ -431,10 +487,10 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
               )}
             </div>
 
-            {/* Dual 3×3 Grids */}
-            <div className="grid grid-cols-2 gap-6">
+            {/* Dual 3×3 Grids - responsive */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               {/* Left: Inventory Grid */}
-              <div className="border-4 border-(--neon-green) bg-black p-4">
+              <div className="border-4 border-(--neon-green) bg-black p-3 md:p-4">
                 <div className="text-sm tracking-wider text-(--neon-green) mb-3 text-center font-bold">
                   📦 SYMBOLSAMLING
                 </div>
@@ -444,12 +500,18 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                       key={symbol?.symbolId || `empty-${index}`}
                       draggable={!!symbol}
                       onDragStart={() => symbol && handleDragStart(symbol)}
+                      onTouchStart={(e) =>
+                        symbol && handleTouchStart(e, symbol)
+                      }
+                      onTouchMove={handleTouchMove}
+                      onTouchEnd={(e) => symbol && handleTouchEnd(e)}
+                      onTouchCancel={handleTouchCancel}
                       className={`
-                        aspect-square border-2 flex flex-col items-center justify-center p-2
-                        ${
-                          symbol
-                            ? "border-(--neon-green) bg-(--neon-green)/10 cursor-grab active:cursor-grabbing hover:bg-(--neon-green)/20"
-                            : "border-(--gray)/20 bg-(--gray)/5"
+                        aspect-square min-w-12 min-h-12 md:min-w-16 md:min-h-16 border-2 flex flex-col items-center justify-center p-1 md:p-2
+                        touch-none
+                        ${symbol
+                          ? "border-(--neon-green) bg-(--neon-green)/10 cursor-grab active:cursor-grabbing hover:bg-(--neon-green)/20 active:scale-95"
+                          : "border-(--gray)/20 bg-(--gray)/5"
                         }
                       `}
                       style={symbol ? {} : { opacity: 0.2 }}
@@ -458,15 +520,20 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                         <>
                           <Icon
                             name={symbol.symbolIcon}
-                            size={40}
+                            size={32}
                             color={symbol.symbolColor}
+                            className="md:w-10 md:h-10"
                           />
-                          <div className="text-[8px] text-(--neon-green) mt-1 text-center uppercase tracking-tight">
+                          <div className="text-[7px] md:text-[8px] text-(--neon-green) mt-1 text-center uppercase tracking-tight">
                             {symbol.symbolColor}
                           </div>
                         </>
                       ) : (
-                        <Icons.Lock size={24} color="gray" />
+                        <Icons.Lock
+                          size={20}
+                          color="gray"
+                          className="md:w-6 md:h-6"
+                        />
                       )}
                     </div>
                   ))}
@@ -477,7 +544,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
               </div>
 
               {/* Right: Challenge Grid */}
-              <div className="border-4 border-(--cold-blue) bg-black p-4">
+              <div className="border-4 border-(--cold-blue) bg-black p-3 md:p-4">
                 <div className="text-sm tracking-wider text-(--cold-blue) mb-3 text-center font-bold">
                   🔓 DEKRYPTERINGSGITTER
                 </div>
@@ -489,20 +556,22 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                     return (
                       <div
                         key={position}
+                        data-drop-zone={isUsed ? position : undefined}
                         onDragOver={handleDragOver}
                         onDrop={() => isUsed && handleDrop(position)}
+                        onTouchMove={handleTouchMove}
                         className={`
-                          aspect-square border-2 flex flex-col items-center justify-center p-2 relative
-                          ${
-                            !isUsed
-                              ? "border-(--gray)/20 bg-(--gray)/5"
-                              : symbol
-                                ? positionFb === "correct"
-                                  ? "border-(--gold) bg-(--gold)/20 animate-[gold-flash_1s_ease-in-out]"
-                                  : positionFb === "wrong"
-                                    ? "border-(--christmas-red) bg-(--christmas-red)/20 animate-[red-shake_0.5s_ease-in-out]"
-                                    : "border-(--cold-blue) bg-(--cold-blue)/10"
-                                : "border-(--cold-blue) border-dashed bg-(--cold-blue)/5 hover:bg-(--cold-blue)/10"
+                          aspect-square min-w-12 min-h-12 md:min-w-16 md:min-h-16 border-2 flex flex-col items-center justify-center p-1 md:p-2 relative
+                          touch-none
+                          ${!isUsed
+                            ? "border-(--gray)/20 bg-(--gray)/5"
+                            : symbol
+                              ? positionFb === "correct"
+                                ? "border-(--gold) bg-(--gold)/20 animate-[gold-flash_1s_ease-in-out]"
+                                : positionFb === "wrong"
+                                  ? "border-(--christmas-red) bg-(--christmas-red)/20 animate-[red-shake_0.5s_ease-in-out]"
+                                  : "border-(--cold-blue) bg-(--cold-blue)/10"
+                              : "border-(--cold-blue) border-dashed bg-(--cold-blue)/5 hover:bg-(--cold-blue)/10"
                           }
                         `}
                       >
@@ -518,19 +587,24 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                           <>
                             <Icon
                               name={symbol.symbolIcon}
-                              size={40}
+                              size={32}
                               color={symbol.symbolColor}
+                              className="md:w-10 md:h-10"
                             />
-                            <div className="text-[8px] text-(--cold-blue) mt-1 uppercase tracking-tight">
+                            <div className="text-[7px] md:text-[8px] text-(--cold-blue) mt-1 uppercase tracking-tight">
                               {symbol.symbolColor}
                             </div>
                           </>
                         ) : isUsed ? (
-                          <div className="text-(--cold-blue)/50 text-2xl">
+                          <div className="text-(--cold-blue)/50 text-xl md:text-2xl">
                             ?
                           </div>
                         ) : (
-                          <Icons.Lock size={16} color="gray" />
+                          <Icons.Lock
+                            size={14}
+                            color="gray"
+                            className="md:w-4 md:h-4"
+                          />
                         )}
                       </div>
                     );
@@ -547,13 +621,12 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
               <div
                 className={`
                 p-4 border-2 text-center font-bold tracking-wider
-                ${
-                  feedback.startsWith("✅")
+                ${feedback.startsWith("✅")
                     ? "border-(--gold) bg-(--gold)/20 text-(--gold) animate-[gold-flash_1s_ease-in-out]"
                     : feedback.startsWith("⚠️")
                       ? "border-(--cold-blue) bg-(--cold-blue)/20 text-(--cold-blue)"
                       : "border-(--christmas-red) bg-(--christmas-red)/20 text-(--christmas-red) animate-[red-shake_0.5s_ease-in-out]"
-                }
+                  }
               `}
               >
                 {feedback}
@@ -574,7 +647,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                 disabled={
                   isProcessing ||
                   challengeGrid.filter((s) => s !== null).length <
-                    selectedChallenge.sequenceLength
+                  selectedChallenge.sequenceLength
                 }
                 className="flex-1 p-3 border-2 border-(--cold-blue) text-black bg-(--cold-blue) hover:shadow-[0_0_15px_rgba(0,221,255,0.6)] transition-all disabled:opacity-50 disabled:cursor-not-allowed font-bold tracking-wider"
               >

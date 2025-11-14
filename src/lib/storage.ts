@@ -33,6 +33,7 @@ const KEYS = {
   FAILED_ATTEMPTS: "nissekomm-failed-attempts",
   NISSENET_LAST_VISIT: "nissekomm-nissenet-last-visit",
   PLAYER_NAMES: "nissekomm-player-names",
+  NICE_LIST_LAST_VIEWED: "nissekomm-nice-list-viewed",
 } as const;
 
 // Type-safe storage interface
@@ -778,6 +779,43 @@ export class StorageManager {
 
   static clearPlayerNames(): void {
     this.removeItem(KEYS.PLAYER_NAMES);
+  }
+
+  // ============================================================
+  // Nice List Read Tracking (for Day 24 finale)
+  // ============================================================
+
+  /**
+   * Mark the Nice List as viewed (called when file is opened)
+   */
+  static setNiceListViewed(): void {
+    this.setItem(KEYS.NICE_LIST_LAST_VIEWED, new Date().toISOString());
+  }
+
+  /**
+   * Check if Nice List has unread updates after Day 24 completion
+   * Returns true if Day 24 is complete and list hasn't been viewed since completion
+   */
+  static hasUnreadNiceList(): boolean {
+    // Check if Day 24 is completed
+    const codes = this.getSubmittedCodes();
+    const day24Code = codes.find((c) => c.kode === "JULAFTEN");
+    if (!day24Code) return false;
+
+    // Get last viewed timestamp
+    const lastViewed = this.getItem<string | null>(
+      KEYS.NICE_LIST_LAST_VIEWED,
+      null,
+    );
+
+    // If never viewed, it's unread
+    if (!lastViewed) return true;
+
+    // Compare timestamps: unread if Day 24 completed after last view
+    const day24Timestamp = new Date(day24Code.dato).getTime();
+    const lastViewedTimestamp = new Date(lastViewed).getTime();
+
+    return day24Timestamp > lastViewedTimestamp;
   }
 
   /**

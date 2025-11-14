@@ -53,9 +53,9 @@
         "content": "Julius og nissene forbereder den store reisen! Reinsdyrene har trent, sleda er klar, og gavene er pakket. Snart kommer Julius med gaver til alle snille barn!"
       }
     ],
-    "dagbokinnlegg": "Dag 22 - To Dager!\n\nTO DAGER! BARE TO! Panikken er reell nå. Men kontrollert panikk. Organisert kaos. Nissemor kaller det 'tradisjonell julestress'. Hun ler. Jeg svetter.\n\nGeneralprøve med reinsdyrene. De flyr perfekt! Rudolf gjorde en looping for å vise seg. Flott, men ikke nødvendig. Sleda klarte prøveturen. Alt fungerer!\n\nVerkstedet er rent. Gavene er pakket. Listen er sjekket to ganger. (Egentlig 47 ganger, men hvem teller?) Vi er klare. Nesten. Veldig nesten.\n\nRampenissen sender siste rapport fra barna. De har vært fantastiske! Han skriver: 'Julius, jeg kom som en kaotisk nisse, men barna lærte meg hva ansvar og vennskap virkelig betyr. Takk for at du ga meg denne sjansen.' Er så stolt av ham.\n\n- Julius",
+    "dagbokinnlegg": "Dag 22 - To Dager!\n\nTO DAGER! BARE TO! Panikken er reell nå. Men kontrollert panikk. Organisert kaos. Nissemor kaller det 'tradisjonell julestress'. Hun ler. Jeg svetter.\n\nGeneralprøve med reinsdyrene. De flyr perfekt! Rudolf gjorde en looping for å vise seg. Flott, men ikke nødvendig. Sleda klarte prøveturen. Alt fungerer!\n\nVerkstedet er rent. Gavene er pakket. Listen er sjekket to ganger. (Egentlig 47 ganger, men hvem teller?) Vi er klare. Nesten. Veldig nesten.\n\nRampenissen sender siste rapport fra barna. De har vært fantastiske! Han skriver: 'Julius, jeg kom som en kaotisk nisse, men barna lærte meg hva ansvar og vennskap virkelig betyr. Takk for at du ga meg denne sjansen.' Er så stolt av ham.\n\nI kveld registrerer jeg navnene deres i det offisielle systemet. Dette er ikke bare en liste - det er bevis på at dere er en del av Snøfalls historie nå.\n\n- Julius",
     "rampenissen_rampestrek": "3 julesokker hengt på rad. I hver sokk: sammenbrettet lapp med ord. Rampenissen har 'pakke-papir' rundt seg som toga.",
-    "fysisk_hint": "Rampenissen har forberedt sokkene! Sjekk hva som er inni hver enkelt.",
+    "fysisk_hint": "Sokk 1: JUL | Sokk 2: E | Sokk 3: AFTEN - Kombiner ordene!",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
       "3 julesokker",
@@ -137,13 +137,13 @@
       },
       {
         "type": "note",
-        "title": "VIKTIG: Skriv inn navnene deres!",
-        "content": "På dag 24 må dere skrive inn navnene deres i systemet slik at Julius kan legge dere til på Snill-listen! Dette gjøres i KodeTerminal etter at dere har løst dagens kode."
+        "title": "Siste forberedelser!",
+        "content": "I morgen er det julaften! Julius er klar, og navnene deres er allerede registrert. I morgen fullf\u00f8rer dere den siste koden!"
       }
     ],
-    "dagbokinnlegg": "Dag 23 - Lillejulaften\n\nI MORGEN ER DET JULAFTEN! (Bare étt utropstegn. Må virke rolig. Må virke profesjonell. MEN AAAHHH!)\n\nSiste forberedelser. Hele teamet er samlet: Pil, Winter, IQ, Trixter - alle er klare. Nissemor pakket ekstragodteri til meg. 'For reisen', sa hun.\n\nOppdaterte listen over snille barn. Barna som har fulgt med Rampenissen hele desember er på toppen! De har vist dedikasjon, vennskap og mot.\n\nEn siste kopp kakao med Nissemor. Hun sa: 'Magien i Snøfall, vennskapet med barna, og motet i hjertet ditt - det er det som gjør julen mulig.'\n\n- Julius",
+    "dagbokinnlegg": "Dag 23 - Lillejulaften\n\nI MORGEN ER DET JULAFTEN! (Bare étt utropstegn. Må virke rolig. Må virke profesjonell. MEN AAAHHH!)\n\nSiste forberedelser. Hele teamet er samlet: Pil, Winter, IQ, Trixter - alle er klare. Nissemor pakket ekstragodteri til meg. 'For reisen', sa hun.\n\nI går registrerte barna navnene sine i systemet! Ser dem på listen nå... Barna som har fulgt med Rampenissen hele desember. De har vist dedikasjon, vennskap og mot.\n\nEn siste kopp kakao med Nissemor. Hun sa: 'Magien i Snøfall, vennskapet med barna, og motet i hjertet ditt - det er det som gjør julen mulig.'\n\n- Julius",
     "rampenissen_rampestrek": "Bilde av kransekake på bordet med festpynt rundt. Rampenissen har partyhatt og konfetti. Ballonger med '23' på.",
-    "fysisk_hint": "Lillejulaften-fest hos Rampenissen! Hva er favorittkaken hans?",
+    "fysisk_hint": "Jeg har 7 lag og er rund som et tårn. Hva heter jeg? (Starter på K)",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
       "Bilde av kransekake (print/tegn)",
@@ -205,9 +205,9 @@
         "content": "Dere har vært på eventyr gjennom hele desember! Dere har beseiret Mørket, hjulpet IQ med oppfinnelser, fulgt brevfuglene, og oppdaget frosne mønstre. Julius og Rampenissen er stolte av dere! God jul! 🎄🎁⭐"
       }
     ],
-    "dagbokinnlegg": "Dag 24 - JULAFTEN! 🎄\n\nDET SKJER NÅ! Trixter og reinsdyrene er spent. Rudolf skinner som en fyrtårn. Sleda er lastet. Nissemor, Pil, Winter, IQ og alle nissene vinker farvel.\n\nGjennomgikk ruten én siste gang. Millioner av hjem. Milliarder av gaver. Åtte timer. Magisk tid gjør alt mulig.\n\nMen først - en spesiell stopp. Barna som fulgte Rampenissen hele desember. De som løste alle gåtene. De har vist vennskap, mot og tro på julemagi. De har beseiret alle farer og utfordringer sammen med oss.\n\nTil alle barna: Takk for en fantastisk desember! Dere viste at magi, vennskap og mot kan overvinne alt - selv Mørket selv. Dere er sanne julenissevenner!\n\nVi sees i neste desember! Eller kanskje tidligere. Hvem vet hvilke eventyr som venter?\n\nHa den beste julaften noensinne!\n\nHO HO HO! 🎅🎁✨\n\n- Julius og hele Snøfall-teamet\n\nP.S. Rampenissen insisterer på å legge til: 'SKIBIDI TOILET FOREVER' i rapporten. Ungdomskulturen er merkelig. Men hyggelig.\n\nP.P.S. Sjekk NISSENET for en siste overraskelse! Snill-listen er oppdatert. ⭐",
+    "dagbokinnlegg": "Dag 24 - JULAFTEN! 🎄\n\nDET SKJER NÅ! Trixter og reinsdyrene er spent. Rudolf skinner som en fyrtårn. Sleda er lastet. Nissemor, Pil, Winter, IQ og alle nissene vinker farvel.\n\nGjennomgikk ruten én siste gang. Millioner av hjem. Milliarder av gaver. Åtte timer. Magisk tid gjør alt mulig.\n\nMen først - en spesiell stopp. Barna som fulgte Rampenissen hele desember. De som løste alle gåtene. De har vist vennskap, mot og tro på julemagi. De har beseiret alle farer og utfordringer sammen med oss.\n\nTil alle barna: Takk for en fantastisk desember! Dere viste at magi, vennskap og mot kan overvinne alt - selv Mørket selv. Dere er sanne julenissevenner!\n\nVi sees i neste desember! Eller kanskje tidligere. Hvem vet hvilke eventyr som venter?\n\nHa den beste julaften noensinne!\n\nHO HO HO! 🎅🎁✨\n\n- Julius og hele Snøfall-teamet\n\nP.S. Rampenissen insisterer på å legge til: 'SKIBIDI TOILET FOREVER' i rapporten. Ungdomskulturen er merkelig. Men hyggelig.\n\nP.P.S. Sjekk NISSENET for en siste overraskelse! Listen er klar med deres personlige melding. 🏆",
     "rampenissen_rampestrek": "Rampenissen har pakket kofferten sin! Bor ved siden av et brev: 'Takk for alt! Ses i Snøfall! - Rampenissen ❤️'. Ekstra godteri og konfetti overalt. Liten tegning av slede på vei mot månen.",
-    "fysisk_hint": "Rampenissen reiser hjem! Les farvel-brevet hans og løs siste gåten.",
+    "fysisk_hint": "Skriv navnet på dagens høytid - dagen da Julius kommer! (9 bokstaver)",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
       "Farvel-brev fra Rampenissen",

@@ -751,6 +751,11 @@ export class GameEngine {
     // This includes eventyr badges, decryption badges, and symbol collection badges
     BadgeManager.checkAndAwardAllEligibleBadges();
 
+    // Special handling: Award trophy badge when Day 24 is completed
+    if (day === 24) {
+      BadgeManager.checkAndAwardBadge("julekalender-fullfort");
+    }
+
     return {
       success: true,
       isNewCompletion: true,

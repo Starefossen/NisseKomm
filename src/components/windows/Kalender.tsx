@@ -96,8 +96,8 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
             </div>
           </div>
 
-          {/* Calendar grid (4 rows × 6 cols = 24 days) */}
-          <div className="grid grid-cols-6 gap-3 p-4 pb-8">
+          {/* Calendar grid - responsive (3/4/6 columns) */}
+          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-3 p-2 md:p-4 pb-8">
             {Array.from({ length: 24 }, (_, i) => i + 1).map((day) => {
               const status = getDayStatus(day);
               const mission = missions.find((m) => m.dag === day);
@@ -108,14 +108,13 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
                   onClick={() => handleDayClick(day)}
                   disabled={status === "locked"}
                   className={`
-                    aspect-square flex flex-col items-center justify-center p-2
-                    border-4 font-bold text-xl transition-all relative
-                    ${
-                      status === "locked"
-                        ? "border-(--gray) bg-black/30 opacity-50 cursor-not-allowed"
-                        : status === "completed"
-                          ? "border-(--gold) bg-(--gold)/30 text-(--gold) shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] cursor-pointer"
-                          : "border-(--neon-green) bg-(--neon-green)/10 text-(--neon-green) hover:shadow-[0_0_20px_rgba(0,255,0,0.4)] cursor-pointer"
+                    aspect-square min-h-12 flex flex-col items-center justify-center p-1 md:p-2
+                    border-4 font-bold text-lg md:text-xl lg:text-2xl transition-all relative
+                    ${status === "locked"
+                      ? "border-(--gray) bg-black/30 opacity-50 cursor-not-allowed"
+                      : status === "completed"
+                        ? "border-(--gold) bg-(--gold)/30 text-(--gold) shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] cursor-pointer"
+                        : "border-(--neon-green) bg-(--neon-green)/10 text-(--neon-green) hover:shadow-[0_0_20px_rgba(0,255,0,0.4)] cursor-pointer active:scale-95"
                     }
                   `}
                 >
@@ -135,7 +134,7 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
                     })()}
 
                   {/* Day number */}
-                  <span className="text-2xl">{day}</span>
+                  <span className="text-xl md:text-2xl">{day}</span>
 
                   {/* Status icon */}
                   <div className="absolute top-1 right-1">
@@ -143,13 +142,13 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
                       <Icons.Lock size={12} color="gray" />
                     )}
                     {status === "completed" && (
-                      <Icons.CheckCircle size={16} color="gold" />
+                      <Icons.CheckCircle size={14} color="gold" />
                     )}
                   </div>
 
-                  {/* Event indicator (small text below) */}
+                  {/* Event indicator (small text below) - hidden on mobile for space */}
                   {mission?.hendelse && status !== "locked" && (
-                    <div className="absolute bottom-1 left-0 right-0 text-[11px] opacity-80 truncate px-1 text-center">
+                    <div className="hidden md:block absolute bottom-1 left-0 right-0 text-[10px] lg:text-[11px] opacity-80 truncate px-1 text-center">
                       {mission.hendelse.substring(0, 15)}
                     </div>
                   )}

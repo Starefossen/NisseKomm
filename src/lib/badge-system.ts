@@ -129,6 +129,10 @@ export class BadgeManager {
         // Check if all required symbols are collected
         return GameEngine.isAllSymbolsCollected();
 
+      case "allQuestsCompleted":
+        // Check if all 24 quests are completed
+        return GameEngine.isGameComplete();
+
       default:
         console.warn("Unknown badge unlock condition type:", condition);
         return false;
@@ -261,7 +265,12 @@ export class BadgeManager {
    * Get badges by type
    */
   static getBadgesByType(
-    type: "bonusoppdrag" | "eventyr" | "decryption" | "collection",
+    type:
+      | "bonusoppdrag"
+      | "eventyr"
+      | "decryption"
+      | "collection"
+      | "completion",
   ): Badge[] {
     return this.getAllBadges().filter((b) => b.type === type);
   }

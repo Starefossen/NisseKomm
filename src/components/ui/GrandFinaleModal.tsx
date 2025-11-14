@@ -6,6 +6,8 @@ import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import { StorageManager } from "@/lib/storage";
 import { getEventyr } from "@/lib/eventyr";
+import { BadgeManager } from "@/lib/badge-system";
+import Image from "next/image";
 
 interface GrandFinaleModalProps {
   onClose: () => void;
@@ -17,15 +19,16 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
   // Get player names from storage
   const playerNames = StorageManager.getPlayerNames();
   const names =
-    playerNames.length > 0
-      ? playerNames.join(", ")
-      : "Georg, Viljar, Marcus, Amund";
+    playerNames.length > 0 ? playerNames.join(", ") : "Kristian, Håkon, Hanna";
 
   // Calculate game statistics
   const completedEventyr = GameEngine.getCompletedEventyr();
   const totalEventyr = GameEngine.getTotalEventyr();
   const solvedDecryptions = StorageManager.getSolvedDecryptions();
   const collectedSymbols = StorageManager.getCollectedSymbols();
+
+  // Get trophy badge
+  const trophyBadge = BadgeManager.getBadge("julekalender-fullfort");
 
   // Generate eventyr completion messages dynamically from eventyr.json
   const eventyrMessages = completedEventyr
@@ -163,9 +166,48 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
             </div>
           )}
 
-          {/* Stage 4: Brainrot finale + stats */}
+          {/* Stage 4: Trophy reveal + Brainrot finale + stats */}
           {stage >= 4 && (
-            <div className="animate-[scale-in_0.5s_ease-out] space-y-4">
+            <div className="animate-[fadeIn_1s_ease-out] space-y-6">
+              {/* Trophy Badge - Dramatic Reveal */}
+              {trophyBadge && (
+                <div className="border-8 border-(--gold) p-6 bg-(--dark-crt) shadow-[0_0_50px_rgba(255,215,0,0.8)] animate-[pulse-led_2s_ease-in-out_infinite]">
+                  <div className="flex flex-col items-center gap-4">
+                    <Image
+                      src="/badges/trophy.svg"
+                      alt="Trophy"
+                      width={96}
+                      height={96}
+                      className="animate-[pulse_2s_ease-in-out_infinite]"
+                    />
+                    <div className="text-4xl font-bold text-(--gold) tracking-wider">
+                      🏆 JULEKALENDER-MESTER 🏆
+                    </div>
+                    <div className="text-xl text-(--gold) border-t-4 border-b-4 border-(--gold)/50 py-3">
+                      {names}
+                    </div>
+                    <div className="text-sm text-(--neon-green) max-w-md text-center">
+                      {trophyBadge.beskrivelse}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Nice List Hint */}
+              <div className="border-4 border-(--cold-blue) p-4 bg-(--cold-blue)/10 space-y-2">
+                <div className="text-xl text-(--cold-blue) font-bold flex items-center justify-center gap-2">
+                  <Icons.Mail size={24} color="blue" />
+                  Julius sin personlige melding venter!
+                </div>
+                <div className="text-sm text-(--neon-green)">
+                  NISSENET → HEMMELIGHETER → 🔴 snill_slem_liste.txt
+                </div>
+                <div className="text-xs opacity-70">
+                  &quot;For å lese min siste hilsen...&quot; - Julius
+                </div>
+              </div>
+
+              {/* Brainrot stats */}
               <div className="text-2xl text-(--gold) border-4 border-(--gold) p-4 bg-(--gold)/10">
                 <div className="mb-2">💾 GYATT Storage Unlocked</div>
                 <div className="mb-2">🎮 Christmas Buff +100</div>

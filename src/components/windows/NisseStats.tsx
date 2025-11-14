@@ -235,7 +235,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
               "Elf_042: Pakking av lego-sett fullført",
               "Elf_137: Kvalitetskontroll av teddybjørner OK",
               "Rudolf: Varmer opp for treningsøkt",
-              "Nissemor: Syr nytt nisseantrekk",
+              "Workshop: Produksjon av nisseantrekk",
               "Workshop: Temperatur stabil",
               "Security: Alle systemer operational",
             ].map((update, i) => (

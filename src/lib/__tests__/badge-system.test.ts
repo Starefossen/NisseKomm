@@ -45,7 +45,7 @@ describe("BadgeManager", () => {
     it("should load all badges from merker.json", () => {
       const badges = BadgeManager.getAllBadges();
       expect(badges).toBeDefined();
-      expect(badges.length).toBe(6);
+      expect(badges.length).toBe(7);
     });
 
     it("should load badge definitions with correct structure", () => {
@@ -190,7 +190,7 @@ describe("BadgeManager", () => {
     it("should calculate badge progress correctly", () => {
       const progress = BadgeManager.getBadgeProgress();
       expect(progress.earned).toBe(0);
-      expect(progress.total).toBe(6);
+      expect(progress.total).toBe(7);
       expect(progress.percentage).toBe(0);
     });
 
@@ -200,8 +200,8 @@ describe("BadgeManager", () => {
 
       const progress = BadgeManager.getBadgeProgress();
       expect(progress.earned).toBe(2);
-      expect(progress.total).toBe(6);
-      expect(progress.percentage).toBe(33); // 2/6 = 33%
+      expect(progress.total).toBe(7);
+      expect(progress.percentage).toBe(29); // 2/7 = 28.57% rounded to 29%
     });
   });
 

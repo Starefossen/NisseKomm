@@ -29,7 +29,7 @@ export function RetroModal({ title, children, onClose }: RetroModalProps) {
         </div>
 
         {/* Modal content */}
-        <div className="p-6 text-(--neon-green)">{children}</div>
+        <div className="p-6 text-(--neon-green) overflow-auto">{children}</div>
       </div>
     </div>
   );

@@ -4,8 +4,8 @@
   - tester?
   - Finne et bedre navn?
 - Hjem
-  - Alle badges vises ikke på hjemskjermen (Badge subsystem)
-  - Stats og logs er ikke riktig for julaften
+  - Stats og logs oppdatert for alle dager
+    - Start low and steady increase (unless there is an override)
   - Glitching / kjerneenergi?
 - Brevfugler:
   - Må testes og fullføres
@@ -15,3 +15,4 @@
   - Hvordan integrerer vi dette bedre?
 - Merker
   - Finne et bedre navn?
+- Mørket / Winter som prøver å sabotere

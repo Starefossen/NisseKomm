@@ -65,11 +65,22 @@
         "type": "allSymbolsCollected",
         "requiredCount": 9
       }
+    },
+    {
+      "id": "julekalender-fullfort",
+      "navn": "Julekalender-Mester",
+      "beskrivelse": "Viste vennskap, mot og tro på julemagi gjennom hele desember. Nå en del av Snøfalls historie.",
+      "ikon": "trophy.svg",
+      "type": "completion",
+      "unlockCondition": {
+        "type": "allQuestsCompleted",
+        "requiredCount": 24
+      }
     }
   ],
   "metadata": {
     "versjon": "1.0",
-    "total_merker": 6,
+    "total_merker": 7,
     "beskrivelse": "Badge system for NisseKomm - Merker (badges) tildeles når spillere fullfører bonusoppdrag, eventyr, dekrypteringer og samlinger."
   }
 }

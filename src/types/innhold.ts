@@ -22,6 +22,10 @@ export type BadgeUnlockCondition =
   | {
       type: "allSymbolsCollected";
       requiredCount: number;
+    }
+  | {
+      type: "allQuestsCompleted";
+      requiredCount: number;
     };
 
 /**
@@ -33,7 +37,7 @@ export interface Badge {
   navn: string;
   beskrivelse: string;
   ikon: string;
-  type: "bonusoppdrag" | "eventyr" | "decryption" | "collection";
+  type: "bonusoppdrag" | "eventyr" | "decryption" | "collection" | "completion";
   unlockCondition: BadgeUnlockCondition;
 }
 

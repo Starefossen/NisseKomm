@@ -82,6 +82,7 @@ export function BadgeRow() {
       {badges.map((badge) => {
         const isEarned = earnedBadgeIds.has(badge.id);
         const isNewlyEarned = newlyEarnedBadge === badge.id;
+        const isTrophy = badge.id === "julekalender-fullfort";
 
         // Determine tooltip text based on badge type
         const getLockedTooltip = () => {
@@ -93,6 +94,8 @@ export function BadgeRow() {
             return `🔒 ${badge.navn} - Løs alle dekrypteringsutfordringer`;
           } else if (badge.unlockCondition.type === "allSymbolsCollected") {
             return `🔒 ${badge.navn} - Samle alle 9 symbolene`;
+          } else if (badge.unlockCondition.type === "allQuestsCompleted") {
+            return `🔒 ${badge.navn} - Fullfør alle 24 oppdrag`;
           }
           return `🔒 ${badge.navn} - Låst`;
         };
@@ -101,14 +104,18 @@ export function BadgeRow() {
           <div
             key={badge.id}
             className={`
-              relative flex items-center justify-center w-12 h-12 border-2
-              transition-all duration-300
-              ${isEarned
-                ? "border-(--gold) bg-(--gold)/10"
-                : "border-(--gray)/50 bg-(--gray)/5 opacity-30 grayscale"
+              relative flex items-center justify-center
+              ${isTrophy && isEarned ? "w-16 h-16" : "w-12 h-12"}
+              border-2 transition-all duration-300
+              ${
+                isTrophy && isEarned
+                  ? "border-4 border-(--gold) bg-(--gold)/20 shadow-[0_0_30px_rgba(255,215,0,0.6)] scale-110 animate-[pulse-led_2s_ease-in-out_infinite]"
+                  : isEarned
+                    ? "border-(--gold) bg-(--gold)/10"
+                    : "border-(--gray)/50 bg-(--gray)/5 opacity-30 grayscale"
               }
               ${isNewlyEarned ? "animate-[scale-in_0.5s_ease-out]" : ""}
-              ${isEarned && !isNewlyEarned ? "animate-[gold-flash_2s_ease-in-out_infinite]" : ""}
+              ${isEarned && !isNewlyEarned && !isTrophy ? "animate-[gold-flash_2s_ease-in-out_infinite]" : ""}
               hover:opacity-100 hover:scale-105
             `}
             title={
@@ -121,10 +128,11 @@ export function BadgeRow() {
             <Image
               src={`/badges/${badge.ikon}`}
               alt={badge.navn}
-              width={40}
-              height={40}
-              className={`transition-all duration-300 ${isEarned ? "" : "opacity-50"
-                }`}
+              width={isTrophy && isEarned ? 52 : 40}
+              height={isTrophy && isEarned ? 52 : 40}
+              className={`transition-all duration-300 ${
+                isEarned ? "" : "opacity-50"
+              }`}
               style={{ imageRendering: "pixelated" }}
               unoptimized
             />

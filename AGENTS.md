@@ -145,19 +145,6 @@
 - **`uke1_oppdrag.json`** through **`uke4_oppdrag.json`** - All 24 daily missions split across 4 weeks with codes, physical clues, and diary entries
 - **`statisk_innhold.json`** - File system, alerts, system metrics (non-mission content)
 
-**Mission Structure**:
-
-```typescript
-{
-  dag: number,              // Day 1-24
-  tittel: string,           // Mission title
-  nissemail_tekst: string,      // Riddle/puzzle description
-  kode: string,             // Expected answer code
-  dagbokinnlegg?: string,   // Julius' diary entry (shown when day ≤ current)
-  hendelse?: string         // Optional calendar event label
-}
-```
-
 **Content Principles**:
 
 - Mission content drives diary unlocking (diary shows all entries up to current day)
@@ -259,11 +246,59 @@
 
 ---
 
-### 4. Symboler & NisseKrypto (Symbol Collection + Decryption)
+### 4. Nice List & Name Registration (Days 22-24)
+
+**Overview**: Personal connection to Julius' official Snill & Slem liste through name registration and finale message.
+
+**Timeline**:
+
+- **Day 22**: Name entry modal appears after code submission → Player enters their name
+- **Day 23**: Names appear at top of Julius' Nice List in `snill_slem_liste.txt` (NISSENET file)
+- **Day 24**: Julius' emotional finale message added to Nice List + trophy badge awarded
+
+**User Flow**:
+
+1. Complete Day 22 quest
+2. Modal appears: "REGISTRER DITT NAVN"
+3. Enter name (or use default "Et snilt barn")
+4. Name saved to localStorage via `StorageManager.addPlayerName()`
+5. Day 23: Open NISSENET → `snill_slem_liste.txt` shows player name at top
+6. Unread indicator (🔴) appears on file until viewed
+7. Day 24: Finale message appears in Nice List + trophy badge unlocks
+
+**Technical Implementation**:
+
+- Name storage: `StorageManager.getPlayerNames()` / `addPlayerName(name)`
+- Dynamic injection: `NisseNetUtforsker.tsx` lines 162-210 (processedFiles useMemo)
+- Unread tracking: `StorageManager.hasUnreadNiceList()` / `setNiceListViewed()`
+- Badge awarding: Trophy badge "julekalender-fullfort" awarded after Day 24 code
+- Placeholder replacement:
+  - `{{UPDATE_DATE}}` → "[VIL BLI OPPDATERT]" (before final update)
+  - `{{FINALE_MESSAGE}}` → Julius' emotional message (Day 24 only)
+  - Player names injected at top of SNILL LISTE section
+
+**Static Content** (`statisk_innhold.json`):
+
+- Nice List template with example names (Georg, Viljar, Marcus, etc.)
+- "[PLASS TIL FLERE NAVN]" as natural placeholder for more children
+- Placeholders for dynamic content (UPDATE_DATE, FINALE_MESSAGE)
+- Tip: "Julius oppdaterer listen hver natt basert på barnets fremgang"
+
+**UI Components**:
+
+- `NameEntryModal.tsx` - Name registration form (Day 22)
+- `NisseNetUtforsker.tsx` - File explorer with dynamic Nice List injection
+- `GrandFinaleModal.tsx` - Stage 4 reveals trophy badge with Nice List reference
+
+**Design Philosophy**: Creates emotional payoff by making player part of Julius' official records, celebrating their completed journey through Snøfall's Christmas adventure.
+
+---
+
+### 5. Symboler & NisseKrypto (Symbol Collection + Decryption)
 
 **Overview**: Physical treasure hunt combined with digital puzzle-solving. Kids find 9 hidden symbol cards, then solve 3 progressive decryption challenges.
 
-#### 4.1 Symbol Collection System
+#### 5.1 Symbol Collection System
 
 **The 9 Symbols**:
 
@@ -325,7 +360,7 @@
   - 🎁 SYMBOLER: Symbol cards, QR codes, collection management
   - 📖 EVENTYR: Story arc visualization and progress tracking
 
-#### 4.2 NisseKrypto Decryption Challenges
+#### 5.2 NisseKrypto Decryption Challenges
 
 **3 Progressive Challenges**:
 
@@ -416,6 +451,73 @@
 - Apply animations via Tailwind classes referencing keyframes
 - Use `className` composition for conditional styles
 - **Contrast rule**: Use `text-black` on bright backgrounds (neon green, gold) for readability
+
+### Responsive Design & Touch Optimization
+
+**Philosophy**: Desktop-first design with mobile/tablet optimization for "low hanging fruit" improvements. The app maintains its retro CRT aesthetic while ensuring usability on touch devices.
+
+**Breakpoint Strategy** (Mobile-First Tailwind):
+
+- **Default (< 640px)**: Mobile phones - single column layouts, reduced effects
+- **sm: 640px**: Large phones (landscape) / Small tablets - increase spacing
+- **md: 768px**: Tablets (portrait) - enable multi-column where appropriate
+- **lg: 1024px**: Tablets (landscape) / Small laptops - **full desktop experience starts here**
+- **xl: 1280px**: Desktop - optimal viewing (design target)
+
+**Key Responsive Patterns**:
+
+```tsx
+// Sidebar collapse pattern
+<div className="hidden lg:flex">Sidebar</div> // Desktop only
+<HamburgerMenu className="lg:hidden" />      // Mobile only
+
+// Grid responsiveness
+<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+
+// Text scaling
+<span className="text-xs md:text-sm lg:text-base">
+
+// Spacing
+<div className="p-2 md:p-4 lg:p-6">
+
+// Touch targets (minimum 44px, prefer 48px)
+<button className="min-w-11 min-h-11 md:min-w-12 md:min-h-12">
+```
+
+**Touch Interaction Guidelines**:
+
+1. **Touch Targets**: Minimum 44×44px (11 Tailwind units), prefer 48×48px (12 units)
+2. **Active States**: Use `active:scale-95` instead of hover-only effects
+3. **Drag & Drop**: Implement both mouse and touch event handlers
+   - Mouse: `onDragStart`, `onDragOver`, `onDrop`
+   - Touch: `onTouchStart`, `onTouchMove`, `onTouchEnd`, `onTouchCancel`
+   - Add `touch-none` class to prevent scroll interference
+   - Track `touchIdentifier` to handle multi-touch correctly
+4. **Buttons**: Add `active:bg-*` states for tactile feedback
+
+**Component Responsive Checklist**:
+
+- [ ] CRT borders: `border-4 md:border-8 lg:border-20`
+- [ ] Windows: `w-full md:w-[90%] md:max-w-4xl`
+- [ ] Close buttons: `w-12 h-12` (48×48px minimum)
+- [ ] Calendar grid: `grid-cols-3 md:grid-cols-4 lg:grid-cols-6`
+- [ ] Desktop icons: `grid-cols-2 md:grid-cols-3`
+- [ ] Split layouts: `flex-col lg:flex-row` or `flex-col lg:grid lg:grid-cols-2`
+- [ ] Desktop icons: `min-w-16 min-h-16 md:min-w-20 md:min-h-20`
+
+**Performance Optimizations** (Mobile):
+
+- Reduced scanline opacity (30% on mobile vs 100% desktop)
+- Simplified glow effects (50% intensity reduction)
+- Lighter vignette shadows
+- Defined in `@media (max-width: 768px)` in `globals.css`
+
+**Testing Strategy**:
+
+- Chrome DevTools responsive mode (iPhone 12 Pro, iPad Pro)
+- Physical device testing for touch interactions
+- Test NisseKrypto drag-drop on tablet
+- Verify sidebar slide-in animation on mobile
 
 ### Norwegian Language
 
@@ -700,12 +802,9 @@ const today = getCurrentDate();
 
 **Planned Features** (Phase 2+):
 
-- Editable Nice/Naughty list in NISSENET (unlock via "HACKINGVERKTØY" mission)
 - Backend persistence (replace localStorage with API)
 - Reactive sidebar widgets (update on code submissions)
-- Additional unlockable modules (replace LÅST slots)
 - Full-screen glitch effects for dramatic feedback
-- Multiplayer progress sharing
 
 ---
 

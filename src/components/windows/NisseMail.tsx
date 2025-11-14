@@ -167,9 +167,9 @@ export function NisseMail({
 
   return (
     <RetroWindow title="NISSEMAIL" onClose={onClose}>
-      <div className="flex h-full gap-4 p-6">
-        {/* Inbox List - Left 30% */}
-        <div className="w-[30%] border-r-4 border-(--neon-green)/30 flex flex-col overflow-hidden">
+      <div className="flex flex-col lg:flex-row h-full gap-4 p-4 md:p-6">
+        {/* Inbox List - Stacks on top for mobile, left 30% on desktop */}
+        <div className="w-full lg:w-[30%] lg:border-r-4 border-(--neon-green)/30 flex flex-col overflow-hidden lg:max-h-full max-h-[40vh]">
           <div className="flex flex-col h-full">
             {/* Inbox header */}
             <div className="flex items-center gap-2 pb-2 border-b-2 border-(--neon-green)/30 shrink-0">
@@ -197,13 +197,13 @@ export function NisseMail({
                 const BadgeIcon =
                   isBonusOppdrag && email.mission.bonusoppdrag
                     ? Icons[
-                        (email.mission.bonusoppdrag.badge_icon
-                          .charAt(0)
-                          .toUpperCase() +
-                          email.mission.bonusoppdrag.badge_icon.slice(
-                            1,
-                          )) as keyof typeof Icons
-                      ]
+                    (email.mission.bonusoppdrag.badge_icon
+                      .charAt(0)
+                      .toUpperCase() +
+                      email.mission.bonusoppdrag.badge_icon.slice(
+                        1,
+                      )) as keyof typeof Icons
+                    ]
                     : null;
 
                 return (
@@ -214,14 +214,13 @@ export function NisseMail({
                     }
                     className={`
                       w-full text-left p-3 border-2 transition-all
-                      ${
-                        isBonusOppdrag
-                          ? isSelected
-                            ? "border-(--gold) bg-(--gold)/20"
-                            : "border-(--gold)/50 hover:border-(--gold) hover:bg-black/30"
-                          : isSelected
-                            ? "border-(--neon-green) bg-(--neon-green)/20"
-                            : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-black/30"
+                      ${isBonusOppdrag
+                        ? isSelected
+                          ? "border-(--gold) bg-(--gold)/20"
+                          : "border-(--gold)/50 hover:border-(--gold) hover:bg-black/30"
+                        : isSelected
+                          ? "border-(--neon-green) bg-(--neon-green)/20"
+                          : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-black/30"
                       }
                       ${isUnread ? "font-bold" : "opacity-70"}
                     `}
@@ -244,13 +243,12 @@ export function NisseMail({
                           )}
                         </div>
                         <div
-                          className={`text-base truncate ${
-                            isUnread
+                          className={`text-base truncate ${isUnread
                               ? isBonusOppdrag
                                 ? "text-(--gold)"
                                 : "text-(--neon-green)"
                               : ""
-                          }`}
+                            }`}
                         >
                           {isBonusOppdrag && email.mission.bonusoppdrag
                             ? email.mission.bonusoppdrag.tittel
@@ -269,13 +267,13 @@ export function NisseMail({
           </div>
         </div>
 
-        {/* Email Content - Right 70% */}
-        <div className="w-[70%] flex flex-col min-h-0">
+        {/* Email Content - Stacks below inbox on mobile, right 70% on desktop */}
+        <div className="w-full lg:w-[70%] flex flex-col min-h-0 flex-1">
           {selectedMission && selectedEmail ? (
             <div className="flex-1 flex flex-col min-h-0">
               {/* Render side-quest email */}
               {selectedEmail.type === "side-quest" &&
-              selectedMission.bonusoppdrag ? (
+                selectedMission.bonusoppdrag ? (
                 <>
                   {/* Bonusoppdrag Email Header */}
                   <div className="space-y-3 pb-4 border-b-4 border-(--gold) mb-4 shrink-0">
@@ -422,11 +420,10 @@ export function NisseMail({
                         <div className="mt-4 pt-4 border-t-4 border-(--gold) shrink-0">
                           <button
                             disabled
-                            className={`w-full px-6 py-3 text-xl tracking-wider font-bold border-4 flex items-center justify-center gap-3 ${
-                              isCompleted
+                            className={`w-full px-6 py-3 text-xl tracking-wider font-bold border-4 flex items-center justify-center gap-3 ${isCompleted
                                 ? "bg-(--neon-green) border-(--neon-green) text-black opacity-100 cursor-default"
                                 : "bg-(--gray) border-(--gray) text-black opacity-50 cursor-not-allowed"
-                            }`}
+                              }`}
                           >
                             {isCompleted ? (
                               <>

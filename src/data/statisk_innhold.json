@@ -79,22 +79,6 @@
       ]
     },
     {
-      "navn": "LOGGER",
-      "type": "mappe",
-      "barn": [
-        {
-          "navn": "system.log",
-          "type": "fil",
-          "innhold": "[23:45] SYSTEM START\n[23:46] Laster juledata...\n[23:47] Snøfall koordinater verifisert\n[23:48] Reinsdyr status: KLAR\n[23:49] Gaveproduksjon: 87% fullført\n[23:50] Alle systemer GO!\n[00:15] Skibidi Sleigh Mode: ENABLED 🛷\n[01:22] Elf_04: 'I am not an NPC' 🤖\n[02:30] Christmas Buff +1 Applied 🎄"
-        },
-        {
-          "navn": "sikkerhet.log",
-          "type": "fil",
-          "innhold": "[SIKKERHET] Tilgangskontroll aktiv\n[SIKKERHET] Passord verifisert\n[SIKKERHET] Bruker autentisert\n[SIKKERHET] Alle porter sikret\n[SIKKERHET] Ingen trusler detektert"
-        }
-      ]
-    },
-    {
       "navn": "SYSTEM",
       "type": "mappe",
       "barn": [
@@ -112,6 +96,16 @@
           "navn": "om-snofall.txt",
           "type": "fil",
           "innhold": "🎄 OM SNØFALL - VELKOMMEN TIL JULENISSENS VERDEN 🎄\n\nHVA ER SNØFALL?\nSnøfall er det magiske stedet hvor Julius (julenissen) bor med Nissemor og alle nissene. Det ligger helt på Nordpolen - 90 grader nord - det nordligste punktet på jorden!\n\nHER BOR:\n👴 JULIUS - Julenissen selv (det er meg!)\n👵 NISSEMOR - Min kjære kone\n🧝 RAMPENISSEN - Min assistent som er hos DERE nå!\n🧝 PIL - Min ivrige lærling\n📋 WINTER (Ole Winter) - Sekretæren som holder orden\n⚙️ IQ - Oppfinneren (ting eksploderer ofte)\n🦌 TRIXTER - Mitt favoritt-reinsdyr\n🦌 RUDOLF - Reinsdyret med rød nese (og stort ego)\n🔮 ORAKELET - Ser fremtiden og advarer oss\n\nMAGISKE ELEMENTER:\n🕊️ BREVFUGLER - Papirfugler som bærer barnas ønsker til oss\n❄️ JULEKULEBLÅSING - Vi lager glasskuler til juletrærne\n⚡ JULEMAGI - Holder alt i gang!\n🌑 MØRKET - Farlig kraft som truer oss i polarnatten\n\nHVORDAN FUNGERER DET?\nBarn (som dere!) folder brevfugler og sender ønsker.\nBrevfuglene flyr magisk til Snøfall.\nWinter organiserer alle ønskene.\nNissene produserer gaver døgnet rundt.\nJulius pakker alt i den magiske sekken.\nPå julenatten flyr vi ut med reinsdyrene!\n\nRAMPENISSENS OPPDRAG:\nJeg har sendt Rampenissen til dere for å bygge bro mellom våre verdener. Han lager oppgaver, gjemmer koder, og holder kontakt med Snøfall gjennom hele desember.\n\nSAMMEN ER VI STERKE!\nVennskap mellom dere og oss gir julemagi. Uten barna ville julen ikke eksistert. Dere er en viktig del av Snøfall!\n\nVelkommen til eventyret!\n- Julius og hele Snøfall-teamet 🎅✨"
+        },
+        {
+          "navn": "system.log",
+          "type": "fil",
+          "innhold": "[23:45] SYSTEM START\n[23:46] Laster juledata...\n[23:47] Snøfall koordinater verifisert\n[23:48] Reinsdyr status: KLAR\n[23:49] Gaveproduksjon: 87% fullført\n[23:50] Alle systemer GO!\n[00:15] Skibidi Sleigh Mode: ENABLED 🛷\n[01:22] Elf_04: 'I am not an NPC' 🤖\n[02:30] Christmas Buff +1 Applied 🎄"
+        },
+        {
+          "navn": "sikkerhet.log",
+          "type": "fil",
+          "innhold": "[SIKKERHET] Tilgangskontroll aktiv\n[SIKKERHET] Passord verifisert\n[SIKKERHET] Bruker autentisert\n[SIKKERHET] Alle porter sikret\n[SIKKERHET] Ingen trusler detektert"
         }
       ]
     },
@@ -132,7 +126,7 @@
         {
           "navn": "winter-organisering.txt",
           "type": "fil",
-          "innhold": "📊 WINTERS ORGANISERING 📊\n\nWinter (Ole Winter) - Julius' sekretær\n\nAnsvar:\n- Organisere alle brevfugler fra barna\n- Sortere ønsker etter kategori\n- Holde oversikt over gaveproduksjon\n- Passe på at ingen ønsker går tapt\n\nSå langt i desember: 847 brevfugler registrert!\n\nWinters motto: 'Alt har sin plass, og alle har sin tid'\n\n(Han er VELDIG organisert. Kanskje litt for organisert?)\n\nUnlocked by: Day 5",
+          "innhold": "📊 WINTERS ORGANISERING 📊\n\nWinter (Ole Winter) - Julius' sekretær\n\nAnsvar:\n- Organisere alle brevfugler fra barna\n- Sortere ønsker etter kategori\n- Holde oversikt over gaveproduksjon\n- Passe på at ingen ønsker går tapt\n\nSå langt i desember: 847 brevfugler registrert!\n\nWinters motto: 'Alt har sin plass, og alle har sin tid'\n\n(Han er VELDIG organisert. Kanskje litt for organisert?)\n\nLåst opp: Dag 5",
           "unlockConditions": {
             "requiresTopics": ["brevfugl-system"]
           }
@@ -140,47 +134,69 @@
       ]
     },
     {
-      "navn": "IQ-VERKSTED",
+      "navn": "SNOFALL-HISTORIER",
       "type": "mappe",
       "barn": [
         {
-          "navn": "iq-verksted.txt",
-          "type": "fil",
-          "innhold": "⚙️ IQS OPPFINNERVERKSTED ⚙️\n\nIQ - Snøfalls mest kreative oppfinner\n\nAktive prosjekter:\n1. Automatisk gavepakker (80% ferdig)\n2. Turbo-reinsdyr forer (testing faset)\n3. Konfetti-teller (eksploderte)\n4. Magisk målebånd (fungerer!)\n\nIQs filosofi:\n'Hvis det ikke eksploderer, har du ikke prøvd hardt nok!'\n\nUtviklet i samarbeid med:\n- Pil (lærling og testpilot)\n- Trixter (ufrivillig testperson)\n\nUnlocked by: Day 2"
+          "navn": "IQ-VERKSTED",
+          "type": "mappe",
+          "barn": [
+            {
+              "navn": "iq-verksted.txt",
+              "type": "fil",
+              "innhold": "⚙️ IQS OPPFINNERVERKSTED ⚙️\n\nIQ - Snøfalls mest kreative oppfinner\n\nAktive prosjekter:\n1. Automatisk gavepakker (80% ferdig)\n2. Turbo-reinsdyr forer (testing faset)\n3. Konfetti-teller (eksploderte)\n4. Magisk målebånd (fungerer!)\n\nIQs filosofi:\n'Hvis det ikke eksploderer, har du ikke prøvd hardt nok!'\n\nUtviklet i samarbeid med:\n- Pil (lærling og testpilot)\n- Trixter (ufrivillig testperson)\n\nLåst opp: Dag 2"
+            },
+            {
+              "navn": "magisk-sekk-test.txt",
+              "type": "fil",
+              "innhold": "🎒 MAGISK SEKK - TESTRAPPORT 🎒\n\nDag 8 - Sekk-testing\n\nTest 1: 500 gaver\nResultat: ✅ SUKSESS (men ble stående fast i døren)\n\nTest 2: 1000 gaver\nResultat: ⚠️ Sekken vokste så mye at den rev av veggen\n\nTest 3: Én fjellelefant\nResultat: ❌ Dette var en dårlig idé\n\nKonklusjon: Magisk sekk fungerer!\nBivirkninger: Ødelegger arkitektur\n\nIQs kommentar: 'Som forventet - magien virker perfekt!'\nJulius' kommentar: 'Hvem godkjente fjellelefant-testen?!'\n\nLåst opp: Dag 8",
+              "unlockConditions": {
+                "requiresTopics": ["iq-oppfinnelser"]
+              }
+            }
+          ]
         },
         {
-          "navn": "magisk-sekk-test.txt",
-          "type": "fil",
-          "innhold": "🎒 MAGISK SEKK - TESTRAPPORT 🎒\n\nDag 8 - Sekk-testing\n\nTest 1: 500 gaver\nResultat: ✅ SUKSESS (men ble stående fast i døren)\n\nTest 2: 1000 gaver\nResultat: ⚠️ Sekken vokste så mye at den rev av veggen\n\nTest 3: Én fjellelefant\nResultat: ❌ Dette var en dårlig idé\n\nKonklusjon: Magisk sekk fungerer!\nBivirkninger: Ødelegger arkitektur\n\nIQs kommentar: 'Som forventet - magien virker perfekt!'\nJulius' kommentar: 'Hvem godkjente fjellelefant-testen?!'\n\nUnlocked by: Day 8",
-          "unlockConditions": {
-            "requiresTopics": ["iq-oppfinnelser"]
-          }
-        }
-      ]
-    },
-    {
-      "navn": "SNØFALL-LOGG",
-      "type": "mappe",
-      "barn": [
+          "navn": "MORKET",
+          "type": "mappe",
+          "barn": [
+            {
+              "navn": "morket-introduksjon.txt",
+              "type": "fil",
+              "innhold": "🌑 MØRKET - EN TRUSSEL 🌑\n\n[KLASSIFISERT - SIKKERHETSNIVÅ 3]\n\nMørket er en mystisk kraft som truer Snøfall.\n\nKjennetegn:\n- Dukker opp i polarnatten\n- Svekker julemagi\n- Truer gaveproduksjon\n- Får nissene til å miste håpet\n\nMotgift:\n✨ Vennskap og samhold\n✨ Julesangen\n✨ Lys fra hjertet\n✨ Barnas hjelp\n\nJulius' strategi:\n'Vi har overlevd Mørket før. Sammen er vi sterke.\nBarna gir oss styrke. Vennskapet beskytter oss.'\n\nOrakeltes advarsel: 'Mørket kommer nærmere...'\n\nLåst opp: Dag 7",
+              "unlockConditions": {
+                "requiresTopics": ["morkets-trussel"]
+              }
+            },
+            {
+              "navn": "orakelet-advarsel.txt",
+              "type": "fil",
+              "innhold": "🔮 ORAKELET ADVARER 🔮\n\nDag 7 - Koordinatene til Snøfall\n\nOrakelet sier:\n'90 grader nord - så langt nord man kan komme.\nIsolert. Beskyttet. Men også sårbar.\n\nMørket kjenner veien.\nDet nærmer seg i polarnatten.\n\nDere må holde sammen.\nVennskap gir varme.\nVarme holder Mørket borte.'\n\nJulius' respons:\n'Takk for advarselen. Vi skal være forberedt.\nBarna hjelper oss. Magien er sterk.'\n\nStatus: ADVARSEL AKTIV\n\nLåst opp: Dag 7",
+              "unlockConditions": {
+                "requiresTopics": ["morkets-trussel"]
+              }
+            }
+          ]
+        },
         {
           "navn": "snostorm-varsel.txt",
           "type": "fil",
-          "innhold": "❄️ VÆRVARSEL - SNØSTORM ❄️\n\nDag 3 - Kritisk værsituasjon\n\nOrakelet advarte:\n'Stor storm kommer fra nord. Snøen vil dekke alt.\nPass på å holde sammen. Vennskap gir varme.'\n\nRegistrerte data:\n- Vindstyrke: 45 m/s\n- Synlighet: Under 5 meter\n- Temperatur: -42°C\n- Fare for villfarelse: HØY\n\nResultat: En nisse gått seg vill (funnet etter 3 timer)\n\nLesson learned: Alltid ta med kompass til dass.\n\nUnlocked by: Day 3"
+          "innhold": "❄️ VÆRVARSEL - SNØSTORM ❄️\n\nDag 3 - Kritisk værsituasjon\n\nOrakelet advarte:\n'Stor storm kommer fra nord. Snøen vil dekke alt.\nPass på å holde sammen. Vennskap gir varme.'\n\nRegistrerte data:\n- Vindstyrke: 45 m/s\n- Synlighet: Under 5 meter\n- Temperatur: -42°C\n- Fare for villfarelse: HØY\n\nResultat: En nisse gått seg vill (funnet etter 3 timer)\n\nLesson learned: Alltid ta med kompass til dass.\n\nLåst opp: Dag 3"
         },
         {
           "navn": "rudolf-drama.txt",
           "type": "fil",
-          "innhold": "🎭 RUDOLF-DRAMA - DAG 4 🎭\n\nRudolf har fått stjerneallerurer igjen.\n\nKrav fra Rudolf:\n- Egen garderobe\n- Personlig assistent\n- Ekstra gulrøtter (kun økologiske)\n- Førsteprioritet på trening\n\nJulius' respons: 'NEI'\n\nLøsning: Trixter arrangerte teaterforestikling.\nRudolf spilte hovedrollen (selvfølgelig).\nAlle nissene applauderte.\nRudolf ble fornøyd.\n\nMoral: Noen ganger trenger alle litt oppmerksomhet.\n\nUnlocked by: Day 4"
+          "innhold": "🎭 RUDOLF-DRAMA - DAG 4 🎭\n\nRudolf har fått stjerneallerurer igjen.\n\nKrav fra Rudolf:\n- Egen garderobe\n- Personlig assistent\n- Ekstra gulrøtter (kun økologiske)\n- Førsteprioritet på trening\n\nJulius' respons: 'NEI'\n\nLøsning: Trixter arrangerte teaterforestikling.\nRudolf spilte hovedrollen (selvfølgelig).\nAlle nissene applauderte.\nRudolf ble fornøyd.\n\nMoral: Noen ganger trenger alle litt oppmerksomhet.\n\nLåst opp: Dag 4"
         },
         {
           "navn": "nikolaus-historie.txt",
           "type": "fil",
-          "innhold": "🎅 ST. NIKOLAUS - HISTORIEN 🎅\n\nNikolaus av Myra (ca. 270-343)\n\nJulius' notater:\n'Møtte Nikolaus på Julenissekonferansen i 324.\nHan kom fra byen Myra (nåværende Tyrkia).\nVar kjent for å gi gaver til barn i lønndom.\n\nVi konkurrerte om hvem hadde lengst skjegg.\nHan vant. Er fortsatt litt bitter.'\n\nTradisjon:\n6. desember - Nikolausdagen\nBarn setter ut sko/støvler\nFår godteri og små gaver\n\nJulius' kommentar:\n'God inspirasjon! Men jeg har bedre reinsdyr.'\n\nUnlocked by: Day 6"
+          "innhold": "🎅 ST. NIKOLAUS - HISTORIEN 🎅\n\nNikolaus av Myra (ca. 270-343)\n\nJulius' notater:\n'Møtte Nikolaus på Julenissekonferansen i 324.\nHan kom fra byen Myra (nåværende Tyrkia).\nVar kjent for å gi gaver til barn i lønndom.\n\nVi konkurrerte om hvem hadde lengst skjegg.\nHan vant. Er fortsatt litt bitter.'\n\nTradisjon:\n6. desember - Nikolausdagen\nBarn setter ut sko/støvler\nFår godteri og små gaver\n\nJulius' kommentar:\n'God inspirasjon! Men jeg har bedre reinsdyr.'\n\nLåst opp: Dag 6"
         },
         {
           "navn": "snowflake-patterns.txt",
           "type": "fil",
-          "innhold": "❄️ SNØFLAK-MØNSTRE ❄️\n\nDag 9 - Mikroskopi-studier\n\nForskning av Julius:\n'Hvert snøfnugg er unikt! Alle har 6 kanter.\nPerfekt symmetri. Naturens geometri.\n\n6 kanter × 3 snøfnugg = 18 kanter totalt\n\nDisse mønstrene inneholder matematikk og magi!'\n\nPil hjalp med å samle 200 forskjellige snøfnugg.\nAlle ulike. Alle vakre.\n\nFrosne mønster holder hemmeligheter...\n\nUnlocked by: Day 9",
+          "innhold": "❄️ SNØFLAK-MØNSTRE ❄️\n\nDag 9 - Mikroskopi-studier\n\nForskning av Julius:\n'Hvert snøfnugg er unikt! Alle har 6 kanter.\nPerfekt symmetri. Naturens geometri.\n\n6 kanter × 3 snøfnugg = 18 kanter totalt\n\nDisse mønstrene inneholder matematikk og magi!'\n\nPil hjalp med å samle 200 forskjellige snøfnugg.\nAlle ulike. Alle vakre.\n\nFrosne mønster holder hemmeligheter...\n\nLåst opp: Dag 9",
           "unlockConditions": {
             "requiresTopics": ["snostorm-snøfall"]
           }
@@ -188,7 +204,7 @@
         {
           "navn": "julekuleblasing.txt",
           "type": "fil",
-          "innhold": "🎄 JULEKULEBLÅSING 🎄\n\nTradisjon fra Snøfall-serien\n\nIQ og Pil jobber med julekuleblåsingsutstyret.\n\nDag 9 produksjon: 200 glasskuler\nKvalitet: Alle perfekte! ✨\n\nProsess:\n1. Smeltet glass (1500°C)\n2. Blås luftboble\n3. Form kule\n4. Avkjøl sakte\n5. Dekorér\n\nJulekuleblåsing krever:\n- Tålmodighet\n- Presisjon\n- Magisk touch\n\nResultat: Vakre, unike julekuler til hvert tre!\n\nUnlocked by: Day 9",
+          "innhold": "🎄 JULEKULEBLÅSING 🎄\n\nTradisjon fra Snøfall-serien\n\nIQ og Pil jobber med julekuleblåsingsutstyret.\n\nDag 9 produksjon: 200 glasskuler\nKvalitet: Alle perfekte! ✨\n\nProsess:\n1. Smeltet glass (1500°C)\n2. Blås luftboble\n3. Form kule\n4. Avkjøl sakte\n5. Dekorér\n\nJulekuleblåsing krever:\n- Tålmodighet\n- Presisjon\n- Magisk touch\n\nResultat: Vakre, unike julekuler til hvert tre!\n\nLåst opp: Dag 9",
           "unlockConditions": {
             "requiresTopics": ["frosne-mønster"]
           }
@@ -196,7 +212,7 @@
         {
           "navn": "farge-koder.txt",
           "type": "fil",
-          "innhold": "🎨 FARGE-MYSTERIET 🎨\n\nDag 10 - Grønn dag\n\nFargekoding i Snøfall:\n🔴 RØD - Julenissens klassiske farge\n🟢 GRØNN - Juletrær og miljø\n🔵 BLÅ - Is og snø\n🟡 GULL - Stjerner og magi\n⚪ HVIT - Snø og renhet\n\nG-R-Ø-N-N = GRØNN\n\nNissemors miljøprosjekt:\n- Sykkel til verkstedet\n- Resirkulering av gavepapir\n- Økologiske gulrøtter til reinsdyr\n\nJulius' kommentar:\n'Grønt og rødt sammen = italiensk restaurant'\n\nUnlocked by: Day 10"
+          "innhold": "🎨 FARGE-MYSTERIET 🎨\n\nDag 10 - Grønn dag\n\nFargekoding i Snøfall:\n🔴 RØD - Julenissens klassiske farge\n🟢 GRØNN - Juletrær og miljø\n🔵 BLÅ - Is og snø\n🟡 GULL - Stjerner og magi\n⚪ HVIT - Snø og renhet\n\nG-R-Ø-N-N = GRØNN\n\nNissemors miljøprosjekt:\n- Sykkel til verkstedet\n- Resirkulering av gavepapir\n- Økologiske gulrøtter til reinsdyr\n\nJulius' kommentar:\n'Grønt og rødt sammen = italiensk restaurant'\n\nLåst opp: Dag 10"
         },
         {
           "navn": "fargesamleren.txt",
@@ -206,7 +222,7 @@
         {
           "navn": "tidsanomalier.txt",
           "type": "fil",
-          "innhold": "⏰ TIDSANOMALIER - RAPPORT ⏰\n\nDag 11 - Kritisk situasjon\n\nKlokkene i Snøfall har stoppet!\n\nRegistrerte anomalier:\n- Storklokke viser 87 o'clock\n- Tre klokker viser: 3:00, 5:00, 4:00\n- Tid går saktere i verkstedet\n- Nissene rapporterer 'tidsdepresjon'\n\nOrakeltes analyse:\n'Mørket manipulerer tiden.\nDet prøver å forsinke julaften.\n3 + 5 + 4 = 12 timer tapt.'\n\nMotgift: Vennskap og samhold holder tiden stabil.\n\nStatus: ⚠️ KRITISK\n\nUnlocked by: Day 11",
+          "innhold": "⏰ TIDSANOMALIER - RAPPORT ⏰\n\nDag 11 - Kritisk situasjon\n\nKlokkene i Snøfall har stoppet!\n\nRegistrerte anomalier:\n- Storklokke viser 87 o'clock\n- Tre klokker viser: 3:00, 5:00, 4:00\n- Tid går saktere i verkstedet\n- Nissene rapporterer 'tidsdepresjon'\n\nOrakeltes analyse:\n'Mørket manipulerer tiden.\nDet prøver å forsinke julaften.\n3 + 5 + 4 = 12 timer tapt.'\n\nMotgift: Vennskap og samhold holder tiden stabil.\n\nStatus: ⚠️ KRITISK\n\nLåst opp: Dag 11",
           "unlockConditions": {
             "requiresTopics": ["morkets-trussel"]
           }
@@ -214,7 +230,7 @@
         {
           "navn": "antenna-crisis.txt",
           "type": "fil",
-          "innhold": "📡 ANTENNE-KRISE 📡\n\nDag 11 - Signal tapt!\n\nSNØFALL TV har mistet signalet.\nAntenne-systemet ødelagt av tidsanomaliene.\n\nTeknisk analyse:\n- Primærantenne: Ikke-funksjonell\n- Backup-system: Offline\n- Signal styrke: 0%\n\nLØSNING KREVES:\nBygg nød-antenne med:\n- Tinfolie (20cm høy)\n- Tape\n- Kreativitet!\n\nLa den stå over natten.\nSystemet kalibrerer automatisk.\n\nSignal gjenopprettet neste morgen! ✅\n\nBelønning: ANTENNE-INGENIØR badge\n\nUnlocked by: Day 11",
+          "innhold": "📡 ANTENNE-KRISE 📡\n\nDag 11 - Signal tapt!\n\nSNØFALL TV har mistet signalet.\nAntenne-systemet ødelagt av tidsanomaliene.\n\nTeknisk analyse:\n- Primærantenne: Ikke-funksjonell\n- Backup-system: Offline\n- Signal styrke: 0%\n\nLØSNING KREVES:\nBygg nød-antenne med:\n- Tinfolie (20cm høy)\n- Tape\n- Kreativitet!\n\nLa den stå over natten.\nSystemet kalibrerer automatisk.\n\nSignal gjenopprettet neste morgen! ✅\n\nBelønning: ANTENNE-INGENIØR badge\n\nLåst opp: Dag 11",
           "unlockConditions": {
             "requiresTopics": ["morket-tidsanomali"]
           }
@@ -222,7 +238,7 @@
         {
           "navn": "julesanger-samling.txt",
           "type": "fil",
-          "innhold": "🎵 JULESANGER-SAMLING 🎵\n\nDag 12 - Sangdag i Snøfall\n\nFavoritt julesanger:\n1. Deilig er jorden\n2. Glade jul\n3. Nordnorsk julesalme\n4. Det hev ei rose sprunge\n\n'Deilig er jorden' - 6 bokstaver: JORDEN\n\nRudolf prøvde å synge.\nResultat: Muling, men han prøvde!\n\nReinsdyr-kor status: AVVIST\n'Det er uprofesjonelt' - Trixter\n\nNissene elsket konserten.\n(Eller later som)\n\nUnlocked by: Day 12",
+          "innhold": "🎵 JULESANGER-SAMLING 🎵\n\nDag 12 - Sangdag i Snøfall\n\nFavoritt julesanger:\n1. Deilig er jorden\n2. Glade jul\n3. Nordnorsk julesalme\n4. Det hev ei rose sprunge\n\n'Deilig er jorden' - 6 bokstaver: JORDEN\n\nRudolf prøvde å synge.\nResultat: Muling, men han prøvde!\n\nReinsdyr-kor status: AVVIST\n'Det er uprofesjonelt' - Trixter\n\nNissene elsket konserten.\n(Eller later som)\n\nLåst opp: Dag 12",
           "unlockConditions": {
             "requiresTopics": ["brevfugl-organisering"]
           }
@@ -230,7 +246,7 @@
         {
           "navn": "lucia-tradisjon.txt",
           "type": "fil",
-          "innhold": "🕯️ LUCIA-TRADISJONEN 🕯️\n\nDag 13 - Luciadagen\n\nTradisjon: 13. desember\nLucia bærer LYS på hodet i krans.\n\nI Snøfall:\n- LED-lys (brannfare!)\n- Lussekatter: 500 stykker\n- Spisetid: 20 minutter\n- Rekord!\n\nSymbolikk:\n💡 Lys = Håp i mørketiden\n💡 Lucia = Lysbringe\n💡 Sammen = Sterke mot Mørket\n\nNissemors lussekatter var magiske.\nBokstavelig. De lyste i mørket.\n\nUnlocked by: Day 13",
+          "innhold": "🕯️ LUCIA-TRADISJONEN 🕯️\n\nDag 13 - Luciadagen\n\nTradisjon: 13. desember\nLucia bærer LYS på hodet i krans.\n\nI Snøfall:\n- LED-lys (brannfare!)\n- Lussekatter: 500 stykker\n- Spisetid: 20 minutter\n- Rekord!\n\nSymbolikk:\n💡 Lys = Håp i mørketiden\n💡 Lucia = Lysbringe\n💡 Sammen = Sterke mot Mørket\n\nNissemors lussekatter var magiske.\nBokstavelig. De lyste i mørket.\n\nLåst opp: Dag 13",
           "unlockConditions": {
             "requiresTopics": ["frosne-mønster"]
           }
@@ -238,7 +254,7 @@
         {
           "navn": "brevfugl-finale.txt",
           "type": "fil",
-          "innhold": "🕊️ BREVFUGL-MYSTERIET LØST! 🕊️\n\nDag 14 - Finale\n\nAlle brevfugler er organisert!\nWinter har fullført registreringen.\n\n847 brevfugler totalt:\n- Fase 1 (Dag 1): Introduksjon\n- Fase 2 (Dag 5): Organisering\n- Fase 3 (Dag 12): Sangfugl\n- Fase 4 (Dag 14): PAPIR - Fullført!\n\nBrevfugl-systemet fungerer perfekt.\nKommunikasjonen mellom Snøfall og barna er sterk.\n\nJulius' melding:\n'Takk for hjelpen! Uten dere hadde vi aldri klart dette.'\n\nP-A-P-I-R = PAPIR\n\nUnlocked by: Day 14",
+          "innhold": "🕊️ BREVFUGL-MYSTERIET LØST! 🕊️\n\nDag 14 - Finale\n\nAlle brevfugler er organisert!\nWinter har fullført registreringen.\n\n847 brevfugler totalt:\n- Fase 1 (Dag 1): Introduksjon\n- Fase 2 (Dag 5): Organisering\n- Fase 3 (Dag 12): Sangfugl\n- Fase 4 (Dag 14): PAPIR - Fullført!\n\nBrevfugl-systemet fungerer perfekt.\nKommunikasjonen mellom Snøfall og barna er sterk.\n\nJulius' melding:\n'Takk for hjelpen! Uten dere hadde vi aldri klart dette.'\n\nP-A-P-I-R = PAPIR\n\nLåst opp: Dag 14",
           "unlockConditions": {
             "requiresTopics": ["julesanger"]
           }
@@ -246,7 +262,7 @@
         {
           "navn": "personlige-brev-intro.txt",
           "type": "fil",
-          "innhold": "💌 PERSONLIGE BREV 💌\n\nDag 14 - Nytt system tilgjengelig!\n\nJulius har nå tid til å skrive personlige brev.\n\nFra Dag 14 og fremover:\nJulius sender spesielle meldinger til dere.\n\nDisse brevene inneholder:\n- Personlige hilsner\n- Oppmuntring\n- Hemmeligheter fra Snøfall\n- Spesiell julemagi\n\nSjekk BREVFUGLER-modulen for nye meldinger!\n\nUnlocked by: Day 14",
+          "innhold": "💌 PERSONLIGE BREV 💌\n\nDag 14 - Nytt system tilgjengelig!\n\nJulius har nå tid til å skrive personlige brev.\n\nFra Dag 14 og fremover:\nJulius sender spesielle meldinger til dere.\n\nDisse brevene inneholder:\n- Personlige hilsner\n- Oppmuntring\n- Hemmeligheter fra Snøfall\n- Spesiell julemagi\n\nSjekk BREVFUGLER-modulen for nye meldinger!\n\nLåst opp: Dag 14",
           "unlockConditions": {
             "requiresTopics": ["brevfugl-fullført"]
           }
@@ -254,29 +270,7 @@
       ]
     },
     {
-      "navn": "MØRKET",
-      "type": "mappe",
-      "barn": [
-        {
-          "navn": "morket-introduksjon.txt",
-          "type": "fil",
-          "innhold": "🌑 MØRKET - EN TRUSSEL 🌑\n\n[KLASSIFISERT - SIKKERHETSNIVÅ 3]\n\nMørket er en mystisk kraft som truer Snøfall.\n\nKjennetegn:\n- Dukker opp i polarnatten\n- Svekker julemagi\n- Truer gaveproduksjon\n- Får nissene til å miste håpet\n\nMotgift:\n✨ Vennskap og samhold\n✨ Julesangen\n✨ Lys fra hjertet\n✨ Barnas hjelp\n\nJulius' strategi:\n'Vi har overlevd Mørket før. Sammen er vi sterke.\nBarna gir oss styrke. Vennskapet beskytter oss.'\n\nOrakeltes advarsel: 'Mørket kommer nærmere...'\n\nUnlocked by: Day 7",
-          "unlockConditions": {
-            "requiresTopics": ["morkets-trussel"]
-          }
-        },
-        {
-          "navn": "orakelet-advarsel.txt",
-          "type": "fil",
-          "innhold": "🔮 ORAKELET ADVARER 🔮\n\nDag 7 - Koordinatene til Snøfall\n\nOrakelet sier:\n'90 grader nord - så langt nord man kan komme.\nIsolert. Beskyttet. Men også sårbar.\n\nMørket kjenner veien.\nDet nærmer seg i polarnatten.\n\nDere må holde sammen.\nVennskap gir varme.\nVarme holder Mørket borte.'\n\nJulius' respons:\n'Takk for advarselen. Vi skal være forberedt.\nBarna hjelper oss. Magien er sterk.'\n\nStatus: ADVARSEL AKTIV\n\nUnlocked by: Day 7",
-          "unlockConditions": {
-            "requiresTopics": ["morkets-trussel"]
-          }
-        }
-      ]
-    },
-    {
-      "navn": "HEMMELIGHETER",
+      "navn": "JULIUS-ARKIV",
       "type": "mappe",
       "barn": [
         {
@@ -287,7 +281,7 @@
         {
           "navn": "snill_slem_liste.txt",
           "type": "fil",
-          "innhold": "🎄 JULIUS' OFFISIELLE SNILL & SLEM LISTE 🎄\n\n[ADVARSEL: SKRIVEBESKYTTET - ADMIN TILGANG PÅKREVD]\n[SIKKERHETSNIVÅ: MAKSIMUM]\n\n═══════════════\n\n✨ SNILL LISTE ✨\n\n1. Georg - Hjulpet mamma hver dag\n2. Viljar - Delt leker med søsken\n3. Marcus - Ryddet rommet uten å bli bedt\n4. Amund - Passet på lillebror\n5. Elias - Leste for bestemor\n6. Brage - Hjalp nabo med snømåking\n7. Sverre - Laget kort til venner\n8. Kees - Gjorde lekser uten klag\n\n... [PLASS TIL FLERE NAVN] ...\n\n{{PLAYER_NAME_PLACEHOLDER}}\n\n═══════════════\n\n⚠️ SLEM LISTE ⚠️\n\n1. [KLASSIFISERT]\n2. [KLASSIFISERT]\n3. [KLASSIFISERT]\n\n[Merk: Listen er heldigvis veldig kort i år!]\n\n═══════════════\n\nSist oppdatert: {{UPDATE_DATE}}\nNeste gjennomgang: 24. Desember kl 23:59\n\n{{FINALE_MESSAGE}}\n\n💡 HINT: Kanskje det finnes en måte å få tilgang til\nredigeringsmodus? Hold utkikk etter HACKINGVERKTØY..."
+          "innhold": "🎄 JULIUS' OFFISIELLE SNILL & SLEM LISTE 🎄\n\n[ADVARSEL: SKRIVEBESKYTTET - ADMIN TILGANG PÅKREVD]\n[SIKKERHETSNIVÅ: MAKSIMUM]\n\n═══════════════\n\n✨ SNILL LISTE ✨\n\n1. Georg - Hjulpet mamma hver dag\n2. Viljar - Delt leker med søsken\n3. Marcus - Ryddet rommet uten å bli bedt\n4. Amund - Passet på lillebror\n5. Elias - Leste for bestemor\n6. Brage - Hjalp nabo med snømåking\n7. Sverre - Laget kort til venner\n8. Kees - Gjorde lekser uten klag\n\n... [PLASS TIL FLERE NAVN] ...\n\n═══════════════\n\n⚠️ SLEM LISTE ⚠️\n\n1. [KLASSIFISERT]\n2. [KLASSIFISERT]\n3. [KLASSIFISERT]\n\n[Merk: Listen er heldigvis veldig kort i år!]\n\n═══════════════\n\nSist oppdatert: {{UPDATE_DATE}}\nNeste gjennomgang: 24. Desember kl 23:59\n\n{{FINALE_MESSAGE}}\n\n💡 TIP: Julius oppdaterer listen hver natt basert på\nbarnets fremgang i julekalender-oppdraget!"
         },
         {
           "navn": "reinsdyr_GYATT.log",
@@ -302,7 +296,7 @@
       ]
     },
     {
-      "navn": "HEMMELIG",
+      "navn": "DEKRYPTERT",
       "type": "mappe",
       "barn": [
         {

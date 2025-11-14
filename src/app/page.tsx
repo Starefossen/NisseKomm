@@ -24,6 +24,7 @@ import { EventyrOversikt } from "@/components/windows/EventyrOversikt";
 import { GrandFinaleModal } from "@/components/ui/GrandFinaleModal";
 import { BadgeRow } from "@/components/ui/BadgeRow";
 import { NameEntryModal } from "@/components/ui/NameEntryModal";
+import { HamburgerMenu } from "@/components/ui/HamburgerMenu";
 import { GameEngine } from "@/lib/game-engine";
 import {
   getCurrentDay,
@@ -92,6 +93,7 @@ export default function Home() {
   });
   const [showGrandFinale, setShowGrandFinale] = useState(false);
   const [showNameEntry, setShowNameEntry] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { playSound, playJingle } = useSounds();
 
   const bootPassword = process.env.NEXT_PUBLIC_BOOT_PASSWORD || "NISSEKODE2025";
@@ -110,9 +112,9 @@ export default function Home() {
     setUnlockedModules(GameEngine.getUnlockedModules());
     setUnreadCount(getUnreadEmailCount());
 
-    // Check if Day 23 just completed and names not yet entered
+    // Check if Day 22 just completed and names not yet entered
     if (
-      GameEngine.isQuestCompleted(23) &&
+      GameEngine.isQuestCompleted(22) &&
       StorageManager.getPlayerNames().length === 0
     ) {
       // Delay to let success animation play
@@ -227,8 +229,36 @@ export default function Home() {
       {/* Main application */}
       {bootComplete && authenticated && (
         <div className="flex h-full">
-          {/* Sidebar - 25% */}
-          <div className="w-1/4 p-4 flex flex-col gap-4 border-r-4 border-(--neon-green)/30 overflow-hidden">
+          {/* Hamburger menu button for mobile */}
+          <HamburgerMenu
+            isOpen={sidebarOpen}
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          />
+
+          {/* Mobile overlay backdrop */}
+          {sidebarOpen && (
+            <div
+              className="lg:hidden fixed inset-0 bg-black/80 z-30"
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
+
+          {/* Sidebar - hidden on mobile, overlay on tablet, static on desktop */}
+          <div
+            className={`
+              ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+              lg:translate-x-0
+              fixed lg:static
+              inset-y-0 left-0
+              w-64 lg:w-1/4
+              p-4 flex flex-col gap-4
+              border-r-4 border-(--neon-green)/30
+              bg-(--dark-crt)
+              overflow-hidden
+              z-40
+              transition-transform duration-300
+            `}
+          >
             <SystemStatus currentDay={getCurrentDay()} />
             <VarselKonsoll alerts={varsler} currentDay={getCurrentDay()} />
           </div>
@@ -238,8 +268,8 @@ export default function Home() {
             <div className="flex-1 overflow-auto">
               {!openWindow ? (
                 // Desktop with icons
-                <div className="flex items-center justify-center h-full p-8">
-                  <div className="grid grid-cols-3 gap-8 max-w-3xl">
+                <div className="flex items-center justify-center h-full p-4 md:p-8">
+                  <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-3xl">
                     <DesktopIcon
                       icon="file"
                       label="NISSEMAIL"
@@ -347,7 +377,7 @@ export default function Home() {
                               label="LÅST"
                               color="gray"
                               disabled
-                              onClick={() => {}}
+                              onClick={() => { }}
                             />
                           );
                         }

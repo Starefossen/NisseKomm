@@ -182,9 +182,8 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
         <div className="p-4 border-2 border-(--cold-blue)/30 bg-(--cold-blue)/5 text-(--cold-blue) text-xs">
           <div className="font-bold mb-1">✉️ PERSONLIGE MELDINGER</div>
           <div className="opacity-80">
-            Julius sender spesielle brev til dere! Nye meldinger kan legges til
-            via Nissemor-guiden. Disse brevene vises her etter hvert som dere
-            fullfører oppdrag.
+            Julius sender spesielle brev til dere! Disse brevene vises her etter
+            hvert som dere fullfører oppdrag.
           </div>
         </div>
       </div>

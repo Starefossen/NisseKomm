@@ -34,6 +34,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="no">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${vt323.variable} antialiased`}
       >

@@ -38,7 +38,7 @@ export function NameEntryModal({ onComplete }: NameEntryModalProps) {
   const handleSkip = () => {
     SoundManager.playSound("click");
     // Use default names
-    onComplete(["Georg", "Viljar", "Marcus", "Amund"]);
+    onComplete(["Kristian", "Håkon", "Hanna"]);
   };
 
   return (

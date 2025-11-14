@@ -92,54 +92,6 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
           </div>
         </div>
 
-        {/* Camera Control Buttons */}
-        <div className="grid grid-cols-4 gap-2 mb-4">
-          <button
-            onClick={() => handleCameraSwitch("cam1")}
-            className={`p-2 border-2 transition-colors ${
-              currentCamera === "cam1"
-                ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
-                : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
-            }`}
-          >
-            <div className="text-xs font-bold">CAM 1</div>
-            <div className="text-[10px]">LANDSBY</div>
-          </button>
-          <button
-            onClick={() => handleCameraSwitch("cam2")}
-            className={`p-2 border-2 transition-colors ${
-              currentCamera === "cam2"
-                ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
-                : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
-            }`}
-          >
-            <div className="text-xs font-bold">CAM 2</div>
-            <div className="text-[10px]">VERKSTED</div>
-          </button>
-          <button
-            onClick={() => handleCameraSwitch("cam3")}
-            className={`p-2 border-2 transition-colors ${
-              currentCamera === "cam3"
-                ? "border-(--christmas-red) bg-(--christmas-red)/20 text-(--christmas-red)"
-                : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
-            }`}
-          >
-            <div className="text-xs font-bold">CAM 3</div>
-            <div className="text-[10px]">OFFLINE</div>
-          </button>
-          <button
-            onClick={() => handleCameraSwitch("static")}
-            className={`p-2 border-2 transition-colors ${
-              currentCamera === "static"
-                ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
-                : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
-            }`}
-          >
-            <div className="text-xs font-bold">CAM 4</div>
-            <div className="text-[10px]">GARASJE</div>
-          </button>
-        </div>
-
         {/* TV Screen with Security Camera Effect */}
         <div className="relative border-4 border-(--neon-green) bg-black aspect-video overflow-hidden">
           {isAntennaBroken ? (
@@ -200,9 +152,8 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
                   />
                   {/* Day/Night tint overlay */}
                   <div
-                    className={`absolute inset-0 transition-all duration-2000 ${
-                      isDaytime ? "bg-blue-400/10" : "bg-slate-950/70"
-                    }`}
+                    className={`absolute inset-0 transition-all duration-2000 ${isDaytime ? "bg-blue-400/10" : "bg-slate-950/70"
+                      }`}
                   />
                   {/* Fog/mist layer for depth - always present, fades in/out */}
                   <div
@@ -567,6 +518,50 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
               </div>
             </>
           )}
+        </div>
+
+        {/* Camera Control Buttons */}
+        <div className="grid grid-cols-4 gap-2 mb-4">
+          <button
+            onClick={() => handleCameraSwitch("cam1")}
+            className={`p-2 border-2 transition-colors ${currentCamera === "cam1"
+                ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
+                : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
+              }`}
+          >
+            <div className="text-xs font-bold">CAM 1</div>
+            <div className="text-[10px]">LANDSBY</div>
+          </button>
+          <button
+            onClick={() => handleCameraSwitch("cam2")}
+            className={`p-2 border-2 transition-colors ${currentCamera === "cam2"
+                ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
+                : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
+              }`}
+          >
+            <div className="text-xs font-bold">CAM 2</div>
+            <div className="text-[10px]">VERKSTED</div>
+          </button>
+          <button
+            onClick={() => handleCameraSwitch("cam3")}
+            className={`p-2 border-2 transition-colors ${currentCamera === "cam3"
+                ? "border-(--christmas-red) bg-(--christmas-red)/20 text-(--christmas-red)"
+                : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
+              }`}
+          >
+            <div className="text-xs font-bold">CAM 3</div>
+            <div className="text-[10px]">OFFLINE</div>
+          </button>
+          <button
+            onClick={() => handleCameraSwitch("static")}
+            className={`p-2 border-2 transition-colors ${currentCamera === "static"
+                ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
+                : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
+              }`}
+          >
+            <div className="text-xs font-bold">CAM 4</div>
+            <div className="text-[10px]">GARASJE</div>
+          </button>
         </div>
 
         {/* Status Info */}

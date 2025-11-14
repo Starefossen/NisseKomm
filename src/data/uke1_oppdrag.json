@@ -120,7 +120,7 @@
     },
     "dagbokinnlegg": "Dag 3 - Snøstorm\n\nVoldsom snøstorm i Snøfall i dag! Kunne knapt se hånden foran meg. Orakelet advarte meg om vær-kaos, men jeg trodde ikke det ville være SÅ ille. En av nissene ble funnet i snøen tre timer etter lunsj. Han hadde gått seg vill på vei til dass. Det er 10 meter unna.\n\nRampenissen rapporterer at barna jobber hardt med oppgavene. Bra! Vennskapet mellom ham og barna vokser, sier han. Sendte meg en lang melding om hvor 'kult' barna er. Tror jeg ser første tegn på at han faktisk bryr seg?\n\nNissemor laget varm kakao med ekstra magi. Nissene danser nå rundt juletreet.\n\n- Julius",
     "rampenissen_rampestrek": "Mel er strødd på kjøkkenbenken med 'snøengel'-mønster. I melet står 'N_SS_' skrevet. Magnetbokstaver I, E, A, O er spredt på kjøleskapet.",
-    "fysisk_hint": "Se på kjøkkenbenken - hva har Rampenissen skrevet i 'snøen'? Bruk magnetbokstavene!",
+    "fysisk_hint": "N_SS_",
     "oppsett_tid": "moderat",
     "materialer_nødvendig": [
       "Mel (ca 2 dl)",
@@ -171,7 +171,7 @@
     "hendelse": "Teater - En Julefortelling",
     "dagbokinnlegg": "Dag 4 - Rudolf-Drama\n\nRudolf har fått stjerneallerurer. Insisterer nå på egen garderobe og personlig assistent. Forklarte at vi bare er en gjeng nisser i Snøfall, ikke Hollywood. Han sultet resten av dagen.\n\nTrixter, min favorittreinsdyr, prøvde å trøste Rudolf. Det endte med at de begge spilte teater for nissene. Rudolf spilte hovedrollen, selvfølgelig. Men... han lyste veldig sterkt i mørket under forestillingen. Kanskje den røde nesen er viktigere enn jeg trodde?\n\nRampenissen melder at barna synes oppgavene er morsomme. Godt! Vennskapet vokser dag for dag.\n\n- Julius",
     "rampenissen_rampestrek": "Kosedyr arrangert som publikum foran en 'scene' (f.eks. sofakant). Rampenissen står som 'regissør' med skilt: 'Rød nese, lyser natten - hvem?'",
-    "fysisk_hint": "Rampenissen har laget teater i stua! Les skiltet og finn svaret.",
+    "fysisk_hint": "Rød nese, lyser natten - hvem?",
     "oppsett_tid": "moderat",
     "materialer_nødvendig": [
       "Kosedyr (5-8 stk)",
@@ -217,7 +217,7 @@
     },
     "dagbokinnlegg": "Dag 5 - Telleproblemer\n\nHar prøvd å telle reinsdyr hele dagen. Får forskjellige tall hver gang. Enten har vi 8, 9, eller 12. Mistenker at noen gjemmer seg for å slippe trening.\n\nWinter kom inn med en enorm stabel brevfugler fra barna. Han hadde talt dem: 847 ønsker så langt! Pil hjelper til med å lese dem alle. Vennskapsbåndene mellom barna og oss blir sterkere.\n\nRampenissen sender bilder av seg selv med barna. De virker å ha det gøy sammen!\n\n- Julius",
     "rampenissen_rampestrek": "8 små leke-reinsdyr står på rad. Ved siden av står Rampenissen med en kalkulator-lapp: '8 × 2 + 1 = ?'. Ett reinsdyr har rød nese (Rudolf).",
-    "fysisk_hint": "Tell reinsdyrene Rampenissen har funnet - men bruk regnestykket!",
+    "fysisk_hint": "8 × 2 + 1 = ?",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
       "8 små reinsdyr/dyr-figurer",
@@ -261,7 +261,7 @@
     "hendelse": "Speidertur til Turnerhytten",
     "dagbokinnlegg": "Dag 6 - Historietimen\n\nSt. Nikolaus-dagen! Min gamle kollega fra Myra. God mann. Vi møttes på julenissekonferansen i 324. Han hadde bedre skjegg enn meg. Fortsatt bitter.\n\nLærte nissene om juletradisjonene rundt om i verden. Pil stilte mange smarte spørsmål. De ble mest interessert i de landene med mest godteri. Typisk.\n\nRampenissen rapporterer at barna er nysgjerrige og lærevillige. Vennskap og læring går hånd i hånd!\n\n- Julius",
     "rampenissen_rampestrek": "I speidersekken/skolesekken ligger et falskt 'gammelt kart' med gåten skrevet på. Rampenissen har tegnet kompas og 'X markerer stedet'.",
-    "fysisk_hint": "Sjekk sekken - Rampenissen har gjemt et mystisk kart!",
+    "fysisk_hint": "Finn byen som begynner med M og slutter med A. 4 bokstaver totalt.",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
       "Papir (kan 'eldes' med tepose)",
@@ -314,7 +314,7 @@
     "hendelse": "Speidertur til Turnerhytten",
     "dagbokinnlegg": "Dag 7 - Geografilektion\n\n90 grader nord! Det er her Snøfall ligger! En av de yngre nissene spurte i dag hvorfor vi ikke bare flytter sørover hvor det er varmere. Måtte forklare hele 'magisk julested'-konseptet.\n\nIsolert her oppe kan være farlig. Mørket lurer alltid der ute i polarnatten. Men magien i Snøfall holder oss trygge. Og vennskapet mellom oss alle gir varme.\n\nRampenissen sender selfies foran peisen. Ser koselig ut. Her er det minus 40 grader!\n\n- Julius",
     "rampenissen_rampestrek": "En tegnet globus på stort papir, eller ekte globus med lapp. Ved siden av står en 'koordinat-tavle' med: 'Snøfall = __ °N'. Rampenissen har kompass.",
-    "fysisk_hint": "Finn globusen Rampenissen har funnet - hvilken koordinat er Snøfall?",
+    "fysisk_hint": "Snøfall = __ °N",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
       "Globus (eller tegning)",

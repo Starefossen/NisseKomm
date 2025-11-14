@@ -40,7 +40,7 @@ export function NisseNetUtforsker({
   // Generate dynamic diary content based on current day
   const generateDiaryContent = useMemo(() => {
     if (currentDay < 1 || currentDay > 24) {
-      return "JULIUS' DAGBOK\n==================\n\nDag 0 - Før Julen Starter\n\nHei! Dette er Julius som skriver fra Snøfall. Jeg har bestemt meg for å føre dagbok over desember måned. Rampenissen har reist ned til barna for å hjelpe dem med årets julekalender.\n\nHer i Snøfall forbereder vi oss på den travleste tiden på året. Nissene er klare, reinsdyrene er (mer eller mindre) motiverte, og Nissemor har bakt nok pepperkaker til å fø en hær.\n\nSnart begynner den magiske tiden. Gleder meg!\n\n- Julius\n\nPS: Rudolf har allerede begynt å klage. Det er ikke engang desember ennå.";
+      return "JULIUS' DAGBOK\n==================\n\nDag 0 - Før Julen Starter\n\nHei! Dette er Julius som skriver fra Snøfall. Jeg har bestemt meg for å føre dagbok over desember måned. Rampenissen har reist ned til barna for å hjelpe dem med årets julekalender.\n\nHer i Snøfall forbereder vi oss på den travleste tiden på året. Nissene er klare, reinsdyrene er (mer eller mindre) motiverte, og vi har bakt nok pepperkaker til å fø en hær.\n\nSnart begynner den magiske tiden. Gleder meg!\n\n- Julius\n\nPS: Rudolf har allerede begynt å klage. Det er ikke engang desember ennå.";
     }
 
     let diary =
@@ -132,6 +132,21 @@ export function NisseNetUtforsker({
       if (node.type === "fil" && node.navn === "snill_slem_liste.txt") {
         const gameState = GameEngine.loadGameState();
         const day23Completed = gameState.completedQuests.has(23);
+        const day24Completed = gameState.completedQuests.has(24);
+
+        // Always clean up placeholder markers before displaying
+        let cleanedContent = node.innhold || "";
+        cleanedContent = cleanedContent.replace(
+          /\{\{UPDATE_DATE\}\}/g,
+          "[VIL BLI OPPDATERT]",
+        );
+        if (!day24Completed) {
+          // Remove finale message placeholder before Day 24
+          cleanedContent = cleanedContent.replace(
+            /\n\n\{\{FINALE_MESSAGE\}\}/g,
+            "",
+          );
+        }
 
         if (day23Completed) {
           // Get player names from StorageManager
@@ -140,7 +155,7 @@ export function NisseNetUtforsker({
           // Only update if names were entered
           if (playerNames.length > 0) {
             // Generate updated Nice List with player names at top
-            let updatedList = node.innhold || "";
+            let updatedList = cleanedContent;
 
             // Find the SNILL LISTE section and inject names
             const snillSection = updatedList.indexOf("✨ SNILL LISTE ✨");
@@ -162,11 +177,40 @@ export function NisseNetUtforsker({
                 "\n" +
                 existingList;
 
-              // Update last modified date
-              updatedList = updatedList.replace(
-                /Sist oppdatert: .*\n/,
-                `Sist oppdatert: 23. Desember ✓\n`,
-              );
+              // Update last modified date based on progress
+              if (day24Completed) {
+                updatedList = updatedList.replace(
+                  /Sist oppdatert: .*\n/,
+                  `Sist oppdatert: 24. Desember - JULAFTEN! 🎄✨\n`,
+                );
+
+                // Day 24: Add Julius' personal finale message
+                const names = playerNames.join(", ");
+                const finaleMessage = `\n\n🏆 GRATULERER, ${names}! 🏆\n\nDere er nå offisielle Julekalender-Mestere!\n\nRampenissen har fortalt meg alt dere har gjort - hver kode,\nhvert symbol, hvert øyeblikk av vennskap.\n\nDere er ikke bare på listen. Dere ER en del av Snøfall nå.\nFor alltid.\n\n- Julius ❤️\n\n`;
+
+                // Replace placeholder or append before hint section
+                if (updatedList.includes("{{FINALE_MESSAGE}}")) {
+                  updatedList = updatedList.replace(
+                    "{{FINALE_MESSAGE}}",
+                    finaleMessage,
+                  );
+                } else {
+                  // Insert before the hint section at bottom
+                  const hintIndex = updatedList.indexOf("💡 HINT:");
+                  if (hintIndex !== -1) {
+                    updatedList =
+                      updatedList.substring(0, hintIndex) +
+                      finaleMessage +
+                      updatedList.substring(hintIndex);
+                  }
+                }
+              } else {
+                // Day 23 only
+                updatedList = updatedList.replace(
+                  /Sist oppdatert: .*\n/,
+                  `Sist oppdatert: 23. Desember ✓\n`,
+                );
+              }
 
               return {
                 ...node,
@@ -174,6 +218,14 @@ export function NisseNetUtforsker({
               };
             }
           }
+        }
+
+        // If we cleaned placeholders but didn't replace with player names, return cleaned version
+        if (cleanedContent !== node.innhold) {
+          return {
+            ...node,
+            innhold: cleanedContent,
+          };
         }
       }
 
@@ -292,22 +344,32 @@ export function NisseNetUtforsker({
         );
       } else {
         const isNew = isFileNew(node.navn);
+        const isUnreadNiceList =
+          node.navn === "snill_slem_liste.txt" &&
+          StorageManager.hasUnreadNiceList();
+
         return (
           <button
             key={path}
-            onClick={() => setSelectedFile(node)}
+            onClick={() => {
+              setSelectedFile(node);
+              // Mark Nice List as viewed when opened
+              if (node.navn === "snill_slem_liste.txt") {
+                StorageManager.setNiceListViewed();
+              }
+            }}
             className={`
               flex items-center gap-2 w-full text-left py-1 px-2 transition-colors
-              ${
-                selectedFile?.navn === node.navn
-                  ? "bg-(--cold-blue)/20 border-l-2 border-(--cold-blue)"
-                  : "hover:bg-(--neon-green)/10"
+              ${selectedFile?.navn === node.navn
+                ? "bg-(--cold-blue)/20 border-l-2 border-(--cold-blue)"
+                : "hover:bg-(--neon-green)/10"
               }
             `}
             style={{ paddingLeft: `${depth * 16 + 8}px` }}
           >
             <Icons.File size={16} color="blue" />
             <span className={isNew ? "text-(--gold) font-bold" : ""}>
+              {isUnreadNiceList && "🔴 "}
               {node.navn}
               {isNew && " (NY!)"}
             </span>
@@ -340,16 +402,16 @@ export function NisseNetUtforsker({
           </div>
         </div>
 
-        {/* Two-column layout */}
-        <div className="grid grid-cols-2 gap-4 flex-1 min-h-0">
+        {/* Two-column layout - stacks on mobile, side-by-side on desktop */}
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-4 flex-1 min-h-0">
           {/* File tree */}
-          <div className="border-2 border-(--neon-green) bg-black/50 overflow-y-auto p-2">
+          <div className="border-2 border-(--neon-green) bg-black/50 overflow-y-auto p-2 max-h-[40vh] lg:max-h-full">
             <div className="text-xs font-bold mb-2 opacity-70">FILTRE</div>
             {renderFileTree(filteredFiles)}
           </div>
 
           {/* File content viewer */}
-          <div className="border-2 border-(--cold-blue) bg-black/50 overflow-y-auto p-4">
+          <div className="border-2 border-(--cold-blue) bg-black/50 overflow-y-auto p-4 flex-1">
             {selectedFile ? (
               <div className="space-y-4">
                 <div className="flex items-center gap-2 pb-2 border-b-2 border-(--cold-blue)">
