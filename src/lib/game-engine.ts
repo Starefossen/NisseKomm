@@ -286,7 +286,7 @@ function validateEventyrReferences(quests: Oppdrag[]): void {
       if (!validEventyrIds.has(eventyrId)) {
         throw new Error(
           `Validation Error: Day ${quest.dag} references unknown eventyr '${eventyrId}'. ` +
-            `Valid eventyr IDs: ${Array.from(validEventyrIds).join(", ")}`,
+          `Valid eventyr IDs: ${Array.from(validEventyrIds).join(", ")}`,
         );
       }
     }
@@ -317,7 +317,7 @@ function validateEventyr(quests: Oppdrag[]): void {
       if (sortedPhases[i] !== expectedPhase) {
         throw new Error(
           `Validation Error: Eventyr '${eventyrId}' has non-sequential phases. ` +
-            `Expected phase ${expectedPhase}, found phase ${sortedPhases[i]}`,
+          `Expected phase ${expectedPhase}, found phase ${sortedPhases[i]}`,
         );
       }
     }
@@ -336,7 +336,7 @@ function validateProgressiveHints(quests: Oppdrag[]): void {
         if (curr <= prev) {
           throw new Error(
             `Validation Error: Day ${quest.dag} progressive hints must have increasing afterAttempts. ` +
-              `Hint ${i} has afterAttempts=${curr}, but previous hint has ${prev}`,
+            `Hint ${i} has afterAttempts=${curr}, but previous hint has ${prev}`,
           );
         }
       }
@@ -364,7 +364,7 @@ function validateSymbolReferences(quests: Oppdrag[]): void {
         if (!awardedSymbols.has(symbolId)) {
           throw new Error(
             `Validation Error: Day ${quest.dag} decryption challenge requires symbol '${symbolId}' ` +
-              `which is never awarded by any quest`,
+            `which is never awarded by any quest`,
           );
         }
       });
@@ -376,7 +376,7 @@ function validateSymbolReferences(quests: Oppdrag[]): void {
           if (index < 0 || index > maxIndex) {
             throw new Error(
               `Validation Error: Day ${quest.dag} decryption challenge correctSequence[${pos}] = ${index} ` +
-                `is out of bounds (max index is ${maxIndex})`,
+              `is out of bounds (max index is ${maxIndex})`,
             );
           }
         },
@@ -402,7 +402,7 @@ function mergeAndValidate(): Oppdrag[] {
   if (allOppdrag.length !== 24) {
     throw new Error(
       `Validation Error: Expected 24 quests, found ${allOppdrag.length}. ` +
-        `Week counts: W1=${week1.length}, W2=${week2.length}, W3=${week3.length}, W4=${week4.length}`,
+      `Week counts: W1=${week1.length}, W2=${week2.length}, W3=${week3.length}, W4=${week4.length}`,
     );
   }
 
@@ -437,7 +437,7 @@ function mergeAndValidate(): Oppdrag[] {
     });
     throw new Error(
       `Validation Error: Duplicate codes found: ${duplicateCodes.join(", ")}. ` +
-        `All 24 codes must be unique.`,
+      `All 24 codes must be unique.`,
     );
   }
 
@@ -1712,19 +1712,20 @@ export class GameEngine {
       });
     }
 
-    // 2. Add primary daily alert for current day
-    const dailyAlert = dailyAlerts.find((a) => a.day === day);
-    if (dailyAlert) {
-      alerts.push({
-        tekst: dailyAlert.tekst,
-        type: dailyAlert.type,
-        tidspunkt: this.generateAlertTimestamp(),
-        day: dailyAlert.day,
+    // 2. Add ALL daily alerts from day 1 up to current day (historical feed)
+    dailyAlerts
+      .filter((a) => a.day <= day)
+      .forEach((dailyAlert) => {
+        alerts.push({
+          tekst: dailyAlert.tekst,
+          type: dailyAlert.type,
+          tidspunkt: this.generateAlertTimestamp(),
+          day: dailyAlert.day,
+        });
       });
-    }
 
-    // 3. Add milestone celebration alerts
-    if (day === 8 && completedDays.has(8)) {
+    // 3. Add milestone celebration alerts for completed days
+    if (day >= 8 && completedDays.has(8)) {
       alerts.push({
         tekst: "🎉 NISSENE: Første uke fullført! Kaken var for stor...",
         type: "info",
@@ -1733,7 +1734,7 @@ export class GameEngine {
       });
     }
 
-    if (day === 16 && completedDays.has(16)) {
+    if (day >= 16 && completedDays.has(16)) {
       alerts.push({
         tekst: "🎂 WINTER: Halvveis! Gaveproduksjon på topp!",
         type: "info",
@@ -1742,7 +1743,7 @@ export class GameEngine {
       });
     }
 
-    if (day === 22 && completedDays.has(22)) {
+    if (day >= 22 && completedDays.has(22)) {
       alerts.push({
         tekst: "⏰ ORAKELET: To dager! Magien intensiveres!",
         type: "advarsel",

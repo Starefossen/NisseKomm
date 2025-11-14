@@ -139,6 +139,26 @@
       "day": 24,
       "tekst": "🎅 JULIUS: God morgen! Jeg var her i natt! Håper dere likte gavene! ✨",
       "type": "info"
+    },
+    {
+      "day": 24,
+      "tekst": "🏆 GRATULERER! Alle 24 oppdrag fullført! Dere er julenisse-agenter!",
+      "type": "info"
+    },
+    {
+      "day": 24,
+      "tekst": "🎄 NISSEMOR: Takk for alt! Se dere neste desember! ✨",
+      "type": "info"
+    },
+    {
+      "day": 24,
+      "tekst": "🧝 RAMPENISSEN: Det var et eventyr! God jul, mine venner! ❤️",
+      "type": "info"
+    },
+    {
+      "day": 24,
+      "tekst": "🦌 TRIXTER: Takk for hjelpen! Reisen var perfekt! 🛷",
+      "type": "info"
     }
   ],
   "varsler": [
