@@ -45,9 +45,10 @@ export function DesktopIcon({
         flex flex-col items-center gap-2 p-3 md:p-4 relative
         w-full min-w-16 min-h-16 md:min-w-20 md:min-h-20
         border-2 transition-all
-        ${disabled
-          ? "border-(--gray) opacity-60 cursor-not-allowed"
-          : "border-transparent hover:border-(--neon-green) hover:bg-(--neon-green)/10 hover:shadow-[0_0_15px_rgba(0,255,0,0.4)] active:scale-95 cursor-pointer"
+        ${
+          disabled
+            ? "border-(--gray) opacity-60 cursor-not-allowed"
+            : "border-transparent hover:border-(--neon-green) hover:bg-(--neon-green)/10 hover:shadow-[0_0_15px_rgba(0,255,0,0.4)] active:scale-95 cursor-pointer"
         }
         ${isShaking ? "animate-[lock-shake_0.3s_ease-in-out]" : ""}
       `}

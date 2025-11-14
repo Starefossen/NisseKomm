@@ -1099,57 +1099,6 @@ export class GameEngine {
   }
 
   /**
-   * Get current system metrics (base + overrides from completed quests)
-   */
-  static getCurrentSystemMetrics(): SystemMetrikk[] {
-    const baseMetrics = (statiskInnhold.systemMetrikker as SystemMetrikk[]).map(
-      (m) => ({ ...m }),
-    );
-    const completedQuests = this.loadGameState().completedQuests;
-
-    // Apply overrides from completed quests
-    ALL_QUESTS.forEach((quest) => {
-      if (completedQuests.has(quest.dag) && quest.system_status_override) {
-        const override = quest.system_status_override;
-        const metric = baseMetrics.find((m) => m.navn === override.metricName);
-        if (metric) {
-          metric.verdi = override.value;
-          metric.status = override.status;
-        }
-      }
-    });
-
-    return baseMetrics;
-  }
-
-  /**
-   * Get current alerts (base + overrides from recent quests)
-   */
-  static getCurrentAlerts(): Varsel[] {
-    const baseAlerts = [...(statiskInnhold.varsler as Varsel[])];
-    const completedQuests = this.loadGameState().completedQuests;
-    const recentAlerts: Varsel[] = [];
-
-    // Collect alert overrides from recently completed quests (last 3 days)
-    const sortedDays = Array.from(completedQuests).sort((a, b) => b - a);
-    const recentDays = sortedDays.slice(0, 3);
-
-    ALL_QUESTS.forEach((quest) => {
-      if (recentDays.includes(quest.dag) && quest.alert_override) {
-        recentAlerts.push({
-          id: `alert-day-${quest.dag}`,
-          tekst: quest.alert_override.text,
-          type: quest.alert_override.type,
-          tidspunkt: getCurrentDate().toTimeString().slice(0, 5),
-        });
-      }
-    });
-
-    // Merge: recent alerts first, then base alerts
-    return [...recentAlerts, ...baseAlerts];
-  }
-
-  /**
    * Get all collected symbols from storage
    *
    * @returns Array of DecryptionSymbol objects that have been scanned/collected
@@ -1545,6 +1494,273 @@ export class GameEngine {
       StorageManager.clearAll();
       window.location.reload();
     }
+  }
+
+  /**
+   * ============================================================
+   * PROGRESSIVE SYSTEM METRICS
+   * ============================================================
+   */
+
+  /**
+   * Calculate progressive metric value using sigmoid curve
+   *
+   * Formula: min + (max - min) / (1 + e^(-k * (day - midpoint)))
+   *
+   * @param min - Minimum value at Day 1
+   * @param max - Maximum value at Day 24
+   * @param day - Current day (1-24)
+   * @param k - Steepness parameter (default 0.4)
+   * @param midpoint - Inflection point (default 12)
+   */
+  private static calculateSigmoidValue(
+    min: number,
+    max: number,
+    day: number,
+    k: number = 0.4,
+    midpoint: number = 12,
+  ): number {
+    const sigmoid = 1 / (1 + Math.exp(-k * (day - midpoint)));
+    const value = min + (max - min) * sigmoid;
+    return Math.round(value);
+  }
+
+  /**
+   * Determine metric status based on value and thresholds
+   */
+  private static getMetricStatus(
+    value: number,
+    max: number,
+  ): "normal" | "advarsel" | "kritisk" {
+    const percentage = (value / max) * 100;
+    if (percentage < 50) return "kritisk";
+    if (percentage < 75) return "advarsel";
+    return "normal";
+  }
+
+  /**
+   * Get progressive system metrics for current day
+   *
+   * BEHAVIOR:
+   * - Filters metrics by unlock_day (progressive reveals)
+   * - Calculates sigmoid progression values
+   * - Applies crisis penalties from unresolved bonusoppdrag
+   * - Merges quest-specific overrides (highest priority)
+   *
+   * @param day - Current day (1-24)
+   * @returns Array of SystemMetrikk with computed values
+   */
+  static getProgressiveMetrics(day: number): SystemMetrikk[] {
+    const baseMetrics = statiskInnhold.systemMetrikker as Array<{
+      navn: string;
+      min: number;
+      maks: number;
+      unlock_day: number;
+      status: "normal" | "advarsel" | "kritisk";
+    }>;
+
+    const progressionConfig = (
+      statiskInnhold as unknown as {
+        progression_config: {
+          sigmoid: { k: number; midpoint: number };
+          crisis_events: Array<{
+            day: number;
+            affected_metric: string;
+            crisis_value: number;
+            status: "normal" | "advarsel" | "kritisk";
+          }>;
+        };
+      }
+    ).progression_config;
+    const { k, midpoint } = progressionConfig.sigmoid;
+    const crisisEvents = progressionConfig.crisis_events as Array<{
+      day: number;
+      affected_metric: string;
+      crisis_value: number;
+      status: "normal" | "advarsel" | "kritisk";
+    }>;
+
+    // Filter metrics by unlock_day
+    const unlockedMetrics = baseMetrics.filter((m) => m.unlock_day <= day);
+
+    // Calculate progressive values
+    const progressiveMetrics: SystemMetrikk[] = unlockedMetrics.map(
+      (metric) => {
+        // Calculate sigmoid value
+        let value = this.calculateSigmoidValue(
+          metric.min,
+          metric.maks,
+          day,
+          k,
+          midpoint,
+        );
+
+        // Apply crisis penalties if unresolved
+        const crisis = crisisEvents.find(
+          (c) => c.affected_metric === metric.navn && c.day <= day,
+        );
+
+        if (crisis) {
+          // Check if crisis is resolved
+          const crisisResolved =
+            (crisis.affected_metric === "NISSEKRAFT" &&
+              this.isCrisisResolved("antenna")) ||
+            (crisis.affected_metric === "BREVFUGL-SVERM" &&
+              this.isCrisisResolved("inventory"));
+
+          if (!crisisResolved) {
+            // Freeze metric at crisis value
+            value = crisis.crisis_value;
+          }
+        }
+
+        // Determine status
+        let status = this.getMetricStatus(value, metric.maks);
+
+        // Apply crisis status if active
+        if (crisis && crisis.status) {
+          const crisisResolved =
+            (crisis.affected_metric === "NISSEKRAFT" &&
+              this.isCrisisResolved("antenna")) ||
+            (crisis.affected_metric === "BREVFUGL-SVERM" &&
+              this.isCrisisResolved("inventory"));
+
+          if (!crisisResolved) {
+            status = crisis.status;
+          }
+        }
+
+        return {
+          navn: metric.navn,
+          verdi: value,
+          maks: metric.maks,
+          status,
+        };
+      },
+    );
+
+    return progressiveMetrics;
+  }
+
+  /**
+   * Get current system metrics (wrapper for getProgressiveMetrics)
+   * Used by SystemStatus component
+   */
+  static getCurrentSystemMetrics(): SystemMetrikk[] {
+    const currentDay = getCurrentDay();
+    return this.getProgressiveMetrics(currentDay);
+  }
+
+  /**
+   * ============================================================
+   * DYNAMIC ALERTS
+   * ============================================================
+   */
+
+  /**
+   * Generate timestamp for alert (HH:MM format)
+   */
+  private static generateAlertTimestamp(): string {
+    const now = getCurrentDate();
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  }
+
+  /**
+   * Get daily narrative alerts for current day
+   *
+   * BEHAVIOR:
+   * - Selects daily_alerts[day-1] as primary alert
+   * - Adds active crisis alerts at top (kritisk priority)
+   * - Injects milestone celebrations (Day 8, 16, 22)
+   * - Merges recent quest alert_overrides (last 3 days)
+   * - Returns max 8 alerts, newest first
+   *
+   * @param day - Current day (1-24)
+   * @param completedDays - Set of completed day numbers
+   * @returns Array of Varsel objects for display
+   */
+  static getDailyAlerts(day: number, completedDays: Set<number>): Varsel[] {
+    const alerts: Varsel[] = [];
+    const dailyAlerts = (
+      statiskInnhold as unknown as {
+        daily_alerts: Array<{
+          day: number;
+          tekst: string;
+          type: "info" | "advarsel" | "kritisk";
+        }>;
+      }
+    ).daily_alerts;
+
+    // 1. Add crisis alerts if active (highest priority)
+    if (day >= 11 && !this.isCrisisResolved("antenna")) {
+      alerts.push({
+        tekst: "⏰ KRITISK: TIDSANOMALIER - ANTENNE-SYSTEM NEDE!",
+        type: "kritisk",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 11,
+      });
+    }
+
+    if (day >= 16 && !this.isCrisisResolved("inventory")) {
+      alerts.push({
+        tekst: "🔧 KRITISK: INVENTAR-SYSTEM KRASJET - TRENGER HJELP!",
+        type: "kritisk",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 16,
+      });
+    }
+
+    // 2. Add primary daily alert for current day
+    const dailyAlert = dailyAlerts.find((a) => a.day === day);
+    if (dailyAlert) {
+      alerts.push({
+        tekst: dailyAlert.tekst,
+        type: dailyAlert.type,
+        tidspunkt: this.generateAlertTimestamp(),
+        day: dailyAlert.day,
+      });
+    }
+
+    // 3. Add milestone celebration alerts
+    if (day === 8 && completedDays.has(8)) {
+      alerts.push({
+        tekst: "🎉 NISSENE: Første uke fullført! Kaken var for stor...",
+        type: "info",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 8,
+      });
+    }
+
+    if (day === 16 && completedDays.has(16)) {
+      alerts.push({
+        tekst: "🎂 WINTER: Halvveis! Gaveproduksjon på topp!",
+        type: "info",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 16,
+      });
+    }
+
+    if (day === 22 && completedDays.has(22)) {
+      alerts.push({
+        tekst: "⏰ ORAKELET: To dager! Magien intensiveres!",
+        type: "advarsel",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 22,
+      });
+    }
+
+    // 4. Sort by priority (kritisk > advarsel > info) and day (newest first)
+    const priorityOrder = { kritisk: 0, advarsel: 1, info: 2 };
+    alerts.sort((a, b) => {
+      const priorityDiff = priorityOrder[a.type] - priorityOrder[b.type];
+      if (priorityDiff !== 0) return priorityDiff;
+      return (b.day || 0) - (a.day || 0);
+    });
+
+    // 5. Return max 8 alerts
+    return alerts.slice(0, 8);
   }
 
   /**

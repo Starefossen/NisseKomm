@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 
-export type IconColor = "green" | "red" | "gold" | "blue" | "gray";
+export type IconColor = "green" | "red" | "gold" | "blue" | "gray" | "yellow";
 
 interface IconProps extends Omit<ComponentProps<"img">, "src" | "alt"> {
   name: string;
@@ -15,6 +15,8 @@ const colorFilters: Record<IconColor, string> = {
   gold: "brightness(0) saturate(100%) invert(80%) sepia(62%) saturate(1523%) hue-rotate(359deg) brightness(104%) contrast(104%)",
   blue: "brightness(0) saturate(100%) invert(75%) sepia(71%) saturate(2234%) hue-rotate(151deg) brightness(104%) contrast(101%)",
   gray: "brightness(0) saturate(100%) invert(44%) sepia(0%) saturate(0%) hue-rotate(199deg) brightness(92%) contrast(88%)",
+  yellow:
+    "brightness(0) saturate(100%) invert(96%) sepia(90%) saturate(2069%) hue-rotate(359deg) brightness(104%) contrast(104%)",
 };
 
 export function Icon({

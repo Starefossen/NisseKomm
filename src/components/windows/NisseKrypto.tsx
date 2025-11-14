@@ -346,9 +346,10 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                     disabled={challenge.isSolved}
                     className={`
                       w-full p-4 text-left border-2 transition-all
-                      ${challenge.isSolved
-                        ? "border-(--gold) bg-(--gold)/10 text-(--gold) cursor-not-allowed"
-                        : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-(--neon-green)/10 text-(--neon-green)"
+                      ${
+                        challenge.isSolved
+                          ? "border-(--gold) bg-(--gold)/10 text-(--gold) cursor-not-allowed"
+                          : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-(--neon-green)/10 text-(--neon-green)"
                       }
                     `}
                   >
@@ -420,10 +421,11 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                   return (
                     <div
                       key={i}
-                      className={`aspect-square border flex items-center justify-center ${symbol
+                      className={`aspect-square border flex items-center justify-center ${
+                        symbol
                           ? "border-(--neon-green) bg-(--neon-green)/10"
                           : "border-(--gray)/30 bg-(--gray)/5"
-                        }`}
+                      }`}
                     >
                       {symbol ? (
                         <Icon
@@ -509,9 +511,10 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                       className={`
                         aspect-square min-w-12 min-h-12 md:min-w-16 md:min-h-16 border-2 flex flex-col items-center justify-center p-1 md:p-2
                         touch-none
-                        ${symbol
-                          ? "border-(--neon-green) bg-(--neon-green)/10 cursor-grab active:cursor-grabbing hover:bg-(--neon-green)/20 active:scale-95"
-                          : "border-(--gray)/20 bg-(--gray)/5"
+                        ${
+                          symbol
+                            ? "border-(--neon-green) bg-(--neon-green)/10 cursor-grab active:cursor-grabbing hover:bg-(--neon-green)/20 active:scale-95"
+                            : "border-(--gray)/20 bg-(--gray)/5"
                         }
                       `}
                       style={symbol ? {} : { opacity: 0.2 }}
@@ -563,15 +566,16 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                         className={`
                           aspect-square min-w-12 min-h-12 md:min-w-16 md:min-h-16 border-2 flex flex-col items-center justify-center p-1 md:p-2 relative
                           touch-none
-                          ${!isUsed
-                            ? "border-(--gray)/20 bg-(--gray)/5"
-                            : symbol
-                              ? positionFb === "correct"
-                                ? "border-(--gold) bg-(--gold)/20 animate-[gold-flash_1s_ease-in-out]"
-                                : positionFb === "wrong"
-                                  ? "border-(--christmas-red) bg-(--christmas-red)/20 animate-[red-shake_0.5s_ease-in-out]"
-                                  : "border-(--cold-blue) bg-(--cold-blue)/10"
-                              : "border-(--cold-blue) border-dashed bg-(--cold-blue)/5 hover:bg-(--cold-blue)/10"
+                          ${
+                            !isUsed
+                              ? "border-(--gray)/20 bg-(--gray)/5"
+                              : symbol
+                                ? positionFb === "correct"
+                                  ? "border-(--gold) bg-(--gold)/20 animate-[gold-flash_1s_ease-in-out]"
+                                  : positionFb === "wrong"
+                                    ? "border-(--christmas-red) bg-(--christmas-red)/20 animate-[red-shake_0.5s_ease-in-out]"
+                                    : "border-(--cold-blue) bg-(--cold-blue)/10"
+                                : "border-(--cold-blue) border-dashed bg-(--cold-blue)/5 hover:bg-(--cold-blue)/10"
                           }
                         `}
                       >
@@ -621,12 +625,13 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
               <div
                 className={`
                 p-4 border-2 text-center font-bold tracking-wider
-                ${feedback.startsWith("✅")
+                ${
+                  feedback.startsWith("✅")
                     ? "border-(--gold) bg-(--gold)/20 text-(--gold) animate-[gold-flash_1s_ease-in-out]"
                     : feedback.startsWith("⚠️")
                       ? "border-(--cold-blue) bg-(--cold-blue)/20 text-(--cold-blue)"
                       : "border-(--christmas-red) bg-(--christmas-red)/20 text-(--christmas-red) animate-[red-shake_0.5s_ease-in-out]"
-                  }
+                }
               `}
               >
                 {feedback}
@@ -647,7 +652,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                 disabled={
                   isProcessing ||
                   challengeGrid.filter((s) => s !== null).length <
-                  selectedChallenge.sequenceLength
+                    selectedChallenge.sequenceLength
                 }
                 className="flex-1 p-3 border-2 border-(--cold-blue) text-black bg-(--cold-blue) hover:shadow-[0_0_15px_rgba(0,221,255,0.6)] transition-all disabled:opacity-50 disabled:cursor-not-allowed font-bold tracking-wider"
               >

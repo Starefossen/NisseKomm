@@ -191,25 +191,6 @@ export interface DecryptionChallenge {
 }
 
 /**
- * System status metric override for dynamic sidebar
- * @public - Used in Oppdrag interface
- */
-export interface SystemStatusOverride {
-  metricName: string; // Metric to override (e.g., "JULESIGNAL")
-  value: number; // New value (0-100)
-  status: "normal" | "advarsel" | "kritisk"; // New status level (Norwegian)
-}
-
-/**
- * Alert override for dynamic alert feed
- * @public - Used in Oppdrag interface
- */
-export interface AlertOverride {
-  text: string; // Alert text
-  type: "info" | "advarsel" | "kritisk"; // Alert type (Norwegian)
-}
-
-/**
  * Print material for parent setup guide
  * @public - Used in Oppdrag interface
  */
@@ -254,14 +235,13 @@ export interface Oppdrag {
   progressive_hints?: ProgressiveHint[]; // Hints revealed after failed attempts
   symbol_clue?: DecryptionSymbol; // Symbol clue hidden in the real world
   decryption_challenge?: DecryptionChallenge; // Symbol-based decryption puzzle
-  system_status_override?: SystemStatusOverride; // Override sidebar system metrics
-  alert_override?: AlertOverride; // Inject alert into feed
   print_materials?: PrintMaterial[]; // Additional print materials for parents
 }
 
 // Alert/warning message
 export interface Varsel {
-  id: string;
+  id?: string;
+  day?: number; // Day number for daily alerts
   tekst: string;
   type: "info" | "advarsel" | "kritisk";
   tidspunkt: string;
@@ -285,14 +265,8 @@ export interface SystemMetrikk {
   verdi: number;
   maks: number;
   status: "normal" | "advarsel" | "kritisk";
-}
-
-// Calendar day configuration
-export interface KalenderDag {
-  dag: number;
-  låst: boolean;
-  fullført: boolean;
-  hendelse?: string; // Optional public event
+  min?: number; // Minimum value for progression calculation
+  unlock_day?: number; // Day when metric becomes visible
 }
 
 // Submitted code log (localStorage)

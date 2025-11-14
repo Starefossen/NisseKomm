@@ -1,4 +1,146 @@
 {
+  "progression_config": {
+    "sigmoid": {
+      "k": 0.4,
+      "midpoint": 12
+    },
+    "crisis_events": [
+      {
+        "day": 11,
+        "affected_metric": "NISSEKRAFT",
+        "crisis_value": 45,
+        "status": "kritisk"
+      },
+      {
+        "day": 16,
+        "affected_metric": "BREVFUGL-SVERM",
+        "crisis_value": 15,
+        "status": "kritisk"
+      }
+    ]
+  },
+  "daily_alerts": [
+    {
+      "day": 1,
+      "tekst": "🎅 JULIUS: Velkommen til Snøfall! Oppstartsekvens initialisert.",
+      "type": "info"
+    },
+    {
+      "day": 2,
+      "tekst": "⚙️ IQ: Tester oppfinnelser. Smell forventet. Anbefaler hjelm.",
+      "type": "info"
+    },
+    {
+      "day": 3,
+      "tekst": "❄️ ORAKELET: Stor snøstorm detektert. Vennskapet holder oss varme.",
+      "type": "advarsel"
+    },
+    {
+      "day": 4,
+      "tekst": "🦌 RUDOLF: Min nese lyser perfekt i dag! (Bare så dere vet)",
+      "type": "info"
+    },
+    {
+      "day": 5,
+      "tekst": "📋 WINTER: 847 brevfugler registrert! Organisering på topp!",
+      "type": "info"
+    },
+    {
+      "day": 6,
+      "tekst": "🎅 JULIUS: St. Nikolaus ringte. Ville vise frem skjegget sitt igjen...",
+      "type": "info"
+    },
+    {
+      "day": 7,
+      "tekst": "🔮 ORAKELET: Mørket lurer ved 90° nord. Våk deg for polarnatten.",
+      "type": "advarsel"
+    },
+    {
+      "day": 8,
+      "tekst": "🎉 NISSENE: Første uke fullført! Kake til alle! (For stor kake...)",
+      "type": "info"
+    },
+    {
+      "day": 9,
+      "tekst": "👵 NISSEMOR: Julekuleblåsing i gang. 200 perfekte kuler produsert!",
+      "type": "info"
+    },
+    {
+      "day": 10,
+      "tekst": "🧝 RAMPENISSEN: Fant 5 grønne ting! Føler meg som detektiv! 🕵️",
+      "type": "info"
+    },
+    {
+      "day": 11,
+      "tekst": "⏰ IQ: KRISE! Klokker gått amok! Viser 87 o'clock... Unnskyld!",
+      "type": "kritisk"
+    },
+    {
+      "day": 12,
+      "tekst": "🎵 NISSENE: Sangøvelse! Rudolf muler. IQ tilbyr ørepropper.",
+      "type": "info"
+    },
+    {
+      "day": 13,
+      "tekst": "🕯️ NISSEMOR: Lucia-dag! 500 lussekatter spist på 20 min. Rekord!",
+      "type": "info"
+    },
+    {
+      "day": 14,
+      "tekst": "🕊️ WINTER: Brevfugl-system fullført! Alle ønsker organisert!",
+      "type": "info"
+    },
+    {
+      "day": 15,
+      "tekst": "🎲 RAMPENISSEN: Fant mandelen i bolle #3! (Nissemor hjalp meg...)",
+      "type": "info"
+    },
+    {
+      "day": 16,
+      "tekst": "🎂 WINTER: HALVVEIS! Gaveproduksjon på topp! (Men inventar krasjet)",
+      "type": "advarsel"
+    },
+    {
+      "day": 17,
+      "tekst": "⭐ ORAKELET: Stjernene viser veien. Mørket svekkes. Holder fram!",
+      "type": "info"
+    },
+    {
+      "day": 18,
+      "tekst": "❄️ PIL: Snøengler overalt! 18 kanter på 3 snøfnugg = magi!",
+      "type": "info"
+    },
+    {
+      "day": 19,
+      "tekst": "🦌 RUDOLF: Krever pauserom og avokadotoast. NEI? Da sulter jeg!",
+      "type": "advarsel"
+    },
+    {
+      "day": 20,
+      "tekst": "🛷 TRIXTER: Slede testet! Fungerer! Rudolf gjorde unødvendig looping.",
+      "type": "info"
+    },
+    {
+      "day": 21,
+      "tekst": "🌟 NISSENE: Rudolf reddet oss! Hans nese spredte Mørket! Helt! ⭐",
+      "type": "info"
+    },
+    {
+      "day": 22,
+      "tekst": "⏰ ORAKELET: To dager igjen! Magien intensiveres! Panikk kontrollert.",
+      "type": "advarsel"
+    },
+    {
+      "day": 23,
+      "tekst": "🎄 JULIUS: I KVELD FLYR VI! Når dere sovner, kommer Julius! 🛷✨",
+      "type": "kritisk"
+    },
+    {
+      "day": 24,
+      "tekst": "🎅 JULIUS: God morgen! Jeg var her i natt! Håper dere likte gavene! ✨",
+      "type": "info"
+    }
+  ],
   "varsler": [
     {
       "id": "v1",
@@ -328,27 +470,31 @@
   ],
   "systemMetrikker": [
     {
-      "navn": "JULESIGNAL",
-      "verdi": 87,
-      "maks": 100,
-      "status": "normal"
-    },
-    {
       "navn": "NISSEKRAFT",
-      "verdi": 94,
+      "min": 20,
       "maks": 100,
-      "status": "normal"
-    },
-    {
-      "navn": "GAVEPRODUKSJON",
-      "verdi": 12,
-      "maks": 24,
+      "unlock_day": 1,
       "status": "advarsel"
     },
     {
-      "navn": "SLEDE ENERGI",
-      "verdi": 78,
+      "navn": "BREVFUGL-SVERM",
+      "min": 0,
       "maks": 100,
+      "unlock_day": 4,
+      "status": "normal"
+    },
+    {
+      "navn": "VERKSTED-VARME",
+      "min": 35,
+      "maks": 100,
+      "unlock_day": 7,
+      "status": "normal"
+    },
+    {
+      "navn": "SLEDE-TURBO",
+      "min": 0,
+      "maks": 100,
+      "unlock_day": 10,
       "status": "normal"
     }
   ],

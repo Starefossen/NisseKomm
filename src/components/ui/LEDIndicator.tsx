@@ -19,6 +19,8 @@ export function LEDIndicator({
         return "var(--christmas-red)";
       case "gold":
         return "var(--gold)";
+      case "yellow":
+        return "#ffff00";
       case "blue":
         return "var(--cold-blue)";
       case "gray":

@@ -31,14 +31,12 @@ import {
   isCalendarActive as isDateCalendarActive,
 } from "@/lib/date-utils";
 import statiskInnholdData from "@/data/statisk_innhold.json";
-import { Varsel, FilNode, SystemMetrikk, KalenderDag } from "@/types/innhold";
+import { Varsel, FilNode } from "@/types/innhold";
 
 const oppdrag = GameEngine.getAllQuests();
 const { varsler, filer } = statiskInnholdData as {
   varsler: Varsel[];
   filer: FilNode[];
-  systemMetrikker: SystemMetrikk[];
-  kalender: KalenderDag[];
 };
 
 /**
@@ -377,7 +375,7 @@ export default function Home() {
                               label="LÅST"
                               color="gray"
                               disabled
-                              onClick={() => { }}
+                              onClick={() => {}}
                             />
                           );
                         }

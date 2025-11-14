@@ -34,13 +34,7 @@
         "afterAttempts": 6,
         "text": "Hint: Svaret er SEKK."
       }
-    ],
-
-    "system_status_override": {
-      "metricName": "SEKKVEKT",
-      "value": 85,
-      "status": "normal"
-    }
+    ]
   },
   {
     "dag": 9,
@@ -137,13 +131,7 @@
         "afterAttempts": 6,
         "text": "Hint: Svaret er GRØNN."
       }
-    ],
-
-    "system_status_override": {
-      "metricName": "FARGEKODER",
-      "value": 33,
-      "status": "normal"
-    }
+    ]
   },
   {
     "dag": 11,
@@ -186,16 +174,6 @@
         "text": "Hint: Svaret er 12."
       }
     ],
-
-    "system_status_override": {
-      "metricName": "JULESIGNAL",
-      "value": 45,
-      "status": "kritisk"
-    },
-    "alert_override": {
-      "text": "KRITISK: TIDSANOMALIER DETEKTERT ⏰",
-      "type": "kritisk"
-    },
     "bonusoppdrag": {
       "tittel": "KRITISK: Signal-krise",
       "beskrivelse": "SNØFALL TV har mistet signalet! Antenne-systemet er ødelagt. Rampenissen trenger AKUTT hjelp til å bygge en nød-antenne. Bruk tinfolie og tape for å lage en antenne (ca 20cm høy). Fest den på toppen av TV-en. La den stå over natten - signalet vil automatisk gjenopprettes neste morgen når systemet har kalibrert den nye antennen.",
@@ -258,11 +236,6 @@
       "correctSequence": [1, 0, 2],
       "messageWhenSolved": "❄️ FROSNE KODER DEKRYPTERT! ❄️\n\nGratulerer! Dere har låst opp det første hemmelige nivået i NisseKrypto-systemet. Julius' notater om de frosne kodene fra snøstormen er nå tilgjengelige i NISSENET under HEMMELIG-mappen.\n\nDisse symbolene representerer hjertenes tre farger - grønn for vekst, rød for varme, blå for kulde. Sammen former de den perfekte balansen i Snøfall.\n\nVel gjort, krypto-agenter! 🔓",
       "unlocksFiles": ["frosne-koder.txt"]
-    },
-    "system_status_override": {
-      "metricName": "NISSEKRAFT",
-      "value": 88,
-      "status": "normal"
     }
   },
   {
@@ -305,20 +278,14 @@
       },
       {
         "afterAttempts": 6,
-        "text": "Hint: Svaret er LYS."
+        "text": "Hint: Svaret er LUCIA."
       }
-    ],
-
-    "system_status_override": {
-      "metricName": "NISSEKRAFT",
-      "value": 92,
-      "status": "normal"
-    }
+    ]
   },
   {
     "dag": 14,
     "tittel": "Pakke-gåten",
-    "nissemail_tekst": "Rampenissen har pakket inn alt! Leker, bøker, til og med dørhåndtak! På tape-bitene står det bokstaver: P-A-P-I-R. Hva bruker vi til å pakke inn gaver?",
+    "nissemail_tekst": "Rampenissen har pakket inn gjenstander rundt i huset! På hver pakke er det tape-biter med én bokstav: P, A, P, I, R. Finn dem alle og sett sammen ordet. Hva bruker vi til å pakke gaver?",
     "kode": "PAPIR",
     "eventyr": {
       "id": "brevfugl-mysteriet",
@@ -358,16 +325,6 @@
         "text": "Hint: Svaret er PAPIR."
       }
     ],
-
-    "system_status_override": {
-      "metricName": "BREVFUGL-SYSTEM",
-      "value": 100,
-      "status": "normal"
-    },
-    "alert_override": {
-      "text": "SUKSESS: BREVFUGL-MYSTERIET LØST! 🕊️",
-      "type": "normal"
-    },
     "print_materials": [
       {
         "type": "note",

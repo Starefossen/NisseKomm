@@ -36,11 +36,6 @@
       "symbolColor": "red",
       "description": "Rød sol fra frostrosen"
     },
-    "system_status_override": {
-      "metricName": "FARGEKODER",
-      "value": 100,
-      "status": "normal"
-    },
     "print_materials": [
       {
         "type": "guide",
@@ -89,16 +84,6 @@
         "text": "Hint: Svaret er tallet 24."
       }
     ],
-
-    "system_status_override": {
-      "metricName": "INVENTAR",
-      "value": 0,
-      "status": "kritisk"
-    },
-    "alert_override": {
-      "text": "KRITISK: INVENTAR-SYSTEM FEIL 🔧",
-      "type": "kritisk"
-    },
     "print_materials": [
       {
         "type": "activity",
@@ -165,22 +150,7 @@
         "text": "Hint: Svaret er STJERNE (7 bokstaver: S-T-J-E-R-N-E)."
       }
     ],
-
-    "system_status_override": {
-      "metricName": "MØRKET",
-      "value": 75,
-      "status": "advarsel"
-    },
-    "alert_override": {
-      "text": "ADVARSEL: MØRKETS KRAFT ØKER 🌑",
-      "type": "advarsel"
-    },
     "print_materials": [
-      {
-        "type": "map",
-        "title": "Stjernekart med 6-kantede symboler",
-        "content": "Tegn et kart som viser romrekkefølgen med snøfnugg-symboler (6-kanter). Eksempel: Stue → Kjøkken → Gang → Soverom → Bad → Barnerom → Gang."
-      },
       {
         "type": "guide",
         "title": "Lucia-tradisjon (13. desember)",
@@ -247,11 +217,6 @@
       "messageWhenSolved": "⭐ STJERNETEGN DEKRYPTERT! ⭐\n\nFantastisk! Dere har mestret den andre utfordringen. Solens rekkefølge har åpenbart gamle hemmeligheter fra Julius' arkiv.\n\nHjerter og soler - kjærlighet og lys - sammen former de stiene gjennom vinterhimmelen som Julius følger på julenatten. Orakelet forutså at kun de mest dedikerte ville finne denne kombinasjonen.\n\nHemmelighetene ligger nå åpne i NISSENET! 🌟",
       "unlocksFiles": ["stjernetegn.txt"]
     },
-    "system_status_override": {
-      "metricName": "SLEDEVEKT",
-      "value": 95,
-      "status": "advarsel"
-    },
     "print_materials": [
       {
         "type": "activity",
@@ -307,16 +272,6 @@
         "text": "Hint: Svaret er REINSDYR (8 bokstaver: R-E-I-N-S-D-Y-R)."
       }
     ],
-
-    "system_status_override": {
-      "metricName": "NISSEKRAFT",
-      "value": 45,
-      "status": "advarsel"
-    },
-    "alert_override": {
-      "text": "ADVARSEL: NISSETRETTHET DETEKTERT ☕",
-      "type": "advarsel"
-    },
     "print_materials": [
       {
         "type": "map",
@@ -404,15 +359,6 @@
       "symbolIcon": "moon",
       "symbolColor": "green",
       "description": "Grønn måne fra nissens gave"
-    },
-    "system_status_override": {
-      "metricName": "SLEDEVEKT",
-      "value": 100,
-      "status": "normal"
-    },
-    "alert_override": {
-      "text": "SUKSESS: SLEDE KLAR FOR OPPDRAG 🛷",
-      "type": "normal"
     },
     "print_materials": [
       {
@@ -502,16 +448,6 @@
         "text": "Hint: Svaret er tallet 5."
       }
     ],
-
-    "system_status_override": {
-      "metricName": "MØRKET",
-      "value": 0,
-      "status": "normal"
-    },
-    "alert_override": {
-      "text": "SUKSESS: MØRKET ER BESEIRET! LYSET HAR SEIERT ⭐",
-      "type": "normal"
-    },
     "print_materials": [
       {
         "type": "activity",

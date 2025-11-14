@@ -568,4 +568,218 @@ describe("GameEngine", () => {
       expect(eventyr.getParentGuidance("nonexistent-arc")).toBeUndefined();
     });
   });
+
+  describe("Progressive System Status", () => {
+    it("should return metrics with sigmoid progression", () => {
+      const metrics = GameEngine.getProgressiveMetrics(12);
+
+      expect(metrics.length).toBeGreaterThan(0);
+      metrics.forEach((metric) => {
+        expect(metric.navn).toBeDefined();
+        expect(metric.verdi).toBeGreaterThanOrEqual(0);
+        expect(metric.verdi).toBeLessThanOrEqual(metric.maks);
+        expect(metric.maks).toBe(100);
+        expect(["normal", "advarsel", "kritisk"]).toContain(metric.status);
+      });
+    });
+
+    it("should show lower values on day 1", () => {
+      const day1Metrics = GameEngine.getProgressiveMetrics(1);
+      const day12Metrics = GameEngine.getProgressiveMetrics(12);
+
+      // Day 1 should have lower values than day 12 (midpoint)
+      const day1Avg =
+        day1Metrics.reduce((sum, m) => sum + m.verdi, 0) / day1Metrics.length;
+      const day12Avg =
+        day12Metrics.reduce((sum, m) => sum + m.verdi, 0) / day12Metrics.length;
+
+      expect(day1Avg).toBeLessThan(day12Avg);
+    });
+
+    it("should show higher values on day 24", () => {
+      const day12Metrics = GameEngine.getProgressiveMetrics(12);
+      const day24Metrics = GameEngine.getProgressiveMetrics(24);
+
+      // Day 24 should have higher values than day 12
+      const day12Avg =
+        day12Metrics.reduce((sum, m) => sum + m.verdi, 0) / day12Metrics.length;
+      const day24Avg =
+        day24Metrics.reduce((sum, m) => sum + m.verdi, 0) / day24Metrics.length;
+
+      expect(day24Avg).toBeGreaterThan(day12Avg);
+    });
+
+    it("should unlock metrics progressively", () => {
+      const day1Metrics = GameEngine.getProgressiveMetrics(1);
+      const day4Metrics = GameEngine.getProgressiveMetrics(4);
+      const day7Metrics = GameEngine.getProgressiveMetrics(7);
+      const day10Metrics = GameEngine.getProgressiveMetrics(10);
+
+      // Only NISSEKRAFT visible on day 1
+      expect(day1Metrics.length).toBe(1);
+      expect(day1Metrics[0].navn).toBe("NISSEKRAFT");
+
+      // BREVFUGL-SVERM unlocks day 4
+      expect(day4Metrics.length).toBe(2);
+
+      // VERKSTED-VARME unlocks day 7
+      expect(day7Metrics.length).toBe(3);
+
+      // SLEDE-TURBO unlocks day 10
+      expect(day10Metrics.length).toBe(4);
+    });
+
+    it("should freeze NISSEKRAFT at crisis value on day 11 if unresolved", () => {
+      const day11Metrics = GameEngine.getProgressiveMetrics(11);
+      const nissekraft = day11Metrics.find((m) => m.navn === "NISSEKRAFT");
+
+      expect(nissekraft).toBeDefined();
+      expect(nissekraft!.verdi).toBe(45); // Crisis value
+      expect(nissekraft!.status).toBe("kritisk");
+    });
+
+    it("should restore NISSEKRAFT after crisis resolved", () => {
+      // Resolve antenna crisis
+      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
+
+      const day11Metrics = GameEngine.getProgressiveMetrics(11);
+      const nissekraft = day11Metrics.find((m) => m.navn === "NISSEKRAFT");
+
+      expect(nissekraft).toBeDefined();
+      expect(nissekraft!.verdi).toBeGreaterThan(45); // Restored to normal progression
+      expect(nissekraft!.status).not.toBe("kritisk");
+    });
+
+    it("should freeze BREVFUGL-SVERM at crisis value on day 16 if unresolved", () => {
+      const day16Metrics = GameEngine.getProgressiveMetrics(16);
+      const brevfugl = day16Metrics.find((m) => m.navn === "BREVFUGL-SVERM");
+
+      expect(brevfugl).toBeDefined();
+      expect(brevfugl!.verdi).toBe(15); // Crisis value
+      expect(brevfugl!.status).toBe("kritisk");
+    });
+
+    it("should restore BREVFUGL-SVERM after crisis resolved", () => {
+      // Resolve inventory crisis
+      BadgeManager.checkAndAwardBadge("inventar-ekspert", true);
+
+      const day16Metrics = GameEngine.getProgressiveMetrics(16);
+      const brevfugl = day16Metrics.find((m) => m.navn === "BREVFUGL-SVERM");
+
+      expect(brevfugl).toBeDefined();
+      expect(brevfugl!.verdi).toBeGreaterThan(15); // Restored to normal progression
+      expect(brevfugl!.status).not.toBe("kritisk");
+    });
+
+    it("should classify status based on thresholds", () => {
+      // Test various days to ensure status classification works
+      const day1Metrics = GameEngine.getProgressiveMetrics(1);
+      const day24Metrics = GameEngine.getProgressiveMetrics(24);
+
+      // Day 1 metrics should be lower (possibly yellow/advarsel)
+      const day1Status = day1Metrics.map((m) => m.status);
+      expect(day1Status.some((s) => s === "advarsel" || s === "kritisk")).toBe(
+        true,
+      );
+
+      // Day 24 metrics should be high (green/normal)
+      const day24Status = day24Metrics.map((m) => m.status);
+      expect(day24Status.some((s) => s === "normal")).toBe(true);
+    });
+  });
+
+  describe("Dynamic Alert System", () => {
+    it("should return alerts for current day", () => {
+      const completedDays = new Set<number>();
+      const day1Alerts = GameEngine.getDailyAlerts(1, completedDays);
+
+      expect(day1Alerts.length).toBeGreaterThan(0);
+      expect(day1Alerts[0].tekst).toBeDefined();
+      expect(["info", "advarsel", "kritisk"]).toContain(day1Alerts[0].type);
+    });
+
+    it("should include crisis alerts when active", () => {
+      const completedDays = new Set<number>();
+      const day11Alerts = GameEngine.getDailyAlerts(11, completedDays);
+
+      // Should have antenna crisis alert
+      const crisisAlert = day11Alerts.find((a) => a.tekst.includes("ANTENNE"));
+      expect(crisisAlert).toBeDefined();
+      expect(crisisAlert!.type).toBe("kritisk");
+    });
+
+    it("should remove crisis alerts when resolved", () => {
+      // Resolve antenna crisis
+      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
+
+      const completedDays = new Set<number>();
+      const day11Alerts = GameEngine.getDailyAlerts(11, completedDays);
+
+      // Should NOT have antenna crisis alert anymore
+      const crisisAlert = day11Alerts.find((a) => a.tekst.includes("ANTENNE"));
+      expect(crisisAlert).toBeUndefined();
+    });
+
+    it("should show multiple crisis alerts simultaneously", () => {
+      const completedDays = new Set<number>();
+      const day17Alerts = GameEngine.getDailyAlerts(17, completedDays);
+
+      // Both crises should be active on day 17
+      const antennaAlert = day17Alerts.find((a) => a.tekst.includes("ANTENNE"));
+      const inventoryAlert = day17Alerts.find((a) =>
+        a.tekst.includes("INVENTAR"),
+      );
+
+      expect(antennaAlert).toBeDefined();
+      expect(inventoryAlert).toBeDefined();
+    });
+
+    it("should include milestone celebration alerts", () => {
+      const completedDays = new Set([8]);
+      const day8Alerts = GameEngine.getDailyAlerts(8, completedDays);
+
+      // Should have week 1 completion celebration
+      const celebrationAlert = day8Alerts.find(
+        (a) => a.tekst.includes("uke") || a.tekst.includes("fullført"),
+      );
+      expect(celebrationAlert).toBeDefined();
+    });
+
+    it("should maintain 3-day rolling window", () => {
+      const completedDays = new Set([1, 2, 3]);
+      const day3Alerts = GameEngine.getDailyAlerts(3, completedDays);
+
+      // Should have alerts from days 1, 2, and 3
+      const days = new Set(day3Alerts.map((a) => a.day).filter((d) => d));
+      expect(days.has(1) || days.has(2) || days.has(3)).toBe(true);
+    });
+
+    it("should limit to max 8 alerts", () => {
+      const completedDays = new Set([1, 2, 3, 4, 5, 6, 7, 8]);
+      const alerts = GameEngine.getDailyAlerts(8, completedDays);
+
+      expect(alerts.length).toBeLessThanOrEqual(8);
+    });
+
+    it("should prioritize kritisk over advarsel over info", () => {
+      const completedDays = new Set<number>();
+      const day11Alerts = GameEngine.getDailyAlerts(11, completedDays);
+
+      // Check that kritisk alerts come first
+      if (day11Alerts.length > 1) {
+        const firstKritisk = day11Alerts.findIndex((a) => a.type === "kritisk");
+        const firstAdvarsel = day11Alerts.findIndex(
+          (a) => a.type === "advarsel",
+        );
+        const firstInfo = day11Alerts.findIndex((a) => a.type === "info");
+
+        if (firstKritisk !== -1 && firstAdvarsel !== -1) {
+          expect(firstKritisk).toBeLessThan(firstAdvarsel);
+        }
+        if (firstAdvarsel !== -1 && firstInfo !== -1) {
+          expect(firstAdvarsel).toBeLessThan(firstInfo);
+        }
+      }
+    });
+  });
 });

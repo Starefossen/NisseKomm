@@ -702,6 +702,359 @@ function NissemorGuideContent() {
         ))}
       </div>
 
+      {/* Progression Visualization Section */}
+      <div className="max-w-7xl mx-auto px-4 pb-12">
+        <details className="border-4 border-(--neon-green) bg-(--dark-crt)/90 overflow-hidden">
+          <summary className="cursor-pointer p-6 bg-(--neon-green)/10 hover:bg-(--neon-green)/20 transition-colors font-bold text-xl">
+            📊 SYSTEMSTATUS PROGRESJON (Forklaring for foreldre)
+          </summary>
+          <div className="p-6 space-y-6">
+            <p className="text-(--neon-green)/80">
+              Denne grafen viser hvordan systemmetrikker bygges opp gradvis
+              gjennom kalenderen (1. til 24. desember). Dette er normalt
+              oppførsel - systemet starter lavt og vokser naturlig mot jul. 🎄
+            </p>
+
+            <div className="space-y-8">
+              {/* NISSEKRAFT Chart */}
+              <div>
+                <h3 className="text-lg font-bold mb-2 text-(--neon-green)">
+                  ⚡ NISSEKRAFT
+                </h3>
+                <svg
+                  viewBox="0 0 600 200"
+                  className="w-full h-auto border-2 border-(--neon-green)/30"
+                >
+                  {/* Grid lines */}
+                  {[0, 25, 50, 75, 100].map((y) => (
+                    <line
+                      key={y}
+                      x1="50"
+                      y1={180 - y * 1.3}
+                      x2="590"
+                      y2={180 - y * 1.3}
+                      stroke="rgba(0, 255, 0, 0.1)"
+                      strokeWidth="1"
+                    />
+                  ))}
+                  {/* Y-axis labels */}
+                  {[0, 25, 50, 75, 100].map((y) => (
+                    <text
+                      key={y}
+                      x="35"
+                      y={185 - y * 1.3}
+                      fill="#00ff00"
+                      fontSize="12"
+                      textAnchor="end"
+                    >
+                      {y}
+                    </text>
+                  ))}
+                  {/* X-axis labels */}
+                  {[1, 6, 11, 16, 21, 24].map((day) => (
+                    <text
+                      key={day}
+                      x={50 + (day - 1) * 23.5}
+                      y="195"
+                      fill="#00ff00"
+                      fontSize="12"
+                      textAnchor="middle"
+                    >
+                      {day}
+                    </text>
+                  ))}
+                  {/* Progression curve */}
+                  <polyline
+                    points={Array.from({ length: 24 }, (_, i) => {
+                      const day = i + 1;
+                      const value = Math.min(
+                        100,
+                        20 +
+                          (80 / (1 + Math.exp(-0.4 * (day - 12)))) *
+                            (day >= 11 ? 0.5 : 1),
+                      );
+                      return `${50 + i * 23.5},${180 - value * 1.3}`;
+                    }).join(" ")}
+                    fill="none"
+                    stroke="#00ff00"
+                    strokeWidth="3"
+                  />
+                  {/* Crisis marker at Day 11 */}
+                  <line
+                    x1={50 + 10 * 23.5}
+                    y1="20"
+                    x2={50 + 10 * 23.5}
+                    y2="180"
+                    stroke="#ff0000"
+                    strokeWidth="2"
+                    strokeDasharray="5,5"
+                  />
+                  <text
+                    x={50 + 10 * 23.5}
+                    y="15"
+                    fill="#ff0000"
+                    fontSize="12"
+                    textAnchor="middle"
+                  >
+                    Antenne-krise
+                  </text>
+                </svg>
+                <p className="text-xs text-(--neon-green)/60 mt-2">
+                  Note: Faller kraftig dag 11 (antenne-krise) til den repareres
+                </p>
+              </div>
+
+              {/* BREVFUGL-SVERM Chart */}
+              <div>
+                <h3 className="text-lg font-bold mb-2 text-(--neon-green)">
+                  🕊️ BREVFUGL-SVERM
+                </h3>
+                <svg
+                  viewBox="0 0 600 200"
+                  className="w-full h-auto border-2 border-(--neon-green)/30"
+                >
+                  {/* Grid lines */}
+                  {[0, 25, 50, 75, 100].map((y) => (
+                    <line
+                      key={y}
+                      x1="50"
+                      y1={180 - y * 1.3}
+                      x2="590"
+                      y2={180 - y * 1.3}
+                      stroke="rgba(0, 255, 0, 0.1)"
+                      strokeWidth="1"
+                    />
+                  ))}
+                  {/* Y-axis labels */}
+                  {[0, 25, 50, 75, 100].map((y) => (
+                    <text
+                      key={y}
+                      x="35"
+                      y={185 - y * 1.3}
+                      fill="#00ff00"
+                      fontSize="12"
+                      textAnchor="end"
+                    >
+                      {y}
+                    </text>
+                  ))}
+                  {/* X-axis labels */}
+                  {[1, 6, 11, 16, 21, 24].map((day) => (
+                    <text
+                      key={day}
+                      x={50 + (day - 1) * 23.5}
+                      y="195"
+                      fill="#00ff00"
+                      fontSize="12"
+                      textAnchor="middle"
+                    >
+                      {day}
+                    </text>
+                  ))}
+                  {/* Progression curve */}
+                  <polyline
+                    points={Array.from({ length: 24 }, (_, i) => {
+                      const day = i + 1;
+                      const value = Math.min(
+                        100,
+                        15 +
+                          (85 / (1 + Math.exp(-0.4 * (day - 12)))) *
+                            (day >= 16 ? 0.4 : 1),
+                      );
+                      return `${50 + i * 23.5},${180 - value * 1.3}`;
+                    }).join(" ")}
+                    fill="none"
+                    stroke="#00ff00"
+                    strokeWidth="3"
+                  />
+                  {/* Crisis marker at Day 16 */}
+                  <line
+                    x1={50 + 15 * 23.5}
+                    y1="20"
+                    x2={50 + 15 * 23.5}
+                    y2="180"
+                    stroke="#ff0000"
+                    strokeWidth="2"
+                    strokeDasharray="5,5"
+                  />
+                  <text
+                    x={50 + 15 * 23.5}
+                    y="15"
+                    fill="#ff0000"
+                    fontSize="12"
+                    textAnchor="middle"
+                  >
+                    Inventar-kaos
+                  </text>
+                </svg>
+                <p className="text-xs text-(--neon-green)/60 mt-2">
+                  Note: Faller kraftig dag 16 (inventar-kaos) til den løses
+                </p>
+              </div>
+
+              {/* VERKSTED-VARME Chart */}
+              <div>
+                <h3 className="text-lg font-bold mb-2 text-(--neon-green)">
+                  🔥 VERKSTED-VARME
+                </h3>
+                <svg
+                  viewBox="0 0 600 200"
+                  className="w-full h-auto border-2 border-(--neon-green)/30"
+                >
+                  {/* Grid lines */}
+                  {[0, 25, 50, 75, 100].map((y) => (
+                    <line
+                      key={y}
+                      x1="50"
+                      y1={180 - y * 1.3}
+                      x2="590"
+                      y2={180 - y * 1.3}
+                      stroke="rgba(0, 255, 0, 0.1)"
+                      strokeWidth="1"
+                    />
+                  ))}
+                  {/* Y-axis labels */}
+                  {[0, 25, 50, 75, 100].map((y) => (
+                    <text
+                      key={y}
+                      x="35"
+                      y={185 - y * 1.3}
+                      fill="#00ff00"
+                      fontSize="12"
+                      textAnchor="end"
+                    >
+                      {y}
+                    </text>
+                  ))}
+                  {/* X-axis labels */}
+                  {[1, 6, 11, 16, 21, 24].map((day) => (
+                    <text
+                      key={day}
+                      x={50 + (day - 1) * 23.5}
+                      y="195"
+                      fill="#00ff00"
+                      fontSize="12"
+                      textAnchor="middle"
+                    >
+                      {day}
+                    </text>
+                  ))}
+                  {/* Progression curve */}
+                  <polyline
+                    points={Array.from({ length: 24 }, (_, i) => {
+                      const day = i + 1;
+                      const value = Math.min(
+                        100,
+                        25 + 75 / (1 + Math.exp(-0.4 * (day - 12))),
+                      );
+                      return `${50 + i * 23.5},${180 - value * 1.3}`;
+                    }).join(" ")}
+                    fill="none"
+                    stroke="#00ff00"
+                    strokeWidth="3"
+                  />
+                </svg>
+                <p className="text-xs text-(--neon-green)/60 mt-2">
+                  Note: Gradvis økning uten kriser
+                </p>
+              </div>
+
+              {/* SLEDE-TURBO Chart */}
+              <div>
+                <h3 className="text-lg font-bold mb-2 text-(--neon-green)">
+                  🚀 SLEDE-TURBO
+                </h3>
+                <svg
+                  viewBox="0 0 600 200"
+                  className="w-full h-auto border-2 border-(--neon-green)/30"
+                >
+                  {/* Grid lines */}
+                  {[0, 25, 50, 75, 100].map((y) => (
+                    <line
+                      key={y}
+                      x1="50"
+                      y1={180 - y * 1.3}
+                      x2="590"
+                      y2={180 - y * 1.3}
+                      stroke="rgba(0, 255, 0, 0.1)"
+                      strokeWidth="1"
+                    />
+                  ))}
+                  {/* Y-axis labels */}
+                  {[0, 25, 50, 75, 100].map((y) => (
+                    <text
+                      key={y}
+                      x="35"
+                      y={185 - y * 1.3}
+                      fill="#00ff00"
+                      fontSize="12"
+                      textAnchor="end"
+                    >
+                      {y}
+                    </text>
+                  ))}
+                  {/* X-axis labels */}
+                  {[1, 6, 11, 16, 21, 24].map((day) => (
+                    <text
+                      key={day}
+                      x={50 + (day - 1) * 23.5}
+                      y="195"
+                      fill="#00ff00"
+                      fontSize="12"
+                      textAnchor="middle"
+                    >
+                      {day}
+                    </text>
+                  ))}
+                  {/* Progression curve */}
+                  <polyline
+                    points={Array.from({ length: 24 }, (_, i) => {
+                      const day = i + 1;
+                      const value = Math.min(
+                        100,
+                        10 + 90 / (1 + Math.exp(-0.4 * (day - 12))),
+                      );
+                      return `${50 + i * 23.5},${180 - value * 1.3}`;
+                    }).join(" ")}
+                    fill="none"
+                    stroke="#00ff00"
+                    strokeWidth="3"
+                  />
+                </svg>
+                <p className="text-xs text-(--neon-green)/60 mt-2">
+                  Note: Låses opp dag 10, gradvis økning uten kriser
+                </p>
+              </div>
+            </div>
+
+            <div className="border-2 border-(--neon-green)/30 bg-(--neon-green)/5 p-4">
+              <h4 className="font-bold text-(--gold) mb-2">
+                📌 Viktig for foreldre:
+              </h4>
+              <ul className="space-y-2 text-(--neon-green)/80 text-sm">
+                <li>
+                  • Verdiene starter <strong>lavt</strong> (10-25) og vokser mot
+                  100 gjennom desember
+                </li>
+                <li>
+                  • <strong>NISSEKRAFT</strong> og{" "}
+                  <strong>BREVFUGL-SVERM</strong> får "kriser" som fryser
+                  verdiene til bonusoppdrag løses
+                </li>
+                <li>
+                  • Nye metrikker låses opp progressivt (dag 1, 4, 7, 10) for å
+                  ikke overvelde barnet
+                </li>
+                <li>
+                  • Hvis barnet spør "hvorfor er det så lavt?", kan du forklare:
+                  "Snøfall bygger opp systemer gradvis mot julaften!"
+                </li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+
       {/* Footer */}
       <div className="max-w-7xl mx-auto text-center opacity-70 text-sm pb-8">
         <p>NisseKomm v1.0 - Nissemor Control Panel</p>

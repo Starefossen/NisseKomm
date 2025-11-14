@@ -37,16 +37,6 @@
         "text": "Hint: Stryk det første ordet."
       }
     ],
-
-    "system_status_override": {
-      "metricName": "NISSEKRAFT",
-      "value": 85,
-      "status": "normal"
-    },
-    "alert_override": {
-      "text": "KALENDER AKTIVERT - OPPDRAG STARTER ✨",
-      "type": "normal"
-    },
     "print_materials": [
       {
         "type": "note",
@@ -97,17 +87,7 @@
         "afterAttempts": 6,
         "text": "Hint: Svaret er 34 (13+21=34)."
       }
-    ],
-
-    "system_status_override": {
-      "metricName": "IQ-SYSTEMER",
-      "value": 60,
-      "status": "normal"
-    },
-    "alert_override": {
-      "text": "IQ OPPFINNELSE DETEKTERT ⚡",
-      "type": "normal"
-    }
+    ]
   },
   {
     "dag": 3,
@@ -152,15 +132,6 @@
       "symbolIcon": "heart",
       "symbolColor": "green",
       "description": "Grønt hjerte fra snøstormen"
-    },
-    "system_status_override": {
-      "metricName": "JULESIGNAL",
-      "value": 72,
-      "status": "advarsel"
-    },
-    "alert_override": {
-      "text": "SNØSTORM DETEKTERT: SYNLIGHET LAV ❄️",
-      "type": "advarsel"
     }
   },
   {
@@ -341,16 +312,6 @@
         "afterAttempts": 6,
         "text": "Hint: Svaret er 90."
       }
-    ],
-
-    "system_status_override": {
-      "metricName": "JULESIGNAL",
-      "value": 65,
-      "status": "advarsel"
-    },
-    "alert_override": {
-      "text": "ORAKELET ADVARER: MØRKET NÆRMER SEG 🌑",
-      "type": "kritisk"
-    }
+    ]
   }
 ]

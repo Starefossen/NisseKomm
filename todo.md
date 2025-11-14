@@ -4,8 +4,6 @@
   - tester?
   - Finne et bedre navn?
 - Hjem
-  - Stats og logs oppdatert for alle dager
-    - Start low and steady increase (unless there is an override)
   - Glitching / kjerneenergi?
 - Brevfugler:
   - Må testes og fullføres
@@ -16,3 +14,5 @@
 - Merker
   - Finne et bedre navn?
 - Mørket / Winter som prøver å sabotere
+- Orakelet?
+- Julius sin dagbok

@@ -2,7 +2,7 @@
   {
     "dag": 22,
     "tittel": "Julesokk-mysteriet",
-    "nissemail_tekst": "Rampenissen har hengt opp sokker! I hver sokk er det lapper: Sokk 1: 'JUL', Sokk 2: 'E', Sokk 3: 'AFTEN'. Kombinér ordene - hva får du?\n\n🔴 I julesokken skjuler seg en RØD MÅNE! Julius forteller at den røde månen symboliserer forventning og spenning - som nattens magiske tid når juleaften nærmer seg!",
+    "nissemail_tekst": "Rampenissen har hengt opp sokker! I hver sokk er det lapper: Sokk 1: 'JUL', Sokk 2: 'E', Sokk 3: 'AFTEN'. Kombinér ordene - hva får du?\n\n🔴 I julesokken skjuler seg en RØD MÅNE! Julius forteller at den røde månen symboliserer forventning og spenning - som nattens magiske tid når Julius flyr gjennom mørket natten til juleaften!",
     "kode": "JULEAFTEN",
     "eventyr": {
       "id": "countdown-julaften",
@@ -32,15 +32,6 @@
       "symbolColor": "red",
       "description": "Rød måne fra julesokk-mysteriet"
     },
-    "system_status_override": {
-      "metricName": "COUNTDOWN",
-      "value": 92,
-      "status": "advarsel"
-    },
-    "alert_override": {
-      "text": "NEDTELLING: 2 DAGER TIL JULAFTEN! 🎅",
-      "type": "advarsel"
-    },
     "print_materials": [
       {
         "type": "activity",
@@ -55,7 +46,7 @@
     ],
     "dagbokinnlegg": "Dag 22 - To Dager!\n\nTO DAGER! BARE TO! Panikken er reell nå. Men kontrollert panikk. Organisert kaos. Nissemor kaller det 'tradisjonell julestress'. Hun ler. Jeg svetter.\n\nGeneralprøve med reinsdyrene. De flyr perfekt! Rudolf gjorde en looping for å vise seg. Flott, men ikke nødvendig. Sleda klarte prøveturen. Alt fungerer!\n\nVerkstedet er rent. Gavene er pakket. Listen er sjekket to ganger. (Egentlig 47 ganger, men hvem teller?) Vi er klare. Nesten. Veldig nesten.\n\nRampenissen sender siste rapport fra barna. De har vært fantastiske! Han skriver: 'Julius, jeg kom som en kaotisk nisse, men barna lærte meg hva ansvar og vennskap virkelig betyr. Takk for at du ga meg denne sjansen.' Er så stolt av ham.\n\nI kveld registrerer jeg navnene deres i det offisielle systemet. Dette er ikke bare en liste - det er bevis på at dere er en del av Snøfalls historie nå.\n\n- Julius",
     "rampenissen_rampestrek": "3 julesokker hengt på rad. I hver sokk: sammenbrettet lapp med ord. Rampenissen har 'pakke-papir' rundt seg som toga.",
-    "fysisk_hint": "Sokk 1: JUL | Sokk 2: E | Sokk 3: AFTEN - Kombiner ordene!",
+    "fysisk_hint": "Sokk 1: JUL | Sokk 2: E | Sokk 3: AFTEN - Julius flyr i morgen kveld!",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
       "3 julesokker",
@@ -68,7 +59,7 @@
   {
     "dag": 23,
     "tittel": "Lillejulaften-fest",
-    "nissemail_tekst": "Rampenissen feirer Lillejulaften! På bordet ligger et bilde av en tradisjonell norsk julekake. Det står: 'Jeg har 7 lag og er rund som et tårn. Hva heter jeg? Hint: Starter på K.'\n\n🌙 Ved kransekaken finner du den siste BLÅ MÅNEN! Julius smiler og sier at den blå månen representerer visdom og fullføring - du har nå samlet alle ni symbolene! Den ultimate dekrypteringen venter...",
+    "nissemail_tekst": "Rampenissen feirer Lillejulaften! På bordet ligger et bilde av en tradisjonell norsk julekake. Det står: 'Jeg har 7 lag og er rund som et tårn. Hva heter jeg? Hint: Starter på K.'\n\n🌙 Ved kransekaken finner du den siste BLÅ MÅNEN! Julius smiler og sier at den blå månen representerer visdom og fullføring - du har nå samlet alle ni symbolene! Den ultimate dekrypteringen venter...\n\nPS: I KVELD KOMMER JULIUS! Når dere sovner i natt, flyr han gjennom himmelen med reinsdyrene. I morgen tidlig er det julaften - og gavene venter under treet! 🎅✨",
     "kode": "KRANSEKAKE",
     "eventyr": {
       "id": "countdown-julaften",
@@ -115,15 +106,6 @@
       "messageWhenSolved": "❤️ HJERTETS HEMMELIGHET ÅPENBART! ❤️\n\nENESTÅENDE! Dere har løst den ultimate utfordringen og funnet den perfekte kombinasjonen av alle ni symbolene!\n\nHjerter for kjærlighet, soler for håp, måner for ro - i farger av vekst, varme og kulde. Dette er den eldgamle formelen som holder magien i Snøfall levende.\n\nJulius' dypeste hemmeligheter er nå deres. Dere har bevist at dere er sanne KODE-MESTERE! Den siste filen venter i NISSENET...\n\n🎄 ALLE DEKRYPTERINGER FULLFØRT! 🎄",
       "unlocksFiles": ["hjertets-hemmelighet.txt"]
     },
-    "system_status_override": {
-      "metricName": "COUNTDOWN",
-      "value": 96,
-      "status": "advarsel"
-    },
-    "alert_override": {
-      "text": "KRITISK: 1 DAG TIL JULAFTEN! NAVN KREVES! 🎄",
-      "type": "kritisk"
-    },
     "print_materials": [
       {
         "type": "activity",
@@ -143,7 +125,7 @@
     ],
     "dagbokinnlegg": "Dag 23 - Lillejulaften\n\nI MORGEN ER DET JULAFTEN! (Bare étt utropstegn. Må virke rolig. Må virke profesjonell. MEN AAAHHH!)\n\nSiste forberedelser. Hele teamet er samlet: Pil, Winter, IQ, Trixter - alle er klare. Nissemor pakket ekstragodteri til meg. 'For reisen', sa hun.\n\nI går registrerte barna navnene sine i systemet! Ser dem på listen nå... Barna som har fulgt med Rampenissen hele desember. De har vist dedikasjon, vennskap og mot.\n\nEn siste kopp kakao med Nissemor. Hun sa: 'Magien i Snøfall, vennskapet med barna, og motet i hjertet ditt - det er det som gjør julen mulig.'\n\n- Julius",
     "rampenissen_rampestrek": "Bilde av kransekake på bordet med festpynt rundt. Rampenissen har partyhatt og konfetti. Ballonger med '23' på.",
-    "fysisk_hint": "Jeg har 7 lag og er rund som et tårn. Hva heter jeg? (Starter på K)",
+    "fysisk_hint": "Jeg har 7 lag og er rund som et tårn. (Starter på K) - I KVELD KOMMER JULIUS!",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
       "Bilde av kransekake (print/tegn)",
@@ -157,7 +139,7 @@
   {
     "dag": 24,
     "tittel": "Julaften - Den Store Finalen",
-    "nissemail_tekst": "GOD JUL! Rampenissen har etterlatt en siste melding: 'Dere klarte det! Alle kodene er funnet! Til slutt, skriv navnet på dagens høytid - dagen da Julius kommer!' (Hint: 9 bokstaver)",
+    "nissemail_tekst": "GOD JUL! Rampenissen har etterlatt en siste melding: 'Dere klarte det! Alle kodene er funnet! Julius kom i natt mens dere sov! Til slutt, skriv navnet på dagens høytid - dagen Julius besøkte dere!' (Hint: 9 bokstaver)",
     "kode": "JULAFTEN",
     "eventyr": {
       "id": "countdown-julaften",
@@ -184,15 +166,6 @@
         "text": "Hint: Svaret er JULAFTEN."
       }
     ],
-    "system_status_override": {
-      "metricName": "COUNTDOWN",
-      "value": 100,
-      "status": "normal"
-    },
-    "alert_override": {
-      "text": "🎄 JULAFTEN! ALLE OPPDRAG FULLFØRT! GOD JUL! 🎅✨",
-      "type": "normal"
-    },
     "print_materials": [
       {
         "type": "certificate",
@@ -207,7 +180,7 @@
     ],
     "dagbokinnlegg": "Dag 24 - JULAFTEN! 🎄\n\nDET SKJER NÅ! Trixter og reinsdyrene er spent. Rudolf skinner som en fyrtårn. Sleda er lastet. Nissemor, Pil, Winter, IQ og alle nissene vinker farvel.\n\nGjennomgikk ruten én siste gang. Millioner av hjem. Milliarder av gaver. Åtte timer. Magisk tid gjør alt mulig.\n\nMen først - en spesiell stopp. Barna som fulgte Rampenissen hele desember. De som løste alle gåtene. De har vist vennskap, mot og tro på julemagi. De har beseiret alle farer og utfordringer sammen med oss.\n\nTil alle barna: Takk for en fantastisk desember! Dere viste at magi, vennskap og mot kan overvinne alt - selv Mørket selv. Dere er sanne julenissevenner!\n\nVi sees i neste desember! Eller kanskje tidligere. Hvem vet hvilke eventyr som venter?\n\nHa den beste julaften noensinne!\n\nHO HO HO! 🎅🎁✨\n\n- Julius og hele Snøfall-teamet\n\nP.S. Rampenissen insisterer på å legge til: 'SKIBIDI TOILET FOREVER' i rapporten. Ungdomskulturen er merkelig. Men hyggelig.\n\nP.P.S. Sjekk NISSENET for en siste overraskelse! Listen er klar med deres personlige melding. 🏆",
     "rampenissen_rampestrek": "Rampenissen har pakket kofferten sin! Bor ved siden av et brev: 'Takk for alt! Ses i Snøfall! - Rampenissen ❤️'. Ekstra godteri og konfetti overalt. Liten tegning av slede på vei mot månen.",
-    "fysisk_hint": "Skriv navnet på dagens høytid - dagen da Julius kommer! (9 bokstaver)",
+    "fysisk_hint": "Skriv navnet på dagens høytid - Julius kom i natt! (9 bokstaver)",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
       "Farvel-brev fra Rampenissen",
