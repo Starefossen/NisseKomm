@@ -7,6 +7,8 @@
   - Glitching / kjerneenergi?
 - Brevfugler:
   - Må testes og fullføres
+- NisseMusikk:
+  - Trenger faktiske lydfiler (8-bit julesanger) før implementering av eventyr-reaktiv spilleliste med spor som låses opp basert på historiefremdrift
 - Nissestats
   - Må testes og fullføres
 - Eventyr

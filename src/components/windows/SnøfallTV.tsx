@@ -19,7 +19,6 @@ import {
   getStaticIntensity,
   getBaseImage,
   type WeatherCondition,
-  type DailyWeather,
 } from "@/lib/weather-config";
 import Image from "next/image";
 
@@ -68,7 +67,7 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
   const particleCount = getParticleCount(todayWeather.condition);
   const staticIntensity = getStaticIntensity(
     todayWeather.condition,
-    isAntennaBroken
+    isAntennaBroken,
   );
 
   // Update time every second
@@ -247,11 +246,12 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
                             // Arc path across horizon above mountains
                             left: `calc(50% + ${Math.cos((sunProgress - 0.5) * Math.PI) * 45}%)`,
                             top: `calc(25% - ${Math.sin(sunProgress * Math.PI) * 15}%)`,
-                            opacity: twilightPhase === "dawn"
-                              ? sunProgress
-                              : twilightPhase === "dusk"
-                                ? 1 - (sunProgress / 2)
-                                : 1,
+                            opacity:
+                              twilightPhase === "dawn"
+                                ? sunProgress
+                                : twilightPhase === "dusk"
+                                  ? 1 - sunProgress / 2
+                                  : 1,
                           }}
                         >
                           {/* Sun glow */}
@@ -362,102 +362,104 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
                     <div className="absolute inset-0 pointer-events-none">
                       {/* Background layer - slowest, smallest, most blur */}
                       <div className="absolute inset-0 blur-sm">
-                        {Array.from({ length: Math.floor(particleCount * 0.3) }).map(
-                          (_, i) => {
-                            const xStart = (i * 17 + Math.sin(i) * 20) % 100;
-                            const xEnd = xStart + Math.cos(i) * 3;
-                            const opacity = 0.3 + (i % 7) * 0.05;
-                            const size = 1 + (i % 3) * 0.5;
-                            const duration = 10 + (i % 6) * 2;
-                            const delay = -(i * 0.4) % duration;
+                        {Array.from({
+                          length: Math.floor(particleCount * 0.3),
+                        }).map((_, i) => {
+                          const xStart = (i * 17 + Math.sin(i) * 20) % 100;
+                          const xEnd = xStart + Math.cos(i) * 3;
+                          const opacity = 0.3 + (i % 7) * 0.05;
+                          const size = 1 + (i % 3) * 0.5;
+                          const duration = 10 + (i % 6) * 2;
+                          const delay = -(i * 0.4) % duration;
 
-                            return (
-                              <div
-                                key={`bg-${i}`}
-                                className="absolute bg-white rounded-full"
-                                style={
-                                  {
-                                    width: `${size}px`,
-                                    height: `${size}px`,
-                                    left: `${xStart}%`,
-                                    opacity,
-                                    animation: `snowfall ${duration}s ${delay}s linear infinite`,
-                                    "--x-start": `${xStart}vw`,
-                                    "--x-mid": `${xStart + Math.sin(i * 2) * 2}vw`,
-                                    "--x-end": `${xEnd}vw`,
-                                  } as React.CSSProperties
-                                }
-                              />
-                            );
-                          }
-                        )}
+                          return (
+                            <div
+                              key={`bg-${i}`}
+                              className="absolute bg-white rounded-full"
+                              style={
+                                {
+                                  width: `${size}px`,
+                                  height: `${size}px`,
+                                  left: `${xStart}%`,
+                                  opacity,
+                                  animation: `snowfall ${duration}s ${delay}s linear infinite`,
+                                  "--x-start": `${xStart}vw`,
+                                  "--x-mid": `${xStart + Math.sin(i * 2) * 2}vw`,
+                                  "--x-end": `${xEnd}vw`,
+                                } as React.CSSProperties
+                              }
+                            />
+                          );
+                        })}
                       </div>
 
                       {/* Midground layer - medium speed and size */}
                       <div className="absolute inset-0">
-                        {Array.from({ length: Math.floor(particleCount * 0.4) }).map(
-                          (_, i) => {
-                            const xStart = (i * 13 + Math.sin(i * 1.5) * 15) % 100;
-                            const xEnd = xStart + Math.cos(i * 1.5) * 5;
-                            const opacity = 0.4 + (i % 6) * 0.08;
-                            const size = 2 + (i % 3) * 0.7;
-                            const duration = 6 + (i % 5) * 1.5;
-                            const delay = -(i * 0.3) % duration;
+                        {Array.from({
+                          length: Math.floor(particleCount * 0.4),
+                        }).map((_, i) => {
+                          const xStart =
+                            (i * 13 + Math.sin(i * 1.5) * 15) % 100;
+                          const xEnd = xStart + Math.cos(i * 1.5) * 5;
+                          const opacity = 0.4 + (i % 6) * 0.08;
+                          const size = 2 + (i % 3) * 0.7;
+                          const duration = 6 + (i % 5) * 1.5;
+                          const delay = -(i * 0.3) % duration;
 
-                            return (
-                              <div
-                                key={`mg-${i}`}
-                                className="absolute bg-white rounded-full"
-                                style={
-                                  {
-                                    width: `${size}px`,
-                                    height: `${size}px`,
-                                    left: `${xStart}%`,
-                                    opacity,
-                                    animation: `snowfall ${duration}s ${delay}s linear infinite`,
-                                    "--x-start": `${xStart}vw`,
-                                    "--x-mid": `${xStart + Math.sin(i * 3) * 3}vw`,
-                                    "--x-end": `${xEnd}vw`,
-                                  } as React.CSSProperties
-                                }
-                              />
-                            );
-                          }
-                        )}
+                          return (
+                            <div
+                              key={`mg-${i}`}
+                              className="absolute bg-white rounded-full"
+                              style={
+                                {
+                                  width: `${size}px`,
+                                  height: `${size}px`,
+                                  left: `${xStart}%`,
+                                  opacity,
+                                  animation: `snowfall ${duration}s ${delay}s linear infinite`,
+                                  "--x-start": `${xStart}vw`,
+                                  "--x-mid": `${xStart + Math.sin(i * 3) * 3}vw`,
+                                  "--x-end": `${xEnd}vw`,
+                                } as React.CSSProperties
+                              }
+                            />
+                          );
+                        })}
                       </div>
 
                       {/* Foreground layer - fastest, largest, sharpest */}
                       <div className="absolute inset-0">
-                        {Array.from({ length: Math.floor(particleCount * 0.3) }).map(
-                          (_, i) => {
-                            const xStart = (i * 11 + Math.sin(i * 2.5) * 10) % 100;
-                            const xEnd = xStart + Math.cos(i * 2) * 6;
-                            const opacity = 0.6 + (i % 5) * 0.08;
-                            const size = 3 + (i % 4) * 1;
-                            const duration = 3 + (i % 3) * 1.2;
-                            const delay = -(i * 0.2) % duration;
+                        {Array.from({
+                          length: Math.floor(particleCount * 0.3),
+                        }).map((_, i) => {
+                          const xStart =
+                            (i * 11 + Math.sin(i * 2.5) * 10) % 100;
+                          const xEnd = xStart + Math.cos(i * 2) * 6;
+                          const opacity = 0.6 + (i % 5) * 0.08;
+                          const size = 3 + (i % 4) * 1;
+                          const duration = 3 + (i % 3) * 1.2;
+                          const delay = -(i * 0.2) % duration;
 
-                            return (
-                              <div
-                                key={`fg-${i}`}
-                                className="absolute bg-white rounded-full"
-                                style={
-                                  {
-                                    width: `${size}px`,
-                                    height: `${size}px`,
-                                    left: `${xStart}%`,
-                                    opacity,
-                                    animation: `snowfall ${duration}s ${delay}s linear infinite`,
-                                    boxShadow: "0 0 3px rgba(255, 255, 255, 0.9)",
-                                    "--x-start": `${xStart}vw`,
-                                    "--x-mid": `${xStart + Math.sin(i * 4) * 4}vw`,
-                                    "--x-end": `${xEnd}vw`,
-                                  } as React.CSSProperties
-                                }
-                              />
-                            );
-                          }
-                        )}
+                          return (
+                            <div
+                              key={`fg-${i}`}
+                              className="absolute bg-white rounded-full"
+                              style={
+                                {
+                                  width: `${size}px`,
+                                  height: `${size}px`,
+                                  left: `${xStart}%`,
+                                  opacity,
+                                  animation: `snowfall ${duration}s ${delay}s linear infinite`,
+                                  boxShadow: "0 0 3px rgba(255, 255, 255, 0.9)",
+                                  "--x-start": `${xStart}vw`,
+                                  "--x-mid": `${xStart + Math.sin(i * 4) * 4}vw`,
+                                  "--x-end": `${xEnd}vw`,
+                                } as React.CSSProperties
+                              }
+                            />
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -592,7 +594,6 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
                   </div>
                 </div>
               )}
-
             </>
           )}
         </div>
@@ -603,10 +604,10 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
             onClick={() => handleCameraSwitch("cam1")}
             disabled={isAntennaBroken}
             className={`p-2 border-2 transition-colors ${isAntennaBroken
-              ? "border-(--neon-green)/10 text-(--neon-green)/20 opacity-30 cursor-not-allowed"
-              : currentCamera === "cam1"
-                ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
-                : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
+                ? "border-(--neon-green)/10 text-(--neon-green)/20 opacity-30 cursor-not-allowed"
+                : currentCamera === "cam1"
+                  ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
+                  : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
               }`}
           >
             <div className="text-xs font-bold">CAM 1</div>
@@ -616,10 +617,10 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
             onClick={() => handleCameraSwitch("cam2")}
             disabled={isAntennaBroken}
             className={`p-2 border-2 transition-colors ${isAntennaBroken
-              ? "border-(--neon-green)/10 text-(--neon-green)/20 opacity-30 cursor-not-allowed"
-              : currentCamera === "cam2"
-                ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
-                : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
+                ? "border-(--neon-green)/10 text-(--neon-green)/20 opacity-30 cursor-not-allowed"
+                : currentCamera === "cam2"
+                  ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
+                  : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
               }`}
           >
             <div className="text-xs font-bold">CAM 2</div>
@@ -629,10 +630,10 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
             onClick={() => handleCameraSwitch("cam3")}
             disabled={isAntennaBroken}
             className={`p-2 border-2 transition-colors ${isAntennaBroken
-              ? "border-(--neon-green)/10 text-(--neon-green)/20 opacity-30 cursor-not-allowed"
-              : currentCamera === "cam3"
-                ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
-                : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
+                ? "border-(--neon-green)/10 text-(--neon-green)/20 opacity-30 cursor-not-allowed"
+                : currentCamera === "cam3"
+                  ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
+                  : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
               }`}
           >
             <div className="text-xs font-bold">CAM 3</div>
@@ -642,10 +643,10 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
             onClick={() => handleCameraSwitch("static")}
             disabled={isAntennaBroken}
             className={`p-2 border-2 transition-colors ${isAntennaBroken
-              ? "border-(--neon-green)/10 text-(--neon-green)/20 opacity-30 cursor-not-allowed"
-              : currentCamera === "static"
-                ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
-                : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
+                ? "border-(--neon-green)/10 text-(--neon-green)/20 opacity-30 cursor-not-allowed"
+                : currentCamera === "static"
+                  ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
+                  : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
               }`}
           >
             <div className="text-xs font-bold">CAM 4</div>
@@ -672,11 +673,7 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
           <div className="p-3 border-2 border-(--neon-green)/30 space-y-1">
             <div className="text-xs text-(--neon-green)/70">KVALITET</div>
             <div className="text-2xl text-(--neon-green) font-bold">
-              {isAntennaBroken
-                ? "---"
-                : currentCamera === "cam1"
-                  ? "HD"
-                  : "SD"}
+              {isAntennaBroken ? "---" : currentCamera === "cam1" ? "HD" : "SD"}
             </div>
           </div>
         </div>
@@ -693,7 +690,8 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
         <div className="p-4 border-2 border-(--cold-blue)/30 bg-(--cold-blue)/5 text-(--cold-blue) text-xs">
           <div className="font-bold mb-1">🌨️ VÆRPROGNOSERING</div>
           <div className="opacity-80">
-            Sanntids værdata fra Snøfall. {todayWeather.description} Oppdateres automatisk hver dag ved midnatt.
+            Sanntids værdata fra Snøfall. {todayWeather.description} Oppdateres
+            automatisk hver dag ved midnatt.
           </div>
         </div>
       </div>

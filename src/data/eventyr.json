@@ -12,6 +12,7 @@
       "farge": "#8b0000",
       "ikon": "alert",
       "vanskelighetsgrad": "middels",
+      "første_opplåsingsdag": 7,
       "belønning": {
         "type": "badge",
         "badge_id": "morket-beseirer",
@@ -44,6 +45,7 @@
       "farge": "#ffa500",
       "ikon": "zap",
       "vanskelighetsgrad": "lett",
+      "første_opplåsingsdag": 2,
       "belønning": {
         "type": "badge",
         "badge_id": "oppfinner-assistent",
@@ -76,6 +78,7 @@
       "farge": "#4169e1",
       "ikon": "mail",
       "vanskelighetsgrad": "lett",
+      "første_opplåsingsdag": 1,
       "belønning": {
         "type": "module_unlock",
         "module_id": "BREVFUGLER",
@@ -107,6 +110,7 @@
       "farge": "#00ced1",
       "ikon": "pin",
       "vanskelighetsgrad": "middels",
+      "første_opplåsingsdag": 3,
       "belønning": {
         "type": "symbol_collection",
         "symbol_id": "snowflake",
@@ -134,6 +138,7 @@
       "farge": "#32cd32",
       "ikon": "eye",
       "vanskelighetsgrad": "lett",
+      "første_opplåsingsdag": 10,
       "belønning": {
         "type": "secret_unlock",
         "file": "HEMMELIGHETER/farge-mysteriet/fargesamlerens_notat.txt",
@@ -165,6 +170,7 @@
       "farge": "#ffd700",
       "ikon": "calendar",
       "vanskelighetsgrad": "lett",
+      "første_opplåsingsdag": 22,
       "belønning": {
         "type": "grand_finale",
         "beskrivelse": "Fullfører julekalenderen og låser opp Grand Finale"
@@ -191,6 +197,7 @@
       "farge": "#cd853f",
       "ikon": "book",
       "vanskelighetsgrad": "lett",
+      "første_opplåsingsdag": 6,
       "belønning": {
         "type": "knowledge",
         "beskrivelse": "Lærer om juletradisjoner rundt om i verden"
@@ -217,6 +224,7 @@
       "farge": "#ff69b4",
       "ikon": "award",
       "vanskelighetsgrad": "lett",
+      "første_opplåsingsdag": 16,
       "belønning": {
         "type": "milestone",
         "beskrivelse": "Halvveis-diplom og oppmuntring"
@@ -243,6 +251,7 @@
       "farge": "#4682b4",
       "ikon": "truck",
       "vanskelighetsgrad": "lett",
+      "første_opplåsingsdag": 18,
       "belønning": {
         "type": "preparation_complete",
         "beskrivelse": "Sleda er klar for julaften!"

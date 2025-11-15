@@ -10,12 +10,12 @@
  */
 
 export type WeatherCondition =
-  | "clear"           // No precipitation, clear skies
-  | "light-snow"      // Light snowfall, ~20 particles
-  | "snow"            // Moderate snowfall, ~50 particles
-  | "heavy-snow"      // Heavy snowfall, ~80 particles
-  | "storm"           // Blizzard conditions, ~120 particles + whiteout
-  | "darkness";       // Mørket overlay (Days 7-20)
+  | "clear" // No precipitation, clear skies
+  | "light-snow" // Light snowfall, ~20 particles
+  | "snow" // Moderate snowfall, ~50 particles
+  | "heavy-snow" // Heavy snowfall, ~80 particles
+  | "storm" // Blizzard conditions, ~120 particles + whiteout
+  | "darkness"; // Mørket overlay (Days 7-20)
 
 export interface DailyWeather {
   day: number;
@@ -33,10 +33,10 @@ export interface DailyWeather {
  */
 export const SUN_TIMES = {
   // Main daylight period
-  sunriseStart: { hour: 7, minute: 0 },    // Dawn begins
-  sunriseFull: { hour: 8, minute: 0 },     // Full daylight
-  sunsetStart: { hour: 17, minute: 0 },    // Dusk begins
-  sunsetFull: { hour: 18, minute: 0 },     // Full darkness
+  sunriseStart: { hour: 7, minute: 0 }, // Dawn begins
+  sunriseFull: { hour: 8, minute: 0 }, // Full daylight
+  sunsetStart: { hour: 17, minute: 0 }, // Dusk begins
+  sunsetFull: { hour: 18, minute: 0 }, // Full darkness
 
   // Twilight duration (60 minutes each)
   twilightDuration: 60, // minutes
@@ -47,9 +47,9 @@ export const SUN_TIMES = {
  * Used to color-code temperature displays
  */
 export const TEMPERATURE_COLORS = {
-  extremeCold: { threshold: -15, led: "blue" as const },    // < -15°C
-  cold: { threshold: -8, led: "green" as const },           // -15°C to -8°C
-  mild: { threshold: Infinity, led: "gold" as const },      // > -8°C
+  extremeCold: { threshold: -15, led: "blue" as const }, // < -15°C
+  cold: { threshold: -8, led: "green" as const }, // -15°C to -8°C
+  mild: { threshold: Infinity, led: "gold" as const }, // > -8°C
 } as const;
 
 /**
@@ -66,21 +66,21 @@ export const TEMPERATURE_COLORS = {
  * - Day 21: Rudolf's red nose defeats Mørket - instant clearing
  */
 export const MORKET_INTENSITY = {
-  day7: 0.15,   // 15% - Initial warning from Orakelet
-  day8: 0.25,   // 25% - Growing presence
-  day9: 0.30,   // 30% - Heavy snow under influence
-  day10: 0.35,  // 35% - SnøfallTV activated to monitor
-  day11: 0.40,  // 40% - Escalation + antenna crisis
-  day12: 0.35,  // 35% - Slight retreat after crisis
-  day13: 0.30,  // 30% - Lucia brings light
-  day14: 0.25,  // 25% - Further retreat
-  day15: 0.20,  // 20% - Recovery period
-  day16: 0.25,  // 25% - Slight return
-  day17: 0.60,  // 60% - PEAK - Mørket's last major push
-  day18: 0.55,  // 55% - Sustained darkness
-  day19: 0.50,  // 50% - Building to climax
-  day20: 0.45,  // 45% - Final night before Rudolf
-  day21: 0.00,  // 0% - Rudolf's victory, instant clearing
+  day7: 0.15, // 15% - Initial warning from Orakelet
+  day8: 0.25, // 25% - Growing presence
+  day9: 0.3, // 30% - Heavy snow under influence
+  day10: 0.35, // 35% - SnøfallTV activated to monitor
+  day11: 0.4, // 40% - Escalation + antenna crisis
+  day12: 0.35, // 35% - Slight retreat after crisis
+  day13: 0.3, // 30% - Lucia brings light
+  day14: 0.25, // 25% - Further retreat
+  day15: 0.2, // 20% - Recovery period
+  day16: 0.25, // 25% - Slight return
+  day17: 0.6, // 60% - PEAK - Mørket's last major push
+  day18: 0.55, // 55% - Sustained darkness
+  day19: 0.5, // 50% - Building to climax
+  day20: 0.45, // 45% - Final night before Rudolf
+  day21: 0.0, // 0% - Rudolf's victory, instant clearing
 } as const;
 
 /**
@@ -94,7 +94,7 @@ export const DAILY_WEATHER: DailyWeather[] = [
     condition: "clear",
     temperature: -8,
     description: "Klart vær, perfekt start på julekalenderen",
-    storyEvent: "Kalenderen begynner"
+    storyEvent: "Kalenderen begynner",
   },
   {
     day: 2,
@@ -107,7 +107,7 @@ export const DAILY_WEATHER: DailyWeather[] = [
     condition: "storm",
     temperature: -18,
     description: "VOLDSOM SNØSTORM! Kunne knapt se hånden foran meg",
-    storyEvent: "Stor snøstorm - se Rampenissens mail"
+    storyEvent: "Stor snøstorm - se Rampenissens mail",
   },
   {
     day: 4,
@@ -132,7 +132,7 @@ export const DAILY_WEATHER: DailyWeather[] = [
     condition: "snow",
     temperature: -15,
     description: "Merkelig mørk snø... Orakelet advarer om en trussel",
-    storyEvent: "Mørket oppdages første gang - subtil begynnelse"
+    storyEvent: "Mørket oppdages første gang - subtil begynnelse",
   },
 
   // Week 2: December 8-14 (Mørket Escalation & Antenna Crisis)
@@ -152,15 +152,16 @@ export const DAILY_WEATHER: DailyWeather[] = [
     day: 10,
     condition: "light-snow",
     temperature: -17,
-    description: "Lett snø, men Mørket tynger luften. SnøfallTV aktiveres for overvåkning",
-    storyEvent: "SnøfallTV modul låses opp"
+    description:
+      "Lett snø, men Mørket tynger luften. SnøfallTV aktiveres for overvåkning",
+    storyEvent: "SnøfallTV modul låses opp",
   },
   {
     day: 11,
     condition: "storm",
     temperature: -22,
     description: "KRITISK STORM! Antennen ødelagt, Mørket eskalerer",
-    storyEvent: "⚠️ ANTENNA CRISIS - Signal lost, Mørket 40%"
+    storyEvent: "⚠️ ANTENNA CRISIS - Signal lost, Mørket 40%",
   },
   {
     day: 12,
@@ -173,7 +174,7 @@ export const DAILY_WEATHER: DailyWeather[] = [
     condition: "light-snow",
     temperature: -13,
     description: "Lucia bringer lys i mørket. Lett snøfall",
-    storyEvent: "Luciadagen - lyset bekjemper mørket"
+    storyEvent: "Luciadagen - lyset bekjemper mørket",
   },
   {
     day: 14,
@@ -194,14 +195,14 @@ export const DAILY_WEATHER: DailyWeather[] = [
     condition: "snow",
     temperature: -12,
     description: "Snøfall, inventar-kaos. Mørket lurer igjen",
-    storyEvent: "Inventory crisis - systemer forstyrret"
+    storyEvent: "Inventory crisis - systemer forstyrret",
   },
   {
     day: 17,
     condition: "heavy-snow",
     temperature: -21,
     description: "MØRKET SLÅR TILBAKE! 60% intensitet, tung snø",
-    storyEvent: "⚠️ KRITISK: Mørket på sitt kraftigste (60%)"
+    storyEvent: "⚠️ KRITISK: Mørket på sitt kraftigste (60%)",
   },
   {
     day: 18,
@@ -225,8 +226,10 @@ export const DAILY_WEATHER: DailyWeather[] = [
     day: 21,
     condition: "clear",
     temperature: -14,
-    description: "✨ RUDOLF BESEIRER MØRKET! Hans røde nese skinner gjennom mørket",
-    storyEvent: "🎉 SEIER! Rudolf's lysnese bryter Mørkets makt - instant klarvær"
+    description:
+      "✨ RUDOLF BESEIRER MØRKET! Hans røde nese skinner gjennom mørket",
+    storyEvent:
+      "🎉 SEIER! Rudolf's lysnese bryter Mørkets makt - instant klarvær",
   },
 
   // Week 4: December 22-24 (Celebration & Christmas Eve)
@@ -234,22 +237,23 @@ export const DAILY_WEATHER: DailyWeather[] = [
     day: 22,
     condition: "clear",
     temperature: -7,
-    description: "Strålende klarvær! Seier feires. Ditt navn registreres i historien",
-    storyEvent: "📝 Name registration - bli en del av Snøfalls historie"
+    description:
+      "Strålende klarvær! Seier feires. Ditt navn registreres i historien",
+    storyEvent: "📝 Name registration - bli en del av Snøfalls historie",
   },
   {
     day: 23,
     condition: "light-snow",
     temperature: -6,
     description: "Magisk lett snø. Ditt navn står på Snill-listen!",
-    storyEvent: "⭐ Ditt navn vises i Julius' offisielle Snill & Slem liste"
+    storyEvent: "⭐ Ditt navn vises i Julius' offisielle Snill & Slem liste",
   },
   {
     day: 24,
     condition: "clear",
     temperature: -4,
     description: "🎄 JULAFTEN! Perfekt klarvær. Julius flyr snart!",
-    storyEvent: "🎅 JULAFTEN - Julius' store reise begynner"
+    storyEvent: "🎅 JULAFTEN - Julius' store reise begynner",
   },
 ];
 
@@ -274,20 +278,20 @@ export function getMorketIntensity(day: number): number {
 
   // Map specific days to intensity levels
   const intensityMap: Record<number, number> = {
-    7: MORKET_INTENSITY.day7,     // 0.15
-    8: MORKET_INTENSITY.day8,     // 0.25
-    9: MORKET_INTENSITY.day9,     // 0.30
-    10: MORKET_INTENSITY.day10,   // 0.35
-    11: MORKET_INTENSITY.day11,   // 0.40
-    12: MORKET_INTENSITY.day12,   // 0.35
-    13: MORKET_INTENSITY.day13,   // 0.30
-    14: MORKET_INTENSITY.day14,   // 0.25
-    15: MORKET_INTENSITY.day15,   // 0.20
-    16: MORKET_INTENSITY.day16,   // 0.25
-    17: MORKET_INTENSITY.day17,   // 0.60 PEAK
-    18: MORKET_INTENSITY.day18,   // 0.55
-    19: MORKET_INTENSITY.day19,   // 0.50
-    20: MORKET_INTENSITY.day20,   // 0.45
+    7: MORKET_INTENSITY.day7, // 0.15
+    8: MORKET_INTENSITY.day8, // 0.25
+    9: MORKET_INTENSITY.day9, // 0.30
+    10: MORKET_INTENSITY.day10, // 0.35
+    11: MORKET_INTENSITY.day11, // 0.40
+    12: MORKET_INTENSITY.day12, // 0.35
+    13: MORKET_INTENSITY.day13, // 0.30
+    14: MORKET_INTENSITY.day14, // 0.25
+    15: MORKET_INTENSITY.day15, // 0.20
+    16: MORKET_INTENSITY.day16, // 0.25
+    17: MORKET_INTENSITY.day17, // 0.60 PEAK
+    18: MORKET_INTENSITY.day18, // 0.55
+    19: MORKET_INTENSITY.day19, // 0.50
+    20: MORKET_INTENSITY.day20, // 0.45
   };
 
   return intensityMap[day] ?? 0;
@@ -306,9 +310,11 @@ export function getSunProgress(currentTime: Date): number {
   const totalMinutes = hours * 60 + minutes;
 
   // Sunrise: 07:45 (465 minutes)
-  const sunriseMinutes = SUN_TIMES.sunriseFull.hour * 60 + SUN_TIMES.sunriseFull.minute;
+  const sunriseMinutes =
+    SUN_TIMES.sunriseFull.hour * 60 + SUN_TIMES.sunriseFull.minute;
   // Sunset: 15:30 (930 minutes)
-  const sunsetMinutes = SUN_TIMES.sunsetStart.hour * 60 + SUN_TIMES.sunsetStart.minute;
+  const sunsetMinutes =
+    SUN_TIMES.sunsetStart.hour * 60 + SUN_TIMES.sunsetStart.minute;
 
   // Before sunrise or after sunset: sun not visible
   if (totalMinutes < sunriseMinutes || totalMinutes > sunsetMinutes) {
@@ -333,8 +339,10 @@ export function getMoonProgress(currentTime: Date): number {
   const totalMinutes = hours * 60 + minutes;
 
   // Moon visible from sunset (16:30) to sunrise (06:45 next day)
-  const sunsetMinutes = SUN_TIMES.sunsetFull.hour * 60 + SUN_TIMES.sunsetFull.minute;
-  const sunriseMinutes = SUN_TIMES.sunriseStart.hour * 60 + SUN_TIMES.sunriseStart.minute;
+  const sunsetMinutes =
+    SUN_TIMES.sunsetFull.hour * 60 + SUN_TIMES.sunsetFull.minute;
+  const sunriseMinutes =
+    SUN_TIMES.sunriseStart.hour * 60 + SUN_TIMES.sunriseStart.minute;
 
   // During daytime: moon not visible
   if (totalMinutes >= sunriseMinutes && totalMinutes < sunsetMinutes) {
@@ -343,7 +351,7 @@ export function getMoonProgress(currentTime: Date): number {
 
   // Calculate progress through night period
   // Night is from 16:30 (990 min) to 06:45 (405 min) = 14.25 hours = 855 minutes
-  const nightDuration = (24 * 60) - (sunsetMinutes - sunriseMinutes);
+  const nightDuration = 24 * 60 - (sunsetMinutes - sunriseMinutes);
 
   let minutesSinceSunset: number;
   if (totalMinutes >= sunsetMinutes) {
@@ -351,7 +359,7 @@ export function getMoonProgress(currentTime: Date): number {
     minutesSinceSunset = totalMinutes - sunsetMinutes;
   } else {
     // Before sunrise (early morning)
-    minutesSinceSunset = (24 * 60) - sunsetMinutes + totalMinutes;
+    minutesSinceSunset = 24 * 60 - sunsetMinutes + totalMinutes;
   }
 
   return minutesSinceSunset / nightDuration;
@@ -367,11 +375,14 @@ export function getTwilightPhase(currentTime: Date): "dawn" | "dusk" | null {
   const totalMinutes = hours * 60 + minutes;
 
   // Dawn: 06:45-07:45
-  const dawnStart = SUN_TIMES.sunriseStart.hour * 60 + SUN_TIMES.sunriseStart.minute;
-  const dawnEnd = SUN_TIMES.sunriseFull.hour * 60 + SUN_TIMES.sunriseFull.minute;
+  const dawnStart =
+    SUN_TIMES.sunriseStart.hour * 60 + SUN_TIMES.sunriseStart.minute;
+  const dawnEnd =
+    SUN_TIMES.sunriseFull.hour * 60 + SUN_TIMES.sunriseFull.minute;
 
   // Dusk: 15:30-16:30
-  const duskStart = SUN_TIMES.sunsetStart.hour * 60 + SUN_TIMES.sunsetStart.minute;
+  const duskStart =
+    SUN_TIMES.sunsetStart.hour * 60 + SUN_TIMES.sunsetStart.minute;
   const duskEnd = SUN_TIMES.sunsetFull.hour * 60 + SUN_TIMES.sunsetFull.minute;
 
   if (totalMinutes >= dawnStart && totalMinutes < dawnEnd) {
@@ -399,13 +410,15 @@ export function getTwilightProgress(currentTime: Date): number {
   const totalMinutes = hours * 60 + minutes;
 
   if (phase === "dawn") {
-    const dawnStart = SUN_TIMES.sunriseStart.hour * 60 + SUN_TIMES.sunriseStart.minute;
+    const dawnStart =
+      SUN_TIMES.sunriseStart.hour * 60 + SUN_TIMES.sunriseStart.minute;
     const minutesSinceDawn = totalMinutes - dawnStart;
     return minutesSinceDawn / SUN_TIMES.twilightDuration;
   }
 
   if (phase === "dusk") {
-    const duskStart = SUN_TIMES.sunsetStart.hour * 60 + SUN_TIMES.sunsetStart.minute;
+    const duskStart =
+      SUN_TIMES.sunsetStart.hour * 60 + SUN_TIMES.sunsetStart.minute;
     const minutesSinceDusk = totalMinutes - duskStart;
     return minutesSinceDusk / SUN_TIMES.twilightDuration;
   }
@@ -417,7 +430,10 @@ export function getTwilightProgress(currentTime: Date): number {
  * Determine which base image to use
  * Returns "day", "night", or "storm"
  */
-export function getBaseImage(weather: WeatherCondition, isDaytime: boolean): "day" | "night" | "storm" {
+export function getBaseImage(
+  weather: WeatherCondition,
+  isDaytime: boolean,
+): "day" | "night" | "storm" {
   // Storm weather always uses storm image
   if (weather === "storm") {
     return "storm";
@@ -431,7 +447,10 @@ export function getBaseImage(weather: WeatherCondition, isDaytime: boolean): "da
  * Calculate brightness filter value during twilight
  * Returns CSS brightness value (0.6 to 1.2)
  */
-export function getTwilightBrightness(currentTime: Date, isDaytime: boolean): number {
+export function getTwilightBrightness(
+  currentTime: Date,
+  isDaytime: boolean,
+): number {
   const phase = getTwilightPhase(currentTime);
 
   if (!phase) {
@@ -443,12 +462,12 @@ export function getTwilightBrightness(currentTime: Date, isDaytime: boolean): nu
 
   if (phase === "dawn") {
     // Transition from night (0.6) to day (1.2)
-    return 0.6 + (0.6 * progress);
+    return 0.6 + 0.6 * progress;
   }
 
   if (phase === "dusk") {
     // Transition from day (1.2) to night (0.6)
-    return 1.2 - (0.6 * progress);
+    return 1.2 - 0.6 * progress;
   }
 
   return 1.0;
@@ -478,7 +497,9 @@ export function getTwilightHueRotate(currentTime: Date): number {
 /**
  * Get LED color for temperature display
  */
-export function getTemperatureLEDColor(temperature: number): "blue" | "green" | "gold" {
+export function getTemperatureLEDColor(
+  temperature: number,
+): "blue" | "green" | "gold" {
   if (temperature < TEMPERATURE_COLORS.extremeCold.threshold) {
     return TEMPERATURE_COLORS.extremeCold.led;
   }
@@ -493,12 +514,12 @@ export function getTemperatureLEDColor(temperature: number): "blue" | "green" | 
  */
 export function getParticleCount(condition: WeatherCondition): number {
   const counts: Record<WeatherCondition, number> = {
-    "clear": 0,
+    clear: 0,
     "light-snow": 20,
-    "snow": 50,
+    snow: 50,
     "heavy-snow": 80,
-    "storm": 120,
-    "darkness": 30, // Light snow during darkness
+    storm: 120,
+    darkness: 30, // Light snow during darkness
   };
 
   return counts[condition];
@@ -510,7 +531,7 @@ export function getParticleCount(condition: WeatherCondition): number {
  */
 export function getStaticIntensity(
   condition: WeatherCondition,
-  isInCrisis: boolean
+  isInCrisis: boolean,
 ): number {
   // Base intensity
   let intensity = 0.9;

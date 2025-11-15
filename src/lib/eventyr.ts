@@ -20,7 +20,7 @@ const EVENTYR_DAYS_CACHE = new Map<string, number[]>();
 
 /**
  * Build eventyr-to-days mapping from oppdrag files (single source of truth)
- * This runs once at module initialization
+ * This runs once at module initialization and validates første_opplåsingsdag
  */
 function buildEventyrDaysMapping(): void {
   const allOppdrag = getAllOppdrag();
@@ -37,6 +37,19 @@ function buildEventyrDaysMapping(): void {
 
   // Sort days for each eventyr
   EVENTYR_DAYS_CACHE.forEach((days) => days.sort((a, b) => a - b));
+
+  // Validate første_opplåsingsdag against computed first day
+  EVENTYR.eventyr.forEach((eventyr) => {
+    const days = EVENTYR_DAYS_CACHE.get(eventyr.id);
+    if (days && days.length > 0) {
+      const computedFirstDay = days[0];
+      if (eventyr.første_opplåsingsdag !== computedFirstDay) {
+        throw new Error(
+          `Validation Error: Eventyr "${eventyr.id}" has første_opplåsingsdag=${eventyr.første_opplåsingsdag} but first quest day is ${computedFirstDay}. Update eventyr.json to match.`,
+        );
+      }
+    }
+  });
 }
 
 // Build mapping on module load

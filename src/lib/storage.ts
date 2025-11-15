@@ -36,6 +36,7 @@ const KEYS = {
   PLAYER_NAMES: "nissekomm-player-names",
   NICE_LIST_LAST_VIEWED: "nissekomm-nice-list-viewed",
   DAGBOK_LAST_READ: "nissekomm-dagbok-last-read",
+  BREVFUGLER: "nissekomm-brevfugler",
 } as const;
 
 // Type-safe storage interface
@@ -45,6 +46,15 @@ interface StorageData {
   viewedEmails: number[]; // Array of day numbers
   soundsEnabled: boolean;
   musicEnabled: boolean;
+}
+
+/**
+ * Brevfugl entry type (parent-transcribed letters from children)
+ */
+interface Brevfugl {
+  dag: number;
+  innhold: string;
+  tidspunkt: string; // ISO timestamp
 }
 
 // In-memory fallback storage (used when localStorage unavailable)
@@ -889,5 +899,53 @@ export class StorageManager {
     // In production, prefer using GameEngine.loadGameState().completedQuests
     // which properly matches codes against mission data
     return new Set<number>();
+  }
+
+  // ============================================================
+  // Brevfugler (Parent-transcribed letters from children)
+  // ============================================================
+
+  /**
+   * Add a brevfugl letter (parent transcribes child's letter)
+   */
+  static leggTilBrevfugl(dag: number, innhold: string): void {
+    const brevfugler = this.getItem<Brevfugl[]>(KEYS.BREVFUGLER, []);
+
+    // Check if letter for this day already exists
+    const existingIndex = brevfugler.findIndex((b) => b.dag === dag);
+
+    const newBrevfugl: Brevfugl = {
+      dag,
+      innhold,
+      tidspunkt: getISOString(),
+    };
+
+    if (existingIndex >= 0) {
+      // Update existing letter
+      brevfugler[existingIndex] = newBrevfugl;
+    } else {
+      // Add new letter
+      brevfugler.push(newBrevfugl);
+    }
+
+    // Sort by day
+    brevfugler.sort((a, b) => a.dag - b.dag);
+
+    this.setItem(KEYS.BREVFUGLER, brevfugler);
+  }
+
+  /**
+   * Get all brevfugler letters
+   */
+  static hentAlleBrevfugler(): Brevfugl[] {
+    return this.getItem<Brevfugl[]>(KEYS.BREVFUGLER, []);
+  }
+
+  /**
+   * Get a specific brevfugl letter by day
+   */
+  static hentBrevfugl(dag: number): Brevfugl | null {
+    const brevfugler = this.hentAlleBrevfugler();
+    return brevfugler.find((b) => b.dag === dag) || null;
   }
 }

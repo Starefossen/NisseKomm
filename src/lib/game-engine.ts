@@ -20,6 +20,7 @@ import {
   getEventyr,
   getEventyrDays,
   getEventyrForDay,
+  getEventyrProgress,
 } from "./eventyr";
 import {
   getCurrentDay,
@@ -1652,6 +1653,83 @@ export class GameEngine {
   }
 
   /**
+   * Get eventyr-driven story metrics
+   * Returns themed metrics that appear only after first_unlock_day
+   *
+   * STORY METRICS:
+   * - "Mørkets Trussel: Skygge-nivå" (Day 7+) - Darkness intensity 0-100
+   * - "IQs Oppfinnelser: Suksessrate" (Day 2+) - Invention success 0-100
+   * - "Brevfugl-Mysteriet: Koordinering" (Day 1+) - Letter organization 0-100
+   * - "Frosne Mønster: Krystallisering" (Day 3+) - Snowflake pattern clarity 0-100
+   *
+   * @param day - Current day (1-24)
+   * @param completedDays - Set of completed quest days
+   * @returns Array of eventyr-specific metrics
+   */
+  static getEventyrMetrikker(
+    day: number,
+    completedDays: Set<number>,
+  ): SystemMetrikk[] {
+    const metrics: SystemMetrikk[] = [];
+    const allEventyr = getAllEventyr();
+
+    // Get major eventyr only (exclude mini-eventyr like countdown, juletradisjon)
+    const majorEventyr = allEventyr.filter((e) => {
+      const days = getEventyrDays(e.id);
+      return days.length >= 3; // Major eventyr have 3+ days
+    });
+
+    majorEventyr.forEach((eventyr) => {
+      // Only show metric if we've reached first unlock day
+      if (day < eventyr.første_opplåsingsdag) return;
+
+      const progress = getEventyrProgress(eventyr.id, completedDays);
+      let status: "normal" | "advarsel" | "kritisk" = "normal";
+
+      // Determine status based on progress
+      if (progress < 30) {
+        status = "kritisk";
+      } else if (progress < 60) {
+        status = "advarsel";
+      }
+
+      // Create themed metric name
+      let themeLabel = "";
+      switch (eventyr.id) {
+        case "morkets-trussel":
+          themeLabel = "Skygge-nivå";
+          // Invert for Mørket (lower is better)
+          status =
+            progress > 70 ? "normal" : progress > 40 ? "advarsel" : "kritisk";
+          break;
+        case "iqs-oppfinnelser":
+          themeLabel = "Suksessrate";
+          break;
+        case "brevfugl-mysteriet":
+          themeLabel = "Koordinering";
+          break;
+        case "frosne-monster":
+          themeLabel = "Krystallisering";
+          break;
+        case "farge-mysteriet":
+          themeLabel = "Fargeklarhet";
+          break;
+        default:
+          themeLabel = "Fremdrift";
+      }
+
+      metrics.push({
+        navn: `${eventyr.navn}: ${themeLabel}`,
+        verdi: progress,
+        maks: 100,
+        status,
+      });
+    });
+
+    return metrics;
+  }
+
+  /**
    * ============================================================
    * DYNAMIC ALERTS
    * ============================================================
@@ -1665,6 +1743,147 @@ export class GameEngine {
     const hours = now.getHours().toString().padStart(2, "0");
     const minutes = now.getMinutes().toString().padStart(2, "0");
     return `${hours}:${minutes}`;
+  }
+
+  /**
+   * Get eventyr milestone celebration alerts
+   * Generates alerts when specific eventyr phases complete
+   *
+   * @param day - Current day (1-24)
+   * @param completedDays - Set of completed quest days
+   * @returns Array of eventyr milestone alerts
+   */
+  private static getEventyrMilepælVarsler(
+    day: number,
+    completedDays: Set<number>,
+  ): Varsel[] {
+    const milepælVarsler: Varsel[] = [];
+
+    // Brevfugl-Mysteriet milestones
+    if (day >= 5 && completedDays.has(5)) {
+      milepælVarsler.push({
+        tekst: "📬 WINTER: 847 brevfugler sortert! Organisasjon perfekt!",
+        type: "info",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 5,
+      });
+    }
+
+    if (day >= 12 && completedDays.has(12)) {
+      milepælVarsler.push({
+        tekst: "🎵 PIL: Sang-systemet aktivert! Brevfugler synger!",
+        type: "info",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 12,
+      });
+    }
+
+    if (day >= 14 && completedDays.has(14)) {
+      milepælVarsler.push({
+        tekst: "🦅 JULIUS: PAPIR-kode funnet! Brevfugl-mysteriet løst!",
+        type: "info",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 14,
+      });
+    }
+
+    // IQs Oppfinnelser milestones
+    if (day >= 8 && completedDays.has(8)) {
+      milepælVarsler.push({
+        tekst:
+          "🎒 IQ: Magisk sekk test vellyket! (Den passet ikke gjennom døra...)",
+        type: "info",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 8,
+      });
+    }
+
+    if (day >= 19 && completedDays.has(19)) {
+      milepælVarsler.push({
+        tekst: "⚡ IQ: Reinsdyr-energidrikk fungerer! Rudolf løper i cirkler!",
+        type: "info",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 19,
+      });
+    }
+
+    // Mørkets Trussel milestones
+    if (day >= 7 && completedDays.has(7)) {
+      milepælVarsler.push({
+        tekst: "🌑 ORAKELET: Mørket lurer der ute... Hold øye med Julestjerna!",
+        type: "advarsel",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 7,
+      });
+    }
+
+    if (day >= 21 && completedDays.has(21)) {
+      milepælVarsler.push({
+        tekst: "🦌 RUDOLF: Nesen min lyser igjen! Mørket spredd!",
+        type: "info",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 21,
+      });
+    }
+
+    // Frosne Mønster milestones
+    if (day >= 9 && completedDays.has(9)) {
+      milepælVarsler.push({
+        tekst: "❄️ JULIUS: Fant 18 snøfnugg-hjørner! Mønstrene er vakre!",
+        type: "info",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 9,
+      });
+    }
+
+    if (day >= 13 && completedDays.has(13)) {
+      milepælVarsler.push({
+        tekst: "🕯️ LUCIA: Lysseremoni fullført! Sn</pelet stråler!",
+        type: "info",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 13,
+      });
+    }
+
+    // Farge-Mysteriet milestones
+    if (day >= 10 && completedDays.has(10)) {
+      milepælVarsler.push({
+        tekst: "🌱 PIL: GRØNN dag! Miljøvennlig juleproduksjon!",
+        type: "info",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 10,
+      });
+    }
+
+    if (day >= 15 && completedDays.has(15)) {
+      milepælVarsler.push({
+        tekst: "🍫 WINTER: Sjokolademysteriet løst! Mandelen funnet!",
+        type: "info",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 15,
+      });
+    }
+
+    // Slede-Forberedelser milestones
+    if (day >= 18 && completedDays.has(18)) {
+      milepælVarsler.push({
+        tekst: "🛷 JULIUS: Slede-dimensjoner sjekket! Alt målt og klart!",
+        type: "info",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 18,
+      });
+    }
+
+    if (day >= 20 && completedDays.has(20)) {
+      milepælVarsler.push({
+        tekst: "✨ NISSENE: Sleda er klar! Magiske egenskaper aktivert!",
+        type: "info",
+        tidspunkt: this.generateAlertTimestamp(),
+        day: 20,
+      });
+    }
+
+    return milepælVarsler;
   }
 
   /**
@@ -1712,7 +1931,11 @@ export class GameEngine {
       });
     }
 
-    // 2. Add ALL daily alerts from day 1 up to current day (historical feed)
+    // 2. Add eventyr milestone celebration alerts (after crisis, before daily)
+    const eventyrVarsler = this.getEventyrMilepælVarsler(day, completedDays);
+    alerts.push(...eventyrVarsler);
+
+    // 3. Add ALL daily alerts from day 1 up to current day (historical feed)
     dailyAlerts
       .filter((a) => a.day <= day)
       .forEach((dailyAlert) => {
@@ -1724,7 +1947,7 @@ export class GameEngine {
         });
       });
 
-    // 3. Add milestone celebration alerts for completed days
+    // 4. Add milestone celebration alerts for completed days
     if (day >= 8 && completedDays.has(8)) {
       alerts.push({
         tekst: "🎉 NISSENE: Første uke fullført! Kaken var for stor...",
@@ -1752,7 +1975,7 @@ export class GameEngine {
       });
     }
 
-    // 4. Sort by priority (kritisk > advarsel > info) and day (newest first)
+    // 5. Sort by priority (kritisk > advarsel > info) and day (newest first)
     const priorityOrder = { kritisk: 0, advarsel: 1, info: 2 };
     alerts.sort((a, b) => {
       const priorityDiff = priorityOrder[a.type] - priorityOrder[b.type];
@@ -1760,7 +1983,7 @@ export class GameEngine {
       return (b.day || 0) - (a.day || 0);
     });
 
-    // 5. Return max 8 alerts
+    // 6. Return max 8 alerts
     return alerts.slice(0, 8);
   }
 
@@ -1784,6 +2007,178 @@ export class GameEngine {
    * Get eventyr for a specific day
    */
   static getEventyrForDay = getEventyrForDay;
+
+  /**
+   * Get Brevfugl-Mysteriet progression summary for Brevfugler module
+   * Returns completion status for all 4 phases + paper bird count
+   *
+   * PHASES:
+   * - Phase 1 (Day 1): Brevfugler introduced
+   * - Phase 2 (Day 5): Winter organizes 847 letters
+   * - Phase 3 (Day 12): Sang-system connects worlds
+   * - Phase 4 (Day 14): PAPIR puzzle completes → BREVFUGLER module unlocks
+   *
+   * @returns Object with phase completion booleans and paper bird counter
+   */
+  static getBrevfuglerFremdrift(): {
+    fase1Fullført: boolean;
+    fase2Fullført: boolean;
+    fase3Fullført: boolean;
+    fase4Fullført: boolean;
+    antallPapirbrev: number;
+  } {
+    const completedQuests = this.loadGameState().completedQuests;
+
+    return {
+      fase1Fullført: completedQuests.has(1),
+      fase2Fullført: completedQuests.has(5),
+      fase3Fullført: completedQuests.has(12),
+      fase4Fullført: completedQuests.has(14),
+      antallPapirbrev: this.getMetricValue("BREVFUGL-SVERM"),
+    };
+  }
+
+  /**
+   * Helper: Get current value of a specific metric by name
+   */
+  private static getMetricValue(metricName: string): number {
+    const metrics = this.getCurrentSystemMetrics();
+    const metric = metrics.find((m) => m.navn === metricName);
+    return metric?.verdi || 0;
+  }
+
+  /**
+   * Get eventyr-reactive music playlist
+   * Returns tracks with locked/unlocked status based on story progression
+   *
+   * UNLOCK PROGRESSION:
+   * - Day 1: "Velkommen til Snøfall" (intro)
+   * - Day 7: "Nissenes Marsj" (unlocked with NISSEMUSIKK module)
+   * - Day 12: "Sang til Brevfuglene" (Brevfugl-Mysteriet Phase 3)
+   * - Day 14: "Brevfugl-vals" (Brevfugl-Mysteriet complete)
+   * - Day 19: "IQs Oppfinnerpolka" (IQs Oppfinnelser Phase 3)
+   * - Day 21: "Rudolfs Triumf" (Mørkets Trussel resolved)
+   * - Day 24: "Julaften i Snøfall" (finale)
+   *
+   * @returns Array of music tracks with lock status
+   */
+  static getEventyrMusikkSpor(): Array<{
+    id: number;
+    tittel: string;
+    varighet: string;
+    låst: boolean;
+    opplåsingsDag: number;
+    eventyrNavn: string;
+  }> {
+    const completedQuests = this.loadGameState().completedQuests;
+
+    return [
+      {
+        id: 1,
+        tittel: "Velkommen til Snøfall (8-bit)",
+        varighet: "2:30",
+        låst: false,
+        opplåsingsDag: 1,
+        eventyrNavn: "Intro",
+      },
+      {
+        id: 2,
+        tittel: "Nissenes Marsj (Chiptune)",
+        varighet: "2:45",
+        låst: !completedQuests.has(7),
+        opplåsingsDag: 7,
+        eventyrNavn: "Generell",
+      },
+      {
+        id: 3,
+        tittel: "Deilig er Jorden (8-bit)",
+        varighet: "2:45",
+        låst: !completedQuests.has(7),
+        opplåsingsDag: 7,
+        eventyrNavn: "Generell",
+      },
+      {
+        id: 4,
+        tittel: "Sang til Brevfuglene (Synth)",
+        varighet: "3:15",
+        låst: !completedQuests.has(12),
+        opplåsingsDag: 12,
+        eventyrNavn: "Brevfugl-Mysteriet",
+      },
+      {
+        id: 5,
+        tittel: "Brevfugl-vals (Oscillator)",
+        varighet: "2:50",
+        låst: !completedQuests.has(14),
+        opplåsingsDag: 14,
+        eventyrNavn: "Brevfugl-Mysteriet",
+      },
+      {
+        id: 6,
+        tittel: "Rudolf med Rød Nese (8-bit)",
+        varighet: "2:58",
+        låst: !completedQuests.has(7),
+        opplåsingsDag: 7,
+        eventyrNavn: "Generell",
+      },
+      {
+        id: 7,
+        tittel: "IQs Oppfinnerpolka (Retro)",
+        varighet: "3:05",
+        låst: !completedQuests.has(19),
+        opplåsingsDag: 19,
+        eventyrNavn: "IQs Oppfinnelser",
+      },
+      {
+        id: 8,
+        tittel: "Snøfnugg-symfoni (Ambient)",
+        varighet: "3:20",
+        låst: !completedQuests.has(13),
+        opplåsingsDag: 13,
+        eventyrNavn: "Frosne Mønster",
+      },
+      {
+        id: 9,
+        tittel: "Mørkets Melodi (Dramatisk)",
+        varighet: "2:40",
+        låst: !completedQuests.has(17),
+        opplåsingsDag: 17,
+        eventyrNavn: "Mørkets Trussel",
+      },
+      {
+        id: 10,
+        tittel: "Rudolfs Triumf (Heroisk)",
+        varighet: "3:30",
+        låst: !completedQuests.has(21),
+        opplåsingsDag: 21,
+        eventyrNavn: "Mørkets Trussel",
+      },
+      {
+        id: 11,
+        tittel: "Bjelleklang (Oscillator Ver.)",
+        varighet: "2:15",
+        låst: !completedQuests.has(7),
+        opplåsingsDag: 7,
+        eventyrNavn: "Generell",
+      },
+      {
+        id: 12,
+        tittel: "Glade Jul (Synth Wave)",
+        varighet: "3:05",
+        låst: !completedQuests.has(7),
+        opplåsingsDag: 7,
+        eventyrNavn: "Generell",
+      },
+      {
+        id: 13,
+        tittel: "Julaften i Snøfall (Finale)",
+        varighet: "4:00",
+        låst: !completedQuests.has(24),
+        opplåsingsDag: 24,
+        eventyrNavn: "Grand Finale",
+      },
+    ];
+  }
 
   /**
    * ============================================================
