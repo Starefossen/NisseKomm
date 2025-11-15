@@ -1784,4 +1784,314 @@ export class GameEngine {
    * Get eventyr for a specific day
    */
   static getEventyrForDay = getEventyrForDay;
+
+  /**
+   * ============================================================
+   * CHRISTMAS COUNTDOWN & GLOBAL PRODUCTION METRICS
+   * ============================================================
+   */
+
+  /**
+   * Get real-time countdown to Christmas Eve (December 24)
+   *
+   * URGENCY LEVELS:
+   * - calm: >14 days remaining (green, steady pulse)
+   * - approaching: 8-14 days (blue, moderate pulse)
+   * - urgent: 4-7 days (gold, fast pulse)
+   * - critical: 1-3 days (red shake, larger text)
+   * - today: 0 days (gold flash, "GOD JUL!")
+   *
+   * @returns Countdown object with time components and urgency level
+   */
+  static getChristmasCountdown(): {
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+    isChristmas: boolean;
+    urgencyLevel: "calm" | "approaching" | "urgent" | "critical" | "today";
+  } {
+    const now = getCurrentDate();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1; // 1-12
+
+    // Calculate target Christmas Eve (year comes from mocked getCurrentDate())
+    let christmasYear = currentYear;
+    if (currentMonth === 12 && now.getDate() > 24) {
+      christmasYear = currentYear + 1;
+    }
+    const christmasEve = new Date(christmasYear, 11, 24, 23, 59, 59); // Dec 24, 23:59:59
+
+    // Calculate time difference
+    const diff = christmasEve.getTime() - now.getTime();
+    const isChristmas = currentMonth === 12 && now.getDate() === 24;
+
+    if (diff <= 0 || isChristmas) {
+      return {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        isChristmas: true,
+        urgencyLevel: "today",
+      };
+    }
+
+    // Calculate components
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    // Determine urgency level
+    let urgencyLevel: "calm" | "approaching" | "urgent" | "critical" | "today";
+    if (days > 14) {
+      urgencyLevel = "calm";
+    } else if (days >= 8) {
+      urgencyLevel = "approaching";
+    } else if (days >= 4) {
+      urgencyLevel = "urgent";
+    } else {
+      urgencyLevel = "critical";
+    }
+
+    return {
+      days,
+      hours,
+      minutes,
+      seconds,
+      isChristmas: false,
+      urgencyLevel,
+    };
+  }
+
+  /**
+   * Get global production metrics for NisseStats dashboard
+   *
+   * METRIC CALCULATION:
+   * 1. Base value from sigmoid progression (min → max over 24 days)
+   * 2. Child progress multiplier bonus (subtle 2-5% boost per completed quest)
+   * 3. Crisis behaviors (glitch, oscillate, drain, stuck, negative, warning, dimming, lost)
+   * 4. Filter by unlock_day (progressive reveal)
+   *
+   * DISPLAY TYPES:
+   * - counter: Large animated numbers (GAVEPRODUKSJON, PEPPERKAKER)
+   * - bar: ASCII progress bar [████░░░░░░] (REINSDYR FLYTIMER)
+   * - percentage: Value with % symbol (SLEDE DRIVSTOFF)
+   * - waveform: Oscillating energy line (NISSEKRAFT)
+   * - radar: Spinning radar sweep (BREVFUGL-SVERM)
+   * - gauge: Semicircle meter with needle (RUDOLF NES-SIGNAL, FORSVARS-BARRIERE)
+   * - binary: Flickering 0s and 1s (RUTE-BEREGNING)
+   * - hexgrid: Hexagonal cells filling (MAGISKE SEKKER)
+   *
+   * CRISIS TYPES:
+   * - glitch: Random flickering values with garbage data
+   * - oscillate: Values counting up and down rapidly
+   * - drain: Slowly decreasing value
+   * - stuck: Frozen at specific value (loop)
+   * - negative: Shows negative numbers (underflow)
+   * - warning: Persistent warning state
+   * - dimming: Slowly dimming/reducing
+   * - lost: Complete signal loss (0 or ???)
+   *
+   * @param day - Current day (1-24)
+   * @param completedQuestCount - Number of completed quests (0-24)
+   * @returns Array of global production metrics with computed values
+   */
+  static getGlobalProductionMetrics(
+    day: number,
+    completedQuestCount: number,
+  ): Array<{
+    navn: string;
+    verdi: number;
+    maks: number;
+    displayType:
+    | "counter"
+    | "bar"
+    | "percentage"
+    | "waveform"
+    | "radar"
+    | "gauge"
+    | "binary"
+    | "hexgrid";
+    unit: string;
+    description: string;
+    status: "normal" | "advarsel" | "kritisk";
+    inCrisis: boolean;
+    crisisType?:
+    | "glitch"
+    | "oscillate"
+    | "drain"
+    | "stuck"
+    | "negative"
+    | "warning"
+    | "dimming"
+    | "lost";
+    crisisText?: string;
+    crisisValues?: number[];
+  }> {
+    const globalMetrics = (
+      statiskInnhold as unknown as {
+        nissestats_global_metrics: Array<{
+          navn: string;
+          min: number;
+          maks: number;
+          unlock_day: number;
+          display_type:
+          | "counter"
+          | "bar"
+          | "percentage"
+          | "waveform"
+          | "radar"
+          | "gauge"
+          | "binary"
+          | "hexgrid";
+          unit: string;
+          child_progress_multiplier: number;
+          description: string;
+          crisis_behavior?: {
+            day: number;
+            crisis_type:
+            | "glitch"
+            | "oscillate"
+            | "drain"
+            | "stuck"
+            | "negative"
+            | "warning"
+            | "dimming"
+            | "lost";
+            crisis_value?: number;
+            crisis_values?: number[];
+            status: "kritisk" | "advarsel";
+            crisis_text: string;
+          };
+        }>;
+      }
+    ).nissestats_global_metrics;
+
+    const progressionConfig = (
+      statiskInnhold as unknown as {
+        progression_config: {
+          sigmoid: { k: number; midpoint: number };
+        };
+      }
+    ).progression_config;
+    const { k, midpoint } = progressionConfig.sigmoid;
+
+    // Filter by unlock_day
+    const unlockedMetrics = globalMetrics.filter((m) => m.unlock_day <= day);
+
+    return unlockedMetrics.map((metric) => {
+      // Calculate base sigmoid value
+      const baseValue = this.calculateSigmoidValue(
+        metric.min,
+        metric.maks,
+        day,
+        k,
+        midpoint,
+      );
+
+      // Apply child progress multiplier (subtle bonus)
+      const progressBonus =
+        1 + completedQuestCount * metric.child_progress_multiplier;
+      let value = Math.round(baseValue * progressBonus);
+
+      // Ensure value doesn't exceed max
+      value = Math.min(value, metric.maks);
+
+      // Check for crisis
+      let inCrisis = false;
+      let crisisType:
+        | "glitch"
+        | "oscillate"
+        | "drain"
+        | "stuck"
+        | "negative"
+        | "warning"
+        | "dimming"
+        | "lost"
+        | undefined;
+      let crisisText: string | undefined;
+      let crisisValues: number[] | undefined;
+      let status: "normal" | "advarsel" | "kritisk" = "normal";
+
+      if (metric.crisis_behavior && day >= metric.crisis_behavior.day) {
+        // Determine which crisis system this belongs to
+        const crisisBehavior = metric.crisis_behavior;
+        let crisisResolved = false;
+
+        // Day 11: Antenna crisis (affects REINSDYR, RUDOLF, BREVFUGL-SVERM)
+        // Programmatic resolution: Auto-resolve on day 13 OR when badge awarded
+        if (
+          crisisBehavior.day === 11 &&
+          ["REINSDYR FLYTIMER", "RUDOLF NES-SIGNAL", "BREVFUGL-SVERM"].includes(
+            metric.navn,
+          )
+        ) {
+          crisisResolved = this.isCrisisResolved("antenna") || day >= 13;
+        }
+
+        // Day 16: Inventory crisis (affects GAVEPRODUKSJON, MAGISKE SEKKER, ØNSKELISTE, NISSEKRAFT)
+        // Programmatic resolution: Auto-resolve on day 18 OR when badge awarded
+        if (
+          crisisBehavior.day === 16 &&
+          [
+            "GAVEPRODUKSJON",
+            "MAGISKE SEKKER",
+            "ØNSKELISTE BEHANDLET",
+            "NISSEKRAFT",
+          ].includes(metric.navn)
+        ) {
+          crisisResolved = this.isCrisisResolved("inventory") || day >= 18;
+        }
+
+        // Day 7: Mørket warning (affects FORSVARS-BARRIERE, JULESTJERNE)
+        // This is a story warning, not a crisis that needs resolution
+        // Programmatic resolution: Auto-resolves on day 14 (when Eventyr 1 concludes)
+        if (
+          crisisBehavior.day === 7 &&
+          ["FORSVARS-BARRIERE", "JULESTJERNE LYSSTYRKE"].includes(metric.navn)
+        ) {
+          // Warning state persists until day 14 (when eventyr progresses)
+          crisisResolved = day >= 14;
+        }
+
+        if (!crisisResolved) {
+          inCrisis = true;
+          crisisType = crisisBehavior.crisis_type;
+          crisisText = crisisBehavior.crisis_text;
+          status = crisisBehavior.status;
+
+          // Set value(s) based on crisis type
+          if (crisisBehavior.crisis_values) {
+            crisisValues = crisisBehavior.crisis_values;
+            // Use first value as default display
+            value = crisisValues[0];
+          } else if (crisisBehavior.crisis_value !== undefined) {
+            value = crisisBehavior.crisis_value;
+          }
+        } else {
+          // Crisis resolved, calculate normal status
+          status = this.getMetricStatus(value, metric.maks);
+        }
+      } else {
+        // No crisis, calculate normal status
+        status = this.getMetricStatus(value, metric.maks);
+      }
+
+      return {
+        navn: metric.navn,
+        verdi: value,
+        maks: metric.maks,
+        displayType: metric.display_type,
+        unit: metric.unit,
+        description: metric.description,
+        status,
+        inCrisis,
+        crisisType,
+        crisisText,
+        crisisValues,
+      };
+    });
+  }
 }

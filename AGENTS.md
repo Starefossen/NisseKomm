@@ -209,8 +209,12 @@
 - Badge awarding: `GameEngine.awardBadge(crisisType)`
 - Parent validation: Required checkbox in KodeTerminal UI
 - Crisis status: `GameEngine.getCrisisStatus()` → UI indicators in sidebar
+- **Programmatic resolution**: Crises auto-resolve after 2 days if not manually resolved
+  - Day 11 Antenna crisis: Auto-resolves on day 13
+  - Day 16 Inventory crisis: Auto-resolves on day 18
+  - Day 7 Mørket warning: Auto-resolves on day 14 (story progression)
 
-**Design Principle**: Bonusoppdrags encourage parent-child collaboration and critical thinking beyond code entry.
+**Design Principle**: Bonusoppdrags encourage parent-child collaboration and critical thinking beyond code entry. Automatic resolution ensures progression isn't blocked if parents don't validate.
 
 ---
 

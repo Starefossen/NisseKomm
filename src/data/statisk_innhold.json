@@ -1,8 +1,8 @@
 {
   "progression_config": {
     "sigmoid": {
-      "k": 0.4,
-      "midpoint": 12
+      "k": 0.18,
+      "midpoint": 15
     },
     "crisis_events": [
       {
@@ -516,6 +516,211 @@
       "maks": 100,
       "unlock_day": 10,
       "status": "normal"
+    }
+  ],
+  "nissestats_global_metrics": [
+    {
+      "navn": "BARN I VERDEN",
+      "min": 2200000000,
+      "maks": 2200000000,
+      "unlock_day": 1,
+      "display_type": "counter",
+      "unit": "barn",
+      "child_progress_multiplier": 0,
+      "description": "Totalt antall barn Julius skal besøke"
+    },
+    {
+      "navn": "GAVEPRODUKSJON",
+      "min": 48000,
+      "maks": 1800000000,
+      "unlock_day": 1,
+      "display_type": "counter",
+      "unit": "pakker",
+      "child_progress_multiplier": 0.03,
+      "description": "Gaver produsert i Snøfall",
+      "crisis_behavior": {
+        "day": 16,
+        "crisis_type": "oscillate",
+        "crisis_values": [330000000, 329847291, 330152847, 329999123],
+        "status": "kritisk",
+        "crisis_text": "INVENTAR-SYSTEM KRASJET"
+      }
+    },
+    {
+      "navn": "NISSEKRAFT",
+      "min": 45,
+      "maks": 100,
+      "unlock_day": 2,
+      "display_type": "waveform",
+      "unit": "%",
+      "child_progress_multiplier": 0.02,
+      "description": "Magisk energi som driver Snøfall",
+      "crisis_behavior": {
+        "day": 16,
+        "crisis_type": "drain",
+        "crisis_value": 62,
+        "status": "advarsel",
+        "crisis_text": "ENERGI-DRAIN (Inventar-system)"
+      }
+    },
+    {
+      "navn": "PEPPERKAKER BAKT",
+      "min": 0,
+      "maks": 500000,
+      "unlock_day": 4,
+      "display_type": "counter",
+      "unit": "kaker",
+      "child_progress_multiplier": 0.025,
+      "description": "Pepperkaker bakt av nissene"
+    },
+    {
+      "navn": "BREVFUGL-SVERM",
+      "min": 12,
+      "maks": 2847,
+      "unlock_day": 5,
+      "display_type": "radar",
+      "unit": "fugler",
+      "child_progress_multiplier": 0.025,
+      "description": "Brevfugler aktive i luften nå",
+      "crisis_behavior": {
+        "day": 11,
+        "crisis_type": "lost",
+        "crisis_value": 0,
+        "status": "kritisk",
+        "crisis_text": "TRACKING TAPT - INGEN KONTAKT"
+      }
+    },
+    {
+      "navn": "JULEKULER BLÅST",
+      "min": 0,
+      "maks": 10000,
+      "unlock_day": 7,
+      "display_type": "counter",
+      "unit": "kuler",
+      "child_progress_multiplier": 0.03,
+      "description": "Håndlagde julekuler fra Nissemor"
+    },
+    {
+      "navn": "FORSVARS-BARRIERE",
+      "min": 88,
+      "maks": 100,
+      "unlock_day": 7,
+      "display_type": "gauge",
+      "unit": "%",
+      "child_progress_multiplier": 0.015,
+      "description": "Magisk beskyttelse mot Mørket",
+      "crisis_behavior": {
+        "day": 7,
+        "crisis_type": "warning",
+        "crisis_value": 88,
+        "status": "advarsel",
+        "crisis_text": "MØRKET DETEKTERT - POLARNATTEN"
+      }
+    },
+    {
+      "navn": "REINSDYR FLYTIMER",
+      "min": 0,
+      "maks": 240,
+      "unlock_day": 10,
+      "display_type": "bar",
+      "unit": "timer",
+      "child_progress_multiplier": 0.025,
+      "description": "Treningsøkter for reinsdyrene",
+      "crisis_behavior": {
+        "day": 11,
+        "crisis_type": "glitch",
+        "crisis_values": [240, 169, 0, -148, 993, 42],
+        "status": "kritisk",
+        "crisis_text": "TELEMETRI OFFLINE - SUNOS-8000-8N"
+      }
+    },
+    {
+      "navn": "RUDOLF NES-SIGNAL",
+      "min": 0,
+      "maks": 100,
+      "unlock_day": 10,
+      "display_type": "gauge",
+      "unit": "%",
+      "child_progress_multiplier": 0.03,
+      "description": "Rudolfs nese-navigasjonsstyrke",
+      "crisis_behavior": {
+        "day": 11,
+        "crisis_type": "glitch",
+        "crisis_values": [0, 12, 83, 2, 0],
+        "status": "kritisk",
+        "crisis_text": "NO CARRIER - SIG_ERR_8000-8N"
+      }
+    },
+    {
+      "navn": "SLEDE DRIVSTOFF",
+      "min": 0,
+      "maks": 100,
+      "unlock_day": 13,
+      "display_type": "percentage",
+      "unit": "%",
+      "child_progress_multiplier": 0.028,
+      "description": "Magisk drivstoff for julenatten"
+    },
+    {
+      "navn": "ØNSKELISTE BEHANDLET",
+      "min": 847,
+      "maks": 2200000,
+      "unlock_day": 14,
+      "display_type": "counter",
+      "unit": "lister",
+      "child_progress_multiplier": 0.035,
+      "description": "Ønskelister prosessert av Winter",
+      "crisis_behavior": {
+        "day": 16,
+        "crisis_type": "stuck",
+        "crisis_value": 847293,
+        "status": "kritisk",
+        "crisis_text": "DATABASE LOOP - STUCK AT 847293"
+      }
+    },
+    {
+      "navn": "MAGISKE SEKKER",
+      "min": 0,
+      "maks": 847,
+      "unlock_day": 16,
+      "display_type": "hexgrid",
+      "unit": "sekker",
+      "child_progress_multiplier": 0.025,
+      "description": "IQs magiske sekker produsert",
+      "crisis_behavior": {
+        "day": 16,
+        "crisis_type": "negative",
+        "crisis_value": -42,
+        "status": "kritisk",
+        "crisis_text": "INVENTORY_UNDERFLOW - NEGATIV TELLING"
+      }
+    },
+    {
+      "navn": "RUTE-BEREGNING",
+      "min": 0,
+      "maks": 100,
+      "unlock_day": 18,
+      "display_type": "binary",
+      "unit": "%",
+      "child_progress_multiplier": 0.03,
+      "description": "Beregning av optimal julenatten-rute"
+    },
+    {
+      "navn": "JULESTJERNE LYSSTYRKE",
+      "min": 72,
+      "maks": 100,
+      "unlock_day": 20,
+      "display_type": "gauge",
+      "unit": "%",
+      "child_progress_multiplier": 0.025,
+      "description": "Julestjernens magiske lysstyrke",
+      "crisis_behavior": {
+        "day": 7,
+        "crisis_type": "dimming",
+        "crisis_value": 72,
+        "status": "advarsel",
+        "crisis_text": "DEMPER - TRENGER MAGISK STYRKE"
+      }
     }
   ],
   "kalender": []

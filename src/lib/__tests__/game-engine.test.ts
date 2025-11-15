@@ -629,25 +629,78 @@ describe("GameEngine", () => {
       expect(day10Metrics.length).toBe(4);
     });
 
-    it("should freeze NISSEKRAFT at crisis value on day 11 if unresolved", () => {
-      const day11Metrics = GameEngine.getProgressiveMetrics(11);
-      const nissekraft = day11Metrics.find((m) => m.navn === "NISSEKRAFT");
+    it("should freeze REINSDYR at crisis value on day 11 if antenna unresolved", () => {
+      const completedQuests = GameEngine.getCompletedQuestCount();
+      const day11Metrics = GameEngine.getGlobalProductionMetrics(
+        11,
+        completedQuests,
+      );
+      const reinsdyr = day11Metrics.find((m) => m.navn === "REINSDYR FLYTIMER");
 
-      expect(nissekraft).toBeDefined();
-      expect(nissekraft!.verdi).toBe(45); // Crisis value
-      expect(nissekraft!.status).toBe("kritisk");
+      expect(reinsdyr).toBeDefined();
+      expect(reinsdyr!.inCrisis).toBe(true);
+      expect(reinsdyr!.status).toBe("kritisk");
     });
 
-    it("should restore NISSEKRAFT after crisis resolved", () => {
-      // Resolve antenna crisis
-      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
+    it("should restore REINSDYR after antenna crisis resolved", () => {
+      // Complete day 11 main quest first (required for bonusoppdrag)
+      const day11Code = getQuestCode(11);
+      GameEngine.submitCode(day11Code, day11Code, 11);
 
-      const day11Metrics = GameEngine.getProgressiveMetrics(11);
-      const nissekraft = day11Metrics.find((m) => m.navn === "NISSEKRAFT");
+      // Resolve antenna crisis by awarding badge
+      const result = BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
+      expect(result.success).toBe(true);
+
+      const completedQuests = GameEngine.getCompletedQuestCount();
+      const day11Metrics = GameEngine.getGlobalProductionMetrics(
+        11,
+        completedQuests,
+      );
+      const reinsdyr = day11Metrics.find((m) => m.navn === "REINSDYR FLYTIMER");
+
+      expect(reinsdyr).toBeDefined();
+      // Crisis is resolved, so inCrisis should be false
+      expect(reinsdyr!.inCrisis).toBe(false);
+      // Status returns to normal calculation (value=82, max=240, so 34% = "kritisk" is correct)
+      // The key difference is crisis is resolved, not that status changes
+      expect(reinsdyr!.crisisText).toBeUndefined();
+    });
+
+    it("should freeze NISSEKRAFT at crisis value on day 16 if inventory unresolved", () => {
+      const completedQuests = GameEngine.getCompletedQuestCount();
+      const day16Metrics = GameEngine.getGlobalProductionMetrics(
+        16,
+        completedQuests,
+      );
+      const nissekraft = day16Metrics.find((m) => m.navn === "NISSEKRAFT");
 
       expect(nissekraft).toBeDefined();
-      expect(nissekraft!.verdi).toBeGreaterThan(45); // Restored to normal progression
-      expect(nissekraft!.status).not.toBe("kritisk");
+      expect(nissekraft!.verdi).toBe(62); // Crisis value
+      expect(nissekraft!.status).toBe("advarsel");
+      expect(nissekraft!.inCrisis).toBe(true);
+    });
+
+    it("should restore NISSEKRAFT after inventory crisis resolved", () => {
+      // Complete day 16 main quest first (required for bonusoppdrag)
+      const day16Code = getQuestCode(16);
+      GameEngine.submitCode(day16Code, day16Code, 16);
+
+      // Resolve inventory crisis by awarding badge
+      const result = BadgeManager.checkAndAwardBadge("inventar-ekspert", true);
+      expect(result.success).toBe(true);
+
+      const completedQuests = GameEngine.getCompletedQuestCount();
+      const day16Metrics = GameEngine.getGlobalProductionMetrics(
+        16,
+        completedQuests,
+      );
+      const nissekraft = day16Metrics.find((m) => m.navn === "NISSEKRAFT");
+
+      expect(nissekraft).toBeDefined();
+      // Crisis is resolved, so inCrisis should be false
+      expect(nissekraft!.inCrisis).toBe(false);
+      // Status returns to normal calculation
+      expect(nissekraft!.crisisText).toBeUndefined();
     });
 
     it("should freeze BREVFUGL-SVERM at crisis value on day 16 if unresolved", () => {
@@ -780,6 +833,244 @@ describe("GameEngine", () => {
           expect(firstAdvarsel).toBeLessThan(firstInfo);
         }
       }
+    });
+  });
+
+  describe("Christmas Countdown & Global Production Metrics", () => {
+    describe("getChristmasCountdown", () => {
+      it("should return countdown with all time components", () => {
+        const countdown = GameEngine.getChristmasCountdown();
+
+        expect(countdown).toHaveProperty("days");
+        expect(countdown).toHaveProperty("hours");
+        expect(countdown).toHaveProperty("minutes");
+        expect(countdown).toHaveProperty("seconds");
+        expect(countdown).toHaveProperty("isChristmas");
+        expect(countdown).toHaveProperty("urgencyLevel");
+      });
+
+      it("should have valid urgency level", () => {
+        const countdown = GameEngine.getChristmasCountdown();
+        const validLevels = [
+          "calm",
+          "approaching",
+          "urgent",
+          "critical",
+          "today",
+        ];
+
+        expect(validLevels).toContain(countdown.urgencyLevel);
+      });
+
+      it("should have non-negative time values", () => {
+        const countdown = GameEngine.getChristmasCountdown();
+
+        expect(countdown.days).toBeGreaterThanOrEqual(0);
+        expect(countdown.hours).toBeGreaterThanOrEqual(0);
+        expect(countdown.hours).toBeLessThan(24);
+        expect(countdown.minutes).toBeGreaterThanOrEqual(0);
+        expect(countdown.minutes).toBeLessThan(60);
+        expect(countdown.seconds).toBeGreaterThanOrEqual(0);
+        expect(countdown.seconds).toBeLessThan(60);
+      });
+    });
+
+    describe("getGlobalProductionMetrics", () => {
+      it("should return array of metrics with required properties", () => {
+        const metrics = GameEngine.getGlobalProductionMetrics(8, 0);
+
+        expect(Array.isArray(metrics)).toBe(true);
+        expect(metrics.length).toBeGreaterThan(0);
+
+        metrics.forEach((metric) => {
+          expect(metric).toHaveProperty("navn");
+          expect(metric).toHaveProperty("verdi");
+          expect(metric).toHaveProperty("maks");
+          expect(metric).toHaveProperty("displayType");
+          expect(metric).toHaveProperty("unit");
+          expect(metric).toHaveProperty("description");
+          expect(metric).toHaveProperty("status");
+          expect(metric).toHaveProperty("inCrisis");
+        });
+      });
+
+      it("should filter metrics by unlock_day", () => {
+        const day1Metrics = GameEngine.getGlobalProductionMetrics(1, 0);
+        const day10Metrics = GameEngine.getGlobalProductionMetrics(10, 0);
+        const day24Metrics = GameEngine.getGlobalProductionMetrics(24, 0);
+
+        // Day 1 should have fewer metrics than day 24
+        expect(day1Metrics.length).toBeLessThan(day24Metrics.length);
+
+        // Day 10 should have more than day 1 but could have less than day 24
+        expect(day10Metrics.length).toBeGreaterThanOrEqual(day1Metrics.length);
+      });
+
+      it("should have values between min and max", () => {
+        const metrics = GameEngine.getGlobalProductionMetrics(8, 0);
+
+        metrics.forEach((metric) => {
+          expect(metric.verdi).toBeGreaterThanOrEqual(0);
+          expect(metric.verdi).toBeLessThanOrEqual(metric.maks);
+        });
+      });
+
+      it("should progress values over time with sigmoid curve", () => {
+        const day1Metrics = GameEngine.getGlobalProductionMetrics(1, 0);
+        const day12Metrics = GameEngine.getGlobalProductionMetrics(12, 0);
+        const day24Metrics = GameEngine.getGlobalProductionMetrics(24, 0);
+
+        // Find PEPPERKAKER (no crisis behavior) to test pure sigmoid
+        const day1Pepper = day1Metrics.find(
+          (m) => m.navn === "PEPPERKAKER BAKT",
+        );
+        const day12Pepper = day12Metrics.find(
+          (m) => m.navn === "PEPPERKAKER BAKT",
+        );
+        const day24Pepper = day24Metrics.find(
+          (m) => m.navn === "PEPPERKAKER BAKT",
+        );
+
+        if (day1Pepper && day12Pepper && day24Pepper) {
+          // Values should increase over time
+          expect(day12Pepper.verdi).toBeGreaterThan(day1Pepper.verdi);
+          expect(day24Pepper.verdi).toBeGreaterThanOrEqual(day12Pepper.verdi);
+
+          // Day 12 (midpoint) should be around 50% for sigmoid
+          const day12Percent = (day12Pepper.verdi / day12Pepper.maks) * 100;
+          expect(day12Percent).toBeGreaterThan(30); // At least 30%
+          expect(day12Percent).toBeLessThan(70); // At most 70%
+        }
+      });
+
+      it("should not reach 100% too early in progression", () => {
+        // Test day 8 specifically (user reported 100% on day 8)
+        const day8Metrics = GameEngine.getGlobalProductionMetrics(8, 0);
+
+        day8Metrics.forEach((metric) => {
+          const percentage = (metric.verdi / metric.maks) * 100;
+
+          // On day 8 (1/3 through calendar), metrics shouldn't be at 100%
+          // unless they have a very high min value (like BARN I VERDEN)
+          if (metric.navn !== "BARN I VERDEN") {
+            expect(percentage).toBeLessThan(95); // Allow some tolerance
+          }
+        });
+      });
+
+      it("should verify day 8 and day 16 progression values are reasonable", () => {
+        const day8Metrics = GameEngine.getGlobalProductionMetrics(8, 0);
+        const day16Metrics = GameEngine.getGlobalProductionMetrics(16, 0);
+
+        // Verify day 8 metrics are not at 100% (except BARN I VERDEN)
+        day8Metrics.forEach((metric) => {
+          const percentage = (metric.verdi / metric.maks) * 100;
+          if (metric.navn !== "BARN I VERDEN") {
+            expect(percentage).toBeLessThan(95);
+          }
+        });
+
+        // Find specific metrics to verify
+        const day16Gaver = day16Metrics.find(
+          (m) => m.navn === "GAVEPRODUKSJON",
+        );
+        const day16Reinsdyr = day16Metrics.find(
+          (m) => m.navn === "REINSDYR FLYTIMER",
+        );
+
+        if (day16Gaver) {
+          const gaverPercent = (day16Gaver.verdi / day16Gaver.maks) * 100;
+          // Day 16 is after midpoint (12), should be over 50% unless in crisis
+          if (!day16Gaver.inCrisis) {
+            expect(gaverPercent).toBeGreaterThan(50);
+          }
+        }
+
+        if (day16Reinsdyr) {
+          const reinsdyrPercent =
+            (day16Reinsdyr.verdi / day16Reinsdyr.maks) * 100;
+          // Should be reasonable progression, not 100% on day 16
+          if (!day16Reinsdyr.inCrisis) {
+            expect(reinsdyrPercent).toBeLessThan(95);
+          }
+        }
+      });
+
+      it("should apply child progress bonus correctly", () => {
+        const withoutBonus = GameEngine.getGlobalProductionMetrics(12, 0);
+        const withBonus = GameEngine.getGlobalProductionMetrics(12, 10);
+
+        // Find metrics with multipliers > 0
+        const gaveWithoutBonus = withoutBonus.find(
+          (m) => m.navn === "GAVEPRODUKSJON",
+        );
+        const gaveWithBonus = withBonus.find(
+          (m) => m.navn === "GAVEPRODUKSJON",
+        );
+
+        if (gaveWithoutBonus && gaveWithBonus) {
+          expect(gaveWithBonus.verdi).toBeGreaterThan(gaveWithoutBonus.verdi);
+        }
+      });
+
+      it("should handle crisis behavior correctly", () => {
+        // Day 11: Antenna crisis affects REINSDYR FLYTIMER, RUDOLF NES-SIGNAL, BREVFUGL-SVERM
+        const day11Metrics = GameEngine.getGlobalProductionMetrics(11, 0);
+        const reinsdyr = day11Metrics.find(
+          (m) => m.navn === "REINSDYR FLYTIMER",
+        );
+
+        if (reinsdyr) {
+          // Should be in crisis if badge not earned
+          const hasResolved = GameEngine.isCrisisResolved("antenna");
+
+          if (!hasResolved) {
+            expect(reinsdyr.inCrisis).toBe(true);
+            // Crisis type is "glitch" with multiple values, not fixed 0
+            expect(reinsdyr.crisisText).toBeDefined();
+          }
+        }
+
+        // Day 16: Inventory crisis affects GAVEPRODUKSJON
+        const day16Metrics = GameEngine.getGlobalProductionMetrics(16, 0);
+        const gaver = day16Metrics.find((m) => m.navn === "GAVEPRODUKSJON");
+
+        if (gaver) {
+          const hasResolved = GameEngine.isCrisisResolved("inventory");
+
+          if (!hasResolved) {
+            expect(gaver.inCrisis).toBe(true);
+            expect(gaver.crisisText).toBeDefined();
+          }
+        }
+      });
+
+      it("should have valid display types", () => {
+        const metrics = GameEngine.getGlobalProductionMetrics(24, 0);
+        const validTypes = [
+          "counter",
+          "bar",
+          "percentage",
+          "waveform",
+          "radar",
+          "gauge",
+          "binary",
+          "hexgrid",
+        ];
+
+        metrics.forEach((metric) => {
+          expect(validTypes).toContain(metric.displayType);
+        });
+      });
+
+      it("should have valid status values", () => {
+        const metrics = GameEngine.getGlobalProductionMetrics(12, 0);
+        const validStatuses = ["normal", "advarsel", "kritisk"];
+
+        metrics.forEach((metric) => {
+          expect(validStatuses).toContain(metric.status);
+        });
+      });
     });
   });
 });

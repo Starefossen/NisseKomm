@@ -12,6 +12,7 @@
  */
 
 import { InnsendelseLog, DecryptionSymbol } from "@/types/innhold";
+import { getISOString } from "./date-utils";
 
 // Storage keys
 const KEYS = {
@@ -790,7 +791,7 @@ export class StorageManager {
    * Mark the Nice List as viewed (called when file is opened)
    */
   static setNiceListViewed(): void {
-    this.setItem(KEYS.NICE_LIST_LAST_VIEWED, new Date().toISOString());
+    this.setItem(KEYS.NICE_LIST_LAST_VIEWED, getISOString());
   }
 
   /**
