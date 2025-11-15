@@ -1394,27 +1394,27 @@ export class GameEngine {
     verdi: number;
     maks: number;
     displayType:
-    | "counter"
-    | "bar"
-    | "percentage"
-    | "waveform"
-    | "radar"
-    | "gauge"
-    | "binary"
-    | "hexgrid";
+      | "counter"
+      | "bar"
+      | "percentage"
+      | "waveform"
+      | "radar"
+      | "gauge"
+      | "binary"
+      | "hexgrid";
     unit: string;
     description: string;
     status: "normal" | "advarsel" | "kritisk";
     inCrisis: boolean;
     crisisType?:
-    | "glitch"
-    | "oscillate"
-    | "drain"
-    | "stuck"
-    | "negative"
-    | "warning"
-    | "dimming"
-    | "lost";
+      | "glitch"
+      | "oscillate"
+      | "drain"
+      | "stuck"
+      | "negative"
+      | "warning"
+      | "dimming"
+      | "lost";
     crisisText?: string;
     crisisValues?: number[];
   }> {
@@ -1426,28 +1426,28 @@ export class GameEngine {
           maks: number;
           unlock_day: number;
           display_type:
-          | "counter"
-          | "bar"
-          | "percentage"
-          | "waveform"
-          | "radar"
-          | "gauge"
-          | "binary"
-          | "hexgrid";
+            | "counter"
+            | "bar"
+            | "percentage"
+            | "waveform"
+            | "radar"
+            | "gauge"
+            | "binary"
+            | "hexgrid";
           unit: string;
           child_progress_multiplier: number;
           description: string;
           crisis_behavior?: {
             day: number;
             crisis_type:
-            | "glitch"
-            | "oscillate"
-            | "drain"
-            | "stuck"
-            | "negative"
-            | "warning"
-            | "dimming"
-            | "lost";
+              | "glitch"
+              | "oscillate"
+              | "drain"
+              | "stuck"
+              | "negative"
+              | "warning"
+              | "dimming"
+              | "lost";
             crisis_value?: number;
             crisis_values?: number[];
             status: "kritisk" | "advarsel";
