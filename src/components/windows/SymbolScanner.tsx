@@ -5,7 +5,7 @@ import { Html5Qrcode, Html5QrcodeScannerState } from "html5-qrcode";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons, Icon } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
-import { GameEngine } from "@/lib/game-engine";
+import { collectSymbolByCode } from "@/lib/systems/symbol-system";
 
 interface SymbolScannerProps {
   onClose: () => void;
@@ -251,7 +251,7 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
     // Simulate processing delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    const result = GameEngine.collectSymbolByCode(inputCode.trim());
+    const result = collectSymbolByCode(inputCode.trim());
 
     if (result.success && result.symbol) {
       SoundManager.playSound("success");

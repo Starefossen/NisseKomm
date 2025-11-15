@@ -8,25 +8,25 @@
  */
 export type BadgeUnlockCondition =
   | {
-    type: "bonusoppdrag";
-    day: number;
-  }
+      type: "bonusoppdrag";
+      day: number;
+    }
   | {
-    type: "eventyr";
-    eventyrId: string;
-  }
+      type: "eventyr";
+      eventyrId: string;
+    }
   | {
-    type: "allDecryptionsSolved";
-    challengeIds: string[];
-  }
+      type: "allDecryptionsSolved";
+      challengeIds: string[];
+    }
   | {
-    type: "allSymbolsCollected";
-    requiredCount: number;
-  }
+      type: "allSymbolsCollected";
+      requiredCount: number;
+    }
   | {
-    type: "allQuestsCompleted";
-    requiredCount: number;
-  };
+      type: "allQuestsCompleted";
+      requiredCount: number;
+    };
 
 /**
  * Badge definition from merker.json
@@ -75,11 +75,11 @@ interface Foreldreveiledning {
 
 interface EventyrBeløning {
   type:
-  | "badge"
-  | "module_unlock"
-  | "secret_unlock"
-  | "symbol_collection"
-  | "grand_finale";
+    | "badge"
+    | "module_unlock"
+    | "secret_unlock"
+    | "symbol_collection"
+    | "grand_finale";
   badge_id?: string;
   badge_navn?: string;
   module_id?: string;
@@ -217,13 +217,13 @@ export interface Oppdrag {
   materialer_nødvendig: string[]; // Items parents need to acquire
   beste_rom: string; // Suggested room/location for mischief
   hint_type:
-  | "skrevet" // Written clue
-  | "visuell" // Visual clue
-  | "gjemt_objekt" // Hidden object
-  | "arrangement" // Physical arrangement/scene
-  | "spor" // Trail/tracks
-  | "lyd" // Sound/audio clue
-  | "kombinasjon"; // Combination of types
+    | "skrevet" // Written clue
+    | "visuell" // Visual clue
+    | "gjemt_objekt" // Hidden object
+    | "arrangement" // Physical arrangement/scene
+    | "spor" // Trail/tracks
+    | "lyd" // Sound/audio clue
+    | "kombinasjon"; // Combination of types
 
   // Optional: Basic features
   hendelse?: string; // Optional public event description (shows on calendar)

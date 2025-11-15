@@ -7,6 +7,7 @@ import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { BadgeManager } from "@/lib/badge-system";
 import { StorageManager } from "@/lib/storage";
 import { GameEngine } from "@/lib/game-engine";
+import { getCollectedSymbols } from "@/lib/systems/symbol-system";
 import { Icon } from "@/lib/icons";
 
 /**
@@ -144,13 +145,13 @@ function MerkerContent() {
           : `⏳ ${completedDays.length}/${days.length} dager fullført`;
       }
       case "allDecryptionsSolved": {
-        const solved = StorageManager.getSolvedDecryptions();
+        const solved = GameEngine.getSolvedDecryptions();
         return solved.length >= 3
           ? "✓ Alle dekrypteringer løst"
           : `⏳ ${solved.length}/3 dekrypteringer løst`;
       }
       case "allSymbolsCollected": {
-        const symbols = StorageManager.getCollectedSymbols();
+        const symbols = getCollectedSymbols();
         return symbols.length >= 9
           ? "✓ Alle symboler samlet"
           : `⏳ ${symbols.length}/9 symboler samlet`;

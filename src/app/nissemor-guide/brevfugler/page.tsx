@@ -3,7 +3,7 @@
 import { Suspense, useState } from "react";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
-import { StorageManager } from "@/lib/storage";
+import { GameEngine } from "@/lib/game-engine";
 
 /**
  * Brevfugler Management Page
@@ -15,7 +15,7 @@ import { StorageManager } from "@/lib/storage";
 function BrevfuglerContent() {
   const [letters, setLetters] = useState<Map<number, string>>(() => {
     const allLetters = new Map<number, string>();
-    const savedLetters = StorageManager.getSantaLetters();
+    const savedLetters = GameEngine.getSantaLetters();
     savedLetters.forEach((letter) => {
       allLetters.set(letter.day, letter.content);
     });
@@ -33,7 +33,7 @@ function BrevfuglerContent() {
     if (editingDay === null) return;
 
     if (letterContent.trim()) {
-      StorageManager.addSantaLetter(editingDay, letterContent.trim());
+      GameEngine.addSantaLetter(editingDay, letterContent.trim());
       setLetters((prev) => {
         const newMap = new Map(prev);
         newMap.set(editingDay, letterContent.trim());
@@ -41,10 +41,10 @@ function BrevfuglerContent() {
       });
     } else {
       // If empty, remove the letter by saving letters without this day
-      const allLetters = StorageManager.getSantaLetters().filter(
+      const allLetters = GameEngine.getSantaLetters().filter(
         (l) => l.day !== editingDay,
       );
-      StorageManager.saveSantaLetters(allLetters);
+      GameEngine.saveSantaLetters(allLetters);
       setLetters((prev) => {
         const newMap = new Map(prev);
         newMap.delete(editingDay);
@@ -63,10 +63,10 @@ function BrevfuglerContent() {
 
   const handleDelete = (day: number) => {
     if (confirm(`Er du sikker på at du vil slette brevet for dag ${day}?`)) {
-      const allLetters = StorageManager.getSantaLetters().filter(
+      const allLetters = GameEngine.getSantaLetters().filter(
         (l) => l.day !== day,
       );
-      StorageManager.saveSantaLetters(allLetters);
+      GameEngine.saveSantaLetters(allLetters);
       setLetters((prev) => {
         const newMap = new Map(prev);
         newMap.delete(day);

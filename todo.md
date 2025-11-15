@@ -7,14 +7,14 @@
   - Glitching / kjerneenergi?
 - Brevfugler:
   - Må testes og fullføres
+  - Må hintes til underveis i historien
 - NisseMusikk:
   - Trenger faktiske lydfiler (8-bit julesanger) før implementering av eventyr-reaktiv spilleliste med spor som låses opp basert på historiefremdrift
-- Nissestats
-  - Må testes og fullføres
-- Eventyr
-  - Hvordan integrerer vi dette bedre?
 - Merker
   - Finne et bedre navn?
 - Mørket / Winter som prøver å sabotere
 - Orakelet?
 - Julius sin dagbok
+- Refactor agents.md
+- Teste data-lasting / lagring mer grundig
+- Legge til multitenant-støtte

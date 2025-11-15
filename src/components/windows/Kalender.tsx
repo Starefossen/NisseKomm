@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { RetroModal } from "../ui/RetroModal";
 import { Icons } from "@/lib/icons";
-import { StorageManager } from "@/lib/storage";
+import { GameEngine } from "@/lib/game-engine";
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 import { getEventyr } from "@/lib/eventyr";
 import type { Oppdrag } from "@/types/innhold";
@@ -19,7 +19,7 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [completedDays, setCompletedDays] = useState<Set<number>>(() => {
     if (typeof window !== "undefined") {
-      return StorageManager.getCompletedDaysForMissions(missions);
+      return GameEngine.getCompletedDays();
     }
     return new Set();
   });
@@ -28,7 +28,7 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
   useEffect(() => {
     const updateCompletedDays = () => {
       if (typeof window !== "undefined") {
-        setCompletedDays(StorageManager.getCompletedDaysForMissions(missions));
+        setCompletedDays(GameEngine.getCompletedDays());
       }
     };
 

@@ -5,7 +5,6 @@ import { SidebarWidget } from "../ui/SidebarWidget";
 import { Icons } from "@/lib/icons";
 import { Varsel } from "@/types/innhold";
 import { GameEngine } from "@/lib/game-engine";
-import { StorageManager } from "@/lib/storage";
 
 interface VarselKonsollProps {
   alerts: Varsel[]; // Base alerts (fallback)
@@ -17,7 +16,7 @@ export function VarselKonsoll({ alerts, currentDay }: VarselKonsollProps) {
   const [dynamicAlerts, setDynamicAlerts] = useState<Varsel[]>(() => {
     if (typeof window !== "undefined") {
       const completedDays = new Set(
-        StorageManager.getSubmittedCodes()
+        GameEngine.getSubmittedCodes()
           .map(
             (c) =>
               GameEngine.getAllQuests().findIndex(
@@ -36,7 +35,7 @@ export function VarselKonsoll({ alerts, currentDay }: VarselKonsollProps) {
     if (typeof window !== "undefined") {
       requestAnimationFrame(() => {
         const completedDays = new Set(
-          StorageManager.getSubmittedCodes()
+          GameEngine.getSubmittedCodes()
             .map(
               (c) =>
                 GameEngine.getAllQuests().findIndex(
@@ -45,11 +44,9 @@ export function VarselKonsoll({ alerts, currentDay }: VarselKonsollProps) {
             )
             .filter((d) => d > 0),
         );
-        const newAlerts = GameEngine.getDailyAlerts(
-          currentDay || 1,
-          completedDays,
+        setDynamicAlerts(
+          GameEngine.getDailyAlerts(currentDay || 1, completedDays),
         );
-        setDynamicAlerts(newAlerts);
       });
     }
   }, [currentDay]); // Only run when day changes, not on mount

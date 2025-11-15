@@ -5,6 +5,7 @@ import { Icons } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import { StorageManager } from "@/lib/storage";
+import { getCollectedSymbols } from "@/lib/systems/symbol-system";
 import { getEventyr } from "@/lib/eventyr";
 import { BadgeManager } from "@/lib/badge-system";
 import Image from "next/image";
@@ -24,8 +25,8 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
   // Calculate game statistics
   const completedEventyr = GameEngine.getCompletedEventyr();
   const totalEventyr = GameEngine.getTotalEventyr();
-  const solvedDecryptions = StorageManager.getSolvedDecryptions();
-  const collectedSymbols = StorageManager.getCollectedSymbols();
+  const solvedDecryptions = GameEngine.getSolvedDecryptions();
+  const collectedSymbols = getCollectedSymbols();
 
   // Get trophy badge
   const trophyBadge = BadgeManager.getBadge("julekalender-fullfort");

@@ -5,7 +5,6 @@ import { RetroWindow } from "../ui/RetroWindow";
 import { Icons, Icon } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
-import { StorageManager } from "@/lib/storage";
 import { DecryptionSymbol } from "@/types/innhold";
 import { SymbolScanner } from "./SymbolScanner";
 
@@ -100,9 +99,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
         );
 
         if (requiredSymbols.length === challenge.requiredSymbols.length) {
-          const isSolved = StorageManager.isDecryptionSolved(
-            challenge.challengeId,
-          );
+          const isSolved = GameEngine.isDecryptionSolved(challenge.challengeId);
 
           challenges.push({
             challengeId: challenge.challengeId,

@@ -5,7 +5,6 @@ import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { Oppdrag, InnsendelseLog } from "@/types/innhold";
 import { SoundManager } from "@/lib/sounds";
-import { StorageManager } from "@/lib/storage";
 import { GameEngine } from "@/lib/game-engine";
 import { getISOString } from "@/lib/date-utils";
 
@@ -38,7 +37,7 @@ export function KodeTerminal({
   } | null>(null);
   const [submittedCodes, setSubmittedCodes] = useState<InnsendelseLog[]>(() => {
     if (typeof window !== "undefined") {
-      return StorageManager.getSubmittedCodes();
+      return GameEngine.getSubmittedCodes();
     }
     return [];
   });
@@ -50,7 +49,7 @@ export function KodeTerminal({
   });
   const [failedAttempts, setFailedAttempts] = useState(() => {
     if (typeof window !== "undefined") {
-      return StorageManager.getFailedAttempts(currentDay);
+      return GameEngine.getFailedAttempts(currentDay);
     }
     return 0;
   });
@@ -58,7 +57,7 @@ export function KodeTerminal({
   // Get the solved code for display if already solved
   const solvedCode = (() => {
     if (typeof window !== "undefined" && isAlreadySolved) {
-      const codes = StorageManager.getSubmittedCodes();
+      const codes = GameEngine.getSubmittedCodes();
       const dayMission = allMissions.find((m) => m.dag === currentDay);
       const entry = codes.find((c) => c.kode === dayMission?.kode);
       return entry?.kode || "";
@@ -135,7 +134,7 @@ export function KodeTerminal({
       setFeedback("error");
       SoundManager.playSound("error");
       if (typeof window !== "undefined") {
-        setFailedAttempts(StorageManager.getFailedAttempts(currentDay));
+        setFailedAttempts(GameEngine.getFailedAttempts(currentDay));
       }
     }
 

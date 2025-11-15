@@ -18,14 +18,14 @@ interface BrevfuglerProps {
 export function Brevfugler({ onClose }: BrevfuglerProps) {
   const [letters] = useState<Letter[]>(() => {
     if (typeof window !== "undefined") {
-      return StorageManager.getSantaLetters();
+      return GameEngine.getSantaLetters();
     }
     return [];
   });
   const [selectedLetter, setSelectedLetter] = useState<number | null>(null);
   const [status] = useState<"pending" | "processed">(() => {
     if (typeof window !== "undefined") {
-      const completedCodes = StorageManager.getSubmittedCodes();
+      const completedCodes = GameEngine.getSubmittedCodes();
       return completedCodes.length >= 14 ? "processed" : "pending";
     }
     return "pending";
@@ -146,10 +146,11 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
                 return (
                   <div
                     key={fase}
-                    className={`p-2 border-2 text-center text-xs ${fullført
+                    className={`p-2 border-2 text-center text-xs ${
+                      fullført
                         ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
                         : "border-(--neon-green)/30 bg-(--neon-green)/5 text-(--neon-green)/50"
-                      }`}
+                    }`}
                   >
                     <div className="font-bold">
                       {fullført ? "✓" : "○"} FASE {fase}
@@ -214,10 +215,11 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
 
         {/* Status Banner */}
         <div
-          className={`p-4 border-2 ${status === "processed"
+          className={`p-4 border-2 ${
+            status === "processed"
               ? "border-(--neon-green) bg-(--neon-green)/10"
               : "border-(--gold) bg-(--gold)/10"
-            }`}
+          }`}
         >
           <div className="flex items-center gap-3">
             {status === "processed" ? (
@@ -273,9 +275,10 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
                   onClick={() => setSelectedLetter(letter.day)}
                   className={`
                     w-full p-3 text-left border-2 transition-all
-                    ${selectedLetter === letter.day
-                      ? "border-(--gold) bg-(--gold)/20"
-                      : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-(--neon-green)/10"
+                    ${
+                      selectedLetter === letter.day
+                        ? "border-(--gold) bg-(--gold)/20"
+                        : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-(--neon-green)/10"
                     }
                   `}
                 >

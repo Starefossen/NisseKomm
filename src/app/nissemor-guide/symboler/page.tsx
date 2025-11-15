@@ -2,8 +2,14 @@
 
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import QRCodeStyling from "qr-code-styling";
+import {
+  getAllSymbols,
+  collectSymbolByCode,
+  getCollectedSymbols,
+  clearCollectedSymbols,
+  addCollectedSymbol,
+} from "@/lib/systems/symbol-system";
 import { GameEngine } from "@/lib/game-engine";
-import { StorageManager } from "@/lib/storage";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { Icon } from "@/lib/icons";
@@ -22,12 +28,12 @@ type SymbolColor = "green" | "red" | "blue";
 
 function SymbolerContent() {
   const [collectedSymbols, setCollectedSymbols] = useState(() =>
-    GameEngine.getCollectedSymbols(),
+    getCollectedSymbols(),
   );
   const [qrCodes, setQrCodes] = useState<Map<string, QRCodeStyling>>(new Map());
   const qrRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
-  const allSymbols = GameEngine.getAllSymbols();
+  const allSymbols = getAllSymbols();
 
   // Listen for storage changes to auto-update symbol collection
   useEffect(() => {
@@ -35,7 +41,7 @@ function SymbolerContent() {
 
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "nissekomm-collected-symbols") {
-        setCollectedSymbols(GameEngine.getCollectedSymbols());
+        setCollectedSymbols(getCollectedSymbols());
       }
     };
 
@@ -145,10 +151,10 @@ function SymbolerContent() {
     );
 
     if (choice) {
-      const result = GameEngine.collectSymbolByCode(choice);
+      const result = collectSymbolByCode(choice);
       if (result.success) {
         alert(`✓ ${result.message}`);
-        setCollectedSymbols(GameEngine.getCollectedSymbols());
+        setCollectedSymbols(getCollectedSymbols());
       } else {
         alert(`✗ ${result.message}`);
       }
@@ -180,13 +186,13 @@ function SymbolerContent() {
 
     if (isCollected) {
       // Remove symbol
-      StorageManager.clearCollectedSymbols();
+      clearCollectedSymbols();
       const remaining = collectedSymbols.filter((c) => c.symbolId !== symbolId);
-      remaining.forEach((s) => StorageManager.addCollectedSymbol(s));
+      remaining.forEach((s) => addCollectedSymbol(s));
       setCollectedSymbols(remaining);
     } else {
       // Add symbol
-      StorageManager.addCollectedSymbol(symbol);
+      addCollectedSymbol(symbol);
       setCollectedSymbols([...collectedSymbols, symbol]);
     }
   };

@@ -603,12 +603,13 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
           <button
             onClick={() => handleCameraSwitch("cam1")}
             disabled={isAntennaBroken}
-            className={`p-2 border-2 transition-colors ${isAntennaBroken
+            className={`p-2 border-2 transition-colors ${
+              isAntennaBroken
                 ? "border-(--neon-green)/10 text-(--neon-green)/20 opacity-30 cursor-not-allowed"
                 : currentCamera === "cam1"
                   ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
                   : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
-              }`}
+            }`}
           >
             <div className="text-xs font-bold">CAM 1</div>
             <div className="text-[10px]">VERKSTED</div>
@@ -616,12 +617,13 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
           <button
             onClick={() => handleCameraSwitch("cam2")}
             disabled={isAntennaBroken}
-            className={`p-2 border-2 transition-colors ${isAntennaBroken
+            className={`p-2 border-2 transition-colors ${
+              isAntennaBroken
                 ? "border-(--neon-green)/10 text-(--neon-green)/20 opacity-30 cursor-not-allowed"
                 : currentCamera === "cam2"
                   ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
                   : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
-              }`}
+            }`}
           >
             <div className="text-xs font-bold">CAM 2</div>
             <div className="text-[10px]">STALL</div>
@@ -629,12 +631,13 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
           <button
             onClick={() => handleCameraSwitch("cam3")}
             disabled={isAntennaBroken}
-            className={`p-2 border-2 transition-colors ${isAntennaBroken
+            className={`p-2 border-2 transition-colors ${
+              isAntennaBroken
                 ? "border-(--neon-green)/10 text-(--neon-green)/20 opacity-30 cursor-not-allowed"
                 : currentCamera === "cam3"
                   ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
                   : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
-              }`}
+            }`}
           >
             <div className="text-xs font-bold">CAM 3</div>
             <div className="text-[10px]">OFFLINE</div>
@@ -642,12 +645,13 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
           <button
             onClick={() => handleCameraSwitch("static")}
             disabled={isAntennaBroken}
-            className={`p-2 border-2 transition-colors ${isAntennaBroken
+            className={`p-2 border-2 transition-colors ${
+              isAntennaBroken
                 ? "border-(--neon-green)/10 text-(--neon-green)/20 opacity-30 cursor-not-allowed"
                 : currentCamera === "static"
                   ? "border-(--neon-green) bg-(--neon-green)/20 text-(--neon-green)"
                   : "border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/50"
-              }`}
+            }`}
           >
             <div className="text-xs font-bold">CAM 4</div>
             <div className="text-[10px]">GARASJE</div>

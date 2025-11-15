@@ -2,7 +2,6 @@
 
 import { useMemo, useEffect, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
-import { StorageManager } from "@/lib/storage";
 import { getAllEventyr, getEventyrDays, getEventyr } from "@/lib/eventyr";
 
 interface TimelineViewProps {
@@ -125,7 +124,7 @@ export function TimelineView({ selectedDay, onSelectDay }: TimelineViewProps) {
         ),
         hasDecryption: !!quest.decryption_challenge,
         decryptionSolved: quest.decryption_challenge
-          ? StorageManager.isDecryptionSolved(
+          ? GameEngine.isDecryptionSolved(
               quest.decryption_challenge.challengeId,
             )
           : false,

@@ -140,12 +140,98 @@
 - Update both StorageManager and local state together
 - Use lazy initialization to avoid loading flashes
 
+### Architecture Principles
+
+**Separation of Concerns:**
+
+The codebase follows a strict **Facade Pattern** with clear boundaries between UI, game logic, domain systems, and persistence layers:
+
+1. **GameEngine** (`lib/game-engine.ts`) - **Single Entry Point**
+   - Central orchestration layer for ALL game state operations
+   - UI components MUST call GameEngine methods, NEVER StorageManager directly
+   - Provides type-safe accessor methods for reading game state
+   - Delegates to specialized domain systems for cohesive features
+   - Examples: `submitCode()`, `getCompletedDays()`, `getSolvedDecryptions()`
+
+2. **Domain Systems** (`lib/systems/`, `lib/generators/`, `lib/validators/`)
+   - Specialized modules for cohesive features (symbol collection, alert generation, quest validation)
+   - Self-contained logic with clear responsibilities
+   - Can be imported directly by GameEngine or UI when appropriate
+   - Examples: `symbol-system.ts` (getAllSymbols, collectSymbolByCode), `alert-generator.ts`, `quest-validator.ts`
+
+3. **Data Loader** (`lib/data-loader.ts`) - **Content Abstraction**
+   - Centralized loading and validation of quest data from JSON files
+   - Build-time validation ensures data integrity before app runs
+   - Provides clean API for accessing quest data (`getAllQuests()`, `getQuestByDay()`)
+   - Separates data concerns from game logic
+   - GameEngine imports from data-loader instead of directly loading JSON
+
+4. **StorageManager** (`lib/storage.ts`) - **Internal Use Only**
+   - Direct access from UI components is PROHIBITED for game state
+   - Only GameEngine and domain systems should call StorageManager
+   - Type-safe localStorage abstraction
+   - Easy to swap for backend API in future
+
+5. **UI Components** (`src/components/`, `src/app/`)
+   - Call GameEngine methods for game state operations
+   - Import domain systems directly only for pure utilities (e.g., `getAllSymbols()`)
+   - May access StorageManager ONLY for pure UI state (see exceptions below)
+
+**Acceptable StorageManager Direct Access** (UI state only):
+
+UI components may call StorageManager directly for **non-game state** concerns:
+
+- **Authentication**: `isAuthenticated()`, `setAuthenticated()` - Boot password verification
+- **Player Names**: `getPlayerNames()`, `addPlayerName()` - Nice List personalization
+- **Diary Tracking**: `getDagbokLastRead()`, `setDagbokLastRead()` - Scroll position memory
+- **Visit Tracking**: `setNisseNetLastVisit()`, `hasUnreadNiceList()` - UI badge state
+- **Admin Tools**: `clearAll()`, `addEarnedBadge()`, `removeEarnedBadge()` - Parent guide only
+
+**Why This Pattern?**
+
+- **Encapsulation**: Game logic centralized, easier to test and maintain
+- **Type Safety**: GameEngine provides properly typed interfaces
+- **Flexibility**: Can add caching, validation, or backend without changing UI
+- **Clarity**: Clear ownership - UI asks GameEngine "what should I show?"
+- **Testing**: Mock GameEngine instead of StorageManager for unit tests
+
+**Code Examples:**
+
+```typescript
+// ❌ BAD - UI directly accessing game state
+const completedDays = StorageManager.getCompletedDaysForMissions();
+const codes = StorageManager.getSubmittedCodes();
+
+// ✅ GOOD - UI calls GameEngine facade
+const completedDays = GameEngine.getCompletedDays();
+const codes = GameEngine.getSubmittedCodes();
+
+// ✅ ACCEPTABLE - Pure UI state
+const isLoggedIn = StorageManager.isAuthenticated();
+const lastRead = StorageManager.getDagbokLastRead();
+```
+
+**Implementation Status:**
+
+All HIGH/MEDIUM priority violations have been resolved. UI components properly use GameEngine accessor methods for game state while maintaining direct StorageManager access for pure UI concerns.
+
 ## Data Architecture
 
 **Content Files** (in `src/data/`):
 
 - **`uke1_oppdrag.json`** through **`uke4_oppdrag.json`** - All 24 daily missions split across 4 weeks with codes, physical clues, and diary entries
 - **`statisk_innhold.json`** - File system, alerts, system metrics (non-mission content)
+
+**Data Loading** (`lib/data-loader.ts`):
+
+- **Purpose**: Centralized quest data loading and validation (separates data from game logic)
+- **Build-time validation**: Runs comprehensive checks on all quest data during import
+- **Public API**:
+  - `getAllQuests()` - Returns all 24 validated quests sorted by day
+  - `getQuestByDay(day)` - Returns specific quest or undefined
+  - `mergeAndValidate()` - Internal function that merges weeks and runs validation
+- **Validation checks**: Quest structure, file references, topic dependencies, eventyr references, progressive hints, symbol references, collection completeness
+- **Usage**: GameEngine imports `getAllQuests()` and `getQuestByDay()` instead of directly loading JSON files
 
 **Content Principles**:
 
@@ -530,8 +616,55 @@
 - All UI text, labels, and messages in Norwegian
 - File/folder names in Norwegian (e.g., "OPPGAVER", "LOGGER")
 - Error messages in Norwegian
-- Comments in English (for code clarity)
 - **Use the vocabulary list below** to ensure consistency
+
+### Code Comments
+
+**Philosophy**: Comments should explain WHY, not WHAT. Code should be self-documenting through clear naming.
+
+**Good Comments** (keep):
+
+- Non-obvious business logic: `// Day 24 completion awards trophy badge`
+- Important constraints: `// Symbols require physical collection (QR scanning or parent addition)`
+- Architectural decisions: `// Compute eventyr completion inline to avoid circular dependency`
+- Complex algorithms: Brief explanation of the approach
+
+**Bad Comments** (remove):
+
+- Obvious actions: `// Check if file exists`, `// Loop through items`
+- Section dividers: `// ============ MODULE UNLOCKS ============`
+- Redundant JSDoc: Repeating @param info already in TypeScript types
+- Step-by-step narration: `// 1. First do X, 2. Then do Y`
+
+**JSDoc Guidelines**:
+
+- Module headers: Brief overview of purpose and key concepts
+- Public functions: One-line summary, omit obvious @param/@returns
+- Internal functions: Often no JSDoc needed if name is clear
+- Complex return types: Document the structure if non-obvious
+
+**Example**:
+
+```typescript
+// ❌ BAD
+/**
+ * Get all completed quest days
+ * @returns Set of day numbers (1-24) that have been completed
+ * @public Used by UI components to check completion status
+ */
+static getCompletedDays(): Set<number> {
+  // Load the game state
+  const state = this.loadGameState();
+  // Return completed quests
+  return state.completedQuests;
+}
+
+// ✅ GOOD
+static getCompletedDays(): Set<number> {
+  const state = this.loadGameState();
+  return state.completedQuests;
+}
+```
 
 #### Norwegian Vocabulary (Ordliste)
 
@@ -605,10 +738,43 @@ Consistent terms used throughout the application:
 
 - One component per file
 - Co-locate related components (windows/, modules/, ui/)
-- Keep utility functions in lib/
-- Centralize types in types/
-- Single source of truth for content (data/uke1-4_oppdrag.json and data/statisk_innhold.json)
-- **All quest loading, validation, and game logic centralized in game-engine.ts**
+- Keep utility functions in `lib/utils/` (pure functions, no side effects)
+- Keep domain systems in `lib/systems/` (symbol collection, etc.)
+- Keep generators in `lib/generators/` (alert generation, etc.)
+- Keep validators in `lib/validators/` (quest validation, etc.)
+- Centralize types in `types/`
+- Single source of truth for content (`data/uke1-4_oppdrag.json` and `data/statisk_innhold.json`)
+- **All quest loading, validation, and game logic centralized in `game-engine.ts`**
+- **GameEngine delegates to domain systems for specialized features**
+
+### Code Maintenance Principles
+
+**No Deprecated/Legacy Code:**
+
+- **Remove, don't comment out**: When code becomes obsolete, delete it entirely rather than commenting it out or marking as deprecated
+- **Complete migrations**: If a pattern changes (e.g., hardcoded config → JSON data), remove all old code immediately
+- **Git is your safety net**: Deleted code can always be recovered from git history if needed
+- **No "DEPRECATED" markers**: If you see deprecated code, complete the migration and remove it
+- **Refactor boldly**: When improving architecture, do complete refactorings rather than partial half-measures
+
+**Why:**
+
+- Deprecated code adds cognitive load when reading
+- Creates confusion about which pattern to follow
+- Accumulates over time into technical debt
+- Git history preserves everything if needed
+
+**Example:**
+
+```typescript
+// ❌ BAD - Leaving deprecated code
+// DEPRECATED: Use quest.reveals.modules instead
+const MODULE_UNLOCKS = [...]; // Old config
+static getModuleUnlocks() { return []; } // Returns empty array
+
+// ✅ GOOD - Complete removal
+// Code deleted entirely, modules now configured in quest JSON
+```
 
 ## Bonusoppdrag System
 
