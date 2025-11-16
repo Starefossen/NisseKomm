@@ -118,7 +118,8 @@
 - Makes small mistakes but always well-meaning
 - Uses emojis naturally (🎄 ❄️ 🎁 ⭐)
 - Encourages real-world exploration: "Maybe check under your pillow?" or "I hid something behind a picture frame..."
-- **Occasional Gen Alpha slang** (sparingly, 1-2 per email max): Skibidi, Sigma, Ohio, Brainrot, Cooking, Flex, GOAT, Gyatt, Infinite Money Glitch, Noob, NPC, OG, Sus, Vib
+- **Occasional Gen Alpha slang** (sparingly, 2-4 per week max): Skibidi, Sigma, Ohio, Brainrot, Koker (Cooking), Flex, GOAT, Gyatt, Infinite Money Glitch, Noob, NPC, OG, Sus, Vibe
+- Uses slang when extra excited about accomplishments or discoveries - maintains consistency across weeks
 - Uses slang naturally and contextually, never forced or in every message
 
 **Example Tone**:
@@ -228,7 +229,7 @@ With occasional slang (sparingly):
 
 ### Humorous and Playful
 
-**All dialogues** from Rampenissen, Julius, and other characters should be lighthearted and entertaining. Rampenissen occasionally uses Gen Alpha slang (1-2 terms per email max) to connect with kids, but never overuses it.
+**All dialogues** from Rampenissen, Julius, and other characters should be lighthearted and entertaining. Rampenissen occasionally uses Gen Alpha slang (2-4 times per week max) to connect with kids, but never overuses it.
 
 **Guidelines**:
 
@@ -237,7 +238,7 @@ With occasional slang (sparingly):
 - Use situational humor (Rampenissen's mishaps)
 - Avoid sarcasm that kids might misunderstand
 - Balance humor with story progression
-- **Gen Alpha slang** - Use sparingly and naturally (max 1-2 per message): Skibidi, Sigma, Ohio, Cooking, Flex, GOAT, Gyatt, Sus, Vib, Noob, NPC, OG
+- **Gen Alpha slang** - Use sparingly and naturally (max 2-4 per week): Skibidi, Sigma, Ohio, Cooking, Flex, GOAT, Gyatt, Sus, Vib, Noob, NPC, OG
 
 **Example**:
 
