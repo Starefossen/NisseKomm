@@ -59,7 +59,7 @@ git clone https://github.com/starefossen/NisseKomm.git
 cd NisseKomm
 
 # Installer avhengigheter
-npm install
+pnpm install
 ```
 
 ### 2. Konfigurasjon (valgfritt)
@@ -86,7 +86,7 @@ NEXT_PUBLIC_MOCK_MONTH=
 ### 3. Kjør Utviklingsserver
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 Åpne [http://localhost:3000](http://localhost:3000) og bruk passordet **NISSEKODE2025**
@@ -116,7 +116,7 @@ Besøk **/nissemor-guide** i nettleseren for:
 Kjør alltid før commit:
 
 ```bash
-npm run check
+pnpm run check
 ```
 
 Dette kjører TypeScript, ESLint, Knip og Prettier.
@@ -261,7 +261,7 @@ Bidrag er velkomne! Vennligst:
 
 **Før du sender PR**:
 
-- Kjør `npm run check` (ingen feil eller advarsler)
+- Kjør `pnpm run check` (ingen feil eller advarsler)
 - Oppdater dokumentasjon ved arkitekturendringer
 - Hold all UI-tekst på norsk
 - Følg eksisterende kodestil
