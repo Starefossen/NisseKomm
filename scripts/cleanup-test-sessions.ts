@@ -49,9 +49,7 @@ async function cleanupTestSessions() {
       return;
     }
 
-    console.log(
-      `📋 Found ${testSessions.length} sessions from last 24 hours:`,
-    );
+    console.log(`📋 Found ${testSessions.length} sessions from last 24 hours:`);
     testSessions.forEach((session, index) => {
       console.log(
         `   ${index + 1}. ${session.sessionId.slice(0, 16)}... (${session.lastUpdated})`,
