@@ -22,7 +22,7 @@ const vt323 = VT323({
 export const metadata: Metadata = {
   title: "NisseKomm - Kommandosenter",
   description:
-    "Julekalender riddel for barn - En retro kommandosenter opplevelse",
+    "Julekalendergåte for barn - Et retro kommandosenter for kritiske Snøfall-operasjoner",
   icons: {
     icon: "/logo.png",
   },
