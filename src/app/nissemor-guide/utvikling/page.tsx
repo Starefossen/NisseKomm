@@ -497,7 +497,7 @@ function UtviklingContent() {
           />
           <div className="text-center mt-4">
             <button
-              onClick={() => {
+              onClick={async () => {
                 const textarea = document.getElementById(
                   "importStateTextarea",
                 ) as HTMLTextAreaElement;
@@ -507,7 +507,7 @@ function UtviklingContent() {
                   return;
                 }
                 try {
-                  GameEngine.importGameState(data);
+                  await GameEngine.importGameState(data);
                   alert("✓ Tilstand importert!");
                   refreshPage();
                 } catch (error) {

@@ -169,11 +169,50 @@ Explain WHY, not WHAT. Remove obvious comments.
 **Key `.env.local` Settings**:
 
 ```bash
+# Test Mode & Date Mocking
 NEXT_PUBLIC_TEST_MODE=false              # Bypass date restrictions
 NEXT_PUBLIC_BOOT_PASSWORD=NISSEKODE2025
 NEXT_PUBLIC_BOOT_ANIMATION_DURATION=2    # 0 = skip
 NEXT_PUBLIC_MOCK_DAY=                    # 1-24 for testing
 NEXT_PUBLIC_MOCK_MONTH=                  # 1-12 for testing
+
+# Storage Backend (Phase 1: Sanity Integration)
+NEXT_PUBLIC_STORAGE_BACKEND=localStorage  # 'localStorage' or 'sanity'
+
+# Sanity CMS Configuration (required when STORAGE_BACKEND=sanity)
+NEXT_PUBLIC_SANITY_PROJECT_ID=            # Your Sanity project ID
+NEXT_PUBLIC_SANITY_DATASET=production     # 'production' or 'development'
+NEXT_PUBLIC_SANITY_API_VERSION=2024-11-01 # API version
+SANITY_API_TOKEN=                         # Write token (server-side only)
+```
+
+**Storage Backend Modes**:
+
+- **localStorage** (default): Browser-only storage, no cross-device sync
+- **sanity**: Cross-device persistence via Sanity CMS backend
+
+**Multi-Tenancy Architecture**:
+
+The boot password serves dual purpose:
+
+1. **Authentication**: Grants access to NisseKomm interface
+2. **Tenant Identifier**: Creates isolated game sessions for each family
+
+When using Sanity backend:
+
+- Each unique boot password creates a separate tenant/family session
+- Password is hashed (SHA-256) and used as `sessionId` in Sanity
+- Same password on different devices = same game progress (cross-device sync)
+- Different passwords = completely isolated sessions (multi-family support)
+- Cookie stores hashed password for session persistence
+
+**Example Multi-Tenant Setup**:
+
+```bash
+# Family Hansen uses: HANSEN2024
+# Family Olsen uses: OLSEN2024
+# Each family sees only their own progress
+# Each family can access from multiple devices
 ```
 
 **Date Mocking**: Set `NEXT_PUBLIC_MOCK_DAY` and `NEXT_PUBLIC_MOCK_MONTH` to test specific days across entire app.

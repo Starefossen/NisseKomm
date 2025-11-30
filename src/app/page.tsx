@@ -68,10 +68,10 @@ function getUnreadFileCount(): number {
 /**
  * Get count of unread diary entries
  */
-function getUnreadDiaryCount(): number {
+function getUnreadDagbokCount(): number {
   if (typeof window === "undefined") return 0;
   const completedQuests = GameEngine.loadGameState().completedQuests;
-  return StorageManager.getUnreadDiaryCount(completedQuests);
+  return StorageManager.getUnreadDagbokCount(completedQuests);
 }
 
 export default function Home() {
@@ -93,8 +93,8 @@ export default function Home() {
   const [unreadFileCount, setUnreadFileCount] = useState(() =>
     getUnreadFileCount(),
   );
-  const [unreadDiaryCount, setUnreadDiaryCount] = useState(() =>
-    getUnreadDiaryCount(),
+  const [unreadDagbokCount, setUnreadDagbokCount] = useState(() =>
+    getUnreadDagbokCount(),
   );
   const [unlockedModules, setUnlockedModules] = useState<string[]>(() => {
     if (typeof window !== "undefined") {
@@ -146,9 +146,9 @@ export default function Home() {
     setBootComplete(true);
   };
 
-  const handleAuthSuccess = () => {
+  const handleAuthSuccess = async (password: string) => {
     setAuthenticated(true);
-    StorageManager.setAuthenticated(true);
+    await StorageManager.setAuthenticated(true, password);
     playSound("success");
     // Play jingle after a short delay
     setTimeout(() => playJingle(), 500);
@@ -178,7 +178,7 @@ export default function Home() {
     if (typeof window !== "undefined") {
       setUnreadCount(getUnreadEmailCount());
       setUnreadFileCount(getUnreadFileCount());
-      setUnreadDiaryCount(getUnreadDiaryCount());
+      setUnreadDagbokCount(getUnreadDagbokCount());
     }
   };
 
@@ -318,7 +318,7 @@ export default function Home() {
                       icon="book"
                       label="DAGBOK"
                       color="gold"
-                      unreadCount={unreadDiaryCount}
+                      unreadCount={unreadDagbokCount}
                       onClick={() => handleIconClick("dagbok")}
                     />
 

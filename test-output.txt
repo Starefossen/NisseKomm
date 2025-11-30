@@ -1,0 +1,137 @@
+  console.log
+    [createStorageAdapter] Backend: localStorage Password provided: false
+
+      at log (src/lib/storage-adapter.ts:420:11)
+
+  console.log
+    [StorageManager] setAuthenticated called with password: TEST_17645...
+
+      at StorageManager.log [as setAuthenticated] (src/lib/storage.ts:119:15)
+
+  console.log
+    [createStorageAdapter] Backend: localStorage Password provided: true
+
+      at log (src/lib/storage-adapter.ts:420:11)
+
+  console.log
+    [SanityAdapter] waitForAllPendingSyncs called, checking 0 adapters
+
+      at SanityStorageAdapter.log [as waitForAllPendingSyncs] (src/lib/storage-adapter.ts:357:13)
+
+  console.log
+    [SanityAdapter] No pending syncs found
+
+      at SanityStorageAdapter.log [as waitForAllPendingSyncs] (src/lib/storage-adapter.ts:370:15)
+
+  console.log
+    [SanityAdapter] waitForAllPendingSyncs called, checking 0 adapters
+
+      at SanityStorageAdapter.log [as waitForAllPendingSyncs] (src/lib/storage-adapter.ts:357:13)
+
+  console.log
+    [SanityAdapter] No pending syncs found
+
+      at SanityStorageAdapter.log [as waitForAllPendingSyncs] (src/lib/storage-adapter.ts:370:15)
+
+  console.log
+    [StorageManager] setAuthenticated called with password: TEST_17645...
+
+      at StorageManager.log [as setAuthenticated] (src/lib/storage.ts:119:15)
+
+  console.log
+    [createStorageAdapter] Backend: localStorage Password provided: true
+
+      at log (src/lib/storage-adapter.ts:420:11)
+
+  console.log
+    [SanityAdapter] waitForAllPendingSyncs called, checking 0 adapters
+
+      at SanityStorageAdapter.log [as waitForAllPendingSyncs] (src/lib/storage-adapter.ts:357:13)
+
+  console.log
+    [SanityAdapter] No pending syncs found
+
+      at SanityStorageAdapter.log [as waitForAllPendingSyncs] (src/lib/storage-adapter.ts:370:15)
+
+  console.log
+    [SanityAdapter] waitForAllPendingSyncs called, checking 0 adapters
+
+      at SanityStorageAdapter.log [as waitForAllPendingSyncs] (src/lib/storage-adapter.ts:357:13)
+
+  console.log
+    [SanityAdapter] No pending syncs found
+
+      at SanityStorageAdapter.log [as waitForAllPendingSyncs] (src/lib/storage-adapter.ts:370:15)
+
+  console.log
+    [StorageManager] setAuthenticated called with password: TEST_17645...
+
+      at StorageManager.log [as setAuthenticated] (src/lib/storage.ts:119:15)
+
+  console.log
+    [createStorageAdapter] Backend: localStorage Password provided: true
+
+      at log (src/lib/storage-adapter.ts:420:11)
+
+  console.log
+    [SanityAdapter] waitForAllPendingSyncs called, checking 0 adapters
+
+      at SanityStorageAdapter.log [as waitForAllPendingSyncs] (src/lib/storage-adapter.ts:357:13)
+
+  console.log
+    [SanityAdapter] No pending syncs found
+
+      at SanityStorageAdapter.log [as waitForAllPendingSyncs] (src/lib/storage-adapter.ts:370:15)
+
+FAIL src/lib/__tests__/sanity-storage.test.ts
+  Sanity Storage Adapter - Basic Operations
+    ○ skipped should authenticate and create session
+    ○ skipped should persist and retrieve submitted codes
+    ○ skipped should persist and retrieve viewed emails
+    ○ skipped should persist sound settings
+    ○ skipped should persist music settings
+  Sanity Storage - Multi-Tenant Isolation
+    ✕ should isolate data between different tenants (531 ms)
+    ○ skipped should maintain separate sound preferences per tenant
+  Sanity Storage - Cross-Device Simulation
+    ○ skipped should sync data across simulated devices (same password)
+    ○ skipped should restore full game state on new device
+  Sanity Storage - Complex Data Types
+    ○ skipped should persist badge data
+    ○ skipped should persist eventyr badges
+    ○ skipped should persist unlocked modules
+    ○ skipped should persist crisis resolution status
+    ○ skipped should persist symbol collection
+    ○ skipped should persist decryption challenges
+  Sanity Storage - GameEngine Integration
+    ○ skipped should work with GameEngine facade
+    ○ skipped should persist game progression
+  Sanity Storage - Error Handling
+    ○ skipped should handle duplicate code submissions gracefully
+    ○ skipped should handle duplicate badge awards gracefully
+  Sanity Storage - Performance
+    ○ skipped should handle rapid successive writes
+    ○ skipped should handle large datasets
+
+  ● Sanity Storage - Multi-Tenant Isolation › should isolate data between different tenants
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      149 |       // Verify Family A still has their data
+      150 |       const codesA = StorageManager.getSubmittedCodes();
+    > 151 |       expect(codesA.some((c) => c.kode === "FAMILYA_CODE")).toBe(true);
+          |                                                             ^
+      152 |       expect(codesA.some((c) => c.kode === "FAMILYB_CODE")).toBe(false);
+      153 |     },
+      154 |     20000,
+
+      at Object.toBe (src/lib/__tests__/sanity-storage.test.ts:151:61)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 20 skipped, 21 total
+Snapshots:   0 total
+Time:        0.958 s, estimated 6 s
+Ran all test suites matching src/lib/__tests__/sanity-storage.test.ts with tests matching "should isolate data between different tenants".

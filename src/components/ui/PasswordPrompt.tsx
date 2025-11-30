@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 interface PasswordPromptProps {
-  onSuccess: () => void;
+  onSuccess: (password: string) => void;
   expectedPassword: string;
 }
 
@@ -26,8 +26,8 @@ export function PasswordPrompt({
     e.preventDefault();
 
     if (password.toUpperCase() === expectedPassword.toUpperCase()) {
-      // Success!
-      onSuccess();
+      // Success! Pass the validated password
+      onSuccess(password.toUpperCase());
     } else {
       // Failed attempt
       const newAttemptCount = attemptCount + 1;

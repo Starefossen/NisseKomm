@@ -811,8 +811,8 @@ export class GameEngine {
   /**
    * Import game state from JSON
    */
-  static importGameState(jsonData: string): boolean {
-    return StorageManager.importData(jsonData);
+  static async importGameState(jsonData: string): Promise<boolean> {
+    return await StorageManager.importData(jsonData);
   }
 
   /**

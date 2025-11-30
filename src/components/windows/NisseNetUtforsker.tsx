@@ -81,7 +81,7 @@ export function NisseNetUtforsker({
     };
 
     const processNode = (node: FilNode): FilNode => {
-      // Diary is now handled by standalone DAGBOK module - hide from NisseNet
+      // Dagbok is now handled by standalone DAGBOK module - hide from NisseNet
       if (node.type === "fil" && node.navn === "nissens_dagbok.txt") {
         return {
           ...node,

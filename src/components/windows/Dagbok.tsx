@@ -126,7 +126,7 @@ export function Dagbok({ missions, onClose }: DagbokProps) {
             </div>
           </div>
         ) : (
-          // Diary entries
+          // Dagbok entries
           completedEntries.map((mission, index) => {
             const isUnread = mission.dag > lastReadDay;
             const eventyr = mission.eventyr

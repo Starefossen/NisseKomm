@@ -353,7 +353,7 @@ describe("GameEngine", () => {
       expect(state.viewedMainEmails.has(1)).toBe(true);
     });
 
-    it("should export and import game state", () => {
+    it("should export and import game state", async () => {
       // Create some game state
       for (let i = 1; i <= 5; i++) {
         const code = getQuestCode(i);
@@ -369,7 +369,7 @@ describe("GameEngine", () => {
       expect(GameEngine.getCompletedQuestCount()).toBe(0);
 
       // Import
-      const success = GameEngine.importGameState(exported);
+      const success = await GameEngine.importGameState(exported);
       expect(success).toBe(true);
 
       // Verify state restored (note: export/import is Phase 2 feature, not all data included yet)

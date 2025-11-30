@@ -2,17 +2,23 @@
  * Storage Layer - Centralized state management
  *
  * This module provides a single source of truth for all persistent state.
- * Currently uses localStorage, but designed to be easily replaced with
- * a backend API in the future.
+ * Supports pluggable storage backends via adapter pattern:
+ * - localStorage (default): Browser-only storage
+ * - Sanity: Cross-device persistence via CMS backend
  *
  * Usage:
- * - All localStorage access should go through this module
- * - Never access localStorage directly in components
- * - Easy migration path: replace localStorage calls with API calls
+ * - All storage access goes through this module
+ * - Never access localStorage or storage adapters directly in components
+ * - Switch backend via NEXT_PUBLIC_STORAGE_BACKEND environment variable
  */
 
 import { InnsendelseLog, DecryptionSymbol } from "@/types/innhold";
 import { getISOString } from "./date-utils";
+import {
+  createStorageAdapter,
+  type StorageAdapter,
+  SanityStorageAdapter,
+} from "./storage-adapter";
 
 // Storage keys
 const KEYS = {
@@ -57,95 +63,43 @@ interface Brevfugl {
   tidspunkt: string; // ISO timestamp
 }
 
-// In-memory fallback storage (used when localStorage unavailable)
-const inMemoryStorage = new Map<string, string>();
-
 /**
  * Storage Manager Class
  * Handles all persistence operations with type safety
  */
 export class StorageManager {
+  private static adapter: StorageAdapter = createStorageAdapter();
+
   // ============================================================
-  // Generic Helper Methods (with error handling)
+  // Generic Helper Methods (now using adapter)
   // ============================================================
 
   /**
-   * Generic set item with error handling and in-memory fallback
+   * Generic set item using storage adapter
    */
   private static setItem<T>(key: string, value: T): void {
-    if (typeof window === "undefined") {
-      inMemoryStorage.set(key, JSON.stringify(value));
-      return;
-    }
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.warn(`Failed to write to localStorage (${key}):`, error);
-      inMemoryStorage.set(key, JSON.stringify(value));
-    }
+    this.adapter.set(key, value);
   }
 
   /**
-   * Generic get item with error handling and in-memory fallback
+   * Generic get item using storage adapter
    */
   private static getItem<T>(key: string, defaultValue: T): T {
-    if (typeof window === "undefined") {
-      const stored = inMemoryStorage.get(key);
-      if (stored) {
-        try {
-          return JSON.parse(stored) as T;
-        } catch {
-          return defaultValue;
-        }
-      }
-      return defaultValue;
-    }
-    try {
-      const stored = localStorage.getItem(key);
-      if (stored === null) return defaultValue;
-      return JSON.parse(stored) as T;
-    } catch (error) {
-      console.warn(`Failed to read from localStorage (${key}):`, error);
-      const stored = inMemoryStorage.get(key);
-      if (stored) {
-        try {
-          return JSON.parse(stored) as T;
-        } catch {
-          return defaultValue;
-        }
-      }
-      return defaultValue;
-    }
+    return this.adapter.get(key, defaultValue);
   }
 
   /**
    * Remove item from storage
    */
   private static removeItem(key: string): void {
-    if (typeof window === "undefined") {
-      inMemoryStorage.delete(key);
-      return;
-    }
-    try {
-      localStorage.removeItem(key);
-    } catch (error) {
-      console.warn(`Failed to remove from localStorage (${key}):`, error);
-    }
-    inMemoryStorage.delete(key);
+    this.adapter.remove(key);
   }
 
   /**
    * Check if item exists in storage
    */
   private static hasItem(key: string): boolean {
-    if (typeof window === "undefined") {
-      return inMemoryStorage.has(key);
-    }
-    try {
-      return localStorage.getItem(key) !== null;
-    } catch {
-      return inMemoryStorage.has(key);
-    }
+    return this.adapter.has(key);
   }
 
   // ============================================================
@@ -153,18 +107,50 @@ export class StorageManager {
   // ============================================================
 
   static isAuthenticated(): boolean {
-    if (typeof window === "undefined") return false;
-    return localStorage.getItem(KEYS.AUTHENTICATED) === "true";
+    return this.getItem(KEYS.AUTHENTICATED, false);
   }
 
-  static setAuthenticated(value: boolean): void {
-    if (typeof window === "undefined") return;
-    localStorage.setItem(KEYS.AUTHENTICATED, String(value));
+  static async setAuthenticated(
+    value: boolean,
+    password?: string,
+  ): Promise<void> {
+    // If authenticating with password, recreate adapter for session setup
+    if (value && password) {
+      // CRITICAL: Wait for all pending syncs from ALL previous adapters before switching
+      // This ensures multi-tenant data doesn't get lost during adapter switches
+      const backend = process.env.NEXT_PUBLIC_STORAGE_BACKEND || "localStorage";
+      if (backend === "sanity") {
+        await SanityStorageAdapter.waitForAllPendingSyncs();
+      }
+
+      // Clear localStorage to ensure clean switch between tenants
+      if (typeof window !== "undefined") {
+        localStorage.clear();
+      }
+
+      this.adapter = createStorageAdapter(password);
+
+      // Wait for Sanity adapter initialization to complete
+      if (this.adapter instanceof SanityStorageAdapter) {
+        await this.adapter.waitForInitialization();
+      }
+    }
+
+    this.setItem(KEYS.AUTHENTICATED, value);
   }
 
   static clearAuthentication(): void {
-    if (typeof window === "undefined") return;
-    localStorage.removeItem(KEYS.AUTHENTICATED);
+    this.removeItem(KEYS.AUTHENTICATED);
+  }
+
+  /**
+   * Wait for all pending background syncs to complete (for testing)
+   * Waits for syncs across ALL adapter instances, not just current one
+   * This is critical for multi-tenant tests where adapters switch
+   */
+  static async waitForPendingSyncs(): Promise<void> {
+    // Wait for syncs across ALL adapter instances (critical for multi-tenant tests)
+    await SanityStorageAdapter.waitForAllPendingSyncs();
   }
 
   // ============================================================
@@ -173,13 +159,7 @@ export class StorageManager {
 
   static getSubmittedCodes(): InnsendelseLog[] {
     if (typeof window === "undefined") return [];
-    try {
-      const stored = localStorage.getItem(KEYS.SUBMITTED_CODES);
-      return stored ? JSON.parse(stored) : [];
-    } catch (e) {
-      console.error("Failed to parse submitted codes:", e);
-      return [];
-    }
+    return this.getItem<InnsendelseLog[]>(KEYS.SUBMITTED_CODES, []);
   }
 
   static addSubmittedCode(code: InnsendelseLog): void {
@@ -189,7 +169,7 @@ export class StorageManager {
     // Avoid duplicates
     if (!codes.some((c) => c.kode === code.kode && c.dato === code.dato)) {
       codes.push(code);
-      localStorage.setItem(KEYS.SUBMITTED_CODES, JSON.stringify(codes));
+      this.setItem(KEYS.SUBMITTED_CODES, codes);
     }
   }
 
@@ -219,7 +199,7 @@ export class StorageManager {
 
   static clearSubmittedCodes(): void {
     if (typeof window === "undefined") return;
-    localStorage.removeItem(KEYS.SUBMITTED_CODES);
+    this.removeItem(KEYS.SUBMITTED_CODES);
   }
 
   // ============================================================
@@ -228,21 +208,15 @@ export class StorageManager {
 
   static getViewedEmails(): Set<number> {
     if (typeof window === "undefined") return new Set();
-    try {
-      const stored = localStorage.getItem(KEYS.VIEWED_EMAILS);
-      const array = stored ? JSON.parse(stored) : [];
-      return new Set(array);
-    } catch (e) {
-      console.error("Failed to parse viewed emails:", e);
-      return new Set();
-    }
+    const array = this.getItem<number[]>(KEYS.VIEWED_EMAILS, []);
+    return new Set(array);
   }
 
   static markEmailAsViewed(day: number): void {
     if (typeof window === "undefined") return;
     const viewed = this.getViewedEmails();
     viewed.add(day);
-    localStorage.setItem(KEYS.VIEWED_EMAILS, JSON.stringify([...viewed]));
+    this.setItem(KEYS.VIEWED_EMAILS, [...viewed]);
   }
 
   static isEmailViewed(day: number): boolean {
@@ -288,7 +262,7 @@ export class StorageManager {
 
   static clearViewedEmails(): void {
     if (typeof window === "undefined") return;
-    localStorage.removeItem(KEYS.VIEWED_EMAILS);
+    this.removeItem(KEYS.VIEWED_EMAILS);
   }
 
   // ============================================================
@@ -297,31 +271,20 @@ export class StorageManager {
 
   static getViewedBonusOppdragEmails(): Set<number> {
     if (typeof window === "undefined") return new Set();
-    try {
-      const stored = localStorage.getItem(KEYS.VIEWED_BONUSOPPDRAG_EMAILS);
-      if (stored) {
-        const arr = JSON.parse(stored) as number[];
-        return new Set(arr);
-      }
-    } catch {
-      // Fallback to empty set on parse error
-    }
-    return new Set();
+    const arr = this.getItem<number[]>(KEYS.VIEWED_BONUSOPPDRAG_EMAILS, []);
+    return new Set(arr);
   }
 
   static markBonusOppdragEmailAsViewed(day: number): void {
     if (typeof window === "undefined") return;
     const viewed = this.getViewedBonusOppdragEmails();
     viewed.add(day);
-    localStorage.setItem(
-      KEYS.VIEWED_BONUSOPPDRAG_EMAILS,
-      JSON.stringify([...viewed]),
-    );
+    this.setItem(KEYS.VIEWED_BONUSOPPDRAG_EMAILS, [...viewed]);
   }
 
   static clearViewedBonusOppdragEmails(): void {
     if (typeof window === "undefined") return;
-    localStorage.removeItem(KEYS.VIEWED_BONUSOPPDRAG_EMAILS);
+    this.removeItem(KEYS.VIEWED_BONUSOPPDRAG_EMAILS);
   }
 
   // ============================================================
@@ -330,24 +293,22 @@ export class StorageManager {
 
   static isSoundsEnabled(): boolean {
     if (typeof window === "undefined") return true;
-    const stored = localStorage.getItem(KEYS.SOUNDS_ENABLED);
-    return stored === null ? true : stored === "true";
+    return this.getItem<boolean>(KEYS.SOUNDS_ENABLED, true);
   }
 
   static setSoundsEnabled(value: boolean): void {
     if (typeof window === "undefined") return;
-    localStorage.setItem(KEYS.SOUNDS_ENABLED, String(value));
+    this.setItem(KEYS.SOUNDS_ENABLED, value);
   }
 
   static isMusicEnabled(): boolean {
     if (typeof window === "undefined") return false;
-    const stored = localStorage.getItem(KEYS.MUSIC_ENABLED);
-    return stored === null ? false : stored === "true";
+    return this.getItem<boolean>(KEYS.MUSIC_ENABLED, false);
   }
 
   static setMusicEnabled(value: boolean): void {
     if (typeof window === "undefined") return;
-    localStorage.setItem(KEYS.MUSIC_ENABLED, String(value));
+    this.setItem(KEYS.MUSIC_ENABLED, value);
   }
 
   // ============================================================
@@ -372,15 +333,9 @@ export class StorageManager {
    */
   static clearAll(): void {
     if (typeof window === "undefined") return;
-    Object.values(KEYS).forEach((key) => {
-      localStorage.removeItem(key);
-    });
-    // Also clear module/crisis/badge data
-    localStorage.removeItem("nissekomm-unlocked-modules");
-    localStorage.removeItem("nissekomm-crisis-completed");
-    localStorage.removeItem("nissekomm-santa-letters");
-    // Clear in-memory storage as well
-    inMemoryStorage.clear();
+
+    // Clear all data through adapter
+    this.adapter.clear();
   }
 
   // ============================================================
@@ -389,12 +344,7 @@ export class StorageManager {
 
   static getUnlockedModules(): string[] {
     if (typeof window === "undefined") return [];
-    try {
-      const data = localStorage.getItem("nissekomm-unlocked-modules");
-      return data ? JSON.parse(data) : [];
-    } catch {
-      return [];
-    }
+    return this.getItem<string[]>("nissekomm-unlocked-modules", []);
   }
 
   static unlockModule(moduleId: string): void {
@@ -402,10 +352,7 @@ export class StorageManager {
     const modules = this.getUnlockedModules();
     if (!modules.includes(moduleId)) {
       modules.push(moduleId);
-      localStorage.setItem(
-        "nissekomm-unlocked-modules",
-        JSON.stringify(modules),
-      );
+      this.setItem("nissekomm-unlocked-modules", modules);
     }
   }
 
@@ -420,27 +367,22 @@ export class StorageManager {
   static getCrisisStatus(): { antenna: boolean; inventory: boolean } {
     if (typeof window === "undefined")
       return { antenna: false, inventory: false };
-    try {
-      const data = localStorage.getItem("nissekomm-crisis-completed");
-      if (!data) return { antenna: false, inventory: false };
-
-      const parsed = JSON.parse(data);
-      // Validate structure to prevent corruption issues
-      return {
-        antenna: parsed.antenna === true,
-        inventory: parsed.inventory === true,
-      };
-    } catch (error) {
-      console.error("Failed to parse crisis status:", error);
-      return { antenna: false, inventory: false };
-    }
+    const status = this.getItem<{ antenna: boolean; inventory: boolean }>(
+      "nissekomm-crisis-completed",
+      { antenna: false, inventory: false },
+    );
+    // Validate structure to prevent corruption issues
+    return {
+      antenna: status.antenna === true,
+      inventory: status.inventory === true,
+    };
   }
 
   static resolveCrisis(crisisType: "antenna" | "inventory"): void {
     if (typeof window === "undefined") return;
     const status = this.getCrisisStatus();
     status[crisisType] = true;
-    localStorage.setItem("nissekomm-crisis-completed", JSON.stringify(status));
+    this.setItem("nissekomm-crisis-completed", status);
   }
 
   static isCrisisResolved(crisisType: "antenna" | "inventory"): boolean {
@@ -453,19 +395,17 @@ export class StorageManager {
 
   static getSantaLetters(): Array<{ day: number; content: string }> {
     if (typeof window === "undefined") return [];
-    try {
-      const data = localStorage.getItem("nissekomm-santa-letters");
-      return data ? JSON.parse(data) : [];
-    } catch {
-      return [];
-    }
+    return this.getItem<Array<{ day: number; content: string }>>(
+      "nissekomm-santa-letters",
+      [],
+    );
   }
 
   static saveSantaLetters(
     letters: Array<{ day: number; content: string }>,
   ): void {
     if (typeof window === "undefined") return;
-    localStorage.setItem("nissekomm-santa-letters", JSON.stringify(letters));
+    this.setItem("nissekomm-santa-letters", letters);
   }
 
   static addSantaLetter(day: number, content: string): void {
@@ -500,12 +440,10 @@ export class StorageManager {
     navn: string;
   }> {
     if (typeof window === "undefined") return [];
-    try {
-      const data = localStorage.getItem(KEYS.BONUSOPPDRAG_BADGES);
-      return data ? JSON.parse(data) : [];
-    } catch {
-      return [];
-    }
+    return this.getItem<Array<{ day: number; icon: string; navn: string }>>(
+      KEYS.BONUSOPPDRAG_BADGES,
+      [],
+    );
   }
 
   static addBonusOppdragBadge(day: number, icon: string, navn: string): void {
@@ -516,7 +454,7 @@ export class StorageManager {
     if (!badges.some((b) => b.day === day)) {
       badges.push({ day, icon, navn });
       badges.sort((a, b) => a.day - b.day);
-      localStorage.setItem(KEYS.BONUSOPPDRAG_BADGES, JSON.stringify(badges));
+      this.setItem(KEYS.BONUSOPPDRAG_BADGES, badges);
     }
   }
 
@@ -538,12 +476,9 @@ export class StorageManager {
     navn: string;
   }> {
     if (typeof window === "undefined") return [];
-    try {
-      const data = localStorage.getItem(KEYS.EVENTYR_BADGES);
-      return data ? JSON.parse(data) : [];
-    } catch {
-      return [];
-    }
+    return this.getItem<
+      Array<{ eventyrId: string; icon: string; navn: string }>
+    >(KEYS.EVENTYR_BADGES, []);
   }
 
   static addEventyrBadge(eventyrId: string, icon: string, navn: string): void {
@@ -553,7 +488,7 @@ export class StorageManager {
     // Avoid duplicates
     if (!badges.some((b) => b.eventyrId === eventyrId)) {
       badges.push({ eventyrId, icon, navn });
-      localStorage.setItem(KEYS.EVENTYR_BADGES, JSON.stringify(badges));
+      this.setItem(KEYS.EVENTYR_BADGES, badges);
     }
   }
 
@@ -568,12 +503,10 @@ export class StorageManager {
 
   static getEarnedBadges(): Array<{ badgeId: string; timestamp: number }> {
     if (typeof window === "undefined") return [];
-    try {
-      const data = localStorage.getItem(KEYS.EARNED_BADGES);
-      return data ? JSON.parse(data) : [];
-    } catch {
-      return [];
-    }
+    return this.getItem<Array<{ badgeId: string; timestamp: number }>>(
+      KEYS.EARNED_BADGES,
+      [],
+    );
   }
 
   static addEarnedBadge(badgeId: string): void {
@@ -583,7 +516,7 @@ export class StorageManager {
     // Avoid duplicates
     if (!badges.some((b) => b.badgeId === badgeId)) {
       badges.push({ badgeId, timestamp: Date.now() });
-      localStorage.setItem(KEYS.EARNED_BADGES, JSON.stringify(badges));
+      this.setItem(KEYS.EARNED_BADGES, badges);
     }
   }
 
@@ -594,12 +527,12 @@ export class StorageManager {
   static removeEarnedBadge(badgeId: string): void {
     if (typeof window === "undefined") return;
     const badges = this.getEarnedBadges().filter((b) => b.badgeId !== badgeId);
-    localStorage.setItem(KEYS.EARNED_BADGES, JSON.stringify(badges));
+    this.setItem(KEYS.EARNED_BADGES, badges);
   }
 
   static clearEarnedBadges(): void {
     if (typeof window === "undefined") return;
-    localStorage.removeItem(KEYS.EARNED_BADGES);
+    this.removeItem(KEYS.EARNED_BADGES);
   }
 
   // ============================================================
@@ -608,14 +541,8 @@ export class StorageManager {
 
   static getUnlockedTopics(): Map<string, number> {
     if (typeof window === "undefined") return new Map();
-    try {
-      const data = localStorage.getItem(KEYS.TOPIC_UNLOCKS);
-      if (!data) return new Map();
-      const obj = JSON.parse(data);
-      return new Map(Object.entries(obj).map(([k, v]) => [k, v as number]));
-    } catch {
-      return new Map();
-    }
+    const obj = this.getItem<Record<string, number>>(KEYS.TOPIC_UNLOCKS, {});
+    return new Map(Object.entries(obj).map(([k, v]) => [k, v as number]));
   }
 
   static unlockTopic(topic: string, day: number): void {
@@ -623,7 +550,7 @@ export class StorageManager {
     const topics = this.getUnlockedTopics();
     topics.set(topic, day);
     const obj = Object.fromEntries(topics);
-    localStorage.setItem(KEYS.TOPIC_UNLOCKS, JSON.stringify(obj));
+    this.setItem(KEYS.TOPIC_UNLOCKS, obj);
   }
 
   static isTopicUnlocked(topic: string): boolean {
@@ -839,20 +766,17 @@ export class StorageManager {
 
   /**
    * Import data from JSON string (for restore or migration)
+   * Note: Does not import authentication state (requires password for multi-tenancy)
    */
-  static importData(jsonData: string): boolean {
+  static async importData(jsonData: string): Promise<boolean> {
     try {
       const data: StorageData = JSON.parse(jsonData);
 
-      this.setAuthenticated(data.authenticated);
-      localStorage.setItem(
-        KEYS.SUBMITTED_CODES,
-        JSON.stringify(data.submittedCodes),
-      );
-      localStorage.setItem(
-        KEYS.VIEWED_EMAILS,
-        JSON.stringify(data.viewedEmails),
-      );
+      // Skip authentication import - requires password for session setup
+      // this.setAuthenticated(data.authenticated);
+
+      this.setItem(KEYS.SUBMITTED_CODES, data.submittedCodes);
+      this.setItem(KEYS.VIEWED_EMAILS, data.viewedEmails);
       this.setSoundsEnabled(data.soundsEnabled);
       this.setMusicEnabled(data.musicEnabled);
 
@@ -864,7 +788,7 @@ export class StorageManager {
   }
 
   // ============================================================
-  // Dagbok (Julius' Diary) Read Tracking
+  // Dagbok (Julius' Dagbok) Read Tracking
   // ============================================================
 
   /**
@@ -884,7 +808,7 @@ export class StorageManager {
   /**
    * Get count of unread diary entries
    */
-  static getUnreadDiaryCount(completedQuests: Set<number>): number {
+  static getUnreadDagbokCount(completedQuests: Set<number>): number {
     const lastRead = this.getDagbokLastRead();
     return Array.from(completedQuests).filter((day) => day > lastRead).length;
   }
