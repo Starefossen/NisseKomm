@@ -54,6 +54,10 @@ export function NisseMail({
   );
 
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
+  const [showEventyrArc, setShowEventyrArc] = useState(false);
+  const [showInbox, setShowInbox] = useState(true);
+  const [expandedEventyrDescription, setExpandedEventyrDescription] =
+    useState(false);
 
   const markAsViewed = useCallback(
     (dag: number, isBonusOppdrag: boolean = false) => {
@@ -140,6 +144,8 @@ export function NisseMail({
     setSelectedMission(mission);
     setSelectedEmail({ type: emailType, mission, day: mission.dag });
     markAsViewed(mission.dag, emailType === "side-quest");
+    // Auto-collapse inbox on mobile after selecting email
+    setShowInbox(false);
   };
 
   const getUnreadCount = () => {
@@ -168,22 +174,43 @@ export function NisseMail({
   return (
     <RetroWindow title="NISSEMAIL" onClose={onClose}>
       <div className="flex flex-col lg:flex-row h-full gap-4 p-4 md:p-6">
-        {/* Inbox List - Stacks on top for mobile, left 30% on desktop */}
-        <div className="w-full lg:w-[30%] lg:border-r-4 border-(--neon-green)/30 flex flex-col overflow-hidden lg:max-h-full max-h-[40vh]">
+        {/* Inbox List - Collapsible on mobile, left 30% on desktop */}
+        <div className="w-full lg:w-[30%] lg:border-r-4 border-(--neon-green)/30 flex flex-col overflow-hidden shrink-0">
           <div className="flex flex-col h-full">
-            {/* Inbox header */}
-            <div className="flex items-center gap-2 pb-2 border-b-2 border-(--neon-green)/30 shrink-0">
+            {/* Inbox header - Clickable toggle on mobile */}
+            <button
+              onClick={() => {
+                SoundManager.playSound("click");
+                setShowInbox(!showInbox);
+              }}
+              className="lg:cursor-default flex items-center gap-2 pb-2 border-b-2 border-(--neon-green)/30 shrink-0 lg:pointer-events-none"
+            >
               <Icons.File size={20} color="green" />
               <span className="text-xl font-bold">INNBOKS</span>
               {getUnreadCount() > 0 && (
-                <span className="ml-auto px-2 py-1 text-sm bg-(--christmas-red) text-white border-2 border-(--christmas-red)">
+                <span className="px-2 py-1 text-sm bg-(--christmas-red) text-white border-2 border-(--christmas-red)">
                   {getUnreadCount()} NY
                 </span>
               )}
-            </div>
+              {/* Chevron indicator for mobile */}
+              <Icons.ChevronDown
+                size={20}
+                className="lg:hidden ml-auto"
+                style={{
+                  transform: showInbox ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "transform 0.2s",
+                }}
+              />
+            </button>
 
-            {/* Email list */}
-            <div className="space-y-2 overflow-y-auto flex-1 mt-2 pb-2">
+            {/* Email list - Collapsible on mobile, always visible on desktop */}
+            <div
+              className={`space-y-2 overflow-y-auto mt-2 pb-2 transition-all lg:flex-1 ${
+                showInbox
+                  ? "max-h-[40vh] lg:max-h-full"
+                  : "max-h-0 lg:max-h-full"
+              }`}
+            >
               {[...emails].reverse().map((email, index) => {
                 const isBonusOppdrag = email.type === "side-quest";
                 const isUnread = isBonusOppdrag
@@ -270,7 +297,7 @@ export function NisseMail({
         </div>
 
         {/* Email Content - Stacks below inbox on mobile, right 70% on desktop */}
-        <div className="w-full lg:w-[70%] flex flex-col min-h-0 flex-1">
+        <div className="w-full lg:w-[70%] flex flex-col min-h-0 flex-1 overflow-hidden">
           {selectedMission && selectedEmail ? (
             <div className="flex-1 flex flex-col min-h-0">
               {/* Render side-quest email */}
@@ -319,12 +346,6 @@ export function NisseMail({
                       <div className="flex gap-3">
                         <span className="opacity-70 w-16">TIL:</span>
                         <span>NISSEHJELPER (HASTER!)</span>
-                      </div>
-                      <div className="flex gap-3">
-                        <span className="opacity-70 w-16">EMNE:</span>
-                        <span className="text-(--gold)">
-                          {selectedMission.bonusoppdrag.tittel}
-                        </span>
                       </div>
                       <div className="flex gap-3">
                         <span className="opacity-70 w-16">DATO:</span>
@@ -485,17 +506,13 @@ export function NisseMail({
                         <span>NISSEHJELPER</span>
                       </div>
                       <div className="flex gap-3">
-                        <span className="opacity-70 w-16">EMNE:</span>
-                        <span>{selectedMission.tittel}</span>
-                      </div>
-                      <div className="flex gap-3">
                         <span className="opacity-70 w-16">DATO:</span>
                         <span>DESEMBER {selectedMission.dag}, 2025</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Eventyr Story Arc Card */}
+                  {/* Eventyr Story Arc Card - Collapsible on mobile */}
                   {selectedMission.eventyr &&
                     (() => {
                       const eventyr = getEventyr(selectedMission.eventyr.id);
@@ -514,41 +531,120 @@ export function NisseMail({
                       if (!eventyr) return null;
 
                       return (
-                        <div
-                          className="mb-4 p-4 border-2 bg-black/50"
-                          style={{ borderColor: eventyr.farge }}
-                        >
-                          <div className="flex items-center gap-3 mb-2">
-                            <Icons.ScriptText
-                              size={24}
-                              style={{ color: eventyr.farge }}
-                            />
-                            <div className="flex-1">
-                              <div
-                                className="font-bold tracking-wider"
+                        <div className="mb-4">
+                          {/* Toggle button - visible on mobile only */}
+                          <button
+                            onClick={() => {
+                              SoundManager.playSound("click");
+                              setShowEventyrArc(!showEventyrArc);
+                            }}
+                            className="lg:hidden w-full mb-2 p-3 border-2 bg-black/50 hover:bg-black/70 transition-colors flex items-center justify-between"
+                            style={{ borderColor: eventyr.farge }}
+                          >
+                            <div className="flex items-center gap-2">
+                              <Icons.ScriptText
+                                size={20}
+                                style={{ color: eventyr.farge }}
+                              />
+                              <span
+                                className="text-sm font-bold"
                                 style={{ color: eventyr.farge }}
                               >
                                 {eventyr.navn.toUpperCase()}
-                              </div>
-                              <div className="text-xs opacity-70">
-                                Fase {selectedMission.eventyr.phase} av{" "}
-                                {eventyrDays.length} • {progressPercent}%
-                                fullført
-                              </div>
+                              </span>
+                              <span className="text-xs opacity-70">
+                                ({progressPercent}%)
+                              </span>
                             </div>
-                          </div>
-                          <div className="text-sm opacity-80 leading-relaxed">
-                            {eventyr.beskrivelse}
-                          </div>
-                          {/* Progress bar */}
-                          <div className="mt-3 h-2 bg-black/50 border border-(--neon-green)/30 relative overflow-hidden">
-                            <div
-                              className="h-full transition-all duration-500"
+                            <Icons.ChevronDown
+                              size={20}
                               style={{
-                                width: `${progressPercent}%`,
-                                backgroundColor: eventyr.farge,
+                                color: eventyr.farge,
+                                transform: showEventyrArc
+                                  ? "rotate(180deg)"
+                                  : "rotate(0deg)",
+                                transition: "transform 0.2s",
                               }}
                             />
+                          </button>
+
+                          {/* Full eventyr card - always visible on desktop, collapsible on mobile */}
+                          <div
+                            className={`border-2 bg-black/50 ${
+                              showEventyrArc ? "block" : "hidden lg:block"
+                            }`}
+                            style={{ borderColor: eventyr.farge }}
+                          >
+                            {/* Compact header with toggle */}
+                            <button
+                              onClick={() => {
+                                SoundManager.playSound("click");
+                                setExpandedEventyrDescription(
+                                  !expandedEventyrDescription,
+                                );
+                              }}
+                              className="w-full p-4 text-left hover:bg-black/30 transition-colors"
+                            >
+                              <div className="flex items-center gap-3 mb-2">
+                                <Icons.ScriptText
+                                  size={24}
+                                  style={{ color: eventyr.farge }}
+                                />
+                                <div className="flex-1">
+                                  <div
+                                    className="font-bold tracking-wider"
+                                    style={{ color: eventyr.farge }}
+                                  >
+                                    {eventyr.navn.toUpperCase()}
+                                  </div>
+                                  <div className="text-xs opacity-70">
+                                    Fase {selectedMission.eventyr.phase} av{" "}
+                                    {eventyrDays.length} • {progressPercent}%
+                                    fullført
+                                  </div>
+                                </div>
+                                <Icons.ChevronDown
+                                  size={20}
+                                  style={{
+                                    color: eventyr.farge,
+                                    transform: expandedEventyrDescription
+                                      ? "rotate(180deg)"
+                                      : "rotate(0deg)",
+                                    transition: "transform 0.2s",
+                                  }}
+                                />
+                              </div>
+                              {/* Truncated description preview */}
+                              <div
+                                className={`text-sm opacity-80 leading-relaxed ${
+                                  expandedEventyrDescription
+                                    ? ""
+                                    : "line-clamp-1"
+                                }`}
+                              >
+                                {eventyr.beskrivelse}
+                              </div>
+                              {!expandedEventyrDescription && (
+                                <div
+                                  className="text-xs mt-1 opacity-60"
+                                  style={{ color: eventyr.farge }}
+                                >
+                                  Les mer...
+                                </div>
+                              )}
+                            </button>
+                            {/* Progress bar */}
+                            <div className="px-4 pb-4">
+                              <div className="h-2 bg-black/50 border border-(--neon-green)/30 relative overflow-hidden">
+                                <div
+                                  className="h-full transition-all duration-500"
+                                  style={{
+                                    width: `${progressPercent}%`,
+                                    backgroundColor: eventyr.farge,
+                                  }}
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       );

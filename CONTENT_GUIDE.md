@@ -567,29 +567,43 @@ _Solution_: Diary Day 5 mentions "RØD", Day 11 "GUL", Day 18 "BLÅ" → Code is
 
 ### Hints System
 
-**Progressive help** without spoiling discovery.
+**Diary-Driven Subtle Hints** - Guidance through storytelling, not instructions.
 
-**Hint Progression** (in `oppdrag.hints` array):
+**Design Philosophy**:
 
-**Hint 1** (Available after 2 failed attempts):
+- **Julius' dagbok is the hint system** - No progressive_hints arrays
+- **Auto-unlocks immediately** when day starts (not after completion)
+- **Story-first, hints second** - Dagbok entries are Julius' daily experiences
+- **Subtle metaphors and observations** woven into narrative voice
+- **Never directive** - No "check kitchen" or "combine letters" instructions
+- **Natural file references** - Essential NISSENET files mentioned organically
 
-- Gentle nudge about where to look
-- "Have you checked the kitchen?"
-- "Maybe the physical note has something useful?"
+**Hint Integration Examples**:
 
-**Hint 2** (After 4 failed attempts):
+**Day 1 (KALENDER puzzle)**:
 
-- More specific direction
-- "The emoji 🏰 often means..."
-- "Try looking up Norwegian kings online"
+- Hint: Winter's organizational system metaphor
+- Dagbok: "hver brevfugl får et nummer, hver liste sorteres... Når alle delene er på plass, ser man plutselig helheten"
+- Effect: Suggests combining parts without saying "arrange letters"
 
-**Hint 3** (After 6 failed attempts):
+**Day 2 (34 - Fibonacci)**:
 
-- Strong guidance but not full answer
-- "The cipher key is the number on the physical note"
-- "Combine the first letter of each word"
+- Hint: Pil's friendship growth metaphor
+- Dagbok: "Når to venner møtes, blir de til noe nytt. Når disse to møter den neste, vokser det videre. Hver bygger på de forrige"
+- Effect: Describes pattern without naming "Fibonacci"
 
-**Rule**: Hints guide thinking, never reveal the answer directly.
+**Day 5 (TRIXTER - Caesar cipher)**:
+
+- Hint: Natural file reference in context
+- Dagbok: "Laget detaljert forklaring til NISSENET - 'dekoder_reinsdyr.txt' har eksempler"
+- Effect: Points to essential tool naturally
+
+**Rules**:
+
+- Dagbok = ~100 words maximum (concise storytelling)
+- Hints feel like side observations, not main content
+- NISSENET reserved for puzzle mechanics only (decoders, data)
+- Remove flavor-only files that don't serve storyline or puzzles
 
 **Example Progression**:
 **Puzzle**: "Med julelys og med norske flagg, og høyt i toppen den blanke stjerne".

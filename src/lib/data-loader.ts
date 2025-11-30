@@ -11,7 +11,6 @@ import {
   validateTopicDependencies,
   validateEventyrReferences,
   validateEventyr,
-  validateProgressiveHints,
   validateSymbolReferences,
   validateQuestCollection,
 } from "./validators/quest-validator";
@@ -56,7 +55,6 @@ export function mergeAndValidate(): Oppdrag[] {
     validateTopicDependencies(allOppdrag);
     validateEventyrReferences(allOppdrag);
     validateEventyr(allOppdrag);
-    validateProgressiveHints(allOppdrag);
     validateSymbolReferences(allOppdrag);
   } catch (error) {
     if (error instanceof Error) {

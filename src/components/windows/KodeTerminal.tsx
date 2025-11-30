@@ -65,19 +65,6 @@ export function KodeTerminal({
     return "";
   })();
 
-  // Get available progressive hints for current attempt count
-  const availableHints = (() => {
-    const dayMission = allMissions.find((m) => m.dag === currentDay);
-    if (!dayMission?.progressive_hints || failedAttempts === 0) {
-      return [];
-    }
-
-    // Return hints where afterAttempts <= current failed attempts
-    return dayMission.progressive_hints
-      .filter((hint) => hint.afterAttempts <= failedAttempts)
-      .sort((a, b) => a.afterAttempts - b.afterAttempts);
-  })();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!code.trim() || processing || isAlreadySolved) return;
@@ -247,37 +234,26 @@ export function KodeTerminal({
           </button>
         </form>
 
-        {/* Progressive hints section */}
-        {availableHints.length > 0 && !isAlreadySolved && (
+        {/* Julius' terminal note after 3 failed attempts */}
+        {failedAttempts >= 3 && !isAlreadySolved && (
           <div className="space-y-3">
-            <div className="flex items-center gap-2 text-sm font-bold text-(--cold-blue) border-b-2 border-(--cold-blue)/30 pb-2">
-              <Icons.Info size={16} color="blue" />
-              <span>HINT ({availableHints.length} tilgjengelig)</span>
-              <span className="text-xs opacity-70 ml-auto">
-                Forsøk: {failedAttempts}
-              </span>
-            </div>
-            {availableHints.map((hint, index) => (
-              <div
-                key={index}
-                className="p-3 border-2 border-(--cold-blue) bg-(--cold-blue)/10 text-(--cold-blue)"
-              >
-                <div className="flex items-start gap-2">
-                  <Icons.Info
-                    size={16}
-                    color="blue"
-                    className="mt-1 shrink-0"
-                  />
-                  <div className="space-y-1">
-                    <div className="text-xs font-bold opacity-70">
-                      HINT {index + 1}/{availableHints.length} (etter{" "}
-                      {hint.afterAttempts} forsøk)
-                    </div>
-                    <div className="text-sm leading-relaxed">{hint.text}</div>
+            <div className="p-4 border-2 border-(--cold-blue) bg-(--cold-blue)/10 text-(--cold-blue)">
+              <div className="flex items-start gap-3">
+                <Icons.BookOpen
+                  size={24}
+                  color="blue"
+                  className="mt-1 shrink-0"
+                />
+                <div className="space-y-2">
+                  <div className="text-sm font-bold">TIPS FRA JULIUS:</div>
+                  <div className="text-sm leading-relaxed">
+                    Sjekk DAGBOK-modulen! Julius skriver daglige notater som kan
+                    inneholde ledetråder til dagens oppgave. Kombinert med
+                    fysiske hint hjemme, finner du løsningen!
                   </div>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
         )}
 

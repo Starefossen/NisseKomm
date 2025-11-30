@@ -1,3 +1,9 @@
+- Hovedoppdrag
+  - dag 3: bokstavhint
+  - dag 4: teater
+  - dag 5: bedre dekoder hint + fysisk hint om plassering
+  - dag 6: fysisk hint mer kryptisk
+  - dag 7: geografisk hint
 - NisseKrypto
   - scan lukker vinduet automatisk
   - scan avslutter ikke kamera
@@ -5,6 +11,8 @@
   - Finne et bedre navn?
 - Hjem
   - Glitching / kjerneenergi?
+- NisseMail
+  - Eventyr-referanser tar mye plass
 - Brevfugler:
   - Må testes og fullføres
   - Må hintes til underveis i historien
@@ -14,7 +22,20 @@
   - Finne et bedre navn?
 - Mørket / Winter som prøver å sabotere
 - Orakelet?
-- Julius sin dagbok
-- Refactor agents.md
 - Teste data-lasting / lagring mer grundig
 - Legge til multitenant-støtte
+- Bonusoppdrag system:
+  - Vurder å utvide med flere hands-on byggeutfordringer (i tillegg til Day 11 antenne og Day 16)
+  - Evaluer etter Phase 1 testing med reelle brukere
+  - Potensielle ideer: Trebjellemål, reinsdyr-stall, gavepakke-organisering
+  - Week 3 bonusoppdrag ideas:
+    - Day 18: Snøengel competition (outdoor/indoor variants with judging criteria)
+    - Day 20: IQ's slede-upgrade building challenge (cardboard engineering with physics)
+  - Week 4 consideration:
+    - Christmas Eve finale hands-on tradition-building bonus (family collaborative tasks)
+- Week 4 Finale Enhancements (Phase 2):
+  - Design custom "Snøfall Champion" badge icon (SVG) for Day 24 completion reward in `public/badges/snowfall-champion.svg`
+  - Deep personalization for Nice List: individual achievement tracking, favorite moments per child
+  - Dynamic certificate with fillable name fields and per-child customization
+  - Multi-child UX improvements: proper per-child progress tracking, individual achievement lists
+  - Name parsing robustness: handle whitespace, multiple formats, graceful display in messages

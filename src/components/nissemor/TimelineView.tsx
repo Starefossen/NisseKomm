@@ -197,10 +197,7 @@ export function TimelineView({ selectedDay, onSelectDay }: TimelineViewProps) {
         📅 TIDSLINJE
       </h2>
 
-      <div
-        className="relative overflow-y-auto flex-1"
-        style={{ minHeight: `${svgHeight}px` }}
-      >
+      <div className="relative overflow-y-auto flex-1 min-h-0">
         {/* SVG for eventyr branches and main timeline */}
         <svg
           className="absolute top-0 left-0"

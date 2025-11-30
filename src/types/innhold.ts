@@ -160,15 +160,6 @@ export interface ContentRequirements {
 }
 
 /**
- * Progressive hint revealed after failed attempts
- * @public - Used in Oppdrag interface
- */
-export interface ProgressiveHint {
-  afterAttempts: number; // Show hint after this many failed attempts
-  text: string; // Hint text (escalates: vague → specific → direct)
-}
-
-/**
  * Decryption symbol awarded for quest completion
  * @public - Used in Oppdrag interface
  */
@@ -233,7 +224,6 @@ export interface Oppdrag {
   eventyr?: EventyrRef; // Eventyr grouping (major/mini eventyr)
   reveals?: ContentReveals; // Content unlocked by completing this quest
   requires?: ContentRequirements; // Content required to access this quest
-  progressive_hints?: ProgressiveHint[]; // Hints revealed after failed attempts
   symbol_clue?: DecryptionSymbol; // Symbol clue hidden in the real world
   decryption_challenge?: DecryptionChallenge; // Symbol-based decryption puzzle
   print_materials?: PrintMaterial[]; // Additional print materials for parents

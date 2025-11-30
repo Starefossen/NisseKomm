@@ -2,131 +2,76 @@
   {
     "dag": 1,
     "tittel": "Nissens Første Melding",
-    "nissemail_tekst": "Velkommen til NisseKomm! Vi trenger din hjelp. Finn den hemmelige koden skjult i dette oppdraget. Hint: Sett sammen bokstavene på skoene i riktig rekkefølge.",
-    "kode": "KALENDER",
+    "nissemail_tekst": "YO! 🎅 Du fant veien inn! Nice! ✨\n\nVelkommen til NISSEKOMM - mitt digitale hovedkvarter for kritiske Snøfall-operasjoner! Julius har gitt meg tilgang til dette systemet så vi kan samarbeide hele desember. 🎄\n\nDu klarte visst å knekke sko-koden! Smart! 🧠 Det betyr at du er offisielt en del av teamet nå. Her inne finner du:\n\n📧 NISSEMAIL - Daglige beskjeder fra meg\n📖 DAGBOK - Julius sine hemmelige notater\n📁 NISSENET - Viktige filer fra Snøfall\n\nVi sees hver dag med nye oppdrag! Dette blir epic! 🚀\n\n- Rampenissen\n\nP.S. Ikke fortell Julius at jeg rotet med skoene hans også... 🤫",
+    "kode": "NISSEKODE2025",
     "eventyr": {
       "id": "brevfugl-mysteriet",
       "phase": 1
     },
-    "dagbokinnlegg": "Dag 1 - Det Begynner!\n\nEndelig! Desember er her! Har sendt Rampenissen ned til barna for å starte årets julekalender. Håper han klarer seg. Han har en tendens til å spise for mye godteri. Og glemme instruksjoner. Og lage kaos. Men han er ivrig! Det må være nok?\n\nHer i Snøfall har vi startet produksjonen for fullt. Nissene jobber dag og natt. Pil, min lærling, er ivrig som alltid. Jeg fant Rudolf sovende i gavesekken i morges. Typisk.\n\nBrevfuglene har begynt å ankomme fra barna! De flyr inn gjennom vinduet hele dagen. Winter, min sekretær, holder orden på alle ønskene.\n\n- Julius",
-    "rampenissen_rampestrek": "Alle skoene i gangen er arrangert i et kaotisk mønster. På hver sko er det festet en lapp med én bokstav: J-U-L-E-K-A-L-E-N-D-E-R (12 bokstaver på 12 sko i tilfeldig rekkefølge). Rampenissen sitter blant skoene med mysisk lapp det står 'J̶U̶L̶E̶' på.",
-    "fysisk_hint": "J̶U̶L̶E̶",
+    "dagbokinnlegg": "Dag 1 - Det Begynner!\n\nEndelig! Desember er her! Rampenissen er sendt til barna. Han har allerede rotet til noe med skoene, ser jeg på kameraene. Typisk.\n\nBrevfuglene strømmer inn! Winter organiserer alt - hver brevfugl får et nummer, hver liste sorteres. Når alle delene er på plass, ser man plutselig helheten. Det er nesten som magi.\n\nProduksjonen går for fullt. Rudolf sov i gavesekken i morges. Pil er ivrig som alltid.\n\n- Julius",
+    "rampenissen_rampestrek": "Alle skoene i gangen er arrangert som et tog med bokstaver festet på hver sko i tilfeldig rekkefølge. Rampenissen sitter helt først som lokfører med mystisk lapp han skulle overlevere fra Julius.",
+    "fysisk_hint": "nissekomm.no + 🎅🗝️📅",
     "oppsett_tid": "moderat",
     "materialer_nødvendig": [
-      "12 sko",
-      "12 lapper med bokstaver: J-U-L-E-K-A-L-E-N-D-E-R",
-      "Tape/feste"
+      "Sko",
+      "12 lapper med bokstaver: N-I-S-S-E-K-O-D-E-2-0-2-5"
     ],
     "beste_rom": "Gang/entre",
     "hint_type": "arrangement",
     "reveals": {
-      "files": ["velkommen.txt", "brevfugler-intro.txt"],
       "topics": ["brevfugl-system"]
     },
-    "progressive_hints": [
-      {
-        "afterAttempts": 2,
-        "text": "Hint: Sett sammen alle bokstavene til ett ord."
-      },
-      {
-        "afterAttempts": 4,
-        "text": "Hint: Hva står det på lappen til Rampenissen?"
-      },
-      {
-        "afterAttempts": 6,
-        "text": "Hint: Stryk det første ordet."
-      }
-    ],
     "print_materials": [
       {
         "type": "note",
-        "title": "Velkomstbrev fra Julius",
-        "content": "Kjære barn! Velkommen til årets julekalender. Rampenissen og jeg trenger deres hjelp. Brevfuglene flyr mellom oss - følg sporene! - Julius"
-      },
-      {
-        "type": "puzzle",
-        "title": "Bokstavlapper til sko",
-        "content": "Print ut 12 lapper med bokstavene: J - U - L - E - K - A - L - E - N - D - E - R (én bokstav per lapp). Fest tilfeldig på 12 sko."
+        "title": "Rampenissens Velkomstlapp - Dag 1",
+        "content": "YO! 🎅\n\nVelkommen til teamet! Jeg er Rampenissen - Julius sin assistent som skal være hos dere hele desember!\n\nJeg har rotet med SKOENE i gangen (ooops! 😅). Men det er faktisk med vilje denne gangen! Bokstavene på skoene er en KODE du trenger.\n\nJulius sa at jeg må gi dere en viktig lapp... \n\nHmmm... lurer på hva det betyr? 🤔\nKanskje skoene har svaret?\n\nVi sees! ✨\n- Rampenissen\n\nP.S. Ikke fortell Julius at jeg brukte skoene hans også... 🤫"
       }
     ]
   },
   {
     "dag": 2,
     "tittel": "Tallmysteriet",
-    "nissemail_tekst": "Huff og huff! 🤯 Jeg prøvde å lage et kunstprosjekt med lekebiler i dag, men det ble et helt rart tallmønster i stedet! Ser sånn ut: 5, 8, 13, 21... og så klarte jeg ikke finne ut hva som kommer etterpå! Kan dere hjelpe meg? Jeg tror det er matematikk-magi involvert her...",
+    "nissemail_tekst": "Yo! 🏎️ Jeg har laget et EPISK bilrace i dag! Fikk lekebilene deres til å stå på rad i startlinjen, men... nå har jeg glemt hva jeg skulle gjøre med dem! 😅\n\nDenne matten koker! 🔥 Fire biler i forskjellige farger: rød, blå, grønn og gul. Hver farge representerer et tall! Se på lappen jeg la ved siden av.\n\nHva er det neste tallet i rekken? Send meg tallet så jeg kan fullføre racet! 🏁\n\n- Rampenissen",
     "kode": "34",
     "eventyr": {
       "id": "iqs-oppfinnelser",
       "phase": 1
     },
-    "dagbokinnlegg": "Dag 2 - Mattekaos\n\nPrøvde å telle alle gavene vi har produsert så langt. Kom til 3.847 før jeg mistet tellingen. Nissene lo av meg. Måtte starte på nytt.\n\nIQ har laget en ny oppfinnelse for automatisk telling, men den eksploderte. Heldigvis bare med konfetti. Pil rydder opp nå.\n\nFikk melding fra Rampenissen. Han har allerede spist seg gjennom halvparten av godteriet hjemme hos barna. Sendte beskjed om moderasjon. Vet at han ikke lytter. Men... han sender bilder av barna som løser oppgavene. De virker smarte. Kanskje smartere enn Rampenissen?\n\n- Julius",
-    "rampenissen_rampestrek": "Et bil-race er arrangert med lekebiler på 'startlinje'. Bamser og figurer står rundt som publikum og heier. Ved siden av racerbanen ligger nummererte lapper: '5', '8', '13', '21', '?'. Rampenissen holder startflagget og et spørsmålstegn.",
-    "fysisk_hint": "?",
+    "dagbokinnlegg": "Dag 2 - Mattekaos\n\nTellemaskin eksplodert. Konfetti overalt. Kom til 3.847 gaver før jeg mistet tellingen. Nissene lo.\n\nPil filosoferte i kveld: 'Som venner som samles. Når to møtes, blir de til noe nytt. Når disse to møter den neste, vokser det videre. Hver bygger på de forrige.' Smart gutt.\n\nRampenissen sender bilder av barna. De virker smarte. Kanskje smartere enn ham?\n\n- Julius",
+    "rampenissen_rampestrek": "4 lekebiler står på rad i spesifikk rekkefølge: rød, blå, grønn, gul. Ved siden av ligger en 'fargelapp' med dekoder og bilene har små numre-lapper festet. Bamser og figurer står som publikum. Rampenissen holder startflagg.",
+    "fysisk_hint": "🔴 Rød = 5\n🔵 Blå = 8\n🟢 Grønn = 13\n🟡 Gul = 21",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
-      "5+ små leker (biler/figurer)",
-      "Nummererte lapper 1-5",
-      "Spørsmålstegn-lapp"
+      "4 lekebiler (rød, blå, grønn, gul)",
+      "Fargelapp med dekoder (se print_materials)",
+      "Startflagg (valgfritt)"
     ],
     "beste_rom": "Stue/barnerom",
     "hint_type": "arrangement",
     "reveals": {
-      "files": ["iq-verksted.txt"],
       "topics": ["iq-oppfinnelser"]
-    },
-    "progressive_hints": [
-      {
-        "afterAttempts": 2,
-        "text": "Hint: Dette er Fibonacci-sekvensen! Legg sammen de to forrige tallene."
-      },
-      {
-        "afterAttempts": 4,
-        "text": "Hint: 13 + 21 = ? Regn det ut!"
-      },
-      {
-        "afterAttempts": 6,
-        "text": "Hint: Svaret er 34 (13+21=34)."
-      }
-    ]
+    }
   },
   {
     "dag": 3,
     "tittel": "Melding fra Snøstormen",
-    "nissemail_tekst": "HJELP! 😱 Jeg prøvde å lage snøengler på kjøkkenet (med MEL, ikke snø - smart, ikke sant?), men nå har jeg glemt hva jeg skulle skrive! Det står bare 'N_SS_' i melet. På kjøleskapet er det noen magnetbokstaver som kan hjelpe. Hvem er jeg egentlig? 🤔\n\n✨ Du finner et GRØNT HJERTE i snøen! Julius forteller at det grønne hjertet symboliserer håp og vekst - akkurat som vennskapet mellom deg og Rampenissen som vokser dag for dag. Samle det til din symbolsamling!",
-    "kode": "NISSE",
+    "nissemail_tekst": "HJELP! 😱 Jeg prøvde å lage snøengler på kjøkkenet (med MEL, ikke snø - smart, ikke sant?), men nå har jeg glemt hva jeg skulle skrive! Det står bare 'N_SS_L__ ' i melet. Noen bokstaver blåste visst bort i stormen! 🌨️\n\nHva tror du jeg prøvde å skrive? Det er noe jeg har på hodet... 🤔\n\nOMG! 💚 I DAG fant jeg noe helt MAGISK i snøen mens jeg laget engelene! Et skinnende GRØNT HJERTE! ✨ Julius forklarte at dette er et av Snøfalls hemmelige symboler - det grønne hjertet representerer håp og vekst, akkurat som vennskapet mellom oss som blir sterkere for hver dag! Det er første symbol til din samling! (Flere kommer snart - de skal brukes i NISSEKRYPTO-systemet som Julius låser opp på dag 4!) 🔓\n\n- Rampenissen",
+    "kode": "NISSELUE",
     "eventyr": {
       "id": "frosne-monster",
       "phase": 1
     },
-    "dagbokinnlegg": "Dag 3 - Snøstorm\n\nVoldsom snøstorm i Snøfall i dag! Kunne knapt se hånden foran meg. Orakelet advarte meg om vær-kaos, men jeg trodde ikke det ville være SÅ ille. En av nissene ble funnet i snøen tre timer etter lunsj. Han hadde gått seg vill på vei til dass. Det er 10 meter unna.\n\nRampenissen rapporterer at barna jobber hardt med oppgavene. Bra! Vennskapet mellom ham og barna vokser, sier han. Sendte meg en lang melding om hvor 'kult' barna er. Tror jeg ser første tegn på at han faktisk bryr seg?\n\nNissemor laget varm kakao med ekstra magi. Nissene danser nå rundt juletreet.\n\n- Julius",
-    "rampenissen_rampestrek": "Mel er strødd på kjøkkenbenken med 'snøengel'-mønster. I melet står 'N_SS_' skrevet. Magnetbokstaver I, E, A, O er spredt på kjøleskapet.",
-    "fysisk_hint": "N_SS_",
-    "oppsett_tid": "moderat",
-    "materialer_nødvendig": [
-      "Mel (ca 2 dl)",
-      "Magnetbokstaver (I, E, A, O)",
-      "Brett/underlag"
-    ],
+    "dagbokinnlegg": "Dag 3 - Snøstorm\n\nVoldsom storm! En nisse gikk seg vill på vei til dass. Ti meter unna. Orakelet hadde advart.\n\nTrixter og jeg fulgte fotspor i snøen - men stormen hadde visket ut deler. Vi måtte forestille oss de manglende trinnene, fylle inn hullene med logikk. Trixter ser mønstre der andre ser kaos.\n\nRampenissen sender lange meldinger om hvor 'kult' barna er. Første tegn på at han bryr seg?\n\n- Julius",
+    "rampenissen_rampestrek": "Mel er strødd på kjøkkenbenken med 'snøengel'-mønster. I melet står 'N_SS_L__' skrevet med tydelige mellomrom hvor bokstaver mangler.",
+    "fysisk_hint": "N_SS_L__",
+    "oppsett_tid": "enkel",
+    "materialer_nødvendig": ["Mel (ca 2 dl)", "Brett/underlag"],
     "beste_rom": "Kjøkken",
     "hint_type": "visuell",
     "reveals": {
-      "files": ["snostorm-varsel.txt"],
       "topics": ["snostorm-snøfall"]
     },
-    "progressive_hints": [
-      {
-        "afterAttempts": 2,
-        "text": "Hint: Det mangler to bokstaver. Hvilke magnetbokstaver passer?"
-      },
-      {
-        "afterAttempts": 4,
-        "text": "Hint: N_SS_ - Første manglende bokstav er I, siste er E."
-      },
-      {
-        "afterAttempts": 6,
-        "text": "Hint: Svaret er NISSE."
-      }
-    ],
     "symbol_clue": {
       "symbolId": "heart-green",
       "symbolIcon": "heart",
@@ -137,41 +82,26 @@
   {
     "dag": 4,
     "tittel": "Teater-gåten",
-    "nissemail_tekst": "Rampenissen har laget et teater med kosedyr! De holder opp et skilt: 'Hvem har rød nese og lyser opp natten?' Finn navnet på reinsdyret med 6 bokstaver.\n\n🔐 VIKTIG NYHET! Julius har låst opp NISSEKRYPTO-modulen på skrivebordet ditt! Dette er et hemmelig dekrypteringssystem. Gjennom desember vil du samle SYMBOLER (hjerter, soler, måner i forskjellige farger). Når du har nok symboler, kan du løse dekrypteringsutfordringer og låse opp Julius' dypeste hemmeligheter! Hold utkikk etter symboler i oppdragene fremover! 🎁",
+    "nissemail_tekst": "YO! 🎭 Teater er GOAT! Jeg har laget et HELT EPISK teater med kosedyrene deres i dag! De står som publikum, og jeg har laget en mystisk gåte for dere!\n\n🔐 FORRESTEN! Julius har akkurat låst opp NISSEKRYPTO-modulen på skrivebordet ditt! Dette er det hemmelige dekrypteringssystemet jeg snakket om i går! Symbolene du samler (som det grønne hjertet) skal brukes der for å låse opp Julius' dypeste hemmeligheter! Kult, ikke sant? 🎁\n\n- Rampenissen",
     "kode": "RUDOLF",
     "hendelse": "Teater - En Julefortelling",
-    "dagbokinnlegg": "Dag 4 - Rudolf-Drama\n\nRudolf har fått stjerneallerurer. Insisterer nå på egen garderobe og personlig assistent. Forklarte at vi bare er en gjeng nisser i Snøfall, ikke Hollywood. Han sultet resten av dagen.\n\nTrixter, min favorittreinsdyr, prøvde å trøste Rudolf. Det endte med at de begge spilte teater for nissene. Rudolf spilte hovedrollen, selvfølgelig. Men... han lyste veldig sterkt i mørket under forestillingen. Kanskje den røde nesen er viktigere enn jeg trodde?\n\nRampenissen melder at barna synes oppgavene er morsomme. Godt! Vennskapet vokser dag for dag.\n\n- Julius",
-    "rampenissen_rampestrek": "Kosedyr arrangert som publikum foran en 'scene' (f.eks. sofakant). Rampenissen står som 'regissør' med skilt: 'Rød nese, lyser natten - hvem?'",
-    "fysisk_hint": "Rød nese, lyser natten - hvem?",
+    "dagbokinnlegg": "Dag 4 - Rudolf-Drama\n\nRudolf krever egen garderobe. 'Vi er nisser, ikke Hollywood,' sa jeg. Han sultet.\n\nTrixter ordnet teater. Rudolf lyste veldig sterkt i mørket - kanskje den røde nesen er viktigere enn jeg trodde?\n\nEtt symbol alene betyr lite. Men når man setter sammen flere - et dyr, en egenskap, en idé - da forteller de en hel historie.\n\n- Julius",
+    "rampenissen_rampestrek": "Kosedyr arrangert som publikum foran en 'scene' (f.eks. sofakant). Ved scenen ligger et skilt med emoji-gåten: 🦌 + ❤️👃 + 💡 = ?. Rampenissen står som 'regissør' med megafon eller regissørstol.",
+    "fysisk_hint": "🦌 + ❤️👃 + 💡 = ?",
     "oppsett_tid": "moderat",
     "materialer_nødvendig": [
       "Kosedyr (5-8 stk)",
-      "Skilt/lapp med gåte",
+      "Emoji-gåte skilt (se print_materials)",
       "Reinsdyr-kosedyr (valgfritt)"
     ],
     "beste_rom": "Stue",
     "hint_type": "skrevet",
     "reveals": {
-      "files": ["rudolf-drama.txt"],
       "modules": ["NISSEKRYPTO"]
     },
-    "progressive_hints": [
-      {
-        "afterAttempts": 2,
-        "text": "Hint: Hvilket kjent reinsdyr har rød nese og leder sleden?"
-      },
-      {
-        "afterAttempts": 4,
-        "text": "Hint: Navnet begynner med R og har 6 bokstaver."
-      },
-      {
-        "afterAttempts": 6,
-        "text": "Hint: Svaret er RUDOLF."
-      }
-    ],
     "print_materials": [
       {
-        "type": "puzzle",
+        "type": "note",
         "title": "Teaterprogram",
         "content": "🎭 JULETEATER I SNØFALL 🎭\n\nI kveld: Rudolf - Reinsdyret med den røde nesen\n\nHovedrolle: Rudolf (spilt av seg selv)\nBirolle: Trixter\nRegissør: Rampenissen\n\nBilletter: Gratis for alle nisser!"
       }
@@ -179,58 +109,57 @@
   },
   {
     "dag": 5,
-    "tittel": "Reinsdyr-forvirring",
-    "nissemail_tekst": "Rampenissen prøver å telle reinsdyr! Han har stilt opp 8 leke-reinsdyr, men... Det står en lapp: '8 reinsdyr × 2 + 1 = ?'. Hva blir svaret?",
-    "kode": "17",
+    "tittel": "Hemmelig Reinsdyr-Kode",
+    "nissemail_tekst": "Hei! 🦌 I dag har jeg fått et mystisk oppdrag fra Julius! Han har skrevet en hemmelig kode på lapper som jeg skulle feste på alle reinsdyr-lekene deres (8 stykker).\n\nProblem: Jeg skjønner ikke hva det står! På hver lapp står det: USJYUFS\n\nJulius sa noe om en 'dekoder' som finnes i NISSENET-systemet... Kan dere lete etter en fil som heter 'dekoder_reinsdyr.txt'? 🤔\n\nHan sa også noe om 'Caesar' og 'minus én'... Jeg er ikke så god med hemmelige koder! Hjelp! 😅\n\n- Rampenissen",
+    "kode": "TRIXTER",
     "eventyr": {
       "id": "brevfugl-mysteriet",
       "phase": 2
     },
-    "dagbokinnlegg": "Dag 5 - Telleproblemer\n\nHar prøvd å telle reinsdyr hele dagen. Får forskjellige tall hver gang. Enten har vi 8, 9, eller 12. Mistenker at noen gjemmer seg for å slippe trening.\n\nWinter kom inn med en enorm stabel brevfugler fra barna. Han hadde talt dem: 847 ønsker så langt! Pil hjelper til med å lese dem alle. Vennskapsbåndene mellom barna og oss blir sterkere.\n\nRampenissen sender bilder av seg selv med barna. De virker å ha det gøy sammen!\n\n- Julius",
-    "rampenissen_rampestrek": "8 små leke-reinsdyr står på rad. Ved siden av står Rampenissen med en kalkulator-lapp: '8 × 2 + 1 = ?'. Ett reinsdyr har rød nese (Rudolf).",
-    "fysisk_hint": "8 × 2 + 1 = ?",
+    "dagbokinnlegg": "Dag 5 - Kode-læring\n\nCaesar-koder! Oppkalt etter keiseren (ja, vi deler navn). Rampenissen fikk en -1 shift med en av reinsdyrene mine sitt navn. Helt forvirret, som forventet.\n\nLaget detaljert forklaring til NISSENET - 'dekoder_reinsdyr.txt' har eksempler. Håper det hjelper!\n\n847 brevfugler så langt. Winter organiserer, Pil leser. Koder gjør eventyret mer spennende.\n\n- Julius",
+    "rampenissen_rampestrek": "8 leke-reinsdyr står plassert HELT KAOTISK over hele stuen - hengende i lampe, balanserende på TV-kanten, stående på hodet i blomsterpotter, liggende på ryggen med beina i været. På hvert reinsdyr er festet en lapp med 'USJYUFS'. I midten sitter Rampenissen med sitt eget leke-reinsdyr og later som om han rir på det, mens han holder et skilt: 'REINSDYR-RODEO! 🤠 (Julius blir SUR hvis han ser dette... 😬)'",
+    "fysisk_hint": "USJYUFS",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
       "8 små reinsdyr/dyr-figurer",
-      "Lapp med regnestykke",
-      "Rød tusj (for nese)"
+      "8 lapper med 'USJYUFS' (se print_materials)",
+      "Tape/feste",
+      "Note om dekoder-fil"
     ],
     "beste_rom": "Stue/barnerom",
-    "hint_type": "arrangement",
+    "hint_type": "kombinasjon",
     "requires": {
       "topics": ["brevfugl-system"],
       "completedDays": [1]
     },
     "reveals": {
-      "files": ["winter-organisering.txt"],
+      "files": ["dekoder_reinsdyr.txt"],
       "topics": ["brevfugl-organisering"]
     },
-    "progressive_hints": [
+    "print_materials": [
       {
-        "afterAttempts": 2,
-        "text": "Hint: Regn 8 × 2 først, så legg til 1."
+        "type": "puzzle",
+        "title": "Reinsdyr-kodelapper (8 stk)",
+        "content": "Print 8 lapper med denne teksten:\n\n╔══════════════╗\n║  USJYUFS    ║\n╚══════════════╝\n\n(Én lapp per reinsdyr)"
       },
       {
-        "afterAttempts": 4,
-        "text": "Hint: 8 × 2 = 16. Hva er 16 + 1?"
-      },
-      {
-        "afterAttempts": 6,
-        "text": "Hint: Svaret er 17."
+        "type": "reference",
+        "title": "Dekoder-referanse",
+        "content": "📝 NOTE TIL RAMPENISSEN:\n\nJulius sa:\n'Finn dekoder_reinsdyr.txt i NISSENET'\n\nNogle om Caesar-kode:\n- Flytt hver bokstav\n- Nøkkel: -1 (ett steg tilbake)\n- Eksempel: B → A, C → B"
       }
     ]
   },
   {
     "dag": 6,
     "tittel": "St. Nikolaus' By",
-    "nissemail_tekst": "I dag feirer vi St. Nikolaus! Rampenissen har gjemt et kart i sekken deres. På kartet står det: 'Finn byen som begynner med M og slutter med A. 4 bokstaver totalt.' Hvilket sted søker vi?\n\n❤️ Du finner et RØDT HJERTE i kartet! Julius sier at det røde hjertet står for varme og kjærlighet - som den kjærligheten St. Nikolaus viste til barn for mange hundre år siden. Dette symbolet bærer ekte julemagi!",
+    "nissemail_tekst": "Hei! 🎅 I dag feirer vi St. Nikolaus! Jeg har gjemt et gammelt kart i sekken deres (speidersekken eller skolesekken). Det er et mystisk kart med en gåte!\n\nPå kartet står det:\n'Finn byen som begynner med M og slutter med A. 4 bokstaver totalt.'\n\nDette er byen hvor St. Nikolaus kom fra for mange hundre år siden! ⛪\n\nOG... vent litt... 💫 GJENNOM KARTET skinner det... et magisk RØDT HJERTE! ❤️ Julius fortalte meg at det røde hjertet representerer varme og kjærlighet - akkurat som den kjærligheten St. Nikolaus viste til barn! Det er det ANDRE symbolet til samlingen din! To hjerter nå! (Grønt og rødt - de skal brukes i NISSEKRYPTO senere!) ✨\n\n- Rampenissen",
     "kode": "MYRA",
     "eventyr": {
       "id": "juletradisjon",
       "phase": 1
     },
     "hendelse": "Speidertur til Turnerhytten",
-    "dagbokinnlegg": "Dag 6 - Historietimen\n\nSt. Nikolaus-dagen! Min gamle kollega fra Myra. God mann. Vi møttes på julenissekonferansen i 324. Han hadde bedre skjegg enn meg. Fortsatt bitter.\n\nLærte nissene om juletradisjonene rundt om i verden. Pil stilte mange smarte spørsmål. De ble mest interessert i de landene med mest godteri. Typisk.\n\nRampenissen rapporterer at barna er nysgjerrige og lærevillige. Vennskap og læring går hånd i hånd!\n\n- Julius",
+    "dagbokinnlegg": "Dag 6 - Historietimen\n\nSt. Nikolaus-dagen! Kollega fra Myra - liten kystby ved Middelhavet. Kort navn, fire bokstaver. 'Den starter og slutter med vokalene i mitt navn,' pleier han si. Morsom måte å huske på.\n\nHan hadde bedre skjegg på konferansen i 324. Fortsatt bitter.\n\nNissene mest interessert i land med mest godteri. Typisk.\n\n- Julius",
     "rampenissen_rampestrek": "I speidersekken/skolesekken ligger et falskt 'gammelt kart' med gåten skrevet på. Rampenissen har tegnet kompas og 'X markerer stedet'.",
     "fysisk_hint": "Finn byen som begynner med M og slutter med A. 4 bokstaver totalt.",
     "oppsett_tid": "enkel",
@@ -242,7 +171,6 @@
     "beste_rom": "Gang (i sekk)",
     "hint_type": "gjemt_objekt",
     "reveals": {
-      "files": ["nikolaus-historie.txt"],
       "topics": ["juletradisjon"]
     },
     "symbol_clue": {
@@ -251,20 +179,6 @@
       "symbolColor": "red",
       "description": "Rødt hjerte fra Lucia-lyset"
     },
-    "progressive_hints": [
-      {
-        "afterAttempts": 2,
-        "text": "Hint: St. Nikolaus kom fra en by i dagens Tyrkia. M_R_."
-      },
-      {
-        "afterAttempts": 4,
-        "text": "Hint: 4 bokstaver: M-Y-R-A."
-      },
-      {
-        "afterAttempts": 6,
-        "text": "Hint: Svaret er MYRA."
-      }
-    ],
     "print_materials": [
       {
         "type": "map",
@@ -276,41 +190,35 @@
   {
     "dag": 7,
     "tittel": "Nordpol-koordinater",
-    "nissemail_tekst": "Rampenissen trenger hjelp! Han har tegnet en globus på kjøkkenet, men koordinatene er visket ut. Det står: 'Snøfall = ___ grader nord'. Finn tallet (hint: Det er det høyeste tallet).",
+    "nissemail_tekst": "Hjelp! 🌍 Jeg har funnet globusen deres, men jeg skjønner ikke hvordan den fungerer! Julius prøvde å forklare meg hvor Snøfall ligger, men jeg ble bare mer forvirret... 😅\n\nJeg har limt tre fargede klistremerker på globusen:\n🔴 Rød klistremerke (helt på toppen)\n🔵 Blå klistremerke (litt lenger ned)\n🟢 Grønn klistremerke (enda lenger ned)\n\nJulius sa: 'Snøfall ligger ved den RØDE prikken. Finn ut hvor mange grader nord det er!'\n\nJeg fant en fil i NISSENET som heter 'snofall_fakta.txt' - kanskje den kan hjelpe? Den forklarer hvor Snøfall egentlig ligger! 🧭\n\nHvem visste at geografi kunne være så vanskelig? 🤔\n\n- Rampenissen",
     "kode": "90",
     "eventyr": {
       "id": "morkets-trussel",
       "phase": 1
     },
     "hendelse": "Speidertur til Turnerhytten",
-    "dagbokinnlegg": "Dag 7 - Geografilektion\n\n90 grader nord! Det er her Snøfall ligger! En av de yngre nissene spurte i dag hvorfor vi ikke bare flytter sørover hvor det er varmere. Måtte forklare hele 'magisk julested'-konseptet.\n\nIsolert her oppe kan være farlig. Mørket lurer alltid der ute i polarnatten. Men magien i Snøfall holder oss trygge. Og vennskapet mellom oss alle gir varme.\n\nRampenissen sender selfies foran peisen. Ser koselig ut. Her er det minus 40 grader!\n\n- Julius",
-    "rampenissen_rampestrek": "En tegnet globus på stort papir, eller ekte globus med lapp. Ved siden av står en 'koordinat-tavle' med: 'Snøfall = __ °N'. Rampenissen har kompass.",
-    "fysisk_hint": "Snøfall = __ °N",
+    "dagbokinnlegg": "Dag 7 - Geografilektion\n\n90 grader nord - Snøfalls koordinater! Det høyeste tallet. Kan ikke gå lenger nord enn toppen. Pil nikket ettertenksomt.\n\nLa alt i NISSENET - 'snofall_fakta.txt'. Isolert her oppe, men magien beskytter oss. Mørket lurer i polarnatten.\n\nRampenissen sender selfies. Minus 40 her!\n\n- Julius",
+    "rampenissen_rampestrek": "Globus (ekte eller tegnet) med tre fargede klistremerker: 🔴 på toppen (Nordpolen/90°N), 🔵 rundt midten-øverst (ca 60°N), 🟢 litt over ekvator (ca 30°N). Ved siden av ligger lapp: 'Snøfall = den røde prikken = __ °N'. Rampenissen har kompass og ser forvirret ut.",
+    "fysisk_hint": "🔴 = __ °N",
     "oppsett_tid": "enkel",
     "materialer_nødvendig": [
-      "Globus (eller tegning)",
+      "Globus (eller stor tegnet globus)",
+      "3 fargede klistremerker (rød, blå, grønn)",
       "Lapp med spørsmål",
       "Kompass (valgfritt)"
     ],
     "beste_rom": "Kjøkken/stue",
-    "hint_type": "skrevet",
+    "hint_type": "visuell",
     "reveals": {
-      "files": ["morket-introduksjon.txt", "orakelet-advarsel.txt"],
+      "files": ["snofall_fakta.txt"],
       "topics": ["morkets-trussel"],
       "modules": ["NISSEMUSIKK"]
     },
-    "progressive_hints": [
+    "print_materials": [
       {
-        "afterAttempts": 2,
-        "text": "Hint: Nordpolen er det nordligste punktet på jorden. Hvor mange grader?"
-      },
-      {
-        "afterAttempts": 4,
-        "text": "Hint: Det høyeste tallet nord er 90 grader."
-      },
-      {
-        "afterAttempts": 6,
-        "text": "Hint: Svaret er 90."
+        "type": "guide",
+        "title": "Globus klistremerke-plassering",
+        "content": "🌍 GLOBUS-OPPSETT 🌍\n\nFest klistremerker på disse stedene:\n\n🔴 RØD: Helt på toppen (Nordpolen)\n   = 90° nord\n\n🔵 BLÅ: Rundt Norge/Skandinavia\n   = ca 60° nord\n\n🟢 GRØNN: Rundt Nord-Afrika\n   = ca 30° nord\n\nRampenissens spørsmål:\n'Snøfall ligger ved den RØDE prikken.\nHvor mange grader nord er det?'"
       }
     ]
   }

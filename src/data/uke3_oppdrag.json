@@ -16,20 +16,6 @@
       "files": ["farge-koder.txt"],
       "topics": ["mandel-tradisjon", "farge-mysteriet-løst"]
     },
-    "progressive_hints": [
-      {
-        "afterAttempts": 2,
-        "text": "Hint: Rampenissen peker på bolle nummer 3. Hva gjemmer seg der?"
-      },
-      {
-        "afterAttempts": 4,
-        "text": "Hint: 'Jeg er hvit og skjult i grøt' - Hva er mandel på norsk?"
-      },
-      {
-        "afterAttempts": 6,
-        "text": "Hint: Svaret er MANDEL (fem bokstaver)."
-      }
-    ],
     "symbol_clue": {
       "symbolId": "sun-red",
       "symbolIcon": "sun-alt",
@@ -68,22 +54,9 @@
     },
     "reveals": {
       "files": ["julesanger-samling.txt"],
-      "topics": ["halvveis-milepæl"]
+      "topics": ["halvveis-milepæl"],
+      "modules": ["NISSESTATS"]
     },
-    "progressive_hints": [
-      {
-        "afterAttempts": 2,
-        "text": "Hint: Hvor mange dager er det fra 1. desember til julaften?"
-      },
-      {
-        "afterAttempts": 4,
-        "text": "Hint: Tell lukene på kalenderen - det er to-og-tjue-fire."
-      },
-      {
-        "afterAttempts": 6,
-        "text": "Hint: Svaret er tallet 24."
-      }
-    ],
     "print_materials": [
       {
         "type": "activity",
@@ -114,10 +87,7 @@
       "Lapp med spørsmål"
     ],
     "beste_rom": "Der kalenderen henger",
-    "hint_type": "skrevet",
-    "reveals": {
-      "modules": ["NISSESTATS"]
-    }
+    "hint_type": "skrevet"
   },
   {
     "dag": 17,
@@ -133,23 +103,9 @@
       "completedDays": [11, 13]
     },
     "reveals": {
-      "files": ["orakelet-advarsel.txt", "lucia-tradisjon.txt"],
+      "files": ["lucia-tradisjon.txt"],
       "topics": ["morket-eskalering", "stjernekart-hemmelighet"]
     },
-    "progressive_hints": [
-      {
-        "afterAttempts": 2,
-        "text": "Hint: Følg stjernekartet med de 6-kantede symbolene - som snøfnugg!"
-      },
-      {
-        "afterAttempts": 4,
-        "text": "Hint: Bokstavene staver ordet for hva som lyser på himmelen om natten."
-      },
-      {
-        "afterAttempts": 6,
-        "text": "Hint: Svaret er STJERNE (7 bokstaver: S-T-J-E-R-N-E)."
-      }
-    ],
     "print_materials": [
       {
         "type": "guide",
@@ -180,23 +136,9 @@
       "phase": 1
     },
     "reveals": {
-      "files": ["snowflake-patterns.txt", "rudolf-drama.txt"],
+      "files": ["snowflake-patterns.txt"],
       "topics": ["sno-magi", "slede-forberedelser"]
     },
-    "progressive_hints": [
-      {
-        "afterAttempts": 2,
-        "text": "Hint: Hva faller fra himmelen om vinteren og dekker bakken hvit?"
-      },
-      {
-        "afterAttempts": 4,
-        "text": "Hint: Det har 3 bokstaver og starter med S."
-      },
-      {
-        "afterAttempts": 6,
-        "text": "Hint: Svaret er SNØ."
-      }
-    ],
     "symbol_clue": {
       "symbolId": "sun-blue",
       "symbolIcon": "sun-alt",
@@ -255,23 +197,8 @@
       "completedDays": [8]
     },
     "reveals": {
-      "files": ["nikolaus-historie.txt"],
       "topics": ["reinsdyr-trening", "iqs-energidrikk"]
     },
-    "progressive_hints": [
-      {
-        "afterAttempts": 2,
-        "text": "Hint: Følg reinsdyrene rundt i huset og løs utfordringene ved hvert stopp."
-      },
-      {
-        "afterAttempts": 4,
-        "text": "Hint: Samle bokstavene fra alle sjekkpunktene - de staver hva som trekker sleda."
-      },
-      {
-        "afterAttempts": 6,
-        "text": "Hint: Svaret er REINSDYR (8 bokstaver: R-E-I-N-S-D-Y-R)."
-      }
-    ],
     "print_materials": [
       {
         "type": "map",
@@ -340,20 +267,6 @@
       "files": ["magisk-sekk-test.txt"],
       "topics": ["slede-forberedelser-fullfort", "iq-finale"]
     },
-    "progressive_hints": [
-      {
-        "afterAttempts": 2,
-        "text": "Hint: Finn alle 5 sjekkpunktene - under, bak, i, under, og ved."
-      },
-      {
-        "afterAttempts": 4,
-        "text": "Hint: Bokstavene staver Julius sin transport på julaften."
-      },
-      {
-        "afterAttempts": 6,
-        "text": "Hint: Svaret er SLEDE (5 bokstaver: S-L-E-D-E)."
-      }
-    ],
     "symbol_clue": {
       "symbolId": "moon-green",
       "symbolIcon": "moon",
@@ -431,23 +344,8 @@
       "completedDays": [17]
     },
     "reveals": {
-      "files": ["morket-introduksjon.txt"],
       "topics": ["morket-finale", "morket-beseirt"]
     },
-    "progressive_hints": [
-      {
-        "afterAttempts": 2,
-        "text": "Hint: Tell spissene på stjernene Rampenissen har gjemt - de er alle like."
-      },
-      {
-        "afterAttempts": 4,
-        "text": "Hint: En julestjerne har 5 spisser - tell dem!"
-      },
-      {
-        "afterAttempts": 6,
-        "text": "Hint: Svaret er tallet 5."
-      }
-    ],
     "print_materials": [
       {
         "type": "activity",

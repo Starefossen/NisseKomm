@@ -333,42 +333,6 @@ export function validateEventyr(quests: Oppdrag[]): void {
 }
 
 /**
- * Validate progressive hints have monotonically increasing attempt thresholds
- *
- * Progressive hints unlock after N failed attempts.
- * Each hint must require MORE attempts than the previous hint.
- *
- * EXAMPLE VALID:
- * - Hint 1: afterAttempts=2
- * - Hint 2: afterAttempts=4
- * - Hint 3: afterAttempts=6 ✓
- *
- * EXAMPLE INVALID:
- * - Hint 1: afterAttempts=2
- * - Hint 2: afterAttempts=2 ✗ (not increasing)
- * - Hint 3: afterAttempts=1 ✗ (decreasing)
- *
- * @param quests - Array of all quests to validate
- * @throws Error if hints don't have increasing thresholds
- */
-export function validateProgressiveHints(quests: Oppdrag[]): void {
-  quests.forEach((quest) => {
-    if (quest.progressive_hints && quest.progressive_hints.length > 1) {
-      for (let i = 1; i < quest.progressive_hints.length; i++) {
-        const prev = quest.progressive_hints[i - 1].afterAttempts;
-        const curr = quest.progressive_hints[i].afterAttempts;
-        if (curr <= prev) {
-          throw new Error(
-            `Validation Error: Day ${quest.dag} progressive hints must have increasing afterAttempts. ` +
-              `Hint ${i} has afterAttempts=${curr}, but previous hint has ${prev}`,
-          );
-        }
-      }
-    }
-  });
-}
-
-/**
  * Validate symbol requirements reference existing symbol rewards
  *
  * VALIDATION:

@@ -1,16 +1,10 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { GuideAuth, useGuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { GameEngine } from "@/lib/game-engine";
-import {
-  getAllEventyr,
-  getEventyrDays,
-  getEventyrProgress,
-  isEventyrComplete,
-} from "@/lib/eventyr";
 import type { Oppdrag, PrintMaterial } from "@/types/innhold";
 
 const allOppdrag = GameEngine.getAllQuests();
@@ -75,32 +69,58 @@ function generateCheckpointCards(quest: Oppdrag): CheckpointCard[] {
   return checkpoints;
 }
 
-// Build checkpoint cards from all quests
-const checkpointCards: CheckpointCard[] = allOppdrag.flatMap(
+// Print material card type
+interface PrintMaterialCard {
+  dag: number;
+  tittel: string;
+  isPrintMaterial: true;
+  content: string;
+  materialTitle?: string;
+  beste_rom: string;
+}
+
+// Build separate lists for different card types
+type Card = (typeof allOppdrag)[0] | CheckpointCard | PrintMaterialCard;
+
+// Group 1: Main quest cards (fysisk_hint) - usually shorter
+const mainQuestCards: Card[] = [];
+allOppdrag.forEach((oppdrag) => {
+  mainQuestCards.push(oppdrag);
+});
+
+// Group 2: Checkpoint cards
+const allCheckpointCards: CheckpointCard[] = allOppdrag.flatMap(
   generateCheckpointCards,
 );
 
-// Build full card list with checkpoints inserted after their main quest
-type Card = (typeof allOppdrag)[0] | CheckpointCard;
-const allCards: Card[] = [];
+// Group 3: Print material cards - usually longer
+const printMaterialCards: PrintMaterialCard[] = [];
 allOppdrag.forEach((oppdrag) => {
-  allCards.push(oppdrag);
-  // Add checkpoint cards for this day if they exist
-  const dayCheckpoints = checkpointCards.filter((c) => c.dag === oppdrag.dag);
-  allCards.push(...dayCheckpoints);
+  if (oppdrag.print_materials && oppdrag.print_materials.length > 0) {
+    oppdrag.print_materials.forEach((material, index) => {
+      printMaterialCards.push({
+        dag: oppdrag.dag,
+        tittel:
+          material.title || `Dag ${oppdrag.dag} - Ekstra lapp ${index + 1}`,
+        isPrintMaterial: true,
+        content: material.content,
+        materialTitle: material.title,
+        beste_rom: oppdrag.beste_rom,
+      });
+    });
+  }
 });
+
+// Combine in order: main quests → checkpoints → print materials
+const allCards: Card[] = [
+  ...mainQuestCards,
+  ...allCheckpointCards,
+  ...printMaterialCards,
+];
 
 function PrintoutContent() {
   const router = useRouter();
   const { kode } = useGuideAuth();
-  const [completedDays] = useState<Set<number>>(() => {
-    // Lazy initialization - only runs once
-    if (typeof window !== "undefined") {
-      const state = GameEngine.loadGameState();
-      return state.completedQuests;
-    }
-    return new Set<number>();
-  });
 
   // Split into pages of 6 cards each (2 columns × 3 rows)
   const cardsPerPage = 6;
@@ -109,19 +129,14 @@ function PrintoutContent() {
     pages.push(allCards.slice(i, i + cardsPerPage));
   }
 
-  // Type guard to check if card is a checkpoint
+  // Type guards
   const isCheckpoint = (card: Card): card is CheckpointCard => {
     return "checkpoint" in card;
   };
 
-  // Get story arc progress for display
-  const allEventyr = getAllEventyr();
-  const eventyrProgress = allEventyr.map((arc) => ({
-    arc,
-    days: getEventyrDays(arc.id),
-    progress: getEventyrProgress(arc.id, completedDays),
-    complete: isEventyrComplete(arc.id, completedDays),
-  }));
+  const isPrintMaterial = (card: Card): card is PrintMaterialCard => {
+    return "isPrintMaterial" in card && card.isPrintMaterial === true;
+  };
 
   return (
     <>
@@ -155,88 +170,11 @@ function PrintoutContent() {
               📋 UTSKRIFTSINSTRUKSJONER:
             </h2>
             <ul className="space-y-2 text-lg">
-              <li>✓ 6 kort per side (2 kolonner × 3 rader)</li>
+              <li>✓ Scroll ned for å se forhåndsvisning av alle kort</li>
               <li>✓ Skriv ut på vanlig A4-papir</li>
               <li>✓ Klipp ut langs de stiplede linjene</li>
-              <li>
-                ✓ Hvert kort er passe størrelse for Rampenissen (ca. 7×10 cm)
-              </li>
               <li>✓ Brett eller rull kortene for ekstra spenning</li>
-              <li>✓ Gjemt tekstene på riktige steder som beskrevet i guiden</li>
             </ul>
-          </div>
-
-          {/* Preview Section */}
-          <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-6 mb-8">
-            <h2 className="text-2xl font-bold text-(--cold-blue) mb-4">
-              👁️ FORHÅNDSVISNING
-            </h2>
-            <p className="text-lg mb-4 opacity-80">
-              Slik vil kortene se ut når de er printet (scrolle ned for å se
-              alle):
-            </p>
-          </div>
-
-          {/* Eventy Progress Summary */}
-          <div className="border-4 border-(--gold) bg-(--gold)/10 p-6 mb-8">
-            <h2 className="text-2xl font-bold text-(--gold) mb-4">
-              📖 STORY ARC FREMGANG
-            </h2>
-            <p className="text-lg mb-4 opacity-80">
-              Oversikt over hvordan barna dine ligger an med historiene:
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {eventyrProgress.map(({ arc, days, progress, complete }) => (
-                <div
-                  key={arc.id}
-                  className="border-2 p-4 bg-black/30"
-                  style={{ borderColor: arc.farge }}
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <span className="text-2xl">{arc.ikon}</span>
-                    <div className="flex-1">
-                      <div
-                        className="text-xl font-bold"
-                        style={{ color: arc.farge }}
-                      >
-                        {arc.navn}
-                      </div>
-                      <div className="text-sm text-(--gray)">
-                        Dager: {days.join(", ")}
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div
-                        className="text-3xl font-bold"
-                        style={{ color: complete ? "var(--gold)" : arc.farge }}
-                      >
-                        {progress}%
-                      </div>
-                      {complete && (
-                        <div className="text-xs text-(--gold)">✓ FULLFØRT</div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="h-2 bg-black border border-(--neon-green)/30">
-                    <div
-                      className="h-full transition-all"
-                      style={{
-                        width: `${progress}%`,
-                        backgroundColor: complete ? "var(--gold)" : arc.farge,
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 text-center">
-              <a
-                href={`/eventyr?kode=${kode}`}
-                className="inline-block px-6 py-2 border-4 border-(--gold) text-(--gold) font-bold text-xl hover:bg-(--gold)/10"
-              >
-                SE FULL HISTORIER-OVERSIKT →
-              </a>
-            </div>
           </div>
 
           {/* Screen Preview */}
@@ -251,8 +189,9 @@ function PrintoutContent() {
               <div className="grid grid-cols-2 gap-6">
                 {pageCards.map((card, cardIndex) => {
                   const isCheckpointCard = isCheckpoint(card);
-                  const dag = isCheckpointCard ? card.dag : card.dag;
-                  const tittel = isCheckpointCard ? card.tittel : card.tittel;
+                  const isPrintMaterialCard = isPrintMaterial(card);
+                  const dag = card.dag;
+                  const tittel = card.tittel;
 
                   return (
                     <div
@@ -304,9 +243,13 @@ function PrintoutContent() {
                               → Gå til neste checkpoint
                             </div>
                           </div>
+                        ) : isPrintMaterialCard ? (
+                          <div className="text-center text-sm leading-snug whitespace-pre-line">
+                            {card.content}
+                          </div>
                         ) : (
-                          <div className="text-center text-base leading-snug font-bold">
-                            &quot;{card.fysisk_hint}&quot;
+                          <div className="text-center text-sm leading-snug">
+                            <div className="font-bold">{card.fysisk_hint}</div>
                           </div>
                         )}
                       </div>
@@ -332,8 +275,9 @@ function PrintoutContent() {
             <div className="print:grid print:grid-cols-2 print:gap-6">
               {pageCards.map((card, cardIndex) => {
                 const isCheckpointCard = isCheckpoint(card);
-                const dag = isCheckpointCard ? card.dag : card.dag;
-                const tittel = isCheckpointCard ? card.tittel : card.tittel;
+                const isPrintMaterialCard = isPrintMaterial(card);
+                const dag = card.dag;
+                const tittel = card.tittel;
 
                 return (
                   <div
@@ -384,10 +328,16 @@ function PrintoutContent() {
                             → Gå til neste checkpoint
                           </div>
                         </div>
+                      ) : isPrintMaterialCard ? (
+                        <div className="print:text-center print:flex-1 print:flex print:items-center print:justify-center print:px-2">
+                          <div className="print:text-sm print:leading-tight print:whitespace-pre-line">
+                            {card.content}
+                          </div>
+                        </div>
                       ) : (
-                        <div className="print:text-center print:flex-1 print:flex print:items-center print:justify-center">
+                        <div className="print:text-center print:flex-1 print:flex print:items-center print:justify-center print:px-2">
                           <div className="print:text-base print:leading-snug print:font-bold">
-                            &quot;{card.fysisk_hint}&quot;
+                            {card.fysisk_hint}
                           </div>
                         </div>
                       )}
@@ -427,50 +377,29 @@ function PrintoutContent() {
 
             <div className="print:mb-6">
               <h2 className="print:text-2xl print:font-bold print:mb-3">
-                💡 Tips for best resultat:
+                💡 Tips:
               </h2>
               <ul className="print:space-y-2 print:text-base print:list-disc print:list-inside">
                 <li>Bruk farget papir (rødt/grønt) for ekstra julestemning</li>
                 <li>
-                  Brett kortene som små brev for å gjøre dem mer spennende
+                  Brett kortene som små brev eller rull dem sammen med bånd
                 </li>
-                <li>Rull dem sammen og fest med bånd eller teip</li>
-                <li>Skjul kortene godt - det er moro å lete litt!</li>
+                <li>Skjul kortene godt - det er moro å lete!</li>
                 <li>Hold denne utskriften skjult fra barna</li>
               </ul>
             </div>
 
-            <div className="print:border-4 print:border-black print:p-4 print:bg-gray-100 print:mb-6">
-              <h2 className="print:text-xl print:font-bold print:mb-2">
-                📖 EVENTYR I KALENDEREN:
-              </h2>
-              <p className="print:text-sm print:mb-2">
-                Barna vil oppdage 6 sammenhengende eventyr gjennom desember:
-              </p>
-              <ul className="print:space-y-1 print:text-sm print:list-disc print:list-inside">
-                {allEventyr.map((arc) => {
-                  const days = getEventyrDays(arc.id);
-                  return (
-                    <li key={arc.id}>
-                      <strong>{arc.navn}</strong> - Dager: {days.join(", ")}
-                    </li>
-                  );
-                })}
-              </ul>
-              <p className="print:text-xs print:mt-2 print:text-gray-600">
-                Se full eventyr-oversikt på /eventyr i appen (foreldreguiden)
-              </p>
-            </div>
-
             <div className="print:border-4 print:border-black print:p-4 print:bg-gray-100">
               <h2 className="print:text-xl print:font-bold print:mb-2">
-                ⚠️ VIKTIG PÅMINNELSE:
+                ⚠️ VIKTIG:
               </h2>
-              <p className="print:text-base">
+              <p className="print:text-base print:mb-2">
                 Hvert kort må settes opp kvelden før eller tidlig om morgenen.
                 Sjekk Nissemor-guiden for detaljer om hvordan Rampenissen skal
-                ha rotet til! Kodene barna finner må tastes inn i KodeTerminal i
-                appen.
+                ha rotet til!
+              </p>
+              <p className="print:text-base">
+                Kodene barna finner må tastes inn i KodeTerminal i appen.
               </p>
             </div>
 
