@@ -13,7 +13,9 @@
  * 3. Run `sanity deploy` to update schema
  */
 
-export const userSession = {
+import { defineType } from "sanity";
+
+export const userSession = defineType({
   name: "userSession",
   title: "User Session",
   type: "document",
@@ -25,14 +27,14 @@ export const userSession = {
       name: "sessionId",
       title: "Session ID",
       type: "string",
-      validation: (Rule: { required: () => unknown }) => Rule.required(),
+      validation: (Rule) => Rule.required(),
       description: "Hashed boot password - unique tenant identifier",
     },
     {
       name: "lastUpdated",
       title: "Last Updated",
       type: "datetime",
-      validation: (Rule: { required: () => unknown }) => Rule.required(),
+      validation: (Rule) => Rule.required(),
       description: "Timestamp of last session update",
     },
 
@@ -71,20 +73,19 @@ export const userSession = {
       of: [
         {
           type: "object",
+          name: "submittedCode",
           fields: [
             {
               name: "kode",
               title: "Code",
               type: "string",
-              validation: (Rule: { required: () => unknown }) =>
-                Rule.required(),
+              validation: (Rule) => Rule.required(),
             },
             {
               name: "dato",
               title: "Date",
               type: "string",
-              validation: (Rule: { required: () => unknown }) =>
-                Rule.required(),
+              validation: (Rule) => Rule.required(),
               description: "ISO timestamp when code was submitted",
             },
           ],
@@ -117,6 +118,7 @@ export const userSession = {
       of: [
         {
           type: "object",
+          name: "bonusOppdragBadge",
           fields: [
             { name: "day", type: "number" },
             { name: "icon", type: "string" },
@@ -133,6 +135,7 @@ export const userSession = {
       of: [
         {
           type: "object",
+          name: "eventyrBadge",
           fields: [
             { name: "eventyrId", type: "string" },
             { name: "icon", type: "string" },
@@ -149,6 +152,7 @@ export const userSession = {
       of: [
         {
           type: "object",
+          name: "earnedBadge",
           fields: [
             { name: "badgeId", type: "string" },
             { name: "timestamp", type: "number" },
@@ -161,12 +165,13 @@ export const userSession = {
     // ============================================================
     // Content Unlocks
     // ============================================================
+    // Note: topicUnlocks stored as JSON string for flexibility
     {
       name: "topicUnlocks",
-      title: "Topic Unlocks",
-      type: "object",
+      title: "Topic Unlocks (JSON)",
+      type: "text",
       description:
-        "Map of unlocked topics to day numbers (stored as {topic: day})",
+        "JSON string: Map of unlocked topics to day numbers {topic: day}",
     },
     {
       name: "unlockedFiles",
@@ -194,6 +199,7 @@ export const userSession = {
       of: [
         {
           type: "object",
+          name: "collectedSymbol",
           fields: [
             { name: "symbolId", type: "string" },
             { name: "symbolIcon", type: "string" },
@@ -213,10 +219,10 @@ export const userSession = {
     },
     {
       name: "decryptionAttempts",
-      title: "Decryption Attempts",
-      type: "object",
+      title: "Decryption Attempts (JSON)",
+      type: "text",
       description:
-        "Map of decryption challenge IDs to attempt counts {challengeId: attemptCount}",
+        "JSON string: Map of challenge IDs to attempt counts {challengeId: attemptCount}",
     },
 
     // ============================================================
@@ -224,10 +230,10 @@ export const userSession = {
     // ============================================================
     {
       name: "failedAttempts",
-      title: "Failed Code Attempts",
-      type: "object",
+      title: "Failed Code Attempts (JSON)",
+      type: "text",
       description:
-        "Map of day numbers to failed attempt counts {day: attemptCount}",
+        "JSON string: Map of day numbers to attempt counts {day: attemptCount}",
     },
 
     // ============================================================
@@ -264,6 +270,7 @@ export const userSession = {
       of: [
         {
           type: "object",
+          name: "santaLetter",
           fields: [
             { name: "day", type: "number" },
             { name: "content", type: "text" },
@@ -279,6 +286,7 @@ export const userSession = {
       of: [
         {
           type: "object",
+          name: "brevfugl",
           fields: [
             { name: "dag", type: "number" },
             { name: "innhold", type: "text" },
@@ -326,4 +334,4 @@ export const userSession = {
       subtitle: "lastUpdated",
     },
   },
-};
+});

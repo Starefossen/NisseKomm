@@ -23,6 +23,10 @@ const customJestConfig = {
     "!src/**/*.stories.{js,jsx,ts,tsx}",
     "!src/**/__tests__/**",
   ],
+  // Transform ES modules from Sanity and its dependencies
+  transformIgnorePatterns: [
+    "node_modules/(?!(nanoid|@sanity|uuid|get-random-values)/)",
+  ],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

@@ -53,7 +53,7 @@ Ensure the `userSession` schema is deployed to your Sanity development dataset:
 
 ```bash
 cd sanity
-npx sanity deploy
+pnpm sanity deploy
 ```
 
 ### 3. Development Server (for API routes)
@@ -116,26 +116,24 @@ pnpm test --coverage
 
 ## Test Data Cleanup
 
-Each test uses a unique password generated from `Date.now()`, so sessions don't interfere with each other. However, this means test sessions accumulate in your Sanity development dataset.
+Each test uses a unique password generated from `Date.now()`, so sessions don't interfere with each other. Test sessions are **automatically cleaned up** after the test suite completes.
 
-### Manual Cleanup (Optional)
+### Automatic Cleanup
 
-You can periodically clean up test sessions in Sanity Studio:
+The `sanity-storage.test.ts` file includes an `afterAll()` hook that:
 
-1. Open Sanity Studio: `cd sanity && npx sanity start`
+1. Tracks all sessionIds created during tests
+2. Deletes them from Sanity in batches after tests complete
+3. Prevents test data accumulation in development dataset
+
+### Manual Cleanup (If Needed)
+
+If automated cleanup fails, you can manually clean up test sessions in Sanity Studio:
+
+1. Open Sanity Studio: `pnpm sanity:dev`
 2. Navigate to "User Session" documents
-3. Delete sessions with `sessionId` starting with test password hashes
-
-### Automated Cleanup (Future)
-
-Consider adding an `afterAll()` hook to delete test sessions:
-
-```typescript
-afterAll(async () => {
-  // Delete all sessions created during this test run
-  // Requires tracking session IDs created in tests
-});
-```
+3. Filter or search for test sessions
+4. Delete as needed
 
 ## Debugging Failed Tests
 
@@ -246,7 +244,7 @@ Example GitHub Actions workflow:
 
 ## Future Improvements
 
-- [ ] Add test data cleanup in `afterAll()`
+- [x] Add test data cleanup in `afterAll()` ✅
 - [ ] Mock Next.js API routes for faster tests
 - [ ] Add performance benchmarks
 - [ ] Test offline/error scenarios

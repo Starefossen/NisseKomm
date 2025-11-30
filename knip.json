@@ -5,9 +5,12 @@
     "**/*.spec.{ts,tsx}",
     "__tests__/**",
     "jest.config.js",
-    "sanity/**"
+    "sanity/**",
+    "sanity.config.ts",
+    "sanity.cli.ts",
+    ".sanity/**"
   ],
-  "ignoreDependencies": ["pixelarticons"],
+  "ignoreDependencies": ["pixelarticons", "@sanity/vision"],
   "ignoreExportsUsedInFile": true,
   "next": {
     "entry": [

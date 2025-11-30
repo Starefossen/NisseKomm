@@ -2,6 +2,25 @@
 import "@testing-library/jest-dom";
 import { webcrypto } from "crypto";
 import http from "http";
+import { readFileSync } from "fs";
+import { resolve } from "path";
+
+// Load environment variables from .env.local
+try {
+  const envPath = resolve(process.cwd(), ".env.local");
+  const envFile = readFileSync(envPath, "utf8");
+  envFile.split("\n").forEach((line) => {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) return;
+    const [key, ...valueParts] = trimmed.split("=");
+    if (key && valueParts.length > 0) {
+      const value = valueParts.join("=").trim();
+      process.env[key.trim()] = value;
+    }
+  });
+} catch (error) {
+  console.warn("Could not load .env.local:", error.message);
+}
 
 // Polyfill fetch for Jest environment
 // Jest's jsdom doesn't include fetch, so we need to provide it

@@ -12,22 +12,31 @@
     "knip:fix": "knip --fix",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "test": "jest",
+    "test": "jest --testPathIgnorePatterns='/src/lib/__tests__/sanity-storage.test.ts'",
+    "test:full": "jest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "format:check": "prettier --check .",
     "format": "prettier --write --list-different .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "sanity": "sanity",
+    "sanity:dev": "sanity dev",
+    "sanity:build": "sanity build",
+    "sanity:deploy": "sanity deploy",
+    "sanity:manage": "sanity manage"
   },
   "dependencies": {
     "@sanity/client": "^7.13.1",
+    "@sanity/vision": "^3.99.0",
     "html5-qrcode": "^2.3.8",
     "next": "^16.0.6",
     "pixelarticons": "^1.8.1",
     "qr-code-styling": "^1.9.2",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "sanity": "^4.19.0",
+    "styled-components": "^6.1.19"
   },
   "devDependencies": {
     "@jest/globals": "^30.2.0",
