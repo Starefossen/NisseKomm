@@ -211,7 +211,7 @@ describe("DELETE /api/session", () => {
 
 // Cleanup test sessions from Sanity
 afterAll(async () => {
-  console.log(`Cleaning up ${testSessions.size} test sessions...`);
+  console.debug(`Cleaning up ${testSessions.size} test sessions...`);
   let successCount = 0;
   let failCount = 0;
 
@@ -228,6 +228,8 @@ afterAll(async () => {
     }
   }
 
-  console.log(`Cleanup complete: ${successCount} deleted, ${failCount} failed`);
+  console.debug(
+    `Cleanup complete: ${successCount} deleted, ${failCount} failed`,
+  );
   testSessions.clear();
 }, 30000);

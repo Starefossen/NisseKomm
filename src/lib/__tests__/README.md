@@ -162,7 +162,7 @@ Add to test file:
 
 ```typescript
 beforeAll(() => {
-  console.log("Sanity Config:", {
+  console.debug("Sanity Config:", {
     projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
     dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
     backend: process.env.NEXT_PUBLIC_STORAGE_BACKEND,
