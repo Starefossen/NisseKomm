@@ -24,7 +24,8 @@
     "sanity:dev": "sanity dev",
     "sanity:build": "sanity build",
     "sanity:deploy": "sanity deploy",
-    "sanity:manage": "sanity manage"
+    "sanity:manage": "sanity manage",
+    "cleanup:test-sessions": "tsx scripts/cleanup-test-sessions.ts"
   },
   "dependencies": {
     "@sanity/client": "^7.13.1",
@@ -46,6 +47,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "babel-plugin-react-compiler": "^1.0.0",
+    "dotenv": "^17.2.3",
     "eslint": "^9.39.1",
     "eslint-config-next": "^16.0.6",
     "jest": "^30.2.0",
@@ -54,6 +56,7 @@
     "postcss": "^8.5.6",
     "prettier": "^3.7.3",
     "tailwindcss": "^4.1.17",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
 }

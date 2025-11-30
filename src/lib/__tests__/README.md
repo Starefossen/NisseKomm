@@ -123,16 +123,27 @@ Each test uses a unique password generated from `Date.now()`, so sessions don't 
 The `sanity-storage.test.ts` file includes an `afterAll()` hook that:
 
 1. Tracks all sessionIds created during tests
-2. Deletes them from Sanity in batches after tests complete
+2. Deletes them from Sanity via DELETE endpoint after tests complete
 3. Prevents test data accumulation in development dataset
+4. Runs with 30 second timeout to handle all deletions
 
 ### Manual Cleanup (If Needed)
 
-If automated cleanup fails, you can manually clean up test sessions in Sanity Studio:
+If automated cleanup fails, you have two options:
+
+#### Option 1: Run cleanup script
+
+```bash
+pnpm run cleanup:test-sessions
+```
+
+This script finds and deletes all sessions with `TEST_` prefix from Sanity.
+
+#### Option 2: Use Sanity Studio
 
 1. Open Sanity Studio: `pnpm sanity:dev`
 2. Navigate to "User Session" documents
-3. Filter or search for test sessions
+3. Filter for sessions starting with "TEST\_"
 4. Delete as needed
 
 ## Debugging Failed Tests

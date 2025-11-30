@@ -15,19 +15,31 @@
  * - Each test uses unique password to avoid cross-contamination
  */
 
-// CRITICAL: Set Sanity backend for these tests
-process.env.NEXT_PUBLIC_STORAGE_BACKEND = "sanity";
-
 import { describe, it, expect, beforeAll, afterAll } from "@jest/globals";
 import { StorageManager } from "../storage";
 import { GameEngine } from "../game-engine";
 import { SanityStorageAdapter } from "../storage-adapter";
+import { createSessionIdFromPassword } from "../session-manager";
+
+// CRITICAL: Set Sanity backend for these tests (save original to restore later)
+const ORIGINAL_STORAGE_BACKEND = process.env.NEXT_PUBLIC_STORAGE_BACKEND;
+process.env.NEXT_PUBLIC_STORAGE_BACKEND = "sanity";
+
+// Track all created test sessions for cleanup
+const createdSessions = new Set<string>();
 
 // Helper to generate unique test passwords
 let testCounter = 0;
 const generateTestPassword = () => {
   testCounter++;
   return `TEST_${Date.now()}_${testCounter}`;
+};
+
+// Helper to track a test session for cleanup
+const trackTestSession = async (password: string) => {
+  const sessionId = await createSessionIdFromPassword(password);
+  createdSessions.add(sessionId);
+  return password;
 };
 
 // Helper to wait for background sync (optimized for faster tests)
@@ -42,7 +54,7 @@ describe("Sanity Storage Adapter - Basic Operations", () => {
   let testPassword: string;
 
   beforeAll(async () => {
-    testPassword = generateTestPassword();
+    testPassword = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, testPassword);
     await waitForSync(); // Wait for initial session creation
   });
@@ -50,7 +62,7 @@ describe("Sanity Storage Adapter - Basic Operations", () => {
   // Removed afterEach wait - let tests handle their own timing
 
   it("should authenticate and create session", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
 
     const isAuth = StorageManager.isAuthenticated();
@@ -58,7 +70,7 @@ describe("Sanity Storage Adapter - Basic Operations", () => {
   }, 10000);
 
   it("should persist and retrieve submitted codes", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -76,7 +88,7 @@ describe("Sanity Storage Adapter - Basic Operations", () => {
   }, 10000);
 
   it("should persist and retrieve viewed emails", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -88,7 +100,7 @@ describe("Sanity Storage Adapter - Basic Operations", () => {
   }, 10000);
 
   it("should persist sound settings", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -100,7 +112,7 @@ describe("Sanity Storage Adapter - Basic Operations", () => {
   }, 10000);
 
   it("should persist music settings", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -115,7 +127,7 @@ describe("Sanity Storage Adapter - Basic Operations", () => {
 describe("Sanity Storage - Multi-Tenant Isolation", () => {
   it("should isolate data between different tenants", async () => {
     // Family A session
-    const familyA = generateTestPassword();
+    const familyA = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, familyA);
     await waitForSync();
 
@@ -127,7 +139,7 @@ describe("Sanity Storage - Multi-Tenant Isolation", () => {
     await waitForSync();
 
     // Family B session (new password = new tenant)
-    const familyB = generateTestPassword();
+    const familyB = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, familyB);
     await waitForSync();
 
@@ -154,13 +166,13 @@ describe("Sanity Storage - Multi-Tenant Isolation", () => {
   }, 20000); // 20 second timeout for multi-tenant switching
 
   it("should maintain separate sound preferences per tenant", async () => {
-    const tenant1 = generateTestPassword();
+    const tenant1 = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, tenant1);
     await waitForSync();
     StorageManager.setSoundsEnabled(false);
     await waitForSync();
 
-    const tenant2 = generateTestPassword();
+    const tenant2 = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, tenant2);
     await waitForSync();
     StorageManager.setSoundsEnabled(true);
@@ -180,7 +192,7 @@ describe("Sanity Storage - Multi-Tenant Isolation", () => {
 
 describe("Sanity Storage - Cross-Device Simulation", () => {
   it("should sync data across simulated devices (same password)", async () => {
-    const familyPassword = generateTestPassword();
+    const familyPassword = await trackTestSession(generateTestPassword());
 
     // Device 1: Submit code
     await StorageManager.setAuthenticated(true, familyPassword);
@@ -204,7 +216,7 @@ describe("Sanity Storage - Cross-Device Simulation", () => {
   }, 15000); // 15 second timeout
 
   it("should restore full game state on new device", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
 
     // Device 1: Build up game state
     await StorageManager.setAuthenticated(true, password);
@@ -216,10 +228,14 @@ describe("Sanity Storage - Cross-Device Simulation", () => {
       dato: new Date().toISOString(),
     });
     StorageManager.markEmailAsViewed(1);
+    await waitForSync(); // Wait for first email to sync
     StorageManager.markEmailAsViewed(2);
+    await waitForSync(); // Wait for second email to sync
     StorageManager.setSoundsEnabled(false);
     StorageManager.setPlayerNames(["Alice", "Bob"]);
     await waitForSync();
+    // Extra wait to ensure all data fully synced before device switch
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     // Device 2: Restore state
     localStorage.clear();
@@ -238,12 +254,12 @@ describe("Sanity Storage - Cross-Device Simulation", () => {
     expect(sounds).toBe(false);
     expect(names).toContain("Alice");
     expect(names).toContain("Bob");
-  }, 15000); // 15 second timeout
+  }, 20000); // 20 second timeout (increased due to multiple syncs)
 });
 
 describe("Sanity Storage - Complex Data Types", () => {
   it("should persist badge data", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -256,7 +272,7 @@ describe("Sanity Storage - Complex Data Types", () => {
   });
 
   it("should persist eventyr badges", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -268,7 +284,7 @@ describe("Sanity Storage - Complex Data Types", () => {
   });
 
   it("should persist unlocked modules", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -280,7 +296,7 @@ describe("Sanity Storage - Complex Data Types", () => {
   });
 
   it("should persist crisis resolution status", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -293,7 +309,7 @@ describe("Sanity Storage - Complex Data Types", () => {
   });
 
   it("should persist symbol collection", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -311,7 +327,7 @@ describe("Sanity Storage - Complex Data Types", () => {
   });
 
   it("should persist decryption challenges", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -325,7 +341,7 @@ describe("Sanity Storage - Complex Data Types", () => {
 
 describe("Sanity Storage - GameEngine Integration", () => {
   it("should work with GameEngine facade", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -345,7 +361,7 @@ describe("Sanity Storage - GameEngine Integration", () => {
   }, 15000); // 15 second timeout
 
   it("should persist game progression", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -369,7 +385,7 @@ describe("Sanity Storage - GameEngine Integration", () => {
 
 describe("Sanity Storage - Error Handling", () => {
   it("should handle duplicate code submissions gracefully", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -388,7 +404,7 @@ describe("Sanity Storage - Error Handling", () => {
   });
 
   it("should handle duplicate badge awards gracefully", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -404,7 +420,7 @@ describe("Sanity Storage - Error Handling", () => {
 
 describe("Sanity Storage - Performance", () => {
   it("should handle rapid successive writes", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -422,7 +438,7 @@ describe("Sanity Storage - Performance", () => {
   });
 
   it("should handle large datasets", async () => {
-    const password = generateTestPassword();
+    const password = await trackTestSession(generateTestPassword());
     await StorageManager.setAuthenticated(true, password);
     await waitForSync();
 
@@ -441,6 +457,42 @@ describe("Sanity Storage - Performance", () => {
 });
 
 // Global cleanup - clear adapter instances after all tests
-afterAll(() => {
+afterAll(async () => {
+  // Restore original storage backend setting
+  if (ORIGINAL_STORAGE_BACKEND !== undefined) {
+    process.env.NEXT_PUBLIC_STORAGE_BACKEND = ORIGINAL_STORAGE_BACKEND;
+  } else {
+    delete process.env.NEXT_PUBLIC_STORAGE_BACKEND;
+  }
+
   SanityStorageAdapter.clearAllInstances();
-});
+
+  // Clean up all test sessions from Sanity
+  console.log(`Cleaning up ${createdSessions.size} test sessions...`);
+  let successCount = 0;
+  let failCount = 0;
+
+  for (const sessionId of createdSessions) {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/session?sessionId=${encodeURIComponent(sessionId)}`,
+        {
+          method: "DELETE",
+        },
+      );
+
+      if (response.ok) {
+        successCount++;
+      } else {
+        failCount++;
+        console.warn(`Failed to delete session ${sessionId}:`, response.status);
+      }
+    } catch (error) {
+      failCount++;
+      console.warn(`Error deleting session ${sessionId}:`, error);
+    }
+  }
+
+  console.log(`Cleanup complete: ${successCount} deleted, ${failCount} failed`);
+  createdSessions.clear();
+}, 30000); // 30 second timeout for cleanup

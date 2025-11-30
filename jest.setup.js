@@ -104,3 +104,14 @@ if (typeof window !== "undefined" && typeof window.crypto === "undefined") {
 beforeEach(() => {
   localStorage.clear();
 });
+
+// Filter expected console warnings to reduce test output noise
+const originalWarn = console.warn;
+console.warn = (...args) => {
+  const message = String(args[0]);
+  // Suppress expected warning about Sanity backend requiring password in localStorage tests
+  if (message.includes("Sanity backend requires password")) {
+    return;
+  }
+  originalWarn(...args);
+};

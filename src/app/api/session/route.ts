@@ -1,16 +1,21 @@
 /**
  * Session API Route
  *
- * Handles session initialization and retrieval.
+ * Handles session initialization, retrieval, and deletion.
  *
  * GET /api/session
- * - Fetches existing session by sessionId from cookie
+ * - Fetches existing session by sessionId from cookie or query parameter
  * - Returns session data or 404 if not found
  *
  * POST /api/session
  * - Creates new session with given sessionId
  * - Sets session cookie
  * - Returns created session data
+ *
+ * DELETE /api/session?sessionId=<id>
+ * - Deletes session(s) matching the sessionId
+ * - Used for cleanup, especially in tests
+ * - Returns success status
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -134,6 +139,38 @@ export async function POST(request: NextRequest) {
     console.error("Failed to create session:", error);
     return NextResponse.json(
       { error: "Failed to create session" },
+      { status: 500 },
+    );
+  }
+}
+
+/**
+ * DELETE /api/session
+ * Delete session by sessionId (for cleanup, especially in tests)
+ */
+export async function DELETE(request: NextRequest) {
+  try {
+    const url = new URL(request.url);
+    const sessionId = url.searchParams.get("sessionId");
+
+    if (!sessionId) {
+      return NextResponse.json(
+        { error: "sessionId required" },
+        { status: 400 },
+      );
+    }
+
+    // Delete all sessions matching the sessionId
+    await sanityServerClient.delete({
+      query: `*[_type == "userSession" && sessionId == $sessionId]`,
+      params: { sessionId },
+    });
+
+    return NextResponse.json({ success: true, sessionId });
+  } catch (error) {
+    console.error("Failed to delete session:", error);
+    return NextResponse.json(
+      { error: "Failed to delete session" },
       { status: 500 },
     );
   }
