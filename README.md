@@ -70,9 +70,6 @@ Opprett `.env.local` for testing og utvikling:
 # Testmodus - Omgå datobegrensninger
 NEXT_PUBLIC_TEST_MODE=false
 
-# Oppstartspassord (standard: NISSEKODE2025)
-NEXT_PUBLIC_BOOT_PASSWORD=NISSEKODE2025
-
 # Oppstartsanimasjon (sekunder, 0 = hopp over)
 NEXT_PUBLIC_BOOT_ANIMATION_DURATION=2
 
@@ -81,19 +78,39 @@ NEXT_PUBLIC_MOCK_DAY=
 
 # Simuler spesifikk måned (1-12)
 NEXT_PUBLIC_MOCK_MONTH=
+
+# Lagring backend
+NEXT_PUBLIC_STORAGE_BACKEND=localStorage  # 'localStorage' eller 'sanity'
+
+# Registrering tilgangskontroll (valgfritt, for privat deling)
+REGISTRATION_SHARE_KEY=     # Tom = åpen registrering, satt verdi = krever nøkkel
+
+# Sanity CMS (påkrevd hvis STORAGE_BACKEND=sanity)
+NEXT_PUBLIC_SANITY_PROJECT_ID=
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2024-11-01
+SANITY_API_TOKEN=
 ```
 
-### 3. Kjør Utviklingsserver
+### 3. Registrer Familie (ved første bruk)
+
+Besøk [http://localhost:3000/register](http://localhost:3000/register) for å:
+
+- Opprett familiekonto
+- Få tildelt **Nissekode** (barn bruker denne)
+- Få tildelt **Foreldrekode** (for foreldreveiledning)
+
+### 4. Kjør Utviklingsserver
 
 ```bash
 pnpm run dev
 ```
 
-Åpne [http://localhost:3000](http://localhost:3000) og bruk passordet **NISSEKODE2025**
+Åpne [http://localhost:3000](http://localhost:3000) og bruk din **Nissekode**
 
-### 4. Foreldreveiledning
+### 5. Foreldreveiledning
 
-Besøk **/nissemor-guide** i nettleseren for:
+Besøk **/nissemor-guide?kode=DIN_FORELDREKODE** i nettleseren for:
 
 - 🎁 **Hovedside**: Administrer oppdrag og moduler
 - 🎯 **Symboler**: Print og skjul QR-kort rundt i huset

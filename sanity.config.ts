@@ -51,6 +51,14 @@ export default defineConfig({
           )
           .items([
             S.listItem()
+              .title("Familier")
+              .child(
+                S.documentTypeList("familyCredentials")
+                  .title("Familier")
+                  .filter('_type == "familyCredentials"')
+                  .defaultOrdering([{ field: "createdAt", direction: "desc" }]),
+              ),
+            S.listItem()
               .title("Spillsesjoner")
               .child(
                 S.documentTypeList("userSession")

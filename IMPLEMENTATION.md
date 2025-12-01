@@ -41,7 +41,7 @@ Rampenissen sends daily emails with riddles. Kids must search their real-world e
 ### Complete User Flow
 
 1. **Boot System**
-   - Child enters boot password: `NISSEKODE2025`
+   - Child enters their unique access code
    - System validates and plays success beep
    - Desktop icons fade in with CRT effect
 
@@ -844,20 +844,22 @@ Physical treasure hunt combined with digital puzzle-solving. Kids find 9 hidden 
 - Duration: `NEXT_PUBLIC_BOOT_ANIMATION_DURATION` (default 2s)
 - Set to 0 to skip
 
-**2. Password Challenge**
+**2. Authentication Challenge**
 
-- Terminal-style input
-- Validates against `NEXT_PUBLIC_BOOT_PASSWORD`
+- Terminal-style code input
+- Calls `/api/auth/login` endpoint
+- Accepts kid code or parent code
 - Case-insensitive matching
 - Escalating error messages:
-  - Attempt 1: "Feil passord. Prøv igjen."
-  - Attempt 2: "Feil passord! Er du sikker?"
-  - Attempt 3+: "Kontakt Nissemor for hjelp!"
+  - Attempt 1: "FEIL KODE"
+  - Attempt 2: "TILGANG NEKTET - PRØV IGJEN"
+  - Attempt 3+: "ADVARSEL: SIKKERHETSBRUDD REGISTRERT"
 
 **3. Success**
 
+- Receives sessionId from API
 - Success beep sound
-- Persist authentication: `StorageManager.setAuthenticated(true)`
+- Persist authentication: `StorageManager.setAuthenticated(true, sessionId)`
 - Play jingle if sounds enabled
 
 **4. Desktop Launch**

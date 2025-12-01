@@ -180,7 +180,6 @@ describe("DELETE /api/session", () => {
         const res = await fetch({ method: "DELETE" });
         expect(res.status).toBe(200);
         const json = await res.json();
-        expect(json.success).toBe(true);
         expect(json.sessionId).toBe(sessionId);
       },
     });

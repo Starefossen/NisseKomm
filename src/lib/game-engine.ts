@@ -96,7 +96,43 @@ interface DecryptionValidationResult {
   correctCount: number;
 }
 
+/**
+ * Dependencies that can be injected for testing or customization
+ */
+interface GameEngineDependencies {
+  /**
+   * Resolver for {{KID_CODE}} placeholder
+   * If not provided, will use default session-based resolver
+   */
+  kidCodeResolver?: () => Promise<string | null>;
+}
+
 export class GameEngine {
+  private static dependencies: GameEngineDependencies = {};
+
+  /**
+   * Configure GameEngine with custom dependencies (primarily for testing)
+   * Call this before using GameEngine methods to inject custom behavior
+   *
+   * @param deps - Partial dependencies to override defaults
+   *
+   * @example
+   * // In tests
+   * GameEngine.configure({
+   *   kidCodeResolver: async () => "NISSEKRAFT2024"
+   * });
+   */
+  static configure(deps: GameEngineDependencies): void {
+    this.dependencies = { ...this.dependencies, ...deps };
+  }
+
+  /**
+   * Reset dependencies to defaults (useful for test cleanup)
+   */
+  static resetDependencies(): void {
+    this.dependencies = {};
+  }
+
   /**
    * Load complete game state from storage
    */
@@ -110,11 +146,17 @@ export class GameEngine {
 
     const completedQuests = new Set<number>();
     submittedCodes.forEach((entry) => {
-      const quest = allQuests.find(
-        (q) => q.kode.toUpperCase() === entry.kode.toUpperCase(),
-      );
-      if (quest) {
-        completedQuests.add(quest.dag);
+      // Prefer day-based matching (reliable with {{KID_CODE}} placeholder)
+      if (entry.day !== undefined) {
+        completedQuests.add(entry.day);
+      } else {
+        // Fallback to code-based matching for legacy data
+        const quest = allQuests.find(
+          (q) => q.kode.toUpperCase() === entry.kode.toUpperCase(),
+        );
+        if (quest) {
+          completedQuests.add(quest.dag);
+        }
       }
     });
 
@@ -199,13 +241,65 @@ export class GameEngine {
 
   /**
    * Submit a code and update game state accordingly
+   * Resolves {{KID_CODE}} placeholder if present in expectedCode
+   *
+   * @param code - User-submitted code
+   * @param expectedCode - Expected code (may contain {{KID_CODE}} placeholder)
+   * @param day - Quest day number
+   * @param kidCodeOverride - Optional kid code to use instead of fetching from session (for testing)
    */
-  static submitCode(
+  static async submitCode(
     code: string,
     expectedCode: string,
     day: number,
-  ): QuestResult {
-    const isCorrect = code.trim().toUpperCase() === expectedCode.toUpperCase();
+    kidCodeOverride?: string,
+  ): Promise<QuestResult> {
+    // Resolve placeholder if present
+    let resolvedExpectedCode = expectedCode;
+    if (expectedCode === "{{KID_CODE}}") {
+      console.debug(
+        "[GameEngine] Resolving {{KID_CODE}} placeholder for Day",
+        day,
+      );
+      let kidCode: string | null = null;
+
+      // Use override if provided (testing)
+      if (kidCodeOverride) {
+        kidCode = kidCodeOverride;
+        console.debug("[GameEngine] Using kidCodeOverride:", kidCode);
+      }
+      // Use injected resolver if available
+      else if (this.dependencies.kidCodeResolver) {
+        console.debug("[GameEngine] Using injected kidCodeResolver");
+        kidCode = await this.dependencies.kidCodeResolver();
+      }
+      // Fall back to default session resolver
+      else {
+        console.debug("[GameEngine] Fetching kidCode from session...");
+        const { getKidCodeFromSession } = await import("./session-manager");
+        kidCode = await getKidCodeFromSession();
+        console.debug(
+          "[GameEngine] Got kidCode from session:",
+          kidCode ? "SUCCESS" : "NULL",
+        );
+      }
+
+      if (!kidCode) {
+        console.error(
+          "[GameEngine] Failed to resolve {{KID_CODE}} - no kidCode available",
+        );
+        return {
+          success: false,
+          isNewCompletion: false,
+          message: "KUNNE IKKE HENTE KODE - PRØV IGJEN",
+        };
+      }
+      resolvedExpectedCode = kidCode;
+      console.debug("[GameEngine] Resolved expected code for Day", day);
+    }
+
+    const isCorrect =
+      code.trim().toUpperCase() === resolvedExpectedCode.toUpperCase();
 
     if (!isCorrect) {
       StorageManager.incrementFailedAttempts(day);
@@ -230,6 +324,7 @@ export class GameEngine {
     StorageManager.addSubmittedCode({
       kode: code.trim().toUpperCase(),
       dato: getISOString(),
+      day, // Store day for reliable matching
     });
 
     StorageManager.resetFailedAttempts(day);

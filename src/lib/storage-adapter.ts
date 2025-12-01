@@ -12,8 +12,6 @@
  * ```
  */
 
-import { createSessionIdFromPassword } from "./session-manager";
-
 // Global tracking of all SanityStorageAdapter instances for cross-adapter sync coordination
 const allAdapterInstances = new Set<SanityStorageAdapter>();
 
@@ -45,7 +43,9 @@ export class LocalStorageAdapter implements StorageAdapter {
       if (stored === null) return defaultValue;
       return JSON.parse(stored) as T;
     } catch (error) {
-      console.warn(`LocalStorageAdapter: Failed to read ${key}:`, error);
+      if (process.env.NODE_ENV === "development") {
+        console.warn(`LocalStorageAdapter: Failed to read ${key}:`, error);
+      }
       return defaultValue;
     }
   }
@@ -58,7 +58,9 @@ export class LocalStorageAdapter implements StorageAdapter {
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
-      console.warn(`LocalStorageAdapter: Failed to write ${key}:`, error);
+      if (process.env.NODE_ENV === "development") {
+        console.warn(`LocalStorageAdapter: Failed to write ${key}:`, error);
+      }
     }
   }
 
@@ -70,7 +72,9 @@ export class LocalStorageAdapter implements StorageAdapter {
     try {
       localStorage.removeItem(key);
     } catch (error) {
-      console.warn(`LocalStorageAdapter: Failed to remove ${key}:`, error);
+      if (process.env.NODE_ENV === "development") {
+        console.warn(`LocalStorageAdapter: Failed to remove ${key}:`, error);
+      }
     }
   }
 
@@ -94,7 +98,9 @@ export class LocalStorageAdapter implements StorageAdapter {
     try {
       localStorage.clear();
     } catch (error) {
-      console.warn("LocalStorageAdapter: Failed to clear:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.warn("LocalStorageAdapter: Failed to clear:", error);
+      }
     }
   }
 }
@@ -112,25 +118,34 @@ export class SanityStorageAdapter implements StorageAdapter {
   private pendingSyncs: Promise<void>[] = []; // Track pending syncs for testing
   private sessionId: string = ""; // Store sessionId for sync requests
 
-  constructor(password: string) {
+  constructor(sessionId: string) {
     // Register this instance globally for cross-adapter sync coordination
     allAdapterInstances.add(this);
-    // Always initialize immediately with password
-    this.initPromise = this.initialize(password);
+    this.sessionId = sessionId;
+    console.debug(
+      "[SanityAdapter] Creating new adapter for session:",
+      sessionId.substring(0, 8) + "...",
+    );
+    // Always initialize immediately with sessionId
+    this.initPromise = this.initialize();
   }
 
   /**
    * Initialize session and load all data
    */
-  private async initialize(password: string): Promise<void> {
-    if (this.initialized) return;
+  private async initialize(): Promise<void> {
+    if (this.initialized) {
+      console.log("[SanityAdapter] Already initialized, skipping");
+      return;
+    }
 
+    console.log("[SanityAdapter] Starting initialization...");
     try {
-      // Create session ID from password (this sets the cookie)
-      this.sessionId = await createSessionIdFromPassword(password);
+      // SessionId is already set in constructor
 
       // Try to fetch existing session by explicit sessionId (not cookie)
       // This is important for multi-tenant: cookie might have been set by another tenant
+      console.log("[SanityAdapter] Fetching session from API...");
       const response = await fetch(
         `/api/session?sessionId=${encodeURIComponent(this.sessionId)}`,
         {
@@ -143,7 +158,14 @@ export class SanityStorageAdapter implements StorageAdapter {
       let sessionData;
       if (response.ok) {
         sessionData = await response.json();
+        console.log(
+          "[SanityAdapter] Loaded existing session, fields:",
+          Object.keys(sessionData).length,
+        );
       } else if (response.status === 404) {
+        console.log(
+          "[SanityAdapter] Session not found, creating new session...",
+        );
         // Create new session
         const createResponse = await fetch("/api/session", {
           method: "POST",
@@ -155,11 +177,12 @@ export class SanityStorageAdapter implements StorageAdapter {
 
         if (createResponse.ok) {
           sessionData = await createResponse.json();
+          console.log("[SanityAdapter] Created new session");
         } else {
           throw new Error("Failed to create session");
         }
       } else {
-        throw new Error("Failed to fetch session");
+        throw new Error(`Failed to fetch session: ${response.status}`);
       }
 
       // Populate cache from session data
@@ -168,16 +191,26 @@ export class SanityStorageAdapter implements StorageAdapter {
         this.cache.clear();
 
         const fieldMap = this.getAllFieldMappings();
+        let loadedFields = 0;
         Object.values(fieldMap).forEach((field) => {
           if (sessionData[field] !== undefined) {
             this.cache.set(field, sessionData[field]);
+            loadedFields++;
           }
         });
+        console.log(
+          "[SanityAdapter] Populated cache with",
+          loadedFields,
+          "fields",
+        );
       }
 
       this.initialized = true;
+      console.log("[SanityAdapter] Initialization complete");
     } catch (error) {
-      console.error("SanityStorageAdapter: Initialization failed:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("[SanityAdapter] Initialization failed:", error);
+      }
       // Fall back to empty cache
       this.initialized = true;
     }
@@ -228,9 +261,11 @@ export class SanityStorageAdapter implements StorageAdapter {
     if (!this.initialized) {
       // Note: This is a synchronous fallback - in practice, initialization
       // should complete before first access due to setAuthenticated() being async
-      console.warn(
-        "SanityStorageAdapter: get() called before initialization complete",
-      );
+      if (process.env.NODE_ENV === "development") {
+        console.warn(
+          "SanityStorageAdapter: get() called before initialization complete",
+        );
+      }
       return defaultValue;
     }
 
@@ -309,7 +344,9 @@ export class SanityStorageAdapter implements StorageAdapter {
     // Ensure initialization is complete first
     const syncPromise = this.initPromise?.then(() => {
       return this.syncWithRetry(updates, 1).catch((error) => {
-        console.error("SanityStorageAdapter: Background sync failed:", error);
+        if (process.env.NODE_ENV === "development") {
+          console.error("SanityStorageAdapter: Background sync failed:", error);
+        }
       });
     });
 
@@ -406,26 +443,88 @@ export class SanityStorageAdapter implements StorageAdapter {
       throw error;
     }
   }
+
+  /**
+   * Get friend names from userSession document
+   */
+  async getFriendNames(): Promise<string[]> {
+    await this.waitForInitialization();
+    try {
+      const response = await fetch(
+        `/api/session/friends?sessionId=${this.sessionId}`,
+        {
+          credentials: "include",
+          cache: "no-store",
+        },
+      );
+
+      if (!response.ok) {
+        if (process.env.NODE_ENV === "development") {
+          console.error("Failed to fetch friend names");
+        }
+        return [];
+      }
+
+      const data = (await response.json()) as { friendNames?: string[] };
+      return data.friendNames || [];
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error fetching friend names:", error);
+      }
+      return [];
+    }
+  }
+
+  /**
+   * Set friend names in userSession document
+   */
+  async setFriendNames(names: string[]): Promise<void> {
+    await this.waitForInitialization();
+    try {
+      const response = await fetch("/api/session/friends", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId: this.sessionId,
+          friendNames: names,
+        }),
+        credentials: "include",
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        const error = (await response.json()) as { error?: string };
+        throw new Error(error.error || "Failed to update friend names");
+      }
+    } catch (error) {
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error setting friend names:", error);
+      }
+      throw error;
+    }
+  }
 }
 
 /**
  * Factory function to create the appropriate storage adapter
  * Based on NEXT_PUBLIC_STORAGE_BACKEND environment variable
  *
- * @param password - Boot password for Sanity multi-tenancy (required for Sanity backend)
+ * @param sessionId - UUID session identifier (required for Sanity backend)
  */
-export function createStorageAdapter(password?: string): StorageAdapter {
+export function createStorageAdapter(sessionId?: string): StorageAdapter {
   const backend = process.env.NEXT_PUBLIC_STORAGE_BACKEND || "localStorage";
 
   switch (backend) {
     case "sanity":
-      if (!password) {
-        console.warn(
-          "Sanity backend requires password, falling back to localStorage",
-        );
+      if (!sessionId) {
+        if (process.env.NODE_ENV === "development") {
+          console.warn(
+            "Sanity backend requires sessionId, falling back to localStorage",
+          );
+        }
         return new LocalStorageAdapter();
       }
-      return new SanityStorageAdapter(password);
+      return new SanityStorageAdapter(sessionId);
     case "localStorage":
     default:
       return new LocalStorageAdapter();

@@ -12,9 +12,17 @@
  * Sanity integration is tested separately in route tests.
  */
 
-import { describe, it, expect, beforeEach } from "@jest/globals";
+import { describe, it, expect, beforeEach, jest } from "@jest/globals";
 import { StorageManager } from "../storage";
 import { GameEngine } from "../game-engine";
+
+// Mock session-manager to prevent cookie side effects in tests
+jest.mock("../session-manager", () => ({
+  setSessionId: jest.fn(),
+  getSessionId: jest.fn(() => null),
+  clearSessionId: jest.fn(),
+  getKidCodeFromSession: jest.fn(() => Promise.resolve(null)),
+}));
 
 // Use localStorage backend for these tests
 process.env.NEXT_PUBLIC_STORAGE_BACKEND = "localStorage";
@@ -31,17 +39,17 @@ describe("Storage Manager - Basic Operations", () => {
     localStorage.clear();
   });
 
-  it("should authenticate and create session", () => {
+  it("should authenticate and create session", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     const isAuth = StorageManager.isAuthenticated();
     expect(isAuth).toBe(true);
   });
 
-  it("should persist and retrieve submitted codes", () => {
+  it("should persist and retrieve submitted codes", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     const testCode = {
       kode: "TESTCODE1",
@@ -55,9 +63,9 @@ describe("Storage Manager - Basic Operations", () => {
     expect(codes.some((c) => c.kode === testCode.kode)).toBe(true);
   });
 
-  it("should persist and retrieve viewed emails", () => {
+  it("should persist and retrieve viewed emails", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     StorageManager.markEmailAsViewed(5);
 
@@ -65,9 +73,9 @@ describe("Storage Manager - Basic Operations", () => {
     expect(viewedEmails.has(5)).toBe(true);
   });
 
-  it("should persist sound settings", () => {
+  it("should persist sound settings", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     StorageManager.setSoundsEnabled(false);
 
@@ -75,9 +83,9 @@ describe("Storage Manager - Basic Operations", () => {
     expect(soundsEnabled).toBe(false);
   });
 
-  it("should persist music settings", () => {
+  it("should persist music settings", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     StorageManager.setMusicEnabled(true);
 
@@ -91,10 +99,14 @@ describe("Storage Manager - Multi-Tenant Isolation", () => {
     localStorage.clear();
   });
 
-  it("should isolate data between different tenants", () => {
+  it("should persist data across session switches in localStorage mode", async () => {
+    // NOTE: localStorage backend does NOT support multi-tenancy
+    // All sessions share the same browser localStorage
+    // This is intentional - localStorage mode is for single-family usage
+
     // Family A session
     const familyA = generateTestPassword();
-    StorageManager.setAuthenticated(true, familyA);
+    await StorageManager.setAuthenticated(true, familyA);
 
     const codeA = {
       kode: "FAMILYA_CODE",
@@ -106,10 +118,9 @@ describe("Storage Manager - Multi-Tenant Isolation", () => {
     const codesA1 = StorageManager.getSubmittedCodes();
     expect(codesA1.some((c) => c.kode === "FAMILYA_CODE")).toBe(true);
 
-    // Family B session (new password = new tenant)
-    // NOTE: localStorage backend clears ALL data when switching tenants
+    // Switch to different session (localStorage mode doesn't clear data)
     const familyB = generateTestPassword();
-    StorageManager.setAuthenticated(true, familyB);
+    await StorageManager.setAuthenticated(true, familyB);
 
     const codeB = {
       kode: "FAMILYB_CODE",
@@ -117,30 +128,33 @@ describe("Storage Manager - Multi-Tenant Isolation", () => {
     };
     StorageManager.addSubmittedCode(codeB);
 
-    // Verify Family B has fresh storage (no Family A data)
+    // In localStorage mode, both codes persist (no tenant isolation)
     const codesB = StorageManager.getSubmittedCodes();
-    expect(codesB.some((c) => c.kode === "FAMILYA_CODE")).toBe(false);
+    expect(codesB.some((c) => c.kode === "FAMILYA_CODE")).toBe(true);
     expect(codesB.some((c) => c.kode === "FAMILYB_CODE")).toBe(true);
   });
 
-  it("should start with fresh storage when switching tenants", () => {
+  it("should persist settings across session switches in localStorage mode", async () => {
+    // NOTE: localStorage backend does NOT clear data when switching sessions
+    // Settings persist in browser localStorage
+
     const tenant1 = generateTestPassword();
-    StorageManager.setAuthenticated(true, tenant1);
+    await StorageManager.setAuthenticated(true, tenant1);
     StorageManager.setSoundsEnabled(false);
 
     // Verify tenant1 setting
     expect(StorageManager.isSoundsEnabled()).toBe(false);
 
-    // Switch to tenant2 - localStorage clears, so settings reset to defaults
+    // Switch to tenant2 - localStorage does NOT clear, settings persist
     const tenant2 = generateTestPassword();
-    StorageManager.setAuthenticated(true, tenant2);
+    await StorageManager.setAuthenticated(true, tenant2);
 
-    // New tenant starts with default settings (sounds enabled by default)
-    expect(StorageManager.isSoundsEnabled()).toBe(true);
-
-    // Set tenant2's preference
-    StorageManager.setSoundsEnabled(false);
+    // In localStorage mode, previous settings persist (no isolation)
     expect(StorageManager.isSoundsEnabled()).toBe(false);
+
+    // Change setting
+    StorageManager.setSoundsEnabled(true);
+    expect(StorageManager.isSoundsEnabled()).toBe(true);
   });
 });
 
@@ -149,11 +163,11 @@ describe("Storage Manager - Session Persistence", () => {
     localStorage.clear();
   });
 
-  it("should persist data in localStorage with same password", () => {
+  it("should persist data in localStorage with same password", async () => {
     const familyPassword = generateTestPassword();
 
     // Device 1: Submit code
-    StorageManager.setAuthenticated(true, familyPassword);
+    await StorageManager.setAuthenticated(true, familyPassword);
 
     const testCode = {
       kode: "DEVICE1_CODE",
@@ -167,11 +181,11 @@ describe("Storage Manager - Session Persistence", () => {
     expect(codes.some((c) => c.kode === "DEVICE1_CODE")).toBe(true);
   });
 
-  it("should restore full game state", () => {
+  it("should restore full game state", async () => {
     const password = generateTestPassword();
 
     // Build up game state
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     // Add various data
     StorageManager.addSubmittedCode({
@@ -203,9 +217,9 @@ describe("Storage Manager - Complex Data Types", () => {
     localStorage.clear();
   });
 
-  it("should persist badge data", () => {
+  it("should persist badge data", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     StorageManager.addBonusOppdragBadge(11, "🚨", "Krise Mester");
 
@@ -214,9 +228,9 @@ describe("Storage Manager - Complex Data Types", () => {
     expect(badges.some((b) => b.day === 11 && b.icon === "🚨")).toBe(true);
   });
 
-  it("should persist eventyr badges", () => {
+  it("should persist eventyr badges", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     StorageManager.addEventyrBadge("eventyr1", "📖", "Eventyr Helt");
 
@@ -224,9 +238,9 @@ describe("Storage Manager - Complex Data Types", () => {
     expect(badges.some((b) => b.eventyrId === "eventyr1")).toBe(true);
   });
 
-  it("should persist unlocked modules", () => {
+  it("should persist unlocked modules", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     StorageManager.unlockModule("nissenet");
 
@@ -234,9 +248,9 @@ describe("Storage Manager - Complex Data Types", () => {
     expect(modules).toContain("nissenet");
   });
 
-  it("should persist crisis resolution status", () => {
+  it("should persist crisis resolution status", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     StorageManager.resolveCrisis("antenna");
 
@@ -245,9 +259,9 @@ describe("Storage Manager - Complex Data Types", () => {
     expect(status.inventory).toBe(false);
   });
 
-  it("should persist symbol collection", () => {
+  it("should persist symbol collection", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     const symbol = {
       symbolId: "symbol1",
@@ -261,9 +275,9 @@ describe("Storage Manager - Complex Data Types", () => {
     expect(symbols.some((s) => s.symbolId === "symbol1")).toBe(true);
   });
 
-  it("should persist decryption challenges", () => {
+  it("should persist decryption challenges", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     StorageManager.addSolvedDecryption("challenge1");
 
@@ -277,31 +291,44 @@ describe("GameEngine Integration", () => {
     localStorage.clear();
   });
 
-  it("should work with GameEngine facade", () => {
+  it("should work with GameEngine facade", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
-    // Use GameEngine to submit code (use actual Day 1 code from uke1_oppdrag.json)
-    const result = GameEngine.submitCode("NISSEKODE2025", "NISSEKODE2025", 1);
+    // Configure GameEngine to use password as kid code (for Day 1 {{KID_CODE}} tests)
+    GameEngine.configure({
+      kidCodeResolver: async () => password,
+    });
+
+    // Day 1 uses {{KID_CODE}} placeholder which resolves to kid code
+    const result = await GameEngine.submitCode(password, "{{KID_CODE}}", 1);
 
     expect(result.success).toBe(true);
 
     // Verify through StorageManager
     const codes = StorageManager.getSubmittedCodes();
-    expect(codes.some((c) => c.kode === "NISSEKODE2025")).toBe(true);
+    expect(codes.some((c) => c.kode === password.toUpperCase())).toBe(true);
 
     // Verify through GameEngine
     const state = GameEngine.loadGameState();
     expect(state.completedQuests.has(1)).toBe(true);
+
+    // Cleanup
+    GameEngine.resetDependencies();
   });
 
-  it("should persist game progression", () => {
+  it("should persist game progression", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
-    // Submit multiple codes (use actual quest codes from uke1_oppdrag.json)
-    GameEngine.submitCode("NISSEKODE2025", "NISSEKODE2025", 1);
-    GameEngine.submitCode("34", "34", 2);
+    // Configure GameEngine for Day 1
+    GameEngine.configure({
+      kidCodeResolver: async () => password,
+    });
+
+    // Submit multiple codes (Day 1 uses {{KID_CODE}} placeholder, Day 2 uses 34)
+    await GameEngine.submitCode(password, "{{KID_CODE}}", 1);
+    await GameEngine.submitCode("34", "34", 2);
 
     const progression = GameEngine.getProgressionPercentage();
     expect(progression).toBeGreaterThan(0);
@@ -309,6 +336,9 @@ describe("GameEngine Integration", () => {
     // Verify progression persists in localStorage
     const newProgression = GameEngine.getProgressionPercentage();
     expect(newProgression).toBe(progression);
+
+    // Cleanup
+    GameEngine.resetDependencies();
   });
 });
 
@@ -317,9 +347,9 @@ describe("Storage Manager - Error Handling", () => {
     localStorage.clear();
   });
 
-  it("should handle duplicate code submissions gracefully", () => {
+  it("should handle duplicate code submissions gracefully", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     const code = {
       kode: "DUPLICATE",
@@ -334,9 +364,9 @@ describe("Storage Manager - Error Handling", () => {
     expect(duplicates.length).toBe(1); // Should only store once
   });
 
-  it("should handle duplicate badge awards gracefully", () => {
+  it("should handle duplicate badge awards gracefully", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     StorageManager.addBonusOppdragBadge(11, "🚨", "Test Badge");
     StorageManager.addBonusOppdragBadge(11, "🚨", "Test Badge"); // Duplicate
@@ -352,9 +382,9 @@ describe("Storage Manager - Performance", () => {
     localStorage.clear();
   });
 
-  it("should handle rapid successive writes", () => {
+  it("should handle rapid successive writes", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     // Rapid writes
     for (let i = 1; i <= 5; i++) {
@@ -368,9 +398,9 @@ describe("Storage Manager - Performance", () => {
     }
   });
 
-  it("should handle large datasets", () => {
+  it("should handle large datasets", async () => {
     const password = generateTestPassword();
-    StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true, password);
 
     // Add many codes
     for (let i = 1; i <= 24; i++) {

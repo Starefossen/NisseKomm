@@ -40,9 +40,6 @@ SANITY_API_TOKEN=your_write_token
 
 # Storage Backend
 NEXT_PUBLIC_STORAGE_BACKEND=sanity
-
-# Boot Password (for localStorage tests)
-NEXT_PUBLIC_BOOT_PASSWORD=TESTCODE2025
 ```
 
 **IMPORTANT**: Always use `development` dataset for tests, never `production`!

@@ -264,4 +264,5 @@ export interface SystemMetrikk {
 export interface InnsendelseLog {
   kode: string;
   dato: string; // ISO date string
+  day?: number; // Quest day number (added for reliable matching with {{KID_CODE}} placeholder)
 }

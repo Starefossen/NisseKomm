@@ -3,7 +3,7 @@
     "dag": 1,
     "tittel": "Nissens Første Melding",
     "nissemail_tekst": "YO! 🎅 Du fant veien inn! Nice! ✨\n\nVelkommen til NISSEKOMM - mitt digitale hovedkvarter for kritiske Snøfall-operasjoner! Julius har gitt meg tilgang til dette systemet så vi kan samarbeide hele desember. 🎄\n\nDu klarte visst å knekke sko-koden! Smart! 🧠 Det betyr at du er offisielt en del av teamet nå. Her inne finner du:\n\n📧 NISSEMAIL - Daglige beskjeder fra meg\n📖 DAGBOK - Julius sine hemmelige notater\n📁 NISSENET - Viktige filer fra Snøfall\n\nVi sees hver dag med nye oppdrag! Dette blir epic! 🚀\n\n- Rampenissen\n\nP.S. Ikke fortell Julius at jeg rotet med skoene hans også... 🤫",
-    "kode": "NISSEKODE2025",
+    "kode": "{{KID_CODE}}",
     "eventyr": {
       "id": "brevfugl-mysteriet",
       "phase": 1
@@ -14,7 +14,7 @@
     "oppsett_tid": "moderat",
     "materialer_nødvendig": [
       "Sko",
-      "12 lapper med bokstaver: N-I-S-S-E-K-O-D-E-2-0-2-5"
+      "Lapper med bokstaver som staver KID_CODE (finnes på /nissemor-guide/printout)"
     ],
     "beste_rom": "Gang/entre",
     "hint_type": "arrangement",

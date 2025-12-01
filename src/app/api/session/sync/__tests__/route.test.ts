@@ -143,7 +143,7 @@ describe("PATCH /api/session/sync", () => {
 
         expect(res.status).toBe(401);
         const json = await res.json();
-        expect(json.error).toBe("No session ID in cookie or body");
+        expect(json.error).toBe("No session ID in cookie or query");
       },
     });
   });

@@ -4,6 +4,8 @@
   - dag 5: bedre dekoder hint + fysisk hint om plassering
   - dag 6: fysisk hint mer kryptisk
   - dag 7: geografisk hint
+- NisseNett
+  - Make snill_slem_liste dynamic
 - NisseKrypto
   - scan lukker vinduet automatisk
   - scan avslutter ikke kamera

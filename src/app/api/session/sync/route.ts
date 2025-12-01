@@ -9,10 +9,15 @@
  * - Supports retry logic from client
  */
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { sanityServerClient } from "@/lib/sanity-client";
-
-const SESSION_COOKIE_NAME = "nissekomm-session";
+import {
+  requireSessionId,
+  requireSession,
+  errorResponse,
+  createErrorResponse,
+  successResponse,
+} from "@/lib/api-utils";
 
 /**
  * PATCH /api/session/sync
@@ -21,40 +26,22 @@ const SESSION_COOKIE_NAME = "nissekomm-session";
 export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json();
-    const { updates, sessionId: bodySessionId } = body;
+    const { updates } = body;
 
-    // Get sessionId from cookie or request body (for tests)
-    const sessionId =
-      request.cookies.get(SESSION_COOKIE_NAME)?.value || bodySessionId;
+    // Extract and validate session ID
+    const sessionIdResult = requireSessionId(request, body);
+    if ("error" in sessionIdResult) return sessionIdResult.error;
+    const { sessionId } = sessionIdResult;
 
-    if (!sessionId) {
-      return NextResponse.json(
-        { error: "No session ID in cookie or body" },
-        { status: 401 },
-      );
-    }
-
+    // Validate updates object
     if (!updates || typeof updates !== "object") {
-      return NextResponse.json(
-        { error: "updates object required" },
-        { status: 400 },
-      );
+      return errorResponse("updates object required");
     }
 
-    // Find existing session (no cache for fresh data)
-    const existingSession = await sanityServerClient.fetch(
-      `*[_type == "userSession" && sessionId == $sessionId][0]`,
-      { sessionId },
-      {
-        perspective: "published",
-        useCdn: false,
-        cache: "no-store",
-      },
-    );
-
-    if (!existingSession) {
-      return NextResponse.json({ error: "Session not found" }, { status: 404 });
-    }
+    // Fetch and validate existing session
+    const sessionResult = await requireSession(sessionId);
+    if ("error" in sessionResult) return sessionResult.error;
+    const { session: existingSession } = sessionResult;
 
     // Update session with new fields and timestamp
     const updatedSession = await sanityServerClient
@@ -65,33 +52,11 @@ export async function PATCH(request: NextRequest) {
       })
       .commit();
 
-    return NextResponse.json({
+    return successResponse({
       success: true,
       session: updatedSession,
     });
   } catch (error) {
-    console.error("Failed to sync session:", error);
-
-    // Return specific error codes for retry logic
-    const err = error as { statusCode?: number; code?: string };
-    if (err.statusCode === 409) {
-      // Conflict - document was modified
-      return NextResponse.json(
-        { error: "Conflict - session was modified", retryable: true },
-        { status: 409 },
-      );
-    }
-
-    if (err.code === "ECONNREFUSED" || err.code === "ETIMEDOUT") {
-      return NextResponse.json(
-        { error: "Network error", retryable: true },
-        { status: 503 },
-      );
-    }
-
-    return NextResponse.json(
-      { error: "Failed to sync session", retryable: false },
-      { status: 500 },
-    );
+    return createErrorResponse(error, "Failed to sync session");
   }
 }

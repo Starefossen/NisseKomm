@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CRTFrame } from "@/components/ui/CRTFrame";
 import { BootSequence } from "@/components/ui/BootSequence";
 import { PasswordPrompt } from "@/components/ui/PasswordPrompt";
 import { SoundToggle } from "@/components/ui/SoundToggle";
 import { useSounds } from "@/lib/sounds";
 import { StorageManager } from "@/lib/storage";
+import { getSessionId } from "@/lib/session-manager";
 import { DesktopIcon } from "@/components/ui/DesktopIcon";
 import { SystemStatus } from "@/components/modules/SystemStatus";
 import { VarselKonsoll } from "@/components/modules/VarselKonsoll";
@@ -107,11 +108,38 @@ export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { playSound, playJingle } = useSounds();
 
-  const bootPassword = process.env.NEXT_PUBLIC_BOOT_PASSWORD || "NISSEKODE2025";
   const bootDuration = parseInt(
     process.env.NEXT_PUBLIC_BOOT_ANIMATION_DURATION || "2",
   );
   const testMode = process.env.NEXT_PUBLIC_TEST_MODE === "true";
+
+  // Restore session from cookie on mount
+  useEffect(() => {
+    const restoreSession = async () => {
+      const existingSessionId = getSessionId();
+      if (existingSessionId && !authenticated) {
+        console.debug(
+          "[App] Restoring session:",
+          existingSessionId.substring(0, 8) + "...",
+        );
+        // Session cookie exists, restore it and wait for initialization
+        await StorageManager.setAuthenticated(true, existingSessionId);
+
+        // Refresh all UI state from loaded session data
+        setUnlockedModules(GameEngine.getUnlockedModules());
+        setUnreadCount(getUnreadEmailCount());
+        setUnreadFileCount(getUnreadFileCount());
+        setUnreadDagbokCount(getUnreadDagbokCount());
+
+        setAuthenticated(true);
+        setBootComplete(true);
+        console.debug("[App] Session restored successfully");
+      }
+    };
+
+    restoreSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run once on mount, authenticated intentionally excluded
 
   // Note: Module unlocks are now handled by GameEngine automatically on code submission
   // The unlockedModules state is initialized from GameEngine and updated via handleCodeSubmitted
@@ -146,9 +174,17 @@ export default function Home() {
     setBootComplete(true);
   };
 
-  const handleAuthSuccess = async (password: string) => {
+  const handleAuthSuccess = async (sessionId: string) => {
+    // CRITICAL: Wait for adapter initialization before updating state
+    await StorageManager.setAuthenticated(true, sessionId);
     setAuthenticated(true);
-    await StorageManager.setAuthenticated(true, password);
+
+    // Refresh all UI state from newly loaded session data
+    setUnlockedModules(GameEngine.getUnlockedModules());
+    setUnreadCount(getUnreadEmailCount());
+    setUnreadFileCount(getUnreadFileCount());
+    setUnreadDagbokCount(getUnreadDagbokCount());
+
     playSound("success");
     // Play jingle after a short delay
     setTimeout(() => playJingle(), 500);
@@ -232,10 +268,7 @@ export default function Home() {
 
       {/* Password prompt */}
       {bootComplete && !authenticated && (
-        <PasswordPrompt
-          onSuccess={handleAuthSuccess}
-          expectedPassword={bootPassword}
-        />
+        <PasswordPrompt onSuccess={handleAuthSuccess} />
       )}
 
       {/* Main application */}

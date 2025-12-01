@@ -10,22 +10,38 @@
  * - Game state persistence
  */
 
-import { describe, it, expect, beforeEach } from "@jest/globals";
+import { describe, it, expect, beforeEach, afterEach } from "@jest/globals";
 import { GameEngine } from "../game-engine";
 import { BadgeManager } from "../badge-system";
 import * as eventyr from "../eventyr";
 
 // Get actual quest codes from data for testing
 const allQuests = GameEngine.getAllQuests();
+
+// Test kid code for Day 1 (which uses {{KID_CODE}} placeholder)
+const TEST_KID_CODE = "NISSEKRAFT2024";
+
 const getQuestCode = (day: number) => {
   const quest = allQuests.find((q) => q.dag === day);
-  return quest?.kode || `CODE${day}`;
+  const code = quest?.kode || `CODE${day}`;
+  // Replace placeholder with test code
+  return code === "{{KID_CODE}}" ? TEST_KID_CODE : code;
 };
 
 describe("GameEngine", () => {
   beforeEach(() => {
     // Clear all storage before each test
     localStorage.clear();
+
+    // Configure GameEngine with test kid code resolver
+    GameEngine.configure({
+      kidCodeResolver: async () => TEST_KID_CODE,
+    });
+  });
+
+  afterEach(() => {
+    // Reset dependencies after each test
+    GameEngine.resetDependencies();
   });
 
   describe("Initial State", () => {
@@ -48,62 +64,62 @@ describe("GameEngine", () => {
   });
 
   describe("Quest Completion", () => {
-    it("should accept correct code and mark quest as completed", () => {
-      const result = GameEngine.submitCode("SEKK", "SEKK", 8);
+    it("should accept correct code and mark quest as completed", async () => {
+      const result = await GameEngine.submitCode("SEKK", "SEKK", 8);
 
       expect(result.success).toBe(true);
       expect(result.isNewCompletion).toBe(true);
       expect(result.message).toContain("KODE AKSEPTERT");
     });
 
-    it("should reject incorrect code", () => {
-      const result = GameEngine.submitCode("WRONG", "SEKK", 8);
+    it("should reject incorrect code", async () => {
+      const result = await GameEngine.submitCode("WRONG", "SEKK", 8);
 
       expect(result.success).toBe(false);
       expect(result.isNewCompletion).toBe(false);
       expect(result.message).toContain("FEIL KODE");
     });
 
-    it("should be case-insensitive for code validation", () => {
-      const result1 = GameEngine.submitCode("sekk", "SEKK", 8);
+    it("should be case-insensitive for code validation", async () => {
+      const result1 = await GameEngine.submitCode("sekk", "SEKK", 8);
       expect(result1.success).toBe(true);
 
       localStorage.clear();
 
-      const result2 = GameEngine.submitCode("SekK", "SEKK", 8);
+      const result2 = await GameEngine.submitCode("SekK", "SEKK", 8);
       expect(result2.success).toBe(true);
     });
 
-    it("should detect duplicate submissions", () => {
+    it("should detect duplicate submissions", async () => {
       // First submission
-      const result1 = GameEngine.submitCode("SEKK", "SEKK", 8);
+      const result1 = await GameEngine.submitCode("SEKK", "SEKK", 8);
       expect(result1.isNewCompletion).toBe(true);
 
       // Second submission of same code
-      const result2 = GameEngine.submitCode("SEKK", "SEKK", 8);
+      const result2 = await GameEngine.submitCode("SEKK", "SEKK", 8);
       expect(result2.success).toBe(true);
       expect(result2.isNewCompletion).toBe(false);
       expect(result2.message).toContain("ALLEREDE REGISTRERT");
     });
 
-    it("should track completed quest count correctly", () => {
+    it("should track completed quest count correctly", async () => {
       expect(GameEngine.getCompletedQuestCount()).toBe(0);
 
-      GameEngine.submitCode("SEKK", "SEKK", 8);
+      await GameEngine.submitCode("SEKK", "SEKK", 8);
       expect(GameEngine.getCompletedQuestCount()).toBe(1);
 
-      GameEngine.submitCode("18", "18", 9);
+      await GameEngine.submitCode("18", "18", 9);
       expect(GameEngine.getCompletedQuestCount()).toBe(2);
 
       // Duplicate shouldn't increase count
-      GameEngine.submitCode("SEKK", "SEKK", 8);
+      await GameEngine.submitCode("SEKK", "SEKK", 8);
       expect(GameEngine.getCompletedQuestCount()).toBe(2);
     });
 
-    it("should check if specific quest is completed", () => {
+    it("should check if specific quest is completed", async () => {
       expect(GameEngine.isQuestCompleted(8)).toBe(false);
 
-      GameEngine.submitCode("SEKK", "SEKK", 8);
+      await GameEngine.submitCode("SEKK", "SEKK", 8);
 
       expect(GameEngine.isQuestCompleted(8)).toBe(true);
       expect(GameEngine.isQuestCompleted(9)).toBe(false);
@@ -111,69 +127,69 @@ describe("GameEngine", () => {
   });
 
   describe("Module Unlocks", () => {
-    it("should unlock NISSEKRYPTO on day 4 completion", () => {
+    it("should unlock NISSEKRYPTO on day 4 completion", async () => {
       expect(GameEngine.isModuleUnlocked("NISSEKRYPTO")).toBe(false);
 
       const code4 = getQuestCode(4);
-      GameEngine.submitCode(code4, code4, 4);
+      await GameEngine.submitCode(code4, code4, 4);
       expect(GameEngine.isModuleUnlocked("NISSEKRYPTO")).toBe(true);
     });
 
-    it("should unlock NISSEMUSIKK on day 7 completion", () => {
+    it("should unlock NISSEMUSIKK on day 7 completion", async () => {
       // Complete 6 quests - no unlock yet
       for (let i = 1; i <= 6; i++) {
         const code = getQuestCode(i);
-        GameEngine.submitCode(code, code, i);
+        await GameEngine.submitCode(code, code, i);
       }
       expect(GameEngine.isModuleUnlocked("NISSEMUSIKK")).toBe(false);
 
       // Complete day 7 quest - should unlock NISSEMUSIKK
       const code7 = getQuestCode(7);
-      GameEngine.submitCode(code7, code7, 7);
+      await GameEngine.submitCode(code7, code7, 7);
       expect(GameEngine.isModuleUnlocked("NISSEMUSIKK")).toBe(true);
     });
 
-    it("should unlock SNØFALL_TV on day 10 completion", () => {
+    it("should unlock SNØFALL_TV on day 10 completion", async () => {
       expect(GameEngine.isModuleUnlocked("SNØFALL_TV")).toBe(false);
 
       const code10 = getQuestCode(10);
-      GameEngine.submitCode(code10, code10, 10);
+      await GameEngine.submitCode(code10, code10, 10);
       expect(GameEngine.isModuleUnlocked("SNØFALL_TV")).toBe(true);
     });
 
-    it("should unlock BREVFUGLER on day 14 completion", () => {
+    it("should unlock BREVFUGLER on day 14 completion", async () => {
       expect(GameEngine.isModuleUnlocked("BREVFUGLER")).toBe(false);
 
       const code14 = getQuestCode(14);
-      GameEngine.submitCode(code14, code14, 14);
+      await GameEngine.submitCode(code14, code14, 14);
       expect(GameEngine.isModuleUnlocked("BREVFUGLER")).toBe(true);
     });
 
-    it("should unlock NISSESTATS on day 16 completion", () => {
+    it("should unlock NISSESTATS on day 16 completion", async () => {
       expect(GameEngine.isModuleUnlocked("NISSESTATS")).toBe(false);
 
       const code16 = getQuestCode(16);
-      GameEngine.submitCode(code16, code16, 16);
+      await GameEngine.submitCode(code16, code16, 16);
       expect(GameEngine.isModuleUnlocked("NISSESTATS")).toBe(true);
     });
 
-    it("should not unlock module on duplicate submission", () => {
+    it("should not unlock module on duplicate submission", async () => {
       const code7 = getQuestCode(7);
-      GameEngine.submitCode(code7, code7, 7);
+      await GameEngine.submitCode(code7, code7, 7);
       expect(GameEngine.isModuleUnlocked("NISSEMUSIKK")).toBe(true);
 
       // Submit duplicate - module stays unlocked but no duplicate unlock
-      const result = GameEngine.submitCode(code7, code7, 7);
+      const result = await GameEngine.submitCode(code7, code7, 7);
       expect(result.isNewCompletion).toBe(false);
       expect(GameEngine.isModuleUnlocked("NISSEMUSIKK")).toBe(true);
     });
 
-    it("should return all unlocked modules", () => {
+    it("should return all unlocked modules", async () => {
       expect(GameEngine.getUnlockedModules()).toEqual([]);
 
       for (let i = 1; i <= 10; i++) {
         const code = getQuestCode(i);
-        GameEngine.submitCode(code, code, i);
+        await GameEngine.submitCode(code, code, i);
       }
 
       const unlocked = GameEngine.getUnlockedModules();
@@ -278,12 +294,12 @@ describe("GameEngine", () => {
   });
 
   describe("Bonusoppdrag System", () => {
-    it("should check side-quest accessibility based on main quest", () => {
+    it("should check side-quest accessibility based on main quest", async () => {
       // Day 11 side-quest not accessible without main quest
       expect(GameEngine.isBonusOppdragAccessible(11)).toBe(false);
 
       // Complete day 11 main quest
-      GameEngine.submitCode("12", "12", 11);
+      await GameEngine.submitCode("12", "12", 11);
 
       // Now side-quest should be accessible
       expect(GameEngine.isBonusOppdragAccessible(11)).toBe(true);
@@ -291,11 +307,11 @@ describe("GameEngine", () => {
   });
 
   describe("Progression Summary", () => {
-    it("should provide comprehensive progression data", () => {
+    it("should provide comprehensive progression data", async () => {
       // Complete 10 quests
       for (let i = 1; i <= 10; i++) {
         const code = getQuestCode(i);
-        GameEngine.submitCode(code, code, i);
+        await GameEngine.submitCode(code, code, i);
       }
 
       // Award one bonus badge manually
@@ -317,10 +333,10 @@ describe("GameEngine", () => {
       expect(summary.isComplete).toBe(false);
     });
 
-    it("should show game complete when all 24 quests done", () => {
+    it("should show game complete when all 24 quests done", async () => {
       for (let i = 1; i <= 24; i++) {
         const code = getQuestCode(i);
-        GameEngine.submitCode(code, code, i);
+        await GameEngine.submitCode(code, code, i);
       }
 
       expect(GameEngine.isGameComplete()).toBe(true);
@@ -333,10 +349,10 @@ describe("GameEngine", () => {
   });
 
   describe("State Persistence", () => {
-    it("should persist state across reloads", () => {
+    it("should persist state across reloads", async () => {
       // Complete some quests
-      GameEngine.submitCode("SEKK", "SEKK", 8);
-      GameEngine.submitCode("18", "18", 9);
+      await GameEngine.submitCode("SEKK", "SEKK", 8);
+      await GameEngine.submitCode("18", "18", 9);
 
       // Award a badge
       BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
@@ -357,7 +373,7 @@ describe("GameEngine", () => {
       // Create some game state
       for (let i = 1; i <= 5; i++) {
         const code = getQuestCode(i);
-        GameEngine.submitCode(code, code, i);
+        await GameEngine.submitCode(code, code, i);
       }
 
       // Export
@@ -378,25 +394,25 @@ describe("GameEngine", () => {
   });
 
   describe("Edge Cases", () => {
-    it("should handle whitespace in code submission", () => {
-      const result = GameEngine.submitCode("  SEKK  ", "SEKK", 8);
+    it("should handle whitespace in code submission", async () => {
+      const result = await GameEngine.submitCode("  SEKK  ", "SEKK", 8);
       expect(result.success).toBe(true);
     });
 
-    it("should handle empty code gracefully", () => {
-      const result = GameEngine.submitCode("", "SEKK", 8);
+    it("should handle empty code gracefully", async () => {
+      const result = await GameEngine.submitCode("", "SEKK", 8);
       expect(result.success).toBe(false);
     });
 
-    it("should handle completing quests out of order", () => {
+    it("should handle completing quests out of order", async () => {
       // Use actual quest codes from the JSON files
       const code10 = getQuestCode(10);
       const code5 = getQuestCode(5);
       const code15 = getQuestCode(15);
 
-      GameEngine.submitCode(code10, code10, 10);
-      GameEngine.submitCode(code5, code5, 5);
-      GameEngine.submitCode(code15, code15, 15);
+      await GameEngine.submitCode(code10, code10, 10);
+      await GameEngine.submitCode(code5, code5, 5);
+      await GameEngine.submitCode(code15, code15, 15);
 
       expect(GameEngine.getCompletedQuestCount()).toBe(3);
       expect(GameEngine.isQuestCompleted(5)).toBe(true);
@@ -457,12 +473,12 @@ describe("GameEngine", () => {
       expect(day17Eventyr.length).toBeGreaterThanOrEqual(1);
     });
 
-    it("should track arc completion based on completed quests", () => {
+    it("should track arc completion based on completed quests", async () => {
       // Complete all brevfugl-mysteriet days
-      GameEngine.submitCode(getQuestCode(1), getQuestCode(1), 1);
-      GameEngine.submitCode(getQuestCode(5), getQuestCode(5), 5);
-      GameEngine.submitCode(getQuestCode(12), getQuestCode(12), 12);
-      GameEngine.submitCode(getQuestCode(14), getQuestCode(14), 14);
+      await GameEngine.submitCode(getQuestCode(1), getQuestCode(1), 1);
+      await GameEngine.submitCode(getQuestCode(5), getQuestCode(5), 5);
+      await GameEngine.submitCode(getQuestCode(12), getQuestCode(12), 12);
+      await GameEngine.submitCode(getQuestCode(14), getQuestCode(14), 14);
 
       const completedDays = new Set([1, 5, 12, 14]);
       expect(
@@ -470,10 +486,10 @@ describe("GameEngine", () => {
       ).toBe(true);
     });
 
-    it("should calculate arc progress correctly", () => {
+    it("should calculate arc progress correctly", async () => {
       // Complete 2 out of 4 days for brevfugl-mysteriet
-      GameEngine.submitCode(getQuestCode(1), getQuestCode(1), 1);
-      GameEngine.submitCode(getQuestCode(5), getQuestCode(5), 5);
+      await GameEngine.submitCode(getQuestCode(1), getQuestCode(1), 1);
+      await GameEngine.submitCode(getQuestCode(5), getQuestCode(5), 5);
 
       const completedDays = new Set([1, 5]);
       const percentage = eventyr.getEventyrProgress(
@@ -642,10 +658,10 @@ describe("GameEngine", () => {
       expect(reinsdyr!.status).toBe("kritisk");
     });
 
-    it("should restore REINSDYR after antenna crisis resolved", () => {
+    it("should restore REINSDYR after antenna crisis resolved", async () => {
       // Complete day 11 main quest first (required for bonusoppdrag)
       const day11Code = getQuestCode(11);
-      GameEngine.submitCode(day11Code, day11Code, 11);
+      await GameEngine.submitCode(day11Code, day11Code, 11);
 
       // Resolve antenna crisis by awarding badge
       const result = BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
@@ -680,10 +696,10 @@ describe("GameEngine", () => {
       expect(nissekraft!.inCrisis).toBe(true);
     });
 
-    it("should restore NISSEKRAFT after inventory crisis resolved", () => {
+    it("should restore NISSEKRAFT after inventory crisis resolved", async () => {
       // Complete day 16 main quest first (required for bonusoppdrag)
       const day16Code = getQuestCode(16);
-      GameEngine.submitCode(day16Code, day16Code, 16);
+      await GameEngine.submitCode(day16Code, day16Code, 16);
 
       // Resolve inventory crisis by awarding badge
       const result = BadgeManager.checkAndAwardBadge("inventar-ekspert", true);

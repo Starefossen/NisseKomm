@@ -6,14 +6,21 @@
 
 import { defineCliConfig } from "sanity/cli";
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "";
+const projectId = process.env.SANITY_STUDIO_PROJECT_ID || "";
+const dataset = process.env.SANITY_STUDIO_DATASET || "production";
+
+// Map dataset to studio appId
+const appIds = {
+  development: "xihpax0331p0f4m84ek0bqjk", // nissekomm-dev.sanity.studio
+  production: "plxedqg3xd4ep7n1qyb5zlv2", // nissekomm.sanity.studio (or your prod URL)
+};
 
 export default defineCliConfig({
   api: {
     projectId,
-    dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
+    dataset,
   },
   deployment: {
-    appId: "xihpax0331p0f4m84ek0bqjk",
+    appId: appIds[dataset as keyof typeof appIds] || appIds.production,
   },
 });

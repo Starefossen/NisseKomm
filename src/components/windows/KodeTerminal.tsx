@@ -75,8 +75,8 @@ export function KodeTerminal({
     // Simulate processing delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    // Submit code through GameEngine
-    const result = GameEngine.submitCode(code, expectedCode, currentDay);
+    // Submit code through GameEngine (now async to handle placeholders)
+    const result = await GameEngine.submitCode(code, expectedCode, currentDay);
 
     if (result.success) {
       // Success!

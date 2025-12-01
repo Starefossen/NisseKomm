@@ -315,6 +315,15 @@ export const userSession = defineType({
       description: "Children's names for Day 23 Nice List personalization",
     },
     {
+      name: "friendNames",
+      title: "Friend Names",
+      type: "array",
+      of: [{ type: "string" }],
+      validation: (Rule) => Rule.max(15),
+      description:
+        "Friend names for snill_slem_liste.txt personalization (0-15)",
+    },
+    {
       name: "niceListLastViewed",
       title: "Nice List Last Viewed",
       type: "string",

@@ -171,12 +171,11 @@ Explain WHY, not WHAT. Remove obvious comments.
 ```bash
 # Test Mode & Date Mocking
 NEXT_PUBLIC_TEST_MODE=false              # Bypass date restrictions
-NEXT_PUBLIC_BOOT_PASSWORD=NISSEKODE2025
 NEXT_PUBLIC_BOOT_ANIMATION_DURATION=2    # 0 = skip
 NEXT_PUBLIC_MOCK_DAY=                    # 1-24 for testing
 NEXT_PUBLIC_MOCK_MONTH=                  # 1-12 for testing
 
-# Storage Backend (Phase 1: Sanity Integration)
+# Storage Backend
 NEXT_PUBLIC_STORAGE_BACKEND=localStorage  # 'localStorage' or 'sanity'
 
 # Sanity CMS Configuration (required when STORAGE_BACKEND=sanity)
@@ -193,10 +192,17 @@ SANITY_API_TOKEN=                         # Write token (server-side only)
 
 **Multi-Tenancy Architecture**:
 
-The boot password serves dual purpose:
+Families register via `/register` page to receive unique access codes:
 
-1. **Authentication**: Grants access to NisseKomm interface
-2. **Tenant Identifier**: Creates isolated game sessions for each family
+1. **Kid Code**: Theme-based, memorable (e.g., "NISSEKRAFT2024") - grants access to main app
+2. **Parent Code**: Secure format (e.g., "NORDPOL-8N4K2") - grants access to parent guide
+
+When using Sanity backend:
+
+- Each family registration creates isolated session with UUID identifier
+- Same codes on different devices = same game progress (cross-device sync)
+- Different families = completely isolated sessions
+- Session stored in cookie for persistence
 
 When using Sanity backend:
 
@@ -209,10 +215,16 @@ When using Sanity backend:
 **Example Multi-Tenant Setup**:
 
 ```bash
-# Family Hansen uses: HANSEN2024
-# Family Olsen uses: OLSEN2024
+# Family Hansen registers and receives:
+# Kid Code: NISSEKRAFT2024
+# Parent Code: NORDPOL-8N4K2
+
+# Family Olsen registers and receives:
+# Kid Code: VERKSTEDVARME2024
+# Parent Code: NORDPOL-2X9M5
+
 # Each family sees only their own progress
-# Each family can access from multiple devices
+# Each family can access from multiple devices using their codes
 ```
 
 **Date Mocking**: Set `NEXT_PUBLIC_MOCK_DAY` and `NEXT_PUBLIC_MOCK_MONTH` to test specific days across entire app.

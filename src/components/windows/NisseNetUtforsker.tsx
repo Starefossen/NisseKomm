@@ -24,12 +24,26 @@ export function NisseNetUtforsker({
     new Set(["root"]),
   );
   const [selectedFile, setSelectedFile] = useState<FilNode | null>(null);
+  const [friendNames, setFriendNames] = useState<string[]>([]);
   const [stats, setStats] = useState({
     totalFiles: 0,
     accessibleFiles: 0,
     secretFiles: 0,
     accessibleSecrets: 0,
   });
+
+  // Fetch friend names from Sanity session on mount
+  useEffect(() => {
+    async function loadFriendNames() {
+      try {
+        const names = await StorageManager.getFriendNames();
+        setFriendNames(names);
+      } catch (error) {
+        console.error("Failed to load friend names:", error);
+      }
+    }
+    loadFriendNames();
+  }, []);
 
   // Track visit time when component mounts
   useEffect(() => {
@@ -122,8 +136,13 @@ export function NisseNetUtforsker({
           // Get player names from StorageManager
           const playerNames = StorageManager.getPlayerNames();
 
+          // Combine player names with friend names for full Nice List
+          const allNames = [...playerNames, ...friendNames].filter(
+            (n) => n.trim().length > 0,
+          );
+
           // Only update if names were entered
-          if (playerNames.length > 0) {
+          if (allNames.length > 0) {
             // Generate updated Nice List with player names at top
             let updatedList = cleanedContent;
 
@@ -133,7 +152,7 @@ export function NisseNetUtforsker({
               const listStart = updatedList.indexOf("\n\n", snillSection) + 2;
               const existingList = updatedList.substring(listStart);
 
-              // Create new entries for players
+              // Create entries for players (with special marker) and friends
               const playerEntries = playerNames
                 .map(
                   (name, i) =>
@@ -141,9 +160,17 @@ export function NisseNetUtforsker({
                 )
                 .join("\n");
 
+              const friendEntries = friendNames
+                .map((name, i) => `${playerNames.length + i + 1}. ${name}`)
+                .join("\n");
+
+              const combinedEntries =
+                playerEntries +
+                (friendEntries.length > 0 ? "\n" + friendEntries : "");
+
               updatedList =
                 updatedList.substring(0, listStart) +
-                playerEntries +
+                combinedEntries +
                 "\n" +
                 existingList;
 
@@ -209,7 +236,7 @@ export function NisseNetUtforsker({
     };
 
     return files.map(processNode);
-  }, [files, currentDay, missions]);
+  }, [files, currentDay, missions, friendNames]);
 
   // Filter files based on unlock status and calculate stats
   const { filteredFiles, fileStats } = useMemo(() => {

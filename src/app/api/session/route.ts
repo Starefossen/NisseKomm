@@ -20,9 +20,14 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { sanityServerClient } from "@/lib/sanity-client";
-
-const SESSION_COOKIE_NAME = "nissekomm-session";
-const SESSION_EXPIRY_DAYS = 365;
+import {
+  getSessionId,
+  fetchSession,
+  setSessionCookie,
+  errorResponse,
+  createErrorResponse,
+  successResponse,
+} from "@/lib/api-utils";
 
 /**
  * GET /api/session
@@ -31,44 +36,23 @@ const SESSION_EXPIRY_DAYS = 365;
  */
 export async function GET(request: NextRequest) {
   try {
-    // Try query parameter first (for explicit session loading)
-    const url = new URL(request.url);
-    let sessionId = url.searchParams.get("sessionId");
-
-    // Fallback to cookie
-    if (!sessionId) {
-      sessionId = request.cookies.get(SESSION_COOKIE_NAME)?.value || null;
-    }
+    // Extract session ID (query takes precedence for multi-tenant switching)
+    const sessionId = getSessionId(request);
 
     if (!sessionId) {
-      return NextResponse.json(
-        { error: "No session ID in cookie or query" },
-        { status: 404 },
-      );
+      return errorResponse("No session ID in cookie or query", 404);
     }
 
-    // Query Sanity for session with fresh data (no cache)
-    const session = await sanityServerClient.fetch(
-      `*[_type == "userSession" && sessionId == $sessionId][0]`,
-      { sessionId },
-      {
-        perspective: "published",
-        useCdn: false, // Always fetch fresh data from origin
-        cache: "no-store",
-      },
-    );
+    // Fetch session with fresh data (no cache)
+    const session = await fetchSession(sessionId);
 
     if (!session) {
-      return NextResponse.json({ error: "Session not found" }, { status: 404 });
+      return errorResponse("Session not found", 404);
     }
 
-    return NextResponse.json(session);
+    return successResponse(session);
   } catch (error) {
-    console.error("Failed to fetch session:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch session" },
-      { status: 500 },
-    );
+    return createErrorResponse(error, "Failed to fetch session");
   }
 }
 
@@ -82,10 +66,7 @@ export async function POST(request: NextRequest) {
     const { sessionId } = body;
 
     if (!sessionId) {
-      return NextResponse.json(
-        { error: "sessionId required" },
-        { status: 400 },
-      );
+      return errorResponse("sessionId required");
     }
 
     // Create new session document in Sanity
@@ -121,26 +102,9 @@ export async function POST(request: NextRequest) {
 
     // Create response with session cookie
     const response = NextResponse.json(newSession, { status: 201 });
-
-    // Set cookie
-    const maxAge = SESSION_EXPIRY_DAYS * 24 * 60 * 60; // seconds
-    response.cookies.set({
-      name: SESSION_COOKIE_NAME,
-      value: sessionId,
-      maxAge,
-      path: "/",
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      httpOnly: false, // Client needs to read this
-    });
-
-    return response;
+    return setSessionCookie(response, sessionId);
   } catch (error) {
-    console.error("Failed to create session:", error);
-    return NextResponse.json(
-      { error: "Failed to create session" },
-      { status: 500 },
-    );
+    return createErrorResponse(error, "Failed to create session");
   }
 }
 
@@ -154,10 +118,7 @@ export async function DELETE(request: NextRequest) {
     const sessionId = url.searchParams.get("sessionId");
 
     if (!sessionId) {
-      return NextResponse.json(
-        { error: "sessionId required" },
-        { status: 400 },
-      );
+      return errorResponse("sessionId required");
     }
 
     // Delete all sessions matching the sessionId
@@ -166,12 +127,8 @@ export async function DELETE(request: NextRequest) {
       params: { sessionId },
     });
 
-    return NextResponse.json({ success: true, sessionId });
+    return successResponse({ sessionId });
   } catch (error) {
-    console.error("Failed to delete session:", error);
-    return NextResponse.json(
-      { error: "Failed to delete session" },
-      { status: 500 },
-    );
+    return createErrorResponse(error, "Failed to delete session");
   }
 }

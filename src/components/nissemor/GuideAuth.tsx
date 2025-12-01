@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 /**
  * GuideAuth Component
  *
  * Centralized authentication check for all nissemor-guide pages.
- * Validates the ?kode= parameter against environment variable.
+ * Validates the ?kode= parameter via /api/auth/verify endpoint.
  * Redirects to home if authentication fails.
  *
  * Usage:
@@ -18,14 +18,47 @@ import { useRouter, useSearchParams } from "next/navigation";
 export function useGuideAuth(): {
   authenticated: boolean;
   kode: string | null;
+  isLoading: boolean;
 } {
   const searchParams = useSearchParams();
-  const expectedKode =
-    process.env.NEXT_PUBLIC_PARENT_GUIDE_KEY || "NORDPOL2025";
   const kode = searchParams.get("kode");
-  const authenticated = kode === expectedKode;
+  const [authenticated, setAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  return { authenticated, kode };
+  useEffect(() => {
+    async function verifyParentCode() {
+      if (!kode) {
+        setAuthenticated(false);
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/auth/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: kode }),
+          credentials: "include",
+        });
+
+        if (response.ok) {
+          const data = (await response.json()) as { isParent: boolean };
+          setAuthenticated(data.isParent);
+        } else {
+          setAuthenticated(false);
+        }
+      } catch (error) {
+        console.error("Parent verification failed:", error);
+        setAuthenticated(false);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    verifyParentCode();
+  }, [kode]);
+
+  return { authenticated, kode, isLoading };
 }
 
 interface GuideAuthProps {
@@ -38,15 +71,15 @@ export function GuideAuth({
   loadingMessage = "Sjekker tilgang...",
 }: GuideAuthProps) {
   const router = useRouter();
-  const { authenticated } = useGuideAuth();
+  const { authenticated, isLoading } = useGuideAuth();
 
   useEffect(() => {
-    if (!authenticated) {
+    if (!isLoading && !authenticated) {
       router.push("/");
     }
-  }, [authenticated, router]);
+  }, [authenticated, isLoading, router]);
 
-  if (!authenticated) {
+  if (isLoading || !authenticated) {
     return (
       <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] flex items-center justify-center">
         <div className="text-2xl">{loadingMessage}</div>

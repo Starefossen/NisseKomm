@@ -19,8 +19,7 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
 
   // Get player names from storage
   const playerNames = StorageManager.getPlayerNames();
-  const names =
-    playerNames.length > 0 ? playerNames.join(", ") : "Kristian, Håkon, Hanna";
+  const names = playerNames.length > 0 ? playerNames.join(", ") : "Spillernavn";
 
   // Calculate game statistics
   const completedEventyr = GameEngine.getCompletedEventyr();
