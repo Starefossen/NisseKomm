@@ -434,11 +434,6 @@
       "type": "mappe",
       "barn": [
         {
-          "navn": "julius_dagbok.txt",
-          "type": "fil",
-          "innhold": "JULIUS' DAGBOK\n\nDag 1: Julekalender-prosjektet er i gang!\nDag 2: Barn over hele verden deltar.\nDag 3: Julefølelsen sprer seg.\nDag 4: Rudolf trener ekstra hardt.\nDag 5: Gaveproduksjonen går som planlagt.\nDag 6: Pil og Winter hjelper til.\nDag 7: IQ har laget nye oppfinnelser.\nDag 8: Trixter leder reinsdyr-treningen.\nDag 9: Orakelet advarer om utfordringer.\nDag 10: Julekuleblåsing går bra!\n\n... fortsetter hver dag ..."
-        },
-        {
           "navn": "snill_slem_liste.txt",
           "type": "fil",
           "innhold": "🎄 JULIUS' OFFISIELLE SNILL & SLEM LISTE 🎄\n\n[ADVARSEL: SKRIVEBESKYTTET - ADMIN TILGANG PÅKREVD]\n[SIKKERHETSNIVÅ: MAKSIMUM]\n\n═══════════════\n\n✨ SNILL LISTE ✨\n\n1. Georg - Hjulpet mamma hver dag\n2. Viljar - Delt leker med søsken\n3. Marcus - Ryddet rommet uten å bli bedt\n4. Amund - Passet på lillebror\n5. Elias - Leste for bestemor\n6. Brage - Hjalp nabo med snømåking\n7. Sverre - Laget kort til venner\n8. Kees - Gjorde lekser uten klag\n\n... [PLASS TIL FLERE NAVN] ...\n\n═══════════════\n\n⚠️ SLEM LISTE ⚠️\n\n1. [KLASSIFISERT]\n2. [KLASSIFISERT]\n3. [KLASSIFISERT]\n\n[Merk: Listen er heldigvis veldig kort i år!]\n\n═══════════════\n\nSist oppdatert: {{UPDATE_DATE}}\nNeste gjennomgang: 24. Desember kl 23:59\n\n{{FINALE_MESSAGE}}\n\n💡 TIP: Julius oppdaterer listen hver natt basert på\nbarnets fremgang i julekalender-oppdraget!"
