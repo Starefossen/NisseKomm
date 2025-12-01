@@ -38,13 +38,13 @@ interface SessionData {
   bonusOppdragBadges: string[];
   eventyrBadges: string[];
   earnedBadges: string[];
-  topicUnlocks: string | Record<string, unknown>;
+  topicUnlocks: Array<{ topic: string; day: number }>; // Sanity array format
   unlockedFiles: string[];
   unlockedModules: string[];
   collectedSymbols: string[];
   solvedDecryptions: string[];
-  decryptionAttempts: string | Record<string, unknown>;
-  failedAttempts: string | Record<string, unknown>;
+  decryptionAttempts: Array<{ challengeId: string; attemptCount: number }>; // Sanity array format
+  failedAttempts: Array<{ day: number; attemptCount: number }>; // Sanity array format
   crisisStatus: { antenna: boolean; inventory: boolean };
   santaLetters: string[];
   brevfugler: string[];

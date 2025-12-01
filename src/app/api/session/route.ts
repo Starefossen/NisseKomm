@@ -84,18 +84,19 @@ export async function POST(request: NextRequest) {
       bonusOppdragBadges: [],
       eventyrBadges: [],
       earnedBadges: [],
-      topicUnlocks: {},
+      topicUnlocks: [], // Array format
       unlockedFiles: [],
       unlockedModules: [],
       collectedSymbols: [],
       solvedDecryptions: [],
-      decryptionAttempts: {},
-      failedAttempts: {},
+      decryptionAttempts: [], // Array format
+      failedAttempts: [], // Array format
       crisisStatus: { antenna: false, inventory: false },
       santaLetters: [],
       brevfugler: [],
       nissenetLastVisit: 0,
       playerNames: [],
+      friendNames: [], // Initialize friendNames array
       niceListLastViewed: null,
       dagbokLastRead: 0,
     });

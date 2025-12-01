@@ -194,7 +194,39 @@ export class SanityStorageAdapter implements StorageAdapter {
         let loadedFields = 0;
         Object.values(fieldMap).forEach((field) => {
           if (sessionData[field] !== undefined) {
-            this.cache.set(field, sessionData[field]);
+            // Convert Sanity array format to in-game Record format for certain fields
+            let value = sessionData[field];
+
+            // topicUnlocks: [{topic, day}] → {topic: day}
+            if (field === "topicUnlocks" && Array.isArray(value)) {
+              const record: Record<string, number> = {};
+              value.forEach((item: { topic: string; day: number }) => {
+                record[item.topic] = item.day;
+              });
+              value = record;
+            }
+
+            // decryptionAttempts: [{challengeId, attemptCount}] → {challengeId: attemptCount}
+            if (field === "decryptionAttempts" && Array.isArray(value)) {
+              const record: Record<string, number> = {};
+              value.forEach(
+                (item: { challengeId: string; attemptCount: number }) => {
+                  record[item.challengeId] = item.attemptCount;
+                },
+              );
+              value = record;
+            }
+
+            // failedAttempts: [{day, attemptCount}] → {day: attemptCount}
+            if (field === "failedAttempts" && Array.isArray(value)) {
+              const record: Record<number, number> = {};
+              value.forEach((item: { day: number; attemptCount: number }) => {
+                record[item.day] = item.attemptCount;
+              });
+              value = record;
+            }
+
+            this.cache.set(field, value);
             loadedFields++;
           }
         });
@@ -247,6 +279,7 @@ export class SanityStorageAdapter implements StorageAdapter {
       "nissekomm-failed-attempts": "failedAttempts",
       "nissekomm-nissenet-last-visit": "nissenetLastVisit",
       "nissekomm-player-names": "playerNames",
+      "nissekomm-friend-names": "friendNames",
       "nissekomm-nice-list-viewed": "niceListLastViewed",
       "nissekomm-dagbok-last-read": "dagbokLastRead",
       "nissekomm-brevfugler": "brevfugler",
@@ -318,23 +351,194 @@ export class SanityStorageAdapter implements StorageAdapter {
       bonusOppdragBadges: [],
       eventyrBadges: [],
       earnedBadges: [],
-      topicUnlocks: {},
+      topicUnlocks: [], // Array format for Sanity
       unlockedFiles: [],
       unlockedModules: [],
       collectedSymbols: [],
       solvedDecryptions: [],
-      decryptionAttempts: {},
-      failedAttempts: {},
+      decryptionAttempts: [], // Array format for Sanity
+      failedAttempts: [], // Array format for Sanity
       crisisStatus: { antenna: false, inventory: false },
       santaLetters: [],
       brevfugler: [],
       nissenetLastVisit: 0,
       playerNames: [],
+      friendNames: [],
       niceListLastViewed: null,
       dagbokLastRead: 0,
     };
 
     this.syncInBackground(defaultData);
+  }
+
+  /**
+   * Get default value for a field
+   */
+  private getDefaultForField(field: string): unknown {
+    switch (field) {
+      case "topicUnlocks":
+      case "decryptionAttempts":
+      case "failedAttempts":
+        return {};
+      default:
+        return null;
+    }
+  }
+
+  /**
+   * Generate a unique key for Sanity array items
+   */
+  private generateKey(prefix: string, identifier: string | number): string {
+    return `${prefix}-${identifier}`;
+  }
+
+  /**
+   * Prepare updates for Sanity sync
+   * Converts in-game Record format to Sanity array format where needed
+   * Adds _key property to all array items (required by Sanity)
+   */
+  private prepareUpdatesForSanity(
+    updates: Record<string, unknown>,
+  ): Record<string, unknown> {
+    const prepared: Record<string, unknown> = {};
+
+    for (const [field, value] of Object.entries(updates)) {
+      // topicUnlocks: {topic: day} → [{_key, topic, day}]
+      if (
+        field === "topicUnlocks" &&
+        typeof value === "object" &&
+        value !== null &&
+        !Array.isArray(value)
+      ) {
+        const array: { _key: string; topic: string; day: number }[] = [];
+        Object.entries(value as Record<string, number>).forEach(
+          ([topic, day]) => {
+            array.push({
+              _key: this.generateKey("topic", topic),
+              topic,
+              day,
+            });
+          },
+        );
+        prepared[field] = array;
+      }
+      // decryptionAttempts: {challengeId: attemptCount} → [{_key, challengeId, attemptCount}]
+      else if (
+        field === "decryptionAttempts" &&
+        typeof value === "object" &&
+        value !== null &&
+        !Array.isArray(value)
+      ) {
+        const array: {
+          _key: string;
+          challengeId: string;
+          attemptCount: number;
+        }[] = [];
+        Object.entries(value as Record<string, number>).forEach(
+          ([challengeId, attemptCount]) => {
+            array.push({
+              _key: this.generateKey("decrypt", challengeId),
+              challengeId,
+              attemptCount,
+            });
+          },
+        );
+        prepared[field] = array;
+      }
+      // failedAttempts: {day: attemptCount} → [{_key, day, attemptCount}]
+      else if (
+        field === "failedAttempts" &&
+        typeof value === "object" &&
+        value !== null &&
+        !Array.isArray(value)
+      ) {
+        const array: { _key: string; day: number; attemptCount: number }[] = [];
+        Object.entries(value as Record<number, number>).forEach(
+          ([day, attemptCount]) => {
+            array.push({
+              _key: this.generateKey("failed", day),
+              day: Number(day),
+              attemptCount,
+            });
+          },
+        );
+        prepared[field] = array;
+      }
+      // Add _key to other array types if they don't have it
+      else if (Array.isArray(value)) {
+        prepared[field] = this.ensureKeysInArray(field, value);
+      } else {
+        prepared[field] = value;
+      }
+    }
+
+    return prepared;
+  }
+
+  /**
+   * Ensure all objects in an array have _key property
+   */
+  private ensureKeysInArray(field: string, array: unknown[]): unknown[] {
+    return array.map((item, index) => {
+      if (typeof item === "object" && item !== null && !("_key" in item)) {
+        // Generate key based on field-specific logic
+        let key: string;
+
+        if (field === "submittedCodes" && "kode" in item && "dato" in item) {
+          // Use code + timestamp for unique key
+          key = this.generateKey(
+            "code",
+            `${(item as { kode: string }).kode}-${(item as { dato: string }).dato}`,
+          );
+        } else if (
+          field === "bonusOppdragBadges" &&
+          "day" in item &&
+          typeof (item as { day: number }).day === "number"
+        ) {
+          key = this.generateKey("bonus", (item as { day: number }).day);
+        } else if (field === "eventyrBadges" && "eventyrId" in item) {
+          key = this.generateKey(
+            "eventyr",
+            (item as { eventyrId: string }).eventyrId,
+          );
+        } else if (
+          field === "earnedBadges" &&
+          "badgeId" in item &&
+          "timestamp" in item
+        ) {
+          key = this.generateKey(
+            "badge",
+            `${(item as { badgeId: string }).badgeId}-${(item as { timestamp: number }).timestamp}`,
+          );
+        } else if (field === "collectedSymbols" && "symbolId" in item) {
+          key = this.generateKey(
+            "symbol",
+            (item as { symbolId: string }).symbolId,
+          );
+        } else if (
+          field === "santaLetters" &&
+          "day" in item &&
+          typeof (item as { day: number }).day === "number"
+        ) {
+          key = this.generateKey("letter", (item as { day: number }).day);
+        } else if (
+          field === "brevfugler" &&
+          "dag" in item &&
+          "tidspunkt" in item
+        ) {
+          key = this.generateKey(
+            "brevfugl",
+            `${(item as { dag: number }).dag}-${(item as { tidspunkt: string }).tidspunkt}`,
+          );
+        } else {
+          // Fallback: use field name + index
+          key = this.generateKey(field, index);
+        }
+
+        return { _key: key, ...item };
+      }
+      return item;
+    });
   }
 
   /**
@@ -410,11 +614,14 @@ export class SanityStorageAdapter implements StorageAdapter {
     retries = 1,
   ): Promise<void> {
     try {
+      // Prepare updates (serialize JSON string fields)
+      const preparedUpdates = this.prepareUpdatesForSanity(updates);
+
       const response = await fetch("/api/session/sync", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          updates,
+          updates: preparedUpdates,
           sessionId: this.sessionId, // Include sessionId for environments without cookie support
         }),
         credentials: "include",

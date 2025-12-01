@@ -15,6 +15,158 @@
 
 import { defineType } from "sanity";
 
+// Define reusable object types first
+export const submittedCodeType = defineType({
+  name: "submittedCode",
+  title: "Submitted Code",
+  type: "object",
+  fields: [
+    {
+      name: "kode",
+      title: "Code",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: "dato",
+      title: "Date",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+      description: "ISO timestamp when code was submitted",
+    },
+  ],
+});
+
+export const bonusOppdragBadgeType = defineType({
+  name: "bonusOppdragBadge",
+  title: "Bonus Quest Badge",
+  type: "object",
+  fields: [
+    { name: "day", type: "number" },
+    { name: "icon", type: "string" },
+    { name: "navn", type: "string" },
+  ],
+});
+
+export const eventyrBadgeType = defineType({
+  name: "eventyrBadge",
+  title: "Story Arc Badge",
+  type: "object",
+  fields: [
+    { name: "eventyrId", type: "string" },
+    { name: "icon", type: "string" },
+    { name: "navn", type: "string" },
+  ],
+});
+
+export const earnedBadgeType = defineType({
+  name: "earnedBadge",
+  title: "Earned Badge",
+  type: "object",
+  fields: [
+    { name: "badgeId", type: "string" },
+    { name: "timestamp", type: "number" },
+  ],
+});
+
+export const topicUnlockType = defineType({
+  name: "topicUnlock",
+  title: "Topic Unlock",
+  type: "object",
+  fields: [
+    {
+      name: "topic",
+      title: "Topic",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+      description: "Topic keyword (kebab-case)",
+    },
+    {
+      name: "day",
+      title: "Day",
+      type: "number",
+      validation: (Rule) => Rule.required().min(1).max(24),
+      description: "Day number when topic was unlocked",
+    },
+  ],
+});
+
+export const collectedSymbolType = defineType({
+  name: "collectedSymbol",
+  title: "Collected Symbol",
+  type: "object",
+  fields: [
+    { name: "symbolId", type: "string" },
+    { name: "symbolIcon", type: "string" },
+    { name: "description", type: "string" },
+  ],
+});
+
+export const decryptionAttemptType = defineType({
+  name: "decryptionAttempt",
+  title: "Decryption Attempt",
+  type: "object",
+  fields: [
+    {
+      name: "challengeId",
+      title: "Challenge ID",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+      description: "Decryption challenge identifier",
+    },
+    {
+      name: "attemptCount",
+      title: "Attempt Count",
+      type: "number",
+      validation: (Rule) => Rule.required().min(0),
+      description: "Number of failed attempts",
+    },
+  ],
+});
+
+export const failedAttemptType = defineType({
+  name: "failedAttempt",
+  title: "Failed Attempt",
+  type: "object",
+  fields: [
+    {
+      name: "day",
+      title: "Day",
+      type: "number",
+      validation: (Rule) => Rule.required().min(1).max(24),
+      description: "Quest day number",
+    },
+    {
+      name: "attemptCount",
+      title: "Attempt Count",
+      type: "number",
+      validation: (Rule) => Rule.required().min(0),
+      description: "Number of failed code submissions",
+    },
+  ],
+});
+
+export const santaLetterType = defineType({
+  name: "santaLetter",
+  title: "Santa Letter",
+  type: "object",
+  fields: [
+    { name: "day", type: "number" },
+    { name: "content", type: "text" },
+  ],
+});
+
+export const brevfuglType = defineType({
+  name: "brevfugl",
+  title: "Brevfugl",
+  type: "object",
+  fields: [
+    { name: "dag", type: "number" },
+    { name: "innhold", type: "text" },
+    { name: "tidspunkt", type: "string" },
+  ],
+});
+
 export const userSession = defineType({
   name: "userSession",
   title: "User Session",
@@ -70,27 +222,7 @@ export const userSession = defineType({
       name: "submittedCodes",
       title: "Submitted Codes",
       type: "array",
-      of: [
-        {
-          type: "object",
-          name: "submittedCode",
-          fields: [
-            {
-              name: "kode",
-              title: "Code",
-              type: "string",
-              validation: (Rule) => Rule.required(),
-            },
-            {
-              name: "dato",
-              title: "Date",
-              type: "string",
-              validation: (Rule) => Rule.required(),
-              description: "ISO timestamp when code was submitted",
-            },
-          ],
-        },
-      ],
+      of: [{ type: "submittedCode" }],
       description: "Array of successfully submitted quest codes",
     },
     {
@@ -115,63 +247,33 @@ export const userSession = defineType({
       name: "bonusOppdragBadges",
       title: "Bonus Quest Badges",
       type: "array",
-      of: [
-        {
-          type: "object",
-          name: "bonusOppdragBadge",
-          fields: [
-            { name: "day", type: "number" },
-            { name: "icon", type: "string" },
-            { name: "navn", type: "string" },
-          ],
-        },
-      ],
+      of: [{ type: "bonusOppdragBadge" }],
       description: "Parent-validated crisis resolution badges",
     },
     {
       name: "eventyrBadges",
       title: "Story Arc Badges",
       type: "array",
-      of: [
-        {
-          type: "object",
-          name: "eventyrBadge",
-          fields: [
-            { name: "eventyrId", type: "string" },
-            { name: "icon", type: "string" },
-            { name: "navn", type: "string" },
-          ],
-        },
-      ],
+      of: [{ type: "eventyrBadge" }],
       description: "Eventyr completion badges",
     },
     {
       name: "earnedBadges",
       title: "Earned Badges (Unified System)",
       type: "array",
-      of: [
-        {
-          type: "object",
-          name: "earnedBadge",
-          fields: [
-            { name: "badgeId", type: "string" },
-            { name: "timestamp", type: "number" },
-          ],
-        },
-      ],
+      of: [{ type: "earnedBadge" }],
       description: "Unified badge system tracking all earned badges",
     },
 
     // ============================================================
     // Content Unlocks
     // ============================================================
-    // Note: topicUnlocks stored as JSON string for flexibility
     {
       name: "topicUnlocks",
-      title: "Topic Unlocks (JSON)",
-      type: "text",
-      description:
-        "JSON string: Map of unlocked topics to day numbers {topic: day}",
+      title: "Topic Unlocks",
+      type: "array",
+      of: [{ type: "topicUnlock" }],
+      description: "Array of unlocked topics with their unlock days",
     },
     {
       name: "unlockedFiles",
@@ -196,17 +298,7 @@ export const userSession = defineType({
       name: "collectedSymbols",
       title: "Collected Symbols",
       type: "array",
-      of: [
-        {
-          type: "object",
-          name: "collectedSymbol",
-          fields: [
-            { name: "symbolId", type: "string" },
-            { name: "symbolIcon", type: "string" },
-            { name: "description", type: "string" },
-          ],
-        },
-      ],
+      of: [{ type: "collectedSymbol" }],
       description: "Physical QR symbols collected via scanner",
     },
     {
@@ -219,10 +311,10 @@ export const userSession = defineType({
     },
     {
       name: "decryptionAttempts",
-      title: "Decryption Attempts (JSON)",
-      type: "text",
-      description:
-        "JSON string: Map of challenge IDs to attempt counts {challengeId: attemptCount}",
+      title: "Decryption Attempts",
+      type: "array",
+      of: [{ type: "decryptionAttempt" }],
+      description: "Array of decryption challenges with attempt counts",
     },
 
     // ============================================================
@@ -230,10 +322,10 @@ export const userSession = defineType({
     // ============================================================
     {
       name: "failedAttempts",
-      title: "Failed Code Attempts (JSON)",
-      type: "text",
-      description:
-        "JSON string: Map of day numbers to attempt counts {day: attemptCount}",
+      title: "Failed Code Attempts",
+      type: "array",
+      of: [{ type: "failedAttempt" }],
+      description: "Array of quest days with failed attempt counts",
     },
 
     // ============================================================
@@ -267,33 +359,14 @@ export const userSession = defineType({
       name: "santaLetters",
       title: "Santa Letters (BREVFUGLER)",
       type: "array",
-      of: [
-        {
-          type: "object",
-          name: "santaLetter",
-          fields: [
-            { name: "day", type: "number" },
-            { name: "content", type: "text" },
-          ],
-        },
-      ],
+      of: [{ type: "santaLetter" }],
       description: "Legacy santa letters system",
     },
     {
       name: "brevfugler",
       title: "Brevfugler (Parent-transcribed letters)",
       type: "array",
-      of: [
-        {
-          type: "object",
-          name: "brevfugl",
-          fields: [
-            { name: "dag", type: "number" },
-            { name: "innhold", type: "text" },
-            { name: "tidspunkt", type: "string" },
-          ],
-        },
-      ],
+      of: [{ type: "brevfugl" }],
       description: "Parent-transcribed letters from children to Santa",
     },
 

@@ -5,6 +5,32 @@
  */
 
 import { familyCredentials } from "./familyCredentials";
-import { userSession } from "./userSession";
+import {
+  userSession,
+  submittedCodeType,
+  bonusOppdragBadgeType,
+  eventyrBadgeType,
+  earnedBadgeType,
+  topicUnlockType,
+  collectedSymbolType,
+  decryptionAttemptType,
+  failedAttemptType,
+  santaLetterType,
+  brevfuglType,
+} from "./userSession";
 
-export const schemaTypes = [familyCredentials, userSession];
+export const schemaTypes = [
+  familyCredentials,
+  userSession,
+  // Object types used in arrays (must be registered)
+  submittedCodeType,
+  bonusOppdragBadgeType,
+  eventyrBadgeType,
+  earnedBadgeType,
+  topicUnlockType,
+  collectedSymbolType,
+  decryptionAttemptType,
+  failedAttemptType,
+  santaLetterType,
+  brevfuglType,
+];
