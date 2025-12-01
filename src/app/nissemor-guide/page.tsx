@@ -8,6 +8,7 @@ import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { TimelineView } from "@/components/nissemor/TimelineView";
 import { Icon } from "@/lib/icons";
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
+import { getAllOppdrag } from "@/lib/oppdrag";
 import {
   getAllEventyr,
   getEventyrDays,
@@ -15,7 +16,7 @@ import {
   isEventyrComplete,
 } from "@/lib/eventyr";
 
-const allOppdrag = GameEngine.getAllQuests();
+const allOppdrag = getAllOppdrag();
 
 function NissemorGuideContent() {
   const { kode } = useGuideAuth();
@@ -34,14 +35,33 @@ function NissemorGuideContent() {
   const [expandedDays, setExpandedDays] = useState<number[]>([]);
   const [selectedDay, setSelectedDay] = useState<number>(relevantDay);
 
+  // Force update trigger for progression recalculation
+  const [, forceUpdate] = useState({});
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+
   // Get completed days for eventyr progress
   const completedDays = useMemo(() => {
-    const state = GameEngine.loadGameState();
-    return state.completedQuests;
-  }, []);
+    return new Set(GameEngine.getCompletedDays());
+  }, [forceUpdate]);
 
   // Get all eventyr
   const allEventyr = useMemo(() => getAllEventyr(), []);
+
+  // Calculate progression summary (refreshes when storage changes)
+  const progression = useMemo(
+    () => GameEngine.getProgressionSummary(),
+    [forceUpdate],
+  );
+
+  // Auto-refresh progression data every 30 seconds to catch child progress updates
+  useEffect(() => {
+    const interval = setInterval(() => {
+      forceUpdate({}); // Refresh progression data
+      setLastUpdated(new Date());
+    }, 30000); // Update every 30 seconds (less aggressive)
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Listen for storage changes to auto-update progression stats
   useEffect(() => {
@@ -50,7 +70,8 @@ function NissemorGuideContent() {
     const handleStorageChange = (e: StorageEvent) => {
       // Trigger re-render when any game-related storage changes
       if (e.key?.startsWith("nissekomm-")) {
-        setSelectedDay((prev) => prev); // Force re-render
+        forceUpdate({}); // Force progression recalculation
+        setLastUpdated(new Date());
       }
     };
 
@@ -72,9 +93,6 @@ function NissemorGuideContent() {
     ],
     [],
   );
-
-  // Calculate progression summary (refreshes when storage changes)
-  const progression = useMemo(() => GameEngine.getProgressionSummary(), []);
 
   const toggleWeek = (week: number) => {
     setExpandedWeeks((prev) =>
@@ -172,12 +190,31 @@ function NissemorGuideContent() {
 
       {/* Header */}
       <div className="max-w-7xl mx-auto mb-8">
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-2 tracking-wider">
-          🎄 NISSEMOR GUIDE 🎄
-        </h1>
-        <p className="text-center text-xl opacity-70">
-          Planleggings- og oversiktspanel for NisseKomm-kalenderen
-        </p>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex-1">
+            <h1 className="text-4xl md:text-5xl font-bold text-center mb-2 tracking-wider">
+              🎄 NISSEMOR GUIDE 🎄
+            </h1>
+            <p className="text-center text-xl opacity-70">
+              Planleggings- og oversiktspanel for NisseKomm-kalenderen
+            </p>
+          </div>
+          <div className="text-right">
+            <button
+              onClick={() => {
+                forceUpdate({});
+                setLastUpdated(new Date());
+              }}
+              className="mb-2 px-4 py-2 border-2 border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20 transition-colors font-bold text-sm"
+              title="Oppdater fremgang fra barnas spill"
+            >
+              🔄 OPPDATER
+            </button>
+            <div className="text-xs opacity-60">
+              Sist oppdatert: {lastUpdated.toLocaleTimeString("nb-NO")}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Quick Stats */}
@@ -224,6 +261,37 @@ function NissemorGuideContent() {
               <div className="text-lg">Badges Tildelt</div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Top Actions - Essential Tools */}
+      <div className="max-w-7xl mx-auto mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Shopping List */}
+          <Link
+            href={`/nissemor-guide/handleliste?kode=${kode}`}
+            className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-6 hover:bg-(--cold-blue)/20 transition-colors"
+          >
+            <h3 className="text-2xl font-bold text-(--cold-blue) mb-2 text-center">
+              🛒 HANDLEKURV-LISTE
+            </h3>
+            <p className="text-center text-sm">
+              Alle materialer som trengs for desember
+            </p>
+          </Link>
+
+          {/* Printout */}
+          <Link
+            href={`/nissemor-guide/printout?kode=${kode}`}
+            className="border-4 border-(--neon-green) bg-(--neon-green)/10 p-6 hover:bg-(--neon-green)/20 transition-colors"
+          >
+            <h3 className="text-2xl font-bold text-(--neon-green) mb-2 text-center">
+              🖨️ UTSKRIFTER
+            </h3>
+            <p className="text-center text-sm">
+              Alle fysiske ledetekster for hele desember, klare for utskrift!
+            </p>
+          </Link>
         </div>
       </div>
 
@@ -508,34 +576,7 @@ function NissemorGuideContent() {
               </h2>
 
               {/* First Row */}
-              <div className="grid md:grid-cols-3 gap-4 mb-4">
-                {/* Shopping List */}
-                <Link
-                  href={`/nissemor-guide/handleliste?kode=${kode}`}
-                  className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-6 hover:bg-(--cold-blue)/20 transition-colors"
-                >
-                  <h3 className="text-2xl font-bold text-(--cold-blue) mb-2 text-center">
-                    🛒 HANDLEKURV-LISTE
-                  </h3>
-                  <p className="text-center text-sm">
-                    Alle materialer som trengs for desember
-                  </p>
-                </Link>
-
-                {/* Printout */}
-                <Link
-                  href={`/nissemor-guide/printout?kode=${kode}`}
-                  className="border-4 border-(--neon-green) bg-(--neon-green)/10 p-6 hover:bg-(--neon-green)/20 transition-colors"
-                >
-                  <h3 className="text-2xl font-bold text-(--neon-green) mb-2 text-center">
-                    🖨️ UTSKRIFTER
-                  </h3>
-                  <p className="text-center text-sm">
-                    Alle fysiske ledetekster for hele desember, klare for
-                    utskrift!
-                  </p>
-                </Link>
-
+              <div className="grid md:grid-cols-1 gap-4 mb-4">
                 {/* Symbols */}
                 <Link
                   href={`/nissemor-guide/symboler?kode=${kode}`}
@@ -551,7 +592,9 @@ function NissemorGuideContent() {
               </div>
 
               {/* Second Row */}
-              <div className="grid md:grid-cols-4 gap-4">
+              <div
+                className={`grid gap-4 ${process.env.NODE_ENV === "development" ? "md:grid-cols-4" : "md:grid-cols-3"}`}
+              >
                 {/* Eventyr */}
                 <Link
                   href={`/nissemor-guide/eventyr?kode=${kode}`}
@@ -578,18 +621,20 @@ function NissemorGuideContent() {
                   </p>
                 </Link>
 
-                {/* Development/Testing */}
-                <Link
-                  href={`/nissemor-guide/utvikling?kode=${kode}`}
-                  className="border-4 border-(--christmas-red) bg-(--christmas-red)/10 p-6 hover:bg-(--christmas-red)/20 transition-colors"
-                >
-                  <h3 className="text-2xl font-bold text-(--christmas-red) mb-2 text-center">
-                    ⚙️ UTVIKLING
-                  </h3>
-                  <p className="text-center text-sm">
-                    Test-verktøy og admin-funksjoner (kun for testing)
-                  </p>
-                </Link>
+                {/* Development/Testing - Only show in development mode */}
+                {process.env.NODE_ENV === "development" && (
+                  <Link
+                    href={`/nissemor-guide/utvikling?kode=${kode}`}
+                    className="border-4 border-(--christmas-red) bg-(--christmas-red)/10 p-6 hover:bg-(--christmas-red)/20 transition-colors"
+                  >
+                    <h3 className="text-2xl font-bold text-(--christmas-red) mb-2 text-center">
+                      ⚙️ UTVIKLING
+                    </h3>
+                    <p className="text-center text-sm">
+                      Test-verktøy og admin-funksjoner (kun for testing)
+                    </p>
+                  </Link>
+                )}
 
                 {/* Brevfugler */}
                 <Link
