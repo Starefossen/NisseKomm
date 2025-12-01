@@ -56,16 +56,29 @@ export async function POST(request: NextRequest) {
     }
 
     // Sanity backend: Query database for credentials
+    console.log("[Login] Backend:", backend, "CodeType:", codeType);
+    console.log(
+      "[Login] Sanity config:",
+      process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ? "✓" : "✗",
+      "project,",
+      process.env.SANITY_API_TOKEN ? "✓" : "✗",
+      "token",
+    );
+
     const query =
       codeType === "kid"
         ? `*[_type == "familyCredentials" && kidCode == $code][0]`
         : `*[_type == "familyCredentials" && parentCode == $code][0]`;
+
+    console.log("[Login] Query:", query);
 
     const credentials = await sanityServerClient.fetch<{
       sessionId: string;
       kidCode: string;
       parentCode: string;
     } | null>(query, { code });
+
+    console.log("[Login] Credentials found:", !!credentials);
 
     if (!credentials) {
       return errorResponse("Ugyldig kode", 401);
@@ -78,6 +91,7 @@ export async function POST(request: NextRequest) {
 
     return successResponse(response);
   } catch (error) {
+    console.error("[Login] Error:", error);
     return createErrorResponse(error, "Innlogging mislyktes");
   }
 }
