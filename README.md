@@ -4,6 +4,17 @@
 
 ![NisseKomm Demo](demo/quest.png)
 
+## 🚀 Prøv NisseKomm - Rampenisse som Tjeneste
+
+**Registrering**: Besøk [https://nissekomm.no/snill-liste](https://nissekomm.no/snill-liste) og bruk registreringskoden `VINTER-KOMMER-67` for å få dine familiekoder.
+
+**Demo-konto**:
+
+- **Nissekode** (barn): `NISSEMORSTJERNE2025`
+- **Foreldrekode**: `NORDPOL-T3Q85WXE`
+
+Gå til [https://nissekomm.no](https://nissekomm.no) og skriv inn nissekoden for å starte eventyret med en gang!
+
 ## 🎅 Om NisseKomm
 
 **NisseKomm** er ikke bare en digital julekalender - det er kontrollsenteret for en ekte adventsopplevelse der barn (9-12 år) hjelper Rampenissen med et viktig oppdrag fra Julius (julenissen).
@@ -92,7 +103,7 @@ NEXT_PUBLIC_SANITY_API_VERSION=2024-11-01
 SANITY_API_TOKEN=
 ```
 
-### 3. Registrer Familie (ved første bruk)
+### 3. Registrer Familie (lokal utvikling)
 
 Besøk [http://localhost:3000/register](http://localhost:3000/register) for å:
 
@@ -195,8 +206,8 @@ src/
 
 ### Fargepalett
 
-| Farge        | Hex       | Bruksområde              |
-| ------------ | --------- | ------------------------ |
+| Farge       | Hex       | Bruksområde              |
+| ----------- | --------- | ------------------------ |
 | 💚 Neongrønn | `#00ff00` | Primær UI, suksess       |
 | ❤️ Julerød   | `#ff0000` | Feil, advarsler          |
 | ⭐ Gull      | `#ffd700` | Fullføring, prestasjoner |
