@@ -28,6 +28,7 @@ export function useGuideAuth(): {
   useEffect(() => {
     async function verifyParentCode() {
       if (!kode) {
+        console.warn("[GuideAuth] Access denied: No parent code provided");
         setAuthenticated(false);
         setIsLoading(false);
         return;
@@ -44,11 +45,22 @@ export function useGuideAuth(): {
         if (response.ok) {
           const data = (await response.json()) as { isParent: boolean };
           setAuthenticated(data.isParent);
+          if (!data.isParent) {
+            console.warn(
+              `[GuideAuth] Access denied: Invalid parent code '${kode.substring(0, 4)}...'`,
+            );
+          }
         } else {
+          console.error(
+            `[GuideAuth] Authentication failed: HTTP ${response.status} ${response.statusText}`,
+          );
           setAuthenticated(false);
         }
       } catch (error) {
-        console.error("Parent verification failed:", error);
+        console.error(
+          "[GuideAuth] Network error during authentication:",
+          error,
+        );
         setAuthenticated(false);
       } finally {
         setIsLoading(false);

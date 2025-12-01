@@ -28,6 +28,9 @@ export async function GET() {
     const sessionId = cookieStore.get("nissekomm-session")?.value;
 
     if (!sessionId) {
+      console.warn(
+        "[AUTH] Session verification failed: No session cookie found",
+      );
       return successResponse({
         authenticated: false,
         role: null,
@@ -37,6 +40,9 @@ export async function GET() {
     // Find familyCredentials by sessionId
     const credentialsResult = await requireCredentials(sessionId);
     if ("error" in credentialsResult) {
+      console.warn(
+        `[AUTH] Session verification failed: ${credentialsResult.error}`,
+      );
       return successResponse({
         authenticated: false,
         role: null,
@@ -50,6 +56,7 @@ export async function GET() {
       sessionId: credentialsResult.credentials.sessionId,
     } as VerifyResponse);
   } catch (error) {
+    console.error("[AUTH] Session verification error:", error);
     return createErrorResponse(error, "Verify error");
   }
 }
@@ -75,6 +82,9 @@ export async function POST(request: NextRequest) {
     const sessionId = cookieStore.get("nissekomm-session")?.value;
 
     if (!sessionId || !body.code) {
+      console.warn(
+        "[AUTH] Parent verification failed: Missing session or code",
+      );
       return successResponse({ isParent: false } as ParentVerifyResponse);
     }
 
@@ -83,14 +93,24 @@ export async function POST(request: NextRequest) {
     // Verify that provided code matches parent code for this session
     const credentialsResult = await requireCredentials(sessionId);
     if ("error" in credentialsResult) {
+      console.warn(
+        `[AUTH] Parent verification failed: ${credentialsResult.error}`,
+      );
       return successResponse({ isParent: false } as ParentVerifyResponse);
     }
 
     const { credentials } = credentialsResult;
     const isParent = credentials.parentCode === code;
 
+    if (!isParent) {
+      console.warn(
+        `[AUTH] Parent code mismatch: provided '${code.substring(0, 4)}...' does not match expected parent code for kid code '${credentials.kidCode?.substring(0, 4)}...'`,
+      );
+    }
+
     return successResponse({ isParent } as ParentVerifyResponse);
   } catch (error) {
+    console.error("[AUTH] Parent verification error:", error);
     return createErrorResponse(error, "Parent verify error");
   }
 }
