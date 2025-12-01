@@ -78,7 +78,6 @@ const SNOFALL_SUFFIXES = [
   "VARME",
 ] as const;
 
-
 // Alphanumeric characters for parent codes (excluding ambiguous: 0, O, I, 1)
 const PARENT_CODE_CHARS = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 interface PasswordPromptProps {
   onSuccess: (sessionId: string) => void;
@@ -35,6 +36,9 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
     setIsLoading(true);
     setError("");
 
+    // Track login attempt
+    trackEvent("login_attempt", { authType: "kid" });
+
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -63,6 +67,8 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
         setCode("");
       } else {
         // Success! Pass the sessionId
+        trackEvent("login_success", { authType: "kid" });
+        trackEvent("session_started", { authType: "kid" });
         onSuccess(data.sessionId);
       }
     } catch (err) {

@@ -5,7 +5,11 @@ import { Html5Qrcode, Html5QrcodeScannerState } from "html5-qrcode";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons, Icon } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
-import { collectSymbolByCode } from "@/lib/systems/symbol-system";
+import {
+  collectSymbolByCode,
+  getCollectedSymbols,
+} from "@/lib/systems/symbol-system";
+import { trackEvent, trackSymbolCollection } from "@/lib/analytics";
 
 interface SymbolScannerProps {
   onClose: () => void;
@@ -248,6 +252,9 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
     setIsProcessing(true);
     SoundManager.playSound("click");
 
+    // Track symbol scan attempt
+    trackEvent("symbol_scanned", { symbolId: inputCode.trim() });
+
     // Simulate processing delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -255,6 +262,11 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
 
     if (result.success && result.symbol) {
       SoundManager.playSound("success");
+
+      // Track successful symbol collection
+      const totalCollected = getCollectedSymbols().length;
+      trackSymbolCollection(result.symbol.symbolId, totalCollected);
+
       setLastCollected({
         symbolIcon: result.symbol.symbolIcon,
         symbolColor: result.symbol.symbolColor,

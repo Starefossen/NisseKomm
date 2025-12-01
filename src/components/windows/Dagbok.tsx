@@ -6,6 +6,7 @@ import { Oppdrag } from "@/types/innhold";
 import { StorageManager } from "@/lib/storage";
 import { GameEngine } from "@/lib/game-engine";
 import { getEventyr } from "@/lib/eventyr";
+import { trackEvent } from "@/lib/analytics";
 
 interface DagbokProps {
   missions: Oppdrag[];
@@ -50,6 +51,9 @@ export function Dagbok({ missions, onClose }: DagbokProps) {
                 if (entry.isIntersecting && day > lastReadDay) {
                   StorageManager.setDagbokLastRead(day);
                   setLastReadDay(day);
+
+                  // Track diary entry read
+                  trackEvent("dagbok_entry_read", { day });
                 }
               }, 3000);
             }

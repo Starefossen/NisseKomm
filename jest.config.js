@@ -12,6 +12,7 @@ const customJestConfig = {
   testEnvironment: "jsdom",
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
+    "^@vercel/analytics$": "<rootDir>/src/lib/__mocks__/@vercel/analytics.ts",
   },
   testMatch: [
     "**/__tests__/**/*.test.[jt]s?(x)",

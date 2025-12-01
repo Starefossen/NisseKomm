@@ -8,6 +8,7 @@ import { StorageManager } from "@/lib/storage";
 import { getCollectedSymbols } from "@/lib/systems/symbol-system";
 import { getEventyr } from "@/lib/eventyr";
 import { BadgeManager } from "@/lib/badge-system";
+import { trackEvent } from "@/lib/analytics";
 import Image from "next/image";
 
 interface GrandFinaleModalProps {
@@ -61,6 +62,13 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
     .filter(Boolean);
 
   useEffect(() => {
+    // Track grand finale view
+    trackEvent("grand_finale_viewed", {
+      totalBadges: BadgeManager.getEarnedBadges().length,
+      symbolsCollected: collectedSymbols.length,
+    });
+    trackEvent("all_quests_completed", {});
+
     // Play celebration sound
     SoundManager.playSound("success");
 
@@ -74,6 +82,7 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
       clearTimeout(timer2);
       clearTimeout(timer3);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

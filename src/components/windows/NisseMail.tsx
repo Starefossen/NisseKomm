@@ -7,6 +7,7 @@ import { Oppdrag } from "@/types/innhold";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import { getEventyr, getEventyrDays } from "@/lib/eventyr";
+import { trackEvent } from "@/lib/analytics";
 
 /**
  * Email types for inbox display
@@ -64,6 +65,10 @@ export function NisseMail({
       if (isBonusOppdrag) {
         if (!viewedBonusOppdrag.has(dag)) {
           GameEngine.markEmailAsViewed(dag, true);
+          trackEvent("mail_marked_read", {
+            emailDay: dag,
+            emailType: "bonus",
+          });
           const updated = new Set(viewedBonusOppdrag);
           updated.add(dag);
           setViewedBonusOppdrag(updated);
@@ -71,6 +76,10 @@ export function NisseMail({
       } else {
         if (!viewedEmails.has(dag)) {
           GameEngine.markEmailAsViewed(dag, false);
+          trackEvent("mail_marked_read", {
+            emailDay: dag,
+            emailType: "quest",
+          });
           const updated = new Set(viewedEmails);
           updated.add(dag);
           setViewedEmails(updated);
@@ -141,6 +150,13 @@ export function NisseMail({
     emailType: EmailType = "main",
   ) => {
     SoundManager.playSound("click");
+
+    // Track mail opened
+    trackEvent("mail_opened", {
+      emailDay: mission.dag,
+      emailType: emailType === "side-quest" ? "bonus" : "quest",
+    });
+
     setSelectedMission(mission);
     setSelectedEmail({ type: emailType, mission, day: mission.dag });
     markAsViewed(mission.dag, emailType === "side-quest");

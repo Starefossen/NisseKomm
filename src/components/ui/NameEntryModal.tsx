@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Icons } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
+import { trackEvent } from "@/lib/analytics";
 
 interface NameEntryModalProps {
   onComplete: (names: string[]) => void;
@@ -31,12 +32,14 @@ export function NameEntryModal({ onComplete }: NameEntryModalProps) {
 
     if (validNames.length > 0) {
       SoundManager.playSound("success");
+      trackEvent("name_registered", { namesCount: validNames.length });
       onComplete(validNames);
     }
   };
 
   const handleSkip = () => {
     SoundManager.playSound("click");
+    trackEvent("name_registered", { namesCount: 1 });
     // Use default name
     onComplete(["Spillernavn"]);
   };
