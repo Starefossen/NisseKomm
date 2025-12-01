@@ -131,7 +131,7 @@ If automated cleanup fails, you have two options:
 #### Option 1: Run cleanup script
 
 ```bash
-pnpm run cleanup:test-sessions
+pnpm cleanup:test-sessions
 ```
 
 This script finds and deletes all sessions with `TEST_` prefix from Sanity.

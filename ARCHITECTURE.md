@@ -541,13 +541,13 @@ Migration script (`scripts/migrate-sessions.ts`):
 
 ```bash
 # Development dataset (safe for testing)
-pnpm run migrate:dev
+pnpm migrate:dev
 
 # Production dataset (requires confirmation)
-pnpm run migrate:prod
+pnpm migrate:prod
 
 # Dry run (preview without changes)
-pnpm run migrate:dry-run
+pnpm migrate:dry-run
 
 # Manual invocation with options
 npx tsx scripts/migrate-sessions.ts --dataset development

@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "check": "pnpm run typecheck && pnpm run lint && pnpm run knip && pnpm run format && pnpm test",
+    "check": "pnpm typecheck && pnpm lint && pnpm knip && pnpm format && pnpm test",
     "knip": "knip",
     "knip:fix": "knip --fix",
     "lint": "eslint .",

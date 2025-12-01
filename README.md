@@ -114,7 +114,7 @@ Besøk [http://localhost:3000/register](http://localhost:3000/register) for å:
 ### 4. Kjør Utviklingsserver
 
 ```bash
-pnpm run dev
+pnpm dev
 ```
 
 Åpne [http://localhost:3000](http://localhost:3000) og bruk din **Nissekode**
@@ -144,7 +144,7 @@ Besøk **/nissemor-guide?kode=DIN_FORELDREKODE** i nettleseren for:
 Kjør alltid før commit:
 
 ```bash
-pnpm run check
+pnpm check
 ```
 
 Dette kjører TypeScript, ESLint, Knip og Prettier.
@@ -206,8 +206,8 @@ src/
 
 ### Fargepalett
 
-| Farge       | Hex       | Bruksområde              |
-| ----------- | --------- | ------------------------ |
+| Farge        | Hex       | Bruksområde              |
+| ------------ | --------- | ------------------------ |
 | 💚 Neongrønn | `#00ff00` | Primær UI, suksess       |
 | ❤️ Julerød   | `#ff0000` | Feil, advarsler          |
 | ⭐ Gull      | `#ffd700` | Fullføring, prestasjoner |
@@ -289,7 +289,7 @@ Bidrag er velkomne! Vennligst:
 
 **Før du sender PR**:
 
-- Kjør `pnpm run check` (ingen feil eller advarsler)
+- Kjør `pnpm check` (ingen feil eller advarsler)
 - Oppdater dokumentasjon ved arkitekturendringer
 - Hold all UI-tekst på norsk
 - Følg eksisterende kodestil

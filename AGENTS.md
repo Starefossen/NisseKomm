@@ -1,6 +1,6 @@
 # NisseKomm - Development Guide for AI Agents
 
-> **Important**: Keep this document updated when making changes to the project. Always run `pnpm run check` at the end of coding sessions to verify code quality. Assume the dev server is already running at <http://localhost:3000>.
+> **Important**: Keep this document updated when making changes to the project. Always run `pnpm check` at the end of coding sessions to verify code quality. Assume the dev server is already running at <http://localhost:3000>.
 >
 > **Do NOT create new markdown files** (like SUMMARY.md, CHANGES.md, etc.) to document your work unless explicitly requested by the user.
 
@@ -235,7 +235,7 @@ When using Sanity backend:
 
 **Before Committing**:
 
-- [ ] Run `pnpm run check` (type checking + linting)
+- [ ] Run `pnpm check` (type checking + linting)
 - [ ] All text in Norwegian (except code comments)
 - [ ] VT323 font used consistently
 - [ ] Thick pixel borders on windows
@@ -259,7 +259,7 @@ When using Sanity backend:
 2. Make changes to components/content
 3. Browser auto-reloads on save
 4. Test in browser (use `NEXT_PUBLIC_TEST_MODE=true` for testing all days)
-5. Run `pnpm run check` before finishing session
+5. Run `pnpm check` before finishing session
 6. Update this document if you changed architecture/patterns
 
 ## Future Enhancements
