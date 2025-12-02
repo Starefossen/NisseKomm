@@ -10,6 +10,8 @@
  * PATCH /api/auth/family
  * Body: { familyName?, kidNames?, friendNames?, parentEmail? }
  * Updates allowed fields in familyCredentials document
+ *
+ * NOTE: Only works with Sanity backend. Returns 501 for localStorage mode.
  */
 
 import { NextRequest } from "next/server";
@@ -43,11 +45,29 @@ interface FamilyUpdateRequest {
 }
 
 /**
+ * Check if we're in localStorage mode (no Sanity backend)
+ */
+function isLocalStorageMode(): boolean {
+  return (
+    (process.env.NEXT_PUBLIC_STORAGE_BACKEND || "localStorage") ===
+    "localStorage"
+  );
+}
+
+/**
  * GET /api/auth/family
  * Fetch family credentials for authenticated parent
  */
 export async function GET(request: NextRequest) {
   try {
+    // localStorage mode: Return 501 Not Implemented
+    if (isLocalStorageMode()) {
+      return errorResponse(
+        "Familieinnstillinger er kun tilgjengelig med Sanity-backend. Vennligst sett NEXT_PUBLIC_STORAGE_BACKEND=sanity",
+        501,
+      );
+    }
+
     // Require parent authentication
     const authResult = requireParentAuth(request);
     if ("error" in authResult) {
@@ -59,7 +79,11 @@ export async function GET(request: NextRequest) {
     // Fetch credentials
     const credentialsResult = await requireCredentials(sessionId);
     if ("error" in credentialsResult) {
-      return credentialsResult.error;
+      // Return 404 with helpful message - this session has no family registration
+      return errorResponse(
+        "Ingen familieregistrering funnet for denne økten. Vennligst registrer deg på /register først.",
+        404,
+      );
     }
 
     const { credentials } = credentialsResult;

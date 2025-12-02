@@ -6,6 +6,7 @@ import { Icons } from "@/lib/icons";
 import { FilNode, Oppdrag } from "@/types/innhold";
 import { GameEngine } from "@/lib/game-engine";
 import { StorageManager } from "@/lib/storage";
+import { resolveTemplate } from "@/lib/template-resolver";
 
 interface NisseNetUtforskerProps {
   files: FilNode[];
@@ -115,115 +116,21 @@ export function NisseNetUtforsker({
       // Day 23: Update Nice List with player names
       if (node.type === "fil" && node.navn === "snill_slem_liste.txt") {
         const gameState = GameEngine.loadGameState();
-        const day23Completed = gameState.completedQuests.has(23);
-        const day24Completed = gameState.completedQuests.has(24);
+        const completedDays = Array.from(gameState.completedQuests);
+        const playerNames = StorageManager.getPlayerNames();
 
-        // Always clean up placeholder markers before displaying
-        let cleanedContent = node.innhold || "";
-        cleanedContent = cleanedContent.replace(
-          /\{\{UPDATE_DATE\}\}/g,
-          "[VIL BLI OPPDATERT]",
-        );
-        if (!day24Completed) {
-          // Remove finale message placeholder before Day 24
-          cleanedContent = cleanedContent.replace(
-            /\n\n\{\{FINALE_MESSAGE\}\}/g,
-            "",
-          );
-        }
+        // Use template resolver to handle all placeholders
+        const resolvedContent = resolveTemplate(node.innhold || "", {
+          playerNames,
+          friendNames,
+          completedDays,
+          currentDay,
+        });
 
-        if (day23Completed) {
-          // Get player names from StorageManager
-          const playerNames = StorageManager.getPlayerNames();
-
-          // Combine player names with friend names for full Nice List
-          const allNames = [...playerNames, ...friendNames].filter(
-            (n) => n.trim().length > 0,
-          );
-
-          // Only update if names were entered
-          if (allNames.length > 0) {
-            // Generate updated Nice List with player names at top
-            let updatedList = cleanedContent;
-
-            // Find the SNILL LISTE section and inject names
-            const snillSection = updatedList.indexOf("✨ SNILL LISTE ✨");
-            if (snillSection !== -1) {
-              const listStart = updatedList.indexOf("\n\n", snillSection) + 2;
-              const existingList = updatedList.substring(listStart);
-
-              // Create entries for players (with special marker) and friends
-              const playerEntries = playerNames
-                .map(
-                  (name, i) =>
-                    `${i + 1}. ${name} - ⭐ FULLFØRT NISSEKOMM JULEKALENDER! ⭐`,
-                )
-                .join("\n");
-
-              const friendEntries = friendNames
-                .map((name, i) => `${playerNames.length + i + 1}. ${name}`)
-                .join("\n");
-
-              const combinedEntries =
-                playerEntries +
-                (friendEntries.length > 0 ? "\n" + friendEntries : "");
-
-              updatedList =
-                updatedList.substring(0, listStart) +
-                combinedEntries +
-                "\n" +
-                existingList;
-
-              // Update last modified date based on progress
-              if (day24Completed) {
-                updatedList = updatedList.replace(
-                  /Sist oppdatert: .*\n/,
-                  `Sist oppdatert: 24. Desember - JULAFTEN! 🎄✨\n`,
-                );
-
-                // Day 24: Add Julius' personal finale message
-                const names = playerNames.join(", ");
-                const finaleMessage = `\n\n🏆 GRATULERER, ${names}! 🏆\n\nDere er nå offisielle Julekalender-Mestere!\n\nRampenissen har fortalt meg alt dere har gjort - hver kode,\nhvert symbol, hvert øyeblikk av vennskap.\n\nDere er ikke bare på listen. Dere ER en del av Snøfall nå.\nFor alltid.\n\n- Julius ❤️\n\n`;
-
-                // Replace placeholder or append before hint section
-                if (updatedList.includes("{{FINALE_MESSAGE}}")) {
-                  updatedList = updatedList.replace(
-                    "{{FINALE_MESSAGE}}",
-                    finaleMessage,
-                  );
-                } else {
-                  // Insert before the hint section at bottom
-                  const hintIndex = updatedList.indexOf("💡 HINT:");
-                  if (hintIndex !== -1) {
-                    updatedList =
-                      updatedList.substring(0, hintIndex) +
-                      finaleMessage +
-                      updatedList.substring(hintIndex);
-                  }
-                }
-              } else {
-                // Day 23 only
-                updatedList = updatedList.replace(
-                  /Sist oppdatert: .*\n/,
-                  `Sist oppdatert: 23. Desember ✓\n`,
-                );
-              }
-
-              return {
-                ...node,
-                innhold: updatedList,
-              };
-            }
-          }
-        }
-
-        // If we cleaned placeholders but didn't replace with player names, return cleaned version
-        if (cleanedContent !== node.innhold) {
-          return {
-            ...node,
-            innhold: cleanedContent,
-          };
-        }
+        return {
+          ...node,
+          innhold: resolvedContent,
+        };
       }
 
       if (node.type === "mappe" && node.barn) {

@@ -3,6 +3,8 @@
  *
  * Sends CRT-themed welcome emails with family access codes via Resend.
  * Used during registration and password recovery.
+ *
+ * In test environment (NODE_ENV=test), emails are logged but not sent.
  */
 
 import { Resend } from "resend";
@@ -20,6 +22,9 @@ interface WelcomeEmailParams {
   parentCode: string;
   kidNames: string[];
 }
+
+// Export for testing
+export type { WelcomeEmailParams };
 
 /**
  * Generate CRT-themed HTML email matching NisseKomm's retro terminal aesthetic
@@ -296,15 +301,37 @@ Ta vare på disse kodene - dere trenger dem hver dag i desember!
 }
 
 /**
+ * Check if running in test environment
+ */
+function isTestEnvironment(): boolean {
+  return (
+    process.env.NODE_ENV === "test" ||
+    process.env.JEST_WORKER_ID !== undefined ||
+    process.env.VITEST !== undefined
+  );
+}
+
+/**
  * Send welcome email with family access codes
  *
- * @returns true if email sent successfully, false otherwise
+ * In test environment, logs the email instead of sending to prevent
+ * accidental emails during testing.
+ *
+ * @returns true if email sent successfully (or skipped in test mode), false otherwise
  */
 export async function sendWelcomeEmail(
   params: WelcomeEmailParams,
 ): Promise<boolean> {
   try {
     const { to, ...contentParams } = params;
+
+    // Skip actual email sending in test environment
+    if (isTestEnvironment()) {
+      console.log(
+        `[Email Service] TEST MODE - Skipping email to ${to} (kidCode: ${contentParams.kidCode})`,
+      );
+      return true;
+    }
 
     const { error } = await resend.emails.send({
       from: FROM_EMAIL,

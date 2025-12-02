@@ -6,7 +6,6 @@ import {
   isParentAuthenticated,
   clearParentAuth,
   setParentAuthenticated,
-  getSessionId,
   setSessionId,
 } from "@/lib/session-manager";
 import { useEffect } from "react";
@@ -133,34 +132,15 @@ function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
         return;
       }
 
-      // Set the session cookie so parent auth can work
-      // This is needed because parents may log in directly without going through the main app
+      // Login already set both cookies (session + parent auth)
+      // Set client-side parent auth for isParentAuthenticated() check
       if (loginData.sessionId) {
         setSessionId(loginData.sessionId);
+        setParentAuthenticated(loginData.sessionId);
       }
 
-      // Verify parent access and set parent auth cookie
-      const verifyResponse = await fetch("/api/auth/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: trimmedCode }),
-        credentials: "include",
-      });
-
-      if (verifyResponse.ok) {
-        const verifyData = await verifyResponse.json();
-        if (verifyData.isParent) {
-          // Set client-side parent auth
-          const sessionId = getSessionId();
-          if (sessionId) {
-            setParentAuthenticated(sessionId);
-          }
-          onSuccess();
-          return;
-        }
-      }
-
-      setError("Kunne ikke verifisere foreldretilgang");
+      onSuccess();
+      return;
     } catch {
       setError("Nettverksfeil. Prøv igjen.");
     } finally {

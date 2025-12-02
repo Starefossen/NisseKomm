@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { GameEngine } from "@/lib/game-engine";
+import { StorageManager } from "@/lib/storage";
+import { resolveTemplate } from "@/lib/template-resolver";
 import type { Oppdrag, PrintMaterial } from "@/types/innhold";
 
 const allOppdrag = GameEngine.getAllQuests();
@@ -165,6 +167,17 @@ function PrintoutContent() {
   const [selectedDays, setSelectedDays] = useState<number[]>(
     Array.from({ length: 24 }, (_, i) => i + 1),
   );
+
+  // State for player names (for template resolution in diplomas)
+  // Uses lazy initialization to avoid useEffect for synchronous data
+  const [playerNames] = useState<string[]>(() =>
+    StorageManager.getPlayerNames(),
+  );
+
+  // Helper to resolve templates in print material content
+  const resolveContent = (content: string): string => {
+    return resolveTemplate(content, { playerNames });
+  };
 
   // Toggle individual day
   const toggleDay = (day: number) => {
@@ -386,7 +399,7 @@ function PrintoutContent() {
                                   : "text-sm"
                               }`}
                             >
-                              {card.content}
+                              {resolveContent(card.content)}
                             </div>
                           ) : (
                             <div className="text-center text-sm leading-snug">
@@ -490,7 +503,7 @@ function PrintoutContent() {
                                 : "print:text-sm"
                             }`}
                           >
-                            {card.content}
+                            {resolveContent(card.content)}
                           </div>
                         </div>
                       ) : (

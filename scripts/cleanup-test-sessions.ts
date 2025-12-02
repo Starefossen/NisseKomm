@@ -4,7 +4,8 @@
  *
  * Removes test data from Sanity including:
  * - familyCredentials with @example.com emails (test registrations)
- * - userSession documents linked to test families
+ * - familyCredentials with sessionId starting with "test_" (unit tests)
+ * - userSession documents linked to test families or with test-like sessionIds
  *
  * Usage:
  *   # Clean up development dataset (default)
@@ -83,19 +84,28 @@ async function cleanupTestSessions() {
   console.log("");
 
   try {
-    // Step 1: Find test familyCredentials (emails ending in @example.com)
+    // Step 1: Find test familyCredentials
+    // Matches:
+    // - emails ending in @example.com (test registrations)
+    // - sessionId starting with "test_" (unit tests: test_family_, test_login_, test_session_)
+    // - sessionId starting with "minimal_" or "orphan_" (edge case tests)
     console.log("🔍 Searching for test family credentials...");
 
     const testFamilies = await sanity.fetch<
       Array<{
         _id: string;
         sessionId: string;
-        parentEmail: string;
+        parentEmail: string | null;
         familyName: string | null;
         createdAt: string;
       }>
     >(
-      `*[_type == "familyCredentials" && parentEmail match "*@example.com"] | order(createdAt desc) {
+      `*[_type == "familyCredentials" && (
+        parentEmail match "*@example.com" ||
+        sessionId match "test_*" ||
+        sessionId match "minimal_*" ||
+        sessionId match "orphan_*"
+      )] | order(createdAt desc) {
         _id,
         sessionId,
         parentEmail,
@@ -106,17 +116,26 @@ async function cleanupTestSessions() {
 
     console.log(`   Found ${testFamilies.length} test families`);
 
-    // Step 2: Find orphaned userSessions (linked to test families)
+    // Step 2: Find test userSessions
+    // Matches:
+    // - Sessions linked to test families
+    // - Sessions with test-like sessionIds (hash patterns from test data)
     const testSessionIds = testFamilies.map((f) => f.sessionId).filter(Boolean);
 
+    // Also find orphaned test sessions that might have been created directly
     const testSessions = await sanity.fetch<
-      Array<{ _id: string; sessionId: string }>
+      Array<{ _id: string; sessionId: string; createdAt: string }>
     >(
-      `*[_type == "userSession" && sessionId in $sessionIds] { _id, sessionId }`,
+      `*[_type == "userSession" && (
+        sessionId in $sessionIds ||
+        sessionId match "test_*" ||
+        sessionId match "minimal_*" ||
+        sessionId match "orphan_*"
+      )] { _id, sessionId, createdAt }`,
       { sessionIds: testSessionIds },
     );
 
-    console.log(`   Found ${testSessions.length} linked user sessions`);
+    console.log(`   Found ${testSessions.length} test user sessions`);
     console.log("");
 
     if (testFamilies.length === 0 && testSessions.length === 0) {
@@ -129,13 +148,26 @@ async function cleanupTestSessions() {
       console.log("📋 Test families to delete:");
       testFamilies.slice(0, 20).forEach((family, index) => {
         const name = family.familyName || "Unnamed";
+        const email = family.parentEmail || "no email";
         const date = new Date(family.createdAt).toLocaleDateString("no-NO");
-        console.log(
-          `   ${index + 1}. ${name} - ${family.parentEmail} [${date}]`,
-        );
+        console.log(`   ${index + 1}. ${name} - ${email} [${date}]`);
       });
       if (testFamilies.length > 20) {
         console.log(`   ... and ${testFamilies.length - 20} more`);
+      }
+      console.log("");
+    }
+
+    // List test sessions
+    if (testSessions.length > 0) {
+      console.log("📋 Test sessions to delete:");
+      testSessions.slice(0, 10).forEach((session, index) => {
+        const shortId = session.sessionId.substring(0, 20) + "...";
+        const date = new Date(session.createdAt).toLocaleDateString("no-NO");
+        console.log(`   ${index + 1}. ${shortId} [${date}]`);
+      });
+      if (testSessions.length > 10) {
+        console.log(`   ... and ${testSessions.length - 10} more`);
       }
       console.log("");
     }

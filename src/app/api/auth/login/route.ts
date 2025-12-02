@@ -4,18 +4,21 @@
  * Accepts either kidCode or parentCode and returns sessionId + role.
  * Used by both kids (daily login) and parents (guide access).
  *
+ * Sets session cookie on successful login for server-side auth.
+ *
  * POST /api/auth/login
  * Body: { code: string }
  * Returns: { sessionId: string, role: 'kid' | 'parent' }
  */
 
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { sanityServerClient } from "@/lib/sanity-client";
 import { getCodeType } from "@/lib/code-generator";
 import {
   errorResponse,
   createErrorResponse,
-  successResponse,
+  setSessionCookie,
+  setParentAuthCookie,
 } from "@/lib/api-utils";
 
 interface LoginRequest {
@@ -48,11 +51,17 @@ export async function POST(request: NextRequest) {
 
     // localStorage backend: Accept any valid code format, use code as sessionId
     if (backend === "localStorage") {
-      const response: LoginResponse = {
+      const responseData: LoginResponse = {
         sessionId: code, // Use the code itself as sessionId for localStorage mode
         role: codeType,
       };
-      return successResponse(response);
+      // Set cookies on response - functions mutate and return the response
+      const response = NextResponse.json(responseData);
+      setSessionCookie(response, code);
+      if (codeType === "parent") {
+        setParentAuthCookie(response, code);
+      }
+      return response;
     }
 
     // Sanity backend: Query database for credentials
@@ -71,12 +80,18 @@ export async function POST(request: NextRequest) {
       return errorResponse("Ugyldig kode", 401);
     }
 
-    const response: LoginResponse = {
+    const responseData: LoginResponse = {
       sessionId: credentials.sessionId,
       role: codeType,
     };
 
-    return successResponse(response);
+    // Set cookies on response - functions mutate and return the response
+    const response = NextResponse.json(responseData);
+    setSessionCookie(response, credentials.sessionId);
+    if (codeType === "parent") {
+      setParentAuthCookie(response, credentials.sessionId);
+    }
+    return response;
   } catch (error) {
     return createErrorResponse(error, "Innlogging mislyktes");
   }

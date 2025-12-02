@@ -48,6 +48,10 @@ function InnstillingerContent() {
         if (!response.ok) {
           if (response.status === 403) {
             setError("Du må være logget inn som forelder for å se denne siden");
+          } else if (response.status === 404) {
+            setError(
+              "Ingen familieregistrering funnet. Gå til /register for å registrere deg først.",
+            );
           } else {
             setError("Kunne ikke hente familieinformasjon");
           }

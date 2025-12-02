@@ -7,6 +7,7 @@ import { StorageManager } from "@/lib/storage";
 import { GameEngine } from "@/lib/game-engine";
 import { getEventyr } from "@/lib/eventyr";
 import { trackEvent } from "@/lib/analytics";
+import { resolveTemplate } from "@/lib/template-resolver";
 
 interface DagbokProps {
   missions: Oppdrag[];
@@ -17,9 +18,16 @@ export function Dagbok({ missions, onClose }: DagbokProps) {
   const [lastReadDay, setLastReadDay] = useState<number>(() =>
     StorageManager.getDagbokLastRead(),
   );
+  const [playerNames, setPlayerNames] = useState<string[]>([]);
   const entryRefs = useRef<Map<number, HTMLDivElement>>(new Map());
   const containerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  // Load player names for template resolution
+  useEffect(() => {
+    const names = StorageManager.getPlayerNames();
+    setPlayerNames(names);
+  }, []);
 
   // Get completed quests to filter diary entries
   const completedQuests =
@@ -149,7 +157,9 @@ export function Dagbok({ missions, onClose }: DagbokProps) {
               >
                 {/* Entry content */}
                 <div className="text-base md:text-lg leading-relaxed whitespace-pre-wrap">
-                  {mission.dagbokinnlegg}
+                  {resolveTemplate(mission.dagbokinnlegg || "", {
+                    playerNames,
+                  })}
                 </div>
 
                 {/* Eventyr badge at end */}
