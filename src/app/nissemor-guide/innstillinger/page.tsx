@@ -3,6 +3,7 @@
 import { useState, useEffect, FormEvent, Suspense } from "react";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
+import { GuideSettings } from "@/components/nissemor/GuideSettings";
 import { Icons } from "@/lib/icons";
 import { clearParentAuth } from "@/lib/session-manager";
 import { useRouter } from "next/navigation";
@@ -279,11 +280,10 @@ function InnstillingerContent() {
                   onClick={() =>
                     copyToClipboard(familyData?.kidCode || "", "kidCode")
                   }
-                  className={`p-2 border-2 transition-colors ${
-                    copiedField === "kidCode"
+                  className={`p-2 border-2 transition-colors ${copiedField === "kidCode"
                       ? "border-(--gold) bg-(--gold) text-black"
                       : "border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green) hover:text-black"
-                  }`}
+                    }`}
                   title="Kopier barnekode"
                 >
                   {copiedField === "kidCode" ? "✓" : <Icons.File size={16} />}
@@ -304,11 +304,10 @@ function InnstillingerContent() {
                   onClick={() =>
                     copyToClipboard(familyData?.parentCode || "", "parentCode")
                   }
-                  className={`p-2 border-2 transition-colors ${
-                    copiedField === "parentCode"
+                  className={`p-2 border-2 transition-colors ${copiedField === "parentCode"
                       ? "border-(--gold) bg-(--gold) text-black"
                       : "border-(--cold-blue) text-(--cold-blue) hover:bg-(--cold-blue) hover:text-black"
-                  }`}
+                    }`}
                   title="Kopier foreldrekode"
                 >
                   {copiedField === "parentCode" ? (
@@ -604,6 +603,11 @@ function InnstillingerContent() {
           </button>
         </form>
 
+        {/* Email Subscription & Delete Account Section */}
+        <div className="mt-8">
+          <GuideSettings />
+        </div>
+
         {/* Account Info */}
         <div className="border-4 border-(--neon-green)/20 p-6 mt-6">
           <h3 className="text-(--neon-green)/70 font-bold mb-2">
@@ -613,10 +617,10 @@ function InnstillingerContent() {
             Opprettet:{" "}
             {familyData?.createdAt
               ? new Date(familyData.createdAt).toLocaleDateString("nb-NO", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
               : "Ukjent"}
           </p>
         </div>

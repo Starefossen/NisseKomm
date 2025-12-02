@@ -104,6 +104,13 @@ export const familyCredentials = defineType({
       validation: (Rule) => Rule.required().email(),
       description: "Parent email for recovery (required, valid email format)",
     },
+    {
+      name: "emailSubscription",
+      title: "Email Subscription",
+      type: "boolean",
+      initialValue: true,
+      description: "Subscribe to daily mission reminder emails at 21:00",
+    },
 
     // ============================================================
     // Metadata

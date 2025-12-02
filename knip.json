@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
-  "entry": ["scripts/**/*.ts"],
+  "entry": ["scripts/**/*.ts", "migrations/**/*.ts"],
   "ignore": [
     "**/*.test.{ts,tsx}",
     "**/*.spec.{ts,tsx}",
@@ -11,7 +11,12 @@
     "sanity.cli.ts",
     ".sanity/**"
   ],
-  "ignoreDependencies": ["pixelarticons", "@sanity/vision", "@types/uuid"],
+  "ignoreDependencies": [
+    "pixelarticons",
+    "@sanity/vision",
+    "@types/uuid",
+    "@sanity/migrate"
+  ],
   "ignoreExportsUsedInFile": true,
   "next": {
     "entry": [

@@ -150,6 +150,7 @@ export async function POST(request: NextRequest) {
       kidNames: validatedKidNames,
       friendNames: validatedFriendNames,
       parentEmail: parentEmail || null,
+      emailSubscription: true, // Opt-in by default for daily mission emails
       createdAt: new Date().toISOString(),
     });
 
