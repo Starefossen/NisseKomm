@@ -135,17 +135,13 @@ export class SanityStorageAdapter implements StorageAdapter {
    */
   private async initialize(): Promise<void> {
     if (this.initialized) {
-      console.log("[SanityAdapter] Already initialized, skipping");
       return;
     }
-
-    console.log("[SanityAdapter] Starting initialization...");
     try {
       // SessionId is already set in constructor
 
       // Try to fetch existing session by explicit sessionId (not cookie)
       // This is important for multi-tenant: cookie might have been set by another tenant
-      console.log("[SanityAdapter] Fetching session from API...");
       const response = await fetch(
         `/api/session?sessionId=${encodeURIComponent(this.sessionId)}`,
         {
@@ -158,14 +154,7 @@ export class SanityStorageAdapter implements StorageAdapter {
       let sessionData;
       if (response.ok) {
         sessionData = await response.json();
-        console.log(
-          "[SanityAdapter] Loaded existing session, fields:",
-          Object.keys(sessionData).length,
-        );
       } else if (response.status === 404) {
-        console.log(
-          "[SanityAdapter] Session not found, creating new session...",
-        );
         // Create new session
         const createResponse = await fetch("/api/session", {
           method: "POST",
@@ -177,7 +166,6 @@ export class SanityStorageAdapter implements StorageAdapter {
 
         if (createResponse.ok) {
           sessionData = await createResponse.json();
-          console.log("[SanityAdapter] Created new session");
         } else {
           throw new Error("Failed to create session");
         }
@@ -230,15 +218,9 @@ export class SanityStorageAdapter implements StorageAdapter {
             loadedFields++;
           }
         });
-        console.log(
-          "[SanityAdapter] Populated cache with",
-          loadedFields,
-          "fields",
-        );
       }
 
       this.initialized = true;
-      console.log("[SanityAdapter] Initialization complete");
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
         console.error("[SanityAdapter] Initialization failed:", error);

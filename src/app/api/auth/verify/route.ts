@@ -6,14 +6,22 @@
  *
  * GET /api/auth/verify
  * Returns: { authenticated: boolean, role: 'kid' | 'parent' | null }
+ *
+ * POST /api/auth/verify
+ * Body: { code?: string }
+ * - If code provided: validates parent code and sets parent auth cookie
+ * - If no code: checks existing parent auth cookie
+ * Returns: { isParent: boolean }
  */
 
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import {
   requireCredentials,
   successResponse,
   createErrorResponse,
+  isParentAuthValid,
+  setParentAuthCookie,
 } from "@/lib/api-utils";
 
 interface VerifyResponse {
@@ -28,9 +36,6 @@ export async function GET() {
     const sessionId = cookieStore.get("nissekomm-session")?.value;
 
     if (!sessionId) {
-      console.warn(
-        "[AUTH] Session verification failed: No session cookie found",
-      );
       return successResponse({
         authenticated: false,
         role: null,
@@ -40,9 +45,6 @@ export async function GET() {
     // Find familyCredentials by sessionId
     const credentialsResult = await requireCredentials(sessionId);
     if ("error" in credentialsResult) {
-      console.warn(
-        `[AUTH] Session verification failed: ${credentialsResult.error}`,
-      );
       return successResponse({
         authenticated: false,
         role: null,
@@ -64,11 +66,13 @@ export async function GET() {
 /**
  * Verify Parent Access
  * POST /api/auth/verify
- * Body: { code: string }
+ * Body: { code?: string }
+ * - If code provided: validates parent code and sets parent auth cookie on success
+ * - If no code provided: checks existing parent auth cookie
  * Returns: { isParent: boolean }
  */
 interface ParentVerifyRequest {
-  code: string;
+  code?: string;
 }
 
 interface ParentVerifyResponse {
@@ -81,11 +85,14 @@ export async function POST(request: NextRequest) {
     const cookieStore = await cookies();
     const sessionId = cookieStore.get("nissekomm-session")?.value;
 
-    if (!sessionId || !body.code) {
-      console.warn(
-        "[AUTH] Parent verification failed: Missing session or code",
-      );
+    if (!sessionId) {
       return successResponse({ isParent: false } as ParentVerifyResponse);
+    }
+
+    // If no code provided, check existing parent auth cookie
+    if (!body.code) {
+      const isValid = isParentAuthValid(request);
+      return successResponse({ isParent: isValid } as ParentVerifyResponse);
     }
 
     const code = body.code.trim().toUpperCase();
@@ -93,9 +100,6 @@ export async function POST(request: NextRequest) {
     // Verify that provided code matches parent code for this session
     const credentialsResult = await requireCredentials(sessionId);
     if ("error" in credentialsResult) {
-      console.warn(
-        `[AUTH] Parent verification failed: ${credentialsResult.error}`,
-      );
       return successResponse({ isParent: false } as ParentVerifyResponse);
     }
 
@@ -103,12 +107,14 @@ export async function POST(request: NextRequest) {
     const isParent = credentials.parentCode === code;
 
     if (!isParent) {
-      console.warn(
-        `[AUTH] Parent code mismatch: provided '${code.substring(0, 4)}...' does not match expected parent code for kid code '${credentials.kidCode?.substring(0, 4)}...'`,
-      );
+      return successResponse({ isParent: false } as ParentVerifyResponse);
     }
 
-    return successResponse({ isParent } as ParentVerifyResponse);
+    // Parent code is valid - set parent auth cookie for future requests
+    const response = NextResponse.json({
+      isParent: true,
+    } as ParentVerifyResponse);
+    return setParentAuthCookie(response, sessionId);
   } catch (error) {
     console.error("[AUTH] Parent verification error:", error);
     return createErrorResponse(error, "Parent verify error");

@@ -606,26 +606,28 @@ export class GameEngine {
    */
   static getCompletedEventyr(): string[] {
     const gameState = this.loadGameState();
-    const eventyrPhases = new Map<string, Set<number>>();
+    const completedEventyrList: string[] = [];
 
+    // Get all unique eventyr IDs from quests
+    const eventyrIds = new Set<string>();
     ALL_QUESTS.forEach((quest: Oppdrag) => {
-      if (quest.eventyr && gameState.completedQuests.has(quest.dag)) {
-        const { id, phase } = quest.eventyr;
-        if (!eventyrPhases.has(id)) {
-          eventyrPhases.set(id, new Set());
-        }
-        eventyrPhases.get(id)!.add(phase);
+      if (quest.eventyr) {
+        eventyrIds.add(quest.eventyr.id);
       }
     });
 
-    const completedEventyrList: string[] = [];
-    eventyrPhases.forEach((phases, eventyrId) => {
-      const sortedPhases = Array.from(phases).sort((a, b) => a - b);
-      const maxPhase = Math.max(...sortedPhases);
-      const isComplete =
-        sortedPhases.length === maxPhase &&
-        sortedPhases.every((phase, idx) => phase === idx + 1);
-      if (isComplete) {
+    // Check each eventyr using proper total phase count from getEventyrDays
+    eventyrIds.forEach((eventyrId) => {
+      const allDaysForEventyr = getEventyrDays(eventyrId);
+      const completedDaysForEventyr = allDaysForEventyr.filter((day) =>
+        gameState.completedQuests.has(day),
+      );
+
+      // Only complete if ALL days/phases are completed
+      if (
+        allDaysForEventyr.length > 0 &&
+        completedDaysForEventyr.length === allDaysForEventyr.length
+      ) {
         completedEventyrList.push(eventyrId);
       }
     });
@@ -1489,27 +1491,27 @@ export class GameEngine {
     verdi: number;
     maks: number;
     displayType:
-      | "counter"
-      | "bar"
-      | "percentage"
-      | "waveform"
-      | "radar"
-      | "gauge"
-      | "binary"
-      | "hexgrid";
+    | "counter"
+    | "bar"
+    | "percentage"
+    | "waveform"
+    | "radar"
+    | "gauge"
+    | "binary"
+    | "hexgrid";
     unit: string;
     description: string;
     status: "normal" | "advarsel" | "kritisk";
     inCrisis: boolean;
     crisisType?:
-      | "glitch"
-      | "oscillate"
-      | "drain"
-      | "stuck"
-      | "negative"
-      | "warning"
-      | "dimming"
-      | "lost";
+    | "glitch"
+    | "oscillate"
+    | "drain"
+    | "stuck"
+    | "negative"
+    | "warning"
+    | "dimming"
+    | "lost";
     crisisText?: string;
     crisisValues?: number[];
   }> {
@@ -1521,28 +1523,28 @@ export class GameEngine {
           maks: number;
           unlock_day: number;
           display_type:
-            | "counter"
-            | "bar"
-            | "percentage"
-            | "waveform"
-            | "radar"
-            | "gauge"
-            | "binary"
-            | "hexgrid";
+          | "counter"
+          | "bar"
+          | "percentage"
+          | "waveform"
+          | "radar"
+          | "gauge"
+          | "binary"
+          | "hexgrid";
           unit: string;
           child_progress_multiplier: number;
           description: string;
           crisis_behavior?: {
             day: number;
             crisis_type:
-              | "glitch"
-              | "oscillate"
-              | "drain"
-              | "stuck"
-              | "negative"
-              | "warning"
-              | "dimming"
-              | "lost";
+            | "glitch"
+            | "oscillate"
+            | "drain"
+            | "stuck"
+            | "negative"
+            | "warning"
+            | "dimming"
+            | "lost";
             crisis_value?: number;
             crisis_values?: number[];
             status: "kritisk" | "advarsel";

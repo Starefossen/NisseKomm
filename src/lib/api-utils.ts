@@ -15,6 +15,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { sanityServerClient } from "@/lib/sanity-client";
 
 const SESSION_COOKIE_NAME = "nissekomm-session";
+const PARENT_AUTH_COOKIE_NAME = "nissekomm-parent-auth";
 
 // ============================================================================
 // Types
@@ -242,8 +243,6 @@ export function createErrorResponse(
   error: unknown,
   defaultMessage = "Internal server error",
 ): NextResponse {
-  console.error(defaultMessage, error);
-
   // Handle Sanity-specific errors
   const err = error as { statusCode?: number; code?: string; message?: string };
 
@@ -269,7 +268,7 @@ export function createErrorResponse(
     );
   }
 
-  // Validation errors (non-retryable)
+  // Validation errors (non-retryable) - don't log these, they're expected user input errors
   if (error instanceof Error) {
     return NextResponse.json(
       {
@@ -280,7 +279,8 @@ export function createErrorResponse(
     );
   }
 
-  // Generic server error (non-retryable)
+  // Generic server error (non-retryable) - log these as they indicate bugs
+  console.error(defaultMessage, error);
   return NextResponse.json(
     {
       error: defaultMessage,
@@ -341,6 +341,81 @@ export function setSessionCookie(
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     httpOnly: false, // Client needs to read this
+  });
+
+  return response;
+}
+
+// ============================================================================
+// Parent Authentication (Server-Side)
+// ============================================================================
+
+/**
+ * Check if parent is authenticated for the given session
+ * Validates that parent auth cookie matches the session cookie
+ */
+export function isParentAuthValid(request: NextRequest): boolean {
+  const sessionId = request.cookies.get(SESSION_COOKIE_NAME)?.value;
+  const parentAuthSessionId = request.cookies.get(
+    PARENT_AUTH_COOKIE_NAME,
+  )?.value;
+
+  if (!sessionId || !parentAuthSessionId) return false;
+  return sessionId === parentAuthSessionId;
+}
+
+/**
+ * Require valid parent authentication
+ * Returns session ID if authenticated, or error response if not
+ * Use this for routes that require parent access (like family settings)
+ */
+export function requireParentAuth(
+  request: NextRequest,
+): { sessionId: string } | { error: NextResponse } {
+  const sessionId = request.cookies.get(SESSION_COOKIE_NAME)?.value;
+  const parentAuthSessionId = request.cookies.get(
+    PARENT_AUTH_COOKIE_NAME,
+  )?.value;
+
+  if (!sessionId) {
+    return {
+      error: NextResponse.json(
+        { error: "No session - please login first" } as ApiError,
+        { status: 401 },
+      ),
+    };
+  }
+
+  if (!parentAuthSessionId || parentAuthSessionId !== sessionId) {
+    return {
+      error: NextResponse.json(
+        { error: "Parent authentication required" } as ApiError,
+        { status: 403 },
+      ),
+    };
+  }
+
+  return { sessionId };
+}
+
+/**
+ * Set parent auth cookie on response
+ * Used after successful parent code validation
+ */
+export function setParentAuthCookie(
+  response: NextResponse,
+  sessionId: string,
+): NextResponse {
+  const maxAge = 365 * 24 * 60 * 60; // 365 days in seconds
+
+  response.cookies.set({
+    name: PARENT_AUTH_COOKIE_NAME,
+    value: sessionId,
+    maxAge,
+    path: "/",
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    httpOnly: false, // Client needs to read this for isParentAuthenticated()
   });
 
   return response;

@@ -13,6 +13,7 @@ const customJestConfig = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
     "^@vercel/analytics$": "<rootDir>/src/lib/__mocks__/@vercel/analytics.ts",
+    "^uuid$": "<rootDir>/src/lib/__mocks__/uuid.ts",
   },
   testMatch: [
     "**/__tests__/**/*.test.[jt]s?(x)",
@@ -25,8 +26,9 @@ const customJestConfig = {
     "!src/**/__tests__/**",
   ],
   // Transform ES modules from Sanity and its dependencies
+  // Note: Pattern must handle pnpm's nested .pnpm structure
   transformIgnorePatterns: [
-    "node_modules/(?!(nanoid|@sanity|uuid|get-random-values)/)",
+    "/node_modules/(?!(.pnpm/(nanoid|@sanity|uuid|get-random-values)|nanoid|@sanity|uuid|get-random-values)/)",
   ],
 };
 

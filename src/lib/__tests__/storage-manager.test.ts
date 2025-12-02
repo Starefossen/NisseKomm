@@ -414,3 +414,295 @@ describe("Storage Manager - Performance", () => {
     expect(codes.length).toBe(24);
   });
 });
+
+describe("Storage Manager - Modules", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("should unlock and track modules", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    expect(StorageManager.isModuleUnlocked("NISSEKRYPTO")).toBe(false);
+
+    StorageManager.unlockModule("NISSEKRYPTO");
+    expect(StorageManager.isModuleUnlocked("NISSEKRYPTO")).toBe(true);
+
+    const modules = StorageManager.getUnlockedModules();
+    expect(modules).toContain("NISSEKRYPTO");
+  });
+
+  it("should not duplicate module unlocks", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    StorageManager.unlockModule("BREVFUGLER");
+    StorageManager.unlockModule("BREVFUGLER");
+    StorageManager.unlockModule("BREVFUGLER");
+
+    const modules = StorageManager.getUnlockedModules();
+    expect(modules.filter((m) => m === "BREVFUGLER").length).toBe(1);
+  });
+});
+
+describe("Storage Manager - Crisis Status", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("should track crisis resolution", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    expect(StorageManager.isCrisisResolved("antenna")).toBe(false);
+    expect(StorageManager.isCrisisResolved("inventory")).toBe(false);
+
+    StorageManager.resolveCrisis("antenna");
+    expect(StorageManager.isCrisisResolved("antenna")).toBe(true);
+    expect(StorageManager.isCrisisResolved("inventory")).toBe(false);
+
+    StorageManager.resolveCrisis("inventory");
+    expect(StorageManager.isCrisisResolved("inventory")).toBe(true);
+  });
+
+  it("should return full crisis status", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    const status = StorageManager.getCrisisStatus();
+    expect(status).toEqual({ antenna: false, inventory: false });
+
+    StorageManager.resolveCrisis("antenna");
+    const updatedStatus = StorageManager.getCrisisStatus();
+    expect(updatedStatus.antenna).toBe(true);
+    expect(updatedStatus.inventory).toBe(false);
+  });
+});
+
+describe("Storage Manager - Santa Letters", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("should add and retrieve santa letters", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    StorageManager.addSantaLetter(1, "Dear Santa, I want a bike!");
+    StorageManager.addSantaLetter(5, "Dear Santa, I want a puppy!");
+
+    const letters = StorageManager.getSantaLetters();
+    expect(letters).toHaveLength(2);
+    expect(letters[0].day).toBe(1);
+    expect(letters[0].content).toBe("Dear Santa, I want a bike!");
+  });
+
+  it("should replace letter for same day", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    StorageManager.addSantaLetter(1, "First letter");
+    StorageManager.addSantaLetter(1, "Updated letter");
+
+    const letters = StorageManager.getSantaLetters();
+    expect(letters).toHaveLength(1);
+    expect(letters[0].content).toBe("Updated letter");
+  });
+
+  it("should sort letters by day", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    StorageManager.addSantaLetter(10, "Day 10 letter");
+    StorageManager.addSantaLetter(3, "Day 3 letter");
+    StorageManager.addSantaLetter(7, "Day 7 letter");
+
+    const letters = StorageManager.getSantaLetters();
+    expect(letters[0].day).toBe(3);
+    expect(letters[1].day).toBe(7);
+    expect(letters[2].day).toBe(10);
+  });
+
+  it("should reject invalid day numbers", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    StorageManager.addSantaLetter(0, "Invalid");
+    StorageManager.addSantaLetter(25, "Invalid");
+
+    const letters = StorageManager.getSantaLetters();
+    expect(letters).toHaveLength(0);
+  });
+
+  it("should reject empty content", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    StorageManager.addSantaLetter(1, "");
+    StorageManager.addSantaLetter(2, "   ");
+
+    const letters = StorageManager.getSantaLetters();
+    expect(letters).toHaveLength(0);
+  });
+});
+
+describe("Storage Manager - Earned Badges", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("should add and check earned badges", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    expect(StorageManager.hasEarnedBadge("test-badge")).toBe(false);
+
+    StorageManager.addEarnedBadge("test-badge");
+    expect(StorageManager.hasEarnedBadge("test-badge")).toBe(true);
+  });
+
+  it("should store badge with timestamp", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    const before = Date.now();
+    StorageManager.addEarnedBadge("timed-badge");
+    const after = Date.now();
+
+    const badges = StorageManager.getEarnedBadges();
+    const badge = badges.find((b) => b.badgeId === "timed-badge");
+    expect(badge).toBeDefined();
+    expect(badge!.timestamp).toBeGreaterThanOrEqual(before);
+    expect(badge!.timestamp).toBeLessThanOrEqual(after);
+  });
+
+  it("should not duplicate badges", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    StorageManager.addEarnedBadge("dup-badge");
+    StorageManager.addEarnedBadge("dup-badge");
+    StorageManager.addEarnedBadge("dup-badge");
+
+    const badges = StorageManager.getEarnedBadges();
+    expect(badges.filter((b) => b.badgeId === "dup-badge")).toHaveLength(1);
+  });
+
+  it("should remove specific badge", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    StorageManager.addEarnedBadge("badge-a");
+    StorageManager.addEarnedBadge("badge-b");
+    StorageManager.removeEarnedBadge("badge-a");
+
+    expect(StorageManager.hasEarnedBadge("badge-a")).toBe(false);
+    expect(StorageManager.hasEarnedBadge("badge-b")).toBe(true);
+  });
+
+  it("should clear all badges", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    StorageManager.addEarnedBadge("badge-1");
+    StorageManager.addEarnedBadge("badge-2");
+    StorageManager.clearEarnedBadges();
+
+    expect(StorageManager.getEarnedBadges()).toHaveLength(0);
+  });
+});
+
+describe("Storage Manager - Bonusoppdrag Emails", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("should track viewed bonusoppdrag emails", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    expect(StorageManager.getViewedBonusOppdragEmails().has(11)).toBe(false);
+
+    StorageManager.markBonusOppdragEmailAsViewed(11);
+    expect(StorageManager.getViewedBonusOppdragEmails().has(11)).toBe(true);
+  });
+
+  it("should clear viewed bonusoppdrag emails", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    StorageManager.markBonusOppdragEmailAsViewed(11);
+    StorageManager.markBonusOppdragEmailAsViewed(16);
+    StorageManager.clearViewedBonusOppdragEmails();
+
+    expect(StorageManager.getViewedBonusOppdragEmails().size).toBe(0);
+  });
+});
+
+describe("Storage Manager - Bonusoppdrag Badges", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("should add and check bonusoppdrag badges", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    expect(StorageManager.hasBonusOppdragBadge(11)).toBe(false);
+
+    StorageManager.addBonusOppdragBadge(11, "trophy", "Antenna Expert");
+    expect(StorageManager.hasBonusOppdragBadge(11)).toBe(true);
+  });
+
+  it("should get all bonusoppdrag badges", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    StorageManager.addBonusOppdragBadge(11, "trophy", "Antenna Expert");
+    StorageManager.addBonusOppdragBadge(16, "star", "Inventory Master");
+
+    const badges = StorageManager.getBonusOppdragBadges();
+    expect(badges).toHaveLength(2);
+    expect(badges[0].day).toBe(11);
+    expect(badges[1].day).toBe(16);
+  });
+
+  it("should not duplicate bonusoppdrag badges", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    StorageManager.addBonusOppdragBadge(11, "trophy", "Expert");
+    StorageManager.addBonusOppdragBadge(11, "trophy", "Expert");
+
+    const badges = StorageManager.getBonusOppdragBadges();
+    expect(badges).toHaveLength(1);
+  });
+});
+
+describe("Storage Manager - Eventyr Badges", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("should add and check eventyr badges", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    expect(StorageManager.hasEventyrBadge("morkets-trussel")).toBe(false);
+
+    StorageManager.addEventyrBadge("morkets-trussel", "shield", "Mørket-Beseirer");
+    expect(StorageManager.hasEventyrBadge("morkets-trussel")).toBe(true);
+  });
+
+  it("should not duplicate eventyr badges", async () => {
+    const password = generateTestPassword();
+    await StorageManager.setAuthenticated(true, password);
+
+    StorageManager.addEventyrBadge("iqs-oppfinnelser", "beaker", "Oppfinner");
+    StorageManager.addEventyrBadge("iqs-oppfinnelser", "beaker", "Oppfinner");
+
+    const badges = StorageManager.getEventyrBadges();
+    expect(badges.filter((b) => b.eventyrId === "iqs-oppfinnelser")).toHaveLength(1);
+  });
+});

@@ -19,26 +19,13 @@ export function DayPlanning({
   const showKeyboardShortcuts = () => {
     alert(
       "⌨️ TASTATURSNARVEIER:\n\n" +
-        "← / h : Forrige dag\n" +
-        "→ / l : Neste dag\n" +
-        "Home / g : Första dag\n" +
-        "End / G : Siste dag\n" +
-        "t : Gå til dagens dato\n" +
-        "? : Vis denna hjelpen",
+      "← / h : Forrige dag\n" +
+      "→ / l : Neste dag\n" +
+      "Home / g : Första dag\n" +
+      "End / G : Siste dag\n" +
+      "t : Gå til dagens dato\n" +
+      "? : Vis denna hjelpen",
     );
-  };
-
-  const getSetupBadgeColor = (tid: string) => {
-    switch (tid) {
-      case "enkel":
-        return "bg-green-600";
-      case "moderat":
-        return "bg-yellow-600";
-      case "avansert":
-        return "bg-red-600";
-      default:
-        return "bg-gray-600";
-    }
   };
 
   return (

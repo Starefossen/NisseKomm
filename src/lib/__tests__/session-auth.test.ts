@@ -22,7 +22,15 @@ import {
   isValidParentCode,
   getCodeType,
 } from "../code-generator";
-import { getSessionId, setSessionId, clearSessionId } from "../session-manager";
+import {
+  getSessionId,
+  setSessionId,
+  clearSessionId,
+  setParentAuthenticated,
+  isParentAuthenticated,
+  clearParentAuth,
+  getKidCodeFromSession,
+} from "../session-manager";
 
 describe("Code Generation", () => {
   it("should generate valid kid codes", () => {
@@ -220,5 +228,144 @@ describe("Edge Cases", () => {
     expect(isValidParentCode("nordpol-abc12345")).toBe(true);
     expect(isValidParentCode("NORDPOL-ABC12345")).toBe(true);
     expect(isValidParentCode("Nordpol-Abc12345")).toBe(true);
+  });
+});
+
+describe("Parent Authentication", () => {
+  beforeEach(() => {
+    // Clear cookies
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+
+    // Clear localStorage
+    localStorage.clear();
+    clearSessionId();
+    clearParentAuth();
+  });
+
+  it("should set parent as authenticated", () => {
+    const sessionId = "550e8400-e29b-41d4-a716-446655440010";
+    setSessionId(sessionId);
+    setParentAuthenticated(sessionId);
+
+    expect(isParentAuthenticated()).toBe(true);
+  });
+
+  it("should return false when no session exists", () => {
+    expect(isParentAuthenticated()).toBe(false);
+  });
+
+  it("should return false when parent auth does not match session", () => {
+    const sessionId = "550e8400-e29b-41d4-a716-446655440011";
+    const otherSessionId = "550e8400-e29b-41d4-a716-446655440012";
+
+    setSessionId(sessionId);
+    setParentAuthenticated(otherSessionId);
+
+    expect(isParentAuthenticated()).toBe(false);
+  });
+
+  it("should persist parent auth in localStorage", () => {
+    const sessionId = "550e8400-e29b-41d4-a716-446655440013";
+    setSessionId(sessionId);
+    setParentAuthenticated(sessionId);
+
+    const stored = localStorage.getItem("nissekomm-parent-auth");
+    expect(stored).toBe(sessionId);
+  });
+
+  it("should clear parent auth without clearing session", () => {
+    const sessionId = "550e8400-e29b-41d4-a716-446655440014";
+    setSessionId(sessionId);
+    setParentAuthenticated(sessionId);
+
+    expect(isParentAuthenticated()).toBe(true);
+
+    clearParentAuth();
+
+    expect(isParentAuthenticated()).toBe(false);
+    expect(getSessionId()).toBe(sessionId); // Session still exists
+  });
+
+  it("should set parent auth cookie", () => {
+    const sessionId = "550e8400-e29b-41d4-a716-446655440015";
+    setSessionId(sessionId);
+    setParentAuthenticated(sessionId);
+
+    const cookies = document.cookie;
+    expect(cookies).toContain("nissekomm-parent-auth=");
+    expect(cookies).toContain(sessionId);
+  });
+
+  it("should handle localStorage write failures gracefully for parent auth", () => {
+    const originalSetItem = localStorage.setItem;
+    localStorage.setItem = () => {
+      throw new Error("Storage quota exceeded");
+    };
+
+    const sessionId = "550e8400-e29b-41d4-a716-446655440016";
+    setSessionId(sessionId);
+
+    // Should not throw even if localStorage fails
+    expect(() => setParentAuthenticated(sessionId)).not.toThrow();
+
+    localStorage.setItem = originalSetItem;
+  });
+
+  it("should use localStorage fallback for parent auth check", () => {
+    const sessionId = "550e8400-e29b-41d4-a716-446655440017";
+
+    // Set session and parent auth
+    setSessionId(sessionId);
+    localStorage.setItem("nissekomm-parent-auth", sessionId);
+
+    // Clear cookies to force localStorage fallback
+    document.cookie.split(";").forEach((c) => {
+      const name = c.trim().split("=")[0];
+      if (name === "nissekomm-parent-auth") {
+        document.cookie = `${name}=;expires=${new Date().toUTCString()};path=/`;
+      }
+    });
+
+    expect(isParentAuthenticated()).toBe(true);
+  });
+});
+
+describe("Get Kid Code From Session", () => {
+  beforeEach(() => {
+    // Clear cookies and localStorage
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+    localStorage.clear();
+    clearSessionId();
+  });
+
+  it("should return null when no session exists", async () => {
+    const result = await getKidCodeFromSession();
+    expect(result).toBeNull();
+  });
+
+  it("should return sessionId as kidCode in localStorage mode when valid", async () => {
+    // Generate a valid kid code and use it as session ID
+    const kidCode = generateKidCode();
+    setSessionId(kidCode);
+
+    const result = await getKidCodeFromSession();
+    expect(result).toBe(kidCode);
+  });
+
+  it("should return null for invalid kid code format in localStorage mode", async () => {
+    // Use a UUID (not a valid kid code) as session ID
+    const uuid = "550e8400-e29b-41d4-a716-446655440018";
+    setSessionId(uuid);
+
+    const result = await getKidCodeFromSession();
+    expect(result).toBeNull();
   });
 });

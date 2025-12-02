@@ -29,12 +29,14 @@ function NissemorGuideContent() {
   const [expandedDays, setExpandedDays] = useState<number[]>([]);
   const [selectedDay, setSelectedDay] = useState<number>(relevantDay);
 
-  const [, forceUpdate] = useState({});
+  // Counter to force useMemo recalculation when data changes
+  const [refreshCounter, setRefreshCounter] = useState(0);
   const [lastUpdated, setLastUpdated] = useState(new Date());
 
   const completedDays = useMemo(() => {
     return new Set(GameEngine.getCompletedDays());
-  }, [forceUpdate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- refreshCounter intentionally triggers recalculation
+  }, [refreshCounter]);
 
   // Initialize storage with sessionId for Nissemor Guide
   useEffect(() => {
@@ -72,13 +74,14 @@ function NissemorGuideContent() {
   // Calculate progression summary (refreshes when storage changes)
   const progression = useMemo(
     () => GameEngine.getProgressionSummary(),
-    [forceUpdate],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- refreshCounter intentionally triggers recalculation
+    [refreshCounter],
   );
 
   // Auto-refresh progression data every 30 seconds to catch child progress updates
   useEffect(() => {
     const interval = setInterval(() => {
-      forceUpdate({}); // Refresh progression data
+      setRefreshCounter((c) => c + 1);
       setLastUpdated(new Date());
     }, 30000); // Update every 30 seconds (less aggressive)
 
@@ -91,7 +94,7 @@ function NissemorGuideContent() {
 
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key?.startsWith("nissekomm-")) {
-        forceUpdate({});
+        setRefreshCounter((c) => c + 1);
         setLastUpdated(new Date());
       }
     };
@@ -166,12 +169,12 @@ function NissemorGuideContent() {
           e.preventDefault();
           alert(
             "⌨️ TASTATURSNARVEIER:\n\n" +
-              "← / h : Forrige dag\n" +
-              "→ / l : Neste dag\n" +
-              "Home / g : Første dag\n" +
-              "End / G : Siste dag\n" +
-              "t : Gå til dagens dato\n" +
-              "? : Vis denna hjelpen",
+            "← / h : Forrige dag\n" +
+            "→ / l : Neste dag\n" +
+            "Home / g : Første dag\n" +
+            "End / G : Siste dag\n" +
+            "t : Gå til dagens dato\n" +
+            "? : Vis denna hjelpen",
           );
           break;
       }
@@ -188,7 +191,7 @@ function NissemorGuideContent() {
       <ProgressionStats
         progression={progression}
         onRefresh={() => {
-          forceUpdate({});
+          setRefreshCounter((c) => c + 1);
           setLastUpdated(new Date());
         }}
         lastUpdated={lastUpdated}

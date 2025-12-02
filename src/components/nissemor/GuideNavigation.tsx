@@ -23,7 +23,8 @@ type PageType =
   | "printout"
   | "brevfugler"
   | "bonusoppdrag"
-  | "merker";
+  | "merker"
+  | "innstillinger";
 
 interface GuideNavigationProps {
   currentPage: PageType;
@@ -75,6 +76,12 @@ export function GuideNavigation({ currentPage }: GuideNavigationProps) {
       href: "/nissemor-guide/utvikling",
       color: "bg-(--christmas-red) text-white hover:bg-(--christmas-red)/80",
     },
+    {
+      id: "innstillinger" as PageType,
+      label: "⚙️ INNSTILLINGER",
+      href: "/nissemor-guide/innstillinger",
+      color: "bg-gray-600 text-white hover:bg-gray-500",
+    },
   ];
 
   return (
@@ -84,9 +91,8 @@ export function GuideNavigation({ currentPage }: GuideNavigationProps) {
           <Link
             key={page.id}
             href={`${page.href}?kode=${kode}`}
-            className={`px-6 py-3 font-bold text-lg border-2 border-black transition-colors ${page.color} ${
-              currentPage === page.id ? "ring-4 ring-(--gold)" : ""
-            }`}
+            className={`px-6 py-3 font-bold text-lg border-2 border-black transition-colors ${page.color} ${currentPage === page.id ? "ring-4 ring-(--gold)" : ""
+              }`}
           >
             {page.label}
           </Link>

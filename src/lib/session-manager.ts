@@ -16,6 +16,10 @@ const SESSION_COOKIE_NAME = "nissekomm-session";
 const SESSION_STORAGE_KEY = "nissekomm-session-id";
 const SESSION_EXPIRY_DAYS = 365;
 
+// Parent authentication cookie - stores sessionId when parent is authenticated
+const PARENT_AUTH_COOKIE_NAME = "nissekomm-parent-auth";
+const PARENT_AUTH_STORAGE_KEY = "nissekomm-parent-auth";
+
 /**
  * Set session ID in storage
  * Used after successful login via /api/auth/login
@@ -181,4 +185,100 @@ function setSessionCookie(sessionId: string): void {
     .join("; ");
 
   document.cookie = cookieString;
+}
+
+// ============================================================================
+// Parent Authentication
+// ============================================================================
+
+/**
+ * Set parent as authenticated for current session
+ * Called after successful parent code validation or registration
+ * @param sessionId - The session ID to associate with parent auth (must match current session)
+ */
+export function setParentAuthenticated(sessionId: string): void {
+  if (typeof document === "undefined") return;
+
+  const maxAge = SESSION_EXPIRY_DAYS * 24 * 60 * 60; // seconds
+  const isSecure = window.location.protocol === "https:";
+
+  // Cookie attributes for security
+  const cookieString = [
+    `${PARENT_AUTH_COOKIE_NAME}=${sessionId}`,
+    `max-age=${maxAge}`,
+    `path=/`,
+    `samesite=lax`,
+    isSecure ? "secure" : "",
+  ]
+    .filter(Boolean)
+    .join("; ");
+
+  document.cookie = cookieString;
+
+  // Also store in localStorage as fallback
+  try {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(PARENT_AUTH_STORAGE_KEY, sessionId);
+    }
+  } catch (e) {
+    if (process.env.NODE_ENV === "development") {
+      console.warn("Failed to write parent auth to localStorage:", e);
+    }
+  }
+}
+
+/**
+ * Check if parent is authenticated for current session
+ * Returns true only if parent auth cookie exists AND matches current session
+ */
+export function isParentAuthenticated(): boolean {
+  const currentSessionId = getSessionId();
+  if (!currentSessionId) return false;
+
+  // Try cookie first
+  if (typeof document !== "undefined") {
+    const cookies = document.cookie.split(";");
+    for (const cookie of cookies) {
+      const [name, value] = cookie.trim().split("=");
+      if (name === PARENT_AUTH_COOKIE_NAME && value === currentSessionId) {
+        return true;
+      }
+    }
+  }
+
+  // Fallback to localStorage
+  try {
+    if (typeof window !== "undefined") {
+      const storedAuth = localStorage.getItem(PARENT_AUTH_STORAGE_KEY);
+      return storedAuth === currentSessionId;
+    }
+  } catch (e) {
+    if (process.env.NODE_ENV === "development") {
+      console.warn("Failed to read parent auth from localStorage:", e);
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Clear parent authentication (logout from parent guide)
+ * Does NOT clear kid session - just revokes parent access
+ */
+export function clearParentAuth(): void {
+  // Clear cookie
+  if (typeof document !== "undefined") {
+    document.cookie = `${PARENT_AUTH_COOKIE_NAME}=; max-age=0; path=/`;
+  }
+
+  // Clear localStorage
+  try {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(PARENT_AUTH_STORAGE_KEY);
+    }
+  } catch (e) {
+    if (process.env.NODE_ENV === "development") {
+      console.warn("Failed to clear parent auth from localStorage:", e);
+    }
+  }
 }

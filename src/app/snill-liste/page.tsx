@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, FormEvent, useEffect } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Icons } from "@/lib/icons";
+import { setSessionId, setParentAuthenticated } from "@/lib/session-manager";
 
 interface RegistrationFormData {
   familyName: string;
@@ -11,13 +12,8 @@ interface RegistrationFormData {
   parentEmail: string;
 }
 
-interface GeneratedCodes {
-  kidCode: string;
-  parentCode: string;
-  sessionId: string;
-}
-
 export default function RegisterPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState<RegistrationFormData>({
     familyName: "",
     kidNames: [""],
@@ -26,9 +22,6 @@ export default function RegisterPage() {
   });
   const [shareKey, setShareKey] = useState("");
 
-  const [generatedCodes, setGeneratedCodes] = useState<GeneratedCodes | null>(
-    null,
-  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [shareKeyRequired, setShareKeyRequired] = useState(false);
@@ -155,192 +148,30 @@ export default function RegisterPage() {
         throw new Error(errorData.error || "Registrering mislyktes");
       }
 
-      const codes = await response.json();
-      setGeneratedCodes(codes);
+      const codes = (await response.json()) as {
+        sessionId: string;
+        kidCode: string;
+      };
+
+      // Set session and parent auth cookies for immediate access
+      if (codes.sessionId) {
+        setSessionId(codes.sessionId);
+        setParentAuthenticated(codes.sessionId);
+      }
+
+      // Store kid code for prefill on main app
+      if (typeof window !== "undefined" && codes.kidCode) {
+        sessionStorage.setItem("PREFILL_CODE", codes.kidCode);
+      }
+
+      // Redirect to Nissemor Guide settings page to show codes
+      router.push("/nissemor-guide/innstillinger");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Noe gikk galt");
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-  };
-
-  // Save codes to localStorage as backup (1 hour expiry)
-  if (generatedCodes) {
-    // Store codes temporarily
-    if (typeof window !== "undefined") {
-      localStorage.setItem(
-        "TEMP_REGISTRATION_CODES",
-        JSON.stringify({
-          ...generatedCodes,
-          timestamp: Date.now(),
-        }),
-      );
-
-      // Auto-clear after 1 hour
-      setTimeout(
-        () => {
-          localStorage.removeItem("TEMP_REGISTRATION_CODES");
-        },
-        60 * 60 * 1000,
-      );
-    }
-
-    // Warning before leaving page
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      e.returnValue = "Har du lagret kodene dine?";
-    };
-
-    if (typeof window !== "undefined") {
-      window.addEventListener("beforeunload", handleBeforeUnload);
-    }
-
-    return (
-      <div className="min-h-screen bg-black p-4 md:p-8 font-mono">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <div className="border-8 border-(--gold) bg-black p-6 mb-6">
-            <div className="flex items-center justify-center gap-4 mb-4">
-              <Icons.Star size={40} color="gold" />
-              <h1 className="text-4xl font-bold text-(--gold) tracking-wider">
-                REGISTRERING FULLFØRT
-              </h1>
-              <Icons.Star size={40} color="gold" />
-            </div>
-            <p className="text-center text-(--neon-green) text-lg">
-              Familiens NisseKomm-tilgang er opprettet!
-            </p>
-          </div>
-
-          {/* Kid Code */}
-          <div className="border-4 border-(--neon-green) bg-(--neon-green)/10 p-6 mb-4">
-            <div className="flex items-center gap-3 mb-3">
-              <Icons.Gift size={24} color="green" />
-              <h2 className="text-2xl font-bold text-(--neon-green)">
-                BARNEKODE
-              </h2>
-            </div>
-            <p className="text-sm text-(--neon-green)/70 mb-4">
-              Barna bruker denne koden til å logge inn:
-            </p>
-            <div className="flex items-center gap-3">
-              <div className="flex-1 bg-black border-2 border-(--neon-green) p-4">
-                <code className="text-2xl font-bold text-(--gold) tracking-widest">
-                  {generatedCodes.kidCode}
-                </code>
-              </div>
-              <button
-                onClick={() => copyToClipboard(generatedCodes.kidCode)}
-                className="px-4 py-4 border-2 border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green) hover:text-black transition-colors"
-                title="Kopier barnekode"
-              >
-                <Icons.File size={20} />
-              </button>
-            </div>
-          </div>
-
-          {/* Parent Code */}
-          <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-6 mb-6">
-            <div className="flex items-center gap-3 mb-3">
-              <Icons.Lock size={24} color="blue" />
-              <h2 className="text-2xl font-bold text-(--cold-blue)">
-                FORELDREKODE
-              </h2>
-            </div>
-            <p className="text-sm text-(--cold-blue)/70 mb-4">
-              Din private kode for tilgang til Nissemor-guiden:
-            </p>
-            <div className="flex items-center gap-3">
-              <div className="flex-1 bg-black border-2 border-(--cold-blue) p-4">
-                <code className="text-2xl font-bold text-(--gold) tracking-widest">
-                  {generatedCodes.parentCode}
-                </code>
-              </div>
-              <button
-                onClick={() => copyToClipboard(generatedCodes.parentCode)}
-                className="px-4 py-4 border-2 border-(--cold-blue) text-(--cold-blue) hover:bg-(--cold-blue) hover:text-black transition-colors"
-                title="Kopier foreldrekode"
-              >
-                <Icons.File size={20} />
-              </button>
-            </div>
-          </div>
-
-          {/* Navigation Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <Link
-              href="/"
-              className="px-6 py-4 border-4 border-(--neon-green) bg-(--neon-green) text-black text-center font-bold tracking-wider hover:bg-transparent hover:text-(--neon-green) transition-colors flex items-center justify-center gap-2"
-              onClick={() => {
-                if (typeof window !== "undefined") {
-                  sessionStorage.setItem(
-                    "PREFILL_CODE",
-                    generatedCodes.kidCode,
-                  );
-                }
-              }}
-            >
-              ÅPNE NISSEKOMM →
-            </Link>
-            <Link
-              href="/nissemor-guide"
-              className="px-6 py-4 border-4 border-(--cold-blue) bg-(--cold-blue) text-black text-center font-bold tracking-wider hover:bg-transparent hover:text-(--cold-blue) transition-colors flex items-center justify-center gap-2"
-            >
-              ÅPNE NISSEMOR-GUIDE →
-            </Link>
-          </div>
-
-          {/* Copy Both Button */}
-          <button
-            onClick={() => {
-              copyToClipboard(
-                `Barnekode: ${generatedCodes.kidCode}\nForeldrekode: ${generatedCodes.parentCode}`,
-              );
-            }}
-            className="w-full px-6 py-4 border-4 border-(--gold) text-(--gold) hover:bg-(--gold) hover:text-black font-bold tracking-wider transition-colors mb-6"
-          >
-            KOPIER BEGGE KODENE
-          </button>
-
-          {/* Important Info */}
-          <div className="border-4 border-(--neon-green)/30 bg-(--neon-green)/5 p-6">
-            <h3 className="text-xl font-bold text-(--gold) mb-4">
-              📋 VIKTIG INFORMASJON
-            </h3>
-            <ul className="space-y-2 text-(--neon-green) text-sm">
-              <li className="flex items-start gap-2">
-                <span className="text-(--gold)">•</span>
-                <span>
-                  Lagre begge kodene et trygt sted - de kan ikke gjenopprettes
-                  senere
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-(--gold)">•</span>
-                <span>
-                  Samme koder fungerer på alle enheter (tablet, PC, mobil)
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-(--gold)">•</span>
-                <span>Barnekoden deles med barna for daglig innlogging</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-(--gold)">•</span>
-                <span>
-                  Foreldrekoden holder du privat for å lese Nissemor-guiden
-                </span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-black p-4 md:p-8 font-mono">
