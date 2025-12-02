@@ -56,6 +56,15 @@ interface CLIArgs {
   includeTest: boolean;
 }
 
+// Delay helper for rate limiting
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Resend rate limit: 2 requests per second
+// We use 600ms between requests to stay safely under the limit
+const DELAY_BETWEEN_EMAILS_MS = 600;
+const MAX_RETRIES = 3;
+const RETRY_DELAY_MS = 2000;
+
 function parseArgs(): CLIArgs {
   const args = process.argv.slice(2);
 
@@ -390,6 +399,7 @@ Ta vare på disse kodene - dere trenger dem hver dag i desember!
 async function sendWelcomeEmail(
   resend: Resend,
   family: FamilyCredentials,
+  retryCount = 0,
 ): Promise<boolean> {
   try {
     const { error } = await resend.emails.send({
@@ -411,6 +421,22 @@ async function sendWelcomeEmail(
     });
 
     if (error) {
+      // Check for rate limit error
+      if (
+        error.message.includes("Too many requests") ||
+        error.message.includes("rate limit")
+      ) {
+        if (retryCount < MAX_RETRIES) {
+          const waitTime = RETRY_DELAY_MS * (retryCount + 1);
+          console.log(
+            `\n   ⏳ Rate limited. Waiting ${waitTime / 1000}s before retry ${retryCount + 1}/${MAX_RETRIES}...`,
+          );
+          await delay(waitTime);
+          return sendWelcomeEmail(resend, family, retryCount + 1);
+        }
+        console.error(`   ✗ Failed after ${MAX_RETRIES} retries: ${error.message}`);
+        return false;
+      }
       console.error(`   ✗ Failed: ${error.message}`);
       return false;
     }
@@ -448,6 +474,22 @@ async function main() {
   // Validate environment
   if (!process.env.RESEND_API_KEY && !args.dryRun) {
     console.error("❌ RESEND_API_KEY is not set. Cannot send emails.");
+    process.exit(1);
+  }
+
+  // Prevent sending production emails with localhost URL
+  if (
+    args.dataset === "production" &&
+    !args.dryRun &&
+    (BASE_URL.includes("localhost") || BASE_URL.includes("127.0.0.1"))
+  ) {
+    console.error(
+      "❌ Cannot send production emails with localhost in NEXT_PUBLIC_URL.",
+    );
+    console.error(`   Current URL: ${BASE_URL}`);
+    console.error(
+      "   Set NEXT_PUBLIC_URL to production domain (e.g., https://nissekomm.no)",
+    );
     process.exit(1);
   }
 
@@ -532,8 +574,8 @@ async function main() {
       failed++;
     }
 
-    // Rate limit: wait 100ms between emails to avoid hitting Resend limits
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    // Rate limit: wait between emails to avoid hitting Resend's 2 req/s limit
+    await delay(DELAY_BETWEEN_EMAILS_MS);
   }
 
   console.log("\n════════════════════════════════════════════");
