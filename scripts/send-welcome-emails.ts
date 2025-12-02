@@ -546,6 +546,16 @@ async function main() {
     process.exit(0);
   }
 
+  // Block bulk emails for development dataset (require --email for single sends)
+  if (args.dataset === "development" && !args.email) {
+    console.error(
+      "\n❌ Bulk emails are not allowed for development dataset.",
+    );
+    console.error("   Use --email <address> to send to a specific family.");
+    console.error("   Or use --dry-run to preview without sending.");
+    process.exit(1);
+  }
+
   // Confirmation prompt for sending to all
   if (!args.email && families.length > 1) {
     console.log(
@@ -560,10 +570,18 @@ async function main() {
 
   let sent = 0;
   let failed = 0;
+  let skipped = 0;
 
   for (const family of families) {
     const name = family.familyName || "Unnamed";
     process.stdout.write(`   → ${name} (${family.parentEmail})... `);
+
+    // Skip @example.com domains (test emails should never be sent)
+    if (family.parentEmail.toLowerCase().endsWith("@example.com")) {
+      console.log("⏭ Skipped (test email)");
+      skipped++;
+      continue;
+    }
 
     const success = await sendWelcomeEmail(resend, family);
 
@@ -579,7 +597,7 @@ async function main() {
   }
 
   console.log("\n════════════════════════════════════════════");
-  console.log(`✅ Complete: ${sent} sent, ${failed} failed`);
+  console.log(`✅ Complete: ${sent} sent, ${failed} failed, ${skipped} skipped`);
   console.log("════════════════════════════════════════════");
 }
 
