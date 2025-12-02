@@ -170,10 +170,9 @@ function SymbolerContent() {
     });
 
     alert(
-      `📊 SYMBOLSAMLING (${collectedSymbols.length}/9):\n\n${symbolStatus.join("\n")}\n\n${
-        collectedSymbols.length === 9
-          ? "🎉 Alle symboler samlet!"
-          : `Mangler ${9 - collectedSymbols.length} symboler.`
+      `📊 SYMBOLSAMLING (${collectedSymbols.length}/9):\n\n${symbolStatus.join("\n")}\n\n${collectedSymbols.length === 9
+        ? "🎉 Alle symboler samlet!"
+        : `Mangler ${9 - collectedSymbols.length} symboler.`
       }`,
     );
   };
@@ -209,11 +208,13 @@ function SymbolerContent() {
   };
 
   return (
-    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8">
-      <GuideNavigation currentPage="symboler" />
+    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8 print:p-0 print:bg-white">
+      <div className="print:hidden">
+        <GuideNavigation currentPage="symboler" />
+      </div>
 
       {/* Header */}
-      <div className="max-w-7xl mx-auto mb-8">
+      <div className="max-w-7xl mx-auto mb-8 print:hidden">
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-2 tracking-wider">
           🎁 SYMBOLSAMLING & NISSEKRYPTO
         </h1>
@@ -224,7 +225,7 @@ function SymbolerContent() {
 
       <div className="max-w-7xl mx-auto">
         {/* Info Box */}
-        <div className="mb-6">
+        <div className="mb-6 print:hidden">
           <div className="border-4 border-(--gold) bg-(--gold)/10 p-6">
             <h2 className="text-2xl font-bold text-(--gold) mb-3 text-center">
               🔐 OM SYMBOLSAMLING & NISSEKRYPTO
@@ -343,7 +344,7 @@ function SymbolerContent() {
         </div>
 
         {/* Symbol Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 print:grid-cols-2 print:gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 print:grid-cols-3 print:gap-0 print:h-screen">
           {allSymbols.map((symbol) => {
             const parts = symbol.symbolId.split("-");
             const symbolType = parts[0];
@@ -358,23 +359,20 @@ function SymbolerContent() {
               (q) => q.symbol_clue?.symbolId === symbol.symbolId,
             );
 
-            const label = `${
-              symbolType === "heart"
+            const label = `${symbolType === "heart"
                 ? "Hjerte"
                 : symbolType === "sun"
                   ? "Sol"
                   : "Måne"
-            } (${
-              color === "green" ? "Grønn" : color === "red" ? "Rød" : "Blå"
-            })`;
+              } (${color === "green" ? "Grønn" : color === "red" ? "Rød" : "Blå"
+              })`;
 
             return (
               <div
                 key={symbol.symbolId}
                 onClick={() => toggleSymbolCollection(symbol.symbolId)}
-                className={`border-4 border-dashed ${colorClass} p-6 bg-black/50 rounded-lg print:break-inside-avoid print:p-3 relative cursor-pointer hover:opacity-80 transition-opacity print:cursor-default ${
-                  isCollected ? "ring-4 ring-(--gold)" : ""
-                }`}
+                className={`border-4 border-dashed ${colorClass} p-6 bg-black/50 rounded-lg print:break-inside-avoid print:p-2 print:h-[33.333vh] print:flex print:flex-col print:justify-center print:border-black print:bg-white print:rounded-none relative cursor-pointer hover:opacity-80 transition-opacity print:cursor-default ${isCollected ? "ring-4 ring-(--gold)" : ""
+                  } print:ring-0`}
               >
                 {/* Collection Status Badge (screen only) */}
                 <div className="absolute top-2 right-2 print:hidden">
@@ -391,33 +389,33 @@ function SymbolerContent() {
 
                 {/* Day Number (subtle, top-left) */}
                 {questWithSymbol && (
-                  <div className="absolute top-2 left-2 text-xs text-(--gray) opacity-50">
+                  <div className="absolute top-2 left-2 text-xs text-(--gray) opacity-50 print:hidden">
                     {questWithSymbol.dag}
                   </div>
                 )}
 
                 {/* Card Header */}
-                <div className="text-center mb-4">
-                  <h3 className={`text-2xl font-bold ${colorClass} mb-2`}>
+                <div className="text-center mb-4 print:mb-2">
+                  <h3 className={`text-2xl font-bold ${colorClass} mb-2 print:text-black print:text-xl`}>
                     {label}
                   </h3>
                 </div>
 
                 {/* QR Code with embedded colored symbol */}
-                <div className="flex justify-center mb-4">
+                <div className="flex justify-center mb-4 print:mb-2">
                   <div
                     ref={(el) => {
                       if (el) qrRefs.current.set(symbol.symbolId, el);
                     }}
-                    className="flex items-center justify-center"
+                    className="flex items-center justify-center print:scale-90"
                   />
                 </div>
 
                 {/* Manual Code */}
                 <div className="text-center">
-                  <p className="text-sm text-(--gray) mb-1">Manuell kode:</p>
+                  <p className="text-sm text-(--gray) mb-1 print:hidden">Manuell kode:</p>
                   <p
-                    className={`text-lg font-bold ${colorClass} tracking-wider`}
+                    className={`text-lg font-bold ${colorClass} tracking-wider print:text-black print:text-base`}
                   >
                     {symbol.symbolId.toUpperCase()}
                   </p>
