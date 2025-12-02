@@ -287,6 +287,68 @@ describe("generateNiceListEntries", () => {
     expect(result).toContain("2. Emma");
     expect(result).not.toContain("3.");
   });
+
+  describe("pre-formatted entries (Name - Reason)", () => {
+    it("uses provided reason when entry matches 'Name - Reason' format", () => {
+      const result = generateNiceListEntries(
+        [],
+        ["Emma - reddet en kanin fra snøstorm"],
+        false,
+      );
+      expect(result).toContain("1. Emma - reddet en kanin fra snøstorm");
+      // Should NOT auto-generate a different reason
+      expect(result).not.toMatch(/1\. Emma - (fant|delte|laget|hjalp)/);
+    });
+
+    it("auto-generates reason for names without dash separator", () => {
+      const result = generateNiceListEntries([], ["Emma"], false);
+      expect(result).toContain("1. Emma -");
+      // Should have some auto-generated reason after the dash
+      expect(result).toMatch(/1\. Emma - .+/);
+    });
+
+    it("handles mixed pre-formatted and simple names", () => {
+      const result = generateNiceListEntries(
+        [],
+        ["Emma - reddet en kanin", "Noah", "Lise - delte lunsjen sin"],
+        false,
+      );
+      expect(result).toContain("1. Emma - reddet en kanin");
+      expect(result).toMatch(/2\. Noah - .+/); // Auto-generated
+      expect(result).toContain("3. Lise - delte lunsjen sin");
+    });
+
+    it("trims whitespace around name and reason", () => {
+      const result = generateNiceListEntries(
+        [],
+        ["  Emma  -  reddet en kanin  "],
+        false,
+      );
+      expect(result).toContain("1. Emma - reddet en kanin");
+      expect(result).not.toContain("  Emma  ");
+    });
+
+    it("handles names with hyphens in the name part", () => {
+      const result = generateNiceListEntries(
+        [],
+        ["Anne-Lise - var snill"],
+        false,
+      );
+      expect(result).toContain("1. Anne-Lise - var snill");
+    });
+
+    it("works with player achievements and pre-formatted friends", () => {
+      const result = generateNiceListEntries(
+        ["Ola"],
+        ["Emma - reddet en kanin"],
+        true,
+      );
+      expect(result).toContain(
+        "1. Ola - ⭐ FULLFØRT NISSEKOMM JULEKALENDER! ⭐",
+      );
+      expect(result).toContain("2. Emma - reddet en kanin");
+    });
+  });
 });
 
 describe("{{NICE_LIST_ENTRIES}} placeholder", () => {

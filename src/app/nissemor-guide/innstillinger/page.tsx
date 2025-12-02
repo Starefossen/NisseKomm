@@ -445,12 +445,12 @@ function InnstillingerContent() {
                       onChange={(e) =>
                         handleFriendNameChange(index, e.target.value)
                       }
-                      maxLength={20}
+                      maxLength={60}
                       placeholder={`Vennenavn ${index + 1}`}
                       className="flex-1 px-4 py-2 bg-black border-2 border-(--cold-blue) text-(--cold-blue) focus:outline-none focus:border-(--neon-green) uppercase text-sm"
                     />
                     <span className="text-xs text-(--cold-blue)/50 w-12 text-right">
-                      {name.length}/20
+                      {name.length}/60
                     </span>
                     <button
                       type="button"

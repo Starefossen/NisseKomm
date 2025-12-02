@@ -265,11 +265,22 @@ export function generateNiceListEntries(
     });
   }
 
-  // Friend names get absurd reasons
+  // Friend names get absurd reasons (unless already formatted as "Name - Reason")
   if (validFriendNames.length > 0) {
     validFriendNames.forEach((name) => {
-      const reason = getReasonForName(name, entryNumber);
-      entries.push(`${entryNumber}. ${name} - ${reason}`);
+      // Check if name already contains a reason (format: "Name - Reason")
+      // Split ONLY on " - " (space-dash-space) to preserve hyphens in names like "Anne-Lise"
+      const separatorIndex = name.indexOf(" - ");
+      if (separatorIndex !== -1) {
+        // Use the pre-formatted entry as-is
+        const namePart = name.substring(0, separatorIndex).trim();
+        const reasonPart = name.substring(separatorIndex + 3).trim();
+        entries.push(`${entryNumber}. ${namePart} - ${reasonPart}`);
+      } else {
+        // Auto-generate absurd reason
+        const reason = getReasonForName(name, entryNumber);
+        entries.push(`${entryNumber}. ${name} - ${reason}`);
+      }
       entryNumber++;
     });
   }
