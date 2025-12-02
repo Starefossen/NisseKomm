@@ -284,8 +284,9 @@ export function TimelineView({ selectedDay, onSelectDay }: TimelineViewProps) {
                 {[branch.startDay, branch.endDay].map((day) => {
                   const y = (day - 1) * dayHeight + dayHeight / 2 - 2;
                   const isStart = day === branch.startDay;
+                  const circleType = isStart ? "start" : "end";
                   return (
-                    <g key={`branch-circle-${branch.eventyrId}-${day}`}>
+                    <g key={`branch-circle-${branch.eventyrId}-${day}-${circleType}`}>
                       <title>
                         {branch.name} - {isStart ? "Start" : "Slutt"} (Dag {day}
                         )
