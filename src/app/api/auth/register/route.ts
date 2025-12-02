@@ -79,8 +79,8 @@ function validateFriendNames(names: string[]): string[] {
 
     const trimmed = name.trim();
 
-    if (trimmed.length === 0 || trimmed.length > 20) {
-      throw new Error("Each friend name must be 1-20 characters");
+    if (trimmed.length === 0 || trimmed.length > 60) {
+      throw new Error("Each friend name must be 1-60 characters");
     }
 
     return trimmed;

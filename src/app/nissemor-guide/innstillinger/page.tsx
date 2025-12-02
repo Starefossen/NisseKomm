@@ -193,15 +193,22 @@ function InnstillingerContent() {
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Lagring mislyktes");
+        // Show specific error message from API
+        throw new Error(data.error || `Lagring mislyktes (${response.status})`);
       }
 
       setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
+      setTimeout(() => setSaveSuccess(false), 5000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Noe gikk galt");
+      console.error("Failed to save family settings:", err);
+      const errorMessage =
+        err instanceof Error ? err.message : "Noe gikk galt ved lagring";
+      setError(errorMessage);
+      // Auto-clear error after 10 seconds
+      setTimeout(() => setError(null), 10000);
     } finally {
       setIsSaving(false);
     }
@@ -321,15 +328,40 @@ function InnstillingerContent() {
 
         {/* Error Display */}
         {error && (
-          <div className="border-4 border-(--neon-red) bg-(--neon-red)/10 p-4 mb-6">
-            <p className="text-(--neon-red) font-bold">⚠️ {error}</p>
+          <div className="border-4 border-(--neon-red) bg-(--neon-red)/20 p-6 mb-6 animate-pulse">
+            <div className="flex items-center gap-3">
+              <span className="text-3xl">⚠️</span>
+              <div className="flex-1">
+                <p className="text-(--neon-red) font-bold text-xl">
+                  LAGRING MISLYKTES
+                </p>
+                <p className="text-(--neon-red)/90 text-lg mt-1">{error}</p>
+              </div>
+              <button
+                onClick={() => setError(null)}
+                className="px-4 py-2 border-2 border-(--neon-red) text-(--neon-red) hover:bg-(--neon-red) hover:text-black transition-colors text-xl font-bold"
+                aria-label="Lukk feilmelding"
+              >
+                ✕
+              </button>
+            </div>
           </div>
         )}
 
         {/* Success Display */}
         {saveSuccess && (
-          <div className="border-4 border-(--gold) bg-(--gold)/10 p-4 mb-6">
-            <p className="text-(--gold) font-bold">✓ Endringene er lagret!</p>
+          <div className="border-4 border-(--gold) bg-(--gold)/20 p-6 mb-6">
+            <div className="flex items-center gap-3">
+              <span className="text-3xl">✓</span>
+              <div>
+                <p className="text-(--gold) font-bold text-xl">
+                  ENDRINGENE ER LAGRET!
+                </p>
+                <p className="text-(--gold)/90 text-sm mt-1">
+                  Familieinnstillingene er oppdatert
+                </p>
+              </div>
+            </div>
           </div>
         )}
 

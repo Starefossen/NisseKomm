@@ -159,7 +159,7 @@ export async function PATCH(request: NextRequest) {
       patch.kidNames = kidNames;
     }
 
-    // Friend names (0-15 names, each max 20 chars)
+    // Friend names (0-15 names, each max 60 chars)
     if (body.friendNames !== undefined) {
       const friendNames = body.friendNames
         .map((n) => n.trim())
@@ -168,8 +168,8 @@ export async function PATCH(request: NextRequest) {
       if (friendNames.length > 15) {
         return errorResponse("Maks 15 vennenavn");
       }
-      if (friendNames.some((n) => n.length > 20)) {
-        return errorResponse("Vennenavn kan maks være 20 tegn");
+      if (friendNames.some((n) => n.length > 60)) {
+        return errorResponse("Vennenavn kan maks være 60 tegn");
       }
       patch.friendNames = friendNames;
     }
