@@ -19,18 +19,11 @@ export function ProgressionStats({
   return (
     <div className="max-w-7xl mx-auto mb-6">
       <div className="flex items-center justify-between mb-4">
-        <div className="flex-1">
-          <h1 className="text-4xl md:text-5xl font-bold text-center mb-2 tracking-wider">
-            🎄 NISSEMOR GUIDE 🎄
-          </h1>
-          <p className="text-center text-xl opacity-70">
-            Planleggings- og oversiktspanel for NisseKomm-kalenderen
-          </p>
-        </div>
+        <h2 className="text-2xl font-bold text-(--neon-green)">📊 FREMGANG</h2>
         <div className="text-right">
           <button
             onClick={onRefresh}
-            className="mb-2 px-4 py-2 border-2 border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20 transition-colors font-bold text-sm"
+            className="mb-1 px-4 py-2 border-2 border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20 transition-colors font-bold text-sm"
             title="Oppdater fremgang fra barnas spill"
           >
             🔄 OPPDATER

@@ -94,6 +94,34 @@ export function DayPlanning({
                     </ul>
                   </div>
                 )}
+              {selectedQuest.symbol_clue && (
+                <div className="mt-3 pt-3 border-t-2 border-(--cold-blue)/30">
+                  <strong className="text-purple-400 text-base flex items-center gap-2">
+                    💎 HUSK Å GJEMME SYMBOLET!
+                  </strong>
+                  <div className="mt-2 bg-purple-500/10 border border-purple-500/30 p-2 rounded">
+                    <div className="text-purple-300">
+                      <strong>Type:</strong>{" "}
+                      {selectedQuest.symbol_clue.symbolIcon}
+                    </div>
+                    {selectedQuest.symbol_clue.symbolColor && (
+                      <div className="text-purple-300">
+                        <strong>Farge:</strong>{" "}
+                        {selectedQuest.symbol_clue.symbolColor}
+                      </div>
+                    )}
+                    {selectedQuest.symbol_clue.description && (
+                      <div className="text-purple-300 text-xs mt-1">
+                        {selectedQuest.symbol_clue.description}
+                      </div>
+                    )}
+                    <div className="text-xs text-purple-400 mt-2">
+                      ⚠️ Dette QR-symbolet må gjemmes sammen med dagens oppsett
+                      for at barna kan finne og skanne det!
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -108,6 +136,103 @@ export function DayPlanning({
             <h3 className="text-xl font-bold mb-3">📔 JULIUS DAGBOK</h3>
             <p className="text-sm">{selectedQuest.dagbokinnlegg}</p>
           </div>
+
+          {/* Special Events Section */}
+          {(selectedQuest.bonusoppdrag ||
+            selectedQuest.symbol_clue ||
+            selectedQuest.reveals?.modules ||
+            selectedQuest.eventyr ||
+            selectedQuest.hendelse) && (
+            <div className="border-4 border-(--neon-green) bg-(--neon-green)/5 p-4">
+              <h3 className="text-2xl font-bold text-(--neon-green) mb-4">
+                ⭐ SPESIALHENDELSER DENNE DAGEN
+              </h3>
+              <div className="grid gap-3">
+                {selectedQuest.bonusoppdrag && (
+                  <div className="border-2 border-(--gold) bg-(--gold)/10 p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-2xl">🏅</span>
+                      <strong className="text-(--gold) text-lg">
+                        BONUSOPPDRAG
+                      </strong>
+                    </div>
+                    <p className="text-sm text-(--neon-green)/90">
+                      {selectedQuest.bonusoppdrag.beskrivelse ||
+                        "Denne dagen har et bonusoppdrag som krever foreldrenes hjelp for å validere."}
+                    </p>
+                    {selectedQuest.bonusoppdrag.badge_id && (
+                      <div className="mt-2 text-xs text-(--gold)">
+                        Gir merke: {selectedQuest.bonusoppdrag.badge_id}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {selectedQuest.symbol_clue && (
+                  <div className="border-2 border-purple-500 bg-purple-500/10 p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-2xl">💎</span>
+                      <strong className="text-purple-400 text-lg">
+                        SYMBOL OPPLÅST
+                      </strong>
+                    </div>
+                    <p className="text-sm text-(--neon-green)/90">
+                      {selectedQuest.symbol_clue.symbolIcon}{" "}
+                      {selectedQuest.symbol_clue.symbolColor && (
+                        <span>({selectedQuest.symbol_clue.symbolColor})</span>
+                      )}
+                      {selectedQuest.symbol_clue.description && (
+                        <span> - {selectedQuest.symbol_clue.description}</span>
+                      )}
+                    </p>
+                  </div>
+                )}
+
+                {selectedQuest.reveals?.modules &&
+                  selectedQuest.reveals.modules.length > 0 && (
+                    <div className="border-2 border-(--cold-blue) bg-(--cold-blue)/10 p-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-2xl">🔓</span>
+                        <strong className="text-(--cold-blue) text-lg">
+                          MODUL OPPLÅST
+                        </strong>
+                      </div>
+                      <p className="text-sm text-(--neon-green)/90">
+                        {selectedQuest.reveals.modules.join(", ")}
+                      </p>
+                    </div>
+                  )}
+
+                {selectedQuest.eventyr && (
+                  <div className="border-2 border-(--gold) bg-(--gold)/10 p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-2xl">📖</span>
+                      <strong className="text-(--gold) text-lg">
+                        EVENTYR - FASE {selectedQuest.eventyr.phase}
+                      </strong>
+                    </div>
+                    <p className="text-sm text-(--neon-green)/90">
+                      Eventyr ID: {selectedQuest.eventyr.id}
+                    </p>
+                  </div>
+                )}
+
+                {selectedQuest.hendelse && (
+                  <div className="border-2 border-(--neon-green) bg-(--neon-green)/10 p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-2xl">🎉</span>
+                      <strong className="text-(--neon-green) text-lg">
+                        HENDELSE
+                      </strong>
+                    </div>
+                    <p className="text-sm text-(--neon-green)/90">
+                      {selectedQuest.hendelse}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Grid: Solution Code and Physical Hint */}
           <div className="grid md:grid-cols-2 gap-6">
@@ -133,29 +258,9 @@ export function DayPlanning({
               </div>
             )}
           </div>
-
-          {/* Additional sections */}
-          {selectedQuest.bonusoppdrag && (
-            <div className="border-4 border-(--gold) bg-(--gold)/10 p-4">
-              <h3 className="text-xl font-bold text-(--gold) mb-3">
-                🏅 BONUSOPPDRAG
-              </h3>
-              <p className="text-sm">
-                Denna dagen har et bonusoppdrag som krever foreldrenes hjelp för
-                å validere.
-              </p>
-            </div>
-          )}
-
-          {selectedQuest.hendelse && (
-            <div className="border-2 border-(--gold)/50 p-4">
-              <h3 className="text-xl font-bold mb-3">🎉 HENDELSE</h3>
-              <p className="text-sm">{selectedQuest.hendelse}</p>
-            </div>
-          )}
         </div>
       ) : (
-        <p className="text-center text-2xl">Velg en dag för å se detaljer</p>
+        <p className="text-center text-2xl">Velg en dag for å se detaljer</p>
       )}
 
       {/* Day Selector */}

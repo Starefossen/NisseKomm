@@ -24,11 +24,16 @@ function NissemorGuideContent() {
 
   const [expandedWeeks, setExpandedWeeks] = useState<number[]>([relevantWeek]);
   const [expandedDays, setExpandedDays] = useState<number[]>([]);
-  const [selectedDay, setSelectedDay] = useState<number>(relevantDay);
+  const [selectedDay, setSelectedDay] = useState<number>(relevantDay); // Default to current day
 
   // Counter to force useMemo recalculation when data changes
   const [refreshCounter, setRefreshCounter] = useState(0);
   const [lastUpdated, setLastUpdated] = useState(new Date());
+
+  // Ensure selectedDay updates when relevantDay changes (e.g., date changes)
+  useEffect(() => {
+    setSelectedDay(relevantDay);
+  }, [relevantDay]);
 
   const completedDays = useMemo(() => {
     return new Set(GameEngine.getCompletedDays());
@@ -166,12 +171,12 @@ function NissemorGuideContent() {
           e.preventDefault();
           alert(
             "⌨️ TASTATURSNARVEIER:\n\n" +
-            "← / h : Forrige dag\n" +
-            "→ / l : Neste dag\n" +
-            "Home / g : Første dag\n" +
-            "End / G : Siste dag\n" +
-            "t : Gå til dagens dato\n" +
-            "? : Vis denna hjelpen",
+              "← / h : Forrige dag\n" +
+              "→ / l : Neste dag\n" +
+              "Home / g : Første dag\n" +
+              "End / G : Siste dag\n" +
+              "t : Gå til dagens dato\n" +
+              "? : Vis denna hjelpen",
           );
           break;
       }
@@ -185,21 +190,62 @@ function NissemorGuideContent() {
     <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8">
       <GuideNavigation currentPage="hovedside" />
 
-      {/* Welcome Section */}
-      <div className="max-w-4xl mx-auto mb-8 text-center">
-        <div className="border-4 border-(--neon-green) bg-(--neon-green)/5 p-6 mb-6">
-          <h1 className="text-3xl md:text-4xl font-bold text-(--gold) mb-4">
-            🎄 Velkommen til Nissemor-guiden! 🎄
-          </h1>
-          <p className="text-lg md:text-xl text-(--neon-green) leading-relaxed mb-4">
-            Dette er kontrollpanelet for hele NisseKomm-adventuren! Her finner du alt du trenger for å følge med på barnets progresjon, forberede dagens oppdrag, og holde styr på fysiske ledetekster og koder.
-          </p>
-          <div className="border-t-2 border-(--neon-green)/30 pt-4 mt-4">
-            <p className="text-base text-(--neon-green)/80">
-              💡 <strong>Tips:</strong> Bruk navigasjonsmenyen over for å utforske ulike verktøy. Start med <strong>📋 HOVEDSIDE</strong> for oversikt, <strong>✉️ BREVFUGLER</strong> for dagens e-post, og <strong>🏅 BONUSOPPDRAG</strong> for spesialoppdrag.
+      {/* Page Title & Welcome */}
+      <div className="max-w-4xl mx-auto mb-8">
+        <h1 className="text-4xl md:text-5xl font-bold text-(--gold) text-center mb-4">
+          🎄 NISSEMOR-GUIDEN 🎄
+        </h1>
+
+        <details className="border-4 border-(--neon-green) bg-(--neon-green)/5">
+          <summary className="cursor-pointer p-4 bg-(--neon-green)/10 hover:bg-(--neon-green)/20 transition-colors font-bold text-xl text-(--neon-green) text-center">
+            ℹ️ Velkommen til foreldrekontrollpanelet! (Klikk for å lese mer)
+          </summary>
+
+          <div className="p-6 space-y-3 text-base">
+            <p className="text-(--neon-green)/90">
+              <strong className="text-(--gold)">🎯 Formål:</strong> Her følger
+              du med på barnets progresjon gjennom de 24 oppdragene, forbereder
+              dagens fysiske ledetekster, og holder styr på koder og
+              hemmeligheter.
+            </p>
+
+            <p className="text-(--neon-green)/90">
+              <strong className="text-(--gold)">📋 Navigasjon:</strong> Bruk
+              knappene over for å utforske:
+            </p>
+            <ul className="list-none space-y-2 ml-4 text-(--neon-green)/80">
+              <li>
+                • <strong className="text-(--neon-green)">HOVEDSIDE</strong> -
+                Oversikt og dagsplanlegging
+              </li>
+              <li>
+                • <strong className="text-pink-400">BREVFUGLER</strong> -
+                E-poster Rampenissen sender til barna
+              </li>
+              <li>
+                • <strong className="text-orange-400">BONUSOPPDRAG</strong> -
+                Spesialoppdrag som krever din hjelp
+              </li>
+              <li>
+                • <strong className="text-(--gold)">MERKER</strong> - Badges
+                barna kan tjene
+              </li>
+              <li>
+                • <strong className="text-purple-400">SYMBOLER</strong> -
+                QR-koder og krypterte meldinger
+              </li>
+              <li>
+                • <strong className="text-(--cold-blue)">EVENTYR</strong> -
+                Fleroppdragshistorier
+              </li>
+            </ul>
+
+            <p className="text-(--neon-green)/90 pt-2">
+              <strong className="text-(--gold)">🔒 Viktig:</strong> Hold denne
+              siden hemmelig for barna - den inneholder alle svarene! 🤫
             </p>
           </div>
-        </div>
+        </details>
       </div>
 
       <ProgressionStats
