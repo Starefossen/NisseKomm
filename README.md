@@ -206,8 +206,8 @@ src/
 
 ### Fargepalett
 
-| Farge       | Hex       | Bruksområde              |
-| ----------- | --------- | ------------------------ |
+| Farge        | Hex       | Bruksområde              |
+| ------------ | --------- | ------------------------ |
 | 💚 Neongrønn | `#00ff00` | Primær UI, suksess       |
 | ❤️ Julerød   | `#ff0000` | Feil, advarsler          |
 | ⭐ Gull      | `#ffd700` | Fullføring, prestasjoner |

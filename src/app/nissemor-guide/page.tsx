@@ -167,12 +167,12 @@ function NissemorGuideContent() {
           e.preventDefault();
           alert(
             "⌨️ TASTATURSNARVEIER:\n\n" +
-            "← / h : Forrige dag\n" +
-            "→ / l : Neste dag\n" +
-            "Home / g : Første dag\n" +
-            "End / G : Siste dag\n" +
-            "t : Gå til dagens dato\n" +
-            "? : Vis denna hjelpen",
+              "← / h : Forrige dag\n" +
+              "→ / l : Neste dag\n" +
+              "Home / g : Første dag\n" +
+              "End / G : Siste dag\n" +
+              "t : Gå til dagens dato\n" +
+              "? : Vis denna hjelpen",
           );
           break;
       }

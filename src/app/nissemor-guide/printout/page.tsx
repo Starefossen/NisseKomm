@@ -244,9 +244,10 @@ function PrintoutContent() {
                     className={`
                       aspect-square border-4 font-bold text-xl
                       transition-all duration-200
-                      ${isSelected
-                        ? "bg-(--neon-green) border-(--neon-green) text-black"
-                        : "bg-transparent border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/60"
+                      ${
+                        isSelected
+                          ? "bg-(--neon-green) border-(--neon-green) text-black"
+                          : "bg-transparent border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/60"
                       }
                     `}
                   >
@@ -379,10 +380,11 @@ function PrintoutContent() {
                             </div>
                           ) : isPrintMaterialCard ? (
                             <div
-                              className={`text-center leading-snug whitespace-pre-line ${card.estimatedSize === "large"
+                              className={`text-center leading-snug whitespace-pre-line ${
+                                card.estimatedSize === "large"
                                   ? "text-xs"
                                   : "text-sm"
-                                }`}
+                              }`}
                             >
                               {card.content}
                             </div>
@@ -482,10 +484,11 @@ function PrintoutContent() {
                       ) : isPrintMaterialCard ? (
                         <div className="print:text-center print:flex-1 print:flex print:items-center print:justify-center print:px-2">
                           <div
-                            className={`print:leading-tight print:whitespace-pre-line ${card.estimatedSize === "large"
+                            className={`print:leading-tight print:whitespace-pre-line ${
+                              card.estimatedSize === "large"
                                 ? "print:text-[10px]"
                                 : "print:text-sm"
-                              }`}
+                            }`}
                           >
                             {card.content}
                           </div>

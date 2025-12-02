@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   isParentAuthenticated,
@@ -30,15 +29,15 @@ export function useGuideAuth(): {
   isLoading: boolean;
   logout: () => void;
 } {
-  const router = useRouter();
   const [authenticated, setAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const logout = useCallback(() => {
     clearParentAuth();
     setAuthenticated(false);
-    router.refresh();
-  }, [router]);
+    // Force a full page reload to reset all component state
+    window.location.href = "/nissemor-guide";
+  }, []);
 
   useEffect(() => {
     async function verifyAuth() {
@@ -234,6 +233,7 @@ export function GuideAuth({
   }, []);
 
   // Derive showContent from authenticated state or successful login
+  // Note: logout triggers a full page reload, so no need to reset loginSuccess
   const showContent = useMemo(
     () => authenticated || loginSuccess,
     [authenticated, loginSuccess],

@@ -91,8 +91,9 @@ export function GuideNavigation({ currentPage }: GuideNavigationProps) {
           <Link
             key={page.id}
             href={page.href}
-            className={`px-6 py-3 font-bold text-lg border-2 border-black transition-colors ${page.color} ${currentPage === page.id ? "ring-4 ring-(--gold)" : ""
-              }`}
+            className={`px-6 py-3 font-bold text-lg border-2 border-black transition-colors ${page.color} ${
+              currentPage === page.id ? "ring-4 ring-(--gold)" : ""
+            }`}
           >
             {page.label}
           </Link>

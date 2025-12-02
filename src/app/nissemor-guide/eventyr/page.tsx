@@ -177,9 +177,10 @@ function HistorierContent() {
                         key={day}
                         className={`
                           text-2xl font-bold px-4 py-2 border-2
-                          ${isCompleted
-                            ? "bg-(--gold) text-black border-(--gold)"
-                            : "bg-black text-(--gray) border-(--gray)"
+                          ${
+                            isCompleted
+                              ? "bg-(--gold) text-black border-(--gold)"
+                              : "bg-black text-(--gray) border-(--gray)"
                           }
                         `}
                       >
