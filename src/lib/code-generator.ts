@@ -191,8 +191,8 @@ export function isValidKidCode(code: string): boolean {
 export function isValidParentCode(code: string): boolean {
   if (!code || typeof code !== "string") return false;
 
-  // NORDPOL-{8+ alphanumeric chars}
-  const pattern = /^NORDPOL-[A-Z0-9]{8,}$/i;
+  // NORDPOL-{5+ alphanumeric chars} (support legacy 5-char codes and current 8-char codes)
+  const pattern = /^NORDPOL-[A-Z0-9]{5,}$/i;
   return pattern.test(code.toUpperCase());
 }
 
