@@ -195,38 +195,31 @@
   },
   {
     "dag": 7,
-    "tittel": "Nordpol-koordinater",
-    "nissemail_tekst": "Hjelp! 🌍 Jeg har funnet globusen deres, men jeg skjønner ikke hvordan den fungerer! Julius prøvde å forklare meg hvor Snøfall ligger, men jeg ble bare mer forvirret... 😅\n\nJeg har limt tre fargede klistremerker på globusen:\n🔴 Rød klistremerke (helt på toppen)\n🔵 Blå klistremerke (litt lenger ned)\n🟢 Grønn klistremerke (enda lenger ned)\n\nJulius sa: 'Snøfall ligger ved den RØDE prikken. Finn ut hvor mange grader nord det er!'\n\nJeg fant en fil i NISSENET som heter 'snofall_fakta.txt' - kanskje den kan hjelpe? Den forklarer hvor Snøfall egentlig ligger! 🧭\n\nHvem visste at geografi kunne være så vanskelig? 🤔\n\n- Rampenissen",
-    "kode": "90",
+    "tittel": "Marshmallow-krigen",
+    "nissemail_tekst": "YO! ⚔️❄️ KRIGEN ER OVER!\n\nOkei, så... jeg hadde en liten \"uenighet\" med kosedyrene i natt om hvem som er den BESTE snøballkasteren. 🏆\n\nDet endte med TOTAL MARSHMALLOW-KRIG! 😅 Bamsen din startet det, jeg sverger! (Ikke fortell Julius...)\n\nPROBLEMET er at jeg gjemte 3 hemmelige marshmallows med tall på, men nå husker jeg ikke REKKEFØLGEN! 🤦\n\nJulius ga meg en gåte for å huske det tresifrede tallet:\n\n📝 \"Jeg er et 3-sifret tall. Summen av sifrene er 18. Det første tallet er halvparten av det andre og en tredjedel av det tredje. Hvilket tall er jeg?\"\n\nFinn de 3 marshmallowene rundt i huset, løs gåten, og send meg svaret! 🔢\n\nP.S. Unnskyld rotet... de andre marshmallowene kan dere spise! 🍬\n\n- Rampenissen",
+    "kode": "369",
     "eventyr": {
       "id": "morkets-trussel",
       "phase": 1
     },
     "hendelse": "Speidertur til Turnerhytten",
-    "dagbokinnlegg": "Dag 7 - Geografilektion\n\n90 grader nord - Snøfalls koordinater! Det høyeste tallet. Kan ikke gå lenger nord enn toppen. Pil nikket ettertenksomt.\n\nLa alt i NISSENET - 'snofall_fakta.txt'. Isolert her oppe, men magien beskytter oss. Mørket lurer i polarnatten.\n\nRampenissen sender selfies. Minus 40 her!\n\n- Julius",
-    "rampenissen_rampestrek": "Globus (ekte eller tegnet) med tre fargede klistremerker: 🔴 på toppen (Nordpolen/90°N), 🔵 rundt midten-øverst (ca 60°N), 🟢 litt over ekvator (ca 30°N). Ved siden av ligger lapp: 'Snøfall = den røde prikken = __ °N'. Rampenissen har kompass og ser forvirret ut.",
-    "fysisk_hint": "🔴 = __ °N",
-    "oppsett_tid": "enkel",
+    "dagbokinnlegg": "Dag 7 - Logikk-leksjoner\n\nRampenissen rapporterer om marshmallow-kaos hjemme hos barna. Kosedyrene skal visst ha \"startet det\". Tviler.\n\nGa ham en tallgåte for å huske koden. Tre sifre, logiske sammenhenger. Matematikk er universelt - fungerer like bra i Snøfall som hos menneskene.\n\nIQ jobber med nye oppfinnelser. Noe om en marshmallow-kanon? Håper det er til fredelige formål.\n\nMørket er stille. For stille. Orakelet rynker pannen.\n\n- Julius",
+    "rampenissen_rampestrek": "Marshmallows strødd over hele stuen som 'snøballer' etter krigen. Kosedyr er delt i to 'lag' med fort av sofaputer - noen ligger 'såret' på gulvet. 3 SPESIELLE marshmallows har tall skrevet på: 3 (i en sko ved døra), 6 (mellom sofaputene), 9 (på kjøkkenbenken). Rampenissen holder hvitt flagg (serviett) og ser utmattet ut.",
+    "fysisk_hint": "Finn 3 marshmallows med tall. Gåte: Sum = 18. Første = halvparten av andre = tredjedel av tredje.",
+    "oppsett_tid": "moderat",
     "materialer_nødvendig": [
-      "Globus (eller stor tegnet globus)",
-      "3 fargede klistremerker (rød, blå, grønn)",
-      "Lapp med spørsmål",
-      "Kompass (valgfritt)"
+      "15-20 marshmallows",
+      "Tusj til å skrive tall (5, 8, 2)",
+      "Kosedyr (6-10 stk)",
+      "Sofaputer som 'fort'",
+      "Hvit serviett som flagg"
     ],
-    "beste_rom": "Kjøkken/stue",
-    "hint_type": "visuell",
+    "beste_rom": "Stue (hovedslag) + kjøkken + gang",
+    "hint_type": "kombinasjon",
     "reveals": {
-      "files": ["snofall_fakta.txt"],
       "topics": ["morkets-trussel"],
       "modules": ["NISSEMUSIKK"]
     },
-    "print_materials": [
-      {
-        "type": "guide",
-        "title": "Globus klistremerke-plassering",
-        "content": "🌍 GLOBUS-OPPSETT 🌍\n\nFest klistremerker på disse stedene:\n\n🔴 RØD: Helt på toppen (Nordpolen)\n   = 90° nord\n\n🔵 BLÅ: Rundt Norge/Skandinavia\n   = ca 60° nord\n\n🟢 GRØNN: Rundt Nord-Afrika\n   = ca 30° nord\n\nRampenissens spørsmål:\n'Snøfall ligger ved den RØDE prikken.\nHvor mange grader nord er det?'"
-      }
-    ],
     "finalized": true
   }
 ]
