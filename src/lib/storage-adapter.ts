@@ -179,7 +179,6 @@ export class SanityStorageAdapter implements StorageAdapter {
         this.cache.clear();
 
         const fieldMap = this.getAllFieldMappings();
-        let loadedFields = 0;
         Object.values(fieldMap).forEach((field) => {
           if (sessionData[field] !== undefined) {
             // Convert Sanity array format to in-game Record format for certain fields
@@ -215,7 +214,6 @@ export class SanityStorageAdapter implements StorageAdapter {
             }
 
             this.cache.set(field, value);
-            loadedFields++;
           }
         });
       }

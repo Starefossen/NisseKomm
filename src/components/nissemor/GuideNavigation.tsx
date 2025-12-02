@@ -8,7 +8,7 @@ import { useGuideAuth } from "./GuideAuth";
  *
  * Shared navigation bar for all nissemor-guide pages.
  * Shows links to main sections: Hovedside, Symboler, Eventyr, Utvikling.
- * Automatically passes ?kode= parameter through all links.
+ * Uses session-based authentication (no URL parameters needed).
  *
  * Usage:
  * <GuideNavigation currentPage="hovedside" />
@@ -31,7 +31,7 @@ interface GuideNavigationProps {
 }
 
 export function GuideNavigation({ currentPage }: GuideNavigationProps) {
-  const { kode } = useGuideAuth();
+  const { logout } = useGuideAuth();
 
   const pages = [
     {
@@ -90,13 +90,19 @@ export function GuideNavigation({ currentPage }: GuideNavigationProps) {
         {pages.map((page) => (
           <Link
             key={page.id}
-            href={`${page.href}?kode=${kode}`}
+            href={page.href}
             className={`px-6 py-3 font-bold text-lg border-2 border-black transition-colors ${page.color} ${currentPage === page.id ? "ring-4 ring-(--gold)" : ""
               }`}
           >
             {page.label}
           </Link>
         ))}
+        <button
+          onClick={logout}
+          className="px-6 py-3 font-bold text-lg border-2 border-black bg-(--christmas-red)/80 text-white hover:bg-(--christmas-red) transition-colors"
+        >
+          🚪 LOGG UT
+        </button>
       </div>
     </nav>
   );

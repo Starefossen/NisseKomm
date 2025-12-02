@@ -121,7 +121,7 @@ pnpm dev
 
 ### 5. Foreldreveiledning
 
-Besøk **/nissemor-guide?kode=DIN_FORELDREKODE** i nettleseren for:
+Besøk **/nissemor-guide** i nettleseren og logg inn med din **foreldrekode** for:
 
 - 🎁 **Hovedside**: Administrer oppdrag og moduler
 - 🎯 **Symboler**: Print og skjul QR-kort rundt i huset
@@ -206,8 +206,8 @@ src/
 
 ### Fargepalett
 
-| Farge        | Hex       | Bruksområde              |
-| ------------ | --------- | ------------------------ |
+| Farge       | Hex       | Bruksområde              |
+| ----------- | --------- | ------------------------ |
 | 💚 Neongrønn | `#00ff00` | Primær UI, suksess       |
 | ❤️ Julerød   | `#ff0000` | Feil, advarsler          |
 | ⭐ Gull      | `#ffd700` | Fullføring, prestasjoner |

@@ -13,7 +13,14 @@
 import "next-test-api-route-handler";
 
 import { testApiHandler } from "next-test-api-route-handler";
-import { describe, it, expect, afterAll, beforeAll, afterEach, beforeEach } from "@jest/globals";
+import {
+  describe,
+  it,
+  expect,
+  afterAll,
+  beforeAll,
+  beforeEach,
+} from "@jest/globals";
 import * as registerRoute from "../../register/route";
 import { sanityServerClient } from "@/lib/sanity-client";
 import { __resetMock as resetUuidMock } from "@/lib/__mocks__/uuid";
@@ -61,11 +68,18 @@ afterAll(async () => {
     process.env.REGISTRATION_SHARE_KEY = originalShareKey;
   }
 
-  // Cleanup test sessions
+  // Cleanup test sessions with proper timeout handling
   const cleanupPromises = testSessionIds.map(cleanupSession);
+
+  // Use AbortController pattern to properly cancel timeout
+  let timeoutId: ReturnType<typeof setTimeout>;
+  const timeoutPromise = new Promise<void>((resolve) => {
+    timeoutId = setTimeout(resolve, 10000);
+  });
+
   await Promise.race([
-    Promise.all(cleanupPromises),
-    new Promise((resolve) => setTimeout(resolve, 10000)),
+    Promise.all(cleanupPromises).then(() => clearTimeout(timeoutId)),
+    timeoutPromise,
   ]);
 }, 20000);
 
@@ -268,7 +282,10 @@ describe("POST /api/auth/register", () => {
     });
 
     it("should generate unique codes for each registration", async () => {
-      const codes: { kid: string[]; parent: string[] } = { kid: [], parent: [] };
+      const codes: { kid: string[]; parent: string[] } = {
+        kid: [],
+        parent: [],
+      };
 
       // Only test 2 registrations to stay within timeout
       for (let i = 0; i < 2; i++) {

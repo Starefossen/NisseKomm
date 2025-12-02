@@ -11,7 +11,7 @@ import {
 } from "@/lib/eventyr";
 import { GameEngine } from "@/lib/game-engine";
 import { Icon } from "@/lib/icons";
-import { GuideAuth, useGuideAuth } from "@/components/nissemor/GuideAuth";
+import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 
 /**
@@ -25,11 +25,10 @@ import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
  * - Progress tracking for each eventyr
  * - Parent guidance and themes
  * - Day assignments for each eventyr
- * - Authentication via ?kode= parameter
+ * - Session-based authentication
  */
 
 function HistorierContent() {
-  const { kode } = useGuideAuth();
   const [completedDays, setCompletedDays] = useState<Set<number>>(() => {
     if (typeof window !== "undefined") {
       return GameEngine.loadGameState().completedQuests;
@@ -178,10 +177,9 @@ function HistorierContent() {
                         key={day}
                         className={`
                           text-2xl font-bold px-4 py-2 border-2
-                          ${
-                            isCompleted
-                              ? "bg-(--gold) text-black border-(--gold)"
-                              : "bg-black text-(--gray) border-(--gray)"
+                          ${isCompleted
+                            ? "bg-(--gold) text-black border-(--gold)"
+                            : "bg-black text-(--gray) border-(--gray)"
                           }
                         `}
                       >
@@ -273,7 +271,7 @@ function HistorierContent() {
 
         <div className="mt-8">
           <Link
-            href={`/nissemor-guide?kode=${kode}`}
+            href="/nissemor-guide"
             className="inline-block text-3xl px-8 py-4 border-4 border-(--neon-green) bg-black text-(--neon-green) hover:bg-(--neon-green) hover:text-black transition-colors"
           >
             ← TILBAKE TIL NISSEMOR GUIDE

@@ -691,7 +691,11 @@ describe("Storage Manager - Eventyr Badges", () => {
 
     expect(StorageManager.hasEventyrBadge("morkets-trussel")).toBe(false);
 
-    StorageManager.addEventyrBadge("morkets-trussel", "shield", "Mørket-Beseirer");
+    StorageManager.addEventyrBadge(
+      "morkets-trussel",
+      "shield",
+      "Mørket-Beseirer",
+    );
     expect(StorageManager.hasEventyrBadge("morkets-trussel")).toBe(true);
   });
 
@@ -703,6 +707,8 @@ describe("Storage Manager - Eventyr Badges", () => {
     StorageManager.addEventyrBadge("iqs-oppfinnelser", "beaker", "Oppfinner");
 
     const badges = StorageManager.getEventyrBadges();
-    expect(badges.filter((b) => b.eventyrId === "iqs-oppfinnelser")).toHaveLength(1);
+    expect(
+      badges.filter((b) => b.eventyrId === "iqs-oppfinnelser"),
+    ).toHaveLength(1);
   });
 });

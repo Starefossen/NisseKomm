@@ -1,24 +1,24 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useCallback, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   isParentAuthenticated,
   clearParentAuth,
   setParentAuthenticated,
   getSessionId,
 } from "@/lib/session-manager";
+import { useEffect } from "react";
 
 /**
  * GuideAuth Component
  *
  * Centralized authentication check for all nissemor-guide pages.
- * Supports two authentication modes:
- * 1. Session-based: Parent auth cookie from previous login or registration
- * 2. Code-based: ?kode= parameter validated via /api/auth/verify
+ * Shows a login form when not authenticated.
  *
- * When code is provided via URL, it's validated and persisted to cookie.
- * Redirects to home if authentication fails.
+ * Validates parent code via /api/auth/login and /api/auth/verify.
+ * On successful login, sets session cookie and persists parent auth.
  *
  * Usage:
  * Wrap page content in <GuideAuth>{content}</GuideAuth>
@@ -27,24 +27,22 @@ import {
 
 export function useGuideAuth(): {
   authenticated: boolean;
-  kode: string | null;
   isLoading: boolean;
   logout: () => void;
 } {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const kode = searchParams.get("kode");
   const [authenticated, setAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const logout = useCallback(() => {
     clearParentAuth();
-    router.push("/");
+    setAuthenticated(false);
+    router.refresh();
   }, [router]);
 
   useEffect(() => {
     async function verifyAuth() {
-      // First, check if we have a valid parent session cookie
+      // Check if we have a valid parent session cookie
       const hasParentSession = isParentAuthenticated();
 
       if (hasParentSession) {
@@ -60,77 +58,26 @@ export function useGuideAuth(): {
           if (response.ok) {
             const data = (await response.json()) as { isParent: boolean };
             if (data.isParent) {
-              console.log(
-                "[GuideAuth] Authenticated via parent session cookie",
-              );
               setAuthenticated(true);
               setIsLoading(false);
               return;
             }
           }
-        } catch (error) {
-          console.error("[GuideAuth] Session validation error:", error);
+        } catch {
+          // Session validation failed
         }
         // Session invalid, clear it
         clearParentAuth();
       }
 
-      // If no valid session, try code from URL
-      if (!kode) {
-        console.warn("[GuideAuth] Access denied: No parent code or session");
-        setAuthenticated(false);
-        setIsLoading(false);
-        return;
-      }
-
-      // Validate code via API
-      try {
-        const response = await fetch("/api/auth/verify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code: kode }),
-          credentials: "include",
-        });
-
-        if (response.ok) {
-          const data = (await response.json()) as { isParent: boolean };
-          setAuthenticated(data.isParent);
-
-          if (data.isParent) {
-            // Code was valid - server set the cookie, also set client-side
-            const sessionId = getSessionId();
-            if (sessionId) {
-              setParentAuthenticated(sessionId);
-            }
-            console.log(
-              "[GuideAuth] Authenticated via parent code, session persisted",
-            );
-          } else {
-            console.warn(
-              `[GuideAuth] Access denied: Invalid parent code '${kode.substring(0, 4)}...'`,
-            );
-          }
-        } else {
-          console.error(
-            `[GuideAuth] Authentication failed: HTTP ${response.status} ${response.statusText}`,
-          );
-          setAuthenticated(false);
-        }
-      } catch (error) {
-        console.error(
-          "[GuideAuth] Network error during authentication:",
-          error,
-        );
-        setAuthenticated(false);
-      } finally {
-        setIsLoading(false);
-      }
+      setAuthenticated(false);
+      setIsLoading(false);
     }
 
     verifyAuth();
-  }, [kode]);
+  }, []);
 
-  return { authenticated, kode, isLoading, logout };
+  return { authenticated, isLoading, logout };
 }
 
 interface GuideAuthProps {
@@ -139,26 +86,169 @@ interface GuideAuthProps {
   showLogout?: boolean;
 }
 
+/**
+ * Login form for parent authentication
+ */
+function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
+  const [code, setCode] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setIsSubmitting(true);
+
+    const trimmedCode = code.trim().toUpperCase();
+    if (!trimmedCode) {
+      setError("Vennligst skriv inn foreldrekoden");
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      // First, login with the parent code to set session
+      const loginResponse = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: trimmedCode }),
+        credentials: "include",
+      });
+
+      if (!loginResponse.ok) {
+        const loginData = await loginResponse.json();
+        setError(loginData.error || "Ugyldig kode");
+        setIsSubmitting(false);
+        return;
+      }
+
+      const loginData = await loginResponse.json();
+
+      // Check if this was a parent code login
+      if (loginData.role !== "parent") {
+        setError(
+          "Dette er en barnekode. Bruk foreldrekoden (starter med NORDPOL-)",
+        );
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Verify parent access and set parent auth cookie
+      const verifyResponse = await fetch("/api/auth/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: trimmedCode }),
+        credentials: "include",
+      });
+
+      if (verifyResponse.ok) {
+        const verifyData = await verifyResponse.json();
+        if (verifyData.isParent) {
+          // Set client-side parent auth
+          const sessionId = getSessionId();
+          if (sessionId) {
+            setParentAuthenticated(sessionId);
+          }
+          onSuccess();
+          return;
+        }
+      }
+
+      setError("Kunne ikke verifisere foreldretilgang");
+    } catch {
+      setError("Nettverksfeil. Prøv igjen.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] flex items-center justify-center p-4">
+      <div className="w-full max-w-md border-4 border-(--neon-green) bg-(--dark-crt) p-8">
+        <h1 className="text-3xl font-bold text-center mb-2">
+          🎅 NISSEMOR GUIDE
+        </h1>
+        <p className="text-center text-(--neon-green)/70 mb-6">
+          Kun for foreldre - logg inn med foreldrekoden
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="parentCode" className="block text-lg mb-2">
+              Foreldrekode:
+            </label>
+            <input
+              id="parentCode"
+              type="text"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              placeholder="NORDPOL-XXXXX"
+              className="w-full p-3 bg-black border-2 border-(--neon-green) text-(--neon-green) font-mono text-xl uppercase placeholder:text-(--neon-green)/30 focus:outline-none focus:border-(--gold)"
+              autoComplete="off"
+              autoFocus
+              disabled={isSubmitting}
+            />
+          </div>
+
+          {error && (
+            <div className="p-3 border-2 border-(--christmas-red) bg-(--christmas-red)/20 text-(--christmas-red)">
+              ⚠️ {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full p-4 bg-(--neon-green) text-black font-bold text-xl hover:bg-(--gold) hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? "Logger inn..." : "🔑 LOGG INN"}
+          </button>
+        </form>
+
+        <div className="mt-6 pt-4 border-t border-(--neon-green)/30 text-center text-sm text-(--neon-green)/60">
+          <p>Foreldrekoden ble sendt til e-posten du registrerte.</p>
+          <p className="mt-2">Den starter med "NORDPOL-"</p>
+        </div>
+
+        <div className="mt-4 text-center">
+          <Link href="/" className="text-(--cold-blue) hover:underline">
+            ← Tilbake til hovedsiden
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function GuideAuth({
   children,
   loadingMessage = "Sjekker tilgang...",
   showLogout = false,
 }: GuideAuthProps) {
-  const router = useRouter();
   const { authenticated, isLoading, logout } = useGuideAuth();
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
-  useEffect(() => {
-    if (!isLoading && !authenticated) {
-      router.push("/");
-    }
-  }, [authenticated, isLoading, router]);
+  // Handle successful login
+  const handleLoginSuccess = useCallback(() => {
+    setLoginSuccess(true);
+  }, []);
 
-  if (isLoading || !authenticated) {
+  // Derive showContent from authenticated state or successful login
+  const showContent = useMemo(
+    () => authenticated || loginSuccess,
+    [authenticated, loginSuccess],
+  );
+
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] flex items-center justify-center">
         <div className="text-2xl">{loadingMessage}</div>
       </div>
     );
+  }
+
+  if (!showContent) {
+    return <ParentLoginForm onSuccess={handleLoginSuccess} />;
   }
 
   return (

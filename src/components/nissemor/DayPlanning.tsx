@@ -19,12 +19,12 @@ export function DayPlanning({
   const showKeyboardShortcuts = () => {
     alert(
       "⌨️ TASTATURSNARVEIER:\n\n" +
-      "← / h : Forrige dag\n" +
-      "→ / l : Neste dag\n" +
-      "Home / g : Första dag\n" +
-      "End / G : Siste dag\n" +
-      "t : Gå til dagens dato\n" +
-      "? : Vis denna hjelpen",
+        "← / h : Forrige dag\n" +
+        "→ / l : Neste dag\n" +
+        "Home / g : Första dag\n" +
+        "End / G : Siste dag\n" +
+        "t : Gå til dagens dato\n" +
+        "? : Vis denna hjelpen",
     );
   };
 

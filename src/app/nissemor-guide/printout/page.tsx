@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
-import { GuideAuth, useGuideAuth } from "@/components/nissemor/GuideAuth";
+import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { GameEngine } from "@/lib/game-engine";
 import type { Oppdrag, PrintMaterial } from "@/types/innhold";
@@ -160,7 +160,6 @@ function estimateCardSize(
 
 function PrintoutContent() {
   const router = useRouter();
-  const { kode } = useGuideAuth();
 
   // State for day selection
   const [selectedDays, setSelectedDays] = useState<number[]>(
@@ -245,10 +244,9 @@ function PrintoutContent() {
                     className={`
                       aspect-square border-4 font-bold text-xl
                       transition-all duration-200
-                      ${
-                        isSelected
-                          ? "bg-(--neon-green) border-(--neon-green) text-black"
-                          : "bg-transparent border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/60"
+                      ${isSelected
+                        ? "bg-(--neon-green) border-(--neon-green) text-black"
+                        : "bg-transparent border-(--neon-green)/30 text-(--neon-green)/50 hover:border-(--neon-green)/60"
                       }
                     `}
                   >
@@ -276,7 +274,7 @@ function PrintoutContent() {
               SKRIV UT ({pages.length} {pages.length === 1 ? "SIDE" : "SIDER"})
             </button>
             <button
-              onClick={() => router.push(`/nissemor-guide?kode=${kode}`)}
+              onClick={() => router.push("/nissemor-guide")}
               className="px-6 py-3 border-4 border-(--neon-green) text-(--neon-green) font-bold text-xl hover:bg-(--neon-green)/10"
             >
               TILBAKE TIL GUIDE
@@ -381,11 +379,10 @@ function PrintoutContent() {
                             </div>
                           ) : isPrintMaterialCard ? (
                             <div
-                              className={`text-center leading-snug whitespace-pre-line ${
-                                card.estimatedSize === "large"
+                              className={`text-center leading-snug whitespace-pre-line ${card.estimatedSize === "large"
                                   ? "text-xs"
                                   : "text-sm"
-                              }`}
+                                }`}
                             >
                               {card.content}
                             </div>
@@ -485,11 +482,10 @@ function PrintoutContent() {
                       ) : isPrintMaterialCard ? (
                         <div className="print:text-center print:flex-1 print:flex print:items-center print:justify-center print:px-2">
                           <div
-                            className={`print:leading-tight print:whitespace-pre-line ${
-                              card.estimatedSize === "large"
+                            className={`print:leading-tight print:whitespace-pre-line ${card.estimatedSize === "large"
                                 ? "print:text-[10px]"
                                 : "print:text-sm"
-                            }`}
+                              }`}
                           >
                             {card.content}
                           </div>

@@ -8,10 +8,9 @@ import {
 
 interface EventyrProgressProps {
   completedDays: Set<number>;
-  kode: string;
 }
 
-export function EventyrProgress({ completedDays, kode }: EventyrProgressProps) {
+export function EventyrProgress({ completedDays }: EventyrProgressProps) {
   const allEventyr = getAllEventyr();
 
   return (
@@ -68,7 +67,7 @@ export function EventyrProgress({ completedDays, kode }: EventyrProgressProps) {
         </div>
         <div className="mt-4 text-center">
           <Link
-            href={`/nissemor-guide/eventyr?kode=${kode}`}
+            href="/nissemor-guide/eventyr"
             className="inline-block px-6 py-2 border-4 border-(--gold) text-(--gold) font-bold text-xl hover:bg-(--gold)/10"
           >
             SE FULL EVENTYR-OVERSIKT →

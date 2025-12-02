@@ -429,7 +429,7 @@ NisseKomm uses a **two-code authentication system** for family multi-tenancy:
 2. **Parent Code** (secure, alphanumeric)
    - Format: `NORDPOL-{5_CHARS}` (e.g., "NORDPOL-8N4K2")
    - Random alphanumeric generation
-   - Used to access parent guide at `/nissemor-guide?kode=PARENT_CODE`
+   - Used to access parent guide at `/nissemor-guide` (session-based login)
    - Verified via `/api/auth/verify` endpoint
 
 ### Registration Flow
@@ -478,16 +478,20 @@ Session persists across devices
 ### Parent Guide Access
 
 ```
-Parent visits /nissemor-guide?kode=PARENT_CODE
+Parent visits /nissemor-guide
     ↓
 GuideAuth component:
-  - Reads code from URL param
+  - Checks for existing session cookie (nissekomm-parent-auth)
+  - If no cookie: Shows login form
+    ↓
+Parent enters parent code in login form
+    ↓
   - POST /api/auth/verify { code }
   - Backend checks if code matches session's parentCode
   - Returns { isParent: true/false }
     ↓
-If verified: Show parent guide
-If failed: Redirect to home
+If verified: Store session in cookie, show parent guide
+If failed: Show error message
 ```
 
 ### Session Storage (Sanity)

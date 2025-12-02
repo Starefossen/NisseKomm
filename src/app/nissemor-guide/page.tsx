@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useEffect, Suspense } from "react";
 import { GameEngine } from "@/lib/game-engine";
-import { GuideAuth, useGuideAuth } from "@/components/nissemor/GuideAuth";
+import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { TimelineView } from "@/components/nissemor/TimelineView";
 import { ProgressionStats } from "@/components/nissemor/ProgressionStats";
@@ -15,8 +15,6 @@ import { getAllOppdrag } from "@/lib/oppdrag";
 const allOppdrag = getAllOppdrag();
 
 function NissemorGuideContent() {
-  const { kode } = useGuideAuth();
-
   const currentDay = getCurrentDay();
   const currentMonth = getCurrentMonth();
   const isDecember = currentMonth === 12;
@@ -197,7 +195,7 @@ function NissemorGuideContent() {
         lastUpdated={lastUpdated}
       />
 
-      <EssentialTools kode={kode || ""} />
+      <EssentialTools />
 
       {/* MAIN CONTENT GRID: Timeline + Planning Sections */}
       <div className="max-w-7xl mx-auto mb-6">
@@ -219,7 +217,7 @@ function NissemorGuideContent() {
         </div>
       </div>
 
-      <EventyrProgress completedDays={completedDays} kode={kode || ""} />
+      <EventyrProgress completedDays={completedDays} />
 
       {/* Weekly Breakdown (Collapsible) */}
       <div className="max-w-7xl mx-auto space-y-6 pb-8">

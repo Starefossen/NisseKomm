@@ -7,7 +7,7 @@
  * - Quest querying utilities
  */
 
-import { describe, it, expect, beforeEach } from "@jest/globals";
+import { describe, it, expect } from "@jest/globals";
 import { getAllOppdrag, isBonusOppdragAccessible } from "../oppdrag";
 
 describe("Oppdrag Loader", () => {
@@ -114,7 +114,7 @@ describe("Oppdrag Loader", () => {
       });
 
       // Each eventyr should have sequential phases starting from 1
-      eventyrPhases.forEach((phases, eventyrId) => {
+      eventyrPhases.forEach((phases) => {
         const sorted = [...phases].sort((a, b) => a - b);
         expect(sorted[0]).toBe(1); // Should start at phase 1
         // Phases should be sequential (no gaps)

@@ -13,7 +13,7 @@
 import "next-test-api-route-handler";
 
 import { testApiHandler } from "next-test-api-route-handler";
-import { describe, it, expect, afterAll, beforeAll } from "@jest/globals";
+import { describe, it, expect, afterAll } from "@jest/globals";
 import * as loginRoute from "../../login/route";
 import { sanityServerClient } from "@/lib/sanity-client";
 import { generateKidCode, generateParentCode } from "@/lib/code-generator";
@@ -58,9 +58,15 @@ afterAll(async () => {
     }
   });
 
+  // Use AbortController pattern to properly cancel timeout
+  let timeoutId: ReturnType<typeof setTimeout>;
+  const timeoutPromise = new Promise<void>((resolve) => {
+    timeoutId = setTimeout(resolve, 8000);
+  });
+
   await Promise.race([
-    Promise.all(cleanupPromises),
-    new Promise((resolve) => setTimeout(resolve, 8000)),
+    Promise.all(cleanupPromises).then(() => clearTimeout(timeoutId)),
+    timeoutPromise,
   ]);
 }, 15000);
 
