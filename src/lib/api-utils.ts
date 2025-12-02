@@ -13,6 +13,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { sanityServerClient } from "@/lib/sanity-client";
+import type { CalendarEvent } from "@/types/innhold";
 
 const SESSION_COOKIE_NAME = "nissekomm-session";
 const PARENT_AUTH_COOKIE_NAME = "nissekomm-parent-auth";
@@ -66,6 +67,7 @@ interface FamilyCredentials {
   friendNames: string[];
   parentEmail?: string;
   createdAt: string;
+  calendarEvents?: CalendarEvent[];
 }
 
 // ============================================================================
@@ -131,6 +133,12 @@ export function requireSessionId(
 /**
  * Fetch session from Sanity with fresh data (no cache)
  * Returns null if session not found
+ *
+ * Uses aggressive cache-busting to ensure fresh data:
+ * - perspective: "raw" - see all documents including newly created ones
+ * - useCdn: false - bypass Sanity CDN
+ * - cache: "no-store" - bypass fetch cache
+ * - next.revalidate: 0 - bypass Next.js cache
  */
 export async function fetchSession(
   sessionId: string,
@@ -140,9 +148,10 @@ export async function fetchSession(
       `*[_type == "userSession" && sessionId == $sessionId][0]`,
       { sessionId },
       {
-        perspective: "published",
-        useCdn: false, // Always fetch fresh data
+        perspective: "raw",
+        useCdn: false,
         cache: "no-store",
+        next: { revalidate: 0 },
       },
     );
 
@@ -182,6 +191,12 @@ export async function requireSession(
 /**
  * Fetch family credentials from Sanity
  * Returns null if credentials not found
+ *
+ * Uses aggressive cache-busting to ensure fresh data:
+ * - perspective: "raw" - see all documents including newly created ones
+ * - useCdn: false - bypass Sanity CDN
+ * - cache: "no-store" - bypass fetch cache
+ * - next.revalidate: 0 - bypass Next.js cache
  */
 export async function fetchCredentials(
   sessionId: string,
@@ -191,6 +206,12 @@ export async function fetchCredentials(
       await sanityServerClient.fetch<FamilyCredentials | null>(
         `*[_type == "familyCredentials" && sessionId == $sessionId][0]`,
         { sessionId },
+        {
+          perspective: "raw",
+          useCdn: false,
+          cache: "no-store",
+          next: { revalidate: 0 },
+        },
       );
 
     return credentials;

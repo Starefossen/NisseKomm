@@ -91,6 +91,7 @@
     ],
     "beste_rom": "Der kalenderen henger",
     "hint_type": "skrevet",
+    "hendelse": "Las Posadas",
     "finalized": false
   },
   {
@@ -348,7 +349,6 @@
       "id": "morkets-trussel",
       "phase": 4
     },
-    "hendelse": "Juletog til hytten",
     "requires": {
       "topics": ["morkets-trussel", "morket-eskalering"],
       "completedDays": [17]
@@ -380,6 +380,7 @@
     ],
     "beste_rom": "Flere rom",
     "hint_type": "gjemt_objekt",
+    "hendelse": "Vintersolverv",
     "finalized": false
   }
 ]

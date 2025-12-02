@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { RetroModal } from "../ui/RetroModal";
 import { Icons } from "@/lib/icons";
@@ -8,15 +8,21 @@ import { GameEngine } from "@/lib/game-engine";
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 import { getEventyr } from "@/lib/eventyr";
 import { trackEvent } from "@/lib/analytics";
-import type { Oppdrag } from "@/types/innhold";
+import type { Oppdrag, CalendarEvent } from "@/types/innhold";
 
 interface KalenderProps {
   missions: Oppdrag[];
+  customCalendarEvents?: CalendarEvent[];
   onClose: () => void;
   onSelectDay: (day: number) => void;
 }
 
-export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
+export function Kalender({
+  missions,
+  customCalendarEvents = [],
+  onClose,
+  onSelectDay,
+}: KalenderProps) {
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [completedDays, setCompletedDays] = useState<Set<number>>(() => {
     if (typeof window !== "undefined") {
@@ -47,6 +53,26 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
       clearInterval(interval);
     };
   }, [missions]);
+
+  /**
+   * Get hendelse for a specific day
+   * Merges file-based mission hendelser with custom family events
+   * Custom events take precedence (override file-based)
+   */
+  const getHendelseForDay = useCallback(
+    (day: number): string | undefined => {
+      // Check custom events first (take precedence)
+      const customEvent = customCalendarEvents.find((e) => e.dag === day);
+      if (customEvent) {
+        return customEvent.hendelse;
+      }
+
+      // Fall back to file-based mission hendelse
+      const mission = missions.find((m) => m.dag === day);
+      return mission?.hendelse;
+    },
+    [customCalendarEvents, missions],
+  );
 
   const isDayLocked = (day: number) => {
     const currentDay = getCurrentDay();
@@ -152,11 +178,15 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
                   </div>
 
                   {/* Event indicator (small text below) - hidden on mobile for space */}
-                  {mission?.hendelse && status !== "locked" && (
-                    <div className="hidden md:block absolute bottom-1 left-0 right-0 text-[10px] lg:text-[11px] opacity-80 truncate px-1 text-center">
-                      {mission.hendelse.substring(0, 15)}
-                    </div>
-                  )}
+                  {(() => {
+                    const hendelse = getHendelseForDay(day);
+                    if (!hendelse || status === "locked") return null;
+                    return (
+                      <div className="hidden md:block absolute bottom-1 left-0 right-0 text-[10px] lg:text-[11px] opacity-80 truncate px-1 text-center">
+                        {hendelse.substring(0, 15)}
+                      </div>
+                    );
+                  })()}
                 </button>
               );
             })}
@@ -221,20 +251,22 @@ export function Kalender({ missions, onClose, onSelectDay }: KalenderProps) {
                 );
               })()}
 
-            {/* Public event */}
-            {selectedMission.hendelse && (
-              <div className="p-3 border-2 border-(--cold-blue) bg-(--cold-blue)/10">
-                <div className="flex items-center gap-2 mb-2">
-                  <Icons.Alert size={16} color="blue" />
-                  <span className="text-sm font-bold text-(--cold-blue)">
-                    HENDELSE
-                  </span>
+            {/* Public event (merged: custom events override file-based) */}
+            {(() => {
+              const hendelse = getHendelseForDay(selectedDay);
+              if (!hendelse) return null;
+              return (
+                <div className="p-3 border-2 border-(--cold-blue) bg-(--cold-blue)/10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Icons.Alert size={16} color="blue" />
+                    <span className="text-sm font-bold text-(--cold-blue)">
+                      HENDELSE
+                    </span>
+                  </div>
+                  <div className="text-sm text-(--cold-blue)">{hendelse}</div>
                 </div>
-                <div className="text-sm text-(--cold-blue)">
-                  {selectedMission.hendelse}
-                </div>
-              </div>
-            )}
+              );
+            })()}
 
             {/* Mission preview */}
             <div className="text-sm">

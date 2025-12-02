@@ -21,6 +21,7 @@ import {
   errorResponse,
   createErrorResponse,
 } from "@/lib/api-utils";
+import type { CalendarEvent } from "@/types/innhold";
 
 interface FamilyResponse {
   familyName: string;
@@ -30,6 +31,7 @@ interface FamilyResponse {
   kidCode: string;
   parentCode: string;
   createdAt: string;
+  calendarEvents: CalendarEvent[];
 }
 
 interface FamilyUpdateRequest {
@@ -37,6 +39,7 @@ interface FamilyUpdateRequest {
   kidNames?: string[];
   friendNames?: string[];
   parentEmail?: string;
+  calendarEvents?: CalendarEvent[];
 }
 
 /**
@@ -69,6 +72,7 @@ export async function GET(request: NextRequest) {
       kidCode: credentials.kidCode,
       parentCode: credentials.parentCode,
       createdAt: credentials.createdAt,
+      calendarEvents: credentials.calendarEvents || [],
     } as FamilyResponse);
   } catch (error) {
     return createErrorResponse(error, "Failed to fetch family data");
@@ -158,6 +162,27 @@ export async function PATCH(request: NextRequest) {
         return errorResponse("Ugyldig e-postadresse");
       }
       patch.parentEmail = email;
+    }
+
+    // Calendar events (0-24 events, max 50 chars each)
+    if (body.calendarEvents !== undefined) {
+      // Validate each event
+      for (const event of body.calendarEvents) {
+        if (event.dag < 1 || event.dag > 24) {
+          return errorResponse("Dag må være mellom 1 og 24");
+        }
+        if (!event.hendelse || event.hendelse.trim().length === 0) {
+          return errorResponse("Hendelse kan ikke være tom");
+        }
+        if (event.hendelse.length > 50) {
+          return errorResponse("Hendelse kan maks være 50 tegn");
+        }
+      }
+      // Clean up and store
+      patch.calendarEvents = body.calendarEvents.map((e) => ({
+        dag: e.dag,
+        hendelse: e.hendelse.trim(),
+      }));
     }
 
     // If nothing to update

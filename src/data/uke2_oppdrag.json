@@ -116,6 +116,7 @@
         "content": "OPPSETT:\n\nFinn 5 grønne gjenstander i huset:\n- Grønn bok\n- Grønn kopp\n- Grønn leke\n- Grønt klesplagg\n- Grønn plante\n\nFest bokstav-lappene på gjenstandene.\nSpre dem rundt i forskjellige rom.\n\nNår alle bokstavene er funnet:\nG + R + Ø + N + N = ?"
       }
     ],
+    "hendelse": "Nobeldagen",
     "finalized": false
   },
   {
@@ -232,7 +233,6 @@
       "id": "frosne-monster",
       "phase": 3
     },
-    "hendelse": "Luciadagen",
     "dagbokinnlegg": "Dag 13 - Lucia-Kaos\n\nLussi-dagen! Nissene ville pynte hele Snøfall med levende lys. Måtte forklare brannfare. Kompromisset: LED-lys formet som levende lys. De sultet i 10 minutter, men ga seg.\n\nNissemor bakte lussekatter. 500 stykker. Nissene spiste dem på 20 minutter. Rekord! Eller et problem. Vet ikke helt.\n\nRampenissen sender bilder av Lucia-prosesjon hjemme hos barna. Vakkert! Minner meg om hvorfor vi gjør dette. For barna. Og kattene. Lussekattene, altså.\n\n- Julius",
     "rampenissen_rampestrek": "LED-lys eller lommelykter arrangert i en sirkel (Lucia-krans). Rundt kransen ligger 11 kort med bokstaver: L-U-S-S-E-K-A-T-T-E-R. På bordet står lussekatter på fat med lapp: 'Hva heter disse kakene? (11 bokstaver)'. Rampenissen har hvitt stoff som 'Lucia-kjole'.",
     "fysisk_hint": "11 bokstaver rundt Lucia-kransen. Hva baker vi på Luciadagen?",
@@ -270,6 +270,7 @@
         "content": "🎵 LUCIASANGEN 🎵\n\nSvart senker natten seg\nI stall og stue\nSolen har gått sin vei,\nSkyggene truer\nInn i vårt mørke hus\nStiger med tente lys,\nSanta Lucia, Santa Lucia\n\nLucia bringer LYS i mørketiden!\nVi baker LUSSEKATTER til feiringen!"
       }
     ],
+    "hendelse": "Luciadagen",
     "finalized": false
   },
   {
@@ -281,7 +282,6 @@
       "id": "brevfugl-mysteriet",
       "phase": 4
     },
-    "hendelse": "Lystenning på Fløyen",
     "dagbokinnlegg": "Dag 14 - Pakke-gåten\n\nKvalitetskontroll av gavepapir. Vi har 847 forskjellige design. Hvorfor? Ingen vet. En nisse foreslo å bare bruke étt design. Han ble utvist fra møtet.\n\nPrøvde å pakke inn en gave selv for å vise nissene hvordan det skal gjøres. Brukte for mye tape. Gaven er nå en tape-ball. Nissene applauderte 'ironisk'. Frekke nisser.\n\nRampenissen sender en rørende melding om hvor mye barna betyr for ham. Skrev at han kommer til å savne dem når julekalenderen er over. Nissemor fikk tårer i øynene da hun leste det. Rampenissen har vokst utrolig mye!\n\n- Julius",
     "rampenissen_rampestrek": "Diverse gjenstander innpakket i julepapir. På hver pakke er det teip-biter med én bokstav: P, A, P, I, R spredt rundt. Rampenissen omgitt av pakker.",
     "fysisk_hint": "Finn alle bokstavene på teipen. Hva bruker vi til å pakke gaver?",

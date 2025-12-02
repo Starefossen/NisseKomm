@@ -6,6 +6,7 @@ import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { Icons } from "@/lib/icons";
 import { clearParentAuth } from "@/lib/session-manager";
 import { useRouter } from "next/navigation";
+import type { CalendarEvent } from "@/types/innhold";
 
 interface FamilyData {
   familyName: string;
@@ -15,6 +16,7 @@ interface FamilyData {
   kidCode: string;
   parentCode: string;
   createdAt: string;
+  calendarEvents: CalendarEvent[];
 }
 
 function InnstillingerContent() {
@@ -32,6 +34,7 @@ function InnstillingerContent() {
     kidNames: [""],
     friendNames: [] as string[],
     parentEmail: "",
+    calendarEvents: [] as CalendarEvent[],
   });
 
   // Fetch family data on mount
@@ -58,6 +61,7 @@ function InnstillingerContent() {
           kidNames: data.kidNames.length > 0 ? data.kidNames : [""],
           friendNames: data.friendNames,
           parentEmail: data.parentEmail,
+          calendarEvents: data.calendarEvents || [],
         });
       } catch (err) {
         console.error("Failed to fetch family data:", err);
@@ -122,6 +126,47 @@ function InnstillingerContent() {
     setFormData({ ...formData, friendNames: newFriendNames });
   };
 
+  // Calendar Event handlers
+  const handleAddCalendarEvent = () => {
+    if (formData.calendarEvents.length < 24) {
+      // Find first available day not already used
+      const usedDays = new Set(formData.calendarEvents.map((e) => e.dag));
+      let availableDay = 1;
+      for (let i = 1; i <= 24; i++) {
+        if (!usedDays.has(i)) {
+          availableDay = i;
+          break;
+        }
+      }
+      setFormData({
+        ...formData,
+        calendarEvents: [
+          ...formData.calendarEvents,
+          { dag: availableDay, hendelse: "" },
+        ],
+      });
+    }
+  };
+
+  const handleRemoveCalendarEvent = (index: number) => {
+    setFormData({
+      ...formData,
+      calendarEvents: formData.calendarEvents.filter((_, i) => i !== index),
+    });
+  };
+
+  const handleCalendarEventDayChange = (index: number, day: number) => {
+    const newEvents = [...formData.calendarEvents];
+    newEvents[index] = { ...newEvents[index], dag: day };
+    setFormData({ ...formData, calendarEvents: newEvents });
+  };
+
+  const handleCalendarEventTextChange = (index: number, text: string) => {
+    const newEvents = [...formData.calendarEvents];
+    newEvents[index] = { ...newEvents[index], hendelse: text };
+    setFormData({ ...formData, calendarEvents: newEvents });
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -138,6 +183,9 @@ function InnstillingerContent() {
           kidNames: formData.kidNames.filter((n) => n.trim()),
           friendNames: formData.friendNames.filter((n) => n.trim()),
           parentEmail: formData.parentEmail,
+          calendarEvents: formData.calendarEvents.filter((e) =>
+            e.hendelse.trim(),
+          ),
         }),
       });
 
@@ -403,6 +451,81 @@ function InnstillingerContent() {
                     <button
                       type="button"
                       onClick={() => handleRemoveFriendName(index)}
+                      className="px-3 py-2 border-2 border-(--neon-red) bg-black text-(--neon-red) hover:bg-(--neon-red) hover:text-black transition-all font-bold text-xl"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Calendar Events */}
+          <div className="border-4 border-(--christmas-red)/50 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <span className="text-(--christmas-red) font-bold text-lg flex items-center gap-2">
+                  <Icons.Calendar size={20} color="red" />
+                  KALENDERHENDELSER
+                </span>
+                <span className="text-xs text-(--christmas-red)/50 ml-2 block mt-1">
+                  Legg til familiens egne hendelser (bursdager, turer, etc.)
+                </span>
+              </div>
+              {formData.calendarEvents.length < 24 && (
+                <button
+                  type="button"
+                  onClick={handleAddCalendarEvent}
+                  className="px-4 py-2 border-2 border-(--christmas-red) text-(--christmas-red) hover:bg-(--christmas-red) hover:text-white transition-colors text-sm"
+                >
+                  + LEGG TIL
+                </button>
+              )}
+            </div>
+            {formData.calendarEvents.length === 0 ? (
+              <p className="text-(--christmas-red)/50 text-sm text-center py-4">
+                Ingen egne hendelser lagt til. Klikk &quot;+ LEGG TIL&quot; for
+                å legge til familieaktiviteter i kalenderen.
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {formData.calendarEvents.map((event, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <select
+                      value={event.dag}
+                      onChange={(e) =>
+                        handleCalendarEventDayChange(
+                          index,
+                          parseInt(e.target.value),
+                        )
+                      }
+                      className="w-20 px-2 py-2 bg-black border-2 border-(--christmas-red) text-(--christmas-red) focus:outline-none focus:border-(--gold) text-center"
+                    >
+                      {Array.from({ length: 24 }, (_, i) => i + 1).map(
+                        (day) => (
+                          <option key={day} value={day}>
+                            {day}. des
+                          </option>
+                        ),
+                      )}
+                    </select>
+                    <input
+                      type="text"
+                      value={event.hendelse}
+                      onChange={(e) =>
+                        handleCalendarEventTextChange(index, e.target.value)
+                      }
+                      maxLength={50}
+                      placeholder="Beskriv hendelsen..."
+                      className="flex-1 px-4 py-2 bg-black border-2 border-(--christmas-red) text-(--christmas-red) focus:outline-none focus:border-(--gold)"
+                    />
+                    <span className="text-xs text-(--christmas-red)/50 w-12 text-right">
+                      {event.hendelse.length}/50
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveCalendarEvent(index)}
                       className="px-3 py-2 border-2 border-(--neon-red) bg-black text-(--neon-red) hover:bg-(--neon-red) hover:text-black transition-all font-bold text-xl"
                     >
                       ×

@@ -3,7 +3,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
-import { Oppdrag } from "@/types/innhold";
+import { Oppdrag, CalendarEvent } from "@/types/innhold";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import { getEventyr, getEventyrDays } from "@/lib/eventyr";
@@ -22,6 +22,7 @@ interface Email {
 
 interface NisseMailProps {
   missions: Oppdrag[];
+  customCalendarEvents?: CalendarEvent[];
   onClose: () => void;
   onOpenKodeTerminal: (day: number) => void;
   currentDay: number;
@@ -30,6 +31,7 @@ interface NisseMailProps {
 
 export function NisseMail({
   missions,
+  customCalendarEvents = [],
   onClose,
   onOpenKodeTerminal,
   currentDay,
@@ -59,6 +61,26 @@ export function NisseMail({
   const [showInbox, setShowInbox] = useState(true);
   const [expandedEventyrDescription, setExpandedEventyrDescription] =
     useState(false);
+
+  /**
+   * Get hendelse for a specific day
+   * Merges file-based mission hendelser with custom family events
+   * Custom events take precedence (override file-based)
+   */
+  const getHendelseForDay = useCallback(
+    (day: number): string | undefined => {
+      // Check custom events first (take precedence)
+      const customEvent = customCalendarEvents.find((e) => e.dag === day);
+      if (customEvent) {
+        return customEvent.hendelse;
+      }
+
+      // Fall back to file-based mission hendelse
+      const mission = missions.find((m) => m.dag === day);
+      return mission?.hendelse;
+    },
+    [customCalendarEvents, missions],
+  );
 
   const markAsViewed = useCallback(
     (dag: number, isBonusOppdrag: boolean = false) => {
@@ -675,20 +697,24 @@ export function NisseMail({
                       </div>
                     </div>
 
-                    {/* Public event if exists */}
-                    {selectedMission.hendelse && (
-                      <div className="p-4 border-2 border-(--cold-blue) bg-(--cold-blue)/10">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Icons.Alert size={20} color="blue" />
-                          <span className="text-sm font-bold text-(--cold-blue)">
-                            DETTE SKJER I DAG
-                          </span>
+                    {/* Public event if exists (merged: custom events override file-based) */}
+                    {(() => {
+                      const hendelse = getHendelseForDay(selectedMission.dag);
+                      if (!hendelse) return null;
+                      return (
+                        <div className="p-4 border-2 border-(--cold-blue) bg-(--cold-blue)/10">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Icons.Alert size={20} color="blue" />
+                            <span className="text-sm font-bold text-(--cold-blue)">
+                              DETTE SKJER I DAG
+                            </span>
+                          </div>
+                          <div className="text-sm text-(--cold-blue)">
+                            {hendelse}
+                          </div>
                         </div>
-                        <div className="text-sm text-(--cold-blue)">
-                          {selectedMission.hendelse}
-                        </div>
-                      </div>
-                    )}
+                      );
+                    })()}
 
                     {/* Mission instructions */}
                     <div className="p-4 border-2 border-(--gold)/30 bg-(--gold)/5">

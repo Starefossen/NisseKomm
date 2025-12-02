@@ -11,6 +11,31 @@
 
 import { defineType } from "sanity";
 
+/**
+ * Calendar Event object type for custom family real-world events
+ */
+export const calendarEventType = defineType({
+  name: "calendarEvent",
+  title: "Calendar Event",
+  type: "object",
+  fields: [
+    {
+      name: "dag",
+      title: "Day",
+      type: "number",
+      validation: (Rule) => Rule.required().min(1).max(24),
+      description: "Calendar day (1-24)",
+    },
+    {
+      name: "hendelse",
+      title: "Event",
+      type: "string",
+      validation: (Rule) => Rule.required().max(50),
+      description: "Event description (max 50 characters)",
+    },
+  ],
+});
+
 export const familyCredentials = defineType({
   name: "familyCredentials",
   title: "Family Credentials",
@@ -95,6 +120,18 @@ export const familyCredentials = defineType({
       title: "Last Recovery Email",
       type: "datetime",
       description: "Timestamp of last recovery email sent (for rate limiting)",
+    },
+
+    // ============================================================
+    // Calendar Events (Custom family real-world events)
+    // ============================================================
+    {
+      name: "calendarEvents",
+      title: "Calendar Events",
+      type: "array",
+      of: [{ type: "calendarEvent" }],
+      description:
+        "Custom real-world events for the calendar (e.g., birthday, family dinner)",
     },
   ],
   preview: {

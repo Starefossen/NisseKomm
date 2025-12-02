@@ -109,6 +109,7 @@
     ],
     "beste_rom": "Kjøkken eller spisebord",
     "hint_type": "kombinasjon",
+    "hendelse": "Lillejulaften",
     "finalized": false
   },
   {
@@ -179,6 +180,7 @@
     ],
     "beste_rom": "Der Rampenissen 'bor'",
     "hint_type": "kombinasjon",
+    "hendelse": "Julaften",
     "finalized": false
   }
 ]

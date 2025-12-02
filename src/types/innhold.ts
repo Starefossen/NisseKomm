@@ -269,3 +269,9 @@ export interface InnsendelseLog {
   dato: string; // ISO date string
   day?: number; // Quest day number (added for reliable matching with {{KID_CODE}} placeholder)
 }
+
+// Custom calendar event (from parent settings)
+export interface CalendarEvent {
+  dag: number; // Day 1-24
+  hendelse: string; // Event description
+}

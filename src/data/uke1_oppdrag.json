@@ -87,7 +87,6 @@
     "tittel": "Teater-gåten",
     "nissemail_tekst": "YO! 🎭 Teater er GOAT! Jeg har laget et HELT EPISK teater med kosedyrene deres i dag! De står som publikum, og jeg har laget en mystisk gåte for dere!\n\n🔐 FORRESTEN! Julius har akkurat låst opp NISSEKRYPTO-modulen på skrivebordet ditt! Dette er det hemmelige dekrypteringssystemet jeg snakket om i går! Symbolene du samler (som det grønne hjertet) skal brukes der for å låse opp Julius' dypeste hemmeligheter! Kult, ikke sant? 🎁\n\n- Rampenissen",
     "kode": "RUDOLF",
-    "hendelse": "Teater - En Julefortelling",
     "dagbokinnlegg": "Dag 4 - Rudolf-Drama\n\nRudolf krever egen garderobe. 'Vi er nisser, ikke Hollywood,' sa jeg. Han sultet.\n\nTrixter ordnet teater. Rudolf lyste veldig sterkt i mørket - kanskje den røde nesen er viktigere enn jeg trodde?\n\nEtt symbol alene betyr lite. Men når man setter sammen flere - et dyr, en egenskap, en idé - da forteller de en hel historie.\n\n- Julius",
     "rampenissen_rampestrek": "Kosedyr arrangert som publikum foran en 'scene' (f.eks. sofakant). Ved scenen ligger et skilt med emoji-gåten: 🦌 + ❤️👃 + 💡 = ?. Rampenissen står som 'regissør' med megafon eller regissørstol.",
     "fysisk_hint": "🦌 + ❤️👃 + 💡 = ?",
@@ -109,6 +108,7 @@
         "content": "🎭 JULETEATER I SNØFALL 🎭\n\nI kveld: Rudolf - Reinsdyret med den røde nesen\n\nHovedrolle: Rudolf (spilt av seg selv)\nBirolle: Trixter\nRegissør: Rampenissen\n\nBilletter: Gratis for alle nisser!"
       }
     ],
+    "hendelse": "Barbrosdagen (St. Barbara)",
     "finalized": true
   },
   {
@@ -163,7 +163,6 @@
       "id": "juletradisjon",
       "phase": 1
     },
-    "hendelse": "Speidertur til Turnerhytten",
     "dagbokinnlegg": "Dag 6 - Historietimen\n\nSt. Nikolaus-dagen! Kollega fra Myra - liten kystby ved Middelhavet. Kort navn, fire bokstaver. 'Den starter og slutter med vokalene i mitt navn,' pleier han si. Morsom måte å huske på.\n\nHan hadde bedre skjegg på konferansen i 324. Fortsatt bitter.\n\nNissene mest interessert i land med mest godteri. Typisk.\n\n- Julius",
     "rampenissen_rampestrek": "Rampenissen har TØMT alle sekkene i gangen! Skolesekker og speidersekker ligger veltet med innholdet strødd utover hele gulvet - blyanter, bøker, matbokser, klær, leker i EN STOR HAUG. Rampenissen sitter midt i rotet med piratbandana og holder opp et 'gammelt kart' (litt krøllete papir). Ved siden av ham ligger en tom 'skattkiste' (skoeske). En lapp sier: 'JULIUS SA SKATTEN FRA ST. NIKOLAUS VAR GJEMT I EN SEKK! 🏴‍☠️ Jeg lette i ALLE sekkene... fant ingen skatt, bare MASSE rart! Kan dere hjelpe meg finne byen han kom fra? Den starter med M!' Kosedyr står rundt som 'vitner' og ser sjokkerte ut.",
     "fysisk_hint": "Finn byen som begynner med M og slutter med A. 4 bokstaver totalt.",
@@ -194,6 +193,7 @@
         "content": "[Tegn et enkelt kart med kompas, bølger (hav), og 'X' som markerer Myra. Skriv gåten: 'Byen begynner med M, slutter med A, 4 bokstaver totalt']"
       }
     ],
+    "hendelse": "St. Nikolaus-dagen",
     "finalized": true
   },
   {
@@ -205,7 +205,6 @@
       "id": "morkets-trussel",
       "phase": 1
     },
-    "hendelse": "Speidertur til Turnerhytten",
     "dagbokinnlegg": "Dag 7 - Logikk-leksjoner\n\nRampenissen rapporterer om marshmallow-kaos hjemme hos barna. Kosedyrene skal visst ha \"startet det\". Tviler.\n\nGa ham en tallgåte for å huske koden. Tre sifre, logiske sammenhenger. Matematikk er universelt - fungerer like bra i Snøfall som hos menneskene.\n\nIQ jobber med nye oppfinnelser. Noe om en marshmallow-kanon? Håper det er til fredelige formål.\n\nMørket er stille. For stille. Orakelet rynker pannen.\n\n- Julius",
     "rampenissen_rampestrek": "Marshmallows strødd over hele stuen som 'snøballer' etter krigen. Kosedyr er delt i to 'lag' med fort av sofaputer - noen ligger 'såret' på gulvet. 3 SPESIELLE marshmallows har tall skrevet på: 3 (i en sko ved døra), 6 (mellom sofaputene), 9 (på kjøkkenbenken). Rampenissen holder hvitt flagg (serviett) og ser utmattet ut.",
     "fysisk_hint": "Finn 3 marshmallows med tall. Gåte: Sum = 18. Første = halvparten av andre = tredjedel av tredje.",

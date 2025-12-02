@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { CRTFrame } from "@/components/ui/CRTFrame";
 import { BootSequence } from "@/components/ui/BootSequence";
 import { PasswordPrompt } from "@/components/ui/PasswordPrompt";
 import { SoundToggle } from "@/components/ui/SoundToggle";
 import { useSounds } from "@/lib/sounds";
 import { StorageManager } from "@/lib/storage";
-import { getSessionId } from "@/lib/session-manager";
+import { useAppState } from "@/lib/app-context";
 import { DesktopIcon } from "@/components/ui/DesktopIcon";
 import { SystemStatus } from "@/components/modules/SystemStatus";
 import { VarselKonsoll } from "@/components/modules/VarselKonsoll";
@@ -50,40 +50,22 @@ function isCalendarActive(testMode: boolean): boolean {
   return isDateCalendarActive(testMode);
 }
 
-/**
- * Get count of unread emails for current day
- */
-function getUnreadEmailCount(): number {
-  if (typeof window === "undefined") return 0;
-  const currentDay = getCurrentDay();
-  return GameEngine.getUnreadEmailCount(currentDay);
-}
-
-/**
- * Get count of unread files in NisseNet
- */
-function getUnreadFileCount(): number {
-  if (typeof window === "undefined") return 0;
-  return GameEngine.getUnreadFileCount();
-}
-
-/**
- * Get count of unread diary entries
- */
-function getUnreadDagbokCount(): number {
-  if (typeof window === "undefined") return 0;
-  const completedQuests = GameEngine.loadGameState().completedQuests;
-  return StorageManager.getUnreadDagbokCount(completedQuests);
-}
-
 export default function Home() {
+  // Get app state from context (handles initialization, session, and data loading)
+  const {
+    isAuthenticated,
+    isInitializing,
+    familyData,
+    unlockedModules,
+    unreadEmailCount,
+    unreadFileCount,
+    unreadDagbokCount,
+    authenticate,
+    refreshGameState,
+  } = useAppState();
+
+  // Local UI state
   const [bootComplete, setBootComplete] = useState(() => {
-    if (typeof window !== "undefined") {
-      return StorageManager.isAuthenticated();
-    }
-    return false;
-  });
-  const [authenticated, setAuthenticated] = useState(() => {
     if (typeof window !== "undefined") {
       return StorageManager.isAuthenticated();
     }
@@ -91,22 +73,12 @@ export default function Home() {
   });
   const [openWindow, setOpenWindow] = useState<string | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const [unreadCount, setUnreadCount] = useState(() => getUnreadEmailCount());
-  const [unreadFileCount, setUnreadFileCount] = useState(() =>
-    getUnreadFileCount(),
-  );
-  const [unreadDagbokCount, setUnreadDagbokCount] = useState(() =>
-    getUnreadDagbokCount(),
-  );
-  const [unlockedModules, setUnlockedModules] = useState<string[]>(() => {
-    if (typeof window !== "undefined") {
-      return GameEngine.getUnlockedModules();
-    }
-    return [];
-  });
   const [showGrandFinale, setShowGrandFinale] = useState(false);
   const [showNameEntry, setShowNameEntry] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [localUnreadFileCount, setLocalUnreadFileCount] =
+    useState(unreadFileCount);
+
   const { playSound, playJingle } = useSounds();
 
   const bootDuration = parseInt(
@@ -114,43 +86,9 @@ export default function Home() {
   );
   const testMode = process.env.NEXT_PUBLIC_TEST_MODE === "true";
 
-  // Restore session from cookie on mount
-  useEffect(() => {
-    const restoreSession = async () => {
-      const existingSessionId = getSessionId();
-      if (existingSessionId && !authenticated) {
-        console.debug(
-          "[App] Restoring session:",
-          existingSessionId.substring(0, 8) + "...",
-        );
-        // Session cookie exists, restore it and wait for initialization
-        await StorageManager.setAuthenticated(true, existingSessionId);
-
-        // Refresh all UI state from loaded session data
-        setUnlockedModules(GameEngine.getUnlockedModules());
-        setUnreadCount(getUnreadEmailCount());
-        setUnreadFileCount(getUnreadFileCount());
-        setUnreadDagbokCount(getUnreadDagbokCount());
-
-        setAuthenticated(true);
-        setBootComplete(true);
-        console.debug("[App] Session restored successfully");
-      }
-    };
-
-    restoreSession();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Run once on mount, authenticated intentionally excluded
-
-  // Note: Module unlocks are now handled by GameEngine automatically on code submission
-  // The unlockedModules state is initialized from GameEngine and updated via handleCodeSubmitted
-  // Crisis state is checked within the respective module components
-  // (SnøfallTV for antenna, NisseStats for inventory) to keep crisis logic co-located with UI
-
   // Update unlocked modules when codes are submitted
   const handleCodeSubmitted = () => {
-    setUnlockedModules(GameEngine.getUnlockedModules());
-    setUnreadCount(getUnreadEmailCount());
+    refreshGameState();
 
     // Check if Day 22 just completed and names not yet entered
     if (
@@ -176,15 +114,8 @@ export default function Home() {
   };
 
   const handleAuthSuccess = async (sessionId: string) => {
-    // CRITICAL: Wait for adapter initialization before updating state
-    await StorageManager.setAuthenticated(true, sessionId);
-    setAuthenticated(true);
-
-    // Refresh all UI state from newly loaded session data
-    setUnlockedModules(GameEngine.getUnlockedModules());
-    setUnreadCount(getUnreadEmailCount());
-    setUnreadFileCount(getUnreadFileCount());
-    setUnreadDagbokCount(getUnreadDagbokCount());
+    // Delegate to AppContext for full initialization
+    await authenticate(sessionId);
 
     playSound("success");
     // Play jingle after a short delay
@@ -204,7 +135,7 @@ export default function Home() {
 
       // Reset NisseNet unread count when opening
       if (windowId === "nissenet" && typeof window !== "undefined") {
-        setUnreadFileCount(0);
+        setLocalUnreadFileCount(0);
       }
     }
   };
@@ -216,12 +147,8 @@ export default function Home() {
     setOpenWindow(null);
     setSelectedDay(null);
     playSound("close");
-    // Refresh unread counts when closing windows
-    if (typeof window !== "undefined") {
-      setUnreadCount(getUnreadEmailCount());
-      setUnreadFileCount(getUnreadFileCount());
-      setUnreadDagbokCount(getUnreadDagbokCount());
-    }
+    // Refresh game state when closing windows
+    refreshGameState();
   };
 
   const handleSelectDay = (day: number) => {
@@ -239,6 +166,17 @@ export default function Home() {
     setShowNameEntry(false);
     playSound("success");
   };
+
+  // Compute effective authenticated state
+  // - During initialization, use local storage check for boot sequence
+  // - After initialization, use context state
+  const effectiveAuthenticated = isInitializing
+    ? StorageManager.isAuthenticated()
+    : isAuthenticated;
+
+  // Use context file count unless we've reset it locally (when opening NisseNet)
+  const displayUnreadFileCount =
+    localUnreadFileCount === 0 ? 0 : unreadFileCount;
 
   // Show access denied if outside December 1-24 in production mode
   if (!isDateValid()) {
@@ -265,7 +203,7 @@ export default function Home() {
   return (
     <CRTFrame>
       {/* Sound toggle button */}
-      {bootComplete && authenticated && <SoundToggle />}
+      {bootComplete && effectiveAuthenticated && <SoundToggle />}
 
       {/* Boot sequence */}
       {!bootComplete && (
@@ -273,12 +211,12 @@ export default function Home() {
       )}
 
       {/* Password prompt */}
-      {bootComplete && !authenticated && (
+      {bootComplete && !effectiveAuthenticated && (
         <PasswordPrompt onSuccess={handleAuthSuccess} />
       )}
 
       {/* Main application */}
-      {bootComplete && authenticated && (
+      {bootComplete && effectiveAuthenticated && (
         <div className="flex h-full">
           {/* Hamburger menu button for mobile */}
           <HamburgerMenu
@@ -325,7 +263,7 @@ export default function Home() {
                       icon="file"
                       label="NISSEMAIL"
                       color="green"
-                      unreadCount={unreadCount}
+                      unreadCount={unreadEmailCount}
                       onClick={() => handleIconClick("nissemail")}
                     />
                     <DesktopIcon
@@ -338,7 +276,7 @@ export default function Home() {
                       icon="folder"
                       label="NISSENET"
                       color="green"
-                      unreadCount={unreadFileCount}
+                      unreadCount={displayUnreadFileCount}
                       onClick={() => handleIconClick("nissenet")}
                     />
                     <DesktopIcon
@@ -451,6 +389,7 @@ export default function Home() {
                       missions={oppdrag}
                       currentDay={getCurrentDay()}
                       initialDay={selectedDay}
+                      customCalendarEvents={familyData.calendarEvents}
                       onClose={handleCloseWindow}
                       onOpenKodeTerminal={(day) => {
                         setSelectedDay(day);
@@ -479,6 +418,7 @@ export default function Home() {
                   {openWindow === "kalender" && (
                     <Kalender
                       missions={oppdrag}
+                      customCalendarEvents={familyData.calendarEvents}
                       onClose={handleCloseWindow}
                       onSelectDay={handleSelectDay}
                     />

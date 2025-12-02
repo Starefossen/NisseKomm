@@ -4,7 +4,7 @@
  * Export all schema types for Sanity Studio configuration
  */
 
-import { familyCredentials } from "./familyCredentials";
+import { familyCredentials, calendarEventType } from "./familyCredentials";
 import {
   userSession,
   submittedCodeType,
@@ -33,4 +33,5 @@ export const schemaTypes = [
   failedAttemptType,
   santaLetterType,
   brevfuglType,
+  calendarEventType,
 ];
