@@ -121,8 +121,9 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
       return;
     }
     processingQRRef.current = true;
+    setIsProcessing(true);
 
-    // Stop scanning first
+    // Stop scanning immediately to prevent re-triggering
     if (qrReaderRef.current) {
       try {
         stopMediaTracks();
@@ -146,11 +147,15 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
 
     // Process the scanned code
     await processCode(decodedText);
-    processingQRRef.current = false;
+    // Don't reset processingQRRef here - keep it locked to prevent any re-triggers
+    // It will be reset when component unmounts or scanner restarts
   };
 
   const startScanning = async () => {
     setScannerError(null); // Clear previous errors
+    processingQRRef.current = false; // Reset processing lock
+    setIsProcessing(false);
+
     try {
       stopMediaTracks();
 
@@ -190,7 +195,7 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
           },
         },
         handleQRScan,
-        () => {}, // Ignore scan errors (just keep trying)
+        () => { }, // Ignore scan errors (just keep trying)
       );
 
       SoundManager.playSound("click");
@@ -255,7 +260,6 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
   };
 
   const processCode = async (inputCode: string) => {
-    setIsProcessing(true);
     SoundManager.playSound("click");
 
     // Track symbol scan attempt
@@ -278,14 +282,34 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
         symbolColor: result.symbol.symbolColor,
         description: result.symbol.description,
       });
-      setTimeout(() => {
+
+      // Show success message briefly, then close to return to NisseKrypto
+      setTimeout(async () => {
         setLastCollected(null);
-      }, 5000);
+        // Ensure scanner is fully stopped before closing
+        await stopScanning();
+        onClose(); // Close scanner and return to NisseKrypto
+      }, 2000);
+    } else if (result.symbol) {
+      // Already collected symbol - show error but still close
+      SoundManager.playSound("error");
+
+      setLastCollected({
+        symbolIcon: result.symbol.symbolIcon,
+        symbolColor: result.symbol.symbolColor,
+        description: "Allerede samlet!",
+      });
+
+      // Show message briefly, then close to return to NisseKrypto
+      setTimeout(async () => {
+        setLastCollected(null);
+        await stopScanning();
+        onClose();
+      }, 2000);
     } else {
+      // Invalid code - don't close, let user try again
       SoundManager.playSound("error");
     }
-
-    setIsProcessing(false);
   };
 
   return (
@@ -386,11 +410,11 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
                 size={48}
                 color={
                   lastCollected.symbolColor as
-                    | "green"
-                    | "red"
-                    | "blue"
-                    | "gold"
-                    | "gray"
+                  | "green"
+                  | "red"
+                  | "blue"
+                  | "gold"
+                  | "gray"
                 }
               />
               <div>
