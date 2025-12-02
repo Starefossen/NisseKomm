@@ -7,6 +7,7 @@ import {
   clearParentAuth,
   setParentAuthenticated,
   getSessionId,
+  setSessionId,
 } from "@/lib/session-manager";
 import { useEffect } from "react";
 
@@ -130,6 +131,12 @@ function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
         );
         setIsSubmitting(false);
         return;
+      }
+
+      // Set the session cookie so parent auth can work
+      // This is needed because parents may log in directly without going through the main app
+      if (loginData.sessionId) {
+        setSessionId(loginData.sessionId);
       }
 
       // Verify parent access and set parent auth cookie

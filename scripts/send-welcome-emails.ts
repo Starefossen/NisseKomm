@@ -434,7 +434,9 @@ async function sendWelcomeEmail(
           await delay(waitTime);
           return sendWelcomeEmail(resend, family, retryCount + 1);
         }
-        console.error(`   ✗ Failed after ${MAX_RETRIES} retries: ${error.message}`);
+        console.error(
+          `   ✗ Failed after ${MAX_RETRIES} retries: ${error.message}`,
+        );
         return false;
       }
       console.error(`   ✗ Failed: ${error.message}`);
@@ -548,9 +550,7 @@ async function main() {
 
   // Block bulk emails for development dataset (require --email for single sends)
   if (args.dataset === "development" && !args.email) {
-    console.error(
-      "\n❌ Bulk emails are not allowed for development dataset.",
-    );
+    console.error("\n❌ Bulk emails are not allowed for development dataset.");
     console.error("   Use --email <address> to send to a specific family.");
     console.error("   Or use --dry-run to preview without sending.");
     process.exit(1);
@@ -597,7 +597,9 @@ async function main() {
   }
 
   console.log("\n════════════════════════════════════════════");
-  console.log(`✅ Complete: ${sent} sent, ${failed} failed, ${skipped} skipped`);
+  console.log(
+    `✅ Complete: ${sent} sent, ${failed} failed, ${skipped} skipped`,
+  );
   console.log("════════════════════════════════════════════");
 }
 
