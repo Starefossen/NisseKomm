@@ -116,8 +116,8 @@ export function TimelineView({ selectedDay, onSelectDay }: TimelineViewProps) {
         hasSymbol: !!quest.symbol_clue,
         symbolCollected: quest.symbol_clue
           ? collectedSymbols.some(
-              (s) => s.symbolId === quest.symbol_clue!.symbolId,
-            )
+            (s) => s.symbolId === quest.symbol_clue!.symbolId,
+          )
           : false,
         hasModule: !!(
           quest.reveals?.modules && quest.reveals.modules.length > 0
@@ -125,8 +125,8 @@ export function TimelineView({ selectedDay, onSelectDay }: TimelineViewProps) {
         hasDecryption: !!quest.decryption_challenge,
         decryptionSolved: quest.decryption_challenge
           ? GameEngine.isDecryptionSolved(
-              quest.decryption_challenge.challengeId,
-            )
+            quest.decryption_challenge.challengeId,
+          )
           : false,
         eventyrPhases,
       };
