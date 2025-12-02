@@ -88,8 +88,26 @@ type Card = (typeof allOppdrag)[0] | CheckpointCard | PrintMaterialCard;
 /**
  * Generate cards for selected days
  */
-function generateCardsForDays(selectedDays: number[]): Card[] {
+function generateCardsForDays(
+  selectedDays: number[],
+  customNote: string,
+): Card[] {
   const filteredQuests = allOppdrag.filter((q) => selectedDays.includes(q.dag));
+
+  // Group 0: Custom note card (if provided) - prepend to all cards
+  const customNoteCard: PrintMaterialCard[] = customNote.trim()
+    ? [
+        {
+          dag: 0, // Special day number for custom note
+          tittel: "Viktig melding fra Rampenissen",
+          isPrintMaterial: true,
+          content: customNote,
+          materialTitle: "Egendefinert notat",
+          beste_rom: "Overalt",
+          estimatedSize: estimateCardSize(customNote),
+        },
+      ]
+    : [];
 
   // Group 1: Main quest cards (fysisk_hint)
   const mainQuestCards: Card[] = [...filteredQuests];
@@ -121,7 +139,12 @@ function generateCardsForDays(selectedDays: number[]): Card[] {
     }
   });
 
-  return [...mainQuestCards, ...checkpointCards, ...printMaterialCards];
+  return [
+    ...customNoteCard,
+    ...mainQuestCards,
+    ...checkpointCards,
+    ...printMaterialCards,
+  ];
 }
 
 /**
@@ -168,6 +191,9 @@ function PrintoutContent() {
     Array.from({ length: 24 }, (_, i) => i + 1),
   );
 
+  // State for custom note
+  const [customNote, setCustomNote] = useState("");
+
   // State for player names (for template resolution in diplomas)
   // Uses lazy initialization to avoid useEffect for synchronous data
   const [playerNames] = useState<string[]>(() =>
@@ -194,7 +220,7 @@ function PrintoutContent() {
   const deselectAll = () => setSelectedDays([]);
 
   // Generate cards based on selected days
-  const allCards = generateCardsForDays(selectedDays);
+  const allCards = generateCardsForDays(selectedDays, customNote);
 
   // Split into pages of 6 cards each (2 columns × 3 rows)
   const cardsPerPage = 6;
@@ -306,6 +332,24 @@ function PrintoutContent() {
             </ul>
           </div>
 
+          {/* Custom Note Editor */}
+          <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-6 mb-8">
+            <h2 className="text-2xl font-bold text-(--cold-blue) mb-3">
+              📝 EGENDEFINERT NOTAT (vises på utskriftssiden)
+            </h2>
+            <textarea
+              value={customNote}
+              onChange={(e) => setCustomNote(e.target.value)}
+              placeholder="Skriv inn en personlig hilsen eller instruksjon som vil vises på toppen av utskriften (valgfritt)..."
+              className="w-full p-4 bg-black border-2 border-(--cold-blue) text-(--neon-green) font-['VT323',monospace] text-xl resize-none focus:outline-none focus:border-(--neon-green)"
+              rows={4}
+            />
+            <p className="text-center text-sm opacity-70 mt-2">
+              💡 Tips: Legg til en personlig hilsen fra Rampenissen, en ekstra
+              instruksjon, eller en morsom kommentar
+            </p>
+          </div>
+
           {/* Screen Preview */}
           {selectedDays.length === 0 ? (
             <div className="text-center py-20 border-4 border-(--neon-green)/30 bg-(--dark-crt)">
@@ -317,110 +361,126 @@ function PrintoutContent() {
               </p>
             </div>
           ) : (
-            pages.map((pageCards, pageIndex) => (
-              <div
-                key={pageIndex}
-                className="mb-12 border-4 border-(--neon-green)/30 p-8 bg-(--dark-crt)"
-              >
-                <div className="text-center text-xl font-bold text-(--gold) mb-6">
-                  SIDE {pageIndex + 1} av {pages.length}
+            <>
+              {/* Custom Note Preview (screen only) */}
+              {customNote && (
+                <div className="mb-8 border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-6">
+                  <h3 className="text-xl font-bold text-(--cold-blue) mb-3 text-center">
+                    DIN EGENDEFINERTE HILSEN:
+                  </h3>
+                  <p className="text-lg text-(--neon-green) whitespace-pre-wrap text-center">
+                    {customNote}
+                  </p>
                 </div>
-                <div className="grid grid-cols-2 gap-6">
-                  {pageCards.map((card, cardIndex) => {
-                    const isCheckpointCard = isCheckpoint(card);
-                    const isPrintMaterialCard = isPrintMaterial(card);
-                    const dag = card.dag;
-                    const tittel = card.tittel;
+              )}
 
-                    // Dynamic height based on content size
-                    const screenHeightClass = isPrintMaterialCard
-                      ? card.estimatedSize === "large"
-                        ? "min-h-[600px]"
-                        : card.estimatedSize === "medium"
-                          ? "min-h-[400px]"
-                          : "min-h-[300px]"
-                      : "min-h-[300px]";
+              {pages.map((pageCards, pageIndex) => (
+                <div
+                  key={pageIndex}
+                  className="mb-12 border-4 border-(--neon-green)/30 p-8 bg-(--dark-crt)"
+                >
+                  <div className="text-center text-xl font-bold text-(--gold) mb-6">
+                    SIDE {pageIndex + 1} av {pages.length}
+                  </div>
+                  <div className="grid grid-cols-2 gap-6">
+                    {pageCards.map((card, cardIndex) => {
+                      const isCheckpointCard = isCheckpoint(card);
+                      const isPrintMaterialCard = isPrintMaterial(card);
+                      const dag = card.dag;
+                      const tittel = card.tittel;
 
-                    return (
-                      <div
-                        key={`${dag}-${cardIndex}`}
-                        className={`border-4 border-dashed border-(--neon-green) p-4 bg-(--dark-crt) ${screenHeightClass}`}
-                      >
-                        {/* Parent info - outside the final note */}
-                        <div className="text-center mb-3">
-                          <div className="text-lg font-bold uppercase text-(--gold) py-1">
-                            {tittel}
-                          </div>
-                        </div>
+                      // Dynamic height based on content size
+                      const screenHeightClass = isPrintMaterialCard
+                        ? card.estimatedSize === "large"
+                          ? "min-h-[600px]"
+                          : card.estimatedSize === "medium"
+                            ? "min-h-[400px]"
+                            : "min-h-[300px]"
+                        : "min-h-[300px]";
 
-                        {/* THE FINAL NOTE FOR KIDS - solid border */}
-                        <div className="border-4 border-solid border-(--neon-green) p-3 bg-(--neon-green)/5 relative mb-3">
-                          {/* Day number badge - smaller, inside note */}
-                          <div className="absolute top-2 right-2 w-8 h-8 bg-(--christmas-red) border-2 border-(--neon-green) flex items-center justify-center">
-                            <span className="text-lg font-bold text-(--gold)">
-                              {dag}
-                            </span>
-                          </div>
-
-                          {/* NisseKomm branding header */}
-                          <div className="text-center mb-3 pb-2 border-b-2 border-(--neon-green)">
-                            <div className="text-base font-bold text-(--neon-green) tracking-wider">
-                              ▬▬ NISSEKOMM ▬▬
-                            </div>
-                            <div className="text-[10px] text-(--cold-blue) font-mono">
-                              [NORDPOL KOMMUNIKASJONSSYSTEM]
+                      return (
+                        <div
+                          key={`${dag}-${cardIndex}`}
+                          className={`border-4 border-dashed border-(--neon-green) p-4 bg-(--dark-crt) ${screenHeightClass}`}
+                        >
+                          {/* Parent info - outside the final note */}
+                          <div className="text-center mb-3">
+                            <div className="text-lg font-bold uppercase text-(--gold) py-1">
+                              {tittel}
                             </div>
                           </div>
 
-                          {/* Message content */}
-                          {isCheckpointCard ? (
-                            <div className="space-y-2">
-                              <div className="text-center text-lg font-bold text-(--gold)">
-                                CHECKPOINT {card.checkpoint}/
-                                {card.totalCheckpoints}
+                          {/* THE FINAL NOTE FOR KIDS - solid border */}
+                          <div className="border-4 border-solid border-(--neon-green) p-3 bg-(--neon-green)/5 relative mb-3">
+                            {/* Day number badge - smaller, inside note */}
+                            {dag > 0 && (
+                              <div className="absolute top-2 right-2 w-8 h-8 bg-(--christmas-red) border-2 border-(--neon-green) flex items-center justify-center">
+                                <span className="text-lg font-bold text-(--gold)">
+                                  {dag}
+                                </span>
                               </div>
-                              {card.challenge && (
-                                <div className="text-center text-sm mb-2 text-(--cold-blue)">
-                                  {card.challenge}
+                            )}
+
+                            {/* NisseKomm branding header */}
+                            <div className="text-center mb-3 pb-2 border-b-2 border-(--neon-green)">
+                              <div className="text-base font-bold text-(--neon-green) tracking-wider">
+                                ▬▬ NISSEKOMM ▬▬
+                              </div>
+                              <div className="text-[10px] text-(--cold-blue) font-mono">
+                                [NORDPOL KOMMUNIKASJONSSYSTEM]
+                              </div>
+                            </div>
+
+                            {/* Message content */}
+                            {isCheckpointCard ? (
+                              <div className="space-y-2">
+                                <div className="text-center text-lg font-bold text-(--gold)">
+                                  CHECKPOINT {card.checkpoint}/
+                                  {card.totalCheckpoints}
                                 </div>
-                              )}
-                              <div className="text-center text-2xl font-bold text-(--neon-green)">
-                                BOKSTAV: {card.letters}
+                                {card.challenge && (
+                                  <div className="text-center text-sm mb-2 text-(--cold-blue)">
+                                    {card.challenge}
+                                  </div>
+                                )}
+                                <div className="text-center text-2xl font-bold text-(--neon-green)">
+                                  BOKSTAV: {card.letters}
+                                </div>
+                                <div className="text-center text-xs mt-2 opacity-70">
+                                  → Gå til neste checkpoint
+                                </div>
                               </div>
-                              <div className="text-center text-xs mt-2 opacity-70">
-                                → Gå til neste checkpoint
+                            ) : isPrintMaterialCard ? (
+                              <div
+                                className={`text-center leading-snug whitespace-pre-line ${
+                                  card.estimatedSize === "large"
+                                    ? "text-xs"
+                                    : "text-sm"
+                                }`}
+                              >
+                                {resolveContent(card.content)}
                               </div>
-                            </div>
-                          ) : isPrintMaterialCard ? (
-                            <div
-                              className={`text-center leading-snug whitespace-pre-line ${
-                                card.estimatedSize === "large"
-                                  ? "text-xs"
-                                  : "text-sm"
-                              }`}
-                            >
-                              {resolveContent(card.content)}
-                            </div>
-                          ) : (
-                            <div className="text-center text-sm leading-snug">
-                              <div className="font-bold">
-                                {card.fysisk_hint}
+                            ) : (
+                              <div className="text-center text-sm leading-snug">
+                                <div className="font-bold">
+                                  {card.fysisk_hint}
+                                </div>
                               </div>
-                            </div>
-                          )}
-                        </div>
+                            )}
+                          </div>
 
-                        {/* Parent reference - outside the final note */}
-                        <div className="text-center text-xs opacity-70 pt-2 border-t border-(--neon-green)/30">
-                          📍 Gjemt i:{" "}
-                          {isCheckpointCard ? card.location : card.beste_rom}
+                          {/* Parent reference - outside the final note */}
+                          <div className="text-center text-xs opacity-70 pt-2 border-t border-(--neon-green)/30">
+                            📍 Gjemt i:{" "}
+                            {isCheckpointCard ? card.location : card.beste_rom}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            ))
+              ))}
+            </>
           )}
         </div>
       </div>
@@ -460,11 +520,13 @@ function PrintoutContent() {
                     {/* THE FINAL NOTE FOR KIDS - solid border */}
                     <div className="print:border-4 print:border-solid print:border-black print:p-3 print:bg-gray-50 print:flex-1 print:flex print:flex-col print:relative">
                       {/* Day number badge - smaller, inside note */}
-                      <div className="print:absolute print:top-2 print:right-2 print:w-8 print:h-8 print:bg-red-600 print:border-2 print:border-black print:flex print:items-center print:justify-center">
-                        <span className="print:text-lg print:font-bold print:text-yellow-400">
-                          {dag}
-                        </span>
-                      </div>
+                      {dag > 0 && (
+                        <div className="print:absolute print:top-2 print:right-2 print:w-8 print:h-8 print:bg-red-600 print:border-2 print:border-black print:flex print:items-center print:justify-center">
+                          <span className="print:text-lg print:font-bold print:text-yellow-400">
+                            {dag}
+                          </span>
+                        </div>
+                      )}
 
                       {/* NisseKomm branding header */}
                       <div className="print:text-center print:mb-3 print:pb-2 print:border-b-2 print:border-black">
