@@ -166,12 +166,12 @@ function NissemorGuideContent() {
           e.preventDefault();
           alert(
             "⌨️ TASTATURSNARVEIER:\n\n" +
-              "← / h : Forrige dag\n" +
-              "→ / l : Neste dag\n" +
-              "Home / g : Første dag\n" +
-              "End / G : Siste dag\n" +
-              "t : Gå til dagens dato\n" +
-              "? : Vis denna hjelpen",
+            "← / h : Forrige dag\n" +
+            "→ / l : Neste dag\n" +
+            "Home / g : Første dag\n" +
+            "End / G : Siste dag\n" +
+            "t : Gå til dagens dato\n" +
+            "? : Vis denna hjelpen",
           );
           break;
       }
@@ -185,17 +185,21 @@ function NissemorGuideContent() {
     <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8">
       <GuideNavigation currentPage="hovedside" />
 
-      {/* Introduction */}
-      <div className="max-w-4xl mx-auto mb-6 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold text-(--gold) mb-3">
-          🎄 NISSEMOR-GUIDEN 🎄
-        </h1>
-        <p className="text-lg text-(--neon-green)/80 leading-relaxed">
-          Velkommen til kontrollpanelet for NisseKomm-adventuren! Her finner du
-          alt du trenger for å følge med på barnets progresjon, forberede dagens
-          oppdrag, og holde styr på fysiske ledetekster og koder. Bruk menyen
-          over for å navigere mellom de ulike verktøyene.
-        </p>
+      {/* Welcome Section */}
+      <div className="max-w-4xl mx-auto mb-8 text-center">
+        <div className="border-4 border-(--neon-green) bg-(--neon-green)/5 p-6 mb-6">
+          <h1 className="text-3xl md:text-4xl font-bold text-(--gold) mb-4">
+            🎄 Velkommen til Nissemor-guiden! 🎄
+          </h1>
+          <p className="text-lg md:text-xl text-(--neon-green) leading-relaxed mb-4">
+            Dette er kontrollpanelet for hele NisseKomm-adventuren! Her finner du alt du trenger for å følge med på barnets progresjon, forberede dagens oppdrag, og holde styr på fysiske ledetekster og koder.
+          </p>
+          <div className="border-t-2 border-(--neon-green)/30 pt-4 mt-4">
+            <p className="text-base text-(--neon-green)/80">
+              💡 <strong>Tips:</strong> Bruk navigasjonsmenyen over for å utforske ulike verktøy. Start med <strong>📋 HOVEDSIDE</strong> for oversikt, <strong>✉️ BREVFUGLER</strong> for dagens e-post, og <strong>🏅 BONUSOPPDRAG</strong> for spesialoppdrag.
+            </p>
+          </div>
+        </div>
       </div>
 
       <ProgressionStats

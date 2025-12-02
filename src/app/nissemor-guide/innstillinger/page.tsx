@@ -240,11 +240,11 @@ function InnstillingerContent() {
         {/* Header */}
         <div className="border-8 border-(--neon-green) bg-black p-6 mb-6">
           <div className="flex items-center justify-center gap-4 mb-4">
-            <Icons.Settings size={40} color="green" />
+            <Icons.Sliders size={40} color="green" />
             <h1 className="text-4xl font-bold text-(--neon-green) tracking-wider">
               FAMILIEINNSTILLINGER
             </h1>
-            <Icons.Settings size={40} color="green" />
+            <Icons.Sliders size={40} color="green" />
           </div>
           <p className="text-center text-(--neon-green)/70">
             Administrer familiens NisseKomm-konto
@@ -272,11 +272,10 @@ function InnstillingerContent() {
                   onClick={() =>
                     copyToClipboard(familyData?.kidCode || "", "kidCode")
                   }
-                  className={`p-2 border-2 transition-colors ${
-                    copiedField === "kidCode"
+                  className={`p-2 border-2 transition-colors ${copiedField === "kidCode"
                       ? "border-(--gold) bg-(--gold) text-black"
                       : "border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green) hover:text-black"
-                  }`}
+                    }`}
                   title="Kopier barnekode"
                 >
                   {copiedField === "kidCode" ? "✓" : <Icons.File size={16} />}
@@ -297,11 +296,10 @@ function InnstillingerContent() {
                   onClick={() =>
                     copyToClipboard(familyData?.parentCode || "", "parentCode")
                   }
-                  className={`p-2 border-2 transition-colors ${
-                    copiedField === "parentCode"
+                  className={`p-2 border-2 transition-colors ${copiedField === "parentCode"
                       ? "border-(--gold) bg-(--gold) text-black"
                       : "border-(--cold-blue) text-(--cold-blue) hover:bg-(--cold-blue) hover:text-black"
-                  }`}
+                    }`}
                   title="Kopier foreldrekode"
                 >
                   {copiedField === "parentCode" ? (
@@ -581,10 +579,10 @@ function InnstillingerContent() {
             Opprettet:{" "}
             {familyData?.createdAt
               ? new Date(familyData.createdAt).toLocaleDateString("nb-NO", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
               : "Ukjent"}
           </p>
         </div>

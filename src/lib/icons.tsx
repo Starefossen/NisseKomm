@@ -54,7 +54,10 @@ export const Icons = {
   Alert: (props: Omit<IconProps, "name">) => <Icon name="alert" {...props} />,
   Warning: (props: Omit<IconProps, "name">) => <Icon name="alert" {...props} />,
   Settings: (props: Omit<IconProps, "name">) => (
-    <Icon name="settings" {...props} />
+    <Icon name="sliders" {...props} />
+  ),
+  Sliders: (props: Omit<IconProps, "name">) => (
+    <Icon name="sliders" {...props} />
   ),
   Help: (props: Omit<IconProps, "name">) => <Icon name="contact" {...props} />,
   Gps: (props: Omit<IconProps, "name">) => <Icon name="gps" {...props} />,
