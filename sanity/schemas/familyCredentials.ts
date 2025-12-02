@@ -90,6 +90,12 @@ export const familyCredentials = defineType({
       validation: (Rule) => Rule.required(),
       description: "Registration timestamp",
     },
+    {
+      name: "lastRecoveryEmail",
+      title: "Last Recovery Email",
+      type: "datetime",
+      description: "Timestamp of last recovery email sent (for rate limiting)",
+    },
   ],
   preview: {
     select: {

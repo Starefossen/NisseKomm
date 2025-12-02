@@ -18,6 +18,7 @@ import {
   createErrorResponse,
   successResponse,
 } from "@/lib/api-utils";
+import { sendWelcomeEmail } from "@/lib/email-service";
 
 interface RegisterRequest {
   familyName?: string;
@@ -182,6 +183,19 @@ export async function POST(request: NextRequest) {
       niceListLastViewed: null,
       dagbokLastRead: 0,
     });
+
+    // Send welcome email with codes (don't block registration on email failure)
+    try {
+      await sendWelcomeEmail({
+        to: parentEmail,
+        familyName: familyName || undefined,
+        kidCode,
+        parentCode,
+        kidNames: validatedKidNames,
+      });
+    } catch (emailError) {
+      console.error("[Registration] Failed to send welcome email:", emailError);
+    }
 
     const response: RegisterResponse = {
       kidCode,

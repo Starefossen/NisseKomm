@@ -6,8 +6,10 @@
   "scripts": {
     "build": "next build",
     "check": "tsc --noEmit && eslint . && knip && prettier --write --list-different . && jest --silent",
-    "cleanup:test-sessions": "tsx scripts/cleanup-test-sessions.ts",
+    "cleanup:dev": "tsx scripts/cleanup-test-sessions.ts --dataset development",
     "dev": "next dev",
+    "email:dev": "tsx scripts/send-welcome-emails.ts --dataset development",
+    "email:prod": "tsx scripts/send-welcome-emails.ts --dataset production",
     "format": "prettier --write --list-different .",
     "format:check": "prettier --check .",
     "knip": "knip",
@@ -38,6 +40,7 @@
     "qr-code-styling": "^1.9.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "resend": "^6.5.2",
     "sanity": "^4.19.0",
     "styled-components": "^6.1.19",
     "uuid": "^13.0.0"

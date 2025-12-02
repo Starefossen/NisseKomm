@@ -12,8 +12,11 @@ interface RegistrationFormData {
   parentEmail: string;
 }
 
+type ViewMode = "register" | "recover";
+
 export default function RegisterPage() {
   const router = useRouter();
+  const [viewMode, setViewMode] = useState<ViewMode>("register");
   const [formData, setFormData] = useState<RegistrationFormData>({
     familyName: "",
     kidNames: [""],
@@ -21,6 +24,9 @@ export default function RegisterPage() {
     parentEmail: "",
   });
   const [shareKey, setShareKey] = useState("");
+  const [recoveryEmail, setRecoveryEmail] = useState("");
+  const [recoveryMessage, setRecoveryMessage] = useState<string | null>(null);
+  const [isRecovering, setIsRecovering] = useState(false);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -173,6 +179,101 @@ export default function RegisterPage() {
     }
   };
 
+  const handleRecover = async (e: FormEvent) => {
+    e.preventDefault();
+    setRecoveryMessage(null);
+    setIsRecovering(true);
+
+    try {
+      const response = await fetch("/api/auth/recover", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: recoveryEmail.trim() }),
+      });
+
+      const data = (await response.json()) as { message: string };
+      setRecoveryMessage(data.message);
+      setRecoveryEmail("");
+    } catch {
+      setRecoveryMessage("Noe gikk galt. Prøv igjen senere.");
+    } finally {
+      setIsRecovering(false);
+    }
+  };
+
+  // Recovery View
+  if (viewMode === "recover") {
+    return (
+      <div className="min-h-screen bg-black p-4 md:p-8 font-mono">
+        <div className="max-w-xl mx-auto">
+          {/* Header */}
+          <div className="border-8 border-(--gold) bg-black p-6 mb-6">
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <Icons.Lock size={40} color="gold" />
+              <h1 className="text-3xl font-bold text-(--gold) tracking-wider">
+                GLEMT KODEN?
+              </h1>
+              <Icons.Lock size={40} color="gold" />
+            </div>
+            <p className="text-center text-(--gold)/70">
+              Skriv inn e-posten du registrerte deg med
+            </p>
+          </div>
+
+          {/* Success/Info Message */}
+          {recoveryMessage && (
+            <div className="border-4 border-(--neon-green) bg-(--neon-green)/10 p-4 mb-6">
+              <p className="text-(--neon-green) font-bold text-center">
+                ✓ {recoveryMessage}
+              </p>
+            </div>
+          )}
+
+          {/* Recovery Form */}
+          <form onSubmit={handleRecover} className="space-y-6">
+            <div className="border-4 border-(--gold) p-6">
+              <label className="block mb-2">
+                <span className="text-(--gold) font-bold">E-POSTADRESSE</span>
+              </label>
+              <input
+                type="email"
+                value={recoveryEmail}
+                onChange={(e) => setRecoveryEmail(e.target.value)}
+                required
+                placeholder="forelder@example.com"
+                className="w-full px-4 py-3 bg-black border-2 border-(--gold) text-(--gold) text-xl focus:outline-none focus:border-(--neon-green)"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isRecovering}
+              className="w-full px-8 py-4 border-4 border-(--gold) bg-(--gold) text-black text-xl font-bold tracking-wider hover:bg-transparent hover:text-(--gold) transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+            >
+              {isRecovering && (
+                <div className="w-6 h-6 border-4 border-black border-t-transparent rounded-full animate-spin" />
+              )}
+              {isRecovering ? "SENDER..." : "SEND KODER PÅ E-POST"}
+            </button>
+          </form>
+
+          {/* Back to Register */}
+          <div className="mt-8 text-center">
+            <button
+              onClick={() => {
+                setViewMode("register");
+                setRecoveryMessage(null);
+              }}
+              className="text-(--neon-green) hover:text-(--gold) underline transition-colors"
+            >
+              ← Tilbake til registrering
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-black p-4 md:p-8 font-mono">
       <div className="max-w-4xl mx-auto">
@@ -237,7 +338,7 @@ export default function RegisterPage() {
               }
               required
               maxLength={50}
-              placeholder="Familie Hansen"
+              placeholder="Familien Hansen"
               className="w-full px-4 py-3 bg-black border-2 border-(--neon-green) text-(--neon-green) text-xl focus:outline-none focus:border-(--gold) uppercase"
             />
           </div>
@@ -395,9 +496,17 @@ export default function RegisterPage() {
           <p className="mt-2">
             Etter registrering får du to koder: barnekode og foreldrekode.
           </p>
-          <p className="mt-1">
-            Lagre kodene et trygt sted - de kan ikke gjenopprettes senere.
-          </p>
+          <p className="mt-1">Kodene sendes til e-postadressen du oppgir.</p>
+        </div>
+
+        {/* Recovery Link */}
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => setViewMode("recover")}
+            className="text-(--gold) hover:text-(--neon-green) underline transition-colors text-lg"
+          >
+            🔑 Glemt koden? Få den tilsendt på e-post
+          </button>
         </div>
       </div>
     </div>

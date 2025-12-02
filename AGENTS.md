@@ -183,7 +183,16 @@ NEXT_PUBLIC_SANITY_PROJECT_ID=            # Your Sanity project ID
 NEXT_PUBLIC_SANITY_DATASET=production     # 'production' or 'development'
 NEXT_PUBLIC_SANITY_API_VERSION=2024-11-01 # API version
 SANITY_API_TOKEN=                         # Write token (server-side only)
+
+# Email Service (Resend)
+RESEND_API_KEY=                           # Resend API key (server-side only)
+RESEND_FROM_EMAIL=                        # Sender email (default: Rampenissen <rampenissen@nissekomm.no>)
+NEXT_PUBLIC_URL=                          # Base URL for email links (default: https://nissekomm.no)
 ```
+
+**Email Service**:
+
+Registration and password recovery emails are sent via Resend from `rampenissen@nissekomm.no`. The `RESEND_API_KEY` environment variable must be configured in Vercel project settings.
 
 **Storage Backend Modes**:
 
