@@ -53,7 +53,7 @@ function SymbolerContent() {
   useEffect(() => {
     const newQrCodes = new Map<string, QRCodeStyling>();
 
-    allSymbols.forEach(async (symbol) => {
+    const loadQRCode = async (symbol: (typeof allSymbols)[0]) => {
       const color =
         symbol.symbolColor === "green"
           ? "#00ff00"
@@ -76,13 +76,23 @@ function SymbolerContent() {
           .replace(/#000000/g, color)
           .replace(/#ffffff/g, "none");
 
-        const blob = new Blob([coloredSvg], { type: "image/svg+xml" });
-        const coloredIconUrl = URL.createObjectURL(blob);
+        // Convert SVG to data URL for better canvas compatibility
+        const svgBase64 = btoa(unescape(encodeURIComponent(coloredSvg)));
+        const dataUrl = `data:image/svg+xml;base64,${svgBase64}`;
+
+        // Pre-load the image to ensure it's ready before QR code renders
+        const img = new Image();
+        img.src = dataUrl;
+
+        await new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = reject;
+        });
 
         const qrCode = new QRCodeStyling({
           width: 200,
           height: 200,
-          type: "svg",
+          type: "canvas", // Use canvas instead of SVG for better print compatibility
           data: symbol.symbolId, // The code to scan (e.g., "heart-green")
           dotsOptions: {
             color: "#000000", // Black QR code dots
@@ -99,7 +109,7 @@ function SymbolerContent() {
           backgroundOptions: {
             color: "#ffffff", // White background for contrast
           },
-          image: coloredIconUrl,
+          image: dataUrl, // Use data URL instead of blob URL
           imageOptions: {
             crossOrigin: "anonymous",
             margin: 2,
@@ -117,7 +127,10 @@ function SymbolerContent() {
       } catch (error) {
         console.error(`Failed to load icon for ${symbol.symbolId}:`, error);
       }
-    });
+    };
+
+    // Load all QR codes
+    allSymbols.forEach(loadQRCode);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run once on mount
 
@@ -170,9 +183,10 @@ function SymbolerContent() {
     });
 
     alert(
-      `📊 SYMBOLSAMLING (${collectedSymbols.length}/9):\n\n${symbolStatus.join("\n")}\n\n${collectedSymbols.length === 9
-        ? "🎉 Alle symboler samlet!"
-        : `Mangler ${9 - collectedSymbols.length} symboler.`
+      `📊 SYMBOLSAMLING (${collectedSymbols.length}/9):\n\n${symbolStatus.join("\n")}\n\n${
+        collectedSymbols.length === 9
+          ? "🎉 Alle symboler samlet!"
+          : `Mangler ${9 - collectedSymbols.length} symboler.`
       }`,
     );
   };
@@ -344,7 +358,7 @@ function SymbolerContent() {
         </div>
 
         {/* Symbol Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 print:grid-cols-3 print:gap-0 print:h-screen">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 print:grid-cols-3 print:gap-1 print:h-screen">
           {allSymbols.map((symbol) => {
             const parts = symbol.symbolId.split("-");
             const symbolType = parts[0];
@@ -359,20 +373,23 @@ function SymbolerContent() {
               (q) => q.symbol_clue?.symbolId === symbol.symbolId,
             );
 
-            const label = `${symbolType === "heart"
+            const label = `${
+              symbolType === "heart"
                 ? "Hjerte"
                 : symbolType === "sun"
                   ? "Sol"
                   : "Måne"
-              } (${color === "green" ? "Grønn" : color === "red" ? "Rød" : "Blå"
-              })`;
+            } (${
+              color === "green" ? "Grønn" : color === "red" ? "Rød" : "Blå"
+            })`;
 
             return (
               <div
                 key={symbol.symbolId}
                 onClick={() => toggleSymbolCollection(symbol.symbolId)}
-                className={`border-4 border-dashed ${colorClass} p-6 bg-black/50 rounded-lg print:break-inside-avoid print:p-2 print:h-[33.333vh] print:flex print:flex-col print:justify-center print:border-black print:bg-white print:rounded-none relative cursor-pointer hover:opacity-80 transition-opacity print:cursor-default ${isCollected ? "ring-4 ring-(--gold)" : ""
-                  } print:ring-0`}
+                className={`border-4 border-dashed ${colorClass} p-6 bg-black/50 rounded-lg print:break-inside-avoid print:p-2 print:h-[33.333vh] print:flex print:flex-col print:justify-center print:bg-white print:rounded-none relative cursor-pointer hover:opacity-80 transition-opacity print:cursor-default ${
+                  isCollected ? "ring-4 ring-(--gold)" : ""
+                } print:ring-0`}
               >
                 {/* Collection Status Badge (screen only) */}
                 <div className="absolute top-2 right-2 print:hidden">
@@ -396,7 +413,9 @@ function SymbolerContent() {
 
                 {/* Card Header */}
                 <div className="text-center mb-4 print:mb-2">
-                  <h3 className={`text-2xl font-bold ${colorClass} mb-2 print:text-black print:text-xl`}>
+                  <h3
+                    className={`text-2xl font-bold ${colorClass} mb-2 print:text-black print:text-xl`}
+                  >
                     {label}
                   </h3>
                 </div>
@@ -413,7 +432,9 @@ function SymbolerContent() {
 
                 {/* Manual Code */}
                 <div className="text-center">
-                  <p className="text-sm text-(--gray) mb-1 print:hidden">Manuell kode:</p>
+                  <p className="text-sm text-(--gray) mb-1 print:hidden">
+                    Manuell kode:
+                  </p>
                   <p
                     className={`text-lg font-bold ${colorClass} tracking-wider print:text-black print:text-base`}
                   >
