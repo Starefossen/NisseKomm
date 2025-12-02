@@ -8,6 +8,7 @@
 - [Character Voices](#character-voices)
 - [Dialogue Principles](#dialogue-principles)
 - [Puzzle Design](#puzzle-design)
+- [Rampestreker Design](#rampestreker-design-physical-mischief-scenes)
 
 ## Norwegian Vocabulary
 
@@ -623,5 +624,177 @@ _Solution_: Diary Day 5 mentions "RØD", Day 11 "GUL", Day 18 "BLÅ" → Code is
 
 ---
 
-**Last Updated**: November 2025
+## Rampestreker Design (Physical Mischief Scenes)
+
+> **Critical Principle**: The mischief should stand on its own for the youngest children (6-8 years) who may be too young for the digital puzzles. The visual scene must be entertaining and understandable without reading the clues.
+
+### Design Philosophy
+
+**Rampestreker** are the physical scenes parents set up each morning showing what Rampenissen has been up to during the night. These serve TWO purposes:
+
+1. **Visual entertainment** for younger siblings who can't solve puzzles
+2. **Physical clue delivery** for the puzzle-solving children
+
+**The scene itself must be funny, surprising, and immediately understandable by just looking at it** - no reading required.
+
+### What Makes a Great Rampestrek
+
+#### ✅ GOOD Rampestreker (Visual Comedy)
+
+- **Clear action visible**: "Something happened here!"
+- **Chaos and mess**: Scattered items, fallen towers, spilled materials
+- **Rampenissen caught in the act**: Guilty expression, holding evidence
+- **Props and costumes**: Bandanas, hats, glasses, signs
+- **Kosedyr involvement**: As witnesses, victims, or accomplices
+- **Physical comedy**: Things that fell over, got tangled, went wrong
+- **Exaggerated reactions**: Panic, pride, confusion
+
+**Examples**:
+
+- Veltet tårn av kopper med skyldig nisse
+- Marshmallow-krig med fort av puter og "sårede" kosedyr
+- Pirat-scene med skattkiste og mannskap
+- Radiostudio med kaotisk utstyr og publikum
+
+#### ❌ WEAK Rampestreker (Static/Boring)
+
+- Just sitting somewhere with a note
+- Holding a calculator or magnifying glass
+- "Looking at" something without interaction
+- No visible action or consequence
+- Requires reading to understand what happened
+- No kosedyr involvement
+- Clean, organized scenes
+
+**Examples to AVOID**:
+
+- "Rampenissen sitter foran kalenderen med kalkulator"
+- "Rampenissen holder en sangbok"
+- "Rampenissen med forstørrelsesglass"
+
+### Rampestrek Categories
+
+#### 1. Kaos-Kategorien (Chaos/Disaster)
+
+Something went hilariously wrong:
+
+- Veltet tårn, søl, rot
+- Eksplodert eksperiment
+- Ramlet ned fra noe
+- Ting har spredt seg overalt
+
+#### 2. Rollespill-Kategorien (Costume/Character)
+
+Rampenissen leker at han er noe annet:
+
+- Pirat med mannskap
+- Radio-DJ med studio
+- Detektiv med vitner
+- Kunstner med utstillling
+- Kokk med kaotisk kjøkken
+
+#### 3. Krig/Kamp-Kategorien (Battle/Conflict)
+
+Rampenissen har vært i konflikt:
+
+- Marshmallow-krig med fort
+- Snøballkamp med kosedyr
+- Putefestning under angrep
+- "Kampen om fjernkontrollen"
+
+#### 4. Tabbe-Kategorien (Oops Moments)
+
+Rampenissen har gjort noe han ikke burde:
+
+- Spist noe (bitemerker!)
+- Mistet noe viktig
+- Ødelagt noe ved uhell
+- Blandet sammen ting
+
+#### 5. Ambisiøs-Kategorien (Over-Ambitious)
+
+Rampenissen prøvde noe for stort:
+
+- Bygge verdens høyeste tårn → ramlet
+- Lage 100 stjerner → kaos
+- Organisere alle leker → katastrofe
+
+### Visual Checklist
+
+For every rampestrek, check:
+
+- [ ] **Umiddelbart morsomt?** Barn ler når de ser det?
+- [ ] **Synlig handling?** Noe har SKJEDD her?
+- [ ] **Rampenissen involvert?** Ikke bare til stede?
+- [ ] **Kosedyr med?** Vitner, ofre, medsammensvorne?
+- [ ] **Kaos/konsekvens?** Ikke rent og pent?
+- [ ] **Fungerer uten tekst?** 6-åring kan le?
+
+### Materials & Setup
+
+**Standard Props** (alle hjem bør ha):
+
+- Kosedyr (5-10 stk)
+- Sofaputer (fort-bygging)
+- Papir og saks (stjerner, lapper)
+- Husholdningsartikler (kopper, skjeer, klær)
+- Små leker (biler, dyr, figurer)
+
+**Ekstra Rekvisitter** (gjør scenene bedre):
+
+- Glitter/konfetti (spor)
+- Bånd/snor (kaos)
+- Små briller/hatter til kosedyr
+- Pappesker (radiostudio, fort, kjøretøy)
+
+**Setup Complexity**:
+
+- **Enkel** (5-10 min): Strø ting, plasser nisse
+- **Moderat** (10-20 min): Bygg scene, kle ut kosedyr
+- **Avansert** (20-30 min): Multi-rom, spor, elaborate setup
+
+### Connecting to Puzzles
+
+While the visual scene entertains everyone, the puzzle clue should be **embedded naturally**:
+
+- Lapp Rampenissen holder = puzzle-tekst
+- Ting i scenen = fysisk hint (bokstaver, tall)
+- Plassering av objekter = ledetråd
+- Kosedyr-skilt = del av gåten
+
+**The puzzle clue should feel like part of the scene**, not a separate educational add-on.
+
+### Example: Before & After
+
+**BEFORE (Weak)**:
+
+> "Sangbok ligger åpen med 'Deilig er jorden'. Ordet JORDEN er dekket med en lapp. Rampenissen har mikrofon."
+
+**AFTER (Strong)**:
+
+> "Rampenissen har laget et 'radiostudio' med lekemikrofon, hodetelefoner (vinterøremuffer), og en haug med 'utstyr' (bokser, ledninger, pappbokser merket 'MIKSEBORD'). Kosedyrene sitter som publikum med skilt: 'APPLAUS!' og 'JUBELROP!'. Rundt ligger sangbok-sider spredd utover gulvet som 'manus'. Rampenissen holder en lapp: 'VELKOMMEN TIL RADIO SNØFALL! 🎙️ Dagens hit: Deilig er **\_** Men hva heter sangen?! Jeg glemte resten! 😱' På veggen henger et 'sendeskjema' med julesanger listet opp."
+
+**Why it's better**:
+
+- Visual comedy (kaotisk radiostudio)
+- Kosedyr involved (publikum med skilt)
+- Clear action (prøver å sende radio)
+- Props and costume (hodetelefoner, miksebord)
+- Puzzle embedded naturally (sangtekst-mysteriet)
+- Works without reading (morsomt å se uansett)
+
+### Reference: Rampestreker Ideas
+
+See [rampestreker.txt](./rampestreker.txt) for 170+ categorized ideas organized by:
+
+- Bathroom, Kitchen, Living room, Bedroom scenes
+- Costume/roleplay ideas
+- Food-based pranks
+- Frozen/trapped scenarios
+- Clothing chaos
+- And more...
+
+---
+
+**Last Updated**: December 2025
 **Maintained By**: AI Coding Agents

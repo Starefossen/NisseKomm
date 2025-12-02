@@ -165,13 +165,16 @@
     },
     "hendelse": "Speidertur til Turnerhytten",
     "dagbokinnlegg": "Dag 6 - Historietimen\n\nSt. Nikolaus-dagen! Kollega fra Myra - liten kystby ved Middelhavet. Kort navn, fire bokstaver. 'Den starter og slutter med vokalene i mitt navn,' pleier han si. Morsom måte å huske på.\n\nHan hadde bedre skjegg på konferansen i 324. Fortsatt bitter.\n\nNissene mest interessert i land med mest godteri. Typisk.\n\n- Julius",
-    "rampenissen_rampestrek": "I speidersekken/skolesekken ligger et falskt 'gammelt kart' med gåten skrevet på. Rampenissen har tegnet kompas og 'X markerer stedet'.",
+    "rampenissen_rampestrek": "Rampenissen har TØMT alle sekkene i gangen! Skolesekker og speidersekker ligger veltet med innholdet strødd utover hele gulvet - blyanter, bøker, matbokser, klær, leker i EN STOR HAUG. Rampenissen sitter midt i rotet med piratbandana og holder opp et 'gammelt kart' (litt krøllete papir). Ved siden av ham ligger en tom 'skattkiste' (skoeske). En lapp sier: 'JULIUS SA SKATTEN FRA ST. NIKOLAUS VAR GJEMT I EN SEKK! 🏴‍☠️ Jeg lette i ALLE sekkene... fant ingen skatt, bare MASSE rart! Kan dere hjelpe meg finne byen han kom fra? Den starter med M!' Kosedyr står rundt som 'vitner' og ser sjokkerte ut.",
     "fysisk_hint": "Finn byen som begynner med M og slutter med A. 4 bokstaver totalt.",
-    "oppsett_tid": "enkel",
+    "oppsett_tid": "moderat",
     "materialer_nødvendig": [
-      "Papir (kan 'eldes' med tepose)",
-      "Gåte skrevet pent",
-      "Kompas-tegning"
+      "Barnas sekker (skolesekk/speidersekk)",
+      "Tøm innholdet ut på gulvet",
+      "Piratbandana til Rampenissen",
+      "Gammelt kart med gåten (kan 'eldes' med tepose)",
+      "Skoeske som tom 'skattkiste'",
+      "Kosedyr som sjokkerte vitner"
     ],
     "beste_rom": "Gang (i sekk)",
     "hint_type": "gjemt_objekt",

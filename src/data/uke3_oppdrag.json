@@ -79,13 +79,15 @@
       "badge_icon": "gift"
     },
     "dagbokinnlegg": "Dag 16 - Halvveis!\n\nHalvveis gjennom desember! Nissene feiret med kake. Stor kake. Veldig stor kake. For stor kake. Den dekket halve verkstedet. Måtte spise oss ut. Tok tre timer.\n\nGjennomgang av fremgangen: 48.392 leker produsert! 2.847 ønskelister behandlet! Winter og Pil har gjort fantastisk jobb med å organisere alt.\n\nRampenissen sender halvveis-rapport fra barna. Vennskapet mellom ham og barna er sterkt. Magien virker!\n\n- Julius",
-    "rampenissen_rampestrek": "Rampenissen sitter foran julekalenderen med kalkulator og forstørrelsesglass, later som han teller. Har laget en stor '?' på en lapp.",
-    "fysisk_hint": "?",
-    "oppsett_tid": "enkel",
+    "rampenissen_rampestrek": "Alle pakkene under juletreet/kalenderen er BORTE! I stedet ligger det rare ting: EN SKO, en TANNBØRSTE, en GULROT, en SOKK, en SKJE. Rampenissen ser PANISK ut med hendene i luften. Ved siden av ham ligger en lapp: 'OISANN! 😱 Jeg RØRTE ved pakkene og de ble til... DETTE?! Julius kommer til å DREPE meg! Pakkene må være GJEMT et sted i huset! HJELP MEG Å FINNE DEM! 🎁' Spor (glitter, bånd-rester, små lapper med 'HINT: UNDER...', 'HINT: BAK...') leder til forskjellige gjemmesteder rundt i huset hvor pakkene faktisk er gjemt.",
+    "fysisk_hint": "Finn de forsvunne pakkene! Følg sporene!",
+    "oppsett_tid": "avansert",
     "materialer_nødvendig": [
-      "Julekalender (deres egen)",
-      "forstørrelsesglass (valgfritt)",
-      "Lapp med spørsmål"
+      "Pakker som skal gjemmes rundt i huset",
+      "Rare erstatnings-ting (sko, tannbørste, gulrot, sokk, skje)",
+      "Glitter og bånd-rester som spor",
+      "Hint-lapper ('UNDER...', 'BAK...')",
+      "Lapp med Rampenissens panikkmelding"
     ],
     "beste_rom": "Der kalenderen henger",
     "hint_type": "skrevet",
@@ -175,13 +177,15 @@
       }
     ],
     "dagbokinnlegg": "Dag 18 - Gavetelling\n\nInventar-dag. Teller gaver. Mister tellingen. Starter på nytt. Mister tellingen igjen. Gir opp. Ber nissene telle. De kommer til tre forskjellige tall. Bestemmer at vi bare tar med alt vi har.\n\nProblemet med slede-størrelse oppstår. Gavene passer ikke. Nissene foreslår større slede. Rudolf foreslår færre gaver. Nissene ser surt på Rudolf. Bygger større slede.\n\nRampenissen sender bilder av gaveønsker fra barna. Søtt! Og håndterbart. Ikke som den ungen som ønsket seg en ekte dinosaur i fjor.\n\n- Julius",
-    "rampenissen_rampestrek": "Utenfor: Snøengler med 'SNØ' skrevet i snøen. Innedørs alternativ: Mel på brett med engelformer og ordet skrevet. Rampenissen med votter.",
+    "rampenissen_rampestrek": "Rampenissen har laget et KUNST-VERKSTED! Bordet er dekket med klippede papirstjerner i alle størrelser, saksrester, glitter overalt, og halvferdige kreasjoner. 'Snøengler' av mel på et brett står ved siden av. Rampenissen holder opp sin 'mesterverk-stjerne' (en litt skjev 6-spisset stjerne) med stolt ansikt, omringet av 20+ andre stjerner han har laget. En lapp sier: 'JULIUS SA VI TRENGTE FLERE STJERNER TIL PYNTEN! ⭐ Jeg har laget MASSEVIS! ...men vent, hva heter den hvite som faller fra himmelen? Den jeg prøvde å lage engler av? 🤔❄️' Kosedyr sitter som 'kunstkritikere' med små briller på.",
     "fysisk_hint": "Jeg faller fra himmelen og gjør julen hvit. 3 bokstaver.",
-    "oppsett_tid": "moderat",
+    "oppsett_tid": "avansert",
     "materialer_nødvendig": [
-      "Mel (hvis innendørs)",
-      "Brett",
-      "Votter til Rampenissen"
+      "20+ klippede papirstjerner i ulike størrelser",
+      "Saks, glitter, papir-rester",
+      "Mel på brett med snøengel-former",
+      "Små briller til kosedyr (kunstkritikere)",
+      "Lapp med Rampenissens melding"
     ],
     "beste_rom": "Ute eller kjøkken",
     "hint_type": "skrevet",
@@ -365,12 +369,14 @@
       }
     ],
     "dagbokinnlegg": "Dag 21 - Tre Dager!\n\nTRE DAGER TIL JULAFTEN! Nissene er i høygir. En av dem festet vinger på ryggen og hoppet fra taket. Han sa han 'øvde på å fly'. Vi har ikke flyvende nisser. Han har nå gips på beinet.\n\nSiste sjekk av gavesekken. Den er magisk, så alt passer inn. Men måtte teste. Puttet en nisse inn. Han passet. Så puttet vi inn en til. De passet. Sluttet på 12 nisser. Ikke rom for flere. Eller kanskje vi skal ikke putte nisser i sekken.\n\nSTORE NYHETER: Rudolf reddet dagen! Når Mørket nærmet seg i kveld, lyste Rudolf sin røde nese kraftigere enn noen gang. Lyset spredte Mørket fullstendig! Han sto der, hode høyt, og sa: 'Dette er hva jeg ble født til.' Alle reinsdyrene applauderte. Jeg må innrømme - Rudolf er en helt. Og han har endelig skjønt det selv.\n\nRampenissen melder om høy spenning hos barna. Samme her! Vi klarer dette!\n\n- Julius",
-    "rampenissen_rampestrek": "5-spisset stjerner gjemt rundt i huset: bak puter, i bokhyller, på vinduskarmer. Rampenissen med forstørrelsesglass og 'detektiv-hatt'. En stjerne lett tilgjengelig for telling.",
-    "fysisk_hint": "Hvor mange spisser har en julestjerne?",
-    "oppsett_tid": "enkel",
+    "rampenissen_rampestrek": "Papir-stjerner henger rundt i huset, MEN - Rampenissen har tatt BITEMERKER i flere av dem! 🦷 Stjernene har synlige bitemerker i spissene der Rampenissen har tygget. Han sitter med stjerne-rester i fanget og skyldig uttrykk. En lapp sier: 'Jeg ble SULTEN, okay?! 😋 Stjernene så ut som pepperkaker! De smakte IKKE som pepperkaker. 0/10 anbefales ikke. 🌟🦷 Finn den ENE stjernen uten bitemerker - den viser svaret!' Kosedyr står rundt som 'vitner' og peker anklagende på ham. ÉN stjerne er hel og har tallet 5 skrevet på baksiden.",
+    "fysisk_hint": "Finn stjernen UTEN bitemerker! Tallet på baksiden er svaret.",
+    "oppsett_tid": "moderat",
     "materialer_nødvendig": [
-      "5-10 papir-stjerner (5-spisset)",
-      "forstørrelsesglass (valgfritt)"
+      "8-10 papir-stjerner med bitemerker (klipp av spisser)",
+      "1 hel stjerne med '5' på baksiden",
+      "Stjerne-rester i Rampenissens fang",
+      "Lapp med Rampenissens unnskyldning"
     ],
     "beste_rom": "Flere rom",
     "hint_type": "gjemt_objekt",

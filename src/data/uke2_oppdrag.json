@@ -89,7 +89,7 @@
       "phase": 1
     },
     "dagbokinnlegg": "Dag 10 - Grønn Dag\n\nNissemor har bestemt at hele Snøfall skal være mer miljøvennlig. Nissene får nå sykle til verkstedet. Det er snø. Overalt. Det går ikke så bra.\n\nPrøvde å male verkstedet grønt for å 'passe temaet'. Nissene sa at rødt er julenissens farge. Ble diskusjon. Endte med kompromiss: grønt OG rødt. Ser ut som en italiensk restaurant nå.\n\nRampenissen sender bilder av barna i grønne nisseluer. Søtt! De ser ut som små nisser. Kanskje de kan komme og jobbe her når de blir større?\n\n- Julius",
-    "rampenissen_rampestrek": "5 grønne gjenstander plassert rundt i huset (grønn bok, grønn kopp, grønn leke, grønt klesplagg, grønn plante). På hver er det limt en lapp med EN bokstav: G, R, Ø, N, N. Barna må finne dem og sette bokstavene i riktig rekkefølge (alfabetisk eller etter gjenstand-størrelse). Rampenissen har 'detektiv'-hatt.",
+    "rampenissen_rampestrek": "Rampenissen er dekket fra topp til tå med grønne ting: grønne klær, grønne lapper, grønne bånd. Ved siden av ham ligger et VELTET TÅRN av grønne gjenstander som har ramlet - kopper, bøker, leker i en kaotisk haug. På hver gjenstand sitter en bokstav (G-R-Ø-N-N). Rampenissen holder et skilt: 'VILLE BYGGE VERDENS HØYESTE GRØNNE TÅRN! 💚 ...det gikk ikke så bra. 😅' Kosedyr står rundt som 'byggeinspektører' med alvorlige ansikter og små briller.",
     "fysisk_hint": "Finn 5 ting som har noe til felles. Hver har en bokstav. Hvilken farge?",
     "oppsett_tid": "avansert",
     "materialer_nødvendig": [
@@ -181,13 +181,16 @@
       "phase": 3
     },
     "dagbokinnlegg": "Dag 12 - Sangdag\n\nStartet morgenen med å synge 'Deilig er jorden' for nissene. De elsket det! Eller late som. Vanskelig å si.\n\nFant ut at rudolf kan synge. Vel, mer som muling. Men han prøver. Det er det som teller. De andre reinsdyrene nekter å være med i kor. Sier det er uprofesjonelt.\n\nRampenissen sier at barna synger julesanger hjemme. Herlig! Det er det julen handler om. Glede, sang, og gaveproduksjon i industriell skala.\n\n- Julius",
-    "rampenissen_rampestrek": "Sangbok ligger åpen med 'Deilig er jorden'. Ordet JORDEN er dekket med en lapp. Rampenissen har mikrofon (leker-mikrofon).",
+    "rampenissen_rampestrek": "Rampenissen har laget et 'radiostudio' med lekemikrofon, hodetelefoner (vinterøremuffer), og en haug med 'utstyr' (bokser, ledninger, pappbokser merket 'MIKSEBORD'). Kosedyrene sitter som publikum med skilt: 'APPLAUS!' og 'JUBELROP!'. Rundt ligger sangbok-sider spredd utover gulvet som 'manus'. Rampenissen holder en lapp: 'VELKOMMEN TIL RADIO SNØFALL! 🎙️ Dagens hit: Deilig er _____ Men hva heter sangen?! Jeg glemte resten! 😱' På veggen henger et 'sendeskjema' med julesanger listet opp.",
     "fysisk_hint": "Deilig er _____ (6 bokstaver)",
-    "oppsett_tid": "enkel",
+    "oppsett_tid": "moderat",
     "materialer_nødvendig": [
-      "Sangbok eller utskrift av sangtekst",
-      "Liten lapp til å dekke ordet",
-      "Leke-mikrofon (valgfritt)"
+      "Lekemikrofon",
+      "Vinterøremuffer (hodetelefoner)",
+      "Pappbokser merket 'MIKSEBORD'",
+      "Sangbok-sider spredd ut",
+      "Skilt: 'APPLAUS!' og 'JUBELROP!' til kosedyr",
+      "'Sendeskjema' med julesanger"
     ],
     "beste_rom": "Stue",
     "hint_type": "gjemt_objekt",
