@@ -6,7 +6,6 @@ import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { TimelineView } from "@/components/nissemor/TimelineView";
 import { ProgressionStats } from "@/components/nissemor/ProgressionStats";
-import { EssentialTools } from "@/components/nissemor/EssentialTools";
 import { DayPlanning } from "@/components/nissemor/DayPlanning";
 import { EventyrProgress } from "@/components/nissemor/EventyrProgress";
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
@@ -167,12 +166,12 @@ function NissemorGuideContent() {
           e.preventDefault();
           alert(
             "⌨️ TASTATURSNARVEIER:\n\n" +
-              "← / h : Forrige dag\n" +
-              "→ / l : Neste dag\n" +
-              "Home / g : Første dag\n" +
-              "End / G : Siste dag\n" +
-              "t : Gå til dagens dato\n" +
-              "? : Vis denna hjelpen",
+            "← / h : Forrige dag\n" +
+            "→ / l : Neste dag\n" +
+            "Home / g : Første dag\n" +
+            "End / G : Siste dag\n" +
+            "t : Gå til dagens dato\n" +
+            "? : Vis denna hjelpen",
           );
           break;
       }
@@ -186,6 +185,18 @@ function NissemorGuideContent() {
     <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8">
       <GuideNavigation currentPage="hovedside" />
 
+      {/* Introduction */}
+      <div className="max-w-4xl mx-auto mb-6 text-center">
+        <h1 className="text-3xl md:text-4xl font-bold text-(--gold) mb-3">
+          🎄 NISSEMOR-GUIDEN 🎄
+        </h1>
+        <p className="text-lg text-(--neon-green)/80 leading-relaxed">
+          Velkommen til kontrollpanelet for NisseKomm-adventuren! Her finner du alt du trenger
+          for å følge med på barnets progresjon, forberede dagens oppdrag, og holde styr på
+          fysiske ledetekster og koder. Bruk menyen over for å navigere mellom de ulike verktøyene.
+        </p>
+      </div>
+
       <ProgressionStats
         progression={progression}
         onRefresh={() => {
@@ -194,8 +205,6 @@ function NissemorGuideContent() {
         }}
         lastUpdated={lastUpdated}
       />
-
-      <EssentialTools />
 
       {/* MAIN CONTENT GRID: Timeline + Planning Sections */}
       <div className="max-w-7xl mx-auto mb-6">
