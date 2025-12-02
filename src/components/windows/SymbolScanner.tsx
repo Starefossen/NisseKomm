@@ -190,7 +190,7 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
           },
         },
         handleQRScan,
-        () => { }, // Ignore scan errors (just keep trying)
+        () => {}, // Ignore scan errors (just keep trying)
       );
 
       SoundManager.playSound("click");
@@ -386,11 +386,11 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
                 size={48}
                 color={
                   lastCollected.symbolColor as
-                  | "green"
-                  | "red"
-                  | "blue"
-                  | "gold"
-                  | "gray"
+                    | "green"
+                    | "red"
+                    | "blue"
+                    | "gold"
+                    | "gray"
                 }
               />
               <div>

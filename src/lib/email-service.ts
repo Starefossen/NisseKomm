@@ -486,8 +486,9 @@ function createDailyMissionEmailHtml({
                     </table>
 
                     <!-- Materials Box -->
-                    ${materialer.length > 0
-      ? `
+                    ${
+                      materialer.length > 0
+                        ? `
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 20px;">
                       <tr>
                         <td>
@@ -507,8 +508,8 @@ function createDailyMissionEmailHtml({
                       </tr>
                     </table>
                     `
-      : ""
-    }
+                        : ""
+                    }
 
                     <!-- Physical Hint Box -->
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 20px;">
@@ -633,16 +634,17 @@ I morgen er det Dag ${day}: ${missionTitle}. Her er hva dere trenger for å sett
 
 ${rampeStrek}
 
-${materialer.length > 0
-      ? `
+${
+  materialer.length > 0
+    ? `
 ───────────────────────────────────────────────────────
 📦 MATERIALER SOM TRENGS:
 ───────────────────────────────────────────────────────
 
 ${materialList}
 `
-      : ""
-    }
+    : ""
+}
 
 ───────────────────────────────────────────────────────
 🔍 FYSISK HINT (FOR BARNA):

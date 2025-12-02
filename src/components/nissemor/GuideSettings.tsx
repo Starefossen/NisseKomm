@@ -167,9 +167,10 @@ export function GuideSettings() {
                 disabled={updating}
                 className={`
                   px-6 py-3 border-4 font-bold text-xl transition-all
-                  ${emailStatus.subscribed
-                    ? "bg-(--neon-green) text-black border-(--neon-green) hover:bg-(--neon-green)/80"
-                    : "bg-(--christmas-red) text-white border-(--christmas-red) hover:bg-(--christmas-red)/80"
+                  ${
+                    emailStatus.subscribed
+                      ? "bg-(--neon-green) text-black border-(--neon-green) hover:bg-(--neon-green)/80"
+                      : "bg-(--christmas-red) text-white border-(--christmas-red) hover:bg-(--christmas-red)/80"
                   }
                   ${updating ? "opacity-50 cursor-not-allowed" : ""}
                   min-w-[200px]
@@ -248,9 +249,10 @@ export function GuideSettings() {
               disabled={deleting || deleteConfirm !== "SLETT"}
               className={`
                 w-full px-6 py-4 border-4 border-(--christmas-red) font-bold text-xl transition-all
-                ${deleteConfirm === "SLETT" && !deleting
-                  ? "bg-(--christmas-red) text-white hover:bg-(--christmas-red)/80"
-                  : "bg-(--christmas-red)/20 text-(--christmas-red)/50 cursor-not-allowed"
+                ${
+                  deleteConfirm === "SLETT" && !deleting
+                    ? "bg-(--christmas-red) text-white hover:bg-(--christmas-red)/80"
+                    : "bg-(--christmas-red)/20 text-(--christmas-red)/50 cursor-not-allowed"
                 }
               `}
             >
@@ -265,9 +267,10 @@ export function GuideSettings() {
         <div
           className={`
             border-4 p-4 text-center font-bold text-lg
-            ${message.type === "success"
-              ? "border-(--gold) bg-(--gold)/10 text-(--gold)"
-              : "border-(--christmas-red) bg-(--christmas-red)/10 text-(--christmas-red)"
+            ${
+              message.type === "success"
+                ? "border-(--gold) bg-(--gold)/10 text-(--gold)"
+                : "border-(--christmas-red) bg-(--christmas-red)/10 text-(--christmas-red)"
             }
           `}
         >

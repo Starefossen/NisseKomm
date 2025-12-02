@@ -29,9 +29,16 @@ const getQuestCode = (day: number) => {
 };
 
 describe("GameEngine", () => {
+  const originalEnv = { ...process.env };
+
   beforeEach(() => {
     // Clear all storage before each test
     localStorage.clear();
+
+    // Mock date to December 1st to prevent automatic time-based unlocks
+    // This ensures tests start with a clean state regardless of real date
+    process.env.NEXT_PUBLIC_MOCK_DAY = "1";
+    process.env.NEXT_PUBLIC_MOCK_MONTH = "12";
 
     // Configure GameEngine with test kid code resolver
     GameEngine.configure({
@@ -42,6 +49,8 @@ describe("GameEngine", () => {
   afterEach(() => {
     // Reset dependencies after each test
     GameEngine.resetDependencies();
+    // Restore environment variables
+    process.env = { ...originalEnv };
   });
 
   describe("Initial State", () => {

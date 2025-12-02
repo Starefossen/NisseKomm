@@ -3,7 +3,7 @@
     "dag": 1,
     "tittel": "Nissens Første Melding",
     "finalized": true,
-    "nissemail_tekst": "YO! 🎅 Du fant veien inn! Nice! ✨\n\nVelkommen til NISSEKOMM - mitt digitale hovedkvarter for kritiske Snøfall-operasjoner! Julius har gitt meg tilgang til dette systemet så vi kan samarbeide hele desember. 🎄\n\nDu klarte visst å knekke sko-koden! Smart! 🧠 Det betyr at du er offisielt en del av teamet nå. Her inne finner du:\n\n📧 NISSEMAIL - Daglige beskjeder fra meg\n📖 DAGBOK - Julius sine hemmelige notater\n📁 NISSENET - Viktige filer fra Snøfall\n\nVi sees hver dag med nye oppdrag! Dette blir epic! 🚀\n\n- Rampenissen\n\nP.S. Ikke fortell Julius at jeg rotet med skoene hans også... 🤫",
+    "nissemail_tekst": "YO! 🎅 derefant veien inn! Nice! ✨\n\nVelkommen til NISSEKOMM - mitt digitale hovedkvarter for kritiske Snøfall-operasjoner! Julius har gitt meg tilgang til dette systemet så vi kan samarbeide hele desember. 🎄\n\nDu klarte visst å knekke sko-koden! Smart! 🧠 Det betyr at dereer offisielt en del av teamet nå. Her inne finner dere:\n\n📧 NISSEMAIL - Daglige beskjeder fra meg\n📖 DAGBOK - Julius sine hemmelige notater\n📁 NISSENET - Viktige filer fra Snøfall\n\nVi sees hver dag med nye oppdrag! Dette blir epic! 🚀\n\n- Rampenissen\n\nP.S. Ikke fortell Julius at jeg rotet med skoene hans også... 🤫",
     "kode": "{{KID_CODE}}",
     "eventyr": {
       "id": "brevfugl-mysteriet",
@@ -26,7 +26,7 @@
       {
         "type": "note",
         "title": "Rampenissens Velkomstlapp - Dag 1",
-        "content": "YO! 🎅\n\nVelkommen til teamet! Jeg er Rampenissen - Julius sin assistent som skal være hos dere hele desember!\n\nJeg har rotet med SKOENE i gangen (ooops! 😅). Men det er faktisk med vilje denne gangen! Bokstavene på skoene er en KODE du trenger.\n\nJulius sa at jeg må gi dere en viktig lapp... \n\nHmmm... lurer på hva det betyr? 🤔\nKanskje skoene har svaret?\n\nVi sees! ✨\n- Rampenissen\n\nP.S. Ikke fortell Julius at jeg brukte skoene hans også... 🤫"
+        "content": "YO! 🎅\n\nVelkommen til teamet! Jeg er Rampenissen - Julius sin assistent som skal være hos dere hele desember!\n\nJeg har rotet med SKOENE i gangen (ooops! 😅). Men det er faktisk med vilje denne gangen! Bokstavene på skoene er en KODE deretrenger.\n\nJulius sa at jeg må gi dere en viktig lapp... \n\nHmmm... lurer på hva det betyr? 🤔\nKanskje skoene har svaret?\n\nVi sees! ✨\n- Rampenissen\n\nP.S. Ikke fortell Julius at jeg brukte skoene hans også... 🤫"
       }
     ]
   },
@@ -58,13 +58,13 @@
   {
     "dag": 3,
     "tittel": "Melding fra Snøstormen",
-    "nissemail_tekst": "HJELP! 😱 Jeg prøvde å lage snøengler på kjøkkenet (med MEL, ikke snø - smart, ikke sant?), men nå har jeg glemt hva jeg skulle skrive! Det står bare 'N_SS_L__ ' i melet. Noen bokstaver blåste visst bort i stormen! 🌨️\n\nHva tror du jeg prøvde å skrive? Det er noe jeg har på hodet... 🤔\n\nOMG! 💚 I DAG fant jeg noe helt MAGISK i snøen mens jeg laget engelene! Et skinnende GRØNT HJERTE! ✨ Julius forklarte at dette er et av Snøfalls hemmelige symboler - det grønne hjertet representerer håp og vekst, akkurat som vennskapet mellom oss som blir sterkere for hver dag! Det er første symbol til din samling! (Flere kommer snart - de skal brukes i NISSEKRYPTO-systemet som Julius låser opp på dag 4!) 🔓\n\n- Rampenissen",
+    "nissemail_tekst": "HJELP! 😱 Jeg prøvde å lage snøengler på kjøkkenet (med MEL, ikke snø - smart, ikke sant?), men nå har jeg glemt hva jeg skulle skrive! Det står bare 'N_SS_L__ ' i melet. Noen bokstaver blåste visst bort i stormen! 🌨️\n\nHva tror dere jeg prøvde å skrive? Det er noe jeg har på hodet... 🤔\n\nP.S. Fant dere det GRØNNE HJERTET som skinner gjennom melet? 💚 Det er første symbol til din samling! Julius skal fortelle mer om det på dag 4! ✨\n\n- Rampenissen",
     "kode": "NISSELUE",
     "eventyr": {
       "id": "frosne-monster",
       "phase": 1
     },
-    "dagbokinnlegg": "Dag 3 - Snøstorm\n\nVoldsom storm! En nisse gikk seg vill på vei til dass. Ti meter unna. Orakelet hadde advart.\n\nTrixter og jeg fulgte fotspor i snøen - men stormen hadde visket ut deler. Vi måtte forestille oss de manglende trinnene, fylle inn hullene med logikk. Trixter ser mønstre der andre ser kaos.\n\nRampenissen sender lange meldinger om hvor 'kult' barna er. Første tegn på at han bryr seg?\n\n- Julius",
+    "dagbokinnlegg": "Dag 3 - Snøstorm\n\nVoldsom storm! En nisse gikk seg vill på vei til dass. Ti meter unna. Orakelet hadde advart.\n\nTrixter og jeg fulgte fotspor i snøen - men stormen hadde visket ut deler. Vi måtte forestille oss de manglende trinnene, fylle inn hullene med logikk. Trixter ser mønstre der andre ser kaos.\n\nRampenissen sender lange meldinger om hvor 'kul' barna er. Første tegn på at han bryr seg?\n\n- Julius",
     "rampenissen_rampestrek": "Mel er strødd på kjøkkenbenken med 'snøengel'-mønster. I melet står 'N_SS_L__' skrevet med tydelige mellomrom hvor bokstaver mangler.",
     "fysisk_hint": "N_SS_L__",
     "oppsett_tid": "enkel",
@@ -85,7 +85,7 @@
   {
     "dag": 4,
     "tittel": "Teater-gåten",
-    "nissemail_tekst": "YO! 🎭 Teater er GOAT! Jeg har laget et HELT EPISK teater med kosedyrene deres i dag! De står som publikum, og jeg har laget en mystisk gåte for dere!\n\n🔐 FORRESTEN! Julius har akkurat låst opp NISSEKRYPTO-modulen på skrivebordet ditt! Dette er det hemmelige dekrypteringssystemet jeg snakket om i går! Symbolene du samler (som det grønne hjertet) skal brukes der for å låse opp Julius' dypeste hemmeligheter! Kult, ikke sant? 🎁\n\n- Rampenissen",
+    "nissemail_tekst": "YO! 🎭 Teater er GOAT! Jeg har laget et HELT EPISK teater med kosedyrene deres i dag! De står som publikum, og jeg har laget en mystisk gåte for dere!\n\n🔐 FORRESTEN! Julius har akkurat låst opp NISSEKRYPTO-modulen på skrivebordet ditt! Dette er det hemmelige dekrypteringssystemet jeg snakket om i går! Symbolene deresamler (som det grønne hjertet) skal brukes der for å låse opp Julius' dypeste hemmeligheter! Kult, ikke sant? 🎁\n\n- Rampenissen",
     "kode": "RUDOLF",
     "dagbokinnlegg": "Dag 4 - Rudolf-Drama\n\nRudolf krever egen garderobe. 'Vi er nisser, ikke Hollywood,' sa jeg. Han sultet.\n\nTrixter ordnet teater. Rudolf lyste veldig sterkt i mørket - kanskje den røde nesen er viktigere enn jeg trodde?\n\nEtt symbol alene betyr lite. Men når man setter sammen flere - et dyr, en egenskap, en idé - da forteller de en hel historie.\n\n- Julius",
     "rampenissen_rampestrek": "Kosedyr arrangert som publikum foran en 'scene' (f.eks. sofakant). Ved scenen ligger et skilt med emoji-gåten: 🦌 + ❤️👃 + 💡 = ?. Rampenissen står som 'regissør' med megafon eller regissørstol.",

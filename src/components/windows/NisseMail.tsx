@@ -662,27 +662,7 @@ export function NisseMail({
                               >
                                 {eventyr.beskrivelse}
                               </div>
-                              {!expandedEventyrDescription && (
-                                <div
-                                  className="text-xs mt-1 opacity-60"
-                                  style={{ color: eventyr.farge }}
-                                >
-                                  Les mer...
-                                </div>
-                              )}
                             </button>
-                            {/* Progress bar */}
-                            <div className="px-4 pb-4">
-                              <div className="h-2 bg-black/50 border border-(--neon-green)/30 relative overflow-hidden">
-                                <div
-                                  className="h-full transition-all duration-500"
-                                  style={{
-                                    width: `${progressPercent}%`,
-                                    backgroundColor: eventyr.farge,
-                                  }}
-                                />
-                              </div>
-                            </div>
                           </div>
                         </div>
                       );

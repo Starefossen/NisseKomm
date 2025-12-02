@@ -317,7 +317,9 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
             <div className="text-2xl font-bold tracking-wider">
               DEKRYPTERINGSSENTER
             </div>
-            <div className="text-sm opacity-70">Klarer du å løse koden?</div>
+            <div className="text-sm opacity-70">
+              Har du samlet alle symbolene? Klarer du å løse koden?
+            </div>
           </div>
           <div className="flex items-center gap-2 px-3 py-1 border-2 border-(--gold) bg-(--gold)/20">
             <div className="w-2 h-2 bg-(--gold) rounded-full animate-pulse-led"></div>
