@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Html5Qrcode, Html5QrcodeScannerState } from "html5-qrcode";
+import { Html5Qrcode } from "html5-qrcode";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons, Icon } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
@@ -66,34 +66,50 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Helper to forcefully stop video tracks
+  const stopMediaTracks = () => {
+    try {
+      const qrReaderElement = document.getElementById("qr-reader");
+      if (qrReaderElement) {
+        const videoElement = qrReaderElement.querySelector("video");
+        if (videoElement && videoElement.srcObject) {
+          const stream = videoElement.srcObject as MediaStream;
+          stream.getTracks().forEach((track) => {
+            track.stop();
+          });
+          // Do not set srcObject to null here as it triggers "onabort" error
+          // videoElement.srcObject = null;
+        }
+      }
+    } catch (e) {
+      console.error("Error stopping media tracks:", e);
+    }
+  };
+
   // Cleanup QR scanner on unmount
   useEffect(() => {
     return () => {
+      // Always try to stop media tracks first
+      stopMediaTracks();
+
       if (qrReaderRef.current) {
         try {
-          const state = qrReaderRef.current.getState();
-          if (state === Html5QrcodeScannerState.SCANNING) {
-            qrReaderRef.current
-              .stop()
-              .then(() => {
-                // Clear the instance after stopping
-                if (qrReaderRef.current) {
+          qrReaderRef.current
+            .stop()
+            .catch(() => {
+              // Ignore stop errors
+            })
+            .finally(() => {
+              if (qrReaderRef.current) {
+                try {
                   qrReaderRef.current.clear();
+                } catch {
+                  // Ignore clear errors
                 }
-              })
-              .catch(() => {
-                // Still try to clear even if stop fails
-                if (qrReaderRef.current) {
-                  try {
-                    qrReaderRef.current.clear();
-                  } catch {
-                    /* Ignore */
-                  }
-                }
-              });
-          }
+              }
+            });
         } catch {
-          // Ignore state check errors
+          // Ignore errors
         }
       }
     };
@@ -109,6 +125,7 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
     // Stop scanning first
     if (qrReaderRef.current) {
       try {
+        stopMediaTracks();
         await qrReaderRef.current.stop();
         // Clear the instance to release camera
         qrReaderRef.current.clear();
@@ -135,6 +152,8 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
   const startScanning = async () => {
     setScannerError(null); // Clear previous errors
     try {
+      stopMediaTracks();
+
       // Ensure any previous instance is fully stopped
       if (qrReaderRef.current) {
         try {
@@ -171,7 +190,7 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
           },
         },
         handleQRScan,
-        () => {}, // Ignore scan errors (just keep trying)
+        () => { }, // Ignore scan errors (just keep trying)
       );
 
       SoundManager.playSound("click");
@@ -206,26 +225,13 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
   const stopScanning = async () => {
     if (qrReaderRef.current) {
       try {
-        // First, manually stop the video stream by accessing the video element
-        const qrReaderElement = document.getElementById("qr-reader");
-        if (qrReaderElement) {
-          const videoElement = qrReaderElement.querySelector("video");
-          if (videoElement && videoElement.srcObject) {
-            const stream = videoElement.srcObject as MediaStream;
-            stream.getTracks().forEach((track) => {
-              track.stop();
-              stream.removeTrack(track);
-            });
-            videoElement.srcObject = null;
-          }
-        }
-
-        // Now call the library's stop method
+        // Try to stop gracefully first
         await qrReaderRef.current.stop();
-        qrReaderRef.current.clear();
       } catch (error) {
         console.error("Failed to stop QR scanner:", error);
-        // Force clear even on error
+      } finally {
+        // Always force stop tracks and clear
+        stopMediaTracks();
         try {
           if (qrReaderRef.current) {
             qrReaderRef.current.clear();
@@ -233,9 +239,9 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
         } catch {
           // Ignore
         }
+        // Set to null to signal garbage collector
+        qrReaderRef.current = null;
       }
-      // Set to null to signal garbage collector
-      qrReaderRef.current = null;
 
       // Clear the DOM element completely to remove any remaining video elements
       const qrReaderElement = document.getElementById("qr-reader");
@@ -380,11 +386,11 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
                 size={48}
                 color={
                   lastCollected.symbolColor as
-                    | "green"
-                    | "red"
-                    | "blue"
-                    | "gold"
-                    | "gray"
+                  | "green"
+                  | "red"
+                  | "blue"
+                  | "gold"
+                  | "gray"
                 }
               />
               <div>
