@@ -32,7 +32,8 @@
         "title": "Toalettpapir-oppsett guide",
         "content": "OPPSETT:\n1. Bruk 3-5 toalettruller\n2. Heng papir rundt badet som en labyrint\n3. Skriv gåten på siste rull\n4. Plasser i midten av labyrinten\n\nSIKKERHET: Pass på at barn kan gå trygt i labyrinten!"
       }
-    ]
+    ],
+    "finalized": false
   },
   {
     "dag": 9,
@@ -75,7 +76,8 @@
         "title": "Snøfnugg-mal",
         "content": "[Print 10 snøfnugg-maler. 6 av dem merkes med blå bakside og matematiske hint: '6 kanter', '× 3', '= ?']"
       }
-    ]
+    ],
+    "finalized": false
   },
   {
     "dag": 10,
@@ -113,7 +115,8 @@
         "title": "Farge-mysteriet oppsett",
         "content": "OPPSETT:\n\nFinn 5 grønne gjenstander i huset:\n- Grønn bok\n- Grønn kopp\n- Grønn leke\n- Grønt klesplagg\n- Grønn plante\n\nFest bokstav-lappene på gjenstandene.\nSpre dem rundt i forskjellige rom.\n\nNår alle bokstavene er funnet:\nG + R + Ø + N + N = ?"
       }
-    ]
+    ],
+    "finalized": false
   },
   {
     "dag": 11,
@@ -165,7 +168,8 @@
       "badge_id": "antenne-ingenior",
       "badge_navn": "Antenne-ingeniør",
       "badge_icon": "zap"
-    }
+    },
+    "finalized": false
   },
   {
     "dag": 12,
@@ -213,7 +217,8 @@
       "correctSequence": [1, 0, 2],
       "messageWhenSolved": "❄️ FROSNE KODER DEKRYPTERT! ❄️\n\nGratulerer! Dere har låst opp det første hemmelige nivået i NisseKrypto-systemet. Julius' notater om de frosne kodene fra snøstormen er nå tilgjengelige i NISSENET under HEMMELIG-mappen.\n\nDisse symbolene representerer hjertenes tre farger - grønn for vekst, rød for varme, blå for kulde. Sammen former de den perfekte balansen i Snøfall.\n\nVel gjort, krypto-agenter! 🔓",
       "unlocksFiles": ["frosne-koder.txt"]
-    }
+    },
+    "finalized": false
   },
   {
     "dag": 13,
@@ -261,7 +266,8 @@
         "title": "Luciasangen tekst",
         "content": "🎵 LUCIASANGEN 🎵\n\nSvart senker natten seg\nI stall og stue\nSolen har gått sin vei,\nSkyggene truer\nInn i vårt mørke hus\nStiger med tente lys,\nSanta Lucia, Santa Lucia\n\nLucia bringer LYS i mørketiden!\nVi baker LUSSEKATTER til feiringen!"
       }
-    ]
+    ],
+    "finalized": false
   },
   {
     "dag": 14,
@@ -303,6 +309,7 @@
         "title": "Brevfugl-mysteriet FULLFØRT!",
         "content": "🕊️ GRATULERER! 🕊️\n\nBREVFUGL-MYSTERIET ER LØST!\n\nFase 1 (Dag 1): Introduksjon\nFase 2 (Dag 5): Organisering  \nFase 3 (Dag 12): Sangfugl\nFase 4 (Dag 14): PAPIR - Fullført!\n\n847 brevfugler registrert!\nAlle ønsker organisert av Winter!\n\nDere har fulgt brevfuglene gjennom 14 dager\nog hjulpet Winter med å organisere alle ønskene.\n\nJulius er STOLT av dere! 🎅\n\nVennskapet mellom Snøfall og dere\ner nå sterkere enn noensinne! 💚\n\n- Rampenissen & Julius"
       }
-    ]
+    ],
+    "finalized": false
   }
 ]

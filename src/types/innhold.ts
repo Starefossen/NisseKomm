@@ -216,6 +216,9 @@ export interface Oppdrag {
     | "lyd" // Sound/audio clue
     | "kombinasjon"; // Combination of types
 
+  // QA/Production status
+  finalized: boolean; // true = reviewed and ready for production, false = subject to change
+
   // Optional: Basic features
   hendelse?: string; // Optional public event description (shows on calendar)
   bonusoppdrag?: Bonusoppdrag; // Optional bonus challenge

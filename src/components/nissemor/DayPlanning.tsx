@@ -46,6 +46,20 @@ export function DayPlanning({
 
       {selectedQuest ? (
         <div className="space-y-6">
+          {/* Draft Warning Banner */}
+          {!selectedQuest.finalized && (
+            <div className="border-2 border-orange-500 bg-orange-500/10 p-3 flex items-center gap-3">
+              <span className="text-2xl">⚠️</span>
+              <div>
+                <span className="font-bold text-orange-400">UTKAST</span>
+                <span className="text-orange-300/80 ml-2">
+                  Denne dagen er ikke ferdig QA-godkjent og kan endres før
+                  lansering.
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* Full Width: Setup Instructions */}
           <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-4">
             <h3 className="text-xl font-bold text-(--cold-blue) mb-3">
@@ -153,21 +167,26 @@ export function DayPlanning({
           {allOppdrag.map((quest) => {
             const isCompleted = completedDays.has(quest.dag);
             const isSelected = quest.dag === selectedDay;
+            const isDraft = !quest.finalized;
 
             return (
               <button
                 key={quest.dag}
                 onClick={() => onSelectDay(quest.dag)}
                 className={`
-                  aspect-square border-2 font-bold text-lg transition-all
+                  aspect-square border-2 font-bold text-lg transition-all relative
                   ${isSelected ? "border-(--gold) bg-(--gold)/20 text-(--gold)" : "border-(--neon-green)/30"}
                   ${isCompleted ? "bg-(--neon-green)/10 text-(--neon-green)" : "text-(--neon-green)/70"}
+                  ${isDraft ? "border-dashed" : ""}
                   hover:border-(--gold) hover:bg-(--gold)/10
                 `}
-                title={`Dag ${quest.dag}: ${quest.tittel}`}
+                title={`Dag ${quest.dag}: ${quest.tittel}${isDraft ? " (UTKAST)" : ""}`}
               >
                 {quest.dag}
                 {isCompleted && <div className="text-xs">✓</div>}
+                {isDraft && (
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-orange-500 rounded-full" />
+                )}
               </button>
             );
           })}

@@ -41,7 +41,8 @@
       "Snor til oppheng"
     ],
     "beste_rom": "Over peis/dør/vindu",
-    "hint_type": "kombinasjon"
+    "hint_type": "kombinasjon",
+    "finalized": false
   },
   {
     "dag": 23,
@@ -107,7 +108,8 @@
       "Gåte-lapp"
     ],
     "beste_rom": "Kjøkken eller spisebord",
-    "hint_type": "kombinasjon"
+    "hint_type": "kombinasjon",
+    "finalized": false
   },
   {
     "dag": 24,
@@ -176,6 +178,7 @@
       "Tegning av slede"
     ],
     "beste_rom": "Der Rampenissen 'bor'",
-    "hint_type": "kombinasjon"
+    "hint_type": "kombinasjon",
+    "finalized": false
   }
 ]

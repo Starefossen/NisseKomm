@@ -166,12 +166,12 @@ function NissemorGuideContent() {
           e.preventDefault();
           alert(
             "⌨️ TASTATURSNARVEIER:\n\n" +
-            "← / h : Forrige dag\n" +
-            "→ / l : Neste dag\n" +
-            "Home / g : Første dag\n" +
-            "End / G : Siste dag\n" +
-            "t : Gå til dagens dato\n" +
-            "? : Vis denna hjelpen",
+              "← / h : Forrige dag\n" +
+              "→ / l : Neste dag\n" +
+              "Home / g : Første dag\n" +
+              "End / G : Siste dag\n" +
+              "t : Gå til dagens dato\n" +
+              "? : Vis denna hjelpen",
           );
           break;
       }
@@ -191,9 +191,10 @@ function NissemorGuideContent() {
           🎄 NISSEMOR-GUIDEN 🎄
         </h1>
         <p className="text-lg text-(--neon-green)/80 leading-relaxed">
-          Velkommen til kontrollpanelet for NisseKomm-adventuren! Her finner du alt du trenger
-          for å følge med på barnets progresjon, forberede dagens oppdrag, og holde styr på
-          fysiske ledetekster og koder. Bruk menyen over for å navigere mellom de ulike verktøyene.
+          Velkommen til kontrollpanelet for NisseKomm-adventuren! Her finner du
+          alt du trenger for å følge med på barnets progresjon, forberede dagens
+          oppdrag, og holde styr på fysiske ledetekster og koder. Bruk menyen
+          over for å navigere mellom de ulike verktøyene.
         </p>
       </div>
 
@@ -266,6 +267,11 @@ function NissemorGuideContent() {
                             Dag {dag.dag}
                           </span>
                           <span className="text-xl">{dag.tittel}</span>
+                          {!dag.finalized && (
+                            <span className="px-2 py-0.5 text-sm bg-orange-500/20 text-orange-400 border border-orange-500/50">
+                              ⚠️ UTKAST
+                            </span>
+                          )}
                           {completedDays.has(dag.dag) && (
                             <span className="text-(--neon-green) font-bold">
                               ✓ FULLFØRT

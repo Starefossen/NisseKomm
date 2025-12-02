@@ -2,6 +2,7 @@
   {
     "dag": 1,
     "tittel": "Nissens Første Melding",
+    "finalized": true,
     "nissemail_tekst": "YO! 🎅 Du fant veien inn! Nice! ✨\n\nVelkommen til NISSEKOMM - mitt digitale hovedkvarter for kritiske Snøfall-operasjoner! Julius har gitt meg tilgang til dette systemet så vi kan samarbeide hele desember. 🎄\n\nDu klarte visst å knekke sko-koden! Smart! 🧠 Det betyr at du er offisielt en del av teamet nå. Her inne finner du:\n\n📧 NISSEMAIL - Daglige beskjeder fra meg\n📖 DAGBOK - Julius sine hemmelige notater\n📁 NISSENET - Viktige filer fra Snøfall\n\nVi sees hver dag med nye oppdrag! Dette blir epic! 🚀\n\n- Rampenissen\n\nP.S. Ikke fortell Julius at jeg rotet med skoene hans også... 🤫",
     "kode": "{{KID_CODE}}",
     "eventyr": {
@@ -51,7 +52,8 @@
     "hint_type": "arrangement",
     "reveals": {
       "topics": ["iq-oppfinnelser"]
-    }
+    },
+    "finalized": true
   },
   {
     "dag": 3,
@@ -77,7 +79,8 @@
       "symbolIcon": "heart",
       "symbolColor": "green",
       "description": "Grønt hjerte fra snøstormen"
-    }
+    },
+    "finalized": true
   },
   {
     "dag": 4,
@@ -105,7 +108,8 @@
         "title": "Teaterprogram",
         "content": "🎭 JULETEATER I SNØFALL 🎭\n\nI kveld: Rudolf - Reinsdyret med den røde nesen\n\nHovedrolle: Rudolf (spilt av seg selv)\nBirolle: Trixter\nRegissør: Rampenissen\n\nBilletter: Gratis for alle nisser!"
       }
-    ]
+    ],
+    "finalized": true
   },
   {
     "dag": 5,
@@ -147,7 +151,8 @@
         "title": "Dekoder-referanse",
         "content": "📝 NOTE TIL RAMPENISSEN:\n\nJulius sa:\n'Finn dekoder_reinsdyr.txt i NISSENET'\n\nNogle om Caesar-kode:\n- Flytt hver bokstav\n- Nøkkel: -1 (ett steg tilbake)\n- Eksempel: B → A, C → B"
       }
-    ]
+    ],
+    "finalized": true
   },
   {
     "dag": 6,
@@ -185,7 +190,8 @@
         "title": "Gammelt kart til Myra",
         "content": "[Tegn et enkelt kart med kompas, bølger (hav), og 'X' som markerer Myra. Skriv gåten: 'Byen begynner med M, slutter med A, 4 bokstaver totalt']"
       }
-    ]
+    ],
+    "finalized": true
   },
   {
     "dag": 7,
@@ -220,6 +226,7 @@
         "title": "Globus klistremerke-plassering",
         "content": "🌍 GLOBUS-OPPSETT 🌍\n\nFest klistremerker på disse stedene:\n\n🔴 RØD: Helt på toppen (Nordpolen)\n   = 90° nord\n\n🔵 BLÅ: Rundt Norge/Skandinavia\n   = ca 60° nord\n\n🟢 GRØNN: Rundt Nord-Afrika\n   = ca 30° nord\n\nRampenissens spørsmål:\n'Snøfall ligger ved den RØDE prikken.\nHvor mange grader nord er det?'"
       }
-    ]
+    ],
+    "finalized": true
   }
 ]

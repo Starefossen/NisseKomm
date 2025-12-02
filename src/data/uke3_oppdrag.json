@@ -41,7 +41,8 @@
       "Fat"
     ],
     "beste_rom": "Kjøkken",
-    "hint_type": "kombinasjon"
+    "hint_type": "kombinasjon",
+    "finalized": false
   },
   {
     "dag": 16,
@@ -87,7 +88,8 @@
       "Lapp med spørsmål"
     ],
     "beste_rom": "Der kalenderen henger",
-    "hint_type": "skrevet"
+    "hint_type": "skrevet",
+    "finalized": false
   },
   {
     "dag": 17,
@@ -124,7 +126,8 @@
       "Snor/tape"
     ],
     "beste_rom": "Flere rom",
-    "hint_type": "spor"
+    "hint_type": "spor",
+    "finalized": false
   },
   {
     "dag": 18,
@@ -181,7 +184,8 @@
       "Votter til Rampenissen"
     ],
     "beste_rom": "Ute eller kjøkken",
-    "hint_type": "skrevet"
+    "hint_type": "skrevet",
+    "finalized": false
   },
   {
     "dag": 19,
@@ -248,7 +252,8 @@
       "Papir-piler for retning"
     ],
     "beste_rom": "Flere rom",
-    "hint_type": "kombinasjon"
+    "hint_type": "kombinasjon",
+    "finalized": false
   },
   {
     "dag": 20,
@@ -327,7 +332,8 @@
       "Papir-piler (valgfritt)"
     ],
     "beste_rom": "Flere rom",
-    "hint_type": "spor"
+    "hint_type": "spor",
+    "finalized": false
   },
   {
     "dag": 21,
@@ -367,6 +373,7 @@
       "forstørrelsesglass (valgfritt)"
     ],
     "beste_rom": "Flere rom",
-    "hint_type": "gjemt_objekt"
+    "hint_type": "gjemt_objekt",
+    "finalized": false
   }
 ]

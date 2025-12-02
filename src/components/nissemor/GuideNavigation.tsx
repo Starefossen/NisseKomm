@@ -123,8 +123,9 @@ export function GuideNavigation({ currentPage }: GuideNavigationProps) {
           <Link
             key={page.id}
             href={page.href}
-            className={`px-4 py-2 font-bold text-base border-2 border-black transition-colors ${page.color} ${currentPage === page.id ? "ring-4 ring-(--gold)" : ""
-              }`}
+            className={`px-4 py-2 font-bold text-base border-2 border-black transition-colors ${page.color} ${
+              currentPage === page.id ? "ring-4 ring-(--gold)" : ""
+            }`}
           >
             {page.label}
           </Link>
@@ -134,8 +135,9 @@ export function GuideNavigation({ currentPage }: GuideNavigationProps) {
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className={`px-4 py-2 font-bold text-base border-2 border-black transition-colors bg-gray-700 text-white hover:bg-gray-600 ${isDropdownPageActive ? "ring-4 ring-(--gold)" : ""
-              }`}
+            className={`px-4 py-2 font-bold text-base border-2 border-black transition-colors bg-gray-700 text-white hover:bg-gray-600 ${
+              isDropdownPageActive ? "ring-4 ring-(--gold)" : ""
+            }`}
           >
             ☰ MER {isMenuOpen ? "▲" : "▼"}
           </button>
@@ -147,10 +149,11 @@ export function GuideNavigation({ currentPage }: GuideNavigationProps) {
                   key={item.id}
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`block px-4 py-3 font-bold text-base hover:bg-(--neon-green)/20 transition-colors border-b border-gray-700 last:border-b-0 ${currentPage === item.id
+                  className={`block px-4 py-3 font-bold text-base hover:bg-(--neon-green)/20 transition-colors border-b border-gray-700 last:border-b-0 ${
+                    currentPage === item.id
                       ? "bg-(--neon-green)/30 text-(--gold)"
                       : "text-(--neon-green)"
-                    }`}
+                  }`}
                 >
                   {item.label}
                 </Link>
