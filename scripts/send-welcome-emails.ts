@@ -124,7 +124,7 @@ function createWelcomeEmailHtml({
   parentCode: string;
   kidNames: string[];
 }): string {
-  const familyGreeting = familyName ? `Familie ${familyName}` : "Kjære familie";
+  const familyGreeting = familyName ? `Familien${familyName}` : "Kjære familie";
   const kidNamesFormatted = kidNames.join(", ");
 
   return `
@@ -337,7 +337,7 @@ function createWelcomeEmailText({
   parentCode: string;
   kidNames: string[];
 }): string {
-  const familyGreeting = familyName ? `Familie ${familyName}` : "Kjære familie";
+  const familyGreeting = familyName ? `Familien${familyName}` : "Kjære familie";
   const kidNamesFormatted = kidNames.join(", ");
 
   return `
