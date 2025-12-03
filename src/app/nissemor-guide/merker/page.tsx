@@ -350,7 +350,7 @@ function MerkerContent() {
               <div className="flex items-start gap-6 mb-4">
                 {/* Badge Visual */}
                 <div
-                  className={`flex-shrink-0 w-20 h-20 border-4 flex items-center justify-center ${
+                  className={`shrink-0 w-20 h-20 border-4 flex items-center justify-center ${
                     isEarned
                       ? "border-(--gold) bg-(--gold)/20"
                       : "border-(--gray) bg-(--gray)/10 grayscale opacity-50"
