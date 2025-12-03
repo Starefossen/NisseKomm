@@ -11,12 +11,7 @@
     "sanity.cli.ts",
     ".sanity/**"
   ],
-  "ignoreDependencies": [
-    "pixelarticons",
-    "@sanity/vision",
-    "@types/uuid",
-    "@sanity/migrate"
-  ],
+  "ignoreDependencies": ["pixelarticons", "@sanity/vision"],
   "ignoreExportsUsedInFile": true,
   "next": {
     "entry": [
