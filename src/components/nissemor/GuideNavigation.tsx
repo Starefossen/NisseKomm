@@ -17,6 +17,7 @@ import { useGuideAuth } from "./GuideAuth";
 
 type PageType =
   | "hovedside"
+  | "oppdrag"
   | "symboler"
   | "eventyr"
   | "utvikling"
@@ -56,6 +57,12 @@ export function GuideNavigation({ currentPage }: GuideNavigationProps) {
       color: "bg-(--neon-green) text-black hover:bg-(--gold)",
     },
     {
+      id: "oppdrag" as PageType,
+      label: "📋 OPPDRAG",
+      href: "/nissemor-guide/oppdrag",
+      color: "bg-(--cold-blue) text-black hover:bg-(--gold)",
+    },
+    {
       id: "brevfugler" as PageType,
       label: "✉️ BREVFUGLER",
       href: "/nissemor-guide/brevfugler",
@@ -83,7 +90,7 @@ export function GuideNavigation({ currentPage }: GuideNavigationProps) {
       id: "eventyr" as PageType,
       label: "📖 EVENTYR",
       href: "/nissemor-guide/eventyr",
-      color: "bg-(--cold-blue) text-black hover:bg-(--gold)",
+      color: "bg-green-700 text-white hover:bg-green-600",
     },
   ];
 
