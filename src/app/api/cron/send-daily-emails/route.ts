@@ -62,6 +62,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate tomorrow's day (emails sent at 21:00 for next day)
+    // Convert to CET (UTC+1) or CEST (UTC+2) timezone
     const now = new Date();
     const cet = new Date(
       now.toLocaleString("en-US", { timeZone: "Europe/Oslo" }),
@@ -69,25 +70,39 @@ export async function POST(request: NextRequest) {
     const currentDay = cet.getDate();
     const currentMonth = cet.getMonth() + 1; // 1-indexed
 
+    console.log(
+      `[Daily Email Cron] Current time (CET): ${cet.toISOString()}, Day: ${currentDay}, Month: ${currentMonth}`,
+    );
+
     // Only send emails in December
     if (currentMonth !== 12) {
-      console.log("[Daily Email Cron] Not December, skipping emails");
+      console.log(
+        `[Daily Email Cron] Not December (month=${currentMonth}), skipping emails`,
+      );
       return NextResponse.json({
         success: true,
-        message: "Outside December period, no emails sent",
+        message: `Outside December period (month ${currentMonth}), no emails sent`,
         sent: 0,
+        currentDay,
+        currentMonth,
       });
     }
 
     const tomorrowDay = currentDay + 1;
+    console.log(
+      `[Daily Email Cron] Tomorrow will be day ${tomorrowDay} of December`,
+    );
 
     // Don't send emails after Dec 24
     if (tomorrowDay > 24) {
-      console.log("[Daily Email Cron] After Dec 24, no more missions");
+      console.log(
+        `[Daily Email Cron] After Dec 24 (tomorrow=${tomorrowDay}), no more missions`,
+      );
       return NextResponse.json({
         success: true,
-        message: "All missions completed (after Dec 24)",
+        message: `All missions completed (tomorrow would be day ${tomorrowDay})`,
         sent: 0,
+        tomorrowDay,
       });
     }
 
@@ -122,26 +137,38 @@ export async function POST(request: NextRequest) {
     );
 
     if (!families || families.length === 0) {
-      console.log("[Daily Email Cron] No subscribed families found");
+      console.warn(
+        "[Daily Email Cron] No subscribed families found in Sanity!",
+      );
       return NextResponse.json({
         success: true,
-        message: "No subscribed families",
+        message: "No subscribed families found",
         sent: 0,
+        day: tomorrowDay,
       });
     }
 
     console.log(
-      `[Daily Email Cron] Found ${families.length} subscribed families`,
+      `[Daily Email Cron] Found ${families.length} subscribed families, preparing to send...`,
+    );
+    console.log(
+      `[Daily Email Cron] Family emails: ${families.map((f) => f.parentEmail).join(", ")}`,
     );
 
     // Send email to each family
+    console.log(
+      `[Daily Email Cron] Starting email send to ${families.length} families...`,
+    );
     const results = await Promise.allSettled(
-      families.map(async (family) => {
+      families.map(async (family, index) => {
+        console.log(
+          `[Daily Email Cron] Sending email ${index + 1}/${families.length} to ${family.parentEmail}...`,
+        );
         // Generate secure unsubscribe token
         const token = generateUnsubscribeToken(family.sessionId);
         const unsubscribeUrl = `${BASE_URL}/api/unsubscribe?session=${encodeURIComponent(family.sessionId)}&token=${token}`;
 
-        return sendDailyMissionEmail({
+        const result = await sendDailyMissionEmail({
           to: family.parentEmail,
           familyName: family.familyName,
           kidNames: family.kidNames,
@@ -153,6 +180,11 @@ export async function POST(request: NextRequest) {
           materialer: tomorrowMission.materialer_nødvendig || [],
           unsubscribeUrl,
         });
+
+        console.log(
+          `[Daily Email Cron] Email ${index + 1}/${families.length} to ${family.parentEmail}: ${result ? "SUCCESS" : "FAILED"}`,
+        );
+        return result;
       }),
     );
 
@@ -167,15 +199,23 @@ export async function POST(request: NextRequest) {
     ).length;
 
     console.log(
-      `[Daily Email Cron] Results: ${successful} sent, ${failed} failed`,
+      `[Daily Email Cron] ✅ COMPLETED - Results: ${successful} sent, ${failed} failed (total: ${families.length})`,
     );
 
-    // Log failures
+    // Log all results in detail
     results.forEach((result, index) => {
       if (result.status === "rejected") {
         console.error(
-          `[Daily Email Cron] Failed to send to ${families[index].parentEmail}:`,
+          `[Daily Email Cron] ❌ FAILED to send to ${families[index].parentEmail}:`,
           result.reason,
+        );
+      } else if (result.value === false) {
+        console.error(
+          `[Daily Email Cron] ❌ FAILED to send to ${families[index].parentEmail}: Email service returned false`,
+        );
+      } else {
+        console.log(
+          `[Daily Email Cron] ✅ SUCCESS: ${families[index].parentEmail}`,
         );
       }
     });

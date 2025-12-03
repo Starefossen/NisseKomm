@@ -13,7 +13,17 @@ import { Resend } from "resend";
 let resendInstance: Resend | null = null;
 function getResend(): Resend {
   if (!resendInstance) {
-    resendInstance = new Resend(process.env.RESEND_API_KEY);
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      console.error(
+        "[Email Service] CRITICAL: RESEND_API_KEY is not set! Emails will fail.",
+      );
+    } else {
+      console.log(
+        `[Email Service] Initializing Resend with API key: ${apiKey.substring(0, 7)}...${apiKey.substring(apiKey.length - 4)}`,
+      );
+    }
+    resendInstance = new Resend(apiKey);
   }
   return resendInstance;
 }
@@ -486,9 +496,8 @@ function createDailyMissionEmailHtml({
                     </table>
 
                     <!-- Materials Box -->
-                    ${
-                      materialer.length > 0
-                        ? `
+                    ${materialer.length > 0
+      ? `
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 20px;">
                       <tr>
                         <td>
@@ -508,8 +517,8 @@ function createDailyMissionEmailHtml({
                       </tr>
                     </table>
                     `
-                        : ""
-                    }
+      : ""
+    }
 
                     <!-- Physical Hint Box -->
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 20px;">
@@ -634,17 +643,16 @@ I morgen er det Dag ${day}: ${missionTitle}. Her er hva dere trenger for å sett
 
 ${rampeStrek}
 
-${
-  materialer.length > 0
-    ? `
+${materialer.length > 0
+      ? `
 ───────────────────────────────────────────────────────
 📦 MATERIALER SOM TRENGS:
 ───────────────────────────────────────────────────────
 
 ${materialList}
 `
-    : ""
-}
+      : ""
+    }
 
 ───────────────────────────────────────────────────────
 🔍 FYSISK HINT (FOR BARNA):
@@ -688,6 +696,13 @@ export async function sendDailyMissionEmail(
   try {
     const { to, ...contentParams } = params;
 
+    console.log(
+      `[Email Service] sendDailyMissionEmail called for ${to}, day ${contentParams.day}`,
+    );
+    console.log(
+      `[Email Service] Environment check: NODE_ENV=${process.env.NODE_ENV}, JEST_WORKER_ID=${process.env.JEST_WORKER_ID}, VITEST=${process.env.VITEST}, isTest=${isTestEnvironment()}`,
+    );
+
     // Skip actual email sending in test environment
     if (isTestEnvironment()) {
       console.log(
@@ -695,6 +710,8 @@ export async function sendDailyMissionEmail(
       );
       return true;
     }
+
+    console.log(`[Email Service] Calling Resend API to send email to ${to}...`);
 
     const { error } = await getResend().emails.send({
       from: FROM_EMAIL,
