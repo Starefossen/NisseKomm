@@ -410,12 +410,22 @@ export async function GET(request: NextRequest) {
     diagnostics.readiness.secretsConfigured;
 
   diagnostics.ready = allReady;
-  diagnostics.warnings = [
-    !diagnostics.readiness.inDecember && "Not in December",
-    !diagnostics.readiness.hasMoreMissions && "No more missions to send",
-    !diagnostics.readiness.backendConfigured && "Sanity backend not configured",
-    !diagnostics.readiness.secretsConfigured && "Missing required secrets",
-  ].filter((w): w is string => typeof w === "string");
+
+  // Build warnings array
+  const warnings: string[] = [];
+  if (!diagnostics.readiness.inDecember) {
+    warnings.push("Not in December");
+  }
+  if (!diagnostics.readiness.hasMoreMissions) {
+    warnings.push("No more missions to send");
+  }
+  if (!diagnostics.readiness.backendConfigured) {
+    warnings.push("Sanity backend not configured");
+  }
+  if (!diagnostics.readiness.secretsConfigured) {
+    warnings.push("Missing required secrets");
+  }
+  diagnostics.warnings = warnings;
 
   return NextResponse.json(diagnostics);
 }
