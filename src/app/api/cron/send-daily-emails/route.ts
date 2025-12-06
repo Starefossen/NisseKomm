@@ -54,6 +54,41 @@ interface FamilyCredentials {
   emailSubscription: boolean;
 }
 
+interface DiagnosticsResponse {
+  service: string;
+  status: string;
+  timestamp: string;
+  schedule: {
+    configured: string;
+    timezone: string;
+  };
+  currentTime: {
+    utc: string;
+    cet: string;
+    currentDay: number;
+    currentMonth: number;
+    tomorrowDay: number | null;
+  };
+  configuration: {
+    storageBackend: string;
+    enabled: boolean;
+    hasCronSecret: boolean;
+    hasResendApiKey: boolean;
+    baseUrl: string;
+    nodeEnv: string | undefined;
+  };
+  readiness: {
+    inDecember: boolean;
+    hasMoreMissions: boolean;
+    backendConfigured: boolean;
+    secretsConfigured: boolean;
+  };
+  subscribedFamiliesCount?: number;
+  sanityError?: string;
+  ready?: boolean;
+  warnings?: (string | false)[];
+}
+
 /**
  * POST /api/cron/send-daily-emails
  * Send daily mission emails to all subscribed families
@@ -323,7 +358,7 @@ export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const testMode = url.searchParams.get("test") === "true";
 
-  const diagnostics = {
+  const diagnostics: DiagnosticsResponse = {
     service: "Daily Mission Email Cron",
     status: "healthy",
     timestamp: new Date().toISOString(),
@@ -361,9 +396,9 @@ export async function GET(request: NextRequest) {
       const count = await sanityServerClient.fetch<number>(
         `count(*[_type == "familyCredentials" && emailSubscription == true])`,
       );
-      (diagnostics as Record<string, unknown>).subscribedFamiliesCount = count;
+      diagnostics.subscribedFamiliesCount = count;
     } catch (error) {
-      (diagnostics as Record<string, unknown>).sanityError =
+      diagnostics.sanityError =
         error instanceof Error ? error.message : String(error);
     }
   }
@@ -374,15 +409,13 @@ export async function GET(request: NextRequest) {
     diagnostics.readiness.backendConfigured &&
     diagnostics.readiness.secretsConfigured;
 
-  return NextResponse.json({
-    ...diagnostics,
-    ready: allReady,
-    warnings: [
-      !diagnostics.readiness.inDecember && "Not in December",
-      !diagnostics.readiness.hasMoreMissions && "No more missions to send",
-      !diagnostics.readiness.backendConfigured &&
-        "Sanity backend not configured",
-      !diagnostics.readiness.secretsConfigured && "Missing required secrets",
-    ].filter(Boolean),
-  });
+  diagnostics.ready = allReady;
+  diagnostics.warnings = [
+    !diagnostics.readiness.inDecember && "Not in December",
+    !diagnostics.readiness.hasMoreMissions && "No more missions to send",
+    !diagnostics.readiness.backendConfigured && "Sanity backend not configured",
+    !diagnostics.readiness.secretsConfigured && "Missing required secrets",
+  ].filter((w): w is string => typeof w === "string");
+
+  return NextResponse.json(diagnostics);
 }
