@@ -101,7 +101,15 @@ NEXT_PUBLIC_SANITY_PROJECT_ID=
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2024-11-01
 SANITY_API_TOKEN=
+
+# Email sending (påkrevd for cron job og email subscriptions)
+RESEND_API_KEY=              # API key fra Resend
+RESEND_FROM_EMAIL=Rampenissen <rampenissen@nissekomm.no>
+CRON_SECRET=                 # Secret for Vercel Cron authorization
+UNSUBSCRIBE_SECRET=          # Secret for unsubscribe token generation
 ```
+
+**📧 For daily email reminders (cron job):** Se [docs/CRON_TROUBLESHOOTING.md](./docs/CRON_TROUBLESHOOTING.md) for komplett guide om oppsett av automatiske e-poster.
 
 ### 3. Registrer Familie (lokal utvikling)
 

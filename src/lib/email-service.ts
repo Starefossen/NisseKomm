@@ -695,27 +695,38 @@ Avbryt abonnement: ${unsubscribeUrl}
 export async function sendDailyMissionEmail(
   params: DailyMissionEmailParams,
 ): Promise<boolean> {
+  const timestamp = new Date().toISOString();
   try {
     const { to, ...contentParams } = params;
 
     console.log(
-      `[Email Service] sendDailyMissionEmail called for ${to}, day ${contentParams.day}`,
+      `[${timestamp}] [Email Service] sendDailyMissionEmail called for ${to}, day ${contentParams.day}`,
     );
     console.log(
-      `[Email Service] Environment check: NODE_ENV=${process.env.NODE_ENV}, JEST_WORKER_ID=${process.env.JEST_WORKER_ID}, VITEST=${process.env.VITEST}, isTest=${isTestEnvironment()}`,
+      `[${timestamp}] [Email Service] Environment check:`,
+      JSON.stringify({
+        nodeEnv: process.env.NODE_ENV,
+        jestWorker: process.env.JEST_WORKER_ID,
+        vitest: process.env.VITEST,
+        isTest: isTestEnvironment(),
+        hasResendKey: !!process.env.RESEND_API_KEY,
+        fromEmail: FROM_EMAIL,
+      }),
     );
 
     // Skip actual email sending in test environment
     if (isTestEnvironment()) {
       console.log(
-        `[Email Service] TEST MODE - Skipping daily mission email to ${to} (day: ${contentParams.day})`,
+        `[${timestamp}] [Email Service] TEST MODE - Skipping daily mission email to ${to} (day: ${contentParams.day})`,
       );
       return true;
     }
 
-    console.log(`[Email Service] Calling Resend API to send email to ${to}...`);
+    console.log(
+      `[${timestamp}] [Email Service] Calling Resend API to send email to ${to}...`,
+    );
 
-    const { error } = await getResend().emails.send({
+    const { data, error } = await getResend().emails.send({
       from: FROM_EMAIL,
       to,
       subject: `🎄 Dag ${contentParams.day}: ${contentParams.missionTitle} - NisseKomm`,
@@ -725,20 +736,35 @@ export async function sendDailyMissionEmail(
 
     if (error) {
       console.error(
-        `[Email Service] Failed to send daily mission email for day ${contentParams.day}:`,
-        error,
+        `[${timestamp}] [Email Service] Failed to send daily mission email for day ${contentParams.day}:`,
+        JSON.stringify({
+          error,
+          to,
+          day: contentParams.day,
+          missionTitle: contentParams.missionTitle,
+        }),
       );
       return false;
     }
 
     console.log(
-      `[Email Service] Daily mission email sent to ${to} for day ${contentParams.day}`,
+      `[${timestamp}] [Email Service] Daily mission email sent successfully:`,
+      JSON.stringify({
+        to,
+        day: contentParams.day,
+        emailId: data?.id,
+      }),
     );
     return true;
   } catch (error) {
     console.error(
-      `[Email Service] Error sending daily mission email for day ${params.day}:`,
-      error,
+      `[${timestamp}] [Email Service] Exception sending daily mission email for day ${params.day}:`,
+      JSON.stringify({
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        to: params.to,
+        day: params.day,
+      }),
     );
     return false;
   }
