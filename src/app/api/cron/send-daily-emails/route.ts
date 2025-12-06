@@ -130,7 +130,6 @@ export async function POST(request: NextRequest) {
     // Don't send emails after Dec 24
     if (tomorrowDay > 24) {
       log("INFO", "After Dec 24 - no more missions", { tomorrowDay });
-      log("INFO", "After Dec 24 - no more missions", { tomorrowDay });
       return NextResponse.json({
         success: true,
         message: `All missions completed (tomorrow would be day ${tomorrowDay})`,
