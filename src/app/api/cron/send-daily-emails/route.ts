@@ -27,6 +27,24 @@ const STORAGE_BACKEND =
 const CRON_SECRET = process.env.CRON_SECRET;
 const BASE_URL = process.env.NEXT_PUBLIC_URL || "https://nissekomm.no";
 
+/**
+ * Structured logger with timestamps for better Vercel log visibility
+ */
+function log(
+  level: "INFO" | "WARN" | "ERROR",
+  message: string,
+  data?: unknown,
+) {
+  const timestamp = new Date().toISOString();
+  const prefix = `[${timestamp}] [Daily Email Cron] [${level}]`;
+
+  if (data !== undefined) {
+    console.log(`${prefix} ${message}`, JSON.stringify(data, null, 2));
+  } else {
+    console.log(`${prefix} ${message}`);
+  }
+}
+
 interface FamilyCredentials {
   _id: string;
   sessionId: string;
@@ -36,24 +54,74 @@ interface FamilyCredentials {
   emailSubscription: boolean;
 }
 
+interface DiagnosticsResponse {
+  service: string;
+  status: string;
+  timestamp: string;
+  schedule: {
+    configured: string;
+    timezone: string;
+  };
+  currentTime: {
+    utc: string;
+    cet: string;
+    currentDay: number;
+    currentMonth: number;
+    tomorrowDay: number | null;
+  };
+  configuration: {
+    storageBackend: string;
+    enabled: boolean;
+    hasCronSecret: boolean;
+    hasResendApiKey: boolean;
+    baseUrl: string;
+    nodeEnv: string | undefined;
+  };
+  readiness: {
+    inDecember: boolean;
+    hasMoreMissions: boolean;
+    backendConfigured: boolean;
+    secretsConfigured: boolean;
+  };
+  subscribedFamiliesCount?: number;
+  sanityError?: string;
+  ready?: boolean;
+  warnings?: string[];
+}
+
 /**
  * POST /api/cron/send-daily-emails
  * Send daily mission emails to all subscribed families
  */
 export async function POST(request: NextRequest) {
+  // Log startup configuration for debugging
+  log("INFO", "=== CRON JOB STARTED ===");
+  log("INFO", "Environment Configuration", {
+    storageBackend: STORAGE_BACKEND,
+    hasCronSecret: !!CRON_SECRET,
+    baseUrl: BASE_URL,
+    hasResendKey: !!process.env.RESEND_API_KEY,
+    nodeEnv: process.env.NODE_ENV,
+  });
+
   try {
     // Verify authorization (Vercel Cron sends secret in Authorization header)
     const authHeader = request.headers.get("authorization");
+    log("INFO", "Authorization check", {
+      hasAuthHeader: !!authHeader,
+      hasCronSecret: !!CRON_SECRET,
+    });
 
     if (CRON_SECRET && authHeader !== `Bearer ${CRON_SECRET}`) {
-      console.warn("[Daily Email Cron] Unauthorized access attempt");
+      log("WARN", "Unauthorized access attempt - auth header mismatch");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only works with Sanity backend
     if (STORAGE_BACKEND === "localStorage") {
-      console.warn(
-        "[Daily Email Cron] Sanity backend required for email service",
+      log(
+        "WARN",
+        "Cannot send emails: Sanity backend required, but localStorage is configured",
       );
       return NextResponse.json(
         { error: "Email service requires Sanity backend" },
@@ -70,15 +138,18 @@ export async function POST(request: NextRequest) {
     const currentDay = cet.getDate();
     const currentMonth = cet.getMonth() + 1; // 1-indexed
 
-    console.log(
-      `[Daily Email Cron] Current time (CET): ${cet.toISOString()}, Day: ${currentDay}, Month: ${currentMonth}`,
-    );
+    log("INFO", "Time calculation", {
+      utcTime: now.toISOString(),
+      cetTime: cet.toISOString(),
+      currentDay,
+      currentMonth,
+    });
 
     // Only send emails in December
     if (currentMonth !== 12) {
-      console.log(
-        `[Daily Email Cron] Not December (month=${currentMonth}), skipping emails`,
-      );
+      log("INFO", "Outside December period - no emails to send", {
+        currentMonth,
+      });
       return NextResponse.json({
         success: true,
         message: `Outside December period (month ${currentMonth}), no emails sent`,
@@ -89,15 +160,11 @@ export async function POST(request: NextRequest) {
     }
 
     const tomorrowDay = currentDay + 1;
-    console.log(
-      `[Daily Email Cron] Tomorrow will be day ${tomorrowDay} of December`,
-    );
+    log("INFO", `Tomorrow will be day ${tomorrowDay} of December`);
 
     // Don't send emails after Dec 24
     if (tomorrowDay > 24) {
-      console.log(
-        `[Daily Email Cron] After Dec 24 (tomorrow=${tomorrowDay}), no more missions`,
-      );
+      log("INFO", "After Dec 24 - no more missions", { tomorrowDay });
       return NextResponse.json({
         success: true,
         message: `All missions completed (tomorrow would be day ${tomorrowDay})`,
@@ -107,24 +174,25 @@ export async function POST(request: NextRequest) {
     }
 
     // Load tomorrow's mission
+    log("INFO", "Loading mission data", { day: tomorrowDay });
     const allOppdrag = getAllOppdrag();
     const tomorrowMission = allOppdrag.find((m) => m.dag === tomorrowDay);
 
     if (!tomorrowMission) {
-      console.error(
-        `[Daily Email Cron] No mission found for day ${tomorrowDay}`,
-      );
+      log("ERROR", "No mission found for day", { day: tomorrowDay });
       return NextResponse.json(
         { error: `No mission data for day ${tomorrowDay}` },
         { status: 500 },
       );
     }
 
-    console.log(
-      `[Daily Email Cron] Preparing emails for Day ${tomorrowDay}: ${tomorrowMission.tittel}`,
-    );
+    log("INFO", "Mission loaded", {
+      day: tomorrowDay,
+      title: tomorrowMission.tittel,
+    });
 
     // Fetch all subscribed families
+    log("INFO", "Fetching subscribed families from Sanity...");
     const families = await sanityServerClient.fetch<FamilyCredentials[]>(
       `*[_type == "familyCredentials" && emailSubscription == true]{
         _id,
@@ -137,9 +205,7 @@ export async function POST(request: NextRequest) {
     );
 
     if (!families || families.length === 0) {
-      console.warn(
-        "[Daily Email Cron] No subscribed families found in Sanity!",
-      );
+      log("WARN", "No subscribed families found in Sanity");
       return NextResponse.json({
         success: true,
         message: "No subscribed families found",
@@ -148,43 +214,72 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    console.log(
-      `[Daily Email Cron] Found ${families.length} subscribed families, preparing to send...`,
-    );
-    console.log(
-      `[Daily Email Cron] Family emails: ${families.map((f) => f.parentEmail).join(", ")}`,
-    );
+    log("INFO", "Found subscribed families", {
+      count: families.length,
+      emails: families.map((f) => f.parentEmail),
+    });
 
     // Send email to each family
-    console.log(
-      `[Daily Email Cron] Starting email send to ${families.length} families...`,
-    );
+    log("INFO", `Starting email send to ${families.length} families...`);
     const results = await Promise.allSettled(
       families.map(async (family, index) => {
-        console.log(
-          `[Daily Email Cron] Sending email ${index + 1}/${families.length} to ${family.parentEmail}...`,
-        );
+        log("INFO", `Sending email ${index + 1}/${families.length}`, {
+          to: family.parentEmail,
+          familyName: family.familyName,
+        });
+
         // Generate secure unsubscribe token
         const token = generateUnsubscribeToken(family.sessionId);
         const unsubscribeUrl = `${BASE_URL}/api/unsubscribe?session=${encodeURIComponent(family.sessionId)}&token=${token}`;
 
-        const result = await sendDailyMissionEmail({
-          to: family.parentEmail,
-          familyName: family.familyName,
-          kidNames: family.kidNames,
-          day: tomorrowDay,
-          missionTitle: tomorrowMission.tittel,
-          missionText: tomorrowMission.nissemail_tekst,
-          rampeStrek: tomorrowMission.rampenissen_rampestrek,
-          fysiskHint: tomorrowMission.fysisk_hint,
-          materialer: tomorrowMission.materialer_nødvendig || [],
-          unsubscribeUrl,
-        });
+        try {
+          const result = await sendDailyMissionEmail({
+            to: family.parentEmail,
+            familyName: family.familyName,
+            kidNames: family.kidNames,
+            day: tomorrowDay,
+            missionTitle: tomorrowMission.tittel,
+            missionText: tomorrowMission.nissemail_tekst,
+            rampeStrek: tomorrowMission.rampenissen_rampestrek,
+            fysiskHint: tomorrowMission.fysisk_hint,
+            materialer: tomorrowMission.materialer_nødvendig || [],
+            unsubscribeUrl,
+          });
 
-        console.log(
-          `[Daily Email Cron] Email ${index + 1}/${families.length} to ${family.parentEmail}: ${result ? "SUCCESS" : "FAILED"}`,
-        );
-        return result;
+          if (result) {
+            log(
+              "INFO",
+              `Email ${index + 1}/${families.length} sent successfully`,
+              {
+                to: family.parentEmail,
+              },
+            );
+          } else {
+            log(
+              "ERROR",
+              `Email ${index + 1}/${families.length} failed - service returned false`,
+              {
+                to: family.parentEmail,
+              },
+            );
+          }
+
+          return result;
+        } catch (emailError) {
+          log(
+            "ERROR",
+            `Email ${index + 1}/${families.length} threw exception`,
+            {
+              to: family.parentEmail,
+              error:
+                emailError instanceof Error
+                  ? emailError.message
+                  : String(emailError),
+              stack: emailError instanceof Error ? emailError.stack : undefined,
+            },
+          );
+          throw emailError;
+        }
       }),
     );
 
@@ -198,25 +293,27 @@ export async function POST(request: NextRequest) {
         (r.status === "fulfilled" && r.value === false),
     ).length;
 
-    console.log(
-      `[Daily Email Cron] ✅ COMPLETED - Results: ${successful} sent, ${failed} failed (total: ${families.length})`,
-    );
+    log("INFO", "=== CRON JOB COMPLETED ===", {
+      successful,
+      failed,
+      total: families.length,
+    });
 
-    // Log all results in detail
+    // Log detailed results
     results.forEach((result, index) => {
       if (result.status === "rejected") {
-        console.error(
-          `[Daily Email Cron] ❌ FAILED to send to ${families[index].parentEmail}:`,
-          result.reason,
-        );
+        log("ERROR", `Failed to send email`, {
+          to: families[index].parentEmail,
+          reason: result.reason,
+        });
       } else if (result.value === false) {
-        console.error(
-          `[Daily Email Cron] ❌ FAILED to send to ${families[index].parentEmail}: Email service returned false`,
-        );
+        log("ERROR", `Email service returned false`, {
+          to: families[index].parentEmail,
+        });
       } else {
-        console.log(
-          `[Daily Email Cron] ✅ SUCCESS: ${families[index].parentEmail}`,
-        );
+        log("INFO", `Email sent successfully`, {
+          to: families[index].parentEmail,
+        });
       }
     });
 
@@ -229,7 +326,10 @@ export async function POST(request: NextRequest) {
       failed,
     });
   } catch (error) {
-    console.error("[Daily Email Cron] Error:", error);
+    log("ERROR", "Unexpected error in cron job", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
     return NextResponse.json(
       {
         error: "Failed to send daily emails",
@@ -242,9 +342,10 @@ export async function POST(request: NextRequest) {
 
 /**
  * GET /api/cron/send-daily-emails
- * Return info about next scheduled email (for debugging)
+ * Health check and diagnostics endpoint
+ * Returns configuration and readiness status
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   const now = new Date();
   const cet = new Date(
     now.toLocaleString("en-US", { timeZone: "Europe/Oslo" }),
@@ -253,15 +354,78 @@ export async function GET() {
   const currentMonth = cet.getMonth() + 1;
   const tomorrowDay = currentDay + 1;
 
-  return NextResponse.json({
+  // Check if test mode is requested via query parameter
+  const url = new URL(request.url);
+  const testMode = url.searchParams.get("test") === "true";
+
+  const diagnostics: DiagnosticsResponse = {
     service: "Daily Mission Email Cron",
-    schedule: "Daily at 21:00 CET",
-    currentTime: cet.toISOString(),
-    currentDay,
-    currentMonth,
-    nextMissionDay:
-      tomorrowDay <= 24 && currentMonth === 12 ? tomorrowDay : null,
-    storageBackend: STORAGE_BACKEND,
-    enabled: STORAGE_BACKEND === "sanity",
-  });
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+    schedule: {
+      configured: "Daily at 21:00 CET (0 21 * 12 *)",
+      timezone: "Europe/Oslo (CET/CEST)",
+    },
+    currentTime: {
+      utc: now.toISOString(),
+      cet: cet.toISOString(),
+      currentDay,
+      currentMonth,
+      tomorrowDay:
+        currentMonth === 12 && tomorrowDay <= 24 ? tomorrowDay : null,
+    },
+    configuration: {
+      storageBackend: STORAGE_BACKEND,
+      enabled: STORAGE_BACKEND === "sanity",
+      hasCronSecret: !!CRON_SECRET,
+      hasResendApiKey: !!process.env.RESEND_API_KEY,
+      baseUrl: BASE_URL,
+      nodeEnv: process.env.NODE_ENV,
+    },
+    readiness: {
+      inDecember: currentMonth === 12,
+      hasMoreMissions: tomorrowDay <= 24,
+      backendConfigured: STORAGE_BACKEND === "sanity",
+      secretsConfigured: !!CRON_SECRET && !!process.env.RESEND_API_KEY,
+    },
+  };
+
+  // In test mode, also try to fetch families count
+  if (testMode && STORAGE_BACKEND === "sanity") {
+    try {
+      const count = await sanityServerClient.fetch<number>(
+        `count(*[_type == "familyCredentials" && emailSubscription == true])`,
+      );
+      diagnostics.subscribedFamiliesCount = count;
+    } catch (error) {
+      diagnostics.sanityError =
+        error instanceof Error ? error.message : String(error);
+    }
+  }
+
+  const allReady =
+    diagnostics.readiness.inDecember &&
+    diagnostics.readiness.hasMoreMissions &&
+    diagnostics.readiness.backendConfigured &&
+    diagnostics.readiness.secretsConfigured;
+
+  diagnostics.ready = allReady;
+
+  // Build warnings array
+  const warnings: string[] = [];
+  if (!diagnostics.readiness.inDecember) {
+    warnings.push("Not in December");
+  }
+  if (!diagnostics.readiness.hasMoreMissions) {
+    warnings.push("No more missions to send");
+  }
+  if (!diagnostics.readiness.backendConfigured) {
+    warnings.push("Sanity backend not configured");
+  }
+  if (!diagnostics.readiness.secretsConfigured) {
+    warnings.push("Missing required secrets");
+  }
+  diagnostics.warnings = warnings;
+
+  return NextResponse.json(diagnostics);
 }

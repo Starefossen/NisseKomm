@@ -7,6 +7,8 @@
     "build": "next build",
     "check": "tsc --noEmit && eslint . && knip && prettier --write --list-different . && jest --silent",
     "cleanup:dev": "tsx scripts/cleanup-test-sessions.ts --dataset development",
+    "cron:health": "tsx scripts/test-cron-health.ts",
+    "cron:health:prod": "tsx scripts/test-cron-health.ts https://nissekomm.no",
     "dev": "next dev",
     "email:dev": "tsx scripts/send-welcome-emails.ts --dataset development",
     "email:prod": "tsx scripts/send-welcome-emails.ts --dataset production",
