@@ -86,7 +86,7 @@ interface DiagnosticsResponse {
   subscribedFamiliesCount?: number;
   sanityError?: string;
   ready?: boolean;
-  warnings?: (string | false)[];
+  warnings?: string[];
 }
 
 /**
