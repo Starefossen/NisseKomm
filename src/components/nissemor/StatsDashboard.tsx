@@ -274,10 +274,11 @@ export function StatsDashboard({ refreshCounter = 0 }: StatsDashboardProps) {
             </div>
             <div className="flex gap-2 justify-center">
               <div
-                className={`border-2 p-2 flex-1 text-center text-xs ${progression.bonusOppdrag.completed >= 1
+                className={`border-2 p-2 flex-1 text-center text-xs ${
+                  progression.bonusOppdrag.completed >= 1
                     ? "border-(--neon-green) bg-(--neon-green)/10"
                     : "border-gray-600 bg-gray-600/10 opacity-50"
-                  }`}
+                }`}
               >
                 <div className="font-bold mb-1">
                   {progression.bonusOppdrag.completed >= 1 ? "✓" : "🔒"}
@@ -286,10 +287,11 @@ export function StatsDashboard({ refreshCounter = 0 }: StatsDashboardProps) {
                 <div className="text-xs opacity-70">(Dag 11)</div>
               </div>
               <div
-                className={`border-2 p-2 flex-1 text-center text-xs ${progression.bonusOppdrag.completed >= 2
+                className={`border-2 p-2 flex-1 text-center text-xs ${
+                  progression.bonusOppdrag.completed >= 2
                     ? "border-(--neon-green) bg-(--neon-green)/10"
                     : "border-gray-600 bg-gray-600/10 opacity-50"
-                  }`}
+                }`}
               >
                 <div className="font-bold mb-1">
                   {progression.bonusOppdrag.completed >= 2 ? "✓" : "🔒"}
@@ -315,10 +317,11 @@ export function StatsDashboard({ refreshCounter = 0 }: StatsDashboardProps) {
             </div>
             <div className="flex gap-2 justify-center">
               <div
-                className={`border-2 p-2 flex-1 text-center text-xs ${solvedDecryptions.includes("decryption-1")
+                className={`border-2 p-2 flex-1 text-center text-xs ${
+                  solvedDecryptions.includes("decryption-1")
                     ? "border-(--neon-green) bg-(--neon-green)/10"
                     : "border-gray-600 bg-gray-600/10 opacity-50"
-                  }`}
+                }`}
               >
                 <div className="font-bold mb-1">
                   {solvedDecryptions.includes("decryption-1") ? "✓" : "🔒"}
@@ -327,10 +330,11 @@ export function StatsDashboard({ refreshCounter = 0 }: StatsDashboardProps) {
                 <div className="text-xs opacity-70">(Dag 9)</div>
               </div>
               <div
-                className={`border-2 p-2 flex-1 text-center text-xs ${solvedDecryptions.includes("decryption-2")
+                className={`border-2 p-2 flex-1 text-center text-xs ${
+                  solvedDecryptions.includes("decryption-2")
                     ? "border-(--neon-green) bg-(--neon-green)/10"
                     : "border-gray-600 bg-gray-600/10 opacity-50"
-                  }`}
+                }`}
               >
                 <div className="font-bold mb-1">
                   {solvedDecryptions.includes("decryption-2") ? "✓" : "🔒"}
@@ -339,10 +343,11 @@ export function StatsDashboard({ refreshCounter = 0 }: StatsDashboardProps) {
                 <div className="text-xs opacity-70">(Dag 15)</div>
               </div>
               <div
-                className={`border-2 p-2 flex-1 text-center text-xs ${solvedDecryptions.includes("decryption-3")
+                className={`border-2 p-2 flex-1 text-center text-xs ${
+                  solvedDecryptions.includes("decryption-3")
                     ? "border-(--neon-green) bg-(--neon-green)/10"
                     : "border-gray-600 bg-gray-600/10 opacity-50"
-                  }`}
+                }`}
               >
                 <div className="font-bold mb-1">
                   {solvedDecryptions.includes("decryption-3") ? "✓" : "🔒"}

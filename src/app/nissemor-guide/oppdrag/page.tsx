@@ -80,12 +80,12 @@ function OppdragContent() {
           e.preventDefault();
           alert(
             "⌨️ TASTATURSNARVEIER:\n\n" +
-              "← / h : Forrige dag\n" +
-              "→ / l : Neste dag\n" +
-              "Home / g : Første dag\n" +
-              "End / G : Siste dag\n" +
-              "t : Gå til dagens dato\n" +
-              "? : Vis denna hjelpen",
+            "← / h : Forrige dag\n" +
+            "→ / l : Neste dag\n" +
+            "Home / g : Første dag\n" +
+            "End / G : Siste dag\n" +
+            "t : Gå til dagens dato\n" +
+            "? : Vis denna hjelpen",
           );
           break;
       }
@@ -122,6 +122,31 @@ function OppdragContent() {
 
       {/* MAIN CONTENT GRID: Timeline + Planning */}
       <div className="max-w-7xl mx-auto mb-6">
+        {/* Mobile Layout: Vertical Stack */}
+        <div className="lg:hidden space-y-6">
+          {/* Mobile: Day Planning First (Primary Content) */}
+          <DayPlanning
+            selectedDay={selectedDay}
+            onSelectDay={setSelectedDay}
+            completedDays={completedDays}
+          />
+
+          {/* Mobile: Timeline in Collapsible Section */}
+          <details className="border-4 border-(--neon-green) bg-(--dark-crt) p-3">
+            <summary className="text-xl font-bold text-(--neon-green) mb-2 cursor-pointer list-none flex items-center justify-between">
+              <span>📅 TIDSLINJE</span>
+              <span className="text-sm opacity-70">(Klikk for å vise)</span>
+            </summary>
+            <div className="mt-4">
+              <TimelineView
+                selectedDay={selectedDay}
+                onSelectDay={setSelectedDay}
+              />
+            </div>
+          </details>
+        </div>
+
+        {/* Desktop Layout: Side-by-Side Grid */}
         <div className="hidden lg:grid lg:grid-cols-[380px_1fr] gap-6">
           {/* Left Column: Timeline */}
           <TimelineView

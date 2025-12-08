@@ -116,8 +116,8 @@ export function TimelineView({ selectedDay, onSelectDay }: TimelineViewProps) {
         hasSymbol: !!quest.symbol_clue,
         symbolCollected: quest.symbol_clue
           ? collectedSymbols.some(
-              (s) => s.symbolId === quest.symbol_clue!.symbolId,
-            )
+            (s) => s.symbolId === quest.symbol_clue!.symbolId,
+          )
           : false,
         hasModule: !!(
           quest.reveals?.modules && quest.reveals.modules.length > 0
@@ -125,8 +125,8 @@ export function TimelineView({ selectedDay, onSelectDay }: TimelineViewProps) {
         hasDecryption: !!quest.decryption_challenge,
         decryptionSolved: quest.decryption_challenge
           ? GameEngine.isDecryptionSolved(
-              quest.decryption_challenge.challengeId,
-            )
+            quest.decryption_challenge.challengeId,
+          )
           : false,
         eventyrPhases,
       };
@@ -192,12 +192,12 @@ export function TimelineView({ selectedDay, onSelectDay }: TimelineViewProps) {
   const dayCircleRadius = 12;
 
   return (
-    <div className="sticky top-4 border-4 border-(--neon-green) bg-(--dark-crt) p-3 h-[calc(100vh-2rem)] flex flex-col">
-      <h2 className="text-2xl font-bold text-(--neon-green) mb-4 text-center shrink-0">
+    <div className="lg:sticky lg:top-4 border-4 border-(--neon-green) bg-(--dark-crt) p-3 lg:h-[calc(100vh-2rem)] flex flex-col">
+      <h2 className="text-2xl font-bold text-(--neon-green) mb-4 text-center shrink-0 hidden lg:block">
         📅 TIDSLINJE
       </h2>
 
-      <div className="relative overflow-y-auto flex-1 min-h-0">
+      <div className="relative overflow-y-auto flex-1 min-h-0 lg:min-h-[400px] max-h-[600px] lg:max-h-none">
         {/* SVG for eventyr branches and main timeline */}
         <svg
           className="absolute top-0 left-0"

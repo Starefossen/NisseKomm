@@ -105,12 +105,13 @@ export function MetricsOverview({ refreshCounter = 0 }: MetricsOverviewProps) {
                 className={`w-full bg-(--dark-crt) border-2 ${statusColor.split(" ")[1]} h-3 relative overflow-hidden`}
               >
                 <div
-                  className={`h-full transition-all duration-1000 ${metric.status === "kritisk"
+                  className={`h-full transition-all duration-1000 ${
+                    metric.status === "kritisk"
                       ? "bg-(--christmas-red) animate-[pulse-led_2s_ease-in-out_infinite]"
                       : metric.status === "advarsel"
                         ? "bg-(--gold)"
                         : "bg-(--neon-green)"
-                    }`}
+                  }`}
                   style={{ width: `${percentage}%` }}
                 />
               </div>
