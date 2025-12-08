@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import Link from "next/link";
 import { GameEngine } from "@/lib/game-engine";
 import { BadgeManager } from "@/lib/badge-system";
@@ -12,28 +12,47 @@ interface StatsDashboardProps {
 }
 
 export function StatsDashboard({ refreshCounter = 0 }: StatsDashboardProps) {
+  const [internalRefreshKey, setInternalRefreshKey] = useState(0);
+
+  // Listen for storage changes to auto-update
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key?.startsWith("nissekomm-")) {
+        setInternalRefreshKey((prev) => prev + 1);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  // Combine external refreshCounter with internal storage listener
+  const effectiveRefreshKey = refreshCounter + internalRefreshKey;
+
   const progression = useMemo(
     () => GameEngine.getProgressionSummary(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [refreshCounter],
+    [effectiveRefreshKey],
   );
 
   const completedDays = useMemo(
     () => GameEngine.getCompletedDays(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [refreshCounter],
+    [effectiveRefreshKey],
   );
 
   const collectedSymbols = useMemo(
     () => GameEngine.getCollectedSymbols(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [refreshCounter],
+    [effectiveRefreshKey],
   );
 
   const solvedDecryptions = useMemo(
     () => GameEngine.getSolvedDecryptions(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [refreshCounter],
+    [effectiveRefreshKey],
   );
 
   const eventyrProgress = useMemo(() => {
@@ -42,12 +61,12 @@ export function StatsDashboard({ refreshCounter = 0 }: StatsDashboardProps) {
     const eventyr2 = getEventyrProgress("iq-test", completedSet);
     return { eventyr1, eventyr2 };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshCounter, completedDays]);
+  }, [effectiveRefreshKey, completedDays]);
 
   const badges = useMemo(
     () => BadgeManager.getEarnedBadges(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [refreshCounter],
+    [effectiveRefreshKey],
   );
 
   // Symbol icons matching actual QR cards (heart/sun/moon × green/red/blue)
@@ -255,11 +274,10 @@ export function StatsDashboard({ refreshCounter = 0 }: StatsDashboardProps) {
             </div>
             <div className="flex gap-2 justify-center">
               <div
-                className={`border-2 p-2 flex-1 text-center text-xs ${
-                  progression.bonusOppdrag.completed >= 1
+                className={`border-2 p-2 flex-1 text-center text-xs ${progression.bonusOppdrag.completed >= 1
                     ? "border-(--neon-green) bg-(--neon-green)/10"
                     : "border-gray-600 bg-gray-600/10 opacity-50"
-                }`}
+                  }`}
               >
                 <div className="font-bold mb-1">
                   {progression.bonusOppdrag.completed >= 1 ? "✓" : "🔒"}
@@ -268,11 +286,10 @@ export function StatsDashboard({ refreshCounter = 0 }: StatsDashboardProps) {
                 <div className="text-xs opacity-70">(Dag 11)</div>
               </div>
               <div
-                className={`border-2 p-2 flex-1 text-center text-xs ${
-                  progression.bonusOppdrag.completed >= 2
+                className={`border-2 p-2 flex-1 text-center text-xs ${progression.bonusOppdrag.completed >= 2
                     ? "border-(--neon-green) bg-(--neon-green)/10"
                     : "border-gray-600 bg-gray-600/10 opacity-50"
-                }`}
+                  }`}
               >
                 <div className="font-bold mb-1">
                   {progression.bonusOppdrag.completed >= 2 ? "✓" : "🔒"}
@@ -298,11 +315,10 @@ export function StatsDashboard({ refreshCounter = 0 }: StatsDashboardProps) {
             </div>
             <div className="flex gap-2 justify-center">
               <div
-                className={`border-2 p-2 flex-1 text-center text-xs ${
-                  solvedDecryptions.includes("decryption-1")
+                className={`border-2 p-2 flex-1 text-center text-xs ${solvedDecryptions.includes("decryption-1")
                     ? "border-(--neon-green) bg-(--neon-green)/10"
                     : "border-gray-600 bg-gray-600/10 opacity-50"
-                }`}
+                  }`}
               >
                 <div className="font-bold mb-1">
                   {solvedDecryptions.includes("decryption-1") ? "✓" : "🔒"}
@@ -311,11 +327,10 @@ export function StatsDashboard({ refreshCounter = 0 }: StatsDashboardProps) {
                 <div className="text-xs opacity-70">(Dag 9)</div>
               </div>
               <div
-                className={`border-2 p-2 flex-1 text-center text-xs ${
-                  solvedDecryptions.includes("decryption-2")
+                className={`border-2 p-2 flex-1 text-center text-xs ${solvedDecryptions.includes("decryption-2")
                     ? "border-(--neon-green) bg-(--neon-green)/10"
                     : "border-gray-600 bg-gray-600/10 opacity-50"
-                }`}
+                  }`}
               >
                 <div className="font-bold mb-1">
                   {solvedDecryptions.includes("decryption-2") ? "✓" : "🔒"}
@@ -324,11 +339,10 @@ export function StatsDashboard({ refreshCounter = 0 }: StatsDashboardProps) {
                 <div className="text-xs opacity-70">(Dag 15)</div>
               </div>
               <div
-                className={`border-2 p-2 flex-1 text-center text-xs ${
-                  solvedDecryptions.includes("decryption-3")
+                className={`border-2 p-2 flex-1 text-center text-xs ${solvedDecryptions.includes("decryption-3")
                     ? "border-(--neon-green) bg-(--neon-green)/10"
                     : "border-gray-600 bg-gray-600/10 opacity-50"
-                }`}
+                  }`}
               >
                 <div className="font-bold mb-1">
                   {solvedDecryptions.includes("decryption-3") ? "✓" : "🔒"}

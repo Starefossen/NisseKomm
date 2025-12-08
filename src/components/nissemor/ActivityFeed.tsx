@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { formatDistanceToNow } from "date-fns";
 import { nb } from "date-fns/locale";
@@ -14,6 +14,25 @@ export function ActivityFeed({
   refreshCounter = 0,
   maxItems = 10,
 }: ActivityFeedProps) {
+  const [internalRefreshKey, setInternalRefreshKey] = useState(0);
+
+  // Listen for storage changes to auto-update
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key?.startsWith("nissekomm-")) {
+        setInternalRefreshKey((prev) => prev + 1);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  // Combine external refreshCounter with internal storage listener
+  const effectiveRefreshKey = refreshCounter + internalRefreshKey;
+
   const activities = useMemo(() => {
     const submittedCodes = GameEngine.getSubmittedCodes();
     const completedDays = GameEngine.getCompletedDays();
@@ -43,7 +62,7 @@ export function ActivityFeed({
       .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
       .slice(0, maxItems);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshCounter, maxItems]);
+  }, [effectiveRefreshKey, maxItems]);
 
   if (activities.length === 0) {
     return (

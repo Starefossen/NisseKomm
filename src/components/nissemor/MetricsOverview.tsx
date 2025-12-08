@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
 
 interface MetricsOverviewProps {
@@ -8,6 +8,25 @@ interface MetricsOverviewProps {
 }
 
 export function MetricsOverview({ refreshCounter = 0 }: MetricsOverviewProps) {
+  const [internalRefreshKey, setInternalRefreshKey] = useState(0);
+
+  // Listen for storage changes to auto-update
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key?.startsWith("nissekomm-")) {
+        setInternalRefreshKey((prev) => prev + 1);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  // Combine external refreshCounter with internal storage listener
+  const effectiveRefreshKey = refreshCounter + internalRefreshKey;
+
   const metrics = useMemo(() => {
     const completedDays = GameEngine.getCompletedDays();
     const currentDay = new Date().getDate();
@@ -26,7 +45,7 @@ export function MetricsOverview({ refreshCounter = 0 }: MetricsOverviewProps) {
 
     return allMetrics.filter((m) => keyMetricNames.includes(m.navn));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshCounter]);
+  }, [effectiveRefreshKey]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -86,13 +105,12 @@ export function MetricsOverview({ refreshCounter = 0 }: MetricsOverviewProps) {
                 className={`w-full bg-(--dark-crt) border-2 ${statusColor.split(" ")[1]} h-3 relative overflow-hidden`}
               >
                 <div
-                  className={`h-full transition-all duration-1000 ${
-                    metric.status === "kritisk"
+                  className={`h-full transition-all duration-1000 ${metric.status === "kritisk"
                       ? "bg-(--christmas-red) animate-[pulse-led_2s_ease-in-out_infinite]"
                       : metric.status === "advarsel"
                         ? "bg-(--gold)"
                         : "bg-(--neon-green)"
-                  }`}
+                    }`}
                   style={{ width: `${percentage}%` }}
                 />
               </div>

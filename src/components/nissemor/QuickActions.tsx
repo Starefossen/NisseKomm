@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { GameEngine } from "@/lib/game-engine";
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
@@ -16,6 +16,25 @@ export function QuickActions({ refreshCounter = 0 }: QuickActionsProps) {
   const currentMonth = getCurrentMonth();
   const isDecember = currentMonth === 12;
 
+  const [internalRefreshKey, setInternalRefreshKey] = useState(0);
+
+  // Listen for storage changes to auto-update
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key?.startsWith("nissekomm-")) {
+        setInternalRefreshKey((prev) => prev + 1);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  // Combine external refreshCounter with internal storage listener
+  const effectiveRefreshKey = refreshCounter + internalRefreshKey;
+
   const quickStats = useMemo(() => {
     const crisisStatus = GameEngine.getCrisisStatus();
     const activeCrises = Object.values(crisisStatus).filter(
@@ -29,7 +48,7 @@ export function QuickActions({ refreshCounter = 0 }: QuickActionsProps) {
       currentDayCompleted: completedDays.has(currentDay),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshCounter, currentDay]);
+  }, [effectiveRefreshKey, currentDay]);
 
   const actions = [
     {
