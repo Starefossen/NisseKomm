@@ -80,6 +80,7 @@ interface PrintMaterialCard {
   materialTitle?: string;
   beste_rom: string;
   estimatedSize: "small" | "medium" | "large";
+  monospace?: boolean;
 }
 
 // Build separate lists for different card types
@@ -133,6 +134,7 @@ function generateCardsForDays(
             materialTitle: material.title,
             beste_rom: oppdrag.beste_rom,
             estimatedSize: estimateCardSize(material.content),
+            monospace: material.monospace,
           });
         }
       });
@@ -452,10 +454,14 @@ function PrintoutContent() {
                               </div>
                             ) : isPrintMaterialCard ? (
                               <div
-                                className={`text-center leading-snug whitespace-pre-line ${
+                                className={`text-center leading-snug ${
                                   card.estimatedSize === "large"
                                     ? "text-xs"
                                     : "text-sm"
+                                } ${
+                                  card.monospace
+                                    ? "font-mono whitespace-pre"
+                                    : "whitespace-pre-wrap"
                                 }`}
                               >
                                 {resolveContent(card.content)}
@@ -559,7 +565,11 @@ function PrintoutContent() {
                       ) : isPrintMaterialCard ? (
                         <div className="print:text-center print:flex-1 print:flex print:items-center print:justify-center print:px-2">
                           <div
-                            className={`print:leading-tight print:whitespace-pre-line ${
+                            className={`print:leading-tight ${
+                              card.monospace
+                                ? "print:whitespace-pre print:font-mono"
+                                : "print:whitespace-pre-wrap"
+                            } ${
                               card.estimatedSize === "large"
                                 ? "print:text-[10px]"
                                 : "print:text-sm"

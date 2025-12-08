@@ -187,9 +187,18 @@ export interface DecryptionChallenge {
  * @public - Used in Oppdrag interface
  */
 export interface PrintMaterial {
-  type: "note" | "map" | "diagram" | "puzzle" | "symbol"; // Material type
+  type:
+    | "note"
+    | "map"
+    | "diagram"
+    | "puzzle"
+    | "symbol"
+    | "lyrics"
+    | "recipe"
+    | "certificate"; // Material type
   content: string; // Material content/description
   title?: string; // Optional title
+  monospace?: boolean; // Use monospace font for ASCII art and code-like content
 }
 
 // Daily mission/riddle

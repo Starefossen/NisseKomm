@@ -257,7 +257,7 @@ With occasional slang (sparingly):
 
 **Regler**:
 
-| ✅ SKAL                            | ❌ SKAL IKKE                              |
+| ✅ SKAL                           | ❌ SKAL IKKE                             |
 | --------------------------------- | ---------------------------------------- |
 | Fortelle hvor ting er gjemt       | Referere til dagboken (den er låst!)     |
 | Bygge spenning og narrativ        | Gjenta tekst fra fysisk lapp             |
@@ -294,7 +294,7 @@ With occasional slang (sparingly):
 
 **Regler**:
 
-| ✅ SKAL                                     | ❌ SKAL IKKE                                  |
+| ✅ SKAL                                    | ❌ SKAL IKKE                                 |
 | ------------------------------------------ | -------------------------------------------- |
 | Være ren fortelling fra Julius' perspektiv | Gi hint til oppgaven (den er allerede løst!) |
 | Referere løst til dagens tema              | Forklare løsningsmetoden                     |
@@ -327,7 +327,7 @@ With occasional slang (sparingly):
 
 **Regler**:
 
-| ✅ SKAL                          | ❌ SKAL IKKE                     |
+| ✅ SKAL                         | ❌ SKAL IKKE                    |
 | ------------------------------- | ------------------------------- |
 | Inneholde gåten/rebuset         | Referere til dagboken           |
 | Gi nok info til å løse oppgaven | Kreve digital info for å forstå |
@@ -370,7 +370,7 @@ With occasional slang (sparingly):
 
 **Regler**:
 
-| ✅ SKAL                            | ❌ SKAL IKKE                       |
+| ✅ SKAL                           | ❌ SKAL IKKE                      |
 | --------------------------------- | --------------------------------- |
 | Være visuelt morsom uten tekst    | Kreve lesing for å forstå         |
 | Involvere kosedyr som vitner/ofre | Bare plassere nissen med en lapp  |
@@ -432,7 +432,7 @@ Se [Rampestreker Design](#rampestreker-design-physical-mischief-scenes) for full
 
 **Regler**:
 
-| ✅ SKAL                                        | ❌ SKAL IKKE                              |
+| ✅ SKAL                                       | ❌ SKAL IKKE                             |
 | --------------------------------------------- | ---------------------------------------- |
 | Være ferdig utformet, klar til bruk           | Si "print 5 lapper med disse bokstavene" |
 | Inneholde selve innholdet, ikke instruksjoner | Si "lag 3 klokker med romertall"         |
@@ -685,7 +685,7 @@ Include subtle nods to Norwegian Christmas traditions:
 - **Realistisk antall**: Maks 10-15 fysiske objekter
 - **Enkle materialer**: Papir, saks, tape, tusj, kosedyr
 
-| ✅ Overkommelig           | ❌ For ambisiøst              |
+| ✅ Overkommelig          | ❌ For ambisiøst             |
 | ------------------------ | ---------------------------- |
 | 5-10 papir-snøfnugg      | 1000 snøfnugg                |
 | 3 klokker med lapper     | Kompleks multi-steg dekoding |
