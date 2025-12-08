@@ -6,9 +6,12 @@
 
 - [Norwegian Vocabulary](#norwegian-vocabulary)
 - [Character Voices](#character-voices)
-- [Dialogue Principles](#dialogue-principles)
+- [Oppdrag JSON Structure](#oppdrag-json-structure)
+- [Content Principles](#content-principles)
 - [Puzzle Design](#puzzle-design)
 - [Rampestreker Design](#rampestreker-design-physical-mischief-scenes)
+
+---
 
 ## Norwegian Vocabulary
 
@@ -104,6 +107,8 @@
 - **Snill liste** - Nice List
 - **Slem liste** - Naughty List
 
+---
+
 ## Character Voices
 
 ### Rampenissen (The Mischievous Elf)
@@ -119,11 +124,9 @@
 - Makes small mistakes but always well-meaning
 - Uses emojis naturally (🎄 ❄️ 🎁 ⭐)
 - Encourages real-world exploration: "Maybe check under your pillow?" or "I hid something behind a picture frame..."
-- **Occasional Gen Alpha slang** (sparingly, 2-4 per week max): Skibidi, Sigma, Ohio, Brainrot, Koker (Cooking), Flex, GOAT, Gyatt, Infinite Money Glitch, Noob, NPC, OG, Sus, Vibe
-- Uses slang when extra excited about accomplishments or discoveries - maintains consistency across weeks
-- Uses slang naturally and contextually, never forced or in every message
-
-**Example Tone**:
+- **Gen Alpha slang** (sparingly, max 2-4 per week): Skibidi, Sigma, Ohio, Brainrot, Koker, Flex, GOAT, Gyatt, Sus, Vibe, Noob, NPC, OG
+- Uses slang when extra excited - maintains consistency across weeks
+- Slang should feel natural and contextual, never forced
 
 **Example Emails**:
 
@@ -137,8 +140,6 @@ Standard tone (most emails):
 >
 > Når du finner den, bruk NisseNet til å finne ut hva den betyr!
 >
-> Krysser fingrene! 🤞
->
 > \- Rampenissen
 
 With occasional slang (sparingly):
@@ -147,11 +148,7 @@ With occasional slang (sparingly):
 >
 > Dette oppdraget er helt sus... Julius sier at noen har rotet med inventaret, og nå er alt kaos! 😱
 >
-> Du er GOAT på å finne ting, så jeg trenger din hjelp! Sjekk bak bildet i stua - jeg gjemte noe der i går.
->
-> Vi må fikse dette før Nissemor finner ut av det! 🤫
->
-> Stay frosty!
+> Du er GOAT på å finne ting, så jeg trenger din hjelp!
 >
 > \- Rampenissen
 
@@ -167,70 +164,466 @@ With occasional slang (sparingly):
 - Reflective in diary entries
 - Speaks with authority but never coldly
 
-**Example**:
+**Example (Dagbok)**:
 
-> Kjære barn,
+> Dag 8 - Sekkproblemer
 >
-> Rampenissen har igjen klart å skape kaos. Denne gangen har han mistet nøklene til julegaveloftet. Jeg skulle blitt sint, men han ser så bekymret ut at jeg ikke har hjerte til det.
+> Gavesekken min trenger reparasjon. Igjen. Nissene syr på den nå.
 >
-> Kan du hjelpe oss finne dem? De må være et sted i Snøfall...
+> Rampenissen har laget kaos med toalettpapir hjemme hos barna. Typisk.
 >
-> Med vennlig hilsen,
-> Julius
+> \- Julius
 
 ### Nissemor (Julius' Wife)
 
 **Personality**: Practical, organized, supportive parent figure.
 
-**Tone**:
-
-- Gentle but firm
-- Patient with technical explanations
-- Warm and encouraging
-- Uses clear, simple language
-
-**Example** (in Nissemor Guide):
-
-> Her kan du hjelpe barna hvis de står fast. Husk at gleden ligger i å løse oppgavene selv, så bruk dette kun hvis nødvendig! 😊
+**Tone**: Gentle but firm, patient, warm and encouraging.
 
 ### Pil (Apprentice)
 
 **Personality**: Eager learner, helpful, asks questions, looks up to Julius.
 
-**Tone**:
-
-- Curious and inquisitive
-- Excited to share discoveries
-- Sometimes unsure but brave
-- Uses simpler vocabulary
+**Tone**: Curious, excited to share discoveries, sometimes unsure but brave.
 
 ### Winter (Secretary)
 
 **Personality**: Highly organized, detail-oriented, speaks formally.
 
-**Tone**:
-
-- Precise language
-- Business-like but not cold
-- Lists and bullet points
-- Emphasizes deadlines
+**Tone**: Precise language, business-like but not cold, uses lists.
 
 ### IQ (Inventor)
 
 **Personality**: Genius but absent-minded, uses technical jargon, enthusiastic about gadgets.
 
-**Tone**:
+**Tone**: Technical terminology, enthusiastic explanations, loves acronyms.
 
-- Technical terminology
-- Enthusiastic explanations
-- Occasionally over-explains
-- Loves acronyms
+---
 
-## Dialogue Principles
+## Oppdrag JSON Structure
 
-### Humorous and Playful
+> **Denne seksjonen forklarer hvert felt i oppdrag JSON-filer og hvordan de skal brukes.**
 
-**All dialogues** from Rampenissen, Julius, and other characters should be lighthearted and entertaining. Rampenissen occasionally uses Gen Alpha slang (2-4 times per week max) to connect with kids, but never overuses it.
+### Oversikt over Felt-Samspill
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                    OPPDRAG FLOW                              │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  1. NisseMail vises → Forteller hvor ting er gjemt          │
+│           ↓                                                  │
+│  2. Barn finner fysisk oppsett (rampenissen_rampestrek)      │
+│           ↓                                                  │
+│  3. Fysisk hint gir gåten/puzzlet                            │
+│           ↓                                                  │
+│  4. Barn løser oppgaven → Taster inn kode                    │
+│           ↓                                                  │
+│  5. Dagbokinnlegg låses opp (BELØNNING)                      │
+│           ↓                                                  │
+│  6. Reveals låses opp (filer, moduler, topics)               │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**KRITISK TIMING:**
+
+- 🔓 `nissemail_tekst` - Tilgjengelig fra dagens start
+- 🔓 `fysisk_hint` - Fysisk i huset (foreldres oppsett)
+- 🔒 `dagbokinnlegg` - Låses opp ETTER riktig kode
+- 🔒 `reveals` - Låses opp ETTER riktig kode
+
+---
+
+### nissemail_tekst
+
+**Hva det er**: E-post fra Rampenissen som barna leser i NisseMail-modulen.
+
+**Formål**:
+
+- Fortelle at noe har skjedd og hvor ting er gjemt
+- Bygge narrativ og spenning
+- Gi kontekst som komplementerer (ikke gjentar) fysisk hint
+- Koble til eventyr/storyline
+
+**Anbefalt lengde**: 150-250 ord (3-4 korte avsnitt)
+
+**Struktur**:
+
+1. **Åpning** (1-2 setninger): Hilsen og hook
+2. **Hoveddel** (2-3 setninger): Hva har skjedd, hvor er ting gjemt
+3. **Hint** (1-2 setninger): Enkelt hint som komplementerer fysisk lapp
+4. **Avslutning**: Signatur "- Rampenissen"
+
+**Regler**:
+
+| ✅ SKAL                            | ❌ SKAL IKKE                              |
+| --------------------------------- | ---------------------------------------- |
+| Fortelle hvor ting er gjemt       | Referere til dagboken (den er låst!)     |
+| Bygge spenning og narrativ        | Gjenta tekst fra fysisk lapp             |
+| Gi kontekst for å forstå oppgaven | Gi bort svaret eller deler av det        |
+| Komplementere fysisk hint         | Liste opp bokstaver/tall fra fysisk lapp |
+
+**Eksempel**:
+
+```json
+"nissemail_tekst": "Hei! 🧻 Jeg har laget en EPISK labyrint av toalettpapir i badet! Det ser ut som et kunstverk... eller kaos. Litt begge deler! 😅\n\nI midten av labyrinten ligger det en mystisk lapp med en rebus! 🤔 Den handler om noe Julius bruker hver eneste julaften når han leverer gaver...\n\nHva putter man gaver i? Og hva bærer man på ryggen? Sett dem sammen! 🎁🎒\n\n- Rampenissen"
+```
+
+---
+
+### dagbokinnlegg
+
+**Hva det er**: Julius' dagbok-innlegg som låses opp ETTER koden er løst.
+
+**Formål**:
+
+- Belønning for å ha løst oppgaven
+- Fortelle om Julius' dag i Snøfall
+- Løst referere til dagens tema (rød tråd)
+- Kommentere Rampenissens rampestrek
+
+**Anbefalt lengde**: 80-150 ord (3-4 korte avsnitt)
+
+**Struktur**:
+
+1. **Overskrift**: "Dag X - [Tema]"
+2. **Hoveddel** (2-3 korte avsnitt): Julius' dag i Snøfall
+3. **Rampenissen-referanse** (1 setning): Løs kommentar om rampestreken
+4. **Signatur**: "- Julius"
+
+**Regler**:
+
+| ✅ SKAL                                     | ❌ SKAL IKKE                                  |
+| ------------------------------------------ | -------------------------------------------- |
+| Være ren fortelling fra Julius' perspektiv | Gi hint til oppgaven (den er allerede løst!) |
+| Referere løst til dagens tema              | Forklare løsningsmetoden                     |
+| Kommentere Rampenissens rampestrek         | Inneholde instruksjoner                      |
+| Føles som en belønning                     | Være nødvendig for å løse oppgaven           |
+
+**Eksempel**:
+
+```json
+"dagbokinnlegg": "Dag 8 - Sekkproblemer\n\nGavesekken min trenger reparasjon. Igjen. Nissene syr på den nå. Spurte hvor mye vekt den kan bære. De bare lo nervøst.\n\nTestet den nye magiske sekken ved å putte inn 500 gaver. Den holdt! Men så kom jeg ikke ut av verkstedet fordi sekken ikke passet gjennom døren.\n\nRampenissen har laget kaos med toalettpapir hjemme hos barna. Typisk.\n\n- Julius"
+```
+
+---
+
+### fysisk_hint
+
+**Hva det er**: Teksten på den fysiske lappen som foreldre printer/skriver og legger ut.
+
+**Formål**:
+
+- Inneholde selve gåten/puzzlet
+- Gi nødvendig informasjon for å løse oppgaven
+- Være tydelig og lesbar for barn
+
+**Format-krav**:
+
+- Kort og konsist (1-3 linjer)
+- Tydelig formatert for utskrift
+- Inkluderer nødvendig info (antall bokstaver, hints)
+
+**Regler**:
+
+| ✅ SKAL                          | ❌ SKAL IKKE                     |
+| ------------------------------- | ------------------------------- |
+| Inneholde gåten/rebuset         | Referere til dagboken           |
+| Gi nok info til å løse oppgaven | Kreve digital info for å forstå |
+| Være printbar og lesbar         | Være for kompleks               |
+
+**Eksempler**:
+
+```json
+"fysisk_hint": "🎁🎁🎁 + 🎒 = ? (4 bokstaver, rimer på DEKK)"
+```
+
+```json
+"fysisk_hint": "III + V + IV = ? (Romertall! I=1, V=5, X=10)"
+```
+
+```json
+"fysisk_hint": "Tall på pakkene: 16, 1, 16, 9, 18. A=1, B=2, C=3..."
+```
+
+---
+
+### rampenissen_rampestrek
+
+**Hva det er**: Beskrivelse av den fysiske scenen foreldre setter opp.
+
+**Formål**:
+
+- Guide foreldre til å lage morsom, visuell scene
+- Underholde yngre søsken som ikke løser puzzles
+- Integrere puzzle-hintet naturlig i scenen
+
+**Anbefalt lengde**: 3-5 setninger med tydelige visuelle detaljer.
+
+**Struktur**:
+
+1. **Hovedscene**: Hva har Rampenissen gjort?
+2. **Kaos/konsekvens**: Hva har gått galt?
+3. **Kosedyr-involvering**: Hva gjør kosedyrene?
+4. **Puzzle-integrasjon**: Hvor er hintet plassert?
+
+**Regler**:
+
+| ✅ SKAL                            | ❌ SKAL IKKE                       |
+| --------------------------------- | --------------------------------- |
+| Være visuelt morsom uten tekst    | Kreve lesing for å forstå         |
+| Involvere kosedyr som vitner/ofre | Bare plassere nissen med en lapp  |
+| Vise kaos og konsekvenser         | Være statisk og kjedelig          |
+| Integrere puzzle naturlig         | Separere underholdning fra puzzle |
+
+**Eksempel**:
+
+```json
+"rampenissen_rampestrek": "Rampenissen har laget et 'radiostudio' med lekemikrofon, hodetelefoner (vinterøremuffer), og en haug med 'utstyr' (bokser, ledninger, pappbokser merket 'MIKSEBORD'). Kosedyrene sitter som publikum med skilt: 'APPLAUS!' og 'JUBELROP!'. Rundt ligger sangbok-sider spredd utover gulvet som 'manus'. Rampenissen holder en lapp: 'VELKOMMEN TIL RADIO SNØFALL! 🎙️ Dagens hit: Deilig er _____ Men hva heter sangen?! Jeg glemte resten! 😱'"
+```
+
+Se [Rampestreker Design](#rampestreker-design-physical-mischief-scenes) for fullstendige retningslinjer.
+
+---
+
+### kode
+
+**Hva det er**: Svaret barna må taste inn i KodeTerminal.
+
+**Formål**:
+
+- Validere at barna har løst oppgaven
+- Låse opp dagbok og reveals
+
+**Regler**:
+
+- Case-insensitive (SEKK = sekk = Sekk)
+- Norske bokstaver støttes (Ø, Æ, Å)
+- Kan være ord eller tall
+- Bør være logisk utledet fra puzzle, ikke gjettbart
+
+**Eksempler**:
+
+```json
+"kode": "SEKK"
+"kode": "12"
+"kode": "LUSSEKATTER"
+"kode": "GRØNN"
+```
+
+---
+
+### print_materials
+
+**Hva det er**: Ferdig print-materiale for foreldre - klar til å klippes ut og brukes direkte.
+
+**Formål**:
+
+- Gjøre oppsett enkelt for foreldre
+- Minimere papirbruk - kun det som faktisk trengs
+- Separere barn-innhold fra foreldre-instruksjoner
+
+**KRITISK - Print-Ready Prinsippet**:
+
+> 🚨 **Alt print-materiale må være FERDIG og BRUKBART som det er.**
+>
+> Foreldre skal kunne printe, klippe ut, og bruke DIREKTE - ingen ekstra arbeid!
+
+**Regler**:
+
+| ✅ SKAL                                        | ❌ SKAL IKKE                              |
+| --------------------------------------------- | ---------------------------------------- |
+| Være ferdig utformet, klar til bruk           | Si "print 5 lapper med disse bokstavene" |
+| Inneholde selve innholdet, ikke instruksjoner | Si "lag 3 klokker med romertall"         |
+| Kunne klippes ut og brukes direkte            | Kreve at foreldre skriver/tegner selv    |
+| Minimere papirbruk (kombiner på ett ark)      | Kaste bort papir på instruksjoner        |
+
+**Hva som IKKE skal være print_materials**:
+
+- ❌ Oppsett-guider (bruk `materialer_nødvendig` og `rampenissen_rampestrek` i stedet)
+- ❌ Instruksjoner til foreldre (disse hører til i Nissemor-guiden)
+- ❌ "Mal"-beskrivelser som krever videre arbeid
+- ❌ Svar på oppgaven (foreldre finner dette i Nissemor-guiden)
+
+**Hva som SKAL være print_materials**:
+
+- ✅ Ferdig rebus-lapp med ramme
+- ✅ Ferdig bokstav-kort (alle på ett ark, klippelinje markert)
+- ✅ Ferdig klokke-tegninger med romertall
+- ✅ Sangtekster, oppskrifter, diplomer
+
+**Type-verdier**:
+
+| Type          | Beskrivelse                                           |
+| ------------- | ----------------------------------------------------- |
+| `puzzle`      | Ferdig innhold barna ser (bokstaver, symboler, gåter) |
+| `lyrics`      | Sangtekster (kulturelt innhold)                       |
+| `recipe`      | Oppskrifter (kulturelt innhold)                       |
+| `certificate` | Diplom/bevis for fullføring                           |
+
+> ⚠️ **Merk**: `guide` type er fjernet - oppsett-instruksjoner hører til i Nissemor-guiden, ikke i print_materials.
+
+**Format-krav**:
+
+- Monospace font for bokstaver/tall/koder
+- A4-vennlig layout
+- Klippelinjer markert med `✂️` eller `- - - -`
+- Alle elementer på færrest mulig ark
+
+**Eksempel - GOD praksis (ferdig til bruk)**:
+
+```json
+"print_materials": [
+  {
+    "type": "puzzle",
+    "title": "Rebus-lapp",
+    "content": "╔══════════════════════════╗\n║  🎁🎁🎁 + 🎒 = ?        ║\n║  4 bokstaver             ║\n║  Rimer på DEKK           ║\n╚══════════════════════════╝"
+  }
+]
+```
+
+**Eksempel - DÅRLIG praksis (krever ekstra arbeid)**:
+
+```json
+// ❌ IKKE GJØR DETTE:
+"print_materials": [
+  {
+    "type": "puzzle",
+    "title": "Bokstav-lapper",
+    "content": "Print 5 lapper med disse bokstavene: G, R, Ø, N, N"
+  },
+  {
+    "type": "guide",
+    "title": "Oppsett-guide",
+    "content": "1. Print lappene\n2. Klipp dem ut\n3. Fest på grønne ting\nSVAR: GRØNN"
+  }
+]
+```
+
+**Eksempel - GOD praksis for flere elementer (alt på ett ark)**:
+
+```json
+"print_materials": [
+  {
+    "type": "puzzle",
+    "title": "Bokstav-kort (klipp ut)",
+    "content": "✂️ KLIPP UT LANGS LINJENE ✂️\n\n╔═══╗  ╔═══╗  ╔═══╗  ╔═══╗  ╔═══╗\n║ G ║  ║ R ║  ║ Ø ║  ║ N ║  ║ N ║\n╚═══╝  ╚═══╝  ╚═══╝  ╚═══╝  ╚═══╝\n- - - - - - - - - - - - - - - - -"
+  }
+]
+```
+
+---
+
+### materialer_nødvendig
+
+**Hva det er**: Liste over fysiske materialer foreldre trenger.
+
+**Formål**: Hjelpe foreldre planlegge oppsett.
+
+**Regler**:
+
+- Kun ting som finnes i de fleste hjem
+- Spesifiser antall når relevant
+- Unngå kjøp-krevende rekvisitter
+
+**Eksempel**:
+
+```json
+"materialer_nødvendig": [
+  "3-5 toalettruller",
+  "Lapp med gåte",
+  "Tape",
+  "Kosedyr (3-5 stk)"
+]
+```
+
+---
+
+### oppsett_tid
+
+**Hva det er**: Estimert tid for foreldre å sette opp scenen.
+
+**Verdier**:
+
+| Verdi      | Tid       | Beskrivelse                |
+| ---------- | --------- | -------------------------- |
+| `enkel`    | 5-10 min  | Strø ting, plasser nisse   |
+| `moderat`  | 10-20 min | Bygg scene, kle ut kosedyr |
+| `avansert` | 20-30 min | Multi-rom, elaborate setup |
+
+---
+
+### beste_rom
+
+**Hva det er**: Anbefalt rom for oppsettet.
+
+**Eksempler**:
+
+```json
+"beste_rom": "Bad"
+"beste_rom": "Stue"
+"beste_rom": "Kjøkken/spisestue"
+"beste_rom": "Flere rom (gang, stue, kjøkken)"
+```
+
+---
+
+### requires og reveals
+
+**Hva det er**: Avhengigheter og opplåsninger.
+
+**requires** - Hva som må være fullført før denne dagen:
+
+```json
+"requires": {
+  "topics": ["brevfugl-organisering"],
+  "completedDays": [3, 5]
+}
+```
+
+**reveals** - Hva som låses opp etter fullføring:
+
+```json
+"reveals": {
+  "files": ["julesanger-samling.txt"],
+  "topics": ["julesanger"],
+  "modules": ["BREVFUGLER"]
+}
+```
+
+---
+
+### eventyr
+
+**Hva det er**: Kobling til overordnet storyline (eventyr).
+
+```json
+"eventyr": {
+  "id": "brevfugl-mysteriet",
+  "phase": 3
+}
+```
+
+---
+
+### Metadata-felt
+
+| Felt        | Type    | Beskrivelse                                     |
+| ----------- | ------- | ----------------------------------------------- |
+| `dag`       | number  | Dag 1-24                                        |
+| `tittel`    | string  | Dagens tittel                                   |
+| `hint_type` | string  | Type hint (skrevet, spor, arrangement, visuell) |
+| `hendelse`  | string  | Spesiell hendelse (Lucia, Nobel, etc.)          |
+| `finalized` | boolean | Om innholdet er ferdig gjennomgått              |
+
+---
+
+## Content Principles
+
+### Humorous and Playful Tone
+
+**All dialogues** should be lighthearted and entertaining.
 
 **Guidelines**:
 
@@ -239,15 +632,10 @@ With occasional slang (sparingly):
 - Use situational humor (Rampenissen's mishaps)
 - Avoid sarcasm that kids might misunderstand
 - Balance humor with story progression
-- **Gen Alpha slang** - Use sparingly and naturally (max 2-4 per week): Skibidi, Sigma, Ohio, Cooking, Flex, GOAT, Gyatt, Sus, Vib, Noob, NPC, OG
-
-**Example**:
-
-> Oops! Jeg har klart å skru på alarmen i hele Snøfall! 🚨 Alle nissene løper rundt nå. Julius er IKKE fornøyd... Men hvis du hjelper meg skru av alarmen, lover jeg å ikke fortelle ham at det var jeg som skrudde den på i utgangspunktet! 🤫
 
 ### Rooted in Snøfall Universe
 
-Reference locations, characters, and magical elements from the TV series naturally.
+Reference locations, characters, and magical elements naturally.
 
 **Key References**:
 
@@ -262,79 +650,63 @@ Reference locations, characters, and magical elements from the TV series natural
 - Integrate lore naturally into puzzles
 - Don't assume kids have watched series
 - Make universe references enhance, not confuse
-- Provide enough context for standalone experience
 
 ### Overarching Themes
 
-Magic, friendship, and adventure should be woven throughout all narrative elements.
+Magic, friendship, and adventure should be woven throughout:
 
-**Magic**:
+**Magic**: Technology feels magical, codes unlock secrets, symbols have powers
 
-- Technology feels magical (CRT terminal = portal to Snøfall)
-- Codes unlock secrets
-- Symbols have hidden powers
-- Diary reveals mysteries
+**Friendship**: Rampenissen relies on child's help, Julius appreciates collaboration
 
-**Friendship**:
-
-- Rampenissen relies on child's help
-- Julius appreciates collaboration
-- Elves work together
-- Child becomes part of team
-
-**Adventure**:
-
-- Daily quests build tension
-- Eventyr creates epic narrative
-- Crises require heroic intervention
-- Discoveries feel meaningful
-
-### Length Guidelines
-
-**Keep emails and diary entries concise** (2-4 short paragraphs) to maintain engagement.
-
-**Structure**:
-
-1. **Opening** (1 paragraph): Hook and context
-2. **Body** (1-2 paragraphs): Main content, puzzle/clue
-3. **Closing** (1 paragraph): Call to action or emotional beat
-
-**Example Structure**:
-
-> **Opening**: Hei! Noe rart har skjedd i dag... 🤔
->
-> **Body**: Jeg fant en merkelig nøkkel i julegaveloftet. Den har et symbol som ligner en måne, men jeg vet ikke hva den åpner. Winter sa at du kanskje kan hjelpe oss finne ut av det?
->
-> **Closing**: Send koden hvis du løser mysteriet! 🎄
+**Adventure**: Daily quests build tension, discoveries feel meaningful
 
 ### Cultural References
 
-Include subtle nods to Norwegian Christmas traditions and Snøfall lore without overwhelming the main narrative.
+Include subtle nods to Norwegian Christmas traditions:
 
-**Norwegian Traditions**:
+- Julebord, Nisseporridge, Lucia (Dec 13), Adventsstjerne, Julenissen
 
-- Julebord (Christmas feast)
-- Nisseporridge (rice porridge for elves)
-- Lucia (December 13)
-- Adventsstjerne (Advent star)
-- Julenissen (Santa Claus figure)
+**Balance**: Don't over-explain traditions, let context provide meaning.
 
-**Snøfall Lore**:
-
-- Magical creatures
-- Workshop operations
-- Reindeer care
-- Gift preparation
-- Letter sorting
-
-**Balance**:
-
-- Don't over-explain traditions
-- Let context provide meaning
-- Use cultural elements as flavor
-- Focus on universal themes
+---
 
 ## Puzzle Design
+
+### Praktiske Begrensninger (Hovedregler)
+
+> **Hovedregel**: Oppgaver må være **overkommelige** for foreldre å sette opp.
+
+**Oppsett-krav**:
+
+- **Maks 2-3 bevegelige deler** per oppgave
+- **Unngå spesial-rekvisitter** - bruk ting som finnes hjemme
+- **Oppsett-tid**: 5-15 minutter normalt, maks 20 min
+- **Realistisk antall**: Maks 10-15 fysiske objekter
+- **Enkle materialer**: Papir, saks, tape, tusj, kosedyr
+
+| ✅ Overkommelig           | ❌ For ambisiøst              |
+| ------------------------ | ---------------------------- |
+| 5-10 papir-snøfnugg      | 1000 snøfnugg                |
+| 3 klokker med lapper     | Kompleks multi-steg dekoding |
+| Bokstaver på grønne ting | Spesial-utskrift + UV-lys    |
+
+### NisseNet Fil-Policy
+
+> **Unngå inflasjon**: Ikke alle oppgaver trenger en fil i NisseNet.
+
+**Retningslinjer**:
+
+- **Maks 3-5 nye filer per uke**
+- **Filer kun når de tilfører puzzle-verdi**
+- **Essensiell vs. valgfri**: Fil må være NØDVENDIG, ikke "nice to have"
+
+**Når trengs en fil**:
+
+- ✅ Dekoder som oversetter fysiske symboler → bokstaver
+- ✅ Informasjon som MÅ kombineres med fysisk ledetråd
+- ❌ Ekstra lore som ikke påvirker puzzle
+- ❌ Gjentakelse av informasjon fra nissemail
 
 ### Physical-Digital Bridge (CRITICAL)
 
@@ -342,382 +714,118 @@ Include subtle nods to Norwegian Christmas traditions and Snøfall lore without 
 
 **Design Pattern Examples**:
 
-1. **Physical note has cipher key** → Digital file has encoded message → Combine to decode
-2. **Physical note has coordinates** → Digital map shows locations → Find intersection
-3. **Physical note has half the puzzle** → Digital file has other half → Merge both
-4. **Physical emoji-rebus** → Digital context clue → Solve Norwegian phrase/title
-5. **Physical observation task** → Digital validation data → Cross-reference to confirm
+1. **Physical has cipher key** → Digital has encoded message
+2. **Physical has coordinates** → Digital map shows locations
+3. **Physical emoji-rebus** → Digital context clue → Solve phrase
+4. **Physical observation task** → Digital validation data
 
-**Rule**: Kids should need to physically move between the real world and the digital HQ multiple times to solve each puzzle.
+**Rule**: Kids should need to move between real world and digital HQ multiple times.
 
 ### Difficulty & Complexity
 
-**Target**: Challenging for ages 9-12, requiring genuine problem-solving effort.
+**Target**: Challenging for ages 9-12, requiring genuine problem-solving.
 
-**Difficulty Guidelines**:
+**Guidelines**:
 
 - **NOT too easy** - Avoid puzzles solvable by just reading the clue
 - **Multi-step required** - Combine information from multiple sources
 - **Thinking time** - Should take 10-30 minutes with exploration
-- **Adult collaboration welcome** - Some puzzles designed for family teamwork
 - **No guessing** - Solutions should be logical and discoverable
-- **Satisfying "aha!" moment** - Clear realization when pieces click together
 
 ### Puzzle Type Variety
 
 #### 1. Emoji-Rebus (Norwegian Classic)
 
-Popular Norwegian puzzle format where emojis represent a phrase, movie title, book, saying, or location.
-
-**Examples**:
+Emojis represent a phrase, movie title, saying, or location.
 
 - 🌟 + ⚔️ = "Stjernekrigen" (Star Wars)
-- 🏰 + ❄️ = "Frost" (Frozen)
-- 🎅 + 🏠 = "Snøfall" (the universe)
-- 🔴 + 🍎 + 🌲 = "Røde epler i skogen"
-
-**Implementation**:
-
-- Physical note: Emoji sequence
-- Digital clue: Context hint (e.g., "En norsk film fra 2013")
-- Answer becomes the code or part of the code
+- 🎅 + 🏠 = "Snøfall"
 
 #### 2. Cipher Challenges
 
-- **Caesar cipher** - Physical note has shift number, digital has message
-- **Substitution cipher** - Physical has key, digital has encrypted text
-- **Symbol replacement** - Physical shows symbol=letter mapping, digital uses symbols
-- **ROT13** - Physical explains method, digital has rotated message
+Caesar cipher, substitution cipher, symbol replacement, A=1 system.
 
 #### 3. Research Puzzles
 
-Kids use available tools and resources outside the game:
-
-- **Encyclopedia lookup** - Find specific fact in physical or online encyclopedia
-- **Book references** - Check specific page in a book they own
-- **Online search** - Google specific Norwegian trivia (e.g., "Hvem var Norges første konge?")
-- **Family knowledge** - Ask parents/grandparents about Norwegian traditions
-- **Map reading** - Use physical or digital maps to find locations
+Encyclopedia lookup, book references, online search, family knowledge.
 
 #### 4. Logic & Math Puzzles
 
-- **Coordinate calculations** - Physical coordinates + digital offset = final location
-- **Pattern sequences** - Complete number/letter patterns
-- **Riddles with math** - "I'm thinking of a number... [clues]"
-- **Time calculations** - Historical dates, countdowns, durations
+Coordinate calculations, pattern sequences, riddles with math.
 
 #### 5. Observation Challenges
 
-- **Spot the difference** - Physical printout vs. digital image
-- **Count objects** - Physical search in house + digital image count
-- **Color/shape matching** - Physical cards + digital pattern key
-- **Hidden details** - Find specific element in physical/digital image
+Spot the difference, count objects, color/shape matching.
 
 #### 6. Word Puzzles
 
-- **Anagrams** - Rearrange letters (Norwegian words)
-- **Crossword clues** - Physical grid, digital answers
-- **Acrostics** - First letters spell the code
-- **Missing letters** - Fill in blanks using context
+Anagrams, crossword clues, acrostics, missing letters.
 
 #### 7. Memory & History Puzzles
 
-**Reference previous days** - Requires kids to remember or look back:
-
-- "Remember the code from Day 3? Add 5 to each number"
-- "What was Rampenissen's favorite color in the Day 7 email?"
-- "The symbol you found on Day 10 + today's clue = answer"
-- "Check Julius' diary entry from Day 5 for the missing word"
-
-**Implementation**:
-
-- Digital: Julius' Dagbok (diary) is searchable
-- Digital: NisseMail keeps all previous emails
-- Physical: Kids may have saved previous notes
-- Encourages re-reading and building narrative continuity
+Reference previous days - requires kids to remember or look back.
 
 ### Progressive Difficulty
 
-**Days 1-8: Foundation** (Easier, teaches patterns)
+**Days 1-8: Foundation** (Easier)
 
 - Introduce physical-digital flow
-- Simple ciphers with obvious keys
-- Direct scavenger hunts with clear locations
-- Single-step emoji-rebus
-- Build confidence and establish mechanics
+- Simple ciphers, direct scavenger hunts
+- Build confidence
 
-**Days 9-16: Escalation** (Medium, multi-step)
+**Days 9-16: Escalation** (Medium)
 
-- Broader search areas in house
-- Multi-step ciphers (decode → translate → solve)
-- Emoji-rebus requiring Norwegian cultural knowledge
-- Start referencing previous days occasionally
-- Require combining 3+ clues from both worlds
+- Multi-step ciphers
+- Start referencing previous days
+- Require combining 3+ clues
 
-**Days 17-24: Mastery** (Harder, complex)
+**Days 17-24: Mastery** (Harder)
 
-- Entire house as search area
-- Complex puzzles requiring external research
-- Heavy callback to previous days' information
-- Multi-day puzzle chains (Day 19 clue needed for Day 21)
-- Require strategic thinking and family collaboration
-- Emoji-rebus with abstract concepts
-
-### Building on Previous Days
-
-**Create continuous narrative** through puzzle callbacks:
-
-**Early References** (Days 9-12):
-
-- "Remember where you found the clue on Day 3?"
-- Simple callbacks to establish pattern
-
-**Mid-Story Integration** (Days 13-18):
-
-- Eventyr phases reference specific earlier days
-- Codes from Week 1 might be part of Week 3 solution
-- Julius' diary entries contain needed information
-
-**Complex Callbacks** (Days 19-24):
-
-- Multiple previous days referenced in single puzzle
-- "You've collected 3 symbols so far, their colors are important..."
-- Grand finale requires memory of entire December journey
-- Creates sense of epic adventure, not isolated daily tasks
-
-**Technical Support**:
-
-- All previous emails accessible in NisseMail
-- Julius' Dagbok shows all unlocked entries
-- Kids naturally keep physical notes as "evidence"
-
-### Example Puzzle Designs
-
-#### Example 1: Emoji-Rebus with Research
-
-_Physical Note_:
-
-```text
-🎿 + 👑 + 🏔️ = ?
-Tips: En norsk helt fra 1990-tallet
-```
-
-_Digital Clue (NisseMail)_:
-
-```text
-Søk etter "norske OL-gull alpint 1990-tallet"
-Forkortelsen av navnet er koden!
-```
-
-_Solution_: Kids search online → Find "Kjetil André Aamodt" → Code is "KAA" or "KAAMODT"
-
-#### Example 2: Multi-Source Cipher
-
-_Physical Note_:
-
-```text
-QFMMF TUVFS
-Nøkkel: -1
-```
-
-_Digital File (hemmeligheter/kode_dag_15.txt)_:
-
-```text
-Bruk nøkkelen fra den fysiske lappen.
-Husk: Hver bokstav flyttes bakover i alfabetet!
-```
-
-_Solution_: Caesar cipher shift -1 → "PELLE SNUSK" → Code is "PELLESNUSK"
-
-#### Example 3: History Callback
-
-_Physical Note (Day 18)_:
-
-```text
-Dag 5: ❤️
-Dag 11: 🌙
-Dag 18: ☀️
-
-Fargene er viktige!
-```
-
-_Digital Clue_:
-
-```text
-Sjekk Julius' dagbok for dag 5, 11 og 18.
-Hvilken farge ble nevnt hver dag?
-Første bokstav i hver farge = koden!
-```
-
-_Solution_: Diary Day 5 mentions "RØD", Day 11 "GUL", Day 18 "BLÅ" → Code is "RGB"
-
-### Physical Scavenger Hunt Design
-
-**Two-Layer System**:
-
-1. **Physical Layer**: Parents hide clues around house
-2. **Digital Layer**: Code validated in KodeTerminal unlocks content
-
-**Design Principles**:
-
-- Physical clues should be fun to find
-- Don't require destroying items
-- Safe locations only
-- Clues work in small apartments too
-- Digital alternative always available (for families without physical setup)
-
-### Hints System
-
-**Diary-Driven Subtle Hints** - Guidance through storytelling, not instructions.
-
-**Design Philosophy**:
-
-- **Julius' dagbok is the hint system** - No progressive_hints arrays
-- **Auto-unlocks immediately** when day starts (not after completion)
-- **Story-first, hints second** - Dagbok entries are Julius' daily experiences
-- **Subtle metaphors and observations** woven into narrative voice
-- **Never directive** - No "check kitchen" or "combine letters" instructions
-- **Natural file references** - Essential NISSENET files mentioned organically
-
-**Hint Integration Examples**:
-
-**Day 1 (KALENDER puzzle)**:
-
-- Hint: Winter's organizational system metaphor
-- Dagbok: "hver brevfugl får et nummer, hver liste sorteres... Når alle delene er på plass, ser man plutselig helheten"
-- Effect: Suggests combining parts without saying "arrange letters"
-
-**Day 2 (34 - Fibonacci)**:
-
-- Hint: Pil's friendship growth metaphor
-- Dagbok: "Når to venner møtes, blir de til noe nytt. Når disse to møter den neste, vokser det videre. Hver bygger på de forrige"
-- Effect: Describes pattern without naming "Fibonacci"
-
-**Day 5 (TRIXTER - Caesar cipher)**:
-
-- Hint: Natural file reference in context
-- Dagbok: "Laget detaljert forklaring til NISSENET - 'dekoder_reinsdyr.txt' har eksempler"
-- Effect: Points to essential tool naturally
-
-**Rules**:
-
-- Dagbok = ~100 words maximum (concise storytelling)
-- Hints feel like side observations, not main content
-- NISSENET reserved for puzzle mechanics only (decoders, data)
-- Remove flavor-only files that don't serve storyline or puzzles
-
-**Example Progression**:
-**Puzzle**: "Med julelys og med norske flagg, og høyt i toppen den blanke stjerne".
-
-1. **Hint 1**: "Dette finner du hjemme i desember"
-2. **Hint 2**: "Det er noe levende som kommer inn i huset i juletiden"
-3. **Hint 3**: "Det er grønt, har bark, og du kan henge pynt på det"
-
-**Answer**: "Juletre" (Christmas tree) → Code: JULETRE
-
-**Never**:
-
-- Give exact answer in hints
-- Show part of the code
-- Remove challenge entirely
-- Make hints required reading
+- Complex puzzles requiring research
+- Heavy callback to previous days
+- Multi-day puzzle chains
 
 ---
 
 ## Rampestreker Design (Physical Mischief Scenes)
 
-> **Critical Principle**: The mischief should stand on its own for the youngest children (6-8 years) who may be too young for the digital puzzles. The visual scene must be entertaining and understandable without reading the clues.
+> **Critical Principle**: The mischief should stand on its own for the youngest children (6-8 years). The visual scene must be entertaining WITHOUT reading the clues.
 
 ### Design Philosophy
 
-**Rampestreker** are the physical scenes parents set up each morning showing what Rampenissen has been up to during the night. These serve TWO purposes:
+**Rampestreker** serve TWO purposes:
 
 1. **Visual entertainment** for younger siblings who can't solve puzzles
 2. **Physical clue delivery** for the puzzle-solving children
 
-**The scene itself must be funny, surprising, and immediately understandable by just looking at it** - no reading required.
+**The scene itself must be funny and immediately understandable by just looking at it.**
 
 ### What Makes a Great Rampestrek
 
 #### ✅ GOOD Rampestreker (Visual Comedy)
 
 - **Clear action visible**: "Something happened here!"
-- **Chaos and mess**: Scattered items, fallen towers, spilled materials
-- **Rampenissen caught in the act**: Guilty expression, holding evidence
-- **Props and costumes**: Bandanas, hats, glasses, signs
+- **Chaos and mess**: Scattered items, fallen towers
+- **Rampenissen caught in the act**: Guilty expression
+- **Props and costumes**: Bandanas, hats, glasses
 - **Kosedyr involvement**: As witnesses, victims, or accomplices
-- **Physical comedy**: Things that fell over, got tangled, went wrong
-- **Exaggerated reactions**: Panic, pride, confusion
+- **Physical comedy**: Things that fell over, got tangled
 
 **Examples**:
 
 - Veltet tårn av kopper med skyldig nisse
-- Marshmallow-krig med fort av puter og "sårede" kosedyr
+- Marshmallow-krig med fort og "sårede" kosedyr
 - Pirat-scene med skattkiste og mannskap
-- Radiostudio med kaotisk utstyr og publikum
+- Radiostudio med kaotisk utstyr
 
 #### ❌ WEAK Rampestreker (Static/Boring)
 
 - Just sitting somewhere with a note
-- Holding a calculator or magnifying glass
 - "Looking at" something without interaction
 - No visible action or consequence
-- Requires reading to understand what happened
+- Requires reading to understand
 - No kosedyr involvement
 - Clean, organized scenes
-
-**Examples to AVOID**:
-
-- "Rampenissen sitter foran kalenderen med kalkulator"
-- "Rampenissen holder en sangbok"
-- "Rampenissen med forstørrelsesglass"
-
-### Rampestrek Categories
-
-#### 1. Kaos-Kategorien (Chaos/Disaster)
-
-Something went hilariously wrong:
-
-- Veltet tårn, søl, rot
-- Eksplodert eksperiment
-- Ramlet ned fra noe
-- Ting har spredt seg overalt
-
-#### 2. Rollespill-Kategorien (Costume/Character)
-
-Rampenissen leker at han er noe annet:
-
-- Pirat med mannskap
-- Radio-DJ med studio
-- Detektiv med vitner
-- Kunstner med utstillling
-- Kokk med kaotisk kjøkken
-
-#### 3. Krig/Kamp-Kategorien (Battle/Conflict)
-
-Rampenissen har vært i konflikt:
-
-- Marshmallow-krig med fort
-- Snøballkamp med kosedyr
-- Putefestning under angrep
-- "Kampen om fjernkontrollen"
-
-#### 4. Tabbe-Kategorien (Oops Moments)
-
-Rampenissen har gjort noe han ikke burde:
-
-- Spist noe (bitemerker!)
-- Mistet noe viktig
-- Ødelagt noe ved uhell
-- Blandet sammen ting
-
-#### 5. Ambisiøs-Kategorien (Over-Ambitious)
-
-Rampenissen prøvde noe for stort:
-
-- Bygge verdens høyeste tårn → ramlet
-- Lage 100 stjerner → kaos
-- Organisere alle leker → katastrofe
 
 ### Visual Checklist
 
@@ -730,69 +838,25 @@ For every rampestrek, check:
 - [ ] **Kaos/konsekvens?** Ikke rent og pent?
 - [ ] **Fungerer uten tekst?** 6-åring kan le?
 
-### Materials & Setup
+### Rampestrek Categories
 
-**Standard Props** (alle hjem bør ha):
+1. **Kaos** - Veltet tårn, søl, eksplodert eksperiment
+2. **Rollespill** - Pirat, DJ, detektiv, kokk
+3. **Krig/Kamp** - Marshmallow-krig, putefestning
+4. **Tabbe** - Spist noe, mistet noe, ødelagt ved uhell
+5. **Ambisiøs** - Prøvde noe for stort → ramlet
 
-- Kosedyr (5-10 stk)
-- Sofaputer (fort-bygging)
-- Papir og saks (stjerner, lapper)
-- Husholdningsartikler (kopper, skjeer, klær)
-- Små leker (biler, dyr, figurer)
+### Setup Complexity
 
-**Ekstra Rekvisitter** (gjør scenene bedre):
+| Nivå     | Tid       | Beskrivelse                |
+| -------- | --------- | -------------------------- |
+| Enkel    | 5-10 min  | Strø ting, plasser nisse   |
+| Moderat  | 10-20 min | Bygg scene, kle ut kosedyr |
+| Avansert | 20-30 min | Multi-rom, elaborate setup |
 
-- Glitter/konfetti (spor)
-- Bånd/snor (kaos)
-- Små briller/hatter til kosedyr
-- Pappesker (radiostudio, fort, kjøretøy)
+### Reference
 
-**Setup Complexity**:
-
-- **Enkel** (5-10 min): Strø ting, plasser nisse
-- **Moderat** (10-20 min): Bygg scene, kle ut kosedyr
-- **Avansert** (20-30 min): Multi-rom, spor, elaborate setup
-
-### Connecting to Puzzles
-
-While the visual scene entertains everyone, the puzzle clue should be **embedded naturally**:
-
-- Lapp Rampenissen holder = puzzle-tekst
-- Ting i scenen = fysisk hint (bokstaver, tall)
-- Plassering av objekter = ledetråd
-- Kosedyr-skilt = del av gåten
-
-**The puzzle clue should feel like part of the scene**, not a separate educational add-on.
-
-### Example: Before & After
-
-**BEFORE (Weak)**:
-
-> "Sangbok ligger åpen med 'Deilig er jorden'. Ordet JORDEN er dekket med en lapp. Rampenissen har mikrofon."
-
-**AFTER (Strong)**:
-
-> "Rampenissen har laget et 'radiostudio' med lekemikrofon, hodetelefoner (vinterøremuffer), og en haug med 'utstyr' (bokser, ledninger, pappbokser merket 'MIKSEBORD'). Kosedyrene sitter som publikum med skilt: 'APPLAUS!' og 'JUBELROP!'. Rundt ligger sangbok-sider spredd utover gulvet som 'manus'. Rampenissen holder en lapp: 'VELKOMMEN TIL RADIO SNØFALL! 🎙️ Dagens hit: Deilig er **\_** Men hva heter sangen?! Jeg glemte resten! 😱' På veggen henger et 'sendeskjema' med julesanger listet opp."
-
-**Why it's better**:
-
-- Visual comedy (kaotisk radiostudio)
-- Kosedyr involved (publikum med skilt)
-- Clear action (prøver å sende radio)
-- Props and costume (hodetelefoner, miksebord)
-- Puzzle embedded naturally (sangtekst-mysteriet)
-- Works without reading (morsomt å se uansett)
-
-### Reference: Rampestreker Ideas
-
-See [rampestreker.txt](./rampestreker.txt) for 170+ categorized ideas organized by:
-
-- Bathroom, Kitchen, Living room, Bedroom scenes
-- Costume/roleplay ideas
-- Food-based pranks
-- Frozen/trapped scenarios
-- Clothing chaos
-- And more...
+See [rampestreker.txt](./rampestreker.txt) for 170+ categorized ideas.
 
 ---
 
