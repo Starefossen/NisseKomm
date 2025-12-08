@@ -1,0 +1,18 @@
+# Dependencies
+node_modules
+pnpm-lock.yaml
+
+# Build outputs
+.next
+out
+dist
+build
+
+# Coverage
+coverage
+
+# Sanity
+.sanity
+
+# Generated files
+*.log
