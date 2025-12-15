@@ -22,7 +22,8 @@
     "hint_type": "skrevet",
     "requires": {
       "topics": ["iq-oppfinnelser"]
-    }
+    },
+    "finalized": true
   },
   {
     "dag": 9,
@@ -88,7 +89,8 @@
         "monospace": true,
         "content": "TALL: 3\n\n__    __\n/_/ /\\ \\_\\\n__ \\ \\/ / __\n\\_\\_🩷_/_/\n/\\___\\_\\/_/___/\\\n\\/ __/_/\\_\\__ \\/\n/_/ /\\/\\ \\_\\\n__/ /\\ \\__\n\\_\\ \\/ /_/"
       }
-    ]
+    ],
+    "finalized": true
   },
   {
     "dag": 10,
@@ -137,7 +139,8 @@
         "content": "💚 N 💚"
       }
     ],
-    "hendelse": "Nobeldagen"
+    "hendelse": "Nobeldagen",
+    "finalized": true
   },
   {
     "dag": 11,
@@ -197,7 +200,8 @@
       "badge_id": "antenne-ingenior",
       "badge_navn": "Antenne-ingeniør",
       "badge_icon": "zap"
-    }
+    },
+    "finalized": true
   },
   {
     "dag": 12,
@@ -248,7 +252,8 @@
       "correctSequence": [1, 0, 2],
       "messageWhenSolved": "❄️ FROSNE KODER DEKRYPTERT! ❄️\n\nGratulerer! Dere har låst opp det første hemmelige nivået i NisseKrypto-systemet. Julius' notater om de frosne kodene fra snøstormen er nå tilgjengelige i NISSENET under HEMMELIG-mappen.\n\nDisse symbolene representerer hjertenes tre farger - grønn for vekst, rød for varme, blå for kulde. Sammen former de den perfekte balansen i Snøfall.\n\nVel gjort, krypto-agenter! 🔓",
       "unlocksFiles": ["frosne-koder.txt"]
-    }
+    },
+    "finalized": true
   },
   {
     "dag": 13,
@@ -289,7 +294,8 @@
         "content": "🎵 LUCIASANGEN 🎵\n\nSvart senker natten seg\nI stall og stue\nSolen har gått sin vei,\nSkyggene truer\nInn i vårt mørke hus\nStiger med tente lys,\nSanta Lucia, Santa Lucia"
       }
     ],
-    "hendelse": "Luciadagen"
+    "hendelse": "Luciadagen",
+    "finalized": true
   },
   {
     "dag": 14,
@@ -355,6 +361,7 @@
         "title": "Brevfugl-mysteriet FULLFØRT!",
         "content": "🐦 GRATULERER! 🐦\n\nBREVFUGL-MYSTERIET ER LØST!\n\nFase 1 (Dag 1): Introduksjon\nFase 2 (Dag 5): Organisering\nFase 3 (Dag 12): Sangfugl\nFase 4 (Dag 14): PAPIR - Fullført!\n\nJulius er STOLT av dere! 🎅\n\n- Rampenissen & Julius"
       }
-    ]
+    ],
+    "finalized": true
   }
 ]
