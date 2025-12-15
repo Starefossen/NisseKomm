@@ -2,7 +2,7 @@
   {
     "dag": 15,
     "tittel": "Sjokolade-mysteriet",
-    "nissemail_tekst": "Rampenissen har laget 'sjokolade-bæsj' på kjøkkenbordet! Under én av dem er det skjult en mandel. Tellingen på bæsjene viser: 3. bolle × 1 = ? Finn mandelen! Men vent... fargesamleren vet noe mer...\n\n🌅 I mandelen skjuler seg en RØD SOL! Julius forteller at den røde solen representerer energi og glede - akkurat som gleden ved å finne mandelen i grøten! Fargesamleren nikker anerkjennende.",
+    "nissemail_tekst": "Hei hei! 💩 Okay, ikke døm meg, men jeg har laget noe VELDIG morsomt på kjøkkenet! 😂\n\nJeg har formet sjokolade som ser ut som... ja, du skjønner! 🍫 Nissemor ville DREPT meg hvis hun så dette! Men det beste? Under ÉN av dem har jeg gjemt en MANDEL! 🥜\n\nDu vet den norske tradisjonen med mandel i grøten? Den som finner mandelen får premie! Finn riktig 'bæsj' og du finner svaret! 🎁\n\nHint: Det handler om noe hvitt og skjult... 🤫\n\n- Rampenissen",
     "kode": "MANDEL",
     "eventyr": {
       "id": "farge-mysteriet",
@@ -24,9 +24,9 @@
     },
     "print_materials": [
       {
-        "type": "guide",
-        "title": "Mandel i grøt - Norsk tradisjon",
-        "content": "Visste du? I norsk juletradisjonen skjules det en mandel i risgrøten. Den som finner mandelen får en marsipangris! Julius fortsetter tradisjonen i Snøfall."
+        "type": "puzzle",
+        "title": "Gåtelappen",
+        "content": "🥜 MANDEL-GÅTEN 🥜\n\nJeg er hvit og liten,\nskjult i noe varmt.\nDen som finner meg\nfår premie - så fint!\n\nHva heter jeg?\n\n_ _ _ _ _ _\n(6 bokstaver)"
       }
     ],
     "dagbokinnlegg": "Dag 15 - Grøtdag\n\nNissemor laget risgrøt til alle i Snøfall. 250 nisser + 8 reinsdyr + 1 julenisse = MYE grøt. Hun skjulte mandelen. Konkurransen er i gang!\n\nNissene spiser som om livet står på spill. Rudolf prøvde å jukse ved å sniffe seg frem til mandelen. Ble disket. Reinsdyr har ikke lov å delta uansett.\n\nJeg fant mandelen! I MIN tredje bolle! Nissemor smilte mistenksomt. Tror hun lot meg vinne. Men tar æren uansett.\n\n- Julius",
@@ -42,12 +42,12 @@
     ],
     "beste_rom": "Kjøkken",
     "hint_type": "kombinasjon",
-    "finalized": false
+    "finalized": true
   },
   {
     "dag": 16,
     "tittel": "Kalender-mysteriet",
-    "nissemail_tekst": "Rampenissen studerer julekalenderen! Han spør: 'Hvor mange luker har en vanlig julekalender? Sjekk kalenderen på veggen og tell!' Hint: Det er samme antall som dager i desember før julaften.",
+    "nissemail_tekst": "YO! 🎄 HALVVEIS-FEIRING! Vi er over halvveis gjennom advent! 🎉\n\nMen OISANN... jeg har rotet det til IGJEN! 😱 Alle pakkene under treet har FORSVUNNET! I stedet ligger det bare rare ting - en SKO?! En TANNBØRSTE?! HVA SKJEDDE?! 🤯\n\nJeg LOVER at jeg ikke har spist dem! Kanskje de bare... gjemte seg? 🙈 Følg sporene rundt i huset!\n\nÅh, og Julius lurte på: Hvor mange luker har egentlig en julekalender? 🤔\n\n- Rampenissen",
     "kode": "24",
     "eventyr": {
       "id": "halvveis-milepæl",
@@ -60,14 +60,9 @@
     },
     "print_materials": [
       {
-        "type": "activity",
-        "title": "Inventar-organisering",
-        "content": "Hjelp Rampenissen med å organisere leker!\n\nWINTER-GODKJENTE KATEGORIER:\n✅ TRANSPORTMIDLER - Biler, fly, båter, tog\n✅ KOSEDYR - Bamser, dukker, plysjdyr\n✅ BYGGEKLOSSER - Lego, klosser, puslespill\n✅ KREATIVT - Tegnesaker, bøker, spill\n\nVelg ÉN kategori:\n1. Finn minst 5 leker som passer\n2. Ordne dem etter størrelse (minst → størst)\n3. Rapporter til forelder:\n   - Kategorinavn\n   - Antall funnet\n\nWinters motto: 'Alt har sin plass, og alle har sin tid!'"
-      },
-      {
-        "type": "guide",
-        "title": "Halvveis-feiring",
-        "content": "Gratulerer! Dere er halvveis gjennom julekalenderen. Julius og nissene er stolt av dere. Kan dere huske alle oppdragene så langt?"
+        "type": "puzzle",
+        "title": "Spor-lapper",
+        "content": "✂️ KLIPP UT SPORENE ✂️\n\n┌─────────────────┐\n│ HINT: UNDER...  │\n│ (kjøkkenbord)   │\n└─────────────────┘\n\n┌─────────────────┐\n│ HINT: BAK...    │\n│ (sofapute)      │\n└─────────────────┘\n\n┌─────────────────┐\n│ HINT: I...      │\n│ (skuff)         │\n└─────────────────┘\n\n┌─────────────────┐\n│ HINT: VED...    │\n│ (vindu)         │\n└─────────────────┘"
       }
     ],
     "bonusoppdrag": {
@@ -92,12 +87,12 @@
     "beste_rom": "Der kalenderen henger",
     "hint_type": "skrevet",
     "hendelse": "Las Posadas",
-    "finalized": false
+    "finalized": true
   },
   {
     "dag": 17,
     "tittel": "Stjerne-konstellasjon",
-    "nissemail_tekst": "Rampenissen har hengt opp stjerner over hele huset! På noen står det bokstaver: S-T-J-E-R-N-E. Følg stjernekartet på kjøleskapet for å finne dem i riktig rekkefolge. Hint: De frosne mønstrene kjenner veien...",
+    "nissemail_tekst": "Hei! ⭐ I dag har jeg pyntet HELE huset med stjerner! Det ser ut som himmelen eksploderte! ✨\n\nMEN - noen av stjernene har HEMMELIGE BOKSTAVER på seg! 🔤 Jeg har laget et stjernekart på kjøleskapet som viser hvilke rom du må besøke!\n\nFinn alle 7 stjernene med bokstaver og sett dem sammen! Hva får du? 🌟\n\nHusk snøfnugg-mønstrene fra før? De 6-kantede symbolene på kartet er inspirert av dem! ❄️\n\n- Rampenissen",
     "kode": "STJERNE",
     "eventyr": {
       "id": "morkets-trussel",
@@ -113,9 +108,9 @@
     },
     "print_materials": [
       {
-        "type": "guide",
-        "title": "Lucia-tradisjon (13. desember)",
-        "content": "Visste du? Lucia (Sankta Lucia) feires 13. desember i Norge. Hun bringer lys i mørketiden med stjerneguttene sine. Stjernene symboliserer håp!"
+        "type": "puzzle",
+        "title": "Stjerne-bokstaver",
+        "content": "⭐ S ⭐\n\n⭐ T ⭐\n\n⭐ J ⭐\n\n⭐ E ⭐\n\n⭐ R ⭐\n\n⭐ N ⭐\n\n⭐ E ⭐\n\n✂️ Klipp ut og fest til papirstjerner!"
       }
     ],
     "dagbokinnlegg": "Dag 17 - Stressuke\n\nBare én uke igjen! PANIKK! Ikke virkelig panikk, men litt bekymret. Skjuler det bak ho-ho-ho-ing. Nissene tror jeg er rolig. Nissemor vet bedre.\n\nOrakelet advarer om faresignaler fra Mørket. Men magien i Snøfall er sterk, og vennskapet mellom oss alle gir oss styrke til å fullføre oppdraget.\n\nRampenissen rapporterer at barna er spente. Godt! Sammen klarer vi alt!\n\n- Julius",
@@ -130,12 +125,12 @@
     ],
     "beste_rom": "Flere rom",
     "hint_type": "spor",
-    "finalized": false
+    "finalized": true
   },
   {
     "dag": 18,
     "tittel": "Snø-sporet",
-    "nissemail_tekst": "Rampenissen har laget snøengler utenfor (eller mel-engler inne)! I snøen/melet står det skrevet: 'Jeg faller fra himmelen og gjør julen hvit. 3 bokstaver.' Finn ordet!\n\n❄️ I snøsporet finner du en BLÅ SOL! Julius forklarer at den blå solen symboliserer klarhet og retning - som stjernesolen som viser Julius veien gjennom vinterhimmelen. Du har nå alle tre solsymbolene!",
+    "nissemail_tekst": "Halla! ❄️ Vet du hva som er KULT? Jeg har laget KUNST i dag! 🎨\n\nHvis det er snø ute, sjekk utenfor - jeg har laget snøengler! Hvis ikke, sjekk kjøkkenet - mel-engler er LIKE bra! 😅\n\nI kunsten min har jeg skrevet en gåte: 'Jeg faller fra himmelen og gjør julen hvit.' 🤔\n\nSvaret er kort - bare 3 bokstaver! Hva kan det være? ❄️\n\n- Rampenissen",
     "kode": "SNØ",
     "eventyr": {
       "id": "slede-forberedelser",
@@ -167,14 +162,9 @@
     },
     "print_materials": [
       {
-        "type": "activity",
-        "title": "Snøengel-konkurranse",
-        "content": "Hvis det er snø ute: Lag snøengler sammen! Hvis ikke: Bruk mel på et brett og lag 'mel-engler' med fingrene. Tegn ansikt på englene!"
-      },
-      {
-        "type": "guide",
-        "title": "Hvorfor er snø hvit?",
-        "content": "Visste du? Snø er hvit fordi iskrystallene reflekterer alt lyset. Hvert snøfnugg er unikt - ingen to er like!"
+        "type": "puzzle",
+        "title": "Snø-gåten",
+        "content": "❄️ SNØ-GÅTEN ❄️\n\nJeg faller fra himmelen\nog gjør julen hvit.\nJeg er kald og myk,\nbarn leker i meg med fryd!\n\nHva er jeg?\n\n_ _ _\n(3 bokstaver)"
       }
     ],
     "dagbokinnlegg": "Dag 18 - Gavetelling\n\nInventar-dag. Teller gaver. Mister tellingen. Starter på nytt. Mister tellingen igjen. Gir opp. Ber nissene telle. De kommer til tre forskjellige tall. Bestemmer at vi bare tar med alt vi har.\n\nProblemet med slede-størrelse oppstår. Gavene passer ikke. Nissene foreslår større slede. Rudolf foreslår færre gaver. Nissene ser surt på Rudolf. Bygger større slede.\n\nRampenissen sender bilder av gaveønsker fra barna. Søtt! Og håndterbart. Ikke som den ungen som ønsket seg en ekte dinosaur i fjor.\n\n- Julius",
@@ -190,12 +180,12 @@
     ],
     "beste_rom": "Ute eller kjøkken",
     "hint_type": "skrevet",
-    "finalized": false
+    "finalized": true
   },
   {
     "dag": 19,
     "tittel": "Reinsdyr-ruten",
-    "nissemail_tekst": "Rampenissen har tegnet en flyrute! Leke-reinsdyr står plassert som viser veien. Ved hvert stopp er det en UTFORDRING du må løse før du går videre. Fullfør alle tre for å finne koden!",
+    "nissemail_tekst": "Hei! 🦌 I dag øver jeg på å være FLYGELEDER for reinsdyrene! ✈️\n\nJeg har satt opp en treningsrute gjennom hele huset! Ved hvert stopp står det et leke-reinsdyr med en liten utfordring! 🎯\n\nFølg ruten fra START til MÅL og løs alle utfordringene! Ved hvert sjekkpunkt finner du bokstaver - samle dem alle! 🔤\n\nHva trekker egentlig sleda til Julius? Det er svaret! 🛷\n\n- Rampenissen",
     "kode": "REINSDYR",
     "eventyr": {
       "id": "iqs-oppfinnelser",
@@ -210,39 +200,24 @@
     },
     "print_materials": [
       {
-        "type": "map",
-        "title": "Reinsdyr-rute med sjekkpunkter",
-        "content": "Tegn en flyrute som viser hvilke rom reinsdyrene står i. Eksempel: START (gang) → Sjekkpunkt 1 (barnerom) → Sjekkpunkt 2 (kjøkken) → Sjekkpunkt 3 (stue) → MÅL (gang). Marker hvert stopp med et reinsdyr-ikon."
+        "type": "puzzle",
+        "title": "Sjekkpunkt 1",
+        "content": "🦌 SJEKKPUNKT 1 🦌\n\nRom: SOVEROM\n\nUtfordring:\nTell beinene på et reinsdyr!\n\nBokstaver: R\n\n→ Neste: KJØKKEN"
       },
       {
-        "type": "checkpoint_cards",
-        "title": "Sjekkpunkt-kort for utskrift",
-        "checkpoints": [
-          {
-            "checkpoint": 1,
-            "location": "SOVEROM",
-            "challenge": "Tell reinsdyrbeina",
-            "letters": "R"
-          },
-          {
-            "checkpoint": 2,
-            "location": "KJØKKEN",
-            "challenge": "Tell røde ting",
-            "letters": "E, I"
-          },
-          {
-            "checkpoint": 3,
-            "location": "BAD",
-            "challenge": "Hvit og kald, faller fra skyene?",
-            "letters": "N, S"
-          },
-          {
-            "checkpoint": 4,
-            "location": "STUE",
-            "challenge": "Siste stopp!",
-            "letters": "D, Y"
-          }
-        ]
+        "type": "puzzle",
+        "title": "Sjekkpunkt 2",
+        "content": "🦌 SJEKKPUNKT 2 🦌\n\nRom: KJØKKEN\n\nUtfordring:\nFinn noe RØDT!\n\nBokstaver: E, I\n\n→ Neste: BAD"
+      },
+      {
+        "type": "puzzle",
+        "title": "Sjekkpunkt 3",
+        "content": "🦌 SJEKKPUNKT 3 🦌\n\nRom: BAD\n\nUtfordring:\nHvit og kald, faller fra skyene?\n\nBokstaver: N, S\n\n→ Neste: STUE"
+      },
+      {
+        "type": "puzzle",
+        "title": "Sjekkpunkt 4 - MÅL",
+        "content": "🦌 SJEKKPUNKT 4 - MÅL! 🦌\n\nRom: STUE\n\nBokstaver: D, Y, R\n\nSett sammen alle bokstavene:\nR + E + I + N + S + D + Y + R = ?\n\n🎉 GRATULERER!"
       }
     ],
     "dagbokinnlegg": "Dag 19 - Tretthetsdag\n\nTrøtteste dag så langt. Falt i søvn tre ganger. En gang midt i setning til nissene. De lo. Ikke artig. Vel, litt artig.\n\nNissemor insisterer på at jeg tar pauser. Forklarer at jeg ikke tar pauser. Hun bare pekte på godteristabelen og smilte. Tok en pause.\n\nRampenissen klager også over trettet. Men så sier han noe som overrasker meg: 'Julius, jeg skjønner nå hvor hardt du jobber. Og hvor viktig det er å ikke gi opp når man er ansvarlig for andres glede.' Hvem er denne modne nissingen?! Nissemors energi-kakao virker underverker!\n\n- Julius",
@@ -258,12 +233,12 @@
     ],
     "beste_rom": "Flere rom",
     "hint_type": "kombinasjon",
-    "finalized": false
+    "finalized": true
   },
   {
     "dag": 20,
     "tittel": "Slede-løpet",
-    "nissemail_tekst": "Rampenissen har laget et hinderbane-løp! På 5 sjekkpunkter er det gjemt bokstaver. Finn dem ALLE for å stave ordet. Hva er Nissens transport?\n\n🌙 Ved målet finner du en GRØNN MÅNE! Julius forteller at den grønne månen symboliserer fred og harmoni - som den rolige natten når sleda glir stille over hustakene. Dette er den første av månesymbolene!",
+    "nissemail_tekst": "YO! 🛷 Fire dager til julaften! FIRE! 😱\n\nI dag har jeg laget et SLEDE-LØP gjennom huset! Det er 5 sjekkpunkter, og ved hvert punkt ligger en bokstav gjemt! 🔤\n\nFinn alle 5 bokstavene og sett dem sammen! Svaret er det Julius bruker for å reise rundt hele verden på én natt! 🌍\n\nHintene er: UNDER, BAK, I, UNDER, VED! God jakt! 🎯\n\n- Rampenissen",
     "kode": "SLEDE",
     "eventyr": {
       "id": "iqs-oppfinnelser",
@@ -285,45 +260,29 @@
     },
     "print_materials": [
       {
-        "type": "map",
-        "title": "Slede-løpet med 5 sjekkpunkter",
-        "content": "Lag et kart som viser hvor sjekkpunktene er gjemt:\n1. UNDER bordet (S)\n2. BAK døra (L)\n3. I bokhylla (E)\n4. UNDER puta (D)\n5. VED vinduet (E)\n\nMarker hvert punkt med et slede-ikon."
+        "type": "puzzle",
+        "title": "Bokstav 1",
+        "content": "🛷 S 🛷\n\nGjem UNDER bordet"
       },
       {
-        "type": "checkpoint_cards",
-        "title": "Sjekkpunkt-kort for utskrift",
-        "checkpoints": [
-          {
-            "checkpoint": 1,
-            "location": "UNDER kjøkkenbord",
-            "letters": "S"
-          },
-          {
-            "checkpoint": 2,
-            "location": "BAK soveromsdør",
-            "letters": "L"
-          },
-          {
-            "checkpoint": 3,
-            "location": "I bokhylle",
-            "letters": "E"
-          },
-          {
-            "checkpoint": 4,
-            "location": "UNDER pute på sofa",
-            "letters": "D"
-          },
-          {
-            "checkpoint": 5,
-            "location": "VED vindu i stue",
-            "letters": "E"
-          }
-        ]
+        "type": "puzzle",
+        "title": "Bokstav 2",
+        "content": "🛷 L 🛷\n\nGjem BAK døra"
       },
       {
-        "type": "guide",
-        "title": "IQs oppfinnelser fullført!",
-        "content": "Gratulerer! Dere har hjulpet IQ med å teste alle oppfinnelsene hans. Energidrikken og slede-oppgraderingen er klare for julaften!"
+        "type": "puzzle",
+        "title": "Bokstav 3",
+        "content": "🛷 E 🛷\n\nGjem I bokhylla"
+      },
+      {
+        "type": "puzzle",
+        "title": "Bokstav 4",
+        "content": "🛷 D 🛷\n\nGjem UNDER puta"
+      },
+      {
+        "type": "puzzle",
+        "title": "Bokstav 5",
+        "content": "🛷 E 🛷\n\nGjem VED vinduet"
       }
     ],
     "dagbokinnlegg": "Dag 20 - Fire Dager\n\nBare fire dager igjen! Alt eskalerer nå. Nissene jobber døgnet rundt. IQ har laget energidrikk av magisk snø. Den virker! Kanskje for godt...\n\nTrixter og reinsdyrene har fått siste treningsøkt. De er klare! Men Rudolf virker nervøs. Han kom til meg i kveld og sa: 'Hva om nesen min ikke lyser sterkt nok? Hva om Mørket er for sterkt?' Første gang jeg har sett ham usikker. Fortalte ham at hans lys har reddet oss før, og vil gjøre det igjen.\n\nPil og Winter dobbeltsjekker alle lister. Vennskapet og magien i Snøfall gir oss styrke. Sammen klarer vi dette!\n\n- Julius",
@@ -338,12 +297,12 @@
     ],
     "beste_rom": "Flere rom",
     "hint_type": "spor",
-    "finalized": false
+    "finalized": true
   },
   {
     "dag": 21,
     "tittel": "Femspiss-jakten",
-    "nissemail_tekst": "Rampenissen vil vite hvor mange spisser en julestjerne har! Han har gjemt stjerner over hele huset. Finn én stjerne og tell spissene. Hva er tallet?",
+    "nissemail_tekst": "Hei! ⭐ TRE DAGER IGJEN! Jeg klarer nesten ikke vente! 🎄\n\nMen jeg har et problem... 😅 Jeg ble SULTEN i natt og... vel... jeg SPISTE på noen av julestjernene! 🦷 De så ut som pepperkaker! (De smakte IKKE som pepperkaker. 0/10.)\n\nNå er nesten alle stjernene ødelagt med bitemerker! 😱 Men ÉN stjerne er fortsatt hel!\n\nFinn den HELE stjernen og tell spissene! Hvor mange har den? 🌟\n\n- Rampenissen",
     "kode": "5",
     "eventyr": {
       "id": "morkets-trussel",
@@ -358,14 +317,9 @@
     },
     "print_materials": [
       {
-        "type": "activity",
-        "title": "Lag dine egne 5-spissede stjerner",
-        "content": "Bruk papir og saks til å klippe ut stjerner. Tell spissene sammen! Hvis dere har glitter eller fargeblyanter, kan dere pynte stjernene."
-      },
-      {
-        "type": "guide",
-        "title": "Mørkets trussel er over!",
-        "content": "Gratulerer! Dere har hjulpet Julius og nissene med å beseire Mørket. Sammen er dere sterkere, og vennskapet har seiert! Julen er reddet!"
+        "type": "puzzle",
+        "title": "Hel stjerne",
+        "content": "⭐ HEL STJERNE ⭐\n\n    ★\n   /|\\\n  / | \\\n /  |  \\\n────┴────\n \\ / \\ /\n  X   X\n / \\ / \\\n\nTell spissene!\nSvaret på baksiden."
       }
     ],
     "dagbokinnlegg": "Dag 21 - Tre Dager!\n\nTRE DAGER TIL JULAFTEN! Nissene er i høygir. En av dem festet vinger på ryggen og hoppet fra taket. Han sa han 'øvde på å fly'. Vi har ikke flyvende nisser. Han har nå gips på beinet.\n\nSiste sjekk av gavesekken. Den er magisk, så alt passer inn. Men måtte teste. Puttet en nisse inn. Han passet. Så puttet vi inn en til. De passet. Sluttet på 12 nisser. Ikke rom for flere. Eller kanskje vi skal ikke putte nisser i sekken.\n\nSTORE NYHETER: Rudolf reddet dagen! Når Mørket nærmet seg i kveld, lyste Rudolf sin røde nese kraftigere enn noen gang. Lyset spredte Mørket fullstendig! Han sto der, hode høyt, og sa: 'Dette er hva jeg ble født til.' Alle reinsdyrene applauderte. Jeg må innrømme - Rudolf er en helt. Og han har endelig skjønt det selv.\n\nRampenissen melder om høy spenning hos barna. Samme her! Vi klarer dette!\n\n- Julius",
@@ -381,6 +335,6 @@
     "beste_rom": "Flere rom",
     "hint_type": "gjemt_objekt",
     "hendelse": "Vintersolverv",
-    "finalized": false
+    "finalized": true
   }
 ]
