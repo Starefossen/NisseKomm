@@ -4,6 +4,7 @@
   - dag 5: bedre dekoder hint + fysisk hint om plassering
   - dag 6: fysisk hint mer kryptisk
   - dag 7: geografisk hint
+  - Rampenisse fysiske hints: trenger indikasjoner for spesielle hendelser (f.eks. når symboler er skjult)
 - NisseNett
   - Make snill_slem_liste dynamic
 - NisseKrypto
