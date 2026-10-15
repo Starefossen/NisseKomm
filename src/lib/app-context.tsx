@@ -10,6 +10,7 @@ import {
 } from "react";
 import { StorageManager } from "./storage";
 import { GameEngine } from "./game-engine";
+import { getCurrentDay } from "./date-utils";
 import {
   getSessionId,
   setSessionId,
@@ -87,19 +88,9 @@ interface AppProviderProps {
 
 export function AppProvider({ children }: AppProviderProps) {
   // Core state
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    if (typeof window !== "undefined") {
-      return StorageManager.isAuthenticated();
-    }
-    return false;
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
-  const [sessionId, setSessionIdState] = useState<string | null>(() => {
-    if (typeof window !== "undefined") {
-      return getSessionId();
-    }
-    return null;
-  });
+  const [sessionId, setSessionIdState] = useState<string | null>(null);
 
   // Family data
   const [familyData, setFamilyData] = useState<FamilyData>(defaultFamilyData);
@@ -119,17 +110,12 @@ export function AppProvider({ children }: AppProviderProps) {
 
     setUnlockedModules(GameEngine.getUnlockedModules());
 
-    // Import getCurrentDay to avoid circular dependency
-    import("./date-utils").then(({ getCurrentDay }) => {
-      const currentDay = getCurrentDay();
-      setUnreadEmailCount(GameEngine.getUnreadEmailCount(currentDay));
-      setUnreadFileCount(GameEngine.getUnreadFileCount());
+    const currentDay = getCurrentDay();
+    setUnreadEmailCount(GameEngine.getUnreadEmailCount(currentDay));
+    setUnreadFileCount(GameEngine.getUnreadFileCount());
 
-      const completedQuests = GameEngine.loadGameState().completedQuests;
-      setUnreadDagbokCount(
-        StorageManager.getUnreadDagbokCount(completedQuests),
-      );
-    });
+    const completedQuests = GameEngine.loadGameState().completedQuests;
+    setUnreadDagbokCount(StorageManager.getUnreadDagbokCount(completedQuests));
   }, []);
 
   /**
@@ -234,7 +220,8 @@ export function AppProvider({ children }: AppProviderProps) {
         setIsAuthenticated(true);
 
         console.debug("[AppContext] Session restored successfully");
-      } else if (isAuthenticated) {
+      } else if (StorageManager.isAuthenticated()) {
+        setIsAuthenticated(true);
         refreshGameState();
       }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { CRTFrame } from "@/components/ui/CRTFrame";
 import { BootSequence } from "@/components/ui/BootSequence";
 import { PasswordPrompt } from "@/components/ui/PasswordPrompt";
@@ -42,6 +42,8 @@ const { varsler, filer } = statiskInnholdData as {
   filer: FilNode[];
 };
 
+const emptySubscribe = () => () => {};
+
 /**
  * Check if current date is within the calendar period (December 1-24)
  * Delegates to centralized date utility
@@ -64,13 +66,14 @@ export default function Home() {
     refreshGameState,
   } = useAppState();
 
+  const isHydrated = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
+
   // Local UI state
-  const [bootComplete, setBootComplete] = useState(() => {
-    if (typeof window !== "undefined") {
-      return StorageManager.isAuthenticated();
-    }
-    return false;
-  });
+  const [bootFinished, setBootFinished] = useState(false);
   const [openWindow, setOpenWindow] = useState<string | null>(null);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [showGrandFinale, setShowGrandFinale] = useState(false);
@@ -108,7 +111,7 @@ export default function Home() {
   const isDateValid = () => isCalendarActive(testMode);
 
   const handleBootComplete = () => {
-    setBootComplete(true);
+    setBootFinished(true);
   };
 
   const handleAuthSuccess = async (sessionId: string) => {
@@ -160,15 +163,16 @@ export default function Home() {
     playSound("success");
   };
 
-  // Compute effective authenticated state
-  // - During initialization, use local storage check for boot sequence
-  // - After initialization, use context state
-  const effectiveAuthenticated = isInitializing
-    ? StorageManager.isAuthenticated()
-    : isAuthenticated;
+  // Compute effective authenticated state only after hydration to match SSR HTML
+  const effectiveAuthenticated = isHydrated
+    ? isInitializing
+      ? StorageManager.isAuthenticated()
+      : isAuthenticated
+    : false;
+  const bootComplete = bootFinished || effectiveAuthenticated;
 
   // Show access denied if outside December 1-24 in production mode
-  if (!isDateValid()) {
+  if (isHydrated && !isDateValid()) {
     return (
       <CRTFrame>
         <div className="flex items-center justify-center h-full">

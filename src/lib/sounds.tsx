@@ -30,16 +30,20 @@ export class SoundManager {
     // Initialize shared AudioContext for all sound effects
     const AudioContextClass =
       window.AudioContext ||
-      (window as unknown as { webkitAudioContext: typeof AudioContext })
+      (window as unknown as { webkitAudioContext?: typeof AudioContext })
         .webkitAudioContext;
-    this.audioContext = new AudioContextClass();
+    if (AudioContextClass) {
+      this.audioContext = new AudioContextClass();
+    }
 
     // Initialize jingle audio (HTML5 Audio for music)
-    this.jingleAudio = new Audio(
-      "/music/christmas-dreams-jingle-bells-268299.mp3",
-    );
-    this.jingleAudio.volume = this.musicVolume;
-    this.jingleAudio.loop = true;
+    if (typeof Audio !== "undefined") {
+      this.jingleAudio = new Audio(
+        "/music/christmas-dreams-jingle-bells-268299.mp3",
+      );
+      this.jingleAudio.volume = this.musicVolume;
+      this.jingleAudio.loop = true;
+    }
 
     // Get saved preferences
     this.enabled = Storage.isSoundsEnabled();

@@ -19,7 +19,9 @@ try {
     }
   });
 } catch (error) {
-  console.warn("Could not load .env.local:", error.message);
+  if (error.code !== "ENOENT") {
+    console.warn("Could not load .env.local:", error.message);
+  }
 }
 
 // Polyfill fetch for Jest environment
