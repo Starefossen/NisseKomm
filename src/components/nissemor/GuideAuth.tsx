@@ -1,6 +1,12 @@
 "use client";
 
-import { useState, useCallback, useMemo, useEffect } from "react";
+import {
+  useState,
+  useCallback,
+  useEffect,
+  createContext,
+  useContext,
+} from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -24,14 +30,19 @@ import {
  * or use useGuideAuth() hook for more control.
  */
 
-export function useGuideAuth(): {
+interface GuideAuthState {
   authenticated: boolean;
   isLoading: boolean;
   logout: () => void;
-} {
+  setAuthenticated: (value: boolean) => void;
+}
+
+const GuideAuthContext = createContext<GuideAuthState | null>(null);
+
+function useStandaloneGuideAuth(enabled = true): GuideAuthState {
   const router = useRouter();
   const [authenticated, setAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(enabled);
 
   const logout = useCallback(() => {
     clearParentAuth();
@@ -40,17 +51,17 @@ export function useGuideAuth(): {
   }, [router]);
 
   useEffect(() => {
+    if (!enabled) return;
+
     async function verifyAuth() {
-      // Check if we have a valid parent session cookie
       const hasParentSession = isParentAuthenticated();
 
       if (hasParentSession) {
-        // Validate with server that session is still valid
         try {
           const response = await fetch("/api/auth/verify", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({}), // Empty body = check session cookie
+            body: JSON.stringify({}),
             credentials: "include",
           });
 
@@ -65,7 +76,6 @@ export function useGuideAuth(): {
         } catch {
           // Session validation failed
         }
-        // Session invalid, clear it
         clearParentAuth();
       }
 
@@ -74,9 +84,19 @@ export function useGuideAuth(): {
     }
 
     verifyAuth();
-  }, []);
+  }, [enabled]);
 
-  return { authenticated, isLoading, logout };
+  return { authenticated, isLoading, logout, setAuthenticated };
+}
+
+export function useGuideAuth(): {
+  authenticated: boolean;
+  isLoading: boolean;
+  logout: () => void;
+} {
+  const context = useContext(GuideAuthContext);
+  const standalone = useStandaloneGuideAuth(context === null);
+  return context ?? standalone;
 }
 
 interface GuideAuthProps {
@@ -211,20 +231,12 @@ export function GuideAuth({
   loadingMessage = "Sjekker tilgang...",
   showLogout = false,
 }: GuideAuthProps) {
-  const { authenticated, isLoading, logout } = useGuideAuth();
-  const [loginSuccess, setLoginSuccess] = useState(false);
+  const authState = useStandaloneGuideAuth(true);
+  const { authenticated, isLoading, logout, setAuthenticated } = authState;
 
-  // Handle successful login
   const handleLoginSuccess = useCallback(() => {
-    setLoginSuccess(true);
-  }, []);
-
-  // Derive showContent from authenticated state or successful login
-  // Note: logout triggers a full page reload, so no need to reset loginSuccess
-  const showContent = useMemo(
-    () => authenticated || loginSuccess,
-    [authenticated, loginSuccess],
-  );
+    setAuthenticated(true);
+  }, [setAuthenticated]);
 
   if (isLoading) {
     return (
@@ -234,12 +246,12 @@ export function GuideAuth({
     );
   }
 
-  if (!showContent) {
+  if (!authenticated) {
     return <ParentLoginForm onSuccess={handleLoginSuccess} />;
   }
 
   return (
-    <>
+    <GuideAuthContext.Provider value={authState}>
       {showLogout && (
         <div className="fixed top-4 right-4 z-50 print:hidden">
           <button
@@ -251,6 +263,6 @@ export function GuideAuth({
         </div>
       )}
       {children}
-    </>
+    </GuideAuthContext.Provider>
   );
 }

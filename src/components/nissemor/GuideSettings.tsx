@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Icon } from "@/lib/icons";
+import { useApp } from "@/lib/app-context";
+import { clearParentAuth } from "@/lib/session-manager";
 
 interface EmailSubscriptionStatus {
   subscribed: boolean;
@@ -11,6 +13,7 @@ interface EmailSubscriptionStatus {
 
 export function GuideSettings() {
   const router = useRouter();
+  const { logout } = useApp();
   const [emailStatus, setEmailStatus] =
     useState<EmailSubscriptionStatus | null>(null);
   const [loading, setLoading] = useState(true);
@@ -112,6 +115,8 @@ export function GuideSettings() {
 
         // Redirect to home page after 3 seconds
         setTimeout(() => {
+          clearParentAuth();
+          logout();
           router.push("/");
         }, 3000);
       } else {
