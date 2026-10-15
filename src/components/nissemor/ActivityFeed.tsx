@@ -46,13 +46,17 @@ export function ActivityFeed({
     }> = [];
 
     // Add code submissions
+    const allQuests = GameEngine.getAllQuests();
     submittedCodes.forEach((entry) => {
+      const matchedDay =
+        entry.day ||
+        allQuests.find((q) => q.kode.toUpperCase() === entry.kode.toUpperCase())
+          ?.dag ||
+        completedDays.size;
       combined.push({
         timestamp: new Date(entry.dato),
         type: "code",
-        day:
-          parseInt(entry.kode.match(/dag-(\d+)/)?.[1] || "0", 10) ||
-          completedDays.size,
+        day: matchedDay,
         code: entry.kode,
       });
     });

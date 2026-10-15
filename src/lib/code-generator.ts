@@ -6,6 +6,8 @@
  * 2. Parent Code: Secure, alphanumeric (e.g., "NORDPOL-8N4K2")
  */
 
+import { getCurrentDate } from "./date-utils";
+
 // Snøfall-themed vocabulary for kid codes (split into combinable parts)
 const SNOFALL_PREFIXES = [
   "BREVFUGL",
@@ -93,7 +95,7 @@ export function generateKidCode(
   year?: number,
   existingCodes: string[] = [],
 ): string {
-  const yearSuffix = year || new Date().getFullYear();
+  const yearSuffix = year || getCurrentDate().getFullYear();
   const maxAttempts = 100;
   let attempts = 0;
 

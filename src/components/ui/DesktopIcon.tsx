@@ -66,7 +66,15 @@ export function DesktopIcon({
         className="md:w-12 md:h-12"
       />
       <span
-        className={`text-xs md:text-sm tracking-wider ${disabled ? "text-(--gray)" : `text-[var(--${color === "green" ? "neon-green" : color === "gold" ? "gold" : color === "blue" ? "cold-blue" : "neon-green"})]`}`}
+        className={`text-xs md:text-sm tracking-wider ${
+          disabled
+            ? "text-(--gray)"
+            : color === "gold"
+              ? "text-(--gold)"
+              : color === "blue"
+                ? "text-(--cold-blue)"
+                : "text-(--neon-green)"
+        }`}
       >
         {label}
       </span>

@@ -240,11 +240,15 @@ export class StorageManager {
   static getUnreadEmailCount(
     currentDay: number,
     totalMissions: number,
-    missions?: Array<{ dag: number; bonusoppdrag?: { kode?: string } }>,
+    missions?: Array<{
+      dag: number;
+      kode?: string;
+      bonusoppdrag?: { kode?: string };
+    }>,
   ): number {
     const viewed = this.getViewedEmails();
     const viewedBonusOppdrag = this.getViewedBonusOppdragEmails();
-    const completedCodes = this.getSubmittedCodes().map((c) => c.kode);
+    const submittedCodes = this.getSubmittedCodes();
     let unreadCount = 0;
 
     for (let day = 1; day <= Math.min(currentDay, totalMissions); day++) {
@@ -258,10 +262,12 @@ export class StorageManager {
         const mission = missions.find((m) => m.dag === day);
         if (mission?.bonusoppdrag) {
           // Check if main quest is completed (to know if bonus quest is accessible)
-          const mainCode = missions.find((m) => m.dag === day);
-          const isMainCompleted =
-            mainCode &&
-            completedCodes.includes(mission.bonusoppdrag.kode || "");
+          const isMainCompleted = submittedCodes.some(
+            (c) =>
+              c.day === day ||
+              (mission.kode &&
+                c.kode.toUpperCase() === mission.kode.toUpperCase()),
+          );
 
           // Side-quest is accessible if main mission is completed
           if (isMainCompleted && !viewedBonusOppdrag.has(day)) {
@@ -752,7 +758,9 @@ export class StorageManager {
   static hasUnreadNiceList(): boolean {
     // Check if Day 24 is completed
     const codes = this.getSubmittedCodes();
-    const day24Code = codes.find((c) => c.kode === "JULAFTEN");
+    const day24Code = codes.find(
+      (c) => c.day === 24 || c.kode.toUpperCase() === "SNØFALLVENNER",
+    );
     if (!day24Code) return false;
 
     // Get last viewed timestamp

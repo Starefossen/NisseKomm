@@ -15,17 +15,7 @@ export function VarselKonsoll({ alerts, currentDay }: VarselKonsollProps) {
   const [selectedAlert, setSelectedAlert] = useState<number | null>(null);
   const [dynamicAlerts, setDynamicAlerts] = useState<Varsel[]>(() => {
     if (typeof window !== "undefined") {
-      const completedDays = new Set(
-        GameEngine.getSubmittedCodes()
-          .map(
-            (c) =>
-              GameEngine.getAllQuests().findIndex(
-                (q) => q.kode.toUpperCase() === c.kode.toUpperCase(),
-              ) + 1,
-          )
-          .filter((d) => d > 0),
-      );
-      return GameEngine.getDailyAlerts(currentDay || 1, completedDays);
+      return GameEngine.getDailyAlerts(currentDay || 1);
     }
     return alerts;
   });
@@ -34,19 +24,7 @@ export function VarselKonsoll({ alerts, currentDay }: VarselKonsollProps) {
     // Refresh alerts when day changes - use requestAnimationFrame to defer setState
     if (typeof window !== "undefined") {
       requestAnimationFrame(() => {
-        const completedDays = new Set(
-          GameEngine.getSubmittedCodes()
-            .map(
-              (c) =>
-                GameEngine.getAllQuests().findIndex(
-                  (q) => q.kode.toUpperCase() === c.kode.toUpperCase(),
-                ) + 1,
-            )
-            .filter((d) => d > 0),
-        );
-        setDynamicAlerts(
-          GameEngine.getDailyAlerts(currentDay || 1, completedDays),
-        );
+        setDynamicAlerts(GameEngine.getDailyAlerts(currentDay || 1));
       });
     }
   }, [currentDay]); // Only run when day changes, not on mount
@@ -102,11 +80,7 @@ export function VarselKonsoll({ alerts, currentDay }: VarselKonsollProps) {
                   size={12}
                   color={
                     getAlertColor(alert.type) as
-                      | "red"
-                      | "green"
-                      | "blue"
-                      | "gray"
-                      | "gold"
+                      "red" | "green" | "blue" | "gray" | "gold"
                   }
                   className="mt-0.5 shrink-0"
                 />

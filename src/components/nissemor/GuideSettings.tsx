@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Icon } from "@/lib/icons";
 
 interface EmailSubscriptionStatus {
@@ -9,6 +10,7 @@ interface EmailSubscriptionStatus {
 }
 
 export function GuideSettings() {
+  const router = useRouter();
   const [emailStatus, setEmailStatus] =
     useState<EmailSubscriptionStatus | null>(null);
   const [loading, setLoading] = useState(true);
@@ -110,7 +112,7 @@ export function GuideSettings() {
 
         // Redirect to home page after 3 seconds
         setTimeout(() => {
-          window.location.href = "/";
+          router.push("/");
         }, 3000);
       } else {
         setMessage({

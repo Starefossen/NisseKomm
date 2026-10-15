@@ -5,7 +5,6 @@ import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { FilNode, Oppdrag } from "@/types/innhold";
 import { GameEngine } from "@/lib/game-engine";
-import { StorageManager } from "@/lib/storage";
 import { resolveTemplate } from "@/lib/template-resolver";
 
 interface NisseNetUtforskerProps {
@@ -26,18 +25,13 @@ export function NisseNetUtforsker({
   );
   const [selectedFile, setSelectedFile] = useState<FilNode | null>(null);
   const [friendNames, setFriendNames] = useState<string[]>([]);
-  const [stats, setStats] = useState({
-    totalFiles: 0,
-    accessibleFiles: 0,
-    secretFiles: 0,
-    accessibleSecrets: 0,
-  });
+  const [initialLastVisit] = useState(() => GameEngine.getNisseNetLastVisit());
 
   // Fetch friend names from Sanity session on mount
   useEffect(() => {
     async function loadFriendNames() {
       try {
-        const names = await StorageManager.getFriendNames();
+        const names = await GameEngine.getFriendNames();
         setFriendNames(names);
       } catch (error) {
         console.error("Failed to load friend names:", error);
@@ -48,19 +42,18 @@ export function NisseNetUtforsker({
 
   // Track visit time when component mounts
   useEffect(() => {
-    StorageManager.setNisseNetLastVisit(currentDay);
+    GameEngine.updateNisseNetLastVisit(currentDay);
   }, [currentDay]);
 
-  // Check if file was newly unlocked today
+  // Check if file was newly unlocked since last visit
   const isFileNew = (fileName: string): boolean => {
-    const lastVisit = StorageManager.getNisseNetLastVisit();
     const completedQuests = GameEngine.loadGameState().completedQuests;
 
     // Check if any quest completed since last visit unlocked this file
     for (const quest of missions) {
       if (
         completedQuests.has(quest.dag) &&
-        quest.dag > lastVisit &&
+        quest.dag > initialLastVisit &&
         quest.reveals?.files?.includes(fileName)
       ) {
         return true;
@@ -117,7 +110,7 @@ export function NisseNetUtforsker({
       if (node.type === "fil" && node.navn === "snill_slem_liste.txt") {
         const gameState = GameEngine.loadGameState();
         const completedDays = Array.from(gameState.completedQuests);
-        const playerNames = StorageManager.getPlayerNames();
+        const playerNames = GameEngine.getPlayerNames();
 
         // Use template resolver to handle all placeholders
         const resolvedContent = resolveTemplate(node.innhold || "", {
@@ -201,11 +194,6 @@ export function NisseNetUtforsker({
     };
   }, [processedFiles, currentDay]);
 
-  // Update stats when they change
-  useEffect(() => {
-    setStats(fileStats);
-  }, [fileStats]);
-
   const toggleFolder = (path: string) => {
     const newExpanded = new Set(expandedFolders);
     if (newExpanded.has(path)) {
@@ -250,7 +238,7 @@ export function NisseNetUtforsker({
         const isNew = isFileNew(node.navn);
         const isUnreadNiceList =
           node.navn === "snill_slem_liste.txt" &&
-          StorageManager.hasUnreadNiceList();
+          GameEngine.hasUnreadNiceList();
 
         return (
           <button
@@ -259,7 +247,7 @@ export function NisseNetUtforsker({
               setSelectedFile(node);
               // Mark Nice List as viewed when opened
               if (node.navn === "snill_slem_liste.txt") {
-                StorageManager.setNiceListViewed();
+                GameEngine.setNiceListViewed();
               }
             }}
             className={`
@@ -286,7 +274,7 @@ export function NisseNetUtforsker({
 
   return (
     <RetroWindow
-      title={`NISSENET (${stats.accessibleFiles}/${stats.totalFiles} filer | ${stats.accessibleSecrets}/${stats.secretFiles} hemmeligheter)`}
+      title={`NISSENET (${fileStats.accessibleFiles}/${fileStats.totalFiles} filer | ${fileStats.accessibleSecrets}/${fileStats.secretFiles} hemmeligheter)`}
       onClose={onClose}
     >
       <div className="p-6 flex flex-col h-full space-y-6">
@@ -299,10 +287,11 @@ export function NisseNetUtforsker({
           </div>
           <div className="text-right text-sm">
             <div className="text-(--neon-green)">
-              {stats.accessibleFiles} / {stats.totalFiles} FILER
+              {fileStats.accessibleFiles} / {fileStats.totalFiles} FILER
             </div>
             <div className="text-(--gold)">
-              {stats.accessibleSecrets} / {stats.secretFiles} HEMMELIGHETER
+              {fileStats.accessibleSecrets} / {fileStats.secretFiles}{" "}
+              HEMMELIGHETER
             </div>
           </div>
         </div>

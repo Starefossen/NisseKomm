@@ -21,11 +21,6 @@ function OppdragContent() {
   // Counter to force useMemo recalculation when data changes
   const [refreshCounter, setRefreshCounter] = useState(0);
 
-  // Ensure selectedDay updates when relevantDay changes (e.g., date changes)
-  useEffect(() => {
-    setSelectedDay(relevantDay);
-  }, [relevantDay]);
-
   const completedDays = useMemo(() => {
     return new Set(GameEngine.getCompletedDays());
     // eslint-disable-next-line react-hooks/exhaustive-deps -- refreshCounter intentionally triggers recalculation
@@ -85,7 +80,7 @@ function OppdragContent() {
               "Home / g : Første dag\n" +
               "End / G : Siste dag\n" +
               "t : Gå til dagens dato\n" +
-              "? : Vis denna hjelpen",
+              "? : Vis denne hjelpen",
           );
           break;
       }
@@ -167,8 +162,8 @@ function OppdragContent() {
 
       {/* Footer */}
       <div className="max-w-7xl mx-auto text-center opacity-70 text-sm pb-8">
-        <p>NisseKomm v1.0 - Nissemor Control Panel</p>
-        <p>Hold denna siden hemmelig fra barna! 🤫</p>
+        <p>NisseKomm v1.0 - Nissemor Kontrollpanel</p>
+        <p>Hold denne siden hemmelig fra barna! 🤫</p>
       </div>
     </div>
   );

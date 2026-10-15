@@ -66,7 +66,7 @@ function NissemorGuideContent() {
       <div className="max-w-7xl mx-auto text-center opacity-70 text-sm pb-8 pt-8">
         <p>NisseKomm v1.0 - Nissemor Kontrollpanel</p>
         <p className="text-(--christmas-red) font-bold mt-1">
-          🔒 Hold denna siden hemmelig fra barna!
+          🔒 Hold denne siden hemmelig fra barna!
         </p>
       </div>
     </div>

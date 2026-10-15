@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import { Icons } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
-import { StorageManager } from "@/lib/storage";
-import { getCollectedSymbols } from "@/lib/systems/symbol-system";
 import { getEventyr } from "@/lib/eventyr";
 import { BadgeManager } from "@/lib/badge-system";
 import { trackEvent } from "@/lib/analytics";
@@ -19,14 +17,14 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
   const [stage, setStage] = useState(1);
 
   // Get player names from storage
-  const playerNames = StorageManager.getPlayerNames();
+  const playerNames = GameEngine.getPlayerNames();
   const names = playerNames.length > 0 ? playerNames.join(", ") : "Spillernavn";
 
   // Calculate game statistics
   const completedEventyr = GameEngine.getCompletedEventyr();
   const totalEventyr = GameEngine.getTotalEventyr();
   const solvedDecryptions = GameEngine.getSolvedDecryptions();
-  const collectedSymbols = getCollectedSymbols();
+  const collectedSymbols = GameEngine.getCollectedSymbols();
 
   // Get trophy badge
   const trophyBadge = BadgeManager.getBadge("julekalender-fullfort");
@@ -162,7 +160,7 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
                   <div className="text-xl text-(--gold) font-bold">
                     🔐 DEKRYPTERING & SYMBOLER
                   </div>
-                  <div className="text-sm text-black space-y-1">
+                  <div className="text-sm text-(--neon-green) space-y-1">
                     {collectedSymbols.length > 0 && (
                       <div>✓ {collectedSymbols.length} symboler samlet</div>
                     )}

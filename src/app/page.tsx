@@ -76,8 +76,6 @@ export default function Home() {
   const [showGrandFinale, setShowGrandFinale] = useState(false);
   const [showNameEntry, setShowNameEntry] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [localUnreadFileCount, setLocalUnreadFileCount] =
-    useState(unreadFileCount);
 
   const { playSound, playJingle } = useSounds();
 
@@ -93,7 +91,7 @@ export default function Home() {
     // Check if Day 22 just completed and names not yet entered
     if (
       GameEngine.isQuestCompleted(22) &&
-      StorageManager.getPlayerNames().length === 0
+      GameEngine.getPlayerNames().length === 0
     ) {
       // Delay to let success animation play
       setTimeout(() => setShowNameEntry(true), 2000);
@@ -132,11 +130,6 @@ export default function Home() {
       setSelectedDay(null);
       trackWindowInteraction(windowId, "opened");
       playSound("open");
-
-      // Reset NisseNet unread count when opening
-      if (windowId === "nissenet" && typeof window !== "undefined") {
-        setLocalUnreadFileCount(0);
-      }
     }
   };
 
@@ -162,7 +155,7 @@ export default function Home() {
   };
 
   const handleNameEntryComplete = (names: string[]) => {
-    StorageManager.setPlayerNames(names);
+    GameEngine.setPlayerNames(names);
     setShowNameEntry(false);
     playSound("success");
   };
@@ -173,10 +166,6 @@ export default function Home() {
   const effectiveAuthenticated = isInitializing
     ? StorageManager.isAuthenticated()
     : isAuthenticated;
-
-  // Use context file count unless we've reset it locally (when opening NisseNet)
-  const displayUnreadFileCount =
-    localUnreadFileCount === 0 ? 0 : unreadFileCount;
 
   // Show access denied if outside December 1-24 in production mode
   if (!isDateValid()) {
@@ -276,7 +265,7 @@ export default function Home() {
                       icon="folder"
                       label="NISSENET"
                       color="green"
-                      unreadCount={displayUnreadFileCount}
+                      unreadCount={unreadFileCount}
                       onClick={() => handleIconClick("nissenet")}
                     />
                     <DesktopIcon

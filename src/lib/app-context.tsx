@@ -207,7 +207,7 @@ export function AppProvider({ children }: AppProviderProps) {
     const restoreSession = async () => {
       const existingSessionId = getSessionId();
 
-      if (existingSessionId && !isAuthenticated) {
+      if (existingSessionId) {
         console.debug(
           "[AppContext] Restoring session:",
           existingSessionId.substring(0, 8) + "...",
@@ -218,6 +218,8 @@ export function AppProvider({ children }: AppProviderProps) {
         setIsAuthenticated(true);
 
         console.debug("[AppContext] Session restored successfully");
+      } else if (isAuthenticated) {
+        refreshGameState();
       }
 
       setIsInitializing(false);

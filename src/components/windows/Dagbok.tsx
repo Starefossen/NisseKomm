@@ -18,16 +18,10 @@ export function Dagbok({ missions, onClose }: DagbokProps) {
   const [lastReadDay, setLastReadDay] = useState<number>(() =>
     StorageManager.getDagbokLastRead(),
   );
-  const [playerNames, setPlayerNames] = useState<string[]>([]);
+  const [playerNames] = useState<string[]>(() => GameEngine.getPlayerNames());
   const entryRefs = useRef<Map<number, HTMLDivElement>>(new Map());
   const containerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
-
-  // Load player names for template resolution
-  useEffect(() => {
-    const names = StorageManager.getPlayerNames();
-    setPlayerNames(names);
-  }, []);
 
   // Get completed quests to filter diary entries
   const completedQuests =

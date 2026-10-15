@@ -5,16 +5,14 @@ import Image from "next/image";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { BadgeManager } from "@/lib/badge-system";
-import { StorageManager } from "@/lib/storage";
 import { GameEngine } from "@/lib/game-engine";
-import { getCollectedSymbols } from "@/lib/systems/symbol-system";
 import { Icon } from "@/lib/icons";
 
 /**
  * Merker (Badges) Management Page
  *
  * Provides overview and management of the badge system:
- * - View all 6 badges with descriptions and unlock conditions
+ * - View all 7 badges with descriptions and unlock conditions
  * - See which badges are earned vs locked
  * - Manually award/revoke badges for testing
  * - View badge statistics
@@ -69,7 +67,7 @@ function MerkerContent() {
     );
 
     if (confirmed) {
-      StorageManager.addEarnedBadge(badgeId);
+      GameEngine.addEarnedBadge(badgeId);
       alert(`✓ Merke tildelt: ${badge.navn}`);
       forceUpdate({});
     }
@@ -84,7 +82,7 @@ function MerkerContent() {
     );
 
     if (confirmed) {
-      StorageManager.removeEarnedBadge(badgeId);
+      GameEngine.removeEarnedBadge(badgeId);
       alert(`Merke fjernet: ${badge.navn}`);
       forceUpdate({});
     }
@@ -116,6 +114,8 @@ function MerkerContent() {
         return `Løs alle 3 dekrypteringsutfordringer i NisseKrypto`;
       case "allSymbolsCollected":
         return `Samle alle 9 symboler i Symbolskanner`;
+      case "allQuestsCompleted":
+        return `Fullfør alle 24 hovedoppdrag i julekalenderen`;
       default:
         return "Ukjent betingelse";
     }
@@ -151,10 +151,16 @@ function MerkerContent() {
           : `⏳ ${solved.length}/3 dekrypteringer løst`;
       }
       case "allSymbolsCollected": {
-        const symbols = getCollectedSymbols();
+        const symbols = GameEngine.getCollectedSymbols();
         return symbols.length >= 9
           ? "✓ Alle symboler samlet"
           : `⏳ ${symbols.length}/9 symboler samlet`;
+      }
+      case "allQuestsCompleted": {
+        const completedCount = GameEngine.getCompletedQuestCount();
+        return completedCount >= 24
+          ? "✓ Alle 24 oppdrag fullført"
+          : `⏳ ${completedCount}/24 oppdrag fullført`;
       }
       default:
         return "❓ Ukjent status";
@@ -171,6 +177,8 @@ function MerkerContent() {
         return "text-blue-400 border-blue-600";
       case "collection":
         return "text-green-400 border-green-600";
+      case "completion":
+        return "text-(--gold) border-(--gold)";
       default:
         return "text-gray-400 border-gray-600";
     }
@@ -186,6 +194,8 @@ function MerkerContent() {
         return "DEKRYPTERING";
       case "collection":
         return "SAMLING";
+      case "completion":
+        return "FULLFØRING";
       default:
         return type.toUpperCase();
     }

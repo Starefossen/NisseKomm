@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   isParentAuthenticated,
   clearParentAuth,
   setParentAuthenticated,
   setSessionId,
 } from "@/lib/session-manager";
-import { useEffect } from "react";
 
 /**
  * GuideAuth Component
@@ -29,15 +29,15 @@ export function useGuideAuth(): {
   isLoading: boolean;
   logout: () => void;
 } {
+  const router = useRouter();
   const [authenticated, setAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const logout = useCallback(() => {
     clearParentAuth();
     setAuthenticated(false);
-    // Force a full page reload to reset all component state
-    window.location.href = "/nissemor-guide";
-  }, []);
+    router.push("/nissemor-guide");
+  }, [router]);
 
   useEffect(() => {
     async function verifyAuth() {
