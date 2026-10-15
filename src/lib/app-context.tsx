@@ -10,7 +10,12 @@ import {
 } from "react";
 import { StorageManager } from "./storage";
 import { GameEngine } from "./game-engine";
-import { getSessionId, setSessionId } from "./session-manager";
+import {
+  getSessionId,
+  setSessionId,
+  clearSessionId,
+  clearParentAuth,
+} from "./session-manager";
 import { CalendarEvent } from "@/types/innhold";
 
 /**
@@ -58,6 +63,7 @@ interface AppState {
 
   // Actions
   authenticate: (sessionId: string) => Promise<void>;
+  logout: () => void;
   refreshGameState: () => void;
   refreshFamilyData: () => Promise<void>;
 }
@@ -200,6 +206,16 @@ export function AppProvider({ children }: AppProviderProps) {
     [initializeApp],
   );
 
+  const logout = useCallback(() => {
+    clearParentAuth();
+    clearSessionId();
+    StorageManager.clearAll();
+    setSessionIdState(null);
+    setIsAuthenticated(false);
+    setFamilyData(defaultFamilyData);
+    refreshGameState();
+  }, [refreshGameState]);
+
   /**
    * Restore existing session on mount
    */
@@ -239,6 +255,7 @@ export function AppProvider({ children }: AppProviderProps) {
     unreadFileCount,
     unreadDagbokCount,
     authenticate,
+    logout,
     refreshGameState,
     refreshFamilyData,
   };
