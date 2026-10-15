@@ -224,7 +224,7 @@ function HandlelisteContent() {
                   <span>{getCategoryIcon(kategori)}</span>
                   <span>{kategori}</span>
                   <span className="text-xl opacity-70">
-                    ({items.size} {items.size === 1 ? "item" : "items"})
+                    ({items.size} {items.size === 1 ? "vare" : "varer"})
                   </span>
                 </h2>
               </div>

@@ -176,7 +176,7 @@ export function getEventyrMilepælVarsler(
 
   if (day >= 13 && completedDays.has(13)) {
     milepælVarsler.push({
-      tekst: "🕯️ LUCIA: Lysseremoni fullført! Sn</pelet stråler!",
+      tekst: "🕯️ LUCIA: Lysseremoni fullført! Snøfall stråler!",
       type: "info",
       tidspunkt: generateAlertTimestamp(),
       day: 13,

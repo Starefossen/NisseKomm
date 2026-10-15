@@ -4,7 +4,6 @@ import { Suspense, useState, useEffect } from "react";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { GameEngine } from "@/lib/game-engine";
-import { StorageManager } from "@/lib/storage";
 import { BadgeManager } from "@/lib/badge-system";
 import type { Oppdrag } from "@/types/innhold";
 
@@ -90,7 +89,7 @@ function BonusoppdragContent() {
     if (confirmed) {
       // Remove the badge from unified system
       if (quest.bonusoppdrag.badge_id) {
-        StorageManager.removeEarnedBadge(quest.bonusoppdrag.badge_id);
+        GameEngine.removeEarnedBadge(quest.bonusoppdrag.badge_id);
       }
 
       alert("Bonusoppdrag tilbakestilt");

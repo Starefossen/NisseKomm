@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { GameEngine } from "@/lib/game-engine";
-import { StorageManager } from "@/lib/storage";
 import { resolveTemplate } from "@/lib/template-resolver";
 import type { Oppdrag, PrintMaterial } from "@/types/innhold";
 
@@ -198,9 +197,7 @@ function PrintoutContent() {
 
   // State for player names (for template resolution in diplomas)
   // Uses lazy initialization to avoid useEffect for synchronous data
-  const [playerNames] = useState<string[]>(() =>
-    StorageManager.getPlayerNames(),
-  );
+  const [playerNames] = useState<string[]>(() => GameEngine.getPlayerNames());
 
   // Helper to resolve templates in print material content
   const resolveContent = (content: string): string => {

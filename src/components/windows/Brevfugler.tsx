@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
-import { StorageManager } from "@/lib/storage";
 import { GameEngine } from "@/lib/game-engine";
 
 interface Letter {
@@ -50,7 +49,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
 
   const handleTranscribe = () => {
     if (selectedDay && transcriptionContent.trim()) {
-      StorageManager.leggTilBrevfugl(selectedDay, transcriptionContent);
+      GameEngine.addBrevfugl(selectedDay, transcriptionContent);
       setTranscriptionContent("");
       setSelectedDay(null);
       // Refresh

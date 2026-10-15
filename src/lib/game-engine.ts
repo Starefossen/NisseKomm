@@ -40,7 +40,13 @@ import {
   convertDailyAlerts,
   sortAlertsByPriority,
 } from "./generators/alert-generator";
-import { getAllSymbols, collectSymbolByCode } from "./systems/symbol-system";
+import {
+  getAllSymbols,
+  collectSymbolByCode,
+  getCollectedSymbols,
+  addCollectedSymbol,
+  clearCollectedSymbols,
+} from "./systems/symbol-system";
 import { getAllQuests, getQuestByDay } from "./data-loader";
 import {
   Oppdrag,
@@ -177,26 +183,21 @@ export class GameEngine {
       }
     });
 
-    // Compute eventyr completion inline to avoid circular dependency
-    const eventyrPhases = new Map<string, Set<number>>();
+    // Compute eventyr completion using total phase count from getEventyrDays
+    const eventyrIds = new Set<string>();
     allQuests.forEach((quest) => {
-      if (quest.eventyr && completedQuests.has(quest.dag)) {
-        const { id, phase } = quest.eventyr;
-        if (!eventyrPhases.has(id)) {
-          eventyrPhases.set(id, new Set());
-        }
-        eventyrPhases.get(id)!.add(phase);
+      if (quest.eventyr) {
+        eventyrIds.add(quest.eventyr.id);
       }
     });
 
     const completedEventyrList: string[] = [];
-    eventyrPhases.forEach((phases, eventyrId) => {
-      const sortedPhases = Array.from(phases).sort((a, b) => a - b);
-      const maxPhase = Math.max(...sortedPhases);
-      const isComplete =
-        sortedPhases.length === maxPhase &&
-        sortedPhases.every((phase, idx) => phase === idx + 1);
-      if (isComplete) {
+    eventyrIds.forEach((eventyrId) => {
+      const allDaysForEventyr = getEventyrDays(eventyrId);
+      if (
+        allDaysForEventyr.length > 0 &&
+        allDaysForEventyr.every((day) => completedQuests.has(day))
+      ) {
         completedEventyrList.push(eventyrId);
       }
     });
@@ -585,6 +586,7 @@ export class GameEngine {
           StorageManager.addUnlockedFile(fileId);
         });
       }
+      BadgeManager.checkAndAwardAllEligibleBadges();
       return {
         correct: true,
         message: challenge.messageWhenSolved,
@@ -655,9 +657,16 @@ export class GameEngine {
    * @public Used by NisseKrypto and SymbolScanner components
    * @see StorageManager.getCollectedSymbols() - Persistence layer
    */
-  static getCollectedSymbols() {
-    return StorageManager.getCollectedSymbols();
+  static getCollectedSymbols = getCollectedSymbols;
+
+  static addCollectedSymbol(
+    symbol: ReturnType<typeof getAllSymbols>[number],
+  ): void {
+    addCollectedSymbol(symbol);
+    BadgeManager.checkAndAwardAllEligibleBadges();
   }
+
+  static clearCollectedSymbols = clearCollectedSymbols;
 
   /**
    * ============================================================
@@ -668,7 +677,14 @@ export class GameEngine {
    */
 
   public static getAllSymbols = getAllSymbols;
-  public static collectSymbolByCode = collectSymbolByCode;
+
+  public static collectSymbolByCode(code: string) {
+    const result = collectSymbolByCode(code);
+    if (result.success) {
+      BadgeManager.checkAndAwardAllEligibleBadges();
+    }
+    return result;
+  }
 
   /**
    * Get newly unlocked content for a completed quest
@@ -771,6 +787,46 @@ export class GameEngine {
     });
 
     return unreadCount;
+  }
+
+  static getNisseNetLastVisit(): number {
+    return StorageManager.getNisseNetLastVisit();
+  }
+
+  static updateNisseNetLastVisit(day: number): void {
+    StorageManager.setNisseNetLastVisit(day);
+  }
+
+  static hasUnreadNiceList(): boolean {
+    return StorageManager.hasUnreadNiceList();
+  }
+
+  static setNiceListViewed(): void {
+    StorageManager.setNiceListViewed();
+  }
+
+  static getPlayerNames(): string[] {
+    return StorageManager.getPlayerNames();
+  }
+
+  static setPlayerNames(names: string[]): void {
+    StorageManager.setPlayerNames(names);
+  }
+
+  static getFriendNames(): Promise<string[]> {
+    return StorageManager.getFriendNames();
+  }
+
+  static addBrevfugl(dag: number, innhold: string): void {
+    StorageManager.leggTilBrevfugl(dag, innhold);
+  }
+
+  static addEarnedBadge(badgeId: string): void {
+    StorageManager.addEarnedBadge(badgeId);
+  }
+
+  static removeEarnedBadge(badgeId: string): void {
+    StorageManager.removeEarnedBadge(badgeId);
   }
 
   /**
@@ -1139,7 +1195,10 @@ export class GameEngine {
    * @param completedDays - Set of completed day numbers
    * @returns Array of Varsel objects for display
    */
-  static getDailyAlerts(day: number, completedDays: Set<number>): Varsel[] {
+  static getDailyAlerts(
+    day: number,
+    completedDays: Set<number> = this.getCompletedDays(),
+  ): Varsel[] {
     const alerts: Varsel[] = [];
     const dailyAlertsData = (
       statiskInnhold as unknown as {

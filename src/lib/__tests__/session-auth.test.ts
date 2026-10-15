@@ -14,7 +14,15 @@
 // Configure environment for testing
 process.env.NEXT_PUBLIC_STORAGE_BACKEND = "localStorage";
 
-import { describe, it, expect, beforeEach, jest } from "@jest/globals";
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  afterEach,
+  jest,
+} from "@jest/globals";
+import { getCurrentDate } from "../date-utils";
 import {
   generateKidCode,
   generateParentCode,
@@ -33,6 +41,10 @@ import {
 } from "../session-manager";
 
 describe("Code Generation", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("should generate valid kid codes", () => {
     // Mock Math.random to ensure different codes
     let callCount = 0;
@@ -43,9 +55,10 @@ describe("Code Generation", () => {
 
     const code1 = generateKidCode();
     const code2 = generateKidCode();
+    const currentYear = getCurrentDate().getFullYear();
 
     expect(isValidKidCode(code1)).toBe(true);
-    expect(code1).toMatch(/^[A-Z]+2025$/);
+    expect(code1).toMatch(new RegExp(`^[A-ZÆØÅ]+${currentYear}$`));
     expect(code1).not.toBe(code2); // Different codes each time
 
     mockRandom.mockRestore();

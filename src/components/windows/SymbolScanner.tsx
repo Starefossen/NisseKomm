@@ -5,10 +5,7 @@ import { Html5Qrcode } from "html5-qrcode";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons, Icon } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
-import {
-  collectSymbolByCode,
-  getCollectedSymbols,
-} from "@/lib/systems/symbol-system";
+import { GameEngine } from "@/lib/game-engine";
 import { trackEvent, trackSymbolCollection } from "@/lib/analytics";
 
 interface SymbolScannerProps {
@@ -60,12 +57,6 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
   const qrReaderRef = useRef<Html5Qrcode | null>(null);
   const processingQRRef = useRef(false);
 
-  // Auto-start scanning on mount
-  useEffect(() => {
-    startScanning();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   // Helper to forcefully stop video tracks
   const stopMediaTracks = () => {
     try {
@@ -86,34 +77,90 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
     }
   };
 
-  // Cleanup QR scanner on unmount
-  useEffect(() => {
-    return () => {
-      // Always try to stop media tracks first
-      stopMediaTracks();
-
-      if (qrReaderRef.current) {
+  const stopScanning = async () => {
+    if (qrReaderRef.current) {
+      try {
+        // Try to stop gracefully first
+        await qrReaderRef.current.stop();
+      } catch (error) {
+        console.error("Failed to stop QR scanner:", error);
+      } finally {
+        // Always force stop tracks and clear
+        stopMediaTracks();
         try {
-          qrReaderRef.current
-            .stop()
-            .catch(() => {
-              // Ignore stop errors
-            })
-            .finally(() => {
-              if (qrReaderRef.current) {
-                try {
-                  qrReaderRef.current.clear();
-                } catch {
-                  // Ignore clear errors
-                }
-              }
-            });
+          if (qrReaderRef.current) {
+            qrReaderRef.current.clear();
+          }
         } catch {
-          // Ignore errors
+          // Ignore
         }
+        // Set to null to signal garbage collector
+        qrReaderRef.current = null;
       }
-    };
-  }, []);
+
+      // Clear the DOM element completely to remove any remaining video elements
+      const qrReaderElement = document.getElementById("qr-reader");
+      if (qrReaderElement) {
+        qrReaderElement.innerHTML = "";
+      }
+
+      SoundManager.playSound("click");
+      setIsScanning(false);
+    }
+  };
+
+  const processCode = async (inputCode: string) => {
+    SoundManager.playSound("click");
+
+    // Track symbol scan attempt
+    trackEvent("symbol_scanned", { symbolId: inputCode.trim() });
+
+    // Simulate processing delay
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const result = GameEngine.collectSymbolByCode(inputCode.trim());
+
+    if (result.success && result.symbol) {
+      SoundManager.playSound("success");
+
+      // Track successful symbol collection
+      const totalCollected = GameEngine.getCollectedSymbols().length;
+      trackSymbolCollection(result.symbol.symbolId, totalCollected);
+
+      setLastCollected({
+        symbolIcon: result.symbol.symbolIcon,
+        symbolColor: result.symbol.symbolColor,
+        description: result.symbol.description,
+      });
+
+      // Show success message briefly, then close to return to NisseKrypto
+      setTimeout(async () => {
+        setLastCollected(null);
+        // Ensure scanner is fully stopped before closing
+        await stopScanning();
+        onClose(); // Close scanner and return to NisseKrypto
+      }, 2000);
+    } else if (result.symbol) {
+      // Already collected symbol - show error but still close
+      SoundManager.playSound("error");
+
+      setLastCollected({
+        symbolIcon: result.symbol.symbolIcon,
+        symbolColor: result.symbol.symbolColor,
+        description: "Allerede samlet!",
+      });
+
+      // Show message briefly, then close to return to NisseKrypto
+      setTimeout(async () => {
+        setLastCollected(null);
+        await stopScanning();
+        onClose();
+      }, 2000);
+    } else {
+      // Invalid code - don't close, let user try again
+      SoundManager.playSound("error");
+    }
+  };
 
   const handleQRScan = async (decodedText: string) => {
     // Prevent multiple simultaneous scans
@@ -227,90 +274,43 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
     }
   };
 
-  const stopScanning = async () => {
-    if (qrReaderRef.current) {
-      try {
-        // Try to stop gracefully first
-        await qrReaderRef.current.stop();
-      } catch (error) {
-        console.error("Failed to stop QR scanner:", error);
-      } finally {
-        // Always force stop tracks and clear
-        stopMediaTracks();
+  // Auto-start scanning on mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      void startScanning();
+    }, 0);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Cleanup QR scanner on unmount
+  useEffect(() => {
+    return () => {
+      // Always try to stop media tracks first
+      stopMediaTracks();
+
+      if (qrReaderRef.current) {
         try {
-          if (qrReaderRef.current) {
-            qrReaderRef.current.clear();
-          }
+          qrReaderRef.current
+            .stop()
+            .catch(() => {
+              // Ignore stop errors
+            })
+            .finally(() => {
+              if (qrReaderRef.current) {
+                try {
+                  qrReaderRef.current.clear();
+                } catch {
+                  // Ignore clear errors
+                }
+              }
+            });
         } catch {
-          // Ignore
+          // Ignore errors
         }
-        // Set to null to signal garbage collector
-        qrReaderRef.current = null;
       }
-
-      // Clear the DOM element completely to remove any remaining video elements
-      const qrReaderElement = document.getElementById("qr-reader");
-      if (qrReaderElement) {
-        qrReaderElement.innerHTML = "";
-      }
-
-      SoundManager.playSound("click");
-      setIsScanning(false);
-    }
-  };
-
-  const processCode = async (inputCode: string) => {
-    SoundManager.playSound("click");
-
-    // Track symbol scan attempt
-    trackEvent("symbol_scanned", { symbolId: inputCode.trim() });
-
-    // Simulate processing delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const result = collectSymbolByCode(inputCode.trim());
-
-    if (result.success && result.symbol) {
-      SoundManager.playSound("success");
-
-      // Track successful symbol collection
-      const totalCollected = getCollectedSymbols().length;
-      trackSymbolCollection(result.symbol.symbolId, totalCollected);
-
-      setLastCollected({
-        symbolIcon: result.symbol.symbolIcon,
-        symbolColor: result.symbol.symbolColor,
-        description: result.symbol.description,
-      });
-
-      // Show success message briefly, then close to return to NisseKrypto
-      setTimeout(async () => {
-        setLastCollected(null);
-        // Ensure scanner is fully stopped before closing
-        await stopScanning();
-        onClose(); // Close scanner and return to NisseKrypto
-      }, 2000);
-    } else if (result.symbol) {
-      // Already collected symbol - show error but still close
-      SoundManager.playSound("error");
-
-      setLastCollected({
-        symbolIcon: result.symbol.symbolIcon,
-        symbolColor: result.symbol.symbolColor,
-        description: "Allerede samlet!",
-      });
-
-      // Show message briefly, then close to return to NisseKrypto
-      setTimeout(async () => {
-        setLastCollected(null);
-        await stopScanning();
-        onClose();
-      }, 2000);
-    } else {
-      // Invalid code - don't close, let user try again
-      SoundManager.playSound("error");
-    }
-  };
+    };
+  }, []);
 
   return (
     <RetroWindow title="SYMBOLSKANNER - QR KODE LESER" onClose={onClose}>
@@ -410,11 +410,7 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
                 size={48}
                 color={
                   lastCollected.symbolColor as
-                    | "green"
-                    | "red"
-                    | "blue"
-                    | "gold"
-                    | "gray"
+                    "green" | "red" | "blue" | "gold" | "gray"
                 }
               />
               <div>

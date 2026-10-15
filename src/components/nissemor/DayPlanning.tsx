@@ -21,10 +21,10 @@ export function DayPlanning({
       "⌨️ TASTATURSNARVEIER:\n\n" +
         "← / h : Forrige dag\n" +
         "→ / l : Neste dag\n" +
-        "Home / g : Första dag\n" +
+        "Home / g : Første dag\n" +
         "End / G : Siste dag\n" +
         "t : Gå til dagens dato\n" +
-        "? : Vis denna hjelpen",
+        "? : Vis denne hjelpen",
     );
   };
 
@@ -69,7 +69,7 @@ export function DayPlanning({
               <div>
                 <strong className="text-(--cold-blue)">📍 Plassering:</strong>
                 <br />
-                {selectedQuest.beste_rom || "Inte spesifisert"}
+                {selectedQuest.beste_rom || "Ikke spesifisert"}
               </div>
               <div>
                 <strong className="text-(--cold-blue)">

@@ -2,13 +2,6 @@
 
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import QRCodeStyling from "qr-code-styling";
-import {
-  getAllSymbols,
-  collectSymbolByCode,
-  getCollectedSymbols,
-  clearCollectedSymbols,
-  addCollectedSymbol,
-} from "@/lib/systems/symbol-system";
 import { GameEngine } from "@/lib/game-engine";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
@@ -28,12 +21,12 @@ type SymbolColor = "green" | "red" | "blue";
 
 function SymbolerContent() {
   const [collectedSymbols, setCollectedSymbols] = useState(() =>
-    getCollectedSymbols(),
+    GameEngine.getCollectedSymbols(),
   );
   const [qrCodes, setQrCodes] = useState<Map<string, QRCodeStyling>>(new Map());
   const qrRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
-  const allSymbols = getAllSymbols();
+  const allSymbols = GameEngine.getAllSymbols();
 
   // Listen for storage changes to auto-update symbol collection
   useEffect(() => {
@@ -41,7 +34,7 @@ function SymbolerContent() {
 
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "nissekomm-collected-symbols") {
-        setCollectedSymbols(getCollectedSymbols());
+        setCollectedSymbols(GameEngine.getCollectedSymbols());
       }
     };
 
@@ -164,10 +157,10 @@ function SymbolerContent() {
     );
 
     if (choice) {
-      const result = collectSymbolByCode(choice);
+      const result = GameEngine.collectSymbolByCode(choice);
       if (result.success) {
         alert(`✓ ${result.message}`);
-        setCollectedSymbols(getCollectedSymbols());
+        setCollectedSymbols(GameEngine.getCollectedSymbols());
       } else {
         alert(`✗ ${result.message}`);
       }
@@ -199,13 +192,13 @@ function SymbolerContent() {
 
     if (isCollected) {
       // Remove symbol
-      clearCollectedSymbols();
+      GameEngine.clearCollectedSymbols();
       const remaining = collectedSymbols.filter((c) => c.symbolId !== symbolId);
-      remaining.forEach((s) => addCollectedSymbol(s));
+      remaining.forEach((s) => GameEngine.addCollectedSymbol(s));
       setCollectedSymbols(remaining);
     } else {
       // Add symbol
-      addCollectedSymbol(symbol);
+      GameEngine.addCollectedSymbol(symbol);
       setCollectedSymbols([...collectedSymbols, symbol]);
     }
   };
@@ -288,7 +281,13 @@ function SymbolerContent() {
                       <Icon
                         name={symbol.symbolIcon}
                         size={24}
-                        className={`text-(--${symbol.symbolColor === "green" ? "neon-green" : symbol.symbolColor === "red" ? "christmas-red" : "cold-blue"})`}
+                        className={
+                          symbol.symbolColor === "green"
+                            ? "text-(--neon-green)"
+                            : symbol.symbolColor === "red"
+                              ? "text-(--christmas-red)"
+                              : "text-(--cold-blue)"
+                        }
                       />
                       <div className="flex-1">
                         <p className="font-bold text-sm">

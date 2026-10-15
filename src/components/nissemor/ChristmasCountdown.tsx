@@ -1,49 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-interface CountdownData {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-  isChristmas: boolean;
-  urgencyLevel: "calm" | "approaching" | "urgent" | "critical" | "today";
-}
-
-function getCountdown(): CountdownData {
-  const now = new Date();
-  const currentYear = now.getFullYear();
-  const christmas = new Date(currentYear, 11, 24, 0, 0, 0); // Dec 24th at midnight
-
-  // If we're past Christmas this year, count to next year
-  if (now > christmas) {
-    christmas.setFullYear(currentYear + 1);
-  }
-
-  const diff = christmas.getTime() - now.getTime();
-  const isChristmas = diff <= 0;
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-  let urgencyLevel: CountdownData["urgencyLevel"] = "calm";
-  if (isChristmas) urgencyLevel = "today";
-  else if (days === 0) urgencyLevel = "critical";
-  else if (days <= 3) urgencyLevel = "urgent";
-  else if (days <= 7) urgencyLevel = "approaching";
-
-  return { days, hours, minutes, seconds, isChristmas, urgencyLevel };
-}
+import { GameEngine } from "@/lib/game-engine";
 
 export function ChristmasCountdown() {
-  const [countdown, setCountdown] = useState<CountdownData>(getCountdown());
+  const [countdown, setCountdown] = useState(() =>
+    GameEngine.getChristmasCountdown(),
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCountdown(getCountdown());
+      setCountdown(GameEngine.getChristmasCountdown());
     }, 1000);
 
     return () => clearInterval(interval);

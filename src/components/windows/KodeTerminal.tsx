@@ -60,7 +60,12 @@ export function KodeTerminal({
     if (typeof window !== "undefined" && isAlreadySolved) {
       const codes = GameEngine.getSubmittedCodes();
       const dayMission = allMissions.find((m) => m.dag === currentDay);
-      const entry = codes.find((c) => c.kode === dayMission?.kode);
+      const entry = codes.find(
+        (c) =>
+          c.day === currentDay ||
+          (dayMission?.kode &&
+            c.kode.toUpperCase() === dayMission.kode.toUpperCase()),
+      );
       return entry?.kode || "";
     }
     return "";

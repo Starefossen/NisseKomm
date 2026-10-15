@@ -6,6 +6,10 @@
  */
 
 import { createClient } from "@sanity/client";
+import dotenv from "dotenv";
+import path from "path";
+
+dotenv.config({ path: path.resolve(process.cwd(), ".env.local") });
 
 async function globalTeardown() {
   // Skip if not using Sanity backend

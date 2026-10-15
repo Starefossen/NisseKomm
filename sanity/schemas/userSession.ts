@@ -34,6 +34,12 @@ export const submittedCodeType = defineType({
       validation: (Rule) => Rule.required(),
       description: "ISO timestamp when code was submitted",
     },
+    {
+      name: "day",
+      title: "Day",
+      type: "number",
+      description: "Quest day number (1-24)",
+    },
   ],
 });
 

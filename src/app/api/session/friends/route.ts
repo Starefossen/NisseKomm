@@ -67,16 +67,20 @@ export async function PATCH(request: NextRequest) {
 
     // Validate each name
     for (const name of friendNames) {
-      if (typeof name !== "string" || name.length > 20) {
+      if (typeof name !== "string" || name.length > 60) {
         return errorResponse(
-          "Friend names must be strings with max 20 characters",
+          "Friend names must be strings with max 60 characters",
         );
       }
     }
 
+    const sessionResult = await requireSession(sessionId);
+    if ("error" in sessionResult) return sessionResult.error;
+    const { session } = sessionResult;
+
     // Update userSession document
     await sanityServerClient
-      .patch(sessionId)
+      .patch(session._id)
       .set({ friendNames })
       .commit({ autoGenerateArrayKeys: true });
 

@@ -32,10 +32,12 @@ export function generateUnsubscribeToken(sessionId: string): string {
  */
 function verifyUnsubscribeToken(sessionId: string, token: string): boolean {
   const expectedToken = generateUnsubscribeToken(sessionId);
-  return crypto.timingSafeEqual(
-    Buffer.from(token, "hex"),
-    Buffer.from(expectedToken, "hex"),
-  );
+  const tokenBuffer = Buffer.from(token, "hex");
+  const expectedBuffer = Buffer.from(expectedToken, "hex");
+  if (tokenBuffer.length !== expectedBuffer.length) {
+    return false;
+  }
+  return crypto.timingSafeEqual(tokenBuffer, expectedBuffer);
 }
 
 /**

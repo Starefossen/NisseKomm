@@ -2,6 +2,7 @@
 
 import { useMemo, useEffect, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
+import { getCurrentDay } from "@/lib/date-utils";
 
 interface MetricsOverviewProps {
   refreshCounter?: number;
@@ -29,7 +30,7 @@ export function MetricsOverview({ refreshCounter = 0 }: MetricsOverviewProps) {
 
   const metrics = useMemo(() => {
     const completedDays = GameEngine.getCompletedDays();
-    const currentDay = new Date().getDate();
+    const currentDay = getCurrentDay();
     const allMetrics = GameEngine.getGlobalProductionMetrics(
       currentDay,
       completedDays.size,

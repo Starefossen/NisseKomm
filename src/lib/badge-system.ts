@@ -271,11 +271,7 @@ export class BadgeManager {
    */
   static getBadgesByType(
     type:
-      | "bonusoppdrag"
-      | "eventyr"
-      | "decryption"
-      | "collection"
-      | "completion",
+      "bonusoppdrag" | "eventyr" | "decryption" | "collection" | "completion",
   ): Badge[] {
     return this.getAllBadges().filter((b) => b.type === type);
   }
