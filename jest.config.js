@@ -36,5 +36,14 @@ module.exports = async () => {
     "/node_modules/(?!\\.pnpm/|(@sanity|nanoid|uuid|get-random-values|get-it|eventsource|eventsource-parser|obug)/)",
     "^.+\\.module\\.(css|sass|scss)$",
   ];
+  if (
+    process.env.NEXT_PUBLIC_STORAGE_BACKEND !== "sanity" ||
+    !process.env.SANITY_API_TOKEN
+  ) {
+    config.testPathIgnorePatterns = [
+      ...(config.testPathIgnorePatterns || []),
+      "<rootDir>/src/app/api/",
+    ];
+  }
   return config;
 };

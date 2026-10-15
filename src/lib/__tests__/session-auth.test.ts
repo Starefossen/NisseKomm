@@ -382,3 +382,55 @@ describe("Get Kid Code From Session", () => {
     expect(result).toBeNull();
   });
 });
+
+describe("SSR Hydration with Existing Session", () => {
+  it("should hydrate Home without mismatch when localStorage is authenticated", async () => {
+    const React = await import("react");
+    const { renderToString } = await import("react-dom/server");
+    const { hydrateRoot } = await import("react-dom/client");
+    const { StorageManager } = await import("../storage");
+    const { AppProvider } = await import("../app-context");
+    const { default: Home } = await import("@/app/page");
+
+    process.env.NEXT_PUBLIC_TEST_MODE = "true";
+    (
+      globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
+    ).IS_REACT_ACT_ENVIRONMENT = true;
+    localStorage.clear();
+
+    const element = React.createElement(
+      AppProvider,
+      null,
+      React.createElement(Home),
+    );
+
+    // 1. Server render has no authenticated session
+    const ssrHtml = renderToString(element);
+
+    // 2. Client has existing authenticated session in localStorage before hydration
+    await StorageManager.setAuthenticated(true);
+
+    const container = document.createElement("div");
+    container.innerHTML = ssrHtml;
+    document.body.appendChild(container);
+
+    const recoverableErrors: unknown[] = [];
+    let root: ReturnType<typeof hydrateRoot> | null = null;
+
+    await React.act(async () => {
+      root = hydrateRoot(container, element, {
+        onRecoverableError: (err) => {
+          recoverableErrors.push(err);
+        },
+      });
+    });
+
+    expect(recoverableErrors).toHaveLength(0);
+    expect(container.textContent).toContain("NISSEMAIL");
+
+    await React.act(async () => {
+      root?.unmount();
+    });
+    container.remove();
+  });
+});
