@@ -785,6 +785,46 @@ Reference previous days - requires kids to remember or look back.
 - Heavy callback to previous days
 - Multi-day puzzle chains
 
+### Multi-modal and mixed-age sibling design (ages 6 to 12)
+
+When designing for a sibling group spanning ages 6, 9, and 11, standard single-track puzzles fail. Either the 11-year-old solves the cipher in ten seconds while the 6-year-old watches, or the puzzle relies on simple counting that bores the older kids.
+
+#### 1. Information asymmetry over difficulty scaling
+
+Split what each child _holds_ or _knows_ rather than giving the youngest child a separate, easier puzzle. None of the three roles can complete the mission alone:
+
+- **The Oracle (age 6):** Controls the physical visual key, color filter, symbol card, or picture map. Six-year-olds match shapes, colors, and spatial positions quickly. When the youngest sibling holds the red acetate lens or the physical QR symbol card, the older siblings must ask her what she sees.
+- **The Field Agent (age 9):** Handles kinetic exploration and physical assembly. Nine-year-olds want to crawl under tables, trace strings down the hallway, count blinking LEDs, or build the aluminum-foil antenna (Day 11) and prism lantern (Day 16).
+- **The Systems Operator (age 11):** Operates the CRT desktop modules (`SnøfallTV`, `NisseKrypto`, `NisseNetUtforsker`, `KodeTerminal`). He tunes frequencies between 85.0 and 108.0 MHz and cross-references digital files, but the terminal is useless until the 6-year-old and 9-year-old deliver their physical findings.
+
+#### 2. State-changing physical artifacts
+
+Avoid relying solely on four-letter passwords written on sticky notes. Use physical props that transform when manipulated:
+
+| Artifact                       | Mechanism                                                                                                                                              | Best role fit          |
+| :----------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------- |
+| **Red-reveal scanner lens**    | Red cellophane mounted in a cardboard frame. Viewing a note printed with red noise patterns hides the noise and reveals cyan letters underneath.       | Age 6 (Oracle)         |
+| **Fold-and-align blueprint**   | An IQ schematic with broken lines that form letters or numbers only when folded along dotted registration arrows.                                      | Age 9 (Field Agent)    |
+| **Screen-to-paper tracing**    | A translucent baking-paper map held directly against the CRT monitor on `SnøfallTV` CAM 2 to align physical landmarks with glowing screen coordinates. | Ages 9 and 11 together |
+| **Punched stencil card**       | A card with cut-out windows placed over a specific page in a household book or NisseNet printout to isolate the password letters.                      | Age 11 (Operator)      |
+| **Flashlight silhouette tube** | A paper stencil taped inside a cardboard roll; shining a flashlight through it in a dark December hallway projects a symbol onto the wall.             | Age 6 and Age 9        |
+
+#### 3. Diegetic media over text blocks
+
+Children between 6 and 12 scan interfaces like detectives and skip long paragraphs. Keep screen text under 80 words per view and embed clues inside tools that behave like real elf equipment:
+
+- **Surveillance anomalies:** Spot Kulde's ice cave bleeding through `SnøfallTV` camera feeds via analog RF multipath ghosting rather than reading about it in an email.
+- **Active frequency tuning:** Sweep the `SnøfallTV` dial (`85.0` to `108.0 MHz`) through static until the carrier wave locks in.
+- **Acoustic telemetry:** Hide code fragments inside functional tools like the 12-track 8-bit jukebox (`NisseMusikk`) and bird radar (`Brevfugler`).
+
+#### 4. Weekday vs. weekend pacing
+
+Respect real family mornings in December:
+
+- **School mornings (Monday to Thursday):** Keep the total loop under 7 minutes. Spot the Rampenisse scene, grab one physical fragment, check one TV channel or NisseNet file, and submit the code before breakfast ends.
+- **Friday cliffhangers and weekends (Friday to Sunday):** Reserve multi-room hunts, physical building challenges (Days 11 and 16), and 3-symbol `NisseKrypto` decryptions (Days 12, 18, and 23) for days when the family has 20 to 30 minutes.
+- **Physical trophy wall:** Maintain a physical board next to the computer where kids tape their 9 collected symbol cards, folded blueprints, and decoded notes across all 24 days.
+
 ---
 
 ## Rampestreker Design (Physical Mischief Scenes)
