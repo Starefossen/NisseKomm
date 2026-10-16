@@ -357,6 +357,208 @@
   }
 }
 
+/* Realistic slow CCTV / camcorder pan & breathing motion */
+@keyframes tv-camera-pan {
+  0% {
+    transform: scale(1.06) translate(0%, 0%);
+  }
+  25% {
+    transform: scale(1.08) translate(-1.2%, 0.6%);
+  }
+  50% {
+    transform: scale(1.07) translate(0.8%, -0.8%);
+  }
+  75% {
+    transform: scale(1.09) translate(1.1%, 0.4%);
+  }
+  100% {
+    transform: scale(1.06) translate(0%, 0%);
+  }
+}
+
+/* Subtle horizontal sync instability for VHS / weak RF signal */
+@keyframes tv-hsync-jitter {
+  0%,
+  92%,
+  100% {
+    transform: translateX(0);
+  }
+  94% {
+    transform: translateX(-3px) skewX(-0.6deg);
+  }
+  96% {
+    transform: translateX(4px) skewX(0.8deg);
+  }
+  98% {
+    transform: translateX(-2px);
+  }
+}
+
+/* Organic aurora curtain sway */
+@keyframes aurora-sway {
+  0%,
+  100% {
+    transform: translateX(-2%) scaleY(1) skewX(-2deg);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateX(2%) scaleY(1.12) skewX(3deg);
+    opacity: 0.85;
+  }
+}
+
+/* Rising chimney smoke and warm steam plumes */
+@keyframes tv-chimney-smoke {
+  0% {
+    transform: translate(0, 0) scale(0.75);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.42;
+  }
+  65% {
+    transform: translate(-6px, -22px) scale(1.35);
+    opacity: 0.25;
+  }
+  100% {
+    transform: translate(-14px, -42px) scale(1.85);
+    opacity: 0;
+  }
+}
+
+/* Slow lantern-carrying elf patrol across Snøfall village square */
+@keyframes tv-lantern-patrol {
+  0% {
+    transform: translateX(0%) translateY(0px) scaleX(1);
+  }
+  12% {
+    transform: translateX(28%) translateY(-1.5px) scaleX(1);
+  }
+  25% {
+    transform: translateX(55%) translateY(0.5px) scaleX(1);
+  }
+  37% {
+    transform: translateX(82%) translateY(-1.5px) scaleX(1);
+  }
+  48% {
+    transform: translateX(100%) translateY(0px) scaleX(1);
+  }
+  50% {
+    transform: translateX(100%) translateY(0px) scaleX(-1);
+  }
+  62% {
+    transform: translateX(74%) translateY(-1.5px) scaleX(-1);
+  }
+  75% {
+    transform: translateX(46%) translateY(0.5px) scaleX(-1);
+  }
+  88% {
+    transform: translateX(18%) translateY(-1.5px) scaleX(-1);
+  }
+  98% {
+    transform: translateX(0%) translateY(0px) scaleX(-1);
+  }
+  100% {
+    transform: translateX(0%) translateY(0px) scaleX(1);
+  }
+}
+
+/* Distant bird or sleigh gliding across mountain sky */
+@keyframes tv-sky-glide {
+  0% {
+    transform: translate(-15%, 4px) scale(0.85);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.75;
+  }
+  50% {
+    transform: translate(45%, -8px) scale(1);
+    opacity: 0.85;
+  }
+  88% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(110%, -2px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* IQ pacing and leaning over the workbench in CAM 2 */
+@keyframes tv-iq-tinker {
+  0%,
+  100% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+  20% {
+    transform: translate(-14px, 1px) rotate(-2deg);
+  }
+  35% {
+    transform: translate(-16px, 3px) rotate(-5deg);
+  }
+  55% {
+    transform: translate(8px, 0px) rotate(1.5deg);
+  }
+  75% {
+    transform: translate(18px, 2px) rotate(4deg);
+  }
+  88% {
+    transform: translate(6px, -1px) rotate(0deg);
+  }
+}
+
+/* Julius subtle breathing, nodding, and mug-lifting in CAM 3 */
+@keyframes tv-julius-study {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg) scaleY(1);
+  }
+  30% {
+    transform: translateY(-1.5px) rotate(1.2deg) scaleY(1.015);
+  }
+  55% {
+    transform: translateY(0.5px) rotate(-0.8deg) scaleY(0.99);
+  }
+  80% {
+    transform: translateY(-2px) rotate(1.8deg) scaleY(1.02);
+  }
+}
+
+/* Kulde looming shadow breathing in the crystal cavern */
+@keyframes tv-kulde-lurk {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.78;
+  }
+  45% {
+    transform: translateY(-3px) scale(1.035);
+    opacity: 0.92;
+  }
+  50% {
+    transform: translateX(2px) translateY(-3px) scale(1.04);
+    opacity: 0.96;
+  }
+  75% {
+    transform: translateY(-1px) scale(1.01);
+    opacity: 0.82;
+  }
+}
+
+/* Sweeping volumetric searchlight / aviation beacon on CAM 4 */
+@keyframes tv-beacon-sweep {
+  0%,
+  100% {
+    transform: rotate(-28deg);
+    opacity: 0.35;
+  }
+  50% {
+    transform: rotate(28deg);
+    opacity: 0.85;
+  }
+}
+
 /* Utility Classes */
 .pixelated {
   image-rendering: pixelated;

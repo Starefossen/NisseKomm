@@ -308,12 +308,160 @@ export function NisseNetUtforsker({
           <div className="border-2 border-(--cold-blue) bg-black/50 overflow-y-auto p-4 flex-1">
             {selectedFile ? (
               <div className="space-y-4">
-                <div className="flex items-center gap-2 pb-2 border-b-2 border-(--cold-blue)">
-                  <Icons.File size={20} color="blue" />
-                  <span className="font-bold text-(--cold-blue)">
-                    {selectedFile.navn}
+                <div className="flex items-center justify-between gap-2 pb-2 border-b-2 border-(--cold-blue)">
+                  <div className="flex items-center gap-2">
+                    <Icons.File size={20} color="blue" />
+                    <span className="font-bold text-(--cold-blue)">
+                      {selectedFile.navn}
+                    </span>
+                  </div>
+                  <span className="text-[10px] tracking-widest px-1.5 py-0.5 border border-(--cold-blue)/40 text-(--cold-blue)/80">
+                    NISSENET // DOKUMENT-VISER
                   </span>
                 </div>
+
+                {/* CRT Visual Evidence & Telemetry Schematic Header */}
+                {(() => {
+                  const name = selectedFile.navn;
+                  const isKulde =
+                    name.includes("snofall_fakta") ||
+                    name.includes("frosne-koder") ||
+                    name.includes("nordpolen_hemmelighet") ||
+                    name.includes("system_logg");
+                  const isVerksted =
+                    name.includes("magisk-sekk") ||
+                    name.includes("halvveis") ||
+                    name.includes("verksted") ||
+                    name.includes("kode_oversikt");
+                  const isAntenne =
+                    name.includes("tidsanomalier") ||
+                    name.includes("antenna-crisis") ||
+                    name.includes("dekoder_reinsdyr") ||
+                    name.includes("stjernetegn");
+                  const isPrism = name.includes("snowflake");
+                  const isColor = name.includes("farge");
+
+                  const feedSrc = isKulde
+                    ? "/feed/kulde-grotte.png"
+                    : isVerksted
+                      ? "/feed/iq-verksted.png"
+                      : isAntenne
+                        ? "/feed/antenne-tarn.png"
+                        : isPrism
+                          ? "/feed/snøfall-storm.png"
+                          : isColor
+                            ? "/feed/snøfall-day.png"
+                            : "/feed/julius-kontor.png";
+
+                  const badgeText = isKulde
+                    ? "BEVIS // 85.0 MHz SPORINGSFIL"
+                    : isVerksted
+                      ? "SKJEMA // IQS VERKSTED-TELEMETRI"
+                      : isAntenne
+                        ? "RADAR // ANTENNETÅRNET NORD"
+                        : isPrism
+                          ? "PRISME // KRYSTALL-ANALYSE"
+                          : isColor
+                            ? "SPEKTER // OPTISK KALIBRERING"
+                            : "ARKIV // JULIUS' KONTOR";
+
+                  const accentColor = isKulde
+                    ? "var(--christmas-red)"
+                    : isVerksted || isColor
+                      ? "var(--neon-green)"
+                      : isAntenne || isPrism
+                        ? "var(--cold-blue)"
+                        : "var(--gold)";
+
+                  return (
+                    <div
+                      className="relative h-28 w-full overflow-hidden border-2 bg-black"
+                      style={{ borderColor: accentColor }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={feedSrc}
+                        alt={selectedFile.navn}
+                        className="w-full h-full object-cover contrast-125 saturate-90 opacity-75 select-none pointer-events-none"
+                        style={{ objectPosition: "center 45%" }}
+                      />
+                      {/* Technical SVG Overlay */}
+                      <svg
+                        viewBox="0 0 400 110"
+                        className="absolute inset-0 w-full h-full pointer-events-none opacity-75"
+                        preserveAspectRatio="none"
+                      >
+                        <line
+                          x1="0"
+                          y1="55"
+                          x2="400"
+                          y2="55"
+                          stroke={accentColor}
+                          strokeWidth="0.6"
+                          strokeDasharray="4 4"
+                          opacity="0.5"
+                        />
+                        {isKulde ? (
+                          <polyline
+                            fill="none"
+                            stroke="#ff0037"
+                            strokeWidth="1.8"
+                            points="0,55 40,55 55,20 70,90 85,30 100,80 120,55 180,55 195,15 210,95 225,25 240,85 260,55 400,55"
+                          />
+                        ) : isVerksted ? (
+                          <g
+                            stroke="#00ff00"
+                            strokeWidth="1.2"
+                            fill="none"
+                            opacity="0.7"
+                          >
+                            <rect x="280" y="25" width="95" height="60" />
+                            <line x1="250" y1="40" x2="280" y2="40" />
+                            <line x1="250" y1="70" x2="280" y2="70" />
+                            <circle cx="310" cy="55" r="12" />
+                            <line x1="322" y1="55" x2="360" y2="55" />
+                          </g>
+                        ) : (
+                          <polyline
+                            fill="none"
+                            stroke={accentColor}
+                            strokeWidth="1.4"
+                            points="0,75 60,65 120,70 180,45 240,55 300,35 360,42 400,30"
+                          />
+                        )}
+                      </svg>
+                      <div
+                        className="absolute inset-0 pointer-events-none opacity-45"
+                        style={{
+                          backgroundImage:
+                            "repeating-linear-gradient(0deg, rgba(0,0,0,0.6) 0px, rgba(0,0,0,0.6) 1px, transparent 1px, transparent 3px)",
+                        }}
+                      />
+                      <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{
+                          background:
+                            "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.88) 100%)",
+                        }}
+                      />
+                      <div className="absolute top-2 left-2.5 right-2.5 flex items-center justify-between text-[10px] font-bold tracking-widest">
+                        <span
+                          className="bg-black/80 px-2 py-0.5 border"
+                          style={{
+                            borderColor: accentColor,
+                            color: accentColor,
+                          }}
+                        >
+                          {badgeText}
+                        </span>
+                        <span className="bg-black/80 px-2 py-0.5 text-(--cold-blue) border border-(--cold-blue)/40">
+                          CRC: VERIFISERT
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })()}
+
                 <div className="text-sm leading-relaxed whitespace-pre-wrap">
                   {selectedFile.innhold || "Ingen innhold tilgjengelig"}
                 </div>

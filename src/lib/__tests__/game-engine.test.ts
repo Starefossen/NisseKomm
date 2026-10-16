@@ -74,7 +74,8 @@ describe("GameEngine", () => {
 
   describe("Quest Completion", () => {
     it("should accept correct code and mark quest as completed", async () => {
-      const result = await GameEngine.submitCode("SEKK", "SEKK", 8);
+      const code8 = getQuestCode(8);
+      const result = await GameEngine.submitCode(code8, code8, 8);
 
       expect(result.success).toBe(true);
       expect(result.isNewCompletion).toBe(true);
@@ -82,7 +83,8 @@ describe("GameEngine", () => {
     });
 
     it("should reject incorrect code", async () => {
-      const result = await GameEngine.submitCode("WRONG", "SEKK", 8);
+      const code8 = getQuestCode(8);
+      const result = await GameEngine.submitCode("WRONG", code8, 8);
 
       expect(result.success).toBe(false);
       expect(result.isNewCompletion).toBe(false);
@@ -90,45 +92,56 @@ describe("GameEngine", () => {
     });
 
     it("should be case-insensitive for code validation", async () => {
-      const result1 = await GameEngine.submitCode("sekk", "SEKK", 8);
+      const code8 = getQuestCode(8);
+      const result1 = await GameEngine.submitCode(
+        code8.toLowerCase(),
+        code8,
+        8,
+      );
       expect(result1.success).toBe(true);
 
       localStorage.clear();
 
-      const result2 = await GameEngine.submitCode("SekK", "SEKK", 8);
+      const mixed =
+        code8.slice(0, 2).toLowerCase() + code8.slice(2).toUpperCase();
+      const result2 = await GameEngine.submitCode(mixed, code8, 8);
       expect(result2.success).toBe(true);
     });
 
     it("should detect duplicate submissions", async () => {
+      const code8 = getQuestCode(8);
       // First submission
-      const result1 = await GameEngine.submitCode("SEKK", "SEKK", 8);
+      const result1 = await GameEngine.submitCode(code8, code8, 8);
       expect(result1.isNewCompletion).toBe(true);
 
       // Second submission of same code
-      const result2 = await GameEngine.submitCode("SEKK", "SEKK", 8);
+      const result2 = await GameEngine.submitCode(code8, code8, 8);
       expect(result2.success).toBe(true);
       expect(result2.isNewCompletion).toBe(false);
       expect(result2.message).toContain("ALLEREDE REGISTRERT");
     });
 
     it("should track completed quest count correctly", async () => {
+      const code8 = getQuestCode(8);
+      const code9 = getQuestCode(9);
       expect(GameEngine.getCompletedQuestCount()).toBe(0);
 
-      await GameEngine.submitCode("SEKK", "SEKK", 8);
+      await GameEngine.submitCode(code8, code8, 8);
       expect(GameEngine.getCompletedQuestCount()).toBe(1);
 
-      await GameEngine.submitCode("18", "18", 9);
+      await GameEngine.submitCode(code9, code9, 9);
       expect(GameEngine.getCompletedQuestCount()).toBe(2);
 
       // Duplicate shouldn't increase count
-      await GameEngine.submitCode("SEKK", "SEKK", 8);
+      await GameEngine.submitCode(code8, code8, 8);
       expect(GameEngine.getCompletedQuestCount()).toBe(2);
     });
 
     it("should check if specific quest is completed", async () => {
+      const code8 = getQuestCode(8);
       expect(GameEngine.isQuestCompleted(8)).toBe(false);
 
-      await GameEngine.submitCode("SEKK", "SEKK", 8);
+      await GameEngine.submitCode(code8, code8, 8);
 
       expect(GameEngine.isQuestCompleted(8)).toBe(true);
       expect(GameEngine.isQuestCompleted(9)).toBe(false);
@@ -308,7 +321,8 @@ describe("GameEngine", () => {
       expect(GameEngine.isBonusOppdragAccessible(11)).toBe(false);
 
       // Complete day 11 main quest
-      await GameEngine.submitCode("12", "12", 11);
+      const code11 = getQuestCode(11);
+      await GameEngine.submitCode(code11, code11, 11);
 
       // Now side-quest should be accessible
       expect(GameEngine.isBonusOppdragAccessible(11)).toBe(true);
@@ -360,8 +374,10 @@ describe("GameEngine", () => {
   describe("State Persistence", () => {
     it("should persist state across reloads", async () => {
       // Complete some quests
-      await GameEngine.submitCode("SEKK", "SEKK", 8);
-      await GameEngine.submitCode("18", "18", 9);
+      const code8 = getQuestCode(8);
+      const code9 = getQuestCode(9);
+      await GameEngine.submitCode(code8, code8, 8);
+      await GameEngine.submitCode(code9, code9, 9);
 
       // Award a badge
       BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
@@ -404,12 +420,14 @@ describe("GameEngine", () => {
 
   describe("Edge Cases", () => {
     it("should handle whitespace in code submission", async () => {
-      const result = await GameEngine.submitCode("  SEKK  ", "SEKK", 8);
+      const code8 = getQuestCode(8);
+      const result = await GameEngine.submitCode(`  ${code8}  `, code8, 8);
       expect(result.success).toBe(true);
     });
 
     it("should handle empty code gracefully", async () => {
-      const result = await GameEngine.submitCode("", "SEKK", 8);
+      const code8 = getQuestCode(8);
+      const result = await GameEngine.submitCode("", code8, 8);
       expect(result.success).toBe(false);
     });
 

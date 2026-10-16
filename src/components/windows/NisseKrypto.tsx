@@ -351,61 +351,106 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
               </div>
             ) : (
               <div className="space-y-2">
-                {availableChallenges.map((challenge) => (
-                  <button
-                    key={challenge.challengeId}
-                    onClick={() => handleChallengeSelect(challenge)}
-                    disabled={challenge.isSolved}
-                    className={`
-                      w-full p-4 text-left border-2 transition-all
-                      ${
-                        challenge.isSolved
-                          ? "border-(--gold) bg-(--gold)/10 text-(--gold) cursor-not-allowed"
-                          : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-(--neon-green)/10 text-(--neon-green)"
-                      }
-                    `}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        {challenge.isSolved ? (
-                          <Icons.CheckCircle size={24} color="gold" />
-                        ) : (
-                          <Icons.LockClosed size={24} color="green" />
-                        )}
-                        <div className="flex-1">
-                          <div className="font-bold tracking-wider text-lg">
-                            DAG {challenge.day}: {challenge.title}
-                          </div>
-                          <div className="text-xs opacity-70 mt-1">
-                            Krever {challenge.sequenceLength} symboler i riktig
-                            rekkefølge
-                          </div>
-                          {/* Show required symbol types */}
-                          <div className="flex gap-1 mt-2">
-                            {challenge.requiredSymbols
-                              .slice(0, 6)
-                              .map((symbol, idx) => (
-                                <Icon
-                                  key={idx}
-                                  name={symbol.symbolIcon}
-                                  size={16}
-                                  color={symbol.symbolColor}
-                                />
-                              ))}
-                            {challenge.requiredSymbols.length > 6 && (
-                              <span className="text-xs opacity-50">
-                                +{challenge.requiredSymbols.length - 6}
-                              </span>
-                            )}
-                          </div>
+                {availableChallenges.map((challenge) => {
+                  const feedSrc =
+                    challenge.challengeId === "frosne-koder"
+                      ? "/feed/kulde-grotte.png"
+                      : challenge.challengeId === "stjernetegn"
+                        ? "/feed/antenne-tarn.png"
+                        : "/feed/julius-kontor.png";
+                  const camTag =
+                    challenge.challengeId === "frosne-koder"
+                      ? "KRYPTO-LÅS 01 // 85.0 MHz IS-KODE"
+                      : challenge.challengeId === "stjernetegn"
+                        ? "KRYPTO-LÅS 02 // STJERNE-NAVIGASJON"
+                        : "KRYPTO-LÅS 03 // SNØFALLS HJERTE";
+
+                  return (
+                    <button
+                      key={challenge.challengeId}
+                      onClick={() => handleChallengeSelect(challenge)}
+                      disabled={challenge.isSolved}
+                      className={`
+                        w-full overflow-hidden text-left border-2 transition-all
+                        ${
+                          challenge.isSolved
+                            ? "border-(--gold) bg-(--gold)/10 text-(--gold) cursor-not-allowed"
+                            : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-(--neon-green)/10 text-(--neon-green)"
+                        }
+                      `}
+                    >
+                      <div className="relative h-20 w-full overflow-hidden border-b border-(--neon-green)/30 bg-black">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={feedSrc}
+                          alt={challenge.title}
+                          className="w-full h-full object-cover contrast-125 saturate-90 opacity-75 select-none pointer-events-none"
+                          style={{ objectPosition: "center 45%" }}
+                        />
+                        <div
+                          className="absolute inset-0 pointer-events-none opacity-45"
+                          style={{
+                            backgroundImage:
+                              "repeating-linear-gradient(0deg, rgba(0,0,0,0.6) 0px, rgba(0,0,0,0.6) 1px, transparent 1px, transparent 3px)",
+                          }}
+                        />
+                        <div className="absolute top-1.5 left-2 right-2 flex items-center justify-between text-[10px] font-bold tracking-widest">
+                          <span className="bg-black/80 px-1.5 py-0.5 border border-(--cold-blue)/50 text-(--cold-blue)">
+                            {camTag}
+                          </span>
+                          <span
+                            className={`bg-black/80 px-1.5 py-0.5 border ${
+                              challenge.isSolved
+                                ? "border-(--gold)/60 text-(--gold)"
+                                : "border-(--christmas-red)/60 text-(--christmas-red)"
+                            }`}
+                          >
+                            {challenge.isSolved ? "DEKRYPTERT" : "KRYPTERT"}
+                          </span>
                         </div>
                       </div>
-                      <div className="text-xs font-bold">
-                        {challenge.isSolved ? "✓ LØST" : "→ START"}
+                      <div className="p-4 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          {challenge.isSolved ? (
+                            <Icons.CheckCircle size={24} color="gold" />
+                          ) : (
+                            <Icons.LockClosed size={24} color="green" />
+                          )}
+                          <div className="flex-1">
+                            <div className="font-bold tracking-wider text-lg">
+                              DAG {challenge.day}: {challenge.title}
+                            </div>
+                            <div className="text-xs opacity-70 mt-1">
+                              Krever {challenge.sequenceLength} symboler i
+                              riktig rekkefølge
+                            </div>
+                            {/* Show required symbol types */}
+                            <div className="flex gap-1 mt-2">
+                              {challenge.requiredSymbols
+                                .slice(0, 6)
+                                .map((symbol, idx) => (
+                                  <Icon
+                                    key={idx}
+                                    name={symbol.symbolIcon}
+                                    size={16}
+                                    color={symbol.symbolColor}
+                                  />
+                                ))}
+                              {challenge.requiredSymbols.length > 6 && (
+                                <span className="text-xs opacity-50">
+                                  +{challenge.requiredSymbols.length - 6}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs font-bold">
+                          {challenge.isSolved ? "✓ LØST" : "→ START"}
+                        </div>
                       </div>
-                    </div>
-                  </button>
-                ))}
+                    </button>
+                  );
+                })}
               </div>
             )}
 
@@ -460,45 +505,77 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
         {selectedChallenge && (
           <div className="space-y-4 animate-scale-in">
             {/* Challenge Header */}
-            <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-4">
-              <div className="flex items-center justify-between mb-2">
-                <div>
-                  <div className="font-bold text-lg text-(--cold-blue)">
-                    🔐 {selectedChallenge.title}
-                  </div>
-                  <div className="text-xs text-(--cold-blue)/60 mt-1">
-                    DAG {selectedChallenge.day} •{" "}
-                    {selectedChallenge.sequenceLength} symboler nødvendig
-                  </div>
-                </div>
-                <button
-                  onClick={() => {
-                    setSelectedChallenge(null);
-                    setChallengeGrid(Array(9).fill(null));
-                    setAttemptCount(0);
-                    setFeedback("");
-                    setPositionFeedback([]);
+            <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 overflow-hidden">
+              <div className="relative h-24 w-full overflow-hidden border-b-2 border-(--cold-blue)/40 bg-black">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={
+                    selectedChallenge.challengeId === "frosne-koder"
+                      ? "/feed/kulde-grotte.png"
+                      : selectedChallenge.challengeId === "stjernetegn"
+                        ? "/feed/antenne-tarn.png"
+                        : "/feed/julius-kontor.png"
+                  }
+                  alt={selectedChallenge.title}
+                  className="w-full h-full object-cover contrast-125 saturate-90 opacity-75 select-none pointer-events-none"
+                  style={{ objectPosition: "center 45%" }}
+                />
+                <div
+                  className="absolute inset-0 pointer-events-none opacity-45"
+                  style={{
+                    backgroundImage:
+                      "repeating-linear-gradient(0deg, rgba(0,0,0,0.6) 0px, rgba(0,0,0,0.6) 1px, transparent 1px, transparent 3px)",
                   }}
-                  className="text-xs border border-(--cold-blue) px-3 py-1 hover:bg-(--cold-blue)/20 transition-all tracking-wider"
-                >
-                  ← AVBRYT
-                </button>
-              </div>
-              <div className="text-sm text-(--cold-blue)/80 bg-(--cold-blue)/5 p-2 border-l-2 border-(--cold-blue)">
-                💡 <span className="font-bold">Hint:</span>{" "}
-                {selectedChallenge.hint}
-              </div>
-              {attemptCount > 0 && (
-                <div className="text-xs text-(--cold-blue)/60 mt-2 flex items-center gap-2">
-                  <span>🎯 Forsøk:</span>
-                  <span className="font-bold">{attemptCount}</span>
-                  {attemptCount > 2 && (
-                    <span className="text-(--christmas-red)">
-                      • Fortsett å prøve!
-                    </span>
-                  )}
+                />
+                <div className="absolute top-2 left-2.5 right-2.5 flex items-center justify-between text-[10px] font-bold tracking-widest">
+                  <span className="bg-black/80 px-2 py-0.5 border border-(--cold-blue)/60 text-(--cold-blue)">
+                    AKTIV DEKRYPTERING // DAG {selectedChallenge.day}
+                  </span>
+                  <span className="bg-black/80 px-2 py-0.5 border border-(--gold)/60 text-(--gold)">
+                    SEKVENS: {selectedChallenge.sequenceLength} SYMBOLER
+                  </span>
                 </div>
-              )}
+              </div>
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <div className="font-bold text-lg text-(--cold-blue)">
+                      🔐 {selectedChallenge.title}
+                    </div>
+                    <div className="text-xs text-(--cold-blue)/60 mt-1">
+                      DAG {selectedChallenge.day} •{" "}
+                      {selectedChallenge.sequenceLength} symboler nødvendig
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setSelectedChallenge(null);
+                      setChallengeGrid(Array(9).fill(null));
+                      setAttemptCount(0);
+                      setFeedback("");
+                      setPositionFeedback([]);
+                    }}
+                    className="text-xs border border-(--cold-blue) px-3 py-1 hover:bg-(--cold-blue)/20 transition-all tracking-wider"
+                  >
+                    ← AVBRYT
+                  </button>
+                </div>
+                <div className="text-sm text-(--cold-blue)/80 bg-(--cold-blue)/5 p-2 border-l-2 border-(--cold-blue)">
+                  💡 <span className="font-bold">Hint:</span>{" "}
+                  {selectedChallenge.hint}
+                </div>
+                {attemptCount > 0 && (
+                  <div className="text-xs text-(--cold-blue)/60 mt-2 flex items-center gap-2">
+                    <span>🎯 Forsøk:</span>
+                    <span className="font-bold">{attemptCount}</span>
+                    {attemptCount > 2 && (
+                      <span className="text-(--christmas-red)">
+                        • Fortsett å prøve!
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Dual 3×3 Grids - responsive */}

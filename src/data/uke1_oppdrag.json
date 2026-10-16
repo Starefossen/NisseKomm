@@ -1,227 +1,177 @@
 [
   {
     "dag": 1,
-    "tittel": "Nissens Første Melding",
-    "finalized": true,
-    "nissemail_tekst": "YO! 🎅 derefant veien inn! Nice! ✨\n\nVelkommen til NISSEKOMM - mitt digitale hovedkvarter for kritiske Snøfall-operasjoner! Julius har gitt meg tilgang til dette systemet så vi kan samarbeide hele desember. 🎄\n\nDu klarte visst å knekke sko-koden! Smart! 🧠 Det betyr at dereer offisielt en del av teamet nå. Her inne finner dere:\n\n📧 NISSEMAIL - Daglige beskjeder fra meg\n📖 DAGBOK - Julius sine hemmelige notater\n📁 NISSENET - Viktige filer fra Snøfall\n\nVi sees hver dag med nye oppdrag! Dette blir epic! 🚀\n\n- Rampenissen\n\nP.S. Ikke fortell Julius at jeg rotet med skoene hans også... 🤫",
-    "kode": "{{KID_CODE}}",
+    "tittel": "Direktelinje Landås",
+    "nissemail_tekst": "HALLO KRISTIAN, HÅKON OG HANNA! Rampenissen er tilbake på Landås! Julius sendte meg ned fra Snøfall i natt med nytt utstyr. IQ har koblet opp direktestrøm på SNØFALL TV, men bærebølgen hakker! Noen har tuklet med linjen vår. Jeg rakk å gjemme en rød tråd og en lapp med de tre første bokstavene ved TV-en i stuen før jeg måtte gjemme meg. Hanna, kan du finne den røde tråden? Håkon, sjekk lappen! Og Kristian: finn resten av oppstartskoden i SYSTEM-mappen i NisseNet (filen om-snofall.txt) og se Julius sin første videologg på Kanal 3!",
+    "rampenissen_rampestrek": "Rampenissen sitter ved TV-en eller iMac-en med en rød garnnøstetråd viklet rundt seg som 'antenneledning' og en lapp merket 'DEL 1: S - I - G'.",
+    "fysisk_hint": "Se ved TV-en eller skjermen i stuen etter Rampenissens røde tråd! Lappen der har de 3 første bokstavene (S-I-G), og filen om-snofall.txt i SYSTEM-mappen i NisseNet har de 3 siste (N-A-L).",
+    "materialer_nødvendig": [
+      "Rampenissen-dukke",
+      "Litt rødt garn eller tråd",
+      "Lapp med teksten: 'BÆREBØLGE DEL 1: S - I - G (Resten ligger i SYSTEM/om-snofall.txt)'",
+      "Valgfritt: Papir-brevfugl ved siden av Rampenissen"
+    ],
+    "beste_rom": "Stue (ved TV-en eller iMac-en)",
+    "oppsett_tid": "moderat",
+    "kode": "SIGNAL",
+    "hint": "Kombiner de 3 bokstavene fra lappen ved TV-en (S-I-G) med de 3 bokstavene fra SYSTEM/om-snofall.txt i NisseNet (N-A-L). Det blir et ord på 6 bokstaver!",
+    "reveals": {
+      "files": ["om-snofall.txt"],
+      "topics": ["velkommen-snøfall", "brevfugl-intro"],
+      "modules": []
+    },
     "eventyr": {
       "id": "brevfugl-mysteriet",
       "phase": 1
     },
-    "dagbokinnlegg": "Dag 1 - Det Begynner!\n\nEndelig! Desember er her! Rampenissen er sendt til barna. Han har allerede rotet til noe med skoene, ser jeg på kameraene. Typisk.\n\nBrevfuglene strømmer inn! Winter organiserer alt - hver brevfugl får et nummer, hver liste sorteres. Når alle delene er på plass, ser man plutselig helheten. Det er nesten som magi.\n\nProduksjonen går for fullt. Rudolf sov i gavesekken i morges. Pil er ivrig som alltid.\n\n- Julius",
-    "rampenissen_rampestrek": "Alle skoene i gangen er arrangert som et tog med bokstaver festet på hver sko i tilfeldig rekkefølge. Rampenissen sitter helt først som lokfører med mystisk lapp han skulle overlevere fra Julius.",
-    "fysisk_hint": "nissekomm.no + 🎅🗝️📅",
-    "oppsett_tid": "moderat",
-    "materialer_nødvendig": [
-      "Sko",
-      "Lapper med bokstaver som staver KID_CODE (finnes på /nissemor-guide/printout)"
-    ],
-    "beste_rom": "Gang/entre",
-    "hint_type": "arrangement",
-    "reveals": {
-      "topics": ["brevfugl-system"]
-    },
-    "print_materials": [
-      {
-        "type": "note",
-        "title": "Rampenissens Velkomstlapp - Dag 1",
-        "content": "YO! 🎅\n\nVelkommen til teamet! Jeg er Rampenissen - Julius sin assistent som skal være hos dere hele desember!\n\nJeg har rotet med SKOENE i gangen (ooops! 😅). Men det er faktisk med vilje denne gangen! Bokstavene på skoene er en KODE deretrenger.\n\nJulius sa at jeg må gi dere en viktig lapp... \n\nHmmm... lurer på hva det betyr? 🤔\nKanskje skoene har svaret?\n\nVi sees! ✨\n- Rampenissen\n\nP.S. Ikke fortell Julius at jeg brukte skoene hans også... 🤫"
-      }
-    ]
+    "dagbokinnlegg": "1. desember. Endelig er kommandolinjen til Landås aktiv igjen! Kristian har begynt i 7. klasse, Håkon går i 4. klasse, og Hanna er eldst i Undring barnehage. Jeg trenger alle tre i år. I natt oppdaget IQ og Orakelet en merkelig iskald støy på hovedfrekvensen vår (90.0 MHz). Før vi kan sende ukrypterte brevfugler over Bergen, måtte barna koble sammen det fysiske SIGNAL-fragmentet i stuen med systemprotokollen vår. Nå er både NisseKomm og Snøfall TV Kanal 3 oppe!",
+    "hint_type": "kombinasjon",
+    "finalized": true
   },
   {
     "dag": 2,
-    "tittel": "Tallmysteriet",
-    "nissemail_tekst": "Yo! 🏎️ Jeg har laget et EPISK bilrace i dag! Fikk lekebilene deres til å stå på rad i startlinjen, men... nå har jeg glemt hva jeg skulle gjøre med dem! 😅\n\nDenne matten koker! 🔥 Fire biler i forskjellige farger: rød, blå, grønn og gul. Hver farge representerer et tall! Se på lappen jeg la ved siden av.\n\nHva er det neste tallet i rekken? Send meg tallet så jeg kan fullføre racet! 🏁\n\n- Rampenissen",
-    "kode": "34",
+    "tittel": "Sikringsboksen til IQ",
+    "nissemail_tekst": "BZZT! Hørte dere det smellet?! IQ skulle bare koble kaffetrakteren sin rett inn i forsterkeren til Snøfall TV, og nå gikk tre sikringer! Jeg prøvde å hjelpe ham her fra spisebordet, så jeg teipet fast tre fargede sikringslapper under stolene rundt bordet. Hanna og Håkon: Krabb under spisebordet og finn alle tre lappene! På hver lapp står det et tall med volt. Kristian: Legg sammen de tre tallene (eller sjekk målerne i IQs Verksted-Lab på Snøfall TV Kanal 2) og send totalsummen i KodeTerminal!",
+    "rampenissen_rampestrek": "Rampenissen ligger opp-ned på en spisestuestol med en lommelykt eller skje som 'skrutrekker', og har teipet 3 lapper under tre stoler: 'RØD SIKRING: 12V', 'GRØNN SIKRING: 16V', 'BLÅ SIKRING: 20V'.",
+    "fysisk_hint": "Se under stolene ved spisebordet! Finn de 3 sikringslappene (12, 16 og 20) og legg dem sammen. Du kan også sjekke spenningsmålerne på Snøfall TV Kanal 2!",
+    "materialer_nødvendig": [
+      "3 små lapper",
+      "Litt teip",
+      "Skriv på lappene: 'Sikring 1: 12', 'Sikring 2: 16', 'Sikring 3: 20'"
+    ],
+    "beste_rom": "Spisestue / kjøkkenbord",
+    "oppsett_tid": "moderat",
+    "kode": "48",
+    "hint": "Legg sammen de tre tallene fra stolene: 12 + 16 + 20. Hva blir summen?",
+    "reveals": {
+      "files": [],
+      "topics": ["iq-oppfinnelser"],
+      "modules": []
+    },
     "eventyr": {
       "id": "iqs-oppfinnelser",
       "phase": 1
     },
-    "dagbokinnlegg": "Dag 2 - Mattekaos\n\nTellemaskin eksplodert. Konfetti overalt. Kom til 3.847 gaver før jeg mistet tellingen. Nissene lo.\n\nPil filosoferte i kveld: 'Som venner som samles. Når to møtes, blir de til noe nytt. Når disse to møter den neste, vokser det videre. Hver bygger på de forrige.' Smart gutt.\n\nRampenissen sender bilder av barna. De virker smarte. Kanskje smartere enn ham?\n\n- Julius",
-    "rampenissen_rampestrek": "4 lekebiler står på rad i spesifikk rekkefølge: rød, blå, grønn, gul. Ved siden av ligger en 'fargelapp' med dekoder og bilene har små numre-lapper festet. Bamser og figurer står som publikum. Rampenissen holder startflagg.",
-    "fysisk_hint": "🔴 Rød = 5\n🔵 Blå = 8\n🟢 Grønn = 13\n🟡 Gul = 21",
-    "oppsett_tid": "enkel",
-    "materialer_nødvendig": [
-      "4 lekebiler (rød, blå, grønn, gul)",
-      "Fargelapp med dekoder (se print_materials)",
-      "Startflagg (valgfritt)"
-    ],
-    "beste_rom": "Stue/barnerom",
-    "hint_type": "arrangement",
-    "reveals": {
-      "topics": ["iq-oppfinnelser"]
-    },
+    "dagbokinnlegg": "2. desember. IQ og sikringsskap er en farlig kombinasjon. Han prøvde å bygge en ny brannmur-forsterker til videologgen min, men endte opp med å mørklegge halve verkstedet og fylle rommet med grønn røyk. Heldigvis fant Hanna, Håkon og Kristian de tre spenningstallene under stolene hjemme på Landås (12 + 16 + 20 = 48 Volt) og fikk strømmen tilbake på Kanal 2.",
+    "hint_type": "kombinasjon",
     "finalized": true
   },
   {
     "dag": 3,
-    "tittel": "Melding fra Snøstormen",
-    "nissemail_tekst": "HJELP! 😱 Jeg prøvde å lage snøengler på kjøkkenet (med MEL, ikke snø - smart, ikke sant?), men nå har jeg glemt hva jeg skulle skrive! Det står bare 'N_SS_L__ ' i melet. Noen bokstaver blåste visst bort i stormen! 🌨️\n\nHva tror dere jeg prøvde å skrive? Det er noe jeg har på hodet... 🤔\n\nP.S. Fant dere det GRØNNE HJERTET som skinner gjennom melet? 💚 Det er første symbol til din samling! Julius skal fortelle mer om det på dag 4! ✨\n\n- Rampenissen",
-    "kode": "NISSELUE",
+    "tittel": "Rimfrost på Ruten",
+    "nissemail_tekst": "BRRR! Da jeg tittet ut av vinduet mot regnet og vinden på Landås i natt, skjedde det noe rart. Et iskaldt blått glimt tegnet krystallmønstre på ruten! Orakelet sier at noen sniker langs kommunikasjonslinjen vår. Jeg la igjen et GRØNT HJERTE-symbolkort og de tre første bokstavene i krystallkoden (P - R - I) i vinduskarmen. Hanna, finn det grønne hjertet! Håkon og Kristian: Åpne NisseNet og les filen snowflake-patterns.txt i SNOFALL-HISTORIER for å finne de tre siste bokstavene!",
+    "rampenissen_rampestrek": "Rampenissen sitter i vinduskarmen pakket inn i en vott eller sokk fordi han 'fryser', sammen med det grønne hjerte-kortet og en lapp med 'KRYSTALL DEL 1: P - R - I'.",
+    "fysisk_hint": "Sjekk vinduskarmen i stuen! Der ligger det grønne hjertesymbolet og første del av ordet (P-R-I). Andre del (S-M-E) står i SNOFALL-HISTORIER/snowflake-patterns.txt i NisseNet.",
+    "materialer_nødvendig": [
+      "Symbolkort: Grønt hjerte (QR-kort)",
+      "Lapp i vinduskarmen: 'DEL 1: P - R - I (Se snowflake-patterns.txt i NisseNet for DEL 2)'",
+      "En vott eller ullsokk rundt Rampenissen"
+    ],
+    "beste_rom": "Vinduskarm i stuen",
+    "oppsett_tid": "moderat",
+    "kode": "PRISME",
+    "hint": "Sett sammen P-R-I fra vinduskarmen med S-M-E fra filen snowflake-patterns.txt i NisseNet (6 bokstaver)!",
+    "reveals": {
+      "files": ["snowflake-patterns.txt"],
+      "topics": ["snostorm-snøfall"],
+      "modules": []
+    },
     "eventyr": {
       "id": "frosne-monster",
       "phase": 1
-    },
-    "dagbokinnlegg": "Dag 3 - Snøstorm\n\nVoldsom storm! En nisse gikk seg vill på vei til dass. Ti meter unna. Orakelet hadde advart.\n\nTrixter og jeg fulgte fotspor i snøen - men stormen hadde visket ut deler. Vi måtte forestille oss de manglende trinnene, fylle inn hullene med logikk. Trixter ser mønstre der andre ser kaos.\n\nRampenissen sender lange meldinger om hvor 'kul' barna er. Første tegn på at han bryr seg?\n\n- Julius",
-    "rampenissen_rampestrek": "Mel er strødd på kjøkkenbenken med 'snøengel'-mønster. I melet står 'N_SS_L__' skrevet med tydelige mellomrom hvor bokstaver mangler.",
-    "fysisk_hint": "N_SS_L__",
-    "oppsett_tid": "enkel",
-    "materialer_nødvendig": ["Mel (ca 2 dl)", "Brett/underlag"],
-    "beste_rom": "Kjøkken",
-    "hint_type": "visuell",
-    "reveals": {
-      "topics": ["snostorm-snøfall"]
     },
     "symbol_clue": {
       "symbolId": "heart-green",
       "symbolIcon": "heart",
       "symbolColor": "green",
-      "description": "Grønt hjerte fra snøstormen"
+      "description": "Grønt hjerte funnet ved det frosne vinduet"
     },
+    "dagbokinnlegg": "3. desember. Det første fysiske sporet av inntrengeren har vist seg. Mens stormen uler rundt Snøfall, la en ukjent kuldekode igjen geometriske iskrystaller på linjen til Bergen. Ved å bryte lyset gjennom et PRISME og sikre det grønne hjertesymbolet har barna gitt oss første ledetråd. Vi må følge nøye med på krystallmønstrene fremover.",
+    "hint_type": "kombinasjon",
     "finalized": true
   },
   {
     "dag": 4,
-    "tittel": "Teater-gåten",
-    "nissemail_tekst": "YO! 🎭 Teater er GOAT! Jeg har laget et HELT EPISK teater med kosedyrene deres i dag! De står som publikum, og jeg har laget en mystisk gåte for dere!\n\n🔐 FORRESTEN! Julius har akkurat låst opp NISSEKRYPTO-modulen på skrivebordet ditt! Dette er det hemmelige dekrypteringssystemet jeg snakket om i går! Symbolene deresamler (som det grønne hjertet) skal brukes der for å låse opp Julius' dypeste hemmeligheter! Kult, ikke sant? 🎁\n\n- Rampenissen",
-    "kode": "RUDOLF",
-    "dagbokinnlegg": "Dag 4 - Rudolf-Drama\n\nRudolf krever egen garderobe. 'Vi er nisser, ikke Hollywood,' sa jeg. Han sultet.\n\nTrixter ordnet teater. Rudolf lyste veldig sterkt i mørket - kanskje den røde nesen er viktigere enn jeg trodde?\n\nEtt symbol alene betyr lite. Men når man setter sammen flere - et dyr, en egenskap, en idé - da forteller de en hel historie.\n\n- Julius",
-    "rampenissen_rampestrek": "Kosedyr arrangert som publikum foran en 'scene' (f.eks. sofakant). Ved scenen ligger et skilt med emoji-gåten: 🦌 + ❤️👃 + 💡 = ?. Rampenissen står som 'regissør' med megafon eller regissørstol.",
-    "fysisk_hint": "🦌 + ❤️👃 + 💡 = ?",
-    "oppsett_tid": "moderat",
+    "tittel": "Skotoget i Gangen",
+    "nissemail_tekst": "Rudolf insisterte på at han kunne navigere til Bergen i blinde uten instrumenter. Spoiler: Han fløy rett inn i en snøfonn! For å hjelpe ham har jeg laget en pil av skoene deres ute i gangen. Hanna, følg skopilen helt frem til skoen som står aller først! Inni den ligger første del av navigasjonsordet (K - O - M - P). Håkon og Kristian: Slå på Snøfall TV og sjekk Julius sin videologg på Kanal 3 (eller hintet her) for å legge til de tre siste bokstavene (A - S - S) slik at vi låser opp NISSEKRYPTO-modulen!",
+    "rampenissen_rampestrek": "Rampenissen har stilt opp skoene i gangen i en lang rekke som peker mot én støvel. I støvelen ligger lappen: 'RETNING DEL 1: K - O - M - P (Legg til A - S - S til slutt!)'.",
+    "fysisk_hint": "Følg rekken av sko ute i gangen! I skoen foran ligger de 4 første bokstavene (K-O-M-P), og på Kanal 3 i Snøfall TV får dere de 3 siste (A-S-S).",
     "materialer_nødvendig": [
-      "Kosedyr (5-8 stk)",
-      "Emoji-gåte skilt (se print_materials)",
-      "Reinsdyr-kosedyr (valgfritt)"
+      "Barnas sko i gangen stilt på rekke",
+      "Lapp i den første skoen: 'DEL 1: K - O - M - P + DEL 2: A - S - S'"
     ],
-    "beste_rom": "Stue",
-    "hint_type": "skrevet",
+    "beste_rom": "Gangen",
+    "oppsett_tid": "moderat",
+    "kode": "KOMPASS",
+    "hint": "Hva bruker man for å finne nord og sør? Sett sammen K-O-M-P og A-S-S (7 bokstaver)!",
     "reveals": {
+      "files": [],
+      "topics": ["rudolf-nese"],
       "modules": ["NISSEKRYPTO"]
     },
-    "print_materials": [
-      {
-        "type": "note",
-        "title": "Teaterprogram",
-        "content": "🎭 JULETEATER I SNØFALL 🎭\n\nI kveld: Rudolf - Reinsdyret med den røde nesen\n\nHovedrolle: Rudolf (spilt av seg selv)\nBirolle: Trixter\nRegissør: Rampenissen\n\nBilletter: Gratis for alle nisser!"
-      }
-    ],
-    "hendelse": "Barbrosdagen (St. Barbara)",
+    "dagbokinnlegg": "4. desember. Rudolf mener fortsatt at den røde nesen hans er bedre enn både GPS og radar, men i vestlandståke trenger selv Rudolf et ordentlig KOMPASS. Takket være skotoget i gangen på Landås er retningsenheten kalibrert, og IQ har åpnet NISSEKRYPTO-modulen på skrivebordet slik at barna kan skanne og lagre symbolkortene sine.",
+    "hint_type": "kombinasjon",
     "finalized": true
   },
   {
     "dag": 5,
-    "tittel": "Hemmelig Reinsdyr-Kode",
-    "nissemail_tekst": "Hei! 🦌 I dag har jeg fått et mystisk oppdrag fra Julius! Han har skrevet en hemmelig kode på lapper som jeg skulle feste på alle reinsdyr-lekene deres (8 stykker).\n\nProblem: Jeg skjønner ikke hva det står! På hver lapp står det: USJYUFS\n\nJulius sa noe om en 'dekoder' som finnes i NISSENET-systemet... Kan dere lete etter en fil som heter 'dekoder_reinsdyr.txt'? 🤔\n\nHan sa også noe om 'Caesar' og 'minus én'... Jeg er ikke så god med hemmelige koder! Hjelp! 😅\n\n- Rampenissen",
-    "kode": "TRIXTER",
+    "tittel": "Brevfuglen over Byfjellene",
+    "nissemail_tekst": "Endelig lørdag! I natt fløy en speider-brevfugl hele veien fra Snøfall og inn over det høyeste av de syv fjellene rett bak huset deres på Landås. Men fordi Spøkelseskoden lytter på linjen, måtte Winter kryptere fjellnavnet med Caesar-kode! Finn papirfuglen jeg har satt i stuen. På vingen står det: V - M - S - J - L - F - O. Kristian, åpne dekoder_reinsdyr.txt i NisseNet (SNOFALL-HISTORIER), flytt hver bokstav ETT STEG TILBAKE i alfabetet sammen med Håkon og Hanna, og skriv inn navnet på fjellet!",
+    "rampenissen_rampestrek": "En brettet papirfugl (eller papirlapp formet som et fly/fugl) sitter høyt oppe i bokhyllen eller på en lampe i stuen med koden 'V M S J L F O (-1 steg tilbake i alfabetet)'.",
+    "fysisk_hint": "Finn papirfuglen i stuen med koden VMSJLFO. Bruk filen dekoder_reinsdyr.txt i SNOFALL-HISTORIER i NisseNet og flytt hver bokstav ett steg bakover i alfabetet!",
+    "materialer_nødvendig": [
+      "1 ark brettet som papirfugl eller papirfly",
+      "Skriv på vingen: 'KRYPTERT FJELL: V - M - S - J - L - F - O (Se dekoder_reinsdyr.txt i NisseNet)'"
+    ],
+    "beste_rom": "Stue (høyt oppe, som på et fjell!)",
+    "oppsett_tid": "moderat",
+    "kode": "ULRIKEN",
+    "hint": "Flytt hver bokstav i VMSJLFO ett steg tilbake i alfabetet (V blir U, M blir L...). Det er fjellet med gondolbanen rett ved Landås!",
+    "reveals": {
+      "files": ["dekoder_reinsdyr.txt"],
+      "topics": ["brevfugl-organisering", "caesar-kode"],
+      "modules": []
+    },
     "eventyr": {
       "id": "brevfugl-mysteriet",
       "phase": 2
     },
-    "dagbokinnlegg": "Dag 5 - Kode-læring\n\nCaesar-koder! Oppkalt etter keiseren (ja, vi deler navn). Rampenissen fikk en -1 shift med en av reinsdyrene mine sitt navn. Helt forvirret, som forventet.\n\nLaget detaljert forklaring til NISSENET - 'dekoder_reinsdyr.txt' har eksempler. Håper det hjelper!\n\n847 brevfugler så langt. Winter organiserer, Pil leser. Koder gjør eventyret mer spennende.\n\n- Julius",
-    "rampenissen_rampestrek": "8 leke-reinsdyr står plassert HELT KAOTISK over hele stuen - hengende i lampe, balanserende på TV-kanten, stående på hodet i blomsterpotter, liggende på ryggen med beina i været. På hvert reinsdyr er festet en lapp med 'USJYUFS'. I midten sitter Rampenissen med sitt eget leke-reinsdyr og later som om han rir på det, mens han holder et skilt: 'REINSDYR-RODEO! 🤠 (Julius blir SUR hvis han ser dette... 😬)'",
-    "fysisk_hint": "USJYUFS",
-    "oppsett_tid": "enkel",
-    "materialer_nødvendig": [
-      "8 små reinsdyr/dyr-figurer",
-      "8 lapper med 'USJYUFS' (se print_materials)",
-      "Tape/feste",
-      "Note om dekoder-fil"
-    ],
-    "beste_rom": "Stue/barnerom",
+    "dagbokinnlegg": "5. desember. Winter har innført Caesar-kryptering på alle innflyginger til Bergen. Dagens brevfugl brukte masten på ULRIKEN som peilepunkt før den landet på Landås. Kristian tok seg av bokstavforskyvningen mens Håkon og Hanna sporet opp papirfuglen i stuen. Nå vet vi at luftveien over Ulriken er trygg.",
     "hint_type": "kombinasjon",
-    "requires": {
-      "topics": ["brevfugl-system"],
-      "completedDays": [1]
-    },
-    "reveals": {
-      "files": ["dekoder_reinsdyr.txt"],
-      "topics": ["brevfugl-organisering"]
-    },
-    "print_materials": [
-      {
-        "type": "puzzle",
-        "title": "Reinsdyr-kodelapper (8 stk)",
-        "content": "Print 8 lapper med denne teksten:\n\n╔══════════════╗\n║  USJYUFS    ║\n╚══════════════╝\n\n(Én lapp per reinsdyr)"
-      },
-      {
-        "type": "reference",
-        "title": "Dekoder-referanse",
-        "content": "📝 NOTE TIL RAMPENISSEN:\n\nJulius sa:\n'Finn dekoder_reinsdyr.txt i NISSENET'\n\nNogle om Caesar-kode:\n- Flytt hver bokstav\n- Nøkkel: -1 (ett steg tilbake)\n- Eksempel: B → A, C → B"
-      }
-    ],
     "finalized": true
   },
   {
     "dag": 6,
-    "tittel": "St. Nikolaus' By",
-    "nissemail_tekst": "Hei! 🎅 I dag feirer vi St. Nikolaus! Jeg har gjemt et gammelt kart i sekken deres (speidersekken eller skolesekken). Det er et mystisk kart med en gåte!\n\nPå kartet står det:\n'Finn byen som begynner med M og slutter med A. 4 bokstaver totalt.'\n\nDette er byen hvor St. Nikolaus kom fra for mange hundre år siden! ⛪\n\nOG... vent litt... 💫 GJENNOM KARTET skinner det... et magisk RØDT HJERTE! ❤️ Julius fortalte meg at det røde hjertet representerer varme og kjærlighet - akkurat som den kjærligheten St. Nikolaus viste til barn! Det er det ANDRE symbolet til samlingen din! To hjerter nå! (Grønt og rødt - de skal brukes i NISSEKRYPTO senere!) ✨\n\n- Rampenissen",
-    "kode": "MYRA",
+    "tittel": "Lommelykt-Sporet i Mørket",
+    "nissemail_tekst": "God søndag! Julius forteller om gamle nordiske lys- og gavetradisjoner på Kanal 3 i dag, og det ga meg en idé! Jeg gjemte en lommelykt sammen med et RØDT HJERTE-symbolkort på et lurt sted i stuen eller gangen. Hanna, finn lommelykten og det røde hjertet! Håkon og Kristian: Lys med lommelykten under sofaen eller bordet der jeg har teipet opp 4 bokstaver i mørket: L - Y - K - T. Hvilket ord på 4 bokstaver lyser opp i mørket?",
+    "rampenissen_rampestrek": "Rampenissen holder en lommelykt og det røde hjerte-kortet. Under stuebordet eller sofaen (der det er litt mørkt) er det teipet en lapp med 'L - Y - K - T'.",
+    "fysisk_hint": "Finn lommelykten og det røde hjertet ved Rampenissen, og lys under stuebordet eller sofaen for å lese de 4 bokstavene!",
+    "materialer_nødvendig": [
+      "1 lommelykt",
+      "Symbolkort: Rødt hjerte (QR-kort)",
+      "Lapp teipet under bordet: 'KODE I MØRKET: L - Y - K - T'"
+    ],
+    "beste_rom": "Stue (under bordet/sofaen)",
+    "oppsett_tid": "moderat",
+    "kode": "LYKT",
+    "hint": "Sjekk lappen under bordet med lommelykten: 4 bokstaver som begynner på L og slutter på T!",
+    "reveals": {
+      "files": [],
+      "topics": ["st-nikolaus", "juletradisjon"],
+      "modules": []
+    },
     "eventyr": {
       "id": "juletradisjon",
       "phase": 1
-    },
-    "dagbokinnlegg": "Dag 6 - Historietimen\n\nSt. Nikolaus-dagen! Kollega fra Myra - liten kystby ved Middelhavet. Kort navn, fire bokstaver. 'Den starter og slutter med vokalene i mitt navn,' pleier han si. Morsom måte å huske på.\n\nHan hadde bedre skjegg på konferansen i 324. Fortsatt bitter.\n\nNissene mest interessert i land med mest godteri. Typisk.\n\n- Julius",
-    "rampenissen_rampestrek": "Rampenissen har TØMT alle sekkene i gangen! Skolesekker og speidersekker ligger veltet med innholdet strødd utover hele gulvet - blyanter, bøker, matbokser, klær, leker i EN STOR HAUG. Rampenissen sitter midt i rotet med piratbandana og holder opp et 'gammelt kart' (litt krøllete papir). Ved siden av ham ligger en tom 'skattkiste' (skoeske). En lapp sier: 'JULIUS SA SKATTEN FRA ST. NIKOLAUS VAR GJEMT I EN SEKK! 🏴‍☠️ Jeg lette i ALLE sekkene... fant ingen skatt, bare MASSE rart! Kan dere hjelpe meg finne byen han kom fra? Den starter med M!' Kosedyr står rundt som 'vitner' og ser sjokkerte ut.",
-    "fysisk_hint": "Finn byen som begynner med M og slutter med A. 4 bokstaver totalt.",
-    "oppsett_tid": "moderat",
-    "materialer_nødvendig": [
-      "Barnas sekker (skolesekk/speidersekk)",
-      "Tøm innholdet ut på gulvet",
-      "Piratbandana til Rampenissen",
-      "Gammelt kart med gåten (kan 'eldes' med tepose)",
-      "Skoeske som tom 'skattkiste'",
-      "Kosedyr som sjokkerte vitner"
-    ],
-    "beste_rom": "Gang (i sekk)",
-    "hint_type": "gjemt_objekt",
-    "reveals": {
-      "topics": ["juletradisjon"]
     },
     "symbol_clue": {
       "symbolId": "heart-red",
       "symbolIcon": "heart",
       "symbolColor": "red",
-      "description": "Rødt hjerte fra Lucia-lyset"
+      "description": "Rødt hjerte funnet sammen med lommelykten"
     },
-    "print_materials": [
-      {
-        "type": "map",
-        "title": "Gammelt kart til Myra",
-        "content": "[Tegn et enkelt kart med kompas, bølger (hav), og 'X' som markerer Myra. Skriv gåten: 'Byen begynner med M, slutter med A, 4 bokstaver totalt']"
-      }
-    ],
-    "hendelse": "St. Nikolaus-dagen",
-    "finalized": true
-  },
-  {
-    "dag": 7,
-    "tittel": "Marshmallow-krigen",
-    "nissemail_tekst": "YO! ⚔️❄️ KRIGEN ER OVER!\n\nOkei, så... jeg hadde en liten \"uenighet\" med kosedyrene i natt om hvem som er den BESTE snøballkasteren. 🏆\n\nDet endte med TOTAL MARSHMALLOW-KRIG! 😅 Bamsen din startet det, jeg sverger! (Ikke fortell Julius...)\n\nPROBLEMET er at jeg gjemte 3 hemmelige marshmallows med tall på, men nå husker jeg ikke REKKEFØLGEN! 🤦\n\nJulius ga meg en gåte for å huske det tresifrede tallet:\n\n📝 \"Jeg er et 3-sifret tall. Summen av sifrene er 18. Det første tallet er halvparten av det andre og en tredjedel av det tredje. Hvilket tall er jeg?\"\n\nFinn de 3 marshmallowene rundt i huset, løs gåten, og send meg svaret! 🔢\n\nP.S. Unnskyld rotet... de andre marshmallowene kan dere spise! 🍬\n\n- Rampenissen",
-    "kode": "369",
-    "eventyr": {
-      "id": "morkets-trussel",
-      "phase": 1
-    },
-    "dagbokinnlegg": "Dag 7 - Logikk-leksjoner\n\nRampenissen rapporterer om marshmallow-kaos hjemme hos barna. Kosedyrene skal visst ha \"startet det\". Tviler.\n\nGa ham en tallgåte for å huske koden. Tre sifre, logiske sammenhenger. Matematikk er universelt - fungerer like bra i Snøfall som hos menneskene.\n\nIQ jobber med nye oppfinnelser. Noe om en marshmallow-kanon? Håper det er til fredelige formål.\n\nMørket er stille. For stille. Orakelet rynker pannen.\n\n- Julius",
-    "rampenissen_rampestrek": "Marshmallows strødd over hele stuen som 'snøballer' etter krigen. Kosedyr er delt i to 'lag' med fort av sofaputer - noen ligger 'såret' på gulvet. 3 SPESIELLE marshmallows har tall skrevet på: 3 (i en sko ved døra), 6 (mellom sofaputene), 9 (på kjøkkenbenken). Rampenissen holder hvitt flagg (serviett) og ser utmattet ut.",
-    "fysisk_hint": "Finn 3 marshmallows med tall. Gåte: Sum = 18. Første = halvparten av andre = tredjedel av tredje.",
-    "oppsett_tid": "moderat",
-    "materialer_nødvendig": [
-      "15-20 marshmallows",
-      "Tusj til å skrive tall (5, 8, 2)",
-      "Kosedyr (6-10 stk)",
-      "Sofaputer som 'fort'",
-      "Hvit serviett som flagg"
-    ],
-    "beste_rom": "Stue (hovedslag) + kjøkken + gang",
+    "dagbokinnlegg": "6. desember. Midt i desembermørket trenger både nisser og barn en god LYKT. I gamle dager gikk folk med lykter mellom gårdene for å dele gaver og varme. I dag brukte Hanna, Håkon og Kristian lommelykt for å avsløre koden i skyggene og fant det røde hjertesymbolet til NisseKrypto.",
     "hint_type": "kombinasjon",
-    "reveals": {
-      "topics": ["morkets-trussel"],
-      "modules": ["NISSEMUSIKK"]
-    },
     "finalized": true
   }
 ]

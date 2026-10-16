@@ -1,67 +1,154 @@
 [
   {
+    "dag": 19,
+    "tittel": "Eksplosjon i Fôringsautomaten",
+    "nissemail_tekst": "KNAS! SMASK! BOING! IQ bygde en helautomatisk snacks-kanon til Rudolf og Trixter i natt, men fjæren røk og skjøt 40 knasende grønnsaker rett gjennom verkstedet! Tre av dem landet hjemme hos dere på Landås! Hanna og Håkon: Løp på jakt etter de 3 oransje grønnsakene jeg har gjemt på kjøkkenet og i stuen! På dem står de 3 første bokstavene: G - U - L. Kristian: Sjekk reinsdyr_GYATT.log i JULIUS-ARKIV i NisseNet for de 3 siste bokstavene (R - O - T)!",
+    "rampenissen_rampestrek": "Rampenissen har gjemt 3 ekte gulrøtter på morsomme steder (f.eks. i fruktskålen, i en sko, og i sofaen) med en lapp: 'REINSDYR-DRIVSTOFF DEL 1: G - U - L (Se JULIUS-ARKIV/reinsdyr_GYATT.log for DEL 2: R - O - T)'.",
+    "fysisk_hint": "Finn de 3 gulrøttene Rampenissen har gjemt (G-U-L) og kombiner med de 3 siste bokstavene (R-O-T) i JULIUS-ARKIV/reinsdyr_GYATT.log!",
+    "materialer_nødvendig": [
+      "3 gulrøtter",
+      "Lapp ved gulrøttene: 'DEL 1: G - U - L (Se JULIUS-ARKIV/reinsdyr_GYATT.log i NisseNet for DEL 2)'"
+    ],
+    "beste_rom": "Kjøkken og stue",
+    "oppsett_tid": "moderat",
+    "kode": "GULROT",
+    "hint": "Hvilken knasende oransje grønnsak elsker reinsdyrene aller mest? Sett sammen G-U-L og R-O-T (6 bokstaver)!",
+    "reveals": {
+      "files": ["reinsdyr_GYATT.log"],
+      "topics": ["reinsdyr-streik", "iq-oppfinnelser"],
+      "modules": []
+    },
+    "eventyr": {
+      "id": "iqs-oppfinnelser",
+      "phase": 3
+    },
+    "dagbokinnlegg": "19. desember. Helgevask i stallen ble avbrutt da IQs automatiske GULROT-kanon gikk av på full styrke. Rudolf var strålende fornøyd med regnet av snacks, og hjemme på Landås fant Hanna, Håkon og Kristian de tre utskutte gulrøttene og koblet dem til telemetriloggen i Julius-Arkiv.",
+    "hint_type": "kombinasjon",
+    "finalized": true
+  },
+  {
+    "dag": 20,
+    "tittel": "Sofa-Sleden og Overlydsmotoren",
+    "nissemail_tekst": "Søndag og 4. søndag i advent! I dag monterer IQ den siste store oppfinnelsen sin på sleden før julaften! Jeg har bygd min egen prøve-slede av sofaputer i stuen sammen med et GRØNT MÅNE-symbolkort. Hanna: Sett deg i pute-sleden og finn det grønne måne-kortet! Håkon: Sjekk dashbord-lappen i pute-sleden (den har de 3 første bokstavene: T - U - R). Kristian: Åpne IQs Verksted-Lab på Snøfall TV (Kanal 2) og les av de 2 siste bokstavene på trykkmåleren (B - O)!",
+    "rampenissen_rampestrek": "Rampenissen sitter i en 'slede' laget av 2-3 sofaputer med tøyler av garn/belte, det grønne måne-kortet og en lapp: 'MOTOR DEL 1: T - U - R (Sjekk Snøfall TV Kanal 2 for DEL 2: B - O)'.",
+    "fysisk_hint": "Sjekk Rampenissens pute-slede i stuen for det grønne måne-kortet og bokstavene T-U-R, og se på Snøfall TV Kanal 2 for de 2 siste bokstavene (B-O)!",
+    "materialer_nødvendig": [
+      "Symbolkort: Grønn måne (QR-kort)",
+      "2-3 sofaputer stilt som en slede",
+      "Lapp: 'MOTOR DEL 1: T - U - R + DEL 2 på Snøfall TV Kanal 2: B - O'"
+    ],
+    "beste_rom": "Stue (sofaen)",
+    "oppsett_tid": "moderat",
+    "kode": "TURBO",
+    "hint": "Sett sammen T-U-R fra pute-sleden i stuen med B-O fra Snøfall TV Kanal 2 (5 bokstaver)!",
+    "reveals": {
+      "files": [],
+      "topics": ["slede-test", "iq-oppfinnelser"],
+      "modules": []
+    },
+    "eventyr": {
+      "id": "iqs-oppfinnelser",
+      "phase": 4
+    },
+    "symbol_clue": {
+      "symbolId": "moon-green",
+      "symbolIcon": "moon",
+      "symbolColor": "green",
+      "description": "Grønn måne funnet i pute-sleden i stuen"
+    },
+    "dagbokinnlegg": "20. desember. Med koden TURBO er alle fire faser av IQs Oppfinnelser fullført! Sleden har nå både kretskort, sikringer, gulrot-energi og ekstra skyvekraft til å krysse Norskehavet og klatre over Ulriken på sekunder. Barna har dessuten sikret det første månesymbolet (Grønn Måne) og merket Oppfinner-Assistent!",
+    "hint_type": "kombinasjon",
+    "finalized": true
+  },
+  {
+    "dag": 21,
+    "tittel": "Slaget om Brannmuren",
+    "nissemail_tekst": "KODE RØD! DETTE ER DET SISTE ANGREPET! Spøkelseskoden Kulde har samlet all kraft på den mørkeste dagen i året (vintersolverv) og sugd fargene rett ut av skjermen deres! For å knuse Kulde én gang for alle må alle tre jobbe sammen NÅ: Hanna, finn det røde varme-skjoldet jeg har lagt ved skjermen (der står første del av koden: B - R - A - N - N)! Håkon og Kristian: Åpne Snøfall TV på KANAL 4 og spill BRANNMUR-ZAPPER (eller les Julius sin nødmelding på Kanal 3) for å hente de 3 siste bokstavene (M - U - R)! Tast inn hele ordet på 8 bokstaver for å sprenge is-låsen og gi fargene tilbake til huset!",
+    "rampenissen_rampestrek": "Rampenissen står vakt foran iMac-en eller TV-en med et lite 'skjold' av papp/papir og lappen: 'FORSVAR DEL 1: B - R - A - N - N (Spill Brannmur-Zapper på Snøfall TV Kanal 4 for DEL 2: M - U - R)'.",
+    "fysisk_hint": "Se ved skjermen etter Rampenissens skjold (B-R-A-N-N) og åpne Snøfall TV Kanal 4 (Brannmur-Zapper) for å finne de 3 siste bokstavene (M-U-R)!",
+    "materialer_nødvendig": [
+      "Lapp formet som et skjold ved iMac-en/TV-en: 'DEL 1: B - R - A - N - N + DEL 2 på Snøfall TV Kanal 4: M - U - R'",
+      "Valgfritt: Sett iMac-skjermen i gråtoner via Fleet før barna står opp (NisseKomm skrur fargene automatisk tilbake når de løser koden!)"
+    ],
+    "beste_rom": "Ved iMac-en / TV-en",
+    "oppsett_tid": "moderat",
+    "kode": "BRANNMUR",
+    "hint": "Sett sammen B-R-A-N-N fra skjoldet ved skjermen med M-U-R fra Snøfall TV Kanal 4 (8 bokstaver)!",
+    "reveals": {
+      "files": ["nordpolen_hemmelighet.txt"],
+      "topics": ["morket-beseirt", "morkets-trussel"],
+      "modules": []
+    },
+    "eventyr": {
+      "id": "morkets-trussel",
+      "phase": 4
+    },
+    "dagbokinnlegg": "21. desember. Vintersolverv - årets mørkeste dag, og dagen da Spøkelseskoden Kulde satte inn sitt siste støt. Den klarte til og med å tappe fargene fra iMac-skjermen hjemme på Landås! Men Kristian, Håkon og Hanna sto sammen, aktiverte den uknuselige BRANNMUR-protokollen, slettet Kulde fra serverne og brakte fargene og julevarmen tilbake. Hele Snøfall jubler!",
+    "hint_type": "kombinasjon",
+    "finalized": true
+  },
+  {
     "dag": 22,
-    "tittel": "Julesokk-mysteriet",
-    "nissemail_tekst": "Yo! 🎄🧦 I dag har jeg hengt opp tre MAGISKE julesokker! Men vent... disse sokkene inneholder IKKE gaver... de inneholder KODER! 🤯\n\nI hver sokk er det lapper med TALL:\n\nSokk 1: '10-21-12' 🎅\nSokk 2: '5' ✨\nSokk 3: '1-6-20-5-14' 🎁\n\nMen hva betyr disse tallene?! 🤔 Dette er Julius' HEMMELIGE kodesystem fra gammel tid!\n\nHEY! 📋 Sjekk NISSENET! Det finnes en fil som heter 'julekode_dekoder.txt' - den viser hvordan du bruker Julius' alfabetiske system! A=1, B=2, C=3... og så videre! 🔤\n\nNår du har dekryptert alle tre sokkene og kombinert bokstavene, får du navnet på DAGENS HØYTID! 🎊\n\nOMG! 🌙❤️ I den første sokken skinner det... en magisk RØD MÅNE! 🌙❤️ Julius forklarte at den røde månen symboliserer forventning og spenning - akkurat som magien i natten før julaften! Dette er den ANDRE månen i samlingen din! 🎉 (Nå har du: 3 hjerter + 3 soler + 2 måner = 8 symboler!)\n\nPS: Etter du har funnet koden, skriv 'NAVN:Ditt navn her' (eller 'NAVN:Emma,Lucas,Noah' hvis dere er flere!) så registrerer Julius dere i det offisielle systemet! 📝✨\n\n- Rampenissen",
-    "kode": "JULEAFTEN",
+    "tittel": "Landingskoordinatene i Sokkene",
+    "nissemail_tekst": "Jippi! Spøkelseskoden er borte, og det er bare TO dager igjen til julaften! Nå må Julius legge inn det nøyaktige landingsstedet for dere tre i sledens datamaskin. Jeg har hengt frem 3 julesokker (eller lagt 3 lapper i skoene til Hanna, Håkon og Kristian) sammen med et RØDT MÅNE-symbolkort! I Sokk 1 ligger tallene 12 - 1. I Sokk 2 ligger 14 - 4. I Sokk 3 ligger 29 - 19. Kristian: Åpne julekode_dekoder.txt i SNOFALL-HISTORIER i NisseNet og oversett tallene (A=1 til Å=29) sammen med Håkon og Hanna! Og husk å skrive inn navnene deres i Snill-listen i KodeTerminal etterpå!",
+    "rampenissen_rampestrek": "I 3 julesokker eller i én sko til hver av Hanna, Håkon og Kristian ligger det røde måne-kortet og 3 tall-lapper: 'Sokk 1 (Hanna): 12 - 1', 'Sokk 2 (Håkon): 14 - 4', 'Sokk 3 (Kristian): 29 - 19'.",
+    "fysisk_hint": "Finn de 3 lappene i sokkene/skoene til Hanna (12-1), Håkon (14-4) og Kristian (29-19), og bruk alfabettabellen i SNOFALL-HISTORIER/julekode_dekoder.txt i NisseNet!",
+    "materialer_nødvendig": [
+      "Symbolkort: Rød måne (QR-kort)",
+      "3 julesokker eller 3 sko",
+      "3 lapper: 'Del 1: 12 - 1', 'Del 2: 14 - 4', 'Del 3: 29 - 19 (Se julekode_dekoder.txt i NisseNet)'"
+    ],
+    "beste_rom": "Stue eller gang",
+    "oppsett_tid": "moderat",
+    "kode": "LANDÅS",
+    "hint": "Oversett tallene med A=1, B=2 ... Å=29: 12=L, 1=A, 14=N, 4=D, 29=Å, 19=S. Hvilket sted i Bergen blir det?",
+    "reveals": {
+      "files": ["julekode_dekoder.txt", "snill_slem_liste.txt"],
+      "topics": ["countdown-starter", "snill-slem-liste"],
+      "modules": []
+    },
     "eventyr": {
       "id": "countdown-julaften",
       "phase": 1
-    },
-    "reveals": {
-      "files": ["julekode_dekoder.txt"],
-      "topics": ["countdown-starter", "to-dager-igjen", "navn-registrering"]
     },
     "symbol_clue": {
       "symbolId": "moon-red",
       "symbolIcon": "moon",
       "symbolColor": "red",
-      "description": "Rød måne fra julesokk-mysteriet"
+      "description": "Rød måne funnet i julesokkene på Landås"
     },
-    "print_materials": [
-      {
-        "type": "puzzle",
-        "title": "Krypterte julesokker - oppsett",
-        "content": "🧦 JULIUS' KODE-SOKKER 🧦\n\nTrenger:\n- 3 julesokker\n- Nummererte lapper med tall\n- Snor til oppheng\n\nOPPSETT:\n\nSokk 1 inneholder lapp:\n'10-21-12'\n\nSokk 2 inneholder lapp:\n'5'\n\nSokk 3 inneholder lapp:\n'1-6-20-5-14'\n\nLegg også ved gåte-lapp:\n'Julius' hemmelige kode!\nSjekk NISSENET for dekoder!\n(julekode_dekoder.txt)'\n\nPS: Husk å henge dem synlig!"
-      },
-      {
-        "type": "guide",
-        "title": "To dager til julaften!",
-        "content": "🎅 NEDTELLING: 2 DAGER! 🎅\n\nJulius og nissene forbereder den store reisen!\n\n✅ Reinsdyrene har trent\n✅ Sleda er klar\n✅ Gavene er pakket\n✅ Ruten er planlagt\n\nSnart kommer Julius med gaver til alle snille barn!\n\nI morgen: Lillejulaften (dag 23)\nI overmorgen: JULAFTEN! (dag 24)\n\nEr dere klare? 🎄✨"
-      }
-    ],
-    "dagbokinnlegg": "Dag 22 - To Dager!\n\nTO DAGER! Panikken er reell nå. Men kontrollert panikk. Organisert kaos. Nissemor kaller det 'tradisjonell julestress'. Hun ler.\n\nGeneralprøve med reinsdyrene. De flyr perfekt! Rudolf gjorde en looping. Sleda klarte prøveturen. Alt fungerer!\n\nVerkstedet er rent. Gavene pakket. Listen sjekket to ganger. (Egentlig 47 ganger.) Vi er klare.\n\nRampenissen sender siste rapport: 'Julius, jeg kom som en kaotisk nisse, men barna lærte meg hva ansvar og vennskap virkelig betyr. Takk for at du ga meg denne sjansen.' Er så stolt.\n\nI kveld registrerer jeg navnene deres. Dere er nå en del av Snøfalls historie.\n\n- Julius",
-    "rampenissen_rampestrek": "3 julesokker hengt på rad. Sokk 1: lapp med '10-21-12'. Sokk 2: lapp med '5'. Sokk 3: lapp med '1-6-20-5-14'. Ved siden av ligger gåte-lapp: 'Julius' kode-system! Sjekk NISSENET for dekoder!' Rampenissen ser ut som hemmelig agent med solbriller.",
-    "fysisk_hint": "Sokk 1: 10-21-12 | Sokk 2: 5 | Sokk 3: 1-6-20-5-14 (Sjekk NISSENET for dekoder!)",
-    "oppsett_tid": "moderat",
-    "materialer_nødvendig": [
-      "3 julesokker",
-      "3 lapper med tall-koder",
-      "Gåte-lapp",
-      "Snor til oppheng"
-    ],
-    "beste_rom": "Over peis/dør/vindu",
+    "dagbokinnlegg": "22. desember. Roen og julegleden har senket seg over Snøfall etter gårsdagens seier. I dag dekodet Kristian, Håkon og Hanna tallkoden 12-1-14-4-29-19 og bekreftet primærmålet i Bergen: LANDÅS! Snill-listen i Julius-Arkiv er nå åpen for registrering av alle tre søsknene.",
     "hint_type": "kombinasjon",
-    "finalized": false
+    "finalized": true
   },
   {
     "dag": 23,
-    "tittel": "Lillejulaften-fest",
-    "nissemail_tekst": "YOOO! 🎉🎂✨ Det er LILLEJULAFTEN! Den nest viktigste dagen i hele desember! 🇳🇴\n\nJeg har laget en EPIC utfordring i dag! På bordet ligger et bilde av Norges mest kjente JULEKAKE! 🍰 Den har mange lag som står oppå hverandre som et tårn!\n\nGÅTEN:\n'Jeg har 7 runde lag og er hvit som snø.\nJeg er norsk tradisjon fra topp til tå.\nMitt navn starter på K og slutter på KAKE.\n10 bokstaver totalt - hva heter jeg?' 🤔\n\nMEN VENT! 🧮 Dette er IKKE bare en enkel gåte! Det finnes et HEMMELIG lag!\n\nHUSK tallet fra dag 16? Hvor mange luker har en kalender? (Psst: 24!) 📅\n\nMatematikk-utfordring:\n7 lag × 24 = ? 🔢\n\nDet tallet inneholder en EKSTRA hemmelighet! Bruk bokstav-posisjon for å finne hint:\nPosisjon 1, 6, 8 i alfabetet gir deg... 🔤\n\nOMG! 🌙💙 Ved kaken skinner den SISTE BLÅE MÅNEN! 🌙💙 Julius smiler og sier at den blå månen representerer visdom og fullføring - du har nå samlet ALLE NI SYMBOLENE! 🎉 (3 hjerter + 3 soler + 3 måner = 9 symboler komplett!)\n\nFORRETEN! 🔓 Med alle 9 symbolene er den ULTIMATE dekrypteringen klar i NISSEKRYPTO! Dette er nivå 3 - 'HJERTETS HEMMELIGHET'! Den vanskeligste utfordringen noensinne! 🌟\n\nPS: Navnet ditt er registrert! I KVELD kommer Julius! Når dere sovner, flyr han gjennom himmelen! I morgen tidlig: JULAFTEN! 🎅✨\n\n- Rampenissen",
-    "kode": "KRANSEKAKE",
+    "tittel": "Stjernevakt på Lille Julaften",
+    "nissemail_tekst": "Det er LILLE JULAFTEN! Reinsdyrene står ferdig spent foran sleden i Snøfall, og sekken er lastet med gaver til Bergen! Men hvordan blir flyværet i natt? Jeg har lagt et BLÅTT MÅNE-symbolkort ved juletreet (eller vinduet) sammen med første del av værmeldingen på 7 bokstaver: S - T - J - E - R - N - E. Hanna: Finn det blå måne-kortet! Håkon og Kristian: Se Julius sin videologg på Snøfall TV Kanal 3 for å få de 5 siste bokstavene (K - L - A - R - T) - og bruk alle 9 symbolene i NISSEKRYPTO til å låse opp den aller siste hemmeligheten (Hjertets Hemmelighet)!",
+    "rampenissen_rampestrek": "Ved juletreet eller i stuevinduet sitter Rampenissen og speider opp mot stjernene med det blå måne-kortet og en lapp: 'FLYVÆR DEL 1: S T J E R N E + DEL 2 på Snøfall TV Kanal 3: K L A R T'.",
+    "fysisk_hint": "Se ved juletreet eller vinduet etter det blå måne-kortet og første del av ordet (STJERNE), og legg til andre del (KLART) fra Snøfall TV Kanal 3!",
+    "materialer_nødvendig": [
+      "Symbolkort: Blå måne (QR-kort)",
+      "Lapp ved juletreet/vinduet: 'DEL 1: S T J E R N E + DEL 2 fra Snøfall TV Kanal 3: K L A R T'"
+    ],
+    "beste_rom": "Stue (ved juletreet eller vinduet)",
+    "oppsett_tid": "moderat",
+    "kode": "STJERNEKLART",
+    "hint": "Sett sammen STJERNE fra lappen ved juletreet og KLART fra Snøfall TV Kanal 3 (12 bokstaver i ett ord)!",
+    "reveals": {
+      "files": [],
+      "topics": ["lille-julaften", "countdown-julaften"],
+      "modules": []
+    },
     "eventyr": {
       "id": "countdown-julaften",
       "phase": 2
-    },
-    "reveals": {
-      "files": ["brevfugl-finale.txt"],
-      "topics": ["lillejulaften", "en-dag-igjen", "alle-symboler-samlet"]
     },
     "symbol_clue": {
       "symbolId": "moon-blue",
       "symbolIcon": "moon",
       "symbolColor": "blue",
-      "description": "Blå måne fra lillejulaften"
+      "description": "Blå måne funnet under stjernevakten på lille julaften"
     },
     "decryption_challenge": {
       "challengeId": "hjertets-hemmelighet",
@@ -77,110 +164,39 @@
         "moon-blue"
       ],
       "correctSequence": [6, 3, 0, 7, 4, 1, 8, 5, 2],
-      "messageWhenSolved": "❤️ HJERTETS HEMMELIGHET ÅPENBART! ❤️\n\nENESTÅENDE! Dere har løst den ultimate utfordringen og funnet den perfekte kombinasjonen av alle ni symbolene!\n\nHjerter for kjærlighet, soler for håp, måner for ro - i farger av vekst, varme og kulde. Dette er den eldgamle formelen som holder magien i Snøfall levende.\n\nJulius' dypeste hemmeligheter er nå deres. Dere har bevist at dere er sanne KODE-MESTERE! Den siste filen venter i NISSENET...\n\n🎄 ALLE DEKRYPTERINGER FULLFØRT! 🎄",
+      "hint": "Sorter etter fargesøylene (Grønn først, så Rød, så Blå) fra nattehimmel til hjerte: Måne → Sol → Hjerte i Grønn, deretter Måne → Sol → Hjerte i Rød, og til slutt Måne → Sol → Hjerte i Blå!",
+      "rewardText": "ALLE 3 NIVÅER DEKRYPTERT! Filen hjertets-hemmelighet.txt er låst opp i DEKRYPTERT, og dere er nå offisielle KODE-MESTERE!",
       "unlocksFiles": ["hjertets-hemmelighet.txt"]
     },
-    "print_materials": [
-      {
-        "type": "activity",
-        "title": "Lillejulaften-pynt",
-        "content": "🎉 LILLEJULAFTEN-FEIRING! 🎉\n\nLag festpynt til Rampenissen!\n\n✅ Partyhatt\n✅ Ballonger\n✅ Konfetti\n✅ Bilde av kransekake (print/tegn)\n\nHvis dere har mulighet:\nLag eller kjøp kransekake til å dele! 🍰\n\n7 lag oppå hverandre = perfekt!\n\nBONUS-MATEMATIKK:\n7 lag × 24 kalenderdører = 168\nBokstav 1, 6, 8 = A, F, H\n(Hint til framtidige gåter!)"
-      },
-      {
-        "type": "guide",
-        "title": "Lillejulaften-tradisjon",
-        "content": "🇳🇴 LILLEJULAFTEN 🇳🇴\n\nI Norge feirer vi Lillejulaften\n23. desember!\n\nVi:\n🎄 Pynter juletreet\n🍽️ Spiser god mat\n🎁 Gleder oss til julaften\n🎅 Forbereder for Julius' besøk\n\nJulius forbereder den siste natten\nfør den store reisen!\n\nI KVELD sovner dere...\nOg når dere våkner:\nDet er JULAFTEN! ✨"
-      },
-      {
-        "type": "note",
-        "title": "Siste forberedelser!",
-        "content": "📝 SISTE DAG I MORGEN! 📝\n\nJulius er klar!\nNavnene deres er registrert!\n\nI morgen fullfører dere:\n⭐ Den siste koden\n⭐ Den ultimate utfordringen\n⭐ Hele julekalender-oppdraget!\n\nVær klare for noe EPISK! 🎄✨"
-      }
-    ],
-    "dagbokinnlegg": "Dag 23 - Lillejulaften\n\nI MORGEN ER DET JULAFTEN! (Må virke rolig. MEN AAAHHH!)\n\nSiste forberedelser. Hele teamet er samlet: Pil, Winter, IQ, Trixter - alle er klare. Nissemor pakket ekstragodteri 'for reisen'.\n\nI går registrerte barna navnene sine! Ser dem på listen nå... Barna som har fulgt med Rampenissen hele desember. De har vist dedikasjon, vennskap og mot.\n\nDe har samlet alle 9 symbolene! Hjertene, solene, månene - alt er komplett. De har mestret hver dekrypteringsutfordring. Fra enkle koder til komplekse cipher-systemer. Imponerende!\n\nEn siste kopp kakao med Nissemor. Hun sa: 'Magien i Snøfall, vennskapet med barna, og motet i hjertet ditt - det er det som gjør julen mulig.'\n\nI morgen... den store finalen.\n\n- Julius",
-    "rampenissen_rampestrek": "Bilde av kransekake (7 lag) på bordet med festpynt rundt. Rampenissen har partyhatt og konfetti. Ballonger med '23' på. Lapp med gåte: 'Jeg har 7 lag, starter på K, 10 bokstaver. Hva er jeg?' og '7 × 24 = ?'",
-    "fysisk_hint": "Jeg har 7 lag, er norsk tradisjon, starter på K, 10 bokstaver. (Bonus: 7 × 24 = ?)",
-    "oppsett_tid": "moderat",
-    "materialer_nødvendig": [
-      "Bilde av kransekake (print/tegn)",
-      "Festpynt (partyhatt, ballonger)",
-      "Konfetti",
-      "Gåte-lapp"
-    ],
-    "beste_rom": "Kjøkken eller spisebord",
+    "dagbokinnlegg": "23. desember. Lille julaften! Skyene sprekker opp over Byfjellene, og Orakelet melder helt STJERNEKLART fra Nordpolen til Bergen. Med det Blå Måne-symbolet på plass har Kristian, Håkon og Hanna samlet alle 9 symbolene og låst opp Nivå 3 i NisseKrypto. I natt flyr vi!",
     "hint_type": "kombinasjon",
-    "hendelse": "Lillejulaften",
-    "finalized": false
+    "finalized": true
   },
   {
     "dag": 24,
-    "tittel": "Julaften - Den Ultimate Finalen",
-    "nissemail_tekst": "GOD JUL! 🎅🎄✨ Dette er det... FINALEN! Den ultimate testen!\n\nRampenissen har etterlatt sin siste melding, og Julius venter! Men først... den STØRSTE utfordringen noensinne! 🤯\n\nTIL NÅ har dere samlet 9 magiske symboler:\n💚❤️💙 Tre hjerter (grønn, rød, blå)\n🟢🔴🔵 Tre soler (grønn, rød, blå)\n🟢🔴🔵 Tre måner (grønn, rød, blå)\n\nMEN... det finnes et TIENDE symbol! ⭐ Den ultimate belønningen!\n\nRAMPENISSENS BREV sier:\n\n'Kjære venn! 🎅\n\nTakk for en utrolig desember!\n\nFor å finne den siste koden, kombiner:\n💚 Grønt hjerte (fra Dag 9 - snøfnugg)\n🔴 Rød sol (fra Dag 15 - mandel)\n🔵 Blå måne (fra i går - kransekake)\n\nGå til SYMBOLSKANNER i appen!\nKombiner: GRØNT HJERTE → RØD SOL → BLÅ MÅNE\n\nDette låser opp din personlige melding\ni Nice List med DITT NAVN! 🎁\n\nJulius venter på deg! ⭐'\n\nNÅR du har funnet koden, skriv den i KODETERMINAL! Den låser opp:\n⭐ Tiende symbol: GULLSTJERNE!\n⭐ Offisiell Snøfall Champion badge!\n⭐ Din personlige melding fra Julius!\n⭐ Sertifikat som bevis! 📜\n\nDette er IKKE bare 'JULAFTEN' som svar - det krever FULL MASTERY av alle symboler! 💪\n\n- Rampenissen\n\nPS: Julius kom i natt mens dere sov! Gavene venter! Men først... løs dette! 🎄",
-    "kode": "SNØFALLVENNER",
+    "tittel": "God Jul på Landås!",
+    "nissemail_tekst": "GOD JUL, KRISTIAN, HÅKON OG HANNA! Vi klarte det! I natt landet sleden mykt på Landås, og både Julius, Trixter, Rudolf og jeg så hvor fint juletreet deres lyser. Før jeg reiser hjem til Snøfall igjen, har jeg lagt igjen en gullstjerne og et avskjedsbrev under juletreet med de 4 første bokstavene: J - U - L - E. Se Julius sin aller siste videologg på Snøfall TV Kanal 3 for de 4 siste bokstavene (M - A - G - I), og skriv inn årets siste kode for å låse opp Julaften-trofeet!",
+    "rampenissen_rampestrek": "Under juletreet ligger Rampenissens avskjedsbrev sammen med en gullstjerne (og gjerne en liten julaften-overraskelse til hver av de tre søsknene) med koden: 'DEL 1: J U L E + DEL 2 på Snøfall TV Kanal 3: M A G I'.",
+    "fysisk_hint": "Se under juletreet etter Rampenissens avskjedsbrev og gullstjernen (JULE) og kombiner med de 4 siste bokstavene (MAGI) på Snøfall TV Kanal 3!",
+    "materialer_nødvendig": [
+      "Avskjedsbrev fra Rampenissen i gullkonvolutt under juletreet med 'DEL 1: J U L E + DEL 2: M A G I'",
+      "Valgfritt: Julestrømpe eller liten morgengave til Kristian, Håkon og Hanna"
+    ],
+    "beste_rom": "Under juletreet",
+    "oppsett_tid": "moderat",
+    "kode": "JULEMAGI",
+    "hint": "Sett sammen JULE fra brevet under juletreet og MAGI fra Julius sin hilsen på Snøfall TV Kanal 3 (8 bokstaver)!",
+    "reveals": {
+      "files": [],
+      "topics": ["julaften", "finale"],
+      "modules": []
+    },
     "eventyr": {
       "id": "countdown-julaften",
       "phase": 3
     },
-    "requires": {
-      "topics": [
-        "brevfugl-fullfort",
-        "morket-beseirt",
-        "iq-finale",
-        "alle-symboler-samlet"
-      ],
-      "completedDays": [14, 20, 21, 23]
-    },
-    "reveals": {
-      "topics": [
-        "julaften",
-        "alle-oppdrag-fullført",
-        "grand-finale",
-        "ultimate-champion"
-      ]
-    },
-    "symbol_clue": {
-      "symbolId": "star-gold",
-      "symbolIcon": "star",
-      "symbolColor": "gold",
-      "description": "Gullstjerne - Ultimate fullføringsbevis"
-    },
-    "badge_award": {
-      "badge_id": "snowfall-champion",
-      "badge_navn": "Snøfall Champion",
-      "badge_icon": "star-gold",
-      "badge_beskrivelse": "Du har fullført alle 24 oppdrag og mestret symbolenes hemmeligheter! Du er en sann helt i Snøfalls historie!"
-    },
-    "print_materials": [
-      {
-        "type": "certificate",
-        "title": "Diplom: Offisiell Snøfall Champion",
-        "content": "🎖️ OFFISIELT DIPLOM 🎖️\n\nGratulerer, {{PLAYER_NAMES}}!\n\nDere har fullført alle 24 oppdrag og hjulpet Julius og Snøfall med årets julekalender!\n\nDu har:\n✅ Løst 24 koder og gåter\n✅ Samlet 10 magiske symboler\n✅ Mestret 3 dekrypteringsnivåer\n✅ Beseiret Mørket\n✅ Hjulpet alle i Snøfall\n✅ Vist mot, vennskap og tro på julemagi\n\nDu er nå en offisiell\nSNØFALL CHAMPION! ⭐\n\n- Signert:\nJulius, Nissemor, Rampenissen,\nRudolf, Pil, Winter, IQ, Trixter,\nog hele Snøfall-teamet\n\n🎄 God Jul! 🎄\n\nDato: 24. Desember 2025"
-      },
-      {
-        "type": "activity",
-        "title": "Year in Review - Familierefleksjon",
-        "content": "🎄 TAKK FOR EN MAGISK DESEMBER! 🎄\n\nFAMILIE-AKTIVITET: Del minnene!\n\nSamles rundt kalenderen og snakk om:\n\n✨ UKE 1 - Starten (Dager 1-7):\n   Hva var det første oppdraget dere husker?\n   \n✨ UKE 2 - Eskalering (Dager 8-14):\n   Hvilken dag var vanskeligst? Morsomst?\n   \n✨ UKE 3 - Mesterskapet (Dager 15-21):\n   Hvilket symbol var kjerest? Hvorfor?\n   \n✨ UKE 4 - Finalen (Dager 22-24):\n   Hva lærte dere av Rampenissen?\n\n🎁 BONUS: Skriv et TAKK-BREV til Julius!\n   Legg det under treet -\n   kanskje han leser det! 😊\n\n📸 Ta bilde av diplom og sertifikatet!\n   Dette er et minne for livet! ✨"
-      },
-      {
-        "type": "guide",
-        "title": "Takk for eventyret!",
-        "content": "⭐ DERE KLARTE DET! ⭐\n\nDere har vært på eventyr gjennom\nhele desember!\n\nDere har:\n🎯 Beseiret Mørket\n🎯 Hjulpet IQ med oppfinnelser\n🎯 Fulgt brevfuglene\n🎯 Oppdaget frosne mønstre\n🎯 Mestret koder og gåter\n🎯 Samlet alle symboler\n🎯 Blitt venner med Snøfall\n\nJulius, Rampenissen, og alle nissene\ner STOLTE av dere!\n\nDette er ikke farvel -\ndette er 'ses neste desember!'\n\n🎅 God Jul! 🎄✨"
-      }
-    ],
-    "dagbokinnlegg": "Dag 24 - JULAFTEN! 🎄\n\nDET SKJER NÅ! Trixter og reinsdyrene er spente. Rudolf skinner som en fyrtårn. Sleda er lastet. Nissemor, Pil, Winter, IQ og alle nissene vinker farvel.\n\nMen først - en spesiell stopp. Barna som fulgte Rampenissen hele desember. De som løste alle gåtene, samlet alle symbolene, mestret alle kodene.\n\nSer navnene deres på Nice List nå:\n{{PLAYER_NAMES}}\n\nDe har beseiret alle utfordringer. Fra enkle oppgaver til komplekse dekrypteringer. Fra Mørkets trussel til ultimate symbol-mastery.\n\nTil {{PLAYER_NAMES}}:\n\nTakk for en fantastisk desember! Dere viste at magi, vennskap og mot kan overvinne alt. Dere er ikke bare på Nice List - dere er SNØFALL CHAMPIONS!\n\nRampenissen vokste sammen med dere. Det er det vakreste med jul - vi vokser sammen.\n\nVi sees i neste desember!\n\nHa den beste julaften noensinne!\n\nHO HO HO! 🎅🎁✨\n\n- Julius og hele Snøfall-teamet\n\nP.S. Sjekk Nice List i NISSENET for deres personlige melding. 🏆",
-    "rampenissen_rampestrek": "Rampenissen har pakket kofferten! Brev ligger ved siden: 'Takk for alt! Kombinér symbolene: 💚 (Dag 9) + 🔴 (Dag 15) + 🔵 (Dag 23) = ? Sjekk SYMBOLSKANNER! Koden venter! - Rampenissen ❤️' Ekstra godteri, konfetti, og tegning av slede på vei mot månen.",
-    "fysisk_hint": "Kombinér 3 symboler: 💚 Grønt hjerte (Dag 9) + 🔴 Rød sol (Dag 15) + 🔵 Blå måne (Dag 23). Gå til SYMBOLSKANNER!",
-    "oppsett_tid": "moderat",
-    "materialer_nødvendig": [
-      "Farvel-brev fra Rampenissen",
-      "Koffert/bag til Rampenissen",
-      "Konfetti",
-      "Ekstra godteri/overraskelse",
-      "Tegning av slede"
-    ],
-    "beste_rom": "Der Rampenissen 'bor'",
+    "dagbokinnlegg": "24. desember. Julaften! Operasjon Spøkelseskode er fullført, og julefreden har senket seg over både Snøfall og Landås. Kristian, Håkon og Hanna har vist ekte søskensamarbeid, skarpt detektivblikk og varme hjerter gjennom hele desember. Takket være deres JULEMAGI er julen reddet igjen. Riktig god jul, mine unge agenter!",
     "hint_type": "kombinasjon",
-    "hendelse": "Julaften",
-    "finalized": false
+    "finalized": true
   }
 ]

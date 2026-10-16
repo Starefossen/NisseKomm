@@ -287,6 +287,12 @@ export default function Home() {
                       unreadCount={unreadDagbokCount}
                       onClick={() => handleIconClick("dagbok")}
                     />
+                    <DesktopIcon
+                      icon="image"
+                      label="SNØFALL TV"
+                      color="green"
+                      onClick={() => handleIconClick("nordpol_tv")}
+                    />
 
                     {/* Unlockable modules - display in unlock order */}
                     {(() => {
@@ -311,13 +317,6 @@ export default function Home() {
                           label: "NISSEMUSIKK",
                           color: "blue" as const,
                           windowKey: "nissemusikk",
-                        },
-                        {
-                          key: "SNØFALL_TV",
-                          icon: "image" as const,
-                          label: "SNØFALL TV",
-                          color: "green" as const,
-                          windowKey: "nordpol_tv",
                         },
                         {
                           key: "BREVFUGLER",
