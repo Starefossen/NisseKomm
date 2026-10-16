@@ -23,6 +23,7 @@ NisseKomm bridges the physical and digital worlds through 5 interconnected syste
 - [3. Eventyr (Story Arcs)](#3-eventyr-story-arcs)
 - [4. Nice List & Name Registration](#4-nice-list--name-registration)
 - [5. Symboler & NisseKrypto](#5-symboler--nissekrypto)
+- [6. Multi-Modal Broadcast, Audio & Smart-Home Bridge](#6-multi-modal-broadcast-audio--smart-home-bridge)
 - [Component Behaviors](#component-behaviors)
 - [System Flows](#system-flows)
 
@@ -714,6 +715,33 @@ Physical treasure hunt combined with digital puzzle-solving. Kids find 9 hidden 
 **Family Collaboration**: Parents manage physical setup, children solve digital puzzles. Encourages teamwork.
 
 **Replay Value**: Parents can re-hide cards for younger siblings in future years. QR codes remain valid.
+
+## 6. Multi-Modal Broadcast, Audio & Smart-Home Bridge
+
+### SnøfallTV (`windows/SnøfallTV.tsx`)
+
+- **Four Photographic CCTV Feeds**:
+  - **CAM 1 (`90.0 MHz`)**: Julius' Kontor (`/feed/julius-kontor.png`, `/feed/snøfall-day.png`, `/feed/snøfall-night.png`, `/feed/snøfall-storm.png`) with organic `feTurbulence` chimney smoke wisps, interior window shadow modulation, and aurora curtains.
+  - **CAM 2 (`94.5 MHz`)**: IQs Verksted (`/feed/iq-verksted.png`) with volumetric ceiling light beams, floating solder-flux dust, micro-soldering arc reflections, and foreground workbench shadow play.
+  - **CAM 3 (`88.2 MHz`)**: Antenne-Tårnet (`/feed/antenne-tårn.png`) with a sweeping lighthouse beacon cone, frost condensation plumes, and fireplace glow on the timber walls.
+  - **CAM 4 (`99.9 MHz`)**: Kuldes Krystallgrotte (`/feed/kulde-grotte.png`) with high-altitude aurora bands, rising cryo-vapor mist (`#crt-vapor-wisp`), and internal optical refraction bursts inside the ice stalagmites.
+- **Analog RF Multipath Ghosting**: When `ghostOverlay` is active on CAM 1 to 3, `/feed/kulde-grotte.png` bleeds through as a phase-shifted double-exposure echo (`mix-blend-screen` + `animate-crt-ghost-drift`) paired with a scanline-masked, `feTurbulence`-warped cryo-pareidolia anomaly (`#crt-ghost-anomaly`).
+- **Interactive Frequency Tuner**: Continuous dial (`85.0` to `108.0 MHz`, `±0.5 MHz` step) that modulates VHS tracking bars, chromatic aberration, and SVG `feTurbulence` noise based on distance from the target carrier wave (`90.0 MHz`).
+- **Scenario Switcher**: 7 quick-select scenario buttons (`SCENARIO 1` to `7`) let parents and kids inspect specific story states and camera anomalies.
+
+### NisseMusikk (`windows/NisseMusikk.tsx`)
+
+- **12-Track HTML5 Chiptune Jukebox**: Plays the 12 8-bit MP3 files in `public/music/` with live seekable progress bar, volume slider (`0` to `100%`), track selector, and auto-advance on track completion.
+- **Audio Coordination**: Calls `SoundManager.stopJingle()` when playback starts so the jukebox never clashes with the background ambient loop.
+- **Acoustic Telemetry Clue**: Embeds the Day 12 clue fragment (`DEL 2: O - D - I`) in the footer panel so kids can combine the physical kitchen chime clue (`M - E - L`) with the jukebox readout.
+
+### Smart-Home Ambient Bridge (`app/api/home-bridge/route.ts`)
+
+- **GET `/api/home-bridge`**: Exposes environmental state for local smart-home polling (`varden` / Home Assistant):
+  - `lightingPreset`: `"frost_decay"` (unsolved current day), `"normal_warm"` (solved current day), or `"victory_gold"` (Day 24 completed).
+  - `activeCrisis`: `"crisis_antenna"` (Day 11 unsolved) or `"crisis_lantern"` (Day 16 unsolved).
+  - `signalStrength`, `kuldeIntrusionPercent`, and `radioFrequencyMHz` (`90.0`).
+- **POST `/api/home-bridge`**: Accepts external smart-home actions (`solve_antenna_crisis`, `solve_lantern_crisis`, `boost_signal`) authenticated via `HOME_BRIDGE_SECRET`.
 
 ## Component Behaviors
 

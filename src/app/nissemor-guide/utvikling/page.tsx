@@ -82,6 +82,87 @@ function UtviklingContent() {
         </div>
       </div>
 
+      {/* 2026 Dev Info & Snøfall TV Quick Reference */}
+      <div className="max-w-4xl mx-auto mb-6">
+        <div className="border-4 border-(--gold) bg-(--gold)/10 p-6 space-y-4">
+          <h2 className="text-3xl font-bold text-(--gold) text-center">
+            📺 SESONG 2026: INNLOGGING & SNØFALL TV
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-base">
+            <div className="p-3 border-2 border-(--neon-green) bg-black/60">
+              <div className="text-(--gold) font-bold mb-1">
+                🔑 DEV-INNLOGGING (localStorage / mise run dev)
+              </div>
+              <div>
+                • Barnekode (Hovedskjerm):{" "}
+                <code className="text-(--gold) font-bold">NISSEKRAFT2026</code>
+              </div>
+              <div>
+                • Foreldrekode (Guide):{" "}
+                <code className="text-(--gold) font-bold">NORDPOL-DEV2026</code>
+              </div>
+              <div className="text-sm opacity-80 mt-1">
+                Start med: <code>mise run dev</code> eller{" "}
+                <code>MOCK_DAY=21 mise run dev</code>
+              </div>
+            </div>
+            <div className="p-3 border-2 border-(--cold-blue) bg-black/60">
+              <div className="text-(--cold-blue) font-bold mb-1">
+                📡 SNØFALL TV & HOME-BRIDGE TEST
+              </div>
+              <div className="text-sm">
+                Åpne <strong>SNØFALL TV</strong> på hovedskjermen og bruk{" "}
+                <strong>«🎬 TV-EKSEMPLER & BAKGRUNNS-OBSERVASJONER»</strong>{" "}
+                nederst i TV-konsollen (eller <strong>«SENDING»</strong>) for å
+                hoppe direkte mellom 8 kuraterte kamerascener med subtile
+                bakgrunnsfigurer og miljøanimasjoner:
+              </div>
+              <ul className="mt-1.5 text-xs space-y-0.5 text-(--neon-green)/90">
+                <li>
+                  • <strong>CAM 1 (Snøfall Torg & Ulriken):</strong> Vinter/Pil
+                  med glødende fjøslykt over snøen, stigende piperøyk,
+                  brevfugl-flokk i radaren og Rudolf med sleden i nordlys.
+                </li>
+                <li>
+                  • <strong>CAM 2 (IQs Verksted-Lab):</strong> IQ i motlys bak
+                  arbeidsbenken med loddebolt-gnister, sakte roterende
+                  tak-tannhjul og damp fra karamell-kolben.
+                </li>
+                <li>
+                  • <strong>CAM 3 (Videologg & 85.0 MHz):</strong> Julius i
+                  levende lys ved skrivebordet med rykende gløggkopp og sovende
+                  verkstedkatt — eller Kuldes is-kronede skygge i
+                  krystallgrotten.
+                </li>
+                <li>
+                  • <strong>CAM 4 (Antennetårn):</strong> Roterende rødt
+                  varsellys i mastetoppen, tårn-tekniker med lommelyktkjegle ved
+                  reléhytta og Kuldes spøkelsesskygge i stormen.
+                </li>
+              </ul>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <a
+                  href="/api/home-bridge?day=21"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-2 py-1 border border-(--cold-blue) text-(--cold-blue) hover:bg-(--cold-blue) hover:text-black text-xs font-bold"
+                >
+                  TEST /api/home-bridge (DAG 21) ↗
+                </a>
+                <a
+                  href="/api/home-bridge?day=17&solved=true"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-2 py-1 border border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green) hover:text-black text-xs font-bold"
+                >
+                  TEST /api/home-bridge (DAG 17 LØST) ↗
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Management Actions */}
       <div className="max-w-4xl mx-auto mb-6">
         <div className="border-4 border-(--neon-green) bg-(--neon-green)/10 p-6">

@@ -6,7 +6,11 @@ import { Icons } from "@/lib/icons";
 import { Oppdrag, CalendarEvent } from "@/types/innhold";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
-import { getEventyr, getEventyrDays } from "@/lib/eventyr";
+import {
+  getEventyr,
+  getEventyrDays,
+  getEventyrCameraMeta,
+} from "@/lib/eventyr";
 import { trackEvent } from "@/lib/analytics";
 
 /**
@@ -387,13 +391,55 @@ export function NisseMail({
                       </div>
                       <div className="flex gap-3">
                         <span className="opacity-70 w-16">DATO:</span>
-                        <span>DESEMBER {selectedMission.dag}, 2025</span>
+                        <span>DESEMBER {selectedMission.dag}, 2026</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Bonusoppdrag Body */}
                   <div className="flex-1 overflow-y-auto space-y-4 min-h-0 pr-2">
+                    {/* CRT Crisis Surveillance Feed */}
+                    <div className="relative h-28 w-full overflow-hidden border-2 border-(--christmas-red) bg-black">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={
+                          selectedMission.dag === 11
+                            ? "/feed/antenne-tarn.png"
+                            : "/feed/iq-verksted.png"
+                        }
+                        alt="Krise-overvåkning"
+                        className="w-full h-full object-cover contrast-125 saturate-90 opacity-85 select-none pointer-events-none"
+                        style={{ objectPosition: "center 45%" }}
+                      />
+                      <div
+                        className="absolute inset-0 pointer-events-none opacity-45"
+                        style={{
+                          backgroundImage:
+                            "repeating-linear-gradient(0deg, rgba(0,0,0,0.6) 0px, rgba(0,0,0,0.6) 1px, transparent 1px, transparent 3px)",
+                        }}
+                      />
+                      <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{
+                          background:
+                            "radial-gradient(ellipse at center, transparent 40%, rgba(255,0,55,0.22) 75%, rgba(0,0,0,0.92) 100%)",
+                        }}
+                      />
+                      <div className="absolute top-2 left-2.5 right-2.5 flex items-center justify-between text-[11px] font-bold tracking-widest">
+                        <div className="flex items-center gap-1.5 bg-black/80 px-2 py-0.5 border border-(--christmas-red)/60 text-(--christmas-red)">
+                          <span className="w-2 h-2 rounded-full bg-(--christmas-red) animate-pulse" />
+                          <span>
+                            {selectedMission.dag === 11
+                              ? "CAM 04 // ANTENNETÅRNET [KRISE]"
+                              : "CAM 02 // PAKKE-SORTERER [KRISE]"}
+                          </span>
+                        </div>
+                        <div className="bg-black/80 px-2 py-0.5 border border-(--gold)/50 text-(--gold)">
+                          ALARM NIVÅ 1
+                        </div>
+                      </div>
+                    </div>
+
                     {/* Crisis description */}
                     <div className="p-4 border-2 border-(--gold) bg-(--gold)/10">
                       <div className="text-lg leading-relaxed whitespace-pre-wrap text-(--gold)">
@@ -545,7 +591,7 @@ export function NisseMail({
                       </div>
                       <div className="flex gap-3">
                         <span className="opacity-70 w-16">DATO:</span>
-                        <span>DESEMBER {selectedMission.dag}, 2025</span>
+                        <span>DESEMBER {selectedMission.dag}, 2026</span>
                       </div>
                     </div>
                   </div>
@@ -567,6 +613,7 @@ export function NisseMail({
                       );
 
                       if (!eventyr) return null;
+                      const camMeta = getEventyrCameraMeta(eventyr.id);
 
                       return (
                         <div className="mb-4">
@@ -608,11 +655,52 @@ export function NisseMail({
 
                           {/* Full eventyr card - always visible on desktop, collapsible on mobile */}
                           <div
-                            className={`border-2 bg-black/50 ${
+                            className={`border-2 bg-black/50 overflow-hidden ${
                               showEventyrArc ? "block" : "hidden lg:block"
                             }`}
                             style={{ borderColor: eventyr.farge }}
                           >
+                            {/* CRT Surveillance Camera Strip */}
+                            <div className="relative h-20 w-full overflow-hidden border-b border-(--neon-green)/30 bg-black">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={camMeta.feedSrc}
+                                alt={eventyr.navn}
+                                className={`w-full h-full object-cover opacity-80 select-none pointer-events-none ${camMeta.filterClass}`}
+                                style={{
+                                  objectPosition: camMeta.objectPosition,
+                                }}
+                              />
+                              <div
+                                className="absolute inset-0 pointer-events-none opacity-40"
+                                style={{
+                                  backgroundImage:
+                                    "repeating-linear-gradient(0deg, rgba(0,0,0,0.6) 0px, rgba(0,0,0,0.6) 1px, transparent 1px, transparent 3px)",
+                                }}
+                              />
+                              <div
+                                className="absolute inset-0 pointer-events-none"
+                                style={{
+                                  background:
+                                    "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.85) 100%)",
+                                }}
+                              />
+                              <div className="absolute top-1.5 left-2 right-2 flex items-center justify-between text-[10px] font-bold tracking-widest">
+                                <span
+                                  className="bg-black/80 px-1.5 py-0.5 border"
+                                  style={{
+                                    borderColor: eventyr.farge,
+                                    color: eventyr.farge,
+                                  }}
+                                >
+                                  {camMeta.camLabel}
+                                </span>
+                                <span className="bg-black/80 px-1.5 py-0.5 text-(--cold-blue) border border-(--cold-blue)/40">
+                                  {camMeta.freqLabel}
+                                </span>
+                              </div>
+                            </div>
+
                             {/* Compact header with toggle */}
                             <button
                               onClick={() => {

@@ -242,3 +242,89 @@ export function getRewardIcon(
 
   return iconMap[rewardType] || "help";
 }
+
+export interface EventyrCameraMeta {
+  feedSrc: string;
+  camLabel: string;
+  freqLabel: string;
+  objectPosition: string;
+  filterClass: string;
+}
+
+const EVENTYR_CAMERA_FEEDS: Record<string, EventyrCameraMeta> = {
+  "morkets-trussel": {
+    feedSrc: "/feed/kulde-grotte.png",
+    camLabel: "CAM 04 // 85.0 MHz KRYSTALLGROTTEN",
+    freqLabel: "TRUSSEL: KULDE [AKTIV OVERVÅKNING]",
+    objectPosition: "center 55%",
+    filterClass: "contrast-125 saturate-90",
+  },
+  "iqs-oppfinnelser": {
+    feedSrc: "/feed/iq-verksted.png",
+    camLabel: "CAM 02 // IQS VERKSTED-LAB",
+    freqLabel: "TELEMETRI: KRETSKORT & BRANNMUR",
+    objectPosition: "center 45%",
+    filterClass: "contrast-110 saturate-95",
+  },
+  "brevfugl-mysteriet": {
+    feedSrc: "/feed/julius-kontor.png",
+    camLabel: "RADAR // BREVDUESLAG SNØFALL",
+    freqLabel: "LUFTKORRIDOR: 60.37°N ⇄ 90.00°N",
+    objectPosition: "center 35%",
+    filterClass: "contrast-110 saturate-90",
+  },
+  "frosne-monster": {
+    feedSrc: "/feed/snøfall-storm.png",
+    camLabel: "CAM 01 // PRISME-SENSOR TORGET",
+    freqLabel: "SPEKTRALANALYSE: IS-GEOMETRI",
+    objectPosition: "center 50%",
+    filterClass: "contrast-125 hue-rotate-15",
+  },
+  "farge-mysteriet": {
+    feedSrc: "/feed/snøfall-day.png",
+    camLabel: "CAM 01 // OPTISK SPEKTER-LÅS",
+    freqLabel: "BØLGELENGDE: RGB-KALIBRERING",
+    objectPosition: "center 60%",
+    filterClass: "contrast-115 saturate-125",
+  },
+  "countdown-julaften": {
+    feedSrc: "/feed/snøfall-night.png",
+    camLabel: "CAM 01 // NORDLYS-KORRIDOR",
+    freqLabel: "OPERASJON: JULAFTEN LANDÅS",
+    objectPosition: "center 40%",
+    filterClass: "contrast-115 saturate-110",
+  },
+  juletradisjon: {
+    feedSrc: "/feed/julius-kontor.png",
+    camLabel: "ARKIV 05 // SNØFALL-KRØNIKEN",
+    freqLabel: "KULTURMINNE: NORDISK JUL",
+    objectPosition: "center 65%",
+    filterClass: "contrast-110 sepia-[0.15]",
+  },
+  "halvveis-milepæl": {
+    feedSrc: "/feed/iq-verksted.png",
+    camLabel: "CAM 02 // PAKKE-SORTERER LOGISTIKK",
+    freqLabel: "MILEPÆL: 12/24 DAGER",
+    objectPosition: "center 65%",
+    filterClass: "contrast-115",
+  },
+  "slede-forberedelser": {
+    feedSrc: "/feed/antenne-tarn.png",
+    camLabel: "CAM 04 // ULRIKEN VIND-RADAR",
+    freqLabel: "SLEDE-NAV: VESTLANDSVIND",
+    objectPosition: "center 45%",
+    filterClass: "contrast-120 saturate-90",
+  },
+};
+
+const DEFAULT_CAMERA_META: EventyrCameraMeta = {
+  feedSrc: "/feed/snøfall-day.png",
+  camLabel: "CAM 01 // SNØFALL SENTRUM",
+  freqLabel: "SIGNAL: OVERVÅKNING AKTIV",
+  objectPosition: "center 50%",
+  filterClass: "contrast-110",
+};
+
+export function getEventyrCameraMeta(eventyrId: string): EventyrCameraMeta {
+  return EVENTYR_CAMERA_FEEDS[eventyrId] || DEFAULT_CAMERA_META;
+}
