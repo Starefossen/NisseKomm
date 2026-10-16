@@ -52,10 +52,17 @@ describe("Eventyr Badge Award Logic", () => {
     GameEngine.resetDependencies();
   });
 
+  const getQuestCode = (day: number): string => {
+    const quest = GameEngine.getAllQuests().find((q) => q.dag === day);
+    if (!quest) throw new Error(`Quest for day ${day} not found`);
+    return quest.kode === "{{KID_CODE}}" ? TEST_KID_CODE : quest.kode;
+  };
+
   describe("IQs Oppfinnelser Badge", () => {
     it("should NOT award badge after completing only day 2 (phase 1)", async () => {
       // Complete day 2 (first phase)
-      await GameEngine.submitCode("34", "34", 2);
+      const code2 = getQuestCode(2);
+      await GameEngine.submitCode(code2, code2, 2);
 
       // Check that eventyr is NOT complete
       const completedEventyr = GameEngine.getCompletedEventyr();
@@ -68,8 +75,10 @@ describe("Eventyr Badge Award Logic", () => {
 
     it("should NOT award badge after completing days 2 and 8 (phases 1-2)", async () => {
       // Complete days 2 and 8
-      await GameEngine.submitCode("34", "34", 2);
-      await GameEngine.submitCode("SEKK", "SEKK", 8);
+      const code2 = getQuestCode(2);
+      const code8 = getQuestCode(8);
+      await GameEngine.submitCode(code2, code2, 2);
+      await GameEngine.submitCode(code8, code8, 8);
 
       // Check that eventyr is NOT complete
       const completedEventyr = GameEngine.getCompletedEventyr();
@@ -82,9 +91,12 @@ describe("Eventyr Badge Award Logic", () => {
 
     it("should NOT award badge after completing days 2, 8, and 19 (phases 1-3)", async () => {
       // Complete days 2, 8, and 19
-      await GameEngine.submitCode("34", "34", 2);
-      await GameEngine.submitCode("SEKK", "SEKK", 8);
-      await GameEngine.submitCode("REINSDYR", "REINSDYR", 19);
+      const code2 = getQuestCode(2);
+      const code8 = getQuestCode(8);
+      const code19 = getQuestCode(19);
+      await GameEngine.submitCode(code2, code2, 2);
+      await GameEngine.submitCode(code8, code8, 8);
+      await GameEngine.submitCode(code19, code19, 19);
 
       // Check that eventyr is NOT complete
       const completedEventyr = GameEngine.getCompletedEventyr();
@@ -97,10 +109,14 @@ describe("Eventyr Badge Award Logic", () => {
 
     it("SHOULD award badge after completing all 4 phases (days 2, 8, 19, 20)", async () => {
       // Complete all days for IQs Oppfinnelser
-      await GameEngine.submitCode("34", "34", 2);
-      await GameEngine.submitCode("SEKK", "SEKK", 8);
-      await GameEngine.submitCode("REINSDYR", "REINSDYR", 19);
-      await GameEngine.submitCode("SLEDE", "SLEDE", 20);
+      const code2 = getQuestCode(2);
+      const code8 = getQuestCode(8);
+      const code19 = getQuestCode(19);
+      const code20 = getQuestCode(20);
+      await GameEngine.submitCode(code2, code2, 2);
+      await GameEngine.submitCode(code8, code8, 8);
+      await GameEngine.submitCode(code19, code19, 19);
+      await GameEngine.submitCode(code20, code20, 20);
 
       // Check that eventyr IS complete
       const completedEventyr = GameEngine.getCompletedEventyr();
@@ -118,23 +134,28 @@ describe("Eventyr Badge Award Logic", () => {
         return getEventyrProgress(eventyrId, completedDays);
       };
 
+      const code2 = getQuestCode(2);
+      const code8 = getQuestCode(8);
+      const code19 = getQuestCode(19);
+      const code20 = getQuestCode(20);
+
       // After day 2: 1/4 = 25%
-      await GameEngine.submitCode("34", "34", 2);
+      await GameEngine.submitCode(code2, code2, 2);
       let progress = getProgress();
       expect(progress).toBe(25);
 
       // After day 8: 2/4 = 50%
-      await GameEngine.submitCode("SEKK", "SEKK", 8);
+      await GameEngine.submitCode(code8, code8, 8);
       progress = getProgress();
       expect(progress).toBe(50);
 
       // After day 19: 3/4 = 75%
-      await GameEngine.submitCode("REINSDYR", "REINSDYR", 19);
+      await GameEngine.submitCode(code19, code19, 19);
       progress = getProgress();
       expect(progress).toBe(75);
 
       // After day 20: 4/4 = 100%
-      await GameEngine.submitCode("SLEDE", "SLEDE", 20);
+      await GameEngine.submitCode(code20, code20, 20);
       progress = getProgress();
       expect(progress).toBe(100);
     });
@@ -142,7 +163,8 @@ describe("Eventyr Badge Award Logic", () => {
 
   describe("Mørkets Trussel Badge", () => {
     it("should NOT award badge after completing only first phase (day 7)", async () => {
-      await GameEngine.submitCode("ORAKELET", "ORAKELET", 7);
+      const code7 = getQuestCode(7);
+      await GameEngine.submitCode(code7, code7, 7);
 
       const completedEventyr = GameEngine.getCompletedEventyr();
       expect(completedEventyr).not.toContain("morkets-trussel");
@@ -175,16 +197,21 @@ describe("Eventyr Badge Award Logic", () => {
 
   describe("Badge Award on Code Submission", () => {
     it("should automatically check and award eventyr badge when last phase is completed", async () => {
+      const code2 = getQuestCode(2);
+      const code8 = getQuestCode(8);
+      const code19 = getQuestCode(19);
+      const code20 = getQuestCode(20);
+
       // Complete first 3 phases
-      await GameEngine.submitCode("34", "34", 2);
-      await GameEngine.submitCode("SEKK", "SEKK", 8);
-      await GameEngine.submitCode("REINSDYR", "REINSDYR", 19);
+      await GameEngine.submitCode(code2, code2, 2);
+      await GameEngine.submitCode(code8, code8, 8);
+      await GameEngine.submitCode(code19, code19, 19);
 
       // Badge should not be awarded yet
       expect(BadgeManager.isBadgeEarned("oppfinner-assistent")).toBe(false);
 
       // Complete final phase
-      const result = await GameEngine.submitCode("SLEDE", "SLEDE", 20);
+      const result = await GameEngine.submitCode(code20, code20, 20);
 
       // Badge should now be awarded automatically
       expect(result.success).toBe(true);

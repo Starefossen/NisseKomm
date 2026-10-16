@@ -6,7 +6,7 @@ import { RetroModal } from "../ui/RetroModal";
 import { Icons } from "@/lib/icons";
 import { GameEngine } from "@/lib/game-engine";
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
-import { getEventyr } from "@/lib/eventyr";
+import { getEventyr, getEventyrCameraMeta } from "@/lib/eventyr";
 import { trackEvent } from "@/lib/analytics";
 import type { Oppdrag, CalendarEvent } from "@/types/innhold";
 
@@ -118,7 +118,7 @@ export function Kalender({
             <Icons.Calendar size={32} color="gold" />
             <div>
               <div className="text-2xl font-bold tracking-wider">
-                DESEMBER 2025
+                DESEMBER 2026
               </div>
               <div className="text-sm opacity-70">
                 JULEKALENDER - 24 OPPDRAG
@@ -222,30 +222,63 @@ export function Kalender({
               (() => {
                 const eventyr = getEventyr(selectedMission.eventyr.id);
                 if (!eventyr) return null;
+                const camMeta = getEventyrCameraMeta(eventyr.id);
 
                 return (
                   <div
-                    className="p-3 border-2"
+                    className="border-2 overflow-hidden"
                     style={{
                       borderColor: eventyr.farge,
                       backgroundColor: `${eventyr.farge}15`,
                     }}
                   >
-                    <div className="flex items-center gap-2 mb-2">
-                      <Icons.ScriptText
-                        size={20}
-                        style={{ color: eventyr.farge }}
+                    <div className="relative h-20 w-full overflow-hidden border-b border-(--neon-green)/30 bg-black">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={camMeta.feedSrc}
+                        alt={eventyr.navn}
+                        className={`w-full h-full object-cover opacity-80 select-none pointer-events-none ${camMeta.filterClass}`}
+                        style={{ objectPosition: camMeta.objectPosition }}
                       />
-                      <span
-                        className="text-sm font-bold"
-                        style={{ color: eventyr.farge }}
-                      >
-                        {eventyr.navn.toUpperCase()}
-                      </span>
+                      <div
+                        className="absolute inset-0 pointer-events-none opacity-40"
+                        style={{
+                          backgroundImage:
+                            "repeating-linear-gradient(0deg, rgba(0,0,0,0.6) 0px, rgba(0,0,0,0.6) 1px, transparent 1px, transparent 3px)",
+                        }}
+                      />
+                      <div className="absolute top-1.5 left-2 right-2 flex items-center justify-between text-[10px] font-bold tracking-widest">
+                        <span
+                          className="bg-black/80 px-1.5 py-0.5 border"
+                          style={{
+                            borderColor: eventyr.farge,
+                            color: eventyr.farge,
+                          }}
+                        >
+                          {camMeta.camLabel}
+                        </span>
+                        <span className="bg-black/80 px-1.5 py-0.5 text-(--cold-blue) border border-(--cold-blue)/40">
+                          {camMeta.freqLabel}
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-xs opacity-80">
-                      Dette oppdraget er en del av eventyret "{eventyr.navn}"
-                      (Fase {selectedMission.eventyr.phase})
+                    <div className="p-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Icons.ScriptText
+                          size={20}
+                          style={{ color: eventyr.farge }}
+                        />
+                        <span
+                          className="text-sm font-bold"
+                          style={{ color: eventyr.farge }}
+                        >
+                          {eventyr.navn.toUpperCase()}
+                        </span>
+                      </div>
+                      <div className="text-xs opacity-80">
+                        Dette oppdraget er en del av eventyret "{eventyr.navn}"
+                        (Fase {selectedMission.eventyr.phase})
+                      </div>
                     </div>
                   </div>
                 );

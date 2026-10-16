@@ -1,3 +1,112 @@
 [tools]
 node = "24"
 pnpm = "10"
+
+[tasks.dev]
+description = "Start NisseKomm dev-server i lokal testmodus (umiddelbar innlogging uten Sanity)"
+run = """
+#!/usr/bin/env bash
+set -euo pipefail
+DAY="${MOCK_DAY:-10}"
+cat <<EOF
+================================================================================
+🎄 NISSEKOMM 2026: OPERASJON SPØKELSESKODE (DEV SERVER - LOCALSTORAGE)
+================================================================================
+🌐 URL-er:
+   • Hovedterminal (Barna)   : http://localhost:3000
+   • Foreldreguide (Nissemor): http://localhost:3000/nissemor-guide
+   • Utvikler- & Testpanel   : http://localhost:3000/nissemor-guide/utvikling
+   • Utskrift & Symbolkort   : http://localhost:3000/nissemor-guide/printout
+
+🔑 Innlogging (fungerer direkte i localStorage-modus):
+   • Barnekode (Hovedskjerm) : NISSEKRAFT2026   (alt: SNØFALLMAGI2026)
+   • Foreldrekode (Guide)    : NORDPOL-DEV2026
+
+📺 Testing av Snøfall TV & Dager:
+   • Åpne "SNØFALL TV" på skrivebordet og bruk "SIMULER DAG (1-24)" øverst i TV-en
+     for å teste alle 24 episoder, karakterportretter, værhendelser og minispill!
+   • Eller start med valgt dag: MOCK_DAY=21 mise run dev (nåværende: Dag ${DAY})
+   • Kjør 'mise run info' for full tabell over alle 24 koder og TV-segmenter.
+================================================================================
+EOF
+NEXT_PUBLIC_STORAGE_BACKEND=localStorage \
+NEXT_PUBLIC_TEST_MODE=true \
+NEXT_PUBLIC_BOOT_ANIMATION_DURATION=0 \
+NEXT_PUBLIC_MOCK_MONTH=12 \
+NEXT_PUBLIC_MOCK_DAY="${DAY}" \
+pnpm dev
+"""
+
+[tasks."dev:sanity"]
+description = "Start NisseKomm dev-server med Sanity-backend fra .env.local"
+run = """
+#!/usr/bin/env bash
+set -euo pipefail
+cat <<EOF
+================================================================================
+🎄 NISSEKOMM 2026 (DEV SERVER - SANITY BACKEND)
+================================================================================
+🌐 URL-er:
+   • Hovedterminal           : http://localhost:3000
+   • Registrer ny familie    : http://localhost:3000/register
+   • Foreldreguide           : http://localhost:3000/nissemor-guide
+   • Utvikler- & Testpanel   : http://localhost:3000/nissemor-guide/utvikling
+================================================================================
+EOF
+pnpm dev
+"""
+
+[tasks.info]
+description = "Vis innloggingskoder, URL-er og fasit for alle 24 dager og TV-segmenter"
+run = """
+#!/usr/bin/env bash
+cat <<'EOF'
+================================================================================
+🎄 NISSEKOMM 2026 — UTVIKLER- & TESTGUIDE
+================================================================================
+🔑 INNLOGGING (ved 'mise run dev' / localStorage):
+   • Barnekode (Hovedterminal) : NISSEKRAFT2026
+   • Foreldrekode (Guide)      : NORDPOL-DEV2026
+
+🌐 VIKTIGE SIDER:
+   • http://localhost:3000                         (NisseKomm Skrivebord & Snøfall TV)
+   • http://localhost:3000/nissemor-guide          (Foreldreguide Dag 1-24)
+   • http://localhost:3000/nissemor-guide/utvikling (Dev-panel: lås opp alt, test TV/symboler)
+   • http://localhost:3000/nissemor-guide/printout  (QR-symbolkort og utskrifter)
+
+📅 FASIT & SNØFALL TV-SEGMENTER (DAG 1-24):
+   Dag 01 | SIGNAL      | K3 Julius    | Direktelinje til Landås (Rød tråd + NisseNet)
+   Dag 02 | 48          | K2 IQ Lab    | Sikringsskap: 12V + 16V + 20V = 48V
+   Dag 03 | PRISME      | K1/K3 Orakel | Iskrystaller i observatoriet (PRI + SME)
+   Dag 04 | KOMPASS     | K1/K3 Julius | Rudolfs retningsutfordring i stallen
+   Dag 05 | ULRIKEN     | K1/K3 Winter | Kryptert brevfugl over Ulriken (VMSJLFO -1)
+   Dag 06 | LYKT        | K1/K3 Julius | Mørklagt torg i Snøfall — lys med lykt
+   Dag 07 | KULDE       | K3/K4 Orakel | Spøkelseskoden Kulde detektert på 90.0 MHz
+   Dag 08 | KRETSKORT   | K2/K4 IQ     | Minispill 1: Kretskort-Kobler (KRETS + KORT)
+   Dag 09 | 24          | K1/K3 Julius | Sekskantet snøkrystall-geometri (4 x 6 = 24)
+   Dag 10 | SPEKTER     | K1/K3 IQ     | RGB-fargekalibrering av Snøfall TV
+   Dag 11 | 75          | K1/K4 IQ     | Antennestorm & Nødfrekvens 15+25+35 = 75 MHz
+   Dag 12 | MELODI      | K3 Julius    | Musikk som smelter is + NisseKrypto Nivå 1
+   Dag 13 | SAFRAN      | K1/K3 Julius | Luciatog på Snøfall Torget (SAF + RAN)
+   Dag 14 | ORIGAMI     | K1/K3 Winter | Brevfugl-tårnet & Origami-protokoll
+   Dag 15 | KARAMELL    | K2/K3 Julius | IQs kakao- og karamell-kolbe i laben
+   Dag 16 | SORTERING   | K3/K4 Winter | Minispill 2: Winters Gave-Sorterer
+   Dag 17 | NORDLYS     | K1/K3 Orakel | Polarstråle på Kanal 1 (NORD + LYS)
+   Dag 18 | TURBULENS   | K3/K4 Julius | Minispill 3: Slede-Simulator over Ulriken
+   Dag 19 | GULROT      | K1/K2 IQ     | Gulrot-sentrifuge i laben & stallen
+   Dag 20 | TURBO       | K2/K3 IQ     | Overlyds-turbin på Kanal 2 (TUR + BO)
+   Dag 21 | BRANNMUR    | K1/K3/K4     | KODE RØD! Minispill 4: Brannmur-Zapper
+   Dag 22 | LANDÅS      | K1/K3 Winter | Landingskoordinater 12-1-14-4-29-19
+   Dag 23 | STJERNEKLART| K1/K3 Julius | Sleden klargjøres på torget for avgang
+   Dag 24 | JULEMAGI    | K1/K3 Julius | Julaften-finale: Sleden flyr over Landås!
+================================================================================
+EOF
+"""
+
+[tasks.check]
+description = "Kjør typesjekk, lint, knip, formatering og alle tester"
+run = "pnpm check"
+
+[tasks.test]
+description = "Kjør Jest-testsuiten"
+run = "pnpm test"

@@ -132,6 +132,17 @@ export function KodeTerminal({
         if (onCodeSubmitted) {
           onCodeSubmitted();
         }
+
+        // Notify optional home ecosystem bridge (Skjerm / Varden / Fleet)
+        fetch("/api/home-bridge", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            day: currentDay,
+            code: code.trim().toUpperCase(),
+            event: "quest_completed",
+          }),
+        }).catch(() => null);
       }
 
       setCode("");

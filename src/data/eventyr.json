@@ -2,12 +2,12 @@
   "eventyr": [
     {
       "id": "morkets-trussel",
-      "navn": "Mørkets Trussel",
-      "beskrivelse": "En mystisk kraft, Mørket, truer Snøfall og juleproduksjonen. Orakelet advarer om tidsanomalier, faresignaler og polarnatten som skjuler farer. Barna må hjelpe Julius med å beskytte magien i Snøfall gjennom vennskap og mot.",
+      "navn": "Spøkelseskoden: Kulde",
+      "beskrivelse": "En ukjent digital inntrenger kalt Spøkelseskoden (Kulde) prøver å fryse ned serverne i Snøfall og stjele fargene fra både juleverkstedet og skjermene hjemme på Landås. Kristian, Håkon og Hanna må bruke kodelogikk, lagsamarbeid og ekte julevarme for å bryte is-krypteringen.",
       "tema": [
-        "Vennskap og samhold",
-        "Mot i farlige situasjoner",
-        "Magisk beskyttelse"
+        "Søskensamarbeid på tvers av alder",
+        "Kodelogikk og mot",
+        "Beskyttelse av julemagien"
       ],
       "farge": "#8b0000",
       "ikon": "alert",
@@ -17,30 +17,30 @@
         "type": "badge",
         "badge_id": "morket-beseirer",
         "badge_navn": "Mørket-Beseirer",
-        "beskrivelse": "Beseiret Mørkets trusler og beskyttet Snøfall"
+        "beskrivelse": "Brøt Spøkelseskoden og gjenopprettet farger og varme i Snøfall"
       },
       "foreldreveiledning": {
-        "sammendrag": "Denne historien introduserer en antagonist (Mørket) som skaper utfordringer. Den lærer barna om å møte farer med mot og vennskap.",
+        "sammendrag": "Hovedtråden for sesong 2 der den digitale spøkelseskoden Kulde fryser ned systemene i Snøfall og til slutt låser iMac-skjermen hjemme i gråtoner på dag 21.",
         "pedagogisk_fokus": [
-          "Samarbeid i vanskelige situasjoner",
-          "Å ikke gi opp når ting blir vanskelig",
-          "Betydningen av vennskap"
+          "Lagsamarbeid mellom 5-, 9- og 12-åring",
+          "Logisk feilsøking når noe går i lås",
+          "Samhold som motvekt mot kulde"
         ],
         "tips": [
-          "Snakk om hvordan Julius og nissene jobber sammen for å løse problemer",
-          "Fremhev hvordan barna hjelper til med å redde situasjonen",
-          "Diskuter hvordan vennskap gir styrke i tøffe tider"
+          "La Kristian (12) lede kodeanalysen mens Håkon (9) og Hanna (5) finner de fysiske gjenstandene",
+          "På dag 21 kan du aktivere gråtoner på iMac-en eller vise feilmeldingen på Skjerm før barna låser opp brannmuren",
+          "Snakk om hvordan alle tre søsknene trengs for å åpne sikkerhetslåsene"
         ]
       }
     },
     {
       "id": "iqs-oppfinnelser",
-      "navn": "IQs Oppfinnelser",
-      "beskrivelse": "IQ, nissenes oppfinner, lager fantastiske gadgets og maskiner - men de eksploderer ofte! Fra tellemaskiner som spyr konfetti til magiske sekker og energidrikker av snø. Barna følger IQs kreative (og kaotiske) oppfinnerprosess.",
+      "navn": "IQs Kretskort & Brannmur",
+      "beskrivelse": "IQ har bygd et nytt videologg-system og en kvante-brannmur for Snøfall TV, men kretskortene ryker, sikringene går og sledens autopilot trenger nye koordinater. Barna hjelper IQ med å koble kretsløp og teste utstyret.",
       "tema": [
-        "Kreativitet og innovasjon",
-        "Å lære av feil",
-        "Vitenskap og teknologi"
+        "Teknologi og kretsløp",
+        "Kreativ feilsøking",
+        "Eksperimentering i verkstedet"
       ],
       "farge": "#ffa500",
       "ikon": "zap",
@@ -50,30 +50,30 @@
         "type": "badge",
         "badge_id": "oppfinner-assistent",
         "badge_navn": "Oppfinner-Assistent",
-        "beskrivelse": "Hjalp IQ med alle oppfinnelsene hans"
+        "beskrivelse": "Koblet kretskortene og kalibrerte IQs oppfinnelser for sesong 2"
       },
       "foreldreveiledning": {
-        "sammendrag": "En humoristisk historie om innovasjon og kreativitet, der feil er en naturlig del av læringsprosessen.",
+        "sammendrag": "Humoristisk teknologitråd der barna hjelper IQ med kretskort, radiobølger og slede-simulering på Snøfall TV.",
         "pedagogisk_fokus": [
-          "Kreativ problemløsning",
-          "At det er greit å feile",
-          "Utholdenhet og fortsette å prøve"
+          "Enkel elektronikk og tallmønstre",
+          "Å prøve på nytt når en oppfinnelse feiler",
+          "Praktisk problemløsning i huset"
         ],
         "tips": [
-          "Snakk om hvordan IQ ikke gir opp selv om oppfinnelsene eksploderer",
-          "Fremhev den kreative prosessen og eksperimentering",
-          "Relatér til egne prosjekter der barn må prøve flere ganger"
+          "Bruk Kanal 2 (IQs Verksted-Lab) og Kanal 4 på Snøfall TV sammen med barna",
+          "La Håkon (9) styre spakene og telle sikringer",
+          "Vis hvordan små feil i koden kan rettes opp med riktig tall"
         ]
       }
     },
     {
       "id": "brevfugl-mysteriet",
-      "navn": "Brevfugl-Mysteriet",
-      "beskrivelse": "Brevfuglene - magiske papirfugler som bærer barnas ønsker til Snøfall - flyr inn gjennom vinduene hele desember. Winter og Pil organiserer alle brevene, og kommunikasjonen mellom barna og Julius styrkes gjennom disse magiske budbringerne.",
+      "navn": "Krypterte Brevfugler",
+      "beskrivelse": "For at Spøkelseskoden ikke skal kunne lese ønskene fra barna på Landås, har Winter og Julius innført brevfugl-kryptering. Papirfuglene bærer nå både ønsker og hemmelige opplåsingsnøkler mellom Bergen og Snøfall.",
       "tema": [
-        "Kommunikasjon og ønsker",
-        "Håp og drømmer",
-        "Magisk forbindelse"
+        "Hemmelige beskjeder",
+        "Ønsker og tradisjon",
+        "Forbindelsen mellom Landås og Nordpolen"
       ],
       "farge": "#4169e1",
       "ikon": "mail",
@@ -85,27 +85,26 @@
         "beskrivelse": "Låser opp Brevfugler-modulen med personlige brev fra Julius"
       },
       "foreldreveiledning": {
-        "sammendrag": "En vakker historie om kommunikasjon og drømmer, der barnas ønsker når frem til julenissen.",
+        "sammendrag": "Brevfuglene knytter stuen på Landås direkte til Snøfall og lar Hanna, Håkon og Kristian sende egne ønsker.",
         "pedagogisk_fokus": [
-          "Viktigheten av å uttrykke ønsker og følelser",
-          "Kommunikasjon over avstand",
-          "Håp og tro på magiske øyeblikk"
+          "Å sette ord på ønsker for seg selv og andre",
+          "Finmotorikk gjennom papirbretting",
+          "Lesetrening med kortere og lengre tekster"
         ],
         "tips": [
-          "La barna lage sine egne 'brevfugler' (origami)",
-          "Snakk om hvordan budskap reiser mellom mennesker",
-          "Diskuter viktigheten av å lytte til andres ønsker"
+          "La Hanna (5) finne de gjemte papirfuglene og tegne på dem",
+          "Brett gjerne ekte brevfugler sammen på dag 14"
         ]
       }
     },
     {
       "id": "frosne-monster",
-      "navn": "Frosne Mønster",
-      "beskrivelse": "I polarnatten rundt Snøfall dannes mystiske mønstre i snø og is. Hvert snøfnugg er unikt, og sammen skjuler de hemmelige koder. Julius studerer disse mønstrene under mikroskop for å finne skjulte budskap.",
+      "navn": "Is-Krystallenes Geometri",
+      "beskrivelse": "Kulde etterlater seg krystallmønstre på rutene og i radaren. Ved å studere symmetrien i snøkrystaller, lysbrytning og prismekoder kan barna avsløre hvor Spøkelseskoden gjemmer seg.",
       "tema": [
-        "Naturens skjønnhet",
-        "Mønstre og matematikk",
-        "Detaljer og oppdagelse"
+        "Geometri og symmetri",
+        "Lys i mørketiden",
+        "Mønstergjenkjenning"
       ],
       "farge": "#00ced1",
       "ikon": "pin",
@@ -114,27 +113,26 @@
       "belønning": {
         "type": "symbol_collection",
         "symbol_id": "snowflake",
-        "beskrivelse": "Samler unike snøfnugg-symboler for dekryptering"
+        "beskrivelse": "Samler krystall- og stjernesymboler til NisseKrypto"
       },
       "foreldreveiledning": {
-        "sammendrag": "En vitenskapelig inspirert historie om å se skjønnhet i detaljer og mønstre i naturen.",
+        "sammendrag": "Utforsker mønstre i is, snø og lys gjennom desember.",
         "pedagogisk_fokus": [
-          "Observasjon og oppdagelse",
-          "Matematiske mønstre i naturen",
-          "Tålmodighet og nøyaktighet"
+          "Symmetri og telling av kanter og vinkler",
+          "Lys og skygge i praksis med lommelykt",
+          "Nøyaktig observasjon"
         ],
         "tips": [
-          "Se på ekte snøfnugg sammen (mikroskop eller bilder)",
-          "Diskuter hvordan alle snøfnugg er unike",
-          "Finn mønstre i hverdagen (i planter, arkitektur, etc.)"
+          "Bruk lommelykt når dere leter etter krystallspor i stuen eller gangen",
+          "La barna telle tagger og sammenligne former"
         ]
       }
     },
     {
       "id": "farge-mysteriet",
-      "navn": "Farge-Mysteriet",
-      "beskrivelse": "En mystisk forbindelse mellom farger og hemmeligheter i Snøfall. Fra den grønne miljødagen til sjokolademysteriet - farger skjuler ledetråder. 'Fargesamleren' vet noe mer...",
-      "tema": ["Fargelære", "Sammenhenger og koblinger", "Mysterier og gåter"],
+      "navn": "Fargespekter-Låsen",
+      "beskrivelse": "Når Spøkelseskoden prøver å gjøre Snøfall grått, må barna hente inn fargespekteret på nytt. Fargesamlerens gamle fargekoder blir nøkkelen som holder Snøfall TV og verkstedet levende.",
+      "tema": ["Fargespekter og optikk", "Kategorisering", "Kreativ leting"],
       "farge": "#32cd32",
       "ikon": "eye",
       "vanskelighetsgrad": "lett",
@@ -142,30 +140,29 @@
       "belønning": {
         "type": "secret_unlock",
         "file": "HEMMELIGHETER/farge-mysteriet/fargesamlerens_notat.txt",
-        "beskrivelse": "Låser opp Fargesamlerens hemmelige notater"
+        "beskrivelse": "Låser opp Fargesamlerens spekter-notater"
       },
       "foreldreveiledning": {
-        "sammendrag": "En kort men fargerik mysterie-historie som lærer barna å se etter mønstre og sammenhenger.",
+        "sammendrag": "En fargerik tråd der Hanna, Håkon og Kristian bruker farger i huset for å kalibrere Snøfall TV.",
         "pedagogisk_fokus": [
-          "Fargegjenkjenning og kategorisering",
-          "Å finne sammenhenger",
-          "Observasjonsferdigheter"
+          "Fargegjenkjenning for yngstemann (Hanna)",
+          "Sortering og bokstavkobling for Håkon og Kristian",
+          "Samarbeid i stuen"
         ],
         "tips": [
-          "Finn gjenstander i forskjellige farger hjemme",
-          "Snakk om hvordan farger kan symbolisere ting (grønn = miljø, rød = kjærlighet)",
-          "Lag et fargebasert skattejakt"
+          "La Hanna være sjef for å hente gjenstander med riktig farge",
+          "Koble fargene til kanalene på Snøfall TV"
         ]
       }
     },
     {
       "id": "countdown-julaften",
-      "navn": "Nedtelling til Julaften",
-      "beskrivelse": "De siste dagene før julaften! Alt intensiveres når Julius og nissene gjør siste forberedelser. Panikk, stress, men også glede og samhold når de nærmer seg det magiske øyeblikket.",
+      "navn": "Operasjon Julaften: Landås",
+      "beskrivelse": "De tre siste dagene før julaften! Spøkelseskoden er brutt, men nå må ruten over Ulriken og Landås finberegnes, sekken pakkes og stjernen tennes før Julius lander.",
       "tema": [
-        "Spenning og forventning",
-        "Stresshåndtering",
-        "Samarbeid under press"
+        "Forventning og juleglede",
+        "Siste innspurt som lag",
+        "Julemagi på Landås"
       ],
       "farge": "#ffd700",
       "ikon": "calendar",
@@ -173,109 +170,98 @@
       "første_opplåsingsdag": 22,
       "belønning": {
         "type": "grand_finale",
-        "beskrivelse": "Fullfører julekalenderen og låser opp Grand Finale"
+        "beskrivelse": "Fullfører Operasjon Spøkelseskode og låser opp Julaften-finalen"
       },
       "foreldreveiledning": {
-        "sammendrag": "Klimakset i fortellingen hvor alle trådene møtes og julemagi blir virkelighet.",
+        "sammendrag": "Finaledagene (22-24. desember) der barna ferdigstiller ruten til Bergen og mottar Julius' siste videologg.",
         "pedagogisk_fokus": [
-          "Å håndtere spenning og forventning",
-          "Betydningen av forberedelse",
-          "Glede ved å nå et mål"
+          "Mestring og stolthet over å ha løst 24 oppdrag sammen",
+          "Ro og julestemning de siste dagene",
+          "Tradisjoner på lille julaften og julaften"
         ],
         "tips": [
-          "Snakk om hvordan Julius føler både stress og glede",
-          "Diskuter egne forberedelser til jul",
-          "Fremhev viktigheten av å feire når man når et mål"
+          "Se Julius' videologg på Kanal 3 sammen om morgenen",
+          "Sørg for at alle tre barnas navn er registrert i Snill-listen i Julius-Arkiv"
         ]
       }
     },
     {
       "id": "juletradisjon",
-      "navn": "Juletradisjoner",
-      "beskrivelse": "Julius deler eventyr om juletradisjoner fra hele verden. Fra St. Nikolaus i Myra til norske skikker - barna lærer om julen gjennom tidene og kulturer.",
-      "tema": ["Kulturell forståelse", "Historie", "Tradisjoner"],
+      "navn": "Nordiske Juletradisjoner",
+      "beskrivelse": "Julius forteller på videologgen om hvordan julen har blitt feiret fra gamle dager til moderne tid i Bergen og Snøfall.",
+      "tema": ["Kultur og historie", "Juleskikker", "Gavmildhet"],
       "farge": "#cd853f",
       "ikon": "book",
       "vanskelighetsgrad": "lett",
       "første_opplåsingsdag": 6,
       "belønning": {
         "type": "knowledge",
-        "beskrivelse": "Lærer om juletradisjoner rundt om i verden"
+        "beskrivelse": "Låser opp historiske arkivfiler fra Julius"
       },
       "foreldreveiledning": {
-        "sammendrag": "En pedagogisk mini-historie om juletradisjoner som gir kulturell innsikt.",
+        "sammendrag": "En varm fortelling om hvorfor vi deler gaver og lyser opp desember.",
         "pedagogisk_fokus": [
-          "Kulturell bevissthet",
-          "Historisk perspektiv",
-          "Respekt for tradisjoner"
+          "Historiefortelling",
+          "Gleden ved å gi",
+          "Familietradisjoner"
         ],
         "tips": [
-          "Diskuter deres egen families juletradisjoner",
-          "Snakk om hvordan tradisjoner varierer mellom land",
-          "Koble til andre kulturer barna kjenner"
+          "Snakk om hva barna gleder seg mest til å gi bort til andre i år"
         ]
       }
     },
     {
       "id": "halvveis-milepæl",
-      "navn": "Halvveis-Milepæl",
-      "beskrivelse": "16. desember - halvveis gjennom kalenderen! En dag for refleksjon og feiring. Julius og nissene tar pause for å se tilbake på hva som er oppnådd så langt.",
-      "tema": ["Refleksjon", "Feiring av fremgang", "Takknemlighet"],
+      "navn": "Verkstedets Halvveis-Krise",
+      "beskrivelse": "16. desember! To tredjedeler av oppladningen er unnagjort, men gave-sorteringsmaskinen til Winter og IQ går varm midt i innspurten.",
+      "tema": ["Feiring av innsats", "Orden i kaos", "Lagånd"],
       "farge": "#ff69b4",
       "ikon": "award",
       "vanskelighetsgrad": "lett",
       "første_opplåsingsdag": 16,
       "belønning": {
         "type": "milestone",
-        "beskrivelse": "Halvveis-diplom og oppmuntring"
+        "beskrivelse": "Halvveis-utmerkelse og tilgang til NisseStats"
       },
       "foreldreveiledning": {
-        "sammendrag": "En milepæl-historie som feirer fremgang og motiverer til å fortsette.",
+        "sammendrag": "Markerer at barna har løst over halvparten av desemberoppdragene og åpner statistikkmodulen.",
         "pedagogisk_fokus": [
-          "Å feire små seire",
-          "Refleksjon over fremgang",
-          "Motivasjon til å fullføre"
+          "Kategorisering og systemtenkning",
+          "Å feire milepæler underveis"
         ],
         "tips": [
-          "Ta en pause og snakk om favorittoppdragene så langt",
-          "Fei at dere har kommet halvveis",
-          "Bygg motivasjon for siste halvdel"
+          "Spill Gave-Sorterer på Snøfall TV Kanal 4 sammen etter at koden er løst"
         ]
       }
     },
     {
       "id": "slede-forberedelser",
-      "navn": "Slede-Forberedelser",
-      "beskrivelse": "Sleda må være klar til julaften! Julius sjekker vekt, størrelse og magiske egenskaper. Reinsdyrene må trene, og alt må være perfekt for den store reisen.",
-      "tema": ["Forberedelse", "Ansvar", "Planlegging"],
+      "navn": "Slede-Simulering & Vestlandsvind",
+      "beskrivelse": "Bergen byr på regn, vindkast rundt Ulriken og bratte bakker på Landås. Trixter, Rudolf og IQ må kalibrere sleden for vestlandsvær før avgang.",
+      "tema": ["Navigasjon og vær", "Presisjon", "Forberedelse"],
       "farge": "#4682b4",
       "ikon": "truck",
       "vanskelighetsgrad": "lett",
       "første_opplåsingsdag": 18,
       "belønning": {
         "type": "preparation_complete",
-        "beskrivelse": "Sleda er klar for julaften!"
+        "beskrivelse": "Sleden er kalibrert for landing på Landås!"
       },
       "foreldreveiledning": {
-        "sammendrag": "En praktisk historie om betydningen av grundig forberedelse.",
+        "sammendrag": "Knyttet til lokalgeografi i Bergen der barna hjelper Julius med vind- og høydeberegninger.",
         "pedagogisk_fokus": [
-          "Planlegging og organisering",
-          "Ansvar for viktige oppgaver",
-          "Betydningen av forberedelse"
+          "Lokal geografi (Ulriken, Landås, Bergen)",
+          "Praktisk regning med høyde og avstand"
         ],
-        "tips": [
-          "Snakk om hvordan dere forbereder dere til jul",
-          "Diskuter viktigheten av å sjekke at alt er klart",
-          "Koble til egne opplevelser med forberedelser"
-        ]
+        "tips": ["Prøv Slede-Simulator-minispillet på Snøfall TV Kanal 4"]
       }
     }
   ],
   "metadata": {
-    "versjon": "1.0",
+    "versjon": "2.0",
     "total_eventyr": 9,
     "hoved_eventyr": 5,
     "mini_eventyr": 4,
-    "beskrivelse": "NisseKomm-kalenderens overordnede narrative struktur. Hvert eventyr vever seg gjennom utvalgte dager i desember og gir dybde til opplevelsen."
+    "beskrivelse": "NisseKomm Sesong 2 (2026): Operasjon Spøkelseskode. Fortellingen vever sammen fysiske ledetråder på Landås, Snøfall TV og NisseKomm-terminalen."
   }
 }

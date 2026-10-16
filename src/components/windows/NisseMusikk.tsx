@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
@@ -8,17 +8,104 @@ import { SoundManager } from "@/lib/sounds";
 interface Track {
   id: number;
   title: string;
-  duration: string;
+  subtitle: string;
+  src: string;
+  defaultDuration: string;
 }
 
 const PLAYLIST: Track[] = [
-  { id: 1, title: "Deilig er Jorden (8-bit)", duration: "2:45" },
-  { id: 2, title: "Vi Tenner Våre Lykter (Chiptune)", duration: "3:12" },
-  { id: 3, title: "Musevisa (Retro Mix)", duration: "2:30" },
-  { id: 4, title: "Rudolf med Rød Nese (8-bit)", duration: "2:58" },
-  { id: 5, title: "Bjelleklang (Oscillator Ver.)", duration: "2:15" },
-  { id: 6, title: "Glade Jul (Synth Wave)", duration: "3:05" },
+  {
+    id: 1,
+    title: "Bjelleklang (8-Bit Chiptune)",
+    subtitle: "Jingle Bells — Snøfall Radio 90.0 MHz",
+    src: "/music/Jingle Bells (8-Bit Version).mp3",
+    defaultDuration: "1:57",
+  },
+  {
+    id: 2,
+    title: "Rudolf er Rød på Nesen (8-Bit)",
+    subtitle: "Rudolph the Red-Nosed Reindeer",
+    src: "/music/Rudolph the Red Nosed Reindeer (8-Bit Version).mp3",
+    defaultDuration: "1:57",
+  },
+  {
+    id: 3,
+    title: "Kranser og Kristtorn (8-Bit)",
+    subtitle: "Deck the Halls — Verksted-Mix",
+    src: "/music/Deck the Halls (8-Bit Version).mp3",
+    defaultDuration: "1:08",
+  },
+  {
+    id: 4,
+    title: "Vinter-Eventyrland (8-Bit)",
+    subtitle: "Winter Wonderland — Krystallhagen",
+    src: "/music/Winter Wonderland (8-Bit Version).mp3",
+    defaultDuration: "1:43",
+  },
+  {
+    id: 5,
+    title: "La Det Snø, La Det Snø (8-Bit)",
+    subtitle: "Let It Snow! — Brevfugl-Tårnet",
+    src: "/music/Let It Snow, Let It Snow, Let It Snow (8-Bit Version).mp3",
+    defaultDuration: "2:03",
+  },
+  {
+    id: 6,
+    title: "Kanefart gjennom Snøfall (8-Bit)",
+    subtitle: "Sleigh Ride — Slede-Ekspert",
+    src: "/music/Sleigh Ride (8-Bit Version).mp3",
+    defaultDuration: "2:04",
+  },
+  {
+    id: 7,
+    title: "Dans rundt Juletreet (8-Bit)",
+    subtitle: "Rockin' Around the Christmas Tree",
+    src: "/music/Rockin' Around the Christmas Tree (8-Bit Version).mp3",
+    defaultDuration: "1:58",
+  },
+  {
+    id: 8,
+    title: "Feliz Navidad (8-Bit)",
+    subtitle: "Globale Nisse-Frekvenser",
+    src: "/music/Feliz Navidad (8-Bit Version).mp3",
+    defaultDuration: "2:08",
+  },
+  {
+    id: 9,
+    title: "Jeg Så Mamma Kysse Nissen (8-Bit)",
+    subtitle: "I Saw Mommy Kissing Santa Claus",
+    src: "/music/I Saw Mommy Kissing Santa Claus (8-Bit Version).mp3",
+    defaultDuration: "2:24",
+  },
+  {
+    id: 10,
+    title: "Alt Jeg Ønsker til Jul (8-Bit)",
+    subtitle: "All I Want for Christmas Is You",
+    src: "/music/All I Want for Christmas Is You (8-Bit Version).mp3",
+    defaultDuration: "4:14",
+  },
+  {
+    id: 11,
+    title: "Siste Jul (8-Bit Synth)",
+    subtitle: "Last Christmas — Nordlys-Utgave",
+    src: "/music/Last Christmas (8-Bit Version).mp3",
+    defaultDuration: "3:46",
+  },
+  {
+    id: 12,
+    title: "Ha en Riktig God og Glitrende Jul (8-Bit)",
+    subtitle: "Have Yourself a Merry Little Christmas",
+    src: "/music/Have Yourself a Merry Little Christmas (8-Bit Version).mp3",
+    defaultDuration: "3:50",
+  },
 ];
+
+function formatTime(seconds: number): string {
+  if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${String(secs).padStart(2, "0")}`;
+}
 
 interface NisseMusikkProps {
   onClose: () => void;
@@ -27,34 +114,114 @@ interface NisseMusikkProps {
 export function NisseMusikk({ onClose }: NisseMusikkProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(0.5);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const track = PLAYLIST[currentTrack];
+
+  useEffect(() => {
+    const audio = new Audio(encodeURI(PLAYLIST[0].src));
+    audio.volume = 0.5;
+    audioRef.current = audio;
+
+    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
+    const handleLoadedMetadata = () => setDuration(audio.duration || 0);
+    const handleEnded = () => {
+      setCurrentTrack((prev) => (prev + 1) % PLAYLIST.length);
+    };
+
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("ended", handleEnded);
+
+    return () => {
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("ended", handleEnded);
+      audio.pause();
+      audioRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const targetSrc = encodeURI(track.src);
+    if (!audio.src.endsWith(targetSrc)) {
+      audio.src = targetSrc;
+      audio.load();
+    }
+
+    if (isPlaying) {
+      SoundManager.stopJingle();
+      audio.play().catch((err) => {
+        console.warn("NisseMusikk playback blocked:", err);
+        setIsPlaying(false);
+      });
+    } else {
+      audio.pause();
+    }
+  }, [currentTrack, isPlaying, track.src]);
 
   const handlePlayPause = () => {
-    if (isPlaying) {
-      SoundManager.playSound("click");
-      setIsPlaying(false);
-    } else {
-      SoundManager.playSound("success");
-      setIsPlaying(true);
-    }
+    SoundManager.playSound("click");
+    setIsPlaying((prev) => !prev);
   };
 
   const handleNext = () => {
     SoundManager.playSound("click");
+    setCurrentTime(0);
     setCurrentTrack((prev) => (prev + 1) % PLAYLIST.length);
   };
 
   const handlePrevious = () => {
     SoundManager.playSound("click");
+    if (audioRef.current && audioRef.current.currentTime > 3) {
+      audioRef.current.currentTime = 0;
+      setCurrentTime(0);
+      return;
+    }
+    setCurrentTime(0);
     setCurrentTrack((prev) => (prev - 1 + PLAYLIST.length) % PLAYLIST.length);
   };
 
   const handleTrackSelect = (index: number) => {
     SoundManager.playSound("click");
-    setCurrentTrack(index);
-    setIsPlaying(true);
+    if (index === currentTrack) {
+      setIsPlaying((prev) => !prev);
+    } else {
+      setCurrentTime(0);
+      setCurrentTrack(index);
+      setIsPlaying(true);
+    }
   };
 
-  const track = PLAYLIST[currentTrack];
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+    const audio = audioRef.current;
+    if (!audio || !duration) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const ratio = Math.max(
+      0,
+      Math.min(1, (e.clientX - rect.left) / rect.width),
+    );
+    const nextTime = ratio * duration;
+    audio.currentTime = nextTime;
+    setCurrentTime(nextTime);
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nextVolume = parseFloat(e.target.value);
+    setVolume(nextVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = nextVolume;
+    }
+  };
+
+  const progressPercent =
+    duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
 
   return (
     <RetroWindow title="NISSEMUSIKK - 8-BIT JUKEBOX" onClose={onClose}>
@@ -64,102 +231,140 @@ export function NisseMusikk({ onClose }: NisseMusikkProps) {
           <Icons.Music size={32} color="blue" />
           <div className="flex-1">
             <div className="text-2xl font-bold tracking-wider">
-              SNØFALL RADIO
+              SNØFALL RADIO // 8-BIT ARKIV
             </div>
             <div className="text-sm opacity-70">
-              KLASSISKE JULESANGER - RETRO EDITION
+              12 EKTE CHIPTUNE-JULESANGER • LYDBØLGE-GENERATOR MOT KULDE
             </div>
           </div>
           <div className="flex items-center gap-2 px-3 py-1 border-2 border-(--gold) bg-(--gold)/20">
-            <div className="w-2 h-2 bg-(--gold) rounded-full animate-pulse-led"></div>
+            <div
+              className={`w-2 h-2 rounded-full ${
+                isPlaying
+                  ? "bg-(--neon-green) animate-ping"
+                  : "bg-(--gold) animate-pulse-led"
+              }`}
+            ></div>
             <span className="text-(--gold) text-xs tracking-wider">
-              LÅST OPP DAG 7
+              {isPlaying ? "SENDER LYDBØLGER" : "KLAR"}
             </span>
           </div>
         </div>
 
         {/* Now Playing Display */}
         <div className="border-4 border-(--neon-green) bg-black p-6 space-y-4">
-          <div className="text-center space-y-2">
+          <div className="text-center space-y-1">
             <div className="text-xs text-(--cold-blue) tracking-wider">
-              NÅ SPILLER
+              {isPlaying ? "NÅ SPILLER PÅ 90.0 MHz" : "VALGT SPOR"}
             </div>
-            <div className="text-2xl text-(--neon-green) font-bold tracking-wider animate-pulse">
+            <div className="text-2xl text-(--neon-green) font-bold tracking-wider">
               {track.title}
             </div>
-            <div className="text-sm text-(--neon-green)/70">
+            <div className="text-xs text-(--cold-blue)/80">
+              {track.subtitle}
+            </div>
+            <div className="text-xs text-(--neon-green)/60 pt-1">
               Spor {currentTrack + 1} av {PLAYLIST.length}
             </div>
           </div>
 
           {/* Visualizer (animated bars) */}
-          <div className="flex items-end justify-center gap-1 h-16">
-            {Array.from({ length: 12 }).map((_, i) => (
+          <div className="flex items-end justify-center gap-1.5 h-16 px-4">
+            {Array.from({ length: 16 }).map((_, i) => (
               <div
                 key={i}
-                className="w-2 bg-(--neon-green)"
+                className="w-2.5 bg-(--neon-green) transition-all duration-150"
                 style={{
-                  height: isPlaying ? `${20 + (i % 5) * 15}%` : "10%",
-                  animation: isPlaying
-                    ? `pulse ${0.5 + (i % 3) * 0.2}s ease-in-out infinite`
-                    : "none",
+                  height: isPlaying
+                    ? `${22 + ((i * 19 + Math.floor(currentTime * 4)) % 5) * 18}%`
+                    : "12%",
+                  opacity: isPlaying ? 0.9 : 0.35,
                 }}
               ></div>
             ))}
           </div>
 
-          {/* Progress Bar */}
+          {/* Seekable Progress Bar */}
           <div className="space-y-1">
-            <div className="h-2 bg-(--neon-green)/20 border border-(--neon-green)">
+            <div
+              onClick={handleSeek}
+              title="Klikk for å spole"
+              className="h-3 bg-(--neon-green)/20 border border-(--neon-green) cursor-pointer relative"
+            >
               <div
-                className="h-full bg-(--neon-green) transition-all"
+                className="h-full bg-(--neon-green) transition-all duration-150"
                 style={{
-                  width: isPlaying ? "45%" : "0%",
-                  transition: "width 0.5s linear",
+                  width: `${progressPercent}%`,
                 }}
               ></div>
             </div>
-            <div className="flex justify-between text-xs text-(--neon-green)/70">
-              <span>1:23</span>
-              <span>{track.duration}</span>
+            <div className="flex justify-between text-xs text-(--neon-green)/70 font-mono">
+              <span>{formatTime(currentTime)}</span>
+              <span>
+                {duration > 0 ? formatTime(duration) : track.defaultDuration}
+              </span>
             </div>
           </div>
         </div>
 
-        {/* Player Controls */}
-        <div className="flex items-center justify-center gap-4">
-          <button
-            onClick={handlePrevious}
-            className="p-3 border-2 border-(--cold-blue) hover:bg-(--cold-blue)/20 transition-all hover:shadow-[0_0_10px_rgba(0,221,255,0.5)]"
-          >
-            <Icons.SkipBack size={24} color="blue" />
-          </button>
+        {/* Player Controls & Volume */}
+        <div className="flex flex-wrap items-center justify-between gap-4 border-2 border-(--neon-green)/30 bg-black/50 p-3">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handlePrevious}
+              title="Forrige spor"
+              className="p-3 border-2 border-(--cold-blue) hover:bg-(--cold-blue)/20 transition-all cursor-pointer"
+            >
+              <Icons.SkipBack size={22} color="blue" />
+            </button>
 
-          <button
-            onClick={handlePlayPause}
-            className="p-4 border-4 border-(--neon-green) hover:bg-(--neon-green)/20 transition-all hover:shadow-[0_0_15px_rgba(0,255,0,0.6)]"
-          >
-            {isPlaying ? (
-              <Icons.Pause size={32} color="green" />
-            ) : (
-              <Icons.Play size={32} color="green" />
-            )}
-          </button>
+            <button
+              onClick={handlePlayPause}
+              title={isPlaying ? "Pause" : "Spill av"}
+              className="p-3.5 border-4 border-(--neon-green) hover:bg-(--neon-green)/20 transition-all cursor-pointer"
+            >
+              {isPlaying ? (
+                <Icons.Pause size={28} color="green" />
+              ) : (
+                <Icons.Play size={28} color="green" />
+              )}
+            </button>
 
-          <button
-            onClick={handleNext}
-            className="p-3 border-2 border-(--cold-blue) hover:bg-(--cold-blue)/20 transition-all hover:shadow-[0_0_10px_rgba(0,221,255,0.5)]"
-          >
-            <Icons.SkipForward size={24} color="blue" />
-          </button>
+            <button
+              onClick={handleNext}
+              title="Neste spor"
+              className="p-3 border-2 border-(--cold-blue) hover:bg-(--cold-blue)/20 transition-all cursor-pointer"
+            >
+              <Icons.SkipForward size={22} color="blue" />
+            </button>
+          </div>
+
+          {/* Volume Control */}
+          <div className="flex items-center gap-3">
+            <Icons.Volume size={20} color="green" />
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={volume}
+              onChange={handleVolumeChange}
+              aria-label="Volum"
+              className="w-28 accent-(--neon-green) cursor-pointer"
+            />
+            <span className="text-xs font-mono text-(--neon-green) w-10 text-right">
+              {Math.round(volume * 100)}%
+            </span>
+          </div>
         </div>
 
         {/* Playlist */}
         <div className="border-2 border-(--neon-green)/30 space-y-0">
-          <div className="p-2 bg-(--neon-green)/10 border-b-2 border-(--neon-green)/30">
-            <div className="text-sm tracking-wider text-(--neon-green)">
-              SPILLELISTE
+          <div className="p-2 bg-(--neon-green)/10 border-b-2 border-(--neon-green)/30 flex justify-between items-center">
+            <div className="text-sm tracking-wider text-(--neon-green) font-bold">
+              SPILLELISTE ({PLAYLIST.length} SPOR)
             </div>
+            <div className="text-xs text-(--cold-blue)">8-BIT AUDIO ENGINE</div>
           </div>
           <div className="max-h-64 overflow-y-auto">
             {PLAYLIST.map((t, index) => (
@@ -167,7 +372,7 @@ export function NisseMusikk({ onClose }: NisseMusikkProps) {
                 key={t.id}
                 onClick={() => handleTrackSelect(index)}
                 className={`
-                  w-full p-3 text-left flex items-center justify-between
+                  w-full p-3 text-left flex items-center justify-between cursor-pointer
                   border-b border-(--neon-green)/10 transition-all
                   ${
                     index === currentTrack
@@ -177,30 +382,40 @@ export function NisseMusikk({ onClose }: NisseMusikkProps) {
                 `}
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-xs opacity-70 w-6">
+                  <span className="text-xs opacity-70 w-6 font-mono">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <span className="text-sm tracking-wider">{t.title}</span>
-                  {index === currentTrack && isPlaying && (
-                    <div className="flex gap-0.5">
-                      <div className="w-0.5 h-3 bg-(--neon-green) animate-pulse"></div>
-                      <div className="w-0.5 h-3 bg-(--neon-green) animate-pulse delay-100"></div>
-                      <div className="w-0.5 h-3 bg-(--neon-green) animate-pulse delay-200"></div>
+                  <div>
+                    <div className="text-sm tracking-wider font-bold">
+                      {t.title}
                     </div>
+                    <div className="text-xs opacity-60">{t.subtitle}</div>
+                  </div>
+                  {index === currentTrack && isPlaying && (
+                    <span className="px-1.5 py-0.5 text-[10px] bg-(--neon-green) text-black font-bold">
+                      SPILLER
+                    </span>
                   )}
                 </div>
-                <span className="text-xs opacity-70">{t.duration}</span>
+                <span className="text-xs opacity-70 font-mono">
+                  {t.defaultDuration}
+                </span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Info Message */}
-        <div className="p-4 border-2 border-(--cold-blue)/30 bg-(--cold-blue)/5 text-(--cold-blue) text-xs">
-          <div className="font-bold mb-1">ℹ️ SIMULERT AVSPILLING</div>
+        {/* Acoustic Shield Telemetry (Day 12 Clue Integration) */}
+        <div className="p-4 border-2 border-(--cold-blue)/40 bg-(--cold-blue)/5 text-(--cold-blue) text-xs space-y-1">
+          <div className="font-bold flex items-center justify-between">
+            <span>🔊 IQs LYDBØLGE-SKJOLD // AKUSTISK TELEMETRI</span>
+            <span className="text-(--gold) font-mono">DEL 2: O - D - I</span>
+          </div>
           <div className="opacity-80">
-            8-bit musikkspiller låst opp etter 7 dager! I en fremtidig versjon
-            vil dette spille ekte chiptune-julesanger med Web Audio API. 🎵
+            Chiptune-frekvensene rister løs krystall-isen fra Kulde! Kombiner
+            første del fra kjøkkenet med{" "}
+            <span className="text-(--gold) font-bold">O - D - I</span> fra
+            musikk-arkivet for å kalibrere lydbølge-skjoldet (Dag 12).
           </div>
         </div>
       </div>

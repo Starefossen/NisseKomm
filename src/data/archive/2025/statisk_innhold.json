@@ -1,0 +1,726 @@
+{
+  "progression_config": {
+    "sigmoid": {
+      "k": 0.18,
+      "midpoint": 15
+    },
+    "crisis_events": [
+      {
+        "day": 11,
+        "affected_metric": "NISSEKRAFT",
+        "crisis_value": 45,
+        "status": "kritisk"
+      },
+      {
+        "day": 16,
+        "affected_metric": "BREVFUGL-SVERM",
+        "crisis_value": 15,
+        "status": "kritisk"
+      }
+    ]
+  },
+  "daily_alerts": [
+    {
+      "day": 1,
+      "tekst": "🎅 JULIUS: Velkommen til Snøfall! Oppstartsekvens initialisert.",
+      "type": "info"
+    },
+    {
+      "day": 2,
+      "tekst": "⚙️ IQ: Tester oppfinnelser. Smell forventet. Anbefaler hjelm.",
+      "type": "info"
+    },
+    {
+      "day": 3,
+      "tekst": "❄️ ORAKELET: Stor snøstorm detektert. Vennskapet holder oss varme.",
+      "type": "advarsel"
+    },
+    {
+      "day": 4,
+      "tekst": "🦌 RUDOLF: Min nese lyser perfekt i dag! (Bare så dere vet)",
+      "type": "info"
+    },
+    {
+      "day": 5,
+      "tekst": "📋 WINTER: 847 brevfugler registrert! Organisering på topp!",
+      "type": "info"
+    },
+    {
+      "day": 6,
+      "tekst": "🎅 JULIUS: St. Nikolaus ringte. Ville vise frem skjegget sitt igjen...",
+      "type": "info"
+    },
+    {
+      "day": 7,
+      "tekst": "🔮 ORAKELET: Mørket lurer ved 90° nord. Våk deg for polarnatten.",
+      "type": "advarsel"
+    },
+    {
+      "day": 8,
+      "tekst": "🎉 NISSENE: Første uke fullført! Kake til alle! (For stor kake...)",
+      "type": "info"
+    },
+    {
+      "day": 9,
+      "tekst": "👵 NISSEMOR: Julekuleblåsing i gang. 200 perfekte kuler produsert!",
+      "type": "info"
+    },
+    {
+      "day": 10,
+      "tekst": "🧝 RAMPENISSEN: Fant 5 grønne ting! Føler meg som detektiv! 🕵️",
+      "type": "info"
+    },
+    {
+      "day": 11,
+      "tekst": "⏰ IQ: KRISE! Klokker gått amok! Viser 87 o'clock... Unnskyld!",
+      "type": "kritisk"
+    },
+    {
+      "day": 12,
+      "tekst": "🎵 NISSENE: Sangøvelse! Rudolf muler. IQ tilbyr ørepropper.",
+      "type": "info"
+    },
+    {
+      "day": 13,
+      "tekst": "🕯️ NISSEMOR: Lucia-dag! 500 lussekatter spist på 20 min. Rekord!",
+      "type": "info"
+    },
+    {
+      "day": 14,
+      "tekst": "🕊️ WINTER: Brevfugl-system fullført! Alle ønsker organisert!",
+      "type": "info"
+    },
+    {
+      "day": 15,
+      "tekst": "🎲 RAMPENISSEN: Fant mandelen i bolle #3! (Nissemor hjalp meg...)",
+      "type": "info"
+    },
+    {
+      "day": 16,
+      "tekst": "🎂 WINTER: HALVVEIS! Gaveproduksjon på topp! (Men inventar krasjet)",
+      "type": "advarsel"
+    },
+    {
+      "day": 17,
+      "tekst": "⭐ ORAKELET: Stjernene viser veien. Mørket svekkes. Holder fram!",
+      "type": "info"
+    },
+    {
+      "day": 18,
+      "tekst": "❄️ PIL: Snøengler overalt! 18 kanter på 3 snøfnugg = magi!",
+      "type": "info"
+    },
+    {
+      "day": 19,
+      "tekst": "🦌 RUDOLF: Krever pauserom og avokadotoast. NEI? Da sulter jeg!",
+      "type": "advarsel"
+    },
+    {
+      "day": 20,
+      "tekst": "🛷 TRIXTER: Slede testet! Fungerer! Rudolf gjorde unødvendig looping.",
+      "type": "info"
+    },
+    {
+      "day": 21,
+      "tekst": "🌟 NISSENE: Rudolf reddet oss! Hans nese spredte Mørket! Helt! ⭐",
+      "type": "info"
+    },
+    {
+      "day": 22,
+      "tekst": "⏰ ORAKELET: To dager igjen! Magien intensiveres! Panikk kontrollert.",
+      "type": "advarsel"
+    },
+    {
+      "day": 23,
+      "tekst": "🎄 JULIUS: I KVELD FLYR VI! Når dere sovner, kommer Julius! 🛷✨",
+      "type": "kritisk"
+    },
+    {
+      "day": 24,
+      "tekst": "🎅 JULIUS: God morgen! Jeg var her i natt! Håper dere likte gavene! ✨",
+      "type": "info"
+    },
+    {
+      "day": 24,
+      "tekst": "🏆 GRATULERER! Alle 24 oppdrag fullført! Dere er julenisse-agenter!",
+      "type": "info"
+    },
+    {
+      "day": 24,
+      "tekst": "🎄 NISSEMOR: Takk for alt! Se dere neste desember! ✨",
+      "type": "info"
+    },
+    {
+      "day": 24,
+      "tekst": "🧝 RAMPENISSEN: Det var et eventyr! God jul, mine venner! ❤️",
+      "type": "info"
+    },
+    {
+      "day": 24,
+      "tekst": "🦌 TRIXTER: Takk for hjelpen! Reisen var perfekt! 🛷",
+      "type": "info"
+    }
+  ],
+  "varsler": [
+    {
+      "id": "v1",
+      "tekst": "JULESIGNAL: USTABIL",
+      "type": "advarsel",
+      "tidspunkt": "23:45"
+    },
+    {
+      "id": "v2",
+      "tekst": "OHIO SNOWSTORM DETEKTERT 💀",
+      "type": "kritisk",
+      "tidspunkt": "23:52"
+    },
+    {
+      "id": "v3",
+      "tekst": "GAVEPRODUKSJON: BAK SKJEMA",
+      "type": "kritisk",
+      "tidspunkt": "00:12"
+    },
+    {
+      "id": "v4",
+      "tekst": "REINSDYR TELEMETRI: NORMAL",
+      "type": "info",
+      "tidspunkt": "01:05"
+    },
+    {
+      "id": "v5",
+      "tekst": "SIGMA LEVEL: 67 📈",
+      "type": "info",
+      "tidspunkt": "02:30"
+    },
+    {
+      "id": "v6",
+      "tekst": "VERKSTED TEMPERATUR: KRITISK LAV",
+      "type": "kritisk",
+      "tidspunkt": "03:15"
+    },
+    {
+      "id": "v7",
+      "tekst": "NISSEKRAFT: OPTIMAL NIVÅ",
+      "type": "info",
+      "tidspunkt": "04:22"
+    },
+    {
+      "id": "v8",
+      "tekst": "RIZZ PROTOCOL: ACTIVATED ✨",
+      "type": "info",
+      "tidspunkt": "05:00"
+    },
+    {
+      "id": "v9",
+      "tekst": "SIKKERHETSSYSTEM: AKTIVERT",
+      "type": "advarsel",
+      "tidspunkt": "06:45"
+    },
+    {
+      "id": "v10",
+      "tekst": "GOD JUL MELDING SENDT",
+      "type": "info",
+      "tidspunkt": "07:00"
+    }
+  ],
+  "filer": [
+    {
+      "navn": "OPPGAVER",
+      "type": "mappe",
+      "barn": [
+        {
+          "navn": "dagens_oppdrag.txt",
+          "type": "fil",
+          "innhold": "Se NISSEMAIL vinduet for å finne dagens utfordring.\n\nNår du har løsningen, bruk KODETERMINAL for å sende inn svaret.\n\nHusk: Noen hint kan være skjult i andre filer!"
+        },
+        {
+          "navn": "hint_arkiv.txt",
+          "type": "fil",
+          "innhold": "DYNAMISK_HINTS"
+        }
+      ]
+    },
+    {
+      "navn": "SYSTEM",
+      "type": "mappe",
+      "barn": [
+        {
+          "navn": "config.sys",
+          "type": "fil",
+          "innhold": "ENISSEKJERNE 3.8]\n\nKONFIGURASJON:\n- Språk: Norsk\n- Tidssone: GMT+1\n- Tema: Retro CRT\n- Sikkerhet: HØYESTE\n\nALLE SYSTEMER OPERATIONAL"
+        },
+        {
+          "navn": "readme.txt",
+          "type": "fil",
+          "innhold": "Velkommen til NisseKomm!\n\nDette er Julius' kommandosenter i Snøfall.\n\nBruk KODETERMINAL til å sende inn koder.\nBruk KALENDER for å se alle oppdrag.\n\nBrevfuglene flyr mellom deg og oss!\n\nLykke til!"
+        },
+        {
+          "navn": "om-snofall.txt",
+          "type": "fil",
+          "innhold": "🎄 OM SNØFALL - VELKOMMEN TIL JULENISSENS VERDEN 🎄\n\nHVA ER SNØFALL?\nSnøfall er det magiske stedet hvor Julius (julenissen) bor med Nissemor og alle nissene. Det ligger helt på Nordpolen - 90 grader nord - det nordligste punktet på jorden!\n\nHER BOR:\n👴 JULIUS - Julenissen selv (det er meg!)\n👵 NISSEMOR - Min kjære kone\n🧝 RAMPENISSEN - Min assistent som er hos DERE nå!\n🧝 PIL - Min ivrige lærling\n📋 WINTER (Ole Winter) - Sekretæren som holder orden\n⚙️ IQ - Oppfinneren (ting eksploderer ofte)\n🦌 TRIXTER - Mitt favoritt-reinsdyr\n🦌 RUDOLF - Reinsdyret med rød nese (og stort ego)\n🔮 ORAKELET - Ser fremtiden og advarer oss\n\nMAGISKE ELEMENTER:\n🕊️ BREVFUGLER - Papirfugler som bærer barnas ønsker til oss\n❄️ JULEKULEBLÅSING - Vi lager glasskuler til juletrærne\n⚡ JULEMAGI - Holder alt i gang!\n🌑 MØRKET - Farlig kraft som truer oss i polarnatten\n\nHVORDAN FUNGERER DET?\nBarn (som dere!) folder brevfugler og sender ønsker.\nBrevfuglene flyr magisk til Snøfall.\nWinter organiserer alle ønskene.\nNissene produserer gaver døgnet rundt.\nJulius pakker alt i den magiske sekken.\nPå julenatten flyr vi ut med reinsdyrene!\n\nRAMPENISSENS OPPDRAG:\nJeg har sendt Rampenissen til dere for å bygge bro mellom våre verdener. Han lager oppgaver, gjemmer koder, og holder kontakt med Snøfall gjennom hele desember.\n\nSAMMEN ER VI STERKE!\nVennskap mellom dere og oss gir julemagi. Uten barna ville julen ikke eksistert. Dere er en viktig del av Snøfall!\n\nVelkommen til eventyret!\n- Julius og hele Snøfall-teamet 🎅✨"
+        },
+        {
+          "navn": "system.log",
+          "type": "fil",
+          "innhold": "[23:45] SYSTEM START\n[23:46] Laster juledata...\n[23:47] Snøfall koordinater verifisert\n[23:48] Reinsdyr status: KLAR\n[23:49] Gaveproduksjon: 87% fullført\n[23:50] Alle systemer GO!\n[00:15] Skibidi Sleigh Mode: ENABLED 🛷\n[01:22] Elf_04: 'I am not an NPC' 🤖\n[02:30] Christmas Buff +1 Applied 🎄"
+        },
+        {
+          "navn": "sikkerhet.log",
+          "type": "fil",
+          "innhold": "[SIKKERHET] Tilgangskontroll aktiv\n[SIKKERHET] Passord verifisert\n[SIKKERHET] Bruker autentisert\n[SIKKERHET] Alle porter sikret\n[SIKKERHET] Ingen trusler detektert"
+        },
+        {
+          "navn": "snofall_fakta.txt",
+          "type": "fil",
+          "innhold": "❄️ SNØFALL - KOORDINATER OG GEOGRAFI ❄️\n\n📍 PLASSERING:\nSnøfall ligger på: 90° nord\n(Nordpolen - det nordligste punktet på jorden!)\n\nHVORFOR 90° NORD?\nJulius' forklaring:\n'Dette er toppen av verden! Så langt nord man kan komme.\nHer er polarnatten lengst, magien sterkest, og julegleden renest.'\n\nGEOGRAFISKE FAKTA:\n🌍 Breddegrad: 90° nord (Nordpolen)\n🌍 Lengdegrad: Alle lengdegrader møtes her!\n🌡️ Temperatur: -40°C til -60°C\n☀️ Midnattssol: Mai-Juli\n🌑 Polarnatt: November-Januar (24t mørke!)\n\nHVORFOR ER DET TRYGT?\nJulius forklarer:\n'Isolert her oppe kan være farlig. Mørket lurer alltid der ute\ni polarnatten. MEN - magien i Snøfall holder oss beskyttet!\nVennskapet mellom oss alle gir varme og styrke.'\n\nSNØFALLS BESKYTTELSE:\n✨ Julemagi skaper et varmt mikroklima\n✨ Forsvarsbarriere mot Mørket\n✨ Nordlyset lyser over oss\n✨ Vennskapets varme overvinner kulden\n\nKOMPASS-TRIKS:\nVed Nordpolen peker kompasset ALLTID sør!\n(Fordi magnetisk nord er litt unna geografisk nord)\n\nWinters kommentar:\n'Vi har den perfekte adressen: 90°N, hvor som helst°Ø/V!\nPostbudet blir alltid forvirret...'\n\nOrakelet advarer:\n'90 grader nord - høyeste tall, lengste natt.\nMørket kjenner veien. Men vi er forberedt.\nSammen er vi sterke.'",
+          "unlockConditions": {
+            "requiresTopics": ["morkets-trussel"]
+          }
+        }
+      ]
+    },
+    {
+      "navn": "BREVFUGLER",
+      "type": "mappe",
+      "barn": []
+    },
+    {
+      "navn": "SNOFALL-HISTORIER",
+      "type": "mappe",
+      "barn": [
+        {
+          "navn": "IQ-VERKSTED",
+          "type": "mappe",
+          "barn": [
+            {
+              "navn": "magisk-sekk-test.txt",
+              "type": "fil",
+              "innhold": "🎒 MAGISK SEKK - TESTRAPPORT 🎒\n\nDag 8 - Sekk-testing\n\nTest 1: 500 gaver\nResultat: ✅ SUKSESS (men ble stående fast i døren)\n\nTest 2: 1000 gaver\nResultat: ⚠️ Sekken vokste så mye at den rev av veggen\n\nTest 3: Én fjellelefant\nResultat: ❌ Dette var en dårlig idé\n\nKonklusjon: Magisk sekk fungerer!\nBivirkninger: Ødelegger arkitektur\n\nIQs kommentar: 'Som forventet - magien virker perfekt!'\nJulius' kommentar: 'Hvem godkjente fjellelefant-testen?!'",
+              "unlockConditions": {
+                "requiresTopics": ["iq-oppfinnelser"]
+              }
+            }
+          ]
+        },
+        {
+          "navn": "dekoder_reinsdyr.txt",
+          "type": "fil",
+          "innhold": "🦌 CAESAR-DEKODER: REINSDYR-KODE 🦌\n\nDag 5 - Hemmelig dekrypteringssystem\n\nJulius' notater:\n'Hver bokstav i alfabetet kan flyttes! Dette kalles en Caesar-kode.\nNøkkelen forteller hvor mange plasser vi flytter.\n\n-1 betyr: Flytt hver bokstav ETT STEG TILBAKE i alfabetet.'\n\nNORSK ALFABET (29 bokstaver):\nA B C D E F G H I J K L M N O P Q R S T U V W X Y Z Æ Ø Å\n\nEKSEMPEL MED -1 SHIFT:\nB → A (ett steg tilbake)\nC → B (ett steg tilbake)\nD → C (ett steg tilbake)\n\nPRØV SELV:\nHvis vi har kodet ordet OJTTF med -1 shift:\nO → ? (Hva kommer før O?)\nJ → ? (Hva kommer før J?)\nT → ? (Hva kommer før T?)\nT → ? (Hva kommer før T?)\nF → ? (Hva kommer før F?)\n\nDEKODING:\nO J T T F\n↓ ↓ ↓ ↓ ↓\nN I S S E\n\nSvar: NISSE!\n\nNå kan du bruke samme metode på koden du fant!\nHusk: Flytt hver bokstav ETT STEG TILBAKE.\n\nJulius' kommentar:\n'Caesar-koder er oppkalt etter den romerske keiseren Julius Caesar\n(ja, vi har samme navn!). Han brukte dem for å sende hemmelige\nmeldinger. Nå bruker vi dem i Snøfall for å beskytte informasjon\nfra Mørket!'",
+          "unlockConditions": {
+            "afterDay": 5
+          }
+        },
+        {
+          "navn": "snowflake-patterns.txt",
+          "type": "fil",
+          "innhold": "❄️ SNØFLAK-MØNSTRE ❄️\n\nDag 9 - Mikroskopi-studier\n\nForskning av Julius:\n'Hvert snøfnugg er unikt! Alle har 6 kanter.\nPerfekt symmetri. Naturens geometri.\n\n6 kanter × 3 snøfnugg = 18 kanter totalt\n\nDisse mønstrene inneholder matematikk og magi!'\n\nPil hjalp med å samle 200 forskjellige snøfnugg.\nAlle ulike. Alle vakre.\n\nFrosne mønster holder hemmeligheter...",
+          "unlockConditions": {
+            "requiresTopics": ["snostorm-snøfall"]
+          }
+        },
+        {
+          "navn": "julekuleblasing.txt",
+          "type": "fil",
+          "innhold": "🎄 JULEKULEBLÅSING 🎄\n\nTradisjon fra Snøfall-serien\n\nIQ og Pil jobber med julekuleblåsingsutstyret.\n\nDag 9 produksjon: 200 glasskuler\nKvalitet: Alle perfekte! ✨\n\nProsess:\n1. Smeltet glass (1500°C)\n2. Blås luftboble\n3. Form kule\n4. Avkjøl sakte\n5. Dekorér\n\nJulekuleblåsing krever:\n- Tålmodighet\n- Presisjon\n- Magisk touch\n\nResultat: Vakre, unike julekuler til hvert tre!",
+          "unlockConditions": {
+            "requiresTopics": ["frosne-mønster"]
+          }
+        },
+        {
+          "navn": "farge-koder.txt",
+          "type": "fil",
+          "innhold": "🎨 FARGE-MYSTERIET 🎨\n\nDag 10 - Grønn dag\n\nFargekoding i Snøfall:\n🔴 RØD - Julenissens klassiske farge\n🟢 GRØNN - Juletrær og miljø\n🔵 BLÅ - Is og snø\n🟡 GULL - Stjerner og magi\n⚪ HVIT - Snø og renhet\n\nG-R-Ø-N-N = GRØNN\n\nNissemors miljøprosjekt:\n- Sykkel til verkstedet\n- Resirkulering av gavepapir\n- Økologiske gulrøtter til reinsdyr\n\nJulius' kommentar:\n'Grønt og rødt sammen = italiensk restaurant'"
+        },
+        {
+          "navn": "farge_system_dekoder.txt",
+          "type": "fil",
+          "innhold": "🎨 FARGESYSTEM-DEKODER 🎨\n\nDag 10 - Snøfalls farge-organisering\n\nFARGEKODING I SNØFALL:\nJulius har et system for å organisere alt etter farger!\n\n🔴 RØD:\n- Julenissens klassiske farge\n- Julekule-produksjon\n- Nødalarmer\n\n🟢 GRØNN:\n- Juletrær og miljø\n- Nissemors økologiske prosjekt\n- Verksted-seksjoner\n\n🔵 BLÅ:\n- Is og snø\n- Kulde-systemer\n- Vinter-sensorer\n\n🟡 GULL:\n- Stjerner og magi\n- Premium-gaver\n- Spesielle merker\n\n⚪ HVIT:\n- Snø og renhet\n- Sikkerhetssoner\n- Julius' skjegg\n\nDETEKTIV-OPPGAVE (DAG 10):\nFinn 5 gjenstander med SAMME farge.\nHver har én bokstav: G, R, Ø, N, N\nSett bokstavene sammen = farge-navnet!\n\nFargesamlerens visdom:\n'Farger er ikke bare vakre - de bærer organisering.\nGrønt for vekst, rødt for tradisjon, blått for ro.\nSamle dem riktig, og orden åpenbares.'",
+          "unlockConditions": {
+            "requiresTopics": ["farge-mysteriet"]
+          }
+        },
+        {
+          "navn": "fargesamleren.txt",
+          "type": "fil",
+          "innhold": "🎨 HVEM ER FARGESAMLEREN? 🎨\n\n[HEMMELIG FIL - Oppdaget av nysgjerrige utforskere]\n\nFargesamleren er en eldgammel nisse som levde i Snøfall for mange hundre år siden.\n\nHVEM:\nNavn: Egentlig navn glemt, kalt 'Fargesamleren'\nAlder: Ukjent (veldig gammel)\nRolle: Studerte fargers magiske egenskaper\n\nHVA HAN GJORDE:\n- Samlet farger fra hele verden\n- Oppdaget at farger inneholder magi\n- Lærte Julius om fargesymboler\n- Skrev nedtekninger om hjerte-sol-måne symbolene\n\nDETTE VISSTE HAN:\n'Farger er ikke bare vakre - de bærer magi.\nGrønt for vekst, rødt for varme, blått for ro.\nHjertene, solene, månene - alle har sine farger.\nSamle dem riktig, og magien åpenbares.'\n\nHANS HEMMELIGHET:\nFargesamleren oppdaget de 9 symbolene (3 hjerter, 3 soler, 3 måner) og deres farger. Han skrev ned dekrypteringskodene som Julius bruker i dag.\n\nHVOR ER HAN NÅ?\nNoen sier han forsvant inn i nordlyset.\nAndre sier han ble ett med fargene selv.\nJulius sier: 'Han lever videre i hver farge vi ser.'\n\nMandelen i risgrøten? Hans favorittradisjon!\nHan sa: 'Hvit mandel skjult i hvit grøt - magien i det skjulte.'\n\n- Fra Julius' hemmelige arkiv"
+        },
+        {
+          "navn": "tidsanomalier.txt",
+          "type": "fil",
+          "innhold": "⏰ TIDSANOMALIER - RAPPORT ⏰\n\nDag 11 - Kritisk situasjon\n\nKlokkene i Snøfall har stoppet!\n\nRegistrerte anomalier:\n- Storklokke viser 87 o'clock\n- Tre klokker viser: 3:00, 5:00, 4:00\n- Tid går saktere i verkstedet\n- Nissene rapporterer 'tidsdepresjon'\n\nOrakeltes analyse:\n'Mørket manipulerer tiden.\nDet prøver å forsinke julaften.\n3 + 5 + 4 = 12 timer tapt.'\n\nMotgift: Vennskap og samhold holder tiden stabil.\n\nStatus: ⚠️ KRITISK",
+          "unlockConditions": {
+            "requiresTopics": ["morkets-trussel"]
+          }
+        },
+        {
+          "navn": "antenna-crisis.txt",
+          "type": "fil",
+          "innhold": "📡 ANTENNE-KRISE 📡\n\nDag 11 - Signal tapt!\n\nSNØFALL TV har mistet signalet.\nAntenne-systemet ødelagt av tidsanomaliene.\n\nTeknisk analyse:\n- Primærantenne: Ikke-funksjonell\n- Backup-system: Offline\n- Signal styrke: 0%\n\nLØSNING KREVES:\nBygg nød-antenne med:\n- Tinfolie (20cm høy)\n- Tape\n- Kreativitet!\n\nLa den stå over natten.\nSystemet kalibrerer automatisk.\n\nSignal gjenopprettet neste morgen! ✅\n\nBelønning: ANTENNE-INGENIØR badge",
+          "unlockConditions": {
+            "requiresTopics": ["morket-tidsanomali"]
+          }
+        },
+        {
+          "navn": "antenne_tid_system.txt",
+          "type": "fil",
+          "innhold": "📡⏰ ANTENNE & TID - SAMMENHENG 📡⏰\n\nDag 11 - Systemanalyse\n\nKRITISK OPPDAGELSE:\nTidsanomaliene og antenne-systemet er koblet sammen!\n\nHVORDAN FUNGERER DET?\n\n1. TIDSSYSTEM:\n- Alle systemer i Snøfall synkroniseres via sentralklokke\n- Når tiden går galt → alle systemer påvirkes\n- 3 klokker viser: 3:00, 5:00, 4:00\n- Total tidsavvik: 3 + 5 + 4 = 12 timer tapt!\n\n2. ANTENNE-SYSTEM:\n- SNØFALL TV bruker tid-synkronisert signal\n- Tidsanomalier → signal forsvinner\n- Må kalibreres med riktig tid for å fungere\n\n3. MØRKETS ANGREP:\nOrakelet forklarer:\n'Mørket manipulerer tiden for å svekke kommunikasjonen.\nDet vil isolere Snøfall fra verden.\n3 + 5 + 4 = 12 timer Mørket har stjålet.'\n\nLØSNING:\nBygg nød-antenne (se bonusoppdrag!)\n- Tinfolie\n- 20cm høy\n- La stå over natten\n- Automatisk kalibrering!\n\nRESTAURERING:\nNeste morgen (Dag 12):\n✅ Antenne kalibrert\n✅ Signal gjenopprettet\n✅ SNØFALL TV fungerer!\n\nJulius' kommentar:\n'Tiden og kommunikasjon er alt i Snøfall.\nUten tid → kaos. Uten antenne → isolasjon.\nSammen beskytter de oss mot Mørket.'\n\nIQs tekniske note:\n'Aldri forventet at tinfolie skulle redde julen.\nMen her er vi. Takk, barn!'",
+          "unlockConditions": {
+            "requiresTopics": ["morket-tidsanomali"]
+          }
+        },
+        {
+          "navn": "julesanger-samling.txt",
+          "type": "fil",
+          "innhold": "🎵 JULESANGER-SAMLING 🎵\n\nDag 12 - Sangdag i Snøfall\n\nFavoritt julesanger:\n1. Deilig er jorden\n2. Glade jul\n3. Nordnorsk julesalme\n4. Det hev ei rose sprunge\n\n'Deilig er jorden' - 6 bokstaver: JORDEN\n\nRudolf prøvde å synge.\nResultat: Muling, men han prøvde!\n\nReinsdyr-kor status: AVVIST\n'Det er uprofesjonelt' - Trixter\n\nNissene elsket konserten.\n(Eller later som)",
+          "unlockConditions": {
+            "requiresTopics": ["brevfugl-organisering"]
+          }
+        },
+        {
+          "navn": "lucia-tradisjon.txt",
+          "type": "fil",
+          "innhold": "🕯️ LUCIA-TRADISJONEN 🕯️\n\nDag 13 - Luciadagen\n\nTradisjon: 13. desember\nLucia bærer LYS på hodet i krans.\n\nI Snøfall:\n- LED-lys (brannfare!)\n- Lussekatter: 500 stykker\n- Spisetid: 20 minutter\n- Rekord!\n\nSymbolikk:\n💡 Lys = Håp i mørketiden\n💡 Lucia = Lysbringe\n💡 Sammen = Sterke mot Mørket\n\nNissemors lussekatter var magiske.\nBokstavelig. De lyste i mørket.",
+          "unlockConditions": {
+            "requiresTopics": ["frosne-mønster"]
+          }
+        },
+        {
+          "navn": "lucia_lussekatt_hemmelig.txt",
+          "type": "fil",
+          "innhold": "🕯️🎂 LUCIA & LUSSEKATTER - HEMMELIGHETEN 🎂🕯️\n\nDag 13 - Luciadagens mysterium\n\nLUCIASANGEN:\n\n'Svart senker natten seg\nI stall og stue\nSolen har gått sin vei,\nSkyggene truer\nInn i vårt mørke hus\nStiger med tente lys,\nSanta Lucia, Santa Lucia'\n\n🕯️ LUCIA-TRADISJONEN:\n- 13. desember\n- Lucia = 'Lys'\n- Bærer levende lys på hodet (eller LED!)\n- Symboliserer håp i mørketiden\n\n🎂 LUSSEKATTER:\nHva er det?\n- Gule saffran-boller\n- S-form eller krøll-form\n- Rosiner i endene\n- Bakes på Luciadagen\n\nHvorfor LUSSEKATTER?\n- Lussi = Lucia\n- Katter = Kattes (sammenkrøllet form)\n- 11 bokstaver: L-U-S-S-E-K-A-T-T-E-R\n\nNISSEMORS OPPSKRIFT:\nNissemor bakte 500 lussekatter på dag 13!\nNissene spiste dem på 20 minutter.\nRekord! (Eller et problem...)\n\nJulius' kommentar:\n'I Snøfall trenger vi lys mot Mørket.\nLucia viser veien med sine lys.\nLussekattene gir oss styrke og samhold.\nBegge deler er viktige i desember!'\n\nORAKELETS VISDOM:\n'Når natten er som mørkest,\nDa kommer lyset sterkest.\nLucia med sitt lys,\nLussekatter gir oss trøst og nys.'\n\nGÅTE FOR DAG 13:\nFinn de 11 bokstavene rundt Lucia-kransen:\nL - U - S - S - E - K - A - T - T - E - R\n\nSett dem sammen!\nHva baker vi på Luciadagen?",
+          "unlockConditions": {
+            "requiresTopics": ["frosne-mønster"]
+          }
+        },
+        {
+          "navn": "brevfugl-finale.txt",
+          "type": "fil",
+          "innhold": "🕊️ BREVFUGL-MYSTERIET LØST! 🕊️\n\nDag 14 - Finale\n\nAlle brevfugler er organisert!\nWinter har fullført registreringen.\n\n847 brevfugler totalt:\n- Fase 1 (Dag 1): Introduksjon\n- Fase 2 (Dag 5): Organisering\n- Fase 3 (Dag 12): Sangfugl\n- Fase 4 (Dag 14): PAPIR - Fullført!\n\nBrevfugl-systemet fungerer perfekt.\nKommunikasjonen mellom Snøfall og barna er sterk.\n\nJulius' melding:\n'Takk for hjelpen! Uten dere hadde vi aldri klart dette.'\n\nP-A-P-I-R = PAPIR",
+          "unlockConditions": {
+            "requiresTopics": ["julesanger"]
+          }
+        },
+        {
+          "navn": "personlige-brev-intro.txt",
+          "type": "fil",
+          "innhold": "💌 PERSONLIGE BREV 💌\n\nDag 14 - Nytt system tilgjengelig!\n\nJulius har nå tid til å skrive personlige brev.\n\nFra Dag 14 og fremover:\nJulius sender spesielle meldinger til dere.\n\nDisse brevene inneholder:\n- Personlige hilsner\n- Oppmuntring\n- Hemmeligheter fra Snøfall\n- Spesiell julemagi\n\nSjekk BREVFUGLER-modulen for nye meldinger!",
+          "unlockConditions": {
+            "requiresTopics": ["brevfugl-fullført"]
+          }
+        },
+        {
+          "navn": "halvveis_system.txt",
+          "type": "fil",
+          "innhold": "🎂 HALVVEIS-MILEPÆL - WINTERS ORGANISERING 🎂\n\nDag 16 - Halvveis gjennom desember!\n\nWINTERS RAPPORT:\n\n📊 FREMGANG SÅ LANGT:\n- 16 av 24 luker åpnet\n- 66.67% fullført\n- 8 dager igjen til julaften!\n\nPRODUKSJONSTALL:\n✅ 48.392 leker produsert\n✅ 2.847 ønskelister behandlet\n✅ 847 brevfugler organisert\n✅ 200 julekuler blåst\n✅ 500 lussekatter spist\n\nINVENTAR-KRISE:\n⚠️ Dag 16: Inventar-systemet krasjet!\n⚠️ Alle kategorier blandet sammen\n⚠️ Trenger AKUTT organisering\n\nWINTERS KATEGORIER:\n1. TRANSPORTMIDLER - Biler, fly, båter, tog\n2. KOSEDYR - Bamser, dukker, plysjdyr\n3. BYGGEKLOSSER - Lego, klosser, puslespill\n4. KREATIVT - Tegnesaker, bøker, spill\n\nWINTERS MOTTO:\n'Alt har sin plass, og alle har sin tid!'\n\nHVA SKJER VIDERE?\n- Uke 3 (Dag 15-21): Eskalering\n- Uke 4 (Dag 22-24): Finale\n- Julaften: LEVERANSE!\n\nJULIUS' KOMMENTAR:\n'Dere har kommet så langt! Winter og Pil er\nstolt av organiseringen. Nissene feirer med\nkake (kanskje litt FOR stor kake...).\n\nVennskapet mellom oss er sterkt.\nSammen klarer vi de siste 8 dagene!'\n\nNISSEMORS OPPMUNTRING:\n'Halvveis er perfekt tid for å se tilbake.\nHusk alle oppgavene dere har løst!\nHvert oppdrag har lært dere noe nytt.\nNå kommer den spennende avslutningen!'\n\nORAKELETS VISDOM:\n'Halvveis er like viktig som start og slutt.\nDette er når magien blir sterkest.\nVennskapet har vokst, kunnskapen økt.\nNå venter de største utfordringene.'",
+          "unlockConditions": {
+            "requiresTopics": ["halvveis-milepæl"]
+          }
+        },
+        {
+          "navn": "julekode_dekoder.txt",
+          "type": "fil",
+          "innhold": "🎅 JULIUS' JULEKODE-SYSTEM - ALFABETISK DEKODER 🎅\n\nDag 22 - Julesokk-mysteriet\n\nJULIUS' HEMMELIGE KODESYSTEM:\n\nAlfabetisk nummer-system:\nA=1  B=2  C=3  D=4  E=5  F=6  G=7\nH=8  I=9  J=10 K=11 L=12 M=13 N=14\nO=15 P=16 Q=17 R=18 S=19 T=20 U=21\nV=22 W=23 X=24 Y=25 Z=26 Æ=27\nØ=28 Å=29\n\nSLIK BRUKER DU SYSTEMET:\n\n📝 Fra tall til bokstav:\n- 10 = J (tiende bokstav)\n- 21 = U (tjueførste bokstav)\n- 12 = L (tolvte bokstav)\n\n📝 Fra bokstav til tall:\n- J = 10\n- U = 21\n- L = 12\n\nEKSEMPEL-DEKODING:\nHvis du ser: 10-21-12\nBetyr det: J-U-L\n\nINSTRUKSJONER FOR DAGENS SOKKER:\n\nJulesokk 1: [tre tall] = 3 bokstaver\nJulesokk 2: [ett tall] = 1 bokstav\nJulesokk 3: [fem tall] = 5 bokstaver\n\nKombiner alle bokstavene → dagens kode!\n\nRAMPENISSENS KOMMENTAR:\n'Jeg prøvde å dekode det selv og fikk ZALBBAFTEN.\nJeg er ikke den smarteste... men dere er! 😅'\n\nHINT: Dette er dagen Julius besøker deg!\nHvorfor feirer vi dagen? Hva heter den?\n\nJULIUS' TIP:\n'Julekoder har beskyttet Snøfalls hemmeligheter\ni århundrer. Nå lærer jeg dem til dere!\nBare de mest dedikerte får tilgang til\ndisse eldgamle chiffer-systemene.'\n\n--- ALFABETISK DEKODER KLAR ---",
+          "unlockConditions": {
+            "requiresTopics": ["countdown-starter"]
+          }
+        },
+        {
+          "navn": "nordpolen_hemmelighet.txt",
+          "type": "fil",
+          "innhold": "🎖️ NORDPOLEN-HEMMELIGHETEN - META-GÅTE LØST! 🎖️\n\nGRATULERER, DETEKTIVER!\n\nDere har løst den ultimate meta-gåten som spenner over hele Uke 3!\n\nDET SKJULTE MØNSTERET:\n\nHver dag i Uke 3 inneholdt et hint som pekte tilbake til en spesifikk dag tidligere i kalenderen. Ved å følge disse sporene tilbake, fant dere fragmenter som sammen former et viktig ord:\n\n🔍 DAG 15: 'Fargesamleren' → peker til Dag 10 → bokstav: N\n🔍 DAG 16: 'Halvveis' → peker til midt i kalenderen → bokstav: O\n🔍 DAG 17: 'Frosne mønster' → peker til Dag 9 → bokstav: R\n🔍 DAG 18: 'Snøstorm' → peker til Dag 3 → bokstav: D\n🔍 DAG 19: 'Reinsdyr-ruten' → peker til Dag 5 (TRIXTER) → bokstav: P\n🔍 DAG 20: 'IQs oppfinnelser' → peker til Dag 2 → bokstav: O\n🔍 DAG 21: 'Morkets trussel' → peker til Dag 7 (90°N) → bokstav: L + EN\n\nN-O-R-D-P-O-L-EN = NORDPOLEN!\n\nJULIUS' HEMMELIGE MELDING:\n\n'Mine kjære detektiver,\n\nHvis dere leser dette, har dere bevist noe ekstraordinært. Dere har ikke bare løst hver dags oppgave - dere har sett det større bildet. Dere har fulgt sporene bakover gjennom tiden og sett hvordan alt henger sammen.\n\nDette er essensen av hva jeg gjør hver jul: Å se sammenhenger. Å huske hvert barn, hvert ønske, hver historie. Alt er forbundet, akkurat som dagene i denne kalenderen.\n\nNordpolen - 90° nord - er ikke bare en plass. Det er symbolet på målet, toppen, det høyeste punktet. Dere har nådd det mentale Nordpolen i denne kalenderen. Dere har mestret kunsten å tenke som en julenisse: Se sammenhenger, huske detaljer, og aldri gi opp.\n\nMed all min respekt og beundring,\nJulius\n\nP.S. Nissemor ba meg si: Vi er UTROLIG stolte av dere! 🎄'\n\nWINTERS ANALYSE:\n'Imponerende detektivarbeid! Dere har:\n- Husket 21 dagers innhold\n- Funnet skjulte referanser\n- Koblet informasjon på tvers av uker\n- Løst en meta-gåte på universitetsnivå\n\nDette er langt over forventet nivå for barn!\nDere har offisiell DETEKTIV-STATUS i Snøfall!'\n\nORAKELETS PROFETI:\n'De som ser bakover, ser også fremover.\nDe som husker fortiden, skaper fremtiden.\nDere har bevist at dere er modne for de siste utfordringene.\nNordpolen venter. Julenatten nærmer seg.'\n\nRAMPENISSENS KOMMENTAR:\n'WHAT?! Dere løste denne?! Jeg skjønte ikke\nengang at det VAR en meta-gåte! Dere er\nmye smartere enn meg... Men det visste jeg jo! 😅🎉'\n\nDERE HAR LÅST OPP:\n🏆 DETEKTIV-STATUS (permanent merke)\n🏆 Tilgang til Julius' dypeste hemmeligheter\n🏆 Ekstra respekt fra alle i Snøfall\n🏆 Mulighet til Bonusutfordringer i Uke 4\n\n--- NORDPOLEN-MYSTERIET FULLFØRT ---",
+          "unlockConditions": {
+            "requiresTopics": ["morket-beseirt"],
+            "requiresCompletedDays": [15, 16, 17, 18, 19, 20, 21]
+          }
+        }
+      ]
+    },
+    {
+      "navn": "JULIUS-ARKIV",
+      "type": "mappe",
+      "barn": [
+        {
+          "navn": "snill_slem_liste.txt",
+          "type": "fil",
+          "innhold": "🎄 JULIUS' OFFISIELLE SNILL & SLEM LISTE 🎄\n\n[ADVARSEL: SKRIVEBESKYTTET - ADMIN TILGANG PÅKREVD]\n[SIKKERHETSNIVÅ: MAKSIMUM]\n\n═══════════════\n\n✨ SNILL LISTE ✨\n\n{{NICE_LIST_ENTRIES}}\n\n═══════════════\n\n⚠️ SLEM LISTE ⚠️\n\n1. [HEMMELIG]\n2. [HEMMELIG]\n3. [HEMMELIG]\n\n[Merk: Listen er heldigvis veldig kort i år!]\n\n═══════════════\n\nSist oppdatert: {{UPDATE_DATE}}\nNeste gjennomgang: 24. Desember kl 23:59\n\n{{FINALE_MESSAGE}}"
+        },
+        {
+          "navn": "reinsdyr_GYATT.log",
+          "type": "fil",
+          "innhold": "🦌 REINSDYR TRENINGSDATA 🦌\n\nRudolf: Speed Level Over 9000\nDonner: Stamina MAXED OUT\nBlitzen: Agility: INSANE\nDasher: Acceleration: BUSSIN\n\nKommentar fra Rudolf:\n'No cap, we gonna deliver these presents fr fr' 💯"
+        },
+        {
+          "navn": "hemmelig_kode.txt",
+          "type": "fil",
+          "innhold": "⭐ HEMMELIG FIL ⭐\n\nDenne filen inneholder ingen koder.\nMen den viser at du er en god utforsker!\n\nFortsett å lete i alle mapper.\nNoen filer har hint til oppdragene.\n\nP.S. POV: You trying to find that last code 👀"
+        }
+      ]
+    },
+    {
+      "navn": "DEKRYPTERT",
+      "type": "mappe",
+      "barn": [
+        {
+          "navn": "frosne-koder.txt",
+          "type": "fil",
+          "innhold": "❄️ FROSNE KODER - NIVÅ 1 DEKRYPTERT ❄️\n\nGratulerer, krypto-agent!\n\nDere har låst opp det første hemmelige nivået i NisseKrypto-systemet.\n\nHJERTENES TRE FARGER:\n\n🟢 GRØNT HJERTE\nRepresenterer: Vekst og liv\nOpprinnelse: Snøstormen som traff Snøfall\nSymbolbetydning: Håp om ny begynnelse\n\n🔴 RØDT HJERTE\nRepresenterer: Varme og tradisjon\nOpprinnelse: St. Nikolaus' gave fra Myra\nSymbolbetydning: Historiens varme gjennom generasjoner\n\n🔵 BLÅTT HJERTE\nRepresenterer: Kulde og renhet\nOpprinnelse: Perfekte snøkrystaller fra forskning\nSymbolbetydning: Vinteren sin essens\n\nDen korrekte rekkefølgen (Rød → Grønn → Blå) representerer julens syklus:\nTradisjon → Håp → Fornyelse\n\nJULIUS' NOTATER:\n'Hjertene i Snøfall inneholder gammel magi. Hver farge representerer en del av balansen vi må opprettholde. Uten denne balansen ville magien forsvinne, og julen kunne ikke eksistere.\n\nDisse symbolene er ikke bare pynt - de er nøkkelen til å forstå hvordan Snøfall fungerer. Bare de mest dedikerte barn får se denne hemmeligheten.'\n\n- Julius, Dag 12\n\nNeste nivå venter... ⭐",
+          "unlockConditions": {
+            "requiresSolvedDecryption": "frosne-koder"
+          }
+        },
+        {
+          "navn": "stjernetegn.txt",
+          "type": "fil",
+          "innhold": "⭐ STJERNETEGN - NIVÅ 2 DEKRYPTERT ⭐\n\nFantastisk arbeid!\n\nDere har mestret den andre utfordringen og åpnet Julius' hemmelige navigasjonskart.\n\nHJERTER OG SOLER - KJÆRLIGHETENS OG LYSETS REKKEFØLGE:\n\nKorrekt sekvens: Grønn sol → Rød hjerte → Grønt hjerte → Blå sol → Blått hjerte → Rød sol\n\n💚 GRØNT HJERTE\nBetydning: Vekst og håp\nNavigasjonspunkt: Barnefamilier med nyfødte\n\n❤️ RØDT HJERTE\nBetydning: Kjærlighet og varme\nNavigasjonspunkt: Hjemmene med sterkest familiekjærlighet\n\n💙 BLÅTT HJERTE\nBetydning: Ro og fred\nNavigasjonspunkt: De som trenger trøst\n\n💚 GRØNN SOL\nBetydning: Nytt lys og begynnelser\nNavigasjonspunkt: Første stoppested på julenatten\n\n❤️ RØD SOL\nBetydning: Tradisjon og glede\nNavigasjonspunkt: Hjemmene med lengst tradisjoner\n\n💙 BLÅ SOL\nBetydning: Vinterens lys\nNavigasjonspunkt: De kaldeste stedene hvor julen trengs mest\n\nJULIUS' NAVIGASJONSKART:\n'Dette er ruten jeg følger på julenatten. Hjertene viser meg hvem som trenger kjærlighet mest, solene viser meg veien. Sammen former de det perfekte kompasset for julenatten. Uten dem ville jeg fly i blinde.'\n\n- Julius, Dag 18\n\nDet siste nivået gjenstår... ❤️",
+          "unlockConditions": {
+            "requiresSolvedDecryption": "stjernetegn"
+          }
+        },
+        {
+          "navn": "hjertets-hemmelighet.txt",
+          "type": "fil",
+          "innhold": "❤️ HJERTETS HEMMELIGHET - NIVÅ 3 DEKRYPTERT ❤️\n\nENESTÅENDE! Dere har løst den ultimate utfordringen.\n\nDE NI SYMBOLENES SANNE BETYDNING:\n\n❤️ HJERTER (3 farger)\nRepresenterer: Kjærlighet og følelser\nMagi: Forbindelsen mellom mennesker\nRolle: Viser hvem som trenger kjærlighet mest\n\n☀️ SOLER (3 farger)\nRepresenterer: Lys og håp\nMagi: Veien gjennom mørket\nRolle: Navigasjon på julenatten\n\n🌙 MÅNER (3 farger)\nRepresenterer: Ro og mysterium\nMagi: Nattas kraft og drømmer\nRolle: Beskyttelse av julens hemmeligheter\n\nJULIUS' ULTIMATE HEMMELIGHET:\n'Mine kjære barn, hvis dere leser dette, har dere bevist noe ekstraordinært. Dette er ikke bare symboler. Dette er hjertet av Snøfall.\n\nKjærligheten gir oss mening, lyset gir oss retning, natten gir oss ro. Uten alle tre ville magien i Snøfall falme og julen kunne ikke eksistere.\n\nDere har mestret alle ni symbolene og forstått deres sanne betydning. Dere er nå offisielle KODE-MESTERE.\n\nMed alle mine varme hilsener fra Snøfall,\nJulius\n\nP.S. Nissemor ba meg legge til: Vi er stolte av dere! 🎄'\n\n--- SLUTT PÅ HEMMELIG ARKIV ---",
+          "unlockConditions": {
+            "requiresSolvedDecryption": "hjertets-hemmelighet"
+          }
+        }
+      ]
+    }
+  ],
+  "systemMetrikker": [
+    {
+      "navn": "NISSEKRAFT",
+      "min": 20,
+      "maks": 100,
+      "unlock_day": 1,
+      "status": "advarsel"
+    },
+    {
+      "navn": "BREVFUGL-SVERM",
+      "min": 0,
+      "maks": 100,
+      "unlock_day": 4,
+      "status": "normal"
+    },
+    {
+      "navn": "VERKSTED-VARME",
+      "min": 35,
+      "maks": 100,
+      "unlock_day": 7,
+      "status": "normal"
+    },
+    {
+      "navn": "SLEDE-TURBO",
+      "min": 0,
+      "maks": 100,
+      "unlock_day": 10,
+      "status": "normal"
+    }
+  ],
+  "nissestats_global_metrics": [
+    {
+      "navn": "BARN I VERDEN",
+      "min": 2200000000,
+      "maks": 2200000000,
+      "unlock_day": 1,
+      "display_type": "counter",
+      "unit": "barn",
+      "child_progress_multiplier": 0,
+      "description": "Totalt antall barn Julius skal besøke"
+    },
+    {
+      "navn": "GAVEPRODUKSJON",
+      "min": 48000,
+      "maks": 1800000000,
+      "unlock_day": 1,
+      "display_type": "counter",
+      "unit": "pakker",
+      "child_progress_multiplier": 0.03,
+      "description": "Gaver produsert i Snøfall",
+      "crisis_behavior": {
+        "day": 16,
+        "crisis_type": "oscillate",
+        "crisis_values": [330000000, 329847291, 330152847, 329999123],
+        "status": "kritisk",
+        "crisis_text": "INVENTAR-SYSTEM KRASJET"
+      }
+    },
+    {
+      "navn": "NISSEKRAFT",
+      "min": 45,
+      "maks": 100,
+      "unlock_day": 2,
+      "display_type": "waveform",
+      "unit": "%",
+      "child_progress_multiplier": 0.02,
+      "description": "Magisk energi som driver Snøfall",
+      "crisis_behavior": {
+        "day": 16,
+        "crisis_type": "drain",
+        "crisis_value": 62,
+        "status": "advarsel",
+        "crisis_text": "ENERGI-DRAIN (Inventar-system)"
+      }
+    },
+    {
+      "navn": "PEPPERKAKER BAKT",
+      "min": 0,
+      "maks": 500000,
+      "unlock_day": 4,
+      "display_type": "counter",
+      "unit": "kaker",
+      "child_progress_multiplier": 0.025,
+      "description": "Pepperkaker bakt av nissene"
+    },
+    {
+      "navn": "BREVFUGL-SVERM",
+      "min": 12,
+      "maks": 2847,
+      "unlock_day": 5,
+      "display_type": "radar",
+      "unit": "fugler",
+      "child_progress_multiplier": 0.025,
+      "description": "Brevfugler aktive i luften nå",
+      "crisis_behavior": {
+        "day": 11,
+        "crisis_type": "lost",
+        "crisis_value": 0,
+        "status": "kritisk",
+        "crisis_text": "TRACKING TAPT - INGEN KONTAKT"
+      }
+    },
+    {
+      "navn": "JULEKULER BLÅST",
+      "min": 0,
+      "maks": 10000,
+      "unlock_day": 7,
+      "display_type": "counter",
+      "unit": "kuler",
+      "child_progress_multiplier": 0.03,
+      "description": "Håndlagde julekuler fra Nissemor"
+    },
+    {
+      "navn": "FORSVARS-BARRIERE",
+      "min": 88,
+      "maks": 100,
+      "unlock_day": 7,
+      "display_type": "gauge",
+      "unit": "%",
+      "child_progress_multiplier": 0.015,
+      "description": "Magisk beskyttelse mot Mørket",
+      "crisis_behavior": {
+        "day": 7,
+        "crisis_type": "warning",
+        "crisis_value": 88,
+        "status": "advarsel",
+        "crisis_text": "MØRKET DETEKTERT - POLARNATTEN"
+      }
+    },
+    {
+      "navn": "REINSDYR FLYTIMER",
+      "min": 0,
+      "maks": 240,
+      "unlock_day": 10,
+      "display_type": "bar",
+      "unit": "timer",
+      "child_progress_multiplier": 0.025,
+      "description": "Treningsøkter for reinsdyrene",
+      "crisis_behavior": {
+        "day": 11,
+        "crisis_type": "glitch",
+        "crisis_values": [240, 169, 0, -148, 993, 42],
+        "status": "kritisk",
+        "crisis_text": "TELEMETRI OFFLINE - SUNOS-8000-8N"
+      }
+    },
+    {
+      "navn": "RUDOLF NES-SIGNAL",
+      "min": 0,
+      "maks": 100,
+      "unlock_day": 10,
+      "display_type": "gauge",
+      "unit": "%",
+      "child_progress_multiplier": 0.03,
+      "description": "Rudolfs nese-navigasjonsstyrke",
+      "crisis_behavior": {
+        "day": 11,
+        "crisis_type": "glitch",
+        "crisis_values": [0, 12, 83, 2, 0],
+        "status": "kritisk",
+        "crisis_text": "NO CARRIER - SIG_ERR_8000-8N"
+      }
+    },
+    {
+      "navn": "SLEDE DRIVSTOFF",
+      "min": 0,
+      "maks": 100,
+      "unlock_day": 13,
+      "display_type": "percentage",
+      "unit": "%",
+      "child_progress_multiplier": 0.028,
+      "description": "Magisk drivstoff for julenatten"
+    },
+    {
+      "navn": "ØNSKELISTE BEHANDLET",
+      "min": 847,
+      "maks": 2200000,
+      "unlock_day": 14,
+      "display_type": "counter",
+      "unit": "lister",
+      "child_progress_multiplier": 0.035,
+      "description": "Ønskelister prosessert av Winter",
+      "crisis_behavior": {
+        "day": 16,
+        "crisis_type": "stuck",
+        "crisis_value": 847293,
+        "status": "kritisk",
+        "crisis_text": "DATABASE LOOP - STUCK AT 847293"
+      }
+    },
+    {
+      "navn": "MAGISKE SEKKER",
+      "min": 0,
+      "maks": 847,
+      "unlock_day": 16,
+      "display_type": "hexgrid",
+      "unit": "sekker",
+      "child_progress_multiplier": 0.025,
+      "description": "IQs magiske sekker produsert",
+      "crisis_behavior": {
+        "day": 16,
+        "crisis_type": "negative",
+        "crisis_value": -42,
+        "status": "kritisk",
+        "crisis_text": "INVENTORY_UNDERFLOW - NEGATIV TELLING"
+      }
+    },
+    {
+      "navn": "RUTE-BEREGNING",
+      "min": 0,
+      "maks": 100,
+      "unlock_day": 18,
+      "display_type": "binary",
+      "unit": "%",
+      "child_progress_multiplier": 0.03,
+      "description": "Beregning av optimal julenatten-rute"
+    },
+    {
+      "navn": "JULESTJERNE LYSSTYRKE",
+      "min": 72,
+      "maks": 100,
+      "unlock_day": 20,
+      "display_type": "gauge",
+      "unit": "%",
+      "child_progress_multiplier": 0.025,
+      "description": "Julestjernens magiske lysstyrke",
+      "crisis_behavior": {
+        "day": 7,
+        "crisis_type": "dimming",
+        "crisis_value": 72,
+        "status": "advarsel",
+        "crisis_text": "DEMPER - TRENGER MAGISK STYRKE"
+      }
+    }
+  ],
+  "kalender": []
+}

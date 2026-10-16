@@ -1,367 +1,205 @@
 [
   {
+    "dag": 7,
+    "tittel": "Inntrengeren i Fryseren",
+    "nissemail_tekst": "ALARM PÅ LANDÅS! Orakelet ropte nettopp over høyttaleren at Spøkelseskoden har angrepet hovedserveren ved 90° nord! Jeg prøvde å kjøle ned modemet vårt i natt, men endte opp med å låse lua eller skjerfet mitt inne i fryseren deres på kjøkkenet! Hanna og Håkon: Åpne fryseren og redde utstyret mitt! Der ligger en iskald lapp med de 3 første bokstavene i fiendens kodenavn: K - U - L. Kristian: Åpne filen snofall_fakta.txt i SYSTEM-mappen i NisseNet (eller skann Kanal 4 på Snøfall TV) for å finne de 2 siste bokstavene (D - E)!",
+    "rampenissen_rampestrek": "I fryseren (eller kjøleskapet) ligger Rampenissens lue/skjerf eller en liten figur på en tallerken med en lapp: 'FROSSET KODENAVN DEL 1: K - U - L (Se SYSTEM/snofall_fakta.txt for DEL 2)'.",
+    "fysisk_hint": "Se i fryseren eller kjøleskapet på kjøkkenet! Der ligger de 3 første bokstavene (K-U-L), og de 2 siste (D-E) står i SYSTEM/snofall_fakta.txt i NisseNet.",
+    "materialer_nødvendig": [
+      "En nisselue, vott eller liten gjenstand i fryseren/kjøleskapet",
+      "Lapp: 'SPØKELSESKODE DEL 1: K - U - L (Sjekk SYSTEM/snofall_fakta.txt for de 2 siste bokstavene)'"
+    ],
+    "beste_rom": "Kjøkkenet (fryser/kjøleskap)",
+    "oppsett_tid": "moderat",
+    "kode": "KULDE",
+    "hint": "Sett sammen K-U-L fra fryseren med D-E fra snofall_fakta.txt i SYSTEM-mappen (5 bokstaver)!",
+    "reveals": {
+      "files": ["snofall_fakta.txt"],
+      "topics": ["morkets-trussel", "nordpolen-90"],
+      "modules": ["NISSEMUSIKK"]
+    },
+    "eventyr": {
+      "id": "morkets-trussel",
+      "phase": 1
+    },
+    "dagbokinnlegg": "7. desember. Nå vet vi hva vi kjemper mot. Orakelet fanget opp signaturen til Spøkelseskoden på 90.0 MHz: den kaller seg KULDE. Den prøver å fryse ned NisseKomm innenfra og tappe fargene ut av både Snøfall og husene til barna. Heldigvis fant Hanna, Håkon og Kristian kodenavnet i tide, og vi har aktivert NISSEMUSIKK for å holde lydbølgene og varmen oppe i verkstedet!",
+    "hint_type": "kombinasjon",
+    "finalized": true
+  },
+  {
     "dag": 8,
-    "tittel": "Toalettpapir-labyrint",
-    "nissemail_tekst": "Hei! 🧻 Jeg har laget en EPISK labyrint av toalettpapir i badet! Det ser ut som et kunstverk... eller kaos. Litt begge deler! 😅\n\nI midten av labyrinten ligger det en mystisk lapp med en rebus! 🤔 Den handler om noe Julius bruker hver eneste julaften når han leverer gaver...\n\nHva putter man gaver i? Og hva bærer man på ryggen? Sett dem sammen! 🎁🎒\n\n- Rampenissen",
-    "kode": "SEKK",
+    "tittel": "Bestikk-Kretsløpet",
+    "nissemail_tekst": "Hurra, vi har klart en hel uke! IQ ville bygge et nytt sikkerhetskort til Snøfall TV for å blokkere Kulde, og jeg prøvde å bygge en kopi på kjøkkenbenken deres med skjeer og gafler! Hanna og Håkon: Sjekk bestikk-mønsteret jeg har lagt på kjøkkenbenken - der ligger første del av ordet på en lapp: K - R - E - T - S. Kristian: Åpne SNOFALL-HISTORIER/IQ-VERKSTED/magisk-sekk-test.txt i NisseNet (eller spill Kretskort-Kobler på Snøfall TV Kanal 4!) for å finne andre del av ordet (K - O - R - T)!",
+    "rampenissen_rampestrek": "Rampenissen har lagt skjeer og gafler i et firkantet 'kretsløp' på kjøkkenbenken med en lapp i midten: 'DEL 1: K R E T S (Finn DEL 2 i IQ-VERKSTED/magisk-sekk-test.txt eller på Snøfall TV Kanal 4)'.",
+    "fysisk_hint": "Se på kjøkkenbenken etter Rampenissens bestikk-kretsløp (KRETS) og kombiner med andre del (KORT) fra magisk-sekk-test.txt i IQ-VERKSTED eller Snøfall TV Kanal 4!",
+    "materialer_nødvendig": [
+      "5-6 skjeer/gafler lagt i et mønster på kjøkkenbenken",
+      "Lapp: 'KOMPONENT DEL 1: K R E T S + DEL 2 fra NisseNet (IQ-VERKSTED)'"
+    ],
+    "beste_rom": "Kjøkkenbenken",
+    "oppsett_tid": "moderat",
+    "kode": "KRETSKORT",
+    "hint": "Sett sammen KRETS fra kjøkkenbenken og KORT fra IQ-VERKSTED i NisseNet (9 bokstaver i ett ord)!",
+    "reveals": {
+      "files": ["magisk-sekk-test.txt"],
+      "topics": ["iq-oppfinnelser", "magisk-sekk"],
+      "modules": []
+    },
     "eventyr": {
       "id": "iqs-oppfinnelser",
       "phase": 2
     },
-    "dagbokinnlegg": "Dag 8 - Sekkproblemer\n\nGavesekken min trenger reparasjon. Igjen. Nissene syr på den nå. Spurte hvor mye vekt den kan bære. De bare lo nervøst. Ikke betryggende.\n\nTestet den nye magiske sekken ved å putte inn 500 gaver. Den holdt! Men så kom jeg ikke ut av verkstedet fordi sekken ikke passet gjennom døren. Måtte rive veggen. Nissene var ikke imponert.\n\nRampenissen har laget kaos med toalettpapir hjemme hos barna. Typisk. Han kaller det 'kunst'. Barna kaller det nok noe annet.\n\n- Julius",
-    "rampenissen_rampestrek": "Rampenissen har laget en EPISK toalettpapir-labyrint på badet! Toalettruller er stablet som vegger, papir-remser henger som lianer, og i midten sitter en forvirret Rampenissen med et kart tegnet på dopapir. Kosedyrene står ved 'inngangen' med skilt: 'LABYRINT-EKSPEDISJON!' og 'INGEN VEI TILBAKE!'. Ett kosedyr har viklet seg inn i papir som en mumie. Rampenissen holder en lapp: 'Jeg FANT veien inn... men GLEMTE veien ut! 😅 Hjelp meg løse gåten så jeg kan rømme!' Gåtelappen ligger midt i labyrinten.",
-    "fysisk_hint": "Jeg er rund og jeg er stor, Julius har meg når han kjører. Full av gaver, full av glede, hva er jeg? (4 bokstaver)",
-    "oppsett_tid": "moderat",
-    "materialer_nødvendig": [
-      "3-5 toalettruller",
-      "Lapp med gåte",
-      "Tape",
-      "Kosedyr (2-3 stk)"
-    ],
-    "beste_rom": "Bad",
-    "hint_type": "skrevet",
-    "requires": {
-      "topics": ["iq-oppfinnelser"]
-    },
+    "dagbokinnlegg": "8. desember. Første uke er fullført! IQ feiret med å konstruere et nytt KRETSKORT til videologg-senderen vår, mens Rampenissen tømte halve bestikkskuffen på Landås for å demonstrere strømbaner. Barna koblet begge halvdelene av ordet og kan nå øve på kretskobling direkte på Kanal 4 på Snøfall TV!",
+    "hint_type": "kombinasjon",
     "finalized": true
   },
   {
     "dag": 9,
-    "tittel": "Snøfnugg-jakten",
-    "nissemail_tekst": "Yo! ❄️ I dag har jeg gjemt snøfnugg OVERALT i huset! 🏠 Det er som en skattejakt, bare kulere! ✨\n\nJeg har gjemt 5 magiske snøfnugg i forskjellige FARGER! 🔵🟡🟠🟢🩷 Hvert snøfnugg har et HEMMELIG TALL på baksiden!\n\nMEN PASS PÅ! Du kan ikke bare legge dem sammen! 🤔 Du må følge den magiske formelen jeg har lagt igjen...\n\nFinn alle snøfnuggene og følg instruksjonene nøye! ❄️\n\n- Rampenissen",
-    "kode": "18",
+    "tittel": "Krystall-Matematikk",
+    "nissemail_tekst": "Nissemor og Pil blåser krystallkuler i glasshytten i dag, og vi har oppdaget en viktig regel: Hvert eneste ekte snøkrystall har nøyaktig 6 tagger! Jeg har hengt opp papir-snøkrystaller på kjøleskapet sammen med et BLÅTT HJERTE-symbolkort. Hanna: Tell hvor mange snøkrystaller som henger på kjøleskapet (det er 4 stykker!) og ta med det blå hjertet! Håkon og Kristian: Sjekk formelen i SNOFALL-HISTORIER/julekuleblasing.txt i NisseNet og regn ut hvor mange tagger det blir til sammen (4 snøkrystaller med 6 tagger på hver)!",
+    "rampenissen_rampestrek": "På kjøleskapsdøren henger 4 papir-snøfnugg (eller 4 tegnede snøkrystaller på en lapp) sammen med det blå hjerte-symbolkortet.",
+    "fysisk_hint": "Tell snøkrystallene på kjøleskapet (4 stk) og gang med antall tagger på et ekte snøkrystall (6 tagger, se julekuleblasing.txt i NisseNet)!",
+    "materialer_nødvendig": [
+      "Symbolkort: Blått hjerte (QR-kort)",
+      "4 klippede eller tegnede snøkrystaller på kjøleskapet",
+      "Lapp: '4 snøkrystaller × 6 tagger på hver = ?'"
+    ],
+    "beste_rom": "Kjøkkenet (kjøleskapsdøren)",
+    "oppsett_tid": "moderat",
+    "kode": "24",
+    "hint": "Regn ut 4 snøkrystaller × 6 tagger på hver (4 × 6)!",
+    "reveals": {
+      "files": ["julekuleblasing.txt"],
+      "topics": ["frosne-mønster", "julekuleblåsing"],
+      "modules": []
+    },
     "eventyr": {
       "id": "frosne-monster",
       "phase": 2
-    },
-    "dagbokinnlegg": "Dag 9 - Snøfnugg-Forskning\n\nBrukte hele formiddagen på å studere snøfnugg under mikroskop. Alle er unike! Fantastisk! Nissemor minnet meg på at jeg egentlig skulle kvalitetssjekke leker. Ups.\n\nNissene laget 15.000 leker i dag. Rekord! IQ og Pil jobbet på julekuleblåsingsutstyret. De blåste 200 glasskuler - alle perfekte!\n\nRampenissen rapporterer om god fremgang. Barna er kreative og intelligente. Magien virker!\n\n- Julius",
-    "rampenissen_rampestrek": "Rampenissen har laget et JULEVERKSTED på stuebordet! Han sitter med saks og papir, omgitt av ferdigklipte papir-snøfnugg i forskjellige farger. Kosedyrene sitter rundt som 'verksted-arbeidere' med små sakser tapet til potene. Papir-rester i mange farger ligger OVERALT. Rampenissen holder et skilt: 'JULEVERKSTED ÅPENT! ❄️ Jeg har gjemt 5 fargede snøfnugg med HEMMELIGE TALL! Følg formelen for å finne koden! 🤔'",
-    "fysisk_hint": "Finn alle snøfnuggene!\n🔵 + 🟡 - 🟠 = ?\n? ÷ 🟢 = ??\n?? × 🩷 = KODEN!",
-    "oppsett_tid": "moderat",
-    "materialer_nødvendig": [
-      "Skriv tall på baksiden: Blå=12, Gul=8, Oransje=2, Grønn=3, Rosa=3",
-      "Tape"
-    ],
-    "beste_rom": "Flere rom (bad, stue, kjøkken, soverom, gang)",
-    "hint_type": "spor",
-    "requires": {
-      "topics": ["snostorm-snøfall"],
-      "completedDays": [3]
-    },
-    "reveals": {
-      "files": ["snowflake-patterns.txt", "julekuleblasing.txt"],
-      "topics": ["frosne-mønster"]
     },
     "symbol_clue": {
       "symbolId": "heart-blue",
       "symbolIcon": "heart",
       "symbolColor": "blue",
-      "description": "Blått hjerte fra snøfnugg-forskning"
+      "description": "Blått hjerte funnet ved snøkrystallene på kjøleskapet"
     },
-    "print_materials": [
-      {
-        "type": "puzzle",
-        "title": "Snøfnugg - BLÅ",
-        "monospace": true,
-        "content": "TALL: 12\n\n\\/\n__/\\__\n\\_🔵_/\n/_/\\_\\\n\\/"
-      },
-      {
-        "type": "puzzle",
-        "title": "Snøfnugg - GUL",
-        "monospace": true,
-        "content": "TALL: 8\n\n_\\/_\n_\\_🟡_/_\n/_/\\_\\\n/\\/\\"
-      },
-      {
-        "type": "puzzle",
-        "title": "Snøfnugg - ORANSJE",
-        "monospace": true,
-        "content": "TALL: 2\n\n\\/\n_\\_\\/\\/_/_\n_\\_🟠_/_\n__/_/\\_\\__\n/ /\\/\\ \\\n/\\"
-      },
-      {
-        "type": "puzzle",
-        "title": "Snøfnugg - GRØNN",
-        "monospace": true,
-        "content": "TALL: 3\n\n/\\\n__\\/__\n\\_\\_\\/\\/_/_/\n_\\_🟢_/_\n__/_/\\_\\__\n/_/ /\\/\\ \\_\\\n/\\\n\\/"
-      },
-      {
-        "type": "puzzle",
-        "title": "Snøfnugg - ROSA",
-        "monospace": true,
-        "content": "TALL: 3\n\n__    __\n/_/ /\\ \\_\\\n__ \\ \\/ / __\n\\_\\_🩷_/_/\n/\\___\\_\\/_/___/\\\n\\/ __/_/\\_\\__ \\/\n/_/ /\\/\\ \\_\\\n__/ /\\ \\__\n\\_\\ \\/ /_/"
-      }
-    ],
+    "dagbokinnlegg": "9. desember. Symmetrien i snøkrystaller er et av våre beste våpen mot Spøkelseskoden, fordi falske digitale krystaller mangler den ekte sekskantede geometrien. Hanna telte 4 snøkrystaller på kjøleskapet, og sammen med Håkon og Kristian regnet de ut 4 × 6 = 24 tagger og sikret det blå hjertesymbolet!",
+    "hint_type": "kombinasjon",
     "finalized": true
   },
   {
     "dag": 10,
-    "tittel": "Fargesamleren",
-    "nissemail_tekst": "Hjelp! 🕵️ Jeg har blitt DETEKTIV i dag! 🔍 Men jeg trenger hjelp til å løse et mysterium...\n\nJeg har gjemt 5 lapper rundt i huset - hver lapp sitter på en gjenstand som har NOE TIL FELLES! De er gjemt i stuen, kjøkkenet, badet, og kanskje barnerommet? 🏠\n\nNår du har funnet alle 5, se NØYE på gjenstandene. Hva er det som er LIKT med alle sammen? 🤔 Det mest ÅPENBARE er ofte svaret!\n\n- Rampenissen",
-    "kode": "GRØNN",
+    "tittel": "Fargene som Forsvant",
+    "nissemail_tekst": "KRISESITUASJON PÅ TV! I natt prøvde Spøkelseskoden Kulde å suge alle fargene ut av Snøfall TV slik at hele julen bare skulle bli grå! Heldigvis gjemte jeg 4 fargerike ting (rød, grønn, blå og gul) rundt i stuen med de 4 første bokstavene: S - P - E - K. Hanna, du er Sjefs-Speider for farger: finn de 4 fargelappene i stuen! Håkon og Kristian: Åpne farge_system_dekoder.txt i SNOFALL-HISTORIER i NisseNet for å finne de 3 siste bokstavene (T - E - R) og lås opp full fargestyrke på SNØFALL TV!",
+    "rampenissen_rampestrek": "Rampenissen har lagt 4 fargede klosser, kopper eller fargeblyanter (rød, grønn, blå, gul) synlig i stuen med en lapp: 'FARGEJAKT DEL 1: S - P - E - K (Finn DEL 2 i farge_system_dekoder.txt i NisseNet)'.",
+    "fysisk_hint": "Finn de 4 fargede tingene Rampenissen har satt frem i stuen (S-P-E-K) og kombiner med de 3 siste bokstavene (T-E-R) i farge_system_dekoder.txt i NisseNet!",
+    "materialer_nødvendig": [
+      "4 fargerike ting (f.eks. LEGO-klosser eller fargeblyanter i rød, grønn, blå, gul)",
+      "Lapp ved fargene: 'DEL 1: S - P - E - K (Se SNOFALL-HISTORIER/farge_system_dekoder.txt for de 3 siste bokstavene)'"
+    ],
+    "beste_rom": "Stue",
+    "oppsett_tid": "moderat",
+    "kode": "SPEKTER",
+    "hint": "Sett sammen S-P-E-K fra fargene i stuen med T-E-R fra farge_system_dekoder.txt i NisseNet (7 bokstaver)!",
+    "reveals": {
+      "files": [
+        "farge-koder.txt",
+        "farge_system_dekoder.txt",
+        "fargesamleren.txt"
+      ],
+      "topics": ["farge-mysteriet"],
+      "modules": ["SNØFALL_TV"]
+    },
     "eventyr": {
       "id": "farge-mysteriet",
       "phase": 1
     },
-    "dagbokinnlegg": "Dag 10 - Nobeldagen\n\nI dag deles Nobelprisen ut! Nissene spurte om jeg noen gang har vunnet. Måtte innrømme at 'Verdens beste gavelevering' ikke er en offisiell kategori. Ennå.\n\nNissemor organiserer verkstedet. Alt skal sorteres. Kopper med kopper. Bøker med bøker. Hun sier det gjør ting enklere å finne.\n\nRampenissen rapporterer om detektivarbeid hjemme hos barna. Han har visst gjemt lapper rundt omkring. Klassisk Rampenissen.\n\n- Julius",
-    "rampenissen_rampestrek": "Rampenissen er dekket fra topp til tå med grønne ting: grønne klær, grønne lapper, grønne bånd. Ved siden av ham ligger et VELTET TÅRN av grønne gjenstander som har ramlet - kopper, bøker, leker i en kaotisk haug. På hver gjenstand sitter en bokstav (G-R-Ø-N-N). Rampenissen holder et skilt: 'VILLE BYGGE VERDENS HØYESTE GRØNNE TÅRN! 💚 ...det gikk ikke så bra. 😅' Kosedyr står rundt som 'byggeinspektører' med alvorlige ansikter og små briller.",
-    "fysisk_hint": "5 bokstaver. 5 gjenstander. Hva har de til felles? Svaret staver seg selv!",
-    "oppsett_tid": "avansert",
-    "materialer_nødvendig": ["5 grønne gjenstander fra huset", "Tape/lim"],
-    "beste_rom": "Flere rom",
-    "hint_type": "spor",
-    "reveals": {
-      "topics": ["farge-mysteriet"],
-      "modules": ["SNØFALL_TV"]
-    },
-    "print_materials": [
-      {
-        "type": "puzzle",
-        "title": "Bokstav 1",
-        "content": "💚 G 💚"
-      },
-      {
-        "type": "puzzle",
-        "title": "Bokstav 2",
-        "content": "💚 R 💚"
-      },
-      {
-        "type": "puzzle",
-        "title": "Bokstav 3",
-        "content": "💚 Ø 💚"
-      },
-      {
-        "type": "puzzle",
-        "title": "Bokstav 4",
-        "content": "💚 N 💚"
-      },
-      {
-        "type": "puzzle",
-        "title": "Bokstav 5",
-        "content": "💚 N 💚"
-      }
-    ],
-    "hendelse": "Nobeldagen",
+    "dagbokinnlegg": "10. desember. Kulde angrep fargekanonene i billedrøret vårt i natt. Men Fargesamlerens gamle lære reddet oss: når rødt, grønt, blått og gult står sammen i et fullt SPEKTER, sprekker gråtone-låsen. Hanna ledet fargejakten i stuen på Landås, og Håkon og Kristian koblet på de tre siste bokstavene fra NisseNet.",
+    "hint_type": "kombinasjon",
     "finalized": true
   },
   {
     "dag": 11,
-    "tittel": "Tids-mysteriet",
-    "nissemail_tekst": "HJELP! ⏰ Noe VELDIG sus har skjedd i natt! 😱 Alle klokkene i huset viser RARE tegn - ikke vanlige tall! 🕐\n\nJeg har funnet tre klokker med mystiske symboler! Romerne brukte disse tegnene som tall for lenge siden! 🤔 I = 1, V = 5... kan du finne ut resten?\n\nFinn klokkene, forstå symbolene, og legg dem sammen! 📚\n\nFORRENSTEN! SNØFALL TV har mistet signalet! 📺 Se bonusoppdraget - det er kritisk! ⚡\n\n- Rampenissen",
-    "kode": "12",
+    "tittel": "Antenne-Krisen på 75 MHz",
+    "nissemail_tekst": "SKURR... KRRR... Hører dere meg gjennom støyen?! Spøkelseskoden Kulde har jammet antennen vår og forskjøvet tre sendere! Jeg har hengt opp tre nød-lapper i stuen, på kjøkkenet og i gangen med tallene 15, 25 og 35 MHz. Håkon og Hanna: Løp og finn alle tre tallene! Kristian: Sjekk tidsanomalier.txt i SNOFALL-HISTORIER, legg sammen de tre tallene (15 + 25 + 35) og tast inn summen i KodeTerminal! Og etterpå: Vi trenger at dere bygger en ekte nød-antenne av aluminiumsfolie i BONUSOPPDRAGET!",
+    "rampenissen_rampestrek": "Rampenissen har viklet litt aluminiumsfolie rundt hodet som 'strålehjelm' og hengt opp 3 lapper: 'Sender 1 (Stue): 15', 'Sender 2 (Kjøkken): 25', 'Sender 3 (Gang): 35'.",
+    "fysisk_hint": "Finn de 3 sender-lappene (15 i stuen, 25 på kjøkkenet, 35 i gangen) og legg tallene sammen!",
+    "materialer_nødvendig": [
+      "3 lapper med tallene 15, 25 og 35",
+      "Rull med aluminiumsfolie klar til bonusoppdraget"
+    ],
+    "beste_rom": "Stue, kjøkken og gang",
+    "oppsett_tid": "moderat",
+    "kode": "75",
+    "hint": "Legg sammen de tre tallene fra sender-lappene: 15 + 25 + 35!",
+    "reveals": {
+      "files": [
+        "tidsanomalier.txt",
+        "antenna-crisis.txt",
+        "antenne_tid_system.txt"
+      ],
+      "topics": ["morket-tidsanomali", "morkets-trussel"],
+      "modules": []
+    },
     "eventyr": {
       "id": "morkets-trussel",
       "phase": 2
     },
-    "dagbokinnlegg": "Dag 11 - Gamle Klokker\n\nFant en gammel klokke på loftet i dag. Den bruker romertall! Nissene syntes det var forvirrende.\n\n'Hvorfor kunne ikke romerne bare bruke vanlige tall?' spurte de. Godt spørsmål. Ingen god svar.\n\nRampenissen har visst tegnet på bilder hjemme. Bart og briller på familiebildene. Klassisk. Barna ler visst av det, så det er vel greit.\n\n- Julius",
-    "rampenissen_rampestrek": "Rampenissen har laget 'TIDSMASKINEN' - en konstruksjon av puter og tepper med 3 tegninger av klokker hengende rundt (III, V, IV). Han har OGSÅ tegnet bart og briller på kosedyrene som 'tidsreisende professorer'. Ett kosedyr har monokkel, ett har Einstein-hår av bomull, ett har bart av svart tape. Rampenissen sitter midt i 'tidsmaskinen' med et skilt: 'TIDSMASKINEN FUNKER! ...men jeg forstår ikke klokkene! 😱 Romerne var RARE!' På gulvet ligger tusjer og papir som 'teknisk utstyr'.",
-    "fysisk_hint": "III + V + IV = ?",
-    "oppsett_tid": "moderat",
-    "materialer_nødvendig": [
-      "3 klokke-tegninger med romertall (III, V, IV)",
-      "Tusj (til bart-tegning)",
-      "Kosedyr eller bilder å tegne på"
-    ],
-    "beste_rom": "Flere rom (gang, stue, kjøkken)",
-    "hint_type": "arrangement",
-    "requires": {
-      "topics": ["morkets-trussel"]
-    },
-    "reveals": {
-      "topics": ["morket-tidsanomali"]
-    },
-    "print_materials": [
-      {
-        "type": "puzzle",
-        "title": "Klokke 1",
-        "monospace": true,
-        "content": "┌─────────────────┐\n│       XII       │\n│   XI       I    │\n│ X           II  │\n│IX     ●    III  │\n│ VIII       IV   │\n│   VII     V     │\n│       VI        │\n└─────────────────┘\n\n✏️ Tegn viser til: III"
-      },
-      {
-        "type": "puzzle",
-        "title": "Klokke 2",
-        "monospace": true,
-        "content": "┌─────────────────┐\n│       XII       │\n│   XI       I    │\n│ X           II  │\n│IX     ●    III  │\n│ VIII       IV   │\n│   VII     V     │\n│       VI        │\n└─────────────────┘\n\n✏️ Tegn viser til: V"
-      },
-      {
-        "type": "puzzle",
-        "title": "Klokke 3",
-        "monospace": true,
-        "content": "┌─────────────────┐\n│       XII       │\n│   XI       I    │\n│ X           II  │\n│IX     ●    III  │\n│ VIII       IV   │\n│   VII     V     │\n│       VI        │\n└─────────────────┘\n\n✏️ Tegn viser til: IV"
-      },
-      {
-        "type": "certificate",
-        "title": "Antenne-ingeniør diplom",
-        "content": "📡 DIPLOM 📡\n\n═══════════════════════════════\n\n      ANTENNE-INGENIØR\n\n═══════════════════════════════\n\nTildelt til: _______________\n\nFor å ha reddet SNØFALL TV\nved å bygge en nød-antenne!\n\nSignalet er gjenopprettet!\n\n⚡ TEKNISK HELT ⚡\n\n        _______________\n        Julius, Snøfall\n\n═══════════════════════════════"
-      }
-    ],
     "bonusoppdrag": {
-      "tittel": "KRITISK: Signal-krise",
-      "beskrivelse": "SNØFALL TV har mistet signalet! Antenne-systemet er ødelagt. Rampenissen trenger AKUTT hjelp til å bygge en nød-antenne. Bruk tinfolie og tape for å lage en antenne (ca 20cm høy). Fest den på toppen av TV-en. La den stå over natten - signalet vil automatisk gjenopprettes neste morgen når systemet har kalibrert den nye antennen.",
+      "tittel": "Bygg Nød-Antenne til Snøfall TV",
+      "beskrivelse": "Signalet på Snøfall TV trenger en fysisk forsterker hjemme på Landås! Bygg en kreativ nød-antenne av aluminiumsfolie (minst 20 cm høy) og plasser den ved skjermen eller TV-en.",
+      "fysisk_oppgave": "Lag en antenne av aluminiumsfolie sammen og vis den til mamma eller pappa for godkjenning i KodeTerminal!",
       "validering": "forelder",
+      "foreldre_kode": "ANTENNE2026",
+      "belønning_tekst": "NØD-ANTENNE GODKJENT! Signalstyrken mellom Landås og Snøfall er nå på 100%, og dere har vunnet merket ANTENNE-INGENIØR!",
       "badge_id": "antenne-ingenior",
       "badge_navn": "Antenne-ingeniør",
       "badge_icon": "zap"
     },
+    "dagbokinnlegg": "11. desember. Den første store krisen i Operasjon Spøkelseskode! Kulde spredte signalet vårt utover tre skjeve frekvenser (15, 25 og 35 MHz). Kristian, Håkon og Hanna fant alle tre senderlappene, regnet ut 15 + 25 + 35 = 75 MHz, og bygde til og med en fysisk nød-antenne av aluminiumsfolie på Landås for å forsterke signalet over Bergen!",
+    "hint_type": "kombinasjon",
     "finalized": true
   },
   {
     "dag": 12,
-    "tittel": "Sang-mysteriet",
-    "nissemail_tekst": "Hei hei! 🎵 Jeg fant en gammel sangbok i verkstedet! Det er en VELDIG kjent julesang, men noen har dekket over det viktigste ordet... 🤔\n\nFinn lappen jeg har lagt ut - den viser hvilken sang det er! Det manglende ordet har 6 bokstaver, og det er noe vi alle bor på! 🌍 Spør gjerne noen hjemme om de kjenner sangen! 🎶\n\nJeg har laget et RADIOSTUDIO i stua! 📻 Kom og se!\n\n- Rampenissen",
-    "kode": "JORDEN",
+    "tittel": "Lydbølgene som Smelter Is",
+    "nissemail_tekst": "God lørdag! Folie-antennen og frekvensen virker, men det sitter fortsatt et tykt lag med is på brevfugl-slusen! IQ fant ut at musikk og glade lydbølger får isen til å sprekke. Jeg har satt frem 3 kopper eller glass på kjøkkenet som 'klokkespill' sammen med et GRØNT SOL-symbolkort! Hanna: Finn det grønne sol-kortet! Håkon: Les de 3 første bokstavene ved koppene (M - E - L). Kristian: Sjekk julesanger-samling.txt i SNOFALL-HISTORIER for å finne de 3 siste bokstavene (O - D - I) - og åpne NISSEKRYPTO etterpå for å løse Nivå 1 med de 3 hjertene!",
+    "rampenissen_rampestrek": "Rampenissen sitter ved 3 kopper/glass på kjøkkenbenken med en teskje som trommestikke, det grønne sol-kortet og en lapp: 'TONE DEL 1: M - E - L (Se julesanger-samling.txt i NisseNet for DEL 2)'.",
+    "fysisk_hint": "Se ved de 3 koppene på kjøkkenet! Der ligger det grønne sol-symbolet og første del av ordet (M-E-L). Andre del (O-D-I) står i SNOFALL-HISTORIER/julesanger-samling.txt!",
+    "materialer_nødvendig": [
+      "Symbolkort: Grønn sol (QR-kort)",
+      "3 kopper eller glass på rekke med en skje",
+      "Lapp: 'DEL 1: M - E - L (Se julesanger-samling.txt i NisseNet for DEL 2)'"
+    ],
+    "beste_rom": "Kjøkkenet",
+    "oppsett_tid": "moderat",
+    "kode": "MELODI",
+    "hint": "Sett sammen M-E-L fra kjøkkenet med O-D-I fra julesanger-samling.txt i NisseNet (6 bokstaver)!",
+    "reveals": {
+      "files": ["julesanger-samling.txt"],
+      "topics": ["julesanger", "brevfugl-organisering"],
+      "modules": []
+    },
     "eventyr": {
       "id": "brevfugl-mysteriet",
       "phase": 3
     },
-    "dagbokinnlegg": "Dag 12 - Sangdag\n\nStartet morgenen med å synge for nissene. De elsket det! Eller late som. Vanskelig å si.\n\nFant ut at Rudolf kan synge. Vel, mer som muling. Men han prøver. Det er det som teller. De andre reinsdyrene nekter å være med i kor. Sier det er uprofesjonelt.\n\nRampenissen sier at barna synger julesanger hjemme. Herlig! Det er det julen handler om. Glede, sang, og gaveproduksjon i industriell skala.\n\n- Julius",
-    "rampenissen_rampestrek": "Rampenissen har laget et 'radiostudio' med lekemikrofon, hodetelefoner (vinterøremuffer), og en haug med 'utstyr' (bokser, ledninger, pappbokser merket 'MIKSEBORD'). Kosedyrene sitter som publikum med skilt: 'APPLAUS!' og 'JUBELROP!'. Rundt ligger sangbok-sider spredd utover gulvet som 'manus'. Rampenissen holder en lapp: 'VELKOMMEN TIL RADIO SNØFALL! 🎙️ Dagens hit: Deilig er _____ Men hva heter sangen?! Jeg glemte resten! 😱' På veggen henger et 'sendeskjema' med julesanger listet opp.",
-    "fysisk_hint": "Deilig er _____ (6 bokstaver)",
-    "oppsett_tid": "moderat",
-    "materialer_nødvendig": [
-      "Lekemikrofon",
-      "Vinterøremuffer (hodetelefoner)",
-      "Pappbokser merket 'MIKSEBORD'",
-      "Sangbok-sider spredd ut",
-      "Skilt: 'APPLAUS!' og 'JUBELROP!' til kosedyr",
-      "'Sendeskjema' med julesanger"
-    ],
-    "beste_rom": "Stue",
-    "hint_type": "gjemt_objekt",
-    "requires": {
-      "topics": ["brevfugl-organisering"]
-    },
-    "reveals": {
-      "files": ["julesanger-samling.txt"],
-      "topics": ["julesanger"]
-    },
-    "print_materials": [
-      {
-        "type": "lyrics",
-        "title": "Deilig er _____ - sangtekst",
-        "content": "🎵 DEILIG ER _____ 🎵\n\nDeilig er _____,\nherlig Guds himmel,\nskjønn er sjelenes pilgrimsgang!\nGjennom de fagre\nriker på _____\ngår vi til paradis med sang!\n\n────────────────────\n\nHvilket ord mangler?\n6 bokstaver\nRimer på BORDEN\n\n────────────────────"
-      }
-    ],
     "symbol_clue": {
       "symbolId": "sun-green",
       "symbolIcon": "sun-alt",
       "symbolColor": "green",
-      "description": "Grønn sol fra sangboken"
+      "description": "Grønn sol funnet ved klokkespillet på kjøkkenet"
     },
     "decryption_challenge": {
       "challengeId": "frosne-koder",
       "requiredSymbols": ["heart-green", "heart-red", "heart-blue"],
       "correctSequence": [1, 0, 2],
-      "messageWhenSolved": "❄️ FROSNE KODER DEKRYPTERT! ❄️\n\nGratulerer! Dere har låst opp det første hemmelige nivået i NisseKrypto-systemet. Julius' notater om de frosne kodene fra snøstormen er nå tilgjengelige i NISSENET under HEMMELIG-mappen.\n\nDisse symbolene representerer hjertenes tre farger - grønn for vekst, rød for varme, blå for kulde. Sammen former de den perfekte balansen i Snøfall.\n\nVel gjort, krypto-agenter! 🔓",
+      "hint": "Julens syklus starter med varme og tradisjon (Rødt hjerte), vokser med håp (Grønt hjerte) og renses i krystallklar snø (Blått hjerte).",
+      "rewardText": "NIVÅ 1 DEKRYPTERT! Filen frosne-koder.txt er nå låst opp i DEKRYPTERT-mappen i NisseNet!",
       "unlocksFiles": ["frosne-koder.txt"]
     },
-    "finalized": true
-  },
-  {
-    "dag": 13,
-    "tittel": "Lucia-mysteriet",
-    "nissemail_tekst": "God Luciadag! 🕯️ I dag er det 13. desember - Lucia-dagen! ✨ Jeg har laget en VAKKER Lucia-krans av LED-lys i en sirkel! 💡\n\nMEN... jeg har glemt hva Nissemor sa vi skulle bake! 🤔 Det er en tradisjonell Lucia-rett! Rundt kransen ligger det bokstav-kort i tilfeldig rekkefølge - sett dem sammen til riktig ord! 🎂\n\n'Svart senker natten seg, i stall og stue...' 🎶 Lucia bringer lys i mørketiden! Akkurat som vi trenger nå når Mørket truer Snøfall! 🌑💡\n\n- Rampenissen",
-    "kode": "LUSSEKATTER",
-    "eventyr": {
-      "id": "frosne-monster",
-      "phase": 3
-    },
-    "dagbokinnlegg": "Dag 13 - Lucia-Kaos\n\nLussi-dagen! Nissene ville pynte hele Snøfall med levende lys. Måtte forklare brannfare. Kompromisset: LED-lys formet som levende lys. De sultet i 10 minutter, men ga seg.\n\nNissemor bakte lussekatter. 500 stykker. Nissene spiste dem på 20 minutter. Rekord! Eller et problem. Vet ikke helt.\n\nRampenissen sender bilder av Lucia-prosesjon hjemme hos barna. Vakkert! Minner meg om hvorfor vi gjør dette. For barna. Og kattene. Lussekattene, altså.\n\n- Julius",
-    "rampenissen_rampestrek": "Rampenissen har arrangert LUCIA-TOG med kosedyrene! Han har hvitt stoff som 'Lucia-kjole' og en krans av LED-lys på hodet. Kosedyrene følger etter i rekke - hver med et lite lys (lommelykt/LED) og hvite 'kapper' av servietter eller tøy.",
-    "fysisk_hint": "Smaker godt (safran og rosiner), gult og mykt. Hva heter de? (11 bokstaver)",
-    "oppsett_tid": "moderat",
-    "materialer_nødvendig": [
-      "LED-lys eller lommelykter (4-6 stk)",
-      "Hvitt stoff/klede (Lucia-kjole)",
-      "Lussekatter på fat (valgfritt)"
-    ],
-    "beste_rom": "Kjøkken/spisestue",
-    "hint_type": "arrangement",
-    "requires": {
-      "topics": ["frosne-mønster"],
-      "completedDays": [9]
-    },
-    "reveals": {
-      "topics": ["lucia"]
-    },
-    "print_materials": [
-      {
-        "type": "recipe",
-        "title": "Lussekatt-oppskrift",
-        "content": "📋 INGREDIENSER:\n• 5 dl melk\n• 1 pakke gjær\n• 150g smør\n• 1.5 dl sukker\n• 1 pose saffran\n• ca. 1 kg hvetemel\n• Rosiner til pynt\n\n👩‍🍳 SLIK GJØR DU:\n1. Varm melk + smør + saffran\n2. Rør inn gjær og sukker\n3. Bland inn mel til deig\n4. Hev i 30 min\n5. Form S-er med rosiner\n6. Stek 225° i 10 min"
-      },
-      {
-        "type": "lyrics",
-        "title": "Luciasangen tekst",
-        "content": "🎵 LUCIASANGEN 🎵\n\nSvart senker natten seg\nI stall og stue\nSolen har gått sin vei,\nSkyggene truer\nInn i vårt mørke hus\nStiger med tente lys,\nSanta Lucia, Santa Lucia"
-      }
-    ],
-    "hendelse": "Luciadagen",
-    "finalized": true
-  },
-  {
-    "dag": 14,
-    "tittel": "Pakke-gåten",
-    "nissemail_tekst": "YO! 🎁 I dag koker jeg skikkelig! 🔥 Jeg har pakket inn gjenstander OVERALT i huset som trening til julaften! 🎄✨\n\nPå HVER pakke har jeg festet en lapp med et TALL! 📦 Finn alle 5 pakkene og noter tallene i RIKTIG rekkefølge!\n\nMen hva betyr tallene? 🤔 Tenk på alfabetet... A er første bokstav, B er andre... Forstår du? 🔐\n\nFORRENSTEN! Dette er den SISTE dagen i Brevfugl-mysteriet! 🐦\n\n- Rampenissen",
-    "kode": "PAPIR",
-    "eventyr": {
-      "id": "brevfugl-mysteriet",
-      "phase": 4
-    },
-    "dagbokinnlegg": "Dag 14 - Pakkefeber\n\nNissene øver på innpakking. Det går... varierende. Noen pakker ser ut som kunstverk. Andre ser ut som de har vært i kamp med en katt.\n\nRampenissen har visst pakket inn halve huset hjemme hos barna. Typisk. Han tar alltid ting litt for langt. Men barna synes det er gøy, så det er greit.\n\nBrevfugl-mysteriet er løst! Så flinke barn! De har fulgt sporene helt fra starten.\n\n- Julius",
-    "rampenissen_rampestrek": "Rampenissen er BEGRAVET under et fjell av innpakkede gaver - bare hodet stikker opp! Kosedyrene er også 'pakket inn' som mumier med julepapir og tape. På hver pakke er det en lapp med ET TALL: 16, 1, 16, 9, 18. Tape ligger overalt. Rampenissen holder et skilt: 'Øvde på pakking... glemte å STOPPE! 🎁😱 Send hjelp!' Kosedyrene har små skilt: 'HJELP!' og 'Jeg er en gave nå!'.",
-    "fysisk_hint": "Tall på pakkene: 16, 1, 16, 9, 18. A=1, B=2, C=3...",
-    "oppsett_tid": "avansert",
-    "materialer_nødvendig": [
-      "Julepapir",
-      "5-8 gjenstander å pakke inn",
-      "Tape"
-    ],
-    "beste_rom": "Stue",
-    "hint_type": "visuell",
-    "requires": {
-      "topics": ["julesanger"]
-    },
-    "reveals": {
-      "files": ["brevfugl-finale.txt", "personlige-brev-intro.txt"],
-      "topics": ["brevfugl-fullfort"],
-      "modules": ["BREVFUGLER"]
-    },
-    "print_materials": [
-      {
-        "type": "puzzle",
-        "title": "Pakke 1",
-        "content": "🎁 16 🎁"
-      },
-      {
-        "type": "puzzle",
-        "title": "Pakke 2",
-        "content": "🎁 1 🎁"
-      },
-      {
-        "type": "puzzle",
-        "title": "Pakke 3",
-        "content": "🎁 16 🎁"
-      },
-      {
-        "type": "puzzle",
-        "title": "Pakke 4",
-        "content": "🎁 9 🎁"
-      },
-      {
-        "type": "puzzle",
-        "title": "Pakke 5",
-        "content": "🎁 18 🎁"
-      },
-      {
-        "type": "puzzle",
-        "title": "Alfabetnøkkel",
-        "content": "🔑 ALFABETNØKKEL 🔑\n\nA=1  B=2  C=3  D=4\nE=5  F=6  G=7  H=8\nI=9  J=10 K=11 L=12\nM=13 N=14 O=15 P=16\nQ=17 R=18 S=19 T=20\nU=21 V=22 W=23 X=24\nY=25 Z=26 Æ=27 Ø=28\nÅ=29\n\n📝 Finn alle 5 pakkene!\nSkriv tallene i rekkefølge!\nOversett til bokstaver!"
-      },
-      {
-        "type": "certificate",
-        "title": "Brevfugl-mysteriet FULLFØRT!",
-        "content": "🐦 GRATULERER! 🐦\n\nBREVFUGL-MYSTERIET ER LØST!\n\nFase 1 (Dag 1): Introduksjon\nFase 2 (Dag 5): Organisering\nFase 3 (Dag 12): Sangfugl\nFase 4 (Dag 14): PAPIR - Fullført!\n\nJulius er STOLT av dere! 🎅\n\n- Rampenissen & Julius"
-      }
-    ],
+    "dagbokinnlegg": "12. desember. Halvveis til julaften! I dag brukte vi en varm jule-MELODI til å riste løs isen fra brevfugl-slusen. Enda viktigere: Med Grønt, Rødt og Blått Hjerte samlet kunne Kristian, Håkon og Hanna gjennomføre den første store dekrypteringen i NisseKrypto (frosne-koder.txt).",
+    "hint_type": "kombinasjon",
     "finalized": true
   }
 ]
