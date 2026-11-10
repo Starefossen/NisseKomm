@@ -51,16 +51,20 @@ def coverage(clip: Path, line: str) -> float:
     ).stdout
     body = {"contents": [{"parts": [
         {"inlineData": {"mimeType": "audio/mp3", "data": base64.b64encode(mp3).decode()}},
-        {"text": "Transcribe exactly what is said, in Norwegian. Output only the transcript."},
+        {"text": "Transcribe exactly what is said, in Norwegian. Write all numbers as words (85,0 = åttifem komma null). Output only the transcript."},
     ]}]}
     req = urllib.request.Request(
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent",
         data=json.dumps(body).encode(), headers={"x-goog-api-key": key, "Content-Type": "application/json"},
     )
     text = json.load(urllib.request.urlopen(req))["candidates"][0]["content"]["parts"][-1]["text"]
+    import difflib
+
     heard = set(words(text))
     script = words(line)
-    return sum(w in heard for w in script) / max(len(script), 1)
+    # fuzzy: transcription spells names differently (Orakelet/Oraklet), so near matches count
+    hit = lambda w: w in heard or bool(difflib.get_close_matches(w, heard, n=1, cutoff=0.75))
+    return sum(hit(w) for w in script) / max(len(script), 1)
 
 
 # ponytail: word-set overlap, not alignment; catches dropped clauses, not swapped word order
