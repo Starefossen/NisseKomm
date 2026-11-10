@@ -41,7 +41,7 @@ export function BootSequence({ onComplete, duration = 2 }: BootSequenceProps) {
     >
       <div className="w-[600px] max-w-[90%] space-y-6">
         {/* Boot message */}
-        <div className="text-(--neon-green) text-2xl tracking-wider font-mono text-center">
+        <div className="text-(--neon-green) text-2xl tracking-wider font-retro text-center">
           <div className="mb-2">ENISSEKJERNE 3.8]</div>
           <div className="text-lg">LASTER...</div>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { CRTFrame } from "@/components/ui/CRTFrame";
 import { BootSequence } from "@/components/ui/BootSequence";
 import { PasswordPrompt } from "@/components/ui/PasswordPrompt";
@@ -196,6 +196,15 @@ export default function Home() {
   const frostMode = effectiveAuthenticated
     ? GameEngine.getFrostMode()
     : { level: 0, message: "" };
+  // One variable drives every colour token (globals.css); frost days lock it to full cold
+  const frost = effectiveAuthenticated
+    ? frostMode.level > 0
+      ? 1
+      : (GameEngine.getFrostLevel() ?? 0) / 100
+    : 0;
+  useEffect(() => {
+    document.documentElement.style.setProperty("--frost", String(frost));
+  }, [frost]);
   const isFrozen = (windowId: string) =>
     frostMode.level === 2 && !FROST_OPEN_WINDOWS.includes(windowId);
 
@@ -290,7 +299,7 @@ export default function Home() {
               inset-y-0 left-0
               w-64 lg:w-1/4
               p-4 flex flex-col gap-4
-              border-r-4 border-(--neon-green)/30
+              border-r-2 border-(--brass)/60
               bg-(--dark-crt)
               overflow-hidden
               z-40

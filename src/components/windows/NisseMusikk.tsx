@@ -244,7 +244,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
                 }}
               ></div>
             </div>
-            <div className="flex justify-between text-xs text-(--neon-green)/70 font-mono">
+            <div className="flex justify-between text-xs text-(--neon-green)/70 font-retro">
               <span>{formatTime(currentTime)}</span>
               <span>
                 {duration > 0 ? formatTime(duration) : track.defaultDuration}
@@ -298,7 +298,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
               aria-label="Volum"
               className="w-28 accent-(--neon-green) cursor-pointer"
             />
-            <span className="text-xs font-mono text-(--neon-green) w-10 text-right">
+            <span className="text-xs font-retro text-(--neon-green) w-10 text-right">
               {Math.round(volume * 100)}%
             </span>
           </div>
@@ -328,7 +328,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
                 `}
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-xs opacity-70 w-6 font-mono">
+                  <span className="text-xs opacity-70 w-6 font-retro">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <div>
@@ -343,7 +343,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
                     </span>
                   )}
                 </div>
-                <span className="text-xs opacity-70 font-mono">
+                <span className="text-xs opacity-70 font-retro">
                   {t.defaultDuration}
                 </span>
               </button>

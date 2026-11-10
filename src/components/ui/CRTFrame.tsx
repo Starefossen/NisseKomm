@@ -4,13 +4,12 @@ interface CRTFrameProps {
   children: ReactNode;
 }
 
+// Dark wood-and-brass console. Scanlines belong to Snøfall TV and Julius' video only.
 export function CRTFrame({ children }: CRTFrameProps) {
   return (
     <div className="crt-frame-container fixed inset-0 bg-(--crt-bg) overflow-hidden">
-      {/* CRT Monitor bezel - responsive borders */}
-      <div className="absolute inset-0 border-4 md:border-8 lg:border-20 border-black rounded-lg shadow-2xl">
-        {/* Main display area with scanlines and vignette */}
-        <div className="relative w-full h-full bg-(--crt-bg) scanline-overlay vignette overflow-hidden">
+      <div className="console-bezel absolute inset-0 p-1 md:p-2 lg:p-4">
+        <div className="relative w-full h-full bg-(--crt-bg) border-2 border-(--brass)/60 rounded-md overflow-hidden shadow-[inset_0_0_60px_rgba(0,0,0,0.6)]">
           {children}
         </div>
       </div>

@@ -14,7 +14,7 @@ function LiveCamDev() {
   if (process.env.NODE_ENV === "production") notFound();
 
   return (
-    <main className="min-h-screen bg-black text-(--neon-green) flex flex-col items-center gap-6 p-6 font-mono">
+    <main className="min-h-screen bg-black text-(--neon-green) flex flex-col items-center gap-6 p-6 font-retro">
       <h1 className="text-2xl">LiveCam: effektprøve</h1>
       <div className="w-full max-w-5xl aspect-video border-4 border-(--neon-green)">
         <LiveCam

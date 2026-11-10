@@ -48,7 +48,7 @@ export function DesktopIcon({
         ${
           disabled
             ? "border-(--gray) opacity-60 cursor-not-allowed"
-            : "border-transparent hover:border-(--neon-green) hover:bg-(--neon-green)/10 hover:shadow-[0_0_15px_rgba(0,255,0,0.4)] active:scale-95 cursor-pointer"
+            : "border-transparent hover:border-(--neon-green) hover:bg-(--neon-green)/10 hover:shadow-[0_0_15px_color-mix(in_oklab,var(--brass)_40%,transparent)] active:scale-95 cursor-pointer"
         }
         ${isShaking ? "animate-[lock-shake_0.3s_ease-in-out]" : ""}
       `}

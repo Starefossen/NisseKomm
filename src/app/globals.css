@@ -1,17 +1,54 @@
 @import "tailwindcss";
 
 :root {
-  /* Christmas Color Palette */
-  --neon-green: #00ff00;
-  --christmas-red: #ff0000;
-  --gold: #ffd700;
-  --cold-blue: #00ddff;
-  --crt-bg: #0a1a0a;
-  --gray: #666666;
+  /* Two temperatures (stil.md): warm Snøfall, cold Kulde. --frost (0–1) is set
+     from GameEngine's Frostgraden by page.tsx and blends one into the other. */
+  --frost: 0;
+  --varm-bg: #120c08;
+  --varm-flate: #1d140d;
+  --varm-kant: #b8863b;
+  --varm-tekst: #f3e3c3;
+  --varm-aksent: #ffb347;
+  --kald-bg: #0b1626;
+  --kald-flate: #12203a;
+  --kald-kant: #5a7a99;
+  --kald-tekst: #dbe9f7;
+  --kald-aksent: #9fd4ff;
 
-  /* Legacy support */
-  --background: #0a1a0a;
-  --foreground: #00ff00;
+  /* Old names keep their roles so hundreds of class names stay untouched */
+  --crt-bg: color-mix(
+    in oklab,
+    var(--varm-bg),
+    var(--kald-bg) calc(var(--frost) * 100%)
+  );
+  --dark-crt: color-mix(
+    in oklab,
+    var(--varm-flate),
+    var(--kald-flate) calc(var(--frost) * 100%)
+  );
+  --brass: color-mix(
+    in oklab,
+    var(--varm-kant),
+    var(--kald-kant) calc(var(--frost) * 100%)
+  );
+  --neon-green: color-mix(
+    in oklab,
+    var(--varm-tekst),
+    var(--kald-tekst) calc(var(--frost) * 100%)
+  );
+  --cold-blue: color-mix(
+    in oklab,
+    var(--varm-aksent),
+    var(--kald-aksent) calc(var(--frost) * 100%)
+  );
+  --gold: #ffd700;
+  --christmas-red: #f0624a;
+  --gray: #666666;
+  /* Green only for northern lights, success blinks and LEDs */
+  --aurora: #00ff8a;
+
+  --background: var(--crt-bg);
+  --foreground: var(--neon-green);
 }
 
 @theme inline {
@@ -591,7 +628,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: rgba(0, 255, 0, 0.1);
+  background: rgba(255, 240, 220, 0.08);
   animation: scanline 6s linear infinite;
   pointer-events: none;
   z-index: 11;
@@ -632,7 +669,7 @@ body:has(.crt-frame-container) {
   /* Reduce scanline opacity on mobile for better performance */
   .scanline-overlay::after {
     opacity: 0.3;
-    background: rgba(0, 255, 0, 0.05);
+    background: rgba(255, 240, 220, 0.04);
   }
 
   /* Reduce static scanline pattern intensity */
@@ -795,4 +832,22 @@ body:has(.crt-frame-container) {
   .aurora-wash {
     animation-duration: 0.01s;
   }
+}
+
+/* Console bezel: dark wood grain with a brass rim, cooling with --frost */
+.console-bezel {
+  background:
+    repeating-linear-gradient(
+      92deg,
+      rgba(255, 255, 255, 0.025) 0 2px,
+      transparent 2px 9px
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--dark-crt), var(--brass) 18%),
+      var(--crt-bg)
+    );
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--brass) 70%, transparent),
+    inset 0 2px 6px rgba(0, 0, 0, 0.7);
 }

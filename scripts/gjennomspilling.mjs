@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Automated playthrough of day 1..24 in a headless browser.
-// Usage: node scripts/gjennomspilling.mjs   (or BASE_URL=http://localhost:3000, DAYS=10,21)
+// Usage: node scripts/gjennomspilling.mjs   (or BASE_URL=http://localhost:3000, DAYS=10,21, WIDTH=1024 HEIGHT=768)
 // Talks raw CDP to chrome-headless-shell (Playwright's cache) or $CHROME, so no new dependency.
 import { spawn } from "node:child_process";
 import { createServer } from "node:net";
@@ -253,8 +253,8 @@ await send("Page.enable");
 await send("Runtime.enable");
 await send("Log.enable");
 await send("Emulation.setDeviceMetricsOverride", {
-  width: 1440,
-  height: 900,
+  width: Number(process.env.WIDTH ?? 1440),
+  height: Number(process.env.HEIGHT ?? 900),
   deviceScaleFactor: 1,
   mobile: false,
 });

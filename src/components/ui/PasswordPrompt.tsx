@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import { setSessionId } from "@/lib/auth-cookies";
+import { mediaUrl } from "@/lib/media";
+
+// Julius' office from media; the village still underneath shows if the feed is missing
+const OFFICE_BG = `linear-gradient(rgba(10,6,4,0.55), rgba(10,6,4,0.8)), url("${mediaUrl("feed/julius-kontor.png")}"), url("/village-day.jpg")`;
 
 interface PasswordPromptProps {
   onSuccess: (sessionId: string) => void;
@@ -71,14 +75,17 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-(--crt-bg) flex items-center justify-center z-50">
+    <div
+      className="fixed inset-0 bg-(--crt-bg) bg-cover bg-center flex items-center justify-center z-50"
+      style={{ backgroundImage: OFFICE_BG }}
+    >
       <div
-        className={`w-[600px] max-w-[90%] space-y-6 ${isShaking ? "animate-[crt-shake_0.3s_ease-in-out]" : ""}`}
+        className={`w-[600px] max-w-[90%] space-y-6 p-6 md:p-8 bg-(--dark-crt)/85 border-2 border-(--brass) rounded-md shadow-[0_8px_40px_rgba(0,0,0,0.7)] ${isShaking ? "animate-[crt-shake_0.3s_ease-in-out]" : ""}`}
       >
         {/* Header */}
-        <div className="text-(--neon-green) text-2xl tracking-wider font-mono text-center mb-8">
-          <div>TILGANGSKONTROLL</div>
-          <div className="text-sm mt-2 opacity-70">
+        <div className="text-(--neon-green) text-3xl tracking-wider font-retro text-center mb-8">
+          <div>SNØFALL · DIREKTELINJE 90,0 MHz</div>
+          <div className="text-xl mt-2 text-(--cold-blue)">
             SKRIV INN DIN HEMMELIGE KODE
           </div>
         </div>
@@ -90,19 +97,19 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
               type="text"
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              className="w-full px-4 py-3 bg-black border-4 border-(--neon-green) text-(--neon-green) text-xl tracking-widest font-mono focus:outline-none focus:shadow-[0_0_20px_rgba(0,255,0,0.5)] uppercase"
+              className="w-full px-4 py-3 bg-(--crt-bg) border-2 border-(--brass) text-(--cold-blue) text-2xl tracking-widest font-retro focus:outline-none focus:shadow-[0_0_20px_color-mix(in_oklab,var(--brass)_50%,transparent)] uppercase"
               autoComplete="off"
               placeholder="_ _ _ _ _ _ _ _"
               autoFocus
               disabled={isLoading}
-              style={{ caretColor: "var(--neon-green)" }}
+              style={{ caretColor: "var(--cold-blue)" }}
             />
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full px-6 py-3 bg-(--neon-green) text-black text-xl tracking-wider font-bold border-4 border-(--neon-green) hover:bg-transparent hover:text-(--neon-green) transition-colors disabled:opacity-50"
+            className="w-full px-6 py-3 min-h-12 bg-(--brass) text-black text-2xl tracking-wider border-2 border-(--brass) hover:bg-transparent hover:text-(--neon-green) transition-colors disabled:opacity-50"
           >
             {isLoading ? "SJEKKER..." : "LOGG INN"}
           </button>
@@ -120,7 +127,7 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
 
         {/* Attempt counter */}
         {attemptCount > 0 && (
-          <div className="text-(--gold) text-center text-sm opacity-70">
+          <div className="text-(--gold) text-center text-lg">
             Forsøk: {attemptCount}
           </div>
         )}

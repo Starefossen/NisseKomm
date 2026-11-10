@@ -15,141 +15,85 @@
 
 ## Visual Language
 
-### Retro CRT Terminal Aesthetic
+### Kontrollrommet i Snøfall
 
-Think 1980s computer monitor - fictional in-game terminals like GTA with nostalgic, pixelated look.
+The app is a control room in Snøfall, not a 1983 terminal (`docs/design-revisjon-2026.md`, option B). Two temperatures from `assets/stil.md`: warm brass, amber, parchment and dark wood for Snøfall; ice, steel and night for Kulde. As Frostgraden rises the whole interface cools; on day 24 it is warm again.
 
 **Core Elements**:
 
-- **Monitor Frame**: Thick bezels around screen
-- **Scanlines**: Animated horizontal lines
-- **CRT Glow**: Subtle blur and bloom effects
-- **Pixelated Rendering**: `image-rendering: pixelated`
-- **Vignette**: Darkened corners
-- **No Smooth Edges**: Jagged, authentic pixel look
-
-**CSS Implementation** (`globals.css`):
-
-```css
-.crt-screen {
-  image-rendering: pixelated;
-  box-shadow: inset 0 0 100px rgba(0, 255, 0, 0.1);
-}
-
-.scanline {
-  background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.1) 50%);
-  animation: scanline 8s linear infinite;
-}
-
-.vignette {
-  box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.9);
-}
-```
+- **Console frame** (`CRTFrame`, `.console-bezel`): dark wood with a thin brass rim. No scanlines or vignette on the frame.
+- **CRT only where there is TV**: scanlines and vignette belong to Snøfall TV (`LiveCam`, drawn in canvas) and Julius' video (`JuliusVideo`, `.scanline-overlay .vignette`).
+- **Thin title bars**: `RetroWindow`, `RetroModal` and `SidebarWidget` have a dark title strip with a 2 px brass rule and parchment text. The close button is neutral and keeps `aria-label="Lukk"`. Content, not chrome, is the brightest thing on screen.
+- **Login**: Snøfall's door. Julius' office still (`/media/feed/julius-kontor.png`, falling back to `/village-day.jpg`) dimmed behind a brass plate headed «SNØFALL · DIREKTELINJE 90,0 MHz».
+- **Pixelated Rendering**: `image-rendering: pixelated` on icons.
 
 ### Interaction Principles
 
-**Playful, Not Realistic**:
+**Calm, never scary** (historie-2026). Feedback when something happens; stillness otherwise.
 
-- Exaggerated animations
-- Immediate visual feedback
-- Generous hover areas
-- Cartoonish effects
-
-**Every Action Has Feedback**:
-
-- Clicks → sound + animation
-- Hover → glow + scale
+- Clicks → sound + short animation
 - Success → gold flash + beep
 - Error → red shake + buzz
+- Fake processing delays (1.5 s) simulate "system thinking"
+- Motion on a diet: Frostgraden ticks, one LED breathes. Avoid endless pulsing and blinking.
 
-**Fake Processing Delays**:
-
-- 1.5s delays simulate "system thinking"
-- Progress animations during waits
-- Adds to retro computer feel
-
-**Constant Motion**:
-
-- Blinking LEDs
-- Scrolling alerts
-- Pulsing indicators
-- Scanline animation
-
-**Norwegian Language**:
-
-- All UI text in Norwegian
-- Error messages in Norwegian
-- Help text in Norwegian
+**Norwegian Language**: all UI text, errors and help in Norwegian.
 
 ## Color System
 
-### Christmas Color Palette
+### Two temperatures, one variable
 
-**Primary Colors**:
+`--frost` (0–1) is set on `<html>` by `src/app/page.tsx` from `GameEngine.getFrostLevel() / 100`. On frost days (`getFrostMode().level > 0`, day 10 and 21) it is locked to 1. Before login it is 0.
 
-| Color             | Hex       | Usage                          | Text Color            |
-| ----------------- | --------- | ------------------------------ | --------------------- |
-| **Neon Green**    | `#00ff00` | Primary UI, text, success      | `text-black`          |
-| **Christmas Red** | `#ff0000` | Errors, warnings, alerts       | `text-black`          |
-| **Gold**          | `#ffd700` | Achievements, completed states | `text-black`          |
-| **Cold Blue**     | `#00ddff` | Secondary info, hints          | `text-black`          |
-| **Dark CRT**      | `#0a1a0a` | Background (deep green-black)  | `text-(--neon-green)` |
-| **Gray**          | `#666666` | Disabled, locked elements      | `text-(--neon-green)` |
+| Role                  | Warm (frost 0) `--varm-*` | Cold (frost 1) `--kald-*` | Token             |
+| --------------------- | ------------------------- | ------------------------- | ----------------- |
+| Background            | `#120c08` dark wood       | `#0b1626` night           | `--crt-bg`        |
+| Surface (window)      | `#1d140d`                 | `#12203a`                 | `--dark-crt`      |
+| Border, title rule    | `#b8863b` brass           | `#5a7a99` steel           | `--brass`         |
+| Primary text and UI   | `#f3e3c3` parchment       | `#dbe9f7` ice             | `--neon-green`    |
+| Accent, numbers, hint | `#ffb347` amber           | `#9fd4ff` ice blue        | `--cold-blue`     |
+| Success, completed    | `#ffd700` gold            | same                      | `--gold`          |
+| Error                 | `#f0624a` brick           | same                      | `--christmas-red` |
+| Northern lights, LED  | `#00ff8a`                 | same                      | `--aurora`        |
+| Locked, disabled      | `#666666`                 | same                      | `--gray`          |
 
-### CSS Custom Properties
-
-**Definition** (`globals.css`):
+The old names are kept so the class names in components did not have to change. **`--neon-green` is no longer green**: it is the primary text colour. Each blended token is
 
 ```css
-:root {
-  --neon-green: #00ff00;
-  --christmas-red: #ff0000;
-  --gold: #ffd700;
-  --cold-blue: #00ddff;
-  --dark-crt: #0a1a0a;
-  --gray: #666666;
-}
+--neon-green: color-mix(
+  in oklab,
+  var(--varm-tekst),
+  var(--kald-tekst) calc(var(--frost) * 100%)
+);
 ```
+
+Glows and shadows use `color-mix(in_oklab,var(--brass)_30%,transparent)` instead of hard-coded `rgba(0,255,0,…)`. The `green` icon colour in `lib/icons.tsx` is parchment.
 
 **Usage** (Tailwind CSS v4):
 
 ```tsx
-// ✅ GOOD - Tailwind v4 syntax
-<div className="bg-(--neon-green) text-black">
-<button className="border-(--christmas-red)">
+<div className="bg-(--dark-crt) border-2 border-(--brass) text-(--neon-green)">
 <span className="text-(--gold)">
-
-// ❌ BAD - Old syntax
-<div className="bg-[var(--neon-green)]">
 ```
 
 ### Color Usage Rules
 
-**Contrast Rule**:
-
-- Use `text-black` on bright backgrounds (neon green, gold, red)
-- Ensures readability on high-contrast colors
-- WCAG AA compliance
+**Contrast**: body text meets WCAG AA (4.5:1) at both frost 0 and frost 1. `src/lib/__tests__/kontrast.test.ts` checks parchment/ice, amber/ice blue, gold and brick against background and surface, and black on brass. Change a token, run the test.
 
 **Semantic Meanings**:
 
-- **Green** = primary UI, navigation, success states
-- **Red** = errors, warnings, critical alerts, locked items
-- **Gold** = achievements, completed items, rewards
-- **Blue** = hints, secondary information, help text
-- **Gray** = disabled, locked, unavailable
-
-**State Indicators**:
-
-- **Available** → Neon green glow
-- **Locked** → Gray with red lock icon
-- **Completed** → Gold with checkmark
-- **Error** → Red shake animation
-- **Success** → Gold flash animation
+- **Parchment / ice** = primary UI and text
+- **Amber / ice blue** = accents, numbers, hints
+- **Gold** = achievements, completed items, success flash
+- **Red** = errors and warnings
+- **Green** = only northern lights (day 17), success blinks and LEDs
+- **Gray** = disabled, locked
 
 ## Typography
 
 ### VT323 Monospace Font
+
+Kid-facing components use the theme font `font-retro` (VT323), never `font-mono` (Geist Mono, left only in the parent guide).
 
 **Source**: Google Fonts
 **Fallback**: `'Courier New', monospace`
@@ -529,10 +473,10 @@ const { playSuccess, playError, playClick } = useSounds();
 
 ### Component Responsive Checklist
 
-**CRT Borders**:
+**Console frame**:
 
 ```tsx
-border-4 md:border-8 lg:border-20
+p-1 md:p-2 lg:p-4
 ```
 
 **Windows**:

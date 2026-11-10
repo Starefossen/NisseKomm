@@ -202,7 +202,7 @@ NEXT_PUBLIC_STORAGE_BACKEND=localStorage # Only value until the move home
 - [ ] Run `pnpm check` (type checking + linting)
 - [ ] All text in Norwegian (except code comments)
 - [ ] VT323 font used consistently
-- [ ] Thick pixel borders on windows
+- [ ] Thin brass title bars on windows (2 px)
 - [ ] Animations on all interactions
 - [ ] Colors from CSS custom properties
 - [ ] StorageManager for all persistence
@@ -211,10 +211,10 @@ NEXT_PUBLIC_STORAGE_BACKEND=localStorage # Only value until the move home
 
 **Design Consistency**:
 
-- [ ] Green = primary UI
+- [ ] Parchment/ice (`--neon-green`) = primary UI; green only for northern lights, success and LEDs
 - [ ] Red = errors
 - [ ] Gold = success/completion
-- [ ] Blue = info/hints
+- [ ] Amber/ice blue (`--cold-blue`) = info/hints
 - [ ] Gray = locked/disabled
 
 ## Development Workflow

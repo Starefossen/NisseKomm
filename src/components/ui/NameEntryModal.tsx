@@ -104,7 +104,7 @@ export function NameEntryModal({ onComplete }: NameEntryModalProps) {
                 }}
                 placeholder={`Navn ${index + 1} (valgfritt)`}
                 maxLength={30}
-                className="flex-1 px-4 py-3 bg-black border-2 border-(--neon-green) text-xl font-mono text-(--neon-green) focus:outline-none focus:border-(--gold) focus:shadow-[0_0_20px_rgba(255,215,0,0.5)] uppercase"
+                className="flex-1 px-4 py-3 bg-black border-2 border-(--neon-green) text-xl font-retro text-(--neon-green) focus:outline-none focus:border-(--gold) focus:shadow-[0_0_20px_rgba(255,215,0,0.5)] uppercase"
                 autoFocus={index === 0}
               />
               {names[index].trim() && (

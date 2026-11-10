@@ -200,7 +200,7 @@ export function KodeTerminal({
               onChange={(e) => setCode(e.target.value)}
               disabled={processing}
               className={`
-                w-full px-4 py-3 bg-black border-4 text-2xl tracking-widest font-mono
+                w-full px-4 py-3 bg-black border-4 text-2xl tracking-widest font-retro
                 focus:outline-none uppercase
                 ${
                   isAlreadySolved
@@ -209,7 +209,7 @@ export function KodeTerminal({
                       ? "border-(--gold)"
                       : feedback === "error"
                         ? "border-(--christmas-red)"
-                        : "border-(--neon-green) focus:shadow-[0_0_20px_rgba(0,255,0,0.5)]"
+                        : "border-(--neon-green) focus:shadow-[0_0_20px_color-mix(in_oklab,var(--brass)_50%,transparent)]"
                 }
               `}
               style={{
@@ -379,7 +379,7 @@ export function KodeTerminal({
                 >
                   <div className="flex items-center gap-2">
                     <Icons.CheckCircle size={16} color="gold" />
-                    <span className="font-mono text-lg text-(--gold)">
+                    <span className="font-retro text-lg text-(--gold)">
                       {entry.kode}
                     </span>
                   </div>
