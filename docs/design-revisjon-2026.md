@@ -153,3 +153,7 @@ Til å rendre for mennesket, ikke til bruk i appen. Alle i 16:9, samme uttrykk s
 
 **3. Skrivebordet dag 21 – fryst.**
 «UI mockup, 16:9, the same Snøfall control-room desktop now frozen. Palette shifted to night blue and steel; rime ice grows in from all four corners over the brass bezel. The thermometer reads FROSTGRADEN 94 % in ice-blue. Most tiles are dimmed under a frost layer; only JULIUS (with red dot), NISSEMAIL and KODETERMINAL remain warm amber. A single quiet line of text in a band under the top edge: «Det er kaldt her nede. Jeg ville bare se lyset deres.» Lonely and still, not scary. Cinematic, film grain, cold blue with one small warm island.»
+
+## Avgjort 10. november
+
+Hans valgte alternativ B «Kontrollrommet i Snøfall», P1 og P2. P0-feilene rettes først, deretter P1 og P2 i egne runder.
