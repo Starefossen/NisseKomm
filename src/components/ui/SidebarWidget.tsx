@@ -7,10 +7,10 @@ interface SidebarWidgetProps {
 
 export function SidebarWidget({ title, children }: SidebarWidgetProps) {
   return (
-    <div className="border-4 border-(--neon-green) bg-black/50 shadow-[0_0_10px_rgba(0,255,0,0.2)] flex flex-col flex-1 overflow-hidden">
+    <div className="border-2 border-(--brass)/70 bg-(--dark-crt) flex flex-col flex-1 overflow-hidden">
       {/* Title bar */}
-      <div className="px-3 py-1 bg-(--neon-green) text-black border-b-4 border-(--neon-green)">
-        <span className="text-base font-bold tracking-wider">{title}</span>
+      <div className="px-3 py-1 text-(--brass) border-b border-(--brass)/70">
+        <span className="text-lg tracking-wider">{title}</span>
       </div>
 
       {/* Content */}

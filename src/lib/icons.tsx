@@ -9,8 +9,9 @@ interface IconProps extends Omit<ComponentProps<"img">, "src" | "alt"> {
 }
 
 const colorFilters: Record<IconColor, string> = {
+  // "green" is the primary role: parchment, like --neon-green at --frost 0
   green:
-    "brightness(0) saturate(100%) invert(75%) sepia(97%) saturate(3077%) hue-rotate(66deg) brightness(118%) contrast(128%)",
+    "brightness(0) saturate(100%) invert(93%) sepia(14%) saturate(560%) hue-rotate(327deg) brightness(100%)",
   red: "brightness(0) saturate(100%) invert(12%) sepia(100%) saturate(7426%) hue-rotate(1deg) brightness(106%) contrast(118%)",
   gold: "brightness(0) saturate(100%) invert(80%) sepia(62%) saturate(1523%) hue-rotate(359deg) brightness(104%) contrast(104%)",
   blue: "brightness(0) saturate(100%) invert(75%) sepia(71%) saturate(2234%) hue-rotate(151deg) brightness(104%) contrast(101%)",

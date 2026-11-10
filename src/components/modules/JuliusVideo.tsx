@@ -74,7 +74,7 @@ export function JuliusVideo({
           SIGNALET ER SVAKT …
         </div>
       ) : (
-        <div className="relative">
+        <div className="relative scanline-overlay vignette">
           <video
             ref={videoRef}
             key={src}
@@ -82,7 +82,7 @@ export function JuliusVideo({
             controls
             playsInline
             preload={preload}
-            className="aspect-video w-full border-4 border-(--gold)/60 bg-black"
+            className="aspect-video w-full border-2 border-(--brass) bg-black"
             onEnded={() => {
               markWatched();
               if (day === 1 && !GameEngine.isIntroSeen("tail")) setTail(true);

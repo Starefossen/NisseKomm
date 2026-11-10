@@ -62,7 +62,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
         {/* =====================================================================
             LIVE CRT ISFUGL-RADAR VIEWPORT (BERGEN / ULRIKEN <-> SNØFALL 90°N)
            ===================================================================== */}
-        <div className="relative w-full h-52 md:h-60 border-4 border-(--neon-green)/70 bg-black overflow-hidden shadow-[0_0_24px_rgba(0,255,0,0.18)]">
+        <div className="relative w-full h-52 md:h-60 border-4 border-(--neon-green)/70 bg-black overflow-hidden shadow-[0_0_24px_color-mix(in_oklab,var(--brass)_18%,transparent)]">
           {/* Split Painterly Surveillance Feeds: Left = Nordtoppen Relay, Right = Julius' Study */}
           <div className="absolute inset-0 grid grid-cols-2">
             <div className="relative overflow-hidden border-r border-(--neon-green)/40">
@@ -155,7 +155,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
             className="absolute z-20 pointer-events-none transition-all duration-1000"
             style={{ left: `${fugl.left}%`, top: `${fugl.top}%` }}
           >
-            <div className="flex items-center gap-1.5 bg-black/85 border border-(--cold-blue) px-2 py-0.5 text-[10px] font-mono text-(--cold-blue) shadow-[0_0_10px_rgba(0,200,255,0.5)]">
+            <div className="flex items-center gap-1.5 bg-black/85 border border-(--cold-blue) px-2 py-0.5 text-[10px] font-retro text-(--cold-blue) shadow-[0_0_10px_rgba(0,200,255,0.5)]">
               <span className="w-2 h-2 rounded-full bg-(--cold-blue) animate-ping" />
               <span>
                 {frossent
@@ -182,7 +182,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
           />
 
           {/* Top & Bottom Radar Telemetry OSD */}
-          <div className="absolute inset-0 z-25 p-3 flex flex-col justify-between pointer-events-none font-mono">
+          <div className="absolute inset-0 z-25 p-3 flex flex-col justify-between pointer-events-none font-retro">
             <div className="flex items-center justify-between gap-2">
               <div className="bg-black/80 border border-(--neon-green)/60 px-2.5 py-1 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-(--neon-green) animate-pulse" />
@@ -219,7 +219,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
             </div>
             <div
               aria-hidden
-              className="font-mono text-(--cold-blue)/40 blur-[3px] select-none"
+              className="font-retro text-(--cold-blue)/40 blur-[3px] select-none"
             >
               ▒▒▒▒ ▒▒▒ ▒▒▒▒▒▒ ▒▒▒ ▒▒▒▒ ▒▒▒▒▒▒▒
             </div>
@@ -254,7 +254,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
             onChange={(e) => setUtkast(e.target.value)}
             placeholder="Kjære Julius ..."
             rows={5}
-            className="w-full p-3 bg-(--dark-crt) border-2 border-(--neon-green) text-(--neon-green) text-sm font-mono resize-none"
+            className="w-full p-3 bg-(--dark-crt) border-2 border-(--neon-green) text-(--neon-green) text-sm font-retro resize-none"
           />
           <button
             onClick={send}

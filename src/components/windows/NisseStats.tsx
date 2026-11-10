@@ -437,7 +437,7 @@ function CrisisDisplay({
     () => React.ReactNode
   > = {
     glitch: () => (
-      <div className={`text-xl font-bold font-mono ${statusColor}`}>
+      <div className={`text-xl font-bold font-retro ${statusColor}`}>
         {displayValue < 0
           ? `ERR:${displayValue}`
           : `${displayValue}█${glitchFrame % 2 === 0 ? "▓" : "░"}??`}
@@ -524,7 +524,7 @@ function NormalDisplay({
       </div>
     ),
     bar: () => (
-      <div className={`text-xs font-mono ${statusColor}`}>
+      <div className={`text-xs font-retro ${statusColor}`}>
         {DisplayRenderers.bar(metric.verdi, metric.maks)}
       </div>
     ),
@@ -536,13 +536,13 @@ function NormalDisplay({
         <div className={`text-xl font-bold ${statusColor} mb-1`}>
           {metric.verdi}%
         </div>
-        <div className={`text-xs font-mono ${statusColor}/50`}>
+        <div className={`text-xs font-retro ${statusColor}/50`}>
           {DisplayRenderers.waveform(metric.verdi, metric.maks)}
         </div>
       </div>
     ),
     radar: () => (
-      <div className={`text-xs font-mono ${statusColor}`}>
+      <div className={`text-xs font-retro ${statusColor}`}>
         {DisplayRenderers.radar(metric.verdi, metric.maks, glitchFrame)}
       </div>
     ),
@@ -551,13 +551,13 @@ function NormalDisplay({
         <div className={`text-xl font-bold ${statusColor} mb-1`}>
           {percent}%
         </div>
-        <div className={`text-xs font-mono ${statusColor}/50`}>
+        <div className={`text-xs font-retro ${statusColor}/50`}>
           {DisplayRenderers.gauge(metric.verdi, metric.maks)}
         </div>
       </div>
     ),
     binary: () => (
-      <div className={`text-xs font-mono ${statusColor}`}>
+      <div className={`text-xs font-retro ${statusColor}`}>
         {DisplayRenderers.binary(percent, glitchFrame)}
       </div>
     ),
