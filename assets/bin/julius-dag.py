@@ -34,6 +34,40 @@ def segments(day: int):
     return segs
 
 
+def words(s: str):
+    return re.findall(r"[a-zæøå]+", s.lower())
+
+
+def coverage(clip: Path, line: str) -> float:
+    """Share of the script's words heard in the clip (Gemini transcription)."""
+    import base64
+    import json
+    import urllib.request
+
+    key = subprocess.run(["fnox", "get", "GEMINI_API_KEY"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
+    mp3 = subprocess.run(
+        ["ffmpeg", "-nostdin", "-v", "error", "-i", str(clip), "-vn", "-ac", "1", "-ar", "16000", "-f", "mp3", "-"],
+        capture_output=True, check=True,
+    ).stdout
+    body = {"contents": [{"parts": [
+        {"inlineData": {"mimeType": "audio/mp3", "data": base64.b64encode(mp3).decode()}},
+        {"text": "Transcribe exactly what is said, in Norwegian. Output only the transcript."},
+    ]}]}
+    req = urllib.request.Request(
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent",
+        data=json.dumps(body).encode(), headers={"x-goog-api-key": key, "Content-Type": "application/json"},
+    )
+    text = json.load(urllib.request.urlopen(req))["candidates"][0]["content"]["parts"][-1]["text"]
+    heard = set(words(text))
+    script = words(line)
+    return sum(w in heard for w in script) / max(len(script), 1)
+
+
+# ponytail: word-set overlap, not alignment; catches dropped clauses, not swapped word order
+MIN_COVERAGE = 0.9
+ATTEMPTS = 3
+
+
 def main():
     day = int(sys.argv[1])
     dry = "--dry-run" in sys.argv
@@ -43,15 +77,22 @@ def main():
         name = f"dag{day:02d}-{i}"
         names.append(name)
         print(f"{name} ({secs} s): {line}")
-        if dry or (OUT / f"{name}.mp4").exists():
+        if dry:
+            continue
+        clip = OUT / f"{name}.mp4"
+        raw = OUT / f"{name}.raw.mp4"  # check the unfiltered audio; the radio filter hurts transcription
+        if clip.exists() and coverage(raw, line) >= MIN_COVERAGE:
             continue
         act = f"{action} Kuldes påvirkning i bildet og lyden: {kulde}"
-        for attempt in (1, 2):
+        for attempt in range(1, ATTEMPTS + 1):
             r = subprocess.run([str(BIN / "julius.sh"), name, line, act, str(secs)], stdin=subprocess.DEVNULL)
             if r.returncode == 0:
-                break
-            if attempt == 2:
-                sys.exit(f"{name} feilet to ganger")
+                c = coverage(raw, line)
+                print(f"  {name}: {c:.0%} av replikken hørt")
+                if c >= MIN_COVERAGE:
+                    break
+            if attempt == ATTEMPTS:
+                sys.exit(f"{name}: fikk ikke en god versjon på {ATTEMPTS} forsøk")
     if dry:
         return
     glitch = OUT / "glitch.mp4"

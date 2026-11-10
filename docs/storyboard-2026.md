@@ -621,3 +621,8 @@ Gjenstår (alt annet er avgjort, se under):
 - **Brevfugler:** «skriv brev til Julius» beholdes uten svar, men bygges slik at brevene kan integreres senere (for eksempel at Julius nevner et brev i videoen).
 - **Bonus dag 16:** foreldrekode `LYKT2026`. Fristen fredag 18. nevnes i historien, men håndheves ikke i koden.
 - **Dag 1, 6 og 24 (gåtedetaljer):** avgjøres i steg 1.
+
+### Intensitetskurven (godkjent 10. november)
+
+- **Dag 10–12 platå:** Kulde-nivå i Julius-videoen dag 11 senkes fra 3 til 2, og musikken høres i appen når dag 12 tiner.
+- **Dag 16–18 platå:** når dag 17 løses, skyller nordlyset over hele skrivebordet i grønt, og Frostgraden tikker synlig ned.
