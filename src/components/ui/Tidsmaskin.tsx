@@ -21,6 +21,7 @@ export function Tidsmaskin() {
 
   // Scripted playthroughs (scripts/gjennomspilling.mjs) drive the same tools
   useEffect(() => {
+    if (!isTimeMachineEnabled()) return;
     (window as unknown as { nissekomm: unknown }).nissekomm = { sim };
   }, []);
 

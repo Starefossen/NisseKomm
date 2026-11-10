@@ -13,7 +13,7 @@ import statisk from "@/data/statisk_innhold.json";
 import merker from "@/data/merker.json";
 import videoer from "@/data/julius_videoer.json";
 import { getAllOppdrag } from "@/lib/oppdrag";
-import { getCurrentDate } from "@/lib/date-utils";
+import { getServerDate } from "@/lib/date-utils";
 import { FROST_UNTIL_HOUR, frostModeFor } from "@/lib/frost";
 import { STATE_KEYS, getStore } from "@/lib/db";
 import { createUploadTicket, mediaStatus } from "@/lib/media-server";
@@ -69,12 +69,7 @@ const isoDate = (d: Date) =>
   `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
 /** Clock plus skip_day's `day-offset`. */
-function now(state: State): Date {
-  const d = getCurrentDate();
-  const offset = state["day-offset"];
-  if (typeof offset === "number") d.setDate(d.getDate() + offset);
-  return d;
-}
+const now = (state: State) => getServerDate(state["day-offset"]);
 
 function solvedDays(state: State): Set<number> {
   const days = new Set<number>();

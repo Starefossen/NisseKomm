@@ -64,6 +64,13 @@ export function getCurrentDate(): Date {
   return d;
 }
 
+/** Server-side «now»: the clock plus skip_day's stored `day-offset`. */
+export function getServerDate(dayOffset: unknown): Date {
+  const d = getCurrentDate();
+  if (typeof dayOffset === "number") d.setDate(d.getDate() + dayOffset);
+  return d;
+}
+
 /** MCP skip_day's `day-offset`, cached from the server by ServerSyncAdapter. */
 function getDayOffset(): number {
   if (typeof window === "undefined") return 0;
