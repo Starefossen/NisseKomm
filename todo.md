@@ -83,7 +83,7 @@ De andre ideene fra denne fasen er flyttet til «Senere forbedringer (etter seso
 - [ ] **Slett det som er dødt:** Fjern ubrukt kode og data i stedet for å kommentere det ut. Oppdater tester og dokumentasjon (AGENTS.md, ARCHITECTURE.md, IMPLEMENTATION.md) så de stemmer med koden.
 - [ ] **Verifiser hele sesongen:** Kjør `pnpm check` og gå gjennom alle 24 dager med `mise run dev:day <dag>` for å bekrefte at alt fungerer som forventet.
 - [x] **knip:** Ekskluder `.claude/` så agent-worktrees ikke gir falske treff i `pnpm check`.
-- [ ] **Next.js-sikkerhetsfiks:** Oppgrader `next` og `eslint-config-next` til 16.4.6 når pakken har passert `minimum-release-age` (worktree og gren `chore/nextjs-security-upgrade` finnes).
+- [x] **Next.js-sikkerhetsfiks:** Oppgrader `next` og `eslint-config-next` til 16.4.6 når pakken har passert `minimum-release-age` (worktree og gren `chore/nextjs-security-upgrade` finnes).
 - [ ] **Videostørrelse:** Komprimer Julius-videoene hardere (mål: 8–12 MB per innslag; dag 1-testen ble 28 MB for 47 s).
 
 ---
