@@ -150,8 +150,8 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [ ] **Julius-videoer (pågår, annen agent komprimerer nå):** komprimer til 8–12 MB per innslag (H.264, faststart) og sjekk at lyd og bilde er i synk. Lag plakatbilde `dag-NN.jpg` (bilde ved 3 s) ved siden av hver mp4. Plakatbildet lages på nytt når en video byttes, også i `assets/bin/julius-dag.py --upload`.
 - [ ] **Snøfall TV-loops og hendelser:** komprimer uten å ødelegge loopen (samme lengde, første og siste bilde med SSIM ≥ 0,97 mot `nokkelramme-rolig.jpg`). Ingen lydspor.
 - [ ] **Rampenissen-lyd:** normaliser lydstyrken (EBU R128, -16 LUFS), samme tonehøyde og dialekt på alle 24, MP3 128k mono.
-- [ ] **Musikk (NisseMusikk):** normaliser lydstyrken og sjekk at alle spor i manifestet finnes.
-- [ ] **Stillbilder og bilder i `public/`:** komprimer (JPEG/WebP), bruk riktig størrelse for visning og fjern ubrukte filer.
+- [x] **Musikk (NisseMusikk):** normaliser lydstyrken og sjekk at alle spor i manifestet finnes.
+- [x] **Stillbilder og bilder i `public/`:** komprimer (JPEG/WebP), bruk riktig størrelse for visning og fjern ubrukte filer. Gjort: logo.png 1024 til 512 px. Feed-PNG-ene (1,5-3 MB) er fullskjermsbakgrunner og beholdt; JPEG ville gitt ca. 10x, men krever endret sti i kode og manifest. Ubrukte kandidater: `assets/out/ubrukte-bilder-public.txt`.
 - [ ] **Utskrifter:** testskriv ut dag 10, 12 og 14 (rødfilter, tosidig, brettark). Bekreft sidetallet mot tabellen i `docs/gaater-2026.md` (dag 12 er tredelt, dag 15 og 18 gir 2 sider). Hans avgjør etter test-printen om det skal være 1 eller 2 ark.
 - [ ] **Mediebiblioteket:** last alt opp til PVC-en (`MEDIA_DIR`) med riktige stier. Kontroller manifestet, at hver fil svarer 200/206 med Range, og at ingen mediefil ligger i git.
 - [ ] **Sluttsjekk:** gjennomspilling på iPad (Safari) over hjemmenettet med de komprimerte filene.
