@@ -108,7 +108,7 @@ function UtviklingContent() {
             </div>
             <div className="p-3 border-2 border-(--cold-blue) bg-black/60">
               <div className="text-(--cold-blue) font-bold mb-1">
-                📡 SNØFALL TV & HOME-BRIDGE TEST
+                📡 SNØFALL TV TEST
               </div>
               <div className="text-sm">
                 Åpne <strong>SNØFALL TV</strong> på hovedskjermen og bruk{" "}
@@ -140,24 +140,6 @@ function UtviklingContent() {
                   reléhytta og Kuldes spøkelsesskygge i stormen.
                 </li>
               </ul>
-              <div className="mt-2 flex flex-wrap gap-2">
-                <a
-                  href="/api/home-bridge?day=21"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="px-2 py-1 border border-(--cold-blue) text-(--cold-blue) hover:bg-(--cold-blue) hover:text-black text-xs font-bold"
-                >
-                  TEST /api/home-bridge (DAG 21) ↗
-                </a>
-                <a
-                  href="/api/home-bridge?day=17&solved=true"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="px-2 py-1 border border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green) hover:text-black text-xs font-bold"
-                >
-                  TEST /api/home-bridge (DAG 17 LØST) ↗
-                </a>
-              </div>
             </div>
           </div>
         </div>

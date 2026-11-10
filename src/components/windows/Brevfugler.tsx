@@ -190,9 +190,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
           >
             <div className="flex items-center gap-1.5 bg-black/85 border border-(--gold) px-2 py-0.5 text-[10px] font-mono text-(--gold) shadow-[0_0_10px_rgba(255,215,0,0.4)]">
               <span className="w-2 h-2 rounded-full bg-(--gold) animate-ping" />
-              <span>
-                BREVFUGL #{104 + (radarTick % activeBirdCount)} [ORIGAMI]
-              </span>
+              <span>BREVFUGL #{104 + (radarTick % activeBirdCount)}</span>
             </div>
           </div>
 
@@ -233,7 +231,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
 
             <div className="flex items-end justify-between gap-2">
               <div className="bg-black/85 border border-(--neon-green)/50 px-2.5 py-1 text-[11px] text-(--neon-green)">
-                📡 AVGANG: ULRIKEN MAST (643 MOH) — KRYPTERING: O-R-I-G-A-M-I
+                📡 AVGANG: ULRIKEN MAST (643 MOH)
               </div>
               <div className="bg-black/85 border border-(--gold)/60 px-2.5 py-1 text-[11px] text-(--gold)">
                 📬 MOTTAK: JULIUS&apos; SKRIVEBORD (SNØFALL)
@@ -510,7 +508,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
                         DAG {selectedLetterData.day}
                       </div>
                       <div className="text-[9px] text-(--neon-green)">
-                        ORIGAMI-VERIFISERT
+                        SEGL-VERIFISERT
                       </div>
                     </div>
                   </div>
