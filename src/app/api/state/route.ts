@@ -10,6 +10,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getRole, jsonError, readJsonBody } from "@/lib/auth";
 import { STATE_KEYS, VERSION_KEY, getStore, storageBackend } from "@/lib/db";
+import { SERVER_KEYS } from "@/lib/storage-adapter";
 import { getAllOppdrag } from "@/lib/oppdrag";
 import { getCurrentDate } from "@/lib/date-utils";
 import { notify } from "@/lib/notify";
@@ -34,7 +35,11 @@ export async function GET(request: NextRequest) {
     frostNotified.add(frost.day);
     void notify(frost);
   }
-  return NextResponse.json(state);
+  // Internal keys (upload tickets and the like) never leave the server.
+  const visible = new Set<string>([...STATE_KEYS, ...SERVER_KEYS, VERSION_KEY]);
+  return NextResponse.json(
+    Object.fromEntries(Object.entries(state).filter(([k]) => visible.has(k))),
+  );
 }
 
 export async function PUT(request: NextRequest) {

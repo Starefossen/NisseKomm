@@ -162,6 +162,16 @@ describe("/api/state removals and validation", () => {
     });
   });
 
+  it("never returns internal keys, and tickets work once", async () => {
+    await memoryStore.putState("upload-ticket:abc", {
+      path: "a.mp4",
+      expires: Date.now() + 60_000,
+    });
+    expect((await call("GET")).json).toEqual({});
+    expect(await memoryStore.consumeTicket("abc", "a.mp4")).toBe(true);
+    expect(await memoryStore.consumeTicket("abc", "a.mp4")).toBe(false);
+  });
+
   it("is off (204) with STORAGE_BACKEND=localStorage", async () => {
     process.env.STORAGE_BACKEND = "localStorage";
     try {

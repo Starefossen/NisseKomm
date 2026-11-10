@@ -63,7 +63,19 @@ export interface Store {
   /** Records a failure and returns failures within the window. */
   addFailure(windowMs: number): Promise<number>;
   failureCount(windowMs: number): Promise<number>;
+  /**
+   * Deletes the upload ticket `upload-ticket:<hash>` and returns true if it
+   * was bound to `path` and unexpired. Atomic: a ticket works once.
+   */
+  consumeTicket(hash: string, path: string): Promise<boolean>;
 }
+
+const ticketOk = (t: unknown, path: string) => {
+  const o = t as { path?: unknown; expires?: unknown } | null | undefined;
+  return (
+    o?.path === path && typeof o.expires === "number" && o.expires > Date.now()
+  );
+};
 
 export function createMemoryStore(): Store & { reset(): void } {
   let kv = new Map<string, unknown>();
@@ -94,6 +106,12 @@ export function createMemoryStore(): Store & { reset(): void } {
     },
     async deleteSession(hash) {
       sessions.delete(hash);
+    },
+    async consumeTicket(hash, path) {
+      const key = `upload-ticket:${hash}`;
+      const t = kv.get(key);
+      kv.delete(key);
+      return ticketOk(t, path);
     },
     async addFailure(w) {
       failures.push(Date.now());
@@ -198,6 +216,13 @@ export function createPgStore(pool: Pool): Store {
     },
     async deleteSession(hash) {
       await pool.query("DELETE FROM sessions WHERE token_sha256 = $1", [hash]);
+    },
+    async consumeTicket(hash, path) {
+      const r = await pool.query(
+        "DELETE FROM kv WHERE key = $1 RETURNING value",
+        [`upload-ticket:${hash}`],
+      );
+      return ticketOk(r.rows[0]?.value, path);
     },
     async addFailure(w) {
       await pool.query("DELETE FROM auth_failures WHERE at <= $1", [window(w)]);
