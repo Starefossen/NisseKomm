@@ -11,13 +11,10 @@ const customJestConfig = {
   // agent worktrees live under .claude/ and must not be picked up as tests or modules
   modulePathIgnorePatterns: ["<rootDir>/.claude/"],
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
-  globalTeardown: "<rootDir>/jest.globalTeardown.ts",
   testEnvironment: "jsdom",
   testTimeout: 15000,
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
-    "^@vercel/analytics$": "<rootDir>/src/lib/__mocks__/@vercel/analytics.ts",
-    "^uuid$": "<rootDir>/src/lib/__mocks__/uuid.ts",
   },
   testMatch: [
     "**/__tests__/**/*.test.[jt]s?(x)",
@@ -35,18 +32,12 @@ const customJestConfig = {
 module.exports = async () => {
   const config = await createJestConfig(customJestConfig)();
   config.transformIgnorePatterns = [
-    "/node_modules/(?!\\.pnpm/|(@sanity|nanoid|uuid|get-random-values|get-it|eventsource|eventsource-parser|obug)/)",
+    "/node_modules/(?!\\.pnpm/|(nanoid|obug)/)",
     "^.+\\.module\\.(css|sass|scss)$",
   ];
-  if (
-    process.env.NEXT_PUBLIC_STORAGE_BACKEND !== "sanity" ||
-    !process.env.SANITY_API_TOKEN
-  ) {
-    config.testPathIgnorePatterns = [
-      "<rootDir>/.claude/",
-      ...(config.testPathIgnorePatterns || []),
-      "<rootDir>/src/app/api/",
-    ];
-  }
+  config.testPathIgnorePatterns = [
+    "<rootDir>/.claude/",
+    ...(config.testPathIgnorePatterns || []),
+  ];
   return config;
 };

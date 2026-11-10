@@ -8,7 +8,7 @@
  * - Storage integration
  */
 
-import { describe, it, expect, beforeEach, jest } from "@jest/globals";
+import { describe, it, expect, beforeEach } from "@jest/globals";
 import {
   getAllSymbols,
   collectSymbolByCode,
@@ -18,14 +18,6 @@ import {
   addCollectedSymbol,
 } from "../systems/symbol-system";
 import { StorageManager } from "../storage";
-
-// Mock session-manager to prevent cookie side effects in tests
-jest.mock("../session-manager", () => ({
-  setSessionId: jest.fn(),
-  getSessionId: jest.fn(() => null),
-  clearSessionId: jest.fn(),
-  getKidCodeFromSession: jest.fn(() => Promise.resolve(null)),
-}));
 
 // Use localStorage backend for these tests
 process.env.NEXT_PUBLIC_STORAGE_BACKEND = "localStorage";

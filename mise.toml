@@ -3,7 +3,7 @@ node = "24"
 pnpm = "10"
 
 [tasks.dev]
-description = "Start NisseKomm dev-server i lokal testmodus (umiddelbar innlogging uten Sanity)"
+description = "Start NisseKomm dev-server i lokal testmodus"
 run = """
 #!/usr/bin/env bash
 set -euo pipefail
@@ -37,24 +37,6 @@ NEXT_PUBLIC_MOCK_DAY="${DAY}" \
 pnpm dev
 """
 
-[tasks."dev:sanity"]
-description = "Start NisseKomm dev-server med Sanity-backend fra .env.local"
-run = """
-#!/usr/bin/env bash
-set -euo pipefail
-cat <<EOF
-================================================================================
-🎄 NISSEKOMM 2026 (DEV SERVER - SANITY BACKEND)
-================================================================================
-🌐 URL-er:
-   • Hovedterminal           : http://localhost:3000
-   • Registrer ny familie    : http://localhost:3000/register
-   • Foreldreguide           : http://localhost:3000/nissemor-guide
-   • Utvikler- & Testpanel   : http://localhost:3000/nissemor-guide/utvikling
-================================================================================
-EOF
-pnpm dev
-"""
 
 [tasks.info]
 description = "Vis innloggingskoder, URL-er og fasit for alle 24 dager og TV-segmenter"

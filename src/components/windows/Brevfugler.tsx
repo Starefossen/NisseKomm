@@ -30,7 +30,10 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
   const [utkast, setUtkast] = useState("");
   const [radarTick, setRadarTick] = useState(0);
   const [currentTime, setCurrentTime] = useState<Date>(() => getCurrentDate());
-  const frossent = erBrevetFrossent(getCurrentDay(), GameEngine.isQuestCompleted(24));
+  const frossent = erBrevetFrossent(
+    getCurrentDay(),
+    GameEngine.isQuestCompleted(24),
+  );
 
   useEffect(() => {
     const timer = setInterval(() => {

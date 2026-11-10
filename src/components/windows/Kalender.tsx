@@ -6,7 +6,6 @@ import { RetroModal } from "../ui/RetroModal";
 import { Icons } from "@/lib/icons";
 import { GameEngine } from "@/lib/game-engine";
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
-import { trackEvent } from "@/lib/analytics";
 import type { Oppdrag, CalendarEvent } from "@/types/innhold";
 
 interface KalenderProps {
@@ -99,10 +98,7 @@ export function Kalender({
   const handleDayClick = (day: number) => {
     const status = getDayStatus(day);
     if (status !== "locked") {
-      trackEvent("calendar_day_clicked", { day, success: true });
       setSelectedDay(day);
-    } else {
-      trackEvent("calendar_day_clicked", { day, success: false });
     }
   };
 

@@ -34,7 +34,6 @@ import {
   getCurrentDay,
   isCalendarActive as isDateCalendarActive,
 } from "@/lib/date-utils";
-import { trackWindowInteraction } from "@/lib/analytics";
 import statiskInnholdData from "@/data/statisk_innhold.json";
 import { Varsel, FilNode } from "@/types/innhold";
 
@@ -138,19 +137,16 @@ export default function Home() {
   const handleIconClick = (windowId: string) => {
     if (openWindow === windowId) {
       setOpenWindow(null);
-      trackWindowInteraction(windowId, "closed");
       playSound("close");
     } else {
       setOpenWindow(windowId);
       setSelectedDay(null);
-      trackWindowInteraction(windowId, "opened");
       playSound("open");
     }
   };
 
   const handleCloseWindow = () => {
     if (openWindow) {
-      trackWindowInteraction(openWindow, "closed");
     }
     setOpenWindow(null);
     setSelectedDay(null);

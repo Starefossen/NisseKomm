@@ -9,12 +9,7 @@ import {
 } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  isParentAuthenticated,
-  clearParentAuth,
-  setParentAuthenticated,
-  setSessionId,
-} from "@/lib/session-manager";
+import { isParentAuthenticated, clearParentAuth } from "@/lib/auth-cookies";
 
 /**
  * GuideAuth Component
@@ -152,13 +147,6 @@ function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
         return;
       }
 
-      // Login already set both cookies (session + parent auth)
-      // Set client-side parent auth for isParentAuthenticated() check
-      if (loginData.sessionId) {
-        setSessionId(loginData.sessionId);
-        setParentAuthenticated(loginData.sessionId);
-      }
-
       onSuccess();
       return;
     } catch {
@@ -212,8 +200,7 @@ function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
         </form>
 
         <div className="mt-6 pt-4 border-t border-(--neon-green)/30 text-center text-sm text-(--neon-green)/60">
-          <p>Foreldrekoden ble sendt til e-posten du registrerte.</p>
-          <p className="mt-2">Den starter med "NORDPOL-"</p>
+          <p>Den starter med "NORDPOL-"</p>
         </div>
 
         <div className="mt-4 text-center">

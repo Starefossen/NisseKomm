@@ -25,21 +25,7 @@ export function NisseNetUtforsker({
     new Set(["root"]),
   );
   const [selectedFile, setSelectedFile] = useState<FilNode | null>(null);
-  const [friendNames, setFriendNames] = useState<string[]>([]);
   const [initialLastVisit] = useState(() => GameEngine.getNisseNetLastVisit());
-
-  // Fetch friend names from Sanity session on mount
-  useEffect(() => {
-    async function loadFriendNames() {
-      try {
-        const names = await GameEngine.getFriendNames();
-        setFriendNames(names);
-      } catch (error) {
-        console.error("Failed to load friend names:", error);
-      }
-    }
-    loadFriendNames();
-  }, []);
 
   // Track visit time when component mounts
   useEffect(() => {
@@ -85,7 +71,6 @@ export function NisseNetUtforsker({
         // Use template resolver to handle all placeholders
         const resolvedContent = resolveTemplate(node.innhold || "", {
           playerNames,
-          friendNames,
           completedDays,
           currentDay,
         });
@@ -106,7 +91,7 @@ export function NisseNetUtforsker({
     };
 
     return files.map(processNode);
-  }, [files, currentDay, friendNames]);
+  }, [files, currentDay]);
 
   // Filter files based on unlock status and calculate stats
   const { filteredFiles, fileStats } = useMemo(() => {
