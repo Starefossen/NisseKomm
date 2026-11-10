@@ -83,6 +83,13 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 
 ---
 
+## Neste kodeoppgaver (lokalt, 10. november)
+
+- [ ] **Varslingssystem:** et lite system for utgående varsler med kanaler som kan slås av og på (e-post til foreldre, Varden/iMessage, Skjerm-kort, radio). Ingen kanal aktiv nå; e-post kan legges til igjen senere.
+- [ ] **MCP-server** (fase 5, T7 og T8) bygges lokalt nå, testet uten Kanidm (lokal nøkkel), og kobles til VKS ved utrulling.
+- [ ] **Simulering:** utvid Tidsmaskin til et simuleringspanel i foreldreguiden: hopp til dag og klokkeslett, løs dager automatisk opp til en dag, sett frost, nullstill, og spol en hel uke.
+- [ ] **Designrevisjon:** forslag i `docs/design-revisjon-2026.md`, deretter bygging av det som godkjennes.
+
 ## Fase 5: Flytt til hjemmeklyngen (krav fra Varden, Starefossen/homelab#22)
 
 Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxScale=1` 1. desember–6. januar, 200Mi/512Mi, PostgreSQL (CloudNativePG), CiliumNetworkPolicy, Secret). NisseKomm-repoet er vårt. Varden rører det ikke.
