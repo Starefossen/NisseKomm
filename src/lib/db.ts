@@ -28,12 +28,17 @@ const MERGED_KEYS = new Set([
   "nissekomm-santa-letters",
   "nissekomm-viewed-emails",
   "nissekomm-viewed-bonusoppdrag-emails",
+  // A symbol scanned on the phone must survive the TV saving its own list.
+  "nissekomm-earned-badges",
+  "nissekomm-collected-symbols",
+  "nissekomm-solved-decryptions",
+  "nissekomm-unlocked-files",
 ]);
 
 const itemId = (x: unknown) => {
   if (x && typeof x === "object") {
     const o = x as Record<string, unknown>;
-    return JSON.stringify(o.day ?? o.dag ?? o.kode ?? o);
+    return JSON.stringify(o.day ?? o.dag ?? o.kode ?? o.badgeId ?? o.symbolId ?? o);
   }
   return JSON.stringify(x);
 };

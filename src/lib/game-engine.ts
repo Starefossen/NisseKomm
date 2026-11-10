@@ -16,11 +16,9 @@
 import { StorageManager } from "./storage";
 import { BadgeManager } from "./badge-system";
 import {
-  getAllEventyr,
   getEventyr,
   getEventyrDays,
   getEventyrForDay,
-  getEventyrProgress,
 } from "./eventyr";
 import {
   getCurrentDay,
@@ -56,7 +54,6 @@ import { getAllQuests, getQuestByDay } from "./data-loader";
 import {
   Oppdrag,
   FilNode,
-  SystemMetrikk,
   Varsel,
   InnsendelseLog,
   DecryptionSymbol,
