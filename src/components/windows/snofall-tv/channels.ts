@@ -1,3 +1,4 @@
+import type { FrostModeLevel } from "@/lib/frost";
 /**
  * Snøfall TV channel map (storyboard «Avgjort 10. november») and the
  * day events from historie-2026 §9. Pure functions of day/hour/state so
@@ -75,6 +76,8 @@ export interface DayState {
   day: number;
   solved: boolean;
   frost: number;
+  /** App-wide frost mode (GameEngine.getFrostMode): 1 = grey, 2 = frozen. */
+  mode: FrostModeLevel;
   /** Day 21 after the code: number of channels thawed so far. */
   thawed: number;
 }
@@ -83,14 +86,15 @@ export interface DayState {
 export function channelEffects(
   channel: ChannelId,
   freq: number,
-  { day, solved, frost, thawed }: DayState,
+  { day, solved, frost, mode, thawed }: DayState,
 ) {
   const onKulde = channel === 4 && freq === FREQ_KULDE;
-  const frozen = day === 21 && (!solved || channel > thawed);
+  // Kill switch and the 20:00 fail-safe clear `mode`; the thaw only follows a solve.
+  const frozen = mode === 2 || (day === 21 && solved && channel > thawed);
   return {
     frost: day >= 24 ? 0 : frost,
     hijack: onKulde && day >= 3,
-    gray: day === 10 && !solved,
+    gray: mode === 1,
     flicker: day === 20,
     frozen,
     warm: day >= 24 || (day === 21 && solved && onKulde && !frozen),
