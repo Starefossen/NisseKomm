@@ -12,7 +12,7 @@ import { getRole, jsonError, readJsonBody } from "@/lib/auth";
 import { STATE_KEYS, VERSION_KEY, getStore, storageBackend } from "@/lib/db";
 import { SERVER_KEYS } from "@/lib/storage-adapter";
 import { getAllOppdrag } from "@/lib/oppdrag";
-import { getCurrentDate } from "@/lib/date-utils";
+import { getServerDate } from "@/lib/date-utils";
 import { notify } from "@/lib/notify";
 import { eventsForWrite, frostOnEvent } from "@/lib/notify/events";
 
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     return new NextResponse(null, { status: 204 });
   if (!(await getRole(request))) return jsonError("Ikke innlogget", 401);
   const state = await getStore().getState();
-  const now = getCurrentDate();
+  const now = getServerDate(state["day-offset"]);
   const frost = frostOnEvent(
     state,
     now.getDate(),

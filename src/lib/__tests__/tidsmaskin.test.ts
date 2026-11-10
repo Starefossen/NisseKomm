@@ -1,5 +1,10 @@
 import { describe, it, expect, afterEach } from "@jest/globals";
-import { getCurrentDate, getCurrentDay, setTimeOverride } from "../date-utils";
+import {
+  getCurrentDate,
+  getCurrentDay,
+  getServerDate,
+  setTimeOverride,
+} from "../date-utils";
 import { GameEngine } from "../game-engine";
 
 describe("Tidsmaskin date override", () => {
@@ -23,6 +28,17 @@ describe("Tidsmaskin date override", () => {
     expect(getCurrentDay()).toBe(2);
     setTimeOverride(null);
     expect(getCurrentDay()).toBe(10);
+  });
+});
+
+describe("getServerDate", () => {
+  afterEach(() => localStorage.clear());
+
+  it("adds skip_day's day-offset and ignores junk", () => {
+    setTimeOverride({ day: 9, month: 12, hour: 19, minute: 59 });
+    expect(getServerDate(2).getDate()).toBe(11);
+    expect(getServerDate("2").getDate()).toBe(9);
+    expect(getServerDate(undefined).getHours()).toBe(19);
   });
 });
 
