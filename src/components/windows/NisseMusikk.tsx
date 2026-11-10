@@ -1,6 +1,6 @@
 "use client";
 
-import { mediaUrl } from "@/lib/media";
+import { MEDIA_MANIFEST, mediaUrl, type MediaManifestEntry } from "@/lib/media";
 import { useState, useEffect, useRef } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
@@ -8,7 +8,7 @@ import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 
-interface Track {
+export interface Track {
   id: number;
   title: string;
   subtitle: string;
@@ -16,98 +16,18 @@ interface Track {
   defaultDuration: string;
 }
 
-const PLAYLIST: Track[] = [
-  {
-    id: 1,
-    title: "Bjelleklang (8-Bit Chiptune)",
-    subtitle: "Jingle Bells — Snøfall Radio 90.0 MHz",
-    src: mediaUrl("music/Jingle Bells (8-Bit Version).mp3"),
-    defaultDuration: "1:57",
-  },
-  {
-    id: 2,
-    title: "Rudolf er Rød på Nesen (8-Bit)",
-    subtitle: "Rudolph the Red-Nosed Reindeer",
-    src: mediaUrl("music/Rudolph the Red Nosed Reindeer (8-Bit Version).mp3"),
-    defaultDuration: "1:57",
-  },
-  {
-    id: 3,
-    title: "Kranser og Kristtorn (8-Bit)",
-    subtitle: "Deck the Halls — Verksted-Mix",
-    src: mediaUrl("music/Deck the Halls (8-Bit Version).mp3"),
-    defaultDuration: "1:08",
-  },
-  {
-    id: 4,
-    title: "Vinter-Eventyrland (8-Bit)",
-    subtitle: "Winter Wonderland — Krystallhagen",
-    src: mediaUrl("music/Winter Wonderland (8-Bit Version).mp3"),
-    defaultDuration: "1:43",
-  },
-  {
-    id: 5,
-    title: "La Det Snø, La Det Snø (8-Bit)",
-    subtitle: "Let It Snow! — Brevfugl-Tårnet",
-    src: mediaUrl(
-      "music/Let It Snow, Let It Snow, Let It Snow (8-Bit Version).mp3",
-    ),
-    defaultDuration: "2:03",
-  },
-  {
-    id: 6,
-    title: "Kanefart gjennom Snøfall (8-Bit)",
-    subtitle: "Sleigh Ride — Slede-Ekspert",
-    src: mediaUrl("music/Sleigh Ride (8-Bit Version).mp3"),
-    defaultDuration: "2:04",
-  },
-  {
-    id: 7,
-    title: "Dans rundt Juletreet (8-Bit)",
-    subtitle: "Rockin' Around the Christmas Tree",
-    src: mediaUrl(
-      "music/Rockin' Around the Christmas Tree (8-Bit Version).mp3",
-    ),
-    defaultDuration: "1:58",
-  },
-  {
-    id: 8,
-    title: "Feliz Navidad (8-Bit)",
-    subtitle: "Globale Nisse-Frekvenser",
-    src: mediaUrl("music/Feliz Navidad (8-Bit Version).mp3"),
-    defaultDuration: "2:08",
-  },
-  {
-    id: 9,
-    title: "Jeg Så Mamma Kysse Nissen (8-Bit)",
-    subtitle: "I Saw Mommy Kissing Santa Claus",
-    src: mediaUrl("music/I Saw Mommy Kissing Santa Claus (8-Bit Version).mp3"),
-    defaultDuration: "2:24",
-  },
-  {
-    id: 10,
-    title: "Alt Jeg Ønsker til Jul (8-Bit)",
-    subtitle: "All I Want for Christmas Is You",
-    src: mediaUrl("music/All I Want for Christmas Is You (8-Bit Version).mp3"),
-    defaultDuration: "4:14",
-  },
-  {
-    id: 11,
-    title: "Siste Jul (8-Bit Synth)",
-    subtitle: "Last Christmas — Nordlys-Utgave",
-    src: mediaUrl("music/Last Christmas (8-Bit Version).mp3"),
-    defaultDuration: "3:46",
-  },
-  {
-    id: 12,
-    title: "Ha en Riktig God og Glitrende Jul (8-Bit)",
-    subtitle: "Have Yourself a Merry Little Christmas",
-    src: mediaUrl(
-      "music/Have Yourself a Merry Little Christmas (8-Bit Version).mp3",
-    ),
-    defaultDuration: "3:50",
-  },
-];
+export const PLAYLIST: Track[] = MEDIA_MANIFEST.filter(
+  (entry): entry is MediaManifestEntry & { title: string } =>
+    typeof entry !== "string" &&
+    entry.path.startsWith("music/") &&
+    Boolean(entry.title),
+).map((entry, index) => ({
+  id: index + 1,
+  title: entry.title,
+  subtitle: entry.subtitle ?? "",
+  src: mediaUrl(entry.path),
+  defaultDuration: entry.defaultDuration ?? "0:00",
+}));
 
 function formatTime(seconds: number): string {
   if (!Number.isFinite(seconds) || seconds < 0) return "0:00";

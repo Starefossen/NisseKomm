@@ -2,7 +2,7 @@ import { createReadStream } from "node:fs";
 import { mkdir, rename, stat, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { Readable } from "node:stream";
-import { MEDIA_MANIFEST, type MediaStatus } from "./media";
+import { MEDIA_MANIFEST, mediaPath, type MediaStatus } from "./media";
 
 const MB = 1024 * 1024;
 
@@ -85,7 +85,8 @@ export async function serveMedia(
 
 export async function mediaStatus(dir = mediaDir()): Promise<MediaStatus[]> {
   return Promise.all(
-    MEDIA_MANIFEST.map(async (p) => {
+    MEDIA_MANIFEST.map(async (entry) => {
+      const p = mediaPath(entry);
       const info = await stat(path.join(dir, p)).catch(() => null);
       return { path: p, size: info?.isFile() ? info.size : null };
     }),
@@ -102,7 +103,7 @@ export async function uploadMedia(
   if (!isLanMode()) return new Response("Ikke funnet", { status: 404 });
   const rel = parts.join("/").normalize("NFC");
   const abs = resolveMedia(parts, dir);
-  if (!abs || !MEDIA_MANIFEST.includes(rel)) {
+  if (!abs || !MEDIA_MANIFEST.some((entry) => mediaPath(entry) === rel)) {
     return new Response("Ukjent fil", { status: 400 });
   }
   const rule = MEDIA_TYPES[path.extname(abs).toLowerCase()];
