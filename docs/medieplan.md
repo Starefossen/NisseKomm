@@ -59,3 +59,15 @@ Hver fil får en sidefil `<fil>.meta.json` som inventaret bruker.
 - Hendelser klippes bare inn i sin egen tilstandsloop og ankres til første bilde i den loopen.
 - Portentréene bruker den lukkede porten (`port-nokkelramme.jpg`) som første og siste bilde. Porten åpner og lukker seg i klippet.
 - Dagsgrensen er 200 videoforespørsler.
+
+## Bilder som bør lages på nytt (inventar 11. november)
+
+Gamle 2025-bilder i K1, K2 og K4 er byttet ut med første bilde fra loopene (gratis, ingen hopp når videoen starter). Originalene ligger i `assets/out/original-pre-komprimering/bilder-gamle/`. Dette gjenstår, i prioritert rekkefølge:
+
+1. **`public/logo.png`** (gammel grønn pikselpalett, brukes som logo og favicon). Referanse: dagens logo. Prompt: «Pikselgrafikk-logo for NisseKomm: ordet NISSEKOMM i kraftige pikselbokstaver i pergamentfarge med en tynn messingkant, en liten iskrystall i pikselstil som prikk over i-en, mørk blåsvart bakgrunn, isblå glød rundt bokstavene. Ingen grønt, ingen tekst utover NISSEKOMM, kvadratisk 1024×1024, tydelig også i 32×32.» Lag også en 32×32-variant til favicon.
+2. **`public/village-day.jpg`** (siste reserve i tre bakgrunner, ligger i git). Bildet er offentlig, så det bør være noe vi kan dele: en enkel tegnet reserve, ikke et generert landsbybilde. Forslag: lag den som SVG i koden (mørk blå himmel, snø, et par varme vinduer) og slett jpg-en.
+3. **K4 antennen ved tjernet** (valgfritt; første bilde fra `antenne-rolig.mp4` holder). Referanse: `assets/locations/antenne-tjern/ref.jpg`. Prompt: «Samme mast, tjern og lille hytte som referansen, blåtime i polarnatt, svakt grønt nordlys over fjellene, rim på stagene, fast overvåkningskamera i samme utsnitt, fotorealistisk, ingen tekst.» Mål: `feed/antenne-tarn.jpg`, og bytt filtypen i koden.
+4. **K4 krystallgrotten** (valgfritt; første bilde fra `grotte-rolig.mp4` holder). Referanse: `assets/locations/krystallgrotten/ref.jpg`. Prompt: «Samme hvelvede isgrotte som referansen, krystallhyller langs veggene, en gammel radio på en steinsokkel i midten, kald blå glød med et svakt varmt lys fra radioens skala, fast kamera i samme utsnitt, fotorealistisk, ingen tekst, ingen figurer.» Mål: `feed/kulde-grotte.jpg`.
+5. **Julius' kontor med Julius** (valgfritt, til nettsiden eller Skjerm). Referanse: `assets/characters/julius/ref-v3.jpg`. Bruk ref-v3 direkte; ingen ny generering trengs.
+
+**Slettes** etter at ingen kode peker på dem: `public/feed/snøfall-night.png` (ubrukt), og v1/v2-restene `assets/locations/snofall-landsby/{still-storm,still-dag24,nokkelramme}.jpg` og `assets/characters/julius/ref-v2*.jpg`. Sjekk først at ingen skript i `assets/bin/` bruker dem.
