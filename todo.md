@@ -1,5 +1,30 @@
 # NisseKomm — Prosjektplan Sesong 2 (2026): Operasjon Spøkelseskode
 
+## Arbeidsrekkefølge for sesong 2026
+
+Hvert steg låses før det neste starter. Endringer i et låst steg krever et eksplisitt ja, og vi sjekker hvilke senere steg som påvirkes. Ingen video lages før manuset er låst.
+
+| #   | Steg                                                                                             | Avhenger av                     | Låser                                   | Mål         |
+| --- | ------------------------------------------------------------------------------------------------ | ------------------------------- | --------------------------------------- | ----------- |
+| 0   | Lås historien: storyboard, lukk hull, uavhengig gjennomgang, godkjenning                         | –                               | `docs/historie-2026.md`                 | 12. nov     |
+| 1   | Gåter og praktisk: koder, brikke i huset og på skjermen, hvem gjør hva, materialer               | 0                               | Gåtedesign, innkjøps- og utskriftsliste | 15. nov     |
+| 2   | All tekst: 24 Julius-manus, 24 Rampenisse-radiomanus, e-post, filer, Kuldes meldinger, språkvask | 1                               | Ferdige manus                           | 18. nov     |
+| 3   | App-kode: fjern flerbruker, ett eventyr, tre merker, video i stedet for dagbok, frost, LiveCam   | 0 (dataformat), parallelt med 2 | Fungerende app med plassholdere         | 22. nov     |
+| 4   | Media: Julius-videoer, TV-loops, musikk (se `assets/`)                                           | 2 og grafikk                    | Ferdige filer i `public/`               | 25. nov     |
+| 5   | Integrasjon og flytting hjem (fase 5)                                                            | 3 og 4                          | –                                       | 28. nov     |
+| 6   | Generalprøve alle 24 dager, innkjøp og utskrifter klare                                          | alt                             | –                                       | 29.–30. nov |
+
+- [ ] Steg 0: Lås historien
+- [ ] Steg 1: Gåter og praktisk gjennomgang
+- [ ] Steg 1b: Bestill og skriv ut fysisk materiell
+- [ ] Steg 2: All tekst låst
+- [ ] Steg 3: App-kode
+- [ ] Steg 4: Media produsert
+- [ ] Steg 5: Integrasjon og flytting hjem
+- [ ] Steg 6: Generalprøve
+
+---
+
 ## Fase 1: Grunnlag, 2026-historie og CRT-moduler (Fullført i PR #9)
 
 - [x] Arkiver 2025-sesongen under `src/data/archive/2025/`
