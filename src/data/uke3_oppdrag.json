@@ -26,7 +26,6 @@
       "id": "spokelseskoden",
       "phase": 13
     },
-    "finalized": true,
     "julius_ps": "Nissemor sendte blomster til begravelsen. Kunstige, så de holder til neste år. Kulde så på lysene i natt uten å ta noe; Orakelet sier det bare så. Jeg vet heller ikke hva jeg skal mene om det."
   },
   {
@@ -53,7 +52,6 @@
       "id": "spokelseskoden",
       "phase": 14
     },
-    "finalized": true,
     "julius_ps": "Winter har aldri fått en fugl hun ikke har sendt. Hun sover ikke i natt. Serviettene deres er visst fugler nå, alle sammen; Rampenissen kaller det «en flokk». Brevfugler er åpen, og den blå fuglen vises på radaren."
   },
   {
@@ -85,7 +83,6 @@
       "symbolColor": "red",
       "description": "Rød sol funnet ved sirupskålen på benken"
     },
-    "finalized": true,
     "julius_ps": "IQ sa én setning i kveld: «Jeg glemte å slå det av.» Så gikk han ut til antennen og ble stående. Les notatboken sammen; Rampenissen sitter i stua og hører på, han også. Og sirupen: Nissemor sier man skal stå _ved_ gryta, ikke _i_ den."
   },
   {
@@ -120,7 +117,6 @@
       "frost_effekt": -20,
       "belønning_tekst": "LYKTEN ER SETT. Orakelet melder om et lys på Landås-siden som ikke var der før. Frostgraden faller 20 %."
     },
-    "finalized": true,
     "julius_ps": "Winter fant skiltet sitt igjen. Det lå under haugen. Rampenissen satt i brødboksen med lokket på hodet og kalte det «ferdig ryddet». NisseStats er åpen fra i kveld.",
     "julius_ps_bonus": "Winter fant skiltet sitt igjen. Det lå under haugen. Orakelet ser et lys på Landås-siden som ikke var der før, og det gjør noe annet også: det er stillere på 85,0. Rampenissen satt i brødboksen med lokket på hodet."
   },
@@ -148,7 +144,6 @@
       "id": "spokelseskoden",
       "phase": 17
     },
-    "finalized": true,
     "julius_ps": "Grotten svarte. Jeg har ikke hørt fra den på et år. Kosedyrene krevde pepperkaker for Rampenissen; Nissemor sier dere bør betale, hun har sett løsepengebrevet. Jeg står i vinduet i natt også.",
     "julius_ps_bonus": "Grotten svarte. Orakelet mener den svarte på to lykter: én ved tjernet og én lenger sør, i et vindu. Kosedyrene krevde pepperkaker for Rampenissen; Nissemor sier dere bør betale. Jeg står i vinduet i natt også."
   },
@@ -197,7 +192,6 @@
       "rewardText": "DEKRYPTERT. Trixters rutekart for julenatt ligger i DEKRYPTERT/stjernetegn.txt. Julius har tegnet en sirkel på det.",
       "unlocksFiles": ["stjernetegn.txt"]
     },
-    "finalized": true,
     "julius_ps": "Trixter vil fly utenom grotten julenatt. Jeg sa nei. Les rutekartet; jeg har tegnet en sirkel på det. Og sjokoladerosinene: Rudolf benekter alt.",
     "julius_ps_bonus": "Trixter vil fly utenom grotten julenatt. Jeg sa nei. Orakelet sier lyset i vinduet deres fortsatt står på; det er det eneste i Bergen som peker rett mot nord. Og sjokoladerosinene: Rudolf benekter alt."
   }

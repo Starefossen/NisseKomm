@@ -24,7 +24,6 @@
       "id": "spokelseskoden",
       "phase": 1
     },
-    "finalized": true,
     "julius_ps": "Rampenissen sov i fruktskålen deres. Med en banan som pute. Jeg har sett ham sove i verre ting. Linjen bærer nå; takk for at dere kom."
   },
   {
@@ -49,7 +48,6 @@
       "id": "spokelseskoden",
       "phase": 2
     },
-    "finalized": true,
     "julius_ps": "Tre sikringer. Én kaffetrakter. Én IQ. Rampenissen satt i sukkerskålen da jeg ringte, og påsto at det var «for å roe nervene». Kanal 2 har strøm igjen."
   },
   {
@@ -83,7 +81,6 @@
       "symbolColor": "green",
       "description": "Grønt hjerte funnet i vinduskarmen på badet"
     },
-    "finalized": true,
     "julius_ps": "Tannkrem på speilet. Hele tuben. Nissemor spør om dere har mer. Orakelet så glimtet på 85,0 samtidig som dere; vi er tre som har sett det nå. Pil sier grønt er håpets farge; derfor er hjertet grønt."
   },
   {
@@ -105,7 +102,6 @@
       "files": [],
       "modules": ["NISSEKRYPTO"]
     },
-    "finalized": true,
     "julius_ps": "Rudolf er hjemme og tørr. Rampenissen har visst lånt pappas solbriller. Innendørs. I desember. Ikke spør meg.",
     "eventyr": {
       "id": "spokelseskoden",
@@ -135,7 +131,6 @@
       "id": "spokelseskoden",
       "phase": 5
     },
-    "finalized": true,
     "julius_ps": "Marshmallows i sofaen, marshmallows i gardinene, én bamse med plaster. Rampenissen kaller det «forsvar av linjen». Winter er lettet over at fuglen kom fram; hun sender alt kryptert fra nå."
   },
   {
@@ -170,7 +165,6 @@
       "symbolColor": "red",
       "description": "Rødt hjerte funnet ved papprullen i gangen"
     },
-    "finalized": true,
     "julius_ps": "Snøengler i mel. På kjøkkenbordet. Nissemor sier det er sløsing, men hun smilte da hun sa det. Lysene rundt antennen brenner til 20. desember; IQ byttet batterier to ganger. Rødt hjerte er varme, sier Pil; derfor er dagens kort rødt."
   }
 ]

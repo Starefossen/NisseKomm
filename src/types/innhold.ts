@@ -46,11 +46,6 @@ export interface BadgeData {
 // Eventy System (from eventyr.json)
 // ============================================================
 
-interface Foreldreveiledning {
-  sammendrag: string;
-  tips: string[];
-}
-
 interface EventyrBeløning {
   type: "badge";
   badge_id: string;
@@ -66,13 +61,11 @@ export interface Eventyr {
   id: string;
   navn: string;
   beskrivelse: string;
-  tema: string[];
   farge: string;
   ikon: string;
   første_opplåsingsdag: number;
   belønning: EventyrBeløning;
   milepaeler: Milepael[];
-  foreldreveiledning: Foreldreveiledning;
 }
 
 export interface EventyrData {
@@ -187,9 +180,6 @@ export interface Oppdrag {
   oppsett_tid: "enkel" | "moderat" | "avansert"; // Setup time: 5min | 15min | 30min+
   materialer_nødvendig: string[]; // Items parents need to acquire
   beste_rom: string; // Suggested room/location for mischief
-
-  // QA/Production status
-  finalized: boolean; // true = reviewed and ready for production, false = subject to change
 
   // Optional: Basic features
   hendelse?: string; // Optional public event description (shows on calendar)
