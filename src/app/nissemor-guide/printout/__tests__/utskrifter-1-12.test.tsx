@@ -104,7 +104,11 @@ const SIDER: [
   [
     "dag03-frostlapp",
     Frostlapp3,
-    { har: ["R", "S", "ETTER KODEN – IQ"], runer: ["R", "S"], ikke: "PRISME" },
+    {
+      har: ["R", "S", "ETTER KODEN – IQ"],
+      runer: ["P", "R", "I", "S", "M", "E"],
+      ikke: "PRISME",
+    },
   ],
   [
     "dag04-skokort",
@@ -125,7 +129,7 @@ const SIDER: [
   [
     "dag07-frostlapp",
     Frostlapp7,
-    { har: [], runer: ["L", "E"], ikke: "KULDE" },
+    { har: [], runer: ["K", "U", "L", "D", "E"], ikke: "KULDE" },
   ],
   [
     "dag08-kretskort",

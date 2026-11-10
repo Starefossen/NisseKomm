@@ -18,7 +18,12 @@ export default function Dag03Frostlapp() {
             className={`${A6} flex flex-col items-center justify-center gap-[10mm]`}
           >
             <div className="text-4xl">FROSTLAPP</div>
-            <Ruter celler={CELLER} runer={RUNER} nummer storrelse="w-[13mm] h-[18mm]" />
+            <Ruter
+              celler={CELLER}
+              runer={RUNER}
+              nummer
+              storrelse="w-[13mm] h-[18mm]"
+            />
           </CutCard>
           <CutCard
             className={`${A6} flex flex-col items-center justify-center gap-[10mm]`}

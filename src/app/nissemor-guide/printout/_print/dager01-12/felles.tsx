@@ -77,10 +77,7 @@ export function Ruter({
           )}
           {(runer ? runer[i] : typeof c === "string" && c) && (
             <span className="absolute top-[1mm] right-[1mm]">
-              <Frostrune
-                letter={runer ? runer[i]! : (c as string)}
-                size={12}
-              />
+              <Frostrune letter={runer ? runer[i]! : (c as string)} size={12} />
             </span>
           )}
           {c ?? <Iskrystall size={28} />}
