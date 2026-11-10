@@ -121,6 +121,17 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [ ] **Flere tilfeldige hendelser og tid på døgnet** for Skjerm (morgen, dag, Lucia, blå brevfugl), jf. avtalen med Varden.
 - [ ] **TypeScript 7** når typescript-eslint støtter det.
 
+## Etterbehandling av media før publisering
+
+- [ ] **Julius-videoer (pågår, annen agent komprimerer nå):** komprimer til 8–12 MB per innslag (H.264, faststart) og sjekk at lyd og bilde er i synk. Lag plakatbilde `dag-NN.jpg` (bilde ved 3 s) ved siden av hver mp4. Plakatbildet lages på nytt når en video byttes, også i `assets/bin/julius-dag.py --upload`.
+- [ ] **Snøfall TV-loops og hendelser:** komprimer uten å ødelegge loopen (samme lengde, første og siste bilde med SSIM ≥ 0,97 mot `nokkelramme-rolig.jpg`). Ingen lydspor.
+- [ ] **Rampenissen-lyd:** normaliser lydstyrken (EBU R128, -16 LUFS), samme tonehøyde og dialekt på alle 24, MP3 128k mono.
+- [ ] **Musikk (NisseMusikk):** normaliser lydstyrken og sjekk at alle spor i manifestet finnes.
+- [ ] **Stillbilder og bilder i `public/`:** komprimer (JPEG/WebP), bruk riktig størrelse for visning og fjern ubrukte filer.
+- [ ] **Utskrifter:** testskriv ut dag 10, 12 og 14 (rødfilter, tosidig, brettark). Bekreft sidetallet mot tabellen i `docs/gaater-2026.md` (dag 12 er tredelt, dag 15 og 18 gir 2 sider).
+- [ ] **Mediebiblioteket:** last alt opp til PVC-en (`MEDIA_DIR`) med riktige stier. Kontroller manifestet, at hver fil svarer 200/206 med Range, og at ingen mediefil ligger i git.
+- [ ] **Sluttsjekk:** gjennomspilling på iPad (Safari) over hjemmenettet med de komprimerte filene.
+
 ## Fase 5: Flytt til hjemmeklyngen (krav fra Varden, Starefossen/homelab#22)
 
 Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxScale=1` 1. desember–6. januar, 200Mi/512Mi, PostgreSQL (CloudNativePG), CiliumNetworkPolicy, Secret). NisseKomm-repoet er vårt. Varden rører det ikke.
