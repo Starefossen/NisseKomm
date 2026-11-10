@@ -38,6 +38,8 @@ export const UTSKRIFTER = [
   "diplom",
   "dag14-serviettfugl",
   "dag17-losepengebrev",
+  "dag13-gravskilt",
+  "dag20-fortskilt",
 ] as const;
 
 /** Printouts that already have their own page. */
