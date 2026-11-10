@@ -18,3 +18,17 @@ a secret word is a real or bonus code.
 | `musikk.skjultSpor`     | `path`, `tittel`, `etterLøstDag` | Hidden NisseMusikk track once that day is solved and the file exists in the media library                                                             |
 | `nissenet.filer`        | `navn`, `passord?`               | NisseNet MORO folder; not counted as hemmeligheter                                                                                                    |
 | `nissenet.feilPassord`  |                                  | Rotating reply to a wrong password                                                                                                                    |
+
+## Slang til sjekk
+
+Rampenissen prøver å høres kul ut og bommer litt med vilje. Ordene under er
+brukt i `tidbits.json`; sjekk med guttene om de fortsatt er i bruk (desember
+2026). «seks sju» er allerede brukt i radiomanuset (dag 20).
+
+- seks sju (terminal, fra dag 20)
+- sigma (idle dag 8, terminal fra dag 8; også i radiomanuset dag 8 og 20)
+- skibidi (terminal)
+- rizz (idle dag 17)
+- aura (dagbok, dag 8-innslaget)
+- cooked (feil kode, fra dag 8)
+- goated (kalender dag 14)

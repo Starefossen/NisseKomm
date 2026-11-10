@@ -4,11 +4,52 @@
     "linjer": [
       {
         "fraDag": 1,
-        "tekst": "Hallo? Er det noen der? Jeg gjemmer meg ikke, jeg bare titter."
+        "tekst": "Hallo? E det nån der? Æ gjømme mæ ikkje, æ bare titte."
+      },
+      { "fraDag": 2, "tekst": "Æ ser dæ. Du ser mæ. Da e vi skuls." },
+      {
+        "fraDag": 3,
+        "tekst": "Har du sett lua mi? Nei? Den va på hodet mitt. Fant den."
       },
       {
         "fraDag": 5,
-        "tekst": "Psst. Jeg har spist opp alle pepperkakene. Ikke si det til Nissemor."
+        "tekst": "Psst. Æ har spist opp alle pepperkakan. Ikkje si det til Nissemor."
+      },
+      {
+        "fraDag": 8,
+        "tekst": "Psst. Æ e sigma no. Æ trur det betyr at æ har skilt."
+      },
+      {
+        "fraDag": 10,
+        "tekst": "E det nån som har en bolle? Æ spør for en venn. Vennen e mæ."
+      },
+      {
+        "fraDag": 13,
+        "tekst": "Hallo? Du har sitte stille lenge. E du en statue? Blink vess du e statue."
+      },
+      {
+        "fraDag": 15,
+        "tekst": "Æ titte bare. Æ gjør ikkje nåkka. Det va ikkje mæ i stad heller."
+      },
+      {
+        "fraDag": 17,
+        "tekst": "Rizz, sei dem store ungan. Æ trur det e ei slags vaffel. Har vi vaffel?"
+      },
+      {
+        "fraDag": 19,
+        "tekst": "Æ øve på å vær usynlig. Kossen går det? Ikkje svar."
+      },
+      {
+        "fraDag": 21,
+        "tekst": "Det e kaldt ute. Det e varmt her. Æ blir her. Du også, sjø."
+      },
+      {
+        "fraDag": 22,
+        "tekst": "Æ har gjømt nåkka. Æ hugse ikkje kor. Det e ikkje viktig. Det va smula."
+      },
+      {
+        "fraDag": 24,
+        "tekst": "God jul. Æ har sove i fruktskåla igjen. Sirkelen e slutta."
       }
     ]
   },
@@ -21,7 +62,7 @@
       },
       {
         "fraDag": 1,
-        "ord": ["RAMPENISSEN"],
+        "ord": ["RAMPENISSEN", "RAMPEN"],
         "tekst": "Det er meg! Men jeg er ikke en kode. Jeg er mye bedre enn en kode."
       },
       {
@@ -38,6 +79,76 @@
         "fraDag": 1,
         "ord": ["KAKAO"],
         "tekst": "Kakaomaskinen er tom. Rampenissen nekter for alt."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["NISSEMOR"],
+        "tekst": "Nissemor sier: Har du spist? Spis først. Så kan du kode."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["KLEMENTIN"],
+        "tekst": "Klementin godkjent. Skrell oppdaget i tastaturet. Igjen."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["SKIBIDI"],
+        "tekst": "Rampenissen: «Skibidi! Det betyr... nåkka. Æ sei det med trykk.»"
+      },
+      {
+        "fraDag": 1,
+        "ord": ["GRØT", "GROT"],
+        "tekst": "Terminalen har fått grøt på seg. Den sier takk."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["RUDOLF", "REINSDYR"],
+        "tekst": "Rudolf svarer ikke. Rudolf tygger."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["TRIXTER"],
+        "tekst": "Trixter sier ingenting. Trixter blunker. Sleden har en ny bulk."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["PIL"],
+        "tekst": "Pil spør: Er dette riktig? Og dette? Og dette? Julius sier ja til alle tre."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["WINTER"],
+        "tekst": "Winter: Henvendelsen er mottatt, nummerert og arkivert. Nr. 4 112."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["SNØFALL", "SNOFALL"],
+        "tekst": "Snøfall ligger der det alltid har ligget. Rett bak der du ikke ser."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["HEI", "HALLO"],
+        "tekst": "Hallo! Terminalen vinker. Du ser det ikke, men den gjør det."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["PASSORD"],
+        "tekst": "Passordet er hemmelig. Så hemmelig at terminalen har glemt det."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["HANNA", "HÅKON", "KRISTIAN"],
+        "tekst": "Navnet er kjent i Snøfall. Winter har det i boka si, skrevet med gullpenn."
+      },
+      {
+        "fraDag": 8,
+        "ord": ["SIGMA"],
+        "tekst": "Rampenissen: «Sigma! Det e mæ. Æ har skilt på det.»"
+      },
+      {
+        "fraDag": 20,
+        "ord": ["SEKS SJU", "67"],
+        "tekst": "Fort-passord godkjent. Fortet er fullt. Vent i gangen."
       }
     ],
     "feilKode": [
@@ -46,7 +157,42 @@
       {
         "fraDag": 1,
         "tekst": "Rampenissen prøvde den i går også. Det gikk ikke da heller."
-      }
+      },
+      {
+        "fraDag": 1,
+        "tekst": "IQ: Negativ. Men fin innsats. Det står ikke i loggen."
+      },
+      { "fraDag": 1, "tekst": "Terminalen later som den ikke så det." },
+      { "fraDag": 1, "tekst": "Nei. Men tastaturet likte lyden." },
+      { "fraDag": 2, "tekst": "Rudolf nøs. Det var ikke et ja." },
+      {
+        "fraDag": 2,
+        "tekst": "Winter har notert forsøket. Med blyant, ikke penn."
+      },
+      { "fraDag": 3, "tekst": "Den der gikk rett i snøfonna." },
+      { "fraDag": 4, "tekst": "Nesten like feil som Rampenissens frokost." },
+      {
+        "fraDag": 5,
+        "tekst": "Terminalen teller til tre og prøver å glemme."
+      },
+      { "fraDag": 6, "tekst": "Pil sier: Jeg trodde også det! Så nei." },
+      {
+        "fraDag": 7,
+        "tekst": "Nissemor sier: Pust. Prøv igjen. Spis en bolle først."
+      },
+      {
+        "fraDag": 8,
+        "tekst": "Rampenissen: «Den va cooked. Det betyr kokt. Som grøt.»"
+      },
+      {
+        "fraDag": 9,
+        "tekst": "Rampenissen: «Æ har tasta verre. Mykje verre.»"
+      },
+      {
+        "fraDag": 11,
+        "tekst": "Den koden er gått ut på dato. Eller aldri inn."
+      },
+      { "fraDag": 14, "tekst": "Feil, men med stil. Trixter nikket." }
     ]
   },
   "tv": [
@@ -55,6 +201,40 @@
       "frekvens": 97.5,
       "tekst": "... og nå været for nisser: snø, mer snø, og litt snø til ...",
       "bilde": "feed/snøfall-day.png"
+    },
+    {
+      "fraDag": 1,
+      "frekvens": 81.5,
+      "tekst": "Rampenissen synger. Det skal være Musevisa. Det er i tre tonearter samtidig."
+    },
+    {
+      "fraDag": 2,
+      "frekvens": 88.0,
+      "tekst": "IQ: «Test, test. Én, to. Er denne på? Den er på. Det var ikke meningen.»",
+      "bilde": "feed/iq-verksted.png"
+    },
+    {
+      "fraDag": 4,
+      "frekvens": 93.5,
+      "tekst": "Knask. Knask. Knask. Et reinsdyr tygger på mikrofonen. Rudolf. Slipp."
+    },
+    {
+      "fraDag": 6,
+      "frekvens": 83.5,
+      "tekst": "Nissemor leser kveldshistorie for noen som allerede sover. Hun leser ferdig likevel.",
+      "bilde": "feed/landsby-rolig.jpg"
+    },
+    {
+      "fraDag": 9,
+      "frekvens": 99.0,
+      "tekst": "Værmelding fra Nordpolen: minus mye. Føles som minus enda mer. Ta på lue.",
+      "bilde": "feed/snøfall-storm.png"
+    },
+    {
+      "fraDag": 14,
+      "frekvens": 91.5,
+      "tekst": "Winter leser dagens post høyt. 4 112 brev. Hun leser alle emnefeltene. Alle.",
+      "bilde": "feed/julius-kontor.jpg"
     }
   ],
   "spam": [
@@ -69,6 +249,72 @@
       "fra": "REINSDYR-SALG",
       "emne": "Brukt slede, nesten ikke krasjet",
       "tekst": "Én eier. Har landet på taket bare 400 ganger. Pris: tre pepperkaker."
+    },
+    {
+      "fraDag": 4,
+      "fra": "IQ-LABS",
+      "emne": "NY! Selvrørende grøtskje (beta)",
+      "tekst": "Rører grøten selv. Rører også i alt annet. Ikke sett den nær katten. Vi har ikke katt. Likevel."
+    },
+    {
+      "fraDag": 6,
+      "fra": "TRIXTERS TRYLLEBUTIKK",
+      "emne": "Garantert ikke-magiske tryllestaver",
+      "tekst": "Hundre prosent pinne. Null prosent magi. Fungerer fint som pinne. Trixter blunker ikke når han sier det, og det er litt magisk."
+    },
+    {
+      "fraDag": 8,
+      "fra": "RUDOLFS FANKLUBB",
+      "emne": "Bli medlem i Rudolfs fanklubb",
+      "tekst": "Medlemskap koster ett eple. Rudolf åpner posten selv. Du får ikke eplet tilbake."
+    },
+    {
+      "fraDag": 9,
+      "fra": "WINTER (AUTOSVAR)",
+      "emne": "Autosvar: Jeg er på kontoret",
+      "tekst": "Jeg er på kontoret. Jeg er alltid på kontoret. Denne meldingen er sendt automatisk, men jeg leste den likevel."
+    },
+    {
+      "fraDag": 10,
+      "fra": "JULEMUSIKK UBEGRENSET",
+      "emne": "Hør Rampenissen synge, hele døgnet",
+      "tekst": "Første time gratis. Andre time betaler vi deg for å fortsette."
+    },
+    {
+      "fraDag": 12,
+      "fra": "RAMPENISSEN (FEIL KNAPP)",
+      "emne": "til alle: IKKE LES",
+      "tekst": "Passordet til snackkartet er TØFFEL. Ikke si det til noen. Vent. Gikk denne til ALLE? Hvordan sletter man?"
+    },
+    {
+      "fraDag": 14,
+      "fra": "NISSEMORS KJØKKEN",
+      "emne": "Oppskrift: Boller uten bolle",
+      "tekst": "Steg 1: Ta fram en bolle. Steg 2: Rampenissen har tatt bollen. Steg 3: Lag grøt i stedet."
+    },
+    {
+      "fraDag": 16,
+      "fra": "PIL",
+      "emne": "Spørsmål (3 stk)",
+      "tekst": "Hva er det beste i desember? Hvorfor? Kan jeg få svaret før Julius? Takk. Hilsen Pil. PS: Dette ble fire spørsmål."
+    },
+    {
+      "fraDag": 18,
+      "fra": "SNØFALL SLEDEPARKERING",
+      "emne": "Bot: feilparkert slede",
+      "tekst": "Sleden sto på taket. Taket er ikke parkering. Gebyr: én klem. Betales til Nissemor."
+    },
+    {
+      "fraDag": 19,
+      "fra": "ORAKELET",
+      "emne": "Orakelet har sett framtiden din",
+      "tekst": "Du kommer til å spise noe godt snart. Orakelet er helt sikker. Orakelet har også sett kakeboksen."
+    },
+    {
+      "fraDag": 21,
+      "fra": "IQ-LABS",
+      "emne": "LANSERING: Turbo-sparkstøtting",
+      "tekst": "Fire hastigheter: sakte, fort, altfor fort og unnskyld. Bremsen kommer i versjon 2."
     }
   ],
   "kalender": [
@@ -77,11 +323,159 @@
       "dag": 1,
       "tekst": "Bak luken ligger en smule. Rampenissen spiste resten."
     },
-    { "fraDag": 2, "dag": 2, "tekst": "Det lukter litt brent grøt her." }
+    { "fraDag": 2, "dag": 2, "tekst": "Det lukter litt brent grøt her." },
+    {
+      "fraDag": 3,
+      "dag": 3,
+      "tekst": "Snøfall-fakta: Orakelet har aldri sagt «vet ikke». Det har sagt «hm» i tre timer."
+    },
+    {
+      "fraDag": 4,
+      "dag": 4,
+      "tekst": "Rampenissen innrømmer: solbrillene var ikke hans. Pilen var det."
+    },
+    {
+      "fraDag": 5,
+      "dag": 5,
+      "tekst": "Snøfall-fakta: Brevfugler brettes alltid med venstre hånd. Ingen vet hvorfor."
+    },
+    {
+      "fraDag": 6,
+      "dag": 6,
+      "tekst": "Rampenissen: «Melet e rydda. Nesten. Golvet e kvitare enn før.»"
+    },
+    {
+      "fraDag": 7,
+      "dag": 7,
+      "tekst": "Lua er tint. Vottene er fortsatt litt stive. Rampenissen også."
+    },
+    {
+      "fraDag": 8,
+      "dag": 8,
+      "tekst": "Rampenissen innrømmer: tårnet av frokostblanding hadde ikke byggetillatelse."
+    },
+    {
+      "fraDag": 9,
+      "dag": 9,
+      "tekst": "Snøfall-fakta: Pil har telt alle iskrystallene i grotta. Han mistet tellingen på ti tusen. Tre ganger."
+    },
+    {
+      "fraDag": 10,
+      "dag": 10,
+      "tekst": "Rampenissen: «Fargan kjem tilbake. Æ har sett dem. Dem va bak sofaen.»"
+    },
+    {
+      "fraDag": 11,
+      "dag": 11,
+      "tekst": "Snøfall-fakta: Antennen ved tjernet er bygd av tre gamle sleder og én teskje."
+    },
+    {
+      "fraDag": 12,
+      "dag": 12,
+      "tekst": "Rampenissen hørte sukket også. Han sa det til bamsene. De trodde ham."
+    },
+    {
+      "fraDag": 13,
+      "dag": 13,
+      "tekst": "Snøfall-fakta: Lussekattene til Nissemor har aldri blitt brent. De tør ikke."
+    },
+    {
+      "fraDag": 14,
+      "dag": 14,
+      "tekst": "Rampenissen brettet en brevfugl. Den ble en brevklump. «Goated», sa han. Den fløy nedover."
+    },
+    {
+      "fraDag": 15,
+      "dag": 15,
+      "tekst": "IQ sa én setning i dag. Det er rekord. Han pleier å si null eller førti."
+    },
+    {
+      "fraDag": 16,
+      "dag": 16,
+      "tekst": "Rampenissen innrømmer: pakken merket «IKKE RIST» ble ristet. Litt. For sikkerhets skyld."
+    },
+    {
+      "fraDag": 17,
+      "dag": 17,
+      "tekst": "Snøfall-fakta: Det grønne lyset over fjellet ses best på ett bein. Sier Rampenissen."
+    },
+    {
+      "fraDag": 18,
+      "dag": 18,
+      "tekst": "Rampenissen: «Æ sto ikkje på taket. Æ sto ved sia av taket. I lufta.»"
+    },
+    {
+      "fraDag": 19,
+      "dag": 19,
+      "tekst": "Rudolf har spist opp beviset. Rudolf spiser alltid opp beviset."
+    },
+    {
+      "fraDag": 20,
+      "dag": 20,
+      "tekst": "Rampenissen: «Fortet har plass til tre. Fire vess en av dem e Hanna.»"
+    },
+    {
+      "fraDag": 21,
+      "dag": 21,
+      "tekst": "Snøfall-fakta: I natt var årets lengste natt. Rampenissen sov gjennom hele. Snorket i D-dur."
+    },
+    {
+      "fraDag": 22,
+      "dag": 22,
+      "tekst": "Winter har telt alt i Snøfall. Alt. Også Rampenissen. Han ble telt som 1,5."
+    },
+    {
+      "fraDag": 23,
+      "dag": 23,
+      "tekst": "Rampenissen: «Æ veit ikkje ka som ligg under treet. Æ har ikkje titta. Æ har bare lytta.»"
+    },
+    {
+      "fraDag": 24,
+      "dag": 24,
+      "tekst": "God jul. Rampenissen har lagt seg i fruktskålen igjen. Det var der det begynte."
+    }
   ],
   "stats": [
     { "fraDag": 16, "navn": "SOKKER BORTE I VASKEN", "verdi": "1 337" },
-    { "fraDag": 16, "navn": "NISSELUER PÅ FEIL HODE", "verdi": "12 %" }
+    { "fraDag": 16, "navn": "NISSELUER PÅ FEIL HODE", "verdi": "12 %" },
+    {
+      "fraDag": 16,
+      "navn": "PEPPERKAKER SPIST AV RAMPENISSEN",
+      "verdi": "ukjent (han spiste tellingen)"
+    },
+    { "fraDag": 16, "navn": "SLEDER PARKERT PÅ TAK", "verdi": "41 %" },
+    {
+      "fraDag": 16,
+      "navn": "GANGER IQ HAR SAGT «NESTEN FERDIG»",
+      "verdi": "9 004"
+    },
+    { "fraDag": 16, "navn": "KAKAO DRUKKET I SNØFALL", "verdi": "3 badekar" },
+    {
+      "fraDag": 17,
+      "navn": "BREVFUGLER SOM FLØY FEIL VEI",
+      "verdi": "2 (begge het Bjarne)"
+    },
+    { "fraDag": 18, "navn": "LENGSTE SKJEGG", "verdi": "Julius, 1,5 kjelker" },
+    {
+      "fraDag": 19,
+      "navn": "SNØBALLER KASTET PÅ RUDOLF",
+      "verdi": "0 (han kastet først)"
+    },
+    {
+      "fraDag": 20,
+      "navn": "GANGER ORAKELET HAR SAGT «HM»",
+      "verdi": "flere enn snøfnugg"
+    },
+    {
+      "fraDag": 21,
+      "navn": "LUER FUNNET I FRYSEREN",
+      "verdi": "1 (hans egen)"
+    },
+    {
+      "fraDag": 22,
+      "navn": "BOLLER NISSEMOR HAR BAKT",
+      "verdi": "nok. Alltid nok."
+    }
   ],
   "musikk": {
     "skjultSpor": {
@@ -95,20 +489,52 @@
   "nissenet": {
     "filer": [
       {
-        "fraDag": 2,
-        "navn": "rampenissens_handleliste.txt",
-        "tekst": "1. Lim\n2. Mer lim\n3. Noe å lime med"
+        "fraDag": 3,
+        "navn": "slem-lista.txt",
+        "tekst": "RAMPENISSENS SLEM-LISTE (uoffisiell)\n\nJulius sier at lista hans ikke har noen slem side.\nDa må noen andre ha en. Her er den.\n\n1. Rampenissen (sukkerskålen)\n2. Rampenissen (speilet)\n3. Rampenissen (fruktskålen, men det var landingen sin feil)\n4. Kaffetrakteren til IQ (mistenkt)\n5. Rudolf (tygger alt)\n6. Rampenissen igjen, for å ha skrevet denne lista\n\nSnill side: se Julius. Han har den."
       },
       {
-        "fraDag": 4,
-        "navn": "IKKE_LES_DENNE.txt",
-        "passord": "grøt",
-        "tekst": "Du leste den likevel. Rampenissen er stolt av deg."
+        "fraDag": 2,
+        "tilDag": 8,
+        "navn": "rampenissens_dagbok.txt",
+        "tekst": "RAMPENISSENS DAGBOK\n(ikke les, ikke vis til bamsene)\n\nDag 1: Landet. Mykt. Gult. Sier ikke mer.\n\nDag 2: Det smalt i Snøfall. Trengte noe søtt. Sovnet i skåla. Ingen så det. Alle så det."
+      },
+      {
+        "fraDag": 9,
+        "tilDag": 15,
+        "navn": "rampenissens_dagbok.txt",
+        "tekst": "RAMPENISSENS DAGBOK\n(ikke les, ikke vis til bamsene)\n\nDag 1: Landet. Mykt. Gult. Sier ikke mer.\n\nDag 2: Det smalt i Snøfall. Trengte noe søtt. Sovnet i skåla. Ingen så det. Alle så det.\n\nDag 5: Krig med bamsene. Begge lag vant. Én bamse har plaster. Jeg har dårlig samvittighet og marshmallow i håret.\n\nDag 8: Navnet er ute. Kulde. Jeg sa det ikke på radio. Jeg sier det her, for dagboka sladrer ikke. Bygde et tårn. Det hadde aura. Aura er en slags lue, tror jeg."
+      },
+      {
+        "fraDag": 16,
+        "tilDag": 21,
+        "navn": "rampenissens_dagbok.txt",
+        "tekst": "RAMPENISSENS DAGBOK\n(ikke les, ikke vis til bamsene)\n\nDag 1: Landet. Mykt. Gult. Sier ikke mer.\n\nDag 2: Det smalt i Snøfall. Trengte noe søtt. Sovnet i skåla. Ingen så det. Alle så det.\n\nDag 5: Krig med bamsene. Begge lag vant. Én bamse har plaster. Jeg har dårlig samvittighet og marshmallow i håret.\n\nDag 8: Navnet er ute. Kulde. Jeg sa det ikke på radio. Jeg sier det her, for dagboka sladrer ikke. Bygde et tårn. Det hadde aura. Aura er en slags lue, tror jeg.\n\nDag 12: Hørte et sukk i isen. Ingen tror meg. Bamsene tror meg. Det holder.\n\nDag 15: Satt i stua da de leste notatboka. Det er ikke en fiende. Det er bare noen som har vært alene lenge. Jeg kjenner den følelsen fra garnkurven."
+      },
+      {
+        "fraDag": 22,
+        "navn": "rampenissens_dagbok.txt",
+        "tekst": "RAMPENISSENS DAGBOK\n(ikke les, ikke vis til bamsene)\n\nDag 1: Landet. Mykt. Gult. Sier ikke mer.\n\nDag 2: Det smalt i Snøfall. Trengte noe søtt. Sovnet i skåla. Ingen så det. Alle så det.\n\nDag 5: Krig med bamsene. Begge lag vant. Én bamse har plaster. Jeg har dårlig samvittighet og marshmallow i håret.\n\nDag 8: Navnet er ute. Kulde. Jeg sa det ikke på radio. Jeg sier det her, for dagboka sladrer ikke. Bygde et tårn. Det hadde aura. Aura er en slags lue, tror jeg.\n\nDag 12: Hørte et sukk i isen. Ingen tror meg. Bamsene tror meg. Det holder.\n\nDag 15: Satt i stua da de leste notatboka. Det er ikke en fiende. Det er bare noen som har vært alene lenge. Jeg kjenner den følelsen fra garnkurven.\n\nDag 18: Vinden tok meg. Jeg tok tilbake. Vinden vant.\n\nDag 21: Årets mørkeste natt. Vi holdt varmen inne. Porten står åpen. Jeg sov i fortet med lua på."
+      },
+      {
+        "fraDag": 10,
+        "navn": "snackkart_HEMMELIG.txt",
+        "passord": "TØFFEL",
+        "tekst": "RAMPENISSENS SNACKKART\n(topphemmelig, ikke vis til Nissemor)\n\nX1: Bak kakeboksen. Tom. Det var meg.\nX2: Under sofaputen, venstre side. Tre pepperkaker. Nå to.\nX3: Inne i en sokk i vaskekurven. Ikke spør.\nX4: Garnkurven på loftet i Snøfall. Fra i fjor. Ikke spis.\n\nReserve: Nissemors kjøkken. Alltid åpent. Alltid nok."
       }
     ],
     "feilPassord": [
       { "fraDag": 1, "tekst": "Feil passord. Filen fniser." },
-      { "fraDag": 1, "tekst": "Nei. Prøv noe som smaker godt." }
+      {
+        "fraDag": 1,
+        "tekst": "Nei. Rampenissen rister på hodet. Lua faller av."
+      },
+      { "fraDag": 1, "tekst": "Winter: Avvist. Nummerert. Arkivert." },
+      { "fraDag": 1, "tekst": "Filen later som den ikke hørte det." },
+      {
+        "fraDag": 1,
+        "tekst": "Feil. Filen låste seg enda mer. På ordentlig? Nei."
+      }
     ]
   }
 }
