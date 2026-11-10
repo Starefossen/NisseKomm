@@ -128,7 +128,7 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [x] MCP-server
 - [x] Testoppsett og gjennomspilling
 
-- [ ] **Småfeil i medieverktøyene (fra agy-gjennomgang 10. november):** `rampenissen-tts.sh` tåler ikke `--force` først; `tv-loops.sh` ser bare `--force` som første argument; `inventar.py --media` uten verdi krasjer; `medie.py` lagrer hash av tom tekst når en manusdel mangler (bør feile); override-nøkkelen treffer ikke når filen ligger utenfor `public/`; `tv-loops.sh:9` lager aldri utdaterte loops på nytt (`pipefail` + `!` snur statusen); `medie.py` uten argumenter krasjer. Rettes når genereringen av dag 1–5 er ferdig.
+- [ ] **Småfeil i medieverktøyene (fra agy-gjennomgang 10. november):** `rampenissen-tts.sh` tåler ikke `--force` først; `tv-loops.sh` ser bare `--force` som første argument; `inventar.py --media` uten verdi krasjer; `medie.py` lagrer hash av tom tekst når en manusdel mangler (bør feile); override-nøkkelen treffer ikke når filen ligger utenfor `public/`; `tv-loops.sh:9` lager aldri utdaterte loops på nytt (`pipefail` + `!` snur statusen); `medie.py` uten argumenter krasjer; `medie.py:62` (dag 24) stopper ikke før filslutt, bør stoppe ved neste `## `. Rettes når genereringen av dag 1–5 er ferdig.
 
 ## Senere forbedringer (etter sesongen)
 
