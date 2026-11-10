@@ -51,3 +51,20 @@
 - [ ] **Finn foreldreløs kode:** Kartlegg komponenter, moduler, systemer, generatorer, API-ruter og JSON-felt som ikke lenger brukes etter at historien for 2026 er låst (for eksempel eventyr-logikk for flere parallelle historier, fjernede merker og lys/webhook-delene i `/api/home-bridge` som ikke har motpart i Varden).
 - [ ] **Slett det som er dødt:** Fjern ubrukt kode og data i stedet for å kommentere det ut. Oppdater tester og dokumentasjon (AGENTS.md, ARCHITECTURE.md, IMPLEMENTATION.md) så de stemmer med koden.
 - [ ] **Verifiser hele sesongen:** Kjør `pnpm check` og gå gjennom alle 24 dager med `mise run dev:day <dag>` for å bekrefte at alt fungerer som forventet.
+- [ ] **knip:** Ekskluder `.claude/worktrees/` så agent-worktrees ikke gir falske treff i `pnpm check`.
+- [ ] **Next.js-sikkerhetsfiks:** Oppgrader `next` og `eslint-config-next` til 16.4.6 når pakken har passert `minimum-release-age` (worktree og gren `chore/nextjs-security-upgrade` finnes).
+- [ ] **Videostørrelse:** Komprimer Julius-videoene hardere (mål: 8–12 MB per innslag; dag 1-testen ble 28 MB for 47 s).
+
+---
+
+## Fase 5: Flytt til hjemmeklyngen (etter at historie og app er klare)
+
+Plasseringen er avtalt med Varden og registrert som sak i homelab: navnerom `nissekomm`, Knative-tjeneste på `https://nissekomm.nissekomm.fn.flaatten.org`, bare på hjemmenettet. Ressurser 200Mi/50m, grense 512Mi, `minScale=maxScale=1` fra 1. desember til 6. januar. 2Gi PVC (`qnap-iscsi`) montert på `/data`. Bare DNS som utgående trafikk.
+
+- [ ] **Fjern flerbrukerstøtte:** Ingen familiekoder, ingen Sanity, ingen Resend, ingen `@vercel/analytics`. Én familie, ingen innlogging for barna. Foreldreguiden bak PIN.
+- [ ] **Lagring:** SQLite i `$DATA_DIR` (standard `/data`) i stedet for localStorage/Sanity for spilltilstand.
+- [ ] **Kjøring:** `output: "standalone"`, lytt på `$PORT` (standard 8080), legg til `GET /api/health`.
+- [ ] **Media utenfor imaget:** Musikk, videoer og loops serveres fra `$DATA_DIR`, ikke bakt inn i Docker-imaget.
+- [ ] **Ingen utgående trafikk i kjøring:** Fonter bygges inn, ingen eksterne kall.
+- [ ] **Hjemmeintegrasjon:** `GET /api/home/state` og `GET /api/home/clips/{date}` med én Bearer-nøkkel (avtalt kontrakt med Skjerm, radio-produsent og Fleet).
+- [ ] **Bygg og utrulling:** Multi-arch image (amd64 påkrevd) og manifester i `starefossen/home` med `mise run full-deploy`.
