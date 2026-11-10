@@ -42,6 +42,8 @@
     var(--kald-aksent) calc(var(--frost) * 100%)
   );
   --gold: #ffd700;
+  /* Brevfugler's blue bird: stays saturated in every theme; --cold-blue washes out in frost */
+  --bird-blue: #2f8cff;
   --christmas-red: #f0624a;
   --gray: #666666;
   /* Green only for northern lights, success blinks and LEDs */

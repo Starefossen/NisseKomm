@@ -101,7 +101,7 @@ function PikselFugl({
         <text
           x="8.5"
           y="7.6"
-          fontSize="3.4"
+          fontSize="4.2"
           textAnchor="middle"
           fill="black"
           className="font-retro"
@@ -188,7 +188,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
                   className="motion-reduce:animate-none"
                   style={{ animation: "bf-circle 9s linear infinite" }}
                 >
-                  <PikselFugl farge="var(--cold-blue)" is />
+                  <PikselFugl farge="var(--bird-blue)" is />
                 </div>
               </div>
             </div>
@@ -199,7 +199,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
               className="absolute"
               style={{ animation: `bf-home ${TINT_MS}ms ease-in-out forwards` }}
             >
-              <PikselFugl farge="var(--cold-blue)" />
+              <PikselFugl farge="var(--bird-blue)" />
             </div>
           )}
 
