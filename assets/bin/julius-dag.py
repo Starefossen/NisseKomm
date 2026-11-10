@@ -133,7 +133,7 @@ def main():
         name = f"dag{day:02d}-{i}"
         names.append(name)
         print(f"{name} ({secs} s): {line}")
-        if dry:
+        if dry or "--join-only" in sys.argv:
             continue
         clip = OUT / f"{name}.mp4"
         raw = OUT / f"{name}.raw.mp4"  # check the unfiltered audio; the radio filter hurts transcription
@@ -178,7 +178,7 @@ def main():
     n = len(segs)
     w, h = int(1280 / 1.15) // 2 * 2, int(720 / 1.15) // 2 * 2
     fc = "".join(
-        f"[{i}:v]fps=24,scale=1280:720,setsar=1" + (f",crop={w}:{h}:(iw-{w})*0.6:(ih-{h})*0.25,scale=1280:720" if i % 2 else "") + f",format=yuv420p[v{i}];"
+        f"[{i}:v]fps=24,scale=1280:720,setsar=1" + (f",crop={w}:{h}:(iw-{w})*0.6:(ih-{h})*0.25,scale=1280:720,setsar=1" if i % 2 else "") + f",format=yuv420p[v{i}];"
         f"[{i}:a]aresample=48000,aformat=channel_layouts=stereo,afade=t=in:d=0.01,afade=t=out:st={dur[i] - 0.01}:d=0.01[a{i}];"
         for i in range(n)
     ) + "".join(f"[v{i}][a{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=1[v][a]"

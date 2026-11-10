@@ -6,8 +6,8 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Type | ✓ | ⚠ | ? | ✗ |
 |---|---:|---:|---:|---:|
-| julius | 0 | 0 | 7 | 17 |
-| rampenissen | 0 | 4 | 3 | 17 |
+| julius | 2 | 0 | 7 | 15 |
+| rampenissen | 5 | 0 | 2 | 17 |
 | music | 0 | 0 | 13 | 0 |
 | tv | 0 | 0 | 23 | 0 |
 | feed | 0 | 0 | 8 | 0 |
@@ -16,8 +16,8 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| video/julius/dag-01.mp4 |  |  | ✗ |
-| video/julius/dag-02.mp4 |  |  | ✗ |
+| video/julius/dag-01.mp4 | 5.4 MB | 2026-11-10 | ✓ |
+| video/julius/dag-02.mp4 | 4.2 MB | 2026-11-10 | ✓ |
 | video/julius/dag-03.mp4 |  |  | ✗ |
 | video/julius/dag-04.mp4 |  |  | ✗ |
 | video/julius/dag-05.mp4 |  |  | ✗ |
@@ -45,11 +45,11 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| audio/rampenissen/dag-01.mp3 | 0.9 MB | 2026-11-10 | ⚠ instruksjonen ble lest opp (laget før sidefiler) |
-| audio/rampenissen/dag-02.mp3 | 0.9 MB | 2026-11-10 | ⚠ instruksjonen ble lest opp (laget før sidefiler) |
-| audio/rampenissen/dag-03.mp3 | 0.9 MB | 2026-11-10 | ⚠ instruksjonen ble lest opp (laget før sidefiler) |
-| audio/rampenissen/dag-04.mp3 | 0.7 MB | 2026-11-10 | ⚠ instruksjonen ble lest opp (laget før sidefiler) |
-| audio/rampenissen/dag-05.mp3 | 0.7 MB | 2026-11-10 | ? |
+| audio/rampenissen/dag-01.mp3 | 0.8 MB | 2026-11-10 | ✓ |
+| audio/rampenissen/dag-02.mp3 | 0.7 MB | 2026-11-10 | ✓ |
+| audio/rampenissen/dag-03.mp3 | 0.8 MB | 2026-11-10 | ✓ |
+| audio/rampenissen/dag-04.mp3 | 0.9 MB | 2026-11-10 | ✓ |
+| audio/rampenissen/dag-05.mp3 | 0.7 MB | 2026-11-10 | ✓ |
 | audio/rampenissen/dag-06.mp3 | 0.8 MB | 2026-11-10 | ? |
 | audio/rampenissen/dag-07.mp3 | 0.8 MB | 2026-11-10 | ? |
 | audio/rampenissen/dag-08.mp3 |  |  | ✗ |
