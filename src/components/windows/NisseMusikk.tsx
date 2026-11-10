@@ -38,10 +38,12 @@ function formatTime(seconds: number): string {
 
 interface NisseMusikkProps {
   onClose: () => void;
+  /** Start playing at once: the day 12 thaw (storyboard «Intensitetskurven»). */
+  autoPlay?: boolean;
 }
 
-export function NisseMusikk({ onClose }: NisseMusikkProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
+export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
+  const [isPlaying, setIsPlaying] = useState(autoPlay);
   const [currentTrack, setCurrentTrack] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -50,12 +52,10 @@ export function NisseMusikk({ onClose }: NisseMusikkProps) {
 
   const track = PLAYLIST[currentTrack];
   // Day 12: Kulde has frozen the jukebox until the day's code is in.
-  const [frozen] = useState(
-    () =>
-      getCurrentMonth() === 12 &&
-      getCurrentDay() === 12 &&
-      !GameEngine.isQuestCompleted(12),
-  );
+  const frozen =
+    getCurrentMonth() === 12 &&
+    getCurrentDay() === 12 &&
+    !GameEngine.isQuestCompleted(12);
 
   useEffect(() => {
     const audio = new Audio(encodeURI(PLAYLIST[0].src));
@@ -180,7 +180,7 @@ export function NisseMusikk({ onClose }: NisseMusikkProps) {
               SNØFALL RADIO // 8-BIT ARKIV
             </div>
             <div className="text-sm opacity-70">
-              12 EKTE CHIPTUNE-JULESANGER • LYDBØLGE-GENERATOR FOR JULESTEMNING
+              VARMEKILDEN • Musikk holder linjen varm når det er kaldt
             </div>
           </div>
           <div className="flex items-center gap-2 px-3 py-1 border-2 border-(--gold) bg-(--gold)/20">

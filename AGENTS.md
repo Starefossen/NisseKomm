@@ -178,66 +178,18 @@ NEXT_PUBLIC_BOOT_ANIMATION_DURATION=2    # 0 = skip
 NEXT_PUBLIC_MOCK_DAY=                    # 1-24 for testing
 NEXT_PUBLIC_MOCK_MONTH=                  # 1-12 for testing
 
-# Storage Backend
-NEXT_PUBLIC_STORAGE_BACKEND=localStorage  # 'localStorage' or 'sanity'
+# One family (no registration)
+KID_CODE=                                # Kids' login (three words, e.g. "snø lykt rein")
+PARENT_CODE=                             # Parent guide login
+NISSEKOMM_MODE=lan                       # 'public' (kid app only) or 'lan' (guide, dev pages)
 
-# Sanity CMS Configuration (required when STORAGE_BACKEND=sanity)
-NEXT_PUBLIC_SANITY_PROJECT_ID=            # Your Sanity project ID
-NEXT_PUBLIC_SANITY_DATASET=production     # 'production' or 'development'
-NEXT_PUBLIC_SANITY_API_VERSION=2024-11-01 # API version
-SANITY_API_TOKEN=                         # Write token (server-side only)
-
-# Email Service (Resend)
-RESEND_API_KEY=                           # Resend API key (server-side only)
-RESEND_FROM_EMAIL=                        # Sender email (default: Rampenissen <rampenissen@nissekomm.no>)
-NEXT_PUBLIC_URL=                          # Base URL for email links (default: https://nissekomm.no)
+# Storage and media
+DATABASE_URL=                            # PostgreSQL; progress is synced via /api/state
+MEDIA_DIR=                               # Video/audio library (not in the repo)
+NEXT_PUBLIC_STORAGE_BACKEND=localStorage # Only value until the move home
 ```
 
-**Email Service**:
-
-Registration and password recovery emails are sent via Resend from `rampenissen@nissekomm.no`. The `RESEND_API_KEY` environment variable must be configured in Vercel project settings.
-
-**Storage Backend Modes**:
-
-- **localStorage** (default): Browser-only storage, no cross-device sync
-- **sanity**: Cross-device persistence via Sanity CMS backend
-
-**Multi-Tenancy Architecture**:
-
-Families register via `/register` page to receive unique access codes:
-
-1. **Kid Code**: Theme-based, memorable (e.g., "NISSEKRAFT2024") - grants access to main app
-2. **Parent Code**: Secure format (e.g., "NORDPOL-8N4K2") - grants access to parent guide
-
-When using Sanity backend:
-
-- Each family registration creates isolated session with UUID identifier
-- Same codes on different devices = same game progress (cross-device sync)
-- Different families = completely isolated sessions
-- Session stored in cookie for persistence
-
-When using Sanity backend:
-
-- Each unique boot password creates a separate tenant/family session
-- Password is hashed (SHA-256) and used as `sessionId` in Sanity
-- Same password on different devices = same game progress (cross-device sync)
-- Different passwords = completely isolated sessions (multi-family support)
-- Cookie stores hashed password for session persistence
-
-**Example Multi-Tenant Setup**:
-
-```bash
-# Family Hansen registers and receives:
-# Kid Code: NISSEKRAFT2024
-# Parent Code: NORDPOL-8N4K2
-
-# Family Olsen registers and receives:
-# Kid Code: VERKSTEDVARME2024
-# Parent Code: NORDPOL-2X9M5
-
-# Each family sees only their own progress
-# Each family can access from multiple devices using their codes
-```
+`mise run dev` sets dev codes and lan mode. Multi-tenancy, Sanity and Resend are gone; one family logs in with `KID_CODE`.
 
 **Date Mocking**: Set `NEXT_PUBLIC_MOCK_DAY` and `NEXT_PUBLIC_MOCK_MONTH` to test specific days across entire app. In `next dev` or with `NEXT_PUBLIC_TEST_MODE=true`, the ⏱ TIDSMASKIN button (bottom right) sets day and time live via a localStorage override in `date-utils.ts`, and can reset progress.
 
