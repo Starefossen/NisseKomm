@@ -304,13 +304,13 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
             <div className="text-2xl font-bold tracking-wider">
               DEKRYPTERINGSSENTER
             </div>
-            <div className="text-sm opacity-70">
+            <div className="text-base opacity-70">
               Har du samlet alle symbolene? Klarer du å løse koden?
             </div>
           </div>
           <div className="flex items-center gap-2 px-3 py-1 border-2 border-(--gold) bg-(--gold)/20">
             <div className="w-2 h-2 bg-(--gold) rounded-full animate-pulse-led"></div>
-            <span className="text-(--gold) text-xs tracking-wider">
+            <span className="text-(--gold) text-base tracking-wider">
               LÅST OPP DAG 9
             </span>
           </div>
@@ -319,20 +319,20 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
         {/* Challenge Selector */}
         {!selectedChallenge && (
           <div className="space-y-3">
-            <div className="text-sm tracking-wider text-(--neon-green) border-b-2 border-(--neon-green)/30 pb-2">
+            <div className="text-base tracking-wider text-(--neon-green) border-b-2 border-(--neon-green)/30 pb-2">
               📋 VELG DEKRYPTERINGSUTFORDRING
             </div>
 
             {availableChallenges.length === 0 ? (
-              <div className="text-center py-8 border-2 border-(--neon-green)/20 text-(--neon-green)/50 text-sm">
+              <div className="text-center py-8 border-2 border-(--neon-green)/20 text-(--neon-green)/50 text-base">
                 <div className="mb-2">🔒</div>
                 <div className="font-bold mb-1">
                   Ingen utfordringer tilgjengelig
                 </div>
-                <div className="text-xs mt-2 opacity-70">
+                <div className="text-base mt-2 opacity-70">
                   Samle flere symboler for å låse opp utfordringer!
                 </div>
-                <div className="text-xs mt-1">
+                <div className="text-base mt-1">
                   Samlet: {collectedSymbols.length}/9 symboler
                 </div>
               </div>
@@ -381,7 +381,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                               "repeating-linear-gradient(0deg, rgba(0,0,0,0.6) 0px, rgba(0,0,0,0.6) 1px, transparent 1px, transparent 3px)",
                           }}
                         />
-                        <div className="absolute top-1.5 left-2 right-2 flex items-center justify-between text-[10px] font-bold tracking-widest">
+                        <div className="absolute top-1.5 left-2 right-2 flex items-center justify-between text-base font-bold tracking-widest">
                           <span className="bg-black/80 px-1.5 py-0.5 border border-(--cold-blue)/50 text-(--cold-blue)">
                             {camTag}
                           </span>
@@ -407,7 +407,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                             <div className="font-bold tracking-wider text-lg">
                               DAG {challenge.day}: {challenge.title}
                             </div>
-                            <div className="text-xs opacity-70 mt-1">
+                            <div className="text-base opacity-70 mt-1">
                               Krever {challenge.sequenceLength} symboler i
                               riktig rekkefølge
                             </div>
@@ -424,14 +424,14 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                                   />
                                 ))}
                               {challenge.requiredSymbols.length > 6 && (
-                                <span className="text-xs opacity-50">
+                                <span className="text-base opacity-50">
                                   +{challenge.requiredSymbols.length - 6}
                                 </span>
                               )}
                             </div>
                           </div>
                         </div>
-                        <div className="text-xs font-bold">
+                        <div className="text-base font-bold">
                           {challenge.isSolved ? "✓ LØST" : "→ START"}
                         </div>
                       </div>
@@ -444,7 +444,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
             {/* Symbol Collection Status */}
             <div className="border-2 border-(--neon-green)/30 bg-(--neon-green)/5 p-4">
               <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2 text-sm text-(--neon-green)">
+                <div className="flex items-center gap-2 text-base text-(--neon-green)">
                   <Icons.Chart size={16} color="green" />
                   DIN SAMLING: {collectedSymbols.length}/9 SYMBOLER
                 </div>
@@ -453,7 +453,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                     SoundManager.playSound("click");
                     setShowScanner(true);
                   }}
-                  className="flex items-center gap-2 px-4 py-2 border-2 border-(--cold-blue) bg-(--cold-blue)/20 hover:bg-(--cold-blue)/30 text-(--cold-blue) font-bold text-sm transition-all"
+                  className="flex items-center gap-2 px-4 py-2 border-2 border-(--cold-blue) bg-(--cold-blue)/20 hover:bg-(--cold-blue)/30 text-(--cold-blue) font-bold text-base transition-all"
                 >
                   <Icon name="camera-add" size={16} color="blue" />
                   SKANN SYMBOLER
@@ -514,7 +514,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                       "repeating-linear-gradient(0deg, rgba(0,0,0,0.6) 0px, rgba(0,0,0,0.6) 1px, transparent 1px, transparent 3px)",
                   }}
                 />
-                <div className="absolute top-2 left-2.5 right-2.5 flex items-center justify-between text-[10px] font-bold tracking-widest">
+                <div className="absolute top-2 left-2.5 right-2.5 flex items-center justify-between text-base font-bold tracking-widest">
                   <span className="bg-black/80 px-2 py-0.5 border border-(--cold-blue)/60 text-(--cold-blue)">
                     AKTIV DEKRYPTERING // DAG {selectedChallenge.day}
                   </span>
@@ -529,7 +529,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                     <div className="font-bold text-lg text-(--cold-blue)">
                       🔐 {selectedChallenge.title}
                     </div>
-                    <div className="text-xs text-(--cold-blue)/60 mt-1">
+                    <div className="text-base text-(--cold-blue)/60 mt-1">
                       DAG {selectedChallenge.day} •{" "}
                       {selectedChallenge.sequenceLength} symboler nødvendig
                     </div>
@@ -542,17 +542,17 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                       setFeedback("");
                       setPositionFeedback([]);
                     }}
-                    className="text-xs border border-(--cold-blue) px-3 py-1 hover:bg-(--cold-blue)/20 transition-all tracking-wider"
+                    className="text-base border border-(--cold-blue) px-3 py-1 hover:bg-(--cold-blue)/20 transition-all tracking-wider"
                   >
                     ← AVBRYT
                   </button>
                 </div>
-                <div className="text-sm text-(--cold-blue)/80 bg-(--cold-blue)/5 p-2 border-l-2 border-(--cold-blue)">
+                <div className="text-base text-(--cold-blue)/80 bg-(--cold-blue)/5 p-2 border-l-2 border-(--cold-blue)">
                   💡 <span className="font-bold">Hint:</span>{" "}
                   {selectedChallenge.hint}
                 </div>
                 {attemptCount > 0 && (
-                  <div className="text-xs text-(--cold-blue)/60 mt-2 flex items-center gap-2">
+                  <div className="text-base text-(--cold-blue)/60 mt-2 flex items-center gap-2">
                     <span>🎯 Forsøk:</span>
                     <span className="font-bold">{attemptCount}</span>
                     {attemptCount > 2 && (
@@ -569,7 +569,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               {/* Left: Inventory Grid */}
               <div className="border-4 border-(--neon-green) bg-black p-3 md:p-4">
-                <div className="text-sm tracking-wider text-(--neon-green) mb-3 text-center font-bold">
+                <div className="text-base tracking-wider text-(--neon-green) mb-3 text-center font-bold">
                   📦 SYMBOLSAMLING
                 </div>
                 <div className="grid grid-cols-3 gap-2">
@@ -617,14 +617,14 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                     </div>
                   ))}
                 </div>
-                <div className="text-xs text-(--neon-green)/60 mt-3 text-center">
+                <div className="text-base text-(--neon-green)/60 mt-3 text-center">
                   {collectedSymbols.length}/9 funnet
                 </div>
               </div>
 
               {/* Right: Challenge Grid */}
               <div className="border-4 border-(--cold-blue) bg-black p-3 md:p-4">
-                <div className="text-sm tracking-wider text-(--cold-blue) mb-3 text-center font-bold">
+                <div className="text-base tracking-wider text-(--cold-blue) mb-3 text-center font-bold">
                   🔓 DEKRYPTERINGSGITTER
                 </div>
                 <div className="grid grid-cols-3 gap-2">
@@ -657,7 +657,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                       >
                         {/* Position Number */}
                         {isUsed && (
-                          <div className="absolute top-1 left-1 text-[10px] text-(--cold-blue)/40">
+                          <div className="absolute top-1 left-1 text-base text-(--cold-blue)/40">
                             {position + 1}
                           </div>
                         )}
@@ -690,7 +690,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                     );
                   })}
                 </div>
-                <div className="text-xs text-(--cold-blue)/60 mt-3 text-center">
+                <div className="text-base text-(--cold-blue)/60 mt-3 text-center">
                   Dra symboler hit for å løse
                 </div>
               </div>
@@ -737,7 +737,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
             </div>
 
             {/* Help Text */}
-            <div className="p-3 border border-(--cold-blue)/30 bg-(--cold-blue)/5 text-(--cold-blue) text-xs">
+            <div className="p-3 border border-(--cold-blue)/30 bg-(--cold-blue)/5 text-(--cold-blue) text-base">
               <div className="font-bold mb-2 flex items-center gap-2">
                 <span>💡</span>
                 <span>HVORDAN LØSE UTFORDRINGEN:</span>

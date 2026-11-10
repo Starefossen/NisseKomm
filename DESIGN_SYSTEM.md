@@ -23,8 +23,12 @@ The app is a control room in Snøfall, not a 1983 terminal (`docs/design-revisjo
 
 - **Console frame** (`CRTFrame`, `.console-bezel`): dark wood with a thin brass rim. No scanlines or vignette on the frame.
 - **CRT only where there is TV**: scanlines and vignette belong to Snøfall TV (`LiveCam`, drawn in canvas) and Julius' video (`JuliusVideo`, `.scanline-overlay .vignette`).
-- **Thin title bars**: `RetroWindow`, `RetroModal` and `SidebarWidget` have a dark title strip with a 2 px brass rule and parchment text. The close button is neutral and keeps `aria-label="Lukk"`. Content, not chrome, is the brightest thing on screen.
+- **Thin title bars**: `RetroWindow` and `RetroModal` have a dark title strip with a 2 px brass rule and parchment text. The close button is neutral and keeps `aria-label="Lukk"`. Content, not chrome, is the brightest thing on screen.
 - **Login**: Snøfall's door. Julius' office still (`/media/feed/julius-kontor.png`, falling back to `/village-day.jpg`) dimmed behind a brass plate headed «SNØFALL · DIREKTELINJE 90,0 MHz».
+- **Desktop in two rows** («I DAG», «VERKTØY»): a 2×2 Julius tile (office still, «JULIUS» over «DAGBOK», red dot until today's video is watched) beside NisseMail, KodeTerminal and Snøfall TV; the tools follow in unlock order. Locked modules are hidden, never shown as «LÅST». Four columns from `md`, 56 px icons.
+- **Sidebar** (`lg:w-56`): Frostgraden as a standing thermometer without a box, the three latest alerts under it. Before day 7: «LINJE 90,0 MHz · BÆREBØLGE» with one LED.
+- **Day 10**: the workspace runs at `saturate(0.3)` with brief colour glimpses (`.frost-colors-leak`); text keeps its contrast and the sidebar is untouched.
+- **Text size**: nothing a child reads is under 16 px (`text-base`).
 - **Pixelated Rendering**: `image-rendering: pixelated` on icons.
 
 ### Interaction Principles
@@ -35,7 +39,7 @@ The app is a control room in Snøfall, not a 1983 terminal (`docs/design-revisjo
 - Success → gold flash + beep
 - Error → red shake + buzz
 - Fake processing delays (1.5 s) simulate "system thinking"
-- Motion on a diet: Frostgraden ticks, one LED breathes. Avoid endless pulsing and blinking.
+- Motion on a diet: Frostgraden ticks, one LED breathes. Avoid endless pulsing and blinking. `prefers-reduced-motion` stops every loop and transition (`globals.css`).
 
 **Norwegian Language**: all UI text, errors and help in Norwegian.
 

@@ -700,13 +700,13 @@ body:has(.crt-frame-container) {
   0%,
   86%,
   100% {
-    filter: grayscale(1);
+    filter: saturate(0.3);
   }
   88% {
-    filter: grayscale(0.2) sepia(0.6) hue-rotate(-50deg) saturate(3);
+    filter: saturate(1.6) hue-rotate(-20deg);
   }
   93% {
-    filter: grayscale(0.2) sepia(0.6) hue-rotate(60deg) saturate(3);
+    filter: saturate(1.6) hue-rotate(40deg);
   }
 }
 
@@ -759,7 +759,8 @@ body:has(.crt-frame-container) {
 }
 
 .frost-colors-leak {
-  filter: grayscale(1);
+  /* Text keeps its contrast; --frost (locked to 1) already cools the tokens */
+  filter: saturate(0.3);
   animation: frost-glimpse 7s steps(1) infinite;
 }
 
@@ -823,6 +824,13 @@ body:has(.crt-frame-container) {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Motion diet: every loop and transition stops for kids who asked the OS for calm */
+  *,
+  *::before,
+  *::after {
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
   .frost-colors-leak,
   .frost-vhs,
   .frost-tick {

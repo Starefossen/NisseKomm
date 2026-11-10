@@ -95,7 +95,7 @@ export function Day1Boot({ onDone }: { onDone: () => void }) {
         {carrier && (
           <div className="text-(--gold) pt-2">BÆREBØLGE 90,0: USTABIL</div>
         )}
-        <div className="text-sm opacity-50 pt-6 text-center">
+        <div className="text-base opacity-50 pt-6 text-center">
           Klikk for å hoppe over
         </div>
       </div>
@@ -124,7 +124,7 @@ export function Day1Tail({ onDone }: { onDone: () => void }) {
       className="absolute inset-0 cursor-pointer"
     >
       <Static />
-      <div className="absolute top-2 left-2 px-2 bg-black/70 text-(--gold) text-sm motion-safe:animate-pulse">
+      <div className="absolute top-2 left-2 px-2 bg-black/70 text-(--gold) text-base motion-safe:animate-pulse">
         LINJE 90,0 · BÆREBØLGE USTABIL
       </div>
       <div className="absolute bottom-2 right-2 px-2 bg-black/70 text-(--neon-green) text-lg">

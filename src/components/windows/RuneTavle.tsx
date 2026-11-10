@@ -14,7 +14,7 @@ export function RuneTavle({ onClose }: { onClose: () => void }) {
           «Tegnene i hjørnet av kortene er Snøfalls gamle skrift. Ett tegn, én
           bokstav. Fyll inn når dere vet.» – IQ
         </p>
-        <div className="text-sm opacity-70">
+        <div className="text-base opacity-70">
           {learned.size} AV {RUNE_ALPHABET.length} TEGN LÆRT
         </div>
         <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-3">

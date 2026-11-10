@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { SidebarWidget } from "../ui/SidebarWidget";
-import { StatusBar } from "../ui/StatusBar";
 import { LEDIndicator } from "../ui/LEDIndicator";
 import { GameEngine } from "@/lib/game-engine";
 
@@ -10,7 +8,7 @@ interface SystemStatusProps {
   currentDay: number;
 }
 
-/** Sidebar: Frostgraden only (historie-2026 §1, storyboard H1). */
+/** Sidebar: Frostgraden as a standing thermometer, no box (design-revisjon P2 #9). */
 export function SystemStatus({ currentDay }: SystemStatusProps) {
   const frost = GameEngine.getFrostLevel(currentDay);
   const solved = GameEngine.isQuestCompleted(currentDay);
@@ -31,51 +29,65 @@ export function SystemStatus({ currentDay }: SystemStatusProps) {
 
   if (frost === null || shown === null) {
     return (
-      <SidebarWidget title="SERVERROM">
-        <div className="flex items-center gap-2 text-base">
-          <LEDIndicator color="green" blinking />
-          <span>ORAKELET LYTTER ...</span>
-        </div>
-      </SidebarWidget>
+      <div className="flex items-center gap-3 text-lg text-(--brass) tracking-wider">
+        <LEDIndicator color="green" blinking />
+        <span>LINJE 90,0 MHz · BÆREBØLGE</span>
+      </div>
     );
   }
 
   const ticking = shown > frost;
   const warning = currentDay === 20 && !solved;
   const status = shown >= 70 ? "kritisk" : shown >= 45 ? "advarsel" : "normal";
+  const fill =
+    status === "kritisk"
+      ? "bg-(--christmas-red)"
+      : status === "advarsel"
+        ? "bg-(--gold)"
+        : "bg-(--cold-blue)";
 
   return (
-    <SidebarWidget title="FROSTGRADEN">
-      <div className="space-y-3">
-        <div
-          className={`text-5xl text-center tabular-nums ${ticking ? "frost-tick" : ""} ${warning ? "animate-pulse" : ""}`}
-          aria-live="polite"
-        >
-          {frost === 0 ? "TØVÆR" : `${shown} %`}
+    <div className="flex flex-col items-center gap-3 text-(--neon-green)">
+      <div className="text-lg tracking-wider text-(--brass)">FROSTGRADEN</div>
+      <div
+        className={`text-5xl tabular-nums ${ticking ? "frost-tick" : ""} ${warning ? "text-(--christmas-red)" : ""}`}
+        aria-live="polite"
+      >
+        {frost === 0 ? "TØVÆR" : `${shown} %`}
+      </div>
+      {/* Tube and bulb; the bulb carries the one breathing LED */}
+      <div className="flex flex-col items-center" aria-hidden>
+        <div className="relative w-4 h-40 border-2 border-(--brass)/70 rounded-t-full overflow-hidden">
+          <div
+            className={`absolute bottom-0 inset-x-0 ${fill}`}
+            style={{ height: `${shown}%` }}
+          />
         </div>
-        <StatusBar label="FROST" value={shown} max={100} status={status} />
-        {currentDay === 21 && solved && (
-          <div className="text-center text-(--gold)">
-            <svg viewBox="0 0 40 30" className="w-16 h-12 mx-auto" aria-hidden>
-              <path
-                d="M4 28 V8 L12 4 V28 M36 28 V8 L28 4 V28"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-              <path d="M14 28 V10 H26 V28" fill="currentColor" opacity="0.3" />
-            </svg>
-            <div className="text-base">PORTEN STÅR ÅPEN</div>
-          </div>
-        )}
-        <div className="flex items-center justify-between pt-3 border-t-2 border-(--neon-green)/30 text-base">
-          <span>{solved ? "LINJEN VARMES" : "FROSTEN STIGER"}</span>
+        <div className="-mt-1">
           <LEDIndicator
-            color={status === "kritisk" ? "red" : solved ? "green" : "yellow"}
+            color={status === "kritisk" ? "red" : solved ? "green" : "blue"}
+            size={24}
             blinking
           />
         </div>
       </div>
-    </SidebarWidget>
+      {currentDay === 21 && solved && (
+        <div className="text-center text-(--gold)">
+          <svg viewBox="0 0 40 30" className="w-16 h-12 mx-auto" aria-hidden>
+            <path
+              d="M4 28 V8 L12 4 V28 M36 28 V8 L28 4 V28"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+            <path d="M14 28 V10 H26 V28" fill="currentColor" opacity="0.3" />
+          </svg>
+          <div className="text-lg">PORTEN STÅR ÅPEN</div>
+        </div>
+      )}
+      <div className="text-lg">
+        {solved ? "LINJEN VARMES" : "FROSTEN STIGER"}
+      </div>
+    </div>
   );
 }

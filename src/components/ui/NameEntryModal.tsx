@@ -61,7 +61,7 @@ export function NameEntryModal({ onComplete }: NameEntryModalProps) {
         {/* Instructions */}
         <div className="text-center space-y-2 p-4 border-2 border-(--cold-blue) bg-(--cold-blue)/10">
           <Icons.Help size={24} color="blue" className="mx-auto" />
-          <div className="text-(--cold-blue) text-sm">
+          <div className="text-(--cold-blue) text-base">
             Julius vil gjerne legge navnene deres øverst på den snille listen!
           </div>
           <div className="text-base opacity-70">

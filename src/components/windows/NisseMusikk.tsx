@@ -167,7 +167,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
         {frozen && (
           <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-2 bg-(--cold-blue)/30 backdrop-blur-sm border-4 border-(--cold-blue) text-(--cold-blue)">
             <div className="text-5xl font-bold tracking-widest">FROSSET</div>
-            <div className="text-sm opacity-80">
+            <div className="text-base opacity-80">
               Rim over spilleren. Ingen lyd før dagens kode er inne.
             </div>
           </div>
@@ -179,7 +179,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
             <div className="text-2xl font-bold tracking-wider">
               SNØFALL RADIO // 8-BIT ARKIV
             </div>
-            <div className="text-sm opacity-70">
+            <div className="text-base opacity-70">
               VARMEKILDEN • Musikk holder linjen varm når det er kaldt
             </div>
           </div>
@@ -191,7 +191,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
                   : "bg-(--gold) animate-pulse-led"
               }`}
             ></div>
-            <span className="text-(--gold) text-xs tracking-wider">
+            <span className="text-(--gold) text-base tracking-wider">
               {isPlaying ? "SENDER LYDBØLGER" : "KLAR"}
             </span>
           </div>
@@ -200,16 +200,16 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
         {/* Now Playing Display */}
         <div className="border-4 border-(--neon-green) bg-black p-6 space-y-4">
           <div className="text-center space-y-1">
-            <div className="text-xs text-(--cold-blue) tracking-wider">
+            <div className="text-base text-(--cold-blue) tracking-wider">
               {isPlaying ? "NÅ SPILLER PÅ 90.0 MHz" : "VALGT SPOR"}
             </div>
             <div className="text-2xl text-(--neon-green) font-bold tracking-wider">
               {track.title}
             </div>
-            <div className="text-xs text-(--cold-blue)/80">
+            <div className="text-base text-(--cold-blue)/80">
               {track.subtitle}
             </div>
-            <div className="text-xs text-(--neon-green)/60 pt-1">
+            <div className="text-base text-(--neon-green)/60 pt-1">
               Spor {currentTrack + 1} av {PLAYLIST.length}
             </div>
           </div>
@@ -244,7 +244,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
                 }}
               ></div>
             </div>
-            <div className="flex justify-between text-xs text-(--neon-green)/70 font-retro">
+            <div className="flex justify-between text-base text-(--neon-green)/70 font-retro">
               <span>{formatTime(currentTime)}</span>
               <span>
                 {duration > 0 ? formatTime(duration) : track.defaultDuration}
@@ -298,7 +298,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
               aria-label="Volum"
               className="w-28 accent-(--neon-green) cursor-pointer"
             />
-            <span className="text-xs font-retro text-(--neon-green) w-10 text-right">
+            <span className="text-base font-retro text-(--neon-green) w-10 text-right">
               {Math.round(volume * 100)}%
             </span>
           </div>
@@ -307,10 +307,12 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
         {/* Playlist */}
         <div className="border-2 border-(--neon-green)/30 space-y-0">
           <div className="p-2 bg-(--neon-green)/10 border-b-2 border-(--neon-green)/30 flex justify-between items-center">
-            <div className="text-sm tracking-wider text-(--neon-green) font-bold">
+            <div className="text-base tracking-wider text-(--neon-green) font-bold">
               SPILLELISTE ({PLAYLIST.length} SPOR)
             </div>
-            <div className="text-xs text-(--cold-blue)">8-BIT AUDIO ENGINE</div>
+            <div className="text-base text-(--cold-blue)">
+              8-BIT AUDIO ENGINE
+            </div>
           </div>
           <div className="max-h-64 overflow-y-auto">
             {PLAYLIST.map((t, index) => (
@@ -328,22 +330,22 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
                 `}
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-xs opacity-70 w-6 font-retro">
+                  <span className="text-base opacity-70 w-6 font-retro">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <div>
-                    <div className="text-sm tracking-wider font-bold">
+                    <div className="text-base tracking-wider font-bold">
                       {t.title}
                     </div>
-                    <div className="text-xs opacity-60">{t.subtitle}</div>
+                    <div className="text-base opacity-60">{t.subtitle}</div>
                   </div>
                   {index === currentTrack && isPlaying && (
-                    <span className="px-1.5 py-0.5 text-[10px] bg-(--neon-green) text-black font-bold">
+                    <span className="px-1.5 py-0.5 text-base bg-(--neon-green) text-black font-bold">
                       SPILLER
                     </span>
                   )}
                 </div>
-                <span className="text-xs opacity-70 font-retro">
+                <span className="text-base opacity-70 font-retro">
                   {t.defaultDuration}
                 </span>
               </button>

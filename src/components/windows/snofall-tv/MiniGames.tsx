@@ -17,7 +17,7 @@ const GAMES: [GameId, string][] = [
   ["porten", "PORTEN"],
 ];
 
-const btn = "min-h-11 px-2 border text-sm font-bold cursor-pointer";
+const btn = "min-h-11 px-2 border text-base font-bold cursor-pointer";
 const click = () => SoundManager.playSound("click");
 
 function Toggles({ labels, done }: { labels: string[]; done: string }) {

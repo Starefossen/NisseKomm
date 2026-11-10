@@ -1,113 +1,52 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { SidebarWidget } from "../ui/SidebarWidget";
 import { Icons } from "@/lib/icons";
 import { Varsel } from "@/types/innhold";
 import { GameEngine } from "@/lib/game-engine";
 
 interface VarselKonsollProps {
   alerts: Varsel[]; // Base alerts (fallback)
-  currentDay?: number; // Optional: to trigger refresh on day change
+  currentDay?: number;
 }
 
+const COLOR = {
+  kritisk: ["red", "text-(--christmas-red)", "border-(--christmas-red)/80"],
+  advarsel: ["gold", "text-(--gold)", "border-(--gold)/40"],
+  info: ["blue", "text-(--cold-blue)", "border-(--neon-green)/30"],
+} as const;
+
+/** The three latest alerts under the thermometer; still, no box (design-revisjon P2 #9, #11). */
 export function VarselKonsoll({ alerts, currentDay }: VarselKonsollProps) {
-  const [selectedAlert, setSelectedAlert] = useState<number | null>(null);
-  const [dynamicAlerts, setDynamicAlerts] = useState<Varsel[]>(() => {
-    if (typeof window !== "undefined") {
-      return GameEngine.getDailyAlerts(currentDay || 1);
-    }
-    return alerts;
-  });
+  const [dynamicAlerts, setDynamicAlerts] = useState<Varsel[]>(() =>
+    typeof window !== "undefined"
+      ? GameEngine.getDailyAlerts(currentDay || 1)
+      : alerts,
+  );
 
   useEffect(() => {
-    // Refresh alerts when day changes - use requestAnimationFrame to defer setState
-    if (typeof window !== "undefined") {
-      requestAnimationFrame(() => {
-        setDynamicAlerts(GameEngine.getDailyAlerts(currentDay || 1));
-      });
-    }
-  }, [currentDay]); // Only run when day changes, not on mount
-
-  const handleAlertClick = (index: number) => {
-    setSelectedAlert(selectedAlert === index ? null : index);
-  };
-
-  const getAlertColor = (type: Varsel["type"]) => {
-    switch (type) {
-      case "kritisk":
-        return "red";
-      case "advarsel":
-        return "gold";
-      default:
-        return "blue";
-    }
-  };
+    requestAnimationFrame(() => {
+      setDynamicAlerts(GameEngine.getDailyAlerts(currentDay || 1));
+    });
+  }, [currentDay]);
 
   return (
-    <SidebarWidget title="VARSLER">
-      <div className="space-y-2 flex-1 overflow-y-auto">
-        {dynamicAlerts.slice(0, 8).map((alert, index) => {
-          const isCrisis = alert.type === "kritisk";
-
-          return (
-            <button
-              key={`alert-${index}`}
-              onClick={() => handleAlertClick(index)}
-              className={`
-                w-full text-left px-2 py-1 border-2 transition-all text-base
-                animate-slide-down
-                ${isCrisis ? "border-(--christmas-red) shadow-[0_0_10px_rgba(255,0,0,0.3)]" : ""}
-                ${
-                  selectedAlert === index
-                    ? "border-(--gold) bg-(--gold)/10"
-                    : isCrisis
-                      ? "border-(--christmas-red)/80 hover:border-(--christmas-red)"
-                      : "border-(--neon-green)/30 hover:border-(--neon-green)"
-                }
-              `}
-              style={{
-                animation:
-                  selectedAlert === index
-                    ? "gold-flash 0.3s ease-out"
-                    : isCrisis
-                      ? "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite"
-                      : "none",
-              }}
-            >
-              <div className="flex items-start gap-2">
-                <Icons.Alert
-                  size={12}
-                  color={
-                    getAlertColor(alert.type) as
-                      "red" | "green" | "blue" | "gray" | "gold"
-                  }
-                  className="mt-0.5 shrink-0"
-                />
-                <div className="flex-1 min-w-0">
-                  <div
-                    className={`
-                    font-bold truncate
-                    ${
-                      alert.type === "kritisk"
-                        ? "text-(--christmas-red)"
-                        : alert.type === "advarsel"
-                          ? "text-(--gold)"
-                          : "text-(--cold-blue)"
-                    }
-                  `}
-                  >
-                    {alert.tekst}
-                  </div>
-                  <div className="text-base opacity-60 mt-0.5">
-                    {alert.tidspunkt}
-                  </div>
-                </div>
-              </div>
-            </button>
-          );
-        })}
-      </div>
-    </SidebarWidget>
+    <ul className="space-y-2 text-base" aria-label="Varsler">
+      {dynamicAlerts.slice(0, 3).map((alert, index) => {
+        const [icon, text, border] = COLOR[alert.type] ?? COLOR.info;
+        return (
+          <li
+            key={`alert-${index}`}
+            className={`min-h-11 flex items-start gap-2 px-2 py-1 border-l-2 ${border}`}
+          >
+            <Icons.Alert size={16} color={icon} className="mt-1 shrink-0" />
+            <div className="min-w-0">
+              <div className={text}>{alert.tekst}</div>
+              <div className="opacity-60">{alert.tidspunkt}</div>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 }

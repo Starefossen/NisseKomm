@@ -338,13 +338,13 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
         {scannerError && (
           <div className="border-4 border-(--christmas-red) bg-(--christmas-red)/20 p-4 text-(--christmas-red) animate-[red-shake_0.5s_ease-in-out]">
             <div className="font-bold mb-1">KAMERA-FEIL</div>
-            <div className="text-sm">{scannerError}</div>
+            <div className="text-base">{scannerError}</div>
             <button
               onClick={() => {
                 setScannerError(null);
                 startScanning();
               }}
-              className="mt-3 px-4 py-2 border-2 border-(--christmas-red) hover:bg-(--christmas-red)/10 text-sm font-bold"
+              className="mt-3 px-4 py-2 border-2 border-(--christmas-red) hover:bg-(--christmas-red)/10 text-base font-bold"
             >
               PRØV IGJEN
             </button>
@@ -375,7 +375,7 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
                 <div className="text-(--neon-green) text-lg font-bold">
                   📷 KLAR FOR Å SKANNE?
                 </div>
-                <div className="text-(--neon-green)/70 text-sm max-w-md">
+                <div className="text-(--neon-green)/70 text-base max-w-md">
                   Hold QR-koden fra symbolkortet foran kameraet. Skanningen
                   starter automatisk når koden oppdages.
                 </div>
@@ -388,7 +388,7 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
                 <Icons.Camera size={32} color="gray" />
                 START KAMERA
               </button>
-              <div className="text-xs text-(--neon-green)/50 text-center max-w-xs">
+              <div className="text-base text-(--neon-green)/50 text-center max-w-xs">
                 Tips: Sørg for god belysning og hold kameraet støtt
               </div>
             </div>
@@ -411,7 +411,7 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
                 <div className="text-lg font-bold text-(--gold)">
                   NYTT SYMBOL!
                 </div>
-                <div className="text-xs opacity-80">
+                <div className="text-base opacity-80">
                   {lastCollected.description}
                 </div>
               </div>

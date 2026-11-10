@@ -73,7 +73,7 @@ export function BadgeRow() {
       {/* Trophy label */}
       <div className="flex items-center gap-2 mr-2">
         <Icons.Trophy className="w-5 h-5 text-(--gold)" />
-        <span className="text-(--gold) font-bold text-sm">MERKER:</span>
+        <span className="text-(--gold) font-bold text-base">MERKER:</span>
       </div>
 
       {/* Badge slots */}
@@ -101,13 +101,12 @@ export function BadgeRow() {
               border-2 transition-all duration-300
               ${
                 isTrophy && isEarned
-                  ? "border-4 border-(--gold) bg-(--gold)/20 shadow-[0_0_30px_rgba(255,215,0,0.6)] scale-110 animate-[pulse-led_2s_ease-in-out_infinite]"
+                  ? "border-4 border-(--gold) bg-(--gold)/20 shadow-[0_0_30px_rgba(255,215,0,0.6)] scale-110"
                   : isEarned
                     ? "border-(--gold) bg-(--gold)/10"
                     : "border-(--gray)/50 bg-(--gray)/5 opacity-30 grayscale"
               }
               ${isNewlyEarned ? "animate-[scale-in_0.5s_ease-out]" : ""}
-              ${isEarned && !isNewlyEarned && !isTrophy ? "animate-[gold-flash_2s_ease-in-out_infinite]" : ""}
               hover:opacity-100 hover:scale-105
             `}
             title={
@@ -144,7 +143,7 @@ export function BadgeRow() {
         );
       })}
       {newlyEarnedBadge && (
-        <div className="ml-3 max-w-md text-sm text-(--gold) animate-[gold-flash_2s_ease-in-out_infinite]">
+        <div className="ml-3 max-w-md text-base text-(--gold) animate-[gold-flash_0.6s_ease-out]">
           {badges.find((b) => b.id === newlyEarnedBadge)?.opplasingstekst}
         </div>
       )}

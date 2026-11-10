@@ -264,7 +264,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
           className={`relative p-4 lg:p-6 border-4 ${urgencyStyles.borderColor} bg-black/30 ${urgencyStyles.animation}`}
         >
           <div className="text-center space-y-2">
-            <div className={`text-xs ${urgencyStyles.textColor} mb-2`}>
+            <div className={`text-base ${urgencyStyles.textColor} mb-2`}>
               ┌─[ NEDTELLING TIL JULAFTEN ]─┐
             </div>
 
@@ -297,7 +297,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
                   {String(countdown.seconds).padStart(2, "0")}
                 </div>
                 <div
-                  className={`text-xs lg:text-sm ${urgencyStyles.textColor}/70`}
+                  className={`text-base lg:text-base ${urgencyStyles.textColor}/70`}
                 >
                   {urgencyLabel}
                 </div>
@@ -306,7 +306,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
 
             {questProgress >= 5 && (
               <div className="absolute top-2 right-2 px-2 py-1 border border-(--gold) bg-(--gold)/10">
-                <div className="text-xs text-(--gold) opacity-70">
+                <div className="text-base text-(--gold) opacity-70">
                   ⭐ +{questProgress}%
                 </div>
               </div>
@@ -338,7 +338,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
         {/* Live Updates Feed */}
         <div className="border-2 border-(--neon-green)/30 max-h-32 lg:max-h-40 overflow-y-auto">
           <div className="p-2 bg-(--neon-green)/10 border-b-2 border-(--neon-green)/30">
-            <div className="text-xs tracking-wider text-(--neon-green)">
+            <div className="text-base tracking-wider text-(--neon-green)">
               🔴 LIVE OPPDATERINGER
             </div>
           </div>
@@ -346,7 +346,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
             {feedItems.map((item, i) => (
               <div
                 key={i}
-                className="p-2 text-xs text-(--neon-green)/70 transition-opacity"
+                className="p-2 text-base text-(--neon-green)/70 transition-opacity"
                 style={{ animationDelay: `${i * 100}ms` }}
               >
                 [{getCurrentDate().toLocaleTimeString("no-NO")}] {item}
@@ -487,7 +487,7 @@ function CrisisDisplay({
   return (
     <div className="space-y-1">
       {renderer && renderer()}
-      <div className="text-xs text-(--christmas-red)/80">
+      <div className="text-base text-(--christmas-red)/80">
         ⚠️ {metric.crisisText}
       </div>
     </div>
@@ -524,7 +524,7 @@ function NormalDisplay({
       </div>
     ),
     bar: () => (
-      <div className={`text-xs font-retro ${statusColor}`}>
+      <div className={`text-base font-retro ${statusColor}`}>
         {DisplayRenderers.bar(metric.verdi, metric.maks)}
       </div>
     ),
@@ -536,13 +536,13 @@ function NormalDisplay({
         <div className={`text-xl font-bold ${statusColor} mb-1`}>
           {metric.verdi}%
         </div>
-        <div className={`text-xs font-retro ${statusColor}/50`}>
+        <div className={`text-base font-retro ${statusColor}/50`}>
           {DisplayRenderers.waveform(metric.verdi, metric.maks)}
         </div>
       </div>
     ),
     radar: () => (
-      <div className={`text-xs font-retro ${statusColor}`}>
+      <div className={`text-base font-retro ${statusColor}`}>
         {DisplayRenderers.radar(metric.verdi, metric.maks, glitchFrame)}
       </div>
     ),
@@ -551,13 +551,13 @@ function NormalDisplay({
         <div className={`text-xl font-bold ${statusColor} mb-1`}>
           {percent}%
         </div>
-        <div className={`text-xs font-retro ${statusColor}/50`}>
+        <div className={`text-base font-retro ${statusColor}/50`}>
           {DisplayRenderers.gauge(metric.verdi, metric.maks)}
         </div>
       </div>
     ),
     binary: () => (
-      <div className={`text-xs font-retro ${statusColor}`}>
+      <div className={`text-base font-retro ${statusColor}`}>
         {DisplayRenderers.binary(percent, glitchFrame)}
       </div>
     ),
@@ -566,7 +566,7 @@ function NormalDisplay({
         <div className={`text-xl font-bold ${statusColor} mb-1`}>
           {metric.verdi.toLocaleString("no-NO")}
         </div>
-        <div className={`text-xs ${statusColor}/50`}>
+        <div className={`text-base ${statusColor}/50`}>
           {DisplayRenderers.hexgrid(metric.verdi, metric.maks)}
         </div>
       </div>
@@ -576,7 +576,7 @@ function NormalDisplay({
   return (
     <div className="flex-1 flex flex-col justify-center">
       {displayComponents[metric.displayType]()}
-      <div className="text-xs opacity-60 mt-auto pt-2">
+      <div className="text-base opacity-60 mt-auto pt-2">
         {metric.description}
       </div>
     </div>
@@ -673,7 +673,7 @@ function MetricCard({ metric, glitchFrame }: MetricCardProps) {
       <div className="flex flex-col h-full">
         {/* Header */}
         <div className="flex items-center justify-between mb-2">
-          <div className="text-xs opacity-70">{metric.navn}</div>
+          <div className="text-base opacity-70">{metric.navn}</div>
           <LEDIndicator color={ledColor} />
         </div>
 

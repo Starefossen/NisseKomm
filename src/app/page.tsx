@@ -10,6 +10,9 @@ import { useSounds } from "@/lib/sounds";
 import { StorageManager } from "@/lib/storage";
 import { useAppState } from "@/lib/app-context";
 import { DesktopIcon } from "@/components/ui/DesktopIcon";
+import { IconColor } from "@/lib/icons";
+import { SoundManager } from "@/lib/sounds";
+import { mediaUrl } from "@/lib/media";
 import { SystemStatus } from "@/components/modules/SystemStatus";
 import { VarselKonsoll } from "@/components/modules/VarselKonsoll";
 import { NisseMail } from "@/components/windows/NisseMail";
@@ -47,6 +50,60 @@ const { varsler, filer } = statiskInnholdData as {
 
 const emptySubscribe = () => () => {};
 
+// Tool row in unlock order; `unlock` is the module key from GameEngine
+const TOOLS: {
+  window: string;
+  icon: string;
+  label: string;
+  color: IconColor;
+  unlock?: string;
+}[] = [
+  { window: "nissenet", icon: "folder", label: "NISSENET", color: "green" },
+  { window: "kalender", icon: "calendar", label: "KALENDER", color: "gold" },
+  {
+    window: "eventyr-oversikt",
+    icon: "script-text",
+    label: "EVENTYR",
+    color: "blue",
+  },
+  { window: "runetavle", icon: "grid", label: "RUNETAVLE", color: "blue" },
+  {
+    window: "nissekrypto",
+    icon: "lock",
+    label: "NISSEKRYPTO",
+    color: "gold",
+    unlock: "NISSEKRYPTO",
+  },
+  {
+    window: "symbolskanner",
+    icon: "key",
+    label: "SYMBOLSKANNER",
+    color: "green",
+    unlock: "SYMBOLSKANNER",
+  },
+  {
+    window: "nissemusikk",
+    icon: "music",
+    label: "NISSEMUSIKK",
+    color: "blue",
+    unlock: "NISSEMUSIKK",
+  },
+  {
+    window: "brevfugler",
+    icon: "mail",
+    label: "BREVFUGLER",
+    color: "gold",
+    unlock: "BREVFUGLER",
+  },
+  {
+    window: "nissestats",
+    icon: "chart",
+    label: "NISSESTATS",
+    color: "blue",
+    unlock: "NISSESTATS",
+  },
+];
+
 /**
  * Check if current date is within the calendar period (December 1-24)
  * Delegates to centralized date utility
@@ -64,7 +121,6 @@ export default function Home() {
     unlockedModules,
     unreadEmailCount,
     unreadFileCount,
-    unreadDagbokCount,
     authenticate,
     refreshGameState,
   } = useAppState();
@@ -245,7 +301,7 @@ export default function Home() {
             <div className="text-xl text-(--neon-green)">
               SYSTEMET ER STENGT UTENFOR JULESONEN
             </div>
-            <div className="text-sm opacity-70 pt-4">
+            <div className="text-base opacity-70 pt-4">
               NisseKomm er kun tilgjengelig 1. - 24. desember
             </div>
           </div>
@@ -279,9 +335,7 @@ export default function Home() {
 
       {/* Main application */}
       {bootComplete && effectiveAuthenticated && !isInitializing && (
-        <div
-          className={`flex h-full ${frostMode.level === 1 ? "frost-colors-leak" : ""}`}
-        >
+        <div className="flex h-full">
           {/* Hamburger menu button for mobile */}
           <HamburgerMenu
             isOpen={sidebarOpen}
@@ -303,8 +357,8 @@ export default function Home() {
               lg:translate-x-0
               fixed lg:static
               inset-y-0 left-0
-              w-64 lg:w-1/4
-              p-4 flex flex-col gap-4
+              w-64 lg:w-56 shrink-0
+              p-4 flex flex-col gap-6 overflow-y-auto
               border-r-2 border-(--brass)/60
               bg-(--dark-crt)
               overflow-hidden
@@ -317,8 +371,10 @@ export default function Home() {
             <VarselKonsoll alerts={varsler} currentDay={getCurrentDay()} />
           </div>
 
-          {/* Main workspace - 75% */}
-          <div className="flex-1 relative flex flex-col">
+          {/* Day 10: the colours leak in the workspace only; the sidebar stays readable */}
+          <div
+            className={`flex-1 min-w-0 relative flex flex-col ${frostMode.level === 1 ? "frost-colors-leak" : ""}`}
+          >
             {/* Kulde's line is a band in the flow so it never lands on the icon grid */}
             {frostMode.level === 2 && !openWindow && (
               <div className="mt-20 mx-8 px-6 py-3 text-center text-2xl text-white bg-(--cold-blue)/15 border-y-2 border-(--cold-blue)/50">
@@ -327,140 +383,81 @@ export default function Home() {
             )}
             <div className="flex-1 overflow-auto">
               {!openWindow ? (
-                // Desktop with icons
-                <div className="flex items-center justify-center h-full p-4 md:p-8">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 max-w-5xl">
-                    <DesktopIcon
-                      icon="file"
-                      label="NISSEMAIL"
-                      color="green"
-                      unreadCount={unreadEmailCount}
-                      onClick={() => handleIconClick("nissemail")}
-                    />
-                    <DesktopIcon
-                      icon="code"
-                      label="KODETERMINAL"
-                      color="blue"
-                      onClick={() => handleIconClick("kodeterminal")}
-                    />
-                    <DesktopIcon
-                      icon="folder"
-                      label="NISSENET"
-                      color="green"
-                      unreadCount={unreadFileCount}
-                      onClick={() => handleIconClick("nissenet")}
-                    />
-                    <DesktopIcon
-                      icon="calendar"
-                      label="KALENDER"
-                      color="gold"
-                      disabled={isFrozen("kalender")}
-                      onClick={() => handleIconClick("kalender")}
-                    />
-                    <DesktopIcon
-                      icon="script-text"
-                      label="EVENTYR"
-                      color="blue"
-                      disabled={isFrozen("eventyr-oversikt")}
-                      onClick={() => handleIconClick("eventyr-oversikt")}
-                    />
-                    <DesktopIcon
-                      icon="book"
-                      label="DAGBOK"
-                      color="gold"
-                      unreadCount={unreadDagbokCount}
-                      onClick={() => handleIconClick("dagbok")}
-                    />
-                    <DesktopIcon
-                      icon="grid"
-                      label="RUNETAVLE"
-                      color="blue"
-                      disabled={isFrozen("runetavle")}
-                      onClick={() => handleIconClick("runetavle")}
-                    />
-                    <DesktopIcon
-                      icon="image"
-                      label="SNØFALL TV"
-                      color="green"
-                      disabled={isFrozen("nordpol_tv")}
-                      onClick={() => handleIconClick("nordpol_tv")}
-                    />
-
-                    {/* Unlockable modules - display in unlock order */}
-                    {(() => {
-                      const moduleOrder = [
-                        {
-                          key: "NISSEKRYPTO",
-                          icon: "lock" as const,
-                          label: "NISSEKRYPTO",
-                          color: "gold" as const,
-                          windowKey: "nissekrypto",
-                        },
-                        {
-                          key: "SYMBOLSKANNER",
-                          icon: "key" as const,
-                          label: "SYMBOLSKANNER",
-                          color: "green" as const,
-                          windowKey: "symbolskanner",
-                        },
-                        {
-                          key: "NISSEMUSIKK",
-                          icon: "music" as const,
-                          label: "NISSEMUSIKK",
-                          color: "blue" as const,
-                          windowKey: "nissemusikk",
-                        },
-                        {
-                          key: "BREVFUGLER",
-                          icon: "mail" as const,
-                          label: "BREVFUGLER",
-                          color: "gold" as const,
-                          windowKey: "brevfugler",
-                        },
-                        {
-                          key: "NISSESTATS",
-                          icon: "chart" as const,
-                          label: "NISSESTATS",
-                          color: "blue" as const,
-                          windowKey: "nissestats",
-                        },
-                      ];
-
-                      const unlockedInOrder = moduleOrder.filter((m) =>
-                        unlockedModules.includes(m.key),
-                      );
-
-                      // Show all unlocked modules or locked placeholders
-                      return moduleOrder.slice(0, 5).map((module, index) => {
-                        const unlockedModule = unlockedInOrder[index];
-                        if (unlockedModule) {
-                          return (
-                            <DesktopIcon
-                              key={unlockedModule.key}
-                              icon={unlockedModule.icon}
-                              label={unlockedModule.label}
-                              color={unlockedModule.color}
-                              disabled={isFrozen(unlockedModule.windowKey)}
-                              onClick={() =>
-                                handleIconClick(unlockedModule.windowKey)
-                              }
-                            />
-                          );
-                        } else {
-                          return (
-                            <DesktopIcon
-                              key={`locked-${index}`}
-                              icon="lock"
-                              label="LÅST"
-                              color="gray"
-                              disabled
-                              onClick={() => {}}
-                            />
-                          );
-                        }
-                      });
-                    })()}
-                  </div>
+                // Desktop in two rows: today's line, then the tools (design-revisjon P2 #8)
+                <div className="flex flex-col items-center justify-center min-h-full gap-6 p-4 md:p-6">
+                  <section className="w-full max-w-4xl">
+                    <h2 className="mb-2 text-lg tracking-wider text-(--brass)">
+                      I DAG
+                    </h2>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                      <button
+                        onClick={() => {
+                          SoundManager.playSound("click");
+                          handleIconClick("dagbok");
+                        }}
+                        className="relative col-span-2 row-span-2 min-h-48 flex flex-col justify-end p-3 border-2 border-(--brass)/70 bg-cover bg-center text-left hover:border-(--gold) active:scale-[0.98] transition-transform"
+                        style={{
+                          backgroundImage: `linear-gradient(transparent 40%, rgba(10,6,4,0.85)), url("${mediaUrl("feed/julius-kontor.png")}"), url("/village-day.jpg")`,
+                        }}
+                      >
+                        {!GameEngine.isJuliusVideoWatched(getCurrentDay()) && (
+                          <span
+                            className="absolute top-3 right-3 w-5 h-5 rounded-full bg-(--christmas-red) shadow-[0_0_10px_var(--christmas-red)]"
+                            aria-label="Ny melding fra Julius"
+                          />
+                        )}
+                        <span className="text-3xl tracking-widest text-(--gold)">
+                          JULIUS
+                        </span>
+                        <span className="text-lg tracking-wider text-(--neon-green)">
+                          DAGBOK
+                        </span>
+                      </button>
+                      <DesktopIcon
+                        icon="file"
+                        label="NISSEMAIL"
+                        color="green"
+                        unreadCount={unreadEmailCount}
+                        onClick={() => handleIconClick("nissemail")}
+                      />
+                      <DesktopIcon
+                        icon="code"
+                        label="KODETERMINAL"
+                        color="blue"
+                        onClick={() => handleIconClick("kodeterminal")}
+                      />
+                      <DesktopIcon
+                        icon="image"
+                        label="SNØFALL TV"
+                        color="green"
+                        disabled={isFrozen("nordpol_tv")}
+                        onClick={() => handleIconClick("nordpol_tv")}
+                      />
+                    </div>
+                  </section>
+                  <section className="w-full max-w-4xl">
+                    <h2 className="mb-2 text-lg tracking-wider text-(--brass)">
+                      VERKTØY
+                    </h2>
+                    {/* Locked modules stay hidden until they unlock: no «LÅST» placeholders */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                      {TOOLS.filter(
+                        (t) => !t.unlock || unlockedModules.includes(t.unlock),
+                      ).map((t) => (
+                        <DesktopIcon
+                          key={t.window}
+                          icon={t.icon}
+                          label={t.label}
+                          color={t.color}
+                          unreadCount={
+                            t.window === "nissenet" ? unreadFileCount : 0
+                          }
+                          disabled={isFrozen(t.window)}
+                          onClick={() => handleIconClick(t.window)}
+                        />
+                      ))}
+                    </div>
+                  </section>
                 </div>
               ) : (
                 // Active window

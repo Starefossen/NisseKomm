@@ -21,7 +21,7 @@
 
 ```text
 ┌─ CRT Frame (fullscreen) ───────────────┐
-│ ┌─ Sidebar (25%) ─┬─ Main (75%) ─────┐ │
+│ ┌─ Sidebar (w-56) ┬─ Main (rest) ────┐ │
 │ │ System Status   │ Desktop Icons    │ │
 │ │ Alert Feed      │ or Active Window │ │
 │ └─────────────────┴──────────────────┘ │
@@ -39,7 +39,7 @@
 
 ```
 CRTFrame (fullscreen container)
-├── Sidebar (25% width)
+├── Sidebar (lg:w-56: Frostgraden, 3 alerts)
 │   ├── SystemStatus (metrics widget)
 │   └── VarselKonsoll (scrolling alerts)
 └── Main (75% width)
