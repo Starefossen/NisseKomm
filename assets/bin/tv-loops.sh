@@ -16,16 +16,20 @@ job() { # name base-image location variant
 job antenne-rolig      "$L/antenne-tjern/ref.jpg"            antenne-tjern rolig
 job antenne-dag11      "$L/antenne-tjern/ref.jpg"            antenne-tjern dag11
 job grotte-rolig       "$L/krystallgrotten/ref.jpg"          krystallgrotten rolig
-job grotte-dag12       "$L/krystallgrotten/ref.jpg"          krystallgrotten dag12
-job grotte-dag15       "$L/krystallgrotten/ref.jpg"          krystallgrotten dag15
-job grotte-dag21       "$L/krystallgrotten/ref.jpg"          krystallgrotten dag21
-job grotte-dag23       "$L/krystallgrotten/ref.jpg"          krystallgrotten dag23
-job grotte-dag24       "$L/krystallgrotten/ref.jpg"          krystallgrotten dag24
+job grotte-dag12       "$L/krystallgrotten/nokkelramme.jpg"          krystallgrotten dag12
+job grotte-dag15       "$L/krystallgrotten/nokkelramme.jpg"          krystallgrotten dag15
+job grotte-dag21       "$L/krystallgrotten/nokkelramme.jpg"          krystallgrotten dag21
+job grotte-dag23       "$L/krystallgrotten/nokkelramme.jpg"          krystallgrotten dag23
+job grotte-dag24       "$L/krystallgrotten/nokkelramme.jpg"          krystallgrotten dag24
 job kontor-julius      "$L/julius-kontor/vidvinkel-ref.jpg"  julius-kontor vidvinkel-ref
 job kontor-tom         "$L/julius-kontor/vidvinkel-tom.jpg"  julius-kontor vidvinkel-tom
 job kontor-dag14       "$L/julius-kontor/vidvinkel-tom.jpg"  julius-kontor dag14
 job landsby-storm      "$L/snofall-landsby/ramme-rolig.jpg"  snofall-landsby storm
 job landsby-dag24      "$L/snofall-landsby/ramme-nordlys.jpg" snofall-landsby dag24
+# random village events (start and end on the key frame of landsby-rolig)
+for e in reinsdyr pakkeslede tarnklokke bakeri aking stjerneskudd; do
+  job "landsby-$e" "$L/snofall-landsby/nokkelramme.jpg" snofall-landsby "hendelse-$e"
+done
 ls "$T"
 # --upload <base-url>: PUT every loop with NISSEKOMM_UPLOAD_TOKEN, then check sizes via GET /api/media.
 if [ "${1:-}" = "--upload" ]; then
