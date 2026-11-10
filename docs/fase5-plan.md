@@ -157,3 +157,13 @@ Kontroll etter P1: `grep -rniE "sanity|resend|@vercel|uuid|session-manager" src 
 2. Trengs `HOME_STATE_TOKEN` når MCP bruker Kanidm-JWT? Forslag: fjern.
 3. Hvilke Kanidm-grupper gir `read` og `parent`?
 4. Synker vi også nøkler som «sett e-post» og symboler mellom skjermer, eller bare fremdrift (minste mulige)? Planen synker alt i tabellen over.
+
+## Avgjort 10. november
+
+- **Synk:** alt spilltilstand deles mellom skjermer (løste koder, sette videoer, bonus, brev til Julius, runetavle, innstillinger). Serveren slår sammen lister per dag.
+- **Skjerm** henter frost fra MCP `get_state`. `HOME_STATE_TOKEN` og `/api/frost` utgår.
+- **MCP-autentisering (fra Varden):** kaller identifiseres med `sub` (UUID for tjenestekonto), ikke grupper. Porten er `iss` + `aud` + scope.
+  - Utsteder `https://id.flaatten.org/oauth2/openid/mcp`, audience `mcp`, påkrevd scope `groups`, alg ES256, typ `at+jwt`, klokkeslingring cirka 60 s.
+  - JWKS hentes i kjøring fra `https://id.flaatten.org/oauth2/openid/mcp/public_key.jwk`, med mellomlagring, periodisk oppfrisking og ny henting ved ukjent `kid`. Ingen innbakte nøkler. Når ingen nøkler er lastet (kaldstart), vent på eller utfør første henting før tokenet vurderes.
+  - Kallere i konfigurasjon (miljø eller montert JSON), ikke i kode, på formen `{issuer, audience, jwks_url, required_scope, callers: {uuid: navn}}` pluss nivå per navn. Ukjent `sub` gir 401.
+  - Kjente kallere: `varden-jwt` `071d4ebd-89ba-445b-80a6-c1bfd5e756ba` (read), `operator-jwt` `00e6aa3b-4146-4ea1-9a81-0498eb2585d6` (parent), `radio-producer-jwt` `5020e366-5eed-49e1-8384-0e114f310dba` (read). `svc-skjerm` (read) og en foreldreidentitet (parent) kommer fra Varden senere.
