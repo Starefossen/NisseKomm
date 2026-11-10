@@ -61,6 +61,7 @@ De andre ideene fra denne fasen er flyttet til «Senere forbedringer (etter seso
 
 ## Fase 4: Opprydding og kvalitetssikring før sesongen
 
+- [ ] **Bytt ut emoji med ordentlige symboler:** finn all bruk av emoji i appen, foreldreguiden, utskriftene og tekstdataene (`src/`, `src/data/*.json`), og bytt til symboler som passer CRT-stilen (pixel-ikoner/SVG i samme stil eller Unicode-tegn som VT323 kan vise). Gjelder også ❄ på bokstavkortene. Test på iPad.
 - [ ] **Finn foreldreløs kode:** Kartlegg komponenter, moduler, systemer, generatorer, API-ruter og JSON-felt som ikke lenger brukes etter at historien for 2026 er låst (for eksempel eventyr-logikk for flere parallelle historier, fjernede merker og lys/webhook-delene i `/api/home-bridge` som ikke har motpart i Varden).
 - [ ] **Slett det som er dødt:** Fjern ubrukt kode og data i stedet for å kommentere det ut. Oppdater tester og dokumentasjon (AGENTS.md, ARCHITECTURE.md, IMPLEMENTATION.md) så de stemmer med koden.
 - [ ] **Verifiser hele sesongen:** Kjør `pnpm check` og gå gjennom alle 24 dager med `mise run dev:day <dag>` for å bekrefte at alt fungerer som forventet.

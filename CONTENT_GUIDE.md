@@ -609,12 +609,12 @@ Se [Rampestreker Design](#rampestreker-design-physical-mischief-scenes) for full
 
 ### Metadata-felt
 
-| Felt        | Type    | Beskrivelse                                     |
-| ----------- | ------- | ----------------------------------------------- |
-| `dag`       | number  | Dag 1-24                                        |
-| `tittel`    | string  | Dagens tittel                                   |
-| `hint_type` | string  | Type hint (skrevet, spor, arrangement, visuell) |
-| `hendelse`  | string  | Spesiell hendelse (Lucia, Nobel, etc.)          |
+| Felt        | Type   | Beskrivelse                                     |
+| ----------- | ------ | ----------------------------------------------- |
+| `dag`       | number | Dag 1-24                                        |
+| `tittel`    | string | Dagens tittel                                   |
+| `hint_type` | string | Type hint (skrevet, spor, arrangement, visuell) |
+| `hendelse`  | string | Spesiell hendelse (Lucia, Nobel, etc.)          |
 
 ---
 
