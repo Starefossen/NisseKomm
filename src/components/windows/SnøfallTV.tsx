@@ -15,6 +15,7 @@ import {
   FREQ_MAX,
   FREQ_MIN,
   channelEffects,
+  channelFallback,
   channelSource,
   latestIntercept,
   type ChannelId,
@@ -119,8 +120,9 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
                 // Day 1: a channel shows snow until its carrier comes in.
                 shownChannel > tunedChannels && !sweeping
                   ? null
-                  : channelSource(shownChannel, day, hour, shownFreq)
+                  : channelSource(shownChannel, day, hour, shownFreq, solved)
               }
+              fallback={channelFallback(shownChannel, shownFreq, day)}
               label={label}
               {...fx}
             />

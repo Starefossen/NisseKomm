@@ -20,35 +20,92 @@ export const FREQ_KULDE = 85;
 export const FREQ_MIN = 80;
 export const FREQ_MAX = 100;
 
-// ponytail: cave, antenna and event loops (T2/T3) don't exist yet; these
-// PNG stills stand in. Swap the path for /video/tv/<name>.mp4 when they land.
-const STILL = {
+export const STILL = {
   antenne: mediaUrl("feed/antenne-tarn.png"),
   grotte: mediaUrl("feed/kulde-grotte.png"),
   storm: mediaUrl("feed/snøfall-storm.png"),
+  landsby: mediaUrl("feed/snøfall-day.png"),
+  verksted: mediaUrl("feed/iq-verksted.png"),
+  kontor: mediaUrl("feed/julius-kontor.png"),
 };
 
-/** Background for a live channel (K3 is the Julius video, not a feed). */
+/** Fallback still image when a video loop fails to load. */
+export function channelFallback(
+  channel: ChannelId,
+  freq: number = FREQ_HOME,
+  day?: number,
+): string | null {
+  switch (channel) {
+    case 1:
+      return day === 18 ? STILL.storm : STILL.landsby;
+    case 2:
+      return STILL.verksted;
+    case 3:
+      return STILL.kontor;
+    case 4:
+      if (freq === FREQ_HOME) return STILL.antenne;
+      if (freq === FREQ_KULDE) return STILL.grotte;
+      return null;
+    default:
+      return null;
+  }
+}
+
+/** Background loop for a live channel. */
 export function channelSource(
   channel: ChannelId,
   day: number,
   hour: number,
   freq: number,
+  solvedOrOpts: boolean | { solved?: boolean; juliusPlaying?: boolean } = false,
+  juliusPlayingArg: boolean = false,
 ): string | null {
+  const solved =
+    typeof solvedOrOpts === "object"
+      ? (solvedOrOpts.solved ?? false)
+      : solvedOrOpts;
+  const juliusPlaying =
+    typeof solvedOrOpts === "object"
+      ? (solvedOrOpts.juliusPlaying ?? false)
+      : juliusPlayingArg;
+
   switch (channel) {
     case 1:
+      if (day === 24 && solved) return mediaUrl("video/tv/landsby-dag24.mp4");
       if (day === 17) return mediaUrl("video/tv/landsby-nordlys.mp4");
-      if (day === 18) return STILL.storm;
+      if (day === 18) return mediaUrl("video/tv/landsby-storm.mp4");
       return mediaUrl("video/tv/landsby-rolig.mp4");
     case 2:
       // IQ works days; the workshop stands empty at night.
       return hour >= 7 && hour < 20
         ? mediaUrl("video/tv/verksted-iq-inne.mp4")
         : mediaUrl("video/tv/verksted-tom.mp4");
+    case 3:
+      if (juliusPlaying) return null;
+      if (day === 14) return mediaUrl("video/tv/kontor-dag14.mp4");
+      return hour >= 7 && hour < 20
+        ? mediaUrl("video/tv/kontor-julius.mp4")
+        : mediaUrl("video/tv/kontor-tom.mp4");
     case 4:
-      if (freq === FREQ_HOME) return STILL.antenne;
+      if (freq === FREQ_HOME) {
+        return day === 11 && !solved
+          ? mediaUrl("video/tv/antenne-dag11.mp4")
+          : mediaUrl("video/tv/antenne-rolig.mp4");
+      }
       // Krystallgrotten is only on the air from day 3 (first ghost image).
-      if (freq === FREQ_KULDE && day >= 3) return STILL.grotte;
+      if (freq === FREQ_KULDE && day >= 3) {
+        if (day >= 24 && solved) return mediaUrl("video/tv/grotte-dag24.mp4");
+        if (day === 23) return mediaUrl("video/tv/grotte-dag23.mp4");
+        if ((day === 21 && solved) || day === 22) {
+          return mediaUrl("video/tv/grotte-dag21.mp4");
+        }
+        if (day >= 15 && day <= 20)
+          return mediaUrl("video/tv/grotte-dag15.mp4");
+        if ((day === 12 && solved) || day === 13 || day === 14) {
+          return mediaUrl("video/tv/grotte-dag12.mp4");
+        }
+        return mediaUrl("video/tv/grotte-rolig.mp4");
+      }
       return null;
     default:
       return null;
