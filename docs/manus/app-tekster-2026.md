@@ -256,7 +256,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - `daily_alerts`: ⚙️ IQ: Tre sikringer røk i natt. Kanal 2 er mørk til noen regner riktig.
 - NisseNet: ingen.
 - `rampenissen_rampestrek`: Sitter midt i sukkerskålen med sukker rundt munnen og en teskje i hånden, tatt på fersken.
-- `fysisk_hint`: Tre A7-kort teipet under tre spisestoler med romertall **XII**, **XVI**, **XX** og et lite iskrystall, ingen regnetegn. Ett lavt nok for Hanna. Løsning: Håkon finner kortene, Kristian leser 12, 16, 20, Julius sier «legg alle sammen». 48. Etter koden lyser sikringsboksen på kanal 2. Reserve: e-posten sier «slik gamle klokker skriver tall».
+- `fysisk_hint`: Tre A7-kort teipet under tre spisestoler, hvert med ett regnestykke i romertall: **IX + III**, **XIX − III**, **XIV + VI** (= 12, 16, 20), og et lite iskrystall. Ett lavt nok for Hanna. Løsning: Håkon finner kortene, Kristian regner ut hvert kort (IX = 9, XIX = 19, XIV = 14), Julius sier «legg alle sammen». 48. Etter koden lyser sikringsboksen på kanal 2. Reserve: e-posten sier «slik gamle klokker skriver tall».
 - `materialer_nødvendig`: maskeringsteip · `dag02-tallkort.pdf` · sukkerskål og teskje
 - `oppsett_tid`: 3 min
 - frost: ikke synlig
@@ -271,7 +271,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - NisseNet: **Slettes:** `SNOFALL-HISTORIER/snowflake-patterns.txt`.
 - Kulde: spøkelsesbilde dag 3 (se A6).
 - `rampenissen_rampestrek`: Har tagget badespeilet med tannkrem: «RAMPEN VAR HER. NO CAP.» og et surt fjes; den tomme tuben ligger i vasken.
-- `fysisk_hint`: Kvelden før: skriv `_ _ Ƨ _ Я _` på det tørre speilet med q-tips i oppvaskmiddel (speilvendt R og S, baklengs rekkefølge), la tørke. Lapp i hjørnet: «Pust på meg.» Glassperle og grønt hjerte-kort i vinduskarmen. Løsning: varmt vann i vasken med døra lukket i to minutter, skriften trer fram, Håkon skriver av, Kristian ser at tegnene er speilvendte og snur rekka: `_ R _ S _ _`. Julius: glassbiten som lager regnbue. Kode PRISME. Reservekortet `dag03-frostlapp.pdf` (speilvendt, med tegn i hjørnene) i tannkremtuben; brukes etterpå til å føre P, R, I, S, M, E på tavla. Legg perlen i konvolutten «24». Hanna, hvis hun vil: puster på speilet, lager regnbue med perlen, skanner kortet.
+- `fysisk_hint`: Kvelden før: skriv `_ _ Ƨ _ Я _` på det tørre speilet med q-tips i oppvaskmiddel (speilvendt R og S, baklengs rekkefølge), la tørke. Lapp i hjørnet: «Pust på meg.» Glassperle, grønt hjerte-kort og en liten konvolutt «ETTER KODEN – IQ» med det rettvendte frostkortet (tegn i hjørnene) i vinduskarmen. Løsning: varmt vann i vasken med døra lukket i to minutter, skriften trer fram, Håkon skriver av, Kristian ser at tegnene er speilvendte og snur rekka: `_ R _ S _ _`. Julius: glassbiten som lager regnbue. Kode PRISME. Etter koden åpnes konvolutten og P, R, I, S, M, E føres på tavla (E trengs dag 7). Det speilvendte reservekortet fra samme PDF ligger i tannkremtuben hvis speilet svikter. Legg perlen i konvolutten «24». Hanna, hvis hun vil: puster på speilet, lager regnbue med perlen, skanner kortet.
 - `materialer_nødvendig`: oppvaskmiddel · q-tips · glassperle · symbolkort grønt hjerte · tannkrem · `dag03-frostlapp.pdf` (reserve)
 - `oppsett_tid`: 4 min
 - frost: ikke synlig
@@ -284,7 +284,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - `daily_alerts`: 🦌 RUDOLF: Fløy feil i tåka. NisseKrypto åpner i kveld.
 - NisseNet: ingen.
 - `rampenissen_rampestrek`: Har tatt pappas solbriller og sitter i pappas sko i gangen, med de andre skoene i ring rundt seg og kosedyrene i en ytre ring, som om han holder kurs.
-- `fysisk_hint`: Sju sko i ring på gulvet i gangen, pappas (med Rampenissen i) som start, kosedyrene i ring utenfor. Kort i hver sko, talt **med klokka** fra Rampenissen: sko 3 **M**, sko 5 **A**, resten ❄ (tegn i hjørnet, prikker bak med klokka). Retningen sies ikke. Løsning: Håkon legger kortene foran skoene, Kristian skriver begge lesninger (`_ _ M _ A _ _` og `_ _ A _ M _ _`), Julius: nålen som finner nord. Bare den første passer. Kode KOMPASS. Før K, O, M, P, A, S på tavla. Hanna, hvis hun vil: teller skoene høyt.
+- `fysisk_hint`: Sju sko i ring på gulvet i gangen, pappas (med Rampenissen i) som start, kosedyrene i ring utenfor. Kort i hver sko, talt **med klokka** fra Rampenissen: sko 3 **M**, sko 5 **A**, resten ❄ (tegn i hjørnet, prikker bak med klokka). Retningen sies ikke. Løsning: Håkon legger kortene foran skoene, Kristian skriver begge lesninger (`_ _ M _ A _ _` med klokka, `_ _ _ A _ M _` mot klokka), Julius: det som peker samme vei uansett hvor man snur seg. Bare den første passer. Kode KOMPASS. Før K, O, M, P, A, S på tavla. Hanna, hvis hun vil: teller skoene høyt.
 - `materialer_nødvendig`: 7 sko · `dag04-skokort.pdf` · pappas solbriller · 4–6 kosedyr
 - `oppsett_tid`: 5 min
 - frost: ikke synlig
@@ -493,7 +493,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
   **Slettes:** `SNOFALL-HISTORIER/julesanger-samling.txt`.
 
 - `rampenissen_rampestrek`: Har rullet ut en hel dorull som «lydbølge» fra badet gjennom gangen til kjøkkenet og ligger utslått i enden ved tre glass.
-- `fysisk_hint`: Tre like glass med 2, 5 og 9 cm vann og ett keramikkrus med litt vann, i tilfeldig rekkefølge, teskje ved. Kortet `dag12-frostlapp-tredelt.pdf` klippet i fire, teipet nederst på utsiden med forsiden inn: dypeste glass `_ E`, midterste `_ O`, lyseste `_ _`, kruset `_ A` (blindspor: det gir dunk, ikke tone; Julius sier «tre toner»). Grønt sol-kort mot midtglasset. Løsning: Håkon slår på alle, legger bort kruset, sorterer glassene fra dypest til lysest, bitene i samme rekkefølge: `_ E _ O _ _`. Julius: det som er igjen av en sang når ordene er borte. Kode MELODI. Så NisseKrypto 1: «varmt, håper, alene» = rødt (PS dag 6), grønt (PS dag 3), blått (PS dag 9, eller ved utelukkelse) → merket Varmebærer. Hører de ikke forskjell: mest vann = dypest. Prikker 1–3 bak de ekte bitene. Hanna, hvis hun vil: slår på glassene og sier hvilken som ikke synger.
+- `fysisk_hint`: Tre like glass med 2, 5 og 9 cm vann og ett keramikkrus med litt vann, i tilfeldig rekkefølge, teskje ved. Kortet `dag12-frostlapp-tredelt.pdf` klippet i fire, teipet nederst på utsiden med forsiden inn: dypeste glass `_ E`, midterste `_ O`, lyseste `_ _`, kruset `_ A` (blindspor: det gir dunk, ikke tone; Julius sier «tre toner»). Grønt sol-kort mot midtglasset. Løsning: Håkon slår på alle, legger bort kruset, sorterer glassene fra dypest til lysest, bitene i samme rekkefølge: `_ E _ O _ _`. Julius: det tonene lager når de kommer etter hverandre. Kode MELODI. Så NisseKrypto 1: «varmt, håper, alene» = rødt (PS dag 6), grønt (PS dag 3), blått (PS dag 9, eller ved utelukkelse) → merket Varmebærer. Hører de ikke forskjell: mest vann = dypest. Prikker 1–3 bak de ekte bitene. Hanna, hvis hun vil: slår på glassene og sier hvilken som ikke synger.
 - `materialer_nødvendig`: 3 glass · 1 keramikkrus · teskje · `dag12-frostlapp-tredelt.pdf` · symbolkort grønn sol · 1 dorull
 - `oppsett_tid`: 4 min
 - frost: 55 → 32
@@ -542,7 +542,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
   **Slettes:** `SNOFALL-HISTORIER/personlige-brev-intro.txt`.
 
 - `rampenissen_rampestrek`: Har brettet alle kjøkkenserviettene til skjeve fugler som ligger over hele kjøkkenet, og sitter selv i en papirbåt i den tørre vasken.
-- `fysisk_hint`: Arket `dag14-brettark.pdf` (tynt papir) sammenrullet i papirbåten: halve streker på hver side av to stiplede linjer, sju tomme ruter med tegn i hjørnene. Brettet langs den loddrette og mot lys: bokstavene **R** og **G** i to vinduer. Brettet langs den vannrette: tallene **2** og **4** ved de samme vinduene. Tekst på arket: «Brett. Hold en lykt bak.» Løsning: Håkon bretter, Kristian finner begge brettene: `_ R _ G _ _ _`, Julius: det japanske ordet for å brette papir til liv. Kode ORIGAMI. Test gjennomlys i november. Hanna, hvis hun vil: holder lykten.
+- `fysisk_hint`: Arket `dag14-brettark.pdf` (tynt papir) sammenrullet i papirbåten: halve streker på hver side av to stiplede linjer, sju tomme ruter med tegn i hjørnene. Brettet langs den loddrette og mot lys: bokstavene **R** og **G** i to vinduer. Brettet langs den vannrette: tallene **2** og **4** ved de samme vinduene. Tekst på arket: «Brett. Hold en lykt bak.» Løsning: Håkon bretter, Kristian finner begge brettene: `_ R _ G _ _ _`, Julius: å gi et flatt ark vinger uten saks og lim, bare ved å bøye det. Kode ORIGAMI. Test gjennomlys i november. Hanna, hvis hun vil: holder lykten.
 - `materialer_nødvendig`: `dag14-brettark.pdf` · ett ark til papirbåt · mobillykt · servietter · valgfritt `dag14-serviettfugl.pdf`
 - `oppsett_tid`: 3 min
 - frost: 50 → 40
@@ -573,9 +573,9 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
   Filen åpner om morgenen dag 15 (`afterDay: 15`), ikke etter koden: margnotatet er dagens posisjonsregel.
 
-- `rampenissen_rampestrek`: Står med begge beina nedi en liten skål sirup, med klissete fotspor av sukker bortover benken og sleiva i hånden.
-- `fysisk_hint`: Sukkerfotspor fra skålen mot fem redskaper på benken: gryte, sleiv, visp, kjevle, øse. Sporene til kjevle og øse stopper halvveis. Under gryten **A**, sleiva **M**, vispen **L** (`dag15-redskapskort.pdf`, bokstav uten tall, tegn i hjørnet); under kjevle og øse ❄-lapper uten tegn. Rutekort 1–8 og rødt sol-kort ved skålen. **Rydd bort sukker og sirup etter rigging.** Løsning: Håkon følger sporene, Kristian har A, M, L uten plass, åpner notatboken i NisseNet: «Gryta på to, sleiva fem ganger, vispen til sju» → `_ A _ _ M _ L _`. Julius: det Nissemor lager når sukker blir brunt og varmt i gryta. Kode KARAMELL. Hanna, hvis hun vil: smaker én fingertupp sirup og skanner sol-kortet.
-- `materialer_nødvendig`: gryte, sleiv, visp, kjevle, øse · `dag15-redskapskort.pdf` · symbolkort rød sol · litt sirup og sukker
+- `rampenissen_rampestrek`: Står med begge beina nedi en liten skål sirup, med fotspor (papirstrimler, tørt) bortover benken og sleiva i hånden.
+- `fysisk_hint`: Fotspor av papir (strimler fra PDF-en, ingen sukker på benken) fra skålen mot fem redskaper: gryte, sleiv, visp, kjevle, øse. Strimlene til kjevle og øse stopper halvveis. Under gryten **A**, sleiva **M**, vispen **L** (`dag15-redskapskort.pdf`, bokstav uten tall, tegn i hjørnet); under kjevle og øse ❄-lapper uten tegn. Rutekort 1–8 og rødt sol-kort ved skålen. Litt sirup i en liten skål under Rampenissens føtter, ellers tørt; **rydd bort sirupflasken og sukkeret.** Løsning: Håkon følger strimlene, Kristian har A, M, L uten plass, åpner notatboken i NisseNet: «Gryta på to, sleiva fem ganger, vispen til sju» → `_ A _ _ M _ L _`. Julius: det Nissemor lager når sukker blir brunt og varmt i gryta. Kode KARAMELL. Hanna, hvis hun vil: smaker én fingertupp sirup og skanner sol-kortet.
+- `materialer_nødvendig`: gryte, sleiv, visp, kjevle, øse · `dag15-redskapskort.pdf` (2 sider, med fotsporstrimler) · symbolkort rød sol · en liten skål med litt sirup
 - `oppsett_tid`: 5 min
 - frost: 56 → 46
 
@@ -638,7 +638,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
   > Julius: «Jeg vet.»
 
 - `rampenissen_rampestrek`: Reinsdyrbesøk: et spor av sjokoladerosiner («reinsdyrbæsj») fra ytterdøra til kjøleskapet, og Rampenissen sitter fast i pappas jakkelomme og peker anklagende på sporet.
-- `fysisk_hint`: Rosinspor med fire hauger på hver sin serviett: 2 rosiner over **U**, 4 over **B**, 7 over **E**, 9 over ❄ (`dag18-rosinkort.pdf`, tegn i hjørnet, prikker bak). Rutekort 1–9 i jakkelommen hos Rampenissen, blått sol-kort i den andre lommen. Løsning: Håkon teller og løfter, Kristian: `_ U _ B _ _ E _ _`. Julius: Trixters ord for når sleden rister. Kode TURBULENS. Så NisseKrypto 2 → kartet; sirkelen på varde 5 trengs dag 21. Før U og B på tavla (trengs dag 20). Hanna, hvis hun vil: teller rosinene og får Rampenissen løs.
+- `fysisk_hint`: Rosinspor med fire hauger på hver sin serviett: 2 rosiner over **U**, 4 over **B**, 7 over **E**, 9 over ❄ (`dag18-rosinkort.pdf`, tegn i hjørnet, prikker bak). Rutekort 1–9 i jakkelommen hos Rampenissen, blått sol-kort i den andre lommen. Løsning: Håkon teller og løfter, Kristian: `_ U _ B _ _ E _ _`. Julius: Trixters ord for når lufta får sleden til å hoppe og riste uten at noen ser hvorfor. Kode TURBULENS. Så NisseKrypto 2 → kartet; sirkelen på varde 5 trengs dag 21. Før B på tavla (trengs dag 20; U er kjent fra dag 7). Hanna, hvis hun vil: teller rosinene og får Rampenissen løs.
 - `materialer_nødvendig`: sjokoladerosiner · 4 servietter · `dag18-rosinkort.pdf` · symbolkort blå sol · jakke på knagg
 - `oppsett_tid`: 4 min
 - frost: 60 → 48
@@ -680,8 +680,8 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - NisseNet: ingen.
 - Kulde: iMac-melding 09:00–12:00 (A6).
 - `rampenissen_rampestrek`: Har bygd fort av et teppe over to stoler med skiltet «KUN FOR SIGMAS. 6-7.», tatt pappas hodetelefoner og fjernkontrollen, og sitter med en skål popcorn.
-- `fysisk_hint`: Fem sofaputer i ulik størrelse inne i fortet, hulter til bulter. Kort (`dag20-putekort.pdf`, prikker bak etter størrelse): under den nest største tegn **U**, under den fjerde største tegn **B**, resten ❄ med tegn i hjørnet. Grønt måne-kort under den minste. Løsning: Håkon henter putene og legger dem etter størrelse (største = 1), Kristian slår opp tegnene: `_ U _ B _`. Julius: det biler får når de skal forbi i bakken. Kode TURBO. Finn fram 8 bøker til mandag. Minn barna på å lese Trixters kart (NisseKrypto) i kveld; i morgen er det meste fryst. Hanna, hvis hun vil: kryper inn og rekker ut putene, skanner måne-kortet.
-- `materialer_nødvendig`: 5 sofaputer i ulik størrelse · teppe og to stoler · `dag20-putekort.pdf` · symbolkort grønn måne · popcorn · 8 bøker til i morgen
+- `fysisk_hint`: Fem puter i tydelig ulik størrelse inne i fortet, hulter til bulter; bruk sofaputer, pynteputer, hodepute, barnepute, hva som helst, så lenge ingen to er like store. Kort (`dag20-putekort.pdf`, prikker bak etter størrelse): under den nest største tegn **U**, under den fjerde største tegn **B**, resten ❄ med tegn i hjørnet. Grønt måne-kort under den minste. Løsning: Håkon henter putene og legger dem etter størrelse (største = 1), Kristian slår opp tegnene: `_ U _ B _`. Julius: det biler får når de skal forbi i bakken. Kode TURBO. Finn fram 8 bøker til mandag. Minn barna på å lese Trixters kart (NisseKrypto) i kveld; i morgen er det meste fryst. Mangler tavla B (dag 18 hoppet over): `runer-fasit.pdf`, eller si at kortet under pute 4 er B. Hanna, hvis hun vil: kryper inn og rekker ut putene, skanner måne-kortet.
+- `materialer_nødvendig`: 5 puter av hvilket som helst slag, i ulik størrelse · teppe og to stoler · `dag20-putekort.pdf` · symbolkort grønn måne · popcorn · 8 bøker til i morgen
 - `oppsett_tid`: 4 min
 - frost: 88 → 76
 
@@ -718,7 +718,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
   `alfabet.txt` gjenbrukes (åpen siden dag 5). **Slettes:** `SNOFALL-HISTORIER/julekode_dekoder.txt`.
 
 - `rampenissen_rampestrek`: Har krøpet inn i Hannas julesokk med bare føttene ut, og kommer ikke løs.
-- `fysisk_hint`: Tre julesokker merket 1, 2, 3 (`dag22-sokkelapper.pdf`): sokk 1 (stua) `15 – 4`, sokk 2 (kjøkkenet) `17 – 7`, sokk 3 (Hannas, i gangen, med Rampenissen og rødt måne-kort) `32 – 22`. Ingen bokstaver. Løsning: Julius: A er alltid først, alfabetet slutter på Å, og Winter legger tre til hvert tall; trekk fra. 12 L, 1 A, 14 N, 4 D, 29 Å, 19 S. Kode LANDÅS. Så navneregistrering.
+- `fysisk_hint`: Tre julesokker merket 1, 2, 3 med to separate tallkort i hver (`dag22-sokkelapper.pdf`, merket 1a/1b osv., ingen bindestrek og ingen minustegn): sokk 1 (stua) `15` og `4`, sokk 2 (kjøkkenet) `17` og `7`, sokk 3 (Hannas, i gangen, med Rampenissen og rødt måne-kort) `32` og `22`. Ingen bokstaver. Løsning: Julius: A er alltid først, alfabetet slutter på Å, og Winter legger tre til hvert tall; trekk fra. 12 L, 1 A, 14 N, 4 D, 29 Å, 19 S. Kode LANDÅS. Så navneregistrering.
 - `materialer_nødvendig`: 3 julesokker · `dag22-sokkelapper.pdf` · alfabetstrimmelen fra dag 5 · symbolkort rød måne
 - `oppsett_tid`: 5 min
 - frost: 40 → 24

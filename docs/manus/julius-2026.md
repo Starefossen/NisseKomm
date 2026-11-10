@@ -2,7 +2,7 @@
 
 **Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer.
 
-**Revisjon 10. november (vanskelighet, godkjent):** nye segmenter dag 5/4, 7/3, 7/5, 8/3, 9/4, 11/4 og 11/5 (nytt), 20/5. Dag 2–4 er ferdig generert og uendret. Brikkene står ordrett som i `gaater-2026.md` etter revisjonen.
+**Revisjon 10. november (vanskelighet, godkjent):** nye segmenter dag 5/4, 7/3, 7/5, 8/3, 9/4, 11/4 og 11/5 (nytt), 20/5. Etter uavhengig gjennomgang også 4/4, 4/5, 12/4, 12/5, 14/4, 14/5, 18/4, 18/5 (brikken ga ordet alene). Dag 2 og 3 er ferdig generert og uendret; **dag 4 regenereres** (segment 4 og 5). Brikkene står ordrett som i `gaater-2026.md` etter revisjonen.
 
 Steg 2. Kilder (låst): `docs/historie-2026.md`, `docs/storyboard-2026.md`, `docs/gaater-2026.md`. Stemme og rom: `assets/characters/julius/*`, `assets/locations/julius-kontor/beskrivelse.txt`, `assets/stil.md`.
 
@@ -104,13 +104,13 @@ Kulde-nivå 1. Svak knitring, lett snø.
    - Varighet: 13 s (22 ord)
    - Handling: Lager en liten bue med hånden som ender i bordplaten.
    - Kulde: Lett snø i bildet øker i to sekunder.
-4. **Replikk:** «Rudolf trenger det samme som sjøfolk alltid hadde i lomma: nålen som finner nord uansett vær. Ikke et kart, ikke en stjerne.»
-   - Varighet: 13 s (22 ord)
-   - Handling: Klapper seg på brystlommen, rister på hodet to ganger.
+4. **Replikk:** «Rudolf trenger det samme som sjøfolk har hatt med seg: det som peker samme vei uansett hvor man snur seg. Ikke et kart, ikke en stjerne.»
+   - Varighet: 15 s (26 ord)
+   - Handling: Snur seg i stolen til begge sider mens pekefingeren står stille i luften, rister på hodet to ganger.
    - Kulde: Svak knitring.
-5. **Replikk:** «Den lille runde med nål i. Kle dere godt i dag, det er fredag og kaldt. Ta vare på hverandre. Julius over og ut.»
+5. **Replikk:** «Sjøfolk hadde den i lomma, Rudolf har den i nesa. Kle dere godt i dag, det er fredag og kaldt. Julius over og ut.»
    - Varighet: 14 s (24 ord)
-   - Handling: Tegner en liten sirkel på bordet med fingeren, så leter han etter knappen.
+   - Handling: Klapper seg på brystlommen, så på nesen, ler, så leter han etter knappen.
    - Kulde: Svak knitring, klikk.
 
 ## Dag 5 (lø) – Brevfuglen over Byfjellene · ULRIKEN
@@ -304,13 +304,13 @@ Kulde-nivå 2. Rim, synlig pust, bildet fryser 1–2 s i segment 3.
    - Varighet: 14 s (23 ord)
    - Handling: Ser ned, stryker seg over skjegget, litt flau.
    - Kulde: Bildet fryser 1–2 s på «sprakk».
-4. **Replikk:** «Nå kommer det viktigste, og det er til deg, Håkon. Nissemor nynnet tre toner ved slusen, den dypeste først. Ikke en sang med ord.»
-   - Varighet: 14 s (24 ord)
+4. **Replikk:** «Nå kommer det viktigste, og det er til deg, Håkon. Nissemor nynnet tre toner ved slusen, den dypeste først. Ingen ord.»
+   - Varighet: 13 s (21 ord)
    - Handling: Holder hånden lavt, så litt høyere, så høyest, som tre trappetrinn.
    - Kulde: Synlig pust.
-5. **Replikk:** «Bare det som er igjen av en sang når ordene er tatt bort. God helg, dere. Syng litt i dag. Julius over og ut.»
+5. **Replikk:** «Bare det tonene lager når de kommer etter hverandre. Isen kjente det igjen. God helg, dere. Syng litt i dag. Julius over og ut.»
    - Varighet: 14 s (24 ord)
-   - Handling: Nynner to toner uten ord, ler, famler etter knappen.
+   - Handling: Nynner tre toner uten ord, lavest først, ler, famler etter knappen.
    - Kulde: Synlig pust, klikk.
 
 ## Dag 13 (sø) – Luciadagens Gylne Krydder · SAFRAN · 3. advent
@@ -354,11 +354,11 @@ Kulde-nivå 1, uke 3: mikrofonen faller ut med et klikk i starten. Den blå fugl
    - Varighet: 15 s (26 ord)
    - Handling: Snur seg mot vinduet, der en liten blå fugl sitter stille i karmen.
    - Kulde: Rim rundt fuglen, ett juletrelys slukner.
-4. **Replikk:** «Nå kommer det, Kristian. Det japanske ordet for å brette papir til liv. Winter uttaler det feil med vilje, så ingen på linjen skal forstå.»
-   - Varighet: 15 s (25 ord)
-   - Handling: Bretter et ark én gang på bordet, holder det opp som en fugl.
+4. **Replikk:** «Nå kommer det, Kristian. Winter har ett ord for å gi et flatt ark vinger uten saks og lim, bare ved å bøye det.»
+   - Varighet: 14 s (24 ord)
+   - Handling: Bøyer et ark to ganger på bordet, holder det opp som en fugl.
    - Kulde: Svak knitring.
-5. **Replikk:** «Det er ikke et norsk ord. Ha en eventyrlig dag, alle sammen. Og vær snille med fuglen om dere ser den. Over og ut.»
+5. **Replikk:** «Hun uttaler det feil med vilje, så ingen på linjen skal forstå. Ha en eventyrlig dag, og vær snille med fuglen. Over og ut.»
    - Varighet: 14 s (24 ord)
    - Handling: Legger arket forsiktig ned, nikker mot vinduet.
    - Kulde: Svak knitring, klikk.
@@ -450,13 +450,13 @@ Kulde-nivå 2. Lampen flakker, to juletrelys slukner, bildet fryser 1–2 s i se
    - Varighet: 14 s (24 ord)
    - Handling: Rister hendene i luften, ler.
    - Kulde: Bildet fryser 1–2 s midt i «ristet», to juletrelys slukner.
-4. **Replikk:** «Når sleden rister i vinden, har Trixter ett ord for det. Flyvertinnene bruker det samme ordet, rett før de ber dere sette dere og feste beltet.»
+4. **Replikk:** «Når lufta får sleden til å hoppe og riste uten at noen ser hvorfor, har Trixter ett ord for det. Han sier det med sammenbitte tenner.»
    - Varighet: 15 s (26 ord)
-   - Handling: Rister hendene i luften, så later han som han strammer et belte over magen.
+   - Handling: Rister hendene i luften, så biter han tennene sammen og knurrer ordløst.
    - Kulde: Lampen flakker.
-5. **Replikk:** «Han sier aldri igjen, Rampenissen. Det sa han i fjor også. Fest beltet, dere tre, og ha en fin fredag. Julius over og ut.»
-   - Varighet: 14 s (24 ord)
-   - Handling: Ler, klapper på det usynlige beltet, leter etter knappen.
+5. **Replikk:** «Han sier aldri igjen, Rampenissen. Det sa han i fjor også. Hold dere fast, dere tre, og ha en fin fredag. Julius over og ut.»
+   - Varighet: 15 s (25 ord)
+   - Handling: Ler, griper tak i bordkanten med begge hender, leter etter knappen.
    - Kulde: Lampen flakker, klikk.
 
 ## Dag 19 (lø) – Eksplosjon i Fôringsautomaten · GULROT · pusterom
@@ -620,7 +620,7 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 | 1   | SIGNAL       | 119 | 60     | 71      | 5     | 25      | 0 % (bruk, ingen bokstaver)        |                                                                     |
 | 2   | 48           | 97  | 48     | 57      | 4     | 26      | regel, ingen tall                  |                                                                     |
 | 3   | PRISME       | 119 | 60     | 70      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                     |
-| 4   | KOMPASS      | 115 | 58     | 68      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                     |
+| 4   | KOMPASS      | 119 | 60     | 70      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5), video regenereres             |
 | 5   | ULRIKEN      | 116 | 58     | 69      | 5     | 26      | nøkkel som oppslag (dag 2)         | Segm. 4 ny: «like mange som sikringer onsdag»                       |
 | 6   | LYKT         | 112 | 56     | 67      | 5     | 25      | 0 % (velger figur)                 |                                                                     |
 | 7   | KULDE        | 117 | 58     | 70      | 5     | 26      | 0 % + peker til tavla              | Bildet fryser der navnet skulle vært sagt; segm. 3 og 5 nye         |
@@ -628,13 +628,13 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 | 9   | 24           | 112 | 56     | 67      | 5     | 26      | armer (6), ikke antall, ikke regel | Låst brikke delt over segm. 4–5                                     |
 | 10  | SPEKTER      | 120 | 60     | 72      | 5     | 26      | 0 %                                | Brikken gjentas i segm. 5 pga. hakking (låst)                       |
 | 11  | 75           | 106 | 53     | 64      | 5     | 26      | to regler, ingen tall              | Segm. 4 ny («ender på fem»), segm. 5 nytt                           |
-| 12  | MELODI       | 118 | 59     | 70      | 5     | 25      | 0 %                                | Låst brikke (27 ord) delt over segm. 4–5                            |
+| 12  | MELODI       | 115 | 58     | 69      | 5     | 25      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                |
 | 13  | SAFRAN       | 121 | 60     | 72      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                     |
-| 14  | ORIGAMI      | 121 | 60     | 71      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                     |
+| 14  | ORIGAMI      | 120 | 60     | 70      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                |
 | 15  | KARAMELL     | 119 | 60     | 71      | 5     | 26      | 0 %                                | Låst brikke er 26 ord alene; «Han spiste ikke engang det» i segm. 5 |
 | 16  | SORTERING    | 99  | 50     | 58      | 4     | 26      | 0 %                                | Brikken sier «stor S» (låst)                                        |
 | 17  | NORDLYS      | 118 | 59     | 70      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5; «i nord» (låst)                    |
-| 18  | TURBULENS    | 120 | 60     | 70      | 5     | 26      | 0 %                                |                                                                     |
+| 18  | TURBULENS    | 121 | 60     | 71      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                |
 | 19  | GULROT       | 121 | 60     | 72      | 5     | 26      | 0 %                                | Kulde 0; brikke delt over segm. 4–5                                 |
 | 20  | TURBO        | 124 | 62     | 73      | 5     | 26      | 0 %                                | Brikke i segm. 3–4; segm. 5 ny: porten = sirkelen på kartet         |
 | 21  | BRANNMUR     | 119 | 60     | 70      | 5     | 26      | 0 %                                | Brikke strammet 10. nov; delt over segm. 3–4                        |
@@ -642,4 +642,4 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 | 23  | STJERNEKLART | 121 | 60     | 72      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 3–4                                     |
 | 24  | JULEMAGI     | 124 | 62     | 73      | 5     | 26      | 0 %                                | Låst brikke (50 ord) delt over segm. 3–5                            |
 
-Sum: 2 792 ord, snitt 116 per dag (cirka 58 s tale, 68–70 s med klippause). Ingen segmenter over 26 ord; alle klipp 13–15 s.
+Sum: 2 793 ord, snitt 116 per dag (cirka 58 s tale, 68–70 s med klippause). Ingen segmenter over 26 ord; alle klipp 13–15 s.
