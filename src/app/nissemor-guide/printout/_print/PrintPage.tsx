@@ -9,10 +9,13 @@ import { Frostrune } from "@/components/ui/Frostrune";
  */
 export function PrintPage({
   title,
+  paper,
   note,
   children,
 }: {
   title: string;
+  /** Paper and sides, e.g. "1 ark, tykt papir, tosidig". */
+  paper?: string;
   note?: ReactNode;
   children: ReactNode;
 }) {
@@ -21,6 +24,7 @@ export function PrintPage({
       <style>{"@page { size: A4; margin: 10mm; }"}</style>
       <div className="print:hidden max-w-4xl mx-auto space-y-4 mb-6 text-(--neon-green) font-['VT323',monospace]">
         <h1 className="text-4xl font-bold text-center">🖨️ {title}</h1>
+        {paper && <p className="text-xl text-center">{paper}</p>}
         {note && <div className="text-lg opacity-80">{note}</div>}
         <button
           onClick={() => window.print()}
