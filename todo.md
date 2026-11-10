@@ -93,6 +93,35 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 - [ ] **MCP-API v1 for hjemmet (avtalt med Varden 10. november, Starefossen/homelab#22, bygges når integrasjon gjenopptas):** `get_screen` (Skjerm: dører, dagens tittel og teaser fra 06:00, Frostgrad, Kulde-navn, merker, Rampenissen sett etter 09/10, frost, gråtone, TV-variant og hendelse, `next_change_at`), `get_clips(date)` (radio: lyd-URL, varighet, sha256, ferdig innen 05:30), `get_kid_context` (Varden: alt barna har låst opp, altså fremdrift, e-post, transkripsjon og PS for løste dager (dagens e-post og transkripsjon, og alle filer og symboler dagens gåte bruker uansett når de ble åpnet, først når dagens kode er løst; filene merkes med hvilke dager de er gåtebiter for; det samme gjelder eldre e-post, transkripsjoner og PS som er biter i dagens gåte; en test sjekker hver dag 1–24 mot bitlisten i `docs/gaater-2026.md`), åpne NisseNet-filer og symboler; uopptjente koder sensureres, ingen foreldredata, pluss en fast `guidance` om aldri å gi svaret, returnert ordrett; sensurerte biter vises som «[skjult]» (dagens kode bruker «[…]», byttes); Varden kjører adversariale barneprompter med krav om null lekkasjer før skillen slås på; Hans 10. november), foreldreverktøy (`give_hint`, `set_frost`, `skip_day`, `reset`, `set_fake_now` som bare gjelder svar til operatøren, utløper etter 24 timer og logges, pluss `preview_screen(as_caller)` for å se Skjerms visning). Alle svar har `schema_version: 1`, tid i Europe/Oslo og er under 16 KB. Medie-URL-er har sterk ETag og Range.
 - [ ] **Skjerm-tekster (venter på integrasjon):** skriv `skjerm_teaser` (én linje lore per dag, ingen bokstaver, tall eller steder) for 24 dager, og en `get_screen`-variant i MCP for familieskjermen.
 
+## Systematisk kvalitetsgjennomgang (ikke nye funksjoner)
+
+Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalitet og tester. Fremgangsmåte per delsystem: gjennomgang med funn (fil:linje) → rettinger → tester → `pnpm check` og gjennomspilling av alle 24 dager. Ingen nye funksjoner; bare det vi har, skal virke som en helhet.
+
+- [ ] Symbolskanner og symbolkort (pågår 10. november)
+- [ ] GameEngine og spilltilstand
+- [ ] Lagring og synk (StorageManager, ServerSyncAdapter, /api/state, Postgres)
+- [ ] Dato og tid (date-utils, Tidsmaskin, simulering, `day-offset`)
+- [ ] Innlogging og moduser (auth, `NISSEKOMM_MODE`, proxy)
+- [ ] KodeTerminal og bonuskoder
+- [ ] NisseMail og varsler
+- [ ] Dagbok og Julius-video (JuliusVideo, sett-status, transkripsjon, PS)
+- [ ] Kalender
+- [ ] Snøfall TV og LiveCam (kanaler, loops, effekter, hendelser)
+- [ ] NisseMusikk
+- [ ] Brevfugler og brev til Julius
+- [ ] NisseKrypto og dekrypteringene
+- [ ] NisseNet-utforsker og filer
+- [ ] Eventyr, milepæler, merker og finale
+- [ ] Frost, Frostgrad og frostmodus
+- [ ] Frostrunene og runetavla
+- [ ] Dag 1-oppstart og 85,0-halen
+- [ ] Foreldreguiden (I kveld, Forberedelser, Dag for dag, Innstillinger, simulering)
+- [ ] Utskrifter
+- [ ] Mediebibliotek og opplasting
+- [ ] Varslingssystem
+- [ ] MCP-server
+- [ ] Testoppsett og gjennomspilling
+
 ## Fase 5: Flytt til hjemmeklyngen (krav fra Varden, Starefossen/homelab#22)
 
 Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxScale=1` 1. desember–6. januar, 200Mi/512Mi, PostgreSQL (CloudNativePG), CiliumNetworkPolicy, Secret). NisseKomm-repoet er vårt. Varden rører det ikke.
