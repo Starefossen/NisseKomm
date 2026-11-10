@@ -659,6 +659,17 @@ body {
   font-size: 20px;
 }
 
+/* The dark page background would print on every sheet once background graphics are on (needed for colour cards) */
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+  body {
+    background: white;
+  }
+}
+
 /* CRT Frame pages should have overflow hidden, but not the guide page */
 body:has(.crt-frame-container) {
   overflow: hidden;

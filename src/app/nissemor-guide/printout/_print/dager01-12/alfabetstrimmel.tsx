@@ -2,7 +2,8 @@ import { RUNE_ALPHABET } from "@/components/ui/Frostrune";
 import { PrintPage, CutCard } from "../PrintPage";
 import { Ark } from "./felles";
 
-const RUTE = "w-[6.4mm]";
+// 29 cells must fit the 190 mm printable width with the card padding
+const RUTE = "w-[6.2mm]";
 
 export default function Alfabetstrimmel() {
   return (
@@ -15,23 +16,27 @@ export default function Alfabetstrimmel() {
         <div className="flex flex-col gap-[10mm] items-center mt-[10mm]">
           {[0, 1].map((i) => (
             <div key={i} className="flex flex-col gap-[6mm] items-center">
-              <CutCard className="flex">
-                {RUNE_ALPHABET.map((l) => (
-                  <div
-                    key={l}
-                    className={`${RUTE} h-[18mm] border-r border-black last:border-r-0 flex items-center justify-center text-[6mm]`}
-                  >
-                    {l}
-                  </div>
-                ))}
+              <CutCard>
+                <div className="flex">
+                  {RUNE_ALPHABET.map((l) => (
+                    <div
+                      key={l}
+                      className={`${RUTE} h-[18mm] border-r border-black last:border-r-0 flex items-center justify-center text-[6mm]`}
+                    >
+                      {l}
+                    </div>
+                  ))}
+                </div>
               </CutCard>
-              <CutCard className="flex">
-                {[0, 1, 2].map((j) => (
-                  <div
-                    key={j}
-                    className={`${RUTE} h-[24mm] border-r border-black last:border-r-0`}
-                  />
-                ))}
+              <CutCard>
+                <div className="flex">
+                  {[0, 1, 2].map((j) => (
+                    <div
+                      key={j}
+                      className={`${RUTE} h-[24mm] border-r border-black last:border-r-0`}
+                    />
+                  ))}
+                </div>
               </CutCard>
             </div>
           ))}

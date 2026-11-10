@@ -220,12 +220,18 @@ export default function InnstillingerSide() {
       <Kort tittel="Mer">
         <ul className="list-disc pl-6">
           <li>
-            <Link href="/nissemor-guide/merker" className="underline">
+            <Link
+              href="/nissemor-guide/merker"
+              className="underline inline-block py-3"
+            >
               Merker
             </Link>
           </li>
           <li>
-            <Link href="/nissemor-guide/symboler" className="underline">
+            <Link
+              href="/nissemor-guide/symboler"
+              className="underline inline-block py-3"
+            >
               Symbolkort med QR-koder
             </Link>
           </li>

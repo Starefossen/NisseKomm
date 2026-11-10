@@ -1,6 +1,18 @@
 import { describe, it, expect } from "@jest/globals";
 import { DAGER, HANDLELISTE, BYGGEPLAN } from "../data";
+import { readFileSync } from "fs";
 import { UTSKRIFTER } from "../../printout/filer";
+
+const GAATER = readFileSync("docs/gaater-2026.md", "utf8").replace(/[*`]/g, "");
+const KODER: Record<number, string> = Object.fromEntries(
+  [1, 2, 3, 4]
+    .flatMap((i) =>
+      JSON.parse(readFileSync(`src/data/uke${i}_oppdrag.json`, "utf8")),
+    )
+    .map((q: { dag: number; kode: string }) => [q.dag, q.kode]),
+);
+const fyll = (t: string) =>
+  t.replace(/\{(\d+)\}/g, (_, d) => KODER[+d]).replace(/`/g, "");
 
 describe("kveldsdata fra gaater-2026", () => {
   it("har dag 1–24 i rekkefølge", () => {
@@ -30,4 +42,24 @@ describe("kveldsdata fra gaater-2026", () => {
     expect(HANDLELISTE).toHaveLength(2);
     expect(BYGGEPLAN).toHaveLength(3);
   });
+
+  // The guide is a copy of the locked doc; a doc edit must reach the parents too
+  it.each(DAGER.map((d) => [d.dag, d] as const))(
+    "dag %i står ordrett i gaater-2026.md",
+    (_, d) => {
+      const felt = [
+        d.tittel,
+        d.mekanikk,
+        d.brikkeH,
+        d.brikkeS,
+        d.hanna,
+        d.oppsett,
+        d.materialer,
+        d.utskrifterTekst,
+        d.reserve,
+        ...d.slikLoses,
+      ];
+      for (const f of felt) expect(GAATER).toContain(fyll(f));
+    },
+  );
 });
