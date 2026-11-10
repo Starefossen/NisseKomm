@@ -22,7 +22,6 @@
       "id": "spokelseskoden",
       "phase": 7
     },
-    "finalized": true,
     "julius_ps": "Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Nissemor ringte; hun sier han så ut som en liten skiltstolpe. Hun sier også at det var derfor hun sendte oransje. Hun visste det ikke. Hun vet sånt likevel."
   },
   {
@@ -48,7 +47,6 @@
       "id": "spokelseskoden",
       "phase": 8
     },
-    "finalized": true,
     "julius_ps": "Et tårn av frokostblanding med skilt. Jeg spurte Nissemor hva «sigma» betyr. Hun sa «spør Kristian». IQ sov på loddebordet i natt med plata som pute; han sier den er ferdig i morgen tidlig."
   },
   {
@@ -79,7 +77,6 @@
       "symbolColor": "blue",
       "description": "Blått hjerte funnet mellom krystallene på kjøleskapet"
     },
-    "finalized": true,
     "julius_ps": "Rampenissen lå i grønnsaksskuffen i to timer for å «bli ekte iskrystall». Han ble en kald nisse med en kålbit i håret. Orakelets radar teller riktig igjen. Pil sier blått hjerte er fargen til det som fryser."
   },
   {
@@ -105,7 +102,6 @@
       "id": "spokelseskoden",
       "phase": 10
     },
-    "finalized": true,
     "julius_ps": "Dere fikk fargene tilbake. Hele Snøfall så det; Pil klappet. Rampenissen sier klementinene var det eneste i stua som holdt på fargen. Kulde tar fra linjen, ikke fra det som alt er framme. Han har selv fire farger i ansiktet og bart på bildet av mamma og pappa. Vaskbart, lover han."
   },
   {
@@ -139,7 +135,6 @@
       "frost_effekt": -20,
       "belønning_tekst": "NØDANTENNE GODKJENT. IQ ser den på radaren og vil ha tegningen. Frostgraden faller 20 %."
     },
-    "finalized": true,
     "julius_ps": "Antennen står rett igjen, og kanal 4 er tilbake. Rampenissen lå på et stekebrett pakket inn som en bakt potet. Han sier folien «holder tankene inne».",
     "julius_ps_bonus": "Antennen står rett igjen, og kanal 4 er tilbake. IQ så folieantennen deres på radaren og vil ha tegningen. Rampenissen lå på et stekebrett pakket inn som en bakt potet; han sier det var «prototypen»."
   },
@@ -182,7 +177,6 @@
       "rewardText": "DEKRYPTERT. Orakelets logg fra slusen ligger i DEKRYPTERT/frosne-koder.txt. Les den sammen.",
       "unlocksFiles": ["frosne-koder.txt"]
     },
-    "finalized": true,
     "julius_ps": "Jeg sa til Rampenissen at han innbilte seg det. Jeg tok feil. Les det Orakelet skrev fra slusen, sammen. Og dorullen: fra badet til kjøkkenet, hele rullen. Nissemor spør om dere har mer av det også."
   }
 ]

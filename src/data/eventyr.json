@@ -4,7 +4,6 @@
       "id": "spokelseskoden",
       "navn": "Spøkelseskoden",
       "beskrivelse": "Noe sender på 85,0 MHz og legger rim på direktelinjen mellom Snøfall og Landås. Det kaller seg Kulde. Tre søsken holder varmen i både hus og server gjennom desember, og finner ut hva som egentlig fryser linjen.",
-      "tema": ["Samhold i mørket", "Å bli sett", "Varme er noe man deler"],
       "farge": "#7ec8e3",
       "ikon": "eye",
       "første_opplåsingsdag": 1,
@@ -43,15 +42,7 @@
           "navn": "Tøvær",
           "tekst": "Sleden fløy over grotten med lys. Noe tinte."
         }
-      ],
-      "foreldreveiledning": {
-        "sammendrag": "Én historie i 24 dager. Kulde er ikke en skurk, men et gammelt program som ble glemt i mørket. Barna skal merke det gradvis (dag 12, 15, 23), ikke få det forklart. Tonen etter dag 15 er omsorg, ikke kamp.",
-        "tips": [
-          "Se Julius' video sammen hver dag; brikken er i siste setning.",
-          "Hanna har én valgfri ting per dag («hvis du vil»); ingenting stopper opp om hun heller vil høre på radioen.",
-          "Dag 10 og 21 er skjermene hjemme grå fra morgenen; det er meningen, og det går over når koden er inne."
-        ]
-      }
+      ]
     }
   ]
 }

@@ -24,7 +24,6 @@
       "id": "spokelseskoden",
       "phase": 19
     },
-    "finalized": true,
     "julius_ps": "Rudolf spiste bevismaterialet. Alt sammen, også det med teip på. Det har vært grønt over Nordtoppen to netter nå, og Orakelet teller flere lys på Landås-siden enn i fjor. IQ bygde automaten for å slippe å tenke; det hjalp ikke.",
     "julius_ps_bonus": "Rudolf spiste bevismaterialet. Alt sammen, også det med teip på. Orakelet teller lys på Landås-siden og sier ett av dem står helt stille, i et vindu, hver kveld. IQ bygde automaten for å slippe å tenke; det hjalp ikke."
   },
@@ -59,7 +58,6 @@
       "symbolColor": "green",
       "description": "Grønn måne funnet under den innerste puten i fortet"
     },
-    "finalized": true,
     "julius_ps": "Nissemor har tent det fjerde lyset. Hun lot det stå i vinduet mot nord. Rampenissen har bygd fort «for å øve på å holde varmen»; popcornet er visst proviant. I morgen trenger dere ikke være redde. Dere trenger å være hjemme.",
     "julius_ps_krypto_mangler": "Nissemor har tent det fjerde lyset. Men dere har ikke åpnet Trixters kart ennå; det ligger i NisseKrypto, bak seks symboler. Åpne det i kveld, for porten står der jeg tegnet sirkelen. Rampenissen har bygd fort «for å øve på å holde varmen»."
   },
@@ -86,7 +84,6 @@
       "id": "spokelseskoden",
       "phase": 21
     },
-    "finalized": true,
     "julius_ps": "Muren holder. Porten står åpen. Nå venter vi på om noe kommer gjennom. Rampenissen sto bak bokmuren med et grytelokk mot trekken og en visp han hadde glemt å legge fra seg; han sier vispen var «for sikkerhets skyld»."
   },
   {
@@ -118,7 +115,6 @@
       "symbolColor": "red",
       "description": "Rød måne funnet innerst i Hannas julesokk"
     },
-    "finalized": true,
     "julius_ps": "Tre navn. Jeg skrev dem selv. Ingenting har kommet gjennom porten ennå, men Orakelet sier det er varmere der nede. Rampenissen satt fast i en julesokk i to timer før noen dro."
   },
   {
@@ -168,7 +164,6 @@
       "rewardText": "DEKRYPTERT. Hele historien ligger i DEKRYPTERT/hjertets-hemmelighet.txt. Det er den siste.",
       "unlocksFiles": ["hjertets-hemmelighet.txt"]
     },
-    "finalized": true,
     "julius_ps": "Nå vet dere alt. Rampenissen også; han satt i treet og hørte. Men ingen av dere vet hva Trixter har i sleden til i morgen. Gaven med altfor mye teip på: la den ligge. Han mente det godt."
   },
   {
@@ -199,7 +194,6 @@
       "id": "spokelseskoden",
       "phase": 24
     },
-    "finalized": true,
     "julius_ps": "Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Ved siden av ligger den siste klementinen fra Nissemors proviant. Varmt og kaldt, side om side. Rampenissen sov i gullkonvolutten med sløyfe på hodet og fraktesken fra første desember som koffert. God jul, Kristian, Håkon og Hanna."
   }
 ]
