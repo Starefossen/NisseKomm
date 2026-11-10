@@ -166,3 +166,77 @@ export function channelEffects(
         : undefined,
   };
 }
+
+/** Village overlay events, drawn in code over landsby-rolig (landsby-overlays.ts). */
+export type LandsbyEventKind = "brevfugler" | "tarnklokke";
+
+export interface LandsbyEvent {
+  kind: LandsbyEventKind;
+  /** Minutes after midnight. */
+  minute: number;
+}
+
+export const LANDSBY_EVENT_SECONDS: Record<LandsbyEventKind, number> = {
+  brevfugler: 14,
+  tarnklokke: 6,
+};
+
+// mulberry32: a day's schedule is the same on every device and every reload.
+function seeded(seed: number) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/**
+ * The day's village events: one every 10–15 minutes, seeded per day, none
+ * within 5 minutes of a story event (`storyMinutes`, minutes after midnight).
+ */
+export function landsbyEvents(
+  day: number,
+  storyMinutes: number[] = [],
+): LandsbyEvent[] {
+  const rng = seeded(Math.imul(day, 2654435761));
+  const events: LandsbyEvent[] = [];
+  for (let m = rng() * 10; m < 24 * 60; m += 10 + rng() * 5) {
+    const kind: LandsbyEventKind = rng() < 0.5 ? "brevfugler" : "tarnklokke";
+    if (storyMinutes.some((s) => Math.abs(s - m) < 5)) continue;
+    events.push({ kind, minute: m });
+  }
+  return events;
+}
+
+/** Frozen days 10 and 21: the letter birds stay home until the code. */
+export function landsbyEventAllowed(
+  kind: LandsbyEventKind,
+  day: number,
+  solved: boolean,
+): boolean {
+  return kind !== "brevfugler" || solved || (day !== 10 && day !== 21);
+}
+
+/** The village event playing at `date`, with progress 0–1, or null. */
+export function activeLandsbyEvent(
+  date: Date,
+  day: number,
+  solved: boolean,
+  storyMinutes: number[] = [],
+): { kind: LandsbyEventKind; progress: number } | null {
+  const now = date.getHours() * 60 + date.getMinutes() + date.getSeconds() / 60;
+  for (const e of landsbyEvents(day, storyMinutes)) {
+    const progress = ((now - e.minute) * 60) / LANDSBY_EVENT_SECONDS[e.kind];
+    if (
+      progress >= 0 &&
+      progress < 1 &&
+      landsbyEventAllowed(e.kind, day, solved)
+    ) {
+      return { kind: e.kind, progress };
+    }
+  }
+  return null;
+}

@@ -14,6 +14,7 @@ import {
   FREQ_KULDE,
   FREQ_MAX,
   FREQ_MIN,
+  activeLandsbyEvent,
   channelEffects,
   channelFallback,
   channelSource,
@@ -127,6 +128,15 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
               fallback={channelFallback(shownChannel, shownFreq, day)}
               label={label}
               {...fx}
+              eventAt={
+                // Overlays are placed on the calm loop's framing only.
+                shownChannel === 1 &&
+                channelSource(1, day, hour, FREQ_HOME, solved)?.endsWith(
+                  "landsby-rolig.mp4",
+                )
+                  ? () => activeLandsbyEvent(getCurrentDate(), day, solved)
+                  : undefined
+              }
             />
           )}
           {shownChannel === 3 && (
