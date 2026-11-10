@@ -14,9 +14,19 @@ function LiveCamDev() {
 
   return (
     <main className="min-h-screen bg-black text-(--neon-green) flex flex-col items-center gap-6 p-6 font-mono">
-      <h1 className="text-2xl">LiveCam-prototype: CAM 2 IQS VERKSTED</h1>
+      <h1 className="text-2xl">LiveCam: effektprøve</h1>
       <div className="w-full max-w-5xl aspect-video border-4 border-(--neon-green)">
-        <LiveCam frost={frost} hijack={hijack} />
+        <LiveCam
+          src={params.get("src") ?? "/video/tv/verksted-iq-inne.mp4"}
+          label="K2 IQS VERKSTED"
+          frost={frost}
+          hijack={hijack}
+          gray={params.get("gray") === "1"}
+          frozen={params.get("frozen") === "1"}
+          warm={params.get("warm") === "1"}
+          flicker={params.get("flicker") === "1"}
+          signature={params.get("signature") === "1"}
+        />
       </div>
       <div className="flex flex-wrap items-center gap-8 text-lg">
         <label className="flex items-center gap-3">
