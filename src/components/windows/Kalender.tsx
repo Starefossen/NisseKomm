@@ -196,7 +196,13 @@ export function Kalender({
       {/* Day detail modal */}
       {selectedDay && selectedMission && (
         <RetroModal
-          title={`DAG ${selectedDay} - ${selectedMission.tittel}`}
+          // Titles can leak earlier codes, so never show one before its day, even in test mode
+          title={
+            completedDays.has(selectedDay) ||
+            (getCurrentMonth() === 12 && selectedDay <= getCurrentDay())
+              ? `DAG ${selectedDay} - ${selectedMission.tittel}`
+              : `DAG ${selectedDay}`
+          }
           onClose={() => setSelectedDay(null)}
         >
           <div className="space-y-4">

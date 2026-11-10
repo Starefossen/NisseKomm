@@ -9,6 +9,30 @@ import { DayPlanning } from "@/components/nissemor/DayPlanning";
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 import { Icon } from "@/lib/icons";
 
+/** Lets a parent mark Julius' video as seen when the kids watched it elsewhere. */
+function VideoSeen({ day }: { day: number }) {
+  const [, rerender] = useState(0);
+  const seen = GameEngine.isJuliusVideoWatched(day);
+  return (
+    <div className="border-4 border-(--cold-blue) p-3 flex items-center justify-between gap-3">
+      <span>
+        Julius&apos; video dag {day}: {seen ? "sett ✓" : "ikke sett"}
+      </span>
+      {!seen && (
+        <button
+          onClick={() => {
+            GameEngine.markJuliusVideoWatched(day);
+            rerender((n) => n + 1);
+          }}
+          className="px-4 min-h-11 border-2 border-(--cold-blue) text-(--cold-blue) hover:bg-(--cold-blue)/20"
+        >
+          MARKER VIDEO SOM SETT
+        </button>
+      )}
+    </div>
+  );
+}
+
 function OppdragContent() {
   const currentDay = getCurrentDay();
   const currentMonth = getCurrentMonth();
@@ -120,6 +144,7 @@ function OppdragContent() {
         {/* Mobile Layout: Vertical Stack */}
         <div className="lg:hidden space-y-6">
           {/* Mobile: Day Planning First (Primary Content) */}
+          <VideoSeen day={selectedDay} />
           <DayPlanning
             selectedDay={selectedDay}
             onSelectDay={setSelectedDay}
@@ -151,6 +176,7 @@ function OppdragContent() {
 
           {/* Right Column: Day Planning */}
           <div className="space-y-6">
+            <VideoSeen day={selectedDay} />
             <DayPlanning
               selectedDay={selectedDay}
               onSelectDay={setSelectedDay}

@@ -48,6 +48,7 @@ export function KodeTerminal({
     }
     return false;
   });
+  const [bonusMessage, setBonusMessage] = useState<string | null>(null);
   const [failedAttempts, setFailedAttempts] = useState(() => {
     if (typeof window !== "undefined") {
       return GameEngine.getFailedAttempts(currentDay);
@@ -73,10 +74,34 @@ export function KodeTerminal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!code.trim() || processing || isAlreadySolved) return;
+    if (!code.trim() || processing) return;
 
     setProcessing(true);
     setFeedback(null);
+
+    // Parents approve bonus quests (day 11 and 16, foreldre_kode) here too,
+    // also after the day's main code is solved
+    const bonusQuest = allMissions.find(
+      (m) =>
+        m.bonusoppdrag?.foreldre_kode.toUpperCase() ===
+        code.trim().toUpperCase(),
+    );
+    if (bonusQuest || isAlreadySolved) {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const ok =
+        !!bonusQuest && GameEngine.isBonusOppdragAccessible(bonusQuest.dag);
+      if (ok) {
+        GameEngine.completeBonusOppdrag(bonusQuest.dag);
+        setBonusMessage(bonusQuest.bonusoppdrag!.belønning_tekst);
+        onCodeSubmitted?.();
+        setCode("");
+      }
+      setFeedback(ok ? "success" : "error");
+      SoundManager.playSound(ok ? "success" : "error");
+      setProcessing(false);
+      setTimeout(() => setFeedback(null), 2000);
+      return;
+    }
 
     // Track code submission attempt
     trackEvent("code_submitted", { day: currentDay });
@@ -184,10 +209,9 @@ export function KodeTerminal({
           <div className="relative">
             <input
               type="text"
-              value={isAlreadySolved ? solvedCode : code}
+              value={code}
               onChange={(e) => setCode(e.target.value)}
-              disabled={processing || isAlreadySolved}
-              readOnly={isAlreadySolved}
+              disabled={processing}
               className={`
                 w-full px-4 py-3 bg-black border-4 text-2xl tracking-widest font-mono
                 focus:outline-none uppercase
@@ -200,7 +224,6 @@ export function KodeTerminal({
                         ? "border-(--christmas-red)"
                         : "border-(--neon-green) focus:shadow-[0_0_20px_rgba(0,255,0,0.5)]"
                 }
-                ${isAlreadySolved ? "cursor-not-allowed" : ""}
               `}
               style={{
                 animation:
@@ -212,14 +235,14 @@ export function KodeTerminal({
                 color: "var(--neon-green)",
                 caretColor: "var(--neon-green)",
               }}
-              placeholder="_ _ _ _ _ _ _ _"
+              placeholder={isAlreadySolved ? solvedCode : "_ _ _ _ _ _ _ _"}
               autoFocus
             />
           </div>
 
           <button
             type="submit"
-            disabled={processing || !code.trim() || isAlreadySolved}
+            disabled={processing || !code.trim()}
             className={`
               w-full px-6 py-3 text-xl tracking-wider font-bold border-4 transition-colors
               ${
@@ -242,8 +265,6 @@ export function KodeTerminal({
           >
             {processing ? (
               "SJEKKER......"
-            ) : isAlreadySolved ? (
-              "RIKTIG LØSNING"
             ) : feedback === "success" ? (
               <span className="flex items-center justify-center gap-2">
                 <Icons.CheckCircle size={24} color="gray" />
@@ -254,10 +275,17 @@ export function KodeTerminal({
                 <Icons.Alert size={24} color="gray" />
                 FEIL KODE - PRØV IGJEN
               </span>
+            ) : isAlreadySolved ? (
+              "RIKTIG LØSNING"
             ) : (
               "SEND"
             )}
           </button>
+          {bonusMessage && (
+            <div className="border-4 border-(--gold) bg-(--gold)/10 p-3 text-(--gold)">
+              ✓ BONUS GODKJENT: {bonusMessage}
+            </div>
+          )}
         </form>
 
         {/* Julius' terminal note after 3 failed attempts */}
