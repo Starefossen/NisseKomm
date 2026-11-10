@@ -301,6 +301,7 @@ for (const day of days) {
       "skrivebord eller innlogging",
     );
     if (await has(LOGIN)) {
+      await shot("innlogging.png");
       await typeInto(LOGIN, KID_CODE);
       await waitFor(async () => !(await has(LOGIN)), 15000, "innlogging");
     }
