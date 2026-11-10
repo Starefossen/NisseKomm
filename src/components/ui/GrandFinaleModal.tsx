@@ -59,11 +59,12 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
               <div className="text-2xl text-(--neon-green)">
                 JULIUS SKREV NAVNENE SELV
               </div>
-              {playerNames.length > 0 && (
-                <div className="text-2xl text-(--gold) border-4 border-(--gold) p-4 bg-(--gold)/10">
-                  {playerNames.join(" · ")}
-                </div>
-              )}
+              <div className="text-2xl text-(--gold) border-4 border-(--gold) p-4 bg-(--gold)/10">
+                {/* Skipped name entry still gets a named list */}
+                {playerNames.length > 0
+                  ? playerNames.join(" · ")
+                  : "Kristian · Håkon · Hanna"}
+              </div>
               <div className="text-base opacity-80">
                 22. desember, for hånd, én gang.
               </div>
