@@ -9,7 +9,11 @@
 - [State Management](#state-management)
 - [Architecture Principles (Facade Pattern)](#architecture-principles-facade-pattern)
 - [Data Architecture](#data-architecture)
-- [Date Handling System](#date-handling-system)
+- [Date Handling System & Tidsmaskin](#date-handling-system--tidsmaskin)
+- [Authentication (One Family)](#authentication-one-family)
+- [Operational Modes (NISSEKOMM_MODE)](#operational-modes-nissekomm_mode)
+- [Media Delivery](#media-delivery)
+- [Notifications](#notifications)
 
 ## Layout & Component Hierarchy
 
@@ -144,6 +148,14 @@ static getUnlockedModules(): string[] {
 
 ## State Management
 
+### Storage Architecture
+
+NisseKomm combines client-side `localStorage` with an optional server-side store for state synchronization across screens:
+
+- **Client Storage (`StorageManager`)**: `lib/storage.ts` provides a type-safe interface over `LocalStorageAdapter`. All UI reads and writes go through `GameEngine` or `StorageManager`.
+- **Server Store (`Store`)**: `lib/db.ts` provides persistent state storage. When `DATABASE_URL` is set, it connects to PostgreSQL (with `kv`, `sessions`, and `login_failures` tables, migrated with an advisory lock). When `DATABASE_URL` is unset, an in-memory store (`createMemoryStore()`) is used (development, testing).
+- **State Sync (`/api/state`)**: Clients sync game progress through `GET /api/state` and `PUT /api/state`. Only whitelisted keys (`STATE_KEYS`) are allowed. Keys that can be updated concurrently across multiple screens (`MERGED_KEYS`) are merged per item/day instead of overwritten. State writes trigger notifications via `notify()`.
+
 ### StorageManager Pattern
 
 **Purpose**: Centralized localStorage abstraction with type-safe methods.
@@ -246,8 +258,7 @@ The codebase follows a strict **Facade Pattern** with clear boundaries between U
 
 UI components may call StorageManager directly for **non-game state** concerns:
 
-- **Authentication**: `isAuthenticated()`, `setAuthenticated(value, sessionId)` - Session management
-- **Friend Names**: `getFriendNames()`, `setFriendNames()` - Nice List personalization (async)
+- **Authentication**: `isAuthenticated()`, `setAuthenticated(value)` - Session management
 - **Player Names**: `getPlayerNames()`, `setPlayerNames()` - Day 23 finale names
 - **Diary Tracking**: `getDagbokLastRead()`, `setDagbokLastRead()` - Scroll position memory
 - **Visit Tracking**: `setNisseNetLastVisit()`, `hasUnreadNiceList()` - UI badge state
@@ -339,7 +350,7 @@ import uke1 from "@/data/uke1_oppdrag.json";
 - **Easy editing**: JSON files allow content changes without code modifications
 - **Build-time safety**: Validation catches errors before app runs
 
-## Date Handling System
+## Date Handling System & Tidsmaskin
 
 ### Critical: Centralized Date Utilities
 
@@ -374,7 +385,7 @@ const dateTimeStr = formatDateTime(new Date());
 const debugInfo = getDateDebugInfo();
 ```
 
-### Mock Support
+### Mock Support & Tidsmaskin
 
 Environment variables override system date:
 
@@ -386,7 +397,15 @@ NEXT_PUBLIC_MOCK_DAY=12
 NEXT_PUBLIC_MOCK_MONTH=12
 ```
 
-**Mock Priority**: `NEXT_PUBLIC_MOCK_DAY` and `NEXT_PUBLIC_MOCK_MONTH` override system date when set.
+**Tidsmaskin (Time Machine)**:
+Interactive time-travel tool for testing advent progression (`src/lib/date-utils.ts`):
+
+- **Availability**: Active in development (`NODE_ENV !== "production"`) or when `NEXT_PUBLIC_TEST_MODE="true"` (`isTimeMachineEnabled()`). In production builds without test mode, `isTimeMachineEnabled()` returns `false` and overrides are ignored.
+- **Storage**: Time override is persisted in `localStorage` under `nissekomm-tidsmaskin` with `{ day, month, hour, minute }`.
+- **Clock Resolution Priority**:
+  1. Tidsmaskin `localStorage` override (seconds continue ticking from the system clock)
+  2. `NEXT_PUBLIC_MOCK_DAY` and `NEXT_PUBLIC_MOCK_MONTH` environment variables
+  3. Real system time (`new Date()`)
 
 ### Usage Pattern
 
@@ -414,245 +433,62 @@ const canAccessDay = isDayAccessible(currentDay);
 - **Flexibility**: Can swap implementation without changing call sites
 - **Debug**: Clear visibility into date configuration
 
-## Authentication & Multi-Tenancy
+## Authentication (One Family)
 
 ### Dual-Code System
 
-NisseKomm uses a **two-code authentication system** for family multi-tenancy:
+NisseKomm serves one family with two pre-shared codes configured as environment variables (`src/lib/auth.ts`):
 
-1. **Kid Code** (theme-based, memorable)
-   - Format: `{THEME_WORD}{YEAR}` (e.g., "NISSEKRAFT2024")
-   - Generated from Snøfall vocabulary (~20 words)
-   - Used by children to access main app
-   - Collision detection ensures uniqueness
+1. **Kid Code (`KID_CODE`)**:
+   - Used by children to log in from the boot terminal.
+   - Example: three Norwegian words separated by spaces (`snø lykt rein`).
+   - Grants the `kid` role.
 
-2. **Parent Code** (secure, alphanumeric)
-   - Format: `NORDPOL-{5_CHARS}` (e.g., "NORDPOL-8N4K2")
-   - Random alphanumeric generation
-   - Used to access parent guide at `/nissemor-guide` (session-based login)
-   - Verified via `/api/auth/verify` endpoint
+2. **Parent Code (`PARENT_CODE`)**:
+   - Used by parents to access `/nissemor-guide`.
+   - Only accessible in LAN mode (`NISSEKOMM_MODE=lan`).
+   - Grants the `parent` role.
 
-### Registration Flow
+### Login & Session Handling
 
-```
-Parent visits /register
-    ↓
-Enters family data:
-  - Family name (optional)
-  - Kid names (1-4, required)
-  - Friend names (0-15, optional)
-  - Parent email (optional)
-    ↓
-Backend generates:
-  - UUID sessionId
-  - Unique kid code
-  - Unique parent code
-    ↓
-Creates documents:
-  - familyCredentials (Sanity)
-  - userSession (Sanity)
-    ↓
-Displays codes to parent
-```
+- **Normalization**: User input is normalized with `normalizeCode()` (lowercased, trimmed, and runs of whitespace or hyphens collapsed to single spaces).
+- **Constant-Time Verification**: Plaintext codes are hashed with SHA-256 and compared using `crypto.timingSafeEqual()` against the hashed environment variables.
+- **Sessions & Cookies**: On successful login via `POST /api/auth/login`, a random 32-byte token is generated. Its SHA-256 digest is stored in the server store (`Store.setSession`), and the token is issued in an HTTP-only `__Host-nissekomm` cookie (`SESSION_COOKIE`).
+  - `kid` sessions expire after 45 days.
+  - `parent` sessions expire after 12 hours.
+- **Verification & Logout**: `GET /api/auth/verify` validates the session token from the cookie against the store. `POST /api/auth/logout` removes the session from the store and clears the cookie.
+- **Brute-Force Throttling**: Failed login attempts are recorded in the store. After 20 failures in a 10-minute window, subsequent attempts are throttled at 1 request per second.
 
-### Login Flow
+## Operational Modes (NISSEKOMM_MODE)
 
-```
-User enters code at boot screen
-    ↓
-POST /api/auth/login { code }
-    ↓
-Backend:
-  - Determines code type (kid/parent)
-  - Queries familyCredentials
-  - Returns { sessionId, role }
-    ↓
-Frontend:
-  - Stores sessionId in cookie
-  - Calls StorageManager.setAuthenticated(true, sessionId)
-  - Creates SanityStorageAdapter(sessionId)
-    ↓
-Session persists across devices
-```
+Controlled by `NISSEKOMM_MODE=public|lan` (`src/lib/mode.ts`). Unset defaults to `lan` in development and `public` in production (fail-closed):
 
-### Parent Guide Access
+- **`public`**: Serves only the kid-facing advent calendar app.
+- **`lan`**: Enables the parent guide (`/nissemor-guide`), developer pages (`/dev`), `/mcp`, and test panels (`isLanOnlyPath`). Parent session validation fails on public mode instances.
 
-```
-Parent visits /nissemor-guide
-    ↓
-GuideAuth component:
-  - Checks for existing session cookie (nissekomm-parent-auth)
-  - If no cookie: Shows login form
-    ↓
-Parent enters parent code in login form
-    ↓
-  - POST /api/auth/verify { code }
-  - Backend checks if code matches session's parentCode
-  - Returns { isParent: true/false }
-    ↓
-If verified: Store session in cookie, show parent guide
-If failed: Show error message
-```
+## Media Delivery
 
-### Session Storage (Sanity)
+Media files (MP4 video, MP3 audio, CRT feeds) are served from `MEDIA_DIR` instead of being bundled in git (`src/lib/media.ts`, `src/lib/media-server.ts`):
 
-**familyCredentials** schema:
+- **Directory Resolution**: `mediaDir()` reads `process.env.MEDIA_DIR`. If unset, it falls back to `public/` in development and `/data/media` in production.
+- **Route Handler**: Served via `/media/[...path]` (`src/app/media/[...path]/route.ts`).
+- **HTTP Range Support**: `serveMedia` supports `Range` headers, enabling video and audio seeking in players.
+- **URL Generation**: `mediaUrl(path)` encodes path segments for safe URLs.
+- **Manifests**: Track definitions for Snøfall Radio (chip-tune audio), Julius video diaries, ambient sounds, and camera feeds.
 
-- `kidCode`: string (unique)
-- `parentCode`: string (unique)
-- `sessionId`: string (UUID, links to userSession)
-- `familyName`: string (optional)
-- `kidNames`: string[] (1-4)
-- `friendNames`: string[] (0-15)
-- `parentEmail`: string (optional)
-- `createdAt`: datetime
+## Notifications
 
-**userSession** schema:
+Outgoing notifications fan out from server-side state writes in `/api/state` (`src/lib/notify/`):
 
-- `_id`: string (UUID sessionId)
-- `sessionId`: string (UUID, indexed)
-- `friendNames`: string[] (0-15, synced from familyCredentials)
-- Game state fields (submittedCodes, viewedEmails, etc.)
-
-### Friend Names Feature
-
-Friend names are used to personalize the Nice List (`snill_slem_liste.txt`):
-
-1. Parents enter 0-15 friend names during registration
-2. Stored in both `familyCredentials` and `userSession`
-3. `NisseNetUtforsker` component fetches via `StorageManager.getFriendNames()`
-4. Names appear in Nice List after Day 23 completion:
-   - Player names (from Day 23) with ⭐ marker
-   - Friend names (from registration) as regular entries
-
-### Migration from Old System
-
-Old system (pre-multi-tenancy):
-
-- Used `NEXT_PUBLIC_BOOT_PASSWORD` environment variable
-- SHA-256 hash of password = sessionId (64 hex chars)
-- No family registration or codes
-
-Migration script (`scripts/migrate-sessions.ts`):
-
-- Finds old sessions (64-char sessionId)
-- Prompts for family data
-- Generates UUID + codes
-- Updates documents
-- Preserves game progress
-
-**Usage**:
-
-```bash
-# Development dataset (safe for testing)
-pnpm migrate:dev
-
-# Production dataset (requires confirmation)
-pnpm migrate:prod
-
-# Dry run (preview without changes)
-pnpm migrate:dry-run
-
-# Manual invocation with options
-npx tsx scripts/migrate-sessions.ts --dataset development
-npx tsx scripts/migrate-sessions.ts --dataset production --dry-run
-```
-
-**Safety Features**:
-
-- `--dataset` flag to specify target (production/development)
-- `--dry-run` mode for risk-free preview
-- Explicit "MIGRATE PRODUCTION" confirmation prompt
-- Clear visual feedback of active configuration
+- **Events**: Triggered on milestones and game moments (`day_solved`, `milestone`, `bonus_approved`, `frost_on`, `frost_off`, `season_complete`).
+- **Channels**: Controlled by `NOTIFY_CHANNELS` (comma-separated, empty by default):
+  - `log`: Console logging.
+  - `email`: Parent notifications.
+  - `varden`: iMessage integration hook.
+  - `skjerm`: Display card integration.
+- **Resilience**: `notify()` catches errors per channel; failing channels log errors without crashing requests or affecting other channels.
 
 ---
 
-## Registration Security
-
-### Access Control
-
-The registration endpoint (`/register`) can be protected with an optional share key for private distribution among friends/family.
-
-**Environment Configuration**:
-
-```bash
-# Open registration (anyone can register)
-REGISTRATION_SHARE_KEY=
-
-# Protected registration (requires secret key)
-REGISTRATION_SHARE_KEY=HEMMELIG_NOKKEL_2024
-```
-
-When a share key is set:
-
-- Registration form displays "REGISTRERINGSNØKKEL" input field
-- API validates shareKey matches environment variable
-- Returns 403 Forbidden if key is missing/incorrect
-
-**Distribution Strategy**:
-
-1. Set `REGISTRATION_SHARE_KEY` in production `.env`
-2. Share the URL with the key: `https://yourdomain.com/register?key=HEMMELIG_NOKKEL_2024`
-3. Users copy-paste the key into the registration form
-
-### Security Measures
-
-**Documented (Not Implemented - Low Risk)**:
-
-The following security measures are documented but not implemented, as the application is intended for private friend/family distribution with low abuse risk:
-
-1. **Rate Limiting**: No IP-based throttling on registration endpoint
-   - **Risk**: Spam registrations could bloat database
-   - **Mitigation**: Share key provides basic access control
-   - **Future**: Implement if public deployment needed
-
-2. **CAPTCHA/Bot Protection**: No automated bot detection
-   - **Risk**: Bots could spam registrations
-   - **Mitigation**: Share key blocks automated discovery
-   - **Future**: Add reCAPTCHA if abuse detected
-
-3. **Registration Audit Logging**: No IP/timestamp tracking
-   - **Risk**: Difficult to track abuse patterns
-   - **Mitigation**: Sanity Studio provides manual review
-   - **Future**: Add logging if operational visibility needed
-
-4. **GDPR Compliance**: Basic data collection, no deletion mechanism
-   - **Risk**: EU privacy law requirements not fully met
-   - **Mitigation**: Family/friend use case has implied consent
-   - **Future**: Add account deletion API for compliance
-
-**Implemented Security Features**:
-
-- ✅ **Email Validation**: Proper regex pattern (`/^[^\s@]+@[^\s@]+\.[^\s@]+$/`)
-- ✅ **Input Sanitization**: Length limits, character validation, duplicate detection
-- ✅ **Code Collision Prevention**: Checks existing codes before generation
-- ✅ **localStorage Backup**: Codes saved temporarily (1-hour expiry) to prevent loss
-- ✅ **Before-Unload Warning**: Browser prompt if user tries to leave success page
-- ✅ **Share Key Protection**: Optional access control for private deployments
-- ✅ **Test Login Feature**: Pre-fills kid code for immediate verification
-
-### Data Protection
-
-**User Data Stored**:
-
-- Family name (optional, max 50 chars)
-- Kid names (1-4, max 20 chars each)
-- Friend names (0-15, max 20 chars each)
-- Parent email (optional, validated format)
-- Access codes (kidCode, parentCode)
-- Session UUID
-
-**Storage Location**:
-
-- Sanity CMS (when `STORAGE_BACKEND=sanity`)
-- localStorage (when `STORAGE_BACKEND=localStorage`)
-
-**Data Retention**:
-
-- Permanent unless manually deleted via Sanity Studio
-- No automatic expiration or cleanup
-
----
-
-**Last Updated**: November 2025
+**Last Updated**: November 2026
 **Maintained By**: AI Coding Agents

@@ -295,51 +295,31 @@ export function NisseNetUtforsker({
                   const name = selectedFile.navn;
                   const isKulde =
                     name.includes("orakelets-rapport") ||
-                    name.includes("frosne-koder") ||
-                    name.includes("nordpolen_hemmelighet") ||
-                    name.includes("system_logg");
-                  const isVerksted =
-                    name.includes("magisk-sekk") ||
-                    name.includes("halvveis") ||
-                    name.includes("verksted") ||
-                    name.includes("kode_oversikt");
-                  const isAntenne =
-                    name.includes("tidsanomalier") ||
-                    name.includes("antenna-crisis") ||
-                    name.includes("dekoder_reinsdyr") ||
-                    name.includes("stjernetegn");
-                  const isPrism = name.includes("snowflake");
+                    name.includes("frosne-koder");
+                  const isAntenne = name.includes("stjernetegn");
                   const isColor = name.includes("farge");
 
                   const feedSrc = isKulde
                     ? mediaUrl("feed/kulde-grotte.png")
-                    : isVerksted
-                      ? mediaUrl("feed/iq-verksted.png")
-                      : isAntenne
-                        ? mediaUrl("feed/antenne-tarn.png")
-                        : isPrism
-                          ? mediaUrl("feed/snøfall-storm.png")
-                          : isColor
-                            ? mediaUrl("feed/snøfall-day.png")
-                            : mediaUrl("feed/julius-kontor.png");
+                    : isAntenne
+                      ? mediaUrl("feed/antenne-tarn.png")
+                      : isColor
+                        ? mediaUrl("feed/snøfall-day.png")
+                        : mediaUrl("feed/julius-kontor.png");
 
                   const badgeText = isKulde
                     ? "BEVIS // 85.0 MHz SPORINGSFIL"
-                    : isVerksted
-                      ? "SKJEMA // IQS VERKSTED-TELEMETRI"
-                      : isAntenne
-                        ? "RADAR // ANTENNETÅRNET NORD"
-                        : isPrism
-                          ? "KRYSTALL-ANALYSE"
-                          : isColor
-                            ? "OPTISK KALIBRERING"
-                            : "ARKIV // JULIUS' KONTOR";
+                    : isAntenne
+                      ? "RADAR // ANTENNETÅRNET NORD"
+                      : isColor
+                        ? "OPTISK KALIBRERING"
+                        : "ARKIV // JULIUS' KONTOR";
 
                   const accentColor = isKulde
                     ? "var(--christmas-red)"
-                    : isVerksted || isColor
+                    : isColor
                       ? "var(--neon-green)"
-                      : isAntenne || isPrism
+                      : isAntenne
                         ? "var(--cold-blue)"
                         : "var(--gold)";
 
@@ -378,19 +358,6 @@ export function NisseNetUtforsker({
                             strokeWidth="1.8"
                             points="0,55 40,55 55,20 70,90 85,30 100,80 120,55 180,55 195,15 210,95 225,25 240,85 260,55 400,55"
                           />
-                        ) : isVerksted ? (
-                          <g
-                            stroke="#00ff00"
-                            strokeWidth="1.2"
-                            fill="none"
-                            opacity="0.7"
-                          >
-                            <rect x="280" y="25" width="95" height="60" />
-                            <line x1="250" y1="40" x2="280" y2="40" />
-                            <line x1="250" y1="70" x2="280" y2="70" />
-                            <circle cx="310" cy="55" r="12" />
-                            <line x1="322" y1="55" x2="360" y2="55" />
-                          </g>
                         ) : (
                           <polyline
                             fill="none"
