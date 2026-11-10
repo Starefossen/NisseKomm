@@ -13,7 +13,7 @@
  * 5. Testable - Pure functions for game logic, side effects isolated
  */
 
-import { StorageManager, type SantaLetter } from "./storage";
+import { StorageManager, type EventyrSave, type SantaLetter } from "./storage";
 import { BadgeManager } from "./badge-system";
 import { getEventyr, getEventyrDays, getEventyrForDay } from "./eventyr";
 import {
@@ -350,6 +350,15 @@ export class GameEngine {
 
   static markIntroSeen(id: IntroId): void {
     StorageManager.markIntroSeen(id);
+  }
+
+  /** Adventure (Klementin-Ekspressen) save; null until the first move. */
+  static getEventyrSave(): EventyrSave | null {
+    return StorageManager.getEventyrSave();
+  }
+
+  static saveEventyr(save: EventyrSave): void {
+    StorageManager.setEventyrSave(save);
   }
 
   /** Frostgraden (0–100) for a day, or null on days 1–6 when it is hidden. */
