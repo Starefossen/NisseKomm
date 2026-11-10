@@ -219,7 +219,7 @@ export function KodeTerminal({
                     : feedback === "error"
                       ? "red-shake 0.5s ease-out"
                       : "none",
-                color: "var(--neon-green)",
+                color: isAlreadySolved ? "var(--gold)" : "var(--neon-green)",
                 caretColor: "var(--neon-green)",
               }}
               placeholder={isAlreadySolved ? solvedCode : "_ _ _ _ _ _ _ _"}

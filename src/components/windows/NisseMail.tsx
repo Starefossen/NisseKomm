@@ -209,6 +209,7 @@ export function NisseMail({
           <div className="flex flex-col h-full">
             {/* Inbox header - Clickable toggle on mobile */}
             <button
+              aria-expanded={showInbox}
               onClick={() => {
                 SoundManager.playSound("click");
                 setShowInbox(!showInbox);
@@ -274,7 +275,9 @@ export function NisseMail({
                   >
                     <div className="flex items-start gap-2">
                       {isUnread && (
-                        <div className="w-2 h-2 mt-2 bg-(--christmas-red) rounded-full shrink-0" />
+                        <div className="w-2 h-2 mt-2 bg-(--christmas-red) rounded-full shrink-0">
+                          <span className="sr-only">Ulest</span>
+                        </div>
                       )}
                       <div className="flex-1 min-w-0">
                         <div
@@ -351,7 +354,7 @@ export function NisseMail({
                       </div>
                       <div className="flex gap-3">
                         <span className="opacity-70 w-16">DATO:</span>
-                        <span>DESEMBER {selectedMission.dag}, 2026</span>
+                        <span>{selectedMission.dag}. DESEMBER 2026</span>
                       </div>
                     </div>
                   </div>
@@ -435,8 +438,8 @@ export function NisseMail({
                           </span>
                         </div>
                         <div className="text-base text-(--cold-blue)">
-                          Denne krisen må løses så raskt som mulig i din
-                          virkelige verden!
+                          Vis det til mamma eller pappa. De taster foreldrekoden
+                          i KODETERMINAL.
                         </div>
                       </div>
                     ) : (
@@ -531,7 +534,7 @@ export function NisseMail({
                       </div>
                       <div className="flex gap-3">
                         <span className="opacity-70 w-16">DATO:</span>
-                        <span>DESEMBER {selectedMission.dag}, 2026</span>
+                        <span>{selectedMission.dag}. DESEMBER 2026</span>
                       </div>
                     </div>
                   </div>
