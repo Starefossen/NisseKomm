@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from "@jest/globals";
 import { GameEngine } from "../game-engine";
+import statisk from "@/data/statisk_innhold.json";
 import { KULDE_RUNER } from "@/components/windows/snofall-tv/runer";
 
 const code = (day: number) =>
@@ -46,6 +47,41 @@ describe("Frostrunene (gaater-2026, meta 1)", () => {
         .split("")
         .filter((c) => !learned.has(c));
       expect({ day, missing }).toEqual({ day, missing: [] });
+    }
+  });
+
+  it("rune lines in NisseNet files are learned by the day the file opens", async () => {
+    const files: {
+      innhold?: string;
+      unlockConditions?: { afterDay?: number };
+    }[] = [];
+    const walk = (n: unknown) => {
+      if (Array.isArray(n)) n.forEach(walk);
+      else if (n && typeof n === "object") {
+        const o = n as Record<string, unknown>;
+        if (typeof o.innhold === "string") files.push(o as never);
+        Object.values(o).forEach(walk);
+      }
+    };
+    walk(statisk);
+    const marked = files.filter((f) => f.innhold!.includes("ᚱ:"));
+    expect(marked.length).toBeGreaterThan(0);
+    for (const f of marked) {
+      // Files gated by a decryption have no afterDay; they open late, day 23 at the earliest.
+      const day = f.unlockConditions?.afterDay ?? 23;
+      localStorage.clear();
+      await solveThrough(day - 1);
+      const learned = GameEngine.getLearnedRunes();
+      for (const l of f
+        .innhold!.split("\n")
+        .filter((l) => l.startsWith("ᚱ:"))) {
+        const missing = l
+          .slice(2)
+          .replace(/ /g, "")
+          .split("")
+          .filter((c) => !learned.has(c));
+        expect(missing).toEqual([]);
+      }
     }
   });
 });
