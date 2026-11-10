@@ -253,7 +253,7 @@ export function NisseMusikk({ onClose }: NisseMusikkProps) {
               SNØFALL RADIO // 8-BIT ARKIV
             </div>
             <div className="text-sm opacity-70">
-              12 EKTE CHIPTUNE-JULESANGER • LYDBØLGE-GENERATOR MOT KULDE
+              12 EKTE CHIPTUNE-JULESANGER • LYDBØLGE-GENERATOR FOR JULESTEMNING
             </div>
           </div>
           <div className="flex items-center gap-2 px-3 py-1 border-2 border-(--gold) bg-(--gold)/20">

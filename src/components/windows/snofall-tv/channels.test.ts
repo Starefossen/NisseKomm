@@ -49,4 +49,9 @@ describe("Snøfall TV frost state per day", () => {
     expect(fx(21, false, { hour: 20 }).frozen).toBe(false);
     expect(fx(10, false, { disabled: true }).gray).toBe(false);
   });
+
+  it("Kulde's day-7 signature burns in only after the code", () => {
+    expect(fx(7, false).signature).toBe(false);
+    expect(fx(7, true).signature).toBe(true);
+  });
 });

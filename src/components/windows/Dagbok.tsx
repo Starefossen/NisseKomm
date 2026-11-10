@@ -43,7 +43,7 @@ export function Dagbok({ missions, onClose, onWatched }: DagbokProps) {
                 DAG {m.dag}. DESEMBER – {m.tittel}
               </summary>
               <div className="pt-3">
-                <JuliusVideo day={m.dag} />
+                <JuliusVideo day={m.dag} preload="none" />
               </div>
             </details>
           ),

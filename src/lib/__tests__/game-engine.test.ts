@@ -210,14 +210,6 @@ describe("GameEngine", () => {
       expect(GameEngine.isModuleUnlocked("NISSEMUSIKK")).toBe(true);
     });
 
-    it("should unlock SNØFALL_TV on day 10 completion", async () => {
-      expect(GameEngine.isModuleUnlocked("SNØFALL_TV")).toBe(false);
-
-      const code10 = getQuestCode(10);
-      await GameEngine.submitCode(code10, code10, 10);
-      expect(GameEngine.isModuleUnlocked("SNØFALL_TV")).toBe(true);
-    });
-
     it("should unlock BREVFUGLER on day 14 completion", async () => {
       expect(GameEngine.isModuleUnlocked("BREVFUGLER")).toBe(false);
 
@@ -256,9 +248,8 @@ describe("GameEngine", () => {
       const unlocked = GameEngine.getUnlockedModules();
       expect(unlocked).toContain("NISSEKRYPTO");
       expect(unlocked).toContain("NISSEMUSIKK");
-      expect(unlocked).toContain("SNØFALL_TV");
       expect(unlocked).toContain("SYMBOLSKANNER");
-      expect(unlocked.length).toBe(4);
+      expect(unlocked.length).toBe(3);
     });
   });
 
@@ -331,7 +322,7 @@ describe("GameEngine", () => {
       expect(summary.badges.earned).toBe(0);
       expect(summary.badges.total).toBe(3);
 
-      expect(summary.modules.unlocked).toBe(4); // + SYMBOLSKANNER (day 3)
+      expect(summary.modules.unlocked).toBe(3); // + SYMBOLSKANNER (day 3)
 
       expect(summary.isComplete).toBe(false);
     });
@@ -472,25 +463,23 @@ describe("GameEngine", () => {
       expect(alerts.length).toBeLessThanOrEqual(8);
     });
 
-    it("should prioritize kritisk over advarsel over info", () => {
-      const completedDays = new Set<number>();
-      const day11Alerts = GameEngine.getDailyAlerts(11, completedDays);
-
-      // Check that kritisk alerts come first
-      if (day11Alerts.length > 1) {
-        const firstKritisk = day11Alerts.findIndex((a) => a.type === "kritisk");
-        const firstAdvarsel = day11Alerts.findIndex(
-          (a) => a.type === "advarsel",
-        );
-        const firstInfo = day11Alerts.findIndex((a) => a.type === "info");
-
-        if (firstKritisk !== -1 && firstAdvarsel !== -1) {
-          expect(firstKritisk).toBeLessThan(firstAdvarsel);
-        }
-        if (firstAdvarsel !== -1 && firstInfo !== -1) {
-          expect(firstAdvarsel).toBeLessThan(firstInfo);
-        }
+    it("shows the newest day first, priority as tiebreaker", () => {
+      const all = new Set(Array.from({ length: 24 }, (_, i) => i + 1));
+      const alerts = GameEngine.getDailyAlerts(24, all);
+      expect(alerts[0].day).toBe(24);
+      const rank = { kritisk: 0, advarsel: 1, info: 2 };
+      for (let i = 1; i < alerts.length; i++) {
+        const [a, b] = [alerts[i - 1], alerts[i]];
+        expect(a.day! > b.day! || rank[a.type] <= rank[b.type]).toBe(true);
+        expect(a.day!).toBeGreaterThanOrEqual(b.day!);
       }
+    });
+
+    it("hides spoiling alerts until the day is solved", () => {
+      const texts = (done: number[]) =>
+        GameEngine.getDailyAlerts(24, new Set(done)).map((a) => a.tekst);
+      expect(texts([]).join()).not.toMatch(/Brevet har tint|Frostgrad 0 %/);
+      expect(texts([24]).join()).toMatch(/Brevet har tint/);
     });
   });
 

@@ -110,7 +110,8 @@
     {
       "day": 21,
       "tekst": "🎅 JULIUS: Muren holder. Porten står åpen. Nå venter vi.",
-      "type": "kritisk"
+      "type": "kritisk",
+      "etterKode": true
     },
     {
       "day": 22,
@@ -130,7 +131,8 @@
     {
       "day": 24,
       "tekst": "❄️ ORAKELET: Frostgrad 0 %. Tøvær.",
-      "type": "info"
+      "type": "info",
+      "etterKode": true
     },
     {
       "day": 24,
@@ -145,7 +147,8 @@
     {
       "day": 24,
       "tekst": "🕊️ WINTER: Den blå fuglen fløy hjem. Brevet har tint.",
-      "type": "info"
+      "type": "info",
+      "etterKode": true
     }
   ],
   "varsler": [

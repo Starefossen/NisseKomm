@@ -99,7 +99,7 @@
     "kode": "SPEKTER",
     "reveals": {
       "files": ["farge-koder.txt", "01-fargene.txt"],
-      "modules": ["SNØFALL_TV"]
+      "modules": []
     },
     "eventyr": {
       "id": "spokelseskoden",

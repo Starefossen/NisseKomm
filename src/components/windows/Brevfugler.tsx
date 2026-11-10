@@ -30,9 +30,9 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
   const [utkast, setUtkast] = useState("");
   const [radarTick, setRadarTick] = useState(0);
   const [currentTime, setCurrentTime] = useState<Date>(() => getCurrentDate());
-  const frossent = erBrevetFrossent(
-    getCurrentDay(),
-    GameEngine.isQuestCompleted(24),
+  // Once per open, not on every radar tick; a code can only be sent with this window closed.
+  const [frossent] = useState(() =>
+    erBrevetFrossent(getCurrentDay(), GameEngine.isQuestCompleted(24)),
   );
 
   useEffect(() => {

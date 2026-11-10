@@ -55,3 +55,6 @@ __pycache__/
 /public/music/
 /assets/**/*.jpg
 /assets/**/*.png
+||||||| 379ebfc
+# Julius videos are produced locally and baked into the image at build
+public/video/julius/

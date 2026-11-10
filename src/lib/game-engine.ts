@@ -1007,7 +1007,7 @@ export class GameEngine {
       },
       modules: {
         unlocked: state.unlockedModules.size,
-        total: 6, // NISSEKRYPTO, SYMBOLSKANNER, NISSEMUSIKK, SNØFALL_TV, BREVFUGLER, NISSESTATS
+        total: 5, // NISSEKRYPTO, SYMBOLSKANNER, NISSEMUSIKK, BREVFUGLER, NISSESTATS
       },
       isComplete: this.isGameComplete(),
     };
@@ -1063,7 +1063,7 @@ export class GameEngine {
    * - Injects eventyr milestone celebrations
    * - Includes all historical daily alerts
    * - Adds general milestone celebrations (Day 8, 16, 22)
-   * - Returns max 8 alerts, sorted by priority
+   * - Returns max 8 alerts, newest day first
    *
    * @param day - Current day (1-24)
    * @param completedDays - Set of completed day numbers
@@ -1087,7 +1087,7 @@ export class GameEngine {
 
     alerts.push(...convertDailyAlerts(dailyAlertsData, day));
 
-    // Sort by priority (kritisk > advarsel > info) and day (newest first)
+    // Newest day first, priority as tiebreaker
     sortAlertsByPriority(alerts);
 
     // 6. Return max 8 alerts

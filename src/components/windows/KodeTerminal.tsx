@@ -87,14 +87,18 @@ export function KodeTerminal({
     );
     if (bonusQuest || isAlreadySolved) {
       await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Retyping the day's own code is still the right answer
+      const sameCode =
+        code.trim().toUpperCase() === expectedCode.trim().toUpperCase();
       const ok =
-        !!bonusQuest && GameEngine.isBonusOppdragAccessible(bonusQuest.dag);
-      if (ok) {
+        sameCode ||
+        (!!bonusQuest && GameEngine.isBonusOppdragAccessible(bonusQuest.dag));
+      if (ok && !sameCode && bonusQuest) {
         GameEngine.completeBonusOppdrag(bonusQuest.dag);
         setBonusMessage(bonusQuest.bonusoppdrag!.belønning_tekst);
         onCodeSubmitted?.();
-        setCode("");
       }
+      if (ok) setCode("");
       setFeedback(ok ? "success" : "error");
       SoundManager.playSound(ok ? "success" : "error");
       setProcessing(false);
@@ -284,9 +288,9 @@ export function KodeTerminal({
                 <div className="space-y-2">
                   <div className="text-sm font-bold">TIPS FRA JULIUS:</div>
                   <div className="text-sm leading-relaxed">
-                    Sjekk DAGBOK-modulen! Julius skriver daglige notater som kan
-                    inneholde ledetråder til dagens oppgave. Kombinert med
-                    fysiske hint hjemme, finner du løsningen!
+                    Les dagens e-post fra Rampenissen i NISSEMAIL én gang til,
+                    og let etter lappen han har gjemt hjemme. Svaret får dere
+                    først når dere setter de to sammen.
                   </div>
                 </div>
               </div>
