@@ -61,7 +61,7 @@ def coverage(clip: Path, line: str) -> float:
     )
     import time
 
-    for wait in (0, 10, 30):  # the transcription API sometimes answers 503
+    for wait in (0, 30, 90, 180):  # the API answers 503/429 under load
         time.sleep(wait)
         try:
             text = json.load(urllib.request.urlopen(req))["candidates"][0]["content"]["parts"][-1]["text"]
@@ -69,7 +69,7 @@ def coverage(clip: Path, line: str) -> float:
         except urllib.error.URLError as e:
             print(f"  transkripsjon feilet ({e}), prøver igjen")
     else:
-        return 0.0
+        return None  # unknown, not zero: keep the clip and flag it
     import difflib
 
     heard = set(words(text))
@@ -97,15 +97,22 @@ def main():
             continue
         clip = OUT / f"{name}.mp4"
         raw = OUT / f"{name}.raw.mp4"  # check the unfiltered audio; the radio filter hurts transcription
-        if clip.exists() and coverage(raw, line) >= MIN_COVERAGE:
+        if clip.exists() and (coverage(raw, line) or 0) >= MIN_COVERAGE:
             continue
         act = f"{action} Kuldes påvirkning i bildet og lyden: {kulde}"
         best = (-1.0, None)
         for attempt in range(1, ATTEMPTS + 1):
             r = subprocess.run([str(BIN / "julius.sh"), name, line, act, str(secs)], stdin=subprocess.DEVNULL)
             if r.returncode != 0:
+                import time
+
+                time.sleep(60 * attempt)  # usually 429 from the video API; back off
                 continue
             c = coverage(raw, line)
+            if c is None:
+                print(f"  ADVARSEL {name}: kunne ikke sjekkes (API), beholdt uten sjekk")
+                best = (1.0, name)
+                break
             print(f"  {name}: {c:.0%} av replikken hørt")
             if c > best[0]:
                 keep = name
