@@ -46,7 +46,7 @@
     "kode": "ORIGAMI",
     "reveals": {
       "files": ["brevfugl-historie.txt"],
-      "modules": ["BREVFUGLER"]
+      "modules": []
     },
     "eventyr": {
       "id": "spokelseskoden",

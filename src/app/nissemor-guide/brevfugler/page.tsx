@@ -6,7 +6,7 @@ import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { GameEngine } from "@/lib/game-engine";
 
 /**
- * The children's letters to Julius, written in the BREVFUGLER module (from day 14),
+ * The children's letters to Julius, written in the BREVFUGLER module (from day 7),
  * with writer and date. Julius reads one of them on video between day 20 and 23,
  * so this page prints cleanly for the recording.
  */
@@ -54,7 +54,7 @@ function BrevfuglerContent() {
 
       <div className="max-w-4xl mx-auto mb-6 border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-4 text-lg space-y-1 print:hidden">
         <p>
-          Barna skriver brev i BREVFUGLER fra dag 14. Hvert brev har navn og
+          Barna skriver brev i BREVFUGLER fra dag 7. Hvert brev har navn og
           dato.
         </p>
         <p>

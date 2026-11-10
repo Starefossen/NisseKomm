@@ -2,7 +2,7 @@
   {
     "dag": 7,
     "tittel": "Inntrengeren i Fryseren",
-    "nissemail_tekst": "Lua mi satt fast i fryseren deres. Jeg prøvde å kjøle ned modemet. Det var feil. Takk for at dere reddet lua, og det som sto ved den! I natt fanget Orakelet signaturen, og den har et navn. Julius sier det ikke rett ut, men han sier nok. Kristian: det som kom ut av isen, har ingen bokstaver. Tavla deres vet mer enn dere tror. Fra i dag måler Orakelet frosten i serverrommet. Se sidepanelet. – Rampenissen",
+    "nissemail_tekst": "Lua mi satt fast i fryseren deres. Jeg prøvde å kjøle ned modemet. Det var feil. Takk for at dere reddet lua, og det som sto ved den! I natt fanget Orakelet signaturen, og den har et navn. Julius sier det ikke rett ut, men han sier nok. Kristian: det som kom ut av isen, har ingen bokstaver. Tavla deres vet mer enn dere tror. Fra i dag måler Orakelet frosten i serverrommet. Se sidepanelet. Brevfugler er åpen også, så nå kan dere skrive brev til Julius! – Rampenissen",
     "rampenissen_rampestrek": "Fastfryst i fryserdøra med lua inne i fryseren og votter som har stivnet rett ut.",
     "fysisk_hint": "Frostkortet (`dag07-frostlapp.pdf`: fem ruter, tegn for **L** i rute 3 og **E** i rute 5, resten ✱ med tegn i hjørnet; ingen bokstaver) i liten zip-pose, fryst flatt i plastbeger (aldri glass) med 1 cm vann. **I fryseren senest søndag 6. kl. 20.** Begeret står ved lua. Løsning: Håkon finner og tiner (2–3 min under lunkent vann), Kristian kjenner igjen tegnene fra tavla (L fra dag 1, E fra dag 3): `_ _ L _ E`. Julius: det motsatte av det som slår mot ansiktet fra ovnen. Kode KULDE. Frostgraden vises første gang. Før K, U, D på tavla. Reserve: `runer-fasit.pdf` i denne guiden. Hanna, hvis hun vil: holder begeret under springen. Lapp fra Rampenissen teipet på begeret i fryseren (håndskrevet): «Tin meg! Lunkent vann, og en voksen. – R»",
     "materialer_nødvendig": [
@@ -16,7 +16,7 @@
     "kode": "KULDE",
     "reveals": {
       "files": ["orakelets-rapport.txt"],
-      "modules": ["NISSEMUSIKK"]
+      "modules": ["NISSEMUSIKK", "BREVFUGLER"]
     },
     "eventyr": {
       "id": "spokelseskoden",

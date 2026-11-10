@@ -485,7 +485,7 @@ export const DAGER = [
     slikLoses: [
       "H9 bretter langs den ene linjen og ser to bokstaver, men ikke hvor de hører hjemme.",
       "K12 prøver den andre linjen: tallene. R i 2, G i 4: _ R _ G _ _ _.",
-      "Ark som får vinger ved å bøyes, sju bokstaver med R og G. {14}. Brevfugler åpner.",
+      "Ark som får vinger ved å bøyes, sju bokstaver med R og G. {14}. Den blå fuglen vises i Brevfugler.",
     ],
     hanna: "holder lykten bak arket.",
     oppsett: "3 min.",
