@@ -101,7 +101,7 @@ describe("read-verktøy lekker ikke koder eller hint", () => {
     const q = JSON.parse(await callTool("read", "get_today_quest"));
     expect(q.day).toBe(5);
     expect(Object.keys(q).sort()).toEqual(
-      ["day", "mail", "title", "video_transcript"].sort(),
+      ["day", "mail", "schema_version", "title", "video_transcript"].sort(),
     );
   });
 });
