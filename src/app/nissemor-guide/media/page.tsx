@@ -3,7 +3,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
-import { mediaUrl, type MediaStatus } from "@/lib/media";
+import { LiveCam } from "@/components/windows/snofall-tv/LiveCam";
+import {
+  MEDIA_GROUPS,
+  mediaGroup,
+  mediaUrl,
+  type MediaStatus,
+} from "@/lib/media";
+import { dayRows, lookThrough, pathOf, type ItemStatus } from "./oversikt";
 
 const TYPES: Record<string, string> = {
   mp4: "video/mp4",
@@ -13,12 +20,165 @@ const TYPES: Record<string, string> = {
   webp: "image/webp",
 };
 
+const ext = (p: string) => p.split(".").pop() ?? "";
 const formatSize = (b: number) => `${(b / 1024 / 1024).toFixed(1)} MB`;
+const box = "border-4 border-(--neon-green) bg-black p-4 mb-6";
+
+function Preview({ path }: { path: string }) {
+  const src = mediaUrl(path);
+  if (ext(path) === "mp4")
+    return (
+      <video
+        src={src}
+        controls
+        preload="metadata"
+        className="w-full max-h-80"
+      />
+    );
+  if (ext(path) === "mp3")
+    return <audio src={src} controls preload="metadata" className="w-full" />;
+  // eslint-disable-next-line @next/next/no-img-element -- served from MEDIA_DIR, not optimisable
+  return <img src={src} alt={path} className="max-h-80" />;
+}
+
+function FileRow({
+  file,
+  onUpload,
+}: {
+  file: MediaStatus;
+  onUpload: (path: string, file: File) => void;
+}) {
+  const missing = file.size === null;
+  return (
+    <li className="border-2 border-(--neon-green) p-2">
+      <div className="flex flex-wrap items-center gap-4">
+        <span className={missing ? "text-(--christmas-red)" : "text-(--gold)"}>
+          {missing ? "MANGLER" : formatSize(file.size!)}
+        </span>
+        <span className="flex-1 break-all">{file.path}</span>
+        <label className="min-h-11 flex items-center cursor-pointer underline">
+          {missing ? "Last opp" : "Erstatt"}
+          <input
+            type="file"
+            accept={TYPES[ext(file.path)]}
+            className="sr-only"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) onUpload(file.path, f);
+              e.target.value = "";
+            }}
+          />
+        </label>
+      </div>
+      {!missing && (
+        <details className="mt-2">
+          <summary className="cursor-pointer min-h-11 flex items-center">
+            Forhåndsvis
+          </summary>
+          <Preview path={file.path} />
+        </details>
+      )}
+    </li>
+  );
+}
+
+function Status({ item }: { item: ItemStatus | null }) {
+  if (!item) return <span className="text-gray-500">–</span>;
+  return (
+    <span
+      className={item.ok ? "text-(--gold)" : "text-(--christmas-red)"}
+      title={item.files.join(", ")}
+    >
+      {item.ok ? "✓" : "✗"} {item.label}
+    </span>
+  );
+}
+
+function Gjennomsyn({ present }: { present: Set<string> | null }) {
+  const [day, setDay] = useState(1);
+  const [hour, setHour] = useState(12);
+  const [solved, setSolved] = useState(false);
+  const views = lookThrough(day, hour, solved);
+  return (
+    <section id="gjennomsyn" className={box}>
+      <h2 className="text-2xl mb-3">Snøfall TV-gjennomsyn</h2>
+      <div className="flex flex-wrap items-center gap-6 mb-4 text-lg">
+        <label className="flex items-center gap-2">
+          Dag
+          <select
+            value={day}
+            onChange={(e) => setDay(Number(e.target.value))}
+            className="bg-black border-2 border-(--neon-green) min-h-11 px-2"
+          >
+            {Array.from({ length: 24 }, (_, i) => (
+              <option key={i} value={i + 1}>
+                {i + 1}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="flex items-center gap-2">
+          Klokka
+          <select
+            value={hour}
+            onChange={(e) => setHour(Number(e.target.value))}
+            className="bg-black border-2 border-(--neon-green) min-h-11 px-2"
+          >
+            <option value={8}>08 (morgen)</option>
+            <option value={12}>12 (dag)</option>
+            <option value={21}>21 (kveld)</option>
+          </select>
+        </label>
+        <label className="flex items-center gap-2 min-h-11">
+          <input
+            type="checkbox"
+            checked={solved}
+            onChange={(e) => setSolved(e.target.checked)}
+            className="w-5 h-5 accent-(--neon-green)"
+          />
+          Koden er løst
+        </label>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        {views.map((v) => {
+          const file = v.src && pathOf(v.src);
+          const missing = file && present && !present.has(file);
+          return (
+            <figure key={v.key}>
+              <div className="aspect-video border-2 border-(--neon-green)">
+                <LiveCam
+                  // Remount on day change so frozen/hijack state starts fresh.
+                  key={`${v.key}-${day}-${hour}-${solved}`}
+                  src={v.src}
+                  fallback={v.fallback}
+                  label={v.label}
+                  {...v.fx}
+                />
+              </div>
+              <figcaption className="text-sm mt-1 break-all">
+                {file ?? "ingen bærebølge"}
+                {missing && (
+                  <span className="text-(--christmas-red)"> · MANGLER</span>
+                )}
+                {v.intercept && (
+                  <span className="block text-(--cold-blue)">
+                    «{v.intercept}»
+                  </span>
+                )}
+              </figcaption>
+            </figure>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
 
 function MediaContent() {
   const [files, setFiles] = useState<MediaStatus[] | null>(null);
   const [unavailable, setUnavailable] = useState(false);
   const [message, setMessage] = useState("");
+  const [onlyMissing, setOnlyMissing] = useState(false);
 
   const load = useCallback(async () => {
     const res = await fetch("/api/media");
@@ -37,7 +197,7 @@ function MediaContent() {
       "/api/media/" + path.split("/").map(encodeURIComponent).join("/"),
       {
         method: "PUT",
-        headers: { "Content-Type": TYPES[path.split(".").pop() ?? ""] },
+        headers: { "Content-Type": TYPES[ext(path)] },
         body: file,
       },
     );
@@ -46,11 +206,14 @@ function MediaContent() {
   };
 
   const missing = files?.filter((f) => f.size === null).length ?? 0;
+  const present = files
+    ? new Set(files.filter((f) => f.size !== null).map((f) => f.path))
+    : null;
 
   return (
     <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-retro p-4 md:p-8">
       <GuideNavigation />
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="border-8 border-(--neon-green) bg-black p-6 mb-6 text-center">
           <h1 className="text-4xl font-bold tracking-wider">MEDIA</h1>
           {files && (
@@ -61,49 +224,79 @@ function MediaContent() {
         </div>
 
         {unavailable && (
-          <p className="text-xl text-(--christmas-red)">
+          <p className="text-xl text-(--christmas-red) mb-4">
             Opplasting er bare tilgjengelig på hjemmenettet (LAN-modus).
           </p>
         )}
         {message && <p className="text-xl text-(--gold) mb-4">{message}</p>}
 
-        <ul className="space-y-2">
-          {files?.map((f) => (
-            <li
-              key={f.path}
-              className="flex flex-wrap items-center gap-4 border-2 border-(--neon-green) p-2"
-            >
-              <span
-                className={
-                  f.size === null ? "text-(--christmas-red)" : "text-(--gold)"
-                }
-              >
-                {f.size === null ? "MANGLER" : formatSize(f.size)}
-              </span>
-              {f.size === null ? (
-                <span className="flex-1 break-all">{f.path}</span>
-              ) : (
-                <a
-                  href={mediaUrl(f.path)}
-                  target="_blank"
-                  className="flex-1 break-all underline"
-                >
-                  {f.path}
-                </a>
-              )}
+        {files && (
+          <section className={box}>
+            <h2 className="text-2xl mb-3">Per dag</h2>
+            <table className="w-full text-left">
+              <tbody>
+                {dayRows(files).map((r) => (
+                  <tr key={r.day} className="border-b border-(--neon-green)/30">
+                    <th className="pr-4 py-1 whitespace-nowrap">Dag {r.day}</th>
+                    <td className="pr-4">
+                      <Status item={r.julius} />
+                    </td>
+                    <td className="pr-4">
+                      <Status item={r.rampenissen} />
+                    </td>
+                    <td>
+                      <Status item={r.tv} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
+        )}
+
+        <Gjennomsyn present={present} />
+
+        {files && (
+          <>
+            <label className="flex items-center gap-2 min-h-11 mb-4 text-lg">
               <input
-                type="file"
-                accept={TYPES[f.path.split(".").pop() ?? ""]}
-                className="min-h-11"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) upload(f.path, file);
-                  e.target.value = "";
-                }}
+                type="checkbox"
+                checked={onlyMissing}
+                onChange={(e) => setOnlyMissing(e.target.checked)}
+                className="w-5 h-5 accent-(--neon-green)"
               />
-            </li>
-          ))}
-        </ul>
+              Vis bare filer som mangler
+            </label>
+            {MEDIA_GROUPS.map((g) => {
+              const all = files.filter((f) => mediaGroup(f.path) === g.id);
+              const shown = onlyMissing
+                ? all.filter((f) => f.size === null)
+                : all;
+              const groupMissing = all.filter((f) => f.size === null).length;
+              return (
+                <section key={g.id} className={box}>
+                  <h2 className="text-2xl mb-3">
+                    {g.title}{" "}
+                    <span
+                      className={
+                        groupMissing
+                          ? "text-(--christmas-red)"
+                          : "text-(--gold)"
+                      }
+                    >
+                      ({all.length - groupMissing}/{all.length})
+                    </span>
+                  </h2>
+                  <ul className="space-y-2">
+                    {shown.map((f) => (
+                      <FileRow key={f.path} file={f} onUpload={upload} />
+                    ))}
+                  </ul>
+                </section>
+              );
+            })}
+          </>
+        )}
       </div>
     </div>
   );

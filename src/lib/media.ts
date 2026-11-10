@@ -96,6 +96,10 @@ const MUSIC: readonly MediaManifestEntry[] = [
 /** Every media file the app expects. Uploads are only accepted for these paths. */
 export const MEDIA_MANIFEST: readonly ManifestEntry[] = [
   ...Array.from({ length: 24 }, (_, i) => `video/julius/dag-${pad(i + 1)}.mp4`),
+  ...Array.from(
+    { length: 24 },
+    (_, i) => `audio/rampenissen/dag-${pad(i + 1)}.mp3`,
+  ),
   "video/tv/landsby-rolig.mp4",
   "video/tv/landsby-nordlys.mp4",
   "video/tv/landsby-storm.mp4",
@@ -122,6 +126,25 @@ export const MEDIA_MANIFEST: readonly ManifestEntry[] = [
   ...MUSIC,
   "music/christmas-dreams-jingle-bells-268299.mp3",
 ];
+
+/** Groups for the parent media page, in display order; first matching prefix wins. */
+export const MEDIA_GROUPS = [
+  { id: "julius", title: "Julius-videoer", prefix: "video/julius/" },
+  {
+    id: "rampenissen",
+    title: "Rampenissen-radio",
+    prefix: "audio/rampenissen/",
+  },
+  { id: "tv", title: "TV-looper", prefix: "video/tv/" },
+  { id: "stills", title: "Kamerabilder", prefix: "feed/" },
+  { id: "music", title: "Musikk", prefix: "music/" },
+] as const;
+
+export type MediaGroupId = (typeof MEDIA_GROUPS)[number]["id"];
+
+export function mediaGroup(path: string): MediaGroupId | undefined {
+  return MEDIA_GROUPS.find((g) => path.startsWith(g.prefix))?.id;
+}
 
 export interface MediaStatus {
   path: string;
