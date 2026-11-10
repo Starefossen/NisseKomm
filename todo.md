@@ -79,6 +79,7 @@ De andre ideene fra denne fasen er flyttet til «Senere forbedringer (etter seso
 - [x] **Designrevisjon:** alternativ B «Kontrollrommet i Snøfall», P0–P2 bygget (`docs/design-revisjon-2026.md`).
 
 - [ ] **MCP-API v1 for hjemmet (avtalt med Varden 10. november, Starefossen/homelab#22, bygges når integrasjon gjenopptas):** `get_screen` (Skjerm: dører, dagens tittel og teaser fra 06:00, Frostgrad, Kulde-navn, merker, Rampenissen sett etter 09/10, frost, gråtone, TV-variant og hendelse; `events[]` er tom når tilstanden ikke er `rolig`, `next_change_at`), `get_clips(date)` (radio: lyd-URL, varighet, sha256, ferdig innen 05:30), `get_kid_context` (Varden: alt barna har låst opp, altså fremdrift, e-post, transkripsjon og PS for løste dager (dagens e-post og transkripsjon, og alle filer og symboler dagens gåte bruker uansett når de ble åpnet, først når dagens kode er løst; filene merkes med hvilke dager de er gåtebiter for; det samme gjelder eldre e-post, transkripsjoner og PS som er biter i dagens gåte; en test sjekker hver dag 1–24 mot bitlisten i `docs/gaater-2026.md`), åpne NisseNet-filer og symboler; uopptjente koder sensureres, ingen foreldredata, pluss en fast `guidance` om aldri å gi svaret, returnert ordrett; sensurerte biter vises som «[skjult]» (dagens kode bruker «[…]», byttes); Varden kjører adversariale barneprompter med krav om null lekkasjer før skillen slås på; Hans 10. november), foreldreverktøy (`give_hint`, `set_frost`, `skip_day`, `reset`, `set_fake_now` som bare gjelder svar til operatøren, utløper etter 24 timer og logges, pluss `preview_screen(as_caller)` for å se Skjerms visning). Alle svar har `schema_version: 1`, tid i Europe/Oslo og er under 16 KB. Medie-URL-er har sterk ETag og Range.
+- [ ] **`get_letters` i MCP (når MCP-API-et bygges):** lesetilgang for foreldretoken til barnas brev til Julius (navn, dato, tekst). Ingen tilgang for Varden eller lesetoken.
 - [ ] **Skjerm-tekster (venter på integrasjon):** skriv `skjerm_teaser` (én linje lore per dag, ingen bokstaver, tall eller steder) for 24 dager, og en `get_screen`-variant i MCP for familieskjermen.
 
 ## Systematisk kvalitetsgjennomgang (ikke nye funksjoner)
@@ -121,6 +122,11 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [ ] **Lengre hendelser:** når videomodellen tillater mer enn 10 sekunder med låst første og siste bilde, kan figurene gå helt inn på torget.
 - [ ] **Flere tilfeldige hendelser og tid på døgnet** for Skjerm (morgen, dag, Lucia, blå brevfugl), jf. avtalen med Varden.
 - [ ] **TypeScript 7** når typescript-eslint støtter det.
+
+## Brevfugler (besluttet 10. november)
+
+- [ ] **Julius leser et brev:** Hans velger et av barnas brev i foreldreguiden. Innslaget (sitat og Julius' svar) skrives inn i én av videoene for dag 20–23 og lages med `assets/bin/julius-dag.py` sammen med dag 13–24. Barna får en oppfordring tidlig i desember om å skrive (Rampenissen eller Julius), så brevene finnes før ca. 18. desember.
+- [ ] **Visuell oppfriskning av Brevfugler:** plan for radar og oppsett som gjør vinduet lettere å forstå og bruke for barna (Kristian 12, Håkon 9, Hanna 5). Plan først, så bygging etter godkjenning.
 
 ## Etterbehandling av media før publisering
 
