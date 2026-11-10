@@ -77,7 +77,7 @@ CRTFrame (fullscreen container)
 
 5. **EventyrOversikt** (`windows/EventyrOversikt.tsx`)
    - Story arc visualization
-   - Progress tracking for 2 eventyr
+   - Progress line for the single eventyr `spokelseskoden`
    - Phase-by-phase breakdown
    - Unlocks: Day 8
 
@@ -290,8 +290,8 @@ const playerNames = StorageManager.getPlayerNames();
 - `uke2_oppdrag.json` - Days 7-12 (Week 2)
 - `uke3_oppdrag.json` - Days 13-18 (Week 3)
 - `uke4_oppdrag.json` - Days 19-24 (Week 4)
-- `statisk_innhold.json` - File system, alerts, system metrics
-- `eventyr.json` - Story arc definitions (2 eventyr)
+- `statisk_innhold.json` - File system, alerts, NisseStats global metrics
+- `eventyr.json` - The one story arc, `spokelseskoden`, with milestones
 - `merker.json` - Badge/achievement definitions
 
 ### Data Loader (`lib/data-loader.ts`)

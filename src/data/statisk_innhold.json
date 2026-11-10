@@ -3,21 +3,7 @@
     "sigmoid": {
       "k": 0.18,
       "midpoint": 15
-    },
-    "crisis_events": [
-      {
-        "day": 11,
-        "affected_metric": "NISSEKRAFT",
-        "crisis_value": 45,
-        "status": "kritisk"
-      },
-      {
-        "day": 16,
-        "affected_metric": "BREVFUGL-SVERM",
-        "crisis_value": 15,
-        "status": "kritisk"
-      }
-    ]
+    }
   },
   "daily_alerts": [
     {
@@ -377,36 +363,6 @@
       ]
     }
   ],
-  "systemMetrikker": [
-    {
-      "navn": "NISSEKRAFT",
-      "min": 20,
-      "maks": 100,
-      "unlock_day": 1,
-      "status": "advarsel"
-    },
-    {
-      "navn": "BREVFUGL-SVERM",
-      "min": 0,
-      "maks": 100,
-      "unlock_day": 4,
-      "status": "normal"
-    },
-    {
-      "navn": "VERKSTED-VARME",
-      "min": 35,
-      "maks": 100,
-      "unlock_day": 7,
-      "status": "normal"
-    },
-    {
-      "navn": "SLEDE-TURBO",
-      "min": 0,
-      "maks": 100,
-      "unlock_day": 10,
-      "status": "normal"
-    }
-  ],
   "nissestats_global_metrics": [
     {
       "navn": "BARN I VERDEN",
@@ -430,12 +386,7 @@
       "crisis_behavior": {
         "day": 16,
         "crisis_type": "oscillate",
-        "crisis_values": [
-          330000000,
-          329847291,
-          330152847,
-          329999123
-        ],
+        "crisis_values": [330000000, 329847291, 330152847, 329999123],
         "status": "kritisk",
         "crisis_text": "SORTERINGS-SYSTEM KRASJET"
       }
@@ -523,14 +474,7 @@
       "crisis_behavior": {
         "day": 11,
         "crisis_type": "glitch",
-        "crisis_values": [
-          240,
-          169,
-          0,
-          -148,
-          993,
-          42
-        ],
+        "crisis_values": [240, 169, 0, -148, 993, 42],
         "status": "kritisk",
         "crisis_text": "TELEMETRI OFFLINE - 75 MHz"
       }
@@ -547,13 +491,7 @@
       "crisis_behavior": {
         "day": 11,
         "crisis_type": "glitch",
-        "crisis_values": [
-          0,
-          12,
-          83,
-          2,
-          0
-        ],
+        "crisis_values": [0, 12, 83, 2, 0],
         "status": "kritisk",
         "crisis_text": "NO CARRIER - ANTENNE NEDE"
       }

@@ -254,11 +254,11 @@ export function validateEventyrReferences(quests: Oppdrag[]): void {
  * - Phases must be positive integers
  *
  * EXAMPLE VALID:
- * - brevfugl-mysteriet: [1, 2, 3, 4] ✓
+ * - spokelseskoden: [1, 2, 3, 4] ✓
  *
  * EXAMPLE INVALID:
- * - brevfugl-mysteriet: [1, 3, 4] ✗ (missing phase 2)
- * - brevfugl-mysteriet: [1, 2, 2, 3] ✗ (duplicate phase 2)
+ * - spokelseskoden: [1, 3, 4] ✗ (missing phase 2)
+ * - spokelseskoden: [1, 2, 2, 3] ✗ (duplicate phase 2)
  *
  * @param quests - Array of all quests to validate
  * @throws Error if eventyr has non-sequential phases

@@ -57,9 +57,7 @@ export function StatsDashboard({ refreshCounter = 0 }: StatsDashboardProps) {
 
   const eventyrProgress = useMemo(() => {
     const completedSet = new Set(completedDays);
-    const eventyr1 = getEventyrProgress("morkets-voktere", completedSet);
-    const eventyr2 = getEventyrProgress("iq-test", completedSet);
-    return { eventyr1, eventyr2 };
+    return getEventyrProgress("spokelseskoden", completedSet);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [effectiveRefreshKey, completedDays]);
 
@@ -231,20 +229,11 @@ export function StatsDashboard({ refreshCounter = 0 }: StatsDashboardProps) {
             <h3 className="text-lg font-bold text-(--neon-green)">EVENTYR</h3>
             <div className="space-y-1 text-sm">
               <div>
-                <div className="text-purple-400 font-bold">Mørkets Voktere</div>
+                <div className="text-purple-400 font-bold">Spøkelseskoden</div>
                 <div className="w-full bg-(--dark-crt) border border-(--neon-green)/50 h-2">
                   <div
                     className="h-full bg-purple-500 transition-all duration-1000"
-                    style={{ width: `${eventyrProgress.eventyr1}%` }}
-                  />
-                </div>
-              </div>
-              <div>
-                <div className="text-orange-400 font-bold">IQ-Test</div>
-                <div className="w-full bg-(--dark-crt) border border-(--neon-green)/50 h-2">
-                  <div
-                    className="h-full bg-orange-500 transition-all duration-1000"
-                    style={{ width: `${eventyrProgress.eventyr2}%` }}
+                    style={{ width: `${eventyrProgress}%` }}
                   />
                 </div>
               </div>

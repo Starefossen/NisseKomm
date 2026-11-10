@@ -600,7 +600,7 @@ Se [Rampestreker Design](#rampestreker-design-physical-mischief-scenes) for full
 
 ```json
 "eventyr": {
-  "id": "brevfugl-mysteriet",
+  "id": "spokelseskoden",
   "phase": 3
 }
 ```
