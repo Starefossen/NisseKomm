@@ -5,6 +5,11 @@ import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { LiveCam } from "@/components/windows/snofall-tv/LiveCam";
 import {
+  LANDSBY_EVENT_SECONDS,
+  landsbyEventAllowed,
+  type LandsbyEventKind,
+} from "@/components/windows/snofall-tv/channels";
+import {
   MEDIA_GROUPS,
   mediaGroup,
   mediaUrl,
@@ -98,7 +103,18 @@ function Gjennomsyn({ present }: { present: Set<string> | null }) {
   const [day, setDay] = useState(1);
   const [hour, setHour] = useState(12);
   const [solved, setSolved] = useState(false);
+  const [shown, setShown] = useState<{
+    kind: LandsbyEventKind;
+    at: number;
+  } | null>(null);
   const views = lookThrough(day, hour, solved);
+  const eventAt = () => {
+    if (!shown || !landsbyEventAllowed(shown.kind, day, solved)) return null;
+    const progress =
+      (performance.now() - shown.at) /
+      (LANDSBY_EVENT_SECONDS[shown.kind] * 1000);
+    return progress < 1 ? { kind: shown.kind, progress } : null;
+  };
   return (
     <section id="gjennomsyn" className={box}>
       <h2 className="text-2xl mb-3">Snøfall TV-gjennomsyn</h2>
@@ -143,6 +159,7 @@ function Gjennomsyn({ present }: { present: Set<string> | null }) {
         {views.map((v) => {
           const file = v.src && pathOf(v.src);
           const missing = file && present && !present.has(file);
+          const village = v.src?.endsWith("landsby-rolig.mp4");
           return (
             <figure key={v.key}>
               <div className="aspect-video border-2 border-(--neon-green)">
@@ -153,8 +170,28 @@ function Gjennomsyn({ present }: { present: Set<string> | null }) {
                   fallback={v.fallback}
                   label={v.label}
                   {...v.fx}
+                  eventAt={village ? eventAt : undefined}
                 />
               </div>
+              {village && (
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {(
+                    [
+                      ["brevfugler", "Brevfugler"],
+                      ["tarnklokke", "Tårnklokka"],
+                    ] as const
+                  ).map(([kind, name]) => (
+                    <button
+                      key={kind}
+                      onClick={() => setShown({ kind, at: performance.now() })}
+                      disabled={!landsbyEventAllowed(kind, day, solved)}
+                      className="min-h-11 px-2 border-2 border-(--neon-green) disabled:border-(--gray) disabled:text-(--gray) cursor-pointer disabled:cursor-not-allowed"
+                    >
+                      Vis hendelse: {name}
+                    </button>
+                  ))}
+                </div>
+              )}
               <figcaption className="text-sm mt-1 break-all">
                 {file ?? "ingen bærebølge"}
                 {missing && (

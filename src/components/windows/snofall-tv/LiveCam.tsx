@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { getCurrentDate } from "@/lib/date-utils";
+import type { LandsbyEventKind } from "./channels";
+import { drawLandsbyEvent } from "./landsby-overlays";
 
 /**
  * LiveCam - one Snøfall TV channel drawn into a single canvas each frame:
@@ -30,6 +32,8 @@ export interface LiveCamEffects {
   signature?: boolean;
   /** Ghost text shown in the middle while hijacked. */
   ghostLine?: string;
+  /** Village event to draw over the picture right now (polled each frame). */
+  eventAt?: () => { kind: LandsbyEventKind; progress: number } | null;
 }
 
 interface LiveCamProps extends LiveCamEffects {
@@ -302,6 +306,19 @@ export function LiveCam({
         ix = (W - iw) / 2 + dx;
         iy = (H - ih) / 2 + dy;
         ctx.drawImage(source, ix, iy, iw, ih);
+        // Positions match the video framing only, not the fallback still.
+        const ev = p.frozen || !video ? null : p.eventAt?.();
+        if (ev) {
+          // Reduced motion: one still frame from the middle of the event.
+          const prog = motion ? ev.progress : 0.5;
+          drawLandsbyEvent(
+            ctx,
+            ev.kind,
+            prog,
+            { x: ix, y: iy, w: iw, h: ih },
+            t,
+          );
+        }
       } else {
         ctx.fillStyle = "#000";
         ctx.fillRect(0, 0, W, H);
