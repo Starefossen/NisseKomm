@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // AGENTS.md is maintained by hand; stop next dev from appending its own block
+  agentRules: false,
   reactCompiler: true,
 };
 
