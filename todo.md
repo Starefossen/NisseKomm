@@ -128,6 +128,8 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [x] MCP-server
 - [x] Testoppsett og gjennomspilling
 
+- [ ] **Småfeil i medieverktøyene (fra agy-gjennomgang 10. november):** `rampenissen-tts.sh` tåler ikke `--force` først; `tv-loops.sh` ser bare `--force` som første argument; `inventar.py --media` uten verdi krasjer; `medie.py` lagrer hash av tom tekst når en manusdel mangler (bør feile); override-nøkkelen treffer ikke når filen ligger utenfor `public/`. Rettes når genereringen av dag 1–5 er ferdig.
+
 ## Senere forbedringer (etter sesongen)
 
 - [ ] **Hullkort / sjablongkort:** kort med utklippede vinduer som legges over en side i en fysisk bok.
