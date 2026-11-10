@@ -243,7 +243,7 @@ function PrintoutContent() {
       {/* Screen-only header */}
       <div className="print:hidden min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-8">
         <div className="max-w-6xl mx-auto">
-          <GuideNavigation currentPage="printout" />
+          <GuideNavigation />
 
           <h1 className="text-4xl font-bold text-center mb-4">
             🖨️ NISSEMOR UTSKRIFTER

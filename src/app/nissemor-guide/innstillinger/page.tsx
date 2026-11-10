@@ -1,54 +1,66 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { GuideAuth } from "@/components/nissemor/GuideAuth";
-import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
+import Link from "next/link";
+import { useState } from "react";
 import { GuideSettings } from "@/components/nissemor/GuideSettings";
-import { Icons } from "@/lib/icons";
-import { clearParentAuth } from "@/lib/auth-cookies";
+import { GameEngine } from "@/lib/game-engine";
+import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
+import { GuideSide, Kort } from "../_kveld/felles";
 
-function InnstillingerContent() {
-  const router = useRouter();
-
-  const handleLogout = () => {
-    clearParentAuth();
-    router.push("/");
-  };
-
+function Feilforsok() {
+  const dag =
+    getCurrentMonth() === 12 && getCurrentDay() <= 24 ? getCurrentDay() : null;
+  const [antall, setAntall] = useState(() =>
+    dag ? GameEngine.getFailedAttempts(dag) : 0,
+  );
+  if (!dag) return <p>Ingen luke i dag.</p>;
   return (
-    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8">
-      <GuideNavigation currentPage="innstillinger" />
-
-      <div className="max-w-4xl mx-auto">
-        <div className="border-8 border-(--neon-green) bg-black p-6 mb-6">
-          <div className="flex items-center justify-center gap-4">
-            <Icons.Sliders size={40} color="green" />
-            <h1 className="text-4xl font-bold text-(--neon-green) tracking-wider">
-              INNSTILLINGER
-            </h1>
-            <Icons.Sliders size={40} color="green" />
-          </div>
-        </div>
-
-        <GuideSettings />
-
-        <div className="mt-8 text-center">
-          <button
-            onClick={handleLogout}
-            className="px-8 py-3 border-4 border-(--christmas-red) text-(--christmas-red) hover:bg-(--christmas-red) hover:text-white transition-colors font-bold tracking-wider"
-          >
-            🚪 LOGG UT FRA FORELDREVEILEDNING
-          </button>
-        </div>
-      </div>
-    </div>
+    <>
+      <p>
+        Feil koder i dag (dag {dag}): {antall}. Etter tre feil viser terminalen
+        et tips fra Julius.
+      </p>
+      <button
+        onClick={() => {
+          GameEngine.resetFailedAttempts(dag);
+          setAntall(0);
+        }}
+        className="px-4 min-h-11 border-2 border-(--cold-blue) text-(--cold-blue) hover:bg-(--cold-blue)/20"
+      >
+        Nullstill feilforsøk
+      </button>
+    </>
   );
 }
 
-export default function InnstillingerPage() {
+export default function InnstillingerSide() {
   return (
-    <GuideAuth>
-      <InnstillingerContent />
-    </GuideAuth>
+    <GuideSide>
+      <h1 className="text-4xl font-bold text-(--gold) text-center">
+        INNSTILLINGER
+      </h1>
+      <GuideSettings />
+      <Kort tittel="Feil koder" farge="border-(--cold-blue)">
+        <Feilforsok />
+      </Kort>
+      <Kort tittel="Simulering">
+        {/* Slot for the Simulering tools (built separately). */}
+        <p className="opacity-80">Kommer snart.</p>
+      </Kort>
+      <Kort tittel="Mer">
+        <ul className="list-disc pl-6">
+          <li>
+            <Link href="/nissemor-guide/merker" className="underline">
+              Merker
+            </Link>
+          </li>
+          <li>
+            <Link href="/nissemor-guide/symboler" className="underline">
+              Symbolkort med QR-koder
+            </Link>
+          </li>
+        </ul>
+      </Kort>
+    </GuideSide>
   );
 }
