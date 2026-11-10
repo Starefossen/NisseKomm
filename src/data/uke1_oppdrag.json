@@ -16,8 +16,13 @@
     "oppsett_tid": "moderat",
     "kode": "SIGNAL",
     "reveals": {
-      "files": ["om-snofall.txt"],
-      "topics": ["velkommen-snøfall", "brevfugl-intro"],
+      "files": [
+        "om-snofall.txt"
+      ],
+      "topics": [
+        "velkommen-snøfall",
+        "brevfugl-intro"
+      ],
       "modules": []
     },
     "eventyr": {
@@ -71,7 +76,9 @@
     "kode": "PRISME",
     "reveals": {
       "files": [],
-      "modules": ["SYMBOLSKANNER"]
+      "modules": [
+        "SYMBOLSKANNER"
+      ]
     },
     "eventyr": {
       "id": "spokelseskoden",
@@ -103,7 +110,9 @@
     "kode": "KOMPASS",
     "reveals": {
       "files": [],
-      "modules": ["NISSEKRYPTO"]
+      "modules": [
+        "NISSEKRYPTO"
+      ]
     },
     "finalized": true,
     "julius_ps": "Rudolf er hjemme og tørr. Rampenissen har visst lånt pappas solbriller. Innendørs. I desember. Ikke spør meg.",
@@ -128,7 +137,9 @@
     "oppsett_tid": "moderat",
     "kode": "ULRIKEN",
     "reveals": {
-      "files": ["alfabet.txt"],
+      "files": [
+        "alfabet.txt"
+      ],
       "modules": []
     },
     "eventyr": {

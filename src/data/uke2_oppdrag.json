@@ -15,15 +15,19 @@
     "oppsett_tid": "moderat",
     "kode": "KULDE",
     "reveals": {
-      "files": ["orakelets-rapport.txt"],
-      "modules": ["NISSEMUSIKK"]
+      "files": [
+        "orakelets-rapport.txt"
+      ],
+      "modules": [
+        "NISSEMUSIKK"
+      ]
     },
     "eventyr": {
       "id": "spokelseskoden",
       "phase": 7
     },
     "finalized": true,
-    "julius_ps": "Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Nissemor ringte; hun sier han så ut som en liten skiltstolpe."
+    "julius_ps": "Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Nissemor ringte; hun sier han så ut som en liten skiltstolpe. Hun sier også at det var derfor hun sendte oransje. Hun visste det ikke. Hun vet sånt likevel."
   },
   {
     "dag": 8,
@@ -41,7 +45,9 @@
     "oppsett_tid": "moderat",
     "kode": "KRETSKORT",
     "reveals": {
-      "files": ["feilrapport-uke-1.txt"],
+      "files": [
+        "feilrapport-uke-1.txt"
+      ],
       "modules": []
     },
     "eventyr": {
@@ -66,7 +72,9 @@
     "oppsett_tid": "moderat",
     "kode": "24",
     "reveals": {
-      "files": ["krystallformel.txt"],
+      "files": [
+        "krystallformel.txt"
+      ],
       "modules": []
     },
     "eventyr": {
@@ -80,7 +88,7 @@
       "description": "Blått hjerte funnet mellom krystallene på kjøleskapet"
     },
     "finalized": true,
-    "julius_ps": "Rampenissen lå i grønnsaksskuffen i to timer for å «bli ekte iskrystall». Han ble en kald nisse med gulrot i håret. Orakelets radar teller riktig igjen. Pil sier blått hjerte er fargen til det som fryser."
+    "julius_ps": "Rampenissen lå i grønnsaksskuffen i to timer for å «bli ekte iskrystall». Han ble en kald nisse med en kålbit i håret. Orakelets radar teller riktig igjen. Pil sier blått hjerte er fargen til det som fryser."
   },
   {
     "dag": 10,
@@ -98,15 +106,20 @@
     "oppsett_tid": "moderat",
     "kode": "SPEKTER",
     "reveals": {
-      "files": ["farge-koder.txt", "01-fargene.txt"],
-      "modules": ["SNØFALL_TV"]
+      "files": [
+        "farge-koder.txt",
+        "01-fargene.txt"
+      ],
+      "modules": [
+        "SNØFALL_TV"
+      ]
     },
     "eventyr": {
       "id": "spokelseskoden",
       "phase": 10
     },
     "finalized": true,
-    "julius_ps": "Dere fikk fargene tilbake. Hele Snøfall så det; Pil klappet. Rampenissen har fire farger i ansiktet og bart på bildet av mamma og pappa. Vaskbart, lover han."
+    "julius_ps": "Dere fikk fargene tilbake. Hele Snøfall så det; Pil klappet. Rampenissen sier klementinene var det eneste i stua som holdt på fargen. Kulde tar fra linjen, ikke fra det som alt er framme. Han har selv fire farger i ansiktet og bart på bildet av mamma og pappa. Vaskbart, lover han."
   },
   {
     "dag": 11,
@@ -123,7 +136,9 @@
     "oppsett_tid": "moderat",
     "kode": "75",
     "reveals": {
-      "files": ["antennen-ved-tjernet.txt"],
+      "files": [
+        "antennen-ved-tjernet.txt"
+      ],
       "modules": []
     },
     "eventyr": {
@@ -176,11 +191,21 @@
     },
     "decryption_challenge": {
       "challengeId": "frosne-koder",
-      "requiredSymbols": ["heart-green", "heart-red", "heart-blue"],
-      "correctSequence": [1, 0, 2],
+      "requiredSymbols": [
+        "heart-green",
+        "heart-red",
+        "heart-blue"
+      ],
+      "correctSequence": [
+        1,
+        0,
+        2
+      ],
       "hint": "Orakelets logg fra slusen: først det som er varmt, så det som håper, til slutt det som er alene. (Fargene står ikke her; Pil har sagt dem i PS dag 3, 6 og 9.)",
       "rewardText": "DEKRYPTERT. Orakelets logg fra slusen ligger i DEKRYPTERT/frosne-koder.txt. Les den sammen.",
-      "unlocksFiles": ["frosne-koder.txt"]
+      "unlocksFiles": [
+        "frosne-koder.txt"
+      ]
     },
     "finalized": true,
     "julius_ps": "Jeg sa til Rampenissen at han innbilte seg det. Jeg tok feil. Les det Orakelet skrev fra slusen, sammen. Og dorullen: fra badet til kjøkkenet, hele rullen. Nissemor spør om dere har mer av det også."

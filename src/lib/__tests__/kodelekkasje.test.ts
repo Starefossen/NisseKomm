@@ -23,7 +23,6 @@ const ALLOWED = new Set(["LANDÅS"]);
 // Locked texts that mention a later code in passing. Listed so a new leak
 // still fails; each one is a question for Hans, not a fix.
 const KNOWN = new Set([
-  "GULROT i dag 9 julius_ps", // «gulrot i håret», ten days before day 19
 ]);
 
 type Visible = { from: number; where: string; text: string };

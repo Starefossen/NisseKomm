@@ -381,7 +381,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
 - `tittel`: Krystall-Matematikk
 - `nissemail_tekst` (90 ord): Noe har hengt krystaller på kjøleskapet deres i natt. ❄️ Noen av dem er ikke ekte, og de er godt laget. Kulde legger falske krystaller i Orakelets radar også, så tellingen blir feil. Pil ble lurt to ganger, så jeg la meg i grønnsaksskuffen for å lære forskjellen. Det går dårlig. Håkon: tell armene på hver krystall, nøye. Kristian: se over dem Håkon er usikker på. IQ har lagt en formel i NisseNet. Hanna, hvis du vil: plukk ut dem som ser rare ut. Det blå kortet henger mellom krystallene. – Rampenissen
-- `julius_ps`: Rampenissen lå i grønnsaksskuffen i to timer for å «bli ekte iskrystall». Han ble en kald nisse med gulrot i håret. Orakelets radar teller riktig igjen. Pil sier blått hjerte er fargen til det som fryser.
+- `julius_ps`: Rampenissen lå i grønnsaksskuffen i to timer for å «bli ekte iskrystall». Han ble en kald nisse med en kålbit i håret. Orakelets radar teller riktig igjen. Pil sier blått hjerte er fargen til det som fryser.
 - `daily_alerts`: 🧪 PIL: Noen av krystallene i radaren er ikke ekte. Jeg ble lurt to ganger.
 - `symbol_clue.description`: Blått hjerte funnet mellom krystallene på kjøleskapet
 - NisseNet: `SNOFALL-HISTORIER/krystallformel.txt` **ny** (`afterDay: 9`), erstatter `julekuleblasing.txt` (**slettes**):

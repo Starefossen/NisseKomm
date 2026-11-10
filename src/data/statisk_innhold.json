@@ -430,7 +430,12 @@
       "crisis_behavior": {
         "day": 16,
         "crisis_type": "oscillate",
-        "crisis_values": [330000000, 329847291, 330152847, 329999123],
+        "crisis_values": [
+          330000000,
+          329847291,
+          330152847,
+          329999123
+        ],
         "status": "kritisk",
         "crisis_text": "SORTERINGS-SYSTEM KRASJET"
       }
@@ -518,7 +523,14 @@
       "crisis_behavior": {
         "day": 11,
         "crisis_type": "glitch",
-        "crisis_values": [240, 169, 0, -148, 993, 42],
+        "crisis_values": [
+          240,
+          169,
+          0,
+          -148,
+          993,
+          42
+        ],
         "status": "kritisk",
         "crisis_text": "TELEMETRI OFFLINE - 75 MHz"
       }
@@ -535,7 +547,13 @@
       "crisis_behavior": {
         "day": 11,
         "crisis_type": "glitch",
-        "crisis_values": [0, 12, 83, 2, 0],
+        "crisis_values": [
+          0,
+          12,
+          83,
+          2,
+          0
+        ],
         "status": "kritisk",
         "crisis_text": "NO CARRIER - ANTENNE NEDE"
       }

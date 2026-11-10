@@ -17,7 +17,9 @@
     "oppsett_tid": "moderat",
     "kode": "GULROT",
     "reveals": {
-      "files": ["foringsautomat.log"],
+      "files": [
+        "foringsautomat.log"
+      ],
       "modules": []
     },
     "eventyr": {
@@ -105,7 +107,9 @@
     "oppsett_tid": "moderat",
     "kode": "LANDÅS",
     "reveals": {
-      "files": ["snill-listen.txt"],
+      "files": [
+        "snill-listen.txt"
+      ],
       "modules": []
     },
     "eventyr": {
@@ -137,7 +141,9 @@
     "oppsett_tid": "moderat",
     "kode": "STJERNEKLART",
     "reveals": {
-      "files": ["03-siste-side.txt"],
+      "files": [
+        "03-siste-side.txt"
+      ],
       "modules": []
     },
     "eventyr": {
@@ -163,10 +169,22 @@
         "moon-red",
         "moon-blue"
       ],
-      "correctSequence": [6, 3, 0, 7, 4, 1, 8, 5, 2],
+      "correctSequence": [
+        6,
+        3,
+        0,
+        7,
+        4,
+        1,
+        8,
+        5,
+        2
+      ],
       "hint": "Tre farger, tre rader: måne → sol → hjerte i grønt, så i rødt, så i blått.",
       "rewardText": "DEKRYPTERT. Hele historien ligger i DEKRYPTERT/hjertets-hemmelighet.txt. Det er den siste.",
-      "unlocksFiles": ["hjertets-hemmelighet.txt"]
+      "unlocksFiles": [
+        "hjertets-hemmelighet.txt"
+      ]
     },
     "finalized": true,
     "julius_ps": "Nå vet dere alt. Rampenissen også; han satt i treet og hørte. Men ingen av dere vet hva Trixter har i sleden til i morgen. Gaven med altfor mye teip på: la den ligge. Han mente det godt."
@@ -178,9 +196,10 @@
     "rampenissen_rampestrek": "Ligger og sover inni den store gullkonvolutten under treet med en sløyfe på hodet og en liten pappeske som pakket koffert ved siden av.",
     "fysisk_hint": "Pappesken med sløyfe ved konvolutten: perlen (dag 3) med lapp `tegn U · 2`, rødfilteret (dag 10) `tegn E · 4`, båndbiten (dag 17) `tegn G · 7` (`dag24-suvenirlapper.pdf`). I konvolutten: avskjedsbrevet, rutekort med åtte ruter og **alltid** de tre reservelappene («IQs kopi») under brevet. Krystallet som ikke smelter under treet, med `dag24-krystallkort.pdf`: «TAKK FOR LYSET» i tegn. Løsning: Håkon leser brevet og legger lappene, Kristian slår opp tegnene: `_ U _ E _ _ G _`. Julius: høytiden foran, pluss det trollmenn later som de har. Kode JULEMAGI. Så brevet i Brevfugler, finale, diplom, merket Snøfalls venn. Lett med vilje; mangler tavla et tegn, er bokstavene U, E, G. Hanna, hvis hun vil: åpner kofferten og sier hvilken dag hver ting kommer fra.",
     "materialer_nødvendig": [
-      "liten pappeske",
+      "liten pappeske (den tomme fraktesken fra dag 1)",
       "sløyfe",
       "gullkonvolutt",
+      "den siste klementinen, ved krystallet, uten lapp",
       "perle, filter og båndbit fra konvolutten «24»",
       "dag24-suvenirlapper.pdf",
       "dag24-krystallkort.pdf",
@@ -199,6 +218,6 @@
       "phase": 24
     },
     "finalized": true,
-    "julius_ps": "Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Rampenissen sov i gullkonvolutten med sløyfe på hodet og en pappeske som koffert. God jul, Kristian, Håkon og Hanna."
+    "julius_ps": "Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Ved siden av ligger den siste klementinen fra Nissemors proviant. Varmt og kaldt, side om side. Rampenissen sov i gullkonvolutten med sløyfe på hodet og fraktesken fra første desember som koffert. God jul, Kristian, Håkon og Hanna."
   }
 ]
