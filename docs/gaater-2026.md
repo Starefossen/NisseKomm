@@ -275,7 +275,7 @@ Snitt oppsett for gåten: 4,4 minutter. Med rampestreken fra §8: cirka 9.
 - **Kode:** NORDLYS (uendret).
 - **Mekanikk:** båndet er et målebånd. Det grønne gavebåndet Rampenissen er bundet med har sju sølvmerker med lik avstand; to av dem er bokstaver, fem er krystaller. Båndet må knytes opp og strekkes ut mellom to stoler før det kan leses i rekkefølge fra sløyfen. Erstatter `N _ R _ L _ S` (57 %).
 - **Brikke H:** 1,5 m grønt gavebånd, sølvpenn: merke 1 ❄, 2 **O**, 3 ❄, 4 ❄, 5 **L**, 6 ❄, 7 ❄, med en liten sølvsløyfe tegnet før merke 1. Båndet går rundt Rampenissen og stolen, knytt med én enkel sløyfe (ikke knute: plastbånd lar seg ikke knyte opp av en 5-åring); løsepengebrevet henger på.
-- **Brikke S:** Julius: «Lyset man kan høre, sa de gamle i nord. Nissene sier det er himmelen som sender brev tilbake: grønt, bølgende, over hele Nordtoppen, og bare når det er mørkt nok.» Han sier ikke ordet og ikke delene av det.
+- **Brikke S:** Julius: «Det man kan høre på himmelen, sa de gamle. Nissene sier det er himmelen som sender brev tilbake: grønt, bølgende, over fjellene, og bare når det er mørkt nok.» Han sier ikke ordet og ikke delene av det.
 - **Slik løses den:** 1) H5 drar i sløyfen og frigjør Rampenissen. 2) H9 strekker båndet mellom to stoler og leser merkene fra sløyfen: `_ O _ _ L _ _`. 3) K12: grønt lys på himmelen i nord, sju bokstaver med O og L. NORDLYS. K1: klikk på himmelen bekrefter «SIGNAL MOTTATT FRA GROTTEN».
 - **Andel per flate:** hus 2 av 7 (29 %). Video: beskrivelse av fenomenet, ingen orddeler.
 - **Vanskelighet:** 3 (Julius' setning er den tyngste delen; rødfilteret trengs ikke).
@@ -331,7 +331,7 @@ Snitt oppsett for gåten: 4,4 minutter. Med rampestreken fra §8: cirka 9.
 - **Kode:** BRANNMUR (uendret).
 - **Mekanikk:** bokmur lest fra venstre. Åtte bøker står som en lav mur foran skjermen, én på gløtt. På hver bokrygg sitter en post-it; tre har bokstav, fem er iset. Muren må flyttes til bordet uten at rekkefølgen ryker. Endret fra `B R _ N _ M _ R` (63 %).
 - **Brikke H:** åtte post-it på bokryggene, fra venstre: 1 ❄, 2 **R**, 3 ❄, 4 ❄, 5 ❄, 6 ❄, 7 **U**, 8 ❄. To bokstaver, ikke tre: bokmuren foran skjermen er i seg selv et hint. Boken på gløtt (porten) er bok 5. Grytelokket og vispen står inntil. Skjerm og app er fryst fra morgenen.
-- **Brikke S:** Julius: «IQ bygde en vegg av varme rundt linjen. Brannfolk bygger det samme i skogen når det brenner, bare av det motsatte, og kaller den etter det de kjemper mot.» Så: «Jeg lot ham la én port stå åpen. Inn mot grotten. Med varme i.»
+- **Brikke S:** Julius: «IQ bygde en vegg av varme rundt linjen. De som kjemper mot flammene i skogen, bygger det samme, bare av det motsatte, og kaller den etter det de kjemper mot.» Så: «Jeg lot ham la én port stå åpen. Inn mot grotten. Med varme i.»
 - **Slik løses den:** 1) H5 leser post-it-lappene fra venstre og sier «bokstav» eller «is»; H9 leser bokstavene. 2) H9 bærer bøkene til bordet i samme rekkefølge (venstre først), så lappene kan sjekkes igjen. 3) K12: `_ R _ _ _ _ U _`, brannfolkenes vegg, dataordet for en vegg som slipper noe gjennom. BRANNMUR. Kanalene tiner, porten tegnes i sidepanelet, merket Portvokter.
 - **Andel per flate:** hus 2 av 8 (25 %). Video: beskrivelse.
 - **Vanskelighet:** 3.

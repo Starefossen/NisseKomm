@@ -1,5 +1,7 @@
 # NisseKomm 2026 – App-tekster (steg 2)
 
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer.
+
 Utkast 10. november 2026. Kilder, alle låst: `docs/historie-2026.md`, `docs/storyboard-2026.md`, `docs/gaater-2026.md`. Stemmer og ordliste: `CONTENT_GUIDE.md`. Ingen JSON eller kode er endret; dette dokumentet er malen for steg 3. Julius' videomanus og Rampenissens radioklipp skrives av en annen agent og står ikke her.
 
 ## Regler brukt

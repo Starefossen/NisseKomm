@@ -1,5 +1,7 @@
 # Julius' videodagbok 2026 – manus
 
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer.
+
 Steg 2. Kilder (låst): `docs/historie-2026.md`, `docs/storyboard-2026.md`, `docs/gaater-2026.md`. Stemme og rom: `assets/characters/julius/*`, `assets/locations/julius-kontor/beskrivelse.txt`, `assets/stil.md`.
 
 ## Slik leses manuset
@@ -417,12 +419,12 @@ Kulde-nivå 1. Ett juletrelys slukner, svak knitring. Ingen omtale av lykten på
    - Varighet: 15 s (26 ord)
    - Handling: Snur seg mot vinduet; et svakt grønt skjær ligger over snøen utenfor.
    - Kulde: Ett juletrelys slukner, men vinduet lyser svakt grønt.
-4. **Replikk:** «Og så det siste, det jeg vil at dere skal huske fra i dag. Lyset man kan høre, sa de gamle i nord.»
+4. **Replikk:** «Og så det siste, det jeg vil at dere skal huske fra i dag. Det man kan høre på himmelen, sa de gamle.»
    - Varighet: 14 s (23 ord)
    - Handling: Holder hånden bak øret, lukker øynene et øyeblikk.
    - Kulde: Svak knitring.
-5. **Replikk:** «Nissene sier det er himmelen som sender brev tilbake: grønt, bølgende, over hele Nordtoppen, og bare når det er mørkt nok. God natt.»
-   - Varighet: 14 s (23 ord)
+5. **Replikk:** «Nissene sier det er himmelen som sender brev tilbake: grønt, bølgende, over fjellene, og bare når det er mørkt nok. God natt.»
+   - Varighet: 13 s (22 ord)
    - Handling: Lar hånden bølge langsomt over hodet, så ned på bordet.
    - Kulde: Svak knitring, klikk.
 
@@ -517,8 +519,8 @@ Kulde-nivå 3 i segment 1–2 (nesten frosset bilde, rim over hele vinduet, lyd 
    - Varighet: 13 s (22 ord)
    - Handling: Tegner en linje over bordet med håndkanten.
    - Kulde: Hakkingen avtar; bildet står nesten stille, men lyden er klar.
-4. **Replikk:** «Brannfolk bygger det samme i skogen når det brenner, bare av det motsatte, og kaller den etter det de kjemper mot.»
-   - Varighet: 13 s (21 ord)
+4. **Replikk:** «De som kjemper mot flammene i skogen, bygger det samme, bare av det motsatte, og kaller den etter det de kjemper mot.»
+   - Varighet: 13 s (22 ord)
    - Handling: Peker på linjen han tegnet, holder blikket der.
    - Kulde: Bildet renser seg ord for ord; på siste ord er det helt rent.
 5. **Replikk:** «Jeg lot ham la én port stå åpen. Inn mot grotten. Med varme i. Kom hjem i kveld, dere tre. Vi er her.»
@@ -625,11 +627,11 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 | 14  | ORIGAMI      | 121 | 60     | 71      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                     |
 | 15  | KARAMELL     | 119 | 60     | 71      | 5     | 26      | 0 %                                | Låst brikke er 26 ord alene; «Han spiste ikke engang det» i segm. 5 |
 | 16  | SORTERING    | 99  | 50     | 58      | 4     | 26      | 0 %                                | Brikken sier «stor S» (låst)                                        |
-| 17  | NORDLYS      | 119 | 60     | 71      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5; «i nord» (låst)                    |
+| 17  | NORDLYS      | 118 | 59     | 70      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5; «i nord» (låst)                    |
 | 18  | TURBULENS    | 120 | 60     | 70      | 5     | 26      | 0 %                                |                                                                     |
 | 19  | GULROT       | 121 | 60     | 72      | 5     | 26      | 0 %                                | Kulde 0; brikke delt over segm. 4–5                                 |
 | 20  | TURBO        | 123 | 62     | 73      | 5     | 26      | 0 %                                | Brikke i segm. 3–4, varsel i segm. 5 (som gåtedok.)                 |
-| 21  | BRANNMUR     | 118 | 59     | 70      | 5     | 26      | 0 %                                | Låst brikke inneholder «Brannfolk»; delt over segm. 3–4             |
+| 21  | BRANNMUR     | 119 | 60     | 70      | 5     | 26      | 0 %                                | Brikke strammet 10. nov; delt over segm. 3–4                        |
 | 22  | LANDÅS       | 118 | 59     | 70      | 5     | 26      | to regler, ingen tall              | Låst brikke (43 ord) delt over segm. 3–5                            |
 | 23  | STJERNEKLART | 121 | 60     | 72      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 3–4                                     |
 | 24  | JULEMAGI     | 124 | 62     | 73      | 5     | 26      | 0 %                                | Låst brikke (50 ord) delt over segm. 3–5                            |

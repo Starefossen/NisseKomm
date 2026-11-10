@@ -19,7 +19,7 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 - [ ] Steg 1b: Bestill og skriv ut fysisk materiell
 - [ ] Steg 1c: Finn nettbutikker for det vi ikke har eller får kjøpt lokalt (budsjett 1000 kr totalt, inkludert frakt; bestill tidlig nok til levering før 25. november)
   - Bare iskrystallet (dag 24) er en mulig nettpost, inntil 250 kr. Let lokalt først. Kandidater: Hadeland Glassverk julepynt (hadeland.com), Hadeland-produkter hos CG.no (frostet glasstre 9,8 cm, 199 kr, 3–5 dager), brukt «Hadeland snøkrystall» på FINN (ca. 100 kr). Siste bestillingsdag 1. desember.
-- [ ] Steg 2: All tekst låst
+- [x] Steg 2: All tekst låst (10. nov)
 - [ ] Steg 3: App-kode
 - [ ] Steg 4: Media produsert
 - [ ] Steg 5: Integrasjon og flytting hjem
@@ -106,3 +106,4 @@ Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxSca
 - [ ] **Bygg:** produksjonsbygg setter ikke `NEXT_PUBLIC_MOCK_*`, `TEST_MODE` eller `STORAGE_BACKEND` (de bakes inn ved bygging).
 - [ ] **Sikkerhetshoder:** flytt fra `vercel.json` til `headers()` i `next.config`.
 - [ ] **Miljø:** `PORT`, `DATABASE_URL`, `KID_CODE`, `PARENT_CODE`, `HOME_STATE_TOKEN`, `NEXT_PUBLIC_URL=https://nissekomm.nissekomm.fn.flaatten.org`.
+- [ ] **Flytt kildekoden til `starefossen/home`:** Etter at `feat/season-2026` er merget og ingen agenter jobber, flyttes repoet inn som `apps/nissekomm` med `git subtree` (historikken beholdes), og dette repoet arkiveres. Hold bygge- og utrullingsoppsett relativt til repoet (ingen absolutte stier), ha `mise.toml` med bygge- og sjekkoppgaver, og hemmeligheter bare fra miljøet.

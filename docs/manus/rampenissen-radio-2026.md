@@ -1,5 +1,7 @@
 # Rampenissen på Morgenrådet 2026 – radioklipp
 
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer.
+
 Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storyboard-2026.md` (§2 kunnskapstidslinje, §3 radiolinjer), `docs/gaater-2026.md`. Format: `varden-morgenradet.md`.
 
 ## Slik brukes klippene
