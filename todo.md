@@ -122,6 +122,13 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [ ] MCP-server
 - [ ] Testoppsett og gjennomspilling
 
+## Senere forbedringer (etter sesongen)
+
+- [ ] **Portkamera for figurer:** et eget, nærmere kamera i gateplan ved porten, så Julius, IQ, Nissemor, Winter og reinsdyrene kan gjøre entré i riktig størrelse. Krever nytt referansebilde og et kamerabytte i Snøfall TV.
+- [ ] **Lengre hendelser:** når videomodellen tillater mer enn 10 sekunder med låst første og siste bilde, kan figurene gå helt inn på torget.
+- [ ] **Flere tilfeldige hendelser og tid på døgnet** for Skjerm (morgen, dag, Lucia, blå brevfugl), jf. avtalen med Varden.
+- [ ] **TypeScript 7** når typescript-eslint støtter det.
+
 ## Fase 5: Flytt til hjemmeklyngen (krav fra Varden, Starefossen/homelab#22)
 
 Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxScale=1` 1. desember–6. januar, 200Mi/512Mi, PostgreSQL (CloudNativePG), CiliumNetworkPolicy, Secret). NisseKomm-repoet er vårt. Varden rører det ikke.
