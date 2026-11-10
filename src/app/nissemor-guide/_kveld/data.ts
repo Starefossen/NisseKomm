@@ -21,7 +21,7 @@ export const DAGER = [
       "3 min for gåten; scenen tar 25 min kvelden 30. november pluss cirka 75 min forarbeid 28.–29. november (se «Dag 1: byggeplan»).",
     minutter: 3,
     materialer:
-      "rødt garn, 6 små klesklyper, maskeringsteip, kortene, runetavla. Scenen: 3 esker klementiner (2,3 kg), 3–4 tomme klementinesker, lyst laken, klesvaskkurv og badehåndkle, avispapir, skoeske kledd i svart med oransje striper (ferdskriveren), C6-konvolutt, fruktskål, banan, 2 servietter, dorullhylse, hårstrikk, 6 gullklistremerker.",
+      "rødt garn, 6 små klesklyper, maskeringsteip, kortene, runetavla. Scenen: 3 esker klementiner (2,3 kg), 3–4 tomme klementinesker, lyst laken, klesvaskkurv og badehåndkle, avispapir, skoeske kledd i svart med oransje striper (ferdskriveren), C6-konvolutt, fruktskål, banan, 2 servietter, dorullhylse, hårstrikk, binders, limstift, tapetkniv, tusj, 6 gullklistremerker.",
     utskrifterTekst:
       "dag01-tradkort.pdf (1 side, tykt papir, tosidig: 6 trådkort med prikker bak + 2 løse kort), runetavle.pdf (1 side, tykt papir), dag01-linjekort.pdf (1 side, tykt: linjekort med passordfelt + konvoluttpåskrift), dag01-frakt.pdf (3 sider, vanlig: fraktetiketter, SKJØRT-merker, stempler), dag01-ferdskriver.pdf (1 side, vanlig: merker og «FORSEGLET»-lapp), dag01-flylogg.pdf (1 side, vanlig: to loggstrimler), operasjonsbrett.pdf (A3, eller 2 × A4 med skjøtemerke, tykt).",
     utskrifter: [
@@ -102,7 +102,8 @@ export const DAGER = [
       "puster på det som ikke er kommet fram, lager regnbue med perlen, skanner hjerte-kortet (symbol 1/9).",
     oppsett: "4 min. Test såpeskrift i november.",
     minutter: 4,
-    materialer: "oppvaskmiddel, q-tips, glassperle, hjerte-kortet.",
+    materialer:
+      "oppvaskmiddel, q-tips, tannkrem, liten konvolutt, glassperle, hjerte-kortet.",
     utskrifterTekst:
       "symbolkort «grønt hjerte» (fra QR-siden). dag03-frostlapp.pdf (1 side, tykt papir: ett kort rettvendt med tegn til konvolutten, ett speilvendt som reserve).",
     utskrifter: ["dag03-frostlapp"],
@@ -138,7 +139,7 @@ export const DAGER = [
     hanna: "teller skoene høyt rundt ringen.",
     oppsett: "5 min (sju sko i ring, sju kort, kosedyr i ring bak).",
     minutter: 5,
-    materialer: "sju sko, kortene.",
+    materialer: "sju sko, 4–6 kosedyr, kortene.",
     utskrifterTekst:
       "dag04-skokort.pdf (1 side, tykt papir, 7 kort, tegn i hjørnet, prikker bak).",
     utskrifter: ["dag04-skokort"],
@@ -220,7 +221,7 @@ export const DAGER = [
       tekst:
         "Har laget snøengler i 1 dl mel i et stekebrett på kjøkkenbordet og ligger midt i den største med mel på nesen. (Helg: større oppsett.)",
       type: "uventet",
-      materialer: "mel (2–3 dl), kjøkkenbord",
+      materialer: "mel (1 dl), stekebrett, kjøkkenbord",
       minutter: 8,
       brikke: "nei (jakt: lommelykt og rull)",
     },
@@ -422,7 +423,7 @@ export const DAGER = [
       "slår på glassene og sier hvilken som ikke synger. Skanner sol-kortet (symbol 4/9).",
     oppsett: "4 min.",
     minutter: 4,
-    materialer: "3 glass, 1 keramikkrus, teskje, kortet, sol-kortet.",
+    materialer: "3 glass, 1 keramikkrus, teskje, teip, kortet, sol-kortet.",
     utskrifterTekst:
       "dag12-frostlapp-tredelt.pdf (1 side, tykt papir, tre biter med klippelinjer pluss én blindsporbit).",
     utskrifter: ["dag12-frostlapp-tredelt"],
@@ -457,7 +458,7 @@ export const DAGER = [
     oppsett: "4 min.",
     minutter: 4,
     materialer:
-      "4 små zip-poser, kanel, gurkemeie, safran, nellik (eller pepper), en lussekatt.",
+      "4 små zip-poser, kanel, gurkemeie, safran, nellik (eller pepper), en lussekatt, serviett.",
     utskrifterTekst: "dag13-krydderkort.pdf (1 side, tykt papir, 4 kort).",
     utskrifter: ["dag13-krydderkort", "dag13-gravskilt"],
     reserve:
@@ -537,7 +538,7 @@ export const DAGER = [
       tekst:
         "Står ved siden av en liten skål sirup, med klissete fotspor av sukker bortover benken og sleiva i hånden.",
       type: "forbudt moro",
-      materialer: "litt sirup, litt sukker, sleiv",
+      materialer: "en skål med litt sirup, sleiv (fotsporene er trykt)",
       minutter: 4,
       brikke: "ja (lappen ved skålene)",
     },
@@ -560,7 +561,8 @@ export const DAGER = [
     hanna: "sier hvor hver ting hører hjemme.",
     oppsett: "4 min utover streken.",
     minutter: 4,
-    materialer: "teip, lappene. Bonus: syltetøyglass, batterilys.",
+    materialer:
+      "teip, lappene, fjernkontroll, tannbørsteglass, brødpose, ostehøvel, brødboks. Bonus: syltetøyglass, batterilys.",
     utskrifterTekst:
       "dag16-sorteringslapper.pdf (1 side, tykt papir, 4 bokstavlapper, 3 tallapper, 1 rutekort).",
     utskrifter: ["dag16-sorteringslapper"],
@@ -595,7 +597,7 @@ export const DAGER = [
     hanna: "drar i sløyfen og slipper Rampenissen fri.",
     oppsett: "4 min (merk båndet, teip kortene, bind).",
     minutter: 4,
-    materialer: "grønt gavebånd, sølvpenn, kortene.",
+    materialer: "grønt gavebånd, sølvpenn, teip, kortene.",
     utskrifterTekst:
       "dag17-baandkort.pdf (1 side, tykt papir, 7 små kort). Valgfri: dag17-losepengebrev.pdf.",
     utskrifter: ["dag17-baandkort", "dag17-losepengebrev"],
@@ -632,7 +634,8 @@ export const DAGER = [
       "teller rosinene i haugene (2, 4, 7, 9) og får Rampenissen løs fra lommen. Skanner sol-kortet (symbol 6/9).",
     oppsett: "4 min.",
     minutter: 4,
-    materialer: "én pose sjokoladerosiner, 4 servietter, kortene.",
+    materialer:
+      "én pose sjokoladerosiner, grått papir eller løper til sporet, 4 servietter, pappas jakke, kortene.",
     utskrifterTekst:
       "dag18-rosinkort.pdf (1 side, tykt papir, 3 bokstavkort, 1 ✱-kort og 1 rutekort).",
     utskrifter: ["dag18-rosinkort"],
@@ -676,7 +679,7 @@ export const DAGER = [
       tekst:
         "Truffet av en gulrot: ligger flat på kjøkkengulvet med et omriss av maskeringsteip rundt seg, et plaster på pannen og gulroten og lappen «BEVIS» pakket inn i aluminiumsfolie ved siden av (åpnes etter koden).",
       type: "uventet",
-      materialer: "maskeringsteip, 1 gulrot ekstra, plaster",
+      materialer: "maskeringsteip, aluminiumsfolie, 1 gulrot ekstra, plaster",
       minutter: 5,
       brikke: "nei (jakt: 3 gulrøtter)",
     },
@@ -714,7 +717,7 @@ export const DAGER = [
       tekst:
         "Har bygd fort av et teppe over to stoler med skiltet «KUN FOR SIGMAS. 6-7.», tatt pappas hodetelefoner og fjernkontrollen, og sitter med en skål popcorn.",
       type: "forbudt moro",
-      materialer: "sofaputer, hodetelefoner, popcorn, lapp",
+      materialer: "teppe, sofaputer, hodetelefoner, popcorn, lapp",
       minutter: 5,
       brikke: "ja (lappen i fortet)",
     },
@@ -1124,15 +1127,15 @@ export const HANDLELISTE = [
         pris: "0",
       },
       {
-        vare: "Mel, sukker, sirup, smør, kanel, nellik",
+        vare: "Mel, sukker, sirup, kanel, nellik",
         mengde: "litt",
-        dager: "6, 13, 15",
+        dager: "2, 6, 13, 15",
         hvor: "hjemme",
         kilde: "hjemme",
         pris: "0",
       },
       {
-        vare: "Banan, servietter, oppvaskmiddel, q-tips",
+        vare: "Banan, servietter, oppvaskmiddel, q-tips, tannkrem",
         mengde: "",
         dager: "1, 3, 13, 14, 18",
         hvor: "hjemme",
@@ -1142,7 +1145,7 @@ export const HANDLELISTE = [
       {
         vare: "Klementiner, 2,3 kg-esker (faste frukter; spises uke 1–2)",
         mengde: "3 esker",
-        dager: "1 (scene), 10, 24",
+        dager: "1 (scene), 24",
         hvor: "lokalt, kjøp 29. nov",
         kilde: "lokalt",
         pris: "210–250 kr",
@@ -1195,7 +1198,7 @@ export const HANDLELISTE = [
       {
         vare: "Sølvpenn",
         mengde: "1",
-        dager: "17, 21",
+        dager: "17",
         hvor: "lokalt",
         kilde: "lokalt",
         pris: "40 kr",
@@ -1235,7 +1238,7 @@ export const HANDLELISTE = [
       {
         vare: "Post-it",
         mengde: "1 blokk",
-        dager: "10 (strek), 21",
+        dager: "10 (strek)",
         hvor: "hjemme eller lokalt",
         kilde: "hjemme",
         pris: "25 kr",
@@ -1257,12 +1260,20 @@ export const HANDLELISTE = [
         pris: "30–40 kr",
       },
       {
-        vare: "Oransje gaffateip 48 mm (ferdskriveren; resten til dag 19); alternativ oransje papir hjemme",
+        vare: "Oransje gaffateip 48 mm (ferdskriveren); alternativ oransje papir hjemme",
         mengde: "1 rull",
-        dager: "1, 19",
+        dager: "1",
         hvor: "lokalt (Clas Ohlson/Biltema/Jula)",
         kilde: "lokalt",
         pris: "50–80 kr (0 med papir)",
+      },
+      {
+        vare: "Grått pakkepapir eller løper, cirka 2 m (rosinsporet)",
+        mengde: "1",
+        dager: "18",
+        hvor: "hjemme eller lokalt (Europris, Clas Ohlson)",
+        kilde: "hjemme",
+        pris: "0–30 kr",
       },
       {
         vare: "Runde gullklistremerker (operasjonsbrettet)",
@@ -1281,7 +1292,7 @@ export const HANDLELISTE = [
         pris: "60 kr lokalt / inntil 250 kr nett",
       },
       {
-        vare: "Rødt garn, små klesklyper, hyssing, teip, magneter, plaster, mobillykt, 3 glass + 1 keramikkrus, syltetøyglass, pappeske, sløyfe, 3 julesokker, papprull, gryte/sleiv/visp/kjevle/øse, ostehøvel, sofaputer i ulik størrelse, teppe, 8 bøker, lyst laken, klesvaskkurv, badehåndkle, skoeske med lokk, C6-konvolutt, hårstrikk, avispapir",
+        vare: "Rødt garn, små klesklyper, hyssing, teip, magneter, plaster, mobillykt, 3 glass + 1 keramikkrus, syltetøyglass, pappeske, sløyfe, 3 julesokker, papprull, gryte/sleiv/visp/kjevle/øse, ostehøvel, sofaputer i ulik størrelse, teppe, 8 bøker, grytelokk, lyst laken, klesvaskkurv, badehåndkle, skoeske med lokk, C6-konvolutt, hårstrikk, avispapir, tusj, vaskbare tusjer, binders, limstift, tapetkniv, liten konvolutt, papp til rødfilteret, stekebrett, dorull, kosedyr, pappas solbriller og hodetelefoner, kunstig blomst, en innpakket gave, frokostpakker, nisselue og votter",
         mengde: "",
         dager: "",
         hvor: "hjemme",
@@ -1292,4 +1303,4 @@ export const HANDLELISTE = [
   },
 ] as const;
 export const HANDLELISTE_SUM =
-  "lokalt cirka 950–1 050 kr (under 1 000 med oransje papir i stedet for teip); nett 0–250 kr";
+  "lokalt cirka 700–1 050 kr, normalt rundt 850 (oransje papir i stedet for teip sparer cirka 65 kr); nett 0–250 kr";
