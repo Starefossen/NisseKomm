@@ -17,6 +17,7 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 - [x] Steg 0: Lås historien (10. nov)
 - [ ] Steg 1: Gåter og praktisk gjennomgang
 - [ ] Steg 1b: Bestill og skriv ut fysisk materiell
+- [ ] Steg 1c: Finn nettbutikker for det vi ikke har eller får kjøpt lokalt (budsjett 1000 kr totalt, inkludert frakt; bestill tidlig nok til levering før 25. november)
 - [ ] Steg 2: All tekst låst
 - [ ] Steg 3: App-kode
 - [ ] Steg 4: Media produsert
