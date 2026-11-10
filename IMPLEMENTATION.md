@@ -230,7 +230,7 @@ Bonusoppdrags balance optional challenge with guaranteed progression. Parents va
 
 One story, **Spøkelseskoden** (`spokelseskoden`), runs through all 24 days. Every quest has `eventyr.id: "spokelseskoden"`; the quest validator rejects unknown ids.
 
-**Data** (`src/data/eventyr.json`): `navn`, `beskrivelse`, `tema`, `første_opplåsingsdag`, `belønning` (badge `snofalls-venn`) and `milepaeler` (days 1, 7, 12, 15, 21, 24), each with `dag`, `navn`, `tekst`.
+**Data** (`src/data/eventyr.json`): `navn`, `beskrivelse`, `første_opplåsingsdag`, `belønning` (badge `snofalls-venn`) and `milepaeler` (days 1, 7, 12, 15, 21, 24), each with `dag`, `navn`, `tekst`.
 
 **Progress**: `getEventyrProgress("spokelseskoden", completedDays)` in `lib/eventyr.ts` returns the percentage of the story's days completed.
 

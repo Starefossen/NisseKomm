@@ -615,7 +615,6 @@ Se [Rampestreker Design](#rampestreker-design-physical-mischief-scenes) for full
 | `tittel`    | string  | Dagens tittel                                   |
 | `hint_type` | string  | Type hint (skrevet, spor, arrangement, visuell) |
 | `hendelse`  | string  | Spesiell hendelse (Lucia, Nobel, etc.)          |
-| `finalized` | boolean | Om innholdet er ferdig gjennomgått              |
 
 ---
 
