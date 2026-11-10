@@ -43,6 +43,7 @@ const KEYS = {
   NICE_LIST_LAST_VIEWED: "nissekomm-nice-list-viewed",
   JULIUS_WATCHED: "nissekomm-julius-watched",
   BREVFUGLER: "nissekomm-brevfugler",
+  FROST_OFF_DAY: "nissekomm-frost-off-day",
 } as const;
 
 // Type-safe storage interface
@@ -815,6 +816,15 @@ export class StorageManager {
 
   static getJuliusWatched(): number[] {
     return this.getItem<number[]>(KEYS.JULIUS_WATCHED, []);
+  }
+
+  /** Day the parent switched frost off (0 = never). Per day so day 10 does not silence day 21. */
+  static getFrostOffDay(): number {
+    return this.getItem<number>(KEYS.FROST_OFF_DAY, 0);
+  }
+
+  static setFrostOffDay(day: number): void {
+    this.setItem(KEYS.FROST_OFF_DAY, day);
   }
 
   static markJuliusWatched(day: number): void {

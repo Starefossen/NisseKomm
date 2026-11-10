@@ -32,6 +32,12 @@ import {
   calculateSigmoidValue,
   getMetricStatus,
 } from "./utils/metric-calculator";
+import {
+  frostLevelFor,
+  frostModeFor,
+  isFrostDay,
+  type FrostMode,
+} from "./frost";
 import { findFileNode } from "./utils/file-tree-utils";
 import {
   getCrisisAlerts,
@@ -368,6 +374,58 @@ export class GameEngine {
 
   static markJuliusVideoWatched(day: number): void {
     StorageManager.markJuliusWatched(day);
+  }
+
+  /** Frostgraden (0–100) for a day, or null on days 1–6 when it is hidden. */
+  static getFrostLevel(day: number = getCurrentDay()): number | null {
+    const quest = ALL_QUESTS.find((q) => q.dag === day);
+    return frostLevelFor(
+      day,
+      this.isQuestCompleted(day),
+      quest ? this.isBonusOppdragCompleted(quest) : false,
+    );
+  }
+
+  static isFrostDay(day: number = getCurrentDay()): boolean {
+    return isFrostDay(day);
+  }
+
+  /** Frost mode right now: level 1 on day 10, 2 on day 21, 0 otherwise or once solved. */
+  static getFrostMode(): FrostMode {
+    const now = getCurrentDate();
+    const day = now.getDate();
+    return frostModeFor({
+      day,
+      month: now.getMonth() + 1,
+      hour: now.getHours(),
+      solved: this.isQuestCompleted(day),
+      disabled: StorageManager.getFrostOffDay() === day,
+    });
+  }
+
+  /** Parent kill switch («Frost av») for today. */
+  static isFrostDisabledToday(): boolean {
+    return StorageManager.getFrostOffDay() === getCurrentDay();
+  }
+
+  static setFrostDisabledToday(disabled: boolean): void {
+    StorageManager.setFrostOffDay(disabled ? getCurrentDay() : 0);
+  }
+
+  /**
+   * Frostrunene learned so far: every letter of a solved word code, plus E and
+   * T from the loose cards on day 1 (gaater-2026, meta 1).
+   */
+  static getLearnedRunes(): Set<string> {
+    const learned = new Set<string>();
+    for (const day of this.getCompletedDays()) {
+      const quest = ALL_QUESTS.find((q) => q.dag === day);
+      for (const ch of quest?.kode.toUpperCase() ?? "") {
+        if (/[A-ZÆØÅ]/.test(ch)) learned.add(ch);
+      }
+      if (day === 1) ["E", "T"].forEach((c) => learned.add(c));
+    }
+    return learned;
   }
 
   static getCompletedDays(): Set<number> {

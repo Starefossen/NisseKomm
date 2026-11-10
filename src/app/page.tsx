@@ -23,6 +23,8 @@ import { NisseKrypto } from "@/components/windows/NisseKrypto";
 import { SymbolScanner } from "@/components/windows/SymbolScanner";
 import { EventyrOversikt } from "@/components/windows/EventyrOversikt";
 import { Dagbok } from "@/components/windows/Dagbok";
+import { RuneTavle } from "@/components/windows/RuneTavle";
+import { FROST_OPEN_WINDOWS } from "@/lib/frost";
 import { GrandFinaleModal } from "@/components/ui/GrandFinaleModal";
 import { BadgeRow } from "@/components/ui/BadgeRow";
 import { NameEntryModal } from "@/components/ui/NameEntryModal";
@@ -80,6 +82,9 @@ export default function Home() {
   const [showNameEntry, setShowNameEntry] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const [thawing, setThawing] = useState(false);
+  const [aurora, setAurora] = useState(false);
+
   const { playSound, playJingle } = useSounds();
 
   const bootDuration = parseInt(
@@ -89,6 +94,13 @@ export default function Home() {
 
   // Update unlocked modules when codes are submitted
   const handleCodeSubmitted = () => {
+    // Day 10/21 thaw and the day 17 northern-light wash (storyboard «Intensitetskurven»)
+    if (frostMode.level > 0 && GameEngine.getFrostMode().level === 0) {
+      setThawing(true);
+    }
+    if (getCurrentDay() === 17 && GameEngine.isQuestCompleted(17)) {
+      setAurora(true);
+    }
     refreshGameState();
 
     // Check if Day 22 just completed and names not yet entered
@@ -171,6 +183,12 @@ export default function Home() {
     : false;
   const bootComplete = bootFinished || effectiveAuthenticated;
 
+  const frostMode = effectiveAuthenticated
+    ? GameEngine.getFrostMode()
+    : { level: 0, message: "" };
+  const isFrozen = (windowId: string) =>
+    frostMode.level === 2 && !FROST_OPEN_WINDOWS.includes(windowId);
+
   // Today's Julius video opens by itself once per visit until it has been watched
   const [autoOpenedDagbok, setAutoOpenedDagbok] = useState(false);
   if (
@@ -224,7 +242,9 @@ export default function Home() {
 
       {/* Main application */}
       {bootComplete && effectiveAuthenticated && (
-        <div className="flex h-full">
+        <div
+          className={`flex h-full ${frostMode.level === 1 ? "frost-colors-leak" : ""}`}
+        >
           {/* Hamburger menu button for mobile */}
           <HamburgerMenu
             isOpen={sidebarOpen}
@@ -290,12 +310,14 @@ export default function Home() {
                       icon="calendar"
                       label="KALENDER"
                       color="gold"
+                      disabled={isFrozen("kalender")}
                       onClick={() => handleIconClick("kalender")}
                     />
                     <DesktopIcon
                       icon="script-text"
                       label="EVENTYR"
                       color="blue"
+                      disabled={isFrozen("eventyr-oversikt")}
                       onClick={() => handleIconClick("eventyr-oversikt")}
                     />
                     <DesktopIcon
@@ -306,9 +328,17 @@ export default function Home() {
                       onClick={() => handleIconClick("dagbok")}
                     />
                     <DesktopIcon
+                      icon="grid"
+                      label="RUNETAVLE"
+                      color="blue"
+                      disabled={isFrozen("runetavle")}
+                      onClick={() => handleIconClick("runetavle")}
+                    />
+                    <DesktopIcon
                       icon="image"
                       label="SNØFALL TV"
                       color="green"
+                      disabled={isFrozen("nordpol_tv")}
                       onClick={() => handleIconClick("nordpol_tv")}
                     />
 
@@ -366,6 +396,7 @@ export default function Home() {
                               icon={unlockedModule.icon}
                               label={unlockedModule.label}
                               color={unlockedModule.color}
+                              disabled={isFrozen(unlockedModule.windowKey)}
                               onClick={() =>
                                 handleIconClick(unlockedModule.windowKey)
                               }
@@ -456,6 +487,9 @@ export default function Home() {
                   {openWindow === "eventyr-oversikt" && (
                     <EventyrOversikt onClose={handleCloseWindow} />
                   )}
+                  {openWindow === "runetavle" && (
+                    <RuneTavle onClose={handleCloseWindow} />
+                  )}
                   {openWindow === "dagbok" && (
                     <Dagbok
                       missions={oppdrag}
@@ -471,6 +505,36 @@ export default function Home() {
             {!openWindow && <BadgeRow />}
           </div>
         </div>
+      )}
+
+      {/* Frost overlays sit above windows but never take clicks */}
+      {bootComplete && effectiveAuthenticated && (
+        <>
+          {frostMode.level === 1 && (
+            <div className="fixed inset-0 pointer-events-none z-60 frost-vhs" />
+          )}
+          {frostMode.level === 2 && (
+            <div className="fixed inset-0 pointer-events-none z-60 frost-edge">
+              {!openWindow && (
+                <div className="absolute inset-x-0 top-1/3 text-center text-2xl text-white/90 px-8">
+                  {frostMode.message}
+                </div>
+              )}
+            </div>
+          )}
+          {thawing && (
+            <div
+              className="fixed inset-0 pointer-events-none z-60 frost-edge frost-thaw"
+              onAnimationEnd={() => setThawing(false)}
+            />
+          )}
+          {aurora && (
+            <div
+              className="fixed inset-0 pointer-events-none z-60 aurora-wash"
+              onAnimationEnd={() => setAurora(false)}
+            />
+          )}
+        </>
       )}
 
       {/* Grand finale modal */}

@@ -93,6 +93,8 @@ const today = getCurrentDate();
 4. **Nice List** (Days 22-24): Name registration → personalized finale message
 5. **Symboler** (Symbol Collection): 9 physical QR cards → 3 NisseKrypto decryption challenges
 
+**Frost (2026)**: `src/lib/frost.ts` holds the Frostgraden table and frost-mode rules (day 10 level 1, day 21 level 2). Use `GameEngine.getFrostLevel()`, `getFrostMode()`, `isFrostDay()`, `getLearnedRunes()`; runes render with `Frostrune`/`RuneText` (`components/ui/Frostrune.tsx`).
+
 📖 **Complete specifications** → [IMPLEMENTATION.md](./IMPLEMENTATION.md)
 
 ## Coding Conventions

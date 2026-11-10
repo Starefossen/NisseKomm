@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { FilNode, Oppdrag } from "@/types/innhold";
+import { FROST_OPEN_FOLDER } from "@/lib/frost";
 import { GameEngine } from "@/lib/game-engine";
 import { resolveTemplate } from "@/lib/template-resolver";
 
@@ -173,10 +174,25 @@ export function NisseNetUtforsker({
     setExpandedFolders(newExpanded);
   };
 
+  // Day 21 (frost level 2): only DEKRYPTERT is readable, the rest is under rime
+  const frozen = GameEngine.getFrostMode().level === 2;
+
   const renderFileTree = (nodes: FilNode[], parentPath = "root", depth = 0) => {
     return nodes.map((node) => {
       const path = `${parentPath}/${node.navn}`;
       const isExpanded = expandedFolders.has(path);
+
+      if (frozen && depth === 0 && node.navn !== FROST_OPEN_FOLDER) {
+        return (
+          <div
+            key={path}
+            className="py-1 px-2 text-(--cold-blue)/50"
+            style={{ paddingLeft: `${depth * 16 + 8}px` }}
+          >
+            ❄ {node.navn} (FROSSET)
+          </div>
+        );
+      }
 
       if (node.type === "mappe") {
         return (

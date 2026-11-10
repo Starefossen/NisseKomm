@@ -656,3 +656,120 @@ body:has(.crt-frame-container) {
     }
   }
 }
+
+/* Frost mode (historie-2026 §6) */
+@keyframes frost-glimpse {
+  0%,
+  86%,
+  100% {
+    filter: grayscale(1);
+  }
+  88% {
+    filter: grayscale(0.2) sepia(0.6) hue-rotate(-50deg) saturate(3);
+  }
+  93% {
+    filter: grayscale(0.2) sepia(0.6) hue-rotate(60deg) saturate(3);
+  }
+}
+
+@keyframes vhs-roll {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 120px;
+  }
+}
+
+@keyframes frost-thaw {
+  0% {
+    opacity: 1;
+    filter: grayscale(1);
+  }
+  60% {
+    opacity: 0.6;
+    background-color: rgba(255, 215, 0, 0.15);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes aurora-wash {
+  0% {
+    opacity: 0;
+    transform: translateX(-30%);
+  }
+  30% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(30%);
+  }
+}
+
+@keyframes frost-tick {
+  0%,
+  100% {
+    color: inherit;
+  }
+  50% {
+    color: var(--cold-blue);
+    text-shadow: 0 0 8px var(--cold-blue);
+  }
+}
+
+.frost-colors-leak {
+  filter: grayscale(1);
+  animation: frost-glimpse 7s steps(1) infinite;
+}
+
+.frost-vhs {
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 3px,
+    rgba(255, 255, 255, 0.06) 3px 4px,
+    transparent 4px 40px,
+    rgba(255, 255, 255, 0.1) 40px 44px
+  );
+  animation: vhs-roll 3s linear infinite;
+}
+
+.frost-edge {
+  box-shadow:
+    inset 0 0 60px 20px rgba(220, 240, 255, 0.55),
+    inset 0 0 160px 40px rgba(180, 220, 255, 0.25);
+}
+
+.frost-thaw {
+  animation: frost-thaw 3s ease-out forwards;
+}
+
+.aurora-wash {
+  background: linear-gradient(
+    100deg,
+    transparent 10%,
+    rgba(0, 255, 120, 0.35) 35%,
+    rgba(0, 221, 255, 0.25) 55%,
+    rgba(0, 255, 120, 0.3) 70%,
+    transparent 90%
+  );
+  animation: aurora-wash 6s ease-in-out forwards;
+}
+
+.frost-tick {
+  animation: frost-tick 0.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frost-colors-leak,
+  .frost-vhs,
+  .frost-tick {
+    animation: none;
+  }
+  .frost-thaw,
+  .aurora-wash {
+    animation-duration: 0.01s;
+  }
+}

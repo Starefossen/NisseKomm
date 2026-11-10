@@ -1,157 +1,79 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SidebarWidget } from "../ui/SidebarWidget";
 import { StatusBar } from "../ui/StatusBar";
 import { LEDIndicator } from "../ui/LEDIndicator";
-import { Icons } from "@/lib/icons";
-import { SystemMetrikk } from "@/types/innhold";
 import { GameEngine } from "@/lib/game-engine";
 
 interface SystemStatusProps {
-  currentDay?: number; // Optional: to trigger refresh on day change
+  currentDay: number;
 }
 
+/** Sidebar: Frostgraden only (historie-2026 §1, storyboard H1). */
 export function SystemStatus({ currentDay }: SystemStatusProps) {
-  const [dynamicMetrics, setDynamicMetrics] = useState<SystemMetrikk[]>(() => {
-    if (typeof window !== "undefined") {
-      return GameEngine.getProgressiveMetrics(currentDay || 1);
-    }
-    return [];
-  });
+  const frost = GameEngine.getFrostLevel(currentDay);
+  const solved = GameEngine.isQuestCompleted(currentDay);
+  const [shown, setShown] = useState(frost);
 
-  const [previousMetrics, setPreviousMetrics] = useState<SystemMetrikk[]>([]);
-  const [improvingMetrics, setImprovingMetrics] = useState<Set<string>>(
-    new Set(),
-  );
-
-  const [criticalStatus, setCriticalStatus] = useState<{
-    text: string;
-    hasIssue: boolean;
-    ledColor: "red" | "yellow" | "green";
-  }>(() => {
-    if (typeof window !== "undefined") {
-      const merged = GameEngine.getProgressiveMetrics(currentDay || 1);
-      const hasKritisk = merged.some((m) => m.status === "kritisk");
-      const hasAdvarsel = merged.some((m) => m.status === "advarsel");
-
-      if (hasKritisk) {
-        const kritiskMetric = merged.find((m) => m.status === "kritisk");
-        return {
-          text: `${kritiskMetric?.navn}: KRITISK`,
-          hasIssue: true,
-          ledColor: "red",
-        };
-      } else if (hasAdvarsel) {
-        const advarselMetric = merged.find((m) => m.status === "advarsel");
-        return {
-          text: `${advarselMetric?.navn}: USTABIL`,
-          hasIssue: true,
-          ledColor: "yellow",
-        };
-      }
-    }
-    return {
-      text: "ALLE SYSTEMER OPERATIONAL",
-      hasIssue: false,
-      ledColor: "green",
-    };
-  });
-
+  // Count down one point at a time so a solved code is felt, not just seen
   useEffect(() => {
-    // Refresh metrics when day changes - use requestAnimationFrame to defer setState
-    if (typeof window !== "undefined") {
-      requestAnimationFrame(() => {
-        const merged = GameEngine.getProgressiveMetrics(currentDay || 1);
-
-        // Detect improvements (>10 point increase)
-        const improving = new Set<string>();
-        merged.forEach((metric) => {
-          const previous = previousMetrics.find((p) => p.navn === metric.navn);
-          if (previous && metric.verdi - previous.verdi > 10) {
-            improving.add(metric.navn);
-            // Clear improving state after animation
-            setTimeout(() => {
-              setImprovingMetrics((prev) => {
-                const next = new Set(prev);
-                next.delete(metric.navn);
-                return next;
-              });
-            }, 2000);
-          }
-        });
-        setImprovingMetrics(improving);
-
-        setPreviousMetrics(dynamicMetrics);
-        setDynamicMetrics(merged);
-
-        const hasKritisk = merged.some((m) => m.status === "kritisk");
-        const hasAdvarsel = merged.some((m) => m.status === "advarsel");
-
-        if (hasKritisk) {
-          const kritiskMetric = merged.find((m) => m.status === "kritisk");
-          setCriticalStatus({
-            text: `${kritiskMetric?.navn}: KRITISK`,
-            hasIssue: true,
-            ledColor: "red",
-          });
-        } else if (hasAdvarsel) {
-          const advarselMetric = merged.find((m) => m.status === "advarsel");
-          setCriticalStatus({
-            text: `${advarselMetric?.navn}: USTABIL`,
-            hasIssue: true,
-            ledColor: "yellow",
-          });
-        } else {
-          setCriticalStatus({
-            text: "ALLE SYSTEMER OPERATIONAL",
-            hasIssue: false,
-            ledColor: "green",
-          });
-        }
-      });
+    if (frost === null || shown === null || shown <= frost) {
+      if (shown !== frost) {
+        const t = setTimeout(() => setShown(frost), 0);
+        return () => clearTimeout(t);
+      }
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentDay]); // Only run when day changes, not on mount
+    const t = setTimeout(() => setShown(shown - 1), 60);
+    return () => clearTimeout(t);
+  }, [frost, shown]);
+
+  if (frost === null || shown === null) {
+    return (
+      <SidebarWidget title="SERVERROM">
+        <div className="flex items-center gap-2 text-xs">
+          <LEDIndicator color="green" blinking />
+          <span>ORAKELET LYTTER ...</span>
+        </div>
+      </SidebarWidget>
+    );
+  }
+
+  const ticking = shown > frost;
+  const warning = currentDay === 20 && !solved;
+  const status = shown >= 70 ? "kritisk" : shown >= 45 ? "advarsel" : "normal";
 
   return (
-    <SidebarWidget title="SYSTEMSTATUS">
-      <div
-        className={`space-y-4 ${criticalStatus.hasIssue && criticalStatus.ledColor === "red" ? "animate-crt-shake" : ""}`}
-      >
-        {/* Status indicator */}
-        <div className="flex items-center gap-2 pb-3 border-b-2 border-(--neon-green)/30">
-          <LEDIndicator
-            color={criticalStatus.ledColor}
-            blinking={criticalStatus.hasIssue}
-          />
-          <span className="text-xs">{criticalStatus.text}</span>
-          {criticalStatus.hasIssue && <Icons.Warning size={16} color="red" />}
+    <SidebarWidget title="FROSTGRADEN">
+      <div className="space-y-3">
+        <div
+          className={`text-5xl text-center tabular-nums ${ticking ? "frost-tick" : ""} ${warning ? "animate-pulse" : ""}`}
+          aria-live="polite"
+        >
+          {frost === 0 ? "TØVÆR" : `${shown} %`}
         </div>
-
-        {/* Metrics */}
-        <div className="space-y-3">
-          {dynamicMetrics.map((metric, index) => (
-            <div
-              key={index}
-              className={
-                improvingMetrics.has(metric.navn) ? "animate-pulse" : ""
-              }
-            >
-              <StatusBar
-                label={metric.navn}
-                value={metric.verdi}
-                max={metric.maks}
-                status={metric.status}
+        <StatusBar label="FROST" value={shown} max={100} status={status} />
+        {currentDay === 21 && solved && (
+          <div className="text-center text-(--gold)">
+            <svg viewBox="0 0 40 30" className="w-16 h-12 mx-auto" aria-hidden>
+              <path
+                d="M4 28 V8 L12 4 V28 M36 28 V8 L28 4 V28"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
               />
-            </div>
-          ))}
-        </div>
-
-        {/* Bottom indicator */}
+              <path d="M14 28 V10 H26 V28" fill="currentColor" opacity="0.3" />
+            </svg>
+            <div className="text-xs">PORTEN STÅR ÅPEN</div>
+          </div>
+        )}
         <div className="flex items-center justify-between pt-3 border-t-2 border-(--neon-green)/30 text-xs">
-          <span>ENISSEKJERNE 3.8]</span>
-          <LEDIndicator color="green" blinking />
+          <span>{solved ? "LINJEN VARMES" : "FROSTEN STIGER"}</span>
+          <LEDIndicator
+            color={status === "kritisk" ? "red" : solved ? "green" : "yellow"}
+            blinking
+          />
         </div>
       </div>
     </SidebarWidget>
