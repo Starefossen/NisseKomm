@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # tv-loops.sh: make all Snøfall TV loops from the reference stills and prompt files.
-# Skips loops that already exist in public/video/tv. Usage: assets/bin/tv-loops.sh
+# Skips loops that already exist in public/video/tv. Usage: assets/bin/tv-loops.sh [--upload <base-url>]
 set -uo pipefail
 A="$(cd "$(dirname "$0")/.." && pwd)"; L="$A/locations"; T="$A/../public/video/tv"; mkdir -p "$T"
 job() { # name base-image location variant
@@ -27,3 +27,18 @@ job kontor-dag14       "$L/julius-kontor/vidvinkel-tom.jpg"  julius-kontor dag14
 job landsby-storm      "$L/snofall-landsby/ramme-rolig.jpg"  snofall-landsby storm
 job landsby-dag24      "$L/snofall-landsby/ramme-nordlys.jpg" snofall-landsby dag24
 ls "$T"
+# --upload <base-url>: PUT every loop with NISSEKOMM_UPLOAD_TOKEN, then check sizes via GET /api/media.
+if [ "${1:-}" = "--upload" ]; then
+  B="${2%/}"; H="Authorization: Bearer $NISSEKOMM_UPLOAD_TOKEN"
+  for f in "$T"/*.mp4; do
+    curl -fsS -X PUT -H "$H" -H "Content-Type: video/mp4" --data-binary "@$f" "$B/api/media/video/tv/$(basename "$f")" >/dev/null \
+      || echo "feil: $(basename "$f")"
+  done
+  curl -fsS -H "$H" "$B/api/media" | python3 -c '
+import json, os, sys
+d = {m["path"]: m["size"] for m in json.load(sys.stdin)}
+bad = [f for f in os.listdir(sys.argv[1]) if f.endswith(".mp4")
+       and d.get("video/tv/" + f) != os.path.getsize(os.path.join(sys.argv[1], f))]
+print("verifisert" if not bad else "feil størrelse: " + " ".join(bad))
+sys.exit(1 if bad else 0)' "$T"
+fi

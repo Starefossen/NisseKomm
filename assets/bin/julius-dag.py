@@ -170,14 +170,29 @@ def main():
 
 
 def upload(base: str, f: Path):
-    """PUT the finished video to a lan-mode NisseKomm (e.g. http://nissekomm.lan)."""
+    """PUT the finished video to a lan-mode NisseKomm (e.g. http://nissekomm.lan).
+
+    Needs NISSEKOMM_UPLOAD_TOKEN: a parent-level MCP token (locally the parent
+    half of MCP_DEV_TOKEN). Checks the stored size via GET /api/media."""
+    import json
+    import os
     import urllib.request
 
-    # TODO(T4): send the parent session cookie once the API requires it.
-    url = f"{base.rstrip('/')}/api/media/video/julius/{f.name}"
-    req = urllib.request.Request(url, data=f.read_bytes(), method="PUT", headers={"Content-Type": "video/mp4"})
+    auth = {"Authorization": f"Bearer {os.environ['NISSEKOMM_UPLOAD_TOKEN']}"}
+    rel = f"video/julius/{f.name}"
+    base = base.rstrip("/")
+    data = f.read_bytes()
+    req = urllib.request.Request(
+        f"{base}/api/media/{rel}", data=data, method="PUT",
+        headers={**auth, "Content-Type": "video/mp4"},
+    )
     with urllib.request.urlopen(req) as r:
-        print(f"lastet opp til {url} ({r.status})")
+        print(f"lastet opp {rel} ({r.status})")
+    with urllib.request.urlopen(urllib.request.Request(f"{base}/api/media", headers=auth)) as r:
+        size = next((m["size"] for m in json.load(r) if m["path"] == rel), None)
+    if size != len(data):
+        sys.exit(f"feil størrelse på serveren: {size} != {len(data)}")
+    print(f"verifisert {rel}: {size} bytes")
 
 
 if __name__ == "__main__":

@@ -1,13 +1,13 @@
-import { uploadMedia } from "@/lib/media-server";
+import type { NextRequest } from "next/server";
+import { authorizeMedia, uploadMedia } from "@/lib/media-server";
 
-// TODO(T4): require the parent session here once T4 is merged.
 export async function PUT(
-  req: Request,
+  req: NextRequest,
   { params }: { params: Promise<{ path: string[] }> },
 ) {
-  return uploadMedia(
-    (await params).path,
-    req.headers.get("content-type"),
-    await req.arrayBuffer(),
+  const parts = (await params).path;
+  return (
+    (await authorizeMedia(req, parts.join("/").normalize("NFC"))) ??
+    uploadMedia(parts, req.headers.get("content-type"), await req.arrayBuffer())
   );
 }

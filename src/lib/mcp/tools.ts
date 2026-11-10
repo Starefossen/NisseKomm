@@ -16,6 +16,7 @@ import { getAllOppdrag } from "@/lib/oppdrag";
 import { getCurrentDate } from "@/lib/date-utils";
 import { FROST_UNTIL_HOUR, frostModeFor } from "@/lib/frost";
 import { STATE_KEYS, getStore } from "@/lib/db";
+import { createUploadTicket, mediaStatus } from "@/lib/media-server";
 import type { Level } from "./auth";
 
 type State = Record<string, unknown>;
@@ -245,6 +246,35 @@ export const TOOLS: Record<string, Tool> = {
       const next = (typeof offset === "number" ? offset : 0) + 1;
       await getStore().putState("day-offset", next);
       return { day_offset: next };
+    },
+  },
+  list_assets: {
+    level: "read",
+    description:
+      "Mediefilene i manifestet med størrelse, eller null om de mangler.",
+    inputSchema: { type: "object", properties: {} },
+    run: async () =>
+      (await mediaStatus()).map((m) => ({
+        ...m,
+        status: m.size === null ? "missing" : "present",
+      })),
+  },
+  upload_asset: {
+    level: "parent",
+    description:
+      "Gir en engangs opplastings-URL (10 min) for én manifestfil. Last opp med PUT og riktig Content-Type.",
+    inputSchema: {
+      type: "object",
+      properties: { path: { type: "string" } },
+    },
+    run: async ({ path }) => {
+      const p = String(path ?? "").normalize("NFC");
+      const ticket = await createUploadTicket(p);
+      return {
+        method: "PUT",
+        url: `/api/media/${p}?ticket=${ticket}`,
+        expires_in_s: 600,
+      };
     },
   },
   reset: {

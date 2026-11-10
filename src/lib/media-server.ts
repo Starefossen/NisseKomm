@@ -1,8 +1,14 @@
+import { createHash, randomBytes } from "node:crypto";
 import { createReadStream } from "node:fs";
 import { mkdir, rename, stat, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { Readable } from "node:stream";
+import type { NextRequest } from "next/server";
 import { MEDIA_MANIFEST, mediaPath, type MediaStatus } from "./media";
+import { isLanMode } from "./mode";
+import { getRole } from "./auth";
+import { authenticate } from "./mcp/auth";
+import { getStore } from "./db";
 
 const MB = 1024 * 1024;
 
@@ -22,9 +28,60 @@ export function mediaDir(): string {
     : "/data/media";
 }
 
-// TODO(T4): replace with T4's parent-session check once it is merged.
-export function isLanMode(): boolean {
-  return process.env.NISSEKOMM_MODE === "lan";
+const TICKET_MS = 10 * 60 * 1000;
+const ticketKey = (t: string) =>
+  `upload-ticket:${createHash("sha256").update(t).digest("hex")}`;
+
+const isManifestPath = (rel: string) =>
+  MEDIA_MANIFEST.some((entry) => mediaPath(entry) === rel);
+
+/** Single-use upload ticket for one manifest path, valid 10 minutes. */
+export async function createUploadTicket(rel: string): Promise<string> {
+  if (!isManifestPath(rel)) throw new Error(`Ukjent fil: ${rel}`);
+  const ticket = randomBytes(24).toString("base64url");
+  await getStore().putState(ticketKey(ticket), {
+    path: rel,
+    expires: Date.now() + TICKET_MS,
+  });
+  return ticket;
+}
+
+// ponytail: read-then-null is not atomic; two PUTs racing within ms could
+// both pass. Add a Store.takeTicket (DELETE … RETURNING) if that matters.
+async function redeemTicket(ticket: string, rel: string): Promise<boolean> {
+  const store = getStore();
+  const key = ticketKey(ticket);
+  const t = (await store.getState())[key] as
+    { path: string; expires: number } | null | undefined;
+  if (!t) return false;
+  await store.putState(key, null);
+  return t.path === rel && t.expires > Date.now();
+}
+
+const forbidden = () => new Response("Krever forelder", { status: 403 });
+const unauthorized = () => new Response("Ikke innlogget", { status: 401 });
+
+/**
+ * Parent cookie, parent Bearer (MCP auth) or, with `rel` (PUT), a ticket
+ * bound to that path. Returns an error Response, or null when allowed.
+ */
+export async function authorizeMedia(
+  req: NextRequest,
+  rel?: string,
+): Promise<Response | null> {
+  if (!isLanMode()) return new Response("Ikke funnet", { status: 404 });
+  const ticket = req.nextUrl.searchParams.get("ticket");
+  if (ticket && rel !== undefined) {
+    return (await redeemTicket(ticket, rel)) ? null : forbidden();
+  }
+  if (req.headers.get("authorization")) {
+    const caller = await authenticate(req);
+    if (!caller) return unauthorized();
+    return caller.level === "parent" ? null : forbidden();
+  }
+  const role = await getRole(req);
+  if (!role) return unauthorized();
+  return role === "parent" ? null : forbidden();
 }
 
 /** Absolute path inside MEDIA_DIR, or null if the path escapes it or has an unknown type. */
@@ -103,7 +160,7 @@ export async function uploadMedia(
   if (!isLanMode()) return new Response("Ikke funnet", { status: 404 });
   const rel = parts.join("/").normalize("NFC");
   const abs = resolveMedia(parts, dir);
-  if (!abs || !MEDIA_MANIFEST.some((entry) => mediaPath(entry) === rel)) {
+  if (!abs || !isManifestPath(rel)) {
     return new Response("Ukjent fil", { status: 400 });
   }
   const rule = MEDIA_TYPES[path.extname(abs).toLowerCase()];
