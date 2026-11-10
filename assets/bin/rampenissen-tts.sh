@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # rampenissen-tts.sh <dag> [stemme]: Rampenissen's radio clip from the locked script, via Gemini TTS.
-# Writes public/audio/rampenissen/dag-NN.mp3. Default voice: Puck (chosen 10 Nov after comparing Puck, Fenrir, Zephyr).
+# Writes public/audio/rampenissen/dag-NN.mp3. Default voice: Fenrir (Hans chose it 10 Nov).
 set -euo pipefail
 source "$(dirname "$0")/_key.sh"
-D=$1; V=${2:-Puck}; O="$ROOT/public/audio/rampenissen"; T="$ROOT/assets/out/rampenissen"; mkdir -p "$O" "$T"
+D=$1; V=${2:-Fenrir}; O="$ROOT/public/audio/rampenissen"; T="$ROOT/assets/out/rampenissen"; mkdir -p "$O" "$T"
 text=$(awk "/^## Dag $D /{p=1} /^## Dag $((D+1)) /{p=0} p" "$ROOT/docs/manus/rampenissen-radio-2026.md" | grep '^\*\*Klipp:\*\*' | sed 's/^\*\*Klipp:\*\* «//; s/»$//')
 [ -n "$text" ] || { echo "Fant ikke klipp for dag $D"; exit 1; }
 jq -n --arg t "Les dette som Rampenissen: en fjollete, rask og litt andpusten nisse med lys stemme, på norsk bokmål med østlandsk tone. Han er ivrig og litt skyldbevisst, ler kort innimellom. Les nøyaktig teksten, ingenting annet: $text" --arg v "$V" \
