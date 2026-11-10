@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { setSessionId } from "@/lib/auth-cookies";
 import { mediaUrl } from "@/lib/media";
 
@@ -17,12 +17,57 @@ const errorMessages = [
   "ADVARSEL: SIKKERHETSBRUDD REGISTRERT",
 ];
 
+/** Words in a typed or pasted code; a trailing separator yields a final "". */
+export function splitCode(value: string): string[] {
+  return value.trimStart().split(/[\s-]+/);
+}
+
+/** auth.ts normalizeCode treats spaces as the separator, so old codes still match. */
+export function joinCode(words: string[]): string {
+  return words.map((w) => w.trim()).join(" ");
+}
+
 export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
-  const [code, setCode] = useState("");
+  const [words, setWords] = useState(["", "", ""]);
+  const refs = useRef<(HTMLInputElement | null)[]>([]);
+
+  const handleChange = (i: number, value: string) => {
+    const parts = splitCode(value);
+    const next = [...words];
+    if (parts.length === 1) {
+      next[i] = parts[0];
+      setWords(next);
+      return;
+    }
+    // A whole pasted code fills from field 1; otherwise a space or «-» moves on
+    const start = parts.filter(Boolean).length >= 3 ? 0 : i;
+    let j = start;
+    for (const part of parts.filter(Boolean)) {
+      if (j > 2) break;
+      next[j++] = part;
+    }
+    setWords(next);
+    refs.current[Math.min(Math.max(j, i + 1), 2)]?.focus();
+  };
+
+  const handleKeyDown = (
+    i: number,
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (e.key === "Backspace" && words[i] === "" && i > 0) {
+      e.preventDefault();
+      refs.current[i - 1]?.focus();
+    }
+  };
   const [attemptCount, setAttemptCount] = useState(0);
   const [error, setError] = useState("");
   const [isShaking, setIsShaking] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Inputs are disabled while checking, so focus can only return once they are enabled
+  useEffect(() => {
+    if (!isLoading && error) refs.current[0]?.focus();
+  }, [isLoading, error]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +79,7 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
+        body: JSON.stringify({ code: joinCode(words) }),
       });
 
       const data = await response.json();
@@ -58,8 +103,7 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
         setIsShaking(true);
         setTimeout(() => setIsShaking(false), 300);
 
-        // Clear code
-        setCode("");
+        setWords(["", "", ""]);
       } else {
         setSessionId(data.kidCode);
         onSuccess(data.kidCode);
@@ -92,18 +136,33 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
 
         {/* Code form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="relative">
-            <input
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="w-full px-4 py-3 bg-(--crt-bg) border-2 border-(--brass) text-(--cold-blue) text-2xl tracking-widest font-retro focus:outline-none focus:shadow-[0_0_20px_color-mix(in_oklab,var(--brass)_50%,transparent)] uppercase"
-              autoComplete="off"
-              placeholder="_ _ _ _ _ _ _ _"
-              autoFocus
-              disabled={isLoading}
-              style={{ caretColor: "var(--cold-blue)" }}
-            />
+          <div className="flex items-center gap-2">
+            {words.map((word, i) => (
+              <div key={i} className="contents">
+                {i > 0 && (
+                  <span className="text-(--brass) text-2xl font-retro">-</span>
+                )}
+                <input
+                  ref={(el) => {
+                    refs.current[i] = el;
+                  }}
+                  type="text"
+                  value={word}
+                  onChange={(e) => handleChange(i, e.target.value)}
+                  onKeyDown={(e) => handleKeyDown(i, e)}
+                  aria-label={`Ord ${i + 1} av 3`}
+                  className="min-w-0 flex-1 min-h-12 px-2 py-3 bg-(--crt-bg) border-2 border-(--brass) text-(--cold-blue) text-2xl text-center tracking-widest font-retro focus:outline-none focus:shadow-[0_0_20px_color-mix(in_oklab,var(--brass)_50%,transparent)] uppercase"
+                  autoComplete="off"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  placeholder="_ _ _"
+                  autoFocus={i === 0}
+                  disabled={isLoading}
+                  style={{ caretColor: "var(--cold-blue)" }}
+                />
+              </div>
+            ))}
           </div>
 
           <button
