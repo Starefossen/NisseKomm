@@ -94,7 +94,7 @@ Etter at koden er inne, låses to–tre setninger «PS fra Julius» opp under vi
 
 ### 3.6 Barnas faste roller
 
-Hanna har hver dag én ting bare hun gjør (symbolkort, rødfilter, form i lyset, sortere ekte og falske). Håkon henter, krabber, teller, brettes, spiller. Kristian slår opp, regner, ser videoen med de andre og taster. Ingen av dem kommer i mål alene, og ingen må lese lange tekster.
+Gåtene er for de to eldste (revidert 10. november: fjorårets var for lette). Håkon henter, krabber, teller, sorterer og bretter. Kristian slår opp, dekoder, regner, ser videoen med de andre og taster; han trenger 5–15 minutter ekte tenking på hverdager, mer i helgene og på milepælene. Håkon kommer ikke i mål uten Kristian, og ingen må lese lange tekster. Hanna er med gjennom rampestreken, symbolkortene (som ritual, ikke steg), radioen, historien og videoene. Hver dag har én valgfri «Hanna, hvis du vil»-rolle som aldri blokkerer; Håkon eller Kristian kan alltid gjøre det samme. Detaljer i `gaater-2026.md`.
 
 ### 3.6b Tre regler fra storyboardet
 
@@ -189,7 +189,7 @@ To flater, samme tilstand: NisseKomm-appen og Skjerm (kjøkken og gang). Skjerm 
 
 **Skjerm, begge dager.** Rimkant som vokser inn fra hjørnene, dempet gråtone over bakgrunn og pynt, og Kuldes linje nederst i rolig, liten skrift. Vær, timeplan, kalender og radiokortet beholder farge og kontrast og ligger øverst; radio autoplay går som vanlig. Ingen blinking, ingen lyd. Dag 10 (nivå 1) svak rimkant, dag 21 (nivå 2) tett rim og linjen «Det er kaldt her nede. Jeg ville bare se lyset deres. 94 %». Når `solved_today` blir sann: rimen trekker seg tilbake over tre sekunder, et kort gyllent skjær, og kortet «Fargene er tilbake» i 30 minutter.
 
-**NisseKomm-appen.** Dag 10 «fargene lekker»: fargeløst med korte glimt av rødt og grønt, VHS-striper, Kuldes spøkelsesbilde på alle TV-kanaler med «KROMATISK DRENERING 71 %». Dag 21 «fryst»: rimkant, Kuldes linje midt på, bare NisseMail, Dagbok/Kanal 3 (videoen) og KodeTerminal åpne, resten dekket av rim. Ved riktig kode: tøvær kanal for kanal, Frostgraden faller, dag 21 tegner den åpne porten i sidepanelet.
+**NisseKomm-appen.** Dag 10 «fargene lekker»: fargeløst med korte glimt av rødt og grønt, VHS-striper, Kuldes spøkelsesbilde på alle TV-kanaler med «KROMATISK DRENERING 71 %». Dag 21 «fryst»: rimkant, Kuldes linje midt på, bare NisseMail, Dagbok/Kanal 3 (videoen), KodeTerminal og `DEKRYPTERT`-mappen i NisseNet åpne (Trixters kart fra dag 18 er porten, se gåtedokumentets meta 2), resten dekket av rim. Ved riktig kode: tøvær kanal for kanal, Frostgraden faller, dag 21 tegner den åpne porten i sidepanelet.
 
 **iMac-ene (dag 20).** Søndag før solverv, familien hjemme: `screen_grayscale on` kl. 09:00 med melding fra Rampenissen, `off` kl. 12:00 uansett. Det er Kuldes første skritt inn i huset, og gir mandag morgen en forhistorie. Ikke brukt dag 10 og 21.
 
