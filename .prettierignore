@@ -16,3 +16,7 @@ coverage
 
 # Generated files
 *.log
+
+# generated media work files
+assets/out/
+assets/locations/**/*.json
