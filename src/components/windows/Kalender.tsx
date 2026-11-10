@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { RetroModal } from "../ui/RetroModal";
 import { Icons } from "@/lib/icons";
@@ -22,35 +22,9 @@ export function Kalender({
   onSelectDay,
 }: KalenderProps) {
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const [completedDays, setCompletedDays] = useState<Set<number>>(() => {
-    if (typeof window !== "undefined") {
-      return GameEngine.getCompletedDays();
-    }
-    return new Set();
-  });
-
-  // Refresh completed days when window regains focus or on mount
-  useEffect(() => {
-    const updateCompletedDays = () => {
-      if (typeof window !== "undefined") {
-        setCompletedDays(GameEngine.getCompletedDays());
-      }
-    };
-
-    // Update on mount
-    updateCompletedDays();
-
-    // Update when window regains focus (e.g., after closing KodeTerminal)
-    window.addEventListener("focus", updateCompletedDays);
-
-    // Also poll every 2 seconds while calendar is open
-    const interval = setInterval(updateCompletedDays, 2000);
-
-    return () => {
-      window.removeEventListener("focus", updateCompletedDays);
-      clearInterval(interval);
-    };
-  }, [missions]);
+  // Only one window is open at a time, so a code submitted in KodeTerminal
+  // shows up here on the next open; no polling needed.
+  const [completedDays] = useState(() => GameEngine.getCompletedDays());
 
   /**
    * Get hendelse for a specific day

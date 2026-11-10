@@ -98,7 +98,7 @@ export function channelEffects(
     flicker: day === 20,
     frozen,
     warm: day >= 24 || (day === 21 && solved && onKulde && !frozen),
-    signature: day === 7,
+    signature: day === 7 && solved,
     ghostLine: frozen
       ? "DET ER KALDT HER NEDE"
       : onKulde

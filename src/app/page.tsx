@@ -30,6 +30,7 @@ import { BadgeRow } from "@/components/ui/BadgeRow";
 import { NameEntryModal } from "@/components/ui/NameEntryModal";
 import { HamburgerMenu } from "@/components/ui/HamburgerMenu";
 import { GameEngine } from "@/lib/game-engine";
+import { useHourTick } from "@/lib/use-clock";
 import {
   getCurrentDay,
   isCalendarActive as isDateCalendarActive,
@@ -85,6 +86,8 @@ export default function Home() {
   const [aurora, setAurora] = useState(false);
 
   const { playSound, playJingle } = useSounds();
+
+  useHourTick(refreshGameState);
 
   const bootDuration = parseInt(
     process.env.NEXT_PUBLIC_BOOT_ANIMATION_DURATION || "2",
@@ -185,15 +188,15 @@ export default function Home() {
   const isFrozen = (windowId: string) =>
     frostMode.level === 2 && !FROST_OPEN_WINDOWS.includes(windowId);
 
-  // Today's Julius video opens by itself once per visit until it has been watched
-  const [autoOpenedDagbok, setAutoOpenedDagbok] = useState(false);
+  // Today's Julius video opens by itself once per visit and day until it has been watched
+  const [autoOpenedDay, setAutoOpenedDay] = useState(0);
   if (
-    !autoOpenedDagbok &&
+    autoOpenedDay !== getCurrentDay() &&
     bootComplete &&
     effectiveAuthenticated &&
     !isInitializing
   ) {
-    setAutoOpenedDagbok(true);
+    setAutoOpenedDay(getCurrentDay());
     if (!GameEngine.isJuliusVideoWatched(getCurrentDay())) {
       setOpenWindow("dagbok");
     }

@@ -58,14 +58,8 @@ export function convertDailyAlerts(
 }
 
 /**
- * Sort alerts by priority and day
- *
- * PRIORITY ORDER:
- * 1. kritisk (red, critical issues)
- * 2. advarsel (gold, warnings)
- * 3. info (green, general information)
- *
- * Within same priority, sorts by day (newest first).
+ * Sort alerts newest day first, then by priority (kritisk > advarsel > info).
+ * Day first, so a pile of older kritisk alerts never pushes today's off the list.
  *
  * @param alerts - Array of alerts to sort
  * @returns Sorted array (in-place mutation)
@@ -73,8 +67,8 @@ export function convertDailyAlerts(
 export function sortAlertsByPriority(alerts: Varsel[]): Varsel[] {
   const priorityOrder = { kritisk: 0, advarsel: 1, info: 2 };
   return alerts.sort((a, b) => {
-    const priorityDiff = priorityOrder[a.type] - priorityOrder[b.type];
-    if (priorityDiff !== 0) return priorityDiff;
-    return (b.day || 0) - (a.day || 0);
+    const dayDiff = (b.day || 0) - (a.day || 0);
+    if (dayDiff !== 0) return dayDiff;
+    return priorityOrder[a.type] - priorityOrder[b.type];
   });
 }

@@ -9,9 +9,15 @@ interface JuliusVideoProps {
   day: number;
   /** Called once the video has been played to the end */
   onWatched?: () => void;
+  /** Past days in Dagbok pass "none" so a long list doesn't fetch every file */
+  preload?: "none" | "metadata";
 }
 
-export function JuliusVideo({ day, onWatched }: JuliusVideoProps) {
+export function JuliusVideo({
+  day,
+  onWatched,
+  preload = "metadata",
+}: JuliusVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [watched, setWatched] = useState(() =>
     GameEngine.isJuliusVideoWatched(day),
@@ -71,13 +77,12 @@ export function JuliusVideo({ day, onWatched }: JuliusVideoProps) {
           src={src}
           controls
           playsInline
-          preload="metadata"
+          preload={preload}
           className="aspect-video w-full border-4 border-(--gold)/60 bg-black"
           onEnded={markWatched}
           onError={() => {
-            // No video yet: the transcript stands in, so the day is not stuck unread
+            // A failed load is not a viewing: the transcript stands in, the red dot stays
             setMissing(true);
-            markWatched();
           }}
         />
       )}
@@ -91,7 +96,7 @@ export function JuliusVideo({ day, onWatched }: JuliusVideoProps) {
         </button>
       )}
 
-      {watched && transcript && (
+      {(watched || missing) && transcript && (
         <p className="text-(--neon-green)/90 leading-relaxed">«{transcript}»</p>
       )}
 

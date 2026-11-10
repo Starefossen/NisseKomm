@@ -141,6 +141,9 @@ for f in ("uke1", "uke2", "uke3", "uke4"):
         new = [n for (_, n, fd, _, _) in NEW_FILES if fd == d and n not in DECRYPTED]
         rev["files"] = new if d >= 8 else [fn for fn in rev.get("files", []) if fn not in DELETE]
         mods = rev.setdefault("modules", [])
+        # Snøfall TV is open from day 1; a day-10 unlock does nothing
+        if "SNØFALL_TV" in mods:
+            mods.remove("SNØFALL_TV")
         if d == 3 and "SYMBOLSKANNER" not in mods:
             mods.append("SYMBOLSKANNER")
     p.write_text(json.dumps(quests, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -149,14 +152,16 @@ for f in ("uke1", "uke2", "uke3", "uke4"):
 p = DATA / "statisk_innhold.json"
 s = json.loads(p.read_text(encoding="utf-8"))
 
+# Alerts that give away the day's outcome wait for the code.
+SPOILERS = ("Muren holder", "Frostgrad 0 %", "Brevet har tint")
 old = s["daily_alerts"]
 alerts = [a for a in old if a["day"] not in days]
 for d in DAYS:
     prev = [a for a in old if a["day"] == d]
     for i, t in enumerate(days[d]["alerts"]):
         a = {"day": d, "tekst": t, "type": prev[i]["type"] if i < len(prev) else "info"}
-        if d == 7:
-            a["etterKode"] = True  # A7: vises først når dag 7 er løst
+        if d == 7 or any(w in t for w in SPOILERS):
+            a["etterKode"] = True  # A7 and spoilers: shown only once the day is solved
         alerts.append(a)
 s["daily_alerts"] = sorted(alerts, key=lambda a: a["day"])
 

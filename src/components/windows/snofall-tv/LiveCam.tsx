@@ -405,7 +405,7 @@ export function LiveCam({ src, label, className, ...fx }: LiveCamProps) {
       ctx.fillStyle = hjAmount > 0.5 ? "rgb(150,200,255)" : "rgb(230,230,210)";
       ctx.textAlign = "left";
       ctx.fillText(
-        hjAmount > 0.5 && Math.random() < 0.3 ? "CAM ? KULDE" : p.label,
+        hjAmount > 0.5 && Math.random() < 0.3 ? "CAM ?" : p.label,
         pad,
         pad,
       );

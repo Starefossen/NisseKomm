@@ -38,7 +38,21 @@ const KEYS = {
   JULIUS_WATCHED: "nissekomm-julius-watched",
   BREVFUGLER: "nissekomm-brevfugler",
   FROST_OFF_DAY: "nissekomm-frost-off-day",
+  UNLOCKED_MODULES: "nissekomm-unlocked-modules",
+  SANTA_LETTERS: "nissekomm-santa-letters",
+  SEASON: "nissekomm-season",
 } as const;
+
+const SEASON = 2026;
+
+// Everything a season builds up. Login and sound settings survive a new season.
+const SEASON_KEYS = Object.values(KEYS).filter(
+  (k) =>
+    k !== KEYS.AUTHENTICATED &&
+    k !== KEYS.SOUNDS_ENABLED &&
+    k !== KEYS.MUSIC_ENABLED &&
+    k !== KEYS.SEASON,
+);
 
 // Type-safe storage interface
 interface StorageData {
@@ -64,6 +78,16 @@ interface Brevfugl {
  */
 export class StorageManager {
   private static adapter: StorageAdapter = createStorageAdapter();
+  private static seasonChecked = false;
+
+  /** Last year's progress must not carry over: wipe it once when the season changes. */
+  private static ensureSeason(): void {
+    if (this.seasonChecked || typeof window === "undefined") return;
+    this.seasonChecked = true;
+    if (this.adapter.get<number | null>(KEYS.SEASON, null) === SEASON) return;
+    SEASON_KEYS.forEach((k) => this.adapter.remove(k));
+    this.adapter.set(KEYS.SEASON, SEASON);
+  }
 
   // ============================================================
   // Generic Helper Methods (now using adapter)
@@ -73,6 +97,7 @@ export class StorageManager {
    * Generic set item using storage adapter
    */
   private static setItem<T>(key: string, value: T): void {
+    this.ensureSeason();
     this.adapter.set(key, value);
   }
 
@@ -80,6 +105,7 @@ export class StorageManager {
    * Generic get item using storage adapter
    */
   private static getItem<T>(key: string, defaultValue: T): T {
+    this.ensureSeason();
     return this.adapter.get(key, defaultValue);
   }
 
@@ -94,6 +120,7 @@ export class StorageManager {
    * Check if item exists in storage
    */
   private static hasItem(key: string): boolean {
+    this.ensureSeason();
     return this.adapter.has(key);
   }
 
@@ -325,7 +352,7 @@ export class StorageManager {
 
   static getUnlockedModules(): string[] {
     if (typeof window === "undefined") return [];
-    return this.getItem<string[]>("nissekomm-unlocked-modules", []);
+    return this.getItem<string[]>(KEYS.UNLOCKED_MODULES, []);
   }
 
   static unlockModule(moduleId: string): void {
@@ -333,7 +360,7 @@ export class StorageManager {
     const modules = this.getUnlockedModules();
     if (!modules.includes(moduleId)) {
       modules.push(moduleId);
-      this.setItem("nissekomm-unlocked-modules", modules);
+      this.setItem(KEYS.UNLOCKED_MODULES, modules);
     }
   }
 
@@ -348,7 +375,7 @@ export class StorageManager {
   static getSantaLetters(): Array<{ day: number; content: string }> {
     if (typeof window === "undefined") return [];
     return this.getItem<Array<{ day: number; content: string }>>(
-      "nissekomm-santa-letters",
+      KEYS.SANTA_LETTERS,
       [],
     );
   }
@@ -357,7 +384,7 @@ export class StorageManager {
     letters: Array<{ day: number; content: string }>,
   ): void {
     if (typeof window === "undefined") return;
-    this.setItem("nissekomm-santa-letters", letters);
+    this.setItem(KEYS.SANTA_LETTERS, letters);
   }
 
   static addSantaLetter(day: number, content: string): void {

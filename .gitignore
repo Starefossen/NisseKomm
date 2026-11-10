@@ -48,3 +48,6 @@ next-env.d.ts
 # Generated media (finished files go to public/)
 assets/out/
 __pycache__/
+
+# Julius videos are produced locally and baked into the image at build
+public/video/julius/
