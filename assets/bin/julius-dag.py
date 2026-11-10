@@ -97,9 +97,9 @@ def main():
             c = coverage(raw, line)
             print(f"  {name}: {c:.0%} av replikken hørt")
             if c > best[0]:
-                keep = OUT / f"{name}.best"
+                keep = name
                 for ext in ("mp4", "raw.mp4"):
-                    shutil.copy(OUT / f"{name}.{ext}", keep.with_suffix(f".{ext}"))
+                    shutil.copy(OUT / f"{name}.{ext}", OUT / f"{name}.best.{ext}")
                 best = (c, keep)
             if c >= MIN_COVERAGE:
                 break
@@ -107,7 +107,7 @@ def main():
             sys.exit(f"{name}: ingen versjon ble laget")
         # ponytail: falls back to the best take instead of aborting; listen to flagged clips by hand
         for ext in ("mp4", "raw.mp4"):
-            shutil.copy(best[1].with_suffix(f".{ext}"), OUT / f"{name}.{ext}")
+            shutil.copy(OUT / f"{name}.best.{ext}", OUT / f"{name}.{ext}")
         if best[0] < MIN_COVERAGE:
             print(f"  ADVARSEL {name}: beste versjon {best[0]:.0%}, lytt gjennom")
     if dry:
