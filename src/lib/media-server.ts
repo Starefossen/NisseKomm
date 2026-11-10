@@ -1,6 +1,13 @@
 import { createHash, randomBytes } from "node:crypto";
 import { createReadStream } from "node:fs";
-import { mkdir, rename, stat, unlink, writeFile } from "node:fs/promises";
+import {
+  mkdir,
+  realpath,
+  rename,
+  stat,
+  unlink,
+  writeFile,
+} from "node:fs/promises";
 import path from "node:path";
 import { Readable } from "node:stream";
 import type { NextRequest } from "next/server";
@@ -87,19 +94,33 @@ export async function serveMedia(
   parts: string[],
   range: string | null,
   dir = mediaDir(),
+  ifNoneMatch: string | null = null,
 ): Promise<Response> {
   const abs = resolveMedia(parts, dir);
   if (!abs) return new Response("Ugyldig sti", { status: 400 });
-  const info = await stat(abs).catch(() => null);
+  // A symlink inside MEDIA_DIR must not lead outside it.
+  const [real, root] = await Promise.all([
+    realpath(abs).catch(() => null),
+    realpath(dir).catch(() => null),
+  ]);
+  if (!real || !root || !real.startsWith(root + path.sep)) {
+    return new Response("Ikke funnet", { status: 404 });
+  }
+  const info = await stat(real).catch(() => null);
   if (!info?.isFile()) return new Response("Ikke funnet", { status: 404 });
+  const etag = `"${info.size.toString(36)}-${info.mtimeMs.toString(36)}"`;
 
   const headers: Record<string, string> = {
     "Content-Type": MEDIA_TYPES[path.extname(abs).toLowerCase()].type,
     "Accept-Ranges": "bytes",
-    // Files can be replaced by upload, so revalidate rather than cache forever.
-    "Cache-Control": "public, max-age=3600, must-revalidate",
+    // Files are swapped by upload: always revalidate (cheap 304 via ETag).
+    "Cache-Control": "no-cache",
+    ETag: etag,
     "Last-Modified": info.mtime.toUTCString(),
   };
+  if (ifNoneMatch?.split(",").some((t) => t.trim() === etag)) {
+    return new Response(null, { status: 304, headers });
+  }
   let start = 0;
   let end = info.size - 1;
   let status = 200;
@@ -125,7 +146,7 @@ export async function serveMedia(
     info.size === 0
       ? null
       : (Readable.toWeb(
-          createReadStream(abs, { start, end }),
+          createReadStream(real, { start, end }),
         ) as ReadableStream<Uint8Array>);
   return new Response(body, { status, headers });
 }
@@ -138,6 +159,12 @@ export async function mediaStatus(dir = mediaDir()): Promise<MediaStatus[]> {
       return { path: p, size: info?.isFile() ? info.size : null };
     }),
   );
+}
+
+/** Rejects a declared body larger than any media type allows, before it is read. */
+export function tooLarge(contentLength: string | null): boolean {
+  const max = Math.max(...Object.values(MEDIA_TYPES).map((r) => r.max));
+  return Number(contentLength ?? 0) > max;
 }
 
 /** Validates and atomically writes one manifest file (lan mode only). */

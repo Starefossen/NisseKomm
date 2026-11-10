@@ -117,8 +117,8 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [x] Dag 1-oppstart og 85,0-halen
 - [ ] Foreldreguiden (I kveld, Forberedelser, Dag for dag, Innstillinger, simulering)
 - [ ] Utskrifter
-- [ ] Mediebibliotek og opplasting
-- [ ] Varslingssystem
+- [x] Mediebibliotek og opplasting (10. november)
+- [x] Varslingssystem (10. november)
 - [ ] MCP-server
 - [ ] Testoppsett og gjennomspilling
 

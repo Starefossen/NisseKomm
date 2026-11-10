@@ -1,12 +1,19 @@
 /** @jest-environment node */
 import { afterEach, expect, test } from "@jest/globals";
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
+import {
+  mkdtempSync,
+  mkdirSync,
+  readFileSync,
+  symlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import {
   mediaStatus,
   resolveMedia,
   serveMedia,
+  tooLarge,
   uploadMedia,
 } from "../media-server";
 import { MEDIA_MANIFEST, mediaUrl } from "../media";
@@ -95,4 +102,45 @@ test("mediaUrl encodes each segment", () => {
   expect(mediaUrl("feed/snøfall-storm.png")).toBe(
     "/media/feed/sn%C3%B8fall-storm.png",
   );
+});
+
+test("symlink out of MEDIA_DIR is not served", async () => {
+  const outside = mkdtempSync(path.join(tmpdir(), "outside-"));
+  writeFileSync(path.join(outside, "secret.mp4"), "secret");
+  symlinkSync(
+    path.join(outside, "secret.mp4"),
+    path.join(dir, "video/julius/dag-23.mp4"),
+  );
+  const res = await serveMedia(["video", "julius", "dag-23.mp4"], null, dir);
+  expect(res.status).toBe(404);
+});
+
+test("suffix range and unsatisfiable range", async () => {
+  const p = ["video", "julius", "dag-01.mp4"];
+  const suffix = await serveMedia(p, "bytes=-3", dir);
+  expect(suffix.status).toBe(206);
+  expect(await suffix.text()).toBe("789");
+  const bad = await serveMedia(p, "bytes=10-", dir);
+  expect(bad.status).toBe(416);
+  expect(bad.headers.get("content-range")).toBe("bytes */10");
+});
+
+test("ETag revalidates and changes when the file is swapped", async () => {
+  const p = ["video", "julius", "dag-01.mp4"];
+  const file = path.join(dir, "video/julius/dag-01.mp4");
+  const first = await serveMedia(p, null, dir);
+  const etag = first.headers.get("etag");
+  expect(first.headers.get("cache-control")).toBe("no-cache");
+  expect((await serveMedia(p, null, dir, etag)).status).toBe(304);
+  writeFileSync(file, "abcdefghijk");
+  const swapped = await serveMedia(p, null, dir, etag);
+  expect(swapped.status).toBe(200);
+  expect(swapped.headers.get("etag")).not.toBe(etag);
+  writeFileSync(file, "0123456789");
+});
+
+test("declared oversize upload is refused before reading", () => {
+  expect(tooLarge(String(51 * 1024 * 1024))).toBe(true);
+  expect(tooLarge("1000")).toBe(false);
+  expect(tooLarge(null)).toBe(false);
 });
