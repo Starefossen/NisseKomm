@@ -158,6 +158,11 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [ ] **Mediebiblioteket:** last alt opp til PVC-en (`MEDIA_DIR`) med riktige stier. Kontroller manifestet, at hver fil svarer 200/206 med Range, og at ingen mediefil ligger i git.
 - [ ] **Sluttsjekk:** gjennomspilling på iPad (Safari) over hjemmenettet med de komprimerte filene.
 
+## Generering av media (til slutt, etter Julius og Rampenissen)
+
+- [ ] **Tid på døgnet for Snøfall TV og Skjerm (Hans 10. november):** egne gjengitte loops, ikke bare farge: `landsby-morgen`, `-dag`, `-skumring` (dagens `rolig`), `-natt`, laget fra nye nøkkelrammer med samme utsnitt som `nokkelramme-rolig.jpg`, uten hopp i løkka, og hendelsene ankres per tilstand. Til de finnes, bruker Skjerm fargefilter på `rolig`; `get_screen` sender `tv.phase`.
+- [ ] **Portkamera:** egen nøkkelramme ved porten i gateplan (Hans lager stillbildet), deretter inntil fire korte entréer (Julius, Nissemor, IQ, Winter).
+
 ## Fase 5: Flytt til hjemmeklyngen (krav fra Varden, Starefossen/homelab#22)
 
 Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxScale=1` 1. desember–6. januar, 200Mi/512Mi, PostgreSQL (CloudNativePG), CiliumNetworkPolicy, Secret). NisseKomm-repoet er vårt. Varden rører det ikke.
