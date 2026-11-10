@@ -22,15 +22,21 @@ export interface Notification {
 
 type Channel = (n: Notification) => void | Promise<void>;
 
+// Enabling a channel that isn't built yet should say so, not drop silently.
+const stub =
+  (name: string): Channel =>
+  (n) =>
+    console.warn(`[notify] kanal ${name} er ikke laget ennå (${n.event})`);
+
 export const CHANNELS: Record<string, Channel> = {
   log: (n) => console.info(`[notify] ${n.event} dag ${n.day}: ${n.title}`),
   // TODO: email to parents (audience "parents"). Resend is gone; choose a
   // transport when this is switched on, ideally without a new dependency.
-  email: () => {},
+  email: stub("email"),
   // TODO: Varden hook (iMessage), directly or via the MCP server.
-  varden: () => {},
+  varden: stub("varden"),
   // TODO: Skjerm card, served through MCP get_state rather than pushed.
-  skjerm: () => {},
+  skjerm: stub("skjerm"),
 };
 
 export function enabledChannels(): string[] {
