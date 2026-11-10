@@ -397,11 +397,13 @@ export class GameEngine {
 
   /**
    * Frostrunene learned so far: every letter of a solved word code, plus E and
-   * T from the loose cards on day 1 (gaater-2026, meta 1).
+   * T from the loose cards on day 1 (gaater-2026, meta 1). Day 5 (cipher) and
+   * day 22 (number cards) have no rune cards, so U comes on day 7 and Å never.
    */
   static getLearnedRunes(): Set<string> {
     const learned = new Set<string>();
     for (const day of this.getCompletedDays()) {
+      if (day === 5 || day === 22) continue;
       const quest = ALL_QUESTS.find((q) => q.dag === day);
       for (const ch of quest?.kode.toUpperCase() ?? "") {
         if (/[A-ZÆØÅ]/.test(ch)) learned.add(ch);

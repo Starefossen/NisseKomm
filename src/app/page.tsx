@@ -153,7 +153,7 @@ export default function Home() {
   const testMode = process.env.NEXT_PUBLIC_TEST_MODE === "true";
 
   // Update unlocked modules when codes are submitted
-  const handleCodeSubmitted = () => {
+  const handleCodeSubmitted = (solvedDay?: number) => {
     // Day 10/21 thaw and the day 17 northern-light wash (storyboard «Intensitetskurven»)
     if (frostMode.level > 0 && GameEngine.getFrostMode().level === 0) {
       setThawing(true);
@@ -180,7 +180,8 @@ export default function Home() {
     }
 
     // Check if all 24 quests completed for grand finale
-    if (GameEngine.isGameComplete()) {
+    // Only on a solved day, so a late bonus approval does not replay it
+    if (solvedDay !== undefined && GameEngine.isGameComplete()) {
       // Delay to let success animation play
       setTimeout(() => setShowGrandFinale(true), 2000);
     }

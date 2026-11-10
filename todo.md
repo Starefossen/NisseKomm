@@ -111,9 +111,9 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [x] Brevfugler og brev til Julius (10. november)
 - [x] NisseKrypto og dekrypteringene
 - [x] NisseNet-utforsker og filer
-- [ ] Eventyr, milepæler, merker og finale
+- [x] Eventyr, milepæler, merker og finale (10. november)
 - [ ] Frost, Frostgrad og frostmodus
-- [ ] Frostrunene og runetavla
+- [x] Frostrunene og runetavla (10. november)
 - [ ] Dag 1-oppstart og 85,0-halen
 - [ ] Foreldreguiden (I kveld, Forberedelser, Dag for dag, Innstillinger, simulering)
 - [ ] Utskrifter

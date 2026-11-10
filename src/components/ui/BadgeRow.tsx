@@ -118,7 +118,7 @@ export function BadgeRow() {
             {/* SVG Badge Icon */}
             <Image
               src={`/badges/${badge.ikon}`}
-              alt={badge.navn}
+              alt={isEarned ? badge.navn : `${badge.navn} (låst)`}
               width={isTrophy && isEarned ? 52 : 40}
               height={isTrophy && isEarned ? 52 : 40}
               className={`transition-all duration-300 ${
@@ -143,7 +143,10 @@ export function BadgeRow() {
         );
       })}
       {newlyEarnedBadge && (
-        <div className="ml-3 max-w-md text-base text-(--gold) animate-[gold-flash_0.6s_ease-out]">
+        <div
+          role="status"
+          className="ml-3 max-w-md text-base text-(--gold) animate-[gold-flash_0.6s_ease-out]"
+        >
           {badges.find((b) => b.id === newlyEarnedBadge)?.opplasingstekst}
         </div>
       )}

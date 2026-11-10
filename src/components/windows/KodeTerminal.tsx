@@ -13,7 +13,8 @@ interface KodeTerminalProps {
   expectedCode: string;
   currentDay: number;
   allMissions: Oppdrag[];
-  onCodeSubmitted?: () => void;
+  /** `day` is set only when a day was newly solved (not for bonus approvals). */
+  onCodeSubmitted?: (day?: number) => void;
 }
 
 export function KodeTerminal({
@@ -145,7 +146,7 @@ export function KodeTerminal({
 
         // Notify parent of code submission
         if (onCodeSubmitted) {
-          onCodeSubmitted();
+          onCodeSubmitted(currentDay);
         }
       }
 

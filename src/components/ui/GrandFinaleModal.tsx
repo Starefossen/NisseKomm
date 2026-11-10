@@ -32,12 +32,20 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="finale-title"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+    >
       <div className="relative max-w-3xl w-full max-h-full overflow-y-auto border-8 border-(--gold) bg-(--dark-crt) p-8 animate-[scale-in_0.5s_ease-out]">
         <div className="space-y-6 text-center">
           {/* 1: Thaw */}
           <div>
-            <h1 className="text-6xl font-bold text-(--gold) tracking-widest animate-[gold-flash_2s_ease-in-out_infinite]">
+            <h1
+              id="finale-title"
+              className="text-6xl font-bold text-(--gold) tracking-widest animate-[gold-flash_2s_ease-in-out_infinite]"
+            >
               TØVÆR
             </h1>
             <div className="text-xl text-(--cold-blue) mt-2">
@@ -103,6 +111,7 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
                 Diplom: Nissemor-guiden → Utskrifter
               </p>
               <button
+                autoFocus
                 onClick={onClose}
                 className="mt-4 px-8 py-4 min-h-11 bg-(--gold) border-4 border-(--gold) text-black font-bold text-2xl hover:opacity-80"
               >

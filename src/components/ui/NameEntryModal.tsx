@@ -37,12 +37,18 @@ export function NameEntryModal({ onComplete }: NameEntryModalProps) {
 
   const handleSkip = () => {
     SoundManager.playSound("click");
-    // Use default name
-    onComplete(["Spillernavn"]);
+    // No placeholder name: it would end up on the finale and the diplomas.
+    // Empty means the modal asks again after the next solved day.
+    onComplete([]);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Snill-listen"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+    >
       <div className="w-full max-w-2xl mx-4 border-8 border-(--gold) bg-black p-8 space-y-6 animate-[scale-in_0.3s_ease-out]">
         {/* Header */}
         <div className="text-center space-y-2 pb-4 border-b-4 border-(--gold)/30">
@@ -53,9 +59,7 @@ export function NameEntryModal({ onComplete }: NameEntryModalProps) {
             </div>
             <Icons.Star size={32} color="gold" />
           </div>
-          <div className="text-(--neon-green) text-lg">
-            Dere har fullført alle 23 oppdrag!
-          </div>
+          <div className="text-(--neon-green) text-lg">Dag 22 er løst!</div>
         </div>
 
         {/* Instructions */}
@@ -103,6 +107,7 @@ export function NameEntryModal({ onComplete }: NameEntryModalProps) {
                   }
                 }}
                 placeholder={`Navn ${index + 1} (valgfritt)`}
+                aria-label={`Navn ${index + 1}`}
                 maxLength={30}
                 className="flex-1 px-4 py-3 bg-black border-2 border-(--neon-green) text-xl font-retro text-(--neon-green) focus:outline-none focus:border-(--gold) focus:shadow-[0_0_20px_rgba(255,215,0,0.5)] uppercase"
                 autoFocus={index === 0}
@@ -141,7 +146,7 @@ export function NameEntryModal({ onComplete }: NameEntryModalProps) {
 
         {/* Footer */}
         <div className="text-center text-base opacity-50 pt-4 border-t-2 border-(--neon-green)/30">
-          Navnene lagres lokalt og vises i Julius' snille liste i NISSENET
+          Navnene står i Julius' snille liste i NISSENET
         </div>
       </div>
     </div>

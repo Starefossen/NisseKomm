@@ -72,6 +72,7 @@ export function RuneText({
   const chars = maskRunes(text, learned);
   return (
     <span
+      role="img"
       className={`inline-flex flex-wrap items-end gap-1 ${className ?? ""}`}
       aria-label={chars.map((c) => c ?? "*").join("")}
     >
