@@ -7,7 +7,11 @@ import { Icons } from "@/lib/icons";
 import { FilNode, Oppdrag } from "@/types/innhold";
 import { FROST_OPEN_FOLDER } from "@/lib/frost";
 import { GameEngine } from "@/lib/game-engine";
+import { RuneText } from "../ui/Frostrune";
 import { resolveTemplate } from "@/lib/template-resolver";
+
+// Lines starting with this marker in a file are drawn as runes, never as text.
+const RUNE_LINE = "ᚱ:";
 
 interface NisseNetUtforskerProps {
   files: FilNode[];
@@ -291,7 +295,21 @@ export function NisseNetUtforsker({
                 </div>
 
                 <div className="text-base leading-relaxed whitespace-pre-wrap">
-                  {selectedFile.innhold || "Ingen innhold tilgjengelig"}
+                  {selectedFile.innhold
+                    ? selectedFile.innhold
+                        .split("\n")
+                        .map((line, i) =>
+                          line.startsWith(RUNE_LINE) ? (
+                            <RuneText
+                              key={i}
+                              text={line.slice(RUNE_LINE.length)}
+                              learned={GameEngine.getLearnedRunes()}
+                            />
+                          ) : (
+                            <div key={i}>{line || "\u00a0"}</div>
+                          ),
+                        )
+                    : "Ingen innhold tilgjengelig"}
                 </div>
               </div>
             ) : (
