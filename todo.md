@@ -90,6 +90,8 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 - [ ] **Simulering:** utvid Tidsmaskin til et simuleringspanel i foreldreguiden: hopp til dag og klokkeslett, løs dager automatisk opp til en dag, sett frost, nullstill, og spol en hel uke.
 - [ ] **Designrevisjon:** forslag i `docs/design-revisjon-2026.md`, deretter bygging av det som godkjennes.
 
+- [ ] **Skjerm-tekster (venter på integrasjon):** skriv `skjerm_teaser` (én linje lore per dag, ingen bokstaver, tall eller steder) for 24 dager, og en `get_screen`-variant i MCP for familieskjermen.
+
 ## Fase 5: Flytt til hjemmeklyngen (krav fra Varden, Starefossen/homelab#22)
 
 Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxScale=1` 1. desember–6. januar, 200Mi/512Mi, PostgreSQL (CloudNativePG), CiliumNetworkPolicy, Secret). NisseKomm-repoet er vårt. Varden rører det ikke.
