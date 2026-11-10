@@ -77,6 +77,7 @@ export default function Home() {
   // Local UI state
   const [bootFinished, setBootFinished] = useState(false);
   const [openWindow, setOpenWindow] = useState<string | null>(null);
+  const [musicAutoPlay, setMusicAutoPlay] = useState(false);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [showGrandFinale, setShowGrandFinale] = useState(false);
   const [showNameEntry, setShowNameEntry] = useState(false);
@@ -102,6 +103,13 @@ export default function Home() {
     }
     if (getCurrentDay() === 17 && GameEngine.isQuestCompleted(17)) {
       setAurora(true);
+    }
+    // Day 12: the jukebox thaws and is heard at once
+    if (getCurrentDay() === 12 && GameEngine.isQuestCompleted(12)) {
+      setTimeout(() => {
+        setMusicAutoPlay(true);
+        setOpenWindow("nissemusikk");
+      }, 2000);
     }
     refreshGameState();
 
@@ -138,6 +146,7 @@ export default function Home() {
   };
 
   const handleIconClick = (windowId: string) => {
+    setMusicAutoPlay(false);
     if (openWindow === windowId) {
       setOpenWindow(null);
       playSound("close");
@@ -149,6 +158,7 @@ export default function Home() {
   };
 
   const handleCloseWindow = () => {
+    setMusicAutoPlay(false);
     if (openWindow) {
     }
     setOpenWindow(null);
@@ -460,7 +470,10 @@ export default function Home() {
                     />
                   )}
                   {openWindow === "nissemusikk" && (
-                    <NisseMusikk onClose={handleCloseWindow} />
+                    <NisseMusikk
+                      onClose={handleCloseWindow}
+                      autoPlay={musicAutoPlay}
+                    />
                   )}
                   {openWindow === "nissekrypto" && (
                     <NisseKrypto onClose={handleCloseWindow} />
