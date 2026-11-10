@@ -2,14 +2,16 @@
 """One queue for all generated media: plan it, run it, resume it.
 
 Usage:
-  generer.py plan [--til-dag N] [--bare KAT]
+  generer.py plan [--til-dag N] [--bare KAT] [--force]
   generer.py kjør [--til-dag N] [--bare julius|rampenissen|tv|port|test|musikk]
-                  [--maks-forespørsler N] [--stopp-etter julius:5]
+                  [--maks-forespørsler N] [--stopp-etter julius:5] [--force]
   generer.py --selvtest
 
 Order: (a) named tests, (b) Julius days ✗/⚠, (c) Rampenissen ✗/⚠, (d) TV loops and
 events, (e) gate entrances, (f) the hidden NisseMusikk track. ✓ current and ? unknown
-are skipped. A daily-limit or spending-cap error stops the run with exit code 75.
+are skipped. Items marked «Lag på nytt» in media-vurdering.json are queued (and their
+mark removed on success), while «Godkjent» items are skipped unless --force.
+A daily-limit or spending-cap error stops the run with exit code 75.
 
 Video requests are counted from lines julius.sh and loop.sh append to $GENERER_LOGG
 after each POST to the interactions API. The API answers synchronously with the video,
@@ -59,31 +61,97 @@ def media_dir() -> Path:
     return Path(os.environ.get("MEDIA_DIR") or ROOT / "public")
 
 
+def vurdering_path(media: Path = None) -> Path:
+    return (media or media_dir()) / "media-vurdering.json"
+
+
+def load_vurderinger(path: Path) -> dict:
+    if not path.exists():
+        return {}
+    try:
+        return json.loads(path.read_text())
+    except Exception:
+        return {}
+
+
+def save_vurderinger(path: Path, data: dict):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(f".tmp.{os.getpid()}")
+    try:
+        tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+        tmp.replace(path)
+    except Exception:
+        tmp.unlink(missing_ok=True)
+        raise
+
+
+def is_redo(v) -> bool:
+    val = (v.get("vurdering") or v.get("status")) if isinstance(v, dict) else v
+    return val in ("lag_paa_nytt", "lag_på_nytt", "redo")
+
+
+def is_approved(v) -> bool:
+    val = (v.get("vurdering") or v.get("status")) if isinstance(v, dict) else v
+    return val in ("godkjent", "approved")
+
+
+def item_path(item_id: str) -> str:
+    cat, _, key = item_id.partition(":")
+    if item_id in TESTS:
+        return f"assets/out/{item_id}.mp4"
+    if cat == "julius":
+        return f"video/julius/dag-{int(key):02d}.mp4" if key.isdigit() else ""
+    if cat == "rampenissen":
+        return f"audio/rampenissen/dag-{int(key):02d}.mp3" if key.isdigit() else ""
+    if cat in ("tv", "port"):
+        return f"video/tv/{key}.mp4"
+    if cat == "musikk":
+        return f"music/{key}.mp3"
+    return ""
+
+
 def tv_jobs():
     out = subprocess.run(["bash", str(BIN / "tv-loops.sh"), "--liste"], capture_output=True, text=True, check=True).stdout
     return out.split()
 
 
-def queue(rows, tv_names, root: Path = ROOT, til_dag=24):
+def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force=False):
     """[(id, category, estimated video requests, command)] in priority order."""
     st = {r["path"]: r["status"] for r in rows}
     todo = (medie.MISSING, medie.STALE)
+    vurd = vurderinger or {}
     q = []
+
+    def should_queue(p: str, current_status) -> bool:
+        v = vurd.get(p)
+        if is_redo(v):
+            return True
+        if is_approved(v) and not force:
+            return False
+        if force:
+            return True
+        return current_status in todo
+
     for name, t in TESTS.items():
-        if not (root / f"assets/out/{name}.mp4").exists():
+        p = f"assets/out/{name}.mp4"
+        if not (root / p).exists() or is_redo(vurd.get(p)) or (force and not is_approved(vurd.get(p))):
             q.append((name, "test", RETRY, [str(BIN / "julius.sh"), name, t["linje"], t["handling"], str(t["sek"])]))
     for d in range(1, til_dag + 1):
         segs = medie.julius_segments(d, root)
-        if segs and st.get(f"video/julius/dag-{d:02d}.mp4") in todo:
+        p = f"video/julius/dag-{d:02d}.mp4"
+        if segs and should_queue(p, st.get(p, medie.MISSING)):
             q.append((f"julius:{d}", "julius", len(segs) * RETRY, ["python3", str(BIN / "julius-dag.py"), str(d)]))
     for d in range(1, til_dag + 1):
-        if medie.rampenissen_text(d, root) and st.get(f"audio/rampenissen/dag-{d:02d}.mp3") in todo:
+        p = f"audio/rampenissen/dag-{d:02d}.mp3"
+        if medie.rampenissen_text(d, root) and should_queue(p, st.get(p, medie.MISSING)):
             q.append((f"rampenissen:{d}", "rampenissen", 0, ["bash", str(BIN / "rampenissen-tts.sh"), str(d)]))
     for n in tv_names:
-        if st.get(f"video/tv/{n}.mp4", medie.MISSING) in todo:
+        p = f"video/tv/{n}.mp4"
+        if should_queue(p, st.get(p, medie.MISSING)):
             cat = "port" if n.startswith("port-") else "tv"
             q.append((f"{cat}:{n}", cat, RETRY, ["bash", str(BIN / "tv-loops.sh"), "--bare", n]))
-    if st.get("music/rampenissen-synger.mp3", medie.MISSING) in todo:
+    p_music = "music/rampenissen-synger.mp3"
+    if should_queue(p_music, st.get(p_music, medie.MISSING)):
         q.append(("musikk:rampenissen-synger", "musikk", 0, ["bash", str(BIN / "rampenissen-tts.sh"), "synger"]))
     return q
 
@@ -113,17 +181,18 @@ def run_cmd(cmd, env):
 
 def done(item_id, root: Path, media: Path) -> bool:
     """Is the item's output now ✓? Tests only need the file."""
-    cat, _, key = item_id.partition(":")
     if item_id in TESTS:
         return (root / f"assets/out/{item_id}.mp4").exists()
-    path = {"julius": f"video/julius/dag-{int(key or 0):02d}.mp4", "rampenissen": f"audio/rampenissen/dag-{int(key or 0):02d}.mp3",
-            "tv": f"video/tv/{key}.mp4", "port": f"video/tv/{key}.mp4", "musikk": f"music/{key}.mp3"}[cat]
+    path = item_path(item_id)
     return medie.status(media / path, path, root)[0] == medie.CURRENT
 
 
-def run(q, state_path: Path, maks=None, stopp_etter=None, runner=run_cmd, check=None):
+def run(q, state_path: Path, maks=None, stopp_etter=None, runner=run_cmd, check=None,
+        vurdering_fil: Path = None):
     """Run the queue; returns the exit code (0 done/stopped, 1 an item failed, 75 limit)."""
     check = check or (lambda i: done(i, ROOT, media_dir()))
+    vpath = vurdering_fil or vurdering_path()
+    vurderinger = load_vurderinger(vpath)
     s = load_state(state_path)
     today = quota_day()
     budget = min(DAY_LIMIT, maks if maks is not None else DAY_LIMIT)
@@ -132,7 +201,9 @@ def run(q, state_path: Path, maks=None, stopp_etter=None, runner=run_cmd, check=
     try:
         for item_id, cat, est, cmd in q:
             used = s["forespørsler"].get(today, 0)
-            if s["elementer"].get(item_id, {}).get("status") == "ferdig" and check(item_id):
+            item_p = item_path(item_id)
+            redo = is_redo(vurderinger.get(item_p))
+            if not redo and s["elementer"].get(item_id, {}).get("status") == "ferdig" and check(item_id):
                 continue
             if est and used + est > budget:
                 print(f"Stopper før {item_id}: {used} brukt, anslag {est:g}, grense {budget}")
@@ -147,6 +218,15 @@ def run(q, state_path: Path, maks=None, stopp_etter=None, runner=run_cmd, check=
             ok = rc == 0 and not limit and check(item_id)
             s["elementer"][item_id] = {"status": "ferdig" if ok else "feilet", "forespørsler": sent,
                                        "tid": datetime.now().isoformat(timespec="seconds")}
+            if ok and redo:
+                if isinstance(vurderinger.get(item_p), dict):
+                    vurderinger[item_p].pop("vurdering", None)
+                    vurderinger[item_p].pop("status", None)
+                    if not vurderinger[item_p]:
+                        vurderinger.pop(item_p, None)
+                else:
+                    vurderinger.pop(item_p, None)
+                save_vurderinger(vpath, vurderinger)
             if limit:
                 m = RETRY_RE.search(out)
                 wait = f", prøv igjen om {m.group(1) or m.group(2)} s" if m else ", prøv igjen etter at kvoten nullstilles (ca. 09:00)"
@@ -188,14 +268,17 @@ def main(argv):
         sys.exit(__doc__)
     til = int(arg(argv, "--til-dag", 24))
     bare = arg(argv, "--bare")
-    q = queue(inventar.scan(media_dir()), tv_jobs(), til_dag=til)
+    force = "--force" in argv
+    vpath = vurdering_path()
+    vurd = load_vurderinger(vpath)
+    q = queue(inventar.scan(media_dir()), tv_jobs(), til_dag=til, vurderinger=vurd, force=force)
     if bare:
         q = [i for i in q if i[1] == bare]
     if argv[0] == "plan":
         plan(q, load_state(STATE)["forespørsler"].get(quota_day(), 0))
         return 0
     maks = arg(argv, "--maks-forespørsler")
-    return run(q, STATE, int(maks) if maks else None, arg(argv, "--stopp-etter"))
+    return run(q, STATE, int(maks) if maks else None, arg(argv, "--stopp-etter"), vurdering_fil=vpath)
 
 
 def selftest():
@@ -243,6 +326,31 @@ def selftest():
         made.clear()
         assert run(q, root / "t4.json", stopp_etter="julius:2", runner=lambda c, e: fake(c, e, fail_on=0),
                    check=lambda i: i in made) == 0 and len(calls) == 2
+
+        # media-vurdering: queue honours verdicts and removes mark on success
+        v_test = {
+            "video/julius/dag-01.mp4": {"vurdering": "lag_paa_nytt"},
+            "video/julius/dag-03.mp4": {"vurdering": "godkjent"},
+        }
+        q_v = queue(rows, ["landsby-rolig"], root, vurderinger=v_test)
+        q_v_ids = [i[0] for i in q_v]
+        assert "julius:1" in q_v_ids, q_v_ids  # queued because lag_paa_nytt
+        assert "julius:2" in q_v_ids, q_v_ids  # queued because MISSING
+        assert "julius:3" not in q_v_ids, q_v_ids  # skipped because godkjent
+
+        # with force=True, godkjent item julius:3 is queued
+        q_force = queue(rows, ["landsby-rolig"], root, vurderinger=v_test, force=True)
+        assert "julius:3" in [i[0] for i in q_force]
+
+        # mark removal after successful run
+        v_file = root / "media-vurdering.json"
+        v_file.write_text(json.dumps({"video/julius/dag-01.mp4": {"vurdering": "lag_paa_nytt", "notat": "fikse"}}))
+        run([("julius:1", "julius", 0, ["echo", "1"])], root / "t_v.json",
+            runner=lambda c, e: (0, "ok"),
+            check=lambda i: True, vurdering_fil=v_file)
+        v_after = json.loads(v_file.read_text())
+        assert "vurdering" not in v_after.get("video/julius/dag-01.mp4", {})
+        assert v_after.get("video/julius/dag-01.mp4", {}).get("notat") == "fikse"
     print("selvtest ok")
 
 

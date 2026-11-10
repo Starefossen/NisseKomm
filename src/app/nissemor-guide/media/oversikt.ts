@@ -129,3 +129,46 @@ export function lookThrough(
 /** Manifest path from a /media/ URL, for status lookups. */
 export const pathOf = (url: string) =>
   decodeURIComponent(url.replace(/^\/media\//, ""));
+
+export type ReviewKindId =
+  "julius" | "rampenissen" | "tv" | "port" | "music" | "stills";
+
+export interface ReviewGroup {
+  id: ReviewKindId;
+  title: string;
+}
+
+export const REVIEW_GROUPS: readonly ReviewGroup[] = [
+  { id: "julius", title: "Julius per dag" },
+  { id: "rampenissen", title: "Rampenissen per dag" },
+  { id: "tv", title: "TV-looper og hendelser" },
+  { id: "port", title: "Port" },
+  { id: "music", title: "Musikk" },
+  { id: "stills", title: "Stillbilder" },
+] as const;
+
+export function reviewKind(path: string): ReviewKindId {
+  if (path.startsWith("video/julius/")) return "julius";
+  if (path.startsWith("audio/rampenissen/")) return "rampenissen";
+  if (path.startsWith("video/tv/port-")) return "port";
+  if (path.startsWith("video/tv/")) return "tv";
+  if (path.startsWith("music/")) return "music";
+  if (path.startsWith("feed/")) return "stills";
+  return "tv";
+}
+
+export function sortReviewItems<T extends { path: string }>(
+  items: T[],
+  kind: ReviewKindId,
+): T[] {
+  if (kind === "julius" || kind === "rampenissen") {
+    return [...items].sort((a, b) => {
+      const matchA = a.path.match(/dag-(\d+)/);
+      const matchB = b.path.match(/dag-(\d+)/);
+      const dayA = matchA ? Number(matchA[1]) : 0;
+      const dayB = matchB ? Number(matchB[1]) : 0;
+      return dayA - dayB;
+    });
+  }
+  return [...items].sort((a, b) => a.path.localeCompare(b.path));
+}
