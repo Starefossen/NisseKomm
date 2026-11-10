@@ -167,3 +167,11 @@ Kontroll etter P1: `grep -rniE "sanity|resend|@vercel|uuid|session-manager" src 
   - JWKS hentes i kjøring fra `https://id.flaatten.org/oauth2/openid/mcp/public_key.jwk`, med mellomlagring, periodisk oppfrisking og ny henting ved ukjent `kid`. Ingen innbakte nøkler. Når ingen nøkler er lastet (kaldstart), vent på eller utfør første henting før tokenet vurderes.
   - Kallere i konfigurasjon (miljø eller montert JSON), ikke i kode, på formen `{issuer, audience, jwks_url, required_scope, callers: {uuid: navn}}` pluss nivå per navn. Ukjent `sub` gir 401.
   - Kjente kallere: `varden-jwt` `071d4ebd-89ba-445b-80a6-c1bfd5e756ba` (read), `operator-jwt` `00e6aa3b-4146-4ea1-9a81-0498eb2585d6` (parent), `radio-producer-jwt` `5020e366-5eed-49e1-8384-0e114f310dba` (read). `svc-skjerm` (read) og en foreldreidentitet (parent) kommer fra Varden senere.
+
+## Avgjort 10. november (offentlig nettsted)
+
+`nissekomm.no` blir offentlig via gate og driftes på VKS (Varden Kubernetes Service). Det endrer fase 5:
+
+- **To moduser fra samme image:** `NISSEKOMM_MODE=web` (offentlig: bare brukergrensesnitt, `/mcp` gir 404 og MCP-koden lastes ikke) og `NISSEKOMM_MODE=mcp` (egen tjeneste `nissekomm-mcp`, bare på hjemmenettet: MCP og lyd for klipp, ikke brukergrensesnitt). Begge bruker samme `DATABASE_URL`. Gate filtrerer på SNI og kan ikke stenge stier, derfor to tjenester.
+- **Innlogging mot internett (T4):** begrensning og utestenging per IP og per kode (IP fra `X-Forwarded-For` bak Kourier), sterke koder (foreldrekoden lengst), informasjonskapsler med `Secure`, `HttpOnly` og `SameSite=Lax`, CSP og sikkerhetshoder, generiske feilmeldinger og ingen stakkspor. Adversarial gjennomgang av en annen modell før eksponering.
+- **`NEXT_PUBLIC_URL=https://nissekomm.no`.** Media blir i imaget.
