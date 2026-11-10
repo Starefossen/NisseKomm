@@ -54,7 +54,7 @@ interface SessionData {
   playerNames: string[];
   friendNames?: string[];
   niceListLastViewed: string | null;
-  dagbokLastRead: number;
+  juliusWatched: number[];
 }
 
 interface FamilyCredentials {

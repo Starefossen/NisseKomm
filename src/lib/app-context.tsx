@@ -114,8 +114,7 @@ export function AppProvider({ children }: AppProviderProps) {
     setUnreadEmailCount(GameEngine.getUnreadEmailCount(currentDay));
     setUnreadFileCount(GameEngine.getUnreadFileCount());
 
-    const completedQuests = GameEngine.loadGameState().completedQuests;
-    setUnreadDagbokCount(StorageManager.getUnreadDagbokCount(completedQuests));
+    setUnreadDagbokCount(GameEngine.isJuliusVideoWatched(currentDay) ? 0 : 1);
   }, []);
 
   /**

@@ -13,14 +13,62 @@
  * - NEXT_PUBLIC_MOCK_MONTH: Override current month (1-12, defaults to 12)
  */
 
+export interface TimeOverride {
+  day: number;
+  month: number; // 1-12
+  hour: number;
+  minute: number;
+}
+
+const TIME_OVERRIDE_KEY = "nissekomm-tidsmaskin";
+
 /**
- * Get the current date/time, respecting mock settings
- * Use this instead of `new Date()` everywhere
+ * Tidsmaskin is a dev/test tool. In a production build without test mode
+ * NODE_ENV is inlined as "production", so this is false and the override
+ * code is dead.
+ */
+export function isTimeMachineEnabled(): boolean {
+  return (
+    process.env.NODE_ENV !== "production" ||
+    process.env.NEXT_PUBLIC_TEST_MODE === "true"
+  );
+}
+
+export function getTimeOverride(): TimeOverride | null {
+  if (!isTimeMachineEnabled() || typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(TIME_OVERRIDE_KEY);
+    return raw ? (JSON.parse(raw) as TimeOverride) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function setTimeOverride(override: TimeOverride | null): void {
+  if (typeof window === "undefined") return;
+  if (override) {
+    window.localStorage.setItem(TIME_OVERRIDE_KEY, JSON.stringify(override));
+  } else {
+    window.localStorage.removeItem(TIME_OVERRIDE_KEY);
+  }
+}
+
+/**
+ * Get the current date/time, respecting the Tidsmaskin override first and
+ * NEXT_PUBLIC_MOCK_* second. Use this instead of `new Date()` everywhere.
  */
 export function getCurrentDate(): Date {
   const now = new Date();
 
-  // Check if we're mocking the date
+  const override = getTimeOverride();
+  if (override) {
+    // Keep seconds ticking so clocks still move
+    const d = new Date(now);
+    d.setMonth(override.month - 1, override.day);
+    d.setHours(override.hour, override.minute);
+    return d;
+  }
+
   const mockDay = process.env.NEXT_PUBLIC_MOCK_DAY;
   const mockMonth = process.env.NEXT_PUBLIC_MOCK_MONTH;
 
@@ -29,10 +77,8 @@ export function getCurrentDate(): Date {
     const month = mockMonth ? parseInt(mockMonth, 10) - 1 : 11; // Default to December (11)
 
     if (!isNaN(day) && day >= 1 && day <= 31) {
-      // Create a new date with the mocked day/month but keep current time
       const mockedDate = new Date(now);
-      mockedDate.setMonth(month);
-      mockedDate.setDate(day);
+      mockedDate.setMonth(month, day);
       return mockedDate;
     }
   }

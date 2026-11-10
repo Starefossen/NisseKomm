@@ -22,38 +22,39 @@
   "daily_alerts": [
     {
       "day": 1,
-      "tekst": "🎅 JULIUS: Direktelinje til Landås åpnet! Sjekk Snøfall TV Kanal 3!",
+      "tekst": "🎅 JULIUS: Direktelinjen er åpen. Ny video på kanal 3.",
       "type": "info"
     },
     {
       "day": 2,
-      "tekst": "⚙️ IQ: Tre sikringer røk i videologg-laben! Trenger spenningssjekk!",
+      "tekst": "⚙️ IQ: Tre sikringer røk i natt. Kanal 2 er mørk til noen regner riktig.",
       "type": "info"
     },
     {
       "day": 3,
-      "tekst": "❄️ ORAKELET: Iskrystaller på linjen. Spøkelseskoden sniker i mørket.",
+      "tekst": "🔮 ORAKELET: Blått glimt på 85,0 MHz klokka 03:12. Noen lytter.",
       "type": "advarsel"
     },
     {
       "day": 4,
-      "tekst": "🦌 RUDOLF: NisseKrypto er aktivert! Nesen min peker rett mot Bergen!",
+      "tekst": "🦌 RUDOLF: Fløy feil i tåka. NisseKrypto åpner i kveld.",
       "type": "info"
     },
     {
       "day": 5,
-      "tekst": "📋 WINTER: Kryptert brevfugl observert over Ulriken! Dekoder klar.",
+      "tekst": "📋 WINTER: Første brevfugl over Bergen. Alt jeg sender er kryptert fra nå.",
       "type": "info"
     },
     {
       "day": 6,
-      "tekst": "🎅 JULIUS: Husk lommelykt i desembermørket! Lys bryter alle gåter.",
+      "tekst": "🎅 JULIUS: God 2. advent. IQ har hengt lys rundt antennen ved tjernet.",
       "type": "info"
     },
     {
       "day": 7,
-      "tekst": "🔮 ORAKELET: ADVARSEL! Spøkelseskoden KULDE angriper 90.0 MHz!",
-      "type": "advarsel"
+      "tekst": "🔮 ORAKELET: Signaturen på 85,0 har et navn. Frostgraden kan måles fra i dag.",
+      "type": "advarsel",
+      "etterKode": true
     },
     {
       "day": 8,
@@ -164,63 +165,9 @@
   "varsler": [
     {
       "id": "v1",
-      "tekst": "LANDÅS-LINK: AKTIV (90.0 MHz)",
+      "tekst": "ORAKELET LYTTER …",
       "type": "info",
-      "tidspunkt": "07:15"
-    },
-    {
-      "id": "v2",
-      "tekst": "SPØKELSESKODE: SPOR DETEKTERT ❄️",
-      "type": "kritisk",
-      "tidspunkt": "07:22"
-    },
-    {
-      "id": "v3",
-      "tekst": "SNØFALL TV: KANAL 1-4 ONLINE",
-      "type": "info",
-      "tidspunkt": "07:30"
-    },
-    {
-      "id": "v4",
-      "tekst": "REINSDYR TELEMETRI: ULRIKEN-RUTE",
-      "type": "info",
-      "tidspunkt": "08:05"
-    },
-    {
-      "id": "v5",
-      "tekst": "BRANNMUR: OVERVÅKER PORTER",
-      "type": "advarsel",
-      "tidspunkt": "08:19"
-    },
-    {
-      "id": "v6",
-      "tekst": "SERVERROM TEMP: FALLENDE (-42°C)",
-      "type": "kritisk",
-      "tidspunkt": "08:40"
-    },
-    {
-      "id": "v7",
-      "tekst": "NISSEKRAFT: BYGGER STYRKE",
-      "type": "info",
-      "tidspunkt": "09:00"
-    },
-    {
-      "id": "v8",
-      "tekst": "AGENT-TRIO: KRISTIAN, HÅKON, HANNA",
-      "type": "info",
-      "tidspunkt": "09:12"
-    },
-    {
-      "id": "v9",
-      "tekst": "KRYPTERING: AES-NISSE-256 AKTIV",
-      "type": "advarsel",
-      "tidspunkt": "09:30"
-    },
-    {
-      "id": "v10",
-      "tekst": "VIDEOLOGG FRA JULIUS KLAR PÅ KANAL 3",
-      "type": "info",
-      "tidspunkt": "09:45"
+      "tidspunkt": "07:00"
     }
   ],
   "filer": [
@@ -231,12 +178,7 @@
         {
           "navn": "dagens_oppdrag.txt",
           "type": "fil",
-          "innhold": "OPERASJON SPØKELSESKODE (SESONG 2)\n\n1. Les dagens e-post fra Rampenissen i NISSEMAIL.\n2. Sjekk Julius' Videologg på SNØFALL TV (Kanal 3).\n3. Kombiner fysiske spor i huset på Landås med datafilene her i NISSENET.\n4. Skriv inn løsningskoden i KODETERMINAL."
-        },
-        {
-          "navn": "hint_arkiv.txt",
-          "type": "fil",
-          "innhold": "DYNAMISK_HINTS"
+          "innhold": "SLIK VIRKER NISSEKOMM\n\n1. Les Rampenissens e-post i NisseMail.\n2. Se dagens video fra Julius. Siste setning er viktig.\n3. Finn det Rampenissen har lagt igjen i huset.\n4. Sett sammen det huset viser og det Julius sier, og tast i KodeTerminal.\n\nIngen av delene holder alene.\n\n\n\n[SIKKERHET] Linjevakt v3.0 aktiv\n[SIKKERHET] 3 agenter verifisert: K12, H9, H5\n[SIKKERHET] Bærebølge 90,0 MHz: ustabil\n[SIKKERHET] Ukjent bærebølge 85,0 MHz: overvåkes\n[SIKKERHET] Tiltak: avventer Orakelet"
         }
       ]
     },
@@ -252,12 +194,12 @@
         {
           "navn": "readme.txt",
           "type": "fil",
-          "innhold": "Velkommen tilbake til NisseKomm!\n\nI år har IQ oppgradert kommandosenteret med direkte videolink på SNØFALL TV.\nMen pass på: En mystisk digital kuldebølge prøver å låse kanaler og stjele farger.\n\nHeldigvis har vi våre tre beste agenter i Bergen på saken!"
+          "innhold": "Velkommen tilbake til NisseKomm!\n\nI år har IQ oppgradert kommandosenteret med direkte videolink på SNØFALL TV.\nMen pass på: En mystisk digital frost prøver å låse kanaler og stjele farger.\n\nHeldigvis har vi våre tre beste agenter i Bergen på saken!"
         },
         {
           "navn": "om-snofall.txt",
           "type": "fil",
-          "innhold": "🎄 SNØFALL KOMMANDOSENTER - SESONG 2 (OPERASJON SPØKELSESKODE) 🎄\n\nHVA SKJER I SNØFALL I ÅR?\nEtter at dere reddet julen i fjor, bygde IQ en ny direktelinje mellom Nordpolen (90° nord) og stuen deres på Landås i Bergen.\n\nMEN NOE HAR KOMMET INN PÅ LINJEN:\nEn mystisk digital inntrenger kalt SPØKELSESKODEN (kodenavn: KULDE) legger igjen rimfrost i serverne våre, låser kretskortene til IQ og prøver å suge fargene ut av både Snøfall TV og skjermene deres hjemme.\n\nVÅRT TEAM I SNØFALL:\n🎅 JULIUS - Sender daglige videologger på Kanal 3\n👵 NISSEMOR - Holder varmen i verkstedet med bakst og glassblåsing\n🧝 RAMPENISSEN - Utplassert felt-agent hjemme hos dere på Landås\n⚙️ IQ - Ansvarlig for kretskort, brannmur og Snøfall TV Kanal 2\n📋 WINTER - Styrer brevfugl-krypteringen og gave-sorteringen\n🦌 TRIXTER & RUDOLF - Trener på vestlandsvind rundt Ulriken\n🔮 ORAKELET - Lytter på spøkelses-frekvensen (Kanal 4)\n\nVÅRT AGENT-TEAM PÅ LANDÅS:\n🕵️ KRISTIAN (12) - Senior-Kryptoagent (koder, frekvenser og logikk)\n🧭 HÅKON (9) - Felt-Agent (kart, kretsløp og TV-styring)\n🌟 HANNA (5) - Sjefs-Speider (farger, telling, symboler og rampestreker)\n\nDAG 1 - OPPSTARTSKODE FOR LINKEN:\nFor å låse opp bærebølgen på Dag 1 trenger dere 6 bokstaver:\n- Første del (3 bokstaver) har Rampenissen gjemt på en lapp ved TV-en eller skjermen i stuen: S - I - G\n- Andre del (3 bokstaver) står registrert her i systemprotokollen: N - A - L\n\nSett de to delene sammen til ett ord på 6 bokstaver og skriv det inn i KODETERMINAL!"
+          "innhold": "SNØFALL – KART OG VELKOMST\n\nSnøfall ligger nord for alt, under Nordtoppen. Her bor Julius, Nissemor, IQ, Winter, Pil, Orakelet, Trixter og Rudolf.\n\nLANDSBYEN: verkstedet, bakeriet, pakkesentralen og slusen ved tjernet.\nANTENNEN VED TJERNET: direktelinjen til Landås, 90,0 MHz.\nNORDTOPPEN: fjellet over landsbyen. Under det ligger gamle ganger ingen bruker lenger.\n\nLinjen ble bygd av IQ i november og åpnet 1. desember. Hvis den skurrer, er det ikke dere. Det jobber vi med.\n\n– Winter, for Snøfall kommandosenter\n\n\n\nSLIK VIRKER NISSEKOMM\n\n1. Les Rampenissens e-post i NisseMail.\n2. Se dagens video fra Julius. Siste setning er viktig.\n3. Finn det Rampenissen har lagt igjen i huset.\n4. Sett sammen det huset viser og det Julius sier, og tast i KodeTerminal.\n\nIngen av delene holder alene.\n\n\n\n[SIKKERHET] Linjevakt v3.0 aktiv\n[SIKKERHET] 3 agenter verifisert: K12, H9, H5\n[SIKKERHET] Bærebølge 90,0 MHz: ustabil\n[SIKKERHET] Ukjent bærebølge 85,0 MHz: overvåkes\n[SIKKERHET] Tiltak: avventer Orakelet"
         },
         {
           "navn": "system.log",
@@ -267,14 +209,14 @@
         {
           "navn": "sikkerhet.log",
           "type": "fil",
-          "innhold": "[SIKKERHET] Brannmur v2.6 aktiv\n[SIKKERHET] 3 søsken-agenter verifisert\n[SIKKERHET] Overvåker innkommende trafikk fra polarnatten\n[SIKKERHET] Merk: Ved gråtone-angrep på iMac, kjør BRANNMUR-protokoll på Dag 21"
+          "innhold": "[SIKKERHET] Linjevakt v3.0 aktiv\n[SIKKERHET] 3 agenter verifisert: K12, H9, H5\n[SIKKERHET] Bærebølge 90,0 MHz: ustabil\n[SIKKERHET] Ukjent bærebølge 85,0 MHz: overvåkes\n[SIKKERHET] Tiltak: avventer Orakelet"
         },
         {
-          "navn": "snofall_fakta.txt",
+          "navn": "orakelets-rapport.txt",
           "type": "fil",
-          "innhold": "❄️ SNØFALL SIKKERHETSRAPPORT: SPØKELSESKODEN ❄️\n\n📍 FREKVENS OG PLASSERING:\nSnøfall ligger på 90° nord, og hovedsenderen vår går på 90.0 MHz.\n\nHVA ER SPØKELSESKODEN?\nOrakelet og IQ har analysert angrepet som startet Dag 7:\nEn iskald digital skygge prøver å senke temperaturen i hoveddatamaskinen vår til alt fryser fast.\n\nSPORINGSANALYSE (DAG 7):\nVi har fanget opp et kodenavn på 5 bokstaver:\n- De 3 første bokstavene står på den frosne lappen Rampenissen la i fryseren hjemme hos dere (K - U - L).\n- De 2 siste bokstavene ble fanget opp av Orakelets nordpol-skanner her i filen: D - E.\n\nSett sammen de 3 bokstavene fra fryseren + de 2 bokstavene her (D - E) for å avsløre inntrengerens navn på 5 bokstaver!",
+          "innhold": "ORAKELETS RAPPORT, 7. DESEMBER\n\nSender: 85,0 MHz. Retning: under Nordtoppen. Temperatur ved kilden: −42,8 °C.\n\nSignaturen er fanget. Den har et navn. Julius sier det nesten; jeg skriver det ikke her.\n\nFrostgraden måles fra i dag: hvor mye av serverrommet som er dekket av rim. Hver natt stiger den. Hver kode senker den.\n\nSignaturen er ikke sint. Den er gjentakende. Samme mønster hver natt, som noen som banker på.\n\n– Orakelet",
           "unlockConditions": {
-            "requiresTopics": ["morkets-trussel"]
+            "afterDay": 7
           }
         }
       ]
@@ -303,22 +245,6 @@
           ]
         },
         {
-          "navn": "dekoder_reinsdyr.txt",
-          "type": "fil",
-          "innhold": "🦌 CAESAR-DEKODER: BREVFUGL OVER BERGEN 🦌\n\nDag 5 - Kryptert fjell-koordinat\n\nJulius og Winter forklarer:\n'For at Spøkelseskoden ikke skal snappe opp brevfuglene når de flyr inn over Bergen, har vi forskjøvet hver bokstav ETT STEG FREM i alfabetet. For å lese koden må dere flytte hver bokstav ETT STEG TILBAKE (-1)!'\n\nNORSK ALFABET:\nA B C D E F G H I J K L M N O P Q R S T U V W X Y Z Æ Ø Å\n\nSLIK DEKODER DERE (-1 STEG TILBAKE):\n- V → U (bokstaven før V er U)\n- M → L (bokstaven før M er L)\n- S → R (bokstaven før S er R)\n- J → I (bokstaven før J er I)\n- L → K (bokstaven før L er K)\n- F → E (bokstaven før F er E)\n- O → N (bokstaven før O er N)\n\nSjekk den krypterte koden VMSJLFO som Rampenissen skrev på papirfuglen i stuen:\nV - M - S - J - L - F - O\n↓   ↓   ↓   ↓   ↓   ↓   ↓\nU - L - R - I - K - E - N\n\nHvilket kjent fjell rett ovenfor Landås fløy brevfuglen over? Skriv navnet i KODETERMINAL!",
-          "unlockConditions": {
-            "afterDay": 5
-          }
-        },
-        {
-          "navn": "snowflake-patterns.txt",
-          "type": "fil",
-          "innhold": "❄️ IS-KRYSTALLENES GEOMETRI & PRISME-LÅS ❄️\n\nMikroskop-notater fra Julius og Pil:\n\nDEL 1 - PRISME-KODEN (DAG 3):\nNår lyset treffer en iskrystall på vinduet, brytes det i alle regnbuens farger.\n- På vinduskarmen i stuen har Rampenissen lagt første halvdel av koden: P - R - I\n- Her i mikroskoploggen ligger andre halvdel av koden: S - M - E\nSett dem sammen til ordet på 6 bokstaver: P-R-I-S-M-E!\n\nDEL 2 - KRYSTALL-MATEMATIKK (DAG 9):\nHvert ekte snøkrystall har nøyaktig 6 tagger (armer).\nTell hvor mange snøkrystaller Rampenissen har festet på kjøleskapet eller døren hjemme (4 stykker).\nRegnestykke: 4 snøkrystaller × 6 tagger på hver = 24 tagger totalt!",
-          "unlockConditions": {
-            "requiresTopics": ["snostorm-snøfall"]
-          }
-        },
-        {
           "navn": "julekuleblasing.txt",
           "type": "fil",
           "innhold": "🎄 NISSEMORS KRYSTALLKULER (DAG 9) 🎄\n\nNissemor og Pil blåser glasskuler med snøkrystall-mønster for å styrke skjoldet rundt Snøfall.\n\nFORMEL FOR KRYSTALL-SYMMETRI:\n- 1 snøkrystall = 6 kanter/tagger\n- 2 snøkrystaller = 12 kanter/tagger\n- 3 snøkrystaller = 18 kanter/tagger\n- 4 snøkrystaller = 24 kanter/tagger\n\nHanna og Håkon: Tell snøkrystallene Rampenissen har hengt opp hjemme hos dere (4 stk), og gang med 6!",
@@ -329,7 +255,10 @@
         {
           "navn": "farge-koder.txt",
           "type": "fil",
-          "innhold": "🎨 FARGESPEKTERET PÅ SNØFALL TV 🎨\n\nBilledrøret på Snøfall TV bruker hele fargespekteret for å holde Spøkelseskoden ute:\n🔴 RØD - Varme fra juleverkstedet\n🟢 GRØNN - Nordlys og kretskort\n🔵 BLÅ - Polarnatt og stjernehimmel\n🟡 GULL - Julemagi på full styrke\n\nNår alle fargene lyser sammen, danner de et komplett SPEKTER!"
+          "innhold": "🎨 FARGESPEKTERET PÅ SNØFALL TV 🎨\n\nBilledrøret på Snøfall TV bruker hele fargespekteret for å holde Spøkelseskoden ute:\n🔴 RØD - Varme fra juleverkstedet\n🟢 GRØNN - Nordlys og kretskort\n🔵 BLÅ - Polarnatt og stjernehimmel\n🟡 GULL - Julemagi på full styrke\n\nNår alle fargene lyser sammen, danner de et komplett SPEKTER!",
+          "unlockConditions": {
+            "afterDay": 10
+          }
         },
         {
           "navn": "farge_system_dekoder.txt",
@@ -432,6 +361,14 @@
             "requiresTopics": ["morket-beseirt"],
             "requiresCompletedDays": [15, 16, 17, 18, 19, 20, 21]
           }
+        },
+        {
+          "navn": "alfabet.txt",
+          "type": "fil",
+          "innhold": "ALFABETET, SLIK WINTER BRUKER DET\n\nA B C D E F G H I J K L M N O P Q R S T U V W X Y Z Æ Ø Å\n\n29 bokstaver. Vårt slutter på Å.",
+          "unlockConditions": {
+            "afterDay": 5
+          }
         }
       ]
     },
@@ -442,17 +379,18 @@
         {
           "navn": "snill_slem_liste.txt",
           "type": "fil",
-          "innhold": "🎄 JULIUS' OFFISIELLE SNILL & SLEM LISTE 🎄\n\n[ADVARSEL: SKRIVEBESKYTTET - ADMIN TILGANG PÅKREVD]\n[SIKKERHETSNIVÅ: MAKSIMUM]\n\n═══════════════\n\n✨ SNILL LISTE ✨\n\n{{NICE_LIST_ENTRIES}}\n\n═══════════════\n\n⚠️ SLEM LISTE ⚠️\n\n1. Spøkelseskoden 'KULDE' (Blokkert i brannmuren!)\n\n[Merk: Ingen barn på Landås står på slem-listen!]\n\n═══════════════\n\nSist oppdatert: {{UPDATE_DATE}}\nNeste gjennomgang: 24. Desember kl 23:59\n\n{{FINALE_MESSAGE}}"
+          "innhold": "🎄 JULIUS' OFFISIELLE SNILL & SLEM LISTE 🎄\n\n[ADVARSEL: SKRIVEBESKYTTET - ADMIN TILGANG PÅKREVD]\n[SIKKERHETSNIVÅ: MAKSIMUM]\n\n═══════════════\n\n✨ SNILL LISTE ✨\n\n{{NICE_LIST_ENTRIES}}\n\n═══════════════\n\n⚠️ SLEM LISTE ⚠️\n\n1. Spøkelseskoden 'KULDE' (Blokkert i brannmuren!)\n\n[Merk: Ingen barn på Landås står på slem-listen!]\n\n═══════════════\n\nSist oppdatert: {{UPDATE_DATE}}\nNeste gjennomgang: 24. Desember kl 23:59\n\n{{FINALE_MESSAGE}}",
+          "unlockConditions": {
+            "afterDay": 22
+          }
         },
         {
           "navn": "reinsdyr_GYATT.log",
           "type": "fil",
-          "innhold": "🦌 REINSDYR-DRIVSTOFF OG TELEMETRI (DAG 19) 🦌\n\nIQs nye fôringsautomat eksploderte på verkstedet!\nHva er det knasende oransje super-drivstoffet som gir Rudolf og Trixter 9000% fart over Ulriken?\n\n- Sjekk de 3 ekte grønnsakene Rampenissen har gjemt i huset (første halvdel: G - U - L)\n- Her i telemetriloggen står andre halvdel: R - O - T\n\nSett dem sammen: G-U-L-R-O-T (6 bokstaver)!"
-        },
-        {
-          "navn": "hemmelig_kode.txt",
-          "type": "fil",
-          "innhold": "⭐ AGENT-HILSEN TIL LANDÅS ⭐\n\nImponerende at dere sjekker alle arkivmappene!\nTips fra IQ: Prøv å klikke rundt i Snøfall TV på Kanal 1, 2, 3 og 4 - der skjuler det seg både minispill, lydsignaler og hemmelige målere."
+          "innhold": "🦌 REINSDYR-DRIVSTOFF OG TELEMETRI (DAG 19) 🦌\n\nIQs nye fôringsautomat eksploderte på verkstedet!\nHva er det knasende oransje super-drivstoffet som gir Rudolf og Trixter 9000% fart over Ulriken?\n\n- Sjekk de 3 ekte grønnsakene Rampenissen har gjemt i huset (første halvdel: G - U - L)\n- Her i telemetriloggen står andre halvdel: R - O - T\n\nSett dem sammen: G-U-L-R-O-T (6 bokstaver)!",
+          "unlockConditions": {
+            "afterDay": 19
+          }
         }
       ]
     },

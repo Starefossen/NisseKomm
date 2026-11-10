@@ -409,11 +409,11 @@ export const userSession = defineType({
       description: "ISO timestamp when Nice List was last opened",
     },
     {
-      name: "dagbokLastRead",
-      title: "Dagbok Last Read Day",
-      type: "number",
-      initialValue: 0,
-      description: "Last diary entry day that was read (for scroll position)",
+      name: "juliusWatched",
+      title: "Julius Videos Watched",
+      type: "array",
+      of: [{ type: "number" }],
+      description: "Days whose Julius video has been played to the end",
     },
   ],
   preview: {

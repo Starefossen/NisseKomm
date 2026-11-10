@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { RetroWindow } from "../ui/RetroWindow";
+import { JuliusVideo } from "../modules/JuliusVideo";
 import { LEDIndicator } from "../ui/LEDIndicator";
 import { Icons } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
@@ -28,426 +29,53 @@ interface SnøfallTVProps {
   currentDay?: number;
 }
 
-type SpeakerId = "JULIUS" | "IQ" | "ORAKELET" | "WINTER";
 type ChannelId = 1 | 2 | 3 | 4;
 type MiniGameId = "kretskort" | "sorterer" | "slede" | "zapper";
-
-interface VlogEntry {
-  day: number;
-  speaker: SpeakerId;
-  locationLabel: string;
-  title: string;
-  transcript: string;
-  codeHint: string;
-  recommendedChannel: ChannelId;
-  segmentTag: string;
-  teletextCode: string;
-  teletextDiagram: string;
-}
-
-const VLOG_ENTRIES: VlogEntry[] = [
-  {
-    day: 1,
-    speaker: "JULIUS",
-    locationLabel: "SNØFALL HOVEDHUSET",
-    title: "Direktelinje til Landås!",
-    transcript:
-      "Hallo Kristian, Håkon og Hanna! Hører dere meg på Landås? IQ har koblet opp dette nye billedrøret slik at dere kan følge oss direkte fra Snøfall. Sjekk den røde tråden ved TV-en deres (S-I-G) og filen om-snofall.txt (N-A-L)!",
-    codeHint: "DEL 1 (Stue): S-I-G + DEL 2 (NisseNet): N-A-L",
-    recommendedChannel: 3,
-    segmentTag: "CAM 03: VHS-LOGG #01",
-    teletextCode: "S-I-G + N-A-L",
-    teletextDiagram: "📡 [STUE: RØD TRÅD] ───► [NISSENET: FIL] ───► SIGNAL",
-  },
-  {
-    day: 2,
-    speaker: "IQ",
-    locationLabel: "VERKSTED-LAB SEKTOR B",
-    title: "Tre sikringer i luften!",
-    transcript:
-      "Eh... hei! Jeg skulle bare koble espressomaskinen på videologg-forsterkeren, og PANG! Finn de tre sikringslappene Rampenissen teipet under stolene ved spisebordet (12V, 16V og 20V) og slå på alle tre sikringene på CAM 2!",
-    codeHint: "12V + 16V + 20V = ? Volt (Slå på sikringene på CAM 2!)",
-    recommendedChannel: 2,
-    segmentTag: "CAM 02: SIKRINGSSKAP",
-    teletextCode: "12V + 16V + 20V",
-    teletextDiagram:
-      "⚡ [SIKRING 1: 12V] + [SIKRING 2: 16V] + [SIKRING 3: 20V] = 48V",
-  },
-  {
-    day: 3,
-    speaker: "ORAKELET",
-    locationLabel: "NORDLYS-OBSERVATORIET",
-    title: "Iskrystaller på linjen",
-    transcript:
-      "En kald skygge sniker langs datalinjen mellom Nordpolen og Bergen. Den legger igjen krystallmønstre på kameralinsen. Bryt lyset gjennom et PRISME: kombiner P-R-I fra vinduskarmen med S-M-E fra mikroskopfilen!",
-    codeHint: "Vinduskarm (P-R-I) + snowflake-patterns.txt (S-M-E)",
-    recommendedChannel: 1,
-    segmentTag: "CAM 01: PRISME-FILTER",
-    teletextCode: "P-R-I + S-M-E",
-    teletextDiagram: "🔭 Hvit stråle ──► △ [PRISME] ──► 🌈 R-G-B-GULL",
-  },
-  {
-    day: 4,
-    speaker: "JULIUS",
-    locationLabel: "REINSDYRSTALLEN",
-    title: "Rudolfs retningsutfordring",
-    transcript:
-      "Rudolf fløy nettopp tre runder rundt sin egen hale i tåken! Følg skotoget til Rampenissen ute i gangen for å finne de fire første bokstavene (K-O-M-P), og legg til mine tre siste bokstaver herfra: A - S - S!",
-    codeHint: "Gangen (K-O-M-P) + Videologg (A-S-S)",
-    recommendedChannel: 1,
-    segmentTag: "CAM 01: STALL-KOMPASS",
-    teletextCode: "K-O-M-P + A-S-S",
-    teletextDiagram: "🧭 [N: SNØFALL] ◄───► [S: BERGEN / LANDÅS] = KOMPASS",
-  },
-  {
-    day: 5,
-    speaker: "WINTER",
-    locationLabel: "BREVFUGL-RADAR",
-    title: "Kryptert brevfugl over Bergen",
-    transcript:
-      "Speider-brevfuglen vår landet nettopp etter å ha passert det høyeste av de syv fjellene ved Landås! Bruk Caesar-dekoderen (-1 steg tilbake) på VMSJLFO som står på papirfuglen i stuen.",
-    codeHint: "VMSJLFO med -1 skift = byfjellet ved Landås",
-    recommendedChannel: 1,
-    segmentTag: "CAM 01: ULRIKEN-RADAR",
-    teletextCode: "VMSJLFO (-1)",
-    teletextDiagram: "🕊️ V→U | M→L | S→R | J→I | L→K | F→E | O→N",
-  },
-  {
-    day: 6,
-    speaker: "JULIUS",
-    locationLabel: "SNØFALL TORG",
-    title: "Lys i desembermørket",
-    transcript:
-      "I gamle dager bar barna lykter gjennom mørket for å vise vei. Finn lommelykten og det røde hjertet ved Rampenissen, og lys under bordet for å lese dagens kode på 4 bokstaver!",
-    codeHint: "Lys under stuebordet: L - Y - K - T",
-    recommendedChannel: 1,
-    segmentTag: "CAM 01: LYKTEFEST",
-    teletextCode: "L - Y - K - T",
-    teletextDiagram: "🔦 [MØRKLAGT TORG] ──► LYS UNDER STUEBORDET ──► LYKT",
-  },
-  {
-    day: 7,
-    speaker: "ORAKELET",
-    locationLabel: "ANTENNETÅRN 90.0 MHz",
-    title: "Kodenavn: KULDE",
-    transcript:
-      "Der slo inntrengeren til på 90.0 MHz! En digital spøkelseskode prøver å fryse ned Snøfall. Redd Rampenissens utstyr ut av fryseren (K-U-L) og koble det med siste del i snofall_fakta.txt (D-E)!",
-    codeHint: "Fryseren (K-U-L) + snofall_fakta.txt (D-E)",
-    recommendedChannel: 4,
-    segmentTag: "CAM 04: 90.0 MHz ALARM",
-    teletextCode: "K-U-L + D-E",
-    teletextDiagram: "❄️ 90.0 MHz SPØKELSESKODE DETEKTERT: [K-U-L-D-E]",
-  },
-  {
-    day: 8,
-    speaker: "IQ",
-    locationLabel: "VERKSTED-LAB SEKTOR B",
-    title: "Bestikk-kretsløpet!",
-    transcript:
-      "Gratulerer med første uke fullført! Rampenissen bygde et kretsløp av skjeer og gafler på kjøkkenbenken (KRETS). Kombiner det med min komponent på CAM 2 og CAM 4 (KORT)!",
-    codeHint: "Kjøkkenbenk (KRETS) + CAM 4 kretskort (KORT)",
-    recommendedChannel: 4,
-    segmentTag: "CAM 04: KRETSKORT-HUD",
-    teletextCode: "KRETS + KORT",
-    teletextDiagram: "🔌 [KJØKKEN: KRETS] + [CAM 4 HUD: KORT] = KRETSKORT",
-  },
-  {
-    day: 9,
-    speaker: "JULIUS",
-    locationLabel: "GLASSBLÅSERIET",
-    title: "Sekskantet geometri",
-    transcript:
-      "Nissemor blåser krystallkuler i dag! Hvert ekte snøkrystall har nøyaktig 6 tagger. Tell de 4 snøkrystallene på kjøleskapet hjemme og gang med 6!",
-    codeHint: "4 snøkrystaller × 6 tagger = ?",
-    recommendedChannel: 1,
-    segmentTag: "CAM 01: KRYSTALL-LUPEN",
-    teletextCode: "4 × 6 = ??",
-    teletextDiagram: "❄️ [6] + ❄️ [6] + ❄️ [6] + ❄️ [6] = 24 TAGGER",
-  },
-  {
-    day: 10,
-    speaker: "IQ",
-    locationLabel: "VERKSTED-LAB SEKTOR B",
-    title: "Kampen om fargespekteret",
-    transcript:
-      "Spøkelseskoden Kulde prøvde å gjøre Snøfall TV svart-hvitt i natt! Hanna, finn de 4 fargene i stuen (S-P-E-K) og legg til T-E-R fra fargedekoderen i NisseNet!",
-    codeHint: "Stuen (S-P-E-K) + NisseNet (T-E-R)",
-    recommendedChannel: 1,
-    segmentTag: "CAM 01: RGB-KALIBRERING",
-    teletextCode: "S-P-E-K + T-E-R",
-    teletextDiagram: "🎨 [RØD][GRØNN][BLÅ][GULL] ──► FULLT SPEKTER AKTIVT",
-  },
-  {
-    day: 11,
-    speaker: "IQ",
-    locationLabel: "ANTENNETÅRN NØDLINK",
-    title: "Nødfrekvens 75 MHz!",
-    transcript:
-      "SKURR... Kulde jammer hovedantennen vår i snøstormen! Finn de tre sender-lappene i huset (15, 25 og 35 MHz), legg dem sammen, og still inn frekvensskanneren på CAM 4 til 75.0 MHz!",
-    codeHint: "15 + 25 + 35 = ? MHz (Still inn 75.0 MHz på CAM 4!)",
-    recommendedChannel: 4,
-    segmentTag: "CAM 04: 75.0 MHz NØDLINK",
-    teletextCode: "15 + 25 + 35 MHz",
-    teletextDiagram: "📡 [15 MHz] + [25 MHz] + [35 MHz] = 75.0 MHz NØDSIGNAL",
-  },
-  {
-    day: 12,
-    speaker: "JULIUS",
-    locationLabel: "SNØFALL HOVEDHUSET",
-    title: "Musikk som smelter is",
-    transcript:
-      "Ingenting varmer et frossent serverrom som en ekte jule-MELODI! Sjekk klokkespillet av kopper på kjøkkenet (M-E-L) og julesanger-samling.txt (O-D-I) - og lås opp Nivå 1 i NisseKrypto!",
-    codeHint: "Kjøkken (M-E-L) + NisseNet (O-D-I)",
-    recommendedChannel: 4,
-    segmentTag: "CAM 04: 100.0 MHz JULE-FM",
-    teletextCode: "M-E-L + O-D-I",
-    teletextDiagram: "🎵 100.0 MHz HARMONISK BØLGE: [M-E-L] + [O-D-I]",
-  },
-  {
-    day: 13,
-    speaker: "JULIUS",
-    locationLabel: "SNØFALL TORG",
-    title: "Luciadagens gylne glød",
-    transcript:
-      "Nissemors lussekatter lyser som små soler mot kulden! Kombiner S-A-F fra Luciatoget i stuen med R-A-N fra oppskriftsfilen i NisseNet.",
-    codeHint: "Stue (S-A-F) + NisseNet (R-A-N)",
-    recommendedChannel: 1,
-    segmentTag: "CAM 01: LUCIATOG",
-    teletextCode: "S-A-F + R-A-N",
-    teletextDiagram: "🕯️🕯️🕯️ LUCIATOG I SNØFALL: [S-A-F] + [R-A-N] = SAFRAN",
-  },
-  {
-    day: 14,
-    speaker: "WINTER",
-    locationLabel: "BREVFUGL-TÅRNET",
-    title: "Origami-protokollen aktiv!",
-    transcript:
-      "Endelig kan vi åpne Brevfugler-modulen! Finn de 4 første bokstavene på papirfuglen på bordet (O-R-I-G) og legg til A-M-I fra brevfugl-finale.txt.",
-    codeHint: "Papirfugl (O-R-I-G) + NisseNet (A-M-I)",
-    recommendedChannel: 1,
-    segmentTag: "CAM 01: BREVFUGL-TÅRN",
-    teletextCode: "O-R-I-G + A-M-I",
-    teletextDiagram: "✉️ ──► 🕊️ BREVFUGL-PROTOKOLL: [O-R-I-G-A-M-I]",
-  },
-  {
-    day: 15,
-    speaker: "JULIUS",
-    locationLabel: "VERKSTED-KJØKKENET",
-    title: "Søt varme på kjøkkenet",
-    transcript:
-      "Rampenissen prøvde å koke Fargesamlerens oppskrift i natt! Finn skålene på kjøkkenet (K-A-R-A) og sjekk IQs boblende kolbe på CAM 2 (M-E-L-L)!",
-    codeHint: "Kjøkken (K-A-R-A) + CAM 2 kolbe (M-E-L-L)",
-    recommendedChannel: 2,
-    segmentTag: "CAM 02: KARAMELL-KOLBE",
-    teletextCode: "K-A-R-A + M-E-L-L",
-    teletextDiagram: "🧪 [KJØKKEN: KARA] + [LAB-KOLBE: MELL] = KARAMELL",
-  },
-  {
-    day: 16,
-    speaker: "WINTER",
-    locationLabel: "PAKKESENTRALEN",
-    title: "Samlebånd-kaos!",
-    transcript:
-      "Kulde snudde gave-sorteringen på hodet! Sjekk de 4 lekehaugene i stuen (S-O-R-T) og hjelp meg i Gave-Sorterer på CAM 4 for å låse opp siste del (E-R-I-N-G)!",
-    codeHint: "Stuegulv (S-O-R-T) + CAM 4 Sorterer (E-R-I-N-G)",
-    recommendedChannel: 4,
-    segmentTag: "CAM 04: GAVE-SORTERER",
-    teletextCode: "S-O-R-T + E-R-I-N-G",
-    teletextDiagram: "📦 [TRANSPORT][KOSEDYR][KLOSSER][KREATIVT] ──► SORTERING",
-  },
-  {
-    day: 17,
-    speaker: "ORAKELET",
-    locationLabel: "NORDLYS-OBSERVATORIET",
-    title: "Himmelbroen i nord",
-    transcript:
-      "Satellitten frøs, men himmelen selv bærer signalet vårt! Kombiner det grønne båndet i gangen (N-O-R-D) med de tre siste bokstavene fra nordlyset på CAM 1: L - Y - S!",
-    codeHint: "Gangen (N-O-R-D) + CAM 1 Nordlys (L-Y-S)",
-    recommendedChannel: 1,
-    segmentTag: "CAM 01: NORDLYS-BROEN",
-    teletextCode: "N-O-R-D + L-Y-S",
-    teletextDiagram: "🌌 POLARSTRÅLE AKTIV PÅ CAM 1: [N-O-R-D] + [L-Y-S]",
-  },
-  {
-    day: 18,
-    speaker: "JULIUS",
-    locationLabel: "FLYSIMULATOREN",
-    title: "Vestlandsvind i simulatoren",
-    transcript:
-      "Det blåser friskt rundt Ulriken! Finn vindlappen ved jakkene i gangen (T-U-R-B-U) og test Slede-Simulatoren på CAM 4 for de siste bokstavene (L-E-N-S)!",
-    codeHint: "Gangen (T-U-R-B-U) + CAM 4 Simulator (L-E-N-S)",
-    recommendedChannel: 4,
-    segmentTag: "CAM 04: SLEDE-RADAR",
-    teletextCode: "T-U-R-B-U + L-E-N-S",
-    teletextDiagram: "🛷 UNNGÅ KASTEVIND OVER ULRIKEN: [TURBU] + [LENS]",
-  },
-  {
-    day: 19,
-    speaker: "IQ",
-    locationLabel: "VERKSTED-LAB SEKTOR B",
-    title: "Høyekspress gulrot-energi",
-    transcript:
-      "Reinsdyrene trenger super-energi før siste innspurt! Finn de 3 gulrøttene gjemt i huset (G-U-L) og kjør sentrifugen på CAM 2 for siste del (R-O-T)!",
-    codeHint: "3 gulrøtter i huset (G-U-L) + CAM 2 Sentrifuge (R-O-T)",
-    recommendedChannel: 2,
-    segmentTag: "CAM 02: SENTRIFUGE",
-    teletextCode: "G-U-L + R-O-T",
-    teletextDiagram: "🥕 [3 GULRØTTER: GUL] + [SENTRIFUGE: ROT] = GULROT",
-  },
-  {
-    day: 20,
-    speaker: "IQ",
-    locationLabel: "VERKSTED-LAB SEKTOR B",
-    title: "Overlyds-slede klar!",
-    transcript:
-      "Bygg en slede av sofaputer i stuen for de første bokstavene (T-U-R), og aktiver trykkmåleren på CAM 2 for siste del (B-O)!",
-    codeHint: "Pute-slede i stuen (T-U-R) + CAM 2 Trykkmåler (B-O)",
-    recommendedChannel: 2,
-    segmentTag: "CAM 02: TRYKKMÅLER",
-    teletextCode: "T-U-R + B-O",
-    teletextDiagram: "🚀 [PUTE-SLEDE: TUR] + [TRYKKMÅLER: BO] = TURBO",
-  },
-  {
-    day: 21,
-    speaker: "ORAKELET",
-    locationLabel: "ANTENNETÅRN BRANNMUR",
-    title: "Slaget ved brannmuren!",
-    transcript:
-      "Dette er det avgjørende slaget mot Spøkelseskoden Kulde! Bygg en mur av bøker rundt Rampenissen (B-R-A-N-N) og rens de 3 frekvensene på CAM 4 for siste del (M-U-R)!",
-    codeHint: "Bok-mur (B-R-A-N-N) + CAM 4 Frekvens-Renser (M-U-R)",
-    recommendedChannel: 4,
-    segmentTag: "CAM 04: BRANNMUR-RENS",
-    teletextCode: "B-R-A-N-N + M-U-R",
-    teletextDiagram: "🛡️ [BOK-MUR: BRANN] + [CAM 4 RENS: MUR] = BRANNMUR",
-  },
-  {
-    day: 22,
-    speaker: "JULIUS",
-    locationLabel: "GULLBOK-GALLERIET",
-    title: "Innflyging Landås",
-    transcript:
-      "Brannmuren holdt og Spøkelseskoden er borte! Nå legger vi inn landingsruten for Bergen. Finn tallene i de tre julesokkene (12-1, 14-4 og 29-19) og bruk julekode_dekoder.txt for å stave bydelen deres!",
-    codeHint:
-      "3 julesokker (12-1, 14-4, 29-19) + NisseNet (A=1..Å=29) = LANDÅS",
-    recommendedChannel: 3,
-    segmentTag: "CAM 03: LANDINGSKODE",
-    teletextCode: "12-1 · 14-4 · 29-19",
-    teletextDiagram: "🧦 [12-1: LA] + [14-4: ND] + [29-19: ÅS] = LANDÅS",
-  },
-  {
-    day: 23,
-    speaker: "JULIUS",
-    locationLabel: "SNØFALL HOVEDHUSET",
-    title: "Stjerneklart over Bergen",
-    transcript:
-      "Sekken er pakket og himmelen over Ulriken og Landås er helt klar! Finn første del ved juletreet (S-T-J-E-R-N-E) og legg til andre del her på skjermen: K - L - A - R - T!",
-    codeHint: "Ved juletreet (S-T-J-E-R-N-E) + Snøfall TV Kanal 3 (K-L-A-R-T)",
-    recommendedChannel: 3,
-    segmentTag: "CAM 03: LILLE JULAFTEN",
-    teletextCode: "STJERNE + KLART",
-    teletextDiagram: "🌟 [JULETRE: STJERNE] + [KANAL 3: KLART] = STJERNEKLART",
-  },
-  {
-    day: 24,
-    speaker: "JULIUS",
-    locationLabel: "SNØFALL LUFTROM",
-    title: "Julaften - Operasjon Fullført!",
-    transcript:
-      "Riktig god jul, Kristian, Håkon og Hanna! Tusen takk for at dere reddet Snøfall! Åpne gullkonvolutten under juletreet (J-U-L-E) og legg til siste del her på Kanal 3: M - A - G - I!",
-    codeHint:
-      "Under juletreet (J-U-L-E) + Snøfall TV Kanal 3 (M-A-G-I) = JULEMAGI",
-    recommendedChannel: 3,
-    segmentTag: "CAM 03: JULAFTEN FINALE",
-    teletextCode: "J-U-L-E + M-A-G-I",
-    teletextDiagram: "🎅🛷✨ [JULETRE: JULE] + [KANAL 3: MAGI] = JULEMAGI!",
-  },
-];
-
-const SPEAKER_META: Record<
-  SpeakerId,
-  {
-    name: string;
-    role: string;
-    feedImage: string;
-    colorClass: string;
-    tintStyle: string;
-  }
-> = {
-  JULIUS: {
-    name: "JULIUS",
-    role: "Julebrev-sjef & Julenisse",
-    feedImage: "/feed/julius-kontor.png",
-    colorClass: "text-(--gold)",
-    tintStyle: "contrast(1.08) saturate(1.1) brightness(0.95)",
-  },
-  IQ: {
-    name: "IQ",
-    role: "Sjefsingeniør i Snøfall",
-    feedImage: "/feed/iq-verksted.png",
-    colorClass: "text-(--neon-green)",
-    tintStyle: "contrast(1.15) saturate(1.15) brightness(0.92)",
-  },
-  ORAKELET: {
-    name: "ORAKELET",
-    role: "Vokter av Nordlyset",
-    feedImage: "/feed/antenne-tarn.png",
-    colorClass: "text-(--cold-blue)",
-    tintStyle: "hue-rotate(-10deg) contrast(1.2) brightness(0.9)",
-  },
-  WINTER: {
-    name: "WINTER",
-    role: "Speider & Brevfugl-pilot",
-    feedImage: "/feed/snøfall-day.png",
-    colorClass: "text-(--neon-green)",
-    tintStyle: "contrast(1.12) brightness(0.9)",
-  },
-};
 
 const KULDE_INTERCEPTS: Record<
   number,
   { title: string; transcript: string; telemetry: string }
 > = {
   3: {
-    title: "ISKRYSTALL-INFeksjon PÅ LINJEN",
+    title: "85,0 MHz // UKJENT SENDER",
     transcript:
-      "DERE SER MEG IKKE ENNÅ, LANDÅS... Men is-krystallene mine vokser allerede langs kablene fra Nordpolen. Snart fryser jeg både bildet og fargene deres!",
-    telemetry: "85.0 MHz // KRYSTALLGROTTEN SEKTOR 01 // PRISME-BLOKKERING",
+      "Er det noen der? Linjen deres er varm. Jeg kjente den helt her nede. Jeg la litt rim på den, bare så jeg kunne holde i den.",
+    telemetry: "85,0 MHz // KRYSTALLGROTTEN // SEKTOR 01",
   },
   7: {
-    title: "KODENAVN: KULDE ER VÅKNET",
+    title: "85,0 MHz // SIGNATUR",
     transcript:
-      "90.0 MHz TILHØRER MEG NÅ! Jeg har frosset ned Rampenissens utstyr og lagt is rundt antennetårnet i Snøfall. Dere klarer aldri å stave navnet mitt i tide!",
-    telemetry: "85.0 MHz // KRYSTALLGROTTEN HOVEDSENDER // -42.8°C",
+      "Orakelet deres leter etter navnet mitt. Ingen har sagt det på et år. Si det, når dere finner det.",
+    telemetry: "85,0 MHz // −42,8 °C // SIGNATUR FANGET",
   },
   10: {
-    title: "FARGESPEKTERET SKAL SLUKKES",
+    title: "FARGENE",
     transcript:
-      "Rødt, grønt og gull? Hvorfor trenger dere farger når alt kan være kaldt, stille og grått? Jeg suger fargene ut av Snøfall TV én etter én!",
-    telemetry: "85.0 MHz // KROMATISK DRENERING AKTIV // MONOKROM LÅS",
+      "Fargene er hos meg nå. Rødt. Grønt. Jeg hadde glemt hvordan de så ut. Jeg skal passe godt på dem.",
+    telemetry: "85,0 MHz // KROMATISK DRENERING 71 %",
   },
   11: {
-    title: "TOTAL BLOKKERING AV NORDTOPPEN",
+    title: "ANTENNEN",
     transcript:
-      "SKURR... Hovedsenderen på 90 MHz er begravd i min snøstorm! Uten nødfrekvensen deres er Snøfall helt isolert fra Bergen!",
-    telemetry: "85.0 MHz // JAMMING- EFFEKT 98% // NØDLINK UKJENT",
+      "Antennen deres roper så høyt mot Bergen. Jeg la is på den, så den kunne høre på meg i stedet. Ingen hører på meg.",
+    telemetry: "85,0 MHz // ANTENNEN VED TJERNET // IS",
   },
   13: {
-    title: "SKYGGEN FRA KRYSTALLGROTTEN",
+    title: "LYSENE",
     transcript:
-      "Ser dere meg mellom istappene på 85.0 MHz? Selv om Lucia-lyset deres blafret i mørket, ruger jeg over hele frekvensbåndet fra Nordtoppen!",
-    telemetry: "85.0 MHz // KRYSTALLGROTTEN DYPSONE // SKYGGE-DETEKSJON",
+      "Lysene deres. Jeg så dem gjennom linjen i natt. Jeg husker ikke når jeg så lys sist.",
+    telemetry: "85,0 MHz // KRYSTALLGROTTEN // STILLE",
   },
   16: {
-    title: "KAOS I PAKKESENTRALEN",
+    title: "BÅNDET",
     transcript:
-      "Jeg snudde samlebåndet til Winter og IQ! Tog, bamser og klosser ligger strødd i et eneste rot. Ingen pakker kommer frem til julaften!",
-    telemetry: "85.0 MHz // LOGISTIKK-SABOTASJE // SORTERINGS-LÅS",
+      "Jeg snudde båndet til Winter. Nå ser hun opp. Nå ser hun hit. Det var alt jeg ville.",
+    telemetry: "85,0 MHz // PAKKESENTRALEN // BÅNDET SNUDD",
   },
   21: {
-    title: "SISTE ANGREP MOT BRANNMUREN",
-    transcript:
-      "NÅ FRYSER JEG SKJERMEN DERES PÅ LANDÅS! Med mindre alle tre søsknene bygger muren og renser bærebølgene mine, forblir Snøfall frosset for alltid!",
-    telemetry: "85.0 MHz // MAKSIMAL KRYO-IMPULS // BRANNMUR KRITISK",
+    title: "DET ER KALDT HER NEDE",
+    transcript: "Det er kaldt her nede. Jeg ville bare se lyset deres.",
+    telemetry: "85,0 MHz // 94 % // …",
   },
 };
 
@@ -463,7 +91,6 @@ interface TVScenarioExample {
   centrifugeSpinning?: boolean;
   pressureTurbo?: boolean;
   pirateIntercept?: boolean;
-  showTeletext?: boolean;
   frequencyMhz?: number;
   showCam4Hud?: boolean;
 }
@@ -480,12 +107,12 @@ const TV_SCENARIO_EXAMPLES: TVScenarioExample[] = [
   },
   {
     id: "ulriken-brevfugl",
-    label: "🦅 Ulriken: Brevfugl-flukt",
+    label: "🦅 Byfjellene: Brevfugl-flukt",
     channel: 1,
     day: 5,
     lensMode: "radar",
     sightingNote:
-      "OBSERVASJON: Luftrumsradaren fanger et varmt optisk ekko i lav høyde over fjellkammen på kurs mot Ulriken.",
+      "OBSERVASJON: Luftrumsradaren fanger et varmt optisk ekko i lav høyde over fjellkammen på kurs mot byfjellene.",
   },
   {
     id: "lab-iq-nattskift",
@@ -517,7 +144,6 @@ const TV_SCENARIO_EXAMPLES: TVScenarioExample[] = [
     channel: 3,
     day: 1,
     pirateIntercept: false,
-    showTeletext: false,
     sightingNote:
       "OBSERVASJON: Varm peisglød, støvkorn i lyskjeglen og damp fra gløggkoppen ved den åpne Snøfall-krøniken.",
   },
@@ -527,7 +153,6 @@ const TV_SCENARIO_EXAMPLES: TVScenarioExample[] = [
     channel: 3,
     day: 13,
     pirateIntercept: true,
-    showTeletext: false,
     sightingNote:
       "OBSERVASJON: Analogt dobbelteksponert spøkelsesbilde (RF multipath) fra Krystallgrotten blør gjennom billedrøret på 85.0 MHz.",
   },
@@ -707,8 +332,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
   const initialDay = Math.max(1, Math.min(24, propDay ?? getCurrentDay()));
   const [selectedDay, setSelectedDay] = useState<number>(initialDay);
 
-  const currentVlog =
-    VLOG_ENTRIES.find((entry) => entry.day === selectedDay) ?? VLOG_ENTRIES[0];
+  const maxDay = Math.max(1, Math.min(24, getCurrentDay()));
 
   const [activeChannel, setActiveChannel] = useState<ChannelId>(1);
   const [activeScenarioId, setActiveScenarioId] =
@@ -733,16 +357,13 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
   const [pressureTurbo, setPressureTurbo] = useState(false);
 
   // CAM 3 VHS & Teletext states
-  const [charIndex, setCharIndex] = useState(0);
-  const [showTeletext, setShowTeletext] = useState(false);
   const [pirateIntercept, setPirateIntercept] = useState(false);
   const [vhsFrameCounter, setVhsFrameCounter] = useState(0);
 
   const activeKuldeIntercept = KULDE_INTERCEPTS[selectedDay] || {
-    title: "KRYPTERT BÆREBØLGE FRA KRYSTALLGROTTEN",
-    transcript:
-      "SKURR... 85.0 MHz... Is-krystallene mine vokser seg sterkere i skyggene under Snøfall. Hver eneste kode dere nøler med gjør vintermørket dypere!",
-    telemetry: `85.0 MHz // KRYSTALLGROTTEN // DAG ${selectedDay} INTERFERENS`,
+    title: "85,0 MHz // UKJENT SENDER",
+    transcript: "…",
+    telemetry: "85,0 MHz // KRYSTALLGROTTEN // INGEN STEMME",
   };
 
   // CAM 4 Antenna & HUD states
@@ -804,24 +425,6 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
     return () => clearInterval(timer);
   }, []);
 
-  const activeTranscript = pirateIntercept
-    ? activeKuldeIntercept.transcript
-    : currentVlog.transcript;
-
-  // Typewriter subtitle effect on CAM 3
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCharIndex((prev) => {
-        if (prev >= activeTranscript.length) {
-          clearInterval(interval);
-          return prev;
-        }
-        return prev + 2;
-      });
-    }, 28);
-    return () => clearInterval(interval);
-  }, [selectedDay, activeTranscript, pirateIntercept]);
-
   const triggerChannelSwitchEffect = useCallback(() => {
     setIsSwitchingChannel(true);
     setTimeout(() => {
@@ -837,10 +440,9 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
   };
 
   const handleDaySelect = (day: number) => {
-    const clamped = Math.max(1, Math.min(24, day));
+    const clamped = Math.max(1, Math.min(maxDay, day));
     SoundManager.playSound("click");
     triggerChannelSwitchEffect();
-    setCharIndex(0);
     setPirateIntercept(false);
     setSelectedDay(clamped);
 
@@ -865,8 +467,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
     triggerChannelSwitchEffect();
     setActiveScenarioId(scenario.id);
     setActiveChannel(scenario.channel);
-    setSelectedDay(scenario.day);
-    setCharIndex(0);
+    setSelectedDay(Math.min(maxDay, scenario.day));
 
     if (scenario.lensMode) setCam1LensMode(scenario.lensMode);
     if (scenario.fuses) setFuses(scenario.fuses);
@@ -878,8 +479,6 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
       setPressureTurbo(scenario.pressureTurbo);
     if (typeof scenario.pirateIntercept === "boolean")
       setPirateIntercept(scenario.pirateIntercept);
-    if (typeof scenario.showTeletext === "boolean")
-      setShowTeletext(scenario.showTeletext);
     if (typeof scenario.frequencyMhz === "number")
       setFrequencyMhz(scenario.frequencyMhz);
     if (typeof scenario.showCam4Hud === "boolean")
@@ -916,7 +515,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
       snow: "SNØ",
       "heavy-snow": "TUNG SNØ",
       storm: "STORM",
-      darkness: "KULDE-SKYGGE",
+      darkness: "FROST-SKYGGE",
     };
     return labels[condition];
   };
@@ -928,8 +527,6 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
   const isKuldeInterference =
     (selectedDay >= 7 && selectedDay <= 20 && !allZapperLocked) ||
     (activeChannel === 4 && frequencyMhz === 90);
-
-  const speakerInfo = SPEAKER_META[currentVlog.speaker];
 
   return (
     <RetroWindow
@@ -1442,11 +1039,9 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                     >
                       <div className="w-2 h-2 bg-(--gold) rounded-full animate-ping" />
                       <div className="absolute -bottom-5 left-0 bg-black/80 px-1.5 py-0.5 text-[10px] text-(--neon-green) whitespace-nowrap border border-(--neon-green)/50">
-                        {selectedDay === 5
-                          ? "MÅL: VMSJLFO (-1)"
-                          : selectedDay === 14
-                            ? "BREVFUGL: A-M-I"
-                            : "RUDOLF: A-S-S"}
+                        {selectedDay === 5 || selectedDay === 14
+                          ? "BREVFUGL"
+                          : "RUDOLF"}
                       </div>
                     </div>
                   </div>
@@ -1556,11 +1151,11 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                     </div>
                     <div className="text-xs text-(--neon-green)/90 mt-0.5">
                       {cam1LensMode === "prisme"
-                        ? "OPTISK PRISME AKTIVT: P-R-I + S-M-E = PRISME | S-P-E-K + T-E-R = SPEKTER"
+                        ? "OPTISK LINSE AKTIV: LYSET BRYTES I FARGER"
                         : cam1LensMode === "radar"
-                          ? "LUFTRUMSRADAR: VMSJLFO (-1 = ULRIKEN) | O-R-I-G + A-M-I | K-O-M-P + A-S-S"
+                          ? "LUFTROMSRADAR AKTIV: SØKER ETTER BREVFUGLER"
                           : cam1LensMode === "nordlys"
-                            ? "POLARSTRÅLE LÅST: N-O-R-D + L-Y-S = NORDLYS!"
+                            ? "POLARHIMMEL: SVAKT GRØNT SKJÆR"
                             : todayWeather.description}
                     </div>
                   </div>
@@ -1572,9 +1167,6 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                         minute: "2-digit",
                         second: "2-digit",
                       })}
-                    </div>
-                    <div className="text-[10px] text-(--gold)">
-                      {currentVlog.teletextCode}
                     </div>
                   </div>
                 </div>
@@ -1782,7 +1374,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                   className="absolute z-30 px-2 py-1 bg-black/75 border border-(--christmas-red) text-[11px] text-(--christmas-red) hover:bg-(--christmas-red)/20 cursor-pointer"
                   style={{ left: "18%", top: "38%" }}
                 >
-                  [SIKRING 1: {fuses[0] ? "12V PÅ" : "AV"}]
+                  [SIKRING 1: {fuses[0] ? "PÅ" : "AV"}]
                 </button>
 
                 <button
@@ -1793,7 +1385,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                   className="absolute z-30 px-2 py-1 bg-black/75 border border-(--neon-green) text-[11px] text-(--neon-green) hover:bg-(--neon-green)/20 cursor-pointer"
                   style={{ left: "38%", top: "33%" }}
                 >
-                  [SIKRING 2: {fuses[1] ? "16V PÅ" : "AV"}]
+                  [SIKRING 2: {fuses[1] ? "PÅ" : "AV"}]
                 </button>
 
                 <button
@@ -1804,7 +1396,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                   className="absolute z-30 px-2 py-1 bg-black/75 border border-(--cold-blue) text-[11px] text-(--cold-blue) hover:bg-(--cold-blue)/20 cursor-pointer"
                   style={{ left: "73%", top: "38%" }}
                 >
-                  [SIKRING 3: {fuses[2] ? "20V PÅ" : "AV"}]
+                  [SIKRING 3: {fuses[2] ? "PÅ" : "AV"}]
                 </button>
 
                 {/* Top Camera OSD Bar */}
@@ -1822,8 +1414,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                         : "border-(--neon-green)/60 text-(--neon-green)"
                     }`}
                   >
-                    SPENNING: {totalVoltage}V / 48V{" "}
-                    {totalVoltage === 48 ? "✓ STABIL (KODE: 48)" : "[USTABIL]"}
+                    SPENNING: {totalVoltage === 48 ? "✓ STABIL" : "[USTABIL]"}
                   </div>
                 </div>
 
@@ -1832,17 +1423,17 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                   <div className="bg-black/85 border border-(--neon-green)/60 px-3 py-1.5 max-w-lg">
                     <div className="text-xs text-(--gold) font-bold">
                       {totalVoltage === 48
-                        ? "⚡ HOVEDSTRØM 48 VOLT AKTIV! (Dag 2 kode: 48)"
-                        : "⚡ Klikk på sikringsboksene i kamerabildet (12V + 16V + 20V)"}
+                        ? "⚡ HOVEDSTRØM AKTIV!"
+                        : "⚡ Klikk på sikringsboksene i kamerabildet"}
                     </div>
                     <div className="text-[11px] text-(--neon-green)/90 mt-0.5">
                       {boilerHot
-                        ? "🧪 KARAMELL-KOLBE 100°C: K-A-R-A + M-E-L-L = KARAMELL!"
+                        ? "🧪 KOLBE 100°C: DET BOBLER"
                         : centrifugeSpinning
-                          ? "🥕 GULROT-SENTRIFUGE: G-U-L + R-O-T = GULROT!"
+                          ? "🥕 SENTRIFUGE: FULL FART"
                           : pressureTurbo
-                            ? "🚀 OVERLYDS-TRYKK 9.8 BAR: T-U-R + B-O = TURBO!"
-                            : "KOMPONENT-LAGER (DAG 8): KRETS + KORT = KRETSKORT"}
+                            ? "🚀 TRYKK 9,8 BAR"
+                            : "KOMPONENT-LAGER"}
                     </div>
                   </div>
                   <div className="bg-black/80 border border-(--neon-green)/60 px-2.5 py-1 text-[11px] text-(--neon-green) font-mono">
@@ -1856,379 +1447,19 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                 CHANNEL 3: JULIUS VIDEOLOGG (AUTHENTIC VHS CAMCORDER BROADCAST)
                =============================================================== */}
             {activeChannel === 3 && (
-              <div className="absolute inset-0">
-                {/* Full-Bleed Painterly Studio / Camcorder Feed (or Kulde Pirate Hijack) */}
-                <div className="absolute inset-0 animate-[tv-camera-pan_24s_ease-in-out_infinite]">
-                  <Image
-                    src={
-                      pirateIntercept
-                        ? "/feed/kulde-grotte.png"
-                        : speakerInfo.feedImage
-                    }
-                    alt={
-                      pirateIntercept
-                        ? "Kuldes Krystallgrotte"
-                        : speakerInfo.name
-                    }
-                    fill
-                    className="object-cover"
-                    style={{
-                      filter: pirateIntercept
-                        ? "contrast(1.22) brightness(0.95) saturate(1.15)"
-                        : speakerInfo.tintStyle,
-                    }}
-                    priority
-                  />
-
-                  {/* KULDE PIRATE HIJACK OVERLAYS (/feed/kulde-grotte.png) */}
-                  {pirateIntercept && (
-                    <>
-                      {/* Pulsing Cyan Plasma in the 3 Frozen Vacuum Tubes (Bottom Right) */}
-                      <div
-                        className="absolute inset-0 pointer-events-none mix-blend-screen animate-pulse"
-                        style={{
-                          background:
-                            "radial-gradient(circle at 75.5% 83%, rgba(0, 240, 255, 0.75) 0%, transparent 8%), radial-gradient(circle at 83% 76%, rgba(0, 225, 255, 0.7) 0%, transparent 8%), radial-gradient(circle at 92% 74%, rgba(0, 240, 255, 0.65) 0%, transparent 8%)",
-                        }}
-                      />
-                      {/* Blinking Red/Cyan Telemetry LEDs on Frozen Transmitter Consoles */}
-                      <div
-                        className="absolute inset-0 pointer-events-none mix-blend-screen animate-[flicker_1.4s_infinite]"
-                        style={{
-                          background:
-                            "radial-gradient(circle at 28% 62%, rgba(255, 40, 60, 0.55) 0%, transparent 9%), radial-gradient(circle at 70% 63%, rgba(0, 225, 255, 0.5) 0%, transparent 10%)",
-                        }}
-                      />
-
-                      {/* Turbulent Cryo-Refraction & Phase-Shifted Ghost Anomaly in the Crystal Archway */}
-                      <div
-                        className="absolute inset-0 pointer-events-none mix-blend-color-dodge"
-                        style={{
-                          animation: "tv-kulde-lurk 9s ease-in-out infinite",
-                          filter: "url(#crt-ghost-anomaly)",
-                          background: `
-                            radial-gradient(ellipse 14% 26% at 49.5% 44%, rgba(0, 240, 255, 0.42) 0%, rgba(0, 130, 215, 0.18) 52%, transparent 82%),
-                            radial-gradient(circle at 47.5% 37%, rgba(210, 255, 255, 0.75) 0%, transparent 1.8%),
-                            radial-gradient(circle at 51.5% 37%, rgba(210, 255, 255, 0.75) 0%, transparent 1.8%)
-                          `,
-                        }}
-                      />
-                    </>
-                  )}
-
-                  {/* JULIUS' TIMBER STUDY ENVIRONMENTAL ANIMATIONS (/feed/julius-kontor.png) */}
-                  {!pirateIntercept && currentVlog.speaker === "JULIUS" && (
-                    <>
-                      {/* Live Falling Snow Clipped Inside Julius' Arched Timber Window */}
-                      <div
-                        className="absolute overflow-hidden pointer-events-none opacity-85"
-                        style={{
-                          left: "41.5%",
-                          top: "14%",
-                          width: "17%",
-                          height: "40%",
-                          borderRadius: "48% 48% 0 0",
-                        }}
-                      >
-                        {Array.from({ length: 20 }).map((_, i) => (
-                          <div
-                            key={`julius-snow-${i}`}
-                            className="absolute bg-white rounded-full"
-                            style={
-                              {
-                                width: `${2 + (i % 2)}px`,
-                                height: `${2 + (i % 2)}px`,
-                                left: `${(i * 17) % 100}%`,
-                                opacity: 0.75,
-                                animation: `snowfall ${3.2 + (i % 3)}s -${i * 0.35}s linear infinite`,
-                              } as React.CSSProperties
-                            }
-                          />
-                        ))}
-                      </div>
-
-                      {/* Warm Flickering Candle & Lantern Blooms */}
-                      <div
-                        className="absolute inset-0 pointer-events-none mix-blend-screen animate-[flicker_2.2s_infinite]"
-                        style={{
-                          background:
-                            "radial-gradient(circle at 31.5% 24%, rgba(255, 195, 70, 0.5) 0%, transparent 10%), radial-gradient(circle at 70.8% 34.5%, rgba(255, 190, 65, 0.45) 0%, transparent 10%), radial-gradient(circle at 56.8% 50.5%, rgba(255, 200, 80, 0.5) 0%, transparent 8%), radial-gradient(circle at 86.5% 52.5%, rgba(255, 185, 60, 0.55) 0%, transparent 9%)",
-                        }}
-                      />
-
-                      {/* Magical Golden Glow on Open Snøfall-krøniken Book on Desk */}
-                      <div
-                        className="absolute inset-0 pointer-events-none mix-blend-screen animate-pulse"
-                        style={{
-                          background:
-                            "radial-gradient(ellipse 18% 12% at 48% 76%, rgba(255, 215, 90, 0.65) 0%, rgba(255, 170, 40, 0.25) 55%, transparent 85%)",
-                        }}
-                      />
-
-                      {/* Organic Turbulence-Warped Steam from Julius' Warm Gløgg Mug on the Desk */}
-                      <div
-                        className="absolute pointer-events-none mix-blend-screen"
-                        style={{
-                          left: "61%",
-                          top: "57%",
-                          width: "36px",
-                          height: "60px",
-                          marginLeft: "-18px",
-                          filter: "url(#crt-vapor-wisp)",
-                          animation:
-                            "tv-chimney-smoke 5.4s ease-in-out infinite",
-                        }}
-                      >
-                        <div
-                          className="w-full h-full blur-[5px]"
-                          style={{
-                            background:
-                              "radial-gradient(ellipse 40% 70% at 50% 65%, rgba(255, 232, 185, 0.48) 0%, rgba(255, 195, 120, 0.18) 55%, transparent 85%)",
-                          }}
-                        />
-                      </div>
-
-                      {/* Subtle Off-Camera Fireplace & Candle Shadow Play Across the Timber Study */}
-                      <div
-                        className="absolute inset-0 pointer-events-none mix-blend-multiply"
-                        style={{
-                          animation: "tv-julius-study 14s ease-in-out infinite",
-                          background:
-                            "radial-gradient(ellipse 22% 38% at 18% 62%, rgba(18, 6, 2, 0.42) 0%, transparent 78%)",
-                        }}
-                      />
-
-                      {/* Pulsing Audio Ring on Vintage Brass Desk Microphone while Speaking */}
-                      {charIndex < activeTranscript.length && (
-                        <div
-                          className="absolute pointer-events-none"
-                          style={{ left: "31.5%", top: "50%" }}
-                        >
-                          <div className="w-12 h-12 -ml-6 -mt-6 rounded-full border border-(--gold)/70 animate-ping" />
-                        </div>
-                      )}
-                    </>
-                  )}
-
-                  {/* Warm fireplace / studio spotlight vignette */}
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      background: pirateIntercept
-                        ? "radial-gradient(circle at 50% 45%, rgba(0, 210, 255, 0.15) 0%, rgba(0, 8, 22, 0.78) 85%)"
-                        : currentVlog.speaker === "JULIUS"
-                          ? "radial-gradient(circle at 50% 45%, rgba(255, 190, 80, 0.18) 0%, rgba(15, 5, 0, 0.6) 85%)"
-                          : "radial-gradient(circle at 50% 45%, transparent 25%, rgba(0, 10, 15, 0.65) 85%)",
-                    }}
-                  />
-                </div>
-
-                {/* VHS Camcorder Viewfinder Framing Marks & Audio Waveform OSD */}
-                <div className="absolute inset-0 pointer-events-none z-20 p-3 flex flex-col justify-between">
-                  {/* Top VHS OSD Row */}
-                  <div className="flex items-start justify-between font-mono">
-                    <div
-                      className={`bg-black/80 border px-2.5 py-1 space-y-0.5 ${
-                        pirateIntercept
-                          ? "border-(--cold-blue)"
-                          : "border-white/30"
-                      }`}
-                    >
-                      <div className="flex items-center gap-2 text-xs text-white font-bold">
-                        <span
-                          className={
-                            pirateIntercept
-                              ? "text-(--cold-blue)"
-                              : "text-(--neon-green)"
-                          }
-                        >
-                          {pirateIntercept ? "PIRAT-INTERCEPT ▶" : "PLAY ▶"}
-                        </span>
-                        <span>
-                          {pirateIntercept
-                            ? "85.0 MHz KRYPTERT"
-                            : "VHS HI-FI SP"}
-                        </span>
-                        <span className="text-(--christmas-red) animate-pulse">
-                          ● LIVE
-                        </span>
-                      </div>
-                      <div
-                        className={`text-[11px] ${
-                          pirateIntercept
-                            ? "text-(--cold-blue)"
-                            : "text-(--gold)"
-                        }`}
-                      >
-                        KILDE:{" "}
-                        {pirateIntercept
-                          ? "KULDE (MØRKETS KRYSTALLGROTTE)"
-                          : `${speakerInfo.name} (${currentVlog.locationLabel})`}
-                      </div>
+              <div className="absolute inset-0 overflow-y-auto bg-black p-4 z-30">
+                {pirateIntercept ? (
+                  <div className="space-y-2 text-(--cold-blue)">
+                    <div className="font-bold">
+                      {activeKuldeIntercept.title}
                     </div>
-
-                    {/* Live Voice Modulation Oscilloscope Bar */}
-                    <div
-                      className={`bg-black/80 border px-3 py-1.5 flex items-center gap-2 ${
-                        pirateIntercept
-                          ? "border-(--cold-blue)/70"
-                          : "border-(--neon-green)/50"
-                      }`}
-                    >
-                      <span
-                        className={`text-[10px] ${
-                          pirateIntercept
-                            ? "text-(--cold-blue)"
-                            : "text-(--neon-green)"
-                        }`}
-                      >
-                        {pirateIntercept ? "IS-MODULASJON:" : "LYD-MODULASJON:"}
-                      </span>
-                      <div className="flex items-end gap-0.5 h-4">
-                        {Array.from({ length: 12 }).map((_, idx) => {
-                          const isSpeaking =
-                            charIndex < activeTranscript.length;
-                          const barH = isSpeaking
-                            ? 25 + ((vhsFrameCounter * 19 + idx * 31) % 75)
-                            : 18;
-                          return (
-                            <div
-                              key={idx}
-                              className={`w-1 transition-all duration-75 ${
-                                pirateIntercept
-                                  ? "bg-(--cold-blue)"
-                                  : "bg-(--neon-green)"
-                              }`}
-                              style={{ height: `${barH}%` }}
-                            />
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    <div className="bg-black/80 border border-white/30 px-2.5 py-1 text-right">
-                      <div className="text-xs text-white font-bold">
-                        DAG {String(selectedDay).padStart(2, "0")} / 24
-                      </div>
-                      <div className="text-[11px] text-(--neon-green)">
-                        TC 00:{String(selectedDay).padStart(2, "0")}:
-                        {String(currentTime.getSeconds()).padStart(2, "0")}:
-                        {String((vhsFrameCounter * 7) % 25).padStart(2, "0")}
-                      </div>
+                    <p>«{activeKuldeIntercept.transcript}»</p>
+                    <div className="text-xs opacity-80">
+                      {activeKuldeIntercept.telemetry}
                     </div>
                   </div>
-
-                  {/* Center Camcorder Crosshair Reticle */}
-                  <div className="self-center w-56 h-28 border border-white/15 relative flex items-center justify-center">
-                    <div className="w-3 h-0.5 bg-white/30" />
-                    <div className="h-3 w-0.5 bg-white/30 absolute" />
-                    <div
-                      className={`absolute -top-5 px-2 py-0.5 bg-black/75 text-[11px] font-mono ${
-                        pirateIntercept
-                          ? "text-(--cold-blue) border border-(--cold-blue)/50"
-                          : "text-(--gold)"
-                      }`}
-                    >
-                      {pirateIntercept
-                        ? activeKuldeIntercept.title
-                        : currentVlog.title.toUpperCase()}
-                    </div>
-                  </div>
-
-                  {/* Authentic Nordic TV Broadcast Subtitles (Bottom Third) */}
-                  <div
-                    className={`mx-auto w-full max-w-3xl bg-black/88 border-y-2 px-4 py-2.5 text-center shadow-lg ${
-                      pirateIntercept
-                        ? "border-(--cold-blue)"
-                        : "border-(--gold)/60"
-                    }`}
-                  >
-                    <div
-                      className={`text-[11px] font-mono uppercase tracking-wider mb-0.5 ${
-                        pirateIntercept ? "text-(--cold-blue)" : "text-(--gold)"
-                      }`}
-                    >
-                      {pirateIntercept
-                        ? "[KULDE - PIRATSENDER 85.0 MHz]"
-                        : `[${speakerInfo.name} - ${speakerInfo.role}]`}
-                    </div>
-                    <p className="text-sm lg:text-base text-white font-mono leading-snug">
-                      «{activeTranscript.slice(0, charIndex)}»
-                      {charIndex < activeTranscript.length && (
-                        <span
-                          className={`inline-block w-2 h-4 ml-1 animate-pulse ${
-                            pirateIntercept ? "bg-(--cold-blue)" : "bg-(--gold)"
-                          }`}
-                        />
-                      )}
-                    </p>
-                    <div
-                      className={`mt-1.5 text-xs font-mono ${
-                        pirateIntercept
-                          ? "text-(--cold-blue)"
-                          : "text-(--neon-green)"
-                      }`}
-                    >
-                      {pirateIntercept
-                        ? activeKuldeIntercept.telemetry
-                        : `LEDETRÅD: ${currentVlog.codeHint}`}
-                    </div>
-                  </div>
-                </div>
-
-                {/* FULL-SCREEN TRANSPARENT NRK TEKST-TV OVERLAY (MIX MODE) */}
-                {showTeletext && (
-                  <div className="absolute inset-0 z-35 bg-black/88 p-4 lg:p-6 flex flex-col justify-between font-mono border-2 border-(--cold-blue)">
-                    <div className="flex items-center justify-between border-b-2 border-(--cold-blue) pb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 bg-(--cold-blue) text-black font-bold text-xs">
-                          P{300 + selectedDay}
-                        </span>
-                        <span className="text-sm text-(--gold) font-bold">
-                          SNØFALL TEKST-TV // DAG {selectedDay}. DESEMBER
-                        </span>
-                      </div>
-                      <span className="text-xs text-(--neon-green)">
-                        {currentTime.toLocaleTimeString("no-NO")}
-                      </span>
-                    </div>
-
-                    <div className="my-auto space-y-3 border-2 border-(--neon-green)/50 bg-black/90 p-4">
-                      <div className="text-xs text-(--cold-blue)">
-                        SEGMENT: {currentVlog.segmentTag} | TALER:{" "}
-                        {speakerInfo.name}
-                      </div>
-                      <div className="text-base text-(--gold) font-bold">
-                        {currentVlog.title}
-                      </div>
-                      <div className="p-3 bg-(--neon-green)/10 border border-(--neon-green) text-sm text-(--neon-green)">
-                        {currentVlog.teletextDiagram}
-                      </div>
-                      <div className="flex items-center justify-between text-xs pt-1">
-                        <span className="text-white/80">
-                          KODEFORMEL: {currentVlog.codeHint}
-                        </span>
-                        <span className="px-2 py-0.5 bg-(--gold) text-black font-bold">
-                          {currentVlog.teletextCode}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-4 gap-2 text-center text-xs font-bold pt-2 border-t border-white/20">
-                      <div className="bg-(--christmas-red) text-white py-1">
-                        100 HOVEDSIDE
-                      </div>
-                      <div className="bg-(--neon-green) text-black py-1">
-                        200 VÆRMELDING
-                      </div>
-                      <div className="bg-(--gold) text-black py-1">
-                        {300 + selectedDay} DAGENS KODE
-                      </div>
-                      <div className="bg-(--cold-blue) text-black py-1">
-                        400 FREKVENSER
-                      </div>
-                    </div>
-                  </div>
+                ) : (
+                  <JuliusVideo key={selectedDay} day={selectedDay} />
                 )}
               </div>
             )}
@@ -2393,9 +1624,9 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                     {frequencyMhz === 75
                       ? "[NØDLINK 75 MHz LÅST]"
                       : frequencyMhz === 85
-                        ? "[❄️ KULDES GROTTE PEILET]"
+                        ? "[❄️ GROTTEN PEILET]"
                         : frequencyMhz === 90
-                          ? "[⚠️ KULDE-INTERFERENS!]"
+                          ? "[⚠️ FROST-INTERFERENS!]"
                           : frequencyMhz === 100
                             ? "[JULE-FM MELODI]"
                             : "[ BÆREBØLGE ]"}
@@ -2409,10 +1640,10 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                       <div className="flex gap-1.5">
                         {(
                           [
-                            ["kretskort", "🔌 DAG 8: KRETSKORT"],
+                            ["kretskort", "🔌 KRETSLØP"],
                             ["sorterer", "📦 DAG 16: SORTERER"],
                             ["slede", "🛷 DAG 18: SLEDE-RADAR"],
-                            ["zapper", "🛡️ DAG 21: BRANNMUR"],
+                            ["zapper", "🛡️ PORTEN"],
                           ] as const
                         ).map(([id, label]) => (
                           <button
@@ -2470,7 +1701,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                         </div>
                         <div className="text-xs text-(--gold) font-bold">
                           {allCircuitConnected
-                            ? "✅ KRETSLØP AKTIVT: KRETS (kjøkken) + KORT (her) = KRETSKORT!"
+                            ? "✅ KRETSLØP AKTIVT!"
                             : "Tips: Klikk på alle røde R-noder til alle 6 lyser grønt."}
                         </div>
                       </div>
@@ -2503,7 +1734,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                         </div>
                         <div className="text-xs text-(--gold) font-bold">
                           {sorterStep >= 4
-                            ? "✅ SAMLEBÅND SYNKRONISERT: S-O-R-T + E-R-I-N-G = SORTERING!"
+                            ? "✅ SAMLEBÅND SYNKRONISERT!"
                             : "Klikk på de 4 kategoriene for å synkronisere pakkeradaren."}
                         </div>
                       </div>
@@ -2513,7 +1744,8 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                       <div className="my-auto space-y-2">
                         <div className="flex items-center justify-between text-xs text-(--neon-green)">
                           <span>
-                            HØYDEVIND-RADAR MOT ULRIKEN (FIL {sleighLane + 1}/3)
+                            HØYDEVIND-RADAR OVER BYFJELLENE (FIL{" "}
+                            {sleighLane + 1}/3)
                           </span>
                           <div className="flex gap-2">
                             <button
@@ -2550,7 +1782,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                         </div>
                         <div className="text-xs text-(--gold) font-bold">
                           {sleighProgress >= 100
-                            ? "✅ KORRIDOR SIKRET: T-U-R-B-U + L-E-N-S = TURBULENS!"
+                            ? "✅ KORRIDOR SIKRET!"
                             : "Manøvrer sleden (▲/▼) til måleren når 100%."}
                         </div>
                       </div>
@@ -2559,7 +1791,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                     {activeMiniGame === "zapper" && (
                       <div className="my-auto space-y-2">
                         <div className="text-xs text-(--neon-green)">
-                          Isoler Spøkelseskoden KULDE på alle 3 bærebølger:
+                          Isoler signaturen på alle 3 bærebølger:
                         </div>
                         <div className="grid grid-cols-3 gap-2">
                           {["75.0 MHz", "90.0 MHz", "100.0 MHz"].map(
@@ -2589,7 +1821,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                         </div>
                         <div className="text-xs text-(--gold) font-bold">
                           {allZapperLocked
-                            ? "✅ BRANNMUR AKTIV: B-R-A-N-N + M-U-R = BRANNMUR!"
+                            ? "✅ PORTEN HOLDER!"
                             : "Rens alle 3 frekvensbåndene for å stenge Kulde ute."}
                         </div>
                       </div>
@@ -2602,13 +1834,13 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                   <div className="bg-black/85 border border-(--neon-green)/60 px-3 py-1.5 max-w-lg">
                     <div className="text-xs font-bold text-(--gold)">
                       {frequencyMhz === 75
-                        ? "📡 75.0 MHz NØDFREKVENS: 15 + 25 + 35 = 75 (Dag 11 kode: 75)"
+                        ? "📡 NØDFREKVENS"
                         : frequencyMhz === 85
-                          ? "❄️ 85.0 MHz PIRAT-SENDER LOKALISERT: MØRKETS KRYSTALLGROTTE (KULDE)"
+                          ? "❄️ 85,0 MHz: UKJENT SENDER UNDER NORDTOPPEN"
                           : frequencyMhz === 90
-                            ? "❄️ 90.0 MHz ALARM: Spøkelseskode K-U-L + D-E = KULDE (Dag 7)"
+                            ? "📡 90,0 MHz: DIREKTELINJEN"
                             : frequencyMhz === 100
-                              ? "🎵 100.0 MHz JULE-FM: M-E-L + O-D-I = MELODI (Dag 12)"
+                              ? "🎵 100,0 MHz: JULE-FM"
                               : `📡 BÆREBØLGE ${frequencyMhz.toFixed(1)} MHz - Signal fra Nordtoppen`}
                     </div>
                     <div className="text-[11px] text-(--neon-green)/80">
@@ -2666,10 +1898,8 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
               {
                 id: 3 as ChannelId,
                 code: "CAM 3",
-                name: "VIDEOLOGG (VHS)",
-                sub: pirateIntercept
-                  ? "85.0 MHz: KULDE"
-                  : `${speakerInfo.name} & TEKST-TV`,
+                name: "JULIUS' VIDEODAGBOK",
+                sub: pirateIntercept ? "85,0 MHz" : "JULIUS",
               },
               {
                 id: 4 as ChannelId,
@@ -2680,7 +1910,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
             ] as const
           ).map((ch) => {
             const isActive = activeChannel === ch.id;
-            const isRecommended = currentVlog.recommendedChannel === ch.id;
+            const isRecommended = ch.id === 3;
             return (
               <button
                 key={ch.id}
@@ -2726,15 +1956,15 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
               onChange={(e) => handleDaySelect(Number(e.target.value))}
               className="bg-black border border-(--gold) text-(--gold) px-2 py-0.5 text-xs font-mono"
             >
-              {VLOG_ENTRIES.map((entry) => (
-                <option key={entry.day} value={entry.day}>
-                  Dag {entry.day}. des – {entry.title} ({entry.speaker})
+              {Array.from({ length: maxDay }, (_, i) => i + 1).map((d) => (
+                <option key={d} value={d}>
+                  Dag {d}. des
                 </option>
               ))}
             </select>
             <button
               onClick={() => handleDaySelect(selectedDay + 1)}
-              disabled={selectedDay >= 24}
+              disabled={selectedDay >= maxDay}
               className="px-2 py-0.5 border border-(--neon-green)/60 text-xs text-(--neon-green) disabled:opacity-30 cursor-pointer"
             >
               ►
@@ -2748,9 +1978,9 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
               {(
                 [
                   ["standard", "NORMAL"],
-                  ["prisme", "🌈 PRISME (DAG 3/10)"],
-                  ["radar", "📡 RADAR (DAG 5/14)"],
-                  ["nordlys", "🌌 NORDLYS (DAG 17)"],
+                  ["prisme", "🌈 LINSE"],
+                  ["radar", "📡 RADAR"],
+                  ["nordlys", "🌌 POLARHIMMEL"],
                 ] as const
               ).map(([mode, label]) => (
                 <button
@@ -2821,17 +2051,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
               <button
                 onClick={() => {
                   SoundManager.playSound("click");
-                  setCharIndex(0);
-                }}
-                className="px-2.5 py-0.5 border border-(--neon-green) text-xs text-(--neon-green) hover:bg-(--neon-green)/20 cursor-pointer"
-              >
-                ⏪ SPOL TILBAKE VHS
-              </button>
-              <button
-                onClick={() => {
-                  SoundManager.playSound("click");
                   triggerChannelSwitchEffect();
-                  setCharIndex(0);
                   setPirateIntercept((v) => !v);
                 }}
                 className={`px-2.5 py-0.5 border text-xs font-bold cursor-pointer ${
@@ -2840,23 +2060,7 @@ export function SnøfallTV({ onClose, currentDay: propDay }: SnøfallTVProps) {
                     : "border-(--cold-blue)/60 text-(--cold-blue) hover:bg-(--cold-blue)/20"
                 }`}
               >
-                ❄️{" "}
-                {pirateIntercept
-                  ? "AVSLUTT PIRAT-LYTTING (85.0 MHz)"
-                  : "AVLYTT 85.0 MHz: KULDE"}
-              </button>
-              <button
-                onClick={() => {
-                  SoundManager.playSound("click");
-                  setShowTeletext((v) => !v);
-                }}
-                className={`px-2.5 py-0.5 border text-xs font-bold cursor-pointer ${
-                  showTeletext
-                    ? "border-(--cold-blue) bg-(--cold-blue) text-black"
-                    : "border-(--gold) text-(--gold) hover:bg-(--gold)/20"
-                }`}
-              >
-                📺 TEKST-TV (SIDE {300 + selectedDay})
+                ❄️ {pirateIntercept ? "TILBAKE TIL JULIUS" : "LYTT PÅ 85,0 MHz"}
               </button>
             </div>
           )}

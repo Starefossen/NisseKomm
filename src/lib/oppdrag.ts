@@ -33,13 +33,11 @@ function validateOppdrag(oppdrag: Oppdrag, weekNumber: number): void {
     "tittel",
     "nissemail_tekst",
     "kode",
-    "dagbokinnlegg",
     "rampenissen_rampestrek",
     "fysisk_hint",
     "oppsett_tid",
     "materialer_nødvendig",
     "beste_rom",
-    "hint_type",
   ];
 
   for (const field of requiredFields) {
@@ -80,6 +78,7 @@ function validateOppdrag(oppdrag: Oppdrag, weekNumber: number): void {
     "kombinasjon",
   ] as const;
   if (
+    oppdrag.hint_type !== undefined &&
     !validHintTypes.includes(
       oppdrag.hint_type as (typeof validHintTypes)[number],
     )

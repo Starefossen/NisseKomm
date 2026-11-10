@@ -171,6 +171,20 @@ export default function Home() {
     : false;
   const bootComplete = bootFinished || effectiveAuthenticated;
 
+  // Today's Julius video opens by itself once per visit until it has been watched
+  const [autoOpenedDagbok, setAutoOpenedDagbok] = useState(false);
+  if (
+    !autoOpenedDagbok &&
+    bootComplete &&
+    effectiveAuthenticated &&
+    !isInitializing
+  ) {
+    setAutoOpenedDagbok(true);
+    if (!GameEngine.isJuliusVideoWatched(getCurrentDay())) {
+      setOpenWindow("dagbok");
+    }
+  }
+
   // Show access denied if outside December 1-24 in production mode
   if (isHydrated && !isDateValid()) {
     return (
@@ -443,7 +457,11 @@ export default function Home() {
                     <EventyrOversikt onClose={handleCloseWindow} />
                   )}
                   {openWindow === "dagbok" && (
-                    <Dagbok missions={oppdrag} onClose={handleCloseWindow} />
+                    <Dagbok
+                      missions={oppdrag}
+                      onClose={handleCloseWindow}
+                      onWatched={refreshGameState}
+                    />
                   )}
                 </>
               )}

@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
       playerNames: [],
       friendNames: [], // Initialize friendNames array
       niceListLastViewed: null,
-      dagbokLastRead: 0,
+      juliusWatched: [],
     });
 
     // Create response with session cookie

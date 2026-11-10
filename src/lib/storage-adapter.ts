@@ -261,7 +261,7 @@ export class SanityStorageAdapter implements StorageAdapter {
       "nissekomm-player-names": "playerNames",
       "nissekomm-friend-names": "friendNames",
       "nissekomm-nice-list-viewed": "niceListLastViewed",
-      "nissekomm-dagbok-last-read": "dagbokLastRead",
+      "nissekomm-julius-watched": "juliusWatched",
       "nissekomm-brevfugler": "brevfugler",
       "nissekomm-unlocked-modules": "unlockedModules",
       "nissekomm-crisis-completed": "crisisStatus",
@@ -345,7 +345,7 @@ export class SanityStorageAdapter implements StorageAdapter {
       playerNames: [],
       friendNames: [],
       niceListLastViewed: null,
-      dagbokLastRead: 0,
+      juliusWatched: [],
     };
 
     this.syncInBackground(defaultData);

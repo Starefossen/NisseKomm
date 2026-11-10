@@ -41,7 +41,7 @@ const KEYS = {
   NISSENET_LAST_VISIT: "nissekomm-nissenet-last-visit",
   PLAYER_NAMES: "nissekomm-player-names",
   NICE_LIST_LAST_VIEWED: "nissekomm-nice-list-viewed",
-  DAGBOK_LAST_READ: "nissekomm-dagbok-last-read",
+  JULIUS_WATCHED: "nissekomm-julius-watched",
   BREVFUGLER: "nissekomm-brevfugler",
 } as const;
 
@@ -810,29 +810,18 @@ export class StorageManager {
   }
 
   // ============================================================
-  // Dagbok (Julius' Dagbok) Read Tracking
+  // Julius' video diary
   // ============================================================
 
-  /**
-   * Get the last diary entry day that was read
-   */
-  static getDagbokLastRead(): number {
-    return this.getItem<number>(KEYS.DAGBOK_LAST_READ, 0);
+  static getJuliusWatched(): number[] {
+    return this.getItem<number[]>(KEYS.JULIUS_WATCHED, []);
   }
 
-  /**
-   * Set the last diary entry day that was read
-   */
-  static setDagbokLastRead(day: number): void {
-    this.setItem(KEYS.DAGBOK_LAST_READ, day);
-  }
-
-  /**
-   * Get count of unread diary entries
-   */
-  static getUnreadDagbokCount(completedQuests: Set<number>): number {
-    const lastRead = this.getDagbokLastRead();
-    return Array.from(completedQuests).filter((day) => day > lastRead).length;
+  static markJuliusWatched(day: number): void {
+    const watched = this.getJuliusWatched();
+    if (!watched.includes(day)) {
+      this.setItem(KEYS.JULIUS_WATCHED, [...watched, day]);
+    }
   }
 
   /**
