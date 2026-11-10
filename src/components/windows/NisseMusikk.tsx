@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
+import { GameEngine } from "@/lib/game-engine";
+import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 
 interface Track {
   id: number;
@@ -120,6 +122,13 @@ export function NisseMusikk({ onClose }: NisseMusikkProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const track = PLAYLIST[currentTrack];
+  // Day 12: Kulde has frozen the jukebox until the day's code is in.
+  const [frozen] = useState(
+    () =>
+      getCurrentMonth() === 12 &&
+      getCurrentDay() === 12 &&
+      !GameEngine.isQuestCompleted(12),
+  );
 
   useEffect(() => {
     const audio = new Audio(encodeURI(PLAYLIST[0].src));
@@ -225,7 +234,17 @@ export function NisseMusikk({ onClose }: NisseMusikkProps) {
 
   return (
     <RetroWindow title="NISSEMUSIKK - 8-BIT JUKEBOX" onClose={onClose}>
-      <div className="p-6 h-full overflow-y-auto space-y-6">
+      <div
+        className={`relative p-6 h-full space-y-6 ${frozen ? "overflow-hidden" : "overflow-y-auto"}`}
+      >
+        {frozen && (
+          <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-2 bg-(--cold-blue)/30 backdrop-blur-sm border-4 border-(--cold-blue) text-(--cold-blue)">
+            <div className="text-5xl font-bold tracking-widest">FROSSET</div>
+            <div className="text-sm opacity-80">
+              Rim over spilleren. Ingen lyd før dagens kode er inne.
+            </div>
+          </div>
+        )}
         {/* Header */}
         <div className="flex items-center gap-4 pb-4 border-b-4 border-(--neon-green)/30">
           <Icons.Music size={32} color="blue" />
@@ -402,20 +421,6 @@ export function NisseMusikk({ onClose }: NisseMusikkProps) {
                 </span>
               </button>
             ))}
-          </div>
-        </div>
-
-        {/* Acoustic Shield Telemetry (Day 12 Clue Integration) */}
-        <div className="p-4 border-2 border-(--cold-blue)/40 bg-(--cold-blue)/5 text-(--cold-blue) text-xs space-y-1">
-          <div className="font-bold flex items-center justify-between">
-            <span>🔊 IQs LYDBØLGE-SKJOLD // AKUSTISK TELEMETRI</span>
-            <span className="text-(--gold) font-mono">DEL 2: O - D - I</span>
-          </div>
-          <div className="opacity-80">
-            Chiptune-frekvensene rister løs krystall-isen fra Kulde! Kombiner
-            første del fra kjøkkenet med{" "}
-            <span className="text-(--gold) font-bold">O - D - I</span> fra
-            musikk-arkivet for å kalibrere lydbølge-skjoldet (Dag 12).
           </div>
         </div>
       </div>

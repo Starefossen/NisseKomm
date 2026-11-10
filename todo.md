@@ -68,7 +68,6 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 - [ ] Skriv ut og klipp til de 9 fysiske QR-symbolkortene (Dag 3, 6, 9, 12, 15, 18, 20, 22, 23) via `/nissemor-guide/printout`.
 - [ ] Lag "Spøkelses-skanneren" (rød cellofan i pappramme) og gjør klar lommelykt til mørke morgener.
 - [ ] Sett opp et fysisk "Operasjonsbrett" (korktavle eller veggplass ved PC-en) der barna kan henge opp symbolkort, brettede blåkopier og løste koder gjennom hele desember.
-- [ ] Konfigurer `HOME_BRIDGE_SECRET` og test lokal polling/webhook mot `~/go/src/github.com/starefossen/home`.
 - [ ] Kjør en rask generalprøve på Dag 1 med `mise run dev:day 1`.
 
 ---

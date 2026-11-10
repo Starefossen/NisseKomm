@@ -733,15 +733,11 @@ Physical treasure hunt combined with digital puzzle-solving. Kids find 9 hidden 
 
 - **12-Track HTML5 Chiptune Jukebox**: Plays the 12 8-bit MP3 files in `public/music/` with live seekable progress bar, volume slider (`0` to `100%`), track selector, and auto-advance on track completion.
 - **Audio Coordination**: Calls `SoundManager.stopJingle()` when playback starts so the jukebox never clashes with the background ambient loop.
-- **Acoustic Telemetry Clue**: Embeds the Day 12 clue fragment (`DEL 2: O - D - I`) in the footer panel so kids can combine the physical kitchen chime clue (`M - E - L`) with the jukebox readout.
+- **Frozen on Day 12**: Shows a «FROSSET» overlay and blocks playback on Day 12 until that day's code is solved.
 
-### Smart-Home Ambient Bridge (`app/api/home-bridge/route.ts`)
+### Smart-Home Integration
 
-- **GET `/api/home-bridge`**: Exposes environmental state for local smart-home polling (`varden` / Home Assistant):
-  - `lightingPreset`: `"frost_decay"` (unsolved current day), `"normal_warm"` (solved current day), or `"victory_gold"` (Day 24 completed).
-  - `activeCrisis`: `"crisis_antenna"` (Day 11 unsolved) or `"crisis_lantern"` (Day 16 unsolved).
-  - `signalStrength`, `kuldeIntrusionPercent`, and `radioFrequencyMHz` (`90.0`).
-- **POST `/api/home-bridge`**: Accepts external smart-home actions (`solve_antenna_crisis`, `solve_lantern_crisis`, `boost_signal`) authenticated via `HOME_BRIDGE_SECRET`.
+No outbound calls. The former `/api/home-bridge` route is removed; the home integration will be an MCP server (see `todo.md`, phase 5).
 
 ## Component Behaviors
 
