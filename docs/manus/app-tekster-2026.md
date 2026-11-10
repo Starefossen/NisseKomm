@@ -203,8 +203,8 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 ### Dag 1 (ti) – Direktelinjen · SIGNAL · M1
 
 - `tittel`: Direktelinjen (gammel: «Direktelinje Landås»; avgjort, se A0)
-- `nissemail_tekst` (86 ord): Hei Kristian, Håkon og Hanna! 🎄 Jeg er tilbake! I natt sendte IQ meg ned. Han har bygd en direktelinje fra Snøfall til stua deres, med Snøfall TV og video fra Julius. Men linjen hakker. Noe knitrer på den, og det er ikke meg. Se Julius først. Håkon: følg den røde tråden min fra TV-en og helt til meg, og ta av det som henger på den. Bare det som henger på linjen, teller. Kristian: tavla fra IQ ligger i den svarte boksen. Heng den opp. – Rampenissen
-- `julius_ps`: Rampenissen sov i fruktskålen deres. Med en banan som pute. Jeg har sett ham sove i verre ting. Linjen bærer nå; takk for at dere kom.
+- `nissemail_tekst` (89 ord): Hei Kristian, Håkon og Hanna! 🎄 Jeg er tilbake! I natt sendte IQ meg ned linjen sammen med Nissemors proviant. Proviantsekken landet først. Linjen går fra Snøfall til stua deres, med Snøfall TV og video fra Julius. Men den hakker. Noe knitrer på den, og det er ikke meg. Se Julius først. Håkon: følg den røde tråden fra TV-en helt til meg, og ta av det som henger på den. Bare det som henger på linjen, teller. Kristian: tavla fra IQ ligger i den svarte boksen. Heng den opp. – Rampenissen
+- `julius_ps`: Rampenissen kom ned linjen sammen med tre esker se-vitamin, og landet under dem. Med en banan som pute. Jeg har sett ham lande i verre ting. Linjen bærer nå; takk for at dere kom. IQ skal koble kaffetrakteren på forsterkeren i natt. Hva kan vel gå galt.
 - `daily_alerts`: 🎅 JULIUS: Direktelinjen er åpen. Ny video på kanal 3.
 - NisseNet: `SYSTEM/om-snofall.txt` **skrives om** (åpen fra dag 1):
 
@@ -242,10 +242,10 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
   **Slettes:** `OPPGAVER/hint_arkiv.txt`, `JULIUS-ARKIV/hemmelig_kode.txt`.
 
-- `rampenissen_rampestrek`: Har sovet i fruktskålen med en banan som pute og en serviett som dyne; den røde garntråden han er viklet inn i går helt bort til TV-en.
-- `fysisk_hint`: Rød garntråd fra TV-en («LINJE 90,0») ned skråningen og langs klementinelva til Rampenissens håndledd (scene: dag 1-designet). Seks A7-kort med klesklyper, talt fra TV-en: ❄, **I**, ❄, **N**, ❄, ❄, tegn i hjørnet, prikker 1–6 bak. To løse kort **E** og **T** uten klype blant klementinene (blindspor). Runetavla (`runetavle.pdf`) i ferdskriveren sammen med IQs konvolutt. Løsning: Håkon tar kortene av tråden i rekkefølge, de løse legges bort, Kristian ser `_ I _ N _ _` og hører Julius (ordet radioen leter etter når den skurrer). Kode SIGNAL. Etterpå: skriv ordet på kortene og før tegnene for S, I, G, N, A, L, E, T inn på tavla. Hanna, hvis hun vil: tar kortene av mens Håkon holder tråden.
-- `materialer_nødvendig`: rødt garn · 6 små klesklyper · maskeringsteip · `dag01-tradkort.pdf` (6 + 2 kort) · `runetavle.pdf` · scenen fra dag 1-designet
-- `oppsett_tid`: 3 min
+- `rampenissen_rampestrek`: Har kommet ned linjen sammen med Nissemors proviant: et skred av klementiner fra TV-benken utover gulvet, revnede fraktesker fra Snøfall oppå, og bare nisseluen og én vinkende arm stikker opp av haugen, banan som pute, serviettfallskjerm bak. Den røde garntråden går fra TV-en over skredet til håndleddet hans. I skredet ligger den svarte ferdskriveren med IQs konvolutt (passordet), flyloggen, runetavla og operasjonsbrettet.
+- `fysisk_hint`: Rød garntråd fra TV-en («LINJE 90,0») ned skråningen og langs klementinelva til Rampenissens håndledd (scene: «Dag 1: byggeplan» i `gaater-2026.md`). Seks A7-kort med klesklyper, talt fra TV-en: ❄, **I**, ❄, **N**, ❄, ❄, tegn i hjørnet, prikker 1–6 bak. To løse kort **E** og **T** uten klype blant klementinene (blindspor). Runetavla (`runetavle.pdf`) i ferdskriveren sammen med IQs konvolutt. Løsning: Håkon tar kortene av tråden i rekkefølge, de løse legges bort, Kristian ser `_ I _ N _ _` og hører Julius (ordet radioen leter etter når den skurrer). Kode SIGNAL. Etterpå: skriv ordet på kortene og før tegnene for S, I, G, N, A, L, E, T inn på tavla. Hanna, hvis hun vil: tar kortene av mens Håkon holder tråden.
+- `materialer_nødvendig`: rødt garn · 6 små klesklyper · maskeringsteip · `dag01-tradkort.pdf` (6 + 2 kort) · `runetavle.pdf` · scenen: 3 esker klementiner, 3–4 tomme esker, lyst laken, klesvaskkurv, håndkle, avispapir, ferdskriver (svart skoeske), `dag01-frakt.pdf`, `dag01-ferdskriver.pdf`, `dag01-linjekort.pdf`, `dag01-flylogg.pdf`, `operasjonsbrett.pdf`, fruktskål, banan, 2 servietter, dorullhylse, hårstrikk
+- `oppsett_tid`: 3 min gåten + 25 min scenen 30. nov (forarbeid 28.–29. nov, se «Dag 1: byggeplan»)
 - frost: ikke synlig
 
 ### Dag 2 (on) – Sikringsboksen til IQ · 48 · jakt
@@ -329,7 +329,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
 - `tittel`: Inntrengeren i Fryseren
 - `nissemail_tekst` (86 ord): Lua mi sitter fast i fryseren deres. 🥶 Jeg prøvde å kjøle ned modemet. Det var feil. I natt fanget Orakelet signaturen, og den har et navn. Julius sier det ikke rett ut, men han sier nok. Redd lua mi, og det som står ved den! Håkon: finn det og få det løs, med lunkent vann og en voksen. Kristian: det som kommer ut av isen, har ingen bokstaver. Tavla deres vet mer enn dere tror. Fra i dag måler Orakelet frosten i serverrommet. Se sidepanelet. – Rampenissen
-- `julius_ps`: Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Nissemor ringte; hun sier han så ut som en liten skiltstolpe.
+- `julius_ps`: Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Nissemor ringte; hun sier han så ut som en liten skiltstolpe. Hun sier også at det var derfor hun sendte oransje. Hun visste det ikke. Hun vet sånt likevel.
 - `daily_alerts` (avgjort: vises først når dag 7 er løst; før det står sidepanelet på `ORAKELET LYTTER …`): 🔮 ORAKELET: Signaturen på 85,0 har et navn. Frostgraden kan måles fra i dag.
 - NisseNet: `SYSTEM/snofall_fakta.txt` **erstattes** av `SYSTEM/orakelets-rapport.txt` (`afterDay: 7`):
 
@@ -404,7 +404,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
 - `tittel`: Fargene som Forsvant
 - `nissemail_tekst` (85 ord): Skjermen deres var GRÅ i morges. Jeg så det klokka fire. 😶 Kulde har tatt fargene: fra Snøfall TV, fra linjen og fra skjermen på kjøkkenet. Jeg gjemte alle fargene jeg fant. På meg, og litt rundt i stua. Håkon: finn alle kortene i stua. Jeg husker ikke hvor mange. Det røde filteret ligger ved tusjene. Hanna, hvis du vil: du er fargesjef og ser gjennom det først. Kristian: rekkefølgen kortene skal ligge i, står i NisseNet. Resten sier Julius, hvis bildet holder lenge nok. – Rampenissen
-- `julius_ps`: Dere fikk fargene tilbake. Hele Snøfall så det; Pil klappet. Rampenissen har fire farger i ansiktet og bart på bildet av mamma og pappa. Vaskbart, lover han.
+- `julius_ps`: Dere fikk fargene tilbake. Hele Snøfall så det; Pil klappet. Rampenissen sier klementinene var det eneste i stua som holdt på fargen. Kulde tar fra linjen, ikke fra det som alt er framme. Han har selv fire farger i ansiktet og bart på bildet av mamma og pappa. Vaskbart, lover han.
 - `daily_alerts`: 📺 IQ: Fargene er borte fra alle kanaler. Kromatisk drenering 71 %.
 - NisseNet: `SNOFALL-HISTORIER/farge-koder.txt` **skrives om** (`afterDay: 10`):
 
@@ -765,7 +765,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
 - `tittel`: God Jul på Landås
 - `nissemail_tekst` (85 ord): De landet. 🎄 Jeg så det. De fløy over grotten først, lavt, med alle lysene på, og noe blått fløy opp og møtte dem. Jeg reiser hjem i kveld. Kofferten min står ved konvolutten under treet. I den ligger tre ting dere kjenner igjen fra desember. Håkon: åpne konvolutten og les brevet mitt høyt. Kristian: rutekortet ligger i konvolutten, lappene har tegn, og Julius sier resten. Hanna, hvis du vil: du vet hvilken dag hver ting kommer fra. Takk for garnkurven. Og takk for alt. – Rampenissen
-- `julius_ps`: Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Rampenissen sov i gullkonvolutten med sløyfe på hodet og en pappeske som koffert. God jul, Kristian, Håkon og Hanna.
+- `julius_ps`: Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Ved siden av ligger den siste klementinen fra Nissemors proviant. Varmt og kaldt, side om side. Rampenissen sov i gullkonvolutten med sløyfe på hodet og fraktesken fra første desember som koffert. God jul, Kristian, Håkon og Hanna.
 - `daily_alerts` (fem): 🎅 JULIUS: God jul, Kristian, Håkon og Hanna. Det er ikke kaldt der nede lenger. · ❄️ ORAKELET: Frostgrad 0 %. Tøvær. · 🎄 NISSEMOR: God jul til hele huset på Landås. · 🧝 RAMPENISSEN: Takk for garnkurven. Vi ses neste desember. · 🕊️ WINTER: Den blå fuglen fløy hjem. Brevet har tint.
 - NisseNet: ingen nye. Fargesamlerens arkiv står komplett.
 - Kulde: Brevfugler, brevet tiner (A8). Skjerm-kort «God jul fra Snøfall».
@@ -780,7 +780,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
 - `rampenissen_rampestrek`: Ligger og sover inni den store gullkonvolutten under treet med en sløyfe på hodet og en liten pappeske som pakket koffert ved siden av.
 - `fysisk_hint`: Pappesken med sløyfe ved konvolutten: perlen (dag 3) med lapp `tegn U · 2`, rødfilteret (dag 10) `tegn E · 4`, båndbiten (dag 17) `tegn G · 7` (`dag24-suvenirlapper.pdf`). I konvolutten: avskjedsbrevet, rutekort med åtte ruter og **alltid** de tre reservelappene («IQs kopi») under brevet. Krystallet som ikke smelter under treet, med `dag24-krystallkort.pdf`: «TAKK FOR LYSET» i tegn. Løsning: Håkon leser brevet og legger lappene, Kristian slår opp tegnene: `_ U _ E _ _ G _`. Julius: høytiden foran, pluss det trollmenn later som de har. Kode JULEMAGI. Så brevet i Brevfugler, finale, diplom, merket Snøfalls venn. Lett med vilje; mangler tavla et tegn, er bokstavene U, E, G. Hanna, hvis hun vil: åpner kofferten og sier hvilken dag hver ting kommer fra.
-- `materialer_nødvendig`: liten pappeske · sløyfe · gullkonvolutt · perle, filter og båndbit fra konvolutten «24» · `dag24-suvenirlapper.pdf` · `dag24-krystallkort.pdf` · diplomene «Snøfalls venn» (3) · iskrystall i glass eller akryl
+- `materialer_nødvendig`: liten pappeske (den tomme fraktesken fra dag 1) · sløyfe · gullkonvolutt · den siste klementinen, ved krystallet, uten lapp · perle, filter og båndbit fra konvolutten «24» · `dag24-suvenirlapper.pdf` · `dag24-krystallkort.pdf` · diplomene «Snøfalls venn» (3) · iskrystall i glass eller akryl
 - `oppsett_tid`: 4 min
 - frost: 12 → 0
 
