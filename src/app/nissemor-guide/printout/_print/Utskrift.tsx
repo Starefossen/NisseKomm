@@ -141,7 +141,7 @@ export function Ruter({
   nummer = false,
   storrelse = "w-[15mm] h-[20mm]",
 }: {
-  celler: (string | null)[];
+  celler: (ReactNode | null)[];
   runer?: (string | undefined)[];
   nummer?: boolean;
   storrelse?: string;
@@ -163,7 +163,7 @@ export function Ruter({
   );
 }
 
-/** Card sizes that tile an <Ark>: 8 «A7» (2 × 4) or 2 «A6» per sheet. */
+/** Card sizes that tile an <Ark>: 8 «A7» (2 × 4) or 4 «A6» (2 × 2) per sheet. */
 export const A7 = "w-[92mm] h-[66mm]";
 export const A6 = "w-[92mm] h-[134mm]";
 
