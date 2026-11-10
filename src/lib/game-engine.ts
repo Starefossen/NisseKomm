@@ -1120,36 +1120,6 @@ export class GameEngine {
   static getEventyrForDay = getEventyrForDay;
 
   /**
-   * Get Brevfugl-Mysteriet progression summary for Brevfugler module
-   * Returns completion status for all 4 phases + paper bird count
-   *
-   * PHASES:
-   * - Phase 1 (Day 1): Brevfugler introduced
-   * - Phase 2 (Day 5): Winter organizes 847 letters
-   * - Phase 3 (Day 12): Sang-system connects worlds
-   * - Phase 4 (Day 14): PAPIR puzzle completes → BREVFUGLER module unlocks
-   *
-   * @returns Object with phase completion booleans and paper bird counter
-   */
-  static getBrevfuglerFremdrift(): {
-    fase1Fullført: boolean;
-    fase2Fullført: boolean;
-    fase3Fullført: boolean;
-    fase4Fullført: boolean;
-    antallPapirbrev: number;
-  } {
-    const completedQuests = this.loadGameState().completedQuests;
-
-    return {
-      fase1Fullført: completedQuests.has(1),
-      fase2Fullført: completedQuests.has(5),
-      fase3Fullført: completedQuests.has(12),
-      fase4Fullført: completedQuests.has(14),
-      antallPapirbrev: 0, // Brevfugler-fasene fjernes i A7
-    };
-  }
-
-  /**
    * ============================================================
    * CHRISTMAS COUNTDOWN & GLOBAL PRODUCTION METRICS
    * ============================================================
