@@ -7,6 +7,7 @@ import { Icons } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
+import { TIDBITS, visible } from "@/lib/tidbits";
 
 export interface Track {
   id: number;
@@ -62,13 +63,29 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
   const lengthRef = useRef(PLAYLIST.length);
 
   useEffect(() => {
-    fetch("/api/musikk")
-      .then((r) => (r.ok ? r.json() : []))
-      .then((paths: string[]) => {
+    const skjult = TIDBITS.musikk.skjultSpor;
+    const hidden =
+      visible([skjult], getCurrentDay()).length > 0 &&
+      GameEngine.isQuestCompleted(skjult.etterLøstDag)
+        ? fetch(mediaUrl(skjult.path), { method: "HEAD" })
+            .then((r) => r.ok)
+            .catch(() => false)
+        : Promise.resolve(false);
+    Promise.all([
+      fetch("/api/musikk").then((r) => (r.ok ? r.json() : [])),
+      hidden,
+    ])
+      .then(([paths, found]: [string[], boolean]) => {
         const list = [
           ...PLAYLIST,
           ...paths.map((p, i) => uploadedTrack(p, PLAYLIST.length + i + 1)),
         ];
+        if (found)
+          list.push({
+            ...uploadedTrack(skjult.path, list.length + 1),
+            title: skjult.tittel,
+            subtitle: skjult.tekst,
+          });
         lengthRef.current = list.length;
         setPlaylist(list);
       })

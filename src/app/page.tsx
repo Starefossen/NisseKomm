@@ -31,6 +31,7 @@ import { RuneTavle } from "@/components/windows/RuneTavle";
 import { FROST_OPEN_WINDOWS } from "@/lib/frost";
 import { GrandFinaleModal } from "@/components/ui/GrandFinaleModal";
 import { BadgeRow } from "@/components/ui/BadgeRow";
+import { IdlePeek } from "@/components/ui/IdlePeek";
 import { NameEntryModal } from "@/components/ui/NameEntryModal";
 import { HamburgerMenu } from "@/components/ui/HamburgerMenu";
 import { GameEngine } from "@/lib/game-engine";
@@ -567,6 +568,15 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {bootComplete &&
+        effectiveAuthenticated &&
+        !isInitializing &&
+        !openWindow &&
+        !showDay1Boot &&
+        !showGrandFinale &&
+        !showNameEntry &&
+        frostMode.level === 0 && <IdlePeek />}
 
       {/* Frost overlays sit above windows but never take clicks */}
       {bootComplete && effectiveAuthenticated && (

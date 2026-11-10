@@ -7,6 +7,8 @@ import { Icons } from "@/lib/icons";
 import { Oppdrag, CalendarEvent } from "@/types/innhold";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
+import { TIDBITS, visible } from "@/lib/tidbits";
+import type { SpamMail } from "@/types/tidbits";
 
 /**
  * Email types for inbox display
@@ -97,6 +99,9 @@ export function NisseMail({
   );
 
   const [showInbox, setShowInbox] = useState(true);
+  // SPAM folder (tidbits.json): read-only, no unread state
+  const [showSpam, setShowSpam] = useState(false);
+  const [spam, setSpam] = useState<SpamMail | null>(null);
   /**
    * Get hendelse for a specific day
    * Merges file-based mission hendelser with custom family events
@@ -171,6 +176,7 @@ export function NisseMail({
   ) => {
     SoundManager.playSound("click");
 
+    setSpam(null);
     setSelectedMission(mission);
     setSelectedEmail({ type: emailType, mission, day: mission.dag });
     markAsViewed(mission.dag, emailType === "side-quest");
@@ -181,6 +187,8 @@ export function NisseMail({
   const getUnreadCount = () => {
     return GameEngine.getUnreadEmailCount(currentDay);
   };
+
+  const spamMails = visible(TIDBITS.spam, currentDay);
 
   // Filter missions up to current day and build email list
   const availableMissions = missions.filter((m) => m.dag <= currentDay);
@@ -313,12 +321,63 @@ export function NisseMail({
                 );
               })}
             </div>
+
+            {spamMails.length > 0 && (
+              <div className="mt-2 pt-2 border-t-2 border-(--neon-green)/30 shrink-0">
+                <button
+                  aria-expanded={showSpam}
+                  onClick={() => {
+                    SoundManager.playSound("click");
+                    setShowSpam(!showSpam);
+                  }}
+                  className="w-full min-h-11 flex items-center gap-2 text-left text-base opacity-70 hover:opacity-100"
+                >
+                  <Icons.Box size={16} color="gray" />
+                  SPAM ({spamMails.length})
+                </button>
+                {showSpam && (
+                  <div className="space-y-1 max-h-[30vh] overflow-y-auto">
+                    {[...spamMails].reverse().map((m) => (
+                      <button
+                        key={m.emne}
+                        onClick={() => {
+                          SoundManager.playSound("click");
+                          setSpam(m);
+                          setShowInbox(false);
+                        }}
+                        className={`w-full min-h-11 text-left p-2 border-2 text-base opacity-70 ${
+                          spam === m
+                            ? "border-(--gray) bg-(--gray)/20"
+                            : "border-(--gray)/40 hover:border-(--gray)"
+                        }`}
+                      >
+                        <div className="truncate">{m.fra}</div>
+                        <div className="truncate">{m.emne}</div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
         {/* Email Content - Stacks below inbox on mobile, right 70% on desktop */}
         <div className="w-full lg:w-[70%] flex flex-col min-h-0 flex-1 overflow-hidden">
-          {selectedMission && selectedEmail ? (
+          {spam ? (
+            <div className="flex-1 overflow-y-auto space-y-3">
+              <div className="pb-3 border-b-4 border-(--gray)/50 space-y-1">
+                <div className="text-base opacity-70">FRA: {spam.fra}</div>
+                <div className="text-xl font-bold">{spam.emne}</div>
+                <div className="text-base text-(--gray)">
+                  SPAM - Rampenissen-filteret fanget denne
+                </div>
+              </div>
+              <div className="text-lg leading-relaxed whitespace-pre-wrap">
+                {spam.tekst}
+              </div>
+            </div>
+          ) : selectedMission && selectedEmail ? (
             <div className="flex-1 flex flex-col min-h-0">
               {/* Render side-quest email */}
               {selectedEmail.type === "side-quest" &&

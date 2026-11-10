@@ -51,6 +51,7 @@ const KEYS = {
   UNLOCKED_MODULES: "nissekomm-unlocked-modules",
   SANTA_LETTERS: "nissekomm-santa-letters",
   INTROS_SEEN: "nissekomm-intros-seen",
+  IDLE_PEEK: "nissekomm-idle-peek",
   SEASON: "nissekomm-season",
 } as const;
 
@@ -739,6 +740,15 @@ export class StorageManager {
   /** One-off openers already shown this season (e.g. the day-1 boot). */
   static getIntrosSeen(): string[] {
     return this.getItem<string[]>(KEYS.INTROS_SEEN, []);
+  }
+
+  /** Time (ms) idle Rampenissen last peeked; UI state, see tidbits.ts. */
+  static getIdlePeek(): number | null {
+    return this.getItem<number | null>(KEYS.IDLE_PEEK, null);
+  }
+
+  static setIdlePeek(at: number): void {
+    this.setItem(KEYS.IDLE_PEEK, at);
   }
 
   static markIntroSeen(id: string): void {

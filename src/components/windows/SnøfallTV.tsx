@@ -23,6 +23,8 @@ import {
 } from "./snofall-tv/channels";
 import { latestRuneLine } from "./snofall-tv/runer";
 import { RuneText } from "../ui/Frostrune";
+import { mediaUrl } from "@/lib/media";
+import { TIDBITS, visible } from "@/lib/tidbits";
 
 interface SnøfallTVProps {
   onClose: () => void;
@@ -96,6 +98,18 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
       ? latestIntercept(day)
       : undefined;
 
+  // Odd frequencies on K4 (tidbits.json tv): a still or static plus a line
+  const odd =
+    shownChannel === 4 && !sweeping
+      ? visible(TIDBITS.tv, day).find((t) => t.frekvens === shownFreq)
+      : undefined;
+  useEffect(() => {
+    if (!odd?.lyd) return;
+    const a = new Audio(mediaUrl(odd.lyd));
+    a.play().catch(() => {});
+    return () => a.pause();
+  }, [odd?.lyd]);
+
   const select = (id: ChannelId) => {
     if (id === channel || id > tunedChannels) return;
     SoundManager.playSound("click");
@@ -123,7 +137,11 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
                 // Day 1: a channel shows snow until its carrier comes in.
                 shownChannel > tunedChannels && !sweeping
                   ? null
-                  : channelSource(shownChannel, day, hour, shownFreq, solved)
+                  : odd
+                    ? odd.bilde
+                      ? mediaUrl(odd.bilde)
+                      : null
+                    : channelSource(shownChannel, day, hour, shownFreq, solved)
               }
               fallback={channelFallback(shownChannel, shownFreq, day)}
               label={label}
@@ -145,6 +163,14 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
           {shownChannel !== 3 && day >= 7 && day < 24 && (
             <div className="absolute top-2 left-1/2 -translate-x-1/2 px-2 bg-black/70 border border-(--cold-blue) text-(--cold-blue) text-base pointer-events-none">
               FROST {frost} %
+            </div>
+          )}
+          {odd && (
+            <div
+              aria-live="polite"
+              className="absolute bottom-2 inset-x-2 px-2 bg-black/70 border border-(--neon-green) text-(--neon-green) text-base text-center pointer-events-none"
+            >
+              {odd.tekst}
             </div>
           )}
           {playing && <MiniGames onClose={() => setPlaying(false)} />}

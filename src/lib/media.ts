@@ -1,3 +1,5 @@
+import { TIDBITS } from "@/lib/tidbits";
+
 /** URL for a media file served from MEDIA_DIR by /media/[...path]. */
 export function mediaUrl(path: string): string {
   return "/media/" + path.split("/").map(encodeURIComponent).join("/");
@@ -132,6 +134,8 @@ export const MEDIA_MANIFEST: readonly ManifestEntry[] = [
   "feed/landsby-rolig.jpg",
   ...MUSIC,
   "music/christmas-dreams-jingle-bells-268299.mp3",
+  // Hidden NisseMusikk track (tidbits.json), listed only once the file exists
+  TIDBITS.musikk.skjultSpor.path,
 ];
 
 /** Groups for the parent media page, in display order; first matching prefix wins. */

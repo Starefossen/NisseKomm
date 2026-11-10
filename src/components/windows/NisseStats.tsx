@@ -6,6 +6,7 @@ import { GameEngine } from "@/lib/game-engine";
 import { LEDIndicator } from "../ui/LEDIndicator";
 import { useSounds } from "@/lib/sounds";
 import { getCurrentDate } from "@/lib/date-utils";
+import { TIDBITS, visible } from "@/lib/tidbits";
 
 interface NisseStatsProps {
   onClose: () => void;
@@ -191,6 +192,7 @@ function generateFeedItems(
 
 export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
   const { playSound } = useSounds();
+  const snofallStats = visible(TIDBITS.stats, currentDay);
   const hasPlayedChristmasSound = useRef(false);
   const [glitchFrame, setGlitchFrame] = useState(0);
 
@@ -354,6 +356,22 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
             ))}
           </div>
         </div>
+
+        {snofallStats.length > 0 && (
+          <div className="p-3 border-2 border-dashed border-(--cold-blue)/60">
+            <div className="text-base text-(--cold-blue) mb-2">
+              ┌─[ SNØFALL-STATISTIKK ]─┐
+            </div>
+            <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1 text-base">
+              {snofallStats.map((s) => (
+                <div key={s.navn} className="flex justify-between gap-3">
+                  <dt className="opacity-70">{s.navn}</dt>
+                  <dd className="text-(--gold) tabular-nums">{s.verdi}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )}
       </div>
     </RetroWindow>
   );
