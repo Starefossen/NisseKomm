@@ -9,9 +9,9 @@ import { getCurrentDate, getCurrentDay } from "@/lib/date-utils";
 const TINT_BREV =
   "Takk for lyset.\nJeg hadde glemt farger.\nKrystallet smelter ikke.\nDet er fra meg.";
 
-// M6 Tøvær: Kulde's letter stays frozen until Christmas Eve.
-export function erBrevetFrossent(day: number): boolean {
-  return day < 24;
+// M6 Tøvær: Kulde's letter thaws as the reward for solving day 24's code.
+export function erBrevetFrossent(day: number, dag24Lost: boolean): boolean {
+  return day < 24 || !dag24Lost;
 }
 
 interface Letter {
@@ -30,7 +30,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
   const [utkast, setUtkast] = useState("");
   const [radarTick, setRadarTick] = useState(0);
   const [currentTime, setCurrentTime] = useState<Date>(() => getCurrentDate());
-  const frossent = erBrevetFrossent(getCurrentDay());
+  const frossent = erBrevetFrossent(getCurrentDay(), GameEngine.isQuestCompleted(24));
 
   useEffect(() => {
     const timer = setInterval(() => {

@@ -43,6 +43,7 @@ def coverage(clip: Path, line: str) -> float:
     """Share of the script's words heard in the clip (Gemini transcription)."""
     import base64
     import json
+    import urllib.error
     import urllib.request
 
     key = subprocess.run(["fnox", "get", "GEMINI_API_KEY"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
@@ -58,7 +59,17 @@ def coverage(clip: Path, line: str) -> float:
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent",
         data=json.dumps(body).encode(), headers={"x-goog-api-key": key, "Content-Type": "application/json"},
     )
-    text = json.load(urllib.request.urlopen(req))["candidates"][0]["content"]["parts"][-1]["text"]
+    import time
+
+    for wait in (0, 10, 30):  # the transcription API sometimes answers 503
+        time.sleep(wait)
+        try:
+            text = json.load(urllib.request.urlopen(req))["candidates"][0]["content"]["parts"][-1]["text"]
+            break
+        except urllib.error.URLError as e:
+            print(f"  transkripsjon feilet ({e}), prøver igjen")
+    else:
+        return 0.0
     import difflib
 
     heard = set(words(text))
