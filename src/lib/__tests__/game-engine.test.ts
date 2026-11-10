@@ -12,8 +12,6 @@
 
 import { describe, it, expect, beforeEach, afterEach } from "@jest/globals";
 import { GameEngine } from "../game-engine";
-import { BadgeManager } from "../badge-system";
-import * as eventyr from "../eventyr";
 
 // Get actual quest codes from data for testing
 const allQuests = GameEngine.getAllQuests();
@@ -54,15 +52,6 @@ describe("GameEngine", () => {
   });
 
   describe("Initial State", () => {
-    it("should load empty state when no data exists", () => {
-      const state = GameEngine.loadGameState();
-
-      expect(state.completedQuests.size).toBe(0);
-      expect(state.submittedCodes).toEqual([]);
-      expect(state.earnedBadges).toEqual([]);
-      expect(state.unlockedModules.size).toBe(0);
-    });
-
     it("should return 0% progression on empty state", () => {
       expect(GameEngine.getProgressionPercentage()).toBe(0);
     });
@@ -218,43 +207,8 @@ describe("GameEngine", () => {
       expect(unlocked).toContain("NISSEKRYPTO");
       expect(unlocked).toContain("NISSEMUSIKK");
       expect(unlocked).toContain("SNØFALL_TV");
-      expect(unlocked.length).toBe(3);
-    });
-  });
-
-  describe("Badge System", () => {
-    it("should award antenna crisis badge", () => {
-      const result = BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
-
-      expect(result.success).toBe(true);
-      expect(result.badge.ikon).toBe("cloud-sharing.svg");
-      expect(result.badge.navn).toBe("Antenne-ingeniør");
-    });
-
-    it("should award inventory crisis badge", () => {
-      const result = BadgeManager.checkAndAwardBadge("inventar-ekspert", true);
-
-      expect(result.success).toBe(true);
-      expect(result.badge.ikon).toBe("loupe-and-bill.svg");
-      expect(result.badge.navn).toBe("Inventar-ekspert");
-    });
-
-    it("should persist badges across reloads", () => {
-      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
-      BadgeManager.checkAndAwardBadge("inventar-ekspert", true);
-
-      const badges = BadgeManager.getEarnedBadges();
-      expect(badges.length).toBe(2);
-      expect(badges.some((b) => b.badgeId === "antenne-ingenior")).toBe(true);
-      expect(badges.some((b) => b.badgeId === "inventar-ekspert")).toBe(true);
-    });
-
-    it("should not duplicate badges", () => {
-      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
-      BadgeManager.checkAndAwardBadge("antenne-ingenior", true); // Try to award again
-
-      const badges = BadgeManager.getEarnedBadges();
-      expect(badges.length).toBe(1);
+      expect(unlocked).toContain("SYMBOLSKANNER");
+      expect(unlocked.length).toBe(4);
     });
   });
 
@@ -263,26 +217,6 @@ describe("GameEngine", () => {
       const status = GameEngine.getCrisisStatus();
       expect(status.antenna).toBe(false);
       expect(status.inventory).toBe(false);
-    });
-
-    it("should resolve crisis when badge is awarded", () => {
-      expect(GameEngine.isCrisisResolved("antenna")).toBe(false);
-
-      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
-
-      expect(GameEngine.isCrisisResolved("antenna")).toBe(true);
-    });
-
-    it("should resolve multiple crises independently", () => {
-      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
-
-      expect(GameEngine.isCrisisResolved("antenna")).toBe(true);
-      expect(GameEngine.isCrisisResolved("inventory")).toBe(false);
-
-      BadgeManager.checkAndAwardBadge("inventar-ekspert", true);
-
-      expect(GameEngine.isCrisisResolved("antenna")).toBe(true);
-      expect(GameEngine.isCrisisResolved("inventory")).toBe(true);
     });
   });
 
@@ -337,21 +271,17 @@ describe("GameEngine", () => {
         await GameEngine.submitCode(code, code, i);
       }
 
-      // Award one bonus badge manually
-      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
-
       const summary = GameEngine.getProgressionSummary();
 
       expect(summary.mainQuests.completed).toBe(10);
       expect(summary.mainQuests.total).toBe(24);
       expect(summary.mainQuests.percentage).toBe(42); // 10/24 rounded
 
-      // Badge count includes automatically awarded badges from eventyr completion
-      // Day 1-10 completes multiple eventyr arcs which award badges automatically
-      expect(summary.badges.earned).toBeGreaterThanOrEqual(1);
-      expect(summary.badges.total).toBe(7); // Total badges available in merker.json
+      // No badge is earned in days 1-10 (first is Varmebærer, day 12)
+      expect(summary.badges.earned).toBe(0);
+      expect(summary.badges.total).toBe(3);
 
-      expect(summary.modules.unlocked).toBe(3); // NISSEKRYPTO + NISSEMUSIKK + SNØFALL_TV
+      expect(summary.modules.unlocked).toBe(4); // + SYMBOLSKANNER (day 3)
 
       expect(summary.isComplete).toBe(false);
     });
@@ -372,28 +302,6 @@ describe("GameEngine", () => {
   });
 
   describe("State Persistence", () => {
-    it("should persist state across reloads", async () => {
-      // Complete some quests
-      const code8 = getQuestCode(8);
-      const code9 = getQuestCode(9);
-      await GameEngine.submitCode(code8, code8, 8);
-      await GameEngine.submitCode(code9, code9, 9);
-
-      // Award a badge
-      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
-
-      // Mark email as viewed
-      GameEngine.markEmailAsViewed(1, false);
-
-      // Load state (simulating reload)
-      const state = GameEngine.loadGameState();
-
-      expect(state.completedQuests.has(8)).toBe(true);
-      expect(state.completedQuests.has(9)).toBe(true);
-      expect(state.earnedBadges.length).toBe(1);
-      expect(state.viewedMainEmails.has(1)).toBe(true);
-    });
-
     it("should export and import game state", async () => {
       // Create some game state
       for (let i = 1; i <= 5; i++) {
@@ -445,170 +353,6 @@ describe("GameEngine", () => {
       expect(GameEngine.isQuestCompleted(5)).toBe(true);
       expect(GameEngine.isQuestCompleted(10)).toBe(true);
       expect(GameEngine.isQuestCompleted(15)).toBe(true);
-    });
-  });
-
-  describe("Eventy System", () => {
-    it("should load all story arcs from eventyr.json", () => {
-      const arcs = eventyr.getAllEventyr();
-
-      expect(arcs.length).toBeGreaterThan(0);
-      expect(arcs.length).toBe(9); // 5 major + 4 mini eventyr
-    });
-
-    it("should validate story arc structure", () => {
-      const arcs = eventyr.getAllEventyr();
-
-      arcs.forEach((arc) => {
-        // Check required fields
-        expect(arc.id).toBeDefined();
-        expect(arc.navn).toBeDefined();
-        expect(arc.beskrivelse).toBeDefined();
-        expect(arc.tema).toBeInstanceOf(Array);
-        expect(arc.farge).toMatch(/^#[0-9a-f]{6}$/i);
-        expect(arc.ikon).toBeDefined();
-        expect(["lett", "middels", "vanskelig"]).toContain(
-          arc.vanskelighetsgrad,
-        );
-        expect(arc.belønning).toBeDefined();
-        expect(arc.foreldreveiledning).toBeDefined();
-      });
-    });
-
-    it("should derive days from oppdrag files correctly", () => {
-      // Check brevfugl-mysteriet (Days 1, 5, 12, 14)
-      const brevfuglDays = eventyr.getEventyrDays("brevfugl-mysteriet");
-      expect(brevfuglDays).toEqual([1, 5, 12, 14]);
-
-      // Check morkets-trussel (Days 7, 11, 17, 21)
-      const morketDays = eventyr.getEventyrDays("morkets-trussel");
-      expect(morketDays).toEqual([7, 11, 17, 21]);
-
-      // Check farge-mysteriet (Days 10, 15)
-      const fargeDays = eventyr.getEventyrDays("farge-mysteriet");
-      expect(fargeDays).toEqual([10, 15]);
-    });
-
-    it("should identify arcs for a specific day", () => {
-      // Day 1 should have brevfugl-mysteriet
-      const day1Eventyr = eventyr.getEventyrForDay(1);
-      expect(day1Eventyr.length).toBe(1);
-      expect(day1Eventyr[0].id).toBe("brevfugl-mysteriet");
-
-      // Day 17 might have multiple arcs (cross-reference)
-      const day17Eventyr = eventyr.getEventyrForDay(17);
-      expect(day17Eventyr.length).toBeGreaterThanOrEqual(1);
-    });
-
-    it("should track arc completion based on completed quests", async () => {
-      // Complete all brevfugl-mysteriet days
-      await GameEngine.submitCode(getQuestCode(1), getQuestCode(1), 1);
-      await GameEngine.submitCode(getQuestCode(5), getQuestCode(5), 5);
-      await GameEngine.submitCode(getQuestCode(12), getQuestCode(12), 12);
-      await GameEngine.submitCode(getQuestCode(14), getQuestCode(14), 14);
-
-      const completedDays = new Set([1, 5, 12, 14]);
-      expect(
-        eventyr.isEventyrComplete("brevfugl-mysteriet", completedDays),
-      ).toBe(true);
-    });
-
-    it("should calculate arc progress correctly", async () => {
-      // Complete 2 out of 4 days for brevfugl-mysteriet
-      await GameEngine.submitCode(getQuestCode(1), getQuestCode(1), 1);
-      await GameEngine.submitCode(getQuestCode(5), getQuestCode(5), 5);
-
-      const completedDays = new Set([1, 5]);
-      const percentage = eventyr.getEventyrProgress(
-        "brevfugl-mysteriet",
-        completedDays,
-      );
-
-      // getEventyrProgress returns a percentage directly, not an object
-      expect(percentage).toBe(50);
-    });
-
-    it("should distinguish between major and mini arcs", () => {
-      const majorEventyr = eventyr.getMajorEventyr();
-      const miniEventyr = eventyr.getMiniEventyr();
-
-      // Major arcs have 3+ days
-      majorEventyr.forEach((arc) => {
-        expect(eventyr.getEventyrDays(arc.id).length).toBeGreaterThanOrEqual(3);
-      });
-
-      // Mini arcs have < 3 days
-      miniEventyr.forEach((arc) => {
-        expect(eventyr.getEventyrDays(arc.id).length).toBeLessThan(3);
-      });
-    });
-
-    it("should provide parent guidance for each arc", () => {
-      const arcs = eventyr.getAllEventyr();
-
-      arcs.forEach((arc) => {
-        const guidance = eventyr.getParentGuidance(arc.id);
-
-        expect(guidance).toBeDefined();
-        if (guidance) {
-          expect(guidance.sammendrag).toBeDefined();
-          expect(guidance.pedagogisk_fokus).toBeInstanceOf(Array);
-          expect(guidance.tips).toBeInstanceOf(Array);
-          expect(guidance.pedagogisk_fokus.length).toBeGreaterThan(0);
-          expect(guidance.tips.length).toBeGreaterThan(0);
-        }
-      });
-    });
-
-    it("should validate all quest eventyr references", () => {
-      // This is already validated at build time, but test it works
-      const quests = GameEngine.getAllQuests();
-
-      const validEventyrIds = new Set(
-        eventyr.getAllEventyr().map((arc) => arc.id),
-      );
-
-      quests.forEach((quest) => {
-        if (quest.eventyr) {
-          expect(validEventyrIds.has(quest.eventyr.id)).toBe(true);
-          expect(quest.eventyr.phase).toBeGreaterThanOrEqual(1);
-          expect(quest.eventyr.phase).toBeLessThanOrEqual(5);
-        }
-      });
-    });
-
-    it("should have sequential phases within each arc", () => {
-      const quests = GameEngine.getAllQuests();
-      const arcs = eventyr.getAllEventyr();
-
-      arcs.forEach((arc) => {
-        const arcQuests = quests
-          .filter((q) => q.eventyr?.id === arc.id)
-          .sort((a, b) => a.dag - b.dag);
-
-        const phases = arcQuests.map((q) => q.eventyr!.phase);
-
-        // Phases should be sequential: 1, 2, 3, 4...
-        for (let i = 0; i < phases.length; i++) {
-          expect(phases[i]).toBe(i + 1);
-        }
-      });
-    });
-
-    it("should return arc metadata (color, icon)", () => {
-      // Test known arcs
-      const morketColor = eventyr.getEventyrColor("morkets-trussel");
-      expect(morketColor).toBe("#8b0000"); // Dark red
-
-      const iqIcon = eventyr.getEventyrIcon("iqs-oppfinnelser");
-      expect(iqIcon).toBe("zap"); // Lightning bolt
-    });
-
-    it("should handle invalid arc IDs gracefully", () => {
-      // Functions return undefined for invalid IDs
-      expect(eventyr.getEventyr("nonexistent-arc")).toBeUndefined();
-      expect(eventyr.getEventyrDays("nonexistent-arc")).toEqual([]);
-      expect(eventyr.getParentGuidance("nonexistent-arc")).toBeUndefined();
     });
   });
 
@@ -685,30 +429,6 @@ describe("GameEngine", () => {
       expect(reinsdyr!.status).toBe("kritisk");
     });
 
-    it("should restore REINSDYR after antenna crisis resolved", async () => {
-      // Complete day 11 main quest first (required for bonusoppdrag)
-      const day11Code = getQuestCode(11);
-      await GameEngine.submitCode(day11Code, day11Code, 11);
-
-      // Resolve antenna crisis by awarding badge
-      const result = BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
-      expect(result.success).toBe(true);
-
-      const completedQuests = GameEngine.getCompletedQuestCount();
-      const day11Metrics = GameEngine.getGlobalProductionMetrics(
-        11,
-        completedQuests,
-      );
-      const reinsdyr = day11Metrics.find((m) => m.navn === "REINSDYR FLYTIMER");
-
-      expect(reinsdyr).toBeDefined();
-      // Crisis is resolved, so inCrisis should be false
-      expect(reinsdyr!.inCrisis).toBe(false);
-      // Status returns to normal calculation (value=82, max=240, so 34% = "kritisk" is correct)
-      // The key difference is crisis is resolved, not that status changes
-      expect(reinsdyr!.crisisText).toBeUndefined();
-    });
-
     it("should freeze NISSEKRAFT at crisis value on day 16 if inventory unresolved", () => {
       const completedQuests = GameEngine.getCompletedQuestCount();
       const day16Metrics = GameEngine.getGlobalProductionMetrics(
@@ -723,29 +443,6 @@ describe("GameEngine", () => {
       expect(nissekraft!.inCrisis).toBe(true);
     });
 
-    it("should restore NISSEKRAFT after inventory crisis resolved", async () => {
-      // Complete day 16 main quest first (required for bonusoppdrag)
-      const day16Code = getQuestCode(16);
-      await GameEngine.submitCode(day16Code, day16Code, 16);
-
-      // Resolve inventory crisis by awarding badge
-      const result = BadgeManager.checkAndAwardBadge("inventar-ekspert", true);
-      expect(result.success).toBe(true);
-
-      const completedQuests = GameEngine.getCompletedQuestCount();
-      const day16Metrics = GameEngine.getGlobalProductionMetrics(
-        16,
-        completedQuests,
-      );
-      const nissekraft = day16Metrics.find((m) => m.navn === "NISSEKRAFT");
-
-      expect(nissekraft).toBeDefined();
-      // Crisis is resolved, so inCrisis should be false
-      expect(nissekraft!.inCrisis).toBe(false);
-      // Status returns to normal calculation
-      expect(nissekraft!.crisisText).toBeUndefined();
-    });
-
     it("should freeze BREVFUGL-SVERM at crisis value on day 16 if unresolved", () => {
       const day16Metrics = GameEngine.getProgressiveMetrics(16);
       const brevfugl = day16Metrics.find((m) => m.navn === "BREVFUGL-SVERM");
@@ -753,18 +450,6 @@ describe("GameEngine", () => {
       expect(brevfugl).toBeDefined();
       expect(brevfugl!.verdi).toBe(15); // Crisis value
       expect(brevfugl!.status).toBe("kritisk");
-    });
-
-    it("should restore BREVFUGL-SVERM after crisis resolved", () => {
-      // Resolve inventory crisis
-      BadgeManager.checkAndAwardBadge("inventar-ekspert", true);
-
-      const day16Metrics = GameEngine.getProgressiveMetrics(16);
-      const brevfugl = day16Metrics.find((m) => m.navn === "BREVFUGL-SVERM");
-
-      expect(brevfugl).toBeDefined();
-      expect(brevfugl!.verdi).toBeGreaterThan(15); // Restored to normal progression
-      expect(brevfugl!.status).not.toBe("kritisk");
     });
 
     it("should classify status based on thresholds", () => {
@@ -792,42 +477,6 @@ describe("GameEngine", () => {
       expect(day1Alerts.length).toBeGreaterThan(0);
       expect(day1Alerts[0].tekst).toBeDefined();
       expect(["info", "advarsel", "kritisk"]).toContain(day1Alerts[0].type);
-    });
-
-    it("should include crisis alerts when active", () => {
-      const completedDays = new Set<number>();
-      const day11Alerts = GameEngine.getDailyAlerts(11, completedDays);
-
-      // Should have antenna crisis alert
-      const crisisAlert = day11Alerts.find((a) => a.tekst.includes("ANTENNE"));
-      expect(crisisAlert).toBeDefined();
-      expect(crisisAlert!.type).toBe("kritisk");
-    });
-
-    it("should remove crisis alerts when resolved", () => {
-      // Resolve antenna crisis
-      BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
-
-      const completedDays = new Set<number>();
-      const day11Alerts = GameEngine.getDailyAlerts(11, completedDays);
-
-      // Should NOT have antenna crisis alert anymore
-      const crisisAlert = day11Alerts.find((a) => a.tekst.includes("ANTENNE"));
-      expect(crisisAlert).toBeUndefined();
-    });
-
-    it("should show multiple crisis alerts simultaneously", () => {
-      const completedDays = new Set<number>();
-      const day17Alerts = GameEngine.getDailyAlerts(17, completedDays);
-
-      // Both crises should be active on day 17
-      const antennaAlert = day17Alerts.find((a) => a.tekst.includes("ANTENNE"));
-      const inventoryAlert = day17Alerts.find((a) =>
-        a.tekst.includes("INVENTAR"),
-      );
-
-      expect(antennaAlert).toBeDefined();
-      expect(inventoryAlert).toBeDefined();
     });
 
     it("should include milestone celebration alerts", () => {
@@ -1053,38 +702,6 @@ describe("GameEngine", () => {
 
         if (gaveWithoutBonus && gaveWithBonus) {
           expect(gaveWithBonus.verdi).toBeGreaterThan(gaveWithoutBonus.verdi);
-        }
-      });
-
-      it("should handle crisis behavior correctly", () => {
-        // Day 11: Antenna crisis affects REINSDYR FLYTIMER, RUDOLF NES-SIGNAL, BREVFUGL-SVERM
-        const day11Metrics = GameEngine.getGlobalProductionMetrics(11, 0);
-        const reinsdyr = day11Metrics.find(
-          (m) => m.navn === "REINSDYR FLYTIMER",
-        );
-
-        if (reinsdyr) {
-          // Should be in crisis if badge not earned
-          const hasResolved = GameEngine.isCrisisResolved("antenna");
-
-          if (!hasResolved) {
-            expect(reinsdyr.inCrisis).toBe(true);
-            // Crisis type is "glitch" with multiple values, not fixed 0
-            expect(reinsdyr.crisisText).toBeDefined();
-          }
-        }
-
-        // Day 16: Inventory crisis affects GAVEPRODUKSJON
-        const day16Metrics = GameEngine.getGlobalProductionMetrics(16, 0);
-        const gaver = day16Metrics.find((m) => m.navn === "GAVEPRODUKSJON");
-
-        if (gaver) {
-          const hasResolved = GameEngine.isCrisisResolved("inventory");
-
-          if (!hasResolved) {
-            expect(gaver.inCrisis).toBe(true);
-            expect(gaver.crisisText).toBeDefined();
-          }
         }
       });
 

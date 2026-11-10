@@ -2,9 +2,9 @@
   {
     "dag": 7,
     "tittel": "Inntrengeren i Fryseren",
-    "nissemail_tekst": "Lua mi sitter fast i fryseren deres. 🥶 Jeg prøvde å kjøle ned modemet, fordi Orakelet sa at noe varmt skurret på linjen. Det var feil. Det som skurrer, er ikke varmt. I natt fanget Orakelet signaturen, og den har et navn. Julius sier det ikke rett ut, men han sier nok. Redd lua mi, og det som står ved den! Håkon: finn det. Hanna: du får det løs, med lunkent vann og en voksen. Kristian: tast navnet. Fra i dag måler Orakelet frosten i serverrommet. Se sidepanelet. – Rampenissen",
+    "nissemail_tekst": "Lua mi sitter fast i fryseren deres. 🥶 Jeg prøvde å kjøle ned modemet. Det var feil. I natt fanget Orakelet signaturen, og den har et navn. Julius sier det ikke rett ut, men han sier nok. Redd lua mi, og det som står ved den! Håkon: finn det og få det løs, med lunkent vann og en voksen. Kristian: det som kommer ut av isen, har ingen bokstaver. Tavla deres vet mer enn dere tror. Fra i dag måler Orakelet frosten i serverrommet. Se sidepanelet. – Rampenissen",
     "rampenissen_rampestrek": "Fastfryst i fryserdøra med lua inne i fryseren og votter som har stivnet rett ut.",
-    "fysisk_hint": "Frostkortet `_ U _ D _` i liten zip-pose, fryst i plastbeger (aldri glass) med 3–4 cm vann. **I fryseren senest søndag 6. kl. 20.** Begeret står ved lua. Løsning: Håkon finner begeret, Hanna tiner det under lunkent vann med en voksen (2–3 min), Håkon tørker kortet. Julius: det motsatte av det som slår mot ansiktet fra ovnen. Kode KULDE. Frostgraden vises første gang.",
+    "fysisk_hint": "Frostkortet (`dag07-frostlapp.pdf`: fem ruter, tegn for **L** i rute 3 og **E** i rute 5, resten ❄ med tegn i hjørnet; ingen bokstaver) i liten zip-pose, fryst i plastbeger (aldri glass) med 3–4 cm vann. **I fryseren senest søndag 6. kl. 20.** Begeret står ved lua. Løsning: Håkon finner og tiner (2–3 min under lunkent vann), Kristian kjenner igjen tegnene fra tavla (L fra dag 1, E fra dag 3): `_ _ L _ E`. Julius: det motsatte av det som slår mot ansiktet fra ovnen. Kode KULDE. Frostgraden vises første gang. Før K, U, D på tavla. Reserve: `runer-fasit.pdf` i denne guiden. Hanna, hvis hun vil: holder begeret under springen.",
     "materialer_nødvendig": [
       "plastbeger eller silikonform",
       "liten zip-pose",
@@ -16,190 +16,173 @@
     "kode": "KULDE",
     "reveals": {
       "files": ["orakelets-rapport.txt"],
-      "topics": ["morkets-trussel", "nordpolen-90"],
       "modules": ["NISSEMUSIKK"]
     },
     "eventyr": {
-      "id": "morkets-trussel",
-      "phase": 1
+      "id": "spokelseskoden",
+      "phase": 7
     },
     "finalized": true,
     "julius_ps": "Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Nissemor ringte; hun sier han så ut som en liten skiltstolpe."
   },
   {
     "dag": 8,
-    "tittel": "Bestikk-Kretsløpet",
-    "nissemail_tekst": "Hurra, vi har klart en hel uke! IQ ville bygge et nytt sikkerhetskort til Snøfall TV for å blokkere Kulde, og jeg prøvde å bygge en kopi på kjøkkenbenken deres med skjeer og gafler! Hanna og Håkon: Sjekk bestikk-mønsteret jeg har lagt på kjøkkenbenken - der ligger første del av ordet på en lapp: K - R - E - T - S. Kristian: Åpne SNOFALL-HISTORIER/IQ-VERKSTED/magisk-sekk-test.txt i NisseNet (eller spill Kretskort-Kobler på Snøfall TV Kanal 4!) for å finne andre del av ordet (K - O - R - T)!",
-    "rampenissen_rampestrek": "Rampenissen har lagt skjeer og gafler i et firkantet 'kretsløp' på kjøkkenbenken med en lapp i midten: 'DEL 1: K R E T S (Finn DEL 2 i IQ-VERKSTED/magisk-sekk-test.txt eller på Snøfall TV Kanal 4)'.",
-    "fysisk_hint": "Se på kjøkkenbenken etter Rampenissens bestikk-kretsløp (KRETS) og kombiner med andre del (KORT) fra magisk-sekk-test.txt i IQ-VERKSTED eller Snøfall TV Kanal 4!",
+    "tittel": "Floken i Verkstedet",
+    "nissemail_tekst": "Uke én er ferdig! 🎉 IQ feirer med å lodde noe som skal holde Kulde ute av kanal 1 til 4. Jeg feiret med å bygge noe. Mitt er høyere. Håkon: riv tårnet forsiktig, pakke for pakke, ingen klatring, til du får tak i arket IQ sendte. Følg hver ledning fra batteriet med fingeren. Hanna, hvis du vil: tell pakkene når de kommer ned. Kristian: IQ sier noe om strøm i dag; hør etter. Og hør hva han kaller tingen han lodder på. Etterpå åpner et spill på kanal 4. – Rampenissen",
+    "rampenissen_rampestrek": "Har bygd tårn av alle frokostblandingspakkene på bordet med skiltet «SIGMA-TÅRN» og sitter på toppen med en suppeøse; litt corn flakes på gulvet.",
+    "fysisk_hint": "Arket `dag08-kretskort.pdf` brettet under suppeøsen på toppen av tårnet: ni lamper, fire ledninger fra batteriet i en floke. Lampe 2 **R**, 5 **S**, 7 **O** har strøm; lampe 4 **E** sitter bak en **åpen bryter** (blindspor); resten ❄ med ledninger som ender i ingenting. Ingen regeltekst på arket. Løsning: Håkon følger ledningene, Kristian ser bryteren (åpen = ingen strøm; Julius: «bare lamper med strøm lyser») og skriver `_ R _ _ S _ O _ _`. Julius: den grønne plata, to ord i ett. Kode KRETSKORT. Tar de med E, passer ikke ordet. Hanna, hvis hun vil: teller pakkene.",
     "materialer_nødvendig": [
-      "5-6 skjeer/gafler lagt i et mønster på kjøkkenbenken",
-      "Lapp: 'KOMPONENT DEL 1: K R E T S + DEL 2 fra NisseNet (IQ-VERKSTED)'"
+      "dag08-kretskort.pdf` (farge om mulig)",
+      "frokostblandingspakker",
+      "suppeøse",
+      "lapp «SIGMA-TÅRN»"
     ],
     "beste_rom": "Kjøkkenbenken",
     "oppsett_tid": "moderat",
     "kode": "KRETSKORT",
-    "hint": "Sett sammen KRETS fra kjøkkenbenken og KORT fra IQ-VERKSTED i NisseNet (9 bokstaver i ett ord)!",
     "reveals": {
-      "files": ["magisk-sekk-test.txt"],
-      "topics": ["iq-oppfinnelser", "magisk-sekk"],
+      "files": ["feilrapport-uke-1.txt"],
       "modules": []
     },
     "eventyr": {
-      "id": "iqs-oppfinnelser",
-      "phase": 2
+      "id": "spokelseskoden",
+      "phase": 8
     },
-    "dagbokinnlegg": "8. desember. Første uke er fullført! IQ feiret med å konstruere et nytt KRETSKORT til videologg-senderen vår, mens Rampenissen tømte halve bestikkskuffen på Landås for å demonstrere strømbaner. Barna koblet begge halvdelene av ordet og kan nå øve på kretskobling direkte på Kanal 4 på Snøfall TV!",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Et tårn av frokostblanding med skilt. Jeg spurte Nissemor hva «sigma» betyr. Hun sa «spør Kristian». IQ sov på loddebordet i natt med plata som pute; han sier den er ferdig i morgen tidlig."
   },
   {
     "dag": 9,
     "tittel": "Krystall-Matematikk",
-    "nissemail_tekst": "Nissemor og Pil blåser krystallkuler i glasshytten i dag, og vi har oppdaget en viktig regel: Hvert eneste ekte snøkrystall har nøyaktig 6 tagger! Jeg har hengt opp papir-snøkrystaller på kjøleskapet sammen med et BLÅTT HJERTE-symbolkort. Hanna: Tell hvor mange snøkrystaller som henger på kjøleskapet (det er 4 stykker!) og ta med det blå hjertet! Håkon og Kristian: Sjekk formelen i SNOFALL-HISTORIER/julekuleblasing.txt i NisseNet og regn ut hvor mange tagger det blir til sammen (4 snøkrystaller med 6 tagger på hver)!",
-    "rampenissen_rampestrek": "På kjøleskapsdøren henger 4 papir-snøfnugg (eller 4 tegnede snøkrystaller på en lapp) sammen med det blå hjerte-symbolkortet.",
-    "fysisk_hint": "Tell snøkrystallene på kjøleskapet (4 stk) og gang med antall tagger på et ekte snøkrystall (6 tagger, se julekuleblasing.txt i NisseNet)!",
+    "nissemail_tekst": "Noe har hengt krystaller på kjøleskapet deres i natt. ❄️ Noen av dem er ikke ekte, og de er godt laget. Kulde legger falske krystaller i Orakelets radar også, så tellingen blir feil. Pil ble lurt to ganger, så jeg la meg i grønnsaksskuffen for å lære forskjellen. Det går dårlig. Håkon: tell armene på hver krystall, nøye. Kristian: se over dem Håkon er usikker på. IQ har lagt en formel i NisseNet. Hanna, hvis du vil: plukk ut dem som ser rare ut. Det blå kortet henger mellom krystallene. – Rampenissen",
+    "rampenissen_rampestrek": "Har krøpet inn i grønnsaksskuffen i kjøleskapet for å «bli ekte iskrystall»; bare beina stikker ut når døra åpnes.",
+    "fysisk_hint": "Ni papirkrystaller (`dag09-krystallark.pdf`) på kjøleskapsdøra: fire ekte med seks like armer, fem falske (fem armer, sju armer, seks armer der én er halv, firkantet midte, seks armer der to sitter på samme side). Blått hjerte-kort mellom dem. Ingen tall. Løsning: Håkon teller armer, Kristian sjekker de nesten riktige, antall ekte = 4; Julius: seks armer; formelen i NisseNet. 4 × 6 = 24. Hanna, hvis hun vil: plukker ut de rare først.",
     "materialer_nødvendig": [
-      "Symbolkort: Blått hjerte (QR-kort)",
-      "4 klippede eller tegnede snøkrystaller på kjøleskapet",
-      "Lapp: '4 snøkrystaller × 6 tagger på hver = ?'"
+      "dag09-krystallark.pdf",
+      "magneter eller teip",
+      "symbolkort blått hjerte"
     ],
     "beste_rom": "Kjøkkenet (kjøleskapsdøren)",
     "oppsett_tid": "moderat",
     "kode": "24",
-    "hint": "Regn ut 4 snøkrystaller × 6 tagger på hver (4 × 6)!",
     "reveals": {
-      "files": ["julekuleblasing.txt"],
-      "topics": ["frosne-mønster", "julekuleblåsing"],
+      "files": ["krystallformel.txt"],
       "modules": []
     },
     "eventyr": {
-      "id": "frosne-monster",
-      "phase": 2
+      "id": "spokelseskoden",
+      "phase": 9
     },
     "symbol_clue": {
       "symbolId": "heart-blue",
       "symbolIcon": "heart",
       "symbolColor": "blue",
-      "description": "Blått hjerte funnet ved snøkrystallene på kjøleskapet"
+      "description": "Blått hjerte funnet mellom krystallene på kjøleskapet"
     },
-    "dagbokinnlegg": "9. desember. Symmetrien i snøkrystaller er et av våre beste våpen mot Spøkelseskoden, fordi falske digitale krystaller mangler den ekte sekskantede geometrien. Hanna telte 4 snøkrystaller på kjøleskapet, og sammen med Håkon og Kristian regnet de ut 4 × 6 = 24 tagger og sikret det blå hjertesymbolet!",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Rampenissen lå i grønnsaksskuffen i to timer for å «bli ekte iskrystall». Han ble en kald nisse med gulrot i håret. Orakelets radar teller riktig igjen. Pil sier blått hjerte er fargen til det som fryser."
   },
   {
     "dag": 10,
     "tittel": "Fargene som Forsvant",
-    "nissemail_tekst": "KRISESITUASJON PÅ TV! I natt prøvde Spøkelseskoden Kulde å suge alle fargene ut av Snøfall TV slik at hele julen bare skulle bli grå! Heldigvis gjemte jeg 4 fargerike ting (rød, grønn, blå og gul) rundt i stuen med de 4 første bokstavene: S - P - E - K. Hanna, du er Sjefs-Speider for farger: finn de 4 fargelappene i stuen! Håkon og Kristian: Åpne farge_system_dekoder.txt i SNOFALL-HISTORIER i NisseNet for å finne de 3 siste bokstavene (T - E - R) og lås opp full fargestyrke på SNØFALL TV!",
-    "rampenissen_rampestrek": "Rampenissen har lagt 4 fargede klosser, kopper eller fargeblyanter (rød, grønn, blå, gul) synlig i stuen med en lapp: 'FARGEJAKT DEL 1: S - P - E - K (Finn DEL 2 i farge_system_dekoder.txt i NisseNet)'.",
-    "fysisk_hint": "Finn de 4 fargede tingene Rampenissen har satt frem i stuen (S-P-E-K) og kombiner med de 3 siste bokstavene (T-E-R) i farge_system_dekoder.txt i NisseNet!",
+    "nissemail_tekst": "Skjermen deres var GRÅ i morges. Jeg så det klokka fire. 😶 Kulde har tatt fargene: fra Snøfall TV, fra linjen og fra skjermen på kjøkkenet. Jeg gjemte alle fargene jeg fant. På meg, og litt rundt i stua. Håkon: finn alle kortene i stua. Jeg husker ikke hvor mange. Det røde filteret ligger ved tusjene. Hanna, hvis du vil: du er fargesjef og ser gjennom det først. Kristian: rekkefølgen kortene skal ligge i, står i NisseNet. Resten sier Julius, hvis bildet holder lenge nok. – Rampenissen",
+    "rampenissen_rampestrek": "Har farget hendene, nesen og halve ansiktet i fire farger med vaskbare tusjer, og tegnet bart på bildet av mamma og pappa (på en post-it over glasset).",
+    "fysisk_hint": "Åtte fargekort (`dag10-fargekort.pdf`, farge) gjemt lavt og høyt i stua, fargenavn øverst. Under rødt støymønster, i cyan: ORANSJE **P**, BLÅ **T**, HVIT **R** (blindspor: hvitt er ikke i regnbuen), resten ❄. Rødfilteret (cellofan i papprammen) ved tusjene. Løsning: Håkon finner kortene, de ses gjennom filteret, Kristian legger dem i regnbuens rekkefølge (filen lister sju; HVIT legges bort): `_ P _ _ T _ _`. Julius: IQs ord for hele regnbuerekka. Kode SPEKTER. Legg filteret i konvolutten «24». Virker ikke filteret med skriverens rødt: skriv for hånd. Nødutgang: «Frost av» i guiden. Hanna, hvis hun vil: fargesjef med filteret.",
     "materialer_nødvendig": [
-      "4 fargerike ting (f.eks. LEGO-klosser eller fargeblyanter i rød, grønn, blå, gul)",
-      "Lapp ved fargene: 'DEL 1: S - P - E - K (Se SNOFALL-HISTORIER/farge_system_dekoder.txt for de 3 siste bokstavene)'"
+      "dag10-fargekort.pdf",
+      "rødfilter (`rodfilter-ramme.pdf` + rødt cellofan)",
+      "vaskbare tusjer",
+      "post-it"
     ],
     "beste_rom": "Stue",
     "oppsett_tid": "moderat",
     "kode": "SPEKTER",
-    "hint": "Sett sammen S-P-E-K fra fargene i stuen med T-E-R fra farge_system_dekoder.txt i NisseNet (7 bokstaver)!",
     "reveals": {
-      "files": [
-        "farge-koder.txt",
-        "farge_system_dekoder.txt",
-        "fargesamleren.txt"
-      ],
-      "topics": ["farge-mysteriet"],
+      "files": ["farge-koder.txt", "01-fargene.txt"],
       "modules": ["SNØFALL_TV"]
     },
     "eventyr": {
-      "id": "farge-mysteriet",
-      "phase": 1
+      "id": "spokelseskoden",
+      "phase": 10
     },
-    "dagbokinnlegg": "10. desember. Kulde angrep fargekanonene i billedrøret vårt i natt. Men Fargesamlerens gamle lære reddet oss: når rødt, grønt, blått og gult står sammen i et fullt SPEKTER, sprekker gråtone-låsen. Hanna ledet fargejakten i stuen på Landås, og Håkon og Kristian koblet på de tre siste bokstavene fra NisseNet.",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Dere fikk fargene tilbake. Hele Snøfall så det; Pil klappet. Rampenissen har fire farger i ansiktet og bart på bildet av mamma og pappa. Vaskbart, lover han."
   },
   {
     "dag": 11,
-    "tittel": "Antenne-Krisen på 75 MHz",
-    "nissemail_tekst": "SKURR... KRRR... Hører dere meg gjennom støyen?! Spøkelseskoden Kulde har jammet antennen vår og forskjøvet tre sendere! Jeg har hengt opp tre nød-lapper i stuen, på kjøkkenet og i gangen med tallene 15, 25 og 35 MHz. Håkon og Hanna: Løp og finn alle tre tallene! Kristian: Sjekk tidsanomalier.txt i SNOFALL-HISTORIER, legg sammen de tre tallene (15 + 25 + 35) og tast inn summen i KodeTerminal! Og etterpå: Vi trenger at dere bygger en ekte nød-antenne av aluminiumsfolie i BONUSOPPDRAGET!",
-    "rampenissen_rampestrek": "Rampenissen har viklet litt aluminiumsfolie rundt hodet som 'strålehjelm' og hengt opp 3 lapper: 'Sender 1 (Stue): 15', 'Sender 2 (Kjøkken): 25', 'Sender 3 (Gang): 35'.",
-    "fysisk_hint": "Finn de 3 sender-lappene (15 i stuen, 25 på kjøkkenet, 35 i gangen) og legg tallene sammen!",
+    "tittel": "Antenne-Krisen",
+    "nissemail_tekst": "SKURR. Hører dere meg? 📡 Kulde forstyrrer antennen ved tjernet. IQ sier senderen er delt i tre, og antennen står skjev og full av is. IQ har sendt tre lapper til dere, i tre rom. Kulde har lagt ut sine egne også, og de ser helt like ut. Håkon: løp, og ta med alt du finner. Hanna, hvis du vil: én ligger i din jakke. Kristian: IQ har to regler, og Julius sier begge. BONUS: bygg en folieantenne, minst 20 cm, og vis en voksen. – Rampenissen",
+    "rampenissen_rampestrek": "Pakket inn fra topp til tå i aluminiumsfolie som en bakt potet, lagt på et stekebrett på benken.",
+    "fysisk_hint": "Fem A7-kort (`dag11-tallkort.pdf`) med antennesymbol, like i utseende: **15** (stua, under en pute), **40** (stua, under en annen pute), **25** (kjøkkenet, brødboksen), **35** (gangen, Hannas jakkelomme), **20** (gangen, pappas jakkelomme). 20 og 40 er Kuldes. Ingen regnetegn, ingen merking. Løsning: Julius: alt IQ bygger ender på fem; legg IQs sammen, ikke gang. 15 + 25 + 35 = 75. Lek etterpå: kanal 4 på 75,0. Bonus: folieantenne ≥ 20 cm, foreldrekode `ANTENNE2026`. Hanna, hvis hun vil: finner kortet i sin egen jakke.",
     "materialer_nødvendig": [
-      "3 lapper med tallene 15, 25 og 35",
-      "Rull med aluminiumsfolie klar til bonusoppdraget"
+      "dag11-tallkort.pdf` (5 kort)",
+      "aluminiumsfolie",
+      "stekebrett"
     ],
     "beste_rom": "Stue, kjøkken og gang",
     "oppsett_tid": "moderat",
     "kode": "75",
-    "hint": "Legg sammen de tre tallene fra sender-lappene: 15 + 25 + 35!",
     "reveals": {
-      "files": [
-        "tidsanomalier.txt",
-        "antenna-crisis.txt",
-        "antenne_tid_system.txt"
-      ],
-      "topics": ["morket-tidsanomali", "morkets-trussel"],
+      "files": ["antennen-ved-tjernet.txt"],
       "modules": []
     },
     "eventyr": {
-      "id": "morkets-trussel",
-      "phase": 2
+      "id": "spokelseskoden",
+      "phase": 11
     },
     "bonusoppdrag": {
-      "tittel": "Bygg Nød-Antenne til Snøfall TV",
-      "beskrivelse": "Signalet på Snøfall TV trenger en fysisk forsterker hjemme på Landås! Bygg en kreativ nød-antenne av aluminiumsfolie (minst 20 cm høy) og plasser den ved skjermen eller TV-en.",
-      "fysisk_oppgave": "Lag en antenne av aluminiumsfolie sammen og vis den til mamma eller pappa for godkjenning i KodeTerminal!",
+      "tittel": "Nødantenne til Snøfall TV",
+      "beskrivelse": "Kulde forstyrrer antennen ved tjernet, og IQ trenger en antenne på Landås-siden også. Bygg en antenne av aluminiumsfolie, minst 20 cm høy, og sett den ved skjermen.",
+      "fysisk_oppgave": "Bygg antennen sammen og vis den til mamma eller pappa. De taster foreldrekoden i KodeTerminal.",
       "validering": "forelder",
       "foreldre_kode": "ANTENNE2026",
-      "belønning_tekst": "NØD-ANTENNE GODKJENT! Signalstyrken mellom Landås og Snøfall er nå på 100%, og dere har vunnet merket ANTENNE-INGENIØR!",
-      "badge_id": "antenne-ingenior",
-      "badge_navn": "Antenne-ingeniør",
-      "badge_icon": "zap"
+      "frost_effekt": -20,
+      "belønning_tekst": "NØDANTENNE GODKJENT. IQ ser den på radaren og vil ha tegningen. Frostgraden faller 20 %."
     },
-    "dagbokinnlegg": "11. desember. Den første store krisen i Operasjon Spøkelseskode! Kulde spredte signalet vårt utover tre skjeve frekvenser (15, 25 og 35 MHz). Kristian, Håkon og Hanna fant alle tre senderlappene, regnet ut 15 + 25 + 35 = 75 MHz, og bygde til og med en fysisk nød-antenne av aluminiumsfolie på Landås for å forsterke signalet over Bergen!",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Antennen står rett igjen, og kanal 4 er tilbake. Rampenissen lå på et stekebrett pakket inn som en bakt potet. Han sier folien «holder tankene inne».",
+    "julius_ps_bonus": "Antennen står rett igjen, og kanal 4 er tilbake. IQ så folieantennen deres på radaren og vil ha tegningen. Rampenissen lå på et stekebrett pakket inn som en bakt potet; han sier det var «prototypen»."
   },
   {
     "dag": 12,
     "tittel": "Lydbølgene som Smelter Is",
-    "nissemail_tekst": "God lørdag! Folie-antennen og frekvensen virker, men det sitter fortsatt et tykt lag med is på brevfugl-slusen! IQ fant ut at musikk og glade lydbølger får isen til å sprekke. Jeg har satt frem 3 kopper eller glass på kjøkkenet som 'klokkespill' sammen med et GRØNT SOL-symbolkort! Hanna: Finn det grønne sol-kortet! Håkon: Les de 3 første bokstavene ved koppene (M - E - L). Kristian: Sjekk julesanger-samling.txt i SNOFALL-HISTORIER for å finne de 3 siste bokstavene (O - D - I) - og åpne NISSEKRYPTO etterpå for å løse Nivå 1 med de 3 hjertene!",
-    "rampenissen_rampestrek": "Rampenissen sitter ved 3 kopper/glass på kjøkkenbenken med en teskje som trommestikke, det grønne sol-kortet og en lapp: 'TONE DEL 1: M - E - L (Se julesanger-samling.txt i NisseNet for DEL 2)'.",
-    "fysisk_hint": "Se ved de 3 koppene på kjøkkenet! Der ligger det grønne sol-symbolet og første del av ordet (M-E-L). Andre del (O-D-I) står i SNOFALL-HISTORIER/julesanger-samling.txt!",
+    "nissemail_tekst": "Jeg hørte noe sukke i isen i natt. Ikke knurre. Sukke. 🎵 Nissemor bare nynnet ved slusen, og da sprakk isen litt. Jeg har lagt en lydbølge gjennom hele huset; den ender ved fire ting på bordet. Bare tre av dem er Nissemors. Håkon: slå forsiktig på alle med skjeen. Hør hvilke som synger, og hvilken som er dypest. Lappene sitter utenpå, og rekkefølgen er lyden. Hanna, hvis du vil: det grønne kortet er ditt. Kristian: tre hjerter. Pil har sagt hva fargene betyr. – Rampenissen",
+    "rampenissen_rampestrek": "Har rullet ut en hel dorull som «lydbølge» fra badet gjennom gangen til kjøkkenet og ligger utslått i enden ved tre glass.",
+    "fysisk_hint": "Tre like glass med 2, 5 og 9 cm vann og ett keramikkrus med litt vann, i tilfeldig rekkefølge, teskje ved. Kortet `dag12-frostlapp-tredelt.pdf` klippet i fire, teipet nederst på utsiden med forsiden inn: dypeste glass `_ E`, midterste `_ O`, lyseste `_ _`, kruset `_ A` (blindspor: det gir dunk, ikke tone; Julius sier «tre toner»). Grønt sol-kort mot midtglasset. Løsning: Håkon slår på alle, legger bort kruset, sorterer glassene fra dypest til lysest, bitene i samme rekkefølge: `_ E _ O _ _`. Julius: det tonene lager når de kommer etter hverandre. Kode MELODI. Så NisseKrypto 1: «varmt, håper, alene» = rødt (PS dag 6), grønt (PS dag 3), blått (PS dag 9, eller ved utelukkelse) → merket Varmebærer. Hører de ikke forskjell: mest vann = dypest. Prikker 1–3 bak de ekte bitene. Hanna, hvis hun vil: slår på glassene og sier hvilken som ikke synger.",
     "materialer_nødvendig": [
-      "Symbolkort: Grønn sol (QR-kort)",
-      "3 kopper eller glass på rekke med en skje",
-      "Lapp: 'DEL 1: M - E - L (Se julesanger-samling.txt i NisseNet for DEL 2)'"
+      "3 glass",
+      "1 keramikkrus",
+      "teskje",
+      "dag12-frostlapp-tredelt.pdf",
+      "symbolkort grønn sol",
+      "1 dorull"
     ],
     "beste_rom": "Kjøkkenet",
     "oppsett_tid": "moderat",
     "kode": "MELODI",
-    "hint": "Sett sammen M-E-L fra kjøkkenet med O-D-I fra julesanger-samling.txt i NisseNet (6 bokstaver)!",
     "reveals": {
-      "files": ["julesanger-samling.txt"],
-      "topics": ["julesanger", "brevfugl-organisering"],
+      "files": [],
       "modules": []
     },
     "eventyr": {
-      "id": "brevfugl-mysteriet",
-      "phase": 3
+      "id": "spokelseskoden",
+      "phase": 12
     },
     "symbol_clue": {
       "symbolId": "sun-green",
       "symbolIcon": "sun-alt",
       "symbolColor": "green",
-      "description": "Grønn sol funnet ved klokkespillet på kjøkkenet"
+      "description": "Grønn sol funnet ved de tre glassene på kjøkkenet"
     },
     "decryption_challenge": {
       "challengeId": "frosne-koder",
       "requiredSymbols": ["heart-green", "heart-red", "heart-blue"],
       "correctSequence": [1, 0, 2],
-      "hint": "Julens syklus starter med varme og tradisjon (Rødt hjerte), vokser med håp (Grønt hjerte) og renses i krystallklar snø (Blått hjerte).",
-      "rewardText": "NIVÅ 1 DEKRYPTERT! Filen frosne-koder.txt er nå låst opp i DEKRYPTERT-mappen i NisseNet!",
+      "hint": "Orakelets logg fra slusen: først det som er varmt, så det som håper, til slutt det som er alene. (Fargene står ikke her; Pil har sagt dem i PS dag 3, 6 og 9.)",
+      "rewardText": "DEKRYPTERT. Orakelets logg fra slusen ligger i DEKRYPTERT/frosne-koder.txt. Les den sammen.",
       "unlocksFiles": ["frosne-koder.txt"]
     },
-    "dagbokinnlegg": "12. desember. Halvveis til julaften! I dag brukte vi en varm jule-MELODI til å riste løs isen fra brevfugl-slusen. Enda viktigere: Med Grønt, Rødt og Blått Hjerte samlet kunne Kristian, Håkon og Hanna gjennomføre den første store dekrypteringen i NisseKrypto (frosne-koder.txt).",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Jeg sa til Rampenissen at han innbilte seg det. Jeg tok feil. Les det Orakelet skrev fra slusen, sammen. Og dorullen: fra badet til kjøkkenet, hele rullen. Nissemor spør om dere har mer av det også."
   }
 ]

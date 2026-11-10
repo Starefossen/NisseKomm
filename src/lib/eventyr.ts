@@ -1,10 +1,9 @@
 /**
- * Eventy Management System
+ * Eventyr (story arc) data from eventyr.json
  *
- * Loads and provides access to story arc metadata from eventyr.json.
- * This separates narrative structure from mission data, making both more manageable.
- *
- * Days are derived from oppdrag files (single source of truth) rather than duplicated.
+ * 2026 has one story, «Spøkelseskoden», over all 24 days. Its days are derived
+ * from the oppdrag files (single source of truth); its milestones (M1–M6) live
+ * in eventyr.json.
  */
 
 import eventyrData from "@/data/eventyr.json";
@@ -12,94 +11,37 @@ import merkerData from "@/data/merker.json";
 import type { EventyrData, Eventyr } from "@/types/innhold";
 import { getAllOppdrag } from "@/lib/oppdrag";
 
-// Load eventyr data at build time
 const EVENTYR: EventyrData = eventyrData as EventyrData;
 
-// Cache for derived eventyr-to-days mapping (computed once at module load)
 const EVENTYR_DAYS_CACHE = new Map<string, number[]>();
 
-/**
- * Build eventyr-to-days mapping from oppdrag files (single source of truth)
- * This runs once at module initialization and validates første_opplåsingsdag
- */
 function buildEventyrDaysMapping(): void {
-  const allOppdrag = getAllOppdrag();
-
-  allOppdrag.forEach((quest) => {
+  getAllOppdrag().forEach((quest) => {
     if (quest.eventyr) {
-      const eventyrId = quest.eventyr.id;
-      if (!EVENTYR_DAYS_CACHE.has(eventyrId)) {
-        EVENTYR_DAYS_CACHE.set(eventyrId, []);
-      }
-      EVENTYR_DAYS_CACHE.get(eventyrId)!.push(quest.dag);
+      const days = EVENTYR_DAYS_CACHE.get(quest.eventyr.id) ?? [];
+      days.push(quest.dag);
+      EVENTYR_DAYS_CACHE.set(quest.eventyr.id, days);
     }
   });
-
-  // Sort days for each eventyr
   EVENTYR_DAYS_CACHE.forEach((days) => days.sort((a, b) => a - b));
 
-  // Validate første_opplåsingsdag against computed first day
   EVENTYR.eventyr.forEach((eventyr) => {
-    const days = EVENTYR_DAYS_CACHE.get(eventyr.id);
-    if (days && days.length > 0) {
-      const computedFirstDay = days[0];
-      if (eventyr.første_opplåsingsdag !== computedFirstDay) {
-        throw new Error(
-          `Validation Error: Eventyr "${eventyr.id}" has første_opplåsingsdag=${eventyr.første_opplåsingsdag} but first quest day is ${computedFirstDay}. Update eventyr.json to match.`,
-        );
-      }
+    const firstDay = EVENTYR_DAYS_CACHE.get(eventyr.id)?.[0];
+    if (firstDay !== undefined && eventyr.første_opplåsingsdag !== firstDay) {
+      throw new Error(
+        `Validation Error: Eventyr "${eventyr.id}" has første_opplåsingsdag=${eventyr.første_opplåsingsdag} but first quest day is ${firstDay}. Update eventyr.json to match.`,
+      );
+    }
+    const badgeId = eventyr.belønning.badge_id;
+    if (!merkerData.merker.some((m) => m.id === badgeId)) {
+      throw new Error(
+        `Validation Error: Eventyr "${eventyr.id}" references badge_id "${badgeId}" which does not exist in merker.json`,
+      );
     }
   });
 }
 
-// Build mapping on module load
 buildEventyrDaysMapping();
-
-/**
- * Validate eventyr badges against merker.json at build time
- */
-function validateEventyrBadges(): void {
-  EVENTYR.eventyr.forEach((eventyr) => {
-    if (eventyr.belønning.type === "badge") {
-      const badgeId = eventyr.belønning.badge_id;
-
-      // Check if badge_id is provided
-      if (!badgeId) {
-        throw new Error(
-          `Validation Error: Eventyr "${eventyr.id}" has badge reward but missing badge_id`,
-        );
-      }
-
-      // Check if badge exists in merker.json
-      const badge = merkerData.merker.find((m) => m.id === badgeId);
-      if (!badge) {
-        throw new Error(
-          `Validation Error: Eventyr "${eventyr.id}" references badge_id "${badgeId}" which does not exist in merker.json`,
-        );
-      }
-
-      // Check if badge type is "eventyr"
-      if (badge.type !== "eventyr") {
-        throw new Error(
-          `Validation Error: Eventyr "${eventyr.id}" references badge "${badgeId}" with type "${badge.type}", expected "eventyr"`,
-        );
-      }
-
-      // Check if badge unlock condition matches eventyr ID
-      if (
-        badge.unlockCondition.type === "eventyr" &&
-        badge.unlockCondition.eventyrId !== eventyr.id
-      ) {
-        throw new Error(
-          `Validation Error: Badge "${badgeId}" unlock condition specifies eventyrId "${badge.unlockCondition.eventyrId}", but it's referenced by eventyr "${eventyr.id}"`,
-        );
-      }
-    }
-  });
-}
-
-// Validate badges on module load
-validateEventyrBadges();
 
 /**
  * Get days assigned to an eventyr (derived from oppdrag files)
@@ -108,16 +50,10 @@ export function getEventyrDays(eventyrId: string): number[] {
   return EVENTYR_DAYS_CACHE.get(eventyrId) || [];
 }
 
-/**
- * Get all eventyr
- */
 export function getAllEventyr(): Eventyr[] {
   return EVENTYR.eventyr;
 }
 
-/**
- * Get a specific eventyr by ID
- */
 export function getEventyr(eventyrId: string): Eventyr | undefined {
   return EVENTYR.eventyr.find((eventyr) => eventyr.id === eventyrId);
 }
@@ -126,60 +62,21 @@ export function getEventyr(eventyrId: string): Eventyr | undefined {
  * Get eventyr that include a specific day
  */
 export function getEventyrForDay(day: number): Eventyr[] {
-  return EVENTYR.eventyr.filter((eventyr) => {
-    const days = getEventyrDays(eventyr.id);
-    return days.includes(day);
-  });
+  return EVENTYR.eventyr.filter((eventyr) =>
+    getEventyrDays(eventyr.id).includes(day),
+  );
 }
 
-/**
- * Get eventyr color for UI styling
- */
-export function getEventyrColor(eventyrId: string): string {
-  const eventyr = getEventyr(eventyrId);
-  return eventyr?.farge || "#666666";
-}
-
-/**
- * Get eventyr icon for UI display
- */
-export function getEventyrIcon(eventyrId: string): string {
-  const eventyr = getEventyr(eventyrId);
-  return eventyr?.ikon || "help";
-}
-
-/**
- * Get parent guidance for an eventyr
- */
-export function getParentGuidance(eventyrId: string) {
-  const eventyr = getEventyr(eventyrId);
-  return eventyr?.foreldreveiledning;
-}
-
-/**
- * Get eventyr reward information (internal use)
- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getEventyrReward(eventyrId: string) {
-  const eventyr = getEventyr(eventyrId);
-  return eventyr?.belønning;
-}
-
-/**
- * Check if all days in an eventyr are completed
- */
 export function isEventyrComplete(
   eventyrId: string,
   completedDays: Set<number>,
 ): boolean {
   const days = getEventyrDays(eventyrId);
-  if (days.length === 0) return false;
-
-  return days.every((day) => completedDays.has(day));
+  return days.length > 0 && days.every((day) => completedDays.has(day));
 }
 
 /**
- * Get progress for an eventyr (percentage)
+ * Get progress for an eventyr (percentage of days completed)
  */
 export function getEventyrProgress(
   eventyrId: string,
@@ -187,144 +84,6 @@ export function getEventyrProgress(
 ): number {
   const days = getEventyrDays(eventyrId);
   if (days.length === 0) return 0;
-
   const completedCount = days.filter((day) => completedDays.has(day)).length;
   return Math.round((completedCount / days.length) * 100);
-}
-
-/**
- * Get major eventyr (5 main narratives)
- */
-export function getMajorEventyr(): Eventyr[] {
-  return EVENTYR.eventyr.filter((eventyr) => {
-    const days = getEventyrDays(eventyr.id);
-    return !eventyr.id.startsWith("countdown") && days.length >= 3;
-  });
-}
-
-/**
- * Get mini eventyr (shorter narratives)
- */
-export function getMiniEventyr(): Eventyr[] {
-  return EVENTYR.eventyr.filter((eventyr) => {
-    const days = getEventyrDays(eventyr.id);
-    return days.length < 3;
-  });
-}
-
-/**
- * Get metadata about the eventyr system (internal use)
- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getEventyrMetadata() {
-  return EVENTYR.metadata;
-}
-
-/**
- * Get pixelarticons icon name for reward type
- * Maps EventyrBeløning.type to valid pixelarticons names
- */
-export function getRewardIcon(
-  rewardType:
-    | "badge"
-    | "module_unlock"
-    | "secret_unlock"
-    | "symbol_collection"
-    | "grand_finale",
-): string {
-  const iconMap: Record<string, string> = {
-    badge: "trophy",
-    module_unlock: "layout",
-    secret_unlock: "lock-open",
-    symbol_collection: "book",
-    grand_finale: "gift",
-  };
-
-  return iconMap[rewardType] || "help";
-}
-
-export interface EventyrCameraMeta {
-  feedSrc: string;
-  camLabel: string;
-  freqLabel: string;
-  objectPosition: string;
-  filterClass: string;
-}
-
-const EVENTYR_CAMERA_FEEDS: Record<string, EventyrCameraMeta> = {
-  "morkets-trussel": {
-    feedSrc: "/feed/kulde-grotte.png",
-    camLabel: "CAM 04 // 85.0 MHz KRYSTALLGROTTEN",
-    freqLabel: "TRUSSEL: KULDE [AKTIV OVERVÅKNING]",
-    objectPosition: "center 55%",
-    filterClass: "contrast-125 saturate-90",
-  },
-  "iqs-oppfinnelser": {
-    feedSrc: "/feed/iq-verksted.png",
-    camLabel: "CAM 02 // IQS VERKSTED-LAB",
-    freqLabel: "TELEMETRI: KRETSKORT & BRANNMUR",
-    objectPosition: "center 45%",
-    filterClass: "contrast-110 saturate-95",
-  },
-  "brevfugl-mysteriet": {
-    feedSrc: "/feed/julius-kontor.png",
-    camLabel: "RADAR // BREVDUESLAG SNØFALL",
-    freqLabel: "LUFTKORRIDOR: 60.37°N ⇄ 90.00°N",
-    objectPosition: "center 35%",
-    filterClass: "contrast-110 saturate-90",
-  },
-  "frosne-monster": {
-    feedSrc: "/feed/snøfall-storm.png",
-    camLabel: "CAM 01 // PRISME-SENSOR TORGET",
-    freqLabel: "SPEKTRALANALYSE: IS-GEOMETRI",
-    objectPosition: "center 50%",
-    filterClass: "contrast-125 hue-rotate-15",
-  },
-  "farge-mysteriet": {
-    feedSrc: "/feed/snøfall-day.png",
-    camLabel: "CAM 01 // OPTISK SPEKTER-LÅS",
-    freqLabel: "BØLGELENGDE: RGB-KALIBRERING",
-    objectPosition: "center 60%",
-    filterClass: "contrast-115 saturate-125",
-  },
-  "countdown-julaften": {
-    feedSrc: "/feed/snøfall-night.png",
-    camLabel: "CAM 01 // NORDLYS-KORRIDOR",
-    freqLabel: "OPERASJON: JULAFTEN LANDÅS",
-    objectPosition: "center 40%",
-    filterClass: "contrast-115 saturate-110",
-  },
-  juletradisjon: {
-    feedSrc: "/feed/julius-kontor.png",
-    camLabel: "ARKIV 05 // SNØFALL-KRØNIKEN",
-    freqLabel: "KULTURMINNE: NORDISK JUL",
-    objectPosition: "center 65%",
-    filterClass: "contrast-110 sepia-[0.15]",
-  },
-  "halvveis-milepæl": {
-    feedSrc: "/feed/iq-verksted.png",
-    camLabel: "CAM 02 // PAKKE-SORTERER LOGISTIKK",
-    freqLabel: "MILEPÆL: 12/24 DAGER",
-    objectPosition: "center 65%",
-    filterClass: "contrast-115",
-  },
-  "slede-forberedelser": {
-    feedSrc: "/feed/antenne-tarn.png",
-    camLabel: "CAM 04 // ULRIKEN VIND-RADAR",
-    freqLabel: "SLEDE-NAV: VESTLANDSVIND",
-    objectPosition: "center 45%",
-    filterClass: "contrast-120 saturate-90",
-  },
-};
-
-const DEFAULT_CAMERA_META: EventyrCameraMeta = {
-  feedSrc: "/feed/snøfall-day.png",
-  camLabel: "CAM 01 // SNØFALL SENTRUM",
-  freqLabel: "SIGNAL: OVERVÅKNING AKTIV",
-  objectPosition: "center 50%",
-  filterClass: "contrast-110",
-};
-
-export function getEventyrCameraMeta(eventyrId: string): EventyrCameraMeta {
-  return EVENTYR_CAMERA_FEEDS[eventyrId] || DEFAULT_CAMERA_META;
 }

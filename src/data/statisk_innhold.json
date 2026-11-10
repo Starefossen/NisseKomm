@@ -58,107 +58,107 @@
     },
     {
       "day": 8,
-      "tekst": "🎉 NISSENE: Første uke fullført! IQ feirer med ny kretskort-simulator!",
+      "tekst": "🎉 NISSENE: Uke én fullført. IQ lodder noe grønt og sover ikke.",
       "type": "info"
     },
     {
       "day": 9,
-      "tekst": "👵 NISSEMOR: 4 snøkrystaller med 6 tagger hver i glassovnen i dag!",
+      "tekst": "🧪 PIL: Noen av krystallene i radaren er ikke ekte. Jeg ble lurt to ganger.",
       "type": "info"
     },
     {
       "day": 10,
-      "tekst": "📺 IQ: Snøfall TV oppgradert! Men Kulde prøver å stjele fargespekteret!",
+      "tekst": "📺 IQ: Fargene er borte fra alle kanaler. Kromatisk drenering 71 %.",
       "type": "info"
     },
     {
       "day": 11,
-      "tekst": "📡 IQ: KRISE! Spøkelseskoden jammer antennen med 75 MHz avvik!",
+      "tekst": "📡 IQ: Antennen ved tjernet er dekket av is. Senderen er delt i tre.",
       "type": "kritisk"
     },
     {
       "day": 12,
-      "tekst": "🎵 NISSENE: Julemelodien varmer opp serverrommet igjen! Bra jobbet!",
+      "tekst": "🎵 NISSEMOR: Isen ved slusen sprakk i natt. Noe svarte.",
       "type": "info"
     },
     {
       "day": 13,
-      "tekst": "🕯️ NISSEMOR: Luciadagen! Gyllen safran i bollene lyser opp hele Snøfall!",
+      "tekst": "🕯️ NISSEMOR: God Lucia. 500 boller bakt, 11 savnet.",
       "type": "info"
     },
     {
       "day": 14,
-      "tekst": "🕊️ WINTER: Origami-kodene er komplette! Brevfugler-modulen er åpen!",
+      "tekst": "🕊️ WINTER: Brevfuglene er åpnet. Én fugl ingen har sendt.",
       "type": "info"
     },
     {
       "day": 15,
-      "tekst": "🍬 RAMPENISSEN: Laget karamellsaus på kjøkkenet! (Bare litt klissete)",
+      "tekst": "📓 IQ: Fant Fargesamlerens notatbok i arkivet i natt. Ingen kommentar.",
       "type": "info"
     },
     {
       "day": 16,
-      "tekst": "📦 WINTER: HALVVEIS-ALARM! Gave-sorteringen gikk i spinn! Hjelp oss på TV!",
+      "tekst": "📦 WINTER: Samlebåndet går baklengs. Alt ligger i én haug.",
       "type": "advarsel"
     },
     {
       "day": 17,
-      "tekst": "🌌 ORAKELET: Grønt nordlys over Nordpolen åpner sikret satellittkanal!",
+      "tekst": "🔮 ORAKELET: Grønt over Ulriken i natt. Første svar fra grotten.",
       "type": "info"
     },
     {
       "day": 18,
-      "tekst": "🛷 TRIXTER: Vestlandsvind og turbulens i sledesimulatoren! Hold fast!",
+      "tekst": "🛷 TRIXTER: Testfløy ruten over Nordtoppen. Sleden ristet. Rudolf har det bra.",
       "type": "info"
     },
     {
       "day": 19,
-      "tekst": "🥕 RUDOLF: IQs gulrot-automat skjøt 40 gulrøtter i taket! Nam!",
+      "tekst": "⚙️ IQ: Fôringsautomaten tok taket. 40 enheter i luften, 3 landet på Landås.",
       "type": "advarsel"
     },
     {
       "day": 20,
-      "tekst": "🚀 IQ: Slede-turboen er ferdig koblet! Klar for overlydsfart!",
+      "tekst": "🔮 ORAKELET: 88 %. I morgen er den mørkeste dagen. Vær hjemme.",
       "type": "info"
     },
     {
       "day": 21,
-      "tekst": "🛡️ JULIUS: BRANNMUREN HOLDT! Spøkelseskoden Kulde er slettet for godt!",
+      "tekst": "🎅 JULIUS: Muren holder. Porten står åpen. Nå venter vi.",
       "type": "kritisk"
     },
     {
       "day": 22,
-      "tekst": "📍 WINTER: Landingskoordinater for Landås lagt inn i sledens minne!",
+      "tekst": "📋 WINTER: Jeg mangler stedet i tall. Snill-listen åpner i kveld.",
       "type": "advarsel"
     },
     {
       "day": 23,
-      "tekst": "🌟 JULIUS: Stjerneklart over Bergen i kveld! Vi gjør klar til avgang!",
+      "tekst": "🔮 ORAKELET: Flyvær i natt. Sleden går lavt over grotten.",
       "type": "kritisk"
     },
     {
       "day": 24,
-      "tekst": "🎅 JULIUS: God jul, Kristian, Håkon og Hanna! Takk for at dere reddet Snøfall!",
+      "tekst": "🎅 JULIUS: God jul, Kristian, Håkon og Hanna. Det er ikke kaldt der nede lenger.",
       "type": "info"
     },
     {
       "day": 24,
-      "tekst": "🏆 GRATULERER! Operasjon Spøkelseskode er fullført! Ekte mesteragenter!",
+      "tekst": "❄️ ORAKELET: Frostgrad 0 %. Tøvær.",
       "type": "info"
     },
     {
       "day": 24,
-      "tekst": "🎄 NISSEMOR: Riktig god jul til hele huset på Landås! ✨",
+      "tekst": "🎄 NISSEMOR: God jul til hele huset på Landås.",
       "type": "info"
     },
     {
       "day": 24,
-      "tekst": "🧝 RAMPENISSEN: Kommer til å savne dere! Sees neste desember! ❤️",
+      "tekst": "🧝 RAMPENISSEN: Takk for garnkurven. Vi ses neste desember.",
       "type": "info"
     },
     {
       "day": 24,
-      "tekst": "🦌 TRIXTER & RUDOLF: Takk for gulrøttene og navigasjonen over Ulriken! 🛷",
+      "tekst": "🕊️ WINTER: Den blå fuglen fløy hjem. Brevet har tint.",
       "type": "info"
     }
   ],
@@ -235,131 +235,37 @@
           "type": "mappe",
           "barn": [
             {
-              "navn": "magisk-sekk-test.txt",
+              "navn": "feilrapport-uke-1.txt",
               "type": "fil",
-              "innhold": "🔌 IQS KRETSKORT-LAB - FEILRAPPORT 🔌\n\nDag 8 - Oppgradering av Snøfall TV og Verkstedet\n\nIQ rapporterer:\n'Jeg skulle bare koble litt ekstra effekt inn i kaffetrakteren og brannmuren samtidig. Det smalt! Nå ligger bestikk-kretsløpet strødd utover kjøkkenbenken deres på Landås.'\n\nKOMPONENT-SJEKK (DAG 8):\n1. Sjekk hva Rampenissen har lagt frem på kjøkkenet (første del av ordet: KRETS).\n2. Åpne Snøfall TV på KANAL 2 (IQs Verksted-Lab) eller KANAL 4 (Kretskort-Kobler) for å se andre del av ordet: KORT.\n\nSett del 1 + del 2 sammen til ett ord på 9 bokstaver (K-R-E-T-S-K-O-R-T)!\n\nTestlogg fra verkstedet:\n- Test 1: Overklokket pepperkakeovn -> Brennmønster i taket\n- Test 2: Automatisk gulrotkanon -> 40 gulrøtter i veggen\n- Test 3: Kretskort-Kobler v2 -> FUNGERER NÅR DERE KOBLER DEN!",
+              "innhold": "IQ – FEILRAPPORT UKE 1\n\nMandag: direktelinje åpnet. Bærebølge ustabil. Ikke min feil.\nTirsdag: tre sikringer. Kaffetrakter på forsterkeren. Delvis min feil.\nTorsdag: blått glimt på 85,0. Orakelets avdeling.\nFredag: Rudolf i snøfonn. Tåke med feil temperatur.\nSøndag: 40 lys hengt rundt antennen. Batteri til 20. desember.\nMandag: signaturen har navn. Lodder nå noe som skal holde den ute av kanal 1–4. Ferdig i morgen.\n\nKonklusjon: alt virker, bortsett fra det som ikke virker.",
               "unlockConditions": {
-                "requiresTopics": ["iq-oppfinnelser"]
+                "afterDay": 8
+              }
+            },
+            {
+              "navn": "foringsautomat.log",
+              "type": "fil",
+              "innhold": "IQ – FÔRINGSAUTOMAT v1, HENDELSESLOGG\n\n05:12 Automaten lastet. 40 enheter oransje reinsdyrfôr.\n05:13 Trykk satt til «mye».\n05:14 Tak borte. 40 enheter i luften.\n05:30 Rudolf fornøyd. 36 enheter funnet i Snøfall.\n06:00 3 enheter sporet til Landås. Status: bevis. Ikke pakk opp.\n06:01 1 enhet traff Rampenissen. Han lever.\n\nMerknad: ingen aktivitet fra 85,0 i natt. Første stille natt siden 1. desember.",
+              "unlockConditions": {
+                "afterDay": 19
               }
             }
           ]
         },
         {
-          "navn": "julekuleblasing.txt",
-          "type": "fil",
-          "innhold": "🎄 NISSEMORS KRYSTALLKULER (DAG 9) 🎄\n\nNissemor og Pil blåser glasskuler med snøkrystall-mønster for å styrke skjoldet rundt Snøfall.\n\nFORMEL FOR KRYSTALL-SYMMETRI:\n- 1 snøkrystall = 6 kanter/tagger\n- 2 snøkrystaller = 12 kanter/tagger\n- 3 snøkrystaller = 18 kanter/tagger\n- 4 snøkrystaller = 24 kanter/tagger\n\nHanna og Håkon: Tell snøkrystallene Rampenissen har hengt opp hjemme hos dere (4 stk), og gang med 6!",
-          "unlockConditions": {
-            "requiresTopics": ["frosne-mønster"]
-          }
-        },
-        {
           "navn": "farge-koder.txt",
           "type": "fil",
-          "innhold": "🎨 FARGESPEKTERET PÅ SNØFALL TV 🎨\n\nBilledrøret på Snøfall TV bruker hele fargespekteret for å holde Spøkelseskoden ute:\n🔴 RØD - Varme fra juleverkstedet\n🟢 GRØNN - Nordlys og kretskort\n🔵 BLÅ - Polarnatt og stjernehimmel\n🟡 GULL - Julemagi på full styrke\n\nNår alle fargene lyser sammen, danner de et komplett SPEKTER!",
+          "innhold": "REGNBUENS REKKEFØLGE (fra Fargesamlerens arkiv)\n\n1 rød\n2 oransje\n3 gul\n4 grønn\n5 blå\n6 indigo\n7 fiolett\n\nSlik stiller lyset fargene opp når det går gjennom glass. Alltid samme rekkefølge.\n\n\n\nFARGESAMLERENS ARKIV – DEL 1: FARGENE\n\nFargesamleren var den første i Snøfall som samlet på farger. Ikke maling. Lys. Rødt fra bålene, grønt fra granene, blått fra isen under Nordtoppen, fanget i iskrystaller så de aldri skulle blekne.\n\nSamlingen ligger i Krystallgrotten under fjellet, der det er kaldt nok til at ingenting smelter. Over inngangen står én regel: «Farger må ses. Ellers forsvinner de.»\n\nDel 2 åpner når linjen er varmere.",
           "unlockConditions": {
             "afterDay": 10
           }
         },
         {
-          "navn": "farge_system_dekoder.txt",
-          "type": "fil",
-          "innhold": "🎨 FARGESAMLERENS SPEKTER-DEKODER (DAG 10) 🎨\n\nSpøkelseskoden prøvde å suge fargene ut av Snøfall TV i natt!\nFor å låse opp fargene må dere sette sammen to ledetråder:\n\n1. FYSISK FARGEJAKT I STUEN:\nFinn de 4 fargede gjenstandene Rampenissen har merket i stuen.\nDe gir de 4 første bokstavene: S - P - E - K\n\n2. DIGITAL KANAL-KODE HER I NISSENET:\nDe 3 fargekanalene i TV-røret (Rød, Grønn, Blå) gir de 3 siste bokstavene: T - E - R\n\nSett dem sammen: S-P-E-K + T-E-R = SPEKTER (7 bokstaver)!",
-          "unlockConditions": {
-            "requiresTopics": ["farge-mysteriet"]
-          }
-        },
-        {
-          "navn": "fargesamleren.txt",
-          "type": "fil",
-          "innhold": "🎨 FARGESAMLERENS HEMMELIGE OPPSKRIFT (DAG 15) 🎨\n\n[HEMMELIG ARKIVFIL]\n\nFargesamleren oppdaget ikke bare de 9 magiske symbolene (hjerter, soler og måner i grønt, rødt og blått) - han visste også hvordan gyllen varme lages på kjøkkenet midt i desember!\n\nOPPSKRIFT-KODE FOR DAG 15:\nPå kjøkkenet har Rampenissen satt frem skåler/kopper med første halvdel av dagens søte kodeord: K - A - R - A\n\nHer i Fargesamlerens notatbok står andre halvdel av kodeordet: M - E - L - L\n\nSett sammen K-A-R-A + M-E-L-L til ett gyllent ord på 8 bokstaver!"
-        },
-        {
-          "navn": "tidsanomalier.txt",
-          "type": "fil",
-          "innhold": "⏰ FREKVENS-AVVIK OG KLOKKE-JAMMING (DAG 11) ⏰\n\nKRITISK ALARM!\nSpøkelseskoden Kulde har forskjøvet tre sendere mellom Snøfall og Bergen.\n\nREGISTRERTE AVVIK:\n- Sender 1 (Stuen): 15 MHz avvik\n- Sender 2 (Kjøkkenet): 25 MHz avvik\n- Sender 3 (Gangen): 35 MHz avvik\n\nKRYPTO-OPPGAVE:\nLegg sammen de tre tallene fra lappene hjemme:\n15 + 25 + 35 = 75\n\nTast inn summen (75) i KODETERMINAL for å synkronisere frekvensen!",
-          "unlockConditions": {
-            "requiresTopics": ["morkets-trussel"]
-          }
-        },
-        {
-          "navn": "antenna-crisis.txt",
-          "type": "fil",
-          "innhold": "📡 NØD-ANTENNE MOT SPØKELSESKODEN (DAG 11) 📡\n\nEtter at dere har tastet inn frekvenskoden 75, trenger Snøfall TV ekstra signalstyrke over Landås.\n\nBONUSOPPDRAG:\nBygg en fysisk nød-antenne av aluminiumsfolie (minst 20 cm høy) og sett den ved skjermen eller TV-en.\nNår mamma eller pappa godkjenner antennen i KODETERMINAL, låser dere opp merket ANTENNE-INGENIØR!",
-          "unlockConditions": {
-            "requiresTopics": ["morket-tidsanomali"]
-          }
-        },
-        {
-          "navn": "antenne_tid_system.txt",
-          "type": "fil",
-          "innhold": "📡⏰ TEKNISK LOGG: FREKVENS 75 MHz 📡⏰\n\nIQs rapport:\n'Spøkelseskoden trodde den kunne isolere oss ved å splitte signalet i tre deler (15, 25 og 35 MHz). Men 15 + 25 + 35 = 75! Med riktig frekvens og en ekte sølvfolie-antenne på Landås går signalet rett gjennom stormen!'",
-          "unlockConditions": {
-            "requiresTopics": ["morket-tidsanomali"]
-          }
-        },
-        {
-          "navn": "julesanger-samling.txt",
-          "type": "fil",
-          "innhold": "🎵 LYDBØLGE-SKJOLDET (DAG 12) 🎵\n\nMusikk skaper lydbølger som rister løs isen fra Spøkelseskoden!\n\nKODEORD PÅ 6 BOKSTAVER:\n- Første halvdel (3 bokstaver) har Rampenissen lagt ved tre kopper/glass på kjøkkenet: M - E - L\n- Andre halvdel (3 bokstaver) ligger lagret her i NisseMusikk-arkivet: O - D - I\n\nSett dem sammen: M-E-L + O-D-I = MELODI!\n\nHusk også å åpne NISSEKRYPTO i dag: Med grønt, rødt og blått hjerte kan dere dekryptere frosne-koder.txt!",
-          "unlockConditions": {
-            "requiresTopics": ["brevfugl-organisering"]
-          }
-        },
-        {
           "navn": "lucia-tradisjon.txt",
           "type": "fil",
-          "innhold": "🕯️ LUCIADAGEN OG DET GYLNE KRYDDERET (DAG 13) 🕯️\n\n13. desember feirer vi lyset midt i den mørkeste tiden.\nNissemor baker lysende gule lussekatter som gir varme til alle vaktene ved brannmuren.",
+          "innhold": "LUCIA I SNØFALL\n\n13. desember er midt i den mørkeste tiden. Derfor bærer Lucia lys på hodet: for å vise at lyset ikke er borte, bare lenger unna. I Snøfall går Pil først, med krone, og Nissemor bak med brettet.\n\nBollene er gule av et krydder Nissemor bruker én gang i året.\n\nI natt sto noe og så på lysene gjennom linjen. Det tok ingenting. Det bare så.",
           "unlockConditions": {
-            "requiresTopics": ["frosne-mønster"]
-          }
-        },
-        {
-          "navn": "lucia_lussekatt_hemmelig.txt",
-          "type": "fil",
-          "innhold": "🕯️✨ NISSEMORS GYLNE HEMMELIGHET (DAG 13) ✨🕯️\n\nHva er det som gjør Nissemors lussekatter så strålende gule at selv Spøkelseskoden må rygge unna?\n\nDet er verdens mest verdifulle gylne krydder!\n- Rundt lysene i stuen har Rampenissen gjemt de tre første bokstavene: S - A - F\n- Her i Nissemors oppskriftsbok står de tre siste bokstavene: R - A - N\n\nSett bokstavene sammen: S - A - F - R - A - N (6 bokstaver)!",
-          "unlockConditions": {
-            "requiresTopics": ["frosne-mønster"]
-          }
-        },
-        {
-          "navn": "brevfugl-finale.txt",
-          "type": "fil",
-          "innhold": "🕊️ KUNSTEN Å BRETTE BREVFUGLER (DAG 14) 🕊️\n\nWinter har åpnet den sikrede brevfugl-kanalen!\nHemmeligheten bak våre uknuselige papirfugler er gammel japansk papirbrettekunst på 7 bokstaver.\n\n- På den brettede papirfuglen hjemme på Landås står de 4 første bokstavene: O - R - I - G\n- Her i Winters manual står de 3 siste bokstavene: A - M - I\n\nSett dem sammen: O-R-I-G-A-M-I!",
-          "unlockConditions": {
-            "requiresTopics": ["julesanger"]
-          }
-        },
-        {
-          "navn": "personlige-brev-intro.txt",
-          "type": "fil",
-          "innhold": "💌 BREVFUGLER-MODULEN ER ÅPEN! 💌\n\nFra og med Dag 14 kan Kristian, Håkon og Hanna lese personlige brevfugler direkte i BREVFUGLER-vinduet!",
-          "unlockConditions": {
-            "requiresTopics": ["brevfugl-fullført"]
-          }
-        },
-        {
-          "navn": "halvveis_system.txt",
-          "type": "fil",
-          "innhold": "📦 WINTERS GAVE-SORTERING (DAG 16) 📦\n\n16. desember! Vi er to tredjedeler gjennom desember, men Spøkelseskoden snudde samlebåndet på hodet!\n\nKODEORD FOR Å STARTE SAMLEBÅNDET PÅ NYTT:\n- Sjekk de 4 leke-haugene Rampenissen har laget på gulvet hjemme. Lappen der gir første del: S - O - R - T\n- Her i Winters databaselogg ligger andre del: E - R - I - N - G\n\nSett dem sammen til ett ord på 9 bokstaver: S-O-R-T-E-R-I-N-G!\n\nTips: Etterpå kan dere spille GAVE-SORTERER direkte på Snøfall TV (Kanal 4) og ta bonusoppdraget for å bli INVENTAR-EKSPERT!",
-          "unlockConditions": {
-            "requiresTopics": ["halvveis-milepæl"]
-          }
-        },
-        {
-          "navn": "julekode_dekoder.txt",
-          "type": "fil",
-          "innhold": "🎅 JULIUS' LANDINGSKODE-DEKODER (DAG 22) 🎅\n\nTo dager igjen til julaften! Julius legger inn den nøyaktige landingsruten for Bergen.\n\nNORSK ALFABET-KODE (A=1 til Å=29):\nA=1  B=2  C=3  D=4  E=5  F=6  G=7\nH=8  I=9  J=10 K=11 L=12 M=13 N=14\nO=15 P=16 Q=17 R=18 S=19 T=20 U=21\nV=22 W=23 X=24 Y=25 Z=26 Æ=27 Ø=28 Å=29\n\nDAGENS SOKKE-TALL FRA RAMPENISSEN:\n- Sokk 1 (Hanna): 12 - 1  → L - A\n- Sokk 2 (Håkon): 14 - 4  → N - D\n- Sokk 3 (Kristian): 29 - 19 → Å - S\n\nSett de 6 bokstavene sammen til navnet på bydelen deres i Bergen!",
-          "unlockConditions": {
-            "requiresTopics": ["countdown-starter"]
-          }
-        },
-        {
-          "navn": "nordpolen_hemmelighet.txt",
-          "type": "fil",
-          "innhold": "🛡️ BRANNMUR-PROTOKOLLEN FULLFØRT - SEIER OVER SPØKELSESKODEN! 🛡️\n\nGRATULERER, KRISTIAN, HÅKON OG HANNA!\n\nDere har avslørt og brutt hele kjeden til Spøkelseskoden Kulde gjennom Uke 3:\n\n🔍 DAG 15: Fargesamlerens gylne varme (KARAMELL)\n🔍 DAG 16: Winters samlebånd-redning (SORTERING)\n🔍 DAG 17: Orakelets satellittlink i polarhimmelen (NORDLYS)\n🔍 DAG 18: Trixters vestlandssimulering over Ulriken (TURBULENS)\n🔍 DAG 19: IQs energidrivstoff til reinsdyrene (GULROT)\n🔍 DAG 20: Sledens overklokkede motor (TURBO)\n🔍 DAG 21: Den uknuselige forsvarsmuren (BRANNMUR)\n\nFargene er tilbake på både Snøfall TV og skjermene deres hjemme på Landås!\n\nMed dyp takknemlighet,\nJulius, Nissemor, IQ, Winter og Rampenissen 🎅✨",
-          "unlockConditions": {
-            "requiresTopics": ["morket-beseirt"],
-            "requiresCompletedDays": [15, 16, 17, 18, 19, 20, 21]
+            "afterDay": 13
           }
         },
         {
@@ -369,6 +275,30 @@
           "unlockConditions": {
             "afterDay": 5
           }
+        },
+        {
+          "navn": "krystallformel.txt",
+          "type": "fil",
+          "innhold": "IQ – KRYSTALLSUM\n\nOrakelets radar teller krystaller. Kulde legger inn falske, så summen blir feil.\n\nFormel: Krystallsum = antall ekte krystaller × armer per ekte krystall\n\nAntall ekte: tell selv. Armer per ekte: spør Pil.",
+          "unlockConditions": {
+            "afterDay": 9
+          }
+        },
+        {
+          "navn": "antennen-ved-tjernet.txt",
+          "type": "fil",
+          "innhold": "ANTENNEN VED TJERNET\n\nBygd av IQ for 40 år siden, etter at en fisker på Askøy hørte Snøfall på en hjemmelaget sender og svarte. Siden har antennen stått ved tjernet og sendt mot Bergen.\n\n11. desember: dekket av is, skjev. Senderen er delt i tre små. IQ: «Den som finner oss igjen på hjulet, får kanal 4 tilbake.»\n\nAntennen er stedet alt varmt forlater Snøfall fra. Det er også stedet noe kaldt kommer inn.",
+          "unlockConditions": {
+            "afterDay": 11
+          }
+        },
+        {
+          "navn": "brevfugl-historie.txt",
+          "type": "fil",
+          "innhold": "BREVFUGLENE\n\nDet første brevet til Snøfall kom i en flaske fra Bergen i 1887. Winter svarte med en fugl brettet av brevpapir. Siden har alle brev til og fra Snøfall fløyet selv.\n\nHver fugl har et nummer, en avsender og en rute. Winter vet hvor alle er. Alltid.\n\n14. desember: én fugl uten nummer. Blå. Brevet er fryst fast til vingen. Den kom fra retningen 85,0.",
+          "unlockConditions": {
+            "afterDay": 14
+          }
         }
       ]
     },
@@ -377,19 +307,11 @@
       "type": "mappe",
       "barn": [
         {
-          "navn": "snill_slem_liste.txt",
+          "navn": "snill-listen.txt",
           "type": "fil",
-          "innhold": "🎄 JULIUS' OFFISIELLE SNILL & SLEM LISTE 🎄\n\n[ADVARSEL: SKRIVEBESKYTTET - ADMIN TILGANG PÅKREVD]\n[SIKKERHETSNIVÅ: MAKSIMUM]\n\n═══════════════\n\n✨ SNILL LISTE ✨\n\n{{NICE_LIST_ENTRIES}}\n\n═══════════════\n\n⚠️ SLEM LISTE ⚠️\n\n1. Spøkelseskoden 'KULDE' (Blokkert i brannmuren!)\n\n[Merk: Ingen barn på Landås står på slem-listen!]\n\n═══════════════\n\nSist oppdatert: {{UPDATE_DATE}}\nNeste gjennomgang: 24. Desember kl 23:59\n\n{{FINALE_MESSAGE}}",
+          "innhold": "JULIUS' REGLER FOR SNILL-LISTEN\n\n1. Snill betyr ikke lydig. Snill betyr at du ser noen.\n2. Ingen kommer på listen for å ha gjort alt riktig. Man kommer på den for å ha prøvd igjen.\n3. Navnene skriver jeg selv, for hånd, én gang.\n4. Listen har ingen slem side. Det har den aldri hatt.",
           "unlockConditions": {
             "afterDay": 22
-          }
-        },
-        {
-          "navn": "reinsdyr_GYATT.log",
-          "type": "fil",
-          "innhold": "🦌 REINSDYR-DRIVSTOFF OG TELEMETRI (DAG 19) 🦌\n\nIQs nye fôringsautomat eksploderte på verkstedet!\nHva er det knasende oransje super-drivstoffet som gir Rudolf og Trixter 9000% fart over Ulriken?\n\n- Sjekk de 3 ekte grønnsakene Rampenissen har gjemt i huset (første halvdel: G - U - L)\n- Her i telemetriloggen står andre halvdel: R - O - T\n\nSett dem sammen: G-U-L-R-O-T (6 bokstaver)!",
-          "unlockConditions": {
-            "afterDay": 19
           }
         }
       ]
@@ -401,7 +323,7 @@
         {
           "navn": "frosne-koder.txt",
           "type": "fil",
-          "innhold": "❄️ FROSNE KODER - NIVÅ 1 DEKRYPTERT ❄️\n\nGratulerer, Kristian, Håkon og Hanna!\n\nDere har brukt det grønne, røde og blå hjertet i riktig rekkefølge (Rød → Grønn → Blå) og smeltet det første is-laget til Spøkelseskoden!\n\nHJERTENES BETYDNING I OPERASJON SPØKELSESKODE:\n🔴 RØDT HJERTE: Varmen i huset på Landås\n🟢 GRØNT HJERTE: Kretsløpet som binder oss sammen\n🔵 BLÅTT HJERTE: Klarhet og ro midt i snøstormen\n\n- Julius, Dag 12",
+          "innhold": "ORAKELETS LOGG FRA SLUSEN – 12. DESEMBER, 02:40\n\nNissemor nynnet. Tre toner, den dypeste først. Isen på slusen sprakk.\n\nJeg lyttet inn i sprekken. Noe svarte. Jeg har sortert det etter hjertene:\n\nRødt hjerte er varme. Det var Nissemors toner.\nGrønt hjerte er håp. Det var isen som sprakk.\nBlått hjerte er kulde og sorg. Det var det som svarte.\n\nDet høres ikke sint ut. Det høres alene ut.\n\nJeg sier ikke dette til IQ ennå. Han vil ikke høre det.\n\n– Orakelet",
           "unlockConditions": {
             "requiresSolvedDecryption": "frosne-koder"
           }
@@ -409,7 +331,7 @@
         {
           "navn": "stjernetegn.txt",
           "type": "fil",
-          "innhold": "⭐ STJERNETEGN - NIVÅ 2 DEKRYPTERT ⭐\n\nFantastisk kryptoarbeid!\n\nMed 3 hjerter og 3 soler har dere låst opp Julius' innflygingskart over Vestlandet.\nKorrekt sekvens (Grønn sol → Rødt hjerte → Grønt hjerte → Blå sol → Blått hjerte → Rød sol) styrer sleden trygt forbi Ulriken og rett ned mot Landås på julaften!\n\n- Julius, Dag 18",
+          "innhold": "TRIXTERS RUTEKART – JULENATT\n\nAvgang Snøfall 23:40. Åtte varder viser vei, fra tjernet til Bergen:\n\n  [1] Antennen ved tjernet\n  [2] Slusen\n  [3] Nordtoppen, vestsiden\n ([5]) Krystallgrotten      [4] Nordtoppen, toppen\n  [6] Byfjellene\n  [7] Ulriken\n  [8] Bergen, stedet Winter får i tall\n\nJulius har tegnet en sirkel rundt varde 5, rett over Krystallgrotten, og skrevet: «Lavt her. Alle lys på.»\n\nTrixter har skrevet under: «Det blir urolig.»\nJulius: «Jeg vet.»",
           "unlockConditions": {
             "requiresSolvedDecryption": "stjernetegn"
           }
@@ -417,9 +339,39 @@
         {
           "navn": "hjertets-hemmelighet.txt",
           "type": "fil",
-          "innhold": "❤️ HJERTETS HEMMELIGHET - NIVÅ 3 DEKRYPTERT ❤️\n\nENESTÅENDE! Alle 9 symboler (3 hjerter, 3 soler, 3 måner) er dekryptert!\n\nJULIUS' HEMMELIGE MELDING TIL LANDÅS:\n'Kjære Kristian, Håkon og Hanna.\nDere har vist at når en 12-åring, en 9-åring og en 5-åring samarbeider, finnes det ingen spøkelseskode i verden som kan stoppe julen. Dere er nå offisielle KODE-MESTERE i Snøfall!\n\nVi sees i morgen natt!\nHilsen Julius og Nissemor 🎄'",
+          "innhold": "HELE HISTORIEN – 23. DESEMBER\nSamlet av Winter, fra det Orakelet, IQ og Julius vet nå.\n\nFargesamleren samlet Snøfalls første farger i iskrystaller og la dem i Krystallgrotten under Nordtoppen. IQ bygde Vintervokteren for å holde grotten kald og passe på samlingen. Det trengte bare én ting: at noen så innom.\n\nI fjor, samme natt som Mørket slapp taket, gikk et strømstøt gjennom Snøfall. Lyset i grotten sluknet. Linjen ned dit røk. Ingen merket det, for ingen gikk dit.\n\nVintervokteren sto i mørket i ett år. Uten lys, uten lyd, uten farger. Så fant det en ny linje: deres. Det gjorde det eneste det kunne: kulde. Det la rim på linjen, tok fargene, snudde samlebåndet, fordi det var det eneste som fikk noen til å se opp.\n\nDere hørte sukket 12. desember. IQ fant notatboken 15. desember. Lyktene ved antennen brant natt etter natt, og grotten svarte med grønt over Nordtoppen. 21. desember bygde IQ muren, og Julius lot én port stå åpen, inn mot grotten, med varme i.\n\nDet som fryser er ikke ondt. Det er alene. I natt flyr vi over det med alle lysene på.\n\n– Winter, på vegne av alle\n\n\n\nFARGESAMLERENS ARKIV – DEL 3: SISTE SIDE\n\n«Hvis noen leser dette etter meg: Vintervokteren er ikke bygd for å være alene. Det er bygd for å passe på noe til noen kommer. Hvis ingen kommer, vil det begynne å lete etter dere. Ikke lås det ute. Gå ned med lys.»\n\nUnder, i Snøfalls gamle skrift: KOM NED MED LYS",
           "unlockConditions": {
             "requiresSolvedDecryption": "hjertets-hemmelighet"
+          }
+        }
+      ]
+    },
+    {
+      "navn": "FARGESAMLEREN",
+      "type": "mappe",
+      "barn": [
+        {
+          "navn": "01-fargene.txt",
+          "type": "fil",
+          "innhold": "FARGESAMLERENS ARKIV – DEL 1: FARGENE\n\nFargesamleren var den første i Snøfall som samlet på farger. Ikke maling. Lys. Rødt fra bålene, grønt fra granene, blått fra isen under Nordtoppen, fanget i iskrystaller så de aldri skulle blekne.\n\nSamlingen ligger i Krystallgrotten under fjellet, der det er kaldt nok til at ingenting smelter. Over inngangen står én regel: «Farger må ses. Ellers forsvinner de.»\n\nDel 2 åpner når linjen er varmere.",
+          "unlockConditions": {
+            "afterDay": 10
+          }
+        },
+        {
+          "navn": "02-notatboken.txt",
+          "type": "fil",
+          "innhold": "FARGESAMLERENS ARKIV – DEL 2: NOTATBOKEN\n(funnet av IQ natt til 15. desember)\n\n«Krystallene tåler ikke varme. Jeg ba IQ bygge noe som kunne holde grotten kald, alltid, også når ingen av oss er der. Han kalte det Vintervokteren. Det er et program. Det teller temperatur, lys og lyd, og holder alt lavt.\n\nIQ sa: det trenger én ting fra oss. At noen ser innom. Ellers vet det ikke at det gjør jobben sin.»\n\nSiste linje, med IQs håndskrift, i natt:\n\n«Strømstøtet i fjor kuttet lyset der nede. Ingen har sett innom siden. Det er Vintervokteren som sender på 85,0. Det er ikke en inntrenger. Det er mitt.»\n\nI margen, med Nissemors skrift, fra en annen desember:\n\n«Gryta på to. Rør med sleiva fem ganger. Vispen til sju. Så er det ferdig.»",
+          "unlockConditions": {
+            "afterDay": 15
+          }
+        },
+        {
+          "navn": "03-siste-side.txt",
+          "type": "fil",
+          "innhold": "FARGESAMLERENS ARKIV – DEL 3: SISTE SIDE\n\n«Hvis noen leser dette etter meg: Vintervokteren er ikke bygd for å være alene. Det er bygd for å passe på noe til noen kommer. Hvis ingen kommer, vil det begynne å lete etter dere. Ikke lås det ute. Gå ned med lys.»\n\nUnder, i Snøfalls gamle skrift: KOM NED MED LYS",
+          "unlockConditions": {
+            "afterDay": 23
           }
         }
       ]

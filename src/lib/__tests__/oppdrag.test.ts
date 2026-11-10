@@ -59,13 +59,19 @@ describe("Oppdrag Loader", () => {
       });
     });
 
-    it("should have julius_ps and no written diary for week 1", () => {
-      getAllOppdrag()
-        .filter((quest) => quest.dag <= 7)
-        .forEach((quest) => {
-          expect(quest.julius_ps).toBeTruthy();
-          expect(quest.dagbokinnlegg).toBeUndefined();
-        });
+    it("should have julius_ps on every day", () => {
+      getAllOppdrag().forEach((quest) => {
+        expect(quest.julius_ps).toBeTruthy();
+      });
+    });
+
+    it("should have PS variants only where app-tekster has them", () => {
+      const days = (k: "julius_ps_bonus" | "julius_ps_krypto_mangler") =>
+        getAllOppdrag()
+          .filter((q) => q[k])
+          .map((q) => q.dag);
+      expect(days("julius_ps_bonus")).toEqual([11, 16, 17, 18, 19]);
+      expect(days("julius_ps_krypto_mangler")).toEqual([20]);
     });
 
     it("should have valid oppsett_tid values", () => {
@@ -76,89 +82,29 @@ describe("Oppdrag Loader", () => {
         expect(validValues).toContain(quest.oppsett_tid);
       });
     });
-
-    it("should have valid hint_type values", () => {
-      const quests = getAllOppdrag();
-      const validTypes = [
-        "skrevet",
-        "visuell",
-        "gjemt_objekt",
-        "arrangement",
-        "spor",
-        "lyd",
-        "kombinasjon",
-      ];
-
-      quests
-        .filter((quest) => quest.hint_type !== undefined)
-        .forEach((quest) => {
-          expect(validTypes).toContain(quest.hint_type);
-        });
-    });
   });
 
   describe("Quest with Eventyr", () => {
-    it("should have valid eventyr references", () => {
-      const quests = getAllOppdrag();
-      const questsWithEventyr = quests.filter((q) => q.eventyr);
-
-      questsWithEventyr.forEach((quest) => {
-        expect(quest.eventyr!.id).toBeTruthy();
-        expect(quest.eventyr!.phase).toBeGreaterThan(0);
-      });
-    });
-
-    it("should have sequential phases for each eventyr", () => {
-      const quests = getAllOppdrag();
-      const eventyrPhases = new Map<string, number[]>();
-
-      quests.forEach((quest) => {
-        if (quest.eventyr) {
-          const { id, phase } = quest.eventyr;
-          if (!eventyrPhases.has(id)) {
-            eventyrPhases.set(id, []);
-          }
-          eventyrPhases.get(id)!.push(phase);
-        }
-      });
-
-      // Each eventyr should have sequential phases starting from 1
-      eventyrPhases.forEach((phases) => {
-        const sorted = [...phases].sort((a, b) => a - b);
-        expect(sorted[0]).toBe(1); // Should start at phase 1
-        // Phases should be sequential (no gaps)
-        for (let i = 0; i < sorted.length - 1; i++) {
-          expect(sorted[i + 1]).toBe(sorted[i] + 1);
-        }
+    it("should belong to the one story on every day", () => {
+      getAllOppdrag().forEach((quest) => {
+        expect(quest.eventyr).toEqual({
+          id: "spokelseskoden",
+          phase: quest.dag,
+        });
       });
     });
   });
 
   describe("Quest with Bonusoppdrag", () => {
-    it("should have valid bonusoppdrag structure", () => {
-      const quests = getAllOppdrag();
-      const questsWithBonus = quests.filter((q) => q.bonusoppdrag);
-
-      expect(questsWithBonus.length).toBeGreaterThan(0);
-
-      questsWithBonus.forEach((quest) => {
-        expect(quest.bonusoppdrag!.tittel).toBeTruthy();
-        expect(quest.bonusoppdrag!.beskrivelse).toBeTruthy();
-        expect(quest.bonusoppdrag!.validering).toBeTruthy();
-        expect(quest.bonusoppdrag!.badge_id).toBeTruthy();
-        expect(quest.bonusoppdrag!.badge_icon).toBeTruthy();
-        expect(quest.bonusoppdrag!.badge_navn).toBeTruthy();
-      });
-    });
-
-    it("should have kode when validering is kode", () => {
-      const quests = getAllOppdrag();
-      const codeValidatedQuests = quests.filter(
-        (q) => q.bonusoppdrag?.validering === "kode",
-      );
-
-      codeValidatedQuests.forEach((quest) => {
-        expect(quest.bonusoppdrag!.kode).toBeTruthy();
+    it("should have the two parent-approved bonus quests", () => {
+      const bonus = getAllOppdrag().filter((q) => q.bonusoppdrag);
+      expect(bonus.map((q) => [q.dag, q.bonusoppdrag!.foreldre_kode])).toEqual([
+        [11, "ANTENNE2026"],
+        [16, "LYKT2026"],
+      ]);
+      bonus.forEach((q) => {
+        expect(q.bonusoppdrag!.validering).toBe("forelder");
+        expect(q.bonusoppdrag!.frost_effekt).toBe(-20);
       });
     });
   });

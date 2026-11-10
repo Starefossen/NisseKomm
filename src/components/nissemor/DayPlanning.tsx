@@ -132,14 +132,18 @@ export function DayPlanning({
           </div>
 
           <div className="border-2 border-(--gold)/50 p-4">
-            <h3 className="text-xl font-bold mb-3">
-              {selectedQuest.julius_ps
-                ? "📼 PS FRA JULIUS"
-                : "📔 JULIUS DAGBOK"}
-            </h3>
-            <p className="text-sm">
-              {selectedQuest.julius_ps ?? selectedQuest.dagbokinnlegg}
-            </p>
+            <h3 className="text-xl font-bold mb-3">📼 PS FRA JULIUS</h3>
+            <p className="text-sm">{selectedQuest.julius_ps}</p>
+            {selectedQuest.julius_ps_bonus && (
+              <p className="text-sm mt-2 opacity-80">
+                Med bonus: {selectedQuest.julius_ps_bonus}
+              </p>
+            )}
+            {selectedQuest.julius_ps_krypto_mangler && (
+              <p className="text-sm mt-2 opacity-80">
+                Uten dekryptert kart: {selectedQuest.julius_ps_krypto_mangler}
+              </p>
+            )}
           </div>
 
           {/* Special Events Section */}
@@ -165,11 +169,10 @@ export function DayPlanning({
                       {selectedQuest.bonusoppdrag.beskrivelse ||
                         "Denne dagen har et bonusoppdrag som krever foreldrenes hjelp for å validere."}
                     </p>
-                    {selectedQuest.bonusoppdrag.badge_id && (
-                      <div className="mt-2 text-xs text-(--gold)">
-                        Gir merke: {selectedQuest.bonusoppdrag.badge_id}
-                      </div>
-                    )}
+                    <div className="mt-2 text-xs text-(--gold)">
+                      Godkjennes i Bonusoppdrag-siden · Frost{" "}
+                      {selectedQuest.bonusoppdrag.frost_effekt} %
+                    </div>
                   </div>
                 )}
 

@@ -1,86 +1,39 @@
 {
   "merker": [
     {
-      "id": "antenne-ingenior",
-      "navn": "Antenne-ingeniør",
-      "beskrivelse": "Løste antenne-krisen og gjenopprettet signalet til Snøfall TV",
-      "ikon": "cloud-sharing.svg",
-      "type": "bonusoppdrag",
-      "unlockCondition": {
-        "type": "bonusoppdrag",
-        "day": 11
-      }
-    },
-    {
-      "id": "inventar-ekspert",
-      "navn": "Inventar-ekspert",
-      "beskrivelse": "Hjalp Rampenissen med å telle og organisere inventaret i Snøfall",
-      "ikon": "loupe-and-bill.svg",
-      "type": "bonusoppdrag",
-      "unlockCondition": {
-        "type": "bonusoppdrag",
-        "day": 16
-      }
-    },
-    {
-      "id": "morket-beseirer",
-      "navn": "Mørket-Beseirer",
-      "beskrivelse": "Beseiret Mørkets trusler og beskyttet Snøfall gjennom vennskap og mot",
-      "ikon": "gift-box.svg",
-      "type": "eventyr",
-      "unlockCondition": {
-        "type": "eventyr",
-        "eventyrId": "morkets-trussel"
-      }
-    },
-    {
-      "id": "oppfinner-assistent",
-      "navn": "Oppfinner-Assistent",
-      "beskrivelse": "Hjalp IQ med alle hans fantastiske (og eksploderende) oppfinnelser",
-      "ikon": "chemistry.svg",
-      "type": "eventyr",
-      "unlockCondition": {
-        "type": "eventyr",
-        "eventyrId": "iqs-oppfinnelser"
-      }
-    },
-    {
-      "id": "kode-mester",
-      "navn": "Kode-Mester",
-      "beskrivelse": "Dekrypterte alle hemmelige koder i NisseKrypto-systemet",
-      "ikon": "key.svg",
-      "type": "decryption",
-      "unlockCondition": {
-        "type": "allDecryptionsSolved",
-        "challengeIds": ["frosne-koder", "stjernetegn", "hjertets-hemmelighet"]
-      }
-    },
-    {
-      "id": "symbol-mester",
-      "navn": "Symbol-Mester",
-      "beskrivelse": "Samlet alle 9 dekrypteringssymboler i julekalenderen",
+      "id": "varmebaerer",
+      "navn": "Varmebærer",
+      "beskrivelse": "Dere hørte at isen sukket.",
       "ikon": "guarantee.svg",
-      "type": "collection",
+      "type": "decryption",
+      "opplasingstekst": "MERKE: VARMEBÆRER. Dere hørte noe ingen andre hørte. Isen sukket, og det hørtes ikke sint ut. Fra nå av bærer dere varmen nedover linjen.",
       "unlockCondition": {
-        "type": "allSymbolsCollected",
-        "requiredCount": 9
+        "type": "decryptionSolved",
+        "challengeId": "frosne-koder"
       }
     },
     {
-      "id": "julekalender-fullfort",
-      "navn": "Julekalender-Mester",
-      "beskrivelse": "Viste vennskap, mot og tro på julemagi gjennom hele desember. Nå en del av Snøfalls historie.",
+      "id": "portvokter",
+      "navn": "Portvokter",
+      "beskrivelse": "Dere holdt muren og lot porten stå åpen.",
+      "ikon": "key.svg",
+      "type": "completion",
+      "opplasingstekst": "MERKE: PORTVOKTER. Muren holder, og porten står åpen. Det er vanskeligere enn å stenge.",
+      "unlockCondition": {
+        "type": "dayCompleted",
+        "day": 21
+      }
+    },
+    {
+      "id": "snofalls-venn",
+      "navn": "Snøfalls venn",
+      "beskrivelse": "Dere står i Snøfalls historie.",
       "ikon": "trophy.svg",
       "type": "completion",
+      "opplasingstekst": "MERKE: SNØFALLS VENN. Tjuefire dager, tre søsken, én linje som aldri frøs helt. Nå står dere i Snøfalls historie.",
       "unlockCondition": {
-        "type": "allQuestsCompleted",
-        "requiredCount": 24
+        "type": "allQuestsCompleted"
       }
     }
-  ],
-  "metadata": {
-    "versjon": "1.0",
-    "total_merker": 7,
-    "beskrivelse": "Badge system for NisseKomm - Merker (badges) tildeles når spillere fullfører bonusoppdrag, eventyr, dekrypteringer og samlinger."
-  }
+  ]
 }

@@ -3,10 +3,9 @@
  *
  * This module manages all badge awards, conditions, and notifications.
  * Badges (merker) are defined in data/merker.json and awarded based on:
- * - Bonusoppdrag completion (parent-validated side quests)
- * - Eventyr completion (story arc achievements)
- * - Decryption challenges (all 3 challenges solved)
- * - Symbol collection (all 9 symbols collected)
+ * - A solved decryption challenge (Varmebærer, day 12)
+ * - A completed day (Portvokter, day 21)
+ * - All 24 days completed (Snøfalls venn)
  *
  * Usage:
  * - BadgeManager.getAllBadges() - Get all badge definitions
@@ -106,32 +105,13 @@ export class BadgeManager {
    */
   static isUnlockConditionMet(condition: BadgeUnlockCondition): boolean {
     switch (condition.type) {
-      case "bonusoppdrag": {
-        // Check if bonusoppdrag for this day is completed (parent validated)
-        // We need to get the quest and check if bonusoppdrag is completed
-        const quest = GameEngine.getAllQuests().find(
-          (q) => q.dag === condition.day,
-        );
-        if (!quest || !quest.bonusoppdrag) return false;
-        return GameEngine.isBonusOppdragCompleted(quest);
-      }
+      case "decryptionSolved":
+        return GameEngine.isDecryptionSolved(condition.challengeId);
 
-      case "eventyr": {
-        // Check if eventyr is completed (all phases done)
-        const completedEventyr = GameEngine.getCompletedEventyr();
-        return completedEventyr.includes(condition.eventyrId);
-      }
-
-      case "allDecryptionsSolved":
-        // Check if all required decryption challenges are solved
-        return GameEngine.isAllDecryptionsSolved();
-
-      case "allSymbolsCollected":
-        // Check if all required symbols are collected
-        return GameEngine.isAllSymbolsCollected();
+      case "dayCompleted":
+        return GameEngine.isQuestCompleted(condition.day);
 
       case "allQuestsCompleted":
-        // Check if all 24 quests are completed
         return GameEngine.isGameComplete();
 
       default:
@@ -145,13 +125,11 @@ export class BadgeManager {
    * Returns result with success status and notification details
    *
    * This is the PRIMARY method for awarding badges - should be called:
-   * - After bonusoppdrag completion (parent validation)
-   * - After eventyr completion (last phase)
-   * - After decryption challenge solved
-   * - After symbol collected
+   * - After a quest is completed
+   * - After a decryption challenge is solved
    *
    * @param badgeId - The ID of the badge to award
-   * @param bypassConditionCheck - If true, award badge without checking conditions (for parent validation)
+   * @param bypassConditionCheck - If true, award badge without checking conditions (parent guide)
    */
   static checkAndAwardBadge(
     badgeId: string,
@@ -199,29 +177,6 @@ export class BadgeManager {
     const totalBadges = this.getEarnedBadges().length;
     trackBadgeEarned(badge.type, totalBadges);
 
-    // If this is a bonusoppdrag badge, also store in legacy system and resolve crisis
-    if (
-      badge.type === "bonusoppdrag" &&
-      badge.unlockCondition.type === "bonusoppdrag"
-    ) {
-      const day = badge.unlockCondition.day;
-
-      // Store in legacy bonusoppdrag badge storage for isBonusOppdragCompleted compatibility
-      StorageManager.addBonusOppdragBadge(day, badge.ikon, badge.navn);
-
-      // Resolve the associated crisis
-      const crisisType =
-        badgeId === "antenne-ingenior"
-          ? "antenna"
-          : badgeId === "inventar-ekspert"
-            ? "inventory"
-            : null;
-
-      if (crisisType) {
-        StorageManager.resolveCrisis(crisisType);
-      }
-    }
-
     // Notify listeners for UI animations
     this.notifyBadgeAwarded(badge);
 
@@ -264,16 +219,6 @@ export class BadgeManager {
     const percentage = total > 0 ? Math.round((earned / total) * 100) : 0;
 
     return { earned, total, percentage };
-  }
-
-  /**
-   * Get badges by type
-   */
-  static getBadgesByType(
-    type:
-      "bonusoppdrag" | "eventyr" | "decryption" | "collection" | "completion",
-  ): Badge[] {
-    return this.getAllBadges().filter((b) => b.type === type);
   }
 
   /**

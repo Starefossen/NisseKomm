@@ -2,185 +2,185 @@
   {
     "dag": 13,
     "tittel": "Luciadagens Gylne Krydder",
-    "nissemail_tekst": "God søndag og gratulerer med Luciadagen! Nissemor har bakt 500 lysende gule lussekatter som varmer opp hele verkstedet slik at Spøkelseskoden Kulde ikke klarer å fryse ned dørene våre. Men hva heter det gylne krydderet som gir bollene den magiske solfargen? Jeg har satt opp små lys i stuen sammen med første del av ordet (S - A - F). Hanna og Håkon: Finn lappen ved lysene! Kristian: Åpne lucia_lussekatt_hemmelig.txt i SNOFALL-HISTORIER i NisseNet for å finne de tre siste bokstavene (R - A - N)!",
-    "rampenissen_rampestrek": "Rampenissen har laget sitt eget 'Luciatog' med kosedyr eller figurer på rekke bak et elektrisk telys, med lappen: 'GULLKRYDDER DEL 1: S - A - F (Se lucia_lussekatt_hemmelig.txt i NisseNet for DEL 2)'.",
-    "fysisk_hint": "Se ved Rampenissens Luciatog i stuen etter de 3 første bokstavene (S-A-F) og kombiner med de 3 siste (R-A-N) i SNOFALL-HISTORIER/lucia_lussekatt_hemmelig.txt!",
+    "nissemail_tekst": "God 3. advent, og god Lucia! 🕯️ Nissemor bakte 500 boller i natt. Jeg spiste elleve. Jeg er død nå. Kulde satt og så på lysene i verkstedet hele natten. Bare så. Jeg vet ikke hva jeg skal mene om det. Ved meg ligger fire små poser. To av dem er gule. Bare én teller, og Julius sier hvilken. Håkon: åpne dem og se godt etter. Hanna, hvis du vil: lukt på alle fire. Kristian: Julius forteller hvor krydderet kommer fra, og hvordan det ser ut. – Rampenissen",
+    "rampenissen_rampestrek": "Har spist for mange lussekatter og holder sin egen begravelse: ligger på en serviett med en blomst i hendene, kosedyrene står i sørgerekke, skilt: «HER HVILER RAMPEN. HAN SPISTE 11.»",
+    "fysisk_hint": "Fire små zip-poser på servietten (`dag13-krydderkort.pdf`): kanel `_ _ N _ _`, gurkemeie `_ _ R _ _ _ _ _ _` (blindspor, ni ruter), ekte safran `_ _ F _ _ _`, nellik (eller pepper) `_ _ L _ _ _`. Like kort, ingen navn. Lussekatt ved. Løsning: to poser er gule; Julius sier «tråder» og «dyrere enn gull», så den gule med tråder teller. Kristian: `_ _ F _ _ _`, krydderet fra en krokus. Kode SAFRAN. Google er lov («krydder fra krokus»). Hanna, hvis hun vil: lukter på alle fire.",
     "materialer_nødvendig": [
-      "1-2 elektriske telys og noen kosedyr på rekke",
-      "Lapp: 'DEL 1: S - A - F (Se lucia_lussekatt_hemmelig.txt i NisseNet for DEL 2)'",
-      "Valgfritt: Lussekatter til søndagsfrokosten"
+      "4 små zip-poser",
+      "kanel",
+      "gurkemeie",
+      "ekte safran (liten konvolutt)",
+      "nellik eller pepper",
+      "lussekatt",
+      "dag13-krydderkort.pdf",
+      "serviett, kunstig blomst, kosedyr, skilt"
     ],
     "beste_rom": "Stue / spisebord",
     "oppsett_tid": "moderat",
     "kode": "SAFRAN",
-    "hint": "Sett sammen S-A-F fra Luciatoget og R-A-N fra lucia_lussekatt_hemmelig.txt i NisseNet (6 bokstaver)!",
     "reveals": {
-      "files": ["lucia-tradisjon.txt", "lucia_lussekatt_hemmelig.txt"],
-      "topics": ["frosne-mønster", "lucia"],
+      "files": ["lucia-tradisjon.txt"],
       "modules": []
     },
     "eventyr": {
-      "id": "frosne-monster",
-      "phase": 3
+      "id": "spokelseskoden",
+      "phase": 13
     },
-    "dagbokinnlegg": "13. desember. Luciadagen! Mens vintermørket ligger tett rundt både Nordpolen og Bergen, lyser Nissemors bakst opp hele kommandosenteret. Hemmeligheten bak den gylne gløden er ekte SAFRAN. Med lysmønsteret komplett er krystallgåtene i Frosne Mønster løst!",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Nissemor sendte blomster til begravelsen. Kunstige, så de holder til neste år. Kulde så på lysene i natt uten å ta noe; Orakelet sier det bare så. Jeg vet heller ikke hva jeg skal mene om det."
   },
   {
     "dag": 14,
     "tittel": "Hemmeligheten i Papirvingene",
-    "nissemail_tekst": "Mandag morgen, og Winter har en stor nyhet! I dag åpner vi hele BREVFUGLER-modulen slik at dere kan lese personlige brev direkte fra Snøfall! Men for å låse opp den siste sikkerhetslåsen må dere finne navnet på den japanske papirbrettekunsten som gjør brevfuglene våre uknuselige. Finn den brettede papirfuglen på stuebordet (den har de 4 første bokstavene: O - R - I - G) og sjekk brevfugl-finale.txt i SNOFALL-HISTORIER i NisseNet for de 3 siste bokstavene (A - M - I)!",
-    "rampenissen_rampestrek": "Rampenissen sitter oppi en papirfugl/papirbåt midt på bordet med lappen: 'BRETTEKUNST DEL 1: O - R - I - G (Se SNOFALL-HISTORIER/brevfugl-finale.txt for DEL 2)'.",
-    "fysisk_hint": "Finn papirfuglen på bordet (O-R-I-G) og kombiner med de 3 siste bokstavene (A-M-I) i SNOFALL-HISTORIER/brevfugl-finale.txt!",
+    "nissemail_tekst": "Winter åpnet brevfuglene i natt! 🕊️ Og det kom én fugl ingen hadde sendt. Blå. Den satt i vinduskarmen til Julius, med et brev fryst fast til vingen. Jeg brettet alle serviettene deres til fugler, og sitter i en båt i vasken. I båten ligger et ark. Håkon: brett det, og hold det mot lykten. Ser du bokstaver uten plass, brett en gang til. Hanna, hvis du vil: hold lykten. Kristian: Winter har et ord for det vi gjør med papir i dag. Brevfugler åpner i kveld. – Rampenissen",
+    "rampenissen_rampestrek": "Har brettet alle kjøkkenserviettene til skjeve fugler som ligger over hele kjøkkenet, og sitter selv i en papirbåt i den tørre vasken.",
+    "fysisk_hint": "Arket `dag14-brettark.pdf` (tynt papir) sammenrullet i papirbåten: halve streker på hver side av to stiplede linjer, sju tomme ruter med tegn i hjørnene. Brettet langs den loddrette og mot lys: bokstavene **R** og **G** i to vinduer. Brettet langs den vannrette: tallene **2** og **4** ved de samme vinduene. Tekst på arket: «Brett. Hold en lykt bak.» Løsning: Håkon bretter, Kristian finner begge brettene: `_ R _ G _ _ _`, Julius: å gi et flatt ark vinger uten saks og lim, bare ved å bøye det. Kode ORIGAMI. Test gjennomlys i november. Hanna, hvis hun vil: holder lykten.",
     "materialer_nødvendig": [
-      "1 brettet papirfugl eller papirfly",
-      "Lapp: 'DEL 1: O - R - I - G (Se brevfugl-finale.txt i NisseNet for DEL 2)'"
+      "dag14-brettark.pdf",
+      "ett ark til papirbåt",
+      "mobillykt",
+      "servietter",
+      "valgfritt `dag14-serviettfugl.pdf"
     ],
     "beste_rom": "Stuebordet",
     "oppsett_tid": "moderat",
     "kode": "ORIGAMI",
-    "hint": "Sett sammen O-R-I-G fra papirfuglen og A-M-I fra brevfugl-finale.txt i NisseNet (7 bokstaver)!",
     "reveals": {
-      "files": ["brevfugl-finale.txt", "personlige-brev-intro.txt"],
-      "topics": ["julesanger", "brevfugl-fullført"],
+      "files": ["brevfugl-historie.txt"],
       "modules": ["BREVFUGLER"]
     },
     "eventyr": {
-      "id": "brevfugl-mysteriet",
-      "phase": 4
+      "id": "spokelseskoden",
+      "phase": 14
     },
-    "dagbokinnlegg": "14. desember. Med koden ORIGAMI har Kristian, Håkon og Hanna fullført hele Krypterte Brevfugler-eventyret! Winter har nå åpnet BREVFUGLER-modulen på skrivebordet, slik at personlige hilsener kan fly fritt mellom Snøfall og Landås uten at Spøkelseskoden kan stoppe dem.",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Winter har aldri fått en fugl hun ikke har sendt. Hun sover ikke i natt. Serviettene deres er visst fugler nå, alle sammen; Rampenissen kaller det «en flokk». Brevfugler er åpen, og den blå fuglen vises på radaren."
   },
   {
     "dag": 15,
-    "tittel": "Fargesamlerens Gylne Sukkerkjel",
-    "nissemail_tekst": "Mmmm! For å holde fargespekteret varmt og gyllent prøvde jeg å koke Fargesamlerens hemmelige oppskrift på kjøkkenet i natt. Jeg satte frem 4 små skåler eller kopper på kjøkkenbenken sammen med et RØDT SOL-symbolkort! Hanna: Finn det røde sol-kortet og tell skålene! Håkon: Les de 4 første bokstavene ved skålene (K - A - R - A). Kristian: Åpne den hemmelige filen fargesamleren.txt i SNOFALL-HISTORIER i NisseNet for å finne de 4 siste bokstavene (M - E - L - L)!",
-    "rampenissen_rampestrek": "Rampenissen sitter ved 4 skåler/kopper på kjøkkenet med en visp eller sleiv, det røde sol-symbolkortet og en lapp: 'SØT VARME DEL 1: K - A - R - A (Se SNOFALL-HISTORIER/fargesamleren.txt for DEL 2)'.",
-    "fysisk_hint": "Se ved de 4 skålene på kjøkkenet etter det røde sol-kortet og bokstavene K-A-R-A, og åpne SNOFALL-HISTORIER/fargesamleren.txt i NisseNet for de 4 siste bokstavene (M-E-L-L)!",
+    "tittel": "Fargesamlerens Notatbok",
+    "nissemail_tekst": "IQ er stille i dag. 📓 Han fant en gammel notatbok i arkivet i natt, Fargesamlerens, og har ikke sagt et ord siden. Jeg prøvde å lage varme på kjøkkenet deres. Det ble klissete. Håkon: følg fotsporene mine fra skålen. Noen av dem kommer fram, noen gjør det ikke. Løft det de ender ved. Hanna, hvis du vil: det røde kortet er ditt. Kristian: rutekortet ligger ved skålen, men tallene gjør det ikke. Nissemor skrev dem i margen på notatboken, som har åpnet i NisseNet. – Rampenissen",
+    "rampenissen_rampestrek": "Står med begge beina nedi en liten skål sirup, med fotspor (papirstrimler, tørt) bortover benken og sleiva i hånden.",
+    "fysisk_hint": "Fotspor av papir (strimler fra PDF-en, ingen sukker på benken) fra skålen mot fem redskaper: gryte, sleiv, visp, kjevle, øse. Strimlene til kjevle og øse stopper halvveis. Under gryten **A**, sleiva **M**, vispen **L** (`dag15-redskapskort.pdf`, bokstav uten tall, tegn i hjørnet); under kjevle og øse ❄-lapper uten tegn. Rutekort 1–8 og rødt sol-kort ved skålen. Litt sirup i en liten skål under Rampenissens føtter, ellers tørt; **rydd bort sirupflasken og sukkeret.** Løsning: Håkon følger strimlene, Kristian har A, M, L uten plass, åpner notatboken i NisseNet: «Gryta på to, sleiva fem ganger, vispen til sju» → `_ A _ _ M _ L _`. Julius: det Nissemor lager når sukker blir brunt og varmt i gryta. Kode KARAMELL. Hanna, hvis hun vil: smaker én fingertupp sirup og skanner sol-kortet.",
     "materialer_nødvendig": [
-      "Symbolkort: Rød sol (QR-kort)",
-      "4 skåler eller kopper på kjøkkenbenken",
-      "Lapp: 'DEL 1: K - A - R - A (Se SNOFALL-HISTORIER/fargesamleren.txt i NisseNet for DEL 2)'"
+      "gryte, sleiv, visp, kjevle, øse",
+      "dag15-redskapskort.pdf` (2 sider, med fotsporstrimler)",
+      "symbolkort rød sol",
+      "en liten skål med litt sirup"
     ],
     "beste_rom": "Kjøkkenet",
     "oppsett_tid": "moderat",
     "kode": "KARAMELL",
-    "hint": "Sett sammen K-A-R-A fra kjøkkenet med M-E-L-L fra fargesamleren.txt i NisseNet (8 bokstaver)!",
     "reveals": {
-      "files": [],
-      "topics": ["mandel-grøt", "farge-mysteriet"],
+      "files": ["02-notatboken.txt"],
       "modules": []
     },
     "eventyr": {
-      "id": "farge-mysteriet",
-      "phase": 2
+      "id": "spokelseskoden",
+      "phase": 15
     },
     "symbol_clue": {
       "symbolId": "sun-red",
       "symbolIcon": "sun-alt",
       "symbolColor": "red",
-      "description": "Rød sol funnet ved Fargesamlerens skåler på kjøkkenet"
+      "description": "Rød sol funnet ved sirupskålen på benken"
     },
-    "dagbokinnlegg": "15. desember. Fargesamleren visste at gyllen KARAMELL bærer på lagret solvarme midt i mørketiden. Med dagens kode har Hanna, Håkon og Kristian fullført Fargespekter-Låsen og sikret det Røde Sol-symbolet! Dessuten er første bokstav i uke 3 sitt hemmelige spor nå på plass.",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "IQ sa én setning i kveld: «Jeg glemte å slå det av.» Så gikk han ut til antennen og ble stående. Les notatboken sammen; Rampenissen sitter i stua og hører på, han også. Og sirupen: Nissemor sier man skal stå _ved_ gryta, ikke _i_ den."
   },
   {
     "dag": 16,
-    "tittel": "Samlebåndet som Gikk i Spinn",
-    "nissemail_tekst": "HJELP! Vi er 16 dager ut i desember, men Spøkelseskoden Kulde snudde Winters gave-samlebånd opp-ned i natt! Leker, bamser og byggeklosser fyker veggimellom! Jeg har laget 4 små leke-hauger på gulvet i stuen med første del av omstartskoden: S - O - R - T. Hanna og Håkon: Sjekk leke-haugene på gulvet! Kristian: Åpne halvveis_system.txt i SNOFALL-HISTORIER i NisseNet for å finne de 5 siste bokstavene (E - R - I - N - G)! Etterpå åpnes både NISSESTATS, minispillet GAVE-SORTERER på Snøfall TV Kanal 4 og dagens BONUSOPPDRAG!",
-    "rampenissen_rampestrek": "Rampenissen sitter midt mellom 4 små hauger med leker (biler, bamser, klosser, bøker/tegnesaker) på stuegulvet med en lapp: 'SAMLEBÅND DEL 1: S - O - R - T (Se halvveis_system.txt i NisseNet for DEL 2)'.",
-    "fysisk_hint": "Se ved de 4 leke-haugene på stuegulvet etter første del av ordet (S-O-R-T) og kombiner med andre del (E-R-I-N-G) i SNOFALL-HISTORIER/halvveis_system.txt!",
+    "tittel": "Pakkesentralen i Spinn",
+    "nissemail_tekst": "Alt i pakkesentralen ligger i én haug. 📦 Kulde snudde samlebåndet i natt. Ikke for å ødelegge, tror Julius. Fordi det er det eneste som får Winter til å se opp. Jeg ryddet hos dere for å hjelpe. Håkon: bær hver ting dit den hører hjemme, og se hva som ligger der. Ikke alt jeg rotet med, hører til. Hanna, hvis du vil: si hvor tingene bor. Kristian: rutekortet ligger i brødboksen. BONUS: sett et batterilys i et syltetøyglass i vinduet mot nord, så noe der nede ser det. – Rampenissen",
+    "rampenissen_rampestrek": "Har «ryddet»: fjernkontrollene ligger i brødboksen, brødet i TV-benken, tannbørstene i bestikkskuffen, ostehøvelen i badeskapet, og han sitter i brødboksen med lokket på hodet.",
+    "fysisk_hint": "Bokstavlapper på tingene som er på feil sted (`dag16-sorteringslapper.pdf`): fjernkontrollen (i brødboksen) **O**, tannbørsteglasset (i bestikkskuffen) **E**, brødposen (i TV-benken) **I**, ostehøvelen (i badeskapet) **K** (blindspor). Tallapper der de hører hjemme: «2» i TV-benken, «5» på badehyllen, «7» i brødboksen; ingen i bestikkskuffen. Rutekort 1–9 i brødboksen under Rampenissen. Løsning: Håkon bærer og finner tallet (eller ikke), Kristian: O i 2, E i 5, I i 7, K har ingen plass = `_ O _ _ E _ I _ _`. Julius: Winters ord for å legge alt i riktig hylle. Kode SORTERING. Bonus: batterilys i syltetøyglass i vindu mot nord, foreldrekode `LYKT2026`. Hanna, hvis hun vil: sier hvor tingene bor.",
     "materialer_nødvendig": [
-      "Noen få leker lagt i 4 små grupper på stuegulvet",
-      "Lapp: 'DEL 1: S - O - R - T (Se halvveis_system.txt i NisseNet for de 5 siste bokstavene)'"
+      "teip",
+      "dag16-sorteringslapper.pdf",
+      "brødboks",
+      "syltetøyglass og batterilys (bonus)"
     ],
     "beste_rom": "Stuegulvet",
     "oppsett_tid": "moderat",
     "kode": "SORTERING",
-    "hint": "Sett sammen S-O-R-T fra leke-haugene på gulvet med E-R-I-N-G fra halvveis_system.txt i NisseNet (9 bokstaver)!",
     "reveals": {
-      "files": ["halvveis_system.txt"],
-      "topics": ["halvveis-milepæl"],
+      "files": [],
       "modules": ["NISSESTATS"]
     },
     "eventyr": {
-      "id": "halvveis-milepæl",
-      "phase": 1
+      "id": "spokelseskoden",
+      "phase": 16
     },
     "bonusoppdrag": {
-      "tittel": "Winters Lyn-Sortering & TV-Simulator",
-      "beskrivelse": "Hjelp Winter med å rydde og sortere lekene i 4 ordentlige kategorier (eller klar 10 pakker i minispillet Gave-Sorterer på Snøfall TV Kanal 4)!",
-      "fysisk_oppgave": "Sorter lekene på gulvet på plass og spill en runde Gave-Sorterer på Snøfall TV Kanal 4 sammen. Vis til mamma eller pappa for godkjenning!",
+      "tittel": "Lykt i vinduet mot nord",
+      "beskrivelse": "Kulde snudde samlebåndet for å bli sett. Orakelet tror et lys på Landås-siden blir lagt merke til der nede. Sett et batterilys i et syltetøyglass i et vindu som vender mot nord, og la det stå om kveldene.",
+      "fysisk_oppgave": "Finn vinduet mot nord sammen med en voksen (mobilen har kompass). Sett lykten der og vis mamma eller pappa, helst innen fredag. De taster foreldrekoden i KodeTerminal.",
       "validering": "forelder",
-      "foreldre_kode": "SORTER2026",
-      "belønning_tekst": "INVENTAR-SYSTEM 100% SYNKRONISERT! Winter bøyer seg i støvet og tildeler dere merket INVENTAR-EKSPERT!",
-      "badge_id": "inventar-ekspert",
-      "badge_navn": "Inventar-ekspert",
-      "badge_icon": "gift"
+      "foreldre_kode": "LYKT2026",
+      "frost_effekt": -20,
+      "belønning_tekst": "LYKTEN ER SETT. Orakelet melder om et lys på Landås-siden som ikke var der før. Frostgraden faller 20 %."
     },
-    "dagbokinnlegg": "16. desember. Winters store skrekk: full kaos i gave-databasen! Men med koden SORTERING fikk Kristian, Håkon og Hanna samlebåndet tilbake på rett kjøl. Som belønning har vi åpnet NISSESTATS-modulen med direktetall fra verkstedet, samt Gave-Sorterer-spillet på Snøfall TV!",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Winter fant skiltet sitt igjen. Det lå under haugen. Rampenissen satt i brødboksen med lokket på hodet og kalte det «ferdig ryddet». NisseStats er åpen fra i kveld.",
+    "julius_ps_bonus": "Winter fant skiltet sitt igjen. Det lå under haugen. Orakelet ser et lys på Landås-siden som ikke var der før, og det gjør noe annet også: det er stillere på 85,0. Rampenissen satt i brødboksen med lokket på hodet."
   },
   {
     "dag": 17,
-    "tittel": "Grønt Lys på Polarhimmelen",
-    "nissemail_tekst": "Spøkelseskoden Kulde prøvde å blokkere satellitten vår i natt, men Orakelet fant en magisk bakvei høyt oppe på himmelen! Jeg har hengt et grønt bånd eller grønt papir i gangen sammen med de 4 første bokstavene: N - O - R - D. Hanna og Håkon: Finn det grønne sporet i gangen! Kristian: Åpne Snøfall TV på KANAL 1 (Snøfall Torget) og klikk på den grønne himmelgløden over fjellene (eller se Julius sin videologg på Kanal 3) for å finne de 3 siste bokstavene (L - Y - S)!",
-    "rampenissen_rampestrek": "I gangen (på speilet eller en knagg) henger en grønn lapp eller et grønt gavebånd i bølger som nordlys med teksten: 'HIMMELBRO DEL 1: N - O - R - D (Klikk på himmelen på Snøfall TV Kanal 1 eller se Kanal 3 for DEL 2: L - Y - S)'.",
-    "fysisk_hint": "Se i gangen etter det grønne nordlys-sporet (N-O-R-D) og sjekk Snøfall TV Kanal 1 eller Kanal 3 for de 3 siste bokstavene (L-Y-S)!",
+    "tittel": "Grønt over Polarhimmelen",
+    "nissemail_tekst": "Det var grønt over Ulriken i natt. 💚 IQ sier det var et svar: lyktene han hang rundt antennen har brent siden 2. advent, og i natt svarte grotten. Jeg er for øvrig kidnappet av kosedyrene. Send pepperkaker. Håkon: dra i sløyfen, strekk båndet ut mellom to stoler og les det fra sløyfen og utover. Det står tegn på det, ikke bokstaver. Hanna, hvis du vil: du drar i sløyfen. Kristian: tavla, og Julius forteller hva de gamle kalte det grønne. Klikk på himmelen på kanal 1 etterpå. – Rampenissen",
+    "rampenissen_rampestrek": "Kidnappet av kosedyrene: sitter bundet til en stol med grønt gavebånd, bamsene står vakt, og et løsepengebrev av utklipte bokstaver sier «GI OSS ALLE PEPPERKAKENE. ELLERS.»",
+    "fysisk_hint": "1,5 m grønt gavebånd med sju sølvmerker med lik avstand og en tegnet sølvsløyfe før merke 1. Sju småkort (`dag17-baandkort.pdf`) teipet ved merkene: ❄, tegn **O**, ❄, ❄, tegn **L**, ❄, ❄ (❄ med tegn i hjørnet). Bundet rundt Rampenissen og stolen med én enkel sløyfe (ikke knute). Løsning: Håkon strekker båndet og leser fra sløyfen, Kristian slår opp tegnene: `_ O _ _ L _ _`. Julius: lyset man kan høre, himmelen som sender brev tilbake. Kode NORDLYS. Klipp av en bit av båndet til konvolutten «24». Hanna, hvis hun vil: drar i sløyfen.",
     "materialer_nødvendig": [
-      "Grønt gavebånd eller grønt ark i gangen",
-      "Lapp: 'DEL 1: N - O - R - D + DEL 2 fra Snøfall TV: L - Y - S'"
+      "grønt gavebånd",
+      "sølvpenn",
+      "dag17-baandkort.pdf",
+      "stol",
+      "løsepengebrev (`dag17-losepengebrev.pdf`, valgfri)"
     ],
     "beste_rom": "Gangen",
     "oppsett_tid": "moderat",
     "kode": "NORDLYS",
-    "hint": "Hva kalles det grønne lyset som danser på nattehimmelen i nord? Sett sammen N-O-R-D og L-Y-S (7 bokstaver)!",
     "reveals": {
       "files": [],
-      "topics": ["morkets-trussel", "stjerner"],
       "modules": []
     },
     "eventyr": {
-      "id": "morkets-trussel",
-      "phase": 3
+      "id": "spokelseskoden",
+      "phase": 17
     },
-    "dagbokinnlegg": "17. desember. Når satellittene fryser, bruker vi himmelens eget fiberoptiske nettverk: det bølgende grønne NORDLYS over Snøfall! Kristian, Håkon og Hanna koblet sammen sporet i gangen med observasjonen på Snøfall TV Kanal 1 og presset Spøkelseskoden tilbake.",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Grotten svarte. Jeg har ikke hørt fra den på et år. Kosedyrene krevde pepperkaker for Rampenissen; Nissemor sier dere bør betale, hun har sett løsepengebrevet. Jeg står i vinduet i natt også.",
+    "julius_ps_bonus": "Grotten svarte. Orakelet mener den svarte på to lykter: én ved tjernet og én lenger sør, i et vindu. Kosedyrene krevde pepperkaker for Rampenissen; Nissemor sier dere bør betale. Jeg står i vinduet i natt også."
   },
   {
     "dag": 18,
     "tittel": "Kastevind rundt Ulriken",
-    "nissemail_tekst": "Hold på nisselua! Trixter og Rudolf tester sleden i vestlandsvær i dag, og det rister skikkelig når vinden tar tak rundt Ulriken! Jeg har lagt et BLÅTT SOL-symbolkort og en vind-melding ved skohyllen eller jakkene med de 5 første bokstavene: T - U - R - B - U. Hanna: Finn det blå sol-kortet! Håkon og Kristian: Prøv SLEDE-SIMULATOR på Snøfall TV Kanal 4 (eller se Kanal 3) for å finne de 4 siste bokstavene (L - E - N - S) - og husk at dere nå har alle 6 symbolene til å løse Nivå 2 (Stjernetegn) i NISSEKRYPTO!",
-    "rampenissen_rampestrek": "Rampenissen henger i en jakkeerm eller sitter i en lue med 'blafrende' skjerf, det blå sol-symbolkortet og en lapp: 'VESTLANDSVIND DEL 1: T - U - R - B - U (Sjekk Slede-Simulator på Snøfall TV Kanal 4 for DEL 2: L - E - N - S)'.",
-    "fysisk_hint": "Se ved jakkene/skoene etter det blå sol-kortet og bokstavene T-U-R-B-U, og sjekk Slede-Simulator på Snøfall TV Kanal 4 for de 4 siste bokstavene (L-E-N-S)!",
+    "nissemail_tekst": "Trixter testet sleden i vestlandsvær i natt. 🛷 Jeg satt bakpå. Rudolf var innom hos dere etterpå. Han la igjen noe på gulvet, fra ytterdøra til kjøleskapet. Jeg sitter fast i pappas jakkelomme. Håkon: følg sporet baklengs fra kjøleskapet. Det har hauger. Tell rosinene i hver, og løft det som ligger under. Hanna, hvis du vil: du teller, og du får meg løs. Kristian: rutekortet er i lommen hos meg. Trixter har ett ord for det sleden gjorde i vinden. Seks symboler nå: les det kartet gir dere, nøye. – Rampenissen",
+    "rampenissen_rampestrek": "Reinsdyrbesøk: et spor av sjokoladerosiner («reinsdyrbæsj») fra ytterdøra til kjøleskapet, og Rampenissen sitter fast i pappas jakkelomme og peker anklagende på sporet.",
+    "fysisk_hint": "Rosinspor med fire hauger på hver sin serviett: 2 rosiner over **U**, 4 over **B**, 7 over **E**, 9 over ❄ (`dag18-rosinkort.pdf`, tegn i hjørnet, prikker bak). Rutekort 1–9 i jakkelommen hos Rampenissen, blått sol-kort i den andre lommen. Løsning: Håkon teller og løfter, Kristian: `_ U _ B _ _ E _ _`. Julius: Trixters ord for når lufta får sleden til å hoppe og riste uten at noen ser hvorfor. Kode TURBULENS. Så NisseKrypto 2 → kartet; sirkelen på varde 5 trengs dag 21. Før B på tavla (trengs dag 20; U er kjent fra dag 7). Hanna, hvis hun vil: teller rosinene og får Rampenissen løs.",
     "materialer_nødvendig": [
-      "Symbolkort: Blå sol (QR-kort)",
-      "Lapp ved jakkene: 'VINDKODE DEL 1: T - U - R - B - U + DEL 2 på Snøfall TV: L - E - N - S'"
+      "sjokoladerosiner",
+      "4 servietter",
+      "dag18-rosinkort.pdf",
+      "symbolkort blå sol",
+      "jakke på knagg"
     ],
     "beste_rom": "Gangen (ved ytterjakkene)",
     "oppsett_tid": "moderat",
     "kode": "TURBULENS",
-    "hint": "Hva kalles det når fly eller sleder rister i luften på grunn av vind? Sett sammen T-U-R-B-U og L-E-N-S (9 bokstaver)!",
     "reveals": {
       "files": [],
-      "topics": ["snøengler", "slede-forberedelser"],
       "modules": []
     },
     "eventyr": {
-      "id": "slede-forberedelser",
-      "phase": 1
+      "id": "spokelseskoden",
+      "phase": 18
     },
     "symbol_clue": {
       "symbolId": "sun-blue",
       "symbolIcon": "sun-alt",
       "symbolColor": "blue",
-      "description": "Blå sol funnet under vindtreningsøkten i gangen"
+      "description": "Blå sol funnet i pappas jakkelomme"
     },
     "decryption_challenge": {
       "challengeId": "stjernetegn",
@@ -193,12 +193,12 @@
         "sun-blue"
       ],
       "correctSequence": [3, 1, 0, 5, 2, 4],
-      "hint": "Følg Julius' innflygingskart i DEKRYPTERT: Grønn sol → Rødt hjerte → Grønt hjerte → Blå sol → Blått hjerte → Rød sol!",
-      "rewardText": "NIVÅ 2 DEKRYPTERT! Navigasjonskartet stjernetegn.txt er nå låst opp i DEKRYPTERT-mappen!",
+      "hint": "Trixters rute: grønn sol → rødt hjerte → grønt hjerte → blå sol → blått hjerte → rød sol.",
+      "rewardText": "DEKRYPTERT. Trixters rutekart for julenatt ligger i DEKRYPTERT/stjernetegn.txt. Julius har tegnet en sirkel på det.",
       "unlocksFiles": ["stjernetegn.txt"]
     },
-    "dagbokinnlegg": "18. desember. Seks dager igjen! Å fly slede over Finse og ned mot Ulriken og Landås krever at vi mestrer kraftig TURBULENS. Barna kalibrerte sledesimulatoren på Kanal 4 og låste samtidig opp det blå sol-symbolet slik at de kan dekryptere navigasjonskartet stjernetegn.txt i NisseKrypto!",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Trixter vil fly utenom grotten julenatt. Jeg sa nei. Les rutekartet; jeg har tegnet en sirkel på det. Og sjokoladerosinene: Rudolf benekter alt.",
+    "julius_ps_bonus": "Trixter vil fly utenom grotten julenatt. Jeg sa nei. Orakelet sier lyset i vinduet deres fortsatt står på; det er det eneste i Bergen som peker rett mot nord. Og sjokoladerosinene: Rudolf benekter alt."
   }
 ]

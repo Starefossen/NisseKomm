@@ -7,7 +7,6 @@ import {
   getEventyrDays,
   getEventyrProgress,
   isEventyrComplete,
-  getRewardIcon,
 } from "@/lib/eventyr";
 import { GameEngine } from "@/lib/game-engine";
 import { Icon } from "@/lib/icons";
@@ -237,21 +236,20 @@ function HistorierContent() {
                 </div>
               )}
 
-              {/* Reward */}
-              {arc.belønning && (
-                <div className="border-2 border-(--gold) p-4 bg-black/50">
-                  <h3 className="text-2xl text-(--gold) mb-2 flex items-center gap-2">
-                    <Icon name={getRewardIcon(arc.belønning.type)} size={24} />
-                    BELØNNING VED FULLFØRING:
-                  </h3>
-                  <p className="text-xl text-(--neon-green)">
-                    <strong>{arc.belønning.type}</strong>
-                  </p>
-                  <p className="text-lg text-(--cold-blue)">
-                    {arc.belønning.beskrivelse}
-                  </p>
-                </div>
-              )}
+              {/* Milestones */}
+              <div className="border-2 border-(--gold) p-4 bg-black/50">
+                <h3 className="text-2xl text-(--gold) mb-2 flex items-center gap-2">
+                  <Icon name="trophy" size={24} />
+                  MILEPÆLER (merket Snøfalls venn ved fullføring):
+                </h3>
+                <ul className="text-lg text-(--cold-blue) space-y-1">
+                  {arc.milepaeler.map((m) => (
+                    <li key={m.dag}>
+                      Dag {m.dag} · {m.navn}: {m.tekst}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           );
         })}

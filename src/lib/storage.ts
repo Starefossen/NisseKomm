@@ -28,8 +28,7 @@ const KEYS = {
   VIEWED_BONUSOPPDRAG_EMAILS: "nissekomm-viewed-bonusoppdrag-emails",
   SOUNDS_ENABLED: "nissekomm-sounds-enabled",
   MUSIC_ENABLED: "nissekomm-music-enabled",
-  BONUSOPPDRAG_BADGES: "nissekomm-bonusoppdrag-badges",
-  EVENTYR_BADGES: "nissekomm-eventyr-badges",
+  BONUSOPPDRAG_COMPLETED: "nissekomm-bonusoppdrag-completed",
   EARNED_BADGES: "nissekomm-earned-badges",
   TOPIC_UNLOCKS: "nissekomm-topic-unlocks",
   // NEW: Multi-day narrative system keys
@@ -243,7 +242,7 @@ export class StorageManager {
     missions?: Array<{
       dag: number;
       kode?: string;
-      bonusoppdrag?: { kode?: string };
+      bonusoppdrag?: object;
     }>,
   ): number {
     const viewed = this.getViewedEmails();
@@ -381,35 +380,6 @@ export class StorageManager {
   }
 
   // ============================================================
-  // Crisis Management
-  // ============================================================
-
-  static getCrisisStatus(): { antenna: boolean; inventory: boolean } {
-    if (typeof window === "undefined")
-      return { antenna: false, inventory: false };
-    const status = this.getItem<{ antenna: boolean; inventory: boolean }>(
-      "nissekomm-crisis-completed",
-      { antenna: false, inventory: false },
-    );
-    // Validate structure to prevent corruption issues
-    return {
-      antenna: status.antenna === true,
-      inventory: status.inventory === true,
-    };
-  }
-
-  static resolveCrisis(crisisType: "antenna" | "inventory"): void {
-    if (typeof window === "undefined") return;
-    const status = this.getCrisisStatus();
-    status[crisisType] = true;
-    this.setItem("nissekomm-crisis-completed", status);
-  }
-
-  static isCrisisResolved(crisisType: "antenna" | "inventory"): boolean {
-    return this.getCrisisStatus()[crisisType];
-  }
-
-  // ============================================================
   // Santa Letters (BREVFUGLER Module)
   // ============================================================
 
@@ -451,70 +421,32 @@ export class StorageManager {
   }
 
   // ============================================================
-  // Bonusoppdrag Badges
+  // Bonusoppdrag (parent-approved days)
   // ============================================================
 
-  static getBonusOppdragBadges(): Array<{
-    day: number;
-    icon: string;
-    navn: string;
-  }> {
+  static getCompletedBonusOppdrag(): number[] {
     if (typeof window === "undefined") return [];
-    return this.getItem<Array<{ day: number; icon: string; navn: string }>>(
-      KEYS.BONUSOPPDRAG_BADGES,
-      [],
+    return this.getItem<number[]>(KEYS.BONUSOPPDRAG_COMPLETED, []);
+  }
+
+  static completeBonusOppdrag(day: number): void {
+    if (typeof window === "undefined") return;
+    const days = this.getCompletedBonusOppdrag();
+    if (!days.includes(day)) {
+      this.setItem(KEYS.BONUSOPPDRAG_COMPLETED, [...days, day]);
+    }
+  }
+
+  static revokeBonusOppdrag(day: number): void {
+    if (typeof window === "undefined") return;
+    this.setItem(
+      KEYS.BONUSOPPDRAG_COMPLETED,
+      this.getCompletedBonusOppdrag().filter((d) => d !== day),
     );
   }
 
-  static addBonusOppdragBadge(day: number, icon: string, navn: string): void {
-    if (typeof window === "undefined") return;
-    const badges = this.getBonusOppdragBadges();
-
-    // Avoid duplicates
-    if (!badges.some((b) => b.day === day)) {
-      badges.push({ day, icon, navn });
-      badges.sort((a, b) => a.day - b.day);
-      this.setItem(KEYS.BONUSOPPDRAG_BADGES, badges);
-    }
-  }
-
-  static hasBonusOppdragBadge(day: number): boolean {
-    const badges = this.getBonusOppdragBadges();
-    const result = badges.some((b) => {
-      return b.day === day;
-    });
-    return result;
-  }
-
-  // ============================================================
-  // Eventyr Badges (Story Arc Completion)
-  // ============================================================
-
-  static getEventyrBadges(): Array<{
-    eventyrId: string;
-    icon: string;
-    navn: string;
-  }> {
-    if (typeof window === "undefined") return [];
-    return this.getItem<
-      Array<{ eventyrId: string; icon: string; navn: string }>
-    >(KEYS.EVENTYR_BADGES, []);
-  }
-
-  static addEventyrBadge(eventyrId: string, icon: string, navn: string): void {
-    if (typeof window === "undefined") return;
-    const badges = this.getEventyrBadges();
-
-    // Avoid duplicates
-    if (!badges.some((b) => b.eventyrId === eventyrId)) {
-      badges.push({ eventyrId, icon, navn });
-      this.setItem(KEYS.EVENTYR_BADGES, badges);
-    }
-  }
-
-  static hasEventyrBadge(eventyrId: string): boolean {
-    const badges = this.getEventyrBadges();
-    return badges.some((b) => b.eventyrId === eventyrId);
+  static isBonusOppdragCompleted(day: number): boolean {
+    return this.getCompletedBonusOppdrag().includes(day);
   }
 
   // ============================================================

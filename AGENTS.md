@@ -88,8 +88,8 @@ const today = getCurrentDate();
 **5 Core Systems**:
 
 1. **Oppdrag** (Daily Quests): 24 missions with riddles → physical clues → codes → diary unlocks
-2. **Bonusoppdrag** (Side Quests): Parent-validated crisis missions (Day 11, 16) with badge rewards
-3. **Eventyr** (Story Arcs): 2 multi-day narratives spanning Days 3-12 and 14-24
+2. **Bonusoppdrag** (Side Quests): Parent-approved tasks on day 11 (antenna) and 16 (lantern, `LYKT2026`) in the guide's Bonusoppdrag page. No badge: −20 % frost and a bonus variant of Julius' PS (`julius_ps_bonus`, day 11 and 16–19)
+3. **Eventyr** (Story Arc): one story, `spokelseskoden`, on all 24 days, with milestones M1–M6 in `eventyr.json` (EventyrOversikt shows one progress line). Badges: Varmebærer (`decryptionSolved` frosne-koder), Portvokter (`dayCompleted` 21), Snøfalls venn (`allQuestsCompleted`)
 4. **Nice List** (Days 22-24): Name registration → personalized finale message
 5. **Symboler** (Symbol Collection): 9 physical QR cards → 3 NisseKrypto decryption challenges
 
@@ -158,7 +158,7 @@ Explain WHY, not WHAT. Remove obvious comments.
 ## Component Behaviors
 
 **NisseMail**: Split-view inbox (30/70), unread tracking, "NY" badges
-**Dagbok**: Julius' video diary (`JuliusVideo`, also Snøfall TV K3). Today's video opens on login with «NY MELDING FRA JULIUS» until played to the end (`GameEngine.markJuliusVideoWatched`); transcript after watching, `julius_ps` after the code. Transcripts: `python3 scripts/julius-transcripts.py` → `src/data/julius_videoer.json`
+**Dagbok**: Julius' video diary (`JuliusVideo`, also Snøfall TV K3). Today's video opens on login with «NY MELDING FRA JULIUS» until played to the end (`GameEngine.markJuliusVideoWatched`); transcript after watching, `GameEngine.getJuliusPs(day)` after the code (bonus and day-20 «krypto mangler» variants). Day texts 2–24 (titles, mail, PS, alerts, NisseNet files): `python3 scripts/oppdrag-innhold.py` from `docs/manus/app-tekster-2026.md`; `kodelekkasje.test.ts` fails if a kid-visible text shows a code early. Transcripts: `python3 scripts/julius-transcripts.py` → `src/data/julius_videoer.json`
 **Kalender**: 3 day states (locked/available/completed), modal on click → opens NisseMail
 **KodeTerminal**: 1.5s processing delay, case-insensitive validation, gold flash on success
 
