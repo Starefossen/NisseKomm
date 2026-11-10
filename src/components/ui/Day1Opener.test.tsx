@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import { BOOT_TICKS, Day1Boot, Day1Tail, TAIL_TICKS } from "./Day1Opener";
 import { maskRunes, RuneText } from "./Frostrune";
 import { GameEngine } from "@/lib/game-engine";
+import { SYNCED_KEYS } from "@/lib/storage-adapter";
 import { latestRuneLine } from "../windows/snofall-tv/runer";
 
 (
@@ -43,6 +44,25 @@ describe("Day-1 opener (T14)", () => {
     act(() => (el.firstChild as HTMLElement).click());
     expect(onDone).toHaveBeenCalled();
     expect(GameEngine.isIntroSeen("boot")).toBe(true);
+  });
+
+  it("boot skips on Enter but not on Tab", () => {
+    const onDone = jest.fn();
+    const el = mount(<Day1Boot onDone={onDone} />);
+    const key = (k: string) =>
+      act(() => {
+        el.firstChild!.dispatchEvent(
+          new KeyboardEvent("keydown", { key: k, bubbles: true }),
+        );
+      });
+    key("Tab");
+    expect(onDone).not.toHaveBeenCalled();
+    key("Enter");
+    expect(onDone).toHaveBeenCalled();
+  });
+
+  it("seen openers sync, so another screen does not replay the boot", () => {
+    expect(SYNCED_KEYS.has("nissekomm-intros-seen")).toBe(true);
   });
 
   it("tail slips to 85,0 and back, once", () => {

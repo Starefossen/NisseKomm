@@ -112,9 +112,9 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [x] NisseKrypto og dekrypteringene
 - [x] NisseNet-utforsker og filer
 - [x] Eventyr, milepæler, merker og finale (10. november)
-- [ ] Frost, Frostgrad og frostmodus
+- [x] Frost, Frostgrad og frostmodus
 - [x] Frostrunene og runetavla (10. november)
-- [ ] Dag 1-oppstart og 85,0-halen
+- [x] Dag 1-oppstart og 85,0-halen
 - [ ] Foreldreguiden (I kveld, Forberedelser, Dag for dag, Innstillinger, simulering)
 - [ ] Utskrifter
 - [ ] Mediebibliotek og opplasting
