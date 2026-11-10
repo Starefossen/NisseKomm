@@ -29,8 +29,7 @@ export function mediaDir(): string {
 }
 
 const TICKET_MS = 10 * 60 * 1000;
-const ticketKey = (t: string) =>
-  `upload-ticket:${createHash("sha256").update(t).digest("hex")}`;
+const ticketHash = (t: string) => createHash("sha256").update(t).digest("hex");
 
 const isManifestPath = (rel: string) =>
   MEDIA_MANIFEST.some((entry) => mediaPath(entry) === rel);
@@ -39,24 +38,15 @@ const isManifestPath = (rel: string) =>
 export async function createUploadTicket(rel: string): Promise<string> {
   if (!isManifestPath(rel)) throw new Error(`Ukjent fil: ${rel}`);
   const ticket = randomBytes(24).toString("base64url");
-  await getStore().putState(ticketKey(ticket), {
+  await getStore().putState(`upload-ticket:${ticketHash(ticket)}`, {
     path: rel,
     expires: Date.now() + TICKET_MS,
   });
   return ticket;
 }
 
-// ponytail: read-then-null is not atomic; two PUTs racing within ms could
-// both pass. Add a Store.takeTicket (DELETE … RETURNING) if that matters.
-async function redeemTicket(ticket: string, rel: string): Promise<boolean> {
-  const store = getStore();
-  const key = ticketKey(ticket);
-  const t = (await store.getState())[key] as
-    { path: string; expires: number } | null | undefined;
-  if (!t) return false;
-  await store.putState(key, null);
-  return t.path === rel && t.expires > Date.now();
-}
+const redeemTicket = (ticket: string, rel: string) =>
+  getStore().consumeTicket(ticketHash(ticket), rel);
 
 const forbidden = () => new Response("Krever forelder", { status: 403 });
 const unauthorized = () => new Response("Ikke innlogget", { status: 401 });

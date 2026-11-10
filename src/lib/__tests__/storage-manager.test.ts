@@ -31,16 +31,14 @@ describe("Storage Manager - Basic Operations", () => {
   });
 
   it("should authenticate and create session", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     const isAuth = StorageManager.isAuthenticated();
     expect(isAuth).toBe(true);
   });
 
   it("should persist and retrieve submitted codes", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     const testCode = {
       kode: "TESTCODE1",
@@ -55,8 +53,7 @@ describe("Storage Manager - Basic Operations", () => {
   });
 
   it("should persist and retrieve viewed emails", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.markEmailAsViewed(5);
 
@@ -65,8 +62,7 @@ describe("Storage Manager - Basic Operations", () => {
   });
 
   it("should persist sound settings", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.setSoundsEnabled(false);
 
@@ -75,8 +71,7 @@ describe("Storage Manager - Basic Operations", () => {
   });
 
   it("should persist music settings", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.setMusicEnabled(true);
 
@@ -96,8 +91,7 @@ describe("Storage Manager - Multi-Tenant Isolation", () => {
     // This is intentional - localStorage mode is for single-family usage
 
     // Family A session
-    const familyA = generateTestPassword();
-    await StorageManager.setAuthenticated(true, familyA);
+    await StorageManager.setAuthenticated(true);
 
     const codeA = {
       kode: "FAMILYA_CODE",
@@ -110,8 +104,7 @@ describe("Storage Manager - Multi-Tenant Isolation", () => {
     expect(codesA1.some((c) => c.kode === "FAMILYA_CODE")).toBe(true);
 
     // Switch to different session (localStorage mode doesn't clear data)
-    const familyB = generateTestPassword();
-    await StorageManager.setAuthenticated(true, familyB);
+    await StorageManager.setAuthenticated(true);
 
     const codeB = {
       kode: "FAMILYB_CODE",
@@ -129,16 +122,14 @@ describe("Storage Manager - Multi-Tenant Isolation", () => {
     // NOTE: localStorage backend does NOT clear data when switching sessions
     // Settings persist in browser localStorage
 
-    const tenant1 = generateTestPassword();
-    await StorageManager.setAuthenticated(true, tenant1);
+    await StorageManager.setAuthenticated(true);
     StorageManager.setSoundsEnabled(false);
 
     // Verify tenant1 setting
     expect(StorageManager.isSoundsEnabled()).toBe(false);
 
     // Switch to tenant2 - localStorage does NOT clear, settings persist
-    const tenant2 = generateTestPassword();
-    await StorageManager.setAuthenticated(true, tenant2);
+    await StorageManager.setAuthenticated(true);
 
     // In localStorage mode, previous settings persist (no isolation)
     expect(StorageManager.isSoundsEnabled()).toBe(false);
@@ -155,10 +146,8 @@ describe("Storage Manager - Session Persistence", () => {
   });
 
   it("should persist data in localStorage with same password", async () => {
-    const familyPassword = generateTestPassword();
-
     // Device 1: Submit code
-    await StorageManager.setAuthenticated(true, familyPassword);
+    await StorageManager.setAuthenticated(true);
 
     const testCode = {
       kode: "DEVICE1_CODE",
@@ -172,10 +161,8 @@ describe("Storage Manager - Session Persistence", () => {
   });
 
   it("should restore full game state", async () => {
-    const password = generateTestPassword();
-
     // Build up game state
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     // Add various data
     StorageManager.addSubmittedCode({
@@ -217,8 +204,7 @@ describe("Storage Manager - Complex Data Types", () => {
   });
 
   it("should persist unlocked modules", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.unlockModule("nissenet");
 
@@ -227,8 +213,7 @@ describe("Storage Manager - Complex Data Types", () => {
   });
 
   it("should persist symbol collection", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     const symbol = {
       symbolId: "symbol1",
@@ -243,8 +228,7 @@ describe("Storage Manager - Complex Data Types", () => {
   });
 
   it("should persist decryption challenges", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.addSolvedDecryption("challenge1");
 
@@ -260,7 +244,7 @@ describe("GameEngine Integration", () => {
 
   it("should work with GameEngine facade", async () => {
     const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     // Configure GameEngine to use password as kid code (for Day 1 {{KID_CODE}} tests)
     GameEngine.configure({
@@ -286,7 +270,7 @@ describe("GameEngine Integration", () => {
 
   it("should persist game progression", async () => {
     const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     // Configure GameEngine for Day 1
     GameEngine.configure({
@@ -315,8 +299,7 @@ describe("Storage Manager - Error Handling", () => {
   });
 
   it("should handle duplicate code submissions gracefully", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     const code = {
       kode: "DUPLICATE",
@@ -338,8 +321,7 @@ describe("Storage Manager - Performance", () => {
   });
 
   it("should handle rapid successive writes", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     // Rapid writes
     for (let i = 1; i <= 5; i++) {
@@ -354,8 +336,7 @@ describe("Storage Manager - Performance", () => {
   });
 
   it("should handle large datasets", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     // Add many codes
     for (let i = 1; i <= 24; i++) {
@@ -376,8 +357,7 @@ describe("Storage Manager - Modules", () => {
   });
 
   it("should unlock and track modules", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     expect(StorageManager.isModuleUnlocked("NISSEKRYPTO")).toBe(false);
 
@@ -389,8 +369,7 @@ describe("Storage Manager - Modules", () => {
   });
 
   it("should not duplicate module unlocks", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.unlockModule("BREVFUGLER");
     StorageManager.unlockModule("BREVFUGLER");
@@ -407,8 +386,7 @@ describe("Storage Manager - Santa Letters", () => {
   });
 
   it("should add and retrieve santa letters", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.addSantaLetter(1, "Dear Santa, I want a bike!");
     StorageManager.addSantaLetter(5, "Dear Santa, I want a puppy!");
@@ -420,8 +398,7 @@ describe("Storage Manager - Santa Letters", () => {
   });
 
   it("should replace letter for same day", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.addSantaLetter(1, "First letter");
     StorageManager.addSantaLetter(1, "Updated letter");
@@ -432,8 +409,7 @@ describe("Storage Manager - Santa Letters", () => {
   });
 
   it("should sort letters by day", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.addSantaLetter(10, "Day 10 letter");
     StorageManager.addSantaLetter(3, "Day 3 letter");
@@ -446,8 +422,7 @@ describe("Storage Manager - Santa Letters", () => {
   });
 
   it("should reject invalid day numbers", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.addSantaLetter(0, "Invalid");
     StorageManager.addSantaLetter(25, "Invalid");
@@ -457,8 +432,7 @@ describe("Storage Manager - Santa Letters", () => {
   });
 
   it("should reject empty content", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.addSantaLetter(1, "");
     StorageManager.addSantaLetter(2, "   ");
@@ -474,8 +448,7 @@ describe("Storage Manager - Earned Badges", () => {
   });
 
   it("should add and check earned badges", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     expect(StorageManager.hasEarnedBadge("test-badge")).toBe(false);
 
@@ -484,8 +457,7 @@ describe("Storage Manager - Earned Badges", () => {
   });
 
   it("should store badge with timestamp", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     const before = Date.now();
     StorageManager.addEarnedBadge("timed-badge");
@@ -499,8 +471,7 @@ describe("Storage Manager - Earned Badges", () => {
   });
 
   it("should not duplicate badges", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.addEarnedBadge("dup-badge");
     StorageManager.addEarnedBadge("dup-badge");
@@ -511,8 +482,7 @@ describe("Storage Manager - Earned Badges", () => {
   });
 
   it("should remove specific badge", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.addEarnedBadge("badge-a");
     StorageManager.addEarnedBadge("badge-b");
@@ -523,8 +493,7 @@ describe("Storage Manager - Earned Badges", () => {
   });
 
   it("should clear all badges", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.addEarnedBadge("badge-1");
     StorageManager.addEarnedBadge("badge-2");
@@ -540,8 +509,7 @@ describe("Storage Manager - Bonusoppdrag Emails", () => {
   });
 
   it("should track viewed bonusoppdrag emails", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     expect(StorageManager.getViewedBonusOppdragEmails().has(11)).toBe(false);
 
@@ -550,8 +518,7 @@ describe("Storage Manager - Bonusoppdrag Emails", () => {
   });
 
   it("should clear viewed bonusoppdrag emails", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
+    await StorageManager.setAuthenticated(true);
 
     StorageManager.markBonusOppdragEmailAsViewed(11);
     StorageManager.markBonusOppdragEmailAsViewed(16);

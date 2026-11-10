@@ -58,6 +58,24 @@ export function setTimeOverride(override: TimeOverride | null): void {
  * NEXT_PUBLIC_MOCK_* second. Use this instead of `new Date()` everywhere.
  */
 export function getCurrentDate(): Date {
+  const d = clockDate();
+  const offset = getDayOffset();
+  if (offset) d.setDate(d.getDate() + offset);
+  return d;
+}
+
+/** MCP skip_day's `day-offset`, cached from the server by ServerSyncAdapter. */
+function getDayOffset(): number {
+  if (typeof window === "undefined") return 0;
+  try {
+    const n = JSON.parse(window.localStorage.getItem("day-offset") ?? "0");
+    return typeof n === "number" ? n : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function clockDate(): Date {
   const now = new Date();
 
   const override = getTimeOverride();

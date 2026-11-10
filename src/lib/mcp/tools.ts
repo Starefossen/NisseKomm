@@ -281,11 +281,11 @@ export const TOOLS: Record<string, Tool> = {
     level: "parent",
     description: "Nullstill all delt spilltilstand.",
     inputSchema: { type: "object", properties: {} },
-    // ponytail: writes null (the store has no delete); clients still holding
-    // local state push it back, as with any removal (db.ts mergeValue).
+    // Replacing writes bump the version, so screens re-fetch instead of
+    // pushing their old lists back.
     run: async () => {
       for (const k of [...STATE_KEYS, "frost-override", "day-offset"]) {
-        await getStore().putState(k, null);
+        await getStore().putState(k, null, true);
       }
       return { reset: true };
     },

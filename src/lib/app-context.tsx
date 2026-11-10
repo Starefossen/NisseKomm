@@ -111,8 +111,9 @@ export function AppProvider({ children }: AppProviderProps) {
         newSessionId.substring(0, 8) + "...",
       );
 
-      // Wait for storage adapter initialization
-      await StorageManager.setAuthenticated(true, newSessionId);
+      await StorageManager.setAuthenticated(true);
+      // Shared state before the first render of game state
+      await StorageManager.sync(refreshGameState);
 
       // Refresh game state
       refreshGameState();
@@ -129,8 +130,10 @@ export function AppProvider({ children }: AppProviderProps) {
   const authenticate = useCallback(
     async (newSessionId: string) => {
       setSessionIdState(newSessionId);
+      setIsInitializing(true);
       setIsAuthenticated(true);
       await initializeApp(newSessionId);
+      setIsInitializing(false);
     },
     [initializeApp],
   );
@@ -163,6 +166,7 @@ export function AppProvider({ children }: AppProviderProps) {
 
         console.debug("[AppContext] Session restored successfully");
       } else if (StorageManager.isAuthenticated()) {
+        await StorageManager.sync(refreshGameState);
         setIsAuthenticated(true);
         refreshGameState();
       }

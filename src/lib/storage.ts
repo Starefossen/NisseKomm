@@ -13,7 +13,11 @@
 
 import { InnsendelseLog, DecryptionSymbol } from "@/types/innhold";
 import { getISOString } from "./date-utils";
-import { createStorageAdapter, type StorageAdapter } from "./storage-adapter";
+import {
+  createStorageAdapter,
+  ServerSyncAdapter,
+  type StorageAdapter,
+} from "./storage-adapter";
 
 // Storage keys
 const KEYS = {
@@ -133,23 +137,26 @@ export class StorageManager {
     return this.getItem(KEYS.AUTHENTICATED, false);
   }
 
-  static async setAuthenticated(
-    value: boolean,
-    sessionId?: string,
-  ): Promise<void> {
-    const backend = process.env.NEXT_PUBLIC_STORAGE_BACKEND || "localStorage";
-
-    // If authenticating with sessionId, recreate adapter for session setup
-    if (value && sessionId) {
-      console.debug(
-        `[StorageManager] Setting authenticated (${backend} mode) with sessionId:`,
-        sessionId.substring(0, 8) + "...",
-      );
-
-      this.adapter = createStorageAdapter();
-    }
-
+  static async setAuthenticated(value: boolean): Promise<void> {
     this.setItem(KEYS.AUTHENTICATED, value);
+  }
+
+  /**
+   * Fetches the shared state from the server before game state is shown.
+   * A no-op with STORAGE_BACKEND=localStorage or when offline.
+   */
+  static async sync(onChange?: () => void): Promise<void> {
+    if (typeof window === "undefined") return;
+    // Season wipe first: it is local, and must not reach the server.
+    this.ensureSeason();
+    if (this.adapter instanceof ServerSyncAdapter) {
+      await this.adapter.start(onChange).catch(() => {});
+    }
+  }
+
+  /** MCP set_frost, read-only here. */
+  static getFrostOverride(): { active: boolean; until: string } | null {
+    return this.getItem("frost-override", null);
   }
 
   static clearAuthentication(): void {
@@ -356,14 +363,10 @@ export class StorageManager {
     }
   }
 
-  /**
-   * Clear all application data
-   */
-  static clearAll(): void {
+  /** Clears this screen; with propagate also the shared state (reset). */
+  static clearAll(propagate = false): void {
     if (typeof window === "undefined") return;
-
-    // Clear all data through adapter
-    this.adapter.clear();
+    this.adapter.clear(propagate);
   }
 
   // ============================================================

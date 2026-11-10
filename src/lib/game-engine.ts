@@ -372,12 +372,14 @@ export class GameEngine {
   static getFrostMode(): FrostMode {
     const now = getCurrentDate();
     const day = now.getDate();
+    const o = StorageManager.getFrostOverride();
     return frostModeFor({
       day,
       month: now.getMonth() + 1,
       hour: now.getHours(),
       solved: this.isQuestCompleted(day),
       disabled: StorageManager.getFrostOffDay() === day,
+      override: o && new Date(o.until) > now ? o.active : undefined,
     });
   }
 
@@ -1053,7 +1055,7 @@ export class GameEngine {
   static resetGame(): void {
     if (typeof window === "undefined") return;
     if (confirm("Er du sikker på at du vil slette all progresjon?")) {
-      StorageManager.clearAll();
+      StorageManager.clearAll(true);
       window.location.reload();
     }
   }
@@ -1069,7 +1071,7 @@ export class GameEngine {
 
   /** Clear all progress without prompting (Tidsmaskin) */
   static resetProgress(): void {
-    StorageManager.clearAll();
+    StorageManager.clearAll(true);
   }
 
   /**
