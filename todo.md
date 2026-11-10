@@ -119,8 +119,8 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [ ] Utskrifter
 - [x] Mediebibliotek og opplasting (10. november)
 - [x] Varslingssystem (10. november)
-- [ ] MCP-server
-- [ ] Testoppsett og gjennomspilling
+- [x] MCP-server
+- [x] Testoppsett og gjennomspilling
 
 ## Senere forbedringer (etter sesongen)
 
