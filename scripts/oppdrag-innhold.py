@@ -18,6 +18,17 @@ DOC = (ROOT / "docs/manus/app-tekster-2026.md").read_text(encoding="utf-8")
 DAYS = range(2, 25)
 EVENTYR_ID = "spokelseskoden"
 
+# Emoji render in colour on iPad Safari. A lone ❄ (a frost square in the setup
+# notes) becomes ✱; other emoji are dropped with one adjacent space.
+EMOJI = "[❄🏅⚠📋📖🛠❌⏳🏆ℹ⭐💡🖨✝📝📍🎯🎅📊🎉🎁🔐📅➕🔑🚪🔒✨✅📦🔓🔴⏰🎄🧝⚙🦌🔧⚡🕊🚨💥🌟💚🔮🧪📺📡🎵🕯📓🛷🍬🥶😶🌙❤]\uFE0F?"
+
+
+def no_emoji(text, frost=False):
+    if frost:
+        text = re.sub("❄(?!\uFE0F)", "✱", text)
+    text = re.sub(r'(["`>]\s*)' + EMOJI + " ", r"\1", text)
+    return re.sub(" ?" + EMOJI, "", text)
+
 
 def section(day):
     m = re.search(rf"^### Dag {day} \(.*?$(.*?)(?=^### Dag |^---$)", DOC, re.S | re.M)
@@ -146,7 +157,7 @@ for f in ("uke1", "uke2", "uke3", "uke4"):
             mods.remove("SNØFALL_TV")
         if d == 3 and "SYMBOLSKANNER" not in mods:
             mods.append("SYMBOLSKANNER")
-    p.write_text(json.dumps(quests, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    p.write_text(no_emoji(json.dumps(quests, ensure_ascii=False, indent=2), frost=True) + "\n", encoding="utf-8")
 
 # --- statisk_innhold ---
 p = DATA / "statisk_innhold.json"
@@ -201,6 +212,6 @@ for path, name, d, doc_path, after in NEW_FILES:
     else:
         siblings[i] = node
 
-p.write_text(json.dumps(s, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+p.write_text(no_emoji(json.dumps(s, ensure_ascii=False, indent=2)) + "\n", encoding="utf-8")
 for d in DAYS:
     print(d, days[d]["tittel"])
