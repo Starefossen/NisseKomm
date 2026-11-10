@@ -146,11 +146,11 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 15 (ti) – Fargesamlerens Notatbok · M4
 
-**Strek:** står ved siden av en liten skål sirup, klissete fotspor over benken, sleiva i hånden. Han vet ikke om Vintervokteren før i kveld.
+**Strek:** står ved siden av en liten skål sirup, fotspor av papir over benken, sleiva i hånden. Han vet ikke om Vintervokteren før i kveld.
 
-**Klipp:** «Rampenissen her, og æ kan ikkje flytt føttan. Æ prøvd å lag varme på kjøkkenet i natt, sånn ekte varme, for det e kaldt på linja. Det blei klissete. Veldig klissete. Æ står i det no. Sleiva va med på det. Men det e ikkje det viktigaste i dag. IQ e stille. IQ e aldri stille. Han fant ei gammel bok i arkivet i natt, og han har ikkje sagt et ord sia. Ikkje ett. Han bare sitt. Nissemor satte ei skål med nåkka søtt og brunt foran han, og den står der enda. Det har aldri skjedd før. Æ e litt urolig. Snakk lavt når dokker kjem heim i dag. Og ta med en klut.»
+**Klipp:** «Rampenissen her, og æ har ikkje smakt. Nesten ikkje. Æ prøvd å lag varme på kjøkkenet i natt, sånn ekte varme, for det e kaldt på linja. Det blei ei lita skål. Æ står ved sida av ho no og passe på. Sleiva va med på det. Men det e ikkje det viktigaste i dag. IQ e stille. IQ e aldri stille. Han fant ei gammel bok i arkivet i natt, og han har ikkje sagt et ord sia. Ikkje ett. Han bare sitt. Nissemor satte ei skål med nåkka søtt og brunt foran han, og den står der enda. Det har aldri skjedd før. Æ e litt urolig. Snakk lavt når dokker kjem heim i dag. Og ta med en klut.»
 
-**intro_hint:** «Gjesten vår kommer ikke løs fra gulvet, og han er bekymret for en venn.»
+**intro_hint:** «Gjesten vår står vakt ved ei skål på benken, og han er bekymret for en venn.»
 
 ## Dag 16 (on) – Pakkesentralen i Spinn · bonus
 
