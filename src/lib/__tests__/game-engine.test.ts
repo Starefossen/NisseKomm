@@ -342,31 +342,6 @@ describe("GameEngine", () => {
     });
   });
 
-  describe("State Persistence", () => {
-    it("should export and import game state", async () => {
-      // Create some game state
-      for (let i = 1; i <= 5; i++) {
-        const code = getQuestCode(i);
-        await GameEngine.submitCode(code, code, i);
-      }
-
-      // Export
-      const exported = GameEngine.exportGameState();
-      expect(exported).toBeTruthy();
-
-      // Clear storage
-      localStorage.clear();
-      expect(GameEngine.getCompletedQuestCount()).toBe(0);
-
-      // Import
-      const success = await GameEngine.importGameState(exported);
-      expect(success).toBe(true);
-
-      // Verify state restored (note: export/import is Phase 2 feature, not all data included yet)
-      expect(GameEngine.getCompletedQuestCount()).toBe(5);
-    });
-  });
-
   describe("Edge Cases", () => {
     it("should handle whitespace in code submission", async () => {
       const code8 = getQuestCode(8);

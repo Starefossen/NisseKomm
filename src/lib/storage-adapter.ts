@@ -109,7 +109,6 @@ export const SYNCED_KEYS = new Set([
   "nissekomm-julius-watched",
   "nissekomm-bonusoppdrag-completed",
   "nissekomm-earned-badges",
-  "nissekomm-brevfugler",
   "nissekomm-santa-letters",
   "nissekomm-frost-off-day",
   "nissekomm-collected-symbols",

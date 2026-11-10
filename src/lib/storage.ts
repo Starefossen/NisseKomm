@@ -40,7 +40,6 @@ const KEYS = {
   PLAYER_NAMES: "nissekomm-player-names",
   NICE_LIST_LAST_VIEWED: "nissekomm-nice-list-viewed",
   JULIUS_WATCHED: "nissekomm-julius-watched",
-  BREVFUGLER: "nissekomm-brevfugler",
   FROST_OFF_DAY: "nissekomm-frost-off-day",
   UNLOCKED_MODULES: "nissekomm-unlocked-modules",
   SANTA_LETTERS: "nissekomm-santa-letters",
@@ -66,15 +65,6 @@ interface StorageData {
   viewedEmails: number[]; // Array of day numbers
   soundsEnabled: boolean;
   musicEnabled: boolean;
-}
-
-/**
- * Brevfugl entry type (parent-transcribed letters from children)
- */
-interface Brevfugl {
-  dag: number;
-  innhold: string;
-  tidspunkt: string; // ISO timestamp
 }
 
 /**
@@ -723,36 +713,6 @@ export class StorageManager {
     return day24Timestamp > lastViewedTimestamp;
   }
 
-  /**
-   * Export data as JSON string (for backup or migration)
-   */
-  static exportData(): string {
-    return JSON.stringify(this.getAllData(), null, 2);
-  }
-
-  /**
-   * Import data from JSON string (for restore or migration)
-   * Note: Does not import authentication state (requires password for multi-tenancy)
-   */
-  static async importData(jsonData: string): Promise<boolean> {
-    try {
-      const data: StorageData = JSON.parse(jsonData);
-
-      // Skip authentication import - requires password for session setup
-      // this.setAuthenticated(data.authenticated);
-
-      this.setItem(KEYS.SUBMITTED_CODES, data.submittedCodes);
-      this.setItem(KEYS.VIEWED_EMAILS, data.viewedEmails);
-      this.setSoundsEnabled(data.soundsEnabled);
-      this.setMusicEnabled(data.musicEnabled);
-
-      return true;
-    } catch (e) {
-      console.error("Failed to import data:", e);
-      return false;
-    }
-  }
-
   // ============================================================
   // Julius' video diary
   // ============================================================
@@ -785,65 +745,5 @@ export class StorageManager {
     if (!watched.includes(day)) {
       this.setItem(KEYS.JULIUS_WATCHED, [...watched, day]);
     }
-  }
-
-  /**
-   * Get completed quest days as a Set
-   */
-  static getCompletedQuestDays(): Set<number> {
-    if (typeof window === "undefined") return new Set();
-
-    // Note: This is a simplified version for compatibility
-    // In production, prefer using GameEngine.loadGameState().completedQuests
-    // which properly matches codes against mission data
-    return new Set<number>();
-  }
-
-  // ============================================================
-  // Brevfugler (Parent-transcribed letters from children)
-  // ============================================================
-
-  /**
-   * Add a brevfugl letter (parent transcribes child's letter)
-   */
-  static leggTilBrevfugl(dag: number, innhold: string): void {
-    const brevfugler = this.getItem<Brevfugl[]>(KEYS.BREVFUGLER, []);
-
-    // Check if letter for this day already exists
-    const existingIndex = brevfugler.findIndex((b) => b.dag === dag);
-
-    const newBrevfugl: Brevfugl = {
-      dag,
-      innhold,
-      tidspunkt: getISOString(),
-    };
-
-    if (existingIndex >= 0) {
-      // Update existing letter
-      brevfugler[existingIndex] = newBrevfugl;
-    } else {
-      // Add new letter
-      brevfugler.push(newBrevfugl);
-    }
-
-    // Sort by day
-    brevfugler.sort((a, b) => a.dag - b.dag);
-
-    this.setItem(KEYS.BREVFUGLER, brevfugler);
-  }
-
-  /**
-   * Get all brevfugler letters
-   */
-  static hentAlleBrevfugler(): Brevfugl[] {
-    return this.getItem<Brevfugl[]>(KEYS.BREVFUGLER, []);
-  }
-
-  /**
-   * Get a specific brevfugl letter by day
-   */
-  static hentBrevfugl(dag: number): Brevfugl | null {
-    const brevfugler = this.hentAlleBrevfugler();
-    return brevfugler.find((b) => b.dag === dag) || null;
   }
 }

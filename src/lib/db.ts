@@ -24,7 +24,6 @@ const MERGED_KEYS = new Set([
   "nissekomm-codes",
   "nissekomm-julius-watched",
   "nissekomm-bonusoppdrag-completed",
-  "nissekomm-brevfugler",
   "nissekomm-santa-letters",
   "nissekomm-viewed-emails",
   "nissekomm-viewed-bonusoppdrag-emails",

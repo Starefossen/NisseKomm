@@ -226,16 +226,6 @@ export interface FilNode {
   };
 }
 
-// System metric/status
-export interface SystemMetrikk {
-  navn: string;
-  verdi: number;
-  maks: number;
-  status: "normal" | "advarsel" | "kritisk";
-  min?: number; // Minimum value for progression calculation
-  unlock_day?: number; // Day when metric becomes visible
-}
-
 // Submitted code log (localStorage)
 export interface InnsendelseLog {
   kode: string;
