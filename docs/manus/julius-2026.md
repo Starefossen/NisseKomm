@@ -29,7 +29,7 @@ Kulde-nivå 1. Svak knitring i lyden hele klippet, lett snø i bildet. Rommet er
    - Varighet: 13 s (17 ord)
    - Handling: Lener seg bakover, ser mot vinduet og landsbyen, smiler.
    - Kulde: Svak knitring.
-2b. **Replikk:** «Og én nisse. Vi husker dere. Alle tre.»
+     2b. **Replikk:** «Og én nisse. Vi husker dere. Alle tre.»
    - Varighet: 13 s (8 ord)
    - Handling: Lener seg fram mot mikrofonen, sier det lavt og varmt.
    - Kulde: Ingen.

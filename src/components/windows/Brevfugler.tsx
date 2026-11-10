@@ -216,7 +216,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
               <div className="bg-black/80 border border-(--neon-green)/60 px-2.5 py-1 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-(--neon-green) animate-pulse" />
                 <span className="text-xs font-bold text-(--neon-green)">
-                  LUFTKORRIDOR: LANDÅS (60.37°N) ⇄ SNØFALL (90.00°N)
+                  LUFTKORRIDOR: DIREKTELINJEN (60.37°N) ⇄ SNØFALL (90.00°N)
                 </span>
               </div>
               <div className="bg-black/80 border border-(--gold) px-2.5 py-1 text-xs font-bold text-(--gold)">
@@ -248,7 +248,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
               PERSONLIGE MELDINGER
             </div>
             <div className="text-sm opacity-70">
-              KRYPTERTE BREVFUGLER MELLOM LANDÅS OG SNØFALL
+              KRYPTERTE BREVFUGLER MELLOM STUA DERES OG SNØFALL
             </div>
           </div>
           <div className="flex items-center gap-2 px-3 py-1 border-2 border-(--gold) bg-(--gold)/20">
@@ -529,7 +529,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
                       </div>
                     </div>
                     <div className="text-[11px] font-mono text-(--cold-blue)">
-                      RUTE: SNØFALL → ULRIKEN → LANDÅS
+                      RUTE: SNØFALL → ULRIKEN → STUA DERES
                     </div>
                   </div>
                 </div>
