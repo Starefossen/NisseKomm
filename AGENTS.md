@@ -193,7 +193,7 @@ STORAGE_BACKEND=                         # server | localStorage; unset = server
 
 `mise run dev` sets dev codes and lan mode. Multi-tenancy, Sanity and Resend are gone; one family logs in with `KID_CODE` (parent guide: `PARENT_CODE`). `NISSEKOMM_MODE=lan` enables the guide, `/dev`, `/mcp` and the simulation panel; `public` serves the kid app only (the default in production). Progress lives in Postgres (in-memory store without `DATABASE_URL`); a season reset (`DELETE /api/state`, parent only) clears the server too, so every screen resets. The MCP server at `/mcp` (Bearer JWT, tools in `src/lib/mcp/tools.ts`) is the home integration; `/api/home-bridge` is gone.
 
-**Date Mocking**: Set `NEXT_PUBLIC_MOCK_DAY` and `NEXT_PUBLIC_MOCK_MONTH` to test specific days across entire app. In `next dev` or with `NEXT_PUBLIC_TEST_MODE=true`, the ⏱ TIDSMASKIN button (bottom right) sets day and time live via a localStorage override in `date-utils.ts`, and can reset progress.
+**Date Mocking**: Set `NEXT_PUBLIC_MOCK_DAY` and `NEXT_PUBLIC_MOCK_MONTH` to test specific days across entire app. In `next dev` or with `NEXT_PUBLIC_TEST_MODE=true`, the TIDSMASKIN button (bottom right) opens a panel that sets day and time live («Gå til dag med fremgang» also solves earlier days via `sim.solveUntil`) via a localStorage override in `date-utils.ts`, and can reset progress.
 
 📖 **Complete API** → [ARCHITECTURE.md#date-handling-system](./ARCHITECTURE.md#date-handling-system)
 

@@ -92,6 +92,7 @@ export const Icons = {
   ),
   Lock: (props: Omit<IconProps, "name">) => <Icon name="lock" {...props} />,
   Close: (props: Omit<IconProps, "name">) => <Icon name="close" {...props} />,
+  Clock: (props: Omit<IconProps, "name">) => <Icon name="clock" {...props} />,
   Calendar: (props: Omit<IconProps, "name">) => (
     <Icon name="calendar" {...props} />
   ),
