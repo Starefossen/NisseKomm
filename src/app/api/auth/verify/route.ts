@@ -1,15 +1,7 @@
-/**
- * POST /api/auth/verify
- * Returns: { isParent: boolean } from the cookies set by /api/auth/login.
- *
- * ponytail: unsigned cookies; T4 replaces this with a signed cookie check.
- */
-
+/** POST /api/auth/verify  Returns { role } for the session cookie, or null. */
 import { NextRequest, NextResponse } from "next/server";
-import { SESSION_COOKIE, PARENT_COOKIE } from "@/lib/auth-cookies";
+import { getRole } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
-  const session = request.cookies.get(SESSION_COOKIE)?.value;
-  const parent = request.cookies.get(PARENT_COOKIE)?.value;
-  return NextResponse.json({ isParent: !!session && session === parent });
+  return NextResponse.json({ role: getRole(request) });
 }

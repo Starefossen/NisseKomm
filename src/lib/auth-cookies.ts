@@ -1,31 +1,28 @@
 /**
- * Client-side reads of the login cookies set by /api/auth/login.
- * ponytail: unsigned cookies, replaced by a signed cookie in T4.
+ * Client-side session helpers. The session cookie is HttpOnly; the client
+ * keeps only the kid code, which puzzles use as {{KID_CODE}}.
  */
 
-export const SESSION_COOKIE = "nissekomm-session";
-export const PARENT_COOKIE = "nissekomm-parent-auth";
+const KID_CODE_KEY = "nissekomm-kid-code";
 
-function readCookie(name: string): string | null {
-  if (typeof document === "undefined") return null;
-  for (const c of document.cookie.split(";")) {
-    const [k, v] = c.trim().split("=");
-    if (k === name && v) return v;
+export const getSessionId = (): string | null =>
+  typeof localStorage === "undefined"
+    ? null
+    : localStorage.getItem(KID_CODE_KEY);
+
+export function setSessionId(kidCode: string): void {
+  localStorage.setItem(KID_CODE_KEY, kidCode);
+}
+
+function serverLogout(): void {
+  fetch("/api/auth/logout", { method: "POST", body: "{}" }).catch(() => {});
+}
+
+export function clearSessionId(): void {
+  if (typeof localStorage !== "undefined") {
+    localStorage.removeItem(KID_CODE_KEY);
   }
-  return null;
+  serverLogout();
 }
 
-function clearCookie(name: string): void {
-  if (typeof document !== "undefined") {
-    document.cookie = `${name}=; max-age=0; path=/`;
-  }
-}
-
-export const getSessionId = () => readCookie(SESSION_COOKIE);
-export const clearSessionId = () => clearCookie(SESSION_COOKIE);
-export const clearParentAuth = () => clearCookie(PARENT_COOKIE);
-
-export function isParentAuthenticated(): boolean {
-  const session = getSessionId();
-  return session !== null && readCookie(PARENT_COOKIE) === session;
-}
+export const clearParentAuth = serverLogout;

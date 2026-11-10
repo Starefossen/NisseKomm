@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { setSessionId } from "@/lib/auth-cookies";
 
 interface PasswordPromptProps {
   onSuccess: (sessionId: string) => void;
@@ -29,12 +30,12 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: code.trim().toUpperCase() }),
+        body: JSON.stringify({ code }),
       });
 
       const data = await response.json();
 
-      if (!response.ok) {
+      if (!response.ok || !data.kidCode) {
         // Failed attempt
         const newAttemptCount = attemptCount + 1;
         setAttemptCount(newAttemptCount);
@@ -43,7 +44,11 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
           newAttemptCount - 1,
           errorMessages.length - 1,
         );
-        setError(errorMessages[errorIndex]);
+        setError(
+          response.status === 429
+            ? "FOR MANGE FORSØK - VENT TI MINUTTER"
+            : errorMessages[errorIndex],
+        );
 
         // Trigger shake animation
         setIsShaking(true);
@@ -52,8 +57,8 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
         // Clear code
         setCode("");
       } else {
-        // Success! Pass the sessionId
-        onSuccess(data.sessionId);
+        setSessionId(data.kidCode);
+        onSuccess(data.kidCode);
       }
     } catch (err) {
       console.error("Login error:", err);
@@ -86,6 +91,7 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
               value={code}
               onChange={(e) => setCode(e.target.value)}
               className="w-full px-4 py-3 bg-black border-4 border-(--neon-green) text-(--neon-green) text-xl tracking-widest font-mono focus:outline-none focus:shadow-[0_0_20px_rgba(0,255,0,0.5)] uppercase"
+              autoComplete="off"
               placeholder="_ _ _ _ _ _ _ _"
               autoFocus
               disabled={isLoading}

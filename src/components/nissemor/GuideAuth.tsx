@@ -9,7 +9,7 @@ import {
 } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { isParentAuthenticated, clearParentAuth } from "@/lib/auth-cookies";
+import { clearParentAuth } from "@/lib/auth-cookies";
 
 /**
  * GuideAuth Component
@@ -17,8 +17,8 @@ import { isParentAuthenticated, clearParentAuth } from "@/lib/auth-cookies";
  * Centralized authentication check for all nissemor-guide pages.
  * Shows a login form when not authenticated.
  *
- * Validates parent code via /api/auth/login and /api/auth/verify.
- * On successful login, sets session cookie and persists parent auth.
+ * Validates the parent code via /api/auth/login; the server keeps the
+ * session in an HttpOnly cookie, checked with /api/auth/verify.
  *
  * Usage:
  * Wrap page content in <GuideAuth>{content}</GuideAuth>
@@ -49,29 +49,24 @@ function useStandaloneGuideAuth(enabled = true): GuideAuthState {
     if (!enabled) return;
 
     async function verifyAuth() {
-      const hasParentSession = isParentAuthenticated();
+      try {
+        const response = await fetch("/api/auth/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}),
+          credentials: "include",
+        });
 
-      if (hasParentSession) {
-        try {
-          const response = await fetch("/api/auth/verify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({}),
-            credentials: "include",
-          });
-
-          if (response.ok) {
-            const data = (await response.json()) as { isParent: boolean };
-            if (data.isParent) {
-              setAuthenticated(true);
-              setIsLoading(false);
-              return;
-            }
+        if (response.ok) {
+          const data = (await response.json()) as { role: string | null };
+          if (data.role === "parent") {
+            setAuthenticated(true);
+            setIsLoading(false);
+            return;
           }
-        } catch {
-          // Session validation failed
         }
-        clearParentAuth();
+      } catch {
+        // Session validation failed
       }
 
       setAuthenticated(false);
@@ -113,7 +108,7 @@ function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
     setError(null);
     setIsSubmitting(true);
 
-    const trimmedCode = code.trim().toUpperCase();
+    const trimmedCode = code.trim();
     if (!trimmedCode) {
       setError("Vennligst skriv inn foreldrekoden");
       setIsSubmitting(false);
@@ -130,8 +125,11 @@ function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
       });
 
       if (!loginResponse.ok) {
-        const loginData = await loginResponse.json();
-        setError(loginData.error || "Ugyldig kode");
+        setError(
+          loginResponse.status === 429
+            ? "For mange forsøk. Vent ti minutter."
+            : "Ugyldig kode",
+        );
         setIsSubmitting(false);
         return;
       }
@@ -140,9 +138,7 @@ function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
 
       // Check if this was a parent code login
       if (loginData.role !== "parent") {
-        setError(
-          "Dette er en barnekode. Bruk foreldrekoden (starter med NORDPOL-)",
-        );
+        setError("Dette er barnekoden. Bruk foreldrekoden.");
         setIsSubmitting(false);
         return;
       }
@@ -176,8 +172,8 @@ function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
               type="text"
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              placeholder="NORDPOL-XXXXX"
-              className="w-full p-3 bg-black border-2 border-(--neon-green) text-(--neon-green) font-mono text-xl uppercase placeholder:text-(--neon-green)/30 focus:outline-none focus:border-(--gold)"
+              placeholder="ord ord ord ord"
+              className="w-full p-3 bg-black border-2 border-(--neon-green) text-(--neon-green) font-mono text-xl placeholder:text-(--neon-green)/30 focus:outline-none focus:border-(--gold)"
               autoComplete="off"
               autoFocus
               disabled={isSubmitting}
@@ -198,10 +194,6 @@ function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
             {isSubmitting ? "Logger inn..." : "🔑 LOGG INN"}
           </button>
         </form>
-
-        <div className="mt-6 pt-4 border-t border-(--neon-green)/30 text-center text-sm text-(--neon-green)/60">
-          <p>Den starter med "NORDPOL-"</p>
-        </div>
 
         <div className="mt-4 text-center">
           <Link href="/" className="text-(--cold-blue) hover:underline">

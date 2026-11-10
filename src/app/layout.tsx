@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, VT323 } from "next/font/google";
 import { AppProvider } from "@/lib/app-context";
 import { Tidsmaskin } from "@/components/ui/Tidsmaskin";
+import { isLanMode } from "@/lib/mode";
+import { connection } from "next/server";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -29,11 +31,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Read NISSEKOMM_MODE at request time, not at build time.
+  await connection();
   return (
     <html lang="no">
       <head>
@@ -43,7 +47,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${vt323.variable} antialiased`}
       >
         <AppProvider>{children}</AppProvider>
-        <Tidsmaskin />
+        {isLanMode() && <Tidsmaskin />}
       </body>
     </html>
   );
