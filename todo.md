@@ -92,6 +92,8 @@ Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxSca
 - [ ] **Dockerfile:** flertrinns på `node:24-alpine`, ikke-root, multi-arch (amd64 påkrevd). Push til `registry.intern.flaatten.org:5000/nissekomm:<unix-ts>` med en mise-oppgave.
 - [ ] **Media i imaget:** `public/` bakes inn (Next støtter Range-forespørsler, som Safari trenger for video).
 - [ ] **Lagring:** PostgreSQL i Varden-klyngen (CloudNativePG), tilkobling fra `DATABASE_URL`. Ingen PVC for appen, så den kan skalere til null og skaleres uavhengig av databasen. Bruk en ren JS-klient (`pg`).
+  - Egen CNPG-klynge `nissekomm-db` (1 instans, 1Gi, PG 17) i navnerommet `nissekomm`. `DATABASE_URL` kommer fra den genererte hemmeligheten `nissekomm-db-app` (nøkkel `uri`, vert `nissekomm-db-rw.nissekomm.svc`, ingen TLS-krav i klyngen).
+  - Migreringer kjøres ved oppstart og må tåle å kjøres flere ganger. Liten tilkoblingspool (maks 5). `/api/health` rører ikke databasen.
 - [ ] **Helse:** `GET /api/health` gir 200 uten autentisering og uten tung IO.
 - [ ] **Fjern:** `@sanity/*`, Sanity Studio og migreringer, `resend` og e-postskript, Vercel-cron og `vercel.json`, `@vercel/analytics`. Null utgående trafikk i kjøring.
 - [ ] **Én familie:** barnekode og foreldrekode fra miljøet (`KID_CODE`, `PARENT_CODE`). Ingen registrering, gjenoppretting eller avmelding.
