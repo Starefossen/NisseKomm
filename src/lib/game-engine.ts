@@ -472,7 +472,8 @@ export class GameEngine {
 
   /**
    * Check and unlock time-based modules
-   * Modules unlock either when quest is completed OR the next day
+   * Modules in a day's reveals open on the morning of that day (storyboard S1),
+   * before the code is solved.
    */
   private static checkTimedModuleUnlocks(currentDay: number): void {
     if (getCurrentMonth() !== 12) {
@@ -480,7 +481,7 @@ export class GameEngine {
     }
 
     ALL_QUESTS.forEach((quest) => {
-      if (quest.reveals?.modules && quest.dag < currentDay) {
+      if (quest.reveals?.modules && quest.dag <= currentDay) {
         quest.reveals.modules.forEach((moduleId) => {
           if (!StorageManager.isModuleUnlocked(moduleId)) {
             StorageManager.unlockModule(moduleId);

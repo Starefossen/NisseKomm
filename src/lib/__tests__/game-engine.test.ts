@@ -149,6 +149,56 @@ describe("GameEngine", () => {
   });
 
   describe("Module Unlocks", () => {
+    describe("date-based opening (morning of the reveal day)", () => {
+      const setDay = (day: number) => {
+        process.env.NEXT_PUBLIC_MOCK_DAY = String(day);
+        GameEngine.loadGameState();
+      };
+
+      it("keeps a module closed the day before its reveal day", () => {
+        setDay(3);
+        expect(GameEngine.isModuleUnlocked("NISSEKRYPTO")).toBe(false);
+      });
+
+      it("opens a module on its day before the code is solved", () => {
+        setDay(4);
+        expect(GameEngine.isQuestCompleted(4)).toBe(false);
+        expect(GameEngine.isModuleUnlocked("NISSEKRYPTO")).toBe(true);
+      });
+
+      it("keeps the module open after the day's code is solved", async () => {
+        setDay(4);
+        const code4 = getQuestCode(4);
+        await GameEngine.submitCode(code4, code4, 4);
+        setDay(5);
+        expect(GameEngine.isModuleUnlocked("NISSEKRYPTO")).toBe(true);
+      });
+
+      it("opens SYMBOLSKANNER on day 3", () => {
+        setDay(2);
+        expect(GameEngine.isModuleUnlocked("SYMBOLSKANNER")).toBe(false);
+        setDay(3);
+        expect(GameEngine.isModuleUnlocked("SYMBOLSKANNER")).toBe(true);
+      });
+
+      it("opens each module on its storyboard day", () => {
+        const firstDay: Record<string, number> = {
+          SYMBOLSKANNER: 3,
+          NISSEKRYPTO: 4,
+          NISSEMUSIKK: 7,
+          BREVFUGLER: 14,
+          NISSESTATS: 16,
+        };
+        for (const [moduleId, day] of Object.entries(firstDay)) {
+          localStorage.clear();
+          setDay(day - 1);
+          expect(GameEngine.isModuleUnlocked(moduleId)).toBe(false);
+          setDay(day);
+          expect(GameEngine.isModuleUnlocked(moduleId)).toBe(true);
+        }
+      });
+    });
+
     it("should unlock NISSEKRYPTO on day 4 completion", async () => {
       expect(GameEngine.isModuleUnlocked("NISSEKRYPTO")).toBe(false);
 
@@ -218,7 +268,8 @@ describe("GameEngine", () => {
       expect(unlocked).toContain("NISSEKRYPTO");
       expect(unlocked).toContain("NISSEMUSIKK");
       expect(unlocked).toContain("SNØFALL_TV");
-      expect(unlocked.length).toBe(3);
+      expect(unlocked).toContain("SYMBOLSKANNER");
+      expect(unlocked.length).toBe(4);
     });
   });
 
@@ -351,7 +402,7 @@ describe("GameEngine", () => {
       expect(summary.badges.earned).toBeGreaterThanOrEqual(1);
       expect(summary.badges.total).toBe(7); // Total badges available in merker.json
 
-      expect(summary.modules.unlocked).toBe(3); // NISSEKRYPTO + NISSEMUSIKK + SNØFALL_TV
+      expect(summary.modules.unlocked).toBe(4); // SYMBOLSKANNER + NISSEKRYPTO + NISSEMUSIKK + SNØFALL_TV
 
       expect(summary.isComplete).toBe(false);
     });
