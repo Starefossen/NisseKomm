@@ -25,10 +25,14 @@ Kulde-nivå 1. Svak knitring i lyden hele klippet, lett snø i bildet. Rommet er
    - Varighet: 13 s (22 ord)
    - Handling: Banker to ganger på mikrofonen med pekefingeren, lytter, så lyser han opp.
    - Kulde: Knitring i lyden, et kort hopp i bildet idet han sier «åpen».
-2. **Replikk:** «Hele Snøfall har ventet på dette. IQ sendte forsyninger ned linjen i natt. Mest se-vitamin, sier Nissemor. Og én nisse. Vi husker dere. Alle tre.»
-   - Varighet: 15 s (25 ord)
+2. **Replikk:** «Hele Snøfall har ventet på dette. I natt sendte IQ forsyninger ned linjen. Mest se-vitamin, sier Nissemor.»
+   - Varighet: 13 s (17 ord)
    - Handling: Lener seg bakover, ser mot vinduet og landsbyen, smiler.
    - Kulde: Svak knitring.
+2b. **Replikk:** «Og én nisse. Vi husker dere. Alle tre.»
+   - Varighet: 13 s (8 ord)
+   - Handling: Lener seg fram mot mikrofonen, sier det lavt og varmt.
+   - Kulde: Ingen.
 3. **Replikk:** «Advent betyr ankomst. Noen er på vei. Derfor teller vi dagene i stedet for å hoppe rett til julaften. Ventingen er halve gleden, sier Nissemor.»
    - Varighet: 15 s (25 ord)
    - Handling: Blar i den store boka, legger flat hånd på siden.
