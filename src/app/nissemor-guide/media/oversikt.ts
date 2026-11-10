@@ -105,6 +105,7 @@ export function lookThrough(
       disabled: false,
     }).level,
     thawed: day === 21 && solved ? CHANNELS.length : 0,
+    hour,
   };
   const views: [ChannelId, number, string][] = [
     ...CHANNELS.map(

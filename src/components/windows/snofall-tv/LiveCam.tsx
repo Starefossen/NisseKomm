@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { getCurrentDate } from "@/lib/date-utils";
-import type { LandsbyEventKind } from "./channels";
+import { phaseGradeAt, type LandsbyEventKind } from "./channels";
 import { drawLandsbyEvent } from "./landsby-overlays";
 
 /**
@@ -30,6 +30,10 @@ export interface LiveCamEffects {
   warm?: boolean;
   /** Day 7: Kulde's signature burns in for a moment. */
   signature?: boolean;
+  /** Apply time-of-day colour grade on K1 when state is 'rolig'. */
+  timeOfDay?: boolean;
+  /** Explicit hour for time-of-day phase (defaults to app clock). */
+  hour?: number;
   /** Ghost text shown in the middle while hijacked. */
   ghostLine?: string;
   /** Village event to draw over the picture right now (polled each frame). */
@@ -337,6 +341,20 @@ export function LiveCam({
       let ih = H;
       ctx.globalCompositeOperation = "source-over";
       ctx.globalAlpha = 1;
+
+      // Time-of-day colour grade on K1 when state is 'rolig'
+      const applyGrade =
+        p.timeOfDay ||
+        (src?.endsWith("landsby-rolig.mp4") && p.label.startsWith("K1"));
+      const grade = applyGrade
+        ? phaseGradeAt(typeof p.hour === "number" ? p.hour : getCurrentDate())
+        : null;
+      if (video) {
+        video.style.filter = grade?.filter ?? "";
+      }
+      canvas.dataset.phase = grade?.phase ?? "";
+      canvas.dataset.grade = grade?.filter ?? "";
+
       // Day 20: the carrier drops out now and then.
       const dropout = p.flicker && motion && Math.random() < 0.04;
       if (sw && source && !dropout) {
@@ -345,7 +363,13 @@ export function LiveCam({
         ih = sh * cover * scale;
         ix = (W - iw) / 2 + dx;
         iy = (H - ih) / 2 + dy;
+        if (grade && grade.filter !== "none") {
+          ctx.filter = grade.filter;
+        }
         ctx.drawImage(source, ix, iy, iw, ih);
+        if (grade && grade.filter !== "none") {
+          ctx.filter = "none";
+        }
         hadFrame = true;
         // Positions match the video framing only, not the fallback still.
         const ev = p.frozen || !video ? null : p.eventAt?.();
@@ -472,6 +496,25 @@ export function LiveCam({
         bar.addColorStop(1, "rgba(255,255,255,0)");
         ctx.fillStyle = bar;
         ctx.fillRect(0, by - H * 0.08, W, H * 0.16);
+      }
+      if (grade && grade.vignette > 0.01) {
+        ctx.save();
+        const nvg = ctx.createRadialGradient(
+          W / 2,
+          H / 2,
+          H * 0.25,
+          W / 2,
+          H / 2,
+          H * 0.9,
+        );
+        nvg.addColorStop(0, "rgba(0,0,0,0)");
+        nvg.addColorStop(
+          1,
+          `rgba(5,10,25,${(grade.vignette * 0.75).toFixed(3)})`,
+        );
+        ctx.fillStyle = nvg;
+        ctx.fillRect(0, 0, W, H);
+        ctx.restore();
       }
       if (vignette) ctx.drawImage(vignette, 0, 0);
 
