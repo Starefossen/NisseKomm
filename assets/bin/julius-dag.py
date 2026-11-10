@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Make one Julius video diary entry from the locked script.
 
-Usage: julius-dag.py <dag> [--dry-run] [--upload <base-url>]
+Usage: julius-dag.py <dag> [--dry-run] [--force] [--upload <base-url>]
+
+Skips a day whose video is current (see medie.py) unless --force.
 
 Reads docs/manus/julius-2026.md, generates one clip per segment with julius.sh
 (retries on failure), audits each clip for continuity errors (up to 3 takes),
@@ -14,6 +16,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).parent))
+import medie  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[2]
 BIN = ROOT / "assets" / "bin"
 OUT = ROOT / "assets" / "out"
@@ -21,18 +26,9 @@ DEST = ROOT / "public" / "video" / "julius"
 
 
 def segments(day: int):
-    text = (ROOT / "docs" / "manus" / "julius-2026.md").read_text()
-    block = re.search(rf"^## Dag {day} \(.*?(?=^## Dag |\Z)", text, re.S | re.M)
-    if not block:
+    segs = medie.julius_segments(day)
+    if not segs:
         sys.exit(f"Fant ikke dag {day}")
-    segs = []
-    for m in re.finditer(
-        r"\*\*Replikk:\*\* «(.+?)»\s*\n\s*- Varighet: (\d+) s.*?\n\s*- Handling: (.+?)\n\s*- Kulde: (.+?)\n",
-        block.group(0),
-        re.S,
-    ):
-        line, secs, action, kulde = m.groups()
-        segs.append((line.strip(), int(secs), action.strip(), kulde.strip()))
     return segs
 
 
@@ -128,6 +124,10 @@ def main():
     day = int(sys.argv[1])
     dry = "--dry-run" in sys.argv
     segs = segments(day)
+    dest = DEST / f"dag-{day:02d}.mp4"
+    if not dry and "--force" not in sys.argv and medie.status(dest)[0] == medie.CURRENT:
+        print(f"{dest} er oppdatert; --force for å lage den på nytt")
+        return
     names = []
     for i, (line, secs, action, kulde) in enumerate(segs, 1):
         name = f"dag{day:02d}-{i}"
@@ -183,7 +183,6 @@ def main():
         for i in range(n)
     ) + "".join(f"[v{i}][a{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=1[v][a]"
     DEST.mkdir(parents=True, exist_ok=True)
-    dest = DEST / f"dag-{day:02d}.mp4"
     # ponytail: crf 28 + 96k audio lands around 8–12 MB per minute at 720p; raise crf if files grow
     subprocess.run(
         ["ffmpeg", "-nostdin", "-y", "-v", "error", *sum((["-i", str(p)] for p in segs), []),
@@ -194,6 +193,8 @@ def main():
     )
     subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-ss", "3", "-i", str(dest), "-frames:v", "1",
                     "-q:v", "3", str(dest.with_suffix(".jpg"))], check=True)
+    medie.write("julius-dag.py", dest, medie.JULIUS_MS, f"Dag {day}", "gemini-omni-1.2-flash",
+                ["assets/characters/julius/ref-v3.jpg"])
     print(dest)
     if "--upload" in sys.argv:
         upload(sys.argv[sys.argv.index("--upload") + 1], dest)

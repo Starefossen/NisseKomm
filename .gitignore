@@ -62,3 +62,4 @@ public/video/julius/
 # gjennomspilling screenshots
 /test-results
 /public/audio/
+/public/media-inventar.json

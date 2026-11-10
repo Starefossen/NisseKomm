@@ -166,6 +166,7 @@ Explain WHY, not WHAT. Remove obvious comments.
 **Brevfugler**: sky over Snøfall (`feed/landsby-rolig.jpg` from `MEDIA_DIR`, fallback `/village-day.jpg`) with pixel birds; the blue bird circles Nordtoppen from day 14; day 24's thaw plays once (`isIntroSeen("brev-tint")`).
 **Kalender**: 3 day states (locked/available/completed), modal on click → opens NisseMail
 **SymbolScanner**: QR camera plus a 4-character card code printed under each QR (`SHORT_CODES` in `symbol-system.ts`, never change once printed). `parseSymbolCode` accepts both; a card is refused before its `symbol_clue` day in December. No camera, denied, or http on a LAN IP (no secure context) → typed code only. `symbolskanner.test.ts` ties printout to parser; `gjennomspilling` types the code on each symbol day.
+**Medieinventar**: generators write `<fil>.meta.json` (source text, reference images, prompt hash; `assets/bin/medie.py`) and skip files that are current unless `--force`. `mise run inventar` writes `assets/INVENTAR.md` and `public/media-inventar.json` (shown on the guide's media page via `/api/media/inventar`).
 **KodeTerminal**: 1.5s processing delay, case-insensitive validation, gold flash on success
 
 📖 **Complete behaviors** → [IMPLEMENTATION.md#component-behaviors](./IMPLEMENTATION.md)

@@ -46,11 +46,27 @@ function Preview({ path }: { path: string }) {
   return <img src={src} alt={path} className="max-h-80" />;
 }
 
+/** One row of media-inventar.json (assets/bin/inventar.py). */
+interface Inventar {
+  path: string;
+  status: "current" | "stale" | "unknown" | "missing";
+  reasons: string[];
+}
+
+const INVENTAR_LABEL: Record<Inventar["status"], [string, string]> = {
+  current: ["✓ oppdatert", "text-(--gold)"],
+  stale: ["! utdatert", "text-(--christmas-red)"],
+  unknown: ["? ukjent", "text-gray-400"],
+  missing: ["✗ mangler", "text-(--christmas-red)"],
+};
+
 function FileRow({
   file,
+  inventar,
   onUpload,
 }: {
   file: MediaStatus;
+  inventar?: Inventar;
   onUpload: (path: string, file: File) => void;
 }) {
   const missing = file.size === null;
@@ -61,6 +77,15 @@ function FileRow({
           {missing ? "MANGLER" : formatSize(file.size!)}
         </span>
         <span className="flex-1 break-all">{file.path}</span>
+        {inventar && (
+          <span
+            className={INVENTAR_LABEL[inventar.status][1]}
+            title={inventar.reasons.join("; ")}
+          >
+            {INVENTAR_LABEL[inventar.status][0]}
+            {inventar.reasons.length > 0 && `: ${inventar.reasons.join("; ")}`}
+          </span>
+        )}
         <label className="min-h-11 flex items-center cursor-pointer underline">
           {missing ? "Last opp" : "Erstatt"}
           <input
@@ -216,11 +241,17 @@ function MediaContent() {
   const [unavailable, setUnavailable] = useState(false);
   const [message, setMessage] = useState("");
   const [onlyMissing, setOnlyMissing] = useState(false);
+  const [inventar, setInventar] = useState<Map<string, Inventar>>(new Map());
 
   const load = useCallback(async () => {
     const res = await fetch("/api/media");
     if (!res.ok) return setUnavailable(true);
     setFiles(await res.json());
+    const inv = await fetch("/api/media/inventar");
+    if (inv.ok) {
+      const rows: Inventar[] = await inv.json();
+      setInventar(new Map(rows.map((r) => [r.path, r])));
+    }
   }, []);
 
   useEffect(() => {
@@ -333,7 +364,12 @@ function MediaContent() {
                   </h2>
                   <ul className="space-y-2">
                     {shown.map((f) => (
-                      <FileRow key={f.path} file={f} onUpload={upload} />
+                      <FileRow
+                        key={f.path}
+                        file={f}
+                        inventar={inventar.get(f.path)}
+                        onUpload={upload}
+                      />
                     ))}
                   </ul>
                   {g.id === "music" && (

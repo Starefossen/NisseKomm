@@ -1,17 +1,23 @@
 #!/usr/bin/env bash
 # tv-loops.sh: make all Snøfall TV loops from the reference stills and prompt files.
-# Skips loops that already exist in public/video/tv. Usage: assets/bin/tv-loops.sh [--upload <base-url>]
+# Remakes only missing or out-of-date loops (medie.py); loops made before sidecars are kept.
+# Usage: assets/bin/tv-loops.sh [--force] [--upload <base-url>]
 set -uo pipefail
 A="$(cd "$(dirname "$0")/.." && pwd)"; L="$A/locations"; T="$A/../public/video/tv"; mkdir -p "$T"
+[ "${1:-}" = --force ] && { FORCE=1; shift; } || FORCE=
+M="python3 $A/bin/medie.py"
+keep() { [ -z "$FORCE" ] && [ -f "$1" ] && ! $M status "$1" | grep -q '^stale'; }
+meta() { $M skriv tv-loops.sh "$1" "$2" - gemini-omni-1.2-flash "$3"; } # out prompt image
 job() { # name base-image location variant
   local name=$1 img=$2 loc=$3 var=$4
-  [ -f "$T/$name.mp4" ] && return 0
+  keep "$T/$name.mp4" && return 0
   if [ -f "$L/$loc/varianter/$var.still.prompt.txt" ]; then
     local still="$L/$loc/still-$var.jpg"
     [ -f "$still" ] || "$A/bin/still.sh" "$img" "$L/$loc/varianter/$var.still.prompt.txt" "$still" || return 1
     img=$still
   fi
-  "$A/bin/loop.sh" "$img" "$L/$loc/varianter/$var.prompt.txt" "$name" 10 && cp "$A/out/$name.mp4" "$T/$name.mp4"
+  "$A/bin/loop.sh" "$img" "$L/$loc/varianter/$var.prompt.txt" "$name" 10 && cp "$A/out/$name.mp4" "$T/$name.mp4" \
+    && meta "$T/$name.mp4" "$L/$loc/varianter/$var.prompt.txt" "$img"
 }
 job antenne-rolig      "$L/antenne-tjern/ref.jpg"            antenne-tjern rolig
 job antenne-dag11      "$L/antenne-tjern/ref.jpg"            antenne-tjern dag11
@@ -33,8 +39,9 @@ v2still() { # variant [base]: still-v2-<variant>.jpg made from the base (default
   echo "$s"
 }
 vjob() { # name image variant: state loop straight from an image
-  [ -f "$T/$1.mp4" ] && return 0
-  "$A/bin/loop.sh" "$2" "$L/snofall-landsby/varianter/$3.prompt.txt" "$1" 10 && cp "$A/out/$1.mp4" "$T/$1.mp4"
+  keep "$T/$1.mp4" && return 0
+  "$A/bin/loop.sh" "$2" "$L/snofall-landsby/varianter/$3.prompt.txt" "$1" 10 && cp "$A/out/$1.mp4" "$T/$1.mp4" \
+    && meta "$T/$1.mp4" "$L/snofall-landsby/varianter/$3.prompt.txt" "$2"
 }
 vjob landsby-rolig   "$V2" rolig
 vjob landsby-nordlys "$(v2still nordlys)" nordlys
@@ -42,9 +49,10 @@ vjob landsby-storm   "$(v2still storm)" storm
 vjob landsby-dag24   "$(v2still dag24 "$(v2still nordlys)")" dag24
 # village events: 10 s (model max with first+last frame), then pinned to the key frame at both ends
 for e in brevfugler julius nissemor iq winter reinsdyr hverdag aking marked tarnklokke stjerneskudd; do
-  [ -f "$T/landsby-$e.mp4" ] && continue
+  keep "$T/landsby-$e.mp4" && continue
   "$A/bin/loop.sh" "$V2" "$L/snofall-landsby/varianter/hendelse-$e.prompt.txt" "landsby-$e.raw" 10 \
-    && "$A/bin/anchor.sh" "$A/out/landsby-$e.raw.mp4" "$V2" "$T/landsby-$e.mp4"
+    && "$A/bin/anchor.sh" "$A/out/landsby-$e.raw.mp4" "$V2" "$T/landsby-$e.mp4" \
+    && meta "$T/landsby-$e.mp4" "$L/snofall-landsby/varianter/hendelse-$e.prompt.txt" "$V2"
 done
 ls "$T"
 # --upload <base-url>: PUT every loop with NISSEKOMM_UPLOAD_TOKEN, then check sizes via GET /api/media.
