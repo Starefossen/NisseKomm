@@ -20,6 +20,7 @@ const ROOT = new URL("..", import.meta.url).pathname;
 const SHOTS = join(ROOT, "test-results", "gjennomspilling");
 // Login checks KID_CODE from the server's environment; with BASE_URL, pass the same one
 const KID_CODE = process.env.KID_CODE ?? "NISSEKRAFT2026";
+const PARENT_CODE = process.env.PARENT_CODE ?? "NORDPOL-DEV2026";
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const missions = [1, 2, 3, 4]
@@ -111,6 +112,7 @@ if (!base) {
         NEXT_PUBLIC_MOCK_DAY: "",
         NEXT_PUBLIC_MOCK_MONTH: "",
         KID_CODE,
+        PARENT_CODE,
         NISSEKOMM_MODE: "lan",
       },
       stdio: ["pipe", "pipe", "pipe"],
@@ -169,6 +171,7 @@ await new Promise((r) => ws.addEventListener("open", r, { once: true }));
 let nextId = 0;
 const pending = new Map();
 const errors = [];
+const warnings = [];
 ws.addEventListener("message", ({ data }) => {
   const msg = JSON.parse(data);
   if (msg.id && pending.has(msg.id)) {
@@ -181,6 +184,8 @@ ws.addEventListener("message", ({ data }) => {
     errors.push(
       `pageerror: ${p.exceptionDetails.exception?.description ?? p.exceptionDetails.text}`,
     );
+  if (msg.method === "Runtime.consoleAPICalled" && p.type === "warning")
+    warnings.push(p.args.map((a) => a.value ?? a.description).join(" "));
   if (msg.method === "Runtime.consoleAPICalled" && p.type === "error")
     errors.push(
       `console.error: ${p.args.map((a) => a.value ?? a.description).join(" ")}`,
@@ -254,6 +259,29 @@ const closeWindow = async () => {
   )
     await sleep(600);
 };
+// Button whose visible text contains `label` (file names carry «● » and « (NY!)»)
+const clickButton = (label) =>
+  evaluate(`(() => {
+    const b = [...document.querySelectorAll('button')]
+      .find((e) => e.offsetParent !== null && e.innerText?.includes(${JSON.stringify(label)}));
+    b?.click();
+    return !!b;
+  })()`);
+const openApp = async (label) => {
+  if (!(await clickText(label))) throw new Error(`fant ikke ${label}-ikonet`);
+  await sleep(800);
+};
+// TV loops are drawn into a canvas; LiveCam mirrors source and event as data-attributes
+const livecam = () =>
+  evaluate(
+    `(() => { const c = document.querySelector('[data-testid=livecam]'); return c && { src: c.dataset.src, event: c.dataset.event }; })()`,
+  );
+const TV_LOOPS = {
+  1: "landsby-rolig.mp4",
+  17: "landsby-nordlys.mp4",
+  18: "landsby-storm.mp4",
+};
+let namesGiven = false;
 const has = (sel) =>
   evaluate(`!!document.querySelector(${JSON.stringify(sel)})`);
 const wordRe = (w) =>
@@ -305,6 +333,35 @@ for (const day of days) {
       await typeInto(LOGIN, KID_CODE);
       await waitFor(async () => !(await has(LOGIN)), 15000, "innlogging");
     }
+    // T14: Day1Boot covers the desktop on the first login of 1 December; skip it like a kid would
+    if (day === 1) {
+      await waitFor(
+        () => has("[aria-label='Hopp over']"),
+        8000,
+        "Day1Boot (innsøking) vises ikke dag 1",
+      )
+        .then(async () => {
+          await evaluate(
+            `document.querySelector("[aria-label='Hopp over']").click()`,
+          );
+          await waitFor(
+            async () => !(await has("[aria-label='Hopp over']")),
+            5000,
+            "Day1Boot lukker seg ikke med «Hopp over»",
+          );
+        })
+        .catch((e) => fails.push(e.message));
+      // Without the clip in MEDIA_DIR the designed fallback «SIGNALET ER SVAKT» stands in
+      await waitFor(
+        async () =>
+          (await has(
+            `video[aria-label="Julius' video for 1. desember"][poster$="dag-01.jpg"]`,
+          )) || (await text()).includes("SIGNALET ER SVAKT"),
+        8000,
+        "Dagbok viser ikke Julius' video dag 1 (plakat) etter Day1Boot",
+      ).catch((e) => fails.push(e.message));
+      await shot("dag-01-julius.png");
+    }
     await waitFor(
       async () => (await text()).includes("NY MELDING FRA JULIUS"),
       8000,
@@ -351,6 +408,35 @@ for (const day of days) {
       );
     await shot(`dag-${String(day).padStart(2, "0")}-skrivebord.png`);
 
+    if (TV_LOOPS[day]) {
+      await openApp("SNØFALL TV");
+      // Day 1 starts on K1 after the tune-in sweep; other days open on K3 (Julius)
+      if (day !== 1)
+        check(await clickButton("K1 "), "fant ikke K1 i Snøfall TV");
+      await waitFor(
+        async () => (await livecam())?.src?.endsWith(TV_LOOPS[day]),
+        8000,
+        `Snøfall TV K1 viser ikke ${TV_LOOPS[day]} dag ${day} (fikk ${(await livecam().catch(() => null))?.src})`,
+      ).catch((e) => fails.push(e.message));
+      await shot(`tv-dag-${String(day).padStart(2, "0")}.png`);
+      await closeWindow();
+    }
+    if (day === 12) {
+      await openApp("NISSEMUSIKK");
+      check(
+        (await text()).includes("FROSSET"),
+        "NisseMusikk er ikke frosset før dag 12-koden",
+      );
+      await closeWindow();
+    }
+    if (day === 17)
+      await evaluate(`(() => {
+        window.__aurora = false;
+        new MutationObserver(() => {
+          if (document.querySelector('.aurora-wash')) window.__aurora = true;
+        }).observe(document.body, { subtree: true, childList: true });
+      })()`);
+
     check(await clickText("KODETERMINAL"), "fant ikke KODETERMINAL-ikonet");
     await waitFor(
       () => has("form input[type=text]"),
@@ -373,14 +459,53 @@ for (const day of days) {
     ).catch((e) => fails.push(e.message));
     await sleep(2500);
 
+    if (day === 12) {
+      await waitFor(
+        async () => {
+          const t = await text();
+          return t.includes("8-BIT JUKEBOX") && !t.includes("FROSSET");
+        },
+        6000,
+        "NisseMusikk åpner ikke tint etter dag 12-koden",
+      ).catch((e) => fails.push(e.message));
+      // Headless Chrome may refuse play() without a fresh gesture; the player then shows «Spill av»
+      check(
+        (await has("[aria-label=Pause]")) ||
+          warnings.some((w) => w.includes("NisseMusikk playback blocked")),
+        "NisseMusikk prøver ikke å spille etter dag 12-koden",
+      );
+      if (!(await has("[aria-label=Pause]")))
+        console.log(
+          `     merk: ${warnings.find((w) => w.includes("NisseMusikk"))?.slice(0, 160)}`,
+        );
+      await shot("nissemusikk-dag12.png");
+    }
+    if (day === 17) {
+      check(
+        await evaluate("window.__aurora"),
+        "nordlyset (.aurora-wash) kom ikke etter dag 17-koden",
+      );
+      await shot("nordlys-dag17.png");
+    }
+
     // Snill-listen: asked on 22, once more on 23 if skipped, never over the finale on 24
     if (day >= 22) {
       const asked = (await text()).includes("HOPP OVER");
+      const expected = day === 22 || (day === 23 && !namesGiven);
       check(
-        asked === day < 24,
+        asked === expected,
         `navnedialogen ${asked ? "vises" : "mangler"} dag ${day}`,
       );
-      if (asked) await clickText("HOPP OVER");
+      if (asked && day === 22) {
+        await typeInto("input[aria-label='Navn 1']", "Kristian");
+        await sleep(300);
+        check(
+          await clickText("LEGG TIL SNILL-LISTEN"),
+          "fant ikke «LEGG TIL SNILL-LISTEN»",
+        );
+        namesGiven = true;
+        await sleep(800);
+      } else if (asked) await clickText("HOPP OVER");
     }
     if (day === 24) {
       await waitFor(
@@ -388,6 +513,11 @@ for (const day of days) {
         20000,
         "finalen (GOD JUL) vises ikke dag 24",
       ).catch((e) => fails.push(e.message));
+      if (namesGiven)
+        check(
+          /KRISTIAN/i.test(await text()),
+          "navnet fra dag 22 står ikke i finalen",
+        );
       await shot("finale-dag24.png");
       writeFileSync(
         join(ROOT, "test-results", "finale-dag24.png"),
@@ -414,6 +544,87 @@ for (const day of days) {
       check(!(await has("video")), "kamera-video ligger igjen i skanneren");
       await closeWindow();
       check(!(await has(".qr-host")), "skanneren lukket ikke kameraet");
+    }
+    // Challenge days of NisseKrypto: the day's card completes the set
+    if ([12, 18, 23].includes(day)) {
+      await openApp("NISSEKRYPTO");
+      const krypto = await evaluate(`(() => {
+        const b = [...document.querySelectorAll('button')].find((e) => e.innerText.includes('DAG ${day}:'));
+        return b ? (b.disabled ? 'låst' : 'åpen') : 'mangler';
+      })()`);
+      check(
+        krypto === "åpen",
+        `NisseKrypto-utfordringen for dag ${day} er ${krypto} etter dagens symbol`,
+      );
+      await shot(`nissekrypto-dag${day}.png`);
+      await closeWindow();
+    }
+    if (day === 14) {
+      await openApp("BREVFUGLER");
+      check(
+        (await text()).includes("En fugl ingen har sendt"),
+        "den blå fuglen mangler i Brevfugler dag 14",
+      );
+      check(await clickText("KRISTIAN"), "fant ikke skriveren KRISTIAN");
+      await evaluate(`document.querySelector('#brev-til-julius').focus()`);
+      await send("Input.insertText", {
+        text: "Kjære Julius, vi passer på lyset.",
+      });
+      check(await clickButton("SEND BREVFUGLEN"), "fant ikke SEND BREVFUGLEN");
+      await waitFor(
+        () => has("[aria-label='Brevfuglen til Kristian']"),
+        5000,
+        "brevet vises ikke som fugl i Brevfugler",
+      ).catch((e) => fails.push(e.message));
+      await shot("brevfugler-dag14.png");
+      await closeWindow();
+    }
+    if (day === 22 && namesGiven) {
+      await openApp("NISSENET");
+      await clickButton("JULIUS-ARKIV");
+      await sleep(300);
+      check(
+        await clickButton("snill-listen.txt"),
+        "fant ikke snill-listen.txt",
+      );
+      await sleep(500);
+      // Storyboard dag 22: the file holds Julius' rules, no names; the names wait for the finale
+      check(
+        (await text()).includes("JULIUS' REGLER FOR SNILL-LISTEN"),
+        "snill-listen.txt viser ikke Julius' regler dag 22",
+      );
+      check(
+        /kristian/i.test(await evaluate("JSON.stringify(localStorage)")),
+        "navnet fra Snill-listen ble ikke lagret",
+      );
+      await shot("snill-listen-dag22.png");
+      await closeWindow();
+    }
+    if (day === 23) {
+      await openApp("NISSENET");
+      await clickButton("FARGESAMLEREN");
+      await sleep(300);
+      check(
+        await clickButton("03-siste-side.txt"),
+        "fant ikke 03-siste-side.txt",
+      );
+      await sleep(500);
+      check(
+        (await text()).includes("FARGESAMLERENS ARKIV – DEL 3"),
+        "03-siste-side.txt åpnet ikke",
+      );
+      check(
+        !(await evaluate(
+          `document.body.textContent.includes('KOM NED MED LYS')`,
+        )),
+        "runelinjen «KOM NED MED LYS» står i klartekst i 03-siste-side.txt",
+      );
+      check(
+        await has("span[role=img] svg, span[role=img] [data-frost]"),
+        "runelinjen mangler i 03-siste-side.txt",
+      );
+      await shot("runer-dag23.png");
+      await closeWindow();
     }
     check(await clickText("DAGBOK"), "fant ikke DAGBOK-ikonet");
     await sleep(1500);
@@ -466,10 +677,39 @@ for (const day of days) {
   );
 }
 
-ws.close();
-const failed = results.filter((r) => !r.ok).length;
+// «Vis hendelse» in the guide's Snøfall TV review: a village overlay on the calm loop.
+// Last, since the parent login replaces the kid session.
+const guideFails = [];
+try {
+  await send("Page.navigate", { url: base + "/nissemor-guide/media" });
+  await waitFor(() => has("#parentCode"), 30000, "guide-innlogging");
+  await typeInto("#parentCode", PARENT_CODE);
+  await waitFor(
+    () => clickButton("Vis hendelse: Brevfugler"),
+    30000,
+    "«Vis hendelse: Brevfugler» i guiden",
+  );
+  await waitFor(
+    async () =>
+      await evaluate(
+        `!!document.querySelector('[data-testid=livecam][data-event=brevfugler]')`,
+      ),
+    8000,
+    "brevfugl-hendelsen tegnes ikke over landsby-rolig (mangler MEDIA_DIR?)",
+  );
+  await shot("tv-hendelse-brevfugler.png");
+} catch (e) {
+  guideFails.push(e.message);
+  await shot("tv-hendelse-feil.png").catch(() => {});
+}
 console.log(
-  `\n${results.length - failed}/${results.length} dager OK. Skjermbilder: ${SHOTS}`,
+  `${guideFails.length ? "FEIL" : "OK  "} guide: Vis hendelse${guideFails.map((f) => `\n       - ${f}`).join("")}`,
+);
+
+ws.close();
+const failed = results.filter((r) => !r.ok).length + guideFails.length;
+console.log(
+  `\n${results.length - failed + guideFails.length}/${results.length} dager OK. Skjermbilder: ${SHOTS}`,
 );
 if (log) writeFileSync(join(SHOTS, "next-dev.log"), log);
 process.exit(failed ? 1 : 0);

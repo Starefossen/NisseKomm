@@ -350,6 +350,8 @@ export function LiveCam({
         hadFrame = true;
         // Positions match the video framing only, not the fallback still.
         const ev = p.frozen || !video ? null : p.eventAt?.();
+        // Read by scripts/gjennomspilling.mjs: the canvas hides what it draws
+        canvas.dataset.event = ev?.kind ?? "";
         if (ev) {
           // Reduced motion: one still frame from the middle of the event.
           const prog = motion ? ev.progress : 0.5;
@@ -552,6 +554,8 @@ export function LiveCam({
   return (
     <canvas
       ref={canvasRef}
+      data-testid="livecam"
+      data-src={src ?? ""}
       className={`block w-full h-full bg-black ${className ?? ""}`}
       aria-label={`${label}, direktesending`}
       role="img"
