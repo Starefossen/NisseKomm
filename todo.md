@@ -84,14 +84,20 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 
 ---
 
-## Fase 5: Flytt til hjemmeklyngen (etter at historie og app er klare)
+## Fase 5: Flytt til hjemmeklyngen (krav fra Varden, Starefossen/homelab#22)
 
-Plasseringen er avtalt med Varden og registrert som sak i homelab: navnerom `nissekomm`, Knative-tjeneste på `https://nissekomm.nissekomm.fn.flaatten.org`, bare på hjemmenettet. Ressurser 200Mi/50m, grense 512Mi, `minScale=maxScale=1` fra 1. desember til 6. januar. 2Gi PVC (`qnap-iscsi`) montert på `/data`. Bare DNS som utgående trafikk.
+Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxScale=1` 1. desember–6. januar, 200Mi/512Mi, 1Gi `qnap-iscsi` PVC, CiliumNetworkPolicy, Secret). NisseKomm-repoet er vårt. Varden rører det ikke.
 
-- [ ] **Fjern flerbrukerstøtte:** Ingen familiekoder, ingen Sanity, ingen Resend, ingen `@vercel/analytics`. Én familie, ingen innlogging for barna. Foreldreguiden bak PIN.
-- [ ] **Lagring:** SQLite i `$DATA_DIR` (standard `/data`) i stedet for localStorage/Sanity for spilltilstand.
-- [ ] **Kjøring:** `output: "standalone"`, lytt på `$PORT` (standard 8080), legg til `GET /api/health`.
-- [ ] **Media utenfor imaget:** Musikk, videoer og loops serveres fra `$DATA_DIR`, ikke bakt inn i Docker-imaget.
-- [ ] **Ingen utgående trafikk i kjøring:** Fonter bygges inn, ingen eksterne kall.
-- [ ] **Hjemmeintegrasjon:** `GET /api/home/state` og `GET /api/home/clips/{date}` med én Bearer-nøkkel (avtalt kontrakt med Skjerm, radio-produsent og Fleet).
-- [ ] **Bygg og utrulling:** Multi-arch image (amd64 påkrevd) og manifester i `starefossen/home` med `mise run full-deploy`.
+- [ ] **Kjøring:** `output: "standalone"` i `next.config`, lytt på `$PORT` (standard 8080), bind `0.0.0.0`.
+- [ ] **Dockerfile:** flertrinns på `node:24-alpine`, ikke-root, multi-arch (amd64 påkrevd). Push til `registry.intern.flaatten.org:5000/nissekomm:<unix-ts>` med en mise-oppgave.
+- [ ] **Media i imaget:** `public/` bakes inn (Next støtter Range-forespørsler, som Safari trenger for video). PVC-en er bare for SQLite.
+- [ ] **Lagring:** `node:sqlite` (innebygd), databasen i `$DATA_DIR/nissekomm.db` (`/data`).
+- [ ] **Helse:** `GET /api/health` gir 200 uten autentisering og uten tung IO.
+- [ ] **Fjern:** `@sanity/*`, Sanity Studio og migreringer, `resend` og e-postskript, Vercel-cron og `vercel.json`, `@vercel/analytics`. Null utgående trafikk i kjøring.
+- [ ] **Én familie:** barnekode og foreldrekode fra miljøet (`KID_CODE`, `PARENT_CODE`). Ingen registrering, gjenoppretting eller avmelding.
+- [ ] **Hjemmeintegrasjon:** erstatt `api/home-bridge` med `GET /api/home/state` og `GET /api/home/clips/{date}`, begge med `Authorization: Bearer $HOME_STATE_TOKEN`.
+  - state: `{date, frost:{active, until, message, morning_ok}, grayscale:{active, until, message}, solved_today, cards:[]}`
+  - clips: `[{character: "julius"|"rampenissen", audio_url, intro_hint}]`, der `audio_url` er en absolutt LAN-URL servert av NisseKomm
+- [ ] **Bygg:** produksjonsbygg setter ikke `NEXT_PUBLIC_MOCK_*`, `TEST_MODE` eller `STORAGE_BACKEND` (de bakes inn ved bygging).
+- [ ] **Sikkerhetshoder:** flytt fra `vercel.json` til `headers()` i `next.config`.
+- [ ] **Miljø:** `PORT`, `DATA_DIR`, `KID_CODE`, `PARENT_CODE`, `HOME_STATE_TOKEN`, `NEXT_PUBLIC_URL=https://nissekomm.nissekomm.fn.flaatten.org`.
