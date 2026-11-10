@@ -134,6 +134,9 @@ const shrinks = (prev: unknown, next: unknown) =>
 
 type Pending = { value: unknown; replace: boolean };
 
+/** Local-only list of synced keys written while the server was unreachable. */
+const UNSYNCED_KEY = "nissekomm-unsynced";
+
 /**
  * localStorage as a synchronous cache of the server state. Plain
  * localStorage until start() has fetched the state, and stays that way when
@@ -147,6 +150,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
   private flushing = false;
   private retryMs = 1000;
   private onChange: () => void = () => {};
+  private startRetry?: ReturnType<typeof setTimeout>;
 
   async start(onChange?: () => void): Promise<void> {
     if (onChange) this.onChange = onChange;
@@ -154,8 +158,20 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
       await this.pull();
       return;
     }
-    this.live = await this.pull();
+    // Progress made offline must not be overwritten by the first pull.
+    const offline = this.unsynced().map(
+      (k) => [k, super.get<unknown>(k, null)] as const,
+    );
+    clearTimeout(this.startRetry);
+    try {
+      this.live = await this.pull();
+    } catch (e) {
+      // Server down at boot: keep playing locally and try again later.
+      this.startRetry = setTimeout(() => void this.start(), 30_000);
+      throw e;
+    }
     if (!this.live) return;
+    for (const [k, v] of offline) if (v != null) this.queue(k, v, false);
     const poll = () => {
       if (!this.pending.size && !this.flushing) {
         this.pull().catch(() => {});
@@ -199,8 +215,27 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     super.clear();
   }
 
+  private unsynced(): string[] {
+    return super.get<string[]>(UNSYNCED_KEY, []);
+  }
+
+  private markUnsynced(keys: string[], dirty: boolean) {
+    const set = new Set(this.unsynced());
+    for (const k of keys) {
+      if (dirty) set.add(k);
+      else set.delete(k);
+    }
+    if (set.size) super.set(UNSYNCED_KEY, [...set]);
+    else super.remove(UNSYNCED_KEY);
+  }
+
   private queue(key: string, value: unknown, replace: boolean) {
-    if (!this.live || !SYNCED_KEYS.has(key)) return;
+    if (!SYNCED_KEYS.has(key)) return;
+    if (!this.live) {
+      // Not removals: the season wipe runs before start() and stays local.
+      if (value != null) this.markUnsynced([key], true);
+      return;
+    }
     const replaced = this.pending.get(key)?.replace ?? false;
     this.pending.set(key, { value, replace: replace || replaced });
     clearTimeout(this.timer);
@@ -228,6 +263,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
         }
         // 409: reset or revoked elsewhere; 400: rejected (fake code). Server wins.
         if (res.status === 409 || res.status === 400) {
+          this.markUnsynced([...this.pending.keys()], false);
           this.pending.clear();
           await this.pull().catch(() => {});
           return;
@@ -240,6 +276,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
         this.version = body.version;
         if (this.pending.get(key) === p) {
           this.pending.delete(key);
+          this.markUnsynced([key], false);
           if (body.value == null) super.remove(key);
           else super.set(key, body.value);
         }
@@ -249,6 +286,8 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
       this.flushing = false;
     }
     if (retry) {
+      // Survives a reload while the server is down.
+      this.markUnsynced([...this.pending.keys()], true);
       this.timer = setTimeout(() => void this.flush(), this.retryMs);
       this.retryMs = Math.min(this.retryMs * 2, 30_000);
     } else if (this.pending.size) {
