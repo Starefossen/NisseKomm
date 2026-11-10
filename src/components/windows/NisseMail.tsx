@@ -284,9 +284,7 @@ export function NisseMail({
                           className={`text-base flex items-center gap-1 ${isUnread ? (isBonusOppdrag ? "text-(--gold)" : "text-(--gold)") : ""}`}
                         >
                           <span>
-                            {isBonusOppdrag
-                              ? "KRISE-VARSEL ⚠️"
-                              : "RAMPENISSEN 🎅"}
+                            {isBonusOppdrag ? "KRISE-VARSEL" : "RAMPENISSEN"}
                           </span>
                           {BadgeIcon && (
                             <BadgeIcon className="w-4 h-4 inline-block" />
@@ -345,7 +343,7 @@ export function NisseMail({
                       <div className="flex gap-3">
                         <span className="opacity-70 w-16">FRA:</span>
                         <span className="text-(--christmas-red) font-bold">
-                          KRISE-VARSEL ⚠️
+                          KRISE-VARSEL
                         </span>
                       </div>
                       <div className="flex gap-3">
@@ -526,7 +524,7 @@ export function NisseMail({
                     <div className="space-y-1 text-base">
                       <div className="flex gap-3">
                         <span className="opacity-70 w-16">FRA:</span>
-                        <span className="text-(--gold)">RAMPENISSEN 🎅</span>
+                        <span className="text-(--gold)">RAMPENISSEN</span>
                       </div>
                       <div className="flex gap-3">
                         <span className="opacity-70 w-16">TIL:</span>

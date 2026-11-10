@@ -3,6 +3,7 @@
  * Each letter is a stem plus up to five features picked by the bits of its
  * position in the alphabet, so the 29 glyphs are unique and stable.
  */
+import { Iskrystall } from "@/components/ui/Iskrystall";
 
 export const RUNE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ".split("");
 
@@ -85,7 +86,7 @@ export function RuneText({
             className="inline-flex items-center justify-center opacity-50"
             style={{ width: size, height: (size * 30) / 20 }}
           >
-            ❄
+            <Iskrystall size={size} />
           </span>
         ) : ch === " " ? (
           <span key={i} style={{ width: size / 2 }} />

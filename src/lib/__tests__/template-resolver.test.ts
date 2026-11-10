@@ -115,7 +115,7 @@ describe("resolveTemplate", () => {
         currentDay: 24,
         completedDays: [23, 24],
       });
-      expect(result).toBe("24. Desember - JULAFTEN! 🎄✨");
+      expect(result).toBe("24. Desember - JULAFTEN!");
     });
 
     it("defaults to day 1 when no currentDay provided", () => {
@@ -213,7 +213,7 @@ describe("generateFinaleMessage", () => {
 
   it("includes congratulations emoji", () => {
     const result = generateFinaleMessage("Test");
-    expect(result).toContain("🏆");
+    expect(result).toContain("GRATULERER");
     expect(result).toContain("GRATULERER");
   });
 
@@ -227,23 +227,19 @@ describe("generateNiceListEntries", () => {
   describe("with showPlayerAchievements = true (Day 23+)", () => {
     it("generates entries for players with special marker", () => {
       const result = generateNiceListEntries(["Ola", "Kari"], [], true);
+      expect(result).toContain("1. Ola - ★ FULLFØRT NISSEKOMM JULEKALENDER! ★");
       expect(result).toContain(
-        "1. Ola - ⭐ FULLFØRT NISSEKOMM JULEKALENDER! ⭐",
-      );
-      expect(result).toContain(
-        "2. Kari - ⭐ FULLFØRT NISSEKOMM JULEKALENDER! ⭐",
+        "2. Kari - ★ FULLFØRT NISSEKOMM JULEKALENDER! ★",
       );
     });
 
     it("adds friends after players with absurd reasons", () => {
       const result = generateNiceListEntries(["Ola"], ["Emma", "Noah"], true);
-      expect(result).toContain(
-        "1. Ola - ⭐ FULLFØRT NISSEKOMM JULEKALENDER! ⭐",
-      );
+      expect(result).toContain("1. Ola - ★ FULLFØRT NISSEKOMM JULEKALENDER! ★");
       expect(result).toContain("2. Emma -");
       expect(result).toContain("3. Noah -");
       // Friends should have reasons (not the achievement marker)
-      expect(result.split("\n")[1]).not.toContain("⭐");
+      expect(result.split("\n")[1]).not.toContain("★");
     });
   });
 
@@ -343,9 +339,7 @@ describe("generateNiceListEntries", () => {
         ["Emma - reddet en kanin"],
         true,
       );
-      expect(result).toContain(
-        "1. Ola - ⭐ FULLFØRT NISSEKOMM JULEKALENDER! ⭐",
-      );
+      expect(result).toContain("1. Ola - ★ FULLFØRT NISSEKOMM JULEKALENDER! ★");
       expect(result).toContain("2. Emma - reddet en kanin");
     });
   });
@@ -376,7 +370,7 @@ describe("{{NICE_LIST_ENTRIES}} placeholder", () => {
       friendNames: ["Emma"],
       completedDays: [23],
     });
-    expect(result).toContain("1. Ola - ⭐ FULLFØRT NISSEKOMM JULEKALENDER! ⭐");
+    expect(result).toContain("1. Ola - ★ FULLFØRT NISSEKOMM JULEKALENDER! ★");
     expect(result).toContain("2. Emma -");
   });
 });

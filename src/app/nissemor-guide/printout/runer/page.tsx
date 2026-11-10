@@ -12,7 +12,7 @@ function RunerContent() {
       <div className="print:hidden min-h-screen bg-(--dark-crt) text-(--neon-green) font-retro p-8">
         <div className="max-w-4xl mx-auto space-y-6">
           <GuideNavigation />
-          <h1 className="text-4xl font-bold text-center">🖨️ FROSTRUNENE</h1>
+          <h1 className="text-4xl font-bold text-center">FROSTRUNENE</h1>
           <div className="flex justify-center text-(--cold-blue)">
             <RuneText text="SNØFALLS GAMLE SKRIFT" size={22} />
           </div>

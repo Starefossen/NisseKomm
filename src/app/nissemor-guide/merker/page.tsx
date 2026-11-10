@@ -106,15 +106,15 @@ function MerkerContent() {
     if (c.type === "decryptionSolved") {
       return GameEngine.isDecryptionSolved(c.challengeId)
         ? "✓ Dekryptert"
-        : "⏳ Ikke dekryptert ennå";
+        : "Ikke dekryptert ennå";
     }
     if (c.type === "dayCompleted") {
       return GameEngine.isQuestCompleted(c.day)
         ? `✓ Dag ${c.day} løst`
-        : `⏳ Dag ${c.day} ikke løst`;
+        : `Dag ${c.day} ikke løst`;
     }
     const completedCount = GameEngine.getCompletedQuestCount();
-    return `${completedCount >= 24 ? "✓" : "⏳"} ${completedCount}/24 dager`;
+    return `${completedCount >= 24 ? "✓" : ""} ${completedCount}/24 dager`;
   };
 
   const getBadgeTypeColor = (type: string) =>
@@ -132,7 +132,7 @@ function MerkerContent() {
       {/* Header */}
       <div className="max-w-7xl mx-auto mb-8">
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-2 tracking-wider">
-          🏆 MERKER (BADGES) 🏆
+          MERKER (BADGES)
         </h1>
         <p className="text-center text-xl opacity-70">
           Oversikt over alle merker og opptjeningsstatus
@@ -143,7 +143,7 @@ function MerkerContent() {
       <div className="max-w-7xl mx-auto mb-6">
         <div className="border-4 border-(--gold) bg-(--gold)/10 p-6">
           <h2 className="text-2xl font-bold text-(--gold) mb-3 text-center">
-            ℹ️ OM MERKESYSTEMET
+            OM MERKESYSTEMET
           </h2>
           <div className="grid md:grid-cols-2 gap-4 text-lg">
             <div>
@@ -195,14 +195,14 @@ function MerkerContent() {
             onClick={handleResetAll}
             className="px-6 py-3 bg-(--christmas-red) text-white font-bold border-4 border-(--christmas-red) hover:opacity-80 transition-opacity"
           >
-            ❌ Fjern alle merker
+            Fjern alle merker
           </button>
         </div>
       </div>
 
       {/* Badge List */}
       <div className="max-w-7xl mx-auto space-y-6 pb-8">
-        <h2 className="text-3xl font-bold text-center mb-4">📋 ALLE MERKER</h2>
+        <h2 className="text-3xl font-bold text-center mb-4">ALLE MERKER</h2>
 
         {allBadges.map((badge) => {
           const isEarned = earnedIds.has(badge.id);
@@ -316,14 +316,14 @@ function MerkerContent() {
                     onClick={() => handleAwardBadge(badge.id)}
                     className="px-6 py-2 bg-(--gold) text-black font-bold hover:opacity-80 transition-opacity"
                   >
-                    ⭐ Tildel merke manuelt
+                    Tildel merke manuelt
                   </button>
                 ) : (
                   <button
                     onClick={() => handleRevokeBadge(badge.id)}
                     className="px-6 py-2 bg-(--christmas-red) text-white font-bold hover:opacity-80 transition-opacity"
                   >
-                    ❌ Fjern merke
+                    Fjern merke
                   </button>
                 )}
               </div>
@@ -336,7 +336,7 @@ function MerkerContent() {
       <div className="max-w-7xl mx-auto text-center opacity-70 text-sm pb-8">
         <p>NisseKomm v1.0 - Merker Management</p>
         <p className="mt-2">
-          💡 Tips: Merker tildeles automatisk når barnet oppfyller betingelsene
+          Tips: Merker tildeles automatisk når barnet oppfyller betingelsene
         </p>
       </div>
     </div>

@@ -96,7 +96,7 @@ describe("Rune lines (T12)", () => {
 
   it("draws learned letters as runes and the rest as frost", () => {
     const el = mount(<RuneText text="ALENE" learned={new Set(["E", "L"])} />);
-    expect(el.querySelectorAll("svg")).toHaveLength(3);
+    expect(el.querySelectorAll("svg[role=img]")).toHaveLength(3);
     expect(el.querySelectorAll("[data-frost]")).toHaveLength(2);
     expect(el.textContent).not.toMatch(/[AN]/);
   });

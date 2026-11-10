@@ -182,9 +182,9 @@ function SymbolerContent() {
     });
 
     alert(
-      `📊 SYMBOLSAMLING (${collectedSymbols.length}/9):\n\n${symbolStatus.join("\n")}\n\n${
+      `SYMBOLSAMLING (${collectedSymbols.length}/9):\n\n${symbolStatus.join("\n")}\n\n${
         collectedSymbols.length === 9
-          ? "🎉 Alle symboler samlet!"
+          ? "Alle symboler samlet!"
           : `Mangler ${9 - collectedSymbols.length} symboler.`
       }`,
     );
@@ -229,7 +229,7 @@ function SymbolerContent() {
       {/* Header */}
       <div className="max-w-7xl mx-auto mb-8 print:hidden">
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-2 tracking-wider">
-          🎁 SYMBOLSAMLING & NISSEKRYPTO
+          SYMBOLSAMLING & NISSEKRYPTO
         </h1>
         <p className="text-center text-xl opacity-70">
           QR-kort for skattejakt og dekryptering
@@ -241,7 +241,7 @@ function SymbolerContent() {
         <div className="mb-6 print:hidden">
           <div className="border-4 border-(--gold) bg-(--gold)/10 p-6">
             <h2 className="text-2xl font-bold text-(--gold) mb-3 text-center">
-              🔐 OM SYMBOLSAMLING & NISSEKRYPTO
+              OM SYMBOLSAMLING & NISSEKRYPTO
             </h2>
             <ul className="space-y-2 text-lg">
               <li>✓ Fysisk skattejakt kombinert med digital dekryptering</li>
@@ -267,7 +267,7 @@ function SymbolerContent() {
         <div className="mb-6 print:hidden">
           <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-6">
             <h2 className="text-2xl font-bold text-(--cold-blue) mb-3 text-center">
-              📅 GJEMMESKJEMA (Når skal hvert symbol gjemmes?)
+              GJEMMESKJEMA (Når skal hvert symbol gjemmes?)
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {allSymbols.map((symbol) => {
@@ -315,7 +315,7 @@ function SymbolerContent() {
               })}
             </div>
             <p className="text-center text-sm opacity-70 mt-4">
-              💡 Tips: Du kan gjemme alle symbolene på dag 1, eller gjemme dem
+              Tips: Du kan gjemme alle symbolene på dag 1, eller gjemme dem
               gradvis når hvert oppdrag starter
             </p>
           </div>
@@ -327,7 +327,7 @@ function SymbolerContent() {
             onClick={handleAddSymbol}
             className="p-4 bg-purple-700 hover:bg-purple-600 text-white font-bold text-lg border-2 border-black transition-colors"
           >
-            ➕ LEGG TIL ETT SYMBOL
+            LEGG TIL ETT SYMBOL
             <p className="text-sm font-normal mt-2 opacity-80">
               Manuell tillegg hvis QR ikke virker
             </p>
@@ -337,7 +337,7 @@ function SymbolerContent() {
             onClick={handleViewStatus}
             className="p-4 bg-purple-800 hover:bg-purple-700 text-white font-bold text-lg border-2 border-black transition-colors"
           >
-            📊 VIS STATUS
+            VIS STATUS
             <p className="text-sm font-normal mt-2 opacity-80">
               {collectedSymbols.length}/9 symboler samlet
             </p>
@@ -355,7 +355,7 @@ function SymbolerContent() {
             }}
             className="p-4 bg-(--neon-green) hover:bg-(--gold) text-black font-bold text-lg border-2 border-black transition-colors"
           >
-            🖨️ PRINT ALLE KORT
+            PRINT ALLE KORT
             <p className="text-sm font-normal mt-2 opacity-80">
               Åpner print-dialog
             </p>

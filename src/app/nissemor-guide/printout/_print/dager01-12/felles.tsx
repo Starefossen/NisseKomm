@@ -25,26 +25,8 @@ export function Ark({
   );
 }
 
-/** Ice crystal for ❄ cells: drawn, not the emoji, so it prints the same everywhere. */
-export function Iskrystall({ size = 32 }: { size?: number }) {
-  const arm = "M0 -10 V10 M-3 -7 L0 -10 L3 -7 M-3 7 L0 10 L3 7";
-  return (
-    <svg
-      viewBox="-12 -12 24 24"
-      width={size}
-      height={size}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.4}
-      strokeLinecap="round"
-      aria-hidden
-    >
-      {[0, 60, 120].map((r) => (
-        <path key={r} d={arm} transform={`rotate(${r})`} />
-      ))}
-    </svg>
-  );
-}
+import { Iskrystall } from "@/components/ui/Iskrystall";
+export { Iskrystall };
 
 /**
  * A frostlapp row: one cell per letter; null = ice crystal. A letter cell

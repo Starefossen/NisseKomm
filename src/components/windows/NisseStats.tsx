@@ -79,11 +79,11 @@ const URGENCY_STYLES: Record<UrgencyLevel, UrgencyStyles> = {
 };
 
 const URGENCY_LABELS: Record<UrgencyLevel, string> = {
-  critical: "⏰ SNART JUL!",
-  urgent: "🎄 FÅ DAGER IGJEN",
-  approaching: "📅 HALVVEIS",
-  calm: "❄️ FORBEREDELSER I GANG",
-  today: "🎅 I DAG!",
+  critical: "SNART JUL!",
+  urgent: "FÅ DAGER IGJEN",
+  approaching: "HALVVEIS",
+  calm: "FORBEREDELSER I GANG",
+  today: "I DAG!",
 };
 
 const CRISIS_ANIMATION_CLASSES: Record<
@@ -108,12 +108,12 @@ function generateFeedItems(
   currentDay: number,
 ): string[] {
   const staticItems = [
-    "🧝 Elf_042: Pakking av lego-sett fullført",
-    "🧝 Elf_137: Kvalitetskontroll av teddybjørner OK",
-    "⚙️ IQ: Turbo-reinsdyr forer testet - liten brann",
-    "📋 Winter: Organisert 1,247 brevfugler i dag",
-    "🦌 Rudolf: Oppvarmingsrunde nr. 4 - perfekt!",
-    "🔧 Vedlikehold: Verksted temperatur stabil",
+    "Elf_042: Pakking av lego-sett fullført",
+    "Elf_137: Kvalitetskontroll av teddybjørner OK",
+    "IQ: Turbo-reinsdyr forer testet - liten brann",
+    "Winter: Organisert 1,247 brevfugler i dag",
+    "Rudolf: Oppvarmingsrunde nr. 4 - perfekt!",
+    "Vedlikehold: Verksted temperatur stabil",
   ];
 
   const dynamicItems: string[] = [];
@@ -123,15 +123,15 @@ function generateFeedItems(
     {
       key: "GAVEPRODUKSJON",
       template: (m: MetricType) =>
-        `📊 Gaveproduksjon: ${m.verdi.toLocaleString("no-NO")} pakker klare!`,
+        `Gaveproduksjon: ${m.verdi.toLocaleString("no-NO")} pakker klare!`,
     },
     {
       key: "NISSEKRAFT",
-      template: (m: MetricType) => `⚡ Nissekraft: ${m.verdi}% energi stabil`,
+      template: (m: MetricType) => `Nissekraft: ${m.verdi}% energi stabil`,
     },
     {
       key: "BREVFUGL-SVERM",
-      template: (m: MetricType) => `🕊️ ${m.verdi} brevfugler aktive i luften`,
+      template: (m: MetricType) => `${m.verdi} brevfugler aktive i luften`,
     },
   ];
 
@@ -148,41 +148,41 @@ function generateFeedItems(
   // Day 11: Antenna crisis
   if (currentDay >= 11 && !crisisStatus.antenna) {
     dynamicItems.unshift(
-      "🚨 KRITISK: RUDOLF NES-SIGNAL TAPT - TELEMETRI OFFLINE",
-      "⚠️ IQ: Antennen er HELT ødelagt! Trenger AKUTT reparasjon!",
-      "🔴 SYSTEMFEIL: SUNOS-8000-8N - MULTIPLE SENSOR FAILURES",
+      "KRITISK: RUDOLF NES-SIGNAL TAPT - TELEMETRI OFFLINE",
+      "IQ: Antennen er HELT ødelagt! Trenger AKUTT reparasjon!",
+      "SYSTEMFEIL: SUNOS-8000-8N - MULTIPLE SENSOR FAILURES",
     );
   }
 
   // Day 16: Inventory crisis
   if (currentDay >= 16 && !crisisStatus.inventory) {
     dynamicItems.unshift(
-      "🚨 KRITISK: INVENTAR-SYSTEM KRASJET - DATABASE LOOP",
-      "⚠️ Winter: 'Alt har sin plass!' - men systemet vet ikke hvor!",
-      "💥 NISSEKRAFT: ENERGI-DRAIN - Prøver å fikse database...",
+      "KRITISK: INVENTAR-SYSTEM KRASJET - DATABASE LOOP",
+      "Winter: 'Alt har sin plass!' - men systemet vet ikke hvor!",
+      "NISSEKRAFT: ENERGI-DRAIN - Prøver å fikse database...",
     );
   }
 
   // Day 7: Mørket warning
   if (currentDay >= 7 && currentDay < 14) {
     dynamicItems.unshift(
-      "⚠️ ORAKELET: MØRKET DETEKTERT - POLARNATTEN NÆRMER SEG",
-      "🌟 JULESTJERNE: Lysstyrke demper... Trenger magisk styrke",
+      "ORAKELET: MØRKET DETEKTERT - POLARNATTEN NÆRMER SEG",
+      "JULESTJERNE: Lysstyrke demper... Trenger magisk styrke",
     );
   }
 
   // Add resolution messages
   if (currentDay >= 12 && crisisStatus.antenna) {
     dynamicItems.push(
-      "✅ ANTENNE-REPARASJON FULLFØRT! SIGNAL: 100%",
-      "🎉 RUDOLF: NESEN MIN LYSER IGJEN! Jeg ser ALT!",
+      "ANTENNE-REPARASJON FULLFØRT! SIGNAL: 100%",
+      "RUDOLF: NESEN MIN LYSER IGJEN! Jeg ser ALT!",
     );
   }
 
   if (currentDay >= 17 && crisisStatus.inventory) {
     dynamicItems.push(
-      "✅ INVENTAR SYNKRONISERT! Produksjon: 100% - Flott arbeid!",
-      "💚 NISSEKRAFT: Systemer normalisert. Database gjenopprettet!",
+      "INVENTAR SYNKRONISERT! Produksjon: 100% - Flott arbeid!",
+      "NISSEKRAFT: Systemer normalisert. Database gjenopprettet!",
     );
   }
 
@@ -271,7 +271,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
             {countdown.isChristmas ? (
               <div className="space-y-2">
                 <div className="text-4xl lg:text-6xl font-bold text-(--gold) animate-[gold-flash_1s_ease-in-out_infinite]">
-                  🎅 GOD JUL! 🎅
+                  GOD JUL!
                 </div>
                 <div className="text-lg lg:text-xl text-(--gold)/80">
                   JULIUS ER PÅ VEI!
@@ -307,7 +307,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
             {questProgress >= 5 && (
               <div className="absolute top-2 right-2 px-2 py-1 border border-(--gold) bg-(--gold)/10">
                 <div className="text-base text-(--gold) opacity-70">
-                  ⭐ +{questProgress}%
+                  ★ +{questProgress}%
                 </div>
               </div>
             )}
@@ -339,7 +339,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
         <div className="border-2 border-(--neon-green)/30 max-h-32 lg:max-h-40 overflow-y-auto">
           <div className="p-2 bg-(--neon-green)/10 border-b-2 border-(--neon-green)/30">
             <div className="text-base tracking-wider text-(--neon-green)">
-              🔴 LIVE OPPDATERINGER
+              ● LIVE OPPDATERINGER
             </div>
           </div>
           <div className="divide-y divide-(--neon-green)/10">
@@ -445,7 +445,7 @@ function CrisisDisplay({
     ),
     oscillate: () => (
       <div className={`text-2xl font-bold ${statusColor}`}>
-        {displayValue.toLocaleString("no-NO")} ↕️
+        {displayValue.toLocaleString("no-NO")}
       </div>
     ),
     stuck: () => (
@@ -464,14 +464,10 @@ function CrisisDisplay({
       </div>
     ),
     warning: () => (
-      <div className={`text-2xl font-bold ${statusColor}`}>
-        {displayValue}% ⚠️
-      </div>
+      <div className={`text-2xl font-bold ${statusColor}`}>{displayValue}%</div>
     ),
     dimming: () => (
-      <div className={`text-2xl font-bold ${statusColor}`}>
-        {displayValue}% ⚠️
-      </div>
+      <div className={`text-2xl font-bold ${statusColor}`}>{displayValue}%</div>
     ),
     drain: () => (
       <div className={`text-2xl font-bold ${statusColor}`}>
@@ -488,7 +484,7 @@ function CrisisDisplay({
     <div className="space-y-1">
       {renderer && renderer()}
       <div className="text-base text-(--christmas-red)/80">
-        ⚠️ {metric.crisisText}
+        {metric.crisisText}
       </div>
     </div>
   );

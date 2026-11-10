@@ -3,7 +3,10 @@ import { DAGER, HANDLELISTE, BYGGEPLAN } from "../data";
 import { readFileSync } from "fs";
 import { UTSKRIFTER } from "../../printout/filer";
 
-const GAATER = readFileSync("docs/gaater-2026.md", "utf8").replace(/[*`]/g, "");
+const GAATER = readFileSync("docs/gaater-2026.md", "utf8")
+  .replace(/[*`]/g, "")
+  // The guide shows frost squares as ✱: ❄ renders as a colour emoji on iPad.
+  .replace(/❄️?/g, "✱");
 const KODER: Record<number, string> = Object.fromEntries(
   [1, 2, 3, 4]
     .flatMap((i) =>

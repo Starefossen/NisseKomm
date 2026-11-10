@@ -18,7 +18,7 @@ function DiplomContent() {
         <div className="max-w-4xl mx-auto space-y-6">
           <GuideNavigation />
           <h1 className="text-4xl font-bold text-center">
-            🖨️ DIPLOM «SNØFALLS VENN»
+            DIPLOM «SNØFALLS VENN»
           </h1>
           <p className="text-lg opacity-80">
             Ett diplom per barn ({navn.join(", ")}). Skriv ut på tykt papir og

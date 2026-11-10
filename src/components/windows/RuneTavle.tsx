@@ -1,5 +1,6 @@
 "use client";
 
+import { Iskrystall } from "@/components/ui/Iskrystall";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Frostrune, RUNE_ALPHABET } from "../ui/Frostrune";
 import { GameEngine } from "@/lib/game-engine";
@@ -33,7 +34,7 @@ export function RuneTavle({ onClose }: { onClose: () => void }) {
                 {known ? (
                   <Frostrune letter={letter} size={24} />
                 ) : (
-                  <span className="text-2xl">❄</span>
+                  <Iskrystall size={24} />
                 )}
               </div>
             );

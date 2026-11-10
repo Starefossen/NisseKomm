@@ -26,7 +26,7 @@ function StubContent() {
     <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-retro p-8">
       <div className="max-w-4xl mx-auto space-y-6">
         <GuideNavigation />
-        <h1 className="text-4xl font-bold text-center">🖨️ {fil}.pdf</h1>
+        <h1 className="text-4xl font-bold text-center">{fil}.pdf</h1>
         <p className="text-xl text-center opacity-80">
           {kjent
             ? "Denne utskriften er ikke laget ennå. Se docs/gaater-2026.md for innholdet."

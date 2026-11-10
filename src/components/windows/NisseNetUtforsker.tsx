@@ -1,5 +1,6 @@
 "use client";
 
+import { Iskrystall } from "@/components/ui/Iskrystall";
 import { useState, useMemo, useEffect } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
@@ -174,7 +175,7 @@ export function NisseNetUtforsker({
             className="py-1 px-2 text-(--cold-blue)/50"
             style={{ paddingLeft: `${depth * 16 + 8}px` }}
           >
-            ❄ {node.navn} (FROSSET)
+            <Iskrystall size={14} /> {node.navn} (FROSSET)
           </div>
         );
       }
@@ -231,7 +232,7 @@ export function NisseNetUtforsker({
           >
             <Icons.File size={16} color="blue" />
             <span className={isNew ? "text-(--gold) font-bold" : ""}>
-              {isUnreadNiceList && "🔴 "}
+              {isUnreadNiceList && "● "}
               {node.navn}
               {isNew && " (NY!)"}
             </span>

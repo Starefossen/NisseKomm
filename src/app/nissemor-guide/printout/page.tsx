@@ -246,7 +246,7 @@ function PrintoutContent() {
           <GuideNavigation />
 
           <h1 className="text-4xl font-bold text-center mb-4">
-            🖨️ NISSEMOR UTSKRIFTER
+            NISSEMOR UTSKRIFTER
           </h1>
           <p className="text-center text-xl mb-6 opacity-70">
             Velg hvilke dager du vil skrive ut - 6 kort per side
@@ -345,7 +345,7 @@ function PrintoutContent() {
           </div>
           <div className="border-4 border-(--gold) bg-(--gold)/10 p-6 mb-8">
             <h2 className="text-2xl font-bold text-(--gold) mb-3">
-              📋 UTSKRIFTSINSTRUKSJONER:
+              UTSKRIFTSINSTRUKSJONER:
             </h2>
             <ul className="space-y-2 text-lg">
               <li>✓ Scroll ned for å se forhåndsvisning av alle kort</li>
@@ -358,7 +358,7 @@ function PrintoutContent() {
           {/* Custom Note Editor */}
           <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-6 mb-8">
             <h2 className="text-2xl font-bold text-(--cold-blue) mb-3">
-              📝 EGENDEFINERT NOTAT (vises på utskriftssiden)
+              EGENDEFINERT NOTAT (vises på utskriftssiden)
             </h2>
             <textarea
               value={customNote}
@@ -368,7 +368,7 @@ function PrintoutContent() {
               rows={4}
             />
             <p className="text-center text-sm opacity-70 mt-2">
-              💡 Tips: Legg til en personlig hilsen fra Rampenissen, en ekstra
+              Tips: Legg til en personlig hilsen fra Rampenissen, en ekstra
               instruksjon, eller en morsom kommentar
             </p>
           </div>
@@ -498,7 +498,7 @@ function PrintoutContent() {
 
                           {/* Parent reference - outside the final note */}
                           <div className="text-center text-xs opacity-70 pt-2 border-t border-(--neon-green)/30">
-                            📍 Gjemt i:{" "}
+                            Gjemt i:{" "}
                             {isCheckpointCard ? card.location : card.beste_rom}
                           </div>
                         </div>
@@ -610,7 +610,7 @@ function PrintoutContent() {
 
                     {/* Parent reference - outside the final note */}
                     <div className="print:text-center print:text-xs print:text-gray-600 print:mt-2 print:pt-1 print:border-t print:border-gray-300">
-                      📍 Gjemt i:{" "}
+                      Gjemt i:{" "}
                       {isCheckpointCard ? card.location : card.beste_rom}
                     </div>
                   </div>
@@ -624,12 +624,12 @@ function PrintoutContent() {
         <div className="print:break-after-page print:p-12">
           <div className="print:max-w-2xl print:mx-auto">
             <h1 className="print:text-4xl print:font-bold print:text-center print:mb-6">
-              📋 OPPSETTSINSTRUKSJONER
+              OPPSETTSINSTRUKSJONER
             </h1>
 
             <div className="print:mb-6">
               <h2 className="print:text-2xl print:font-bold print:mb-3">
-                🎯 Hvordan bruke disse kortene:
+                Hvordan bruke disse kortene:
               </h2>
               <ol className="print:space-y-2 print:text-base print:list-decimal print:list-inside">
                 <li>Klipp ut hvert kort langs de stiplede linjene</li>
@@ -642,7 +642,7 @@ function PrintoutContent() {
 
             <div className="print:mb-6">
               <h2 className="print:text-2xl print:font-bold print:mb-3">
-                💡 Tips:
+                Tips:
               </h2>
               <ul className="print:space-y-2 print:text-base print:list-disc print:list-inside">
                 <li>Bruk farget papir (rødt/grønt) for ekstra julestemning</li>
@@ -656,7 +656,7 @@ function PrintoutContent() {
 
             <div className="print:border-4 print:border-black print:p-4 print:bg-gray-100">
               <h2 className="print:text-xl print:font-bold print:mb-2">
-                ⚠️ VIKTIG:
+                VIKTIG:
               </h2>
               <p className="print:text-base print:mb-2">
                 Hvert kort må settes opp kvelden før eller tidlig om morgenen.
@@ -669,7 +669,7 @@ function PrintoutContent() {
             </div>
 
             <div className="print:text-center print:mt-8 print:text-gray-500">
-              <p className="print:text-sm">NisseKomm v1.0 - God Jul! 🎅</p>
+              <p className="print:text-sm">NisseKomm v1.0 - God Jul!</p>
             </div>
           </div>
         </div>
