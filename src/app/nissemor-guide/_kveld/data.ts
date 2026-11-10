@@ -536,7 +536,7 @@ export const DAGER = [
       "Lapper under gryte, sleiv, visp (bokstav) og kjevle, øse (✱); to spor som stopper; rydd bort sukker og sirup; rutekort og sol-kort ved skålen",
     strek: {
       tekst:
-        "Står ved siden av en liten skål sirup, med klissete fotspor av sukker bortover benken og sleiva i hånden.",
+        "Står ved siden av en liten skål sirup med sleiva i hånden; papirfotspor går bortover benken.",
       type: "forbudt moro",
       materialer: "en skål med litt sirup, sleiv (fotsporene er trykt)",
       minutter: 4,
