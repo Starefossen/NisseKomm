@@ -1,13 +1,25 @@
 /**
  * @jest-environment node
  */
-import { describe, it, expect, afterEach, beforeAll, jest } from "@jest/globals";
+import {
+  describe,
+  it,
+  expect,
+  afterEach,
+  beforeAll,
+  jest,
+} from "@jest/globals";
 import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { getAllOppdrag } from "@/lib/oppdrag";
 import { memoryStore } from "@/lib/db";
-import { CODE_WORDS, MAX_RESPONSE_BYTES, TOOLS, callTool } from "@/lib/mcp/tools";
+import {
+  CODE_WORDS,
+  MAX_RESPONSE_BYTES,
+  TOOLS,
+  callTool,
+} from "@/lib/mcp/tools";
 import { mp3Duration } from "@/lib/mcp/clips";
 import { POST } from "@/app/mcp/route";
 
@@ -133,7 +145,9 @@ describe("set_fake_now", () => {
   it("gjelder bare kalleren og utløper etter 24 timer", async () => {
     jest.useFakeTimers({ now: at(10, 12, 11) });
     const res = JSON.parse(
-      await callTool(operator, "set_fake_now", { now: at(21, 8).toISOString() }),
+      await callTool(operator, "set_fake_now", {
+        now: at(21, 8).toISOString(),
+      }),
     );
     expect(res.schema_version).toBe(1);
     expect((await screen(operator)).day).toBe(21);
@@ -290,5 +304,32 @@ describe("tilgang", () => {
     } finally {
       delete process.env.MCP_DEV_TOKEN;
     }
+  });
+});
+
+// MCP_FIXTURES_DIR=<dir> writes example get_screen answers for Varden.
+describe("get_screen-eksempler", () => {
+  const dir = process.env.MCP_FIXTURES_DIR;
+  it.each([
+    ["morgen", 5, 7, 4],
+    ["kveld", 5, 20, 5],
+    ["frost", 10, 7, 9],
+    ["dag24", 24, 18, 24],
+  ])("%s", async (name, day, hour, upTo) => {
+    await solvedUpTo(upTo);
+    await memoryStore.putState(
+      "nissekomm-earned-badges",
+      upTo >= 24 ? ["portvokter", "snofalls-venn"] : [],
+    );
+    jest.useFakeTimers({ now: at(day, hour) });
+    const out = await callTool("read", "get_screen");
+    if (dir) {
+      mkdirSync(dir, { recursive: true });
+      writeFileSync(
+        path.join(dir, `get_screen-${name}.json`),
+        JSON.stringify(JSON.parse(out), null, 2) + "\n",
+      );
+    }
+    expect(JSON.parse(out).day).toBe(day);
   });
 });

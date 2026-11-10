@@ -36,11 +36,7 @@ async function handle(req: Request): Promise<Response> {
   }));
   server.setRequestHandler(CallToolRequestSchema, async (r) => {
     try {
-      const text = await callTool(
-        caller,
-        r.params.name,
-        r.params.arguments,
-      );
+      const text = await callTool(caller, r.params.name, r.params.arguments);
       return { content: [{ type: "text", text }] };
     } catch (e) {
       return {

@@ -304,7 +304,7 @@ export function getScreen(state: State, at?: Date) {
   };
 }
 
-const intArg =(v: unknown, min: number, max: number) => {
+const intArg = (v: unknown, min: number, max: number) => {
   const n = Number(v);
   if (!Number.isInteger(n) || n < min || n > max) {
     throw new Error(`Må være et heltall ${min}–${max}`);
@@ -355,7 +355,10 @@ export const TOOLS: Record<string, Tool> = {
       const stored = (await read())["nissekomm-santa-letters"];
       const letters = Array.isArray(stored) ? stored : [];
       // Shares ~5000 characters between the letters so 16 KB always holds.
-      const max = Math.min(2000, Math.floor(5000 / Math.max(letters.length, 1)));
+      const max = Math.min(
+        2000,
+        Math.floor(5000 / Math.max(letters.length, 1)),
+      );
       return {
         letters: letters.map((l) => ({
           from: typeof l?.from === "string" ? l.from : null,

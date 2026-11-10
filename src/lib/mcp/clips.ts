@@ -8,7 +8,9 @@ import path from "node:path";
 import { mediaDir } from "@/lib/media-server";
 import { mediaUrl } from "@/lib/media";
 
-const BITRATES = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320];
+const BITRATES = [
+  0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320,
+];
 const RATES = [44100, 48000, 32000];
 
 /**
@@ -36,7 +38,10 @@ export function mp3Duration(buf: Buffer): number | null {
   return null;
 }
 
-const cache = new Map<string, { key: string; sha256: string; duration_s: number | null }>();
+const cache = new Map<
+  string,
+  { key: string; sha256: string; duration_s: number | null }
+>();
 
 export async function getClip(day: number, dir = mediaDir()) {
   const rel = `audio/rampenissen/dag-${String(day).padStart(2, "0")}.mp3`;
@@ -57,5 +62,10 @@ export async function getClip(day: number, dir = mediaDir()) {
     };
     cache.set(abs, hit);
   }
-  return { ...base, ready: true, duration_s: hit.duration_s, sha256: hit.sha256 };
+  return {
+    ...base,
+    ready: true,
+    duration_s: hit.duration_s,
+    sha256: hit.sha256,
+  };
 }
