@@ -202,4 +202,15 @@ describe("utskrifter dag 1–12", () => {
     const { tekst } = render(Frostlapp7);
     expect(tekst.replace(/FROSTLAPP|\d|\s/g, "")).toBe("");
   });
+
+  // CutCard is flex-col, so the strip printed as a column over two pages
+  it("alfabetstrimmelen ligger vannrett", () => {
+    const el = document.createElement("div");
+    act(() => createRoot(el).render(<Alfabetstrimmel />));
+    const rute = [...el.querySelectorAll("div")].find(
+      (d) => d.textContent === "A",
+    )!;
+    expect(rute.parentElement!.className.split(" ")).toContain("flex");
+    expect(rute.parentElement!.className).not.toContain("flex-col");
+  });
 });

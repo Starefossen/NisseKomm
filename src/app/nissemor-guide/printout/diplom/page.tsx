@@ -37,7 +37,7 @@ function DiplomContent() {
         {navn.map((n) => (
           <section
             key={n}
-            className="break-after-page h-screen flex flex-col items-center justify-center text-center gap-8 border-8 border-double border-black p-12"
+            className="break-after-page last:break-after-auto h-screen flex flex-col items-center justify-center text-center gap-8 border-8 border-double border-black p-12"
           >
             <div className="text-2xl tracking-widest">DIPLOM</div>
             <h1 className="text-6xl font-bold">Snøfalls venn</h1>

@@ -14,7 +14,7 @@ function StubContent() {
   const Side = SIDER_01_12[fil] ?? SIDER_13_24[fil];
   if (Side)
     return (
-      <div className="min-h-screen bg-(--dark-crt) p-8 print:bg-white print:p-0">
+      <div className="min-h-screen bg-(--dark-crt) p-8 print:min-h-0 print:bg-white print:p-0">
         <div className="max-w-4xl mx-auto mb-6 print:hidden">
           <GuideNavigation />
         </div>

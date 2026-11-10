@@ -163,14 +163,14 @@ function BrevfuglerContent() {
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleStartEdit(day)}
-                        className="px-3 py-1 bg-(--neon-green) text-black text-sm font-bold hover:opacity-80"
+                        className="px-3 py-1 min-h-11 bg-(--neon-green) text-black text-base font-bold hover:opacity-80"
                       >
                         {hasLetter ? "Rediger" : "Skriv"}
                       </button>
                       {hasLetter && (
                         <button
                           onClick={() => handleDelete(day)}
-                          className="px-3 py-1 bg-(--christmas-red) text-white text-sm font-bold hover:opacity-80"
+                          className="px-3 py-1 min-h-11 bg-(--christmas-red) text-white text-base font-bold hover:opacity-80"
                         >
                           Slett
                         </button>
@@ -205,7 +205,7 @@ function BrevfuglerContent() {
                   </div>
                 ) : hasLetter ? (
                   <div className="bg-black/50 p-3 border-2 border-(--gold)/50">
-                    <p className="whitespace-pre-wrap text-sm line-clamp-4">
+                    <p className="whitespace-pre-wrap text-base line-clamp-4">
                       {letters.get(day)}
                     </p>
                   </div>

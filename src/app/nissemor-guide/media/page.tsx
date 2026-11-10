@@ -270,24 +270,31 @@ function MediaContent() {
         {files && (
           <section className={box}>
             <h2 className="text-2xl mb-3">Per dag</h2>
-            <table className="w-full text-left">
-              <tbody>
-                {dayRows(files).map((r) => (
-                  <tr key={r.day} className="border-b border-(--neon-green)/30">
-                    <th className="pr-4 py-1 whitespace-nowrap">Dag {r.day}</th>
-                    <td className="pr-4">
-                      <Status item={r.julius} />
-                    </td>
-                    <td className="pr-4">
-                      <Status item={r.rampenissen} />
-                    </td>
-                    <td>
-                      <Status item={r.tv} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <tbody>
+                  {dayRows(files).map((r) => (
+                    <tr
+                      key={r.day}
+                      className="border-b border-(--neon-green)/30"
+                    >
+                      <th className="pr-4 py-1 whitespace-nowrap">
+                        Dag {r.day}
+                      </th>
+                      <td className="pr-4">
+                        <Status item={r.julius} />
+                      </td>
+                      <td className="pr-4">
+                        <Status item={r.rampenissen} />
+                      </td>
+                      <td>
+                        <Status item={r.tv} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </section>
         )}
 

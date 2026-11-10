@@ -115,8 +115,8 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [x] Frost, Frostgrad og frostmodus
 - [x] Frostrunene og runetavla (10. november)
 - [x] Dag 1-oppstart og 85,0-halen
-- [ ] Foreldreguiden (I kveld, Forberedelser, Dag for dag, Innstillinger, simulering)
-- [ ] Utskrifter
+- [x] Foreldreguiden (I kveld, Forberedelser, Dag for dag, Innstillinger, simulering)
+- [x] Utskrifter
 - [x] Mediebibliotek og opplasting (10. november)
 - [x] Varslingssystem (10. november)
 - [x] MCP-server

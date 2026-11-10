@@ -7,7 +7,7 @@ import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { GameEngine } from "@/lib/game-engine";
 import { resolveTemplate } from "@/lib/template-resolver";
 import type { Oppdrag, PrintMaterial } from "@/types/innhold";
-import { UTSKRIFTER, FERDIGE, utskriftHref } from "./filer";
+import { UTSKRIFTER, utskriftHref } from "./filer";
 
 const allOppdrag = GameEngine.getAllQuests();
 
@@ -261,7 +261,7 @@ function PrintoutContent() {
                 <a
                   key={navn}
                   href={utskriftHref(navn)}
-                  className={`underline min-h-11 flex items-center ${navn in FERDIGE ? "text-(--gold)" : "opacity-70"}`}
+                  className="underline min-h-11 flex items-center break-all text-(--gold)"
                 >
                   {navn}
                 </a>
@@ -271,26 +271,26 @@ function PrintoutContent() {
 
           {/* Day Selection Grid */}
           <div className="border-4 border-(--neon-green) bg-(--neon-green)/5 p-6 mb-6">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex flex-wrap gap-2 justify-between items-center mb-4">
               <h2 className="text-2xl font-bold text-(--neon-green)">
                 VELG DAGER:
               </h2>
               <div className="flex gap-3">
                 <button
                   onClick={selectAll}
-                  className="px-4 py-2 border-2 border-(--neon-green) text-(--neon-green) text-sm hover:bg-(--neon-green)/10"
+                  className="px-4 py-2 min-h-11 border-2 border-(--neon-green) text-(--neon-green) text-base hover:bg-(--neon-green)/10"
                 >
                   VELG ALLE
                 </button>
                 <button
                   onClick={deselectAll}
-                  className="px-4 py-2 border-2 border-(--christmas-red) text-(--christmas-red) text-sm hover:bg-(--christmas-red)/10"
+                  className="px-4 py-2 min-h-11 border-2 border-(--christmas-red) text-(--christmas-red) text-base hover:bg-(--christmas-red)/10"
                 >
                   FJERN ALLE
                 </button>
               </div>
             </div>
-            <div className="grid grid-cols-12 gap-2">
+            <div className="grid grid-cols-6 md:grid-cols-12 gap-2">
               {Array.from({ length: 24 }, (_, i) => i + 1).map((day) => {
                 const isSelected = selectedDays.includes(day);
                 return (
@@ -298,7 +298,7 @@ function PrintoutContent() {
                     key={day}
                     onClick={() => toggleDay(day)}
                     className={`
-                      aspect-square border-4 font-bold text-xl
+                      aspect-square border-4 font-bold text-xl min-h-11
                       transition-all duration-200
                       ${
                         isSelected
@@ -322,7 +322,7 @@ function PrintoutContent() {
             </div>
           </div>
 
-          <div className="flex gap-4 justify-center mb-8">
+          <div className="flex flex-wrap gap-4 justify-center mb-8">
             <button
               onClick={() => window.print()}
               disabled={selectedDays.length === 0}
@@ -405,7 +405,7 @@ function PrintoutContent() {
                   <div className="text-center text-xl font-bold text-(--gold) mb-6">
                     SIDE {pageIndex + 1} av {pages.length}
                   </div>
-                  <div className="grid grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {pageCards.map((card, cardIndex) => {
                       const isCheckpointCard = isCheckpoint(card);
                       const isPrintMaterialCard = isPrintMaterial(card);

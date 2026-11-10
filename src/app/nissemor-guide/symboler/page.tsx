@@ -363,7 +363,7 @@ function SymbolerContent() {
         </div>
 
         {/* Symbol Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 print:grid-cols-3 print:gap-1 print:h-screen">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 print:grid-cols-3 print:gap-1">
           {allSymbols.map((symbol) => {
             const parts = symbol.symbolId.split("-");
             const symbolType = parts[0];
@@ -392,7 +392,7 @@ function SymbolerContent() {
               <div
                 key={symbol.symbolId}
                 onClick={() => toggleSymbolCollection(symbol.symbolId)}
-                className={`border-4 border-dashed ${colorClass} p-6 bg-black/50 rounded-lg print:break-inside-avoid print:p-2 print:h-[33.333vh] print:flex print:flex-col print:justify-center print:bg-white print:rounded-none relative cursor-pointer hover:opacity-80 transition-opacity print:cursor-default ${
+                className={`border-4 border-dashed ${colorClass} p-6 bg-black/50 rounded-lg print:break-inside-avoid print:p-2 print:h-[90mm] print:flex print:flex-col print:justify-center print:bg-white print:rounded-none relative cursor-pointer hover:opacity-80 transition-opacity print:cursor-default ${
                   isCollected ? "ring-4 ring-(--gold)" : ""
                 } print:ring-0`}
               >
