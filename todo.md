@@ -100,8 +100,8 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [x] Symbolskanner og symbolkort (10. november)
 - [ ] GameEngine og spilltilstand
 - [ ] Lagring og synk (StorageManager, ServerSyncAdapter, /api/state, Postgres)
-- [ ] Dato og tid (date-utils, Tidsmaskin, simulering, `day-offset`)
-- [ ] Innlogging og moduser (auth, `NISSEKOMM_MODE`, proxy)
+- [x] Dato og tid (date-utils, Tidsmaskin, simulering, `day-offset`) (10. november)
+- [x] Innlogging og moduser (auth, `NISSEKOMM_MODE`, proxy) (10. november)
 - [x] KodeTerminal og bonuskoder
 - [x] NisseMail og varsler
 - [x] Dagbok og Julius-video (JuliusVideo, sett-status, transkripsjon, PS)
