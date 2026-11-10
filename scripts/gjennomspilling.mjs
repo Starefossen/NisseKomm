@@ -245,7 +245,7 @@ const frostgrad = () =>
   evaluate(
     `(() => { const t = document.body.innerText.match(/FROSTGRADEN\\s+(TØVÆR|\\d+ %)/); return t ? t[1] : null; })()`,
   );
-const LOGIN = "input[placeholder='_ _ _ _ _ _ _ _']";
+const LOGIN = "input[aria-label='Ord 1 av 3']";
 const closeWindow = async () => {
   if (
     await evaluate(
