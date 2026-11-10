@@ -31,6 +31,8 @@ export function mp3Duration(buf: Buffer): number | null {
     const x = i + 4 + (mono ? 17 : 32);
     const tag = buf.subarray(x, x + 4).toString("latin1");
     if ((tag === "Xing" || tag === "Info") && buf[x + 7] & 1) {
+      // A truncated header has no trustworthy frame count.
+      if (x + 12 > buf.length) return null;
       return Math.round((buf.readUInt32BE(x + 8) * 1152 * 100) / rate) / 100;
     }
     return Math.round(((buf.length - i) * 8 * 100) / (kbps * 1000)) / 100;

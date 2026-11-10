@@ -6,7 +6,8 @@
 import { createRemoteJWKSet, jwtVerify } from "jose";
 
 export type Level = "read" | "parent";
-export type Caller = { name: string; level: Level };
+/** `sub` is the unique key (fake clocks); `name` is only a label. */
+export type Caller = { sub: string; name: string; level: Level };
 
 const DEFAULT_ISSUER = "https://id.flaatten.org/oauth2/openid/mcp";
 
@@ -27,7 +28,7 @@ function callerFor(sub: string): Caller | null {
   try {
     const c = JSON.parse(process.env.MCP_CALLERS ?? "{}")[sub];
     return c && isLevel(c.level)
-      ? { name: String(c.name), level: c.level }
+      ? { sub, name: String(c.name), level: c.level }
       : null;
   } catch {
     return null;
@@ -42,7 +43,7 @@ function devCaller(token: string): Caller | null {
     const level = pair.slice(0, i).trim();
     const tok = pair.slice(i + 1).trim();
     if (i > 0 && tok.length >= 8 && tok === token && isLevel(level)) {
-      return { name: `dev-${level}`, level };
+      return { sub: `dev-${level}`, name: `dev-${level}`, level };
     }
   }
   return null;

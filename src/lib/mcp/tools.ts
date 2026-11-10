@@ -117,18 +117,22 @@ const osloIso = (date: string, hour: number): string =>
     : `${date}T${pad(hour)}:00:00+01:00`;
 
 /**
- * set_fake_now: per caller name, the clock keeps running from the fake
+ * set_fake_now: per caller `sub`, the clock keeps running from the fake
  * start. In memory only (one LAN pod); a restart clears it.
  */
+export class ArgError extends Error {}
+
 const fakeClocks = new Map<string, { fake: number; set: number }>();
+const FAKE_MIN = Date.parse("2026-11-01T00:00:00+01:00");
+const FAKE_MAX = Date.parse("2027-01-31T23:59:59+01:00");
 export const FAKE_NOW_TTL_MS = 24 * 3600 * 1000;
-export function clockFor(name: string): Date | undefined {
-  const f = fakeClocks.get(name);
+export function clockFor(sub: string): Date | undefined {
+  const f = fakeClocks.get(sub);
   if (!f) return undefined;
   const elapsed = Date.now() - f.set;
   if (elapsed > FAKE_NOW_TTL_MS) {
-    fakeClocks.delete(name);
-    console.info(`[mcp] set_fake_now for ${name} expired`);
+    fakeClocks.delete(sub);
+    console.info(`[mcp] set_fake_now for ${sub} expired`);
     return undefined;
   }
   return new Date(f.fake + elapsed);
@@ -404,7 +408,7 @@ export function getScreen(state: State, at?: Date) {
 const intArg = (v: unknown, min: number, max: number) => {
   const n = Number(v);
   if (!Number.isInteger(n) || n < min || n > max) {
-    throw new Error(`Må være et heltall ${min}–${max}`);
+    throw new ArgError(`ugyldig argument: heltall ${min}–${max}`);
   }
   return n;
 };
@@ -416,14 +420,14 @@ export const TOOLS: Record<string, Tool> = {
     level: "read",
     description: "Frost, gråtone og om dagens kode er løst.",
     inputSchema: { type: "object", properties: {} },
-    run: async (_, c) => getState(await read(), clockFor(c.name)),
+    run: async (_, c) => getState(await read(), clockFor(c.sub)),
   },
   get_screen: {
     level: "read",
     description:
       "Skjerm: dører (frost_day), tittel og teaser, today (løst, tidspunkt, milepæl), milestone_latest, countdown_days, Frostgrad, merker, frost, TV (poster_url, events) og neste endring. Tider i Europe/Oslo. Medie-URL-er er absolutte når NISSEKOMM_PUBLIC_BASE er satt, ellers rot-relative.",
     inputSchema: { type: "object", properties: {} },
-    run: async (_, c) => getScreen(await read(), clockFor(c.name)),
+    run: async (_, c) => getScreen(await read(), clockFor(c.sub)),
   },
   get_clips: {
     level: "read",
@@ -434,8 +438,11 @@ export const TOOLS: Record<string, Tool> = {
       properties: { date: { type: "string" } },
     },
     run: async ({ date }, c) => {
-      const today = isoDate(now(await read(), clockFor(c.name)));
-      const d = String(date ?? today);
+      const today = isoDate(now(await read(), clockFor(c.sub)));
+      const d = date === undefined ? today : String(date);
+      if (!/^\d{4}-\d\d-\d\d$/.test(d)) {
+        throw new ArgError("ugyldig argument: date");
+      }
       const m = /^2026-12-(\d\d)$/.exec(d);
       const day = m ? Number(m[1]) : 0;
       // A later date would be a spoiler; ISO dates compare as strings.
@@ -450,7 +457,8 @@ export const TOOLS: Record<string, Tool> = {
     inputSchema: { type: "object", properties: {} },
     run: async () => {
       const stored = (await read())["nissekomm-santa-letters"];
-      const letters = Array.isArray(stored) ? stored : [];
+      // ponytail: first 50 letters; the kids write one or two each.
+      const letters = Array.isArray(stored) ? stored.slice(0, 50) : [];
       // Shares ~5000 characters between the letters so 16 KB always holds.
       const max = Math.min(
         2000,
@@ -458,7 +466,7 @@ export const TOOLS: Record<string, Tool> = {
       );
       return {
         letters: letters.map((l) => ({
-          from: typeof l?.from === "string" ? l.from : null,
+          from: typeof l?.from === "string" ? l.from.slice(0, 40) : null,
           date: `2026-12-${pad(Number(l?.day) || 0)}`,
           day: Number(l?.day) || null,
           content: String(l?.content ?? "").slice(0, max),
@@ -476,13 +484,15 @@ export const TOOLS: Record<string, Tool> = {
     },
     run: async ({ now: at }, c) => {
       if (at === undefined || at === null || at === "") {
-        fakeClocks.delete(c.name);
+        fakeClocks.delete(c.sub);
         console.info(`[mcp] set_fake_now cleared by ${c.name}`);
         return { fake_now: null };
       }
       const t = Date.parse(String(at));
-      if (Number.isNaN(t)) throw new Error("Ugyldig now");
-      fakeClocks.set(c.name, { fake: t, set: Date.now() });
+      if (!(t >= FAKE_MIN && t <= FAKE_MAX)) {
+        throw new ArgError("ugyldig argument: now (2026-11-01–2027-01-31)");
+      }
+      fakeClocks.set(c.sub, { fake: t, set: Date.now() });
       console.info(`[mcp] set_fake_now ${c.name} -> ${String(at)}`);
       return {
         fake_now: new Date(t).toISOString(),
@@ -493,19 +503,20 @@ export const TOOLS: Record<string, Tool> = {
   preview_screen: {
     level: "parent",
     description:
-      "get_screen slik en annen kaller (as_caller, navnet i MCP_CALLERS) ser den.",
+      "get_screen slik en read-kaller (as_caller, f.eks. skjerm) ser den nå, med sensur. Ingen set_fake_now gjelder her.",
     inputSchema: {
       type: "object",
       properties: { as_caller: { type: "string" } },
     },
-    run: async ({ as_caller }) => {
-      const at = clockFor(String(as_caller ?? ""));
+    // Read callers cannot set a fake clock, so Skjerm sees real time; no
+    // parent's fake clock (the operator's or another's) applies here.
+    run: async () => {
       const state = await read();
       // Same guard as a read caller gets.
       return JSON.parse(
         redact(
-          JSON.stringify({ ...getScreen(state, at), schema_version: 1 }),
-          earnedCodes(state, at),
+          JSON.stringify({ ...getScreen(state), schema_version: 1 }),
+          earnedCodes(state),
         ),
       );
     },
@@ -514,13 +525,13 @@ export const TOOLS: Record<string, Tool> = {
     level: "read",
     description: "Dagens oppdrag slik barna ser det: tittel, e-post, video.",
     inputSchema: { type: "object", properties: {} },
-    run: async (_, c) => getTodayQuest(await read(), clockFor(c.name)),
+    run: async (_, c) => getTodayQuest(await read(), clockFor(c.sub)),
   },
   get_progress: {
     level: "read",
     description: "Løste dager og merker.",
     inputSchema: { type: "object", properties: {} },
-    run: async (_, c) => getProgress(await read(), clockFor(c.name)),
+    run: async (_, c) => getProgress(await read(), clockFor(c.sub)),
   },
   give_hint: {
     level: "parent",
@@ -549,7 +560,8 @@ export const TOOLS: Record<string, Tool> = {
         typeof until === "string"
           ? until
           : `${isoDate(now(state))}T${FROST_UNTIL_HOUR}:00`;
-      if (Number.isNaN(Date.parse(end))) throw new Error("Ugyldig until");
+      if (Number.isNaN(Date.parse(end)))
+        throw new ArgError("ugyldig argument: until");
       await getStore().putState("frost-override", {
         active: active === true,
         until: end,
@@ -616,10 +628,12 @@ export async function callTool(
   name: string,
   args: Record<string, unknown> = {},
 ): Promise<string> {
-  const caller = typeof who === "string" ? { name: who, level: who } : who;
-  const tool = TOOLS[name];
+  const caller: Caller =
+    typeof who === "string" ? { sub: who, name: who, level: who } : who;
+  // Own keys only: "constructor" or "__proto__" must not reach a prototype.
+  const tool = Object.hasOwn(TOOLS, name) ? TOOLS[name] : undefined;
   if (!tool || (tool.level === "parent" && caller.level !== "parent")) {
-    throw new Error(`Ukjent verktøy: ${name}`);
+    throw new ArgError("Ukjent verktøy");
   }
   let out = await tool.run(args, caller);
   if (out && typeof out === "object" && !Array.isArray(out)) {
@@ -627,7 +641,7 @@ export async function callTool(
   }
   let text = JSON.stringify(out);
   if (tool.level === "read") {
-    text = redact(text, earnedCodes(await read(), clockFor(caller.name)));
+    text = redact(text, earnedCodes(await read(), clockFor(caller.sub)));
   }
   if (Buffer.byteLength(text) > MAX_RESPONSE_BYTES) {
     throw new Error(`Svaret fra ${name} er over 16 KB`);
