@@ -513,14 +513,16 @@ S = under en halv dag, M = 1–2 dager, L = 3+ dager. «Innhold» er tekst/medie
 
 ### Rampestrek og fysisk (innhold + utskrift)
 
-| #   | Hva                                                                                                                                                                                                                              | Størrelse |
-| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| F1  | `rampenissen_rampestrek` og `materialer_nødvendig` skrives om for 24 dager fra §8 + §3                                                                                                                                           | S         |
-| F2  | Frostlapp-PDF: 19 orddager med skjelett, tallapper dag 2/11, krystallark dag 9 (4 ekte + 3 falske), fargekort dag 10 (blå bokstav under rødt), bokstavkort dag 1, bokstavlapp dag 19, bretteanvisning dag 14, sokkelapper dag 22 | M         |
-| F3  | Ni symbolkort (finnes i QR-siden)                                                                                                                                                                                                | –         |
-| F4  | Sjablong dag 6 (mal for utskjæring)                                                                                                                                                                                              | S         |
-| F5  | Handleliste oppdatert (hull 25)                                                                                                                                                                                                  | S         |
-| F6  | Diplom «Snøfalls venn» i `printout`                                                                                                                                                                                              | S         |
+| #   | Hva                                                                                                                                                                                                                                   | Størrelse |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| F1  | `rampenissen_rampestrek` og `materialer_nødvendig` skrives om for 24 dager fra §8 + §3                                                                                                                                                | S         |
+| F2  | Frostlapp-PDF: 19 orddager med skjelett, tallapper dag 2/11, krystallark dag 9 (4 ekte + 3 falske), fargekort dag 10 (blå bokstav under rødt), bokstavkort dag 1, bokstavlapp dag 19, bretteanvisning dag 14, sokkelapper dag 22      | M         |
+| F3  | Ni symbolkort (finnes i QR-siden)                                                                                                                                                                                                     | –         |
+| F4  | Sjablong dag 6 (mal for utskjæring)                                                                                                                                                                                                   | S         |
+| F5  | Handleliste oppdatert (hull 25)                                                                                                                                                                                                       | S         |
+| F6  | Diplom «Snøfalls venn» i `printout`                                                                                                                                                                                                   | S         |
+| F7  | **Tegnsett (meta 1):** 29 oppfunne glyffer A–Å som font eller SVG; `runetavle.pdf` (barna, i ferdskriveren dag 1) og `runer-fasit.pdf` (bare Nissemor-guiden); tegn i hjørnet av alle kort-PDF-er; kort i tegn dag 7, 17, 20, 24      | M         |
+| F8  | Reviderte kort-PDF-er etter vanskelighetsrevisjonen: romertall (2, 23), speilvendt (3), blindsporkort (1, 8, 10, 11, 12, 13, 15, 16, 18), to brettelinjer (14), `dag17-baandkort.pdf`, `dag21-portkort.pdf`, `dag24-krystallkort.pdf` | S         |
 
 ### NisseMail
 
@@ -535,7 +537,7 @@ S = under en halv dag, M = 1–2 dager, L = 3+ dager. «Innhold» er tekst/medie
 | --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
 | N1  | Tre verktøyfiler: `alfabet.txt` (5 og 22, uten tall), `krystallformel.txt` (9), `farge-koder.txt` (10), alle `afterDay`                                                                                                                                                                                                    | S           |
 | N2  | Fargesamlerens arkiv i tre filer (10, 15, 23)                                                                                                                                                                                                                                                                              | S (innhold) |
-| N3  | Tre DEKRYPTERT-avsløringer skrevet på nytt                                                                                                                                                                                                                                                                                 | S (innhold) |
+| N3  | Tre DEKRYPTERT-avsløringer skrevet på nytt; `stjernetegn.txt` som kart med åtte varder og sirkel på 5 (meta 2); margnotat i `02-notatboken.txt` (dag 15); runelinje i `03-siste-side.txt`                                                                                                                                  | S (innhold) |
 | N4  | Lore-filer: `om-snofall.txt`, `snofall_fakta.txt` (Orakelets rapport), `magisk-sekk-test.txt`, antenne-filen (slått sammen), `brevfugl-historie.txt`, `lucia-tradisjon.txt`, `foringsautomat.log`, `snill-listen.txt`                                                                                                      | S           |
 | N5  | Slett: `hint_arkiv.txt`, `hemmelig_kode.txt`, `snowflake-patterns.txt`, `julekuleblasing.txt`, `farge_system_dekoder.txt`, `lucia_lussekatt_hemmelig.txt`, `halvveis_system.txt`, `julekode_dekoder.txt`, `nordpolen_hemmelighet.txt`, `personlige-brev-intro.txt`, `dagens_oppdrag.txt` (eller skriv om uten Kanal-fasit) | S           |
 | N6  | NisseNet-toppmerke: fjern «PRISME // KRYSTALL-ANALYSE» og «SPEKTER // OPTISK KALIBRERING»                                                                                                                                                                                                                                  | S           |
@@ -551,6 +553,8 @@ S = under en halv dag, M = 1–2 dager, L = 3+ dager. «Innhold» er tekst/medie
 | T5  | Kode: Frostgrad-effekter (is fra kantene, fargetap, støy) som funksjon av prosenten                                                                                                                                           | M                           |
 | T6  | Kode: hendelser dag 1 (kanaler inn én etter én), 7 (signatur), 10 (grå), 20 (flimmer), 21 (frys/tine), 24 (varm)                                                                                                              | M                           |
 | T7  | Sju spøkelsestekster skrevet om (lengsel)                                                                                                                                                                                     | S                           |
+| T12 | Runelinje i spøkelsesbildet: nytt felt `transcript_runer` (dag 10, 13, 16, 21) tegnet med tegnsettet fra F7 under den norske linjen; samme komponent viser runelinjen i `03-siste-side.txt` dag 23                            | S (kode, etter F7)          |
+| T13 | Frostmodus 2 (dag 21) lar `DEKRYPTERT`-mappen i NisseNet være lesbar: Trixters kart er porten (meta 2)                                                                                                                        | S                           |
 | T8  | K3 = `JuliusVideo`; slett `VLOG_ENTRIES`, teletext-fasit, `codeHint`                                                                                                                                                          | S                           |
 | T9  | Minispill beholdes som lek etter koden; fjern bokstav-/tallgevinster i HUD                                                                                                                                                    | S                           |
 | T10 | Scenarioknapper ut av barnas visning                                                                                                                                                                                          | S                           |
@@ -558,15 +562,16 @@ S = under en halv dag, M = 1–2 dager, L = 3+ dager. «Innhold» er tekst/medie
 
 ### NisseMusikk · Brevfugler · NisseKrypto · EventyrOversikt
 
-| #   | Hva                                                                                                                                    | Størrelse |
-| --- | -------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| M1  | NisseMusikk: fjern bunnpanel med brikke; «FROSSET»-overlegg dag 12 til løst; «varmekilden»-tekst                                       | S         |
-| B1  | Brevfugler: blå fugl på radar fra dag 14, fryst brev-kort, tiner dag 24 med Vintervokterens fire linjer; fjern faseliste og svar-løfte | M         |
-| B2  | Brevfugler: fjern «KRYPTERING: O-R-I-G-A-M-I» og «[ORIGAMI]» i radaren (lekkasje dag 14)                                               | S         |
-| S1  | `SYMBOLSKANNER` åpen fra dag 3 (reveals på dag 3 eller alltid på skrivebordet); NisseKrypto fra dag 4                                  | S         |
-| G1  | GrandFinaleModal skrevet om for én historie og tøvær-tonen; fjern eventyr-iterasjon og slang                                           | S         |
-| K1  | NisseKrypto: nye `rewardText`; merke Varmebærer ved dekryptering 1                                                                     | S         |
-| O1  | EventyrOversikt: én linje med seks milepæler (liste i `eventyr.json`), fjern kamerametadata per ID                                     | M         |
+| #   | Hva                                                                                                                                         | Størrelse |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| M1  | NisseMusikk: fjern bunnpanel med brikke; «FROSSET»-overlegg dag 12 til løst; «varmekilden»-tekst                                            | S         |
+| B1  | Brevfugler: blå fugl på radar fra dag 14, fryst brev-kort, tiner dag 24 med Vintervokterens fire linjer; fjern faseliste og svar-løfte      | M         |
+| B2  | Brevfugler: fjern «KRYPTERING: O-R-I-G-A-M-I» og «[ORIGAMI]» i radaren (lekkasje dag 14)                                                    | S         |
+| S1  | `SYMBOLSKANNER` åpen fra dag 3 (reveals på dag 3 eller alltid på skrivebordet); NisseKrypto fra dag 4                                       | S         |
+| G1  | GrandFinaleModal skrevet om for én historie og tøvær-tonen; fjern eventyr-iterasjon og slang                                                | S         |
+| K1  | NisseKrypto: nye `rewardText`; merke Varmebærer ved dekryptering 1                                                                          | S         |
+| K2  | Betinget PS på dekryptering: `julius_ps_krypto_mangler` dag 20 vises når `stjernetegn` ikke er løst (samme mekanisme som `julius_ps_bonus`) | S         |
+| O1  | EventyrOversikt: én linje med seks milepæler (liste i `eventyr.json`), fjern kamerametadata per ID                                          | M         |
 
 ### Data (JSON)
 
@@ -599,7 +604,7 @@ S = under en halv dag, M = 1–2 dager, L = 3+ dager. «Innhold» er tekst/medie
 | C2  | Enkel innlogging: ett passord fra env eller ingen (avgjørelse 4)                                                                                                                                          | S         |
 | C3  | AGENTS.md / IMPLEMENTATION.md / ARCHITECTURE.md oppdatert etter koden                                                                                                                                     | S         |
 
-Sum per flate: Julius-video 6 · Radio 3 · Fysisk 6 · NisseMail 2 · NisseNet 6 · Snøfall TV 11 (én L) · Musikk/Brevfugler/Krypto/Eventyr/Finale 7 · Data 7 · Frost/hjem 6 · Opprydding 3 = **57 punkter**.
+Sum per flate: Julius-video 6 · Radio 3 · Fysisk 8 · NisseMail 2 · NisseNet 6 · Snøfall TV 13 (én L) · Musikk/Brevfugler/Krypto/Eventyr/Finale 8 · Data 7 · Frost/hjem 6 · Opprydding 3 = **62 punkter**. F7, F8, T12, T13 og K2 kommer fra vanskelighetsrevisjonen 10. november (`gaater-2026.md`, «Meta-gåter»). Runetavla er papir på operasjonsbrettet; ingen app-komponent trengs.
 
 ---
 
