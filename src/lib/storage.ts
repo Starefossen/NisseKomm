@@ -40,6 +40,7 @@ const KEYS = {
   FROST_OFF_DAY: "nissekomm-frost-off-day",
   UNLOCKED_MODULES: "nissekomm-unlocked-modules",
   SANTA_LETTERS: "nissekomm-santa-letters",
+  INTROS_SEEN: "nissekomm-intros-seen",
   SEASON: "nissekomm-season",
 } as const;
 
@@ -745,6 +746,16 @@ export class StorageManager {
 
   static setFrostOffDay(day: number): void {
     this.setItem(KEYS.FROST_OFF_DAY, day);
+  }
+
+  /** One-off openers already shown this season (e.g. the day-1 boot). */
+  static getIntrosSeen(): string[] {
+    return this.getItem<string[]>(KEYS.INTROS_SEEN, []);
+  }
+
+  static markIntroSeen(id: string): void {
+    const seen = this.getIntrosSeen();
+    if (!seen.includes(id)) this.setItem(KEYS.INTROS_SEEN, [...seen, id]);
   }
 
   static markJuliusWatched(day: number): void {

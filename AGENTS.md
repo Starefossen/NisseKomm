@@ -161,6 +161,7 @@ Explain WHY, not WHAT. Remove obvious comments.
 
 **NisseMail**: Split-view inbox (30/70), unread tracking, "NY" badges
 **Dagbok**: Julius' video diary (`JuliusVideo`, also Snøfall TV K3). Today's video opens on login with «NY MELDING FRA JULIUS» until played to the end (`GameEngine.markJuliusVideoWatched`); transcript after watching, `GameEngine.getJuliusPs(day)` after the code (bonus and day-20 «krypto mangler» variants). Day texts 2–24 (titles, mail, PS, alerts, NisseNet files): `python3 scripts/oppdrag-innhold.py` from `docs/manus/app-tekster-2026.md`; `kodelekkasje.test.ts` fails if a kid-visible text shows a code early. Transcripts: `python3 scripts/julius-transcripts.py` → `src/data/julius_videoer.json`
+**Dag 1-åpning (T14)**: `ui/Day1Opener.tsx`: `Day1Boot` (page.tsx, first login on 1 Dec) and `Day1Tail` (after Julius day-1 video); once each via `GameEngine.isIntroSeen/markIntroSeen`, click skips. Rune lines (T12) under Kulde's ghost line: `snofall-tv/runer.ts` + `RuneText learned=`, unlearned letters as frost.
 **Kalender**: 3 day states (locked/available/completed), modal on click → opens NisseMail
 **KodeTerminal**: 1.5s processing delay, case-insensitive validation, gold flash on success
 

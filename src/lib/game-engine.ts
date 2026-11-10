@@ -345,6 +345,15 @@ export class GameEngine {
     StorageManager.markJuliusWatched(day);
   }
 
+  /** Day-1 opener parts (T14): "boot" after the password, "tail" after Julius' video. */
+  static isIntroSeen(id: "boot" | "tail"): boolean {
+    return StorageManager.getIntrosSeen().includes(id);
+  }
+
+  static markIntroSeen(id: "boot" | "tail"): void {
+    StorageManager.markIntroSeen(id);
+  }
+
   /** Frostgraden (0–100) for a day, or null on days 1–6 when it is hidden. */
   static getFrostLevel(day: number = getCurrentDay()): number | null {
     const quest = ALL_QUESTS.find((q) => q.dag === day);

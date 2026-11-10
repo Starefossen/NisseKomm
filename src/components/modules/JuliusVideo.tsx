@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { getCurrentDay } from "@/lib/date-utils";
 import transcripts from "@/data/julius_videoer.json";
+import { Day1Tail } from "../ui/Day1Opener";
 
 interface JuliusVideoProps {
   day: number;
@@ -24,6 +25,7 @@ export function JuliusVideo({
     GameEngine.isJuliusVideoWatched(day),
   );
   const [missing, setMissing] = useState(false);
+  const [tail, setTail] = useState(false);
 
   if (day > getCurrentDay()) {
     return (
@@ -72,20 +74,26 @@ export function JuliusVideo({
           SIGNALET ER SVAKT …
         </div>
       ) : (
-        <video
-          ref={videoRef}
-          key={src}
-          src={src}
-          controls
-          playsInline
-          preload={preload}
-          className="aspect-video w-full border-4 border-(--gold)/60 bg-black"
-          onEnded={markWatched}
-          onError={() => {
-            // A failed load is not a viewing: the transcript stands in, the red dot stays
-            setMissing(true);
-          }}
-        />
+        <div className="relative">
+          <video
+            ref={videoRef}
+            key={src}
+            src={src}
+            controls
+            playsInline
+            preload={preload}
+            className="aspect-video w-full border-4 border-(--gold)/60 bg-black"
+            onEnded={() => {
+              markWatched();
+              if (day === 1 && !GameEngine.isIntroSeen("tail")) setTail(true);
+            }}
+            onError={() => {
+              // A failed load is not a viewing: the transcript stands in, the red dot stays
+              setMissing(true);
+            }}
+          />
+          {tail && <Day1Tail onDone={() => setTail(false)} />}
+        </div>
       )}
 
       {watched && !missing && (
