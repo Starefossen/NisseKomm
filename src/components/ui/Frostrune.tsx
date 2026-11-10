@@ -43,30 +43,55 @@ export function Frostrune({ letter, size = 24, className }: FrostruneProps) {
   );
 }
 
-/** A line of text in runes (e.g. transcript_runer). Spaces stay spaces. */
+/** Letters not in `learned` become frost noise (null); spaces stay. */
+export function maskRunes(
+  text: string,
+  learned?: Set<string>,
+): (string | null)[] {
+  return text
+    .toUpperCase()
+    .split("")
+    .map((ch) => (ch === " " || !learned || learned.has(ch) ? ch : null));
+}
+
+/**
+ * A line of text in runes (e.g. transcript_runer). Spaces stay spaces. With
+ * `learned`, only those letters are drawn; the rest is frost noise.
+ */
 export function RuneText({
   text,
   size = 20,
   className,
+  learned,
 }: {
   text: string;
   size?: number;
   className?: string;
+  learned?: Set<string>;
 }) {
+  const chars = maskRunes(text, learned);
   return (
     <span
       className={`inline-flex flex-wrap items-end gap-1 ${className ?? ""}`}
-      aria-label={text}
+      aria-label={chars.map((c) => c ?? "*").join("")}
     >
-      {text
-        .split("")
-        .map((ch, i) =>
-          ch === " " ? (
-            <span key={i} style={{ width: size / 2 }} />
-          ) : (
-            <Frostrune key={i} letter={ch} size={size} />
-          ),
-        )}
+      {chars.map((ch, i) =>
+        ch === null ? (
+          <span
+            key={i}
+            data-frost
+            aria-hidden
+            className="inline-flex items-center justify-center opacity-50"
+            style={{ width: size, height: (size * 30) / 20 }}
+          >
+            ❄
+          </span>
+        ) : ch === " " ? (
+          <span key={i} style={{ width: size / 2 }} />
+        ) : (
+          <Frostrune key={i} letter={ch} size={size} />
+        ),
+      )}
     </span>
   );
 }

@@ -19,6 +19,8 @@ import {
   latestIntercept,
   type ChannelId,
 } from "./snofall-tv/channels";
+import { latestRuneLine } from "./snofall-tv/runer";
+import { RuneText } from "../ui/Frostrune";
 
 interface SnøfallTVProps {
   onClose: () => void;
@@ -142,6 +144,13 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
               85,0 MHz // KRYSTALLGROTTEN
             </div>
             <div className="text-lg">«{intercept}»</div>
+            {latestRuneLine(day) && (
+              <RuneText
+                text={latestRuneLine(day)!}
+                learned={GameEngine.getLearnedRunes()}
+                className="mt-1"
+              />
+            )}
           </div>
         )}
 

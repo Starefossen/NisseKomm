@@ -21,6 +21,7 @@ export class SoundManager {
     open: { frequency: 600, duration: 150, waveType: "sine" as const },
     close: { frequency: 400, duration: 100, waveType: "sine" as const },
     type: { frequency: 1000, duration: 50, waveType: "square" as const },
+    static: { frequency: 90, duration: 400, waveType: "sawtooth" as const },
     boot: { frequency: 500, duration: 300, waveType: "triangle" as const },
   };
 

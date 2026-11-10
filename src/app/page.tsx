@@ -4,6 +4,7 @@ import { useState, useSyncExternalStore } from "react";
 import { CRTFrame } from "@/components/ui/CRTFrame";
 import { BootSequence } from "@/components/ui/BootSequence";
 import { PasswordPrompt } from "@/components/ui/PasswordPrompt";
+import { Day1Boot } from "@/components/ui/Day1Opener";
 import { SoundToggle } from "@/components/ui/SoundToggle";
 import { useSounds } from "@/lib/sounds";
 import { StorageManager } from "@/lib/storage";
@@ -202,6 +203,16 @@ export default function Home() {
     }
   }
 
+  // T14: first login of the season on 1 December gets the tune-in, once
+  const [day1BootDone, setDay1BootDone] = useState(false);
+  const showDay1Boot =
+    bootComplete &&
+    effectiveAuthenticated &&
+    !isInitializing &&
+    !day1BootDone &&
+    getCurrentDay() === 1 &&
+    !GameEngine.isIntroSeen("boot");
+
   // Show access denied if outside December 1-24 in production mode
   if (isHydrated && !isDateValid()) {
     return (
@@ -233,6 +244,8 @@ export default function Home() {
       {!bootComplete && (
         <BootSequence onComplete={handleBootComplete} duration={bootDuration} />
       )}
+
+      {showDay1Boot && <Day1Boot onDone={() => setDay1BootDone(true)} />}
 
       {/* Password prompt */}
       {bootComplete && !effectiveAuthenticated && (
