@@ -38,7 +38,9 @@ const MERGED_KEYS = new Set([
 const itemId = (x: unknown) => {
   if (x && typeof x === "object") {
     const o = x as Record<string, unknown>;
-    return JSON.stringify(o.day ?? o.dag ?? o.kode ?? o.badgeId ?? o.symbolId ?? o);
+    return JSON.stringify(
+      o.day ?? o.dag ?? o.kode ?? o.badgeId ?? o.symbolId ?? o,
+    );
   }
   return JSON.stringify(x);
 };

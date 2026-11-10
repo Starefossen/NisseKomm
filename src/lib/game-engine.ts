@@ -15,11 +15,7 @@
 
 import { StorageManager } from "./storage";
 import { BadgeManager } from "./badge-system";
-import {
-  getEventyr,
-  getEventyrDays,
-  getEventyrForDay,
-} from "./eventyr";
+import { getEventyr, getEventyrDays, getEventyrForDay } from "./eventyr";
 import {
   getCurrentDay,
   getCurrentMonth,
