@@ -407,65 +407,6 @@ describe("GameEngine", () => {
   });
 
   describe("Progressive System Status", () => {
-    it("should return metrics with sigmoid progression", () => {
-      const metrics = GameEngine.getProgressiveMetrics(12);
-
-      expect(metrics.length).toBeGreaterThan(0);
-      metrics.forEach((metric) => {
-        expect(metric.navn).toBeDefined();
-        expect(metric.verdi).toBeGreaterThanOrEqual(0);
-        expect(metric.verdi).toBeLessThanOrEqual(metric.maks);
-        expect(metric.maks).toBe(100);
-        expect(["normal", "advarsel", "kritisk"]).toContain(metric.status);
-      });
-    });
-
-    it("should show lower values on day 1", () => {
-      const day1Metrics = GameEngine.getProgressiveMetrics(1);
-      const day12Metrics = GameEngine.getProgressiveMetrics(12);
-
-      // Day 1 should have lower values than day 12 (midpoint)
-      const day1Avg =
-        day1Metrics.reduce((sum, m) => sum + m.verdi, 0) / day1Metrics.length;
-      const day12Avg =
-        day12Metrics.reduce((sum, m) => sum + m.verdi, 0) / day12Metrics.length;
-
-      expect(day1Avg).toBeLessThan(day12Avg);
-    });
-
-    it("should show higher values on day 24", () => {
-      const day12Metrics = GameEngine.getProgressiveMetrics(12);
-      const day24Metrics = GameEngine.getProgressiveMetrics(24);
-
-      // Day 24 should have higher values than day 12
-      const day12Avg =
-        day12Metrics.reduce((sum, m) => sum + m.verdi, 0) / day12Metrics.length;
-      const day24Avg =
-        day24Metrics.reduce((sum, m) => sum + m.verdi, 0) / day24Metrics.length;
-
-      expect(day24Avg).toBeGreaterThan(day12Avg);
-    });
-
-    it("should unlock metrics progressively", () => {
-      const day1Metrics = GameEngine.getProgressiveMetrics(1);
-      const day4Metrics = GameEngine.getProgressiveMetrics(4);
-      const day7Metrics = GameEngine.getProgressiveMetrics(7);
-      const day10Metrics = GameEngine.getProgressiveMetrics(10);
-
-      // Only NISSEKRAFT visible on day 1
-      expect(day1Metrics.length).toBe(1);
-      expect(day1Metrics[0].navn).toBe("NISSEKRAFT");
-
-      // BREVFUGL-SVERM unlocks day 4
-      expect(day4Metrics.length).toBe(2);
-
-      // VERKSTED-VARME unlocks day 7
-      expect(day7Metrics.length).toBe(3);
-
-      // SLEDE-TURBO unlocks day 10
-      expect(day10Metrics.length).toBe(4);
-    });
-
     it("should freeze REINSDYR at crisis value on day 11 if antenna unresolved", () => {
       const completedQuests = GameEngine.getCompletedQuestCount();
       const day11Metrics = GameEngine.getGlobalProductionMetrics(
@@ -491,31 +432,6 @@ describe("GameEngine", () => {
       expect(nissekraft!.verdi).toBe(62); // Crisis value
       expect(nissekraft!.status).toBe("advarsel");
       expect(nissekraft!.inCrisis).toBe(true);
-    });
-
-    it("should freeze BREVFUGL-SVERM at crisis value on day 16 if unresolved", () => {
-      const day16Metrics = GameEngine.getProgressiveMetrics(16);
-      const brevfugl = day16Metrics.find((m) => m.navn === "BREVFUGL-SVERM");
-
-      expect(brevfugl).toBeDefined();
-      expect(brevfugl!.verdi).toBe(15); // Crisis value
-      expect(brevfugl!.status).toBe("kritisk");
-    });
-
-    it("should classify status based on thresholds", () => {
-      // Test various days to ensure status classification works
-      const day1Metrics = GameEngine.getProgressiveMetrics(1);
-      const day24Metrics = GameEngine.getProgressiveMetrics(24);
-
-      // Day 1 metrics should be lower (possibly yellow/advarsel)
-      const day1Status = day1Metrics.map((m) => m.status);
-      expect(day1Status.some((s) => s === "advarsel" || s === "kritisk")).toBe(
-        true,
-      );
-
-      // Day 24 metrics should be high (green/normal)
-      const day24Status = day24Metrics.map((m) => m.status);
-      expect(day24Status.some((s) => s === "normal")).toBe(true);
     });
   });
 

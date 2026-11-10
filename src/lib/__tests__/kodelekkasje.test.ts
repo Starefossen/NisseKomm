@@ -22,8 +22,7 @@ const ALLOWED = new Set(["LANDÅS"]);
 
 // Locked texts that mention a later code in passing. Listed so a new leak
 // still fails; each one is a question for Hans, not a fix.
-const KNOWN = new Set([
-]);
+const KNOWN = new Set<string>([]);
 
 type Visible = { from: number; where: string; text: string };
 

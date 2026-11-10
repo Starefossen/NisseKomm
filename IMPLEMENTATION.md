@@ -228,118 +228,13 @@ Bonusoppdrags balance optional challenge with guaranteed progression. Parents va
 
 ## 3. Eventyr (Story Arcs)
 
-### Overview
+One story, **Spøkelseskoden** (`spokelseskoden`), runs through all 24 days. Every quest has `eventyr.id: "spokelseskoden"`; the quest validator rejects unknown ids.
 
-Multi-phase narrative quests spanning 8-10 days with escalating challenges. Creates overarching narrative tension across weeks.
+**Data** (`src/data/eventyr.json`): `navn`, `beskrivelse`, `tema`, `første_opplåsingsdag`, `belønning` (badge `snofalls-venn`) and `milepaeler` (days 1, 7, 12, 15, 21, 24), each with `dag`, `navn`, `tekst`.
 
-### Current Eventyr
+**Progress**: `getEventyrProgress("spokelseskoden", completedDays)` in `lib/eventyr.ts` returns the percentage of the story's days completed.
 
-**Eventyr 1: "Jakten på Snøfallens Grunnstein"**
-
-- **Days**: 3-12 (9 phases)
-- **Theme**: Finding the foundation stone of Snøfall
-- **Badge**: "GRUNNSTEIN-VOKTER"
-
-**Eventyr 2: "Nattens Magi og Månekrystallet"**
-
-- **Days**: 14-24 (9 phases)
-- **Theme**: Night magic and moon crystal
-- **Badge**: "MÅNEKRYSTALL-MESTER"
-
-### Phase Structure
-
-**Phase 1-2: Setup**
-
-- Introduction to mystery
-- Initial clues and characters
-- Establishes stakes
-
-**Phase 3-6: Investigation**
-
-- Gathering evidence
-- Solving sub-puzzles
-- Progressive revelations
-- Rising tension
-
-**Phase 7-8: Climax**
-
-- Confronting main challenge
-- Using accumulated knowledge
-- High-stakes decisions
-
-**Phase 9: Resolution**
-
-- Mystery solved
-- Reward ceremony
-- Badge awarded
-- Setup for next eventyr (if applicable)
-
-### User Flow
-
-1. **Automatic Unlock**
-   - Eventyr phase unlocks on specific day
-   - No manual activation required
-   - Appears in EventyrOversikt module
-
-2. **Progress Tracking**
-   - Complete daily main quests
-   - Eventyr phases advance automatically
-   - Visual progress indicator in EventyrOversikt
-
-3. **Phase Completion**
-   - Each phase tied to specific quest day
-   - Phase content revealed in diary
-   - Narrative continuity maintained
-
-4. **Final Reward**
-   - Last phase awards completion badge
-   - Special finale message from Julius
-   - Badge visible in profile
-
-### Technical Implementation
-
-**Story Data** (`src/data/eventyr.json`):
-
-```json
-{
-  "id": "eventyr1",
-  "navn": "Jakten på Snøfallens Grunnstein",
-  "beskrivelse": "En urgammel hemmelighet...",
-  "startDag": 3,
-  "sluttDag": 12,
-  "faser": [
-    {
-      "fase": 1,
-      "dag": 3,
-      "tittel": "Mysteriet begynner",
-      "innhold": "Julius oppdager noe rart..."
-    }
-  ],
-  "badge": "grunnstein-vokter"
-}
-```
-
-**Progress Calculation**:
-
-- `GameEngine.getEventyrProgress(eventyrId)` tracks phase completion
-- Returns: total phases, completed count, current phase, completion status
-- Phases unlock automatically when corresponding quest day is completed
-- Badge awarded on final phase completion
-
-**Badge Awarding**:
-
-- Badge automatically awarded when all eventyr phases complete
-- Checked via `GameEngine.getEventyrProgress()`
-- Stored via `StorageManager.addEarnedBadge()`
-
-### UI Module
-
-**EventyrOversikt** (`windows/EventyrOversikt.tsx`):
-
-- Unlocks on Day 8
-- Shows both eventyr with progress bars
-- Phase-by-phase breakdown
-- Visual timeline with checkmarks
+**UI**: `EventyrOversikt` shows one progress line with the milestones reached; the parent guide (`/nissemor-guide/eventyr`, `StatsDashboard`) shows the same progress.
 
 ## 4. Nice List & Name Registration
 
