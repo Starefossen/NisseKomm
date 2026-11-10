@@ -28,7 +28,7 @@ Status: **finnes** (brukes som i dag), **endres**, **ny**, **fjernes**.
 | **Kalender** (`windows/Kalender.tsx`)                                                | 24 luker, tre tilstander, modal → NisseMail.                                                                                                                                                                                                                                        | Uendret. Titlene må ikke inneholde dagens kode (dag 21 gjør det).                                                                                                                                                                                                                                                                                                                                    | finnes (tittelfiks)     |
 | **KodeTerminal** (`windows/KodeTerminal.tsx`)                                        | Validering, 1,5 s, gullblink, foreldrekode for bonus, kaller `/api/home-bridge` (POST).                                                                                                                                                                                             | Uendret. Ingen sperre mot video. Bonusgodkjenning gir −20 % frost i stedet for merke. Fjern utgående home-bridge-kall (Skjerm poller i stedet).                                                                                                                                                                                                                                                      | endres (S)              |
 | **Snøfall TV** (`windows/SnøfallTV.tsx`, 2 955 linjer)                               | Fire fotofeeder (PNG) med SVG-effekter, frekvenshjul 85,0–108,0, spøkelsesbilde (`PIRATE_INTERCEPTS`, 7 dager: 3, 7, 10, 11, 13, 16, 21), fire minispill (kretskort, sorterer, slede, zapper), tekst-TV, 7 scenarioknapper synlige for barna. Kanal 3 viser VLOG-tekst med fasit.   | Kanal 3 = videospilleren. Kanal 1/2/4 = loop + minispill som lek/bekreftelse etter koden, aldri brikke. Loops erstatter PNG (fem faste + ca. ti hendelsesloops, §9). Kodeeffekter styrt av Frostgraden. Spøkelsestekstene skrives om fra hån til lengsel. Scenarioknappene flyttes til Nissemor-guiden.                                                                                              | endres (L)              |
-| **NisseNet** (`windows/NisseNetUtforsker.tsx` + `statisk_innhold.json › filer`)      | Filtre med 30 filer. Mange inneholder fasit (eks. `julesanger-samling.txt`: «KODEORD PÅ 6 BOKSTAVER», `om-snofall.txt`: N-A-L). `hint_arkiv.txt` viser `hint`-feltet, som staver koden. Verktøyfiler for dag 7, 9, 10, 16, 22 låses opp først **etter** dagens kode (topic-vilkår). | Verktøy og arkiv: `alfabet.txt` (dag 5), `krystallformel.txt` (dag 9), `farge-koder.txt` (dag 10, rekkefølge), `alfabettabell.txt` (dag 22), Fargesamlerens arkiv (dag 10, 15, 23), tre DEKRYPTERT-filer = de tre avsløringene. Alle verktøy åpner på dato (`afterDay`), ikke etter kode. `hint_arkiv.txt` fjernes.                                                                                  | endres (M)              |
+| **NisseNet** (`windows/NisseNetUtforsker.tsx` + `statisk_innhold.json › filer`)      | Filtre med 30 filer. Mange inneholder fasit (eks. `julesanger-samling.txt`: «KODEORD PÅ 6 BOKSTAVER», `om-snofall.txt`: N-A-L). `hint_arkiv.txt` viser `hint`-feltet, som staver koden. Verktøyfiler for dag 7, 9, 10, 16, 22 låses opp først **etter** dagens kode (topic-vilkår). | Verktøy og arkiv: `alfabet.txt` (dag 5), `krystallformel.txt` (dag 9), `farge-koder.txt` (dag 10, rekkefølge), `alfabet.txt` igjen (dag 22), Fargesamlerens arkiv (dag 10, 15, 23), tre DEKRYPTERT-filer = de tre avsløringene. Alle verktøy åpner på dato (`afterDay`), ikke etter kode. `hint_arkiv.txt` fjernes.                                                                                  | endres (M)              |
 | **NisseMusikk** (`windows/NisseMusikk.tsx`)                                          | 13 chiptune-spor, bunnpanel med «DEL 2: O - D - I» hardkodet.                                                                                                                                                                                                                       | Åpner dag 7 som «varmekilden». Dag 12: «FROSSET» til koden er inne. Hardkodet brikke fjernes.                                                                                                                                                                                                                                                                                                        | endres (S)              |
 | **Brevfugler** (`windows/Brevfugler.tsx`)                                            | Radar, skriv brev til Julius (lagres lokalt), faseliste for `brevfugl-mysteriet` (1, 5, 12, 14) hardkodet, lover «Julius' svar kommer neste dag i NisseMail» (ingen svarmekanisme finnes).                                                                                          | Åpner dag 14. Radar med én blå fugl fra grotten og et fryst brev som tiner dag 24. Faselisten og svar-løftet fjernes; brevskriving kan stå.                                                                                                                                                                                                                                                          | endres (M)              |
 | **NisseKrypto** (`windows/NisseKrypto.tsx`)                                          | Tre dekrypteringer (dag 12, 18, 23) med rekkefølgehint, låser opp DEKRYPTERT-filer.                                                                                                                                                                                                 | Uendret mekanikk. Nye tekster i `rewardText` og i de tre filene (avsløringene). Dag 12 gir merket Varmebærer.                                                                                                                                                                                                                                                                                        | endres (innhold)        |
@@ -54,7 +54,27 @@ Status: **finnes** (brukes som i dag), **endres**, **ny**, **fjernes**.
 
 Disse står én gang her, så dagene under slipper å gjenta dem.
 
-**Frostlappen (brikke H på orddager).** Lappen i huset viser kodeordet med omtrent halvparten av bokstavene «iset over» (trykt som iskrystaller). Eksempel dag 7: `K _ L _ E`. Julius' setning peker på ordet uten å si det. Hver for seg er de for svake: skjelettet gir mange ord, Julius' setning gir mange synonymer. Sammen gir de ett. Kristian trenger begge; Hanna og Håkon skaffer lappen. Lappene trykkes fra Nissemor-guiden (én PDF for hele måneden). Tall-dager (2, 9, 11) og kodedager (5, 22) har egne lapper, se dagen.
+**Frostlappen (brikke H på orddager).** Lappen i huset viser kodeordet med noen bokstaver synlige og resten «iset over» (trykt som iskrystaller). Eksempel dag 7: `K _ _ _ E`. Julius' setning peker på ordet uten å si det. Hver for seg skal de være for svake; sammen gir de ett ord. Kristian trenger begge; Hanna og Håkon skaffer lappen. Lappene trykkes fra Nissemor-guiden (én PDF for hele måneden). Tall-dager (2, 9, 11) og kodedager (5, 22) har egne lapper, se dagen.
+
+**Brikketaket (gjelder alle dager).** Ingen enkelt flate skal gi mer enn 40 % av koden. For ord: huset viser høyst 40 % av bokstavene (rundet ned; 5–7 bokstaver → 2, 8–9 → 3, 12 → 4), aldri både første og siste bokstav, aldri en sammenhengende stavelse. Julius' setning inneholder aldri ordet, et synonym eller ordets første lyd; den beskriver bruken eller hvem som sier det. Verktøyfiler gir regel, aldri bokstaver. For tall: huset gir tallene, Julius gir regneregelen, og regelen står ikke på lappen. Skjelettene i §3 er skrevet før taket ble satt og bryter det på dag 3, 4, 8, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23 og 24 (de gir 50–80 %); de **merkes «steg 1»** og strammes i gåtegjennomgangen med taket som hard grense. Dag 1, 2, 5, 7, 9, 11 og 22 holder taket slik de står. Alternativ til færre bokstaver, der ordet blir for vanskelig for et 12-årig øye: bokstavene gis i feil rekkefølge (som dag 1) eller spres på flere ting som må hentes (som dag 19).
+
+**Betinget innhold.** Video og radio er spilt inn på forhånd og kan ikke forgrene seg. Alt som avhenger av om barna gjorde noe (bonus løst, kode inne, navn registrert) ligger derfor bare i tekst som koden kan velge mellom: PS fra Julius, NisseMail, spøkelsesbildet, Skjerm-kort. Julius snakker om bonusene i fremtid eller på en måte som er sann uansett.
+
+**Kunnskapstidslinje.** Hvem vet hva, så ingen flate sier noe avsenderen ikke kan vite:
+
+| Dag | Barna vet                                                                         | Rampenissen vet                                                                               | Julius vet                             | IQ vet                                  |
+| --- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | -------------------------------------- | --------------------------------------- |
+| 1–6 | Noe hakker på linjen                                                              | Det samme, sett fra gulvet                                                                    | Orakelet hører noe på 85,0             | Linjen er bygd riktig; noe annet sender |
+| 7   | Navnet: Kulde. Frostgraden                                                        | Navnet (hørte Julius si det på linjen)                                                        | Navnet                                 | Navnet                                  |
+| 12  | Kulde høres alene ut (avsløring 1)                                                | Hørte sukket selv, blir ikke trodd                                                            | Tviler: sorg, ikke sinne               | Vil ikke høre om det                    |
+| 15  | Hvem Kulde er: Vintervokteren, bygd av IQ (notatboken)                            | Det samme, samme kveld: han sitter i stua når barna leser. Fra nå kaller ingen Kulde «fiende» | Det samme, IQ fortalte ham om morgenen | Fant notatboken i natt, sier én setning |
+| 17  | Grotten svarte med lys                                                            | Så det grønne over Ulriken                                                                    | Første kontakt                         | Begynner å tegne en mur med port        |
+| 20  | Kulde når huset i morgen; muren er for å holde varmen inne, ikke for å stenge ute | Han skal holde huset varmt (bøker, lokk) og vet at porten skal stå åpen                       | Bestemmer porten                       | Bygger muren                            |
+| 21  | Porten står åpen                                                                  | Det samme                                                                                     | –                                      | –                                       |
+| 23  | Hele historien (avsløring 3)                                                      | Det samme, men ikke hva som ligger under treet i morgen                                       | –                                      | –                                       |
+| 24  | Alt                                                                               | Alt                                                                                           | –                                      | –                                       |
+
+Konsekvens for tonen etter dag 15: Rampenissen rigger ikke til krig. Bokmuren dag 21 er «for å holde huset varmt», grytelokket er mot trekken, og han sier selv at porten skal stå åpen. Julius bruker aldri «fiende», «slå» eller «knuse» etter dag 12.
 
 **Hvordan lappen hentes.** Historien krever at brikke H «må hentes, telles, sorteres, lyses på eller ses gjennom filter, aldri bare leses av». Dagene under sier hva barna faktisk gjør. På jaktdager ligger den utenfor scenen; ellers i scenen.
 
@@ -63,6 +83,8 @@ Disse står én gang her, så dagene under slipper å gjenta dem.
 **Radio.** Rampenissens klipp bærer tre ting: hva som skjedde i natt (fra gulvet på Landås), hvordan han har det, og bekreftelse av gårsdagen. Aldri brikker, bokstaver, tall eller «hvor». Hvis et klipp mangler, mangler barna ingenting.
 
 **Roller.** Hanna har én ting bare hun gjør (merket **H5** under). Håkon henter, krabber, teller, spiller (**H9**). Kristian slår opp, regner, ser videoen med de andre og taster (**K12**).
+
+**Hannas dager.** Kravet er at Hannas handling gir noe koden trenger, ikke bare noe hyggelig. Slik §3 står, gjør den det på **dag 1** (tar bokstavkortene av tråden), **2** (finner én av tre lapper), **7** (tiner lappen), **9** (sorterer ekte og falske, det gir tallet 4), **10** (leser bokstavene gjennom rødt filter), **11** (finner én av tre lapper), **19** (legger gulrøttene i riktig rekkefølge), **20** (henter lappen i fortet), **21** (leser bokstavene i rekkefølge), **22** (finner lappen i sin sokk), og på de ni symbolkortdagene (3, 6, 9, 12, 15, 18, 20, 22, 23) der kortet hun skanner er det dekrypteringene dag 12, 18 og 23 krever. På **dag 4, 5, 6, 8, 13, 14, 15, 16, 17, 18 og 24** er oppgaven hennes i dag staffasje (telle pakker, velge fugl, smake sirup, løsne knuter); de **merkes «steg 1»** med krav: enten bærer Hannas handling en del av brikke H (for eksempel at de synlige bokstavene bare kan nås av henne, eller at hun må sortere noe før rekkefølgen gir mening), eller så aksepteres det uttrykkelig at symbolkortet er hennes bidrag den dagen.
 
 **Frostgraden.** Vises i sidepanelet fra dag 7. Tabellen er fasit for koden (statisk per dag i JSON, ingen formel):
 
@@ -74,7 +96,7 @@ Disse står én gang her, så dagene under slipper å gjenta dem.
 
 Dag 1–6 vises ingen prosent (Orakelet har ikke navnet ennå). Dag 10 og 21 er angrepsdager med hopp. Dag 20 er varselet. Uløste dager står på morgenverdien til de løses.
 
-**Snøfall TV-kanaler (forslag til én fast kartlegging).** K1 Snøfall landsby/Julius' kontor (ute), K2 IQs verksted (sikringer, kolbe, sentrifuge, trykkmåler), K3 Julius' video, K4 antennen ved tjernet (frekvenshjul, HUD, minispill). 85,0 MHz på hjulet = Krystallgrotten (Kuldes spøkelsesbilde). Dagens kode avviker (K3 = antenne, K4 = grotte); se hull 20.
+**Snøfall TV-kanaler (avgjort 10. november).** K1 Snøfall landsby/ute, K2 IQs verksted (sikringer, kolbe, sentrifuge, trykkmåler), K3 Julius' video, K4 antennen ved tjernet (frekvenshjul, HUD, minispill). 85,0 MHz på hjulet = Krystallgrotten (Kuldes spøkelsesbilde). Koden endres til å følge kartet (hull 20).
 
 ---
 
@@ -158,7 +180,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Innlogging.** Tema: St. Nikolaus, gaver i sko, lyktene folk bar mellom gårdene. I natt: Orakelet sier lys er det Kulde ikke tåler; IQ hengte lykter rundt antennen. Brikke S: «Det barna bar mellom gårdene da det var som mørkest. Ikke et bål, ikke et stearinlys. Det med håndtak.» Kulde 1.
 
-**Gåte.** H: lommelykt + papprull med bakepapir og sjablong i enden, gjemt utenfor scenen (gang/soverom) sammen med rødt hjerte-kort. Sjablongen er skjelettet `L _ K _` skåret ut, så bokstavene står på veggen når Håkon lyser (H9); Hanna sier hva hun ser og leser bokstavene (H5). S: det med håndtak. Kristian: LYKT (K12). Kode **LYKT**. _Sjablong med form (en lykt) i stedet for bokstaver gjør Julius overflødig; derfor bokstaver._ Avgjørelse 2.
+**Gåte.** H: lommelykt + papprull med bakepapir og sjablong i enden, gjemt utenfor scenen (gang/soverom) sammen med rødt hjerte-kort. Sjablongen er skjelettet `L _ K _` skåret ut, så bokstavene står på veggen når Håkon lyser (H9); Hanna sier hva hun ser og leser bokstavene (H5). S: det med håndtak. Kristian: LYKT (K12). Kode **LYKT**. **Steg 1:** utskårne bokstaver i bakepapir gir bare diffust lys med en vanlig lommelykt; bokstavprojeksjon er ikke pålitelig. Bruk skyggefigurer (silhuett som kan være lykt, lampe eller fakkel; Julius' «med håndtak» avgjør) eller en lapp som bare kan leses med lykt under bordet, innenfor brikketaket.
 
 **Flater.** Mail: lys er våpenet, «finn lommelykten». Ingen fil. K1 «lyktefest»-overlegg som lek. Symbol 2/9.
 
@@ -172,7 +194,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Innlogging.** Tema: mørketid; hvorfor sola ikke står opp nord for polarsirkelen, og at kulde ikke er ondskap, bare fravær av varme. I natt: Orakelet fanget signaturen. Det har et navn. Frostgraden kan måles nå. Brikke S: «Navnet er det motsatte av det Nissemor har i ovnen akkurat nå. Ikke bollene. Det som kommer ut når hun åpner døra.» Kulde 2 (bildet fryser 1–2 s idet han sier navnet, så han sier det ikke).
 
-**Gåte.** H: frostlappen `K _ L _ E` ligger i en liten pose fryst inn i et glass vann i fryseren; Hanna holder glasset under varmt vann med en voksen til posen slipper (H5): varme smelter kulde, uten at noen sier det. Håkon tørker og leser (H9). S: motsatt av varme. Kristian: KULDE (K12). Kode **KULDE**.
+**Gåte.** H: frostlappen `K _ _ _ E` ligger i en liten pose fryst inn i et glass vann i fryseren; Hanna holder glasset under varmt vann med en voksen til posen slipper (H5): varme smelter kulde, uten at noen sier det. Håkon tørker og leser (H9). S: motsatt av varme. Kristian: KULDE (K12). Kode **KULDE**.
 
 **Flater.** Mail: Orakelet har navnet, «redd lua mi». Sidepanel: **Frostgraden 30 %** vises første gang. Snøfall TV: signaturen brenner seg inn et øyeblikk på alle kanaler (kode); spøkelsesbilde dag 7 («-42,8 °C»). NisseMusikk åpner («varmekilden», liten tekst i vinduet). NisseNet: `snofall_fakta.txt` skrives om til Orakelets rapport uten D-E, åpner på dato.
 
@@ -290,7 +312,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Belønning.** Resten av arkivet (del 2). PS: «IQ sa én setning i kveld: 'Jeg glemte å slå det av.'»
 
-**Kontinuitet.** M4. Fra nå vet barna hva Kulde er. Radio og mail slutter å kalle Kulde «fiende».
+**Kontinuitet.** M4. Fra nå vet barna hva Kulde er, og Rampenissen vet det samme fra samme kveld (han sitter i stua når de leser). Fra dag 16 kaller ingen flate Kulde «fiende».
 
 ### Dag 16 (on) – Pakkesentralen i Spinn · SORTERING + bonus
 
@@ -302,23 +324,23 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Flater.** NisseStats åpner. K4 Gave-Sorterer som lek. Bonus: «Sett en lykt (batterilys i syltetøyglass) i vinduet mot nord, så Kulde ser den. Frist fredag.» Foreldrekode ny (`LYKT2026`), −20 frost. Mail nevner bonusen. NisseNet: `halvveis_system.txt` fjernes (ikke lenger verktøy). Frost 63 → 50 → 30.
 
-**Belønning.** NisseStats. PS: «Winter fant skiltet sitt igjen. Det lå under haugen.» Bonus: «Orakelet så lykten fra Snøfall. Det gjorde noe annet også.»
+**Belønning.** NisseStats. PS: «Winter fant skiltet sitt igjen. Det lå under haugen.» PS-variant når bonusen er godkjent (tekst, kan komme hvilken som helst dag til og med fredag): «Orakelet ser et lys på Landås-siden som ikke var der før. Det gjør noe annet også.»
 
-**Kontinuitet.** Lykten i vinduet er det Kulde «ser» dag 21. Bonus-fristen (fredag 18) må håndteres i koden (hull 11).
+**Kontinuitet.** Lykten i vinduet er ett av lysene Kulde «ser» dag 21; Kuldes linje er skrevet slik at den er sann også uten bonus («lyset deres» = huset). Fristen fredag 18 nevnes i mail og PS, håndheves ikke i koden (avgjort). Videoene dag 17–19 nevner aldri lykten direkte (se regelen om betinget innhold).
 
 ### Dag 17 (to) – Grønt Lys på Polarhimmelen · NORDLYS
 
 **Morgen.** Strek: kidnappet av kosedyrene, bundet til stol med grønt gavebånd, løsepengebrev «GI OSS ALLE PEPPERKAKENE. ELLERS.» Radio: «Det var grønt over Ulriken i natt. Ikke en bil. IQ sier det var et svar. Jeg er for øvrig kidnappet. Send pepperkaker.»
 
-**Innlogging.** Tema: nordlys slik nissene forteller det (radioen tar fysikken): himmelen som sender brev tilbake. I natt: lykten i vinduet (eller lysene rundt antennen hvis ingen bonus) ble sett fra grotten, og grotten svarte med grønt lys over Nordtoppen. Første signal tilbake. Brikke S: «Lyset man kan høre, sa de gamle i nord. Nissene sier det er himmelen som sender brev. Det har et navn med retning i seg.» Kulde 1.
+**Innlogging.** Tema: nordlys slik nissene forteller det (radioen tar fysikken): himmelen som sender brev tilbake. I natt: lyktene IQ hengte rundt antennen (dag 6) brant hele natten, og grotten svarte med grønt lys over Nordtoppen. Første signal tilbake. Julius: «Orakelet sier det kom et svar på lys. Hvilket lys, vet vi ikke. Jeg ser mot nord i natt også.» Sant uansett om bonusen er gjort; lykten på Landås nevnes bare i PS (betinget). Brikke S: «Lyset man kan høre, sa de gamle i nord. Nissene sier det er himmelen som sender brev. Det har et navn med retning i seg.» Kulde 1.
 
 **Gåte.** H: bokstavene i skjelettet `N _ R _ L _ S` er skrevet med sølvpenn langs det grønne båndet; båndet må knytes opp og strekkes ut for å leses: Hanna løsner knutene (H5), Håkon holder båndet stramt og leser (H9). S: himmelbrev med retning i seg. Kristian: NORDLYS (K12). Kode **NORDLYS**.
 
 **Flater.** Mail: grønt lys, kidnappet. Snøfall TV: ny landsby-loop med nordlys; K1-klikk på himmelen bekrefter («SIGNAL MOTTATT FRA GROTTEN»). Frost 52 → 42.
 
-**Belønning.** PS: «Grotten svarte. Jeg har ikke hørt fra den på et år.»
+**Belønning.** PS: «Grotten svarte. Jeg har ikke hørt fra den på et år.» PS-variant med bonus godkjent: «Grotten svarte. Orakelet mener den svarte på to lys, ett ved tjernet og ett lenger sør.»
 
-**Kontinuitet.** Første toveiskontakt. Peker mot dag 21 (porten) og 24.
+**Kontinuitet.** Første toveiskontakt, utløst av antennelyktene fra dag 6, ikke av bonusen. Bonusen gir frost −20 og PS-varianter dag 16–19. Peker mot dag 21 (porten) og 24.
 
 ### Dag 18 (fr) – Kastevind rundt Ulriken · TURBULENS + blå sol · krypto 2
 
@@ -338,7 +360,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Morgen.** Strek (helg): ligger flat på kjøkkengulvet med maskeringsteip-omriss, plaster på pannen, gulrot merket «BEVIS». Radio: «IQ bygde en fôringsautomat. Den skjøt 40 av dem gjennom taket. Tre landet hos dere. Én landet på meg. Jeg er et åsted nå.»
 
-**Innlogging.** Tema: julenek og dyrene ved jul; hvorfor vi gir til dyrene også. I natt: ingenting fra Kulde. Snøfall puster. IQ bygde noe dumt for å slippe å tenke. Brikke S: «Det oransje drivstoffet Rudolf vil ha, og som IQ nå har 40 for lite av.» Kulde 0 (ren video, første gang siden dag 1: barna skal merke det).
+**Innlogging.** Tema: julenek og dyrene ved jul; hvorfor vi gir til dyrene også. I natt: ingenting fra Kulde. Snøfall puster. Julius: «Det har vært grønt over Nordtoppen to netter nå. Orakelet teller lys på Landås-siden og sier det er flere enn i fjor.» (Sant med og uten bonus: husets vanlige julelys teller.) IQ bygde noe dumt for å slippe å tenke. Brikke S: «Det oransje drivstoffet Rudolf vil ha, og som IQ nå har 40 for lite av.» Kulde 0 (ren video, første gang siden dag 1: barna skal merke det).
 
 **Gåte.** H: tre gulrøtter gjemt i tre rom, hver med en lapp som viser en bokstav og en plass: `G·1`, `L·3`, `T·6`; «BEVIS»-gulroten på gulvet har seks tomme ruter. Håkon jakter (H9), Hanna legger gulrøttene i riktig rute etter tallet (H5). Skjelettet blir `G _ L _ _ T`. S: Rudolfs oransje drivstoff. Kristian: GULROT (K12). Kode **GULROT**.
 
@@ -350,23 +372,23 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 ### Dag 20 (sø) – Sofa-Sleden · TURBO + grønn måne · 4. advent · varselet
 
-**Morgen.** iMac-ene grå 09:00–12:00 med melding fra Rampenissen: «Kulde er ved døra. I morgen trenger jeg dere.» Strek: fort av alle sofaputene, skilt «KUN FOR SIGMAS. 6-7.», pappas hodetelefoner, popcorn over sofaen. Radio: «Julius sa jeg skulle be dere finne fram bøker. Mange bøker. Til i morgen. Jeg har bygd et fort i mellomtiden. Det er til forsvar. Popcornet er proviant.»
+**Morgen.** iMac-ene grå 09:00–12:00 med melding fra Rampenissen: «Kulde er ved døra. I morgen trenger jeg dere.» Strek: fort av alle sofaputene, skilt «KUN FOR SIGMAS. 6-7.», pappas hodetelefoner, popcorn over sofaen. Radio: «Julius sa jeg skulle be dere finne fram bøker. Mange bøker. Til i morgen. Han sier bøker holder på varmen. Jeg har bygd et fort i mellomtiden, for å øve på å holde varmen. Popcornet er proviant.»
 
-**Innlogging.** Tema: de fire adventslysene og hva hvert står for. I natt: Orakelet målte 88 %. I morgen er den mørkeste dagen; Kulde når huset. IQ sier han kan bygge en mur av varme rundt linjen, men han vil ha barna våkne. Brikke S: «IQ ga sledemotoren det samme som biler får når de må forbi noen i bakken. Han sier det med armene.» Avslutning: «I morgen er den mørkeste dagen. Dere trenger ikke være redde. Dere trenger å være hjemme.» Kulde 2 (flimrer oftere).
+**Innlogging.** Tema: de fire adventslysene og hva hvert står for. I natt: Orakelet målte 88 %. I morgen er den mørkeste dagen; Kulde når huset, ikke for å skade, men fordi det er der lyset er. IQ vil bygge en mur av varme rundt linjen så det er varme igjen å dele; Julius har bedt om én port i den. Brikke S: «IQ ga sledemotoren det samme som biler får når de må forbi noen i bakken. Han sier det med armene.» Avslutning: «I morgen er den mørkeste dagen. Dere trenger ikke være redde. Dere trenger å være hjemme.» Kulde 2 (flimrer oftere).
 
 **Gåte.** H: frostlapp `T _ R _ O` inne i fortet, under en pute; Hanna må inn i fortet (bare hun får plass) (H5), Håkon finner puten med lappen ved å telle putene fra skiltet (H9). S: det biler får i bakken. Kristian: TURBO (K12). Kode **TURBO**.
 
-**Flater.** Mail: 88 %, «finn fram bøker til i morgen», ingen forklaring på hvorfor. Sidepanel: Frost 88 → 76, blinker. Snøfall TV: alle kanaler flimrer oftere (kode); Orakelets varsel som tekst-TV på K3 etter videoen. K2 trykkmåler som lek. Symbol 7/9.
+**Flater.** Mail: 88 %, «finn fram bøker til i morgen, bøker holder på varmen», og én linje fra Rampenissen: «Vi stenger ingen ute. Vi holder varmen inne.» Sidepanel: Frost 88 → 76, blinker. Snøfall TV: alle kanaler flimrer oftere (kode); Orakelets varsel som tekst-TV på K3 etter videoen. K2 trykkmåler som lek. Symbol 7/9.
 
 **Belønning.** PS: «Nissemor har tent det fjerde lyset. Hun lot det stå i vinduet mot nord.»
 
 **Kontinuitet.** Varselet. Bøkene = muren dag 21. Slang brukt (3 av 3).
 
-### Dag 21 (ma) – Slaget om Brannmuren · BRANNMUR · M5 Muren og porten · vintersolverv · frost nivå 2
+### Dag 21 (ma) – Vintersolverv · BRANNMUR · M5 Muren og porten · vintersolverv · frost nivå 2
 
-**Morgen.** Skjerm (kjøkken + gang) tett rim fra 05:30, linjen «Det er kaldt her nede. Jeg ville bare se lyset deres. 94 %». Vær, timeplan og radio virker. Strek: bak en lav mur av bøker foran skjermen med grytelokk som skjold og visp som sverd. (Nikker til historien.) Radio: «Skjermen er død. Alt er hvitt. Men muren står. Jeg står bak den. Jeg har stått her siden klokka fire. Vispen er tung. Kom hjem.»
+**Morgen.** Skjerm (kjøkken + gang) tett rim fra 05:30, linjen «Det er kaldt her nede. Jeg ville bare se lyset deres. 94 %». Vær, timeplan og radio virker. Strek: bak en lav mur av bøker foran skjermen med grytelokk mot trekken og en visp (han bakte, og glemte å legge den fra seg). (Nikker til historien.) Radio: «Skjermen er hvit. Alt er hvitt. Men bokmuren står, og den holder varmen inne. Jeg har stått her siden klokka fire og passet på at en bok står på gløtt, sånn Julius sa. Det er en dør i muren. Den skal være åpen. Kom hjem.»
 
-**Innlogging** (etter skolen). Frostmodus nivå 2: rimkant over hele appen, Kuldes linje midt på, bare NisseMail, Dagbok (videoen) og KodeTerminal kan åpnes. Resten under rim. Tema: vintersolverv, gamle jól, bålene, og at lyset alltid snur, uansett. I natt: Kulde nådde huset. IQ bygde muren rundt linjen. Men Julius stoppet ham før den ble tett. Brikke S: «IQ bygde en vegg av varme rundt linjen. Brannfolk bygger det samme i skogen, av det motsatte.» Avslutning: «Jeg lot ham la én port stå åpen. Inn mot grotten. Med varme i.» Kulde 3 i første halvdel, 0 i siste setning (muren holder).
+**Innlogging** (etter skolen). Frostmodus nivå 2: rimkant over hele appen, Kuldes linje midt på, bare NisseMail, Dagbok (videoen) og KodeTerminal kan åpnes. Resten under rim. Tema: vintersolverv, gamle jól, bålene, og at lyset alltid snur, uansett. I natt: Kulde nådde huset. IQ bygde muren rundt linjen. Julius: «En mur er ikke mot noen. Den holder varmen inne så det er noe igjen å dele. Derfor ba jeg om en port.» Brikke S: «IQ bygde en vegg av varme rundt linjen. Brannfolk bygger det samme i skogen, av det motsatte.» Avslutning: «Jeg lot ham la én port stå åpen. Inn mot grotten. Med varme i.» Kulde 3 i første halvdel, 0 i siste setning (muren holder).
 
 **Gåte.** H: post-it med bokstav på hver av åtte bokrygger i muren, halvparten iset: `B R _ N _ M _ R` lest fra venstre. Hanna leser bokstavene i rekkefølge (H5), Håkon må bære muren fra skjermen til bordet uten at rekkefølgen ryker (H9). S: vegg av varme, brannfolkenes vegg. Kristian: BRANNMUR (K12). Kode **BRANNMUR**.
 
@@ -382,9 +404,9 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Innlogging.** Tema: Snill-listen, hva «snill» betyr for Julius (ikke lydig, men å se noen), om å bli sett. I natt: ingenting kom gjennom porten ennå, men det er varmere der nede. Winter trenger landingsstedet i tall. Brikke S: «Winter skriver tall i stedet for bokstaver når noe er viktig. A er alltid først. Resten følger.» Kulde 0.
 
-**Gåte.** H: tre julesokker i tre rom (Hannas med Rampenissen i); i hver en lapp med to tall: `12 – 1`, `14 – 4`, `29 – 19`, rød måne-kort i den siste. Hanna drar Rampenissen ut og finner lappen (H5), Håkon finner de to andre (H9). Verktøy: `alfabettabell.txt` (NisseNet, åpner på dato): A=1 … Å=29, ingen regel. S: tall for bokstaver, A først. Kristian: L-A, N-D, Å-S = LANDÅS (K12). Kode **LANDÅS**. Hvilken sokk er først? Sokkene er merket 1–3 (eller barnas navn i alderens rekkefølge, yngst først).
+**Gåte.** H: tre julesokker i tre rom (Hannas med Rampenissen i); i hver en lapp med to tall: `12 – 1`, `14 – 4`, `29 – 19`, rød måne-kort i den siste. Hanna drar Rampenissen ut og finner lappen (H5), Håkon finner de to andre (H9). Verktøy: `alfabet.txt` fra dag 5 (bare alfabetet, uten tall). S: tall for bokstaver, A er først; det er regelen, og den står ingen steder. Kristian teller seg fram: L-A, N-D, Å-S = LANDÅS (K12). Kode **LANDÅS**. Hvilken sokk er først? Sokkene er merket 1–3 (eller barnas navn i alderens rekkefølge, yngst først).
 
-**Flater.** Navneregistrering (NameEntryModal) etter koden. NisseNet: `alfabettabell.txt`, `snill_slem_liste.txt` → `snill-listen.txt` (Julius' egne regler, ingen navn). Symbol 8/9. Frost 40 → 24.
+**Flater.** Navneregistrering (NameEntryModal) etter koden. NisseNet: `alfabet.txt` (gjenbruk), `snill_slem_liste.txt` → `snill-listen.txt` (Julius' egne regler, ingen navn). Symbol 8/9. Frost 40 → 24.
 
 **Belønning.** Navnene står på listen. PS: «Tre navn. Jeg skrev dem selv.»
 
@@ -400,7 +422,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Flater.** NisseKrypto: dekryptering 3 med ni symboler. `DEKRYPTERT/hjertets-hemmelighet.txt` = avsløring 3, hele historien: Fargesamleren, IQ, Vintervokteren, strømstøtet, et år alene i mørket, lyset barna satte i vinduet, porten. Avslutter: «Det som fryser er ikke ondt. Det er alene. I natt flyr vi over det med alle lysene på.» NisseNet: Fargesamlerens arkiv del 3 (`03-siste-side.txt`). Snøfall TV: grotte-loop med lys som siver ned ovenfra. Symbol 9/9. Frost 30 → 10.
 
-**Belønning.** Avsløring 3. PS: «Nå vet dere alt. Det gjør ikke Rampenissen. Ikke si det før i morgen.»
+**Belønning.** Avsløring 3. PS: «Nå vet dere alt. Rampenissen også, han satt i treet og hørte. Men ingen av dere vet hva Trixter har i sleden til i morgen.»
 
 **Kontinuitet.** Sannheten. Alt dag 24 er konsekvens.
 
@@ -422,38 +444,47 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 ## 4. Hull og motsigelser
 
-Nummerert. «Dag» er der det slår inn; «alle» betyr gjennomgående.
+Nummerert. «Dag» er der det slår inn; «alle» betyr gjennomgående. Status: **løst i historien** (teksten i §2/§3 er fasit), **steg 1** (tas i gåtegjennomgangen), **byggeliste** (kode/innhold, se §5).
 
-1. **Alle – Brikke S lekker i koden i dag.** `VLOG_ENTRIES` i `SnøfallTV.tsx` staver svaret («S-I-G + N-A-L»), `teletextCode` gjentar det, NisseMusikk har «DEL 2: O - D - I» hardkodet i bunnpanelet, og `hint_arkiv.txt` viser `hint`-feltet som staver koden. Fiks: slett `VLOG_ENTRIES`/teletext-fasit, fjern bunnpanelet i NisseMusikk, fjern `hint_arkiv.txt`. Transkriptene flyttes til JSON uten bokstaver.
-2. **Alle – Sidepanelets dagsvarsler staver koden.** `daily_alerts` dag 9 («4 snøkrystaller med 6 tagger»), 11 («75 MHz»), 13 («safran»), 14 («Origami»), 18 («turbulens»), 19 («gulrot»), 20 («turbo»), 21 («BRANNMUREN»), 23 («Stjerneklart»). Varslene vises før koden er inne. Fiks: skriv om alle 28 uten kodeord; varselet skal være stemning, ikke innhold.
-3. **Dag 7, 9, 10, 16, 22 – Verktøyfilen låses opp etter dagens kode.** `snofall_fakta.txt`, `julekuleblasing.txt`, `farge_system_dekoder.txt`, `halvveis_system.txt`, `julekode_dekoder.txt` krever et topic som først settes når samme dags kode er inne (`isFileUnlocked` → `requiresTopics`). E-posten ber barna åpne filen før koden. Fiks: alle verktøyfiler bruker `afterDay`, ikke topics.
-4. **Alle – NisseNet-filene er fasit, ikke verktøy.** `julesanger-samling.txt` («KODEORD PÅ 6 BOKSTAVER»), `snowflake-patterns.txt` («PRISME-KODEN»), `om-snofall.txt` (N-A-L), `hemmelig_kode.txt`. Fiks: skriv om til fire rene verktøy (alfabet, krystallformel, fargerekkefølge, alfabettabell), Fargesamlerens arkiv i tre deler, tre DEKRYPTERT-avsløringer, resten lore eller slettet. Nissemor-guiden får fasiten.
-5. **Alle – Ingen videospiller finnes.** Dagbok er tekst, Kanal 3 er tekst. Historiedokumentet kaller dette «en liten kodeendring»; det er en ny spillerkomponent, 24 filer med lokal lagring/strømming, sett-flagg per dag, autoåpning, transkript og PS-opplåsing (M). Fiks: én `JuliusVideo`-komponent brukt av både Dagbok og K3.
-6. **Dag 10 og 21 – Frost-endepunktet finnes ikke.** `app/api/home-bridge/route.ts` er POST med utgående webhooks; IMPLEMENTATION.md beskriver en GET som ikke er der. Historien krever GET med `{frost, level, until, message, solved_today}`. Fiks: ny GET, avledet av dato + løst-status + klokke (ingen lagring); fjern POST og KodeTerminals utgående kall.
-7. **Dag 21 – Tittelen lekker koden.** «Slaget om Brannmuren» står i Kalender-modulen og i iCal på Skjerm fra morgenen. Fiks: «Vintersolverv» eller «Slaget om Muren». Sjekk også at ingen iCal-tittel inneholder dagens kode (dag 23 «Stjernevakt» gir første halvdel, som lappen uansett gir; akseptabelt).
-8. **Dag 2, 5, 9 – Radioen sier hvor.** Historiedokumentets radiolinjer: «under stolene deres» (2), «landet på lampen i stua» (5), «på kjøleskapet deres» (9). Regelen i §3.3 er aldri «hvor», og dag 2 og 5 er jaktdager. Fiks: linjene over i §3 er skrevet uten sted.
-9. **Dag 21 – Innholdet sier at Kulde slettes.** `daily_alerts` dag 21 («slettet for godt»), `nordpolen_hemmelighet.txt`, `dagbokinnlegg` dag 21 («slettet Kulde fra serverne»), eventyr `morkets-trussel`. Motsier hele premisset (porten står åpen). Fiks: slett/skriv om; bruk PS-teksten i §3.
-10. **Dag 16 – Bonusoppdraget er et annet.** JSON: sorter leker + Gave-Sorterer, kode `SORTER2026`, merke `inventar-ekspert`. Historien: lykt i vinduet mot nord, frist fredag, −20 % frost, ingen merke. Fiks: ny bonustekst, ny foreldrekode, fjern merke. **Fristen** krever at `isBonusOppdragAccessible` også sjekker dag ≤ 18; i dag er det bare «dagens kode er inne».
-11. **Dag 11 og 16 – Bonusbelønning krever frostmodellen.** `−20 %` finnes ikke før Frostgraden finnes. Fiks: frosttabell i JSON (§2) + `bonusSolved` trekker 20.
-12. **Dag 21 – «Ett bånd før skolen» kolliderer med frost nivå 2.** Historien sier Zapper på K4 før skolen, men nivå 2 låser alt unntatt Mail, Dagbok og Terminal. Barna ser dessuten ikke appen om morgenen på skoledager. Fiks: Zapper er lek etter koden. Fjern setningen.
-13. **Dag 2 – Taleren i videoen er IQ.** `VLOG_ENTRIES[1].speaker = "IQ"`. Beslutning: Julius alle 24 dager. Fiks: Julius forteller, IQ kan høres i bakgrunnen.
-14. **Alle – Spøkelsesbildene håner.** De sju `PIRATE_INTERCEPTS`-tekstene («ruger jeg over hele frekvensbåndet», «hver kode dere nøler med gjør vintermørket dypere») er en skurk. Historien: lengsel, ikke hån, og dag 21 er rolig og ensom. Fiks: sju nye linjer som blir mer ensomme utover måneden; dag 3 nesten uten ord.
-15. **Alle – Ni eventyr-ID-er i data og kode.** `eventyr.json` (9), `EVENTYR_CAMERA_FEEDS` i `eventyr.ts`, Dagboks «EVENTYR-TRÅD»-etikett, Brevfuglers hardkodede faser (1, 5, 12, 14), `oppdrag.eventyr.id` på alle dager, badge-validering som krever samsvar mellom merke og eventyr. Fiks: én ID med `phase` 1–24; EventyrOversikt tegner seks milepæler fra en liten liste i JSON; Brevfugler slutter å vise faser.
-16. **Merker – To vilkår mangler i motoren.** Varmebærer = én bestemt dekryptering (finnes bare `allDecryptionsSolved`), Portvokter = dag 21 løst (finnes bare `bonusoppdrag`-dag). Fiks: to små vilkårstyper i `badge-system.ts`: `decryptionSolved: id` og `dayCompleted: n`. Seks merker og to badge-PNG-er slettes.
-17. **Dag 14 og 24 – Brevfugler lover svar som ikke kommer.** Komponenten sier «Julius' svar kommer neste dag i NisseMail»; ingenting sender svar. Fiks: fjern løftet; den blå fuglen og det fryste brevet er innholdet. Avgjørelse: beholde skriv-til-Julius?
-18. **Alle – Scenarioknappene er synlige for barna.** Sju «SCENARIO»-knapper i Snøfall TV lar barna hoppe til dag 21-tilstand. Fiks: flytt til Nissemor-guiden (utvikling-siden) eller bak `NEXT_PUBLIC_TEST_MODE`.
-19. **Alle – Multi-tenancy står igjen.** `api/auth/*`, `api/family`, `api/session`, `api/cron/send-daily-emails`, `api/unsubscribe`, `api/settings/*`, `sanity-client.ts`, `email-service.ts`, `session-manager.ts`, `storage-adapter.ts` (Sanity-gren). Beslutning: lokal, én familie. Fiks: slett; behold ett valgfritt oppstartspassord. Innloggingsskjermen blir del av fiksjonen («bærebølge-passord»), eller fjernes. Avgjørelse 4.
-20. **Snøfall TV – Kanalnummerering i kode og historie er ulik.** Kode: K1 Julius' kontor (90,0), K2 verksted, K3 antenne-tårn (88,2) med VLOG-overlegg, K4 grotte (99,9) med HUD/minispill. Historie: K3 = videoen, 85,0 = grotten på hjulet, K1/2/4 = minispill. Fiks: én kartlegging (§2-forslaget) før loops bestilles, ellers blir «antennen ved tjernet»-loopen lagt på feil kanal.
-21. **Dag 1, 6, 9, 10, 23, 24 – Gåtene historiedokumentet merket som uferdige.** Løst over med: bokstavkort på tråden (1), bokstavsjablong (6), ekte/falske krystaller med tydelige feil (9), rødt filter med rekkefølgefil (10), skjelett med hele første ledd (23), omskrevet Julius-linje (24). Dag 1 og 24 trenger menneskets ja.
-22. **Alle – Hanna mangler oppgave fire dager i historiedokumentet** (8, 14, 16, 17). §3 gir henne en (telle pakker, velge fugl, si hvor ting hører hjemme, løsne knuter).
-23. **Dag 13 og helgene – Finnes Morgenrådet søndag?** Dag 6, 13, 20 er søndager og dag 5, 12, 19 lørdager. Hvis radioen ikke sender i helgen, trenger de seks dagene en annen vei for klippet (spilles i appen, eller på Skjerm). Avgjørelse 5.
-24. **Dag 10 og 21 – «Åpner ved innlogging» og frost om morgenen.** På skoledager ser barna ikke appen før ca. 15:00; Skjerm bærer morgenen alene. Da må Skjerm-linjen være nok til å forstå at noe er galt, uten å si hva de skal gjøre. OK slik det står, men parent-guiden bør si at ingen skal «vise» appen om morgenen.
-25. **Dag 24 – Krystallet som ikke smelter står ikke på innkjøpslisten** i §7. Heller ikke sølvpenn (17), maskeringsteip (19), post-it (10, 21), bokstavkort/perler til tråden (1). Fiks: oppdater handlelisten i Nissemor-guiden.
-26. **Dag 17 – «Sa samene».** Linjen tillegger samisk tradisjon noe som er en generell nordlig folketro (at nordlyset kan høres/suser). Fiks: «sa de gamle i nord», som i §3.
-27. **Dag 20 – iMac-melding fra «Rampenissen» leveres av Varden.** Avsender vises som systemmelding. Akseptert i historiedokumentet, men barna kan spørre hvordan Rampenissen skriver på iMac-en. Fiks: la meldingen starte med «RAMPENISSEN VIA IQ:».
-28. **Dag 12 – NisseMusikk «FROSSET» mens Varmebærer-merket deles ut** samme dag. Rekkefølge: kode → musikk tiner → dekryptering → merke. Fiks: sørg for at merket utløses av dekrypteringen, ikke av koden, så barna gjør dekrypteringen.
-29. **Frostgraden og `systemMetrikker`.** Sidepanelet viser fire metrikker fra `statisk_innhold.json` (NISSEKRAFT osv.) med sigmoid. Historien vil ha ett tall. Fiks: Frostgraden øverst som eget felt, de fire metrikkene beholdes under eller fjernes (avgjørelse 6).
-30. **Dokumentasjon.** IMPLEMENTATION.md beskriver GET home-bridge, `lightingPreset` og `kuldeIntrusionPercent` som ikke finnes; AGENTS.md beskriver Sanity/Resend/familiekoder som skal bort. Fiks etter koden.
+1. **Alle – Brikke S lekker i koden i dag.** `VLOG_ENTRIES` i `SnøfallTV.tsx` staver svaret («S-I-G + N-A-L»), `teletextCode` gjentar det, NisseMusikk har «DEL 2: O - D - I» hardkodet i bunnpanelet, og `hint_arkiv.txt` viser `hint`-feltet som staver koden. Fiks: slett `VLOG_ENTRIES`/teletext-fasit, fjern bunnpanelet i NisseMusikk, fjern `hint_arkiv.txt`. Transkriptene flyttes til JSON uten bokstaver. → **byggeliste** (T8, M1, N5)
+2. **Alle – Sidepanelets dagsvarsler staver koden.** `daily_alerts` dag 9 («4 snøkrystaller med 6 tagger»), 11 («75 MHz»), 13 («safran»), 14 («Origami»), 18 («turbulens»), 19 («gulrot»), 20 («turbo»), 21 («BRANNMUREN»), 23 («Stjerneklart»). Fiks: skriv om alle 28 uten kodeord. → **byggeliste** (D4)
+3. **Dag 7, 9, 10, 16, 22 – Verktøyfilen låses opp etter dagens kode.** `snofall_fakta.txt`, `julekuleblasing.txt`, `farge_system_dekoder.txt`, `halvveis_system.txt`, `julekode_dekoder.txt` krever et topic som først settes når samme dags kode er inne. Fiks: alle verktøyfiler bruker `afterDay`. → **byggeliste** (N1)
+4. **Alle – NisseNet-filene er fasit, ikke verktøy.** `julesanger-samling.txt`, `snowflake-patterns.txt`, `om-snofall.txt` (N-A-L **og** «kodenavn: KULDE» seks dager før M2), `sikkerhet.log» («kjør BRANNMUR-protokoll på Dag 21»), `hemmelig_kode.txt`. Fiks: tre rene verktøy, Fargesamlerens arkiv i tre deler, tre DEKRYPTERT-avsløringer, resten lore eller slettet. → **byggeliste** (N1–N5)
+5. **Alle – Ingen videospiller finnes.** Dagbok og Kanal 3 er tekst. Ny `JuliusVideo`-komponent, sett-flagg, autoåpning, transkript, PS. → **byggeliste** (V4–V6)
+6. **Dag 10 og 21 – Frost-endepunktet finnes ikke, og fremdriften ligger i nettleseren.** `home-bridge` er POST med utgående webhooks; en GET kan ikke vite om koden er løst så lenge `StorageManager` skriver til `localStorage`. Løses av flyttingen til hjemmeserver med SQLite som lagring (fremdrift på server); GET `/api/frost` leser derfra. → **byggeliste** (H3, C1)
+7. **Dag 11 og 21 – Titler lekker koden.** «Antenne-Krisen på 75 MHz» (dag 11, JSON) og «Slaget om Brannmuren» (dag 21) står i Kalender og iCal fra morgenen. Fiks: «Antenne-Krisen» og «Vintersolverv». → **løst i historien** (§3-overskrifter) + **byggeliste** (D3, D5)
+8. **Dag 2, 5, 9 – Radioen sier hvor.** → **løst i historien** (radiolinjene i §3 er uten sted).
+9. **Dag 21 – Innholdet sier at Kulde slettes.** `daily_alerts`, `nordpolen_hemmelighet.txt`, `dagbokinnlegg`, eventyr `morkets-trussel`. → **byggeliste** (D3, D4, N5)
+10. **Dag 16 – Bonusoppdraget er et annet.** JSON: lekesortering, `SORTER2026`, merke. Historien: lykt i vinduet, `LYKT2026`, −20 % frost, frist nevnes men håndheves ikke (avgjort). → **byggeliste** (E2)
+11. **Dag 11 og 16 – Bonusbelønning krever frostmodellen.** → **byggeliste** (H1)
+12. **Dag 21 – «Ett bånd før skolen» kolliderer med frost nivå 2.** Zapper er lek etter koden. → **løst i historien**
+13. **Dag 2 – Taleren i videoen er IQ.** Julius alle 24 dager. → **løst i historien** (V1)
+14. **Alle – Spøkelsesbildene håner.** Sju nye linjer, lengsel. → **byggeliste** (T7)
+15. **Alle – Ni eventyr-ID-er i data og kode.** → **byggeliste** (D1, O1, B1)
+16. **Merker – To vilkår mangler i motoren, og UI-et kjenner dem ikke.** `badge-system.ts`/`BadgeManager` og `BadgeRow`-tooltips må håndtere `decryptionSolved` og `dayCompleted`; `resolveCrisis("inventory")` blir død kode når dag 16-merket forsvinner. → **byggeliste** (D2)
+17. **Dag 14 og 24 – Brevfugler lover svar som ikke kommer.** Skriv-til-Julius beholdes uten svar (avgjort), løftet fjernes. → **byggeliste** (B1)
+18. **Alle – Scenarioknappene er synlige for barna.** → **byggeliste** (T10)
+19. **Alle – Multi-tenancy står igjen.** Passordskjerm beholdes som fiksjon med fast passord (avgjort). → **byggeliste** (C1, C2)
+20. **Snøfall TV – Kanalkart.** Avgjort: K1 landsby, K2 verksted, K3 video, K4 antenne/hjul, 85,0 = grotte. → **byggeliste** (T1)
+21. **Dag 1, 6, 9, 10, 23, 24 – Gåtene historiedokumentet merket som uferdige.** 9 er løst i §3 innenfor brikketaket. 1, 6, 10, 23, 24 → **steg 1** (avgjort).
+22. **Hannas rolle.** Se «Hannas dager» i §2: ti dager + symbolkortene bærer kode; elleve dager → **steg 1**.
+23. **Helgeradio.** Avgjort: Morgenrådet sender som vanlig, klippet i 09-sendingen og i appen. → **løst i historien**
+24. **Dag 10 og 21 – Skjerm bærer morgenen alene.** Nissemor-guiden sier at ingen viser appen om morgenen. → **byggeliste** (F-tekst i guiden)
+25. **Innkjøp mangler** (krystall, sølvpenn, maskeringsteip, post-it, bokstavkort). → **byggeliste** (F5)
+26. **Dag 17 – «Sa samene».** → **løst i historien** («de gamle i nord»).
+27. **Dag 20 – iMac-melding.** «RAMPENISSEN VIA IQ:». → **byggeliste** (H5)
+28. **Dag 12 – Merket utløses av dekrypteringen, ikke koden.** → **byggeliste** (K1)
+29. **Sidepanel.** Avgjort: bare Frostgraden. → **byggeliste** (H1)
+30. **Dokumentasjon.** → **byggeliste** (C3)
+31. **Dag 16–17 – Kausalitet.** Forhåndsinnspilt video dag 17 sa at lykten i vinduet ble sett, mens fristen er fredag 18. → **løst i historien**: nordlyset dag 17 svarer på antennelyktene fra dag 6; Julius sier «hvilket lys vet vi ikke, jeg ser mot nord i natt også»; dag 19 teller Orakelet lys på Landås-siden (sant uansett); lykten nevnes bare i betinget PS. Regel «Betinget innhold» i §2.
+32. **Dag 15–23 – Tone og kunnskap.** Rampenissen rigget til krig dag 20–21 etter at barna visste at Kulde er ensom, og dag 23 sa Julius at Rampenissen ikke visste hvem Kulde var. → **løst i historien**: kunnskapstidslinje i §2 (Rampenissen vet det samme som barna fra dag 15-kvelden), dag 20–21 omskrevet til «holde varmen inne og la porten stå åpen», dag 23-PS endret.
+33. **Alle orddager – Frostlappen ga 50–80 % av bokstavene**, så Kristian kunne hoppe over videoen. → **løst i historien** (brikketaket i §2) + **steg 1** for dag 3, 4, 8, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24.
+34. **Dag 6 – Bokstavprojeksjon gjennom bakepapir er fysisk upålitelig.** → **steg 1** (skyggefigur eller lykt-lest lapp).
+35. **Dag 14 – Brevfugler lekker ORIGAMI.** Radaren viser «KRYPTERING: O-R-I-G-A-M-I» og «[ORIGAMI]» når modulen åpner. → **byggeliste** (B1)
+36. **Dag 3 og 10 – NisseNet-toppmerket lekker.** `NisseNetUtforsker.tsx` viser «PRISME // KRYSTALL-ANALYSE» og «SPEKTER // OPTISK KALIBRERING». → **byggeliste** (N6)
+37. **Dag 3 – SYMBOLSKANNER åpner aldri.** Første symbolkort kommer dag 3, NisseKrypto åpner dag 4, og `SYMBOLSKANNER` står ikke i noen `reveals.modules`. Fiks: skanneren åpen fra dag 3 (eller alltid), NisseKrypto fra dag 4 som før. → **byggeliste** (S1)
+38. **Dag 24 – GrandFinaleModal er skrevet for ni eventyr og gammel tone** («GYATT Storage / Sigma Level MAX»). → **byggeliste** (G1)
+39. **Snøfall TV – Omskrivingen er L, ikke M/S.** 2 955 linjer med sammenvevd CRT/SVG, fire minispill og tuner; video i K3, loops per kanal og frosteffekter er én omskriving. → **byggeliste** (T4–T6 slått sammen til T11)
 
 ---
 
@@ -502,11 +533,12 @@ S = under en halv dag, M = 1–2 dager, L = 3+ dager. «Innhold» er tekst/medie
 
 | #   | Hva                                                                                                                                                                                                                                                                                                                        | Størrelse   |
 | --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| N1  | Fire verktøyfiler: `alfabet.txt` (5), `krystallformel.txt` (9), `farge-koder.txt` (10), `alfabettabell.txt` (22), alle `afterDay`                                                                                                                                                                                          | S           |
+| N1  | Tre verktøyfiler: `alfabet.txt` (5 og 22, uten tall), `krystallformel.txt` (9), `farge-koder.txt` (10), alle `afterDay`                                                                                                                                                                                                    | S           |
 | N2  | Fargesamlerens arkiv i tre filer (10, 15, 23)                                                                                                                                                                                                                                                                              | S (innhold) |
 | N3  | Tre DEKRYPTERT-avsløringer skrevet på nytt                                                                                                                                                                                                                                                                                 | S (innhold) |
 | N4  | Lore-filer: `om-snofall.txt`, `snofall_fakta.txt` (Orakelets rapport), `magisk-sekk-test.txt`, antenne-filen (slått sammen), `brevfugl-historie.txt`, `lucia-tradisjon.txt`, `foringsautomat.log`, `snill-listen.txt`                                                                                                      | S           |
 | N5  | Slett: `hint_arkiv.txt`, `hemmelig_kode.txt`, `snowflake-patterns.txt`, `julekuleblasing.txt`, `farge_system_dekoder.txt`, `lucia_lussekatt_hemmelig.txt`, `halvveis_system.txt`, `julekode_dekoder.txt`, `nordpolen_hemmelighet.txt`, `personlige-brev-intro.txt`, `dagens_oppdrag.txt` (eller skriv om uten Kanal-fasit) | S           |
+| N6  | NisseNet-toppmerke: fjern «PRISME // KRYSTALL-ANALYSE» og «SPEKTER // OPTISK KALIBRERING»                                                                                                                                                                                                                                  | S           |
 
 ### Snøfall TV
 
@@ -522,6 +554,7 @@ S = under en halv dag, M = 1–2 dager, L = 3+ dager. «Innhold» er tekst/medie
 | T8  | K3 = `JuliusVideo`; slett `VLOG_ENTRIES`, teletext-fasit, `codeHint`                                                                                                                                                          | S                           |
 | T9  | Minispill beholdes som lek etter koden; fjern bokstav-/tallgevinster i HUD                                                                                                                                                    | S                           |
 | T10 | Scenarioknapper ut av barnas visning                                                                                                                                                                                          | S                           |
+| T11 | Samlet omskriving av `SnøfallTV.tsx`: video i K3 under CRT-laget, loop-bakgrunn per kanal, frosteffekter, kanalkart, minispill beholdt. T4–T6 og T8–T10 inngår.                                                               | **L**                       |
 
 ### NisseMusikk · Brevfugler · NisseKrypto · EventyrOversikt
 
@@ -529,6 +562,9 @@ S = under en halv dag, M = 1–2 dager, L = 3+ dager. «Innhold» er tekst/medie
 | --- | -------------------------------------------------------------------------------------------------------------------------------------- | --------- |
 | M1  | NisseMusikk: fjern bunnpanel med brikke; «FROSSET»-overlegg dag 12 til løst; «varmekilden»-tekst                                       | S         |
 | B1  | Brevfugler: blå fugl på radar fra dag 14, fryst brev-kort, tiner dag 24 med Vintervokterens fire linjer; fjern faseliste og svar-løfte | M         |
+| B2  | Brevfugler: fjern «KRYPTERING: O-R-I-G-A-M-I» og «[ORIGAMI]» i radaren (lekkasje dag 14)                                               | S         |
+| S1  | `SYMBOLSKANNER` åpen fra dag 3 (reveals på dag 3 eller alltid på skrivebordet); NisseKrypto fra dag 4                                  | S         |
+| G1  | GrandFinaleModal skrevet om for én historie og tøvær-tonen; fjern eventyr-iterasjon og slang                                           | S         |
 | K1  | NisseKrypto: nye `rewardText`; merke Varmebærer ved dekryptering 1                                                                     | S         |
 | O1  | EventyrOversikt: én linje med seks milepæler (liste i `eventyr.json`), fjern kamerametadata per ID                                     | M         |
 
@@ -538,19 +574,22 @@ S = under en halv dag, M = 1–2 dager, L = 3+ dager. «Innhold» er tekst/medie
 | --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
 | D1  | `eventyr.json`: én ID `spokelseskoden`, milepælsliste M1–M6                                                                                                                                   | S         |
 | D2  | `merker.json`: tre merker, to nye vilkårstyper                                                                                                                                                | S         |
+| D2b | Badge-UI og motor: `BadgeManager` og `BadgeRow` håndterer `decryptionSolved`/`dayCompleted` med riktig tooltip; `resolveCrisis("inventory")` fjernes                                          | S         |
 | D3  | `uke1–4_oppdrag.json`: nye felt `video_transkript`, `julius_ps`, `frost_morgen`, `frost_etter`; `hint` omskrevet eller fjernet; `eventyr.id` på alle dager; `reveals` ryddet; titler (dag 21) | M         |
+| D3b | Lekkasjer i data: tittel dag 11 («Antenne-Krisen») og 21 («Vintersolverv»), `om-snofall.txt` uten «kodenavn: KULDE», `sikkerhet.log` uten «BRANNMUR»                                          | S         |
 | D4  | `statisk_innhold.json`: 28 varsler omskrevet, filtre etter N1–N5, `systemMetrikker` (avgjørelse 6)                                                                                            | S         |
 | D5  | Kalenderliste (24 titler) til iCal-eksport                                                                                                                                                    | S         |
 
 ### Frost, sidepanel og hjem
 
-| #   | Hva                                                                                                                                      | Størrelse       |
-| --- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
-| H1  | Frostgraden i sidepanelet fra dag 7 (tabell i JSON, −20 ved bonus), «TØVÆR» dag 24, åpen port dag 21                                     | S               |
-| H2  | Frostmodus nivå 1 (dag 10) og 2 (dag 21) i appen: CSS-overlegg + vindussperre, avledet av dato/løst/klokke; «Frost av» i Nissemor-guiden | M               |
-| H3  | GET `/api/frost` med `{frost, level, until, message, solved_today}`; slett POST home-bridge og KodeTerminal-kallet                       | S               |
-| H4  | Skjerm: polling og rim-tegning (annet repo, avtalt kontrakt)                                                                             | senere          |
-| H5  | Varden: Orakel-kort dag 7, julehilsen dag 24, iCal, iMac-gråtone dag 20                                                                  | senere (konfig) |
+| #   | Hva                                                                                                                                                                                      | Størrelse       |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| H1  | Frostgraden i sidepanelet fra dag 7 (tabell i JSON, −20 ved bonus), «TØVÆR» dag 24, åpen port dag 21                                                                                     | S               |
+| H2  | Frostmodus nivå 1 (dag 10) og 2 (dag 21) i appen: CSS-overlegg + vindussperre, avledet av dato/løst/klokke; «Frost av» i Nissemor-guiden                                                 | M               |
+| H3  | GET `/api/frost` med `{frost, level, until, message, solved_today}`; slett POST home-bridge og KodeTerminal-kallet                                                                       | S               |
+| H3b | Fremdrift på server: SQLite erstatter `localStorage` som kilde for løste dager, bonus og video-sett (del av flyttingen til hjemmeserver). GET `/api/frost` og PS-varianter leser derfra. | M               |
+| H4  | Skjerm: polling og rim-tegning (annet repo, avtalt kontrakt)                                                                                                                             | senere          |
+| H5  | Varden: Orakel-kort dag 7, julehilsen dag 24, iCal, iMac-gråtone dag 20                                                                                                                  | senere (konfig) |
 
 ### Opprydding
 
@@ -560,21 +599,18 @@ S = under en halv dag, M = 1–2 dager, L = 3+ dager. «Innhold» er tekst/medie
 | C2  | Enkel innlogging: ett passord fra env eller ingen (avgjørelse 4)                                                                                                                                          | S         |
 | C3  | AGENTS.md / IMPLEMENTATION.md / ARCHITECTURE.md oppdatert etter koden                                                                                                                                     | S         |
 
-Sum per flate: Julius-video 6 · Radio 3 · Fysisk 6 · NisseMail 2 · NisseNet 5 · Snøfall TV 10 · Musikk/Brevfugler/Krypto/Eventyr 4 · Data 5 · Frost/hjem 5 · Opprydding 3 = **49 punkter**.
+Sum per flate: Julius-video 6 · Radio 3 · Fysisk 6 · NisseMail 2 · NisseNet 6 · Snøfall TV 11 (én L) · Musikk/Brevfugler/Krypto/Eventyr/Finale 7 · Data 7 · Frost/hjem 6 · Opprydding 3 = **57 punkter**.
 
 ---
 
 ## 6. Avgjørelser for mennesket
 
-1. **Dag 1:** bokstavkort på tråden (anagram med Julius' setning) eller frostlapp `S _ G _ A _`?
-2. **Dag 6:** sjablong med bokstavskjelett (krever utskjæring) eller bare lommelykt + lapp under bordet (som i dag)?
-3. **Dag 24:** godta omskrevet Julius-linje («trollmenn jukser») eller finne en annen vei til MAGI?
-4. **Innlogging:** beholde en passordskjerm som del av fiksjonen, eller gå rett til skrivebordet på hjemmeserveren?
-5. **Radio i helgen:** sender Morgenrådet lørdag og søndag? Hvis ikke: spille klippet i appen, på Skjerm, eller la de seks dagene være uten.
-6. **Sidepanel:** bare Frostgraden, eller Frostgraden pluss de fire gamle metrikkene?
-7. **Brevfugler:** beholde «skriv brev til Julius» uten svar, eller ta det ut?
-8. **Bonus dag 16:** ny foreldrekode `LYKT2026`, og skal fristen (fredag 18) håndheves i koden eller bare nevnes?
-9. **Kanalkart** (§2-forslaget) før loops bestilles.
+Gjenstår (alt annet er avgjort, se under):
+
+1. **Kunnskapstidslinjen i §2:** godta at Rampenissen vet det samme som barna fra dag 15-kvelden (han er i rommet), slik at tonen etter dag 15 er felles.
+2. **Brikketaket 40 %:** godta som hard grense for steg 1. Det gjør noen ord tyngre for Kristian og flytter vekt over på Julius' setning.
+3. **Dag 17 uten lykt-avhengighet:** nordlyset svarer på antennelyktene fra dag 6; bonusen gir bare frost og PS-varianter. Godta.
+4. **SQLite som fremdriftslager** i hjemmeserver-flyttingen før frost-endepunktet bygges (rekkefølge i byggingen).
 
 ### Avgjort 10. november
 
