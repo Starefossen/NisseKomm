@@ -207,7 +207,7 @@ export function NisseMail({
               <Icons.File size={20} color="green" />
               <span className="text-xl font-bold">INNBOKS</span>
               {getUnreadCount() > 0 && (
-                <span className="px-2 py-1 text-sm bg-(--christmas-red) text-white border-2 border-(--christmas-red)">
+                <span className="px-2 py-1 text-base bg-(--christmas-red) text-white border-2 border-(--christmas-red)">
                   {getUnreadCount()} NY
                 </span>
               )}
@@ -267,7 +267,7 @@ export function NisseMail({
                       )}
                       <div className="flex-1 min-w-0">
                         <div
-                          className={`text-sm flex items-center gap-1 ${isUnread ? (isBonusOppdrag ? "text-(--gold)" : "text-(--gold)") : ""}`}
+                          className={`text-base flex items-center gap-1 ${isUnread ? (isBonusOppdrag ? "text-(--gold)" : "text-(--gold)") : ""}`}
                         >
                           <span>
                             {isBonusOppdrag
@@ -291,7 +291,7 @@ export function NisseMail({
                             ? email.mission.bonusoppdrag.tittel
                             : email.mission.tittel}
                         </div>
-                        <div className="text-xs opacity-50 mt-1">
+                        <div className="text-base opacity-50 mt-1">
                           DAG {email.day}
                           {isBonusOppdrag && " • BONUSOPPDRAG"}
                         </div>
@@ -321,13 +321,13 @@ export function NisseMail({
                         </div>
                         <Icons.Gift className="w-8 h-8 text-(--gold) animate-[pulse-led_1.5s_ease-in-out_infinite]" />
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-(--gold)">
+                      <div className="flex items-center gap-2 text-base text-(--gold)">
                         <Icons.Alert size={16} color="gold" />
                         <span>KRITISK</span>
                       </div>
                     </div>
 
-                    <div className="space-y-1 text-sm">
+                    <div className="space-y-1 text-base">
                       <div className="flex gap-3">
                         <span className="opacity-70 w-16">FRA:</span>
                         <span className="text-(--christmas-red) font-bold">
@@ -374,7 +374,7 @@ export function NisseMail({
                             "radial-gradient(ellipse at center, transparent 40%, rgba(255,0,55,0.22) 75%, rgba(0,0,0,0.92) 100%)",
                         }}
                       />
-                      <div className="absolute top-2 left-2.5 right-2.5 flex items-center justify-between text-[11px] font-bold tracking-widest">
+                      <div className="absolute top-2 left-2.5 right-2.5 flex items-center justify-between text-base font-bold tracking-widest">
                         <div className="flex items-center gap-1.5 bg-black/80 px-2 py-0.5 border border-(--christmas-red)/60 text-(--christmas-red)">
                           <span className="w-2 h-2 rounded-full bg-(--christmas-red) animate-pulse" />
                           <span>
@@ -400,15 +400,15 @@ export function NisseMail({
                     <div className="p-4 border-2 border-(--gold) bg-black/30 space-y-2">
                       <div className="flex items-center gap-3">
                         <Icons.Gift size={20} color="gold" />
-                        <span className="text-sm font-bold text-(--gold)">
+                        <span className="text-base font-bold text-(--gold)">
                           OPPGAVE:
                         </span>
                       </div>
-                      <div className="text-sm">
+                      <div className="text-base">
                         {selectedMission.bonusoppdrag.fysisk_oppgave}
                       </div>
                       {GameEngine.isBonusOppdragCompleted(selectedMission) && (
-                        <div className="text-sm font-bold text-(--gold)">
+                        <div className="text-base font-bold text-(--gold)">
                           {selectedMission.bonusoppdrag.belønning_tekst}
                         </div>
                       )}
@@ -419,11 +419,11 @@ export function NisseMail({
                       <div className="p-4 border-2 border-(--cold-blue) bg-(--cold-blue)/10">
                         <div className="flex items-center gap-2 mb-2">
                           <Icons.Help size={16} color="blue" />
-                          <span className="text-sm font-bold text-(--cold-blue)">
+                          <span className="text-base font-bold text-(--cold-blue)">
                             VALIDERING:
                           </span>
                         </div>
-                        <div className="text-sm text-(--cold-blue)">
+                        <div className="text-base text-(--cold-blue)">
                           Denne krisen må løses så raskt som mulig i din
                           virkelige verden!
                         </div>
@@ -432,11 +432,11 @@ export function NisseMail({
                       <div className="p-4 border-2 border-(--gold)/30 bg-(--gold)/5">
                         <div className="flex items-center gap-2 mb-2">
                           <Icons.Help size={16} color="gold" />
-                          <span className="text-sm font-bold text-(--gold)">
+                          <span className="text-base font-bold text-(--gold)">
                             INSTRUKSJONER:
                           </span>
                         </div>
-                        <div className="text-sm opacity-90">
+                        <div className="text-base opacity-90">
                           Løs krisen og send inn koden i KODETERMINAL.
                         </div>
                       </div>
@@ -503,13 +503,13 @@ export function NisseMail({
                       <div className="text-2xl font-bold tracking-wider">
                         {selectedMission.tittel}
                       </div>
-                      <div className="flex items-center gap-2 text-sm opacity-70">
+                      <div className="flex items-center gap-2 text-base opacity-70">
                         <Icons.Calendar size={16} color="green" />
                         <span>DAG {selectedMission.dag}</span>
                       </div>
                     </div>
 
-                    <div className="space-y-1 text-sm">
+                    <div className="space-y-1 text-base">
                       <div className="flex gap-3">
                         <span className="opacity-70 w-16">FRA:</span>
                         <span className="text-(--gold)">RAMPENISSEN 🎅</span>
@@ -542,11 +542,11 @@ export function NisseMail({
                         <div className="p-4 border-2 border-(--cold-blue) bg-(--cold-blue)/10">
                           <div className="flex items-center gap-2 mb-2">
                             <Icons.Alert size={20} color="blue" />
-                            <span className="text-sm font-bold text-(--cold-blue)">
+                            <span className="text-base font-bold text-(--cold-blue)">
                               DETTE SKJER I DAG
                             </span>
                           </div>
-                          <div className="text-sm text-(--cold-blue)">
+                          <div className="text-base text-(--cold-blue)">
                             {hendelse}
                           </div>
                         </div>
@@ -557,11 +557,11 @@ export function NisseMail({
                     <div className="p-4 border-2 border-(--gold)/30 bg-(--gold)/5">
                       <div className="flex items-center gap-2 mb-2">
                         <Icons.Help size={16} color="gold" />
-                        <span className="text-sm font-bold text-(--gold)">
+                        <span className="text-base font-bold text-(--gold)">
                           INSTRUKSJONER:
                         </span>
                       </div>
-                      <div className="text-sm opacity-90">
+                      <div className="text-base opacity-90">
                         Når du har løst oppdraget og funnet koden, klikk på
                         knappen under for å sende inn svaret i KODETERMINAL.
                       </div>

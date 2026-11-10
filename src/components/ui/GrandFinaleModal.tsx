@@ -56,7 +56,7 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
                   {playerNames.join(" · ")}
                 </div>
               )}
-              <div className="text-sm opacity-80">
+              <div className="text-base opacity-80">
                 22. desember, for hånd, én gang.
               </div>
             </div>
@@ -99,7 +99,7 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
               <p className="text-xl">
                 Under treet ligger noe fra Vintervokteren. Det smelter ikke.
               </p>
-              <p className="text-sm opacity-70">
+              <p className="text-base opacity-70">
                 Diplom: Nissemor-guiden → Utskrifter
               </p>
               <button

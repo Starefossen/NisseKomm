@@ -41,7 +41,7 @@ export function SoundToggle() {
       >
         <Icons.Music size={20} color={musicEnabled ? "green" : "gray"} />
         <span
-          className={`text-sm font-bold tracking-wider ${musicEnabled ? "text-(--neon-green)" : "text-(--gray)"}`}
+          className={`text-base font-bold tracking-wider ${musicEnabled ? "text-(--neon-green)" : "text-(--gray)"}`}
         >
           {musicEnabled ? "MUSIKK" : "MUSIKK"}
         </span>
@@ -55,7 +55,7 @@ export function SoundToggle() {
       >
         <Icons.Volume size={20} color={enabled ? "green" : "gray"} />
         <span
-          className={`text-sm font-bold tracking-wider ${enabled ? "text-(--neon-green)" : "text-(--gray)"}`}
+          className={`text-base font-bold tracking-wider ${enabled ? "text-(--neon-green)" : "text-(--gray)"}`}
         >
           {enabled ? "EFFEKTER" : "EFFEKTER"}
         </span>

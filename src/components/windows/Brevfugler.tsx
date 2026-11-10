@@ -155,7 +155,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
             className="absolute z-20 pointer-events-none transition-all duration-1000"
             style={{ left: `${fugl.left}%`, top: `${fugl.top}%` }}
           >
-            <div className="flex items-center gap-1.5 bg-black/85 border border-(--cold-blue) px-2 py-0.5 text-[10px] font-retro text-(--cold-blue) shadow-[0_0_10px_rgba(0,200,255,0.5)]">
+            <div className="flex items-center gap-1.5 bg-black/85 border border-(--cold-blue) px-2 py-0.5 text-base font-retro text-(--cold-blue) shadow-[0_0_10px_rgba(0,200,255,0.5)]">
               <span className="w-2 h-2 rounded-full bg-(--cold-blue) animate-ping" />
               <span>
                 {frossent
@@ -186,11 +186,11 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
             <div className="flex items-center justify-between gap-2">
               <div className="bg-black/80 border border-(--neon-green)/60 px-2.5 py-1 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-(--neon-green) animate-pulse" />
-                <span className="text-xs font-bold text-(--neon-green)">
+                <span className="text-base font-bold text-(--neon-green)">
                   LUFTKORRIDOR: DIREKTELINJEN (60.37°N) ⇄ SNØFALL (90.00°N)
                 </span>
               </div>
-              <div className="bg-black/80 border border-(--gold) px-2.5 py-1 text-xs font-bold text-(--gold)">
+              <div className="bg-black/80 border border-(--gold) px-2.5 py-1 text-base font-bold text-(--gold)">
                 {currentTime.toLocaleTimeString("no-NO", {
                   hour: "2-digit",
                   minute: "2-digit",
@@ -201,10 +201,10 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
             </div>
 
             <div className="flex items-end justify-between gap-2">
-              <div className="bg-black/85 border border-(--neon-green)/50 px-2.5 py-1 text-[11px] text-(--neon-green)">
+              <div className="bg-black/85 border border-(--neon-green)/50 px-2.5 py-1 text-base text-(--neon-green)">
                 📡 MOTTAK: ULRIKEN MAST (643 MOH)
               </div>
-              <div className="bg-black/85 border border-(--gold)/60 px-2.5 py-1 text-[11px] text-(--gold)">
+              <div className="bg-black/85 border border-(--gold)/60 px-2.5 py-1 text-base text-(--gold)">
                 ❄ AVSENDER: KRYSTALLGROTTEN (NORDTOPPEN)
               </div>
             </div>
@@ -214,7 +214,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
         {/* Frozen letter from the Crystal Cave */}
         {frossent ? (
           <div className="p-4 border-2 border-(--cold-blue) bg-(--cold-blue)/10 space-y-2">
-            <div className="text-sm font-bold text-(--cold-blue)">
+            <div className="text-base font-bold text-(--cold-blue)">
               ❄ FRYST BREV
             </div>
             <div
@@ -223,20 +223,20 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
             >
               ▒▒▒▒ ▒▒▒ ▒▒▒▒▒▒ ▒▒▒ ▒▒▒▒ ▒▒▒▒▒▒▒
             </div>
-            <div className="text-xs text-(--cold-blue)/80">
+            <div className="text-base text-(--cold-blue)/80">
               Brevet sitter fast på vingen til den blå fuglen. Det tiner når
               linjen er varm.
             </div>
           </div>
         ) : (
           <div className="p-4 border-2 border-(--gold) bg-(--gold)/10 space-y-2">
-            <div className="text-sm font-bold text-(--gold)">
+            <div className="text-base font-bold text-(--gold)">
               💧 BREVET HAR TINT
             </div>
             <div className="text-base text-(--neon-green) leading-relaxed whitespace-pre-line">
               {TINT_BREV}
             </div>
-            <div className="text-xs text-(--cold-blue)">
+            <div className="text-base text-(--cold-blue)">
               Fra: Vintervokteren, Krystallgrotten
             </div>
           </div>
@@ -244,8 +244,8 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
 
         {/* Letters to Julius: stored locally for the parent guide; Julius does not reply here */}
         <div className="p-4 border-2 border-(--neon-green)/50 space-y-3">
-          <div className="text-sm font-bold">✉ SKRIV BREV TIL JULIUS</div>
-          <div className="text-xs opacity-70">
+          <div className="text-base font-bold">✉ SKRIV BREV TIL JULIUS</div>
+          <div className="text-base opacity-70">
             Skriv brevet på papir, og skriv det av her. Brevfuglen tar det med
             til Snøfall.
           </div>
@@ -254,7 +254,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
             onChange={(e) => setUtkast(e.target.value)}
             placeholder="Kjære Julius ..."
             rows={5}
-            className="w-full p-3 bg-(--dark-crt) border-2 border-(--neon-green) text-(--neon-green) text-sm font-retro resize-none"
+            className="w-full p-3 bg-(--dark-crt) border-2 border-(--neon-green) text-(--neon-green) text-base font-retro resize-none"
           />
           <button
             onClick={send}
@@ -264,7 +264,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
             SEND BREVFUGL TIL SNØFALL
           </button>
           {letters.length > 0 && (
-            <ul className="space-y-1 text-xs">
+            <ul className="space-y-1 text-base">
               {letters.map((l) => (
                 <li key={l.day} className="text-(--neon-green)/80">
                   ✓ Dag {l.day}: brevfugl sendt

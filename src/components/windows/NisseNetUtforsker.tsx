@@ -253,9 +253,9 @@ export function NisseNetUtforsker({
           <Icons.Folder size={32} color="green" />
           <div className="flex-1">
             <div className="text-2xl font-bold tracking-wider">FILSYSTEM</div>
-            <div className="text-sm opacity-70">UTFORSK NISSENETTVERKET</div>
+            <div className="text-base opacity-70">UTFORSK NISSENETTVERKET</div>
           </div>
-          <div className="text-right text-sm">
+          <div className="text-right text-base">
             <div className="text-(--neon-green)">
               {fileStats.accessibleFiles} / {fileStats.totalFiles} FILER
             </div>
@@ -270,7 +270,7 @@ export function NisseNetUtforsker({
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-4 flex-1 min-h-0">
           {/* File tree */}
           <div className="border-2 border-(--neon-green) bg-black/50 overflow-y-auto p-2 max-h-[40vh] lg:max-h-full">
-            <div className="text-xs font-bold mb-2 opacity-70">FILTRE</div>
+            <div className="text-base font-bold mb-2 opacity-70">FILTRE</div>
             {renderFileTree(filteredFiles)}
           </div>
 
@@ -285,7 +285,7 @@ export function NisseNetUtforsker({
                       {selectedFile.navn}
                     </span>
                   </div>
-                  <span className="text-[10px] tracking-widest px-1.5 py-0.5 border border-(--cold-blue)/40 text-(--cold-blue)/80">
+                  <span className="text-base tracking-widest px-1.5 py-0.5 border border-(--cold-blue)/40 text-(--cold-blue)/80">
                     NISSENET // DOKUMENT-VISER
                   </span>
                 </div>
@@ -381,7 +381,7 @@ export function NisseNetUtforsker({
                             "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.88) 100%)",
                         }}
                       />
-                      <div className="absolute top-2 left-2.5 right-2.5 flex items-center justify-between text-[10px] font-bold tracking-widest">
+                      <div className="absolute top-2 left-2.5 right-2.5 flex items-center justify-between text-base font-bold tracking-widest">
                         <span
                           className="bg-black/80 px-2 py-0.5 border"
                           style={{
@@ -399,12 +399,12 @@ export function NisseNetUtforsker({
                   );
                 })()}
 
-                <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                <div className="text-base leading-relaxed whitespace-pre-wrap">
                   {selectedFile.innhold || "Ingen innhold tilgjengelig"}
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-center h-full text-sm opacity-50">
+              <div className="flex items-center justify-center h-full text-base opacity-50">
                 <div className="text-center">
                   <Icons.Help size={32} className="mx-auto mb-2 opacity-30" />
                   <div>Velg en fil for å se innhold</div>
@@ -415,7 +415,7 @@ export function NisseNetUtforsker({
         </div>
 
         {/* Help text */}
-        <div className="text-xs opacity-70 p-3 border-2 border-(--neon-green)/30">
+        <div className="text-base opacity-70 p-3 border-2 border-(--neon-green)/30">
           <div className="flex items-center gap-2">
             <Icons.Help size={12} />
             <span>

@@ -42,13 +42,13 @@ export function EventyrOversikt({ onClose }: EventyrOversiktProps) {
             </div>
             {/* The description names Kulde, the day 7 code */}
             {completedDays.has(7) && (
-              <div className="text-sm opacity-80">{eventyr.beskrivelse}</div>
+              <div className="text-base opacity-80">{eventyr.beskrivelse}</div>
             )}
           </div>
         </div>
 
         <div>
-          <div className="flex justify-between text-xs mb-1">
+          <div className="flex justify-between text-base mb-1">
             <span>FREMGANG</span>
             <span>{progress}%</span>
           </div>

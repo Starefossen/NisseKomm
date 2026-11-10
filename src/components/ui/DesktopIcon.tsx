@@ -43,7 +43,7 @@ export function DesktopIcon({
       disabled={disabled && false} // Allow clicks on disabled for animation
       className={`
         flex flex-col items-center gap-2 p-3 md:p-4 relative
-        w-full min-w-16 min-h-16 md:min-w-20 md:min-h-20
+        w-full min-w-16 min-h-24
         border-2 transition-all
         ${
           disabled
@@ -61,9 +61,9 @@ export function DesktopIcon({
       )}
       <Icon
         name={icon}
-        size={40}
+        size={48}
         color={disabled ? "gray" : color}
-        className="md:w-12 md:h-12"
+        className="md:w-14 md:h-14"
       />
       <span
         className={`text-base md:text-lg tracking-wider ${

@@ -179,14 +179,14 @@ export function KodeTerminal({
             <div className="text-2xl font-bold tracking-wider">
               TERMINAL TILGANG
             </div>
-            <div className="text-sm opacity-70">
+            <div className="text-base opacity-70">
               SKRIV INN KODE FOR DAG {currentDay}
             </div>
           </div>
           {isAlreadySolved && (
             <div className="flex items-center gap-2 px-4 py-2 border-2 border-(--gold) bg-(--gold)/20 text-(--gold)">
               <Icons.CheckCircle size={20} color="gold" />
-              <span className="text-sm font-bold">LØST</span>
+              <span className="text-base font-bold">LØST</span>
             </div>
           )}
         </div>
@@ -286,8 +286,8 @@ export function KodeTerminal({
                   className="mt-1 shrink-0"
                 />
                 <div className="space-y-2">
-                  <div className="text-sm font-bold">TIPS FRA JULIUS:</div>
-                  <div className="text-sm leading-relaxed">
+                  <div className="text-base font-bold">TIPS FRA JULIUS:</div>
+                  <div className="text-base leading-relaxed">
                     Les dagens e-post fra Rampenissen i NISSEMAIL én gang til,
                     og let etter lappen han har gjemt hjemme. Svaret får dere
                     først når dere setter de to sammen.
@@ -308,13 +308,13 @@ export function KodeTerminal({
 
             {unlockedContent.files.length > 0 && (
               <div className="space-y-1">
-                <div className="flex items-center gap-2 text-sm font-bold">
+                <div className="flex items-center gap-2 text-base font-bold">
                   <Icons.File size={16} color="green" />
                   <span>FILER I NISSENET:</span>
                 </div>
                 <div className="pl-6 space-y-1">
                   {unlockedContent.files.map((file, i) => (
-                    <div key={i} className="text-sm">
+                    <div key={i} className="text-base">
                       • {file}
                     </div>
                   ))}
@@ -324,13 +324,13 @@ export function KodeTerminal({
 
             {unlockedContent.symbols.length > 0 && (
               <div className="space-y-1">
-                <div className="flex items-center gap-2 text-sm font-bold">
+                <div className="flex items-center gap-2 text-base font-bold">
                   <Icons.Key size={16} color="green" />
                   <span>KRYPTO-SYMBOLER:</span>
                 </div>
                 <div className="pl-6 space-y-1">
                   {unlockedContent.symbols.map((symbol, i) => (
-                    <div key={i} className="text-sm">
+                    <div key={i} className="text-base">
                       • {symbol.symbolIcon.toUpperCase()} - {symbol.description}
                     </div>
                   ))}
@@ -340,13 +340,13 @@ export function KodeTerminal({
 
             {unlockedContent.topics.length > 0 && (
               <div className="space-y-1">
-                <div className="flex items-center gap-2 text-sm font-bold">
+                <div className="flex items-center gap-2 text-base font-bold">
                   <Icons.BookOpen size={16} color="green" />
                   <span>EMNER:</span>
                 </div>
                 <div className="pl-6 space-y-1">
                   {unlockedContent.topics.map((topic, i) => (
-                    <div key={i} className="text-sm">
+                    <div key={i} className="text-base">
                       • {topic}
                     </div>
                   ))}
@@ -354,7 +354,7 @@ export function KodeTerminal({
               </div>
             )}
 
-            <div className="text-xs opacity-90 pt-2 border-t-2 border-(--neon-green)/30">
+            <div className="text-base opacity-90 pt-2 border-t-2 border-(--neon-green)/30">
               Sjekk NISSENET eller NISSEKRYPTO for å se det nye innholdet!
             </div>
           </div>
@@ -368,7 +368,7 @@ export function KodeTerminal({
 
           <div className="max-h-[200px] overflow-y-auto space-y-2">
             {submittedCodes.length === 0 ? (
-              <div className="text-sm opacity-50 text-center py-4">
+              <div className="text-base opacity-50 text-center py-4">
                 Ingen koder innsendt ennå
               </div>
             ) : (
@@ -383,7 +383,7 @@ export function KodeTerminal({
                       {entry.kode}
                     </span>
                   </div>
-                  <span className="text-xs opacity-70">
+                  <span className="text-base opacity-70">
                     {new Date(entry.dato).toLocaleDateString("no-NO", {
                       day: "numeric",
                       month: "short",

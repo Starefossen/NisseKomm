@@ -133,7 +133,7 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
             <div className="absolute inset-0 pointer-events-none bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.18)_0px,rgba(0,0,0,0.18)_1px,transparent_1px,transparent_3px)]" />
           )}
           {shownChannel !== 3 && day >= 7 && day < 24 && (
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 px-2 bg-black/70 border border-(--cold-blue) text-(--cold-blue) text-sm pointer-events-none">
+            <div className="absolute top-2 left-1/2 -translate-x-1/2 px-2 bg-black/70 border border-(--cold-blue) text-(--cold-blue) text-base pointer-events-none">
               FROST {frost} %
             </div>
           )}
@@ -142,7 +142,7 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
 
         {intercept && (
           <div className="border-2 border-(--cold-blue) bg-black/80 p-2 text-(--cold-blue)">
-            <div className="text-xs opacity-70">
+            <div className="text-base opacity-70">
               85,0 MHz // KRYSTALLGROTTEN
             </div>
             <div className="text-lg">«{intercept}»</div>
