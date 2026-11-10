@@ -4,7 +4,8 @@
 Usage: julius-dag.py <dag> [--dry-run] [--upload <base-url>]
 
 Reads docs/manus/julius-2026.md, generates one clip per segment with julius.sh
-(retries once on failure), joins them with a short tape glitch and writes
+(retries on failure), audits each clip for continuity errors (up to 3 takes),
+joins them with alternating framing (hard cuts, continuous audio) and writes
 public/video/julius/dag-NN.mp4, compressed for the app.
 """
 import re
@@ -79,6 +80,45 @@ def coverage(clip: Path, line: str) -> float:
     return sum(hit(w) for w in script) / max(len(script), 1)
 
 
+AUDIT = """You are a strict continuity supervisor for a short film. The man must hold a chrome microphone in his RIGHT hand the whole time. Watch every frame and list ONLY physics and continuity errors:
+- props appearing, disappearing, duplicating or changing shape/identity (book, letters, papers, ink pot, wooden mug, glasses, switchboard, mic, cable)
+- hands: extra/missing fingers, a third hand, hand passing through objects, objects merging with hands or each other, mic floating or held by no hand, mic switching hands
+- body or furniture morphing, background objects changing
+Do not report lighting, film grain, style or lip sync. For each error: timestamp (mm:ss), short description, severity: "minor" (only seen when looking for it) or "noticeable" (a 9-year-old would notice on first viewing).
+Answer as JSON: {"errors":[{"t":"00:03","what":"...","severity":"minor|noticeable"}],"mic_hand_ok":true|false}"""
+
+
+def audit(clip: Path):
+    """Noticeable continuity errors in the clip (Gemini video review); None if the API failed."""
+    import base64
+    import json
+    import time
+    import urllib.error
+    import urllib.request
+
+    key = subprocess.run(["fnox", "get", "GEMINI_API_KEY"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
+    body = {"contents": [{"parts": [
+        {"inlineData": {"mimeType": "video/mp4", "data": base64.b64encode(clip.read_bytes()).decode()}},
+        {"text": AUDIT}]}], "generationConfig": {"responseMimeType": "application/json"}}
+    req = urllib.request.Request(
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent",
+        data=json.dumps(body).encode(), headers={"x-goog-api-key": key, "Content-Type": "application/json"},
+    )
+    for wait in (0, 30, 90):
+        time.sleep(wait)
+        try:
+            r = json.loads(json.load(urllib.request.urlopen(req))["candidates"][0]["content"]["parts"][-1]["text"])
+            break
+        except (urllib.error.URLError, KeyError, ValueError) as e:
+            print(f"  gjennomgang feilet ({e}), prøver igjen")
+    else:
+        return None
+    bad = [f"{e['t']} {e['what']}" for e in r.get("errors", []) if e.get("severity") == "noticeable"]
+    if not r.get("mic_hand_ok", True) and not bad:
+        bad.append("mikrofonen bytter hånd eller forsvinner")
+    return bad
+
+
 # ponytail: word-set overlap, not alignment; catches dropped clauses, not swapped word order
 MIN_COVERAGE = 0.9
 ATTEMPTS = 3
@@ -100,7 +140,7 @@ def main():
         if clip.exists() and (coverage(raw, line) or 0) >= MIN_COVERAGE:
             continue
         act = f"{action} Kuldes påvirkning i bildet og lyden: {kulde}"
-        best = (-1.0, None)
+        best = (None, None)  # (score, problems); score = (clean, coverage)
         for attempt in range(1, ATTEMPTS + 1):
             r = subprocess.run([str(BIN / "julius.sh"), name, line, act, str(secs)], stdin=subprocess.DEVNULL)
             if r.returncode != 0:
@@ -113,57 +153,47 @@ def main():
                 time.sleep(60 * attempt)  # usually 429 from the video API; back off
                 continue
             c = coverage(raw, line)
-            if c is None:
-                print(f"  ADVARSEL {name}: kunne ikke sjekkes (API), beholdt uten sjekk")
-                best = (1.0, name)
-                break
-            print(f"  {name}: {c:.0%} av replikken hørt")
-            if c > best[0]:
-                keep = name
+            c = 1.0 if c is None else c  # unknown: don't burn a take on an API hiccup
+            bad = audit(raw) or []
+            print(f"  {name}: {c:.0%} av replikken hørt, feil: {bad or 'ingen'}")
+            score = (not bad, c)
+            if best[0] is None or score > best[0]:
                 for ext in ("mp4", "raw.mp4"):
                     shutil.copy(OUT / f"{name}.{ext}", OUT / f"{name}.best.{ext}")
-                best = (c, keep)
-            if c >= MIN_COVERAGE:
+                best = (score, bad)
+            if not bad and c >= MIN_COVERAGE:
                 break
-        if best[1] is None:
+        if best[0] is None:
             sys.exit(f"{name}: ingen versjon ble laget")
-        # ponytail: falls back to the best take instead of aborting; listen to flagged clips by hand
+        # ponytail: falls back to the best take instead of aborting; check flagged clips by hand
         for ext in ("mp4", "raw.mp4"):
             shutil.copy(OUT / f"{name}.best.{ext}", OUT / f"{name}.{ext}")
-        if best[0] < MIN_COVERAGE:
-            print(f"  ADVARSEL {name}: beste versjon {best[0]:.0%}, lytt gjennom")
+        if best[1] or best[0][1] < MIN_COVERAGE:
+            print(f"  ADVARSEL {name}: beste versjon {best[0][1]:.0%}, feil: {best[1]}")
     if dry:
         return
-    glitch = OUT / "glitch.mp4"
-    if not glitch.exists():
-        subprocess.run(
-            ["ffmpeg", "-nostdin", "-y", "-v", "error", "-f", "lavfi", "-i",
-             "nullsrc=s=1280x720:r=24:d=0.3,geq=random(1)*255:128:128", "-f", "lavfi", "-i",
-             "anoisesrc=a=0.08:d=0.3:r=48000", "-c:v", "libx264", "-pix_fmt", "yuv420p",
-             "-c:a", "aac", "-ar", "48000", "-ac", "2", str(glitch)],
-            check=True,
-        )
-    parts = []
-    for n in names:
-        norm = OUT / f"n_{n}.mp4"
-        subprocess.run(
-            ["ffmpeg", "-nostdin", "-y", "-v", "error", "-i", str(OUT / f"{n}.mp4"), "-vf",
-             "fps=24,scale=1280:720,format=yuv420p", "-c:v", "libx264", "-c:a", "aac",
-             "-ar", "48000", "-ac", "2", str(norm)],
-            check=True,
-        )
-        parts += [norm, glitch]
-    lst = OUT / f"dag{day:02d}.txt"
-    lst.write_text("".join(f"file '{p}'\n" for p in parts[:-1]))
+    # alternating framing: every other segment a 1.15x crop on Julius, hard cut, continuous audio
+    segs = [OUT / f"{n}.mp4" for n in names]
+    dur = [float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(p)])) for p in segs]
+    n = len(segs)
+    w, h = int(1280 / 1.15) // 2 * 2, int(720 / 1.15) // 2 * 2
+    fc = "".join(
+        f"[{i}:v]fps=24,scale=1280:720,setsar=1" + (f",crop={w}:{h}:(iw-{w})*0.6:(ih-{h})*0.25,scale=1280:720" if i % 2 else "") + f",format=yuv420p[v{i}];"
+        f"[{i}:a]aresample=48000,aformat=channel_layouts=stereo,afade=t=in:d=0.01,afade=t=out:st={dur[i] - 0.01}:d=0.01[a{i}];"
+        for i in range(n)
+    ) + "".join(f"[v{i}][a{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=1[v][a]"
     DEST.mkdir(parents=True, exist_ok=True)
     dest = DEST / f"dag-{day:02d}.mp4"
     # ponytail: crf 28 + 96k audio lands around 8–12 MB per minute at 720p; raise crf if files grow
     subprocess.run(
-        ["ffmpeg", "-nostdin", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", str(lst),
+        ["ffmpeg", "-nostdin", "-y", "-v", "error", *sum((["-i", str(p)] for p in segs), []),
+         "-filter_complex", fc, "-map", "[v]", "-map", "[a]",
          "-c:v", "libx264", "-crf", "28", "-preset", "slow", "-c:a", "aac", "-b:a", "96k",
          "-movflags", "+faststart", str(dest)],
         check=True,
     )
+    subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-ss", "3", "-i", str(dest), "-frames:v", "1",
+                    "-q:v", "3", str(dest.with_suffix(".jpg"))], check=True)
     print(dest)
     if "--upload" in sys.argv:
         upload(sys.argv[sys.argv.index("--upload") + 1], dest)

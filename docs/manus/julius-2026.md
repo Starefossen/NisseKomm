@@ -60,7 +60,7 @@ Kulde-nivå 1. Svak knitring, lett snø.
    - Kulde: Svak knitring.
 2. **Replikk:** «Her i verkstedet kaster vi ingenting. Går noe i stykker, åpner vi det og ser hvorfor. En reparert ting kjenner man igjen. Den har en historie.»
    - Varighet: 15 s (26 ord)
-   - Handling: Løfter den gamle telefonen på bordkanten og setter den ned igjen.
+   - Handling: Legger venstre hånd på sentralbordet ved siden av seg og plugger inn en ledning.
    - Kulde: Svak knitring.
 3. **Replikk:** «I natt koblet IQ kaffetrakteren på forsterkeren. Det smalt. Tre sikringer røk, og Kanal to ble mørk. IQ sier det var været. Det var trakteren.»
    - Varighet: 15 s (25 ord)
@@ -85,15 +85,15 @@ Kulde-nivå 1 med ett kort blått blaff i bildet i segment 3 (første spor av gr
    - Kulde: Svak knitring.
 3. **Replikk:** «I natt kom det et sånt mønster på linjen vår. Og Orakelet så et blått glimt på åttifem komma null. Et sted vi ikke sender fra.»
    - Varighet: 15 s (26 ord)
-   - Handling: Legger fra seg fjærpennen, sitter helt stille.
+   - Handling: Legger venstre hånd flatt på den åpne boka, sitter helt stille.
    - Kulde: Ett blått blaff over hele bildet, et halvt sekund, idet han sier «blått glimt».
 4. **Replikk:** «Hør nå godt etter. Pil holdt glassbiten mot lyset, og hele regnbuen falt på gulvet. IQ sa navnet på en sånn glassbit tre ganger.»
    - Varighet: 14 s (24 ord)
-   - Handling: Lener seg inn mot mikrofonen, løfter forstørrelsesglasset mot lampen.
+   - Handling: Lener seg inn mot mikrofonen, peker med venstre hånd mot vegglampen.
    - Kulde: Svak knitring.
 5. **Replikk:** «Det er ikke et speil og ikke en lupe. Da sier vi det sånn. God natt, dere tre. Julius over og ut.»
    - Varighet: 13 s (22 ord)
-   - Handling: Legger forstørrelsesglasset ned med et lite smil, leter etter knappen.
+   - Handling: Blar om en side i den åpne boka med et lite smil, leter etter knappen.
    - Kulde: Svak knitring, klikk.
 
 ## Dag 4 (fr) – Skotoget i Gangen · KOMPASS
@@ -106,7 +106,7 @@ Kulde-nivå 1. Svak knitring, lett snø.
    - Kulde: Svak knitring.
 2. **Replikk:** «I dag tar man en gren fra et frukttre og setter den i vann. Står den varmt, springer den ut til jul. Blomster midt på vinteren.»
    - Varighet: 15 s (26 ord)
-   - Handling: Peker mot en vase med bare kvister på hyllen, nikker.
+   - Handling: Peker mot hyllene bak seg, nikker.
    - Kulde: Svak knitring.
 3. **Replikk:** «I natt mistet Rudolf retningen. Det lå en tåke over fjorden som var kald på feil måte. Han landet i en snøfonn.»
    - Varighet: 13 s (22 ord)
@@ -118,7 +118,7 @@ Kulde-nivå 1. Svak knitring, lett snø.
    - Kulde: Svak knitring.
 5. **Replikk:** «Sjøfolk hadde den i lomma, Rudolf har den i nesa. Kle dere godt i dag, det er fredag og kaldt. Julius over og ut.»
    - Varighet: 14 s (24 ord)
-   - Handling: Klapper seg på brystlommen, så på nesen, ler, så leter han etter knappen.
+   - Handling: Klapper seg på brystet, så på nesen, ler, så leter han etter knappen.
    - Kulde: Svak knitring, klikk.
 
 ## Dag 5 (lø) – Brevfuglen over Byfjellene · ULRIKEN
@@ -127,7 +127,7 @@ Kulde-nivå 1. Svak knitring.
 
 1. **Replikk:** «God lørdag, alle sammen. Jeg hører det er regn i Bergen. Det er det alltid, sier Winter. Hun har aldri vært der.»
    - Varighet: 13 s (22 ord)
-   - Handling: Tar en slurk av trekoppen, setter den fra seg.
+   - Handling: Legger venstre hånd rundt trekoppen på bordet uten å løfte den.
    - Kulde: Svak knitring.
 2. **Replikk:** «Den første brevfuglen til Bergen sendte Winter for førti år siden. Den landet på Fløyen, så på regnet og nektet å fly videre.»
    - Varighet: 14 s (23 ord)
@@ -135,7 +135,7 @@ Kulde-nivå 1. Svak knitring.
    - Kulde: Svak knitring.
 3. **Replikk:** «I natt kom årets første fugl over byfjellene. Men Winter stoler ikke på linjen lenger. Noen lytter. Så nå skriver hun alt i hemmelig skrift.»
    - Varighet: 15 s (25 ord)
-   - Handling: Holder opp et brev med rød skrift, snur det, legger det ned.
+   - Handling: Tar opp et ark fra papirbunken med venstre hånd, ser på det, legger det ned.
    - Kulde: Kort hopp i bildet på «noen lytter».
 4. **Replikk:** «Winter flyttet hver bokstav så mange skritt fram som IQ sprengte sikringer onsdag. Dere må gå så mange tilbake. Husk at vårt alfabet slutter på Å.»
    - Varighet: 15 s (26 ord)
