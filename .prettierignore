@@ -20,3 +20,4 @@ coverage
 # generated media work files
 assets/out/
 assets/locations/**/*.json
+.claude/
