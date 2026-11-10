@@ -33,8 +33,14 @@ const TUNE_DONE = SWEEP_TICKS + TICKS_PER_CHANNEL * CHANNELS.length;
 // Day 21 after the code: one channel thaws every 6 ticks.
 const THAW_TICKS = 6;
 
+// Restarts from 0 whenever `active` turns on, so a solve while open starts the thaw.
 function useTicker(active: boolean, until: number): number {
-  const [tick, setTick] = useState(active ? 0 : until);
+  const [tick, setTick] = useState(until);
+  const [wasActive, setWasActive] = useState(false);
+  if (active !== wasActive) {
+    setWasActive(active);
+    if (active) setTick(0);
+  }
   useEffect(() => {
     if (tick >= until) return;
     const id = setTimeout(() => setTick((t) => t + 1), TICK_MS);
@@ -45,9 +51,17 @@ function useTicker(active: boolean, until: number): number {
 
 export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
   const day = Math.max(1, Math.min(24, currentDay ?? getCurrentDay()));
-  const [solved] = useState(() => GameEngine.isQuestCompleted(day));
-  const [frost] = useState(() => GameEngine.getFrostLevel(day) ?? 0);
-  const [hour] = useState(() => getCurrentDate().getHours());
+  // Read on every render: the parent re-renders after a code, and the clock
+  // tick catches the 20:00 fail-safe and the parent's «Frost av».
+  const [, setNow] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setNow((n) => n + 1), 30_000);
+    return () => clearInterval(id);
+  }, []);
+  const solved = GameEngine.isQuestCompleted(day);
+  const frost = GameEngine.getFrostLevel(day) ?? 0;
+  const mode = GameEngine.getFrostMode().level;
+  const hour = getCurrentDate().getHours();
 
   const tuneTick = useTicker(day === 1 && !solved, TUNE_DONE);
   const tuning = tuneTick < TUNE_DONE;
@@ -70,6 +84,7 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
     day,
     solved,
     frost,
+    mode,
     thawed,
   });
   const intercept =
@@ -113,7 +128,7 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
           {shownChannel === 3 && (
             <div className="absolute inset-0 pointer-events-none bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.18)_0px,rgba(0,0,0,0.18)_1px,transparent_1px,transparent_3px)]" />
           )}
-          {day >= 7 && day < 24 && (
+          {shownChannel !== 3 && day >= 7 && day < 24 && (
             <div className="absolute top-2 left-1/2 -translate-x-1/2 px-2 bg-black/70 border border-(--cold-blue) text-(--cold-blue) text-sm pointer-events-none">
               FROST {frost} %
             </div>
