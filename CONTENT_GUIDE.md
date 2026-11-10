@@ -876,7 +876,7 @@ For every rampestrek, check:
 - [ ] **Rampenissen involvert?** Ikke bare til stede?
 - [ ] **Kosedyr med?** Vitner, ofre, medsammensvorne?
 - [ ] **Kaos/konsekvens?** Ikke rent og pent?
-- [ ] **Fungerer uten tekst?** 6-åring kan le?
+- [ ] **Fungerer uten tekst?** 5-åring kan le?
 
 ### Rampestrek Categories
 

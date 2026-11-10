@@ -30,7 +30,7 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 ## Fase 1: Grunnlag, 2026-historie og CRT-moduler (Fullført i PR #9)
 
 - [x] Arkiver 2025-sesongen under `src/data/archive/2025/`
-- [x] 24 daglige oppdrag (`uke1_oppdrag.json` til `uke4_oppdrag.json`) med asymmetriske søskenroller (Hanna 6, Håkon 9, Kristian 11)
+- [x] 24 daglige oppdrag (`uke1_oppdrag.json` til `uke4_oppdrag.json`) med asymmetriske søskenroller (Hanna 5, Håkon 9, Kristian 12)
 - [x] 3 sammenvevde eventyr (`morkets-trussel`, `iqs-oppfinnelser`, `brevfugl-mysteriet`) i `eventyr.json`
 - [x] `SnøfallTV`: 4 fotografiske kamerakanaler (`/feed/*.png`), analog CRT RF-multipath spøkelsesbilde fra Kulde, og frekvenssøk (`85.0`–`108.0 MHz`)
 - [x] `NisseMusikk`: Ekte HTML5-avspilling av 12 8-bit MP3-spor i `public/music/` med spoling, volumkontroll og Dag 12-ledetråd (`DEL 2: O - D - I`)
@@ -45,7 +45,7 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 
 ### 2.1 Utskrivbare fysiske rekvisitter (`/nissemor-guide/printout`)
 
-- [ ] **Rød-filter dekoderkort (Dag 1 og utvalgte dager):** Mal for kort med rød støytekst som skjuler blå/cyan kodebokstaver når Hanna (6) ser gjennom et rødt cellofan-filter ("Spøkelses-skanner").
+- [ ] **Rød-filter dekoderkort (Dag 1 og utvalgte dager):** Mal for kort med rød støytekst som skjuler blå/cyan kodebokstaver når Hanna (5) ser gjennom et rødt cellofan-filter ("Spøkelses-skanner").
 - [ ] **Brett-og-linjer blåkopier (IQs skjemaer):** Utskrivbare ark der halve bokstaver og kretslinjer danner kodeordet først når Håkon (9) bretter arket langs stiplede piler.
 - [ ] ** Hullkort / sjablongkort:** Kort med utklippede vinduer som legges over en bestemt side i en fysisk bok i bokhyllen (eller utskrift fra NisseNet) for å isolere passordet.
 - [ ] **1:1 Skjerm-kalkeringskart:** Mal tilpasset bakepapir/matpapir med registreringsmerker som holdes direkte mot CRT-skjermen i `SnøfallTV` (CAM 2) for å koble fysiske punkter med lysende skjermkoordinater.
@@ -53,7 +53,7 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 ### 2.2 Sanntids smarthus-respons (`varden` / Home Assistant webhook)
 
 - [ ] **Utgående webhook ved kode-innlevering (`KodeTerminal`):** Send umiddelbar POST fra server/klient til lokal `varden`-agent når dagens kode løses, slik at stuelampene blinker gull to ganger og skifter fra kald blå (`4000K`) til varm hvit (`2200K`) innen 2 sekunder.
-- [ ] **Utgående webhook ved frekvenslås (`SnøfallTV` på `90.0 MHz`):** Trigger en kort 8-sekunders radioskurring eller lydeffekt på kjøkkenhøyttaleren når Kristian (11) låser inn bærebølgen på `90.0 MHz`.
+- [ ] **Utgående webhook ved frekvenslås (`SnøfallTV` på `90.0 MHz`):** Trigger en kort 8-sekunders radioskurring eller lydeffekt på kjøkkenhøyttaleren når Kristian (12) låser inn bærebølgen på `90.0 MHz`.
 - [ ] **Morgen-indikator i gangen:** Automatiser i `varden` at én lampe i gangen lyser isblått kl. 06:45 hver morgen frem til dagens kode i NisseKomm er løst (`lightingPreset === "frost_decay"`).
 
 ### 2.3 Skjerm- og lyd-interaksjon i appen
