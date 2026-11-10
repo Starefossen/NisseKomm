@@ -102,8 +102,8 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [ ] Lagring og synk (StorageManager, ServerSyncAdapter, /api/state, Postgres)
 - [ ] Dato og tid (date-utils, Tidsmaskin, simulering, `day-offset`)
 - [ ] Innlogging og moduser (auth, `NISSEKOMM_MODE`, proxy)
-- [ ] KodeTerminal og bonuskoder
-- [ ] NisseMail og varsler
+- [x] KodeTerminal og bonuskoder
+- [x] NisseMail og varsler
 - [ ] Dagbok og Julius-video (JuliusVideo, sett-status, transkripsjon, PS)
 - [ ] Kalender
 - [ ] Snøfall TV og LiveCam (kanaler, loops, effekter, hendelser)

@@ -480,7 +480,9 @@ export default function Home() {
                     <KodeTerminal
                       onClose={handleCloseWindow}
                       expectedCode={getCurrentMission().kode}
-                      currentDay={selectedDay || getCurrentDay()}
+                      // The mission's own day: getCurrentMission falls back to
+                      // day 1 after day 24, and code and day must agree
+                      currentDay={getCurrentMission().dag}
                       allMissions={oppdrag}
                       onCodeSubmitted={handleCodeSubmitted}
                     />

@@ -219,10 +219,14 @@ export function KodeTerminal({
                     : feedback === "error"
                       ? "red-shake 0.5s ease-out"
                       : "none",
-                color: "var(--neon-green)",
+                color: isAlreadySolved ? "var(--gold)" : "var(--neon-green)",
                 caretColor: "var(--neon-green)",
               }}
               placeholder={isAlreadySolved ? solvedCode : "_ _ _ _ _ _ _ _"}
+              aria-label={`Kode for dag ${currentDay}`}
+              autoComplete="off"
+              autoCapitalize="characters"
+              spellCheck={false}
               autoFocus
             />
           </div>
@@ -268,8 +272,18 @@ export function KodeTerminal({
               "SEND"
             )}
           </button>
+          <div role="status" aria-live="polite" className="sr-only">
+            {feedback === "success"
+              ? "Kode akseptert"
+              : feedback === "error"
+                ? "Feil kode, prøv igjen"
+                : ""}
+          </div>
           {bonusMessage && (
-            <div className="border-4 border-(--gold) bg-(--gold)/10 p-3 text-(--gold)">
+            <div
+              role="status"
+              className="border-4 border-(--gold) bg-(--gold)/10 p-3 text-(--gold)"
+            >
               ✓ BONUS GODKJENT: {bonusMessage}
             </div>
           )}
