@@ -13,6 +13,7 @@ import type { Pool } from "pg";
 import * as stateRoute from "../route";
 import { createPgStore, memoryStore, mergeValue, migrate } from "@/lib/db";
 
+process.env.STORAGE_BACKEND = "server";
 const TOKEN = "test-token";
 const sha = (s: string) => createHash("sha256").update(s).digest("hex");
 
@@ -122,5 +123,48 @@ describe("Postgres store (pg-mem)", () => {
 
     await store.addFailure(60_000);
     expect(await store.addFailure(60_000)).toBe(2);
+
+    await store.putState("nissekomm-julius-watched", null, true);
+    expect((await store.getState())["state-version"]).toBe(1);
+  });
+});
+
+describe("/api/state removals and validation", () => {
+  it("rejects codes that are not the real code for their day", async () => {
+    const fake = await call("PUT", {
+      key: "nissekomm-codes",
+      value: [{ kode: "JUKS", dato: "x", day: 1 }],
+    });
+    expect(fake.status).toBe(400);
+    const wrongDay = await call("PUT", {
+      key: "nissekomm-codes",
+      value: [{ kode: "SIGNAL", dato: "x", day: 2 }],
+    });
+    expect(wrongDay.status).toBe(400);
+    expect((await call("GET")).json).toEqual({});
+  });
+
+  it("replace shrinks a list and stale versions get 409", async () => {
+    const key = "nissekomm-julius-watched";
+    await call("PUT", { key, value: [1, 2], version: 0 });
+    const reset = await call("PUT", { key, value: null, replace: true });
+    expect(reset.json).toEqual({ value: null, version: 1 });
+    // A screen still on version 0 pushes its old list: refused
+    const stale = await call("PUT", { key, value: [1, 2], version: 0 });
+    expect(stale.status).toBe(409);
+    expect(stale.json).toEqual({ version: 1 });
+    expect((await call("GET")).json).toEqual({
+      [key]: null,
+      "state-version": 1,
+    });
+  });
+
+  it("is off (404) with STORAGE_BACKEND=localStorage", async () => {
+    process.env.STORAGE_BACKEND = "localStorage";
+    try {
+      expect((await call("GET")).status).toBe(404);
+    } finally {
+      process.env.STORAGE_BACKEND = "server";
+    }
   });
 });

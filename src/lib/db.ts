@@ -3,27 +3,21 @@
  * Postgres when DATABASE_URL is set, otherwise in memory (dev, tests).
  */
 import { Pool } from "pg";
+import { SYNCED_KEYS, VERSION_KEY } from "./storage-adapter";
 
 export type Role = "kid" | "parent";
 type Session = { role: Role; expires: number };
 
 /** Keys clients may sync (fase5-plan §2). Everything else stays local. */
-export const STATE_KEYS = new Set([
-  "nissekomm-codes",
-  "nissekomm-julius-watched",
-  "nissekomm-bonusoppdrag-completed",
-  "nissekomm-earned-badges",
-  "nissekomm-brevfugler",
-  "nissekomm-santa-letters",
-  "nissekomm-frost-off-day",
-  "nissekomm-collected-symbols",
-  "nissekomm-solved-decryptions",
-  "nissekomm-unlocked-files",
-  "nissekomm-topic-unlocks",
-  "nissekomm-player-names",
-  "nissekomm-viewed-emails",
-  "nissekomm-viewed-bonusoppdrag-emails",
-]);
+export const STATE_KEYS = SYNCED_KEYS;
+export { VERSION_KEY };
+
+/** STORAGE_BACKEND, else server when DATABASE_URL is set. */
+export function storageBackend(): "server" | "localStorage" {
+  const b = process.env.STORAGE_BACKEND;
+  if (b === "server" || b === "localStorage") return b;
+  return process.env.DATABASE_URL ? "server" : "localStorage";
+}
 
 // Lists two screens append to at once; merged per day instead of overwritten.
 const MERGED_KEYS = new Set([
@@ -45,9 +39,8 @@ const itemId = (x: unknown) => {
 };
 
 /**
- * Union of stored and incoming lists, incoming wins per day.
- * ponytail: removals (revoked bonus, reset) don't propagate; add a
- * replace flag when a client needs to shrink a list.
+ * Union of stored and incoming lists, incoming wins per day. Shrinking a
+ * list (reset, revoked bonus) goes through putState(..., replace).
  */
 export function mergeValue(key: string, stored: unknown, incoming: unknown) {
   if (!MERGED_KEYS.has(key) || !Array.isArray(stored)) return incoming;
@@ -59,8 +52,11 @@ export function mergeValue(key: string, stored: unknown, incoming: unknown) {
 
 export interface Store {
   getState(): Promise<Record<string, unknown>>;
-  /** Merges and stores; returns the stored value. */
-  putState(key: string, value: unknown): Promise<unknown>;
+  /**
+   * Merges and stores; returns the stored value. replace skips the merge and
+   * bumps VERSION_KEY, so screens holding the old list re-fetch.
+   */
+  putState(key: string, value: unknown, replace?: boolean): Promise<unknown>;
   getSession(hash: string): Promise<Session | null>;
   setSession(hash: string, s: Session): Promise<void>;
   deleteSession(hash: string): Promise<void>;
@@ -84,10 +80,11 @@ export function createMemoryStore(): Store & { reset(): void } {
     async getState() {
       return Object.fromEntries(kv);
     },
-    async putState(key, value) {
-      const merged = mergeValue(key, kv.get(key), value);
-      kv.set(key, merged);
-      return merged;
+    async putState(key, value, replace = false) {
+      const stored = replace ? value : mergeValue(key, kv.get(key), value);
+      kv.set(key, stored);
+      if (replace) kv.set(VERSION_KEY, Number(kv.get(VERSION_KEY) ?? 0) + 1);
+      return stored;
     },
     async getSession(hash) {
       return sessions.get(hash) ?? null;
@@ -149,25 +146,32 @@ export function createPgStore(pool: Pool): Store {
       const r = await pool.query("SELECT key, value FROM kv");
       return Object.fromEntries(r.rows.map((row) => [row.key, row.value]));
     },
-    async putState(key, value) {
+    async putState(key, value, replace = false) {
       const c = await pool.connect();
-      try {
-        await c.query("BEGIN");
+      const update = async (k: string, fn: (old: unknown) => unknown) => {
         await c.query(
           "INSERT INTO kv (key, value) VALUES ($1, 'null') ON CONFLICT (key) DO NOTHING",
-          [key],
+          [k],
         );
         const r = await c.query(
           "SELECT value FROM kv WHERE key = $1 FOR UPDATE",
-          [key],
+          [k],
         );
-        const merged = mergeValue(key, r.rows[0]?.value, value);
+        const next = fn(r.rows[0]?.value);
         await c.query(
           "UPDATE kv SET value = $2, updated_at = now() WHERE key = $1",
-          [key, JSON.stringify(merged)],
+          [k, JSON.stringify(next)],
         );
+        return next;
+      };
+      try {
+        await c.query("BEGIN");
+        const stored = await update(key, (old) =>
+          replace ? value : mergeValue(key, old, value),
+        );
+        if (replace) await update(VERSION_KEY, (n) => Number(n ?? 0) + 1);
         await c.query("COMMIT");
-        return merged;
+        return stored;
       } catch (e) {
         await c.query("ROLLBACK").catch(() => {});
         throw e;

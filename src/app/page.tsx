@@ -262,8 +262,14 @@ export default function Home() {
         <PasswordPrompt onSuccess={handleAuthSuccess} />
       )}
 
+      {bootComplete && effectiveAuthenticated && isInitializing && (
+        <div className="flex items-center justify-center h-full text-2xl text-(--neon-green) animate-pulse">
+          HENTER DATA...
+        </div>
+      )}
+
       {/* Main application */}
-      {bootComplete && effectiveAuthenticated && (
+      {bootComplete && effectiveAuthenticated && !isInitializing && (
         <div
           className={`flex h-full ${frostMode.level === 1 ? "frost-colors-leak" : ""}`}
         >

@@ -26,7 +26,7 @@ describe("Symbol System", () => {
   beforeEach(async () => {
     localStorage.clear();
     // Initialize storage for tests
-    await StorageManager.setAuthenticated(true, `test_${Date.now()}`);
+    await StorageManager.setAuthenticated(true);
   });
 
   describe("getAllSymbols", () => {

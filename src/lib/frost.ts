@@ -68,8 +68,12 @@ export function frostModeFor(opts: {
   hour: number;
   solved: boolean;
   disabled: boolean;
+  /** MCP set_frost while its `until` lies ahead; wins over everything else. */
+  override?: boolean;
 }): FrostMode {
   const entry = FROST_DAYS[opts.day];
+  if (opts.override === false) return { level: 0, message: "" };
+  if (opts.override) return entry ?? { level: 1, message: "Kulde er her." };
   if (
     !entry ||
     opts.month !== 12 ||
