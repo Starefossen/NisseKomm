@@ -12,6 +12,8 @@ import { SoundManager } from "@/lib/sounds";
 
 const TICK_MS = 250;
 const fmt = (f: number) => f.toFixed(1).replace(".", ",");
+// Tab or a modifier must not skip by accident; Enter, space and Escape do.
+const SKIP_KEYS = ["Enter", " ", "Escape"];
 
 // Snow/static over the screen; motion-safe so reduced motion gets a still image.
 function Static() {
@@ -78,7 +80,7 @@ export function Day1Boot({ onDone }: { onDone: () => void }) {
       tabIndex={0}
       aria-label="Hopp over"
       onClick={finish}
-      onKeyDown={finish}
+      onKeyDown={(e) => SKIP_KEYS.includes(e.key) && finish()}
       className="fixed inset-0 z-[60] bg-(--crt-bg) flex items-center justify-center cursor-pointer"
     >
       <Static />
@@ -120,7 +122,7 @@ export function Day1Tail({ onDone }: { onDone: () => void }) {
       tabIndex={0}
       aria-label="Hopp over"
       onClick={finish}
-      onKeyDown={finish}
+      onKeyDown={(e) => SKIP_KEYS.includes(e.key) && finish()}
       className="absolute inset-0 cursor-pointer"
     >
       <Static />

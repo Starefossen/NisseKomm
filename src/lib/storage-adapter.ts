@@ -112,6 +112,7 @@ export const SYNCED_KEYS = new Set([
   "nissekomm-brevfugler",
   "nissekomm-santa-letters",
   "nissekomm-frost-off-day",
+  "nissekomm-intros-seen",
   "nissekomm-collected-symbols",
   "nissekomm-solved-decryptions",
   "nissekomm-unlocked-files",
