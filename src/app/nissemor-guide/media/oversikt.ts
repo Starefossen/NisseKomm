@@ -7,7 +7,7 @@ import {
   channelEffects,
   channelFallback,
   channelSource,
-  latestIntercept,
+  interceptFor,
   type ChannelId,
 } from "@/components/windows/snofall-tv/channels";
 
@@ -121,7 +121,7 @@ export function lookThrough(
     fx: channelEffects(ch, freq, state),
     intercept:
       ch === 4 && freq === FREQ_KULDE && day >= 3
-        ? latestIntercept(day)
+        ? interceptFor(day)
         : undefined,
   }));
 }

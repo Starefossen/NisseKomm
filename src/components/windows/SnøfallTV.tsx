@@ -7,7 +7,7 @@ import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import { getCurrentDay, getCurrentDate } from "@/lib/date-utils";
 import { LiveCam } from "./snofall-tv/LiveCam";
-import { MiniGames } from "./snofall-tv/MiniGames";
+import { MiniGames, gamesFor } from "./snofall-tv/MiniGames";
 import {
   CHANNELS,
   FREQ_HOME,
@@ -18,10 +18,10 @@ import {
   channelEffects,
   channelFallback,
   channelSource,
-  latestIntercept,
+  interceptFor,
   type ChannelId,
 } from "./snofall-tv/channels";
-import { latestRuneLine } from "./snofall-tv/runer";
+import { runeLineFor } from "./snofall-tv/runer";
 import { RuneText } from "../ui/Frostrune";
 import { mediaUrl } from "@/lib/media";
 import { TIDBITS, visible } from "@/lib/tidbits";
@@ -95,7 +95,7 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
   });
   const intercept =
     shownChannel === 4 && shownFreq === FREQ_KULDE && day >= 3
-      ? latestIntercept(day)
+      ? interceptFor(day)
       : undefined;
 
   // Odd frequencies on K4 (tidbits.json tv): a still or static plus a line
@@ -173,7 +173,7 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
               {odd.tekst}
             </div>
           )}
-          {playing && <MiniGames onClose={() => setPlaying(false)} />}
+          {playing && <MiniGames day={day} onClose={() => setPlaying(false)} />}
         </div>
 
         {intercept && (
@@ -182,9 +182,9 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
               85,0 MHz // KRYSTALLGROTTEN
             </div>
             <div className="text-lg">«{intercept}»</div>
-            {latestRuneLine(day) && (
+            {runeLineFor(day) && (
               <RuneText
-                text={latestRuneLine(day)!}
+                text={runeLineFor(day)!}
                 learned={GameEngine.getLearnedRunes()}
                 className="mt-1"
               />
@@ -212,7 +212,7 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
               </button>
             );
           })}
-          {solved && channel === 4 && !playing && (
+          {solved && channel === 4 && !playing && gamesFor(day).length > 0 && (
             <button
               onClick={() => {
                 SoundManager.playSound("click");

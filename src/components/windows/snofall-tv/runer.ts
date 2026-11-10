@@ -1,5 +1,3 @@
-import { KULDE_INTERCEPTS } from "./channels";
-
 /** T12: Kulde's own voice in Frostrunene under the ghost line (app-tekster A6). */
 export const KULDE_RUNER: Record<number, string> = {
   10: "SE MEG",
@@ -8,10 +6,7 @@ export const KULDE_RUNER: Record<number, string> = {
   21: "LYSET DERES",
 };
 
-/** Rune line for the ghost image shown on `day` (latest intercept so far). */
-export function latestRuneLine(day: number): string | undefined {
-  const days = Object.keys(KULDE_INTERCEPTS)
-    .map(Number)
-    .filter((d) => d <= day);
-  return days.length ? KULDE_RUNER[Math.max(...days)] : undefined;
+/** Rune line under the ghost image shown on `day`. */
+export function runeLineFor(day: number): string | undefined {
+  return KULDE_RUNER[day];
 }
