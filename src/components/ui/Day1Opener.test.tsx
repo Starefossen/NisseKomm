@@ -5,7 +5,7 @@ import { BOOT_TICKS, Day1Boot, Day1Tail, TAIL_TICKS } from "./Day1Opener";
 import { maskRunes, RuneText } from "./Frostrune";
 import { GameEngine } from "@/lib/game-engine";
 import { SYNCED_KEYS } from "@/lib/storage-adapter";
-import { latestRuneLine } from "../windows/snofall-tv/runer";
+import { runeLineFor } from "../windows/snofall-tv/runer";
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
@@ -102,9 +102,10 @@ describe("Rune lines (T12)", () => {
   });
 
   it("follows the ghost image of the day", () => {
-    expect(latestRuneLine(9)).toBeUndefined();
-    expect(latestRuneLine(10)).toBe("SE MEG");
-    expect(latestRuneLine(11)).toBeUndefined();
-    expect(latestRuneLine(22)).toBe("LYSET DERES");
+    expect(runeLineFor(9)).toBeUndefined();
+    expect(runeLineFor(10)).toBe("SE MEG");
+    expect(runeLineFor(11)).toBeUndefined();
+    expect(runeLineFor(21)).toBe("LYSET DERES");
+    expect(runeLineFor(22)).toBeUndefined();
   });
 });

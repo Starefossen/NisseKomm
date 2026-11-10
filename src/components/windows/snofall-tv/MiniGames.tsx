@@ -10,12 +10,15 @@ import { SoundManager } from "@/lib/sounds";
 
 type GameId = "kretslop" | "sorterer" | "slede" | "porten";
 
-const GAMES: [GameId, string][] = [
-  ["kretslop", "KRETSLØP"],
-  ["sorterer", "SORTERER"],
-  ["slede", "SLEDE-RADAR"],
-  ["porten", "PORTEN"],
+// Storyboard day each toy first appears (8 kretskort, 16 sorterer, 18 slede, 21 zapper).
+const GAMES: [GameId, string, number][] = [
+  ["kretslop", "KRETSLØP", 8],
+  ["sorterer", "SORTERER", 16],
+  ["slede", "SLEDE-RADAR", 18],
+  ["porten", "PORTEN", 21],
 ];
+
+export const gamesFor = (day: number) => GAMES.filter(([, , d]) => day >= d);
 
 const btn = "min-h-11 px-2 border text-base font-bold cursor-pointer";
 const click = () => SoundManager.playSound("click");
@@ -46,15 +49,22 @@ function Toggles({ labels, done }: { labels: string[]; done: string }) {
   );
 }
 
-export function MiniGames({ onClose }: { onClose: () => void }) {
-  const [game, setGame] = useState<GameId>("kretslop");
+export function MiniGames({
+  day,
+  onClose,
+}: {
+  day: number;
+  onClose: () => void;
+}) {
+  const games = gamesFor(day);
+  const [game, setGame] = useState<GameId>(games[games.length - 1][0]);
   const [sorted, setSorted] = useState(0);
   const [sleigh, setSleigh] = useState(40);
 
   return (
     <div className="absolute inset-2 z-30 bg-black/85 border-2 border-(--neon-green) p-3 flex flex-col gap-3 text-(--neon-green)">
       <div className="flex flex-wrap gap-2 items-center">
-        {GAMES.map(([id, label]) => (
+        {games.map(([id, label]) => (
           <button
             key={id}
             onClick={() => {

@@ -1,3 +1,4 @@
+import { gamesFor } from "./MiniGames";
 import { describe, it, expect } from "@jest/globals";
 import { frostLevelFor, frostModeFor } from "@/lib/frost";
 import { mediaUrl } from "@/lib/media";
@@ -7,6 +8,7 @@ import {
   channelEffects,
   channelFallback,
   channelSource,
+  interceptFor,
   STILL,
 } from "./channels";
 
@@ -263,5 +265,23 @@ describe("Snøfall TV channel video source mappings", () => {
       expect(channelFallback(4, FREQ_KULDE, 1)).toBe(STILL.grotte);
       expect(channelFallback(4, 95, 1)).toBeNull();
     });
+  });
+});
+
+describe("day gates", () => {
+  it("airs each ghost line on its own day only", () => {
+    expect(interceptFor(3)).toMatch(/Linjen deres er varm/);
+    expect(interceptFor(4)).toBeUndefined();
+    expect(interceptFor(21)).toMatch(/lyset deres/);
+    expect(interceptFor(22)).toBeUndefined();
+  });
+
+  it("opens each toy from its storyboard day", () => {
+    const ids = (d: number) => gamesFor(d).map(([id]) => id);
+    expect(ids(7)).toEqual([]);
+    expect(ids(8)).toEqual(["kretslop"]);
+    expect(ids(17)).toEqual(["kretslop", "sorterer"]);
+    expect(ids(18)).toContain("slede");
+    expect(ids(21)).toContain("porten");
   });
 });

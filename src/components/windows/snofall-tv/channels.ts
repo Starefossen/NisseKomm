@@ -123,11 +123,9 @@ export const KULDE_INTERCEPTS: Record<number, string> = {
   21: "Det er kaldt her nede. Jeg ville bare se lyset deres.",
 };
 
-export function latestIntercept(day: number): string | undefined {
-  const days = Object.keys(KULDE_INTERCEPTS)
-    .map(Number)
-    .filter((d) => d <= day);
-  return days.length ? KULDE_INTERCEPTS[Math.max(...days)] : undefined;
+/** Each ghost line airs on its own day only; after day 21 there is silence. */
+export function interceptFor(day: number): string | undefined {
+  return KULDE_INTERCEPTS[day];
 }
 
 export interface DayState {
