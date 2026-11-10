@@ -313,6 +313,12 @@ function PrintoutContent() {
               SKRIV UT ({pages.length} {pages.length === 1 ? "SIDE" : "SIDER"})
             </button>
             <button
+              onClick={() => router.push("/nissemor-guide/printout/runer")}
+              className="px-6 py-3 border-4 border-(--cold-blue) text-(--cold-blue) font-bold text-xl hover:bg-(--cold-blue)/10"
+            >
+              RUNETAVLE OG FASIT
+            </button>
+            <button
               onClick={() => router.push("/nissemor-guide")}
               className="px-6 py-3 border-4 border-(--neon-green) text-(--neon-green) font-bold text-xl hover:bg-(--neon-green)/10"
             >
