@@ -29,6 +29,15 @@ export const PLAYLIST: Track[] = MEDIA_MANIFEST.filter(
   defaultDuration: entry.defaultDuration ?? "0:00",
 }));
 
+/** A track uploaded via the guide's media page: title from the file name. */
+export const uploadedTrack = (path: string, id: number): Track => ({
+  id,
+  title: path.replace(/^music\//, "").replace(/\.mp3$/i, ""),
+  subtitle: "Opplastet spor",
+  src: mediaUrl(path),
+  defaultDuration: "–:––",
+});
+
 function formatTime(seconds: number): string {
   if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
   const mins = Math.floor(seconds / 60);
@@ -49,8 +58,24 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.5);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [playlist, setPlaylist] = useState(PLAYLIST);
+  const lengthRef = useRef(PLAYLIST.length);
 
-  const track = PLAYLIST[currentTrack];
+  useEffect(() => {
+    fetch("/api/musikk")
+      .then((r) => (r.ok ? r.json() : []))
+      .then((paths: string[]) => {
+        const list = [
+          ...PLAYLIST,
+          ...paths.map((p, i) => uploadedTrack(p, PLAYLIST.length + i + 1)),
+        ];
+        lengthRef.current = list.length;
+        setPlaylist(list);
+      })
+      .catch(() => {});
+  }, []);
+
+  const track = playlist[currentTrack];
   // Day 12: Kulde has frozen the jukebox until the day's code is in.
   const frozen =
     getCurrentMonth() === 12 &&
@@ -65,7 +90,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
     const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
     const handleLoadedMetadata = () => setDuration(audio.duration || 0);
     const handleEnded = () => {
-      setCurrentTrack((prev) => (prev + 1) % PLAYLIST.length);
+      setCurrentTrack((prev) => (prev + 1) % lengthRef.current);
     };
 
     audio.addEventListener("timeupdate", handleTimeUpdate);
@@ -110,7 +135,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
   const handleNext = () => {
     SoundManager.playSound("click");
     setCurrentTime(0);
-    setCurrentTrack((prev) => (prev + 1) % PLAYLIST.length);
+    setCurrentTrack((prev) => (prev + 1) % playlist.length);
   };
 
   const handlePrevious = () => {
@@ -121,7 +146,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
       return;
     }
     setCurrentTime(0);
-    setCurrentTrack((prev) => (prev - 1 + PLAYLIST.length) % PLAYLIST.length);
+    setCurrentTrack((prev) => (prev - 1 + playlist.length) % playlist.length);
   };
 
   const handleTrackSelect = (index: number) => {
@@ -204,7 +229,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
                 {track.subtitle}
               </div>
               <div className="text-base text-(--neon-green)/60 pt-1">
-                Spor {currentTrack + 1} av {PLAYLIST.length}
+                Spor {currentTrack + 1} av {playlist.length}
               </div>
             </div>
 
@@ -305,14 +330,14 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
           <div className="border-2 border-(--neon-green)/30 space-y-0">
             <div className="p-2 bg-(--neon-green)/10 border-b-2 border-(--neon-green)/30 flex justify-between items-center">
               <div className="text-base tracking-wider text-(--neon-green) font-bold">
-                SPILLELISTE ({PLAYLIST.length} SPOR)
+                SPILLELISTE ({playlist.length} SPOR)
               </div>
               <div className="text-base text-(--cold-blue)">
                 8-BIT AUDIO ENGINE
               </div>
             </div>
             <div className="max-h-64 overflow-y-auto">
-              {PLAYLIST.map((t, index) => (
+              {playlist.map((t, index) => (
                 <button
                   key={t.id}
                   aria-current={index === currentTrack ? "true" : undefined}

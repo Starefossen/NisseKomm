@@ -37,6 +37,7 @@ import { GameEngine } from "@/lib/game-engine";
 import { useHourTick } from "@/lib/use-clock";
 import {
   getCurrentDay,
+  getCurrentMonth,
   isCalendarActive as isDateCalendarActive,
 } from "@/lib/date-utils";
 import statiskInnholdData from "@/data/statisk_innhold.json";
@@ -110,6 +111,19 @@ const TOOLS: {
  */
 function isCalendarActive(testMode: boolean): boolean {
   return isDateCalendarActive(testMode);
+}
+
+/**
+ * Julius' video stills, today first, then earlier days: a missing file is a
+ * transparent layer, so the newest existing poster shows. Never a future day.
+ */
+function juliusPosters(): string {
+  const today = getCurrentMonth() === 12 ? Math.min(getCurrentDay(), 24) : 0;
+  return Array.from(
+    { length: today },
+    (_, i) =>
+      `url("${mediaUrl(`video/julius/dag-${String(today - i).padStart(2, "0")}.jpg`)}"), `,
+  ).join("");
 }
 
 export default function Home() {
@@ -398,7 +412,7 @@ export default function Home() {
                         }}
                         className="relative col-span-2 row-span-2 min-h-48 flex flex-col justify-end p-3 border-2 border-(--brass)/70 bg-cover bg-center text-left hover:border-(--gold) active:scale-[0.98] transition-transform"
                         style={{
-                          backgroundImage: `linear-gradient(transparent 40%, rgba(10,6,4,0.85)), url("${mediaUrl("feed/julius-kontor.png")}"), url("/village-day.jpg")`,
+                          backgroundImage: `linear-gradient(transparent 40%, rgba(10,6,4,0.85)), ${juliusPosters()}url("${mediaUrl("feed/julius-kontor.png")}"), url("/village-day.jpg")`,
                         }}
                       >
                         {!GameEngine.isJuliusVideoWatched(getCurrentDay()) && (

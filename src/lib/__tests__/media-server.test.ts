@@ -15,6 +15,7 @@ import {
   serveMedia,
   tooLarge,
   uploadMedia,
+  extraMusic,
 } from "../media-server";
 import { MEDIA_MANIFEST, mediaUrl } from "../media";
 
@@ -143,4 +144,52 @@ test("declared oversize upload is refused before reading", () => {
   expect(tooLarge(String(51 * 1024 * 1024))).toBe(true);
   expect(tooLarge("1000")).toBe(false);
   expect(tooLarge(null)).toBe(false);
+});
+
+test("new music track uploads, wrong type is refused, and it is listed", async () => {
+  process.env.NISSEKOMM_MODE = "lan";
+  const ok = await uploadMedia(
+    ["music", "Ny låt.mp3"],
+    "audio/mpeg",
+    new ArrayBuffer(8),
+    dir,
+  );
+  expect(ok.status).toBe(201);
+  expect(
+    (
+      await uploadMedia(
+        ["music", "Ny låt.mp3"],
+        "video/mp4",
+        new ArrayBuffer(8),
+        dir,
+      )
+    ).status,
+  ).toBe(415);
+  expect(
+    (
+      await uploadMedia(
+        ["music", "x.mp4"],
+        "video/mp4",
+        new ArrayBuffer(8),
+        dir,
+      )
+    ).status,
+  ).toBe(400);
+  expect(
+    (
+      await uploadMedia(
+        ["music", "a", "b.mp3"],
+        "audio/mpeg",
+        new ArrayBuffer(8),
+        dir,
+      )
+    ).status,
+  ).toBe(400);
+  expect((await extraMusic(dir)).map((f) => f.path)).toEqual([
+    "music/Ny låt.mp3",
+  ]);
+  expect((await mediaStatus(dir)).at(-1)).toEqual({
+    path: "music/Ny låt.mp3",
+    size: 8,
+  });
 });
