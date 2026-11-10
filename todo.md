@@ -98,8 +98,8 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalitet og tester. Fremgangsmåte per delsystem: gjennomgang med funn (fil:linje) → rettinger → tester → `pnpm check` og gjennomspilling av alle 24 dager. Ingen nye funksjoner; bare det vi har, skal virke som en helhet.
 
 - [x] Symbolskanner og symbolkort (10. november)
-- [ ] GameEngine og spilltilstand
-- [ ] Lagring og synk (StorageManager, ServerSyncAdapter, /api/state, Postgres)
+- [x] GameEngine og spilltilstand (10. november)
+- [x] Lagring og synk (StorageManager, ServerSyncAdapter, /api/state, Postgres) (10. november)
 - [ ] Dato og tid (date-utils, Tidsmaskin, simulering, `day-offset`)
 - [ ] Innlogging og moduser (auth, `NISSEKOMM_MODE`, proxy)
 - [x] KodeTerminal og bonuskoder
