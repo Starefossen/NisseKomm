@@ -8,6 +8,7 @@ Reads docs/manus/julius-2026.md, generates one clip per segment with julius.sh
 public/video/julius/dag-NN.mp4, compressed for the app.
 """
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -69,7 +70,7 @@ def coverage(clip: Path, line: str) -> float:
 
 # ponytail: word-set overlap, not alignment; catches dropped clauses, not swapped word order
 MIN_COVERAGE = 0.9
-ATTEMPTS = 3
+ATTEMPTS = 4
 
 
 def main():
@@ -88,15 +89,27 @@ def main():
         if clip.exists() and coverage(raw, line) >= MIN_COVERAGE:
             continue
         act = f"{action} Kuldes påvirkning i bildet og lyden: {kulde}"
+        best = (-1.0, None)
         for attempt in range(1, ATTEMPTS + 1):
             r = subprocess.run([str(BIN / "julius.sh"), name, line, act, str(secs)], stdin=subprocess.DEVNULL)
-            if r.returncode == 0:
-                c = coverage(raw, line)
-                print(f"  {name}: {c:.0%} av replikken hørt")
-                if c >= MIN_COVERAGE:
-                    break
-            if attempt == ATTEMPTS:
-                sys.exit(f"{name}: fikk ikke en god versjon på {ATTEMPTS} forsøk")
+            if r.returncode != 0:
+                continue
+            c = coverage(raw, line)
+            print(f"  {name}: {c:.0%} av replikken hørt")
+            if c > best[0]:
+                keep = OUT / f"{name}.best"
+                for ext in ("mp4", "raw.mp4"):
+                    shutil.copy(OUT / f"{name}.{ext}", keep.with_suffix(f".{ext}"))
+                best = (c, keep)
+            if c >= MIN_COVERAGE:
+                break
+        if best[1] is None:
+            sys.exit(f"{name}: ingen versjon ble laget")
+        # ponytail: falls back to the best take instead of aborting; listen to flagged clips by hand
+        for ext in ("mp4", "raw.mp4"):
+            shutil.copy(best[1].with_suffix(f".{ext}"), OUT / f"{name}.{ext}")
+        if best[0] < MIN_COVERAGE:
+            print(f"  ADVARSEL {name}: beste versjon {best[0]:.0%}, lytt gjennom")
     if dry:
         return
     glitch = OUT / "glitch.mp4"
