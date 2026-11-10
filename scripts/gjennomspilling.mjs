@@ -386,10 +386,7 @@ for (const day of days) {
         5000,
         `symbolkort ${m.symbol_clue.symbolId} ble ikke samlet med kortkode`,
       ).catch((e) => fails.push(e.message));
-      check(
-        !(await has("video")),
-        "kamera-video ligger igjen i skanneren",
-      );
+      check(!(await has("video")), "kamera-video ligger igjen i skanneren");
       await closeWindow();
       check(!(await has(".qr-host")), "skanneren lukket ikke kameraet");
     }
