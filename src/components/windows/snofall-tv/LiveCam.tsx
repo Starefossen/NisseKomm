@@ -131,9 +131,8 @@ export function LiveCam({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const reduceMotion =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
 
     let source: HTMLVideoElement | HTMLImageElement | null = null;
     let video: HTMLVideoElement | null = null;

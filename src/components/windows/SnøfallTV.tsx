@@ -25,6 +25,8 @@ import { runeLineFor } from "./snofall-tv/runer";
 import { RuneText } from "../ui/Frostrune";
 import { mediaUrl } from "@/lib/media";
 import { TIDBITS, visible } from "@/lib/tidbits";
+import { DarkChannel } from "./snofall-tv/DarkChannel";
+import { PressureGauge } from "./snofall-tv/PressureGauge";
 
 interface SnøfallTVProps {
   onClose: () => void;
@@ -130,32 +132,43 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
             <div className="absolute inset-0 overflow-y-auto">
               <JuliusVideo day={day} />
             </div>
+          ) : shownChannel === 2 && day === 2 && !solved ? (
+            <DarkChannel />
           ) : (
-            <LiveCam
-              key={`${shownChannel}`}
-              src={
-                // Day 1: a channel shows snow until its carrier comes in.
-                shownChannel > tunedChannels && !sweeping
-                  ? null
-                  : odd
-                    ? odd.bilde
-                      ? mediaUrl(odd.bilde)
-                      : null
-                    : channelSource(shownChannel, day, hour, shownFreq, solved)
-              }
-              fallback={channelFallback(shownChannel, shownFreq, day)}
-              label={label}
-              {...fx}
-              eventAt={
-                // Overlays are placed on the calm loop's framing only.
-                shownChannel === 1 &&
-                channelSource(1, day, hour, FREQ_HOME, solved)?.endsWith(
-                  "landsby-rolig.mp4",
-                )
-                  ? () => activeLandsbyEvent(getCurrentDate(), day, solved)
-                  : undefined
-              }
-            />
+            <>
+              <LiveCam
+                key={`${shownChannel}`}
+                src={
+                  // Day 1: a channel shows snow until its carrier comes in.
+                  shownChannel > tunedChannels && !sweeping
+                    ? null
+                    : odd
+                      ? odd.bilde
+                        ? mediaUrl(odd.bilde)
+                        : null
+                      : channelSource(
+                          shownChannel,
+                          day,
+                          hour,
+                          shownFreq,
+                          solved,
+                        )
+                }
+                fallback={channelFallback(shownChannel, shownFreq, day)}
+                label={label}
+                {...fx}
+                eventAt={
+                  // Overlays are placed on the calm loop's framing only.
+                  shownChannel === 1 &&
+                  channelSource(1, day, hour, FREQ_HOME, solved)?.endsWith(
+                    "landsby-rolig.mp4",
+                  )
+                    ? () => activeLandsbyEvent(getCurrentDate(), day, solved)
+                    : undefined
+                }
+              />
+              {shownChannel === 2 && day === 20 && <PressureGauge />}
+            </>
           )}
           {shownChannel === 3 && (
             <div className="absolute inset-0 pointer-events-none bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.18)_0px,rgba(0,0,0,0.18)_1px,transparent_1px,transparent_3px)]" />
@@ -173,7 +186,13 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
               {odd.tekst}
             </div>
           )}
-          {playing && <MiniGames day={day} onClose={() => setPlaying(false)} />}
+          {playing && (
+            <MiniGames
+              day={day}
+              initialGame={channel === 2 ? "sentrifuge" : undefined}
+              onClose={() => setPlaying(false)}
+            />
+          )}
         </div>
 
         {intercept && (
@@ -212,17 +231,20 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
               </button>
             );
           })}
-          {solved && channel === 4 && !playing && gamesFor(day).length > 0 && (
-            <button
-              onClick={() => {
-                SoundManager.playSound("click");
-                setPlaying(true);
-              }}
-              className="min-h-11 px-3 border-2 border-(--gold) text-(--gold) text-lg cursor-pointer ml-auto"
-            >
-              TEKNISK HUD
-            </button>
-          )}
+          {solved &&
+            (channel === 4 || (channel === 2 && day >= 19)) &&
+            !playing &&
+            gamesFor(day).length > 0 && (
+              <button
+                onClick={() => {
+                  SoundManager.playSound("click");
+                  setPlaying(true);
+                }}
+                className="min-h-11 px-3 border-2 border-(--gold) text-(--gold) text-lg cursor-pointer ml-auto"
+              >
+                {channel === 2 ? "SENTRIFUGE" : "TEKNISK HUD"}
+              </button>
+            )}
         </div>
 
         {channel === 4 && !sweeping && (
