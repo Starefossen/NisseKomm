@@ -73,7 +73,7 @@
     "reveals": {
       "files": [],
       "topics": ["snostorm-snøfall"],
-      "modules": []
+      "modules": ["SYMBOLSKANNER"]
     },
     "eventyr": {
       "id": "frosne-monster",
