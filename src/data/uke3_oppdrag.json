@@ -19,9 +19,7 @@
     "oppsett_tid": "moderat",
     "kode": "SAFRAN",
     "reveals": {
-      "files": [
-        "lucia-tradisjon.txt"
-      ],
+      "files": ["lucia-tradisjon.txt"],
       "modules": []
     },
     "eventyr": {
@@ -48,12 +46,8 @@
     "oppsett_tid": "moderat",
     "kode": "ORIGAMI",
     "reveals": {
-      "files": [
-        "brevfugl-historie.txt"
-      ],
-      "modules": [
-        "BREVFUGLER"
-      ]
+      "files": ["brevfugl-historie.txt"],
+      "modules": ["BREVFUGLER"]
     },
     "eventyr": {
       "id": "spokelseskoden",
@@ -78,9 +72,7 @@
     "oppsett_tid": "moderat",
     "kode": "KARAMELL",
     "reveals": {
-      "files": [
-        "02-notatboken.txt"
-      ],
+      "files": ["02-notatboken.txt"],
       "modules": []
     },
     "eventyr": {
@@ -113,9 +105,7 @@
     "kode": "SORTERING",
     "reveals": {
       "files": [],
-      "modules": [
-        "NISSESTATS"
-      ]
+      "modules": ["NISSESTATS"]
     },
     "eventyr": {
       "id": "spokelseskoden",
@@ -202,19 +192,10 @@
         "sun-red",
         "sun-blue"
       ],
-      "correctSequence": [
-        3,
-        1,
-        0,
-        5,
-        2,
-        4
-      ],
+      "correctSequence": [3, 1, 0, 5, 2, 4],
       "hint": "Trixters rute: grønn sol → rødt hjerte → grønt hjerte → blå sol → blått hjerte → rød sol.",
       "rewardText": "DEKRYPTERT. Trixters rutekart for julenatt ligger i DEKRYPTERT/stjernetegn.txt. Julius har tegnet en sirkel på det.",
-      "unlocksFiles": [
-        "stjernetegn.txt"
-      ]
+      "unlocksFiles": ["stjernetegn.txt"]
     },
     "finalized": true,
     "julius_ps": "Trixter vil fly utenom grotten julenatt. Jeg sa nei. Les rutekartet; jeg har tegnet en sirkel på det. Og sjokoladerosinene: Rudolf benekter alt.",

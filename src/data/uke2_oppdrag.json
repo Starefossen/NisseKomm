@@ -15,12 +15,8 @@
     "oppsett_tid": "moderat",
     "kode": "KULDE",
     "reveals": {
-      "files": [
-        "orakelets-rapport.txt"
-      ],
-      "modules": [
-        "NISSEMUSIKK"
-      ]
+      "files": ["orakelets-rapport.txt"],
+      "modules": ["NISSEMUSIKK"]
     },
     "eventyr": {
       "id": "spokelseskoden",
@@ -45,9 +41,7 @@
     "oppsett_tid": "moderat",
     "kode": "KRETSKORT",
     "reveals": {
-      "files": [
-        "feilrapport-uke-1.txt"
-      ],
+      "files": ["feilrapport-uke-1.txt"],
       "modules": []
     },
     "eventyr": {
@@ -72,9 +66,7 @@
     "oppsett_tid": "moderat",
     "kode": "24",
     "reveals": {
-      "files": [
-        "krystallformel.txt"
-      ],
+      "files": ["krystallformel.txt"],
       "modules": []
     },
     "eventyr": {
@@ -106,13 +98,8 @@
     "oppsett_tid": "moderat",
     "kode": "SPEKTER",
     "reveals": {
-      "files": [
-        "farge-koder.txt",
-        "01-fargene.txt"
-      ],
-      "modules": [
-        "SNØFALL_TV"
-      ]
+      "files": ["farge-koder.txt", "01-fargene.txt"],
+      "modules": ["SNØFALL_TV"]
     },
     "eventyr": {
       "id": "spokelseskoden",
@@ -136,9 +123,7 @@
     "oppsett_tid": "moderat",
     "kode": "75",
     "reveals": {
-      "files": [
-        "antennen-ved-tjernet.txt"
-      ],
+      "files": ["antennen-ved-tjernet.txt"],
       "modules": []
     },
     "eventyr": {
@@ -191,21 +176,11 @@
     },
     "decryption_challenge": {
       "challengeId": "frosne-koder",
-      "requiredSymbols": [
-        "heart-green",
-        "heart-red",
-        "heart-blue"
-      ],
-      "correctSequence": [
-        1,
-        0,
-        2
-      ],
+      "requiredSymbols": ["heart-green", "heart-red", "heart-blue"],
+      "correctSequence": [1, 0, 2],
       "hint": "Orakelets logg fra slusen: først det som er varmt, så det som håper, til slutt det som er alene. (Fargene står ikke her; Pil har sagt dem i PS dag 3, 6 og 9.)",
       "rewardText": "DEKRYPTERT. Orakelets logg fra slusen ligger i DEKRYPTERT/frosne-koder.txt. Les den sammen.",
-      "unlocksFiles": [
-        "frosne-koder.txt"
-      ]
+      "unlocksFiles": ["frosne-koder.txt"]
     },
     "finalized": true,
     "julius_ps": "Jeg sa til Rampenissen at han innbilte seg det. Jeg tok feil. Les det Orakelet skrev fra slusen, sammen. Og dorullen: fra badet til kjøkkenet, hele rullen. Nissemor spør om dere har mer av det også."
