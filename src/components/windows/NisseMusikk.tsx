@@ -1,5 +1,6 @@
 "use client";
 
+import { mediaUrl } from "@/lib/media";
 import { useState, useEffect, useRef } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
@@ -20,84 +21,90 @@ const PLAYLIST: Track[] = [
     id: 1,
     title: "Bjelleklang (8-Bit Chiptune)",
     subtitle: "Jingle Bells — Snøfall Radio 90.0 MHz",
-    src: "/music/Jingle Bells (8-Bit Version).mp3",
+    src: mediaUrl("music/Jingle Bells (8-Bit Version).mp3"),
     defaultDuration: "1:57",
   },
   {
     id: 2,
     title: "Rudolf er Rød på Nesen (8-Bit)",
     subtitle: "Rudolph the Red-Nosed Reindeer",
-    src: "/music/Rudolph the Red Nosed Reindeer (8-Bit Version).mp3",
+    src: mediaUrl("music/Rudolph the Red Nosed Reindeer (8-Bit Version).mp3"),
     defaultDuration: "1:57",
   },
   {
     id: 3,
     title: "Kranser og Kristtorn (8-Bit)",
     subtitle: "Deck the Halls — Verksted-Mix",
-    src: "/music/Deck the Halls (8-Bit Version).mp3",
+    src: mediaUrl("music/Deck the Halls (8-Bit Version).mp3"),
     defaultDuration: "1:08",
   },
   {
     id: 4,
     title: "Vinter-Eventyrland (8-Bit)",
     subtitle: "Winter Wonderland — Krystallhagen",
-    src: "/music/Winter Wonderland (8-Bit Version).mp3",
+    src: mediaUrl("music/Winter Wonderland (8-Bit Version).mp3"),
     defaultDuration: "1:43",
   },
   {
     id: 5,
     title: "La Det Snø, La Det Snø (8-Bit)",
     subtitle: "Let It Snow! — Brevfugl-Tårnet",
-    src: "/music/Let It Snow, Let It Snow, Let It Snow (8-Bit Version).mp3",
+    src: mediaUrl(
+      "music/Let It Snow, Let It Snow, Let It Snow (8-Bit Version).mp3",
+    ),
     defaultDuration: "2:03",
   },
   {
     id: 6,
     title: "Kanefart gjennom Snøfall (8-Bit)",
     subtitle: "Sleigh Ride — Slede-Ekspert",
-    src: "/music/Sleigh Ride (8-Bit Version).mp3",
+    src: mediaUrl("music/Sleigh Ride (8-Bit Version).mp3"),
     defaultDuration: "2:04",
   },
   {
     id: 7,
     title: "Dans rundt Juletreet (8-Bit)",
     subtitle: "Rockin' Around the Christmas Tree",
-    src: "/music/Rockin' Around the Christmas Tree (8-Bit Version).mp3",
+    src: mediaUrl(
+      "music/Rockin' Around the Christmas Tree (8-Bit Version).mp3",
+    ),
     defaultDuration: "1:58",
   },
   {
     id: 8,
     title: "Feliz Navidad (8-Bit)",
     subtitle: "Globale Nisse-Frekvenser",
-    src: "/music/Feliz Navidad (8-Bit Version).mp3",
+    src: mediaUrl("music/Feliz Navidad (8-Bit Version).mp3"),
     defaultDuration: "2:08",
   },
   {
     id: 9,
     title: "Jeg Så Mamma Kysse Nissen (8-Bit)",
     subtitle: "I Saw Mommy Kissing Santa Claus",
-    src: "/music/I Saw Mommy Kissing Santa Claus (8-Bit Version).mp3",
+    src: mediaUrl("music/I Saw Mommy Kissing Santa Claus (8-Bit Version).mp3"),
     defaultDuration: "2:24",
   },
   {
     id: 10,
     title: "Alt Jeg Ønsker til Jul (8-Bit)",
     subtitle: "All I Want for Christmas Is You",
-    src: "/music/All I Want for Christmas Is You (8-Bit Version).mp3",
+    src: mediaUrl("music/All I Want for Christmas Is You (8-Bit Version).mp3"),
     defaultDuration: "4:14",
   },
   {
     id: 11,
     title: "Siste Jul (8-Bit Synth)",
     subtitle: "Last Christmas — Nordlys-Utgave",
-    src: "/music/Last Christmas (8-Bit Version).mp3",
+    src: mediaUrl("music/Last Christmas (8-Bit Version).mp3"),
     defaultDuration: "3:46",
   },
   {
     id: 12,
     title: "Ha en Riktig God og Glitrende Jul (8-Bit)",
     subtitle: "Have Yourself a Merry Little Christmas",
-    src: "/music/Have Yourself a Merry Little Christmas (8-Bit Version).mp3",
+    src: mediaUrl(
+      "music/Have Yourself a Merry Little Christmas (8-Bit Version).mp3",
+    ),
     defaultDuration: "3:50",
   },
 ];

@@ -1,5 +1,6 @@
 "use client";
 
+import { mediaUrl } from "@/lib/media";
 import { useState, useMemo, useEffect } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
@@ -311,16 +312,16 @@ export function NisseNetUtforsker({
                   const isColor = name.includes("farge");
 
                   const feedSrc = isKulde
-                    ? "/feed/kulde-grotte.png"
+                    ? mediaUrl("feed/kulde-grotte.png")
                     : isVerksted
-                      ? "/feed/iq-verksted.png"
+                      ? mediaUrl("feed/iq-verksted.png")
                       : isAntenne
-                        ? "/feed/antenne-tarn.png"
+                        ? mediaUrl("feed/antenne-tarn.png")
                         : isPrism
-                          ? "/feed/snøfall-storm.png"
+                          ? mediaUrl("feed/snøfall-storm.png")
                           : isColor
-                            ? "/feed/snøfall-day.png"
-                            : "/feed/julius-kontor.png";
+                            ? mediaUrl("feed/snøfall-day.png")
+                            : mediaUrl("feed/julius-kontor.png");
 
                   const badgeText = isKulde
                     ? "BEVIS // 85.0 MHz SPORINGSFIL"

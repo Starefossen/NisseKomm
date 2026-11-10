@@ -1,5 +1,6 @@
 "use client";
 
+import { mediaUrl } from "@/lib/media";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { RetroWindow } from "../ui/RetroWindow";
@@ -66,7 +67,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
           <div className="absolute inset-0 grid grid-cols-2">
             <div className="relative overflow-hidden border-r border-(--neon-green)/40">
               <Image
-                src="/feed/antenne-tarn.png"
+                src={mediaUrl("feed/antenne-tarn.png")}
                 alt="Ulriken / Nordtoppen Relé"
                 fill
                 className="object-cover animate-[tv-camera-pan_28s_ease-in-out_infinite]"
@@ -85,7 +86,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
 
             <div className="relative overflow-hidden">
               <Image
-                src="/feed/julius-kontor.png"
+                src={mediaUrl("feed/julius-kontor.png")}
                 alt="Julius' Kontor og Brevhyller"
                 fill
                 className="object-cover animate-[tv-camera-pan_32s_ease-in-out_infinite]"

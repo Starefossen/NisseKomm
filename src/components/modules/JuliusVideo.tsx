@@ -1,5 +1,6 @@
 "use client";
 
+import { mediaUrl } from "@/lib/media";
 import { useRef, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { getCurrentDay } from "@/lib/date-utils";
@@ -31,7 +32,7 @@ export function JuliusVideo({ day, onWatched }: JuliusVideoProps) {
   const ps = GameEngine.isQuestCompleted(day)
     ? GameEngine.getJuliusPs(day)
     : undefined;
-  const src = `/video/julius/dag-${String(day).padStart(2, "0")}.mp4`;
+  const src = mediaUrl(`video/julius/dag-${String(day).padStart(2, "0")}.mp4`);
 
   const markWatched = () => {
     if (!watched) {

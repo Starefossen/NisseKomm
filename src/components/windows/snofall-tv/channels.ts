@@ -1,3 +1,4 @@
+import { mediaUrl } from "@/lib/media";
 import type { FrostModeLevel } from "@/lib/frost";
 /**
  * Snøfall TV channel map (storyboard «Avgjort 10. november») and the
@@ -22,9 +23,9 @@ export const FREQ_MAX = 100;
 // ponytail: cave, antenna and event loops (T2/T3) don't exist yet; these
 // PNG stills stand in. Swap the path for /video/tv/<name>.mp4 when they land.
 const STILL = {
-  antenne: "/feed/antenne-tarn.png",
-  grotte: "/feed/kulde-grotte.png",
-  storm: "/feed/snøfall-storm.png",
+  antenne: mediaUrl("feed/antenne-tarn.png"),
+  grotte: mediaUrl("feed/kulde-grotte.png"),
+  storm: mediaUrl("feed/snøfall-storm.png"),
 };
 
 /** Background for a live channel (K3 is the Julius video, not a feed). */
@@ -36,14 +37,14 @@ export function channelSource(
 ): string | null {
   switch (channel) {
     case 1:
-      if (day === 17) return "/video/tv/landsby-nordlys.mp4";
+      if (day === 17) return mediaUrl("video/tv/landsby-nordlys.mp4");
       if (day === 18) return STILL.storm;
-      return "/video/tv/landsby-rolig.mp4";
+      return mediaUrl("video/tv/landsby-rolig.mp4");
     case 2:
       // IQ works days; the workshop stands empty at night.
       return hour >= 7 && hour < 20
-        ? "/video/tv/verksted-iq-inne.mp4"
-        : "/video/tv/verksted-tom.mp4";
+        ? mediaUrl("video/tv/verksted-iq-inne.mp4")
+        : mediaUrl("video/tv/verksted-tom.mp4");
     case 4:
       if (freq === FREQ_HOME) return STILL.antenne;
       // Krystallgrotten is only on the air from day 3 (first ghost image).
