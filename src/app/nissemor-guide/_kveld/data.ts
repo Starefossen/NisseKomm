@@ -867,7 +867,7 @@ export const DAGER = [
 ] as const;
 
 export const INNEN_25_NOV: readonly string[] = [
-  "Kjøp alt under «lokalt» i handlelisten. Let etter iskrystallet lokalt først; bestill på nett bare hvis det ikke finnes (frist for bestilling 1. desember).",
+  "Kjøp alt under «lokalt» i handlelisten. Velg iskrystallet innen 25. november: lokalt (Nille, Søstrene Grene eller Clas Ohlson, 30–60 kr) eller på nett (Hadeland Glassverk / CG.no frostet glasstre 9,8 cm, ca. 199 kr, 3–5 dager; siste bestilling 1. desember).",
   "Skriv ut hele PDF-en og symbolkortene. Klipp alle kort og legg dem i 24 konvolutter merket med dag. Legg runer-fasit.pdf i Nissemor-mappen, aldri på brettet. Dag 1-utskriftene (runetavle, linjekort, frakt, ferdskriver, flylogg, brett) legges i konvolutt «1» til 28. november.",
   "Kjøp svart kraftpapir (2 ark) og oransje teip til ferdskriveren; finn fram skoeske med lokk, lyst laken, klesvaskkurv. Klementinene kjøpes først 29. november.",
   "Lag rødfilteret (cellofan i papprammen). Test det mot dag10-testark.pdf; svikter det, skriv kortene for hånd (blå kulepenn under rød tusj).",
@@ -1287,9 +1287,9 @@ export const HANDLELISTE = [
         vare: "Iskrystall som ikke smelter (glass/akryl)",
         mengde: "1",
         dager: "24",
-        hvor: "lokalt først (Nille/Europris, 30–60 kr); nett som reserve",
+        hvor: "Lokalt: Nille, Søstrene Grene eller Clas Ohlson (30–60 kr). Nett: Hadeland Glassverk / CG.no frostet glasstre 9,8 cm (ca. 199 kr, 3–5 dager), siste bestilling 1. desember. Velg innen 25. november.",
         kilde: "lokalt",
-        pris: "60 kr lokalt / inntil 250 kr nett",
+        pris: "30–60 kr lokalt / ca. 199 kr nett",
       },
       {
         vare: "Rødt garn, små klesklyper, hyssing, teip, magneter, plaster, mobillykt, 3 glass + 1 keramikkrus, syltetøyglass, pappeske, sløyfe, 3 julesokker, papprull, gryte/sleiv/visp/kjevle/øse, ostehøvel, sofaputer i ulik størrelse, teppe, 8 bøker, grytelokk, lyst laken, klesvaskkurv, badehåndkle, skoeske med lokk, C6-konvolutt, hårstrikk, avispapir, tusj, vaskbare tusjer, binders, limstift, tapetkniv, liten konvolutt, papp til rødfilteret, stekebrett, dorull, kosedyr, pappas solbriller og hodetelefoner, kunstig blomst, en innpakket gave, frokostpakker, nisselue og votter",

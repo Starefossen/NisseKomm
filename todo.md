@@ -18,7 +18,7 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 - [x] Steg 1: Gåter og praktisk gjennomgang (10. nov)
 - [ ] Steg 1b: Bestill og skriv ut fysisk materiell
 - [ ] Steg 1c: Finn nettbutikker for det vi ikke har eller får kjøpt lokalt (budsjett 1000 kr totalt, inkludert frakt; bestill tidlig nok til levering før 25. november)
-  - Bare iskrystallet (dag 24) er en mulig nettpost, inntil 250 kr. Let lokalt først. Kandidater: Hadeland Glassverk julepynt (hadeland.com), Hadeland-produkter hos CG.no (frostet glasstre 9,8 cm, 199 kr, 3–5 dager), brukt «Hadeland snøkrystall» på FINN (ca. 100 kr). Siste bestillingsdag 1. desember.
+  - Bare iskrystallet (dag 24) kan bli en nettpost. To alternativer, velg innen 25. november: lokalt hos Nille, Søstrene Grene eller Clas Ohlson (30–60 kr), eller på nett hos Hadeland Glassverk / CG.no, frostet glasstre 9,8 cm (ca. 199 kr, 3–5 dager), siste bestilling 1. desember. Reserve: brukt «Hadeland snøkrystall» på FINN (ca. 100 kr).
 - [x] Steg 2: All tekst låst (10. nov)
 - [ ] Steg 3: App-kode
 - [ ] Steg 4: Media produsert
