@@ -137,7 +137,7 @@ type Pending = { value: unknown; replace: boolean };
 /**
  * localStorage as a synchronous cache of the server state. Plain
  * localStorage until start() has fetched the state, and stays that way when
- * the server has sync off (STORAGE_BACKEND=localStorage answers 404).
+ * the server has sync off (STORAGE_BACKEND=localStorage answers 204).
  */
 export class ServerSyncAdapter extends LocalStorageAdapter {
   private live = false;
@@ -171,7 +171,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
   /** Replaces the cached shared keys with the server's. False if sync is off. */
   async pull(): Promise<boolean> {
     const res = await fetch("/api/state", { credentials: "same-origin" });
-    if (!res.ok) return false;
+    if (res.status !== 200) return false;
     const state = (await res.json()) as Record<string, unknown>;
     for (const k of [...SYNCED_KEYS, ...SERVER_KEYS]) {
       if (state[k] == null) super.remove(k);

@@ -3,7 +3,7 @@
  * PUT /api/state  Body: { key, value, replace?, version? }. Returns
  *                 { value, version } after merging; replace overwrites.
  *                 409 when `version` is older than the stored one.
- * Both require a kid or parent session; 404 with STORAGE_BACKEND=localStorage.
+ * Both require a kid or parent session; 204 (sync off) with STORAGE_BACKEND=localStorage.
  * Writes that mark a game moment
  * (day solved, bonus approved, frost off) fan out through notify().
  */
@@ -19,7 +19,8 @@ import { eventsForWrite, frostOnEvent } from "@/lib/notify/events";
 const frostNotified = new Set<number>();
 
 export async function GET(request: NextRequest) {
-  if (storageBackend() !== "server") return jsonError("Synk er av", 404);
+  if (storageBackend() !== "server")
+    return new NextResponse(null, { status: 204 });
   if (!(await getRole(request))) return jsonError("Ikke innlogget", 401);
   const state = await getStore().getState();
   const now = getCurrentDate();
@@ -37,7 +38,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
-  if (storageBackend() !== "server") return jsonError("Synk er av", 404);
+  if (storageBackend() !== "server")
+    return new NextResponse(null, { status: 204 });
   if (!(await getRole(request))) return jsonError("Ikke innlogget", 401);
   const body = await readJsonBody(request);
   if (body instanceof NextResponse) return body;

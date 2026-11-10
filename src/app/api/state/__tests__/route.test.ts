@@ -33,7 +33,10 @@ async function call(method: "GET" | "PUT", body?: unknown, cookie = true) {
         headers,
         body: body === undefined ? undefined : JSON.stringify(body),
       });
-      out = { status: res.status, json: await res.json() };
+      out = {
+        status: res.status,
+        json: res.status === 204 ? null : await res.json(),
+      };
     },
   });
   return out!;
@@ -159,10 +162,10 @@ describe("/api/state removals and validation", () => {
     });
   });
 
-  it("is off (404) with STORAGE_BACKEND=localStorage", async () => {
+  it("is off (204) with STORAGE_BACKEND=localStorage", async () => {
     process.env.STORAGE_BACKEND = "localStorage";
     try {
-      expect((await call("GET")).status).toBe(404);
+      expect((await call("GET")).status).toBe(204);
     } finally {
       process.env.STORAGE_BACKEND = "server";
     }

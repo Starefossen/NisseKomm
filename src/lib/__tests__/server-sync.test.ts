@@ -85,7 +85,7 @@ describe("ServerSyncAdapter", () => {
 
   it("stays local when the server has sync off", async () => {
     global.fetch = jest.fn(
-      async () => ({ ok: false, status: 404 }) as Response,
+      async () => ({ ok: true, status: 204 }) as Response,
     ) as unknown as typeof fetch;
     const a = new ServerSyncAdapter();
     await a.start();
