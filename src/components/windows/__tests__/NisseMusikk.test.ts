@@ -24,4 +24,11 @@ describe("NisseMusikk playlist", () => {
       expect(track.defaultDuration).toBe(manifest.defaultDuration);
     });
   });
+
+  it("koder filnavnet nøyaktig én gang (encodeURI på toppen ga 404)", () => {
+    for (const track of PLAYLIST) {
+      expect(track.src).not.toMatch(/%25/);
+      expect(decodeURIComponent(track.src)).not.toMatch(/%/);
+    }
+  });
 });

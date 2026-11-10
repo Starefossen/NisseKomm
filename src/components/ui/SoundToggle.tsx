@@ -36,28 +36,30 @@ export function SoundToggle() {
       {/* Music Toggle */}
       <button
         onClick={handleMusicToggle}
-        className="flex items-center gap-2 px-3 py-2 bg-(--crt-bg) border-2 border-(--neon-green) hover:bg-(--neon-green)/20 transition-colors"
+        className="flex items-center gap-2 min-h-11 px-3 py-2 bg-(--crt-bg) border-2 border-(--neon-green) hover:bg-(--neon-green)/20 transition-colors"
+        aria-pressed={musicEnabled}
         title={musicEnabled ? "Skru av musikk" : "Skru på musikk"}
       >
         <Icons.Music size={20} color={musicEnabled ? "green" : "gray"} />
         <span
           className={`text-base font-bold tracking-wider ${musicEnabled ? "text-(--neon-green)" : "text-(--gray)"}`}
         >
-          {musicEnabled ? "MUSIKK" : "MUSIKK"}
+          MUSIKK
         </span>
       </button>
 
       {/* Sound Effects Toggle */}
       <button
         onClick={handleToggle}
-        className="flex items-center gap-2 px-3 py-2 bg-(--crt-bg) border-2 border-(--neon-green) hover:bg-(--neon-green)/20 transition-colors"
+        className="flex items-center gap-2 min-h-11 px-3 py-2 bg-(--crt-bg) border-2 border-(--neon-green) hover:bg-(--neon-green)/20 transition-colors"
+        aria-pressed={enabled}
         title={enabled ? "Skru av lydeffekter" : "Skru på lydeffekter"}
       >
         <Icons.Volume size={20} color={enabled ? "green" : "gray"} />
         <span
           className={`text-base font-bold tracking-wider ${enabled ? "text-(--neon-green)" : "text-(--gray)"}`}
         >
-          {enabled ? "EFFEKTER" : "EFFEKTER"}
+          EFFEKTER
         </span>
       </button>
     </div>

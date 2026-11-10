@@ -8,8 +8,8 @@ import { GameEngine } from "@/lib/game-engine";
 /**
  * Brevfugler Management Page
  *
- * Parents can add personal letters from Julius to children.
- * Letters are stored per day (1-24) and shown in the BREVFUGLER module (unlocked day 14).
+ * The children's letters to Julius, written in the BREVFUGLER module (from day 14).
+ * Julius does not reply in the app; parents read, fix or remove them here.
  */
 
 function BrevfuglerContent() {
@@ -84,9 +84,7 @@ function BrevfuglerContent() {
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-2 tracking-wider">
           ✉️ BREVFUGLER
         </h1>
-        <p className="text-center text-xl opacity-70">
-          Personlige brev fra Julius til barna
-        </p>
+        <p className="text-center text-xl opacity-70">Barnas brev til Julius</p>
       </div>
 
       {/* Info Box */}
@@ -97,15 +95,12 @@ function BrevfuglerContent() {
           </h2>
           <ul className="space-y-2 text-lg">
             <li>✓ BREVFUGLER-modulen låses opp dag 14 i appen</li>
-            <li>✓ Her kan du legge til personlige brev fra Julius til barna</li>
             <li>
-              ✓ Brevene kan inneholde oppfordringer, komplimenter eller
-              hemmeligheter
+              ✓ Barna skriver brev til Julius der, ett eller flere per dag
             </li>
-            <li>
-              ✓ Barna finner brevene i appen når de åpner BREVFUGLER-modulen
-            </li>
-            <li>✓ Du kan legge til/endre brev når som helst</li>
+            <li>✓ Brevene havner her, sortert på dag</li>
+            <li>✓ Julius svarer ikke i appen; svaret er opp til dere</li>
+            <li>✓ Du kan rette eller slette brev når som helst</li>
           </ul>
         </div>
       </div>
@@ -189,7 +184,7 @@ function BrevfuglerContent() {
                     <textarea
                       value={letterContent}
                       onChange={(e) => setLetterContent(e.target.value)}
-                      placeholder="Kjære [navn],&#10;&#10;Skriv et personlig brev fra Julius her...&#10;&#10;Hilsen Julius"
+                      placeholder="Kjære Julius ..."
                       className="w-full h-48 bg-black border-2 border-(--neon-green) text-(--neon-green) p-3 text-lg resize-none"
                       autoFocus
                     />
