@@ -2,6 +2,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { createReadStream } from "node:fs";
 import {
   mkdir,
+  readdir,
   realpath,
   rename,
   stat,
@@ -41,9 +42,29 @@ const ticketHash = (t: string) => createHash("sha256").update(t).digest("hex");
 const isManifestPath = (rel: string) =>
   MEDIA_MANIFEST.some((entry) => mediaPath(entry) === rel);
 
+/** Extra NisseMusikk tracks: any MP3 directly under music/, beyond the manifest. */
+export const isMusicTrack = (rel: string) => /^music\/[^/]+\.mp3$/i.test(rel);
+
+const canUpload = (rel: string) => isManifestPath(rel) || isMusicTrack(rel);
+
+/** Uploaded music/ MP3s not in the manifest, sorted by name. */
+export async function extraMusic(dir = mediaDir()): Promise<MediaStatus[]> {
+  const names = await readdir(path.join(dir, "music")).catch(() => []);
+  const extra = names
+    .map((n) => `music/${n.normalize("NFC")}`)
+    .filter((p) => isMusicTrack(p) && !isManifestPath(p))
+    .sort();
+  return Promise.all(
+    extra.map(async (p) => {
+      const info = await stat(path.join(dir, p)).catch(() => null);
+      return { path: p, size: info?.isFile() ? info.size : null };
+    }),
+  );
+}
+
 /** Single-use upload ticket for one manifest path, valid 10 minutes. */
 export async function createUploadTicket(rel: string): Promise<string> {
-  if (!isManifestPath(rel)) throw new Error(`Ukjent fil: ${rel}`);
+  if (!canUpload(rel)) throw new Error(`Ukjent fil: ${rel}`);
   const ticket = randomBytes(24).toString("base64url");
   await getStore().putState(`upload-ticket:${ticketHash(ticket)}`, {
     path: rel,
@@ -152,13 +173,14 @@ export async function serveMedia(
 }
 
 export async function mediaStatus(dir = mediaDir()): Promise<MediaStatus[]> {
-  return Promise.all(
+  const manifest = await Promise.all(
     MEDIA_MANIFEST.map(async (entry) => {
       const p = mediaPath(entry);
       const info = await stat(path.join(dir, p)).catch(() => null);
       return { path: p, size: info?.isFile() ? info.size : null };
     }),
   );
+  return [...manifest, ...(await extraMusic(dir))];
 }
 
 /** Rejects a declared body larger than any media type allows, before it is read. */
@@ -177,7 +199,7 @@ export async function uploadMedia(
   if (!isLanMode()) return new Response("Ikke funnet", { status: 404 });
   const rel = parts.join("/").normalize("NFC");
   const abs = resolveMedia(parts, dir);
-  if (!abs || !isManifestPath(rel)) {
+  if (!abs || !canUpload(rel)) {
     return new Response("Ukjent fil", { status: 400 });
   }
   const rule = MEDIA_TYPES[path.extname(abs).toLowerCase()];

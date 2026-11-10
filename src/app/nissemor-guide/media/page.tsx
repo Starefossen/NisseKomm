@@ -25,7 +25,7 @@ const TYPES: Record<string, string> = {
   webp: "image/webp",
 };
 
-const ext = (p: string) => p.split(".").pop() ?? "";
+const ext = (p: string) => (p.split(".").pop() ?? "").toLowerCase();
 const formatSize = (b: number) => `${(b / 1024 / 1024).toFixed(1)} MB`;
 const box = "border-4 border-(--neon-green) bg-black p-4 mb-6";
 
@@ -336,6 +336,21 @@ function MediaContent() {
                       <FileRow key={f.path} file={f} onUpload={upload} />
                     ))}
                   </ul>
+                  {g.id === "music" && (
+                    <label className="mt-3 min-h-11 flex items-center cursor-pointer underline">
+                      Last opp nytt spor (MP3, maks 20 MB)
+                      <input
+                        type="file"
+                        accept="audio/mpeg,.mp3"
+                        className="sr-only"
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          if (f) upload(`music/${f.name}`, f);
+                          e.target.value = "";
+                        }}
+                      />
+                    </label>
+                  )}
                 </section>
               );
             })}
