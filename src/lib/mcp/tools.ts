@@ -16,15 +16,17 @@ import { getAllOppdrag } from "@/lib/oppdrag";
 import { getServerDate } from "@/lib/date-utils";
 import { FROST_UNTIL_HOUR, frostModeFor } from "@/lib/frost";
 import { getStore, resetState } from "@/lib/db";
+import { frostLevelFor } from "@/lib/frost";
 import { createUploadTicket, mediaStatus } from "@/lib/media-server";
-import type { Level } from "./auth";
+import type { Caller, Level } from "./auth";
+import { getClip } from "./clips";
 
 type State = Record<string, unknown>;
 type Tool = {
   level: Level;
   description: string;
   inputSchema: { type: "object"; properties: Record<string, object> };
-  run(args: Record<string, unknown>): Promise<unknown>;
+  run(args: Record<string, unknown>, caller: Caller): Promise<unknown>;
 };
 
 /** Every value under a `kode`/`foreldre_kode` key anywhere in src/data. */
@@ -54,8 +56,8 @@ export function redact(text: string, earned = new Set<string>()): string {
 }
 
 /** Codes the kids have typed in on a day up to today; story names stay readable. */
-export function earnedCodes(state: State): Set<string> {
-  const today = adventDay(now(state)) ?? 0;
+export function earnedCodes(state: State, at?: Date): Set<string> {
+  const today = adventDay(now(state, at)) ?? 0;
   const solved = solvedDays(state);
   return new Set(
     getAllOppdrag()
@@ -65,11 +67,66 @@ export function earnedCodes(state: State): Set<string> {
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
-const isoDate = (d: Date) =>
-  `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
-/** Clock plus skip_day's `day-offset`. */
-const now = (state: State) => getServerDate(state["day-offset"]);
+const OSLO = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Europe/Oslo",
+  hourCycle: "h23",
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  weekday: "short",
+});
+/** Wall-clock parts in Europe/Oslo, whatever TZ the server runs in. */
+export function oslo(d: Date) {
+  const p = Object.fromEntries(
+    OSLO.formatToParts(d).map((x) => [x.type, x.value]),
+  );
+  return {
+    year: Number(p.year),
+    month: Number(p.month),
+    day: Number(p.day),
+    hour: Number(p.hour),
+    minute: Number(p.minute),
+    weekend: p.weekday === "Sat" || p.weekday === "Sun",
+  };
+}
+const isoDate = (d: Date) => {
+  const o = oslo(d);
+  return `${o.year}-${pad(o.month)}-${pad(o.day)}`;
+};
+// ponytail: fixed CET offset, right for November–February; use Temporal if
+// the API is ever used in summer.
+const osloIso = (date: string, hour: number): string =>
+  hour >= 24
+    ? osloIso(
+        isoDate(new Date(Date.parse(`${date}T12:00:00+01:00`) + 864e5)),
+        hour - 24,
+      )
+    : `${date}T${pad(hour)}:00:00+01:00`;
+
+/**
+ * set_fake_now: per caller name, the clock keeps running from the fake
+ * start. In memory only (one LAN pod); a restart clears it.
+ */
+const fakeClocks = new Map<string, { fake: number; set: number }>();
+export const FAKE_NOW_TTL_MS = 24 * 3600 * 1000;
+export function clockFor(name: string): Date | undefined {
+  const f = fakeClocks.get(name);
+  if (!f) return undefined;
+  const elapsed = Date.now() - f.set;
+  if (elapsed > FAKE_NOW_TTL_MS) {
+    fakeClocks.delete(name);
+    console.info(`[mcp] set_fake_now for ${name} expired`);
+    return undefined;
+  }
+  return new Date(f.fake + elapsed);
+}
+
+/** Caller's fake clock, else clock plus skip_day's `day-offset`. */
+const now = (state: State, at?: Date) =>
+  at ?? getServerDate(state["day-offset"]);
 
 function solvedDays(state: State): Set<number> {
   const days = new Set<number>();
@@ -89,15 +146,13 @@ function solvedDays(state: State): Set<number> {
 
 /** Calendar day 1–24 in December, else null. */
 function adventDay(d: Date): number | null {
-  const day = d.getDate();
-  return d.getMonth() === 11 && day <= 24 ? day : null;
+  const { day, month } = oslo(d);
+  return month === 12 && day <= 24 ? day : null;
 }
 
-export function getState(state: State) {
-  const d = now(state);
-  const day = d.getDate();
-  const month = d.getMonth() + 1;
-  const hour = d.getHours();
+export function getState(state: State, at?: Date) {
+  const d = now(state, at);
+  const { day, month, hour } = oslo(d);
   const date = isoDate(d);
   const solved = solvedDays(state).has(day);
   const mode = frostModeFor({
@@ -134,8 +189,8 @@ export function getState(state: State) {
   };
 }
 
-export function getTodayQuest(state: State) {
-  const day = adventDay(now(state));
+export function getTodayQuest(state: State, at?: Date) {
+  const day = adventDay(now(state, at));
   const q = day && getAllOppdrag().find((o) => o.dag === day);
   if (!q) return null;
   return {
@@ -146,8 +201,8 @@ export function getTodayQuest(state: State) {
   };
 }
 
-export function getProgress(state: State) {
-  const today = adventDay(now(state)) ?? 0;
+export function getProgress(state: State, at?: Date) {
+  const today = adventDay(now(state, at)) ?? 0;
   const badges = state["nissekomm-earned-badges"];
   return {
     days_solved: [...solvedDays(state)]
@@ -157,7 +212,99 @@ export function getProgress(state: State) {
   };
 }
 
-const intArg = (v: unknown, min: number, max: number) => {
+/** Europe/Oslo hours: natt 19–06, morgen 06–09, dag 09–15, skumring 15–19. */
+function phaseAt(hour: number) {
+  if (hour >= 6 && hour < 9) return { phase: "morgen", next: 9 };
+  if (hour >= 9 && hour < 15) return { phase: "dag", next: 15 };
+  if (hour >= 15 && hour < 19) return { phase: "skumring", next: 19 };
+  return { phase: "natt", next: hour < 6 ? 6 : 30 };
+}
+
+/** Snøfall landsby state for a story day (same rule as Snøfall TV K1). */
+function tvState(day: number | null, solved: boolean) {
+  if (day === 24 && solved) return "dag24";
+  // NORDLYS is day 17's code: the name (and its loop URL) waits for it.
+  if (day === 17) return solved ? "nordlys" : "rolig";
+  if (day === 18) return "storm";
+  return "rolig";
+}
+
+/**
+ * Skjerm's view. `next_change_at` is the earliest of every possible change,
+ * phase included: title (06), Rampenissen (09/10), phase, grayscale (12),
+ * frost stop (20), midnight, or a set_frost end. It may be a no-op.
+ */
+export function getScreen(state: State, at?: Date) {
+  const d = now(state, at);
+  const o = oslo(d);
+  const date = isoDate(d);
+  const today = adventDay(d) ?? 0;
+  const solved = solvedDays(state);
+  const solvedToday = today > 0 && solved.has(today);
+  const bonus = state["nissekomm-bonusoppdrag-completed"];
+  const badges = state["nissekomm-earned-badges"];
+  const q =
+    today && o.hour >= 6 ? getAllOppdrag().find((x) => x.dag === today) : null;
+  const tv = tvState(today, solvedToday);
+  const { phase, next: phaseNext } = phaseAt(o.hour);
+  // ponytail: weekday 09 / weekend 10, from Morgenrådet's broadcast times.
+  const rampenissenHour = o.weekend ? 10 : 9;
+  const nextHour = Math.min(
+    phaseNext,
+    ...[6, rampenissenHour, 12, FROST_UNTIL_HOUR, 24].filter((h) => h > o.hour),
+  );
+  let next = osloIso(date, nextHour);
+  const fo = state["frost-override"] as { until?: unknown } | undefined;
+  const foEnd = typeof fo?.until === "string" ? Date.parse(fo.until) : NaN;
+  if (foEnd > d.getTime() && foEnd < Date.parse(next)) {
+    next = fo!.until as string;
+  }
+  const base = getState(state, at);
+  return {
+    now: `${date}T${pad(o.hour)}:${pad(o.minute)}:00+01:00`,
+    day: today || null,
+    doors: Array.from({ length: 24 }, (_, i) => ({
+      day: i + 1,
+      state:
+        i + 1 > today
+          ? "locked"
+          : solved.has(i + 1)
+            ? "completed"
+            : "available",
+    })),
+    title: q?.tittel ?? null,
+    // ponytail: placeholder until skjerm_teaser texts are written (todo.md).
+    teaser:
+      (q as { skjerm_teaser?: string } | null | undefined)?.skjerm_teaser ??
+      (q ? "Nytt oppdrag venter i NisseKomm." : null),
+    frost_percent: today
+      ? frostLevelFor(
+          today,
+          solvedToday,
+          Array.isArray(bonus) && bonus.includes(today),
+        )
+      : null,
+    // Kulde gets a name once day 7 (KULDE) is solved; a key holding a code
+    // word would itself be redacted.
+    antagonist_name: today >= 7 && solved.has(7) ? "Kulde" : null,
+    badges: Array.isArray(badges) ? badges : [],
+    rampenissen_seen: today > 0 && o.hour >= rampenissenHour,
+    frost: base.frost,
+    grayscale: base.grayscale,
+    tv: {
+      state: tv,
+      variant: `/media/video/tv/landsby-${tv}.mp4`,
+      phase,
+      phase_next_change_at: osloIso(date, phaseNext),
+    },
+    // ponytail: no events yet (todo.md «Flere tilfeldige hendelser»); only
+    // ever non-empty when tv.state is rolig.
+    events: [] as string[],
+    next_change_at: next,
+  };
+}
+
+const intArg =(v: unknown, min: number, max: number) => {
   const n = Number(v);
   if (!Number.isInteger(n) || n < min || n > max) {
     throw new Error(`Må være et heltall ${min}–${max}`);
@@ -172,30 +319,108 @@ export const TOOLS: Record<string, Tool> = {
     level: "read",
     description: "Frost, gråtone og om dagens kode er løst.",
     inputSchema: { type: "object", properties: {} },
-    run: async () => getState(await read()),
+    run: async (_, c) => getState(await read(), clockFor(c.name)),
+  },
+  get_screen: {
+    level: "read",
+    description:
+      "Skjerm: dører, tittel og teaser, Frostgrad, merker, frost, TV og neste endring.",
+    inputSchema: { type: "object", properties: {} },
+    run: async (_, c) => getScreen(await read(), clockFor(c.name)),
   },
   get_clips: {
     level: "read",
-    description: "Radioklipp for en dato (YYYY-MM-DD).",
+    description:
+      "Rampenissens radioklipp for en dato (YYYY-MM-DD), aldri etter i dag.",
     inputSchema: {
       type: "object",
       properties: { date: { type: "string" } },
     },
-    // ponytail: no Rampenissen radio clips exist yet; list them from media
-    // once the manifest has them, and never for a date after today.
-    run: async () => [],
+    run: async ({ date }, c) => {
+      const today = isoDate(now(await read(), clockFor(c.name)));
+      const d = String(date ?? today);
+      const m = /^2026-12-(\d\d)$/.exec(d);
+      const day = m ? Number(m[1]) : 0;
+      // A later date would be a spoiler; ISO dates compare as strings.
+      const clips =
+        day >= 1 && day <= 24 && d <= today ? [await getClip(day)] : [];
+      return { date: d, clips };
+    },
+  },
+  get_letters: {
+    level: "parent",
+    description: "Barnas brev til Julius med navn og dato.",
+    inputSchema: { type: "object", properties: {} },
+    run: async () => {
+      const stored = (await read())["nissekomm-santa-letters"];
+      const letters = Array.isArray(stored) ? stored : [];
+      // Shares ~5000 characters between the letters so 16 KB always holds.
+      const max = Math.min(2000, Math.floor(5000 / Math.max(letters.length, 1)));
+      return {
+        letters: letters.map((l) => ({
+          from: typeof l?.from === "string" ? l.from : null,
+          date: `2026-12-${pad(Number(l?.day) || 0)}`,
+          day: Number(l?.day) || null,
+          content: String(l?.content ?? "").slice(0, max),
+        })),
+      };
+    },
+  },
+  set_fake_now: {
+    level: "parent",
+    description:
+      "Lat som klokka er `now` (ISO) i svar til deg selv. Utløper etter 24 timer; tom `now` nullstiller.",
+    inputSchema: {
+      type: "object",
+      properties: { now: { type: "string" } },
+    },
+    run: async ({ now: at }, c) => {
+      if (at === undefined || at === null || at === "") {
+        fakeClocks.delete(c.name);
+        console.info(`[mcp] set_fake_now cleared by ${c.name}`);
+        return { fake_now: null };
+      }
+      const t = Date.parse(String(at));
+      if (Number.isNaN(t)) throw new Error("Ugyldig now");
+      fakeClocks.set(c.name, { fake: t, set: Date.now() });
+      console.info(`[mcp] set_fake_now ${c.name} -> ${String(at)}`);
+      return {
+        fake_now: new Date(t).toISOString(),
+        expires_at: new Date(Date.now() + FAKE_NOW_TTL_MS).toISOString(),
+      };
+    },
+  },
+  preview_screen: {
+    level: "parent",
+    description:
+      "get_screen slik en annen kaller (as_caller, navnet i MCP_CALLERS) ser den.",
+    inputSchema: {
+      type: "object",
+      properties: { as_caller: { type: "string" } },
+    },
+    run: async ({ as_caller }) => {
+      const at = clockFor(String(as_caller ?? ""));
+      const state = await read();
+      // Same guard as a read caller gets.
+      return JSON.parse(
+        redact(
+          JSON.stringify({ ...getScreen(state, at), schema_version: 1 }),
+          earnedCodes(state, at),
+        ),
+      );
+    },
   },
   get_today_quest: {
     level: "read",
     description: "Dagens oppdrag slik barna ser det: tittel, e-post, video.",
     inputSchema: { type: "object", properties: {} },
-    run: async () => getTodayQuest(await read()),
+    run: async (_, c) => getTodayQuest(await read(), clockFor(c.name)),
   },
   get_progress: {
     level: "read",
     description: "Løste dager og merker.",
     inputSchema: { type: "object", properties: {} },
-    run: async () => getProgress(await read()),
+    run: async (_, c) => getProgress(await read(), clockFor(c.name)),
   },
   give_hint: {
     level: "parent",
@@ -283,16 +508,29 @@ export const TOOLS: Record<string, Tool> = {
   },
 };
 
-/** Runs a tool for a caller; read answers are redacted. */
+export const MAX_RESPONSE_BYTES = 16 * 1024;
+
+/** Runs a tool for a caller; read answers are redacted. A bare level is a test caller. */
 export async function callTool(
-  level: Level,
+  who: Level | Caller,
   name: string,
   args: Record<string, unknown> = {},
 ): Promise<string> {
+  const caller = typeof who === "string" ? { name: who, level: who } : who;
   const tool = TOOLS[name];
-  if (!tool || (tool.level === "parent" && level !== "parent")) {
+  if (!tool || (tool.level === "parent" && caller.level !== "parent")) {
     throw new Error(`Ukjent verktøy: ${name}`);
   }
-  const text = JSON.stringify(await tool.run(args));
-  return tool.level === "read" ? redact(text, earnedCodes(await read())) : text;
+  let out = await tool.run(args, caller);
+  if (out && typeof out === "object" && !Array.isArray(out)) {
+    out = { schema_version: 1, ...out };
+  }
+  let text = JSON.stringify(out);
+  if (tool.level === "read") {
+    text = redact(text, earnedCodes(await read(), clockFor(caller.name)));
+  }
+  if (Buffer.byteLength(text) > MAX_RESPONSE_BYTES) {
+    throw new Error(`Svaret fra ${name} er over 16 KB`);
+  }
+  return text;
 }

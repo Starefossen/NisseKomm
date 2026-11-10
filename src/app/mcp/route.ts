@@ -37,7 +37,7 @@ async function handle(req: Request): Promise<Response> {
   server.setRequestHandler(CallToolRequestSchema, async (r) => {
     try {
       const text = await callTool(
-        caller.level,
+        caller,
         r.params.name,
         r.params.arguments,
       );
