@@ -8,7 +8,6 @@ import { GameEngine } from "@/lib/game-engine";
 import { getCurrentDay, getCurrentDate } from "@/lib/date-utils";
 import { LiveCam } from "./snofall-tv/LiveCam";
 import { MiniGames } from "./snofall-tv/MiniGames";
-import { getFrostLevel } from "./snofall-tv/frost";
 import {
   CHANNELS,
   FREQ_HOME,
@@ -47,7 +46,7 @@ function useTicker(active: boolean, until: number): number {
 export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
   const day = Math.max(1, Math.min(24, currentDay ?? getCurrentDay()));
   const [solved] = useState(() => GameEngine.isQuestCompleted(day));
-  const [frost] = useState(() => getFrostLevel(day));
+  const [frost] = useState(() => GameEngine.getFrostLevel(day) ?? 0);
   const [hour] = useState(() => getCurrentDate().getHours());
 
   const tuneTick = useTicker(day === 1 && !solved, TUNE_DONE);

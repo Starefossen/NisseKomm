@@ -8,6 +8,8 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
+  // agent worktrees live under .claude/ and must not be picked up as tests or modules
+  modulePathIgnorePatterns: ["<rootDir>/.claude/"],
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   globalTeardown: "<rootDir>/jest.globalTeardown.ts",
   testEnvironment: "jsdom",
@@ -41,6 +43,7 @@ module.exports = async () => {
     !process.env.SANITY_API_TOKEN
   ) {
     config.testPathIgnorePatterns = [
+      "<rootDir>/.claude/",
       ...(config.testPathIgnorePatterns || []),
       "<rootDir>/src/app/api/",
     ];
