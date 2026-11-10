@@ -7,9 +7,10 @@ import "next-test-api-route-handler";
 
 import { testApiHandler } from "next-test-api-route-handler";
 import { describe, it, expect, beforeEach } from "@jest/globals";
+import { createHash } from "node:crypto";
 import { NextRequest } from "next/server";
 import * as loginRoute from "../route";
-import { authStore } from "@/lib/auth";
+import { memoryStore } from "@/lib/db";
 import { proxy } from "@/proxy";
 
 const ORIGIN = "https://nissekomm.no";
@@ -47,8 +48,7 @@ beforeEach(() => {
   env.KID_CODE = "snø lykt elg";
   env.PARENT_CODE = "bjelle kakao reinsdyr vott";
   env.NISSEKOMM_MODE = "lan";
-  authStore.sessions.clear();
-  authStore.failures = [];
+  memoryStore.reset();
 });
 
 describe("POST /api/auth/login", () => {
@@ -64,7 +64,9 @@ describe("POST /api/auth/login", () => {
     expect(res.cookie).toMatch(/HttpOnly/);
     expect(res.cookie).toMatch(/SameSite=lax/i);
     expect(res.cookie).toMatch(/Path=\//);
-    expect(authStore.sessions.size).toBe(1);
+    const token = res.cookie!.match(/__Host-nissekomm=([^;]+)/)![1];
+    const hash = createHash("sha256").update(token).digest("hex");
+    expect(await memoryStore.getSession(hash)).toMatchObject({ role: "kid" });
   });
 
   it("accepts the parent code only in lan mode", async () => {

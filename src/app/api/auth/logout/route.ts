@@ -5,7 +5,7 @@ import { SESSION_COOKIE, deleteSession, readJsonBody } from "@/lib/auth";
 export async function POST(request: NextRequest) {
   const body = await readJsonBody(request);
   if (body instanceof NextResponse) return body;
-  deleteSession(request);
+  await deleteSession(request);
   const response = NextResponse.json({ ok: true });
   response.cookies.set(SESSION_COOKIE, "", {
     maxAge: 0,

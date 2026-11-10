@@ -4,9 +4,10 @@
  */
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
+import { getStore, type Role } from "@/lib/db";
 import { isLanMode } from "@/lib/mode";
 
-export type Role = "kid" | "parent";
+export type { Role };
 
 export const SESSION_COOKIE = "__Host-nissekomm";
 const MAX_AGE: Record<Role, number> = {
@@ -35,30 +36,25 @@ function matches(input: Buffer, envValue: string | undefined): boolean {
   return !!envValue && timingSafeEqual(input, hashCode(envValue));
 }
 
-// ponytail: in-memory and per pod; T5 swaps this object for Postgres.
-export const authStore = {
-  sessions: new Map<string, { role: Role; expires: number }>(),
-  failures: [] as number[],
-};
-
 const sha256 = (s: string) => createHash("sha256").update(s).digest("hex");
 
-export function getRole(request: NextRequest): Role | null {
+export async function getRole(request: NextRequest): Promise<Role | null> {
   const token = request.cookies.get(SESSION_COOKIE)?.value;
   if (!token) return null;
   const key = sha256(token);
-  const s = authStore.sessions.get(key);
-  if (!s || s.expires < Date.now()) {
-    authStore.sessions.delete(key);
+  const s = await getStore().getSession(key);
+  if (!s) return null;
+  if (s.expires < Date.now()) {
+    await getStore().deleteSession(key);
     return null;
   }
   if (s.role === "parent" && !isLanMode()) return null;
   return s.role;
 }
 
-export function deleteSession(request: NextRequest): void {
+export async function deleteSession(request: NextRequest): Promise<void> {
   const token = request.cookies.get(SESSION_COOKIE)?.value;
-  if (token) authStore.sessions.delete(sha256(token));
+  if (token) await getStore().deleteSession(sha256(token));
 }
 
 export const jsonError = (error: string, status: number) =>
@@ -103,9 +99,7 @@ const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
  * and the kids still get in.
  */
 export async function checkCode(code: string): Promise<Role | null> {
-  const now = Date.now();
-  authStore.failures = authStore.failures.filter((t) => now - t < WINDOW_MS);
-  if (authStore.failures.length > MAX_FAILURES) {
+  if ((await getStore().failureCount(WINDOW_MS)) > MAX_FAILURES) {
     await (throttle = throttle.then(() => sleep(THROTTLE_MS)));
   }
   const input = hashCode(code);
@@ -114,13 +108,16 @@ export async function checkCode(code: string): Promise<Role | null> {
   const parent = matches(input, process.env.PARENT_CODE) && isLanMode();
   if (parent) return "parent";
   if (kid) return "kid";
-  authStore.failures.push(Date.now());
+  await getStore().addFailure(WINDOW_MS);
   return null;
 }
 
-export function startSession(response: NextResponse, role: Role): void {
+export async function startSession(
+  response: NextResponse,
+  role: Role,
+): Promise<void> {
   const token = randomBytes(32).toString("base64url");
-  authStore.sessions.set(sha256(token), {
+  await getStore().setSession(sha256(token), {
     role,
     expires: Date.now() + MAX_AGE[role] * 1000,
   });

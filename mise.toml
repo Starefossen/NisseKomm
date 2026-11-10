@@ -112,3 +112,14 @@ TAG="registry.intern.flaatten.org:5000/nissekomm:$(date +%s)"
 docker buildx build --platform linux/amd64,linux/arm64 -t "$TAG" --push .
 echo "$TAG"
 """
+
+[tasks."dev:pg"]
+description = "Start en midlertidig Postgres i Docker (Colima) og skriv ut DATABASE_URL"
+run = """
+#!/usr/bin/env bash
+set -euo pipefail
+ID=$(docker run -d --rm -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=nissekomm -p 127.0.0.1::5432 postgres:17-alpine)
+PORT=$(docker port "$ID" 5432/tcp | head -1 | sed 's/.*://')
+echo "DATABASE_URL=postgres://postgres:dev@127.0.0.1:${PORT}/nissekomm"
+echo "Stopp med: docker stop ${ID:0:12}"
+"""
