@@ -23,7 +23,7 @@ export interface StorageAdapter {
   remove(key: string): void;
   has(key: string): boolean;
   /** propagate: also clear the shared server state (a reset) */
-  clear(propagate?: boolean): void;
+  clear(propagate?: boolean): void | Promise<void>;
 }
 
 /**
@@ -136,6 +136,8 @@ type Pending = { value: unknown; replace: boolean };
 
 /** Local-only list of synced keys written while the server was unreachable. */
 const UNSYNCED_KEY = "nissekomm-unsynced";
+/** Local-only: the server version this screen last saw. */
+const SEEN_KEY = "nissekomm-state-version-seen";
 
 /**
  * localStorage as a synchronous cache of the server state. Plain
@@ -162,6 +164,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     const offline = this.unsynced().map(
       (k) => [k, super.get<unknown>(k, null)] as const,
     );
+    const seen = super.get<number | null>(SEEN_KEY, null);
     clearTimeout(this.startRetry);
     try {
       this.live = await this.pull();
@@ -171,6 +174,11 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
       throw e;
     }
     if (!this.live) return;
+    // Reset (or revoked) elsewhere since: the server wins, as on a 409.
+    if (seen != null && this.version > seen) {
+      this.markUnsynced(this.unsynced(), false);
+      offline.length = 0;
+    }
     for (const [k, v] of offline) if (v != null) this.queue(k, v, false);
     const poll = () => {
       if (!this.pending.size && !this.flushing) {
@@ -194,7 +202,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
       else super.set(k, state[k]);
     }
     const v = state[VERSION_KEY];
-    this.version = typeof v === "number" ? v : 0;
+    this.setVersion(typeof v === "number" ? v : 0);
     this.onChange();
     return true;
   }
@@ -210,9 +218,24 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     this.queue(key, null, true);
   }
 
-  clear(propagate = false): void {
-    if (propagate) for (const k of SYNCED_KEYS) this.queue(k, null, true);
+  /** With propagate, the server clears the whole family's state (parent only). */
+  async clear(propagate = false): Promise<void> {
+    clearTimeout(this.timer);
+    this.pending.clear();
     super.clear();
+    if (!propagate) return;
+    const res = await fetch("/api/state", {
+      method: "DELETE",
+      credentials: "same-origin",
+      keepalive: true,
+    });
+    if (!res.ok) throw new Error(`Nullstilling feilet (${res.status})`);
+    if (this.live) await this.pull();
+  }
+
+  private setVersion(v: number) {
+    this.version = v;
+    super.set(SEEN_KEY, v);
   }
 
   private unsynced(): string[] {
@@ -273,7 +296,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
           break;
         }
         const body = (await res.json()) as { value: unknown; version: number };
-        this.version = body.version;
+        this.setVersion(body.version);
         if (this.pending.get(key) === p) {
           this.pending.delete(key);
           this.markUnsynced([key], false);

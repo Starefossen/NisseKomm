@@ -191,8 +191,12 @@ function Simulering() {
       <button
         className="px-4 min-h-11 border-2 border-(--christmas-red) text-(--christmas-red) hover:bg-(--christmas-red)/20"
         onClick={() => {
-          if (confirm("Nullstille all fremdrift? Klokkeslettet beholdes.")) {
-            kjør(sim.reset, "All fremdrift er nullstilt.");
+          if (
+            confirm(
+              "Nullstille all fremdrift på alle skjermer for hele familien? Innlogging og klokkeslett beholdes.",
+            )
+          ) {
+            kjør(sim.reset, "All fremdrift er nullstilt på alle skjermer.");
           }
         }}
       >

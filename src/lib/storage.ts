@@ -354,9 +354,9 @@ export class StorageManager {
   }
 
   /** Clears this screen; with propagate also the shared state (reset). */
-  static clearAll(propagate = false): void {
+  static async clearAll(propagate = false): Promise<void> {
     if (typeof window === "undefined") return;
-    this.adapter.clear(propagate);
+    await this.adapter.clear(propagate);
   }
 
   // ============================================================

@@ -3,13 +3,20 @@
  * PUT /api/state  Body: { key, value, replace?, version? }. Returns
  *                 { value, version } after merging; replace overwrites.
  *                 409 when `version` is older than the stored one.
- * Both require a kid or parent session; 204 (sync off) with STORAGE_BACKEND=localStorage.
+ * DELETE /api/state  Parent only: season reset for every screen (resetState).
+ * GET/PUT require a kid or parent session; 204 (sync off) with STORAGE_BACKEND=localStorage.
  * Writes that mark a game moment
  * (day solved, bonus approved, frost off) fan out through notify().
  */
 import { NextRequest, NextResponse } from "next/server";
 import { getRole, jsonError, readJsonBody } from "@/lib/auth";
-import { STATE_KEYS, VERSION_KEY, getStore, storageBackend } from "@/lib/db";
+import {
+  STATE_KEYS,
+  VERSION_KEY,
+  getStore,
+  resetState,
+  storageBackend,
+} from "@/lib/db";
 import { SERVER_KEYS } from "@/lib/storage-adapter";
 import { getAllOppdrag } from "@/lib/oppdrag";
 import { getServerDate } from "@/lib/date-utils";
@@ -68,6 +75,16 @@ export async function PUT(request: NextRequest) {
     value: stored,
     version: replace === true ? current + 1 : current,
   });
+}
+
+export async function DELETE(request: NextRequest) {
+  if (storageBackend() !== "server")
+    return new NextResponse(null, { status: 204 });
+  const role = await getRole(request);
+  if (!role) return jsonError("Ikke innlogget", 401);
+  if (role !== "parent") return jsonError("Bare for foreldre", 403);
+  await resetState();
+  return NextResponse.json({ reset: true });
 }
 
 /** Every entry must be the real code for its day, so «solved» can't be faked. */

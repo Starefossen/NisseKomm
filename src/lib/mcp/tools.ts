@@ -15,7 +15,7 @@ import videoer from "@/data/julius_videoer.json";
 import { getAllOppdrag } from "@/lib/oppdrag";
 import { getServerDate } from "@/lib/date-utils";
 import { FROST_UNTIL_HOUR, frostModeFor } from "@/lib/frost";
-import { STATE_KEYS, getStore } from "@/lib/db";
+import { getStore, resetState } from "@/lib/db";
 import { createUploadTicket, mediaStatus } from "@/lib/media-server";
 import type { Level } from "./auth";
 
@@ -276,12 +276,8 @@ export const TOOLS: Record<string, Tool> = {
     level: "parent",
     description: "Nullstill all delt spilltilstand.",
     inputSchema: { type: "object", properties: {} },
-    // Replacing writes bump the version, so screens re-fetch instead of
-    // pushing their old lists back.
     run: async () => {
-      for (const k of [...STATE_KEYS, "frost-override", "day-offset"]) {
-        await getStore().putState(k, null, true);
-      }
+      await resetState();
       return { reset: true };
     },
   },
