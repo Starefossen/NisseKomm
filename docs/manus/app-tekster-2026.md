@@ -1,6 +1,6 @@
 # NisseKomm 2026 – App-tekster (steg 2)
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Endret etter ja fra Hans 10. november.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans.
 
 **Revisjon 10. november (vanskelighet, godkjent):** e-poster, PS, krypto-hint, NisseNet-filer og Nissemor-tekster fulgt opp etter revisjonen i `gaater-2026.md` (to meta-gåter, blindspor, Hanna uten kodebærende steg). Nye felt: `transcript_runer` i `kulde_spokelsesbilde` (dag 10, 13, 16, 21) og `julius_ps_krypto_mangler` (dag 20).
 
@@ -136,15 +136,15 @@ Alltid rolig, kort, ensom. Aldri trusler, aldri utropstegn. Spøkelsesbildet (`k
 
 | Dag | `title`                   | `transcript`                                                                                                                | `telemetry`                                | `transcript_runer` |
 | --- | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ------------------ |
-| 3   | 85,0 MHz // UKJENT SENDER | Er det noen der? Linjen deres er varm. Jeg kjente den helt her nede. Jeg la litt rim på den, bare så jeg kunne holde i den. | 85,0 MHz // KRYSTALLGROTTEN // SEKTOR 01   | –                  |
+| 3   | 85,0 MHz // UKJENT SENDER | Er det noen der? Linjen deres er varm. Jeg kjente den helt her nede. Jeg la litt rim på den, bare så jeg kunne holde i den. | 85,0 MHz // UNDER NORDTOPPEN // SEKTOR 01  | –                  |
 | 7   | 85,0 MHz // SIGNATUR      | Orakelet deres leter etter navnet mitt. Ingen har sagt det på et år. Si det, når dere finner det.                           | 85,0 MHz // −42,8 °C // SIGNATUR FANGET    | –                  |
 | 10  | FARGENE                   | Fargene er hos meg nå. Rødt. Grønt. Jeg hadde glemt hvordan de så ut. Jeg skal passe godt på dem.                           | 85,0 MHz // KROMATISK DRENERING 71 %       | SE MEG             |
 | 11  | ANTENNEN                  | Antennen deres roper så høyt mot Bergen. Jeg la is på den, så den kunne høre på meg i stedet. Ingen hører på meg.           | 85,0 MHz // ANTENNEN VED TJERNET // IS     | –                  |
-| 13  | LYSENE                    | Lysene deres. Jeg så dem gjennom linjen i natt. Jeg husker ikke når jeg så lys sist.                                        | 85,0 MHz // KRYSTALLGROTTEN // STILLE      | ALENE              |
+| 13  | LYSENE                    | Lysene deres. Jeg så dem gjennom linjen i natt. Jeg husker ikke når jeg så lys sist.                                        | 85,0 MHz // UNDER NORDTOPPEN // STILLE     | ALENE              |
 | 16  | BÅNDET                    | Jeg snudde båndet til Winter. Nå ser hun opp. Nå ser hun hit. Det var alt jeg ville.                                        | 85,0 MHz // PAKKESENTRALEN // BÅNDET SNUDD | SE OPP             |
 | 21  | DET ER KALDT HER NEDE     | Det er kaldt her nede. Jeg ville bare se lyset deres.                                                                       | 85,0 MHz // 94 % // …                      | LYSET DERES        |
 
-Reservetekst (dager uten egen linje, erstatter dagens «Is-krystallene mine vokser»): `transcript`: «…» · `telemetry`: `85,0 MHz // KRYSTALLGROTTEN // INGEN STEMME`.
+Reservetekst (dager uten egen linje, erstatter dagens «Is-krystallene mine vokser»): `transcript`: «…» · `telemetry`: `85,0 MHz // KRYSTALLGROTTEN // INGEN STEMME` (til og med dag 13: `UNDER NORDTOPPEN`; grotta navngis først fra dag 15).
 
 `transcript_runer` er Kuldes egen stemme i Snøfalls gamle skrift (meta 1), vist med tegnsettet under den norske linjen. Den er historie, aldri kode, og alle bokstavene er lært av kortene før dagen den vises (SE MEG: dag 1, 3, 4; ALENE: dag 1, 3; SE OPP: dag 1, 3, 4; LYSET DERES: dag 1, 3, 6, 7).
 
@@ -329,7 +329,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
 - `tittel`: Inntrengeren i Fryseren
 - `nissemail_tekst` (0 ord): Lua mi satt fast i fryseren deres. 🥶 Jeg prøvde å kjøle ned modemet. Det var feil. Takk for at dere reddet lua, og det som sto ved den! I natt fanget Orakelet signaturen, og den har et navn. Julius sier det ikke rett ut, men han sier nok. Kristian: det som kom ut av isen, har ingen bokstaver. Tavla deres vet mer enn dere tror. Fra i dag måler Orakelet frosten i serverrommet. Se sidepanelet. Brevfugler er åpen også, så nå kan dere skrive brev til Julius! – Rampenissen
-- `julius_ps`: Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Nissemor ringte. Hun sier han så ut som en liten skiltstolpe. Hun sier også at det var derfor hun sendte oransje. Hun visste det ikke. Hun vet sånt likevel.
+- `julius_ps`: Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Nissemor ringte. Hun sier han så ut som en liten skiltstolpe.
 - `daily_alerts` (avgjort: vises først når dag 7 er løst; før det står sidepanelet på `ORAKELET LYTTER …`): 🔮 ORAKELET: Signaturen på 85,0 har et navn. Frostgraden kan måles fra i dag.
 - NisseNet: `SYSTEM/snofall_fakta.txt` **erstattes** av `SYSTEM/orakelets-rapport.txt` (`afterDay: 7`):
 

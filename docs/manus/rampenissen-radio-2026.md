@@ -1,6 +1,6 @@
 # Rampenissen på Morgenrådet 2026 – radioklipp
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans.
 
 Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storyboard-2026.md` (§2 kunnskapstidslinje, §3 radiolinjer), `docs/gaater-2026.md`. Format: `varden-morgenradet.md`.
 
@@ -32,7 +32,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 1 (ti) – Direktelinjen
 
-**Strek:** sovet i fruktskålen, banan som pute, viklet inn i rød garntråd.
+**Strek:** begravd under et skred av klementiner fra TV-benken, banan som pute, viklet inn i rød garntråd.
 
 **Klipp:** «Hallo? Hallo! E denne på? Det e mæ! Rampenissen! Æ e TILBAKE! Æ har sove i en garnkurv på loftet i Snøfall heile året, og i natt sendt IQ mæ ned gjennom den nye direktelinja. Hodestups. Æ landa mykt, i nåkka gult og buet. Æ sei ikkje meir. Det va ikkje min idé å sov der, det va landinga sin idé. Og garnet? Garnet va der da æ kom. Nesten. Hør her: det knitre nåkka på linja. Og det e ikkje mæ. IQ sei det e været. IQ sei bestandig at det e været. God morra, Landås! Æ e på jobb.»
 

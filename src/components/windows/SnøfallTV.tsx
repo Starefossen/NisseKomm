@@ -179,7 +179,7 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
         {intercept && (
           <div className="border-2 border-(--cold-blue) bg-black/80 p-2 text-(--cold-blue)">
             <div className="text-base opacity-70">
-              85,0 MHz // KRYSTALLGROTTEN
+              85,0 MHz // {day <= 13 ? "UNDER NORDTOPPEN" : "KRYSTALLGROTTEN"}
             </div>
             <div className="text-lg">«{intercept}»</div>
             {runeLineFor(day) && (

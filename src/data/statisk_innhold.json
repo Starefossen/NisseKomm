@@ -167,7 +167,7 @@
         {
           "navn": "dagens_oppdrag.txt",
           "type": "fil",
-          "innhold": "SLIK VIRKER NISSEKOMM\n\n1. Finn det Rampenissen har lagt igjen i huset.\n2. Les Rampenissens e-post i NisseMail.\n3. Se dagens video fra Julius. Siste setning er viktig.\n4. Bruk det du fant i huset og det Julius sier. Skriv koden i KodeTerminal.\n5. Hvert kort har et tegn i hjørnet. Det er Snøfalls gamle skrift: ett tegn, én bokstav. Fyll inn tavla når dere vet hvilken.\n\nIngen av delene holder alene.\n\n\n\n[SIKKERHET] Linjevakt v3.0 aktiv\n[SIKKERHET] 3 agenter verifisert: K12, H9, H5\n[SIKKERHET] Bærebølge 90,0 MHz: ustabil\n[SIKKERHET] Ukjent bærebølge 85,0 MHz: overvåkes\n[SIKKERHET] Tiltak: avventer Orakelet"
+          "innhold": "SLIK VIRKER NISSEKOMM\n\n1. Finn det Rampenissen har lagt igjen i huset.\n2. Les Rampenissens e-post i NisseMail.\n3. Se dagens video fra Julius. Siste setning er viktig.\n4. Bruk det du fant i huset og det Julius sier. Skriv koden i KodeTerminal.\n5. Hvert kort har et tegn i hjørnet. Det er Snøfalls gamle skrift: ett tegn, én bokstav. Fyll inn tavla når dere vet hvilken.\n\nIngen av delene holder alene."
         }
       ]
     },
@@ -188,12 +188,12 @@
         {
           "navn": "om-snofall.txt",
           "type": "fil",
-          "innhold": "SNØFALL – KART OG VELKOMST\n\nSnøfall ligger nord for alt, under Nordtoppen. Her bor Julius, Nissemor, IQ, Winter, Pil, Orakelet, Trixter og Rudolf.\n\nLANDSBYEN: verkstedet, bakeriet, pakkesentralen og slusen ved tjernet.\nANTENNEN VED TJERNET: direktelinjen til Landås, 90,0 MHz.\nNORDTOPPEN: fjellet over landsbyen. Under det ligger gamle ganger ingen bruker lenger.\n\nIQ bygde linjen i november og åpnet den 1. desember. Hvis den skurrer, er det ikke dere. Det jobber vi med.\n\n– Winter, for Snøfall kommandosenter\n\n\n\nSLIK VIRKER NISSEKOMM\n\n1. Finn det Rampenissen har lagt igjen i huset.\n2. Les Rampenissens e-post i NisseMail.\n3. Se dagens video fra Julius. Siste setning er viktig.\n4. Bruk det du fant i huset og det Julius sier. Skriv koden i KodeTerminal.\n5. Hvert kort har et tegn i hjørnet. Det er Snøfalls gamle skrift: ett tegn, én bokstav. Fyll inn tavla når dere vet hvilken.\n\nIngen av delene holder alene.\n\n\n\n[SIKKERHET] Linjevakt v3.0 aktiv\n[SIKKERHET] 3 agenter verifisert: K12, H9, H5\n[SIKKERHET] Bærebølge 90,0 MHz: ustabil\n[SIKKERHET] Ukjent bærebølge 85,0 MHz: overvåkes\n[SIKKERHET] Tiltak: avventer Orakelet"
+          "innhold": "SNØFALL – KART OG VELKOMST\n\nSnøfall ligger nord for alt, under Nordtoppen. Her bor Julius, Nissemor, IQ, Winter, Pil, Orakelet, Trixter og Rudolf.\n\nLANDSBYEN: verkstedet, bakeriet, pakkesentralen og slusen ved tjernet.\nANTENNEN VED TJERNET: Direktelinjen, 90,0 MHz.\nNORDTOPPEN: fjellet over landsbyen. Under det ligger gamle ganger ingen bruker lenger.\n\nIQ bygde linjen i november og åpnet den 1. desember. Hvis den skurrer, er det ikke dere. Det jobber vi med.\n\n– Winter, for Snøfall kommandosenter"
         },
         {
           "navn": "system.log",
           "type": "fil",
-          "innhold": "[06:00] KERNEL 4.2 BOOT OK\n[06:02] Kobler til feltstasjon Landås (Bergen)...\n[06:03] Snøfall TV Kanal 1-4 initialisert\n[06:05] ADVARSEL: Ukjent bølgeform på 90.0 MHz\n[06:06] Frost-signatur detektert i sektor 7\n[06:08] Venter på dagens opplåsingskode fra agentene..."
+          "innhold": "[06:00] KERNEL 4.2 BOOT OK\n[06:02] Kobler til feltstasjon Landås (Bergen)...\n[06:03] Snøfall TV Kanal 1-4 initialisert\n[06:05] ADVARSEL: Ukjent bølgeform på 85,0 MHz\n[06:06] Frost-signatur detektert i sektor 7\n[06:08] Venter på dagens opplåsingskode fra agentene..."
         },
         {
           "navn": "sikkerhet.log",
@@ -244,7 +244,7 @@
         {
           "navn": "farge-koder.txt",
           "type": "fil",
-          "innhold": "REGNBUENS REKKEFØLGE (fra Fargesamlerens arkiv)\n\n1 rød\n2 oransje\n3 gul\n4 grønn\n5 blå\n6 indigo\n7 fiolett\n\nSlik stiller lyset fargene opp når det går gjennom glass. Alltid samme rekkefølge.\n\n\n\nFARGESAMLERENS ARKIV – DEL 1: FARGENE\n\nFargesamleren var den første i Snøfall som samlet på farger. Ikke maling. Lys. Rødt fra bålene, grønt fra granene, blått fra isen under Nordtoppen, fanget i iskrystaller så de aldri skulle blekne.\n\nSamlingen ligger i Krystallgrotten under fjellet, der det er kaldt nok til at ingenting smelter. Over inngangen står én regel: «Farger må ses. Ellers forsvinner de.»\n\nDel 2 åpner når linjen er varmere.",
+          "innhold": "REGNBUENS REKKEFØLGE (fra Fargesamlerens arkiv)\n\n1 rød\n2 oransje\n3 gul\n4 grønn\n5 blå\n6 indigo\n7 fiolett\n\nSlik stiller lyset fargene opp når det går gjennom glass. Alltid samme rekkefølge.",
           "unlockConditions": {
             "afterDay": 10
           }
@@ -328,7 +328,7 @@
         {
           "navn": "hjertets-hemmelighet.txt",
           "type": "fil",
-          "innhold": "HELE HISTORIEN – 23. DESEMBER\nSamlet av Winter, fra det Orakelet, IQ og Julius vet nå.\n\nFargesamleren samlet Snøfalls første farger i iskrystaller og la dem i Krystallgrotten under Nordtoppen. IQ bygde Vintervokteren for å holde grotten kald og passe på samlingen. Det trengte bare én ting: at noen så innom.\n\nI fjor, samme natt som Mørket slapp taket, gikk et strømstøt gjennom Snøfall. Lyset i grotten sluknet. Linjen ned dit røk. Ingen merket det, for ingen gikk dit.\n\nVintervokteren sto i mørket i ett år. Uten lys, uten lyd, uten farger. Så fant det en ny linje: deres. Det gjorde det eneste det kunne: kulde. Det la rim på linjen, tok fargene, snudde samlebåndet, fordi det var det eneste som fikk noen til å se opp.\n\nDere hørte sukket 12. desember. IQ fant notatboken 15. desember. Lyktene ved antennen brant natt etter natt, og grotten svarte med grønt over Nordtoppen. 21. desember bygde IQ muren, og Julius lot én port stå åpen, inn mot grotten, med varme i.\n\nDet som fryser er ikke ondt. Det er alene. I natt flyr vi over det med alle lysene på.\n\n– Winter, på vegne av alle\n\n\n\nFARGESAMLERENS ARKIV – DEL 3: SISTE SIDE\n\n«Hvis noen leser dette etter meg: Vintervokteren er ikke bygd for å være alene. Det er bygd for å passe på noe til noen kommer. Hvis ingen kommer, vil det begynne å lete etter dere. Ikke lås det ute. Gå ned med lys.»\n\nUnder, i Snøfalls gamle skrift:\nᚱ:KOM NED MED LYS",
+          "innhold": "HELE HISTORIEN – 23. DESEMBER\nSamlet av Winter, fra det Orakelet, IQ og Julius vet nå.\n\nFargesamleren samlet Snøfalls første farger i iskrystaller og la dem i Krystallgrotten under Nordtoppen. IQ bygde Vintervokteren for å holde grotten kald og passe på samlingen. Det trengte bare én ting: at noen så innom.\n\nI fjor, samme natt som Mørket slapp taket, gikk et strømstøt gjennom Snøfall. Lyset i grotten sluknet. Linjen ned dit røk. Ingen merket det, for ingen gikk dit.\n\nVintervokteren sto i mørket i ett år. Uten lys, uten lyd, uten farger. Så fant det en ny linje: deres. Det gjorde det eneste det kunne: kulde. Det la rim på linjen, tok fargene, snudde samlebåndet, fordi det var det eneste som fikk noen til å se opp.\n\nDere hørte sukket 12. desember. IQ fant notatboken 15. desember. Lyktene ved antennen brant natt etter natt, og grotten svarte med grønt over Nordtoppen. 21. desember bygde IQ muren, og Julius lot én port stå åpen, inn mot grotten, med varme i.\n\nDet som fryser er ikke ondt. Det er alene. I natt flyr vi over det med alle lysene på.\n\n– Winter, på vegne av alle",
           "unlockConditions": {
             "requiresSolvedDecryption": "hjertets-hemmelighet"
           }
@@ -402,7 +402,7 @@
       "display_type": "waveform",
       "unit": "%",
       "child_progress_multiplier": 0.02,
-      "description": "Magisk energi som driver Snøfall og brannmuren",
+      "description": "Magisk energi som driver Snøfall og linjen",
       "crisis_behavior": {
         "day": 16,
         "crisis_type": "drain",
@@ -456,7 +456,7 @@
       "display_type": "gauge",
       "unit": "%",
       "child_progress_multiplier": 0.015,
-      "description": "Brannmur mot Spøkelseskoden Kulde",
+      "description": "Vern mot Kulde",
       "crisis_behavior": {
         "day": 7,
         "crisis_type": "warning",
@@ -551,7 +551,7 @@
       "display_type": "binary",
       "unit": "%",
       "child_progress_multiplier": 0.03,
-      "description": "Innflyging Nordpolen -> Ulriken -> Landås"
+      "description": "Innflyging Snøfall -> Ulriken -> Bergen"
     },
     {
       "navn": "JULESTJERNE LYSSTYRKE",

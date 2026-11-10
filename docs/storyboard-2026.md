@@ -1,6 +1,6 @@
 # NisseKomm 2026 – Storyboard «Spøkelseskoden»
 
-Utkast 10. november 2026. Kilde: `docs/historie-2026.md` (låst historie), dagens JSON i `src/data/`, komponentene i `src/components/` og `src/lib/game-engine.ts`. Repoet er ikke endret. Justert mot gåter og manus 10. november, etter ja fra Hans.
+Utkast 10. november 2026. Kilde: `docs/historie-2026.md` (låst historie), dagens JSON i `src/data/`, komponentene i `src/components/` og `src/lib/game-engine.ts`. Repoet er ikke endret. Justert mot gåter og manus 10. november, etter ja fra Hans. Kontinuitet rettet 11. november etter ja fra Hans.
 
 Beslutninger som er nyere enn deler av historiedokumentet, og som dette storyboardet følger:
 
@@ -149,11 +149,11 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 ### Dag 4 (fr) – Skotoget i Gangen · KOMPASS · jakt
 
-**Morgen.** Strek: pappas solbriller og pappas sko, kosedyr på rekke bak. Radio: «Rudolf fløy rett i snøfonna i natt. Han sa han fant veien med nesen. Jeg har laget en pil. Av noe. Ikke si hva.»
+**Morgen.** Strek: pappas solbriller og pappas sko, kosedyr i ring utenfor. Radio: «Rudolf fløy rett i snøfonna i natt. Han sa han fant veien med nesen. Jeg har laget en pil. Av noe. Ikke si hva.»
 
 **Innlogging.** Tema: Barbro-dagen, grener i vann som blomstrer til jul. I natt: Rudolf mistet retningen i Kuldes tåke over fjorden. Brikke S: «Rudolf trenger det samme som sjøfolk alltid hadde med: nålen som finner nord uansett vær.» Kulde 1.
 
-**Gåte.** H: skotoget går ut av scenen (gangen) og inn i et annet rom; i den siste skoen ligger frostlappen `K _ M _ A _ S`. Hanna følger toget (H5), Håkon tar lappen ut av skoen (H9). S: nålen som finner nord. Kristian: KOMPASS (K12). Kode **KOMPASS**.
+**Gåte.** H: sko og kosedyr står i ring rundt Rampenissen i gangen; i den siste skoen ligger frostlappen `K _ M _ A _ S`. Hanna teller skoene høyt rundt ringen (H5), Håkon tar lappen ut av skoen (H9). S: nålen som finner nord. Kristian: KOMPASS (K12). Kode **KOMPASS**.
 
 **Flater.** Mail: Rudolf, tåke, «følg skoene». NisseKrypto åpner (neste morgen eller ved kode). K1: Rudolf-stall-overlegg kan stå som lek. Frost: ikke synlig.
 
