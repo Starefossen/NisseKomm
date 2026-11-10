@@ -127,6 +127,7 @@
 - **Gen Alpha slang** (sparingly, max 2-4 per week): Skibidi, Sigma, Ohio, Brainrot, Koker, Flex, GOAT, Gyatt, Sus, Vibe, Noob, NPC, OG
 - Uses slang when extra excited - maintains consistency across weeks
 - Slang should feel natural and contextual, never forced
+- **Spoken voice is nordlandsk (Bodø/Salten)**: the radio clips in `docs/manus/rampenissen-radio-2026.md` are written in dialect (æ, mæ, dokker, ikkje, ka/kor/kem, e/va/ska, nåkka) so the TTS voice sounds natural; the «Skrivemåte» section at the top of that file is the spelling rule. Only the spoken lines change: content, names, places and puzzle words stay as in bokmål, and written text (NisseMail, app text, intro lines for Birk and Lyng) stays bokmål.
 
 **Example Emails**:
 
