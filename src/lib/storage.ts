@@ -19,6 +19,13 @@ import {
   type StorageAdapter,
 } from "./storage-adapter";
 
+/** A letter to Julius. Letters from before 2026 have no `from`. */
+export interface SantaLetter {
+  day: number;
+  from?: string;
+  content: string;
+}
+
 // Storage keys
 const KEYS = {
   AUTHENTICATED: "nissekomm-authenticated",
@@ -385,22 +392,18 @@ export class StorageManager {
   // Santa Letters (BREVFUGLER Module)
   // ============================================================
 
-  static getSantaLetters(): Array<{ day: number; content: string }> {
+  static getSantaLetters(): SantaLetter[] {
     if (typeof window === "undefined") return [];
-    return this.getItem<Array<{ day: number; content: string }>>(
-      KEYS.SANTA_LETTERS,
-      [],
-    );
+    return this.getItem<SantaLetter[]>(KEYS.SANTA_LETTERS, []);
   }
 
-  static saveSantaLetters(
-    letters: Array<{ day: number; content: string }>,
-  ): void {
+  static saveSantaLetters(letters: SantaLetter[]): void {
     if (typeof window === "undefined") return;
     this.setItem(KEYS.SANTA_LETTERS, letters);
   }
 
-  static addSantaLetter(day: number, content: string): void {
+  /** One letter per day and writer; a letter from the same writer the same day replaces it. */
+  static addSantaLetter(day: number, content: string, from?: string): void {
     if (typeof window === "undefined") return;
 
     // Validate input
@@ -414,12 +417,15 @@ export class StorageManager {
     }
 
     const letters = this.getSantaLetters();
-    // Remove existing letter for this day if present
-    const filtered = letters.filter((l) => l.day !== day);
-    filtered.push({ day, content: content.trim() });
-    // Sort by day
-    filtered.sort((a, b) => a.day - b.day);
-    this.saveSantaLetters(filtered);
+    const letter: SantaLetter = from
+      ? { day, from, content: content.trim() }
+      : { day, content: content.trim() };
+    // Replace in place so the order the children wrote in stays
+    const i = letters.findIndex((l) => l.day === day && l.from === from);
+    if (i >= 0) letters[i] = letter;
+    else letters.push(letter);
+    letters.sort((a, b) => a.day - b.day);
+    this.saveSantaLetters(letters);
   }
 
   // ============================================================

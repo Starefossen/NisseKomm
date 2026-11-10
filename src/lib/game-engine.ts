@@ -13,7 +13,7 @@
  * 5. Testable - Pure functions for game logic, side effects isolated
  */
 
-import { StorageManager } from "./storage";
+import { StorageManager, type SantaLetter } from "./storage";
 import { BadgeManager } from "./badge-system";
 import { getEventyr, getEventyrDays, getEventyrForDay } from "./eventyr";
 import {
@@ -98,6 +98,8 @@ interface GameEngineDependencies {
    */
   kidCodeResolver?: () => Promise<string | null>;
 }
+
+type IntroId = "boot" | "tail" | "brev-tint";
 
 export class GameEngine {
   private static dependencies: GameEngineDependencies = {};
@@ -341,12 +343,12 @@ export class GameEngine {
     StorageManager.markJuliusWatched(day);
   }
 
-  /** Day-1 opener parts (T14): "boot" after the password, "tail" after Julius' video. */
-  static isIntroSeen(id: "boot" | "tail"): boolean {
+  /** One-off sequences: day-1 opener (T14) "boot" after the password and "tail" after Julius' video; "brev-tint" is Brevfugler's day-24 thaw. */
+  static isIntroSeen(id: IntroId): boolean {
     return StorageManager.getIntrosSeen().includes(id);
   }
 
-  static markIntroSeen(id: "boot" | "tail"): void {
+  static markIntroSeen(id: IntroId): void {
     StorageManager.markIntroSeen(id);
   }
 
@@ -540,20 +542,18 @@ export class GameEngine {
     );
   }
 
-  static getSantaLetters(): Array<{ day: number; content: string }> {
+  static getSantaLetters(): SantaLetter[] {
     return StorageManager.getSantaLetters();
   }
 
-  static addSantaLetter(day: number, content: string): void {
-    StorageManager.addSantaLetter(day, content);
+  static addSantaLetter(day: number, content: string, from?: string): void {
+    StorageManager.addSantaLetter(day, content, from);
   }
 
   /**
    * Save complete set of Santa letters (replaces existing)
    */
-  static saveSantaLetters(
-    letters: Array<{ day: number; content: string }>,
-  ): void {
+  static saveSantaLetters(letters: SantaLetter[]): void {
     StorageManager.saveSantaLetters(letters);
   }
 

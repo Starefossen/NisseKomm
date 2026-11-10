@@ -6,221 +6,130 @@ import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { GameEngine } from "@/lib/game-engine";
 
 /**
- * Brevfugler Management Page
- *
- * The children's letters to Julius, written in the BREVFUGLER module (from day 14).
- * Julius does not reply in the app; parents read, fix or remove them here.
+ * The children's letters to Julius, written in the BREVFUGLER module (from day 14),
+ * with writer and date. Julius reads one of them on video between day 20 and 23,
+ * so this page prints cleanly for the recording.
  */
 
 function BrevfuglerContent() {
-  const [letters, setLetters] = useState<Map<number, string>>(() => {
-    const allLetters = new Map<number, string>();
-    const savedLetters = GameEngine.getSantaLetters();
-    savedLetters.forEach((letter) => {
-      allLetters.set(letter.day, letter.content);
-    });
-    return allLetters;
-  });
-  const [editingDay, setEditingDay] = useState<number | null>(null);
-  const [letterContent, setLetterContent] = useState("");
+  const [letters, setLetters] = useState(() => GameEngine.getSantaLetters());
+  const [editing, setEditing] = useState<number | null>(null);
+  const [tekst, setTekst] = useState("");
 
-  const handleStartEdit = (day: number) => {
-    setEditingDay(day);
-    setLetterContent(letters.get(day) || "");
+  const lagre = (neste: typeof letters) => {
+    GameEngine.saveSantaLetters(neste);
+    setLetters(neste);
+    setEditing(null);
   };
 
-  const handleSave = () => {
-    if (editingDay === null) return;
-
-    if (letterContent.trim()) {
-      GameEngine.addSantaLetter(editingDay, letterContent.trim());
-      setLetters((prev) => {
-        const newMap = new Map(prev);
-        newMap.set(editingDay, letterContent.trim());
-        return newMap;
-      });
-    } else {
-      // If empty, remove the letter by saving letters without this day
-      const allLetters = GameEngine.getSantaLetters().filter(
-        (l) => l.day !== editingDay,
-      );
-      GameEngine.saveSantaLetters(allLetters);
-      setLetters((prev) => {
-        const newMap = new Map(prev);
-        newMap.delete(editingDay);
-        return newMap;
-      });
-    }
-
-    setEditingDay(null);
-    setLetterContent("");
+  const handleSave = (i: number) => {
+    const t = tekst.trim();
+    lagre(
+      t
+        ? letters.map((l, j) => (j === i ? { ...l, content: t } : l))
+        : letters.filter((_, j) => j !== i),
+    );
   };
 
-  const handleCancel = () => {
-    setEditingDay(null);
-    setLetterContent("");
-  };
-
-  const handleDelete = (day: number) => {
-    if (confirm(`Er du sikker på at du vil slette brevet for dag ${day}?`)) {
-      const allLetters = GameEngine.getSantaLetters().filter(
-        (l) => l.day !== day,
-      );
-      GameEngine.saveSantaLetters(allLetters);
-      setLetters((prev) => {
-        const newMap = new Map(prev);
-        newMap.delete(day);
-        return newMap;
-      });
+  const handleDelete = (i: number) => {
+    if (confirm(`Slette brevet fra dag ${letters[i].day}?`)) {
+      lagre(letters.filter((_, j) => j !== i));
     }
   };
 
   return (
-    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) p-4 md:p-8">
-      <GuideNavigation />
+    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) p-4 md:p-8 print:bg-white print:text-black print:p-0">
+      <div className="print:hidden">
+        <GuideNavigation />
+      </div>
 
-      {/* Header */}
-      <div className="max-w-7xl mx-auto mb-8">
+      <div className="max-w-4xl mx-auto mb-6">
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-2 tracking-wider">
-          ✉️ BREVFUGLER
+          BREVFUGLER
         </h1>
-        <p className="text-center text-xl opacity-70">Barnas brev til Julius</p>
+        <p className="text-center text-xl opacity-70">
+          Barnas brev til Julius ({letters.length})
+        </p>
       </div>
 
-      {/* Info Box */}
-      <div className="max-w-7xl mx-auto mb-6">
-        <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-6">
-          <h2 className="text-2xl font-bold text-(--cold-blue) mb-3 text-center">
-            📖 OM BREVFUGLER
-          </h2>
-          <ul className="space-y-2 text-lg">
-            <li>✓ BREVFUGLER-modulen låses opp dag 14 i appen</li>
-            <li>
-              ✓ Barna skriver brev til Julius der, ett eller flere per dag
-            </li>
-            <li>✓ Brevene havner her, sortert på dag</li>
-            <li>✓ Julius svarer ikke i appen; svaret er opp til dere</li>
-            <li>✓ Du kan rette eller slette brev når som helst</li>
-          </ul>
-        </div>
+      <div className="max-w-4xl mx-auto mb-6 border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-4 text-lg space-y-1 print:hidden">
+        <p>
+          Barna skriver brev i BREVFUGLER fra dag 14. Hvert brev har navn og
+          dato.
+        </p>
+        <p>
+          Julius leser ett av brevene på video mellom dag 20 og 23. Skriv ut
+          brevene innen 18. desember.
+        </p>
+        <button
+          onClick={() => window.print()}
+          className="mt-2 min-h-12 px-4 bg-(--gold) text-black font-bold hover:opacity-80"
+        >
+          Skriv ut brevene
+        </button>
       </div>
 
-      {/* Stats */}
-      <div className="max-w-7xl mx-auto mb-6">
-        <div className="grid grid-cols-3 gap-4">
-          <div className="border-4 border-(--neon-green) bg-(--neon-green)/10 p-4">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-(--neon-green) mb-2">
-                {letters.size}
-              </div>
-              <div className="text-lg">Brev Skrevet</div>
-            </div>
-          </div>
-          <div className="border-4 border-(--gold) bg-(--gold)/10 p-4">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-(--gold) mb-2">
-                {24 - letters.size}
-              </div>
-              <div className="text-lg">Dager Igjen</div>
-            </div>
-          </div>
-          <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/10 p-4">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-(--cold-blue) mb-2">
-                24
-              </div>
-              <div className="text-lg">Totalt Dager</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Letter Grid */}
-      <div className="max-w-7xl mx-auto space-y-6 pb-8">
-        <h2 className="text-3xl font-bold text-center mb-4">
-          📅 BREV FOR HVER DAG
-        </h2>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: 24 }, (_, i) => i + 1).map((day) => {
-            const hasLetter = letters.has(day);
-            const isEditing = editingDay === day;
-
-            return (
-              <div
-                key={day}
-                className={`border-4 p-4 ${
-                  hasLetter
-                    ? "border-(--gold) bg-(--gold)/10"
-                    : "border-(--neon-green)/30 bg-black/30"
-                }`}
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-2xl font-bold">
-                    Dag {day} {hasLetter && "✓"}
-                  </h3>
-                  {!isEditing && (
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleStartEdit(day)}
-                        className="px-3 py-1 min-h-11 bg-(--neon-green) text-black text-base font-bold hover:opacity-80"
-                      >
-                        {hasLetter ? "Rediger" : "Skriv"}
-                      </button>
-                      {hasLetter && (
-                        <button
-                          onClick={() => handleDelete(day)}
-                          className="px-3 py-1 min-h-11 bg-(--christmas-red) text-white text-base font-bold hover:opacity-80"
-                        >
-                          Slett
-                        </button>
-                      )}
-                    </div>
-                  )}
+      <div className="max-w-4xl mx-auto space-y-4 pb-8">
+        {letters.length === 0 && (
+          <p className="text-center opacity-60 py-8">Ingen brev ennå.</p>
+        )}
+        {letters.map((l, i) => (
+          <article
+            key={`${l.day}-${l.from ?? ""}-${i}`}
+            className="border-4 border-(--gold) bg-(--gold)/10 p-4 break-inside-avoid print:border-2 print:border-black print:bg-white"
+          >
+            <div className="flex items-center justify-between gap-2 mb-2">
+              <h2 className="text-2xl font-bold">
+                {l.from ?? "Ukjent"} · {l.day}. desember
+              </h2>
+              {editing !== i && (
+                <div className="flex gap-2 print:hidden">
+                  <button
+                    onClick={() => {
+                      setEditing(i);
+                      setTekst(l.content);
+                    }}
+                    className="px-3 min-h-11 bg-(--neon-green) text-black text-base font-bold hover:opacity-80"
+                  >
+                    Rediger
+                  </button>
+                  <button
+                    onClick={() => handleDelete(i)}
+                    className="px-3 min-h-11 bg-(--christmas-red) text-white text-base font-bold hover:opacity-80"
+                  >
+                    Slett
+                  </button>
                 </div>
-
-                {isEditing ? (
-                  <div className="space-y-3">
-                    <textarea
-                      value={letterContent}
-                      onChange={(e) => setLetterContent(e.target.value)}
-                      placeholder="Kjære Julius ..."
-                      className="w-full h-48 bg-black border-2 border-(--neon-green) text-(--neon-green) p-3 text-lg resize-none"
-                      autoFocus
-                    />
-                    <div className="flex gap-2">
-                      <button
-                        onClick={handleSave}
-                        className="flex-1 px-4 py-2 bg-(--gold) text-black font-bold hover:opacity-80"
-                      >
-                        Lagre
-                      </button>
-                      <button
-                        onClick={handleCancel}
-                        className="flex-1 px-4 py-2 border-2 border-(--neon-green) text-(--neon-green) font-bold hover:bg-(--neon-green)/20"
-                      >
-                        Avbryt
-                      </button>
-                    </div>
-                  </div>
-                ) : hasLetter ? (
-                  <div className="bg-black/50 p-3 border-2 border-(--gold)/50">
-                    <p className="whitespace-pre-wrap text-base line-clamp-4">
-                      {letters.get(day)}
-                    </p>
-                  </div>
-                ) : (
-                  <p className="text-center opacity-50 py-8">Ingen brev ennå</p>
-                )}
+              )}
+            </div>
+            {editing === i ? (
+              <div className="space-y-3">
+                <textarea
+                  value={tekst}
+                  onChange={(e) => setTekst(e.target.value)}
+                  className="w-full h-48 bg-black border-2 border-(--neon-green) text-(--neon-green) p-3 text-lg resize-none"
+                  autoFocus
+                />
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleSave(i)}
+                    className="flex-1 min-h-11 px-4 bg-(--gold) text-black font-bold hover:opacity-80"
+                  >
+                    Lagre
+                  </button>
+                  <button
+                    onClick={() => setEditing(null)}
+                    className="flex-1 min-h-11 px-4 border-2 border-(--neon-green) text-(--neon-green) font-bold hover:bg-(--neon-green)/20"
+                  >
+                    Avbryt
+                  </button>
+                </div>
               </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div className="max-w-7xl mx-auto text-center opacity-70 text-sm pb-8">
-        <p>NisseKomm v1.0 - Brevfugler Management</p>
+            ) : (
+              <p className="whitespace-pre-wrap text-xl">{l.content}</p>
+            )}
+          </article>
+        ))}
       </div>
     </div>
   );
