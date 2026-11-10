@@ -184,9 +184,9 @@ export default function Home() {
     }
     refreshGameState();
 
-    // Check if Day 22 just completed and names not yet entered
+    // Ask for names after solving day 22; if skipped, once more after day 23, never later
     if (
-      GameEngine.isQuestCompleted(22) &&
+      (solvedDay === 22 || solvedDay === 23) &&
       GameEngine.getPlayerNames().length === 0
     ) {
       // Delay to let success animation play
@@ -598,7 +598,9 @@ export default function Home() {
       )}
 
       {/* Day 23 name entry modal */}
-      {showNameEntry && <NameEntryModal onComplete={handleNameEntryComplete} />}
+      {showNameEntry && !showGrandFinale && (
+        <NameEntryModal onComplete={handleNameEntryComplete} />
+      )}
     </CRTFrame>
   );
 }
