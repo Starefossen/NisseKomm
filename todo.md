@@ -30,14 +30,14 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 Øverst er det som gjøres nå. Ingen frister; rekkefølgen er prioriteten. Nye ideer går til «Senere forbedringer» med mindre de retter noe som er ødelagt.
 
 1. **Julius-manus i ny stemme:** Fable skriver om alle 24 dager; Hans godkjenner dag 1–3, så resten.
-2. **Julius dag 1–5 fra `ref-v3`:** lages etter godkjent manus; Hans sjekker før dag 6–12.
+2. **Julius dag 1–5 fra `ref-v3`:** venter (se punkt 9).
 3. **Feil fra byggelista:** navnevinduet over finalen (dag 22–24) og runelinjen dag 23 i NisseNet (pågår).
 4. **Utvidet gjennomspilling:** dekke Julius dag 1, TV-hendelser, musikken dag 12, NisseKrypto, Brevfugler, nordlys, navn, runer og finalen.
 5. **Emoji til symboler** (pågår).
-6. **Rampenissen-stemme:** nordnorsk, Fenrir, +4 halvtoner (`dag-01-nordnorsk-pitch4.mp3`). Dag 1–3 lages på nytt; så alle 24 radiomanus og TTS.
+6. **Rampenissen-stemme:** nordnorsk, Fenrir, +4 halvtoner (`dag-01-nordnorsk-pitch4.mp3`). Dag 1–3 er laget. Resten venter til Hans har lest manus og hørt det som finnes (gjøres til slutt).
 7. **Etterbehandling av media:** musikk og stillbilder (pågår), resten av seksjonen under.
 8. **Next.js 16.4.6** når pakken har passert `minimum-release-age`.
-9. **Julius dag 6–24** (dag 13–24 venter på Hans), inkludert brev-innslaget.
+9. **Julius-videoer (dag 1–24) til slutt:** Hans leser manus og ser det som finnes før vi lager resten, inkludert brev-innslaget.
 10. **Fysisk (Hans):** testutskrifter, sidetall dag 12/15/18, innkjøp, Rampenissens 15 lapper.
 11. **Flytting hjem (fase 5)** når Hans opphever pausen.
 12. **Generalprøve** på iPad over hjemmenettet, og en siste nullstilling.
