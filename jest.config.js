@@ -32,7 +32,7 @@ const customJestConfig = {
 module.exports = async () => {
   const config = await createJestConfig(customJestConfig)();
   config.transformIgnorePatterns = [
-    "/node_modules/(?!\\.pnpm/|(nanoid|obug)/)",
+    "/node_modules/(?!\\.pnpm/|(nanoid|obug|jose)/)",
     "^.+\\.module\\.(css|sass|scss)$",
   ];
   config.testPathIgnorePatterns = [
