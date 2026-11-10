@@ -11,7 +11,8 @@ for a in "$@"; do
 done
 [ ${#ARGS[@]} -gt 0 ] && set -- "${ARGS[@]}" || set --
 M="python3 $A/bin/medie.py"
-keep() { [ -z "$FORCE" ] && [ -f "$1" ] && $M status "$1" >/dev/null 2>&1; }
+# unknown (made before the inventory) counts as keep; only stale or missing is remade
+keep() { [ -z "$FORCE" ] && [ -f "$1" ] && [ "$($M status "$1" | head -1)" != stale ]; }
 meta() { $M skriv tv-loops.sh "$1" "$2" - gemini-omni-1.2-flash "$3"; } # out prompt image
 job() { # name base-image location variant
   local name=$1 img=$2 loc=$3 var=$4
