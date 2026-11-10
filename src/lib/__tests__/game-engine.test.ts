@@ -175,7 +175,7 @@ describe("GameEngine", () => {
           SYMBOLSKANNER: 3,
           NISSEKRYPTO: 4,
           NISSEMUSIKK: 7,
-          BREVFUGLER: 14,
+          BREVFUGLER: 7,
           NISSESTATS: 16,
         };
         for (const [moduleId, day] of Object.entries(firstDay)) {
@@ -210,11 +210,11 @@ describe("GameEngine", () => {
       expect(GameEngine.isModuleUnlocked("NISSEMUSIKK")).toBe(true);
     });
 
-    it("should unlock BREVFUGLER on day 14 completion", async () => {
+    it("should unlock BREVFUGLER on day 7 completion", async () => {
       expect(GameEngine.isModuleUnlocked("BREVFUGLER")).toBe(false);
 
-      const code14 = getQuestCode(14);
-      await GameEngine.submitCode(code14, code14, 14);
+      const code7 = getQuestCode(7);
+      await GameEngine.submitCode(code7, code7, 7);
       expect(GameEngine.isModuleUnlocked("BREVFUGLER")).toBe(true);
     });
 
@@ -249,7 +249,8 @@ describe("GameEngine", () => {
       expect(unlocked).toContain("NISSEKRYPTO");
       expect(unlocked).toContain("NISSEMUSIKK");
       expect(unlocked).toContain("SYMBOLSKANNER");
-      expect(unlocked.length).toBe(3);
+      expect(unlocked).toContain("BREVFUGLER");
+      expect(unlocked.length).toBe(4);
     });
   });
 
@@ -322,7 +323,7 @@ describe("GameEngine", () => {
       expect(summary.badges.earned).toBe(0);
       expect(summary.badges.total).toBe(3);
 
-      expect(summary.modules.unlocked).toBe(3); // + SYMBOLSKANNER (day 3)
+      expect(summary.modules.unlocked).toBe(4); // + SYMBOLSKANNER (day 3), NISSEKRYPTO (day 4), NISSEMUSIKK & BREVFUGLER (day 7)
 
       expect(summary.isComplete).toBe(false);
     });

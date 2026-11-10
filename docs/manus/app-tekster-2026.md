@@ -328,7 +328,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 ### Dag 7 (ma) – Inntrengeren i Fryseren · KULDE · M2 Navnet
 
 - `tittel`: Inntrengeren i Fryseren
-- `nissemail_tekst` (0 ord): Lua mi satt fast i fryseren deres. 🥶 Jeg prøvde å kjøle ned modemet. Det var feil. Takk for at dere reddet lua, og det som sto ved den! I natt fanget Orakelet signaturen, og den har et navn. Julius sier det ikke rett ut, men han sier nok. Kristian: det som kom ut av isen, har ingen bokstaver. Tavla deres vet mer enn dere tror. Fra i dag måler Orakelet frosten i serverrommet. Se sidepanelet. – Rampenissen
+- `nissemail_tekst` (0 ord): Lua mi satt fast i fryseren deres. 🥶 Jeg prøvde å kjøle ned modemet. Det var feil. Takk for at dere reddet lua, og det som sto ved den! I natt fanget Orakelet signaturen, og den har et navn. Julius sier det ikke rett ut, men han sier nok. Kristian: det som kom ut av isen, har ingen bokstaver. Tavla deres vet mer enn dere tror. Fra i dag måler Orakelet frosten i serverrommet. Se sidepanelet. Brevfugler er åpen også, så nå kan dere skrive brev til Julius! – Rampenissen
 - `julius_ps`: Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Nissemor ringte. Hun sier han så ut som en liten skiltstolpe. Hun sier også at det var derfor hun sendte oransje. Hun visste det ikke. Hun vet sånt likevel.
 - `daily_alerts` (avgjort: vises først når dag 7 er løst; før det står sidepanelet på `ORAKELET LYTTER …`): 🔮 ORAKELET: Signaturen på 85,0 har et navn. Frostgraden kan måles fra i dag.
 - NisseNet: `SYSTEM/snofall_fakta.txt` **erstattes** av `SYSTEM/orakelets-rapport.txt` (`afterDay: 7`):

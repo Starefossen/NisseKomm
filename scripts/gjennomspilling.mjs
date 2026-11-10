@@ -559,11 +559,11 @@ for (const day of days) {
       await shot(`nissekrypto-dag${day}.png`);
       await closeWindow();
     }
-    if (day === 14) {
+    if (day === 7) {
       await openApp("BREVFUGLER");
       check(
-        (await text()).includes("En fugl ingen har sendt"),
-        "den blå fuglen mangler i Brevfugler dag 14",
+        !(await text()).includes("En fugl ingen har sendt"),
+        "den blå fuglen skal ikke vises i Brevfugler før dag 14",
       );
       check(await clickText("KRISTIAN"), "fant ikke skriveren KRISTIAN");
       await evaluate(`document.querySelector('#brev-til-julius').focus()`);
@@ -576,6 +576,15 @@ for (const day of days) {
         5000,
         "brevet vises ikke som fugl i Brevfugler",
       ).catch((e) => fails.push(e.message));
+      await shot("brevfugler-dag7.png");
+      await closeWindow();
+    }
+    if (day === 14) {
+      await openApp("BREVFUGLER");
+      check(
+        (await text()).includes("En fugl ingen har sendt"),
+        "den blå fuglen mangler i Brevfugler dag 14",
+      );
       await shot("brevfugler-dag14.png");
       await closeWindow();
     }
