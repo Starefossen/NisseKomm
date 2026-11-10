@@ -52,7 +52,12 @@ export function EventyrOversikt({ onClose }: EventyrOversiktProps) {
             <span>FREMGANG</span>
             <span>{progress}%</span>
           </div>
-          <div className="h-4 border-2 border-(--neon-green)/30 bg-black overflow-hidden">
+          <div
+            role="progressbar"
+            aria-label="Fremgang"
+            aria-valuenow={progress}
+            className="h-4 border-2 border-(--neon-green)/30 bg-black overflow-hidden"
+          >
             <div
               className={`h-full transition-all duration-500 ${isComplete ? "bg-(--gold)" : "bg-(--neon-green)"}`}
               style={{ width: `${progress}%` }}
