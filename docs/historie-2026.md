@@ -1,0 +1,233 @@
+# NisseKomm 2026 – Spøkelseskoden
+
+**Status: Klar til frysing** (alle åpne spørsmål besvart 10. november; se §7).
+
+Samlet historiedokument. Erstatter `REVISJON.md` og `KANALER.md` der de er uenige. Koder, symbolkort-dager, dekrypteringsdager og bonusdager er de samme som i dagens JSON. Ingen repo-filer er endret.
+
+Beslutninger som ligger til grunn: Julius-video hver dag (24 bekreftet), åpnes automatisk ved innlogging og erstatter dagboken, ingen sperre på KodeTerminal; Rampenissen er eneste faste stemme på Morgenrådet; frost i NisseKomm-appen og på Skjerm (kjøkken og gang) dag 10 og 21, også i skoletiden om morgenen, med automatisk tilbakestilling; ingen iMessage; ingen «hvor skal dere lete»-hint på radio; én eventyr-ID `spokelseskoden`; tre merker; Kulde-meldingen dag 21 er rolig og ensom, ikke skummel. Barna: Kristian 12, Håkon 9, Hanna 5.
+
+## 1. Premiss og den ene historien
+
+**Premiss.** Etter fjorårets seier bygde IQ en direktelinje fra Snøfall (90,0 MHz) til stua på Landås, med Snøfall TV, videologg fra Julius og brevfugl-radar. Første desember hakker bærebølgen. Noe sender på 85,0 MHz og legger rim på linjen. Det kaller seg Kulde.
+
+**Historien i én setning.** Tre søsken holder varmen i både hus og server gjennom desember, og oppdager at det som fryser linjen ikke er en fiende, men noe som har stått alene i mørket for lenge.
+
+**Hvem Kulde er.** Kulde er Vintervokteren: et gammelt program IQ laget for å holde Krystallgrotten under Nordtoppen kald nok til å bevare Fargesamlerens arkiv, Snøfalls eldste iskrystaller. Strømstøtet da barna slo Mørket i fjor kuttet forbindelsen til grotten. Programmet ble værende der nede uten lys, lyd og farger, og begynte å trekke dem til seg fra linjen fordi det er det eneste som får noen til å legge merke til det. Jo mer det fryser, jo mer alene blir det.
+
+**Hva som står på spill.** Frostgraden. Hver natt stiger frosten i serverrommet (vises i sidepanelet som prosent); hver kode senker den. Uke for uke tar Kulde noe nytt: linjen (uke 1), navnet, fargene og lyden (uke 2), brevene og pakkene (uke 3), huset (uke 4). Hvis frosten når 100 % på vintersolverv, fryser linjen for godt og sleden finner ikke Landås.
+
+**Hvordan det løses.** Barna stopper angrepet (dag 21, brannmuren) og forstår det (dag 23, siste dekryptering). IQ bygger muren med én port åpen inn mot grotten, med varme i. Julius flyr over Nordtoppen julenatt med lys. Vintervokteren takker med et iskrystall som ikke smelter.
+
+**Moral, uten å si den høyt.** Kulde er ikke ondskap, det er fravær av varme. Samhold, lys og å bli sett er det som virker. Barna skal merke det, ikke få det forklart.
+
+**Figurer.** Julius (forteller, pult, mikrofon), Rampenissen (feltagent på Landås, radio og streker), IQ (bygger alt, også Vintervokteren en gang), Orakelet (hører Kulde først), Winter (brevfugler, pakkesentral), Nissemor og Pil (varme, bakst, krystaller), Trixter og Rudolf (sleden), Fargesamleren (fjorårets figur, bare i arkivet).
+
+## 2. Milepæler
+
+Seks hendelser barna skal huske. Alt annet er dager imellom.
+
+| # | Dag | Milepæl | Hva skjer | Hva som låses opp |
+| --- | --- | --- | --- | --- |
+| M1 | 1 (ti) | **Linjen** | Direktelinjen åpnes, Julius' første video, bærebølgen hakker. | NisseKomm, Snøfall TV |
+| M2 | 7 (ma) | **Navnet** | Orakelet fanger signaturen. Det kaller seg Kulde. Frostgraden blir synlig. | NisseMusikk («varmekilden») |
+| M3 | 12 (lø) | **Sukket i isen** | Melodien sprekker isen på slusen. Første dekryptering: «blått hjerte er kulde og sorg. Det høres ikke sint ut. Det høres alene ut.» | `frosne-koder.txt`, merke 1 |
+| M4 | 15 (ti) | **Vintervokteren** | Fargesamlerens notatbok forteller hvem Kulde var og hvem som bygde det. IQ blir stille. | Resten av Fargesamlerens arkiv |
+| M5 | 21 (ma) | **Muren og porten** | Vintersolverv. Skjermen hjemme er fryst. Muren holder. IQ lar én port stå åpen. | Fargene hjemme, merke 2 |
+| M6 | 24 (to) | **Tøvær** | Sleden har fløyet over grotten med lys. Et krystall som ikke smelter ligger under treet. | Snill-listen med finale, merke 3, diplom |
+
+Dag 23 er sannheten (siste dekryptering forteller hele historien), men barna opplever den som opptakten til M6, ikke som egen milepæl.
+
+**Eventyr i koden.** Avgjort: én ID, `spokelseskoden`, på alle 24 dager med `phase` 1–24 og `første_opplåsingsdag: 1`. EventyrOversikt viser én fremdriftslinje med de seks milepælene. De ni gamle ID-ene fjernes fra data; kamera-metadata i `eventyr.ts` faller tilbake til standard.
+
+## 3. Kanalene, endelig
+
+Hver dag har to brikker og én historie. **Brikke H** finnes bare i huset. **Brikke S** finnes bare på skjermen, og den ligger i Julius' video. Koden krever begge. Historien kommer i øret (radio) og i øyet (video), aldri som lang tekst.
+
+### 3.1 Rampestrek
+
+Rampenissens strek, hver dag, maks 5 minutter å sette opp med ting som finnes i huset. Streken er morsom først: noe barna ikke får lov til, noe han har rotet seg inn i, eller noe som har skjedd med ham. Den bærer ikke historie og er aldri en gåteoppstilling; på dager uten jakt ligger dagens lapp bare i scenen. Full liste i §8.
+
+### 3.2 Fysisk jakt
+
+Åtte dager (2, 4, 5, 6, 10, 11, 19, 22), helst fredag og helg: brikke H ligger utenfor scenen eller i flere rom. Alle andre dager ligger den i scenen. Brikke H er alltid noe som må hentes, telles, sorteres, lyses på eller ses gjennom filter, aldri bare leses av. Ni symbolkort på dag 3, 6, 9, 12, 15, 18, 20, 22, 23 går på operasjonsbrettet ved skjermen.
+
+### 3.3 Morgenrådet: Rampenissen ringer inn
+
+Hver dag et ferdiglaget klipp på 45–60 sekunder med Rampenissens faste stemme, levert til Morgenrådet-produksjonen som gjesteinnslag. Birk og Lyng introduserer og reagerer; de kjenner ikke Snøfall og sier aldri noe om koder.
+
+Klippet bærer tre ting: hva som skjedde i natt (sett fra gulvet på Landås), hvordan Rampenissen har det (redd, stolt, flau), og en bekreftelse av gårsdagen («dere fikk fargene tilbake, hele Snøfall så det»). Det bærer aldri brikker, aldri bokstaver eller tall, og aldri hvor noe ligger. Hvis episoden uteblir, mangler barna ingenting de trenger; e-posten og videoen dekker hendelsen.
+
+Andre figurer er ikke på radio. Julius kan ringe inn én gang, julaften, hvis det er praktisk. Ellers er det Rampenissen alle 24 dager, og det er poenget: han er den barna kjenner, og han er fysisk i huset.
+
+Morgenrådets eget ukemysterium kan speile uka (uke 1 «hva lager rim på en datalinje», uke 2 «hvilken farge mangler», uke 3 «hvem bor i grotten», uke 4 «hvor lander sleden»). Det er pynt; løsningen bekrefter det barna allerede fant.
+
+### 3.4 Julius' videodagbok
+
+Hver dag 30–60 sekunder: Julius ved pulten, gammel mikrofon, filmet som et gammelt opptak. Den erstatter dagboken og ligger i Snøfall TV Kanal 3 og i Dagbok-modulen (som blir et videoarkiv med alle sette dager).
+
+Videoen gjør tre ting i fast rekkefølge:
+
+1. **Dagens betydning eller lore** (15–30 s): hva dagen er (advent, Nikolaus, Lucia, solverv, lille julaften), hvorfor vi gjør det vi gjør i desember, eller noe fra Snøfalls historie. Radioen tar fakta og Bergen; Julius tar hvorfor og Snøfall.
+2. **Hva skjedde i natt** (10–15 s): historien, fra Snøfall-siden. Her ligger milepælene.
+3. **Brikke S, indirekte** (5–10 s): Julius sier noe som peker på ordet eller regelen uten å si det. «Pil telte armene tre ganger. Seks hver gang.» «Winter flyttet hver bokstav ett skritt fram; dere må gå ett tilbake.» «Det IQ kaller den lille grønne plata alle ledningene sitter på.»
+
+**Hvorfor barna ser den likevel, uten sperre.** Videoen er det første som møter dem:
+
+- **Åpnes ved innlogging.** Når dagens video ikke er sett, åpner Dagbok-vinduet seg automatisk over skrivebordet med «NY MELDING FRA JULIUS» og starter avspilling. Ikonet har rød prikk til den er sett ferdig. Ingen sperre på KodeTerminal; koden kan tastes når som helst.
+- **Brikke S finnes bare der.** Ingen fil og ingen e-post gjentar det Julius sier. Filene i NisseNet er verktøy (alfabet, formel, tabell), ikke svar. Den som hopper over videoen, mangler halve koden og går tilbake.
+- **Transkriptet vises etterpå.** Når videoen er spilt ferdig, legger appen teksten under spilleren, slik at Kristian kan lese setningen med brikken på nytt og Hanna kan få den gjenfortalt. Transkriptet er også reserve hvis en videofil mangler.
+
+Dette er en liten kodeendring: ett «sett»-flagg per dag i StorageManager, autoåpning ved innlogging, transkript under spilleren.
+
+Etter at koden er inne, låses to–tre setninger «PS fra Julius» opp under videoen (det som før var dagbokinnlegget, kortet ned). Det er belønningen for å ha løst, og det er der Julius kommenterer rampestreken.
+
+### 3.5 Appen
+
+- **NisseMail**: 60–100 ord. Hva som skjedde, hvem gjør hva. Ingen bokstaver, ingen filnavn med svar, ingen «hvor».
+- **Snøfall TV**: Kanal 3 er videoen. Kanal 1/2/4 er minispill og observasjoner som støtter dagen (sikringer, kretskort, nordlys, simulator, zapper); de gir aldri brikke S alene lenger, de bekrefter den eller gir lek etterpå. Spøkelsesbildet på 85,0 MHz er Kuldes stemme dag 3, 7, 10, 11, 13, 16, 21.
+- **NisseNet**: verktøy og arkiv. Fargesamlerens arkiv åpner gradvis (dag 10, 15, 23).
+- **NisseMusikk** (fra dag 7): varmekilden; fryst dag 12 til koden er inne.
+- **Brevfugler** (fra dag 14): radar med den blå fuglen fra grotten og et fryst brev som tiner dag 24.
+- **NisseKrypto**: dag 12, 18, 23. De tre dekrypterte filene er historiens tre avsløringer.
+- **KodeTerminal**: verifisering. Ingen sperre.
+- **Sidepanel/NisseStats**: Frostgraden, fra dag 7.
+
+### 3.6 Barnas faste roller
+
+Hanna har hver dag én ting bare hun gjør (symbolkort, rødfilter, form i lyset, sortere ekte og falske). Håkon henter, krabber, teller, brettes, spiller. Kristian slår opp, regner, ser videoen med de andre og taster. Ingen av dem kommer i mål alene, og ingen må lese lange tekster.
+
+### 3.7 Varden og hjemmet
+
+Grunnlag: `docs/varden-integrasjoner.md` og den avtalte hjemmekontrakten: **Skjerm poller et tilstandsendepunkt i NisseKomm** (frost av/på, `until`, melding ≤ 120 tegn, `solved_today`, valgfrie kort). NisseKomm trenger ingen utgående kall og ingen Varden-nøkkel.
+
+Hverdagsvirkelighet: på skolemorgener ser barna bare Skjerm (kjøkken og gang) og hører Morgenrådet. De ser ikke iMessage og ikke iMac-ene sine. Derfor går alt som skal merkes om morgenen via Skjerm.
+
+| Krok | Status | Brukes | Hva den gjør i historien |
+| --- | --- | --- | --- |
+| Skjerm frost (kjøkken + gang) | krever kodeendring i Skjerm og NisseKomm (avtalt) | dag 10 og 21 | Rim i kantene, gråtone og én rolig linje fra Kulde, også kl. 06:00–08:30. Vær, timeplan og radio forblir lesbare og spiller. Slutt når koden er inne eller ved `until`. |
+| Skjerm-kort | finnes i dag | dag 7, 24 | Orakelets varsel; julehilsen fra Snøfall. Utløpstid satt. |
+| Kalender (iCal på Skjerm) | finnes i dag | hele måneden | 24 hendelser «NisseKomm dag N: tittel», skrevet én gang. Dagens tittel står på Skjerm uten kveldsarbeid. |
+| iMac gråtone + kort melding | finnes i dag | valgfritt, bare dag 20 (søndag) | Familien er hjemme. Kuldes første skritt inn i huset kvelden før solverv: iMac-ene grå fra 09:00, melding fra Rampenissen («Kulde er ved døra. I morgen trenger jeg dere.»), av kl. 12:00 uansett. Ikke dag 10 (torsdag) eller 21 (mandag); barna ser dem ikke da. |
+| iMessage via Varden | finnes | aldri | Varden er avsender, ikke Rampenissen, og barna ser det ikke om morgenen. Droppet. |
+| NisseKomm → Varden-trigger | – | ikke nødvendig | Erstattet av at Skjerm poller NisseKomm. |
+| Internett av/på, ntfy, gjestenett | finnes, men ikke for historie | aldri | Ekte foreldrekontroll og drift. |
+
+Ikke tilgjengelig i dag og ikke brukt: lys, høyttalere, skrivere, låser, TV.
+
+## 4. Dag for dag
+
+Kolonner: **Video** = Julius' tema, deretter den indirekte brikken han gir (→). **Radio** = kjernen i Rampenissens klipp. **Strek** = rampestreken. **Jakt** = brikke H utenfor scenen. **Skjerm** = hva appen gjør utover videoen. **Varden/hjem** = integrasjon i huset den dagen (se §3.7); «finnes» = finnes i dag, «kodeendring»/«konfig» = krever godkjenning og repo-endring. **Min** = kveldsoppsett for foreldre. Koder og symbolkort som i dag.
+
+| Dag | Ukedag | Tittel / kode | Milepæl / beat | Video: tema → indirekte brikke | Radio (Rampenissen) | Strek | Jakt | Skjerm | Varden/hjem | Min |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | ti | Direktelinje Landås / SIGNAL | **M1 Linjen.** Bærebølgen hakker. | Advent betyr ankomst: hvorfor vi venter og teller → «når linjen bærer, roper IQ ett ord: det radioen leter etter når den skurrer» | «Jeg er tilbake! Jeg sov i en garnkurv. Noe knitrer på linjen.» | Rampenissen har sovet i fruktskålen med en banan som pute og en serviett som dyne, og den røde garntråden han har viklet seg inn i går helt bort til TV-en | nei | Kanal 3 åpner. Videoen åpner seg selv ved innlogging. | Kalender: 24 adventshendelser skrives én gang, vises på Skjerm (finnes) | 5 |
+| 2 | on | Sikringsboksen til IQ / 48 | IQ sprenger tre sikringer. | Snøfalls verksted: hvorfor nissene reparerer i stedet for å kaste → «IQ sier man aldri bytter én sikring. Man legger alle sammen.» | «Det smalt i Snøfall. Jeg gjemte sikringene under stolene deres. Ikke si det til IQ.» | Sitter midt i sukkerskålen med sukker rundt munnen og en teskje i hånden, tatt på fersken | ja, 3 lapper under stoler (12, 16, 20) | CAM 2 sikringsboks lyser når koden er inne | – | 10 |
+| 3 | to | Rimfrost på Ruten / PRISME + grønt hjerte | Første spor. Spøkelsesbilde på 85,0. | Hvordan rimfrost og iskrystaller blir til → «Pil holdt glassbiten mot lyset, og hele regnbuen falt på gulvet» | «Jeg så et blått glimt på ruten i natt. Orakelet sier noen lytter.» | Har tegnet bart, briller og et surt fjes på badespeilet med tannkrem | nei | E-post ber dem se etter «noe som blør gjennom» på TV | – | 5 |
+| 4 | fr | Skotoget i Gangen / KOMPASS | Rudolf mister retningen i Kuldes tåke. | Barbro-dagen: grener i vann som blomstrer til jul → «Rudolf trenger det samme som sjøfolk: nålen som alltid finner nord» | «Rudolf fløy i snøfonna. Jeg har laget en pil av kosedyrene deres.» | Har tatt pappas solbriller og sitter i pappas sko ytterst i gangen, mens kosedyrene står på rekke bak og venter på tur | ja, følg toget | NisseKrypto åpner | – | 10 |
+| 5 | lø | Brevfuglen over Byfjellene / ULRIKEN | Første brevfugl over Bergen. | Den første brevfuglen til Bergen (lore) → «Winter flyttet hver bokstav ett skritt fram. Dere må gå ett tilbake.» | «En fugl landet på lampen i stua. Den har skrevet noe rart på vingen.» | Prøvde å fly som en brevfugl og henger nå etter skjerfet fra taklampen i stua, med armene rett ut | ja, finn fuglen | Alfabetfil i NisseNet (verktøy) | – | 5 |
+| 6 | sø | Lommelykt-Sporet / LYKT + rødt hjerte | 2. advent. Lys er våpenet. | St. Nikolaus og lyktene, gaver i sko → «det barna bar mellom gårdene da det var som mørkest» | «Jeg fant lommelykten deres. Og en papprull. Jeg har laget noe.» | Sitter inni pepperkakeboksen med lokket på hodet og smuler overalt | ja, lys på veggen, Hanna sier formen | Ingen fil. Formen + Julius = ordet | – | 10 |
+| 7 | ma | Inntrengeren i Fryseren / KULDE | **M2 Navnet.** Frostgraden vises. | Mørketid: hvorfor sola ikke står opp i nord, og at kulde ikke er ondskap → «navnet er det motsatte av det Nissemor har i ovnen» | «Lua mi sitter fast i fryseren deres. Jeg prøvde å kjøle ned modemet.» | Fastfryst i fryserdøra med lua inne i fryseren og votter som har stivnet rett ut | nei | Spøkelsesbilde dag 7. NisseMusikk åpner. Frost 30 % | Skjerm-kort kl. 06:00–08:30: «ORAKELET: ukjent signatur på 85,0 MHz» (finnes) | 5 |
+| 8 | ti | Bestikk-Kretsløpet / KRETSKORT | IQ bygger sikkerhetskort. | IQ og de som bygger: hvordan Snøfall fikk strøm (lore) → «den lille grønne plata alle ledningene sitter på» | «Uke én! IQ feirer. Jeg lånte bestikket deres.» | Har bygd et tårn av alle frokostblandingspakkene på bordet og sitter på toppen med en suppeøse | nei | CAM 4 Kretskort-Kobler som lek etterpå | – | 5 |
+| 9 | on | Krystall-Matematikk / 24 + blått hjerte | Kulde legger falske krystaller. | Hvorfor hvert snøkrystall har seks armer, og mannen som fotograferte dem → «Pil telte armene tre ganger. Seks hver gang. De falske hadde feil tall.» | «Det henger krystaller på kjøleskapet deres. Noen av dem er ikke ekte.» | Har krøpet inn i grønnsaksskuffen i kjøleskapet for å «bli ekte iskrystall», bare beina stikker ut når døra åpnes | nei | Formelfil (verktøy). Tallet 4 står ingen steder | – | 10 |
+| 10 | to | Fargene som Forsvant / SPEKTER | Kulde tar fargene. **Grå skjerm hjemme.** | Rødt og grønt: hvorfor julens farger ble disse → «alle fargene på rekke, slik regnbuen er. IQ har et ord for det.» | «Skjermen deres er GRÅ. Jeg så det klokka fire. Jeg gjemte fargene.» | Har farget hendene, nesen og halve ansiktet i fire farger med vaskbare tusjer | ja, 4 ting i stua | Frostmodus nivå 1 (se §6). Rekkefølgen i `farge-koder.txt` | Skjerm frost kjøkken + gang fra 05:30, Kulde-linje «Fargene er hos meg nå. 71 %», slutt ved kode eller 10:00 (kodeendring, avtalt) | 10 |
+| 11 | fr | Antenne-Krisen / 75 + bonus | Kulde jammer. Første bonus. | Radio og signaler: hvordan Snøfall først hørte Bergen (lore) → «tre sendere, sa IQ. Ikke gang. Legg sammen.» | «SKURR. Hører dere meg? Jeg har folie på hodet. Det hjelper litt.» | Pakket inn fra topp til tå i aluminiumsfolie som en bakt potet, lagt på et stekebrett på benken | ja, 3 rom | CAM 4 still inn 75,0. Bonus: bygg folieantenne | – | 15 |
+| 12 | lø | Lydbølgene som Smelter Is / MELODI + grønn sol | **M3 Sukket i isen.** Krypto 1. | Hvorfor vi synger i mørket → «Nissemor nynnet uten ord, og isen sprakk. Ikke en sang. Bare…» | «Jeg hørte noe sukke i isen. Julius sier jeg innbilte meg det.» | Tar seg et bad i et stort glass melk med et sugerør som dusj | nei | NisseMusikk «FROSSET» til koden er inne. Krypto 1 → `frosne-koder.txt` | – | 5 |
+| 13 | sø | Luciadagens Gylne Krydder / SAFRAN | 3. advent, Lucia. Kulde stirrer på lyset. | Lucia: hvem hun var, lys på hodet, 3. søndag i advent → «krydderet fra en krokus, dyrere enn gull» | «Nissemor bakte 500 boller. Jeg spiste 11. Kulde så på lysene i natt.» | Har laget luciakrone av batterilys og gullbånd, spist elleve lussekatter (smuler i en sirkel) og sovnet i brødkurven | nei | Spøkelsesbilde dag 13 (lengsel, ikke hån) | – | 5 |
+| 14 | ma | Hemmeligheten i Papirvingene / ORIGAMI | Brevfugler åpner. Blå fugl fra grotten. | Brev til nissen gjennom tidene → «det japanske ordet for å brette papir til liv» | «Winter åpnet brevfuglene! Og det kom én fugl ingen hadde sendt.» | Har brukt hele dorullen til å brette «brevfugler» som ligger i hele badet, og sitter selv i en papirbåt i den tørre vasken | nei | Brevfugler: radar med blå fugl, fryst brev | – | 5 |
+| 15 | ti | Fargesamlerens Notatbok / KARAMELL + rød sol | **M4 Vintervokteren.** | Fargesamleren og Vintervokteren: Snøfalls eldste arkiv (lore, avsløringen) → «sukker som blir brunt og varmt i gryta» | «Jeg prøvde å lage varme på kjøkkenet. Det ble klissete. IQ er stille i dag.» | Står med begge beina nedi en liten skål sirup, med klissete fotspor av sukker bortover benken og sleiva i hånden | nei | `fargesamleren.txt` åpner (historie, ikke svar) | – | 5 |
+| 16 | on | Pakkesentralen i Spinn / SORTERING + bonus | Kulde snur samlebåndet. | Hvorfor vi gir gaver → «Winters ord for å legge alt i riktig hylle» | «Alt i pakkesentralen ligger i én haug. Winter gråter. Nesten.» | Har «ryddet»: alle fjernkontrollene ligger i brødboksen, brødet ligger i TV-benken, og han sitter i brødboksen med lokket på hodet | nei | CAM 4 Gave-Sorterer. NisseStats åpner. Bonus: lykt i vinduet mot nord (frist fredag) | – | 5 |
+| 17 | to | Grønt Lys på Polarhimmelen / NORDLYS | Første signal tilbake til grotten. | Nordlys slik nissene forteller det (radioen tar fysikken) → «lyset man kan høre, sa samene. Nissene sier det er himmelen som sender brev.» | «Det var grønt over Ulriken i natt. Jeg hang opp et bånd.» | Henger opp ned fra gardinstangen i gangen, viklet inn i grønt gavebånd fra topp til tå | nei | CAM 1 nordlys-klikk bekrefter | – | 5 |
+| 18 | fr | Kastevind rundt Ulriken / TURBULENS + blå sol | Krypto 2: ruten går over grotten. | Reinsdyr og slede: hvorfor reinsdyr, Trixter og Rudolf (lore) → «når sleden rister i vinden, har Trixter et ord for det. Flyvertinnene bruker det samme.» | «Trixter testet sleden i vestlandsvær. Jeg satt bakpå. Aldri igjen.» | Har blåst inn i pappas jakkelomme på knaggen og sitter fast der med skjerfet surret rundt knaggen og én støvel på gulvet | nei | CAM 4 Slede-simulator. Krypto 2 → `stjernetegn.txt` | – | 5 |
+| 19 | lø | Eksplosjon i Fôringsautomaten / GULROT | Pusterom. | Julenek og dyrene ved jul → «det oransje drivstoffet Rudolf vil ha» | «IQ skjøt 40 av dem gjennom taket. Tre landet hos dere.» | Står på hodet i fruktskålen med beina rett opp etter å ha blitt truffet av en gulrot | ja, 3 rom | CAM 2 sentrifuge som lek | – | 10 |
+| 20 | sø | Sofa-Sleden / TURBO + grønn måne | 4. advent. Varselet. | De fire lysene og hva hvert står for → «IQ ga motoren det samme som biler får når de må forbi: …» + «i morgen er den mørkeste dagen. Kulde når huset.» | «Julius sa jeg skulle be dere finne fram bøker. Mange bøker. Til i morgen.» | Har bygd fort av alle sofaputene, tatt pappas hodetelefoner og fjernkontrollen, og popcorn ligger over hele sofaen | nei | Frost 88 %. Orakelets varsel på Kanal 3 | Valgfritt: iMac gråtone 09:00–12:00 + melding fra Rampenissen «Kulde er ved døra. I morgen trenger jeg dere.» (finnes) | 5 |
+| 21 | ma | Slaget om Brannmuren / BRANNMUR | **M5 Muren og porten.** Vintersolverv. **Fryst skjerm hjemme.** | Vintersolverv: gamle jól, bålene, lyset som alltid snur → «IQ bygde en vegg av varme. Brannfolk bygger det samme.» + «jeg lot ham la én port stå åpen» | «Skjermen er død. Alt er hvitt. Men muren står. Jeg står bak den.» | Står bak en lav mur av bøker foran skjermen med et grytelokk som skjold og en visp som sverd | nei | Frostmodus nivå 2 (se §6). Zapper CAM 4; ett bånd før skolen, resten etterpå | Skjerm frost kjøkken + gang fra 05:30, Kulde-linje «Det er kaldt her nede. Jeg ville bare se lyset deres. 94 %», slutt ved kode eller 10:00 (kodeendring, avtalt) | 10 |
+| 22 | ti | Landingskoordinatene / LANDÅS + rød måne | Snill-listen åpner. | Snill-listen: hva «snill» betyr for Julius, om å bli sett → «Winter skriver tall for bokstaver. A er alltid først.» | «Julius vil vite nøyaktig hvor dere bor. Jeg sa 'ved sofaen'. Det holdt ikke.» | Har krøpet inn i Hannas julesokk med bare føttene ut, og kommer ikke løs | ja, 3 sokker | Alfabettabell (verktøy). Navneregistrering | – | 10 |
+| 23 | on | Stjernevakt / STJERNEKLART + blå måne | Sannheten. Krypto 3. | Lille julaften: treet, grøten, mandelen, hvorfor én natt til → «Orakelet meldte været i ett ord: ikke en sky» | «I natt flyr de. Over Nordtoppen. Med alle lysene på. Jeg gråter ikke.» | Har pakket opp et hjørne av en gave under treet, teipet det igjen med altfor mye teip, og sitter nå i treet som pynt med dårlig samvittighet | nei | Krypto 3 → `hjertets-hemmelighet.txt`: hele historien om Vintervokteren | – | 5 |
+| 24 | to | God Jul på Landås / JULEMAGI | **M6 Tøvær.** | Julaften: hvorfor vi feirer, fred i huset, hva julemagi er → «det dere har laget hele desember. Ikke kode. Ikke varme. Det tredje.» | «De landet. Jeg så det. Jeg reiser i kveld. Takk for garnkurven.» | Ligger og sover inni den store gullkonvolutten under treet med en sløyfe på hodet og en fyrstikkeske som pakket koffert ved siden av | nei | Brevet i Brevfugler tiner. Snill-listen med finale. Diplom | Skjerm-kort «God jul fra Snøfall» hele dagen (finnes) | 5 |
+
+Jakt: 8 dager (2, 4, 5, 6, 10, 11, 19, 22). Oppsett over 5 minutter: 2, 4, 6, 9, 10, 11, 19, 21, 22. Bare dag 11 (fredag) går over 10.
+
+**Gåter som trenger mer arbeid i neste steg:** 1 (hvordan de tre siste bokstavene faktisk gis uten at Julius staver), 6 (sjablongen), 9 (falske krystaller, må være tydelig for en 5-åring), 10 (rødfilteret), 23 og 24 (brikken i videoen må være entydig for et 9-årig øre). Alle de andre følger mønsteret lapp + Julius' setning.
+
+## 5. Belønninger
+
+I dag: sju merker, fem eventyr-belønninger, to bonusmerker, hemmelige filer og modulåpninger. Det er for mye til at noe av det betyr noe. Forslag:
+
+**Tre merker, ett per store milepæl, med navn fra historien:**
+
+| Merke | Dag | Vilkår | Betydning |
+| --- | --- | --- | --- |
+| **Varmebærer** | 12 | Krypto 1 løst (M3) | Dere hørte at isen sukket. |
+| **Portvokter** | 21 | Dag 21 løst (M5) | Dere holdt muren og lot porten stå åpen. |
+| **Snøfalls venn** | 24 | Alle 24 dager (M6) | Dere er i Snøfalls historie. (Dagens `julekalender-fullfort`, nytt navn.) |
+
+Fjernes: `antenne-ingenior`, `inventar-ekspert`, `oppfinner-assistent`, `morket-beseirer`, `kode-mester`, `symbol-mester`. Eventyr-belønningene (`module_unlock`, `secret_unlock`, `symbol_collection`, `milestone`, `preparation_complete`) forsvinner med de ni eventyrene; det eneste eventyret har belønning «Snøfalls venn». Motoren støtter vilkårstypene `decryption` (i dag «alle tre»; Varmebærer trenger «én bestemt», liten kodeendring eller bruk `eventyr`-typen på en delmengde) og `completion`.
+
+**Belønninger som ikke er merker, og som barna faktisk merker:**
+
+- **Moduler som åpner** (NisseKrypto 4, NisseMusikk 7, Brevfugler 14, NisseStats 16). Ingen fanfare; de er bare der neste morgen.
+- **Frostgraden som faller** når koden er inne, og ekstra når bonusoppdraget er godkjent. Bonusoppdragene (11 antenne, 16 lykt) gir ikke merke; de gir −20 % frost og en setning i Julius' PS. Foreldrekoden beholdes for godkjenning.
+- **De ni symbolkortene** på operasjonsbrettet. Fysisk samling, ingen digital dublett.
+- **De tre dekrypterte filene** (12, 18, 23) er historiens tre avsløringer, ikke gratulasjoner.
+- **Fargene som kommer tilbake** på skjermen dag 10 og 21.
+- **PS fra Julius** under videoen etter hver kode.
+- **Dag 24:** Snill-listen med Julius' finalehilsen, ett utskrevet diplom per barn («Snøfalls venn», fra `print_materials`), og krystallet under treet.
+
+## 6. Frost dag 10 og 21
+
+To flater, samme tilstand: NisseKomm-appen og Skjerm (kjøkken og gang). Skjerm poller NisseKomms tilstandsendepunkt og speiler det. Barna skal se at noe er galt *om morgenen*, også på skoledager, uten at morgenen slutter å virke.
+
+**Tilstanden** (fra NisseKomm): `frost: on|off`, `level: 1|2`, `until` (klokkeslett for tvungen slutt), `message` (≤ 120 tegn, fra Kulde), `solved_today`. Frost slås på av datoen (10 og 21) ved første lasting etter midnatt og slås av når dagens kode er inne eller ved `until` (kl. 10:00 begge dager). Lagret per sesjon. Nissemor-guiden har bryteren «Frost av» som nødutgang.
+
+**Skjerm, begge dager.** Rimkant som vokser inn fra hjørnene, dempet gråtone over bakgrunn og pynt, og Kuldes linje nederst i rolig, liten skrift. Vær, timeplan, kalender og radiokortet beholder farge og kontrast og ligger øverst; radio autoplay går som vanlig. Ingen blinking, ingen lyd. Dag 10 (nivå 1) svak rimkant, dag 21 (nivå 2) tett rim og linjen «Det er kaldt her nede. Jeg ville bare se lyset deres. 94 %». Når `solved_today` blir sann: rimen trekker seg tilbake over tre sekunder, et kort gyllent skjær, og kortet «Fargene er tilbake» i 30 minutter.
+
+**NisseKomm-appen.** Dag 10 «fargene lekker»: fargeløst med korte glimt av rødt og grønt, VHS-striper, Kuldes spøkelsesbilde på alle TV-kanaler med «KROMATISK DRENERING 71 %». Dag 21 «fryst»: rimkant, Kuldes linje midt på, bare NisseMail, Dagbok/Kanal 3 (videoen) og KodeTerminal åpne, resten dekket av rim. Ved riktig kode: tøvær kanal for kanal, Frostgraden faller, dag 21 tegner den åpne porten i sidepanelet.
+
+**iMac-ene (valgfritt, dag 20).** Søndag før solverv, familien hjemme: `screen_grayscale on` kl. 09:00 med melding fra Rampenissen, `off` kl. 12:00 uansett. Det er Kuldes første skritt inn i huset, og gir mandag morgen en forhistorie. Ikke brukt dag 10 og 21.
+
+**Hva forelderen gjør kvelden før:** ingenting. Alt styres av datoen og koden. Det eneste fysiske er bokmuren dag 21.
+
+**Hva som må bygges:** tilstandsendepunktet og frostmodus i NisseKomm; polling og frost-tegning i Skjerm (avtalt kontrakt); kalenderhendelsene og de to Skjerm-kortene via Varden (finnes); eventuelt én cron for iMac dag 20 (finnes).
+
+## 7. Status: Klar til frysing
+
+Alle spørsmål fra forrige runde er besvart: ingen videosperre, men autoåpning (§3.4); frost i app og på Skjerm begge dager med morgenvisning (§6); ingen iMessage; iMac bare som valgfritt tillegg dag 20; én eventyr-ID; tre merker; Kulde-meldingen rolig; 24 videoer bekreftet. Historien, kodene, symboldagene, milepælene, kanalrollene og dagtabellen er låst.
+
+**Eneste gjenstående valg (blokkerer ikke):** iMac-gråtone dag 20, ja eller nei.
+
+**Neste steg, i rekkefølge:** `eventyr.json` (én ID) og `merker.json` (tre merker); de 24 e-postene; de 24 videomanusene med brikke S låst mot koden; de 24 Rampenissen-klippene; NisseNet-filene uten fasit; kalenderhendelsene og Skjerm-kortene; tilstandsendepunkt og frostmodus i NisseKomm, deretter Skjerm-siden. Gåtene merket i §4 (1, 6, 9, 10, 23, 24) tas i gåtegjennomgangen. Innkjøp: rødt cellofan, papprull, batterilys, syltetøyglass og bakepapir, aluminiumsfolie, én glassperle, 9 symbolkort.
+
+## 8. Rampestreker 2026
+
+Retning fra 2025: ingen dypere mening, ingen gåteoppstilling. Streken skal være gal, litt frekk, dum og enkel. Tre typer: **forbudt moro** (han gjør noe barna får kjeft for), **i trøbbel** (han sitter fast, er viklet inn, tatt på fersken) og **uventet** (noe har skjedd med ham). Maks 5 minutter, ting fra et vanlig hjem, trygt for en 5-åring å se og herme etter: ingen levende lys, kniver, medisiner, klatring eller mye mat til spille. Litt søl er greit. Tre streker nikker til historien (7, 9, 21); resten gjør det ikke.
+
+Fordeling: forbudt moro 11, i trøbbel 8, uventet 5. Opptrapping mot jul: fra fruktskål og sukkerskål til bokmur, oppakket gave og pakket koffert.
+
+| Dag | Ukedag | Rampestrek | Type | Materialer | Min | Bærer dagens brikke |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | ti | Rampenissen har sovet i fruktskålen med en banan som pute og en serviett som dyne, og den røde garntråden han har viklet seg inn i går helt bort til TV-en. | uventet | banan, serviett, rødt garn | 3 | ja (lappen i enden av tråden) |
+| 2 | on | Sitter midt i sukkerskålen med sukker rundt munnen og en teskje i hånden, tatt på fersken. | forbudt moro | sukkerskål, teskje | 2 | nei (jakt) |
+| 3 | to | Har tegnet bart, briller og et surt fjes på badespeilet med tannkrem; den tomme tuben ligger i vasken. | forbudt moro | tannkrem | 3 | ja (lapp teipet på speilet) |
+| 4 | fr | Har tatt pappas solbriller og sitter i pappas sko ytterst i gangen, mens kosedyrene står på rekke bak og venter på tur. | forbudt moro | pappas solbriller og sko, 4–6 kosedyr | 5 | ja (lappen i skoen) |
+| 5 | lø | Prøvde å fly som en brevfugl og henger nå etter skjerfet fra taklampen i stua, med armene rett ut. | i trøbbel | skjerf, tråd | 3 | nei (jakt: papirfuglen) |
+| 6 | sø | Sitter inni pepperkakeboksen med lokket på hodet og smuler overalt; alle pepperkakene er «borte». | forbudt moro | pepperkakeboks, noen smuler | 2 | nei (jakt: lommelykt og rull) |
+| 7 | ma | Fastfryst i fryserdøra med lua inne i fryseren og votter som har stivnet rett ut. (Kulde var her.) | i trøbbel | nisselue, votter | 3 | ja (lappen i fryseren) |
+| 8 | ti | Har bygd et tårn av alle frokostblandingspakkene på bordet og sitter på toppen med en suppeøse; litt corn flakes på gulvet. | forbudt moro | frokostpakker, øse | 3 | ja (lappen på tårnet) |
+| 9 | on | Har krøpet inn i grønnsaksskuffen i kjøleskapet for å «bli ekte iskrystall», bare beina stikker ut når døra åpnes. | i trøbbel | ingenting ekstra | 2 | ja (krystallene på døra) |
+| 10 | to | Har farget hendene, nesen og halve ansiktet i fire farger med vaskbare tusjer; tusjene ligger strødd uten korker. | forbudt moro | vaskbare tusjer | 3 | nei (jakt: 4 fargede ting) |
+| 11 | fr | Pakket inn fra topp til tå i aluminiumsfolie som en bakt potet, lagt på et stekebrett på benken. | uventet | aluminiumsfolie, stekebrett | 3 | nei (jakt: 3 rom) |
+| 12 | lø | Tar seg et bad i et stort glass melk med et sugerør som dusj; tre tomme glass står og «synger» ved siden av. | forbudt moro | glass, litt melk, sugerør | 3 | ja (de tre glassene) |
+| 13 | sø | Har laget luciakrone av batterilys og gullbånd, spist elleve lussekatter (smuler i en sirkel) og sovnet i brødkurven. | forbudt moro | 2 batterilys, gullbånd, brødkurv | 4 | ja (lappen i kurven) |
+| 14 | ma | Har brukt hele dorullen til å brette «brevfugler» som ligger i hele badet, og sitter selv i en papirbåt i den tørre vasken. | uventet | 1 dorull, 1 ark | 5 | ja (lappen i båten) |
+| 15 | ti | Står med begge beina nedi en liten skål sirup, med klissete fotspor av sukker bortover benken og sleiva i hånden. | forbudt moro | litt sirup, litt sukker, sleiv | 4 | ja (lappen ved skålene) |
+| 16 | on | Har «ryddet»: alle fjernkontrollene ligger i brødboksen, brødet ligger i TV-benken, og han sitter i brødboksen med lokket på hodet. | uventet | brødboks, fjernkontroller | 3 | ja (lappen i brødboksen) |
+| 17 | to | Henger opp ned fra gardinstangen i gangen, viklet inn i grønt gavebånd fra topp til tå. | i trøbbel | grønt gavebånd | 3 | ja (lappen på båndet) |
+| 18 | fr | Har blåst inn i pappas jakkelomme på knaggen og sitter fast der med skjerfet surret rundt knaggen og én støvel på gulvet. | i trøbbel | jakke på knagg, skjerf | 2 | ja (lappen i lommen) |
+| 19 | lø | Står på hodet i fruktskålen med beina rett opp etter å ha blitt truffet av en gulrot; gulroten ligger ved siden av. | uventet | 1 gulrot ekstra | 2 | nei (jakt: 3 gulrøtter) |
+| 20 | sø | Har bygd fort av alle sofaputene, tatt pappas hodetelefoner og fjernkontrollen, og popcorn ligger over hele sofaen. | forbudt moro | sofaputer, hodetelefoner, en neve popcorn | 4 | ja (lappen i fortet) |
+| 21 | ma | Står bak en lav mur av bøker foran skjermen med et grytelokk som skjold og en visp som sverd. (Han er klar.) | i trøbbel | 5–8 bøker, grytelokk, visp | 4 | ja (bokryggene) |
+| 22 | ti | Har krøpet inn i Hannas julesokk med bare føttene ut, og kommer ikke løs. | i trøbbel | 3 julesokker | 3 | ja (én av sokkene) |
+| 23 | on | Har pakket opp et hjørne av en gave under treet, teipet det igjen med altfor mye teip, og sitter nå i treet som pynt med dårlig samvittighet. | forbudt moro | teip, en gave | 3 | ja (lappen i treet) |
+| 24 | to | Ligger og sover inni den store gullkonvolutten under treet med en sløyfe på hodet og en fyrstikkeske som pakket koffert ved siden av. | uventet | konvolutt, sløyfe, tom fyrstikkeske | 3 | ja (konvolutten) |
+
+På jaktdager (2, 4, 5, 6, 10, 11, 19, 22) ligger brikken utenfor scenen der det står «nei»; på dag 4 og 22 faller den naturlig i scenen likevel. Rydding etterpå er aldri mer enn å tørke benken eller riste en pute.

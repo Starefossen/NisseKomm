@@ -43,3 +43,11 @@
 - [ ] Sett opp et fysisk "Operasjonsbrett" (korktavle eller veggplass ved PC-en) der barna kan henge opp symbolkort, brettede blåkopier og løste koder gjennom hele desember.
 - [ ] Konfigurer `HOME_BRIDGE_SECRET` og test lokal polling/webhook mot `~/go/src/github.com/starefossen/home`.
 - [ ] Kjør en rask generalprøve på Dag 1 med `mise run dev:day 1`.
+
+---
+
+## Fase 4: Opprydding og kvalitetssikring før sesongen
+
+- [ ] **Finn foreldreløs kode:** Kartlegg komponenter, moduler, systemer, generatorer, API-ruter og JSON-felt som ikke lenger brukes etter at historien for 2026 er låst (for eksempel eventyr-logikk for flere parallelle historier, fjernede merker og lys/webhook-delene i `/api/home-bridge` som ikke har motpart i Varden).
+- [ ] **Slett det som er dødt:** Fjern ubrukt kode og data i stedet for å kommentere det ut. Oppdater tester og dokumentasjon (AGENTS.md, ARCHITECTURE.md, IMPLEMENTATION.md) så de stemmer med koden.
+- [ ] **Verifiser hele sesongen:** Kjør `pnpm check` og gå gjennom alle 24 dager med `mise run dev:day <dag>` for å bekrefte at alt fungerer som forventet.
