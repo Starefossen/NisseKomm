@@ -1,0 +1,146 @@
+{
+  "_om": "Gåtebiter per dag fra docs/gaater-2026.md: NisseNet-filer, symboler og eldre e-post, transkripsjoner og PS som dagens gåte bruker. `sitat` står ordrett i dagens avsnitt; src/lib/mcp/__tests__/kid-context.test.ts sjekker begge veier. Dagens egen e-post og transkripsjon er alltid biter og står ikke her. get_kid_context holder alt dette tilbake til dagen er løst.",
+  "biter": [
+    {
+      "dag": 3,
+      "type": "symbol",
+      "id": "heart-green",
+      "sitat": "skanner hjerte-kortet (symbol 1/9)"
+    },
+    {
+      "dag": 5,
+      "type": "fil",
+      "id": "alfabet.txt",
+      "sitat": "`alfabet.txt` er samme strimmel på skjermen"
+    },
+    {
+      "dag": 5,
+      "type": "transkripsjon",
+      "fra_dag": 2,
+      "sitat": "transkriptet fra dag 2 ligger i arkivet"
+    },
+    { "dag": 5, "type": "epost", "fra_dag": 2, "sitat": "i e-posten dag 2" },
+    { "dag": 5, "type": "ps", "fra_dag": 2, "sitat": "i PS dag 2" },
+    {
+      "dag": 6,
+      "type": "symbol",
+      "id": "heart-red",
+      "sitat": "Skanner hjerte-kortet (symbol 2/9)"
+    },
+    {
+      "dag": 9,
+      "type": "fil",
+      "id": "krystallformel.txt",
+      "sitat": "Verktøy: `krystallformel.txt`"
+    },
+    {
+      "dag": 9,
+      "type": "symbol",
+      "id": "heart-blue",
+      "sitat": "Det blå hjerte-kortet mellom dem"
+    },
+    {
+      "dag": 10,
+      "type": "fil",
+      "id": "farge-koder.txt",
+      "sitat": "`farge-koder.txt` lister sju"
+    },
+    {
+      "dag": 12,
+      "type": "symbol",
+      "id": "sun-green",
+      "sitat": "Skanner sol-kortet (symbol 4/9)"
+    },
+    {
+      "dag": 12,
+      "type": "fil",
+      "id": "frosne-koder.txt",
+      "sitat": "→ `frosne-koder.txt`"
+    },
+    {
+      "dag": 12,
+      "type": "ps",
+      "fra_dag": 3,
+      "sitat": "fargenes betydning står i PS dag 3, 6 og 9"
+    },
+    {
+      "dag": 12,
+      "type": "ps",
+      "fra_dag": 6,
+      "sitat": "fargenes betydning står i PS dag 3, 6 og 9"
+    },
+    {
+      "dag": 12,
+      "type": "ps",
+      "fra_dag": 9,
+      "sitat": "fargenes betydning står i PS dag 3, 6 og 9"
+    },
+    {
+      "dag": 15,
+      "type": "fil",
+      "id": "02-notatboken.txt",
+      "sitat": "Rutetallene står i Fargesamlerens notatbok (fil, åpner samme dag)"
+    },
+    {
+      "dag": 15,
+      "type": "symbol",
+      "id": "sun-red",
+      "sitat": "skanner sol-kortet (symbol 5/9)"
+    },
+    {
+      "dag": 18,
+      "type": "fil",
+      "id": "stjernetegn.txt",
+      "sitat": "`stjernetegn.txt` (belønningen for krypto 2)"
+    },
+    {
+      "dag": 18,
+      "type": "symbol",
+      "id": "sun-blue",
+      "sitat": "Skanner sol-kortet (symbol 6/9)"
+    },
+    {
+      "dag": 20,
+      "type": "symbol",
+      "id": "moon-green",
+      "sitat": "Skanner måne-kortet (symbol 7/9)"
+    },
+    {
+      "dag": 21,
+      "type": "fil",
+      "id": "stjernetegn.txt",
+      "sitat": "Åpner `stjernetegn.txt`: varde 5"
+    },
+    {
+      "dag": 21,
+      "type": "transkripsjon",
+      "fra_dag": 20,
+      "sitat": "sa Julius dag 20"
+    },
+    { "dag": 21, "type": "ps", "fra_dag": 20, "sitat": "sier PS dag 20 fra" },
+    {
+      "dag": 22,
+      "type": "symbol",
+      "id": "moon-red",
+      "sitat": "Skanner måne-kortet (symbol 8/9)"
+    },
+    {
+      "dag": 23,
+      "type": "fil",
+      "id": "hjertets-hemmelighet.txt",
+      "sitat": "NisseKrypto 3 → `hjertets-hemmelighet.txt`"
+    },
+    {
+      "dag": 23,
+      "type": "fil",
+      "id": "03-siste-side.txt",
+      "sitat": "Fargesamlerens siste side (fil etter krypto 3)"
+    },
+    {
+      "dag": 23,
+      "type": "symbol",
+      "id": "moon-blue",
+      "sitat": "Skanner måne-kortet (symbol 9/9)"
+    }
+  ]
+}
