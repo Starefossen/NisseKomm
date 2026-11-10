@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        // Symbol scanner needs getUserMedia; default policy would deny camera
+        source: "/(.*)",
+        headers: [{ key: "Permissions-Policy", value: "camera=(self)" }],
+      },
+      {
         source: "/api/(.*)",
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },

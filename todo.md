@@ -152,7 +152,7 @@ Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxSca
   - Lyd serveres med HTTP GET og samme Bearer.
   - Krever adversarial gjennomgang av en annen modell før merge (autentisering).
 - [ ] **Bygg:** produksjonsbygg setter ikke `NEXT_PUBLIC_MOCK_*`, `TEST_MODE` eller `STORAGE_BACKEND` (de bakes inn ved bygging).
-- [ ] **Sikkerhetshoder:** ta med `Permissions-Policy: camera=(self)` så symbolskanneren virker.
+- [x] **Sikkerhetshoder:** ta med `Permissions-Policy: camera=(self)` så symbolskanneren virker.
 - [x] **Sikkerhetshoder (opprinnelig punkt):** flytt fra `vercel.json` til `headers()` i `next.config`.
 - [ ] **Miljø:** `PORT`, `DATABASE_URL`, `KID_CODE`, `PARENT_CODE`, `HOME_STATE_TOKEN`, `NEXT_PUBLIC_URL=https://nissekomm.nissekomm.fn.flaatten.org`.
 - [ ] **Flytt kildekoden til `starefossen/home`:** Etter at `feat/season-2026` er merget og ingen agenter jobber, flyttes repoet inn som `apps/nissekomm` med `git subtree` (historikken beholdes), og dette repoet arkiveres. Hold bygge- og utrullingsoppsett relativt til repoet (ingen absolutte stier), ha `mise.toml` med bygge- og sjekkoppgaver, og hemmeligheter bare fra miljøet.
