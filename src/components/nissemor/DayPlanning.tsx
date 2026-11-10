@@ -131,10 +131,15 @@ export function DayPlanning({
             <p className="text-sm">{selectedQuest.nissemail_tekst}</p>
           </div>
 
-          {/* Full Width: Julius Dagbok */}
           <div className="border-2 border-(--gold)/50 p-4">
-            <h3 className="text-xl font-bold mb-3">📔 JULIUS DAGBOK</h3>
-            <p className="text-sm">{selectedQuest.dagbokinnlegg}</p>
+            <h3 className="text-xl font-bold mb-3">
+              {selectedQuest.julius_ps
+                ? "📼 PS FRA JULIUS"
+                : "📔 JULIUS DAGBOK"}
+            </h3>
+            <p className="text-sm">
+              {selectedQuest.julius_ps ?? selectedQuest.dagbokinnlegg}
+            </p>
           </div>
 
           {/* Special Events Section */}

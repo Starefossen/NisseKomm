@@ -65,29 +65,6 @@ export function NisseNetUtforsker({
   // Process files and inject dynamic content for snill_slem_liste.txt
   // Note: nissens_dagbok.txt is now handled by standalone DAGBOK module
   const processedFiles = useMemo(() => {
-    const generateHintsContent = (maxDay: number): string => {
-      let content =
-        "🔍 HINT ARKIV\n========================================\n\n";
-      content += "Her finner du hint til alle oppdragene!\n";
-      content += "Hintene låses opp etter hvert som du fullfører dagene.\n\n";
-      content += "---\n\n";
-
-      // Generate hints for each day up to maxDay
-      for (let day = 1; day <= Math.min(maxDay, 24); day++) {
-        const mission = missions.find((m) => m.dag === day);
-        if (mission && mission.fysisk_hint) {
-          content += `Dag ${day}: ${mission.fysisk_hint}\n`;
-        }
-      }
-
-      if (maxDay < 24) {
-        content +=
-          "\n[Flere hint låses opp etter hvert som dere fullfører flere dager]";
-      }
-
-      return content;
-    };
-
     const processNode = (node: FilNode): FilNode => {
       // Dagbok is now handled by standalone DAGBOK module - hide from NisseNet
       if (node.type === "fil" && node.navn === "nissens_dagbok.txt") {
@@ -95,14 +72,6 @@ export function NisseNetUtforsker({
           ...node,
           innhold:
             "DENNE FILEN ER FLYTTET\n\nJulius' dagbok er nå tilgjengelig som egen modul på skrivebordet.\nÅpne DAGBOK-ikonet for å lese innleggene!\n\n- NisseNet Administrator",
-        };
-      }
-
-      // Generate hint content dynamically up to current day
-      if (node.type === "fil" && node.navn === "hint_arkiv.txt") {
-        return {
-          ...node,
-          innhold: generateHintsContent(currentDay),
         };
       }
 
@@ -136,7 +105,7 @@ export function NisseNetUtforsker({
     };
 
     return files.map(processNode);
-  }, [files, currentDay, missions, friendNames]);
+  }, [files, currentDay, friendNames]);
 
   // Filter files based on unlock status and calculate stats
   const { filteredFiles, fileStats } = useMemo(() => {
@@ -324,7 +293,7 @@ export function NisseNetUtforsker({
                 {(() => {
                   const name = selectedFile.navn;
                   const isKulde =
-                    name.includes("snofall_fakta") ||
+                    name.includes("orakelets-rapport") ||
                     name.includes("frosne-koder") ||
                     name.includes("nordpolen_hemmelighet") ||
                     name.includes("system_logg");
@@ -360,9 +329,9 @@ export function NisseNetUtforsker({
                       : isAntenne
                         ? "RADAR // ANTENNETÅRNET NORD"
                         : isPrism
-                          ? "PRISME // KRYSTALL-ANALYSE"
+                          ? "KRYSTALL-ANALYSE"
                           : isColor
-                            ? "SPEKTER // OPTISK KALIBRERING"
+                            ? "OPTISK KALIBRERING"
                             : "ARKIV // JULIUS' KONTOR";
 
                   const accentColor = isKulde

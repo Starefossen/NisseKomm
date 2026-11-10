@@ -23,13 +23,11 @@ import { getAllEventyr } from "../eventyr";
  * - tittel: Quest title
  * - nissemail_tekst: Email content from Rampenissen
  * - kode: Completion code (unique per quest)
- * - dagbokinnlegg: Julius' diary entry
  * - rampenissen_rampestrek: Rampenissen's mischief description
  * - fysisk_hint: Physical scavenger hunt clue
  * - oppsett_tid: Setup complexity (enkel/moderat/avansert)
  * - materialer_nødvendig: Required materials array
  * - beste_rom: Best room for hiding clue
- * - hint_type: Clue category (skrevet/visuell/gjemt_objekt/etc)
  *
  * BONUS QUEST VALIDATION:
  * - If bonusoppdrag exists, validates all required fields
@@ -46,13 +44,11 @@ export function validateOppdrag(oppdrag: Oppdrag, weekNumber: number): void {
     "tittel",
     "nissemail_tekst",
     "kode",
-    "dagbokinnlegg",
     "rampenissen_rampestrek",
     "fysisk_hint",
     "oppsett_tid",
     "materialer_nødvendig",
     "beste_rom",
-    "hint_type",
   ];
 
   for (const field of requiredFields) {
@@ -93,6 +89,7 @@ export function validateOppdrag(oppdrag: Oppdrag, weekNumber: number): void {
     "kombinasjon",
   ] as const;
   if (
+    oppdrag.hint_type !== undefined &&
     !validHintTypes.includes(
       oppdrag.hint_type as (typeof validHintTypes)[number],
     )

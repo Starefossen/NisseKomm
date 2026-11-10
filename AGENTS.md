@@ -158,7 +158,7 @@ Explain WHY, not WHAT. Remove obvious comments.
 ## Component Behaviors
 
 **NisseMail**: Split-view inbox (30/70), unread tracking, "NY" badges
-**Dagbok**: Continuous scroll, IntersectionObserver for read tracking, auto-scroll to first unread
+**Dagbok**: Julius' video diary (`JuliusVideo`, also Snøfall TV K3). Today's video opens on login with «NY MELDING FRA JULIUS» until played to the end (`GameEngine.markJuliusVideoWatched`); transcript after watching, `julius_ps` after the code. Transcripts: `python3 scripts/julius-transcripts.py` → `src/data/julius_videoer.json`
 **Kalender**: 3 day states (locked/available/completed), modal on click → opens NisseMail
 **KodeTerminal**: 1.5s processing delay, case-insensitive validation, gold flash on success
 
@@ -236,7 +236,7 @@ When using Sanity backend:
 # Each family can access from multiple devices using their codes
 ```
 
-**Date Mocking**: Set `NEXT_PUBLIC_MOCK_DAY` and `NEXT_PUBLIC_MOCK_MONTH` to test specific days across entire app.
+**Date Mocking**: Set `NEXT_PUBLIC_MOCK_DAY` and `NEXT_PUBLIC_MOCK_MONTH` to test specific days across entire app. In `next dev` or with `NEXT_PUBLIC_TEST_MODE=true`, the ⏱ TIDSMASKIN button (bottom right) sets day and time live via a localStorage override in `date-utils.ts`, and can reset progress.
 
 📖 **Complete API** → [ARCHITECTURE.md#date-handling-system](./ARCHITECTURE.md#date-handling-system)
 

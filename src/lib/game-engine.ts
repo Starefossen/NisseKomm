@@ -362,6 +362,14 @@ export class GameEngine {
     return state.completedQuests.size;
   }
 
+  static isJuliusVideoWatched(day: number): boolean {
+    return StorageManager.getJuliusWatched().includes(day);
+  }
+
+  static markJuliusVideoWatched(day: number): void {
+    StorageManager.markJuliusWatched(day);
+  }
+
   static getCompletedDays(): Set<number> {
     const state = this.loadGameState();
     return state.completedQuests;
@@ -979,6 +987,11 @@ export class GameEngine {
     }
   }
 
+  /** Clear all progress without prompting (Tidsmaskin) */
+  static resetProgress(): void {
+    StorageManager.clearAll();
+  }
+
   /**
    * ============================================================
    * PROGRESSIVE SYSTEM METRICS
@@ -1206,9 +1219,10 @@ export class GameEngine {
           day: number;
           tekst: string;
           type: "info" | "advarsel" | "kritisk";
+          etterKode?: boolean;
         }>;
       }
-    ).daily_alerts;
+    ).daily_alerts.filter((a) => !a.etterKode || completedDays.has(a.day));
 
     // Get crisis status from storage
     const crisisStatus = this.getCrisisStatus();

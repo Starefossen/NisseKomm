@@ -51,14 +51,21 @@ describe("Oppdrag Loader", () => {
         expect(quest.tittel).toBeTruthy();
         expect(quest.nissemail_tekst).toBeTruthy();
         expect(quest.kode).toBeTruthy();
-        expect(quest.dagbokinnlegg).toBeTruthy();
         expect(quest.rampenissen_rampestrek).toBeTruthy();
         expect(quest.fysisk_hint).toBeTruthy();
         expect(quest.oppsett_tid).toBeTruthy();
         expect(Array.isArray(quest.materialer_nødvendig)).toBe(true);
         expect(quest.beste_rom).toBeTruthy();
-        expect(quest.hint_type).toBeTruthy();
       });
+    });
+
+    it("should have julius_ps and no written diary for week 1", () => {
+      getAllOppdrag()
+        .filter((quest) => quest.dag <= 7)
+        .forEach((quest) => {
+          expect(quest.julius_ps).toBeTruthy();
+          expect(quest.dagbokinnlegg).toBeUndefined();
+        });
     });
 
     it("should have valid oppsett_tid values", () => {
@@ -82,9 +89,11 @@ describe("Oppdrag Loader", () => {
         "kombinasjon",
       ];
 
-      quests.forEach((quest) => {
-        expect(validTypes).toContain(quest.hint_type);
-      });
+      quests
+        .filter((quest) => quest.hint_type !== undefined)
+        .forEach((quest) => {
+          expect(validTypes).toContain(quest.hint_type);
+        });
     });
   });
 

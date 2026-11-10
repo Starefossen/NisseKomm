@@ -182,7 +182,7 @@ export async function POST(request: NextRequest) {
       playerNames: validatedKidNames, // Pre-fill with kid names
       friendNames: validatedFriendNames, // Store friend names
       niceListLastViewed: null,
-      dagbokLastRead: 0,
+      juliusWatched: [],
     });
 
     // Send welcome email with codes (don't block registration on email failure)

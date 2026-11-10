@@ -208,7 +208,8 @@ export interface Oppdrag {
   tittel: string;
   nissemail_tekst: string; // Mission description for children (available in app)
   kode: string;
-  dagbokinnlegg: string; // Santa's diary entry for this day (required)
+  dagbokinnlegg?: string; // Legacy written diary (days 8-24 until rewritten)
+  julius_ps?: string; // Shown under Julius' video once the code is solved
 
   // Physical setup for parents (required)
   rampenissen_rampestrek: string; // Description of physical mischief scene for parent setup
@@ -216,7 +217,7 @@ export interface Oppdrag {
   oppsett_tid: "enkel" | "moderat" | "avansert"; // Setup time: 5min | 15min | 30min+
   materialer_nødvendig: string[]; // Items parents need to acquire
   beste_rom: string; // Suggested room/location for mischief
-  hint_type:
+  hint_type?:
     | "skrevet" // Written clue
     | "visuell" // Visual clue
     | "gjemt_objekt" // Hidden object

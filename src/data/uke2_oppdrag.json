@@ -2,19 +2,20 @@
   {
     "dag": 7,
     "tittel": "Inntrengeren i Fryseren",
-    "nissemail_tekst": "ALARM PÅ LANDÅS! Orakelet ropte nettopp over høyttaleren at Spøkelseskoden har angrepet hovedserveren ved 90° nord! Jeg prøvde å kjøle ned modemet vårt i natt, men endte opp med å låse lua eller skjerfet mitt inne i fryseren deres på kjøkkenet! Hanna og Håkon: Åpne fryseren og redde utstyret mitt! Der ligger en iskald lapp med de 3 første bokstavene i fiendens kodenavn: K - U - L. Kristian: Åpne filen snofall_fakta.txt i SYSTEM-mappen i NisseNet (eller skann Kanal 4 på Snøfall TV) for å finne de 2 siste bokstavene (D - E)!",
-    "rampenissen_rampestrek": "I fryseren (eller kjøleskapet) ligger Rampenissens lue/skjerf eller en liten figur på en tallerken med en lapp: 'FROSSET KODENAVN DEL 1: K - U - L (Se SYSTEM/snofall_fakta.txt for DEL 2)'.",
-    "fysisk_hint": "Se i fryseren eller kjøleskapet på kjøkkenet! Der ligger de 3 første bokstavene (K-U-L), og de 2 siste (D-E) står i SYSTEM/snofall_fakta.txt i NisseNet.",
+    "nissemail_tekst": "Lua mi sitter fast i fryseren deres. 🥶 Jeg prøvde å kjøle ned modemet, fordi Orakelet sa at noe varmt skurret på linjen. Det var feil. Det som skurrer, er ikke varmt. I natt fanget Orakelet signaturen, og den har et navn. Julius sier det ikke rett ut, men han sier nok. Redd lua mi, og det som står ved den! Håkon: finn det. Hanna: du får det løs, med lunkent vann og en voksen. Kristian: tast navnet. Fra i dag måler Orakelet frosten i serverrommet. Se sidepanelet. – Rampenissen",
+    "rampenissen_rampestrek": "Fastfryst i fryserdøra med lua inne i fryseren og votter som har stivnet rett ut.",
+    "fysisk_hint": "Frostkortet `_ U _ D _` i liten zip-pose, fryst i plastbeger (aldri glass) med 3–4 cm vann. **I fryseren senest søndag 6. kl. 20.** Begeret står ved lua. Løsning: Håkon finner begeret, Hanna tiner det under lunkent vann med en voksen (2–3 min), Håkon tørker kortet. Julius: det motsatte av det som slår mot ansiktet fra ovnen. Kode KULDE. Frostgraden vises første gang.",
     "materialer_nødvendig": [
-      "En nisselue, vott eller liten gjenstand i fryseren/kjøleskapet",
-      "Lapp: 'SPØKELSESKODE DEL 1: K - U - L (Sjekk SYSTEM/snofall_fakta.txt for de 2 siste bokstavene)'"
+      "plastbeger eller silikonform",
+      "liten zip-pose",
+      "dag07-frostlapp.pdf",
+      "nisselue og votter"
     ],
     "beste_rom": "Kjøkkenet (fryser/kjøleskap)",
     "oppsett_tid": "moderat",
     "kode": "KULDE",
-    "hint": "Sett sammen K-U-L fra fryseren med D-E fra snofall_fakta.txt i SYSTEM-mappen (5 bokstaver)!",
     "reveals": {
-      "files": ["snofall_fakta.txt"],
+      "files": ["orakelets-rapport.txt"],
       "topics": ["morkets-trussel", "nordpolen-90"],
       "modules": ["NISSEMUSIKK"]
     },
@@ -22,9 +23,8 @@
       "id": "morkets-trussel",
       "phase": 1
     },
-    "dagbokinnlegg": "7. desember. Nå vet vi hva vi kjemper mot. Orakelet fanget opp signaturen til Spøkelseskoden på 90.0 MHz: den kaller seg KULDE. Den prøver å fryse ned NisseKomm innenfra og tappe fargene ut av både Snøfall og husene til barna. Heldigvis fant Hanna, Håkon og Kristian kodenavnet i tide, og vi har aktivert NISSEMUSIKK for å holde lydbølgene og varmen oppe i verkstedet!",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Nissemor ringte; hun sier han så ut som en liten skiltstolpe."
   },
   {
     "dag": 8,
