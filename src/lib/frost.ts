@@ -92,6 +92,8 @@ export const FROST_OPEN_WINDOWS = [
   "dagbok",
   "kodeterminal",
   "nissenet",
+  // krypto 2 unlocks Trixter's map, which day 21 needs
+  "nissekrypto",
 ];
 /** The only NisseNet folder readable during level 2 (meta 2: Trixter's map). */
 export const FROST_OPEN_FOLDER = "DEKRYPTERT";
