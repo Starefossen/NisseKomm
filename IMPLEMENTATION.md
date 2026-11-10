@@ -76,7 +76,7 @@ Rampenissen sends daily emails with riddles. Kids must search their real-world e
 6. **Success Feedback**
    - Gold flash animation
    - Success beep sound
-   - Code persisted to localStorage
+   - Code persisted via StorageManager (server store, localStorage cache)
    - Appears in terminal history
 
 7. **Unlocks**
@@ -112,7 +112,7 @@ Rampenissen sends daily emails with riddles. Kids must search their real-world e
 
 - Normalizes input (trim, uppercase)
 - Case-insensitive comparison
-- Persists to localStorage on success
+- Persists via StorageManager on success
 - Timestamps submission
 - Returns boolean success/failure
 
@@ -121,7 +121,7 @@ Rampenissen sends daily emails with riddles. Kids must search their real-world e
 - `GameEngine.getCompletedDays()` returns completed quest days
 - `GameEngine.getUnlockedModules()` returns available modules
 - Module unlocks based on quest completion
-- All progress stored in localStorage via StorageManager
+- All progress stored via StorageManager: PostgreSQL through `/api/state`, with `localStorage` as cache
 
 ### Parent Controls
 
@@ -615,14 +615,10 @@ Physical treasure hunt combined with digital puzzle-solving. Kids find 9 hidden 
 
 ### SnøfallTV (`windows/SnøfallTV.tsx`)
 
-- **Four Photographic CCTV Feeds**:
-  - **CAM 1 (`90.0 MHz`)**: Julius' Kontor (`/feed/julius-kontor.png`, `/feed/snøfall-day.png`, `/feed/snøfall-night.png`, `/feed/snøfall-storm.png`) with organic `feTurbulence` chimney smoke wisps, interior window shadow modulation, and aurora curtains.
-  - **CAM 2 (`94.5 MHz`)**: IQs Verksted (`/feed/iq-verksted.png`) with volumetric ceiling light beams, floating solder-flux dust, micro-soldering arc reflections, and foreground workbench shadow play.
-  - **CAM 3 (`88.2 MHz`)**: Antenne-Tårnet (`/feed/antenne-tårn.png`) with a sweeping lighthouse beacon cone, frost condensation plumes, and fireplace glow on the timber walls.
-  - **CAM 4 (`99.9 MHz`)**: Kuldes Krystallgrotte (`/feed/kulde-grotte.png`) with high-altitude aurora bands, rising cryo-vapor mist (`#crt-vapor-wisp`), and internal optical refraction bursts inside the ice stalagmites.
-- **Analog RF Multipath Ghosting**: When `ghostOverlay` is active on CAM 1 to 3, `/feed/kulde-grotte.png` bleeds through as a phase-shifted double-exposure echo (`mix-blend-screen` + `animate-crt-ghost-drift`) paired with a scanline-masked, `feTurbulence`-warped cryo-pareidolia anomaly (`#crt-ghost-anomaly`).
-- **Interactive Frequency Tuner**: Continuous dial (`85.0` to `108.0 MHz`, `±0.5 MHz` step) that modulates VHS tracking bars, chromatic aberration, and SVG `feTurbulence` noise based on distance from the target carrier wave (`90.0 MHz`).
-- **Scenario Switcher**: 7 quick-select scenario buttons (`SCENARIO 1` to `7`) let parents and kids inspect specific story states and camera anomalies.
+- **Four channels** (`snofall-tv/channels.ts`): SNØFALL LANDSBY (90,0 MHz), IQS VERKSTED, JULIUS and ANTENNEN. Each plays video loops from `MEDIA_DIR` (`/media/video/tv/*.mp4`) picked by day, hour and solved state; stills in `/media/feed/` are the fallback. Kulde's cave is on the air at 85,0 MHz from day 3.
+- **Village overlays** (`landsby-overlays.ts`): letter birds and the tower light are drawn on canvas over the video, not baked into it. Events are seeded per day and are only cut into `landsby-rolig`, never into the story loops (day 17, 18, 24), and they stay home on frozen days 10 and 21 until the code is solved.
+- **Ghost image and runes**: Kulde's ghost bleeds through with a rune line under it (`runer.ts`, `RuneText`); letters not yet learned are drawn as frost.
+- **Frequency tuner**: continuous dial (`80.0` to `100.0 MHz`) with tracking bars, chromatic aberration and noise by distance from the target carrier.
 
 ### NisseMusikk (`windows/NisseMusikk.tsx`)
 
@@ -632,7 +628,7 @@ Physical treasure hunt combined with digital puzzle-solving. Kids find 9 hidden 
 
 ### Smart-Home Integration
 
-No outbound calls. The former `/api/home-bridge` route is removed; the home integration will be an MCP server (see `todo.md`, phase 5).
+The former `/api/home-bridge` route is removed. The home integration is the MCP server at `/mcp` (see ARCHITECTURE.md). Outgoing notifications go through `src/lib/notify` and are off until `NOTIFY_CHANNELS` is set.
 
 ## Component Behaviors
 

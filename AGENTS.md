@@ -34,7 +34,7 @@
 
 - **Next.js 16** (App Router) + **React 19** + **TypeScript** (strict)
 - **Tailwind CSS v4** (utility-first, custom properties)
-- **localStorage** (via StorageManager abstraction)
+- **PostgreSQL** (`DATABASE_URL`) via `/api/state`, with `localStorage` as a client cache (StorageManager abstraction)
 
 📖 **Visual design** → [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md)
 
@@ -162,6 +162,7 @@ Explain WHY, not WHAT. Remove obvious comments.
 **NisseMail**: Split-view inbox (30/70), unread tracking, "NY" badges
 **Dagbok**: Julius' video diary (`JuliusVideo`, also Snøfall TV K3). Today's video opens on login with «NY MELDING FRA JULIUS» until played to the end (`GameEngine.markJuliusVideoWatched`); transcript after watching, `GameEngine.getJuliusPs(day)` after the code (bonus and day-20 «krypto mangler» variants). Day texts 2–24 (titles, mail, PS, alerts, NisseNet files): `python3 scripts/oppdrag-innhold.py` from `docs/manus/app-tekster-2026.md`; `kodelekkasje.test.ts` fails if a kid-visible text shows a code early. Transcripts: `python3 scripts/julius-transcripts.py` → `src/data/julius_videoer.json`
 **Dag 1-åpning (T14)**: `ui/Day1Opener.tsx`: `Day1Boot` (page.tsx, first login on 1 Dec) and `Day1Tail` (after Julius day-1 video); once each via `GameEngine.isIntroSeen/markIntroSeen`, click skips. Rune lines (T12) under Kulde's ghost line: `snofall-tv/runer.ts` + `RuneText learned=`, unlearned letters as frost.
+**Snøfall TV**: four channels (`snofall-tv/channels.ts`) play video loops from `MEDIA_DIR`. Village events (letter birds, tower light) are drawn on canvas in code (`landsby-overlays.ts`) and only cut into `landsby-rolig`, never into other loops. **Runes**: `GameEngine.getLearnedRunes()` = letters of solved word codes plus E and T on day 1 (day 5 and 22 give none, so U comes on day 7 and B on day 18). **Brev til Julius** are stored in `nissekomm-santa-letters` and synced.
 **Kalender**: 3 day states (locked/available/completed), modal on click → opens NisseMail
 **SymbolScanner**: QR camera plus a 4-character card code printed under each QR (`SHORT_CODES` in `symbol-system.ts`, never change once printed). `parseSymbolCode` accepts both; a card is refused before its `symbol_clue` day in December. No camera, denied, or http on a LAN IP (no secure context) → typed code only. `symbolskanner.test.ts` ties printout to parser; `gjennomspilling` types the code on each symbol day.
 **KodeTerminal**: 1.5s processing delay, case-insensitive validation, gold flash on success
@@ -186,11 +187,11 @@ NISSEKOMM_MODE=lan                       # 'public' (kid app only) or 'lan' (gui
 
 # Storage and media
 DATABASE_URL=                            # PostgreSQL; progress is synced via /api/state
-MEDIA_DIR=                               # Video/audio library (not in the repo)
-NEXT_PUBLIC_STORAGE_BACKEND=localStorage # Only value until the move home
+MEDIA_DIR=                               # Video/audio library (not in the repo), served at /media/*
+STORAGE_BACKEND=                         # server | localStorage; unset = server when DATABASE_URL is set
 ```
 
-`mise run dev` sets dev codes and lan mode. Multi-tenancy, Sanity and Resend are gone; one family logs in with `KID_CODE`.
+`mise run dev` sets dev codes and lan mode. Multi-tenancy, Sanity and Resend are gone; one family logs in with `KID_CODE` (parent guide: `PARENT_CODE`). `NISSEKOMM_MODE=lan` enables the guide, `/dev`, `/mcp` and the simulation panel; `public` serves the kid app only (the default in production). Progress lives in Postgres (in-memory store without `DATABASE_URL`); a season reset (`DELETE /api/state`, parent only) clears the server too, so every screen resets. The MCP server at `/mcp` (Bearer JWT, tools in `src/lib/mcp/tools.ts`) is the home integration; `/api/home-bridge` is gone.
 
 **Date Mocking**: Set `NEXT_PUBLIC_MOCK_DAY` and `NEXT_PUBLIC_MOCK_MONTH` to test specific days across entire app. In `next dev` or with `NEXT_PUBLIC_TEST_MODE=true`, the ⏱ TIDSMASKIN button (bottom right) sets day and time live via a localStorage override in `date-utils.ts`, and can reset progress.
 
@@ -231,7 +232,6 @@ NEXT_PUBLIC_STORAGE_BACKEND=localStorage # Only value until the move home
 
 **Planned Features** (Phase 2+):
 
-- Backend persistence (replace localStorage with API)
 - Reactive sidebar widgets (update on code submissions)
 - Full-screen glitch effects for dramatic feedback
 

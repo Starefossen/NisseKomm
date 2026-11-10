@@ -41,25 +41,12 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 
 ---
 
-## Fase 2: Multi-modale utvidelser (Fysisk + Digitalt + Smarthus)
+## Fase 2: Multi-modale utvidelser (avgrenset til det gåtene bruker)
 
-### 2.1 Utskrivbare fysiske rekvisitter (`/nissemor-guide/printout`)
+- [x] **Rød-filter dekoderkort:** brukes på dag 10 (SPEKTER, `docs/gaater-2026.md`).
+- [x] **Brettede ark:** brukes på dag 14 (ORIGAMI, `docs/gaater-2026.md`).
 
-- [ ] **Rød-filter dekoderkort (Dag 1 og utvalgte dager):** Mal for kort med rød støytekst som skjuler blå/cyan kodebokstaver når Hanna (5) ser gjennom et rødt cellofan-filter ("Spøkelses-skanner").
-- [ ] **Brett-og-linjer blåkopier (IQs skjemaer):** Utskrivbare ark der halve bokstaver og kretslinjer danner kodeordet først når Håkon (9) bretter arket langs stiplede piler.
-- [ ] ** Hullkort / sjablongkort:** Kort med utklippede vinduer som legges over en bestemt side i en fysisk bok i bokhyllen (eller utskrift fra NisseNet) for å isolere passordet.
-- [ ] **1:1 Skjerm-kalkeringskart:** Mal tilpasset bakepapir/matpapir med registreringsmerker som holdes direkte mot CRT-skjermen i `SnøfallTV` (CAM 2) for å koble fysiske punkter med lysende skjermkoordinater.
-
-### 2.2 Sanntids smarthus-respons (`varden` / Home Assistant webhook)
-
-- [ ] **Utgående webhook ved kode-innlevering (`KodeTerminal`):** Send umiddelbar POST fra server/klient til lokal `varden`-agent når dagens kode løses, slik at stuelampene blinker gull to ganger og skifter fra kald blå (`4000K`) til varm hvit (`2200K`) innen 2 sekunder.
-- [ ] **Utgående webhook ved frekvenslås (`SnøfallTV` på `90.0 MHz`):** Trigger en kort 8-sekunders radioskurring eller lydeffekt på kjøkkenhøyttaleren når Kristian (12) låser inn bærebølgen på `90.0 MHz`.
-- [ ] **Morgen-indikator i gangen:** Automatiser i `varden` at én lampe i gangen lyser isblått kl. 06:45 hver morgen frem til dagens kode i NisseKomm er løst (`lightingPreset === "frost_decay"`).
-
-### 2.3 Skjerm- og lyd-interaksjon i appen
-
-- [ ] **Kalibreringsmodus på `SnøfallTV` CAM 2:** Legg til en knapp (`[KALIBRER SKJERMKART]`) som viser faste hjørnekors på CRT-skjermen slik at barna kan legge fysisk matpapir eller hullkort rett på skjermen.
-- [ ] **Akustisk rytme-/morse-fyr i `SnøfallTV`:** Bruk Web Audio API (`SoundManager`) til å spille en kort repeterende tone-sekvens når radioen stilles inn på en skjult frekvens, som matcher fysiske banketegn fra Rampenissen.
+De andre ideene fra denne fasen er flyttet til «Senere forbedringer (etter sesongen)».
 
 ---
 
@@ -77,7 +64,7 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 - [ ] **Finn foreldreløs kode:** Kartlegg komponenter, moduler, systemer, generatorer, API-ruter og JSON-felt som ikke lenger brukes etter at historien for 2026 er låst (for eksempel eventyr-logikk for flere parallelle historier, fjernede merker og lys/webhook-delene i `/api/home-bridge` som ikke har motpart i Varden).
 - [ ] **Slett det som er dødt:** Fjern ubrukt kode og data i stedet for å kommentere det ut. Oppdater tester og dokumentasjon (AGENTS.md, ARCHITECTURE.md, IMPLEMENTATION.md) så de stemmer med koden.
 - [ ] **Verifiser hele sesongen:** Kjør `pnpm check` og gå gjennom alle 24 dager med `mise run dev:day <dag>` for å bekrefte at alt fungerer som forventet.
-- [ ] **knip:** Ekskluder `.claude/worktrees/` så agent-worktrees ikke gir falske treff i `pnpm check`.
+- [x] **knip:** Ekskluder `.claude/` så agent-worktrees ikke gir falske treff i `pnpm check`.
 - [ ] **Next.js-sikkerhetsfiks:** Oppgrader `next` og `eslint-config-next` til 16.4.6 når pakken har passert `minimum-release-age` (worktree og gren `chore/nextjs-security-upgrade` finnes).
 - [ ] **Videostørrelse:** Komprimer Julius-videoene hardere (mål: 8–12 MB per innslag; dag 1-testen ble 28 MB for 47 s).
 
@@ -85,10 +72,10 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 
 ## Neste kodeoppgaver (lokalt, 10. november)
 
-- [ ] **Varslingssystem:** et lite system for utgående varsler med kanaler som kan slås av og på (e-post til foreldre, Varden/iMessage, Skjerm-kort, radio). Ingen kanal aktiv nå; e-post kan legges til igjen senere.
-- [ ] **MCP-server** (fase 5, T7 og T8) bygges lokalt nå, testet uten Kanidm (lokal nøkkel), og kobles til VKS ved utrulling.
-- [ ] **Simulering:** utvid Tidsmaskin til et simuleringspanel i foreldreguiden: hopp til dag og klokkeslett, løs dager automatisk opp til en dag, sett frost, nullstill, og spol en hel uke.
-- [ ] **Designrevisjon:** forslag i `docs/design-revisjon-2026.md`, deretter bygging av det som godkjennes.
+- [x] **Varslingssystem** (`src/lib/notify`, `/api/varsler`): et lite system for utgående varsler med kanaler som kan slås av og på (e-post til foreldre, Varden/iMessage, Skjerm-kort, radio). Ingen kanal aktiv nå; e-post kan legges til igjen senere.
+- [x] **MCP-server** på `/mcp` (`src/lib/mcp`), testet uten Kanidm (lokal nøkkel). Kobling til Kanidm og VKS gjenstår ved utrulling (se fase 5).
+- [x] **Simulering** (`window.nissekomm.sim`, `src/lib/simulation.ts`): utvid Tidsmaskin til et simuleringspanel i foreldreguiden: hopp til dag og klokkeslett, løs dager automatisk opp til en dag, sett frost, nullstill, og spol en hel uke.
+- [x] **Designrevisjon:** alternativ B «Kontrollrommet i Snøfall», P0–P2 bygget (`docs/design-revisjon-2026.md`).
 
 - [ ] **MCP-API v1 for hjemmet (avtalt med Varden 10. november, Starefossen/homelab#22, bygges når integrasjon gjenopptas):** `get_screen` (Skjerm: dører, dagens tittel og teaser fra 06:00, Frostgrad, Kulde-navn, merker, Rampenissen sett etter 09/10, frost, gråtone, TV-variant og hendelse; `events[]` er tom når tilstanden ikke er `rolig`, `next_change_at`), `get_clips(date)` (radio: lyd-URL, varighet, sha256, ferdig innen 05:30), `get_kid_context` (Varden: alt barna har låst opp, altså fremdrift, e-post, transkripsjon og PS for løste dager (dagens e-post og transkripsjon, og alle filer og symboler dagens gåte bruker uansett når de ble åpnet, først når dagens kode er løst; filene merkes med hvilke dager de er gåtebiter for; det samme gjelder eldre e-post, transkripsjoner og PS som er biter i dagens gåte; en test sjekker hver dag 1–24 mot bitlisten i `docs/gaater-2026.md`), åpne NisseNet-filer og symboler; uopptjente koder sensureres, ingen foreldredata, pluss en fast `guidance` om aldri å gi svaret, returnert ordrett; sensurerte biter vises som «[skjult]» (dagens kode bruker «[…]», byttes); Varden kjører adversariale barneprompter med krav om null lekkasjer før skillen slås på; Hans 10. november), foreldreverktøy (`give_hint`, `set_frost`, `skip_day`, `reset`, `set_fake_now` som bare gjelder svar til operatøren, utløper etter 24 timer og logges, pluss `preview_screen(as_caller)` for å se Skjerms visning). Alle svar har `schema_version: 1`, tid i Europe/Oslo og er under 16 KB. Medie-URL-er har sterk ETag og Range.
 - [ ] **Skjerm-tekster (venter på integrasjon):** skriv `skjerm_teaser` (én linje lore per dag, ingen bokstaver, tall eller steder) for 24 dager, og en `get_screen`-variant i MCP for familieskjermen.
@@ -124,6 +111,11 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 
 ## Senere forbedringer (etter sesongen)
 
+- [ ] **Hullkort / sjablongkort:** kort med utklippede vinduer som legges over en side i en fysisk bok.
+- [ ] **1:1 skjermkalkeringskart:** bakepapir med registreringsmerker som holdes mot CRT-skjermen i Snøfall TV, med en kalibreringsknapp (`[KALIBRER SKJERMKART]`) som viser hjørnekors.
+- [ ] **Utgående webhook ved kodeinnlevering og frekvenslås (90,0 MHz):** lamper som blinker gull, og en kort radioskurring på kjøkkenhøyttaleren. Hører til Varden-integrasjonen.
+- [ ] **Morgenindikator i gangen:** én lampe lyser isblått kl. 06:45 til dagens kode er løst. Hører til Varden-integrasjonen.
+- [ ] **Akustisk morsefyr i Snøfall TV:** kort tonesekvens (Web Audio) på en skjult frekvens, som matcher fysiske banketegn.
 - [ ] **Portkamera for figurer:** et eget, nærmere kamera i gateplan ved porten, så Julius, IQ, Nissemor, Winter og reinsdyrene kan gjøre entré i riktig størrelse. Krever nytt referansebilde og et kamerabytte i Snøfall TV.
 - [ ] **Lengre hendelser:** når videomodellen tillater mer enn 10 sekunder med låst første og siste bilde, kan figurene gå helt inn på torget.
 - [ ] **Flere tilfeldige hendelser og tid på døgnet** for Skjerm (morgen, dag, Lucia, blå brevfugl), jf. avtalen med Varden.
@@ -133,16 +125,16 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 
 Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxScale=1` 1. desember–6. januar, 200Mi/512Mi, PostgreSQL (CloudNativePG), CiliumNetworkPolicy, Secret). NisseKomm-repoet er vårt. Varden rører det ikke.
 
-- [ ] **Kjøring:** `output: "standalone"` i `next.config`, lytt på `$PORT` (standard 8080), bind `0.0.0.0`.
-- [ ] **Dockerfile:** flertrinns på `node:24-alpine`, ikke-root, multi-arch (amd64 påkrevd). Push til `registry.intern.flaatten.org:5000/nissekomm:<unix-ts>` med en mise-oppgave.
+- [x] **Kjøring:** `output: "standalone"` i `next.config`, lytt på `$PORT` (standard 8080), bind `0.0.0.0`.
+- [x] **Dockerfile:** flertrinns på `node:24-alpine`, ikke-root, multi-arch (amd64 påkrevd). Push til `registry.intern.flaatten.org:5000/nissekomm:<unix-ts>` med en mise-oppgave.
 - [ ] **Media i imaget:** `public/` bakes inn (Next støtter Range-forespørsler, som Safari trenger for video).
-- [ ] **Lagring:** PostgreSQL i Varden-klyngen (CloudNativePG), tilkobling fra `DATABASE_URL`. Ingen PVC for appen, så den kan skalere til null og skaleres uavhengig av databasen. Bruk en ren JS-klient (`pg`).
+- [x] **Lagring:** PostgreSQL i Varden-klyngen (CloudNativePG), tilkobling fra `DATABASE_URL`. Ingen PVC for appen, så den kan skalere til null og skaleres uavhengig av databasen. Bruk en ren JS-klient (`pg`).
   - Egen CNPG-klynge `nissekomm-db` (1 instans, 1Gi, PG 17) i navnerommet `nissekomm`. `DATABASE_URL` kommer fra den genererte hemmeligheten `nissekomm-db-app` (nøkkel `uri`, vert `nissekomm-db-rw.nissekomm.svc`, ingen TLS-krav i klyngen).
   - Migreringer kjøres ved oppstart og må tåle å kjøres flere ganger. Liten tilkoblingspool (maks 5). `/api/health` rører ikke databasen.
-- [ ] **Helse:** `GET /api/health` gir 200 uten autentisering og uten tung IO.
-- [ ] **Fjern:** `@sanity/*`, Sanity Studio og migreringer, `resend` og e-postskript, Vercel-cron og `vercel.json`, `@vercel/analytics`. Null utgående trafikk i kjøring.
-- [ ] **Én familie:** barnekode og foreldrekode fra miljøet (`KID_CODE`, `PARENT_CODE`). Ingen registrering, gjenoppretting eller avmelding.
-- [ ] **Hjemmeintegrasjon via MCP** (erstatter REST-endepunktene; bekreftet av Hans 10. november): MCP-server på `/mcp` (Streamable HTTP, `@modelcontextprotocol/sdk`), bare på hjemmenettet. `api/home-bridge` fjernes.
+- [x] **Helse:** `GET /api/health` gir 200 uten autentisering og uten tung IO.
+- [x] **Fjern:** `@sanity/*`, Sanity Studio og migreringer, `resend` og e-postskript, Vercel-cron og `vercel.json`, `@vercel/analytics`. Null utgående trafikk i kjøring.
+- [x] **Én familie:** barnekode og foreldrekode fra miljøet (`KID_CODE`, `PARENT_CODE`). Ingen registrering, gjenoppretting eller avmelding.
+- [x] **Hjemmeintegrasjon via MCP** (koden er ferdig; Kanidm-oppsett mot VKS gjenstår ved utrulling) (erstatter REST-endepunktene; bekreftet av Hans 10. november): MCP-server på `/mcp` (Streamable HTTP, `@modelcontextprotocol/sdk`), bare på hjemmenettet. `api/home-bridge` fjernes.
   - Autentisering: `Authorization: Bearer` med Kanidm-JWT, validert med `jose` mot JWKS fra `https://id.flaatten.org/oauth2/openid/mcp`, audience `mcp`, scope `groups`. Ingen token i URL.
   - Nivå `read` (barnesikkert): `get_state`, `get_clips(date)`, `get_today_quest`, `get_progress`. Aldri koder, svar, `hint` eller fremtidige dager; filtreres på serveren, med test som sjekker svarene mot alle 24 koder.
   - Nivå `parent`: `give_hint(day)`, `set_frost(active, until)`, `reset`/`skip_day`. Varden, radio-produsent og Skjerm får bare `read`. `parent` bare for operatør og en egen foreldreidentitet. Ingen verktøy som gir fasit.
@@ -150,6 +142,6 @@ Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxSca
   - Krever adversarial gjennomgang av en annen modell før merge (autentisering).
 - [ ] **Bygg:** produksjonsbygg setter ikke `NEXT_PUBLIC_MOCK_*`, `TEST_MODE` eller `STORAGE_BACKEND` (de bakes inn ved bygging).
 - [ ] **Sikkerhetshoder:** ta med `Permissions-Policy: camera=(self)` så symbolskanneren virker.
-- [ ] **Sikkerhetshoder (opprinnelig punkt):** flytt fra `vercel.json` til `headers()` i `next.config`.
+- [x] **Sikkerhetshoder (opprinnelig punkt):** flytt fra `vercel.json` til `headers()` i `next.config`.
 - [ ] **Miljø:** `PORT`, `DATABASE_URL`, `KID_CODE`, `PARENT_CODE`, `HOME_STATE_TOKEN`, `NEXT_PUBLIC_URL=https://nissekomm.nissekomm.fn.flaatten.org`.
 - [ ] **Flytt kildekoden til `starefossen/home`:** Etter at `feat/season-2026` er merget og ingen agenter jobber, flyttes repoet inn som `apps/nissekomm` med `git subtree` (historikken beholdes), og dette repoet arkiveres. Hold bygge- og utrullingsoppsett relativt til repoet (ingen absolutte stier), ha `mise.toml` med bygge- og sjekkoppgaver, og hemmeligheter bare fra miljøet.
