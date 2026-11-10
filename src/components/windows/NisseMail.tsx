@@ -1,7 +1,7 @@
 "use client";
 
 import { mediaUrl } from "@/lib/media";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { Oppdrag, CalendarEvent } from "@/types/innhold";
@@ -26,6 +26,47 @@ interface NisseMailProps {
   onOpenKodeTerminal: (day: number) => void;
   currentDay: number;
   initialDay?: number | null;
+}
+
+/**
+ * The mail NisseMail opens on: the calendar's day, today's mail, the first
+ * unread one, or day 1. Never a mail for a day that has not come yet.
+ */
+export function velgStartEpost(
+  missions: Oppdrag[],
+  currentDay: number,
+  initialDay: number | null | undefined,
+  viewedEmails: Set<number>,
+  viewedBonusOppdrag: Set<number>,
+  completedDays: Set<number>,
+): Email | null {
+  const available = missions.filter((m) => m.dag <= currentDay);
+  if (available.length === 0) return null;
+
+  const fromCalendar = initialDay
+    ? available.find((m) => m.dag === initialDay)
+    : undefined;
+  if (fromCalendar) {
+    return { type: "main", mission: fromCalendar, day: fromCalendar.dag };
+  }
+
+  const today = available.find((m) => m.dag === currentDay);
+  if (today) return { type: "main", mission: today, day: today.dag };
+
+  for (const mission of available) {
+    if (!viewedEmails.has(mission.dag)) {
+      return { type: "main", mission, day: mission.dag };
+    }
+    if (
+      mission.bonusoppdrag &&
+      completedDays.has(mission.dag) &&
+      !viewedBonusOppdrag.has(mission.dag)
+    ) {
+      return { type: "side-quest", mission, day: mission.dag };
+    }
+  }
+
+  return { type: "main", mission: available[0], day: available[0].dag };
 }
 
 export function NisseMail({
@@ -55,7 +96,6 @@ export function NisseMail({
     },
   );
 
-  const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
   const [showInbox, setShowInbox] = useState(true);
   /**
    * Get hendelse for a specific day
@@ -98,61 +138,32 @@ export function NisseMail({
     [viewedEmails, viewedBonusOppdrag],
   );
 
-  // Calculate initial mission selection
-  // eslint-disable-next-line react-hooks/preserve-manual-memoization
-  const initialEmail = useMemo<Email | null>(() => {
-    if (missions.length === 0) return null;
+  const [initialEmail] = useState(() =>
+    typeof window === "undefined"
+      ? null
+      : velgStartEpost(
+          missions,
+          currentDay,
+          initialDay,
+          viewedEmails,
+          viewedBonusOppdrag,
+          GameEngine.loadGameState().completedQuests,
+        ),
+  );
 
-    // Get completed days for side-quest check
-    const gameState = GameEngine.loadGameState();
-    const completedDays = gameState.completedQuests;
-
-    // If initialDay is provided (from calendar), use that
-    if (initialDay) {
-      const dayMission = missions.find((m) => m.dag === initialDay);
-      if (dayMission) {
-        return { type: "main", mission: dayMission, day: initialDay };
-      }
-    }
-
-    // Otherwise try to find today's mission
-    const todayMission = missions.find((m) => m.dag === currentDay);
-    if (todayMission) {
-      return { type: "main", mission: todayMission, day: currentDay };
-    }
-
-    // Find first unread mission (main or side-quest)
-    for (const mission of missions) {
-      // Check main email
-      if (!viewedEmails.has(mission.dag)) {
-        return { type: "main", mission, day: mission.dag };
-      }
-      // Check side-quest email if main is completed and has side-quest
-      if (
-        mission.bonusoppdrag &&
-        completedDays.has(mission.dag) &&
-        !viewedBonusOppdrag.has(mission.dag)
-      ) {
-        return { type: "side-quest", mission, day: mission.dag };
-      }
-    }
-
-    // Default to first mission
-    return { type: "main", mission: missions[0], day: missions[0].dag };
-  }, [missions, currentDay, initialDay, viewedEmails, viewedBonusOppdrag]);
-
-  const [selectedMission, setSelectedMission] = useState<Oppdrag | null>(() => {
-    if (initialEmail) {
-      // Mark as viewed on initial render
-      if (typeof window !== "undefined") {
-        if (initialEmail.type === "main") {
-          GameEngine.markEmailAsViewed(initialEmail.day, false);
-        }
-      }
-      return initialEmail.mission;
-    }
-    return null;
-  });
+  // The content pane needs both, so the opening mail must set both
+  const [selectedEmail, setSelectedEmail] = useState<Email | null>(
+    initialEmail,
+  );
+  const [selectedMission, setSelectedMission] = useState<Oppdrag | null>(
+    initialEmail?.mission ?? null,
+  );
+  // Opening a mail marks it read, in storage and in the inbox list
+  const [initialMarked, setInitialMarked] = useState(false);
+  if (!initialMarked && initialEmail) {
+    setInitialMarked(true);
+    markAsViewed(initialEmail.day, initialEmail.type === "side-quest");
+  }
 
   const handleSelectMission = (
     mission: Oppdrag,
