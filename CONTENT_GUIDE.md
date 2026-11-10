@@ -799,6 +799,8 @@ Split what each child _holds_ or _knows_ rather than giving the youngest child a
 
 #### 2. State-changing physical artifacts
 
+In 2026 only the red-reveal lens (day 10) and the fold sheet (day 14) are used. Screen tracing and punched stencils are ideas for later seasons (`todo.md`).
+
 Avoid relying solely on four-letter passwords written on sticky notes. Use physical props that transform when manipulated:
 
 | Artifact                       | Mechanism                                                                                                                                              | Best role fit          |

@@ -112,7 +112,7 @@ CRTFrame (fullscreen container)
 
 4. **BREVFUGLER** (`windows/Brevfugler.tsx`)
    - **Unlocks**: Day 14 completion
-   - Personal letters from Julius
+   - Letters to Julius, stored in `nissekomm-santa-letters` and synced between screens
    - Origami-style paper birds
 
 ### Module Unlock Logic
@@ -150,10 +150,11 @@ static getUnlockedModules(): string[] {
 
 ### Storage Architecture
 
-NisseKomm combines client-side `localStorage` with an optional server-side store for state synchronization across screens:
+Game state lives on the server (PostgreSQL via `/api/state`, selected by `STORAGE_BACKEND` or by `DATABASE_URL` being set). Each screen keeps a `localStorage` cache and syncs through `ServerSyncAdapter`. Without a server store it runs on `localStorage` alone:
 
 - **Client Storage (`StorageManager`)**: `lib/storage.ts` provides a type-safe interface over `LocalStorageAdapter`. All UI reads and writes go through `GameEngine` or `StorageManager`.
 - **Server Store (`Store`)**: `lib/db.ts` provides persistent state storage. When `DATABASE_URL` is set, it connects to PostgreSQL (with `kv`, `sessions`, and `login_failures` tables, migrated with an advisory lock). When `DATABASE_URL` is unset, an in-memory store (`createMemoryStore()`) is used (development, testing).
+- **Season reset**: `DELETE /api/state` (parent session only) calls `resetState()`, which clears every synced key and the server-written keys (`frost-override`, `day-offset`), so all screens start over.
 - **State Sync (`/api/state`)**: Clients sync game progress through `GET /api/state` and `PUT /api/state`. Only whitelisted keys (`STATE_KEYS`) are allowed. Keys that can be updated concurrently across multiple screens (`MERGED_KEYS`) are merged per item/day instead of overwritten. State writes trigger notifications via `notify()`.
 
 ### StorageManager Pattern
@@ -207,7 +208,7 @@ useEffect(() => {
 
 **State Types**:
 
-- **Persistent** (localStorage via StorageManager): Authentication, progress, read status, preferences
+- **Persistent** (server store, cached in localStorage via StorageManager): Authentication, progress, read status, preferences
 - **Session-only** (React state): Open window, selected day, UI interactions
 - **Derived** (computed): Unlocked modules, available quests, eventyr progress
 
@@ -471,10 +472,14 @@ Controlled by `NISSEKOMM_MODE=public|lan` (`src/lib/mode.ts`). Unset defaults to
 Media files (MP4 video, MP3 audio, CRT feeds) are served from `MEDIA_DIR` instead of being bundled in git (`src/lib/media.ts`, `src/lib/media-server.ts`):
 
 - **Directory Resolution**: `mediaDir()` reads `process.env.MEDIA_DIR`. If unset, it falls back to `public/` in development and `/data/media` in production.
-- **Route Handler**: Served via `/media/[...path]` (`src/app/media/[...path]/route.ts`).
+- **Route Handler**: Served via `/media/[...path]` (`src/app/media/[...path]/route.ts`). `/api/media` reports library status and takes uploads for the parent guide (and MCP `list_assets`/`upload_asset`).
 - **HTTP Range Support**: `serveMedia` supports `Range` headers, enabling video and audio seeking in players.
 - **URL Generation**: `mediaUrl(path)` encodes path segments for safe URLs.
 - **Manifests**: Track definitions for Snøfall Radio (chip-tune audio), Julius video diaries, ambient sounds, and camera feeds.
+
+## MCP Server
+
+`/mcp` (Streamable HTTP, `lan` mode only) is the home integration. `Authorization: Bearer` with a Kanidm JWT, validated with `jose` (`src/lib/mcp/auth.ts`). `read` tools (`get_state`, `get_clips`, `get_today_quest`, `get_progress`) never return codes or answers; `parent` tools (`give_hint`, `set_frost`, `skip_day`, `reset`, `list_assets`, `upload_asset`) are for the operator. Tools live in `src/lib/mcp/tools.ts`.
 
 ## Notifications
 
