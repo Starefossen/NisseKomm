@@ -37,19 +37,35 @@ describe("read-verktøy lekker ikke koder eller hint", () => {
     expect(CODE_WORDS.length).toBeGreaterThanOrEqual(24);
   });
 
+  const solvedUpTo = (n: number) => ({
+    "nissekomm-codes": quests
+      .filter((q) => q.dag <= n)
+      .map((q) => ({ kode: q.kode, dato: "x" })),
+  });
+
   it.each(Array.from({ length: 24 }, (_, i) => i + 1))("dag %i", async (d) => {
-    for (const state of [{}, allSolved]) {
+    // [state, highest day the kids have solved]
+    const cases: Array<[Record<string, unknown>, number]> = [
+      [{}, 0],
+      [solvedUpTo(d - 1), d - 1],
+      [allSolved, d],
+    ];
+    for (const [state, upTo] of cases) {
       memoryStore.reset();
       for (const [k, v] of Object.entries(state)) {
         await memoryStore.putState(k, v);
       }
+      const earned = new Set(
+        quests.filter((q) => q.dag <= upTo).map((q) => q.kode.toUpperCase()),
+      );
+      const forbidden = CODE_WORDS.filter((c) => !earned.has(c.toUpperCase()));
       for (const hour of [7, 10, 21]) {
         jest.useFakeTimers({ now: new Date(2026, 11, d, hour) });
         for (const tool of READ_TOOLS) {
           const out = await callTool("read", tool, {
             date: `2026-12-${String(d).padStart(2, "0")}`,
           });
-          for (const c of CODE_WORDS) {
+          for (const c of forbidden) {
             expect(out.toUpperCase()).not.toContain(c.toUpperCase());
           }
           for (const h of hints) expect(out).not.toContain(h);
@@ -57,6 +73,17 @@ describe("read-verktøy lekker ikke koder eller hint", () => {
         jest.useRealTimers();
       }
     }
+  });
+
+  it("løste koder fra før i dag står igjen (Kulde etter dag 7)", async () => {
+    await memoryStore.putState(
+      "nissekomm-codes",
+      solvedUpTo(7)["nissekomm-codes"],
+    );
+    jest.useFakeTimers({ now: new Date(2026, 11, 8, 10) });
+    expect(await callTool("read", "get_today_quest")).toMatch(/KULDE/i);
+    memoryStore.reset();
+    expect(await callTool("read", "get_today_quest")).not.toMatch(/KULDE/i);
   });
 
   it("dagens oppdrag viser bare i dag", async () => {

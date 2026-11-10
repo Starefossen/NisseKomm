@@ -41,15 +41,28 @@ export const CODE_WORDS: string[] = (() => {
 })();
 
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-const CODE_RE = new RegExp(
-  CODE_WORDS.map((c) =>
-    /^\d+$/.test(c) ? `(?<!\\d)${c}(?!\\d)` : escape(c),
-  ).join("|"),
-  "giu",
-);
+/** Removes every code word except `earned` (solved days up to today). */
+export function redact(text: string, earned = new Set<string>()): string {
+  const words = CODE_WORDS.filter((c) => !earned.has(c.toUpperCase()));
+  if (!words.length) return text;
+  const re = new RegExp(
+    words
+      .map((c) => (/^\d+$/.test(c) ? `(?<!\\d)${c}(?!\\d)` : escape(c)))
+      .join("|"),
+    "giu",
+  );
+  return text.replace(re, "[…]");
+}
 
-export function redact(text: string): string {
-  return text.replace(CODE_RE, "[…]");
+/** Codes the kids have typed in on a day up to today; story names stay readable. */
+export function earnedCodes(state: State): Set<string> {
+  const today = adventDay(now(state)) ?? 0;
+  const solved = solvedDays(state);
+  return new Set(
+    getAllOppdrag()
+      .filter((q) => q.dag <= today && solved.has(q.dag))
+      .map((q) => q.kode.toUpperCase()),
+  );
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -262,5 +275,5 @@ export async function callTool(
     throw new Error(`Ukjent verktøy: ${name}`);
   }
   const text = JSON.stringify(await tool.run(args));
-  return tool.level === "read" ? redact(text) : text;
+  return tool.level === "read" ? redact(text, earnedCodes(await read())) : text;
 }
