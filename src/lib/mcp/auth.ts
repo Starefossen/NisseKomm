@@ -60,6 +60,7 @@ export async function authenticate(req: Request): Promise<Caller | null> {
       algorithms: ["ES256"],
       typ: "at+jwt",
       clockTolerance: 60,
+      requiredClaims: ["exp"],
     });
     const scope = payload.scope;
     const scopes = Array.isArray(scope)

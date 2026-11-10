@@ -43,14 +43,12 @@ export const CODE_WORDS: string[] = (() => {
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 /** Removes every code word except `earned` (solved days up to today). */
 export function redact(text: string, earned = new Set<string>()): string {
-  const words = CODE_WORDS.filter((c) => !earned.has(c.toUpperCase()));
-  if (!words.length) return text;
-  const re = new RegExp(
-    words
-      .map((c) => (/^\d+$/.test(c) ? `(?<!\\d)${c}(?!\\d)` : escape(c)))
-      .join("|"),
-    "giu",
+  // Numeric codes (24, 48, 75) would mangle the JSON; kodelekkasje.test covers them.
+  const words = CODE_WORDS.filter(
+    (c) => !/^\d+$/.test(c) && !earned.has(c.toUpperCase()),
   );
+  if (!words.length) return text;
+  const re = new RegExp(words.map(escape).join("|"), "giu");
   return text.replace(re, "[…]");
 }
 

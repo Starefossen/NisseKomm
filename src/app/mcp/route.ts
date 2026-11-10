@@ -57,4 +57,4 @@ async function handle(req: Request): Promise<Response> {
   return transport.handleRequest(req);
 }
 
-export { handle as GET, handle as POST, handle as DELETE };
+export { handle as POST };

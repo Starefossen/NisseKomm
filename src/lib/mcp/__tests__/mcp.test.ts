@@ -58,7 +58,9 @@ describe("read-verktøy lekker ikke koder eller hint", () => {
       const earned = new Set(
         quests.filter((q) => q.dag <= upTo).map((q) => q.kode.toUpperCase()),
       );
-      const forbidden = CODE_WORDS.filter((c) => !earned.has(c.toUpperCase()));
+      const forbidden = CODE_WORDS.filter(
+        (c) => !/^\d+$/.test(c) && !earned.has(c.toUpperCase()),
+      );
       for (const hour of [7, 10, 21]) {
         jest.useFakeTimers({ now: new Date(2026, 11, d, hour) });
         for (const tool of READ_TOOLS) {
@@ -84,6 +86,14 @@ describe("read-verktøy lekker ikke koder eller hint", () => {
     expect(await callTool("read", "get_today_quest")).toMatch(/KULDE/i);
     memoryStore.reset();
     expect(await callTool("read", "get_today_quest")).not.toMatch(/KULDE/i);
+  });
+
+  it("dag 24 gir gyldig JSON med riktig dag og dato", async () => {
+    jest.useFakeTimers({ now: new Date(2026, 11, 24, 10) });
+    expect(JSON.parse(await callTool("read", "get_state")).date).toBe(
+      "2026-12-24",
+    );
+    expect(JSON.parse(await callTool("read", "get_today_quest")).day).toBe(24);
   });
 
   it("dagens oppdrag viser bare i dag", async () => {
