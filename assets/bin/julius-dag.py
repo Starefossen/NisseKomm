@@ -81,7 +81,7 @@ def coverage(clip: Path, line: str) -> float:
 
 # ponytail: word-set overlap, not alignment; catches dropped clauses, not swapped word order
 MIN_COVERAGE = 0.9
-ATTEMPTS = 4
+ATTEMPTS = 3
 
 
 def main():
@@ -105,6 +105,10 @@ def main():
             r = subprocess.run([str(BIN / "julius.sh"), name, line, act, str(secs)], stdin=subprocess.DEVNULL)
             if r.returncode != 0:
                 import time
+
+                resp = OUT / f"{name}.resp.json"
+                if resp.exists() and "spending cap" in resp.read_text():
+                    sys.exit("Stoppet: månedlig utgiftstak i Gemini er nådd")
 
                 time.sleep(60 * attempt)  # usually 429 from the video API; back off
                 continue
