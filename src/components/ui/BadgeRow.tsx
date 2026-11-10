@@ -85,11 +85,11 @@ export function BadgeRow() {
         const getLockedTooltip = () => {
           const c = badge.unlockCondition;
           if (c.type === "decryptionSolved") {
-            return `🔒 ${badge.navn} - Løs den første dekrypteringen i NisseKrypto`;
+            return `LÅST: ${badge.navn} - Løs den første dekrypteringen i NisseKrypto`;
           } else if (c.type === "dayCompleted") {
-            return `🔒 ${badge.navn} - Løs dag ${c.day}`;
+            return `LÅST: ${badge.navn} - Løs dag ${c.day}`;
           }
-          return `🔒 ${badge.navn} - Fullfør alle 24 dager`;
+          return `LÅST: ${badge.navn} - Fullfør alle 24 dager`;
         };
 
         return (
@@ -111,7 +111,7 @@ export function BadgeRow() {
             `}
             title={
               isEarned
-                ? `✨ ${badge.navn} - ${badge.beskrivelse}`
+                ? `${badge.navn} - ${badge.beskrivelse}`
                 : getLockedTooltip()
             }
           >

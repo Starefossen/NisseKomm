@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { Frostrune, RuneText } from "@/components/ui/Frostrune";
 import { CutCard, NewSheet, PrintPage } from "./PrintPage";
+import { Iskrystall } from "./dager01-12/felles";
 
 /*
  * Printables for days 13–24 and the §8 prank signs, per docs/gaater-2026.md.
@@ -25,7 +26,7 @@ function Skjelett({ m }: { m: string }) {
             {i + 1}
           </span>
           {c === "_" ? (
-            "❄"
+            <Iskrystall size={24} />
           ) : (
             <>
               {c}
@@ -100,7 +101,9 @@ function Dag13() {
       <div className="grid grid-cols-2 gap-4">
         {kort.map((m) => (
           <CutCard key={m} className={`${RETRO} h-40 gap-2`}>
-            <div className="tracking-widest">❄ FROSTLAPP ❄</div>
+            <div className="tracking-widest flex items-center gap-2">
+              <Iskrystall size={16} /> FROSTLAPP <Iskrystall size={16} />
+            </div>
             <Skjelett m={m} />
           </CutCard>
         ))}
@@ -231,7 +234,7 @@ function Dag15() {
   return (
     <PrintPage
       title="DAG 15 · REDSKAPSKORT"
-      note="Side 1 tykt papir: A under gryta, M under sleiva, L under vispen, ❄ under kjevle og øse. Side 2 vanlig papir: fem fotsporstrimler, de to korte går mot kjevle og øse."
+      note="Side 1 tykt papir: A under gryta, M under sleiva, L under vispen, iskrystall under kjevle og øse. Side 2 vanlig papir: fem fotsporstrimler, de to korte går mot kjevle og øse."
     >
       <Grid>
         {["A", "M", "L"].map((l) => (
@@ -241,7 +244,9 @@ function Dag15() {
         ))}
         {[1, 2].map((i) => (
           <CutCard key={i} className="h-32">
-            <Big>❄</Big>
+            <Big>
+              <Iskrystall size={56} />
+            </Big>
           </CutCard>
         ))}
         <Rutekort n={8} />
@@ -288,7 +293,13 @@ function Dag17Baand() {
       <div className="grid grid-cols-7 gap-2">
         {kort.map((l, i) => (
           <CutCard key={i} nr={i + 1} className="h-24">
-            {l ? <RuneKort l={l} size={30} /> : <Big>❄</Big>}
+            {l ? (
+              <RuneKort l={l} size={30} />
+            ) : (
+              <Big>
+                <Iskrystall size={56} />
+              </Big>
+            )}
           </CutCard>
         ))}
       </div>
@@ -339,12 +350,12 @@ function Dag18() {
   return (
     <PrintPage
       title="DAG 18 · ROSINKORT"
-      note="2 rosiner over U, 4 over B, 7 over E, 9 over ❄. Prikkene på baksiden er reserven hvis noen spiser sporet."
+      note="2 rosiner over U, 4 over B, 7 over E, 9 over iskrystallet. Prikkene på baksiden er reserven hvis noen spiser sporet."
     >
       <Grid>
         {kort.map((k) => (
           <CutCard key={k.n} rune={k.l || undefined} className="h-32">
-            <Big>{k.l || "❄"}</Big>
+            <Big>{k.l || <Iskrystall size={56} />}</Big>
           </CutCard>
         ))}
         <div />
@@ -386,7 +397,7 @@ function Dag19() {
         {lapper.map((p) => (
           <CutCard key={p.n} rune={p.l || undefined} className="h-32 gap-1">
             <Big>
-              {p.l || "❄"} · {p.n}
+              {p.l || <Iskrystall size={48} />} · {p.n}
             </Big>
             <span className="text-xs text-gray-400 print:hidden">{p.rom}</span>
           </CutCard>
@@ -413,7 +424,13 @@ function Dag20() {
       <Grid>
         {kort.map((l, i) => (
           <CutCard key={i} className="h-36">
-            {l ? <RuneKort l={l} /> : <Big>❄</Big>}
+            {l ? (
+              <RuneKort l={l} />
+            ) : (
+              <Big>
+                <Iskrystall size={56} />
+              </Big>
+            )}
           </CutCard>
         ))}
       </Grid>
@@ -442,7 +459,7 @@ function Dag21() {
   return (
     <PrintPage
       title="DAG 21 · PORTKORT"
-      note="Ryggkortene teipes på bok 1–8 fra venstre. Kortet med U · 7 legges inne i bok 5, ❄-kortet inne i bok 3 (den på gløtt)."
+      note="Ryggkortene teipes på bok 1–8 fra venstre. Kortet med U · 7 legges inne i bok 5, iskrystallkortet inne i bok 3 (den på gløtt)."
     >
       <div className="grid grid-cols-8 gap-2">
         {Array.from({ length: 8 }, (_, i) => (
@@ -452,7 +469,7 @@ function Dag21() {
             rune={i === 1 ? "R" : undefined}
             className="h-40"
           >
-            <Big>{i === 1 ? "R" : "❄"}</Big>
+            <Big>{i === 1 ? "R" : <Iskrystall size={56} />}</Big>
           </CutCard>
         ))}
       </div>
@@ -461,7 +478,9 @@ function Dag21() {
           <Big>U · 7</Big>
         </CutCard>
         <CutCard className="h-36">
-          <Big>❄</Big>
+          <Big>
+            <Iskrystall size={56} />
+          </Big>
         </CutCard>
       </div>
     </PrintPage>
@@ -546,7 +565,7 @@ function Dag23() {
       <div className={`${RETRO} grid grid-cols-3 gap-2 justify-items-center`}>
         {nr.map((n) => (
           <Stjerne key={n}>
-            {forside[n] ?? "❄"}
+            {forside[n] ?? <Iskrystall size={20} />}
             {forside[n] && <Frostrune letter={forside[n]} size={10} />}
           </Stjerne>
         ))}
@@ -599,9 +618,9 @@ function Dag24Krystall() {
       note="Legges ved krystallet under treet. Vintervokterens eneste ord til dem, bare i tegn."
     >
       <CutCard className="h-[120mm] gap-8">
-        <div className="text-4xl">❄</div>
+        <Iskrystall size={40} />
         <RuneText text="TAKK FOR LYSET" size={36} />
-        <div className="text-4xl">❄</div>
+        <Iskrystall size={40} />
       </CutCard>
     </PrintPage>
   );
@@ -632,7 +651,7 @@ export const SIDER_13_24: Record<string, () => ReactNode> = {
   "dag13-gravskilt": () => (
     <Skilt
       title="DAG 13 · GRAVSKILT"
-      linjer={["✝ HER HVILER RAMPEN.", "HAN SPISTE 11."]}
+      linjer={["† HER HVILER RAMPEN.", "HAN SPISTE 11."]}
     />
   ),
   "dag14-brettark": Dag14Brettark,

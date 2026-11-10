@@ -16,7 +16,7 @@ export function GuideSettings() {
     <div className="space-y-6">
       {/* Frost kill switch (historie-2026 §6): emergency exit on day 10 and 21 */}
       <div className="border-4 border-(--cold-blue) bg-(--cold-blue)/5 p-6 space-y-3">
-        <h2 className="text-2xl font-bold text-(--cold-blue)">❄ FROST AV</h2>
+        <h2 className="text-2xl font-bold text-(--cold-blue)">FROST AV</h2>
         <p className="text-(--neon-green)/80 text-sm">
           Dag 10 og 21 fryser NisseKomm til dagens kode er inne (senest kl.
           20:00). Slå av frosten for i dag hvis noe står fast.

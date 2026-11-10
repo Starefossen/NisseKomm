@@ -10,7 +10,7 @@ import { useSounds } from "@/lib/sounds";
 import { StorageManager } from "@/lib/storage";
 import { useAppState } from "@/lib/app-context";
 import { DesktopIcon } from "@/components/ui/DesktopIcon";
-import { IconColor } from "@/lib/icons";
+import { IconColor, Icons } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
 import { mediaUrl } from "@/lib/media";
 import { SystemStatus } from "@/components/modules/SystemStatus";
@@ -309,7 +309,7 @@ export default function Home() {
       <CRTFrame>
         <div className="flex items-center justify-center h-full">
           <div className="text-center space-y-4 p-8 border-4 border-(--christmas-red) max-w-2xl">
-            <div className="text-6xl mb-4">⚠️</div>
+            <Icons.Warning size={64} color="red" className="mx-auto mb-4" />
             <div className="text-3xl font-bold text-(--christmas-red) tracking-wider">
               TILGANG NEKTET
             </div>

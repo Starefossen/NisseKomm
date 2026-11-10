@@ -159,7 +159,7 @@ export function resolveTemplate(
 
     let dateText: string;
     if (day24Completed) {
-      dateText = "24. Desember - JULAFTEN! 🎄✨";
+      dateText = "24. Desember - JULAFTEN!";
     } else if (day23Completed) {
       dateText = "23. Desember ✓";
     } else {
@@ -216,7 +216,7 @@ export function formatNameList(names: string[]): string {
  */
 export function generateFinaleMessage(names: string): string {
   return `
-🏆 GRATULERER, ${names}! 🏆
+GRATULERER, ${names}!
 
 Dere er nå offisielle Julekalender-Mestere!
 
@@ -226,7 +226,7 @@ hvert symbol, hvert øyeblikk av vennskap.
 Dere er ikke bare på listen. Dere ER en del av Snøfall nå.
 For alltid.
 
-- Julius ❤️
+- Julius
 `;
 }
 
@@ -234,7 +234,7 @@ For alltid.
  * Generate Nice List entries from names
  *
  * Logic:
- * - If Day 23+ complete and playerNames exist: show players with ⭐ marker at top
+ * - If Day 23+ complete and playerNames exist: show players with ★ marker at top
  * - If friendNames exist: add them with absurd reasons
  * - If neither: show fallback names with absurd reasons
  *
@@ -259,7 +259,7 @@ export function generateNiceListEntries(
   if (showPlayerAchievements && validPlayerNames.length > 0) {
     validPlayerNames.forEach((name) => {
       entries.push(
-        `${entryNumber}. ${name} - ⭐ FULLFØRT NISSEKOMM JULEKALENDER! ⭐`,
+        `${entryNumber}. ${name} - ★ FULLFØRT NISSEKOMM JULEKALENDER! ★`,
       );
       entryNumber++;
     });

@@ -155,9 +155,7 @@ function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
   return (
     <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-retro flex items-center justify-center p-4">
       <div className="w-full max-w-md border-4 border-(--neon-green) bg-(--dark-crt) p-8">
-        <h1 className="text-3xl font-bold text-center mb-2">
-          🎅 NISSEMOR GUIDE
-        </h1>
+        <h1 className="text-3xl font-bold text-center mb-2">NISSEMOR GUIDE</h1>
         <p className="text-center text-(--neon-green)/70 mb-6">
           Kun for foreldre - logg inn med foreldrekoden
         </p>
@@ -182,7 +180,7 @@ function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
 
           {error && (
             <div className="p-3 border-2 border-(--christmas-red) bg-(--christmas-red)/20 text-(--christmas-red)">
-              ⚠️ {error}
+              {error}
             </div>
           )}
 
@@ -191,7 +189,7 @@ function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
             disabled={isSubmitting}
             className="w-full p-4 bg-(--neon-green) text-black font-bold text-xl hover:bg-(--gold) hover:text-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? "Logger inn..." : "🔑 LOGG INN"}
+            {isSubmitting ? "Logger inn..." : "LOGG INN"}
           </button>
         </form>
 
@@ -237,7 +235,7 @@ export function GuideAuth({
             onClick={logout}
             className="px-4 py-2 bg-(--christmas-red) text-white border-2 border-white hover:bg-(--christmas-red)/80 transition-colors font-bold"
           >
-            🚪 LOGG UT
+            LOGG UT
           </button>
         </div>
       )}

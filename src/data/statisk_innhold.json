@@ -8,145 +8,145 @@
   "daily_alerts": [
     {
       "day": 1,
-      "tekst": "🎅 JULIUS: Direktelinjen er åpen. Ny video på kanal 3.",
+      "tekst": "JULIUS: Direktelinjen er åpen. Ny video på kanal 3.",
       "type": "info"
     },
     {
       "day": 2,
-      "tekst": "⚙️ IQ: Tre sikringer røk i natt. Kanal 2 er mørk til noen regner riktig.",
+      "tekst": "IQ: Tre sikringer røk i natt. Kanal 2 er mørk til noen regner riktig.",
       "type": "info"
     },
     {
       "day": 3,
-      "tekst": "🔮 ORAKELET: Blått glimt på 85,0 MHz klokka 03:12. Noen lytter.",
+      "tekst": "ORAKELET: Blått glimt på 85,0 MHz klokka 03:12. Noen lytter.",
       "type": "advarsel"
     },
     {
       "day": 4,
-      "tekst": "🦌 RUDOLF: Fløy feil i tåka. NisseKrypto åpner i kveld.",
+      "tekst": "RUDOLF: Fløy feil i tåka. NisseKrypto åpner i kveld.",
       "type": "info"
     },
     {
       "day": 5,
-      "tekst": "📋 WINTER: Første brevfugl over Bergen. Alt jeg sender er kryptert fra nå.",
+      "tekst": "WINTER: Første brevfugl over Bergen. Alt jeg sender er kryptert fra nå.",
       "type": "info"
     },
     {
       "day": 6,
-      "tekst": "🎅 JULIUS: God 2. advent. IQ har hengt lys rundt antennen ved tjernet.",
+      "tekst": "JULIUS: God 2. advent. IQ har hengt lys rundt antennen ved tjernet.",
       "type": "info"
     },
     {
       "day": 7,
-      "tekst": "🔮 ORAKELET: Signaturen på 85,0 har et navn. Frostgraden kan måles fra i dag.",
+      "tekst": "ORAKELET: Signaturen på 85,0 har et navn. Frostgraden kan måles fra i dag.",
       "type": "advarsel",
       "etterKode": true
     },
     {
       "day": 8,
-      "tekst": "🎉 NISSENE: Uke én fullført. IQ lodder noe grønt og sover ikke.",
+      "tekst": "NISSENE: Uke én fullført. IQ lodder noe grønt og sover ikke.",
       "type": "info"
     },
     {
       "day": 9,
-      "tekst": "🧪 PIL: Noen av krystallene i radaren er ikke ekte. Jeg ble lurt to ganger.",
+      "tekst": "PIL: Noen av krystallene i radaren er ikke ekte. Jeg ble lurt to ganger.",
       "type": "info"
     },
     {
       "day": 10,
-      "tekst": "📺 IQ: Fargene er borte fra alle kanaler. Kromatisk drenering 71 %.",
+      "tekst": "IQ: Fargene er borte fra alle kanaler. Kromatisk drenering 71 %.",
       "type": "info"
     },
     {
       "day": 11,
-      "tekst": "📡 IQ: Antennen ved tjernet er dekket av is. Senderen er delt i tre.",
+      "tekst": "IQ: Antennen ved tjernet er dekket av is. Senderen er delt i tre.",
       "type": "kritisk"
     },
     {
       "day": 12,
-      "tekst": "🎵 NISSEMOR: Isen ved slusen sprakk i natt. Noe svarte.",
+      "tekst": "NISSEMOR: Isen ved slusen sprakk i natt. Noe svarte.",
       "type": "info"
     },
     {
       "day": 13,
-      "tekst": "🕯️ NISSEMOR: God Lucia. 500 boller bakt, 11 savnet.",
+      "tekst": "NISSEMOR: God Lucia. 500 boller bakt, 11 savnet.",
       "type": "info"
     },
     {
       "day": 14,
-      "tekst": "🕊️ WINTER: Brevfuglene er åpnet. Én fugl ingen har sendt.",
+      "tekst": "WINTER: Brevfuglene er åpnet. Én fugl ingen har sendt.",
       "type": "info"
     },
     {
       "day": 15,
-      "tekst": "📓 IQ: Fant Fargesamlerens notatbok i arkivet i natt. Ingen kommentar.",
+      "tekst": "IQ: Fant Fargesamlerens notatbok i arkivet i natt. Ingen kommentar.",
       "type": "info"
     },
     {
       "day": 16,
-      "tekst": "📦 WINTER: Samlebåndet går baklengs. Alt ligger i én haug.",
+      "tekst": "WINTER: Samlebåndet går baklengs. Alt ligger i én haug.",
       "type": "advarsel"
     },
     {
       "day": 17,
-      "tekst": "🔮 ORAKELET: Grønt over Ulriken i natt. Første svar fra grotten.",
+      "tekst": "ORAKELET: Grønt over Ulriken i natt. Første svar fra grotten.",
       "type": "info"
     },
     {
       "day": 18,
-      "tekst": "🛷 TRIXTER: Testfløy ruten over Nordtoppen. Sleden ristet. Rudolf har det bra.",
+      "tekst": "TRIXTER: Testfløy ruten over Nordtoppen. Sleden ristet. Rudolf har det bra.",
       "type": "info"
     },
     {
       "day": 19,
-      "tekst": "⚙️ IQ: Fôringsautomaten tok taket. 40 enheter i luften, 3 landet på Landås.",
+      "tekst": "IQ: Fôringsautomaten tok taket. 40 enheter i luften, 3 landet på Landås.",
       "type": "advarsel"
     },
     {
       "day": 20,
-      "tekst": "🔮 ORAKELET: 88 %. I morgen er den mørkeste dagen. Vær hjemme.",
+      "tekst": "ORAKELET: 88 %. I morgen er den mørkeste dagen. Vær hjemme.",
       "type": "info"
     },
     {
       "day": 21,
-      "tekst": "🎅 JULIUS: Muren holder. Porten står åpen. Nå venter vi.",
+      "tekst": "JULIUS: Muren holder. Porten står åpen. Nå venter vi.",
       "type": "kritisk",
       "etterKode": true
     },
     {
       "day": 22,
-      "tekst": "📋 WINTER: Jeg mangler stedet i tall. Snill-listen åpner i kveld.",
+      "tekst": "WINTER: Jeg mangler stedet i tall. Snill-listen åpner i kveld.",
       "type": "advarsel"
     },
     {
       "day": 23,
-      "tekst": "🔮 ORAKELET: Flyvær i natt. Sleden går lavt over grotten.",
+      "tekst": "ORAKELET: Flyvær i natt. Sleden går lavt over grotten.",
       "type": "kritisk"
     },
     {
       "day": 24,
-      "tekst": "🎅 JULIUS: God jul, Kristian, Håkon og Hanna. Det er ikke kaldt der nede lenger.",
+      "tekst": "JULIUS: God jul, Kristian, Håkon og Hanna. Det er ikke kaldt der nede lenger.",
       "type": "info"
     },
     {
       "day": 24,
-      "tekst": "❄️ ORAKELET: Frostgrad 0 %. Tøvær.",
+      "tekst": "ORAKELET: Frostgrad 0 %. Tøvær.",
       "type": "info",
       "etterKode": true
     },
     {
       "day": 24,
-      "tekst": "🎄 NISSEMOR: God jul til hele huset på Landås.",
+      "tekst": "NISSEMOR: God jul til hele huset på Landås.",
       "type": "info"
     },
     {
       "day": 24,
-      "tekst": "🧝 RAMPENISSEN: Takk for garnkurven. Vi ses neste desember.",
+      "tekst": "RAMPENISSEN: Takk for garnkurven. Vi ses neste desember.",
       "type": "info"
     },
     {
       "day": 24,
-      "tekst": "🕊️ WINTER: Den blå fuglen fløy hjem. Brevet har tint.",
+      "tekst": "WINTER: Den blå fuglen fløy hjem. Brevet har tint.",
       "type": "info",
       "etterKode": true
     }

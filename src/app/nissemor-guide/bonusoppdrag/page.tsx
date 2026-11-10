@@ -81,7 +81,7 @@ function BonusoppdragContent() {
       {/* Header */}
       <div className="max-w-7xl mx-auto mb-8">
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-2 tracking-wider">
-          🏅 BONUSOPPDRAG
+          BONUSOPPDRAG
         </h1>
         <p className="text-center text-xl opacity-70">
           Manuell validering av kriseløsninger
@@ -92,7 +92,7 @@ function BonusoppdragContent() {
       <div className="max-w-7xl mx-auto mb-6">
         <div className="border-4 border-(--gold) bg-(--gold)/10 p-6">
           <h2 className="text-2xl font-bold text-(--gold) mb-3 text-center">
-            ⚠️ OM BONUSOPPDRAG
+            OM BONUSOPPDRAG
           </h2>
           <ul className="space-y-2 text-lg">
             <li>
@@ -145,7 +145,7 @@ function BonusoppdragContent() {
       {/* Bonus Quests List */}
       <div className="max-w-7xl mx-auto space-y-6 pb-8">
         <h2 className="text-3xl font-bold text-center mb-4">
-          📋 ALLE BONUSOPPDRAG
+          ALLE BONUSOPPDRAG
         </h2>
 
         {bonusQuests.map((quest) => {
@@ -188,7 +188,7 @@ function BonusoppdragContent() {
               {/* Description */}
               <div className="mb-4">
                 <h4 className="text-lg font-bold text-(--cold-blue) mb-2">
-                  📖 BESKRIVELSE:
+                  BESKRIVELSE:
                 </h4>
                 <p className="text-lg bg-black/50 p-4 border-2 border-(--cold-blue)/50">
                   {bonus.beskrivelse}
@@ -198,7 +198,7 @@ function BonusoppdragContent() {
               {/* Task */}
               <div className="mb-4">
                 <h4 className="text-lg font-bold text-(--gold) mb-2">
-                  🛠️ OPPGAVE:
+                  OPPGAVE:
                 </h4>
                 <p className="text-lg bg-black/50 p-4 border-2 border-(--gold)/50">
                   {bonus.fysisk_oppgave}
@@ -220,7 +220,7 @@ function BonusoppdragContent() {
                     onClick={() => handleRevoke(quest)}
                     className="px-6 py-3 bg-(--christmas-red) text-white font-bold hover:opacity-80 border-4 border-(--christmas-red)"
                   >
-                    ❌ Tilbakestill
+                    Tilbakestill
                   </button>
                 )}
               </div>

@@ -179,7 +179,7 @@ export class BadgeManager {
       success: true,
       badge,
       isNewAward: true,
-      message: `🏅 Gratulerer! Du har låst opp merket "${badge.navn}"!`,
+      message: `Gratulerer! Du har låst opp merket "${badge.navn}"!`,
     };
   }
 

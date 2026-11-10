@@ -87,6 +87,10 @@ function render(navn: string) {
   const Side = SIDER_13_24[navn];
   const el = document.createElement("div");
   act(() => createRoot(el).render(<Side />));
+  // Ice crystals are drawn SVGs; count each as ❄ so the specs can name them.
+  el.querySelectorAll("svg[data-iskrystall]").forEach((s) =>
+    s.replaceWith("❄"),
+  );
   return el;
 }
 
