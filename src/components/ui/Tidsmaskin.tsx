@@ -56,7 +56,7 @@ export function Tidsmaskin() {
     "min-h-11 px-3 border-2 border-(--gold) text-(--gold) hover:bg-(--gold)/20";
 
   return (
-    <div className="fixed bottom-2 right-2 z-[9999] font-mono text-sm">
+    <div className="fixed bottom-2 right-2 z-[9999] font-mono text-sm print:hidden">
       {open && (
         <div className="mb-2 p-3 bg-black border-2 border-(--gold) space-y-2 w-64">
           <div className="text-(--gold) font-bold">TIDSMASKIN (test)</div>
