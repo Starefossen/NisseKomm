@@ -337,6 +337,25 @@ export class StorageManager {
     };
   }
 
+  /** Every stored key except login, for Simulering's øyeblikksbilde */
+  static snapshot(): Record<string, unknown> {
+    const out: Record<string, unknown> = {};
+    for (const k of Object.values(KEYS)) {
+      if (k !== KEYS.AUTHENTICATED && this.adapter.has(k)) {
+        out[k] = this.adapter.get(k, null);
+      }
+    }
+    return out;
+  }
+
+  static restoreSnapshot(data: Record<string, unknown>): void {
+    for (const k of Object.values(KEYS)) {
+      if (k === KEYS.AUTHENTICATED) continue;
+      if (k in data) this.adapter.set(k, data[k]);
+      else this.adapter.remove(k);
+    }
+  }
+
   /**
    * Clear all application data
    */

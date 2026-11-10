@@ -268,6 +268,12 @@ await waitFor(
   30000,
   "første lasting",
 );
+// Simulering API (src/lib/simulation.ts), mounted with Tidsmaskin in lan mode
+await waitFor(
+  () => evaluate("!!window.nissekomm?.sim"),
+  30000,
+  "window.nissekomm.sim",
+);
 await evaluate("localStorage.clear()");
 
 const results = [];
@@ -277,9 +283,7 @@ for (const day of days) {
   const check = (ok, msg) => ok || fails.push(msg);
   errors.length = 0;
   try {
-    await evaluate(
-      `localStorage.setItem('nissekomm-tidsmaskin', JSON.stringify({day:${day},month:12,hour:8,minute:0}))`,
-    );
+    await evaluate(`window.nissekomm.sim.goTo(${day}, "08:00")`);
     await send("Page.navigate", { url: base });
     await waitFor(
       async () => /KODETERMINAL|VIDEODAGBOK|LOGG INN/.test(await text()),

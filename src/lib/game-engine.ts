@@ -1058,6 +1058,15 @@ export class GameEngine {
     }
   }
 
+  /** Full game state as plain data (Simulering's øyeblikksbilde) */
+  static getSnapshot(): Record<string, unknown> {
+    return StorageManager.snapshot();
+  }
+
+  static restoreSnapshot(data: Record<string, unknown>): void {
+    StorageManager.restoreSnapshot(data);
+  }
+
   /** Clear all progress without prompting (Tidsmaskin) */
   static resetProgress(): void {
     StorageManager.clearAll();
