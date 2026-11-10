@@ -1,6 +1,6 @@
 # NisseKomm 2026 – Spøkelseskoden
 
-**Status: Klar til låsing** (historiehull fra storyboard-gjennomgangen lukket 10. november; se §7 og `docs/storyboard-2026.md`).
+**Status: LÅST 10. november 2026.** Endringer krever eksplisitt ja fra Hans, og vi sjekker hvilke senere steg som påvirkes. Bekreftet ved låsing: kunnskapstidslinjen, tak på 40 % av svaret per flate (hard regel i steg 1), dag 17 uavhengig av lyktbonusen, og SQLite-fremdrift før frosttilstand for hjemmeskjermer.
 
 Samlet historiedokument. Erstatter `REVISJON.md` og `KANALER.md` der de er uenige. Koder, symbolkort-dager, dekrypteringsdager og bonusdager er de samme som i dagens JSON. Ingen repo-filer er endret.
 
@@ -197,7 +197,7 @@ To flater, samme tilstand: NisseKomm-appen og Skjerm (kjøkken og gang). Skjerm 
 
 **Hva som må bygges:** tilstandsendepunktet og frostmodus i NisseKomm; polling og frost-tegning i Skjerm (avtalt kontrakt); kalenderhendelsene og de to Skjerm-kortene via Varden (finnes); eventuelt én cron for iMac dag 20 (finnes).
 
-## 7. Status: Klar til låsing
+## 7. Status: Låst 10. november 2026
 
 Alle spørsmål fra forrige runde er besvart: ingen videosperre, men autoåpning (§3.4); frost i app og på Skjerm begge dager med morgenvisning til koden er løst (§6); ingen iMessage; iMac-gråtone søndag 20; én eventyr-ID; tre merker; Kulde-meldingen rolig; 24 videoer bekreftet. Historien, kodene, symboldagene, milepælene, kanalrollene og dagtabellen er låst.
 

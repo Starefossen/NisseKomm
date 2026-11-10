@@ -14,7 +14,7 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 | 5   | Integrasjon og flytting hjem (fase 5)                                                            | 3 og 4                          | –                                       | 28. nov     |
 | 6   | Generalprøve alle 24 dager, innkjøp og utskrifter klare                                          | alt                             | –                                       | 29.–30. nov |
 
-- [ ] Steg 0: Lås historien
+- [x] Steg 0: Lås historien (10. nov)
 - [ ] Steg 1: Gåter og praktisk gjennomgang
 - [ ] Steg 1b: Bestill og skriv ut fysisk materiell
 - [ ] Steg 2: All tekst låst
