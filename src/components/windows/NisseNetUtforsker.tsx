@@ -1,6 +1,5 @@
 "use client";
 
-import { mediaUrl } from "@/lib/media";
 import { useState, useMemo, useEffect } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
@@ -289,115 +288,6 @@ export function NisseNetUtforsker({
                     NISSENET // DOKUMENT-VISER
                   </span>
                 </div>
-
-                {/* CRT Visual Evidence & Telemetry Schematic Header */}
-                {(() => {
-                  const name = selectedFile.navn;
-                  const isKulde =
-                    name.includes("orakelets-rapport") ||
-                    name.includes("frosne-koder");
-                  const isAntenne = name.includes("stjernetegn");
-                  const isColor = name.includes("farge");
-
-                  const feedSrc = isKulde
-                    ? mediaUrl("feed/kulde-grotte.png")
-                    : isAntenne
-                      ? mediaUrl("feed/antenne-tarn.png")
-                      : isColor
-                        ? mediaUrl("feed/snøfall-day.png")
-                        : mediaUrl("feed/julius-kontor.png");
-
-                  const badgeText = isKulde
-                    ? "BEVIS // 85.0 MHz SPORINGSFIL"
-                    : isAntenne
-                      ? "RADAR // ANTENNETÅRNET NORD"
-                      : isColor
-                        ? "OPTISK KALIBRERING"
-                        : "ARKIV // JULIUS' KONTOR";
-
-                  const accentColor = isKulde
-                    ? "var(--christmas-red)"
-                    : isColor
-                      ? "var(--neon-green)"
-                      : isAntenne
-                        ? "var(--cold-blue)"
-                        : "var(--gold)";
-
-                  return (
-                    <div
-                      className="relative h-28 w-full overflow-hidden border-2 bg-black"
-                      style={{ borderColor: accentColor }}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={feedSrc}
-                        alt={selectedFile.navn}
-                        className="w-full h-full object-cover contrast-125 saturate-90 opacity-75 select-none pointer-events-none"
-                        style={{ objectPosition: "center 45%" }}
-                      />
-                      {/* Technical SVG Overlay */}
-                      <svg
-                        viewBox="0 0 400 110"
-                        className="absolute inset-0 w-full h-full pointer-events-none opacity-75"
-                        preserveAspectRatio="none"
-                      >
-                        <line
-                          x1="0"
-                          y1="55"
-                          x2="400"
-                          y2="55"
-                          stroke={accentColor}
-                          strokeWidth="0.6"
-                          strokeDasharray="4 4"
-                          opacity="0.5"
-                        />
-                        {isKulde ? (
-                          <polyline
-                            fill="none"
-                            stroke="#ff0037"
-                            strokeWidth="1.8"
-                            points="0,55 40,55 55,20 70,90 85,30 100,80 120,55 180,55 195,15 210,95 225,25 240,85 260,55 400,55"
-                          />
-                        ) : (
-                          <polyline
-                            fill="none"
-                            stroke={accentColor}
-                            strokeWidth="1.4"
-                            points="0,75 60,65 120,70 180,45 240,55 300,35 360,42 400,30"
-                          />
-                        )}
-                      </svg>
-                      <div
-                        className="absolute inset-0 pointer-events-none opacity-45"
-                        style={{
-                          backgroundImage:
-                            "repeating-linear-gradient(0deg, rgba(0,0,0,0.6) 0px, rgba(0,0,0,0.6) 1px, transparent 1px, transparent 3px)",
-                        }}
-                      />
-                      <div
-                        className="absolute inset-0 pointer-events-none"
-                        style={{
-                          background:
-                            "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.88) 100%)",
-                        }}
-                      />
-                      <div className="absolute top-2 left-2.5 right-2.5 flex items-center justify-between text-base font-bold tracking-widest">
-                        <span
-                          className="bg-black/80 px-2 py-0.5 border"
-                          style={{
-                            borderColor: accentColor,
-                            color: accentColor,
-                          }}
-                        >
-                          {badgeText}
-                        </span>
-                        <span className="bg-black/80 px-2 py-0.5 text-(--cold-blue) border border-(--cold-blue)/40">
-                          CRC: VERIFISERT
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })()}
 
                 <div className="text-base leading-relaxed whitespace-pre-wrap">
                   {selectedFile.innhold || "Ingen innhold tilgjengelig"}
