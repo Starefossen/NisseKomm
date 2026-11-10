@@ -34,6 +34,7 @@ export interface LiveCamEffects {
 
 interface LiveCamProps extends LiveCamEffects {
   src: string | null;
+  fallback?: string | null;
   label: string;
   className?: string;
 }
@@ -70,7 +71,13 @@ function makeBlobTile(): HTMLCanvasElement {
   return c;
 }
 
-export function LiveCam({ src, label, className, ...fx }: LiveCamProps) {
+export function LiveCam({
+  src,
+  fallback,
+  label,
+  className,
+  ...fx
+}: LiveCamProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const props = useRef<LiveCamEffects & { label: string }>({
     frost: 0,
@@ -103,6 +110,14 @@ export function LiveCam({ src, label, className, ...fx }: LiveCamProps) {
       video.loop = true;
       video.playsInline = true;
       video.preload = "auto";
+      if (fallback) {
+        const fallbackImg = new Image();
+        fallbackImg.src = fallback;
+        video.onerror = () => {
+          source = fallbackImg;
+          video = null;
+        };
+      }
       if (!reduceMotion) video.play().catch(() => {});
       source = video;
     } else if (src) {
@@ -110,6 +125,7 @@ export function LiveCam({ src, label, className, ...fx }: LiveCamProps) {
       img.src = src;
       source = img;
     }
+    const activeVideo = video;
     document.fonts?.load("20px VT323").catch(() => {});
 
     const noiseTiles = Array.from({ length: 4 }, () => makeNoiseTile());
@@ -456,13 +472,13 @@ export function LiveCam({ src, label, className, ...fx }: LiveCamProps) {
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
-      if (video) {
-        video.pause();
-        video.removeAttribute("src");
-        video.load();
+      if (activeVideo) {
+        activeVideo.pause();
+        activeVideo.removeAttribute("src");
+        activeVideo.load();
       }
     };
-  }, [src]);
+  }, [src, fallback]);
 
   return (
     <canvas
