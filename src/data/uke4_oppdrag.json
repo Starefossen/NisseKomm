@@ -24,8 +24,8 @@
       "id": "spokelseskoden",
       "phase": 19
     },
-    "julius_ps": "Rudolf spiste bevismaterialet. Alt sammen, også det med teip på. Det har vært grønt over Nordtoppen to netter nå, og Orakelet teller flere lys på Landås-siden enn i fjor. IQ bygde automaten for å slippe å tenke; det hjalp ikke.",
-    "julius_ps_bonus": "Rudolf spiste bevismaterialet. Alt sammen, også det med teip på. Orakelet teller lys på Landås-siden og sier ett av dem står helt stille, i et vindu, hver kveld. IQ bygde automaten for å slippe å tenke; det hjalp ikke."
+    "julius_ps": "Rudolf spiste bevisene. Alt sammen, også det med teip på. Det har vært grønt over Nordtoppen to netter nå, og Orakelet teller flere lys på Landås-siden enn i fjor. IQ bygde automaten for å slippe å tenke; det hjalp ikke.",
+    "julius_ps_bonus": "Rudolf spiste bevisene. Alt sammen, også det med teip på. Orakelet teller lys på Landås-siden og sier ett av dem står helt stille, i et vindu, hver kveld. IQ bygde automaten for å slippe å tenke; det hjalp ikke."
   },
   {
     "dag": 20,
@@ -58,7 +58,7 @@
       "symbolColor": "green",
       "description": "Grønn måne funnet under den innerste puten i fortet"
     },
-    "julius_ps": "Nissemor har tent det fjerde lyset. Hun lot det stå i vinduet mot nord. Rampenissen har bygd fort «for å øve på å holde varmen»; popcornet er visst proviant. I morgen trenger dere ikke være redde. Dere trenger å være hjemme.",
+    "julius_ps": "Nissemor har tent det fjerde lyset. Hun lot det stå i vinduet mot nord. Rampenissen har bygd fort «for å øve på å holde varmen»; popcornet er visst niste. I morgen trenger dere ikke være redde. Dere trenger å være hjemme.",
     "julius_ps_krypto_mangler": "Nissemor har tent det fjerde lyset. Men dere har ikke åpnet Trixters kart ennå; det ligger i NisseKrypto, bak seks symboler. Åpne det i kveld, for porten står der jeg tegnet sirkelen. Rampenissen har bygd fort «for å øve på å holde varmen»."
   },
   {
@@ -84,7 +84,7 @@
       "id": "spokelseskoden",
       "phase": 21
     },
-    "julius_ps": "Muren holder. Porten står åpen. Nå venter vi på om noe kommer gjennom. Rampenissen sto bak bokmuren med et grytelokk mot trekken og en visp han hadde glemt å legge fra seg; han sier vispen var «for sikkerhets skyld»."
+    "julius_ps": "Muren holder. Porten står åpen. Nå venter vi på om noe kommer gjennom. Rampenissen sto bak bokmuren med et grytelokk mot trekken. Han holdt en visp han hadde glemt å legge fra seg, og sa den var «for sikkerhets skyld»."
   },
   {
     "dag": 22,
@@ -194,6 +194,6 @@
       "id": "spokelseskoden",
       "phase": 24
     },
-    "julius_ps": "Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Ved siden av ligger den siste klementinen fra Nissemors proviant. Varmt og kaldt, side om side. Rampenissen sov i gullkonvolutten med sløyfe på hodet og fraktesken fra første desember som koffert. God jul, Kristian, Håkon og Hanna."
+    "julius_ps": "Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Ved siden av ligger den siste klementinen fra Nissemors niste. Varmt og kaldt, side om side. Rampenissen sov i gullkonvolutten med sløyfe på hodet og fraktesken fra første desember som koffert. God jul, Kristian, Håkon og Hanna."
   }
 ]

@@ -167,7 +167,7 @@
         {
           "navn": "dagens_oppdrag.txt",
           "type": "fil",
-          "innhold": "SLIK VIRKER NISSEKOMM\n\n1. Finn det Rampenissen har lagt igjen i huset.\n2. Les Rampenissens e-post i NisseMail.\n3. Se dagens video fra Julius. Siste setning er viktig.\n4. Sett sammen det huset viser og det Julius sier, og tast i KodeTerminal.\n5. Hvert kort har et tegn i hjørnet. Det er Snøfalls gamle skrift: ett tegn, én bokstav. Fyll inn tavla når dere vet hvilken.\n\nIngen av delene holder alene.\n\n\n\n[SIKKERHET] Linjevakt v3.0 aktiv\n[SIKKERHET] 3 agenter verifisert: K12, H9, H5\n[SIKKERHET] Bærebølge 90,0 MHz: ustabil\n[SIKKERHET] Ukjent bærebølge 85,0 MHz: overvåkes\n[SIKKERHET] Tiltak: avventer Orakelet"
+          "innhold": "SLIK VIRKER NISSEKOMM\n\n1. Finn det Rampenissen har lagt igjen i huset.\n2. Les Rampenissens e-post i NisseMail.\n3. Se dagens video fra Julius. Siste setning er viktig.\n4. Bruk det du fant i huset og det Julius sier. Skriv koden i KodeTerminal.\n5. Hvert kort har et tegn i hjørnet. Det er Snøfalls gamle skrift: ett tegn, én bokstav. Fyll inn tavla når dere vet hvilken.\n\nIngen av delene holder alene.\n\n\n\n[SIKKERHET] Linjevakt v3.0 aktiv\n[SIKKERHET] 3 agenter verifisert: K12, H9, H5\n[SIKKERHET] Bærebølge 90,0 MHz: ustabil\n[SIKKERHET] Ukjent bærebølge 85,0 MHz: overvåkes\n[SIKKERHET] Tiltak: avventer Orakelet"
         }
       ]
     },
@@ -183,12 +183,12 @@
         {
           "navn": "readme.txt",
           "type": "fil",
-          "innhold": "Velkommen tilbake til NisseKomm!\n\nI år har IQ oppgradert kommandosenteret med direkte videolink på SNØFALL TV.\nMen pass på: En mystisk digital frost prøver å låse kanaler og stjele farger.\n\nHeldigvis har vi våre tre beste agenter i Bergen på saken!"
+          "innhold": "Velkommen tilbake til NisseKomm!\n\nI år har IQ oppgradert kommandosenteret med direkte video på SNØFALL TV.\nMen pass på: En mystisk digital frost prøver å låse kanaler og stjele farger.\n\nHeldigvis har vi våre tre beste agenter i Bergen på saken!"
         },
         {
           "navn": "om-snofall.txt",
           "type": "fil",
-          "innhold": "SNØFALL – KART OG VELKOMST\n\nSnøfall ligger nord for alt, under Nordtoppen. Her bor Julius, Nissemor, IQ, Winter, Pil, Orakelet, Trixter og Rudolf.\n\nLANDSBYEN: verkstedet, bakeriet, pakkesentralen og slusen ved tjernet.\nANTENNEN VED TJERNET: direktelinjen til Landås, 90,0 MHz.\nNORDTOPPEN: fjellet over landsbyen. Under det ligger gamle ganger ingen bruker lenger.\n\nLinjen ble bygd av IQ i november og åpnet 1. desember. Hvis den skurrer, er det ikke dere. Det jobber vi med.\n\n– Winter, for Snøfall kommandosenter\n\n\n\nSLIK VIRKER NISSEKOMM\n\n1. Finn det Rampenissen har lagt igjen i huset.\n2. Les Rampenissens e-post i NisseMail.\n3. Se dagens video fra Julius. Siste setning er viktig.\n4. Sett sammen det huset viser og det Julius sier, og tast i KodeTerminal.\n5. Hvert kort har et tegn i hjørnet. Det er Snøfalls gamle skrift: ett tegn, én bokstav. Fyll inn tavla når dere vet hvilken.\n\nIngen av delene holder alene.\n\n\n\n[SIKKERHET] Linjevakt v3.0 aktiv\n[SIKKERHET] 3 agenter verifisert: K12, H9, H5\n[SIKKERHET] Bærebølge 90,0 MHz: ustabil\n[SIKKERHET] Ukjent bærebølge 85,0 MHz: overvåkes\n[SIKKERHET] Tiltak: avventer Orakelet"
+          "innhold": "SNØFALL – KART OG VELKOMST\n\nSnøfall ligger nord for alt, under Nordtoppen. Her bor Julius, Nissemor, IQ, Winter, Pil, Orakelet, Trixter og Rudolf.\n\nLANDSBYEN: verkstedet, bakeriet, pakkesentralen og slusen ved tjernet.\nANTENNEN VED TJERNET: direktelinjen til Landås, 90,0 MHz.\nNORDTOPPEN: fjellet over landsbyen. Under det ligger gamle ganger ingen bruker lenger.\n\nIQ bygde linjen i november og åpnet den 1. desember. Hvis den skurrer, er det ikke dere. Det jobber vi med.\n\n– Winter, for Snøfall kommandosenter\n\n\n\nSLIK VIRKER NISSEKOMM\n\n1. Finn det Rampenissen har lagt igjen i huset.\n2. Les Rampenissens e-post i NisseMail.\n3. Se dagens video fra Julius. Siste setning er viktig.\n4. Bruk det du fant i huset og det Julius sier. Skriv koden i KodeTerminal.\n5. Hvert kort har et tegn i hjørnet. Det er Snøfalls gamle skrift: ett tegn, én bokstav. Fyll inn tavla når dere vet hvilken.\n\nIngen av delene holder alene.\n\n\n\n[SIKKERHET] Linjevakt v3.0 aktiv\n[SIKKERHET] 3 agenter verifisert: K12, H9, H5\n[SIKKERHET] Bærebølge 90,0 MHz: ustabil\n[SIKKERHET] Ukjent bærebølge 85,0 MHz: overvåkes\n[SIKKERHET] Tiltak: avventer Orakelet"
         },
         {
           "navn": "system.log",
@@ -203,7 +203,7 @@
         {
           "navn": "orakelets-rapport.txt",
           "type": "fil",
-          "innhold": "ORAKELETS RAPPORT, 7. DESEMBER\n\nSender: 85,0 MHz. Retning: under Nordtoppen. Temperatur ved kilden: −42,8 °C.\n\nSignaturen er fanget. Den har et navn. Julius sier det nesten; jeg skriver det ikke her.\n\nFrostgraden måles fra i dag: hvor mye av serverrommet som er dekket av rim. Hver natt stiger den. Hver kode senker den.\n\nSignaturen er ikke sint. Den er gjentakende. Samme mønster hver natt, som noen som banker på.\n\n– Orakelet",
+          "innhold": "ORAKELETS RAPPORT, 7. DESEMBER\n\nSender: 85,0 MHz. Retning: under Nordtoppen. Temperatur ved kilden: −42,8 °C.\n\nSignaturen er fanget. Den har et navn. Julius sier det nesten; jeg skriver det ikke her.\n\nFrostgraden måles fra i dag: hvor mye av serverrommet som er dekket av rim. Hver natt stiger den. Hver kode senker den.\n\nSignaturen er ikke sint. Den gjentar seg. Samme mønster hver natt, som noen som banker på.\n\n– Orakelet",
           "unlockConditions": {
             "afterDay": 7
           }
@@ -276,7 +276,7 @@
         {
           "navn": "antennen-ved-tjernet.txt",
           "type": "fil",
-          "innhold": "ANTENNEN VED TJERNET\n\nBygd av IQ for 40 år siden, etter at en fisker på Askøy hørte Snøfall på en hjemmelaget sender og svarte. Siden har antennen stått ved tjernet og sendt mot Bergen.\n\n11. desember: dekket av is, skjev. Senderen er delt i tre små. IQ: «Den som finner oss igjen på hjulet, får kanal 4 tilbake.»\n\nAntennen er stedet alt varmt forlater Snøfall fra. Det er også stedet noe kaldt kommer inn.",
+          "innhold": "ANTENNEN VED TJERNET\n\nIQ bygde den for 40 år siden, etter at en fisker på Askøy hørte Snøfall på en hjemmelaget sender og svarte. Siden har antennen stått ved tjernet og sendt mot Bergen.\n\n11. desember: dekket av is, skjev. Senderen er delt i tre små. IQ: «Den som finner oss igjen på hjulet, får kanal 4 tilbake.»\n\nAntennen er stedet alt varmt forlater Snøfall fra. Det er også stedet noe kaldt kommer inn.",
           "unlockConditions": {
             "afterDay": 11
           }
