@@ -26,7 +26,7 @@ export const STILL = {
   storm: mediaUrl("feed/snøfall-storm.png"),
   landsby: mediaUrl("feed/snøfall-day.png"),
   verksted: mediaUrl("feed/iq-verksted.png"),
-  kontor: mediaUrl("feed/julius-kontor.png"),
+  kontor: mediaUrl("feed/julius-kontor.jpg"),
 };
 
 /** Fallback still image when a video loop fails to load. */

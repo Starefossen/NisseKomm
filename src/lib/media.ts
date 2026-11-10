@@ -122,7 +122,7 @@ export const MEDIA_MANIFEST: readonly ManifestEntry[] = [
   "feed/snøfall-storm.png",
   "feed/snøfall-day.png",
   "feed/iq-verksted.png",
-  "feed/julius-kontor.png",
+  "feed/julius-kontor.jpg",
   "feed/landsby-rolig.jpg",
   ...MUSIC,
   "music/christmas-dreams-jingle-bells-268299.mp3",

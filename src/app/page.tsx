@@ -412,7 +412,7 @@ export default function Home() {
                         }}
                         className="relative col-span-2 row-span-2 min-h-48 flex flex-col justify-end p-3 border-2 border-(--brass)/70 bg-cover bg-center text-left hover:border-(--gold) active:scale-[0.98] transition-transform"
                         style={{
-                          backgroundImage: `linear-gradient(transparent 40%, rgba(10,6,4,0.85)), ${juliusPosters()}url("${mediaUrl("feed/julius-kontor.png")}"), url("/village-day.jpg")`,
+                          backgroundImage: `linear-gradient(transparent 40%, rgba(10,6,4,0.85)), ${juliusPosters()}url("${mediaUrl("feed/julius-kontor.jpg")}"), url("/village-day.jpg")`,
                         }}
                       >
                         {!GameEngine.isJuliusVideoWatched(getCurrentDay()) && (

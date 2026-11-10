@@ -317,7 +317,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                       ? "/feed/kulde-grotte.png"
                       : challenge.challengeId === "stjernetegn"
                         ? "/feed/antenne-tarn.png"
-                        : "/feed/julius-kontor.png";
+                        : "/feed/julius-kontor.jpg";
                   const camTag =
                     challenge.challengeId === "frosne-koder"
                       ? "KRYPTO-LÅS 01 // 85.0 MHz IS-KODE"
@@ -486,7 +486,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                       ? "/feed/kulde-grotte.png"
                       : selectedChallenge.challengeId === "stjernetegn"
                         ? "/feed/antenne-tarn.png"
-                        : "/feed/julius-kontor.png"
+                        : "/feed/julius-kontor.jpg"
                   }
                   alt={selectedChallenge.title}
                   className="w-full h-full object-cover contrast-125 saturate-90 opacity-75 select-none pointer-events-none"

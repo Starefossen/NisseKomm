@@ -5,7 +5,7 @@ import { setSessionId } from "@/lib/auth-cookies";
 import { mediaUrl } from "@/lib/media";
 
 // Julius' office from media; the village still underneath shows if the feed is missing
-const OFFICE_BG = `linear-gradient(rgba(10,6,4,0.55), rgba(10,6,4,0.8)), url("${mediaUrl("feed/julius-kontor.png")}"), url("/village-day.jpg")`;
+const OFFICE_BG = `linear-gradient(rgba(10,6,4,0.55), rgba(10,6,4,0.8)), url("${mediaUrl("feed/julius-kontor.jpg")}"), url("/village-day.jpg")`;
 
 interface PasswordPromptProps {
   onSuccess: (sessionId: string) => void;
