@@ -18,6 +18,7 @@ import {
   CODE_WORDS,
   MAX_RESPONSE_BYTES,
   TOOLS,
+  TV_GRADE_OVERRIDE,
   callTool,
 } from "@/lib/mcp/tools";
 import { mp3Duration } from "@/lib/mcp/clips";
@@ -96,6 +97,19 @@ describe("get_screen", () => {
     await solvedUpTo(24);
     jest.useFakeTimers({ now: at(24, 10) });
     expect((await screen()).tv.state).toBe("dag24");
+  });
+
+  it("tv.grade mangler uten overstyring, none med", async () => {
+    jest.useFakeTimers({ now: at(3, 7) });
+    expect((await screen()).tv).not.toHaveProperty("grade");
+    TV_GRADE_OVERRIDE.morgen = "none";
+    try {
+      expect((await screen()).tv.grade).toBe("none");
+      jest.useFakeTimers({ now: at(3, 12) });
+      expect((await screen()).tv).not.toHaveProperty("grade");
+    } finally {
+      delete TV_GRADE_OVERRIDE.morgen;
+    }
   });
 
   it("Rampenissen sett etter 09 på hverdag, 10 i helgen", async () => {

@@ -213,12 +213,20 @@ export function getProgress(state: State, at?: Date) {
 }
 
 /** Europe/Oslo hours: natt 19–06, morgen 06–09, dag 09–15, skumring 15–19. */
-function phaseAt(hour: number) {
+function phaseAt(hour: number): { phase: Phase; next: number } {
   if (hour >= 6 && hour < 9) return { phase: "morgen", next: 9 };
   if (hour >= 9 && hour < 15) return { phase: "dag", next: 15 };
   if (hour >= 15 && hour < 19) return { phase: "skumring", next: 19 };
   return { phase: "natt", next: hour < 6 ? 6 : 30 };
 }
+
+type Phase = "morgen" | "dag" | "skumring" | "natt";
+/**
+ * `tv.grade` per phase. Without an entry the field is left out and Skjerm
+ * grades the rolig loop from tv.phase; set "none" once a phase has its own
+ * rendered loop.
+ */
+export const TV_GRADE_OVERRIDE: Partial<Record<Phase, string>> = {};
 
 /** Snøfall landsby state for a story day (same rule as Snøfall TV K1). */
 function tvState(day: number | null, solved: boolean) {
@@ -296,6 +304,7 @@ export function getScreen(state: State, at?: Date) {
       variant: `/media/video/tv/landsby-${tv}.mp4`,
       phase,
       phase_next_change_at: osloIso(date, phaseNext),
+      ...(TV_GRADE_OVERRIDE[phase] && { grade: TV_GRADE_OVERRIDE[phase] }),
     },
     // ponytail: no events yet (todo.md «Flere tilfeldige hendelser»); only
     // ever non-empty when tv.state is rolig.
