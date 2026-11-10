@@ -95,6 +95,18 @@ run = "pnpm check"
 description = "Medieinventar: skriv assets/INVENTAR.md og public/media-inventar.json"
 run = "python3 assets/bin/inventar.py --selvtest && python3 assets/bin/inventar.py"
 
+[tasks."media:plan"]
+description = "Mediekø: vis hva som lages, i rekkefølge, med anslag for videoforespørsler"
+run = "python3 assets/bin/generer.py --selvtest >/dev/null && python3 assets/bin/generer.py plan"
+
+[tasks."media:kjør"]
+description = "Mediekø: lag det som mangler eller er utdatert (gjenopptas der den stoppet)"
+run = "python3 assets/bin/generer.py kjør"
+
+[tasks."media:test-klementin"]
+description = "Testklipp: Julius løfter en klementin med venstre hånd"
+run = "python3 assets/bin/generer.py kjør --bare test"
+
 [tasks.test]
 description = "Kjør Jest-testsuiten"
 run = "pnpm test"
