@@ -34,7 +34,8 @@ describe("Simulering", () => {
   it("reset clears progress but keeps the simulated day", async () => {
     sim.goTo(14);
     await sim.solveUntil(14);
-    sim.reset();
+    global.fetch = (async () => ({ ok: true, status: 204 })) as never;
+    await sim.reset();
     expect(GameEngine.getCompletedQuestCount()).toBe(0);
     expect(getCurrentDay()).toBe(14);
   });

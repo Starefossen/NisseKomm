@@ -964,9 +964,9 @@ export class GameEngine {
     StorageManager.restoreSnapshot(data);
   }
 
-  /** Clear all progress without prompting (Tidsmaskin) */
-  static resetProgress(): void {
-    StorageManager.clearAll(true);
+  /** Clears all progress on every screen (parent guide, Tidsmaskin). */
+  static resetProgress(): Promise<void> {
+    return StorageManager.clearAll(true);
   }
 
   /**

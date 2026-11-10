@@ -34,10 +34,12 @@ function setFrost(setting: FrostSetting): void {
 }
 
 /** Clears all progress but keeps the simulated time. */
-function reset(): void {
+async function reset(): Promise<void> {
   const saved = getTimeOverride();
-  GameEngine.resetProgress();
+  // The local wipe is synchronous; restore the clock before the server answers.
+  const done = GameEngine.resetProgress();
   setTimeOverride(saved);
+  await done;
 }
 
 /** Solves seven days one by one from today and lands on the morning after. */

@@ -1,5 +1,9 @@
 import { describe, it, expect, beforeEach, jest } from "@jest/globals";
-import { ServerSyncAdapter, VERSION_KEY } from "../storage-adapter";
+import {
+  SYNCED_KEYS,
+  ServerSyncAdapter,
+  VERSION_KEY,
+} from "../storage-adapter";
 import { GameEngine } from "../game-engine";
 import { StorageManager } from "../storage";
 import { getCurrentDay } from "../date-utils";
@@ -24,6 +28,10 @@ const store = {
 async function fakeFetch(_url: unknown, init?: RequestInit) {
   const reply = (status: number, body: unknown) =>
     ({ ok: status < 300, status, json: async () => body }) as Response;
+  if (init?.method === "DELETE") {
+    for (const k of SYNCED_KEYS) await store.putState(k, null, true);
+    return reply(200, { reset: true });
+  }
   if (init?.method !== "PUT") return reply(200, await store.getState());
   const { key, value, replace, version } = JSON.parse(String(init.body));
   const current = Number((await store.getState())[VERSION_KEY] ?? 0);
@@ -81,6 +89,36 @@ describe("ServerSyncAdapter", () => {
     b.set(KEY, [6]);
     await flush(b);
     expect((await store.getState())[KEY]).toEqual([6]);
+  });
+
+  it("a reset on one screen empties another screen with stale data", async () => {
+    const a = new ServerSyncAdapter();
+    const b = new ServerSyncAdapter();
+    await a.start();
+    await b.start();
+    a.set(KEY, [1, 2]);
+    await flush(a);
+    const seen = localStorage.getItem("nissekomm-state-version-seen");
+
+    await a.clear(true);
+    expect((await store.getState())[KEY]).toBeNull();
+
+    // b reloads holding old progress it never managed to push
+    localStorage.setItem(KEY, JSON.stringify([1, 2, 3]));
+    localStorage.setItem("nissekomm-unsynced", JSON.stringify([KEY]));
+    localStorage.setItem("nissekomm-state-version-seen", seen!);
+    const b2 = new ServerSyncAdapter();
+    await b2.start();
+    await jest.advanceTimersByTimeAsync(1000);
+    expect((await store.getState())[KEY]).toBeNull();
+    expect(b2.get(KEY, "tom")).toBe("tom");
+    expect(localStorage.getItem("nissekomm-unsynced")).toBeNull();
+
+    // the old b, still open, is refused and re-fetches
+    b.set(KEY, [1, 2, 3]);
+    await flush(b);
+    expect((await store.getState())[KEY]).toBeNull();
+    expect(b.get(KEY, "tom")).toBe("tom");
   });
 
   it("keeps progress made while the server was down", async () => {

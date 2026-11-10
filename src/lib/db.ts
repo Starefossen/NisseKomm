@@ -3,7 +3,7 @@
  * Postgres when DATABASE_URL is set, otherwise in memory (dev, tests).
  */
 import { Pool } from "pg";
-import { SYNCED_KEYS, VERSION_KEY } from "./storage-adapter";
+import { SERVER_KEYS, SYNCED_KEYS, VERSION_KEY } from "./storage-adapter";
 
 export type Role = "kid" | "parent";
 type Session = { role: Role; expires: number };
@@ -237,6 +237,16 @@ export function createPgStore(pool: Pool): Store {
     },
     failureCount,
   };
+}
+
+/**
+ * Season reset for the whole family. Replacing writes bump the version, so
+ * screens re-fetch instead of pushing their old lists back. Sessions stay.
+ */
+export async function resetState(store: Store = getStore()): Promise<void> {
+  for (const k of [...STATE_KEYS, ...SERVER_KEYS]) {
+    await store.putState(k, null, true);
+  }
 }
 
 export const memoryStore = createMemoryStore();

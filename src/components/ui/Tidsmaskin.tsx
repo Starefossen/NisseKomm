@@ -51,8 +51,11 @@ export function Tidsmaskin() {
     if (!confirm("Nullstille all fremdrift? Tidsmaskinen beholder datoen.")) {
       return;
     }
-    sim.reset();
-    window.location.reload();
+    // Kid sessions can't clear the server (403); this screen is still reset.
+    void sim
+      .reset()
+      .catch(() => {})
+      .finally(() => window.location.reload());
   };
 
   const btn =

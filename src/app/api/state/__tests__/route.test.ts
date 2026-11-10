@@ -17,7 +17,11 @@ process.env.STORAGE_BACKEND = "server";
 const TOKEN = "test-token";
 const sha = (s: string) => createHash("sha256").update(s).digest("hex");
 
-async function call(method: "GET" | "PUT", body?: unknown, cookie = true) {
+async function call(
+  method: "GET" | "PUT" | "DELETE",
+  body?: unknown,
+  cookie = true,
+) {
   let out: { status: number; json: unknown } | undefined;
   await testApiHandler({
     appHandler: stateRoute,
@@ -187,6 +191,21 @@ describe("/api/state removals and validation", () => {
     expect((await call("GET")).json).toEqual({});
     expect(await memoryStore.consumeTicket("abc", "a.mp4")).toBe(true);
     expect(await memoryStore.consumeTicket("abc", "a.mp4")).toBe(false);
+  });
+
+  it("DELETE resets the family's state for parents only, sessions stay", async () => {
+    await memoryStore.putState("nissekomm-codes", [{ kode: "X", day: 1 }]);
+    expect((await call("DELETE")).status).toBe(403);
+    process.env.NISSEKOMM_MODE = "lan";
+    await memoryStore.setSession(sha(TOKEN), {
+      role: "parent",
+      expires: Date.now() + 60_000,
+    });
+    expect((await call("DELETE")).status).toBe(200);
+    const state = (await call("GET")).json as Record<string, unknown>;
+    expect(state["nissekomm-codes"]).toBeNull();
+    expect(state["state-version"]).toBeGreaterThan(0);
+    delete process.env.NISSEKOMM_MODE;
   });
 
   it("is off (204) with STORAGE_BACKEND=localStorage", async () => {
