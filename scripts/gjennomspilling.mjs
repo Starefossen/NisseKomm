@@ -111,6 +111,7 @@ if (!base) {
         NEXT_PUBLIC_MOCK_DAY: "",
         NEXT_PUBLIC_MOCK_MONTH: "",
         KID_CODE,
+        NISSEKOMM_MODE: "lan",
       },
       stdio: ["pipe", "pipe", "pipe"],
       detached: true,
@@ -281,7 +282,7 @@ await waitFor(
 await waitFor(
   () => evaluate("!!window.nissekomm?.sim"),
   30000,
-  "window.nissekomm.sim",
+  "window.nissekomm.sim: dev server not ready / restart it (BASE_URL-serveren må kjøre i lan-modus med NEXT_PUBLIC_TEST_MODE=true; ellers stopp og start `mise run dev` på nytt, eller slett .next etter en Next-oppgradering)",
 );
 await evaluate("localStorage.clear()");
 
