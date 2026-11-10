@@ -36,7 +36,7 @@ const solvedUpTo = async (n: number) =>
   );
 const screen = async (who: Parameters<typeof callTool>[0] = "read") =>
   JSON.parse(await callTool(who, "get_screen"));
-const operator = { name: "operator", level: "parent" as const };
+const operator = { sub: "op", name: "operator", level: "parent" as const };
 
 afterEach(() => {
   jest.useRealTimers();

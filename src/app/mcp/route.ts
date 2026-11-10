@@ -10,7 +10,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import { isLanMode } from "@/lib/mode";
 import { authenticate } from "@/lib/mcp/auth";
-import { TOOLS, callTool } from "@/lib/mcp/tools";
+import { ArgError, TOOLS, callTool } from "@/lib/mcp/tools";
 
 async function handle(req: Request): Promise<Response> {
   if (!isLanMode()) return new Response("Not Found", { status: 404 });
@@ -39,10 +39,10 @@ async function handle(req: Request): Promise<Response> {
       const text = await callTool(caller, r.params.name, r.params.arguments);
       return { content: [{ type: "text", text }] };
     } catch (e) {
-      return {
-        isError: true,
-        content: [{ type: "text", text: (e as Error).message }],
-      };
+      // Details stay in the log; callers see only a generic reason.
+      if (!(e instanceof ArgError)) console.error("[mcp]", r.params.name, e);
+      const text = e instanceof ArgError ? e.message : "intern feil";
+      return { isError: true, content: [{ type: "text", text }] };
     }
   });
   const transport = new WebStandardStreamableHTTPServerTransport({
