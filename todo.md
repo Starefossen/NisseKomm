@@ -97,9 +97,12 @@ Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxSca
 - [ ] **Helse:** `GET /api/health` gir 200 uten autentisering og uten tung IO.
 - [ ] **Fjern:** `@sanity/*`, Sanity Studio og migreringer, `resend` og e-postskript, Vercel-cron og `vercel.json`, `@vercel/analytics`. Null utgående trafikk i kjøring.
 - [ ] **Én familie:** barnekode og foreldrekode fra miljøet (`KID_CODE`, `PARENT_CODE`). Ingen registrering, gjenoppretting eller avmelding.
-- [ ] **Hjemmeintegrasjon:** erstatt `api/home-bridge` med `GET /api/home/state` og `GET /api/home/clips/{date}`, begge med `Authorization: Bearer $HOME_STATE_TOKEN`.
-  - state: `{date, frost:{active, until, message, morning_ok}, grayscale:{active, until, message}, solved_today, cards:[]}`
-  - clips: `[{character: "julius"|"rampenissen", audio_url, intro_hint}]`, der `audio_url` er en absolutt LAN-URL servert av NisseKomm
+- [ ] **Hjemmeintegrasjon via MCP** (erstatter REST-endepunktene; forslag fra Varden, venter på bekreftelse fra Hans): MCP-server på `/mcp` (Streamable HTTP, `@modelcontextprotocol/sdk`), bare på hjemmenettet. `api/home-bridge` fjernes.
+  - Autentisering: `Authorization: Bearer` med Kanidm-JWT, validert med `jose` mot JWKS fra `https://id.flaatten.org/oauth2/openid/mcp`, audience `mcp`, scope `groups`. Ingen token i URL.
+  - Nivå `read` (barnesikkert): `get_state`, `get_clips(date)`, `get_today_quest`, `get_progress`. Aldri koder, svar, `hint` eller fremtidige dager; filtreres på serveren, med test som sjekker svarene mot alle 24 koder.
+  - Nivå `parent`: `give_hint(day)`, `set_frost(active, until)`, `reset`/`skip_day`. Varden (barnevendt) får aldri `parent`.
+  - Lyd serveres med HTTP GET og samme Bearer.
+  - Krever adversarial gjennomgang av en annen modell før merge (autentisering).
 - [ ] **Bygg:** produksjonsbygg setter ikke `NEXT_PUBLIC_MOCK_*`, `TEST_MODE` eller `STORAGE_BACKEND` (de bakes inn ved bygging).
 - [ ] **Sikkerhetshoder:** flytt fra `vercel.json` til `headers()` i `next.config`.
 - [ ] **Miljø:** `PORT`, `DATABASE_URL`, `KID_CODE`, `PARENT_CODE`, `HOME_STATE_TOKEN`, `NEXT_PUBLIC_URL=https://nissekomm.nissekomm.fn.flaatten.org`.
