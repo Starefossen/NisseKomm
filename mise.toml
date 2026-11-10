@@ -19,16 +19,18 @@ cat <<EOF
    • Utskrift & Symbolkort   : http://localhost:3000/nissemor-guide/printout
 
 🔑 Innlogging (fungerer direkte i localStorage-modus):
-   • Barnekode (Hovedskjerm) : NISSEKRAFT2026   (alt: SNØFALLMAGI2026)
+   • Barnekode (Hovedskjerm) : snø lykt rein
    • Foreldrekode (Guide)    : NORDPOL-DEV2026
 
 📺 Testing av Snøfall TV & Dager:
-   • Åpne "SNØFALL TV" på skrivebordet og bruk "SIMULER DAG (1-24)" øverst i TV-en
-     for å teste alle 24 episoder, karakterportretter, værhendelser og minispill!
+   • Bruk «⏱ TIDSMASKIN» nede til høyre for å bytte dag og klokkeslett.
    • Eller start med valgt dag: MOCK_DAY=21 mise run dev (nåværende: Dag ${DAY})
-   • Kjør 'mise run info' for full tabell over alle 24 koder og TV-segmenter.
+   • Hele sesongen automatisk: mise run test:gjennomspilling
 ================================================================================
 EOF
+KID_CODE="${KID_CODE:-snø lykt rein}" \
+PARENT_CODE="${PARENT_CODE:-NORDPOL-DEV2026}" \
+NISSEKOMM_MODE="${NISSEKOMM_MODE:-lan}" \
 NEXT_PUBLIC_STORAGE_BACKEND=localStorage \
 NEXT_PUBLIC_TEST_MODE=true \
 NEXT_PUBLIC_BOOT_ANIMATION_DURATION=0 \
