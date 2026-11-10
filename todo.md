@@ -129,7 +129,7 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [ ] **Rampenissen-lyd:** normaliser lydstyrken (EBU R128, -16 LUFS), samme tonehøyde og dialekt på alle 24, MP3 128k mono.
 - [ ] **Musikk (NisseMusikk):** normaliser lydstyrken og sjekk at alle spor i manifestet finnes.
 - [ ] **Stillbilder og bilder i `public/`:** komprimer (JPEG/WebP), bruk riktig størrelse for visning og fjern ubrukte filer.
-- [ ] **Utskrifter:** testskriv ut dag 10, 12 og 14 (rødfilter, tosidig, brettark). Bekreft sidetallet mot tabellen i `docs/gaater-2026.md` (dag 12 er tredelt, dag 15 og 18 gir 2 sider).
+- [ ] **Utskrifter:** testskriv ut dag 10, 12 og 14 (rødfilter, tosidig, brettark). Bekreft sidetallet mot tabellen i `docs/gaater-2026.md` (dag 12 er tredelt, dag 15 og 18 gir 2 sider). Hans avgjør etter test-printen om det skal være 1 eller 2 ark.
 - [ ] **Mediebiblioteket:** last alt opp til PVC-en (`MEDIA_DIR`) med riktige stier. Kontroller manifestet, at hver fil svarer 200/206 med Range, og at ingen mediefil ligger i git.
 - [ ] **Sluttsjekk:** gjennomspilling på iPad (Safari) over hjemmenettet med de komprimerte filene.
 
