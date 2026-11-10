@@ -99,7 +99,7 @@ export function GuideSide({ children }: { children: ReactNode }) {
   return (
     <Suspense>
       <GuideAuth>
-        <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] text-xl p-4 md:p-8">
+        <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) text-xl p-4 md:p-8">
           <div className="max-w-4xl mx-auto space-y-6">
             <GuideNavigation />
             {children}

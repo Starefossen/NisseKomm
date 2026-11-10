@@ -64,7 +64,7 @@ export function NameEntryModal({ onComplete }: NameEntryModalProps) {
           <div className="text-(--cold-blue) text-sm">
             Julius vil gjerne legge navnene deres øverst på den snille listen!
           </div>
-          <div className="text-xs opacity-70">
+          <div className="text-base opacity-70">
             Skriv inn navnet til hvert barn (maks 4 navn)
           </div>
         </div>
@@ -115,7 +115,7 @@ export function NameEntryModal({ onComplete }: NameEntryModalProps) {
         </div>
 
         {/* Navigation hints */}
-        <div className="text-xs text-center opacity-70 space-y-1">
+        <div className="text-base text-center opacity-70 space-y-1">
           <div>Trykk ENTER for å gå videre til neste felt</div>
           <div>
             Du kan hoppe over tomme felt - kun utfylte navn legges til listen
@@ -140,7 +140,7 @@ export function NameEntryModal({ onComplete }: NameEntryModalProps) {
         </div>
 
         {/* Footer */}
-        <div className="text-center text-xs opacity-50 pt-4 border-t-2 border-(--neon-green)/30">
+        <div className="text-center text-base opacity-50 pt-4 border-t-2 border-(--neon-green)/30">
           Navnene lagres lokalt og vises i Julius' snille liste i NISSENET
         </div>
       </div>

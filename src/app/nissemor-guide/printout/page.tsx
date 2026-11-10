@@ -241,7 +241,7 @@ function PrintoutContent() {
   return (
     <>
       {/* Screen-only header */}
-      <div className="print:hidden min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-8">
+      <div className="print:hidden min-h-screen bg-(--dark-crt) text-(--neon-green) font-retro p-8">
         <div className="max-w-6xl mx-auto">
           <GuideNavigation />
 
@@ -364,7 +364,7 @@ function PrintoutContent() {
               value={customNote}
               onChange={(e) => setCustomNote(e.target.value)}
               placeholder="Skriv inn en personlig hilsen eller instruksjon som vil vises på toppen av utskriften (valgfritt)..."
-              className="w-full p-4 bg-black border-2 border-(--cold-blue) text-(--neon-green) font-['VT323',monospace] text-xl resize-none focus:outline-none focus:border-(--neon-green)"
+              className="w-full p-4 bg-black border-2 border-(--cold-blue) text-(--neon-green) font-retro text-xl resize-none focus:outline-none focus:border-(--neon-green)"
               rows={4}
             />
             <p className="text-center text-sm opacity-70 mt-2">
@@ -682,7 +682,7 @@ export default function PrintoutPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] flex items-center justify-center">
+        <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-retro flex items-center justify-center">
           <div className="text-2xl">Laster...</div>
         </div>
       }

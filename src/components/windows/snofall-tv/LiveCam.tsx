@@ -126,7 +126,11 @@ export function LiveCam({
       source = img;
     }
     const activeVideo = video;
-    document.fonts?.load("20px VT323").catch(() => {});
+    // next/font registers a hashed family name; canvas needs it spelled out
+    const font =
+      getComputedStyle(document.body).getPropertyValue("--font-vt323") ||
+      "monospace";
+    document.fonts?.load(`20px ${font}`).catch(() => {});
 
     const noiseTiles = Array.from({ length: 4 }, () => makeNoiseTile());
     const blob = makeBlobTile();
@@ -414,7 +418,7 @@ export function LiveCam({
       // --- OSD ----------------------------------------------------------
       const fs = Math.max(12, Math.round(H * 0.045));
       const pad = Math.round(H * 0.035);
-      ctx.font = `${fs}px VT323, monospace`;
+      ctx.font = `${fs}px ${font}`;
       ctx.textBaseline = "top";
       ctx.shadowColor = "rgba(0,0,0,0.9)";
       ctx.shadowBlur = 3;
@@ -446,12 +450,12 @@ export function LiveCam({
       }
       ctx.textAlign = "center";
       if (noSignal && !dropout) {
-        ctx.font = `${fs * 1.4}px VT323, monospace`;
+        ctx.font = `${fs * 1.4}px ${font}`;
         ctx.fillStyle = "rgba(230,230,210,0.8)";
         ctx.fillText("INGEN BÆREBØLGE", W / 2, H * 0.44);
       }
       if (hjAmount > 0.5 || p.frozen) {
-        ctx.font = `${fs * 1.6}px VT323, monospace`;
+        ctx.font = `${fs * 1.6}px ${font}`;
         ctx.fillStyle = `rgba(170,210,255,${p.frozen ? 0.9 : 0.5 + 0.5 * Math.random()})`;
         const line = p.ghostLine ?? "SIGNAL OVERTATT";
         ctx.fillText(line, W / 2 + (p.frozen ? 0 : rand(-3, 3)), H * 0.42);
@@ -459,7 +463,7 @@ export function LiveCam({
       // Day 7: the name burns in for a few seconds after tuning in.
       const sinceStart = now - startedAt;
       if (p.signature && sinceStart > 1200 && sinceStart < 4200) {
-        ctx.font = `${fs * 4}px VT323, monospace`;
+        ctx.font = `${fs * 4}px ${font}`;
         ctx.fillStyle = `rgba(170,215,255,${0.75 * Math.sin(((sinceStart - 1200) / 3000) * Math.PI)})`;
         ctx.fillText("KULDE", W / 2 + (motion ? rand(-4, 4) : 0), H * 0.32);
       }

@@ -5,7 +5,7 @@ import QRCodeStyling from "qr-code-styling";
 import { GameEngine } from "@/lib/game-engine";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
-import { Icon } from "@/lib/icons";
+import { Icon, iconSrc } from "@/lib/icons";
 
 /**
  * Symbol Management & Printout Page
@@ -57,7 +57,7 @@ function SymbolerContent() {
               : "#ffd700";
 
       // Fetch the SVG and color it
-      const iconUrl = `https://unpkg.com/pixelarticons@1.8.1/svg/${symbol.symbolIcon}.svg`;
+      const iconUrl = iconSrc(symbol.symbolIcon);
 
       try {
         const response = await fetch(iconUrl);
@@ -215,7 +215,7 @@ function SymbolerContent() {
   };
 
   return (
-    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8 print:p-0 print:bg-white">
+    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) p-4 md:p-8 print:p-0 print:bg-white">
       <div className="print:hidden">
         <GuideNavigation />
       </div>
@@ -464,7 +464,7 @@ export default function SymbolerPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] flex items-center justify-center">
+        <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) flex items-center justify-center">
           <div className="text-2xl">Laster...</div>
         </div>
       }

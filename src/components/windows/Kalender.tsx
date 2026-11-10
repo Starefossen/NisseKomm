@@ -89,7 +89,7 @@ export function Kalender({
               <div className="text-2xl font-bold tracking-wider">
                 DESEMBER 2026
               </div>
-              <div className="text-sm opacity-70">
+              <div className="text-lg opacity-70">
                 JULEKALENDER - 24 OPPDRAG
               </div>
             </div>
@@ -135,7 +135,7 @@ export function Kalender({
                     const hendelse = getHendelseForDay(day);
                     if (!hendelse || status === "locked") return null;
                     return (
-                      <div className="hidden md:block absolute bottom-1 left-0 right-0 text-[10px] lg:text-[11px] opacity-80 truncate px-1 text-center">
+                      <div className="hidden md:block absolute bottom-1 left-0 right-0 text-base opacity-80 truncate px-1 text-center">
                         {hendelse.substring(0, 15)}
                       </div>
                     );
@@ -146,7 +146,7 @@ export function Kalender({
           </div>
 
           {/* Legend */}
-          <div className="flex items-center justify-center gap-6 text-xs py-4 border-t-2 border-(--neon-green)/30">
+          <div className="flex items-center justify-center gap-6 text-base py-4 border-t-2 border-(--neon-green)/30">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 border-2 border-(--gray) bg-black/30" />
               <span className="opacity-70">Låst</span>
@@ -184,17 +184,17 @@ export function Kalender({
                 <div className="p-3 border-2 border-(--cold-blue) bg-(--cold-blue)/10">
                   <div className="flex items-center gap-2 mb-2">
                     <Icons.Alert size={16} color="blue" />
-                    <span className="text-sm font-bold text-(--cold-blue)">
+                    <span className="text-lg font-bold text-(--cold-blue)">
                       HENDELSE
                     </span>
                   </div>
-                  <div className="text-sm text-(--cold-blue)">{hendelse}</div>
+                  <div className="text-lg text-(--cold-blue)">{hendelse}</div>
                 </div>
               );
             })()}
 
             {/* Mission preview */}
-            <div className="text-sm">
+            <div className="text-lg">
               {selectedMission.nissemail_tekst.substring(0, 150)}...
             </div>
 

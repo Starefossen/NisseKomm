@@ -56,7 +56,7 @@ export function DesktopIcon({
       {/* Unread badge */}
       {unreadCount > 0 && (
         <div className="absolute -top-1 -right-1 w-6 h-6 bg-(--christmas-red) border-2 border-(--christmas-red) flex items-center justify-center z-10">
-          <span className="text-white text-xs font-bold">{unreadCount}</span>
+          <span className="text-white text-base font-bold">{unreadCount}</span>
         </div>
       )}
       <Icon
@@ -66,7 +66,7 @@ export function DesktopIcon({
         className="md:w-12 md:h-12"
       />
       <span
-        className={`text-xs md:text-sm tracking-wider ${
+        className={`text-base md:text-lg tracking-wider ${
           disabled
             ? "text-(--gray)"
             : color === "gold"

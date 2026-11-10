@@ -126,7 +126,7 @@ function MerkerContent() {
     type === "decryption" ? "DEKRYPTERING" : "FULLFØRING";
 
   return (
-    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8">
+    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) p-4 md:p-8">
       <GuideNavigation />
 
       {/* Header */}
@@ -347,7 +347,7 @@ export default function MerkerPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] flex items-center justify-center">
+        <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) flex items-center justify-center">
           <div className="text-2xl">Laster...</div>
         </div>
       }

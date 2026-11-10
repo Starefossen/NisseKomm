@@ -14,7 +14,7 @@ export function Ark({
   children: ReactNode;
   stil?: "barn" | "forelder";
 }) {
-  const font = stil === "barn" ? "font-['VT323',monospace]" : "font-sans";
+  const font = stil === "barn" ? "font-retro" : "font-sans";
   return (
     <div
       data-ark={stil}

@@ -16,7 +16,7 @@ export default function Dag10Testark() {
         <div className="grid grid-cols-3 gap-4">
           {TETTHET.map((t) => (
             <div key={t} className="flex flex-col gap-2">
-              <div className="h-[60mm] border border-gray-400 text-[30mm] leading-none font-['VT323',monospace]">
+              <div className="h-[60mm] border border-gray-400 text-[30mm] leading-none font-retro">
                 <Rodstoy tetthet={t}>X</Rodstoy>
               </div>
               <div className="text-center">Tetthet {t}</div>

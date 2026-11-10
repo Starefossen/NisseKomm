@@ -295,6 +295,7 @@ export default function Home() {
               overflow-hidden
               z-40
               transition-transform duration-300
+              ${frostMode.level === 2 ? "frost-frozen" : ""}
             `}
           >
             <SystemStatus currentDay={getCurrentDay()} />
@@ -303,6 +304,12 @@ export default function Home() {
 
           {/* Main workspace - 75% */}
           <div className="flex-1 relative flex flex-col">
+            {/* Kulde's line is a band in the flow so it never lands on the icon grid */}
+            {frostMode.level === 2 && !openWindow && (
+              <div className="mt-20 mx-8 px-6 py-3 text-center text-2xl text-white bg-(--cold-blue)/15 border-y-2 border-(--cold-blue)/50">
+                {frostMode.message}
+              </div>
+            )}
             <div className="flex-1 overflow-auto">
               {!openWindow ? (
                 // Desktop with icons
@@ -539,13 +546,7 @@ export default function Home() {
             <div className="fixed inset-0 pointer-events-none z-60 frost-vhs" />
           )}
           {frostMode.level === 2 && (
-            <div className="fixed inset-0 pointer-events-none z-60 frost-edge">
-              {!openWindow && (
-                <div className="absolute inset-x-0 top-1/3 text-center text-2xl text-white/90 px-8">
-                  {frostMode.message}
-                </div>
-              )}
-            </div>
+            <div className="fixed inset-0 pointer-events-none z-60 frost-edge" />
           )}
           {thawing && (
             <div

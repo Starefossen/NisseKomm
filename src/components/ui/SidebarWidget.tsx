@@ -14,7 +14,7 @@ export function SidebarWidget({ title, children }: SidebarWidgetProps) {
       </div>
 
       {/* Content */}
-      <div className="p-3 text-(--neon-green) text-sm flex flex-col flex-1 overflow-hidden">
+      <div className="p-3 text-(--neon-green) text-lg flex flex-col flex-1 overflow-hidden">
         {children}
       </div>
     </div>

@@ -20,7 +20,7 @@ export function GuideNavigation() {
   const { logout } = useGuideAuth();
   const sti = usePathname();
   return (
-    <nav className="max-w-4xl mx-auto mb-6 print:hidden font-['VT323',monospace]">
+    <nav className="max-w-4xl mx-auto mb-6 print:hidden font-retro">
       <ul className="flex flex-wrap gap-2 text-lg">
         {SIDER.map(([href, navn]) => {
           const aktiv = sti === href || sti.startsWith(href + "/");
