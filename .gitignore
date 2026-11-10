@@ -43,3 +43,6 @@ next-env.d.ts
 
 # sanity
 .sanity/*
+
+# Generated media (finished files go to public/)
+assets/out/
