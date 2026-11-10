@@ -58,8 +58,8 @@ def rampenissen_text(day: int, root: Path = ROOT) -> str:
     for line in (root / RAMPE_MS).read_text().splitlines():
         if line.startswith(f"## Dag {day} "):
             on = True
-        elif line.startswith(f"## Dag {day + 1} "):
-            on = False
+        elif on and line.startswith("## "):
+            break
         if on and line.startswith("**Klipp:** «"):
             out.append(re.sub(r"»$", "", line[len("**Klipp:** «"):]))
     return "\n".join(out)
@@ -110,10 +110,13 @@ def rel(p) -> str:
 
 def write(generator, out, source, section, model, images=(), root: Path = ROOT, extra=None):
     """Write <out>.meta.json recording the inputs as they are now."""
+    text = source_text(source, section, root)
+    if text is None:
+        raise ValueError(f"kilden finnes ikke: {source} {section or ''}".strip())
     meta = {
         "generator": generator,
         "created": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "source": {"path": source, "section": section, "sha256": sha(source_text(source, section, root) or "")},
+        "source": {"path": source, "section": section, "sha256": sha(text)},
         "reference_images": [{"path": i, "sha256": file_sha(i, root)} for i in images],
         "prompt_version": prompt_version(generator, root),
         "model": model,
@@ -145,6 +148,9 @@ def status(out: Path, key: str = "", root: Path = ROOT):
 
 
 def main(argv):
+    if not argv:
+        print(__doc__)
+        sys.exit(2)
     cmd, args = argv[0], argv[1:]
     if cmd == "tekst":
         print(rampenissen_text(int(args[1])))

@@ -64,6 +64,9 @@ def coverage(clip: Path, line: str) -> float:
             text = json.load(urllib.request.urlopen(req))["candidates"][0]["content"]["parts"][-1]["text"]
             break
         except urllib.error.URLError as e:
+            body = e.read().decode(errors="replace") if hasattr(e, "read") else ""
+            if "requests per day" in body or "per day" in body:
+                sys.exit("Stoppet: dagsgrensen for Gemini er nådd (requests per day)")
             print(f"  transkripsjon feilet ({e}), prøver igjen")
     else:
         return None  # unknown, not zero: keep the clip and flag it
@@ -106,6 +109,9 @@ def audit(clip: Path):
             r = json.loads(json.load(urllib.request.urlopen(req))["candidates"][0]["content"]["parts"][-1]["text"])
             break
         except (urllib.error.URLError, KeyError, ValueError) as e:
+            body = e.read().decode(errors="replace") if hasattr(e, "read") else ""
+            if "requests per day" in body or "per day" in body:
+                sys.exit("Stoppet: dagsgrensen for Gemini er nådd (requests per day)")
             print(f"  gjennomgang feilet ({e}), prøver igjen")
     else:
         return None
@@ -147,8 +153,12 @@ def main():
                 import time
 
                 resp = OUT / f"{name}.resp.json"
-                if resp.exists() and "spending cap" in resp.read_text():
-                    sys.exit("Stoppet: månedlig utgiftstak i Gemini er nådd")
+                if resp.exists():
+                    txt = resp.read_text()
+                    if "spending cap" in txt:
+                        sys.exit("Stoppet: månedlig utgiftstak i Gemini er nådd")
+                    if "requests per day" in txt or "per day" in txt:
+                        sys.exit("Stoppet: dagsgrensen for Gemini er nådd (requests per day)")
 
                 time.sleep(60 * attempt)  # usually 429 from the video API; back off
                 continue

@@ -4,9 +4,14 @@
 # Usage: assets/bin/tv-loops.sh [--force] [--upload <base-url>]
 set -uo pipefail
 A="$(cd "$(dirname "$0")/.." && pwd)"; L="$A/locations"; T="$A/../public/video/tv"; mkdir -p "$T"
-[ "${1:-}" = --force ] && { FORCE=1; shift; } || FORCE=
+FORCE=
+ARGS=()
+for a in "$@"; do
+  [ "$a" = --force ] && FORCE=1 || ARGS+=("$a")
+done
+[ ${#ARGS[@]} -gt 0 ] && set -- "${ARGS[@]}" || set --
 M="python3 $A/bin/medie.py"
-keep() { [ -z "$FORCE" ] && [ -f "$1" ] && ! $M status "$1" | grep -q '^stale'; }
+keep() { [ -z "$FORCE" ] && [ -f "$1" ] && $M status "$1" >/dev/null 2>&1; }
 meta() { $M skriv tv-loops.sh "$1" "$2" - gemini-omni-1.2-flash "$3"; } # out prompt image
 job() { # name base-image location variant
   local name=$1 img=$2 loc=$3 var=$4

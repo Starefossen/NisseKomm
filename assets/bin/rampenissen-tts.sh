@@ -5,10 +5,15 @@
 # Skips a day whose clip is current (medie.py) unless --force; writes dag-NN.mp3.meta.json.
 set -euo pipefail
 source "$(dirname "$0")/_key.sh"
+FORCE=
+ARGS=()
+for a in "$@"; do
+  [ "$a" = --force ] && FORCE=1 || ARGS+=("$a")
+done
+[ ${#ARGS[@]} -gt 0 ] && set -- "${ARGS[@]}" || set --
 D=$1; V=${2:-Fenrir}; O="$ROOT/public/audio/rampenissen"; T="$ROOT/assets/out/rampenissen"; mkdir -p "$O" "$T"
 M="python3 $ROOT/assets/bin/medie.py"; F="$O/dag-$(printf %02d "$D").mp3"
-[[ " $* " != *" --force "* ]] && $M status "$F" >/dev/null && { echo "$F er oppdatert; --force for å lage den på nytt"; exit 0; }
-[ "$V" = --force ] && V=Fenrir
+[ -z "$FORCE" ] && $M status "$F" >/dev/null && { echo "$F er oppdatert; --force for å lage den på nytt"; exit 0; }
 text=$($M tekst rampenissen "$D")
 [ -n "$text" ] || { echo "Fant ikke klipp for dag $D"; exit 1; }
 jq -n --arg t "$($M stil rampenissen)\n\n$text" --arg v "$V" \

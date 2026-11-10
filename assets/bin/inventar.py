@@ -94,8 +94,14 @@ def markdown(rows, old) -> str:
 
 
 def main(argv):
-    media = Path(argv[argv.index("--media") + 1] if "--media" in argv
-                 else os.environ.get("MEDIA_DIR") or ROOT / "public")
+    if "--media" in argv:
+        idx = argv.index("--media")
+        if idx + 1 >= len(argv) or argv[idx + 1].startswith("-"):
+            print("Usage: inventar.py [--media DIR] [--json]")
+            sys.exit(2)
+        media = Path(argv[idx + 1])
+    else:
+        media = Path(os.environ.get("MEDIA_DIR") or ROOT / "public")
     rows = scan(media)
     data = json.dumps(rows, ensure_ascii=False, indent=1)
     if "--json" in argv:
@@ -116,7 +122,7 @@ def selfcheck():
         (root / "docs/manus").mkdir(parents=True)
         (root / "src/lib").mkdir(parents=True)
         ms = root / medie.RAMPE_MS
-        ms.write_text("## Dag 1 (søn)\n**Klipp:** «Hei!»\n## Dag 2 (man)\n**Klipp:** «Hallo»\n")
+        ms.write_text("## Dag 1 (søn)\n**Klipp:** «Hei!»\n## Dag 2 (man)\n**Klipp:** «Hallo»\n## Dag 5 (fre)\n**Klipp:** «Fem»\n")
         (root / "src/lib/media.ts").write_text('"audio/rampenissen/dag-01.mp3"')
         media = root / "public"
         (media / "audio/rampenissen").mkdir(parents=True)
@@ -125,7 +131,7 @@ def selfcheck():
             f.write_bytes(b"mp3")
             medie.write("rampenissen-tts.sh", f, medie.RAMPE_MS, f"Dag {d}", "tts", [], root)
         (media / "audio/rampenissen/dag-03.mp3").write_bytes(b"mp3")
-        ms.write_text(ms.read_text().replace("Hallo", "Hallo igjen"))
+        ms.write_text("## Dag 1 (søn)\n**Klipp:** «Hei!»\n## Dag 2 (man)\n**Klipp:** «Hallo igjen»\n")
         by = {r["path"]: r for r in scan(media, root)}
         assert by["audio/rampenissen/dag-01.mp3"]["status"] == medie.CURRENT
         assert by["audio/rampenissen/dag-02.mp3"]["status"] == medie.STALE
