@@ -211,9 +211,9 @@ With occasional slang (sparingly):
 │                    OPPDRAG FLOW                              │
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
-│  1. NisseMail vises → Forteller hvor ting er gjemt          │
+│  1. Barn finner fysisk oppsett (rampenissen_rampestrek)      │
 │           ↓                                                  │
-│  2. Barn finner fysisk oppsett (rampenissen_rampestrek)      │
+│  2. NisseMail leses → viser tilbake til det de fant          │
 │           ↓                                                  │
 │  3. Fysisk hint gir gåten/puzzlet                            │
 │           ↓                                                  │
@@ -239,9 +239,11 @@ With occasional slang (sparingly):
 
 **Hva det er**: E-post fra Rampenissen som barna leser i NisseMail-modulen.
 
+**NisseMail leses etter at barna har vært i den fysiske verden: vis tilbake til det de har gjort, ikke gi instruksjoner for det.** Om morgenen finner de rampestreken og brikkene før de åpner appen. E-posten sier «Fant dere tråden min?», ikke «Følg tråden». Det barna må vite for å gjøre noe på stedet, står på lappen Rampenissen legger igjen der (i `fysisk_hint` og `gaater-2026.md`). E-posten peker videre til det som gjenstår i appen: Julius, NisseNet, tavla, KodeTerminal.
+
 **Formål**:
 
-- Fortelle at noe har skjedd og hvor ting er gjemt
+- Fortelle at noe har skjedd, og vise tilbake til det barna har funnet
 - Bygge narrativ og spenning
 - Gi kontekst som komplementerer (ikke gjentar) fysisk hint
 - Koble til eventyr/storyline
@@ -251,7 +253,7 @@ With occasional slang (sparingly):
 **Struktur**:
 
 1. **Åpning** (1-2 setninger): Hilsen og hook
-2. **Hoveddel** (2-3 setninger): Hva har skjedd, hvor er ting gjemt
+2. **Hoveddel** (2-3 setninger): Hva har skjedd, og hva barna fant
 3. **Hint** (1-2 setninger): Enkelt hint som komplementerer fysisk lapp
 4. **Avslutning**: Signatur "- Rampenissen"
 
@@ -259,9 +261,10 @@ With occasional slang (sparingly):
 
 | ✅ SKAL                           | ❌ SKAL IKKE                             |
 | --------------------------------- | ---------------------------------------- |
-| Fortelle hvor ting er gjemt       | Referere til dagboken (den er låst!)     |
+| Vise tilbake til det de fant      | Referere til dagboken (den er låst!)     |
 | Bygge spenning og narrativ        | Gjenta tekst fra fysisk lapp             |
 | Gi kontekst for å forstå oppgaven | Gi bort svaret eller deler av det        |
+| Peke til det som gjenstår i appen | Gi instruksjoner for fysiske handlinger  |
 | Komplementere fysisk hint         | Liste opp bokstaver/tall fra fysisk lapp |
 
 **Eksempel**:
