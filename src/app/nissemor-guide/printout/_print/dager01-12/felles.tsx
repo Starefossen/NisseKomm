@@ -53,10 +53,14 @@ export function Iskrystall({ size = 32 }: { size?: number }) {
 export function Ruter({
   celler,
   nummer = false,
+  runer,
   storrelse = "w-[15mm] h-[20mm]",
 }: {
   celler: (ReactNode | null)[];
   nummer?: boolean;
+  /** Per-cell runes, overriding the default (rune on visible letters only).
+   *  Only for cards where the meta puzzle teaches or tests the runes (day 3, 7). */
+  runer?: (string | undefined)[];
   storrelse?: string;
 }) {
   return (
@@ -71,9 +75,12 @@ export function Ruter({
               {i + 1}
             </span>
           )}
-          {typeof c === "string" && (
+          {(runer ? runer[i] : typeof c === "string" && c) && (
             <span className="absolute top-[1mm] right-[1mm]">
-              <Frostrune letter={c} size={12} />
+              <Frostrune
+                letter={runer ? runer[i]! : (c as string)}
+                size={12}
+              />
             </span>
           )}
           {c ?? <Iskrystall size={28} />}

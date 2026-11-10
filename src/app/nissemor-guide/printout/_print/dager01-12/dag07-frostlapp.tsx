@@ -3,7 +3,8 @@ import { PrintPage, CutCard } from "../PrintPage";
 import { A6, Ark, Ruter } from "./felles";
 
 // No letters at all: cell 3 and 5 hold only the runes learned on day 1 and 3.
-// ❄ cells carry no rune.
+// The ❄ cells keep their runes: decoding runes is the day-7 puzzle.
+const RUNER = ["K", "U", undefined, "D", undefined];
 const CELLER = [
   null,
   null,
@@ -27,7 +28,7 @@ export default function Dag07Frostlapp() {
               className={`${A6} flex flex-col items-center justify-center gap-[10mm]`}
             >
               <div className="text-4xl">FROSTLAPP</div>
-              <Ruter celler={CELLER} nummer storrelse="w-[15mm] h-[22mm]" />
+              <Ruter celler={CELLER} runer={RUNER} nummer storrelse="w-[15mm] h-[22mm]" />
             </CutCard>
           ))}
         </div>

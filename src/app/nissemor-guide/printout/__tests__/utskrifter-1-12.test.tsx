@@ -29,7 +29,7 @@ import Tredelt from "../_print/dager01-12/dag12-frostlapp-tredelt";
 ).IS_REACT_ACT_ENVIRONMENT = true;
 
 // har: text that must be printed. runer: exactly the runes printed
-// (only on visible letters, never on ❄ squares).
+// (only on visible letters, except day 3 and 7 where the meta puzzle teaches them).
 // ikke: the code, which must never appear on the sheets.
 const SIDER: [
   string,
