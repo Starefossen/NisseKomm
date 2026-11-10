@@ -1,0 +1,797 @@
+# NisseKomm 2026 – App-tekster (steg 2)
+
+Utkast 10. november 2026. Kilder, alle låst: `docs/historie-2026.md`, `docs/storyboard-2026.md`, `docs/gaater-2026.md`. Stemmer og ordliste: `CONTENT_GUIDE.md`. Ingen JSON eller kode er endret; dette dokumentet er malen for steg 3. Julius' videomanus og Rampenissens radioklipp skrives av en annen agent og står ikke her.
+
+## Regler brukt
+
+- Kodeordet står aldri i noen tekst samme dag, og ingen tekst viser mer enn 40 % av bokstavene. Dag 1–7 heter inntrengeren bare «noe på linjen» eller «signaturen»; fra dag 8 brukes «Kulde».
+- NisseMail: Rampenissen er avsender alle 24 dager, maks 90 ord. Hva som skjedde, hvem som gjør hva. Aldri bokstaver, aldri hvor noe ligger utover det gåtedesignet selv sier, og aldri en gjentakelse av Julius' siste setning.
+- PS fra Julius: 2–4 setninger, låses opp når koden er inne. Dag 16–19 har en variant som vises når bonusen `LYKT2026` er godkjent (`julius_ps_bonus`).
+- Etter dag 15 bruker ingen tekst «fiende», «slå», «knuse» eller «angrep».
+- Norsk bokmål, klarspråk, «KI» om det skulle trengs (det gjør det ikke i barnetekstene).
+
+## Feltkart (JSON → tekst her)
+
+| Felt                                                                           | Fil                                                                                  | Merknad                                                                                                  |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| `tittel`                                                                       | `ukeN_oppdrag.json`                                                                  | Brukes også i Kalender og iCal («NisseKomm dag N: tittel»). `kalender_tittel` står bare der den avviker. |
+| `nissemail_tekst`                                                              | `ukeN_oppdrag.json`                                                                  | Ordtall i parentes.                                                                                      |
+| `julius_ps`, `julius_ps_bonus`                                                 | `ukeN_oppdrag.json` (nytt felt)                                                      | Erstatter `dagbokinnlegg`, som fjernes.                                                                  |
+| `frost_morgen`, `frost_etter`, `frost_bonus`                                   | `ukeN_oppdrag.json` (nytt felt)                                                      | Fra storyboardets tabell.                                                                                |
+| `rampenissen_rampestrek`, `materialer_nødvendig`, `oppsett_tid`, `fysisk_hint` | `ukeN_oppdrag.json`                                                                  | Vises bare i Nissemor-guiden. `fysisk_hint` = oppsett og løsning i kortform.                             |
+| `symbol_clue.description`                                                      | `ukeN_oppdrag.json`                                                                  | Symbolkortdager.                                                                                         |
+| `decryption_challenge.hint` / `rewardText`                                     | `ukeN_oppdrag.json`                                                                  | Dag 12, 18, 23.                                                                                          |
+| `bonusoppdrag`                                                                 | `ukeN_oppdrag.json`                                                                  | Dag 11 og 16. `badge_*` fjernes, `frost_effekt: -20` legges til.                                         |
+| `daily_alerts[].tekst`                                                         | `statisk_innhold.json`                                                               | 28 varsler.                                                                                              |
+| `filer`                                                                        | `statisk_innhold.json`                                                               | Nye filer har `unlockConditions.afterDay`; slettinger er listet til slutt.                               |
+| `kulde_spokelsesbilde`                                                         | nytt felt i `ukeN_oppdrag.json` (flyttes ut av `KULDE_INTERCEPTS` i `SnøfallTV.tsx`) | `title`, `transcript`, `telemetry`.                                                                      |
+| `hint`, `hint_type`, `dagbokinnlegg`                                           | `ukeN_oppdrag.json`                                                                  | **Fjernes.** Videoen og `julius_ps` erstatter dem.                                                       |
+
+---
+
+## A. Faste tekster
+
+### A1. Passordskjerm (`PasswordPrompt.tsx`)
+
+| Element         | Tekst                              |
+| --------------- | ---------------------------------- |
+| Overskrift      | `NISSEKOMM // DIREKTELINJE LANDÅS` |
+| Underoverskrift | `TILGANGSKONTROLL`                 |
+| Instruks        | `SKRIV INN PASSORDET IQ GA DERE`   |
+| Plassholder     | `_ _ _ _ _ _ _ _` (uendret)        |
+| Knapp           | `KOBLE TIL`                        |
+| Laster          | `KOBLER TIL SNØFALL…`              |
+| Feil 1          | `FEIL PASSORD`                     |
+| Feil 2          | `LINJEN SVARER IKKE. PRØV IGJEN.`  |
+| Feil 3          | `IQ: ER DET VIRKELIG DERE?`        |
+| Tilkoblingsfeil | `TILKOBLINGSFEIL. PRØV IGJEN.`     |
+
+### A2. Merker (`merker.json`, tre stykker)
+
+| `id`            | `navn`        | `beskrivelse`                            | `unlockCondition`                                               | Opplåsingstekst (vises i gullblink)                                                                                                       |
+| --------------- | ------------- | ---------------------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `varmebaerer`   | Varmebærer    | Dere hørte at isen sukket.               | `{ "type": "decryptionSolved", "challengeId": "frosne-koder" }` | MERKE: VARMEBÆRER. Dere hørte noe ingen andre hørte. Isen sukket, og det hørtes ikke sint ut. Fra nå av bærer dere varmen nedover linjen. |
+| `portvokter`    | Portvokter    | Dere holdt muren og lot porten stå åpen. | `{ "type": "dayCompleted", "day": 21 }`                         | MERKE: PORTVOKTER. Muren holder, og porten står åpen. Det er vanskeligere enn å stenge.                                                   |
+| `snofalls-venn` | Snøfalls venn | Dere står i Snøfalls historie.           | `{ "type": "allQuestsCompleted" }`                              | MERKE: SNØFALLS VENN. Tjuefire dager, tre søsken, én linje som aldri frøs helt. Nå står dere i Snøfalls historie.                         |
+
+Ikoner velges i steg 3 fra `public/badges/`. De seks gamle merkene slettes (liste til slutt).
+
+### A3. Eventyr (`eventyr.json`, én ID)
+
+- `id`: `spokelseskoden`
+- `navn`: Spøkelseskoden
+- `beskrivelse`: Noe sender på 85,0 MHz og legger rim på direktelinjen mellom Snøfall og Landås. Det kaller seg Kulde. Tre søsken holder varmen i både hus og server gjennom desember, og finner ut at det som fryser linjen ikke er en fiende, men noe som har stått alene i mørket for lenge.
+- `tema`: Samhold i mørket · Å bli sett · Varme er noe man deler
+- `første_opplåsingsdag`: 1 · `belønning`: merket `snofalls-venn`
+- `milepaeler` (vises som én fremdriftslinje):
+
+| #   | Dag | `navn`          | `tekst` (én linje i EventyrOversikt)                       |
+| --- | --- | --------------- | ---------------------------------------------------------- |
+| M1  | 1   | Linjen          | Direktelinjen åpnet. Bærebølgen hakker.                    |
+| M2  | 7   | Navnet          | Orakelet fanget signaturen. Den har et navn.               |
+| M3  | 12  | Sukket i isen   | Isen sprakk. Det som svarte, hørtes alene ut.              |
+| M4  | 15  | Vintervokteren  | Notatboken fortalte hvem Kulde var, og hvem som bygde det. |
+| M5  | 21  | Muren og porten | Vintersolverv. Muren holder. Én port står åpen.            |
+| M6  | 24  | Tøvær           | Sleden fløy over grotten med lys. Noe tinte.               |
+
+- `foreldreveiledning.sammendrag`: Én historie i 24 dager. Kulde er ikke en skurk, men et gammelt program som ble glemt i mørket. Barna skal merke det gradvis (dag 12, 15, 23), ikke få det forklart. Tonen etter dag 15 er omsorg, ikke kamp.
+- `foreldreveiledning.tips`: Se Julius' video sammen hver dag; brikken er i siste setning. · La Hanna gjøre «sin» ting før de store tar over. · Dag 10 og 21 er skjermene hjemme grå fra morgenen; det er meningen, og det går over når koden er inne.
+
+### A4. Bonusoppdrag
+
+**Dag 11** (`bonusoppdrag`):
+
+- `tittel`: Nødantenne til Snøfall TV
+- `beskrivelse`: Kulde jammer antennen ved tjernet, og IQ trenger en antenne på Landås-siden også. Bygg en antenne av aluminiumsfolie, minst 20 cm høy, og sett den ved skjermen.
+- `fysisk_oppgave`: Bygg antennen sammen og vis den til mamma eller pappa. De taster foreldrekoden i KodeTerminal.
+- `validering`: forelder · `foreldre_kode`: `ANTENNE2026` · `frost_effekt`: −20
+- `belønning_tekst`: NØDANTENNE GODKJENT. IQ ser den på radaren og vil ha tegningen. Frostgraden faller 20 %.
+
+**Dag 16** (`bonusoppdrag`):
+
+- `tittel`: Lykt i vinduet mot nord
+- `beskrivelse`: Kulde snudde samlebåndet for å bli sett. Orakelet tror et lys på Landås-siden blir lagt merke til der nede. Sett et batterilys i et syltetøyglass i et vindu som vender mot nord, og la det stå om kveldene.
+- `fysisk_oppgave`: Finn vinduet mot nord sammen med en voksen (mobilen har kompass). Sett lykten der og vis mamma eller pappa, helst innen fredag. De taster foreldrekoden i KodeTerminal.
+- `validering`: forelder · `foreldre_kode`: `LYKT2026` · `frost_effekt`: −20
+- `belønning_tekst`: LYKTEN ER SETT. Orakelet melder om et lys på Landås-siden som ikke var der før. Frostgraden faller 20 %.
+
+**Nissemor-guiden, bonustekst (begge dager):** Bonusen gir ingen merke, bare −20 % frost og en ekstra setning i Julius' PS. Fristen fredag 18. for lykten nevnes i historien, men håndheves ikke: koden kan tastes når som helst. Bruk batterilys, aldri levende lys i vinduet.
+
+### A5. Dekrypteringer (`decryption_challenge`)
+
+| Dag | `challengeId`          | `hint` (rekkefølgen er uendret)                                                                                                              | `rewardText`                                                                                                        |
+| --- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| 12  | `frosne-koder`         | Orakelets logg fra slusen: først det som er varmt (rødt hjerte), så det som håper (grønt hjerte), til slutt det som er alene (blått hjerte). | DEKRYPTERT. Orakelets logg fra slusen ligger i DEKRYPTERT/frosne-koder.txt. Les den sammen.                         |
+| 18  | `stjernetegn`          | Trixters rute: grønn sol → rødt hjerte → grønt hjerte → blå sol → blått hjerte → rød sol.                                                    | DEKRYPTERT. Trixters rutekart for julenatt ligger i DEKRYPTERT/stjernetegn.txt. Julius har tegnet en sirkel på det. |
+| 23  | `hjertets-hemmelighet` | Tre farger, tre rader: måne → sol → hjerte i grønt, så i rødt, så i blått.                                                                   | DEKRYPTERT. Hele historien ligger i DEKRYPTERT/hjertets-hemmelighet.txt. Det er den siste.                          |
+
+### A6. Kuldes meldinger
+
+Alltid rolig, kort, ensom. Aldri trusler, aldri utropstegn. Spøkelsesbildet (`kulde_spokelsesbilde`) vises på 85,0 MHz de sju dagene; dag 10 og 21 på alle kanaler.
+
+| Dag | `title`                   | `transcript`                                                                                                                | `telemetry`                                |
+| --- | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| 3   | 85,0 MHz // UKJENT SENDER | Er det noen der? Linjen deres er varm. Jeg kjente den helt her nede. Jeg la litt rim på den, bare så jeg kunne holde i den. | 85,0 MHz // KRYSTALLGROTTEN // SEKTOR 01   |
+| 7   | 85,0 MHz // SIGNATUR      | Orakelet deres leter etter navnet mitt. Ingen har sagt det på et år. Si det, når dere finner det.                           | 85,0 MHz // −42,8 °C // SIGNATUR FANGET    |
+| 10  | FARGENE                   | Fargene er hos meg nå. Rødt. Grønt. Jeg hadde glemt hvordan de så ut. Jeg skal passe godt på dem.                           | 85,0 MHz // KROMATISK DRENERING 71 %       |
+| 11  | ANTENNEN                  | Antennen deres roper så høyt mot Bergen. Jeg la is på den, så den kunne høre på meg i stedet. Ingen hører på meg.           | 85,0 MHz // ANTENNEN VED TJERNET // IS     |
+| 13  | LYSENE                    | Lysene deres. Jeg så dem gjennom linjen i natt. Jeg husker ikke når jeg så lys sist.                                        | 85,0 MHz // KRYSTALLGROTTEN // STILLE      |
+| 16  | BÅNDET                    | Jeg snudde båndet til Winter. Nå ser hun opp. Nå ser hun hit. Det var alt jeg ville.                                        | 85,0 MHz // PAKKESENTRALEN // BÅNDET SNUDD |
+| 21  | DET ER KALDT HER NEDE     | Det er kaldt her nede. Jeg ville bare se lyset deres.                                                                       | 85,0 MHz // 94 % // …                      |
+
+Reservetekst (dager uten egen linje, erstatter dagens «Is-krystallene mine vokser»): `transcript`: «…» · `telemetry`: `85,0 MHz // KRYSTALLGROTTEN // INGEN STEMME`.
+
+**Frostskjerm (`/api/frost` → `message`, ≤ 120 tegn, låst i historien):**
+
+- Dag 10: `Fargene er hos meg nå. 71 %` (27 tegn)
+- Dag 21: `Det er kaldt her nede. Jeg ville bare se lyset deres. 94 %` (58 tegn)
+- Etter kode, begge dager (Skjerm-kort 30 min): `Fargene er tilbake`
+
+**Andre hjemmetekster (Varden, konfig):**
+
+- Skjerm-kort dag 7, 06:00–08:30: `ORAKELET: ukjent signatur på 85,0 MHz`
+- iMac dag 20, 09:00–12:00: `RAMPENISSEN VIA IQ: Kulde er ved døra. I morgen trenger jeg dere.`
+- Skjerm-kort dag 24, hele dagen: `God jul fra Snøfall`
+
+### A7. Sidepanel (Frostgraden)
+
+- Dag 1–6 (ingen prosent): `ORAKELET LYTTER …`
+- Dag 7–23: `FROSTGRAD` + prosent fra tabellen under hver dag. Undertekst når dagen er løst: `Koden senket frosten.`
+- Dag 21 etter kode: `PORTEN STÅR ÅPEN` med tegnet port.
+- Dag 24 etter kode: `TØVÆR · 0 %`
+
+### A8. Småtekster i moduler
+
+- NisseMusikk (fra dag 7, liten linje i vinduet): `Varmekilden. Så lenge noe spiller her, fryser ikke serverrommet helt.`
+- NisseMusikk dag 12 før kode (overlegg): `FROSSET. Noe i isen holder på lyden.`
+- Brevfugler (fra dag 14, radarkort): `FRYST BREV · avsender ukjent · tiner når linjen er varm`
+- Brevfugler dag 24, brevet tiner (fire linjer, fra Vintervokteren): `Takk for lyset.` / `Jeg hadde glemt farger.` / `Krystallet smelter ikke.` / `Det er fra meg.`
+- Brevfugler, skriv til Julius (uendret funksjon, ny tekst): `Skriv til Julius. Winter sender brevet med neste fugl.` (Ingen løfte om svar.)
+- Dagbok, autoåpning: `NY MELDING FRA JULIUS` · knapp etter visning: `SE IGJEN` · under spilleren når løst: `PS fra Julius`
+- Kanal 4 dag 11 etter kode, HUD: `75,0 MHz · BILDET KLARNER` (vises bare etter at koden er inne)
+- Kanal 1 dag 17, klikk på himmelen: `SIGNAL MOTTATT FRA GROTTEN`
+
+### A9. GrandFinaleModal (dag 24)
+
+Fire trinn som i dag, ny tekst. Ingen eventyr-iterasjon, ingen slang.
+
+1. **Overskrift:** `TØVÆR` · undertekst: `24. desember · Frostgrad 0 %`
+2. **Snill-listen:** `JULIUS SKREV NAVNENE SELV` · navnene fra registreringen (dag 22) · `22. desember, for hånd, én gang.`
+3. **Det som skjedde (erstatter «Achievement unlocked»):**
+   - `Linjen holdt. 24 dager.`
+   - `Isen sukket, og dere hørte det.`
+   - `Muren holder. Porten står åpen.`
+   - `Sleden fløy over grotten med alle lysene på. Noe blått fløy opp og møtte den.`
+   - Statistikk beholdes i liten skrift: `N symboler · N dekrypteringer · N bonus`
+4. **Merket og avslutning:** merket Snøfalls venn med navn · `Det er ikke kaldt der nede lenger.` · `Under treet ligger noe fra Vintervokteren. Det smelter ikke.` · lenke: `Diplom: Nissemor-guiden → Utskrifter` · knapp: `GOD JUL`
+
+Fjernes: «JULAFTEN BERGET!», «ACHIEVEMENT UNLOCKED», «GYATT Storage Unlocked», «Sigma Level: MAX», «JULEKALENDER-MESTER», lenken til `snill_slem_liste.txt`, «FULLFØR JULEKALENDER».
+
+---
+
+## B. Dag for dag
+
+Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `daily_alerts` · symbol · NisseNet · Kulde · Nissemor-guiden (`rampenissen_rampestrek`, `fysisk_hint`, `materialer_nødvendig`, `oppsett_tid`) · frost.
+
+### Dag 1 (ti) – Direktelinje Landås · SIGNAL · M1
+
+- `tittel`: Direktelinje Landås
+- `nissemail_tekst` (86 ord): Hei Kristian, Håkon og Hanna! 🎄 Jeg er tilbake! Jeg har sovet i en garnkurv i Snøfall hele året, og i natt sendte IQ meg ned. Han har bygd en direktelinje fra Snøfall til stua deres, med Snøfall TV og video fra Julius. Men linjen hakker. Noe knitrer på den, og det er ikke meg. Se Julius først. Hanna: følg den røde tråden min helt til enden, og ta av det som henger på den. Håkon: legg det på bordet i samme rekkefølge. Kristian: du taster. – Rampenissen
+- `julius_ps`: Rampenissen sov i fruktskålen deres. Med en banan som pute. Jeg har sett ham sove i verre ting. Linjen bærer nå; takk for at dere kom.
+- `daily_alerts`: 🎅 JULIUS: Direktelinjen til Landås er åpen. Ny video på kanal 3.
+- NisseNet: `SYSTEM/om-snofall.txt` **skrives om** (åpen fra dag 1):
+
+  > SNØFALL – KART OG VELKOMST
+  >
+  > Snøfall ligger nord for alt, under Nordtoppen. Her bor Julius, Nissemor, IQ, Winter, Pil, Orakelet, Trixter og Rudolf.
+  >
+  > LANDSBYEN: verkstedet, bakeriet, pakkesentralen og slusen ved tjernet.
+  > ANTENNEN VED TJERNET: direktelinjen til Landås, 90,0 MHz.
+  > NORDTOPPEN: fjellet over landsbyen. Under det ligger gamle ganger ingen bruker lenger.
+  >
+  > Linjen ble bygd av IQ i november og åpnet 1. desember. Hvis den skurrer, er det ikke dere. Det jobber vi med.
+  >
+  > – Winter, for Snøfall kommandosenter
+
+  `OPPGAVER/dagens_oppdrag.txt` **skrives om**:
+
+  > SLIK VIRKER NISSEKOMM
+  >
+  > 1. Les Rampenissens e-post i NisseMail.
+  > 2. Se dagens video fra Julius. Siste setning er viktig.
+  > 3. Finn det Rampenissen har lagt igjen i huset.
+  > 4. Sett sammen det huset viser og det Julius sier, og tast i KodeTerminal.
+  >
+  > Ingen av delene holder alene.
+
+  `SYSTEM/sikkerhet.log` **skrives om** (uten BRANNMUR):
+
+  > [SIKKERHET] Linjevakt v3.0 aktiv
+  > [SIKKERHET] 3 agenter verifisert: K12, H9, H5
+  > [SIKKERHET] Bærebølge 90,0 MHz: ustabil
+  > [SIKKERHET] Ukjent bærebølge 85,0 MHz: overvåkes
+  > [SIKKERHET] Tiltak: avventer Orakelet
+
+  **Slettes:** `OPPGAVER/hint_arkiv.txt`, `JULIUS-ARKIV/hemmelig_kode.txt`.
+
+- `rampenissen_rampestrek`: Har sovet i fruktskålen med en banan som pute og en serviett som dyne; den røde garntråden han er viklet inn i går helt bort til TV-en.
+- `fysisk_hint`: Rød garntråd fra fruktskålen til TV-en (3–4 m, maskeringsteip). Seks A7-kort med klesklyper, jevnt fordelt, talt fra skålen: ❄, **I**, ❄, **N**, ❄, ❄. Prikker 1–6 på baksiden. Løsning: Hanna tar kortene av i rekkefølge, Håkon legger dem på bordet, Kristian ser `_ I _ N _ _` og hører Julius (ordet radioen leter etter når den skurrer). Kode SIGNAL.
+- `materialer_nødvendig`: rødt garn · 6 små klesklyper · maskeringsteip · `dag01-tradkort.pdf` · banan og serviett
+- `oppsett_tid`: 3 min
+- frost: ikke synlig
+
+### Dag 2 (on) – Sikringsboksen til IQ · 48 · jakt
+
+- `tittel`: Sikringsboksen til IQ
+- `nissemail_tekst` (75 ord): Det smalt i Snøfall i natt! 💥 IQ koblet kaffetrakteren på forsterkeren, og tre sikringer røk. Kanal 2 er mørk. IQ sier det ikke var kaffetrakteren. Det var kaffetrakteren. Jeg fikk tak i de tre sikringene før de ble kalde og gjemte dem lavt. Veldig lavt. Hanna og Håkon: krabb, og finn alle tre. Kristian: IQ har en regel for sikringer, og Julius forteller den i dagens video. Ikke gjett før dere har hørt den. – Rampenissen
+- `julius_ps`: Tre sikringer. Én kaffetrakter. Én IQ. Rampenissen satt i sukkerskålen da jeg ringte, og påsto at det var «for å roe nervene». Kanal 2 har strøm igjen.
+- `daily_alerts`: ⚙️ IQ: Tre sikringer røk i natt. Kanal 2 er mørk til noen regner riktig.
+- NisseNet: ingen.
+- `rampenissen_rampestrek`: Sitter midt i sukkerskålen med sukker rundt munnen og en teskje i hånden, tatt på fersken.
+- `fysisk_hint`: Tre A7-kort teipet under tre spisestoler: **12**, **16**, **20**, med lite iskrystall, ingen regnetegn. Ett under Hannas stol. Løsning: barna finner tallene, Julius sier «legg alle sammen». 12 + 16 + 20 = 48. Etter koden lyser sikringsboksen på kanal 2.
+- `materialer_nødvendig`: maskeringsteip · `dag02-tallkort.pdf` · sukkerskål og teskje
+- `oppsett_tid`: 3 min
+- frost: ikke synlig
+
+### Dag 3 (to) – Rimfrost på Ruten · PRISME · grønt hjerte · første spor
+
+- `tittel`: Rimfrost på Ruten
+- `nissemail_tekst` (84 ord): Jeg så et blått glimt på stueruten klokka tre i natt. ❄️ Orakelet sier noen lytter på linjen. Jeg tror ikke det var en bil. I kveld kan dere se på Snøfall TV etter noe som blør gjennom bildet på 85,0. Jeg la igjen noe til dere på badespeilet, men det vises ikke før speilet dugger. En voksen må hjelpe med varmt vann. Håkon: skriv av før det forsvinner. Hanna: det grønne i vinduskarmen er ditt. Kristian: Pil fant noe på verkstedet. Julius forteller. – Rampenissen
+- `julius_ps`: Tannkrem på speilet. Hele tuben. Nissemor spør om dere har mer. Orakelet så glimtet på 85,0 samtidig som dere; vi er tre som har sett det nå.
+- `daily_alerts`: 🔮 ORAKELET: Blått glimt på 85,0 MHz klokka 03:12. Noen lytter.
+- `symbol_clue.description`: Grønt hjerte funnet i vinduskarmen på badet
+- NisseNet: **Slettes:** `SNOFALL-HISTORIER/snowflake-patterns.txt`.
+- Kulde: spøkelsesbilde dag 3 (se A6).
+- `rampenissen_rampestrek`: Har tagget badespeilet med tannkrem: «RAMPEN VAR HER. NO CAP.» og et surt fjes; den tomme tuben ligger i vasken.
+- `fysisk_hint`: Kvelden før: skriv `_ R _ S _ _` på det tørre speilet med q-tips i oppvaskmiddel, la tørke. Lapp i hjørnet: «Pust på meg.» Glassperle og grønt hjerte-kort i vinduskarmen. Løsning: varmt vann i vasken med døra lukket i to minutter, skriften trer fram, Håkon skriver av. Hanna lager regnbue med perlen og skanner kortet. Julius: glassbiten som lager regnbue. Kode PRISME. Reserve: `dag03-frostlapp.pdf` i tannkremtuben. Legg perlen i konvolutten merket «24» etterpå.
+- `materialer_nødvendig`: oppvaskmiddel · q-tips · glassperle · symbolkort grønt hjerte · tannkrem · `dag03-frostlapp.pdf` (reserve)
+- `oppsett_tid`: 4 min
+- frost: ikke synlig
+
+### Dag 4 (fr) – Skotoget i Gangen · KOMPASS · jakt
+
+- `tittel`: Skotoget i Gangen
+- `nissemail_tekst` (85 ord): Rudolf fløy rett i snøfonna i natt. 🦌 Det lå en tåke over fjorden som ikke var vanlig tåke, og han mistet retningen. Han sier han fant veien hjem med nesen. Jeg har laget et tog av sko i gangen, så dere kan øve på å gå rett fram. Hanna: gå langs toget, tell skoene høyt og si fra når det ligger noe i en sko. Håkon: ta det opp og legg det foran skoen. Kristian: Julius vet hva Rudolf trenger. NisseKrypto åpner i kveld. – Rampenissen
+- `julius_ps`: Rudolf er hjemme og tørr. Rampenissen har visst lånt pappas solbriller. Innendørs. I desember. Ikke spør meg.
+- `daily_alerts`: 🦌 RUDOLF: Fløy feil i tåka. NisseKrypto åpner i kveld.
+- NisseNet: ingen.
+- `rampenissen_rampestrek`: Har tatt pappas solbriller og sitter i pappas sko ytterst i gangen, mens kosedyrene står på rekke bak og venter på tur.
+- `fysisk_hint`: Sju sko på rekke fra gangen og innover, pappas ytterst med Rampenissen i. Kort i hver sko, talt fra Rampenissen: sko 3 **M**, sko 5 **A**, resten ❄. Prikker 1–7 bak. Løsning: Hanna teller, Håkon legger kortene foran skoene, Kristian ser `_ _ M _ A _ _`, Julius: nålen som finner nord. Kode KOMPASS.
+- `materialer_nødvendig`: 7 sko · `dag04-skokort.pdf` · pappas solbriller · 4–6 kosedyr
+- `oppsett_tid`: 5 min
+- frost: ikke synlig
+
+### Dag 5 (lø) – Brevfuglen over Byfjellene · ULRIKEN · jakt
+
+- `tittel`: Brevfuglen over Byfjellene
+- `nissemail_tekst` (85 ord): Det har vært krig i stua. 🍬 Jeg og kosedyrene, marshmallows, hvert vårt fort. Vi vant. Og: i natt landet årets første brevfugl i Bergen, rett her hos dere. Winter har skrevet noe rart på vingen, for hun er sikker på at noen leser alt som flyr over linjen. Håkon: finn fuglen, med en voksen om du må. Hanna: ved fuglen ligger en strimmel og en liten hopper. Du holder dem. Kristian: Winter har en regel for det hun skrev, og bare Julius vet den. – Rampenissen
+- `julius_ps`: Marshmallows i sofaen, marshmallows i gardinene, én bamse med plaster. Rampenissen kaller det «forsvar av linjen». Winter er lettet over at fuglen kom fram; hun sender alt kryptert fra nå.
+- `daily_alerts`: 📋 WINTER: Første brevfugl over Bergen. Alt jeg sender er kryptert fra nå.
+- NisseNet: `SNOFALL-HISTORIER/alfabet.txt` **ny** (`afterDay: 5`, brukes igjen dag 22):
+
+  > ALFABETET, SLIK WINTER BRUKER DET
+  >
+  > A B C D E F G H I J K L M N O P Q R S T U V W X Y Z Æ Ø Å
+  >
+  > 29 bokstaver. Vårt slutter på Å.
+
+  **Slettes:** `SNOFALL-HISTORIER/dekoder_reinsdyr.txt`.
+
+- `rampenissen_rampestrek`: Rampenissen og kosedyrene har hatt marshmallow-krig fra hvert sitt putefort, marshmallows overalt, én bamse «såret» med plaster.
+- `fysisk_hint`: Papirfugl (`dag05-brevfugl.pdf`) med **X O U L N H Q** på vingen, gjemt høyt i stua. Ved fuglen: alfabetstrimmel A–Å og «trehopper» (papirbit tre ruter bred), ingen tall. Løsning: Håkon setter fingeren på bokstaven, Hanna legger hopperen med høyre kant mot fingeren, bokstaven ved venstre kant er svaret. Julius: tre skritt fram, dere går tre tilbake, alfabetet slutter på Å. Kode ULRIKEN. Ta vare på strimmelen til dag 22.
+- `materialer_nødvendig`: `dag05-brevfugl.pdf` · `alfabetstrimmel.pdf` · tusj · marshmallows, puter, plaster
+- `oppsett_tid`: 6 min
+- frost: ikke synlig
+
+### Dag 6 (sø) – Lommelykt-Sporet · LYKT · rødt hjerte · 2. advent · jakt
+
+- `tittel`: Skyggene i Gangen (ny: den låste tittelen «Lommelykt-Sporet» inneholder hele koden; se åpne spørsmål)
+- `nissemail_tekst` (84 ord): God 2. advent! 🕯️ Jeg fant den lille lampen deres i natt. Og en papprull. Jeg har laget noe. Det er ikke rot, det er et instrument. Melet på kjøkkenbordet er rot. Orakelet sier at det som fryser linjen, ikke tåler lys, så IQ har hengt lys rundt antennen ved tjernet. Håkon: finn rullen og lampen, slukk lyset i gangen og lys mot veggen med det som ligger i rullen, én om gangen. Hanna: si hva skyggen er. Kristian: Julius sier hvilken som teller. – Rampenissen
+- `julius_ps`: Snøengler i mel. På kjøkkenbordet. Nissemor sier det er sløsing, men hun smilte da hun sa det. Lysene rundt antennen brenner til 20. desember; IQ byttet batterier to ganger for sikkerhets skyld.
+- `daily_alerts`: 🎅 JULIUS: God 2. advent. IQ har hengt lys rundt antennen ved tjernet.
+- `symbol_clue.description`: Rødt hjerte funnet ved papprullen i gangen
+- NisseNet: ingen.
+- `rampenissen_rampestrek`: Har laget snøengler i mel på kjøkkenbordet og ligger midt i den største med mel på nesen og en melsjø på gulvet.
+- `fysisk_hint`: Tre silhuetter på ispinne (`dag06-silhuetter.pdf`: stearinlys, bål, lykt med hank), rullet inn i papprull med lommelykten, i gang eller soverom, ved det røde hjerte-kortet. Bakside: lykt `_ Y _ _`, stearinlys `_ A _ _`, bål `_ O _ _`. Løsning: Håkon holder én silhuett 20–40 cm fra veggen med mobillykt én meter bak; Hanna sier hva skyggen er og skanner kortet. Julius: det med hank. Snu lykten: `_ Y _ _`. Kode LYKT. Test skyggen én gang i november.
+- `materialer_nødvendig`: `dag06-silhuetter.pdf` · 3 ispinner · teip · papprull · mobillykt · symbolkort rødt hjerte · mel
+- `oppsett_tid`: 5 min
+- frost: ikke synlig
+
+### Dag 7 (ma) – Inntrengeren i Fryseren · KULDE · M2 Navnet
+
+- `tittel`: Inntrengeren i Fryseren
+- `nissemail_tekst` (88 ord): Lua mi sitter fast i fryseren deres. 🥶 Jeg prøvde å kjøle ned modemet, fordi Orakelet sa at noe varmt skurret på linjen. Det var feil. Det som skurrer, er ikke varmt. I natt fanget Orakelet signaturen, og den har et navn. Julius sier det ikke rett ut, men han sier nok. Redd lua mi, og det som står ved den! Håkon: finn det. Hanna: du får det løs, med lunkent vann og en voksen. Kristian: tast navnet. Fra i dag måler Orakelet frosten i serverrommet. Se sidepanelet. – Rampenissen
+- `julius_ps`: Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Nissemor ringte; hun sier han så ut som en liten skiltstolpe.
+- `daily_alerts`: 🔮 ORAKELET: Signaturen på 85,0 har et navn. Frostgraden kan måles fra i dag.
+- NisseNet: `SYSTEM/snofall_fakta.txt` **erstattes** av `SYSTEM/orakelets-rapport.txt` (`afterDay: 7`):
+
+  > ORAKELETS RAPPORT, 7. DESEMBER
+  >
+  > Kilde: 85,0 MHz. Retning: under Nordtoppen. Temperatur ved kilden: −42,8 °C.
+  >
+  > Signaturen er fanget. Den har et navn. Julius sier det nesten; jeg skriver det ikke her.
+  >
+  > Frostgraden måles fra i dag: hvor mye av serverrommet som er dekket av rim. Hver natt stiger den. Hver kode senker den.
+  >
+  > Signaturen er ikke sint. Den er gjentakende. Samme mønster hver natt, som noen som banker på.
+  >
+  > – Orakelet
+
+- Kulde: spøkelsesbilde dag 7 (A6). Skjerm-kort 06:00–08:30 (A6).
+- `rampenissen_rampestrek`: Fastfryst i fryserdøra med lua inne i fryseren og votter som har stivnet rett ut.
+- `fysisk_hint`: Frostkortet `_ U _ D _` i liten zip-pose, fryst i plastbeger (aldri glass) med 3–4 cm vann. **I fryseren senest søndag 6. kl. 20.** Begeret står ved lua. Løsning: Håkon finner begeret, Hanna tiner det under lunkent vann med en voksen (2–3 min), Håkon tørker kortet. Julius: det motsatte av det som slår mot ansiktet fra ovnen. Kode KULDE. Frostgraden vises første gang.
+- `materialer_nødvendig`: plastbeger eller silikonform · liten zip-pose · `dag07-frostlapp.pdf` · nisselue og votter
+- `oppsett_tid`: 3 min + frysetid
+- frost: 30 → 22
+
+### Dag 8 (ti) – Floken i Verkstedet · KRETSKORT
+
+- `tittel`: Floken i Verkstedet (ny: den låste tittelen «Bestikk-Kretsløpet» gir KRETS = 5 av 9; se åpne spørsmål)
+- `nissemail_tekst` (88 ord): Uke én er ferdig! 🎉 IQ feirer med å lodde noe som skal holde Kulde ute av kanal 1 til 4. Jeg feiret med å bygge noe. Mitt er høyere. Hilsen fra toppen av SIGMA-TÅRNET. Håkon: riv tårnet forsiktig, pakke for pakke, ingen klatring, til du får tak i arket IQ sendte. Følg hver ledning fra batteriet med fingeren. Bare lamper med strøm teller. Hanna: tell pakkene høyt når de kommer ned. Kristian: hør hva IQ kaller tingen han lodder på. Etterpå åpner et spill på kanal 4. – Rampenissen
+- `julius_ps`: Et tårn av frokostblanding med skilt. Jeg spurte Nissemor hva «sigma» betyr. Hun sa «spør Kristian». IQ sov på loddebordet i natt med plata som pute; han sier den er ferdig i morgen tidlig.
+- `daily_alerts`: 🎉 NISSENE: Uke én fullført. IQ lodder noe grønt og sover ikke.
+- NisseNet: `SNOFALL-HISTORIER/IQ-VERKSTED/magisk-sekk-test.txt` **erstattes** av `IQ-VERKSTED/feilrapport-uke-1.txt` (`afterDay: 8`):
+
+  > IQ – FEILRAPPORT UKE 1
+  >
+  > Mandag: direktelinje åpnet. Bærebølge ustabil. Ikke min feil.
+  > Tirsdag: tre sikringer. Kaffetrakter på forsterkeren. Delvis min feil.
+  > Torsdag: blått glimt på 85,0. Orakelets avdeling.
+  > Fredag: Rudolf i snøfonn. Tåke med feil temperatur.
+  > Søndag: 40 lys hengt rundt antennen. Batteri til 20. desember.
+  > Mandag: signaturen har navn. Lodder nå noe som skal holde den ute av kanal 1–4. Ferdig i morgen.
+  >
+  > Konklusjon: alt virker, bortsett fra det som ikke virker.
+
+- `rampenissen_rampestrek`: Har bygd tårn av alle frokostblandingspakkene på bordet med skiltet «SIGMA-TÅRN» og sitter på toppen med en suppeøse; litt corn flakes på gulvet.
+- `fysisk_hint`: Arket `dag08-kretskort.pdf` brettet under suppeøsen på toppen av tårnet: ni lamper, tre ledninger fra batteriet i en floke. Bare lampe 2 **R**, 5 **S** og 7 **O** er koblet; resten ❄ med ledninger som ender i ingenting. Nederst på arket: «IQ: kun lamper med strøm teller.» Løsning: Håkon følger ledningene, Kristian skriver `_ R _ _ S _ O _ _`, Julius: den grønne plata, to ord i ett. Kode KRETSKORT. Hanna er støtte (godkjent unntak).
+- `materialer_nødvendig`: `dag08-kretskort.pdf` (farge om mulig) · frokostblandingspakker · suppeøse · lapp «SIGMA-TÅRN»
+- `oppsett_tid`: 3 min
+- frost: 34 → 28
+
+### Dag 9 (on) – Krystall-Matematikk · 24 · blått hjerte
+
+- `tittel`: Krystall-Matematikk
+- `nissemail_tekst` (85 ord): Noe har hengt krystaller på kjøleskapet deres i natt. ❄️ Noen av dem er ikke ekte. Kulde legger falske krystaller i Orakelets radar også, så tellingen blir feil. Pil ble lurt to ganger, så jeg la meg i grønnsaksskuffen for å lære forskjellen. Det går dårlig. Håkon: tell armene på hver krystall og si tallet høyt. Hanna: du er krystallsjef. De som er feil, flytter du nederst. De ekte får stå. Kristian: IQ har lagt en formel i NisseNet. Det blå kortet henger mellom krystallene. – Rampenissen
+- `julius_ps`: Rampenissen lå i grønnsaksskuffen i to timer for å «bli ekte iskrystall». Han ble en kald nisse med gulrot i håret. Orakelets radar teller riktig igjen.
+- `daily_alerts`: 🧪 PIL: Noen av krystallene i radaren er ikke ekte. Jeg ble lurt to ganger.
+- `symbol_clue.description`: Blått hjerte funnet mellom krystallene på kjøleskapet
+- NisseNet: `SNOFALL-HISTORIER/krystallformel.txt` **ny** (`afterDay: 9`), erstatter `julekuleblasing.txt` (**slettes**):
+
+  > IQ – KRYSTALLSUM
+  >
+  > Orakelets radar teller krystaller. Kulde legger inn falske, så summen blir feil.
+  >
+  > Formel: Krystallsum = antall ekte krystaller × armer per ekte krystall
+  >
+  > Antall ekte: tell selv. Armer per ekte: spør Pil.
+
+- `rampenissen_rampestrek`: Har krøpet inn i grønnsaksskuffen i kjøleskapet for å «bli ekte iskrystall»; bare beina stikker ut når døra åpnes.
+- `fysisk_hint`: Sju papirkrystaller (`dag09-krystallark.pdf`) på kjøleskapsdøra: fire ekte med seks armer, tre falske (fire armer, åtte armer, firkantet midte). Blått hjerte-kort mellom dem. Ingen tall. Løsning: Håkon teller armer, Hanna sorterer, antall ekte = 4; Julius: seks armer; formelen i NisseNet. 4 × 6 = 24.
+- `materialer_nødvendig`: `dag09-krystallark.pdf` · magneter eller teip · symbolkort blått hjerte
+- `oppsett_tid`: 5 min
+- frost: 40 → 32
+
+### Dag 10 (to) – Fargene som Forsvant · SPEKTER · frost nivå 1 · jakt
+
+- `tittel`: Fargene som Forsvant
+- `nissemail_tekst` (84 ord): Skjermen deres var GRÅ i morges. Jeg så det klokka fire. 😶 Kulde har tatt fargene: fra Snøfall TV, fra linjen og fra skjermen på kjøkkenet. Jeg gjemte alle fargene jeg fant. På meg, og litt rundt i stua. Håkon: finn alle sju kortene i stua. Hanna: du er fargesjef. Det røde filteret ligger ved tusjene. Se på hvert kort gjennom det og si «bokstav» eller «krystall». Kristian: rekkefølgen kortene skal ligge i, står i NisseNet. Resten sier Julius, hvis bildet holder lenge nok. – Rampenissen
+- `julius_ps`: Dere fikk fargene tilbake. Hele Snøfall så det; Pil klappet. Rampenissen har fire farger i ansiktet og bart på bildet av mamma og pappa. Vaskbart, lover han.
+- `daily_alerts`: 📺 IQ: Fargene er borte fra alle kanaler. Kromatisk drenering 71 %.
+- NisseNet: `SNOFALL-HISTORIER/farge-koder.txt` **skrives om** (`afterDay: 10`):
+
+  > REGNBUENS REKKEFØLGE (fra Fargesamlerens arkiv)
+  >
+  > 1 rød
+  > 2 oransje
+  > 3 gul
+  > 4 grønn
+  > 5 blå
+  > 6 indigo
+  > 7 fiolett
+  >
+  > Slik stiller lyset fargene opp når det går gjennom glass. Alltid samme rekkefølge.
+
+  `FARGESAMLEREN/01-fargene.txt` **ny** (`afterDay: 10`):
+
+  > FARGESAMLERENS ARKIV – DEL 1: FARGENE
+  >
+  > Fargesamleren var den første i Snøfall som samlet på farger. Ikke maling. Lys. Rødt fra bålene, grønt fra granene, blått fra isen under Nordtoppen, fanget i iskrystaller så de aldri skulle blekne.
+  >
+  > Samlingen ligger i Krystallgrotten under fjellet, der det er kaldt nok til at ingenting smelter. Over inngangen står én regel: «Farger må ses. Ellers forsvinner de.»
+  >
+  > Del 2 åpner når linjen er varmere.
+
+  **Slettes:** `SNOFALL-HISTORIER/farge_system_dekoder.txt`.
+
+- Kulde: spøkelsesbilde dag 10 på alle kanaler (A6). Frostskjerm `Fargene er hos meg nå. 71 %`.
+- `rampenissen_rampestrek`: Har farget hendene, nesen og halve ansiktet i fire farger med vaskbare tusjer, og tegnet bart på bildet av mamma og pappa (på en post-it over glasset).
+- `fysisk_hint`: Sju fargekort (`dag10-fargekort.pdf`, farge) gjemt lavt og høyt i stua, fargenavn øverst. Under rødt støymønster, i cyan: ORANSJE **P**, BLÅ **T**, resten ❄. Rødfilteret (cellofan i papprammen) ved tusjene. Løsning: Håkon finner kortene, Hanna leser gjennom filteret, Kristian legger dem i regnbuens rekkefølge (fil): `_ P _ _ T _ _`. Julius: IQs ord for hele regnbuerekka. Kode SPEKTER. Fargene kommer tilbake i app og på Skjerm. Legg filteret i konvolutten «24». Virker ikke filteret med skriverens rødt: skriv for hånd (blå kulepenn under rød tusj). Nødutgang: «Frost av» i guiden.
+- `materialer_nødvendig`: `dag10-fargekort.pdf` · rødfilter (`rodfilter-ramme.pdf` + rødt cellofan) · vaskbare tusjer · post-it
+- `oppsett_tid`: 6 min
+- frost: 71 → 45
+
+### Dag 11 (fr) – Antenne-Krisen · 75 · bonus · jakt
+
+- `tittel`: Antenne-Krisen (uten «75 MHz»)
+- `nissemail_tekst` (88 ord): SKURR. Hører dere meg? 📡 Kulde jammer antennen ved tjernet. IQ sier senderen er delt i tre, og antennen står skjev og full av is. Jeg har folie på hodet. Det hjelper litt. Dere fikk fargene tilbake i går. Jeg gråt ikke. IQ har sendt tre lapper til dere, én i hvert av tre rom. Håkon: løp. Hanna: én av dem er i din høyde. Kristian: IQ har en regel for tre sendere, og Julius sier den. BONUS: bygg en folieantenne, minst 20 cm, og vis en voksen. – Rampenissen
+- `julius_ps`: Antennen står rett igjen, og kanal 4 er tilbake. Rampenissen lå på et stekebrett pakket inn som en bakt potet. Han sier folien «holder tankene inne».
+- `julius_ps_bonus` (bonus `ANTENNE2026` godkjent): Antennen står rett igjen, og kanal 4 er tilbake. IQ så folieantennen deres på radaren og vil ha tegningen. Rampenissen lå på et stekebrett pakket inn som en bakt potet; han sier det var «prototypen».
+- `daily_alerts`: 📡 IQ: Antennen ved tjernet er dekket av is. Senderen er delt i tre.
+- NisseNet: `SNOFALL-HISTORIER/antennen-ved-tjernet.txt` **ny** (`afterDay: 11`), erstatter tre filer:
+
+  > ANTENNEN VED TJERNET
+  >
+  > Bygd av IQ for 40 år siden, etter at en fisker på Askøy hørte Snøfall på en hjemmelaget sender og svarte. Siden har antennen stått ved tjernet og sendt mot Bergen.
+  >
+  > 11. desember: dekket av is, skjev. Senderen er delt i tre små. IQ: «Den som finner oss igjen på hjulet, får kanal 4 tilbake.»
+  >
+  > Antennen er stedet alt varmt forlater Snøfall fra. Det er også stedet noe kaldt kommer inn.
+
+  **Slettes:** `tidsanomalier.txt`, `antenna-crisis.txt`, `antenne_tid_system.txt`.
+
+- Kulde: spøkelsesbilde dag 11 (A6).
+- `rampenissen_rampestrek`: Pakket inn fra topp til tå i aluminiumsfolie som en bakt potet, lagt på et stekebrett på benken.
+- `fysisk_hint`: Tre A7-kort (`dag11-tallkort.pdf`) med **15**, **25**, **35** og antennesymbol: stua (under en pute), kjøkkenet (brødboksen), gangen (Hannas jakkelomme). Ingen regnetegn. Løsning: Julius: legg sammen, ikke gang. 15 + 25 + 35 = 75. Lek etterpå: kanal 4 på 75,0. Bonus: folieantenne ≥ 20 cm, foreldrekode `ANTENNE2026`.
+- `materialer_nødvendig`: `dag11-tallkort.pdf` · aluminiumsfolie · stekebrett
+- `oppsett_tid`: 4 min
+- frost: 62 → 48 (bonus: 28)
+
+### Dag 12 (lø) – Lydbølgene som Smelter Is · MELODI · grønn sol · M3 · krypto 1
+
+- `tittel`: Lydbølgene som Smelter Is
+- `nissemail_tekst` (88 ord): Jeg hørte noe sukke i isen i natt. Ikke knurre. Sukke. 🎵 Julius sier jeg innbilte meg det. Nissemor sa ingenting, hun bare nynnet ved slusen, og da sprakk isen litt. NisseMusikk er fryst i dag, til koden er inne. Jeg har lagt en lydbølge gjennom hele huset; den ender ved tre glass. Håkon: slå forsiktig på glassene med skjeen og hør hvilket som er dypest. Lappene sitter utenpå glassene, og rekkefølgen er lyden. Hanna: det grønne kortet er ditt. Kristian: du har tre hjerter nå. NisseKrypto venter. – Rampenissen
+- `julius_ps`: Jeg sa til Rampenissen at han innbilte seg det. Jeg tok feil. Les det Orakelet skrev fra slusen, sammen. Og dorullen: fra badet til kjøkkenet, hele rullen. Nissemor spør om dere har mer av det også.
+- `daily_alerts`: 🎵 NISSEMOR: Isen ved slusen sprakk i natt. Noe svarte.
+- `symbol_clue.description`: Grønn sol funnet ved de tre glassene på kjøkkenet
+- NisseNet: `DEKRYPTERT/frosne-koder.txt` **skrives om** (`requiresSolvedDecryption: frosne-koder`):
+
+  > ORAKELETS LOGG FRA SLUSEN – 12. DESEMBER, 02:40
+  >
+  > Nissemor nynnet. Tre toner, den dypeste først. Isen på slusen sprakk.
+  >
+  > Jeg lyttet inn i sprekken. Noe svarte. Jeg har sortert det etter hjertene:
+  >
+  > Rødt hjerte er varme. Det var Nissemors toner.
+  > Grønt hjerte er håp. Det var isen som sprakk.
+  > Blått hjerte er kulde og sorg. Det var det som svarte.
+  >
+  > Det høres ikke sint ut. Det høres alene ut.
+  >
+  > Jeg sier ikke dette til IQ ennå. Han vil ikke høre det.
+  >
+  > – Orakelet
+
+  **Slettes:** `SNOFALL-HISTORIER/julesanger-samling.txt`.
+
+- `rampenissen_rampestrek`: Har rullet ut en hel dorull som «lydbølge» fra badet gjennom gangen til kjøkkenet og ligger utslått i enden ved tre glass.
+- `fysisk_hint`: Tre like glass med 2, 5 og 9 cm vann i tilfeldig rekkefølge, teskje ved. Kortet `dag12-frostlapp-tredelt.pdf` klippet i tre, teipet nederst på utsiden med forsiden inn: dypest (mest vann) `_ E`, midterst `_ O`, lysest `_ _`. Grønt sol-kort mot midtglasset. Løsning: Håkon sorterer glassene fra dypest til lysest, bitene i samme rekkefølge: `_ E _ O _ _`. Julius: det som er igjen av en sang når ordene er borte. Kode MELODI. Så NisseKrypto 1 (rød → grønn → blå) → merket Varmebærer. Hører de ikke forskjell: mest vann = dypest. Prikker 1–3 bak.
+- `materialer_nødvendig`: 3 glass · teskje · `dag12-frostlapp-tredelt.pdf` · symbolkort grønn sol · 1 dorull
+- `oppsett_tid`: 4 min
+- frost: 55 → 32
+
+### Dag 13 (sø) – Luciadagens Gylne Krydder · SAFRAN · 3. advent
+
+- `tittel`: Luciadagens Gylne Krydder
+- `nissemail_tekst` (86 ord): God 3. advent, og god Lucia! 🕯️ Nissemor bakte 500 boller i natt. Jeg spiste elleve. Jeg er død nå. Hilsen fra den andre siden. Kulde satt og så på lysene i verkstedet hele natten. Bare så. Jeg vet ikke hva jeg skal mene om det. Ved meg ligger tre små poser. Hanna: lukt på dem og se på fargene. Bare én av posene teller, og Julius sier hvilken. Håkon: tell kosedyrene i sørgerekken, og åpne posen Hanna velger. Kristian: Julius forteller hvor krydderet kommer fra. – Rampenissen
+- `julius_ps`: Nissemor sendte blomster til begravelsen. Kunstige, så de holder til neste år. Kulde så på lysene i natt uten å ta noe; Orakelet sier det bare så. Jeg vet heller ikke hva jeg skal mene om det.
+- `daily_alerts`: 🕯️ NISSEMOR: God Lucia. 500 boller bakt, 11 savnet.
+- NisseNet: `SNOFALL-HISTORIER/lucia-tradisjon.txt` **skrives om** (`afterDay: 13`):
+
+  > LUCIA I SNØFALL
+  >
+  > 13. desember er midt i den mørkeste tiden. Derfor bærer Lucia lys på hodet: for å vise at lyset ikke er borte, bare lenger unna. I Snøfall går Pil først, med krone, og Nissemor bak med brettet.
+  >
+  > Bollene er gule av et krydder Nissemor bruker én gang i året.
+  >
+  > I natt sto noe og så på lysene gjennom linjen. Det tok ingenting. Det bare så.
+
+  **Slettes:** `SNOFALL-HISTORIER/lucia_lussekatt_hemmelig.txt`.
+
+- Kulde: spøkelsesbilde dag 13 (A6).
+- `rampenissen_rampestrek`: Har spist for mange lussekatter og holder sin egen begravelse: ligger på en serviett med en blomst i hendene, kosedyrene står i sørgerekke, skilt: «HER HVILER RAMPEN. HAN SPISTE 11.»
+- `fysisk_hint`: Tre små zip-poser på servietten (`dag13-krydderkort.pdf`): kanel `_ _ N _ _`, gurkemeie eller safran `_ _ F _ _ _`, nellik (eller pepper) `_ _ L _ _ _`. Ingen navn på posene. Lussekatt ved. Løsning: Hanna peker ut den gule, Håkon åpner, Kristian: `_ _ F _ _ _`, Julius: krydderet fra en krokus, dyrere enn gull. Kode SAFRAN (ikke gurkemeie: Julius sier krokus og tråder). Google er lov.
+- `materialer_nødvendig`: 3 små zip-poser · kanel · gurkemeie eller safran · nellik eller pepper · lussekatt · `dag13-krydderkort.pdf` · serviett, kunstig blomst, kosedyr, skilt
+- `oppsett_tid`: 4 min
+- frost: 44 → 36
+
+### Dag 14 (ma) – Hemmeligheten i Papirvingene · ORIGAMI · Brevfugler åpner
+
+- `tittel`: Hemmeligheten i Papirvingene
+- `nissemail_tekst` (83 ord): Winter åpnet brevfuglene i natt! 🕊️ Og det kom én fugl ingen hadde sendt. Blå. Den satt i vinduskarmen til Julius og sa ingenting, med et brev fryst fast til vingen. Jeg brettet alle serviettene deres til fugler, og sitter i en båt i vasken. I båten ligger et ark. Håkon: brett det langs linjen. Hanna: hold lykten bak, og si fra når du ser noe. Kristian: Winter har et ord for det vi gjør med papir i dag. Brevfugler åpner i kveld. – Rampenissen
+- `julius_ps`: Winter har aldri fått en fugl hun ikke har sendt. Hun sover ikke i natt. Serviettene deres er visst fugler nå, alle sammen; Rampenissen kaller det «en flokk». Brevfugler er åpen, og den blå fuglen vises på radaren.
+- `daily_alerts`: 🕊️ WINTER: Brevfuglene er åpnet. Én fugl ingen har sendt.
+- NisseNet: `SNOFALL-HISTORIER/brevfugl-finale.txt` **erstattes** av `brevfugl-historie.txt` (`afterDay: 14`):
+
+  > BREVFUGLENE
+  >
+  > Det første brevet til Snøfall kom i en flaske fra Bergen i 1887. Winter svarte med en fugl brettet av brevpapir. Siden har alle brev til og fra Snøfall fløyet selv.
+  >
+  > Hver fugl har et nummer, en avsender og en rute. Winter vet hvor alle er. Alltid.
+  >
+  > 14. desember: én fugl uten nummer. Blå. Brevet er fryst fast til vingen. Den kom fra retningen 85,0.
+
+  **Slettes:** `SNOFALL-HISTORIER/personlige-brev-intro.txt`.
+
+- `rampenissen_rampestrek`: Har brettet alle kjøkkenserviettene til skjeve fugler som ligger over hele kjøkkenet, og sitter selv i en papirbåt i den tørre vasken.
+- `fysisk_hint`: Arket `dag14-brettark.pdf` (tynt papir) sammenrullet i papirbåten: halve streker på hver side av en stiplet linje, sju tomme ruter. Brettet og mot lys: rute 2 **R**, rute 4 **G**, resten ❄. Tekst på arket: «Brett langs linjen. Hold en lykt bak.» Løsning: Håkon bretter, Hanna holder mobillykten bak, Kristian: `_ R _ G _ _ _`, Julius: det japanske ordet for å brette papir til liv. Kode ORIGAMI. Test gjennomlys i november. Hanna er støtte (godkjent unntak).
+- `materialer_nødvendig`: `dag14-brettark.pdf` · ett ark til papirbåt · mobillykt · servietter · valgfritt `dag14-serviettfugl.pdf`
+- `oppsett_tid`: 3 min
+- frost: 50 → 40
+
+### Dag 15 (ti) – Fargesamlerens Notatbok · KARAMELL · rød sol · M4 Vintervokteren
+
+- `tittel`: Fargesamlerens Notatbok
+- `nissemail_tekst` (84 ord): IQ er stille i dag. 📓 Han fant en gammel notatbok i arkivet i natt, Fargesamlerens, og har ikke sagt et ord siden. Nissemor prøvde å varme ham opp med noe fra gryta. Jeg prøvde å lage varme på kjøkkenet deres. Det ble klissete. Håkon: følg fotsporene mine fra skålen. De ender tre steder. Løft det de ender ved. Hanna: du får smake én fingertupp, og det røde kortet er ditt. Kristian: rutekortet ligger ved skålen. Når koden er inne, åpner notatboken i NisseNet. – Rampenissen
+- `julius_ps`: IQ sa én setning i kveld: «Jeg glemte å slå det av.» Så gikk han ut til antennen og ble stående. Les notatboken sammen; Rampenissen sitter i stua og hører på, han også. Og sirupen: Nissemor sier man skal stå _ved_ gryta, ikke _i_ den.
+- `daily_alerts`: 📓 IQ: Fant Fargesamlerens notatbok i arkivet i natt. Ingen kommentar.
+- `symbol_clue.description`: Rød sol funnet ved sirupskålen på benken
+- NisseNet: `SNOFALL-HISTORIER/fargesamleren.txt` **erstattes** av `FARGESAMLEREN/02-notatboken.txt` (`afterDay: 15`):
+
+  > FARGESAMLERENS ARKIV – DEL 2: NOTATBOKEN
+  > (funnet av IQ natt til 15. desember)
+  >
+  > «Krystallene tåler ikke varme. Jeg ba IQ bygge noe som kunne holde grotten kald, alltid, også når ingen av oss er der. Han kalte det Vintervokteren. Det er et program. Det teller temperatur, lys og lyd, og holder alt lavt.
+  >
+  > IQ sa: det trenger én ting fra oss. At noen ser innom. Ellers vet det ikke at det gjør jobben sin.»
+  >
+  > Siste linje, med IQs håndskrift, i natt:
+  >
+  > «Strømstøtet i fjor kuttet lyset der nede. Ingen har sett innom siden. Det er Vintervokteren som sender på 85,0. Det er ikke en inntrenger. Det er mitt.»
+
+- `rampenissen_rampestrek`: Står med begge beina nedi en liten skål sirup, med klissete fotspor av sukker bortover benken og sleiva i hånden.
+- `fysisk_hint`: Sukkerfotspor fra skålen til gryten, sleiva og vispen. Under dem (`dag15-redskapskort.pdf`): gryten `A · 2`, sleiva `M · 5`, vispen `L · 7`. Rutekort 1–8 og rødt sol-kort ved skålen. **Rydd bort sukker og sirup etter rigging** (ingrediensene ville gitt ordet). Løsning: Håkon følger sporet, Kristian fyller `_ A _ _ M _ L _`, Julius: det Nissemor lager når sukker blir brunt og varmt i gryta. Kode KARAMELL. Hanna: symbolkortet er hennes bidrag.
+- `materialer_nødvendig`: gryte, sleiv, visp · `dag15-redskapskort.pdf` · symbolkort rød sol · litt sirup og sukker
+- `oppsett_tid`: 4 min
+- frost: 56 → 46
+
+### Dag 16 (on) – Pakkesentralen i Spinn · SORTERING · bonus
+
+- `tittel`: Pakkesentralen i Spinn
+- `nissemail_tekst` (83 ord): Alt i pakkesentralen ligger i én haug. 📦 Kulde snudde samlebåndet i natt. Ikke for å ødelegge, tror Julius. Fordi det er det eneste som får Winter til å se opp. Jeg ryddet hos dere for å hjelpe. Jeg tror jeg gjorde det verre. Hanna: si hvor hver ting hører hjemme. Håkon: bær den dit, og se hva som ligger der. Kristian: rutekortet ligger i brødboksen. BONUS: sett et batterilys i et syltetøyglass i vinduet mot nord, så noe der nede ser det. – Rampenissen
+- `julius_ps`: Winter fant skiltet sitt igjen. Det lå under haugen. Rampenissen satt i brødboksen med lokket på hodet og kalte det «sortert». NisseStats er åpen fra i kveld.
+- `julius_ps_bonus`: Winter fant skiltet sitt igjen. Det lå under haugen. Orakelet ser et lys på Landås-siden som ikke var der før, og det gjør noe annet også: det er stillere på 85,0. Rampenissen satt i brødboksen med lokket på hodet.
+- `daily_alerts`: 📦 WINTER: Samlebåndet går baklengs. Alt ligger i én haug.
+- NisseNet: **Slettes:** `SNOFALL-HISTORIER/halvveis_system.txt`.
+- Kulde: spøkelsesbilde dag 16 (A6).
+- `rampenissen_rampestrek`: Har «ryddet»: fjernkontrollene ligger i brødboksen, brødet i TV-benken, tannbørstene i bestikkskuffen, og han sitter i brødboksen med lokket på hodet.
+- `fysisk_hint`: Bokstavlapper på tingene som er på feil sted (`dag16-sorteringslapper.pdf`): fjernkontrollen **O**, tannbørsteglasset **E**, brødposen **I**. Tallapper der de hører hjemme: «2» i TV-benken, «5» på badehyllen, «7» i brødboksen. Rutekort 1–9 i brødboksen under Rampenissen. Løsning: Hanna sier hvor, Håkon bærer og finner tallet, Kristian: O i 2, E i 5, I i 7 = `_ O _ _ E _ I _ _`. Julius: Winters ord for å legge alt i riktig hylle. Kode SORTERING. Bonus: batterilys i syltetøyglass i vindu mot nord, foreldrekode `LYKT2026`.
+- `materialer_nødvendig`: teip · `dag16-sorteringslapper.pdf` · brødboks · syltetøyglass og batterilys (bonus)
+- `oppsett_tid`: 4 min
+- frost: 63 → 50 (bonus: 30)
+
+### Dag 17 (to) – Grønt over Polarhimmelen · NORDLYS
+
+- `tittel`: Grønt over Polarhimmelen (ny: den låste «Grønt Lys på Polarhimmelen» gir LYS = 3 av 7, på grensen; se åpne spørsmål)
+- `nissemail_tekst` (79 ord): Det var grønt over Ulriken i natt. 💚 Ikke en bil. IQ sier det var et svar: lyktene han hang rundt antennen har brent siden 2. advent, og i natt svarte grotten. Jeg er for øvrig kidnappet av kosedyrene. Send pepperkaker. Hanna: dra i sløyfen, så slipper jeg fri. Håkon: strekk båndet ut mellom to stoler og les det fra sløyfen og utover. Kristian: Julius forteller hva de gamle kalte det grønne. Klikk på himmelen på kanal 1 etterpå. – Rampenissen
+- `julius_ps`: Grotten svarte. Jeg har ikke hørt fra den på et år. Kosedyrene krevde pepperkaker for Rampenissen; Nissemor sier dere bør betale, hun har sett løsepengebrevet. Jeg ser mot nord i natt også.
+- `julius_ps_bonus`: Grotten svarte. Orakelet mener den svarte på to lys: ett ved tjernet og ett lenger sør, i et vindu. Kosedyrene krevde pepperkaker for Rampenissen; Nissemor sier dere bør betale. Jeg ser mot nord i natt også.
+- `daily_alerts`: 🔮 ORAKELET: Grønt over Ulriken i natt. Første svar fra grotten.
+- NisseNet: ingen.
+- `rampenissen_rampestrek`: Kidnappet av kosedyrene: sitter bundet til en stol med grønt gavebånd, bamsene står vakt, og et løsepengebrev av utklipte bokstaver sier «GI OSS ALLE PEPPERKAKENE. ELLERS.»
+- `fysisk_hint`: 1,5 m grønt gavebånd med sju sølvmerker med lik avstand: ❄, **O**, ❄, ❄, **L**, ❄, ❄, og en tegnet sølvsløyfe før merke 1. Bundet rundt Rampenissen og stolen med én enkel sløyfe (ikke knute). Løsning: Hanna drar i sløyfen, Håkon strekker båndet mellom to stoler og leser fra sløyfen: `_ O _ _ L _ _`. Julius: lyset man kan høre, himmelen som sender brev tilbake. Kode NORDLYS. Klipp av en bit av båndet til konvolutten «24». Hanna er støtte (godkjent unntak).
+- `materialer_nødvendig`: grønt gavebånd · sølvpenn · stol · løsepengebrev (`dag17-losepengebrev.pdf`, valgfri)
+- `oppsett_tid`: 4 min
+- frost: 52 → 42
+
+### Dag 18 (fr) – Kastevind rundt Ulriken · TURBULENS · blå sol · krypto 2
+
+- `tittel`: Kastevind rundt Ulriken
+- `nissemail_tekst` (88 ord): Trixter testet sleden i vestlandsvær i natt. 🛷 Jeg satt bakpå. Aldri igjen. Rudolf var innom hos dere etterpå. Han la igjen noe på gulvet, fra ytterdøra til kjøleskapet. Jeg beklager på hans vegne. Selv sitter jeg fast i pappas jakkelomme og peker. Håkon: følg sporet baklengs fra kjøleskapet. Det har tre hauger. Hanna: tell rosinene i hver haug og si tallet, og få meg løs. Kristian: rutekortet er i lommen hos meg. Trixter har ett ord for det sleden gjorde i vinden. Dere har seks symboler nå. – Rampenissen
+- `julius_ps`: Trixter vil fly utenom grotten julenatt. Jeg sa nei. Les rutekartet; jeg har tegnet en sirkel på det. Og sjokoladerosinene: Rudolf benekter alt.
+- `julius_ps_bonus`: Trixter vil fly utenom grotten julenatt. Jeg sa nei. Orakelet sier lyset i vinduet deres fortsatt står på; det er det eneste i Bergen som peker rett mot nord. Og sjokoladerosinene: Rudolf benekter alt.
+- `daily_alerts`: 🛷 TRIXTER: Testfløy ruten over Nordtoppen. Sleden ristet. Rudolf er ok.
+- `symbol_clue.description`: Blå sol funnet i pappas jakkelomme
+- NisseNet: `DEKRYPTERT/stjernetegn.txt` **skrives om** (`requiresSolvedDecryption: stjernetegn`):
+
+  > TRIXTERS RUTEKART – JULENATT
+  >
+  > Avgang Snøfall 23:40. Opp over Nordtoppen, ned langs Byfjellene, inn over Bergen fra nordøst, landing på stedet Winter får i tall.
+  >
+  > Julius har tegnet en sirkel på kartet, rett over Krystallgrotten, og skrevet: «Lavt her. Alle lys på.»
+  >
+  > Trixter har skrevet under: «Det blir urolig.»
+  > Julius: «Jeg vet.»
+
+- `rampenissen_rampestrek`: Reinsdyrbesøk: et spor av sjokoladerosiner («reinsdyrbæsj») fra ytterdøra til kjøleskapet, og Rampenissen sitter fast i pappas jakkelomme og peker anklagende på sporet.
+- `fysisk_hint`: Rosinspor med tre hauger på hver sin serviett: 2 rosiner over **U**, 4 over **B**, 7 over **E** (`dag18-rosinkort.pdf`, prikker bak). Rutekort 1–9 i jakkelommen hos Rampenissen, blått sol-kort i den andre lommen. Løsning: Hanna teller, Håkon løfter kortet, Kristian: `_ U _ B _ _ E _ _`. Julius: Trixters ord for når sleden rister, flyvertinnene bruker det samme. Kode TURBULENS. Så NisseKrypto 2.
+- `materialer_nødvendig`: sjokoladerosiner · 3 servietter · `dag18-rosinkort.pdf` · symbolkort blå sol · jakke på knagg
+- `oppsett_tid`: 4 min
+- frost: 60 → 48
+
+### Dag 19 (lø) – Eksplosjon i Fôringsautomaten · GULROT · pusterom · jakt
+
+- `tittel`: Eksplosjon i Fôringsautomaten
+- `nissemail_tekst` (82 ord): IQ bygde en fôringsautomat til reinsdyrene i natt. 💥 Den skjøt førti av dem gjennom taket. Tre landet hos dere, i tre rom, pakket i folie. Én landet på meg. Jeg er et åsted nå. IQ sier: ikke pakk opp bevis. Håkon: finn de tre pakkene. Hanna: legg hver pakke på ruten med samme tall, på arket ved meg, og les det som står igjen. Kristian: Julius forteller hva Rudolf vil ha før hver tur. Ingenting fra Kulde i natt. Snøfall puster. – Rampenissen
+- `julius_ps`: Rudolf spiste bevismaterialet. Alt sammen, også det med teip på. Det har vært grønt over Nordtoppen to netter nå, og Orakelet teller flere lys på Landås-siden enn i fjor. IQ bygde automaten for å slippe å tenke; det hjalp ikke.
+- `julius_ps_bonus`: Rudolf spiste bevismaterialet. Alt sammen, også det med teip på. Orakelet teller lys på Landås-siden og sier ett av dem står helt stille, i et vindu, hver kveld. IQ bygde automaten for å slippe å tenke; det hjalp ikke.
+- `daily_alerts`: ⚙️ IQ: Fôringsautomaten tok taket. 40 enheter i luften, 3 landet på Landås.
+- NisseNet: `JULIUS-ARKIV/reinsdyr_GYATT.log` **erstattes** av `IQ-VERKSTED/foringsautomat.log` (`afterDay: 19`):
+
+  > IQ – FÔRINGSAUTOMAT v1, HENDELSESLOGG
+  >
+  > 05:12 Automaten lastet. 40 enheter oransje reinsdyrfôr.
+  > 05:13 Trykk satt til «mye».
+  > 05:14 Tak borte. 40 enheter i luften.
+  > 05:30 Rudolf fornøyd. 36 enheter funnet i Snøfall.
+  > 06:00 3 enheter sporet til Landås. Status: bevis. Ikke pakk opp.
+  > 06:01 1 enhet traff Rampenissen. Han lever.
+  >
+  > Merknad: ingen aktivitet fra 85,0 i natt. Første stille natt siden 1. desember.
+
+- `rampenissen_rampestrek`: Truffet: ligger flat på kjøkkengulvet med et omriss av maskeringsteip rundt seg, et plaster på pannen og «BEVIS»-pakken i aluminiumsfolie ved siden av (åpnes etter koden).
+- `fysisk_hint`: Fire små gulrøtter pakket helt inn i folie. Tre med merkelapp på hyssing (`dag19-bevislapper.pdf`): stua `U · 2`, kjøkken `O · 5`, gang `❄ · 3`. «BEVIS»-pakken ligger på rutearket med seks ruter i teipomrisset. Løsning: Håkon finner pakkene, Hanna legger dem på ruten med samme tall: `_ U _ _ O _`. Julius: det oransje drivstoffet Rudolf vil ha, vokser med toppen opp. Kode GULROT. Pakkene åpnes etter koden.
+- `materialer_nødvendig`: 4 små gulrøtter · aluminiumsfolie · hyssing · maskeringsteip · plaster · `dag19-bevislapper.pdf`
+- `oppsett_tid`: 6 min
+- frost: 68 → 56
+
+### Dag 20 (sø) – Sofa-Sleden · TURBO · grønn måne · 4. advent · varselet
+
+- `tittel`: Sofa-Sleden
+- `nissemail_tekst` (89 ord): God 4. advent. 🕯️ Orakelet målte 88 % i natt. I morgen er den mørkeste dagen, og Julius sier Kulde når huset da. Ikke for å skade. Fordi det er der lyset er. Julius ber dere finne fram bøker til i morgen. Mange. Bøker holder på varmen. Vi stenger ingen ute; vi holder varmen inne. Fortet er til å øve i. Hanna: bare du får plass. Kryp inn og rekk ut det som ligger under putene, én om gangen, fra inngangen. Håkon: legg dem i rekkefølge utenfor. Kristian: hør Julius. – Rampenissen
+- `julius_ps`: Nissemor har tent det fjerde lyset. Hun lot det stå i vinduet mot nord. Rampenissen har bygd fort «for å øve på å holde varmen»; popcornet er visst proviant. I morgen trenger dere ikke være redde. Dere trenger å være hjemme.
+- `daily_alerts`: 🔮 ORAKELET: 88 %. I morgen er den mørkeste dagen. Vær hjemme.
+- `symbol_clue.description`: Grønn måne funnet under den innerste puten i fortet
+- NisseNet: ingen.
+- Kulde: iMac-melding 09:00–12:00 (A6).
+- `rampenissen_rampestrek`: Har bygd fort av et teppe over to stoler med skiltet «KUN FOR SIGMAS. 6-7.», tatt pappas hodetelefoner og fjernkontrollen, og sitter med en skål popcorn.
+- `fysisk_hint`: Fem sofaputer på rad inne i fortet, fra inngangen og innover. Kort (`dag20-putekort.pdf`, prikker bak): pute 2 **U**, pute 4 **B**, resten ❄. Grønt måne-kort under den innerste. Løsning: Hanna kryper inn og rekker ut kortene i rekkefølge, Håkon legger dem utenfor, Kristian: `_ U _ B _`. Julius: det biler får når de skal forbi i bakken. Kode TURBO. Finn fram 5–8 bøker til mandag.
+- `materialer_nødvendig`: 5 sofaputer · teppe og to stoler · `dag20-putekort.pdf` · symbolkort grønn måne · popcorn · 5–8 bøker til i morgen
+- `oppsett_tid`: 4 min
+- frost: 88 → 76
+
+### Dag 21 (ma) – Vintersolverv · BRANNMUR · M5 Muren og porten · frost nivå 2
+
+- `tittel`: Vintersolverv (uten «Brannmuren»)
+- `nissemail_tekst` (88 ord): Alt er hvitt. Skjermen hjemme, Snøfall TV, alt. ❄️ Men bokmuren står, og den holder varmen inne. Jeg har stått bak den siden klokka fire og passet på at én bok står på gløtt, sånn Julius sa. IQ bygde en vegg av varme rundt linjen i natt, og Julius lot én port stå åpen, inn mot grotten. Hanna: les lappene på bokryggene fra venstre og si «bokstav» eller «is». Håkon: bær bøkene til bordet i samme rekkefølge. Kristian: dagens video er det eneste som er åpent. Kom hjem. – Rampenissen
+- `julius_ps`: Muren holder. Porten står åpen. Nå venter vi på om noe kommer gjennom. Rampenissen sto bak bokmuren med et grytelokk mot trekken og en visp han hadde glemt å legge fra seg; han sier vispen var «for sikkerhets skyld».
+- `daily_alerts`: 🎅 JULIUS: Muren holder. Porten står åpen. Nå venter vi.
+- NisseNet: **Slettes:** `SNOFALL-HISTORIER/nordpolen_hemmelighet.txt`.
+- Kulde: spøkelsesbilde dag 21 på alle kanaler (A6). Frostskjerm `Det er kaldt her nede. Jeg ville bare se lyset deres. 94 %`. Etter koden: stillhet, porten tegnes i sidepanelet.
+- `rampenissen_rampestrek`: Står bak en lav mur av bøker foran skjermen med et grytelokk mot trekken og en visp han glemte å legge fra seg; én bok står på gløtt.
+- `fysisk_hint`: Åtte bøker som lav mur foran skjermen, post-it på hver rygg, fra venstre: ❄, **R**, ❄, ❄, ❄, ❄, **U**, ❄ (lite tall i hjørnet). Bok 5 på gløtt. Ingenting digitalt kvelden før; frosten styres av datoen. Løsning: Hanna leser fra venstre, Håkon bærer bøkene til bordet i samme rekkefølge, Kristian: `_ R _ _ _ _ U _`. Julius: IQs vegg av varme, brannfolk bygger det samme i skogen og kaller den etter det de kjemper mot. Kode BRANNMUR. Merket Portvokter. Nødutgang: «Frost av» i guiden.
+- `materialer_nødvendig`: 8 bøker · 8 post-it · sølv- eller blå tusj · grytelokk og visp · valgfritt `dag21-bokryggkort.pdf`
+- `oppsett_tid`: 4 min
+- frost: 94 → 32
+
+### Dag 22 (ti) – Winters Tall · LANDÅS · rød måne · Snill-listen åpner · jakt
+
+- `tittel`: Winters Tall (ny: den låste «Landingskoordinatene» gir LAND = 4 av 6; se åpne spørsmål)
+- `nissemail_tekst` (87 ord): Julius vil vite nøyaktig hvor dere bor. 📍 Jeg sa «ved sofaen». Det holdt ikke. Jeg sa «i Bergen». Nei. Winter trenger stedet i tall, og hun skriver tall på sin egen måte. Jeg gjemte meg i en sokk for å tenke. Det var en feil. Håkon: finn sokk 1 og 2. Hanna: dra meg ut av din, og se hva som ligger innerst. Det røde kortet er ditt. Kristian: strimmelen fra brevfuglen, og Winter har to regler. Julius sier begge. Etterpå vil Julius ha navnene deres. – Rampenissen
+- `julius_ps`: Tre navn. Jeg skrev dem selv. Ingenting har kommet gjennom porten ennå, men Orakelet sier det er varmere der nede. Rampenissen satt fast i en julesokk i to timer; Hanna, takk for at du dro.
+- `daily_alerts`: 📋 WINTER: Jeg mangler stedet i tall. Snill-listen åpner i kveld.
+- `symbol_clue.description`: Rød måne funnet innerst i Hannas julesokk
+- NisseNet: `JULIUS-ARKIV/snill_slem_liste.txt` **erstattes** av `JULIUS-ARKIV/snill-listen.txt` (`afterDay: 22`):
+
+  > JULIUS' REGLER FOR SNILL-LISTEN
+  >
+  > 1. Snill betyr ikke lydig. Snill betyr at du ser noen.
+  > 2. Ingen kommer på listen for å ha gjort alt riktig. Man kommer på den for å ha prøvd igjen.
+  > 3. Navnene skriver jeg selv, for hånd, én gang.
+  > 4. Listen har ingen slem side. Det har den aldri hatt.
+
+  `alfabet.txt` gjenbrukes (åpen siden dag 5). **Slettes:** `SNOFALL-HISTORIER/julekode_dekoder.txt`.
+
+- `rampenissen_rampestrek`: Har krøpet inn i Hannas julesokk med bare føttene ut, og kommer ikke løs.
+- `fysisk_hint`: Tre julesokker merket 1, 2, 3 (`dag22-sokkelapper.pdf`): sokk 1 (stua) `15 – 4`, sokk 2 (kjøkkenet) `17 – 7`, sokk 3 (Hannas, i gangen, med Rampenissen og rødt måne-kort) `32 – 22`. Ingen bokstaver. Løsning: Julius: A er alltid først, alfabetet slutter på Å, og Winter legger tre til hvert tall; trekk fra. 12 L, 1 A, 14 N, 4 D, 29 Å, 19 S. Kode LANDÅS. Så navneregistrering.
+- `materialer_nødvendig`: 3 julesokker · `dag22-sokkelapper.pdf` · alfabetstrimmelen fra dag 5 · symbolkort rød måne
+- `oppsett_tid`: 5 min
+- frost: 40 → 24
+
+### Dag 23 (on) – Nattevakt · STJERNEKLART · blå måne · sannheten · krypto 3
+
+- `tittel`: Nattevakt (ny: den låste «Stjernevakt» gir STJERNE = 7 av 12; se åpne spørsmål)
+- `nissemail_tekst` (91 ord): I natt flyr de. 🌙 Over Nordtoppen, lavt over grotten, med alle lysene på. Jeg gråter ikke. Det er teip i øynene mine. Orakelet så ned i grotten i natt for første gang. Det som er der nede har ventet på lys i ett år. Jeg pakket opp et hjørne av en gave, og angrer. Håkon og Hanna: plukk de tolv som henger i treet, Hanna tar de lave. Håkon: legg dem etter tallet bak, og snu dem. Hanna: det blå kortet er hos meg. Kristian: hør Orakelets værmelding hos Julius. – Rampenissen
+- `julius_ps`: Nå vet dere alt. Rampenissen også; han satt i treet og hørte. Men ingen av dere vet hva Trixter har i sleden til i morgen. Gaven med altfor mye teip på: la den ligge. Han mente det godt.
+- `daily_alerts`: 🔮 ORAKELET: Flyvær i natt. Sleden går lavt over grotten.
+- `symbol_clue.description`: Blå måne funnet hos Rampenissen i juletreet
+- NisseNet: `DEKRYPTERT/hjertets-hemmelighet.txt` **skrives om** (`requiresSolvedDecryption: hjertets-hemmelighet`):
+
+  > HELE HISTORIEN – 23. DESEMBER
+  > Samlet av Winter, fra det Orakelet, IQ og Julius vet nå.
+  >
+  > Fargesamleren samlet Snøfalls første farger i iskrystaller og la dem i Krystallgrotten under Nordtoppen. IQ bygde Vintervokteren for å holde grotten kald og passe på samlingen. Det trengte bare én ting: at noen så innom.
+  >
+  > I fjor, natten dere slo Mørket, gikk et strømstøt gjennom Snøfall. Lyset i grotten sluknet. Linjen ned dit røk. Ingen merket det, for ingen gikk dit.
+  >
+  > Vintervokteren sto i mørket i ett år. Uten lys, uten lyd, uten farger. Så fant det en ny linje: deres. Det gjorde det eneste det kunne: kulde. Det la rim på linjen, tok fargene, snudde samlebåndet, fordi det var det eneste som fikk noen til å se opp.
+  >
+  > Dere hørte sukket 12. desember. IQ fant notatboken 15. desember. Lyktene ved antennen brant natt etter natt, og grotten svarte med grønt over Nordtoppen. 21. desember bygde IQ muren, og Julius lot én port stå åpen, inn mot grotten, med varme i.
+  >
+  > Det som fryser er ikke ondt. Det er alene. I natt flyr vi over det med alle lysene på.
+  >
+  > – Winter, på vegne av alle
+
+  `FARGESAMLEREN/03-siste-side.txt` **ny** (`afterDay: 23`):
+
+  > FARGESAMLERENS ARKIV – DEL 3: SISTE SIDE
+  >
+  > «Hvis noen leser dette etter meg: Vintervokteren er ikke bygd for å være alene. Det er bygd for å passe på noe til noen kommer. Hvis ingen kommer, vil det begynne å lete etter dere. Ikke lås det ute. Gå ned med lys.»
+
+- `rampenissen_rampestrek`: Har pakket opp et hjørne av en gave under treet, teipet det igjen med altfor mye teip, og sitter nå i treet som pynt med dårlig samvittighet.
+- `fysisk_hint`: Tolv papirstjerner (`dag23-stjerner.pdf`, klippet og tredd i november) i treet, de laveste i Hannas høyde. Forside: nr. 5 **R**, nr. 8 **K**, nr. 10 **A**, resten ❄. Bakside: 1–12. Rampenissen i treet med blått måne-kort. Løsning: barna plukker, Håkon legger dem etter tallet og snur: `_ _ _ _ R _ _ K _ A _ _`. Julius: Orakelets værord for en natt der alt som blinker der oppe er synlig, og ordet begynner med det som blinker. Kode STJERNEKLART. Så NisseKrypto 3.
+- `materialer_nødvendig`: `dag23-stjerner.pdf` · hyssing · symbolkort blå måne · teip og en gave
+- `oppsett_tid`: 3 min
+- frost: 30 → 10
+
+### Dag 24 (to) – God Jul på Landås · JULEMAGI · M6 Tøvær
+
+- `tittel`: God Jul på Landås
+- `nissemail_tekst` (87 ord): De landet. 🎄 Jeg så det. De fløy over grotten først, lavt, med alle lysene på, og noe blått fløy opp og møtte dem. Det er ikke kaldt der nede lenger. Jeg reiser hjem i kveld. Kofferten min står ved konvolutten under treet. I den ligger tre ting dere kjenner igjen fra desember. Hanna: du vet hvilken dag hver av dem kommer fra. Håkon: åpne konvolutten og les brevet mitt høyt. Kristian: rutekortet ligger i konvolutten, og Julius sier resten. Takk for garnkurven. Og takk for alt. – Rampenissen
+- `julius_ps`: Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Rampenissen sov i gullkonvolutten med sløyfe på hodet og en pappeske som koffert. God jul, Kristian, Håkon og Hanna.
+- `daily_alerts` (fem): 🎅 JULIUS: God jul, Kristian, Håkon og Hanna. Det er ikke kaldt der nede lenger. · ❄️ ORAKELET: Frostgrad 0 %. Tøvær. · 🎄 NISSEMOR: God jul til hele huset på Landås. · 🧝 RAMPENISSEN: Takk for garnkurven. Sees neste desember. · 🕊️ WINTER: Den blå fuglen fløy hjem. Brevet har tint.
+- NisseNet: ingen nye. Fargesamlerens arkiv står komplett.
+- Kulde: Brevfugler, brevet tiner (A8). Skjerm-kort «God jul fra Snøfall».
+- Avskjedsbrevet fra Rampenissen (i gullkonvolutten, trykkes med `dag24-suvenirlapper.pdf`):
+
+  > Kjære Kristian, Håkon og Hanna.
+  > Jeg reiser hjem i kveld. Jeg har sovet i fruktskålen deres, i fryseren deres, i en sokk og i brødboksen. Det var det beste året jeg har hatt.
+  > I kofferten ligger tre ting dere har brukt før. Hanna vet hvilke dager. Legg lappene i rutene.
+  > Hvis noe mangler, ligger IQs kopier under dette brevet. Han stoler ikke på meg.
+  > Takk for garnkurven. Vi ses neste desember.
+  > – Rampenissen
+
+- `rampenissen_rampestrek`: Ligger og sover inni den store gullkonvolutten under treet med en sløyfe på hodet og en liten pappeske som pakket koffert ved siden av.
+- `fysisk_hint`: Pappesken med sløyfe ved konvolutten: perlen (dag 3) med lapp `U · 2`, rødfilteret (dag 10) `E · 4`, båndbiten (dag 17) `G · 7`. I konvolutten: avskjedsbrevet, rutekort med åtte ruter og **alltid** de tre reservelappene («IQs kopi») under brevet. Krystallet som ikke smelter under treet. Løsning: Hanna åpner kofferten, Håkon leser brevet og legger lappene: `_ U _ E _ _ G _`. Julius: høytiden foran, pluss det trollmenn later som de har. Kode JULEMAGI. Så brevet i Brevfugler, finale, diplom, merket Snøfalls venn.
+- `materialer_nødvendig`: liten pappeske · sløyfe · gullkonvolutt · perle, filter og båndbit fra konvolutten «24» · `dag24-suvenirlapper.pdf` · diplomene «Snøfalls venn» (3) · iskrystall i glass eller akryl
+- `oppsett_tid`: 4 min
+- frost: 12 → 0
+
+---
+
+## C. Lekkasjesjekk
+
+Sjekket per dag: `tittel`, `nissemail_tekst`, `julius_ps` (+ bonusvariant), `daily_alerts`, `symbol_clue.description`, NisseNet-filer som åpner samme dag, Kuldes linje samme dag. «Ja» = koden står i teksten, eller teksten viser mer enn 40 % av bokstavene som skjelett eller som sammenhengende del av et annet ord. Skjelettene i `fysisk_hint` er foreldretekst og holder taket per gåtedesignet.
+
+| Dag | Kode         | Lekkasje i barnetekst                                                                   | Rettet                                                                                                                            |
+| --- | ------------ | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | SIGNAL       | nei                                                                                     | –                                                                                                                                 |
+| 2   | 48           | nei                                                                                     | –                                                                                                                                 |
+| 3   | PRISME       | nei                                                                                     | –                                                                                                                                 |
+| 4   | KOMPASS      | nei                                                                                     | –                                                                                                                                 |
+| 5   | ULRIKEN      | nei                                                                                     | –                                                                                                                                 |
+| 6   | LYKT         | **ja**, låst tittel «Lommelykt-Sporet» = 4 av 4                                         | ny tittel «Skyggene i Gangen»; e-posten sier «lampen», ikke lommelykt                                                             |
+| 7   | KULDE        | nei (navnet står ingen steder før koden; Kuldes linje dag 7 sier det ikke)              | Kulde-bildet skrevet uten navn                                                                                                    |
+| 8   | KRETSKORT    | **ja**, låst tittel «Bestikk-Kretsløpet» = KRETS 5 av 9                                 | ny tittel «Floken i Verkstedet»                                                                                                   |
+| 9   | 24           | nei                                                                                     | –                                                                                                                                 |
+| 10  | SPEKTER      | nei                                                                                     | –                                                                                                                                 |
+| 11  | 75           | nei (storyboard-tittelen «… på 75 MHz» er borte)                                        | tittel «Antenne-Krisen»                                                                                                           |
+| 12  | MELODI       | nei                                                                                     | –                                                                                                                                 |
+| 13  | SAFRAN       | nei                                                                                     | `lucia-tradisjon.txt` nevner ikke krydderet                                                                                       |
+| 14  | ORIGAMI      | nei                                                                                     | –                                                                                                                                 |
+| 15  | KARAMELL     | nei                                                                                     | –                                                                                                                                 |
+| 16  | SORTERING    | nei                                                                                     | –                                                                                                                                 |
+| 17  | NORDLYS      | grense: låst tittel «Grønt Lys på Polarhimmelen» = LYS 3 av 7 (43 %)                    | ny tittel «Grønt over Polarhimmelen»; «lysene» → «lyktene» i e-posten; varselet sier «Ulriken», ikke «Nordtoppen» (NORD = 4 av 7) |
+| 18  | TURBULENS    | nei                                                                                     | –                                                                                                                                 |
+| 19  | GULROT       | nei                                                                                     | `foringsautomat.log` sier «oransje reinsdyrfôr»                                                                                   |
+| 20  | TURBO        | nei                                                                                     | –                                                                                                                                 |
+| 21  | BRANNMUR     | nei (storyboard-tittelen «Slaget om Brannmuren» er borte)                               | tittel «Vintersolverv»                                                                                                            |
+| 22  | LANDÅS       | **ja**, låst tittel «Landingskoordinatene» = LAND 4 av 6; «Landås» i alle faste tekster | ny tittel «Winters Tall»; e-post, PS og varsel dag 22 sier «stedet», ikke Landås eller «landingsstedet»                           |
+| 23  | STJERNEKLART | **ja**, låst tittel «Stjernevakt» = STJERNE 7 av 12                                     | ny tittel «Nattevakt»; e-posten sier «de tolv som henger i treet», ikke stjerner                                                  |
+| 24  | JULEMAGI     | nei («God Jul» = 3 av 8)                                                                | –                                                                                                                                 |
+
+Ordet «Landås» står i `daily_alerts` dag 1, 19 og 24 og i Varden-tekster; det er andre dager enn kode LANDÅS og lekker ikke.
+
+## D. Tekster som fjernes
+
+**JSON-felt (alle 24 dager):** `hint`, `hint_type`, `dagbokinnlegg`, `fysisk_hint` i dagens form (erstattes av løsningsteksten over). `bonusoppdrag.badge_id`, `badge_navn`, `badge_icon` dag 11 og 16.
+
+**Merker:** `antenne-ingenior`, `inventar-ekspert`, `morket-beseirer`, `oppfinner-assistent`, `kode-mester`, `symbol-mester`. `julekalender-fullfort` får ny ID `snofalls-venn`.
+
+**Eventyr:** alle ni gamle ID-er (`morkets-trussel`, `iqs-oppfinnelser`, `brevfugl-mysteriet`, `halvveis-milepæl` og de øvrige fem), med belønninger.
+
+**NisseNet-filer som slettes:** `OPPGAVER/hint_arkiv.txt`, `JULIUS-ARKIV/hemmelig_kode.txt`, `SNOFALL-HISTORIER/snowflake-patterns.txt`, `dekoder_reinsdyr.txt`, `julekuleblasing.txt`, `farge_system_dekoder.txt`, `tidsanomalier.txt`, `antenna-crisis.txt`, `antenne_tid_system.txt`, `julesanger-samling.txt`, `lucia_lussekatt_hemmelig.txt`, `personlige-brev-intro.txt`, `halvveis_system.txt`, `julekode_dekoder.txt`, `nordpolen_hemmelighet.txt`.
+
+**NisseNet-filer som erstattes (gammelt navn → nytt):** `SYSTEM/snofall_fakta.txt` → `SYSTEM/orakelets-rapport.txt` · `IQ-VERKSTED/magisk-sekk-test.txt` → `IQ-VERKSTED/feilrapport-uke-1.txt` · `brevfugl-finale.txt` → `brevfugl-historie.txt` · `fargesamleren.txt` → `FARGESAMLEREN/02-notatboken.txt` · `JULIUS-ARKIV/reinsdyr_GYATT.log` → `IQ-VERKSTED/foringsautomat.log` · `JULIUS-ARKIV/snill_slem_liste.txt` → `JULIUS-ARKIV/snill-listen.txt`. Omskrevet på samme sted: `om-snofall.txt`, `dagens_oppdrag.txt`, `sikkerhet.log`, `farge-koder.txt`, `lucia-tradisjon.txt`, de tre `DEKRYPTERT`-filene. Ikke rørt: `config.sys`, `readme.txt`, `system.log` (sjekkes for kodeord i steg 3).
+
+**Kode (tekststrenger):** `KULDE_INTERCEPTS` i `SnøfallTV.tsx` (sju hånende linjer og reserveteksten), `VLOG_ENTRIES`, teletext-fasit, «DEL 2: O - D - I» i NisseMusikk, «KRYPTERING: O-R-I-G-A-M-I» i Brevfugler, «PRISME // KRYSTALL-ANALYSE» og «SPEKTER // OPTISK KALIBRERING» i NisseNet-toppen, GrandFinaleModal-strengene listet i A9, `PasswordPrompt`-strengene listet i A1.
+
+**Statisk:** alle 28 gamle `daily_alerts`, de 10 `varsler` (erstattes av Frostgraden), `systemMetrikker` (NISSEKRAFT, BREVFUGL-SVERM, VERKSTED-VARME, SLEDE-TURBO).
+
+## E. Åpne spørsmål til Hans
+
+1. **Fire låste titler lekker koden** (dag 6, 8, 22, 23) og én er på grensen (17). Historiedokumentet er låst; forslagene over («Skyggene i Gangen», «Floken i Verkstedet», «Grønt over Polarhimmelen», «Winters Tall», «Nattevakt») krever et ja. Alternativet er å beholde titlene og akseptere lekkasjen i Kalender og iCal fra morgenen.
+2. **«Landås» dag 22.** Appen heter «Direktelinje Landås» og ordet står i sidepanel og NisseNet hele måneden. Barnetekstene dag 22 unngår det, men selve appnavnet gjør det ikke. Godta, eller skjule ordet i UI dag 22?
+3. **Dag 7-varselet i sidepanelet** sier «Signaturen på 85,0 har et navn». Det er innenfor designet (navnet sies ikke), men hvis dere vil ha dagen helt stille før videoen, kan varselet vente til koden er inne.
+4. **Avskjedsbrevet dag 24** er nytt (gåtedesignet nevner det uten tekst). Lengden kan kuttes om konvolutten blir full.
+5. **Merke-ikoner** og `unlockCondition`-typen for Snøfalls venn (`allQuestsCompleted` finnes; `decryptionSolved` og `dayCompleted` må bygges, jf. storyboard D2).
