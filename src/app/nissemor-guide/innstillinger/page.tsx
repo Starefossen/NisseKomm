@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GuideSettings } from "@/components/nissemor/GuideSettings";
 import { GameEngine } from "@/lib/game-engine";
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
@@ -33,6 +33,20 @@ function Feilforsok() {
   );
 }
 
+function Varsler() {
+  const [kanaler, setKanaler] = useState<string[] | null>(null);
+  useEffect(() => {
+    fetch("/api/varsler")
+      .then((r) => (r.ok ? r.json() : { channels: [] }))
+      .then((d) => setKanaler(d.channels ?? []))
+      .catch(() => setKanaler([]));
+  }, []);
+  if (!kanaler) return null;
+  return (
+    <p>Varsler: {kanaler.length ? kanaler.join(", ") : "ingen kanaler på"}.</p>
+  );
+}
+
 export default function InnstillingerSide() {
   return (
     <GuideSide>
@@ -40,6 +54,7 @@ export default function InnstillingerSide() {
         INNSTILLINGER
       </h1>
       <GuideSettings />
+      <Varsler />
       <Kort tittel="Feil koder" farge="border-(--cold-blue)">
         <Feilforsok />
       </Kort>
