@@ -575,3 +575,13 @@ Sum per flate: Julius-video 6 · Radio 3 · Fysisk 6 · NisseMail 2 · NisseNet 
 7. **Brevfugler:** beholde «skriv brev til Julius» uten svar, eller ta det ut?
 8. **Bonus dag 16:** ny foreldrekode `LYKT2026`, og skal fristen (fredag 18) håndheves i koden eller bare nevnes?
 9. **Kanalkart** (§2-forslaget) før loops bestilles.
+
+### Avgjort 10. november
+
+- **Innlogging:** passordskjerm beholdes som del av fiksjonen (fast passord barna kan, ingen reell sikkerhet).
+- **Radio i helgen:** Morgenrådet som vanlig, klippet går i 09-sendingen. Klippet ligger også i appen.
+- **Kanalkart:** K1 Snøfall landsby/ute, K2 IQs verksted, K3 Julius' video, K4 antennen ved tjernet med frekvenshjul (85,0 MHz = Krystallgrotten). Koden endres til å følge kartet.
+- **Sidepanel:** bare Frostgraden.
+- **Brevfugler:** «skriv brev til Julius» beholdes uten svar, men bygges slik at brevene kan integreres senere (for eksempel at Julius nevner et brev i videoen).
+- **Bonus dag 16:** foreldrekode `LYKT2026`. Fristen fredag 18. nevnes i historien, men håndheves ikke i koden.
+- **Dag 1, 6 og 24 (gåtedetaljer):** avgjøres i steg 1.
