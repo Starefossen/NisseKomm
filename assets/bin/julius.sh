@@ -12,6 +12,7 @@ Do not add, remove or change any object: no telephone, no cups other than the wo
 jq -n --arg p "$P" --arg secs "$SECS" --rawfile img <(base64 -i "$A/characters/julius/ref-v3.jpg" | tr -d '\n') \
   '{model:"gemini-omni-1.2-flash",input:[{type:"image",data:$img,mime_type:"image/jpeg"},{type:"text",text:$p}],response_format:{type:"video",duration:($secs+"s")}}' > "$D/$NAME.req.json"
 curl -s "https://generativelanguage.googleapis.com/v1beta/interactions" -H "x-goog-api-key: $K" -H 'Content-Type: application/json' -d @"$D/$NAME.req.json" > "$D/$NAME.resp.json"
+if [ -n "${GENERER_LOGG:-}" ]; then echo "video $NAME" >> "$GENERER_LOGG"; fi  # generer.py counts sent requests
 jq -e .error "$D/$NAME.resp.json" && exit 1
 jq -r '.steps[] | select(.type=="model_output") | (.content // .output)[] | select(.type=="video") | .data' "$D/$NAME.resp.json" | base64 -d > "$D/$NAME.raw.mp4"
 "$(dirname "$0")/julius-filter.sh" "$D/$NAME.raw.mp4" "$D/$NAME.mp4"  # look and sound: no API call, rerun alone to tweak
