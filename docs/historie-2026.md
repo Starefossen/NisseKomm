@@ -233,3 +233,30 @@ Fordeling: forbudt moro 10, i trøbbel 6, uventet 8.
 | 24 | to | Ligger og sover inni den store gullkonvolutten under treet med en sløyfe på hodet og en liten pappeske som pakket koffert ved siden av. | uventet | konvolutt, sløyfe, liten pappeske | 3 | ja (konvolutten) |
 
 På jaktdager (2, 4, 5, 6, 10, 11, 19, 22) ligger brikken utenfor scenen der det står «nei»; på dag 4 og 22 faller den naturlig i scenen likevel. Rydding etterpå: tørke benk eller bord, riste en pute, samle marshmallows.
+
+## 9. Snøfall TV gjennom desember
+
+**Teknikk.** Hver kanal får en rolig Gemini-videoloop (8–10 s, låst kamera, krysstonet i ffmpeg så skjøten ikke synes) som levende bakgrunn. Kode legger effekter oppå: frostgrad (is fra kantene, fargetap, støy, frosne bilder), Kuldes forstyrrelser og CRT-preg. Nye loops lages bare der rommet selv må se annerledes ut. Alt annet styres av kode.
+
+**Faste loops (lages før 1. desember):** Julius' kontor, IQs verksted, antennen ved tjernet, Snøfall landsby (dag, natt, storm) og Krystallgrotten (Kuldes 85,0 MHz).
+
+**Når TV-en må endre seg:**
+
+| Dag | Hendelse | Hva skjer på Snøfall TV | Hvordan |
+| --- | --- | --- | --- |
+| 1 | M1 Linjen | Kanalene kommer inn én etter én gjennom snøstøy. Bærebølgen hakker. | Kode |
+| 3 | Første spor | Første spøkelsesbilde på 85,0 MHz: et blått glimt i isen. | Kode + grotte-loop |
+| 7 | M2 Navnet | Kuldes signatur brenner seg inn et øyeblikk på alle kanaler. Frostgraden blir synlig i hjørnet. | Kode |
+| 10 | Fargene forsvinner | Alle kanaler grå, korte glimt av rødt og grønt, VHS-striper. Tilbake når koden er løst. | Kode |
+| 11 | Antennen jammes | Antennen ved tjernet er dekket av is og står skjevt. | Ny loop |
+| 12 | M3 Sukket i isen | Etter melodien sprekker isen i grotten litt, og noe blått lyser svakt. | Ny loop (grotte) |
+| 14 | Brevfugl fra grotten | En frossen brevfugl ligger i vinduskarmen på Julius' kontor. | Ny loop (kontor) |
+| 15 | M4 Vintervokteren | Grotten vises tydelig for første gang: et ensomt blått lys i mørket. Rolig, ikke skummelt. | Ny loop (grotte) |
+| 17 | Nordlys | Nordlys over landsbyen, første signal tilbake til grotten. | Ny loop (landsby) |
+| 18 | Kastevind | Storm over landsbyen. | Eksisterende storm-bilde som loop |
+| 20 | Varselet | Alle kanaler flimrer oftere. Frosten er høy. | Kode |
+| 21 | M5 Muren og porten | Alle kanaler fryser: rimkant, frosne bilder, Kuldes linje. Etter koden: kanalene tiner én etter én, og en varm port lyser i grotten. | Kode + ny loop (grotte med varm port) |
+| 23 | Sannheten | Grotten med lys som siver ned ovenfra. | Ny loop (grotte) |
+| 24 | M6 Tøvær | Alle kanaler varme og i full farge. Sleden over Nordtoppen, grotten tiner. | Nye loops (landsby, grotte) |
+
+Frostgraden styrer kodeeffektene alle andre dager, så TV-en blir gradvis kaldere uten nye videoer. Omtrent ti nye loops totalt (cirka 1 dollar per loop).
