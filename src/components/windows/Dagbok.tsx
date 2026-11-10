@@ -32,7 +32,7 @@ export function Dagbok({ missions, onClose, onWatched }: DagbokProps) {
               <h2 className="text-(--gold) font-bold text-lg">
                 DAG {m.dag}. DESEMBER – {m.tittel}
               </h2>
-              <JuliusVideo day={m.dag} onWatched={onWatched} />
+              <JuliusVideo day={m.dag} onWatched={onWatched} autoPlay />
             </section>
           ) : (
             <details

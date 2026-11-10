@@ -13,12 +13,15 @@ interface JuliusVideoProps {
   onWatched?: () => void;
   /** Past days in Dagbok pass "none" so a long list doesn't fetch every file */
   preload?: "none" | "metadata";
+  /** Dagbok starts today's unwatched video; iPad Safari ignores it without a tap, controls stay */
+  autoPlay?: boolean;
 }
 
 export function JuliusVideo({
   day,
   onWatched,
   preload = "metadata",
+  autoPlay = false,
 }: JuliusVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [watched, setWatched] = useState(() =>
@@ -54,7 +57,7 @@ export function JuliusVideo({
     const video = videoRef.current;
     if (!video) return;
     video.currentTime = 0;
-    void video.play();
+    video.play().catch(() => {});
   };
 
   return (
@@ -80,8 +83,10 @@ export function JuliusVideo({
             key={src}
             src={src}
             controls
+            aria-label={`Julius' video for ${day}. desember`}
             playsInline
             preload={preload}
+            autoPlay={autoPlay && isToday && !watched}
             className="aspect-video w-full border-2 border-(--brass) bg-black"
             onEnded={() => {
               markWatched();

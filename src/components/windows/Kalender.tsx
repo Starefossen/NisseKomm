@@ -15,6 +15,12 @@ interface KalenderProps {
   onSelectDay: (day: number) => void;
 }
 
+const STATUS_LABEL = {
+  locked: "låst",
+  available: "tilgjengelig",
+  completed: "fullført",
+};
+
 export function Kalender({
   missions,
   customCalendarEvents = [],
@@ -63,6 +69,11 @@ export function Kalender({
     return false;
   };
 
+  // Titles and mail text can leak codes, so never show them before their day, even in test mode
+  const isDayRevealed = (day: number) =>
+    completedDays.has(day) ||
+    (getCurrentMonth() === 12 && day <= getCurrentDay());
+
   const getDayStatus = (day: number): "locked" | "available" | "completed" => {
     if (completedDays.has(day)) return "completed";
     if (isDayLocked(day)) return "locked";
@@ -105,6 +116,7 @@ export function Kalender({
                   key={day}
                   onClick={() => handleDayClick(day)}
                   disabled={status === "locked"}
+                  aria-label={`${day}. desember, ${STATUS_LABEL[status]}`}
                   className={`
                     aspect-square min-h-12 flex flex-col items-center justify-center p-1 md:p-2
                     border-4 font-bold text-lg md:text-xl lg:text-2xl transition-all relative
@@ -166,10 +178,8 @@ export function Kalender({
       {/* Day detail modal */}
       {selectedDay && selectedMission && (
         <RetroModal
-          // Titles can leak earlier codes, so never show one before its day, even in test mode
           title={
-            completedDays.has(selectedDay) ||
-            (getCurrentMonth() === 12 && selectedDay <= getCurrentDay())
+            isDayRevealed(selectedDay)
               ? `DAG ${selectedDay} - ${selectedMission.tittel}`
               : `DAG ${selectedDay}`
           }
@@ -193,10 +203,11 @@ export function Kalender({
               );
             })()}
 
-            {/* Mission preview */}
-            <div className="text-lg">
-              {selectedMission.nissemail_tekst.substring(0, 150)}...
-            </div>
+            {isDayRevealed(selectedDay) && (
+              <div className="text-lg">
+                {selectedMission.nissemail_tekst.substring(0, 150)}...
+              </div>
+            )}
 
             {/* Action buttons */}
             <div className="flex gap-3">

@@ -24,11 +24,27 @@ job grotte-dag24       "$L/krystallgrotten/nokkelramme.jpg"          krystallgro
 job kontor-julius      "$L/julius-kontor/vidvinkel-ref.jpg"  julius-kontor vidvinkel-ref
 job kontor-tom         "$L/julius-kontor/vidvinkel-tom.jpg"  julius-kontor vidvinkel-tom
 job kontor-dag14       "$L/julius-kontor/vidvinkel-tom.jpg"  julius-kontor dag14
-job landsby-storm      "$L/snofall-landsby/ramme-rolig.jpg"  snofall-landsby storm
-job landsby-dag24      "$L/snofall-landsby/ramme-nordlys.jpg" snofall-landsby dag24
-# random village events (start and end on the key frame of landsby-rolig)
-for e in reinsdyr pakkeslede tarnklokke bakeri aking stjerneskudd; do
-  job "landsby-$e" "$L/snofall-landsby/nokkelramme.jpg" snofall-landsby "hendelse-$e"
+# Snøfall village: everything from nokkelramme-v2.jpg (empty square, closed double gate, red postkasse).
+V2="$L/snofall-landsby/nokkelramme-v2.jpg"
+[ -f "$V2" ] || "$A/bin/still.sh" "$L/snofall-landsby/nokkelramme.jpg" "$L/snofall-landsby/varianter/v2.still.prompt.txt" "$V2" || exit 1
+v2still() { # variant [base]: still-v2-<variant>.jpg made from the base (default v2)
+  local s="$L/snofall-landsby/still-v2-$1.jpg"
+  [ -f "$s" ] || "$A/bin/still.sh" "${2:-$V2}" "$L/snofall-landsby/varianter/$1.still.prompt.txt" "$s" >/dev/null || return 1
+  echo "$s"
+}
+vjob() { # name image variant: state loop straight from an image
+  [ -f "$T/$1.mp4" ] && return 0
+  "$A/bin/loop.sh" "$2" "$L/snofall-landsby/varianter/$3.prompt.txt" "$1" 10 && cp "$A/out/$1.mp4" "$T/$1.mp4"
+}
+vjob landsby-rolig   "$V2" rolig
+vjob landsby-nordlys "$(v2still nordlys)" nordlys
+vjob landsby-storm   "$(v2still storm)" storm
+vjob landsby-dag24   "$(v2still dag24 "$(v2still nordlys)")" dag24
+# village events: 10 s (model max with first+last frame), then pinned to the key frame at both ends
+for e in brevfugler julius nissemor iq winter reinsdyr hverdag aking marked tarnklokke stjerneskudd; do
+  [ -f "$T/landsby-$e.mp4" ] && continue
+  "$A/bin/loop.sh" "$V2" "$L/snofall-landsby/varianter/hendelse-$e.prompt.txt" "landsby-$e.raw" 10 \
+    && "$A/bin/anchor.sh" "$A/out/landsby-$e.raw.mp4" "$V2" "$T/landsby-$e.mp4"
 done
 ls "$T"
 # --upload <base-url>: PUT every loop with NISSEKOMM_UPLOAD_TOKEN, then check sizes via GET /api/media.
