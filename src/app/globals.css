@@ -834,6 +834,63 @@ body:has(.crt-frame-container) {
   animation: frost-tick 0.6s ease-in-out infinite;
 }
 
+/* Brevfugler: pixel birds in the sky over Snøfall */
+@keyframes bf-wing {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes bf-circle {
+  from {
+    transform: rotate(0deg) translateX(56px) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(56px) rotate(-360deg);
+  }
+}
+@keyframes bf-enter-right {
+  from {
+    transform: translateX(70vw);
+  }
+}
+@keyframes bf-fly-up {
+  0% {
+    transform: translateY(260px) scale(0.4) rotate(45deg);
+    opacity: 0.4;
+  }
+  25% {
+    transform: translateY(200px) scale(0.6) rotate(0deg);
+    opacity: 1;
+  }
+}
+@keyframes bf-flip {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+/* Day-24 thaw: the blue bird comes down from Nordtoppen, waits, then flies home left */
+@keyframes bf-home {
+  0% {
+    left: 64%;
+    top: 22%;
+  }
+  20%,
+  80% {
+    left: 46%;
+    top: 12%;
+  }
+  100% {
+    left: -15%;
+    top: 4%;
+  }
+}
+@keyframes bf-line-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   /* Motion diet: every loop and transition stops for kids who asked the OS for calm */
   *,

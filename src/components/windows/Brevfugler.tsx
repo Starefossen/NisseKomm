@@ -1,14 +1,28 @@
 "use client";
 
 import { mediaUrl } from "@/lib/media";
-import { useState, useEffect } from "react";
-import Image from "next/image";
+import { useEffect, useState, type CSSProperties } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
+import { Icon } from "@/lib/icons";
 import { GameEngine } from "@/lib/game-engine";
-import { getCurrentDate, getCurrentDay } from "@/lib/date-utils";
+import { getCurrentDay } from "@/lib/date-utils";
 
-const TINT_BREV =
-  "Takk for lyset.\nJeg hadde glemt farger.\nKrystallet smelter ikke.\nDet er fra meg.";
+const TINT_BREV = [
+  "Takk for lyset.",
+  "Jeg hadde glemt farger.",
+  "Krystallet smelter ikke.",
+  "Det er fra meg.",
+];
+
+/** One family: the name buttons are fixed, each with a symbol Hanna (5) knows without reading. */
+export const SKRIVERE = [
+  { navn: "Kristian", ikon: "zap" },
+  { navn: "Håkon", ikon: "star" },
+  { navn: "Hanna", ikon: "heart" },
+] as const;
+
+const BLA_FUGL_FRA_DAG = 14;
+const TINT_MS = 9000;
 
 // M6 Tøvær: Kulde's letter thaws as the reward for solving day 24's code.
 export function erBrevetFrossent(day: number, dag24Lost: boolean): boolean {
@@ -16,24 +30,87 @@ export function erBrevetFrossent(day: number, dag24Lost: boolean): boolean {
 }
 
 /**
- * Stores a letter where the parent guide reads it. Three children write on the same
- * day, so a second letter is appended instead of replacing the first.
+ * Stores a letter where the parent guide reads it, with the writer's name so Julius
+ * knows who wrote what. A second letter from the same child the same day is appended.
  * Returns false (and the caller keeps the draft) outside days 1-24.
  */
-export function sendBrev(dag: number, utkast: string): boolean {
+export function sendBrev(dag: number, utkast: string, fra: string): boolean {
   const tekst = utkast.trim();
-  if (!tekst || dag < 1 || dag > 24) return false;
-  const forrige = GameEngine.getSantaLetters().find((l) => l.day === dag);
+  if (!tekst || !fra || dag < 1 || dag > 24) return false;
+  const forrige = GameEngine.getSantaLetters().find(
+    (l) => l.day === dag && l.from === fra,
+  );
   GameEngine.addSantaLetter(
     dag,
     forrige ? `${forrige.content}\n\n${tekst}` : tekst,
+    fra,
   );
   return true;
 }
 
-interface Letter {
-  day: number;
-  content: string;
+/** The thaw plays once, the first time the window opens after day 24 is solved. */
+export function skalTineSpilles(frossent: boolean): boolean {
+  return !frossent && !GameEngine.isIntroSeen("brev-tint");
+}
+
+function PikselFugl({
+  farge,
+  bokstav,
+  is = false,
+}: {
+  farge: string;
+  bokstav?: string;
+  is?: boolean;
+}) {
+  const vinge = (delay: string): CSSProperties => ({
+    animation: `bf-wing 0.5s steps(1) ${delay} infinite`,
+  });
+  return (
+    <svg
+      viewBox="0 0 16 12"
+      width={48}
+      height={36}
+      shapeRendering="crispEdges"
+      aria-hidden
+      style={{ color: farge }}
+    >
+      <g fill="currentColor">
+        {/* body and head */}
+        <rect x="5" y="5" width="7" height="3" />
+        <rect x="11" y="4" width="3" height="3" />
+        <rect x="14" y="5" width="2" height="1" />
+        <rect x="2" y="5" width="3" height="2" />
+        {/* wings up */}
+        <g style={vinge("0s")}>
+          <rect x="6" y="1" width="2" height="4" />
+          <rect x="8" y="2" width="2" height="3" />
+          <rect x="4" y="0" width="2" height="2" />
+        </g>
+        {/* wings down */}
+        <g style={vinge("-0.25s")}>
+          <rect x="6" y="8" width="2" height="3" />
+          <rect x="8" y="8" width="2" height="2" />
+          <rect x="4" y="10" width="2" height="2" />
+        </g>
+      </g>
+      <rect x="12" y="4" width="1" height="1" fill="black" />
+      {is && (
+        <rect x="6" y="5" width="3" height="2" fill="white" opacity={0.9} />
+      )}
+      {bokstav && (
+        <text
+          x="8.5"
+          y="7.6"
+          fontSize="3.4"
+          textAnchor="middle"
+          fill="black"
+          className="font-retro"
+        >
+          {bokstav}
+        </text>
+      )}
+    </svg>
+  );
 }
 
 interface BrevfuglerProps {
@@ -41,258 +118,242 @@ interface BrevfuglerProps {
 }
 
 export function Brevfugler({ onClose }: BrevfuglerProps) {
-  const [letters, setLetters] = useState<Letter[]>(() =>
-    typeof window !== "undefined" ? GameEngine.getSantaLetters() : [],
-  );
+  const [dag] = useState(() => getCurrentDay());
+  const [letters, setLetters] = useState(() => GameEngine.getSantaLetters());
   const [utkast, setUtkast] = useState("");
-  const [radarTick, setRadarTick] = useState(0);
-  const [currentTime, setCurrentTime] = useState<Date>(() => getCurrentDate());
-  // Once per open, not on every radar tick; a code can only be sent with this window closed.
+  const [skriver, setSkriver] = useState<string | null>(null);
+  const [nySendt, setNySendt] = useState<string | null>(null);
+  const [kollbotte, setKollbotte] = useState<Record<string, number>>({});
+  // Once per open; a code can only be sent with this window closed.
   const [frossent] = useState(() =>
-    erBrevetFrossent(getCurrentDay(), GameEngine.isQuestCompleted(24)),
+    erBrevetFrossent(dag, GameEngine.isQuestCompleted(24)),
+  );
+  const [tiner, setTiner] = useState(
+    () =>
+      skalTineSpilles(frossent) &&
+      !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,
   );
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setRadarTick((prev) => (prev + 1) % 100);
-      setCurrentTime(getCurrentDate());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+    if (!frossent) GameEngine.markIntroSeen("brev-tint");
+  }, [frossent]);
+
+  useEffect(() => {
+    if (!tiner) return;
+    const t = setTimeout(() => setTiner(false), TINT_MS);
+    return () => clearTimeout(t);
+  }, [tiner]);
 
   const send = () => {
-    if (!sendBrev(getCurrentDay(), utkast)) return;
+    if (!skriver || !sendBrev(dag, utkast, skriver)) return;
     setLetters(GameEngine.getSantaLetters());
+    setNySendt(skriver);
     setUtkast("");
   };
 
-  // Frozen: the blue bird circles Nordtoppen. Thawed: it flies home along the corridor.
-  const angle = radarTick * 0.6;
-  const fugl = frossent
-    ? { left: 72 + Math.cos(angle) * 8, top: 45 + Math.sin(angle) * 14 }
-    : { left: 72 - ((radarTick * 3) % 55), top: 40 };
+  const dagensFugler = letters.filter((l) => l.day === dag && l.from);
+  const perSkriver = SKRIVERE.map(({ navn }) => ({
+    navn,
+    antall: letters.filter((l) => l.from === navn).length,
+  })).filter((s) => s.antall > 0);
+  const blaFugl = frossent && dag >= BLA_FUGL_FRA_DAG;
 
   return (
-    <RetroWindow title="BREVFUGLER — RADAR" onClose={onClose}>
-      <div className="p-4 md:p-6 h-full overflow-y-auto space-y-6 bg-(--dark-crt)">
-        {/* =====================================================================
-            LIVE CRT ISFUGL-RADAR VIEWPORT (BERGEN / ULRIKEN <-> SNØFALL 90°N)
-           ===================================================================== */}
-        <div className="relative w-full h-52 md:h-60 border-4 border-(--neon-green)/70 bg-black overflow-hidden shadow-[0_0_24px_color-mix(in_oklab,var(--brass)_18%,transparent)]">
-          {/* Split Painterly Surveillance Feeds: Left = Nordtoppen Relay, Right = Julius' Study */}
-          <div className="absolute inset-0 grid grid-cols-2">
-            <div className="relative overflow-hidden border-r border-(--neon-green)/40">
-              <Image
-                src={mediaUrl("feed/antenne-tarn.png")}
-                alt="Ulriken / Nordtoppen Relé"
-                fill
-                className="object-cover animate-[tv-camera-pan_28s_ease-in-out_infinite]"
-                style={{ filter: "contrast(1.1) brightness(0.85)" }}
-                priority
-              />
-              {/* Pulsing Red Aviation Beacon */}
-              <div
-                className="absolute inset-0 pointer-events-none mix-blend-screen animate-pulse"
-                style={{
-                  background:
-                    "radial-gradient(circle at 62.5% 10.8%, rgba(255, 40, 40, 0.85) 0%, transparent 16%)",
-                }}
-              />
-            </div>
-
-            <div className="relative overflow-hidden">
-              <Image
-                src={mediaUrl("feed/julius-kontor.png")}
-                alt="Julius' Kontor og Brevhyller"
-                fill
-                className="object-cover animate-[tv-camera-pan_32s_ease-in-out_infinite]"
-                style={{ filter: "contrast(1.08) brightness(0.9)" }}
-                priority
-              />
-              {/* Warm Candlelight Glow */}
-              <div
-                className="absolute inset-0 pointer-events-none mix-blend-screen animate-[flicker_2.5s_infinite]"
-                style={{
-                  background:
-                    "radial-gradient(circle at 48% 76%, rgba(255, 210, 80, 0.55) 0%, transparent 25%)",
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Radar Grid & Flight Trajectory SVG Overlay */}
-          <svg
-            viewBox="0 0 800 240"
-            className="absolute inset-0 w-full h-full pointer-events-none z-15"
-            preserveAspectRatio="none"
-          >
-            {/* Subtle Radar Polar Circles */}
-            <circle
-              cx="160"
-              cy="155"
-              r="45"
-              fill="none"
-              stroke="rgba(0, 255, 100, 0.35)"
-              strokeDasharray="4 4"
-            />
-            <circle
-              cx="640"
-              cy="125"
-              r="45"
-              fill="none"
-              stroke="rgba(255, 215, 0, 0.4)"
-              strokeDasharray="4 4"
-            />
-
-            {/* Dashed Flight Corridor Arc: Landås/Ulriken -> Snøfall */}
-            <path
-              d="M 160 155 Q 400 25, 640 125"
-              fill="none"
-              stroke="#00ff66"
-              strokeWidth="2.5"
-              strokeDasharray="8 6"
-            />
-            <path
-              d="M 640 125 Q 400 210, 160 155"
-              fill="none"
-              stroke="#ffd700"
-              strokeWidth="2"
-              strokeDasharray="5 7"
-              opacity="0.75"
-            />
-
-            {/* Waypoint Nodes */}
-            <circle cx="160" cy="155" r="6" fill="#00ff66" />
-            <circle cx="640" cy="125" r="6" fill="#ffd700" />
-          </svg>
-
-          {/* The blue bird from the Crystal Cave */}
+    <RetroWindow title="BREVFUGLER" onClose={onClose}>
+      <div className="h-full flex flex-col bg-(--dark-crt) overflow-hidden">
+        {/* The sky over Snøfall */}
+        <div
+          className="relative flex-[1.15] min-h-0 overflow-hidden border-b-2 border-(--brass) bg-cover bg-center"
+          style={{
+            backgroundImage: `linear-gradient(rgba(10,6,4,0.35), rgba(10,6,4,0.75)), url("${mediaUrl("feed/landsby-rolig.jpg")}"), url("/village-day.jpg")`,
+          }}
+          onClick={() => tiner && setTiner(false)}
+          data-testid="brevfugler-himmel"
+        >
           <div
-            className="absolute z-20 pointer-events-none transition-all duration-1000"
-            style={{ left: `${fugl.left}%`, top: `${fugl.top}%` }}
-          >
-            <div className="flex items-center gap-1.5 bg-black/85 border border-(--cold-blue) px-2 py-0.5 text-base font-retro text-(--cold-blue) shadow-[0_0_10px_rgba(0,200,255,0.5)]">
-              <span className="w-2 h-2 rounded-full bg-(--cold-blue) animate-ping" />
-              <span>
-                {frossent
-                  ? "BLÅ FUGL: UKJENT AVSENDER"
-                  : "BLÅ FUGL: PÅ VEI HJEM"}
-              </span>
-            </div>
-          </div>
-
-          {/* CRT Scanlines & Vignette */}
-          <div
-            className="absolute inset-0 pointer-events-none z-15"
+            className="absolute inset-0 pointer-events-none"
             style={{
               backgroundImage:
-                "repeating-linear-gradient(0deg, rgba(0,0,0,0.36) 0px, rgba(0,0,0,0.36) 1px, transparent 1px, transparent 3px)",
-            }}
-          />
-          <div
-            className="absolute inset-0 pointer-events-none z-15"
-            style={{
-              background:
-                "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.75) 100%)",
+                "repeating-linear-gradient(0deg, rgba(0,0,0,0.3) 0px, rgba(0,0,0,0.3) 1px, transparent 1px, transparent 3px)",
             }}
           />
 
-          {/* Top & Bottom Radar Telemetry OSD */}
-          <div className="absolute inset-0 z-25 p-3 flex flex-col justify-between pointer-events-none font-retro">
-            <div className="flex items-center justify-between gap-2">
-              <div className="bg-black/80 border border-(--neon-green)/60 px-2.5 py-1 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-(--neon-green) animate-pulse" />
-                <span className="text-base font-bold text-(--neon-green)">
-                  LUFTKORRIDOR: DIREKTELINJEN (60.37°N) ⇄ SNØFALL (90.00°N)
-                </span>
-              </div>
-              <div className="bg-black/80 border border-(--gold) px-2.5 py-1 text-base font-bold text-(--gold)">
-                {currentTime.toLocaleTimeString("no-NO", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                })}{" "}
-                | AKTIVE FUGLER: 1
+          {blaFugl && (
+            <div className="absolute left-[64%] top-[22%]">
+              <div
+                className="motion-reduce:animate-none"
+                style={{ animation: "bf-enter-right 4s ease-out 1s backwards" }}
+              >
+                <div
+                  className="motion-reduce:animate-none"
+                  style={{ animation: "bf-circle 9s linear infinite" }}
+                >
+                  <PikselFugl farge="var(--cold-blue)" is />
+                </div>
               </div>
             </div>
+          )}
 
-            <div className="flex items-end justify-between gap-2">
-              <div className="bg-black/85 border border-(--neon-green)/50 px-2.5 py-1 text-base text-(--neon-green)">
-                📡 MOTTAK: ULRIKEN MAST (643 MOH)
+          {tiner && (
+            <div
+              className="absolute"
+              style={{ animation: `bf-home ${TINT_MS}ms ease-in-out forwards` }}
+            >
+              <PikselFugl farge="var(--cold-blue)" />
+            </div>
+          )}
+
+          {dagensFugler.map((l, i) => {
+            const n = kollbotte[l.from!] ?? 0;
+            return (
+              <button
+                key={l.from}
+                type="button"
+                aria-label={`Brevfuglen til ${l.from}`}
+                onClick={() =>
+                  setKollbotte((k) => ({ ...k, [l.from!]: n + 1 }))
+                }
+                className="absolute min-w-12 min-h-12 flex items-center justify-center cursor-pointer"
+                style={{ left: `${8 + i * 17}%`, top: `${14 + (i % 2) * 22}%` }}
+              >
+                <span
+                  key={n}
+                  className="block motion-reduce:animate-none"
+                  style={{
+                    animation:
+                      n > 0
+                        ? "bf-flip 0.7s ease-in-out"
+                        : nySendt === l.from
+                          ? "bf-fly-up 2.4s ease-out"
+                          : undefined,
+                  }}
+                >
+                  <PikselFugl farge="var(--gold)" bokstav={l.from![0]} />
+                </span>
+              </button>
+            );
+          })}
+
+          {!frossent && (
+            <div
+              className="absolute left-1/2 top-[8%] -translate-x-1/2 w-[min(26rem,80%)] p-3 bg-(--neon-green) text-black border-2 border-(--gold) shadow-[0_0_30px_var(--gold)] font-retro"
+              data-testid="tint-brev"
+            >
+              {TINT_BREV.map((linje, i) => (
+                <div
+                  key={linje}
+                  className="text-xl leading-tight"
+                  style={
+                    tiner
+                      ? {
+                          animation: `bf-line-in 0.8s ease-out ${2 + i * 1.2}s both`,
+                        }
+                      : undefined
+                  }
+                >
+                  {linje}
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="absolute inset-x-0 bottom-0 p-2 bg-black/70 text-base text-(--neon-green) space-y-0.5">
+            {blaFugl && (
+              <div className="text-(--cold-blue)">
+                En fugl ingen har sendt. Den har et brev frosset fast på vingen.
               </div>
-              <div className="bg-black/85 border border-(--gold)/60 px-2.5 py-1 text-base text-(--gold)">
-                ❄ AVSENDER: KRYSTALLGROTTEN (NORDTOPPEN)
+            )}
+            {!frossent && (
+              <div className="text-(--gold)">
+                Fra Vintervokteren, Krystallgrotten
               </div>
+            )}
+            <div>
+              {dagensFugler.length === 0
+                ? "Ingen brev er sendt i dag ennå."
+                : dagensFugler.length === 1
+                  ? "1 brev er på vei til Julius."
+                  : `${dagensFugler.length} brev er på vei til Julius.`}
+              {perSkriver.length > 0 &&
+                `  Sendt i desember: ${perSkriver.map((s) => `${s.navn} ${s.antall}`).join(", ")}`}
             </div>
           </div>
         </div>
 
-        {/* Frozen letter from the Crystal Cave */}
-        {frossent ? (
-          <div className="p-4 border-2 border-(--cold-blue) bg-(--cold-blue)/10 space-y-2">
-            <div className="text-base font-bold text-(--cold-blue)">
-              ❄ FRYST BREV
-            </div>
-            <div
-              aria-hidden
-              className="font-retro text-(--cold-blue)/40 blur-[3px] select-none"
-            >
-              ▒▒▒▒ ▒▒▒ ▒▒▒▒▒▒ ▒▒▒ ▒▒▒▒ ▒▒▒▒▒▒▒
-            </div>
-            <div className="text-base text-(--cold-blue)/80">
-              Brevet sitter fast på vingen til den blå fuglen. Det tiner når
-              linjen er varm.
-            </div>
-          </div>
-        ) : (
-          <div className="p-4 border-2 border-(--gold) bg-(--gold)/10 space-y-2">
-            <div className="text-base font-bold text-(--gold)">
-              💧 BREVET HAR TINT
-            </div>
-            <div className="text-base text-(--neon-green) leading-relaxed whitespace-pre-line">
-              {TINT_BREV}
-            </div>
-            <div className="text-base text-(--cold-blue)">
-              Fra: Vintervokteren, Krystallgrotten
-            </div>
-          </div>
-        )}
-
-        {/* Letters to Julius: stored locally for the parent guide; Julius does not reply here */}
-        <div className="p-4 border-2 border-(--neon-green)/50 space-y-3">
-          <label
-            htmlFor="brev-til-julius"
-            className="block text-base font-bold"
-          >
-            ✉ SKRIV BREV TIL JULIUS
-          </label>
-          <div className="text-base opacity-70">
-            Skriv brevet på papir, og skriv det av her. Brevfuglen tar det med
-            til Snøfall.
-          </div>
-          <textarea
-            id="brev-til-julius"
-            value={utkast}
-            onChange={(e) => setUtkast(e.target.value)}
-            placeholder="Kjære Julius ..."
-            rows={5}
-            className="w-full p-3 bg-(--dark-crt) border-2 border-(--neon-green) text-(--neon-green) text-base font-retro resize-none"
-          />
-          <button
-            onClick={send}
-            disabled={!utkast.trim()}
-            className="w-full min-h-11 px-4 py-2 border-2 border-(--gold) bg-(--gold)/20 hover:bg-(--gold)/30 disabled:opacity-30 disabled:cursor-not-allowed text-(--gold) font-bold transition-colors cursor-pointer"
-          >
-            SEND BREVFUGL TIL SNØFALL
-          </button>
-          {letters.length > 0 && (
-            <ul className="space-y-1 text-base">
-              {letters.map((l) => (
-                <li key={l.day} className="text-(--neon-green)/80">
-                  ✓ Dag {l.day}: brevfugl sendt
-                </li>
+        {/* The writing desk */}
+        <div className="flex-1 min-h-0 grid grid-cols-[1fr_12rem] gap-3 p-3">
+          <div className="flex flex-col gap-2 min-h-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-base font-bold">HVEM SKRIVER?</span>
+              {SKRIVERE.map(({ navn, ikon }) => (
+                <button
+                  key={navn}
+                  type="button"
+                  onClick={() => setSkriver(navn)}
+                  aria-pressed={skriver === navn}
+                  className={`min-h-12 px-3 flex items-center gap-2 border-2 text-lg font-bold cursor-pointer transition-colors ${
+                    skriver === navn
+                      ? "border-(--gold) bg-(--gold) text-black"
+                      : "border-(--neon-green)/60 text-(--neon-green) hover:bg-(--neon-green)/15"
+                  }`}
+                >
+                  <Icon
+                    name={ikon}
+                    size={24}
+                    color={skriver === navn ? "gray" : "gold"}
+                  />
+                  {navn.toUpperCase()}
+                </button>
               ))}
-            </ul>
+            </div>
+            <label htmlFor="brev-til-julius" className="text-base opacity-70">
+              Skriv på papir først. Så skriver dere det av her.
+            </label>
+            <textarea
+              id="brev-til-julius"
+              value={utkast}
+              onChange={(e) => setUtkast(e.target.value)}
+              placeholder="Kjære Julius ..."
+              className="flex-1 min-h-16 w-full p-2 bg-black/40 border-2 border-(--neon-green) text-(--neon-green) text-lg font-retro resize-none"
+            />
+            <button
+              type="button"
+              onClick={send}
+              disabled={!utkast.trim() || !skriver}
+              className="min-h-12 px-4 flex items-center justify-center gap-2 border-2 border-(--gold) bg-(--gold)/20 hover:bg-(--gold)/30 disabled:opacity-30 disabled:cursor-not-allowed text-(--gold) text-lg font-bold transition-colors cursor-pointer"
+            >
+              <Icon name="send" size={24} color="gold" />
+              SEND BREVFUGLEN
+            </button>
+          </div>
+
+          {frossent ? (
+            <div className="relative p-3 border-2 border-(--cold-blue) bg-(--cold-blue)/10 flex flex-col gap-2 shadow-[inset_0_0_24px_var(--cold-blue)]">
+              <div className="flex items-center gap-2 text-base font-bold text-(--cold-blue)">
+                <Icon name="snowflake" size={24} color="blue" />
+                FRYST BREV
+              </div>
+              <div className="text-base text-(--cold-blue)/80">
+                {blaFugl
+                  ? "Brevet sitter fast på vingen til den blå fuglen. Det tiner når linjen er varm."
+                  : "Ingen frosne brev ennå."}
+              </div>
+            </div>
+          ) : (
+            <div className="relative p-3 border-2 border-(--gold) bg-(--gold)/10 flex flex-col gap-2 overflow-hidden">
+              {tiner && (
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-(--cold-blue)/40 frost-thaw"
+                />
+              )}
+              <div className="text-base font-bold text-(--gold)">
+                BREVET HAR TINT
+              </div>
+              <div className="text-base text-(--neon-green)">
+                Fra Vintervokteren, Krystallgrotten
+              </div>
+            </div>
           )}
         </div>
       </div>

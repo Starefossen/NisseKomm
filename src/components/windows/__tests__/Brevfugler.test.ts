@@ -1,6 +1,6 @@
 import { beforeEach, describe, it, expect } from "@jest/globals";
 import { GameEngine } from "@/lib/game-engine";
-import { erBrevetFrossent, sendBrev } from "../Brevfugler";
+import { erBrevetFrossent, sendBrev, skalTineSpilles } from "../Brevfugler";
 
 describe("Brevfugler: Kuldes brev", () => {
   it("er fryst dag 14 (og fram til julaften)", () => {
@@ -17,17 +17,45 @@ describe("Brevfugler: Kuldes brev", () => {
 describe("Brevfugler: brev til Julius", () => {
   beforeEach(() => localStorage.clear());
 
-  it("lagrer der foreldreguiden leser, og legger søskens brev samme dag til", () => {
-    expect(sendBrev(14, "  Kjære Julius, Kristian her ")).toBe(true);
-    expect(sendBrev(14, "Hilsen Hanna")).toBe(true);
+  it("lagrer hvert barns brev med navn, og legger samme barns andre brev til", () => {
+    expect(sendBrev(14, "  Kjære Julius, Kristian her ", "Kristian")).toBe(
+      true,
+    );
+    expect(sendBrev(14, "Hilsen Hanna", "Hanna")).toBe(true);
+    expect(sendBrev(14, "PS", "Kristian")).toBe(true);
     expect(GameEngine.getSantaLetters()).toEqual([
-      { day: 14, content: "Kjære Julius, Kristian her\n\nHilsen Hanna" },
+      {
+        day: 14,
+        from: "Kristian",
+        content: "Kjære Julius, Kristian her\n\nPS",
+      },
+      { day: 14, from: "Hanna", content: "Hilsen Hanna" },
     ]);
   });
 
-  it("avviser tomme brev og dager utenfor 1-24, så utkastet beholdes", () => {
-    expect(sendBrev(14, "   ")).toBe(false);
-    expect(sendBrev(25, "Etter jul")).toBe(false);
+  it("beholder gamle brev uten navn ved siden av nye", () => {
+    GameEngine.saveSantaLetters([{ day: 14, content: "Gammelt brev" }]);
+    sendBrev(14, "Nytt", "Håkon");
+    const brev = GameEngine.getSantaLetters();
+    expect(brev).toContainEqual({ day: 14, content: "Gammelt brev" });
+    expect(brev).toContainEqual({ day: 14, from: "Håkon", content: "Nytt" });
+  });
+
+  it("avviser tomme brev, manglende navn og dager utenfor 1-24", () => {
+    expect(sendBrev(14, "   ", "Hanna")).toBe(false);
+    expect(sendBrev(14, "Hei", "")).toBe(false);
+    expect(sendBrev(25, "Etter jul", "Hanna")).toBe(false);
     expect(GameEngine.getSantaLetters()).toEqual([]);
+  });
+});
+
+describe("Brevfugler: tøvær dag 24", () => {
+  beforeEach(() => localStorage.clear());
+
+  it("spilles bare én gang, og aldri mens brevet er fryst", () => {
+    expect(skalTineSpilles(true)).toBe(false);
+    expect(skalTineSpilles(false)).toBe(true);
+    GameEngine.markIntroSeen("brev-tint");
+    expect(skalTineSpilles(false)).toBe(false);
   });
 });
