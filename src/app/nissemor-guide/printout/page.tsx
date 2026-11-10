@@ -7,6 +7,7 @@ import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { GameEngine } from "@/lib/game-engine";
 import { resolveTemplate } from "@/lib/template-resolver";
 import type { Oppdrag, PrintMaterial } from "@/types/innhold";
+import { UTSKRIFTER, FERDIGE, utskriftHref } from "./filer";
 
 const allOppdrag = GameEngine.getAllQuests();
 
@@ -250,6 +251,23 @@ function PrintoutContent() {
           <p className="text-center text-xl mb-6 opacity-70">
             Velg hvilke dager du vil skrive ut - 6 kort per side
           </p>
+
+          <div className="border-4 border-(--gold) p-6 mb-6">
+            <h2 className="text-2xl font-bold text-(--gold) mb-3">
+              UTSKRIFTSLISTE 2026
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              {UTSKRIFTER.map((navn) => (
+                <a
+                  key={navn}
+                  href={utskriftHref(navn)}
+                  className={`underline min-h-11 flex items-center ${navn in FERDIGE ? "text-(--gold)" : "opacity-70"}`}
+                >
+                  {navn}
+                </a>
+              ))}
+            </div>
+          </div>
 
           {/* Day Selection Grid */}
           <div className="border-4 border-(--neon-green) bg-(--neon-green)/5 p-6 mb-6">
