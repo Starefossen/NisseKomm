@@ -67,14 +67,6 @@ export function getEventyrForDay(day: number): Eventyr[] {
   );
 }
 
-export function isEventyrComplete(
-  eventyrId: string,
-  completedDays: Set<number>,
-): boolean {
-  const days = getEventyrDays(eventyrId);
-  return days.length > 0 && days.every((day) => completedDays.has(day));
-}
-
 /**
  * Get progress for an eventyr (percentage of days completed)
  */

@@ -410,6 +410,11 @@ export class GameEngine {
     return StorageManager.getFailedAttempts(day);
   }
 
+  /** Parent guide: clear a day's wrong guesses so Julius' hint resets */
+  static resetFailedAttempts(day: number): void {
+    StorageManager.resetFailedAttempts(day);
+  }
+
   /**
    * Get all quest data (delegates to oppdrag loader)
    */

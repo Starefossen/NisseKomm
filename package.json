@@ -22,7 +22,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "date-fns": "^4.4.0",
     "html5-qrcode": "^2.3.8",
     "next": "^16.4.0",
     "pg": "^8.23.1",

@@ -217,7 +217,7 @@ function SymbolerContent() {
   return (
     <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8 print:p-0 print:bg-white">
       <div className="print:hidden">
-        <GuideNavigation currentPage="symboler" />
+        <GuideNavigation />
       </div>
 
       {/* Header */}

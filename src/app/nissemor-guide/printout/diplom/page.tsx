@@ -16,7 +16,7 @@ function DiplomContent() {
     <>
       <div className="print:hidden min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-8">
         <div className="max-w-4xl mx-auto space-y-6">
-          <GuideNavigation currentPage="printout" />
+          <GuideNavigation />
           <h1 className="text-4xl font-bold text-center">
             🖨️ DIPLOM «SNØFALLS VENN»
           </h1>

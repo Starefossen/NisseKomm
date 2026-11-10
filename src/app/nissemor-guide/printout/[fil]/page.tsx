@@ -16,7 +16,7 @@ function StubContent() {
     return (
       <div className="min-h-screen bg-(--dark-crt) p-8 print:bg-white print:p-0">
         <div className="max-w-4xl mx-auto mb-6 print:hidden">
-          <GuideNavigation currentPage="printout" />
+          <GuideNavigation />
         </div>
         <Side />
       </div>
@@ -25,7 +25,7 @@ function StubContent() {
   return (
     <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-8">
       <div className="max-w-4xl mx-auto space-y-6">
-        <GuideNavigation currentPage="printout" />
+        <GuideNavigation />
         <h1 className="text-4xl font-bold text-center">🖨️ {fil}.pdf</h1>
         <p className="text-xl text-center opacity-80">
           {kjent

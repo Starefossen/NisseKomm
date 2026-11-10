@@ -127,7 +127,7 @@ function MerkerContent() {
 
   return (
     <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8">
-      <GuideNavigation currentPage="merker" />
+      <GuideNavigation />
 
       {/* Header */}
       <div className="max-w-7xl mx-auto mb-8">

@@ -49,7 +49,7 @@ function MediaContent() {
 
   return (
     <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8">
-      <GuideNavigation currentPage="media" />
+      <GuideNavigation />
       <div className="max-w-4xl mx-auto">
         <div className="border-8 border-(--neon-green) bg-black p-6 mb-6 text-center">
           <h1 className="text-4xl font-bold tracking-wider">MEDIA</h1>
