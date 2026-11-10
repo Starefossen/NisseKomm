@@ -18,10 +18,7 @@ export async function POST(request: NextRequest) {
     if (typeof body.code !== "string" || !body.code.trim()) {
       return jsonError("Ugyldig kode", 400);
     }
-    const role = checkCode(body.code);
-    if (role === "locked") {
-      return jsonError("For mange forsøk. Vent litt.", 429);
-    }
+    const role = await checkCode(body.code);
     if (!role) return jsonError("Ugyldig kode", 401);
 
     // The kid code doubles as {{KID_CODE}} in puzzles, so the client keeps it.

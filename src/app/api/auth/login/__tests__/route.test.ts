@@ -22,6 +22,8 @@ async function login(body: unknown, origin: string | null = ORIGIN) {
     test: async ({ fetch }) => {
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
+        // Behind Kourier the public host arrives as X-Forwarded-Host.
+        "X-Forwarded-Host": "nissekomm.no",
       };
       if (origin) headers.Origin = origin;
       const res = await fetch({
@@ -44,7 +46,6 @@ const env = process.env as Record<string, string | undefined>;
 beforeEach(() => {
   env.KID_CODE = "snø lykt elg";
   env.PARENT_CODE = "bjelle kakao reinsdyr vott";
-  env.NEXT_PUBLIC_URL = ORIGIN;
   env.NISSEKOMM_MODE = "lan";
   authStore.sessions.clear();
   authStore.failures = [];
@@ -80,11 +81,18 @@ describe("POST /api/auth/login", () => {
     expect(res.cookie).toBeNull();
   });
 
-  it("locks out after 20 failures, even for the right code", async () => {
-    for (let i = 0; i < 20; i++) {
+  it("throttles to 1/s after 20 failures but still lets the kids in", async () => {
+    for (let i = 0; i < 21; i++) {
       expect((await login({ code: `feil ${i}` })).status).toBe(401);
     }
-    expect((await login({ code: "snø lykt elg" })).status).toBe(429);
+    const start = Date.now();
+    const [a, b] = await Promise.all([
+      login({ code: "feil igjen" }),
+      login({ code: "snø lykt elg" }),
+    ]);
+    expect(a.status).toBe(401);
+    expect(b.status).toBe(200);
+    expect(Date.now() - start).toBeGreaterThanOrEqual(1900);
   });
 
   it("rejects cross-origin, missing origin and oversized bodies", async () => {
