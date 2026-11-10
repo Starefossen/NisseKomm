@@ -1,0 +1,13 @@
+.git
+node_modules
+.next
+.env*
+coverage
+.claude
+Dockerfile
+.dockerignore
+# Media lives on a volume ($MEDIA_DIR), not in the image
+public/video
+public/feed
+public/music
+assets
