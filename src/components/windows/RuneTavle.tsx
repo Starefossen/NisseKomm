@@ -7,6 +7,7 @@ import { GameEngine } from "@/lib/game-engine";
 
 export function RuneTavle({ onClose }: { onClose: () => void }) {
   const learned = GameEngine.getLearnedRunes();
+  const taught = GameEngine.getLearnedRunes(24);
 
   return (
     <RetroWindow title="RUNETAVLE" onClose={onClose}>
@@ -16,10 +17,21 @@ export function RuneTavle({ onClose }: { onClose: () => void }) {
           bokstav. Fyll inn når dere vet.» – IQ
         </p>
         <div className="text-base opacity-70">
-          {learned.size} AV {RUNE_ALPHABET.length} TEGN LÆRT
+          {learned.size} AV {taught.size} TEGN LÆRT
         </div>
         <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-3">
           {RUNE_ALPHABET.map((letter) => {
+            const isTaught = taught.has(letter);
+            if (!isTaught) {
+              return (
+                <div
+                  key={letter}
+                  className="flex flex-col items-center justify-center p-2 border-2 min-h-24 border-(--neon-green)/20 text-(--neon-green)/30"
+                >
+                  <span className="text-2xl opacity-30 select-none">?</span>
+                </div>
+              );
+            }
             const known = learned.has(letter);
             return (
               <div

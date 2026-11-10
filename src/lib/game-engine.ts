@@ -394,10 +394,18 @@ export class GameEngine {
    * Frostrunene learned so far: every letter of a solved word code, plus E and
    * T from the loose cards on day 1 (gaater-2026, meta 1). Day 5 (cipher) and
    * day 22 (number cards) have no rune cards, so U comes on day 7 and Å never.
+   * When completed is provided (day number or iterable of days), returns the
+   * runes learned across those days (e.g. day 24 gives all 19 taught runes).
    */
-  static getLearnedRunes(): Set<string> {
+  static getLearnedRunes(
+    completed?: Set<number> | readonly number[] | number,
+  ): Set<string> {
+    const completedDays: Iterable<number> =
+      typeof completed === "number"
+        ? Array.from({ length: completed }, (_, i) => i + 1)
+        : (completed ?? this.getCompletedDays());
     const learned = new Set<string>();
-    for (const day of this.getCompletedDays()) {
+    for (const day of completedDays) {
       if (day === 5 || day === 22) continue;
       const quest = ALL_QUESTS.find((q) => q.dag === day);
       for (const ch of quest?.kode.toUpperCase() ?? "") {

@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from "@jest/globals";
 import { GameEngine } from "../game-engine";
 import statisk from "@/data/statisk_innhold.json";
 import { KULDE_RUNER } from "@/components/windows/snofall-tv/runer";
+import { RUNE_ALPHABET } from "@/components/ui/Frostrune";
 
 const code = (day: number) =>
   GameEngine.getAllQuests().find((q) => q.dag === day)!.kode;
@@ -35,6 +36,24 @@ describe("Frostrunene (gaater-2026, meta 1)", () => {
     expect(GameEngine.getLearnedRunes().has("B")).toBe(true);
     await solveThrough(24);
     expect(GameEngine.getLearnedRunes().has("Å")).toBe(false);
+  });
+
+  it("derives exactly 19 taught runes and 10 untaught letters for day 24", () => {
+    const taught = GameEngine.getLearnedRunes(24);
+    expect(taught.size).toBe(19);
+    const untaught = RUNE_ALPHABET.filter((l) => !taught.has(l));
+    expect(untaught).toEqual([
+      "C",
+      "H",
+      "Q",
+      "V",
+      "W",
+      "X",
+      "Z",
+      "Æ",
+      "Ø",
+      "Å",
+    ]);
   });
 
   it("every Kulde rune line is fully learned before its day", async () => {
