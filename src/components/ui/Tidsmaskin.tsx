@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { GameEngine } from "@/lib/game-engine";
+import { useEffect, useState } from "react";
+import { sim } from "@/lib/simulation";
 import {
   getCurrentDate,
-  getTimeOverride,
   isTimeMachineEnabled,
   setTimeOverride,
 } from "@/lib/date-utils";
@@ -19,6 +18,11 @@ export function Tidsmaskin() {
   const [open, setOpen] = useState(false);
   const [day, setDay] = useState(1);
   const [time, setTime] = useState("07:00");
+
+  // Scripted playthroughs (scripts/gjennomspilling.mjs) drive the same tools
+  useEffect(() => {
+    (window as unknown as { nissekomm: unknown }).nissekomm = { sim };
+  }, []);
 
   if (!isTimeMachineEnabled()) return null;
 
@@ -46,9 +50,7 @@ export function Tidsmaskin() {
     if (!confirm("Nullstille all fremdrift? Tidsmaskinen beholder datoen.")) {
       return;
     }
-    const saved = getTimeOverride();
-    GameEngine.resetProgress();
-    setTimeOverride(saved);
+    sim.reset();
     window.location.reload();
   };
 
