@@ -1,5 +1,6 @@
 "use client";
 
+import { mediaUrl } from "@/lib/media";
 import { useState, useEffect, DragEvent, TouchEvent } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons, Icon } from "@/lib/icons";
@@ -314,10 +315,10 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                 {availableChallenges.map((challenge) => {
                   const feedSrc =
                     challenge.challengeId === "frosne-koder"
-                      ? "/feed/kulde-grotte.png"
+                      ? mediaUrl("feed/kulde-grotte.png")
                       : challenge.challengeId === "stjernetegn"
-                        ? "/feed/antenne-tarn.png"
-                        : "/feed/julius-kontor.jpg";
+                        ? mediaUrl("feed/antenne-tarn.png")
+                        : mediaUrl("feed/julius-kontor.jpg");
                   const camTag =
                     challenge.challengeId === "frosne-koder"
                       ? "KRYPTO-LÅS 01 // 85.0 MHz IS-KODE"
@@ -483,10 +484,10 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                 <img
                   src={
                     selectedChallenge.challengeId === "frosne-koder"
-                      ? "/feed/kulde-grotte.png"
+                      ? mediaUrl("feed/kulde-grotte.png")
                       : selectedChallenge.challengeId === "stjernetegn"
-                        ? "/feed/antenne-tarn.png"
-                        : "/feed/julius-kontor.jpg"
+                        ? mediaUrl("feed/antenne-tarn.png")
+                        : mediaUrl("feed/julius-kontor.jpg")
                   }
                   alt={selectedChallenge.title}
                   className="w-full h-full object-cover contrast-125 saturate-90 opacity-75 select-none pointer-events-none"
