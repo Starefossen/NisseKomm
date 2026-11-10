@@ -104,7 +104,7 @@ Dag 1–6 vises ingen prosent (Orakelet har ikke navnet ennå). Dag 10 og 21 er 
 
 Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H, S, kode, hvem) · **Flater** · **Belønning** · **Kontinuitet**.
 
-### Dag 1 (ti) – Direktelinje Landås · SIGNAL · M1 Linjen
+### Dag 1 (ti) – Direktelinjen · SIGNAL · M1 Linjen
 
 **Morgen.** Strek: Rampenissen har sovet i fruktskålen med banan som pute og serviett som dyne; rød garntråd fra ham til TV-en. Radio: «Jeg er tilbake! Jeg sov i en garnkurv på loftet i Snøfall hele året. IQ sendte meg ned i natt. Noe knitrer på linjen, og det er ikke meg.» Stemning: glad, litt søvnig.
 
@@ -174,7 +174,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Kontinuitet.** Winter og brevfuglene (dag 14, 24). Ulriken er landingsmerket dag 22–23.
 
-### Dag 6 (sø) – Lommelykt-Sporet · LYKT + rødt hjerte · 2. advent · jakt
+### Dag 6 (sø) – Skyggene i Gangen · LYKT + rødt hjerte · 2. advent · jakt
 
 **Morgen.** Strek (helg): snøengler i mel på kjøkkenbordet, Rampenissen midt i den største. Radio: «Jeg fant lommelykten deres. Og en papprull. Jeg har laget noe til dere. Det er ikke rot. Det er et instrument. Melet er rot.»
 
@@ -202,7 +202,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Kontinuitet.** M2. Fra nå teller Frostgraden. «Kan snakke til» peker mot dag 21 (porten) og 23.
 
-### Dag 8 (ti) – Bestikk-Kretsløpet · KRETSKORT
+### Dag 8 (ti) – Floken i Verkstedet · KRETSKORT
 
 **Morgen.** Strek: tårn av frokostblandingspakker, skilt «SIGMA-TÅRN», sitter på toppen med suppeøse. Radio: «Uke én er ferdig! IQ feirer med å bygge noe. Jeg feiret med å bygge noe. Mitt er høyere. Hilsen fra toppen.»
 
@@ -328,7 +328,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Kontinuitet.** Lykten i vinduet er ett av lysene Kulde «ser» dag 21; Kuldes linje er skrevet slik at den er sann også uten bonus («lyset deres» = huset). Fristen fredag 18 nevnes i mail og PS, håndheves ikke i koden (avgjort). Videoene dag 17–19 nevner aldri lykten direkte (se regelen om betinget innhold).
 
-### Dag 17 (to) – Grønt Lys på Polarhimmelen · NORDLYS
+### Dag 17 (to) – Grønt over Polarhimmelen · NORDLYS
 
 **Morgen.** Strek: kidnappet av kosedyrene, bundet til stol med grønt gavebånd, løsepengebrev «GI OSS ALLE PEPPERKAKENE. ELLERS.» Radio: «Det var grønt over Ulriken i natt. Ikke en bil. IQ sier det var et svar. Jeg er for øvrig kidnappet. Send pepperkaker.»
 
@@ -398,7 +398,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Kontinuitet.** M5. Ikke seier, men valg. Porten er det sleden flyr gjennom dag 24.
 
-### Dag 22 (ti) – Landingskoordinatene · LANDÅS + rød måne · Snill-listen åpner · jakt
+### Dag 22 (ti) – Winters Tall · LANDÅS + rød måne · Snill-listen åpner · jakt
 
 **Morgen.** Strek: krøpet inn i Hannas julesokk med bare føttene ut. Radio: «Julius vil vite nøyaktig hvor dere bor. Jeg sa 'ved sofaen'. Det holdt ikke. Jeg sa 'i Bergen'. Det holdt heller ikke. Jeg gjemte meg i en sokk. Det var en feil. Muren holdt i går, forresten. Alle så det.»
 
@@ -412,7 +412,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Kontinuitet.** Landås, Ulriken (dag 5) og ruten (dag 18) møtes.
 
-### Dag 23 (on) – Stjernevakt · STJERNEKLART + blå måne · sannheten · krypto 3
+### Dag 23 (on) – Nattevakt · STJERNEKLART + blå måne · sannheten · krypto 3
 
 **Morgen.** Strek: pakket opp et hjørne av en gave, teipet igjen med altfor mye teip, sitter i treet som pynt med dårlig samvittighet. Radio: «I natt flyr de. Over Nordtoppen. Med alle lysene på. Julius sa de skal fly lavt over grotten. Jeg gråter ikke. Det er teip i øynene mine.»
 

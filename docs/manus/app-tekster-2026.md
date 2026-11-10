@@ -31,20 +31,39 @@ Utkast 10. november 2026. Kilder, alle låst: `docs/historie-2026.md`, `docs/sto
 
 ## A. Faste tekster
 
+### A0. Navnet på linjen (avgjort: ingen synlig «Direktelinjen»)
+
+Linjen heter **«Direktelinjen»** i all tekst, med «90,0 MHz» der det trengs teknisk preg («Linje 90,0» i HUD og logger). Stedsnavnet Landås står aldri i navnet, fordi dag 22 har kode LANDÅS. Byggeliste, alt som nevner det gamle navnet eller stedet som linjenavn (`grep -rni "landås" src/`, uten `archive` og tester):
+
+| Sted                                                           | I dag                                                                                     | Blir                                                                                                                  |
+| -------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `src/data/uke1_oppdrag.json` dag 1 `tittel`                    | «Direktelinje Landås»                                                                     | «Direktelinjen» (se dag 1)                                                                                            |
+| `src/data/statisk_innhold.json` `varsler[0]`                   | «LANDÅS-LINK: AKTIV (90.0 MHz)»                                                           | fjernes (hele `varsler` erstattes av Frostgraden, A7)                                                                 |
+| `src/components/windows/SnøfallTV.tsx:53` `VLOG_ENTRIES` dag 1 | «Direktelinje til Landås!»                                                                | slettes (T8)                                                                                                          |
+| `SnøfallTV.tsx:100, 108–109, 327–343` teletext/`codeHint`      | «BERGEN / LANDÅS», «Innflyging Landås», «= LANDÅS»                                        | slettes (T8; fasit)                                                                                                   |
+| `SnøfallTV.tsx:413, 449` `KULDE_INTERCEPTS`                    | «LANDÅS …»                                                                                | erstattes av A6                                                                                                       |
+| `src/lib/weather-config.ts:62`                                 | «Direktelinjen til Landås er koblet opp.»                                                 | «Direktelinjen er koblet opp.»                                                                                        |
+| `src/lib/weather-config.ts:219`                                | «Stjerneklart flyvær fra Snøfall til Landås!»                                             | «Flyvær fra Snøfall til Bergen.» (fjerner også STJERNEKLART, dag 23-kode)                                             |
+| `src/lib/eventyr.ts:293` `freqLabel`                           | «OPERASJON: JULAFTEN LANDÅS»                                                              | faller bort med kamerametadata (O1)                                                                                   |
+| `src/components/windows/Brevfugler.tsx:221, 253, 534`          | «LUFTKORRIDOR: LANDÅS … », «MELLOM LANDÅS OG SNØFALL», «RUTE: SNØFALL → ULRIKEN → LANDÅS» | «LUFTKORRIDOR: BERGEN (60,37°N) ⇄ SNØFALL», «BREVFUGLER MELLOM BERGEN OG SNØFALL», «RUTE: SNØFALL → ULRIKEN → BERGEN» |
+| `Brevfugler.tsx:161` kodekommentar                             | –                                                                                         | uendret (ikke synlig)                                                                                                 |
+
+Tekster i dette dokumentet som sier «Landås» om stedet (varsler dag 1, 19, 24; «Landås-siden» i PS; Varden-kort) er beholdt: de gjelder andre dager enn 22. **Julius-manus** (`docs/manus/julius-2026.md`): overskriften for dag 1 (linje 16) bruker «Direktelinje Landås» og må følge den nye tittelen; replikkene sier «direktelinjen fra verkstedet til stua deres» og trenger ingen endring. Dag 22-replikkene nevner ikke Landås.
+
 ### A1. Passordskjerm (`PasswordPrompt.tsx`)
 
-| Element         | Tekst                              |
-| --------------- | ---------------------------------- |
-| Overskrift      | `NISSEKOMM // DIREKTELINJE LANDÅS` |
-| Underoverskrift | `TILGANGSKONTROLL`                 |
-| Instruks        | `SKRIV INN PASSORDET IQ GA DERE`   |
-| Plassholder     | `_ _ _ _ _ _ _ _` (uendret)        |
-| Knapp           | `KOBLE TIL`                        |
-| Laster          | `KOBLER TIL SNØFALL…`              |
-| Feil 1          | `FEIL PASSORD`                     |
-| Feil 2          | `LINJEN SVARER IKKE. PRØV IGJEN.`  |
-| Feil 3          | `IQ: ER DET VIRKELIG DERE?`        |
-| Tilkoblingsfeil | `TILKOBLINGSFEIL. PRØV IGJEN.`     |
+| Element         | Tekst                                   |
+| --------------- | --------------------------------------- |
+| Overskrift      | `NISSEKOMM // DIREKTELINJEN · 90,0 MHz` |
+| Underoverskrift | `TILGANGSKONTROLL`                      |
+| Instruks        | `SKRIV INN PASSORDET IQ GA DERE`        |
+| Plassholder     | `_ _ _ _ _ _ _ _` (uendret)             |
+| Knapp           | `KOBLE TIL`                             |
+| Laster          | `KOBLER TIL SNØFALL…`                   |
+| Feil 1          | `FEIL PASSORD`                          |
+| Feil 2          | `LINJEN SVARER IKKE. PRØV IGJEN.`       |
+| Feil 3          | `IQ: ER DET VIRKELIG DERE?`             |
+| Tilkoblingsfeil | `TILKOBLINGSFEIL. PRØV IGJEN.`          |
 
 ### A2. Merker (`merker.json`, tre stykker)
 
@@ -173,12 +192,12 @@ Fjernes: «JULAFTEN BERGET!», «ACHIEVEMENT UNLOCKED», «GYATT Storage Unlocke
 
 Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `daily_alerts` · symbol · NisseNet · Kulde · Nissemor-guiden (`rampenissen_rampestrek`, `fysisk_hint`, `materialer_nødvendig`, `oppsett_tid`) · frost.
 
-### Dag 1 (ti) – Direktelinje Landås · SIGNAL · M1
+### Dag 1 (ti) – Direktelinjen · SIGNAL · M1
 
-- `tittel`: Direktelinje Landås
+- `tittel`: Direktelinjen (gammel: «Direktelinje Landås»; avgjort, se A0)
 - `nissemail_tekst` (86 ord): Hei Kristian, Håkon og Hanna! 🎄 Jeg er tilbake! Jeg har sovet i en garnkurv i Snøfall hele året, og i natt sendte IQ meg ned. Han har bygd en direktelinje fra Snøfall til stua deres, med Snøfall TV og video fra Julius. Men linjen hakker. Noe knitrer på den, og det er ikke meg. Se Julius først. Hanna: følg den røde tråden min helt til enden, og ta av det som henger på den. Håkon: legg det på bordet i samme rekkefølge. Kristian: du taster. – Rampenissen
 - `julius_ps`: Rampenissen sov i fruktskålen deres. Med en banan som pute. Jeg har sett ham sove i verre ting. Linjen bærer nå; takk for at dere kom.
-- `daily_alerts`: 🎅 JULIUS: Direktelinjen til Landås er åpen. Ny video på kanal 3.
+- `daily_alerts`: 🎅 JULIUS: Direktelinjen er åpen. Ny video på kanal 3.
 - NisseNet: `SYSTEM/om-snofall.txt` **skrives om** (åpen fra dag 1):
 
   > SNØFALL – KART OG VELKOMST
@@ -283,7 +302,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - `oppsett_tid`: 6 min
 - frost: ikke synlig
 
-### Dag 6 (sø) – Lommelykt-Sporet · LYKT · rødt hjerte · 2. advent · jakt
+### Dag 6 (sø) – Skyggene i Gangen · LYKT · rødt hjerte · 2. advent · jakt
 
 - `tittel`: Skyggene i Gangen (ny: den låste tittelen «Lommelykt-Sporet» inneholder hele koden; se åpne spørsmål)
 - `nissemail_tekst` (84 ord): God 2. advent! 🕯️ Jeg fant den lille lampen deres i natt. Og en papprull. Jeg har laget noe. Det er ikke rot, det er et instrument. Melet på kjøkkenbordet er rot. Orakelet sier at det som fryser linjen, ikke tåler lys, så IQ har hengt lys rundt antennen ved tjernet. Håkon: finn rullen og lampen, slukk lyset i gangen og lys mot veggen med det som ligger i rullen, én om gangen. Hanna: si hva skyggen er. Kristian: Julius sier hvilken som teller. – Rampenissen
@@ -302,7 +321,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - `tittel`: Inntrengeren i Fryseren
 - `nissemail_tekst` (88 ord): Lua mi sitter fast i fryseren deres. 🥶 Jeg prøvde å kjøle ned modemet, fordi Orakelet sa at noe varmt skurret på linjen. Det var feil. Det som skurrer, er ikke varmt. I natt fanget Orakelet signaturen, og den har et navn. Julius sier det ikke rett ut, men han sier nok. Redd lua mi, og det som står ved den! Håkon: finn det. Hanna: du får det løs, med lunkent vann og en voksen. Kristian: tast navnet. Fra i dag måler Orakelet frosten i serverrommet. Se sidepanelet. – Rampenissen
 - `julius_ps`: Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Nissemor ringte; hun sier han så ut som en liten skiltstolpe.
-- `daily_alerts`: 🔮 ORAKELET: Signaturen på 85,0 har et navn. Frostgraden kan måles fra i dag.
+- `daily_alerts` (avgjort: vises først når dag 7 er løst; før det står sidepanelet på `ORAKELET LYTTER …`): 🔮 ORAKELET: Signaturen på 85,0 har et navn. Frostgraden kan måles fra i dag.
 - NisseNet: `SYSTEM/snofall_fakta.txt` **erstattes** av `SYSTEM/orakelets-rapport.txt` (`afterDay: 7`):
 
   > ORAKELETS RAPPORT, 7. DESEMBER
@@ -790,8 +809,8 @@ Ordet «Landås» står i `daily_alerts` dag 1, 19 og 24 og i Varden-tekster; de
 
 ## E. Åpne spørsmål til Hans
 
-1. **Fire låste titler lekker koden** (dag 6, 8, 22, 23) og én er på grensen (17). Historiedokumentet er låst; forslagene over («Skyggene i Gangen», «Floken i Verkstedet», «Grønt over Polarhimmelen», «Winters Tall», «Nattevakt») krever et ja. Alternativet er å beholde titlene og akseptere lekkasjen i Kalender og iCal fra morgenen.
-2. **«Landås» dag 22.** Appen heter «Direktelinje Landås» og ordet står i sidepanel og NisseNet hele måneden. Barnetekstene dag 22 unngår det, men selve appnavnet gjør det ikke. Godta, eller skjule ordet i UI dag 22?
-3. **Dag 7-varselet i sidepanelet** sier «Signaturen på 85,0 har et navn». Det er innenfor designet (navnet sies ikke), men hvis dere vil ha dagen helt stille før videoen, kan varselet vente til koden er inne.
-4. **Avskjedsbrevet dag 24** er nytt (gåtedesignet nevner det uten tekst). Lengden kan kuttes om konvolutten blir full.
+1. **Fire låste titler lekker koden** (dag 6, 8, 22, 23) og én er på grensen (17). **Venter på avgjørelse.** Dokumentet viser både gammel og foreslått tittel per dag («Skyggene i Gangen», «Floken i Verkstedet», «Grønt over Polarhimmelen», «Winters Tall», «Nattevakt»). Alternativet er å beholde titlene og akseptere lekkasjen i Kalender og iCal fra morgenen.
+2. **«Landås» i linjenavnet.** Avgjort: linjen heter «Direktelinjen», aldri med stedsnavn. Byggeliste i A0.
+3. **Dag 7-varselet.** Avgjort: vises først når dag 7-koden er inne.
+4. **Avskjedsbrevet dag 24.** Avgjort: beholdes.
 5. **Merke-ikoner** og `unlockCondition`-typen for Snøfalls venn (`allQuestsCompleted` finnes; `decryptionSolved` og `dayCompleted` må bygges, jf. storyboard D2).

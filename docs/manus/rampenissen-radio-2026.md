@@ -14,7 +14,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 ---
 
-## Dag 1 (ti) – Direktelinje Landås
+## Dag 1 (ti) – Direktelinjen
 
 **Strek:** sovet i fruktskålen, banan som pute, viklet inn i rød garntråd.
 
@@ -54,7 +54,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 **intro_hint:** «Det skal ha vært krig i en stue på Landås i natt. Vi har et øyenvitne på linjen.»
 
-## Dag 6 (sø) – Lommelykt-Sporet · 2. advent
+## Dag 6 (sø) – Skyggene i Gangen · 2. advent
 
 **Strek:** snøengler i mel på kjøkkenbordet, ligger midt i den største. Helg, 09-sendingen.
 
@@ -70,7 +70,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 **intro_hint:** «Vi har en melding fra en som ikke kan bevege armene. Han sier det er midlertidig.»
 
-## Dag 8 (ti) – Bestikk-Kretsløpet
+## Dag 8 (ti) – Floken i Verkstedet
 
 **Strek:** tårn av frokostblandingspakker, skilt «SIGMA-TÅRN», sitter på toppen med suppeøse. Slang 1 av 2.
 
@@ -142,7 +142,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 **intro_hint:** «Noen har ryddet. Han vil gjerne forklare seg.»
 
-## Dag 17 (to) – Grønt Lys på Polarhimmelen
+## Dag 17 (to) – Grønt over Polarhimmelen
 
 **Strek:** kidnappet av kosedyrene, bundet til en stol med grønt gavebånd, løsepengebrev «GI OSS ALLE PEPPERKAKENE. ELLERS.»
 
@@ -182,7 +182,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 **intro_hint:** «En rolig melding i dag, fra en som har stått vakt siden klokka fire.»
 
-## Dag 22 (ti) – Landingskoordinatene · Snill-listen
+## Dag 22 (ti) – Winters Tall · Snill-listen
 
 **Strek:** krøpet inn i Hannas julesokk, bare føttene ut. Han sier ikke stedsnavnet deres i dag.
 
@@ -190,7 +190,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 **intro_hint:** «Gjesten vår sitter fast i noe lite og ber om hjelp.»
 
-## Dag 23 (on) – Stjernevakt · sannheten
+## Dag 23 (on) – Nattevakt · sannheten
 
 **Strek:** pakket opp et hjørne av en gave, teipet igjen med altfor mye teip, sitter i treet som pynt.
 

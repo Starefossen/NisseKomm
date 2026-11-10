@@ -13,7 +13,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md`, `docs/storyboard-2026.md`, `doc
 
 ---
 
-## Dag 1 (ti) – Direktelinje Landås · SIGNAL · M1
+## Dag 1 (ti) – Direktelinjen · SIGNAL · M1
 
 Kulde-nivå 1. Svak knitring i lyden hele klippet, lett snø i bildet. Rommet er ellers som på referansebildet.
 
@@ -134,7 +134,7 @@ Kulde-nivå 1. Svak knitring.
    - Handling: Lener seg inn som om han sier noe hemmelig, så tilbake med et smil.
    - Kulde: Svak knitring, klikk.
 
-## Dag 6 (sø) – Lommelykt-Sporet · LYKT · rødt hjerte · 2. advent
+## Dag 6 (sø) – Skyggene i Gangen · LYKT · rødt hjerte · 2. advent
 
 Kulde-nivå 1. Svak knitring.
 
@@ -184,7 +184,7 @@ Kulde-nivå 2. Første dag med rim på innsiden av vinduet og langs bordkanten, 
    - Handling: Legger hendene rundt trekoppen, nikker rolig.
    - Kulde: Synlig pust, klikk.
 
-## Dag 8 (ti) – Bestikk-Kretsløpet · KRETSKORT
+## Dag 8 (ti) – Floken i Verkstedet · KRETSKORT
 
 Kulde-nivå 1. Rim på vinduet, synlig pust, blekket i blekkhuset er fryst.
 
@@ -401,7 +401,7 @@ Kulde-nivå 2. Lampen flakker, mikrofonen faller ut et øyeblikk i segment 3, bi
    - Handling: Tegner en stor S i luften, peker over sin egen dør.
    - Kulde: Lampen flakker, klikk.
 
-## Dag 17 (to) – Grønt Lys på Polarhimmelen · NORDLYS
+## Dag 17 (to) – Grønt over Polarhimmelen · NORDLYS
 
 Kulde-nivå 1. Ett juletrelys slukner, svak knitring. Ingen omtale av lykten på Landås (betinget innhold, bare i PS).
 
@@ -526,7 +526,7 @@ Kulde-nivå 3 i segment 1–2 (nesten frosset bilde, rim over hele vinduet, lyd 
    - Handling: Peker på linjen han tegnet, holder blikket der.
    - Kulde: Bildet renser seg ord for ord; på siste ord er det helt rent.
 
-## Dag 22 (ti) – Landingskoordinatene · LANDÅS · rød måne · Snill-listen
+## Dag 22 (ti) – Winters Tall · LANDÅS · rød måne · Snill-listen
 
 Kulde-nivå 0. Rent bilde og ren lyd. Rimen på vinduet er borte, bare dugg i hjørnene.
 
@@ -551,7 +551,7 @@ Kulde-nivå 0. Rent bilde og ren lyd. Rimen på vinduet er borte, bare dugg i hj
    - Handling: Skriver i luften, teller videre med fingeren bortover bordet.
    - Kulde: Ingen.
 
-## Dag 23 (on) – Stjernevakt · STJERNEKLART · blå måne · sannheten
+## Dag 23 (on) – Nattevakt · STJERNEKLART · blå måne · sannheten
 
 Kulde-nivå 0. Rent. Lys siver ned gjennom vinduet, mer enn vanlig.
 

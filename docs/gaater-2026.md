@@ -46,7 +46,7 @@ Snitt oppsett for gåten: 4,4 minutter. Med rampestreken fra §8: cirka 9.
 
 ## Dag for dag
 
-### Dag 1 (ti) – Direktelinje Landås · SIGNAL
+### Dag 1 (ti) – Direktelinjen · SIGNAL
 
 - **Kode:** SIGNAL (uendret).
 - **Mekanikk:** tråden er rekkefølgen. Avgjørelse (storyboard avgjørelse 1): bokstavkort på tråden, ikke anagram og ikke frostlapp på TV-en. Seks kort henger på den røde garntråden, men bare to har bokstav. Alle seks bokstaver løst på tråden ville gitt hele ordet i feil rekkefølge, altså over taket.
@@ -116,7 +116,7 @@ Snitt oppsett for gåten: 4,4 minutter. Med rampestreken fra §8: cirka 9.
 - **Utskrifter:** `dag05-brevfugl.pdf` (1 side, vanlig papir, bretteanvisning for en enkel papirfugl med stor hvit vinge) og `alfabetstrimmel.pdf` (1 side, tykt papir, med trehopper til utklipp; strimmelen brukes igjen dag 22).
 - **Reserve:** Teller de feil vei (framover), får de ÆRØOQKT og skjønner det. Mangler strimmelen, holder `alfabet.txt` på skjermen.
 
-### Dag 6 (sø) – Lommelykt-Sporet · LYKT + rødt hjerte · 2. advent · jakt
+### Dag 6 (sø) – Skyggene i Gangen · LYKT + rødt hjerte · 2. advent · jakt
 
 - **Kode:** LYKT (uendret).
 - **Mekanikk:** skyggefigurer, ikke bokstavprojeksjon (storyboard avgjørelse: skyggefigur). Tre silhuetter i tykt papir på ispinne: et stearinlys, et bål og en lykt med hank. Holdt mellom mobillykten og veggen i mørk gang kaster de en stor, skarp skygge (punktlys gir skarp skygge; lommelykt i rør gjør det ikke). Alle tre har et frostkort med én bokstav på baksiden, så ingen kan velge ved å titte. Julius sier hvilken figur som gjelder.
@@ -144,7 +144,7 @@ Snitt oppsett for gåten: 4,4 minutter. Med rampestreken fra §8: cirka 9.
 - **Utskrifter:** `dag07-frostlapp.pdf` (1 side, tykt papir).
 - **Reserve:** Blir det ikke fryst, legges posen i isbitskuffen. Kortet tåler vann i posen uansett.
 
-### Dag 8 (ti) – Bestikk-Kretsløpet · KRETSKORT
+### Dag 8 (ti) – Floken i Verkstedet · KRETSKORT
 
 - **Kode:** KRETSKORT (uendret).
 - **Mekanikk:** følg ledningen i floken. Et trykt kretskort med ni lamper nummerert 1–9 og tre ledninger fra batteriet som krysser hverandre i en floke. Bare tre lamper er koblet til batteriet; de har bokstav. Erstatter `K R _ T S _ _ R T` (67 %).
@@ -270,7 +270,7 @@ Snitt oppsett for gåten: 4,4 minutter. Med rampestreken fra §8: cirka 9.
 - **Utskrifter:** `dag16-sorteringslapper.pdf` (1 side, tykt papir, 3 bokstavlapper, 3 tallapper, 1 rutekort).
 - **Reserve:** Setter de en ting feil, mangler tallappen der, og de prøver neste plass.
 
-### Dag 17 (to) – Grønt Lys på Polarhimmelen · NORDLYS
+### Dag 17 (to) – Grønt over Polarhimmelen · NORDLYS
 
 - **Kode:** NORDLYS (uendret).
 - **Mekanikk:** båndet er et målebånd. Det grønne gavebåndet Rampenissen er bundet med har sju sølvmerker med lik avstand; to av dem er bokstaver, fem er krystaller. Båndet må knytes opp og strekkes ut mellom to stoler før det kan leses i rekkefølge fra sløyfen. Erstatter `N _ R _ L _ S` (57 %).
@@ -340,7 +340,7 @@ Snitt oppsett for gåten: 4,4 minutter. Med rampestreken fra §8: cirka 9.
 - **Utskrifter:** ingen; alternativt `dag21-bokryggkort.pdf` (1 side, tykt papir, 8 kort som teipes i stedet for post-it).
 - **Reserve:** Faller muren, har lappene et lite tall i hjørnet.
 
-### Dag 22 (ti) – Landingskoordinatene · LANDÅS + rød måne · Snill-listen · jakt
+### Dag 22 (ti) – Winters Tall · LANDÅS + rød måne · Snill-listen · jakt
 
 - **Kode:** LANDÅS (uendret).
 - **Mekanikk:** A = 1, pluss tre. Tre julesokker i tre rom, hver med en lapp med to tall. Winter har lagt tre til hvert tall. Begge reglene sier bare Julius; ren A = 1 på tallene gir tull (O-D, Q-G, ?-V), så en 12-åring som gjetter A = 1 må likevel se videoen. Alfabetstrimmelen fra dag 5 og `alfabet.txt` gir bokstavene uten tall.
@@ -354,7 +354,7 @@ Snitt oppsett for gåten: 4,4 minutter. Med rampestreken fra §8: cirka 9.
 - **Utskrifter:** `dag22-sokkelapper.pdf` (1 side, tykt papir, 3 lapper og 3 sokkemerker).
 - **Reserve:** Glemmer de å trekke fra, får de tull og går tilbake til transkriptet («legger alltid tre til»).
 
-### Dag 23 (on) – Stjernevakt · STJERNEKLART + blå måne · sannheten · krypto 3
+### Dag 23 (on) – Nattevakt · STJERNEKLART + blå måne · sannheten · krypto 3
 
 - **Kode:** STJERNEKLART (uendret).
 - **Mekanikk:** nummererte stjerner i treet. Tolv små papirstjerner henger i juletreet, nummerert 1–12 på baksiden. Tre har bokstav på forsiden, ni har krystall (stjerner i treet er i seg selv et hint, derfor tre og ikke fire). Stjernene klippes og tres i november; kvelden før er det bare å henge. Endret fra `S T J E R N E _ _ _ _ T` (67 %). **Brikke S endret:** storyboardets «bare stjerner» sa første halvdel av ordet; Julius sier nå verken «stjerne» eller «klart».
