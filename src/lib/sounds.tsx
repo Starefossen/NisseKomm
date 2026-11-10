@@ -1,5 +1,6 @@
 "use client";
 
+import { mediaUrl } from "@/lib/media";
 import { useEffect, useRef } from "react";
 import { StorageManager as Storage } from "./storage";
 
@@ -39,7 +40,7 @@ export class SoundManager {
     // Initialize jingle audio (HTML5 Audio for music)
     if (typeof Audio !== "undefined") {
       this.jingleAudio = new Audio(
-        "/music/christmas-dreams-jingle-bells-268299.mp3",
+        mediaUrl("music/christmas-dreams-jingle-bells-268299.mp3"),
       );
       this.jingleAudio.volume = this.musicVolume;
       this.jingleAudio.loop = true;

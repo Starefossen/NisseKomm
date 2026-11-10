@@ -1,5 +1,6 @@
 "use client";
 
+import { mediaUrl } from "@/lib/media";
 import { useState, useCallback, useMemo } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
@@ -352,8 +353,8 @@ export function NisseMail({
                       <img
                         src={
                           selectedMission.dag === 11
-                            ? "/feed/antenne-tarn.png"
-                            : "/feed/iq-verksted.png"
+                            ? mediaUrl("feed/antenne-tarn.png")
+                            : mediaUrl("feed/iq-verksted.png")
                         }
                         alt="Krise-overvåkning"
                         className="w-full h-full object-cover contrast-125 saturate-90 opacity-85 select-none pointer-events-none"

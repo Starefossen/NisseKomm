@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Make one Julius video diary entry from the locked script.
 
-Usage: julius-dag.py <dag> [--dry-run]
+Usage: julius-dag.py <dag> [--dry-run] [--upload <base-url>]
 
 Reads docs/manus/julius-2026.md, generates one clip per segment with julius.sh
 (retries once on failure), joins them with a short tape glitch and writes
@@ -161,6 +161,19 @@ def main():
         check=True,
     )
     print(dest)
+    if "--upload" in sys.argv:
+        upload(sys.argv[sys.argv.index("--upload") + 1], dest)
+
+
+def upload(base: str, f: Path):
+    """PUT the finished video to a lan-mode NisseKomm (e.g. http://nissekomm.lan)."""
+    import urllib.request
+
+    # TODO(T4): send the parent session cookie once the API requires it.
+    url = f"{base.rstrip('/')}/api/media/video/julius/{f.name}"
+    req = urllib.request.Request(url, data=f.read_bytes(), method="PUT", headers={"Content-Type": "video/mp4"})
+    with urllib.request.urlopen(req) as r:
+        print(f"lastet opp til {url} ({r.status})")
 
 
 if __name__ == "__main__":

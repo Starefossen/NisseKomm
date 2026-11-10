@@ -1,5 +1,6 @@
 "use client";
 
+import { mediaUrl } from "@/lib/media";
 import { Suspense, useState } from "react";
 import { notFound, useSearchParams } from "next/navigation";
 import { LiveCam } from "@/components/windows/snofall-tv/LiveCam";
@@ -17,7 +18,7 @@ function LiveCamDev() {
       <h1 className="text-2xl">LiveCam: effektprøve</h1>
       <div className="w-full max-w-5xl aspect-video border-4 border-(--neon-green)">
         <LiveCam
-          src={params.get("src") ?? "/video/tv/verksted-iq-inne.mp4"}
+          src={params.get("src") ?? mediaUrl("video/tv/verksted-iq-inne.mp4")}
           label="K2 IQS VERKSTED"
           frost={frost}
           hijack={hijack}

@@ -26,7 +26,8 @@ type PageType =
   | "brevfugler"
   | "bonusoppdrag"
   | "merker"
-  | "innstillinger";
+  | "innstillinger"
+  | "media";
 
 interface GuideNavigationProps {
   currentPage: PageType;
@@ -110,6 +111,11 @@ export function GuideNavigation({ currentPage }: GuideNavigationProps) {
       id: "innstillinger" as PageType,
       label: "⚙️ INNSTILLINGER",
       href: "/nissemor-guide/innstillinger",
+    },
+    {
+      id: "media" as PageType,
+      label: "🎞️ MEDIA",
+      href: "/nissemor-guide/media",
     },
     {
       id: "utvikling" as PageType,
