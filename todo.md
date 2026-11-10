@@ -106,7 +106,7 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [x] NisseMail og varsler
 - [x] Dagbok og Julius-video (JuliusVideo, sett-status, transkripsjon, PS)
 - [x] Kalender
-- [ ] Snøfall TV og LiveCam (kanaler, loops, effekter, hendelser)
+- [x] Snøfall TV og LiveCam (kanaler, loops, effekter, hendelser)
 - [x] NisseMusikk (10. november)
 - [x] Brevfugler og brev til Julius (10. november)
 - [x] NisseKrypto og dekrypteringene

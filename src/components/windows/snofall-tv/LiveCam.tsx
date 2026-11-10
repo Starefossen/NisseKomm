@@ -75,6 +75,36 @@ function makeBlobTile(): HTMLCanvasElement {
   return c;
 }
 
+// Built once per page: channel and frequency changes remount the effect,
+// and rebuilding five canvases per step of the frequency wheel is wasted work.
+let tiles: { noise: HTMLCanvasElement[]; blob: HTMLCanvasElement } | null =
+  null;
+function getTiles() {
+  tiles ??= {
+    noise: Array.from({ length: 4 }, () => makeNoiseTile()),
+    blob: makeBlobTile(),
+  };
+  return tiles;
+}
+
+/** The loop runs only while it is seen and moving. */
+export function videoShouldPlay(o: {
+  hidden: boolean;
+  frozen: boolean;
+  reduceMotion: boolean;
+}): boolean {
+  return !o.hidden && !o.frozen && !o.reduceMotion;
+}
+
+/**
+ * A video that has shown a frame and drops below HAVE_CURRENT_DATA (loop
+ * seam, seek, stall) keeps its last picture instead of flashing black with
+ * «INGEN BÆREBØLGE».
+ */
+export function holdLastFrame(readyState: number, hadFrame: boolean): boolean {
+  return hadFrame && readyState < 2;
+}
+
 export function LiveCam({
   src,
   fallback,
@@ -114,15 +144,20 @@ export function LiveCam({
       video.loop = true;
       video.playsInline = true;
       video.preload = "auto";
-      if (fallback) {
-        const fallbackImg = new Image();
-        fallbackImg.src = fallback;
-        video.onerror = () => {
+      video.onerror = () => {
+        if (fallback) {
+          const fallbackImg = new Image();
+          fallbackImg.src = fallback;
           source = fallbackImg;
-          video = null;
-        };
+        } else source = null;
+        video = null;
+      };
+      // iPad Safari loads no frame until play(); reduced motion stops on the first one.
+      const v = video;
+      v.play().catch(() => {});
+      if (reduceMotion) {
+        v.addEventListener("loadeddata", () => v.pause(), { once: true });
       }
-      if (!reduceMotion) video.play().catch(() => {});
       source = video;
     } else if (src) {
       const img = new Image();
@@ -136,8 +171,7 @@ export function LiveCam({
       "monospace";
     document.fonts?.load(`20px ${font}`).catch(() => {});
 
-    const noiseTiles = Array.from({ length: 4 }, () => makeNoiseTile());
-    const blob = makeBlobTile();
+    const { noise: noiseTiles, blob } = getTiles();
 
     // Static layers rebuilt on resize (vignette, scanlines) and on frost change (ice).
     let W = 0;
@@ -154,6 +188,7 @@ export function LiveCam({
     let colourFlashHue = 0;
     let raf = 0;
     let lastDrawn = 0;
+    let hadFrame = false;
     const startedAt = performance.now();
 
     const resize = () => {
@@ -265,9 +300,15 @@ export function LiveCam({
       const t = now / 1000;
       // Day 21: the line is frozen solid, the picture stops moving.
       if (video && motion) {
-        if (p.frozen && !video.paused) video.pause();
-        else if (!p.frozen && video.paused) video.play().catch(() => {});
+        const play = videoShouldPlay({
+          hidden: document.hidden,
+          frozen: !!p.frozen,
+          reduceMotion,
+        });
+        if (!play && !video.paused) video.pause();
+        else if (play && video.paused) video.play().catch(() => {});
       }
+      if (video && holdLastFrame(video.readyState, hadFrame)) return;
 
       if (p.hijack && motion) {
         if (now > nextHijackBurst) {
@@ -306,6 +347,7 @@ export function LiveCam({
         ix = (W - iw) / 2 + dx;
         iy = (H - ih) / 2 + dy;
         ctx.drawImage(source, ix, iy, iw, ih);
+        hadFrame = true;
         // Positions match the video framing only, not the fallback still.
         const ev = p.frozen || !video ? null : p.eventAt?.();
         if (ev) {
@@ -488,11 +530,17 @@ export function LiveCam({
     };
 
     raf = requestAnimationFrame(draw);
+    // rAF stops in a hidden tab, so the draw loop can't pause the video there.
+    const onVisibility = () => {
+      if (document.hidden) activeVideo?.pause();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
     const ro = new ResizeObserver(() => resize());
     ro.observe(canvas);
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       if (activeVideo) {
         activeVideo.pause();
         activeVideo.removeAttribute("src");
