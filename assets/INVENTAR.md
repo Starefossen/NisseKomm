@@ -7,7 +7,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | Type        |   ✓ |   ⚠ |   ? |   ✗ |
 | ----------- | --: | --: | --: | --: |
 | julius      |   2 |   0 |   7 |  15 |
-| rampenissen |   5 |   0 |   2 |  17 |
+| rampenissen |   0 |   5 |   2 |  17 |
 | music       |   0 |   0 |  13 |   0 |
 | tv          |   0 |   0 |  23 |   0 |
 | feed        |   0 |   0 |   8 |   0 |
@@ -43,32 +43,32 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 ## rampenissen
 
-| Fil                          | Størrelse | Dato       | Status |
-| ---------------------------- | --------: | ---------- | ------ |
-| audio/rampenissen/dag-01.mp3 |    0.8 MB | 2026-11-10 | ✓      |
-| audio/rampenissen/dag-02.mp3 |    0.7 MB | 2026-11-10 | ✓      |
-| audio/rampenissen/dag-03.mp3 |    0.8 MB | 2026-11-10 | ✓      |
-| audio/rampenissen/dag-04.mp3 |    0.9 MB | 2026-11-10 | ✓      |
-| audio/rampenissen/dag-05.mp3 |    0.7 MB | 2026-11-10 | ✓      |
-| audio/rampenissen/dag-06.mp3 |    0.8 MB | 2026-11-10 | ?      |
-| audio/rampenissen/dag-07.mp3 |    0.8 MB | 2026-11-10 | ?      |
-| audio/rampenissen/dag-08.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-09.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-10.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-11.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-12.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-13.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-14.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-15.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-16.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-17.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-18.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-19.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-20.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-21.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-22.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-23.mp3 |           |            | ✗      |
-| audio/rampenissen/dag-24.mp3 |           |            | ✗      |
+| Fil                          | Størrelse | Dato       | Status                                                               |
+| ---------------------------- | --------: | ---------- | -------------------------------------------------------------------- |
+| audio/rampenissen/dag-01.mp3 |    0.8 MB | 2026-11-10 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 1 |
+| audio/rampenissen/dag-02.mp3 |    0.7 MB | 2026-11-10 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 2 |
+| audio/rampenissen/dag-03.mp3 |    0.8 MB | 2026-11-10 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 3 |
+| audio/rampenissen/dag-04.mp3 |    0.9 MB | 2026-11-10 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 4 |
+| audio/rampenissen/dag-05.mp3 |    0.7 MB | 2026-11-10 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 5 |
+| audio/rampenissen/dag-06.mp3 |    0.8 MB | 2026-11-10 | ?                                                                    |
+| audio/rampenissen/dag-07.mp3 |    0.8 MB | 2026-11-10 | ?                                                                    |
+| audio/rampenissen/dag-08.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-09.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-10.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-11.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-12.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-13.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-14.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-15.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-16.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-17.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-18.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-19.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-20.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-21.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-22.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-23.mp3 |           |            | ✗                                                                    |
+| audio/rampenissen/dag-24.mp3 |           |            | ✗                                                                    |
 
 ## music
 

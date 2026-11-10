@@ -34,7 +34,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** sovet i fruktskålen, banan som pute, viklet inn i rød garntråd.
 
-**Klipp:** «Hallo? Hallo! E denne på? Det e mæ! Rampenissen! Æ e TILBAKE! Æ har sove i en garnkurv på loftet i Snøfall heile året, og i natt sendte IQ mæ ned gjennom den nye direktelinja. Hodestups. Æ landa mykt, i nåkka gult og buet. Æ sei ikkje meir. Det va ikkje min idé å sov der, det va landinga sin idé. Og garnet? Garnet va der da æ kom. Nesten. Hør her: det knitre nåkka på linja. Og det e ikkje mæ. IQ sei det e været. IQ sei bestandig at det e været. God morra, Landås! Æ e på jobb.»
+**Klipp:** «Hallo? Hallo! E denne på? Det e mæ! Rampenissen! Æ e TILBAKE! Æ har sove i en garnkurv på loftet i Snøfall heile året, og i natt sendt IQ mæ ned gjennom den nye direktelinja. Hodestups. Æ landa mykt, i nåkka gult og buet. Æ sei ikkje meir. Det va ikkje min idé å sov der, det va landinga sin idé. Og garnet? Garnet va der da æ kom. Nesten. Hør her: det knitre nåkka på linja. Og det e ikkje mæ. IQ sei det e været. IQ sei bestandig at det e været. God morra, Landås! Æ e på jobb.»
 
 **intro_hint:** «Vi har fått en lydmelding fra en som sier han er tilbake på jobb. Han sa ikke hvor han har vært.»
 
@@ -42,7 +42,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** sitter i sukkerskålen med teskje, tatt på fersken.
 
-**Klipp:** «God morra! Rampenissen her, direkte fra… ei skål. Hør, det SMALT i Snøfall i natt. Tre sikringa. Pang, pang, pang. IQ sei det ikkje va kaffetraktern. Det va kaffetraktern, sjø. Og æ blei så skremt at æ trengt nåkka søtt. Litt. Ei teskje. Kanskje to. Kanskje æ sovna i skåla. Det e ikkje bevist. Dokker fikk linja til å bær i går, forresten, heile verkstedet hørte det! IQ ropte så høgt at Nissemor kom med teppe. I dag e Kanal to heilt mørk, og IQ spring rundt med lommelykt i munnen. Æ hjelpe til heimefra. Fra skåla. Over.»
+**Klipp:** «God morra! Rampenissen her, direkte fra… ei skål. Hør, det SMALT i Snøfall i natt. Tre sikringa. Pang, pang, pang. IQ sei det ikkje va kaffetraktern. Det va kaffetraktern, sjø. Og æ blei så skremt at æ trengt nåkka søtt. Litt. Ei teskje. Kanskje to. Kanskje æ sovna i skåla. Det e ikkje bevist. Dokker fikk linja til å bær i går, forresten, heile verkstedet hørt det! IQ ropt så høgt at Nissemor kom med teppe. I dag e Kanal to heilt mørk, og IQ spring rundt med lommelykt i munnen. Æ hjelpe til heimefra. Fra skåla. Over.»
 
 **intro_hint:** «Han ringte inn fra en skål. Han ville ikke si hva slags skål.»
 
@@ -50,7 +50,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** tannkrem på badespeilet, «RAMPEN VAR HER. NO CAP.», surt fjes, tom tube i vasken.
 
-**Klipp:** «Rampenissen her. Litt lav stemme i dag, for æ sov dårlig. Klokka tre såg æ et blått glimt på stueruta. Æ sei det va en bil. Æ trur ikkje det va en bil. Orakelet oppi Snøfall sei nån lytte på linja. Nån som ikkje e oss. Så da mått æ ro mæ ned, og da pusse man tenna, ikkje sant? Og så blei det… kunst. På speilet. Æ skreiv bare sannheta. Æ VA der. Tuben va nesten tom fra før. Nesten. Det e ikkje rot, det e en signatur. Dokker fikk strøm på Kanal to i går, bra jobba! Pil klappa. Over og ut, nesten.»
+**Klipp:** «Rampenissen her. Litt lav stemme i dag, for æ sov dårlig. Klokka tre såg æ et blått glimt på stueruta. Æ sei det va en bil. Æ trur ikkje det va en bil. Orakelet oppi Snøfall sei nån lytte på linja. Nån som ikkje e oss. Så da mått æ ro mæ ned, og da pusse en tenna, ikkje sant? Og så blei det… kunst. På speilet. Æ skreiv bare sannheta. Æ VA der. Tuben va nesten tom fra før. Nesten. Det e ikkje rot, det e en signatur. Dokker fikk strøm på Kanal to i går, bra jobba! Pil klappa. Over og ut, nesten.»
 
 **intro_hint:** «Dagens gjest har sovet dårlig og har pusset tenner. Grundig.»
 
@@ -58,7 +58,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** pappas solbriller, sitter i pappas sko ytterst i gangen, kosedyr i kø bak.
 
-**Klipp:** «Fredag! Rampenissen rapportere fra… et høgt sted. Et sko-høgt sted. Rudolf fløy rett i snøfonna i natt. Det låg ei tåke over fjorden som va kald på feil måte, og han sa han fant veien med nesa. Nesa! Han kom heim med snø i begge øran. Så æ tenkt: nån må vis retning her i huset. Æ har laga en pil. Av nåkka. Ikkje si ka. Kosedyra står i kø for å få prøv. Dem får ikkje. Solbrillan e for sikkerhets skyld, det e veldig blankt i snøen. Pappa treng dem ikkje i desember uansett, det e mørkt heile tida. Logisk, sjø. Dokker fikk regnbuen i går, heile Snøfall såg den. God helg snart!»
+**Klipp:** «Fredag! Rampenissen rapportere fra… et høgt sted. Et sko-høgt sted. Rudolf fløy rett i snøfonna i natt. Det låg ei tåke over fjorden som va kald på feil måte, og han sa han fant veien med nesa. Nesa! Han kom heim med snø i begge øra. Så æ tenkt: nån må vis retning her i huset. Æ har laga en pil. Av nåkka. Ikkje si ka. Kosedyra står i kø for å få prøv. Dem får ikkje. Solbrillan e for sikkerhets skyld, det e veldig blankt i snøen. Pappa treng dem ikkje i desember uansett, det e mørkt heile tida. Logisk, sjø. Dokker fikk regnbuen i går, heile Snøfall såg den. God helg snart!»
 
 **intro_hint:** «En liten fyr med altfor store solbriller vil si noe om retning.»
 
@@ -66,7 +66,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** marshmallow-krig mellom Rampenissen og kosedyrene, én bamse med plaster. Helg, 09-sendingen.
 
-**Klipp:** «God lørdag, sovetryna! Klokka e ni, og dokker e sikkert våkne. Æ har vært våken sia fire. Det har vært krig i stua. Æ og bamsan. Vi vant. Begge lag vant, det va litt uklart. Én bamse blei truffet i magen og har plaster, han e tapper. Ammunisjonen va myk og kvit, og æ ska rydd. Seinere. Og hør: en brevfugl landa i natt, den første over Bergen i år! Winter oppi Snøfall stole ikkje på nån no. Ho skriv alt i hemmelig skrift fordi nån lytte. Fuglen har nåkka rart på vingen. Æ skjønne det ikkje. Æ e bare agent, ikkje sekretær. Kos dokker i regnet!»
+**Klipp:** «God lørdag, sovetryna! Klokka e ni, og dokker e sikkert våkne. Æ har vært våken sia fire. Det har vært krig i stua. Æ og bamsan. Vi vant. Begge lag vant, det va litt uklart. Én bamse blei truffa i magen og har plaster, han e tapper. Kulene va myke og kvite, og æ ska rydd. Seinere. Og hør: en brevfugl landa i natt, den første over Bergen i år! Winter oppi Snøfall stole ikkje på nån no. Ho skriv alt i hemmelig skrift fordi nån lytte. Fuglen har nåkka rart på vingen. Æ skjønne det ikkje. Æ e bare agent, ikkje sekretær. Kos dokker i regnet!»
 
 **intro_hint:** «Det skal ha vært krig i en stue på Landås i natt. Vi har et øyenvitne på linjen.»
 
