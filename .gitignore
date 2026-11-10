@@ -58,3 +58,6 @@ __pycache__/
 ||||||| 379ebfc
 # Julius videos are produced locally and baked into the image at build
 public/video/julius/
+
+# gjennomspilling screenshots
+/test-results
