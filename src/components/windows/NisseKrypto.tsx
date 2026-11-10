@@ -7,7 +7,6 @@ import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import { DecryptionSymbol } from "@/types/innhold";
 import { SymbolScanner } from "./SymbolScanner";
-import { trackEvent } from "@/lib/analytics";
 
 /**
  * NisseKrypto - Symbol Decryption Challenge System
@@ -232,12 +231,6 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
     setIsProcessing(true);
     SoundManager.playSound("click");
 
-    // Track decryption submission attempt
-    trackEvent("decryption_submitted", {
-      day: selectedChallenge.day,
-      decryptionAttempts: attemptCount + 1,
-    });
-
     // Simulate processing delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
@@ -264,12 +257,6 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
       setPositionFeedback(
         Array(selectedChallenge.sequenceLength).fill("correct"),
       );
-
-      // Track successful decryption completion
-      trackEvent("decryption_completed", {
-        day: selectedChallenge.day,
-        decryptionAttempts: attemptCount + 1,
-      });
 
       // Reload data to update solved status
       setTimeout(() => {

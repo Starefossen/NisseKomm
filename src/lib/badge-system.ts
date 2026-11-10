@@ -23,7 +23,6 @@ import badgeData from "@/data/merker.json";
 import type { Badge, BadgeUnlockCondition, EarnedBadge } from "@/types/innhold";
 import { StorageManager } from "@/lib/storage";
 import { GameEngine } from "@/lib/game-engine";
-import { trackBadgeEarned } from "./analytics";
 
 /**
  * Badge award result with notification details
@@ -172,10 +171,6 @@ export class BadgeManager {
 
     // Award the badge!
     StorageManager.addEarnedBadge(badgeId);
-
-    // Track badge earned in analytics
-    const totalBadges = this.getEarnedBadges().length;
-    trackBadgeEarned(badge.type, totalBadges);
 
     // Notify listeners for UI animations
     this.notifyBadgeAwarded(badge);

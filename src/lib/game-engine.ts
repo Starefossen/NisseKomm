@@ -256,9 +256,9 @@ export class GameEngine {
       }
       // Fall back to default session resolver
       else {
-        console.debug("[GameEngine] Fetching kidCode from session...");
-        const { getKidCodeFromSession } = await import("./session-manager");
-        kidCode = await getKidCodeFromSession();
+        // The kid code is the session id in localStorage mode
+        const { getSessionId } = await import("./auth-cookies");
+        kidCode = getSessionId();
         console.debug(
           "[GameEngine] Got kidCode from session:",
           kidCode ? "SUCCESS" : "NULL",
@@ -880,10 +880,6 @@ export class GameEngine {
 
   static setPlayerNames(names: string[]): void {
     StorageManager.setPlayerNames(names);
-  }
-
-  static getFriendNames(): Promise<string[]> {
-    return StorageManager.getFriendNames();
   }
 
   static addBrevfugl(dag: number, innhold: string): void {

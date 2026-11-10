@@ -107,19 +107,5 @@ beforeEach(() => {
   localStorage.clear();
 });
 
-// Filter expected console warnings to reduce test output noise
-const originalWarn = console.warn;
-console.warn = (...args) => {
-  const message = String(args[0]);
-  // Suppress expected warnings in localStorage tests
-  if (
-    message.includes("Sanity backend requires password") ||
-    message.includes("Sanity backend requires sessionId")
-  ) {
-    return;
-  }
-  originalWarn(...args);
-};
-
 // Suppress console.debug in tests entirely (debug logging is for development only)
 console.debug = () => {};

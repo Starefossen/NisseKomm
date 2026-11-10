@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, VT323 } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react";
 import { AppProvider } from "@/lib/app-context";
 import { Tidsmaskin } from "@/components/ui/Tidsmaskin";
 import "./globals.css";
@@ -45,7 +44,6 @@ export default function RootLayout({
       >
         <AppProvider>{children}</AppProvider>
         <Tidsmaskin />
-        <Analytics />
       </body>
     </html>
   );

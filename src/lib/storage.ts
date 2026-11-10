@@ -4,7 +4,6 @@
  * This module provides a single source of truth for all persistent state.
  * Supports pluggable storage backends via adapter pattern:
  * - localStorage (default): Browser-only storage
- * - Sanity: Cross-device persistence via CMS backend
  *
  * Usage:
  * - All storage access goes through this module
@@ -14,11 +13,7 @@
 
 import { InnsendelseLog, DecryptionSymbol } from "@/types/innhold";
 import { getISOString } from "./date-utils";
-import {
-  createStorageAdapter,
-  type StorageAdapter,
-  SanityStorageAdapter,
-} from "./storage-adapter";
+import { createStorageAdapter, type StorageAdapter } from "./storage-adapter";
 
 // Storage keys
 const KEYS = {
@@ -123,31 +118,7 @@ export class StorageManager {
         sessionId.substring(0, 8) + "...",
       );
 
-      // CRITICAL: Save sessionId to cookie for persistence across page reloads
-      const { setSessionId } = await import("./session-manager");
-      setSessionId(sessionId);
-
-      // CRITICAL: Wait for all pending syncs from ALL previous adapters before switching
-      // This ensures multi-tenant data doesn't get lost during adapter switches
-      if (backend === "sanity") {
-        console.debug("[StorageManager] Waiting for pending syncs...");
-        await SanityStorageAdapter.waitForAllPendingSyncs();
-      }
-
-      // Clear localStorage to ensure clean switch between tenants (Sanity mode only)
-      if (backend === "sanity" && typeof window !== "undefined") {
-        localStorage.clear();
-      }
-
-      console.debug("[StorageManager] Creating new storage adapter...");
-      this.adapter = createStorageAdapter(sessionId);
-
-      // Wait for Sanity adapter initialization to complete
-      if (this.adapter instanceof SanityStorageAdapter) {
-        console.debug("[StorageManager] Waiting for adapter initialization...");
-        await this.adapter.waitForInitialization();
-        console.debug("[StorageManager] Adapter initialization complete");
-      }
+      this.adapter = createStorageAdapter();
     }
 
     this.setItem(KEYS.AUTHENTICATED, value);
@@ -155,16 +126,6 @@ export class StorageManager {
 
   static clearAuthentication(): void {
     this.removeItem(KEYS.AUTHENTICATED);
-  }
-
-  /**
-   * Wait for all pending background syncs to complete (for testing)
-   * Waits for syncs across ALL adapter instances, not just current one
-   * This is critical for multi-tenant tests where adapters switch
-   */
-  static async waitForPendingSyncs(): Promise<void> {
-    // Wait for syncs across ALL adapter instances (critical for multi-tenant tests)
-    await SanityStorageAdapter.waitForAllPendingSyncs();
   }
 
   // ============================================================
@@ -824,32 +785,5 @@ export class StorageManager {
   static hentBrevfugl(dag: number): Brevfugl | null {
     const brevfugler = this.hentAlleBrevfugler();
     return brevfugler.find((b) => b.dag === dag) || null;
-  }
-
-  // ============================================================
-  // Friend Names (for Nice List personalization)
-  // ============================================================
-
-  /**
-   * Get friend names from Sanity session (async)
-   * Returns empty array if using localStorage or if not available
-   */
-  static async getFriendNames(): Promise<string[]> {
-    if (this.adapter instanceof SanityStorageAdapter) {
-      await this.adapter.waitForInitialization();
-      return this.adapter.getFriendNames();
-    }
-    return [];
-  }
-
-  /**
-   * Set friend names in Sanity session (async)
-   * No-op if using localStorage backend
-   */
-  static async setFriendNames(names: string[]): Promise<void> {
-    if (this.adapter instanceof SanityStorageAdapter) {
-      await this.adapter.waitForInitialization();
-      await this.adapter.setFriendNames(names);
-    }
   }
 }

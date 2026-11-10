@@ -11,12 +11,7 @@ import {
 import { StorageManager } from "./storage";
 import { GameEngine } from "./game-engine";
 import { getCurrentDay } from "./date-utils";
-import {
-  getSessionId,
-  setSessionId,
-  clearSessionId,
-  clearParentAuth,
-} from "./session-manager";
+import { getSessionId, clearSessionId, clearParentAuth } from "./auth-cookies";
 import { CalendarEvent } from "@/types/innhold";
 
 /**
@@ -42,9 +37,6 @@ import { CalendarEvent } from "@/types/innhold";
 
 interface FamilyData {
   calendarEvents: CalendarEvent[];
-  familyName?: string;
-  kidNames: string[];
-  friendNames: string[];
 }
 
 interface AppState {
@@ -53,7 +45,6 @@ interface AppState {
   isInitializing: boolean;
   sessionId: string | null;
 
-  // Family data (from Sanity/API)
   familyData: FamilyData;
 
   // Derived game state accessors (computed from GameEngine)
@@ -66,15 +57,10 @@ interface AppState {
   authenticate: (sessionId: string) => Promise<void>;
   logout: () => void;
   refreshGameState: () => void;
-  refreshFamilyData: () => Promise<void>;
 }
 
-const defaultFamilyData: FamilyData = {
-  calendarEvents: [],
-  familyName: undefined,
-  kidNames: [],
-  friendNames: [],
-};
+// ponytail: no family data source until the server state lands (T5/T6)
+const familyData: FamilyData = { calendarEvents: [] };
 
 const AppContext = createContext<AppState | null>(null);
 
@@ -91,9 +77,6 @@ export function AppProvider({ children }: AppProviderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const [sessionId, setSessionIdState] = useState<string | null>(null);
-
-  // Family data
-  const [familyData, setFamilyData] = useState<FamilyData>(defaultFamilyData);
 
   // Game state (refreshed on demand)
   const [unlockedModules, setUnlockedModules] = useState<string[]>([]);
@@ -118,40 +101,6 @@ export function AppProvider({ children }: AppProviderProps) {
   }, []);
 
   /**
-   * Fetch family data from API
-   * Loads all non-sensitive family data: names, calendar events, etc.
-   */
-  const fetchFamilyData = useCallback(async (): Promise<FamilyData> => {
-    try {
-      const response = await fetch("/api/family", {
-        credentials: "include",
-      });
-
-      if (response.ok) {
-        const data = (await response.json()) as FamilyData;
-        return {
-          familyName: data.familyName,
-          kidNames: data.kidNames || [],
-          friendNames: data.friendNames || [],
-          calendarEvents: data.calendarEvents || [],
-        };
-      }
-    } catch (err) {
-      console.warn("Could not fetch family data:", err);
-    }
-
-    return defaultFamilyData;
-  }, []);
-
-  /**
-   * Refresh family data (for when settings change)
-   */
-  const refreshFamilyData = useCallback(async () => {
-    const data = await fetchFamilyData();
-    setFamilyData(data);
-  }, [fetchFamilyData]);
-
-  /**
    * Full initialization sequence
    * Called on session restore and after successful authentication
    */
@@ -165,16 +114,12 @@ export function AppProvider({ children }: AppProviderProps) {
       // Wait for storage adapter initialization
       await StorageManager.setAuthenticated(true, newSessionId);
 
-      // Load family data
-      const data = await fetchFamilyData();
-      setFamilyData(data);
-
       // Refresh game state
       refreshGameState();
 
       console.debug("[AppContext] Initialization complete");
     },
-    [fetchFamilyData, refreshGameState],
+    [refreshGameState],
   );
 
   /**
@@ -183,7 +128,6 @@ export function AppProvider({ children }: AppProviderProps) {
    */
   const authenticate = useCallback(
     async (newSessionId: string) => {
-      setSessionId(newSessionId);
       setSessionIdState(newSessionId);
       setIsAuthenticated(true);
       await initializeApp(newSessionId);
@@ -197,7 +141,6 @@ export function AppProvider({ children }: AppProviderProps) {
     StorageManager.clearAll();
     setSessionIdState(null);
     setIsAuthenticated(false);
-    setFamilyData(defaultFamilyData);
     refreshGameState();
   }, [refreshGameState]);
 
@@ -243,7 +186,6 @@ export function AppProvider({ children }: AppProviderProps) {
     authenticate,
     logout,
     refreshGameState,
-    refreshFamilyData,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

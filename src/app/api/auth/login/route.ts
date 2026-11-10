@@ -1,98 +1,50 @@
 /**
- * Family Login API Endpoint
- *
- * Accepts either kidCode or parentCode and returns sessionId + role.
- * Used by both kids (daily login) and parents (guide access).
- *
- * Sets session cookie on successful login for server-side auth.
- *
  * POST /api/auth/login
  * Body: { code: string }
  * Returns: { sessionId: string, role: 'kid' | 'parent' }
+ *
+ * ponytail: accepts any code of the right shape and uses it as sessionId.
+ * T4 checks against KID_CODE/PARENT_CODE and signs the cookie.
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { sanityServerClient } from "@/lib/sanity-client";
-import { getCodeType } from "@/lib/code-generator";
-import {
-  errorResponse,
-  createErrorResponse,
-  setSessionCookie,
-  setParentAuthCookie,
-} from "@/lib/api-utils";
+import { SESSION_COOKIE, PARENT_COOKIE } from "@/lib/auth-cookies";
 
-interface LoginRequest {
-  code: string;
-}
+const COOKIE_OPTIONS = {
+  maxAge: 365 * 24 * 60 * 60,
+  path: "/",
+  sameSite: "lax" as const,
+  secure: process.env.NODE_ENV === "production",
+  httpOnly: false, // client reads it to restore the session
+};
 
-interface LoginResponse {
-  sessionId: string;
-  role: "kid" | "parent";
+function codeType(code: string): "kid" | "parent" | null {
+  if (/^NORDPOL-[A-Z0-9]{5,}$/.test(code)) return "parent";
+  if (/^[A-ZÆØÅ]+\d{4}\d*$/.test(code)) return "kid";
+  return null;
 }
 
 export async function POST(request: NextRequest) {
+  let body: { code?: unknown };
   try {
-    const body = (await request.json()) as LoginRequest;
-
-    if (!body.code || typeof body.code !== "string") {
-      return errorResponse("Code is required");
-    }
-
-    const code = body.code.trim().toUpperCase();
-
-    // Determine code type
-    const codeType = getCodeType(code);
-
-    if (codeType === "invalid") {
-      return errorResponse("Ugyldig kode", 401);
-    }
-
-    const backend = process.env.NEXT_PUBLIC_STORAGE_BACKEND || "localStorage";
-
-    // localStorage backend: Accept any valid code format, use code as sessionId
-    if (backend === "localStorage") {
-      const responseData: LoginResponse = {
-        sessionId: code, // Use the code itself as sessionId for localStorage mode
-        role: codeType,
-      };
-      // Set cookies on response - functions mutate and return the response
-      const response = NextResponse.json(responseData);
-      setSessionCookie(response, code);
-      if (codeType === "parent") {
-        setParentAuthCookie(response, code);
-      }
-      return response;
-    }
-
-    // Sanity backend: Query database for credentials
-    const query =
-      codeType === "kid"
-        ? `*[_type == "familyCredentials" && kidCode == $code][0]`
-        : `*[_type == "familyCredentials" && parentCode == $code][0]`;
-
-    const credentials = await sanityServerClient.fetch<{
-      sessionId: string;
-      kidCode: string;
-      parentCode: string;
-    } | null>(query, { code });
-
-    if (!credentials) {
-      return errorResponse("Ugyldig kode", 401);
-    }
-
-    const responseData: LoginResponse = {
-      sessionId: credentials.sessionId,
-      role: codeType,
-    };
-
-    // Set cookies on response - functions mutate and return the response
-    const response = NextResponse.json(responseData);
-    setSessionCookie(response, credentials.sessionId);
-    if (codeType === "parent") {
-      setParentAuthCookie(response, credentials.sessionId);
-    }
-    return response;
-  } catch (error) {
-    return createErrorResponse(error, "Innlogging mislyktes");
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Ugyldig forespørsel" }, { status: 400 });
   }
+  if (typeof body.code !== "string" || !body.code.trim()) {
+    return NextResponse.json({ error: "Code is required" }, { status: 400 });
+  }
+
+  const code = body.code.trim().toUpperCase();
+  const role = codeType(code);
+  if (!role) {
+    return NextResponse.json({ error: "Ugyldig kode" }, { status: 401 });
+  }
+
+  const response = NextResponse.json({ sessionId: code, role });
+  response.cookies.set(SESSION_COOKIE, code, COOKIE_OPTIONS);
+  if (role === "parent") {
+    response.cookies.set(PARENT_COOKIE, code, COOKIE_OPTIONS);
+  }
+  return response;
 }

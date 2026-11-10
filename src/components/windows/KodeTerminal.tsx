@@ -7,7 +7,6 @@ import { Oppdrag, InnsendelseLog } from "@/types/innhold";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import { getISOString } from "@/lib/date-utils";
-import { trackEvent, trackCodeSubmission } from "@/lib/analytics";
 
 interface KodeTerminalProps {
   onClose: () => void;
@@ -103,9 +102,6 @@ export function KodeTerminal({
       return;
     }
 
-    // Track code submission attempt
-    trackEvent("code_submitted", { day: currentDay });
-
     // Simulate processing delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
@@ -117,17 +113,7 @@ export function KodeTerminal({
       setFeedback("success");
       SoundManager.playSound("success");
 
-      // Track successful code submission
-      const currentAttempts = GameEngine.getFailedAttempts(currentDay) + 1;
-      trackCodeSubmission(currentDay, true, currentAttempts);
-
       if (result.isNewCompletion) {
-        // Track quest completion
-        trackEvent("quest_completed", {
-          day: currentDay,
-          attempts: currentAttempts,
-        });
-
         // Update local state
         const newEntry: InnsendelseLog = {
           kode: code.trim().toUpperCase(),
@@ -171,9 +157,6 @@ export function KodeTerminal({
           : 0;
 
       setFailedAttempts(currentFailedAttempts);
-
-      // Track failed code submission
-      trackCodeSubmission(currentDay, false, currentFailedAttempts);
     }
 
     setProcessing(false);

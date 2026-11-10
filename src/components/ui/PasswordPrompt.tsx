@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { trackEvent } from "@/lib/analytics";
 
 interface PasswordPromptProps {
   onSuccess: (sessionId: string) => void;
@@ -14,17 +13,7 @@ const errorMessages = [
 ];
 
 export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
-  const [code, setCode] = useState(() => {
-    // Check for pre-filled code from registration
-    if (typeof window !== "undefined") {
-      const prefillCode = sessionStorage.getItem("PREFILL_CODE");
-      if (prefillCode) {
-        sessionStorage.removeItem("PREFILL_CODE");
-        return prefillCode;
-      }
-    }
-    return "";
-  });
+  const [code, setCode] = useState("");
   const [attemptCount, setAttemptCount] = useState(0);
   const [error, setError] = useState("");
   const [isShaking, setIsShaking] = useState(false);
@@ -35,9 +24,6 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
 
     setIsLoading(true);
     setError("");
-
-    // Track login attempt
-    trackEvent("login_attempt", { authType: "kid" });
 
     try {
       const response = await fetch("/api/auth/login", {
@@ -67,8 +53,6 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
         setCode("");
       } else {
         // Success! Pass the sessionId
-        trackEvent("login_success", { authType: "kid" });
-        trackEvent("session_started", { authType: "kid" });
         onSuccess(data.sessionId);
       }
     } catch (err) {

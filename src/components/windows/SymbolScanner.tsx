@@ -6,7 +6,6 @@ import { RetroWindow } from "../ui/RetroWindow";
 import { Icons, Icon } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
-import { trackEvent, trackSymbolCollection } from "@/lib/analytics";
 
 interface SymbolScannerProps {
   onClose: () => void;
@@ -113,7 +112,6 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
     SoundManager.playSound("click");
 
     // Track symbol scan attempt
-    trackEvent("symbol_scanned", { symbolId: inputCode.trim() });
 
     // Simulate processing delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -122,10 +120,6 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
 
     if (result.success && result.symbol) {
       SoundManager.playSound("success");
-
-      // Track successful symbol collection
-      const totalCollected = GameEngine.getCollectedSymbols().length;
-      trackSymbolCollection(result.symbol.symbolId, totalCollected);
 
       setLastCollected({
         symbolIcon: result.symbol.symbolIcon,

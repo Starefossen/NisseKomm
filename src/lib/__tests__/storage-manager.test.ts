@@ -9,20 +9,11 @@
  * - Complex data types handling
  *
  * Uses localStorage backend for fast, isolated tests.
- * Sanity integration is tested separately in route tests.
  */
 
-import { describe, it, expect, beforeEach, jest } from "@jest/globals";
+import { describe, it, expect, beforeEach } from "@jest/globals";
 import { StorageManager } from "../storage";
 import { GameEngine } from "../game-engine";
-
-// Mock session-manager to prevent cookie side effects in tests
-jest.mock("../session-manager", () => ({
-  setSessionId: jest.fn(),
-  getSessionId: jest.fn(() => null),
-  clearSessionId: jest.fn(),
-  getKidCodeFromSession: jest.fn(() => Promise.resolve(null)),
-}));
 
 // Use localStorage backend for these tests
 process.env.NEXT_PUBLIC_STORAGE_BACKEND = "localStorage";
@@ -176,7 +167,6 @@ describe("Storage Manager - Session Persistence", () => {
     StorageManager.addSubmittedCode(testCode);
 
     // Device 2: Same password, should see same data via localStorage
-    // (In real Sanity mode, this would sync across actual devices)
     const codes = StorageManager.getSubmittedCodes();
     expect(codes.some((c) => c.kode === "DEVICE1_CODE")).toBe(true);
   });

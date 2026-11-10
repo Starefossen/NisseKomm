@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import { BadgeManager } from "@/lib/badge-system";
-import { trackEvent } from "@/lib/analytics";
 import Image from "next/image";
 
 interface GrandFinaleModalProps {
@@ -24,18 +23,12 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
   const badge = BadgeManager.getBadge("snofalls-venn");
 
   useEffect(() => {
-    trackEvent("grand_finale_viewed", {
-      totalBadges: BadgeManager.getEarnedBadges().length,
-      symbolsCollected: symbols,
-    });
-    trackEvent("all_quests_completed", {});
     SoundManager.playSound("success");
 
     const timers = [2000, 4000, 6000].map((ms, i) =>
       setTimeout(() => setStage(i + 2), ms),
     );
     return () => timers.forEach(clearTimeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
