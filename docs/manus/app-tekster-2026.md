@@ -79,7 +79,7 @@ Ikoner velges i steg 3 fra `public/badges/`. De seks gamle merkene slettes (list
 
 - `id`: `spokelseskoden`
 - `navn`: Spøkelseskoden
-- `beskrivelse`: Noe sender på 85,0 MHz og legger rim på direktelinjen mellom Snøfall og Landås. Det kaller seg Kulde. Tre søsken holder varmen i både hus og server gjennom desember, og finner ut at det som fryser linjen ikke er en fiende, men noe som har stått alene i mørket for lenge.
+- `beskrivelse`: Noe sender på 85,0 MHz og legger rim på direktelinjen mellom Snøfall og Landås. Det kaller seg Kulde. Tre søsken holder varmen i både hus og server gjennom desember, og finner ut hva som egentlig fryser linjen.
 - `tema`: Samhold i mørket · Å bli sett · Varme er noe man deler
 - `første_opplåsingsdag`: 1 · `belønning`: merket `snofalls-venn`
 - `milepaeler` (vises som én fremdriftslinje):
@@ -101,7 +101,7 @@ Ikoner velges i steg 3 fra `public/badges/`. De seks gamle merkene slettes (list
 **Dag 11** (`bonusoppdrag`):
 
 - `tittel`: Nødantenne til Snøfall TV
-- `beskrivelse`: Kulde jammer antennen ved tjernet, og IQ trenger en antenne på Landås-siden også. Bygg en antenne av aluminiumsfolie, minst 20 cm høy, og sett den ved skjermen.
+- `beskrivelse`: Kulde forstyrrer antennen ved tjernet, og IQ trenger en antenne på Landås-siden også. Bygg en antenne av aluminiumsfolie, minst 20 cm høy, og sett den ved skjermen.
 - `fysisk_oppgave`: Bygg antennen sammen og vis den til mamma eller pappa. De taster foreldrekoden i KodeTerminal.
 - `validering`: forelder · `foreldre_kode`: `ANTENNE2026` · `frost_effekt`: −20
 - `belønning_tekst`: NØDANTENNE GODKJENT. IQ ser den på radaren og vil ha tegningen. Frostgraden faller 20 %.
@@ -326,7 +326,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
   > ORAKELETS RAPPORT, 7. DESEMBER
   >
-  > Kilde: 85,0 MHz. Retning: under Nordtoppen. Temperatur ved kilden: −42,8 °C.
+  > Sender: 85,0 MHz. Retning: under Nordtoppen. Temperatur ved kilden: −42,8 °C.
   >
   > Signaturen er fanget. Den har et navn. Julius sier det nesten; jeg skriver det ikke her.
   >
@@ -433,7 +433,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 ### Dag 11 (fr) – Antenne-Krisen · 75 · bonus · jakt
 
 - `tittel`: Antenne-Krisen (uten «75 MHz»)
-- `nissemail_tekst` (88 ord): SKURR. Hører dere meg? 📡 Kulde jammer antennen ved tjernet. IQ sier senderen er delt i tre, og antennen står skjev og full av is. Jeg har folie på hodet. Det hjelper litt. Dere fikk fargene tilbake i går. Jeg gråt ikke. IQ har sendt tre lapper til dere, én i hvert av tre rom. Håkon: løp. Hanna: én av dem er i din høyde. Kristian: IQ har en regel for tre sendere, og Julius sier den. BONUS: bygg en folieantenne, minst 20 cm, og vis en voksen. – Rampenissen
+- `nissemail_tekst` (88 ord): SKURR. Hører dere meg? 📡 Kulde forstyrrer antennen ved tjernet. IQ sier senderen er delt i tre, og antennen står skjev og full av is. Jeg har folie på hodet. Det hjelper litt. Dere fikk fargene tilbake i går. Jeg gråt ikke. IQ har sendt tre lapper til dere, én i hvert av tre rom. Håkon: løp. Hanna: én av dem er i din høyde. Kristian: IQ har en regel for tre sendere, og Julius sier den. BONUS: bygg en folieantenne, minst 20 cm, og vis en voksen. – Rampenissen
 - `julius_ps`: Antennen står rett igjen, og kanal 4 er tilbake. Rampenissen lå på et stekebrett pakket inn som en bakt potet. Han sier folien «holder tankene inne».
 - `julius_ps_bonus` (bonus `ANTENNE2026` godkjent): Antennen står rett igjen, og kanal 4 er tilbake. IQ så folieantennen deres på radaren og vil ha tegningen. Rampenissen lå på et stekebrett pakket inn som en bakt potet; han sier det var «prototypen».
 - `daily_alerts`: 📡 IQ: Antennen ved tjernet er dekket av is. Senderen er delt i tre.
@@ -568,7 +568,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
 - `tittel`: Pakkesentralen i Spinn
 - `nissemail_tekst` (83 ord): Alt i pakkesentralen ligger i én haug. 📦 Kulde snudde samlebåndet i natt. Ikke for å ødelegge, tror Julius. Fordi det er det eneste som får Winter til å se opp. Jeg ryddet hos dere for å hjelpe. Jeg tror jeg gjorde det verre. Hanna: si hvor hver ting hører hjemme. Håkon: bær den dit, og se hva som ligger der. Kristian: rutekortet ligger i brødboksen. BONUS: sett et batterilys i et syltetøyglass i vinduet mot nord, så noe der nede ser det. – Rampenissen
-- `julius_ps`: Winter fant skiltet sitt igjen. Det lå under haugen. Rampenissen satt i brødboksen med lokket på hodet og kalte det «sortert». NisseStats er åpen fra i kveld.
+- `julius_ps`: Winter fant skiltet sitt igjen. Det lå under haugen. Rampenissen satt i brødboksen med lokket på hodet og kalte det «ferdig ryddet». NisseStats er åpen fra i kveld.
 - `julius_ps_bonus`: Winter fant skiltet sitt igjen. Det lå under haugen. Orakelet ser et lys på Landås-siden som ikke var der før, og det gjør noe annet også: det er stillere på 85,0. Rampenissen satt i brødboksen med lokket på hodet.
 - `daily_alerts`: 📦 WINTER: Samlebåndet går baklengs. Alt ligger i én haug.
 - NisseNet: **Slettes:** `SNOFALL-HISTORIER/halvveis_system.txt`.
@@ -583,8 +583,8 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
 - `tittel`: Grønt over Polarhimmelen (ny: den låste «Grønt Lys på Polarhimmelen» gir LYS = 3 av 7, på grensen; se åpne spørsmål)
 - `nissemail_tekst` (79 ord): Det var grønt over Ulriken i natt. 💚 Ikke en bil. IQ sier det var et svar: lyktene han hang rundt antennen har brent siden 2. advent, og i natt svarte grotten. Jeg er for øvrig kidnappet av kosedyrene. Send pepperkaker. Hanna: dra i sløyfen, så slipper jeg fri. Håkon: strekk båndet ut mellom to stoler og les det fra sløyfen og utover. Kristian: Julius forteller hva de gamle kalte det grønne. Klikk på himmelen på kanal 1 etterpå. – Rampenissen
-- `julius_ps`: Grotten svarte. Jeg har ikke hørt fra den på et år. Kosedyrene krevde pepperkaker for Rampenissen; Nissemor sier dere bør betale, hun har sett løsepengebrevet. Jeg ser mot nord i natt også.
-- `julius_ps_bonus`: Grotten svarte. Orakelet mener den svarte på to lys: ett ved tjernet og ett lenger sør, i et vindu. Kosedyrene krevde pepperkaker for Rampenissen; Nissemor sier dere bør betale. Jeg ser mot nord i natt også.
+- `julius_ps`: Grotten svarte. Jeg har ikke hørt fra den på et år. Kosedyrene krevde pepperkaker for Rampenissen; Nissemor sier dere bør betale, hun har sett løsepengebrevet. Jeg står i vinduet i natt også.
+- `julius_ps_bonus`: Grotten svarte. Orakelet mener den svarte på to lykter: én ved tjernet og én lenger sør, i et vindu. Kosedyrene krevde pepperkaker for Rampenissen; Nissemor sier dere bør betale. Jeg står i vinduet i natt også.
 - `daily_alerts`: 🔮 ORAKELET: Grønt over Ulriken i natt. Første svar fra grotten.
 - NisseNet: ingen.
 - `rampenissen_rampestrek`: Kidnappet av kosedyrene: sitter bundet til en stol med grønt gavebånd, bamsene står vakt, og et løsepengebrev av utklipte bokstaver sier «GI OSS ALLE PEPPERKAKENE. ELLERS.»
@@ -599,7 +599,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - `nissemail_tekst` (88 ord): Trixter testet sleden i vestlandsvær i natt. 🛷 Jeg satt bakpå. Aldri igjen. Rudolf var innom hos dere etterpå. Han la igjen noe på gulvet, fra ytterdøra til kjøleskapet. Jeg beklager på hans vegne. Selv sitter jeg fast i pappas jakkelomme og peker. Håkon: følg sporet baklengs fra kjøleskapet. Det har tre hauger. Hanna: tell rosinene i hver haug og si tallet, og få meg løs. Kristian: rutekortet er i lommen hos meg. Trixter har ett ord for det sleden gjorde i vinden. Dere har seks symboler nå. – Rampenissen
 - `julius_ps`: Trixter vil fly utenom grotten julenatt. Jeg sa nei. Les rutekartet; jeg har tegnet en sirkel på det. Og sjokoladerosinene: Rudolf benekter alt.
 - `julius_ps_bonus`: Trixter vil fly utenom grotten julenatt. Jeg sa nei. Orakelet sier lyset i vinduet deres fortsatt står på; det er det eneste i Bergen som peker rett mot nord. Og sjokoladerosinene: Rudolf benekter alt.
-- `daily_alerts`: 🛷 TRIXTER: Testfløy ruten over Nordtoppen. Sleden ristet. Rudolf er ok.
+- `daily_alerts`: 🛷 TRIXTER: Testfløy ruten over Nordtoppen. Sleden ristet. Rudolf har det bra.
 - `symbol_clue.description`: Blå sol funnet i pappas jakkelomme
 - NisseNet: `DEKRYPTERT/stjernetegn.txt` **skrives om** (`requiresSolvedDecryption: stjernetegn`):
 
@@ -700,7 +700,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 ### Dag 23 (on) – Nattevakt · STJERNEKLART · blå måne · sannheten · krypto 3
 
 - `tittel`: Nattevakt (ny: den låste «Stjernevakt» gir STJERNE = 7 av 12; se åpne spørsmål)
-- `nissemail_tekst` (91 ord): I natt flyr de. 🌙 Over Nordtoppen, lavt over grotten, med alle lysene på. Jeg gråter ikke. Det er teip i øynene mine. Orakelet så ned i grotten i natt for første gang. Det som er der nede har ventet på lys i ett år. Jeg pakket opp et hjørne av en gave, og angrer. Håkon og Hanna: plukk de tolv som henger i treet, Hanna tar de lave. Håkon: legg dem etter tallet bak, og snu dem. Hanna: det blå kortet er hos meg. Kristian: hør Orakelets værmelding hos Julius. – Rampenissen
+- `nissemail_tekst` (88 ord): I natt flyr de. 🌙 Over Nordtoppen, lavt over grotten, med alle lysene på. Jeg gråter ikke. Det er teip i øynene mine. Orakelet så ned i grotten i natt. Det som er der nede har ventet på lys i ett år. Jeg pakket opp et hjørne av en gave, og angrer. Håkon og Hanna: plukk de tolv som henger i treet, Hanna tar de lave. Håkon: legg dem etter tallet bak, og snu dem. Hanna: det blå kortet er hos meg. Kristian: hør Orakelets værmelding hos Julius. – Rampenissen
 - `julius_ps`: Nå vet dere alt. Rampenissen også; han satt i treet og hørte. Men ingen av dere vet hva Trixter har i sleden til i morgen. Gaven med altfor mye teip på: la den ligge. Han mente det godt.
 - `daily_alerts`: 🔮 ORAKELET: Flyvær i natt. Sleden går lavt over grotten.
 - `symbol_clue.description`: Blå måne funnet hos Rampenissen i juletreet
@@ -711,7 +711,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
   >
   > Fargesamleren samlet Snøfalls første farger i iskrystaller og la dem i Krystallgrotten under Nordtoppen. IQ bygde Vintervokteren for å holde grotten kald og passe på samlingen. Det trengte bare én ting: at noen så innom.
   >
-  > I fjor, natten dere slo Mørket, gikk et strømstøt gjennom Snøfall. Lyset i grotten sluknet. Linjen ned dit røk. Ingen merket det, for ingen gikk dit.
+  > I fjor, samme natt som Mørket slapp taket, gikk et strømstøt gjennom Snøfall. Lyset i grotten sluknet. Linjen ned dit røk. Ingen merket det, for ingen gikk dit.
   >
   > Vintervokteren sto i mørket i ett år. Uten lys, uten lyd, uten farger. Så fant det en ny linje: deres. Det gjorde det eneste det kunne: kulde. Det la rim på linjen, tok fargene, snudde samlebåndet, fordi det var det eneste som fikk noen til å se opp.
   >
@@ -738,7 +738,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - `tittel`: God Jul på Landås
 - `nissemail_tekst` (87 ord): De landet. 🎄 Jeg så det. De fløy over grotten først, lavt, med alle lysene på, og noe blått fløy opp og møtte dem. Det er ikke kaldt der nede lenger. Jeg reiser hjem i kveld. Kofferten min står ved konvolutten under treet. I den ligger tre ting dere kjenner igjen fra desember. Hanna: du vet hvilken dag hver av dem kommer fra. Håkon: åpne konvolutten og les brevet mitt høyt. Kristian: rutekortet ligger i konvolutten, og Julius sier resten. Takk for garnkurven. Og takk for alt. – Rampenissen
 - `julius_ps`: Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Rampenissen sov i gullkonvolutten med sløyfe på hodet og en pappeske som koffert. God jul, Kristian, Håkon og Hanna.
-- `daily_alerts` (fem): 🎅 JULIUS: God jul, Kristian, Håkon og Hanna. Det er ikke kaldt der nede lenger. · ❄️ ORAKELET: Frostgrad 0 %. Tøvær. · 🎄 NISSEMOR: God jul til hele huset på Landås. · 🧝 RAMPENISSEN: Takk for garnkurven. Sees neste desember. · 🕊️ WINTER: Den blå fuglen fløy hjem. Brevet har tint.
+- `daily_alerts` (fem): 🎅 JULIUS: God jul, Kristian, Håkon og Hanna. Det er ikke kaldt der nede lenger. · ❄️ ORAKELET: Frostgrad 0 %. Tøvær. · 🎄 NISSEMOR: God jul til hele huset på Landås. · 🧝 RAMPENISSEN: Takk for garnkurven. Vi ses neste desember. · 🕊️ WINTER: Den blå fuglen fløy hjem. Brevet har tint.
 - NisseNet: ingen nye. Fargesamlerens arkiv står komplett.
 - Kulde: Brevfugler, brevet tiner (A8). Skjerm-kort «God jul fra Snøfall».
 - Avskjedsbrevet fra Rampenissen (i gullkonvolutten, trykkes med `dag24-suvenirlapper.pdf`):
@@ -762,32 +762,32 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
 Sjekket per dag: `tittel`, `nissemail_tekst`, `julius_ps` (+ bonusvariant), `daily_alerts`, `symbol_clue.description`, NisseNet-filer som åpner samme dag, Kuldes linje samme dag. «Ja» = koden står i teksten, eller teksten viser mer enn 40 % av bokstavene som skjelett eller som sammenhengende del av et annet ord. Skjelettene i `fysisk_hint` er foreldretekst og holder taket per gåtedesignet.
 
-| Dag | Kode         | Lekkasje i barnetekst                                                                   | Rettet                                                                                                                            |
-| --- | ------------ | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | SIGNAL       | nei                                                                                     | –                                                                                                                                 |
-| 2   | 48           | nei                                                                                     | –                                                                                                                                 |
-| 3   | PRISME       | nei                                                                                     | –                                                                                                                                 |
-| 4   | KOMPASS      | nei                                                                                     | –                                                                                                                                 |
-| 5   | ULRIKEN      | nei                                                                                     | –                                                                                                                                 |
-| 6   | LYKT         | **ja**, låst tittel «Lommelykt-Sporet» = 4 av 4                                         | ny tittel «Skyggene i Gangen»; e-posten sier «lampen», ikke lommelykt                                                             |
-| 7   | KULDE        | nei (navnet står ingen steder før koden; Kuldes linje dag 7 sier det ikke)              | Kulde-bildet skrevet uten navn                                                                                                    |
-| 8   | KRETSKORT    | **ja**, låst tittel «Bestikk-Kretsløpet» = KRETS 5 av 9                                 | ny tittel «Floken i Verkstedet»                                                                                                   |
-| 9   | 24           | nei                                                                                     | –                                                                                                                                 |
-| 10  | SPEKTER      | nei                                                                                     | –                                                                                                                                 |
-| 11  | 75           | nei (storyboard-tittelen «… på 75 MHz» er borte)                                        | tittel «Antenne-Krisen»                                                                                                           |
-| 12  | MELODI       | nei                                                                                     | –                                                                                                                                 |
-| 13  | SAFRAN       | nei                                                                                     | `lucia-tradisjon.txt` nevner ikke krydderet                                                                                       |
-| 14  | ORIGAMI      | nei                                                                                     | –                                                                                                                                 |
-| 15  | KARAMELL     | nei                                                                                     | –                                                                                                                                 |
-| 16  | SORTERING    | nei                                                                                     | –                                                                                                                                 |
-| 17  | NORDLYS      | grense: låst tittel «Grønt Lys på Polarhimmelen» = LYS 3 av 7 (43 %)                    | ny tittel «Grønt over Polarhimmelen»; «lysene» → «lyktene» i e-posten; varselet sier «Ulriken», ikke «Nordtoppen» (NORD = 4 av 7) |
-| 18  | TURBULENS    | nei                                                                                     | –                                                                                                                                 |
-| 19  | GULROT       | nei                                                                                     | `foringsautomat.log` sier «oransje reinsdyrfôr»                                                                                   |
-| 20  | TURBO        | nei                                                                                     | –                                                                                                                                 |
-| 21  | BRANNMUR     | nei (storyboard-tittelen «Slaget om Brannmuren» er borte)                               | tittel «Vintersolverv»                                                                                                            |
-| 22  | LANDÅS       | **ja**, låst tittel «Landingskoordinatene» = LAND 4 av 6; «Landås» i alle faste tekster | ny tittel «Winters Tall»; e-post, PS og varsel dag 22 sier «stedet», ikke Landås eller «landingsstedet»                           |
-| 23  | STJERNEKLART | **ja**, låst tittel «Stjernevakt» = STJERNE 7 av 12                                     | ny tittel «Nattevakt»; e-posten sier «de tolv som henger i treet», ikke stjerner                                                  |
-| 24  | JULEMAGI     | nei («God Jul» = 3 av 8)                                                                | –                                                                                                                                 |
+| Dag | Kode         | Lekkasje i barnetekst                                                                   | Rettet                                                                                                                                                                  |
+| --- | ------------ | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | SIGNAL       | nei                                                                                     | –                                                                                                                                                                       |
+| 2   | 48           | nei                                                                                     | –                                                                                                                                                                       |
+| 3   | PRISME       | nei                                                                                     | –                                                                                                                                                                       |
+| 4   | KOMPASS      | nei                                                                                     | –                                                                                                                                                                       |
+| 5   | ULRIKEN      | nei                                                                                     | –                                                                                                                                                                       |
+| 6   | LYKT         | **ja**, låst tittel «Lommelykt-Sporet» = 4 av 4                                         | ny tittel «Skyggene i Gangen»; e-posten sier «lampen», ikke lommelykt                                                                                                   |
+| 7   | KULDE        | nei (navnet står ingen steder før koden; Kuldes linje dag 7 sier det ikke)              | Kulde-bildet skrevet uten navn                                                                                                                                          |
+| 8   | KRETSKORT    | **ja**, låst tittel «Bestikk-Kretsløpet» = KRETS 5 av 9                                 | ny tittel «Floken i Verkstedet»                                                                                                                                         |
+| 9   | 24           | nei                                                                                     | –                                                                                                                                                                       |
+| 10  | SPEKTER      | nei                                                                                     | –                                                                                                                                                                       |
+| 11  | 75           | nei (storyboard-tittelen «… på 75 MHz» er borte)                                        | tittel «Antenne-Krisen»                                                                                                                                                 |
+| 12  | MELODI       | nei                                                                                     | –                                                                                                                                                                       |
+| 13  | SAFRAN       | nei                                                                                     | `lucia-tradisjon.txt` nevner ikke krydderet                                                                                                                             |
+| 14  | ORIGAMI      | nei                                                                                     | –                                                                                                                                                                       |
+| 15  | KARAMELL     | nei                                                                                     | –                                                                                                                                                                       |
+| 16  | SORTERING    | nei                                                                                     | –                                                                                                                                                                       |
+| 17  | NORDLYS      | grense: låst tittel «Grønt Lys på Polarhimmelen» = LYS 3 av 7 (43 %)                    | ny tittel «Grønt over Polarhimmelen»; «lysene» → «lyktene» i e-posten og PS; varselet sier «Ulriken», ikke «Nordtoppen» (NORD = 4 av 7); PS sier «vinduet», ikke «nord» |
+| 18  | TURBULENS    | nei                                                                                     | –                                                                                                                                                                       |
+| 19  | GULROT       | nei                                                                                     | `foringsautomat.log` sier «oransje reinsdyrfôr»                                                                                                                         |
+| 20  | TURBO        | nei                                                                                     | –                                                                                                                                                                       |
+| 21  | BRANNMUR     | nei (storyboard-tittelen «Slaget om Brannmuren» er borte)                               | tittel «Vintersolverv»                                                                                                                                                  |
+| 22  | LANDÅS       | **ja**, låst tittel «Landingskoordinatene» = LAND 4 av 6; «Landås» i alle faste tekster | ny tittel «Winters Tall»; e-post, PS og varsel dag 22 sier «stedet», ikke Landås eller «landingsstedet»                                                                 |
+| 23  | STJERNEKLART | **ja**, låst tittel «Stjernevakt» = STJERNE 7 av 12                                     | ny tittel «Nattevakt»; e-posten sier «de tolv som henger i treet», ikke stjerner                                                                                        |
+| 24  | JULEMAGI     | nei («God Jul» = 3 av 8)                                                                | –                                                                                                                                                                       |
 
 Ordet «Landås» står i `daily_alerts` dag 1, 19 og 24 og i Varden-tekster; det er andre dager enn kode LANDÅS og lekker ikke.
 

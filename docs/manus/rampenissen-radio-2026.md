@@ -10,7 +10,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 - Klippet bærer tre ting: hva som skjedde i natt (sett fra gulvet på Landås), hvordan Rampenissen har det, og en bekreftelse av gårsdagen. Det bærer aldri bokstaver, tall fra koden eller hvor noe ligger. Streken omtaler han fra sin egen side, uten å innrømme alt.
 - Kunnskapstidslinje (storyboard §2): han sier ikke navnet på radio dag 7, hører sukket dag 12, vet hvem Vintervokteren er fra kvelden dag 15, og bruker aldri «fiende» etter det. Dag 20–21: holde varmen inne, porten åpen. Dag 23 vet han ikke hva som ligger under treet.
 - Rampenissen sier «Kulde» om det som sender fra dag 8. Slang bare dag 8 og 20 (dag 3 står på speilet, ikke i klippet).
-- Lydregi i klammer er for produksjonen, ikke for å leses.
+- Lydregi står på egen linje (`Lydregi:`) og er for produksjonen. Inne i klippet står bare det som skal sies.
 
 ---
 
@@ -26,7 +26,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 **Strek:** sitter i sukkerskålen med teskje, tatt på fersken.
 
-**Klipp:** «God morgen! Rampenissen her, direkte fra… en skål. Hør, det SMALT i Snøfall i natt. Tre sikringer. Pang, pang, pang. IQ sier det ikke var kaffetrakteren. Det var kaffetrakteren. Og jeg ble så skremt at jeg trengte noe søtt. Litt. En teskje. Kanskje to. Kanskje jeg sovnet i skålen. Det er ikke bevist. Dere fikk linjen til å bære i går, forresten, hele verkstedet hørte det! IQ ropte så høyt at Nissemor kom med teppe. I dag er Kanal 2 helt mørk, og IQ løper rundt med lommelykt i munnen. Jeg hjelper til hjemmefra. Fra skålen. Over.»
+**Klipp:** «God morgen! Rampenissen her, direkte fra… en skål. Hør, det SMALT i Snøfall i natt. Tre sikringer. Pang, pang, pang. IQ sier det ikke var kaffetrakteren. Det var kaffetrakteren. Og jeg ble så skremt at jeg trengte noe søtt. Litt. En teskje. Kanskje to. Kanskje jeg sovnet i skålen. Det er ikke bevist. Dere fikk linjen til å bære i går, forresten, hele verkstedet hørte det! IQ ropte så høyt at Nissemor kom med teppe. I dag er Kanal to helt mørk, og IQ løper rundt med lommelykt i munnen. Jeg hjelper til hjemmefra. Fra skålen. Over.»
 
 **intro_hint:** «Han ringte inn fra en skål. Han ville ikke si hva slags skål.»
 
@@ -34,7 +34,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 **Strek:** tannkrem på badespeilet, «RAMPEN VAR HER. NO CAP.», surt fjes, tom tube i vasken.
 
-**Klipp:** «Rampenissen her. Litt lav stemme i dag, for jeg sov dårlig. Klokka tre så jeg et blått glimt på stueruten. Jeg sier det var en bil. Jeg tror ikke det var en bil. Orakelet oppe i Snøfall sier noen lytter på linjen. Noen som ikke er oss. Så da måtte jeg roe meg ned, og da pusser man tenner, ikke sant? Og så ble det… kunst. På speilet. Jeg skrev bare sannheten. Jeg VAR der. Tuben var nesten tom fra før. Nesten. Det er ikke rot, det er en signatur. Dere fikk strøm på Kanal 2 i går, bra jobba! Pil klappet. Over og ut, nesten.»
+**Klipp:** «Rampenissen her. Litt lav stemme i dag, for jeg sov dårlig. Klokka tre så jeg et blått glimt på stueruten. Jeg sier det var en bil. Jeg tror ikke det var en bil. Orakelet oppe i Snøfall sier noen lytter på linjen. Noen som ikke er oss. Så da måtte jeg roe meg ned, og da pusser man tenner, ikke sant? Og så ble det… kunst. På speilet. Jeg skrev bare sannheten. Jeg VAR der. Tuben var nesten tom fra før. Nesten. Det er ikke rot, det er en signatur. Dere fikk strøm på Kanal to i går, bra jobba! Pil klappet. Over og ut, nesten.»
 
 **intro_hint:** «Dagens gjest har sovet dårlig og har pusset tenner. Grundig.»
 
@@ -50,7 +50,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 **Strek:** marshmallow-krig mellom Rampenissen og kosedyrene, én bamse med plaster. Helg, 09-sendingen.
 
-**Klipp:** «God lørdag, sovetryner! Klokka er ni, og dere er sikkert våkne. Jeg har vært våken siden fire. Det har vært krig i stua. Jeg og bamsene. Vi vant. Begge lag vant, det var litt uklart. Én bamse ble truffet i magen og har plaster, han er tapper. Ammunisjonen var myk og hvit, og jeg skal rydde. Senere. Og hør: en brevfugl landet i natt, den første over Bergen i år! Winter oppe i Snøfall er helt paranoid nå. Hun skriver alt i hemmelig skrift fordi noen lytter. Fuglen har noe rart på vingen. Jeg forstår det ikke. Jeg er bare agent, ikke sekretær. Kos dere i regnet!»
+**Klipp:** «God lørdag, sovetryner! Klokka er ni, og dere er sikkert våkne. Jeg har vært våken siden fire. Det har vært krig i stua. Jeg og bamsene. Vi vant. Begge lag vant, det var litt uklart. Én bamse ble truffet i magen og har plaster, han er tapper. Ammunisjonen var myk og hvit, og jeg skal rydde. Senere. Og hør: en brevfugl landet i natt, den første over Bergen i år! Winter oppe i Snøfall stoler ikke på noen nå. Hun skriver alt i hemmelig skrift fordi noen lytter. Fuglen har noe rart på vingen. Jeg forstår det ikke. Jeg er bare agent, ikke sekretær. Kos dere i regnet!»
 
 **intro_hint:** «Det skal ha vært krig i en stue på Landås i natt. Vi har et øyenvitne på linjen.»
 
@@ -58,7 +58,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 **Strek:** snøengler i mel på kjøkkenbordet, ligger midt i den største. Helg, 09-sendingen.
 
-**Klipp:** «God søndag og god andre advent! Rampenissen her, litt hvit i ansiktet. Det er mel. Ikke spør. Jo, spør: jeg skulle lage snøengler, og det er ikke snø inne, så jeg brukte det nærmeste. Kjøkkenbordet er nå et vinterlandskap. Jeg ligger i den største engelen. Det var ikke meningen at gulvet skulle bli med. Melet er rot, det innrømmer jeg. Men! I natt sa Orakelet at det som fryser linjen, ikke tåler lys. IQ hengte lys rundt hele antennen, den ser ut som et juletre. Og jeg fant lommelykten deres. Og en papprull. Jeg har laget noe. Det er ikke rot. Det er et instrument. God helg!»
+**Klipp:** «God søndag og god andre advent! Rampenissen her, litt hvit i ansiktet. Det er mel. Ikke spør. Jo, spør: jeg skulle lage snøengler, og det er ikke snø inne, så jeg brukte det nærmeste. Kjøkkenbordet er nå et vinterlandskap. Jeg ligger i den største engelen. Det var ikke meningen at gulvet skulle bli med. Melet er rot, det innrømmer jeg. Men! I natt sa Orakelet at det som fryser linjen, ikke tåler lys. IQ hengte lys rundt hele antennen, den ser ut som et juletre. Og jeg fant den lille lampen deres. Og en papprull. Jeg har laget noe. Det er ikke rot. Det er et instrument. God helg!»
 
 **intro_hint:** «Gjesten vår er litt hvit i ansiktet i dag. Han sier det ikke er snø.»
 
@@ -96,9 +96,11 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 ## Dag 11 (fr) – Antenne-Krisen · bonus
 
-**Strek:** pakket inn i aluminiumsfolie som en bakt potet, på et stekebrett på benken. Klippet har skurr lagt på.
+**Strek:** pakket inn i aluminiumsfolie som en bakt potet, på et stekebrett på benken.
 
-**Klipp:** «[skurr] …hallo? Hører dere meg? Kulde jammer antennen ved tjernet, så det kan hende jeg forsvinner midt i… [skurr] Der. Jeg har folie på hodet. Det hjelper litt. Jeg har også folie på resten. Det hjelper ikke, men nå er jeg varm, og jeg ligger på et stekebrett, og ingen må skru på ovnen. INGEN. Viktig nyhet: dere fikk fargene tilbake i går! Hele Snøfall så det. IQ danset. Pil danset. Jeg så det på den lille skjermen min. Jeg gråt ikke. Det var folie i øyet. God fredag, og hvis dere hører skurr i dag, er det ikke meg, det er… [skurr]»
+**Lydregi:** skurr lagt på i starten, etter «midt i…» og over siste ord; klippet begynner midt i en setning og kuttes midt i den siste.
+
+**Klipp:** «…hallo? Hører dere meg? Kulde forstyrrer antennen ved tjernet, så det kan hende jeg forsvinner midt i… Der. Jeg har folie på hodet. Det hjelper litt. Jeg har også folie på resten. Det hjelper ikke, men nå er jeg varm, og jeg ligger på et stekebrett, og ingen må skru på ovnen. INGEN. Viktig nyhet: dere fikk fargene tilbake i går! Hele Snøfall så det. IQ danset. Pil danset. Jeg så det på den lille skjermen min. Jeg gråt ikke. Det var folie i øyet. God fredag, og hvis dere hører skurr i dag, er det ikke meg, det er…»
 
 **intro_hint:** «Det skurrer litt på linjen i dag. Gjesten vår har tatt sine forholdsregler.»
 
@@ -122,7 +124,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 **Strek:** alle kjøkkenserviettene brettet til skjeve fugler, sitter selv i en papirbåt i den tørre vasken.
 
-**Klipp:** «Mandag, og jeg er ikke død lenger, det gikk over. Rampenissen her, fra en båt. En papirbåt. I vasken. Den er tørr, slapp av. Winter åpnet brevfuglene i natt! Fuglene fløy ut fra pakkesentralen som en sky, det var det fineste jeg har sett. Og så kom det én fugl ingen hadde sendt. Blå. Den satte seg i vinduskarmen til Julius og sa ingenting. Winter la den i en eske med et håndkle over, sånn man gjør med redde fugler. Jeg ble inspirert og brettet alle serviettene deres til fugler. De er litt skjeve. De flyr ikke. Men de prøver, og det teller. Over.»
+**Klipp:** «Mandag, og jeg er ikke død lenger, det gikk over. Rampenissen her, fra en båt. En papirbåt. I vasken. Den er tørr, slapp av. Winter åpnet brevfuglene i natt! Fuglene fløy ut fra pakkesentralen som en sky, det var det fineste jeg har sett. Og så kom det én fugl ingen hadde sendt. Blå. Den satte seg i vinduskarmen til Julius og sa ingenting. Winter ville legge den i en eske med et håndkle over, sånn man gjør med redde fugler. Den ble sittende. Jeg ble inspirert og brettet alle serviettene deres til fugler. De er litt skjeve. De flyr ikke. Men de prøver, og det teller. Over.»
 
 **intro_hint:** «Dagens gjest ringer fra en båt. En veldig liten båt.»
 
@@ -186,7 +188,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 **Strek:** krøpet inn i Hannas julesokk, bare føttene ut. Han sier ikke stedsnavnet deres i dag.
 
-**Klipp:** «Rampenissen her, og det er varmt igjen! Muren holdt i går. Porten står åpen. Alle så det, hele Snøfall, og Orakelet sier det er varmere der nede nå. Jeg sov godt for første gang på lenge. Men så ringte Julius klokka fem. Han vil vite nøyaktig hvor dere bor. Til landingen. Jeg sa «ved sofaen». Det holdt ikke. Jeg sa «i Bergen». Det holdt heller ikke. Winter vil ha det i tall, hun stoler ikke på ord, og jeg kan ikke tall. Så jeg ble stresset og gjemte meg i en sokk. Det var en feil. Den er liten. Føttene mine er ute. Resten er inne. Hjelp. Over.»
+**Klipp:** «Rampenissen her, og det er varmt igjen! Muren holdt i går. Porten står åpen. Alle så det, hele Snøfall, og Orakelet sier det er varmere der nede nå. Jeg sov godt for første gang på lenge. Men så ringte Julius klokka fem. Han vil vite nøyaktig hvor dere bor. Til julenatt. Jeg sa «ved sofaen». Det holdt ikke. Jeg sa «i Bergen». Det holdt heller ikke. Winter vil ha det i tall, hun stoler ikke på ord, og jeg kan ikke tall. Så jeg ble stresset og gjemte meg i en sokk. Det var en feil. Den er liten. Føttene mine er ute. Resten er inne. Hjelp. Over.»
 
 **intro_hint:** «Gjesten vår sitter fast i noe lite og ber om hjelp.»
 
@@ -212,31 +214,31 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 Ord = talte ord i klippet. Sek = ord / 2,4. «Kode/hvor» = klippet sier ingen bokstav eller tall fra koden, ikke selve kodeordet, og ikke hvor brikke H ligger. Streken beskriver han alltid fra sin egen plass; den er synlig for barna uansett.
 
-| Dag | Kode         | Ord | Sek | Sending | Kode/hvor       | Merknad                                                               |
-| --- | ------------ | --- | --- | ------- | --------------- | --------------------------------------------------------------------- |
-| 1   | SIGNAL       | 101 | 42  | 06      | ok              |                                                                       |
-| 2   | 48           | 97  | 40  | 06      | ok              | «Tre sikringer» er antall, ikke tall fra koden (gåtedok. reserve)     |
-| 3   | PRISME       | 106 | 44  | 06      | ok              |                                                                       |
-| 4   | KOMPASS      | 113 | 47  | 06      | ok              | «Jeg har laget en pil. Av noe.» (låst storyboard), ingen plass        |
-| 5   | ULRIKEN      | 107 | 45  | 09      | ok              | Fuglen nevnes uten sted                                               |
-| 6   | LYKT         | 107 | 45  | 09      | ok, med merknad | «lommelykten deres» er låst radiolinje; e-posten sier det samme       |
-| 7   | KULDE        | 109 | 45  | 06      | ok, med merknad | «Det som skurrer, er kaldt» er låst storyboardlinje; navnet sies ikke |
-| 8   | KRETSKORT    | 98  | 41  | 06      | ok              | Slang 1 av 2                                                          |
-| 9   | 24           | 101 | 42  | 06      | ok              | Ingen antall eller armer                                              |
-| 10  | SPEKTER      | 102 | 42  | 06      | ok              | «rundt i stua» fra historiedok. er tatt ut                            |
-| 11  | 75           | 103 | 43  | 06      | ok              |                                                                       |
-| 12  | MELODI       | 106 | 44  | 09      | ok              | Glassene nevnes ikke                                                  |
-| 13  | SAFRAN       | 104 | 43  | 09      | ok              |                                                                       |
-| 14  | ORIGAMI      | 104 | 43  | 06      | ok              |                                                                       |
-| 15  | KARAMELL     | 110 | 46  | 06      | ok              | Verken sukker eller sirup nevnes                                      |
-| 16  | SORTERING    | 109 | 45  | 06      | ok              | «ryddet», aldri «sortere»                                             |
-| 17  | NORDLYS      | 102 | 42  | 06      | ok              | «grønt over Ulriken», aldri «nord» + «lys»                            |
-| 18  | TURBULENS    | 105 | 44  | 06      | ok              | «hoppet», ikke «ristet»                                               |
-| 19  | GULROT       | 109 | 45  | 09      | ok              | «førti av dem», aldri hva                                             |
-| 20  | TURBO        | 108 | 45  | 09      | ok              | Slang 2 av 2; varme inne, ingen ute                                   |
-| 21  | BRANNMUR     | 109 | 45  | 06      | ok, med merknad | «bokmuren»/«muren» er låst framing; første ledd sies ikke             |
-| 22  | LANDÅS       | 108 | 45  | 06      | ok              | Stedsnavnet unngås hele klippet                                       |
-| 23  | STJERNEKLART | 110 | 46  | 06      | ok              |                                                                       |
-| 24  | JULEMAGI     | 112 | 47  | 06      | ok              | «God jul» er høytidsnavnet Julius selv ber dem sette foran            |
+| Dag | Kode         | Ord | Sek | Sending | Kode/hvor       | Merknad                                                                      |
+| --- | ------------ | --- | --- | ------- | --------------- | ---------------------------------------------------------------------------- |
+| 1   | SIGNAL       | 101 | 42  | 06      | ok              |                                                                              |
+| 2   | 48           | 97  | 40  | 06      | ok              | «Tre sikringer» er antall, ikke tall fra koden (gåtedok. reserve)            |
+| 3   | PRISME       | 106 | 44  | 06      | ok              |                                                                              |
+| 4   | KOMPASS      | 113 | 47  | 06      | ok              | «Jeg har laget en pil. Av noe.» (låst storyboard), ingen plass               |
+| 5   | ULRIKEN      | 108 | 45  | 09      | ok              | Fuglen nevnes uten sted                                                      |
+| 6   | LYKT         | 109 | 45  | 09      | ok              | Storyboardets «lommelykten» er byttet til «den lille lampen», som i e-posten |
+| 7   | KULDE        | 109 | 45  | 06      | ok, med merknad | «Det som skurrer, er kaldt» er låst storyboardlinje; navnet sies ikke        |
+| 8   | KRETSKORT    | 98  | 41  | 06      | ok              | Slang 1 av 2                                                                 |
+| 9   | 24           | 101 | 42  | 06      | ok              | Ingen antall eller armer                                                     |
+| 10  | SPEKTER      | 102 | 42  | 06      | ok              | «rundt i stua» fra historiedok. er tatt ut                                   |
+| 11  | 75           | 100 | 42  | 06      | ok              |                                                                              |
+| 12  | MELODI       | 106 | 44  | 09      | ok              | Glassene nevnes ikke                                                         |
+| 13  | SAFRAN       | 104 | 43  | 09      | ok              |                                                                              |
+| 14  | ORIGAMI      | 108 | 45  | 06      | ok              |                                                                              |
+| 15  | KARAMELL     | 110 | 46  | 06      | ok              | Verken sukker eller sirup nevnes                                             |
+| 16  | SORTERING    | 109 | 45  | 06      | ok              | «ryddet», aldri «sortere»                                                    |
+| 17  | NORDLYS      | 102 | 42  | 06      | ok              | «grønt over Ulriken», aldri «nord» + «lys»                                   |
+| 18  | TURBULENS    | 105 | 44  | 06      | ok              | «hoppet», ikke «ristet»                                                      |
+| 19  | GULROT       | 109 | 45  | 09      | ok              | «førti av dem», aldri hva                                                    |
+| 20  | TURBO        | 108 | 45  | 09      | ok              | Slang 2 av 2; varme inne, ingen ute                                          |
+| 21  | BRANNMUR     | 109 | 45  | 06      | ok, med merknad | «bokmuren»/«muren» er låst framing; første ledd sies ikke                    |
+| 22  | LANDÅS       | 108 | 45  | 06      | ok              | Stedsnavnet unngås hele klippet; «landingen» byttet til «julenatt»           |
+| 23  | STJERNEKLART | 110 | 46  | 06      | ok              |                                                                              |
+| 24  | JULEMAGI     | 112 | 47  | 06      | ok              | «God jul» er høytidsnavnet Julius selv ber dem sette foran                   |
 
-Sum: 2 540 ord, snitt 106 per dag (cirka 44 s).
+Sum: 2 544 ord, snitt 106 per dag (cirka 44 s).
