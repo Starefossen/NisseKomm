@@ -133,7 +133,7 @@ def main():
         name = f"dag{day:02d}-{i}"
         names.append(name)
         print(f"{name} ({secs} s): {line}")
-        if dry or "--join-only" in sys.argv:
+        if dry or "--join-only" in sys.argv or "--refilter" in sys.argv:
             continue
         clip = OUT / f"{name}.mp4"
         raw = OUT / f"{name}.raw.mp4"  # check the unfiltered audio; the radio filter hurts transcription
@@ -172,6 +172,9 @@ def main():
             print(f"  ADVARSEL {name}: beste versjon {best[0][1]:.0%}, feil: {best[1]}")
     if dry:
         return
+    if "--refilter" in sys.argv:  # no API calls: redo look and sound from the kept raw clips
+        for n in names:
+            subprocess.run([str(BIN / "julius-filter.sh"), str(OUT / f"{n}.raw.mp4"), str(OUT / f"{n}.mp4")], check=True)
     # alternating framing: every other segment a 1.15x crop on Julius, hard cut, continuous audio
     segs = [OUT / f"{n}.mp4" for n in names]
     dur = [float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(p)])) for p in segs]
@@ -194,7 +197,7 @@ def main():
     subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-ss", "3", "-i", str(dest), "-frames:v", "1",
                     "-q:v", "3", str(dest.with_suffix(".jpg"))], check=True)
     medie.write("julius-dag.py", dest, medie.JULIUS_MS, f"Dag {day}", "gemini-omni-1.2-flash",
-                ["assets/characters/julius/ref-v3.jpg"])
+                ["assets/characters/julius/ref-v3.jpg"], extra={"filter_version": medie.filter_version()})
     print(dest)
     if "--upload" in sys.argv:
         upload(sys.argv[sys.argv.index("--upload") + 1], dest)

@@ -89,7 +89,13 @@ def prompt_version(generator: str, root: Path = ROOT) -> str:
     }.get(generator)
     if parts is None:
         return sha(RAMPE_STYLE)
-    return sha("".join((root / p).read_text() if (root / p).exists() else "" for p in parts))
+    # julius.sh: only the prompt part, above the API call; the post-filter lives in julius-filter.sh
+    return sha("".join(((root / p).read_text().split("\ncurl ")[0]) if (root / p).exists() else "" for p in parts))
+
+
+def filter_version(root: Path = ROOT) -> str:
+    m = re.search(r"^FILTER_VERSION=(\d+)", (root / "assets/bin/julius-filter.sh").read_text(), re.M)
+    return m.group(1) if m else ""
 
 
 def file_sha(path: str, root: Path = ROOT):
@@ -102,7 +108,7 @@ def rel(p) -> str:
     return str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else str(p)
 
 
-def write(generator, out, source, section, model, images=(), root: Path = ROOT):
+def write(generator, out, source, section, model, images=(), root: Path = ROOT, extra=None):
     """Write <out>.meta.json recording the inputs as they are now."""
     meta = {
         "generator": generator,
@@ -111,6 +117,7 @@ def write(generator, out, source, section, model, images=(), root: Path = ROOT):
         "reference_images": [{"path": i, "sha256": file_sha(i, root)} for i in images],
         "prompt_version": prompt_version(generator, root),
         "model": model,
+        **(extra or {}),
     }
     Path(str(out) + ".meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n")
 
