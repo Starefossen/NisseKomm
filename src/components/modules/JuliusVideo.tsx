@@ -83,6 +83,7 @@ export function JuliusVideo({
             key={src}
             src={src}
             controls
+            aria-label={`Julius' video for ${day}. desember`}
             playsInline
             preload={preload}
             autoPlay={autoPlay && isToday && !watched}

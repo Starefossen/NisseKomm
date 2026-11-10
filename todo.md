@@ -104,8 +104,8 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [ ] Innlogging og moduser (auth, `NISSEKOMM_MODE`, proxy)
 - [ ] KodeTerminal og bonuskoder
 - [ ] NisseMail og varsler
-- [ ] Dagbok og Julius-video (JuliusVideo, sett-status, transkripsjon, PS)
-- [ ] Kalender
+- [x] Dagbok og Julius-video (JuliusVideo, sett-status, transkripsjon, PS)
+- [x] Kalender
 - [ ] Snøfall TV og LiveCam (kanaler, loops, effekter, hendelser)
 - [ ] NisseMusikk
 - [ ] Brevfugler og brev til Julius
