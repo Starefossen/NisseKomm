@@ -217,25 +217,13 @@ describe("Storage Manager - Complex Data Types", () => {
     localStorage.clear();
   });
 
-  it("should persist badge data", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
-
-    StorageManager.addBonusOppdragBadge(11, "🚨", "Krise Mester");
-
-    const badges = StorageManager.getBonusOppdragBadges();
-    expect(badges.length).toBeGreaterThan(0);
-    expect(badges.some((b) => b.day === 11 && b.icon === "🚨")).toBe(true);
-  });
-
-  it("should persist eventyr badges", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
-
-    StorageManager.addEventyrBadge("eventyr1", "📖", "Eventyr Helt");
-
-    const badges = StorageManager.getEventyrBadges();
-    expect(badges.some((b) => b.eventyrId === "eventyr1")).toBe(true);
+  it("should persist approved bonus days", () => {
+    StorageManager.completeBonusOppdrag(16);
+    StorageManager.completeBonusOppdrag(16);
+    expect(StorageManager.getCompletedBonusOppdrag()).toEqual([16]);
+    expect(StorageManager.isBonusOppdragCompleted(16)).toBe(true);
+    StorageManager.revokeBonusOppdrag(16);
+    expect(StorageManager.isBonusOppdragCompleted(16)).toBe(false);
   });
 
   it("should persist unlocked modules", async () => {
@@ -246,17 +234,6 @@ describe("Storage Manager - Complex Data Types", () => {
 
     const modules = StorageManager.getUnlockedModules();
     expect(modules).toContain("nissenet");
-  });
-
-  it("should persist crisis resolution status", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
-
-    StorageManager.resolveCrisis("antenna");
-
-    const status = StorageManager.getCrisisStatus();
-    expect(status.antenna).toBe(true);
-    expect(status.inventory).toBe(false);
   });
 
   it("should persist symbol collection", async () => {
@@ -363,18 +340,6 @@ describe("Storage Manager - Error Handling", () => {
     const duplicates = codes.filter((c) => c.kode === "DUPLICATE");
     expect(duplicates.length).toBe(1); // Should only store once
   });
-
-  it("should handle duplicate badge awards gracefully", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
-
-    StorageManager.addBonusOppdragBadge(11, "🚨", "Test Badge");
-    StorageManager.addBonusOppdragBadge(11, "🚨", "Test Badge"); // Duplicate
-
-    const badges = StorageManager.getBonusOppdragBadges();
-    const day11Badges = badges.filter((b) => b.day === 11);
-    expect(day11Badges.length).toBe(1);
-  });
 });
 
 describe("Storage Manager - Performance", () => {
@@ -443,40 +408,6 @@ describe("Storage Manager - Modules", () => {
 
     const modules = StorageManager.getUnlockedModules();
     expect(modules.filter((m) => m === "BREVFUGLER").length).toBe(1);
-  });
-});
-
-describe("Storage Manager - Crisis Status", () => {
-  beforeEach(() => {
-    localStorage.clear();
-  });
-
-  it("should track crisis resolution", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
-
-    expect(StorageManager.isCrisisResolved("antenna")).toBe(false);
-    expect(StorageManager.isCrisisResolved("inventory")).toBe(false);
-
-    StorageManager.resolveCrisis("antenna");
-    expect(StorageManager.isCrisisResolved("antenna")).toBe(true);
-    expect(StorageManager.isCrisisResolved("inventory")).toBe(false);
-
-    StorageManager.resolveCrisis("inventory");
-    expect(StorageManager.isCrisisResolved("inventory")).toBe(true);
-  });
-
-  it("should return full crisis status", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
-
-    const status = StorageManager.getCrisisStatus();
-    expect(status).toEqual({ antenna: false, inventory: false });
-
-    StorageManager.resolveCrisis("antenna");
-    const updatedStatus = StorageManager.getCrisisStatus();
-    expect(updatedStatus.antenna).toBe(true);
-    expect(updatedStatus.inventory).toBe(false);
   });
 });
 
@@ -637,78 +568,5 @@ describe("Storage Manager - Bonusoppdrag Emails", () => {
     StorageManager.clearViewedBonusOppdragEmails();
 
     expect(StorageManager.getViewedBonusOppdragEmails().size).toBe(0);
-  });
-});
-
-describe("Storage Manager - Bonusoppdrag Badges", () => {
-  beforeEach(() => {
-    localStorage.clear();
-  });
-
-  it("should add and check bonusoppdrag badges", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
-
-    expect(StorageManager.hasBonusOppdragBadge(11)).toBe(false);
-
-    StorageManager.addBonusOppdragBadge(11, "trophy", "Antenna Expert");
-    expect(StorageManager.hasBonusOppdragBadge(11)).toBe(true);
-  });
-
-  it("should get all bonusoppdrag badges", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
-
-    StorageManager.addBonusOppdragBadge(11, "trophy", "Antenna Expert");
-    StorageManager.addBonusOppdragBadge(16, "star", "Inventory Master");
-
-    const badges = StorageManager.getBonusOppdragBadges();
-    expect(badges).toHaveLength(2);
-    expect(badges[0].day).toBe(11);
-    expect(badges[1].day).toBe(16);
-  });
-
-  it("should not duplicate bonusoppdrag badges", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
-
-    StorageManager.addBonusOppdragBadge(11, "trophy", "Expert");
-    StorageManager.addBonusOppdragBadge(11, "trophy", "Expert");
-
-    const badges = StorageManager.getBonusOppdragBadges();
-    expect(badges).toHaveLength(1);
-  });
-});
-
-describe("Storage Manager - Eventyr Badges", () => {
-  beforeEach(() => {
-    localStorage.clear();
-  });
-
-  it("should add and check eventyr badges", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
-
-    expect(StorageManager.hasEventyrBadge("morkets-trussel")).toBe(false);
-
-    StorageManager.addEventyrBadge(
-      "morkets-trussel",
-      "shield",
-      "Mørket-Beseirer",
-    );
-    expect(StorageManager.hasEventyrBadge("morkets-trussel")).toBe(true);
-  });
-
-  it("should not duplicate eventyr badges", async () => {
-    const password = generateTestPassword();
-    await StorageManager.setAuthenticated(true, password);
-
-    StorageManager.addEventyrBadge("iqs-oppfinnelser", "beaker", "Oppfinner");
-    StorageManager.addEventyrBadge("iqs-oppfinnelser", "beaker", "Oppfinner");
-
-    const badges = StorageManager.getEventyrBadges();
-    expect(
-      badges.filter((b) => b.eventyrId === "iqs-oppfinnelser"),
-    ).toHaveLength(1);
   });
 });

@@ -40,9 +40,6 @@ import {
 } from "./frost";
 import { findFileNode } from "./utils/file-tree-utils";
 import {
-  getCrisisAlerts,
-  getEventyrMilepælVarsler,
-  getGeneralMilestoneAlerts,
   convertDailyAlerts,
   sortAlertsByPriority,
 } from "./generators/alert-generator";
@@ -69,30 +66,17 @@ interface GameState {
   completedQuests: Set<number>;
   submittedCodes: string[];
   completedBonusOppdrag: Set<number>;
-  earnedBadges: Badge[];
   unlockedModules: Set<string>;
   viewedMainEmails: Set<number>;
   viewedBonusOppdragEmails: Set<number>;
-  resolvedCrises: {
-    antenna: boolean;
-    inventory: boolean;
-  };
   unlockedTopics: Map<string, number>;
   santaLetters: Array<{ day: number; content: string }>;
   completedEventyr: Set<string>;
 }
 
-interface Badge {
-  day: number;
-  icon: string;
-  name: string;
-  crisisType?: "antenna" | "inventory";
-}
-
 interface QuestResult {
   success: boolean;
   isNewCompletion: boolean;
-  earnedBadge?: Badge;
   message: string;
 }
 
@@ -173,12 +157,6 @@ export class GameEngine {
     });
 
     const completedBonusOppdrag = new Set<number>();
-    const storedBadges = StorageManager.getBonusOppdragBadges();
-    const earnedBadges: Badge[] = storedBadges.map((b) => ({
-      day: b.day,
-      icon: b.icon,
-      name: b.navn,
-    }));
 
     allQuests.forEach((quest) => {
       if (quest.bonusoppdrag) {
@@ -216,11 +194,9 @@ export class GameEngine {
       completedQuests,
       submittedCodes: submittedCodes.map((c) => c.kode),
       completedBonusOppdrag,
-      earnedBadges,
       unlockedModules: new Set(StorageManager.getUnlockedModules()),
       viewedMainEmails: StorageManager.getViewedEmails(),
       viewedBonusOppdragEmails: StorageManager.getViewedBonusOppdragEmails(),
-      resolvedCrises: StorageManager.getCrisisStatus(),
       unlockedTopics: StorageManager.getUnlockedTopics(),
       santaLetters: StorageManager.getSantaLetters(),
       completedEventyr: new Set(completedEventyrList),
@@ -235,11 +211,9 @@ export class GameEngine {
       completedQuests: new Set(),
       submittedCodes: [],
       completedBonusOppdrag: new Set(),
-      earnedBadges: [],
       unlockedModules: new Set(),
       viewedMainEmails: new Set(),
       viewedBonusOppdragEmails: new Set(),
-      resolvedCrises: { antenna: false, inventory: false },
       unlockedTopics: new Map(),
       santaLetters: [],
       completedEventyr: new Set(),
@@ -339,11 +313,6 @@ export class GameEngine {
     this.processContentUnlocks(day);
 
     BadgeManager.checkAndAwardAllEligibleBadges();
-
-    // Day 24 completion awards trophy badge
-    if (day === 24) {
-      BadgeManager.checkAndAwardBadge("julekalender-fullfort");
-    }
 
     return {
       success: true,
@@ -454,13 +423,45 @@ export class GameEngine {
   static isBonusOppdragCompleted(quest: Oppdrag): boolean {
     if (!quest.bonusoppdrag) return false;
 
-    if (quest.bonusoppdrag.validering === "forelder") {
-      return StorageManager.hasBonusOppdragBadge(quest.dag);
-    } else if (quest.bonusoppdrag.kode) {
-      return StorageManager.isCodeSubmitted(quest.bonusoppdrag.kode);
-    }
+    return StorageManager.isBonusOppdragCompleted(quest.dag);
+  }
 
-    return false;
+  /**
+   * Parent approval of a bonus quest (guide page or the parent code)
+   */
+  static completeBonusOppdrag(day: number): void {
+    StorageManager.completeBonusOppdrag(day);
+  }
+
+  static revokeBonusOppdrag(day: number): void {
+    StorageManager.revokeBonusOppdrag(day);
+  }
+
+  /**
+   * Julius' PS for a solved day: bonus variant once the bonus is approved,
+   * "krypto mangler" variant while the day's decryption is still unsolved
+   */
+  static getJuliusPs(day: number): string | undefined {
+    const quest = getQuestByDay(day);
+    if (!quest) return undefined;
+    if (quest.julius_ps_krypto_mangler) {
+      // The most recent decryption before this day (day 20: stjernetegn)
+      const latest = ALL_QUESTS.filter(
+        (q) => q.dag <= day && q.decryption_challenge,
+      ).at(-1)?.decryption_challenge;
+      if (latest && !StorageManager.isDecryptionSolved(latest.challengeId)) {
+        return quest.julius_ps_krypto_mangler;
+      }
+    }
+    if (quest.julius_ps_bonus && this.isLyktBonusCompleted(day)) {
+      return quest.julius_ps_bonus;
+    }
+    return quest.julius_ps;
+  }
+
+  // Day 11 PS follows its own bonus; days 16-19 follow the lantern (day 16)
+  private static isLyktBonusCompleted(day: number): boolean {
+    return StorageManager.isBonusOppdragCompleted(day >= 16 ? 16 : day);
   }
 
   /**
@@ -549,17 +550,13 @@ export class GameEngine {
    */
 
   /**
-   * Check if a crisis is resolved
-   */
-  static isCrisisResolved(crisisType: "antenna" | "inventory"): boolean {
-    return StorageManager.isCrisisResolved(crisisType);
-  }
-
-  /**
-   * Get crisis status for all crisis types
+   * Crisis status is the bonus quests: antenna = day 11, inventory = day 16
    */
   static getCrisisStatus(): { antenna: boolean; inventory: boolean } {
-    return StorageManager.getCrisisStatus();
+    return {
+      antenna: StorageManager.isBonusOppdragCompleted(11),
+      inventory: StorageManager.isBonusOppdragCompleted(16),
+    };
   }
 
   /**
@@ -656,7 +653,7 @@ export class GameEngine {
       BadgeManager.checkAndAwardAllEligibleBadges();
       return {
         correct: true,
-        message: challenge.messageWhenSolved,
+        message: challenge.rewardText,
         correctCount,
       };
     } else {
@@ -785,6 +782,11 @@ export class GameEngine {
     }
 
     const conditions = fileNode.unlockConditions;
+
+    // Decrypted files open only through the challenge (handled above)
+    if (conditions.requiresSolvedDecryption) {
+      return false;
+    }
 
     // Check day requirement
     if (conditions.afterDay && currentDay < conditions.afterDay) {
@@ -1009,7 +1011,7 @@ export class GameEngine {
       },
       modules: {
         unlocked: state.unlockedModules.size,
-        total: 5, // NISSEKRYPTO, NISSEMUSIKK, SNØFALL_TV, BREVFUGLER, NISSESTATS
+        total: 6, // NISSEKRYPTO, SYMBOLSKANNER, NISSEMUSIKK, SNØFALL_TV, BREVFUGLER, NISSESTATS
       },
       isComplete: this.isGameComplete(),
     };
@@ -1123,9 +1125,9 @@ export class GameEngine {
           // Check if crisis is resolved
           const crisisResolved =
             (crisis.affected_metric === "NISSEKRAFT" &&
-              this.isCrisisResolved("antenna")) ||
+              this.getCrisisStatus().antenna) ||
             (crisis.affected_metric === "BREVFUGL-SVERM" &&
-              this.isCrisisResolved("inventory"));
+              this.getCrisisStatus().inventory);
 
           if (!crisisResolved) {
             // Freeze metric at crisis value
@@ -1140,9 +1142,9 @@ export class GameEngine {
         if (crisis && crisis.status) {
           const crisisResolved =
             (crisis.affected_metric === "NISSEKRAFT" &&
-              this.isCrisisResolved("antenna")) ||
+              this.getCrisisStatus().antenna) ||
             (crisis.affected_metric === "BREVFUGL-SVERM" &&
-              this.isCrisisResolved("inventory"));
+              this.getCrisisStatus().inventory);
 
           if (!crisisResolved) {
             status = crisis.status;
@@ -1211,33 +1213,8 @@ export class GameEngine {
         status = "advarsel";
       }
 
-      // Create themed metric name
-      let themeLabel = "";
-      switch (eventyr.id) {
-        case "morkets-trussel":
-          themeLabel = "Skygge-nivå";
-          // Invert for Mørket (lower is better)
-          status =
-            progress > 70 ? "normal" : progress > 40 ? "advarsel" : "kritisk";
-          break;
-        case "iqs-oppfinnelser":
-          themeLabel = "Suksessrate";
-          break;
-        case "brevfugl-mysteriet":
-          themeLabel = "Koordinering";
-          break;
-        case "frosne-monster":
-          themeLabel = "Krystallisering";
-          break;
-        case "farge-mysteriet":
-          themeLabel = "Fargeklarhet";
-          break;
-        default:
-          themeLabel = "Fremdrift";
-      }
-
       metrics.push({
-        navn: `${eventyr.navn}: ${themeLabel}`,
+        navn: `${eventyr.navn}: Fremdrift`,
         verdi: progress,
         maks: 100,
         status,
@@ -1283,26 +1260,9 @@ export class GameEngine {
       }
     ).daily_alerts.filter((a) => !a.etterKode || completedDays.has(a.day));
 
-    // Get crisis status from storage
-    const crisisStatus = this.getCrisisStatus();
+    alerts.push(...convertDailyAlerts(dailyAlertsData, day));
 
-    // 1. Add crisis alerts if active (highest priority)
-    const crisisAlerts = getCrisisAlerts(day, crisisStatus);
-    alerts.push(...crisisAlerts);
-
-    // 2. Add eventyr milestone celebration alerts
-    const eventyrVarsler = getEventyrMilepælVarsler(day, completedDays);
-    alerts.push(...eventyrVarsler);
-
-    // 3. Add ALL daily alerts from day 1 up to current day (historical feed)
-    const dailyVarsler = convertDailyAlerts(dailyAlertsData, day);
-    alerts.push(...dailyVarsler);
-
-    // 4. Add general milestone celebration alerts
-    const milestoneAlerts = getGeneralMilestoneAlerts(day, completedDays);
-    alerts.push(...milestoneAlerts);
-
-    // 5. Sort by priority (kritisk > advarsel > info) and day (newest first)
+    // Sort by priority (kritisk > advarsel > info) and day (newest first)
     sortAlertsByPriority(alerts);
 
     // 6. Return max 8 alerts
@@ -1745,7 +1705,7 @@ export class GameEngine {
             metric.navn,
           )
         ) {
-          crisisResolved = this.isCrisisResolved("antenna") || day >= 13;
+          crisisResolved = this.getCrisisStatus().antenna || day >= 13;
         }
 
         // Day 16: Inventory crisis (affects GAVEPRODUKSJON, MAGISKE SEKKER, ØNSKELISTE, NISSEKRAFT)
@@ -1759,7 +1719,7 @@ export class GameEngine {
             "NISSEKRAFT",
           ].includes(metric.navn)
         ) {
-          crisisResolved = this.isCrisisResolved("inventory") || day >= 18;
+          crisisResolved = this.getCrisisStatus().inventory || day >= 18;
         }
 
         // Day 7: Mørket warning (affects FORSVARS-BARRIERE, JULESTJERNE)

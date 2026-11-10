@@ -4,27 +4,17 @@ import { Suspense, useState, useEffect } from "react";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { GameEngine } from "@/lib/game-engine";
-import { BadgeManager } from "@/lib/badge-system";
 import type { Oppdrag } from "@/types/innhold";
 
 /**
  * Bonusoppdrag Management Page
  *
- * Parents can manually validate bonus quest completions.
- * This is for crisis resolution missions that require parent approval.
- *
- * NOTE: The current system supports 2 hardcoded crises:
- * - Day 11: Antenna crisis (badge: "Antenne-ingeniør")
- * - Day 16: Inventory chaos (badge: "Inventar-ekspert")
+ * Parents approve the two bonus quests (day 11 antenna, day 16 lantern).
+ * Approval gives no badge: Frostgraden drops 20 % and Julius' PS gets a
+ * bonus variant.
  */
 
 const allOppdrag = GameEngine.getAllQuests();
-
-// Map day numbers to crisis types (based on current quest data)
-const DAY_TO_CRISIS: Record<number, "antenna" | "inventory"> = {
-  11: "antenna",
-  16: "inventory",
-};
 
 function BonusoppdragContent() {
   const [, forceUpdate] = useState({});
@@ -35,9 +25,8 @@ function BonusoppdragContent() {
 
     const handleStorageChange = (e: StorageEvent) => {
       if (
-        e.key === "nissekomm-earned-badges" ||
-        e.key === "nissekomm-bonusoppdrag-badges" ||
-        e.key === "nissekomm-crisis-status"
+        e.key === "nissekomm-bonusoppdrag-completed" ||
+        e.key === "nissekomm-codes"
       ) {
         forceUpdate({});
       }
@@ -53,27 +42,15 @@ function BonusoppdragContent() {
   const handleValidate = (quest: Oppdrag) => {
     if (!quest.bonusoppdrag) return;
 
-    const crisisType = DAY_TO_CRISIS[quest.dag];
-    if (!crisisType) {
-      alert("Feil: Ukjent krisetype for denne dagen");
-      return;
-    }
-
     const confirmed = confirm(
-      `Bekreft at barnet har fullført bonusoppdraget:\n\n` +
+      `Bekreft at barna har fullført bonusoppdraget:\n\n` +
         `"${quest.bonusoppdrag.tittel}"\n\n` +
-        `${quest.bonusoppdrag.beskrivelse}\n\n` +
-        `Dette vil tildele merket og markere krisen som løst.`,
+        `${quest.bonusoppdrag.fysisk_oppgave}`,
     );
 
     if (confirmed) {
-      // Award badge and resolve crisis (bypass condition check - parent has validated)
-      const badgeId =
-        crisisType === "antenna" ? "antenne-ingenior" : "inventar-ekspert";
-      BadgeManager.checkAndAwardBadge(badgeId, true);
-      alert(
-        `✓ Bonusoppdrag fullført!\n\nMerke tildelt: ${quest.bonusoppdrag.badge_navn}`,
-      );
+      GameEngine.completeBonusOppdrag(quest.dag);
+      alert(`✓ ${quest.bonusoppdrag.belønning_tekst}`);
       forceUpdate({});
     }
   };
@@ -82,16 +59,11 @@ function BonusoppdragContent() {
     if (!quest.bonusoppdrag) return;
 
     const confirmed = confirm(
-      `Er du sikker på at du vil tilbakestille bonusoppdraget for dag ${quest.dag}?\n\n` +
-        `Dette vil fjerne merket "${quest.bonusoppdrag.badge_navn}".`,
+      `Er du sikker på at du vil tilbakestille bonusoppdraget for dag ${quest.dag}?`,
     );
 
     if (confirmed) {
-      // Remove the badge from unified system
-      if (quest.bonusoppdrag.badge_id) {
-        GameEngine.removeEarnedBadge(quest.bonusoppdrag.badge_id);
-      }
-
+      GameEngine.revokeBonusOppdrag(quest.dag);
       alert("Bonusoppdrag tilbakestilt");
       forceUpdate({});
     }
@@ -126,11 +98,15 @@ function BonusoppdragContent() {
             <li>
               ✓ Bonusoppdrag er valgfrie utfordringer utover hovedoppdraget
             </li>
-            <li>✓ De handler om kriser i Snøfall som må løses</li>
+            <li>✓ Godkjenn her når dere har sett det barna har laget</li>
             <li>
-              ✓ Krever forelder-validering fordi løsningene er åpne/kreative
+              ✓ Bonusen gir ingen merke, bare −20 % frost og en ekstra setning i
+              Julius&apos; PS
             </li>
-            <li>✓ Ved godkjenning får barnet et spesielt merke</li>
+            <li>
+              ✓ Fristen fredag 18. for lykten nevnes i historien, men håndheves
+              ikke. Bruk batterilys, aldri levende lys i vinduet.
+            </li>
             <li>✓ Bonusoppdrag må fullføres ETTER hovedoppdraget for dagen</li>
           </ul>
         </div>
@@ -219,14 +195,14 @@ function BonusoppdragContent() {
                 </p>
               </div>
 
-              {/* Badge Info */}
+              {/* Task */}
               <div className="mb-4">
                 <h4 className="text-lg font-bold text-(--gold) mb-2">
-                  🏅 MERKE:
+                  🛠️ OPPGAVE:
                 </h4>
-                <div className="bg-black/50 p-4 border-2 border-(--gold)/50">
-                  <p className="text-xl font-bold">{bonus.badge_navn}</p>
-                </div>
+                <p className="text-lg bg-black/50 p-4 border-2 border-(--gold)/50">
+                  {bonus.fysisk_oppgave}
+                </p>
               </div>
 
               {/* Actions */}

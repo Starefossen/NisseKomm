@@ -1,267 +1,57 @@
 {
   "eventyr": [
     {
-      "id": "morkets-trussel",
-      "navn": "Spøkelseskoden: Kulde",
-      "beskrivelse": "En ukjent digital inntrenger kalt Spøkelseskoden (Kulde) prøver å fryse ned serverne i Snøfall og stjele fargene fra både juleverkstedet og skjermene hjemme på Landås. Kristian, Håkon og Hanna må bruke kodelogikk, lagsamarbeid og ekte julevarme for å bryte is-krypteringen.",
-      "tema": [
-        "Søskensamarbeid på tvers av alder",
-        "Kodelogikk og mot",
-        "Beskyttelse av julemagien"
-      ],
-      "farge": "#8b0000",
-      "ikon": "alert",
-      "vanskelighetsgrad": "middels",
-      "første_opplåsingsdag": 7,
-      "belønning": {
-        "type": "badge",
-        "badge_id": "morket-beseirer",
-        "badge_navn": "Mørket-Beseirer",
-        "beskrivelse": "Brøt Spøkelseskoden og gjenopprettet farger og varme i Snøfall"
-      },
-      "foreldreveiledning": {
-        "sammendrag": "Hovedtråden for sesong 2 der den digitale spøkelseskoden Kulde fryser ned systemene i Snøfall og til slutt låser iMac-skjermen hjemme i gråtoner på dag 21.",
-        "pedagogisk_fokus": [
-          "Lagsamarbeid mellom 5-, 9- og 12-åring",
-          "Logisk feilsøking når noe går i lås",
-          "Samhold som motvekt mot kulde"
-        ],
-        "tips": [
-          "La Kristian (12) lede kodeanalysen mens Håkon (9) og Hanna (5) finner de fysiske gjenstandene",
-          "På dag 21 kan du aktivere gråtoner på iMac-en eller vise feilmeldingen på Skjerm før barna låser opp brannmuren",
-          "Snakk om hvordan alle tre søsknene trengs for å åpne sikkerhetslåsene"
-        ]
-      }
-    },
-    {
-      "id": "iqs-oppfinnelser",
-      "navn": "IQs Kretskort & Brannmur",
-      "beskrivelse": "IQ har bygd et nytt videologg-system og en kvante-brannmur for Snøfall TV, men kretskortene ryker, sikringene går og sledens autopilot trenger nye koordinater. Barna hjelper IQ med å koble kretsløp og teste utstyret.",
-      "tema": [
-        "Teknologi og kretsløp",
-        "Kreativ feilsøking",
-        "Eksperimentering i verkstedet"
-      ],
-      "farge": "#ffa500",
-      "ikon": "zap",
-      "vanskelighetsgrad": "lett",
-      "første_opplåsingsdag": 2,
-      "belønning": {
-        "type": "badge",
-        "badge_id": "oppfinner-assistent",
-        "badge_navn": "Oppfinner-Assistent",
-        "beskrivelse": "Koblet kretskortene og kalibrerte IQs oppfinnelser for sesong 2"
-      },
-      "foreldreveiledning": {
-        "sammendrag": "Humoristisk teknologitråd der barna hjelper IQ med kretskort, radiobølger og slede-simulering på Snøfall TV.",
-        "pedagogisk_fokus": [
-          "Enkel elektronikk og tallmønstre",
-          "Å prøve på nytt når en oppfinnelse feiler",
-          "Praktisk problemløsning i huset"
-        ],
-        "tips": [
-          "Bruk Kanal 2 (IQs Verksted-Lab) og Kanal 4 på Snøfall TV sammen med barna",
-          "La Håkon (9) styre spakene og telle sikringer",
-          "Vis hvordan små feil i koden kan rettes opp med riktig tall"
-        ]
-      }
-    },
-    {
-      "id": "brevfugl-mysteriet",
-      "navn": "Krypterte Brevfugler",
-      "beskrivelse": "For at Spøkelseskoden ikke skal kunne lese ønskene fra barna på Landås, har Winter og Julius innført brevfugl-kryptering. Papirfuglene bærer nå både ønsker og hemmelige opplåsingsnøkler mellom Bergen og Snøfall.",
-      "tema": [
-        "Hemmelige beskjeder",
-        "Ønsker og tradisjon",
-        "Forbindelsen mellom Landås og Nordpolen"
-      ],
-      "farge": "#4169e1",
-      "ikon": "mail",
-      "vanskelighetsgrad": "lett",
+      "id": "spokelseskoden",
+      "navn": "Spøkelseskoden",
+      "beskrivelse": "Noe sender på 85,0 MHz og legger rim på direktelinjen mellom Snøfall og Landås. Det kaller seg Kulde. Tre søsken holder varmen i både hus og server gjennom desember, og finner ut hva som egentlig fryser linjen.",
+      "tema": ["Samhold i mørket", "Å bli sett", "Varme er noe man deler"],
+      "farge": "#7ec8e3",
+      "ikon": "eye",
       "første_opplåsingsdag": 1,
       "belønning": {
-        "type": "module_unlock",
-        "module_id": "BREVFUGLER",
-        "beskrivelse": "Låser opp Brevfugler-modulen med personlige brev fra Julius"
+        "type": "badge",
+        "badge_id": "snofalls-venn"
       },
-      "foreldreveiledning": {
-        "sammendrag": "Brevfuglene knytter stuen på Landås direkte til Snøfall og lar Hanna, Håkon og Kristian sende egne ønsker.",
-        "pedagogisk_fokus": [
-          "Å sette ord på ønsker for seg selv og andre",
-          "Finmotorikk gjennom papirbretting",
-          "Lesetrening med kortere og lengre tekster"
-        ],
-        "tips": [
-          "La Hanna (5) finne de gjemte papirfuglene og tegne på dem",
-          "Brett gjerne ekte brevfugler sammen på dag 14"
-        ]
-      }
-    },
-    {
-      "id": "frosne-monster",
-      "navn": "Is-Krystallenes Geometri",
-      "beskrivelse": "Kulde etterlater seg krystallmønstre på rutene og i radaren. Ved å studere symmetrien i snøkrystaller, lysbrytning og prismekoder kan barna avsløre hvor Spøkelseskoden gjemmer seg.",
-      "tema": [
-        "Geometri og symmetri",
-        "Lys i mørketiden",
-        "Mønstergjenkjenning"
+      "milepaeler": [
+        {
+          "dag": 1,
+          "navn": "Linjen",
+          "tekst": "Direktelinjen åpnet. Bærebølgen hakker."
+        },
+        {
+          "dag": 7,
+          "navn": "Navnet",
+          "tekst": "Orakelet fanget signaturen. Den har et navn."
+        },
+        {
+          "dag": 12,
+          "navn": "Sukket i isen",
+          "tekst": "Isen sprakk. Det som svarte, hørtes alene ut."
+        },
+        {
+          "dag": 15,
+          "navn": "Vintervokteren",
+          "tekst": "Notatboken fortalte hvem Kulde var, og hvem som bygde det."
+        },
+        {
+          "dag": 21,
+          "navn": "Muren og porten",
+          "tekst": "Vintersolverv. Muren holder. Én port står åpen."
+        },
+        {
+          "dag": 24,
+          "navn": "Tøvær",
+          "tekst": "Sleden fløy over grotten med lys. Noe tinte."
+        }
       ],
-      "farge": "#00ced1",
-      "ikon": "pin",
-      "vanskelighetsgrad": "middels",
-      "første_opplåsingsdag": 3,
-      "belønning": {
-        "type": "symbol_collection",
-        "symbol_id": "snowflake",
-        "beskrivelse": "Samler krystall- og stjernesymboler til NisseKrypto"
-      },
       "foreldreveiledning": {
-        "sammendrag": "Utforsker mønstre i is, snø og lys gjennom desember.",
-        "pedagogisk_fokus": [
-          "Symmetri og telling av kanter og vinkler",
-          "Lys og skygge i praksis med lommelykt",
-          "Nøyaktig observasjon"
-        ],
+        "sammendrag": "Én historie i 24 dager. Kulde er ikke en skurk, men et gammelt program som ble glemt i mørket. Barna skal merke det gradvis (dag 12, 15, 23), ikke få det forklart. Tonen etter dag 15 er omsorg, ikke kamp.",
         "tips": [
-          "Bruk lommelykt når dere leter etter krystallspor i stuen eller gangen",
-          "La barna telle tagger og sammenligne former"
+          "Se Julius' video sammen hver dag; brikken er i siste setning.",
+          "Hanna har én valgfri ting per dag («hvis du vil»); ingenting stopper opp om hun heller vil høre på radioen.",
+          "Dag 10 og 21 er skjermene hjemme grå fra morgenen; det er meningen, og det går over når koden er inne."
         ]
-      }
-    },
-    {
-      "id": "farge-mysteriet",
-      "navn": "Fargespekter-Låsen",
-      "beskrivelse": "Når Spøkelseskoden prøver å gjøre Snøfall grått, må barna hente inn fargespekteret på nytt. Fargesamlerens gamle fargekoder blir nøkkelen som holder Snøfall TV og verkstedet levende.",
-      "tema": ["Fargespekter og optikk", "Kategorisering", "Kreativ leting"],
-      "farge": "#32cd32",
-      "ikon": "eye",
-      "vanskelighetsgrad": "lett",
-      "første_opplåsingsdag": 10,
-      "belønning": {
-        "type": "secret_unlock",
-        "file": "HEMMELIGHETER/farge-mysteriet/fargesamlerens_notat.txt",
-        "beskrivelse": "Låser opp Fargesamlerens spekter-notater"
-      },
-      "foreldreveiledning": {
-        "sammendrag": "En fargerik tråd der Hanna, Håkon og Kristian bruker farger i huset for å kalibrere Snøfall TV.",
-        "pedagogisk_fokus": [
-          "Fargegjenkjenning for yngstemann (Hanna)",
-          "Sortering og bokstavkobling for Håkon og Kristian",
-          "Samarbeid i stuen"
-        ],
-        "tips": [
-          "La Hanna være sjef for å hente gjenstander med riktig farge",
-          "Koble fargene til kanalene på Snøfall TV"
-        ]
-      }
-    },
-    {
-      "id": "countdown-julaften",
-      "navn": "Operasjon Julaften: Landås",
-      "beskrivelse": "De tre siste dagene før julaften! Spøkelseskoden er brutt, men nå må ruten over Ulriken og Landås finberegnes, sekken pakkes og stjernen tennes før Julius lander.",
-      "tema": [
-        "Forventning og juleglede",
-        "Siste innspurt som lag",
-        "Julemagi på Landås"
-      ],
-      "farge": "#ffd700",
-      "ikon": "calendar",
-      "vanskelighetsgrad": "lett",
-      "første_opplåsingsdag": 22,
-      "belønning": {
-        "type": "grand_finale",
-        "beskrivelse": "Fullfører Operasjon Spøkelseskode og låser opp Julaften-finalen"
-      },
-      "foreldreveiledning": {
-        "sammendrag": "Finaledagene (22-24. desember) der barna ferdigstiller ruten til Bergen og mottar Julius' siste videologg.",
-        "pedagogisk_fokus": [
-          "Mestring og stolthet over å ha løst 24 oppdrag sammen",
-          "Ro og julestemning de siste dagene",
-          "Tradisjoner på lille julaften og julaften"
-        ],
-        "tips": [
-          "Se Julius' videologg på Kanal 3 sammen om morgenen",
-          "Sørg for at alle tre barnas navn er registrert i Snill-listen i Julius-Arkiv"
-        ]
-      }
-    },
-    {
-      "id": "juletradisjon",
-      "navn": "Nordiske Juletradisjoner",
-      "beskrivelse": "Julius forteller på videologgen om hvordan julen har blitt feiret fra gamle dager til moderne tid i Bergen og Snøfall.",
-      "tema": ["Kultur og historie", "Juleskikker", "Gavmildhet"],
-      "farge": "#cd853f",
-      "ikon": "book",
-      "vanskelighetsgrad": "lett",
-      "første_opplåsingsdag": 6,
-      "belønning": {
-        "type": "knowledge",
-        "beskrivelse": "Låser opp historiske arkivfiler fra Julius"
-      },
-      "foreldreveiledning": {
-        "sammendrag": "En varm fortelling om hvorfor vi deler gaver og lyser opp desember.",
-        "pedagogisk_fokus": [
-          "Historiefortelling",
-          "Gleden ved å gi",
-          "Familietradisjoner"
-        ],
-        "tips": [
-          "Snakk om hva barna gleder seg mest til å gi bort til andre i år"
-        ]
-      }
-    },
-    {
-      "id": "halvveis-milepæl",
-      "navn": "Verkstedets Halvveis-Krise",
-      "beskrivelse": "16. desember! To tredjedeler av oppladningen er unnagjort, men gave-sorteringsmaskinen til Winter og IQ går varm midt i innspurten.",
-      "tema": ["Feiring av innsats", "Orden i kaos", "Lagånd"],
-      "farge": "#ff69b4",
-      "ikon": "award",
-      "vanskelighetsgrad": "lett",
-      "første_opplåsingsdag": 16,
-      "belønning": {
-        "type": "milestone",
-        "beskrivelse": "Halvveis-utmerkelse og tilgang til NisseStats"
-      },
-      "foreldreveiledning": {
-        "sammendrag": "Markerer at barna har løst over halvparten av desemberoppdragene og åpner statistikkmodulen.",
-        "pedagogisk_fokus": [
-          "Kategorisering og systemtenkning",
-          "Å feire milepæler underveis"
-        ],
-        "tips": [
-          "Spill Gave-Sorterer på Snøfall TV Kanal 4 sammen etter at koden er løst"
-        ]
-      }
-    },
-    {
-      "id": "slede-forberedelser",
-      "navn": "Slede-Simulering & Vestlandsvind",
-      "beskrivelse": "Bergen byr på regn, vindkast rundt Ulriken og bratte bakker på Landås. Trixter, Rudolf og IQ må kalibrere sleden for vestlandsvær før avgang.",
-      "tema": ["Navigasjon og vær", "Presisjon", "Forberedelse"],
-      "farge": "#4682b4",
-      "ikon": "truck",
-      "vanskelighetsgrad": "lett",
-      "første_opplåsingsdag": 18,
-      "belønning": {
-        "type": "preparation_complete",
-        "beskrivelse": "Sleden er kalibrert for landing på Landås!"
-      },
-      "foreldreveiledning": {
-        "sammendrag": "Knyttet til lokalgeografi i Bergen der barna hjelper Julius med vind- og høydeberegninger.",
-        "pedagogisk_fokus": [
-          "Lokal geografi (Ulriken, Landås, Bergen)",
-          "Praktisk regning med høyde og avstand"
-        ],
-        "tips": ["Prøv Slede-Simulator-minispillet på Snøfall TV Kanal 4"]
       }
     }
-  ],
-  "metadata": {
-    "versjon": "2.0",
-    "total_eventyr": 9,
-    "hoved_eventyr": 5,
-    "mini_eventyr": 4,
-    "beskrivelse": "NisseKomm Sesong 2 (2026): Operasjon Spøkelseskode. Fortellingen vever sammen fysiske ledetråder på Landås, Snøfall TV og NisseKomm-terminalen."
-  }
+  ]
 }

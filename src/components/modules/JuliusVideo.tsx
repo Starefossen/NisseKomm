@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
-import { getQuestByDay } from "@/lib/data-loader";
 import { getCurrentDay } from "@/lib/date-utils";
 import transcripts from "@/data/julius_videoer.json";
 
@@ -30,7 +29,7 @@ export function JuliusVideo({ day, onWatched }: JuliusVideoProps) {
   const isToday = day === getCurrentDay();
   const transcript = transcripts.find((t) => t.dag === day)?.transkripsjon;
   const ps = GameEngine.isQuestCompleted(day)
-    ? getQuestByDay(day)?.julius_ps
+    ? GameEngine.getJuliusPs(day)
     : undefined;
   const src = `/video/julius/dag-${String(day).padStart(2, "0")}.mp4`;
 

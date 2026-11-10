@@ -7,26 +7,9 @@
  * @public - Used in Badge interface
  */
 export type BadgeUnlockCondition =
-  | {
-      type: "bonusoppdrag";
-      day: number;
-    }
-  | {
-      type: "eventyr";
-      eventyrId: string;
-    }
-  | {
-      type: "allDecryptionsSolved";
-      challengeIds: string[];
-    }
-  | {
-      type: "allSymbolsCollected";
-      requiredCount: number;
-    }
-  | {
-      type: "allQuestsCompleted";
-      requiredCount: number;
-    };
+  | { type: "decryptionSolved"; challengeId: string }
+  | { type: "dayCompleted"; day: number }
+  | { type: "allQuestsCompleted" };
 
 /**
  * Badge definition from merker.json
@@ -37,7 +20,8 @@ export interface Badge {
   navn: string;
   beskrivelse: string;
   ikon: string;
-  type: "bonusoppdrag" | "eventyr" | "decryption" | "collection" | "completion";
+  type: "decryption" | "completion";
+  opplasingstekst: string; // Shown in the gold flash when earned
   unlockCondition: BadgeUnlockCondition;
 }
 
@@ -56,11 +40,6 @@ export interface EarnedBadge {
  */
 export interface BadgeData {
   merker: Badge[];
-  metadata: {
-    versjon: string;
-    total_merker: number;
-    beskrivelse: string;
-  };
 }
 
 // ============================================================
@@ -69,23 +48,18 @@ export interface BadgeData {
 
 interface Foreldreveiledning {
   sammendrag: string;
-  pedagogisk_fokus: string[];
   tips: string[];
 }
 
 interface EventyrBeløning {
-  type:
-    | "badge"
-    | "module_unlock"
-    | "secret_unlock"
-    | "symbol_collection"
-    | "grand_finale";
-  badge_id?: string;
-  badge_navn?: string;
-  module_id?: string;
-  symbol_id?: string;
-  file?: string;
-  beskrivelse: string;
+  type: "badge";
+  badge_id: string;
+}
+
+export interface Milepael {
+  dag: number;
+  navn: string;
+  tekst: string;
 }
 
 export interface Eventyr {
@@ -95,21 +69,14 @@ export interface Eventyr {
   tema: string[];
   farge: string;
   ikon: string;
-  vanskelighetsgrad: "lett" | "middels" | "vanskelig";
-  første_opplåsingsdag: number; // Day when eventyr metrics/alerts become visible
+  første_opplåsingsdag: number;
   belønning: EventyrBeløning;
+  milepaeler: Milepael[];
   foreldreveiledning: Foreldreveiledning;
 }
 
 export interface EventyrData {
   eventyr: Eventyr[];
-  metadata: {
-    versjon: string;
-    total_eventyr: number;
-    hoved_eventyr: number;
-    mini_eventyr: number;
-    beskrivelse: string;
-  };
 }
 
 // ============================================================
@@ -123,11 +90,11 @@ export interface EventyrData {
 export interface Bonusoppdrag {
   tittel: string;
   beskrivelse: string;
-  validering: "kode" | "forelder"; // Code submission or parent validation
-  kode?: string; // Only required if validering is "kode"
-  badge_id: string; // Badge identifier (e.g., "antenne-ingenior")
-  badge_icon: "coin" | "heart" | "zap" | "trophy" | "gift" | "star";
-  badge_navn: string; // Badge title (e.g., "Antenne-ekspert")
+  fysisk_oppgave: string;
+  validering: "forelder";
+  foreldre_kode: string; // Typed by a parent in KodeTerminal
+  frost_effekt: number;
+  belønning_tekst: string;
 }
 
 /**
@@ -135,7 +102,7 @@ export interface Bonusoppdrag {
  * @public - Used in Oppdrag interface
  */
 export interface EventyrRef {
-  id: string; // Eventyr identifier (e.g., "morkets-trussel", "iqs-oppfinnelser")
+  id: string; // Eventyr identifier (2026: "spokelseskoden")
   phase: number; // Phase number within eventyr (1-5 for major eventyr, 1-2 for mini-eventyr)
 }
 
@@ -178,7 +145,9 @@ export interface DecryptionChallenge {
   challengeId: string; // Unique challenge identifier
   requiredSymbols: string[]; // Symbol IDs needed to attempt challenge
   correctSequence: number[]; // Correct arrangement (indexes into requiredSymbols)
-  messageWhenSolved: string; // Message revealed on successful decryption
+  messageWhenSolved?: string; // Message revealed on successful decryption
+  hint: string; // Order hint shown in NisseKrypto
+  rewardText: string; // Shown when solved
   unlocksFiles?: string[]; // Additional files unlocked on success
 }
 
@@ -208,8 +177,9 @@ export interface Oppdrag {
   tittel: string;
   nissemail_tekst: string; // Mission description for children (available in app)
   kode: string;
-  dagbokinnlegg?: string; // Legacy written diary (days 8-24 until rewritten)
   julius_ps?: string; // Shown under Julius' video once the code is solved
+  julius_ps_bonus?: string; // Replaces julius_ps once LYKT2026 (or the day's bonus) is approved
+  julius_ps_krypto_mangler?: string; // Replaces julius_ps while the day's decryption is unsolved
 
   // Physical setup for parents (required)
   rampenissen_rampestrek: string; // Description of physical mischief scene for parent setup
@@ -217,14 +187,6 @@ export interface Oppdrag {
   oppsett_tid: "enkel" | "moderat" | "avansert"; // Setup time: 5min | 15min | 30min+
   materialer_nødvendig: string[]; // Items parents need to acquire
   beste_rom: string; // Suggested room/location for mischief
-  hint_type?:
-    | "skrevet" // Written clue
-    | "visuell" // Visual clue
-    | "gjemt_objekt" // Hidden object
-    | "arrangement" // Physical arrangement/scene
-    | "spor" // Trail/tracks
-    | "lyd" // Sound/audio clue
-    | "kombinasjon"; // Combination of types
 
   // QA/Production status
   finalized: boolean; // true = reviewed and ready for production, false = subject to change
@@ -259,7 +221,8 @@ export interface FilNode {
   barn?: FilNode[]; // Children for folders
   unlockConditions?: {
     requiresTopics?: string[]; // Topics required to unlock this file
-    afterDay?: number; // Unlock after completing this day
+    afterDay?: number; // Visible from the morning of this day
+    requiresSolvedDecryption?: string; // Visible once this challenge is solved
   };
 }
 

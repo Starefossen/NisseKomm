@@ -6,11 +6,6 @@ import { Icons } from "@/lib/icons";
 import { Oppdrag, CalendarEvent } from "@/types/innhold";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
-import {
-  getEventyr,
-  getEventyrDays,
-  getEventyrCameraMeta,
-} from "@/lib/eventyr";
 import { trackEvent } from "@/lib/analytics";
 
 /**
@@ -61,11 +56,7 @@ export function NisseMail({
   );
 
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
-  const [showEventyrArc, setShowEventyrArc] = useState(false);
   const [showInbox, setShowInbox] = useState(true);
-  const [expandedEventyrDescription, setExpandedEventyrDescription] =
-    useState(false);
-
   /**
    * Get hendelse for a specific day
    * Merges file-based mission hendelser with custom family events
@@ -262,18 +253,7 @@ export function NisseMail({
                   selectedEmail?.type === email.type &&
                   selectedEmail?.day === email.day;
 
-                // Get badge icon for side-quests
-                const BadgeIcon =
-                  isBonusOppdrag && email.mission.bonusoppdrag
-                    ? Icons[
-                        (email.mission.bonusoppdrag.badge_icon
-                          .charAt(0)
-                          .toUpperCase() +
-                          email.mission.bonusoppdrag.badge_icon.slice(
-                            1,
-                          )) as keyof typeof Icons
-                      ]
-                    : null;
+                const BadgeIcon = isBonusOppdrag ? Icons.Gift : null;
 
                 return (
                   <button
@@ -353,24 +333,7 @@ export function NisseMail({
                         <div className="text-2xl font-bold tracking-wider text-(--gold)">
                           {selectedMission.bonusoppdrag.tittel}
                         </div>
-                        {selectedMission.bonusoppdrag.badge_icon && (
-                          <>
-                            {(() => {
-                              const iconKey =
-                                selectedMission.bonusoppdrag.badge_icon
-                                  .charAt(0)
-                                  .toUpperCase() +
-                                selectedMission.bonusoppdrag.badge_icon.slice(
-                                  1,
-                                );
-                              const BadgeIcon =
-                                Icons[iconKey as keyof typeof Icons];
-                              return (
-                                <BadgeIcon className="w-8 h-8 text-(--gold) animate-[pulse-led_1.5s_ease-in-out_infinite]" />
-                              );
-                            })()}
-                          </>
-                        )}
+                        <Icons.Gift className="w-8 h-8 text-(--gold) animate-[pulse-led_1.5s_ease-in-out_infinite]" />
                       </div>
                       <div className="flex items-center gap-2 text-sm text-(--gold)">
                         <Icons.Alert size={16} color="gold" />
@@ -447,42 +410,22 @@ export function NisseMail({
                       </div>
                     </div>
 
-                    {/* Badge showcase */}
-                    <div className="p-4 border-2 border-(--gold) bg-black/30">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Icons.Trophy size={20} color="gold" />
+                    {/* Task and reward */}
+                    <div className="p-4 border-2 border-(--gold) bg-black/30 space-y-2">
+                      <div className="flex items-center gap-3">
+                        <Icons.Gift size={20} color="gold" />
                         <span className="text-sm font-bold text-(--gold)">
-                          MERKER & BELØNNING:
+                          OPPGAVE:
                         </span>
                       </div>
-                      <div className="flex items-center gap-4 p-3 bg-(--gold)/5 border-2 border-(--gold)/30">
-                        {selectedMission.bonusoppdrag.badge_icon && (
-                          <>
-                            {(() => {
-                              const iconKey =
-                                selectedMission.bonusoppdrag.badge_icon
-                                  .charAt(0)
-                                  .toUpperCase() +
-                                selectedMission.bonusoppdrag.badge_icon.slice(
-                                  1,
-                                );
-                              const BadgeIcon =
-                                Icons[iconKey as keyof typeof Icons];
-                              return (
-                                <BadgeIcon className="w-12 h-12 text-(--gold)" />
-                              );
-                            })()}
-                          </>
-                        )}
-                        <div>
-                          <div className="text-lg font-bold text-(--gold)">
-                            {selectedMission.bonusoppdrag.badge_navn}
-                          </div>
-                          <div className="text-sm opacity-70">
-                            Låses opp ved fullføring
-                          </div>
-                        </div>
+                      <div className="text-sm">
+                        {selectedMission.bonusoppdrag.fysisk_oppgave}
                       </div>
+                      {GameEngine.isBonusOppdragCompleted(selectedMission) && (
+                        <div className="text-sm font-bold text-(--gold)">
+                          {selectedMission.bonusoppdrag.belønning_tekst}
+                        </div>
+                      )}
                     </div>
 
                     {/* Validation instructions */}
@@ -595,166 +538,6 @@ export function NisseMail({
                       </div>
                     </div>
                   </div>
-
-                  {/* Eventyr Story Arc Card - Collapsible on mobile */}
-                  {selectedMission.eventyr &&
-                    (() => {
-                      const eventyr = getEventyr(selectedMission.eventyr.id);
-                      const eventyrDays = getEventyrDays(
-                        selectedMission.eventyr.id,
-                      );
-                      const completedDays =
-                        GameEngine.loadGameState().completedQuests;
-                      const completedInEventyr = eventyrDays.filter((day) =>
-                        completedDays.has(day),
-                      ).length;
-                      const progressPercent = Math.round(
-                        (completedInEventyr / eventyrDays.length) * 100,
-                      );
-
-                      if (!eventyr) return null;
-                      const camMeta = getEventyrCameraMeta(eventyr.id);
-
-                      return (
-                        <div className="mb-4">
-                          {/* Toggle button - visible on mobile only */}
-                          <button
-                            onClick={() => {
-                              SoundManager.playSound("click");
-                              setShowEventyrArc(!showEventyrArc);
-                            }}
-                            className="lg:hidden w-full mb-2 p-3 border-2 bg-black/50 hover:bg-black/70 transition-colors flex items-center justify-between"
-                            style={{ borderColor: eventyr.farge }}
-                          >
-                            <div className="flex items-center gap-2">
-                              <Icons.ScriptText
-                                size={20}
-                                style={{ color: eventyr.farge }}
-                              />
-                              <span
-                                className="text-sm font-bold"
-                                style={{ color: eventyr.farge }}
-                              >
-                                {eventyr.navn.toUpperCase()}
-                              </span>
-                              <span className="text-xs opacity-70">
-                                ({progressPercent}%)
-                              </span>
-                            </div>
-                            <Icons.ChevronDown
-                              size={20}
-                              style={{
-                                color: eventyr.farge,
-                                transform: showEventyrArc
-                                  ? "rotate(180deg)"
-                                  : "rotate(0deg)",
-                                transition: "transform 0.2s",
-                              }}
-                            />
-                          </button>
-
-                          {/* Full eventyr card - always visible on desktop, collapsible on mobile */}
-                          <div
-                            className={`border-2 bg-black/50 overflow-hidden ${
-                              showEventyrArc ? "block" : "hidden lg:block"
-                            }`}
-                            style={{ borderColor: eventyr.farge }}
-                          >
-                            {/* CRT Surveillance Camera Strip */}
-                            <div className="relative h-20 w-full overflow-hidden border-b border-(--neon-green)/30 bg-black">
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img
-                                src={camMeta.feedSrc}
-                                alt={eventyr.navn}
-                                className={`w-full h-full object-cover opacity-80 select-none pointer-events-none ${camMeta.filterClass}`}
-                                style={{
-                                  objectPosition: camMeta.objectPosition,
-                                }}
-                              />
-                              <div
-                                className="absolute inset-0 pointer-events-none opacity-40"
-                                style={{
-                                  backgroundImage:
-                                    "repeating-linear-gradient(0deg, rgba(0,0,0,0.6) 0px, rgba(0,0,0,0.6) 1px, transparent 1px, transparent 3px)",
-                                }}
-                              />
-                              <div
-                                className="absolute inset-0 pointer-events-none"
-                                style={{
-                                  background:
-                                    "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.85) 100%)",
-                                }}
-                              />
-                              <div className="absolute top-1.5 left-2 right-2 flex items-center justify-between text-[10px] font-bold tracking-widest">
-                                <span
-                                  className="bg-black/80 px-1.5 py-0.5 border"
-                                  style={{
-                                    borderColor: eventyr.farge,
-                                    color: eventyr.farge,
-                                  }}
-                                >
-                                  {camMeta.camLabel}
-                                </span>
-                                <span className="bg-black/80 px-1.5 py-0.5 text-(--cold-blue) border border-(--cold-blue)/40">
-                                  {camMeta.freqLabel}
-                                </span>
-                              </div>
-                            </div>
-
-                            {/* Compact header with toggle */}
-                            <button
-                              onClick={() => {
-                                SoundManager.playSound("click");
-                                setExpandedEventyrDescription(
-                                  !expandedEventyrDescription,
-                                );
-                              }}
-                              className="w-full p-4 text-left hover:bg-black/30 transition-colors"
-                            >
-                              <div className="flex items-center gap-3 mb-2">
-                                <Icons.ScriptText
-                                  size={24}
-                                  style={{ color: eventyr.farge }}
-                                />
-                                <div className="flex-1">
-                                  <div
-                                    className="font-bold tracking-wider"
-                                    style={{ color: eventyr.farge }}
-                                  >
-                                    {eventyr.navn.toUpperCase()}
-                                  </div>
-                                  <div className="text-xs opacity-70">
-                                    Fase {selectedMission.eventyr.phase} av{" "}
-                                    {eventyrDays.length} • {progressPercent}%
-                                    fullført
-                                  </div>
-                                </div>
-                                <Icons.ChevronDown
-                                  size={20}
-                                  style={{
-                                    color: eventyr.farge,
-                                    transform: expandedEventyrDescription
-                                      ? "rotate(180deg)"
-                                      : "rotate(0deg)",
-                                    transition: "transform 0.2s",
-                                  }}
-                                />
-                              </div>
-                              {/* Truncated description preview */}
-                              <div
-                                className={`text-sm opacity-80 leading-relaxed ${
-                                  expandedEventyrDescription
-                                    ? ""
-                                    : "line-clamp-1"
-                                }`}
-                              >
-                                {eventyr.beskrivelse}
-                              </div>
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })()}
 
                   {/* Email Body - Scrollable */}
                   <div className="flex-1 overflow-y-auto space-y-4 min-h-0 pr-2">

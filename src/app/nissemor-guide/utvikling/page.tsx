@@ -201,11 +201,12 @@ function UtviklingContent() {
               onClick={() => {
                 if (
                   confirm(
-                    "Tildel ALLE badges? Dette vil gi både Antenne-ingeniør og Inventar-ekspert badges.",
+                    "Tildel ALLE merker (Varmebærer, Portvokter, Snøfalls venn)?",
                   )
                 ) {
-                  BadgeManager.checkAndAwardBadge("antenne-ingenior", true);
-                  BadgeManager.checkAndAwardBadge("inventar-ekspert", true);
+                  BadgeManager.getAllBadges().forEach((b) =>
+                    BadgeManager.checkAndAwardBadge(b.id, true),
+                  );
                   alert("✓ Alle badges er nå tildelt!");
                   refreshPage();
                 }
@@ -382,17 +383,16 @@ function UtviklingContent() {
             {/* Award One Badge */}
             <button
               onClick={() => {
-                const badgeIds = ["antenne-ingenior", "inventar-ekspert"];
+                const badges = BadgeManager.getAllBadges();
+                const badgeIds = badges.map((b) => b.id);
                 const choice = prompt(
-                  `Hvilken badge vil du tildele?\n\n1. Antenne-ingeniør\n2. Inventar-ekspert\n\nSkriv nummeret (1-2):`,
+                  `Hvilket merke vil du tildele?\n\n${badges.map((b, i) => `${i + 1}. ${b.navn}`).join("\n")}\n\nSkriv nummeret:`,
                 );
                 if (choice) {
                   const index = parseInt(choice) - 1;
                   if (index >= 0 && index < badgeIds.length) {
                     BadgeManager.checkAndAwardBadge(badgeIds[index], true);
-                    alert(
-                      `✓ ${index === 0 ? "Antenne-ingeniør" : "Inventar-ekspert"} badge tildelt!`,
-                    );
+                    alert(`✓ ${badges[index].navn} tildelt!`);
                     refreshPage();
                   }
                 }

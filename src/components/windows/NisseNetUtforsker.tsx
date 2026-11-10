@@ -63,7 +63,7 @@ export function NisseNetUtforsker({
     return false;
   };
 
-  // Process files and inject dynamic content for snill_slem_liste.txt
+  // Process files and inject dynamic content for snill-listen.txt
   // Note: nissens_dagbok.txt is now handled by standalone DAGBOK module
   const processedFiles = useMemo(() => {
     const processNode = (node: FilNode): FilNode => {
@@ -77,7 +77,7 @@ export function NisseNetUtforsker({
       }
 
       // Day 23: Update Nice List with player names
-      if (node.type === "fil" && node.navn === "snill_slem_liste.txt") {
+      if (node.type === "fil" && node.navn === "snill-listen.txt") {
         const gameState = GameEngine.loadGameState();
         const completedDays = Array.from(gameState.completedQuests);
         const playerNames = GameEngine.getPlayerNames();
@@ -222,8 +222,7 @@ export function NisseNetUtforsker({
       } else {
         const isNew = isFileNew(node.navn);
         const isUnreadNiceList =
-          node.navn === "snill_slem_liste.txt" &&
-          GameEngine.hasUnreadNiceList();
+          node.navn === "snill-listen.txt" && GameEngine.hasUnreadNiceList();
 
         return (
           <button
@@ -231,7 +230,7 @@ export function NisseNetUtforsker({
             onClick={() => {
               setSelectedFile(node);
               // Mark Nice List as viewed when opened
-              if (node.navn === "snill_slem_liste.txt") {
+              if (node.navn === "snill-listen.txt") {
                 GameEngine.setNiceListViewed();
               }
             }}

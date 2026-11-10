@@ -2,153 +2,153 @@
   {
     "dag": 19,
     "tittel": "Eksplosjon i Fôringsautomaten",
-    "nissemail_tekst": "KNAS! SMASK! BOING! IQ bygde en helautomatisk snacks-kanon til Rudolf og Trixter i natt, men fjæren røk og skjøt 40 knasende grønnsaker rett gjennom verkstedet! Tre av dem landet hjemme hos dere på Landås! Hanna og Håkon: Løp på jakt etter de 3 oransje grønnsakene jeg har gjemt på kjøkkenet og i stuen! På dem står de 3 første bokstavene: G - U - L. Kristian: Sjekk reinsdyr_GYATT.log i JULIUS-ARKIV i NisseNet for de 3 siste bokstavene (R - O - T)!",
-    "rampenissen_rampestrek": "Rampenissen har gjemt 3 ekte gulrøtter på morsomme steder (f.eks. i fruktskålen, i en sko, og i sofaen) med en lapp: 'REINSDYR-DRIVSTOFF DEL 1: G - U - L (Se JULIUS-ARKIV/reinsdyr_GYATT.log for DEL 2: R - O - T)'.",
-    "fysisk_hint": "Finn de 3 gulrøttene Rampenissen har gjemt (G-U-L) og kombiner med de 3 siste bokstavene (R-O-T) i JULIUS-ARKIV/reinsdyr_GYATT.log!",
+    "nissemail_tekst": "IQ bygde en fôringsautomat til reinsdyrene i natt. 💥 Den skjøt førti av dem gjennom taket. Tre landet hos dere, i tre rom, pakket i folie. Én landet på meg. Jeg er et åsted nå. IQ sier: ikke pakk opp bevis. Håkon: finn de tre pakkene, og legg hver på ruten med samme tall, på arket ved meg. Hanna, hvis du vil: du legger dem. Kristian: Julius forteller hva Rudolf vil ha før hver tur. Ingenting fra Kulde i natt. Snøfall puster. – Rampenissen",
+    "rampenissen_rampestrek": "Truffet: ligger flat på kjøkkengulvet med et omriss av maskeringsteip rundt seg, et plaster på pannen og «BEVIS»-pakken i aluminiumsfolie ved siden av (åpnes etter koden).",
+    "fysisk_hint": "Fire små gulrøtter pakket helt inn i folie. Tre med merkelapp på hyssing (`dag19-bevislapper.pdf`, tegn i hjørnet): stua `U · 2`, kjøkken `O · 5`, gang `❄ · 3`. «BEVIS»-pakken ligger på rutearket med seks ruter i teipomrisset. Løsning: Håkon finner pakkene og legger dem på ruten med samme tall: `_ U _ _ O _`. Julius: det oransje drivstoffet Rudolf vil ha, vokser med toppen opp. Kode GULROT. Pakkene åpnes etter koden. Pusterom med vilje. Hanna, hvis hun vil: legger pakkene på rutene.",
     "materialer_nødvendig": [
-      "3 gulrøtter",
-      "Lapp ved gulrøttene: 'DEL 1: G - U - L (Se JULIUS-ARKIV/reinsdyr_GYATT.log i NisseNet for DEL 2)'"
+      "4 små gulrøtter",
+      "aluminiumsfolie",
+      "hyssing",
+      "maskeringsteip",
+      "plaster",
+      "dag19-bevislapper.pdf"
     ],
     "beste_rom": "Kjøkken og stue",
     "oppsett_tid": "moderat",
     "kode": "GULROT",
-    "hint": "Hvilken knasende oransje grønnsak elsker reinsdyrene aller mest? Sett sammen G-U-L og R-O-T (6 bokstaver)!",
     "reveals": {
-      "files": ["reinsdyr_GYATT.log"],
-      "topics": ["reinsdyr-streik", "iq-oppfinnelser"],
+      "files": ["foringsautomat.log"],
       "modules": []
     },
     "eventyr": {
-      "id": "iqs-oppfinnelser",
-      "phase": 3
+      "id": "spokelseskoden",
+      "phase": 19
     },
-    "dagbokinnlegg": "19. desember. Helgevask i stallen ble avbrutt da IQs automatiske GULROT-kanon gikk av på full styrke. Rudolf var strålende fornøyd med regnet av snacks, og hjemme på Landås fant Hanna, Håkon og Kristian de tre utskutte gulrøttene og koblet dem til telemetriloggen i Julius-Arkiv.",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Rudolf spiste bevismaterialet. Alt sammen, også det med teip på. Det har vært grønt over Nordtoppen to netter nå, og Orakelet teller flere lys på Landås-siden enn i fjor. IQ bygde automaten for å slippe å tenke; det hjalp ikke.",
+    "julius_ps_bonus": "Rudolf spiste bevismaterialet. Alt sammen, også det med teip på. Orakelet teller lys på Landås-siden og sier ett av dem står helt stille, i et vindu, hver kveld. IQ bygde automaten for å slippe å tenke; det hjalp ikke."
   },
   {
     "dag": 20,
-    "tittel": "Sofa-Sleden og Overlydsmotoren",
-    "nissemail_tekst": "Søndag og 4. søndag i advent! I dag monterer IQ den siste store oppfinnelsen sin på sleden før julaften! Jeg har bygd min egen prøve-slede av sofaputer i stuen sammen med et GRØNT MÅNE-symbolkort. Hanna: Sett deg i pute-sleden og finn det grønne måne-kortet! Håkon: Sjekk dashbord-lappen i pute-sleden (den har de 3 første bokstavene: T - U - R). Kristian: Åpne IQs Verksted-Lab på Snøfall TV (Kanal 2) og les av de 2 siste bokstavene på trykkmåleren (B - O)!",
-    "rampenissen_rampestrek": "Rampenissen sitter i en 'slede' laget av 2-3 sofaputer med tøyler av garn/belte, det grønne måne-kortet og en lapp: 'MOTOR DEL 1: T - U - R (Sjekk Snøfall TV Kanal 2 for DEL 2: B - O)'.",
-    "fysisk_hint": "Sjekk Rampenissens pute-slede i stuen for det grønne måne-kortet og bokstavene T-U-R, og se på Snøfall TV Kanal 2 for de 2 siste bokstavene (B-O)!",
+    "tittel": "Sofa-Sleden",
+    "nissemail_tekst": "God 4. advent. 🕯️ I morgen er den mørkeste dagen, og Julius sier Kulde når huset da. Ikke for å skade. Fordi det er der lyset er. Julius ber dere finne fram åtte bøker til i morgen. Bøker holder på varmen. Putene lå etter størrelse, den største som nummer én, før jeg veltet dem. Håkon: hent dem ut og legg dem i rett rekkefølge. Hanna, hvis du vil: du kryper inn først. Kristian: tavla, og hør Julius helt til slutt. Les Trixters kart i kveld. – Rampenissen",
+    "rampenissen_rampestrek": "Har bygd fort av et teppe over to stoler med skiltet «KUN FOR SIGMAS. 6-7.», tatt pappas hodetelefoner og fjernkontrollen, og sitter med en skål popcorn.",
+    "fysisk_hint": "Fem puter i tydelig ulik størrelse inne i fortet, hulter til bulter; bruk sofaputer, pynteputer, hodepute, barnepute, hva som helst, så lenge ingen to er like store. Kort (`dag20-putekort.pdf`, prikker bak etter størrelse): under den nest største tegn **U**, under den fjerde største tegn **B**, resten ❄ med tegn i hjørnet. Grønt måne-kort under den minste. Løsning: Håkon henter putene og legger dem etter størrelse (største = 1), Kristian slår opp tegnene: `_ U _ B _`. Julius: det biler får når de skal forbi i bakken. Kode TURBO. Finn fram 8 bøker til mandag. Minn barna på å lese Trixters kart (NisseKrypto) i kveld; i morgen er det meste fryst. Mangler tavla B (dag 18 hoppet over): `runer-fasit.pdf`, eller si at kortet under pute 4 er B. Hanna, hvis hun vil: kryper inn og rekker ut putene, skanner måne-kortet.",
     "materialer_nødvendig": [
-      "Symbolkort: Grønn måne (QR-kort)",
-      "2-3 sofaputer stilt som en slede",
-      "Lapp: 'MOTOR DEL 1: T - U - R + DEL 2 på Snøfall TV Kanal 2: B - O'"
+      "5 puter av hvilket som helst slag, i ulik størrelse",
+      "teppe og to stoler",
+      "dag20-putekort.pdf",
+      "symbolkort grønn måne",
+      "popcorn",
+      "8 bøker til i morgen"
     ],
     "beste_rom": "Stue (sofaen)",
     "oppsett_tid": "moderat",
     "kode": "TURBO",
-    "hint": "Sett sammen T-U-R fra pute-sleden i stuen med B-O fra Snøfall TV Kanal 2 (5 bokstaver)!",
     "reveals": {
       "files": [],
-      "topics": ["slede-test", "iq-oppfinnelser"],
       "modules": []
     },
     "eventyr": {
-      "id": "iqs-oppfinnelser",
-      "phase": 4
+      "id": "spokelseskoden",
+      "phase": 20
     },
     "symbol_clue": {
       "symbolId": "moon-green",
       "symbolIcon": "moon",
       "symbolColor": "green",
-      "description": "Grønn måne funnet i pute-sleden i stuen"
+      "description": "Grønn måne funnet under den innerste puten i fortet"
     },
-    "dagbokinnlegg": "20. desember. Med koden TURBO er alle fire faser av IQs Oppfinnelser fullført! Sleden har nå både kretskort, sikringer, gulrot-energi og ekstra skyvekraft til å krysse Norskehavet og klatre over Ulriken på sekunder. Barna har dessuten sikret det første månesymbolet (Grønn Måne) og merket Oppfinner-Assistent!",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Nissemor har tent det fjerde lyset. Hun lot det stå i vinduet mot nord. Rampenissen har bygd fort «for å øve på å holde varmen»; popcornet er visst proviant. I morgen trenger dere ikke være redde. Dere trenger å være hjemme.",
+    "julius_ps_krypto_mangler": "Nissemor har tent det fjerde lyset. Men dere har ikke åpnet Trixters kart ennå; det ligger i NisseKrypto, bak seks symboler. Åpne det i kveld, for porten står der jeg tegnet sirkelen. Rampenissen har bygd fort «for å øve på å holde varmen»."
   },
   {
     "dag": 21,
-    "tittel": "Slaget om Brannmuren",
-    "nissemail_tekst": "KODE RØD! DETTE ER DET SISTE ANGREPET! Spøkelseskoden Kulde har samlet all kraft på den mørkeste dagen i året (vintersolverv) og sugd fargene rett ut av skjermen deres! For å knuse Kulde én gang for alle må alle tre jobbe sammen NÅ: Hanna, finn det røde varme-skjoldet jeg har lagt ved skjermen (der står første del av koden: B - R - A - N - N)! Håkon og Kristian: Åpne Snøfall TV på KANAL 4 og spill BRANNMUR-ZAPPER (eller les Julius sin nødmelding på Kanal 3) for å hente de 3 siste bokstavene (M - U - R)! Tast inn hele ordet på 8 bokstaver for å sprenge is-låsen og gi fargene tilbake til huset!",
-    "rampenissen_rampestrek": "Rampenissen står vakt foran iMac-en eller TV-en med et lite 'skjold' av papp/papir og lappen: 'FORSVAR DEL 1: B - R - A - N - N (Spill Brannmur-Zapper på Snøfall TV Kanal 4 for DEL 2: M - U - R)'.",
-    "fysisk_hint": "Se ved skjermen etter Rampenissens skjold (B-R-A-N-N) og åpne Snøfall TV Kanal 4 (Brannmur-Zapper) for å finne de 3 siste bokstavene (M-U-R)!",
+    "tittel": "Vintersolverv",
+    "nissemail_tekst": "Alt er hvitt. Skjermen hjemme, Snøfall TV, alt. ❄️ Men bokmuren står, og den holder varmen inne. Jeg satte én bok på gløtt, men jeg husker ikke om det var den Julius mente. Kartet vet. IQ bygde en vegg av varme rundt linjen i natt, og Julius lot én port stå åpen, inn mot grotten. Håkon: les ryggene fra venstre. Bare én bokstav står ute; den andre ligger inne i porten. Kristian: Julius sa i går hvor porten står. Hanna, hvis du vil: si «bokstav» eller «is». Kom hjem. – Rampenissen",
+    "rampenissen_rampestrek": "Står bak en lav mur av bøker foran skjermen med et grytelokk mot trekken og en visp han glemte å legge fra seg; én bok står på gløtt (feil bok, han gjettet).",
+    "fysisk_hint": "Åtte bøker som lav mur foran skjermen, ryggkort fra `dag21-portkort.pdf` teipet på hver rygg, fra venstre: ❄, **R**, ❄, ❄, ❄, ❄, ❄, ❄ (rutetall i hjørnet, tegn). Inne i bok 5 (porten, varde 5 på Trixters kart): kortet `U · 7`. Inne i bok 3: et ❄-kort; bok 3 står på gløtt (blindspor). Ingenting digitalt kvelden før. Løsning: Håkon leser ryggene (bare R), Kristian husker dag 20 (porten = sirkelen på kartet) og åpner bok 5: `_ R _ _ _ _ U _`. Julius: IQs vegg av varme, brannfolk bygger det samme og kaller den etter det de kjemper mot. Kode BRANNMUR. Merket Portvokter. Er kartet ikke lest: PS dag 20 sa fra; fasit her: bok 5. Nødutgang: «Frost av» i guiden. Hanna, hvis hun vil: sier «bokstav» eller «is».",
     "materialer_nødvendig": [
-      "Lapp formet som et skjold ved iMac-en/TV-en: 'DEL 1: B - R - A - N - N + DEL 2 på Snøfall TV Kanal 4: M - U - R'",
-      "Valgfritt: Sett iMac-skjermen i gråtoner via Fleet før barna står opp (NisseKomm skrur fargene automatisk tilbake når de løser koden!)"
+      "8 bøker",
+      "teip",
+      "dag21-portkort.pdf",
+      "grytelokk og visp"
     ],
     "beste_rom": "Ved iMac-en / TV-en",
     "oppsett_tid": "moderat",
     "kode": "BRANNMUR",
-    "hint": "Sett sammen B-R-A-N-N fra skjoldet ved skjermen med M-U-R fra Snøfall TV Kanal 4 (8 bokstaver)!",
     "reveals": {
-      "files": ["nordpolen_hemmelighet.txt"],
-      "topics": ["morket-beseirt", "morkets-trussel"],
+      "files": [],
       "modules": []
     },
     "eventyr": {
-      "id": "morkets-trussel",
-      "phase": 4
+      "id": "spokelseskoden",
+      "phase": 21
     },
-    "dagbokinnlegg": "21. desember. Vintersolverv - årets mørkeste dag, og dagen da Spøkelseskoden Kulde satte inn sitt siste støt. Den klarte til og med å tappe fargene fra iMac-skjermen hjemme på Landås! Men Kristian, Håkon og Hanna sto sammen, aktiverte den uknuselige BRANNMUR-protokollen, slettet Kulde fra serverne og brakte fargene og julevarmen tilbake. Hele Snøfall jubler!",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Muren holder. Porten står åpen. Nå venter vi på om noe kommer gjennom. Rampenissen sto bak bokmuren med et grytelokk mot trekken og en visp han hadde glemt å legge fra seg; han sier vispen var «for sikkerhets skyld»."
   },
   {
     "dag": 22,
-    "tittel": "Landingskoordinatene i Sokkene",
-    "nissemail_tekst": "Jippi! Spøkelseskoden er borte, og det er bare TO dager igjen til julaften! Nå må Julius legge inn det nøyaktige landingsstedet for dere tre i sledens datamaskin. Jeg har hengt frem 3 julesokker (eller lagt 3 lapper i skoene til Hanna, Håkon og Kristian) sammen med et RØDT MÅNE-symbolkort! I Sokk 1 ligger tallene 12 - 1. I Sokk 2 ligger 14 - 4. I Sokk 3 ligger 29 - 19. Kristian: Åpne julekode_dekoder.txt i SNOFALL-HISTORIER i NisseNet og oversett tallene (A=1 til Å=29) sammen med Håkon og Hanna! Og husk å skrive inn navnene deres i Snill-listen i KodeTerminal etterpå!",
-    "rampenissen_rampestrek": "I 3 julesokker eller i én sko til hver av Hanna, Håkon og Kristian ligger det røde måne-kortet og 3 tall-lapper: 'Sokk 1 (Hanna): 12 - 1', 'Sokk 2 (Håkon): 14 - 4', 'Sokk 3 (Kristian): 29 - 19'.",
-    "fysisk_hint": "Finn de 3 lappene i sokkene/skoene til Hanna (12-1), Håkon (14-4) og Kristian (29-19), og bruk alfabettabellen i SNOFALL-HISTORIER/julekode_dekoder.txt i NisseNet!",
+    "tittel": "Winters Tall",
+    "nissemail_tekst": "Julius vil vite nøyaktig hvor dere bor. 📍 Jeg sa «ved sofaen». Det holdt ikke. Jeg sa «i Bergen». Nei. Winter trenger stedet i tall, og hun skriver tall på sin egen måte. Jeg gjemte meg i en sokk for å tenke. Det var en feil. Håkon: finn alle tre sokkene. Hanna, hvis du vil: dra meg ut av din. Det røde kortet er ditt. Kristian: strimmelen fra brevfuglen, og Winter har to regler. Julius sier begge. Etterpå vil Julius ha navnene deres. – Rampenissen",
+    "rampenissen_rampestrek": "Har krøpet inn i Hannas julesokk med bare føttene ut, og kommer ikke løs.",
+    "fysisk_hint": "Tre julesokker merket 1, 2, 3 med to separate tallkort i hver (`dag22-sokkelapper.pdf`, merket 1a/1b osv., ingen bindestrek og ingen minustegn): sokk 1 (stua) `15` og `4`, sokk 2 (kjøkkenet) `17` og `7`, sokk 3 (Hannas, i gangen, med Rampenissen og rødt måne-kort) `32` og `22`. Ingen bokstaver. Løsning: Julius: A er alltid først, alfabetet slutter på Å, og Winter legger tre til hvert tall; trekk fra. 12 L, 1 A, 14 N, 4 D, 29 Å, 19 S. Kode LANDÅS. Så navneregistrering.",
     "materialer_nødvendig": [
-      "Symbolkort: Rød måne (QR-kort)",
-      "3 julesokker eller 3 sko",
-      "3 lapper: 'Del 1: 12 - 1', 'Del 2: 14 - 4', 'Del 3: 29 - 19 (Se julekode_dekoder.txt i NisseNet)'"
+      "3 julesokker",
+      "dag22-sokkelapper.pdf",
+      "alfabetstrimmelen fra dag 5",
+      "symbolkort rød måne"
     ],
     "beste_rom": "Stue eller gang",
     "oppsett_tid": "moderat",
     "kode": "LANDÅS",
-    "hint": "Oversett tallene med A=1, B=2 ... Å=29: 12=L, 1=A, 14=N, 4=D, 29=Å, 19=S. Hvilket sted i Bergen blir det?",
     "reveals": {
-      "files": ["julekode_dekoder.txt", "snill_slem_liste.txt"],
-      "topics": ["countdown-starter", "snill-slem-liste"],
+      "files": ["snill-listen.txt"],
       "modules": []
     },
     "eventyr": {
-      "id": "countdown-julaften",
-      "phase": 1
+      "id": "spokelseskoden",
+      "phase": 22
     },
     "symbol_clue": {
       "symbolId": "moon-red",
       "symbolIcon": "moon",
       "symbolColor": "red",
-      "description": "Rød måne funnet i julesokkene på Landås"
+      "description": "Rød måne funnet innerst i Hannas julesokk"
     },
-    "dagbokinnlegg": "22. desember. Roen og julegleden har senket seg over Snøfall etter gårsdagens seier. I dag dekodet Kristian, Håkon og Hanna tallkoden 12-1-14-4-29-19 og bekreftet primærmålet i Bergen: LANDÅS! Snill-listen i Julius-Arkiv er nå åpen for registrering av alle tre søsknene.",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Tre navn. Jeg skrev dem selv. Ingenting har kommet gjennom porten ennå, men Orakelet sier det er varmere der nede. Rampenissen satt fast i en julesokk i to timer før noen dro."
   },
   {
     "dag": 23,
-    "tittel": "Stjernevakt på Lille Julaften",
-    "nissemail_tekst": "Det er LILLE JULAFTEN! Reinsdyrene står ferdig spent foran sleden i Snøfall, og sekken er lastet med gaver til Bergen! Men hvordan blir flyværet i natt? Jeg har lagt et BLÅTT MÅNE-symbolkort ved juletreet (eller vinduet) sammen med første del av værmeldingen på 7 bokstaver: S - T - J - E - R - N - E. Hanna: Finn det blå måne-kortet! Håkon og Kristian: Se Julius sin videologg på Snøfall TV Kanal 3 for å få de 5 siste bokstavene (K - L - A - R - T) - og bruk alle 9 symbolene i NISSEKRYPTO til å låse opp den aller siste hemmeligheten (Hjertets Hemmelighet)!",
-    "rampenissen_rampestrek": "Ved juletreet eller i stuevinduet sitter Rampenissen og speider opp mot stjernene med det blå måne-kortet og en lapp: 'FLYVÆR DEL 1: S T J E R N E + DEL 2 på Snøfall TV Kanal 3: K L A R T'.",
-    "fysisk_hint": "Se ved juletreet eller vinduet etter det blå måne-kortet og første del av ordet (STJERNE), og legg til andre del (KLART) fra Snøfall TV Kanal 3!",
+    "tittel": "Nattevakt",
+    "nissemail_tekst": "I natt flyr de. 🌙 Over Nordtoppen, lavt over grotten, med alle lysene på. Jeg gråter ikke. Orakelet så ned i grotten i natt. Det som er der nede har ventet på lys i ett år. Jeg pakket opp et hjørne av en gave, og angrer. Håkon: plukk de tolv som henger i treet, legg dem etter tallet bak, og snu dem. Tallene er skrevet slik IQ skriver dem. Hanna, hvis du vil: ta de lave, og det blå kortet er hos meg. Kristian: hør Orakelets værmelding hos Julius. – Rampenissen",
+    "rampenissen_rampestrek": "Har pakket opp et hjørne av en gave under treet, teipet det igjen med altfor mye teip, og sitter nå i treet som pynt med dårlig samvittighet.",
+    "fysisk_hint": "Tolv papirstjerner (`dag23-stjerner.pdf`, klippet og tredd i november) i treet, de laveste i Hannas høyde. Forside: nr. 5 **R**, nr. 8 **K**, nr. 10 **A**, resten ❄ (tegn i hjørnet). Bakside: romertall I–XII. Rampenissen i treet med blått måne-kort. Løsning: Håkon plukker (en voksen løfter til de høye), legger dem etter romertallet og snur: `_ _ _ _ R _ _ K _ A _ _`. Julius: Orakelets værord for en natt der alt som blinker der oppe er synlig, og ordet begynner med det som blinker. Kode STJERNEKLART. Så NisseKrypto 3. Hanna, hvis hun vil: tar de lave stjernene og skanner måne-kortet.",
     "materialer_nødvendig": [
-      "Symbolkort: Blå måne (QR-kort)",
-      "Lapp ved juletreet/vinduet: 'DEL 1: S T J E R N E + DEL 2 fra Snøfall TV Kanal 3: K L A R T'"
+      "dag23-stjerner.pdf",
+      "hyssing",
+      "symbolkort blå måne",
+      "teip og en gave"
     ],
     "beste_rom": "Stue (ved juletreet eller vinduet)",
     "oppsett_tid": "moderat",
     "kode": "STJERNEKLART",
-    "hint": "Sett sammen STJERNE fra lappen ved juletreet og KLART fra Snøfall TV Kanal 3 (12 bokstaver i ett ord)!",
     "reveals": {
-      "files": [],
-      "topics": ["lille-julaften", "countdown-julaften"],
+      "files": ["03-siste-side.txt"],
       "modules": []
     },
     "eventyr": {
-      "id": "countdown-julaften",
-      "phase": 2
+      "id": "spokelseskoden",
+      "phase": 23
     },
     "symbol_clue": {
       "symbolId": "moon-blue",
       "symbolIcon": "moon",
       "symbolColor": "blue",
-      "description": "Blå måne funnet under stjernevakten på lille julaften"
+      "description": "Blå måne funnet hos Rampenissen i juletreet"
     },
     "decryption_challenge": {
       "challengeId": "hjertets-hemmelighet",
@@ -164,39 +164,41 @@
         "moon-blue"
       ],
       "correctSequence": [6, 3, 0, 7, 4, 1, 8, 5, 2],
-      "hint": "Sorter etter fargesøylene (Grønn først, så Rød, så Blå) fra nattehimmel til hjerte: Måne → Sol → Hjerte i Grønn, deretter Måne → Sol → Hjerte i Rød, og til slutt Måne → Sol → Hjerte i Blå!",
-      "rewardText": "ALLE 3 NIVÅER DEKRYPTERT! Filen hjertets-hemmelighet.txt er låst opp i DEKRYPTERT, og dere er nå offisielle KODE-MESTERE!",
+      "hint": "Tre farger, tre rader: måne → sol → hjerte i grønt, så i rødt, så i blått.",
+      "rewardText": "DEKRYPTERT. Hele historien ligger i DEKRYPTERT/hjertets-hemmelighet.txt. Det er den siste.",
       "unlocksFiles": ["hjertets-hemmelighet.txt"]
     },
-    "dagbokinnlegg": "23. desember. Lille julaften! Skyene sprekker opp over Byfjellene, og Orakelet melder helt STJERNEKLART fra Nordpolen til Bergen. Med det Blå Måne-symbolet på plass har Kristian, Håkon og Hanna samlet alle 9 symbolene og låst opp Nivå 3 i NisseKrypto. I natt flyr vi!",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Nå vet dere alt. Rampenissen også; han satt i treet og hørte. Men ingen av dere vet hva Trixter har i sleden til i morgen. Gaven med altfor mye teip på: la den ligge. Han mente det godt."
   },
   {
     "dag": 24,
-    "tittel": "God Jul på Landås!",
-    "nissemail_tekst": "GOD JUL, KRISTIAN, HÅKON OG HANNA! Vi klarte det! I natt landet sleden mykt på Landås, og både Julius, Trixter, Rudolf og jeg så hvor fint juletreet deres lyser. Før jeg reiser hjem til Snøfall igjen, har jeg lagt igjen en gullstjerne og et avskjedsbrev under juletreet med de 4 første bokstavene: J - U - L - E. Se Julius sin aller siste videologg på Snøfall TV Kanal 3 for de 4 siste bokstavene (M - A - G - I), og skriv inn årets siste kode for å låse opp Julaften-trofeet!",
-    "rampenissen_rampestrek": "Under juletreet ligger Rampenissens avskjedsbrev sammen med en gullstjerne (og gjerne en liten julaften-overraskelse til hver av de tre søsknene) med koden: 'DEL 1: J U L E + DEL 2 på Snøfall TV Kanal 3: M A G I'.",
-    "fysisk_hint": "Se under juletreet etter Rampenissens avskjedsbrev og gullstjernen (JULE) og kombiner med de 4 siste bokstavene (MAGI) på Snøfall TV Kanal 3!",
+    "tittel": "God Jul på Landås",
+    "nissemail_tekst": "De landet. 🎄 Jeg så det. De fløy over grotten først, lavt, med alle lysene på, og noe blått fløy opp og møtte dem. Jeg reiser hjem i kveld. Kofferten min står ved konvolutten under treet. I den ligger tre ting dere kjenner igjen fra desember. Håkon: åpne konvolutten og les brevet mitt høyt. Kristian: rutekortet ligger i konvolutten, lappene har tegn, og Julius sier resten. Hanna, hvis du vil: du vet hvilken dag hver ting kommer fra. Takk for garnkurven. Og takk for alt. – Rampenissen",
+    "rampenissen_rampestrek": "Ligger og sover inni den store gullkonvolutten under treet med en sløyfe på hodet og en liten pappeske som pakket koffert ved siden av.",
+    "fysisk_hint": "Pappesken med sløyfe ved konvolutten: perlen (dag 3) med lapp `tegn U · 2`, rødfilteret (dag 10) `tegn E · 4`, båndbiten (dag 17) `tegn G · 7` (`dag24-suvenirlapper.pdf`). I konvolutten: avskjedsbrevet, rutekort med åtte ruter og **alltid** de tre reservelappene («IQs kopi») under brevet. Krystallet som ikke smelter under treet, med `dag24-krystallkort.pdf`: «TAKK FOR LYSET» i tegn. Løsning: Håkon leser brevet og legger lappene, Kristian slår opp tegnene: `_ U _ E _ _ G _`. Julius: høytiden foran, pluss det trollmenn later som de har. Kode JULEMAGI. Så brevet i Brevfugler, finale, diplom, merket Snøfalls venn. Lett med vilje; mangler tavla et tegn, er bokstavene U, E, G. Hanna, hvis hun vil: åpner kofferten og sier hvilken dag hver ting kommer fra.",
     "materialer_nødvendig": [
-      "Avskjedsbrev fra Rampenissen i gullkonvolutt under juletreet med 'DEL 1: J U L E + DEL 2: M A G I'",
-      "Valgfritt: Julestrømpe eller liten morgengave til Kristian, Håkon og Hanna"
+      "liten pappeske",
+      "sløyfe",
+      "gullkonvolutt",
+      "perle, filter og båndbit fra konvolutten «24»",
+      "dag24-suvenirlapper.pdf",
+      "dag24-krystallkort.pdf",
+      "diplomene «Snøfalls venn» (3)",
+      "iskrystall i glass eller akryl"
     ],
     "beste_rom": "Under juletreet",
     "oppsett_tid": "moderat",
     "kode": "JULEMAGI",
-    "hint": "Sett sammen JULE fra brevet under juletreet og MAGI fra Julius sin hilsen på Snøfall TV Kanal 3 (8 bokstaver)!",
     "reveals": {
       "files": [],
-      "topics": ["julaften", "finale"],
       "modules": []
     },
     "eventyr": {
-      "id": "countdown-julaften",
-      "phase": 3
+      "id": "spokelseskoden",
+      "phase": 24
     },
-    "dagbokinnlegg": "24. desember. Julaften! Operasjon Spøkelseskode er fullført, og julefreden har senket seg over både Snøfall og Landås. Kristian, Håkon og Hanna har vist ekte søskensamarbeid, skarpt detektivblikk og varme hjerter gjennom hele desember. Takket være deres JULEMAGI er julen reddet igjen. Riktig god jul, mine unge agenter!",
-    "hint_type": "kombinasjon",
-    "finalized": true
+    "finalized": true,
+    "julius_ps": "Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Rampenissen sov i gullkonvolutten med sløyfe på hodet og en pappeske som koffert. God jul, Kristian, Håkon og Hanna."
   }
 ]

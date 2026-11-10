@@ -78,50 +78,12 @@ export function validateOppdrag(oppdrag: Oppdrag, weekNumber: number): void {
     );
   }
 
-  // Validate hint_type is valid value
-  const validHintTypes = [
-    "skrevet",
-    "visuell",
-    "gjemt_objekt",
-    "arrangement",
-    "spor",
-    "lyd",
-    "kombinasjon",
-  ] as const;
-  if (
-    oppdrag.hint_type !== undefined &&
-    !validHintTypes.includes(
-      oppdrag.hint_type as (typeof validHintTypes)[number],
-    )
-  ) {
-    throw new Error(
-      `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - hint_type must be one of: ${validHintTypes.join(", ")}`,
-    );
-  }
-
   // Validate bonus quest structure if present
   if (oppdrag.bonusoppdrag) {
-    const bonusoppdrag = oppdrag.bonusoppdrag;
-    if (
-      !bonusoppdrag.tittel ||
-      !bonusoppdrag.beskrivelse ||
-      !bonusoppdrag.validering ||
-      !bonusoppdrag.badge_icon ||
-      !bonusoppdrag.badge_navn
-    ) {
+    const b = oppdrag.bonusoppdrag;
+    if (!b.tittel || !b.beskrivelse || !b.fysisk_oppgave || !b.foreldre_kode) {
       throw new Error(
         `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - bonusoppdrag missing required fields`,
-      );
-    }
-    if (bonusoppdrag.validering === "kode" && !bonusoppdrag.kode) {
-      throw new Error(
-        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - bonusoppdrag with validering="kode" must have kode field`,
-      );
-    }
-    const validBadgeIcons = ["coin", "heart", "zap", "trophy", "gift", "star"];
-    if (!validBadgeIcons.includes(bonusoppdrag.badge_icon)) {
-      throw new Error(
-        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - bonusoppdrag.badge_icon must be one of: ${validBadgeIcons.join(", ")}`,
       );
     }
   }

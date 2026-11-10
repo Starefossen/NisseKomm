@@ -50,14 +50,6 @@ function MerkerContent() {
   const totalCount = allBadges.length;
   const percentage = Math.round((earnedCount / totalCount) * 100);
 
-  // Get badge type counts
-  const typeStats = {
-    bonusoppdrag: allBadges.filter((b) => b.type === "bonusoppdrag").length,
-    eventyr: allBadges.filter((b) => b.type === "eventyr").length,
-    decryption: allBadges.filter((b) => b.type === "decryption").length,
-    collection: allBadges.filter((b) => b.type === "collection").length,
-  };
-
   const handleAwardBadge = (badgeId: string) => {
     const badge = BadgeManager.getBadge(badgeId);
     if (!badge) return;
@@ -101,105 +93,37 @@ function MerkerContent() {
   };
 
   const getUnlockConditionText = (badge: (typeof allBadges)[0]): string => {
-    const condition = badge.unlockCondition;
-
-    switch (condition.type) {
-      case "bonusoppdrag":
-        return `Fullfør bonusoppdrag på dag ${condition.day} (krever forelder-validering)`;
-      case "eventyr": {
-        const eventyr = GameEngine.getEventyr(condition.eventyrId);
-        return `Fullfør eventyret "${eventyr?.navn || condition.eventyrId}"`;
-      }
-      case "allDecryptionsSolved":
-        return `Løs alle 3 dekrypteringsutfordringer i NisseKrypto`;
-      case "allSymbolsCollected":
-        return `Samle alle 9 symboler i Symbolskanner`;
-      case "allQuestsCompleted":
-        return `Fullfør alle 24 hovedoppdrag i julekalenderen`;
-      default:
-        return "Ukjent betingelse";
+    const c = badge.unlockCondition;
+    if (c.type === "decryptionSolved") {
+      return `Løs dekrypteringen «${c.challengeId}» i NisseKrypto (dag 12)`;
     }
+    if (c.type === "dayCompleted") return `Løs dag ${c.day}`;
+    return "Fullfør alle 24 dager";
   };
 
   const getUnlockStatus = (badge: (typeof allBadges)[0]): string => {
-    const condition = badge.unlockCondition;
-
-    switch (condition.type) {
-      case "bonusoppdrag": {
-        const quest = GameEngine.getAllQuests().find(
-          (q) => q.dag === condition.day && q.bonusoppdrag,
-        );
-        return quest && GameEngine.isBonusOppdragCompleted(quest)
-          ? "✓ Bonusoppdrag fullført"
-          : "⏳ Venter på bonusoppdrag";
-      }
-      case "eventyr": {
-        const eventyr = GameEngine.getEventyr(condition.eventyrId);
-        if (!eventyr) return "❓ Eventyr ikke funnet";
-        const days = GameEngine.getEventyrDays(condition.eventyrId);
-        const completedDays = days.filter((d) =>
-          GameEngine.isQuestCompleted(d),
-        );
-        return days.length === completedDays.length
-          ? "✓ Eventyr fullført"
-          : `⏳ ${completedDays.length}/${days.length} dager fullført`;
-      }
-      case "allDecryptionsSolved": {
-        const solved = GameEngine.getSolvedDecryptions();
-        return solved.length >= 3
-          ? "✓ Alle dekrypteringer løst"
-          : `⏳ ${solved.length}/3 dekrypteringer løst`;
-      }
-      case "allSymbolsCollected": {
-        const symbols = GameEngine.getCollectedSymbols();
-        return symbols.length >= 9
-          ? "✓ Alle symboler samlet"
-          : `⏳ ${symbols.length}/9 symboler samlet`;
-      }
-      case "allQuestsCompleted": {
-        const completedCount = GameEngine.getCompletedQuestCount();
-        return completedCount >= 24
-          ? "✓ Alle 24 oppdrag fullført"
-          : `⏳ ${completedCount}/24 oppdrag fullført`;
-      }
-      default:
-        return "❓ Ukjent status";
+    const c = badge.unlockCondition;
+    if (c.type === "decryptionSolved") {
+      return GameEngine.isDecryptionSolved(c.challengeId)
+        ? "✓ Dekryptert"
+        : "⏳ Ikke dekryptert ennå";
     }
+    if (c.type === "dayCompleted") {
+      return GameEngine.isQuestCompleted(c.day)
+        ? `✓ Dag ${c.day} løst`
+        : `⏳ Dag ${c.day} ikke løst`;
+    }
+    const completedCount = GameEngine.getCompletedQuestCount();
+    return `${completedCount >= 24 ? "✓" : "⏳"} ${completedCount}/24 dager`;
   };
 
-  const getBadgeTypeColor = (type: string) => {
-    switch (type) {
-      case "bonusoppdrag":
-        return "text-orange-400 border-orange-600";
-      case "eventyr":
-        return "text-purple-400 border-purple-600";
-      case "decryption":
-        return "text-blue-400 border-blue-600";
-      case "collection":
-        return "text-green-400 border-green-600";
-      case "completion":
-        return "text-(--gold) border-(--gold)";
-      default:
-        return "text-gray-400 border-gray-600";
-    }
-  };
+  const getBadgeTypeColor = (type: string) =>
+    type === "decryption"
+      ? "text-blue-400 border-blue-600"
+      : "text-(--gold) border-(--gold)";
 
-  const getBadgeTypeLabel = (type: string) => {
-    switch (type) {
-      case "bonusoppdrag":
-        return "BONUSOPPDRAG";
-      case "eventyr":
-        return "EVENTYR";
-      case "decryption":
-        return "DEKRYPTERING";
-      case "collection":
-        return "SAMLING";
-      case "completion":
-        return "FULLFØRING";
-      default:
-        return type.toUpperCase();
-    }
-  };
+  const getBadgeTypeLabel = (type: string) =>
+    type === "decryption" ? "DEKRYPTERING" : "FULLFØRING";
 
   return (
     <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8">
@@ -230,32 +154,16 @@ function MerkerContent() {
                 <li>
                   • Synlige prestasjoner som vises nederst på hjemskjermen
                 </li>
-                <li>• 6 forskjellige merker kan opptjenes gjennom desember</li>
-                <li>• Hver type merke har ulike krav for å bli opptjent</li>
+                <li>• 3 merker kan opptjenes gjennom desember</li>
                 <li>• Merker er permanente (lagres i localStorage)</li>
               </ul>
             </div>
             <div>
-              <h3 className="font-bold text-(--neon-green) mb-2">
-                Merketyper:
-              </h3>
+              <h3 className="font-bold text-(--neon-green) mb-2">Merkene:</h3>
               <ul className="space-y-1 ml-4">
-                <li>
-                  • <span className="text-orange-400">BONUSOPPDRAG</span> (2
-                  stk) - Forelder-validerte sideoppdrag
-                </li>
-                <li>
-                  • <span className="text-purple-400">EVENTYR</span> (2 stk) -
-                  Fullføre historiesekvenser
-                </li>
-                <li>
-                  • <span className="text-blue-400">DEKRYPTERING</span> (1 stk)
-                  - Løse alle kode-utfordringer
-                </li>
-                <li>
-                  • <span className="text-green-400">SAMLING</span> (1 stk) -
-                  Finne alle symboler
-                </li>
+                <li>• Varmebærer: første dekryptering (dag 12)</li>
+                <li>• Portvokter: dag 21 løst</li>
+                <li>• Snøfalls venn: alle 24 dager løst</li>
               </ul>
             </div>
           </div>
@@ -275,51 +183,6 @@ function MerkerContent() {
               <div className="text-3xl font-bold text-(--gold)">
                 {percentage}%
               </div>
-            </div>
-          </div>
-
-          {/* By Type */}
-          <div className="border-4 border-orange-600 bg-orange-600/10 p-4">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-orange-400 mb-2">
-                {
-                  allBadges.filter(
-                    (b) => b.type === "bonusoppdrag" && earnedIds.has(b.id),
-                  ).length
-                }
-                /{typeStats.bonusoppdrag}
-              </div>
-              <div className="text-sm">Bonusoppdrag</div>
-            </div>
-          </div>
-
-          <div className="border-4 border-purple-600 bg-purple-600/10 p-4">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-purple-400 mb-2">
-                {
-                  allBadges.filter(
-                    (b) => b.type === "eventyr" && earnedIds.has(b.id),
-                  ).length
-                }
-                /{typeStats.eventyr}
-              </div>
-              <div className="text-sm">Eventyr</div>
-            </div>
-          </div>
-
-          <div className="border-4 border-blue-600 bg-blue-600/10 p-4">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-blue-400 mb-2">
-                {
-                  allBadges.filter(
-                    (b) =>
-                      (b.type === "decryption" || b.type === "collection") &&
-                      earnedIds.has(b.id),
-                  ).length
-                }
-                /2
-              </div>
-              <div className="text-sm">Puzzle</div>
             </div>
           </div>
         </div>

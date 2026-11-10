@@ -7,10 +7,8 @@ import { useEffect, useState } from "react";
 import type { Badge } from "@/types/innhold";
 
 /**
- * Horizontal badge row showing locked/unlocked achievements
- * - Bonusoppdrag badges: Side-quest resolutions (antenna, inventory)
- * - Eventyr badges: Story arc completions (Mørket, IQ, etc.)
- * - Decryption badges: Crypto challenges and symbol collection
+ * Horizontal badge row: Varmebærer (day 12 decryption), Portvokter (day 21),
+ * Snøfalls venn (all 24 days). A new badge shows its opplasingstekst in gold.
  *
  * Badges are loaded dynamically from merker.json via BadgeManager
  */
@@ -42,10 +40,10 @@ export function BadgeRow() {
       setNewlyEarnedBadge(badge.id);
       setEarnedBadgeIds((prev) => new Set([...prev, badge.id]));
 
-      // Clear animation after 3 seconds
+      // Long enough to read the unlock text aloud
       setTimeout(() => {
         setNewlyEarnedBadge(null);
-      }, 3000);
+      }, 10000);
     };
 
     BadgeManager.onBadgeAwarded(handleBadgeAwarded);
@@ -82,22 +80,16 @@ export function BadgeRow() {
       {badges.map((badge) => {
         const isEarned = earnedBadgeIds.has(badge.id);
         const isNewlyEarned = newlyEarnedBadge === badge.id;
-        const isTrophy = badge.id === "julekalender-fullfort";
+        const isTrophy = badge.id === "snofalls-venn";
 
-        // Determine tooltip text based on badge type
         const getLockedTooltip = () => {
-          if (badge.unlockCondition.type === "bonusoppdrag") {
-            return `🔒 ${badge.navn} - Løs bonusoppdraget på dag ${badge.unlockCondition.day}`;
-          } else if (badge.unlockCondition.type === "eventyr") {
-            return `🔒 ${badge.navn} - Fullfør ${badge.unlockCondition.eventyrId.replace(/-/g, " ")} eventyret`;
-          } else if (badge.unlockCondition.type === "allDecryptionsSolved") {
-            return `🔒 ${badge.navn} - Løs alle dekrypteringsutfordringer`;
-          } else if (badge.unlockCondition.type === "allSymbolsCollected") {
-            return `🔒 ${badge.navn} - Samle alle 9 symbolene`;
-          } else if (badge.unlockCondition.type === "allQuestsCompleted") {
-            return `🔒 ${badge.navn} - Fullfør alle 24 oppdrag`;
+          const c = badge.unlockCondition;
+          if (c.type === "decryptionSolved") {
+            return `🔒 ${badge.navn} - Løs den første dekrypteringen i NisseKrypto`;
+          } else if (c.type === "dayCompleted") {
+            return `🔒 ${badge.navn} - Løs dag ${c.day}`;
           }
-          return `🔒 ${badge.navn} - Låst`;
+          return `🔒 ${badge.navn} - Fullfør alle 24 dager`;
         };
 
         return (
@@ -151,6 +143,11 @@ export function BadgeRow() {
           </div>
         );
       })}
+      {newlyEarnedBadge && (
+        <div className="ml-3 max-w-md text-sm text-(--gold) animate-[gold-flash_2s_ease-in-out_infinite]">
+          {badges.find((b) => b.id === newlyEarnedBadge)?.opplasingstekst}
+        </div>
+      )}
     </div>
   );
 }
