@@ -15,6 +15,22 @@ export function erBrevetFrossent(day: number, dag24Lost: boolean): boolean {
   return day < 24 || !dag24Lost;
 }
 
+/**
+ * Stores a letter where the parent guide reads it. Three children write on the same
+ * day, so a second letter is appended instead of replacing the first.
+ * Returns false (and the caller keeps the draft) outside days 1-24.
+ */
+export function sendBrev(dag: number, utkast: string): boolean {
+  const tekst = utkast.trim();
+  if (!tekst || dag < 1 || dag > 24) return false;
+  const forrige = GameEngine.getSantaLetters().find((l) => l.day === dag);
+  GameEngine.addSantaLetter(
+    dag,
+    forrige ? `${forrige.content}\n\n${tekst}` : tekst,
+  );
+  return true;
+}
+
 interface Letter {
   day: number;
   content: string;
@@ -45,7 +61,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
   }, []);
 
   const send = () => {
-    GameEngine.addBrevfugl(getCurrentDay(), utkast);
+    if (!sendBrev(getCurrentDay(), utkast)) return;
     setLetters(GameEngine.getSantaLetters());
     setUtkast("");
   };
@@ -244,12 +260,18 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
 
         {/* Letters to Julius: stored locally for the parent guide; Julius does not reply here */}
         <div className="p-4 border-2 border-(--neon-green)/50 space-y-3">
-          <div className="text-base font-bold">✉ SKRIV BREV TIL JULIUS</div>
+          <label
+            htmlFor="brev-til-julius"
+            className="block text-base font-bold"
+          >
+            ✉ SKRIV BREV TIL JULIUS
+          </label>
           <div className="text-base opacity-70">
             Skriv brevet på papir, og skriv det av her. Brevfuglen tar det med
             til Snøfall.
           </div>
           <textarea
+            id="brev-til-julius"
             value={utkast}
             onChange={(e) => setUtkast(e.target.value)}
             placeholder="Kjære Julius ..."

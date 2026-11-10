@@ -58,7 +58,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
     !GameEngine.isQuestCompleted(12);
 
   useEffect(() => {
-    const audio = new Audio(encodeURI(PLAYLIST[0].src));
+    const audio = new Audio(PLAYLIST[0].src);
     audio.volume = 0.5;
     audioRef.current = audio;
 
@@ -85,9 +85,9 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const targetSrc = encodeURI(track.src);
-    if (!audio.src.endsWith(targetSrc)) {
-      audio.src = targetSrc;
+    // mediaUrl already encodes; encoding again turns %20 into %2520 and 404s.
+    if (!audio.src.endsWith(track.src)) {
+      audio.src = track.src;
       audio.load();
     }
 
@@ -135,15 +135,10 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
     }
   };
 
-  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const audio = audioRef.current;
     if (!audio || !duration) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const ratio = Math.max(
-      0,
-      Math.min(1, (e.clientX - rect.left) / rect.width),
-    );
-    const nextTime = ratio * duration;
+    const nextTime = parseFloat(e.target.value);
     audio.currentTime = nextTime;
     setCurrentTime(nextTime);
   };
@@ -156,13 +151,10 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
     }
   };
 
-  const progressPercent =
-    duration > 0 ? Math.min(100, (currentTime / duration) * 100) : 0;
-
   return (
     <RetroWindow title="NISSEMUSIKK - 8-BIT JUKEBOX" onClose={onClose}>
       <div
-        className={`relative p-6 h-full space-y-6 ${frozen ? "overflow-hidden" : "overflow-y-auto"}`}
+        className={`relative h-full ${frozen ? "overflow-hidden" : "overflow-y-auto"}`}
       >
         {frozen && (
           <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-2 bg-(--cold-blue)/30 backdrop-blur-sm border-4 border-(--cold-blue) text-(--cold-blue)">
@@ -172,154 +164,160 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
             </div>
           </div>
         )}
-        {/* Header */}
-        <div className="flex items-center gap-4 pb-4 border-b-4 border-(--neon-green)/30">
-          <Icons.Music size={32} color="blue" />
-          <div className="flex-1">
-            <div className="text-2xl font-bold tracking-wider">
-              SNØFALL RADIO // 8-BIT ARKIV
+        {/* inert: the overlay hides the controls, keyboard must not reach them either */}
+        <div className="p-6 space-y-6" inert={frozen}>
+          {/* Header */}
+          <div className="flex items-center gap-4 pb-4 border-b-4 border-(--neon-green)/30">
+            <Icons.Music size={32} color="blue" />
+            <div className="flex-1">
+              <div className="text-2xl font-bold tracking-wider">
+                SNØFALL RADIO // 8-BIT ARKIV
+              </div>
+              <div className="text-base opacity-70">
+                VARMEKILDEN • Musikk holder linjen varm når det er kaldt
+              </div>
             </div>
-            <div className="text-base opacity-70">
-              VARMEKILDEN • Musikk holder linjen varm når det er kaldt
-            </div>
-          </div>
-          <div className="flex items-center gap-2 px-3 py-1 border-2 border-(--gold) bg-(--gold)/20">
-            <div
-              className={`w-2 h-2 rounded-full ${
-                isPlaying
-                  ? "bg-(--neon-green) animate-ping"
-                  : "bg-(--gold) animate-pulse-led"
-              }`}
-            ></div>
-            <span className="text-(--gold) text-base tracking-wider">
-              {isPlaying ? "SENDER LYDBØLGER" : "KLAR"}
-            </span>
-          </div>
-        </div>
-
-        {/* Now Playing Display */}
-        <div className="border-4 border-(--neon-green) bg-black p-6 space-y-4">
-          <div className="text-center space-y-1">
-            <div className="text-base text-(--cold-blue) tracking-wider">
-              {isPlaying ? "NÅ SPILLER PÅ 90.0 MHz" : "VALGT SPOR"}
-            </div>
-            <div className="text-2xl text-(--neon-green) font-bold tracking-wider">
-              {track.title}
-            </div>
-            <div className="text-base text-(--cold-blue)/80">
-              {track.subtitle}
-            </div>
-            <div className="text-base text-(--neon-green)/60 pt-1">
-              Spor {currentTrack + 1} av {PLAYLIST.length}
-            </div>
-          </div>
-
-          {/* Visualizer (animated bars) */}
-          <div className="flex items-end justify-center gap-1.5 h-16 px-4">
-            {Array.from({ length: 16 }).map((_, i) => (
+            <div className="flex items-center gap-2 px-3 py-1 border-2 border-(--gold) bg-(--gold)/20">
               <div
-                key={i}
-                className="w-2.5 bg-(--neon-green) transition-all duration-150"
-                style={{
-                  height: isPlaying
-                    ? `${22 + ((i * 19 + Math.floor(currentTime * 4)) % 5) * 18}%`
-                    : "12%",
-                  opacity: isPlaying ? 0.9 : 0.35,
-                }}
+                className={`w-2 h-2 rounded-full ${
+                  isPlaying
+                    ? "bg-(--neon-green) animate-ping"
+                    : "bg-(--gold) animate-pulse-led"
+                }`}
               ></div>
-            ))}
-          </div>
-
-          {/* Seekable Progress Bar */}
-          <div className="space-y-1">
-            <div
-              onClick={handleSeek}
-              title="Klikk for å spole"
-              className="h-3 bg-(--neon-green)/20 border border-(--neon-green) cursor-pointer relative"
-            >
-              <div
-                className="h-full bg-(--neon-green) transition-all duration-150"
-                style={{
-                  width: `${progressPercent}%`,
-                }}
-              ></div>
-            </div>
-            <div className="flex justify-between text-base text-(--neon-green)/70 font-retro">
-              <span>{formatTime(currentTime)}</span>
-              <span>
-                {duration > 0 ? formatTime(duration) : track.defaultDuration}
+              <span className="text-(--gold) text-base tracking-wider">
+                {isPlaying ? "SENDER LYDBØLGER" : "KLAR"}
               </span>
             </div>
           </div>
-        </div>
 
-        {/* Player Controls & Volume */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-2 border-(--neon-green)/30 bg-black/50 p-3">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={handlePrevious}
-              title="Forrige spor"
-              className="p-3 border-2 border-(--cold-blue) hover:bg-(--cold-blue)/20 transition-all cursor-pointer"
-            >
-              <Icons.SkipBack size={22} color="blue" />
-            </button>
-
-            <button
-              onClick={handlePlayPause}
-              title={isPlaying ? "Pause" : "Spill av"}
-              className="p-3.5 border-4 border-(--neon-green) hover:bg-(--neon-green)/20 transition-all cursor-pointer"
-            >
-              {isPlaying ? (
-                <Icons.Pause size={28} color="green" />
-              ) : (
-                <Icons.Play size={28} color="green" />
-              )}
-            </button>
-
-            <button
-              onClick={handleNext}
-              title="Neste spor"
-              className="p-3 border-2 border-(--cold-blue) hover:bg-(--cold-blue)/20 transition-all cursor-pointer"
-            >
-              <Icons.SkipForward size={22} color="blue" />
-            </button>
-          </div>
-
-          {/* Volume Control */}
-          <div className="flex items-center gap-3">
-            <Icons.Volume size={20} color="green" />
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.05"
-              value={volume}
-              onChange={handleVolumeChange}
-              aria-label="Volum"
-              className="w-28 accent-(--neon-green) cursor-pointer"
-            />
-            <span className="text-base font-retro text-(--neon-green) w-10 text-right">
-              {Math.round(volume * 100)}%
-            </span>
-          </div>
-        </div>
-
-        {/* Playlist */}
-        <div className="border-2 border-(--neon-green)/30 space-y-0">
-          <div className="p-2 bg-(--neon-green)/10 border-b-2 border-(--neon-green)/30 flex justify-between items-center">
-            <div className="text-base tracking-wider text-(--neon-green) font-bold">
-              SPILLELISTE ({PLAYLIST.length} SPOR)
+          {/* Now Playing Display */}
+          <div className="border-4 border-(--neon-green) bg-black p-6 space-y-4">
+            <div className="text-center space-y-1">
+              <div className="text-base text-(--cold-blue) tracking-wider">
+                {isPlaying ? "NÅ SPILLER PÅ 90.0 MHz" : "VALGT SPOR"}
+              </div>
+              <div className="text-2xl text-(--neon-green) font-bold tracking-wider">
+                {track.title}
+              </div>
+              <div className="text-base text-(--cold-blue)/80">
+                {track.subtitle}
+              </div>
+              <div className="text-base text-(--neon-green)/60 pt-1">
+                Spor {currentTrack + 1} av {PLAYLIST.length}
+              </div>
             </div>
-            <div className="text-base text-(--cold-blue)">
-              8-BIT AUDIO ENGINE
+
+            {/* Visualizer (animated bars) */}
+            <div className="flex items-end justify-center gap-1.5 h-16 px-4">
+              {Array.from({ length: 16 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="w-2.5 bg-(--neon-green) transition-all duration-150"
+                  style={{
+                    height: isPlaying
+                      ? `${22 + ((i * 19 + Math.floor(currentTime * 4)) % 5) * 18}%`
+                      : "12%",
+                    opacity: isPlaying ? 0.9 : 0.35,
+                  }}
+                ></div>
+              ))}
+            </div>
+
+            {/* Seekable Progress Bar */}
+            <div className="space-y-1">
+              <input
+                type="range"
+                min="0"
+                max={duration || 0}
+                step="1"
+                value={Math.min(currentTime, duration || 0)}
+                onChange={handleSeek}
+                disabled={!duration}
+                aria-label="Spol i sporet"
+                aria-valuetext={formatTime(currentTime)}
+                className="w-full min-h-11 accent-(--neon-green) cursor-pointer"
+              />
+              <div className="flex justify-between text-base text-(--neon-green)/70 font-retro">
+                <span>{formatTime(currentTime)}</span>
+                <span>
+                  {duration > 0 ? formatTime(duration) : track.defaultDuration}
+                </span>
+              </div>
             </div>
           </div>
-          <div className="max-h-64 overflow-y-auto">
-            {PLAYLIST.map((t, index) => (
+
+          {/* Player Controls & Volume */}
+          <div className="flex flex-wrap items-center justify-between gap-4 border-2 border-(--neon-green)/30 bg-black/50 p-3">
+            <div className="flex items-center gap-3">
               <button
-                key={t.id}
-                onClick={() => handleTrackSelect(index)}
-                className={`
+                onClick={handlePrevious}
+                title="Forrige spor"
+                aria-label="Forrige spor"
+                className="p-3 border-2 border-(--cold-blue) hover:bg-(--cold-blue)/20 transition-all cursor-pointer"
+              >
+                <Icons.SkipBack size={22} color="blue" />
+              </button>
+
+              <button
+                onClick={handlePlayPause}
+                title={isPlaying ? "Pause" : "Spill av"}
+                aria-label={isPlaying ? "Pause" : "Spill av"}
+                className="p-3.5 border-4 border-(--neon-green) hover:bg-(--neon-green)/20 transition-all cursor-pointer"
+              >
+                {isPlaying ? (
+                  <Icons.Pause size={28} color="green" />
+                ) : (
+                  <Icons.Play size={28} color="green" />
+                )}
+              </button>
+
+              <button
+                onClick={handleNext}
+                title="Neste spor"
+                aria-label="Neste spor"
+                className="p-3 border-2 border-(--cold-blue) hover:bg-(--cold-blue)/20 transition-all cursor-pointer"
+              >
+                <Icons.SkipForward size={22} color="blue" />
+              </button>
+            </div>
+
+            {/* Volume Control */}
+            <div className="flex items-center gap-3">
+              <Icons.Volume size={20} color="green" />
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={volume}
+                onChange={handleVolumeChange}
+                aria-label="Volum"
+                className="w-28 accent-(--neon-green) cursor-pointer"
+              />
+              <span className="text-base font-retro text-(--neon-green) w-10 text-right">
+                {Math.round(volume * 100)}%
+              </span>
+            </div>
+          </div>
+
+          {/* Playlist */}
+          <div className="border-2 border-(--neon-green)/30 space-y-0">
+            <div className="p-2 bg-(--neon-green)/10 border-b-2 border-(--neon-green)/30 flex justify-between items-center">
+              <div className="text-base tracking-wider text-(--neon-green) font-bold">
+                SPILLELISTE ({PLAYLIST.length} SPOR)
+              </div>
+              <div className="text-base text-(--cold-blue)">
+                8-BIT AUDIO ENGINE
+              </div>
+            </div>
+            <div className="max-h-64 overflow-y-auto">
+              {PLAYLIST.map((t, index) => (
+                <button
+                  key={t.id}
+                  aria-current={index === currentTrack ? "true" : undefined}
+                  onClick={() => handleTrackSelect(index)}
+                  className={`
                   w-full p-3 text-left flex items-center justify-between cursor-pointer
                   border-b border-(--neon-green)/10 transition-all
                   ${
@@ -328,28 +326,29 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
                       : "hover:bg-(--neon-green)/10 text-(--neon-green)/70 hover:text-(--neon-green)"
                   }
                 `}
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-base opacity-70 w-6 font-retro">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <div className="text-base tracking-wider font-bold">
-                      {t.title}
-                    </div>
-                    <div className="text-base opacity-60">{t.subtitle}</div>
-                  </div>
-                  {index === currentTrack && isPlaying && (
-                    <span className="px-1.5 py-0.5 text-base bg-(--neon-green) text-black font-bold">
-                      SPILLER
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-base opacity-70 w-6 font-retro">
+                      {String(index + 1).padStart(2, "0")}
                     </span>
-                  )}
-                </div>
-                <span className="text-base opacity-70 font-retro">
-                  {t.defaultDuration}
-                </span>
-              </button>
-            ))}
+                    <div>
+                      <div className="text-base tracking-wider font-bold">
+                        {t.title}
+                      </div>
+                      <div className="text-base opacity-60">{t.subtitle}</div>
+                    </div>
+                    {index === currentTrack && isPlaying && (
+                      <span className="px-1.5 py-0.5 text-base bg-(--neon-green) text-black font-bold">
+                        SPILLER
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-base opacity-70 font-retro">
+                    {t.defaultDuration}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
