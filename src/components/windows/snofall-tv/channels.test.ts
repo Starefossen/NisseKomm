@@ -282,6 +282,8 @@ describe("day gates", () => {
     expect(ids(8)).toEqual(["kretslop"]);
     expect(ids(17)).toEqual(["kretslop", "sorterer"]);
     expect(ids(18)).toContain("slede");
+    expect(ids(18)).not.toContain("sentrifuge");
+    expect(ids(19)).toContain("sentrifuge");
     expect(ids(21)).toContain("porten");
   });
 });
