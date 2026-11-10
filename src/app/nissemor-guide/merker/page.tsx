@@ -29,7 +29,7 @@ function MerkerContent() {
       // Re-render when badges, quests, or other relevant data changes
       if (
         e.key === "nissekomm-earned-badges" ||
-        e.key === "nissekomm-submitted-codes" ||
+        e.key === "nissekomm-codes" ||
         e.key === "nissekomm-solved-decryptions" ||
         e.key === "nissekomm-collected-symbols"
       ) {

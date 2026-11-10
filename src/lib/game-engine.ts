@@ -15,13 +15,7 @@
 
 import { StorageManager } from "./storage";
 import { BadgeManager } from "./badge-system";
-import {
-  getAllEventyr,
-  getEventyr,
-  getEventyrDays,
-  getEventyrForDay,
-  getEventyrProgress,
-} from "./eventyr";
+import { getEventyr, getEventyrDays, getEventyrForDay } from "./eventyr";
 import {
   getCurrentDay,
   getCurrentMonth,
@@ -56,7 +50,6 @@ import { getAllQuests, getQuestByDay } from "./data-loader";
 import {
   Oppdrag,
   FilNode,
-  SystemMetrikk,
   Varsel,
   InnsendelseLog,
   DecryptionSymbol,
@@ -723,54 +716,6 @@ export class GameEngine {
   }
 
   /**
-   * Get completed eventyr
-   * Returns array of unique eventyr IDs that have all phases completed
-   */
-  static getCompletedEventyr(): string[] {
-    const gameState = this.loadGameState();
-    const completedEventyrList: string[] = [];
-
-    // Get all unique eventyr IDs from quests
-    const eventyrIds = new Set<string>();
-    ALL_QUESTS.forEach((quest: Oppdrag) => {
-      if (quest.eventyr) {
-        eventyrIds.add(quest.eventyr.id);
-      }
-    });
-
-    // Check each eventyr using proper total phase count from getEventyrDays
-    eventyrIds.forEach((eventyrId) => {
-      const allDaysForEventyr = getEventyrDays(eventyrId);
-      const completedDaysForEventyr = allDaysForEventyr.filter((day) =>
-        gameState.completedQuests.has(day),
-      );
-
-      // Only complete if ALL days/phases are completed
-      if (
-        allDaysForEventyr.length > 0 &&
-        completedDaysForEventyr.length === allDaysForEventyr.length
-      ) {
-        completedEventyrList.push(eventyrId);
-      }
-    });
-
-    return completedEventyrList;
-  }
-
-  /**
-   * Get total number of eventyr in the game
-   */
-  static getTotalEventyr(): number {
-    const eventyrIds = new Set<string>();
-    ALL_QUESTS.forEach((quest: Oppdrag) => {
-      if (quest.eventyr) {
-        eventyrIds.add(quest.eventyr.id);
-      }
-    });
-    return eventyrIds.size;
-  }
-
-  /**
    * Get all collected symbols from storage
    *
    * @returns Array of DecryptionSymbol objects that have been scanned/collected
@@ -868,35 +813,6 @@ export class GameEngine {
   }
 
   /**
-   * Check if a mission is accessible (requirements met)
-   */
-  static isMissionAccessible(day: number): boolean {
-    const quest = getQuestByDay(day);
-    if (!quest || !quest.requires) return true;
-
-    const requirements = quest.requires;
-
-    if (requirements.completedDays) {
-      const completedQuests = this.loadGameState().completedQuests;
-      const hasAllDays = requirements.completedDays.every((d) =>
-        completedQuests.has(d),
-      );
-      if (!hasAllDays) return false;
-    }
-
-    // Check topic requirements
-    if (requirements.topics) {
-      const unlockedTopics = StorageManager.getUnlockedTopics();
-      const hasAllTopics = requirements.topics.every((topic) =>
-        unlockedTopics.has(topic),
-      );
-      if (!hasAllTopics) return false;
-    }
-
-    return true;
-  }
-
-  /**
    * Get unread file count for NisseNet badge
    */
   static getUnreadFileCount(): number {
@@ -942,10 +858,6 @@ export class GameEngine {
     StorageManager.setPlayerNames(names);
   }
 
-  static addBrevfugl(dag: number, innhold: string): void {
-    StorageManager.leggTilBrevfugl(dag, innhold);
-  }
-
   static addEarnedBadge(badgeId: string): void {
     StorageManager.addEarnedBadge(badgeId);
   }
@@ -976,18 +888,6 @@ export class GameEngine {
   }
 
   /**
-   * Check if all decryption challenges are solved
-   */
-  static isAllDecryptionsSolved(): boolean {
-    const solvedDecryptions = StorageManager.getSolvedDecryptions();
-    return (
-      solvedDecryptions.includes("frosne-koder") &&
-      solvedDecryptions.includes("stjernetegn") &&
-      solvedDecryptions.includes("hjertets-hemmelighet")
-    );
-  }
-
-  /**
    * Get all solved decryption challenge IDs
    *
    * @returns Array of decryption challenge IDs that have been solved
@@ -1006,30 +906,6 @@ export class GameEngine {
    */
   static isDecryptionSolved(challengeId: string): boolean {
     return StorageManager.isDecryptionSolved(challengeId);
-  }
-
-  /**
-   * Get decryption challenge progress
-   */
-  static getDecryptionProgress(): {
-    solved: number;
-    total: number;
-    allSolved: boolean;
-  } {
-    const solvedDecryptions = StorageManager.getSolvedDecryptions();
-    return {
-      solved: solvedDecryptions.length,
-      total: 3,
-      allSolved: this.isAllDecryptionsSolved(),
-    };
-  }
-
-  /**
-   * Check if all symbols are collected (9 total)
-   */
-  static isAllSymbolsCollected(): boolean {
-    const collectedSymbols = StorageManager.getCollectedSymbols();
-    return collectedSymbols.length >= 9;
   }
 
   /**
@@ -1078,31 +954,6 @@ export class GameEngine {
    * DATA MANAGEMENT
    * ============================================================
    */
-
-  /**
-   * Export complete game state as JSON
-   */
-  static exportGameState(): string {
-    return StorageManager.exportData();
-  }
-
-  /**
-   * Import game state from JSON
-   */
-  static async importGameState(jsonData: string): Promise<boolean> {
-    return await StorageManager.importData(jsonData);
-  }
-
-  /**
-   * Reset all game progress
-   */
-  static resetGame(): void {
-    if (typeof window === "undefined") return;
-    if (confirm("Er du sikker på at du vil slette all progresjon?")) {
-      StorageManager.clearAll(true);
-      window.location.reload();
-    }
-  }
 
   /** Full game state as plain data (Simulering's øyeblikksbilde) */
   static getSnapshot(): Record<string, unknown> {

@@ -89,6 +89,23 @@ describe("mergeValue", () => {
     ).toEqual([{ dag: 1, innhold: "ny" }]);
     expect(mergeValue("nissekomm-player-names", ["a"], ["b"])).toEqual(["b"]);
   });
+
+  it("keeps a symbol or badge another screen saved meanwhile", () => {
+    expect(
+      mergeValue(
+        "nissekomm-collected-symbols",
+        [{ symbolId: "a", description: "A" }],
+        [{ symbolId: "b", description: "B" }],
+      ),
+    ).toHaveLength(2);
+    expect(
+      mergeValue(
+        "nissekomm-earned-badges",
+        [{ badgeId: "x", timestamp: 1 }],
+        [{ badgeId: "x", timestamp: 2 }],
+      ),
+    ).toEqual([{ badgeId: "x", timestamp: 2 }]);
+  });
 });
 
 describe("Postgres store (pg-mem)", () => {

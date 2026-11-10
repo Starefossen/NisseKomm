@@ -83,6 +83,23 @@ describe("ServerSyncAdapter", () => {
     expect((await store.getState())[KEY]).toEqual([6]);
   });
 
+  it("keeps progress made while the server was down", async () => {
+    await store.putState(KEY, [1]);
+    global.fetch = jest.fn(async () => {
+      throw new Error("nede");
+    }) as unknown as typeof fetch;
+    const a = new ServerSyncAdapter();
+    await expect(a.start()).rejects.toThrow();
+    a.set(KEY, [2]);
+
+    // Server back: the retry pulls, then pushes the offline write
+    global.fetch = jest.fn(fakeFetch) as unknown as typeof fetch;
+    await jest.advanceTimersByTimeAsync(30_000);
+    await flush(a);
+    expect((await store.getState())[KEY]).toEqual([1, 2]);
+    expect(localStorage.getItem("nissekomm-unsynced")).toBeNull();
+  });
+
   it("stays local when the server has sync off", async () => {
     global.fetch = jest.fn(
       async () => ({ ok: true, status: 204 }) as Response,
