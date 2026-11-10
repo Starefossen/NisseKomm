@@ -89,8 +89,23 @@ describe("get_screen", () => {
       const s = await screen();
       expect(s.tv.state).toBe(state);
       expect(s.tv.variant).toBe(`/media/video/tv/landsby-${state}.mp4`);
-      if (state !== "rolig") expect(s.events).toEqual([]);
+      expect(s).not.toHaveProperty("events");
+      if (state === "rolig") {
+        expect(s.tv.events.length).toBeGreaterThan(0);
+        expect(s.tv.events[0]).toMatchObject({ kind: "overlay", url: null });
+        expect(Date.parse(s.tv.events[0].at)).toBeGreaterThan(
+          at(day, 10).getTime() - 60_000,
+        );
+      } else {
+        expect(s.tv.events).toEqual([]);
+        expect(s.tv.poster_url).toBe("/media/feed/sn%C3%B8fall-storm.png");
+      }
     }
+    await solvedUpTo(16);
+    jest.useFakeTimers({ now: at(17, 10) });
+    expect((await screen()).tv.poster_url).toBe(
+      "/media/feed/landsby-rolig.jpg",
+    );
     await solvedUpTo(17);
     jest.useFakeTimers({ now: at(17, 10) });
     expect((await screen()).tv.state).toBe("nordlys");
@@ -119,7 +134,68 @@ describe("get_screen", () => {
     expect((await screen()).rampenissen_seen).toBe(false);
   });
 
-  it.each([1, 10, 24])("dag %i: uopptjente koder sensureres", async (d) => {
+  it("frost_day: dag 10 først på dagen, dag 21 fra dag 20", async () => {
+    const frostDays = async (d: number) => {
+      jest.useFakeTimers({ now: at(d, 7) });
+      return (await screen()).doors
+        .filter((x: { frost_day: boolean }) => x.frost_day)
+        .map((x: { day: number }) => x.day);
+    };
+    expect(await frostDays(9)).toEqual([]);
+    expect(await frostDays(10)).toEqual([10]);
+    expect(await frostDays(19)).toEqual([10]);
+    expect(await frostDays(20)).toEqual([10, 21]);
+  });
+
+  it("today.solved, solved_at, milepæl og nedtelling", async () => {
+    await solvedUpTo(6);
+    jest.useFakeTimers({ now: at(7, 10) });
+    let s = await screen();
+    expect(s.today).toEqual({
+      solved: false,
+      solved_at: null,
+      milestone_reached: false,
+    });
+    expect(s.milestone_latest).toEqual({ id: "M1", name: "Linjen" });
+    expect(s.milestone_latest).not.toEqual(
+      expect.objectContaining({ name: "Navnet" }),
+    );
+    expect(s.countdown_days).toBe(17);
+    expect(s.season).toBe("2026");
+    await memoryStore.putState(
+      "nissekomm-codes",
+      quests
+        .filter((q) => q.dag <= 7)
+        .map((q) => ({ kode: q.kode, dato: "2026-12-07T08:42:10.000Z" })),
+    );
+    s = await screen();
+    expect(s.today).toEqual({
+      solved: true,
+      solved_at: "2026-12-07T09:42:00+01:00",
+      milestone_reached: true,
+    });
+    expect(s.milestone_latest).toEqual({ id: "M2", name: "Navnet" });
+    jest.useFakeTimers({ now: at(26, 10) });
+    expect((await screen()).countdown_days).toBe(0);
+  });
+
+  it("NISSEKOMM_PUBLIC_BASE gir absolutte medie-URL-er", async () => {
+    process.env.NISSEKOMM_PUBLIC_BASE = "https://nisse.example/";
+    try {
+      jest.useFakeTimers({ now: at(3, 10) });
+      const s = await screen();
+      expect(s.tv.variant).toBe(
+        "https://nisse.example/media/video/tv/landsby-rolig.mp4",
+      );
+      expect(s.tv.poster_url).toBe(
+        "https://nisse.example/media/feed/landsby-rolig.jpg",
+      );
+    } finally {
+      delete process.env.NISSEKOMM_PUBLIC_BASE;
+    }
+  });
+
+  it.each([1, 10, 17, 24])("dag %i: uopptjente koder sensureres", async (d) => {
     for (const upTo of [0, d - 1, d]) {
       memoryStore.reset();
       await solvedUpTo(upTo);

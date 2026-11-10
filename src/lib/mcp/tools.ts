@@ -14,9 +14,19 @@ import merker from "@/data/merker.json";
 import videoer from "@/data/julius_videoer.json";
 import { getAllOppdrag } from "@/lib/oppdrag";
 import { getServerDate } from "@/lib/date-utils";
-import { FROST_UNTIL_HOUR, frostModeFor } from "@/lib/frost";
+import {
+  FROST_UNTIL_HOUR,
+  frostLevelFor,
+  frostModeFor,
+  isFrostDay,
+} from "@/lib/frost";
 import { getStore, resetState } from "@/lib/db";
-import { frostLevelFor } from "@/lib/frost";
+import { mediaUrl } from "@/lib/media";
+import {
+  LANDSBY_EVENT_SECONDS,
+  landsbyEventAllowed,
+  landsbyEvents,
+} from "@/components/windows/snofall-tv/channels";
 import { createUploadTicket, mediaStatus } from "@/lib/media-server";
 import type { Caller, Level } from "./auth";
 import { getClip } from "./clips";
@@ -144,6 +154,30 @@ function solvedDays(state: State): Set<number> {
   return days;
 }
 
+/** When the day's code was typed in (ISO, Oslo), or null. */
+function solvedAt(state: State, day: number): string | null {
+  const codes = state["nissekomm-codes"];
+  if (!Array.isArray(codes)) return null;
+  const kode = getAllOppdrag()
+    .find((q) => q.dag === day)
+    ?.kode.toUpperCase();
+  const c = codes.find(
+    (x) => x?.day === day || String(x?.kode ?? "").toUpperCase() === kode,
+  );
+  const t = Date.parse(String(c?.dato ?? ""));
+  if (Number.isNaN(t)) return null;
+  const d = new Date(t);
+  const o = oslo(d);
+  return `${isoDate(d)}T${pad(o.hour)}:${pad(o.minute)}:00+01:00`;
+}
+
+/** Media URL, absolute when NISSEKOMM_PUBLIC_BASE is set. */
+const media = (p: string) =>
+  (process.env.NISSEKOMM_PUBLIC_BASE ?? "").replace(/\/$/, "") + mediaUrl(p);
+
+/** Closest still per tv.state; others use the rolig still. */
+const TV_STILL: Record<string, string> = { storm: "feed/snøfall-storm.png" };
+
 /** Calendar day 1–24 in December, else null. */
 function adventDay(d: Date): number | null {
   const { day, month } = oslo(d);
@@ -268,11 +302,65 @@ export function getScreen(state: State, at?: Date) {
     next = fo!.until as string;
   }
   const base = getState(state, at);
+  // A milestone counts once its day is solved, so no later day's name leaks.
+  const milestones = eventyr.eventyr[0].milepaeler.map((m, i) => ({
+    id: `M${i + 1}`,
+    name: m.navn,
+    day: m.dag,
+  }));
+  const latest = milestones
+    .filter((m) => m.day <= today && solved.has(m.day))
+    .at(-1);
+  // Level-2 frost is warned the day before; level 1 stays a surprise.
+  const frostFrom = (d: number) =>
+    frostModeFor({ day: d, month: 12, hour: 0, solved: false, disabled: false })
+      .level === 2
+      ? d - 1
+      : d;
+  const nowS = (o.hour * 60 + o.minute) * 60;
+  const events =
+    tv === "rolig" && today
+      ? landsbyEvents(today)
+          .filter(
+            (e) =>
+              landsbyEventAllowed(e.kind, today, solvedToday) &&
+              e.minute * 60 + LANDSBY_EVENT_SECONDS[e.kind] > nowS,
+          )
+          // ponytail: next 8 only (~115 a day would crowd 16 KB).
+          .slice(0, 8)
+          .map((e) => {
+            const s = Math.floor(e.minute * 60);
+            const hms = [s / 3600, (s / 60) % 60, s % 60]
+              .map((n) => pad(Math.floor(n)))
+              .join(":");
+            return {
+              id: `${e.kind}-${today}-${Math.floor(e.minute)}`,
+              kind: "overlay" as const,
+              url: null,
+              at: `${date}T${hms}+01:00`,
+            };
+          })
+      : [];
   return {
     now: `${date}T${pad(o.hour)}:${pad(o.minute)}:00+01:00`,
     day: today || null,
+    season: "2026",
+    countdown_days: Math.max(
+      0,
+      Math.round(
+        (Date.parse("2026-12-24T12:00:00Z") - Date.parse(`${date}T12:00:00Z`)) /
+          864e5,
+      ),
+    ),
+    today: {
+      solved: solvedToday,
+      solved_at: solvedToday ? solvedAt(state, today) : null,
+      milestone_reached: solvedToday && milestones.some((m) => m.day === today),
+    },
+    milestone_latest: latest ? { id: latest.id, name: latest.name } : null,
     doors: Array.from({ length: 24 }, (_, i) => ({
       day: i + 1,
+      frost_day: isFrostDay(i + 1) && today >= frostFrom(i + 1),
       state:
         i + 1 > today
           ? "locked"
@@ -301,14 +389,14 @@ export function getScreen(state: State, at?: Date) {
     grayscale: base.grayscale,
     tv: {
       state: tv,
-      variant: `/media/video/tv/landsby-${tv}.mp4`,
+      variant: media(`video/tv/landsby-${tv}.mp4`),
+      poster_url: media(TV_STILL[tv] ?? "feed/landsby-rolig.jpg"),
       phase,
       phase_next_change_at: osloIso(date, phaseNext),
       ...(TV_GRADE_OVERRIDE[phase] && { grade: TV_GRADE_OVERRIDE[phase] }),
+      // Code-drawn village overlays, only ever over the rolig loop.
+      events,
     },
-    // ponytail: no events yet (todo.md «Flere tilfeldige hendelser»); only
-    // ever non-empty when tv.state is rolig.
-    events: [] as string[],
     next_change_at: next,
   };
 }
@@ -333,7 +421,7 @@ export const TOOLS: Record<string, Tool> = {
   get_screen: {
     level: "read",
     description:
-      "Skjerm: dører, tittel og teaser, Frostgrad, merker, frost, TV og neste endring.",
+      "Skjerm: dører (frost_day), tittel og teaser, today (løst, tidspunkt, milepæl), milestone_latest, countdown_days, Frostgrad, merker, frost, TV (poster_url, events) og neste endring. Tider i Europe/Oslo. Medie-URL-er er absolutte når NISSEKOMM_PUBLIC_BASE er satt, ellers rot-relative.",
     inputSchema: { type: "object", properties: {} },
     run: async (_, c) => getScreen(await read(), clockFor(c.name)),
   },
