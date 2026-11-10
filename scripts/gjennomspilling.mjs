@@ -373,6 +373,29 @@ for (const day of days) {
     ).catch((e) => fails.push(e.message));
     await sleep(2500);
 
+    // Snill-listen: asked on 22, once more on 23 if skipped, never over the finale on 24
+    if (day >= 22) {
+      const asked = (await text()).includes("HOPP OVER");
+      check(
+        asked === day < 24,
+        `navnedialogen ${asked ? "vises" : "mangler"} dag ${day}`,
+      );
+      if (asked) await clickText("HOPP OVER");
+    }
+    if (day === 24) {
+      await waitFor(
+        async () => (await text()).includes("GOD JUL"),
+        20000,
+        "finalen (GOD JUL) vises ikke dag 24",
+      ).catch((e) => fails.push(e.message));
+      await shot("finale-dag24.png");
+      writeFileSync(
+        join(ROOT, "test-results", "finale-dag24.png"),
+        readFileSync(join(SHOTS, "finale-dag24.png")),
+      );
+      await clickText("GOD JUL");
+    }
+
     await closeWindow();
     // Headless Chrome has no camera: the scanner must fall back to the typed card code
     if (m.symbol_clue) {
