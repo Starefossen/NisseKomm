@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { setSessionId } from "@/lib/auth-cookies";
 import { mediaUrl } from "@/lib/media";
 
@@ -63,6 +63,11 @@ export function PasswordPrompt({ onSuccess }: PasswordPromptProps) {
   const [error, setError] = useState("");
   const [isShaking, setIsShaking] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Inputs are disabled while checking, so focus can only return once they are enabled
+  useEffect(() => {
+    if (!isLoading && error) refs.current[0]?.focus();
+  }, [isLoading, error]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

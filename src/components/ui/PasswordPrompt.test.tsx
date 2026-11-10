@@ -60,6 +60,22 @@ describe("PasswordPrompt", () => {
     expect(JSON.parse(init.body as string)).toEqual({ code: "snø lykt rein" });
   });
 
+  it("clears the fields and refocuses field 1 after a wrong code", async () => {
+    global.fetch = jest.fn(async () => ({
+      ok: false,
+      status: 401,
+      json: async () => ({}),
+    })) as unknown as typeof fetch;
+    const f = mount();
+    type(f[0], "feil kode her");
+    await act(async () => {
+      f[0].form!.requestSubmit();
+    });
+    expect(f.map((i) => i.value)).toEqual(["", "", ""]);
+    expect(f[0].disabled).toBe(false);
+    expect(document.activeElement).toBe(f[0]);
+  });
+
   it("moves on with a space and back with Backspace", () => {
     const f = mount();
     type(f[0], "snø ");
