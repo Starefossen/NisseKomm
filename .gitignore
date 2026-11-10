@@ -60,6 +60,8 @@ __pycache__/
 public/video/julius/
 
 # gjennomspilling screenshots
-/test-results
+/test-results/**/*.png
+/test-results/**/*.log
+/test-results/gjennomspilling/
 /public/audio/
 /public/media-inventar.json
