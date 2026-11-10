@@ -57,6 +57,7 @@ import {
   SystemMetrikk,
   Varsel,
   InnsendelseLog,
+  DecryptionSymbol,
 } from "@/types/innhold";
 import statiskInnhold from "@/data/statisk_innhold.json";
 
@@ -607,6 +608,41 @@ export class GameEngine {
     }
 
     // Symbols require physical collection (QR scanning or parent addition)
+  }
+
+  /**
+   * Decryption challenges for NisseKrypto, from the morning of their day.
+   * `requiredSymbols` keeps the data order, because `correctSequence` indexes
+   * into it (not into the order the cards were scanned).
+   */
+  static getDecryptionChallenges(currentDay: number): Array<{
+    challengeId: string;
+    day: number;
+    title: string;
+    hint: string;
+    requiredSymbols: DecryptionSymbol[];
+    missingCount: number;
+    isSolved: boolean;
+  }> {
+    const all = getAllSymbols();
+    return ALL_QUESTS.filter(
+      (q) => q.decryption_challenge && q.dag <= currentDay,
+    ).map((q) => {
+      const c = q.decryption_challenge!;
+      return {
+        challengeId: c.challengeId,
+        day: q.dag,
+        title: q.tittel,
+        hint: c.hint,
+        requiredSymbols: c.requiredSymbols
+          .map((id) => all.find((s) => s.symbolId === id))
+          .filter((s): s is DecryptionSymbol => !!s),
+        missingCount: c.requiredSymbols.filter(
+          (id) => !StorageManager.hasSymbol(id),
+        ).length,
+        isSolved: StorageManager.isDecryptionSolved(c.challengeId),
+      };
+    });
   }
 
   /**

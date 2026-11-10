@@ -18,6 +18,7 @@ import {
   addCollectedSymbol,
 } from "../systems/symbol-system";
 import { StorageManager } from "../storage";
+import { GameEngine } from "../game-engine";
 
 // Use localStorage backend for these tests
 process.env.NEXT_PUBLIC_STORAGE_BACKEND = "localStorage";
@@ -209,5 +210,43 @@ describe("Symbol System", () => {
 
       expect(getCollectedSymbols()).toHaveLength(9);
     });
+  });
+});
+
+describe("NisseKrypto-utfordringer", () => {
+  beforeEach(async () => {
+    localStorage.clear();
+    await StorageManager.setAuthenticated(true);
+  });
+
+  const challenge = (day: number, id: string) =>
+    GameEngine.getDecryptionChallenges(day).find((c) => c.challengeId === id);
+
+  it("vises fra morgenen på dagen, ikke før", () => {
+    expect(challenge(11, "frosne-koder")).toBeUndefined();
+    expect(challenge(12, "frosne-koder")).toBeDefined();
+    expect(challenge(17, "stjernetegn")).toBeUndefined();
+    expect(challenge(22, "hjertets-hemmelighet")).toBeUndefined();
+    expect(challenge(23, "hjertets-hemmelighet")).toBeDefined();
+  });
+
+  it("teller manglende symboler", () => {
+    collectSymbolByCode("heart-green");
+    expect(challenge(12, "frosne-koder")?.missingCount).toBe(2);
+  });
+
+  it("godtar riktig rekkefølge selv om kortene ble skannet i annen rekkefølge", () => {
+    for (const id of ["heart-blue", "heart-green", "heart-red"]) {
+      collectSymbolByCode(id);
+    }
+    const c = challenge(12, "frosne-koder")!;
+    // Hint: varmt (rødt) → håper (grønt) → alene (blått)
+    const seq = ["heart-red", "heart-green", "heart-blue"].map((id) =>
+      c.requiredSymbols.findIndex((s) => s.symbolId === id),
+    );
+    expect(
+      GameEngine.validateDecryptionSequence(c.challengeId, seq).correct,
+    ).toBe(true);
+    expect(GameEngine.isFileUnlocked("frosne-koder.txt", 12)).toBe(true);
   });
 });
