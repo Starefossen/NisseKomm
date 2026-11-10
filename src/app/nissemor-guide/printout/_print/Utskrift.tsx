@@ -162,3 +162,32 @@ export function Ruter({
     </div>
   );
 }
+
+/** Card sizes that tile an <Ark>: 8 «A7» (2 × 4) or 2 «A6» per sheet. */
+export const A7 = "w-[92mm] h-[66mm]";
+export const A6 = "w-[92mm] h-[134mm]";
+
+/**
+ * Order for the back of a duplex sheet (long-edge flip): each row of a
+ * grid with `kolonner` columns is reversed so backs land behind fronts.
+ */
+export function bakside<T>(liste: T[], kolonner: number): (T | null)[] {
+  const ut: (T | null)[] = [];
+  for (let i = 0; i < liste.length; i += kolonner) {
+    const rad: (T | null)[] = liste.slice(i, i + kolonner);
+    while (rad.length < kolonner) rad.push(null);
+    ut.push(...rad.reverse());
+  }
+  return ut;
+}
+
+/** n dots, for the order dots on card backs. */
+export function Prikker({ n }: { n: number }) {
+  return (
+    <div className="flex gap-[3mm]" aria-label={`${n} prikker`}>
+      {Array.from({ length: n }, (_, i) => (
+        <span key={i} className="w-[5mm] h-[5mm] rounded-full bg-black" />
+      ))}
+    </div>
+  );
+}
