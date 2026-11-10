@@ -109,8 +109,8 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 - [ ] Snøfall TV og LiveCam (kanaler, loops, effekter, hendelser)
 - [ ] NisseMusikk
 - [ ] Brevfugler og brev til Julius
-- [ ] NisseKrypto og dekrypteringene
-- [ ] NisseNet-utforsker og filer
+- [x] NisseKrypto og dekrypteringene
+- [x] NisseNet-utforsker og filer
 - [ ] Eventyr, milepæler, merker og finale
 - [ ] Frost, Frostgrad og frostmodus
 - [ ] Frostrunene og runetavla
