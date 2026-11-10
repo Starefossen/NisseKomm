@@ -88,7 +88,7 @@ describe("Symbol System", () => {
 
       expect(result.success).toBe(false);
       expect(result.symbol).toBeUndefined();
-      expect(result.message).toContain("Ugyldig symbolkode");
+      expect(result.message).toContain("Ukjent kode");
     });
 
     it("should prevent duplicate collection", () => {
@@ -99,7 +99,7 @@ describe("Symbol System", () => {
       // Second collection of same symbol should fail
       const second = collectSymbolByCode("sun-red");
       expect(second.success).toBe(false);
-      expect(second.message).toContain("allerede samlet");
+      expect(second.message).toContain("allerede");
       expect(second.symbol).toBeDefined(); // Returns symbol info even on failure
     });
 

@@ -59,6 +59,8 @@ function SymbolerContent() {
       // Fetch the SVG and color it
       const iconUrl = iconSrc(symbol.symbolIcon);
 
+      // Without the icon the card still needs a scannable QR
+      let dataUrl: string | undefined;
       try {
         const response = await fetch(iconUrl);
         const svgText = await response.text();
@@ -71,7 +73,7 @@ function SymbolerContent() {
 
         // Convert SVG to data URL for better canvas compatibility
         const svgBase64 = btoa(unescape(encodeURIComponent(coloredSvg)));
-        const dataUrl = `data:image/svg+xml;base64,${svgBase64}`;
+        dataUrl = `data:image/svg+xml;base64,${svgBase64}`;
 
         // Pre-load the image to ensure it's ready before QR code renders
         const img = new Image();
@@ -81,45 +83,49 @@ function SymbolerContent() {
           img.onload = resolve;
           img.onerror = reject;
         });
-
-        const qrCode = new QRCodeStyling({
-          width: 200,
-          height: 200,
-          type: "canvas", // Use canvas instead of SVG for better print compatibility
-          data: symbol.symbolId, // The code to scan (e.g., "heart-green")
-          dotsOptions: {
-            color: "#000000", // Black QR code dots
-            type: "square",
-          },
-          cornersSquareOptions: {
-            color: "#000000", // Black corners
-            type: "square",
-          },
-          cornersDotOptions: {
-            color: "#000000", // Black corner dots
-            type: "square",
-          },
-          backgroundOptions: {
-            color: "#ffffff", // White background for contrast
-          },
-          image: dataUrl, // Use data URL instead of blob URL
-          imageOptions: {
-            crossOrigin: "anonymous",
-            margin: 2,
-            imageSize: 0.6, // 60% of QR code
-            hideBackgroundDots: true,
-            saveAsBlob: false,
-          },
-          qrOptions: {
-            errorCorrectionLevel: "H", // High error correction to allow for image overlay
-          },
-        });
-
-        newQrCodes.set(symbol.symbolId, qrCode);
-        setQrCodes(new Map(newQrCodes));
       } catch (error) {
-        console.error(`Failed to load icon for ${symbol.symbolId}:`, error);
+        console.warn(
+          `Ikon mangler for ${symbol.symbolId}, QR uten ikon`,
+          error,
+        );
+        dataUrl = undefined;
       }
+
+      const qrCode = new QRCodeStyling({
+        width: 200,
+        height: 200,
+        type: "canvas", // Use canvas instead of SVG for better print compatibility
+        data: GameEngine.getSymbolQrPayload(symbol.symbolId),
+        dotsOptions: {
+          color: "#000000", // Black QR code dots
+          type: "square",
+        },
+        cornersSquareOptions: {
+          color: "#000000", // Black corners
+          type: "square",
+        },
+        cornersDotOptions: {
+          color: "#000000", // Black corner dots
+          type: "square",
+        },
+        backgroundOptions: {
+          color: "#ffffff", // White background for contrast
+        },
+        image: dataUrl, // Use data URL instead of blob URL
+        imageOptions: {
+          crossOrigin: "anonymous",
+          margin: 2,
+          imageSize: 0.4, // larger icons made phones miss the code
+          hideBackgroundDots: true,
+          saveAsBlob: false,
+        },
+        qrOptions: {
+          errorCorrectionLevel: "H", // High error correction to allow for image overlay
+        },
+      });
+
+      newQrCodes.set(symbol.symbolId, qrCode);
+      setQrCodes(new Map(newQrCodes));
     };
 
     // Load all QR codes
@@ -432,12 +438,13 @@ function SymbolerContent() {
                 {/* Manual Code */}
                 <div className="text-center">
                   <p className="text-sm text-(--gray) mb-1 print:hidden">
-                    Manuell kode:
+                    Kode uten kamera:
                   </p>
                   <p
-                    className={`text-lg font-bold ${colorClass} tracking-wider print:text-black print:text-base`}
+                    data-kortkode={symbol.symbolId}
+                    className={`text-3xl font-bold ${colorClass} tracking-[0.3em] print:text-black print:text-2xl`}
                   >
-                    {symbol.symbolId.toUpperCase()}
+                    {GameEngine.getSymbolShortCode(symbol.symbolId)}
                   </p>
                 </div>
               </div>

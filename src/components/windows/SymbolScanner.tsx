@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { RetroWindow } from "../ui/RetroWindow";
-import { Icons, Icon } from "@/lib/icons";
+import { Icon } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 
@@ -11,412 +11,274 @@ interface SymbolScannerProps {
   onClose: () => void;
 }
 
+type CameraState = "starter" | "på" | "av" | "usikker" | "nektet" | "mangler";
+
+type Result = {
+  n: number;
+  tone: "ny" | "info" | "feil";
+  title: string;
+  text: string;
+  icon?: string;
+  color?: string;
+};
+
+const CAMERA_TEXT: Record<CameraState, string> = {
+  starter: "Starter kameraet …",
+  på: "Kameraet er på. Hold kortet stille foran kameraet.",
+  av: "Kameraet er av. Skriv koden under QR-koden, eller start kameraet.",
+  usikker:
+    "Kameraet virker bare på nissekomm.no. Skriv koden under QR-koden i stedet.",
+  nektet:
+    "NisseKomm fikk ikke bruke kameraet. Skriv koden under QR-koden, eller gi tillatelse i nettleseren og trykk START KAMERA.",
+  mangler:
+    "Fant ikke noe kamera. Skriv koden under QR-koden på kortet i stedet.",
+};
+
+// getUserMedia only exists in a secure context (https or localhost), not on http://<LAN-IP>
+function cameraSupported(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    window.isSecureContext &&
+    !!navigator.mediaDevices?.getUserMedia
+  );
+}
+
+function cameraError(error: unknown): CameraState {
+  const text = `${(error as Error)?.name ?? ""} ${String(error)}`;
+  if (/NotAllowed|Permission|denied/i.test(text)) return "nektet";
+  return "mangler";
+}
+
 /**
- * SymbolScanner - QR Code Scanner and Manual Entry for Symbol Collection
- *
- * PARENT SETUP:
- * - Print 9 symbol cards from /nissemor-guide/symboler page
- * - Each card has QR code + manual entry code (e.g., "heart-green")
- * - Hide cards around house (treasure hunt style)
- * - Kids use camera to scan QR codes OR manually enter codes
- *
- * SCANNING FLOW:
- * 1. Scanner auto-starts on component mount
- * 2. Camera accesses back-facing camera ("environment" mode)
- * 3. QR viewport shows 70% of smaller screen dimension
- * 4. On successful scan:
- *    - Stops camera immediately
- *    - Validates code with GameEngine
- *    - Adds to collection if valid and new
- *    - Shows success feedback for 5 seconds
- *
- * SYMBOL CODES (9 total):
- * - heart-green, heart-red, heart-blue
- * - sun-green, sun-red, sun-blue
- * - moon-green, moon-red, moon-blue
- *
- * CAMERA MANAGEMENT:
- * - Properly stops MediaStream tracks on unmount
- * - Clears DOM elements to prevent memory leaks
- * - Handles permission errors gracefully
- *
- * @see /src/app/nissemor-guide/symboler/page.tsx - Parent QR generation page
- * @see /src/lib/game-engine.ts - collectSymbolByCode() validation logic
+ * Scans the nine symbol cards (QR) or takes the short code printed under the QR.
+ * The camera lives in one effect keyed on `wantCamera`: every run gets its own
+ * DOM host and stops its own reader, so strict-mode double mounts and closing
+ * the window mid-start never leave the camera on.
  */
 export function SymbolScanner({ onClose }: SymbolScannerProps) {
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isScanning, setIsScanning] = useState(false);
-  const [scannerError, setScannerError] = useState<string | null>(null);
-  const [lastCollected, setLastCollected] = useState<{
-    symbolIcon: string;
-    symbolColor: string;
-    description: string;
-  } | null>(null);
+  const [supported] = useState(cameraSupported);
+  const [wantCamera, setWantCamera] = useState(supported);
+  const [camera, setCamera] = useState<CameraState>(
+    supported ? "starter" : "usikker",
+  );
+  const [result, setResult] = useState<Result | null>(null);
+  const [code, setCode] = useState("");
+  const [count, setCount] = useState(
+    () => GameEngine.getCollectedSymbols().length,
+  );
+  const hostRef = useRef<HTMLDivElement>(null);
+  const lastScan = useRef({ text: "", at: 0 });
 
-  const qrReaderRef = useRef<Html5Qrcode | null>(null);
-  const processingQRRef = useRef(false);
-
-  // Helper to forcefully stop video tracks
-  const stopMediaTracks = () => {
-    try {
-      const qrReaderElement = document.getElementById("qr-reader");
-      if (qrReaderElement) {
-        const videoElement = qrReaderElement.querySelector("video");
-        if (videoElement && videoElement.srcObject) {
-          const stream = videoElement.srcObject as MediaStream;
-          stream.getTracks().forEach((track) => {
-            track.stop();
-          });
-          // Do not set srcObject to null here as it triggers "onabort" error
-          // videoElement.srcObject = null;
-        }
-      }
-    } catch (e) {
-      console.error("Error stopping media tracks:", e);
-    }
-  };
-
-  const stopScanning = async () => {
-    if (qrReaderRef.current) {
-      try {
-        // Try to stop gracefully first
-        await qrReaderRef.current.stop();
-      } catch (error) {
-        console.error("Failed to stop QR scanner:", error);
-      } finally {
-        // Always force stop tracks and clear
-        stopMediaTracks();
-        try {
-          if (qrReaderRef.current) {
-            qrReaderRef.current.clear();
-          }
-        } catch {
-          // Ignore
-        }
-        // Set to null to signal garbage collector
-        qrReaderRef.current = null;
-      }
-
-      // Clear the DOM element completely to remove any remaining video elements
-      const qrReaderElement = document.getElementById("qr-reader");
-      if (qrReaderElement) {
-        qrReaderElement.innerHTML = "";
-      }
-
-      SoundManager.playSound("click");
-      setIsScanning(false);
-    }
-  };
-
-  const processCode = async (inputCode: string) => {
-    SoundManager.playSound("click");
-
-    // Track symbol scan attempt
-
-    // Simulate processing delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const result = GameEngine.collectSymbolByCode(inputCode.trim());
-
-    if (result.success && result.symbol) {
+  const submit = (raw: string) => {
+    const r = GameEngine.collectSymbolByCode(raw);
+    setCount(GameEngine.getCollectedSymbols().length);
+    if (r.status === "ny" && r.symbol) {
       SoundManager.playSound("success");
-
-      setLastCollected({
-        symbolIcon: result.symbol.symbolIcon,
-        symbolColor: result.symbol.symbolColor,
-        description: result.symbol.description,
+      setTimeout(() => SoundManager.playSound("open"), 160);
+      setResult({
+        n: Date.now(),
+        tone: "ny",
+        title: "NYTT SYMBOL!",
+        text: r.symbol.description,
+        icon: r.symbol.symbolIcon,
+        color: r.symbol.symbolColor,
       });
-
-      // Show success message briefly, then close to return to NisseKrypto
-      setTimeout(async () => {
-        setLastCollected(null);
-        // Ensure scanner is fully stopped before closing
-        await stopScanning();
-        onClose(); // Close scanner and return to NisseKrypto
-      }, 2000);
-    } else if (result.symbol) {
-      // Already collected symbol - show error but still close
-      SoundManager.playSound("error");
-
-      setLastCollected({
-        symbolIcon: result.symbol.symbolIcon,
-        symbolColor: result.symbol.symbolColor,
-        description: "Allerede samlet!",
+    } else if (r.status === "allerede" && r.symbol) {
+      SoundManager.playSound("click");
+      setResult({
+        n: Date.now(),
+        tone: "info",
+        title: "ALLEREDE SAMLET",
+        text: `${r.symbol.description}: ${r.message}`,
+        icon: r.symbol.symbolIcon,
+        color: r.symbol.symbolColor,
       });
-
-      // Show message briefly, then close to return to NisseKrypto
-      setTimeout(async () => {
-        setLastCollected(null);
-        await stopScanning();
-        onClose();
-      }, 2000);
     } else {
-      // Invalid code - don't close, let user try again
       SoundManager.playSound("error");
+      setResult({
+        n: Date.now(),
+        tone: r.status === "for-tidlig" ? "info" : "feil",
+        title: r.status === "for-tidlig" ? "IKKE ENNÅ" : "FEIL KODE",
+        text: r.message,
+      });
     }
+    return r.success;
   };
 
-  const handleQRScan = async (decodedText: string) => {
-    // Prevent multiple simultaneous scans
-    if (processingQRRef.current) {
-      return;
-    }
-    processingQRRef.current = true;
-    setIsProcessing(true);
+  // Latest submit for the scanner callback, which is bound once per camera start
+  const submitRef = useRef(submit);
+  useEffect(() => {
+    submitRef.current = submit;
+  });
 
-    // Stop scanning immediately to prevent re-triggering
-    if (qrReaderRef.current) {
-      try {
-        stopMediaTracks();
-        await qrReaderRef.current.stop();
-        // Clear the instance to release camera
-        qrReaderRef.current.clear();
-      } catch {
-        // Ignore stop errors
-      }
-      // Set to null for garbage collector
-      qrReaderRef.current = null;
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!wantCamera || !host) return;
+    let cancelled = false;
+    const el = document.createElement("div");
+    el.id = `qr-${Math.random().toString(36).slice(2)}`;
+    el.className = "qr-host";
+    host.appendChild(el);
+    const reader = new Html5Qrcode(el.id, { verbose: false });
 
-      // Clear DOM to remove video elements
-      const qrReaderElement = document.getElementById("qr-reader");
-      if (qrReaderElement) {
-        qrReaderElement.innerHTML = "";
-      }
-
-      setIsScanning(false);
-    }
-
-    // Process the scanned code
-    await processCode(decodedText);
-    // Don't reset processingQRRef here - keep it locked to prevent any re-triggers
-    // It will be reset when component unmounts or scanner restarts
-  };
-
-  const startScanning = async () => {
-    setScannerError(null); // Clear previous errors
-    processingQRRef.current = false; // Reset processing lock
-    setIsProcessing(false);
-
-    try {
-      stopMediaTracks();
-
-      // Ensure any previous instance is fully stopped
-      if (qrReaderRef.current) {
-        try {
-          await qrReaderRef.current.stop();
-          qrReaderRef.current.clear();
-        } catch {
-          // Ignore errors from stopping previous instance
-        }
-        qrReaderRef.current = null;
-      }
-
-      // Clear DOM element to ensure clean start
-      const qrReaderElement = document.getElementById("qr-reader");
-      if (qrReaderElement) {
-        qrReaderElement.innerHTML = "";
-      }
-
-      setIsScanning(true);
-
-      // Wait for DOM to render the qr-reader element
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
-      const qrReader = new Html5Qrcode("qr-reader");
-      qrReaderRef.current = qrReader;
-
-      await qrReader.start(
-        { facingMode: "environment" }, // Use back camera
+    const started = reader
+      .start(
+        { facingMode: "environment" },
         {
           fps: 10,
-          qrbox: (width, height) => {
-            const smallerDimension = Math.min(width, height);
-            const boxSize = Math.floor(smallerDimension * 0.7); // 70% of smaller dimension
-            return { width: boxSize, height: boxSize };
+          qrbox: (w, h) => {
+            const side = Math.floor(Math.min(w, h) * 0.7);
+            return { width: side, height: side };
           },
         },
-        handleQRScan,
-        () => {}, // Ignore scan errors (just keep trying)
-      );
+        (text) => {
+          // The same card stays in view for many frames; take it once per 3 s
+          const now = Date.now();
+          if (
+            text === lastScan.current.text &&
+            now - lastScan.current.at < 3000
+          )
+            return;
+          lastScan.current = { text, at: now };
+          submitRef.current(text);
+        },
+        () => {},
+      )
+      .then(() => !cancelled && setCamera("på"))
+      .catch((error) => {
+        console.warn("Kamera startet ikke:", error);
+        if (!cancelled) {
+          setCamera(cameraError(error));
+          setWantCamera(false);
+        }
+      });
 
-      SoundManager.playSound("click");
-    } catch (error) {
-      console.error("Failed to start QR scanner:", error);
-      SoundManager.playSound("error");
-      setIsScanning(false);
+    return () => {
+      cancelled = true;
+      // Stop after start settles: stopping a pending start leaks the stream
+      void started.finally(async () => {
+        try {
+          if (reader.isScanning) await reader.stop();
+          reader.clear();
+        } catch {
+          // Already stopped
+        }
+        const stream = el.querySelector("video")?.srcObject;
+        if (stream instanceof MediaStream)
+          stream.getTracks().forEach((t) => t.stop());
+        el.remove();
+      });
+    };
+  }, [wantCamera]);
 
-      // User-friendly error messages
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
-      if (
-        errorMessage.includes("Permission") ||
-        errorMessage.includes("NotAllowedError")
-      ) {
-        setScannerError(
-          "⚠️ Kamera-tilgang nektet. Vennligst gi tillatelse i nettleserens innstillinger.",
-        );
-      } else if (
-        errorMessage.includes("NotFoundError") ||
-        errorMessage.includes("No camera")
-      ) {
-        setScannerError("📷 Fant ikke kamera. Sjekk at enheten har et kamera.");
-      } else {
-        setScannerError(
-          "❌ Kunne ikke starte kamera. Prøv å laste siden på nytt.",
-        );
-      }
-    }
+  const toggleCamera = () => {
+    SoundManager.playSound("click");
+    setCamera(wantCamera ? "av" : "starter");
+    setWantCamera(!wantCamera);
   };
 
-  // Auto-start scanning on mount
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      void startScanning();
-    }, 0);
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Cleanup QR scanner on unmount
-  useEffect(() => {
-    return () => {
-      // Always try to stop media tracks first
-      stopMediaTracks();
-
-      if (qrReaderRef.current) {
-        try {
-          qrReaderRef.current
-            .stop()
-            .catch(() => {
-              // Ignore stop errors
-            })
-            .finally(() => {
-              if (qrReaderRef.current) {
-                try {
-                  qrReaderRef.current.clear();
-                } catch {
-                  // Ignore clear errors
-                }
-              }
-            });
-        } catch {
-          // Ignore errors
-        }
-      }
-    };
-  }, []);
+  const resultStyle =
+    result?.tone === "ny"
+      ? "border-(--gold) bg-(--gold)/20 text-(--gold) animate-[gold-flash_1s_ease-in-out]"
+      : result?.tone === "info"
+        ? "border-(--cold-blue) bg-(--cold-blue)/10 text-(--cold-blue)"
+        : "border-(--christmas-red) bg-(--christmas-red)/20 text-(--christmas-red) animate-[red-shake_0.5s_ease-in-out]";
 
   return (
-    <RetroWindow title="SYMBOLSKANNER - QR KODE LESER" onClose={onClose}>
+    <RetroWindow title="SYMBOLSKANNER" onClose={onClose}>
       <style jsx global>{`
-        #qr-reader {
+        .qr-host,
+        .qr-host > div {
           width: 100% !important;
           height: 100% !important;
           position: relative !important;
         }
-        #qr-reader > div {
-          width: 100% !important;
-          height: 100% !important;
-        }
-        #qr-reader video {
+        .qr-host video {
           width: 100% !important;
           height: 100% !important;
           object-fit: cover !important;
           position: absolute !important;
-          top: 0 !important;
-          left: 0 !important;
-        }
-        #qr-reader canvas {
-          position: absolute !important;
-          top: 50% !important;
-          left: 50% !important;
-          transform: translate(-50%, -50%) !important;
+          inset: 0 !important;
         }
       `}</style>
-      <div className="flex flex-col h-full p-4 space-y-4">
-        {/* Error Display */}
-        {scannerError && (
-          <div className="border-4 border-(--christmas-red) bg-(--christmas-red)/20 p-4 text-(--christmas-red) animate-[red-shake_0.5s_ease-in-out]">
-            <div className="font-bold mb-1">KAMERA-FEIL</div>
-            <div className="text-base">{scannerError}</div>
-            <button
-              onClick={() => {
-                setScannerError(null);
-                startScanning();
-              }}
-              className="mt-3 px-4 py-2 border-2 border-(--christmas-red) hover:bg-(--christmas-red)/10 text-base font-bold"
-            >
-              PRØV IGJEN
-            </button>
+      <div className="flex flex-col h-full p-4 gap-4 overflow-y-auto">
+        <div className="flex items-center justify-between gap-4">
+          <p
+            role="status"
+            aria-live="polite"
+            data-kamera={camera}
+            className={`text-lg ${camera === "nektet" || camera === "mangler" || camera === "usikker" ? "text-(--cold-blue)" : "text-(--neon-green)"}`}
+          >
+            {CAMERA_TEXT[camera]}
+          </p>
+          <span className="shrink-0 text-xl text-(--gold)">{count} av 9</span>
+        </div>
+
+        {wantCamera && (
+          <div
+            ref={hostRef}
+            className="relative flex-1 min-h-64 border-4 border-(--brass) overflow-hidden bg-black"
+          />
+        )}
+
+        {result && (
+          <div
+            key={result.n}
+            role="alert"
+            className={`border-4 p-4 flex items-center gap-4 ${resultStyle}`}
+          >
+            {result.icon && (
+              <Icon
+                name={result.icon}
+                size={56}
+                color={result.color as "green" | "red" | "blue"}
+              />
+            )}
+            <div>
+              <div className="text-2xl font-bold">{result.title}</div>
+              <div className="text-lg">{result.text}</div>
+            </div>
           </div>
         )}
 
-        {/* QR Scanner - Full height */}
-        <div className="flex-1 flex flex-col min-h-0">
-          {isScanning ? (
-            <div className="flex-1 flex flex-col gap-3 min-h-0">
-              <div
-                id="qr-reader"
-                className="flex-1 border-4 border-(--neon-green) overflow-hidden relative"
-                style={{
-                  maxHeight: "calc(100vh - 200px)",
-                }}
-              ></div>
-              <button
-                onClick={stopScanning}
-                className="w-full px-6 py-3 bg-(--christmas-red) hover:bg-(--christmas-red)/80 text-white font-bold border-4 border-black transition-colors shrink-0"
-              >
-                STOPP SKANNING
-              </button>
-            </div>
-          ) : (
-            <div className="flex-1 flex flex-col items-center justify-center gap-6 border-2 border-(--neon-green)/30 p-8">
-              <div className="text-center space-y-2">
-                <div className="text-(--neon-green) text-lg font-bold">
-                  📷 KLAR FOR Å SKANNE?
-                </div>
-                <div className="text-(--neon-green)/70 text-base max-w-md">
-                  Hold QR-koden fra symbolkortet foran kameraet. Skanningen
-                  starter automatisk når koden oppdages.
-                </div>
-              </div>
-              <button
-                onClick={startScanning}
-                disabled={isProcessing}
-                className="px-8 py-6 bg-(--cold-blue) hover:bg-(--cold-blue)/80 disabled:bg-(--gray) text-black font-bold text-xl border-4 border-black transition-colors flex items-center gap-3"
-              >
-                <Icons.Camera size={32} color="gray" />
-                START KAMERA
-              </button>
-              <div className="text-base text-(--neon-green)/50 text-center max-w-xs">
-                Tips: Sørg for god belysning og hold kameraet støtt
-              </div>
-            </div>
-          )}
-        </div>
+        <form
+          className="flex gap-3"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!code.trim()) return;
+            if (submit(code)) setCode("");
+          }}
+        >
+          <label className="sr-only" htmlFor="symbolkode">
+            Kode fra symbolkortet
+          </label>
+          <input
+            id="symbolkode"
+            value={code}
+            onChange={(e) => setCode(e.target.value.toUpperCase())}
+            placeholder="KODE FRA KORTET"
+            autoComplete="off"
+            autoCapitalize="characters"
+            spellCheck={false}
+            maxLength={16}
+            className="flex-1 min-w-0 min-h-14 px-4 text-2xl tracking-widest font-retro bg-black border-4 border-(--brass) text-(--neon-green) placeholder:text-(--neon-green)/40"
+          />
+          <button
+            type="submit"
+            className="min-h-14 min-w-24 px-6 text-2xl font-bold bg-(--neon-green) text-black border-4 border-black"
+          >
+            SEND
+          </button>
+        </form>
 
-        {/* Last Collected Symbol Preview */}
-        {lastCollected && (
-          <div className="border-4 border-(--gold) bg-(--gold)/20 p-4 animate-[gold-flash_1s_ease-in-out]">
-            <div className="flex items-center gap-3">
-              <Icon
-                name={lastCollected.symbolIcon}
-                size={48}
-                color={
-                  lastCollected.symbolColor as
-                    "green" | "red" | "blue" | "gold" | "gray"
-                }
-              />
-              <div>
-                <div className="text-lg font-bold text-(--gold)">
-                  NYTT SYMBOL!
-                </div>
-                <div className="text-base opacity-80">
-                  {lastCollected.description}
-                </div>
-              </div>
-            </div>
-          </div>
+        {supported && (
+          <button
+            type="button"
+            onClick={toggleCamera}
+            className="min-h-14 w-full px-6 text-xl font-bold border-4 border-black text-black bg-(--cold-blue)"
+          >
+            {wantCamera ? "SLÅ AV KAMERA" : "START KAMERA"}
+          </button>
         )}
       </div>
     </RetroWindow>
