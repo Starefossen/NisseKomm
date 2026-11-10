@@ -7,6 +7,7 @@ import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import { DecryptionSymbol } from "@/types/innhold";
 import { SymbolScanner } from "./SymbolScanner";
+import { getCurrentDay } from "@/lib/date-utils";
 
 /**
  * NisseKrypto - Symbol Decryption Challenge System
@@ -40,16 +41,7 @@ interface NisseKryptoProps {
   onClose: () => void;
 }
 
-interface Challenge {
-  challengeId: string;
-  day: number;
-  title: string;
-  hint: string;
-  requiredSymbols: DecryptionSymbol[];
-  sequenceLength: number;
-  isSolved: boolean;
-  attempts: number;
-}
+type Challenge = ReturnType<typeof GameEngine.getDecryptionChallenges>[number];
 
 export function NisseKrypto({ onClose }: NisseKryptoProps) {
   const [collectedSymbols, setCollectedSymbols] = useState<DecryptionSymbol[]>(
@@ -85,36 +77,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
     const symbols = GameEngine.getCollectedSymbols();
     setCollectedSymbols(symbols);
 
-    // Load available challenges
-    const allQuests = GameEngine.getAllQuests();
-    const challenges: Challenge[] = [];
-
-    allQuests.forEach((quest) => {
-      if (quest.decryption_challenge) {
-        const challenge = quest.decryption_challenge;
-
-        // Check if all required symbols are collected
-        const requiredSymbols = symbols.filter((s) =>
-          challenge.requiredSymbols.includes(s.symbolId),
-        );
-
-        if (requiredSymbols.length === challenge.requiredSymbols.length) {
-          const isSolved = GameEngine.isDecryptionSolved(challenge.challengeId);
-
-          challenges.push({
-            challengeId: challenge.challengeId,
-            day: quest.dag,
-            title: quest.tittel,
-            hint: challenge.messageWhenSolved || "Plasser symbolene riktig",
-            requiredSymbols,
-            sequenceLength: challenge.correctSequence.length,
-            isSolved,
-            attempts: 0,
-          });
-        }
-      }
-    });
-
+    const challenges = GameEngine.getDecryptionChallenges(getCurrentDay());
     setAvailableChallenges(challenges);
   };
 
@@ -179,16 +142,20 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
 
     const touch = e.changedTouches[0];
     if (touch && touch.identifier === touchIdentifier) {
-      // Check if touch ended over a valid drop zone
-      const element = document.elementFromPoint(touch.clientX, touch.clientY);
-      if (element && element.hasAttribute("data-drop-zone")) {
+      // closest(): the finger usually lands on the icon inside the slot
+      const element = document
+        .elementFromPoint(touch.clientX, touch.clientY)
+        ?.closest("[data-drop-zone]");
+      if (!element) {
+        handlePlace(touchedSymbol); // a tap, not a drag
+      } else {
         const dropPosition = parseInt(
           element.getAttribute("data-drop-zone") || "-1",
           10,
         );
         if (
           dropPosition >= 0 &&
-          dropPosition < selectedChallenge.sequenceLength
+          dropPosition < selectedChallenge.requiredSymbols.length
         ) {
           const newGrid = [...challengeGrid];
           newGrid[dropPosition] = touchedSymbol;
@@ -208,6 +175,19 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
     setTouchIdentifier(null);
   };
 
+  const handlePlace = (symbol: DecryptionSymbol) => {
+    if (!selectedChallenge) return;
+    const free = challengeGrid.findIndex(
+      (s, i) => s === null && i < selectedChallenge.requiredSymbols.length,
+    );
+    if (free === -1) return;
+    const newGrid = [...challengeGrid];
+    newGrid[free] = symbol;
+    setChallengeGrid(newGrid);
+    setPositionFeedback([]);
+    SoundManager.playSound("click");
+  };
+
   const handleClearGrid = () => {
     SoundManager.playSound("click");
     setChallengeGrid(Array(9).fill(null));
@@ -220,9 +200,9 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
 
     // Check if grid is complete
     const filledCount = challengeGrid.filter((s) => s !== null).length;
-    if (filledCount < selectedChallenge.sequenceLength) {
+    if (filledCount < selectedChallenge.requiredSymbols.length) {
       setFeedback(
-        `⚠️ Fyll ut ${selectedChallenge.sequenceLength} posisjoner først!`,
+        `⚠️ Fyll ut ${selectedChallenge.requiredSymbols.length} posisjoner først!`,
       );
       SoundManager.playSound("error");
       return;
@@ -236,7 +216,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
 
     // Convert grid to sequence indices
     const userSequence = challengeGrid
-      .slice(0, selectedChallenge.sequenceLength)
+      .slice(0, selectedChallenge.requiredSymbols.length)
       .map((symbol) => {
         if (!symbol) return -1;
         return selectedChallenge.requiredSymbols.findIndex(
@@ -255,7 +235,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
       SoundManager.playSound("success");
       setFeedback(`✅ ${result.message}`);
       setPositionFeedback(
-        Array(selectedChallenge.sequenceLength).fill("correct"),
+        Array(selectedChallenge.requiredSymbols.length).fill("correct"),
       );
 
       // Reload data to update solved status
@@ -268,14 +248,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
     } else {
       SoundManager.playSound("error");
       setFeedback(
-        `❌ ${result.correctCount || 0}/${selectedChallenge.sequenceLength} riktig plassert`,
-      );
-
-      // Show position feedback (for now just mark all as wrong, could be enhanced)
-      setPositionFeedback(
-        challengeGrid
-          .slice(0, selectedChallenge.sequenceLength)
-          .map(() => "wrong"),
+        `❌ ${result.correctCount || 0}/${selectedChallenge.requiredSymbols.length} riktig plassert`,
       );
     }
 
@@ -356,13 +329,17 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                     <button
                       key={challenge.challengeId}
                       onClick={() => handleChallengeSelect(challenge)}
-                      disabled={challenge.isSolved}
+                      disabled={
+                        challenge.isSolved || challenge.missingCount > 0
+                      }
                       className={`
                         w-full overflow-hidden text-left border-2 transition-all
                         ${
                           challenge.isSolved
                             ? "border-(--gold) bg-(--gold)/10 text-(--gold) cursor-not-allowed"
-                            : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-(--neon-green)/10 text-(--neon-green)"
+                            : challenge.missingCount > 0
+                              ? "border-(--gray)/40 text-(--gray) cursor-not-allowed"
+                              : "border-(--neon-green)/30 hover:border-(--neon-green) hover:bg-(--neon-green)/10 text-(--neon-green)"
                         }
                       `}
                     >
@@ -408,9 +385,17 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                               DAG {challenge.day}: {challenge.title}
                             </div>
                             <div className="text-base opacity-70 mt-1">
-                              Krever {challenge.sequenceLength} symboler i
-                              riktig rekkefølge
+                              Krever {challenge.requiredSymbols.length} symboler
+                              i riktig rekkefølge
                             </div>
+                            {!challenge.isSolved &&
+                              challenge.missingCount > 0 && (
+                                <div className="text-base mt-1">
+                                  Mangler {challenge.missingCount} symbol
+                                  {challenge.missingCount > 1 ? "er" : ""}.
+                                  Skann kortene først.
+                                </div>
+                              )}
                             {/* Show required symbol types */}
                             <div className="flex gap-1 mt-2">
                               {challenge.requiredSymbols
@@ -519,7 +504,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                     AKTIV DEKRYPTERING // DAG {selectedChallenge.day}
                   </span>
                   <span className="bg-black/80 px-2 py-0.5 border border-(--gold)/60 text-(--gold)">
-                    SEKVENS: {selectedChallenge.sequenceLength} SYMBOLER
+                    SEKVENS: {selectedChallenge.requiredSymbols.length} SYMBOLER
                   </span>
                 </div>
               </div>
@@ -531,7 +516,8 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                     </div>
                     <div className="text-base text-(--cold-blue)/60 mt-1">
                       DAG {selectedChallenge.day} •{" "}
-                      {selectedChallenge.sequenceLength} symboler nødvendig
+                      {selectedChallenge.requiredSymbols.length} symboler
+                      nødvendig
                     </div>
                   </div>
                   <button
@@ -576,6 +562,16 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                   {collectedSymbols.slice(0, 9).map((symbol, index) => (
                     <div
                       key={symbol?.symbolId || `empty-${index}`}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={symbol.description}
+                      onClick={() => handlePlace(symbol)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          handlePlace(symbol);
+                        }
+                      }}
                       draggable={!!symbol}
                       onDragStart={() => symbol && handleDragStart(symbol)}
                       onTouchStart={(e) =>
@@ -629,7 +625,8 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   {challengeGrid.map((symbol, position) => {
-                    const isUsed = position < selectedChallenge.sequenceLength;
+                    const isUsed =
+                      position < selectedChallenge.requiredSymbols.length;
                     const positionFb = positionFeedback[position];
 
                     return (
@@ -638,6 +635,13 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                         data-drop-zone={isUsed ? position : undefined}
                         onDragOver={handleDragOver}
                         onDrop={() => isUsed && handleDrop(position)}
+                        onClick={() => {
+                          if (!symbol) return;
+                          const newGrid = [...challengeGrid];
+                          newGrid[position] = null;
+                          setChallengeGrid(newGrid);
+                          setPositionFeedback([]);
+                        }}
                         onTouchMove={handleTouchMove}
                         className={`
                           aspect-square min-w-12 min-h-12 md:min-w-16 md:min-h-16 border-2 flex flex-col items-center justify-center p-1 md:p-2 relative
@@ -691,7 +695,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                   })}
                 </div>
                 <div className="text-base text-(--cold-blue)/60 mt-3 text-center">
-                  Dra symboler hit for å løse
+                  Dra eller trykk på symbolene. Trykk her for å ta et ut.
                 </div>
               </div>
             </div>
@@ -728,7 +732,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                 disabled={
                   isProcessing ||
                   challengeGrid.filter((s) => s !== null).length <
-                    selectedChallenge.sequenceLength
+                    selectedChallenge.requiredSymbols.length
                 }
                 className="flex-1 p-3 border-2 border-(--cold-blue) text-black bg-(--cold-blue) hover:shadow-[0_0_15px_rgba(0,221,255,0.6)] transition-all disabled:opacity-50 disabled:cursor-not-allowed font-bold tracking-wider"
               >
@@ -744,7 +748,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
               </div>
               <div className="opacity-80 space-y-1">
                 <div>
-                  1. Dra symboler fra{" "}
+                  1. Dra eller trykk symboler fra{" "}
                   <span className="text-(--neon-green) font-bold">
                     SYMBOLSAMLING
                   </span>{" "}
@@ -761,12 +765,6 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                 <div>
                   4. Klikk <span className="font-bold">TEST KODE</span> for å
                   sjekke løsningen
-                </div>
-                <div className="mt-2 pt-1 border-t border-(--cold-blue)/20">
-                  <span className="text-(--gold)">✓ Gull ramme</span> = Riktig
-                  plassert •{" "}
-                  <span className="text-(--christmas-red)">✗ Rød ramme</span> =
-                  Feil
                 </div>
               </div>
             </div>

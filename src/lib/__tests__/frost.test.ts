@@ -1,5 +1,18 @@
 import { describe, it, expect } from "@jest/globals";
-import { frostLevelFor, frostModeFor, isFrostDay } from "../frost";
+import {
+  FROST_OPEN_FOLDER,
+  frostLevelFor,
+  frostModeFor,
+  isFrostDay,
+} from "../frost";
+import statiskInnhold from "@/data/statisk_innhold.json";
+
+describe("frostmodus 2 i NisseNet", () => {
+  it("lar Trixters kart (dag 18) stå lesbart på dag 21", () => {
+    const open = statiskInnhold.filer.find((n) => n.navn === FROST_OPEN_FOLDER);
+    expect(open?.barn?.map((f) => f.navn)).toContain("stjernetegn.txt");
+  });
+});
 
 describe("Frostgraden", () => {
   // storyboard-2026 §2: [day, morning, after code, after bonus]
