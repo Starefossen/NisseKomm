@@ -86,12 +86,12 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 
 ## Fase 5: Flytt til hjemmeklyngen (krav fra Varden, Starefossen/homelab#22)
 
-Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxScale=1` 1. desember–6. januar, 200Mi/512Mi, 1Gi `qnap-iscsi` PVC, CiliumNetworkPolicy, Secret). NisseKomm-repoet er vårt. Varden rører det ikke.
+Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxScale=1` 1. desember–6. januar, 200Mi/512Mi, PostgreSQL (CloudNativePG), CiliumNetworkPolicy, Secret). NisseKomm-repoet er vårt. Varden rører det ikke.
 
 - [ ] **Kjøring:** `output: "standalone"` i `next.config`, lytt på `$PORT` (standard 8080), bind `0.0.0.0`.
 - [ ] **Dockerfile:** flertrinns på `node:24-alpine`, ikke-root, multi-arch (amd64 påkrevd). Push til `registry.intern.flaatten.org:5000/nissekomm:<unix-ts>` med en mise-oppgave.
-- [ ] **Media i imaget:** `public/` bakes inn (Next støtter Range-forespørsler, som Safari trenger for video). PVC-en er bare for SQLite.
-- [ ] **Lagring:** `node:sqlite` (innebygd), databasen i `$DATA_DIR/nissekomm.db` (`/data`).
+- [ ] **Media i imaget:** `public/` bakes inn (Next støtter Range-forespørsler, som Safari trenger for video).
+- [ ] **Lagring:** PostgreSQL i Varden-klyngen (CloudNativePG), tilkobling fra `DATABASE_URL`. Ingen PVC for appen, så den kan skalere til null og skaleres uavhengig av databasen. Bruk en ren JS-klient (`pg`).
 - [ ] **Helse:** `GET /api/health` gir 200 uten autentisering og uten tung IO.
 - [ ] **Fjern:** `@sanity/*`, Sanity Studio og migreringer, `resend` og e-postskript, Vercel-cron og `vercel.json`, `@vercel/analytics`. Null utgående trafikk i kjøring.
 - [ ] **Én familie:** barnekode og foreldrekode fra miljøet (`KID_CODE`, `PARENT_CODE`). Ingen registrering, gjenoppretting eller avmelding.
@@ -100,4 +100,4 @@ Varden eier hjemmesiden i `starefossen/home` (Knative-tjeneste, `minScale=maxSca
   - clips: `[{character: "julius"|"rampenissen", audio_url, intro_hint}]`, der `audio_url` er en absolutt LAN-URL servert av NisseKomm
 - [ ] **Bygg:** produksjonsbygg setter ikke `NEXT_PUBLIC_MOCK_*`, `TEST_MODE` eller `STORAGE_BACKEND` (de bakes inn ved bygging).
 - [ ] **Sikkerhetshoder:** flytt fra `vercel.json` til `headers()` i `next.config`.
-- [ ] **Miljø:** `PORT`, `DATA_DIR`, `KID_CODE`, `PARENT_CODE`, `HOME_STATE_TOKEN`, `NEXT_PUBLIC_URL=https://nissekomm.nissekomm.fn.flaatten.org`.
+- [ ] **Miljø:** `PORT`, `DATABASE_URL`, `KID_CODE`, `PARENT_CODE`, `HOME_STATE_TOKEN`, `NEXT_PUBLIC_URL=https://nissekomm.nissekomm.fn.flaatten.org`.
