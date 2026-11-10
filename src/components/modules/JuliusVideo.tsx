@@ -82,6 +82,8 @@ export function JuliusVideo({
             ref={videoRef}
             key={src}
             src={src}
+            // The clips open on black; a still from 3 s in sits next to each mp4
+            poster={src.replace(/\.mp4$/, ".jpg")}
             controls
             aria-label={`Julius' video for ${day}. desember`}
             playsInline
