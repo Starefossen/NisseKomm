@@ -2,7 +2,7 @@
 
 Steg 1 i byggerekkefølgen. Kilder: `docs/historie-2026.md` (låst), `docs/storyboard-2026.md`, `CONTENT_GUIDE.md` og kodene i `src/data/uke1–4_oppdrag.json`. Ingen kode er endret. Historiebeats er ikke rørt; det som er bestemt her, er hvordan hver dags to brikker ser ut, hva de faktisk gjør med dem, og hva en forelder må ha klart.
 
-**Status: LÅST 10. november 2026.** De seks avgjørelsene i (d) er godtatt av Hans, og uavhengig gjennomgang (21 funn) er innarbeidet. Endringer krever eksplisitt ja.
+**Status: LÅST 10. november 2026.** De seks avgjørelsene i (d) er godtatt av Hans, og uavhengig gjennomgang (21 funn) er innarbeidet. Endringer krever eksplisitt ja. Endret etter ja fra Hans 10. november.
 
 **Revisjon 10. november 2026 (vanskelighet).** Godkjent av Hans: gåtene er for Kristian (12) og Håkon (9); Hanna (5) har valgfrie roller som aldri blokkerer. To meta-gåter (Frostrunene, Trixters kart), blindspor med feil bokstav der Julius' setning avgjør, og hevet nivå på 21 dager. Alle koder, brikke H + S, taket på 40 % og oppsett under 5 minutter på hverdager står. Julius-videoene dag 2–4 er ferdige og uendret. Standardvalg merket «standardvalg, kan endres» i (e).
 
@@ -64,7 +64,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 ### Meta 2: Trixters kart (dag 18 → 21)
 
-`DEKRYPTERT/stjernetegn.txt` (krypto 2) er Trixters rutekart: åtte varder nummerert 1–8 fra Snøfall til Bergen, Julius' sirkel på varde 5, rett over Krystallgrotten. PS dag 18 sier «les rutekartet». **Dag 20:** Julius sier at porten står der sirkelen er. **Dag 21:** bare R er synlig på bokmuren; `U · 7` ligger inne i bok 5, et ❄-kort i bok 3 (den på gløtt). Er krypto 2 ikke løst innen dag 20, får PS dag 20 en betinget variant som sier fra.
+`DEKRYPTERT/stjernetegn.txt` (krypto 2) er Trixters rutekart: åtte varder nummerert 1–8 fra Snøfall til Bergen, Julius' sirkel på varde 5, rett over Krystallgrotten. PS dag 18 sier «les rutekartet». **Dag 20:** Julius sier at porten står der sirkelen er. **Dag 21:** bare R er synlig på bokmuren; `U · 7` ligger inne i bok 5, et ❄-kort med teksten «Feil bok. Hvor satte Julius sirkelen?» i bok 3 (den på gløtt). Er krypto 2 ikke løst innen dag 20, får PS dag 20 en betinget variant som sier fra.
 
 ## Dag for dag
 
@@ -162,7 +162,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** KULDE (uendret).
 - **Mekanikk:** tine lappen ut av is, som før. Nytt: kortet har ingen bokstaver, bare to tegn og tre ❄. Rute 3 har tegnet for **L**, rute 5 tegnet for **E** (begge lært dag 1 og 3). Først tine, så kjenne igjen tegnene fra tavla, så Julius. Første utbetaling av meta 1.
-- **Brikke H:** frostkortet (fem ruter: ❄, ❄, tegn L, ❄, tegn E; ❄-rutene har tegn i hjørnet som vanlig) i liten plastpose, fryst i et **plastbeger** med 3–4 cm vann, ved Rampenissens lue i fryseren. Lapp fra Rampenissen (teipet på begeret i fryseren, håndskrevet): «Tin meg! Lunkent vann, og en voksen. – R»
+- **Brikke H:** frostkortet (fem ruter: ❄, ❄, tegn L, ❄, tegn E; ❄-rutene har tegn i hjørnet som vanlig) i liten plastpose, fryst flatt i et **plastbeger** med 1 cm vann, ved Rampenissens lue i fryseren. Lapp fra Rampenissen (teipet på begeret i fryseren, håndskrevet): «Tin meg! Lunkent vann, og en voksen. – R»
 - **Brikke S:** Julius: «Navnet er det motsatte av det Nissemor har i ovnen akkurat nå. Ikke bollene. Det som slår mot ansiktet når hun åpner ovnsdøra.» Bildet fryser 1–2 sekunder der han ellers ville sagt navnet. I segment 3 sier han at Orakelet skrev navnet «med tegnene i hjørnet av kortene».
 - **Slik løses den:** 1) H9 finner begeret og tiner det under lunkent vann med en voksen (2–3 min). 2) K12 ser to tegn uten bokstav, husker Julius og tavla, slår opp: L i rute 3, E i rute 5: `_ _ L _ E`. 3) Motsatt av ovnsvarme, fem bokstaver. KULDE. Frostgraden vises for første gang. 4) Tegnene for K, U, D føres på tavla.
 - **Hanna (hvis hun vil):** holder begeret under springen.
@@ -282,7 +282,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** KARAMELL (uendret).
 - **Mekanikk:** følg sporet til redskaper, som før. Nytt: sporet går mot fem redskaper, men to spor stopper underveis (blindspor til kjevle og øse, med ❄-kort under). Lappene under gryte, sleiv og visp har bare bokstav, ingen tall. Rutetallene står i Fargesamlerens notatbok (fil, åpner samme dag) som Nissemors margnotat: «Gryta på to. Rør med sleiva fem ganger. Vispen til sju.» Fil gir regel, hus gir bokstaver, Julius gir ordet.
-- **Brikke H:** fem redskaper på benken: gryte, sleiv, visp, kjevle, øse. Sporene er **papirstrimler med trykte, sukkerfargede fotspor** (fra PDF-en), lagt fra skålen mot alle fem; strimlene til kjevle og øse slutter halvveis. Ikke sukker på benken: tirsdag morgen er det ingen tid til vask. Rampenissens føtter står i en liten skål med et par skjeer sirup (streken), ellers tørt. Under gryten **A**, under sleiva **M**, under vispen **L** (med tegn); under kjevle og øse ❄-kort uten tegn. Rutekort 1–8 og rødt sol-kort ved skålen. Sirupflasken og sukkeret ryddes bort. Lapp fra Rampenissen (ved sirupskålen, håndskrevet): «Følg fotsporene mine, og løft det de ender ved. – R»
+- **Brikke H:** fem redskaper på benken: gryte, sleiv, visp, kjevle, øse. Sporene er **papirstrimler med trykte, sukkerfargede fotspor** (fra PDF-en), lagt fra skålen mot alle fem; strimlene til kjevle og øse slutter halvveis. Ikke sukker på benken: tirsdag morgen er det ingen tid til vask. Rampenissen står ved siden av en liten skål med et par skjeer sirup (streken), ellers tørt. Under gryten **A**, under sleiva **M**, under vispen **L** (med tegn); under kjevle og øse ❄-kort uten tegn. Rutekort 1–8 og rødt sol-kort ved skålen. Sirupflasken og sukkeret ryddes bort. Lapp fra Rampenissen (ved sirupskålen, håndskrevet): «Følg fotsporene mine, og løft det de ender ved. – R»
 - **Brikke S:** Julius: «Nissemor prøvde å varme opp IQ med det hun lager når sukker blir brunt og varmt i gryta, og som stivner til gull når det kjølner. Han spiste ikke engang det.»
 - **Slik løses den:** 1) H9 følger sporene og løfter det de ender ved; to spor ender i ingenting. 2) K12 har A, M, L uten plass. Notatboken åpner i NisseNet; margnotatet gir 2, 5, 7. `_ A _ _ M _ L _`. 3) Brunt, varmt sukker, åtte bokstaver. KARAMELL. Arkivet del 2 åpner.
 - **Hanna (hvis hun vil):** smaker én fingertupp sirup, skanner sol-kortet (symbol 5/9).
@@ -371,10 +371,10 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 ### Dag 21 (ma) – Vintersolverv · BRANNMUR · M5 · frost nivå 2
 
 - **Kode:** BRANNMUR (uendret).
-- **Mekanikk:** bokmur lest fra venstre, som før. Nytt: bare én bokstav står på ryggene. Den andre ligger som kort inne i én bok, porten. Hvilken bok som er porten, sa Julius dag 20: der sirkelen står på Trixters kart (varde 5). Boka Rampenissen satte på gløtt (bok 3) er feil og inneholder et ❄-kort. Meta 2 betaler seg. **Standardvalg, kan endres:** dagen løses etter skolen; frosten varer til koden er inne (nødstopp 20:00).
-- **Brikke H:** åtte bøker som lav mur foran skjermen. Ryggkort fra venstre: 1 ❄, 2 **R**, 3 ❄, 4 ❄, 5 ❄, 6 ❄, 7 ❄, 8 ❄, alle med lite rutetall i hjørnet og tegn. Inne i bok 5: kortet `U · 7` (med tegn). Inne i bok 3 (på gløtt): et ❄-kort. Grytelokket og vispen står inntil. Skjerm og app er fryst fra morgenen.
+- **Mekanikk:** bokmur lest fra venstre, som før. Nytt: bare én bokstav står på ryggene. Den andre ligger som kort inne i én bok, porten. Hvilken bok som er porten, sa Julius dag 20: der sirkelen står på Trixters kart (varde 5). Boka Rampenissen satte på gløtt (bok 3) er feil og inneholder et ❄-kort med teksten «Feil bok. Hvor satte Julius sirkelen?». Meta 2 betaler seg. **Standardvalg, kan endres:** dagen løses etter skolen; frosten varer til koden er inne (nødstopp 20:00).
+- **Brikke H:** åtte bøker som lav mur foran skjermen. Ryggkort fra venstre: 1 ❄, 2 **R**, 3 ❄, 4 ❄, 5 ❄, 6 ❄, 7 ❄, 8 ❄, alle med lite rutetall i hjørnet og tegn. Inne i bok 5: kortet `U · 7` (med tegn). Inne i bok 3 (på gløtt): et ❄-kort med teksten «Feil bok. Hvor satte Julius sirkelen?». Grytelokket og vispen står inntil. Skjerm og app er fryst fra morgenen.
 - **Brikke S:** Julius: «IQ bygde en vegg av varme rundt linjen. De som kjemper mot flammene i skogen, bygger det samme, bare av det motsatte, og kaller den etter det de kjemper mot.» Så: «Jeg lot ham la én port stå åpen. Inn mot grotten. Med varme i.»
-- **Slik løses den:** 1) H9 leser ryggkortene fra venstre: bare R på 2. 2) K12 husker dag 20: porten er sirkelen på Trixters kart. Åpner `stjernetegn.txt`: varde 5. Åpner bok 5: `U · 7`. (Bok 3 på gløtt gir ❄.) 3) `_ R _ _ _ _ U _`, brannfolkenes vegg, dataordet for en vegg som slipper noe gjennom. BRANNMUR. Kanalene tiner, porten tegnes i sidepanelet, merket Portvokter.
+- **Slik løses den:** 1) H9 leser ryggkortene fra venstre: bare R på 2. 2) K12 husker dag 20: porten er sirkelen på Trixters kart. Åpner `stjernetegn.txt`: varde 5. Åpner bok 5: `U · 7`. (Bok 3 på gløtt gir ❄ og «Feil bok».) 3) `_ R _ _ _ _ U _`, brannfolkenes vegg, dataordet for en vegg som slipper noe gjennom. BRANNMUR. Kanalene tiner, porten tegnes i sidepanelet, merket Portvokter.
 - **Hanna (hvis hun vil):** leser ryggkortene og sier «bokstav» eller «is».
 - **Andel per flate:** hus 1 av 8 synlig (13 %), 2 av 8 (25 %) etter at porten er funnet. Fil (dag 18): tallet, ingen bokstaver. Video: beskrivelse.
 - **Vanskelighet:** 5.

@@ -1,6 +1,6 @@
 # Rampenissen på Morgenrådet 2026 – radioklipp
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november.
 
 Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storyboard-2026.md` (§2 kunnskapstidslinje, §3 radiolinjer), `docs/gaater-2026.md`. Format: `varden-morgenradet.md`.
 
@@ -72,7 +72,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 6 (sø) – Skyggene i Gangen · 2. advent
 
-**Strek:** snøengler i mel på kjøkkenbordet, ligger midt i den største. Helg, 09-sendingen.
+**Strek:** snøengler i 1 dl mel i et stekebrett på kjøkkenbordet, ligger midt i den største. Helg, 09-sendingen.
 
 **Klipp:** «God søndag og god andre advent! Rampenissen her, litt kvit i ansiktet. Det e mel. Ikkje spør. Jo, spør: æ skull lag snøengla, og det e ikkje snø inne, så æ brukt det nærmeste. Kjøkkenbordet e no et vinterlandskap. Æ ligg i den største engelen. Det va ikkje meininga at golvet skull bli med. Melet e rot, det innrømme æ. Men! I natt sa Orakelet at det som fryse linja, ikkje tåle lys. IQ hengt lys rundt heile antenna, den ser ut som et juletre. Og æ fant den lille lampa dokkers. Og en papprull. Æ har laga nåkka. Det e ikkje rot. Det e et instrument. God helg!»
 
@@ -106,7 +106,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** hender, nese og halve ansiktet i fire tusjfarger, bart på post-it over bildet av mamma og pappa. Skjerm er grå fra 05:30.
 
-**Klipp:** «Høre dokker mæ? Skjermen dokkers e GRÅ. Æ såg det klokka fire i natt, og herregud, æ blei så redd at æ gjord nåkka. Æ gjømt alle fargan æ fant. På mæ. Hendan, nesa, halve ansiktet. No e æ den mest fargerike tingen i huset, og det e et ansvar. Mamma og pappa fikk bart på bildet, men det e en post-it, det går av, æ sjekka. Kulde har tatt fargan fra Snøfall TV også. Alt e grått der oppe. Nissemor bake grå bolla. IQ sei dokker e dem einaste med farga igjen. Så pass på dem. Ikkje vask mæ. Æ meine det. Over.»
+**Klipp:** «Høre dokker mæ? Skjermen dokkers e GRÅ. Æ såg det klokka fire i natt, og herregud, æ blei så redd at æ gjord nåkka. Æ gjømt alle fargan æ fant. Noen på mæ, resten gjømt i stua. Hendan, nesa, halve ansiktet. No e æ den mest fargerike tingen i huset, og det e et ansvar. Mamma og pappa fikk bart på bildet, men det e en post-it, det går av, æ sjekka. Kulde har tatt fargan fra Snøfall TV også. Alt e grått der oppe. Nissemor bake grå bolla. IQ sei dokker e dem einaste med farga igjen. Så pass på dem. Ikkje vask mæ. Æ meine det. Over.»
 
 **intro_hint:** «Han sier han er den mest fargerike tingen i huset i dag. Han høres bekymret ut.»
 
@@ -122,7 +122,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 12 (lø) – Lydbølgene som Smelter Is · M3
 
-**Strek:** en hel dorull som «lydbølge» fra badet til kjøkkenet, ligger utslått i enden. Helg, 09-sendingen.
+**Strek:** 1,5–2 m dorull som «lydbølge» bortover kjøkkenet, ligger utslått i enden. Helg, 09-sendingen.
 
 **Klipp:** «God lørdag. Æ snakke lavt i dag. Æ hørt nåkka sukk i isen i natt. Ikkje knurr. Ikkje fres. Sukk. Sånn som når en e aleina og trur ingen høre. Julius sei æ innbilt mæ det. Nissemor sa ingenting, ho bare nynna og gikk ned mot slusa med lykt. Æ veit ka æ hørt. Så æ prøvd å lag ei lydbølge, ei stor ei, for å send lyd tilbake. Det blei en dorull. Heile dorullen. Fra badet til kjøkkenet. Det e vitenskap, ikkje rot. Antenna i Snøfall står rett igjen, forresten, takka være dokker. IQ har sagt takk tolv ganga. Hør etter i dag. Hør ordentlig.»
 
@@ -146,9 +146,9 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 15 (ti) – Fargesamlerens Notatbok · M4
 
-**Strek:** begge beina i en liten skål sirup, klissete fotspor over benken, sleiva i hånden. Han vet ikke om Vintervokteren før i kveld.
+**Strek:** står ved siden av en liten skål sirup, klissete fotspor over benken, sleiva i hånden. Han vet ikke om Vintervokteren før i kveld.
 
-**Klipp:** «Rampenissen her, og æ kan ikkje flytt føttan. Æ prøvd å lag varme på kjøkkenet i natt, sånn ekte varme, for det e kaldt på linja. Det blei klissete. Veldig klissete. Æ står i det no. Sleiva va med på det. Men det e ikkje det viktigaste i dag. IQ e stille. IQ e aldri stille. Han fant ei gammel bok i arkivet i natt, og han har ikkje sagt et ord sia. Ikkje ett. Han bare sitt. Nissemor satte kakao foran han, og den står der enda. Det har aldri skjedd før. Æ e litt urolig. Snakk lavt når dokker kjem heim i dag. Og ta med en klut.»
+**Klipp:** «Rampenissen her, og æ kan ikkje flytt føttan. Æ prøvd å lag varme på kjøkkenet i natt, sånn ekte varme, for det e kaldt på linja. Det blei klissete. Veldig klissete. Æ står i det no. Sleiva va med på det. Men det e ikkje det viktigaste i dag. IQ e stille. IQ e aldri stille. Han fant ei gammel bok i arkivet i natt, og han har ikkje sagt et ord sia. Ikkje ett. Han bare sitt. Nissemor satte ei skål med nåkka søtt og brunt foran han, og den står der enda. Det har aldri skjedd før. Æ e litt urolig. Snakk lavt når dokker kjem heim i dag. Og ta med en klut.»
 
 **intro_hint:** «Gjesten vår kommer ikke løs fra gulvet, og han er bekymret for en venn.»
 
@@ -170,7 +170,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 18 (fr) – Kastevind rundt Ulriken
 
-**Strek:** spor av sjokoladerosiner fra ytterdøra til kjøleskapet, sitter fast i pappas jakkelomme og peker anklagende.
+**Strek:** spor av sjokoladerosiner på gråpapir fra ytterdøra mot kjøleskapet, sitter fast i pappas jakkelomme og peker anklagende.
 
 **Klipp:** «Fredag. Rampenissen her, fra ei lomme. Pappa si jakkelomme. Æ kom ikkje opp igjen. Trixter testa sleden i vestlandsvær i natt. Æ satt bakpå. Rundt Ulriken hoppa sleden så pakkan fløy, og æ fløy, og magen min fløy for sæ sjøl. Aldri igjen. Rudolf va innom etterpå for å sjekk at æ levde. Han gikk gjennom huset. Han la igjen nåkka på golvet dokkers. Små, brune, runde. Æ sei unnskyld for han. Det e ikkje det det ser ut som. Det e sjokolade. Trur æ. Ikkje smak før en voksen har sagt ja. Dokker fikk grotta til å svar i går, forresten. Alle såg det. Over.»
 

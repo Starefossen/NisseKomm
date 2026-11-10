@@ -182,7 +182,7 @@ export const DAGER = [
     iKveld: "Gjem fuglen høyt, legg strimmelen ved",
     strek: {
       tekst:
-        "Snøballkrig i stua: Rampenissen og kosedyrene har hatt marshmallow-krig fra hvert sitt putefort, marshmallows overalt, én bamse «såret» med plaster. (Helg: større oppsett.)",
+        "Snøballkrig i stua: Rampenissen og kosedyrene har hatt marshmallow-krig fra hvert sitt putefort, marshmallows over hele salongbordet, én bamse «såret» med plaster. (Helg: større oppsett.)",
       type: "forbudt moro",
       materialer: "pose marshmallows, puter, plaster, kosedyr",
       minutter: 10,
@@ -218,7 +218,7 @@ export const DAGER = [
     iKveld: "Silhuettene i papprullen, lommelykt og hjerte-kort i gangen",
     strek: {
       tekst:
-        "Har laget snøengler i mel på kjøkkenbordet og ligger midt i den største med mel på nesen og en melsjø på gulvet. (Helg: større oppsett.)",
+        "Har laget snøengler i 1 dl mel i et stekebrett på kjøkkenbordet og ligger midt i den største med mel på nesen. (Helg: større oppsett.)",
       type: "uventet",
       materialer: "mel (2–3 dl), kjøkkenbord",
       minutter: 8,
@@ -232,7 +232,7 @@ export const DAGER = [
     mekanikk:
       "tine lappen ut av is, som før. Nytt: kortet har ingen bokstaver, bare to tegn og tre ✱. Rute 3 har tegnet for L, rute 5 tegnet for E (begge lært dag 1 og 3). Først tine, så kjenne igjen tegnene fra tavla, så Julius. Første utbetaling av meta 1.",
     brikkeH:
-      "frostkortet (fem ruter: ✱, ✱, tegn L, ✱, tegn E; ✱-rutene har tegn i hjørnet som vanlig) i liten plastpose, fryst i et plastbeger med 3–4 cm vann, ved Rampenissens lue i fryseren. Lapp fra Rampenissen (teipet på begeret i fryseren, håndskrevet): «Tin meg! Lunkent vann, og en voksen. – R»",
+      "frostkortet (fem ruter: ✱, ✱, tegn L, ✱, tegn E; ✱-rutene har tegn i hjørnet som vanlig) i liten plastpose, fryst flatt i et plastbeger med 1 cm vann, ved Rampenissens lue i fryseren. Lapp fra Rampenissen (teipet på begeret i fryseren, håndskrevet): «Tin meg! Lunkent vann, og en voksen. – R»",
     brikkeS:
       "Julius: «Navnet er det motsatte av det Nissemor har i ovnen akkurat nå. Ikke bollene. Det som slår mot ansiktet når hun åpner ovnsdøra.» Bildet fryser 1–2 sekunder der han ellers ville sagt navnet. I segment 3 sier han at Orakelet skrev navnet «med tegnene i hjørnet av kortene».",
     slikLoses: [
@@ -431,7 +431,7 @@ export const DAGER = [
     iKveld: "Tre glass med vann og ett krus, kortbiter teipet utenpå, sol-kort",
     strek: {
       tekst:
-        "Har rullet ut en hel dorull som «lydbølge» fra badet gjennom gangen til kjøkkenet og ligger utslått i enden ved tre glass. (Helg.)",
+        "Har rullet ut 1,5–2 m dorull som «lydbølge» bortover kjøkkenet og ligger utslått i enden ved tre glass. (Helg.)",
       type: "forbudt moro",
       materialer: "1 dorull, 3 glass",
       minutter: 6,
@@ -513,7 +513,7 @@ export const DAGER = [
     mekanikk:
       "følg sporet til redskaper, som før. Nytt: sporet går mot fem redskaper, men to spor stopper underveis (blindspor til kjevle og øse, med ✱-kort under). Lappene under gryte, sleiv og visp har bare bokstav, ingen tall. Rutetallene står i Fargesamlerens notatbok (fil, åpner samme dag) som Nissemors margnotat: «Gryta på to. Rør med sleiva fem ganger. Vispen til sju.» Fil gir regel, hus gir bokstaver, Julius gir ordet.",
     brikkeH:
-      "fem redskaper på benken: gryte, sleiv, visp, kjevle, øse. Sporene er papirstrimler med trykte, sukkerfargede fotspor (fra PDF-en), lagt fra skålen mot alle fem; strimlene til kjevle og øse slutter halvveis. Ikke sukker på benken: tirsdag morgen er det ingen tid til vask. Rampenissens føtter står i en liten skål med et par skjeer sirup (streken), ellers tørt. Under gryten A, under sleiva M, under vispen L (med tegn); under kjevle og øse ✱-kort uten tegn. Rutekort 1–8 og rødt sol-kort ved skålen. Sirupflasken og sukkeret ryddes bort. Lapp fra Rampenissen (ved sirupskålen, håndskrevet): «Følg fotsporene mine, og løft det de ender ved. – R»",
+      "fem redskaper på benken: gryte, sleiv, visp, kjevle, øse. Sporene er papirstrimler med trykte, sukkerfargede fotspor (fra PDF-en), lagt fra skålen mot alle fem; strimlene til kjevle og øse slutter halvveis. Ikke sukker på benken: tirsdag morgen er det ingen tid til vask. Rampenissen står ved siden av en liten skål med et par skjeer sirup (streken), ellers tørt. Under gryten A, under sleiva M, under vispen L (med tegn); under kjevle og øse ✱-kort uten tegn. Rutekort 1–8 og rødt sol-kort ved skålen. Sirupflasken og sukkeret ryddes bort. Lapp fra Rampenissen (ved sirupskålen, håndskrevet): «Følg fotsporene mine, og løft det de ender ved. – R»",
     brikkeS:
       "Julius: «Nissemor prøvde å varme opp IQ med det hun lager når sukker blir brunt og varmt i gryta, og som stivner til gull når det kjølner. Han spiste ikke engang det.»",
     slikLoses: [
@@ -535,7 +535,7 @@ export const DAGER = [
       "Lapper under gryte, sleiv, visp (bokstav) og kjevle, øse (✱); to spor som stopper; rydd bort sukker og sirup; rutekort og sol-kort ved skålen",
     strek: {
       tekst:
-        "Står med begge beina nedi en liten skål sirup, med klissete fotspor av sukker bortover benken og sleiva i hånden.",
+        "Står ved siden av en liten skål sirup, med klissete fotspor av sukker bortover benken og sleiva i hånden.",
       type: "forbudt moro",
       materialer: "litt sirup, litt sukker, sleiv",
       minutter: 4,
@@ -641,9 +641,9 @@ export const DAGER = [
     iKveld: "Rosinspor med fire hauger, rutekort og sol-kort i jakken",
     strek: {
       tekst:
-        "Reinsdyrbesøk: et spor av sjokoladerosiner («reinsdyrbæsj») fra ytterdøra til kjøleskapet, og Rampenissen sitter fast i pappas jakkelomme og peker anklagende på sporet.",
+        "Reinsdyrbesøk: et spor av sjokoladerosiner («reinsdyrbæsj») på et stykke gråpapir fra ytterdøra mot kjøleskapet, og Rampenissen sitter fast i pappas jakkelomme og peker anklagende på sporet.",
       type: "uventet",
-      materialer: "sjokoladerosiner, jakke på knagg",
+      materialer: "sjokoladerosiner, gråpapir eller løper, jakke på knagg",
       minutter: 3,
       brikke: "ja (lappen i lommen)",
     },
@@ -724,14 +724,14 @@ export const DAGER = [
     tittel: "Vintersolverv · {21} · M5 · frost nivå 2",
     kode: "{21}",
     mekanikk:
-      "bokmur lest fra venstre, som før. Nytt: bare én bokstav står på ryggene. Den andre ligger som kort inne i én bok, porten. Hvilken bok som er porten, sa Julius dag 20: der sirkelen står på Trixters kart (varde 5). Boka Rampenissen satte på gløtt (bok 3) er feil og inneholder et ✱-kort. Meta 2 betaler seg. Standardvalg, kan endres: dagen løses etter skolen; frosten varer til koden er inne (nødstopp 20:00).",
+      "bokmur lest fra venstre, som før. Nytt: bare én bokstav står på ryggene. Den andre ligger som kort inne i én bok, porten. Hvilken bok som er porten, sa Julius dag 20: der sirkelen står på Trixters kart (varde 5). Boka Rampenissen satte på gløtt (bok 3) er feil og inneholder et ✱-kort med teksten «Feil bok. Hvor satte Julius sirkelen?». Meta 2 betaler seg. Standardvalg, kan endres: dagen løses etter skolen; frosten varer til koden er inne (nødstopp 20:00).",
     brikkeH:
-      "åtte bøker som lav mur foran skjermen. Ryggkort fra venstre: 1 ✱, 2 R, 3 ✱, 4 ✱, 5 ✱, 6 ✱, 7 ✱, 8 ✱, alle med lite rutetall i hjørnet og tegn. Inne i bok 5: kortet U · 7 (med tegn). Inne i bok 3 (på gløtt): et ✱-kort. Grytelokket og vispen står inntil. Skjerm og app er fryst fra morgenen.",
+      "åtte bøker som lav mur foran skjermen. Ryggkort fra venstre: 1 ✱, 2 R, 3 ✱, 4 ✱, 5 ✱, 6 ✱, 7 ✱, 8 ✱, alle med lite rutetall i hjørnet og tegn. Inne i bok 5: kortet U · 7 (med tegn). Inne i bok 3 (på gløtt): et ✱-kort med teksten «Feil bok. Hvor satte Julius sirkelen?». Grytelokket og vispen står inntil. Skjerm og app er fryst fra morgenen.",
     brikkeS:
       "Julius: «IQ bygde en vegg av varme rundt linjen. De som kjemper mot flammene i skogen, bygger det samme, bare av det motsatte, og kaller den etter det de kjemper mot.» Så: «Jeg lot ham la én port stå åpen. Inn mot grotten. Med varme i.»",
     slikLoses: [
       "H9 leser ryggkortene fra venstre: bare R på 2.",
-      "K12 husker dag 20: porten er sirkelen på Trixters kart. Åpner stjernetegn.txt: varde 5. Åpner bok 5: U · 7. (Bok 3 på gløtt gir ✱.)",
+      "K12 husker dag 20: porten er sirkelen på Trixters kart. Åpner stjernetegn.txt: varde 5. Åpner bok 5: U · 7. (Bok 3 på gløtt gir ✱ og «Feil bok».)",
       "_ R _ _ _ _ U _, brannfolkenes vegg, dataordet for en vegg som slipper noe gjennom. {21}. Kanalene tiner, porten tegnes i sidepanelet, merket Portvokter.",
     ],
     hanna: "leser ryggkortene og sier «bokstav» eller «is».",

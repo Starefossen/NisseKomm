@@ -459,7 +459,7 @@ function Dag21() {
   return (
     <PrintPage
       title="DAG 21 · PORTKORT"
-      note="Ryggkortene teipes på bok 1–8 fra venstre. Kortet med U · 7 legges inne i bok 5, iskrystallkortet inne i bok 3 (den på gløtt)."
+      note="Ryggkortene teipes på bok 1–8 fra venstre. Kortet med U · 7 legges inne i bok 5, iskrystallkortet med «Feil bok» inne i bok 3 (den på gløtt)."
     >
       <div className="grid grid-cols-8 gap-2">
         {Array.from({ length: 8 }, (_, i) => (
@@ -481,6 +481,7 @@ function Dag21() {
           <Big>
             <Iskrystall size={56} />
           </Big>
+          <div className="text-lg">Feil bok. Hvor satte Julius sirkelen?</div>
         </CutCard>
       </div>
     </PrintPage>
