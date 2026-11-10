@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
+import Link from "next/link";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { WelcomeCard } from "@/components/nissemor/WelcomeCard";
@@ -31,6 +32,22 @@ function NissemorGuideContent() {
         <h1 className="text-4xl md:text-5xl font-bold text-(--gold) text-center mb-8">
           NISSEMOR-GUIDEN
         </h1>
+
+        <div className="flex flex-wrap justify-center gap-4 mb-8 text-2xl">
+          {[
+            ["/nissemor-guide/i-kveld", "🌙 I KVELD"],
+            ["/nissemor-guide/forberedelser", "🛒 FORBEREDELSER"],
+            ["/nissemor-guide/fasit", "🔑 FASIT"],
+          ].map(([href, tekst]) => (
+            <Link
+              key={href}
+              href={href}
+              className="px-6 min-h-12 flex items-center border-4 border-(--gold) text-(--gold) hover:bg-(--gold)/20"
+            >
+              {tekst}
+            </Link>
+          ))}
+        </div>
 
         {/* Welcome Card */}
         <WelcomeCard />
