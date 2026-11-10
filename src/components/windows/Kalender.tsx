@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { RetroModal } from "../ui/RetroModal";
+import { TIDBITS, visible } from "@/lib/tidbits";
 import { Icons } from "@/lib/icons";
 import { GameEngine } from "@/lib/game-engine";
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
@@ -208,6 +209,20 @@ export function Kalender({
                 {selectedMission.nissemail_tekst.substring(0, 150)}...
               </div>
             )}
+
+            {/* Small extra behind an already-opened door (tidbits.json) */}
+            {completedDays.has(selectedDay) &&
+              visible(TIDBITS.kalender, getCurrentDay())
+                .filter((t) => t.dag === selectedDay)
+                .map((t) => (
+                  <div
+                    key={t.tekst}
+                    role="status"
+                    className="text-lg text-(--gold) italic"
+                  >
+                    {t.tekst}
+                  </div>
+                ))}
 
             {/* Action buttons */}
             <div className="flex gap-3">

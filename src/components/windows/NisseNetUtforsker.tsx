@@ -5,6 +5,8 @@ import { useState, useMemo, useEffect } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { FilNode, Oppdrag } from "@/types/innhold";
+import type { NisseNetTidbit } from "@/types/tidbits";
+import { TIDBITS, passwordOk, rotate, visible } from "@/lib/tidbits";
 import { FROST_OPEN_FOLDER } from "@/lib/frost";
 import { GameEngine } from "@/lib/game-engine";
 import { RuneText } from "../ui/Frostrune";
@@ -30,6 +32,34 @@ export function NisseNetUtforsker({
     new Set(["root"]),
   );
   const [selectedFile, setSelectedFile] = useState<FilNode | null>(null);
+  // MORO folder (tidbits.json): outside the file and hemmeligheter counters
+  const moroFiles = visible(TIDBITS.nissenet.filer, currentDay);
+  const [moro, setMoro] = useState<NisseNetTidbit | null>(null);
+  const [opened, setOpened] = useState<Set<string>>(new Set());
+  const [password, setPassword] = useState("");
+  const [wrongCount, setWrongCount] = useState(0);
+  const [wrongLine, setWrongLine] = useState<string | null>(null);
+  const openMoro = (f: NisseNetTidbit) => {
+    setSelectedFile(null);
+    setMoro(f);
+    setPassword("");
+    setWrongLine(null);
+  };
+  const tryPassword = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!moro?.passord) return;
+    if (passwordOk(moro.passord, password)) {
+      setOpened(new Set(opened).add(moro.navn));
+      setWrongLine(null);
+    } else {
+      setWrongLine(
+        rotate(TIDBITS.nissenet.feilPassord, wrongCount, currentDay) ??
+          "FEIL PASSORD",
+      );
+      setWrongCount((n) => n + 1);
+    }
+    setPassword("");
+  };
   const [initialLastVisit] = useState(() => GameEngine.getNisseNetLastVisit());
 
   // Track visit time when component mounts
@@ -218,6 +248,7 @@ export function NisseNetUtforsker({
           <button
             key={path}
             onClick={() => {
+              setMoro(null);
               setSelectedFile(node);
               // Mark Nice List as viewed when opened
               if (node.navn === "snill-listen.txt") {
@@ -276,11 +307,81 @@ export function NisseNetUtforsker({
           <div className="border-2 border-(--neon-green) bg-black/50 overflow-y-auto p-2 max-h-[40vh] lg:max-h-full">
             <div className="text-base font-bold mb-2 opacity-70">FILTRE</div>
             {renderFileTree(filteredFiles)}
+            {!frozen && moroFiles.length > 0 && (
+              <div className="mt-2">
+                <div className="flex items-center gap-2 py-1 px-2 font-bold">
+                  <Icons.FolderOpen size={16} color="gold" />
+                  MORO
+                </div>
+                {moroFiles.map((f) => (
+                  <button
+                    key={f.navn}
+                    onClick={() => openMoro(f)}
+                    className={`flex items-center gap-2 w-full min-h-11 text-left px-2 pl-6 ${
+                      moro?.navn === f.navn
+                        ? "bg-(--gold)/20 border-l-2 border-(--gold)"
+                        : "hover:bg-(--neon-green)/10"
+                    }`}
+                  >
+                    {f.passord && !opened.has(f.navn) ? (
+                      <Icons.Lock size={16} color="gold" />
+                    ) : (
+                      <Icons.File size={16} color="gold" />
+                    )}
+                    {f.navn}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* File content viewer */}
           <div className="border-2 border-(--cold-blue) bg-black/50 overflow-y-auto p-4 flex-1">
-            {selectedFile ? (
+            {moro ? (
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 pb-2 border-b-2 border-(--gold)">
+                  <Icons.File size={20} color="gold" />
+                  <span className="font-bold text-(--gold)">{moro.navn}</span>
+                </div>
+                {moro.passord && !opened.has(moro.navn) ? (
+                  <form onSubmit={tryPassword} className="space-y-3">
+                    <label className="block text-base">
+                      FILEN ER LÅST. SKRIV PASSORD:
+                      <input
+                        type="text"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="mt-2 w-full min-h-11 px-3 bg-black border-2 border-(--gold) text-(--gold) text-lg uppercase focus:outline-none"
+                        autoComplete="off"
+                        autoCapitalize="characters"
+                        spellCheck={false}
+                      />
+                    </label>
+                    <button
+                      type="submit"
+                      disabled={!password.trim()}
+                      className="w-full min-h-11 border-2 border-(--gold) text-(--gold) text-lg hover:bg-(--gold) hover:text-black disabled:opacity-50"
+                    >
+                      ÅPNE
+                    </button>
+                    <div
+                      role="status"
+                      aria-live="polite"
+                      className="text-base text-(--christmas-red) min-h-6"
+                    >
+                      {wrongLine}
+                    </div>
+                  </form>
+                ) : (
+                  <div
+                    aria-live="polite"
+                    className="text-base leading-relaxed whitespace-pre-wrap"
+                  >
+                    {moro.tekst}
+                  </div>
+                )}
+              </div>
+            ) : selectedFile ? (
               <div className="space-y-4">
                 <div className="flex items-center justify-between gap-2 pb-2 border-b-2 border-(--cold-blue)">
                   <div className="flex items-center gap-2">

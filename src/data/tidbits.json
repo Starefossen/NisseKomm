@@ -1,0 +1,114 @@
+{
+  "idle": {
+    "minutter": 4,
+    "linjer": [
+      {
+        "fraDag": 1,
+        "tekst": "Hallo? Er det noen der? Jeg gjemmer meg ikke, jeg bare titter."
+      },
+      {
+        "fraDag": 5,
+        "tekst": "Psst. Jeg har spist opp alle pepperkakene. Ikke si det til Nissemor."
+      }
+    ]
+  },
+  "terminal": {
+    "hemmeligeOrd": [
+      {
+        "fraDag": 1,
+        "ord": ["HJELP"],
+        "tekst": "HJELP ER PÅ VEI. Den kommer på en kjelke. Den er litt treg."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["RAMPENISSEN"],
+        "tekst": "Det er meg! Men jeg er ikke en kode. Jeg er mye bedre enn en kode."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["JULIUS"],
+        "tekst": "Julius sover middag. Han snorker i C-dur."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["IQ"],
+        "tekst": "IQ sier: Systemet er helt i orden. Nesten. Kanskje."
+      },
+      {
+        "fraDag": 1,
+        "ord": ["KAKAO"],
+        "tekst": "Kakaomaskinen er tom. Rampenissen nekter for alt."
+      }
+    ],
+    "feilKode": [
+      { "fraDag": 1, "tekst": "Terminalen hikket. Det var nok ikke den." },
+      { "fraDag": 1, "tekst": "Den koden smaker som gammel lefse." },
+      {
+        "fraDag": 1,
+        "tekst": "Rampenissen prøvde den i går også. Det gikk ikke da heller."
+      }
+    ]
+  },
+  "tv": [
+    {
+      "fraDag": 1,
+      "frekvens": 97.5,
+      "tekst": "... og nå været for nisser: snø, mer snø, og litt snø til ...",
+      "bilde": "feed/snøfall-day.png"
+    }
+  ],
+  "spam": [
+    {
+      "fraDag": 1,
+      "fra": "NISSEPRINS@NORDPOLEN.INFO",
+      "emne": "DU HAR VUNNET 1000 PEPPERKAKER",
+      "tekst": "Send oss bare en sokk, så sender vi pepperkakene. Kanskje."
+    },
+    {
+      "fraDag": 3,
+      "fra": "REINSDYR-SALG",
+      "emne": "Brukt slede, nesten ikke krasjet",
+      "tekst": "Én eier. Har landet på taket bare 400 ganger. Pris: tre pepperkaker."
+    }
+  ],
+  "kalender": [
+    {
+      "fraDag": 1,
+      "dag": 1,
+      "tekst": "Bak luken ligger en smule. Rampenissen spiste resten."
+    },
+    { "fraDag": 2, "dag": 2, "tekst": "Det lukter litt brent grøt her." }
+  ],
+  "stats": [
+    { "fraDag": 16, "navn": "SOKKER BORTE I VASKEN", "verdi": "1 337" },
+    { "fraDag": 16, "navn": "NISSELUER PÅ FEIL HODE", "verdi": "12 %" }
+  ],
+  "musikk": {
+    "skjultSpor": {
+      "fraDag": 12,
+      "etterLøstDag": 12,
+      "path": "music/rampenissen-synger.mp3",
+      "tittel": "Rampenissen synger (ikke trykk her)",
+      "tekst": "Hemmelig spor"
+    }
+  },
+  "nissenet": {
+    "filer": [
+      {
+        "fraDag": 2,
+        "navn": "rampenissens_handleliste.txt",
+        "tekst": "1. Lim\n2. Mer lim\n3. Noe å lime med"
+      },
+      {
+        "fraDag": 4,
+        "navn": "IKKE_LES_DENNE.txt",
+        "passord": "grøt",
+        "tekst": "Du leste den likevel. Rampenissen er stolt av deg."
+      }
+    ],
+    "feilPassord": [
+      { "fraDag": 1, "tekst": "Feil passord. Filen fniser." },
+      { "fraDag": 1, "tekst": "Nei. Prøv noe som smaker godt." }
+    ]
+  }
+}

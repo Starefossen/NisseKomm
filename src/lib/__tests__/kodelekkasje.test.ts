@@ -12,6 +12,7 @@ import statisk from "@/data/statisk_innhold.json";
 import eventyrData from "@/data/eventyr.json";
 import merker from "@/data/merker.json";
 import videoer from "@/data/julius_videoer.json";
+import { TIDBITS } from "@/lib/tidbits";
 import type { FilNode } from "@/types/innhold";
 
 const quests = getAllOppdrag();
@@ -92,6 +93,24 @@ for (const e of eventyrData.eventyr) {
 for (const m of merker.merker) add(1, `merke ${m.id}`, m.beskrivelse);
 for (const v of videoer)
   add(v.dag, `Julius-video dag ${v.dag}`, v.transkripsjon);
+
+// Tidbits: every text from its fraDag (the hidden track and a password
+// file's text are gated later, but checking from fraDag is stricter).
+const t = TIDBITS;
+for (const [where, list] of Object.entries({
+  idle: t.idle.linjer,
+  terminal: t.terminal.hemmeligeOrd,
+  feilkode: t.terminal.feilKode,
+  tv: t.tv,
+  spam: t.spam,
+  kalender: t.kalender,
+  stats: t.stats,
+  musikk: [t.musikk.skjultSpor],
+  nissenet: t.nissenet.filer,
+  passord: t.nissenet.feilPassord,
+})) {
+  for (const e of list) add(e.fraDag, `tidbits ${where}`, JSON.stringify(e));
+}
 
 const pattern = (code: string) =>
   /^\d+$/.test(code)

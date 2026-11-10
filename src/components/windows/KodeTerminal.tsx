@@ -6,7 +6,8 @@ import { Icons } from "@/lib/icons";
 import { Oppdrag, InnsendelseLog } from "@/types/innhold";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
-import { getISOString } from "@/lib/date-utils";
+import { getCurrentDay, getISOString } from "@/lib/date-utils";
+import { TIDBITS, rotate, secretReply } from "@/lib/tidbits";
 
 interface KodeTerminalProps {
   onClose: () => void;
@@ -49,6 +50,9 @@ export function KodeTerminal({
     return false;
   });
   const [bonusMessage, setBonusMessage] = useState<string | null>(null);
+  // Secret-word reply or wrong-code joke (tidbits.json); never a hint
+  const [tull, setTull] = useState<string | null>(null);
+  const [jokeIndex, setJokeIndex] = useState(0);
   const [failedAttempts, setFailedAttempts] = useState(() => {
     if (typeof window !== "undefined") {
       return GameEngine.getFailedAttempts(currentDay);
@@ -78,6 +82,7 @@ export function KodeTerminal({
 
     setProcessing(true);
     setFeedback(null);
+    setTull(null);
 
     // Parents approve bonus quests (day 11 and 16, foreldre_kode) here too,
     // also after the day's main code is solved
@@ -86,6 +91,21 @@ export function KodeTerminal({
         m.bonusoppdrag?.foreldre_kode.toUpperCase() ===
         code.trim().toUpperCase(),
     );
+    // A secret word is never a real or bonus code (tidbits.test.ts) and never
+    // reaches submitCode, so it does not count as a failed attempt.
+    const secret =
+      !bonusQuest &&
+      code.trim().toUpperCase() !== expectedCode.trim().toUpperCase()
+        ? secretReply(code, getCurrentDay())
+        : null;
+    if (secret) {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      setTull(secret);
+      setCode("");
+      setProcessing(false);
+      return;
+    }
+
     if (bonusQuest || isAlreadySolved) {
       await new Promise((resolve) => setTimeout(resolve, 1500));
       // Retyping the day's own code is still the right answer
@@ -162,6 +182,8 @@ export function KodeTerminal({
           : 0;
 
       setFailedAttempts(currentFailedAttempts);
+      setTull(rotate(TIDBITS.terminal.feilKode, jokeIndex, getCurrentDay()));
+      setJokeIndex((n) => n + 1);
     }
 
     setProcessing(false);
@@ -280,6 +302,15 @@ export function KodeTerminal({
                 ? "Feil kode, prøv igjen"
                 : ""}
           </div>
+          {tull && (
+            <div
+              role="status"
+              aria-live="polite"
+              className="border-2 border-(--cold-blue) bg-(--cold-blue)/10 p-3 text-base text-(--cold-blue)"
+            >
+              {tull}
+            </div>
+          )}
           {bonusMessage && (
             <div
               role="status"
