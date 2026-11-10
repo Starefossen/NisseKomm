@@ -29,6 +29,15 @@ const missions = [1, 2, 3, 4]
     ),
   )
   .sort((a, b) => a.dag - b.dag);
+// Short codes printed under the QR on each symbol card
+const SHORT_CODES = Object.fromEntries(
+  [
+    ...readFileSync(
+      join(ROOT, "src/lib/systems/symbol-system.ts"),
+      "utf8",
+    ).matchAll(/"([a-z]+-[a-z]+)": "([A-Z0-9]{4})"/g),
+  ].map((m) => [m[1], m[2]]),
+);
 const FROST_DAYS = { 10: ".frost-vhs", 21: ".frost-edge:not(.frost-thaw)" };
 const days = process.env.DAYS
   ? process.env.DAYS.split(",").map(Number)
@@ -363,6 +372,27 @@ for (const day of days) {
     await sleep(2500);
 
     await closeWindow();
+    // Headless Chrome has no camera: the scanner must fall back to the typed card code
+    if (m.symbol_clue) {
+      check(await clickText("SYMBOLSKANNER"), "fant ikke SYMBOLSKANNER");
+      await waitFor(
+        () => has("[data-kamera=mangler], [data-kamera=nektet]"),
+        8000,
+        "skanneren viser ikke reserve uten kamera",
+      ).catch((e) => fails.push(e.message));
+      await typeInto("#symbolkode", SHORT_CODES[m.symbol_clue.symbolId]);
+      await waitFor(
+        async () => (await text()).includes("NYTT SYMBOL!"),
+        5000,
+        `symbolkort ${m.symbol_clue.symbolId} ble ikke samlet med kortkode`,
+      ).catch((e) => fails.push(e.message));
+      check(
+        !(await has("video")),
+        "kamera-video ligger igjen i skanneren",
+      );
+      await closeWindow();
+      check(!(await has(".qr-host")), "skanneren lukket ikke kameraet");
+    }
     check(await clickText("DAGBOK"), "fant ikke DAGBOK-ikonet");
     await sleep(1500);
     const after = await text();

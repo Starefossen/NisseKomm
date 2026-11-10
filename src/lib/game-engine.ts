@@ -46,6 +46,8 @@ import {
 import {
   getAllSymbols,
   collectSymbolByCode,
+  getSymbolShortCode,
+  getSymbolQrPayload,
   getCollectedSymbols,
   addCollectedSymbol,
   clearCollectedSymbols,
@@ -757,9 +759,13 @@ export class GameEngine {
    */
 
   public static getAllSymbols = getAllSymbols;
+  public static getSymbolShortCode = getSymbolShortCode;
+  public static getSymbolQrPayload = getSymbolQrPayload;
 
   public static collectSymbolByCode(code: string) {
-    const result = collectSymbolByCode(code);
+    // Day gating only in December; outside the season parents can test freely
+    const day = getCurrentMonth() === 12 ? getCurrentDay() : 24;
+    const result = collectSymbolByCode(code, day);
     if (result.success) {
       BadgeManager.checkAndAwardAllEligibleBadges();
     }
