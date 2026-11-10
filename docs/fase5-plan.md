@@ -175,3 +175,11 @@ Kontroll etter P1: `grep -rniE "sanity|resend|@vercel|uuid|session-manager" src 
 - **To moduser fra samme image:** `NISSEKOMM_MODE=web` (offentlig: bare brukergrensesnitt, `/mcp` gir 404 og MCP-koden lastes ikke) og `NISSEKOMM_MODE=mcp` (egen tjeneste `nissekomm-mcp`, bare på hjemmenettet: MCP og lyd for klipp, ikke brukergrensesnitt). Begge bruker samme `DATABASE_URL`. Gate filtrerer på SNI og kan ikke stenge stier, derfor to tjenester.
 - **Innlogging mot internett (T4):** begrensning og utestenging per IP og per kode (IP fra `X-Forwarded-For` bak Kourier), sterke koder (foreldrekoden lengst), informasjonskapsler med `Secure`, `HttpOnly` og `SameSite=Lax`, CSP og sikkerhetshoder, generiske feilmeldinger og ingen stakkspor. Adversarial gjennomgang av en annen modell før eksponering.
 - **`NEXT_PUBLIC_URL=https://nissekomm.no`.** Media blir i imaget.
+
+## Avgjort 10. november (media)
+
+Media ligger på en PVC (`MEDIA_DIR`, standard `/data/media`), ikke i imaget. Hver fil kan lastes opp for seg. Imaget blir slankt.
+
+- **T11 Mediebibliotek:** en rute som serverer filer fra `MEDIA_DIR` med Range-støtte (Safari trenger det for video) og riktige cache-hoder. Mangler en fil, faller appen tilbake som i dag («SIGNALET ER SVAKT», snø på TV).
+- **Opplasting:** bare i `lan`-modus. I foreldreguiden finnes en side med liste over forventede filer (Julius dag 1–24, TV-loops, kamerabilder, musikk), status for hver og opplasting av én fil om gangen. Det samme går via et enkelt API (`PUT /api/media/<sti>`) og senere MCP-verktøyet `upload_asset` på `parent`-nivå. Filtype og størrelse sjekkes, og stier kan ikke gå utenfor mappen.
+- **Begge tjenestene monterer PVC-en** (VKS er én node, så RWO holder). Den offentlige leser, LAN-tjenesten leser og skriver.

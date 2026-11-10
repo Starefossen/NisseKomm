@@ -48,3 +48,10 @@ next-env.d.ts
 # Generated media (finished files go to public/)
 assets/out/
 __pycache__/
+
+# Media stays out of git (public repo). Kept locally and baked into the image at build.
+/public/video/
+/public/feed/
+/public/music/
+/assets/**/*.jpg
+/assets/**/*.png
