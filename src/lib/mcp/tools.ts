@@ -357,6 +357,7 @@ export function getScreen(state: State, at?: Date) {
       ),
     ),
     today: {
+      skjerm_teaser: q?.skjerm_teaser ?? null,
       solved: solvedToday,
       solved_at: solvedToday ? solvedAt(state, today) : null,
       milestone_reached: solvedToday && milestones.some((m) => m.day === today),
@@ -373,10 +374,6 @@ export function getScreen(state: State, at?: Date) {
             : "available",
     })),
     title: q?.tittel ?? null,
-    // ponytail: placeholder until skjerm_teaser texts are written (todo.md).
-    teaser:
-      (q as { skjerm_teaser?: string } | null | undefined)?.skjerm_teaser ??
-      (q ? "Nytt oppdrag venter i NisseKomm." : null),
     frost_percent: today
       ? frostLevelFor(
           today,
@@ -425,7 +422,7 @@ export const TOOLS: Record<string, Tool> = {
   get_screen: {
     level: "read",
     description:
-      "Skjerm: dører (frost_day), tittel og teaser, today (løst, tidspunkt, milepæl), milestone_latest, countdown_days, Frostgrad, merker, frost, TV (poster_url, events) og neste endring. Tider i Europe/Oslo. Medie-URL-er er absolutte når NISSEKOMM_PUBLIC_BASE er satt, ellers rot-relative.",
+      "Skjerm: dører (frost_day), tittel, today (skjerm_teaser, løst, tidspunkt, milepæl), milestone_latest, countdown_days, Frostgrad, merker, frost, TV (poster_url, events) og neste endring. Tider i Europe/Oslo. Medie-URL-er er absolutte når NISSEKOMM_PUBLIC_BASE er satt, ellers rot-relative.",
     inputSchema: { type: "object", properties: {} },
     run: async (_, c) => getScreen(await read(), clockFor(c.sub)),
   },

@@ -54,13 +54,15 @@ describe("get_screen", () => {
     expect(s.doors[4].state).toBe("available");
     expect(s.doors[5].state).toBe("locked");
     expect(s.title).toBe(quests[4].tittel);
-    expect(s.teaser).toBeTruthy();
+    expect(s.today.skjerm_teaser).toBe(quests[4].skjerm_teaser);
+    expect(s.teaser).toBeUndefined();
   });
 
   it("ingen tittel før 06:00", async () => {
     jest.useFakeTimers({ now: at(5, 5) });
     const s = await screen();
     expect(s.title).toBeNull();
+    expect(s.today.skjerm_teaser).toBeNull();
     expect(s.tv.phase).toBe("natt");
     expect(s.tv.phase_next_change_at).toBe("2026-12-05T06:00:00+01:00");
     expect(s.next_change_at).toBe("2026-12-05T06:00:00+01:00");
@@ -152,6 +154,7 @@ describe("get_screen", () => {
     jest.useFakeTimers({ now: at(7, 10) });
     let s = await screen();
     expect(s.today).toEqual({
+      skjerm_teaser: quests[6].skjerm_teaser,
       solved: false,
       solved_at: null,
       milestone_reached: false,
@@ -170,6 +173,7 @@ describe("get_screen", () => {
     );
     s = await screen();
     expect(s.today).toEqual({
+      skjerm_teaser: quests[6].skjerm_teaser,
       solved: true,
       solved_at: "2026-12-07T09:42:00+01:00",
       milestone_reached: true,

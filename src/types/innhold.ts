@@ -168,6 +168,7 @@ export interface Oppdrag {
   // Core properties (required)
   dag: number;
   tittel: string;
+  skjerm_teaser?: string; // One line for the hallway screen from 06:00; never a code or a clue
   nissemail_tekst: string; // Mission description for children (available in app)
   kode: string;
   julius_ps?: string; // Shown under Julius' video once the code is solved

@@ -36,6 +36,9 @@ for (const q of quests) {
   const k = q.dag;
   add(k, `dag ${k} tittel`, q.tittel);
   add(k, `dag ${k} nissemail_tekst`, q.nissemail_tekst);
+  add(k, `dag ${k} skjerm_teaser`, q.skjerm_teaser);
+  if ((q.skjerm_teaser ?? "").length > 60)
+    throw new Error(`dag ${k} skjerm_teaser > 60 tegn`);
   add(k, `dag ${k} symbol_clue`, q.symbol_clue?.description);
   add(k, `dag ${k} krypto-hint`, q.decryption_challenge?.hint);
   add(k + 1, `dag ${k} julius_ps`, q.julius_ps);
