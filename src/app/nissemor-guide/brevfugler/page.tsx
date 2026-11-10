@@ -76,7 +76,7 @@ function BrevfuglerContent() {
   };
 
   return (
-    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] p-4 md:p-8">
+    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) p-4 md:p-8">
       <GuideNavigation />
 
       {/* Header */}
@@ -190,7 +190,7 @@ function BrevfuglerContent() {
                       value={letterContent}
                       onChange={(e) => setLetterContent(e.target.value)}
                       placeholder="Kjære [navn],&#10;&#10;Skriv et personlig brev fra Julius her...&#10;&#10;Hilsen Julius"
-                      className="w-full h-48 bg-black border-2 border-(--neon-green) text-(--neon-green) p-3 font-['VT323',monospace] text-lg resize-none"
+                      className="w-full h-48 bg-black border-2 border-(--neon-green) text-(--neon-green) p-3 text-lg resize-none"
                       autoFocus
                     />
                     <div className="flex gap-2">
@@ -235,7 +235,7 @@ export default function BrevfuglerPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] flex items-center justify-center">
+        <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) flex items-center justify-center">
           <div className="text-2xl">Laster...</div>
         </div>
       }

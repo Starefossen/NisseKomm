@@ -19,6 +19,31 @@ const colorFilters: Record<IconColor, string> = {
     "brightness(0) saturate(100%) invert(96%) sepia(90%) saturate(2069%) hue-rotate(359deg) brightness(104%) contrast(104%)",
 };
 
+// Names from pixelarticons 1.x that were renamed in the installed 2.x
+const renamed: Record<string, string> = {
+  alert: "warning-diamond",
+  "audio-device": "headphone",
+  book: "book-open",
+  "camera-add": "camera",
+  "cellular-signal": "cellular-signal-3",
+  "cellular-signal-off": "cellular-signal-0",
+  coin: "coins",
+  grid: "grid-3x3",
+  info: "info-box",
+  "lock-open": "unlock",
+  "mood-happy": "smile",
+  "moon-star": "moon",
+  next: "arrow-right",
+  prev: "arrow-left",
+  notification: "bell",
+  pin: "map-pin",
+  "script-text": "script",
+  "sun-alt": "sun",
+};
+
+// Served from public/icons (copied from node_modules by `pnpm icons`): no runtime network
+export const iconSrc = (name: string) => `/icons/${renamed[name] ?? name}.svg`;
+
 export function Icon({
   name,
   size = 24,
@@ -30,7 +55,7 @@ export function Icon({
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={`https://unpkg.com/pixelarticons@1.8.1/svg/${name}.svg`}
+      src={iconSrc(name)}
       alt={name}
       width={size}
       height={size}

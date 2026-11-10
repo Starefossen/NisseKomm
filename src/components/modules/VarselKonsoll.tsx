@@ -55,7 +55,7 @@ export function VarselKonsoll({ alerts, currentDay }: VarselKonsollProps) {
               key={`alert-${index}`}
               onClick={() => handleAlertClick(index)}
               className={`
-                w-full text-left px-2 py-1 border-2 transition-all text-xs
+                w-full text-left px-2 py-1 border-2 transition-all text-base
                 animate-slide-down
                 ${isCrisis ? "border-(--christmas-red) shadow-[0_0_10px_rgba(255,0,0,0.3)]" : ""}
                 ${
@@ -99,7 +99,7 @@ export function VarselKonsoll({ alerts, currentDay }: VarselKonsollProps) {
                   >
                     {alert.tekst}
                   </div>
-                  <div className="text-[10px] opacity-60 mt-0.5">
+                  <div className="text-base opacity-60 mt-0.5">
                     {alert.tidspunkt}
                   </div>
                 </div>

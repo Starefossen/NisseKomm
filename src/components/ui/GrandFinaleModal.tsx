@@ -72,7 +72,7 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
                 Sleden fløy over grotten med alle lysene på. Noe blått fløy opp
                 og møtte den.
               </p>
-              <p className="text-xs opacity-70 pt-2">
+              <p className="text-base opacity-70 pt-2">
                 {symbols} symboler · {decryptions} dekrypteringer · {bonus}{" "}
                 bonus
               </p>

@@ -32,7 +32,7 @@ export function SystemStatus({ currentDay }: SystemStatusProps) {
   if (frost === null || shown === null) {
     return (
       <SidebarWidget title="SERVERROM">
-        <div className="flex items-center gap-2 text-xs">
+        <div className="flex items-center gap-2 text-base">
           <LEDIndicator color="green" blinking />
           <span>ORAKELET LYTTER ...</span>
         </div>
@@ -65,10 +65,10 @@ export function SystemStatus({ currentDay }: SystemStatusProps) {
               />
               <path d="M14 28 V10 H26 V28" fill="currentColor" opacity="0.3" />
             </svg>
-            <div className="text-xs">PORTEN STÅR ÅPEN</div>
+            <div className="text-base">PORTEN STÅR ÅPEN</div>
           </div>
         )}
-        <div className="flex items-center justify-between pt-3 border-t-2 border-(--neon-green)/30 text-xs">
+        <div className="flex items-center justify-between pt-3 border-t-2 border-(--neon-green)/30 text-base">
           <span>{solved ? "LINJEN VARMES" : "FROSTEN STIGER"}</span>
           <LEDIndicator
             color={status === "kritisk" ? "red" : solved ? "green" : "yellow"}

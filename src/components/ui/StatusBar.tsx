@@ -21,7 +21,7 @@ export function StatusBar({
 
   return (
     <div className="space-y-1">
-      <div className="flex justify-between items-center text-xs">
+      <div className="flex justify-between items-center text-base">
         <span>{label}</span>
         <span>
           {value}/{max}

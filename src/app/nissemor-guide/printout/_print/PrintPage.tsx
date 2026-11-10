@@ -22,7 +22,7 @@ export function PrintPage({
   return (
     <div className="print:p-0">
       <style>{"@page { size: A4; margin: 10mm; }"}</style>
-      <div className="print:hidden max-w-4xl mx-auto space-y-4 mb-6 text-(--neon-green) font-['VT323',monospace]">
+      <div className="print:hidden max-w-4xl mx-auto space-y-4 mb-6 text-(--neon-green) font-retro">
         <h1 className="text-4xl font-bold text-center">🖨️ {title}</h1>
         {paper && <p className="text-xl text-center">{paper}</p>}
         {note && <div className="text-lg opacity-80">{note}</div>}

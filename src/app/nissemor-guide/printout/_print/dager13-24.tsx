@@ -10,7 +10,7 @@ import { CutCard, NewSheet, PrintPage } from "./PrintPage";
  * let a child who keeps the rune board read the whole answer.
  */
 
-const RETRO = "font-['VT323',monospace] uppercase";
+const RETRO = "font-retro uppercase";
 
 /** Frostlapp skeleton: "_" is a ❄ square, any other char is shown with its rune. */
 function Skjelett({ m }: { m: string }) {
@@ -298,7 +298,7 @@ function Dag17Baand() {
 
 function Dag17Losepenger() {
   const tekst = "GI OSS ALLE PEPPERKAKENE. ELLERS.";
-  const fonter = ["font-serif", "font-sans", "font-mono", "font-['VT323']"];
+  const fonter = ["font-serif", "font-sans", "font-mono", "font-retro"];
   return (
     <PrintPage title="DAG 17 · LØSEPENGEBREV (VALGFRI)">
       <div className="border-4 border-black p-8 min-h-[200mm] flex flex-col justify-center gap-10">

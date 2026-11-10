@@ -153,7 +153,7 @@ function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
   };
 
   return (
-    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-retro flex items-center justify-center p-4">
       <div className="w-full max-w-md border-4 border-(--neon-green) bg-(--dark-crt) p-8">
         <h1 className="text-3xl font-bold text-center mb-2">
           🎅 NISSEMOR GUIDE
@@ -219,7 +219,7 @@ export function GuideAuth({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-['VT323',monospace] flex items-center justify-center">
+      <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-retro flex items-center justify-center">
         <div className="text-2xl">{loadingMessage}</div>
       </div>
     );

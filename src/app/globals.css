@@ -19,6 +19,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-retro: var(--font-vt323), monospace;
 }
 
 /* CRT Animations */
@@ -617,7 +618,7 @@
 body {
   background: var(--crt-bg);
   color: var(--neon-green);
-  font-family: "VT323", monospace;
+  font-family: var(--font-vt323), monospace;
   font-size: 20px;
 }
 
@@ -736,10 +737,32 @@ body:has(.crt-frame-container) {
   animation: vhs-roll 3s linear infinite;
 }
 
+/* Rime grows in from the corners; the inset shadow alone vanished on wide screens */
 .frost-edge {
+  background:
+    radial-gradient(circle at 0 0, rgba(230, 245, 255, 0.7), transparent 22%),
+    radial-gradient(
+      circle at 100% 0,
+      rgba(230, 245, 255, 0.7),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at 0 100%,
+      rgba(230, 245, 255, 0.7),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(230, 245, 255, 0.7),
+      transparent 22%
+    );
   box-shadow:
-    inset 0 0 60px 20px rgba(220, 240, 255, 0.55),
-    inset 0 0 160px 40px rgba(180, 220, 255, 0.25);
+    inset 0 0 40px 24px rgba(230, 245, 255, 0.8),
+    inset 0 0 220px 60px rgba(180, 220, 255, 0.35);
+}
+
+.frost-frozen {
+  filter: grayscale(0.9) brightness(0.8) sepia(0.3) hue-rotate(170deg);
 }
 
 .frost-thaw {

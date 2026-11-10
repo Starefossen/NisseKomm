@@ -5,6 +5,9 @@
   "packageManager": "pnpm@10.24.0",
   "scripts": {
     "build": "next build",
+    "icons": "node -e \"require('fs').cpSync('node_modules/pixelarticons/svg','public/icons',{recursive:true})\"",
+    "postinstall": "pnpm icons",
+    "prebuild": "pnpm icons",
     "check": "tsc --noEmit && eslint . && knip && prettier --write --list-different . && jest --silent",
     "dev": "next dev",
     "format": "prettier --write --list-different .",
