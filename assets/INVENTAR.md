@@ -10,7 +10,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | rampenissen | 0 | 5 | 2 | 17 |
 | music | 0 | 0 | 13 | 0 |
 | tv | 0 | 0 | 23 | 0 |
-| feed | 0 | 0 | 8 | 0 |
+| feed | 0 | 0 | 7 | 0 |
 
 ## julius
 
@@ -127,7 +127,6 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | feed/iq-verksted.png | 1.1 MB | 2026-11-11 | ? |
 | feed/julius-kontor.jpg | 0.2 MB | 2026-11-10 | ? |
 | feed/landsby-rolig.jpg | 0.2 MB | 2026-11-10 | ? |
-| feed/snøfall-night.png | 2.2 MB | 2025-11-14 | ? ikke i manifestet |
 
 ## Gamle filer
 
