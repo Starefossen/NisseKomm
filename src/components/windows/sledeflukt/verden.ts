@@ -2,7 +2,7 @@
  * SLEDEFLUKT: the 3D world around the pure sim in snofall-tv/slede.ts.
  * The sim keeps its units (x in track units, altitude and z in sim units); this
  * module maps them to render units (SKALA) and builds every mesh: valley tiles,
- * trees, Snøfall houses with chimneys, the things on the course and the rig.
+ * trees, Snøfall houses with chimneys, the rings and things on the course and the rig.
  * Nothing here touches the DOM or WebGL, so it is testable.
  */
 
@@ -10,6 +10,8 @@ import { hex, type Mat4, Mesh, transform, type Vec3 } from "./gl";
 import {
   HUS_PIPE,
   lagBane,
+  RING_ALT,
+  RING_X,
   type SledeEtappe,
   type Ting,
 } from "../snofall-tv/slede";
@@ -184,19 +186,25 @@ function husMesh(variant: number): HusMesh {
   return { mesh: m.build(), pipe };
 }
 
-/** Beacon: stone cairn, a lantern and a tall light so it reads from afar. */
-function vardeMesh() {
+/** The ring's opening in render units: exactly the sim's hit ellipse, so what you see is what counts. */
+export const RING_RX = RING_X * SPOR;
+export const RING_RY = RING_ALT * SKALA;
+
+/**
+ * Golden ring in the air, facing the course (the xy plane): a dotted hoop of
+ * glowing beads on a thin band, all unlit so it reads through fog from afar.
+ */
+function ringMesh() {
   const m = new Mesh();
-  m.cone([0, 0, 0], 2.4, 1.6, STEIN, 6, 1.8);
-  m.cone([0, 1.6, 0], 1.8, 1.4, STEIN_LYS, 6, 1.2);
-  m.cone([0, 3, 0], 1.2, 1.2, STEIN, 6, 0.7);
-  m.box([0, 4.8, 0], [1.2, 1.2, 1.2], ORANSJE, 1);
-  m.box([0, 12, 0], [0.7, 14, 0.7], VINDU, 1);
-  m.cone([0, 19, 0], 1.6, 2, GULL, 4, 0, 1);
-  m.cone([0, 19, 0], 1.6, -2, GULL, 4, 0, 1);
-  for (let i = 0; i < 8; i++) {
-    const a = (i / 8) * Math.PI * 2;
-    m.box([Math.cos(a) * 7, 10, Math.sin(a) * 7], [1, 1, 1], GULL, 1);
+  const n = 16;
+  const BÅND = hex(0xc9962a);
+  const ved = (i: number): Vec3 => {
+    const a = (i / n) * Math.PI * 2;
+    return [Math.cos(a) * RING_RX, Math.sin(a) * RING_RY, 0];
+  };
+  for (let i = 0; i < n; i++) {
+    m.rod(ved(i), ved(i + 1), 0.35, BÅND, 4, 0.35, 1);
+    m.box(ved(i), [1.4, 1.4, 1.4], i % 2 ? GULL : VINDU, 1);
   }
   return m.build();
 }
@@ -402,7 +410,7 @@ function tømmerMesh() {
 export interface Meshes {
   tre: Float32Array;
   hus: HusMesh[];
-  varde: Float32Array;
+  ring: Float32Array;
   stjerne: Float32Array;
   topp: Float32Array;
   band: Float32Array;
@@ -425,7 +433,7 @@ export function meshes(): Meshes {
     cache = {
       tre: treMesh(),
       hus: [0, 1, 2].map(husMesh),
-      varde: vardeMesh(),
+      ring: ringMesh(),
       stjerne: stjerneMesh(),
       topp: toppMesh(),
       band: bandMesh(),

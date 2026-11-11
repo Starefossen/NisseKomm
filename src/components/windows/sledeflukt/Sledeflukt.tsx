@@ -303,6 +303,8 @@ export function SledefluktSpill({
     let id = 0;
     let eye: Vec3 | null = null;
     let sistDist = 0;
+    // Gold sparks from the last rings flown through: where and when.
+    const gnister: { p: Vec3; t0: number }[] = [];
     // Frame-time ring for the auto resolution and the dev overlay.
     const tider = new Float32Array(180);
     let nTid = 0;
@@ -316,8 +318,16 @@ export function SledefluktSpill({
       switch (h) {
         case "bjelle":
           l?.bjelle(rekkeMult(sim.s.rekke));
+          gnister.push({
+            p: tilVerden(sim.s.px, sim.s.alt, sim.s.dist),
+            t0: performance.now() / 1000,
+          });
           if (sim.s.rekke % 3 === 0 && sim.s.rekke > 0)
             say(`REKKE x${rekkeMult(sim.s.rekke)}`, "#00ff8a");
+          break;
+        case "nesten":
+          l?.tikk(false);
+          say("NESTEN!", "#8aa0c0");
           break;
         case "bom":
           if (sim.s.besteRekke >= 3) say("REKKEN RØK", "#8aa0c0");
@@ -665,12 +675,38 @@ export function SledefluktSpill({
           r.tegn(M.band, transform(pos, [0, 0, Math.sin(t) * 0.1]));
           continue;
         }
+        if (o.type === "varde") {
+          // Rings hang in the air and turn slowly; a ring flown through spins up.
+          pos[1] = o.h * SKALA;
+          r.tegn(M.ring, transform(pos, [0, 0, t * (o.treff ? 3 : 0.5)]));
+          continue;
+        }
         pos[1] = bakke(pos[0], o.z) - 0.2;
-        if (o.type === "varde") r.tegn(M.varde, transform(pos));
-        else if (o.type === "topp") r.tegn(M.topp, transform(pos));
+        if (o.type === "topp") r.tegn(M.topp, transform(pos));
         else {
           const s = verden.spesial.get(nøkkel(o));
           if (s) r.tegn(s, transform(pos));
+        }
+      }
+
+      // Sparks fan out from a ring for half a second, then are forgotten.
+      while (gnister.length && t - gnister[0].t0 > 0.5) gnister.shift();
+      for (const g of gnister) {
+        const alder = t - g.t0;
+        for (let k = 0; k < 8; k++) {
+          const a = (k / 8) * Math.PI * 2 + g.t0;
+          r.tegn(
+            M.prikk,
+            transform(
+              [
+                g.p[0] + Math.cos(a) * alder * 40,
+                g.p[1] + Math.sin(a) * alder * 40 - alder * alder * 30,
+                g.p[2] + alder * 20,
+              ],
+              [0, 0, a],
+              1 - alder,
+            ),
+          );
         }
       }
 
@@ -923,7 +959,7 @@ export function SledefluktSpill({
           ) : (
             <>
               <div>
-                VARDER {b?.varder ?? 0}/{b?.varderTotalt ?? 0}
+                RINGER {b?.varder ?? 0}/{b?.varderTotalt ?? 0}
               </div>
               <div className="text-(--cold-blue)">
                 UTFORDRING {b?.utf ?? ""}
@@ -1158,7 +1194,7 @@ export function SledefluktSpill({
                 </div>
                 <div className="text-base leading-tight">«{etappe.intro}»</div>
                 <div className="text-sm opacity-70 tabular-nums leading-tight">
-                  ● {krav[0]} varder · ●● {krav[1]} · ●●● {krav[2]} og ingen
+                  ● {krav[0]} ringer · ●● {krav[1]} · ●●● {krav[2]} og ingen
                   krasj
                 </div>
                 <div className="border border-(--cold-blue)/60 px-2 py-0.5 text-base leading-tight">
@@ -1263,7 +1299,7 @@ export function SledefluktSpill({
                 <dl className="grid grid-cols-[auto_auto_auto_auto] gap-x-3 gap-y-0 text-left text-base leading-tight tabular-nums mx-auto w-fit">
                   {(
                     [
-                      ["VARDER", `${resultat.varder}/${resultat.varderTotalt}`],
+                      ["RINGER", `${resultat.varder}/${resultat.varderTotalt}`],
                       ["STJERNER", resultat.stjerner],
                       [
                         "BESTE REKKE",
@@ -1356,7 +1392,7 @@ function nesteBjelle(
   if (r.bjeller >= 3) return "Alle tre bjeller. IQ bukker!";
   const mangler = krav[r.bjeller] - r.varder;
   if (mangler > 0)
-    return `${mangler} ${mangler === 1 ? "varde" : "varder"} til neste bjelle.`;
+    return `${mangler} ${mangler === 1 ? "ring" : "ringer"} til neste bjelle.`;
   return "Fly uten krasj, så henger den tredje bjellen.";
 }
 

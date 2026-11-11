@@ -22,6 +22,9 @@ import {
   NÆR_M,
   RAMP,
   rekkeMult,
+  RING_ALT,
+  RING_X,
+  ringAvvik,
   UTFORDRING_BONUS,
   utfordringKlart,
   utfordringStatus,
@@ -133,15 +136,60 @@ describe("sim", () => {
     expect(sim.s.fart).toBeLessThan(ETAPPER[0].fart * 0.5);
   });
 
-  it("scores a beacon when passing through its ring", () => {
+  it("scores a ring when flying through its centre", () => {
     const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
     const v = sim.s.ting.find((t) => t.type === "varde")!;
     sim.s.px = v.x;
+    sim.s.alt = v.h;
     sim.s.dist = v.z - 1;
     expect(sim.step(1 / 60, still)).toContain("bjelle");
     expect(sim.s.poeng).toBe(150);
     expect(sim.s.varder).toBe(1);
     expect(sim.s.kraft).toBe(0.25);
+  });
+
+  it("rings hang at an altitude: too high or too low is a near miss, then a miss", () => {
+    const ved = (dAlt: number, dx = 0) => {
+      const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
+      const v = sim.s.ting.find((t) => t.type === "varde")!;
+      sim.s.px = v.x + dx;
+      sim.s.alt = v.h + dAlt;
+      sim.s.dist = v.z - 1;
+      return [sim.step(1 / 60, still), sim.s.poeng] as const;
+    };
+    expect(ringAvvik(0.35, 120, { x: 0, h: 120, z: 0, type: "varde" })).toBe(1);
+    expect(ved(RING_ALT * 0.8)[0]).toContain("bjelle");
+    expect(ved(RING_ALT * 0.8)[1]).toBe(100);
+    expect(ved(RING_ALT * 1.3)[0]).toContain("nesten");
+    expect(ved(RING_ALT * 1.3)[1]).toBe(0);
+    expect(ved(0, RING_X * 2.5)[0]).toContain("bom");
+    // The assistant's wider ring forgives a little more.
+    const sim = createSim(ETAPPER[0], { assist: true, reduceMotion: false });
+    const v = sim.s.ting.find((t) => t.type === "varde")!;
+    sim.s.px = v.x;
+    sim.s.alt = v.h + RING_ALT * 1.3;
+    sim.s.dist = v.z - 1;
+    expect(sim.step(1 / 60, still)).toContain("bjelle");
+  });
+
+  it("ring altitudes vary within reach: gentle on day 8, wider later, every step climbable", () => {
+    const spenn = new Map<string, number>();
+    for (const e of ETAPPER) {
+      const ringer = lagBane(e).filter((t) => t.type === "varde");
+      const h = ringer.map((t) => t.h);
+      expect(Math.min(...h)).toBeGreaterThanOrEqual(70);
+      expect(Math.max(...h)).toBeLessThanOrEqual(240);
+      spenn.set(e.id, Math.max(...h) - Math.min(...h));
+      for (let i = 1; i < ringer.length; i++) {
+        const sek = (ringer[i].z - ringer[i - 1].z) / (e.fart * (1 + RAMP));
+        expect(Math.abs(ringer[i].h - ringer[i - 1].h)).toBeLessThanOrEqual(
+          150 * sek,
+        );
+      }
+    }
+    expect(spenn.get("tundra")!).toBeGreaterThan(40);
+    expect(spenn.get("tundra")!).toBeLessThan(spenn.get("julenatt")!);
+    expect(spenn.get("tundra")!).toBeLessThan(spenn.get("stjernedrysset")!);
   });
 
   it("steering has inertia and the course speeds up towards the finish", () => {
@@ -194,7 +242,7 @@ describe("GameEngine.recordSledeResultat", () => {
 });
 
 describe("rekke og nære på", () => {
-  it("multiplies beacons after 3, 6 and 9 in a row, and a miss resets", () => {
+  it("multiplies rings after 3, 6 and 9 in a row, and a miss resets", () => {
     expect([0, 2, 3, 5, 6, 9, 30].map(rekkeMult)).toEqual([
       1, 1, 2, 2, 3, 4, 4,
     ]);
@@ -202,6 +250,7 @@ describe("rekke og nære på", () => {
     const varder = sim.s.ting.filter((t) => t.type === "varde");
     for (let i = 0; i < 4; i++) {
       sim.s.px = varder[i].x;
+      sim.s.alt = varder[i].h;
       sim.s.dist = varder[i].z - 1;
       sim.s.first = sim.s.ting.indexOf(varder[i]);
       sim.step(1 / 60, still);
@@ -210,6 +259,7 @@ describe("rekke og nære på", () => {
     // Fourth beacon paid double (x2 from the third onwards).
     expect(sim.s.poeng).toBe(150 * 3 + 300);
     sim.s.px = varder[4].x + 1;
+    sim.s.alt = varder[4].h;
     sim.s.dist = varder[4].z - 1;
     sim.s.first = sim.s.ting.indexOf(varder[4]);
     expect(sim.step(1 / 60, still)).toContain("bom");
