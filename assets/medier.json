@@ -136,6 +136,14 @@
     "mal": "assets/prompts/spill/piksel-klokketarnet.txt",
     "notat": "Ugleposten K1, ny scene fra torget: toppen av klokketårnet. Torgets pikselbilde er bare stil- og palettreferanse (prompts/spill/piksel-ny-scene)"
   },
+  "spill-piksel/julebodene": {
+    "generator": "piksel",
+    "sted": "julebodene",
+    "ut": "spill/piksel/julebodene.png",
+    "bilde": "public/spill/piksel/torget.png",
+    "mal": "assets/prompts/spill/piksel-julebodene.txt",
+    "notat": "Ugleposten K1, ny scene fra torget: bodene på torget, nærbilde. Torgets pikselbilde er bare stil- og palettreferanse (prompts/spill/piksel-ny-scene)"
+  },
   "portrett/winter": {
     "generator": "portrett",
     "ut": "spill/portrett-winter.png",

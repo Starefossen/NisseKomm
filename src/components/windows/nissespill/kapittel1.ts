@@ -142,6 +142,7 @@ export const KAPITTEL_1: Kapittel = {
         { til: "kafeen", navn: "Inn på kaféen" },
         { til: "pakkesentralen", navn: "Inn i pakkesentralen" },
         { til: "klokketaarnet", navn: "Opp i klokketårnet" },
+        { til: "julebodene", navn: "Bort til julebodene" },
       ],
       // In the snow in front of the clock tower, between the stalls and the mailbox
       fjaer: { x: 49, y: 86, w: 4, h: 6 },
@@ -932,6 +933,137 @@ export const KAPITTEL_1: Kapittel = {
             },
           ],
           bruk: "Du legger vingen mot glasset. Det er lunkent av lampene. Utenfor går snøen forbi viserne som små lys. Du blir stående litt. Det er lov.",
+        },
+      ],
+    },
+    {
+      id: "julebodene",
+      navn: "Julebodene",
+      bilde: "spill/julebodene.jpg",
+      utganger: [{ til: "torget", navn: "Tilbake til torget" }],
+      // In the trampled snow between the stalls
+      fjaer: { x: 51, y: 73, w: 4, h: 6 },
+      hotspots: [
+        {
+          id: "lanterna",
+          navn: "Lanterna",
+          rect: { x: 5, y: 35, w: 6, h: 14 },
+          smart: "se",
+          se: "En lanterne i takskjegget, med en flamme som er mer gul enn varm. Bodnissen har hengt den der for å se bærene. Bærene ser like ut i mørket. De ser like ut i lyset også.",
+          bruk: "Du dytter lanterna. Den svinger, og skyggen av to boder, to bodnisser og én ugle danser over snøen. Uglen er størst. Det er skyggens fortjeneste.",
+        },
+        {
+          id: "bodnisse_v",
+          navn: "Bodnissen til venstre",
+          rect: { x: 11, y: 37, w: 13, h: 25 },
+          smart: "snakk",
+          se: "En kort, rund bodnisse i ullsjal med sjalet trukket opp til nesa. Han har solgt bær på torget i førti år. De samme bærene, hevder naboen. Han hevder det motsatte, like lenge.",
+          bruk: "Du prikker bodnissen på armen. Han ser på deg, så på bærene, så på deg. «Ei neve er gratis for ugler. To never er handel.»",
+          prat: [
+            {
+              hvis: "tok_tyttebaer",
+              tekst:
+                "«Fikk du bær? Bra. Mine er best. Ikke hør på ham med skiltet. Han kjøper av meg.» Han sier det høyt nok. Naboen hører det. Naboen sier ingenting, men skiltet hans ser litt mindre ut.",
+            },
+            {
+              tekst:
+                "«Frosne tyttebær! Harde som småstein og røde som ... ja, som tyttebær. De tiner ikke her ute, ikke før mai. Vil du ha saft av dem, må du slippe dem i noe varmt. Ta ei neve, ugler får ei neve.»",
+            },
+          ],
+        },
+        {
+          id: "baerkurvene_v",
+          navn: "Bærkurvene",
+          rect: { x: 6, y: 57, w: 30, h: 16 },
+          smart: "bruk",
+          se: "Kurver med røde og blå frosne bær, stablet så høyt at de nederste kurvene aldri har sett dagslys. De øverste bærene glitrer av rim. Hvert bær er et lite, hardt løfte om saft en gang i framtida.",
+          ta: {
+            item: "tyttebaer",
+            tekst:
+              "Du tar ei neve frosne tyttebær fra kurven nærmest. Bodnissen nikker. Fra torget, langt borte, hører du Winter notere: «Bær. Ei neve. Boden til venstre.»",
+          },
+          bruk: "Du har bær nok. Bodnissen løfter et øyenbryn under sjalet. Ett øyenbryn er alt han har å si om saken.",
+        },
+        {
+          id: "klementinene",
+          navn: "Klementinkassa",
+          rect: { x: 17, y: 83, w: 19, h: 17 },
+          smart: "se",
+          se:
+            "En trekasse med klementiner, så oransje at de lyser i snøen. Det er en fordypning i kassa, akkurat stor nok til en nisse på tretti centimeter. " +
+            R +
+            "«Æ har aldri ligge i den kassa. Æ har ligge VED SIDA av den kassa. Det e en viktig forskjell for en som selger klementina.»",
+          bruk: "Du ruller en klementin med nebbet. Den triller ut av kassa, over snøen og stopper mot boden til høyre. Bodnissen til høyre tar den opp og legger den i sin kasse. Han har ikke klementiner. Nå har han én.",
+        },
+        {
+          id: "vottene",
+          navn: "Vottekurven",
+          rect: { x: 36, y: 79, w: 15, h: 21 },
+          smart: "se",
+          se: "En kurv med strikkede votter i alle farger. Ingen av dem har make. Hjerterud strikker én og én, når hun venter på at noe skal heve. Så går hun. Vottene er like lange som en bolle tar.",
+          bruk: "Du drar fram en grønn vott med nebbet. Den passer ikke på en ugle. Du prøver likevel. Bodnissen til venstre ler så sjalet sklir ned. Det var verdt det.",
+        },
+        {
+          id: "taarnet",
+          navn: "Klokketårnet",
+          rect: { x: 54, y: 0, w: 9, h: 58 },
+          smart: "se",
+          gaaTil: "klokketaarnet",
+          se: "Klokketårnet rett bak bodene, gyllent mot natta. Herfra ser du at det er lys i rommet øverst, og en luke som står åpen. Floke kan fly opp dit.",
+        },
+        {
+          id: "gryta",
+          navn: "Gryta",
+          rect: { x: 63, y: 80, w: 11, h: 18 },
+          smart: "se",
+          se: "En liten messinggryte på et bord, med damp som stiger opp. Du kikker nedi. Tom. Det er bare dampen igjen. Bodnissen til høyre: «Utsolgt siden tre. Dampen er gratis.»",
+          bruk: "Du holder vingene over gryta. Dampen er varm, men den varmer ikke noe. Hadde det vært noe i gryta, hadde det vært noe å tine bær i. Det er ikke noe i gryta.",
+          feil: {
+            tyttebaer:
+              "Du slipper et bær i gryta. Det klirrer mot bunnen. Tom gryte tiner ingenting. Bodnissen til høyre fisker det opp og legger det i sin kurv. Han har tjent ett bær i dag.",
+            kaffekopp:
+              "Du setter koppen i gryta. Nå står det en kopp i en gryte. Bodnissen til høyre: «Det er ikke sånn det virker.» Du tar koppen tilbake. Den er fortsatt varm.",
+          },
+        },
+        {
+          id: "bodnisse_h",
+          navn: "Bodnissen til høyre",
+          rect: { x: 77, y: 36, w: 11, h: 25 },
+          smart: "snakk",
+          se: "En høy, tynn bodnisse med spisse ører og et uttrykk som om han har vunnet noe. Han har et skilt. Det er det han har vunnet.",
+          bruk: "Du prikker bodnissen på armen. Han bøyer seg ned og hvisker: «Mine er bedre. Jeg sier ikke hvorfor. Da hadde det ikke vært en hemmelighet.»",
+          prat: [
+            {
+              hvis: "tok_tyttebaer",
+              tekst:
+                "«Tok du av HANS bær?» Han ser dypt skuffet ut i to sekunder. Så: «Det går bra. De er like. Ikke si det til noen. Særlig ikke til ham.»",
+            },
+            {
+              tekst:
+                "«Bedre bær! Les skiltet. Jeg har stått her i førti år ved siden av ham, og mine har alltid vært bedre. Samme skog, samme frost, samme kurv. Men bedre. Ta ei neve, så skjønner du.»",
+            },
+          ],
+        },
+        {
+          id: "baerkurvene_h",
+          navn: "De bedre bærkurvene",
+          rect: { x: 65, y: 57, w: 27, h: 16 },
+          smart: "bruk",
+          se: "Kurver med røde og blå frosne bær, nøyaktig like dem til venstre. Nøyaktig. Du ser fram og tilbake tre ganger. Rampenissen ser fram og tilbake tre ganger. Winter har en protokoll om saken. Den er tom.",
+          ta: {
+            item: "tyttebaer",
+            tekst:
+              "Du tar ei neve frosne tyttebær fra den bedre kurven. De er like harde og like røde. Bodnissen til høyre smiler som om du har valgt riktig. Bodnissen til venstre ser en annen vei.",
+          },
+          bruk: "Du har bær nok. Bodnissen til høyre nikker forståelsesfullt. «Man trenger ikke mer enn det beste.»",
+        },
+        {
+          id: "skiltet",
+          navn: "Skiltet",
+          rect: { x: 86, y: 36, w: 12, h: 16 },
+          smart: "se",
+          se: "Et håndmalt treskilt: «BEDRE». Bare det. Malingen er ny. Den males på nytt hver morgen, før naboen kommer, for å være sikker. Under ligger førti lag med «BEDRE».",
+          bruk: "Du snur skiltet med nebbet. På baksiden står det, med mindre bokstaver: «LIKE». Du snur det fort tilbake. Noen ting skal to bodnisser få ordne opp i selv.",
         },
       ],
     },

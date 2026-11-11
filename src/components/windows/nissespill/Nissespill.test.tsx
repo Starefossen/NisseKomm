@@ -344,6 +344,21 @@ describe("Nissespill: motor", () => {
       // 10+ funny SE lines
       const seLinjer = k.scener.flatMap((s) => s.hotspots.map((h) => h.se));
       expect(seLinjer.length).toBeGreaterThanOrEqual(10);
+      // Every scene is reachable from the start and leads back (no dead end)
+      const naboer = (id: string) => {
+        const sc = k.scener.find((x) => x.id === id)!;
+        return [
+          ...sc.utganger.map((u) => u.til),
+          ...sc.hotspots.flatMap((h) => (h.gaaTil ? [h.gaaTil] : [])),
+        ];
+      };
+      const fra = (start: string) => {
+        const sett = new Set([start]);
+        for (const id of sett) naboer(id).forEach((n) => sett.add(n));
+        return sett;
+      };
+      expect([...fra(k.start)].sort()).toEqual([...scener].sort());
+      for (const sc of k.scener) expect(fra(sc.id).has(k.start)).toBe(true);
     },
   );
 
@@ -408,6 +423,34 @@ describe("Nissespill: motor", () => {
       ["torget", "postkassen", "kaffekopp"],
       ["!", "torget/luka", "frostluke"],
     ]);
+  });
+
+  it("kapittel 1 kan spilles gjennom via de nye stedene fra torget", () => {
+    const save = spill(KAPITLER[0], [
+      ["?", "hjerterud", "Vi leter etter Rampenissens garnkurv."],
+      ["?", "hjerterud", "Kan vi få en bolle?"],
+      ["julebodene", "baerkurvene_h"],
+      ["!", "klokketaarnet/skiva", "taarnuret"],
+      ["verksted", "kaffekoppen"],
+      ["verksted", "sidebordet"],
+      ["verksted", "doera", "skjema"],
+      ["+", "tyttebaer", "kaffekopp"],
+      ["torget", "stempelputa", "baersaft"],
+      ["!", "torget/skrinet", "skrin"],
+      ["torget", "winter", "skjema_signert"],
+      ["torget", "postkassen", "kaffekopp"],
+      ["!", "torget/luka", "frostluke"],
+    ]);
+    expect(save.inventory).toContain("bolle");
+    expect(save.flags).toContain("klokka_stilt");
+    // The side goal never steals the chain's TIPS or NOTAT before the end
+    const k1 = KAPITLER[0];
+    const fersk = M.nyttKapittel(k1);
+    expect(M.tips(k1, fersk).tekst).toContain("skjerfet");
+    expect(M.tips(k1, fersk, "klokka_stilt").tekst).toContain("plata");
+    expect(M.notater(k1, fersk).map((n) => n.tekst)).not.toContain(
+      "Still den lille skiva i klokketårnet.",
+    );
   });
 
   it("kapittel 2 kan spilles gjennom", () => {
