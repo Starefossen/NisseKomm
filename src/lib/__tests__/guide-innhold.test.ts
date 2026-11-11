@@ -43,6 +43,15 @@ describe("manus parsers", () => {
     expect(r.intro_hint).toBeTruthy();
   });
 
+  it("keeps a nested «…» inside the replikk", () => {
+    const j = parseJulius(
+      "## Dag 3 (x)\n1. **Replikk:** «Han sa «hei» til meg.» (låst)\n   - Varighet: 9 s\n",
+      3,
+    )!;
+    expect(j.segmenter[0].replikk).toBe("Han sa «hei» til meg.");
+    expect(j.segmenter[0].laast).toBe(true);
+  });
+
   it("applies julius-dag.py's speech budget", () => {
     const kort = "en to tre fire fem";
     expect(lintSegment(kort, 15, false).varsler).toEqual([]);
@@ -57,7 +66,7 @@ describe("manus parsers", () => {
     const segs = parseJulius(md(MANUS.julius), 13)!.segmenter;
     expect(segs.map((s) => [s.ord, s.sek, s.laast])).toEqual([
       [19, 14, false],
-      [9, 14, false],
+      [20, 14, false],
       [21, 15, false],
       [25, 15, true],
       [26, 15, true],

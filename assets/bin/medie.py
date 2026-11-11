@@ -74,7 +74,7 @@ def julius_segments(day: int, root: Path = ROOT):
         return []
     out = []
     for seg in re.split(r"\*\*Replikk:\*\*", block.group(0))[1:]:
-        line = re.match(r"\s*«(.+?)»(.*)", seg, re.S)
+        line = re.match(r"\s*«(.+)»(.*)", seg)  # greedy on one line: nested «…» stays inside
         secs = re.search(r"^\s*- Varighet: (\d+) s(.*)$", seg, re.M)
         if not line or not secs:
             continue
@@ -396,9 +396,10 @@ def selftest():
         r = Path(d)
         (r / JULIUS_MS).parent.mkdir(parents=True, exist_ok=True)
         (r / JULIUS_MS).write_text("## Dag 3 (x)\n1. **Replikk:** «Hei.»\n   - Varighet: 13 s (2 ord)\n   - Handling: Vinker.\n"
-                                   "   - Kulde: Svak knitring.\n2. **Replikk:** «Brikke her.» (låst)\n   - Varighet: 15 s\n"
+                                   "   - Kulde: Svak knitring.\n2. **Replikk:** «Han sa «hei» til meg.»\n   - Varighet: 9 s\n3. **Replikk:** «Brikke her.» (låst)\n   - Varighet: 15 s\n"
                                    "   - Kulde: Fargene renner ut.\n## Dag 4 (y)\n")
         assert julius_segments(3, r) == [("Hei.", 13, "Vinker.", "Svak knitring.", False),
+                                         ("Han sa «hei» til meg.", 9, "", "", False),
                                          ("Brikke her.", 15, "", "Fargene renner ut.", True)], julius_segments(3, r)
         assert julius_segments(4, r) == []
         for f, t in {"assets/stil.md": "STIL\n",

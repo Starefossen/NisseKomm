@@ -76,16 +76,14 @@ export function parseJulius(md: string, dag: number) {
   for (const seg of deler) {
     // Greedy within the line: a quoted Rampenissen line inside the replikk has its own «».
     const linje = seg.match(/^\s*«(.+)»([^»\n]*)/);
-    // medie.julius_segments takes the shortest «…» (it stops at a nested »); count what the pipeline counts.
-    const py = seg.match(/^\s*«([\s\S]+?)»(.*)/);
     const sek = seg.match(/^\s*- Varighet: (\d+) s(.*)$/m);
-    if (!linje || !py || !sek) continue;
+    if (!linje || !sek) continue;
     const felt = (k: string) =>
       seg.match(new RegExp(`^\\s*- ${k}: (.+)$`, "m"))?.[1].trim() ?? "";
-    const tag = (py[2] + sek[2]).toLowerCase();
+    const tag = (linje[2] + sek[2]).toLowerCase();
     const laast = tag.includes("låst") || tag.includes("brikke");
     const replikk = linje[1].trim();
-    const { n, varsler } = lintSegment(py[1].trim(), Number(sek[1]), laast);
+    const { n, varsler } = lintSegment(linje[1].trim(), Number(sek[1]), laast);
     segmenter.push({
       replikk,
       sek: Number(sek[1]),

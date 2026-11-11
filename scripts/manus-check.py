@@ -84,7 +84,7 @@ IGNORE_WORDS = {"rampenissen", "rampenissens", "rampen", "hverandre", "andre", "
                 "gammel", "kilden", "vinter", "vinteren", "melding", "ter", "aldri", "kaldt", "elleve", "fortelle", "tjernet"}
 def spoken_surfaces(d):
     out = []
-    for rep in re.findall(r"\*\*Replikk:\*\* «(.*?)»", jd[d]): out.append(("julius", rep))
+    for rep in re.findall(r"\*\*Replikk:\*\* «(.*)»", jd[d]): out.append(("julius", rep))
     out.append(("radio", re.search(r"\*\*Klipp:\*\* «(.*?)»\n", rd[d], re.S).group(1)))
     out.append(("intro", re.search(r"\*\*intro_hint:\*\* «(.*?)»", rd[d]).group(1)))
     body = ad[d]
