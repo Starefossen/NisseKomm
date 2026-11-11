@@ -418,11 +418,16 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
 
 export type Sim = ReturnType<typeof createSim>;
 
+/** Beacons needed for one, two and three bells (40, 70 and 90 %). */
+export const bjelleKrav = (totalt: number) =>
+  [0.4, 0.7, 0.9].map((a) => Math.ceil(a * totalt));
+
 /** 0–3 bells: how many beacons were taken, and a clean run for the third. */
 export function bjeller(varder: number, totalt: number, krasj: number): number {
-  const andel = totalt ? varder / totalt : 0;
-  if (andel >= 0.9 && krasj === 0) return 3;
-  if (andel >= 0.7) return 2;
-  if (andel >= 0.4) return 1;
+  if (!totalt) return 0;
+  const [en, to, tre] = bjelleKrav(totalt);
+  if (varder >= tre && krasj === 0) return 3;
+  if (varder >= to) return 2;
+  if (varder >= en) return 1;
   return 0;
 }

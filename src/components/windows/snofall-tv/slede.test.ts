@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from "@jest/globals";
 import { GameEngine } from "@/lib/game-engine";
 import {
   ALT_CRUISE,
+  bjelleKrav,
   bjeller,
   createSim,
   ETAPPER,
@@ -114,6 +115,9 @@ describe("sim", () => {
   });
 
   it("bells: 40 % one, 70 % two, 90 % and no crash three", () => {
+    expect(bjelleKrav(10)).toEqual([4, 7, 9]);
+    expect(bjelleKrav(61)).toEqual([25, 43, 55]);
+    expect(bjeller(0, 0, 0)).toBe(0);
     expect(bjeller(3, 10, 0)).toBe(0);
     expect(bjeller(4, 10, 2)).toBe(1);
     expect(bjeller(7, 10, 1)).toBe(2);

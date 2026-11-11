@@ -2,6 +2,7 @@
 
 import {
   useEffect,
+  useMemo,
   useRef,
   useState,
   type PointerEvent as ReactPointerEvent,
@@ -12,10 +13,12 @@ import { SoundManager } from "@/lib/sounds";
 import {
   ALT_MAX,
   ALT_MIN,
+  bjelleKrav,
   bjeller,
   createSim,
   ETAPPER,
   etapperFor,
+  lagBane,
   rekkeMult,
   type Hendelse,
   type Sim,
@@ -197,7 +200,18 @@ export function SledeSimulator({ day }: { day: number }) {
   const faseRef = useRef<Fase>("start");
   const lyd = useRef<SledeLyd | null>(null);
   const bilde = useRef<HTMLImageElement | null>(null);
-  const [resultat, setResultat] = useState({ poeng: 0, bjeller: 0, beste: 0 });
+  const [resultat, setResultat] = useState({
+    poeng: 0,
+    bjeller: 0,
+    beste: 0,
+    varder: 0,
+    varderTotalt: 0,
+    stjerner: 0,
+    besteRekke: 0,
+    nære: 0,
+    tidsbonus: 0,
+    krasj: 0,
+  });
 
   const åpne = etapperFor(day);
   const [etappe, setEtappe] = useState<SledeEtappe>(
@@ -210,6 +224,10 @@ export function SledeSimulator({ day }: { day: number }) {
   const [beste, setBeste] = useState(() => GameEngine.getSledeResultater());
   const [touchHint, setTouchHint] = useState(false);
   const reduceMotion = useRef(false);
+  const krav = useMemo(
+    () => bjelleKrav(lagBane(etappe).filter((t) => t.type === "varde").length),
+    [etappe],
+  );
 
   // A tap can start and end between two frames; the loop consumes this latch.
   const sprang = useRef(false);
@@ -239,6 +257,11 @@ export function SledeSimulator({ day }: { day: number }) {
     nedtelling.current = NEDTELLING;
     setFase("nedtelling");
   };
+  // Enter on the panels restarts; the key listener is bound once, so it reads the latest start.
+  const startRef = useRef(start);
+  useEffect(() => {
+    startRef.current = start;
+  });
 
   // Painted horizon for the chosen stage; the ridge fallback is drawn until it loads.
   useEffect(() => {
@@ -421,7 +444,18 @@ export function SledeSimulator({ day }: { day: number }) {
             ? bjeller(sim.s.varder, sim.s.varderTotalt, sim.s.krasj)
             : 0;
           const saved = GameEngine.recordSledeResultat(e.id, sim.s.poeng, b);
-          setResultat({ poeng: sim.s.poeng, bjeller: b, beste: saved.poeng });
+          setResultat({
+            poeng: sim.s.poeng,
+            bjeller: b,
+            beste: saved.poeng,
+            varder: sim.s.varder,
+            varderTotalt: sim.s.varderTotalt,
+            stjerner: sim.s.stjerner,
+            besteRekke: sim.s.besteRekke,
+            nære: sim.s.nære,
+            tidsbonus: sim.s.tidsbonus,
+            krasj: sim.s.krasj,
+          });
           setBeste(GameEngine.getSledeResultater());
           setFase(sim.s.ferdig ? "slutt" : "tapt");
         }
@@ -748,6 +782,10 @@ export function SledeSimulator({ day }: { day: number }) {
         if (faseRef.current === "spiller") setFase("pause");
         else if (faseRef.current === "pause") setFase("spiller");
       }
+      if (e.key === "Enter" && faseRef.current !== "spiller") {
+        if (faseRef.current === "pause") setFase("spiller");
+        else if (faseRef.current !== "nedtelling") startRef.current();
+      }
     };
     const up = (e: KeyboardEvent) => {
       const k = KEYS[e.key];
@@ -961,6 +999,10 @@ export function SledeSimulator({ day }: { day: number }) {
                   ))}
                 </div>
                 <div className="text-lg">«{etappe.intro}»</div>
+                <div className="text-base opacity-70 tabular-nums">
+                  ● {krav[0]} varder · ●● {krav[1]} · ●●● {krav[2]} og ingen
+                  krasj
+                </div>
                 <button
                   type="button"
                   onClick={() => {
@@ -1022,19 +1064,43 @@ export function SledeSimulator({ day }: { day: number }) {
                 <div className="text-xl tabular-nums">
                   POENG {resultat.poeng} · BESTE {resultat.beste}
                 </div>
+                <dl className="grid grid-cols-[auto_1fr] gap-x-3 text-left text-base tabular-nums mx-auto w-fit">
+                  {(
+                    [
+                      ["VARDER", `${resultat.varder}/${resultat.varderTotalt}`],
+                      ["STJERNER", resultat.stjerner],
+                      [
+                        "BESTE REKKE",
+                        `${resultat.besteRekke} (x${rekkeMult(resultat.besteRekke)})`,
+                      ],
+                      ["NÆRE PÅ", resultat.nære],
+                      ["TIDSBONUS", `+${resultat.tidsbonus}`],
+                      ["KRASJ", resultat.krasj],
+                    ] as const
+                  ).map(([k, v]) => (
+                    <div key={k} className="contents">
+                      <dt className="opacity-70">{k}</dt>
+                      <dd className="text-right">{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <div className="text-base text-(--cold-blue)">
+                  {fase === "tapt"
+                    ? "Rudolf trenger en gulrot og et nytt forsøk."
+                    : nesteBjelle(resultat, krav)}
+                </div>
                 <div className="text-base opacity-70">
-                  {fase === "slutt"
-                    ? etappe.id === "julenatt"
+                  {fase === "slutt" &&
+                    (etappe.id === "julenatt"
                       ? "Ruten er klar. God jul fra IQ og Rudolf!"
-                      : "Ruten er logget i IQs notatbok."
-                    : "Rudolf trenger en gulrot og et nytt forsøk."}
+                      : "Ruten er logget i IQs notatbok.")}
                 </div>
                 <button
                   type="button"
                   onClick={start}
                   className={`${knapp} border-(--gold) text-(--gold) w-full`}
                 >
-                  IGJEN
+                  EN GANG TIL
                 </button>
                 <button
                   type="button"
@@ -1053,6 +1119,18 @@ export function SledeSimulator({ day }: { day: number }) {
 }
 
 const bjelletegn = (n: number) => "●".repeat(n) + "○".repeat(3 - n);
+
+/** What the next bell asks for, so a kid knows what to go for on the next run. */
+function nesteBjelle(
+  r: { bjeller: number; varder: number; krasj: number },
+  krav: number[],
+) {
+  if (r.bjeller >= 3) return "Alle tre bjeller. IQ bukker!";
+  const mangler = krav[r.bjeller] - r.varder;
+  if (mangler > 0)
+    return `${mangler} ${mangler === 1 ? "varde" : "varder"} til neste bjelle.`;
+  return "Fly uten krasj, så henger den tredje bjellen.";
+}
 
 /** A small brass sleigh for the repair quota. */
 function Slede({ dim }: { dim: boolean }) {
