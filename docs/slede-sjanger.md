@@ -30,7 +30,7 @@ bestemt spill.
 | Dag | Etappe                | Knott                                 | Horisont   |
 | --- | --------------------- | ------------------------------------- | ---------- |
 | 8   | Tundra-testen         | Grunnkurset                           | tundra     |
-| 9   | Vardeløypa            | Varde annenhver seksjon, færre trær   | tundra     |
+| 9   | Ringløypa             | Varde annenhver seksjon, færre trær   | tundra     |
 | 12  | Granskogen            | Trær på 60 % av frie seksjoner        | tundra     |
 | 14  | Stjernedrysset        | Stjerner i alle høyder                | julenatt   |
 | 18  | Kastevind-dalen       | Vind på 40 % av seksjonene, 1,6× kast | tundra     |

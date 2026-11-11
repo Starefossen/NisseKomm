@@ -27,7 +27,7 @@
     },
     {
       "fra_dag": 8,
-      "tekst": "bygger sikkerhetskort"
+      "tekst": "lodder kretskortet som skal holde Kulde ute av kanal 1 til 4"
     },
     {
       "fra_dag": 15,

@@ -543,7 +543,7 @@ Kulde-nivå 2. Bildet flimrer (lampen flakker, etterarbeid), og juletrelysene sl
    - Varighet: 15 s (21 ord) · låst
    - Handling: Tegner en liten sirkel på bordet med venstre pekefinger og lar fingeren stå der.
    - Kulde: Svak knitring.
-6. **Replikk:** «I morgen trenger dere bare å være hjemme. Rampenissen finner fram bøker. Bøker holder på varmen. Ha en rolig dag, dere tre.»
+6. **Replikk:** «I morgen må dere bare være hjemme. Finn åtte bøker med Rampenissen. Bøker holder på varmen. Ha en rolig dag, dere tre.»
    - Varighet: 15 s (22 ord)
    - Handling: Legger venstre hånd flatt på bordet, ser rolig fram.
    - Kulde: Svak knitring. Juletrelysene slukner, men lampen står. Klikk.

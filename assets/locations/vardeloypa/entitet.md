@@ -1,9 +1,9 @@
-# Vardeløypa
+# Ringløypa
 
 ```json
 {
   "id": "vardeloypa",
-  "navn": ["Vardeløypa"],
+  "navn": ["Ringløypa"],
   "refs": {},
   "avledet_fra": "torget"
 }

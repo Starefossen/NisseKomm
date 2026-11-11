@@ -16,7 +16,7 @@
       "tekst": "ligger ved torget i Snøfall; Ugleposten besøker den fra torget"
     },
     {
-      "fra_dag": 16,
+      "fra_dag": 20,
       "tekst": "det fjerde adventslyset står i vinduet mot nord"
     },
     {
