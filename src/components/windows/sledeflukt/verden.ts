@@ -20,6 +20,8 @@ import {
   GRENSE,
   høyde,
   iKorridor,
+  MUR,
+  murPunkt,
   fraKorridor,
   PORT_BREDDE,
   STEDER,
@@ -898,4 +900,27 @@ export function husPlassFri(h: FriHus): Mat4 {
   const x = h.x * SKALA - pipe[0] * Math.cos(h.rot);
   const z = h.z * SKALA + pipe[0] * Math.sin(h.rot);
   return transform([x, høyde(h.x, h.z) * SKALA - 0.2, z], [0, h.rot, 0]);
+}
+
+/** IQ's wall once it is open (day 21): a warm gold band along the ridge crest, gate gap left out. */
+export function murGlødMesh(): Float32Array {
+  const m = new Mesh();
+  const GULLGLØD = hex(0xffb347);
+  const topp = (sv: number): [Vec3, Vec3] => {
+    const [x, z] = murPunkt(sv);
+    const y = høyde(x, z) * SKALA;
+    return [
+      [x * SKALA, y - 4, z * SKALA],
+      [x * SKALA, y + 1.5, z * SKALA],
+    ];
+  };
+  const STEG = 150;
+  for (const side of [-1, 1])
+    for (let a = MUR.port; a < MUR.halv; a += STEG) {
+      const [p0, p1] = topp(side * a);
+      const [q0, q1] = topp(side * Math.min(MUR.halv, a + STEG));
+      m.quad(p0, q0, q1, p1, GULLGLØD, 1);
+      m.quad(q0, p0, p1, q1, GULLGLØD, 1);
+    }
+  return m.build();
 }

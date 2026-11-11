@@ -8,6 +8,8 @@ import {
   iKorridor,
   murPunkt,
   TUN,
+  ALT_MIN,
+  husTopp,
   createFri,
   FJELL,
   FUGLER,
@@ -41,6 +43,7 @@ const fly = (sim: ReturnType<typeof createFri>, sek: number, inn = still) => {
 describe("fri flyging på vidda", () => {
   it("flies by heading: north by default, a held stick turns it round", () => {
     const sim = createFri(dag8);
+    sim.s.kurs = 0;
     const z0 = sim.s.z;
     fly(sim, 2);
     expect(sim.s.z).toBeLessThan(z0 - 1000);
@@ -179,6 +182,7 @@ describe("fri flyging på vidda", () => {
 
   it("flies in under Snøfall's gate arch, but the wall, the gable and the turrets stop it", () => {
     const inn = createFri({ ...dag8, reduceMotion: true });
+    [inn.s.alt, inn.s.kurs] = [90, 0];
     const ev = fly(inn, 2.5);
     expect(ev).not.toContain("krasj");
     expect(inn.s.z).toBeLessThan(TUN.r - 200);
@@ -187,7 +191,7 @@ describe("fri flyging på vidda", () => {
     expect(bygg(TUN.r, 0, 90)).toBe(TUN.h);
     expect(bygg(0, 0, 100)).toBeGreaterThan(200);
     const gavl = createFri({ ...dag8, reduceMotion: true });
-    gavl.s.alt = 150;
+    [gavl.s.alt, gavl.s.kurs] = [150, 0];
     expect(fly(gavl, 2)).toContain("krasj");
     const mur = createFri(dag8);
     [mur.s.x, mur.s.z, mur.s.kurs, mur.s.alt] = [
@@ -207,6 +211,28 @@ describe("fri flyging på vidda", () => {
     ];
     expect(fly(over, 1.5)).not.toContain("krasj");
     expect(over.s.x).toBeLessThan(TUN.r);
+  });
+
+  it("starts above the roofs, over the gate, past the clock tower without a crash", () => {
+    const sim = createFri({ ...dag8, reduceMotion: true });
+    expect(sim.s.alt).toBeGreaterThan(TUN.gavl + 35);
+    const ev = fly(sim, 6);
+    expect(ev).not.toContain("krasj");
+    expect(ev).not.toContain("skrape");
+    expect(sim.s.z).toBeLessThan(-200);
+  });
+
+  it("ring houses block the sled like the other buildings", () => {
+    const h = lagHus(false)[0];
+    const mot = (alt: number) => {
+      const sim = createFri(dag8);
+      [sim.s.x, sim.s.z, sim.s.kurs, sim.s.alt] = [h.x, h.z + 500, 0, alt];
+      return fly(sim, 1);
+    };
+    expect(mot(ALT_MIN + 5)).toContain("krasj");
+    expect(husTopp([h], h.x, h.z)).toBe(h.h);
+    expect(husTopp([h], h.x + 200, h.z)).toBe(0);
+    expect(mot(h.h + 50)).not.toContain("krasj");
   });
 
   it("finds Muren and the cave on the days they open, and keeps the sled out before", () => {

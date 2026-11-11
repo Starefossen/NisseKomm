@@ -11,6 +11,7 @@ import {
   lagRute,
   lagVerden,
   meshes,
+  murGlødMesh,
   murMesh,
   SKALA,
   SPOR,
@@ -116,5 +117,14 @@ describe("sledeflukt verden", () => {
     expect(p[0]).toBeCloseTo(1);
     expect(p[1]).toBeCloseTo(2);
     expect(p[2]).toBeCloseTo(2);
+  });
+
+  it("Muren's glow runs along the whole arc on the ridge crest, every vertex lit", () => {
+    const g = murGlødMesh();
+    expect(g.length / STRIDE).toBeGreaterThan(100);
+    for (let i = 0; i < g.length; i += STRIDE) expect(g[i + 9]).toBe(1);
+    let topp = 0;
+    for (let i = 1; i < g.length; i += STRIDE) topp = Math.max(topp, g[i]);
+    expect(topp).toBeGreaterThan(30);
   });
 });

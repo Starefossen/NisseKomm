@@ -100,6 +100,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - Krystallgrotten flyttes til foten av Nordtoppen mot nordøst. Hvorfor: teksten sier «under Nordtoppen».
 - Bergen-korridoren går mot nordøst, bak grotten. Hvorfor: julenattsruta går over Nordtoppen og lavt over grotten.
 - Snøfall er et rundt tun med klokketårnet i midten, porten rett mot sør og fire murtårn med løkkupler; rutenettgatene går ut. Hvorfor: alle bilder og tekster viser et rundt tun.
+- Ringhusene stopper sleden som de andre husene, sleden starter over takene med kurs over porten forbi klokketårnet, og hele Muren-buen gløder gull fra dag 21. Bergen-retningen (13°) står. Hvorfor: Hans svarte på de åpne spørsmålene etter første versjon.
 
 ## Nissemor-guiden i Docker (2026-11-11)
 

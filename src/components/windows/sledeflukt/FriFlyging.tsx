@@ -64,6 +64,7 @@ import {
   husPlassFri,
   lagRute,
   meshes,
+  murGlødMesh,
   murMesh,
   REIN,
   REIN_SKALA,
@@ -222,6 +223,13 @@ export function FriFlyging({
     const gardin = gardinMesh(o.bergen);
     const grotte = grotteMesh(1600);
     const portMesh = murMesh(0);
+    // Before day 21 Muren is a grey silhouette; from then the whole arc glows warm.
+    const murGlød = stedÅpent(
+      STEDER.find((s) => s.id === "muren")!,
+      o,
+    )
+      ? murGlødMesh()
+      : null;
     const snofall = snofallMesh();
     const BERGEN_PORT = fraKorridor(GRENSE, 0);
     const ruter = new Map<number, Rute>();
@@ -433,9 +441,10 @@ export function FriFlyging({
         }
         // Label beside the dot, away from the map's edge; the east side reads leftwards.
         kart.fillStyle = åpen ? "#d9e4f5" : "#9fb0cc";
-        // The cave sits close by Nordtoppen: its label reads to the right of the dot.
-        const høyre = s.x > 4000 && s.id !== "grotten";
-        const venstre = s.x < -4000;
+        // The cave sits close by Nordtoppen: Nordtoppen reads left of its dot, the cave right.
+        const høyre =
+          (s.x > 4000 && s.id !== "grotten") || s.id === "nordtoppen";
+        const venstre = s.x < -4000 || s.id === "grotten";
         kart.textAlign = høyre ? "right" : venstre ? "left" : "center";
         const tx = høyre ? x - 6 : venstre ? x + 6 : x;
         const ty = s.z < -10000 ? y - (åpen ? 5 : 12) : y + 13;
@@ -593,6 +602,7 @@ export function FriFlyging({
         t,
       );
       r.tegn(fjern, IDENT);
+      if (murGlød) r.tegn(murGlød, IDENT);
       r.tegn(gardin, IDENT);
       if (!o.bergen) r.grå(0.85);
       r.tegn(
@@ -658,6 +668,7 @@ export function FriFlyging({
       if (r.synlig(antennePos, FJERN)) r.tegn(M.antenne, transform(antennePos));
       if (day >= grotten.dag && r.synlig(grottePos, FJERN))
         r.tegn(grotte, transform(grottePos, [0, Math.PI / 2, 0]));
+      if (murGlød) r.tegn(murGlød, IDENT);
       if (r.synlig(murPos, FJERN))
         r.tegn(
           portMesh,

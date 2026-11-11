@@ -25,8 +25,21 @@ export const PORT_BREDDE = 1400;
 export const BERGEN_SLUTT = GRENSE + 15000;
 export const FART = 800;
 export const ALT_MIN = 60;
-/** Low enough to fly in under Snøfall's gate arch, straight ahead at the start. */
-export const ALT_START = 90;
+/** Above the roofs and the gate's gable at the start (Hans, 2026-11-11). */
+export const ALT_START = 260;
+/** Start heading: over the gate, with the clock tower ahead but left of the line. */
+export const KURS_START = -0.12;
+/** Footprint radius round a ring house's chimney that the sled can hit. */
+export const HUS_R = 70;
+
+/** Chimney top of a house standing at (x, z), or 0; houses block like Snøfall's buildings. */
+export const husTopp = (hus: readonly FriHus[], x: number, z: number) => {
+  let t = 0;
+  for (const h of hus)
+    if (Math.abs(h.x - x) < HUS_R && Math.abs(h.z - z) < HUS_R)
+      t = Math.max(t, h.h);
+  return t;
+};
 
 /** Krystallgrotten at Nordtoppen's north-east foot (Hans, 2026-11-11). */
 const GROTTE = { x: 4200, z: -18200 };
@@ -527,12 +540,12 @@ export function createFri(o: FriOpts) {
   const hus = lagHus(o.bergen);
   const grotte = topp("grotten");
   const s = {
-    // South of the gate, lined up to fly in under the arch.
+    // South of the gate, high over it, the tower ahead but off the line.
     x: 0,
     z: 2600,
     alt: ALT_START,
     /** Heading, radians clockwise from north (-z). */
-    kurs: 0,
+    kurs: KURS_START,
     /** Smoothed stick, drives the turn and the bank. */
     sving: 0,
     /** The stick as the reins feel it (first lag stage), and the sleigh's trailing turn. */
@@ -624,7 +637,11 @@ export function createFri(o: FriOpts) {
     // Snøfall's wall, gate and houses are read close ahead; the top of one is a hard edge.
     let fram = høyde(s.x + fx * SE_FRAM, s.z + fz * SE_FRAM) + 40;
     for (const k of [60, 100, 150])
-      fram = Math.max(fram, bygg(s.x + fx * k, s.z + fz * k, s.alt) + 60);
+      fram = Math.max(
+        fram,
+        bygg(s.x + fx * k, s.z + fz * k, s.alt) + 60,
+        husTopp(hus, s.x + fx * k, s.z + fz * k) + 60,
+      );
     if (fram > ALT_MAX || fram > s.alt + KLATRE_FRITT) {
       if (s.tid >= s.sakteTil) krasj(ev, fx, fz);
     } else if (s.tid < s.stoppTil) {
