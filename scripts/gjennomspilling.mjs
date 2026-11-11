@@ -361,10 +361,14 @@ await waitFor(
   "window.nissekomm.sim: dev server not ready / restart it (BASE_URL-serveren må kjøre i lan-modus med NEXT_PUBLIC_TEST_MODE=true; ellers stopp og start `mise run dev` på nytt, eller slett .next etter en Next-oppgradering)",
 );
 await evaluate("localStorage.clear()");
-if (days[0] > 1)
+if (days[0] > 1) {
+  // Reload first: the app stamps the season on load and wipes progress without the stamp
+  await send("Page.navigate", { url: base });
+  await waitFor(() => evaluate("!!window.nissekomm?.sim"), 30000, "sim");
   await evaluate(
     `(async () => { window.nissekomm.sim.goTo(${days[0] - 1}, "20:00"); await window.nissekomm.sim.solveUntil(${days[0] - 1}, { symbols: true }); })()`,
   );
+}
 
 const results = [];
 for (const day of days) {
@@ -384,8 +388,7 @@ for (const day of days) {
       await shot("innlogging.png");
       await typeInto(LOGIN, KID_CODE);
       await waitFor(async () => !(await has(LOGIN)), 15000, "innlogging");
-    }
-    // T14: Day1Boot covers the desktop on the first login of 1 December; skip it like a kid would
+    } // T14: Day1Boot covers the desktop on the first login of 1 December; skip it like a kid would
     if (day === 1) {
       await waitFor(
         () => has("[aria-label='Hopp over']"),
