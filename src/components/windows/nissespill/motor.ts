@@ -303,7 +303,7 @@ export function tips(kap: Kapittel, save: EventyrSave): Utfall {
       tekst: "Rampenissen: «Tips? Du e jo ferdig! Gå og spis en klementin.»",
     };
   }
-  const nivaa = Math.min(save.hints[g.id] ?? 0, 2);
+  const nivaa = Math.min(save.hints?.[g.id] ?? 0, 2);
   return {
     save: { ...save, hints: { ...save.hints, [g.id]: nivaa + 1 } },
     tekst: g.tips[nivaa],

@@ -421,6 +421,8 @@ export const KAPITTEL_1: Kapittel = {
               harItem: "skjema",
               uten: "stempel_vaat",
               neste: "ustemplet",
+              // Ustemplet mentions the stamp pad, so it must become visible here too.
+              flagg: "winter_snakket",
             },
             {
               tekst: "Vær så god: skjema, og stempelputa er våt!",
