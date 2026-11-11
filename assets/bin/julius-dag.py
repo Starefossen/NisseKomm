@@ -7,7 +7,7 @@ Skips a day whose video is current (see medie.py) unless --force.
 
 Reads docs/manus/julius-2026.md, generates one clip per segment with julius.sh
 (retries on failure), audits each clip for continuity errors (up to 3 takes),
-joins them with alternating framing (hard cuts, continuous audio) and writes
+joins them with alternating framing (hard cuts, 40 ms audio crossfades, -16 LUFS) and writes
 public/video/julius/dag-NN.mp4, compressed for the app.
 """
 import re
@@ -36,8 +36,27 @@ def words(s: str):
     return re.findall(r"[a-zæøå]+", s.lower())
 
 
-def coverage(clip: Path, line: str) -> float:
-    """Share of the script's words heard in the clip (Gemini transcription)."""
+def speech_at_end(clip: Path) -> bool:
+    """True if the voice is still going in the clip's last 0.15 s: the model ran out of time mid-line.
+
+    The pipeline never trims speech, so such a clip cannot be fixed in the join; regenerate it
+    (with more seconds in the script if the line is long)."""
+    out = subprocess.run(
+        ["ffmpeg", "-nostdin", "-sseof", "-0.15", "-i", str(clip), "-vn", "-af", "astats=measure_overall=RMS_level:measure_perchannel=none",
+         "-f", "null", "-"], capture_output=True, text=True).stderr
+    rms = re.findall(r"RMS level dB: (-?[\d.]+|-inf)", out)
+    # ponytail: RMS threshold, not VAD; room tone above -35 dB would read as speech
+    return bool(rms) and rms[-1] != "-inf" and float(rms[-1]) > -35
+
+
+def tail_missing(heard_text: str, line: str, n: int = 2) -> list:
+    """The script's last n words that the transcript lacks; a cut-off ending shows up here, not in the % heard."""
+    heard = words(heard_text)
+    return [w for w in words(line)[-n:] if w not in heard[-(n + 3):]]
+
+
+def coverage(clip: Path, line: str):
+    """Share of the script's words heard in the clip (Gemini transcription); 0 if the last words are missing."""
     import base64
     import json
     import urllib.error
@@ -76,6 +95,9 @@ def coverage(clip: Path, line: str) -> float:
     script = words(line)
     # fuzzy: transcription spells names differently (Orakelet/Oraklet), so near matches count
     hit = lambda w: w in heard or bool(difflib.get_close_matches(w, heard, n=1, cutoff=0.75))
+    if tail_missing(text, line):
+        print(f"  slutten mangler: {tail_missing(text, line)} (hørt: …{text.strip()[-60:]})")
+        return 0.0
     return sum(hit(w) for w in script) / max(len(script), 1)
 
 
@@ -143,7 +165,7 @@ def main():
             continue
         clip = OUT / f"{name}.mp4"
         raw = OUT / f"{name}.raw.mp4"  # check the unfiltered audio; the radio filter hurts transcription
-        if clip.exists() and (coverage(raw, line) or 0) >= MIN_COVERAGE:
+        if clip.exists() and not speech_at_end(raw) and (coverage(raw, line) or 0) >= MIN_COVERAGE:
             continue
         act = f"{action} Kuldes påvirkning i bildet og lyden: {kulde}"
         best = (None, None)  # (score, problems); score = (clean, coverage)
@@ -164,6 +186,9 @@ def main():
                 continue
             c = coverage(raw, line)
             c = 1.0 if c is None else c  # unknown: don't burn a take on an API hiccup
+            if speech_at_end(raw):
+                print(f"  {name}: stemmen går til siste bilde, replikken er kuttet")
+                c = 0.0
             bad = audit(raw) or []
             print(f"  {name}: {c:.0%} av replikken hørt, feil: {bad or 'ingen'}")
             score = (not bad, c)
@@ -185,17 +210,42 @@ def main():
     if "--refilter" in sys.argv:  # no API calls: redo look and sound from the kept raw clips
         for n in names:
             subprocess.run([str(BIN / "julius-filter.sh"), str(OUT / f"{n}.raw.mp4"), str(OUT / f"{n}.mp4")], check=True)
-    # alternating framing: every other segment a 1.15x crop on Julius, hard cut, continuous audio
-    segs = [OUT / f"{n}.mp4" for n in names]
+    for n in names:
+        if speech_at_end(OUT / f"{n}.raw.mp4"):
+            print(f"  REGENERER {n}: stemmen går til siste bilde, replikken er kuttet")
+    DEST.mkdir(parents=True, exist_ok=True)
+    join([OUT / f"{n}.mp4" for n in names], dest)
+    subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-ss", "3", "-i", str(dest), "-frames:v", "1",
+                    "-q:v", "3", str(dest.with_suffix(".jpg"))], check=True)
+    medie.write("julius-dag.py", dest, medie.JULIUS_MS, f"Dag {day}", "gemini-omni-1.2-flash",
+                ["assets/characters/julius/ref-v3.jpg"], extra={"filter_version": medie.filter_version()})
+    print(dest)
+    if "--upload" in sys.argv:
+        upload(sys.argv[sys.argv.index("--upload") + 1], dest)
+
+
+XFADE = 0.04  # audio crossfade at each join; the video loses the same time so lip sync holds
+
+
+def join(segs, dest: Path):
+    """Alternating framing (every other segment a 1.15x crop, hard cut) with short audio crossfades,
+    each segment levelled to -16 LUFS and the whole day limited to -1.5 dBTP."""
     dur = [float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(p)])) for p in segs]
     n = len(segs)
     w, h = int(1280 / 1.15) // 2 * 2, int(720 / 1.15) // 2 * 2
-    fc = "".join(
-        f"[{i}:v]fps=24,scale=1280:720,setsar=1" + (f",crop={w}:{h}:(iw-{w})*0.6:(ih-{h})*0.25,scale=1280:720,setsar=1" if i % 2 else "") + f",format=yuv420p[v{i}];"
-        f"[{i}:a]aresample=48000,aformat=channel_layouts=stereo,afade=t=in:d=0.01,afade=t=out:st={dur[i] - 0.01}:d=0.01[a{i}];"
-        for i in range(n)
-    ) + "".join(f"[v{i}][a{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=1[v][a]"
-    DEST.mkdir(parents=True, exist_ok=True)
+    fc = ""
+    for i in range(n):
+        end = f",trim=duration={dur[i] - XFADE:.3f}" if i < n - 1 else ""
+        crop = f",crop={w}:{h}:(iw-{w})*0.6:(ih-{h})*0.25,scale=1280:720,setsar=1" if i % 2 else ""
+        fc += f"[{i}:v]fps=24,scale=1280:720,setsar=1{crop}{end},setpts=PTS-STARTPTS,format=yuv420p[v{i}];"
+        # ponytail: one-pass loudnorm per segment; two-pass (measure, then linear) if levels pump audibly
+        fc += f"[{i}:a]loudnorm=I=-16:TP=-2:LRA=11,aresample=48000,aformat=channel_layouts=stereo[a{i}];"
+    fc += "".join(f"[v{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=0[v];"
+    prev = "a0"
+    for i in range(1, n):
+        fc += f"[{prev}][a{i}]acrossfade=d={XFADE}:c1=tri:c2=tri[x{i}];"
+        prev = f"x{i}"
+    fc += f"[{prev}]alimiter=limit=0.84:level=false[a]"  # 0.84 ≈ -1.5 dBTP
     # ponytail: crf 28 + 96k audio lands around 8–12 MB per minute at 720p; raise crf if files grow
     subprocess.run(
         ["ffmpeg", "-nostdin", "-y", "-v", "error", *sum((["-i", str(p)] for p in segs), []),
@@ -204,13 +254,12 @@ def main():
          "-movflags", "+faststart", str(dest)],
         check=True,
     )
-    subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-ss", "3", "-i", str(dest), "-frames:v", "1",
-                    "-q:v", "3", str(dest.with_suffix(".jpg"))], check=True)
-    medie.write("julius-dag.py", dest, medie.JULIUS_MS, f"Dag {day}", "gemini-omni-1.2-flash",
-                ["assets/characters/julius/ref-v3.jpg"], extra={"filter_version": medie.filter_version()})
-    print(dest)
-    if "--upload" in sys.argv:
-        upload(sys.argv[sys.argv.index("--upload") + 1], dest)
+
+
+def selftest():
+    assert tail_missing("ja hallo IQ sier linjen er", "IQ sier linjen er åpen.") == ["åpen"]
+    assert tail_missing("IQ sier linjen er åpen", "IQ sier linjen er åpen.") == []
+    print("selftest ok")
 
 
 def upload(base: str, f: Path):
@@ -240,4 +289,4 @@ def upload(base: str, f: Path):
 
 
 if __name__ == "__main__":
-    main()
+    selftest() if sys.argv[1:] == ["selftest"] else main()
