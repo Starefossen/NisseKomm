@@ -59,6 +59,30 @@ void main(){
   gl_FragColor = vec4(c, 1.0);
 }`;
 
+// Snow: three layers of falling pixel flakes in the small buffer, drawn over the
+// scene with no depth; a cell grid per layer, hash picks which cells hold a flake.
+const SNOW_FRAG = `
+precision mediump float;
+varying vec2 vUv;
+uniform float uTid; uniform float uTetthet; uniform float uDrift; uniform vec2 uSize;
+float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+void main(){
+  vec2 px = vUv * uSize;
+  float hit = 0.0;
+  for (int i = 0; i < 3; i++) {
+    float lag = float(i);
+    float cell = 12.0 + lag * 10.0;
+    vec2 p = px + vec2(uTid * uDrift * (lag + 1.0) * 12.0, uTid * (35.0 + lag * 45.0));
+    vec2 c = floor(p / cell);
+    if (hash(c + lag * 7.0) > uTetthet) continue;
+    vec2 o = vec2(hash(c * 3.1 + 1.0), hash(c * 5.3 + 2.0)) * 0.7 + 0.15;
+    vec2 d = abs(fract(p / cell) - o) * cell;
+    if (max(d.x, d.y) < 0.5 + lag * 0.5) hit = 1.0;
+  }
+  if (hit < 0.5) discard;
+  gl_FragColor = vec4(0.93, 0.95, 1.0, 1.0);
+}`;
+
 // Post: nearest sample of the small buffer, 4×4 Bayer dither, snap to the palette.
 const POST_FRAG = `
 precision mediump float;
@@ -102,10 +126,12 @@ export class Renderer {
   private prog: WebGLProgram;
   private sky: WebGLProgram;
   private post: WebGLProgram;
+  private snow: WebGLProgram;
   private a = { pos: 0, norm: 0, col: 0, glow: 0, inst: 0 };
   private u: Record<string, WebGLUniformLocation | null> = {};
   private us: Record<string, WebGLUniformLocation | null> = {};
   private up: Record<string, WebGLUniformLocation | null> = {};
+  private usn: Record<string, WebGLUniformLocation | null> = {};
   private quad: WebGLBuffer;
   private bayer: WebGLTexture;
   private fbo: WebGLFramebuffer | null = null;
@@ -161,6 +187,9 @@ export class Renderer {
       "uSize",
     ])
       this.us[n] = gl.getUniformLocation(this.sky, n);
+    this.snow = this.program(QUAD_VERT, SNOW_FRAG, ["aPos"]);
+    for (const n of ["uTid", "uTetthet", "uDrift", "uSize"])
+      this.usn[n] = gl.getUniformLocation(this.snow, n);
     this.post = this.program(QUAD_VERT, POST_FRAG, ["aPos"]);
     for (const n of ["uTex", "uBayer", "uPalett", "uDither"])
       this.up[n] = gl.getUniformLocation(this.post, n);
@@ -413,6 +442,19 @@ export class Renderer {
     return dx * dx + dz * dz < rekkevidde * rekkevidde;
   }
 
+  /** Snowfall over the finished scene; tetthet 0..1 is the share of cells with a flake, drift follows the wind. */
+  snø(tetthet: number, tid: number, drift: number) {
+    if (tetthet <= 0) return;
+    const gl = this.gl;
+    gl.disable(gl.DEPTH_TEST);
+    gl.useProgram(this.snow);
+    gl.uniform1f(this.usn.uTid, tid);
+    gl.uniform1f(this.usn.uTetthet, tetthet);
+    gl.uniform1f(this.usn.uDrift, drift);
+    gl.uniform2f(this.usn.uSize, this.bredde, this.høyde);
+    this.drawQuad();
+  }
+
   avslutt() {
     const gl = this.gl;
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -447,6 +489,7 @@ export class Renderer {
     gl.deleteRenderbuffer(this.depth);
     gl.deleteTexture(this.bayer);
     gl.deleteBuffer(this.quad);
-    for (const p of [this.prog, this.sky, this.post]) gl.deleteProgram(p);
+    for (const p of [this.prog, this.sky, this.snow, this.post])
+      gl.deleteProgram(p);
   }
 }

@@ -186,7 +186,9 @@ function vardeMesh() {
   m.cone([0, 1.6, 0], 1.8, 1.4, STEIN_LYS, 6, 1.2);
   m.cone([0, 3, 0], 1.2, 1.2, STEIN, 6, 0.7);
   m.box([0, 4.8, 0], [1.2, 1.2, 1.2], ORANSJE, 1);
-  m.box([0, 12, 0], [0.5, 14, 0.5], VINDU, 1);
+  m.box([0, 12, 0], [0.7, 14, 0.7], VINDU, 1);
+  m.cone([0, 19, 0], 2.2, 2.6, GULL, 4, 0, 1);
+  m.cone([0, 19, 0], 2.2, -2.6, GULL, 4, 0, 1);
   for (let i = 0; i < 8; i++) {
     const a = (i / 8) * Math.PI * 2;
     m.box([Math.cos(a) * 7, 10, Math.sin(a) * 7], [1, 1, 1], GULL, 1);
@@ -223,13 +225,14 @@ export function murMesh(port: number) {
   return m.build();
 }
 
-/** The cave: a dark crack in the snow with a faint glow along the edges. */
+/** The cave: a dark crack in the snow, its edges marked by a dashed line of ice lights. */
 function grotteMesh(lengde: number) {
   const m = new Mesh();
   const l = lengde * SKALA;
-  m.box([0, 0.1, -l / 2], [0.8 * SPOR * 2, 0.6, l], hex(0x050816));
+  m.box([0, 0.1, -l / 2], [0.8 * SPOR * 2, 0.6, l], hex(0x0b1430));
   for (const s of [-1, 1])
-    m.box([s * 0.8 * SPOR, 0.2, -l / 2], [1.2, 0.4, l], hex(0x00ff8a), 1);
+    for (let z = 2; z < l; z += 12)
+      m.box([s * 0.8 * SPOR, 0.5, -z], [1.6, 1, 4], SNØ, 1);
   return m.build();
 }
 
@@ -262,19 +265,33 @@ function bandMesh() {
   return m.build();
 }
 
-/** Julius' sleigh, facing -z: red body, gold rail, runners curling up at the front. */
+/**
+ * Julius' sleigh, facing -z: red hull with a high swept back and a curled
+ * front, gold trim along the sides, a sack of presents, and two gold runners
+ * on struts with the tips curling up.
+ */
 function sledeMesh() {
   const m = new Mesh();
-  m.box([0, 0.9, 0.3], [3.6, 1.6, 6], RØD);
-  m.box([0, 1.9, 2.4], [3.6, 1.2, 1.2], RØDMALING);
-  m.box([0, 1.75, -1.5], [3.7, 0.3, 2.6], GULL);
-  m.box([0, 1.4, -0.5], [2.4, 1.6, 2.2], hex(0x1f5a3c));
+  const MØRKRØD = hex(0x8a1c1c);
+  m.box([0, 1.1, 0.4], [4.2, 1.6, 6.6], RØD);
+  m.box([0, 2.1, -3.1], [4.2, 2.2, 1], RØD);
+  m.box([0, 3.3, -3.6], [4.2, 0.6, 1.2], GULL, 1);
+  m.box([0, 2.1, 3.3], [4.2, 1.4, 0.9], MØRKRØD);
+  m.box([0, 2.9, 3.3], [4.2, 0.3, 1], GULL, 1);
+  m.box([0, 1.9, 2.1], [3.4, 0.5, 1.8], hex(0x1f5a3c));
+  for (const x of [-2.15, 2.15]) m.box([x, 1.9, 0.4], [0.3, 0.3, 6.6], GULL, 1);
+  m.box([0, 2.5, -0.9], [2.8, 1.8, 2.4], GRAN_LYS);
+  m.box([-0.6, 3.6, -1.1], [0.9, 0.9, 0.9], RØD);
+  m.box([0.7, 3.5, -0.6], [0.8, 0.8, 0.8], GULL, 1);
+  m.box([0.1, 3.8, -1.5], [0.6, 0.6, 0.6], VINDU, 1);
   for (const s of [-1, 1]) {
-    const x = s * 1.6;
-    m.rod([x, -0.3, 3.2], [x, -0.3, -2.6], 0.22, GULL, 4);
-    m.rod([x, -0.3, -2.6], [x, 1.1, -4.2], 0.2, GULL, 4);
-    m.rod([x, -0.3, 1], [x, 0.4, 1], 0.18, GULL, 4);
-    m.rod([x, -0.3, -1.6], [x, 0.4, -1.6], 0.18, GULL, 4);
+    const x = s * 1.9;
+    m.rod([x, -0.4, 4.2], [x, -0.4, -3.2], 0.3, GULL, 4);
+    m.rod([x, -0.4, -3.2], [x, 0.5, -4.5], 0.28, GULL, 4);
+    m.rod([x, 0.5, -4.5], [x, 1.9, -5.1], 0.26, GULL, 4);
+    m.rod([x, -0.4, 4.2], [x, 0.3, 4.8], 0.26, GULL, 4);
+    m.rod([x, -0.4, 2.4], [x, 0.4, 2.4], 0.22, STEIN, 4);
+    m.rod([x, -0.4, -1.8], [x, 0.4, -1.8], 0.22, STEIN, 4);
   }
   return m.build();
 }
@@ -307,8 +324,14 @@ function beinMesh() {
   return m.build();
 }
 
-/** Reindeer positions ahead of the sleigh (world z offsets, forward is -z). */
-export const REIN_Z = [9, 14.5, 20];
+/** Scale of a reindeer relative to the mesh. */
+export const REIN_SKALA = 1.25;
+/** The team ahead of the sleigh: a pair, then the lead animal in front (forward is -z). */
+export const REIN: Vec3[] = [
+  [-2.6, 0.9, -10],
+  [2.6, 0.9, -10],
+  [0, 0.9, -16.5],
+];
 /** Hip offsets of the four legs in a reindeer's frame. */
 export const BEIN: Vec3[] = [
   [-0.6, -0.6, -1.2],
@@ -317,18 +340,21 @@ export const BEIN: Vec3[] = [
   [0.6, -0.6, 1.2],
 ];
 
-/** Reins from the sleigh front to each reindeer. */
+/** Reins from the sleigh front to the pair, and from the pair to the lead animal. */
 function tømmerMesh() {
   const m = new Mesh();
-  for (const s of [-1, 1])
-    for (let i = 0; i < 3; i++)
-      m.rod(
-        [s * 1.2, 1.2, -3 - i * 5.4],
-        [s * 0.8, 1.5, -(REIN_Z[i] - 1.2)],
-        0.07,
-        hex(0x3a2a1e),
-        3,
-      );
+  const LÆR = hex(0x3a2a1e);
+  const bak = (r: Vec3): Vec3 => [r[0], r[1] + 0.6, r[2] + 2.1 * REIN_SKALA];
+  for (const i of [0, 1])
+    m.rod([Math.sign(REIN[i][0]) * 1.4, 2, -3.6], bak(REIN[i]), 0.1, LÆR, 3);
+  for (const i of [0, 1])
+    m.rod(
+      [REIN[i][0], REIN[i][1] + 1, REIN[i][2] - 2],
+      bak(REIN[2]),
+      0.08,
+      LÆR,
+      3,
+    );
   return m.build();
 }
 

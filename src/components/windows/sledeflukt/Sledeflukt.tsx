@@ -38,7 +38,8 @@ import {
   lagVerden,
   meshes,
   nøkkel,
-  REIN_Z,
+  REIN,
+  REIN_SKALA,
   SKALA,
   tilVerden,
   type Hus,
@@ -459,7 +460,7 @@ export function SledefluktSpill({
         target = [p[0], p[1] + 1, p[2]];
       } else {
         const bak = tilVerden(px, alt, dist - 170);
-        ønsket = [bak[0], p[1] + 6.5, bak[2]];
+        ønsket = [bak[0], p[1] + 8, bak[2]];
         const fram = tilVerden(px, alt, dist + 160);
         target = [fram[0], p[1] + 1.2, fram[2]];
       }
@@ -564,8 +565,9 @@ export function SledefluktSpill({
         const rein = multiply(
           base,
           transform(
-            [0, 0.9 + bob, -REIN_Z[i]],
+            [REIN[i][0], REIN[i][1] + bob, REIN[i][2]],
             [Math.sin(fase * 2) * 0.05, 0, 0],
+            REIN_SKALA,
           ),
         );
         r.tegn(M.rein[i === 2 ? 0 : 1], rein);
@@ -576,6 +578,8 @@ export function SledefluktSpill({
           r.tegn(M.bein, multiply(rein, transform(BEIN[j], [sving, 0, 0])));
         }
       }
+      // Snowfall as the stage sets it; reduced motion flies in still air.
+      if (!reduceMotion.current) r.snø(e.snøfall / 400, t, sim.s.vind);
       r.avslutt();
 
       // Frame statistics: auto fallback after three seconds over the limit.
