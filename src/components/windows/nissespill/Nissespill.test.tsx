@@ -387,8 +387,7 @@ describe("Nissespill: motor", () => {
 
   it("kapittel 2 kan spilles gjennom", () => {
     spill(KAPITLER[1], [
-      ["tjernet", "snoehaugen"],
-      ["tjernet", "hytta", "noekkel"],
+      ["!", "tjernet/hytta", "hyttelaas"],
       ["tjernet", "hytta"],
       ["tjernet", "benken"],
       ["verksted", "tavla"],
@@ -404,6 +403,7 @@ describe("Nissespill: motor", () => {
       ["verksted", "radioroerene", "boks_i_vott"],
       ["tjernet", "peileskiva", "varmboks"],
       ["tjernet", "peileskiva", "magnetnaal"],
+      ["!", "tjernet/mottakeren", "mottaker"],
     ]);
   });
 

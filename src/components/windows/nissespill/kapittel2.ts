@@ -3,7 +3,9 @@
  * antenna has frozen because Rudolf chewed through the heater cable, so the
  * picture to Landås stutters. Written for Håkon (9) and Kristian (12): the tin
  * box is heated on the tubes and carried in the oven glove, and it has to be
- * reheated for the frozen water cup; the hand warmer is a red herring. Side
+ * reheated for the frozen water cup; the hand warmer is a red herring. Two
+ * mini-puzzles: the hut's combination lock (count what the sign lists) and the
+ * receiver that must be tuned to the number on the note in the hut. Side
  * story only: ordinary frost and a bored reindeer, nothing from the main story.
  * Rampenissen speaks nordlandsk (docs/manus/rampenissen-radio-2026.md
  * «Skrivemåte»), everyone else bokmål.
@@ -33,12 +35,6 @@ export const KAPITTEL_2: Kapittel = {
     R +
     "«Antenna peke mot Landås, bildet e skarpt, og Rudolf tygg på knekkebrød i staden for kabel. Dokker e gode! IQ sei han ska lage ei egen hylle te knekkebrødet, med lås. Rudolf har allereie sett på låsen. Neste gang treng æ hjelp med nåkka ... mørkt. Æ sei ikkje meir. Over og ut!»",
   gjenstander: {
-    noekkel: {
-      id: "noekkel",
-      navn: "Hyttenøkkel",
-      ikon: "key",
-      se: "En liten jernnøkkel med en lapp: «HYTTA. LEGG TILBAKE. – IQ». Lappen er våt av snø, og noen har skrevet «NEI» under med reinsdyrhov. Det kan man ikke, men det står der.",
-    },
     blikkboks: {
       id: "blikkboks",
       navn: "Blikkboks",
@@ -94,6 +90,41 @@ export const KAPITTEL_2: Kapittel = {
       se: "Ei lita pose med lappen «RIST FOR VARME». Du rister. Den blir lunken. Det er alt den har å by på. Den har vært brukt. Mange ganger.",
     },
   },
+  fjaerBelonning:
+    R +
+    "«To fjær te! Knerten mista ei fjær kvar gang ho e stolt. Ho e stolt ofte. Det e en av tingan vi har felles.»",
+  puslespill: {
+    hyttelaas: {
+      type: "laas",
+      tittel: "Hengelåsen på hytta",
+      flagg: "hytta_aapen",
+      tekst:
+        "1-3-1. Én lampe, tre kabler, én rein. Hengelåsen klikker opp, og døra går opp med et knirk som høres ut som «endelig». " +
+        R +
+        "«Han TELTE sæ fram te koden. Og så skreiv han framgangsmåten på døra. Det e IQ i et nøtteskall. Et stort nøtteskall.»",
+      hjul: [
+        ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+        ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+        ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+      ],
+      svar: ["1", "3", "1"],
+    },
+    mottaker: {
+      type: "radio",
+      tittel: "Mottakeren i hytta",
+      flagg: "k2_ferdig",
+      tekst:
+        "97,3. Susen dør, nåla står stille, og lampa på toppen av masta lyser jevnt. " +
+        R +
+        "«BILDET! Æ ser heile ugla! Æ ser FJÆRAN hennes! Æ ser at ho treng et bad!»",
+      min: 88,
+      max: 108,
+      maal: 97.3,
+      toleranse: 0.2,
+      steg: 0.1,
+      enhet: "MHz",
+    },
+  },
   kombinasjoner: [
     {
       a: "sirup",
@@ -120,6 +151,8 @@ export const KAPITTEL_2: Kapittel = {
       navn: "Antenna ved tjernet",
       bilde: "spill/antenne-tarn.jpg",
       utganger: [{ til: "verksted", navn: "Fly til verkstedet" }],
+      // In the snow at the near edge of the tarn, bottom left
+      fjaer: { x: 4, y: 84, w: 4, h: 6 },
       hotspots: [
         {
           id: "himmelen",
@@ -149,7 +182,7 @@ export const KAPITTEL_2: Kapittel = {
           smart: "bruk",
           se: [
             {
-              hvis: "k2_ferdig",
+              hvis: "antenne_peilet",
               tekst:
                 "Skiva står på L. Antenna peker rett mot Landås. Nåla i koppen snurrer fornøyd rundt seg selv, som en hund som har funnet sofaen.",
             },
@@ -170,7 +203,7 @@ export const KAPITTEL_2: Kapittel = {
           ],
           bruk: [
             {
-              hvis: "k2_ferdig",
+              hvis: "antenne_peilet",
               tekst:
                 "Ikke rør! Den står perfekt. " +
                 R +
@@ -190,13 +223,13 @@ export const KAPITTEL_2: Kapittel = {
             {
               item: "magnetnaal",
               hvis: "kopp_tint",
-              uten: "k2_ferdig",
-              flagg: "k2_ferdig",
+              uten: "antenne_peilet",
+              flagg: "antenne_peilet",
               forbruker: true,
               tekst:
-                "Du legger korken med nåla i vannkoppen. Den rød enden snur seg rolig mot nord. Knerten vrir skiva til N møter nåla, og antenna svinger sakte rundt og stopper på L. Lampa på toppen slutter å blinke og lyser jevnt. " +
+                "Du legger korken med nåla i vannkoppen. Den røde enden snur seg rolig mot nord. Knerten vrir skiva til N møter nåla, og antenna svinger sakte rundt og stopper på L. Inne i hytta begynner noe å suse. " +
                 R +
-                "«BILDET! Æ ser heile ugla! Æ ser FJÆRAN hennes! Æ ser at ho treng et bad!»",
+                "«Æ ser nåkka! Æ ser ... SNØ. Antenna peke rett, men mottakeren i hytta står på feil tall. Det står sikkert på en lapp. Alt hos IQ står på en lapp.»",
             },
             {
               item: "magnetnaal",
@@ -290,7 +323,6 @@ export const KAPITTEL_2: Kapittel = {
               "Du vifter med grytevotten. Rudolf tror du vinker, og nikker høflig tilbake. Han er oppdratt.",
             magnetnaal:
               "Du holder nåla opp. Den peker mot nord. Rudolf peker mot kabelen. Begge har rett på hver sin måte.",
-            noekkel: "Rudolf har ikke bruk for nøkler. Rudolf går gjennom.",
             haandvarmer:
               "Du legger håndvarmeren på mulen hans. Han lukker øynene og nyter det. Han flytter seg ikke en millimeter. Nå har han kabel OG spa.",
           },
@@ -392,6 +424,7 @@ export const KAPITTEL_2: Kapittel = {
           navn: "Hytta",
           rect: { x: 58, y: 56, w: 14, h: 20 },
           smart: "bruk",
+          puslespill: "hyttelaas",
           se: [
             {
               hvis: "tok_blikkboks",
@@ -405,7 +438,7 @@ export const KAPITTEL_2: Kapittel = {
             },
             {
               tekst:
-                "Ei lita trehytte med ett vindu som lyser gult. Skilt på døra: «ANTENNEHYTTA. NØKKEL UNDER MATTA. IKKE SI DET TIL NOEN. – IQ». Det er ingen matte. Bare en snøhaug. Og skiltet sier det til alle.",
+                "Ei lita trehytte med ett vindu som lyser gult og en hengelås med tre tallhjul på døra. Skilt: «ANTENNEHYTTA. KODE: TELL LAMPER PÅ MASTA, KABLER I SNØEN, REINSDYR. IKKE SI DET TIL NOEN. – IQ». Skiltet sier det til alle.",
             },
           ],
           bruk: [
@@ -415,7 +448,7 @@ export const KAPITTEL_2: Kapittel = {
             },
             {
               tekst:
-                "Låst. Du drar i døra. Den sier «nei» på hyttespråk, altså ingenting.",
+                "Døra står åpen. Boksen er tatt. Lampa lyser for en håndvarmer og en lapp.",
             },
           ],
           ta: {
@@ -424,21 +457,11 @@ export const KAPITTEL_2: Kapittel = {
             tekst:
               "Du løfter blikkboksen fra benken. Den er tung og iskald. Knerten må ta to tak og si et ord ugler ikke skal si.",
           },
-          bruker: [
-            {
-              item: "noekkel",
-              uten: "hytta_aapen",
-              flagg: "hytta_aapen",
-              forbruker: true,
-              tekst:
-                "Nøkkelen passer. Døra går opp med et knirk som høres ut som «endelig». Du legger nøkkelen pent på hylla innenfor, slik lappen sa. Du er den første som gjør det.",
-            },
-          ],
           feil: {
             sirupbroed:
               "Du smører sirup på døra. Nå er den låst OG klissete. Bra jobba. Rudolf har allerede merket det.",
             magnetnaal:
-              "Nåla peker mot nord. Døra er fortsatt låst, men nå vet du hvilken vei den vender. Det hjelper ingen.",
+              "Nåla peker mot nord. Hengelåsen peker ingen vei. Den er en hengelås.",
             grytevott:
               "Du banker på med votten. Mykt. Ingen hører. Ingen bor her.",
           },
@@ -453,11 +476,11 @@ export const KAPITTEL_2: Kapittel = {
             {
               hvis: "tok_haandvarmer",
               tekst:
-                "Benken, lampa og et tomt sted. Alt som var varmt, er tatt. Alt som var lunkent, også.",
+                "Benken, lampa og et tomt sted. Alt som var varmt, er tatt. Alt som var lunkent, også. På lampa henger lappen: «LANDÅS 97,3. IKKE RØR RATTET. – IQ».",
             },
             {
               tekst:
-                "Ved siden av der boksen står, ligger ei lita pose: «RIST FOR VARME». IQ har tydeligvis sittet her og frosset.",
+                "Ved siden av der boksen står, ligger ei lita pose: «RIST FOR VARME». IQ har tydeligvis sittet her og frosset. På lampa henger en lapp: «LANDÅS 97,3. IKKE RØR RATTET. – IQ». Noen har rørt rattet.",
             },
           ],
           ta: {
@@ -470,36 +493,42 @@ export const KAPITTEL_2: Kapittel = {
           bruk: "Benken er en benk. Den gjør benketing. Står stille, holder lampa med selskap.",
         },
         {
+          id: "mottakeren",
+          navn: "Mottakeren i vinduet",
+          rect: { x: 60, y: 58, w: 10, h: 8 },
+          smart: "bruk",
+          vis: { hvis: "antenne_peilet" },
+          puslespill: "mottaker",
+          se: [
+            {
+              hvis: "k2_ferdig",
+              tekst:
+                "Mottakeren står på 97,3 og suser ikke. Nåla står stille som en lydig hund. IQ har allerede teipet fast rattet.",
+            },
+            {
+              tekst:
+                "En liten mottaker i vinduskarmen med et ratt og en nål som skjelver over tallene. Den suser. Noen har rørt rattet. Lappen på lampa sier hvor det skal stå.",
+            },
+          ],
+          bruk: "Den står rett. Du lar rattet være. Du er den første.",
+        },
+        {
           id: "snoehaugen",
           navn: "Snøhaugen ved døra",
           rect: { x: 58, y: 76, w: 14, h: 10 },
           smart: "bruk",
-          se: [
-            {
-              hvis: "tok_noekkel",
-              tekst:
-                "En snøhaug med et nøkkelformet hull i. Mysteriet er løst. Det var aldri et mysterium.",
-            },
-            {
-              tekst:
-                "En liten snøhaug rett foran døra. Akkurat der ei dørmatte ville ligget, hvis noen hadde eid ei dørmatte. Noen eide ei. Rudolf åt den.",
-            },
-          ],
-          ta: {
-            item: "noekkel",
-            tekst:
-              "Knerten graver med begge føttene. Snø til alle kanter. Og der: en liten jernnøkkel med lapp. " +
-              R +
-              "«Under matta. Alle gjømme nøkla under matta. Æ gjømme min i ei klementin. Æ spiste klementinen. Æ har ikkje nøkkel.»",
-          },
-          bruk: "Bare snø igjen. Og et hull. Og en veldig fornøyd ugle.",
+          se: "En liten snøhaug rett foran døra. Akkurat der ei dørmatte ville ligget, hvis noen hadde eid ei dørmatte. Noen eide ei. Rudolf åt den.",
+          bruk:
+            "Knerten graver med begge føttene. Snø til alle kanter. Ingen nøkkel. Ingen matte. " +
+            R +
+            "«Alle gjømme nøkla under matta. IQ har ikkje matte. Så han har kodelås. Og skilt. Han e trygg på en veldig utrygg måte.»",
         },
         {
           id: "kablene",
           navn: "Kablene",
           rect: { x: 28, y: 80, w: 30, h: 18 },
           smart: "se",
-          se: "Tykke svarte kabler slynger seg over snøen fra hytta til masta. Én av dem har merker. Bittemerker. Store. Med mellomrom som passer akkurat til ei reinsdyrkjeft, hvis noen skulle lure.",
+          se: "Tre tykke svarte kabler slynger seg over snøen fra hytta til masta. Én av dem har merker. Bittemerker. Store. Med mellomrom som passer akkurat til ei reinsdyrkjeft, hvis noen skulle lure.",
           bruk: "Du drar i en kabel. Inne i hytta sier noe «pling». Du slipper kabelen. Det sier «pling» igjen. Det var ikke deg.",
         },
       ],
@@ -509,6 +538,8 @@ export const KAPITTEL_2: Kapittel = {
       navn: "IQs verksted",
       bilde: "spill/iq-verksted.jpg",
       utganger: [{ til: "tjernet", navn: "Fly ut til tjernet" }],
+      // On the floor under the side table
+      fjaer: { x: 88, y: 84, w: 4, h: 6 },
       hotspots: [
         {
           id: "sikringsskapet",
@@ -775,7 +806,7 @@ export const KAPITTEL_2: Kapittel = {
         },
         boks: {
           tekst:
-            "«I antennehytta står en blikkboks med skruer. Tung som synd. Varm den på noe her inne som er varmt nok. Det er mye her inne som er varmt nok. Det er problemet med her inne. Og nøkkelen til hytta ligger der nøkler ligger. Les skiltet. Ikke si det til noen.»",
+            "«I antennehytta står en blikkboks med skruer. Tung som synd. Varm den på noe her inne som er varmt nok. Det er mye her inne som er varmt nok. Det er problemet med her inne. Og hytta har kodelås. Koden står ikke på skiltet, jeg er ikke dum. Men hvordan man finner den, står der. Ikke si det til noen.»",
           rampenissen: "«Det står på skiltet. Han har skrive det på SKILTET.»",
           valg: [
             { tekst: "Og hvordan holder vi en glovarm boks?", neste: "vott" },
@@ -805,10 +836,10 @@ export const KAPITTEL_2: Kapittel = {
         },
         landaas: {
           tekst:
-            "«Jeg har risset en L i peileskiva på masta, der Landås ligger, og en N for nord. Men skiva vet ikke selv hvor nord er. Det gjør nåla på tavla mi. Den må flyte i vann. Flyte. I vann. Ikke ligge på is, is er ikke vann, jeg har hatt denne diskusjonen før.»",
+            "«Jeg har risset en L i peileskiva på masta, der Landås ligger, og en N for nord. Men skiva vet ikke selv hvor nord er. Det gjør nåla på tavla mi. Den må flyte i vann. Flyte. I vann. Ikke ligge på is, is er ikke vann, jeg har hatt denne diskusjonen før. Og når antenna står rett, må mottakeren i hytta stå på Landås. Tallet står på en lapp der inne. Jeg skrev det ned for å slippe å huske det. Det virket.»",
           rampenissen:
-            "«Nål, vann, nord, L. Æ skreiv det på handa. Æ skreiv det på feil hand, men det står der.»",
-          valg: [{ tekst: "Nål, vann, nord, L. Skjønner." }],
+            "«Nål, vann, nord, L, lapp. Æ skreiv det på handa. Æ skreiv det på feil hand, men det står der.»",
+          valg: [{ tekst: "Nål, vann, nord, L, lapp. Skjønner." }],
         },
         pling: {
           tekst:
@@ -825,11 +856,11 @@ export const KAPITTEL_2: Kapittel = {
       ferdig: "hytta_aapen",
       tips: [
         R +
-          "«Noe tungt og varmt, sa IQ. Boksen hans ligg i hytta ved antenna. Men døra e låst, og skiltet på døra sei meir enn det burde.»",
+          "«Nåkka tungt og varmt, sa IQ. Boksen hans ligg i hytta ved antenna. Men døra har kodelås, og skiltet på døra sei meir enn det burde.»",
         R +
-          "«Les skiltet på hyttedøra. IQ gjømme nøkla der alle gjømme nøkla. Det e ingen matte, men det e nåkka der matta skulle vore.»",
+          "«Skiltet sei TELL. Lamper på masta, kabler i snøen, reinsdyr. SE på lampa, SE på kablan, og tell reinsdyr. Det går fort.»",
         R +
-          "«BRUK snøhaugen foran hyttedøra. Nøkla ligg under. Bruk den på døra, og ta boksen inni.»",
+          "«Ei lampe, tre kabla, en Rudolf. BRUK hytta og still hjulan på 1, 3 og 1.»",
       ],
     },
     {
@@ -870,7 +901,7 @@ export const KAPITTEL_2: Kapittel = {
     },
     {
       id: "peiling",
-      ferdig: "k2_ferdig",
+      ferdig: "antenne_peilet",
       tips: [
         R +
           "«Antenna snurre, koppen har vann, og IQ har rissa en L i skiva. No mangle bare nåkka som veit kor nord e.»",
@@ -878,6 +909,18 @@ export const KAPITTEL_2: Kapittel = {
           "«Nåla på tavla hos IQ peke alltid mot nord. Ta ho med, med kork og alt.»",
         R +
           "«Ta magnetnåla fra tavla og bruk den på peileskiva på masta. Så finn antenna L sjøl.»",
+      ],
+    },
+    {
+      id: "mottaker",
+      ferdig: "k2_ferdig",
+      tips: [
+        R +
+          "«Antenna står rett, men bildet e snø. Mottakeren i hyttevinduet suse. Nån har rørt rattet. Æ sei ikkje kem.»",
+        R +
+          "«IQ skriv alt på lappa. SE på benken i hytta. Der står tallet mottakeren ska stå på.»",
+        R +
+          "«BRUK mottakeren i vinduet og dra rattet te 97,3. Når søylene e fulle, trykk LÅS FREKVENS.»",
       ],
     },
   ],
