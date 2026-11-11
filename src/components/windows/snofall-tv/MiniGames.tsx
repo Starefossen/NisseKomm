@@ -70,7 +70,8 @@ export function MiniGames({
   const [rpm, setRpm] = useState(0);
 
   return (
-    <div className="absolute inset-2 z-30 bg-black/85 border-2 border-(--neon-green) p-3 flex flex-col gap-3 text-(--neon-green)">
+    // Top and bottom bands stay clear for the channel OSD (label, REC, clock, TEMP)
+    <div className="absolute inset-x-2 top-[15%] bottom-[12%] overflow-y-auto z-30 bg-black/85 border-2 border-(--neon-green) p-3 flex flex-col gap-3 text-(--neon-green)">
       <div className="flex flex-wrap gap-2 items-center">
         {games.map(([id, label]) => (
           <button
