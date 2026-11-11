@@ -45,7 +45,9 @@ IMAGE_CATS = ("slede", "spill", "portrett")  # sleigh horizons, Ugleposten still
 
 
 def names(cat):
-    return [k.split("/", 1)[1] for k in MEDIER if k.startswith(cat + "/")]
+    """Jobs made by an image model; others (generator «skaler») are only tracked in medier.json."""
+    return [k.split("/", 1)[1] for k, j in MEDIER.items()
+            if k.startswith(cat + "/") and j["generator"] in ("still", "portrett")]
 
 
 SLEDE, SPILL, PORTRETT = (names(c) for c in IMAGE_CATS)

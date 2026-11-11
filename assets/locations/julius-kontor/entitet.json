@@ -1,0 +1,12 @@
+{
+  "navn": [
+    "Julius' kontor"
+  ],
+  "refs": {
+    "standard": "ref.jpg",
+    "tom": "ref-tom.jpg",
+    "vidvinkel": "ref-vidvinkel.jpg",
+    "vidvinkel-tom": "ref-vidvinkel-tom.jpg"
+  },
+  "standard_ref": "standard"
+}

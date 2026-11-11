@@ -10,7 +10,8 @@ CLI (for the shell generators):
   medie.py skriv <generator> <fil> <kilde> <seksjon|-> <modell> [bilde ...]
   medie.py status <fil>                   prints the status; exit 0 only if ✓ current
   medie.py render <id>                    prompt, base image and refs of a medier.json job, one per line
-  medie.py flytt                          move gitignored refs and stills to their new paths (assets/flyttet.json)
+  medie.py brukt-av <entitet>             medier.json jobs that use winter, torget, objects/postkasse …
+  medie.py flytt                        move gitignored refs and stills to their new paths (assets/flyttet.json)
   medie.py tv                           the TV loops of medier.json, one line each (tv-loops.sh)
   medie.py stiller <id>                   intermediate stills of a job: image|prompt|out, first one first
   medie.py --selvtest
@@ -255,6 +256,20 @@ def stills(job_id: str, root: Path = ROOT, table=None):
     return out
 
 
+def used_by(entity: str, root: Path = ROOT, table=None):
+    """medier.json jobs that use an entity (winter, objects/postkasse …): as place, image, ref or in the template."""
+    table = table or jobs(root)
+    seg = f"/{entity.rsplit('/', 1)[-1]}"
+    hits = []
+    for k, j in table.items():
+        paths = [j.get("bilde") or "", *j.get("refs", [])]
+        text = (root / j["mal"]).read_text() if j.get("mal") and (root / j["mal"]).exists() else ""
+        if j.get("sted") == entity or any(f"{seg}#" in p or f"{seg}/" in p for p in paths) \
+                or re.search(rf"\{{\{{(\w+/)?{re.escape(entity.rsplit('/', 1)[-1])}[}}.]", text):
+            hits.append(k)
+    return hits
+
+
 def tv_lines(root: Path = ROOT):
     """One line per TV loop for tv-loops.sh: name|prompt|image|state|anchor|refs (absolute, refs space-separated)."""
     table = jobs(root)
@@ -292,6 +307,8 @@ def selftest():
         t |= {"s1": {"ut": "o/s1.jpg", "bilde": "assets/base.jpg", "mal": "p/b.txt"},
               "s2": {"ut": "o/s2.jpg", "bilde": "s1", "mal": "p/b.txt"}, "e": {"bilde": "s2", "mal": "p/b.txt"}}
         assert render("e", r, t)[1] == "o/s2.jpg"  # base image is an intermediate still
+        assert used_by("winter", r, t) == ["a", "d"] and used_by("objects/postkasse", r, t) == ["a"]
+        assert used_by("torg", r, t) == ["a", "c"]  # image locations/torg#rolig, template {{torg}}
         assert stills("e", r, t) == [("assets/base.jpg", "p/b.txt", "o/s1.jpg"), ("o/s1.jpg", "p/b.txt", "o/s2.jpg")]
         # sidecars: a file made from the rendered prompt records the template; the description drives its status
         (r / MEDIER).write_text(json.dumps(t))
@@ -338,6 +355,8 @@ def main(argv):
     elif cmd == "render":
         prompt, img, refs = render(args[0])
         print(*(str(ROOT / p) for p in (prompt, img, *refs) if p), sep="\n")
+    elif cmd == "brukt-av":
+        print(*used_by(args[0]), sep="\n")
     elif cmd == "flytt":
         flytt()
     elif cmd == "tv":

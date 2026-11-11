@@ -1,0 +1,3 @@
+STED (SLEDEFLUKT-etappe, snofall-tv/slede.ts «stjernedrysset»): Stjerner som drysser over vidda, husene i Snøfall med piper. Bruker julenatt-horisonten. Dag 14.
+- Ingen egen horisont ennå.
+- Felles regler for horisontene: locations/sledeflukt/beskrivelse.txt.

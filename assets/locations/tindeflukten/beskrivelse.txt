@@ -1,0 +1,3 @@
+STED (SLEDEFLUKT-etappe, snofall-tv/slede.ts «tindeflukten»): Spisse tinder som stikker opp som tenner. Bruker nordtoppen-horisonten. Dag 19.
+- Ingen egen horisont ennå.
+- Felles regler for horisontene: locations/sledeflukt/beskrivelse.txt.

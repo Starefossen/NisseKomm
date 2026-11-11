@@ -1,0 +1,3 @@
+STED (SLEDEFLUKT-etappe, snofall-tv/slede.ts «granskogen»): Tett granskog, lavt mellom stammene eller høyt over toppene. Bruker tundra-horisonten. Dag 12.
+- Ingen egen horisont ennå.
+- Felles regler for horisontene: locations/sledeflukt/beskrivelse.txt.

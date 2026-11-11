@@ -1,0 +1,10 @@
+{
+  "navn": [
+    "torget"
+  ],
+  "refs": {
+    "standard": "ref.jpg"
+  },
+  "standard_ref": "standard",
+  "avledet_fra": "snofall-landsby"
+}

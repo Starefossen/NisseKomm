@@ -1,0 +1,3 @@
+STED (SLEDEFLUKT-etappe, snofall-tv/slede.ts «julenatt»): Stjerneklart, landsbyen i det fjerne og lys opp av grotten. Dag 24.
+- Horisont: feed/slede-julenatt.jpg (medier.json slede/julenatt), laget fra torget/ref.jpg.
+- Felles regler for horisontene: locations/sledeflukt/beskrivelse.txt.

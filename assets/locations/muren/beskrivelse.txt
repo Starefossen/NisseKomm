@@ -1,0 +1,3 @@
+STED (SLEDEFLUKT-etappe, snofall-tv/slede.ts «muren»): Snøføyke og steinmur med én lysende port. Dag 21.
+- Horisont: feed/slede-muren.jpg (medier.json slede/muren), laget fra torget/ref.jpg.
+- Felles regler for horisontene: locations/sledeflukt/beskrivelse.txt.

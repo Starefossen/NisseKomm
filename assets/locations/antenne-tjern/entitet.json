@@ -1,0 +1,10 @@
+{
+  "navn": [
+    "tjernet",
+    "antennetjernet"
+  ],
+  "refs": {
+    "standard": "ref.jpg"
+  },
+  "standard_ref": "standard"
+}

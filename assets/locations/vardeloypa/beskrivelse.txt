@@ -1,0 +1,3 @@
+STED (SLEDEFLUKT-etappe, snofall-tv/slede.ts «vardeloypa»): Snøvidda med tette varder. Bruker tundra-horisonten. Dag 9.
+- Ingen egen horisont ennå.
+- Felles regler for horisontene: locations/sledeflukt/beskrivelse.txt.

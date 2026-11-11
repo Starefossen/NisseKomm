@@ -1,0 +1,3 @@
+STED (SLEDEFLUKT-etappe, snofall-tv/slede.ts «kastevind»): Dal der vinden kaster fra begge sider, tett snøfall og ikke nordlys. Bruker tundra-horisonten. Dag 18.
+- Ingen egen horisont ennå.
+- Felles regler for horisontene: locations/sledeflukt/beskrivelse.txt.

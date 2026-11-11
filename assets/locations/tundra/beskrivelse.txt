@@ -1,0 +1,3 @@
+STED (SLEDEFLUKT-etappe, snofall-tv/slede.ts «tundra»): Flat, øde snøvidde med lave fjell og fjerne lykter. Dag 8.
+- Horisont: feed/slede-tundra.jpg (medier.json slede/tundra), laget fra torget/ref.jpg.
+- Felles regler for horisontene: locations/sledeflukt/beskrivelse.txt.

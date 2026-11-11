@@ -1,0 +1,3 @@
+STED (SLEDEFLUKT-etappe, snofall-tv/slede.ts «nordtoppen»): Spiss topp og sterkt nordlys. Dag 20.
+- Horisont: feed/slede-nordtoppen.jpg (medier.json slede/nordtoppen), laget fra torget/ref.jpg.
+- Felles regler for horisontene: locations/sledeflukt/beskrivelse.txt.
