@@ -132,6 +132,11 @@ export const MEDIA_MANIFEST: readonly ManifestEntry[] = [
   "feed/iq-verksted.png",
   "feed/julius-kontor.jpg",
   "feed/landsby-rolig.jpg",
+  // Painted horizons for IQs sledesimulator (assets/locations/sledeflukt)
+  "feed/slede-tundra.jpg",
+  "feed/slede-nordtoppen.jpg",
+  "feed/slede-muren.jpg",
+  "feed/slede-julenatt.jpg",
   ...MUSIC,
   "music/christmas-dreams-jingle-bells-268299.mp3",
   // Hidden NisseMusikk track (tidbits.json), listed only once the file exists
