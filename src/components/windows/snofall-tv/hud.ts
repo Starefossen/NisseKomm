@@ -2,7 +2,7 @@
 export type GameId =
   "kretslop" | "sorterer" | "slede" | "sentrifuge" | "porten";
 
-// Storyboard day each toy first appears (8 kretskort and slede, 16 sorterer, 19 sentrifuge, 21 zapper).
+// Storyboard day each toy first appears (8 kretskort and slede, 16 sorterer, 19 sentrifuge, 21 porten).
 export const GAMES: [GameId, string, number][] = [
   ["kretslop", "KRETSLØP", 8],
   ["sorterer", "SORTERER", 16],

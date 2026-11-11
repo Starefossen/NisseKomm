@@ -143,12 +143,15 @@ const SPILL: Tool[] = [
 function daysLeft(unlockDay: number | null): number | null {
   if (!unlockDay) return null;
   const today = getCurrentMonth() === 12 ? getCurrentDay() : 0;
-  return Math.max(unlockDay - today, 1);
+  return unlockDay - today;
 }
 
 function opensIn(unlockDay: number | null): string {
   const n = daysLeft(unlockDay);
   if (n === null) return "LÅST";
+  // Quest modules open after that day's code (daily_alerts say «i kveld»)
+  if (n === 0) return "ÅPNER I KVELD";
+  if (n < 0) return "ÅPNER ETTER KODEN";
   return n === 1 ? "ÅPNER I MORGEN" : `ÅPNER OM ${n} DAGER`;
 }
 
@@ -579,9 +582,11 @@ export default function Home() {
                                               3500,
                                             );
                                             setLockedMsg(
-                                              n === 1
-                                                ? `Rampenissen: «Heisann, ikkje så fort! ${t.label} e klar i morra.»`
-                                                : `${t.hint ?? "LÅST"}. Rampenissen: «Ho-ho, vent ${n ?? "nokka"} daga te!»`,
+                                              n !== null && n <= 0
+                                                ? `Rampenissen: «Heisann, ikkje så fort! ${t.label} e klar når koden e inne.»`
+                                                : n === 1
+                                                  ? `Rampenissen: «Heisann, ikkje så fort! ${t.label} e klar i morra.»`
+                                                  : `${t.hint ?? "LÅST"}. Rampenissen: «Ho-ho, vent ${n ?? "nokka"} daga te!»`,
                                             );
                                           }
                                         : undefined

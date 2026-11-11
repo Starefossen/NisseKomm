@@ -399,6 +399,7 @@ export class GameEngine {
 
   /** Opening a window counts as having seen everything unlocked in it so far. */
   static markOpplasingerSett(vindu: string, day = getCurrentDay()) {
+    this.markIntroSeen(`ny-${vindu}`);
     OPPLASINGER.filter((o) => o.vindu === vindu && o.dag <= day).forEach((o) =>
       this.markIntroSeen(settNokkel(o)),
     );

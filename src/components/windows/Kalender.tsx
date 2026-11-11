@@ -221,19 +221,23 @@ export function Kalender({
               </div>
             )}
 
-            {GameEngine.getOpplasinger(selectedDay).length > 0 && (
-              <div className="p-3 border-2 border-(--gold) bg-(--gold)/10 text-lg text-(--gold)">
-                <div className="font-bold tracking-wider">
-                  ÅPNET DENNE DAGEN
-                </div>
-                {GameEngine.getOpplasinger(selectedDay).map((o) => (
-                  <div key={o.tekst}>
-                    {o.tekst}
-                    {GameEngine.getOpplasingNivaa(o) > 0 && " · IKKE SETT ENNÅ"}
+            {/* Today's modules open after the code, so the box waits for it */}
+            {(selectedDay !== getCurrentDay() ||
+              completedDays.has(selectedDay)) &&
+              GameEngine.getOpplasinger(selectedDay).length > 0 && (
+                <div className="p-3 border-2 border-(--gold) bg-(--gold)/10 text-lg text-(--gold)">
+                  <div className="font-bold tracking-wider">
+                    ÅPNET DENNE DAGEN
                   </div>
-                ))}
-              </div>
-            )}
+                  {GameEngine.getOpplasinger(selectedDay).map((o) => (
+                    <div key={o.tekst}>
+                      {o.tekst}
+                      {GameEngine.getOpplasingNivaa(o) > 0 &&
+                        " · IKKE SETT ENNÅ"}
+                    </div>
+                  ))}
+                </div>
+              )}
 
             {/* Small extra behind an already-opened door (tidbits.json) */}
             {completedDays.has(selectedDay) &&

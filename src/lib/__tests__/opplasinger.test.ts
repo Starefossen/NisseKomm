@@ -40,7 +40,11 @@ describe("opplasinger", () => {
 
   it("modules: match getModuleUnlockDay", () => {
     for (const [m, v] of [
+      ["SYMBOLSKANNER", "symbolskanner"],
       ["NISSEKRYPTO", "nissekrypto"],
+      ["NISSESPILL", "nissespill"],
+      ["NISSEMUSIKK", "nissemusikk"],
+      ["BREVFUGLER", "brevfugler"],
       ["SLEDEFLUKT", "sledeflukt"],
       ["NISSESTATS", "nissestats"],
     ]) {

@@ -31,7 +31,7 @@ export interface Opplasing {
   tekst: string;
   /** Noun phrase the nudge lines slot in («kapittel 2 i UGLEPOSTEN»). */
   navn: string;
-  /** Sidebar alert in a character voice; unset for desktop modules, whose tile and daily_alerts already say it. */
+  /** Sidebar alert in a character voice; unset for desktop modules, whose tile already says it. */
   varsel?: string;
   /** Only visible once that day's code is in (HUD toys). */
   etterKode?: boolean;
