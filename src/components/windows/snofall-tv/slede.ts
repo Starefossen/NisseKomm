@@ -569,6 +569,7 @@ export type Hendelse =
   | "levering"
   | "pakkebom"
   | "leveringKlart"
+  | "runde"
   | "mål";
 
 export interface SimOpts {
@@ -579,6 +580,47 @@ export interface SimOpts {
   utfordring?: Utfordring;
   /** The day's delivery mission on stages with houses. */
   levering?: Leveringsoppdrag;
+  /** Fri flyging: no finish line, no result; the valley loops back to Snøfall. */
+  fri?: boolean;
+}
+
+/** Free flight loops from the far farms (lengde + FRI_SLUTT) back to the village (FRI_START). */
+export const FRI_START = -1200;
+export const FRI_SLUTT = 1500;
+
+export interface Landemerke {
+  z: number;
+  navn: string;
+}
+
+/** Named places along a stage, for free flight: the village, the course's features, the farms at the end. */
+export function landemerker(e: SledeEtappe): Landemerke[] {
+  const ut: Landemerke[] = [{ z: 0, navn: "SNØFALL" }];
+  const bane = lagBane(e);
+  const første = (type: TingType) => bane.find((t) => t.type === type)?.z;
+  const mur = første("mur");
+  if (mur !== undefined) ut.push({ z: mur, navn: "MUREN" });
+  const grotte = første("grotte");
+  if (grotte !== undefined) ut.push({ z: grotte, navn: "GROTTEN" });
+  const band = første("band");
+  if (band !== undefined) ut.push({ z: band, navn: "LYSBÅNDENE" });
+  ut.push({ z: Math.round(e.lengde / 2), navn: e.navn.toUpperCase() });
+  ut.push({
+    z: e.lengde,
+    navn: e.id === "julenatt" ? "LANDÅS" : "GÅRDENE",
+  });
+  return ut.sort((a, b) => a.z - b.z);
+}
+
+/** The next landmark ahead of `dist`, as «NAVN 2,4 KM»; past the last it is the village again, around the loop. */
+export function nesteLandemerke(e: SledeEtappe, dist: number) {
+  const alle = landemerker(e);
+  const neste = alle.find((l) => l.z > dist + 200);
+  const avstand = neste
+    ? neste.z - dist
+    : e.lengde + FRI_SLUTT - dist - FRI_START;
+  const km = Math.max(0, avstand / 1000);
+  return `${(neste ?? alle[0]).navn} ${km.toFixed(1).replace(".", ",")} KM`;
 }
 
 /** Score multiplier for a run of beacons without a miss: x1, x2 at 3, x3 at 6, x4 at 9. */
@@ -730,6 +772,21 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
       if (!t.ferdig) passer(t, ev);
       t.ferdig = true;
       s.first++;
+    }
+
+    // Free flight never finishes: past the last farms it loops back to Snøfall.
+    if (opts.fri) {
+      if (s.dist >= e.lengde + FRI_SLUTT) {
+        s.dist = FRI_START;
+        s.first = 0;
+        s.pakke = null;
+        for (const t of ting) {
+          t.ferdig = false;
+          t.treff = false;
+        }
+        ev.push("runde");
+      }
+      return ev;
     }
 
     if (s.dist >= e.lengde) {

@@ -19,6 +19,7 @@ import {
   dagensUtfordring,
   ETAPPER,
   lagBane,
+  landemerker,
   leveringsoppdrag,
   pakkenavn,
 } from "@/components/windows/snofall-tv/slede";
@@ -146,6 +147,13 @@ for (const e of ETAPPER) {
     const l = leveringsoppdrag(d, e);
     if (l) add(d, `slede ${e.id} levering dag ${d}`, l.tekst);
   }
+  add(
+    e.dag,
+    `slede ${e.id} landemerker`,
+    landemerker(e)
+      .map((l) => l.navn)
+      .join(" "),
+  );
 }
 add(14, "slede pakkenavn", [0, 1, 2, 3].map((i) => pakkenavn([], i)).join(" "));
 

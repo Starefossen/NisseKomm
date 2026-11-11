@@ -8,10 +8,13 @@ import {
   ETAPPER,
   etapperFor,
   forutsiPakke,
+  FRI_SLUTT,
   HUS_PIPE,
   lagBane,
+  landemerker,
   LEVERING_BONUS,
   leveringsoppdrag,
+  nesteLandemerke,
   pakkenavn,
   RAMP,
   rekkeMult,
@@ -382,5 +385,45 @@ describe("pipelevering", () => {
       ev = ev.concat(sim.step(1 / 60, still));
     expect(ev).toContain("leveringKlart");
     expect(sim.s.leveringKlart).toBe(true);
+  });
+});
+
+describe("fri flyging", () => {
+  it("never finishes: past the farms it loops back to Snøfall with the course reset", () => {
+    const e = ETAPPER[0];
+    const sim = createSim(e, { assist: true, reduceMotion: false, fri: true });
+    let runder = 0;
+    let maks = 0;
+    for (let i = 0; i < 20000; i++) {
+      const ev = sim.step(1 / 60, still);
+      if (ev.includes("runde")) runder++;
+      maks = Math.max(maks, sim.s.dist);
+    }
+    expect(sim.s.ferdig).toBe(false);
+    expect(runder).toBeGreaterThanOrEqual(1);
+    expect(maks).toBeGreaterThan(e.lengde + FRI_SLUTT - 100);
+    expect(sim.s.dist).toBeLessThan(e.lengde);
+    expect(sim.s.ting.every((t) => !t.ferdig || t.z <= sim.s.dist)).toBe(true);
+  });
+
+  it("names the landmarks in course order and points at the next one", () => {
+    const julenatt = ETAPPER.find((x) => x.id === "julenatt")!;
+    const l = landemerker(julenatt);
+    expect(l[0]).toEqual({ z: 0, navn: "SNØFALL" });
+    expect(l.map((x) => x.navn)).toContain("GROTTEN");
+    expect(l[l.length - 1].navn).toBe("LANDÅS");
+    for (let i = 1; i < l.length; i++)
+      expect(l[i].z).toBeGreaterThan(l[i - 1].z);
+    expect(nesteLandemerke(julenatt, -1200)).toBe("SNØFALL 1,2 KM");
+    expect(nesteLandemerke(julenatt, julenatt.lengde + 100)).toMatch(
+      /^SNØFALL \d+,\d KM$/,
+    );
+    const muren = ETAPPER.find((x) => x.id === "muren")!;
+    expect(landemerker(muren).map((x) => x.navn)).toContain("MUREN");
+    expect(landemerker(ETAPPER[0]).map((x) => x.navn)).toEqual([
+      "SNØFALL",
+      "TUNDRA-TESTEN",
+      "GÅRDENE",
+    ]);
   });
 });
