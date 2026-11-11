@@ -44,6 +44,7 @@ if git diff --name-only "$BEFORE" HEAD |
 fi
 
 if ((DRY)); then
+  git reset -q --hard # `pnpm check` runs prettier --write
   git checkout -q "$ORIG"
   echo "PORT OK (dry-run, ikke pushet): $* | check OK | gjennomspilling $PLAY | $((SECONDS - START))s"
 else
