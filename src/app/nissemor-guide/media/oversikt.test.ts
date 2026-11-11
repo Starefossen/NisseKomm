@@ -5,7 +5,13 @@ import {
   mediaGroup,
   mediaPath,
 } from "@/lib/media";
-import { dayRows, lookThrough } from "./oversikt";
+import {
+  dayRows,
+  lookThrough,
+  REVIEW_GROUPS,
+  reviewKind,
+  sortReviewItems,
+} from "./oversikt";
 
 const paths = MEDIA_MANIFEST.map(mediaPath);
 
@@ -117,5 +123,42 @@ describe("lookThrough", () => {
     expect(Object.values(v).every((x) => x.fx.warm && x.fx.frost === 0)).toBe(
       true,
     );
+  });
+});
+
+describe("review kinds and sorting", () => {
+  it("has exactly the 6 required review kinds", () => {
+    expect(REVIEW_GROUPS.map((g) => g.id)).toEqual([
+      "julius",
+      "rampenissen",
+      "tv",
+      "port",
+      "music",
+      "stills",
+    ]);
+  });
+
+  it("maps paths to the correct review kind", () => {
+    expect(reviewKind("video/julius/dag-05.mp4")).toBe("julius");
+    expect(reviewKind("audio/rampenissen/dag-10.mp3")).toBe("rampenissen");
+    expect(reviewKind("video/tv/port-julius.mp4")).toBe("port");
+    expect(reviewKind("video/tv/port-winter.mp4")).toBe("port");
+    expect(reviewKind("video/tv/landsby-rolig.mp4")).toBe("tv");
+    expect(reviewKind("music/Jingle Bells.mp3")).toBe("music");
+    expect(reviewKind("feed/landsby-rolig.jpg")).toBe("stills");
+  });
+
+  it("sorts julius and rampenissen by day number", () => {
+    const raw = [
+      { path: "video/julius/dag-10.mp4" },
+      { path: "video/julius/dag-02.mp4" },
+      { path: "video/julius/dag-01.mp4" },
+    ];
+    const sorted = sortReviewItems(raw, "julius");
+    expect(sorted.map((s) => s.path)).toEqual([
+      "video/julius/dag-01.mp4",
+      "video/julius/dag-02.mp4",
+      "video/julius/dag-10.mp4",
+    ]);
   });
 });

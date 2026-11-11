@@ -21,7 +21,8 @@ import medie  # noqa: E402
 
 ROOT = medie.ROOT
 DIRS = ("video", "audio", "music", "feed")
-KINDS = [("video/julius/", "julius"), ("audio/rampenissen/", "rampenissen"), ("video/tv/", "tv"),
+KINDS = [("video/julius/", "julius"), ("audio/rampenissen/", "rampenissen"),
+         ("video/tv/port-", "port"), ("video/tv/", "tv"),
          ("feed/", "feed"), ("music/", "music")]
 MARK = {medie.CURRENT: "✓", medie.STALE: "⚠", medie.UNKNOWN: "?", medie.MISSING: "✗"}
 
@@ -32,7 +33,8 @@ def manifest(root: Path = ROOT):
     paths = re.findall(r'"((?:video|audio|feed|music)/[^"]+\.\w+)"', src)
     days = [f"video/julius/dag-{d:02d}.mp4" for d in range(1, 25)]
     days += [f"audio/rampenissen/dag-{d:02d}.mp3" for d in range(1, 25)]
-    return list(dict.fromkeys(days + paths))
+    ports = [f"video/tv/port-{c}.mp4" for c in ("julius", "nissemor", "iq", "winter")]
+    return list(dict.fromkeys(days + paths + ports))
 
 
 def kind(path: str) -> str:
@@ -56,10 +58,23 @@ def scan(media: Path, root: Path = ROOT):
         if path not in wanted:
             why = why + ["ikke i manifestet"]
         stat = f.stat() if f.exists() else None
+        side = Path(str(f) + ".meta.json")
+        meta = None
+        if side.exists():
+            try:
+                m = json.loads(side.read_text())
+                meta = {
+                    "generator": m.get("generator"),
+                    "created": m.get("created"),
+                    "source": m.get("source"),
+                }
+            except Exception:
+                pass
         rows.append({
             "path": path, "kind": kind(path), "status": st, "reasons": why,
             "size": stat.st_size if stat else None,
             "date": date.fromtimestamp(stat.st_mtime).isoformat() if stat else None,
+            "meta": meta,
         })
     return rows
 
