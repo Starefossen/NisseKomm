@@ -428,7 +428,7 @@ function merkeMesh(farge = GULL) {
 /** Flat dark oval on the snow: shows where a ring or the rig is over the ground. */
 function skyggeMesh(b: number, d: number) {
   const m = new Mesh();
-  const MØRK = hex(0x2e3448);
+  const MØRK = hex(0x5a6378);
   m.box([0, 0, 0], [b, 0.1, d * 0.6], MØRK);
   m.box([0, 0, 0], [b * 0.7, 0.1, d], MØRK);
   return m.build();
