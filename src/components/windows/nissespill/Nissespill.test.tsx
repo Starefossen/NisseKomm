@@ -308,4 +308,23 @@ describe("Nissespill: motor", () => {
       ["?", "radioen", "Vi kommer tilbake."],
     ]);
   });
+
+  it("kapittel 4 kan spilles gjennom", () => {
+    spill(KAPITLER[3], [
+      ["?", "winter", "Hva står på listen?"],
+      ["kontor", "blekkhuset"],
+      ["kontor", "brevfuglen", "fjaer"],
+      ["kontor", "skaala"],
+      ["kontor", "brevfuglen", "klementin"],
+      ["kontor", "taletrakten"],
+      ["kontor", "brevbunken"],
+      ["+", "magnet", "hyssing"],
+      ["kontor", "vedkassa", "fiskesnoere"],
+      ["kontor", "julius", "briller"],
+      ["porten", "sleden", "bjelle"],
+      ["?", "winter", "Kan vi få litt talg fra lanterna?"],
+      ["porten", "lanterne_v"],
+      ["porten", "hengslet", "talgstump"],
+    ]);
+  });
 });
