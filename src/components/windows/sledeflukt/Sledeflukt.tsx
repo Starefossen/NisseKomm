@@ -1,12 +1,7 @@
 "use client";
 import { NyttIDag } from "@/components/ui/NyttIDag";
 
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { RetroWindow } from "@/components/ui/RetroWindow";
 import { GameEngine } from "@/lib/game-engine";
 import { SoundManager } from "@/lib/sounds";
@@ -66,6 +61,11 @@ import {
   tilVerden,
   type Hus,
   type Verden,
+  pipeRøyk,
+  RØYK_FADE,
+  RØYK_MAKS,
+  SKY_FADE,
+  skyRøyk,
 } from "./verden";
 
 /**
@@ -109,6 +109,8 @@ interface Hud {
 }
 
 const IDENT = identity();
+const RØYK = new Float32Array(RØYK_MAKS * 4);
+const SKY = new Float32Array(RØYK_MAKS * 4);
 const LYS: Vec3 = [0.35, 0.8, 0.5];
 const farge = (s: string) => hex(parseInt(s.slice(1), 16));
 
@@ -773,6 +775,7 @@ function Etappeflukt({
       }
 
       const ting = sim.s.ting;
+      let nRøyk = 0;
       for (let i = Math.max(0, sim.s.first - 4); i < ting.length; i++) {
         const o = ting[i];
         if (o.z > dist + FJERN_SIM) break;
@@ -817,18 +820,7 @@ function Etappeflukt({
               r.tegn(M.merkeNær, transform(pos, [0, t, 0]));
               pos[1] -= 3;
             }
-            // Three puffs rising from the chimney, drifting with the wind.
-            for (let k = 0; k < 3; k++) {
-              const f = (t * 0.5 * motion + k / 3) % 1;
-              r.tegn(
-                M.røyk,
-                transform(
-                  [pos[0] + f * f * 4 * sim.s.vind, pos[1] + f * 6, pos[2]],
-                  [0, t + k, 0],
-                  0.8 + f * 1.4,
-                ),
-              );
-            }
+            nRøyk = pipeRøyk(RØYK, nRøyk, pos, t * motion, sim.s.vind);
           }
           continue;
         }
@@ -890,23 +882,11 @@ function Etappeflukt({
       }
 
       // A missed chimney answers with a fat grey cloud rising for a second.
+      r.tegnRøyk(M.røyk, RØYK, nRøyk, ...RØYK_FADE);
       while (puff.length && t - puff[0].t0 > 1.2) puff.shift();
-      for (const g of puff) {
-        const alder = t - g.t0;
-        for (let k = 0; k < 6; k++)
-          r.tegn(
-            M.røyk,
-            transform(
-              [
-                g.p[0] + Math.sin(k * 2.1) * alder * 6,
-                g.p[1] + alder * 9 + k * 0.8,
-                g.p[2] + alder * 10 + Math.cos(k * 1.7) * alder * 4,
-              ],
-              [0, t + k, 0],
-              1.5 + alder * 4,
-            ),
-          );
-      }
+      let nSky = 0;
+      for (const g of puff) nSky = skyRøyk(SKY, nSky, g.p, t - g.t0, 10);
+      r.tegnRøyk(M.røyk, SKY, nSky, ...SKY_FADE);
 
       // Packages: the one in the air, and where the next would land.
       if (sim.s.pakke) {

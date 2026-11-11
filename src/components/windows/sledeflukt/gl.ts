@@ -42,11 +42,15 @@ export function multiply(a: Mat4, b: Mat4): Mat4 {
   return r;
 }
 
-/** Translate · rotateY · rotateX · rotateZ · scale (rotation in radians). */
+/**
+ * Translate · rotateY · rotateX · rotateZ · scale (rotation in radians), in
+ * closed form: one array per call instead of five (dozens of objects a frame).
+ */
 export function transform(
   pos: Vec3 = [0, 0, 0],
   rot: Vec3 = [0, 0, 0],
   scale: Vec3 | number = 1,
+  m: Mat4 = new Float32Array(16),
 ): Mat4 {
   const [rx, ry, rz] = rot;
   const cx = Math.cos(rx),
@@ -55,67 +59,48 @@ export function transform(
     sy = Math.sin(ry),
     cz = Math.cos(rz),
     sz = Math.sin(rz);
-  const mx = new Float32Array([
-    1,
-    0,
-    0,
-    0,
-    0,
-    cx,
-    sx,
-    0,
-    0,
-    -sx,
-    cx,
-    0,
-    0,
-    0,
-    0,
-    1,
-  ]);
-  const my = new Float32Array([
-    cy,
-    0,
-    -sy,
-    0,
-    0,
-    1,
-    0,
-    0,
-    sy,
-    0,
-    cy,
-    0,
-    0,
-    0,
-    0,
-    1,
-  ]);
-  const mz = new Float32Array([
-    cz,
-    sz,
-    0,
-    0,
-    -sz,
-    cz,
-    0,
-    0,
-    0,
-    0,
-    1,
-    0,
-    0,
-    0,
-    0,
-    1,
-  ]);
-  const m = multiply(multiply(my, mx), mz);
-  const s = typeof scale === "number" ? [scale, scale, scale] : scale;
-  for (let c = 0; c < 3; c++) for (let r = 0; r < 3; r++) m[4 * c + r] *= s[c];
+  const [a, b, c] = typeof scale === "number" ? [scale, scale, scale] : scale;
+  m[0] = (cy * cz + sy * sx * sz) * a;
+  m[1] = cx * sz * a;
+  m[2] = (-sy * cz + cy * sx * sz) * a;
+  m[3] = 0;
+  m[4] = (-cy * sz + sy * sx * cz) * b;
+  m[5] = cx * cz * b;
+  m[6] = (sy * sz + cy * sx * cz) * b;
+  m[7] = 0;
+  m[8] = sy * cx * c;
+  m[9] = -sx * c;
+  m[10] = cy * cx * c;
+  m[11] = 0;
   m[12] = pos[0];
   m[13] = pos[1];
   m[14] = pos[2];
+  m[15] = 1;
   return m;
+}
+
+/** Many meshes placed once, as one mesh: one draw call for everything static. */
+export function bak(deler: readonly (readonly [Float32Array, Mat4])[]) {
+  let n = 0;
+  for (const [mesh] of deler) n += mesh.length;
+  const ut = new Float32Array(n);
+  let o = 0;
+  for (const [mesh, m] of deler) {
+    for (let i = 0; i < mesh.length; i += STRIDE, o += STRIDE) {
+      const [x, y, z, nx, ny, nz] = mesh.subarray(i, i + 6);
+      ut[o] = m[0] * x + m[4] * y + m[8] * z + m[12];
+      ut[o + 1] = m[1] * x + m[5] * y + m[9] * z + m[13];
+      ut[o + 2] = m[2] * x + m[6] * y + m[10] * z + m[14];
+      const v = normalize([
+        m[0] * nx + m[4] * ny + m[8] * nz,
+        m[1] * nx + m[5] * ny + m[9] * nz,
+        m[2] * nx + m[6] * ny + m[10] * nz,
+      ]);
+      ut.set(v, o + 3);
+      ut.set(mesh.subarray(i + 6, i + STRIDE), o + 6);
+    }
+  }
+  return ut;
 }
 
 export function apply(m: Mat4, v: Vec3): Vec3 {

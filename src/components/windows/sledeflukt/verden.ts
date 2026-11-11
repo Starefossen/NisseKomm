@@ -533,9 +533,60 @@ function pakkeMesh() {
   return m.build();
 }
 
-/** One puff of chimney smoke, unit size; scaled and lifted per frame. */
+/** One puff of smoke, unit size: a rounded blob of crossed slabs, pale and half lit. */
 function røykMesh() {
-  return new Mesh().box([0, 0, 0], [1, 1, 1], hex(0x9fb0cc), 0.6).build();
+  const m = new Mesh();
+  const lys = hex(0xd9e4f5);
+  m.box([0, 0, 0], [1, 0.7, 0.7], lys, 0.5);
+  m.box([0, 0, 0], [0.7, 1, 0.7], lys, 0.5);
+  m.box([0, 0, 0], [0.7, 0.7, 1], lys, 0.5);
+  return m.build();
+}
+
+/** Scale range over which a chimney puff fades out (renderer.tegnRøyk). */
+export const RØYK_FADE = [1.1, 2.3] as const;
+/** The same for the grey cloud from a missed chimney. */
+export const SKY_FADE = [3, 6.3] as const;
+/** Room for every puff drawn in one frame; extra puffs are skipped. */
+export const RØYK_MAKS = 256;
+
+/**
+ * Three puffs rising from a chimney top at `pos`, swaying and drifting with the
+ * wind, written as instances [x, y, z, scale] into `ut` from instance `i`.
+ * Returns the next free instance.
+ */
+export function pipeRøyk(
+  ut: Float32Array,
+  i: number,
+  pos: Vec3,
+  t: number,
+  vind: number,
+): number {
+  for (let k = 0; k < 3 && i < RØYK_MAKS; k++, i++) {
+    const f = (t * 0.5 + k / 3 + ((pos[0] * 0.013) % 1)) % 1;
+    ut[i * 4] = pos[0] + Math.sin(t * 1.3 + k * 2) * f * 0.8 + f * f * 4 * vind;
+    ut[i * 4 + 1] = pos[1] + f * 7;
+    ut[i * 4 + 2] = pos[2] + Math.cos(t * 1.1 + k) * f * 0.6;
+    ut[i * 4 + 3] = 0.7 + f * 1.6;
+  }
+  return i;
+}
+
+/** A missed chimney's grey cloud: six puffs spreading over `alder` seconds. */
+export function skyRøyk(
+  ut: Float32Array,
+  i: number,
+  p: Vec3,
+  alder: number,
+  bak: number,
+): number {
+  for (let k = 0; k < 6 && i < RØYK_MAKS; k++, i++) {
+    ut[i * 4] = p[0] + Math.sin(k * 2.1) * alder * 6;
+    ut[i * 4 + 1] = p[1] + alder * 9 + k * 0.8;
+    ut[i * 4 + 2] = p[2] + alder * bak + Math.cos(k * 1.7) * alder * 4;
+    ut[i * 4 + 3] = 1.5 + alder * 4;
+  }
+  return i;
 }
 
 /** Drop aim: a dot along the predicted fall, and the landing cross on the ground. */

@@ -7,6 +7,7 @@
  */
 
 import {
+  identity,
   lookAt,
   multiply,
   PALETT,
@@ -16,12 +17,17 @@ import {
   type Vec3,
 } from "./gl";
 
+const IDENT_M = identity();
+
 const VERT = `
 attribute vec3 aPos; attribute vec3 aNorm; attribute vec3 aCol; attribute float aGlow;
 attribute vec4 aInst;
 uniform mat4 uModel; uniform mat4 uVP; uniform vec3 uLys; uniform vec3 uKamera; uniform vec2 uTaake;
-varying vec3 vCol; varying float vFog;
+uniform vec2 uFade;
+varying vec3 vCol; varying float vFog; varying float vAlfa;
 void main(){
+  // Smoke: a puff grows as it rises, so its scale is its age; it fades out.
+  vAlfa = uFade.y > 0.0 ? 1.0 - smoothstep(uFade.x, uFade.y, aInst.w) : 1.0;
   vec3 p = aPos * aInst.w + aInst.xyz;
   vec4 w = uModel * vec4(p, 1.0);
   vec3 n = normalize(mat3(uModel) * aNorm);
@@ -34,9 +40,15 @@ void main(){
 
 const FRAG = `
 precision mediump float;
-varying vec3 vCol; varying float vFog; uniform vec3 uDis; uniform float uGraa;
+varying vec3 vCol; varying float vFog; varying float vAlfa; uniform vec3 uDis; uniform float uGraa;
 uniform vec3 uTopp; uniform vec3 uHorisont; uniform float uLinje; uniform float uHoyde;
+float b2(vec2 q){ return mod(2.0 * q.x + 3.0 * q.y, 4.0); }
 void main(){
+  // See-through without blending: a 4×4 Bayer screen door, chunky like the rest.
+  if (vAlfa < 1.0) {
+    vec2 a = mod(floor(gl_FragCoord.xy), 4.0);
+    if ((4.0 * b2(mod(a, 2.0)) + b2(floor(a / 2.0)) + 0.5) / 16.0 > vAlfa) discard;
+  }
   vec3 c = mix(vCol, vec3(0.47, 0.50, 0.56), uGraa);
   // Haze turns into the sky behind it at full fog, so where the drawn world ends
   // (valley walls, far tiles) there is no hard edge against the night sky.
@@ -168,6 +180,7 @@ export class Renderer {
   private inst: ANGLE_instanced_arrays | null;
   private bufs = new Map<Float32Array, Buf>();
   private instBufs = new Map<Float32Array, WebGLBuffer>();
+  private røykBuf: WebGLBuffer | null = null;
   private vp: Mat4 = new Float32Array(16);
   private kamera: Vec3 = [0, 0, 0];
   bredde = 640;
@@ -220,6 +233,7 @@ export class Renderer {
       "uHorisont",
       "uLinje",
       "uHoyde",
+      "uFade",
     ])
       this.u[n] = gl.getUniformLocation(this.prog, n);
     this.sky = this.program(QUAD_VERT, SKY_FRAG, ["aPos"]);
@@ -423,6 +437,7 @@ export class Renderer {
     gl.uniform1f(this.u.uLinje, linje);
     gl.uniform1f(this.u.uHoyde, this.høyde);
     gl.uniform1f(this.u.uGraa, 0);
+    gl.uniform2f(this.u.uFade, 0, 0);
     gl.enableVertexAttribArray(this.a.pos);
     gl.enableVertexAttribArray(this.a.norm);
     gl.enableVertexAttribArray(this.a.col);
@@ -489,6 +504,33 @@ export class Renderer {
     gl.disableVertexAttribArray(this.a.inst);
   }
 
+  /**
+   * Chimney smoke and snow puffs in one call: `antall` instances [x, y, z, scale]
+   * from a scratch array rewritten every frame; a puff fades out as its scale
+   * goes from `fra` to `til`.
+   */
+  tegnRøyk(
+    mesh: Float32Array,
+    instanser: Float32Array,
+    antall: number,
+    fra: number,
+    til: number,
+  ) {
+    if (!antall) return;
+    const gl = this.gl;
+    gl.uniform2f(this.u.uFade, fra, til);
+    const del = instanser.subarray(0, antall * 4);
+    if (this.inst) {
+      this.røykBuf ??= gl.createBuffer()!;
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.røykBuf);
+      gl.bufferData(gl.ARRAY_BUFFER, del, gl.DYNAMIC_DRAW);
+      this.instBufs.set(del, this.røykBuf);
+    }
+    this.tegnMange(mesh, del, IDENT_M);
+    this.instBufs.delete(del);
+    gl.uniform2f(this.u.uFade, 0, 0);
+  }
+
   /** Forget depth so far: the near terrain is drawn over the coarse horizon mesh under it. */
   nullstillDybde() {
     this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
@@ -547,6 +589,7 @@ export class Renderer {
     const gl = this.gl;
     for (const b of this.bufs.values()) gl.deleteBuffer(b.buffer);
     for (const b of this.instBufs.values()) gl.deleteBuffer(b);
+    if (this.røykBuf) gl.deleteBuffer(this.røykBuf);
     this.bufs.clear();
     this.instBufs.clear();
     gl.deleteFramebuffer(this.fbo);

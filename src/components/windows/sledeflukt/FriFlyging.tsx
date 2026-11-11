@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { SoundManager } from "@/lib/sounds";
 import {
@@ -38,12 +34,18 @@ import {
   TUN,
   vinkelTil,
   type FriHendelse,
-  type FriHus,
   type FriOpts,
   type FriSim,
 } from "../snofall-tv/vidda";
 import { SledeLyd } from "../snofall-tv/slede-lyd";
-import { hex, identity, multiply, transform, type Mat4, type Vec3 } from "./gl";
+import {
+  bak,
+  hex,
+  identity,
+  multiply,
+  transform,
+  type Vec3,
+} from "./gl";
 import {
   GRENSE_MS,
   OPPLØSNINGER,
@@ -71,6 +73,11 @@ import {
   SKALA,
   SPOR,
   tilVidda,
+  pipeRøyk,
+  RØYK_FADE,
+  RØYK_MAKS,
+  SKY_FADE,
+  skyRøyk,
 } from "./verden";
 
 /**
@@ -88,6 +95,8 @@ const FJERN_SIM = FJERN / SKALA;
 const HORISONT = 4200;
 
 const IDENT = identity();
+const RØYK = new Float32Array(RØYK_MAKS * 4);
+const SKY = new Float32Array(RØYK_MAKS * 4);
 const LYS: Vec3 = [0.35, 0.8, 0.5];
 const HIMMEL = {
   topp: hex(0x070a1c),
@@ -244,7 +253,10 @@ export function FriFlyging({
     const snofall = snofallMesh();
     const BERGEN_PORT = fraKorridor(GRENSE, 0);
     const ruter = new Map<number, Rute>();
-    const husM = new Map<FriHus, Mat4>();
+    // The houses never move: baked once into one mesh, one draw call.
+    const husBakt = bak(
+      sim.s.hus.map((h) => [M.hus[h.variant].mesh, husPlassFri(h)] as const),
+    );
     const kart = kartRef.current?.getContext("2d") ?? null;
     const kompass = kompassRef.current?.getContext("2d") ?? null;
     const grotten = STEDER.find((s) => s.id === "grotten")!;
@@ -694,6 +706,9 @@ export function FriFlyging({
           ruter.delete(n);
         }
       }
+      // A fast turn uncovers many tiles at once; build a few per frame (the
+      // horizon mesh shows under the gaps), all at once only on the first frame.
+      let nye = ruter.size ? 3 : Infinity;
       for (let ix = i0x; ix <= i1x; ix++)
         for (let iz = i0z; iz <= i1z; iz++) {
           const cx = (ix + 0.5) * RUTE;
@@ -706,6 +721,7 @@ export function FriFlyging({
           const n = nøkkel(ix, iz);
           let rute = ruter.get(n);
           if (!rute) {
+            if (nye-- <= 0) continue;
             const grå = STEDER.some(
               (s) =>
                 !stedÅpent(s, o) &&
@@ -741,17 +757,13 @@ export function FriFlyging({
         r.tegnMange(M.tre, PYNTETRÆR, IDENT);
       }
 
-      // Houses with smoke, stars on the ones that got a package.
+      // Houses (baked), smoke, stars on the ones that got a package.
+      r.tegn(husBakt, IDENT);
+      let nRøyk = 0;
       for (const h of sim.s.hus) {
         const dx = h.x - x;
         const dz = h.z - z;
         if (dx * dx + dz * dz > FJERN_SIM * FJERN_SIM) continue;
-        let m = husM.get(h);
-        if (!m) {
-          m = husPlassFri(h);
-          husM.set(h, m);
-        }
-        r.tegn(M.hus[h.variant].mesh, m);
         const pos = tilVidda(h.x, h.h, h.z);
         if (h.treff) {
           pos[1] += 3;
@@ -763,17 +775,7 @@ export function FriFlyging({
           r.tegn(M.merkeNær, transform(pos, [0, t, 0]));
           pos[1] -= 3;
         }
-        for (let k = 0; k < 3; k++) {
-          const f = (t * 0.5 * motion + k / 3) % 1;
-          r.tegn(
-            M.røyk,
-            transform(
-              [pos[0], pos[1] + f * 6, pos[2]],
-              [0, t + k, 0],
-              0.8 + f * 1.4,
-            ),
-          );
-        }
+        nRøyk = pipeRøyk(RØYK, nRøyk, pos, t * motion, sim.s.vind);
       }
 
       // Letter birds on their rounds.
@@ -788,23 +790,11 @@ export function FriFlyging({
         );
       }
 
+      r.tegnRøyk(M.røyk, RØYK, nRøyk, ...RØYK_FADE);
       while (puff.length && t - puff[0].t0 > 1.2) puff.shift();
-      for (const g of puff) {
-        const alder = t - g.t0;
-        for (let k = 0; k < 6; k++)
-          r.tegn(
-            M.røyk,
-            transform(
-              [
-                g.p[0] + Math.sin(k * 2.1) * alder * 6,
-                g.p[1] + alder * 9 + k * 0.8,
-                g.p[2] + Math.cos(k * 1.7) * alder * 4,
-              ],
-              [0, t + k, 0],
-              1.5 + alder * 4,
-            ),
-          );
-      }
+      let nSky = 0;
+      for (const g of puff) nSky = skyRøyk(SKY, nSky, g.p, t - g.t0, 0);
+      r.tegnRøyk(M.røyk, SKY, nSky, ...SKY_FADE);
 
       // The package in the air, or where the next one would land.
       if (sim.s.pakke) {
