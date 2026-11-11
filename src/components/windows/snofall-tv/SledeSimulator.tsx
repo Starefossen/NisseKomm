@@ -2,6 +2,7 @@
 
 import {
   useEffect,
+  useMemo,
   useRef,
   useState,
   type PointerEvent as ReactPointerEvent,
@@ -12,10 +13,15 @@ import { SoundManager } from "@/lib/sounds";
 import {
   ALT_MAX,
   ALT_MIN,
+  bjelleKrav,
   bjeller,
   createSim,
+  dagensUtfordring,
   ETAPPER,
   etapperFor,
+  lagBane,
+  rekkeMult,
+  utfordringStatus,
   type Hendelse,
   type Sim,
   type SledeEtappe,
@@ -39,7 +45,9 @@ const FADE_STEPS = 48;
 /** Longest thing on a course (the cave in lagBane). */
 const GROTTE_MAX = 1600;
 
-type Fase = "start" | "spiller" | "pause" | "slutt" | "tapt";
+type Fase = "start" | "nedtelling" | "spiller" | "pause" | "slutt" | "tapt";
+/** Seconds of 3–2–1 before the sleigh is handed over, then «FLY!» overlaps the first stretch. */
+const NEDTELLING = 3;
 
 interface Hud {
   alt: number;
@@ -50,6 +58,8 @@ interface Hud {
   liv: number;
   kraft: number;
   sprang: boolean;
+  mult: number;
+  utf: string;
   vind: number;
   framdrift: number;
   nyser: boolean;
@@ -193,7 +203,19 @@ export function SledeSimulator({ day }: { day: number }) {
   const faseRef = useRef<Fase>("start");
   const lyd = useRef<SledeLyd | null>(null);
   const bilde = useRef<HTMLImageElement | null>(null);
-  const [resultat, setResultat] = useState({ poeng: 0, bjeller: 0, beste: 0 });
+  const [resultat, setResultat] = useState({
+    poeng: 0,
+    bjeller: 0,
+    beste: 0,
+    varder: 0,
+    varderTotalt: 0,
+    stjerner: 0,
+    besteRekke: 0,
+    nære: 0,
+    tidsbonus: 0,
+    krasj: 0,
+    utfordringKlart: false,
+  });
 
   const åpne = etapperFor(day);
   const [etappe, setEtappe] = useState<SledeEtappe>(
@@ -206,13 +228,28 @@ export function SledeSimulator({ day }: { day: number }) {
   const [beste, setBeste] = useState(() => GameEngine.getSledeResultater());
   const [touchHint, setTouchHint] = useState(false);
   const reduceMotion = useRef(false);
+  const krav = useMemo(
+    () => bjelleKrav(lagBane(etappe).filter((t) => t.type === "varde").length),
+    [etappe],
+  );
+  const utfordring = useMemo(
+    () => dagensUtfordring(day, etappe),
+    [day, etappe],
+  );
+  const utfordringRef = useRef(utfordring);
+  useEffect(() => {
+    utfordringRef.current = utfordring;
+  }, [utfordring]);
 
   // A tap can start and end between two frames; the loop consumes this latch.
   const sprang = useRef(false);
+  /** Countdown clock; the draw loop counts it down and flips to spiller at 0. */
+  const nedtelling = useRef(-1);
 
   const setFase = (f: Fase) => {
     // Wind restarts on its own via setVind when flying resumes.
     if (f !== "spiller") lyd.current?.stop();
+    if (f !== "spiller" && f !== "nedtelling") nedtelling.current = -1;
     // Back on the start screen: a fresh course for attract mode.
     if (f === "start")
       simRef.current = createSim(etappeRef.current, {
@@ -228,10 +265,16 @@ export function SledeSimulator({ day }: { day: number }) {
     simRef.current = createSim(etappe, {
       assist,
       reduceMotion: reduceMotion.current,
+      utfordring,
     });
-    lyd.current?.startVind();
-    setFase("spiller");
+    nedtelling.current = NEDTELLING;
+    setFase("nedtelling");
   };
+  // Enter on the panels restarts; the key listener is bound once, so it reads the latest start.
+  const startRef = useRef(start);
+  useEffect(() => {
+    startRef.current = start;
+  });
 
   // Painted horizon for the chosen stage; the ridge fallback is drawn until it loads.
   useEffect(() => {
@@ -281,7 +324,6 @@ export function SledeSimulator({ day }: { day: number }) {
     let shake = 0;
     let flash = 0;
     let nyser = 0;
-    let streaks = 0;
     let last = 0;
     let hudAt = 0;
     let raf = 0;
@@ -294,10 +336,17 @@ export function SledeSimulator({ day }: { day: number }) {
       const l = lyd.current;
       switch (h) {
         case "bjelle":
-          l?.bjelle();
+          l?.bjelle(rekkeMult(sim.s.rekke));
           flash = 0.25;
+          if (sim.s.rekke % 3 === 0 && sim.s.rekke > 0)
+            say(`REKKE x${rekkeMult(sim.s.rekke)}`, "#00ff8a");
           break;
         case "bom":
+          if (sim.s.besteRekke >= 3) say("REKKEN RØK", "#8aa0c0");
+          break;
+        case "nære":
+          l?.stjerne();
+          say("NÆRE PÅ!", "#ffb347");
           break;
         case "stjerne":
           l?.stjerne();
@@ -317,7 +366,6 @@ export function SledeSimulator({ day }: { day: number }) {
           break;
         case "sprang":
           l?.sprang();
-          streaks = 3;
           sprangGlow = 3;
           say("SPRANG!", "#ff8a5a");
           break;
@@ -337,6 +385,11 @@ export function SledeSimulator({ day }: { day: number }) {
             sim.s.tapt ? "IQ KOBLER INN NØDBREMSEN" : "KLONK! SNØ I ANSIKTET",
             "#f0624a",
           );
+          break;
+        case "utfordring":
+          l?.port();
+          flash = 0.6;
+          say(`UTFORDRING KLART  +${utfordringRef.current.bonus}`);
           break;
         case "mål":
           l?.fanfare();
@@ -375,6 +428,17 @@ export function SledeSimulator({ day }: { day: number }) {
       const t = now / 1000;
       const spiller = faseRef.current === "spiller";
 
+      if (faseRef.current === "nedtelling") {
+        const før = Math.ceil(nedtelling.current);
+        nedtelling.current -= dt;
+        const nå = Math.ceil(nedtelling.current);
+        if (nå < før) lyd.current?.tikk(nå <= 0);
+        if (nedtelling.current <= 0) {
+          lyd.current?.startVind();
+          setFase("spiller");
+        }
+      }
+
       if (spiller) {
         const k = held.current;
         const inn: Styring = {
@@ -398,7 +462,19 @@ export function SledeSimulator({ day }: { day: number }) {
             ? bjeller(sim.s.varder, sim.s.varderTotalt, sim.s.krasj)
             : 0;
           const saved = GameEngine.recordSledeResultat(e.id, sim.s.poeng, b);
-          setResultat({ poeng: sim.s.poeng, bjeller: b, beste: saved.poeng });
+          setResultat({
+            poeng: sim.s.poeng,
+            bjeller: b,
+            beste: saved.poeng,
+            varder: sim.s.varder,
+            varderTotalt: sim.s.varderTotalt,
+            stjerner: sim.s.stjerner,
+            besteRekke: sim.s.besteRekke,
+            nære: sim.s.nære,
+            tidsbonus: sim.s.tidsbonus,
+            krasj: sim.s.krasj,
+            utfordringKlart: sim.s.utfordringKlart,
+          });
           setBeste(GameEngine.getSledeResultater());
           setFase(sim.s.ferdig ? "slutt" : "tapt");
         }
@@ -419,7 +495,6 @@ export function SledeSimulator({ day }: { day: number }) {
       shake = Math.max(0, shake - dt);
       flash = Math.max(0, flash - dt);
       nyser = Math.max(0, nyser - dt);
-      streaks = Math.max(0, streaks - dt);
       sprangGlow = Math.max(0, sprangGlow - dt);
 
       ctx.save();
@@ -570,9 +645,10 @@ export function SledeSimulator({ day }: { day: number }) {
         }
       }
 
-      // Speed streaks during a sprang.
-      if (streaks > 0 && !reduceMotion.current) {
-        ctx.strokeStyle = `rgba(255,255,255,${0.25 * Math.min(1, streaks)})`;
+      // Speed streaks whenever the sleigh runs above cruise: sprang, lift, the end ramp.
+      const over = spiller ? sim.s.fart / (e.fart * motion) - 1 : 0;
+      if (over > 0.08 && !reduceMotion.current) {
+        ctx.strokeStyle = `rgba(255,255,255,${0.3 * Math.min(1, over / 0.8)})`;
         ctx.lineWidth = 1;
         for (let i = 0; i < 18; i++) {
           const a = (i / 18) * Math.PI * 2 + t * 2;
@@ -650,6 +726,22 @@ export function SledeSimulator({ day }: { day: number }) {
         ctx.fillRect(0, 0, W, H);
       }
 
+      // Countdown: the number pops in large and shrinks; «FLY!» rides into the first second.
+      const ned = nedtelling.current;
+      if (ned > -0.7) {
+        const frac = ned > 0 ? ned - Math.floor(ned) : 0;
+        ctx.textAlign = "center";
+        ctx.font = `${Math.round(72 + frac * 40)}px ${font}`;
+        ctx.globalAlpha = ned > 0 ? 0.6 + frac * 0.4 : 1 + ned / 0.7;
+        ctx.fillStyle = ned > 0 ? "#ffd700" : "#00ff8a";
+        ctx.fillText(
+          ned > 0 ? String(Math.ceil(ned)) : "FLY!",
+          W / 2,
+          H * 0.42,
+        );
+        ctx.globalAlpha = 1;
+      }
+
       // Floating feedback text.
       ctx.textAlign = "center";
       ctx.font = `22px ${font}`;
@@ -667,6 +759,7 @@ export function SledeSimulator({ day }: { day: number }) {
       ctx.globalAlpha = 1;
       ctx.restore();
 
+      if (spiller) nedtelling.current -= dt;
       if (spiller && now - hudAt > 100) {
         hudAt = now;
         setHud({
@@ -678,6 +771,8 @@ export function SledeSimulator({ day }: { day: number }) {
           liv: sim.s.liv,
           kraft: sim.s.kraft,
           sprang: sim.s.tid < sim.s.sprangTil,
+          mult: rekkeMult(sim.s.rekke),
+          utf: utfordringStatus(utfordringRef.current, sim.s),
           vind: sim.s.vind,
           framdrift: Math.min(1, sim.s.dist / e.lengde),
           nyser: nyser > 0,
@@ -707,6 +802,10 @@ export function SledeSimulator({ day }: { day: number }) {
         if (faseRef.current === "spiller") setFase("pause");
         else if (faseRef.current === "pause") setFase("spiller");
       }
+      if (e.key === "Enter" && faseRef.current !== "spiller") {
+        if (faseRef.current === "pause") setFase("spiller");
+        else if (faseRef.current !== "nedtelling") startRef.current();
+      }
     };
     const up = (e: KeyboardEvent) => {
       const k = KEYS[e.key];
@@ -720,8 +819,11 @@ export function SledeSimulator({ day }: { day: number }) {
     };
   }, []);
 
-  // Touch: left half slides the course, right half the altitude; several fingers at once.
-  const pointers = useRef(new Map<number, "kurs" | "høyde">());
+  // Touch: left half steers, right half sets altitude; several fingers at once.
+  // Each finger is a stick centred where it landed, so no spot on the glass is «straight».
+  const pointers = useRef(
+    new Map<number, { zone: "kurs" | "høyde"; x0: number; y0: number }>(),
+  );
   const onPointer = (ev: ReactPointerEvent<HTMLDivElement>) => {
     const el = ev.currentTarget;
     const r = el.getBoundingClientRect();
@@ -729,23 +831,28 @@ export function SledeSimulator({ day }: { day: number }) {
     const ny = (ev.clientY - r.top) / r.height;
     if (ev.type === "pointerdown") {
       el.setPointerCapture(ev.pointerId);
-      pointers.current.set(ev.pointerId, nx < 0.5 ? "kurs" : "høyde");
+      pointers.current.set(ev.pointerId, {
+        zone: nx < 0.5 ? "kurs" : "høyde",
+        x0: nx,
+        y0: ny,
+      });
       if (ev.pointerType !== "mouse") setTouchHint(true);
     }
-    const zone = pointers.current.get(ev.pointerId);
-    if (!zone) return;
+    const p = pointers.current.get(ev.pointerId);
+    if (!p) return;
     if (ev.type === "pointerup" || ev.type === "pointercancel") {
       pointers.current.delete(ev.pointerId);
       // Another finger may still hold this zone; it sets the value on its next move.
-      if ([...pointers.current.values()].includes(zone)) return;
-      if (zone === "kurs") touch.current.steer = 0;
+      for (const q of pointers.current.values()) if (q.zone === p.zone) return;
+      if (p.zone === "kurs") touch.current.steer = 0;
       else touch.current.climb = 0;
       return;
     }
+    // Full deflection ~1/8 of the width sideways, ~1/5 of the height up or down.
     const dead = (v: number) =>
-      Math.abs(v) < 0.12 ? 0 : Math.max(-1, Math.min(1, v));
-    if (zone === "kurs") touch.current.steer = dead((nx - 0.25) / 0.18);
-    else touch.current.climb = dead((0.5 - ny) / 0.28);
+      Math.abs(v) < 0.08 ? 0 : Math.max(-1, Math.min(1, v));
+    if (p.zone === "kurs") touch.current.steer = dead((nx - p.x0) / 0.12);
+    else touch.current.climb = dead((p.y0 - ny) / 0.2);
   };
 
   const velg = (e: SledeEtappe) => {
@@ -783,10 +890,10 @@ export function SledeSimulator({ day }: { day: number }) {
       {touchHint && fase === "spiller" && (
         <>
           <div className="absolute bottom-2 left-3 text-(--neon-green)/40 text-base pointer-events-none">
-            ← → KURS
+            DRA ← → KURS
           </div>
-          <div className="absolute bottom-2 right-3 text-(--neon-green)/40 text-base pointer-events-none">
-            ▲ ▼ HØYDE
+          <div className="absolute bottom-2 right-20 text-(--neon-green)/40 text-base pointer-events-none">
+            DRA ▲ ▼ HØYDE
           </div>
         </>
       )}
@@ -798,6 +905,7 @@ export function SledeSimulator({ day }: { day: number }) {
           <div>
             VARDER {b?.varder ?? 0}/{b?.varderTotalt ?? 0}
           </div>
+          <div className="text-(--cold-blue)">UTFORDRING {b?.utf ?? ""}</div>
         </div>
         <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1/3">
           <div className="h-2 border border-(--brass) bg-black/60">
@@ -815,6 +923,11 @@ export function SledeSimulator({ day }: { day: number }) {
         <div className={`absolute top-1 right-14 ${panel} text-right`}>
           <div className="text-(--gold) tabular-nums text-2xl">
             {b?.poeng ?? 0}
+            {(b?.mult ?? 1) > 1 && (
+              <span className="ml-2 text-(--neon-green) text-xl">
+                x{b?.mult}
+              </span>
+            )}
           </div>
           {!assist && (
             <div
@@ -896,49 +1009,73 @@ export function SledeSimulator({ day }: { day: number }) {
         </>
       )}
 
-      {fase !== "spiller" && (
+      {fase !== "spiller" && fase !== "nedtelling" && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/55 p-2 overflow-y-auto">
-          <div className="border-2 border-(--brass) bg-black/85 p-3 max-w-md w-full max-h-full overflow-y-auto text-(--neon-green) space-y-2 text-center">
+          <div className="border-2 border-(--brass) bg-black/85 p-2 max-w-lg w-full max-h-full overflow-y-auto text-(--neon-green) space-y-1.5 text-center">
             {fase === "start" && (
               <>
-                <div className="text-(--gold) text-2xl">IQs SLEDESIMULATOR</div>
-                <div className="flex flex-wrap gap-2 justify-center">
+                <div className="text-(--gold) text-xl leading-none">
+                  IQs SLEDESIMULATOR
+                </div>
+                <div className="flex flex-wrap gap-1 justify-center">
                   {åpne.map((e) => (
                     <button
                       key={e.id}
                       type="button"
                       onClick={() => velg(e)}
-                      className={`${knapp} ${e.id === etappe.id ? "border-(--gold) bg-(--gold) text-black" : "border-(--neon-green)/50"}`}
+                      className={`min-h-11 px-2 border-2 text-base leading-none cursor-pointer ${e.id === etappe.id ? "border-(--gold) bg-(--gold) text-black" : "border-(--neon-green)/50"}`}
                     >
-                      {e.navn} {bjelletegn(beste[e.id]?.bjeller ?? 0)}
+                      {e.navn}
+                      <span className="block text-sm tracking-widest">
+                        {bjelletegn(beste[e.id]?.bjeller ?? 0)}
+                      </span>
                     </button>
                   ))}
                 </div>
-                <div className="text-lg">«{etappe.intro}»</div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    SoundManager.playSound("click");
-                    setAssist((a) => !a);
-                  }}
-                  className={`${knapp} ${assist ? "border-(--cold-blue) text-(--cold-blue)" : "border-(--christmas-red) text-(--christmas-red)"}`}
-                >
-                  IQ-ASSISTENT: {assist ? "PÅ" : "AV"}
-                </button>
-                <div className="text-base opacity-70">
-                  {assist
-                    ? "Sleden holder høyden selv og krasjer aldri. Styr gjennom vardene!"
-                    : "Tre forsøk, kastevind og stjerner. Jakt på tre bjeller!"}
+                <div className="text-base leading-tight">«{etappe.intro}»</div>
+                <div className="text-sm opacity-70 tabular-nums leading-tight">
+                  ● {krav[0]} varder · ●● {krav[1]} · ●●● {krav[2]} og ingen
+                  krasj
                 </div>
-                <button
-                  type="button"
-                  onClick={start}
-                  className={`${knapp} border-(--gold) text-(--gold) w-full`}
-                >
-                  START
-                </button>
-                <div className="text-base opacity-60">
-                  PILTASTER / WASD · MELLOMROM = SPRANG · ESC = PAUSE
+                <div className="border border-(--cold-blue)/60 px-2 py-0.5 text-base leading-tight">
+                  <span className="text-(--cold-blue)">
+                    DAGENS UTFORDRING:{" "}
+                  </span>
+                  {utfordring.tekst}
+                  <span className="opacity-70">
+                    {" "}
+                    · +{utfordring.bonus} poeng
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      SoundManager.playSound("click");
+                      setAssist((a) => !a);
+                    }}
+                    title={
+                      assist
+                        ? "Sleden holder høyden selv og krasjer aldri."
+                        : "Tre forsøk, full kastevind."
+                    }
+                    className={`${knapp} ${assist ? "border-(--cold-blue) text-(--cold-blue)" : "border-(--christmas-red) text-(--christmas-red)"}`}
+                  >
+                    IQ-ASSISTENT: {assist ? "PÅ" : "AV"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={start}
+                    className={`${knapp} border-(--gold) text-(--gold) flex-1`}
+                  >
+                    START
+                  </button>
+                </div>
+                <div className="text-sm opacity-60 leading-tight">
+                  {assist
+                    ? "Assistenten holder høyden og krasjer aldri."
+                    : "Tre forsøk, full kastevind."}{" "}
+                  · PILTASTER / WASD · MELLOMROM = SPRANG · ESC = PAUSE
                 </div>
               </>
             )}
@@ -963,40 +1100,67 @@ export function SledeSimulator({ day }: { day: number }) {
             )}
             {(fase === "slutt" || fase === "tapt") && (
               <>
-                <div className="text-(--gold) text-2xl">
+                <div className="text-(--gold) text-xl leading-none">
                   {fase === "slutt"
-                    ? "GODKJENT AV IQ!"
+                    ? `GODKJENT AV IQ!  ${bjelletegn(resultat.bjeller)}`
                     : "IQ KOBLER INN NØDBREMSEN"}
                 </div>
-                {fase === "slutt" && (
-                  <div className="text-3xl text-(--gold)">
-                    {bjelletegn(resultat.bjeller)}
-                  </div>
-                )}
-                <div className="text-xl tabular-nums">
+                <div className="text-lg tabular-nums leading-tight">
                   POENG {resultat.poeng} · BESTE {resultat.beste}
                 </div>
-                <div className="text-base opacity-70">
-                  {fase === "slutt"
-                    ? etappe.id === "julenatt"
-                      ? "Ruten er klar. God jul fra IQ og Rudolf!"
-                      : "Ruten er logget i IQs notatbok."
-                    : "Rudolf trenger en gulrot og et nytt forsøk."}
+                <dl className="grid grid-cols-[auto_auto_auto_auto] gap-x-3 gap-y-0 text-left text-base leading-tight tabular-nums mx-auto w-fit">
+                  {(
+                    [
+                      ["VARDER", `${resultat.varder}/${resultat.varderTotalt}`],
+                      ["STJERNER", resultat.stjerner],
+                      [
+                        "BESTE REKKE",
+                        `${resultat.besteRekke} (x${rekkeMult(resultat.besteRekke)})`,
+                      ],
+                      ["NÆRE PÅ", resultat.nære],
+                      ["TIDSBONUS", `+${resultat.tidsbonus}`],
+                      ["KRASJ", resultat.krasj],
+                    ] as const
+                  ).map(([k, v]) => (
+                    <div key={k} className="contents">
+                      <dt className="opacity-70">{k}</dt>
+                      <dd className="text-right">{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <div
+                  className={`text-base leading-tight ${resultat.utfordringKlart ? "text-(--gold)" : "opacity-70"}`}
+                >
+                  UTFORDRING:{" "}
+                  {resultat.utfordringKlart
+                    ? `KLART  +${utfordring.bonus}`
+                    : fase === "slutt"
+                      ? "ikke denne gangen"
+                      : "-"}
                 </div>
-                <button
-                  type="button"
-                  onClick={start}
-                  className={`${knapp} border-(--gold) text-(--gold) w-full`}
-                >
-                  IGJEN
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setFase("start")}
-                  className={`${knapp} border-(--neon-green)/50 w-full`}
-                >
-                  VELG ETAPPE
-                </button>
+                <div className="text-base text-(--cold-blue) leading-tight">
+                  {fase === "tapt"
+                    ? "Rudolf trenger en gulrot og et nytt forsøk."
+                    : etappe.id === "julenatt" && resultat.bjeller >= 3
+                      ? "Ruten er klar. God jul fra IQ og Rudolf!"
+                      : nesteBjelle(resultat, krav)}
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={start}
+                    className={`${knapp} border-(--gold) text-(--gold) flex-1`}
+                  >
+                    EN GANG TIL
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFase("start")}
+                    className={`${knapp} border-(--neon-green)/50`}
+                  >
+                    VELG ETAPPE
+                  </button>
+                </div>
               </>
             )}
           </div>
@@ -1007,6 +1171,18 @@ export function SledeSimulator({ day }: { day: number }) {
 }
 
 const bjelletegn = (n: number) => "●".repeat(n) + "○".repeat(3 - n);
+
+/** What the next bell asks for, so a kid knows what to go for on the next run. */
+function nesteBjelle(
+  r: { bjeller: number; varder: number; krasj: number },
+  krav: number[],
+) {
+  if (r.bjeller >= 3) return "Alle tre bjeller. IQ bukker!";
+  const mangler = krav[r.bjeller] - r.varder;
+  if (mangler > 0)
+    return `${mangler} ${mangler === 1 ? "varde" : "varder"} til neste bjelle.`;
+  return "Fly uten krasj, så henger den tredje bjellen.";
+}
 
 /** A small brass sleigh for the repair quota. */
 function Slede({ dim }: { dim: boolean }) {

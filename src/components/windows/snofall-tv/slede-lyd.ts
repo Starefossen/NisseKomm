@@ -90,13 +90,26 @@ export class SledeLyd {
     };
   }
 
-  bjelle() {
+  /** The bell climbs a step per multiplier so a long run sounds like a run. */
+  bjelle(mult = 1) {
     const ctx = SoundManager.context();
     if (!ctx) return;
     const t = ctx.currentTime;
-    this.tone(ctx, 1800, t, 0.25, "sine", 0.18);
-    this.tone(ctx, 2400, t + 0.06, 0.3, "sine", 0.12);
-    this.tone(ctx, 3600, t + 0.06, 0.12, "triangle", 0.05);
+    const k = Math.pow(2, (mult - 1) / 6);
+    this.tone(ctx, 1800 * k, t, 0.25, "sine", 0.18);
+    this.tone(ctx, 2400 * k, t + 0.06, 0.3, "sine", 0.12);
+    this.tone(ctx, 3600 * k, t + 0.06, 0.12, "triangle", 0.05);
+  }
+
+  /** Countdown tick; the last one is the higher «go». */
+  tikk(siste: boolean) {
+    const ctx = SoundManager.context();
+    if (!ctx) return;
+    const t = ctx.currentTime;
+    if (siste) {
+      this.tone(ctx, 1320, t, 0.3, "square", 0.08);
+      this.tone(ctx, 1760, t + 0.05, 0.4, "triangle", 0.08);
+    } else this.tone(ctx, 880, t, 0.1, "square", 0.07);
   }
 
   stjerne() {
