@@ -84,13 +84,13 @@ ejob() { # name state event: one event clip for a state loop
     && "$A/bin/anchor.sh" "$A/out/$1.raw.mp4" "$key" "$T/$1.mp4" \
     && meta "$T/$1.mp4" "$LV/hendelse-$3.prompt.txt" "$key" $r
 }
-for e in brevfugler julius nissemor iq winter reinsdyr hverdag aking marked tarnklokke stjerneskudd; do ejob "landsby-$e" landsby-rolig "$e"; done
+for e in brevfugler julius iq winter reinsdyr hverdag aking marked tarnklokke stjerneskudd; do ejob "landsby-$e" landsby-rolig "$e"; done
 for e in brevfugler hverdag reinsdyr; do ejob "landsby-morgen-$e" landsby-morgen "$e"; done
 for e in aking marked hverdag; do ejob "landsby-dag-$e" landsby-dag "$e"; done
 for e in stjerneskudd tarnklokke reinsdyr; do ejob "landsby-natt-$e" landsby-natt "$e"; done
 # Gate camera: the closed gate (port-nokkelramme.jpg) is first and last frame; the gate opens and closes in the clip.
 PK="$L/snofall-landsby/port-nokkelramme.jpg"
-for c in julius nissemor iq winter; do
+for c in julius hjerterud iq winter; do
   keep "$T/port-$c.mp4" && continue
   r=$(ref "$c")
   "$A/bin/loop.sh" "$PK" "$LV/port-$c.prompt.txt" "port-$c.raw" 10 $r \

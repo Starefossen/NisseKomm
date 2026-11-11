@@ -33,7 +33,7 @@ def manifest(root: Path = ROOT):
     paths = re.findall(r'"((?:video|audio|feed|music)/[^"]+\.\w+)"', src)
     days = [f"video/julius/dag-{d:02d}.mp4" for d in range(1, 25)]
     days += [f"audio/rampenissen/dag-{d:02d}.mp3" for d in range(1, 25)]
-    ports = [f"video/tv/port-{c}.mp4" for c in ("julius", "nissemor", "iq", "winter")]
+    ports = [f"video/tv/port-{c}.mp4" for c in ("julius", "hjerterud", "iq", "winter")]
     return list(dict.fromkeys(days + paths + ports))
 
 

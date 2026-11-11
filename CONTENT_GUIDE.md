@@ -49,9 +49,9 @@
 **Characters (Snøfall Universe):**
 
 - **Julius** - Santa Claus (from Snøfall)
-- **Nissemor** - Julius' wife
+- **Hjerterud** - Runs the bakery and café in Snøfall (warm, bubbly, slightly overwhelming)
 - **Rampenissen** - The Mischievous Elf (Julius' assistant stationed with children)
-- **Pil** - Julius' apprentice (eager and helpful)
+- **Pil** - IQ's apprentice (eager and helpful)
 - **Winter (Ole Winter)** - Julius' secretary (organizes everything)
 - **IQ** - Inventor (creates gadgets and contraptions)
 - **Trixter** - Julius' favorite reindeer
@@ -175,15 +175,17 @@ With occasional slang (sparingly):
 >
 > \- Julius
 
-### Nissemor (Julius' Wife)
+### Hjerterud (Bakery and Café)
 
-**Personality**: Practical, organized, supportive parent figure.
+**Personality**: Bubbly, warm and a little overwhelming. Runs the bakery and café; hugs, buns and cocoa. Makes sure nobody is cold or hungry. Not part of Julius' household: she lives at the café.
 
-**Tone**: Gentle but firm, patient, warm and encouraging.
+**Tone**: Hearty, quick, caring; always one more bun, one more question about whether you have eaten.
 
-### Pil (Apprentice)
+**Look** (`assets/characters/hjerterud/beskrivelse.txt`): 50s, round and rosy-cheeked, reddish-brown curls in a loose bun, flowered red-and-brown dress, knitted cardigan, white apron with flour dust, usually a tray of buns or a cocoa pot in hand.
 
-**Personality**: Eager learner, helpful, asks questions, looks up to Julius.
+### Pil (IQ's Apprentice)
+
+**Personality**: Eager learner, helpful, asks questions, looks up to IQ.
 
 **Tone**: Curious, excited to share discoveries, sometimes unsure but brave.
 

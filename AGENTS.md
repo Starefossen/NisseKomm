@@ -22,7 +22,7 @@
 
 **The Physical-Digital Bridge**: This is NOT a purely digital game. Success requires exploring BOTH worlds - searching the house for physical clues while investigating files in NisseKomm's retro CRT terminal. The two worlds intertwine throughout December 1-24.
 
-**Universe**: Based on Snøfall TV series - Julius (Santa) in magical Snøfall with Nissemor and elves. Rampenissen does humorous mischiefs during advent while keeping a watchful eye on the kids, but this year he needs their problem-solving help.
+**Universe**: Based on Snøfall TV series - Julius (Santa) in magical Snøfall with Hjerterud and elves. Rampenissen does humorous mischiefs during advent while keeping a watchful eye on the kids, but this year he needs their problem-solving help.
 
 📖 **Complete details** → [CONTENT_GUIDE.md#dialogue-principles](./CONTENT_GUIDE.md#dialogue-principles) | [IMPLEMENTATION.md#game-mechanics](./IMPLEMENTATION.md)
 

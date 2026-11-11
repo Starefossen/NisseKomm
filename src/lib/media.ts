@@ -108,7 +108,6 @@ export const MEDIA_MANIFEST: readonly ManifestEntry[] = [
   "video/tv/landsby-hverdag.mp4",
   "video/tv/landsby-aking.mp4",
   "video/tv/landsby-stjerneskudd.mp4",
-  "video/tv/landsby-nissemor.mp4",
   "video/tv/landsby-winter.mp4",
   "video/tv/verksted-iq-inne.mp4",
   "video/tv/verksted-tom.mp4",
@@ -124,7 +123,7 @@ export const MEDIA_MANIFEST: readonly ManifestEntry[] = [
   "video/tv/grotte-dag23.mp4",
   "video/tv/grotte-dag24.mp4",
   "video/tv/port-julius.mp4",
-  "video/tv/port-nissemor.mp4",
+  "video/tv/port-hjerterud.mp4",
   "video/tv/port-iq.mp4",
   "video/tv/port-winter.mp4",
   "feed/antenne-tarn.png",
@@ -137,7 +136,7 @@ export const MEDIA_MANIFEST: readonly ManifestEntry[] = [
   // NISSESPILL (Ugleposten): stills and pixel portraits, assets/bin/portrett.sh + piksel.sh
   "spill/torget.jpg",
   "spill/port-aapen.jpg",
-  ...["rampenissen", "iq", "winter", "julius", "nissemor"].map(
+  ...["rampenissen", "iq", "winter", "julius", "hjerterud"].map(
     (n) => `spill/portrett-${n}.png`,
   ),
   // Painted horizons for IQs sledesimulator (assets/locations/sledeflukt)

@@ -44,7 +44,8 @@ SLEDE = ("tundra", "nordtoppen", "muren", "julenatt")  # prompts: assets/locatio
 SLEDE_REF = "assets/locations/snofall-landsby/nokkelramme-rolig.jpg"
 WINTER_REFS = ("assets/characters/winter/ref-v1-outside.jpg", "assets/characters/winter/ref-v1-tophat.jpg")  # gitignored
 # Ugleposten pixel portraits: name -> (prompt, refs); output spill/portrett-<name>.png (portrett.sh + piksel.sh)
-PORTRETT = {"winter": ("assets/characters/winter/portrett.prompt.txt", WINTER_REFS)}
+PORTRETT = {"winter": ("assets/characters/winter/portrett.prompt.txt", WINTER_REFS),
+            "hjerterud": ("assets/characters/hjerterud/portrett.prompt.txt", ())}
 # Ugleposten scene stills (nissespill/kapittel1-4.ts): id -> (reference, prompt); output spill/<id>.jpg
 SPILL = {
     "iq-verksted": ("assets/locations/iq-verksted/vidvinkel-tom.jpg", "assets/locations/iq-verksted/varianter/spill.still.prompt.txt"),

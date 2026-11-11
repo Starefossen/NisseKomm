@@ -56,7 +56,7 @@ Basert på TV-serien **Snøfall** med kjente karakterer:
 
 - **Julius** (julenissen) - Vis og varm leder
 - **Rampenissen** - Din entusiastiske, litt klønete venn
-- **Nissemor** - Julius' kone, praktisk og støttende
+- **Hjerterud** - Driver bakeriet og kafeen, varm og litt overveldende
 - **Pil, Winter, IQ** - Nisser med spesialoppgaver
 - **Orakelet & Mørket** - Mystikk og spenning
 
