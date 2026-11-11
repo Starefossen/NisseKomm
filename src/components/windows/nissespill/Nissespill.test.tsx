@@ -204,34 +204,80 @@ describe("Nissespill: motor", () => {
     });
   });
 
-  it("alle referanser i kapittel 1 peker på noe som finnes", () => {
-    const k = KAPITTEL_1;
-    const items = new Set(Object.keys(k.gjenstander));
-    const scener = new Set(k.scener.map((s) => s.id));
-    for (const s of k.scener) {
-      for (const u of s.utganger) expect(scener.has(u.til)).toBe(true);
-      for (const h of s.hotspots) {
-        if (h.ta) expect(items.has(h.ta.item)).toBe(true);
-        if (h.snakk) expect(k.dialoger[h.snakk]).toBeDefined();
-        if (h.gaaTil) expect(scener.has(h.gaaTil)).toBe(true);
-        for (const b of h.bruker ?? []) {
-          expect(items.has(b.item)).toBe(true);
-          if (b.gir) expect(items.has(b.gir)).toBe(true);
-        }
-        for (const f of Object.keys(h.feil ?? {}))
-          expect(items.has(f)).toBe(true);
-      }
-    }
-    for (const d of Object.values(k.dialoger)) {
-      for (const n of Object.values(d.noder)) {
-        for (const v of n.valg ?? []) {
-          if (v.neste) expect(d.noder[v.neste]).toBeDefined();
-          if (v.harItem) expect(items.has(v.harItem)).toBe(true);
+  it.each(KAPITLER.filter((k) => k.klar).map((k) => [k.n, k] as const))(
+    "alle referanser i kapittel %i peker på noe som finnes",
+    (_n, k) => {
+      const items = new Set(Object.keys(k.gjenstander));
+      const scener = new Set(k.scener.map((s) => s.id));
+      for (const s of k.scener) {
+        for (const u of s.utganger) expect(scener.has(u.til)).toBe(true);
+        for (const h of s.hotspots) {
+          if (h.ta) expect(items.has(h.ta.item)).toBe(true);
+          if (h.snakk) expect(k.dialoger[h.snakk]).toBeDefined();
+          if (h.gaaTil) expect(scener.has(h.gaaTil)).toBe(true);
+          for (const b of h.bruker ?? []) {
+            expect(items.has(b.item)).toBe(true);
+            if (b.gir) expect(items.has(b.gir)).toBe(true);
+          }
+          for (const f of Object.keys(h.feil ?? {}))
+            expect(items.has(f)).toBe(true);
         }
       }
+      for (const d of Object.values(k.dialoger)) {
+        for (const n of Object.values(d.noder)) {
+          for (const v of n.valg ?? []) {
+            if (v.neste) expect(d.noder[v.neste]).toBeDefined();
+            if (v.harItem) expect(items.has(v.harItem)).toBe(true);
+          }
+        }
+      }
+      // 10+ funny SE lines
+      const seLinjer = k.scener.flatMap((s) => s.hotspots.map((h) => h.se));
+      expect(seLinjer.length).toBeGreaterThanOrEqual(10);
+    },
+  );
+
+  /** Every chapter is solvable from a fresh save with the steps below (no softlock). */
+  const spill = (kap: M.Kapittel, steg: [string, string, string?][]) => {
+    let save = M.nyttKapittel(kap);
+    const hot = (scene: string, id: string) => {
+      const h = kap.scener
+        .find((s) => s.id === scene)!
+        .hotspots.find((x) => x.id === id)!;
+      expect(M.synlige(M.scene(kap, save), save)).toContain(h);
+      return h;
+    };
+    for (const st of steg) {
+      if (st[0] === "+") {
+        const u = M.kombiner(kap, save, st[1], st[2] ?? "");
+        expect(u.lyd).toBe("success");
+        save = u.save;
+        continue;
+      }
+      save = M.gaa(save, st[0]).save;
+      const u = M.trykk(kap, save, hot(st[0], st[1]), null, st[2] ?? null);
+      expect([u.tekst, u.lyd]).toEqual([u.tekst, "success"]);
+      save = u.save;
     }
-    // 10+ funny SE lines
-    const seLinjer = k.scener.flatMap((s) => s.hotspots.map((h) => h.se));
-    expect(seLinjer.length).toBeGreaterThanOrEqual(10);
+    expect(save.flags).toContain(kap.slutt);
+    return save;
+  };
+
+  it("kapittel 2 kan spilles gjennom", () => {
+    spill(KAPITLER[1], [
+      ["tjernet", "snoehaugen"],
+      ["tjernet", "hytta", "noekkel"],
+      ["tjernet", "hytta"],
+      ["verksted", "tavla"],
+      ["verksted", "hyllene"],
+      ["verksted", "sidebordet"],
+      ["verksted", "krakken"],
+      ["+", "sirup", "knekkebroed"],
+      ["verksted", "radioroerene", "blikkboks"],
+      ["verksted", "radioroerene", "grytevott"],
+      ["tjernet", "rudolf", "sirupbroed"],
+      ["tjernet", "tannhjulet", "varmboks"],
+      ["tjernet", "peileskiva", "magnetnaal"],
+    ]);
   });
 });

@@ -6,6 +6,7 @@
  */
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 import { KAPITTEL_1 } from "./kapittel1";
+import { KAPITTEL_2 } from "./kapittel2";
 import type { Kapittel, Scene } from "./motor";
 
 const TODO = "TODO: tekst kommer.";
@@ -52,31 +53,6 @@ const stub = (
   scener,
   gaater: gaater.map((g) => ({ ...g, tips: [TODO, TODO, TODO] })),
 });
-
-/**
- * Kapittel 2 (dag 10, Frostgraden stiger): antenna at the tarn is frozen and Rudolf
- * chews the cable. Puzzles: syrup on crispbread lures Rudolf; a tin warmed under the
- * radio tubes (oven mitt!) thaws the gear; a magnet needle aims the antenna.
- */
-const KAPITTEL_2 = stub(
-  2,
-  "Antenna i permafrost",
-  10,
-  [
-    stubScene("verksted2", "IQs verksted", "feed/iq-verksted.png", "tjernet"),
-    stubScene(
-      "tjernet",
-      "Antenna ved tjernet",
-      "feed/antenne-tarn.png",
-      "verksted2",
-    ),
-  ],
-  [
-    { id: "rudolf", ferdig: "rudolf_flyttet" },
-    { id: "tannhjul", ferdig: "tannhjul_tint" },
-    { id: "peiling", ferdig: "k2_ferdig" },
-  ],
-);
 
 /**
  * Kapittel 3 (dag 16, after Vintervokteren is known): bring warmth and a light into
