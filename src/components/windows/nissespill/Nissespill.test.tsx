@@ -324,8 +324,8 @@ describe("Nissespill: motor", () => {
       ["?", "nissemor", "Vi skal passe på den."],
       ["kontor", "tekoppen"],
       ["+", "stearinlys", "tesil"],
-      ["?", "julius", "Rampenissen vil gi et lys til han i grotten."],
-      ["?", "julius", "Klare, høyre, foran flammen."],
+      // The lantern held to the clear shelf shows the chain and thaws the shard
+      ["grotten", "klarekrystallene", "tesil_lanterne"],
       ["grotten", "klarekrystallene"],
       ["grotten", "sokkelen", "tesil_lanterne"],
       ["grotten", "sokkelen", "krystallskaar"],
