@@ -102,15 +102,14 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     tap(el, "VIDERE");
     expect(GameEngine.getEventyrSave()?.flags).toContain("k1_intro");
 
-    // Stempelputa is hidden until Winter has explained the system
-    expect(find(el, "Stempelputa")).toBeUndefined();
+    // The pad is in plain sight; Winter explains what it is for
+    expect(find(el, "Stempelputa")).toBeDefined();
     tap(el, "Winter");
     expect(el.textContent).toContain("Halt!");
     tap(el, "Vi leter etter en garnkurv. Med en bjelle i.");
     expect(el.textContent).toContain("SENGA mi i postkassen");
     tap(el, "Og stempelet?");
     tap(el, "Skjønner. Vi finner noe rødt.");
-    expect(find(el, "Stempelputa")).toBeDefined();
 
     // Berries, then up to the workshop for the cup and the form
     tap(el, "Julebodene");
@@ -137,23 +136,32 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
       "baersaft",
     ]);
 
+    // The form goes under IQ's door for a signature
+    tap(el, "Skjema 4112-B");
+    tap(el, "IQs dør");
+    expect(el.textContent).toContain("brunsvidd hjørne");
+    expect(GameEngine.getEventyrSave()?.inventory).toEqual([
+      "baersaft",
+      "skjema_signert",
+    ]);
+
     // Remount mid-game: same scene and pockets
     el = mount();
     expect(el.textContent).toContain("IQs verksted");
     tap(el, "→ Ned trappa til torget");
 
-    // Unstamped form is refused, juice wets the pad, stamped form opens the lock
-    tap(el, "Skjema 4112-B");
+    // Signed form with a dry pad is refused, juice wets the pad, then it passes
+    tap(el, "Skjema 4112-B, signert");
     tap(el, "Winter");
-    expect(el.textContent).toContain("Felt 7-C");
+    expect(el.textContent).toContain("helt nei");
     tap(el, "Kopp med tyttebærsaft");
     tap(el, "Stempelputa");
     expect(el.textContent).toContain("skogsbær");
     expect(GameEngine.getEventyrSave()?.inventory).toEqual([
-      "skjema",
+      "skjema_signert",
       "kaffekopp",
     ]);
-    tap(el, "Skjema 4112-B");
+    tap(el, "Skjema 4112-B, signert");
     tap(el, "Winter");
     expect(el.textContent).toContain("til nød gyldig");
 
@@ -274,20 +282,37 @@ describe("Nissespill: motor", () => {
     return save;
   };
 
+  it("kapittel 1 kan spilles gjennom", () => {
+    spill(KAPITLER[0], [
+      ["torget", "bodene"],
+      ["verksted", "kaffekoppen"],
+      ["verksted", "sidebordet"],
+      ["verksted", "doera", "skjema"],
+      ["+", "tyttebaer", "kaffekopp"],
+      ["torget", "stempelputa", "baersaft"],
+      ["torget", "winter", "skjema_signert"],
+      ["torget", "postkassen", "kaffekopp"],
+    ]);
+  });
+
   it("kapittel 2 kan spilles gjennom", () => {
     spill(KAPITLER[1], [
       ["tjernet", "snoehaugen"],
       ["tjernet", "hytta", "noekkel"],
       ["tjernet", "hytta"],
+      ["tjernet", "benken"],
       ["verksted", "tavla"],
       ["verksted", "hyllene"],
       ["verksted", "sidebordet"],
       ["verksted", "krakken"],
       ["+", "sirup", "knekkebroed"],
-      ["verksted", "radioroerene", "blikkboks"],
-      ["verksted", "radioroerene", "grytevott"],
+      ["+", "blikkboks", "grytevott"],
+      ["verksted", "radioroerene", "boks_i_vott"],
       ["tjernet", "rudolf", "sirupbroed"],
       ["tjernet", "tannhjulet", "varmboks"],
+      // The box is cold again; the frozen water cup needs a second round
+      ["verksted", "radioroerene", "boks_i_vott"],
+      ["tjernet", "peileskiva", "varmboks"],
       ["tjernet", "peileskiva", "magnetnaal"],
     ]);
   });
@@ -299,8 +324,8 @@ describe("Nissespill: motor", () => {
       ["?", "nissemor", "Vi skal passe på den."],
       ["kontor", "tekoppen"],
       ["+", "stearinlys", "tesil"],
-      ["?", "julius", "Rampenissen vil gi et lys til han i grotten."],
-      ["?", "julius", "Klare, høyre, foran flammen."],
+      // The lantern held to the clear shelf shows the chain and thaws the shard
+      ["grotten", "klarekrystallene", "tesil_lanterne"],
       ["grotten", "klarekrystallene"],
       ["grotten", "sokkelen", "tesil_lanterne"],
       ["grotten", "sokkelen", "krystallskaar"],
@@ -309,22 +334,26 @@ describe("Nissespill: motor", () => {
     ]);
   });
 
-  it("kapittel 4 kan spilles gjennom", () => {
+  it("kapittel 4 kan spilles gjennom i valgfri rekkefølge", () => {
+    // Port first, then bell, then glasses: Winter's list is no longer ordered
     spill(KAPITLER[3], [
       ["?", "winter", "Hva står på listen?"],
-      ["kontor", "blekkhuset"],
-      ["kontor", "brevfuglen", "fjaer"],
-      ["kontor", "skaala"],
-      ["kontor", "brevfuglen", "klementin"],
+      ["?", "winter", "Kan vi få litt talg fra lanterna?"],
+      ["porten", "lanterne_v"],
+      ["porten", "hengslet", "talgstump"],
       ["kontor", "taletrakten"],
       ["kontor", "brevbunken"],
       ["+", "magnet", "hyssing"],
       ["kontor", "vedkassa", "fiskesnoere"],
-      ["kontor", "julius", "briller"],
       ["porten", "sleden", "bjelle"],
-      ["?", "winter", "Kan vi få litt talg fra lanterna?"],
-      ["porten", "lanterne_v"],
-      ["porten", "hengslet", "talgstump"],
+      ["kontor", "blekkhuset"],
+      ["kontor", "brevfuglen", "fjaer"],
+      ["kontor", "skaala"],
+      ["kontor", "brevfuglen", "klementin"],
+      ["kontor", "julius", "briller"],
+      ["?", "winter", "Alt på lista er gjort. Sjekk!"],
+      ["?", "winter", "Punkt to: bjella henger."],
+      ["?", "winter", "Punkt tre: porten er smurt."],
     ]);
   });
 });
