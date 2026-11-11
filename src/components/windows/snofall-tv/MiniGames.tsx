@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { SoundManager } from "@/lib/sounds";
-import { SledeSimulator } from "./SledeSimulator";
 
 /**
  * Antenna-HUD toys. Pure play, shown only after today's code is in:
@@ -127,7 +126,11 @@ export function MiniGames({
           )}
         </>
       )}
-      {game === "slede" && <SledeSimulator day={day} />}
+      {game === "slede" && (
+        <div className="text-(--cold-blue)">
+          IQs simulator er flyttet til SLEDEFLUKT på skrivebordet.
+        </div>
+      )}
       {game === "sentrifuge" && (
         <>
           <div>Sentrifuger prøvene ({rpm} RPM):</div>

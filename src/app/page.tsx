@@ -29,6 +29,7 @@ import { EventyrOversikt } from "@/components/windows/EventyrOversikt";
 import { Dagbok } from "@/components/windows/Dagbok";
 import { RuneTavle } from "@/components/windows/RuneTavle";
 import { Nissespill } from "@/components/windows/nissespill/Nissespill";
+import { Sledeflukt } from "@/components/windows/sledeflukt/Sledeflukt";
 import { FROST_OPEN_WINDOWS } from "@/lib/frost";
 import { GrandFinaleModal } from "@/components/ui/GrandFinaleModal";
 import { BadgeRow } from "@/components/ui/BadgeRow";
@@ -90,6 +91,13 @@ const TOOLS: {
     label: "NISSESPILL",
     color: "gold",
     unlock: "NISSESPILL",
+  },
+  {
+    window: "sledeflukt",
+    icon: "compass",
+    label: "SLEDEFLUKT",
+    color: "blue",
+    unlock: "SLEDEFLUKT",
   },
   {
     window: "nissemusikk",
@@ -562,6 +570,12 @@ export default function Home() {
                   )}
                   {openWindow === "nissespill" && (
                     <Nissespill onClose={handleCloseWindow} />
+                  )}
+                  {openWindow === "sledeflukt" && (
+                    <Sledeflukt
+                      day={getCurrentDay()}
+                      onClose={handleCloseWindow}
+                    />
                   )}
                   {openWindow === "dagbok" && (
                     <Dagbok
