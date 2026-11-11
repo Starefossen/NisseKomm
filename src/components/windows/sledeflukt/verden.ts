@@ -209,6 +209,34 @@ function ringMesh() {
   return m.build();
 }
 
+/** Letter bird, facing -z: ice-blue body, white wings spread, gold beak, a letter in its claws. */
+function fuglMesh() {
+  const m = new Mesh();
+  const BLÅ = hex(0x8ea4c8);
+  m.ellipsoid([0, 0, 0], [0.7, 0.6, 1.2], BLÅ, 6, 3);
+  m.ellipsoid([0, 0.5, -1.1], [0.5, 0.5, 0.5], BLÅ, 6, 3);
+  m.box([0, 0.45, -1.7], [0.25, 0.2, 0.5], GULL, 1);
+  for (const s of [-1, 1]) {
+    m.quad(
+      [s * 0.4, 0.2, -0.6],
+      [s * 2.6, 0.9, -0.2],
+      [s * 2.4, 0.9, 0.8],
+      [s * 0.4, 0.2, 0.6],
+      SNØ,
+    );
+    m.quad(
+      [s * 0.4, 0.2, 0.6],
+      [s * 2.4, 0.9, 0.8],
+      [s * 2.6, 0.9, -0.2],
+      [s * 0.4, 0.2, -0.6],
+      SNØ_SKYGGE,
+    );
+  }
+  m.box([0, -0.9, 0], [0.9, 0.1, 0.7], SNØ, 1);
+  m.box([0, -0.85, 0], [0.3, 0.12, 0.3], RØD, 1);
+  return m.build();
+}
+
 function stjerneMesh() {
   const m = new Mesh();
   m.cone([0, 0, 0], 1.4, 1.6, GULL, 4, 0, 1);
@@ -411,6 +439,7 @@ export interface Meshes {
   tre: Float32Array;
   hus: HusMesh[];
   ring: Float32Array;
+  fugl: Float32Array;
   stjerne: Float32Array;
   topp: Float32Array;
   band: Float32Array;
@@ -434,6 +463,7 @@ export function meshes(): Meshes {
       tre: treMesh(),
       hus: [0, 1, 2].map(husMesh),
       ring: ringMesh(),
+      fugl: fuglMesh(),
       stjerne: stjerneMesh(),
       topp: toppMesh(),
       band: bandMesh(),

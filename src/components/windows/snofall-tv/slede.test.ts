@@ -20,6 +20,8 @@ import {
   landingTekst,
   PIPE_POENG,
   NÆR_M,
+  RADIO,
+  radiolinje,
   RAMP,
   rekkeMult,
   RING_ALT,
@@ -283,13 +285,45 @@ describe("rekke og nære på", () => {
     expect(sim.s.rekke).toBe(4);
     // Fourth beacon paid double (x2 from the third onwards).
     expect(sim.s.poeng).toBe(150 * 3 + 300);
-    sim.s.px = varder[4].x + 1;
+    sim.s.px = varder[4].x > 0 ? varder[4].x - 1 : varder[4].x + 1;
     sim.s.alt = varder[4].h;
     sim.s.dist = varder[4].z - 1;
     sim.s.first = sim.s.ting.indexOf(varder[4]);
     expect(sim.step(1 / 60, still)).toContain("bom");
     expect(sim.s.rekke).toBe(0);
     expect(sim.s.besteRekke).toBe(4);
+  });
+
+  it("catches a letter bird at its altitude for a bonus and a little boost", () => {
+    for (const e of ETAPPER) {
+      const fugler = lagBane(e).filter((t) => t.type === "fugl");
+      expect(fugler.length).toBeGreaterThanOrEqual(2);
+      for (const f of fugler) {
+        expect(Math.abs(f.x)).toBeLessThanOrEqual(1);
+        expect(f.h).toBeGreaterThanOrEqual(100);
+        expect(f.h).toBeLessThanOrEqual(210);
+      }
+    }
+    const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
+    const f = sim.s.ting.find((t) => t.type === "fugl")!;
+    sim.s.px = f.x;
+    sim.s.alt = f.h + 100;
+    sim.s.dist = f.z - 1;
+    sim.s.first = sim.s.ting.indexOf(f);
+    expect(sim.step(1 / 60, still)).not.toContain("fugl");
+    f.ferdig = false;
+    sim.s.alt = f.h;
+    sim.s.dist = f.z - 1;
+    sim.s.first = sim.s.ting.indexOf(f);
+    expect(sim.step(1 / 60, still)).toContain("fugl");
+    expect(sim.s.fugler).toBe(1);
+    expect(sim.s.poeng).toBe(75);
+    expect(sim.s.kraft).toBeCloseTo(0.15);
+    expect(radiolinje("fugl", 0)).toMatch(/brevfugl/i);
+    expect(radiolinje("fugl", 3)).toBe(radiolinje("fugl", 0));
+    expect(radiolinje("stjerne", 0)).toBeNull();
+    for (const l of Object.values(RADIO).flat())
+      expect(l.length).toBeLessThan(70);
   });
 
   it("rewards skimming a tree without hitting it", () => {

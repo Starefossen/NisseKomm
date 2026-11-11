@@ -27,6 +27,8 @@ export interface Blanding {
   /** Odds per free segment. */
   tre: number;
   stjerne: number;
+  /** Letter birds to catch in the air; odds per free segment. */
+  fugl: number;
   topp: number;
   vind: number;
   /** Gust strength relative to the first stages. */
@@ -71,6 +73,7 @@ const ROLIG: Blanding = {
   høyde: 45,
   tre: 0.25,
   stjerne: 0.3,
+  fugl: 0.05,
   topp: 0,
   vind: 0.15,
   vindKraft: 1,
@@ -301,7 +304,8 @@ export type TingType =
   | "stjerne"
   | "mur"
   | "grotte"
-  | "hus";
+  | "hus"
+  | "fugl";
 
 export interface Ting {
   z: number;
@@ -406,6 +410,15 @@ export function lagBane(e: SledeEtappe): Ting[] {
     let p = m.topp;
     if (u < p) {
       out.push({ z, x: (r() - 0.5) * 1.6, type: "topp", h: 230 });
+      continue;
+    }
+    if (u < (p += m.fugl)) {
+      out.push({
+        z,
+        x: Math.max(-1, Math.min(1, lane + (r() - 0.5))),
+        type: "fugl",
+        h: 100 + r() * 110,
+      });
       continue;
     }
     if (u < (p += m.stjerne)) {
@@ -635,6 +648,7 @@ export type Hendelse =
   | "bjelle"
   | "bom"
   | "nesten"
+  | "fugl"
   | "krasj"
   | "stjerne"
   | "band"
@@ -732,6 +746,8 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     varder: 0,
     varderTotalt: ting.filter((t) => t.type === "varde").length,
     stjerner: 0,
+    /** Letter birds caught. */
+    fugler: 0,
     nære: 0,
     krasj: 0,
     /** Rings in a row without a miss; the multiplier is rekkeMult(rekke). */
@@ -748,6 +764,8 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     pakkebom: 0,
     /** Metres from the chimney for the last package that scored (0 = in it). */
     sisteMeter: 0,
+    /** The house a landed package was aimed at (nearest within reach), for the chimney's reply. */
+    sisteHus: null as Ting | null,
     leveringKlart: false,
     /** Boost meter 0..1, filled by rings; full = sprang available. */
     kraft: 0,
@@ -836,11 +854,17 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
         // Close counts too: points fall with distance, and per house only an improvement pays.
         let nærmest: Ting | null = null;
         let m = NÆR_M;
+        s.sisteHus = null;
+        let nærZ = 1500;
         for (const h of hus) {
           const d = meterFraPipa(p, h);
           if (d < m) {
             m = d;
             nærmest = h;
+          }
+          if (Math.abs(h.z - p.z) < nærZ) {
+            nærZ = Math.abs(h.z - p.z);
+            s.sisteHus = h;
           }
         }
         const poeng = nærPoeng(m);
@@ -946,6 +970,16 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
           ev.push("stjerne");
         }
         break;
+      case "fugl":
+        // A letter bird flies into the sack: a bonus and a little boost.
+        if (dx < 0.3 * widen && Math.abs(s.alt - t.h) < 45 * widen) {
+          t.treff = true;
+          s.fugler++;
+          s.poeng += 75 * boost;
+          s.kraft = Math.min(1, s.kraft + 0.15);
+          ev.push("fugl");
+        }
+        break;
       case "band":
         if (dx < 0.6 && s.alt > 150) {
           t.treff = true;
@@ -1040,6 +1074,49 @@ export function utfordringStatus(u: Utfordring, s: Telling) {
       return `${s.nære}/${u.mål}`;
   }
 }
+
+/**
+ * Rampenissen on the sled radio: one short line per event, nordlandsk
+ * (docs/manus/rampenissen-radio-2026.md «Skrivemåte»). No clues, no codes;
+ * names stay in bokmål. Visible from day 8 (synlig-tekst.ts).
+ */
+export const RADIO: Partial<Record<Hendelse, readonly string[]>> = {
+  fugl: [
+    "Ka du sei! Du fanga en brevfugl. Den hadde post te Julius.",
+    "Brevfugl i sekken! Æ håpe den ikkje bæsja på pakkan.",
+    "Fin fangst! Fuglen sei takk, trur æ.",
+  ],
+  krasj: [
+    "Klonk. Æ såg ingenting, æ. Rudolf såg alt.",
+    "Snø i ansiktet e bra for huden, sei Hjerterud.",
+    "Æ sa et ord Julius ikkje like. Inni mæ.",
+  ],
+  nesten: [
+    "Nesten! Æ telte den, men IQ gjord det ikkje.",
+    "Så nære at ringen blei nervøs.",
+  ],
+  levering: [
+    "Rett i pipa! Dem får sot på gaven, men gave e gave.",
+    "Bra jobba! Kaffen te pappaen der inne blei akkurat svart.",
+  ],
+  pakkebom: [
+    "Pakken ligg i snøen. Nån finn den te påske.",
+    "Oi. Det der va ikkje pipa. Det va en hage.",
+  ],
+  utfordring: ["Utfordring klart! Æ sei det på Morgenrådet i morra."],
+  mål: [
+    "I mål! Rudolf vil ha nåkka godt og æ vil ha kaffe.",
+    "Landa! IQ nikke. Det e det nærmaste han kjem et smil.",
+  ],
+  sprang: ["SPRANG! Hold dæ fast, det her e ikkje lov på jorda."],
+  port: ["Gjennom porten! Varmen slapp dæ inn."],
+};
+
+/** The n-th radio line for an event, or null when Rampenissen has nothing to say. */
+export const radiolinje = (h: Hendelse, n: number) => {
+  const l = RADIO[h];
+  return l ? l[n % l.length] : null;
+};
 
 /** Rings needed for one, two and three bells (40, 70 and 90 %). */
 export const bjelleKrav = (totalt: number) =>

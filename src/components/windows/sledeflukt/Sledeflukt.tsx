@@ -26,6 +26,7 @@ import {
   nesteLandemerke,
   landingTekst,
   pakkenavn,
+  radiolinje,
   rekkeMult,
   SPILLERE,
   utfordringStatus,
@@ -167,6 +168,7 @@ export function SledefluktSpill({
     varder: 0,
     varderTotalt: 0,
     stjerner: 0,
+    fugler: 0,
     besteRekke: 0,
     nære: 0,
     tidsbonus: 0,
@@ -205,6 +207,7 @@ export function SledefluktSpill({
   const [touchHint, setTouchHint] = useState(false);
   const [melding, setMelding] = useState<Melding | null>(null);
   const [pluss, setPluss] = useState<Melding | null>(null);
+  const [radio, setRadio] = useState<Melding | null>(null);
   const [feil, setFeil] = useState<string | null>(null);
   const [stat, setStat] = useState({
     p50: 0,
@@ -326,18 +329,35 @@ export function SledefluktSpill({
     let id = 0;
     let eye: Vec3 | null = null;
     let sistDist = 0;
-    // Gold sparks from the last rings flown through: where and when.
+    // Gold sparks from the last rings flown through, and smoke a chimney puffs back: where and when.
     const gnister: { p: Vec3; t0: number }[] = [];
+    const puff: { p: Vec3; t0: number }[] = [];
+    // Reindeer reaction (a hop) and Rampenissen's radio: seconds left, and lines said.
+    let hopp = 0;
+    let radioTil = 0;
+    let radioN = 0;
+
+    const say = (tekst: string, farge = "#ffd700") =>
+      setMelding({ tekst, farge, id: ++id });
+
+    /** Rampenissen cuts in at most every six seconds; near misses only now and then. */
+    const radioen = (h: Hendelse, now: number) => {
+      if (now < radioTil) return;
+      if (h === "nesten" && radioN % 3) return;
+      const l = radiolinje(h, radioN);
+      if (!l) return;
+      radioN++;
+      radioTil = now + 6;
+      setRadio({ tekst: l, farge: "#ffb347", id: ++id });
+    };
     // Frame-time ring for the auto resolution and the dev overlay.
     const tider = new Float32Array(180);
     let nTid = 0;
     let målAt = 0;
 
-    const say = (tekst: string, farge = "#ffd700") =>
-      setMelding({ tekst, farge, id: ++id });
-
     const hendelse = (h: Hendelse, sim: Sim) => {
       const l = lyd.current;
+      radioen(h, performance.now() / 1000);
       switch (h) {
         case "bjelle":
           l?.bjelle(rekkeMult(sim.s.rekke));
@@ -350,7 +370,13 @@ export function SledefluktSpill({
           break;
         case "nesten":
           l?.tikk(false);
+          hopp = 0.5;
           say("NESTEN!", "#8aa0c0");
+          break;
+        case "fugl":
+          l?.stjerne();
+          hopp = 0.5;
+          say("BREVFUGL FANGET  +75", "#c0d2ec");
           break;
         case "bom":
           if (sim.s.besteRekke >= 3) say("REKKEN RØK", "#8aa0c0");
@@ -381,6 +407,7 @@ export function SledefluktSpill({
         case "krasj":
           l?.krasj();
           nyser = 1.5;
+          hopp = 0.7;
           if (!reduceMotion.current) shake = 0.45;
           say(
             sim.s.tapt ? "IQ KOBLER INN NØDBREMSEN" : "KLONK! SNØ I ANSIKTET",
@@ -406,6 +433,16 @@ export function SledefluktSpill({
           break;
         case "pakkebom":
           say("PAKKEN HAVNET I SNØEN", "#8aa0c0");
+          // The chimney you missed puffs a cloud back at you.
+          if (sim.s.sisteHus)
+            puff.push({
+              p: tilVerden(
+                sim.s.sisteHus.x,
+                sim.s.sisteHus.h,
+                sim.s.sisteHus.z,
+              ),
+              t0: performance.now() / 1000,
+            });
           break;
         case "leveringKlart":
           l?.port();
@@ -436,15 +473,17 @@ export function SledefluktSpill({
         kart.fillStyle =
           t.type === "varde"
             ? "#ffb347"
-            : t.type === "stjerne"
-              ? "#ffd700"
-              : t.type === "mur"
-                ? "#9fb0cc"
-                : t.type === "band"
-                  ? "#00ff8a"
-                  : t.type === "hus"
-                    ? "#d9e4f5"
-                    : "#2e7a4f";
+            : t.type === "fugl"
+              ? "#c0d2ec"
+              : t.type === "stjerne"
+                ? "#ffd700"
+                : t.type === "mur"
+                  ? "#9fb0cc"
+                  : t.type === "band"
+                    ? "#00ff8a"
+                    : t.type === "hus"
+                      ? "#d9e4f5"
+                      : "#2e7a4f";
         const y = sy(t.z);
         if (t.type === "mur") {
           kart.fillRect(2, y - 1, W - 4, 2);
@@ -550,6 +589,7 @@ export function SledefluktSpill({
             varder: sim.s.varder,
             varderTotalt: sim.s.varderTotalt,
             stjerner: sim.s.stjerner,
+            fugler: sim.s.fugler,
             besteRekke: sim.s.besteRekke,
             nære: sim.s.nære,
             tidsbonus: sim.s.tidsbonus,
@@ -575,6 +615,7 @@ export function SledefluktSpill({
 
       shake = Math.max(0, shake - dt);
       nyser = Math.max(0, nyser - dt);
+      hopp = Math.max(0, hopp - dt);
       const { px, alt, bank, dist } = sim.s;
       if (spiller) gange += dt * (sim.s.fart / e.fart) * 9;
 
@@ -699,6 +740,12 @@ export function SledefluktSpill({
           r.tegn(M.stjerne, transform(pos, [0, t * 2, 0]));
           continue;
         }
+        if (o.type === "fugl") {
+          // Hovers and flaps in place; the sim's hit box is where it hangs.
+          pos[1] = o.h * SKALA + Math.sin(t * 3 + o.z) * 0.6;
+          r.tegn(M.fugl, transform(pos, [0, 0, Math.sin(t * 12) * 0.25]));
+          continue;
+        }
         if (o.type === "band") {
           pos[1] = o.h * SKALA;
           r.tegn(M.band, transform(pos, [0, 0, Math.sin(t) * 0.1]));
@@ -739,6 +786,25 @@ export function SledefluktSpill({
         }
       }
 
+      // A missed chimney answers with a fat grey cloud rising for a second.
+      while (puff.length && t - puff[0].t0 > 1.2) puff.shift();
+      for (const g of puff) {
+        const alder = t - g.t0;
+        for (let k = 0; k < 6; k++)
+          r.tegn(
+            M.røyk,
+            transform(
+              [
+                g.p[0] + Math.sin(k * 2.1) * alder * 6,
+                g.p[1] + alder * 9 + k * 0.8,
+                g.p[2] + alder * 10 + Math.cos(k * 1.7) * alder * 4,
+              ],
+              [0, t + k, 0],
+              1.5 + alder * 4,
+            ),
+          );
+      }
+
       // Packages: the one in the air, and where the next would land.
       if (sim.s.pakke) {
         const q = sim.s.pakke;
@@ -770,7 +836,10 @@ export function SledefluktSpill({
       r.tegn(M.tømmer, base);
       for (let i = 0; i < 3; i++) {
         const fase = gange + i * 2.1;
-        const bob = spiller ? Math.sin(fase * 2) * 0.2 : 0;
+        // Reindeer hop when startled: a near miss, a bird, a crash.
+        const bob =
+          (spiller ? Math.sin(fase * 2) * 0.2 : 0) +
+          Math.sin(Math.min(1, hopp / 0.5) * Math.PI) * (1 + i * 0.3);
         const rein = multiply(
           base,
           transform(
@@ -1104,6 +1173,19 @@ export function SledefluktSpill({
             {melding.tekst}
           </div>
         )}
+        {radio && (fase === "spiller" || fase === "slutt") && (
+          <div
+            key={radio.id}
+            className="absolute inset-x-0 bottom-[22%] text-center text-xl px-24"
+            style={{
+              color: radio.farge,
+              textShadow: "0 0 8px #000",
+              animation: "rise 4s ease-out forwards",
+            }}
+          >
+            RADIO · RAMPENISSEN: «{radio.tekst}»
+          </div>
+        )}
         {pluss && fase === "spiller" && (
           <div
             key={pluss.id}
@@ -1359,6 +1441,7 @@ export function SledefluktSpill({
                     [
                       ["RINGER", `${resultat.varder}/${resultat.varderTotalt}`],
                       ["STJERNER", resultat.stjerner],
+                      ["BREVFUGLER", resultat.fugler],
                       [
                         "BESTE REKKE",
                         `${resultat.besteRekke} (x${rekkeMult(resultat.besteRekke)})`,

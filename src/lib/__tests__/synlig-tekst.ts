@@ -18,6 +18,7 @@ import {
   landemerker,
   leveringsoppdrag,
   pakkenavn,
+  RADIO,
 } from "@/components/windows/snofall-tv/slede";
 import type { FilNode } from "@/types/innhold";
 
@@ -144,3 +145,4 @@ for (const e of ETAPPER) {
   );
 }
 add(14, "slede pakkenavn", [0, 1, 2, 3].map((i) => pakkenavn([], i)).join(" "));
+add(8, "slede radio", Object.values(RADIO).flat().join(" "));
