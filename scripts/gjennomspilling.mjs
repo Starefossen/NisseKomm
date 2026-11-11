@@ -108,7 +108,6 @@ if (!base) {
       cwd: ROOT,
       env: {
         ...process.env,
-        NEXT_PUBLIC_STORAGE_BACKEND: "localStorage",
         NEXT_PUBLIC_TEST_MODE: "true",
         NEXT_PUBLIC_BOOT_ANIMATION_DURATION: "0",
         NEXT_PUBLIC_MOCK_DAY: "",

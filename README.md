@@ -90,8 +90,6 @@ NEXT_PUBLIC_MOCK_DAY=
 # Simuler spesifikk måned (1-12)
 NEXT_PUBLIC_MOCK_MONTH=
 
-# Lagring backend
-NEXT_PUBLIC_STORAGE_BACKEND=localStorage  # 'localStorage' eller 'sanity'
 
 # Registrering tilgangskontroll (valgfritt, for privat deling)
 REGISTRATION_SHARE_KEY=     # Tom = åpen registrering, satt verdi = krever nøkkel

@@ -20,9 +20,6 @@ import {
 import { StorageManager } from "../storage";
 import { GameEngine } from "../game-engine";
 
-// Use localStorage backend for these tests
-process.env.NEXT_PUBLIC_STORAGE_BACKEND = "localStorage";
-
 describe("Symbol System", () => {
   beforeEach(async () => {
     localStorage.clear();

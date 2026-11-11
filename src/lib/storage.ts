@@ -8,7 +8,7 @@
  * Usage:
  * - All storage access goes through this module
  * - Never access localStorage or storage adapters directly in components
- * - Switch backend via NEXT_PUBLIC_STORAGE_BACKEND environment variable
+ * - Backend: STORAGE_BACKEND on the server (server sync or localStorage only)
  */
 
 import { InnsendelseLog, DecryptionSymbol } from "@/types/innhold";

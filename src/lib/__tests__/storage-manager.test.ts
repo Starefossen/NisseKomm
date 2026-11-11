@@ -15,9 +15,6 @@ import { describe, it, expect, beforeEach } from "@jest/globals";
 import { StorageManager } from "../storage";
 import { GameEngine } from "../game-engine";
 
-// Use localStorage backend for these tests
-process.env.NEXT_PUBLIC_STORAGE_BACKEND = "localStorage";
-
 // Helper to generate unique test passwords
 let testCounter = 0;
 const generateTestPassword = () => {

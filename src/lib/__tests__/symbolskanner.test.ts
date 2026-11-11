@@ -15,8 +15,6 @@ import {
 } from "../systems/symbol-system";
 import { StorageManager } from "../storage";
 
-process.env.NEXT_PUBLIC_STORAGE_BACKEND = "localStorage";
-
 describe("symbolskanner", () => {
   beforeEach(async () => {
     localStorage.clear();
