@@ -33,7 +33,7 @@
 - **Single window paradigm**: Only one app window open at a time (desktop icons hide when window opens)
 - **Persistent sidebar**: Always shows system metrics and scrolling alerts
 - **Modal windows**: Centered overlays with retro window chrome
-- **Desktop grid**: 2×3 icon layout (6 core modules + 4 unlockable modules)
+- **Desktop sections**: I DAG (Julius widget plus today's tools), UTFORSK and SPILL OG MORO in `src/app/page.tsx`; locked tools stay in place
 
 ### Component Hierarchy
 
@@ -85,10 +85,12 @@ CRTFrame (fullscreen container)
    - Open from day 1
 
 6. **Julius' Dagbok** (`windows/Dagbok.tsx`)
-   - Continuous scroll timeline
-   - Quest-gated entries (prevents spoilers)
-   - Unread tracking with auto-scroll
-   - IntersectionObserver for read detection
+   - Julius' video diary: today's `JuliusVideo` on top, earlier days as `<details>` below
+   - Only days up to today in December (nothing before 1 December)
+   - Opens by itself on login until today's video is watched
+
+7. **Snøfall TV** (`windows/SnøfallTV.tsx`, window id `nordpol_tv`)
+   - Four channels (`snofall-tv/channels.ts`), K3 replays Julius' video
 
 ### Unlockable Modules (Conditional Appearance)
 
@@ -155,7 +157,7 @@ static getUnlockedModules(): string[] {
 Game state lives on the server (PostgreSQL via `/api/state`, selected by `STORAGE_BACKEND` or by `DATABASE_URL` being set). Each screen keeps a `localStorage` cache and syncs through `ServerSyncAdapter`. Without a server store it runs on `localStorage` alone:
 
 - **Client Storage (`StorageManager`)**: `lib/storage.ts` provides a type-safe interface over `LocalStorageAdapter`. All UI reads and writes go through `GameEngine` or `StorageManager`.
-- **Server Store (`Store`)**: `lib/db.ts` provides persistent state storage. When `DATABASE_URL` is set, it connects to PostgreSQL (with `kv`, `sessions`, and `login_failures` tables, migrated with an advisory lock). When `DATABASE_URL` is unset, an in-memory store (`createMemoryStore()`) is used (development, testing).
+- **Server Store (`Store`)**: `lib/db.ts` provides persistent state storage. When `DATABASE_URL` is set, it connects to PostgreSQL (with `kv`, `sessions`, and `auth_failures` tables, migrated with an advisory lock). When `DATABASE_URL` is unset, an in-memory store (`createMemoryStore()`) is used (development, testing).
 - **Season reset**: `DELETE /api/state` (parent session only) calls `resetState()`, which clears every synced key and the server-written keys (`frost-override`, `day-offset`), so all screens start over.
 - **State Sync (`/api/state`)**: Clients sync game progress through `GET /api/state` and `PUT /api/state`. Only whitelisted keys (`STATE_KEYS`) are allowed. Keys that can be updated concurrently across multiple screens (`MERGED_KEYS`) are merged per item/day instead of overwritten. State writes trigger notifications via `notify()`.
 
@@ -170,7 +172,7 @@ Game state lives on the server (PostgreSQL via `/api/state`, selected by `STORAG
 ```typescript
 // Game State (via GameEngine only)
 static getCompletedDaysForMissions(): Set<number>
-static addSubmittedCode(day: number, code: string, timestamp: string)
+static addSubmittedCode(code: InnsendelseLog)
 static getCollectedSymbols(): DecryptionSymbol[]
 static addCollectedSymbol(symbol: DecryptionSymbol)
 
@@ -178,9 +180,8 @@ static addCollectedSymbol(symbol: DecryptionSymbol)
 static isAuthenticated(): boolean
 static setAuthenticated(value: boolean)
 static getPlayerNames(): string[]
-static addPlayerName(name: string)
-static getDagbokLastRead(): number
-static setDagbokLastRead(day: number)
+static setPlayerNames(names: string[])
+static getIdlePeek(): number | null
 ```
 
 ### React State Patterns
@@ -307,6 +308,10 @@ const playerNames = StorageManager.getPlayerNames();
 - `statisk_innhold.json` - File system, alerts, NisseStats global metrics
 - `eventyr.json` - The one story arc, `spokelseskoden`, with milestones
 - `merker.json` - Badge/achievement definitions
+- `julius_videoer.json` - Julius' video transcripts (`scripts/julius-transcripts.py`)
+- `gaatebiter.json` - Riddle pieces hidden by MCP `get_kid_context` until solved
+- `tidbits.json` - Small surprises (`lib/tidbits.ts`, `docs/tidbits.md`)
+- `entiteter.json` - Character facts, written by `mise run entiteter`
 
 ### Data Loader (`lib/data-loader.ts`)
 
@@ -374,18 +379,19 @@ const currentMonth = getCurrentMonth();
 // Check if calendar is active (Dec 1-24)
 const isActive = isCalendarActive();
 
-// Check if specific quest day is accessible
-const canAccess = isDayAccessible(12);
-
 // Get ISO string with mock support
 const isoString = getISOString();
 
-// Format helpers
-const dateStr = formatDate(new Date());
-const dateTimeStr = formatDateTime(new Date());
+// Server-side «now» including MCP skip_day's offset
+const serverNow = getServerDate(state["day-offset"]);
 
-// Debug current configuration
-const debugInfo = getDateDebugInfo();
+// Countdown to Christmas Eve from a given time
+const countdown = christmasCountdown(getCurrentDate());
+
+// Tidsmaskin
+isTimeMachineEnabled();
+getTimeOverride();
+setTimeOverride({ day, month, hour, minute });
 ```
 
 ### Mock Support & Tidsmaskin
@@ -419,14 +425,9 @@ const currentDay = today.getDate();
 const isDecember = today.getMonth() === 11;
 
 // ✅ GOOD - Centralized date utilities
-import {
-  getCurrentDay,
-  getCurrentMonth,
-  isDayAccessible,
-} from "@/lib/date-utils";
+import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 const currentDay = getCurrentDay();
 const isDecember = getCurrentMonth() === 12;
-const canAccessDay = isDayAccessible(currentDay);
 ```
 
 ### Why Centralized Date Handling?
@@ -459,7 +460,7 @@ NisseKomm serves one family with two pre-shared codes configured as environment 
 - **Sessions & Cookies**: On successful login via `POST /api/auth/login`, a random 32-byte token is generated. Its SHA-256 digest is stored in the server store (`Store.setSession`), and the token is issued in an HTTP-only `__Host-nissekomm` cookie (`SESSION_COOKIE`).
   - `kid` sessions expire after 45 days.
   - `parent` sessions expire after 12 hours.
-- **Verification & Logout**: `GET /api/auth/verify` validates the session token from the cookie against the store. `POST /api/auth/logout` removes the session from the store and clears the cookie.
+- **Verification & Logout**: `POST /api/auth/verify` validates the session token from the cookie against the store. `POST /api/auth/logout` removes the session from the store and clears the cookie.
 - **Brute-Force Throttling**: Failed login attempts are recorded in the store. After 20 failures in a 10-minute window, subsequent attempts are throttled at 1 request per second.
 
 ## Operational Modes (NISSEKOMM_MODE)
@@ -490,9 +491,7 @@ Outgoing notifications fan out from server-side state writes in `/api/state` (`s
 - **Events**: Triggered on milestones and game moments (`day_solved`, `milestone`, `bonus_approved`, `frost_on`, `frost_off`, `season_complete`).
 - **Channels**: Controlled by `NOTIFY_CHANNELS` (comma-separated, empty by default):
   - `log`: Console logging.
-  - `email`: Parent notifications.
-  - `varden`: iMessage integration hook.
-  - `skjerm`: Display card integration.
+  - `email`, `varden`, `skjerm`: planned; today they are stubs that only log a warning.
 - **Resilience**: `notify()` catches errors per channel; failing channels log errors without crashing requests or affecting other channels.
 
 ---
