@@ -8,7 +8,7 @@
  */
 
 import { describe, it, expect } from "@jest/globals";
-import { getAllOppdrag, isBonusOppdragAccessible } from "../oppdrag";
+import { getAllOppdrag } from "../oppdrag";
 
 describe("Oppdrag Loader", () => {
   describe("getAllOppdrag", () => {
@@ -142,38 +142,5 @@ describe("Oppdrag Loader", () => {
         expect(quest.symbol_clue!.description).toBeTruthy();
       });
     });
-  });
-});
-
-describe("isBonusOppdragAccessible", () => {
-  it("should return false when main quest not completed", () => {
-    const completedCodes: string[] = [];
-    const result = isBonusOppdragAccessible(8, completedCodes);
-    expect(result).toBe(false);
-  });
-
-  it("should return true when main quest is completed", () => {
-    const quests = getAllOppdrag();
-    const day8Quest = quests.find((q) => q.dag === 8);
-    expect(day8Quest).toBeDefined();
-
-    const completedCodes = [day8Quest!.kode.toUpperCase()];
-    const result = isBonusOppdragAccessible(8, completedCodes);
-    expect(result).toBe(true);
-  });
-
-  it("should be case-insensitive for code matching", () => {
-    const quests = getAllOppdrag();
-    const day8Quest = quests.find((q) => q.dag === 8);
-
-    const completedCodes = [day8Quest!.kode.toLowerCase()];
-    const result = isBonusOppdragAccessible(8, completedCodes);
-    expect(result).toBe(true);
-  });
-
-  it("should return false for non-existent day", () => {
-    const completedCodes = ["SOMECODE"];
-    const result = isBonusOppdragAccessible(99, completedCodes);
-    expect(result).toBe(false);
   });
 });

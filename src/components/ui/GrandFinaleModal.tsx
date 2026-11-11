@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
-import { BadgeManager } from "@/lib/badge-system";
 import Image from "next/image";
 
 interface GrandFinaleModalProps {
@@ -20,7 +19,7 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
   const symbols = GameEngine.getCollectedSymbols().length;
   const decryptions = GameEngine.getSolvedDecryptions().length;
   const bonus = GameEngine.getProgressionSummary().bonusOppdrag.completed;
-  const badge = BadgeManager.getBadge("snofalls-venn");
+  const badge = GameEngine.getBadge("snofalls-venn");
 
   useEffect(() => {
     SoundManager.playSound("success");

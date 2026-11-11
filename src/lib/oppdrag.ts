@@ -1,6 +1,9 @@
 /**
  * Oppdrag Loader - Validates and merges all weekly quest files
  *
+ * Kept apart from data-loader.ts: eventyr.ts reads quests at load and
+ * quest-validator imports eventyr, so data-loader would be a cycle.
+ *
  * This module imports all 4 weekly quest files (uke1-4_oppdrag.json),
  * validates the data structure, and exports a single sorted array of all 24 days.
  *
@@ -145,26 +148,4 @@ const allOppdrag = mergeAndValidate();
  */
 export function getAllOppdrag(): Oppdrag[] {
   return allOppdrag;
-}
-
-/**
- * Check if a specific day is completed (internal helper)
- */
-function isDayCompleted(day: number, completedCodes: string[]): boolean {
-  const oppdrag = allOppdrag.find((o) => o.dag === day);
-  if (!oppdrag) return false;
-  return completedCodes.some(
-    (code) => code.toUpperCase() === oppdrag.kode.toUpperCase(),
-  );
-}
-
-/**
- * Check if a side-quest is accessible (main quest must be completed first)
- * @public - Used by NisseMail component for sidequest visibility
- */
-export function isBonusOppdragAccessible(
-  day: number,
-  completedCodes: string[],
-): boolean {
-  return isDayCompleted(day, completedCodes);
 }
