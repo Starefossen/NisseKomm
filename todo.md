@@ -37,10 +37,11 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 6. **Rampenissen-stemme:** nordnorsk, Fenrir, +4 halvtoner (`dag-01-nordnorsk-pitch4.mp3`). Dag 1–3 er laget. Resten venter til Hans har lest manus og hørt det som finnes (gjøres til slutt).
 7. **Etterbehandling av media:** musikk og stillbilder (pågår), resten av seksjonen under.
 8. **Next.js 16.4.6** når pakken har passert `minimum-release-age`.
-9. **Julius-videoer (dag 1–24) til slutt:** Hans leser manus og ser det som finnes før vi lager resten, inkludert brev-innslaget.
-10. **Fysisk (Hans):** testutskrifter, sidetall dag 12/15/18, innkjøp, Rampenissens 15 lapper.
-11. **Flytting hjem (fase 5)** når Hans opphever pausen.
-12. **Generalprøve** på iPad over hjemmenettet, og en siste nullstilling.
+9. **Gjennomgang av Winters karakterdesign:** Hans lager nye grunnbilder av Winter. Deretter går vi gjennom `assets/characters/winter/` (beskrivelse, portrettprompt), Ugleposten-portrettet, TV-loopene og porten med Winter, og alt Winter-materiell lages på nytt fra de nye bildene. Winter er «han».
+10. **Julius-videoer (dag 1–24) til slutt:** Hans leser manus og ser det som finnes før vi lager resten, inkludert brev-innslaget.
+11. **Fysisk (Hans):** testutskrifter, sidetall dag 12/15/18, innkjøp, Rampenissens 15 lapper.
+12. **Flytting hjem (fase 5)** når Hans opphever pausen.
+13. **Generalprøve** på iPad over hjemmenettet, og en siste nullstilling.
 
 ---
 
