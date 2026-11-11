@@ -524,41 +524,46 @@ export default function Home() {
                             !locked &&
                             !GameEngine.isIntroSeen(`ny-${t.window}`);
                           return (
-                            <DesktopIcon
+                            <div
                               key={t.window}
-                              icon={t.icon}
-                              label={t.label}
-                              color={t.color}
-                              unreadCount={
-                                t.window === "nissenet" ? unreadFileCount : 0
-                              }
-                              disabled={locked || isFrozen(t.window)}
-                              locked={locked}
-                              teaser={locked ? opensIn(unlockDay) : undefined}
-                              isNew={isNew}
-                              onLockedClick={
-                                locked
-                                  ? () => {
-                                      const n = daysLeft(unlockDay);
-                                      setTimeout(
-                                        () => setLockedMsg(null),
-                                        3500,
-                                      );
-                                      setLockedMsg(
-                                        n === 1
-                                          ? `Rampenissen: «Heisann, ikkje så fort! ${t.label} e klar i morra.»`
-                                          : `${t.hint}. Rampenissen: «Ho-ho, vent ${n ?? "nokka"} daga te!»`,
-                                      );
-                                    }
-                                  : undefined
-                              }
-                              onClick={() => {
-                                if (isNew)
-                                  GameEngine.markIntroSeen(`ny-${t.window}`);
-                                setLockedMsg(null);
-                                handleIconClick(t.window);
-                              }}
-                            />
+                              data-modul={t.unlock}
+                              data-laast={locked ? "ja" : undefined}
+                            >
+                              <DesktopIcon
+                                icon={t.icon}
+                                label={t.label}
+                                color={t.color}
+                                unreadCount={
+                                  t.window === "nissenet" ? unreadFileCount : 0
+                                }
+                                disabled={locked || isFrozen(t.window)}
+                                locked={locked}
+                                teaser={locked ? opensIn(unlockDay) : undefined}
+                                isNew={isNew}
+                                onLockedClick={
+                                  locked
+                                    ? () => {
+                                        const n = daysLeft(unlockDay);
+                                        setTimeout(
+                                          () => setLockedMsg(null),
+                                          3500,
+                                        );
+                                        setLockedMsg(
+                                          n === 1
+                                            ? `Rampenissen: «Heisann, ikkje så fort! ${t.label} e klar i morra.»`
+                                            : `${t.hint}. Rampenissen: «Ho-ho, vent ${n ?? "nokka"} daga te!»`,
+                                        );
+                                      }
+                                    : undefined
+                                }
+                                onClick={() => {
+                                  if (isNew)
+                                    GameEngine.markIntroSeen(`ny-${t.window}`);
+                                  setLockedMsg(null);
+                                  handleIconClick(t.window);
+                                }}
+                              />
+                            </div>
                           );
                         })}
                       </div>
