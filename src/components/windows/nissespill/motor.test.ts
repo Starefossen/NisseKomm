@@ -269,6 +269,17 @@ describe("motor: kapitlenes minispill er gyldige", () => {
           // A feather under a hotspot could never be tapped
           if (s.fjaer) expect(overlapper(s.fjaer, h.rect)).toBe(false);
         }
+        // Exits are places in the picture; they must not hide a hotspot or the feather
+        for (const u of s.utganger) {
+          if (!u.rect) continue;
+          if (s.fjaer) expect(overlapper(s.fjaer, u.rect)).toBe(false);
+          for (const h of s.hotspots)
+            expect([u.til, h.id, overlapper(u.rect, h.rect)]).toEqual([
+              u.til,
+              h.id,
+              false,
+            ]);
+        }
       }
       for (const p of Object.values(k.puslespill ?? {})) {
         if (p.type === "rute") expect(P.ruteFeil(p)).toEqual([]);

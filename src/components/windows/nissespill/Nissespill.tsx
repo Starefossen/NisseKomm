@@ -495,20 +495,42 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 {status}
               </div>
 
-              {!iIntro && !iUtro && !dialog && (
-                <div className="absolute top-2 right-2 flex flex-col items-end gap-2">
-                  {scene.utganger.map((u) => (
+              {!visSoner &&
+                !iIntro &&
+                !iUtro &&
+                !dialog &&
+                scene.utganger.map((u) =>
+                  u.rect ? (
+                    <button
+                      key={u.til}
+                      type="button"
+                      aria-label={u.navn}
+                      onClick={() => bruk(M.gaa(save, u.til))}
+                      className={`group absolute rounded min-w-11 min-h-11 cursor-alias ${hint ? "border-2 border-dashed border-(--cold-blue)" : "hover:border-2 hover:border-dashed hover:border-(--cold-blue)/70"} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--cold-blue)`}
+                      style={{
+                        left: `${u.rect.x}%`,
+                        top: `${u.rect.y}%`,
+                        width: `${u.rect.w}%`,
+                        height: `${u.rect.h}%`,
+                      }}
+                    >
+                      <span
+                        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap px-2 bg-black/80 border border-(--cold-blue) text-base text-(--cold-blue) pointer-events-none transition-opacity ${hint ? "opacity-100" : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"}`}
+                      >
+                        → {u.navn}
+                      </span>
+                    </button>
+                  ) : (
                     <button
                       key={u.til}
                       type="button"
                       onClick={() => bruk(M.gaa(save, u.til))}
-                      className={`${LITEN} bg-black/70 border-(--cold-blue) text-(--cold-blue)`}
+                      className={`${LITEN} absolute top-2 right-2 bg-black/70 border-(--cold-blue) text-(--cold-blue)`}
                     >
                       → {u.navn}
                     </button>
-                  ))}
-                </div>
-              )}
+                  ),
+                )}
             </div>
             {puslespill && kap.puslespill?.[puslespill] && (
               <Puslespill
@@ -870,6 +892,24 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
               />
             ))}
           </div>
+          {scene.utganger.some((u) => u.rect) && !iIntro && !iUtro && (
+            <select
+              aria-label="Steder"
+              value=""
+              disabled={!!dialog}
+              onChange={(e) =>
+                e.target.value && bruk(M.gaa(save, e.target.value))
+              }
+              className={`${LITEN} bg-black border-(--cold-blue) text-(--cold-blue)`}
+            >
+              <option value="">STEDER</option>
+              {scene.utganger.map((u) => (
+                <option key={u.til} value={u.til}>
+                  {u.navn}
+                </option>
+              ))}
+            </select>
+          )}
           <button
             type="button"
             aria-expanded={notat}

@@ -138,11 +138,31 @@ export const KAPITTEL_1: Kapittel = {
       navn: "Torget i Snøfall",
       bilde: "spill/torget.jpg",
       utganger: [
-        { til: "verksted", navn: "Opp trappa til verkstedet" },
-        { til: "kafeen", navn: "Inn på kaféen" },
-        { til: "pakkesentralen", navn: "Inn i pakkesentralen" },
-        { til: "klokketaarnet", navn: "Opp i klokketårnet" },
-        { til: "julebodene", navn: "Bort til julebodene" },
+        {
+          til: "verksted",
+          navn: "Opp trappa til verkstedet",
+          rect: { x: 7, y: 6, w: 12, h: 26 },
+        },
+        {
+          til: "kafeen",
+          navn: "Inn på kaféen",
+          rect: { x: 42, y: 26, w: 10, h: 20 },
+        },
+        {
+          til: "pakkesentralen",
+          navn: "Inn i pakkesentralen",
+          rect: { x: 67, y: 8, w: 14, h: 32 },
+        },
+        {
+          til: "klokketaarnet",
+          navn: "Opp i klokketårnet",
+          rect: { x: 53, y: 44, w: 12, h: 18 },
+        },
+        {
+          til: "julebodene",
+          navn: "Bort til julebodene",
+          rect: { x: 43, y: 47, w: 9, h: 14 },
+        },
       ],
       // In the snow in front of the clock tower, between the stalls and the mailbox
       fjaer: { x: 49, y: 86, w: 4, h: 6 },
@@ -150,7 +170,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "trappa",
           navn: "Trappa",
-          rect: { x: 0, y: 8, w: 19, h: 84 },
+          rect: { x: 0, y: 34, w: 19, h: 58 },
           smart: "bruk",
           gaaTil: "verksted",
           se: "Ei bratt tretrapp opp til loftet. Det tredje trinnet knirker i D-dur. IQ kaller det en alarm. Rampenissen kaller det trinn nummer tre, og hopper over det.",
@@ -171,7 +191,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "urtaarnet",
           navn: "Urtårnet",
-          rect: { x: 52, y: 0, w: 14, h: 62 },
+          rect: { x: 52, y: 0, w: 14, h: 44 },
           smart: "se",
           gaaTil: "klokketaarnet",
           prat: "Du roper «hva er klokka?» opp til tårnet. Klokka slår ett slag, midt mellom to timer, som for å si at det er dens sak.",
@@ -180,7 +200,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "husene",
           navn: "Husene",
-          rect: { x: 24, y: 14, w: 28, h: 26 },
+          rect: { x: 24, y: 14, w: 18, h: 26 },
           smart: "se",
           gaaTil: "kafeen",
           se: "Fargerike tømmerhus med snø på takene. I et vindu står en nisse og vinker. Nei, han pusser vinduet. Nei, han vinker. Han gjør begge deler. Han er effektiv. Det huset som lukter kanel, er Hjerteruds kafé.",

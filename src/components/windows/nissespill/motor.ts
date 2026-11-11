@@ -132,7 +132,8 @@ export interface Scene {
   navn: string;
   bilde: string;
   hotspots: Hotspot[];
-  utganger: { til: string; navn: string }[];
+  /** With `rect`, the exit is a place in the picture; without, a small button. */
+  utganger: { til: string; navn: string; rect?: Rect }[];
   /** Optional hidden owl feather (small rect, percent like hotspots). */
   fjaer?: Rect;
 }
