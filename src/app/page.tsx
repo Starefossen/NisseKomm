@@ -53,14 +53,21 @@ const { varsler, filer } = statiskInnholdData as {
 
 const emptySubscribe = () => () => {};
 
-// Tool row in unlock order; `unlock` is the module key from GameEngine
-const TOOLS: {
+type Tool = {
   window: string;
   icon: string;
   label: string;
   color: IconColor;
+  /** Module key from GameEngine; unset = open from day 1 */
   unlock?: string;
-}[] = [
+  /** Teaser under the lock; never a clue or code word (kodelekkasje) */
+  hint?: string;
+  /** Kept a surprise: not shown at all until it unlocks */
+  hidden?: boolean;
+};
+
+// Fixed positions all season: locked apps show in place, so nothing jumps on unlock
+const UTFORSK: Tool[] = [
   { window: "nissenet", icon: "folder", label: "NISSENET", color: "green" },
   { window: "kalender", icon: "calendar", label: "KALENDER", color: "gold" },
   {
@@ -76,6 +83,7 @@ const TOOLS: {
     label: "NISSEKRYPTO",
     color: "gold",
     unlock: "NISSEKRYPTO",
+    hint: "NOE ER LÅST MED TEGN",
   },
   {
     window: "symbolskanner",
@@ -83,13 +91,19 @@ const TOOLS: {
     label: "SYMBOLSKANNER",
     color: "green",
     unlock: "SYMBOLSKANNER",
+    hint: "KAMERAET VARMES OPP",
   },
+];
+
+// A future sleigh module slots in after UGLEPOSTEN (grid goes to 5 columns)
+const SPILL: Tool[] = [
   {
     window: "nissespill",
     icon: "gamepad",
-    label: "NISSESPILL",
+    label: "UGLEPOSTEN",
     color: "gold",
     unlock: "NISSESPILL",
+    hint: "EN UGLE ER PÅ VEI",
   },
   {
     window: "nissemusikk",
@@ -97,6 +111,7 @@ const TOOLS: {
     label: "NISSEMUSIKK",
     color: "blue",
     unlock: "NISSEMUSIKK",
+    hint: "JUKEBOKSEN ER FROSSET",
   },
   {
     window: "brevfugler",
@@ -104,6 +119,7 @@ const TOOLS: {
     label: "BREVFUGLER",
     color: "gold",
     unlock: "BREVFUGLER",
+    hint: "FUGLENE ØVER PÅ Å FLY",
   },
   {
     window: "nissestats",
@@ -111,8 +127,21 @@ const TOOLS: {
     label: "NISSESTATS",
     color: "blue",
     unlock: "NISSESTATS",
+    hidden: true,
   },
 ];
+
+function daysLeft(unlockDay: number | null): number | null {
+  if (!unlockDay) return null;
+  const today = getCurrentMonth() === 12 ? getCurrentDay() : 0;
+  return Math.max(unlockDay - today, 1);
+}
+
+function opensIn(unlockDay: number | null): string {
+  const n = daysLeft(unlockDay);
+  if (n === null) return "LÅST";
+  return n === 1 ? "ÅPNER I MORGEN" : `ÅPNER OM ${n} DAGER`;
+}
 
 /**
  * Check if current date is within the calendar period (December 1-24)
@@ -165,6 +194,7 @@ export default function Home() {
 
   const [thawing, setThawing] = useState(false);
   const [aurora, setAurora] = useState(false);
+  const [lockedMsg, setLockedMsg] = useState<string | null>(null);
 
   const { playSound, playJingle } = useSounds();
 
@@ -451,6 +481,7 @@ export default function Home() {
                         onClick={() => handleIconClick("kodeterminal")}
                       />
                       <DesktopIcon
+                        className="col-span-2"
                         icon="image"
                         label="SNØFALL TV"
                         color="green"
@@ -459,29 +490,82 @@ export default function Home() {
                       />
                     </div>
                   </section>
-                  <section className="w-full max-w-4xl">
-                    <h2 className="mb-2 text-lg tracking-wider text-(--brass)">
-                      VERKTØY
-                    </h2>
-                    {/* Locked modules stay hidden until they unlock: no «LÅST» placeholders */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-                      {TOOLS.filter(
-                        (t) => !t.unlock || unlockedModules.includes(t.unlock),
-                      ).map((t) => (
-                        <DesktopIcon
-                          key={t.window}
-                          icon={t.icon}
-                          label={t.label}
-                          color={t.color}
-                          unreadCount={
-                            t.window === "nissenet" ? unreadFileCount : 0
-                          }
-                          disabled={isFrozen(t.window)}
-                          onClick={() => handleIconClick(t.window)}
-                        />
-                      ))}
-                    </div>
-                  </section>
+                  {lockedMsg && (
+                    <p
+                      role="status"
+                      className="fixed bottom-24 left-1/2 -translate-x-1/2 z-30 w-[min(90%,40rem)] px-4 py-2 text-lg text-center bg-(--dark-crt) text-(--cold-blue) border-2 border-(--cold-blue)/50"
+                    >
+                      {lockedMsg}
+                    </p>
+                  )}
+                  {(
+                    [
+                      ["UTFORSK", UTFORSK, "grid-cols-3"],
+                      ["SPILL OG MORO", SPILL, "grid-cols-2 md:grid-cols-4"],
+                    ] as const
+                  ).map(([title, tools, cols]) => (
+                    <section key={title} className="w-full max-w-4xl">
+                      <h2 className="mb-2 text-lg tracking-wider text-(--brass)">
+                        {title}
+                      </h2>
+                      <div className={`grid ${cols} gap-3 md:gap-4`}>
+                        {tools.map((t) => {
+                          const locked =
+                            !!t.unlock && !unlockedModules.includes(t.unlock);
+                          const unlockDay = t.unlock
+                            ? GameEngine.getModuleUnlockDay(t.unlock)
+                            : null;
+                          if (locked && t.hidden)
+                            return <div key={t.window} aria-hidden />;
+                          const isNew =
+                            !!t.unlock &&
+                            !locked &&
+                            !GameEngine.isIntroSeen(`ny-${t.window}`);
+                          return (
+                            <DesktopIcon
+                              key={t.window}
+                              icon={t.icon}
+                              label={t.label}
+                              color={t.color}
+                              unreadCount={
+                                t.window === "nissenet" ? unreadFileCount : 0
+                              }
+                              disabled={locked || isFrozen(t.window)}
+                              locked={locked}
+                              teaser={
+                                locked
+                                  ? `${opensIn(unlockDay)} · ${t.hint}`
+                                  : undefined
+                              }
+                              isNew={isNew}
+                              onLockedClick={
+                                locked
+                                  ? () => {
+                                      const n = daysLeft(unlockDay);
+                                      setTimeout(
+                                        () => setLockedMsg(null),
+                                        3500,
+                                      );
+                                      setLockedMsg(
+                                        n === 1
+                                          ? `Rampenissen: «Heisann, ikkje så fort! ${t.label} e klar i morra.»`
+                                          : `Rampenissen: «Ho-ho, den her e låst! Vent ${n ?? "nokka"} dag${n === 1 ? "" : "a"} te.»`,
+                                      );
+                                    }
+                                  : undefined
+                              }
+                              onClick={() => {
+                                if (isNew)
+                                  GameEngine.markIntroSeen(`ny-${t.window}`);
+                                setLockedMsg(null);
+                                handleIconClick(t.window);
+                              }}
+                            />
+                          );
+                        })}
+                      </div>
+                    </section>
+                  ))}
                 </div>
               ) : (
                 // Active window

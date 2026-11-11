@@ -104,7 +104,7 @@ interface GameEngineDependencies {
   kidCodeResolver?: () => Promise<string | null>;
 }
 
-type IntroId = "boot" | "tail" | "brev-tint";
+type IntroId = "boot" | "tail" | "brev-tint" | `ny-${string}`;
 
 export class GameEngine {
   private static dependencies: GameEngineDependencies = {};
@@ -560,6 +560,14 @@ export class GameEngine {
    */
   static isModuleUnlocked(moduleId: string): boolean {
     return StorageManager.isModuleUnlocked(moduleId);
+  }
+
+  /** December day a module opens (its quest's reveals), null if never. */
+  static getModuleUnlockDay(moduleId: string): number | null {
+    return (
+      ALL_QUESTS.find((q) => q.reveals?.modules?.includes(moduleId))?.dag ??
+      null
+    );
   }
 
   /**

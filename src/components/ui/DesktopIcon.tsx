@@ -11,6 +11,11 @@ interface DesktopIconProps {
   disabled?: boolean;
   unreadCount?: number;
   onClick: () => void;
+  locked?: boolean;
+  teaser?: string;
+  isNew?: boolean;
+  onLockedClick?: () => void;
+  className?: string;
 }
 
 export function DesktopIcon({
@@ -20,6 +25,11 @@ export function DesktopIcon({
   disabled = false,
   unreadCount = 0,
   onClick,
+  locked = false,
+  teaser,
+  isNew = false,
+  onLockedClick,
+  className = "",
 }: DesktopIconProps) {
   const [isShaking, setIsShaking] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -30,6 +40,7 @@ export function DesktopIcon({
       // Trigger lock shake animation
       setIsShaking(true);
       setTimeout(() => setIsShaking(false), 300);
+      onLockedClick?.();
     } else {
       SoundManager.playSound("click");
       onClick();
@@ -41,10 +52,12 @@ export function DesktopIcon({
       ref={buttonRef}
       onClick={handleClick}
       disabled={disabled && false} // Allow clicks on disabled for animation
-      className={`
+      aria-label={teaser ? `${label}, låst: ${teaser}` : undefined}
+      className={`${className}
         flex flex-col items-center gap-2 p-3 md:p-4 relative
         w-full min-w-16 min-h-24
-        border-2 transition-all
+        border-2 transition-all focus-visible:outline-2 focus-visible:outline-(--gold)
+        ${isNew ? "border-(--gold)!" : ""}
         ${
           disabled
             ? "border-(--gray) opacity-60 cursor-not-allowed"
@@ -58,6 +71,19 @@ export function DesktopIcon({
         <div className="absolute -top-1 -right-1 w-6 h-6 bg-(--christmas-red) border-2 border-(--christmas-red) flex items-center justify-center z-10">
           <span className="text-white text-base font-bold">{unreadCount}</span>
         </div>
+      )}
+      {isNew && (
+        <div className="absolute -top-1 -left-1 px-1 bg-(--gold) text-black text-base z-10 animate-[pulse-led_1.5s_ease-in-out_infinite]">
+          NY
+        </div>
+      )}
+      {locked && (
+        <Icon
+          name="lock"
+          size={20}
+          color="gray"
+          className="absolute top-1 right-1"
+        />
       )}
       <Icon
         name={icon}
@@ -78,6 +104,11 @@ export function DesktopIcon({
       >
         {label}
       </span>
+      {teaser && (
+        <span className="text-sm leading-tight text-center text-(--gray)">
+          {teaser}
+        </span>
+      )}
     </button>
   );
 }
