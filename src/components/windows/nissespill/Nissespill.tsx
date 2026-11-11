@@ -191,7 +191,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
 
   const valgListe = node ? M.valgSomVises(node, save) : [];
   const PANEL =
-    "w-full overflow-y-auto border-t-2 border-(--brass) px-3 py-2 landscape:absolute landscape:inset-x-0 landscape:bottom-0 landscape:max-h-[40%] landscape:bg-black/70 portrait:bg-black portrait:max-h-[calc(100cqh-56.25cqw)]";
+    "w-full overflow-y-auto border-t-2 border-(--brass) px-3 py-2 landscape:absolute landscape:inset-x-0 landscape:bottom-0 landscape:max-h-[45%] landscape:bg-black/70 portrait:bg-black portrait:max-h-[35dvh]";
   const LITEN =
     "min-h-11 px-2 rounded border-2 text-lg active:scale-95 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold)";
   const MENYPUNKT =
@@ -208,11 +208,11 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
         }}
       >
         {/* Size container: the 16:9 stage is as large as fits, so percent hotspots stay on the image */}
-        <div className="flex-1 min-h-0 bg-black flex items-center portrait:items-start justify-center [container-type:size]">
+        <div className="bg-black">
           {/* Landscape: panels overlay the lower part of the scene. Portrait: they sit below it */}
-          <div className="relative w-[min(100cqw,calc(100cqh*16/9))]">
+          <div className="relative w-full">
             <div
-              className="relative aspect-video w-full overflow-hidden"
+              className="relative aspect-video w-full shrink-0 overflow-hidden"
               onClick={(e) => {
                 if (
                   e.target === e.currentTarget ||
@@ -324,7 +324,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                     </div>
                   </div>
                 )}
-                <div className="flex flex-col border-t border-(--brass)/50 pt-1">
+                <div className="grid landscape:grid-cols-2 gap-x-4 border-t border-(--brass)/50 pt-1">
                   {valgListe.map((v) => (
                     <button
                       key={v.tekst}

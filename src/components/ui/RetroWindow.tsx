@@ -21,7 +21,7 @@ export function RetroWindow({
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/70 p-4">
       <div
-        className={`relative w-full ${stor ? "h-full" : "md:w-[90%] md:max-w-4xl h-[90vh] md:h-[80vh]"} bg-(--dark-crt) border-2 border-(--brass) shadow-[0_8px_40px_rgba(0,0,0,0.6)]`}
+        className={`relative w-full ${stor ? "max-h-full landscape:w-[min(100%,calc((100dvh-8.75rem)*16/9))]" : "md:w-[90%] md:max-w-4xl h-[90vh] md:h-[80vh]"} bg-(--dark-crt) border-2 border-(--brass) shadow-[0_8px_40px_rgba(0,0,0,0.6)]`}
         style={{ animation: "scale-in 0.3s ease-out" }}
       >
         {/* Title bar */}
@@ -42,7 +42,9 @@ export function RetroWindow({
         </div>
 
         {/* Window content */}
-        <div className="h-[calc(100%-3.125rem)] overflow-auto text-(--neon-green)">
+        <div
+          className={`h-[calc(100%-3.125rem)] ${stor ? "h-auto!" : ""} overflow-auto text-(--neon-green)`}
+        >
           {children}
         </div>
       </div>
