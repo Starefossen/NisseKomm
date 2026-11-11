@@ -731,7 +731,7 @@ export const DAGER = [
     brikkeH:
       "åtte bøker som lav mur foran skjermen. Ryggkort fra venstre: 1 ✱, 2 R, 3 ✱, 4 ✱, 5 ✱, 6 ✱, 7 ✱, 8 ✱, alle med lite rutetall i hjørnet og tegn. Inne i bok 5: kortet U · 7 (med tegn). Inne i bok 3 (på gløtt): et ✱-kort med teksten «Feil bok. Hvor satte Julius sirkelen?». Grytelokket og vispen står inntil. Skjerm og app er fryst fra morgenen.",
     brikkeS:
-      "Julius: «IQ bygde en vegg av varme rundt linjen. De som kjemper mot flammene i skogen, bygger det samme, bare av det motsatte, og kaller den etter det de kjemper mot.» Så: «Jeg lot ham la én port stå åpen. Inn mot grotten. Med varme i.»",
+      "Julius: «IQ bygde en vegg av varme rundt linjen. De som kjemper mot flammene i skogen, bygger samme slags vegg, og kaller den etter det de kjemper mot.» Så: «Jeg lot ham la én port stå åpen. Inn mot grotten. Med varme i.»",
     slikLoses: [
       "H9 leser ryggkortene fra venstre: bare R på 2.",
       "K12 husker dag 20: porten er sirkelen på Trixters kart. Åpner stjernetegn.txt: varde 5. Åpner bok 5: U · 7. (Bok 3 på gløtt gir ✱ og «Feil bok».)",

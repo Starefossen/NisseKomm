@@ -33,6 +33,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - Flytregel 8: Ordtak for 9 år: ingen «motsatt av det motsatte», «sier det med armene», «høre på himmelen». Test: kan Håkon gjenfortelle segmentet med én setning?
 - Mailer skrives som lest etter husjakten (fortid).
 - 2026-11-11: De to låste segmentene dag 17-4 og dag 20-4 er skrevet om uten «høre på himmelen» og «sier det med armene», samme mening og innenfor ordbudsjettet. Hvorfor: flytregel 8 gjelder også låste linjer.
+- 2026-11-11: Dag 21-4 (låst, BRANNMUR-brikken) sier «bygger samme slags vegg, og kaller den etter det de kjemper mot» i stedet for «bygger det samme, bare av det motsatte». Hvorfor: «bare av det motsatte» er for abstrakt for en niåring; brikken står.
 
 ## Spill (2026-11-10/11)
 

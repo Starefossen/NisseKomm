@@ -564,8 +564,8 @@ Kulde-nivå 3 i segment 1–2 (nesten frosset bilde, rim over hele vinduet, lyde
    - Varighet: 12 s (17 ord) · låst
    - Handling: Tegner en linje over bordet med venstre håndkant og holder hånden der.
    - Kulde: Synlig pust. Rim, bildet hakker, men lyden er klar.
-4. **Replikk:** «Veggen har et navn. De som kjemper mot flammene i skogen, bygger det samme, bare av det motsatte, og kaller den etter det de kjemper mot.»
-   - Varighet: 15 s (26 ord) · låst
+4. **Replikk:** «Veggen har et navn. De som kjemper mot flammene i skogen, bygger samme slags vegg, og kaller den etter det de kjemper mot.»
+   - Varighet: 15 s (23 ord) · låst
    - Handling: Peker på linjen han tegnet, holder blikket der.
    - Kulde: Svak knitring.
 5. **Replikk:** «Muren har én åpning. Jeg lot ham la én port stå åpen. Inn mot grotten. Med varme i. Kom hjem i kveld. Vi er her.»
