@@ -48,12 +48,9 @@ const tekst = (src: string) =>
     []
   ).join("\n");
 // Parent guide is not kid-visible; slede.ts and channels.ts text is checked per day
-// in synlig-tekst.ts. TODO(fix/nissestats-2026): drop NisseStats once rewritten.
+// in synlig-tekst.ts.
 const barnefiler = files.filter(
-  (f) =>
-    !/nissemor-guide|snofall-tv\/(slede|channels)\.ts$|NisseStats\.tsx$/.test(
-      f,
-    ),
+  (f) => !/nissemor-guide|snofall-tv\/(slede|channels)\.ts$/.test(f),
 );
 
 describe("kodelekkasje", () => {

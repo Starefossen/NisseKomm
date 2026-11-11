@@ -2,48 +2,23 @@
 
 import { useState, useEffect, useRef } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
-import { GameEngine } from "@/lib/game-engine";
+import { GameEngine, type MetricDisplayType } from "@/lib/game-engine";
 import { LEDIndicator } from "../ui/LEDIndicator";
 import { useSounds } from "@/lib/sounds";
 import { getCurrentDate } from "@/lib/date-utils";
 import { TIDBITS, visible } from "@/lib/tidbits";
 import { KAPITLER } from "./nissespill/kapitler";
 import { ETAPPER } from "./snofall-tv/slede";
+import statisk from "@/data/statisk_innhold.json";
 
 interface NisseStatsProps {
   onClose: () => void;
   currentDay: number;
 }
 
-type MetricType = {
-  navn: string;
-  verdi: number;
-  maks: number;
-  displayType:
-    | "counter"
-    | "bar"
-    | "percentage"
-    | "waveform"
-    | "radar"
-    | "gauge"
-    | "binary"
-    | "hexgrid";
-  unit: string;
-  description: string;
-  status: "normal" | "advarsel" | "kritisk";
-  inCrisis: boolean;
-  crisisType?:
-    | "glitch"
-    | "oscillate"
-    | "drain"
-    | "stuck"
-    | "negative"
-    | "warning"
-    | "dimming"
-    | "lost";
-  crisisText?: string;
-  crisisValues?: number[];
-};
+type MetricType = ReturnType<
+  typeof GameEngine.getGlobalProductionMetrics
+>[number];
 
 type UrgencyLevel = "calm" | "approaching" | "urgent" | "critical" | "today";
 
@@ -89,108 +64,26 @@ const URGENCY_LABELS: Record<UrgencyLevel, string> = {
   today: "I DAG!",
 };
 
-const CRISIS_ANIMATION_CLASSES: Record<
-  NonNullable<MetricType["crisisType"]>,
-  string
-> = {
-  glitch: "animate-[glitch_0.3s_infinite]",
-  oscillate: "animate-pulse",
-  warning: "animate-[gold-flash_2s_ease-in-out_infinite]",
-  drain: "animate-[red-shake_0.5s_ease-in-out]",
-  stuck: "animate-[red-shake_0.5s_ease-in-out]",
-  negative: "animate-[red-shake_0.5s_ease-in-out]",
-  dimming: "animate-[red-shake_0.5s_ease-in-out]",
-  lost: "animate-[red-shake_0.5s_ease-in-out]",
-};
+/** Snøfall's log (statisk_innhold.json), newest day first. */
+const FEED = statisk.nissestats_feed as {
+  fra_dag: number;
+  tekst: string;
+}[];
 
-/**
- * Generate dynamic feed items based on current metrics and crisis status
- */
-function generateFeedItems(
-  metrics: MetricType[],
-  currentDay: number,
-): string[] {
-  const staticItems = [
-    "Elf_042: Pakking av lego-sett fullført",
-    "Elf_137: Kvalitetskontroll av teddybjørner OK",
-    "IQ: Turbo-reinsdyr forer testet - liten brann",
-    "Winter: Organisert 1,247 brevfugler i dag",
-    "Rudolf: Oppvarmingsrunde nr. 4 - perfekt!",
-    "Vedlikehold: Verksted temperatur stabil",
-  ];
-
-  const dynamicItems: string[] = [];
-
-  // Add metric updates
-  const metricUpdates = [
-    {
-      key: "GAVEPRODUKSJON",
-      template: (m: MetricType) =>
-        `Gaveproduksjon: ${m.verdi.toLocaleString("no-NO")} pakker klare!`,
-    },
-    {
-      key: "NISSEKRAFT",
-      template: (m: MetricType) => `Nissekraft: ${m.verdi}% energi stabil`,
-    },
-    {
-      key: "BREVFUGL-SVERM",
-      template: (m: MetricType) => `${m.verdi} brevfugler aktive i luften`,
-    },
-  ];
-
-  metricUpdates.forEach(({ key, template }) => {
-    const metric = metrics.find((m) => m.navn === key);
-    if (metric && !metric.inCrisis) {
-      dynamicItems.push(template(metric));
-    }
-  });
-
-  // Add crisis alerts
-  const crisisStatus = GameEngine.getCrisisStatus();
-
-  // Day 11: Antenna crisis
-  if (currentDay >= 11 && !crisisStatus.antenna) {
-    dynamicItems.unshift(
-      "KRITISK: RUDOLF NES-SIGNAL TAPT - TELEMETRI OFFLINE",
-      "IQ: Antennen er HELT ødelagt! Trenger AKUTT reparasjon!",
-      "SYSTEMFEIL: SUNOS-8000-8N - MULTIPLE SENSOR FAILURES",
-    );
-  }
-
-  // Day 16: Inventory crisis
-  if (currentDay >= 16 && !crisisStatus.inventory) {
-    dynamicItems.unshift(
-      "KRITISK: INVENTAR-SYSTEM KRASJET - DATABASE LOOP",
-      "Winter: 'Alt har sin plass!' - men systemet vet ikke hvor!",
-      "NISSEKRAFT: ENERGI-DRAIN - Prøver å fikse database...",
-    );
-  }
-
-  // Day 7: Mørket warning
-  if (currentDay >= 7 && currentDay < 14) {
-    dynamicItems.unshift(
-      "ORAKELET: MØRKET DETEKTERT - POLARNATTEN NÆRMER SEG",
-      "JULESTJERNE: Lysstyrke demper... Trenger magisk styrke",
-    );
-  }
-
-  // Add resolution messages
-  if (currentDay >= 12 && crisisStatus.antenna) {
-    dynamicItems.push(
-      "ANTENNE-REPARASJON FULLFØRT! SIGNAL: 100%",
-      "RUDOLF: NESEN MIN LYSER IGJEN! Jeg ser ALT!",
-    );
-  }
-
-  if (currentDay >= 17 && crisisStatus.inventory) {
-    dynamicItems.push(
-      "INVENTAR SYNKRONISERT! Produksjon: 100% - Flott arbeid!",
-      "NISSEKRAFT: Systemer normalisert. Database gjenopprettet!",
-    );
-  }
-
-  return [...dynamicItems, ...staticItems].slice(0, 9);
+// Live readings on top, then the log from the newest day back
+function feedItems(metrics: MetricType[], currentDay: number): string[] {
+  const live = metrics
+    .filter((m) =>
+      ["FROSTGRADEN", "DIREKTELINJEN", "BREVFUGLER I LUFTA"].includes(m.navn),
+    )
+    .map((m) => `${m.navn}: ${m.verdi.toLocaleString("no-NO")} ${m.unit}`);
+  const logg = FEED.filter((f) => f.fra_dag <= currentDay)
+    .reverse()
+    .map((f) => f.tekst);
+  return [...live, ...logg].slice(0, 12);
 }
+
+const bjelletegn = (n: number) => "●".repeat(n) + "○".repeat(3 - n);
 
 export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
   const { playSound } = useSounds();
@@ -198,25 +91,19 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
   const hasPlayedChristmasSound = useRef(false);
   const [glitchFrame, setGlitchFrame] = useState(0);
 
-  // Countdown state
   const [countdown, setCountdown] = useState(() =>
     GameEngine.getChristmasCountdown(),
   );
 
-  // Production metrics state
-  const [metrics, setMetrics] = useState<MetricType[]>(() => {
-    const completedQuestCount = GameEngine.getCompletedQuestCount();
-    return GameEngine.getGlobalProductionMetrics(
+  const [metrics, setMetrics] = useState<MetricType[]>(() =>
+    GameEngine.getGlobalProductionMetrics(
       currentDay,
-      completedQuestCount,
-    );
-  });
+      GameEngine.getCompletedQuestCount(),
+    ),
+  );
 
-  // Feed state
-  const [feedItems, setFeedItems] = useState<string[]>([]);
   const [tab, setTab] = useState<"malere" | "live" | "snofall">("malere");
 
-  // Update countdown every second
   useEffect(() => {
     const interval = setInterval(() => {
       const newCountdown = GameEngine.getChristmasCountdown();
@@ -231,31 +118,20 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
     return () => clearInterval(interval);
   }, [playSound]);
 
-  // Update metrics every 2 seconds (glitch/oscillate animations happen faster)
+  // Refresh readings every 2 s so a code typed in another window shows up
   useEffect(() => {
     const interval = setInterval(() => {
-      const completedQuestCount = GameEngine.getCompletedQuestCount();
-      const newMetrics = GameEngine.getGlobalProductionMetrics(
-        currentDay,
-        completedQuestCount,
+      setMetrics(
+        GameEngine.getGlobalProductionMetrics(
+          currentDay,
+          GameEngine.getCompletedQuestCount(),
+        ),
       );
-      setMetrics(newMetrics);
       setGlitchFrame((prev) => (prev + 1) % 1000);
     }, 2000);
 
     return () => clearInterval(interval);
   }, [currentDay]);
-
-  // Generate feed items
-  useEffect(() => {
-    const updateFeed = () => {
-      setFeedItems(generateFeedItems(metrics, currentDay));
-    };
-
-    updateFeed();
-    const interval = setInterval(updateFeed, 3000);
-    return () => clearInterval(interval);
-  }, [metrics, currentDay]);
 
   const urgencyStyles = URGENCY_STYLES[countdown.urgencyLevel];
   const urgencyLabel = URGENCY_LABELS[countdown.urgencyLevel];
@@ -310,7 +186,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
             )}
           </div>
 
-          <Tile label="OPPDRAG" value={`${questProgress}/24`}>
+          <Tile label="KODER LØST" value={`${questProgress}/24`}>
             <div className="grid grid-cols-12 gap-0.5">
               {Array.from({ length: 24 }, (_, i) => (
                 <div
@@ -393,7 +269,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
                       <dt className="opacity-70 truncate">{e.navn}</dt>
                       <dd className="text-(--gold) tabular-nums">
                         {slede[e.id]
-                          ? `${slede[e.id].poeng.toLocaleString("no-NO")} · ${slede[e.id].bjeller} bj.`
+                          ? `${slede[e.id].poeng.toLocaleString("no-NO")} ${bjelletegn(slede[e.id].bjeller)}`
                           : "-"}
                       </dd>
                     </div>
@@ -406,7 +282,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
 
         {tab === "live" && (
           <div className="border-2 border-(--neon-green)/30 divide-y divide-(--neon-green)/10">
-            {feedItems.map((item, i) => (
+            {feedItems(metrics, currentDay).map((item, i) => (
               <div key={i} className="p-2 text-base text-(--neon-green)/70">
                 [{getCurrentDate().toLocaleTimeString("no-NO")}] {item}
               </div>
@@ -452,9 +328,6 @@ function Tile({
   );
 }
 
-/**
- * Render functions for different display types
- */
 const DisplayRenderers = {
   bar: (value: number, max: number) => {
     const percentage = Math.round((value / max) * 100);
@@ -508,105 +381,59 @@ const DisplayRenderers = {
   percentage: (value: number, max: number) => Math.round((value / max) * 100),
 };
 
-/**
- * Crisis display components
- */
-interface CrisisDisplayProps {
-  displayValue: number;
-  glitchFrame: number;
-  statusColor: string;
-  unit: string;
-  crisisText?: string;
-}
-
-function CrisisDisplay({
-  metric,
-  displayValue,
-  glitchFrame,
-  statusColor,
-}: CrisisDisplayProps & { metric: MetricType }) {
-  const crisisRenderers: Record<
-    NonNullable<MetricType["crisisType"]>,
-    () => React.ReactNode
-  > = {
-    glitch: () => (
-      <div className={`text-xl font-bold font-retro ${statusColor}`}>
-        {displayValue < 0
-          ? `ERR:${displayValue}`
-          : `${displayValue}█${glitchFrame % 2 === 0 ? "▓" : "░"}??`}
-      </div>
-    ),
-    oscillate: () => (
-      <div className={`text-2xl font-bold ${statusColor}`}>
-        {displayValue.toLocaleString("no-NO")}
-      </div>
-    ),
-    stuck: () => (
-      <div className={`text-2xl font-bold ${statusColor}`}>
-        {displayValue.toLocaleString("no-NO")} [LOOP]
-      </div>
-    ),
-    negative: () => (
-      <div className={`text-2xl font-bold ${statusColor}`}>
-        {displayValue} {metric.unit} [UNDERFLOW]
-      </div>
-    ),
-    lost: () => (
-      <div className={`text-2xl font-bold ${statusColor}`}>
-        {glitchFrame % 2 === 0 ? "???" : "▓▓▓"} LOST
-      </div>
-    ),
-    warning: () => (
-      <div className={`text-2xl font-bold ${statusColor}`}>{displayValue}%</div>
-    ),
-    dimming: () => (
-      <div className={`text-2xl font-bold ${statusColor}`}>{displayValue}%</div>
-    ),
-    drain: () => (
-      <div className={`text-2xl font-bold ${statusColor}`}>
-        {displayValue}% ↓↓↓
-      </div>
-    ),
-  };
-
-  const renderer = metric.crisisType
-    ? crisisRenderers[metric.crisisType]
-    : null;
-
-  return (
-    <div className="space-y-1">
-      {renderer && renderer()}
-      <div className="text-base text-(--christmas-red)/80">
-        {metric.crisisText}
-      </div>
-    </div>
-  );
-}
-
-/**
- * Normal display component
- */
-interface NormalDisplayProps {
+interface MetricCardProps {
   metric: MetricType;
-  liveCount: number;
-  statusColor: string;
   glitchFrame: number;
 }
 
-function NormalDisplay({
-  metric,
-  liveCount,
-  statusColor,
-  glitchFrame,
-}: NormalDisplayProps) {
-  const percent = DisplayRenderers.percentage(metric.verdi, metric.maks);
+function MetricCard({ metric, glitchFrame }: MetricCardProps) {
+  const targetRef = useRef(metric.verdi);
   // Tooltip fungerer ikke på touch: trykk utvider beskrivelsen på stedet
   const [open, setOpen] = useState(false);
 
-  const displayComponents: Record<
-    MetricType["displayType"],
-    () => React.ReactNode
-  > = {
+  // Big counters tick up towards their value so the window feels live
+  const shouldAnimate =
+    metric.displayType === "counter" && metric.maks > 100_000;
+
+  const [animatedCount, setAnimatedCount] = useState(() =>
+    shouldAnimate
+      ? Math.max(metric.verdi * 0.95, metric.verdi - 10000)
+      : metric.verdi,
+  );
+
+  useEffect(() => {
+    targetRef.current = metric.verdi;
+  }, [metric.verdi]);
+
+  useEffect(() => {
+    if (!shouldAnimate) return;
+    const increment = Math.max(1, Math.floor(metric.maks / 100000));
+    const interval = setInterval(() => {
+      setAnimatedCount((prev) => {
+        const next = prev + increment;
+        return next > targetRef.current ? targetRef.current : next;
+      });
+    }, 100);
+    return () => clearInterval(interval);
+  }, [metric.verdi, metric.maks, shouldAnimate]);
+
+  const liveCount = shouldAnimate ? animatedCount : metric.verdi;
+  const percent = DisplayRenderers.percentage(metric.verdi, metric.maks);
+
+  const statusColor =
+    metric.status === "kritisk"
+      ? "text-(--christmas-red)"
+      : metric.status === "advarsel"
+        ? "text-(--gold)"
+        : "text-(--neon-green)";
+  const ledColor =
+    metric.status === "kritisk"
+      ? "red"
+      : metric.status === "advarsel"
+        ? "gold"
+        : "green";
+
+  const displayComponents: Record<MetricDisplayType, () => React.ReactNode> = {
     counter: () => (
       <div
         className={`text-xl lg:text-2xl font-bold ${statusColor} transition-all`}
@@ -671,132 +498,21 @@ function NormalDisplay({
   };
 
   return (
-    <div className="flex-1 flex flex-col justify-center">
-      {displayComponents[metric.displayType]()}
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        aria-expanded={open}
-        className={`text-base opacity-60 mt-auto pt-1 text-left min-h-11 w-full ${open ? "" : "truncate"}`}
-      >
-        {metric.description}
-      </button>
-    </div>
-  );
-}
-
-// Metric Card Component with all display types and crisis animations
-interface MetricCardProps {
-  metric: MetricType;
-  glitchFrame: number;
-}
-
-function MetricCard({ metric, glitchFrame }: MetricCardProps) {
-  const targetRef = useRef(metric.verdi);
-
-  // Determine if this metric should animate
-  const shouldAnimate =
-    !metric.inCrisis &&
-    metric.navn !== "BARN I VERDEN" &&
-    metric.displayType === "counter";
-
-  // Initialize animated count with lazy initializer to avoid setState in effect
-  const getInitialCount = () => {
-    if (!shouldAnimate) return metric.verdi;
-    return Math.max(metric.verdi * 0.95, metric.verdi - 10000);
-  };
-
-  const [animatedCount, setAnimatedCount] = useState(getInitialCount);
-
-  // Update target ref when metric value changes
-  useEffect(() => {
-    targetRef.current = metric.verdi;
-  }, [metric.verdi]);
-
-  // Animate counters for production metrics
-  useEffect(() => {
-    if (!shouldAnimate) {
-      return; // Non-animated metrics will use metric.verdi directly
-    }
-
-    // Increment slowly to simulate live production
-    const increment = Math.max(1, Math.floor(metric.maks / 100000));
-    const interval = setInterval(() => {
-      setAnimatedCount((prev) => {
-        const next = prev + increment;
-        return next > targetRef.current ? targetRef.current : next;
-      });
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, [metric.verdi, metric.maks, shouldAnimate]);
-
-  // Use animated count for animated metrics, actual value for others
-  const displayCount = shouldAnimate ? animatedCount : metric.verdi;
-
-  // Determine styling based on crisis and status
-  const getStatusColor = () => {
-    if (metric.inCrisis) return "text-(--christmas-red)";
-    if (metric.status === "kritisk") return "text-(--christmas-red)";
-    if (metric.status === "advarsel") return "text-(--gold)";
-    return "text-(--neon-green)";
-  };
-
-  const statusColor = getStatusColor();
-
-  // Get animated crisis value for glitch/oscillate types
-  const displayValue =
-    metric.inCrisis && metric.crisisValues
-      ? metric.crisisValues[glitchFrame % metric.crisisValues.length]
-      : metric.verdi;
-
-  // Get crisis animation class
-  const crisisAnimation =
-    metric.inCrisis && metric.crisisType
-      ? CRISIS_ANIMATION_CLASSES[metric.crisisType]
-      : "";
-
-  const borderClass = metric.inCrisis
-    ? "border-(--christmas-red) bg-(--christmas-red)/10"
-    : "border-(--neon-green)/50 bg-(--neon-green)/5";
-
-  const ledColor = metric.inCrisis
-    ? "red"
-    : metric.status === "kritisk"
-      ? "red"
-      : metric.status === "advarsel"
-        ? "gold"
-        : "green";
-
-  return (
-    <div
-      className={`p-2 border-2 border-dashed transition-all will-change-transform flex flex-col ${crisisAnimation} ${borderClass}`}
-    >
-      <div className="flex flex-col h-full">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-1">
-          <div className="text-base opacity-70">{metric.navn}</div>
-          <LEDIndicator color={ledColor} />
-        </div>
-
-        {/* Value Display */}
-        {metric.inCrisis ? (
-          <CrisisDisplay
-            metric={metric}
-            displayValue={displayValue}
-            glitchFrame={glitchFrame}
-            statusColor={statusColor}
-            unit={metric.unit}
-            crisisText={metric.crisisText}
-          />
-        ) : (
-          <NormalDisplay
-            metric={metric}
-            liveCount={displayCount}
-            statusColor={statusColor}
-            glitchFrame={glitchFrame}
-          />
-        )}
+    <div className="p-2 border-2 border-dashed border-(--neon-green)/50 bg-(--neon-green)/5 flex flex-col">
+      <div className="flex items-center justify-between mb-1">
+        <div className="text-base opacity-70">{metric.navn}</div>
+        <LEDIndicator color={ledColor} />
+      </div>
+      <div className="flex-1 flex flex-col justify-center">
+        {displayComponents[metric.displayType]()}
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          aria-expanded={open}
+          className={`text-base opacity-60 mt-auto pt-1 text-left min-h-11 w-full ${open ? "" : "truncate"}`}
+        >
+          {metric.description}
+        </button>
       </div>
     </div>
   );

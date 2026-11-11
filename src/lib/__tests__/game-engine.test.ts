@@ -255,14 +255,6 @@ describe("GameEngine", () => {
     });
   });
 
-  describe("Crisis Management", () => {
-    it("should start with all crises unresolved", () => {
-      const status = GameEngine.getCrisisStatus();
-      expect(status.antenna).toBe(false);
-      expect(status.inventory).toBe(false);
-    });
-  });
-
   describe("Email Tracking", () => {
     it("should mark main emails as viewed", () => {
       GameEngine.markEmailAsViewed(1, false);
@@ -371,35 +363,6 @@ describe("GameEngine", () => {
       expect(GameEngine.isQuestCompleted(5)).toBe(true);
       expect(GameEngine.isQuestCompleted(10)).toBe(true);
       expect(GameEngine.isQuestCompleted(15)).toBe(true);
-    });
-  });
-
-  describe("Progressive System Status", () => {
-    it("should freeze REINSDYR at crisis value on day 11 if antenna unresolved", () => {
-      const completedQuests = GameEngine.getCompletedQuestCount();
-      const day11Metrics = GameEngine.getGlobalProductionMetrics(
-        11,
-        completedQuests,
-      );
-      const reinsdyr = day11Metrics.find((m) => m.navn === "REINSDYR FLYTIMER");
-
-      expect(reinsdyr).toBeDefined();
-      expect(reinsdyr!.inCrisis).toBe(true);
-      expect(reinsdyr!.status).toBe("kritisk");
-    });
-
-    it("should freeze NISSEKRAFT at crisis value on day 16 if inventory unresolved", () => {
-      const completedQuests = GameEngine.getCompletedQuestCount();
-      const day16Metrics = GameEngine.getGlobalProductionMetrics(
-        16,
-        completedQuests,
-      );
-      const nissekraft = day16Metrics.find((m) => m.navn === "NISSEKRAFT");
-
-      expect(nissekraft).toBeDefined();
-      expect(nissekraft!.verdi).toBe(62); // Crisis value
-      expect(nissekraft!.status).toBe("advarsel");
-      expect(nissekraft!.inCrisis).toBe(true);
     });
   });
 
@@ -514,7 +477,6 @@ describe("GameEngine", () => {
           expect(metric).toHaveProperty("unit");
           expect(metric).toHaveProperty("description");
           expect(metric).toHaveProperty("status");
-          expect(metric).toHaveProperty("inCrisis");
         });
       });
 
@@ -544,16 +506,10 @@ describe("GameEngine", () => {
         const day12Metrics = GameEngine.getGlobalProductionMetrics(12, 0);
         const day24Metrics = GameEngine.getGlobalProductionMetrics(24, 0);
 
-        // Find PEPPERKAKER (no crisis behavior) to test pure sigmoid
-        const day1Pepper = day1Metrics.find(
-          (m) => m.navn === "PEPPERKAKER BAKT",
-        );
-        const day12Pepper = day12Metrics.find(
-          (m) => m.navn === "PEPPERKAKER BAKT",
-        );
-        const day24Pepper = day24Metrics.find(
-          (m) => m.navn === "PEPPERKAKER BAKT",
-        );
+        // Find PEPPERKAKER to test pure sigmoid
+        const day1Pepper = day1Metrics.find((m) => m.navn === "GAVER PAKKET");
+        const day12Pepper = day12Metrics.find((m) => m.navn === "GAVER PAKKET");
+        const day24Pepper = day24Metrics.find((m) => m.navn === "GAVER PAKKET");
 
         if (day1Pepper && day12Pepper && day24Pepper) {
           // Values should increase over time
@@ -594,30 +550,13 @@ describe("GameEngine", () => {
           }
         });
 
-        // Find specific metrics to verify
-        const day16Gaver = day16Metrics.find(
-          (m) => m.navn === "GAVEPRODUKSJON",
-        );
+        const day16Gaver = day16Metrics.find((m) => m.navn === "GAVER PAKKET");
         const day16Reinsdyr = day16Metrics.find(
           (m) => m.navn === "REINSDYR FLYTIMER",
         );
-
-        if (day16Gaver) {
-          const gaverPercent = (day16Gaver.verdi / day16Gaver.maks) * 100;
-          // Day 16 is after midpoint (12), should be over 50% unless in crisis
-          if (!day16Gaver.inCrisis) {
-            expect(gaverPercent).toBeGreaterThan(50);
-          }
-        }
-
-        if (day16Reinsdyr) {
-          const reinsdyrPercent =
-            (day16Reinsdyr.verdi / day16Reinsdyr.maks) * 100;
-          // Should be reasonable progression, not 100% on day 16
-          if (!day16Reinsdyr.inCrisis) {
-            expect(reinsdyrPercent).toBeLessThan(95);
-          }
-        }
+        // Day 16 is past the sigmoid midpoint (15)
+        expect(day16Gaver!.verdi / day16Gaver!.maks).toBeGreaterThan(0.5);
+        expect(day16Reinsdyr!.verdi / day16Reinsdyr!.maks).toBeLessThan(0.95);
       });
 
       it("should apply child progress bonus correctly", () => {
@@ -626,11 +565,9 @@ describe("GameEngine", () => {
 
         // Find metrics with multipliers > 0
         const gaveWithoutBonus = withoutBonus.find(
-          (m) => m.navn === "GAVEPRODUKSJON",
+          (m) => m.navn === "GAVER PAKKET",
         );
-        const gaveWithBonus = withBonus.find(
-          (m) => m.navn === "GAVEPRODUKSJON",
-        );
+        const gaveWithBonus = withBonus.find((m) => m.navn === "GAVER PAKKET");
 
         if (gaveWithoutBonus && gaveWithBonus) {
           expect(gaveWithBonus.verdi).toBeGreaterThan(gaveWithoutBonus.verdi);
@@ -653,6 +590,23 @@ describe("GameEngine", () => {
         metrics.forEach((metric) => {
           expect(validTypes).toContain(metric.displayType);
         });
+      });
+
+      it("reads frost, line warmth, runes and ghost images live", async () => {
+        const by = (d: number) =>
+          Object.fromEntries(
+            GameEngine.getGlobalProductionMetrics(d, 0).map((m) => [m.navn, m]),
+          );
+        const d16 = by(16);
+        expect(d16.FROSTGRADEN.verdi).toBe(63);
+        expect(d16.DIREKTELINJEN.verdi).toBe(37);
+        expect(d16.FROSTGRADEN.status).toBe("kritisk");
+        expect(d16.FROSTRUNER.verdi).toBe(0);
+        expect(d16["KULDE PÅ 85,0"].verdi).toBe(6);
+        const code1 = getQuestCode(1);
+        await GameEngine.submitCode(code1, code1, 1);
+        expect(by(16).FROSTRUNER.verdi).toBe(GameEngine.getLearnedRunes().size);
+        expect(by(16).FROSTRUNER.verdi).toBeGreaterThan(0);
       });
 
       it("should have valid status values", () => {

@@ -368,6 +368,50 @@
   ],
   "nissestats_global_metrics": [
     {
+      "navn": "FROSTGRADEN",
+      "min": 0,
+      "maks": 100,
+      "unlock_day": 7,
+      "display_type": "gauge",
+      "unit": "%",
+      "child_progress_multiplier": 0,
+      "description": "Rim i serverrommet i Snøfall. Hver kode senker den.",
+      "kilde": "frost"
+    },
+    {
+      "navn": "DIREKTELINJEN",
+      "min": 0,
+      "maks": 100,
+      "unlock_day": 1,
+      "display_type": "waveform",
+      "unit": "%",
+      "child_progress_multiplier": 0,
+      "description": "Bærebølgen på 90,0 MHz mellom Snøfall og Landås. Varm linje gir klar lyd.",
+      "kilde": "linje"
+    },
+    {
+      "navn": "FROSTRUNER",
+      "min": 0,
+      "maks": 100,
+      "unlock_day": 1,
+      "display_type": "bar",
+      "unit": "tegn",
+      "child_progress_multiplier": 0,
+      "description": "Tegn på tavla dere kan lese. Hvert løst ord lærer dere nye.",
+      "kilde": "runer"
+    },
+    {
+      "navn": "KULDE PÅ 85,0",
+      "min": 0,
+      "maks": 100,
+      "unlock_day": 7,
+      "display_type": "counter",
+      "unit": "ganger",
+      "child_progress_multiplier": 0,
+      "description": "Spøkelsesbildet på Snøfall TV i desember. Orakelet teller.",
+      "kilde": "spokelser"
+    },
+    {
       "navn": "BARN I VERDEN",
       "min": 2200000000,
       "maks": 2200000000,
@@ -375,95 +419,37 @@
       "display_type": "counter",
       "unit": "barn",
       "child_progress_multiplier": 0,
-      "description": "Totalt antall barn Julius skal besøke"
+      "description": "Barn Julius skal besøke julenatt"
     },
     {
-      "navn": "GAVEPRODUKSJON",
+      "navn": "GAVER PAKKET",
       "min": 48000,
       "maks": 1800000000,
       "unlock_day": 1,
       "display_type": "counter",
       "unit": "pakker",
       "child_progress_multiplier": 0.03,
-      "description": "Gaver produsert i Snøfall",
-      "crisis_behavior": {
-        "day": 16,
-        "crisis_type": "oscillate",
-        "crisis_values": [330000000, 329847291, 330152847, 329999123],
-        "status": "kritisk",
-        "crisis_text": "SORTERINGS-SYSTEM KRASJET"
-      }
+      "description": "Pakker ferdige fra verkstedet i Snøfall"
     },
     {
-      "navn": "NISSEKRAFT",
-      "min": 45,
-      "maks": 100,
-      "unlock_day": 2,
-      "display_type": "waveform",
-      "unit": "%",
-      "child_progress_multiplier": 0.02,
-      "description": "Magisk energi som driver Snøfall og linjen",
-      "crisis_behavior": {
-        "day": 16,
-        "crisis_type": "drain",
-        "crisis_value": 62,
-        "status": "advarsel",
-        "crisis_text": "ENERGI-DRAIN (Samlebånd-stopp)"
-      }
-    },
-    {
-      "navn": "PEPPERKAKER BAKT",
-      "min": 0,
-      "maks": 500000,
-      "unlock_day": 4,
-      "display_type": "counter",
-      "unit": "kaker",
-      "child_progress_multiplier": 0.025,
-      "description": "Pepperkaker bakt av Hjerterud"
-    },
-    {
-      "navn": "BREVFUGL-SVERM",
+      "navn": "BREVFUGLER I LUFTA",
       "min": 12,
       "maks": 2847,
       "unlock_day": 5,
       "display_type": "radar",
       "unit": "fugler",
       "child_progress_multiplier": 0.025,
-      "description": "Krypterte brevfugler i luften nå",
-      "crisis_behavior": {
-        "day": 11,
-        "crisis_type": "lost",
-        "crisis_value": 0,
-        "status": "kritisk",
-        "crisis_text": "FREKVENS 75 MHz JAMMET"
-      }
+      "description": "Brevfugler mellom Bergen og Snøfall akkurat nå"
     },
     {
-      "navn": "JULEKULER BLÅST",
-      "min": 0,
-      "maks": 10000,
-      "unlock_day": 7,
+      "navn": "LYKTER VED ANTENNEN",
+      "min": 6,
+      "maks": 360,
+      "unlock_day": 6,
       "display_type": "counter",
-      "unit": "kuler",
-      "child_progress_multiplier": 0.03,
-      "description": "Krystallkuler fra glasshytten"
-    },
-    {
-      "navn": "FORSVARS-BARRIERE",
-      "min": 88,
-      "maks": 100,
-      "unlock_day": 7,
-      "display_type": "gauge",
-      "unit": "%",
-      "child_progress_multiplier": 0.015,
-      "description": "Vern mot Kulde",
-      "crisis_behavior": {
-        "day": 7,
-        "crisis_type": "warning",
-        "crisis_value": 88,
-        "status": "advarsel",
-        "crisis_text": "SPØKELSESKODE KULDE DETEKTERT"
-      }
+      "unit": "lykter",
+      "child_progress_multiplier": 0.02,
+      "description": "IQs lykter rundt antennen. Flere for hver natt."
     },
     {
       "navn": "REINSDYR FLYTIMER",
@@ -473,103 +459,140 @@
       "display_type": "bar",
       "unit": "timer",
       "child_progress_multiplier": 0.025,
-      "description": "Vindtrening for Ulriken-landing",
-      "crisis_behavior": {
-        "day": 11,
-        "crisis_type": "glitch",
-        "crisis_values": [240, 169, 0, -148, 993, 42],
-        "status": "kritisk",
-        "crisis_text": "TELEMETRI OFFLINE - 75 MHz"
-      }
+      "description": "Trixters trening for vestlandsvær"
     },
     {
-      "navn": "RUDOLF NES-SIGNAL",
-      "min": 0,
-      "maks": 100,
-      "unlock_day": 10,
-      "display_type": "gauge",
-      "unit": "%",
-      "child_progress_multiplier": 0.03,
-      "description": "Rudolfs radarstyrke gjennom vestlandståke",
-      "crisis_behavior": {
-        "day": 11,
-        "crisis_type": "glitch",
-        "crisis_values": [0, 12, 83, 2, 0],
-        "status": "kritisk",
-        "crisis_text": "NO CARRIER - ANTENNE NEDE"
-      }
-    },
-    {
-      "navn": "SLEDE DRIVSTOFF",
-      "min": 0,
-      "maks": 100,
+      "navn": "LUSSEKATTER",
+      "min": 500,
+      "maks": 24000,
       "unlock_day": 13,
-      "display_type": "percentage",
-      "unit": "%",
-      "child_progress_multiplier": 0.028,
-      "description": "Gulrot- og stjernedrivstoff på tanken"
+      "display_type": "counter",
+      "unit": "boller",
+      "child_progress_multiplier": 0.02,
+      "description": "Hjerteruds boller. Rampenissen spiste elleve."
     },
     {
-      "navn": "ØNSKELISTE BEHANDLET",
+      "navn": "PAKKER PÅ HYLLA",
       "min": 847,
       "maks": 2200000,
-      "unlock_day": 14,
+      "unlock_day": 17,
       "display_type": "counter",
-      "unit": "lister",
+      "unit": "pakker",
       "child_progress_multiplier": 0.035,
-      "description": "Origami-brevfugler sortert av Winter",
-      "crisis_behavior": {
-        "day": 16,
-        "crisis_type": "stuck",
-        "crisis_value": 847293,
-        "status": "kritisk",
-        "crisis_text": "SORTERINGS-LOOP VED 847293"
-      }
+      "description": "Pakker Winter har satt på riktig hylle"
     },
     {
-      "navn": "MAGISKE SEKKER",
-      "min": 0,
-      "maks": 847,
-      "unlock_day": 16,
-      "display_type": "hexgrid",
-      "unit": "sekker",
-      "child_progress_multiplier": 0.025,
-      "description": "Ferdigpakkede ekspedisjonssekker",
-      "crisis_behavior": {
-        "day": 16,
-        "crisis_type": "negative",
-        "crisis_value": -42,
-        "status": "kritisk",
-        "crisis_text": "SORTERING_UNDERFLOW"
-      }
-    },
-    {
-      "navn": "RUTE-BEREGNING",
+      "navn": "SLEDERUTE",
       "min": 0,
       "maks": 100,
       "unlock_day": 18,
       "display_type": "binary",
       "unit": "%",
       "child_progress_multiplier": 0.03,
-      "description": "Innflyging Snøfall -> Ulriken -> Bergen"
+      "description": "Innflyging Snøfall → Ulriken → Landås, beregnet av Trixter"
     },
     {
-      "navn": "JULESTJERNE LYSSTYRKE",
-      "min": 72,
+      "navn": "RUDOLFS DRIVSTOFF",
+      "min": 0,
       "maks": 100,
       "unlock_day": 20,
-      "display_type": "gauge",
+      "display_type": "percentage",
       "unit": "%",
-      "child_progress_multiplier": 0.025,
-      "description": "Stjernelys som bryter gjennom polarnatten",
-      "crisis_behavior": {
-        "day": 7,
-        "crisis_type": "dimming",
-        "crisis_value": 72,
-        "status": "advarsel",
-        "crisis_text": "KULDE-SKYGGE DETEKTERT"
-      }
+      "child_progress_multiplier": 0.028,
+      "description": "Fôringsautomaten fylt opp igjen etter smellen"
+    },
+    {
+      "navn": "SNILL-LISTEN",
+      "min": 2100000000,
+      "maks": 2200000000,
+      "unlock_day": 22,
+      "display_type": "counter",
+      "unit": "navn",
+      "child_progress_multiplier": 0.01,
+      "description": "Navn Winter har stemplet i år"
     }
   ],
-  "kalender": []
+  "kalender": [],
+  "nissestats_feed": [
+    {
+      "fra_dag": 1,
+      "tekst": "IQ: Direktelinjen er oppe. 90,0 MHz. Bærebølgen hakker litt. Det er været."
+    },
+    {
+      "fra_dag": 1,
+      "tekst": "ORAKELET: Noe sender på 85,0 MHz. Lytter."
+    },
+    {
+      "fra_dag": 2,
+      "tekst": "IQ: Tre sikringer byttet. Alle sammen, ikke én."
+    },
+    {
+      "fra_dag": 4,
+      "tekst": "TRIXTER: Rudolf fløy i snøfonna. Øver på retning."
+    },
+    {
+      "fra_dag": 7,
+      "tekst": "ORAKELET: Signaturen har et navn. Frostgraden måles hver natt fra nå."
+    },
+    {
+      "fra_dag": 10,
+      "tekst": "ARKIV: Fargesamlerens første mappe er åpnet."
+    },
+    {
+      "fra_dag": 13,
+      "tekst": "HJERTERUD: Isen på slusen sprakk da jeg nynnet. Den sukket."
+    },
+    {
+      "fra_dag": 13,
+      "tekst": "HJERTERUD: 500 lussekatter ut av ovnen. 11 savnet."
+    },
+    {
+      "fra_dag": 14,
+      "tekst": "WINTER: Brevfuglene er sluppet. Én blå fugl ingen har sendt."
+    },
+    {
+      "fra_dag": 16,
+      "tekst": "IQ: Ingen logg i går. Leste notatboken på nytt."
+    },
+    {
+      "fra_dag": 16,
+      "tekst": "WINTER: Alt i pakkesentralen ligger i én haug. Samlebåndet går baklengs."
+    },
+    {
+      "fra_dag": 17,
+      "tekst": "WINTER: Hyllene stemmer igjen. Rampenissen er ute av brødboksen."
+    },
+    {
+      "fra_dag": 17,
+      "tekst": "ORAKELET: Grønt lys over polarhimmelen i natt. Første signal tilbake."
+    },
+    {
+      "fra_dag": 18,
+      "tekst": "TRIXTER: Sleden testet i kastevind rundt Ulriken. Rister, men holder."
+    },
+    {
+      "fra_dag": 20,
+      "tekst": "IQ: Fôringsautomaten reparert. 40 gulrøtter hentet ned fra taket."
+    },
+    {
+      "fra_dag": 21,
+      "tekst": "TRIXTER: Motoren er klar. Rudolf tester sofaen."
+    },
+    {
+      "fra_dag": 22,
+      "tekst": "IQ: Muren holder varmen inne. Én port står åpen."
+    },
+    {
+      "fra_dag": 22,
+      "tekst": "WINTER: Snill-listen er åpen. Jeg trenger stedet i tall."
+    },
+    {
+      "fra_dag": 24,
+      "tekst": "ORAKELET: Ikke en sky i natt. Sleden gikk over Nordtoppen med alle lysene på."
+    },
+    {
+      "fra_dag": 24,
+      "tekst": "JULIUS: Landet på Landås. God jul."
+    }
+  ]
 }

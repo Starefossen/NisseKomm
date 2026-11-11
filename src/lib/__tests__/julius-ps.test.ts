@@ -28,12 +28,4 @@ describe("GameEngine.getJuliusPs", () => {
     StorageManager.addSolvedDecryption("stjernetegn");
     expect(GameEngine.getJuliusPs(20)).toBe(q(20).julius_ps);
   });
-
-  it("derives the crisis status from the bonus quests", () => {
-    GameEngine.completeBonusOppdrag(16);
-    expect(GameEngine.getCrisisStatus()).toEqual({
-      antenna: false,
-      inventory: true,
-    });
-  });
 });

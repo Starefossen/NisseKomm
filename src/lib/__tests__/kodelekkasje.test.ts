@@ -17,24 +17,12 @@ const ALLOWED = new Set(["LANDÅS"]);
 // still fails; each one is a question for Hans, not a fix.
 const KNOWN = new Set<string>([]);
 
-// TODO(fix/nissestats-2026): NisseStats still carries 2025 text; drop this when that branch lands.
-const EXPECTED_FAIL = /^NisseStats/;
-
 const pattern = (code: string) =>
   /^\d+$/.test(code)
     ? new RegExp(`(?<!\\d)${code}(?!\\d)`)
     : new RegExp(code, "i");
 
 describe("kodelekkasje", () => {
-  it("NisseStats still leaks (remove EXPECTED_FAIL once fixed)", () => {
-    const leaks = visible.filter(
-      (v) =>
-        EXPECTED_FAIL.test(v.where) &&
-        quests.some((q) => q.dag >= v.from && pattern(q.kode).test(v.text)),
-    );
-    expect(leaks.length).toBeGreaterThan(0);
-  });
-
   it.each(quests.map((q) => q.dag))(
     "dag %i: ingen synlig tekst viser dagens eller senere koder",
     (d) => {
@@ -42,7 +30,7 @@ describe("kodelekkasje", () => {
         .filter((q) => q.dag >= d && !ALLOWED.has(q.kode))
         .map((q) => q.kode);
       const leaks = visible
-        .filter((v) => v.from <= d && !EXPECTED_FAIL.test(v.where))
+        .filter((v) => v.from <= d)
         .flatMap((v) =>
           codes
             .filter((c) => pattern(c).test(v.text))

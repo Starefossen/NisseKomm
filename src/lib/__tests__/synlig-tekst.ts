@@ -207,23 +207,25 @@ for (const [d, t] of Object.entries(KULDE_INTERCEPTS))
   add(Number(d), `Snøfall TV Kulde dag ${d}`, t);
 add(1, "Snøfall TV kanaler", CHANNELS.map((c) => c.name).join(" "));
 
-// NisseStats opens the evening of day 16 (dag 16 julius_ps). TODO: the metrics and
-// feed are 2025 text and leak later codes; rewritten on fix/nissestats-2026, so
-// kodelekkasje lists these sources in EXPECTED_FAIL until that branch lands.
+// NisseStats (reveals day 16, open from that morning): each metric from its
+// unlock_day, the log from each line's fra_dag, the window's own literals.
+const NISSESTATS_DAG = quests.find((q) =>
+  q.reveals?.modules?.includes("NISSESTATS"),
+)!.dag;
+for (const m of statisk.nissestats_global_metrics)
+  add(
+    Math.max(NISSESTATS_DAG, m.unlock_day),
+    `NisseStats måler ${m.navn}`,
+    `${m.navn} ${m.description}`,
+  );
+for (const f of statisk.nissestats_feed)
+  add(
+    Math.max(NISSESTATS_DAG, f.fra_dag),
+    `NisseStats logg dag ${f.fra_dag}`,
+    f.tekst,
+  );
 add(
-  17,
-  "NisseStats metrics",
-  JSON.stringify(statisk.nissestats_global_metrics),
-);
-add(
-  17,
+  NISSESTATS_DAG,
   "NisseStats",
   literaler(kilde("src/components/windows/NisseStats.tsx")),
-);
-const motor = kilde("src/lib/game-engine.ts");
-const fra = motor.indexOf("static getGlobalProductionMetrics");
-add(
-  17,
-  "NisseStats game-engine",
-  literaler(motor.slice(fra, motor.indexOf("\n  static ", fra + 1))),
 );
