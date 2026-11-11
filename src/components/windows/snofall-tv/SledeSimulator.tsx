@@ -36,6 +36,8 @@ const HOR = 150;
 const FOCAL = 300;
 const HALF = 450; // world units per track unit
 const FADE_STEPS = 48;
+/** Longest thing on a course (the cave in lagBane). */
+const GROTTE_MAX = 1600;
 
 type Fase = "start" | "spiller" | "pause" | "slutt" | "tapt";
 
@@ -205,7 +207,18 @@ export function SledeSimulator({ day }: { day: number }) {
   const [touchHint, setTouchHint] = useState(false);
   const reduceMotion = useRef(false);
 
+  // A tap can start and end between two frames; the loop consumes this latch.
+  const sprang = useRef(false);
+
   const setFase = (f: Fase) => {
+    // Wind restarts on its own via setVind when flying resumes.
+    if (f !== "spiller") lyd.current?.stop();
+    // Back on the start screen: a fresh course for attract mode.
+    if (f === "start")
+      simRef.current = createSim(etappeRef.current, {
+        assist: true,
+        reduceMotion: true,
+      });
     faseRef.current = f;
     setFaseState(f);
   };
@@ -373,14 +386,14 @@ export function SledeSimulator({ day }: { day: number }) {
             -1,
             Math.min(1, (k.U ? 1 : 0) - (k.D ? 1 : 0) + touch.current.climb),
           ),
-          sprang: k.S,
+          sprang: k.S || sprang.current,
         };
+        sprang.current = false;
         const før = sim.s.poeng;
         for (const h of sim.step(dt, inn)) hendelse(h, sim);
         if (sim.s.poeng > før) say(`+${sim.s.poeng - før}`);
         lyd.current?.setVind(sim.s.fart / e.fart, sim.s.vind);
         if (sim.s.ferdig || sim.s.tapt) {
-          lyd.current?.stop();
           const b = sim.s.ferdig
             ? bjeller(sim.s.varder, sim.s.varderTotalt, sim.s.krasj)
             : 0;
@@ -394,6 +407,11 @@ export function SledeSimulator({ day }: { day: number }) {
         sim.s.dist += 160 * dt * motion;
         sim.s.px = Math.sin(t * 0.3) * 0.4;
         sim.s.bank = Math.cos(t * 0.3) * 0.12;
+        while (
+          sim.s.first < sim.s.ting.length &&
+          sim.s.ting[sim.s.first].z <= sim.s.dist
+        )
+          sim.s.first++;
       }
 
       const { px, alt, bank, dist } = sim.s;
@@ -498,7 +516,10 @@ export function SledeSimulator({ day }: { day: number }) {
       const ting = sim.s.ting;
       let end = sim.s.first;
       while (end < ting.length && ting[end].z < dist + drawDist) end++;
-      for (let i = end - 1; i >= sim.s.first; i--) {
+      // Long things (the cave) stay visible after their start has passed.
+      let lo = sim.s.first;
+      while (lo > 0 && ting[lo - 1].z > dist - GROTTE_MAX) lo--;
+      for (let i = end - 1; i >= lo; i--) {
         const o = ting[i];
         if (o.z <= dist + 20 && o.type !== "grotte" && o.type !== "vind")
           continue;
@@ -646,7 +667,7 @@ export function SledeSimulator({ day }: { day: number }) {
       ctx.globalAlpha = 1;
       ctx.restore();
 
-      if (now - hudAt > 100) {
+      if (spiller && now - hudAt > 100) {
         hudAt = now;
         setHud({
           alt: sim.s.alt,
@@ -678,6 +699,7 @@ export function SledeSimulator({ day }: { day: number }) {
       const k = KEYS[e.key];
       if (k) {
         held.current[k] = true;
+        if (k === "S") sprang.current = true;
         // Only while flying: on the panels space and arrows still work the buttons.
         if (faseRef.current === "spiller") e.preventDefault();
       }
@@ -714,6 +736,8 @@ export function SledeSimulator({ day }: { day: number }) {
     if (!zone) return;
     if (ev.type === "pointerup" || ev.type === "pointercancel") {
       pointers.current.delete(ev.pointerId);
+      // Another finger may still hold this zone; it sets the value on its next move.
+      if ([...pointers.current.values()].includes(zone)) return;
       if (zone === "kurs") touch.current.steer = 0;
       else touch.current.climb = 0;
       return;
@@ -854,10 +878,9 @@ export function SledeSimulator({ day }: { day: number }) {
             }}
             onPointerDown={(e) => {
               e.stopPropagation();
-              held.current.S = true;
+              sprang.current = true;
             }}
-            onPointerUp={() => (held.current.S = false)}
-            onPointerCancel={() => (held.current.S = false)}
+            onClick={() => (sprang.current = true)}
           >
             SPRANG
           </button>

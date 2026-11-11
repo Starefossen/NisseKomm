@@ -62,6 +62,7 @@ export class SledeLyd {
       this.vind.src.stop();
     } catch {}
     this.vind.src.disconnect();
+    this.vind.gain.disconnect();
     this.vind = null;
   }
 
