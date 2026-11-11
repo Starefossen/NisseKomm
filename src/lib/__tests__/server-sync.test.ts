@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, jest } from "@jest/globals";
 import {
+  RESET_KEY,
   SYNCED_KEYS,
   ServerSyncAdapter,
   VERSION_KEY,
@@ -30,12 +31,14 @@ async function fakeFetch(_url: unknown, init?: RequestInit) {
     ({ ok: status < 300, status, json: async () => body }) as Response;
   if (init?.method === "DELETE") {
     for (const k of SYNCED_KEYS) await store.putState(k, null, true);
+    kv.set(RESET_KEY, kv.get(VERSION_KEY));
     return reply(200, { reset: true });
   }
   if (init?.method !== "PUT") return reply(200, await store.getState());
   const { key, value, replace, version } = JSON.parse(String(init.body));
   const current = Number((await store.getState())[VERSION_KEY] ?? 0);
-  if (version < current) return reply(409, { version: current });
+  if (version < current)
+    return reply(409, { version: current, reset: kv.get(RESET_KEY) ?? null });
   if (key === "nissekomm-codes") return reply(400, { error: "Ugyldig kode" });
   const stored = await store.putState(key, value, replace);
   return reply(200, {
@@ -76,7 +79,7 @@ describe("ServerSyncAdapter", () => {
     await flush(a);
 
     // Reset from the guide (or MCP reset) on another screen
-    await store.putState(KEY, null, true);
+    await fakeFetch("", { method: "DELETE" });
 
     // b still holds the old version: its write is refused and it re-fetches
     b.set(KEY, [1, 2, 3]);
@@ -110,7 +113,7 @@ describe("ServerSyncAdapter", () => {
     await b.start();
     a.set(KEY, [1, 2]);
     await flush(a);
-    const seen = localStorage.getItem("nissekomm-state-version-seen");
+    const seen = localStorage.getItem("nissekomm-state-reset-seen");
 
     await a.clear(true);
     expect((await store.getState())[KEY]).toBeNull();
@@ -118,7 +121,7 @@ describe("ServerSyncAdapter", () => {
     // b reloads holding old progress it never managed to push
     localStorage.setItem(KEY, JSON.stringify([1, 2, 3]));
     localStorage.setItem("nissekomm-unsynced", JSON.stringify([KEY]));
-    localStorage.setItem("nissekomm-state-version-seen", seen!);
+    localStorage.setItem("nissekomm-state-reset-seen", seen!);
     const b2 = new ServerSyncAdapter();
     await b2.start();
     await jest.advanceTimersByTimeAsync(1000);
@@ -131,6 +134,22 @@ describe("ServerSyncAdapter", () => {
     await flush(b);
     expect((await store.getState())[KEY]).toBeNull();
     expect(b.get(KEY, "tom")).toBe("tom");
+  });
+
+  it("a replacing write elsewhere (409, no reset) keeps pending writes", async () => {
+    const a = new ServerSyncAdapter();
+    const b = new ServerSyncAdapter();
+    await a.start();
+    await b.start();
+    a.set("nissekomm-slede", { tundra: 1, muren: 2 });
+    await flush(a);
+    a.set("nissekomm-slede", { tundra: 1 }); // shrink: bumps the version
+    await flush(a);
+
+    b.set(KEY, [7]);
+    await flush(b); // 409, not a reset: b sends again
+    await jest.advanceTimersByTimeAsync(1000);
+    expect((await store.getState())[KEY]).toEqual([7]);
   });
 
   it("a rejected key does not drop the other pending keys", async () => {

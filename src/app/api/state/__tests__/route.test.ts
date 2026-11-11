@@ -177,7 +177,7 @@ describe("/api/state removals and validation", () => {
     // A screen still on version 0 pushes its old list: refused
     const stale = await call("PUT", { key, value: [1, 2], version: 0 });
     expect(stale.status).toBe(409);
-    expect(stale.json).toEqual({ version: 1 });
+    expect(stale.json).toEqual({ version: 1, reset: null });
     expect((await call("GET")).json).toEqual({
       [key]: null,
       "state-version": 1,

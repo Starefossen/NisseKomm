@@ -128,6 +128,8 @@ export const SYNCED_KEYS = new Set([
 export const SERVER_KEYS = ["frost-override", "day-offset"];
 /** Bumped by every replacing write; an older client must re-fetch. */
 export const VERSION_KEY = "state-version";
+/** Set by a season reset (DELETE /api/state); only a new value may drop local writes. */
+export const RESET_KEY = "state-reset";
 
 const json = (x: unknown) => JSON.stringify(x);
 const isObj = (x: unknown): x is Record<string, unknown> =>
@@ -148,8 +150,8 @@ type Pending = { value: unknown; replace: boolean };
 
 /** Local-only list of synced keys written while the server was unreachable. */
 const UNSYNCED_KEY = "nissekomm-unsynced";
-/** Local-only: the server version this screen last saw. */
-const SEEN_KEY = "nissekomm-state-version-seen";
+/** Local-only: the reset marker this screen last saw. */
+const RESET_SEEN_KEY = "nissekomm-state-reset-seen";
 
 /**
  * localStorage as a synchronous cache of the server state. Plain
@@ -159,6 +161,7 @@ const SEEN_KEY = "nissekomm-state-version-seen";
 export class ServerSyncAdapter extends LocalStorageAdapter {
   private live = false;
   private version = 0;
+  private reset: unknown = null;
   private pending = new Map<string, Pending>();
   private timer?: ReturnType<typeof setTimeout>;
   private flushing = false;
@@ -176,7 +179,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     const offline = this.unsynced().map(
       (k) => [k, super.get<unknown>(k, null)] as const,
     );
-    const seen = super.get<number | null>(SEEN_KEY, null);
+    const seen = super.get<unknown>(RESET_SEEN_KEY, null);
     clearTimeout(this.startRetry);
     try {
       this.live = await this.pull();
@@ -186,8 +189,8 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
       throw e;
     }
     if (!this.live) return;
-    // Reset (or revoked) elsewhere since: the server wins, as on a 409.
-    if (seen != null && this.version > seen) {
+    // Season reset elsewhere since: the server wins.
+    if (json(this.reset) !== json(seen)) {
       this.markUnsynced(this.unsynced(), false);
       offline.length = 0;
     }
@@ -214,7 +217,9 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
       else super.set(k, state[k]);
     }
     const v = state[VERSION_KEY];
-    this.setVersion(typeof v === "number" ? v : 0);
+    this.version = typeof v === "number" ? v : 0;
+    this.reset = state[RESET_KEY] ?? null;
+    super.set(RESET_SEEN_KEY, this.reset);
     this.onChange();
     return true;
   }
@@ -243,11 +248,6 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     });
     if (!res.ok) throw new Error(`Nullstilling feilet (${res.status})`);
     if (this.live) await this.pull();
-  }
-
-  private setVersion(v: number) {
-    this.version = v;
-    super.set(SEEN_KEY, v);
   }
 
   private unsynced(): string[] {
@@ -305,19 +305,25 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
           await this.pull().catch(() => {});
           continue;
         }
-        // 409: reset or a replacing write elsewhere. Server wins.
+        // 409: a season reset drops local writes; any other replacing
+        // write elsewhere just means a newer version, so send again.
         if (res.status === 409) {
-          this.markUnsynced([...this.pending.keys()], false);
-          this.pending.clear();
-          await this.pull().catch(() => {});
-          return;
+          const c = (await res.json()) as { version: number; reset?: unknown };
+          if (json(c.reset ?? null) !== json(this.reset)) {
+            this.markUnsynced([...this.pending.keys()], false);
+            this.pending.clear();
+            await this.pull().catch(() => {});
+            return;
+          }
+          this.version = c.version;
+          break;
         }
         if (!res.ok) {
           retry = true;
           break;
         }
         const body = (await res.json()) as { value: unknown; version: number };
-        this.setVersion(body.version);
+        this.version = body.version;
         if (this.pending.get(key) === p) {
           this.pending.delete(key);
           this.markUnsynced([key], false);

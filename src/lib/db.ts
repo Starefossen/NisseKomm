@@ -3,7 +3,12 @@
  * Postgres when DATABASE_URL is set, otherwise in memory (dev, tests).
  */
 import { Pool } from "pg";
-import { SERVER_KEYS, SYNCED_KEYS, VERSION_KEY } from "./storage-adapter";
+import {
+  RESET_KEY,
+  SERVER_KEYS,
+  SYNCED_KEYS,
+  VERSION_KEY,
+} from "./storage-adapter";
 
 export type Role = "kid" | "parent";
 type Session = { role: Role; expires: number };
@@ -261,6 +266,8 @@ export async function resetState(store: Store = getStore()): Promise<void> {
   for (const k of [...STATE_KEYS, ...SERVER_KEYS]) {
     await store.putState(k, null, true);
   }
+  // Tells a stale screen this 409 was a reset, so it drops its pending writes.
+  await store.putState(RESET_KEY, (await store.getState())[VERSION_KEY]);
 }
 
 export const memoryStore = createMemoryStore();

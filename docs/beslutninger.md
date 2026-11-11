@@ -70,3 +70,9 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 
 - Koordinatoren delegerer blokkerende arbeid (fletting, sjekk, gjennomspilling, mediekjøringer) til underagenter.
 - Porten for app-kode er `pnpm check` pluss sharded gjennomspilling.
+
+## Synk og drift (2026-11-11)
+
+- Dagbok er tom før 1. desember, viser dag 1 til i dag i desember, og alle 24 videoene fra 25. desember (gjennom januar). Kalender og Ugleposten følger samme regel (`getAdventDay`). Hvorfor: barna skal kunne se videoene igjen etter jul.
+- Synk bruker en nullstillingsmarkør (`state-reset`). Bare en ekte sesongnullstilling fra foreldrene kaster ulagrede skriv på en skjerm; andre 409 sendes på nytt. Hvorfor: fremgang skal aldri forsvinne i det stille.
+- `/api/health` sjekker ikke databasen, MCP svarer 405 på GET/DELETE, og frostvarselet sendes fra GET `/api/state`. Hvorfor: appen spiller videre lokalt når databasen er nede, transporten er tilstandsløs, og det finnes ingen planlagt jobb ennå.
