@@ -378,12 +378,11 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 alt={scene.navn}
                 draggable={false}
                 className="absolute inset-0 w-full h-full object-cover"
-                onError={(e) =>
-                  setBildeFeil((f) => [
-                    ...f,
-                    e.currentTarget.getAttribute("src") ?? "",
-                  ])
-                }
+                onError={(e) => {
+                  // Read src now: React clears currentTarget before the updater runs
+                  const src = e.currentTarget.getAttribute("src") ?? "";
+                  setBildeFeil((f) => [...f, src]);
+                }}
               />
               <Stemning bilde={scene.bilde} />
               {!iIntro &&
