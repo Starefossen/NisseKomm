@@ -145,3 +145,8 @@ echo "Stopp med: docker stop ${ID:0:12}"
 [tasks."test:gjennomspilling"]
 description = "Spill gjennom dag 1–24 i headless Chromium (DAYS=10,21 for utvalg, BASE_URL for kjørende server)"
 run = "node scripts/gjennomspilling.mjs"
+
+[tasks."test:gjennomspilling:webkit"]
+description = "Spill gjennom dager i WebKit med iPad-oppsett (1180x820 landscape)"
+env = { MEDIA_DIR = "/Users/hans/go/src/github.com/starefossen/NisseKomm/public" }
+run = "node scripts/gjennomspilling-webkit.mjs"
