@@ -143,6 +143,7 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Urtårnet",
           rect: { x: 52, y: 0, w: 14, h: 62 },
           smart: "se",
+          prat: "Du roper «hva er klokka?» opp til tårnet. Klokka slår ett slag, midt mellom to timer, som for å si at det er dens sak.",
           se: "Klokkeskiva har fire visere: timer, minutter, sekunder og «tid til neste julekake». Den fjerde er bøyd fordi noen har prøvd å dytte den framover med en kjepp.",
           bruk:
             "Du når ikke opp til klokka. " +
@@ -161,6 +162,10 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Postkassen",
           rect: { x: 66, y: 42, w: 16, h: 36 },
           smart: "bruk",
+          prat:
+            "Du hvisker «hallo?» inn i brevsprekken. Det lukter ull og klementin tilbake. Ingen svarer. " +
+            R +
+            "«Det e SENGA mi der inne. Senger svare ikkje. Dem lytte.»",
           vis: { uten: "hengsel_tint" },
           se: [
             {

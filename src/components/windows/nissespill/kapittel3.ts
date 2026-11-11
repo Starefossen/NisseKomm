@@ -148,6 +148,10 @@ export const KAPITTEL_3: Kapittel = {
           navn: "Bamsen",
           rect: { x: 43, y: 30, w: 8, h: 10 },
           smart: "se",
+          prat:
+            "Du sier hei til bamsen. Han sier det samme som han har sagt i hundre år. " +
+            R +
+            "«Han e den beste å snakke med i heile Snøfall. Han avbryt aldri.»",
           se: "En gammel bamse med ett øye og et nystrøket halstørkle. Han har sittet i hylla siden Julius var liten. Han har sett alt. Han sier ingenting. Det er derfor han fortsatt sitter der.",
           bruk: "Du klapper bamsen. Han ser like rolig ut. Han er proff. Han har vært proff i hundre år.",
         },
@@ -328,6 +332,10 @@ export const KAPITTEL_3: Kapittel = {
           navn: "De blå krystallene",
           rect: { x: 6, y: 22, w: 32, h: 58 },
           smart: "se",
+          prat:
+            "Du hvisker til de blå krystallene. Hviskingen kommer ikke tilbake. Den ble der inne. " +
+            R +
+            "«Ikkje gi dem fleire ord. Dem samle på sånt.»",
           se: "Hyller skåret rett inn i isen, fulle av krystaller med blå glød. Hver har en liten lapp med tall, skrevet med stø hånd for lenge siden. Noen bygde dette nøye. Noen hadde tid. Noen hadde kanskje for mye tid.",
           bruk: "Du tar i en blå krystall. Den er kald, tung, og det kjennes som om den drikker lyset ut av øynene dine. Du slipper. Du blunker. Lyset kommer tilbake. Det var på lån.",
           feil: {

@@ -20,6 +20,8 @@
  *       S start, M goal, | straight, L corner, T tee, + cross, . empty.
  *   TIPS: add a `Gaate` with `ferdig` = the puzzle's `flagg`; the overlay's TIPS
  *   button uses it. A test rejects unsolvable or pre-solved routes and bad locks.
+ * - SNAKK on a thing: `Hotspot.prat` (a Linje). Hotspots without `bruk`/`prat` get
+ *   a rotating generic line, so no tap is ever silent.
  * - Notebook (NOTAT): every `Gaate` has `maal`, one bokmål line without the answer.
  *   It shows when solved (crossed out) or when it is the first unsolved goal; goals
  *   that run in parallel get `kjent` (a condition, `{}` = from the start).
@@ -83,6 +85,8 @@ export interface Hotspot {
   /** Custom lines for wrong items; others get a generic shrug. */
   feil?: Record<string, string>;
   snakk?: string;
+  /** SNAKK on a thing that has no dialog; otherwise a rotating generic line. */
+  prat?: Linje;
   /** BRUK walks to this scene (stairs, doors); exits also get a button. */
   gaaTil?: string;
   /** BRUK opens this mini-puzzle (key in `Kapittel.puslespill`) until it is solved. */
@@ -180,6 +184,27 @@ const SKULDERTREKK = [
   "Rampenissen: «Æ ser ka du tenke, men nei.»",
   "Rampenissen: «Kreativt! Feil, men kreativt.»",
 ];
+
+/** BRUK on something with no `bruk` line; rotates per hotspot so repeats stay fresh. */
+const INGENTING = [
+  "Det skjer ingenting. Absolutt ingenting.",
+  "Rampenissen: «Knerten dytte på det med nebbet. Ingenting. Ho prøve med den andre sida av nebbet. Like lite.»",
+  "Rampenissen: «Nei, det der e bare te å se på. Æ veit, æ har òg prøvd å ta på alt.»",
+  "Rampenissen: «Det sitt fast, eller så e det ikkje meint å flyttes på. Sannsynligvis begge dela.»",
+  "Rampenissen: «Knerten ser på det. Det ser tilbake. Ingen av dem gir sæ. Vi går videre.»",
+];
+
+/** SNAKK on something with neither `snakk` nor `prat`. */
+const SVARER_IKKE = [
+  (n: string) => `${n} svarer ikke. Forståelig nok.`,
+  (n: string) =>
+    `Du sier «hallo» til ${n.toLowerCase()}. Det blir stille. Rampenissen: «Æ har snakka med verre. Æ har snakka med ei dørmatte i tre tima.»`,
+  (n: string) =>
+    `Knerten uler lavt mot ${n.toLowerCase()}. Rampenissen: «Ugler snakke ikkje med sånt. Dem har standard.»`,
+  (n: string) => `${n} sier ingenting, men du får en følelse av å bli vurdert.`,
+];
+
+const hash = (s: string) => [...s].reduce((a, c) => a + c.charCodeAt(0), 0);
 
 export const has = (save: EventyrSave, flag: string) =>
   save.flags.includes(flag);
@@ -335,14 +360,16 @@ export function trykk(
       save,
       tekst: h.bruk
         ? velg(h.bruk, save)
-        : "Det skjer ingenting. Absolutt ingenting.",
+        : INGENTING[hash(h.id) % INGENTING.length],
       lyd: "click",
     };
   }
   if (h.snakk) return { save, dialog: h.snakk, lyd: "click" };
   return {
     save,
-    tekst: `${h.navn} svarer ikke. Forståelig nok.`,
+    tekst: h.prat
+      ? velg(h.prat, save)
+      : SVARER_IKKE[hash(h.id) % SVARER_IKKE.length](h.navn),
     lyd: "click",
   };
 }

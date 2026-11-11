@@ -140,6 +140,10 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   const [verb, setVerb] = useState<M.Verb | null>(null);
   const [holder, setHolder] = useState<string | null>(null);
   const [tekst, setTekst] = useState("");
+  // Caption over the text: what was tapped (iPad has no hover label)
+  const [emne, setEmne] = useState<{ navn: string; ikon?: string } | null>(
+    null,
+  );
   const [dialog, setDialog] = useState<{ id: string; node: string } | null>(
     null,
   );
@@ -180,7 +184,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
 
   const dag = spilldag();
 
-  const bruk = (u: M.Utfall) => {
+  const bruk = (u: M.Utfall, om?: { navn: string; ikon?: string }) => {
     if (save) {
       const ny = u.save.inventory.find((i) => !save.inventory.includes(i));
       // After render: the new slot flies down from the scene into the pocket
@@ -205,7 +209,10 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
         { transform: "translateX(0)" },
       ]);
     setSave(u.save);
-    if (u.tekst !== undefined) setTekst(u.tekst);
+    if (u.tekst !== undefined) {
+      setTekst(u.tekst);
+      setEmne(om ?? null);
+    }
     if (u.dialog) setDialog({ id: u.dialog, node: "start" });
     if (u.puslespill) setPuslespill(u.puslespill);
     if (u.lyd) SoundManager.playSound(u.lyd);
@@ -289,13 +296,18 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   const taler = dialog ? kap.dialoger[dialog.id] : null;
 
   const tapItem = (id: string) => {
+    const g = kap.gjenstander[id];
     if (verb === "se") {
-      setTekst(kap.gjenstander[id].se);
+      setTekst(g.se);
+      setEmne(g);
       setVerb(null);
       return;
     }
     setVerb(null);
-    if (holder && holder !== id) bruk(M.kombiner(kap, save, holder, id));
+    if (holder && holder !== id)
+      bruk(M.kombiner(kap, save, holder, id), {
+        navn: `${kap.gjenstander[holder].navn} + ${g.navn}`,
+      });
     else setHolder(holder === id ? null : id);
   };
 
@@ -380,7 +392,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                         x: h.rect.x + h.rect.w / 2,
                         y: h.rect.y + h.rect.h / 2,
                       });
-                      bruk(M.trykk(kap, save, h, verb, holder));
+                      bruk(M.trykk(kap, save, h, verb, holder), h);
                     }}
                     className={`group absolute rounded min-w-11 min-h-11 ${visSoner || hint ? "border-2 border-dashed border-(--gold)" : ""} active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) focus-visible:bg-white/20`}
                     style={{
@@ -620,6 +632,14 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 onClick={() => setTekst("")}
                 className={`${PANEL} text-left text-xl leading-tight`}
               >
+                {emne && (
+                  <span className="flex items-center gap-1 text-base text-(--gold) uppercase tracking-wider">
+                    {emne.ikon && (
+                      <Icon name={emne.ikon} size={16} color="gold" />
+                    )}
+                    {emne.navn}
+                  </span>
+                )}
                 <Skriv key={tekst} tekst={tekst} />
               </button>
             )}

@@ -228,6 +228,10 @@ export const KAPITTEL_4: Kapittel = {
           navn: "Sleden",
           rect: { x: 44, y: 54, w: 10, h: 20 },
           smart: "bruk",
+          prat:
+            "Du ønsker sleden god tur. Den knirker vennlig. " +
+            R +
+            "«Den sa takk. Æ kan sledespråk. Æ bodde under en i to vintra.»",
           se: [
             {
               hvis: "bjelle_montert",
@@ -489,6 +493,7 @@ export const KAPITTEL_4: Kapittel = {
           navn: "Bamsen",
           rect: { x: 43, y: 30, w: 8, h: 10 },
           smart: "se",
+          prat: "Du gratulerer bamsen med sløyfa. Han sier ingenting, men sløyfa sitter litt rettere etterpå.",
           se: "Bamsen med ett øye har fått ny sløyfe til jul. Han ser ikke mer begeistret ut enn vanlig. Innvendig jubler han. Han har jublet innvendig siden 1920.",
         },
         {
@@ -671,6 +676,7 @@ export const KAPITTEL_4: Kapittel = {
           navn: "Brevfuglen",
           rect: { x: 56, y: 84, w: 9, h: 10 },
           smart: "bruk",
+          prat: "«Hei, du.» Brevfuglen svarer med en lav kurring som betyr enten «hei» eller «ikke rør». Du velger å tro det første.",
           se: [
             {
               hvis: "tok_briller",

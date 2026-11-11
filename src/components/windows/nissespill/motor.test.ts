@@ -178,6 +178,22 @@ describe("motor: fjær", () => {
   });
 });
 
+describe("motor: ingen stille trykk", () => {
+  it("SNAKK bruker prat når den finnes, ellers en generisk linje med navnet", () => {
+    const k1 = KAPITLER[0];
+    const hot = (id: string) => k1.scener[0].hotspots.find((h) => h.id === id)!;
+    const s = M.nyttKapittel(k1);
+    expect(M.trykk(k1, s, hot("urtaarnet"), "snakk", null).tekst).toContain(
+      "hva er klokka",
+    );
+    expect(M.trykk(k1, s, hot("husene"), "snakk", null).tekst).toMatch(
+      /husene/i,
+    );
+    // BRUK without a bruk line never returns an empty text
+    expect(M.trykk(k1, s, hot("husene"), "bruk", null).tekst).toBeTruthy();
+  });
+});
+
 describe("motor: dialog husker spurte valg", () => {
   it("valg med neste gråes etter bruk, avslutninger ikke, og nytt kapittel glemmer", () => {
     const k1 = KAPITLER[0];
