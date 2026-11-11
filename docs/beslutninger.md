@@ -78,3 +78,8 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - Dagbok er tom før 1. desember, viser dag 1 til i dag i desember, og alle 24 videoene fra 25. desember (gjennom januar). Kalender og Ugleposten følger samme regel (`getAdventDay`). Hvorfor: barna skal kunne se videoene igjen etter jul.
 - Synk bruker en nullstillingsmarkør (`state-reset`). Bare en ekte sesongnullstilling fra foreldrene kaster ulagrede skriv på en skjerm; andre 409 sendes på nytt. Hvorfor: fremgang skal aldri forsvinne i det stille.
 - `/api/health` sjekker ikke databasen, MCP svarer 405 på GET/DELETE, og frostvarselet sendes fra GET `/api/state`. Hvorfor: appen spiller videre lokalt når databasen er nede, transporten er tilstandsløs, og det finnes ingen planlagt jobb ennå.
+
+## Innhold (2026-11-11)
+
+- Radio dag 12 og 15 beholdes med Rampenissen som øyenvitne fra Snøfall. Hvorfor: lyden er laget og replikkene er redigert av Hans.
+- E-posten dag 4 («NisseKrypto åpner i kveld») er et unntak fra regelen om at opplåsinger meldes i appen, som dag 8 (SLEDEFLUKT). Hvorfor: NisseKrypto er et milepæl i historien.
