@@ -4,6 +4,8 @@
 >
 > **Do NOT create new markdown files** (like SUMMARY.md, CHANGES.md, etc.) to document your work unless explicitly requested by the user.
 
+Beslutninger fra Hans: [docs/beslutninger.md](./docs/beslutninger.md) — sjekk før du endrer noe som berøres. Agenter legger nye beslutninger fra Hans til der (dato, én linje, kort «hvorfor»).
+
 ## Quick Navigation
 
 **Session Starter** (you're here): Project essence, critical patterns, environment setup
