@@ -134,7 +134,7 @@ export const MEDIA_MANIFEST: readonly ManifestEntry[] = [
   "feed/iq-verksted.png",
   "feed/julius-kontor.jpg",
   "feed/landsby-rolig.jpg",
-  // NISSESPILL (Klementin-Ekspressen): stills and pixel portraits, assets/bin/portrett.sh + piksel.sh
+  // NISSESPILL (Ugleposten): stills and pixel portraits, assets/bin/portrett.sh + piksel.sh
   "spill/torget.jpg",
   "spill/port-aapen.jpg",
   ...["rampenissen", "iq", "winter", "julius", "nissemor"].map(

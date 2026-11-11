@@ -1,5 +1,5 @@
 /**
- * Chapter registry and day gating for Klementin-Ekspressen. Story timeline per
+ * Chapter registry and day gating for Ugleposten. Story timeline per
  * docs/storyboard-2026.md: no Kulde before day 7, Vintervokteren known from day 15.
  */
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";

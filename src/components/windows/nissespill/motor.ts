@@ -1,5 +1,5 @@
 /**
- * Klementin-Ekspressen: the point-and-click rules as pure functions over the save.
+ * Ugleposten: the point-and-click rules as pure functions over the save.
  * Scenes are data (kapittel*.ts); the UI (Nissespill.tsx) only renders and dispatches.
  * Hotspot rects are percent of the 16:9 still so they follow the image on any screen.
  */
