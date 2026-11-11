@@ -64,8 +64,7 @@ export function Kalender({
 
   // Titles and mail text can leak codes, so never show them before their day, even in test mode
   const isDayRevealed = (day: number) =>
-    completedDays.has(day) ||
-    day <= getAdventDay();
+    completedDays.has(day) || day <= getAdventDay();
 
   const getDayStatus = (day: number): "locked" | "available" | "completed" => {
     if (completedDays.has(day)) return "completed";
@@ -133,8 +132,7 @@ export function Kalender({
                   </div>
 
                   {/* Teaser: something opens this day, never what */}
-                  {(status === "locked" ||
-                    day > getAdventDay()) &&
+                  {(status === "locked" || day > getAdventDay()) &&
                     GameEngine.getOpplasinger(day).length > 0 && (
                       <span className="absolute bottom-0.5 left-0 right-0 text-sm text-(--gold) opacity-100 tracking-wider">
                         NOE ÅPNER
