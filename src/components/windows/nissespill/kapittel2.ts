@@ -27,13 +27,13 @@ export const KAPITTEL_2: Kapittel = {
     R +
       "«Psst, dokker! Det e kaldt, og bildet fra Snøfall HAKKE. Knerten sitt ute ved tjernet, og æ ser bare halve ugla. Den bakerste halvdelen. Det e ikkje den beste.»",
     R +
-      "«Antenna ved tjernet har frøse fast. Og veit dokker kem som står og TYGG på kabelen? Rudolf. Sjølvaste Rudolf, han med nesa. Han tygg på alt når han kjede sæ. I fjor åt han ei dørmatte og halve Winter sin skriveplate.»",
+      "«Antenna ved tjernet har frøse fast. Og veit dokker kem som står og TYGG på kabelen? Rudolf. Han med nesa. Han tygg på alt når han kjede sæ. I fjor åt han ei dørmatte og halve skriveplata te Winter.»",
     R +
       "«Vi må få Rudolf vekk, tine antenna og peile ho mot Landås igjen. IQ sitt bak døra si som vanlig og roper. TIPS-knappen e fortsatt mæ, men dokker treng den sikkert ikkje. Sikkert.»",
   ],
   utro:
     R +
-    "«Antenna peke mot Landås, bildet e skarpt, og Rudolf tygg på knekkebrød i staden for kabel. Dokker e gode! IQ sei han ska lage ei egen hylle te knekkebrødet, med lås. Rudolf har allereie sett på låsen. Neste gang treng æ hjelp med nåkka ... mørkt. Æ sei ikkje meir. Over og ut!»",
+    "«Antenna peke mot Landås, bildet e skarpt, og Rudolf tygg på knekkebrød i stedet for kabel. Dokker e gode! IQ ska lage ei egen hylle te knekkebrødet, med lås. Rudolf har allerede sett på låsen. Neste gang treng æ hjelp med nåkka ... mørkt. Over og ut!»",
   gjenstander: {
     blikkboks: {
       id: "blikkboks",
@@ -92,7 +92,7 @@ export const KAPITTEL_2: Kapittel = {
   },
   fjaerBelonning:
     R +
-    "«To fjær te! Knerten mista ei fjær kvar gang ho e stolt. Ho e stolt ofte. Det e en av tingan vi har felles.»",
+    "«To fjær te! Knerten mista ei fjær hver gang ho e stolt. Ho e stolt ofte. Det e en av tingan vi har felles.»",
   puslespill: {
     hyttelaas: {
       type: "laas",
@@ -166,7 +166,7 @@ export const KAPITTEL_2: Kapittel = {
           navn: "Fjella",
           rect: { x: 56, y: 16, w: 44, h: 14 },
           smart: "se",
-          se: "Lave fjell med snø helt ned. Et sted bak dem ligger Nordtoppen. Et sted langt bak dem igjen ligger Landås, en sofa, og en nisse som venter på bedre bilde og har spist opp ventesnacksen.",
+          se: "Lave fjell med snø helt ned. Et sted bak dem ligger Nordtoppen. Et sted langt bak dem igjen ligger Landås, en sofa, og en nisse som venter på bedre bilde og har spist opp alt godteriet mens han ventet.",
         },
         {
           id: "lampa",
@@ -227,9 +227,9 @@ export const KAPITTEL_2: Kapittel = {
               flagg: "antenne_peilet",
               forbruker: true,
               tekst:
-                "Du legger korken med nåla i vannkoppen. Den røde enden snur seg rolig mot nord. Knerten vrir skiva til N møter nåla, og antenna svinger sakte rundt og stopper på L. Inne i hytta begynner noe å suse. " +
+                "Du legger korken med nåla i vannkoppen. Den røde enden snur seg mot nord. Knerten vrir skiva til N møter nåla, og antenna svinger rundt og stopper på L. " +
                 R +
-                "«Æ ser nåkka! Æ ser ... SNØ. Antenna peke rett, men mottakeren i hytta står på feil tall. Det står sikkert på en lapp. Alt hos IQ står på en lapp.»",
+                "«Æ ser ... SNØ. Antenna peke rett, men mottakeren i hytta står på feil tall. Alt hos IQ står på en lapp.»",
             },
             {
               item: "magnetnaal",
@@ -252,7 +252,7 @@ export const KAPITTEL_2: Kapittel = {
               gir: "boks_i_vott",
               forbruker: true,
               tekst:
-                "Du holder den glovarme boksen inntil koppen. Isen synker sammen, blir grå, blir vann. Koppen er full av vann, og skiva snurrer lett, så vinden får ikke tak. Boksen er kald igjen. " +
+                "Du holder den glovarme boksen inntil koppen. Isen synker sammen og blir vann. Skiva snurrer lett, så vinden får ikke tak. Boksen er kald igjen. " +
                 R +
                 "«Vann! Ekte vann! No mangle vi bare nåkka som veit kor nord e.»",
             },
@@ -267,7 +267,7 @@ export const KAPITTEL_2: Kapittel = {
               gir: "boks_i_vott",
               forbruker: true,
               tekst:
-                "Du holder den varme boksen mot koppen. Isen smelter ... og fryser til igjen før du har snudd deg. Skiva står fast, koppen står rett i vinden, og vinden vinner. Boksen er kald. " +
+                "Du holder den varme boksen mot koppen. Isen smelter ... og fryser til igjen før du har snudd deg. Skiva står fast, rett i vinden, og vinden vinner. Boksen er kald. " +
                 R +
                 "«Bortkasta! Så lenge skiva står fast, fryse koppen på nytt. Tannhjulet først, sjø.»",
             },
@@ -290,11 +290,11 @@ export const KAPITTEL_2: Kapittel = {
           rect: { x: 38, y: 56, w: 22, h: 22 },
           smart: "bruk",
           vis: { uten: "rudolf_flyttet" },
-          se: "Rudolf står ved foten av masta med en svart kabel i munnen. Han tygger sakte og ser på deg med store, rolige øyne. Nesa lyser litt rødt hver gang han tygger. Bak ham skimter du et tannhjul dekket av is. Han står ikke i veien. Han ER veien.",
+          se: "Rudolf står ved foten av masta med en svart kabel i munnen. Nesa lyser rødt hver gang han tygger. Bak ham skimter du et tannhjul dekket av is. Han står ikke i veien. Han ER veien.",
           bruk:
             "Du dytter Rudolf. Rudolf dytter tilbake. Rudolf vinner. " +
             R +
-            "«Han veie like mykje som en sofa. Æ har prøvd. Æ har prøvd med sofaen òg, for å sammenligne.»",
+            "«Han veie like mye som en sofa. Æ har prøvd. Æ har prøvd med sofaen òg, for å sammenligne.»",
           bruker: [
             {
               item: "sirupbroed",
@@ -303,7 +303,7 @@ export const KAPITTEL_2: Kapittel = {
               tekst:
                 "Rudolf snuser. Rudolf slipper kabelen. Rudolf tar knekkebrødet så forsiktig at ikke en dråpe sirup søles, og rusler bort til buskene for å tygge i fred. " +
                 R +
-                "«HA! Sirup slår kabel. Skriv det ned, IQ. Skriv det på tavla, under tegninga av han.»",
+                "«HA! Sirup slår kabel. Skriv det på tavla, IQ, under tegninga av han.»",
             },
           ],
           feil: {
@@ -365,7 +365,7 @@ export const KAPITTEL_2: Kapittel = {
               gir: "boks_i_vott",
               forbruker: true,
               tekst:
-                "Du setter den glovarme boksen inntil isen. Det freser. Det drypper. Det renner. Etter en stund gir isen fra seg et lite KNAKK, og tannhjulet rykker til. Fritt! Boksen er kald igjen, men den gjorde jobben. " +
+                "Du setter den glovarme boksen inntil isen. Det freser, drypper, renner. Så et lite KNAKK, og tannhjulet rykker til. Fritt! Boksen er kald igjen, men den gjorde jobben. " +
                 R +
                 "«Hørte dokker det? Det va lyden av IQ som blir stolt. Han høres ut som et tannhjul.»",
             },
@@ -596,7 +596,7 @@ export const KAPITTEL_2: Kapittel = {
               gir: "varmboks",
               forbruker: true,
               tekst:
-                "Du setter boksen oppå de tre rørene og holder den der med votten. Rørene dupper under vekta, men holder. Det tar ikke lang tid før boksen begynner å ryke. Du løfter den av. Glovarm, tung, og trygg i votten. " +
+                "Du setter boksen på de tre rørene og holder den der med votten. Rørene dupper under vekta, men holder. Snart ryker boksen. Du løfter den av. Glovarm, tung og trygg i votten. " +
                 R +
                 "«No e den varm. Veldig varm. Fly fort, før den blir fornuftig igjen.»",
             },
@@ -608,7 +608,7 @@ export const KAPITTEL_2: Kapittel = {
           ],
           feil: {
             blikkboks:
-              "Du setter boksen på rørene. Ti sekunder, så ryker den. Du griper den. AU! Du slipper den på benken og blåser på fingrene. Når du er ferdig å blåse, er boksen kald igjen. " +
+              "Du setter boksen på rørene. Ti sekunder, så ryker den. Du griper den. AU! Du slipper den på benken og blåser på fingrene. Når du er ferdig, er boksen kald igjen. " +
               R +
               "«IKKJE med fingran! Ka har IQ på handa når han tar i varme ting? Når han HUSKE det?»",
             grytevott:
@@ -753,7 +753,7 @@ export const KAPITTEL_2: Kapittel = {
             {
               hvis: "k2_ferdig",
               tekst:
-                "«Bildet er skarpt! Jeg ser det på måleren min! Hvem enn dere er: dere er forfremmet til assistenter. Ulønnet. Det er den høyeste stillingen jeg har.»",
+                "«Bildet er skarpt! Jeg ser det på måleren min! Hvem dere enn er: dere er forfremmet til assistenter. Ulønnet. Det er den høyeste stillingen jeg har.»",
             },
             {
               hvis: "iq_snakket",
@@ -795,7 +795,7 @@ export const KAPITTEL_2: Kapittel = {
         },
         antenne: {
           tekst:
-            "«Jeg VET det! Tannhjulet som snur antenna er frosset fast. Det hadde en varmekabel. Hadde. Rudolf tygget den i to i natt fordi han kjedet seg. Nå må tannhjulet tines med noe varmt. Ikke en kaffekopp, den er kald før du er ute av døra. Noe tungt. Metall. Som holder på varmen.»",
+            "«Jeg VET det! Tannhjulet som snur antenna er frosset fast. Det hadde en varmekabel. Hadde. Rudolf tygget den i to i natt. Nå må tannhjulet tines med noe varmt. Ikke en kaffekopp, den er kald før du er ute av døra. Noe tungt. Metall. Som holder på varmen.»",
           rampenissen:
             "«Nåkka tungt og varmt. Og nåkka å hold det med, for æ kjenne IQ sine varme ting. Dem e varme på en personlig måte.»",
           valg: [
@@ -806,7 +806,7 @@ export const KAPITTEL_2: Kapittel = {
         },
         boks: {
           tekst:
-            "«I antennehytta står en blikkboks med skruer. Tung som synd. Varm den på noe her inne som er varmt nok. Det er mye her inne som er varmt nok. Det er problemet med her inne. Og hytta har kodelås. Koden står ikke på skiltet, jeg er ikke dum. Men hvordan man finner den, står der. Ikke si det til noen.»",
+            "«I antennehytta står en blikkboks med skruer. Varm den på noe her inne som er varmt nok. Det er mye her inne som er varmt nok. Det er problemet. Og hytta har kodelås. Koden står ikke på skiltet, jeg er ikke dum. Men hvordan man finner den, står der. Ikke si det til noen.»",
           rampenissen: "«Det står på skiltet. Han har skrive det på SKILTET.»",
           valg: [
             { tekst: "Og hvordan holder vi en glovarm boks?", neste: "vott" },
@@ -836,7 +836,7 @@ export const KAPITTEL_2: Kapittel = {
         },
         landaas: {
           tekst:
-            "«Jeg har risset en L i peileskiva på masta, der Landås ligger, og en N for nord. Men skiva vet ikke selv hvor nord er. Det gjør nåla på tavla mi. Den må flyte i vann. Flyte. I vann. Ikke ligge på is, is er ikke vann, jeg har hatt denne diskusjonen før. Og når antenna står rett, må mottakeren i hytta stå på Landås. Tallet står på en lapp der inne. Jeg skrev det ned for å slippe å huske det. Det virket.»",
+            "«Jeg har risset en L i peileskiva, der Landås ligger, og en N for nord. Men skiva vet ikke hvor nord er. Det gjør nåla på tavla mi. Den må flyte i vann. Ikke ligge på is, is er ikke vann. Og når antenna står rett, må mottakeren i hytta stå på Landås. Tallet står på en lapp der inne.»",
           rampenissen:
             "«Nål, vann, nord, L, lapp. Æ skreiv det på handa. Æ skreiv det på feil hand, men det står der.»",
           valg: [{ tekst: "Nål, vann, nord, L, lapp. Skjønner." }],
@@ -870,7 +870,7 @@ export const KAPITTEL_2: Kapittel = {
         R +
           "«Rudolf går ikkje fra kabelen frivillig. Han treng nåkka BEDRE å tygge på. Alt e bedre med sirup, sei IQ. Rudolf e enig.»",
         R +
-          "«Sirup har Nissemor gjømt i verkstedet, og nøden ligg i en skuff. Saman blir det nåkka Rudolf vil ha.»",
+          "«Sirup har Nissemor gjømt i verkstedet, og nøden ligg i en skuff. I lag blir det nåkka Rudolf vil ha.»",
         R +
           "«Ta sirupen fra hylla og knekkebrødet fra skuffen i sidebordet. Trykk på sirupen i lomma, så på knekkebrødet. Gi det te Rudolf.»",
       ],
@@ -882,7 +882,7 @@ export const KAPITTEL_2: Kapittel = {
         R +
           "«Tannhjulet nederst på masta e frosse. Det treng nåkka tungt og varmt inntil sæ. Lenge. Håndvarmeren e ikkje nok, den e lunken som en unnskyldning.»",
         R +
-          "«Blikkboksen kan varmes på radiorøran hos IQ. Men ikkje med fingran. Nissemor sin grytevott heng under krakken te IQ. Boks og vott saman først.»",
+          "«Blikkboksen kan varmes på radiorøran hos IQ. Men ikkje med fingran. Nissemor sin grytevott heng under krakken te IQ. Boks og vott i lag først.»",
         R +
           "«Kombiner boksen og grytevotten i lomma. Bruk dem på radiorøran. Fly te tjernet og hold den varme boksen mot tannhjulet.»",
       ],
@@ -892,9 +892,9 @@ export const KAPITTEL_2: Kapittel = {
       ferdig: "kopp_tint",
       tips: [
         R +
-          "«Nåla ska flyte i vann, sei IQ. Koppen på skiva e full av is. Is e ikkje vann, same ka isen sei.»",
+          "«Nåla ska flyte i vann, sei IQ. Koppen på skiva e full av is. Is e ikkje vann, samme ka isen sei.»",
         R +
-          "«Vi har allereie nåkka som tine is. Boksen e kald igjen, men røran hos IQ e ikkje det.»",
+          "«Vi har allerede nåkka som tine is. Boksen e kald igjen, men røran hos IQ e ikkje det.»",
         R +
           "«Varm boksen på radiorøran en gang te, og hold den mot koppen på peileskiva.»",
       ],

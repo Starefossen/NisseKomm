@@ -20,15 +20,15 @@ export const KAPITTEL_1: Kapittel = {
   slutt: "k1_ferdig",
   intro: [
     R +
-      "«Psst. Dokker trur kanskje æ bare sitt i hylla og glor? Feil. IQ har kobla kameraan i Snøfall te skjermen dokkers, og no styre dokker Knerten: ull-ugla mi med messingbrilla. Ho sitt på torget. Ho e smartare enn ho ser ut. Det e ikkje vanskelig.»",
+      "«Psst. Dokker trur kanskje æ bare sitt i hylla og glor? Feil. IQ har kobla kameraan i Snøfall te skjermen dokkers, og no styre dokker Knerten: ull-ugla mi med messingbrilla. Ho e smartare enn ho ser ut.»",
     R +
-      "«Saka e sånn: Æ sov i ei garnkurv på loftet te IQ heile året. I kurven ligg lykkebjella mi. Uten den finn ikkje sleden fram te stua dokkers på julaften. Og no e kurven BORTE. Nån har tatt senga mi. Æ har mistanka. Han har skjerf.»",
+      "«Saka e sånn: Æ sov i ei garnkurv på loftet te IQ heile året. I kurven ligg lykkebjella mi, og uten den finn ikkje sleden fram te stua dokkers på julaften. No e kurven BORTE. Æ har mistanka. Han har skjerf.»",
     R +
       "«Dokker kan sånt her. SE, BRUK, SNAKK, lomma nederst. Står dokker fast, e TIPS-knappen mæ som hviske. Æ hviske høgt.»",
   ],
   utro:
     R +
-    "«Dokker klarte det! Lykkebjella e trygg, og Knerten flyg kurven opp på loftet igjen. Winter fikk skjemaet sitt, IQ fikk glasset sitt, og æ fikk senga mi. Alle vant. Winter mest, han har et brunsvidd skjema med bærlukt i arkivet. Neste gang treng æ hjelp med nåkka ... kaldere. Æ sei ikkje meir. Over og ut!»",
+    "«Dokker klarte det! Lykkebjella e trygg, og Knerten flyg kurven opp på loftet igjen. Winter fikk skjemaet sitt, IQ fikk glasset sitt, og æ fikk senga mi. Alle vant. Neste gang treng æ hjelp med nåkka ... kaldere. Æ sei ikkje meir. Over og ut!»",
   gjenstander: {
     tyttebaer: {
       id: "tyttebaer",
@@ -76,7 +76,7 @@ export const KAPITTEL_1: Kapittel = {
       tittel: "Stempelskrinet",
       flagg: "skrin_aapent",
       tekst:
-        "1-6-4-0. Det siste hjulet klikker, og lokket spretter opp. Inni ligger stempelet «SNØFALL POSTVESEN» på rød fløyel, som en liten konge. Winter ser opp fra skriveplata: «Tømmetiden. Selvsagt. Jeg visste det.» Han visste det ikke.",
+        "1-6-4-0. Det siste hjulet klikker, og lokket spretter opp. Inni ligger stempelet «SNØFALL POSTVESEN» på rød fløyel, som en liten konge. Winter ser opp: «Tømmetiden. Selvsagt. Jeg visste det.» Han visste det ikke.",
       hjul: [
         ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
         ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
@@ -191,9 +191,9 @@ export const KAPITTEL_1: Kapittel = {
               flagg: "hengsel_tint",
               forbruker: true,
               tekst:
-                "Du holder den varme koppen mot hengslet. Det drypper, det knaker ... og luka glir opp en tomme. Så stopper den. På innsiden av luka har Winter limt et postkort av torget, og frosten har skjøvet det i ni biter. Winter: «Frostlås. Paragraf 101. Luka åpnes når bildet er helt.» " +
+                "Du holder den varme koppen mot hengslet. Det knaker, og luka glir opp en tomme. Innenfor sitter et postkort av torget, skjøvet i ni biter av frosten. Winter: «Frostlås. Paragraf 101. Luka åpnes når bildet er helt.» " +
                 R +
-                "«Han har PARAGRAF på det! Skyv bitan på plass, så e vi inne.»",
+                "«Han har PARAGRAF på det! Skyv bitan på plass.»",
             },
             {
               item: "kaffekopp",
@@ -272,9 +272,9 @@ export const KAPITTEL_1: Kapittel = {
             kaffekopp:
               "Du heller en dråpe kaffe på puta. Brun. Winter: «Brunt er ikke en godkjent stempelfarge. Brunt er en godkjent kaffefarge. Det er to forskjellige skjemaer.»",
             syltetoey:
-              "Du smører en klatt syltetøy på puta. Det er rødt! Det er vått! Winter trykker stempelet i det, og stempelet blir sittende fast. SMATT. Han drar det løs. «Klissete er ikke en farge.» Puta er like tørr under klatten. " +
+              "Du smører en klatt syltetøy på puta. Rødt! Vått! Winter trykker stempelet i det. SMATT. Det sitter fast. «Klissete er ikke en farge.» Puta er like tørr under klatten. " +
               R +
-              "«Nesten. NESTEN. Det må vær tynt og rødt, ikkje tjukt og rødt.»",
+              "«Nesten! Det må vær tynt og rødt, ikkje tjukt og rødt.»",
           },
         },
         {
@@ -300,7 +300,7 @@ export const KAPITTEL_1: Kapittel = {
               "Du setter koppen på skrinet. Det blir en ring. Winter: «Det der skrinet har stått ringfritt siden 1987.» Du tørker den vekk. Han noterer likevel.",
             baersaft:
               R +
-              "«Ikkje på skrinet! Saften ska på PUTA. Skrinet ska bare opnes.»",
+              "«Ikkje på skrinet! Saften ska på PUTA. Skrinet ska bare åpnes.»",
           },
         },
         {
@@ -319,9 +319,9 @@ export const KAPITTEL_1: Kapittel = {
               flagg: "postkasse_opplaast",
               forbruker: true,
               tekst:
-                "Winter tar skjemaet med to fingertupper, leser felt 3-A, nikker, løfter stempelet ut av skrinet, trykker det i puta og ... SMAKK. Et knallrødt avtrykk. Han snuser på det. «Ureglementert bærlukt. Brunsvidd hjørne. Men til nød gyldig.» Han låser opp postkassen med en liten messingnøkkel. " +
+                "Winter leser felt 3-A, nikker, løfter stempelet ut av skrinet, trykker det i puta og ... SMAKK. Han snuser på avtrykket. «Bærlukt. Brunsvidd hjørne. Men til nød gyldig.» Han låser opp postkassen. " +
                 R +
-                "«HAHA! Han lukta på det! Fort, før han finn en paragraf til!»",
+                "«Han LUKTA på det! Fort, før han finn en paragraf til!»",
             },
             {
               item: "skjema_signert",
@@ -420,9 +420,9 @@ export const KAPITTEL_1: Kapittel = {
               gir: "skjema_signert",
               forbruker: true,
               tekst:
-                "Du skyver skjemaet inn under døra. Stille. Så: en penn som skraper, et lite PANG, og skjemaet kommer ut igjen med en signatur i felt 3-A og et brunsvidd hjørne. IQ: «Ikke spør om hjørnet.» " +
+                "Du skyver skjemaet under døra. Stille. Så: en penn som skraper, et lite PANG, og skjemaet kommer ut med signatur i felt 3-A og et brunsvidd hjørne. IQ: «Ikke spør om hjørnet.» " +
                 R +
-                "«Han signere alt som kjem under døra. Det e sånn han endte opp med en rein.»",
+                "«Han signere alt som kjem under døra. Det e sånn han fikk en rein.»",
             },
           ],
           feil: {
@@ -612,9 +612,9 @@ export const KAPITTEL_1: Kapittel = {
         },
         kurv: {
           tekst:
-            "«Garnkurven. Funnet på loftet til IQ, full av ull og klementinskall. Umerket løsøre. Den ligger i postkassen til jeg får Skjema 4112-B: utfylt, signert av eieren av funnstedet, og stemplet. Tre ting. Jeg har skrevet dem opp for dere.» Han gjør ikke det.",
+            "«Garnkurven. Funnet på loftet til IQ, full av ull og klementinskall. Umerket løsøre. Den ligger i postkassen til jeg får Skjema 4112-B: utfylt, signert av eieren av funnstedet, og stemplet. Tre ting.»",
           rampenissen:
-            "«POSTKASSEN?! Han har lagt SENGA mi i postkassen! Og 'umerka'? Den lukte mæ! Lukt e merking!»",
+            "«POSTKASSEN?! Han har lagt SENGA mi i postkassen! Og ‘umerka’? Den lukte mæ! Lukt e merking!»",
           valg: [
             { tekst: "Hvor får vi tak i et sånt skjema?", neste: "skjema" },
             { tekst: "Hvem er eieren av funnstedet?", neste: "eier" },
@@ -662,16 +662,16 @@ export const KAPITTEL_1: Kapittel = {
         },
         skrin_laast: {
           tekst:
-            "Winter kikker på puta. «Våt. Godkjent rød.» Så på skrinet. «Låst. Stempelet ligger der inne, og jeg åpner ikke skrin i arbeidstiden. Tømmetiden står på skiltet. Hjulene står på skrinet. Resten er hoderegning, og hoderegning er ikke min paragraf.»",
+            "Winter kikker på puta. «Våt. Godkjent rød.» Så på skrinet. «Låst. Jeg åpner ikke skrin i arbeidstiden. Tømmetiden står på skiltet. Hjulene står på skrinet. Resten er hoderegning, og det er ikke min paragraf.»",
           rampenissen:
             "«Han veit koden sjøl og lar oss gjør jobben. Æ har respekt for det. Litt.»",
           valg: [{ tekst: "Vi åpner skrinet." }],
         },
         rampen: {
           tekst:
-            "«Rampenissen. Han som sov på loftet til IQ i elleve måneder og dro uten å feie. Hvis dere har kontakt med ham: han skylder meg toogførti minutter arbeidstid og én blyant.»",
+            "«Rampenissen. Han som sov på loftet til IQ i elleve måneder og dro uten å feie. Hvis dere har kontakt med ham: han skylder meg førtito minutter arbeidstid og én blyant.»",
           rampenissen:
-            "«Toogførti minutt? Æ brukte to tima på å stable klementinkassan hans! Og blyanten tygde æ på i søvne. Det telle ikkje.»",
+            "«Førtito minutt? Æ brukte to tima på å stable klementinkassan hans! Og blyanten tygde æ på i søvne. Det telle ikkje.»",
           valg: [{ tekst: "Vi skal hilse." }],
         },
         skjerf: {
@@ -682,7 +682,7 @@ export const KAPITTEL_1: Kapittel = {
         },
         ustemplet: {
           tekst:
-            "Winter tar skjemaet med to fingertupper og holder det mot lyset. «Felt 3-A, eier av funnsted: tomt. Felt 7-C, stempel: tomt. Uten de to er dette en papirlapp egnet til papirbåter.» Han gir det tilbake. «Eieren signerer. Stempelet står der borte. Puta er tørr. Lykke til.»",
+            "Winter holder skjemaet mot lyset. «Felt 3-A, eier av funnsted: tomt. Felt 7-C, stempel: tomt. Uten de to er dette en papirbåt.» Han gir det tilbake. «Eieren signerer. Stempelet står der borte. Puta er tørr. Lykke til.»",
           rampenissen:
             "«Papirbåt! ... Nei. Fokus. Signatur OG stempel. Han e grundig, det ska han ha. Æ ska ikkje gi han nåkka anna.»",
           valg: [{ tekst: "Vi kommer tilbake." }],
@@ -695,7 +695,7 @@ export const KAPITTEL_1: Kapittel = {
         },
         stemplet: {
           tekst:
-            "Winter leser felt 3-A, nikker, trykker stempelet i den røde puta og ... SMAKK. Han snuser på avtrykket. «Ureglementert bærlukt. Brunsvidd hjørne. Men til nød gyldig.» Han låser opp postkassen med en liten messingnøkkel og går tilbake til skriveplata.",
+            "Winter leser felt 3-A, nikker, trykker stempelet i den røde puta og ... SMAKK. Han snuser på avtrykket. «Bærlukt. Brunsvidd hjørne. Men til nød gyldig.» Han låser opp postkassen med en liten messingnøkkel.",
           rampenissen:
             "«HAHA! Han LUKTA på det! Fort, kurven, før han finn en paragraf til!»",
           valg: [{ tekst: "Takk, Winter!" }],

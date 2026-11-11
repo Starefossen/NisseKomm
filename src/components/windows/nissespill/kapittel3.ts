@@ -32,13 +32,13 @@ export const KAPITTEL_3: Kapittel = {
     R +
       "«Dokker. Hør. Æ har tenkt. Det skjer ikkje ofte, så hør godt etter. Heilt sia æ hørte sukket i isen har æ tenkt. Og no veit vi kem han e, han der nede i grotta. IQ bygde han. Og så glømte alle han. Alle. I mange år.»",
     R +
-      "«Æ vil ikkje slåss med han. Æ vil gi han nåkka. Et lys. Grotta e det mørkaste stedet i heile Snøfall, mørkare enn under senga mi, og det sei ikkje lite. Knerten sitt hos Julius no. Julius e ute, men Nissemor e der. Ho veit ting.»",
+      "«Æ vil ikkje slåss med han. Æ vil gi han nåkka. Et lys. Grotta e det mørkaste stedet i heile Snøfall, mørkare enn under senga mi. Knerten sitt hos Julius no. Julius e ute, men Nissemor e der. Ho veit ting.»",
     R +
-      "«Problemet: det trekk nåkka forferdelig der nede. Alt som brenn, blås ut. Vi treng et lys som trekken ikkje tar, og det må nå heile grotta, ikkje bare golvet. Og så sei vi hei. Bare det. Ikkje meir. Æ klare å sei bare det. Trur æ.»",
+      "«Problemet: det trekk nåkka forferdelig der nede. Alt som brenn, blås ut. Vi treng et lys som trekken ikkje tar, og det må nå heile grotta. Og så sei vi hei. Bare det. Æ klare å sei bare det. Trur æ.»",
   ],
   utro:
     R +
-    "«Han svarte ikkje. Men han slo ikkje av lyset heller. Det står der no, nede i mørket, og krystallan sende det videre, hylle for hylle. Nissemor sei det e det snillaste æ har gjort. Æ sa det va dokker. Ho sa 'ja, det òg'. Neste gang ... neste gang ska nån reise. Æ sei ikkje meir. Over og ut!»",
+    "«Han svarte ikkje. Men han slo ikkje av lyset heller. Det står der no, nede i mørket, og krystallan sende det videre. Nissemor sei det e det snillaste æ har gjort. Æ sa det va dokker. Ho sa ‘ja, det òg’. Neste gang ska nån reise. Æ sei ikkje meir. Over og ut!»",
   gjenstander: {
     stearinlys: {
       id: "stearinlys",
@@ -80,9 +80,9 @@ export const KAPITTEL_3: Kapittel = {
       tittel: "Lyset gjennom hylla",
       flagg: "krystall_satt",
       tekst:
-        "Den siste krystallen vrir seg på plass, og lyset hopper. Hylle etter hylle, krystall etter krystall, helt opp til taket. Hele grotten lyser gull og blått. " +
+        "Den siste krystallen vrir seg på plass, og lyset hopper. Hylle etter hylle, helt opp til taket. Hele grotta lyser gull og blått. " +
         R +
-        "«... Æ har ikkje ord. Æ har bestandig ord. Æ har for mange ord, sei Nissemor. Men ikkje no.»",
+        "«... Æ har ikkje ord. Æ har bestandig ord, sei Nissemor. Men ikkje no.»",
       rutenett: ["L.M", "L|L", "S.L"],
     },
     stemme: {
@@ -90,7 +90,7 @@ export const KAPITTEL_3: Kapittel = {
       tittel: "Skiva på radioen",
       flagg: "radio_stilt",
       tekst:
-        "880. Susen glir bort, og summingen kommer gjennom høyttaleren i stedet for bare fra rørene. Dyp og rolig, som noen som nynner og nettopp har merket at døra sto åpen. " +
+        "880. Susen glir bort, og summingen kommer gjennom høyttaleren. Dyp og rolig, som noen som nynner og nettopp har merket at døra sto åpen. " +
         R +
         "«No hører han oss. Og vi hører han. Æ e ikkje klar. Æ e klar. Æ e begge deler.»",
       min: 500,
@@ -109,7 +109,7 @@ export const KAPITTEL_3: Kapittel = {
       tekst:
         "Du setter lyset inni tesilen og smekker lokket igjen. Flammen står rolig bak messingnettet og lyser gjennom alle hullene. " +
         R +
-        "«Ei lanterne av ei tesil! Gruvefolk gjor sånt. Nissemor veit alt. Det e ikkje alltid like praktisk, men no va det det.»",
+        "«Ei lanterne av ei tesil! Gruvefolk gjord sånt. Nissemor veit alt. Det e ikkje alltid praktisk, men no va det det.»",
     },
   ],
   scener: [
@@ -117,7 +117,7 @@ export const KAPITTEL_3: Kapittel = {
       id: "kontor",
       navn: "Julius' kontor",
       bilde: "spill/julius-kontor.jpg",
-      utganger: [{ til: "grotten", navn: "Ut vinduet og ned i grotten" }],
+      utganger: [{ til: "grotten", navn: "Ut vinduet og ned i grotta" }],
       // On the desk between the window candles and the open diary
       fjaer: { x: 72, y: 64, w: 4, h: 6 },
       hotspots: [
@@ -156,7 +156,7 @@ export const KAPITTEL_3: Kapittel = {
           navn: "Vinduet",
           rect: { x: 56, y: 0, w: 40, h: 40 },
           smart: "se",
-          se: "Et stort buevindu med rim på rutene. Utenfor ligger Snøfall blått og stille, og langt der ute lyser ei rød lampe på ei mast, jevnt og rolig. Noen har peilet den riktig. Noen var det dere.",
+          se: "Et stort buevindu med rim på rutene. Utenfor ligger Snøfall blått og stille, og langt der ute lyser ei rød lampe på ei mast, jevnt og rolig. Noen har peilet den riktig. Det var dere.",
         },
         {
           id: "lysene",
@@ -296,7 +296,7 @@ export const KAPITTEL_3: Kapittel = {
           se:
             "Julius' dagbok, åpen. Du leser ikke andres dagbøker. Knerten leser ikke andres dagbøker. " +
             R +
-            "«Æ les ... Nei. Æ gjør ikkje det. Fly videre. Fly videre, sa æ. Ok, bare overskrifta. Nei!»",
+            "«Æ les ... Nei. Æ gjør ikkje det. Fly videre. Fly videre, sa æ. Okei, bare overskrifta. Nei!»",
         },
       ],
     },
@@ -334,7 +334,7 @@ export const KAPITTEL_3: Kapittel = {
             tesil_lanterne:
               "Du holder lanterna mot en blå krystall. Lyset forsvinner inn i den og kommer ikke ut igjen. Krystallen gløder litt mer blått, som om den har spist. " +
               R +
-              "«Ikkje de blå. De blå ET lys. Prøv de andre.»",
+              "«Ikkje dem blå. Dem blå ET lys. Prøv dem andre.»",
             stearinlys:
               "Du holder lyset mot en blå krystall. Flammen blir mindre. Du tar det vekk. Flammen blir større. Den tilgir deg.",
             lupe: "Du ser på en blå krystall gjennom lupa. Den er større, blåere, og ser sulten ut på nært hold. Du senker lupa.",
@@ -373,7 +373,7 @@ export const KAPITTEL_3: Kapittel = {
             item: "krystallskaar",
             en_av: [{ hvis: "skaar_loes" }, { hvis: "lys_paa_sokkelen" }],
             tekst:
-              "Du tar det løse skåret fra pytten på nederste hylle. Det er lett og klart. Når du holder det opp, ser du hele grotten gjennom det. Litt større. Og litt mindre mørk, selv om det ikke kan stemme.",
+              "Du tar det løse skåret fra pytten på nederste hylle. Det er lett og klart. Når du holder det opp, ser du hele grotta gjennom det. Litt større. Og litt mindre mørk, selv om det ikke kan stemme.",
           },
           bruk: [
             {
@@ -399,9 +399,9 @@ export const KAPITTEL_3: Kapittel = {
               uten: "skaar_loes",
               flagg: "skaar_loes",
               tekst:
-                "Du holder lanterna inntil den klare krystallen nederst. Den lyser opp. Og krystallen bak den. Og den bak der igjen, helt til lyset forsvinner i mørket oppe ved taket. Så drypper det: rimet rundt skåret smelter, og skåret løsner og ligger i en liten pytt. Du flytter lanterna, og hylla slukner igjen. " +
+                "Du holder lanterna inntil den nederste klare krystallen. Den lyser opp. Og den bak. Og den bak der igjen, helt opp mot taket. Så drypper det: rimet smelter, og skåret løsner. " +
                 R +
-                "«SÅG dokker det? De klare SENDE lyset videre! Og skåret e løst! To fluer, ei tesil!»",
+                "«SÅG dokker det? Dem klare SENDE lyset videre! Og skåret e løst! To fluer, ei tesil!»",
             },
             {
               item: "tesil_lanterne",
@@ -450,7 +450,7 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "krystall_satt",
               tekst:
-                "Nå som hele grotten lyser, ser du at det er små bokstaver på knottene, slitt ned av fingre for lenge siden. Noen bygde dette med omhu. Rørene gløder blått, og de gløder litt sterkere enn i sted. Det kan være lyset. Det kan være noe annet.",
+                "Nå som hele grotta lyser, ser du små bokstaver på knottene, slitt ned av fingre for lenge siden. Rørene gløder litt sterkere enn i sted. Det kan være lyset. Det kan være noe annet.",
             },
             {
               hvis: "lys_paa_sokkelen",
@@ -503,7 +503,7 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "krystall_satt",
               tekst:
-                "Tesil-lanterna står på sokkelen med krystallskåret foran. Lyset går gjennom skåret, treffer hylla til høyre, hopper til neste, og neste. Hele grotten lyser gull og blått. I lyset ser du at noen har risset et tall i steinen ved lanterna, med samme hånd som lappene: «880». Det er ikke mørkt her lenger. Det har det vært lenge.",
+                "Lanterna står på sokkelen med skåret foran, og hele grotta lyser gull og blått. I lyset ser du at noen har risset et tall i steinen ved lanterna, med samme hånd som lappene: «880». Det er ikke mørkt her lenger. Det har det vært lenge.",
             },
             {
               hvis: "skaar_satt",
@@ -539,9 +539,9 @@ export const KAPITTEL_3: Kapittel = {
               flagg: "lys_paa_sokkelen",
               forbruker: true,
               tekst:
-                "Du setter tesil-lanterna midt på sokkelen. Trekken fra sprekken kommer susende ... og flammen står rolig bak messingnettet. Et lite gult lys i et hav av blått. Men det når ikke bort til hyllene. " +
+                "Du setter lanterna midt på sokkelen. Trekken kommer susende ... og flammen står rolig bak messingnettet. Men lyset når ikke bort til hyllene. " +
                 R +
-                "«Det står! Det STÅR! Men søren, grotta e stor. Lyset treng nåkka som sende det videre. Vi har sett ka som gjør det.»",
+                "«Det STÅR! Men grotta e stor. Lyset treng nåkka som sende det videre. Vi har sett ka som gjør det.»",
             },
             {
               item: "tesil_lanterne",
@@ -549,9 +549,9 @@ export const KAPITTEL_3: Kapittel = {
               flagg: "lys_paa_sokkelen",
               forbruker: true,
               tekst:
-                "Du setter tesil-lanterna midt på sokkelen. Trekken fra sprekken kommer susende ... og flammen står rolig bak messingnettet. Lyset når ikke bort til hyllene. Nesten ikke. Nederst på den klare hylla fanger én krystall det, lyser svakt, og rimet ved siden av den begynner å dryppe. " +
+                "Du setter lanterna midt på sokkelen. Trekken kommer, og flammen står rolig. Nederst på den klare hylla fanger én krystall lyset, og rimet ved siden av begynner å dryppe. " +
                 R +
-                "«Det står! Det STÅR! Og ... såg dokker det? Den nederste klare TOK lyset. Og nåkka ved sia av tine. Æ vil vite ka.»",
+                "«Det STÅR! Og såg dokker det? Den nederste klare TOK lyset. Og nåkka ved sia av tine.»",
             },
             {
               item: "krystallskaar",
@@ -560,9 +560,9 @@ export const KAPITTEL_3: Kapittel = {
               flagg: "skaar_satt",
               forbruker: true,
               tekst:
-                "Du setter krystallskåret i snøen rett foran lanterna, vendt mot den klare hylla. Lyset går gjennom det og ut på andre siden, større. Det treffer den første klare krystallen. Den lyser opp. Den neste er mørk. Lyset går ut av den første på skrå, mot veggen, der ingen krystall står. " +
+                "Du setter skåret foran lanterna, vendt mot den klare hylla. Lyset går gjennom det, større, og treffer den første klare krystallen. Den neste er mørk: lyset går ut på skrå, mot veggen. " +
                 R +
-                "«Dem må SNUS! Hylle for hylle, så lyset finn neste. Han som bygde dem, bygde dem til å vris. Fly bort og vri.»",
+                "«Dem må SNUS! Hylle for hylle, så lyset finn neste. Dem e bygd te å vris.»",
             },
             {
               item: "krystallskaar",
@@ -572,7 +572,7 @@ export const KAPITTEL_3: Kapittel = {
             {
               item: "stearinlys",
               tekst:
-                "Du setter lyset på sokkelen. Trekken fra sprekken tar det med ett pust. Knerten flyr opp og tenner det igjen på det andre lyset i vinduskarmen hos Nissemor, og later som ingenting. " +
+                "Du setter lyset på sokkelen. Trekken tar det med ett pust. Knerten flyr opp og tenner det igjen på lyset i vinduskarmen hos Nissemor, og later som ingenting. " +
                 R +
                 "«Trekken tar alt som står bart. Lyset treng nåkka rundt sæ. Nåkka med hull i, så det får puste.»",
             },
@@ -583,7 +583,7 @@ export const KAPITTEL_3: Kapittel = {
             lupe:
               "Du setter lupa foran lanterna. Lyset samles til én liten, skarp prikk på veggen. Prikken er veldig lys. Grotta er veldig stor. Prikken taper. " +
               R +
-              "«Større lys, ikkje mindre lys! Lupa gjør det feil vei. Julius lese brev med den, ikkje grotter.»",
+              "«Større lys, ikkje mindre! Lupa gjør det feil vei.»",
           },
         },
         {
@@ -653,7 +653,7 @@ export const KAPITTEL_3: Kapittel = {
         },
         lys: {
           tekst:
-            "Nissemor legger fra seg pennen. «Et lys. Til ham.» Hun ser ut av vinduet en stund. «Det er det snilleste jeg har hørt fra Rampenissen siden han var liten. Men det trekker fra sprekken i taket der nede. Et vanlig lys blåser ut før du er halvveis. Og ett lys er lite i en så stor grotte. Det må nå hyllene.»",
+            "Nissemor legger fra seg pennen. «Et lys. Til ham. Det er det snilleste jeg har hørt fra Rampenissen siden han var liten. Men det trekker fra sprekken i taket der nede. Et vanlig lys blåser ut før du er halvveis. Og ett lys er lite i en så stor grotte. Det må nå hyllene.»",
           rampenissen:
             "«Æ va aldri liten. Æ va kompakt. Æ e fortsatt kompakt.»",
           valg: [
@@ -664,7 +664,7 @@ export const KAPITTEL_3: Kapittel = {
         },
         skjerm: {
           tekst:
-            "«Gruvefolk før i tiden hadde lanterner med netting rundt flammen. Luft kommer inn, vind kommer ikke. Jeg har ikke netting.» Hun ser på tekoppen sin. Så på deg. «Jeg har messing med hull i. Du vet hva jeg mener. Sett lyset inni og lukk lokket. Og jeg vil ha den tilbake.»",
+            "«Gruvefolk hadde lanterner med netting rundt flammen. Luft kommer inn, vind kommer ikke. Jeg har ikke netting.» Hun ser på tekoppen sin. Så på deg. «Jeg har messing med hull i. Sett lyset inni og lukk lokket. Og jeg vil ha den tilbake.»",
           rampenissen:
             "«Ho meine tesila! Ho sa det ikkje, men ho meine det. Ho har svar på alt. Det e litt irriterande. Æ sei det med kjærlighet.»",
           valg: [{ tekst: "Vi skal passe på den.", flagg: "nissemor_ja" }],
@@ -698,7 +698,7 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "k3_ferdig",
               tekst:
-                "«Knerten. Jeg ser lyset herfra. Hele grotten. IQ sa ingenting på fem minutter, og det har aldri skjedd før. Jeg tok tiden.»",
+                "«Knerten. Jeg ser lyset herfra. Hele grotta. IQ sa ingenting på fem minutter, og det har aldri skjedd før. Jeg tok tiden.»",
             },
             {
               hvis: "julius_snakket",
@@ -740,9 +740,9 @@ export const KAPITTEL_3: Kapittel = {
         },
         krystall: {
           tekst:
-            "«Krystallene. Han som bygde dem, visste hva han gjorde: noen av dem drikker lys, og noen sender det videre fra hylle til hylle. Hvilke som gjør hva, får dere se selv, med et lys i hånda. Og finner dere et løst stykke av de riktige, så hører det hjemme foran flammen.»",
+            "«Krystallene. Noen av dem drikker lys, og noen sender det videre fra hylle til hylle. Hvilke som gjør hva, får dere se selv, med et lys i hånda. Finner dere et løst stykke av de riktige, hører det hjemme foran flammen.»",
           rampenissen:
-            "«Prøv dæ fram med lyset. Det e sånn æ gjør alt. Det e sjelden det går så bra, men no e det lov.»",
+            "«Prøv dokker fram med lyset. Det e sånn æ gjør alt. Det e sjelden det går så bra, men no e det lov.»",
           valg: [{ tekst: "Vi prøver oss fram." }],
         },
         tjernet: {
@@ -767,17 +767,17 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "radio_stilt",
               tekst:
-                "Radioen summer gjennom høyttaleren. Hele grotten lyser rundt den. Det er nå eller aldri. Hva sier man til noen som ikke har hørt en stemme på lenge?",
+                "Radioen summer gjennom høyttaleren. Hele grotta lyser rundt den. Det er nå eller aldri. Hva sier man til noen som ikke har hørt en stemme på lenge?",
             },
             {
               hvis: "krystall_satt",
               tekst:
-                "Radioen summer. Hele grotten lyser rundt den, og i lyset ser du skiva. Nåla står feil. Han hører ikke dere ennå, bare seg selv.",
+                "Radioen summer. Hele grotta lyser rundt den, og i lyset ser du skiva. Nåla står feil. Han hører ikke dere ennå, bare seg selv.",
             },
             {
               hvis: "lys_paa_sokkelen",
               tekst:
-                "Radioen summer. Lanterna lyser svakt på messingen. Resten av grotten er mørk. Det er ikke nok. Ikke ennå.",
+                "Radioen summer. Lanterna lyser svakt på messingen. Resten av grotta er mørk. Det er ikke nok. Ikke ennå.",
             },
             {
               tekst:
@@ -817,7 +817,7 @@ export const KAPITTEL_3: Kapittel = {
         stille: {
           tekst: "Summingen fortsetter. Ingen svarer. Ikke ennå.",
           rampenissen:
-            "«Vent med å snakk. Først lyset, så heile grotta, så skiva på radioen. Så hilsa. Han ska SE oss og HØRE oss når vi sei hei. Æ vil ikkje vær en stemme i mørket. Han har nok av dem.»",
+            "«Vent med å snakk. Først lyset, så heile grotta, så skiva på radioen. Og så hilse vi. Han ska SE oss og HØRE oss når vi sei hei. Æ vil ikkje vær en stemme i mørket. Han har nok av dem.»",
           valg: [{ tekst: "Greit." }],
         },
         svar: {
@@ -836,7 +836,7 @@ export const KAPITTEL_3: Kapittel = {
       ferdig: "tok_tesil",
       tips: [
         R +
-          "«Trekken der nede blås ut alt. Nissemor veit sikkert ka gruvefolk gjor med lys i trekk. Spør ho. Ho sitt rett der og skriv.»",
+          "«Trekken der nede blås ut alt. Nissemor veit sikkert ka gruvefolk gjord med lys i trekk. Spør ho. Ho sitt rett der og skriv.»",
         R +
           "«Nissemor snakka om netting rundt flammen, og så såg ho på tekoppen sin. Ka heng det på en tekopp som e av messing og full av hull?»",
         R +
@@ -882,7 +882,7 @@ export const KAPITTEL_3: Kapittel = {
         R +
           "«Den nederste krystallen lyse, men lyset går ut te veggen. Krystallan sitt i ringa og kan vris. BRUK den klare hylla.»",
         R +
-          "«Lyset går bare ut der den slipte sida peke. Start nederst ved S og vri kvar krystall te lyset treff neste. Hjørnekrystallan snur lyset, den rette sende det videre.»",
+          "«Lyset går bare ut der den slipte sida peke. Start nederst ved S og vri hver krystall te lyset treff neste. Hjørnekrystallan snur lyset, den rette sende det videre.»",
         R +
           "«Fra S: opp te hjørnet, snu det mot høyre, gjennom den rette, og hjørnet øverst te høyre snur det opp te M. De to andre hjørnan e bare pynt.»",
       ],

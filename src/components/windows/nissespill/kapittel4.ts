@@ -28,13 +28,13 @@ export const KAPITTEL_4: Kapittel = {
     R +
       "«Dokker! Det e snart. Porten står åpen, sleden e pakka, og Winter står ved porten med ei LISTE. Tre punkt. Ingen flyg før alle tre e kryssa av. Han har to blyanta. Det betyr alvor.»",
     R +
-      "«Julius finn ikkje brillan sine. Lykkebjella mi, den vi redda fra postkassen, e BORTE fra knaggen. Og porten hyle som en katt kvar gang nån tar i den. Æ har hørt den heilt te Bergen. Naboen trudde det va mæ.»",
+      "«Julius finn ikkje brillan sine. Lykkebjella mi, den vi redda fra postkassen, e BORTE fra knaggen. Og porten hyle som en katt hver gang nån tar i den. Æ har hørt den heilt te Bergen. Naboen trudde det va mæ.»",
     R +
       "«Knerten står ved porten. Winter har lista, Julius har kontoret, og dokker har hodan. Dokker kan dette no. Æ sitt her og spise klementin og e nervøs. Det e sånn æ hjelpe.»",
   ],
   utro:
     R +
-    "«Briller, bjelle, port. Tre av tre, i den rekkefølgen dokker valgte sjøl. Winter godtok det. WINTER. Sleden e klar, og lykkebjella mi heng der ho ska, så Julius finn fram te stua dokkers. Det va dokker som gjord det. Heile veien, fra postkassa te porten. Æ ... æ må gå og finn ei klementin. Det e nåkka i øyet. Det e ikkje klementin. Over og ut. Og god jul!»",
+    "«Briller, bjelle, port. Tre av tre, i den rekkefølgen dokker valgte sjøl. Winter godtok det. WINTER. Lykkebjella heng der ho ska, så Julius finn fram te stua dokkers. Det va dokker som gjord det. Æ må gå og finn ei klementin. Det e nåkka i øyet. Over og ut. Og god jul!»",
   gjenstander: {
     fjaer: {
       id: "fjaer",
@@ -110,9 +110,9 @@ export const KAPITTEL_4: Kapittel = {
       tittel: "Avgangsskjemaet",
       flagg: "k4_ferdig",
       tekst:
-        "LEST. HENGT. SMURT. Tre stempler, tre felt, tre kryss. Winter ser lenge på skjemaet. Oppe i kontorvinduet løfter Julius tommelen. Winter løfter sin. Han tar den ned fort, men dere så det. " +
+        "LEST. HENGT. SMURT. Tre stempler, tre felt. Oppe i kontorvinduet løfter Julius tommelen. Winter løfter sin. Han tar den ned fort, men dere så det. " +
         R +
-        "«TOMMEL OPP FRA JULIUS! Og fra WINTER! Det e den høgaste utmerkelsen i Snøfall. Det finnes ikkje nåkka høgare. Æ har sjekka.»",
+        "«TOMMEL OPP FRA JULIUS! Og fra WINTER! Det finnes ikkje nåkka høgare i Snøfall. Æ har sjekka.»",
       hjul: [
         ["SETT", "LEST", "HENGT", "SMURT", "TALT"],
         ["SETT", "LEST", "HENGT", "SMURT", "TALT"],
@@ -249,7 +249,7 @@ export const KAPITTEL_4: Kapittel = {
               tekst:
                 "Du knytter lykkebjella fast i tømmene med den røde garntråden. Den klinger ikke. Den gnistrer. Winter krysser av punkt to uten å se opp. " +
                 R +
-                "«BJELLA MI! På sleden! No finn han fram. No finn han HEIM. Te stua dokkers, meine æ. Det e det same.»",
+                "«BJELLA MI! På sleden! No finn han HEIM. Te stua dokkers, meine æ. Det e det samme.»",
             },
           ],
           feil: {
@@ -299,7 +299,7 @@ export const KAPITTEL_4: Kapittel = {
               tekst:
                 "Du gnir talg inn i hengslet. En gang. To. Portfløyen glir opp, stille som snø, og står vidåpen. Winter krysser av punkt tre og hører etter. Ingenting. Han ser nesten skuffet ut. " +
                 R +
-                "«STILLE! Hørte dokker det? Ingenting! Det e den fineste lyden en port kan lage.»",
+                "«Hørte dokker det? Ingenting! Det e den fineste lyden en port kan lage.»",
             },
           ],
           feil: {
@@ -356,7 +356,7 @@ export const KAPITTEL_4: Kapittel = {
             },
             {
               tekst:
-                "Winter holder skriveplata fram. Avgangsskjemaet har tre felt: «1. Snill-listen er ___». «2. Bjella er ___». «3. Porten er ___». Ved siden av ligger stempelblokka: tre hjul med ord på, ett hjul for hvert felt. Winter ser på deg. Han sier ingenting. Det er hans måte å si «vær så god» på.",
+                "Avgangsskjemaet har tre felt: «1. Snill-listen er ___». «2. Bjella er ___». «3. Porten er ___». Ved siden av ligger stempelblokka: tre hjul med ord, ett for hvert felt. Winter ser på deg og sier ingenting. Det er hans måte å si «vær så god» på.",
             },
           ],
           bruk: "Skjemaet er stemplet. Winter tar skriveplata tilbake, forsiktig, som om den er varm.",
@@ -442,9 +442,9 @@ export const KAPITTEL_4: Kapittel = {
               flagg: "snoere_nede",
               forbruker: true,
               tekst:
-                "Du senker magneten ned i sprekken. Den svinger, den leter ... og setter seg fast mellom to vedkubber halvveis nede. Sprekken går ikke rett ned. Den går i sikksakk mellom kubbene, og kubbene kan vippes. " +
+                "Du senker magneten ned i sprekken. Den svinger, leter ... og setter seg fast mellom to kubber halvveis nede. Sprekken går i sikksakk mellom kubbene, og kubbene kan vippes. " +
                 R +
-                "«Det e som en labyrint der nede. Vipp på kubban så snora finn veien. Ikkje dra. Ikkje dra ennå!»",
+                "«Det e en labyrint der nede. Vipp på kubban så snora finn veien. Ikkje dra ennå!»",
             },
           ],
           feil: {
@@ -593,9 +593,9 @@ export const KAPITTEL_4: Kapittel = {
               flagg: "briller_levert",
               forbruker: true,
               tekst:
-                "Julius tar brillene, blåser bort ei fjær og setter dem på nesa. «Å.» Han ser ned på listen. «Å!» Han ser på deg. «Knerten, du har sot på nebbet.» Nede ved porten krysser Winter av punkt én. " +
+                "Julius tar brillene, blåser bort ei fjær og setter dem på nesa. «Å.» Han ser på listen. «Å!» Han ser på deg. «Knerten, du har sot på nebbet.» Nede ved porten krysser Winter av punkt én. " +
                 R +
-                "«Han ser! Han ser lista! Han ser Knerten sitt skitne nebb! Han ser alt! Æ må gjømme klementinskallet.»",
+                "«Han ser! Han ser lista! Han ser alt! Æ må gjømme klementinskallet.»",
             },
           ],
           feil: {
@@ -704,9 +704,9 @@ export const KAPITTEL_4: Kapittel = {
               uten: "fugl_kilt",
               flagg: "fugl_kilt",
               tekst:
-                "Du kiler fuglen under vingen med fjærpennen. Hun fniser, en brevfugl-fnis, og letter en centimeter. Under henne: Julius' briller! Runde og blanke. Så setter hun seg igjen. " +
+                "Du kiler fuglen under vingen med fjærpennen. Hun fniser og letter en centimeter. Under henne: Julius' briller! Runde og blanke. Så setter hun seg igjen. " +
                 R +
-                "«Brevfugla ruge på alt som e rundt og blankt. Rundt OG blankt. Gi ho nåkka ANNA som e det, så flytte ho sæ.»",
+                "«Brevfugla ruge på alt som e rundt OG blankt. Gi ho nåkka ANNA som e det, så flytte ho sæ.»",
             },
             {
               item: "fjaer",
@@ -721,9 +721,9 @@ export const KAPITTEL_4: Kapittel = {
               gir: "briller",
               forbruker: true,
               tekst:
-                "Du legger klementinen ved siden av fuglen. Hun ser på den. Hun ser på brillene. Klementinen er rundere. Og blankere. Hun flytter seg over på klementinen med et lite, fornøyd pip, og du plukker opp brillene. " +
+                "Du legger klementinen ved siden av fuglen. Hun ser på den. Hun ser på brillene. Klementinen er rundere. Og blankere. Hun flytter seg over med et fornøyd pip, og du plukker opp brillene. " +
                 R +
-                "«Byttehandel! Og ho fikk den beste delen, spør du mæ. Spør mæ. Æ har meininga om klementina.»",
+                "«Byttehandel! Og ho fikk den beste delen, spør du mæ. Spør mæ.»",
             },
           ],
           feil: {
@@ -841,7 +841,7 @@ export const KAPITTEL_4: Kapittel = {
           tekst:
             "«Punkt én: Julius leser Snill-listen. Han finner ikke brillene sine. Punkt to: lykkebjella henger på sleden. Den er borte fra knaggen. Punkt tre: høyre portfløy smøres. Den hyler. Begynn hvor dere vil. Jeg sa det. Det gjorde vondt, men jeg sa det.»",
           rampenissen:
-            "«Bjella MI? Æ hang ho på knaggen hos Julius! ... Æ trur æ hang ho der. Æ hang NÅKKA der. Og 'begynn kor dokker vil'? Fra WINTER? Det snør oppover.»",
+            "«Bjella MI? Æ hang ho på knaggen hos Julius! ... Æ trur æ hang ho der. Æ hang NÅKKA der. Og ‘begynn kor dokker vil’? Fra WINTER? Det snør oppover.»",
           valg: [
             { tekst: "Hvorfor ikke i rekkefølge i år?", neste: "rekkefolge" },
             { tekst: "Vi fikser det." },
@@ -851,7 +851,7 @@ export const KAPITTEL_4: Kapittel = {
           tekst:
             "«I fjor sto Julius og ventet på punkt én mens punkt tre hylte, og ingen gjorde noe, for rekkefølgen. Det var ikke byråkrati. Det var dumt. Jeg skrev det opp.» Han viser lappen. Det står «DUMT». Understreket.",
           rampenissen:
-            "«Han har skrive 'dumt' på ei lapp om sæ sjøl. Det e det modigaste æ har sett i Snøfall.»",
+            "«Han har skrive ‘dumt’ på ei lapp om sæ sjøl. Det e det modigaste æ har sett i Snøfall.»",
           valg: [{ tekst: "Respekt, Winter." }],
         },
         talg: {
@@ -870,16 +870,16 @@ export const KAPITTEL_4: Kapittel = {
         },
         skjerf: {
           tekst:
-            "Winter ser ned på skjerfet. «To runder i dag. Det er mildere. Jeg vet ikke hvorfor. Det er ingen paragraf for det.» Han retter på skriveplaten. «Jeg har det bra. Takk for at du spurte. Ingen spør. Jeg har et skjema for det, og det er tomt.»",
+            "Winter ser ned på skjerfet. «To runder i dag. Det er mildere. Jeg vet ikke hvorfor. Det er ingen paragraf for det.» Han retter på skriveplata. «Jeg har det bra. Takk for at du spurte. Ingen spør. Jeg har et skjema for det, og det er tomt.»",
           rampenissen:
             "«Han har tatt av en runde! Det e tøvær i Winter! Nån må ring IQ, det e sikkert vitenskap.»",
           valg: [{ tekst: "Vi spør igjen i morgen." }],
         },
         stempel: {
           tekst:
-            "Winter løfter blyanten. «Punkt én.» Oppe i kontorvinduet vinker Julius med listen, briller på nesa. «Punkt to.» Han bøyer seg over sleden; bjella gnistrer mot ham, og han ser bort. «Punkt tre.» Han dytter høyre portfløy med én finger. Stille. «Tre av tre. Da gjenstår stemplingen. Skjemaet har tre felt, blokka har tre hjul. Paragraf 16: den som gjorde jobben, stempler. Det er dere. Jeg ser på.»",
+            "Winter løfter blyanten. «Punkt én.» Julius vinker fra kontorvinduet, briller på nesa. «Punkt to.» Bjella gnistrer i tømmene. «Punkt tre.» Han dytter portfløyen med én finger. Stille. «Tre av tre. Paragraf 16: den som gjorde jobben, stempler. Det er dere. Jeg ser på.»",
           rampenissen:
-            "«Vi får STEMPLE? Med Winter sitt stempel? Æ må sett mæ. Æ sitt allereie. Æ må sett mæ meir.»",
+            "«Vi får STEMPLE? Med Winter sitt stempel? Æ må sett mæ. Æ sitt allerede. Æ må sett mæ meir.»",
           valg: [{ tekst: "Vi stempler." }],
         },
         ikkeferdig: {
@@ -947,9 +947,9 @@ export const KAPITTEL_4: Kapittel = {
         },
         bjelle: {
           tekst:
-            "«Rampenissens bjelle? Den hang på knaggen under lampa. Så kom Rudolf innom for å låne en bok, reiste seg på bakbeina, og nå ligger den bak vedkassa. Det er for trangt for hender der. Og for ugler, er jeg redd. Jeg har prøvd med en pinne. Pinnen er der også nå.»",
+            "«Rampenissens bjelle? Den hang på knaggen under lampa. Så kom Rudolf innom for å låne en bok, reiste seg på bakbeina, og nå ligger den bak vedkassa. For trangt for hender. Og for ugler, er jeg redd. Jeg har prøvd med en pinne. Pinnen er der også nå.»",
           rampenissen:
-            "«Rudolf. Sjølvsagt. For trangt for hender, ugler og pinna. Men bjella e av messing. Ka e det som like messing og jern?»",
+            "«Rudolf. Sjølsagt. For trangt for hender, ugler og pinna. Men bjella e av messing. Ka e det som like messing og jern?»",
           valg: [{ tekst: "Vi finner på noe." }],
         },
         liste: {
@@ -982,7 +982,7 @@ export const KAPITTEL_4: Kapittel = {
         R +
           "«Bjella ligg bak vedkassa hos Julius. For trangt for hender og ugler. Men ikkje for nåkka på ei snor, med nåkka i enden som bjella heng sæ fast på.»",
         R +
-          "«Magneten på skapet ved taletrakten, og den røde hyssingen rundt brevbunken. Saman blir det ei fiskestang.»",
+          "«Magneten på skapet ved taletrakten, og den røde hyssingen rundt brevbunken. I lag blir det ei fiskestang.»",
         R +
           "«Kombiner magneten og hyssingen, og bruk fiskestanga på vedkassa.»",
       ],
@@ -994,7 +994,7 @@ export const KAPITTEL_4: Kapittel = {
         R +
           "«Snora sitt fast mellom kubban. Sprekken går i sikksakk. BRUK sprekken bak vedkassa og vipp på kubban.»",
         R +
-          "«Start øverst ved S. Kvar kubbe har to åpninga. Vipp dem te åpninga peke mot neste kubbe, heilt ned te M.»",
+          "«Start øverst ved S. Hver kubbe har to åpninga. Vipp dem te åpninga peke mot neste kubbe, heilt ned te M.»",
         R +
           "«Fra S rett ned, så te høyre, så ned gjennom den rette kubben, og det nederste hjørnet snur te høyre inn på M. De to andre kubban e bare i veien.»",
       ],
@@ -1045,7 +1045,7 @@ export const KAPITTEL_4: Kapittel = {
       ferdig: "k4_ferdig",
       tips: [
         R +
-          "«Tre felt på skjemaet, tre hjul på blokka. Les felta. Ordet som mangle i kvart felt, e ordet som ska stå på hjulet.»",
+          "«Tre felt på skjemaet, tre hjul på blokka. Les felta. Ordet som mangle i hvert felt, e ordet som ska stå på hjulet.»",
         R +
           "«Snill-lista blir LEST. Bjella HENG. Porten e SMURT. I den rekkefølgen.»",
         R +
