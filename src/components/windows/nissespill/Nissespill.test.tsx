@@ -153,6 +153,7 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     // Berries, then up to the workshop for the cup and the form
     tap(el, "Julebodene");
     expect(GameEngine.getEventyrSave()?.inventory).toEqual(["tyttebaer"]);
+    expect(el.textContent).toContain("LAGRET");
     tap(el, "Trappa");
     expect(el.textContent).toContain("IQs verksted");
     tap(el, "Kaffekoppen");

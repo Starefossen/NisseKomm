@@ -159,6 +159,13 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
     const t = setTimeout(() => setHint(false), 1500);
     return () => clearTimeout(t);
   }, [hint]);
+  // Autosave is silent; a short «LAGRET» after progress tells the kids it stuck
+  const [lagret, setLagret] = useState(false);
+  useEffect(() => {
+    if (!lagret) return;
+    const t = setTimeout(() => setLagret(false), 1200);
+    return () => clearTimeout(t);
+  }, [lagret]);
   const sceneRef = useRef<HTMLDivElement>(null);
   const lommeRef = useRef<HTMLDivElement>(null);
   const [ring, setRing] = useState<{ n: number; x: number; y: number } | null>(
@@ -216,6 +223,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
     if (u.dialog) setDialog({ id: u.dialog, node: "start" });
     if (u.puslespill) setPuslespill(u.puslespill);
     if (u.lyd) SoundManager.playSound(u.lyd);
+    if (u.lyd === "success") setLagret(true);
     setVerb(null);
     setHolder(null);
   };
@@ -446,6 +454,14 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                     animation: "ug-ring 0.8s ease-out forwards",
                   }}
                 />
+              )}
+              {lagret && (
+                <span
+                  className="absolute bottom-2 right-2 px-2 bg-black/70 border border-(--neon-green) text-base text-(--neon-green) tracking-wider pointer-events-none"
+                  style={{ animation: "fadeIn 0.3s ease-out" }}
+                >
+                  LAGRET
+                </span>
               )}
               {ring && (
                 <span

@@ -175,7 +175,7 @@ export interface Utfall {
   dialog?: string;
   /** Open this mini-puzzle. */
   puslespill?: string;
-  lyd?: "click" | "success" | "error";
+  lyd?: "click" | "success" | "error" | "open";
 }
 
 const SKULDERTREKK = [
@@ -311,7 +311,7 @@ export const synlige = (s: Scene, save: EventyrSave) =>
   s.hotspots.filter((h) => ok(h.vis, save));
 
 export function gaa(save: EventyrSave, til: string): Utfall {
-  return { save: { ...save, sceneId: til }, lyd: "click" };
+  return { save: { ...save, sceneId: til }, lyd: "open" };
 }
 
 /** A tap on a hotspot, with a chosen verb and/or an item in hand. */
