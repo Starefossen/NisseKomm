@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RetroWindow } from "@/components/ui/RetroWindow";
 import { Icon } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
@@ -48,6 +48,37 @@ function Portrett({ navn, stor }: { navn: string; stor?: boolean }) {
   );
 }
 
+/**
+ * Typewriter line; a tap finishes it. The untyped rest stays in the DOM, invisible,
+ * so the box never jumps and the full text is there for screen readers and tests.
+ */
+function Skriv({ tekst }: { tekst: string }) {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (n >= tekst.length) return;
+    const t = setTimeout(() => setN(n + 2), 22);
+    return () => clearTimeout(t);
+  }, [n, tekst]);
+  return (
+    <span
+      onClick={(e) => {
+        if (n < tekst.length) {
+          e.stopPropagation();
+          setN(tekst.length);
+        }
+      }}
+    >
+      {tekst.slice(0, n)}
+      <span className="invisible">{tekst.slice(n)}</span>
+    </span>
+  );
+}
+
+/** Cheap feedback on iPad: transform/opacity only, via the Web Animations API. */
+function animer(el: Element | null | undefined, frames: Keyframe[], ms = 350) {
+  el?.animate?.(frames, { duration: ms, easing: "ease-out" });
+}
+
 export function Nissespill({ onClose }: { onClose: () => void }) {
   const [save, setSave] = useState<EventyrSave | null>(null);
   const [meny, setMeny] = useState(true);
@@ -67,6 +98,11 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
     const t = setTimeout(() => setHint(false), 1500);
     return () => clearTimeout(t);
   }, [hint]);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const lommeRef = useRef<HTMLDivElement>(null);
+  const [ring, setRing] = useState<{ n: number; x: number; y: number } | null>(
+    null,
+  );
   const [bildeFeil, setBildeFeil] = useState<string | null>(null);
 
   // Storage is browser-only: load after mount, persist every change.
@@ -83,6 +119,29 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   const dag = spilldag();
 
   const bruk = (u: M.Utfall) => {
+    if (save) {
+      const ny = u.save.inventory.find((i) => !save.inventory.includes(i));
+      // After render: the new slot flies down from the scene into the pocket
+      if (ny)
+        setTimeout(() =>
+          animer(
+            lommeRef.current?.querySelector(`[data-gjenstand="${ny}"]`),
+            [
+              { transform: "translateY(-45vh) scale(2.5)", opacity: 0 },
+              { transform: "translateY(0) scale(1)", opacity: 1 },
+            ],
+            600,
+          ),
+        );
+    }
+    if (u.lyd === "error")
+      animer(sceneRef.current, [
+        { transform: "translateX(0)" },
+        { transform: "translateX(-8px)" },
+        { transform: "translateX(8px)" },
+        { transform: "translateX(-5px)" },
+        { transform: "translateX(0)" },
+      ]);
     setSave(u.save);
     if (u.tekst !== undefined) setTekst(u.tekst);
     if (u.dialog) setDialog({ id: u.dialog, node: "start" });
@@ -184,7 +243,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   };
 
   const status = holder
-    ? `Bruk ${kap.gjenstander[holder]?.navn ?? holder} på …`
+    ? `BRUK ${kap.gjenstander[holder]?.navn ?? holder} på …`
     : verb
       ? `${VERBS.find((x) => x.id === verb)?.label} hva?`
       : scene.navn;
@@ -212,6 +271,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
           {/* Landscape: panels overlay the lower part of the scene. Portrait: they sit below it */}
           <div className="relative w-full">
             <div
+              ref={sceneRef}
               className="relative aspect-video w-full shrink-0 overflow-hidden"
               onClick={(e) => {
                 if (
@@ -223,6 +283,8 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
+                key={scene.bilde}
+                style={{ animation: "fadeIn 0.5s ease-out" }}
                 src={
                   bildeFeil === scene.bilde
                     ? "/village-day.jpg"
@@ -241,18 +303,42 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                     key={h.id}
                     type="button"
                     aria-label={h.navn}
-                    onClick={() => bruk(M.trykk(kap, save, h, verb, holder))}
-                    className={`absolute rounded min-w-11 min-h-11 ${visSoner || hint ? "border-2 border-dashed border-(--gold)" : ""} active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) focus-visible:bg-white/20`}
+                    onClick={() => {
+                      setRing({
+                        n: (ring?.n ?? 0) + 1,
+                        x: h.rect.x + h.rect.w / 2,
+                        y: h.rect.y + h.rect.h / 2,
+                      });
+                      bruk(M.trykk(kap, save, h, verb, holder));
+                    }}
+                    className={`group absolute rounded min-w-11 min-h-11 ${visSoner || hint ? "border-2 border-dashed border-(--gold)" : ""} active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) focus-visible:bg-white/20`}
                     style={{
                       left: `${h.rect.x}%`,
                       top: `${h.rect.y}%`,
                       width: `${h.rect.w}%`,
                       height: `${h.rect.h}%`,
                     }}
-                  />
+                  >
+                    <span className="absolute left-1/2 -top-8 -translate-x-1/2 whitespace-nowrap px-2 bg-black/80 text-base text-(--neon-green) opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                      {h.navn}
+                    </span>
+                  </button>
                 ))}
+              {ring && (
+                <span
+                  key={ring.n}
+                  className="absolute w-20 h-20 -ml-10 -mt-10 rounded-full border-4 border-(--gold) pointer-events-none"
+                  style={{
+                    left: `${ring.x}%`,
+                    top: `${ring.y}%`,
+                    animation: "ug-ring 0.5s ease-out forwards",
+                  }}
+                />
+              )}
 
-              <div className="absolute top-2 left-2 px-2 bg-black/70 text-base text-(--cold-blue) uppercase tracking-wider pointer-events-none">
+              <div
+                className={`absolute top-2 left-2 px-2 bg-black/70 text-base tracking-wider pointer-events-none ${verb || holder ? "text-(--gold) border border-(--gold) animate-pulse" : "text-(--cold-blue) uppercase"}`}
+              >
                 {status}
               </div>
 
@@ -277,7 +363,10 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 <div className="flex-1 min-w-0">
                   <p className="text-lg text-(--gold)">Rampenissen</p>
                   <p className="text-xl leading-tight">
-                    {iIntro ? kap.intro[introSteg] : kap.utro}
+                    <Skriv
+                      key={iIntro ? kap.intro[introSteg] : kap.utro}
+                      tekst={iIntro ? kap.intro[introSteg] : kap.utro}
+                    />
                   </p>
                   <button
                     type="button"
@@ -307,7 +396,10 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   <div className="min-w-0">
                     <p className="text-lg text-(--gold)">{taler.taler}</p>
                     <p className="text-xl leading-tight">
-                      {M.velg(node.tekst, save)}
+                      <Skriv
+                        key={dialog.node}
+                        tekst={M.velg(node.tekst, save)}
+                      />
                     </p>
                   </div>
                 </div>
@@ -355,7 +447,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 onClick={() => setTekst("")}
                 className={`${PANEL} text-left text-xl leading-tight`}
               >
-                {tekst}
+                <Skriv key={tekst} tekst={tekst} />
               </button>
             )}
           </div>
@@ -370,6 +462,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
               aria-pressed={verb === v.id}
               onClick={() => {
                 setHolder(null);
+                SoundManager.playSound("click");
                 setVerb(verb === v.id ? null : v.id);
               }}
               className={`${LITEN} flex items-center gap-1 ${verb === v.id ? "bg-(--neon-green) text-black border-(--neon-green)" : "border-(--neon-green)/60"}`}
@@ -383,6 +476,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
             </button>
           ))}
           <div
+            ref={lommeRef}
             className="flex-1 min-w-0 flex gap-1 overflow-x-auto"
             aria-label="Lommene"
           >
@@ -391,10 +485,14 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
               .map((id) => (
                 <button
                   key={id}
+                  data-gjenstand={id}
                   type="button"
                   aria-label={kap.gjenstander[id].navn}
                   title={kap.gjenstander[id].navn}
-                  onClick={() => tapItem(id)}
+                  onClick={() => {
+                    SoundManager.playSound("click");
+                    tapItem(id);
+                  }}
                   className={`shrink-0 w-11 h-11 border-2 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) ${holder === id ? "bg-(--gold) border-(--gold)" : "border-(--brass)"}`}
                 >
                   <Icon

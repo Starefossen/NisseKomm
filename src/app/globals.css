@@ -296,6 +296,17 @@
   }
 }
 
+@keyframes ug-ring {
+  from {
+    transform: scale(0.3);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
