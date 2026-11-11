@@ -296,8 +296,17 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
           retry = true;
           break;
         }
-        // 409: reset or revoked elsewhere; 400: rejected (fake code). Server wins.
-        if (res.status === 409 || res.status === 400) {
+        // 400: this key was rejected (fake code); drop only it, the server's value wins.
+        if (res.status === 400) {
+          if (this.pending.get(key) === p) {
+            this.pending.delete(key);
+            this.markUnsynced([key], false);
+          }
+          await this.pull().catch(() => {});
+          continue;
+        }
+        // 409: reset or a replacing write elsewhere. Server wins.
+        if (res.status === 409) {
           this.markUnsynced([...this.pending.keys()], false);
           this.pending.clear();
           await this.pull().catch(() => {});

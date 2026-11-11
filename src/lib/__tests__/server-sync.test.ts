@@ -36,6 +36,7 @@ async function fakeFetch(_url: unknown, init?: RequestInit) {
   const { key, value, replace, version } = JSON.parse(String(init.body));
   const current = Number((await store.getState())[VERSION_KEY] ?? 0);
   if (version < current) return reply(409, { version: current });
+  if (key === "nissekomm-codes") return reply(400, { error: "Ugyldig kode" });
   const stored = await store.putState(key, value, replace);
   return reply(200, {
     value: stored,
@@ -130,6 +131,16 @@ describe("ServerSyncAdapter", () => {
     await flush(b);
     expect((await store.getState())[KEY]).toBeNull();
     expect(b.get(KEY, "tom")).toBe("tom");
+  });
+
+  it("a rejected key does not drop the other pending keys", async () => {
+    const a = new ServerSyncAdapter();
+    await a.start();
+    a.set("nissekomm-codes", [{ kode: "FALSK", day: 1 }]);
+    a.set(KEY, [7]);
+    await flush(a);
+    expect((await store.getState())[KEY]).toEqual([7]);
+    expect((await store.getState())["nissekomm-codes"]).toBeUndefined();
   });
 
   it("keeps progress made while the server was down", async () => {
