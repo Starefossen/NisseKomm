@@ -8,6 +8,9 @@ const SIDER = [
   ["/nissemor-guide/i-kveld", "I kveld"],
   ["/nissemor-guide/forberedelser", "Forberedelser"],
   ["/nissemor-guide/fasit", "Dag for dag"],
+  ["/nissemor-guide/dag/1", "Dagsvisning"],
+  ["/nissemor-guide/bibliotek", "Bibliotek"],
+  ["/nissemor-guide/sok", "Søk"],
   ["/nissemor-guide/printout", "Utskrifter"],
   ["/nissemor-guide/media", "Media"],
   ["/nissemor-guide/bonusoppdrag", "Bonus"],
@@ -23,7 +26,9 @@ export function GuideNavigation() {
     <nav className="max-w-4xl mx-auto mb-6 print:hidden font-retro">
       <ul className="flex flex-wrap gap-2 text-lg">
         {SIDER.map(([href, navn]) => {
-          const aktiv = sti === href || sti.startsWith(href + "/");
+          // The day view links to day 1 but stays marked on every day.
+          const rot = href.replace(/\/dag\/1$/, "/dag");
+          const aktiv = sti === href || sti.startsWith(rot + "/");
           return (
             <li key={href}>
               <Link

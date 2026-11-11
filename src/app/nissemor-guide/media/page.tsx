@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { LiveCam } from "@/components/windows/snofall-tv/LiveCam";
@@ -9,11 +9,6 @@ import {
   landsbyEventAllowed,
   type LandsbyEventKind,
 } from "@/components/windows/snofall-tv/channels";
-import { mediaUrl, type MediaStatus } from "@/lib/media";
-import type {
-  MediaVurderingItem,
-  MediaVurderinger,
-} from "@/app/api/media/vurdering/route";
 import {
   dayRows,
   lookThrough,
@@ -23,276 +18,9 @@ import {
   sortReviewItems,
   type ItemStatus,
 } from "./oversikt";
+import { ReviewItemCard, useMediaData } from "./kort";
 
-const TYPES: Record<string, string> = {
-  mp4: "video/mp4",
-  mp3: "audio/mpeg",
-  png: "image/png",
-  jpg: "image/jpeg",
-  webp: "image/webp",
-};
-
-const ext = (p: string) => (p.split(".").pop() ?? "").toLowerCase();
-const formatSize = (b: number) => `${(b / 1024 / 1024).toFixed(1)} MB`;
 const box = "border-4 border-(--neon-green) bg-black p-4 mb-6";
-
-function formatCreated(iso: string | undefined): string {
-  if (!iso) return "–";
-  return iso
-    .replace("T", " ")
-    .replace(/\.\d+Z$/, "")
-    .replace("Z", "");
-}
-
-/** One row of media-inventar.json (assets/bin/inventar.py). */
-interface Inventar {
-  path: string;
-  status: "current" | "stale" | "unknown" | "missing";
-  reasons: string[];
-  meta?: {
-    generator?: string;
-    created?: string;
-    source?: {
-      path?: string;
-      section?: string;
-      sha256?: string;
-    };
-  } | null;
-}
-
-const INVENTAR_LABEL: Record<Inventar["status"], [string, string]> = {
-  current: ["[✓ Oppdatert]", "text-(--gold)"],
-  stale: ["[!] Utdatert", "text-(--christmas-red)"],
-  unknown: ["[?] Ukjent", "text-gray-400"],
-  missing: ["[✗ Mangler]", "text-(--christmas-red)"],
-};
-
-function InlinePlayer({ path, missing }: { path: string; missing: boolean }) {
-  const src = mediaUrl(path);
-  const fileExt = ext(path);
-
-  if (missing) {
-    return (
-      <div className="p-3 my-2 border border-(--christmas-red)/60 bg-(--christmas-red)/10 text-(--christmas-red) text-sm">
-        Filen mangler på disk
-      </div>
-    );
-  }
-
-  if (fileExt === "mp4") {
-    const poster = mediaUrl(path.replace(/\.mp4$/, ".jpg"));
-    return (
-      <div className="my-2 bg-black">
-        <video
-          src={src}
-          poster={poster}
-          controls
-          preload="none"
-          className="w-full max-h-72 border border-(--neon-green)/40 bg-black"
-        />
-      </div>
-    );
-  }
-
-  if (fileExt === "mp3") {
-    return (
-      <div className="my-2">
-        <audio src={src} controls preload="none" className="w-full min-h-11" />
-      </div>
-    );
-  }
-
-  return (
-    <div className="my-2 flex justify-center bg-black/60 p-2 border border-(--neon-green)/40">
-      {/* eslint-disable-next-line @next/next/no-img-element -- served from MEDIA_DIR */}
-      <img src={src} alt={path} className="max-h-72 w-auto object-contain" />
-    </div>
-  );
-}
-
-function ReviewItemCard({
-  file,
-  inventar,
-  vurdering,
-  isSaving,
-  onSaveVerdict,
-  onUpload,
-}: {
-  file: MediaStatus;
-  inventar?: Inventar;
-  vurdering?: MediaVurderingItem;
-  isSaving?: boolean;
-  onSaveVerdict: (
-    path: string,
-    v: "godkjent" | "lag_paa_nytt" | null,
-    note?: string,
-  ) => void;
-  onUpload: (path: string, file: File) => void;
-}) {
-  const missing = file.size === null;
-  const statusKey = inventar
-    ? inventar.status
-    : missing
-      ? "missing"
-      : "unknown";
-  const [label, colorClass] = INVENTAR_LABEL[statusKey];
-
-  const currentVerdict = vurdering?.vurdering ?? null;
-  const [note, setNote] = useState(vurdering?.notat ?? "");
-
-  const handleVerdictClick = (targetVerdict: "godkjent" | "lag_paa_nytt") => {
-    const nextVerdict = currentVerdict === targetVerdict ? null : targetVerdict;
-    onSaveVerdict(file.path, nextVerdict, note);
-  };
-
-  const handleNoteBlur = () => {
-    if (note !== (vurdering?.notat ?? "")) {
-      onSaveVerdict(file.path, currentVerdict, note);
-    }
-  };
-
-  return (
-    <div className="border-2 border-(--neon-green) bg-black/90 p-3 mb-3 text-(--neon-green)">
-      {/* Top row: Path & Inventory Status */}
-      <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-(--neon-green)/30 pb-2">
-        <span className="font-bold break-all text-base md:text-lg">
-          {file.path}
-        </span>
-        <div className="flex items-center gap-3">
-          <span
-            className={missing ? "text-(--christmas-red)" : "text-(--gold)"}
-          >
-            {missing ? "MANGLER" : formatSize(file.size!)}
-          </span>
-          <span className={colorClass} title={inventar?.reasons.join("; ")}>
-            {label}
-          </span>
-        </div>
-      </div>
-
-      {/* Reasons / Why */}
-      {inventar?.reasons && inventar.reasons.length > 0 && (
-        <div className="mt-1 text-xs md:text-sm text-(--cold-blue) break-words">
-          Årsak: {inventar.reasons.join("; ")}
-        </div>
-      )}
-
-      {/* Sidecar Metadata */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-1 text-xs md:text-sm text-(--neon-green)/80 bg-black/60 border border-(--neon-green)/20 p-2 my-2">
-        <div>
-          <span className="text-(--neon-green)/50">Generator: </span>
-          <span className="break-all">{inventar?.meta?.generator || "–"}</span>
-        </div>
-        <div>
-          <span className="text-(--neon-green)/50">Opprettet: </span>
-          <span>{formatCreated(inventar?.meta?.created)}</span>
-        </div>
-        <div>
-          <span className="text-(--neon-green)/50">Kildeseksjon: </span>
-          <span className="break-all">
-            {inventar?.meta?.source?.section ||
-              inventar?.meta?.source?.path ||
-              "–"}
-          </span>
-        </div>
-      </div>
-
-      {/* Inline Player */}
-      <InlinePlayer path={file.path} missing={missing} />
-
-      {/* Actions: Verdict Buttons, Note, Upload */}
-      <div className="mt-3 pt-2 border-t border-(--neon-green)/30 flex flex-col gap-2">
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Godkjent button */}
-          <button
-            type="button"
-            onClick={() => handleVerdictClick("godkjent")}
-            disabled={isSaving}
-            className={`min-h-11 min-w-28 px-4 py-2 font-bold cursor-pointer transition-colors border-2 ${
-              currentVerdict === "godkjent"
-                ? "bg-(--gold) text-black border-(--gold)"
-                : "border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20"
-            }`}
-          >
-            {currentVerdict === "godkjent" ? "[✓] Godkjent" : "Godkjent"}
-          </button>
-
-          {/* Lag på nytt button */}
-          <button
-            type="button"
-            onClick={() => handleVerdictClick("lag_paa_nytt")}
-            disabled={isSaving}
-            className={`min-h-11 min-w-28 px-4 py-2 font-bold cursor-pointer transition-colors border-2 ${
-              currentVerdict === "lag_paa_nytt"
-                ? "bg-(--christmas-red) text-white border-(--christmas-red)"
-                : "border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20"
-            }`}
-          >
-            {currentVerdict === "lag_paa_nytt"
-              ? "[!] Lag på nytt"
-              : "Lag på nytt"}
-          </button>
-
-          {currentVerdict && (
-            <button
-              type="button"
-              onClick={() => onSaveVerdict(file.path, null, note)}
-              disabled={isSaving}
-              className="min-h-11 px-3 py-2 text-sm text-(--neon-green)/70 underline cursor-pointer hover:text-(--neon-green)"
-            >
-              Fjern valg
-            </button>
-          )}
-
-          {isSaving && (
-            <span className="text-sm text-(--gold) animate-pulse ml-auto">
-              Lagrer...
-            </span>
-          )}
-
-          <label className="min-h-11 flex items-center cursor-pointer underline ml-auto text-sm">
-            {missing ? "Last opp fil" : "Erstatt fil"}
-            <input
-              type="file"
-              accept={TYPES[ext(file.path)]}
-              className="sr-only"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) onUpload(file.path, f);
-                e.target.value = "";
-              }}
-            />
-          </label>
-        </div>
-
-        {/* Short Note field */}
-        <div className="flex flex-wrap sm:flex-nowrap gap-2 items-center mt-1">
-          <input
-            type="text"
-            value={note}
-            placeholder="Kort notat..."
-            onChange={(e) => setNote(e.target.value)}
-            onBlur={handleNoteBlur}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                onSaveVerdict(file.path, currentVerdict, note);
-              }
-            }}
-            className="w-full min-h-11 bg-black border-2 border-(--neon-green) px-3 text-sm text-(--neon-green) focus:outline-none focus:border-(--gold)"
-          />
-          <button
-            type="button"
-            onClick={() => onSaveVerdict(file.path, currentVerdict, note)}
-            disabled={isSaving}
-            className="min-h-11 min-w-28 px-4 py-2 border-2 border-(--neon-green) hover:bg-(--neon-green)/20 text-sm font-bold cursor-pointer"
-          >
-            Lagre notat
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function Status({ item }: { item: ItemStatus | null }) {
   if (!item) return <span className="text-gray-500">–</span>;
@@ -421,95 +149,20 @@ function Gjennomsyn({ present }: { present: Set<string> | null }) {
 }
 
 function MediaContent() {
-  const [files, setFiles] = useState<MediaStatus[] | null>(null);
-  const [unavailable, setUnavailable] = useState(false);
-  const [message, setMessage] = useState("");
-  const [onlyMissing, setOnlyMissing] = useState(false);
-  const [onlyUnrated, setOnlyUnrated] = useState(false);
-  const [inventar, setInventar] = useState<Map<string, Inventar>>(new Map());
-  const [vurderinger, setVurderinger] = useState<MediaVurderinger>({});
-  const [savingMap, setSavingMap] = useState<Record<string, boolean>>({});
-
-  const load = useCallback(async () => {
-    try {
-      const [resMedia, resInv, resVurd] = await Promise.all([
-        fetch("/api/media"),
-        fetch("/api/media/inventar"),
-        fetch("/api/media/vurdering"),
-      ]);
-
-      if (!resMedia.ok) {
-        setUnavailable(true);
-        return;
-      }
-      setFiles(await resMedia.json());
-
-      if (resInv.ok) {
-        const rows: Inventar[] = await resInv.json();
-        setInventar(new Map(rows.map((r) => [r.path, r])));
-      }
-
-      if (resVurd.ok) {
-        const v: MediaVurderinger = await resVurd.json();
-        setVurderinger(v);
-      }
-    } catch {
-      setUnavailable(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- initial fetch
-    load();
-  }, [load]);
-
-  const upload = async (path: string, file: File) => {
-    setMessage(`Laster opp ${path} ...`);
-    const res = await fetch(
-      "/api/media/" + path.split("/").map(encodeURIComponent).join("/"),
-      {
-        method: "PUT",
-        headers: { "Content-Type": TYPES[ext(path)] },
-        body: file,
-      },
-    );
-    setMessage(res.ok ? `Lastet opp ${path}` : `Feil: ${await res.text()}`);
-    load();
-  };
-
-  const handleSaveVerdict = async (
-    path: string,
-    v: "godkjent" | "lag_paa_nytt" | null,
-    note?: string,
-  ) => {
-    setSavingMap((prev) => ({ ...prev, [path]: true }));
-    try {
-      const res = await fetch("/api/media/vurdering", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ path, vurdering: v, notat: note }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setVurderinger((prev) => {
-          const next = { ...prev };
-          if (!data.entry) {
-            delete next[path];
-          } else {
-            next[path] = data.entry;
-          }
-          return next;
-        });
-        setMessage(`Lagret vurdering for ${path}`);
-      } else {
-        setMessage(`Feil ved lagring: ${await res.text()}`);
-      }
-    } catch {
-      setMessage("Nettverksfeil ved lagring");
-    } finally {
-      setSavingMap((prev) => ({ ...prev, [path]: false }));
-    }
-  };
+  const {
+    files,
+    unavailable,
+    message,
+    onlyMissing,
+    setOnlyMissing,
+    onlyUnrated,
+    setOnlyUnrated,
+    inventar,
+    vurderinger,
+    savingMap,
+    upload,
+    handleSaveVerdict,
+  } = useMediaData();
 
   const missing = files?.filter((f) => f.size === null).length ?? 0;
   const present = files
