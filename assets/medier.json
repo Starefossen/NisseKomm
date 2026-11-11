@@ -1,423 +1,437 @@
 {
- "slede/tundra": {
-  "generator": "still",
-  "sted": "tundra",
-  "ut": "feed/slede-tundra.jpg",
-  "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
-  "mal": "assets/locations/sledeflukt/varianter/tundra.still.prompt.txt"
- },
- "slede/nordtoppen": {
-  "generator": "still",
-  "sted": "nordtoppen",
-  "ut": "feed/slede-nordtoppen.jpg",
-  "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
-  "mal": "assets/locations/sledeflukt/varianter/nordtoppen.still.prompt.txt"
- },
- "slede/muren": {
-  "generator": "still",
-  "sted": "muren",
-  "ut": "feed/slede-muren.jpg",
-  "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
-  "mal": "assets/locations/sledeflukt/varianter/muren.still.prompt.txt"
- },
- "slede/julenatt": {
-  "generator": "still",
-  "sted": "julenatt",
-  "ut": "feed/slede-julenatt.jpg",
-  "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
-  "mal": "assets/locations/sledeflukt/varianter/julenatt.still.prompt.txt"
- },
- "spill/iq-verksted": {
-  "generator": "still",
-  "sted": "iq-verksted",
-  "ut": "spill/iq-verksted.jpg",
-  "bilde": "assets/locations/iq-verksted/vidvinkel-tom.jpg",
-  "mal": "assets/locations/iq-verksted/varianter/spill.still.prompt.txt"
- },
- "spill/julius-kontor": {
-  "generator": "still",
-  "sted": "julius-kontor",
-  "ut": "spill/julius-kontor.jpg",
-  "bilde": "assets/locations/julius-kontor/ref-tom.jpg",
-  "mal": "assets/locations/julius-kontor/varianter/spill.still.prompt.txt"
- },
- "spill/antenne-tarn": {
-  "generator": "still",
-  "sted": "antenne-tjern",
-  "ut": "spill/antenne-tarn.jpg",
-  "bilde": "assets/locations/antenne-tjern/ref.jpg",
-  "mal": "assets/locations/antenne-tjern/varianter/spill.still.prompt.txt"
- },
- "spill/kulde-grotte": {
-  "generator": "still",
-  "sted": "krystallgrotten",
-  "ut": "spill/kulde-grotte.jpg",
-  "bilde": "assets/locations/krystallgrotten/ref.jpg",
-  "mal": "assets/locations/krystallgrotten/varianter/spill.still.prompt.txt"
- },
- "spill/torget": {
-  "generator": "still",
-  "sted": "torget",
-  "ut": "spill/torget.jpg",
-  "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
-  "mal": "assets/locations/snofall-landsby/varianter/torget-spill.still.prompt.txt",
-  "refs": [
-   "assets/characters/winter/ref-v1-outside.jpg",
-   "assets/characters/winter/ref-v1-tophat.jpg"
-  ]
- },
- "portrett/winter": {
-  "generator": "portrett",
-  "ut": "spill/portrett-winter.png",
-  "mal": "assets/characters/winter/portrett.prompt.txt",
-  "refs": [
-   "assets/characters/winter/ref-v1-outside.jpg",
-   "assets/characters/winter/ref-v1-tophat.jpg"
-  ]
- },
- "portrett/hjerterud": {
-  "generator": "portrett",
-  "ut": "spill/portrett-hjerterud.png",
-  "mal": "assets/characters/hjerterud/portrett.prompt.txt"
- },
- "tv/antenne-rolig": {
-  "generator": "loop",
-  "ut": "video/tv/antenne-rolig.mp4",
-  "bilde": "assets/locations/antenne-tjern/ref.jpg",
-  "mal": "assets/locations/antenne-tjern/varianter/rolig.prompt.txt"
- },
- "still/antenne-tjern-dag11": {
-  "generator": "mellomstill",
-  "ut": "assets/locations/antenne-tjern/still-dag11.jpg",
-  "bilde": "assets/locations/antenne-tjern/ref.jpg",
-  "mal": "assets/locations/antenne-tjern/varianter/dag11.still.prompt.txt"
- },
- "tv/antenne-dag11": {
-  "generator": "loop",
-  "ut": "video/tv/antenne-dag11.mp4",
-  "bilde": "still/antenne-tjern-dag11",
-  "mal": "assets/locations/antenne-tjern/varianter/dag11.prompt.txt"
- },
- "tv/grotte-rolig": {
-  "generator": "loop",
-  "ut": "video/tv/grotte-rolig.mp4",
-  "bilde": "assets/locations/krystallgrotten/ref.jpg",
-  "mal": "assets/locations/krystallgrotten/varianter/rolig.prompt.txt"
- },
- "still/krystallgrotten-dag12": {
-  "generator": "mellomstill",
-  "ut": "assets/locations/krystallgrotten/still-dag12.jpg",
-  "bilde": "assets/locations/krystallgrotten/nokkelramme.jpg",
-  "mal": "assets/locations/krystallgrotten/varianter/dag12.still.prompt.txt"
- },
- "tv/grotte-dag12": {
-  "generator": "loop",
-  "ut": "video/tv/grotte-dag12.mp4",
-  "bilde": "still/krystallgrotten-dag12",
-  "mal": "assets/locations/krystallgrotten/varianter/dag12.prompt.txt"
- },
- "still/krystallgrotten-dag15": {
-  "generator": "mellomstill",
-  "ut": "assets/locations/krystallgrotten/still-dag15.jpg",
-  "bilde": "assets/locations/krystallgrotten/nokkelramme.jpg",
-  "mal": "assets/locations/krystallgrotten/varianter/dag15.still.prompt.txt"
- },
- "tv/grotte-dag15": {
-  "generator": "loop",
-  "ut": "video/tv/grotte-dag15.mp4",
-  "bilde": "still/krystallgrotten-dag15",
-  "mal": "assets/locations/krystallgrotten/varianter/dag15.prompt.txt"
- },
- "still/krystallgrotten-dag21": {
-  "generator": "mellomstill",
-  "ut": "assets/locations/krystallgrotten/still-dag21.jpg",
-  "bilde": "assets/locations/krystallgrotten/nokkelramme.jpg",
-  "mal": "assets/locations/krystallgrotten/varianter/dag21.still.prompt.txt"
- },
- "tv/grotte-dag21": {
-  "generator": "loop",
-  "ut": "video/tv/grotte-dag21.mp4",
-  "bilde": "still/krystallgrotten-dag21",
-  "mal": "assets/locations/krystallgrotten/varianter/dag21.prompt.txt"
- },
- "still/krystallgrotten-dag23": {
-  "generator": "mellomstill",
-  "ut": "assets/locations/krystallgrotten/still-dag23.jpg",
-  "bilde": "assets/locations/krystallgrotten/nokkelramme.jpg",
-  "mal": "assets/locations/krystallgrotten/varianter/dag23.still.prompt.txt"
- },
- "tv/grotte-dag23": {
-  "generator": "loop",
-  "ut": "video/tv/grotte-dag23.mp4",
-  "bilde": "still/krystallgrotten-dag23",
-  "mal": "assets/locations/krystallgrotten/varianter/dag23.prompt.txt"
- },
- "still/krystallgrotten-dag24": {
-  "generator": "mellomstill",
-  "ut": "assets/locations/krystallgrotten/still-dag24.jpg",
-  "bilde": "assets/locations/krystallgrotten/nokkelramme.jpg",
-  "mal": "assets/locations/krystallgrotten/varianter/dag24.still.prompt.txt"
- },
- "tv/grotte-dag24": {
-  "generator": "loop",
-  "ut": "video/tv/grotte-dag24.mp4",
-  "bilde": "still/krystallgrotten-dag24",
-  "mal": "assets/locations/krystallgrotten/varianter/dag24.prompt.txt"
- },
- "tv/kontor-julius": {
-  "generator": "loop",
-  "ut": "video/tv/kontor-julius.mp4",
-  "bilde": "assets/locations/julius-kontor/vidvinkel-ref.jpg",
-  "mal": "assets/locations/julius-kontor/varianter/vidvinkel-ref.prompt.txt"
- },
- "tv/kontor-tom": {
-  "generator": "loop",
-  "ut": "video/tv/kontor-tom.mp4",
-  "bilde": "assets/locations/julius-kontor/vidvinkel-tom.jpg",
-  "mal": "assets/locations/julius-kontor/varianter/vidvinkel-tom.prompt.txt"
- },
- "still/julius-kontor-dag14": {
-  "generator": "mellomstill",
-  "ut": "assets/locations/julius-kontor/still-dag14.jpg",
-  "bilde": "assets/locations/julius-kontor/vidvinkel-tom.jpg",
-  "mal": "assets/locations/julius-kontor/varianter/dag14.still.prompt.txt"
- },
- "tv/kontor-dag14": {
-  "generator": "loop",
-  "ut": "video/tv/kontor-dag14.mp4",
-  "bilde": "still/julius-kontor-dag14",
-  "mal": "assets/locations/julius-kontor/varianter/dag14.prompt.txt"
- },
- "still/landsby-v2": {
-  "generator": "mellomstill",
-  "ut": "assets/locations/snofall-landsby/nokkelramme-v2.jpg",
-  "bilde": "assets/locations/snofall-landsby/nokkelramme.jpg",
-  "mal": "assets/locations/snofall-landsby/varianter/v2.still.prompt.txt"
- },
- "still/landsby-v2-nordlys": {
-  "generator": "mellomstill",
-  "ut": "assets/locations/snofall-landsby/still-v2-nordlys.jpg",
-  "bilde": "still/landsby-v2",
-  "mal": "assets/locations/snofall-landsby/varianter/nordlys.still.prompt.txt"
- },
- "tv/landsby-rolig": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-rolig.mp4",
-  "bilde": "still/landsby-v2",
-  "mal": "assets/locations/snofall-landsby/varianter/rolig.prompt.txt"
- },
- "tv/landsby-nordlys": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-nordlys.mp4",
-  "bilde": "still/landsby-v2-nordlys",
-  "mal": "assets/locations/snofall-landsby/varianter/nordlys.prompt.txt"
- },
- "still/landsby-v2-storm": {
-  "generator": "mellomstill",
-  "ut": "assets/locations/snofall-landsby/still-v2-storm.jpg",
-  "bilde": "still/landsby-v2",
-  "mal": "assets/locations/snofall-landsby/varianter/storm.still.prompt.txt"
- },
- "tv/landsby-storm": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-storm.mp4",
-  "bilde": "still/landsby-v2-storm",
-  "mal": "assets/locations/snofall-landsby/varianter/storm.prompt.txt"
- },
- "still/landsby-v2-dag24": {
-  "generator": "mellomstill",
-  "ut": "assets/locations/snofall-landsby/still-v2-dag24.jpg",
-  "bilde": "still/landsby-v2-nordlys",
-  "mal": "assets/locations/snofall-landsby/varianter/dag24.still.prompt.txt"
- },
- "tv/landsby-dag24": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-dag24.mp4",
-  "bilde": "still/landsby-v2-dag24",
-  "mal": "assets/locations/snofall-landsby/varianter/dag24.prompt.txt"
- },
- "still/landsby-tid-morgen": {
-  "generator": "mellomstill",
-  "ut": "assets/locations/snofall-landsby/still-tid-morgen.jpg",
-  "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
-  "mal": "assets/locations/snofall-landsby/varianter/tid-morgen.still.prompt.txt"
- },
- "tv/landsby-morgen": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-morgen.mp4",
-  "bilde": "still/landsby-tid-morgen",
-  "mal": "assets/locations/snofall-landsby/varianter/tid-morgen.prompt.txt"
- },
- "still/landsby-tid-dag": {
-  "generator": "mellomstill",
-  "ut": "assets/locations/snofall-landsby/still-tid-dag.jpg",
-  "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
-  "mal": "assets/locations/snofall-landsby/varianter/tid-dag.still.prompt.txt"
- },
- "tv/landsby-dag": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-dag.mp4",
-  "bilde": "still/landsby-tid-dag",
-  "mal": "assets/locations/snofall-landsby/varianter/tid-dag.prompt.txt"
- },
- "still/landsby-tid-natt": {
-  "generator": "mellomstill",
-  "ut": "assets/locations/snofall-landsby/still-tid-natt.jpg",
-  "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
-  "mal": "assets/locations/snofall-landsby/varianter/tid-natt.still.prompt.txt"
- },
- "tv/landsby-natt": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-natt.mp4",
-  "bilde": "still/landsby-tid-natt",
-  "mal": "assets/locations/snofall-landsby/varianter/tid-natt.prompt.txt"
- },
- "tv/landsby-brevfugler": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-brevfugler.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-brevfugler.prompt.txt",
-  "tilstand": "landsby-rolig"
- },
- "tv/landsby-julius": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-julius.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-julius.prompt.txt",
-  "tilstand": "landsby-rolig"
- },
- "tv/landsby-iq": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-iq.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-iq.prompt.txt",
-  "tilstand": "landsby-rolig"
- },
- "tv/landsby-winter": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-winter.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-winter.prompt.txt",
-  "tilstand": "landsby-rolig",
-  "refs": [
-   "assets/characters/winter/ref-v1-outside.jpg"
-  ]
- },
- "tv/landsby-reinsdyr": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-reinsdyr.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-reinsdyr.prompt.txt",
-  "tilstand": "landsby-rolig"
- },
- "tv/landsby-hverdag": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-hverdag.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-hverdag.prompt.txt",
-  "tilstand": "landsby-rolig"
- },
- "tv/landsby-aking": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-aking.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-aking.prompt.txt",
-  "tilstand": "landsby-rolig"
- },
- "tv/landsby-marked": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-marked.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-marked.prompt.txt",
-  "tilstand": "landsby-rolig"
- },
- "tv/landsby-tarnklokke": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-tarnklokke.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-tarnklokke.prompt.txt",
-  "tilstand": "landsby-rolig"
- },
- "tv/landsby-stjerneskudd": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-stjerneskudd.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-stjerneskudd.prompt.txt",
-  "tilstand": "landsby-rolig"
- },
- "tv/landsby-morgen-brevfugler": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-morgen-brevfugler.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-brevfugler.prompt.txt",
-  "tilstand": "landsby-morgen"
- },
- "tv/landsby-morgen-hverdag": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-morgen-hverdag.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-hverdag.prompt.txt",
-  "tilstand": "landsby-morgen"
- },
- "tv/landsby-morgen-reinsdyr": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-morgen-reinsdyr.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-reinsdyr.prompt.txt",
-  "tilstand": "landsby-morgen"
- },
- "tv/landsby-dag-aking": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-dag-aking.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-aking.prompt.txt",
-  "tilstand": "landsby-dag"
- },
- "tv/landsby-dag-marked": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-dag-marked.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-marked.prompt.txt",
-  "tilstand": "landsby-dag"
- },
- "tv/landsby-dag-hverdag": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-dag-hverdag.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-hverdag.prompt.txt",
-  "tilstand": "landsby-dag"
- },
- "tv/landsby-natt-stjerneskudd": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-natt-stjerneskudd.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-stjerneskudd.prompt.txt",
-  "tilstand": "landsby-natt"
- },
- "tv/landsby-natt-tarnklokke": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-natt-tarnklokke.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-tarnklokke.prompt.txt",
-  "tilstand": "landsby-natt"
- },
- "tv/landsby-natt-reinsdyr": {
-  "generator": "loop",
-  "ut": "video/tv/landsby-natt-reinsdyr.mp4",
-  "mal": "assets/locations/snofall-landsby/varianter/hendelse-reinsdyr.prompt.txt",
-  "tilstand": "landsby-natt"
- },
- "tv/port-julius": {
-  "generator": "loop",
-  "ut": "video/tv/port-julius.mp4",
-  "bilde": "assets/locations/snofall-landsby/port-nokkelramme.jpg",
-  "mal": "assets/locations/snofall-landsby/varianter/port-julius.prompt.txt",
-  "anker": true
- },
- "tv/port-hjerterud": {
-  "generator": "loop",
-  "ut": "video/tv/port-hjerterud.mp4",
-  "bilde": "assets/locations/snofall-landsby/port-nokkelramme.jpg",
-  "mal": "assets/locations/snofall-landsby/varianter/port-hjerterud.prompt.txt",
-  "anker": true
- },
- "tv/port-iq": {
-  "generator": "loop",
-  "ut": "video/tv/port-iq.mp4",
-  "bilde": "assets/locations/snofall-landsby/port-nokkelramme.jpg",
-  "mal": "assets/locations/snofall-landsby/varianter/port-iq.prompt.txt",
-  "anker": true
- },
- "tv/port-winter": {
-  "generator": "loop",
-  "ut": "video/tv/port-winter.mp4",
-  "bilde": "assets/locations/snofall-landsby/port-nokkelramme.jpg",
-  "mal": "assets/locations/snofall-landsby/varianter/port-winter.prompt.txt",
-  "anker": true,
-  "refs": [
-   "assets/characters/winter/ref-v1-tophat.jpg"
-  ]
- }
+  "slede/tundra": {
+    "generator": "still",
+    "sted": "tundra",
+    "ut": "feed/slede-tundra.jpg",
+    "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
+    "mal": "assets/locations/sledeflukt/varianter/tundra.still.prompt.txt"
+  },
+  "slede/nordtoppen": {
+    "generator": "still",
+    "sted": "nordtoppen",
+    "ut": "feed/slede-nordtoppen.jpg",
+    "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
+    "mal": "assets/locations/sledeflukt/varianter/nordtoppen.still.prompt.txt"
+  },
+  "slede/muren": {
+    "generator": "still",
+    "sted": "muren",
+    "ut": "feed/slede-muren.jpg",
+    "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
+    "mal": "assets/locations/sledeflukt/varianter/muren.still.prompt.txt"
+  },
+  "slede/julenatt": {
+    "generator": "still",
+    "sted": "julenatt",
+    "ut": "feed/slede-julenatt.jpg",
+    "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
+    "mal": "assets/locations/sledeflukt/varianter/julenatt.still.prompt.txt"
+  },
+  "spill/iq-verksted": {
+    "generator": "still",
+    "sted": "iq-verksted",
+    "ut": "spill/iq-verksted.jpg",
+    "bilde": "assets/locations/iq-verksted/vidvinkel-tom.jpg",
+    "mal": "assets/locations/iq-verksted/varianter/spill.still.prompt.txt"
+  },
+  "spill/julius-kontor": {
+    "generator": "still",
+    "sted": "julius-kontor",
+    "ut": "spill/julius-kontor.jpg",
+    "bilde": "assets/locations/julius-kontor/ref-tom.jpg",
+    "mal": "assets/locations/julius-kontor/varianter/spill.still.prompt.txt"
+  },
+  "spill/antenne-tarn": {
+    "generator": "still",
+    "sted": "antenne-tjern",
+    "ut": "spill/antenne-tarn.jpg",
+    "bilde": "assets/locations/antenne-tjern/ref.jpg",
+    "mal": "assets/locations/antenne-tjern/varianter/spill.still.prompt.txt"
+  },
+  "spill/kulde-grotte": {
+    "generator": "still",
+    "sted": "krystallgrotten",
+    "ut": "spill/kulde-grotte.jpg",
+    "bilde": "assets/locations/krystallgrotten/ref.jpg",
+    "mal": "assets/locations/krystallgrotten/varianter/spill.still.prompt.txt"
+  },
+  "spill/torget": {
+    "generator": "still",
+    "sted": "torget",
+    "ut": "spill/torget.jpg",
+    "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
+    "mal": "assets/locations/snofall-landsby/varianter/torget-spill.still.prompt.txt",
+    "refs": [
+      "assets/characters/winter/ref-v1-outside.jpg",
+      "assets/characters/winter/ref-v1-tophat.jpg"
+    ]
+  },
+  "portrett/winter": {
+    "generator": "portrett",
+    "ut": "spill/portrett-winter.png",
+    "mal": "assets/characters/winter/portrett.prompt.txt",
+    "refs": [
+      "assets/characters/winter/ref-v1-outside.jpg",
+      "assets/characters/winter/ref-v1-tophat.jpg"
+    ]
+  },
+  "portrett/hjerterud": {
+    "generator": "portrett",
+    "ut": "spill/portrett-hjerterud.png",
+    "mal": "assets/characters/hjerterud/portrett.prompt.txt"
+  },
+  "portrett/iq": {
+    "generator": "portrett",
+    "ut": "spill/portrett-iq.png",
+    "mal": "assets/characters/iq/portrett.prompt.txt",
+    "refs": ["assets/characters/iq/ref.jpg", "public/spill/portrett-julius.png"]
+  },
+  "portrett/julius": {
+    "generator": "portrett",
+    "ut": "spill/portrett-julius.png",
+    "mal": "assets/characters/julius/portrett.prompt.txt",
+    "refs": ["assets/characters/julius/ref-v3.jpg"]
+  },
+  "portrett/rampenissen": {
+    "generator": "portrett",
+    "ut": "spill/portrett-rampenissen.png",
+    "mal": "assets/characters/rampenissen/portrett.prompt.txt",
+    "refs": ["public/spill/portrett-julius.png"]
+  },
+  "tv/antenne-rolig": {
+    "generator": "loop",
+    "ut": "video/tv/antenne-rolig.mp4",
+    "bilde": "assets/locations/antenne-tjern/ref.jpg",
+    "mal": "assets/locations/antenne-tjern/varianter/rolig.prompt.txt"
+  },
+  "still/antenne-tjern-dag11": {
+    "generator": "mellomstill",
+    "ut": "assets/locations/antenne-tjern/still-dag11.jpg",
+    "bilde": "assets/locations/antenne-tjern/ref.jpg",
+    "mal": "assets/locations/antenne-tjern/varianter/dag11.still.prompt.txt"
+  },
+  "tv/antenne-dag11": {
+    "generator": "loop",
+    "ut": "video/tv/antenne-dag11.mp4",
+    "bilde": "still/antenne-tjern-dag11",
+    "mal": "assets/locations/antenne-tjern/varianter/dag11.prompt.txt"
+  },
+  "tv/grotte-rolig": {
+    "generator": "loop",
+    "ut": "video/tv/grotte-rolig.mp4",
+    "bilde": "assets/locations/krystallgrotten/ref.jpg",
+    "mal": "assets/locations/krystallgrotten/varianter/rolig.prompt.txt"
+  },
+  "still/krystallgrotten-dag12": {
+    "generator": "mellomstill",
+    "ut": "assets/locations/krystallgrotten/still-dag12.jpg",
+    "bilde": "assets/locations/krystallgrotten/nokkelramme.jpg",
+    "mal": "assets/locations/krystallgrotten/varianter/dag12.still.prompt.txt"
+  },
+  "tv/grotte-dag12": {
+    "generator": "loop",
+    "ut": "video/tv/grotte-dag12.mp4",
+    "bilde": "still/krystallgrotten-dag12",
+    "mal": "assets/locations/krystallgrotten/varianter/dag12.prompt.txt"
+  },
+  "still/krystallgrotten-dag15": {
+    "generator": "mellomstill",
+    "ut": "assets/locations/krystallgrotten/still-dag15.jpg",
+    "bilde": "assets/locations/krystallgrotten/nokkelramme.jpg",
+    "mal": "assets/locations/krystallgrotten/varianter/dag15.still.prompt.txt"
+  },
+  "tv/grotte-dag15": {
+    "generator": "loop",
+    "ut": "video/tv/grotte-dag15.mp4",
+    "bilde": "still/krystallgrotten-dag15",
+    "mal": "assets/locations/krystallgrotten/varianter/dag15.prompt.txt"
+  },
+  "still/krystallgrotten-dag21": {
+    "generator": "mellomstill",
+    "ut": "assets/locations/krystallgrotten/still-dag21.jpg",
+    "bilde": "assets/locations/krystallgrotten/nokkelramme.jpg",
+    "mal": "assets/locations/krystallgrotten/varianter/dag21.still.prompt.txt"
+  },
+  "tv/grotte-dag21": {
+    "generator": "loop",
+    "ut": "video/tv/grotte-dag21.mp4",
+    "bilde": "still/krystallgrotten-dag21",
+    "mal": "assets/locations/krystallgrotten/varianter/dag21.prompt.txt"
+  },
+  "still/krystallgrotten-dag23": {
+    "generator": "mellomstill",
+    "ut": "assets/locations/krystallgrotten/still-dag23.jpg",
+    "bilde": "assets/locations/krystallgrotten/nokkelramme.jpg",
+    "mal": "assets/locations/krystallgrotten/varianter/dag23.still.prompt.txt"
+  },
+  "tv/grotte-dag23": {
+    "generator": "loop",
+    "ut": "video/tv/grotte-dag23.mp4",
+    "bilde": "still/krystallgrotten-dag23",
+    "mal": "assets/locations/krystallgrotten/varianter/dag23.prompt.txt"
+  },
+  "still/krystallgrotten-dag24": {
+    "generator": "mellomstill",
+    "ut": "assets/locations/krystallgrotten/still-dag24.jpg",
+    "bilde": "assets/locations/krystallgrotten/nokkelramme.jpg",
+    "mal": "assets/locations/krystallgrotten/varianter/dag24.still.prompt.txt"
+  },
+  "tv/grotte-dag24": {
+    "generator": "loop",
+    "ut": "video/tv/grotte-dag24.mp4",
+    "bilde": "still/krystallgrotten-dag24",
+    "mal": "assets/locations/krystallgrotten/varianter/dag24.prompt.txt"
+  },
+  "tv/kontor-julius": {
+    "generator": "loop",
+    "ut": "video/tv/kontor-julius.mp4",
+    "bilde": "assets/locations/julius-kontor/vidvinkel-ref.jpg",
+    "mal": "assets/locations/julius-kontor/varianter/vidvinkel-ref.prompt.txt"
+  },
+  "tv/kontor-tom": {
+    "generator": "loop",
+    "ut": "video/tv/kontor-tom.mp4",
+    "bilde": "assets/locations/julius-kontor/vidvinkel-tom.jpg",
+    "mal": "assets/locations/julius-kontor/varianter/vidvinkel-tom.prompt.txt"
+  },
+  "still/julius-kontor-dag14": {
+    "generator": "mellomstill",
+    "ut": "assets/locations/julius-kontor/still-dag14.jpg",
+    "bilde": "assets/locations/julius-kontor/vidvinkel-tom.jpg",
+    "mal": "assets/locations/julius-kontor/varianter/dag14.still.prompt.txt"
+  },
+  "tv/kontor-dag14": {
+    "generator": "loop",
+    "ut": "video/tv/kontor-dag14.mp4",
+    "bilde": "still/julius-kontor-dag14",
+    "mal": "assets/locations/julius-kontor/varianter/dag14.prompt.txt"
+  },
+  "still/landsby-v2": {
+    "generator": "mellomstill",
+    "ut": "assets/locations/snofall-landsby/nokkelramme-v2.jpg",
+    "bilde": "assets/locations/snofall-landsby/nokkelramme.jpg",
+    "mal": "assets/locations/snofall-landsby/varianter/v2.still.prompt.txt"
+  },
+  "still/landsby-v2-nordlys": {
+    "generator": "mellomstill",
+    "ut": "assets/locations/snofall-landsby/still-v2-nordlys.jpg",
+    "bilde": "still/landsby-v2",
+    "mal": "assets/locations/snofall-landsby/varianter/nordlys.still.prompt.txt"
+  },
+  "tv/landsby-rolig": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-rolig.mp4",
+    "bilde": "still/landsby-v2",
+    "mal": "assets/locations/snofall-landsby/varianter/rolig.prompt.txt"
+  },
+  "tv/landsby-nordlys": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-nordlys.mp4",
+    "bilde": "still/landsby-v2-nordlys",
+    "mal": "assets/locations/snofall-landsby/varianter/nordlys.prompt.txt"
+  },
+  "still/landsby-v2-storm": {
+    "generator": "mellomstill",
+    "ut": "assets/locations/snofall-landsby/still-v2-storm.jpg",
+    "bilde": "still/landsby-v2",
+    "mal": "assets/locations/snofall-landsby/varianter/storm.still.prompt.txt"
+  },
+  "tv/landsby-storm": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-storm.mp4",
+    "bilde": "still/landsby-v2-storm",
+    "mal": "assets/locations/snofall-landsby/varianter/storm.prompt.txt"
+  },
+  "still/landsby-v2-dag24": {
+    "generator": "mellomstill",
+    "ut": "assets/locations/snofall-landsby/still-v2-dag24.jpg",
+    "bilde": "still/landsby-v2-nordlys",
+    "mal": "assets/locations/snofall-landsby/varianter/dag24.still.prompt.txt"
+  },
+  "tv/landsby-dag24": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-dag24.mp4",
+    "bilde": "still/landsby-v2-dag24",
+    "mal": "assets/locations/snofall-landsby/varianter/dag24.prompt.txt"
+  },
+  "still/landsby-tid-morgen": {
+    "generator": "mellomstill",
+    "ut": "assets/locations/snofall-landsby/still-tid-morgen.jpg",
+    "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
+    "mal": "assets/locations/snofall-landsby/varianter/tid-morgen.still.prompt.txt"
+  },
+  "tv/landsby-morgen": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-morgen.mp4",
+    "bilde": "still/landsby-tid-morgen",
+    "mal": "assets/locations/snofall-landsby/varianter/tid-morgen.prompt.txt"
+  },
+  "still/landsby-tid-dag": {
+    "generator": "mellomstill",
+    "ut": "assets/locations/snofall-landsby/still-tid-dag.jpg",
+    "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
+    "mal": "assets/locations/snofall-landsby/varianter/tid-dag.still.prompt.txt"
+  },
+  "tv/landsby-dag": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-dag.mp4",
+    "bilde": "still/landsby-tid-dag",
+    "mal": "assets/locations/snofall-landsby/varianter/tid-dag.prompt.txt"
+  },
+  "still/landsby-tid-natt": {
+    "generator": "mellomstill",
+    "ut": "assets/locations/snofall-landsby/still-tid-natt.jpg",
+    "bilde": "assets/locations/snofall-landsby/nokkelramme-rolig.jpg",
+    "mal": "assets/locations/snofall-landsby/varianter/tid-natt.still.prompt.txt"
+  },
+  "tv/landsby-natt": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-natt.mp4",
+    "bilde": "still/landsby-tid-natt",
+    "mal": "assets/locations/snofall-landsby/varianter/tid-natt.prompt.txt"
+  },
+  "tv/landsby-brevfugler": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-brevfugler.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-brevfugler.prompt.txt",
+    "tilstand": "landsby-rolig"
+  },
+  "tv/landsby-julius": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-julius.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-julius.prompt.txt",
+    "tilstand": "landsby-rolig"
+  },
+  "tv/landsby-iq": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-iq.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-iq.prompt.txt",
+    "tilstand": "landsby-rolig"
+  },
+  "tv/landsby-winter": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-winter.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-winter.prompt.txt",
+    "tilstand": "landsby-rolig",
+    "refs": ["assets/characters/winter/ref-v1-outside.jpg"]
+  },
+  "tv/landsby-reinsdyr": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-reinsdyr.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-reinsdyr.prompt.txt",
+    "tilstand": "landsby-rolig"
+  },
+  "tv/landsby-hverdag": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-hverdag.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-hverdag.prompt.txt",
+    "tilstand": "landsby-rolig"
+  },
+  "tv/landsby-aking": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-aking.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-aking.prompt.txt",
+    "tilstand": "landsby-rolig"
+  },
+  "tv/landsby-marked": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-marked.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-marked.prompt.txt",
+    "tilstand": "landsby-rolig"
+  },
+  "tv/landsby-tarnklokke": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-tarnklokke.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-tarnklokke.prompt.txt",
+    "tilstand": "landsby-rolig"
+  },
+  "tv/landsby-stjerneskudd": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-stjerneskudd.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-stjerneskudd.prompt.txt",
+    "tilstand": "landsby-rolig"
+  },
+  "tv/landsby-morgen-brevfugler": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-morgen-brevfugler.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-brevfugler.prompt.txt",
+    "tilstand": "landsby-morgen"
+  },
+  "tv/landsby-morgen-hverdag": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-morgen-hverdag.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-hverdag.prompt.txt",
+    "tilstand": "landsby-morgen"
+  },
+  "tv/landsby-morgen-reinsdyr": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-morgen-reinsdyr.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-reinsdyr.prompt.txt",
+    "tilstand": "landsby-morgen"
+  },
+  "tv/landsby-dag-aking": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-dag-aking.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-aking.prompt.txt",
+    "tilstand": "landsby-dag"
+  },
+  "tv/landsby-dag-marked": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-dag-marked.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-marked.prompt.txt",
+    "tilstand": "landsby-dag"
+  },
+  "tv/landsby-dag-hverdag": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-dag-hverdag.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-hverdag.prompt.txt",
+    "tilstand": "landsby-dag"
+  },
+  "tv/landsby-natt-stjerneskudd": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-natt-stjerneskudd.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-stjerneskudd.prompt.txt",
+    "tilstand": "landsby-natt"
+  },
+  "tv/landsby-natt-tarnklokke": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-natt-tarnklokke.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-tarnklokke.prompt.txt",
+    "tilstand": "landsby-natt"
+  },
+  "tv/landsby-natt-reinsdyr": {
+    "generator": "loop",
+    "ut": "video/tv/landsby-natt-reinsdyr.mp4",
+    "mal": "assets/locations/snofall-landsby/varianter/hendelse-reinsdyr.prompt.txt",
+    "tilstand": "landsby-natt"
+  },
+  "tv/port-julius": {
+    "generator": "loop",
+    "ut": "video/tv/port-julius.mp4",
+    "bilde": "assets/locations/snofall-landsby/port-nokkelramme.jpg",
+    "mal": "assets/locations/snofall-landsby/varianter/port-julius.prompt.txt",
+    "anker": true
+  },
+  "tv/port-hjerterud": {
+    "generator": "loop",
+    "ut": "video/tv/port-hjerterud.mp4",
+    "bilde": "assets/locations/snofall-landsby/port-nokkelramme.jpg",
+    "mal": "assets/locations/snofall-landsby/varianter/port-hjerterud.prompt.txt",
+    "anker": true
+  },
+  "tv/port-iq": {
+    "generator": "loop",
+    "ut": "video/tv/port-iq.mp4",
+    "bilde": "assets/locations/snofall-landsby/port-nokkelramme.jpg",
+    "mal": "assets/locations/snofall-landsby/varianter/port-iq.prompt.txt",
+    "anker": true
+  },
+  "tv/port-winter": {
+    "generator": "loop",
+    "ut": "video/tv/port-winter.mp4",
+    "bilde": "assets/locations/snofall-landsby/port-nokkelramme.jpg",
+    "mal": "assets/locations/snofall-landsby/varianter/port-winter.prompt.txt",
+    "anker": true,
+    "refs": ["assets/characters/winter/ref-v1-tophat.jpg"]
+  }
 }

@@ -177,7 +177,8 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
     for cat in IMAGE_CATS:
         for n in names(cat):
             p = MEDIER[f"{cat}/{n}"]["ut"]
-            if not should_queue(p, st.get(p, medie.MISSING)):
+            # not every image is in the inventory (media.ts manifest); then ask its sidecar
+            if not should_queue(p, st.get(p) or medie.status(media_dir() / p, p, ROOT)[0]):
                 continue
             prompt, img, refs = medie.render(f"{cat}/{n}", ROOT, MEDIER)
             refs = [str(root / r) for r in refs]
