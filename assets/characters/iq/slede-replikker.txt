@@ -1,0 +1,13 @@
+# IQ i sledesimulatoren. Korte replikker for TTS (mild trøndersk, lys, rask og ivrig).
+# Én per linje: id<TAB>replikk. Ikke generert ennå.
+start	Tømman e kobla te bærebølga! Hold kursen etter vardan, så ser vi om sleden held.
+varde	Der ja! Rein passering. Rudolf gliste, æ så det.
+bom	Oi, den varden gikk vi utenom. Ingen fare, det kjem fleir.
+vind	Kastevind fra Ulriken! Hold imot, hold imot!
+krasj	Klonk! Snø i forgasseren. Rolig, Rudolf nyse den ut.
+sprang	Full kraft på mula! Hold dåkk fast, no går det unna!
+band	Lysbånd! Kjenn på løftet, det e himmelen som dytte.
+port	Porten står åpen. Rett gjennom, med varmen i behold!
+grotte	Lyset nådde ned. Det va det vi kom for.
+maal	Praktfull flyging! Ruta e godkjent og logga i notatboka mi.
+nodbrems	Æ kobla inn nødbremsen. Ein gulrot te Rudolf, så prøve vi igjen.
