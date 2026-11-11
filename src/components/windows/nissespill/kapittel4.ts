@@ -39,8 +39,8 @@ export const KAPITTEL_4: Kapittel = {
     R +
     "«Briller, bjelle, port. Tre av tre, i den rekkefølgen dokker valgte sjøl. Winter godtok det. WINTER. Lykkebjella heng der ho ska. Sleden finn fram uansett, sei IQ, Winter har tall og Trixter har kart. Men no finn den fram med LYKKE. Det va dokker som gjord det. Æ må gå og finn ei klementin. Det e nåkka i øyet. Over og ut. Og god jul!»",
   gjenstander: {
-    fjaer: {
-      id: "fjaer",
+    fjaerpenn: {
+      id: "fjaerpenn",
       navn: "Fjærpenn",
       ikon: "feather",
       se: "Julius' fjærpenn, med grønt blekk på spissen og en veldig myk fjær i den andre enden. Den kiler bare av å se på den. Floke ser på den og rister på seg.",
@@ -85,7 +85,7 @@ export const KAPITTEL_4: Kapittel = {
       id: "bjelle",
       navn: "Lykkebjella",
       ikon: "bell",
-      se: "Rampenissens lykkebjelle, med den røde garntråden fra garnkurven. Litt støv, litt vedflis, én nøtt som satt fast. Den gnistrer fortsatt. Nøtta gjør ikke det.",
+      se: "Rampenissens lykkebjelle av messing, med en jernring i toppen og den røde garntråden fra garnkurven. Litt støv, litt vedflis, én nøtt som satt fast. Den gnistrer fortsatt. Nøtta gjør ikke det.",
     },
     talgstump: {
       id: "talgstump",
@@ -228,7 +228,7 @@ export const KAPITTEL_4: Kapittel = {
             },
           ],
           feil: {
-            fjaer:
+            fjaerpenn:
               "Du kiler haspen med fjærpennen. Haspen ler ikke. Winter gjør det heller ikke. Nesten.",
             fiskesnoere:
               "Du fisker etter haspen. Magneten klikker fast i lanterna. Winter: «Offentlig belysning er ikkje fiskevann.» Du drar den løs.",
@@ -244,6 +244,7 @@ export const KAPITTEL_4: Kapittel = {
         },
         {
           id: "sleden",
+          figur: "slede",
           navn: "Sleden",
           rect: { x: 44, y: 54, w: 10, h: 20 },
           smart: "bruk",
@@ -336,7 +337,7 @@ export const KAPITTEL_4: Kapittel = {
               "Du henger bjella på hengslet. Nå hyler det med bjelle på. Winter: «Nei.» " +
               R +
               "«NEI.» Dem e enige. Dem veit det ikkje. Det e første gang.",
-            fjaer:
+            fjaerpenn:
               "Du stikker fjærpennen i hengslet. Grønt blekk på rust. Nå er det et rustent, hylende, grønt hengsel.",
           },
         },
@@ -350,6 +351,7 @@ export const KAPITTEL_4: Kapittel = {
         },
         {
           id: "winter",
+          figur: "winter",
           navn: "Winter",
           rect: { x: 72, y: 58, w: 14, h: 28 },
           smart: "snakk",
@@ -369,6 +371,7 @@ export const KAPITTEL_4: Kapittel = {
         },
         {
           id: "skriveplata",
+          figur: "skriveplate",
           navn: "Skriveplata",
           rect: { x: 86, y: 72, w: 8, h: 12 },
           smart: "bruk",
@@ -487,7 +490,7 @@ export const KAPITTEL_4: Kapittel = {
               "Du slipper magneten ned i sprekken. KLIKK, den sitter fast i bjella der nede. Og du når ikke ned. Floke river den opp igjen med nebbet, med nød og neppe. Du trenger noe å senke den ned MED. Og dra opp med.",
             hyssing:
               "Du senker hyssingen ned. Den henger der og gjør ingenting. Bjella er ikke imponert. Noe må sitte i enden. Noe bjeller liker.",
-            fjaer:
+            fjaerpenn:
               "Du stikker fjærpennen ned i sprekken. Det kiler bjella. Den ler ikke. Bjeller ler ikke, de ringer, og denne gjør ikke det engang.",
             klementin:
               "Du triller klementinen inn i sprekken. Nå er det to ting der nede. Floke får den ut igjen etter en stund. Dette gikk feil vei.",
@@ -608,6 +611,7 @@ export const KAPITTEL_4: Kapittel = {
         },
         {
           id: "julius",
+          figur: "julius",
           navn: "Julius",
           rect: { x: 48, y: 57, w: 17, h: 16 },
           smart: "snakk",
@@ -641,7 +645,7 @@ export const KAPITTEL_4: Kapittel = {
               "Julius tar klementinen, takker og legger den i lomma. Så gir han den tilbake. «Du trenger den til noe, tror jeg. Jeg ser det på deg. Jeg ser ikke mye, men det ser jeg.»",
             noett:
               "Julius tar nøtta, knekker den med tennene og gir deg kjernen. «Takk. Hva var spørsmålet?» Du spiser kjernen. Nøtta er borte. Du har en nøtt mindre og et spørsmål mer.",
-            fjaer:
+            fjaerpenn:
               "Du kiler Julius under nesa med fjærpennen. Han nyser så listen flyr. Du henter den. Han nyser igjen. Du henter den igjen. Du legger fjæra bort.",
             bjelle:
               "Julius lytter. «Rampenissens bjelle. Den skal på sleden, ikke på meg. Jeg har prøvd å fly med bjelle på. Det ble en lang kveld.»",
@@ -689,7 +693,7 @@ export const KAPITTEL_4: Kapittel = {
           smart: "bruk",
           se: [
             {
-              hvis: "tok_fjaer",
+              hvis: "tok_fjaerpenn",
               tekst:
                 "Blekkhuset uten penn. Blekket er fortsatt grønt. Det venter. Blekk er tålmodig.",
             },
@@ -699,7 +703,7 @@ export const KAPITTEL_4: Kapittel = {
             },
           ],
           ta: {
-            item: "fjaer",
+            item: "fjaerpenn",
             tekst:
               "Du drar fjærpennen opp av blekkhuset. En grønn dråpe faller på skrivebordet og blir til en liten gran. Nesten. Mer som en gran som har hatt en vanskelig vinter.",
           },
@@ -707,6 +711,7 @@ export const KAPITTEL_4: Kapittel = {
         },
         {
           id: "brevfuglen",
+          figur: "brevfugl",
           navn: "Brevfuglen",
           rect: { x: 56, y: 84, w: 9, h: 10 },
           smart: "bruk",
@@ -740,7 +745,7 @@ export const KAPITTEL_4: Kapittel = {
           ],
           bruker: [
             {
-              item: "fjaer",
+              item: "fjaerpenn",
               uten: "fugl_kilt",
               flagg: "fugl_kilt",
               tekst:
@@ -749,7 +754,7 @@ export const KAPITTEL_4: Kapittel = {
                 "«Brevfugla ruge på alt som e rundt OG blankt. Gi ho nåkka ANNA som e det, så flytte ho sæ.»",
             },
             {
-              item: "fjaer",
+              item: "fjaerpenn",
               hvis: "fugl_kilt",
               tekst:
                 "Du kiler henne igjen. Hun fniser igjen. Brillene glimter igjen. Hun setter seg igjen. Dette kan dere holde på med hele kvelden. Hun har ingen planer.",
@@ -1015,7 +1020,7 @@ export const KAPITTEL_4: Kapittel = {
           tekst:
             "«Rampenissens bjelle? Den hang på knaggen under lampa. Så kom Rudolf innom for å låne en bok, reiste seg på bakbeina, og nå ligger den bak vedkassa. For trangt for hender. Og for ugler, er jeg redd. Jeg har prøvd med en pinne. Pinnen er der også nå.»",
           rampenissen:
-            "«Rudolf. Sjølsagt. For trangt for hender, ugler og pinna. Men bjella e av messing. Ka e det som like messing og jern?»",
+            "«Rudolf. Sjølsagt. For trangt for hender, ugler og pinna. Bjella e messing, men ringen i toppen e jern. Ka e det som like jern?»",
           valg: [{ tekst: "Vi finner på noe." }],
         },
         liste: {
@@ -1127,7 +1132,7 @@ export const KAPITTEL_4: Kapittel = {
       ],
     },
     {
-      id: "stempel",
+      id: "avgangsstempel",
       ferdig: "k4_ferdig",
       maal: "Still hjulene på skriveplata og stemple avgangen.",
       tips: [

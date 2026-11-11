@@ -492,6 +492,10 @@ export class GameEngine {
     StorageManager.setSledeSpiller(navn);
   }
 
+  static getSkjermId(): string {
+    return StorageManager.getSkjermId();
+  }
+
   /** Frostgraden (0–100) for a day, or null on days 1–6 when it is hidden. */
   static getFrostLevel(day: number = getCurrentDay()): number | null {
     const quest = ALL_QUESTS.find((q) => q.dag === day);

@@ -101,7 +101,7 @@ export const KAPITTEL_3: Kapittel = {
       min: 80,
       max: 100,
       maal: 85.0,
-      toleranse: 0.2,
+      toleranse: 0.3,
       steg: 0.1,
       enhet: "MHz",
     },
@@ -207,6 +207,7 @@ export const KAPITTEL_3: Kapittel = {
         },
         {
           id: "hjerterud",
+          figur: "hjerterud",
           navn: "Hjerterud",
           rect: { x: 48, y: 57, w: 17, h: 16 },
           smart: "snakk",

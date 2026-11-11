@@ -46,6 +46,17 @@ export interface EventyrSave {
   hints: Record<string, number>;
   /** Owl feathers found, `<chapter>:<sceneId>`; kept across replays. Missing in old saves. */
   fjaer?: string[];
+  /** Other chapters' progress, parked when switching chapter (decision 2026-11-11). */
+  parkert?: Record<
+    number,
+    { sceneId: string; inventory: string[]; flags: string[] }
+  >;
+  /** Last day played (YYYY-MM-DD), for the resume card and the overnight hint. */
+  sist?: string;
+  /** Wrong tries per goal (`Gaate.id`) while it is the first unsolved one. */
+  feil?: Record<string, number>;
+  /** Soft lock: the screen that acted last, with player name and wall-clock ms. */
+  skjerm?: { id: string; navn: string; tid: number };
 }
 
 // Storage keys
@@ -75,6 +86,7 @@ const KEYS = {
   INTROS_SEEN: "nissekomm-intros-seen",
   SLEDE: "nissekomm-slede",
   SLEDE_SPILLER: "nissekomm-slede-spiller",
+  SKJERM_ID: "nissekomm-skjerm-id",
   IDLE_PEEK: "nissekomm-idle-peek",
   EVENTYR: "nissekomm-eventyr",
   FORELDRE_AVKRYSNING: "nissekomm-foreldre-avkrysning",
@@ -818,6 +830,16 @@ export class StorageManager {
 
   static setSledeSpiller(navn: string | null): void {
     this.setItem(KEYS.SLEDE_SPILLER, navn);
+  }
+
+  /** Random id for this screen (not synced), so the story save knows who acted last. */
+  static getSkjermId(): string {
+    let id = this.getItem<string | null>(KEYS.SKJERM_ID, null);
+    if (!id) {
+      id = Math.random().toString(36).slice(2, 10);
+      this.setItem(KEYS.SKJERM_ID, id);
+    }
+    return id;
   }
 
   static markJuliusWatched(day: number): void {

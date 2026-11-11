@@ -250,12 +250,12 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     jest.useRealTimers();
     expect(el.textContent).toContain("TIL KAPITLENE");
     expect(el.textContent).toContain("KAPITTEL 1 FULLFØRT");
-    expect(el.textContent).toContain(`Fjær 0/${FJAER_K1} · Ingen tips`);
+    expect(el.textContent).toContain(`Uglefjær 0/${FJAER_K1} · Ingen tips`);
     const save = GameEngine.getEventyrSave();
     expect(save?.flags).toContain("k1_ferdig");
     tap(el, "TIL KAPITLENE");
     expect(el.textContent).toContain(
-      `Fullført · Fjær 0/${FJAER_K1} · Ingen tips`,
+      `Fullført · Uglefjær 0/${FJAER_K1} · Ingen tips`,
     );
   });
 
@@ -265,7 +265,7 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     tap(el, "HOPP OVER");
     tap(el, "SE");
     tap(el, "Noe lite");
-    expect(el.textContent).toContain(`Fjær 1/${FJAER_K1}`);
+    expect(el.textContent).toContain(`Uglefjær 1/${FJAER_K1}`);
     expect(find(el, "Noe lite")).toBeUndefined();
     expect(GameEngine.getEventyrSave()?.fjaer).toEqual(["1:torget"]);
   });
@@ -312,7 +312,9 @@ describe("Nissespill: motor", () => {
       inventory: [],
       flags: ["k2_ferdig"],
       hints: { rudolf: 1 },
+      feil: {},
       fjaer: [],
+      parkert: {},
     });
   });
 
@@ -530,7 +532,7 @@ describe("Nissespill: motor", () => {
       ["kontor", "vedkassa"],
       ["porten", "sleden", "bjelle"],
       ["kontor", "blekkhuset"],
-      ["kontor", "brevfuglen", "fjaer"],
+      ["kontor", "brevfuglen", "fjaerpenn"],
       ["kontor", "skaala"],
       ["kontor", "brevfuglen", "klementin"],
       ["kontor", "julius", "briller"],
@@ -645,5 +647,200 @@ describe("Nissespill: kartplate og koblinger til NisseKomm", () => {
     expect(varsler()).toContain(FJAER_VARSEL);
     GameEngine.markIntroSeen("ny-nissenet-fjaer");
     expect(varsler()).not.toContain(FJAER_VARSEL);
+  });
+});
+
+describe("Nissespill: softlock-revisjon av kapitteldata", () => {
+  // Flags the engine or UI sets itself, not chapter data
+  const motorFlagg = (f: string) =>
+    /^k\d+_(intro|utro)$/.test(f) ||
+    f === "hint_bruk" ||
+    /^(ny|spurt|rp|hoert):/.test(f);
+
+  const samle = (o: unknown, nokler: string[], ut: string[] = []): string[] => {
+    if (Array.isArray(o)) o.forEach((x) => samle(x, nokler, ut));
+    else if (o && typeof o === "object")
+      for (const [k, v] of Object.entries(o)) {
+        if (nokler.includes(k) && typeof v === "string") ut.push(v);
+        else samle(v, nokler, ut);
+      }
+    return ut;
+  };
+
+  it.each(KAPITLER.filter((k) => k.klar).map((k) => [k.n, k] as const))(
+    "kapittel %i: alle flagg som leses settes, alle ting kan skaffes, rects ligger i bildet",
+    (n, k) => {
+      const satt = new Set([
+        ...samle(k, ["flagg"]),
+        ...k.scener.flatMap((s) =>
+          s.hotspots.flatMap((h) => (h.ta ? [`tok_${h.ta.item}`] : [])),
+        ),
+      ]);
+      const lest = samle(k, ["hvis", "uten"]).filter(
+        // Other chapters' facts are set there
+        (f) => !motorFlagg(f) && !(/^k\d+_/.test(f) && !f.startsWith(`k${n}_`)),
+      );
+      for (const f of lest) expect([f, satt.has(f)]).toEqual([f, true]);
+      for (const g of k.gaater)
+        expect([g.ferdig, satt.has(g.ferdig)]).toEqual([g.ferdig, true]);
+
+      const skaffes = new Set([
+        ...k.scener.flatMap((s) =>
+          s.hotspots.flatMap((h) => [
+            ...(h.ta ? [h.ta.item] : []),
+            ...(h.bruker ?? []).flatMap((b) => (b.gir ? [b.gir] : [])),
+          ]),
+        ),
+        ...k.kombinasjoner.map((x) => x.gir),
+        ...samle(k.dialoger, ["gir"]),
+      ]);
+      for (const id of Object.keys(k.gjenstander))
+        expect([id, skaffes.has(id)]).toEqual([id, true]);
+
+      for (const s of k.scener)
+        for (const h of s.hotspots) {
+          const r = h.rect;
+          expect(
+            r.x >= 0 && r.y >= 0 && r.x + r.w <= 100 && r.y + r.h <= 100,
+          ).toBe(true);
+        }
+    },
+  );
+
+  it("målene har unike id-er på tvers av kapitlene (tips telles per id)", () => {
+    const ids = KAPITLER.flatMap((k) => k.gaater.map((g) => g.id));
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("figurer og ikoner følger asset-kontrakten", () => {
+    const FIGURER = [
+      "rudolf",
+      "rudolf-busk",
+      "tannhjul",
+      "peileskive",
+      "hjerterud",
+      "julius",
+      "brevfugl",
+      "winter",
+      "slede",
+      "skriveplate",
+    ];
+    const brukt = KAPITLER.flatMap((k) =>
+      k.scener.flatMap((s) =>
+        s.hotspots.flatMap((h) => (h.figur ? [h.figur] : [])),
+      ),
+    );
+    expect([...new Set(brukt)].sort()).toEqual([...FIGURER].sort());
+    for (const k of KAPITLER)
+      for (const [id, g] of Object.entries(k.gjenstander)) {
+        expect(g.id).toBe(id);
+        expect(/^[a-z_]+$/.test(id)).toBe(true);
+      }
+  });
+});
+
+describe("Nissespill: parkering per kapittel", () => {
+  const K1 = KAPITLER[0];
+  const K2 = KAPITLER[1];
+  it("bytte av kapittel parkerer det gamle og henter det fram igjen", () => {
+    let s = M.nyttKapittel(K1);
+    s = {
+      ...s,
+      sceneId: "verksted",
+      inventory: ["kaffekopp"],
+      flags: [...s.flags, "winter_snakket"],
+    };
+    const i2 = M.byttKapittel(K2, s);
+    expect(i2.kapittel).toBe(2);
+    expect(i2.inventory).toEqual([]);
+    expect(i2.parkert?.[1]?.inventory).toEqual(["kaffekopp"]);
+    const tilbake = M.byttKapittel(K1, {
+      ...i2,
+      flags: [...i2.flags, "k2_ferdig"],
+    });
+    expect(tilbake.sceneId).toBe("verksted");
+    expect(tilbake.inventory).toEqual(["kaffekopp"]);
+    expect(tilbake.flags).toEqual(
+      expect.arrayContaining(["winter_snakket", "k2_ferdig"]),
+    );
+    expect(tilbake.parkert?.[2]).toBeDefined();
+    expect(tilbake.parkert?.[1]).toBeUndefined();
+    // Restart wipes only this chapter; the parked one survives
+    const paaNytt = M.nyttKapittel(K1, tilbake);
+    expect(paaNytt.inventory).toEqual([]);
+    expect(paaNytt.flags).not.toContain("winter_snakket");
+    expect(paaNytt.parkert?.[2]).toBeDefined();
+    expect(M.erFullfort(paaNytt, K2)).toBe(true);
+  });
+
+  beforeEach(() => {
+    localStorage.clear();
+    env.NEXT_PUBLIC_MOCK_MONTH = "12";
+    env.NEXT_PUBLIC_MOCK_DAY = "10";
+  });
+  afterEach(() => {
+    delete env.NEXT_PUBLIC_MOCK_DAY;
+    delete env.NEXT_PUBLIC_MOCK_MONTH;
+  });
+
+  it("«Start kapittelet på nytt» spør først, og Nei beholder alt", () => {
+    GameEngine.saveEventyr({
+      ...M.nyttKapittel(K1),
+      inventory: ["kaffekopp"],
+      flags: ["k1_intro"],
+    });
+    const el = mount();
+    tap(el, "MENY");
+    tap(el, "Start kapittelet på nytt");
+    expect(el.textContent).toContain("Starte kapittel 1 på nytt?");
+    tap(el, "Nei");
+    expect(GameEngine.getEventyrSave()?.inventory).toEqual(["kaffekopp"]);
+  });
+});
+
+describe("Nissespill: myk lås mellom skjermer", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    env.NEXT_PUBLIC_MOCK_MONTH = "12";
+    env.NEXT_PUBLIC_MOCK_DAY = "4";
+  });
+  afterEach(() => {
+    delete env.NEXT_PUBLIC_MOCK_DAY;
+    delete env.NEXT_PUBLIC_MOCK_MONTH;
+  });
+
+  it("en lagring fra den andre skjermen tas inn og viser «<navn> spiller nå»", () => {
+    GameEngine.saveEventyr({
+      ...M.nyttKapittel(KAPITTEL_1),
+      flags: ["k1_intro"],
+    });
+    const el = mount();
+    expect(el.textContent).not.toContain("spiller nå");
+    // The other screen's save lands in storage via the sync pull
+    GameEngine.saveEventyr({
+      ...M.nyttKapittel(KAPITTEL_1),
+      sceneId: "verksted",
+      flags: ["k1_intro", "winter_snakket"],
+      skjerm: { id: "ipad", navn: "Kristian", tid: Date.now() },
+    });
+    act(() => {
+      document.dispatchEvent(new Event("visibilitychange"));
+    });
+    expect(el.textContent).toContain("Kristian spiller nå");
+    tap(el, "TA OVER");
+    expect(el.textContent).not.toContain("spiller nå");
+    // Adopted, not overwritten: the next action builds on the other screen's progress
+    tap(el, "NOTAT");
+    expect(GameEngine.getEventyrSave()?.sceneId).toBe("verksted");
+    expect(GameEngine.getEventyrSave()?.flags).toContain("winter_snakket");
+  });
+
+  it("egen lagring gir ingen lås, og en gammel lås fra den andre er utløpt", () => {
+    GameEngine.saveEventyr({
+      ...M.nyttKapittel(KAPITTEL_1),
+      flags: ["k1_intro"],
+      skjerm: { id: "ipad", navn: "Håkon", tid: Date.now() - 10 * 60_000 },
+    });
+    expect(mount().textContent).not.toContain("spiller nå");
   });
 });

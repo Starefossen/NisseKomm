@@ -33,7 +33,7 @@ export const KAPITTEL_2: Kapittel = {
     R +
       "«Antenna ved tjernet har frøse fast. Rim fra linja, heilt ned i tannhjulet. Det e Kulde sitt, det. Men veit dokker kem som står foran tannhjulet og TYGG på en kabel? Rudolf. Han med nesa. Han tygg på alt når han kjede sæ, og han har klødd sæ på masta så peileskiva peke på ingenting. I fjor åt han ei dørmatte og halve skriveplata te Winter.»",
     R +
-      "«Vi må få Rudolf vekk, tine tannhjulet og peile antenna mot Landås igjen. IQ sitt bak døra si som vanlig og roper. TIPS-knappen e fortsatt mæ, men dokker treng den sikkert ikkje. Sikkert.»",
+      "«Vi må få Rudolf vekk, tine tannhjulet og peile antenna mot Landås igjen. IQ sitt bak døra si som vanlig og roper. RAMPENISSEN-knappen nederst e fortsatt mæ, med tips, men dokker treng den sikkert ikkje. Sikkert.»",
   ],
   utro:
     R +
@@ -124,7 +124,7 @@ export const KAPITTEL_2: Kapittel = {
       min: 88,
       max: 108,
       maal: 90.0,
-      toleranse: 0.2,
+      toleranse: 0.3,
       steg: 0.1,
       enhet: "MHz",
     },
@@ -187,6 +187,7 @@ export const KAPITTEL_2: Kapittel = {
         },
         {
           id: "peileskiva",
+          figur: "peileskive",
           navn: "Peileskiva på masta",
           prat: "Du spør skiva hvor nord er. Den snurrer ikke og sier ingenting. Den har to måter å ikke svare på, og bruker begge.",
           rect: { x: 44, y: 30, w: 12, h: 26 },
@@ -275,12 +276,10 @@ export const KAPITTEL_2: Kapittel = {
             },
             {
               item: "varmboks",
-              gir: "boks_i_vott",
-              forbruker: true,
               tekst:
-                "Du holder den varme boksen mot koppen. Isen smelter ... og fryser til igjen før du har snudd deg. Skiva står fast, rett i vinden, og vinden vinner. Boksen er kald. " +
+                "Du holder den varme boksen mot koppen. Isen smelter ... og fryser til igjen før du har snudd deg. Skiva står fast, rett i vinden, og vinden vinner. " +
                 R +
-                "«Bortkasta! Så lenge skiva står fast, fryse koppen på nytt. Tannhjulet først, sjø.»",
+                "«Boksen e fortsatt varm, heldigvis. Så lenge skiva står fast, fryse koppen på nytt. Tannhjulet først, sjø.»",
             },
           ],
           feil: {
@@ -297,6 +296,7 @@ export const KAPITTEL_2: Kapittel = {
         },
         {
           id: "rudolf",
+          figur: "rudolf",
           navn: "Rudolf",
           rect: { x: 38, y: 56, w: 22, h: 22 },
           smart: "bruk",
@@ -341,6 +341,7 @@ export const KAPITTEL_2: Kapittel = {
         },
         {
           id: "tannhjulet",
+          figur: "tannhjul",
           navn: "Tannhjulet",
           rect: { x: 40, y: 58, w: 18, h: 18 },
           smart: "bruk",
@@ -416,6 +417,7 @@ export const KAPITTEL_2: Kapittel = {
         },
         {
           id: "rudolf2",
+          figur: "rudolf-busk",
           navn: "Rudolf",
           rect: { x: 82, y: 40, w: 18, h: 40 },
           smart: "se",

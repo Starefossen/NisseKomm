@@ -15,6 +15,8 @@ import { Puslespill } from "./Puslespill";
 import { Portrett, Skriv, UgleIntro } from "./UgleIntro";
 import { Kartplate } from "./Kartplate";
 import { Tekst } from "./kobling";
+import { getISOString } from "@/lib/date-utils";
+import { SPILLERE } from "../snofall-tv/slede";
 
 const DEV =
   process.env.NODE_ENV !== "production" ||
@@ -91,6 +93,100 @@ function Stemning({ bilde }: { bilde: string }) {
   );
 }
 
+/** Item icon: 32×32 pixel PNG (spill/piksel/ikon/<id>.png), pixelarticons glyph until it exists. */
+function GjenstandIkon({
+  g,
+  size,
+  dempet,
+}: {
+  g: M.Gjenstand;
+  size: number;
+  dempet?: boolean;
+}) {
+  const [mangler, setMangler] = useState(false);
+  if (mangler)
+    return <Icon name={g.ikon} size={size} color={dempet ? "gray" : "gold"} />;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={mediaUrl(`spill/piksel/ikon/${g.id}.png`)}
+      alt=""
+      width={size}
+      height={size}
+      draggable={false}
+      className="pixelated pointer-events-none"
+      onError={() => setMangler(true)}
+    />
+  );
+}
+
+// Blocky stand-in (8×8) for a sprite that is not drawn yet: visible, clearly a placeholder.
+const SILHUETT = [
+  "..XXXX..",
+  ".XXXXXX.",
+  ".XXXXXX.",
+  "..XXXX..",
+  ".XXXXXX.",
+  "XXXXXXXX",
+  "XXXXXXXX",
+  ".XX..XX.",
+];
+
+/** A person or thing the still lacks, drawn in its hotspot's rect, feet on the bottom edge. */
+function Figur({ id, rect }: { id: string; rect: M.Rect }) {
+  const [mangler, setMangler] = useState(false);
+  return (
+    <div
+      aria-hidden
+      data-figur={id}
+      className="absolute pointer-events-none flex items-end justify-center"
+      style={{
+        left: `${rect.x}%`,
+        top: `${rect.y}%`,
+        width: `${rect.w}%`,
+        height: `${rect.h}%`,
+      }}
+    >
+      {mangler ? (
+        <svg
+          viewBox="0 0 8 8"
+          className="h-full max-w-full opacity-70"
+          shapeRendering="crispEdges"
+        >
+          {SILHUETT.flatMap((rad, y) =>
+            [...rad].map((c, x) =>
+              c === "X" ? (
+                <rect
+                  key={`${x}-${y}`}
+                  x={x}
+                  y={y}
+                  width={1}
+                  height={1}
+                  fill="#1b2433"
+                  stroke="#c9a227"
+                  strokeWidth={0.06}
+                />
+              ) : null,
+            ),
+          )}
+        </svg>
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={mediaUrl(`spill/piksel/figur/${id}.png`)}
+          alt=""
+          draggable={false}
+          className="max-w-full max-h-full object-contain object-bottom pixelated"
+          onError={() => setMangler(true)}
+        />
+      )}
+    </div>
+  );
+}
+
+// The soft lock shows for this long after the other screen's last action.
+const LAAS_MS = 2 * 60_000;
+
 /** Cheap feedback on iPad: transform/opacity only, via the Web Animations API. */
 function animer(el: Element | null | undefined, frames: Keyframe[], ms = 350) {
   el?.animate?.(frames, { duration: ms, easing: "ease-out" });
@@ -103,9 +199,11 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   const [holder, setHolder] = useState<string | null>(null);
   const [tekst, setTekst] = useState("");
   // Caption over the text: what was tapped (iPad has no hover label)
-  const [emne, setEmne] = useState<{ navn: string; ikon?: string } | null>(
-    null,
-  );
+  const [emne, setEmne] = useState<{
+    navn: string;
+    ikon?: string;
+    id?: string;
+  } | null>(null);
   // `sagt` is the line the kids just chose, shown above the answer
   const [dialog, setDialog] = useState<{
     id: string;
@@ -133,6 +231,8 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
     return () => clearTimeout(t);
   }, [lagret]);
   const sceneRef = useRef<HTMLDivElement>(null);
+  // Set when a pocket item was dropped on a hotspot, so the slot's click does not also fire
+  const dratt = useRef(false);
   const lommeRef = useRef<HTMLDivElement>(null);
   const [ring, setRing] = useState<{ n: number; x: number; y: number } | null>(
     null,
@@ -144,23 +244,95 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   } | null>(null);
   const [bildeFeil, setBildeFeil] = useState<string[]>([]);
 
+  // The pickup card shows first; the slot flies in once it is dismissed.
+  const [plukk, setPlukk] = useState<string | null>(null);
+  // Rampenissen's panel: what he said on opening, plus the hint asked for there.
+  const [rp, setRp] = useState<{
+    nytt: string[];
+    tips?: string;
+    igjen?: boolean;
+  } | null>(null);
+  // One shared story save (decision 2026-11-11). `lastet` is the object read from
+  // storage, so loading or adopting it never writes back and never takes the lock.
+  const lastet = useRef<EventyrSave | null>(null);
+  const skrevet = useRef("");
+  const idag = getISOString().slice(0, 10);
+  const [nyDag, setNyDag] = useState(false);
+  // «<navn> spiller nå»: another screen acted within LAAS_MS
+  const [annen, setAnnen] = useState<string | null>(null);
+  const [spiller, setSpiller] = useState<string | null>(null);
+  const [bekreft, setBekreft] = useState<number | null>(null);
+  const annenSkjerm = (s: EventyrSave | null) =>
+    s?.skjerm &&
+    s.skjerm.id !== GameEngine.getSkjermId() &&
+    // Wall clock on purpose: the lock compares real time across screens, not the mocked day
+    Date.now() - s.skjerm.tid < LAAS_MS
+      ? s.skjerm.navn
+      : null;
+
   // Storage is browser-only: load after mount, persist every change.
   useEffect(() => {
     const s = GameEngine.getEventyrSave();
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- initial load
+    lastet.current = s;
+    skrevet.current = JSON.stringify(s);
+    /* eslint-disable react-hooks/set-state-in-effect -- initial load */
     setSave(s);
-    if (s && !s.flags.includes(kapittel(s.kapittel).slutt)) setMeny(false);
+    setSpiller(GameEngine.getSledeSpiller());
+    setAnnen(annenSkjerm(s));
+    if (s && !s.flags.includes(kapittel(s.kapittel).slutt)) {
+      setMeny(false);
+      const kap = kapittel(s.kapittel);
+      // Coming back on another day: a recap from Rampenissen, and an overnight hint ready
+      if (s.sist && s.sist !== idag && s.flags.includes(`k${kap.n}_intro`)) {
+        setNyDag(true);
+        setRp({ nytt: [M.gjenoppta(kap, s)], igjen: true });
+      }
+    }
+    /* eslint-enable react-hooks/set-state-in-effect */
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once on mount
   }, []);
   useEffect(() => {
-    if (save) GameEngine.saveEventyr(save);
+    if (!save || save === lastet.current) return;
+    const ut = {
+      ...save,
+      sist: idag,
+      skjerm: {
+        id: GameEngine.getSkjermId(),
+        navn: spiller ?? "",
+        tid: Date.now(),
+      },
+    };
+    skrevet.current = JSON.stringify(ut);
+    GameEngine.saveEventyr(ut);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- write on save changes only
   }, [save]);
 
   const dag = spilldag();
 
-  // The pickup card shows first; the slot flies in once it is dismissed.
-  const [plukk, setPlukk] = useState<string | null>(null);
-  // Rampenissen's panel: what he said on opening, plus the hint asked for there.
-  const [rp, setRp] = useState<{ nytt: string[]; tips?: string } | null>(null);
+  // Adopt what the other screen saved (sync pulls land in storage every 30 s),
+  // but never in the middle of a dialog, puzzle or pickup card.
+  const opptatt = !!(dialog || puslespill || plukk);
+  useEffect(() => {
+    const sjekk = () => {
+      if (opptatt) return;
+      const s = GameEngine.getEventyrSave();
+      const json = JSON.stringify(s);
+      if (!s || json === skrevet.current) return;
+      skrevet.current = json;
+      if (s.skjerm?.id === GameEngine.getSkjermId()) return;
+      lastet.current = s;
+      setSave(s);
+      setTekst("");
+      setHolder(null);
+      setAnnen(annenSkjerm(s));
+    };
+    const t = setInterval(sjekk, 3000);
+    document.addEventListener("visibilitychange", sjekk);
+    return () => {
+      clearInterval(t);
+      document.removeEventListener("visibilitychange", sjekk);
+    };
+  }, [opptatt]);
   const flyInn = (id: string) =>
     setTimeout(() =>
       animer(
@@ -197,6 +369,12 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
       if (holder) s = M.sett(s, holder);
       if (u.dialog)
         s = M.merkReplikk(kapittel(s.kapittel), s, u.dialog, "start");
+      if (u.lyd === "error") s = M.medFeil(kapittel(s.kapittel), s);
+      // A new room starts with a clean panel, not the last room's line
+      if (s.sceneId !== save.sceneId) {
+        setTekst("");
+        setEmne(null);
+      }
       u = { ...u, save: s };
     }
     if (u.lyd === "error")
@@ -220,22 +398,62 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
     setHolder(null);
   };
 
-  const startKapittel = (n: number) => {
+  /** Switch (parks the chapter in play) or, with `paaNytt`, restart from scratch. */
+  const startKapittel = (n: number, paaNytt = false) => {
     SoundManager.playSound("open");
-    const ny = M.nyttKapittel(kapittel(n), save);
+    const k = kapittel(n);
+    const ny =
+      paaNytt || !save ? M.nyttKapittel(k, save) : M.byttKapittel(k, save);
     // The opener plays once per chapter; a replay goes straight to the scene
     setSave(
       GameEngine.isIntroSeen(`ugle-k${n}`) ? M.medFlagg(ny, `k${n}_intro`) : ny,
     );
     setTekst("");
     setDialog(null);
+    setHolder(null);
+    setBekreft(null);
     setMeny(false);
   };
+
+  const bekreftBoks = bekreft !== null && (
+    <div
+      role="alertdialog"
+      aria-label="Starte på nytt?"
+      className="absolute inset-0 z-40 bg-black/85 flex items-center justify-center p-3"
+    >
+      <div className="max-w-md border-4 border-(--gold) bg-black p-4 space-y-3 text-center">
+        <p className="text-2xl text-(--gold)">
+          Starte kapittel {bekreft} på nytt?
+        </p>
+        <p className="text-xl">
+          Alt i dette kapittelet nullstilles: lomma, stedene og det dere har
+          gjort. Uglefjærene beholder dere.
+        </p>
+        <div className="flex gap-3 justify-center">
+          <button
+            type="button"
+            className={`${BTN} border-(--gold) text-(--gold)`}
+            onClick={() => startKapittel(bekreft, true)}
+          >
+            Ja, på nytt
+          </button>
+          <button
+            type="button"
+            className={`${BTN} border-(--brass)`}
+            onClick={() => setBekreft(null)}
+          >
+            Nei
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   if (meny || !save) {
     return (
       <RetroWindow title="UGLEPOSTEN" onClose={onClose}>
-        <div className="p-4 md:p-6 max-w-2xl mx-auto space-y-4">
+        <div className="relative p-4 md:p-6 max-w-2xl mx-auto space-y-4">
+          {bekreftBoks}
           <h2 className="text-3xl text-(--gold) tracking-wider">UGLEPOSTEN</h2>
           <p className="text-xl leading-tight">
             Rampenissen har glemt noe i Snøfall. Styr Floke, ull-ugla hans,
@@ -243,13 +461,32 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
             ting for å SE, BRUK og SNAKK.
           </p>
           <NyttIDag vindu="nissespill" />
+          {/* Per screen, shared with SLEDEFLUKT: the other screen sees who is playing */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-xl">Hvem spiller her?</span>
+            {SPILLERE.map((n) => (
+              <button
+                key={n}
+                type="button"
+                aria-pressed={spiller === n}
+                className={`${BTN} ${spiller === n ? "bg-(--gold) text-black border-(--gold)" : "border-(--brass)"}`}
+                onClick={() => {
+                  GameEngine.setSledeSpiller(n);
+                  setSpiller(n);
+                }}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
           <Kartplate dag={dag} save={save} />
           <ul className="space-y-2">
             {KAPITLER.map((k) => {
               const laast = !erLaastOpp(k, dag);
               const aapen = !laast && k.klar;
-              const ferdig = save?.flags.includes(k.slutt);
-              const paagaar = save?.kapittel === k.n && !ferdig;
+              const ferdig = M.erFullfort(save, k);
+              const paagaar = M.erPaabegynt(save, k);
+              const iSpill = paagaar && save?.kapittel === k.n;
               return (
                 <li
                   key={k.n}
@@ -270,7 +507,9 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                           : !k.klar
                             ? "Under arbeid i Snøfall"
                             : paagaar
-                              ? "Påbegynt"
+                              ? iSpill
+                                ? "Påbegynt"
+                                : "Påbegynt · på pause"
                               : "Klar"}
                     </div>
                     {laast && (
@@ -284,7 +523,11 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                       type="button"
                       className={`${BTN} border-(--gold) text-(--gold)`}
                       onClick={() =>
-                        paagaar ? setMeny(false) : startKapittel(k.n)
+                        iSpill
+                          ? setMeny(false)
+                          : ferdig
+                            ? setBekreft(k.n)
+                            : startKapittel(k.n)
                       }
                     >
                       {paagaar ? "FORTSETT" : ferdig ? "SPILL IGJEN" : "SPILL"}
@@ -324,6 +567,12 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
       setVerb(null);
       return;
     }
+    if (verb === "snakk") {
+      setTekst(`Du snakker til ${g.navn.toLowerCase()}. Den svarer ikke.`);
+      setEmne(g);
+      setVerb(null);
+      return;
+    }
     setVerb(null);
     if (holder && holder !== id)
       bruk(M.kombiner(kap, save, holder, id), {
@@ -344,8 +593,11 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
     );
   };
 
+  const holdt = holder ? kap.gjenstander[holder] : null;
+  // Outlines stay on while an item is held, so the kids see what it can go on
+  const visKanter = hint || !!holder;
   const status = holder
-    ? `BRUK ${kap.gjenstander[holder]?.navn ?? holder} på …`
+    ? `BRUK ${holdt?.navn ?? holder} PÅ …`
     : verb
       ? `${VERBS.find((x) => x.id === verb)?.label} hva?`
       : scene.navn;
@@ -379,8 +631,15 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 if (
                   e.target === e.currentTarget ||
                   e.target instanceof HTMLImageElement
-                )
+                ) {
                   setHint(true);
+                  if (holdt) {
+                    setTekst(
+                      `Trykk på noe i bildet, eller ✕ for å legge ${holdt.navn.toLowerCase()} tilbake.`,
+                    );
+                    setEmne(null);
+                  }
+                }
               }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -400,6 +659,11 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 }}
               />
               <Stemning bilde={scene.bilde} />
+              {!visSoner &&
+                hotspots.map(
+                  (h) =>
+                    h.figur && <Figur key={h.id} id={h.figur} rect={h.rect} />,
+                )}
               {visSoner && <SoneEditor key={scene.id} scene={scene} />}
               {!visSoner &&
                 !iIntro &&
@@ -409,6 +673,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   <button
                     key={h.id}
                     type="button"
+                    data-hotspot={h.id}
                     aria-label={h.navn}
                     onClick={() => {
                       setRing({
@@ -418,7 +683,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                       });
                       bruk(M.trykk(kap, save, h, verb, holder), h);
                     }}
-                    className={`group absolute rounded min-w-11 min-h-11 ${hint ? "border-2 border-dashed border-(--gold)" : "hover:border-2 hover:border-dashed hover:border-(--gold)/60"} active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) focus-visible:bg-white/20`}
+                    className={`group absolute rounded min-w-11 min-h-11 ${visKanter ? "border-2 border-dashed border-(--gold)" : "hover:border-2 hover:border-dashed hover:border-(--gold)/60"} active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) focus-visible:bg-white/20`}
                     style={{
                       left: `${h.rect.x}%`,
                       top: `${h.rect.y}%`,
@@ -492,11 +757,26 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 />
               )}
 
-              <div
-                className={`absolute top-2 left-2 px-2 bg-black/70 text-base tracking-wider pointer-events-none ${verb || holder ? "text-(--gold) border border-(--gold) animate-pulse" : "text-(--cold-blue) uppercase"}`}
-              >
-                {status}
-              </div>
+              {holdt ? (
+                <div className="absolute top-2 left-2 z-10 flex items-center gap-2 pl-2 bg-black/85 border-2 border-(--gold) text-xl text-(--gold) tracking-wider">
+                  <GjenstandIkon g={holdt} size={32} />
+                  <span className="motion-safe:animate-pulse">{status}</span>
+                  <button
+                    type="button"
+                    aria-label={`Legg ${holdt.navn.toLowerCase()} tilbake`}
+                    onClick={() => setHolder(null)}
+                    className="min-w-11 min-h-11 border-l-2 border-(--gold) text-2xl"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ) : (
+                <div
+                  className={`absolute top-2 left-2 px-2 bg-black/70 text-base tracking-wider pointer-events-none ${verb ? "text-(--gold) border border-(--gold) animate-pulse" : "text-(--cold-blue) uppercase"}`}
+                >
+                  {status}
+                </div>
+              )}
 
               {!visSoner &&
                 !iIntro &&
@@ -509,7 +789,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                       type="button"
                       aria-label={u.navn}
                       onClick={() => bruk(M.gaa(save, u.til))}
-                      className={`group absolute rounded min-w-11 min-h-11 cursor-alias ${hint ? "border-2 border-dashed border-(--cold-blue)" : "hover:border-2 hover:border-dashed hover:border-(--cold-blue)/70"} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--cold-blue)`}
+                      className={`group absolute rounded min-w-11 min-h-11 cursor-alias ${visKanter ? "border-2 border-dashed border-(--cold-blue)" : "hover:border-2 hover:border-dashed hover:border-(--cold-blue)/70"} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--cold-blue)`}
                       style={{
                         left: `${u.rect.x}%`,
                         top: `${u.rect.y}%`,
@@ -518,7 +798,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                       }}
                     >
                       <span
-                        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap px-2 bg-black/80 border border-(--cold-blue) text-base text-(--cold-blue) pointer-events-none transition-opacity ${hint ? "opacity-100" : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"}`}
+                        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap px-2 bg-black/80 border border-(--cold-blue) text-base text-(--cold-blue) pointer-events-none transition-opacity ${visKanter ? "opacity-100" : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"}`}
                       >
                         → {u.navn}
                       </span>
@@ -535,6 +815,31 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   ),
                 )}
             </div>
+            {bekreftBoks}
+            {annen !== null && (
+              <div
+                role="alertdialog"
+                aria-label="Spiller på en annen skjerm"
+                className="absolute inset-0 z-40 bg-black/85 flex items-center justify-center p-3"
+              >
+                <div className="max-w-md border-4 border-(--cold-blue) bg-black p-4 space-y-3 text-center">
+                  <p className="text-2xl text-(--cold-blue)">
+                    {annen ? `${annen} spiller nå` : "Noen spiller nå"}
+                  </p>
+                  <p className="text-xl">
+                    På en annen skjerm. Bli med der, eller ta over her. Dere
+                    deler samme eventyr.
+                  </p>
+                  <button
+                    type="button"
+                    className={`${BTN} border-(--gold) text-(--gold)`}
+                    onClick={() => setAnnen(null)}
+                  >
+                    TA OVER
+                  </button>
+                </div>
+              </div>
+            )}
             {puslespill && kap.puslespill?.[puslespill] && (
               <Puslespill
                 key={puslespill}
@@ -552,7 +857,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   );
                   setSave(u.save);
                   SoundManager.playSound("click");
-                  return u.tekst ?? "";
+                  return { tekst: u.tekst ?? "", siste: u.siste };
                 }}
               />
             )}
@@ -561,7 +866,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 role="dialog"
                 aria-label={`Funnet: ${kap.gjenstander[plukk].navn}`}
                 tabIndex={-1}
-                ref={(el) => el?.focus()}
+                autoFocus
                 onClick={lukkPlukk}
                 onKeyDown={(e) => {
                   if (["Enter", " ", "Escape"].includes(e.key)) {
@@ -576,12 +881,8 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   <p className="text-lg text-(--cold-blue) tracking-widest">
                     FUNNET!
                   </p>
-                  <div className="w-24 h-24 border-2 border-(--brass) flex items-center justify-center motion-safe:animate-pulse">
-                    <Icon
-                      name={kap.gjenstander[plukk].ikon}
-                      size={72}
-                      color="gold"
-                    />
+                  <div className="w-28 h-28 border-2 border-(--brass) flex items-center justify-center motion-safe:animate-pulse">
+                    <GjenstandIkon g={kap.gjenstander[plukk]} size={96} />
                   </div>
                   <h3 className="text-3xl text-(--gold) tracking-wider">
                     {kap.gjenstander[plukk].navn}
@@ -589,6 +890,11 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   <p className="text-xl text-(--neon-green) leading-tight">
                     {M.funnetTekst(kap.gjenstander[plukk])}
                   </p>
+                  {M.visBrukHint(save) && (
+                    <p className="text-xl text-(--cold-blue) leading-tight">
+                      Trykk på den i lomma, så på det du vil bruke den på.
+                    </p>
+                  )}
                   <button
                     type="button"
                     className={`${LITEN} border-(--gold) text-(--gold)`}
@@ -596,21 +902,6 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                     Legg i lomma
                   </button>
                 </div>
-              </div>
-            )}
-            {!plukk && !rp && !dialog && M.visBrukHint(save) && (
-              <div className="absolute bottom-2 left-2 right-2 z-10 flex items-center gap-2 bg-black/85 border-2 border-(--cold-blue) p-2 text-lg text-(--cold-blue)">
-                <span className="flex-1">
-                  Prøv BRUK med en ting på noe i scenen, eller trykk to ting i
-                  lomma etter hverandre.
-                </span>
-                <button
-                  type="button"
-                  className={`${LITEN} border-(--cold-blue)`}
-                  onClick={() => setSave(M.medFlagg(save, "hint_bruk"))}
-                >
-                  OK
-                </button>
               </div>
             )}
             {rp && (
@@ -639,7 +930,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                       {rp.tips}
                     </p>
                   )}
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
                     <button
                       type="button"
                       className={`${LITEN} border-(--gold) text-(--gold)`}
@@ -652,6 +943,18 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                     >
                       TIPS
                     </button>
+                    {rp.igjen && (
+                      <button
+                        type="button"
+                        className={`${LITEN} border-(--cold-blue) text-(--cold-blue)`}
+                        onClick={() => {
+                          setRp(null);
+                          setIntroIgjen(true);
+                        }}
+                      >
+                        Se introen igjen
+                      </button>
+                    )}
                     <button
                       type="button"
                       className={`${LITEN} border-(--brass)`}
@@ -820,8 +1123,8 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
               >
                 {emne && (
                   <span className="flex items-center gap-1 text-base text-(--gold) uppercase tracking-wider">
-                    {emne.ikon && (
-                      <Icon name={emne.ikon} size={16} color="gold" />
+                    {emne.ikon && emne.id && kap.gjenstander[emne.id] && (
+                      <GjenstandIkon g={kap.gjenstander[emne.id]} size={16} />
                     )}
                     {emne.navn}
                   </span>
@@ -869,21 +1172,35 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   aria-label={kap.gjenstander[id].navn}
                   title={kap.gjenstander[id].navn}
                   onClick={() => {
+                    if (dratt.current) {
+                      dratt.current = false;
+                      return;
+                    }
                     SoundManager.playSound("click");
                     tapItem(id);
                   }}
-                  className={`relative shrink-0 w-11 h-11 border-2 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) ${holder === id ? "bg-(--gold) border-(--gold)" : M.erNy(save, id) ? "border-(--gold) motion-safe:animate-pulse" : "border-(--brass)"}`}
+                  // Drag from the pocket onto the scene: what the 12-year-old tries first on iPad
+                  onPointerUp={(e) => {
+                    const mål = document
+                      .elementFromPoint(e.clientX, e.clientY)
+                      ?.closest("[data-hotspot]");
+                    const h = hotspots.find(
+                      (x) => x.id === mål?.getAttribute("data-hotspot"),
+                    );
+                    if (!h) return;
+                    dratt.current = true;
+                    // Touch releases outside the slot fire no click; clear the guard next tick
+                    setTimeout(() => (dratt.current = false), 50);
+                    bruk(M.trykk(kap, save, h, null, id), h);
+                  }}
+                  className={`relative shrink-0 w-12 h-12 border-2 flex items-center justify-center touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) transition-transform ${holder === id ? "scale-110 border-(--gold) bg-(--gold)/25 shadow-[0_0_12px_var(--gold)]" : M.erNy(save, id) ? "border-(--gold) motion-safe:animate-pulse" : "border-(--brass)"}`}
                 >
                   {M.erNy(save, id) && (
                     <span className="absolute -top-1 -right-1 px-0.5 bg-(--gold) text-black text-xs leading-none">
                       NY
                     </span>
                   )}
-                  <Icon
-                    name={kap.gjenstander[id].ikon}
-                    size={26}
-                    color={holder === id ? "gray" : "gold"}
-                  />
+                  <GjenstandIkon g={kap.gjenstander[id]} size={32} />
                 </button>
               ))}
             {Array.from({
@@ -891,7 +1208,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
             }).map((_, i) => (
               <div
                 key={i}
-                className="shrink-0 w-11 h-11 border-2 border-(--brass)/30"
+                className="shrink-0 w-12 h-12 border-2 border-(--brass)/30"
               />
             ))}
           </div>
@@ -931,8 +1248,18 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
               SoundManager.playSound("click");
               if (rp) return setRp(null);
               const nytt = M.rampenissenNytt(kap, save);
-              setSave(M.hoer(save, nytt));
-              setRp({ nytt: nytt.map((n) => n.tekst) });
+              let s = M.hoer(save, nytt);
+              // Stuck overnight or after many wrong tries: the next hint comes unasked
+              const grunn = M.dyttGrunn(kap, s, nyDag);
+              let tips: string | undefined;
+              if (grunn) {
+                const u = M.tips(kap, s);
+                s = u.save;
+                tips = `${M.DYTT[grunn]} ${u.tekst ?? ""}`;
+                setNyDag(false);
+              }
+              setSave(s);
+              setRp({ nytt: nytt.map((n) => n.tekst), tips });
             }}
             className={`${LITEN} relative flex items-center gap-1 border-(--gold) text-(--gold)`}
           >
@@ -940,7 +1267,8 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
               <Portrett navn="rampenissen" />
             </span>
             RAMPENISSEN
-            {M.rampenissenNytt(kap, save).length > 0 && (
+            {(M.rampenissenNytt(kap, save).length > 0 ||
+              !!M.dyttGrunn(kap, save, nyDag)) && (
               <span
                 aria-label="Nytt fra Rampenissen"
                 className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-(--gold) motion-safe:animate-pulse"
@@ -960,7 +1288,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
               <div className="absolute bottom-full right-0 mb-1 z-10 w-64 flex flex-col bg-black border-2 border-(--brass) py-1">
                 {M.fjaerTelling(kap, save)[1] > 0 && (
                   <p className="px-3 min-h-11 flex items-center text-lg text-(--gold)">
-                    Fjær {M.fjaerTelling(kap, save).join("/")}
+                    Uglefjær {M.fjaerTelling(kap, save).join("/")}
                   </p>
                 )}
                 <button
@@ -978,7 +1306,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   className={MENYPUNKT}
                   onClick={() => {
                     setValg(false);
-                    startKapittel(kap.n);
+                    setBekreft(kap.n);
                   }}
                 >
                   Start kapittelet på nytt

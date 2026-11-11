@@ -25,7 +25,7 @@ export const KAPITTEL_1: Kapittel = {
     R +
       "«Saka e sånn: Æ sov i ei garnkurv på loftet te IQ heile året. I kurven ligg lykkebjella mi. Den har hengt på sleden hver julaften sia æ va liten, for lykke. Ikkje for retning, Winter har tall te sånt. For LYKKE. No e kurven BORTE. Æ har mistanka. Han har skjerf.»",
     R +
-      "«Dokker kan sånt her. SE, BRUK, SNAKK, lomma nederst. Står dokker fast, e TIPS-knappen mæ som hviske. Æ hviske høgt.»",
+      "«Dokker kan sånt her. SE, BRUK, SNAKK, lomma nederst. Står dokker fast, trykk på mæ, RAMPENISSEN-knappen nederst, så hviske æ tips. Æ hviske høgt.»",
   ],
   utro:
     R +
@@ -117,8 +117,8 @@ export const KAPITTEL_1: Kapittel = {
         "Siste bit glir på plass, og torget er helt igjen. KLIKK. Luka svinger opp. Inni ligger garnkurven, og oppi den: lykkebjella. Den klinger ikke. Den gnistrer. " +
         R +
         "«BJELLA MI! Og kurven lukte fortsatt mæ. Det e et kompliment. Æ tar det som et kompliment.»",
-      bilde: "spill/torget.jpg",
-      trekk: 30,
+      bilde: "spill/piksel/torget.png",
+      trekk: 14,
     },
   },
   kombinasjoner: [
@@ -1697,6 +1697,7 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "klokka",
       ferdig: "klokka_stilt",
+      kjent: { hvis: "winter_snakket" },
       maal: "Still den lille skiva i klokketårnet.",
       tips: [
         R +

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SoundManager } from "@/lib/sounds";
 import { mediaUrl } from "@/lib/media";
 import * as P from "./minispill";
@@ -51,8 +51,17 @@ function Laas({ p, lost }: Props<P.PuslespillDef & { type: "laas" }>) {
   );
 }
 
+// Tiles survive Avbryt and scene changes while the page lives (keyed by the puzzle's flag).
+const SKYV = new Map<string, number[]>();
+
 function Skyv({ p, lost }: Props<P.PuslespillDef & { type: "skyv" }>) {
-  const [st, setSt] = useState(() => P.skyvStokk(p.trekk, p.seed));
+  const [st, setStRaw] = useState(
+    () => SKYV.get(p.flagg) ?? P.skyvStokk(p.trekk, p.seed),
+  );
+  const setSt = (ny: number[]) => {
+    SKYV.set(p.flagg, ny);
+    setStRaw(ny);
+  };
   return (
     <div className="grid grid-cols-3 gap-1 w-fit mx-auto">
       {st.map((v, i) => (
@@ -103,9 +112,17 @@ function blipp(styrke: number) {
 
 function Radio({ p, lost }: Props<P.PuslespillDef & { type: "radio" }>) {
   const [v, setV] = useState(p.min);
-  const [sus, setSus] = useState(false);
+  const [sus, setSus] = useState("");
   const styrke = P.radioSignal(p, v);
-  const desimaler = (p.steg ?? 1) < 1 ? 1 : 0;
+  const steg = p.steg ?? 1;
+  const desimaler = steg < 1 ? 1 : 0;
+  const still = (n: number) => {
+    // Round away float drift from repeated ±steg
+    const r = Math.min(p.max, Math.max(p.min, Math.round(n / steg) * steg));
+    setV(r);
+    setSus("");
+    blipp(P.radioSignal(p, r));
+  };
   return (
     <div className="space-y-3 max-w-md mx-auto">
       <div className="flex items-end justify-between gap-3">
@@ -122,36 +139,53 @@ function Radio({ p, lost }: Props<P.PuslespillDef & { type: "radio" }>) {
           ))}
         </span>
       </div>
-      <input
-        type="range"
-        aria-label="Frekvens"
-        min={p.min}
-        max={p.max}
-        step={p.steg ?? 1}
-        value={v}
-        onChange={(e) => {
-          const n = Number(e.target.value);
-          setV(n);
-          setSus(false);
-          blipp(P.radioSignal(p, n));
-        }}
-        className="w-full h-11 accent-(--gold)"
-      />
+      {/* Nudge buttons: a finger on an iPad slider cannot hit a 0.1 step */}
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          aria-label="Litt ned"
+          className={`${KNAPP} border-(--brass)`}
+          onClick={() => still(v - steg)}
+        >
+          −
+        </button>
+        <input
+          type="range"
+          aria-label="Frekvens"
+          min={p.min}
+          max={p.max}
+          step={steg}
+          value={v}
+          onChange={(e) => still(Number(e.target.value))}
+          className="flex-1 h-11 accent-(--gold)"
+        />
+        <button
+          type="button"
+          aria-label="Litt opp"
+          className={`${KNAPP} border-(--brass)`}
+          onClick={() => still(v + steg)}
+        >
+          +
+        </button>
+      </div>
       <div className="flex items-center gap-3">
         <button
           type="button"
           className={`${KNAPP} border-(--gold) text-(--gold)`}
           onClick={() => {
-            if (P.radioInne(p, v)) lost();
-            else {
-              SoundManager.playSound("error");
-              setSus(true);
-            }
+            if (P.radioInne(p, v)) return lost();
+            SoundManager.playSound("error");
+            const d = p.maal - v;
+            setSus(
+              Math.abs(d) <= 1
+                ? `Nesten! Litt ${d > 0 ? "opp" : "ned"}.`
+                : "Bare sus.",
+            );
           }}
         >
           LÅS FREKVENS
         </button>
-        {sus && <span className="text-lg text-(--cold-blue)">Bare sus.</span>}
+        {sus && <span className="text-lg text-(--cold-blue)">{sus}</span>}
       </div>
     </div>
   );
@@ -224,7 +258,10 @@ function Rute({ p, lost }: Props<P.PuslespillDef & { type: "rute" }>) {
   );
 }
 
-/** Overlay for one mini-puzzle; Escape or AVBRYT leaves without solving. */
+/**
+ * Overlay for one mini-puzzle; Escape or AVBRYT leaves without solving. After
+ * the last tip level Rampenissen offers to place the last piece (solves it).
+ */
 export function Puslespill({
   p,
   onLost,
@@ -234,22 +271,34 @@ export function Puslespill({
   p: P.PuslespillDef;
   onLost: () => void;
   onAvbryt: () => void;
-  onTips: () => string;
+  onTips: () => { tekst: string; siste?: boolean };
 }) {
-  const [tips, setTips] = useState("");
+  const [tips, setTips] = useState<{ tekst: string; siste?: boolean } | null>(
+    null,
+  );
   const [lost, setLost] = useState(false);
+  // Refs so parent re-renders neither re-subscribe Escape nor restart the LØST beat
+  const avbryt = useRef(onAvbryt);
+  const ferdigRef = useRef(onLost);
   useEffect(() => {
-    const k = (e: KeyboardEvent) => e.key === "Escape" && onAvbryt();
+    avbryt.current = onAvbryt;
+    ferdigRef.current = onLost;
+  });
+  useEffect(() => {
+    const k = (e: KeyboardEvent) => e.key === "Escape" && avbryt.current();
     window.addEventListener("keydown", k);
     return () => window.removeEventListener("keydown", k);
-  }, [onAvbryt]);
+  }, []);
   // A beat to see the solved state before the overlay closes
   useEffect(() => {
     if (!lost) return;
-    const t = setTimeout(onLost, 700);
+    const t = setTimeout(() => ferdigRef.current(), 700);
     return () => clearTimeout(t);
-  }, [lost, onLost]);
-  const ferdig = () => setLost(true);
+  }, [lost]);
+  const ferdig = () => {
+    SKYV.delete(p.flagg);
+    setLost(true);
+  };
 
   return (
     <div
@@ -291,7 +340,20 @@ export function Puslespill({
         </p>
       )}
       {tips && !lost && (
-        <p className="text-xl leading-tight text-(--cold-blue)">{tips}</p>
+        <div className="space-y-2">
+          <p className="text-xl leading-tight text-(--cold-blue)">
+            {tips.tekst}
+          </p>
+          {tips.siste && (
+            <button
+              type="button"
+              className={`${KNAPP} border-(--gold) text-(--gold)`}
+              onClick={ferdig}
+            >
+              La Rampenissen ta den siste biten
+            </button>
+          )}
+        </div>
       )}
     </div>
   );

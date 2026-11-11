@@ -8,7 +8,7 @@
  *   plus `alle: Vilkaar[]` (AND) and `en_av: Vilkaar[]` (OR); they nest.
  * - Feathers: `Scene.fjaer: { x, y, w, h }` (percent, keep it small, about 3).
  *   One per scene at most. SE or a bare tap picks it up. `Kapittel.fjaerBelonning`
- *   is appended when the last one in the chapter is found. MENY shows «Fjær x/N».
+ *   is appended when the last one in the chapter is found. MENY shows «Uglefjær x/N».
  * - Mini-puzzles: `Kapittel.puslespill: { [id]: PuslespillDef }` and
  *   `Hotspot.puslespill: id`. BRUK opens it until solved; solving sets `flagg`
  *   and shows `tekst`; after that the hotspot's normal `bruk` line applies.
@@ -97,6 +97,12 @@ export interface Hotspot {
   gaaTil?: string;
   /** BRUK opens this mini-puzzle (key in `Kapittel.puslespill`) until it is solved. */
   puslespill?: string;
+  /**
+   * Sprite drawn in the hotspot's rect while the hotspot is visible, for people
+   * and things the still lacks: `spill/piksel/figur/<figur>.png`, transparent,
+   * anchored bottom centre, scaled to fit. A pixel silhouette shows until it exists.
+   */
+  figur?: string;
 }
 
 export interface Kombinasjon {
@@ -255,28 +261,85 @@ const medItem = (save: EventyrSave, id?: string) =>
     ? { ...save, inventory: [...save.inventory, id] }
     : save;
 
+const kFakta = (flags: string[], unntatt: number) =>
+  flags.filter(
+    (f) =>
+      f === "hint_bruk" || (/^k\d+_/.test(f) && !f.startsWith(`k${unntatt}_`)),
+  );
+
 /**
- * Fresh start of a chapter. Only other chapters' `k<m>_…` facts survive, so a
- * replay («SPILL IGJEN», dev «nullstill») clears this chapter's flags and hints.
+ * Fresh start of a chapter («Start på nytt», «SPILL IGJEN»). Only other
+ * chapters' `k<m>_…` facts survive; other chapters' parked progress is kept.
  */
 export function nyttKapittel(
   kap: Kapittel,
   forrige?: EventyrSave | null,
 ): EventyrSave {
   const egne = new Set(kap.gaater.map((g) => g.id));
+  const parkert = { ...forrige?.parkert };
+  delete parkert[kap.n];
+  // Restarting the chapter in play: nothing to park. Switching from another: park it.
+  if (forrige && forrige.kapittel !== kap.n)
+    parkert[forrige.kapittel] = {
+      sceneId: forrige.sceneId,
+      inventory: forrige.inventory,
+      flags: forrige.flags,
+    };
   return {
+    ...forrige,
     kapittel: kap.n,
     sceneId: kap.start,
     inventory: [],
-    flags: (forrige?.flags ?? []).filter(
-      (f) => /^k\d+_/.test(f) && !f.startsWith(`k${kap.n}_`),
-    ),
+    flags: kFakta(forrige?.flags ?? [], kap.n),
     hints: Object.fromEntries(
       Object.entries(forrige?.hints ?? {}).filter(([id]) => !egne.has(id)),
     ),
+    feil: {},
     fjaer: forrige?.fjaer ?? [],
+    parkert,
   };
 }
+
+/**
+ * Switch to a chapter without losing anything: the outgoing chapter is parked
+ * and the incoming one resumes from its parked state (or starts fresh).
+ */
+export function byttKapittel(kap: Kapittel, save: EventyrSave): EventyrSave {
+  if (save.kapittel === kap.n) return save;
+  const p = save.parkert?.[kap.n];
+  if (!p) return nyttKapittel(kap, save);
+  const parkert = {
+    ...save.parkert,
+    [save.kapittel]: {
+      sceneId: save.sceneId,
+      inventory: save.inventory,
+      flags: save.flags,
+    },
+  };
+  delete parkert[kap.n];
+  return {
+    ...save,
+    kapittel: kap.n,
+    sceneId: p.sceneId,
+    inventory: p.inventory,
+    flags: [...new Set([...kFakta(save.flags, kap.n), ...p.flags])],
+    feil: {},
+    parkert,
+  };
+}
+
+/** Chapter in play or parked half-way. */
+export const erPaabegynt = (save: EventyrSave | null, kap: Kapittel) =>
+  !!save &&
+  !save.flags.includes(kap.slutt) &&
+  !(save.parkert?.[kap.n]?.flags ?? []).includes(kap.slutt) &&
+  (save.kapittel === kap.n || !!save.parkert?.[kap.n]);
+
+/** Finished, whether in play or parked. */
+export const erFullfort = (save: EventyrSave | null, kap: Kapittel) =>
+  !!save &&
+  (save.flags.includes(kap.slutt) ||
+    (save.parkert?.[kap.n]?.flags ?? []).includes(kap.slutt));
 
 const fjaerId = (kap: Kapittel, sceneId: string) => `${kap.n}:${sceneId}`;
 
@@ -312,8 +375,8 @@ export function taFjaer(
     save: s,
     tekst:
       x === n && kap.fjaerBelonning
-        ? `En uglefjær! Fjær ${x}/${n}. ${kap.fjaerBelonning}`
-        : `En uglefjær! Fjær ${x}/${n}.`,
+        ? `En uglefjær! Uglefjær ${x}/${n}. ${kap.fjaerBelonning}`
+        : `En uglefjær! Uglefjær ${x}/${n}.`,
     lyd: "success",
   };
 }
@@ -341,7 +404,7 @@ export function trykk(
     if (b) {
       let s = medFlagg(save, b.flagg);
       if (b.forbruker) s = utenItem(s, holder);
-      s = medItem(s, b.gir);
+      s = medItem(medFlagg(s, "hint_bruk"), b.gir);
       return { save: s, tekst: b.tekst, lyd: "success" };
     }
     const navn = kap.gjenstander[holder]?.navn ?? holder;
@@ -406,7 +469,7 @@ export function kombiner(
     };
   }
   return {
-    save: medItem(utenItem(utenItem(save, a), b), k.gir),
+    save: medItem(utenItem(utenItem(medFlagg(save, "hint_bruk"), a), b), k.gir),
     tekst: k.tekst,
     lyd: "success",
   };
@@ -436,15 +499,26 @@ export function velgSvar(
   return medItem(utenItem(s, v.tar), v.gir);
 }
 
+/** The goal TIPS talks about: none once the chapter is done (optional extras stay quiet). */
+export const naaGaate = (kap: Kapittel, save: EventyrSave) =>
+  has(save, kap.slutt)
+    ? undefined
+    : kap.gaater.find((x) => !has(save, x.ferdig));
+
 /**
  * Next hint for the first unsolved goal, or for the goal that ends in `flagg`
  * (an open side puzzle); levels stick at 3 so the answer stays visible.
+ * `siste` is true once the last level is shown (mini-puzzles then offer to solve).
  */
-export function tips(kap: Kapittel, save: EventyrSave, flagg?: string): Utfall {
+export function tips(
+  kap: Kapittel,
+  save: EventyrSave,
+  flagg?: string,
+): Utfall & { siste?: boolean } {
   const g =
     (flagg &&
       kap.gaater.find((x) => x.ferdig === flagg && !has(save, flagg))) ||
-    kap.gaater.find((x) => !has(save, x.ferdig));
+    naaGaate(kap, save);
   if (!g) {
     return {
       save,
@@ -453,10 +527,63 @@ export function tips(kap: Kapittel, save: EventyrSave, flagg?: string): Utfall {
   }
   const nivaa = Math.min(save.hints?.[g.id] ?? 0, 2);
   return {
-    save: { ...save, hints: { ...save.hints, [g.id]: nivaa + 1 } },
+    save: {
+      ...save,
+      hints: { ...save.hints, [g.id]: nivaa + 1 },
+      feil: { ...save.feil, [g.id]: 0 },
+    },
     tekst: g.tips[nivaa],
     lyd: "click",
+    siste: nivaa === 2,
   };
+}
+
+/** A wrong try counts against the goal the kids are stuck on. */
+export function medFeil(kap: Kapittel, save: EventyrSave): EventyrSave {
+  const g = naaGaate(kap, save);
+  if (!g) return save;
+  return {
+    ...save,
+    feil: { ...save.feil, [g.id]: (save.feil?.[g.id] ?? 0) + 1 },
+  };
+}
+
+export const FEIL_FOER_DYTT = 4;
+
+/**
+ * Why Rampenissen should offer the next hint unprompted: a new day since last
+ * play, or four wrong tries on the same goal. Null when no hint is left to give.
+ */
+export function dyttGrunn(
+  kap: Kapittel,
+  save: EventyrSave,
+  nyDag: boolean,
+): "natt" | "feil" | null {
+  const g = naaGaate(kap, save);
+  if (!g || (save.hints?.[g.id] ?? 0) >= 3) return null;
+  if ((save.feil?.[g.id] ?? 0) >= FEIL_FOER_DYTT) return "feil";
+  return nyDag ? "natt" : null;
+}
+
+export const DYTT = {
+  natt: "Rampenissen: «Æ har tenkt i natt. Og æ trur æ veit nåkka.»",
+  feil: "Rampenissen: «Æ ser dokker strevar litt. Her e et lite puff.»",
+};
+
+/** Resume card after a break: the current goal, the pocket and the feathers. */
+export function gjenoppta(kap: Kapittel, save: EventyrSave): string {
+  const g = naaGaate(kap, save);
+  const ting = save.inventory
+    .filter((i) => kap.gjenstander[i])
+    .map((i) => kap.gjenstander[i].navn);
+  const [x, n] = fjaerTelling(kap, save);
+  const deler = [
+    "Der e dokker! Velkommen tilbake.",
+    g?.maal ? `Sist heldt vi på med: ${g.maal}` : "",
+    ting.length ? `I lomma: ${ting.join(", ")}.` : "Lomma e tom.",
+    n > 0 ? `Uglefjær: ${x} av ${n}.` : "",
+  ];
+  return `Rampenissen: «${deler.filter(Boolean).join(" ")}»`;
 }
 
 /** Notebook («Hva gjør vi nå?»): solved goals, the current one, and goals already known. */
@@ -468,7 +595,7 @@ export function oppsummering(kap: Kapittel, save: EventyrSave) {
     0,
   );
   const deler = [
-    n > 0 ? `Fjær ${x}/${n}` : "",
+    n > 0 ? `Uglefjær ${x}/${n}` : "",
     tips === 0 ? "Ingen tips" : tips === 1 ? "1 tips" : `${tips} tips`,
   ].filter(Boolean);
   return {
@@ -532,9 +659,8 @@ export const erNy = (save: EventyrSave, id: string) => has(save, `ny:${id}`);
 export const sett = (save: EventyrSave, id: string) =>
   utenFlagg(save, `ny:${id}`);
 
-/** One-time nudge once two items are in the pocket. */
-export const visBrukHint = (save: EventyrSave) =>
-  save.inventory.length >= 2 && !has(save, "hint_bruk");
+/** The pickup card teaches item use until the first item has been used on something. */
+export const visBrukHint = (save: EventyrSave) => !has(save, "hint_bruk");
 
 /**
  * Rampenissen never cuts in on his own. Dialog asides (`Node.rampenissen`)

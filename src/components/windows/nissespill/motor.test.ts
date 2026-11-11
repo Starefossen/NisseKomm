@@ -173,7 +173,7 @@ describe("motor: fjær", () => {
     expect(M.fjaerTelling(KAP, s)).toEqual([1, 2]);
     expect(M.taFjaer(KAP, s, "a", null).save).toBe(s);
     const u = M.taFjaer(KAP, s, "c", null);
-    expect(u.tekst).toContain("Fjær 2/2. Floke");
+    expect(u.tekst).toContain("Uglefjær 2/2. Floke");
     expect(M.nyttKapittel(KAP, u.save).fjaer).toEqual(["9:a", "9:c"]);
   });
 });
@@ -219,12 +219,12 @@ describe("motor: oppsummering", () => {
     const k1 = KAPITLER[0];
     const s = M.nyttKapittel(k1);
     const n = k1.scener.filter((x) => x.fjaer).length;
-    expect(M.oppsummering(k1, s).kort).toBe(`Fjær 0/${n} · Ingen tips`);
+    expect(M.oppsummering(k1, s).kort).toBe(`Uglefjær 0/${n} · Ingen tips`);
     const mange = { ...s, hints: { winter: 3, stempel: 5, ukjent: 9 } };
     expect(M.oppsummering(k1, mange).tips).toBe(6);
     expect(M.oppsummering(k1, mange).linje).toContain("en del");
     expect(M.oppsummering(k1, { ...s, hints: { winter: 1 } }).kort).toBe(
-      `Fjær 0/${n} · 1 tips`,
+      `Uglefjær 0/${n} · 1 tips`,
     );
   });
 });
@@ -240,6 +240,7 @@ describe("motor: notatbok", () => {
       [true, "Finn"],
       [false, "Gjør"],
       [false, "Få"],
+      [false, "Still"],
     ]);
   });
 

@@ -96,6 +96,9 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 
 - Kartplata over Snøfall står over kapittellista. Hvorfor: barna ser hvor kapitlene foregår før de velger.
 - Flokes fjærbok (`flokes_fjaerbok.txt`) vises i MORO-mappa som låst med fjærteller («LÅST · 3/8 FJÆR») til åtte fjær, så åpnes den. Hvorfor: en synlig belønning lokker mer enn en skjult.
+- Ett felles eventyr-lagringspunkt for begge guttene, med myk lås: når én spiller, viser den andre skjermen «<navn> spiller nå» og tar inn siste lagring (TA OVER for å fortsette der). Fremdrift parkeres per kapittel, så et annet kapittel eller «Start på nytt» sletter aldri et kapittel, og omstart spør først. Hvorfor: det er familiens felles historie, og ingen skal miste noe ved å hoppe over dager.
+- Figurer og ting som mangler i bildene tegnes som sprites (`public/spill/piksel/figur/<id>.png`) i hotspotens rect, med piksel-silhuett til PNG-en finnes. Hvorfor: barna skal se det de blir bedt om å snakke med og bruke ting på.
+- Gjenstander får egne 32×32 pikselikoner (`public/spill/piksel/ikon/<id>.png`), med pixelarticons som reserve. Hvorfor: generiske glyfer viste ikke hva man holdt.
 
 ## Snøfall i fri flyging (2026-11-11)
 
