@@ -4,6 +4,7 @@
  * Hotspot rects are percent of the 16:9 still so they follow the image on any screen.
  */
 import type { EventyrSave } from "@/lib/storage";
+import type { PuslespillDef } from "./puslespill";
 
 export type Verb = "se" | "bruk" | "snakk";
 
@@ -63,6 +64,8 @@ export interface Hotspot {
   snakk?: string;
   /** BRUK walks to this scene (stairs, doors); exits also get a button. */
   gaaTil?: string;
+  /** BRUK opens this mini-puzzle (key in `Kapittel.puslespill`) until it is solved. */
+  puslespill?: string;
 }
 
 export interface Kombinasjon {
@@ -133,6 +136,7 @@ export interface Kapittel {
   gaater: Gaate[];
   /** Line shown when the last feather of the chapter is found. */
   fjaerBelonning?: string;
+  puslespill?: Record<string, PuslespillDef>;
 }
 
 export interface Utfall {
@@ -140,6 +144,8 @@ export interface Utfall {
   tekst?: string;
   /** Open this dialog. */
   dialog?: string;
+  /** Open this mini-puzzle. */
+  puslespill?: string;
   lyd?: "click" | "success" | "error";
 }
 
@@ -284,6 +290,9 @@ export function trykk(
   if (v === "se") return { save, tekst: velg(h.se, save), lyd: "click" };
   if (v === "bruk") {
     if (h.gaaTil) return gaa(save, h.gaaTil);
+    const p = h.puslespill && kap.puslespill?.[h.puslespill];
+    if (p && !has(save, p.flagg))
+      return { save, puslespill: h.puslespill, lyd: "click" };
     const t = h.ta;
     const tok = t ? `tok_${t.item}` : "";
     if (t && !has(save, tok) && ok(t, save)) {
@@ -357,4 +366,15 @@ export function tips(kap: Kapittel, save: EventyrSave): Utfall {
     tekst: g.tips[nivaa],
     lyd: "click",
   };
+}
+
+/** The UI reports a solved mini-puzzle; the engine sets its flag. */
+export function losPuslespill(
+  kap: Kapittel,
+  save: EventyrSave,
+  id: string,
+): Utfall {
+  const p = kap.puslespill?.[id];
+  if (!p) return { save };
+  return { save: medFlagg(save, p.flagg), tekst: p.tekst, lyd: "success" };
 }
