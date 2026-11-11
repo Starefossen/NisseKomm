@@ -303,7 +303,7 @@ export const KAPITTEL_4: Kapittel = {
     {
       id: "kontor",
       navn: "Julius' kontor",
-      bilde: "feed/julius-kontor.jpg",
+      bilde: "spill/julius-kontor.jpg",
       utganger: [{ til: "porten", navn: "Ned til porten" }],
       hotspots: [
         {

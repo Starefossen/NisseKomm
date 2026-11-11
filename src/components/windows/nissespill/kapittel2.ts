@@ -97,7 +97,7 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "tjernet",
       navn: "Antenna ved tjernet",
-      bilde: "feed/antenne-tarn.png",
+      bilde: "spill/antenne-tarn.jpg",
       utganger: [{ til: "verksted", navn: "Fly til verkstedet" }],
       hotspots: [
         {
@@ -395,7 +395,7 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "verksted",
       navn: "IQs verksted",
-      bilde: "feed/iq-verksted.png",
+      bilde: "spill/iq-verksted.jpg",
       utganger: [{ til: "tjernet", navn: "Fly ut til tjernet" }],
       hotspots: [
         {

@@ -73,7 +73,7 @@ export const KAPITTEL_3: Kapittel = {
     {
       id: "kontor",
       navn: "Julius' kontor",
-      bilde: "feed/julius-kontor.jpg",
+      bilde: "spill/julius-kontor.jpg",
       utganger: [{ til: "grotten", navn: "Ut vinduet og ned i grotten" }],
       hotspots: [
         {
@@ -239,7 +239,7 @@ export const KAPITTEL_3: Kapittel = {
     {
       id: "grotten",
       navn: "Krystallgrotten",
-      bilde: "feed/kulde-grotte.png",
+      bilde: "spill/kulde-grotte.jpg",
       utganger: [{ til: "kontor", navn: "Opp igjen til kontoret" }],
       hotspots: [
         {

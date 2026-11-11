@@ -257,7 +257,7 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "verksted",
       navn: "IQs verksted",
-      bilde: "feed/iq-verksted.png",
+      bilde: "spill/iq-verksted.jpg",
       utganger: [{ til: "torget", navn: "Ned trappa til torget" }],
       hotspots: [
         {

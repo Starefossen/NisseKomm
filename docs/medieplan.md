@@ -70,4 +70,15 @@ Gamle 2025-bilder i K1, K2 og K4 er byttet ut med første bilde fra loopene (gra
 4. **K4 krystallgrotten** (valgfritt; første bilde fra `grotte-rolig.mp4` holder). Referanse: `assets/locations/krystallgrotten/ref.jpg`. Prompt: «Samme hvelvede isgrotte som referansen, krystallhyller langs veggene, en gammel radio på en steinsokkel i midten, kald blå glød med et svakt varmt lys fra radioens skala, fast kamera i samme utsnitt, fotorealistisk, ingen tekst, ingen figurer.» Mål: `feed/kulde-grotte.jpg`.
 5. **Julius' kontor med Julius** (valgfritt, til nettsiden eller Skjerm). Referanse: `assets/characters/julius/ref-v3.jpg`. Bruk ref-v3 direkte; ingen ny generering trengs.
 
+**Ugleposten (nissespill, K1–K4).** Scenebildene er stillbilder (ingen videokvote, ca. 0,13 USD per bilde, 4 bilder). Kø: `python3 assets/bin/generer.py plan` (`--bare spill`), prompter i `assets/locations/<sted>/varianter/spill.still.prompt.txt`. Kapitlene peker nå på `spill/*.jpg`; til bildene er laget viser spillet reservebildet `/village-day.jpg`.
+
+| Bilde                                                    | Brukt i | Referanse                       | Status                                                                                 |
+| -------------------------------------------------------- | ------- | ------------------------------- | -------------------------------------------------------------------------------------- |
+| `spill/iq-verksted.jpg` (var `feed/iq-verksted.png`)     | K1, K2  | `iq-verksted/vidvinkel-tom.jpg` | i kø                                                                                   |
+| `spill/julius-kontor.jpg` (var `feed/julius-kontor.jpg`) | K3, K4  | `julius-kontor/ref-tom.jpg`     | i kø                                                                                   |
+| `spill/antenne-tarn.jpg` (var `feed/antenne-tarn.png`)   | K2      | `antenne-tjern/ref.jpg`         | i kø                                                                                   |
+| `spill/kulde-grotte.jpg` (var `feed/kulde-grotte.png`)   | K3      | `krystallgrotten/ref.jpg`       | i kø                                                                                   |
+| `spill/torget.jpg`, `spill/port-aapen.jpg`               | K1, K4  | –                               | nye, finnes                                                                            |
+| `spill/portrett-radio.png`                               | K3      | –                               | mangler (pikselportrett, bokstav-reserve vises); lages med `portrett.sh` + `piksel.sh` |
+
 **Slettes** etter at ingen kode peker på dem: `public/feed/snøfall-night.png` (ubrukt), og v1/v2-restene `assets/locations/snofall-landsby/{still-storm,still-dag24,nokkelramme}.jpg` og `assets/characters/julius/ref-v2*.jpg`. Sjekk først at ingen skript i `assets/bin/` bruker dem.
