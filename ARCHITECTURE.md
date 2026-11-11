@@ -43,9 +43,8 @@ CRTFrame (fullscreen container)
 │   ├── SystemStatus (metrics widget)
 │   └── VarselKonsoll (scrolling alerts)
 └── Main (75% width)
-    ├── DesktopGrid (icon layout)
-    │   ├── Core Icons (6 always visible)
-    │   └── Unlockable Icons (4 conditional)
+    ├── Desktop sections in src/app/page.tsx (I DAG, UTFORSK, SPILL OG MORO)
+    │   └── Locked tools stay in place (`unlock` module key)
     └── ActiveWindow (single window at a time)
         ├── RetroWindow (chrome wrapper)
         └── Module Component (content)
@@ -65,7 +64,7 @@ CRTFrame (fullscreen container)
    - Code submission interface
    - Validation with 1.5s processing delay
    - History of submitted codes
-   - Parent validation checkbox for bonusoppdrag
+   - Parents approve bonusoppdrag by typing `foreldre_kode` here
 
 3. **NisseNet Utforsker** (`windows/NisseNetUtforsker.tsx`)
    - File browser with folder tree navigation
@@ -83,7 +82,7 @@ CRTFrame (fullscreen container)
    - Story arc visualization
    - Progress line for the single eventyr `spokelseskoden`
    - Phase-by-phase breakdown
-   - Unlocks: Day 8
+   - Open from day 1
 
 6. **Julius' Dagbok** (`windows/Dagbok.tsx`)
    - Continuous scroll timeline
@@ -94,24 +93,24 @@ CRTFrame (fullscreen container)
 ### Unlockable Modules (Conditional Appearance)
 
 1. **NISSEKRYPTO** (`windows/NisseKrypto.tsx`)
-   - **Unlocks**: Day 4 completion
+   - **Unlocks**: Day 4
    - Decryption challenges (3 progressive puzzles)
    - Drag-drop symbol interface
    - Attempt tracking and hints
 
 2. **SYMBOLSKANNER** (`windows/SymbolScanner.tsx`)
-   - **Unlocks**: Day 4 completion
+   - **Unlocks**: Day 3
    - QR code scanner for symbol cards
    - Manual code entry fallback
    - Camera management with proper cleanup
 
 3. **NISSEMUSIKK** (`windows/NisseMusikk.tsx`)
-   - **Unlocks**: Day 6 completion
+   - **Unlocks**: Day 7
    - Christmas music player (Snøfall Radio)
    - Background audio control
 
 4. **BREVFUGLER** (`windows/Brevfugler.tsx`)
-   - **Unlocks**: Day 14 completion
+   - **Unlocks**: Day 7
    - Letters to Julius, stored in `nissekomm-santa-letters` and synced between screens
    - Origami-style paper birds
 
@@ -119,6 +118,14 @@ CRTFrame (fullscreen container)
    - **Unlocks**: Day 4 (chapters on day 4/10/16/22)
    - Ugleposten: point-and-click side story; engine `motor.ts`, chapters as data
    - Save in `nissekomm-eventyr` via `GameEngine.getEventyrSave/saveEventyr`, synced
+
+6. **SLEDEFLUKT** (`windows/sledeflukt/`)
+   - **Unlocks**: Day 8
+
+7. **NISSESTATS** (`windows/NisseStats.tsx`)
+   - **Unlocks**: Day 16 (hidden until then)
+
+RUNETAVLE is open from day 1 (no `unlock` key).
 
 ### Module Unlock Logic
 
@@ -128,26 +135,16 @@ Unlocks are configured in quest JSON files (`uke1-4_oppdrag.json`):
 {
   "dag": 4,
   "reveals": {
-    "modules": ["NISSEKRYPTO", "SYMBOLSKANNER"]
+    "modules": ["NISSEKRYPTO", "NISSESPILL"]
   }
 }
 ```
 
-GameEngine dynamically determines available modules:
+Modules in a day's `reveals.modules` open on the morning of that day, before the code is solved (`checkTimedModuleUnlocks`), and again on solve; GameEngine stores them via `StorageManager.unlockModule`, so reading is a plain lookup:
 
 ```typescript
 static getUnlockedModules(): string[] {
-  const completedDays = this.getCompletedDays();
-  const allQuests = getAllQuests();
-
-  const modules = new Set<string>();
-  allQuests.forEach(quest => {
-    if (completedDays.has(quest.dag) && quest.reveals?.modules) {
-      quest.reveals.modules.forEach(m => modules.add(m));
-    }
-  });
-
-  return Array.from(modules);
+  return StorageManager.getUnlockedModules();
 }
 ```
 
@@ -240,7 +237,7 @@ The codebase follows a strict **Facade Pattern** with clear boundaries between U
      - `symbol-system.ts` - Symbol collection and validation
      - `alert-generator.ts` - Dynamic alert creation
      - `quest-validator.ts` - Quest data validation
-     - `badge-system.ts` - Achievement tracking
+     - `badge-system.ts` (`lib/badge-system.ts`) - Achievement tracking
 
 3. **Data Loader** (`lib/data-loader.ts`) - **Content Abstraction**
    - Centralized loading and validation of quest data from JSON files

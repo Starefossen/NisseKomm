@@ -139,80 +139,37 @@ Optional crisis resolution missions with **parent validation**. Encourages paren
 
 ### Current Bonusoppdrags
 
-**Day 11: Antenne-krise**
+**Day 11: Nødantenne til Snøfall TV** (`foreldre_kode` `ANTENNE2026`)
 
-- **Type**: Signal/communication crisis
-- **Badge**: "ANTENNE-INGENIØR"
-- **Auto-resolve**: Day 13 (if not manually resolved)
-- **Description**: Satellite antenna malfunction disrupts Snøfall communications
+**Day 16: Lykt i vinduet mot nord** (`foreldre_kode` `LYKT2026`)
 
-**Day 16: Inventar-kaos**
-
-- **Type**: Inventory management crisis
-- **Badge**: "INVENTAR-EKSPERT"
-- **Auto-resolve**: Day 18 (if not manually resolved)
-- **Description**: Workshop inventory system chaos
+Neither awards a badge or auto-resolves. Completing one lowers frost by 20 % (`frost_effekt: -20`) and unlocks the bonus variant of Julius' PS (`julius_ps_bonus`).
 
 ### Complete User Flow
 
-1. **Prerequisites**
-   - Main quest for that day MUST be completed first
-   - Bonusoppdrag appears in NisseMail with crisis indicator
-   - Sidebar shows active crisis status (red alert)
-
-2. **Read Crisis Description**
-   - Opens NisseMail
-   - Crisis email from Julius or Orakelet
-   - Describes problem requiring creative solution
-
-3. **Child Attempts Solution**
-   - Varies by quest type:
-     - **Antenna**: Adjust signal parameters
-     - **Inventory**: Organize items logically
-   - May involve physical activity or problem-solving
-
-4. **Parent Validation**
-   - Opens **KodeTerminal**
-   - Special "BONUS" indicator visible
-   - **Parent validation checkbox** appears
-   - Parent reviews child's solution
-
-5. **Submit with Validation**
-   - Parent checks validation box
-   - Submits bonusoppdrag code
-   - System validates both code AND parent checkbox
-
-6. **Rewards**
-   - Badge awarded automatically
-   - Crisis resolved (sidebar alert clears)
-   - Special congratulations message
-   - Badge visible in profile/stats
+1. **Prerequisites**: the day's main quest must be completed first (`GameEngine.isBonusOppdragAccessible`)
+2. **Read the task** in NisseMail and do the physical task (`fysisk_oppgave`)
+3. **Parent approval**: the parent types `foreldre_kode` in KodeTerminal (also accepted after the day's code is solved), or approves on `/nissemor-guide/bonusoppdrag`
+4. **Reward**: `GameEngine.completeBonusOppdrag(dag)`, `belønning_tekst` shown in the terminal
 
 ### Technical Implementation
 
-**Quest Structure**:
+**Quest Structure** (`Bonusoppdrag` in `src/types/innhold.ts`):
 
 ```json
 {
   "dag": 11,
-  "bonusoppdrag": true,
-  "crisisType": "antenna",
-  "kode": "SIGNAL2024",
-  "epost": {
-    "fra": "Orakelet",
-    "emne": "⚠️ KRISE: Antennen svikter!",
-    "innhold": "Noe er galt med kommunikasjonen..."
+  "bonusoppdrag": {
+    "tittel": "Nødantenne til Snøfall TV",
+    "beskrivelse": "...",
+    "fysisk_oppgave": "...",
+    "validering": "forelder",
+    "foreldre_kode": "ANTENNE2026",
+    "frost_effekt": -20,
+    "belønning_tekst": "..."
   }
 }
 ```
-
-**Validation Logic**:
-
-- Requires BOTH code submission AND parent validation checkbox
-- Main quest must be completed before bonus becomes accessible
-- Badge awarded automatically on completion
-- Crisis status updated in sidebar
-- Uses GameEngine facade for all state operations
 
 **Crisis Status Tracking**:
 
@@ -253,7 +210,7 @@ Personal connection to Julius' official Snill & Slem liste through name registra
 
 **Day 23: Nice List Appearance**
 
-- Names appear at top of `snill_slem_liste.txt`
+- Names appear at top of `JULIUS-ARKIV/snill-listen.txt`
 - File accessible in NISSENET
 - Unread indicator (🔴) appears on file
 - Placeholder text: "[VIL BLI OPPDATERT]"
@@ -261,7 +218,7 @@ Personal connection to Julius' official Snill & Slem liste through name registra
 **Day 24: Grand Finale**
 
 - Julius' emotional finale message added
-- Trophy badge "julekalender-fullfort" awarded
+- Trophy badge "snofalls-venn" awarded
 - Celebration modal with badge reveal
 
 ### Complete User Flow
@@ -279,13 +236,13 @@ Personal connection to Julius' official Snill & Slem liste through name registra
 
 3. **Name Storage**
    - Validates non-empty input
-   - Stores via `StorageManager.addPlayerName(name)`
+   - Stores via `GameEngine.setPlayerNames(names)`
    - Confirmation message
    - Modal closes
 
 4. **Day 23 Nice List Update**
    - Opens NISSENET Utforsker
-   - Navigates to "SNILL & SLEM LISTE"
+   - Navigates to `JULIUS-ARKIV/snill-listen.txt`
    - File shows unread indicator
    - Opens file
 
@@ -305,14 +262,14 @@ Personal connection to Julius' official Snill & Slem liste through name registra
 
 **Name Storage**:
 
-- `StorageManager.addPlayerName(name)` adds name to list
+- `GameEngine.setPlayerNames(names)` stores the list
 - `StorageManager.getPlayerNames()` retrieves all names
 - Multiple names supported (siblings)
 - Persists across sessions
 
 **Dynamic File Injection**:
 
-- Nice List file (`snill_slem_liste.txt`) dynamically updated
+- Nice List file (`JULIUS-ARKIV/snill-listen.txt`) dynamically updated
 - Player names injected at top on Day 23+
 - Format: `✓ [Name] - SNILL`
 - Finale message injected on Day 24 completion
@@ -327,7 +284,7 @@ Personal connection to Julius' official Snill & Slem liste through name registra
 
 **Badge Awarding** (Day 24):
 
-- Trophy badge "julekalender-fullfort" awarded on Day 24 completion
+- Trophy badge "snofalls-venn" awarded when all quests are completed (`allQuestsCompleted`)
 - Triggers 4-stage grand finale modal automatically
 - Badge visible in NisseStats and profile
 
@@ -339,7 +296,7 @@ Personal connection to Julius' official Snill & Slem liste through name registra
 {
   "filer": [
     {
-      "navn": "snill_slem_liste.txt",
+      "navn": "snill-listen.txt",
       "innhold": "=== JULIUS' OFFISIELLE LISTE ===\n\nSNILL LISTE:\n\n[PLASS TIL FLERE NAVN]\n\n✓ Georg - SNILL\n✓ Viljar - SNILL\n✓ Marcus - SNILL\n\n{{UPDATE_DATE}}\n\n{{FINALE_MESSAGE}}"
     }
   ]
@@ -478,8 +435,8 @@ Physical treasure hunt combined with digital puzzle-solving. Kids find 9 hidden 
 
 - **Requirements**: 3 hearts
 - **Difficulty**: Easy (3-symbol sequence)
-- **Unlocks**: Secret file in NisseNet
-- **Message**: Meaning of heart colors
+- **Unlocks**: `DEKRYPTERT/frosne-koder.txt`
+- **Badge**: "varmebaerer" (Varmebærer)
 
 **Challenge 2: "Stjernetegn"** (Day 18)
 
@@ -493,7 +450,6 @@ Physical treasure hunt combined with digital puzzle-solving. Kids find 9 hidden 
 - **Requirements**: All 9 symbols
 - **Difficulty**: Hard (9-symbol sequence)
 - **Unlocks**: Julius' deepest secrets
-- **Badge**: "KODE-MESTER"
 - **Message**: Mastery celebration
 
 #### Challenge Flow
@@ -570,12 +526,12 @@ Physical treasure hunt combined with digital puzzle-solving. Kids find 9 hidden 
 {
   "dag": 12,
   "decryption_challenge": {
-    "id": "frosne-koder",
-    "navn": "Frosne Koder",
+    "challengeId": "frosne-koder",
     "requiredSymbols": ["heart-green", "heart-red", "heart-blue"],
-    "correctSequence": ["heart-red", "heart-green", "heart-blue"],
-    "messageWhenSolved": "Hjerter holder nøkkelen til...",
-    "unlocksFiles": ["hemmeligheter/hjerte_magi.txt"]
+    "correctSequence": [1, 0, 2],
+    "hint": "...",
+    "rewardText": "DEKRYPTERT. ... DEKRYPTERT/frosne-koder.txt ...",
+    "unlocksFiles": ["frosne-koder.txt"]
   }
 }
 ```

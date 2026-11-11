@@ -15,7 +15,7 @@ assets/
   locations/<id>/                # snofall-landsby, julius-kontor, krystallgrotten, antenne-tjern, iq-verksted, sledeflukt
     beskrivelse.txt, entitet.json
     ref.jpg, ref-<variant>.jpg   # ref-rolig, ref-v2, ref-vidvinkel, ref-vidvinkel-tom, ref-nordlys …
-  objects/<id>/                  # nytt: postkasse, klementin, slede, lille-pjokk, brevfugl, flosshatt
+  objects/<id>/                  # nytt: postkasse, klementin, slede, brevfugl, flosshatt
     beskrivelse.txt, entitet.json, [ref.jpg]
   prompts/<app>/<navn>.txt       # maler, flyttet fra locations/*/varianter/: tv/, spill/, slede/, portrett/, julius/
   medier.json                    # ALLE avledede filer: mal + entiteter + refs → ut-sti

@@ -384,27 +384,20 @@ Defined in `globals.css`:
 **SoundManager** (`lib/sounds.tsx`):
 
 ```typescript
-class SoundManager {
-  private audioContext: AudioContext | null = null;
-
-  playBeep(frequency: number, duration: number) {
-    const oscillator = this.audioContext.createOscillator();
-    oscillator.frequency.value = frequency;
-    oscillator.connect(this.audioContext.destination);
-    oscillator.start();
-    oscillator.stop(this.audioContext.currentTime + duration);
-  }
-}
+// Static methods; named sounds are defined in soundConfigs
+SoundManager.playSound("click");
+SoundManager.playSound("success");
+SoundManager.playJingle();
 ```
 
 **Hook** (`useSounds()`):
 
 ```typescript
-const { playSuccess, playError, playClick } = useSounds();
+const { playSound } = useSounds();
 
 // In component
 <button onClick={() => {
-  playClick();
+  playSound("click");
   handleAction();
 }}>
 ```

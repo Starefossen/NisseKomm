@@ -301,7 +301,7 @@ With occasional slang (sparingly):
 
 - 🔓 `nissemail_tekst` - Tilgjengelig fra dagens start
 - 🔓 `fysisk_hint` - Fysisk i huset (foreldres oppsett)
-- 🔒 `dagbokinnlegg` - Låses opp ETTER riktig kode
+- 🔒 `julius_ps` - Vises under Julius' video ETTER riktig kode
 - 🔒 `reveals` - Låses opp ETTER riktig kode
 
 ---
@@ -346,40 +346,11 @@ With occasional slang (sparingly):
 
 ---
 
-### dagbokinnlegg
+### julius_ps
 
-**Hva det er**: Julius' dagbok-innlegg som låses opp ETTER koden er løst.
+**Hva det er**: Julius' dagbok er en video (`JuliusVideo`); transkripsjonene ligger i `src/data/julius_videoer.json` (`python3 scripts/julius-transcripts.py`). Etter riktig kode vises `julius_ps` under videoen (`GameEngine.getJuliusPs(day)`). `julius_ps_bonus` erstatter den når dagens bonusoppdrag er godkjent, og `julius_ps_krypto_mangler` mens dagens dekryptering er uløst.
 
-**Formål**:
-
-- Belønning for å ha løst oppgaven
-- Fortelle om Julius' dag i Snøfall
-- Løst referere til dagens tema (rød tråd)
-- Kommentere Rampenissens rampestrek
-
-**Anbefalt lengde**: 80-150 ord (3-4 korte avsnitt)
-
-**Struktur**:
-
-1. **Overskrift**: "Dag X - [Tema]"
-2. **Hoveddel** (2-3 korte avsnitt): Julius' dag i Snøfall
-3. **Rampenissen-referanse** (1 setning): Løs kommentar om rampestreken
-4. **Signatur**: "- Julius"
-
-**Regler**:
-
-| ✅ SKAL                                    | ❌ SKAL IKKE                                 |
-| ------------------------------------------ | -------------------------------------------- |
-| Være ren fortelling fra Julius' perspektiv | Gi hint til oppgaven (den er allerede løst!) |
-| Referere løst til dagens tema              | Forklare løsningsmetoden                     |
-| Kommentere Rampenissens rampestrek         | Inneholde instruksjoner                      |
-| Føles som en belønning                     | Være nødvendig for å løse oppgaven           |
-
-**Eksempel**:
-
-```json
-"dagbokinnlegg": "Dag 8 - Sekkproblemer\n\nGavesekken min trenger reparasjon. Igjen. Nissene syr på den nå. Spurte hvor mye vekt den kan bære. De bare lo nervøst.\n\nTestet den nye magiske sekken ved å putte inn 500 gaver. Den holdt! Men så kom jeg ikke ut av verkstedet fordi sekken ikke passet gjennom døren.\n\nRampenissen har laget kaos med toalettpapir hjemme hos barna. Typisk.\n\n- Julius"
-```
+**Regler**: PS-en er en belønning. Den gir ikke hint til en oppgave som allerede er løst, og viser aldri en kode for tidlig (`kodelekkasje.test.ts`).
 
 ---
 
@@ -491,6 +462,8 @@ Se [Rampestreker Design](#rampestreker-design-physical-mischief-scenes) for full
 ### print_materials
 
 **Hva det er**: Ferdig print-materiale for foreldre - klar til å klippes ut og brukes direkte.
+
+> **Merk**: Feltet finnes i typen `Oppdrag`, men ingen dag bruker det i dag. Utskriftene ligger i `src/app/nissemor-guide/printout/filer.ts`.
 
 **Formål**:
 
@@ -683,12 +656,11 @@ Se [Rampestreker Design](#rampestreker-design-physical-mischief-scenes) for full
 
 ### Metadata-felt
 
-| Felt        | Type   | Beskrivelse                                     |
-| ----------- | ------ | ----------------------------------------------- |
-| `dag`       | number | Dag 1-24                                        |
-| `tittel`    | string | Dagens tittel                                   |
-| `hint_type` | string | Type hint (skrevet, spor, arrangement, visuell) |
-| `hendelse`  | string | Spesiell hendelse (Lucia, Nobel, etc.)          |
+| Felt       | Type   | Beskrivelse                            |
+| ---------- | ------ | -------------------------------------- |
+| `dag`      | number | Dag 1-24                               |
+| `tittel`   | string | Dagens tittel                          |
+| `hendelse` | string | Spesiell hendelse (Lucia, Nobel, etc.) |
 
 ---
 
