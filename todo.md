@@ -25,6 +25,27 @@ Hvert steg låses før det neste starter. Endringer i et låst steg krever et ek
 - [ ] Steg 5: Integrasjon og flytting hjem
 - [ ] Steg 6: Generalprøve
 
+## Status: arbeidsstrømmer (oppdateres av koordinatoren)
+
+### Venter på Hans
+
+1. **Julius-manus:** godkjenn ny dag 1 (gren `manus/julius-dag1`), og si ja eller nei til å skrive om dag 2–24 i én runde etter åtte flytregler (`docs/manus/` er låst og krever ja).
+2. **Julius-video dag 1–5:** lytt på de nye lydfilene (lydnivå og overganger) før lydfiksen flettes; klippene dag01-1, dag01-5, dag02-1 og dag03-5 må lages på nytt.
+3. **Klementin dag 1:** ekte klementin i bildet krever nytt referansebilde av Julius med frukt på bordet; nå er det mime.
+4. **Bilder:** Ugleposten-scener, portretter (inkludert `portrett-radio.png`) og Winter-grunnbilder (se plasseringslisten i samtalen og `docs/medieplan.md`).
+5. **iPad-test:** Ugleposten (minispill, fjær, NOTAT, sluttkort) og Sledeflukt 3D (FPS på `/dev/sledeflukt` når fase 1 er klar).
+
+### Pågår (agenter)
+
+- Gjennomspillingen er rød på main etter hjemskjermen; retting pågår (`fix/gjennomspilling-hjemskjerm`).
+- Skjermer med for mye rulling: kartlegging og retting (`fix/scrolling`).
+- Sledeflukt 3D fase 1 (`feat/sledeflukt-3d`); fase 2 (pipelevering, fri flyging) venter på fase 1.
+
+### Klar til fletting når avhengigheten er løst
+
+- Lydfiks for Julius-videoene (`fix/julius-lyd`): venter på punkt 2 over.
+- Ny dag 1 for Julius (`manus/julius-dag1`): venter på punkt 1 over; deretter `julius-dag.py 1 --force`.
+
 ## Prioritert liste (oppdateres fortløpende)
 
 Øverst er det som gjøres nå. Ingen frister; rekkefølgen er prioriteten. Nye ideer går til «Senere forbedringer» med mindre de retter noe som er ødelagt.
