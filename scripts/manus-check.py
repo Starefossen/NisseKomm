@@ -3,7 +3,10 @@
 Usage: manus-check.py [--write]  (without --write: report only)
 """
 import math, re, sys
-D = "/Users/hans/go/src/github.com/starefossen/NisseKomm/docs/manus/"
+from pathlib import Path
+D = str(Path(__file__).resolve().parent.parent / "docs/manus") + "/"
+read_ = lambda f: Path(f).read_text(encoding="utf-8")
+write_ = lambda f, t: Path(f).write_text(t, encoding="utf-8")
 J, R, A = D + "julius-2026.md", D + "rampenissen-radio-2026.md", D + "app-tekster-2026.md"
 WRITE = "--write" in sys.argv
 CODES = {1:"SIGNAL",2:"48",3:"PRISME",4:"KOMPASS",5:"ULRIKEN",6:"LYKT",7:"KULDE",8:"KRETSKORT",9:"24",
@@ -20,7 +23,7 @@ def split_days(text):
     return out
 
 # ---------- Julius ----------
-jt = open(J).read()
+jt = read_(J)
 jd = split_days(jt)
 jrows = {}
 for d, body in jd.items():
@@ -45,10 +48,10 @@ jt2 = re.sub(r"^\| (\d+)\s* \| (\S+\s*) \| \d+\s* \| \d+\s* \| \d+\s* \| \d\s* \
 jsum = sum(v[0] for v in jrows.values())
 jt2 = re.sub(r"Sum: [\d ]+ ord, snitt \d+ per dag", f"Sum: {jsum:,}".replace(",", " ") + f" ord, snitt {round(jsum/24)} per dag", jt2)
 print("JULIUS sum", jsum, "snitt", round(jsum / 24))
-if WRITE and jt2 != open(J).read(): open(J, "w").write(jt2)
+if WRITE and jt2 != read_(J): write_(J, jt2)
 
 # ---------- Radio ----------
-rt = open(R).read()
+rt = read_(R)
 rd = split_days(rt)
 rrows = {}
 for d, body in rd.items():
@@ -61,17 +64,17 @@ rt2 = re.sub(r"^\| (\d+)\s* \| (\S+\s*) \| \d+\s* \| \d+\s* \|", rrow, rt, flags
 rsum = sum(rrows.values())
 rt2 = re.sub(r"Sum: [\d ]+ ord, snitt \d+ per dag \(cirka \d+ s\)", f"Sum: {rsum:,}".replace(",", " ") + f" ord, snitt {round(rsum/24)} per dag (cirka {round(rsum/24/2.4)} s)", rt2)
 print("RADIO sum", rsum)
-if WRITE and rt2 != open(R).read(): open(R, "w").write(rt2)
+if WRITE and rt2 != read_(R): write_(R, rt2)
 
 # ---------- App ----------
-at = open(A).read()
+at = read_(A)
 def mail(m):
     n = len([t for t in m.group(2).split() if t != "–" and re.search(r"[\wæøå]", t)])
     if n > 90: print(f"APP: e-post over 90 ord ({n}): {m.group(2)[:40]}")
     if int(m.group(1)) != n: print(f"APP: e-post ordtall {m.group(1)} -> {n}: {m.group(2)[:40]}")
     return f"- `nissemail_tekst` ({n} ord): {m.group(2)}"
 at2 = re.sub(r"^- `nissemail_tekst` \((\d+) ord\): (.*)$", mail, at, flags=re.M)
-if WRITE and at2 != at: open(A, "w").write(at2)
+if WRITE and at2 != at: write_(A, at2)
 
 # ---------- Leak check ----------
 ad = split_days(at2)

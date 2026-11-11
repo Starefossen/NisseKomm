@@ -21,9 +21,7 @@ const ROOT = new URL("..", import.meta.url).pathname;
 const SHOTS = join(ROOT, "test-results", "webkit");
 const RAPPORT_PATH = join(SHOTS, "RAPPORT.md");
 
-const MEDIA_DIR =
-  process.env.MEDIA_DIR ??
-  "/Users/hans/go/src/github.com/starefossen/NisseKomm/public";
+const MEDIA_DIR = process.env.MEDIA_DIR ?? join(ROOT, "public");
 const KID_CODE = process.env.KID_CODE ?? "snø lykt rein";
 const PARENT_CODE = process.env.PARENT_CODE ?? "NORDPOL-DEV2026";
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
