@@ -11,11 +11,11 @@ import { SledeSimulator } from "./SledeSimulator";
 
 type GameId = "kretslop" | "sorterer" | "slede" | "sentrifuge" | "porten";
 
-// Storyboard day each toy first appears (8 kretskort, 16 sorterer, 18 slede, 19 sentrifuge, 21 zapper).
+// Storyboard day each toy first appears (8 kretskort and slede, 16 sorterer, 19 sentrifuge, 21 zapper).
 const GAMES: [GameId, string, number][] = [
   ["kretslop", "KRETSLØP", 8],
   ["sorterer", "SORTERER", 16],
-  ["slede", "SLEDESIMULATOR", 18],
+  ["slede", "SLEDESIMULATOR", 8],
   ["sentrifuge", "SENTRIFUGE", 19],
   ["porten", "PORTEN", 21],
 ];

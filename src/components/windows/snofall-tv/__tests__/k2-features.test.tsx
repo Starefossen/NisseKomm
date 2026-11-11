@@ -163,6 +163,36 @@ describe("K2 Features: DarkChannel, Sentrifuge, PressureGauge", () => {
     });
   });
 
+  describe("K4 TEKNISK HUD", () => {
+    const hud = (day: number) => {
+      const el = mount(<SnøfallTV currentDay={day} onClose={() => {}} />);
+      const k4 = Array.from(el.querySelectorAll("button")).find((b) =>
+        b.textContent?.startsWith("K4"),
+      );
+      act(() => k4!.click());
+      return Array.from(el.querySelectorAll("button")).find((b) =>
+        b.textContent?.includes("TEKNISK HUD"),
+      );
+    };
+
+    it.each([8, 22])("is shown greyed before day %i's code", (day) => {
+      const btn = hud(day);
+      expect(btn?.disabled).toBe(true);
+      expect(btn?.textContent).toContain("Løs dagens kode først");
+    });
+
+    it.each([8, 22])("opens after day %i's code", (day) => {
+      StorageManager.addSubmittedCode({
+        kode: "TEST",
+        dato: new Date().toISOString(),
+        day,
+      });
+      const btn = hud(day);
+      expect(btn?.disabled).toBe(false);
+      expect(btn?.textContent).not.toContain("Løs");
+    });
+  });
+
   describe("Day 19: Sentrifuge mini-game", () => {
     it("is gated by day via gamesFor(day)", () => {
       const g18 = gamesFor(18).map(([id]) => id);

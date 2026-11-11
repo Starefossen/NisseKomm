@@ -231,18 +231,24 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
               </button>
             );
           })}
-          {solved &&
-            (channel === 4 || (channel === 2 && day >= 19)) &&
+          {(channel === 4 || (channel === 2 && day >= 19)) &&
             !playing &&
             gamesFor(day).length > 0 && (
+              // Greyed before today's code so kids know the toys are there.
               <button
+                disabled={!solved}
                 onClick={() => {
                   SoundManager.playSound("click");
                   setPlaying(true);
                 }}
-                className="min-h-11 px-3 border-2 border-(--gold) text-(--gold) text-lg cursor-pointer ml-auto"
+                className={`min-h-11 px-3 border-2 text-lg ml-auto ${
+                  solved
+                    ? "border-(--gold) text-(--gold) cursor-pointer"
+                    : "border-gray-600 text-gray-500 cursor-not-allowed"
+                }`}
               >
                 {channel === 2 ? "SENTRIFUGE" : "TEKNISK HUD"}
+                {!solved && " · Løs dagens kode først"}
               </button>
             )}
         </div>
