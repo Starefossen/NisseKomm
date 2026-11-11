@@ -135,7 +135,7 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     let el = mount();
     tap(el, "SPILL");
     // Intro: three bubbles from Rampenissen
-    expect(el.textContent).toContain("Knerten");
+    expect(el.textContent).toContain("Floke");
     tap(el, "VIDERE");
     tap(el, "VIDERE");
     tap(el, "VIDERE");

@@ -252,7 +252,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
         <div className="p-4 md:p-6 max-w-2xl mx-auto space-y-4">
           <h2 className="text-3xl text-(--gold) tracking-wider">UGLEPOSTEN</h2>
           <p className="text-xl leading-tight">
-            Rampenissen har glemt noe i Snøfall. Styr Knerten, ull-ugla hans,
+            Rampenissen har glemt noe i Snøfall. Styr Floke, ull-ugla hans,
             gjennom IQs kameraer og hjelp ham, ett kapittel om gangen. Trykk på
             ting for å SE, BRUK og SNAKK.
           </p>
@@ -624,10 +624,10 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
               <div className={`${PANEL} space-y-2`}>
                 {dialog.sagt && (
                   <div className="flex items-start gap-3">
-                    <Portrett navn="knerten" />
+                    <Portrett navn="floke" />
                     <div className="min-w-0">
                       <p className="text-lg text-(--cold-blue)">
-                        Dere (gjennom Knerten)
+                        Dere (gjennom Floke)
                       </p>
                       <p className="text-xl leading-tight">«{dialog.sagt}»</p>
                     </div>

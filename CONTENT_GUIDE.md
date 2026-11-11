@@ -117,6 +117,14 @@
 
 Generated from `assets/characters/<id>/entitet.md`, the one source for look, personality, voice, relations and facts. Edit there, then run `mise run entiteter`.
 
+#### Floke (`assets/characters/floke/entitet.md`)
+
+- **Navn:** Floke; **pronomen:** hun; **fra dag:** 4
+- **Personlighet:** Stille, sta og observant. Sier ingenting, men gir seg aldri: dytter på ting med nebbet, stirrer på folk til de ser bort. Blåser seg opp når hun er stolt.
+- **Stemme:** Ingen replikker. Hun uler lavt, blinker og dytter. Det barna «sier» gjennom henne står som «Dere (gjennom Floke)» i dialogpanelet; Rampenissen tolker og kommenterer fra hylla.
+- **Forhold:** rampenissen: laget henne av garnrester på IQs loft; hun er øynene hans i Snøfall; barna: barna styrer henne gjennom IQs kameraer i Ugleposten; iq: kameraene hans sender det hun ser til skjermen på Landås
+- **Aldri:** «Knerten», «Flokke»
+
 #### Hjerterud (`assets/characters/hjerterud/entitet.md`)
 
 - **Navn:** Hjerterud; **pronomen:** hun; **fra dag:** 1

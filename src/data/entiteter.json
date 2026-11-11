@@ -1,5 +1,12 @@
 [
   {
+    "id": "floke",
+    "navn": ["Floke"],
+    "pronomen": "hun",
+    "fra_dag": 4,
+    "ikke": ["Knerten", "Flokke"]
+  },
+  {
     "id": "hjerterud",
     "navn": ["Hjerterud"],
     "pronomen": "hun",

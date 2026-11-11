@@ -188,10 +188,10 @@ const SKULDERTREKK = [
 /** BRUK on something with no `bruk` line; rotates per hotspot so repeats stay fresh. */
 const INGENTING = [
   "Det skjer ingenting. Absolutt ingenting.",
-  "Rampenissen: «Knerten dytte på det med nebbet. Ingenting. Ho prøve med den andre sida av nebbet. Like lite.»",
+  "Rampenissen: «Floke dytte på det med nebbet. Ingenting. Ho prøve med den andre sida av nebbet. Like lite.»",
   "Rampenissen: «Nei, det der e bare te å se på. Æ veit, æ har òg prøvd å ta på alt.»",
   "Rampenissen: «Det sitt fast, eller så e det ikkje meint å flyttes på. Sannsynligvis begge dela.»",
-  "Rampenissen: «Knerten ser på det. Det ser tilbake. Ingen av dem gir sæ. Vi går videre.»",
+  "Rampenissen: «Floke ser på det. Det ser tilbake. Ingen av dem gir sæ. Vi går videre.»",
 ];
 
 /** SNAKK on something with neither `snakk` nor `prat`. */
@@ -200,7 +200,7 @@ const SVARER_IKKE = [
   (n: string) =>
     `Du sier «hallo» til ${n.toLowerCase()}. Det blir stille. Rampenissen: «Æ har snakka med verre. Æ har snakka med ei dørmatte i tre tima.»`,
   (n: string) =>
-    `Knerten uler lavt mot ${n.toLowerCase()}. Rampenissen: «Ugler snakke ikkje med sånt. Dem har standard.»`,
+    `Floke uler lavt mot ${n.toLowerCase()}. Rampenissen: «Ugler snakke ikkje med sånt. Dem har standard.»`,
   (n: string) => `${n} sier ingenting, men du får en følelse av å bli vurdert.`,
 ];
 

@@ -47,7 +47,7 @@ Vurdering av sidespillene mot den låste historien (`historie-2026.md`, `gaater-
 
 **Det som mangler.** Ingen av spillene gir noe tilbake til appen:
 
-- **Fjærene** (8 stk.) belønnes bare med én replikk fra Rampenissen. Knerten, ugla og fjærene finnes ikke noe annet sted i appen (null treff utenfor `nissespill/`).
+- **Fjærene** (8 stk.) belønnes bare med én replikk fra Rampenissen. Floke, ugla og fjærene finnes ikke noe annet sted i appen (null treff utenfor `nissespill/`).
 - **Sleden** lagrer poeng og bjeller, men ingenting leser dem: ikke NisseStats, ikke PS, ikke NisseNet.
 - **HUD-lekene** husker ingenting.
 - **Lykkebjella** i Ugleposten (K1 finner den, K4 mister den igjen) og **bjellene** i sleden er samme ord uten kobling.
@@ -61,7 +61,7 @@ Vurdering av sidespillene mot den låste historien (`historie-2026.md`, `gaater-
 | 1   | **Land det som finnes.** Commit og merge sledeworktreen (dag 8, ni etapper, daglig utfordring) og `fix/teknisk-hud`. Dette er forskjellen på «noe nytt hver dag fra dag 8» og ti tomme dager, og ingenting av det rører gåtene.                                                                                                                | Høy     | S       |
 | 2   | **Flytt tre etapper** ut av opphopningene: Vardeløypa 10 → 9, Kastevind-dalen 16 → 18 (TURBULENS), Tindeflukten 18 → 19 (pusterom, lørdag). Tre tall i `ETAPPER` pluss testen.                                                                                                                                                                 | Høy     | S       |
 | 3   | **Søskentavle i sleden.** Navneknapper Kristian/Håkon som i Brev til Julius, beste per etappe per spiller på startskjermen, dagens utfordring per spiller. Står i `todo.md` som «etter sesongen»; den bør fram, fordi det er dette som gjør daglig utfordring til noe en 9-åring og en 12-åring kommer tilbake til uten å konkurrere om gåten. | Høy     | M       |
-| 4   | **Fjærene gir en fil.** Åtte fjær funnet → `MORO/knerten.txt` i NisseNet (Winters notat om ugla), og én PS-variant dag 24 («Knerten leverte åtte fjær …»). Samme mønster som `julius_ps_bonus`. PS-teksten er låst i steg 2 og trenger ja fra Hans.                                                                                            | Middels | M       |
+| 4   | **Fjærene gir en fil.** Åtte fjær funnet → `MORO/floke.txt` i NisseNet (Winters notat om ugla), og én PS-variant dag 24 («Floke leverte åtte fjær …»). Samme mønster som `julius_ps_bonus`. PS-teksten er låst i steg 2 og trenger ja fra Hans.                                                                                                | Middels | M       |
 | 5   | **Lykkebjella som kryssgjenstand.** Når K4 er fullført, får sleden bjellelyden fra K1 og HUD-linjen «LYKKEBJELLA OM BORD» på Julenatt-etappen. Én flagg-sjekk mot `EventyrSave`, ingen ny grafikk.                                                                                                                                             | Middels | S       |
 | 6   | **Foreldreguiden «I kveld»** får én linje på dag 4, 10, 16 og 22: nytt kapittel i Ugleposten, forslag til roller (Håkon styrer, Kristian leser). Ren tekst i `_kveld/data.ts`.                                                                                                                                                                 | Lav     | S       |
 

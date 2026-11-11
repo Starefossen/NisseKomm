@@ -72,7 +72,7 @@ const KAP: M.Kapittel = {
   kombinasjoner: [],
   dialoger: {},
   gaater: [],
-  fjaerBelonning: "Knerten blåser seg opp av stolthet.",
+  fjaerBelonning: "Floke blåser seg opp av stolthet.",
   puslespill: {
     skaplaas: {
       type: "laas",
@@ -173,7 +173,7 @@ describe("motor: fjær", () => {
     expect(M.fjaerTelling(KAP, s)).toEqual([1, 2]);
     expect(M.taFjaer(KAP, s, "a", null).save).toBe(s);
     const u = M.taFjaer(KAP, s, "c", null);
-    expect(u.tekst).toContain("Fjær 2/2. Knerten");
+    expect(u.tekst).toContain("Fjær 2/2. Floke");
     expect(M.nyttKapittel(KAP, u.save).fjaer).toEqual(["9:a", "9:c"]);
   });
 });

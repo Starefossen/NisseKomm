@@ -21,7 +21,8 @@ const ENT = entiteter as Entitet[];
 
 // Words close to a name that are real words or other figures. Each is a
 // question for Hans the first time it shows up.
-const OK_WORDS = new Set<string>([]);
+// «Floken» (day 8 title, a tangle of wires) is the noun, not the owl Floke.
+const OK_WORDS = new Set<string>(["Floken"]);
 
 const word = (n: string) =>
   new RegExp(`(?<![\\p{L}])${n.replace(/[.']/g, "\\$&")}(?![\\p{L}])`, "u");
