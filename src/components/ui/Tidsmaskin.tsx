@@ -48,9 +48,10 @@ export function Tidsmaskin() {
     setOpen(true);
   };
 
-  const apply = async (withProgress = false) => {
+  // "fremgang" leaves today unsolved; "løst" includes today.
+  const apply = async (solveTo = 0) => {
     setTimeOverride({ day, month: 12, hour, minute });
-    if (withProgress) await sim.solveUntil(day - 1);
+    if (solveTo > 0) await sim.solveUntil(solveTo);
     window.location.reload();
   };
 
@@ -149,8 +150,11 @@ export function Tidsmaskin() {
           <button onClick={() => void apply()} className={btn}>
             Gå til dag
           </button>
-          <button onClick={() => void apply(true)} className={btn}>
+          <button onClick={() => void apply(day - 1)} className={btn}>
             Gå til dag med fremgang
+          </button>
+          <button onClick={() => void apply(day)} className={btn}>
+            Gå til dag, løst
           </button>
           <button onClick={clear} className={btn}>
             Ekte tid
