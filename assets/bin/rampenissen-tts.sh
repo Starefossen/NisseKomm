@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # rampenissen-tts.sh <dag> [stemme] [--force]: Rampenissen's radio clip from the locked script, via Gemini TTS.
 # Writes public/audio/rampenissen/dag-NN.mp3. Default voice: Fenrir, nordnorsk delivery, +4 semitones, -16 LUFS
-# (Hans chose it 10 Nov). The script text stays bokmål; only the delivery is nordnorsk.
+# (Hans chose it 10 Nov). The clips are written in nordlandsk (Bodø/Salten) since 10 Nov; see «Skrivemåte» in the script.
 # Skips a day whose clip is current (medie.py) unless --force; writes dag-NN.mp3.meta.json.
 set -euo pipefail
 source "$(dirname "$0")/_key.sh"
