@@ -424,7 +424,10 @@ export function lagBane(e: SledeEtappe): Ting[] {
   // the sled's reach (|x| > 1.75), until that stage's day.
   const neste = ETAPPER[ETAPPER.indexOf(e) + 1];
   if (neste)
-    for (const [dz, x] of [[-2200, 1.9], [-1600, -2.1]] as const)
+    for (const [dz, x] of [
+      [-2200, 1.9],
+      [-1600, -2.1],
+    ] as const)
       out.push({ z: e.lengde + dz, x, type: "topp", h: 230, lås: neste.dag });
   return out.sort((a, b) => a.z - b.z);
 }
@@ -489,7 +492,10 @@ function lagLøype(e: SledeEtappe): Ting[] {
   // step is more than the sled can climb between two rings at the stage's speed.
   let alt = ALT_CRUISE;
   const steg = ((KLATRE * m.varde * SEG) / e.fart) * 0.7;
-  const minSteg = Math.min(steg, Math.max(RING_ALT + 4, Math.min(steg * 0.6, m.høyde * 0.9)));
+  const minSteg = Math.min(
+    steg,
+    Math.max(RING_ALT + 4, Math.min(steg * 0.6, m.høyde * 0.9)),
+  );
   const lav = Math.max(RING_ALT_MIN, ALT_CRUISE - m.høyde);
   const høy = Math.min(RING_ALT_MAX, ALT_CRUISE + m.høyde);
   let ring = 0;
