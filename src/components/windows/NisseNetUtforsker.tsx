@@ -32,10 +32,10 @@ export function NisseNetUtforsker({
     new Set(["root"]),
   );
   const [selectedFile, setSelectedFile] = useState<FilNode | null>(null);
-  // MORO folder (tidbits.json): outside the file and hemmeligheter counters
-  const moroFiles = visible(TIDBITS.nissenet.filer, currentDay).filter(
-    (f) => !f.fjaer || GameEngine.getUglefjaer() >= f.fjaer,
-  );
+  // MORO folder (tidbits.json): outside the file and hemmeligheter counters.
+  // Feather files are teased: shown locked with the count until reached.
+  const moroFiles = visible(TIDBITS.nissenet.filer, currentDay);
+  const fjaer = GameEngine.getUglefjaer();
   const [moro, setMoro] = useState<NisseNetTidbit | null>(null);
   const [opened, setOpened] = useState<Set<string>>(new Set());
   const [password, setPassword] = useState("");
@@ -316,24 +316,40 @@ export function NisseNetUtforsker({
                   <Icons.FolderOpen size={16} color="gold" />
                   MORO
                 </div>
-                {moroFiles.map((f) => (
-                  <button
-                    key={f.navn}
-                    onClick={() => openMoro(f)}
-                    className={`flex items-center gap-2 w-full min-h-11 text-left px-2 pl-6 ${
-                      moro?.navn === f.navn
-                        ? "bg-(--gold)/20 border-l-2 border-(--gold)"
-                        : "hover:bg-(--neon-green)/10"
-                    }`}
-                  >
-                    {f.passord && !opened.has(f.navn) ? (
-                      <Icons.Lock size={16} color="gold" />
-                    ) : (
-                      <Icons.File size={16} color="gold" />
-                    )}
-                    {f.navn}
-                  </button>
-                ))}
+                {moroFiles.map((f) =>
+                  f.fjaer && fjaer < f.fjaer ? (
+                    <div
+                      key={f.navn}
+                      data-testid="moro-fjaer-laast"
+                      className="flex items-center gap-2 w-full min-h-11 px-2 pl-6 text-gray-400"
+                    >
+                      <Icons.Lock size={16} color="gray" />
+                      <span>
+                        {f.navn}
+                        <span className="block text-sm">
+                          LÅST · {fjaer}/{f.fjaer} FJÆR
+                        </span>
+                      </span>
+                    </div>
+                  ) : (
+                    <button
+                      key={f.navn}
+                      onClick={() => openMoro(f)}
+                      className={`flex items-center gap-2 w-full min-h-11 text-left px-2 pl-6 ${
+                        moro?.navn === f.navn
+                          ? "bg-(--gold)/20 border-l-2 border-(--gold)"
+                          : "hover:bg-(--neon-green)/10"
+                      }`}
+                    >
+                      {f.passord && !opened.has(f.navn) ? (
+                        <Icons.Lock size={16} color="gold" />
+                      ) : (
+                        <Icons.File size={16} color="gold" />
+                      )}
+                      {f.navn}
+                    </button>
+                  ),
+                )}
               </div>
             )}
           </div>

@@ -83,3 +83,8 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 
 - Radio dag 12 og 15 beholdes med Rampenissen som øyenvitne fra Snøfall. Hvorfor: lyden er laget og replikkene er redigert av Hans.
 - E-posten dag 4 («NisseKrypto åpner i kveld») er et unntak fra regelen om at opplåsinger meldes i appen, som dag 8 (SLEDEFLUKT). Hvorfor: NisseKrypto er et milepæl i historien.
+
+## Ugleposten (2026-11-11)
+
+- Kartplata over Snøfall står over kapittellista. Hvorfor: barna ser hvor kapitlene foregår før de velger.
+- Flokes fjærbok (`flokes_fjaerbok.txt`) vises i MORO-mappa som låst med fjærteller («LÅST · 3/8 FJÆR») til åtte fjær, så åpnes den. Hvorfor: en synlig belønning lokker mer enn en skjult.

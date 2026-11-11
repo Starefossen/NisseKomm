@@ -13,10 +13,10 @@ import { KAPITLER, erLaastOpp } from "./kapitler";
 // Percent of the plate, matching the prompt's layout: pond left, square
 // centre, Julius' house right, gate at the bottom.
 const STED: Record<number, [number, number]> = {
-  1: [50, 58],
-  2: [16, 44],
-  3: [82, 40],
-  4: [58, 86],
+  1: [50, 56],
+  2: [13, 44],
+  3: [78, 32],
+  4: [52, 82],
 };
 
 export function Kartplate({
