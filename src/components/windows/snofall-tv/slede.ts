@@ -395,6 +395,8 @@ export const ringAvvik = (px: number, alt: number, t: Ting) =>
 
 /** Calendar day from which every stage has chimneys to drop into; stages without a delivery target get a few optional ones. */
 export const PIPER_FRA_DAG = 14;
+/** Seconds between two drops. */
+export const SLIPP_PAUSE = 0.6;
 const VALGFRIE_HUS = 13;
 
 export function lagBane(e: SledeEtappe, dag = 0): Ting[] {
@@ -836,6 +838,9 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     utfordringKlart: false,
     /** The package in the air, if any; one at a time. */
     pakke: null as Pakke | null,
+    sisteSlipp: -Infinity,
+    /** Where the last package hit the snow (track x, sim z), for the puff. */
+    landing: null as { x: number; z: number } | null,
     /** Packages dropped so far (names the next one), delivered, and lost in the snow. */
     slipp: 0,
     pakker: 0,
@@ -931,8 +936,10 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
       s.alt = Math.max(ALT_MIN, s.alt - 60 * dt);
     s.dist += s.fart * dt;
 
-    if (inn.slipp && !s.pakke && hus.length) {
+    // SLIPP works on every stage, chimneys or not; a short pause stops spamming.
+    if (inn.slipp && !s.pakke && s.tid - s.sisteSlipp >= SLIPP_PAUSE) {
       s.pakke = nyPakke(s);
+      s.sisteSlipp = s.tid;
       s.slipp++;
       ev.push("slipp");
     }
@@ -981,9 +988,11 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
           s.sisteMeter = Math.max(0.1, m);
           ev.push("nærLevering");
         } else {
-          s.pakkebom++;
+          // Without chimneys a package in the snow is just fun, not a miss.
+          if (hus.length) s.pakkebom++;
           ev.push("pakkebom");
         }
+        s.landing = { x: p.x, z: p.z };
         s.pakke = null;
       }
     }

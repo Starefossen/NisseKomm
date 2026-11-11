@@ -26,6 +26,7 @@ import {
   KLATRE,
   RING_ALT,
   RING_X,
+  SLIPP_PAUSE,
   ringAvvik,
   UTFORDRING_BONUS,
   utfordringKlart,
@@ -566,6 +567,34 @@ describe("pipelevering", () => {
     expect(ev).toContain("pakkebom");
     expect(sim.s.pakkebom).toBe(1);
     expect(sim.s.pakker).toBe(0);
+  });
+
+  it("SLIPP works on every stage from day 8, chimneys or not, with a short pause", () => {
+    for (const e of ETAPPER) {
+      const sim = createSim(e, { assist: true, reduceMotion: false, dag: 8 });
+      const harHus = lagBane(e, 8).some((t) => t.type === "hus");
+      let ev: string[] = sim.step(1 / 60, { ...still, slipp: true });
+      expect(ev).toContain("slipp");
+      for (let i = 0; i < 600 && sim.s.pakke; i++)
+        ev = ev.concat(sim.step(1 / 60, still));
+      expect(sim.s.landing).not.toBeNull();
+      if (!harHus) {
+        expect(ev).toContain("pakkebom");
+        expect(sim.s.pakkebom).toBe(0);
+        expect(sim.s.poeng).toBe(0);
+      }
+    }
+    const sim = createSim(ETAPPER[0], {
+      assist: true,
+      reduceMotion: false,
+      dag: 8,
+    });
+    sim.step(1 / 60, { ...still, slipp: true });
+    sim.s.pakke = null;
+    expect(sim.step(1 / 60, { ...still, slipp: true })).not.toContain("slipp");
+    for (let i = 0; i < SLIPP_PAUSE * 60; i++) sim.step(1 / 60, still);
+    sim.s.pakke = null;
+    expect(sim.step(1 / 60, { ...still, slipp: true })).toContain("slipp");
   });
 
   it("names packages after the kids' letters, generic sacks without", () => {

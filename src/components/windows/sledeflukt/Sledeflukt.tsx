@@ -464,7 +464,13 @@ function Etappeflukt({
           break;
         case "pakkebom":
           say("PAKKEN HAVNET I SNØEN", "#8aa0c0");
-          // The chimney you missed puffs a cloud back at you.
+          l?.tikk(false);
+          // A puff of snow where it landed; a missed chimney puffs a cloud back at you too.
+          if (sim.s.landing)
+            puff.push({
+              p: tilVerden(sim.s.landing.x, 0, sim.s.landing.z),
+              t0: performance.now() / 1000,
+            });
           if (sim.s.sisteHus)
             puff.push({
               p: tilVerden(
@@ -1314,7 +1320,7 @@ function Etappeflukt({
       {fase === "spiller" && (
         <>
           <div className="absolute bottom-3 right-3 flex gap-2">
-            {harHus && (
+            {
               <button
                 type="button"
                 aria-label="Slipp pakke"
@@ -1326,7 +1332,7 @@ function Etappeflukt({
               >
                 SLIPP
               </button>
-            )}
+            }
             <button
               type="button"
               aria-label="Brems"
@@ -1565,11 +1571,9 @@ function Etappeflukt({
                   {assist
                     ? "Assistenten holder høyden og krasjer aldri."
                     : "Tre forsøk, full kastevind."}{" "}
-                  · PILTASTER / WASD · SHIFT = FART · X = BREMS · E = SPRANG
-                  {harHus
-                    ? " · MELLOMROM = SLIPP PAKKE · BREMS GIR TID TIL Å SIKTE"
-                    : ""}{" "}
-                  · ESC = PAUSE
+                  · PILTASTER / WASD · SHIFT = FART · X = BREMS · E = SPRANG ·
+                  MELLOMROM = SLIPP PAKKE
+                  {harHus ? " · BREMS GIR TID TIL Å SIKTE" : ""} · ESC = PAUSE
                 </div>
               </>
             )}
