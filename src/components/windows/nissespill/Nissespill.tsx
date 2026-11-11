@@ -15,6 +15,14 @@ const DEV =
   process.env.NEXT_PUBLIC_TEST_MODE === "true";
 
 // Icons so Hanna (5) can tell the verbs apart without reading.
+// Old scene images stay as fallback until the new spill/ stills are generated.
+const GAMLE_BILDER: Record<string, string> = {
+  "spill/iq-verksted.jpg": "feed/iq-verksted.png",
+  "spill/julius-kontor.jpg": "feed/julius-kontor.jpg",
+  "spill/antenne-tarn.jpg": "feed/antenne-tarn.png",
+  "spill/kulde-grotte.jpg": "feed/kulde-grotte.png",
+};
+
 const VERBS: { id: M.Verb; label: string; ikon: string }[] = [
   { id: "se", label: "SE", ikon: "eye" },
   { id: "bruk", label: "BRUK", ikon: "hand" },
@@ -66,7 +74,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
     const t = setTimeout(() => setHint(false), 1500);
     return () => clearTimeout(t);
   }, [hint]);
-  const [bildeFeil, setBildeFeil] = useState<string | null>(null);
+  const [bildeFeil, setBildeFeil] = useState<string[]>([]);
 
   // Storage is browser-only: load after mount, persist every change.
   useEffect(() => {
@@ -216,15 +224,22 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={
-                bildeFeil === scene.bilde
-                  ? "/village-day.jpg"
-                  : mediaUrl(scene.bilde)
-              }
+              src={[
+                mediaUrl(scene.bilde),
+                ...(GAMLE_BILDER[scene.bilde]
+                  ? [mediaUrl(GAMLE_BILDER[scene.bilde])]
+                  : []),
+                "/village-day.jpg",
+              ].find((u) => !bildeFeil.includes(u))}
               alt={scene.navn}
               draggable={false}
               className="absolute inset-0 w-full h-full object-cover"
-              onError={() => setBildeFeil(scene.bilde)}
+              onError={(e) =>
+                setBildeFeil((f) => [
+                  ...f,
+                  e.currentTarget.getAttribute("src") ?? "",
+                ])
+              }
             />
             {!iIntro &&
               !iUtro &&
