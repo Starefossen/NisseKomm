@@ -7,6 +7,7 @@ import {
   ETAPPER,
   etapperFor,
   lagBane,
+  RAMP,
   rekkeMult,
 } from "./slede";
 
@@ -89,6 +90,20 @@ describe("sim", () => {
     expect(sim.s.poeng).toBe(150);
     expect(sim.s.varder).toBe(1);
     expect(sim.s.kraft).toBe(0.25);
+  });
+
+  it("steering has inertia and the course speeds up towards the finish", () => {
+    const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
+    sim.step(1 / 60, { ...still, steer: 1 });
+    const nudge = sim.s.px;
+    expect(nudge).toBeGreaterThan(0);
+    expect(nudge).toBeLessThan(1.9 / 60 / 2);
+    for (let i = 0; i < 30; i++) sim.step(1 / 60, { ...still, steer: 1 });
+    expect(sim.s.vx).toBeGreaterThan(1.8);
+    const start = sim.s.fart;
+    sim.s.dist = ETAPPER[0].lengde - 10;
+    sim.step(1 / 600, still);
+    expect(sim.s.fart / start).toBeCloseTo(1 + RAMP, 1);
   });
 
   it("reduced motion flies slower and still finishes", () => {

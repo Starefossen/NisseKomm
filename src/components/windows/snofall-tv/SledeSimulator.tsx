@@ -283,7 +283,6 @@ export function SledeSimulator({ day }: { day: number }) {
     let shake = 0;
     let flash = 0;
     let nyser = 0;
-    let streaks = 0;
     let last = 0;
     let hudAt = 0;
     let raf = 0;
@@ -326,7 +325,6 @@ export function SledeSimulator({ day }: { day: number }) {
           break;
         case "sprang":
           l?.sprang();
-          streaks = 3;
           sprangGlow = 3;
           say("SPRANG!", "#ff8a5a");
           break;
@@ -428,7 +426,6 @@ export function SledeSimulator({ day }: { day: number }) {
       shake = Math.max(0, shake - dt);
       flash = Math.max(0, flash - dt);
       nyser = Math.max(0, nyser - dt);
-      streaks = Math.max(0, streaks - dt);
       sprangGlow = Math.max(0, sprangGlow - dt);
 
       ctx.save();
@@ -579,9 +576,10 @@ export function SledeSimulator({ day }: { day: number }) {
         }
       }
 
-      // Speed streaks during a sprang.
-      if (streaks > 0 && !reduceMotion.current) {
-        ctx.strokeStyle = `rgba(255,255,255,${0.25 * Math.min(1, streaks)})`;
+      // Speed streaks whenever the sleigh runs above cruise: sprang, lift, the end ramp.
+      const over = spiller ? sim.s.fart / (e.fart * motion) - 1 : 0;
+      if (over > 0.08 && !reduceMotion.current) {
+        ctx.strokeStyle = `rgba(255,255,255,${0.3 * Math.min(1, over / 0.8)})`;
         ctx.lineWidth = 1;
         for (let i = 0; i < 18; i++) {
           const a = (i / 18) * Math.PI * 2 + t * 2;

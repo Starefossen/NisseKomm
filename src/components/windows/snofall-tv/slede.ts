@@ -227,6 +227,9 @@ export interface SimOpts {
 export const rekkeMult = (rekke: number) =>
   1 + Math.min(3, Math.floor(rekke / 3));
 
+/** Speed gain from start to finish of a stage. */
+export const RAMP = 0.2;
+
 export const ALT_MIN = 40;
 export const ALT_MAX = 270;
 export const ALT_CRUISE = 120;
@@ -237,6 +240,8 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
   const grotter = ting.filter((t) => t.type === "grotte");
   const s = {
     px: 0,
+    /** Sideways velocity in track units/s; the stick sets a target it glides to. */
+    vx: 0,
     alt: ALT_CRUISE,
     bank: 0,
     dist: 0,
@@ -280,14 +285,17 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     s.vind += ((sone?.kraft ?? 0) - s.vind) * Math.min(1, dt * 3);
     const gust = s.vind * (opts.assist ? 0.25 : 0.55);
 
-    s.px = Math.max(-1.3, Math.min(1.3, s.px + (inn.steer * 1.9 + gust) * dt));
+    // Inertia: a quick tap nudges, a held stick builds to full speed in ~0.3 s.
+    s.vx += (inn.steer * 1.9 + gust - s.vx) * Math.min(1, dt * 9);
+    s.px = Math.max(-1.3, Math.min(1.3, s.px + s.vx * dt));
+    if (Math.abs(s.px) >= 1.3) s.vx = 0;
     if (inn.climb !== 0) {
       s.alt += inn.climb * 150 * dt;
     } else if (opts.assist) {
       s.alt += (ALT_CRUISE - s.alt) * Math.min(1, dt * 0.8);
     }
     s.alt = Math.max(ALT_MIN, Math.min(ALT_MAX, s.alt));
-    s.bank += (inn.steer * 0.35 + gust * 0.3 - s.bank) * Math.min(1, dt * 6);
+    s.bank += (s.vx * 0.2 - s.bank) * Math.min(1, dt * 6);
 
     if (inn.sprang && s.kraft >= 1 && s.tid > s.sprangTil) {
       s.kraft = 0;
@@ -298,7 +306,9 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     if (s.tid < s.sprangTil) mult *= 1.8;
     if (s.tid < s.løftTil) mult *= 1.3;
     if (s.tid < s.sakteTil) mult *= 0.45;
-    s.fart = e.fart * mult * motion;
+    // The course gets faster towards the finish, so the last third is the test.
+    const ramp = 1 + RAMP * Math.min(1, s.dist / e.lengde);
+    s.fart = e.fart * mult * motion * ramp;
     s.dist += s.fart * dt;
 
     // Light is dropped by flying low anywhere over the cave crack (stage 4).
