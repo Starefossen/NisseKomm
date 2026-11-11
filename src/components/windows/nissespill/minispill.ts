@@ -39,10 +39,15 @@ export const laasDrei = (
   st: number[],
   i: number,
   d: 1 | -1,
-) => st.map((v, j) => (j === i ? (v + d + p.hjul[i].length) % p.hjul[i].length : v));
+) =>
+  st.map((v, j) =>
+    j === i ? (v + d + p.hjul[i].length) % p.hjul[i].length : v,
+  );
 
-export const laasApen = (p: { hjul: string[][]; svar: string[] }, st: number[]) =>
-  p.svar.every((s, i) => p.hjul[i][st[i]] === s);
+export const laasApen = (
+  p: { hjul: string[][]; svar: string[] },
+  st: number[],
+) => p.svar.every((s, i) => p.hjul[i][st[i]] === s);
 
 // --- Sliding tiles (value 8 is the hole; solved = [0..8]) ---
 
@@ -109,10 +114,8 @@ export function radioSignal(
   return Math.max(0, 1 - Math.abs(v - p.maal) / bredde);
 }
 
-export const radioInne = (
-  p: { maal: number; toleranse: number },
-  v: number,
-) => Math.abs(v - p.maal) <= p.toleranse;
+export const radioInne = (p: { maal: number; toleranse: number }, v: number) =>
+  Math.abs(v - p.maal) <= p.toleranse;
 
 // --- Route (bits: N=1 E=2 S=4 W=8) ---
 
@@ -195,7 +198,10 @@ function ruteLosbar(g: string[]): boolean {
 }
 
 /** Problems with a route config; empty means playable. */
-export function ruteFeil(p: { rutenett: string[]; start?: number[] }): string[] {
+export function ruteFeil(p: {
+  rutenett: string[];
+  start?: number[];
+}): string[] {
   const g = p.rutenett;
   const feil: string[] = [];
   const alle = g.join("");

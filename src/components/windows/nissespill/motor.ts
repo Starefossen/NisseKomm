@@ -2,9 +2,27 @@
  * Ugleposten: the point-and-click rules as pure functions over the save.
  * Scenes are data (kapittel*.ts); the UI (Nissespill.tsx) only renders and dispatches.
  * Hotspot rects are percent of the 16:9 still so they follow the image on any screen.
+ *
+ * Data format for chapter authors (examples in motor.test.ts, fixture KAP):
+ * - Conditions (`vis`, `ta`, `bruker`, `Valg`, `Linje` variants): `hvis`, `uten`,
+ *   plus `alle: Vilkaar[]` (AND) and `en_av: Vilkaar[]` (OR); they nest.
+ * - Feathers: `Scene.fjaer: { x, y, w, h }` (percent, keep it small, about 3).
+ *   One per scene at most. SE or a bare tap picks it up. `Kapittel.fjaerBelonning`
+ *   is appended when the last one in the chapter is found. MENY shows «Fjær x/N».
+ * - Mini-puzzles: `Kapittel.puslespill: { [id]: PuslespillDef }` and
+ *   `Hotspot.puslespill: id`. BRUK opens it until solved; solving sets `flagg`
+ *   and shows `tekst`; after that the hotspot's normal `bruk` line applies.
+ *   Every def has `tittel`, `flagg`, `tekst` and one of (minispill.ts):
+ *     { type: "laas", hjul: [["1","2","3"], ["A","B"]], svar: ["3","B"] }
+ *     { type: "skyv", bilde?: "spill/x.jpg", trekk?: 40 }  (3×3, always solvable)
+ *     { type: "radio", min: 88, max: 108, maal: 101.5, toleranse: 0.3, steg?: 0.1, enhet?: "MHz" }
+ *     { type: "rute", rutenett: ["SL.", ".|.", ".LM"], start?: [quarter turns per cell] }
+ *       S start, M goal, | straight, L corner, T tee, + cross, . empty.
+ *   TIPS: add a `Gaate` with `ferdig` = the puzzle's `flagg`; the overlay's TIPS
+ *   button uses it. A test rejects unsolvable or pre-solved routes and bad locks.
  */
 import type { EventyrSave } from "@/lib/storage";
-import type { PuslespillDef } from "./puslespill";
+import type { PuslespillDef } from "./minispill";
 
 export type Verb = "se" | "bruk" | "snakk";
 
@@ -236,7 +254,11 @@ export function taFjaer(
   verb: Verb | null,
 ): Utfall {
   if (verb && verb !== "se")
-    return { save, tekst: "Noe lite og mykt. Se nærmere på det.", lyd: "click" };
+    return {
+      save,
+      tekst: "Noe lite og mykt. Se nærmere på det.",
+      lyd: "click",
+    };
   if (harFjaer(kap, save, sceneId)) return { save };
   const s = { ...save, fjaer: [...(save.fjaer ?? []), fjaerId(kap, sceneId)] };
   const [x, n] = fjaerTelling(kap, s);

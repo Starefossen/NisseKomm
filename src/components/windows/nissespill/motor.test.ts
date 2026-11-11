@@ -1,7 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
 import type { EventyrSave } from "@/lib/storage";
 import * as M from "./motor";
-import * as P from "./puslespill";
+import * as P from "./minispill";
 import { KAPITLER } from "./kapitler";
 
 const save = (...flags: string[]): EventyrSave => ({
@@ -191,7 +191,12 @@ describe("motor: kapitlenes minispill er gyldige", () => {
         if (p.type === "laas") {
           expect(p.svar.length).toBe(p.hjul.length);
           p.svar.forEach((x, i) => expect(p.hjul[i]).toContain(x));
-          expect(P.laasApen(p, p.hjul.map(() => 0))).toBe(false);
+          expect(
+            P.laasApen(
+              p,
+              p.hjul.map(() => 0),
+            ),
+          ).toBe(false);
         }
         if (p.type === "radio") {
           expect(p.maal).toBeGreaterThan(p.min);

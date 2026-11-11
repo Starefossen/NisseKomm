@@ -9,6 +9,7 @@ import type { EventyrSave } from "@/lib/storage";
 import { mediaUrl } from "@/lib/media";
 import { KAPITLER, kapittel, erLaastOpp, spilldag } from "./kapitler";
 import * as M from "./motor";
+import { Puslespill } from "./Puslespill";
 
 const DEV =
   process.env.NODE_ENV !== "production" ||
@@ -142,6 +143,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   const [dialog, setDialog] = useState<{ id: string; node: string } | null>(
     null,
   );
+  const [puslespill, setPuslespill] = useState<string | null>(null);
   const [introSteg, setIntroSteg] = useState(0);
   const [visSoner, setVisSoner] = useState(false);
   const [valg, setValg] = useState(false);
@@ -157,9 +159,11 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   const [ring, setRing] = useState<{ n: number; x: number; y: number } | null>(
     null,
   );
-  const [glimt, setGlimt] = useState<{ n: number; x: number; y: number } | null>(
-    null,
-  );
+  const [glimt, setGlimt] = useState<{
+    n: number;
+    x: number;
+    y: number;
+  } | null>(null);
   const [bildeFeil, setBildeFeil] = useState<string[]>([]);
 
   // Storage is browser-only: load after mount, persist every change.
@@ -202,6 +206,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
     setSave(u.save);
     if (u.tekst !== undefined) setTekst(u.tekst);
     if (u.dialog) setDialog({ id: u.dialog, node: "start" });
+    if (u.puslespill) setPuslespill(u.puslespill);
     if (u.lyd) SoundManager.playSound(u.lyd);
     setVerb(null);
     setHolder(null);
@@ -462,6 +467,23 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 </div>
               )}
             </div>
+            {puslespill && kap.puslespill?.[puslespill] && (
+              <Puslespill
+                key={puslespill}
+                p={kap.puslespill[puslespill]}
+                onAvbryt={() => setPuslespill(null)}
+                onLost={() => {
+                  setPuslespill(null);
+                  bruk(M.losPuslespill(kap, save, puslespill));
+                }}
+                onTips={() => {
+                  const u = M.tips(kap, save);
+                  setSave(u.save);
+                  SoundManager.playSound("click");
+                  return u.tekst ?? "";
+                }}
+              />
+            )}
             {(iIntro || iUtro) && (
               <div className={`${PANEL} flex items-start gap-3`}>
                 <Portrett navn="rampenissen" />
