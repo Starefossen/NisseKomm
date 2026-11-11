@@ -326,6 +326,8 @@ def selftest():
     medie.selftest()
     with tempfile.TemporaryDirectory() as t:
         root = Path(t)
+        # images missing from rows fall back to their sidecar in MEDIA_DIR; never read the real library here
+        old_media, os.environ["MEDIA_DIR"] = os.environ.get("MEDIA_DIR"), str(root / "media")
         (root / "docs/manus").mkdir(parents=True)
         (root / medie.JULIUS_MS).write_text("".join(
             f"## Dag {d} (x)\n**Replikk:** «Hei {d}»\n- Varighet: 8 s\n- Handling: smil\n- Kulde: ingen\n" for d in (1, 2, 3)))
@@ -405,6 +407,9 @@ def selftest():
         v_after = json.loads(v_file.read_text())
         assert "vurdering" not in v_after.get("video/julius/dag-01.mp4", {})
         assert v_after.get("video/julius/dag-01.mp4", {}).get("notat") == "fikse"
+        os.environ.pop("MEDIA_DIR")
+        if old_media is not None:
+            os.environ["MEDIA_DIR"] = old_media
     print("selvtest ok")
 
 
