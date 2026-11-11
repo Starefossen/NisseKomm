@@ -588,7 +588,7 @@ export const DAGER = [
     brikkeH:
       "1,5 m grønt gavebånd med sju sølvmerker med lik avstand og en tegnet sløyfe før merke 1. Sju små kort fra dag17-baandkort.pdf teipes ved merkene: 1 ✱, 2 tegn O, 3 ✱, 4 ✱, 5 tegn L, 6 ✱, 7 ✱ (✱-kortene har tegn i hjørnet). Båndet rundt Rampenissen og stolen med én enkel sløyfe. Lapp fra Rampenissen (ved løsepengebrevet, håndskrevet): «Strekk båndet ut mellom to stoler, og les fra sløyfen. – R»",
     brikkeS:
-      "Julius: «Det man kan høre på himmelen, sa de gamle. Nissene sier det er himmelen som sender brev tilbake: grønt, bølgende, over fjellene, og bare når det er mørkt nok.»",
+      "Julius: «De gamle her oppe hadde et navn på det grønne lyset. De sa at himmelen snakket når det kom. Nissene sier det er himmelen som sender brev tilbake: grønt, bølgende, over fjellene, og bare når det er mørkt nok.»",
     slikLoses: [
       "H9 løsner sløyfen, strekker båndet mellom to stoler og leser fra sløyfen.",
       "K12 slår opp tegnene på tavla: _ O _ _ L _ _.",
@@ -693,7 +693,7 @@ export const DAGER = [
     brikkeH:
       "fem puter i tydelig ulik størrelse inne i fortet, hulter til bulter. Bruk hva som helst som er pute: sofaputer, pynteputer, en hodepute, en barnepute; det viktige er at ingen to er like store. Under den nest største: tegn U. Under den fjerde største: tegn B. Under de tre andre ✱ (med tegn i hjørnet). Grønt måne-kort under den minste. Skiltet «KUN FOR SIGMAS. 6-7.» ved inngangen. Lapp fra Rampenissen (ved inngangen til fortet, håndskrevet): «Putene lå etter størrelse, den største som nummer én. Så veltet jeg. Unnskyld. – R»",
     brikkeS:
-      "Julius: «IQ ga sledemotoren det samme som biler får når de skal forbi noen i bakken. Han sier det med armene, og motoren hviner når han sier det.» Deretter varselet og, i siste segment: «Jeg har bedt om én port. Den står der jeg tegnet sirkelen på Trixters kart.»",
+      "Julius: «IQ ga sledemotoren det samme som biler får når de skal forbi noen i bakken. IQ elsker ordet. Han roper det hver gang motoren starter, og motoren hviner tilbake.» Deretter varselet og, i siste segment: «Jeg har bedt om én port. Den står der jeg tegnet sirkelen på Trixters kart.»",
     slikLoses: [
       "H9 henter putene ut og legger dem etter størrelse.",
       "K12 slår opp tegnene: _ U _ B _.",

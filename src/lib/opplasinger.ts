@@ -128,7 +128,7 @@ export const OPPLASINGER: readonly Opplasing[] = bygg();
 export const FJAER_MAAL = 8;
 // No digits (number codes); «åtte» is written out
 export const FJAER_VARSEL =
-  "RAMPENISSEN: Floke har funne åtte uglefjær. ÅTTE. Ho har skrevet nåkka om det, og IQ la det i MORO-mappa på NisseNet. Æ har ikkje lest det. Jo.";
+  "RAMPENISSEN: Floke har funne åtte uglefjær. ÅTTE. Ho har skrive nåkka om det, og IQ la det i MORO-mappa på NisseNet. Æ har ikkje lest det. Jo.";
 
 export const opplasingerPaaDag = (dag: number) =>
   OPPLASINGER.filter((o) => o.dag === dag);

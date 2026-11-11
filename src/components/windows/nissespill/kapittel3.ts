@@ -645,7 +645,7 @@ export const KAPITTEL_3: Kapittel = {
           navn: "Den store krystallen",
           rect: { x: 0, y: 56, w: 14, h: 44 },
           smart: "se",
-          se: "En krystall høyere enn Floke, med ei lapp nederst: «NR. 1». Den første. Noen begynte her, en gang, med stor tro på det. Lappen er skrevet med samme skrift som lappen på IQs dør. Yngre skrift. Samme hånd.",
+          se: "En krystall høyere enn Floke, med en lapp nederst: «NR. 1». Den første. Noen begynte her, en gang, med stor tro på det. Lappen er skrevet med samme skrift som lappen på IQs dør. Yngre skrift. Samme hånd.",
           prat: "Du hvisker «nummer én» til den store krystallen. Lyset inni den flytter seg litt, som om den hørte navnet sitt. Det gjorde den sikkert ikke. Du går likevel litt lenger unna.",
         },
         {

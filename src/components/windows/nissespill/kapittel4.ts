@@ -834,7 +834,7 @@ export const KAPITTEL_4: Kapittel = {
             {
               hvis: "k4_ferdig",
               tekst:
-                "«Avgangslisten er komplett. Tre av tre. Eg har aldri hatt tre av tre. Eg vet ikkje helt hva eg skal gjøre med hendene. Eg tror eg skal ta av en runde til.»",
+                "«Avgangslisten er komplett. Tre av tre. Eg har aldri hatt tre av tre. Eg vet ikkje helt ka eg skal gjøre med hendene. Eg tror eg skal ta av en runde til.»",
             },
             {
               hvis: "klar_til_stempel",
@@ -917,7 +917,7 @@ export const KAPITTEL_4: Kapittel = {
           tekst:
             "«I fjor sto Julius og ventet på punkt én mens punkt tre hylte, og ingen gjorde noe, for rekkefølgen. Det var ikkje byråkrati. Det var dumt. Eg skrev det opp.» Han viser lappen. Det står «DUMT». Understreket.",
           rampenissen:
-            "«Han har skrive ‘dumt’ på ei lapp om sæ sjøl. Det e det modigaste æ har sett i Snøfall.»",
+            "«Han har skrive ‘dumt’ på en lapp om sæ sjøl. Det e det modigaste æ har sett i Snøfall.»",
           valg: [{ tekst: "Respekt, Winter." }],
         },
         talg: {
@@ -936,7 +936,7 @@ export const KAPITTEL_4: Kapittel = {
         },
         skjerf: {
           tekst:
-            "Winter ser ned på skjerfet. «To runder i dag. Det er mildere. Eg vet ikkje hvorfor. Det er ingen paragraf for det.» Han retter på skriveplata. «Eg har det bra. Takk for at du spurte. Ingen spør. Eg har et skjema for det, og det er tomt.»",
+            "Winter ser ned på skjerfet. «To runder i dag. Det er mildere. Eg vet ikkje korfor. Det er ingen paragraf for det.» Han retter på skriveplata. «Eg har det bra. Takk for at du spurte. Ingen spør. Eg har et skjema for det, og det er tomt.»",
           rampenissen:
             "«Han har tatt av en runde! Det e tøvær i Winter! Nån må ring IQ, det e sikkert vitenskap.»",
           valg: [{ tekst: "Vi spør igjen i morgen." }],
@@ -1080,7 +1080,7 @@ export const KAPITTEL_4: Kapittel = {
         R +
           "«Magneten har tak i bjella. Dra ho opp, og tenk på kor ho ska henge. Winter sa det. Æ sa det. Sleden sa det nesten.»",
         R + "«BRUK vedkassa for å dra opp bjella. Så ned te byporten.»",
-        R + "«Bruk lykkebjella på sleden innenfor byporten.»",
+        R + "«Bruk lykkebjella på sleden innafor byporten.»",
       ],
     },
     {

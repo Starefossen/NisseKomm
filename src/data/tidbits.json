@@ -13,7 +13,7 @@
       },
       {
         "fraDag": 5,
-        "tekst": "Psst. Æ har spist opp alle pepperkakan. Ikkje si det til Hjerterud."
+        "tekst": "Psst. Æ har spist opp alle pepperkakan. Ikkje si det te Hjerterud."
       },
       {
         "fraDag": 8,
@@ -63,7 +63,7 @@
       {
         "fraDag": 1,
         "ord": ["RAMPENISSEN", "RAMPEN"],
-        "tekst": "Det er meg! Men jeg er ikke en kode. Jeg er mye bedre enn en kode."
+        "tekst": "Det e mæ! Men æ e ikkje en kode. Æ e mye bedre enn en kode."
       },
       {
         "fraDag": 1,
@@ -392,7 +392,7 @@
     {
       "fraDag": 16,
       "dag": 16,
-      "tekst": "Rampenissen innrømmer: pakken merket «IKKE RIST» ble ristet. Litt. For sikkerhets skyld."
+      "tekst": "Rampenissen innrømmer: brødboksen var en trang seng. Lokket var en fin hatt."
     },
     {
       "fraDag": 17,
@@ -412,7 +412,7 @@
     {
       "fraDag": 20,
       "dag": 20,
-      "tekst": "Rampenissen: «Fortet har plass til tre. Fire vess en av dem e Hanna.»"
+      "tekst": "Rampenissen: «Fortet har plass te tre. Fire vess en av dem e Hanna.»"
     },
     {
       "fraDag": 21,
