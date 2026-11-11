@@ -227,7 +227,7 @@ export function murMesh(port: number) {
 function grotteMesh(lengde: number) {
   const m = new Mesh();
   const l = lengde * SKALA;
-  m.box([0, -0.6, -l / 2], [0.8 * SPOR * 2, 1, l], hex(0x050816));
+  m.box([0, 0.1, -l / 2], [0.8 * SPOR * 2, 0.6, l], hex(0x050816));
   for (const s of [-1, 1])
     m.box([s * 0.8 * SPOR, 0.2, -l / 2], [1.2, 0.4, l], hex(0x00ff8a), 1);
   return m.build();
