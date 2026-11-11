@@ -21,6 +21,13 @@
     "ikke": ["Julenissen Julius", "julenisse-Julius"]
   },
   {
+    "id": "pil",
+    "navn": ["Pil", "PIL"],
+    "pronomen": "han",
+    "fra_dag": 1,
+    "ikke": ["Pila", "jenta Pil", "Pil, hun"]
+  },
+  {
     "id": "rampenissen",
     "navn": ["Rampenissen"],
     "pronomen": "han",
