@@ -42,7 +42,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** sitter i sukkerskålen med teskje, tatt på fersken.
 
-**Klipp:** «God morra! Rampenissen her, direkte fra… ei skål. Hør, det SMALT i Snøfall i natt. Tre sikringa. Pang, pang, pang. IQ sei det ikkje va kaffetraktern. Det va kaffetraktern, sjø. Og æ blei så skremt at æ trengt nåkka søtt. Litt. Ei teskje. Kanskje to. Kanskje æ sovna i skåla. Det e ikkje bevist. Dokker fikk linja til å bær i går, forresten, heile verkstedet hørt det! IQ ropt så høgt at Hjerterud kom med teppe. I dag e Kanal to heilt mørk, og IQ spring rundt med lommelykt i munnen. Æ hjelpe til heimefra. Fra skåla. Over.»
+**Klipp:** «God morra! Rampenissen her, direkte fra… ei skål. Hør, det SMALT i Snøfall i natt. Tre sikringa. Pang, pang, pang. IQ sei det ikkje va kaffetraktern. Det va kaffetraktern, sjø. Og æ blei så skremt at æ trengt nåkka søtt. Litt. Ei teskje. Kanskje to. Kanskje æ sovna i skåla. Det e ikkje bevist. Dokker fikk linja til å bær i går, forresten, heile verkstedet hørt det! IQ ropt så høgt at Hjerterud kom med teppe. I dag e Kanal to heilt mørk, og IQ spring rundt med ei lita lampe i munnen. Æ hjelpe til heimefra. Fra skåla. Over.»
 
 **intro_hint:** «Han ringte inn fra en skål. Han ville ikke si hva slags skål.»
 
