@@ -829,14 +829,14 @@ export const KAPITTEL_3: Kapittel = {
           tekst:
             "Summingen fortsetter, dyp og rolig. Den vet ikke at dere er her.",
           rampenissen:
-            "«Nei. Ikkje i dag. Det har ikkje hørt en stemme på mange år, og den første ska ikkje vær mi. La det få lyset først. Ord kjem seinare, fra nån som e flinkare te det enn mæ.»",
+            "«Nei. Ikkje i dag. Det har vært aleina lenge, og den første stemmen det hører igjen, ska ikkje vær mi. La det få lyset først. Ord kjem seinare, fra nån som e flinkare te det enn mæ.»",
           valg: [{ tekst: "Greit." }],
         },
         svar: {
           tekst:
             "Dere står stille. Summingen fortsetter, dyp og rolig. Lanterna lyser på den nederste hylla, og krystallene sender lyset bortover til veggen. Ingenting forandrer seg. Og likevel.",
           rampenissen:
-            "«Det merka oss ikkje. Det e greit. Lyset e ikkje for at det ska sjå oss. Det e for at det ikkje ska vær heilt mørkt der nede. Vi går no. Æ sa det ikkje så høgt. Det e nytt.»",
+            "«Det merka oss ikkje. Det e greit. Lyset e ikkje for at det ska se oss. Det e for at det ikkje ska vær heilt mørkt der nede. Vi går no. Æ sa det ikkje så høgt. Det e nytt.»",
           valg: [{ tekst: "Vi går. Lyset blir.", flagg: "k3_ferdig" }],
         },
       },
