@@ -52,6 +52,7 @@ Hver fil får en sidefil `<fil>.meta.json` som inventaret bruker.
 ## Beslutninger
 
 - Julius lages fra `ref-v3.jpg`.
+- Winter lages fra `assets/characters/winter/ref-v1-outside.jpg` og `ref-v1-tophat.jpg` (portrett, `spill/torget.jpg`, `port-winter`, `landsby-winter`; gitignorert som Julius' ref).
 - Julius-innslag klippes med vekslende utsnitt (annethvert innslag 1,15x nærmere), harde kutt og sammenhengende lyd.
 - Mykere klikk i opptaksfilteret (kort, dempet «tape»-dunk).
 - Rampenissen: stemmen Fenrir, nordlandsk tonefall, +4 halvtoner, -16 LUFS. Teksten er bokmål.

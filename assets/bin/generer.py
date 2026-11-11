@@ -42,15 +42,23 @@ EXIT_LIMIT = 75  # EX_TEMPFAIL: try again after the quota resets
 LIMIT_RE = re.compile(r"per day|spending cap|Stoppet: (dagsgrensen|månedlig)", re.I)
 SLEDE = ("tundra", "nordtoppen", "muren", "julenatt")  # prompts: assets/locations/sledeflukt/varianter
 SLEDE_REF = "assets/locations/snofall-landsby/nokkelramme-rolig.jpg"
+WINTER_REFS = ("assets/characters/winter/ref-v1-outside.jpg", "assets/characters/winter/ref-v1-tophat.jpg")  # gitignored
+# Ugleposten pixel portraits: name -> (prompt, refs); output spill/portrett-<name>.png (portrett.sh + piksel.sh)
+PORTRETT = {"winter": ("assets/characters/winter/portrett.prompt.txt", WINTER_REFS)}
 # Ugleposten scene stills (nissespill/kapittel1-4.ts): id -> (reference, prompt); output spill/<id>.jpg
 SPILL = {
     "iq-verksted": ("assets/locations/iq-verksted/vidvinkel-tom.jpg", "assets/locations/iq-verksted/varianter/spill.still.prompt.txt"),
     "julius-kontor": ("assets/locations/julius-kontor/ref-tom.jpg", "assets/locations/julius-kontor/varianter/spill.still.prompt.txt"),
     "antenne-tarn": ("assets/locations/antenne-tjern/ref.jpg", "assets/locations/antenne-tjern/varianter/spill.still.prompt.txt"),
     "kulde-grotte": ("assets/locations/krystallgrotten/ref.jpg", "assets/locations/krystallgrotten/varianter/spill.still.prompt.txt"),
+    "torget": ("assets/locations/snofall-landsby/nokkelramme-rolig.jpg", "assets/locations/snofall-landsby/varianter/torget-spill.still.prompt.txt",
+               *WINTER_REFS),
 }
-STILL_SH = ('mkdir -p "$(dirname "$3")" && bash "$4/still.sh" "$1" "$2" "$3" && '
-            'python3 "$4/medie.py" skriv still.sh "$3" "$2" - gemini-3-pro-image "$1"')
+STILL_SH = ('mkdir -p "$(dirname "$3")" && bash "$4/still.sh" "$1" "$2" "$3" "${@:5}" && '
+            'python3 "$4/medie.py" skriv still.sh "$3" "$2" - gemini-3-pro-image "$1" "${@:5}"')
+PORTRETT_SH = ('mkdir -p "$(dirname "$3")" "$5" && bash "$4/portrett.sh" "$2" "$5/$(basename "$3")" "${@:6}" && '
+               'bash "$4/piksel.sh" "$5/$(basename "$3")" "$3" && '
+               'python3 "$4/medie.py" skriv portrett.sh "$3" "$2" - gemini-3-pro-image "${@:6}"')
 RETRY_RE = re.compile(r'retryDelay"?:\s*"?(\d+)s|retry in ([\d.]+)\s*s', re.I)
 
 # Named tests: one Julius clip each, made with julius.sh into assets/out/<name>.mp4.
@@ -119,6 +127,8 @@ def item_path(item_id: str) -> str:
         return f"feed/slede-{key}.jpg"
     if cat == "spill":
         return f"spill/{key}.jpg"
+    if cat == "portrett":
+        return f"spill/portrett-{key}.png"
     if cat in ("tv", "port"):
         return f"video/tv/{key}.mp4"
     if cat == "musikk":
@@ -131,8 +141,7 @@ def tv_jobs():
     return out.split()
 
 
-# Held until Hans has made new base images of Winter (todo.md: Winters karakterdesign).
-VENTER = {"port:port-winter", "tv:landsby-winter"}
+VENTER = set()  # item ids held back from the queue
 
 
 def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force=False):
@@ -177,11 +186,18 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
             # still.sh makes the image; medie.py skriv records the sidecar so it counts as current
             q.append((f"slede:{v}", "slede", 0, ["bash", "-c", STILL_SH, "_", str(root / SLEDE_REF),
                                                  str(root / prompt), str(media_dir() / p), str(BIN)]))
-    for n, (ref, prompt) in SPILL.items():
+    for n, (ref, prompt, *extra) in SPILL.items():
         p = f"spill/{n}.jpg"
         if should_queue(p, st.get(p, medie.MISSING)):
             q.append((f"spill:{n}", "spill", 0, ["bash", "-c", STILL_SH, "_", str(root / ref),
-                                                 str(root / prompt), str(media_dir() / p), str(BIN)]))
+                                                 str(root / prompt), str(media_dir() / p), str(BIN),
+                                                 *(str(root / e) for e in extra)]))
+    for n, (prompt, refs) in PORTRETT.items():
+        p = f"spill/portrett-{n}.png"
+        if should_queue(p, st.get(p, medie.MISSING)):
+            q.append((f"portrett:{n}", "portrett", 0, ["bash", "-c", PORTRETT_SH, "_", "", str(root / prompt),
+                                                       str(media_dir() / p), str(BIN), str(root / "assets/out"),
+                                                       *(str(root / r) for r in refs)]))
     p_music = "music/rampenissen-synger.mp3"
     if should_queue(p_music, st.get(p_music, medie.MISSING)):
         q.append(("musikk:rampenissen-synger", "musikk", 0, ["bash", str(BIN / "rampenissen-tts.sh"), "synger"]))
@@ -328,7 +344,8 @@ def selftest():
                 {"path": "video/tv/landsby-rolig.mp4", "status": medie.UNKNOWN},
                 {"path": "music/rampenissen-synger.mp3", "status": medie.CURRENT},
                 *({"path": f"feed/slede-{v}.jpg", "status": medie.CURRENT} for v in SLEDE),
-                *({"path": f"spill/{n}.jpg", "status": medie.CURRENT} for n in SPILL)]
+                *({"path": f"spill/{n}.jpg", "status": medie.CURRENT} for n in SPILL),
+                *({"path": f"spill/portrett-{n}.png", "status": medie.CURRENT} for n in PORTRETT)]
         q = queue(rows, ["landsby-rolig", "landsby-morgen", "port-iq"], root)
         assert [i[0] for i in q] == ["test-klementin", "julius:2", "julius:3", "tv:landsby-morgen", "port:port-iq"], q
         # sleigh stills: queued when missing, as images (estimate 0, so never counted against the video quota)
@@ -338,6 +355,9 @@ def selftest():
         assert sorted(i[0] for i in qp if i[1] == "spill") == sorted(f"spill:{n}" for n in SPILL)
         assert all(i[2] == 0 for i in qp if i[1] == "spill") and item_path("spill:torget") == "spill/torget.jpg"
         assert item_path("slede:muren") == "feed/slede-muren.jpg"
+        assert item_path("portrett:winter") == "spill/portrett-winter.png"
+        qr = queue([r for r in rows if r["path"] != "spill/portrett-winter.png"], [], root, til_dag=0)
+        assert [i[0] for i in qr if i[1] == "portrett"] == ["portrett:winter"], qr
         calls, made = [], set()
 
         def fake(cmd, env, fail_on=3):

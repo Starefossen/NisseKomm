@@ -16,7 +16,9 @@ M="python3 $A/bin/medie.py"
 # unknown (made before the inventory) counts as keep; only stale or missing is remade
 want() { [ -n "$LIST" ] && { echo "$1"; return 1; }; [ -z "$ONLY" ] || [ "$ONLY" = "$1" ]; }
 keep() { want "$(basename "$1" .mp4)" || return 0; [ -z "$FORCE" ] && [ -f "$1" ] && [ "$($M status "$1" | head -1)" != stale ]; }
-meta() { $M skriv tv-loops.sh "$1" "$2" - gemini-omni-1.2-flash "$3"; } # out prompt image
+meta() { $M skriv tv-loops.sh "$1" "$2" - gemini-omni-1.2-flash "${@:3}"; } # out prompt image [ref]
+# Winter's look comes from his reference photo (gitignored, like Julius' ref-v3.jpg)
+ref() { case $1 in *winter) echo "$A/characters/winter/ref-v1-outside.jpg" ;; esac; }
 job() { # name base-image location variant
   local name=$1 img=$2 loc=$3 var=$4
   keep "$T/$name.mp4" && return 0
@@ -76,9 +78,10 @@ first() { # state loop -> its first frame as jpg
 ejob() { # name state event: one event clip for a state loop
   keep "$T/$1.mp4" && return 0
   local key; key=$(first "$2") || return 1
-  "$A/bin/loop.sh" "$key" "$LV/hendelse-$3.prompt.txt" "$1.raw" 10 \
+  local r; r=$(ref "$3")
+  "$A/bin/loop.sh" "$key" "$LV/hendelse-$3.prompt.txt" "$1.raw" 10 $r \
     && "$A/bin/anchor.sh" "$A/out/$1.raw.mp4" "$key" "$T/$1.mp4" \
-    && meta "$T/$1.mp4" "$LV/hendelse-$3.prompt.txt" "$key"
+    && meta "$T/$1.mp4" "$LV/hendelse-$3.prompt.txt" "$key" $r
 }
 for e in brevfugler julius nissemor iq winter reinsdyr hverdag aking marked tarnklokke stjerneskudd; do ejob "landsby-$e" landsby-rolig "$e"; done
 for e in brevfugler hverdag reinsdyr; do ejob "landsby-morgen-$e" landsby-morgen "$e"; done
@@ -88,9 +91,10 @@ for e in stjerneskudd tarnklokke reinsdyr; do ejob "landsby-natt-$e" landsby-nat
 PK="$L/snofall-landsby/port-nokkelramme.jpg"
 for c in julius nissemor iq winter; do
   keep "$T/port-$c.mp4" && continue
-  "$A/bin/loop.sh" "$PK" "$LV/port-$c.prompt.txt" "port-$c.raw" 10 \
+  r=$(ref "$c")
+  "$A/bin/loop.sh" "$PK" "$LV/port-$c.prompt.txt" "port-$c.raw" 10 $r \
     && "$A/bin/anchor.sh" "$A/out/port-$c.raw.mp4" "$PK" "$T/port-$c.mp4" \
-    && meta "$T/port-$c.mp4" "$LV/port-$c.prompt.txt" "$PK"
+    && meta "$T/port-$c.mp4" "$LV/port-$c.prompt.txt" "$PK" $r
 done
 [ -n "$LIST$ONLY" ] && exit 0
 ls "$T"
