@@ -112,6 +112,7 @@ const SPILL: Tool[] = [
     label: "SLEDEFLUKT",
     color: "blue",
     unlock: "SLEDEFLUKT",
+    hint: "IQ SMØRER MEDARNE",
   },
   {
     window: "nissemusikk",
@@ -576,7 +577,7 @@ export default function Home() {
                                             setLockedMsg(
                                               n === 1
                                                 ? `Rampenissen: «Heisann, ikkje så fort! ${t.label} e klar i morra.»`
-                                                : `${t.hint}. Rampenissen: «Ho-ho, vent ${n ?? "nokka"} daga te!»`,
+                                                : `${t.hint ?? "LÅST"}. Rampenissen: «Ho-ho, vent ${n ?? "nokka"} daga te!»`,
                                             );
                                           }
                                         : undefined
