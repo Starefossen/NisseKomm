@@ -78,7 +78,7 @@ export const STEDER: readonly Sted[] = [
     z: 7500,
     r: 1600,
     dag: 8,
-    radio: "Gårdan! Her bor dem som gir Rudolf mat. Vink!",
+    radio: "Gårdan! Her bor dem som gir Trixter mat. Vink!",
   },
   {
     id: "nordtoppen",

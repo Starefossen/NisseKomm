@@ -209,7 +209,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
     dag: 19,
     navn: "Tindeflukten",
     intro:
-      "Tindene stikker opp som tenner. Opp i god tid, Rudolf liker ikke stein i pelsen.",
+      "Tindene stikker opp som tenner. Opp i god tid, Trixter liker ikke stein i pelsen.",
     lengde: 46000,
     fart: 950,
     blanding: {
@@ -1192,7 +1192,7 @@ export const RADIO: Record<string, readonly string[]> = {
   ],
   utfordring: ["Utfordring klart! Æ sei det på Morgenrådet i morra."],
   mål: [
-    "I mål! Rudolf vil ha nåkka godt og æ vil ha kaffe.",
+    "I mål! Trixter vil ha nåkka godt og æ vil ha kaffe.",
     "Landa! IQ nikke. Det e det nærmaste han kjem et smil.",
   ],
   sprang: ["SPRANG! Hold dæ fast, det her e ikkje lov på jorda."],
@@ -1202,7 +1202,7 @@ export const RADIO: Record<string, readonly string[]> = {
     "Låst, sjø. Kom tilbake når dagen kjem.",
   ],
   snu: [
-    "Hei! Lysgardina e enden på kartet. Snu, Rudolf!",
+    "Hei! Lysgardina e enden på kartet. Snu, Trixter!",
     "Lenger enn det her flyg vi ikkje i kveld. Snu!",
   ],
   grotte: ["Lyset nådde ned i grotta! Krystallan blinke."],
