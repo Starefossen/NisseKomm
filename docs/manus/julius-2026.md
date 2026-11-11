@@ -84,17 +84,17 @@ Kulde-nivå 1. Svak knitring, lett snø. Morgensangen for første gang, og den s
 
 ## Dag 3 (to) – Rimfrost på Ruten · PRISME · grønt hjerte
 
-Kulde-nivå 1 med ett kort blått blaff i bildet i segment 3 (første spor av grotten). Pil presenteres i segment 2 (første gang barna hører navnet).
+Kulde-nivå 1 med ett kort blått blaff i bildet i segment 3 (første spor av grotten). Pil (IQs lærling, «han») presenteres i segment 2 (første gang barna hører navnet).
 
 1. **Replikk:** «Ja, hallo? Jo, der kom lyset på. Gooood morgen, Snøfall! Lampen er sen i dag, akkurat som meg. Strekk armene i været, alle sammen. Sånn.»
    - Varighet: 15 s (25 ord)
    - Handling: Myser mot lampen, så strekker han venstre arm rett opp over hodet og stønner fornøyd.
    - Kulde: Lampen tenner et halvt sekund forsinket.
-2. **Replikk:** «Hanna, kan du tegne en stjerne i lufta? Sånn. Pil, hun som passer krystallene våre, tegnet ti på arket mitt i natt. Ingen er like.»
-   - Varighet: 15 s (25 ord)
+2. **Replikk:** «Hanna, kan du tegne en stjerne i lufta? Sånn. Pil, lærlingen til IQ, tegnet ti på arket mitt i natt. Ingen er like.»
+   - Varighet: 14 s (23 ord)
    - Handling: Tegner en stjerne i luften med venstre hånd, så ser han ned på arket foran seg og smiler.
    - Kulde: Svak knitring.
-3. **Replikk:** «I natt kom det et sånt mønster på linjen vår. Og Orakelet så et blått glimt på åttifem komma null. Et sted vi ikke sender fra.»
+3. **Replikk:** «I natt kom det rimmønster på linjen vår, som på arket. Orakelet så et blått glimt på åttifem komma null. Et sted vi ikke sender fra.»
    - Varighet: 15 s (26 ord)
    - Handling: Legger venstre hånd flatt på den åpne boka, sitter helt stille.
    - Kulde: Ett blått blaff over hele bildet, et halvt sekund, idet han sier «blått glimt».
@@ -234,7 +234,7 @@ Kulde-nivå 1. Rim på vinduet, synlig pust. Mikrofonen «sitter fast» i hånda
 
 ## Dag 9 (on) – Krystall-Matematikk · 24 · blått hjerte
 
-Kulde-nivå 1. Rim, synlig pust, svak knitring. Morgensangen, andre forsøk, og denne gangen går den. Pil ble lurt to ganger i natt (som på radioen og i e-posten) før hun telte på nytt.
+Kulde-nivå 1. Rim, synlig pust, svak knitring. Morgensangen, andre forsøk, og denne gangen går den. Pil ble lurt to ganger i natt (som på radioen og i e-posten) før han telte på nytt.
 
 1. **Replikk:** «Gooood morgen, Snøfall! Niende desember, favorittdagen min. Og morgensangen, andre forsøk: God morgen, kopp. God morgen, bok. God morgen, Håkon, Hanna, Kristian. Og god morgen, Pil!»
    - Varighet: 15 s (26 ord)
@@ -248,7 +248,7 @@ Kulde-nivå 1. Rim, synlig pust, svak knitring. Morgensangen, andre forsøk, og 
    - Varighet: 14 s (23 ord)
    - Handling: Sprer fingrene på venstre hånd og holder dem opp mot lampelyset hele segmentet.
    - Kulde: Rim på vinduet glitrer når han løfter hånden.
-4. **Replikk:** «Pil ble lurt to ganger i natt. Så satte hun seg ned med lupen. Pil telte armene tre ganger. Seks hver gang på de ekte.»
+4. **Replikk:** «Pil ble lurt to ganger i natt. Så satte han seg ned med lupen. Pil telte armene tre ganger. Seks hver gang på de ekte.»
    - Varighet: 15 s (25 ord)
    - Handling: Holder opp fem fingre og tommelen på venstre hånd og teller dem én og én, langsomt.
    - Kulde: Synlig pust.
@@ -311,8 +311,8 @@ Kulde-nivå 2 (senket fra 3, intensitetskurven). Kraftig knitring, bildet hopper
 
 Kulde-nivå 2. Rim, synlig pust, bildet fryser 1–2 s i segment 3. Julius innrømmer at han ikke trodde Rampenissen, og sier han skal ringe og si unnskyld; radioen samme morgen («Julius sa i går kveld at æ innbilt mæ det») og dag 13 («Julius sa unnskyld») stemmer uansett rekkefølge.
 
-1. **Replikk:** «Goooood morgen, Snøfall! Jeg tok feil i går, og det skal jeg innrømme i dag. Det er ikke lett, ikke engang for meg.»
-   - Varighet: 14 s (23 ord)
+1. **Replikk:** «Goooood morgen, Snøfall! Jeg tok feil i går, og det skal jeg innrømme i dag. Det skjer ikke ofte. Spør Hjerterud. Hun har en liste.»
+   - Varighet: 15 s (25 ord)
    - Handling: Sitter rolig, legger venstre hånd på bordet og lar den ligge.
    - Kulde: Synlig pust.
 2. **Replikk:** «Rapport fra Rampenissen: «Æ har laga ei lydbølge. Av dorull. Heile kjøkkenet.» En hel rull, folkens. Jeg lo så trekoppen hoppet. Hjerterud lo ikke.»
@@ -340,8 +340,8 @@ Kulde-nivå 1. Rim, synlig pust, svak knitring.
    - Varighet: 14 s (23 ord)
    - Handling: Holder opp tre fingre på venstre hånd, så snuser han i luften og smiler.
    - Kulde: Synlig pust.
-2. **Replikk:** «Rapport fra Rampenissen: «Æ har spist elleve lussekatta. Æ e nesten død no. Kosedyra sørge.» Død! Av boller. Jeg har vært nær selv. Hjerterud teller mine.»
-   - Varighet: 15 s (26 ord)
+2. **Replikk:** «Rapport fra Rampenissen: «Æ har spist elleve lussekatta. Æ e død no. Kosedyra sørge.» Død! Av boller. Jeg har vært nær selv. Hjerterud teller mine.»
+   - Varighet: 15 s (25 ord)
    - Handling: Tar opp et ark fra brevbunken med venstre hånd, leser, og ler rungende.
    - Kulde: Svak knitring.
 3. **Replikk:** «I natt sto Kulde og så på Lucia-lysene gjennom linjen. Lenge. Den tok ingenting. Den bare så. Jeg vet ikke hva jeg skal mene om det.»
@@ -650,7 +650,7 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 | --- | ------------ | --- | ------ | ------- | ----- | ------- | ---------------------------------- | --------------------------------------------------------------------- |
 | 1   | SIGNAL       | 149 | 74     | 88      | 6     | 26      | 0 % (bruk, ingen bokstaver)        | Omskrevet 11. nov (flyt, seks segm.); 85,0-hale i appen, ikke i filen |
 | 2   | 48           | 118 | 59     | 70      | 5     | 26      | regel, ingen tall                  | Morgensangen første gang (skjærer seg)                                |
-| 3   | PRISME       | 123 | 62     | 73      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                       |
+| 3   | PRISME       | 121 | 60     | 72      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                       |
 | 4   | KOMPASS      | 125 | 62     | 74      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5), video regenereres               |
 | 5   | ULRIKEN      | 117 | 58     | 70      | 5     | 26      | nøkkel som oppslag (dag 2)         | Segm. 4 ny: «like mange som sikringer onsdag»                         |
 | 6   | LYKT         | 122 | 61     | 72      | 5     | 26      | 0 % (velger figur)                 |                                                                       |
@@ -659,8 +659,8 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 | 9   | 24           | 125 | 62     | 74      | 5     | 26      | armer (6), ikke antall, ikke regel | Låst brikke delt over segm. 4–5; morgensangen andre gang (går)        |
 | 10  | SPEKTER      | 128 | 64     | 74      | 5     | 26      | 0 %                                | Brikken gjentas i segm. 5 pga. hakking (låst)                         |
 | 11  | 75           | 122 | 61     | 72      | 5     | 26      | to regler, ingen tall              | Segm. 4 ny («ender på fem»), segm. 5 nytt                             |
-| 12  | MELODI       | 123 | 62     | 73      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                  |
-| 13  | SAFRAN       | 126 | 63     | 74      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                       |
+| 12  | MELODI       | 125 | 62     | 74      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                  |
+| 13  | SAFRAN       | 125 | 62     | 74      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                       |
 | 14  | ORIGAMI      | 124 | 62     | 73      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                  |
 | 15  | KARAMELL     | 128 | 64     | 75      | 5     | 26      | 0 %                                | Låst brikke er 26 ord alene; «Han spiste ikke engang det» i segm. 5   |
 | 16  | SORTERING    | 126 | 63     | 73      | 5     | 26      | 0 %                                | Brikken sier «stor S» (låst); morgensangen tredje gang (lampen)       |
@@ -673,4 +673,4 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 | 23  | STJERNEKLART | 123 | 62     | 73      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 3–4                                       |
 | 24  | JULEMAGI     | 151 | 76     | 89      | 6     | 26      | 0 %                                | Låst brikke (50 ord) delt over segm. 4–6; morgensangen går hele veien |
 
-Sum: 3 034 ord, snitt 126 per dag (cirka 60 s tale, 70 s med klippause). Ingen segmenter over 26 ord; alle klipp 13–15 s.
+Sum: 3 033 ord, snitt 126 per dag (cirka 60 s tale, 70 s med klippause). Ingen segmenter over 26 ord; alle klipp 13–15 s.

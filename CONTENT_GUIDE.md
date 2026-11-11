@@ -141,6 +141,14 @@ Generated from `assets/characters/<id>/entitet.md`, the one source for look, per
 - **Forhold:** rampenissen: sjef; oppgitt, men glad i ham; iq: stoler på oppfinnelsene; winter: sekretær; lar ham passe papirene; hjerterud: venn; drikker kakaoen hennes
 - **Aldri:** «Julenissen Julius», «julenisse-Julius»
 
+#### Pil (`assets/characters/pil/entitet.md`)
+
+- **Navn:** Pil, PIL; **pronomen:** han; **fra dag:** 1
+- **Personlighet:** Ivrig lærling, hjelpsom, spør mye og ser opp til IQ. Litt usikker, men modig.
+- **Stemme:** Nysgjerrig og rask, gleder seg over alt han finner ut. Bokmål.
+- **Forhold:** iq: læremester; Pil er lærlingen hans i verkstedet; hjerterud: baker sammen med henne; julius: sitter i døra på kontoret og tegner krystaller for ham
+- **Aldri:** «Pila», «jenta Pil», «Pil, hun»
+
 #### Rampenissen (`assets/characters/rampenissen/entitet.md`)
 
 - **Navn:** Rampenissen; **pronomen:** han; **fra dag:** 1

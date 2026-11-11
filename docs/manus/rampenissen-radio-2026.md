@@ -1,6 +1,6 @@
 # Rampenissen på Morgenrådet 2026 – radioklipp
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «nesten død», 15 skåla, 23 tempus) etter ja fra Hans.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «død. Nesten.», 15 skåla, 23 tempus) etter ja fra Hans.
 
 Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storyboard-2026.md` (§2 kunnskapstidslinje, §3 radiolinjer), `docs/gaater-2026.md`. Format: `varden-morgenradet.md`.
 
@@ -132,7 +132,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** sin egen begravelse etter elleve lussekatter: serviett, blomst, kosedyr i sørgerekke, skilt «HER HVILER RAMPEN. HAN SPISTE 11.» Helg, 09-sendingen.
 
-**Klipp:** «God Lucia-morra. Dette e Rampenissen, og æ e nesten død. Hjerterud bakt fem hundre bolla til Lucia. Æ spist elleve. Ikkje tolv. Elleve. Kosedyra hold begravelse, og dem e veldig verdige, bortsett fra kaninen som ler. Hilsen fra den andre sida av bordet. Det e ganske koselig her, æ har blomst. Men hør: i går hørt dokker det samme som mæ. Isen sukka. Julius sa unnskyld. Det har aldri skjedd. Og i natt satt Kulde og såg på Lucia-lysan i verkstedet gjennom linja. Bare såg. Tok ingenting. Æ veit ikkje ka æ ska mein om det. Syng høgt i dag. Og ikkje spis elleve. Ti e grensa.»
+**Klipp:** «God Lucia-morra. Dette e Rampenissen, og æ e død. Nesten. Hjerterud bakt fem hundre bolla til Lucia. Æ spist elleve. Ikkje tolv. Elleve. Kosedyra hold begravelse, og dem e veldig verdige, bortsett fra kaninen som ler. Hilsen fra den andre sida. Det e ganske koselig her, æ har blomst. Men hør: i går hørt dokker det samme som mæ. Isen sukka. Julius sa unnskyld. Det har aldri skjedd. Og i natt satt Kulde og såg på Lucia-lysan i verkstedet gjennom linja. Bare såg. Tok ingenting. Æ veit ikkje ka æ ska mein om det. Syng høgt i dag. Og ikkje spis elleve. Ti e grensa.»
 
 **intro_hint:** «Vi har fått en hilsen fra, sitat, den andre siden. Han høres ganske opplagt ut til å være død.»
 
@@ -244,7 +244,7 @@ Ord = talte ord i klippet. Sek = ord / 2,4. «Kode/hvor» = klippet sier ingen b
 | 10  | SPEKTER      | 109 | 45  | 06      | ok              | «rundt i stua» fra historiedok. er tatt ut                                   |
 | 11  | 75           | 101 | 42  | 06      | ok              |                                                                              |
 | 12  | MELODI       | 110 | 46  | 09      | ok              | Glassene nevnes ikke                                                         |
-| 13  | SAFRAN       | 107 | 45  | 09      | ok              |                                                                              |
+| 13  | SAFRAN       | 105 | 44  | 09      | ok              |                                                                              |
 | 14  | ORIGAMI      | 108 | 45  | 06      | ok              |                                                                              |
 | 15  | KARAMELL     | 135 | 56  | 06      | ok              | Verken sukker eller sirup nevnes                                             |
 | 16  | SORTERING    | 110 | 46  | 06      | ok              | «ryddet», aldri «sortere»                                                    |
@@ -257,4 +257,4 @@ Ord = talte ord i klippet. Sek = ord / 2,4. «Kode/hvor» = klippet sier ingen b
 | 23  | STJERNEKLART | 111 | 46  | 06      | ok              |                                                                              |
 | 24  | JULEMAGI     | 112 | 47  | 06      | ok              | «God jul» er høytidsnavnet Julius selv ber dem sette foran                   |
 
-Sum: 2 600 ord, snitt 108 per dag (cirka 45 s).
+Sum: 2 598 ord, snitt 108 per dag (cirka 45 s).
