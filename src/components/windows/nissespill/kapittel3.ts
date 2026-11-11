@@ -826,7 +826,8 @@ export const KAPITTEL_3: Kapittel = {
           valg: [{ tekst: "Greit." }],
         },
         ikkje: {
-          tekst: "Summingen fortsetter, dyp og rolig. Den vet ikke at dere er her.",
+          tekst:
+            "Summingen fortsetter, dyp og rolig. Den vet ikke at dere er her.",
           rampenissen:
             "«Nei. Ikkje i dag. Det har ikkje hørt en stemme på mange år, og den første ska ikkje vær mi. La det få lyset først. Ord kjem seinare, fra nån som e flinkare te det enn mæ.»",
           valg: [{ tekst: "Greit." }],
