@@ -334,14 +334,16 @@
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-julius.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-julius.txt",
-    "tilstand": "landsby-rolig"
+    "tilstand": "landsby-rolig",
+    "refs": ["characters/julius#standard"]
   },
   "tv/landsby-iq": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-iq.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-iq.txt",
-    "tilstand": "landsby-rolig"
+    "tilstand": "landsby-rolig",
+    "refs": ["characters/iq#standard"]
   },
   "tv/landsby-winter": {
     "generator": "loop",
@@ -462,7 +464,8 @@
     "ut": "video/tv/port-julius.mp4",
     "bilde": "locations/porten#standard",
     "mal": "assets/prompts/tv/snofall-landsby/port-julius.txt",
-    "anker": true
+    "anker": true,
+    "refs": ["characters/julius#standard"]
   },
   "tv/port-hjerterud": {
     "generator": "loop",
