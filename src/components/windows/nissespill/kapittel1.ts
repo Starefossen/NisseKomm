@@ -20,7 +20,7 @@ export const KAPITTEL_1: Kapittel = {
   slutt: "k1_ferdig",
   intro: [
     R +
-      "«Psst. Dokker trur kanskje æ bare sitt i hylla og glor? Feil. IQ har kobla kameraan i Snøfall te skjermen dokkers, og no styre dokker Knerten: ull-ugla mi med messingbrilla. Ho e smartare enn ho ser ut.»",
+      "«Psst. Dokker trur kanskje æ bare sitt i hylla og glor? Feil. IQ har kobla kameraan i Snøfall te skjermen dokkers, og no e DOKKER Knerten: ull-ugla mi med messingbrilla. Dokker ser det ho ser, og folk i Snøfall snakke te ho som om det va dokker. Æ sitt her i hylla og hviske. Ingen der borte hør mæ. Heldigvis.»",
     R +
       "«Saka e sånn: Æ sov i ei garnkurv på loftet te IQ heile året. I kurven ligg lykkebjella mi, og uten den finn ikkje sleden fram te stua dokkers på julaften. No e kurven BORTE. Æ har mistanka. Han har skjerf.»",
     R +
@@ -610,7 +610,7 @@ export const KAPITTEL_1: Kapittel = {
               uten: "stempel_vaat",
               neste: "tort",
             },
-            { tekst: "Har du sett Rampenissen?", neste: "rampen" },
+            { tekst: "Kjenner du Rampenissen?", neste: "rampen" },
             { tekst: "Hvorfor har du tre runder med skjerf?", neste: "skjerf" },
             { tekst: "Ha det, Winter." },
           ],
@@ -676,7 +676,7 @@ export const KAPITTEL_1: Kapittel = {
           tekst:
             "«Rampenissen. Han som sov på loftet til IQ i elleve måneder og dro uten å feie. Hvis dere har kontakt med ham: han skylder meg førtito minutter arbeidstid og én blyant.»",
           rampenissen:
-            "«Førtito minutt? Æ brukte to tima på å stable klementinkassan hans! Og blyanten tygde æ på i søvne. Det telle ikkje.»",
+            "«Ikkje sei at æ sitt her og hør på! ... Førtito minutt? Æ brukte to tima på å stable klementinkassan hans! Og blyanten tygde æ på i søvne. Det telle ikkje.»",
           valg: [{ tekst: "Vi skal hilse." }],
         },
         skjerf: {

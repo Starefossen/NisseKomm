@@ -147,9 +147,12 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   const [emne, setEmne] = useState<{ navn: string; ikon?: string } | null>(
     null,
   );
-  const [dialog, setDialog] = useState<{ id: string; node: string } | null>(
-    null,
-  );
+  // `sagt` is the line the kids just chose, shown above the answer
+  const [dialog, setDialog] = useState<{
+    id: string;
+    node: string;
+    sagt?: string;
+  } | null>(null);
   const [puslespill, setPuslespill] = useState<string | null>(null);
   const [notat, setNotat] = useState(false);
   const [introSteg, setIntroSteg] = useState(0);
@@ -325,7 +328,11 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   const tapValg = (v: M.Valg) => {
     SoundManager.playSound("click");
     setSave(M.velgSvar(save, v, dialog?.id));
-    setDialog(v.neste && dialog ? { id: dialog.id, node: v.neste } : null);
+    setDialog(
+      v.neste && dialog
+        ? { id: dialog.id, node: v.neste, sagt: v.tekst }
+        : null,
+    );
   };
 
   const status = holder
@@ -612,6 +619,17 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
 
             {dialog && node && taler && (
               <div className={`${PANEL} space-y-2`}>
+                {dialog.sagt && (
+                  <div className="flex items-start gap-3">
+                    <Portrett navn="knerten" />
+                    <div className="min-w-0">
+                      <p className="text-lg text-(--cold-blue)">
+                        Dere (gjennom Knerten)
+                      </p>
+                      <p className="text-xl leading-tight">«{dialog.sagt}»</p>
+                    </div>
+                  </div>
+                )}
                 <div className="flex items-start gap-3">
                   <Portrett key={taler.portrett} navn={taler.portrett} />
                   <div className="min-w-0">
@@ -625,11 +643,12 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   </div>
                 </div>
                 {node.rampenissen && (
-                  <div className="flex items-start gap-3">
+                  // Rampenissen sits on the shelf at home; nobody in Snøfall hears him
+                  <div className="flex items-start gap-3 pl-6 italic">
                     <Portrett navn="rampenissen" />
                     <div className="min-w-0">
                       <p className="text-lg text-(--gold)">
-                        Rampenissen (hvisker)
+                        Rampenissen (hvisker fra hylla)
                       </p>
                       <p className="text-xl leading-tight">
                         {node.rampenissen}
