@@ -26,6 +26,7 @@ import {
   getCurrentMonth,
   getISOString,
   getCurrentDate,
+  christmasCountdown,
 } from "./date-utils";
 import {
   calculateSigmoidValue,
@@ -1237,78 +1238,9 @@ export class GameEngine {
    * ============================================================
    */
 
-  /**
-   * Get real-time countdown to Christmas Eve (December 24)
-   *
-   * URGENCY LEVELS:
-   * - calm: >14 days remaining (green, steady pulse)
-   * - approaching: 8-14 days (blue, moderate pulse)
-   * - urgent: 4-7 days (gold, fast pulse)
-   * - critical: 1-3 days (red shake, larger text)
-   * - today: 0 days (gold flash, "GOD JUL!")
-   *
-   * @returns Countdown object with time components and urgency level
-   */
-  static getChristmasCountdown(): {
-    days: number;
-    hours: number;
-    minutes: number;
-    seconds: number;
-    isChristmas: boolean;
-    urgencyLevel: "calm" | "approaching" | "urgent" | "critical" | "today";
-  } {
-    const now = getCurrentDate();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth() + 1; // 1-12
-
-    // Calculate target Christmas Eve (year comes from mocked getCurrentDate())
-    let christmasYear = currentYear;
-    if (currentMonth === 12 && now.getDate() > 24) {
-      christmasYear = currentYear + 1;
-    }
-    const christmasEve = new Date(christmasYear, 11, 24, 23, 59, 59); // Dec 24, 23:59:59
-
-    // Calculate time difference
-    const diff = christmasEve.getTime() - now.getTime();
-    const isChristmas = currentMonth === 12 && now.getDate() === 24;
-
-    if (diff <= 0 || isChristmas) {
-      return {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-        isChristmas: true,
-        urgencyLevel: "today",
-      };
-    }
-
-    // Calculate components
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    // Determine urgency level
-    let urgencyLevel: "calm" | "approaching" | "urgent" | "critical" | "today";
-    if (days > 14) {
-      urgencyLevel = "calm";
-    } else if (days >= 8) {
-      urgencyLevel = "approaching";
-    } else if (days >= 4) {
-      urgencyLevel = "urgent";
-    } else {
-      urgencyLevel = "critical";
-    }
-
-    return {
-      days,
-      hours,
-      minutes,
-      seconds,
-      isChristmas: false,
-      urgencyLevel,
-    };
+  /** Real-time countdown to Christmas Eve (date-utils.christmasCountdown). */
+  static getChristmasCountdown() {
+    return christmasCountdown(getCurrentDate());
   }
 
   /**
