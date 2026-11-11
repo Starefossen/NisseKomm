@@ -235,7 +235,7 @@ Ord = talte ord i klippet. Sek = ord × 0,44 (målt tempo på dag 1–5). «Kode
 | Dag | Kode         | Ord | Sek | Sending | Kode/hvor       | Merknad                                                                                    |
 | --- | ------------ | --- | --- | ------- | --------------- | ------------------------------------------------------------------------------------------ |
 | 1   | SIGNAL       | 101 | 42  | 06      | ok              |                                                                                            |
-| 2   | 48           | 98  | 41  | 06      | ok              | «Tre sikringer» er antall, ikke tall fra koden (gåtedok. reserve)                          |
+| 2   | 48           | 100 | 42  | 06      | ok              | «Tre sikringer» er antall, ikke tall fra koden (gåtedok. reserve)                          |
 | 3   | PRISME       | 105 | 44  | 06      | ok              |                                                                                            |
 | 4   | KOMPASS      | 115 | 48  | 06      | ok              | «Jeg har laget en pil. Av noe.» (låst storyboard), ingen plass                             |
 | 5   | ULRIKEN      | 107 | 45  | 09      | ok              | Fuglen nevnes uten sted                                                                    |
@@ -259,4 +259,4 @@ Ord = talte ord i klippet. Sek = ord × 0,44 (målt tempo på dag 1–5). «Kode
 | 23  | STJERNEKLART | 111 | 46  | 06      | ok              |                                                                                            |
 | 24  | JULEMAGI     | 111 | 46  | 06      | ok              | «God jul» er høytidsnavnet Julius selv ber dem sette foran; sendt fra Snøfall, ingen strek |
 
-Sum: 2 572 ord, snitt 107 per dag (cirka 45 s).
+Sum: 2 574 ord, snitt 107 per dag (cirka 45 s).

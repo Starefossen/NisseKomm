@@ -270,7 +270,7 @@ export const DAGER = [
     brikkeH:
       "arket på toppen av Sigma-tårnet. Lampe 2 R, lampe 5 S, lampe 7 O med strøm; lampe 4 E bak åpen bryter; de fem andre ✱ med ledninger som ender i ingenting. Synlige bokstaver har tegn; ✱ på de døde lampene har tegn i hjørnet (de er ekte ruter i ordet). Lapp fra Rampenissen (på tårnet, håndskrevet): «IQs ark ligger på toppen. Ta ned pakkene én og én. Ingen klatring! – R»",
     brikkeS:
-      "Julius: «Den lille grønne plata alle ledningene sitter fast på. IQ lodder på én, sover på én, og kaller den alltid det samme, med to ord i ett.» I segment 3: «Bare lamper med strøm lyser, sier han.»",
+      "Julius: «Den lille grønne plata alle ledningene sitter fast på. IQ lodder på én, sover på én, og kaller den alltid det samme, med to ord i ett.» I segment 2: «Bare lamper med strøm lyser, sier han.»",
     slikLoses: [
       "H9 river tårnet pakke for pakke og får arket.",
       "H9 følger hver ledning fra batteriet. K12 ser bryteren på vei til lampe 4 og forklarer: åpen bryter, ingen strøm.",
@@ -516,7 +516,7 @@ export const DAGER = [
     brikkeH:
       "fem redskaper på benken: gryte, sleiv, visp, kjevle, øse. Sporene er papirstrimler med trykte, sukkerfargede fotspor (fra PDF-en), lagt fra skålen mot alle fem; strimlene til kjevle og øse slutter halvveis. Ikke sukker på benken: tirsdag morgen er det ingen tid til vask. Rampenissen står ved siden av en liten skål med et par skjeer sirup (streken), ellers tørt. Under gryten A, under sleiva M, under vispen L (med tegn); under kjevle og øse ✱-kort uten tegn. Rutekort 1–8 og rødt sol-kort ved skålen. Sirupflasken og sukkeret ryddes bort. Lapp fra Rampenissen (ved sirupskålen, håndskrevet): «Følg fotsporene mine, og løft det de ender ved. – R»",
     brikkeS:
-      "Julius: «Hjerterud prøvde å varme opp IQ med det hun lager når sukker blir brunt og varmt i gryta, og som stivner til gull når det kjølner. Han spiste ikke engang det.»",
+      "Julius: «Hjerterud prøvde å varme opp IQ med det hun lager når sukker blir brunt og varmt i gryta. Det stivner til gull når det kjølner. Han spiste ikke engang det.»",
     slikLoses: [
       "H9 følger sporene og løfter det de ender ved; to spor ender i ingenting.",
       "K12 har A, M, L uten plass. Notatboken åpner i NisseNet; margnotatet gir 2, 5, 7. _ A _ _ M _ L _.",
@@ -801,7 +801,7 @@ export const DAGER = [
     brikkeH:
       "tolv stjerner i treet, de laveste i Hannas høyde. Forside: nr. 5 R, nr. 8 K, nr. 10 A, resten ✱; alle med tegn. Bakside: I–XII. Rampenissen i treet med det blå måne-kortet.",
     brikkeS:
-      "Julius: «Orakelet meldte flyværet i ett ord. Ikke en sky, ikke én. Været har et ord for en natt der alt som blinker der oppe er synlig hele veien, og det ordet begynner med det som blinker.»",
+      "Julius: «Orakelet meldte flyværet i ett ord. Ikke en sky, ikke én. Været har et ord for en natt der alt som blinker der oppe er synlig hele veien. Ordet begynner med det som blinker.»",
     slikLoses: [
       "H9 plukker stjernene (en voksen løfter til de høye).",
       "H9 legger dem etter romertallet og snur dem: _ _ _ _ R _ _ K _ A _ _.",

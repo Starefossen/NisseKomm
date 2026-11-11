@@ -34,6 +34,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - Mailer skrives som lest etter husjakten (fortid).
 - 2026-11-11: De to låste segmentene dag 17-4 og dag 20-4 er skrevet om uten «høre på himmelen» og «sier det med armene», samme mening og innenfor ordbudsjettet. Hvorfor: flytregel 8 gjelder også låste linjer.
 - 2026-11-11: Dag 21-4 (låst, BRANNMUR-brikken) sier «bygger samme slags vegg, og kaller den etter det de kjemper mot» i stedet for «bygger det samme, bare av det motsatte». Hvorfor: «bare av det motsatte» er for abstrakt for en niåring; brikken står.
+- 2026-11-12: Dag 4–24 har 4–6 segmenter (fire der det går, fem der brikken trenger tre) og rundt 20 ord per segment, høyst 20 i vanlige segmenter og 22 i låste, bare når halen er en avskjed. Dag 1–3 er filmet og står. Hvorfor: videomodellen stopper på rundt 15 s og mister de siste ordene på 22–25 ord, og hvert segment er én forespørsel; færre og kortere segmenter gir færre klipp som må lages på nytt. Julius skal fortsatt være levende: fyll og julefakta ryker først, aldri «i natt», oppsett og utbetaling eller brikken.
 
 ## Spill (2026-11-10/11)
 

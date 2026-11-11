@@ -62,22 +62,20 @@ describe("manus parsers", () => {
     expect(wcount("TV-en og Lucia-morgen, 85,0")).toBe(5);
   });
 
-  it("matches julius-dag.py lint on day 13", () => {
-    // Expected values from: julius-dag.py wcount/timing over medie.julius_segments(13)
-    const segs = parseJulius(md(MANUS.julius), 13)!.segmenter;
+  it("matches julius-dag.py lint on day 17", () => {
+    // Expected values from: julius-dag.py wcount/timing over medie.julius_segments(17)
+    const segs = parseJulius(md(MANUS.julius), 17)!.segmenter;
     expect(segs.map((s) => [s.ord, s.sek, s.laast])).toEqual([
-      [19, 14, false],
       [20, 14, false],
-      [21, 15, false],
-      [25, 15, true],
-      [26, 15, true],
+      [20, 14, false],
+      [19, 14, true],
+      [22, 15, true],
     ]);
     expect(segs.map((s) => s.varsler)).toEqual([
       [],
       [],
-      ["21 ord trenger 14.2 s; modellen leverer ofte 13 s på 15"],
-      ["25 ord trenger 16.5 s med 2 s hale, bestilt 15 s"],
-      ["26 ord trenger 17.0 s med 2 s hale, bestilt 15 s"],
+      [],
+      ["22 ord trenger 14.8 s; modellen leverer ofte 13 s på 15"],
     ]);
   });
 });
