@@ -19,12 +19,20 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - Ny flyt for dag 1–24 med åtte flytregler.
 - Dag 1 forklarer oppdraget: NisseKomm, frosten, og at kodene holder linjen varm.
 - Kulde navngis først dag 7.
-- Rampenissen-sitater i Julius' replikker er på maks 7 ord.
+- Rampenissen-sitater i Julius' replikker er på maks 7 ord (foreldrevedtak 2026-11-11).
+- Flytregel 1: Et segment begynner og slutter på en hel setning med eget subjekt. Aldri fragment først, aldri pronomen som peker til forrige klipp.
+- Flytregel 2: Første setning i hvert segment sier hva vi snakker om (IQ, Rampenissen, brikken). Én tanke per segment; «i natt»-segmentet har høyst tre setninger.
+- Flytregel 3: Siste setning i hvert segment er en bro eller en pust, ikke en punchline («…og det var ikke alt.» / «Men hør nå.»).
+- Flytregel 4: Ingen vits uten at oppsettet er i samme segment, og ingen referanse til noe som bare er i radioen eller PS-en.
+- Flytregel 5: Brikken: innledning og brikke i ett segment, farvel i halen på samme eller neste. Ingen segmenter under 12 ord; farvelet er aldri alene.
+- Flytregel 6: Handlingen følger teksten og varer hele segmentet; maks to segmenter på rad med ulike rekvisitter.
+- Flytregel 7: Åpningen følger dag 1-malen: hilsen, dato og noe fysisk sammen. «I natt» kommer alltid før julefakta.
+- Flytregel 8: Ordtak for 9 år: ingen «motsatt av det motsatte», «sier det med armene», «høre på himmelen». Test: kan Håkon gjenfortelle segmentet med én setning?
 - Mailer skrives som lest etter husjakten (fortid).
 
 ## Spill (2026-11-10/11)
 
-- Spillet heter Ugleposten, ikke Klementin-Ekspressen. (AGENTS.md og noe kode bruker fortsatt det gamle navnet.)
+- Spillet heter Ugleposten, ikke Klementin-Ekspressen.
 - Spilleren er Floke, Rampenissens garnugle (ikke Knerten), sett gjennom IQs kameraer.
 - Ugleposten er i pikselkunst, så meta-spillet skilles fra den «ekte» Snøfall.
 - Ugleposten følger hovedhistorien strengt.
