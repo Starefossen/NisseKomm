@@ -435,7 +435,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "sikringsskapet",
           navn: "Sikringsskapet",
-          rect: { x: 0, y: 22, w: 20, h: 40 },
+          rect: { x: 0, y: 27, w: 14, h: 36 },
           smart: "se",
           se: "Et skap fullt av målere og visere. Alle står pent på midten, som om ingenting noen gang har skjedd her. Noen har limt på en lapp: «ALDRI MER KAFFETRAKTER». Lappen er svidd i kanten.",
           prat: "Du spør skapet om det er trygt. Det svarer med et lite klikk. Det er enten ja eller en sikring. Du går ikke nærmere for å finne ut.",
@@ -444,7 +444,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "tavla",
           navn: "Tavla",
-          rect: { x: 22, y: 25, w: 13, h: 26 },
+          rect: { x: 14, y: 30, w: 13, h: 30 },
           smart: "se",
           se: "Formler, piler og en tegning av noe rundt. Nederst står det «IKKE VISK UT», og rett under har noen visket ut noe. Det som er visket ut, var større enn det som står igjen. Oppe i hjørnet henger en lapp med frostruner, IQs håndskrift: ᚱ:SE OPP",
           prat: "Du sier «hallo» til tavla. Krittstøvet svarer med å drysse. Det er hele svaret, og det er et ærlig et.",
@@ -452,7 +452,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "oscilloskopet",
           navn: "Oscilloskopet",
-          rect: { x: 20, y: 58, w: 9, h: 18 },
+          rect: { x: 21, y: 57, w: 14, h: 15 },
           smart: "se",
           se: "Den grønne streken tegner en kurve som ser nøyaktig ut som profilen til en gretten grevling. Hver gang noen tråkker på gulvet, hopper halen.",
           prat: "Du snakker til grevlingen på skjermen. Halen hopper når du snakker. Den hopper mer når Rampenissen snakker. Den har god smak.",
@@ -461,7 +461,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "radioroerene",
           navn: "Radiorørene",
-          rect: { x: 7, y: 70, w: 13, h: 16 },
+          rect: { x: 10, y: 65, w: 11, h: 18 },
           smart: "se",
           se: "Tre glødende rør i rødt, grønt og oransje. De summer i tre forskjellige toner. Sammen blir det nesten en julesang. Nesten. Mer som en julesang som har gått seg vill.",
           bruk:
@@ -472,7 +472,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "vinduet",
           navn: "Vinduet",
-          rect: { x: 54, y: 18, w: 10, h: 28 },
+          rect: { x: 51, y: 21, w: 13, h: 39 },
           smart: "se",
           se: "Rim på rutene og snø utenfor. På innsiden har noen tegnet et smilefjes i duggen. Med nesa, ser det ut som. Nesa var kald etterpå, ser det også ut som.",
           prat:
@@ -483,14 +483,14 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "skiltet",
           navn: "Skiltet",
-          rect: { x: 66, y: 7, w: 11, h: 12 },
+          rect: { x: 67, y: 20, w: 12, h: 10 },
           smart: "se",
           se: "«IKKE RØR (GJELDER OGSÅ RAMPENISSEN)». Under skiltet henger en lapp med klementin-klistremerker: «Æ rørte ikkje. Æ bare kikka med fingran. – R.»",
         },
         {
           id: "doera",
           navn: "IQs dør",
-          rect: { x: 66, y: 20, w: 14, h: 44 },
+          rect: { x: 66, y: 32, w: 14, h: 40 },
           smart: "snakk",
           snakk: "iq",
           se: "IQs dør. Innenfra høres klirring, summing og en mann som forhandler med en skrutrekker. Det er en sprekk under døra, akkurat bred nok til et ark. Eller en veldig flat nisse.",
@@ -524,7 +524,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "kaffekoppen",
           navn: "Kaffekoppen",
-          rect: { x: 45, y: 74, w: 9, h: 13 },
+          rect: { x: 47, y: 70, w: 7, h: 22 },
           smart: "bruk",
           se: [
             {
@@ -547,14 +547,14 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "tegningen",
           navn: "Tegningen",
-          rect: { x: 36, y: 86, w: 17, h: 14 },
+          rect: { x: 15, y: 85, w: 30, h: 15 },
           smart: "se",
           se: "En tegning av en slede med to svære trakter bak på meiene. Noen har skrevet «DREVET AV PEPPERKAKEGASS» med blyant, og Julius har satt et stort spørsmålstegn ved siden av med rød fargestift. IQ har satt et utropstegn ved spørsmålstegnet. Diskusjonen pågår.",
         },
         {
           id: "sidebordet",
           navn: "Sidebordet",
-          rect: { x: 78, y: 50, w: 14, h: 22 },
+          rect: { x: 85, y: 64, w: 15, h: 30 },
           smart: "bruk",
           se: [
             {
@@ -579,7 +579,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "krakken",
           navn: "Krakken",
-          rect: { x: 67, y: 65, w: 10, h: 15 },
+          rect: { x: 66, y: 72, w: 8, h: 27 },
           smart: "se",
           se: "IQs krakk. Den har tre bein og en bok under det fjerde. Boka heter «Balanse for viderekomne». Den er ikke åpnet.",
           prat: "Du spør krakken hvordan det går med balansen. Den vipper. Det er svaret, og det har vært svaret siden boka kom under.",
@@ -587,7 +587,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "hyllene",
           navn: "Hyllene",
-          rect: { x: 40, y: 8, w: 16, h: 16 },
+          rect: { x: 27, y: 33, w: 23, h: 15 },
           smart: "bruk",
           se: [
             {
@@ -627,7 +627,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "lyspaera",
           navn: "Lyspæra",
-          rect: { x: 31, y: 0, w: 6, h: 14 },
+          rect: { x: 48, y: 0, w: 4, h: 23 },
           smart: "se",
           se: "Én naken lyspære i en ledning fra bjelken. Den har hengt der siden sikring nummer én. Den blunker når IQ tenker. Akkurat nå blunker den fort.",
           bruk: "Du dytter pæra med vingen. Skyggene i verkstedet svinger fram og tilbake, og et øyeblikk ser alt dobbelt så rotete ut. Det er ikke mulig. Det skjer likevel.",
@@ -635,7 +635,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "radioen",
           navn: "Den gamle radioen",
-          rect: { x: 57, y: 8, w: 7, h: 9 },
+          rect: { x: 39, y: 21, w: 9, h: 11 },
           smart: "se",
           se: "En gammel radio av tre øverst på hylla, med stoff foran høyttaleren og ett eneste ratt. IQs første mottaker, bygd for å høre Julius lese julefortellinger fra kontoret. Den tar fortsatt bare én kanal. Det er den kanalen.",
           prat:
@@ -646,14 +646,14 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "skrivebordslampa",
           navn: "Skrivebordslampa",
-          rect: { x: 80, y: 41, w: 8, h: 9 },
+          rect: { x: 87, y: 45, w: 9, h: 19 },
           smart: "se",
           se: "Ei bøyelig messinglampe over sidebordet. Den er bøyd i tre vinkler for å lyse under, over og bak noe som ikke står der lenger. IQ flyttet det. Lampa fikk ikke beskjed.",
         },
         {
           id: "tengene",
           navn: "Tengene",
-          rect: { x: 0, y: 88, w: 18, h: 12 },
+          rect: { x: 0, y: 84, w: 15, h: 16 },
           smart: "se",
           se: "Tenger, skrutrekkere og en loddebolt, spredt utover benkekanten i det IQ kaller «systemet». Systemet er at den han trenger, alltid ligger nederst.",
           bruk: "Du dytter en tang. Den drar med seg en skrutrekker, som drar med seg loddebolten, som stopper rett før kanten. Du står helt stille. Systemet holdt.",
@@ -661,7 +661,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "oppfinnelsen",
           navn: "Den lille oppfinnelsen",
-          rect: { x: 29, y: 68, w: 8, h: 12 },
+          rect: { x: 38, y: 51, w: 11, h: 16 },
           smart: "se",
           se: "Noe lite av messing og glass som gløder på benken. Det har en spole, en knapp og en lapp: «VIRKER. IKKE SPØR HVORDAN.» IQ bygde den for å holde kaffen varm. Den holder rommet varmt. Han tar det som en bonus.",
           bruk: "Du trykker på knappen. Gløden blir sterkere, så svakere, så normal. Innenfra døra: «Hørte jeg knappen?» Du rører den ikke mer.",
@@ -682,7 +682,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "lampa",
           navn: "Lampa",
-          rect: { x: 20, y: 8, w: 7, h: 19 },
+          rect: { x: 18, y: 2, w: 7, h: 28 },
           smart: "se",
           se: "En messinglampe i kjetting fra bjelken. Den svinger litt hver gang ovnsdøra går. Hjerterud sier det er trekk. Rampenissen sier det er lampa som danser.",
           prat: "Du uler opp mot lampa. Den svinger, som om den nikker. Hjerterud: «Ikke oppmuntre henne, Floke.»",
@@ -691,7 +691,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "disken",
           navn: "Disken",
-          rect: { x: 0, y: 46, w: 21, h: 26 },
+          rect: { x: 0, y: 46, w: 18, h: 26 },
           smart: "se",
           se: "Boller under glassklokker, kringler på et fat og mel over alt. Under den ene klokka ligger fire boller. Under den andre lå det fire kringler. Nå ligger det tre. Ingen sier noe.",
           bruk: "Du løfter på glassklokka med nebbet. Hjerterud: «Spør, så får du. Det er regelen her. Det er den eneste regelen her.»",
@@ -700,7 +700,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "krusene",
           navn: "Krusene",
-          rect: { x: 0, y: 72, w: 16, h: 22 },
+          rect: { x: 0, y: 73, w: 19, h: 22 },
           smart: "se",
           se: "Krus i alle størrelser. Det største har en hank som er limt tre ganger. Det tilhører IQ. Det minste tilhører Pil. Det med klementin på tilhører ingen. Alle vet hvem det tilhører.",
           prat: "Du sier «skål» til krusene. Det klinger svakt i det største. Det er IQs. Det klinger alltid litt, hank nummer tre er løs.",
@@ -709,7 +709,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "kakaokanna",
           navn: "Kakaokanna",
-          rect: { x: 21, y: 38, w: 9, h: 24 },
+          rect: { x: 18, y: 40, w: 10, h: 22 },
           smart: "se",
           se: "En blank messingkanne som damper. Innholdet er varmt, brunt og tykt nok til å stå på egne bein. Hjerterud kaller det kakao. Winter kaller det «ikkje tillatt på torget, paragraf 14».",
           prat: "Du hvisker «snart?» til kakaokanna. Den damper tilbake. Hjerterud: «Når du har spist. Kakao på tom mage er bare brunt.»",
@@ -727,7 +727,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "hjerterud",
           navn: "Hjerterud",
-          rect: { x: 31, y: 26, w: 17, h: 70 },
+          rect: { x: 31, y: 29, w: 15, h: 63 },
           smart: "snakk",
           snakk: "hjerterud",
           se: "Hjerterud bak disken med et brett nystekte boller. Kinnene er røde av ovnen, håret har rømt fra knuten, og forkleet har mer mel enn stoff. Hun smiler før hun ser hvem det er. Hun smiler alltid før.",
@@ -744,7 +744,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "ovnen",
           navn: "Bakerovnen",
-          rect: { x: 48, y: 17, w: 17, h: 45 },
+          rect: { x: 48, y: 15, w: 23, h: 47 },
           smart: "se",
           se: "En svær murovn med glødende luke. Det er det varmeste stedet i Snøfall, og om vinteren sover katten, Pil og tre hansker oppå den. Hjerterud vet om katten og Pil.",
           prat: "Du sier «hei» inn i ovnsluka. Noe oppå ovnen svarer med å strekke seg. Det er katten. Eller Pil. Begge svarer sånn.",
@@ -760,7 +760,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "melsekken",
           navn: "Melsekken",
-          rect: { x: 58, y: 62, w: 7, h: 14 },
+          rect: { x: 63, y: 64, w: 9, h: 20 },
           smart: "se",
           se: "En strisekk med mel, åpen i toppen. Det er et lite fotavtrykk i melet ved siden av. Fotavtrykket har tre tær og hører til en ugle. Du har ikke vært her før. Du har vært her før.",
           bruk: "Du dytter nebbet i melet. Hvitt nebb. Hjerterud ler så brettet rister. «Nå ser du ut som en snøugle!»",
@@ -768,7 +768,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "stolen",
           navn: "Stolen",
-          rect: { x: 63, y: 55, w: 8, h: 24 },
+          rect: { x: 71, y: 55, w: 10, h: 40 },
           smart: "se",
           se: "En trestol med rett rygg. På setet står det risset inn: «MIN. – IQ». Stolen er lånt tilbake. Lappene sitter igjen.",
           prat: "Du spør stolen om den savner IQ. Den sier ingenting, men den står litt vendt mot døra.",
@@ -777,7 +777,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "bordene",
           navn: "Bordene",
-          rect: { x: 71, y: 55, w: 29, h: 40 },
+          rect: { x: 81, y: 55, w: 19, h: 42 },
           smart: "se",
           se: "To små bord med broderte duker og stearinlys. På det ene ligger en lapp: «Reservert Julius». Lappen er fra forrige jul. Hjerterud tar den ikke bort. Han kommer kanskje.",
           bruk: "Du blåser på det ene lyset. Det blafrer og blir stående. Hjerteruds lys slukker ikke. Det har de aldri gjort.",
@@ -785,7 +785,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "vinduet",
           navn: "Vinduet",
-          rect: { x: 84, y: 18, w: 16, h: 36 },
+          rect: { x: 84, y: 17, w: 16, h: 37 },
           smart: "se",
           se: "Rim i hjørnene og klokketårnet utenfor, gyllent mot natta. I vinduskarmen står fire lysestaker. Ingen av lysene er tent ennå. Hjerterud tenner dem når det er tid.",
           prat: "Du banker på ruta. Utenfor ser Winter opp fra postkassen, finner deg i vinduet og noterer. Hjerterud, uten å snu seg: «La ham. Han har så lite.»",
@@ -793,7 +793,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "tallerkenhylla",
           navn: "Tallerkenhylla",
-          rect: { x: 26, y: 28, w: 8, h: 7 },
+          rect: { x: 27, y: 21, w: 17, h: 9 },
           smart: "se",
           se: "Ei hylle med tallerkener i stabel og ei krukke med tresleiver. Den øverste tallerkenen har et hakk. Den er Julius'. Han insisterer på den. Han sier et hakk er et minne. Hjerterud sier det er et hakk.",
           bruk: "Du strekker deg etter en tallerken. Hjerterud: «Nei. Jeg har sett ugler med tallerkener. Jeg har sett gulvet etterpå.»",
@@ -801,7 +801,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "veden",
           navn: "Veden under ovnen",
-          rect: { x: 49, y: 62, w: 9, h: 12 },
+          rect: { x: 51, y: 64, w: 12, h: 17 },
           smart: "se",
           se: "Bjørkeved stablet i buen under ovnen, med barken ut, så tørr at den synger når den brenner. Hjerterud stabler selv. Hun har sendt hjem to nisser som stablet feil vei. De kom tilbake. Alle kommer tilbake.",
           bruk: "Du drar i en vedkubbe. Stabelen svaier. Du dytter den tilbake. Hjerterud har allerede snudd seg. Hun snur seg alltid i tide.",
@@ -809,7 +809,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "bildet",
           navn: "Bildet på veggen",
-          rect: { x: 73, y: 32, w: 4, h: 9 },
+          rect: { x: 80, y: 32, w: 5, h: 16 },
           smart: "se",
           se: "Et lite innrammet ark på veggen ved ovnen: «Bevilling for skjenking av kakao, paragraf 14, unntak 1. – W.» Winters eneste unntak. Hjerterud fikk det ved å servere ham kakao til han signerte. Det tok fire kopper.",
           prat: "Du leser bevillingen høyt. Hjerterud ler. «Fire kopper. Han sa nei etter hver av dem, og ja etter den femte. Han tror det var fire.»",
@@ -817,7 +817,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "gulvet",
           navn: "Snøen på gulvet",
-          rect: { x: 59, y: 88, w: 12, h: 12 },
+          rect: { x: 58, y: 88, w: 13, h: 12 },
           smart: "se",
           se: "Smeltende snø i gangen fra døra, i små hauger med fotspor i. Støvler, støvler, hover, støvler. Hover. Hjerterud slipper inn alle som fryser. Rudolf fryser aldri. Han kommer likevel.",
           bruk: "Du hopper i den minste snøhaugen. Den sprer seg utover gulvet. Hjerterud, uten å se: «Mopp i kroken, Floke.» Det er en spøk. Ugler mopper ikke. Du ser på moppen likevel.",

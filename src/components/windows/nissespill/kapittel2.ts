@@ -597,7 +597,7 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "sikringsskapet",
           navn: "Sikringsskapet",
-          rect: { x: 0, y: 22, w: 20, h: 40 },
+          rect: { x: 0, y: 27, w: 14, h: 36 },
           smart: "se",
           se: "Alle målerne står på midten. Lappen «ALDRI MER KAFFETRAKTER» henger der fortsatt. Noen har lagt til en ny lapp under: «ELLER VAFFELJERN». Lista blir lengre hvert år.",
           prat: "Du spør skapet hva som skjedde med vaffeljernet. Det klikker én gang. Det er alt du får vite, og det er sannsynligvis nok.",
@@ -606,7 +606,7 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "tavla",
           navn: "Tavla",
-          rect: { x: 22, y: 25, w: 13, h: 26 },
+          rect: { x: 14, y: 30, w: 13, h: 30 },
           smart: "bruk",
           se: [
             {
@@ -629,7 +629,7 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "oscilloskopet",
           navn: "Oscilloskopet",
-          rect: { x: 20, y: 58, w: 9, h: 18 },
+          rect: { x: 21, y: 57, w: 14, h: 15 },
           smart: "se",
           se: "Den grønne streken hakker i dag. Hopp, hopp, pause, hopp. Det ser ut som noen som tygger. Det ER noen som tygger. IQ har koblet det til Rudolf.",
           prat: "Du snakker til streken. Den hakker i takt med stemmen din. Så i takt med Rudolf. Rudolf vinner. Rudolf har kjevene.",
@@ -638,7 +638,7 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "radioroerene",
           navn: "Radiorørene",
-          rect: { x: 7, y: 70, w: 13, h: 16 },
+          rect: { x: 10, y: 65, w: 11, h: 18 },
           smart: "bruk",
           se: "Tre glødende rør i rødt, grønt og oransje. Varmen fra dem kjennes helt bort til døra. IQ bruker dem til å tørke sokker. Det er forbudt. Han gjør det likevel. Sokkene har brennmerker formet som radiorør.",
           bruk:
@@ -685,7 +685,7 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "vinduet",
           navn: "Vinduet",
-          rect: { x: 54, y: 18, w: 10, h: 28 },
+          rect: { x: 51, y: 21, w: 13, h: 39 },
           smart: "se",
           se: "Rim på rutene. Smilefjeset fra sist er der fortsatt. Noen har tegnet en rein ved siden av. Reinen har kabel i munnen. Noen har tegnet et kryss over reinen. Reinen har tegnet et kryss over krysset. Trolig.",
           prat:
@@ -696,14 +696,14 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "skiltet",
           navn: "Skiltet",
-          rect: { x: 66, y: 7, w: 11, h: 12 },
+          rect: { x: 67, y: 20, w: 12, h: 10 },
           smart: "se",
           se: "«IKKE RØR (GJELDER OGSÅ RAMPENISSEN)». Under henger en ny lapp: «GJELDER OGSÅ RUDOLF». Lappen har bittemerker. Lappen om bittemerkene har også bittemerker.",
         },
         {
           id: "doera",
           navn: "IQs dør",
-          rect: { x: 66, y: 20, w: 14, h: 44 },
+          rect: { x: 66, y: 32, w: 14, h: 40 },
           smart: "snakk",
           snakk: "iq",
           se: "IQs dør. Innenfra høres klirring, og en mann som sier «nei, nei, NEI» til noe som sier «pling». Det er uklart hvem som vinner.",
@@ -712,7 +712,7 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "kaffekoppen",
           navn: "Kaffekoppen",
-          rect: { x: 45, y: 74, w: 9, h: 13 },
+          rect: { x: 47, y: 70, w: 7, h: 22 },
           smart: "se",
           se: "En ny kaffekopp på benken. Denne er tom. Helt tom. IQ har vært tørst, eller Rampenissen har vært innom. Begge deler er mulig. Begge deler er sannsynlig.",
           bruk:
@@ -723,14 +723,14 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "tegningen",
           navn: "Tegningen",
-          rect: { x: 36, y: 86, w: 17, h: 14 },
+          rect: { x: 15, y: 85, w: 30, h: 15 },
           smart: "se",
           se: "Sledetegningen med pepperkakegass-traktene. Julius' røde spørsmålstegn og IQs utropstegn har fått selskap av et tredje tegn. Det er et bittemerke. Diskusjonen har fått en ny deltaker.",
         },
         {
           id: "sidebordet",
           navn: "Sidebordet",
-          rect: { x: 78, y: 50, w: 14, h: 22 },
+          rect: { x: 85, y: 64, w: 15, h: 30 },
           smart: "bruk",
           se: [
             {
@@ -753,7 +753,7 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "krakken",
           navn: "Krakken",
-          rect: { x: 67, y: 65, w: 10, h: 15 },
+          rect: { x: 66, y: 72, w: 8, h: 27 },
           smart: "bruk",
           prat: "Du spør krakken om den savner noe under setet. Den vipper. Det er alt krakken sier om saken.",
           se: [
@@ -779,7 +779,7 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "hyllene",
           navn: "Hyllene",
-          rect: { x: 40, y: 8, w: 16, h: 16 },
+          rect: { x: 27, y: 33, w: 23, h: 15 },
           smart: "bruk",
           se: [
             {
@@ -802,7 +802,7 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "lyspaera",
           navn: "Lyspæra",
-          rect: { x: 31, y: 0, w: 6, h: 14 },
+          rect: { x: 48, y: 0, w: 4, h: 23 },
           smart: "se",
           se: "Lyspæra i taket blunker i takt med noe ute ved tjernet. IQ har koblet den til masta. Når bildet hakker, blunker pæra. Akkurat nå blunker den mye.",
           bruk: "Du dytter pæra. Den svinger og blunker samtidig. Nå er det både mørkt og hakkete. Du stopper den med vingen.",
@@ -810,7 +810,7 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "radioen",
           navn: "Den gamle radioen",
-          rect: { x: 57, y: 8, w: 7, h: 9 },
+          rect: { x: 39, y: 21, w: 9, h: 11 },
           smart: "se",
           se: "IQs første mottaker, radioen av tre øverst på hylla. I dag suser den. Den tar bare én kanal, og den kanalen kommer fra masta ved tjernet. Når masta peker feil, hører radioen snø.",
           prat:
@@ -821,14 +821,14 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "skrivebordslampa",
           navn: "Skrivebordslampa",
-          rect: { x: 80, y: 41, w: 8, h: 9 },
+          rect: { x: 87, y: 45, w: 9, h: 19 },
           smart: "se",
           se: "Messinglampa over sidebordet er bøyd ned mot skuffen med nødrasjonen. Den lyser rett på ordet NØD. IQ har stilt den sånn med vilje. Han vil at nøden skal være lett å finne.",
         },
         {
           id: "tengene",
           navn: "Tengene",
-          rect: { x: 0, y: 88, w: 18, h: 12 },
+          rect: { x: 0, y: 84, w: 15, h: 16 },
           smart: "se",
           se: "Tenger og skrutrekkere i «systemet». I dag ligger det en tang for seg selv, pent, med en lapp: «TIL KABEL. HVIS RUDOLF.» Han visste. Han visste, og han gikk inn likevel.",
           bruk: "Du dytter tanga. Lappen glir av. Du legger den tilbake. Lappen er viktigere enn tanga. Det er sånn det er med lapper her.",
@@ -836,7 +836,7 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "oppfinnelsen",
           navn: "Den lille oppfinnelsen",
-          rect: { x: 29, y: 68, w: 8, h: 12 },
+          rect: { x: 38, y: 51, w: 11, h: 16 },
           smart: "se",
           se: "Den lille oppfinnelsen på benken gløder som før. Lappen «VIRKER. IKKE SPØR HVORDAN» har fått en ny linje: «VIRKER FORTSATT. SLUTT Å SPØRRE.» Noen har spurt.",
           bruk: "Du trykker på knappen. Gløden blir sterkere. Innenfra døra: «Var det knappen? Det var knappen.» Du trekker vingen til deg.",

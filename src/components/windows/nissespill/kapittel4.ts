@@ -613,7 +613,7 @@ export const KAPITTEL_4: Kapittel = {
           id: "julius",
           figur: "julius",
           navn: "Julius",
-          rect: { x: 48, y: 57, w: 17, h: 16 },
+          rect: { x: 60, y: 40, w: 20, h: 36 },
           smart: "snakk",
           snakk: "julius",
           se: [

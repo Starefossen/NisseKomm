@@ -105,7 +105,19 @@ function GjenstandIkon({
 }) {
   const [mangler, setMangler] = useState(false);
   if (mangler)
-    return <Icon name={g.ikon} size={size} color={dempet ? "gray" : "gold"} />;
+    // Framed glyph so a not-yet-drawn icon reads as a pixel token, not a broken image
+    return (
+      <span
+        className="inline-flex items-center justify-center bg-[#1b2433] border border-(--gold)/60"
+        style={{ width: size, height: size }}
+      >
+        <Icon
+          name={g.ikon}
+          size={Math.round(size * 0.75)}
+          color={dempet ? "gray" : "gold"}
+        />
+      </span>
+    );
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
