@@ -196,51 +196,51 @@ Kulde-nivå 1. Svak knitring.
 
 ## Dag 7 (ma) – Inntrengeren i Fryseren · KULDE · M2 Navnet
 
-Kulde-nivå 2. Første dag med rim på innsiden av vinduet og langs bordkanten, synlig pust. Bildet fryser 1–2 s i segment 2 der han ellers ville sagt navnet. Segment 2 peker til tegnene på kortene (meta 1); Frostgraden er i segment 5.
+Kulde-nivå 2. Første dag med rim på innsiden av vinduet og langs bordkanten, synlig pust. Bildet fryser etter «kaller seg» i segment 2 der han ellers ville sagt navnet (etterarbeid). Segment 2 peker til tegnene på kortene (meta 1); Frostgraden er i segment 5.
 
-1. **Replikk:** «Gooood morgen, Snøfall! Brrr. Jeg fryser på kontoret. Rim på innsiden av vinduet! Det har jeg aldri sett før. Hopp, dere, så dere blir varme.»
-   - Varighet: 15 s (25 ord)
+1. **Replikk:** «Gooood morgen, Snøfall! Brrr. Jeg fryser på kontoret. Rim på innsiden av vinduet! Hopp, dere, så dere blir varme.»
+   - Varighet: 14 s (19 ord)
    - Handling: Gnir venstre hånd mot overarmen, ser over skulderen mot vinduet, så hopper han litt i stolen.
    - Kulde: Synlig pust, rim i vinduskantene.
-2. **Replikk:** «I natt fanget Orakelet den som sender på åttifem. Den har et navn. Den kaller seg… ja. Orakelet skrev navnet med tegnene i hjørnet av kortene.»
-   - Varighet: 15 s (26 ord)
-   - Handling: Holder et lite kort fra brevbunken i venstre hånd hele segmentet, stopper opp på «kaller seg», og peker til slutt i hjørnet av kortet.
-   - Kulde: Bildet fryser helt i 1–2 s etter «kaller seg», lyden faller bort, så kommer begge tilbake.
-3. **Replikk:** «Nord for polarsirkelen står ikke sola opp nå. Det heter mørketid. Men mørket er ikke ondt. Det er bare et sted varmen ikke har nådd ennå.»
-   - Varighet: 15 s (26 ord)
+2. **Replikk:** «I natt fanget Orakelet den som sender på åttifem. Den kaller seg… ja. Orakelet skrev navnet med tegnene i hjørnet av kortene.»
+   - Varighet: 15 s (22 ord)
+   - Handling: Peker med venstre pekefinger i hjørnet av det øverste arket i brevbunken uten å løfte det, stopper opp på «kaller seg».
+   - Kulde: Synlig pust, svak knitring. Bildet fryser på «kaller seg», lyden faller ut.
+3. **Replikk:** «Nord for polarsirkelen står ikke sola opp. Det heter mørketid. Mørket er ikke ondt. Det er et sted varmen ikke har nådd.»
+   - Varighet: 15 s (22 ord)
    - Handling: Snakker rolig, legger venstre hånd flatt på boka og lar den ligge.
    - Kulde: Synlig pust, svak knitring.
 4. **Replikk:** «Men hør nå. Navnet er det motsatte av det Hjerterud har i ovnen akkurat nå. Ikke bollene. Det som slår mot ansiktet når hun åpner ovnsdøra.»
-   - Varighet: 15 s (26 ord)
+   - Varighet: 15 s (26 ord) · låst
    - Handling: Vifter venstre hånd foran ansiktet som fra ovnsvarme, smiler.
-   - Kulde: Synlig pust, klikk.
-5. **Replikk:** «Fra i dag viser Orakelet hvor kaldt det er på linjen. Vi kaller det Frostgraden. Hold på hverandre. Ha en riktig fin dag!»
-   - Varighet: 15 s (23 ord)
+   - Kulde: Synlig pust.
+5. **Replikk:** «Fra i dag viser Orakelet hvor kaldt linjen er. Vi kaller det Frostgraden. Hold på hverandre. Ha en riktig fin dag!»
+   - Varighet: 15 s (21 ord)
    - Handling: Legger venstre hånd rundt trekoppen, nikker rolig.
    - Kulde: Synlig pust, klikk.
 
 ## Dag 8 (ti) – Lampene som Lyver · KRETSKORT
 
-Kulde-nivå 1. Rim på vinduet, synlig pust. Mikrofonen «sitter fast» i hånda hans hele klippet.
+Kulde-nivå 1. Rim på vinduet, synlig pust. Mikrofonen «sitter fast» i hånda hans i segment 1; den blir i høyre hånd.
 
-1. **Replikk:** «Gooooood morgen, Snøfall! Uke én er unnagjort, folkens. Bra jobbet! Og mikrofonen har fryst fast i hånda mi. Se. Den sitter.»
-   - Varighet: 15 s (21 ord)
-   - Handling: Rister mikrofonen i høyre hånd som for å få den løs, gir opp og ler.
+1. **Replikk:** «Gooooood morgen, Snøfall! Uke én er unnagjort, folkens. Bra jobbet! Og mikrofonen har fryst fast i hånda mi. Den sitter.»
+   - Varighet: 14 s (20 ord)
+   - Handling: Ser ned på mikrofonen i høyre hånd og vrikker på håndleddet som om den sitter fast; fingrene holder hele tiden rundt håndtaket. Gir opp og ler.
    - Kulde: Rim på bordkanten, synlig pust.
-2. **Replikk:** «Rapport fra Rampenissen: «Æ har bygd et tårn av frokostblanding. Det hete Sigma-tårn.» Sigma. Jeg vet ikke hva det betyr. Han vet det nok ikke heller.»
-   - Varighet: 15 s (26 ord)
-   - Handling: Tar opp et ark fra brevbunken med venstre hånd, holder det langt fra øynene, ler.
+2. **Replikk:** «Rapport fra Rampenissen: «Æ bygde et tårn av frokostblanding. Sigma-tårn.» Sigma. Ingen av oss vet hva det betyr.»
+   - Varighet: 13 s (18 ord)
+   - Handling: Løfter et ark fra brevbunken med venstre hånd, holder det langt fra øynene, ler og legger det ned.
    - Kulde: Svak knitring.
-3. **Replikk:** «I natt satt IQ med loddebolten til morgenen. Han lager noe som skal holde det kalde ute av kanalene. Bare lamper med strøm lyser, sier han.»
-   - Varighet: 15 s (26 ord)
+3. **Replikk:** «I natt satt IQ med loddebolten. Han bygger noe som holder det kalde ute. Bare lamper med strøm lyser, sier han.»
+   - Varighet: 15 s (21 ord)
    - Handling: Peker mot taket der verkstedet er med venstre hånd, og holder pekefingeren der til siste setning, der han knipser som en bryter.
    - Kulde: Synlig pust.
 4. **Replikk:** «Hør etter nå, Kristian. Dagens ord er det IQ holder i hendene hele natten: den lille grønne plata alle ledningene sitter fast på.»
-   - Varighet: 15 s (23 ord)
+   - Varighet: 15 s (23 ord) · låst
    - Handling: Lener seg inn, former et lite rektangel med tommel og pekefinger på venstre hånd og holder det.
    - Kulde: Synlig pust.
 5. **Replikk:** «IQ lodder på én, sover på én, og kaller den alltid det samme, med to ord i ett. Ha en riktig fin dag!»
-   - Varighet: 15 s (23 ord)
+   - Varighet: 15 s (23 ord) · låst
    - Handling: Legger kinnet på venstre hånd som på en pute, ler.
    - Kulde: Svak knitring, klikk.
 
@@ -248,72 +248,72 @@ Kulde-nivå 1. Rim på vinduet, synlig pust. Mikrofonen «sitter fast» i hånda
 
 Kulde-nivå 1. Rim, synlig pust, svak knitring. Morgensangen, andre forsøk, og denne gangen går den. Pil ble lurt to ganger i natt (som på radioen og i e-posten) før han telte på nytt.
 
-1. **Replikk:** «Gooood morgen, Snøfall! Niende desember, favorittdagen min. Og morgensangen, andre forsøk: God morgen, kopp. God morgen, bok. God morgen, Håkon, Hanna, Kristian. Og god morgen, Pil!»
-   - Varighet: 15 s (26 ord)
-   - Handling: Dirigerer med venstre pekefinger, nikker mot koppen, boka og døren der Pil sitter, fornøyd.
+1. **Replikk:** «Gooood morgen, Snøfall! Morgensangen, andre forsøk: God morgen, kopp. God morgen, bok. God morgen, Håkon, Hanna, Kristian. Og god morgen, Pil!»
+   - Varighet: 15 s (21 ord)
+   - Handling: Dirigerer med venstre pekefinger, nikker mot koppen og boka, så ut mot lytterne, fornøyd.
    - Kulde: Synlig pust.
-2. **Replikk:** «I natt la Kulde falske krystaller inn i radaren vår, så Orakelet mistet tellingen. Jeg gikk på den selv, ærlig talt. Pil satt oppe hele natten.»
-   - Varighet: 15 s (26 ord)
+2. **Replikk:** «I natt la Kulde falske krystaller i radaren, så Orakelet mistet tellingen. Jeg gikk på den selv. Pil satt oppe hele natten.»
+   - Varighet: 15 s (22 ord)
    - Handling: Legger venstre hånd flatt på boka og blir alvorlig, så ler han kort av seg selv.
-   - Kulde: Knitring, kort hopp i bildet.
-3. **Replikk:** «Hvert snøkrystall har seks armer. Det kommer av hvordan vann fester seg til vann når det fryser. Og nå kommer det viktigste, Håkon.»
-   - Varighet: 15 s (23 ord)
+   - Kulde: Knitring, kort hopp i bildet på «falske».
+3. **Replikk:** «Hvert snøkrystall har seks armer. Det kommer av hvordan vann fester seg til vann når det fryser. Nå kommer det viktigste, Håkon.»
+   - Varighet: 15 s (22 ord)
    - Handling: Sprer fingrene på venstre hånd og holder dem opp mot lampelyset hele segmentet.
-   - Kulde: Rim på vinduet glitrer når han løfter hånden.
+   - Kulde: Synlig pust, rim på vinduet.
 4. **Replikk:** «Pil ble lurt to ganger i natt. Så satte han seg ned med lupen. Pil telte armene tre ganger. Seks hver gang på de ekte.»
-   - Varighet: 15 s (25 ord)
-   - Handling: Holder opp fem fingre og tommelen på venstre hånd og teller dem én og én, langsomt.
+   - Varighet: 15 s (25 ord) · låst
+   - Handling: Teller på fingrene på venstre hånd, én og én, langsomt, og nikker på den siste.
    - Kulde: Synlig pust.
 5. **Replikk:** «De falske hadde feil tall, og de var lette å kjenne igjen når man først så etter. Tell nøye, dere. Ha en riktig fin dag!»
-   - Varighet: 15 s (25 ord)
+   - Varighet: 15 s (25 ord) · låst
    - Handling: Banker lett på bordet med venstre hånd på «feil tall», smiler.
    - Kulde: Synlig pust, klikk.
 
 ## Dag 10 (to) – Fargene som Forsvant · SPEKTER · frost nivå 1
 
-Kulde-nivå 3. Fargene renner ut av bildet i segment 2; segment 4 hakker i lyd og bilde, og Julius gjentar brikken i segment 5. Appen viser klippet i svart-hvitt med fargeglimt.
+Kulde-nivå 3. Fargene renner ut av bildet i segment 2 og er borte resten av dagen; segment 4 hakker i bildet, og Julius gjentar brikken i segment 5. Alt dette gjøres i etterarbeid (ffmpeg) per segment; prompten ber bare om knitring.
 
-1. **Replikk:** «Hallo? Hører dere meg? God morgen, Snøfall. Linjen er dårlig i dag. Jeg skal snakke langsomt, og jeg skal si det viktigste to ganger, i tilfelle.»
-   - Varighet: 15 s (26 ord)
+1. **Replikk:** «Hallo? Hører dere meg? God morgen, Snøfall. Linjen er dårlig i dag. Jeg snakker langsomt og sier det viktigste to ganger.»
+   - Varighet: 15 s (21 ord)
    - Handling: Holder mikrofonen tett inntil munnen, banker på den med venstre pekefinger.
-   - Kulde: Kraftig knitring, VHS-striper nederst i bildet.
-2. **Replikk:** «I natt tok Kulde fargene. Fra linjen, fra Snøfall TV, og fra skjermen hjemme hos dere. Her er alt grått nå. Bare juletreet holder litt igjen.»
-   - Varighet: 15 s (26 ord)
+   - Kulde: Kraftig knitring.
+2. **Replikk:** «I natt tok Kulde fargene. Fra linjen, fra Snøfall TV, og fra skjermen hjemme hos dere. Bare juletreet holder litt igjen.»
+   - Varighet: 15 s (21 ord)
    - Handling: Ser seg rundt i rommet, ser ned på sin egen venstre hånd.
-   - Kulde: Fargene renner ut av bildet ovenfra og ned mens han snakker; bare juletreet beholder litt rødt og grønt.
-3. **Replikk:** «Rødt og grønt er julens farger. Kristtornen holder bladene grønne hele vinteren, og bærene er røde. Det var det eneste som lyste i mørket.»
-   - Varighet: 15 s (24 ord)
-   - Handling: Holder opp et brev med rød skrift mot juletreet med venstre hånd, hele segmentet.
-   - Kulde: Fargene blafrer, rødt og grønt forsterkes et øyeblikk.
+   - Kulde: Kraftig knitring. Fargene renner ut av bildet mens han snakker.
+3. **Replikk:** «Rødt og grønt er julens farger. Kristtornen er grønn hele vinteren, og bærene er røde. Den lyste alene i mørket.»
+   - Varighet: 14 s (20 ord)
+   - Handling: Nikker mot juletreet til venstre, holder opp to fingre på venstre hånd for de to fargene.
+   - Kulde: Knitring, grått bilde.
 4. **Replikk:** «Hør nå godt. Alle fargene på rekke, slik regnbuen stiller dem opp. IQ har ett ord for hele rekka. Han sier det når han er stolt.»
-   - Varighet: 15 s (26 ord)
+   - Varighet: 15 s (26 ord) · låst
    - Handling: Tegner en bue i luften med venstre hånd.
-   - Kulde: Lyd og bilde hakker gjennom hele segmentet; enkeltord faller bort.
+   - Kulde: Knitring, grått bilde. Bildet hakker gjennom segmentet.
 5. **Replikk:** «Én gang til. Alle fargene på rekke, slik regnbuen stiller dem opp. Ett ord for hele rekka. Hold ut, dere. Ha en riktig fin dag, likevel.»
-   - Varighet: 15 s (26 ord)
+   - Varighet: 15 s (26 ord) · låst
    - Handling: Tegner buen en gang til, langsommere, ser bestemt ut.
-   - Kulde: Gjentakelsen kommer gjennom klarere, med svak knitring. Klikk.
+   - Kulde: Svak knitring, grått bilde. Klikk.
 
 ## Dag 11 (fr) – Antenne-Krisen · 75 · bonus
 
-Kulde-nivå 2 (senket fra 3, intensitetskurven). Kraftig knitring, bildet hopper, rim. Lyden faller ut i brøkdeler av sekunder. Fem segmenter: brikken i segment 4, «vi hører dere» og avskjed i 5.
+Kulde-nivå 2 (senket fra 3, intensitetskurven). Kraftig knitring, bildet hopper, rim. Lydbortfall bare i segment 1 og aldri i brikken (etterarbeid). Fem segmenter: brikken i segment 4, «vi hører dere» og avskjed i 5.
 
-1. **Replikk:** «Ja… hallo? Er det liv i jernvaren? Gooood morgen, Snøfall! Nei, ikke mye i dag. Men vi prøver likevel, sånn som vi alltid gjør her oppe.»
-   - Varighet: 15 s (26 ord)
-   - Handling: Banker på mikrofonen med venstre pekefinger, rister den lett i høyre hånd.
-   - Kulde: Knitring, lyden faller ut på «ikke mye».
-2. **Replikk:** «Rampenissen rapporterer: «Æ har pakka mæ inn i folie. Som en bakt potet.» En potet! Hjerterud spurte om han var ferdigstekt. Jeg lo i ti minutter.»
-   - Varighet: 15 s (26 ord)
-   - Handling: Tar opp et ark fra brevbunken med venstre hånd, leser, og ler lavt.
-   - Kulde: Bildet hopper to ganger.
-3. **Replikk:** «I natt delte Kulde senderen i tre. Antennen ved tjernet er full av is og står skjevt. Men IQ har en regel. Hør nå, Kristian.»
-   - Varighet: 15 s (25 ord)
-   - Handling: Peker ut av vinduet mot tjernet med venstre hånd og holder pekefingeren der.
-   - Kulde: Knitring øker, striper over bildet.
+1. **Replikk:** «Ja… hallo? Er det liv i jernvaren? Gooood morgen, Snøfall! Nei, ikke mye i dag. Men vi prøver likevel.»
+   - Varighet: 14 s (19 ord)
+   - Handling: Banker på mikrofonen med venstre pekefinger, ser ned på den i høyre hånd og vrikker på håndleddet; fingrene holder rundt håndtaket.
+   - Kulde: Knitring, rim på vinduet. Lyden faller ut et øyeblikk.
+2. **Replikk:** «Rampenissen rapporterer: «Æ e en bakt potet. I folie.» En potet! Hjerterud spurte om han var ferdigstekt. Jeg lo lenge.»
+   - Varighet: 14 s (20 ord)
+   - Handling: Løfter et ark fra brevbunken med venstre hånd, leser, ler lavt og legger det ned.
+   - Kulde: Knitring. Kort hopp i bildet på «potet».
+3. **Replikk:** «I natt delte Kulde senderen i tre. Antennen ved tjernet er full av is. Men IQ har en regel. Hør nå, Kristian.»
+   - Varighet: 15 s (22 ord)
+   - Handling: Peker bak seg mot vinduet med venstre hånd og holder pekefingeren der.
+   - Kulde: Knitring øker, rim på vinduet.
 4. **Replikk:** «Tre sendere, sa IQ, og alt han bygger ender på fem. Kulde satte ut sine egne. Ikke gang dem. Legg IQs sammen, så finner dere oss.»
-   - Varighet: 15 s (26 ord)
+   - Varighet: 15 s (26 ord) · låst
    - Handling: Tre fingre på venstre hånd, så fem, så legger han hånden flat på bordet.
-   - Kulde: Knitring, enkeltord faller bort.
+   - Kulde: Svak knitring.
 5. **Replikk:** «Vi hører dere i biter, men vi hører dere. Vi er her. Ha en riktig fin dag, dere tre.»
    - Varighet: 14 s (19 ord)
    - Handling: Legger venstre hånd flatt på bordet foran seg, ser rolig fram.
@@ -321,27 +321,27 @@ Kulde-nivå 2 (senket fra 3, intensitetskurven). Kraftig knitring, bildet hopper
 
 ## Dag 12 (lø) – Lydbølgene som Smelter Is · MELODI · grønn sol · M3
 
-Kulde-nivå 2. Rim, synlig pust, bildet fryser 1–2 s i segment 3. Julius innrømmer at han ikke trodde Rampenissen, og sier han skal ringe og si unnskyld; radioen samme morgen («Julius sa i går kveld at æ innbilt mæ det») og dag 13 («Julius sa unnskyld») stemmer uansett rekkefølge.
+Kulde-nivå 2. Rim, synlig pust, bildet fryser i segment 3 (etterarbeid). Julius innrømmer at han ikke trodde Rampenissen, og sier han skal si unnskyld i kveld; radioen samme morgen («Julius sa i går kveld at æ innbilt mæ det») og dag 13 («Julius sa unnskyld») stemmer uansett rekkefølge.
 
-1. **Replikk:** «Goooood morgen, Snøfall! Jeg tok feil i går, og det skal jeg innrømme i dag. Det skjer ikke ofte. Spør Hjerterud. Hun har en liste.»
-   - Varighet: 15 s (25 ord)
+1. **Replikk:** «Goooood morgen, Snøfall! Jeg tok feil i går, og det innrømmer jeg. Det skjer ikke ofte. Spør Hjerterud. Hun har en liste.»
+   - Varighet: 15 s (22 ord)
    - Handling: Sitter rolig, legger venstre hånd på bordet og lar den ligge.
    - Kulde: Synlig pust.
-2. **Replikk:** «Rapport fra Rampenissen: «Æ har laga ei lydbølge. Av dorull. Heile kjøkkenet.» En hel rull, folkens. Jeg lo så trekoppen hoppet. Hjerterud lo ikke.»
-   - Varighet: 15 s (24 ord)
-   - Handling: Tar opp et ark fra brevbunken med venstre hånd, leser, og ler.
+2. **Replikk:** «Rapport fra Rampenissen: «Æ laga lydbølge av dorull. Heile kjøkkenet.» En hel rull. Jeg lo så trekoppen hoppet. Hjerterud lo ikke.»
+   - Varighet: 15 s (21 ord)
+   - Handling: Løfter et ark fra brevbunken med venstre hånd, leser, ler og legger det ned.
    - Kulde: Svak knitring.
-3. **Replikk:** «I natt gikk Hjerterud ned til slusen og nynnet. Isen sprakk, og noe der inne svarte. Rampenissen hørte det først, og jeg trodde ham ikke.»
-   - Varighet: 15 s (25 ord)
+3. **Replikk:** «I natt gikk Hjerterud til slusen og nynnet. Isen sprakk, og noe svarte. Rampenissen hørte det først. Jeg trodde ham ikke.»
+   - Varighet: 15 s (21 ord)
    - Handling: Ser ned og stryker seg over skjegget med venstre hånd, litt flau, hele segmentet.
-   - Kulde: Bildet fryser 1–2 s på «sprakk».
+   - Kulde: Synlig pust. Bildet fryser på «sprakk».
 4. **Replikk:** «Håkon, hør. Hjerterud nynnet tre toner ved slusen, den dypeste først. Ingen ord. Bare det tonene lager når de kommer etter hverandre. Isen kjente det igjen.»
-   - Varighet: 15 s (26 ord)
+   - Varighet: 15 s (26 ord) · låst
    - Handling: Holder venstre hånd lavt, så litt høyere, så høyest, som tre trappetrinn.
    - Kulde: Synlig pust.
-5. **Replikk:** «Jeg tok feil om Rampenissen, og jeg skal ringe ham og si unnskyld. Syng litt i dag, dere. Ha en riktig fin helg, dere tre!»
-   - Varighet: 15 s (25 ord)
-   - Handling: Nynner tre toner uten ord, lavest først, ler.
+5. **Replikk:** «Jeg tok feil om Rampenissen, og i kveld sier jeg unnskyld. Syng litt, dere. Mm, mm, mmm. Ha en riktig fin helg!»
+   - Varighet: 15 s (22 ord)
+   - Handling: Nynner de tre tonene i replikken, lavest først, med venstre hånd som trappetrinn, ler.
    - Kulde: Synlig pust, klikk.
 
 ## Dag 13 (sø) – Luciadagens Gylne Krydder · SAFRAN · 3. advent
@@ -666,12 +666,12 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 | 4   | KOMPASS      | 114 | 57     | 74      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5), video regenereres               |
 | 5   | ULRIKEN      | 100 | 50     | 68      | 5     | 26      | nøkkel som oppslag (dag 2)         | Segm. 4 ny: «like mange som sikringer onsdag»                         |
 | 6   | LYKT         | 111 | 56     | 74      | 5     | 26      | 0 % (velger figur)                 |                                                                       |
-| 7   | KULDE        | 126 | 63     | 75      | 5     | 26      | 0 % + peker til kortet             | Bildet fryser der navnet skulle vært sagt; segm. 3 og 5 nye           |
-| 8   | KRETSKORT    | 119 | 60     | 75      | 5     | 26      | 0 % + regel om strøm               | Låst brikke delt over segm. 4–5; segm. 3 ny; mikrofonen sitter fast   |
-| 9   | 24           | 125 | 62     | 75      | 5     | 26      | armer (6), ikke antall, ikke regel | Låst brikke delt over segm. 4–5; morgensangen andre gang (går)        |
-| 10  | SPEKTER      | 128 | 64     | 75      | 5     | 26      | 0 %                                | Brikken gjentas i segm. 5 pga. hakking (låst)                         |
-| 11  | 75           | 122 | 61     | 74      | 5     | 26      | to regler, ingen tall              | Segm. 4 ny («ender på fem»), segm. 5 nytt                             |
-| 12  | MELODI       | 125 | 62     | 75      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                  |
+| 7   | KULDE        | 110 | 55     | 74      | 5     | 26      | 0 % + peker til kortet             | Bildet fryser der navnet skulle vært sagt; segm. 3 og 5 nye           |
+| 8   | KRETSKORT    | 105 | 52     | 72      | 5     | 23      | 0 % + regel om strøm               | Låst brikke delt over segm. 4–5; segm. 3 ny; mikrofonen sitter fast   |
+| 9   | 24           | 115 | 58     | 75      | 5     | 25      | armer (6), ikke antall, ikke regel | Låst brikke delt over segm. 4–5; morgensangen andre gang (går)        |
+| 10  | SPEKTER      | 114 | 57     | 74      | 5     | 26      | 0 %                                | Brikken gjentas i segm. 5 pga. hakking (låst)                         |
+| 11  | 75           | 106 | 53     | 72      | 5     | 26      | to regler, ingen tall              | Segm. 4 ny («ender på fem»), segm. 5 nytt                             |
+| 12  | MELODI       | 112 | 56     | 75      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                  |
 | 13  | SAFRAN       | 125 | 62     | 75      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                       |
 | 14  | ORIGAMI      | 124 | 62     | 75      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                  |
 | 15  | KARAMELL     | 128 | 64     | 75      | 5     | 26      | 0 %                                | Låst brikke er 26 ord alene; «Han spiste ikke engang det» i segm. 5   |
@@ -685,4 +685,4 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 | 23  | STJERNEKLART | 123 | 62     | 75      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 3–4                                       |
 | 24  | JULEMAGI     | 151 | 76     | 90      | 6     | 26      | 0 %                                | Låst brikke (50 ord) delt over segm. 4–6; morgensangen går hele veien |
 
-Sum: 3 005 ord, snitt 125 per dag (cirka 60 s tale, 70 s med klippause). Ingen segmenter over 26 ord; alle klipp 13–15 s.
+Sum: 2 922 ord, snitt 122 per dag (cirka 60 s tale, 70 s med klippause). Ingen segmenter over 26 ord; alle klipp 13–15 s.
