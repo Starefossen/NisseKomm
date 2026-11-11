@@ -7,8 +7,14 @@
   "refs": {},
   "avledet_fra": "torget",
   "fakta": [
-    { "fra_dag": 1, "tekst": "gyllent klokketårn midt på torget; lyset i toppen ses fra hele Snøfall" },
-    { "fra_dag": 4, "tekst": "klokkeskiva har fire visere; den fjerde er bøyd; Winter stiller tårnklokka etter tømmingen av postkassen" }
+    {
+      "fra_dag": 1,
+      "tekst": "gyllent klokketårn midt på torget; lyset i toppen ses fra hele Snøfall"
+    },
+    {
+      "fra_dag": 4,
+      "tekst": "klokkeskiva har fire visere; den fjerde er bøyd; Winter stiller tårnklokka etter tømmingen av postkassen"
+    }
   ]
 }
 ```

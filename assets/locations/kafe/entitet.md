@@ -7,9 +7,18 @@
   "refs": {},
   "avledet_fra": "torget",
   "fakta": [
-    { "fra_dag": 1, "tekst": "Hjerterud driver kaféen og bakeriet og bor der; Pil baker sammen med henne" },
-    { "fra_dag": 4, "tekst": "ligger ved torget i Snøfall; Ugleposten besøker den fra torget" },
-    { "fra_dag": 16, "tekst": "det fjerde adventslyset står i vinduet mot nord" }
+    {
+      "fra_dag": 1,
+      "tekst": "Hjerterud driver kaféen og bakeriet og bor der; Pil baker sammen med henne"
+    },
+    {
+      "fra_dag": 4,
+      "tekst": "ligger ved torget i Snøfall; Ugleposten besøker den fra torget"
+    },
+    {
+      "fra_dag": 16,
+      "tekst": "det fjerde adventslyset står i vinduet mot nord"
+    }
   ]
 }
 ```

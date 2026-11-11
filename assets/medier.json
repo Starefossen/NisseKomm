@@ -148,52 +148,37 @@
     "generator": "portrett",
     "ut": "spill/portrett-winter.png",
     "mal": "assets/prompts/portrett/winter.txt",
-    "refs": [
-      "characters/winter#outside",
-      "characters/winter#tophat"
-    ]
+    "refs": ["characters/winter#outside", "characters/winter#tophat"]
   },
   "portrett/hjerterud": {
     "generator": "portrett",
     "ut": "spill/portrett-hjerterud.png",
     "mal": "assets/prompts/portrett/hjerterud.txt",
-    "refs": [
-      "public/spill/portrett-julius.png"
-    ]
+    "refs": ["public/spill/portrett-julius.png"]
   },
   "portrett/iq": {
     "generator": "portrett",
     "ut": "spill/portrett-iq.png",
     "mal": "assets/prompts/portrett/iq.txt",
-    "refs": [
-      "characters/iq#standard",
-      "public/spill/portrett-julius.png"
-    ]
+    "refs": ["characters/iq#standard", "public/spill/portrett-julius.png"]
   },
   "portrett/julius": {
     "generator": "portrett",
     "ut": "spill/portrett-julius.png",
     "mal": "assets/prompts/portrett/julius.txt",
-    "refs": [
-      "characters/julius#standard"
-    ]
+    "refs": ["characters/julius#standard"]
   },
   "portrett/floke": {
     "generator": "portrett",
     "ut": "spill/portrett-floke.png",
     "mal": "assets/prompts/portrett/floke.txt",
-    "refs": [
-      "public/spill/portrett-julius.png"
-    ]
+    "refs": ["public/spill/portrett-julius.png"]
   },
   "portrett/rampenissen": {
     "generator": "portrett",
     "ut": "spill/portrett-rampenissen.png",
     "mal": "assets/prompts/portrett/rampenissen.txt",
-    "refs": [
-      "characters/rampenissen#ekte",
-      "public/spill/portrett-julius.png"
-    ]
+    "refs": ["characters/rampenissen#ekte", "public/spill/portrett-julius.png"]
   },
   "tv/antenne-rolig": {
     "generator": "loop",
@@ -432,9 +417,7 @@
     "ut": "assets/out/stills/snofall-landsby/still-julius.jpg",
     "bilde": "assets/out/forste-landsby-rolig.jpg",
     "mal": "assets/prompts/tv/snofall-landsby/julius.still.txt",
-    "refs": [
-      "characters/julius#standard"
-    ]
+    "refs": ["characters/julius#standard"]
   },
   "tv/landsby-julius": {
     "generator": "loop",
@@ -450,9 +433,7 @@
     "ut": "assets/out/stills/snofall-landsby/still-iq.jpg",
     "bilde": "assets/out/forste-landsby-rolig.jpg",
     "mal": "assets/prompts/tv/snofall-landsby/iq.still.txt",
-    "refs": [
-      "characters/iq#standard"
-    ]
+    "refs": ["characters/iq#standard"]
   },
   "tv/landsby-iq": {
     "generator": "loop",
@@ -468,9 +449,7 @@
     "ut": "assets/out/stills/snofall-landsby/still-winter.jpg",
     "bilde": "assets/out/forste-landsby-rolig.jpg",
     "mal": "assets/prompts/tv/snofall-landsby/winter.still.txt",
-    "refs": [
-      "characters/winter#outside"
-    ]
+    "refs": ["characters/winter#outside"]
   },
   "tv/landsby-winter": {
     "generator": "loop",

@@ -8,7 +8,10 @@
   "avledet_fra": "torget",
   "fakta": [
     { "fra_dag": 1, "tekst": "små boder med lanterner på torget i Snøfall" },
-    { "fra_dag": 4, "tekst": "to boder selger frosne bær, den ene med skiltet «BEDRE»; Ugleposten besøker dem fra torget" }
+    {
+      "fra_dag": 4,
+      "tekst": "to boder selger frosne bær, den ene med skiltet «BEDRE»; Ugleposten besøker dem fra torget"
+    }
   ]
 }
 ```

@@ -7,9 +7,18 @@
   "refs": {},
   "avledet_fra": "torget",
   "fakta": [
-    { "fra_dag": 1, "tekst": "Winter er sjef for pakkesentralen; den ligger bak postkassen på torget" },
-    { "fra_dag": 4, "tekst": "samlebånd, skjemahyller og Winters kontor; Ugleposten besøker den fra torget" },
-    { "fra_dag": 16, "tekst": "samlebåndet snus om natten, alt havner i én haug" }
+    {
+      "fra_dag": 1,
+      "tekst": "Winter er sjef for pakkesentralen; den ligger bak postkassen på torget"
+    },
+    {
+      "fra_dag": 4,
+      "tekst": "samlebånd, skjemahyller og Winters kontor; Ugleposten besøker den fra torget"
+    },
+    {
+      "fra_dag": 16,
+      "tekst": "samlebåndet snus om natten, alt havner i én haug"
+    }
   ]
 }
 ```
