@@ -38,14 +38,7 @@ import {
   type FriSim,
 } from "../snofall-tv/vidda";
 import { SledeLyd } from "../snofall-tv/slede-lyd";
-import {
-  bak,
-  hex,
-  identity,
-  multiply,
-  transform,
-  type Vec3,
-} from "./gl";
+import { bak, hex, identity, multiply, transform, type Vec3 } from "./gl";
 import {
   GRENSE_MS,
   OPPLØSNINGER,
@@ -860,7 +853,7 @@ export function FriFlyging({
             REIN_SKALA,
           ),
         );
-        r.tegn(M.rein[i === 2 ? 0 : 1], rein);
+        r.tegn(M.rein, rein);
         for (let j = 0; j < 4; j++) {
           const sving = spiller
             ? Math.sin(fase + (j === 0 || j === 3 ? 0 : Math.PI)) * 0.6

@@ -956,7 +956,7 @@ function Etappeflukt({
             REIN_SKALA,
           ),
         );
-        r.tegn(M.rein[i === 2 ? 0 : 1], rein);
+        r.tegn(M.rein, rein);
         for (let j = 0; j < 4; j++) {
           const sving = spiller
             ? Math.sin(fase + (j === 0 || j === 3 ? 0 : Math.PI)) * 0.6

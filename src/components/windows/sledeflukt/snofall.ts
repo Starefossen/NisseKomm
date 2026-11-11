@@ -365,11 +365,14 @@ function pynt(m: Mesh) {
     const a = (i / 24) * Math.PI * 2;
     lampe(Math.sin(a) * 840, -Math.cos(a) * 840);
   }
-  // Picket fences along the main street.
+  // Picket fences along the main street, from the ring street (r 800) towards
+  // the gate, so no fence crosses the ring street.
+  const [f0, f1] = [(800 + 7.5 + 10) * S, 1210 * S];
   for (const s of [-1, 1]) {
     const x = s * 70 * S;
-    for (const y of [0.6, 1.2]) m.box([x, y, 93], [0.15, 0.15, 56], PALISADE);
-    for (let z = 65; z <= 121; z += 4)
+    for (const y of [0.6, 1.2])
+      m.box([x, y, (f0 + f1) / 2], [0.15, 0.15, f1 - f0], PALISADE);
+    for (let z = Math.ceil(f0); z <= f1; z += 4)
       m.box([x, 0.7, z], [0.2, 1.4, 0.2], PALISADE);
   }
   // The Christmas tree on the square, south of the tower, lit.

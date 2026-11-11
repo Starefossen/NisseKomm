@@ -50,7 +50,8 @@ describe("sledeflukt verden", () => {
       m.slede,
       m.bein,
       m.tømmer,
-      ...m.rein,
+      m.rein,
+      m.røyk,
       ...m.hus.map((h) => h.mesh),
     ]) {
       expect(mesh.length % (STRIDE * 3)).toBe(0);

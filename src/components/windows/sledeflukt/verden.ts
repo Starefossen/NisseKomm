@@ -504,14 +504,14 @@ export function mannskap(slede: Mat4, p: Positur): [Float32Array, Mat4][] {
   return ut;
 }
 
-/** A reindeer without legs, facing -z; the lead animal gets a red nose. */
-function reinMesh(leder: boolean) {
+/** A reindeer without legs, facing -z. Trixter leads, so no red nose. */
+function reinMesh() {
   const m = new Mesh();
   m.ellipsoid([0, 0, 0], [1, 1.05, 2.1], PELS, 8, 4);
   m.ellipsoid([0, 0.2, 0.5], [0.9, 0.9, 1.3], PELS_MØRK, 8, 4);
   m.rod([0, 0.6, -1.8], [0, 2, -2.8], 0.45, PELS, 5, 0.35);
   m.box([0, 2.3, -3.2], [0.8, 0.8, 1.4], PELS);
-  m.box([0, 2.2, -4], [0.5, 0.5, 0.4], leder ? RØD : PELS_MØRK, leder ? 1 : 0);
+  m.box([0, 2.2, -4], [0.5, 0.5, 0.4], PELS_MØRK);
   m.box([0, 0.3, 2.1], [0.4, 0.5, 0.3], PELS_LYS);
   for (const s of [-1, 1]) {
     const x = s * 0.35;
@@ -678,7 +678,7 @@ export interface Meshes {
   juliusArm: Float32Array;
   pil: Float32Array;
   pilArm: Float32Array;
-  rein: [Float32Array, Float32Array];
+  rein: Float32Array;
   bein: Float32Array;
   tømmer: Float32Array;
   pakke: Float32Array;
@@ -718,7 +718,7 @@ export function meshes(): Meshes {
       juliusArm: armMesh(RØD, 1.5),
       pil: pilMesh(),
       pilArm: armMesh(GRAN_LYS, 1.1),
-      rein: [reinMesh(true), reinMesh(false)],
+      rein: reinMesh(),
       bein: beinMesh(),
       tømmer: tømmerMesh(),
       pakke: pakkeMesh(),
