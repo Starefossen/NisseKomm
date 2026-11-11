@@ -13,6 +13,7 @@ import eventyrData from "@/data/eventyr.json";
 import merker from "@/data/merker.json";
 import videoer from "@/data/julius_videoer.json";
 import { TIDBITS } from "@/lib/tidbits";
+import { KAPITLER } from "@/components/windows/nissespill/kapitler";
 import type { FilNode } from "@/types/innhold";
 
 const quests = getAllOppdrag();
@@ -113,6 +114,17 @@ for (const [where, list] of Object.entries({
   passord: t.nissenet.feilPassord,
 })) {
   for (const e of list) add(e.fraDag, `tidbits ${where}`, JSON.stringify(e));
+}
+
+// NISSESPILL: every string in a chapter is visible from its unlock day. The whole
+// chapter is serialised (numbers dropped: hotspot rects are not text), so new
+// fields are covered without listing them.
+for (const k of KAPITLER) {
+  add(
+    k.dag,
+    `nissespill kapittel ${k.n}`,
+    JSON.stringify(k, (_, v) => (typeof v === "number" ? undefined : v)),
+  );
 }
 
 const pattern = (code: string) =>

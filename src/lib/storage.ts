@@ -26,6 +26,15 @@ export interface SantaLetter {
   content: string;
 }
 
+export interface EventyrSave {
+  /** Chapter in play (components/windows/nissespill/kapitler.ts). */
+  kapittel: number;
+  sceneId: string;
+  inventory: string[];
+  flags: string[];
+  hints: Record<string, number>;
+}
+
 // Storage keys
 const KEYS = {
   AUTHENTICATED: "nissekomm-authenticated",
@@ -52,6 +61,7 @@ const KEYS = {
   SANTA_LETTERS: "nissekomm-santa-letters",
   INTROS_SEEN: "nissekomm-intros-seen",
   IDLE_PEEK: "nissekomm-idle-peek",
+  EVENTYR: "nissekomm-eventyr",
   SEASON: "nissekomm-season",
 } as const;
 
@@ -754,6 +764,15 @@ export class StorageManager {
   static markIntroSeen(id: string): void {
     const seen = this.getIntrosSeen();
     if (!seen.includes(id)) this.setItem(KEYS.INTROS_SEEN, [...seen, id]);
+  }
+
+  /** Point-and-click adventure (NISSESPILL) save: chapter, scene, inventory, flags, hint levels. */
+  static getEventyrSave(): EventyrSave | null {
+    return this.getItem<EventyrSave | null>(KEYS.EVENTYR, null);
+  }
+
+  static setEventyrSave(save: EventyrSave): void {
+    this.setItem(KEYS.EVENTYR, save);
   }
 
   static markJuliusWatched(day: number): void {

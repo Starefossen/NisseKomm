@@ -28,6 +28,7 @@ import { SymbolScanner } from "@/components/windows/SymbolScanner";
 import { EventyrOversikt } from "@/components/windows/EventyrOversikt";
 import { Dagbok } from "@/components/windows/Dagbok";
 import { RuneTavle } from "@/components/windows/RuneTavle";
+import { Nissespill } from "@/components/windows/nissespill/Nissespill";
 import { FROST_OPEN_WINDOWS } from "@/lib/frost";
 import { GrandFinaleModal } from "@/components/ui/GrandFinaleModal";
 import { BadgeRow } from "@/components/ui/BadgeRow";
@@ -82,6 +83,13 @@ const TOOLS: {
     label: "SYMBOLSKANNER",
     color: "green",
     unlock: "SYMBOLSKANNER",
+  },
+  {
+    window: "nissespill",
+    icon: "gamepad",
+    label: "NISSESPILL",
+    color: "gold",
+    unlock: "NISSESPILL",
   },
   {
     window: "nissemusikk",
@@ -551,6 +559,9 @@ export default function Home() {
                   )}
                   {openWindow === "runetavle" && (
                     <RuneTavle onClose={handleCloseWindow} />
+                  )}
+                  {openWindow === "nissespill" && (
+                    <Nissespill onClose={handleCloseWindow} />
                   )}
                   {openWindow === "dagbok" && (
                     <Dagbok

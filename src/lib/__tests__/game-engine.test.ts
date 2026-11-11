@@ -250,7 +250,7 @@ describe("GameEngine", () => {
       expect(unlocked).toContain("NISSEMUSIKK");
       expect(unlocked).toContain("SYMBOLSKANNER");
       expect(unlocked).toContain("BREVFUGLER");
-      expect(unlocked.length).toBe(4);
+      expect(unlocked.length).toBe(5);
     });
   });
 
@@ -323,7 +323,7 @@ describe("GameEngine", () => {
       expect(summary.badges.earned).toBe(0);
       expect(summary.badges.total).toBe(3);
 
-      expect(summary.modules.unlocked).toBe(4); // + SYMBOLSKANNER (day 3), NISSEKRYPTO (day 4), NISSEMUSIKK & BREVFUGLER (day 7)
+      expect(summary.modules.unlocked).toBe(5); // + SYMBOLSKANNER (day 3), NISSEKRYPTO & NISSESPILL (day 4), NISSEMUSIKK & BREVFUGLER (day 7)
 
       expect(summary.isComplete).toBe(false);
     });

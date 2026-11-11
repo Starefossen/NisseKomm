@@ -31,6 +31,8 @@ assets/
 | `bin/loop.sh <inn.jpg> <prompt.txt> <navn> [sek]`       | Lager en loop fra et stillbilde og skjuler skjøten           |
 | `bin/seamless.sh <inn.mp4> <ut.mp4> [fade]`             | Krysstoner slutten inn i starten                             |
 | `bin/julius.sh <navn> "<replikk>" ["<handling>"] [sek]` | Lager et klipp av Julius' videologg med opptaksfilter        |
+| `bin/portrett.sh <prompt.txt> <ut.png> [ref.jpg ...]`   | Kvadratisk portrett til Nissespill (dialogbokser)            |
+| `bin/piksel.sh <inn> <ut.png> [px] [farger]`            | Pikselutgave med liten palett (ffmpeg), til `public/spill/`  |
 
 Nøkkelen hentes med `fnox get GEMINI_API_KEY` fra prosjektmappen. Modeller: `gemini-3-pro-image` for bilder, `gemini-omni-1.2-flash` (Interactions API) for video.
 

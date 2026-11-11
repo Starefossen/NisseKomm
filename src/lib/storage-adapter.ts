@@ -119,6 +119,7 @@ export const SYNCED_KEYS = new Set([
   "nissekomm-player-names",
   "nissekomm-viewed-emails",
   "nissekomm-viewed-bonusoppdrag-emails",
+  "nissekomm-eventyr",
 ]);
 /** Written by MCP (set_frost, skip_day); clients only read them. */
 export const SERVER_KEYS = ["frost-override", "day-offset"];

@@ -134,6 +134,12 @@ export const MEDIA_MANIFEST: readonly ManifestEntry[] = [
   "feed/iq-verksted.png",
   "feed/julius-kontor.jpg",
   "feed/landsby-rolig.jpg",
+  // NISSESPILL (Klementin-Ekspressen): stills and pixel portraits, assets/bin/portrett.sh + piksel.sh
+  "spill/torget.jpg",
+  "spill/port-aapen.jpg",
+  ...["rampenissen", "iq", "winter", "julius", "nissemor"].map(
+    (n) => `spill/portrett-${n}.png`,
+  ),
   ...MUSIC,
   "music/christmas-dreams-jingle-bells-268299.mp3",
   // Hidden NisseMusikk track (tidbits.json)
@@ -150,6 +156,7 @@ export const MEDIA_GROUPS = [
   },
   { id: "tv", title: "TV-looper", prefix: "video/tv/" },
   { id: "stills", title: "Kamerabilder", prefix: "feed/" },
+  { id: "spill", title: "Nissespill", prefix: "spill/" },
   { id: "music", title: "Musikk", prefix: "music/" },
 ] as const;
 
