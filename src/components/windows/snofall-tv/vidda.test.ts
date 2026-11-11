@@ -311,3 +311,31 @@ describe("fri flyging på vidda", () => {
     );
   });
 });
+
+describe("krasj i fri flyging (review-sledeflukt)", () => {
+  it("a wall crash turns the sled around, so it does not fly back in", () => {
+    const sim = createFri(julaften);
+    sim.s.alt = 60;
+    // Aim straight at Nordtoppen's flank from just outside it.
+    const n = FJELL[0];
+    sim.s.x = n.x;
+    sim.s.z = n.z + n.r * 0.9;
+    sim.s.kurs = 0;
+    let ev = fly(sim, 3);
+    const krasj = ev.filter((e) => e === "krasj").length;
+    expect(krasj).toBeLessThanOrEqual(1);
+    ev = fly(sim, 3);
+    expect(ev.filter((e) => e === "krasj").length).toBe(0);
+  });
+  it("a held dive into the ground crashes once", () => {
+    const sim = createFri(dag8);
+    const ev = fly(sim, 10, { ...still, climb: -1 });
+    expect(ev.filter((e) => e === "krasj").length).toBe(1);
+  });
+  it("dt of 0, NaN or a huge stall keeps the state finite", () => {
+    const sim = createFri(dag8);
+    for (const dt of [0, NaN, 5]) sim.step(dt, still);
+    for (const v of [sim.s.x, sim.s.z, sim.s.alt, sim.s.kurs])
+      expect(Number.isFinite(v)).toBe(true);
+  });
+});

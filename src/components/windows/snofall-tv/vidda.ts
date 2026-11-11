@@ -8,6 +8,7 @@
 
 import {
   ALT_MAX,
+  STYRE_TREGHET,
   SKADE_PER_TREFF,
   HUS_PIPE,
   nærPoeng,
@@ -66,8 +67,6 @@ export const iKorridor = (x: number, z: number) => ({
 const BERGEN_PORT = fraKorridor(GRENSE + 6000, 0);
 /** Full stick turns this fast (a circle in about six seconds). */
 const SVING = 1.05;
-/** Seconds for a turn to build or fade; higher feels heavier. */
-export const STYRE_TREGHET = 0.5;
 const KLATRE = 150;
 /** How far ahead the sled reads the terrain; a wall higher than this over the sled is a crash. */
 const SE_FRAM = 400;
@@ -591,6 +590,8 @@ export function createFri(o: FriOpts) {
     sakteTil: 0,
     /** After a crash the sled stands still until this time, then flies on slowly. */
     stoppTil: 0,
+    /** After a crash a held dive is ignored until the stick comes back up. */
+    dykkSperre: false,
     /** Sled damage 0–1 from scrapes; 1 is a crash, a respawn starts it over. */
     skade: 0,
     sisteSkade: -Infinity,
@@ -607,19 +608,25 @@ export function createFri(o: FriOpts) {
   };
   const motion = o.reduceMotion ? 0.72 : 1;
 
-  // A crash stops the sled for a second, then sets it down a stretch back and a bit higher.
-  function krasj(ev: FriHendelse[], fx: number, fz: number) {
-    s.stoppTil = s.tid + 1;
-    s.sakteTil = s.tid + 2.2;
+  // A crash stops the sled briefly, then sets it down a stretch back and a bit
+  // higher; after hitting something ahead it faces away, so it does not fly
+  // straight back in.
+  function krasj(ev: FriHendelse[], fx: number, fz: number, snu: boolean) {
+    s.stoppTil = s.tid + 0.6;
+    s.sakteTil = s.tid + 1.8;
+    s.dykkSperre = true;
     s.x -= fx * 600;
     s.z -= fz * 600;
-    s.alt = Math.max(s.alt, høyde(s.x, s.z) + 30) + 60;
+    if (snu) s.kurs += Math.PI;
+    s.alt = Math.min(ALT_MAX, Math.max(s.alt, høyde(s.x, s.z) + 30) + 60);
     s.skade = 0;
     ev.push("krasj");
   }
 
   function step(dt: number, inn: Styring): FriHendelse[] {
     const ev: FriHendelse[] = [];
+    // A stalled tab or a zero step must not blow up the sim.
+    dt = Math.min(0.1, Math.max(0, dt || 0));
     s.tid += dt;
     // Two lag stages: the turn eases in and out over STYRE_TREGHET, and is slower at speed.
     const k = Math.min(1, (dt * 4) / STYRE_TREGHET);
@@ -637,7 +644,7 @@ export function createFri(o: FriOpts) {
       if (!s.ute) ev.push("snu");
       s.ute = true;
       if (ute > 4000) {
-        const f = (ute - 4000) / (ute + GRENSE);
+        const f = Math.min(1, ((ute - 4000) / (ute + GRENSE)) * dt * 9);
         s.x += (mål[0] - s.x) * f;
         s.z += (mål[1] - s.z) * f;
       }
@@ -652,7 +659,8 @@ export function createFri(o: FriOpts) {
     s.aero += (1 - AERO * inn.climb - s.aero) * Math.min(1, dt * 1.2);
     mult *= s.aero;
     s.fart = FART * mult * motion;
-    if (s.tid >= s.sakteTil && s.fart < FART * motion * 0.7) s.alt -= 60 * dt;
+    if (s.tid >= s.sakteTil && inn.climb > 0 && s.fart < FART * motion * 0.7)
+      s.alt -= 60 * dt;
     const fx = Math.sin(s.kurs);
     const fz = -Math.cos(s.kurs);
 
@@ -666,7 +674,7 @@ export function createFri(o: FriOpts) {
         husTopp(hus, s.x + fx * k, s.z + fz * k) + 60,
       );
     if (fram > ALT_MAX || fram > s.alt + KLATRE_FRITT) {
-      if (s.tid >= s.sakteTil) krasj(ev, fx, fz);
+      if (s.tid >= s.sakteTil) krasj(ev, fx, fz, true);
     } else if (s.tid < s.stoppTil) {
       // Just crashed: the sled sits still in the snow for a moment.
     } else {
@@ -676,16 +684,23 @@ export function createFri(o: FriOpts) {
       if (fram > s.alt + 25 && s.tid - s.sisteSkade > 0.6) {
         s.sisteSkade = s.tid;
         s.skade += SKADE_PER_TREFF;
-        if (s.skade >= 1) krasj(ev, fx, fz);
+        if (s.skade >= 1) krasj(ev, fx, fz, true);
         else ev.push("skrape");
       }
       if (fram > s.alt) s.alt += (fram - s.alt) * Math.min(1, dt * 4);
     }
-    s.alt += inn.climb * KLATRE * dt;
-    // Diving into the ground is a crash too.
+    if (inn.climb >= 0) s.dykkSperre = false;
+    const forrigeAlt = s.alt;
+    if (!(inn.climb < 0 && s.dykkSperre)) s.alt += inn.climb * KLATRE * dt;
+    // Diving into the ground is a crash too, counted on arrival only.
     const gulv = Math.max(ALT_MIN, høyde(s.x, s.z) + 30);
-    if (inn.climb < 0 && s.alt <= gulv && s.tid >= s.sakteTil)
-      krasj(ev, fx, fz);
+    if (
+      inn.climb < 0 &&
+      s.alt <= gulv &&
+      forrigeAlt > gulv &&
+      s.tid >= s.sakteTil
+    )
+      krasj(ev, fx, fz, false);
     s.alt = Math.max(ALT_MIN, høyde(s.x, s.z) + 30, Math.min(ALT_MAX, s.alt));
 
     // Wind: like the stages' gust zones it eases in, but here it never stops,

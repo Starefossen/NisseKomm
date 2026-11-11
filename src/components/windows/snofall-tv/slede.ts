@@ -590,7 +590,8 @@ export const UTFORDRING_BONUS = 500;
 
 // The numeric day codes are plain numbers; a target that spells one would
 // trip kodelekkasje, so those two counts are nudged by one.
-const trygtTall = (n: number) => (n === 24 || n === 75 ? n + 1 : n);
+const trygtTall = (n: number) =>
+  n === 24 || n === 48 || n === 75 ? n + 1 : n;
 
 /**
  * The day's challenge: one of six, cycling with the date so every open day
@@ -856,6 +857,8 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     sprangTil: 0,
     løftTil: 0,
     sakteTil: 0,
+    /** After a crash a held dive is ignored until the stick comes back up. */
+    dykkSperre: false,
     vind: 0,
     /** Sideways push on the sleigh this step; packages drift with it (forutsiPakke). */
     gust: 0,
@@ -866,6 +869,8 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     first: 0,
   };
   const widen = opts.assist ? 1.4 : 1;
+  // Stage 1 has a soft floor (Hans): the snow scrapes but never crashes.
+  const mykBunn = !!opts.assist || e.id === "tundra";
   const motion = opts.reduceMotion ? 0.72 : 1;
 
   function step(dt: number, inn: Styring): Hendelse[] {
@@ -891,21 +896,25 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     s.slep += (s.vx - s.slep) * Math.min(1, dt * 2.5);
     s.px = Math.max(-1.3, Math.min(1.3, s.px + s.vx * dt));
     if (Math.abs(s.px) >= 1.3) s.vx = 0;
-    if (inn.climb !== 0) {
+    if (inn.climb >= 0) s.dykkSperre = false;
+    const forrigeAlt = s.alt;
+    if (inn.climb !== 0 && !(inn.climb < 0 && s.dykkSperre)) {
       s.alt += inn.climb * KLATRE * dt;
     } else if (opts.assist) {
       s.alt += (ALT_CRUISE - s.alt) * Math.min(1, dt * 0.8);
     }
-    // Diving into the snow is a crash; with the assistant the floor is soft.
+    // Diving into the snow is a crash, counted on arrival only so a held
+    // stick cannot drain lives; with the assistant the floor is soft.
     if (
-      !opts.assist &&
+      !mykBunn &&
       inn.climb < 0 &&
       s.alt <= ALT_MIN &&
+      forrigeAlt > ALT_MIN &&
       s.tid >= s.sakteTil
     ) {
       krasj(ev);
       s.alt = ALT_MIN + 40;
-    } else if (!opts.assist && s.alt < ALT_MIN + 8) skrape(ev);
+    } else if (!opts.assist && s.alt < ALT_MIN + 8) skrape(ev, mykBunn);
     s.alt = Math.max(ALT_MIN, Math.min(ALT_MAX, s.alt));
     s.bank += (s.vx * 0.28 - s.bank) * Math.min(1, dt * 6);
 
@@ -931,6 +940,9 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     if (
       !opts.assist &&
       s.tid >= s.sakteTil &&
+      // Only while still climbing: after a climb the aero eases back from
+      // below, and braking then must not read as falling.
+      inn.climb > 0 &&
       s.fart < e.fart * ramp * motion * 0.7
     )
       s.alt = Math.max(ALT_MIN, s.alt - 60 * dt);
@@ -989,7 +1001,10 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
           ev.push("nærLevering");
         } else {
           // Without chimneys a package in the snow is just fun, not a miss.
-          if (hus.length) s.pakkebom++;
+          if (hus.length) {
+            s.pakkebom++;
+            s.rekke = 0;
+          }
           ev.push("pakkebom");
         }
         s.landing = { x: p.x, z: p.z };
@@ -1117,11 +1132,12 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     ev.push("nære");
   }
 
-  function skrape(ev: Hendelse[]) {
+  function skrape(ev: Hendelse[], snø = false) {
     // One scrape per pass, not one per frame.
     if (s.tid - s.sisteSkade < 0.6) return;
     s.sisteSkade = s.tid;
     s.skade += SKADE_PER_TREFF;
+    if (snø) s.skade = Math.min(0.99, s.skade);
     if (s.skade >= 1) {
       s.skade = 0;
       krasj(ev);
@@ -1133,6 +1149,7 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     s.sisteSkade = s.tid;
     s.rekke = 0;
     s.sakteTil = s.tid + 1.2;
+    s.dykkSperre = true;
     s.sprangTil = 0;
     if (!opts.assist) {
       s.liv--;

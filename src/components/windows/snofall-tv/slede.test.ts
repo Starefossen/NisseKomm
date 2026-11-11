@@ -245,15 +245,15 @@ describe("sim", () => {
   it("climbing costs speed, diving gains it, a stall drops the nose", () => {
     const fart = (climb: number, gass = 0) => {
       const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
-      sim.s.alt = 300;
-      for (let i = 0; i < 120; i++) sim.step(1 / 60, { ...still, climb, gass });
+      sim.s.alt = 100;
+      for (let i = 0; i < 90; i++) sim.step(1 / 60, { ...still, climb, gass });
       return sim;
     };
     const flat = fart(0).s.fart;
     expect(fart(0.5).s.fart).toBeLessThan(flat * 0.95);
     expect(fart(-0.5).s.fart).toBeGreaterThan(flat * 1.05);
-    // Braking up a climb stalls: the sled climbs less than with the throttle open.
-    expect(fart(0.5, -1).s.alt).toBeLessThan(fart(0.5).s.alt - 30);
+    // Braking up a full climb stalls: the sled climbs less than with the throttle open.
+    expect(fart(1, -1).s.alt).toBeLessThan(fart(1).s.alt - 30);
   });
 
   it("obstacles in the path ramp up by stage; stage 1 has none", () => {
@@ -637,7 +637,7 @@ describe("pipelevering", () => {
 
   it("diving into the snow is a crash without the assistant, never with it", () => {
     const ned = { steer: 0, climb: -1, sprang: false };
-    const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
+    const sim = createSim(ETAPPER[1], { assist: false, reduceMotion: false });
     const ev: string[] = [];
     for (let i = 0; i < 180; i++) ev.push(...sim.step(1 / 60, ned));
     expect(ev).toContain("krasj");
@@ -648,7 +648,7 @@ describe("pipelevering", () => {
   });
 
   it("small hits add damage; a full meter is a crash and starts the meter over", () => {
-    const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
+    const sim = createSim(ETAPPER[1], { assist: false, reduceMotion: false });
     const ev: string[] = [];
     // Skimming the snow without diving: a scrape every 0.6 s.
     for (let i = 0; i < 60 * 1.1; i++) {
@@ -710,7 +710,37 @@ describe("ringløypa", () => {
       expect(lagBane(e, 24).some((t) => t.type === "hus")).toBe(true);
       expect(lagBane(e, 24)).toEqual(lagBane(e, 24));
     }
-    expect(lagBane(ETAPPER[0], 13).some((t) => t.type === "hus")).toBe(false);
-    expect(leveringsoppdrag(24, ETAPPER[0])).toBeNull();
+    expect(lagBane(ETAPPER[1], 13).some((t) => t.type === "hus")).toBe(false);
+    expect(leveringsoppdrag(24, ETAPPER[1])).toBeNull();
+  });
+});
+
+describe("gulv og stall (review-sledeflukt)", () => {
+  const etappe = (id: string) => ETAPPER.find((x) => x.id === id)!;
+  it("a stick held at the floor crashes once, not every 1.2 s", () => {
+    const sim = createSim(etappe("vardeloypa"), {});
+    for (let i = 0; i < 60 * 8 && !sim.s.tapt; i++)
+      sim.step(1 / 60, { ...still, climb: -1 });
+    expect(sim.s.krasj).toBe(1);
+    expect(sim.s.tapt).toBe(false);
+  });
+  it("stage 1 has a soft floor: diving into the snow only scrapes", () => {
+    const sim = createSim(etappe("tundra"), {});
+    sim.s.ting.length = 0; // only the snow, no trees to hit
+    for (let i = 0; i < 60 * 10; i++) sim.step(1 / 60, { ...still, climb: -1 });
+    expect(sim.s.krasj).toBe(0);
+    expect(sim.s.skade).toBeGreaterThan(0);
+    expect(sim.s.skade).toBeLessThan(1);
+  });
+  it("braking after a climb does not stall the sled down", () => {
+    const sim = createSim(etappe("vardeloypa"), {});
+    for (let i = 0; i < 60; i++) sim.step(1 / 60, { ...still, climb: 1 });
+    const alt = sim.s.alt;
+    for (let i = 0; i < 120; i++) sim.step(1 / 60, { ...still, gass: -1 });
+    expect(sim.s.alt).toBeGreaterThanOrEqual(alt);
+  });
+  it("difficulty never drops below stage 1", () => {
+    const [f, ...rest] = ETAPPER;
+    for (const e of rest) expect(e.fart).toBeGreaterThanOrEqual(f.fart);
   });
 });
