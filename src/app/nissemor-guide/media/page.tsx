@@ -23,7 +23,7 @@ import { ReviewItemCard, useMediaData } from "./kort";
 const box = "border-4 border-(--neon-green) bg-black p-4 mb-6";
 
 function Status({ item }: { item: ItemStatus | null }) {
-  if (!item) return <span className="text-gray-500">–</span>;
+  if (!item) return <span className="text-(--neon-green)/80">–</span>;
   return (
     <span
       className={item.ok ? "text-(--gold)" : "text-(--christmas-red)"}
@@ -199,7 +199,7 @@ function MediaContent() {
                   {totalLagPaaNytt} lag på nytt
                 </span>
                 <span>·</span>
-                <span className="text-gray-400">
+                <span className="text-(--neon-green)/80">
                   {totalManglerVurdering} mangler vurdering
                 </span>
               </div>
@@ -312,7 +312,7 @@ function MediaContent() {
                       {lagPaaNyttCount} lag på nytt
                     </span>
                     <span>·</span>
-                    <span className="text-gray-400">
+                    <span className="text-(--neon-green)/80">
                       {manglerCount} mangler
                     </span>
                     <span className="text-(--neon-green)/70">
@@ -322,7 +322,7 @@ function MediaContent() {
                 </div>
 
                 {shown.length === 0 ? (
-                  <p className="text-gray-400 text-sm py-4 text-center">
+                  <p className="text-(--neon-green)/80 text-sm py-4 text-center">
                     Ingen elementer matcher gjeldende filtre i denne gruppen.
                   </p>
                 ) : (

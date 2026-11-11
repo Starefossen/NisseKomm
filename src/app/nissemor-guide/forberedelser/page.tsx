@@ -78,7 +78,7 @@ function Forberedelser() {
                       {v.mengde && ` · ${v.mengde}`}
                       {v.pris && ` · ${v.pris}`}
                       {v.dager && ` · dag ${v.dager}`}
-                      <span className="block text-base opacity-70">
+                      <span className="block text-base opacity-80">
                         {v.hvor}
                       </span>
                     </span>

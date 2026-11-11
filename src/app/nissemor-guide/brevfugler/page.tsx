@@ -47,7 +47,7 @@ function BrevfuglerContent() {
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-2 tracking-wider">
           BREVFUGLER
         </h1>
-        <p className="text-center text-xl opacity-70">
+        <p className="text-center text-xl opacity-80">
           Barnas brev til Julius ({letters.length})
         </p>
       </div>
@@ -71,7 +71,7 @@ function BrevfuglerContent() {
 
       <div className="max-w-4xl mx-auto space-y-4 pb-8">
         {letters.length === 0 && (
-          <p className="text-center opacity-60 py-8">Ingen brev ennå.</p>
+          <p className="text-center opacity-80 py-8">Ingen brev ennå.</p>
         )}
         {letters.map((l, i) => (
           <article

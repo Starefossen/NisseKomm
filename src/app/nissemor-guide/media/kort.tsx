@@ -46,7 +46,7 @@ interface Inventar {
 const INVENTAR_LABEL: Record<Inventar["status"], [string, string]> = {
   current: ["[✓ Oppdatert]", "text-(--gold)"],
   stale: ["[!] Utdatert", "text-(--christmas-red)"],
-  unknown: ["[?] Ukjent", "text-gray-400"],
+  unknown: ["[?] Ukjent", "text-(--neon-green)/80"],
   missing: ["[✗ Mangler]", "text-(--christmas-red)"],
 };
 
@@ -155,13 +155,13 @@ export function ReviewItemCard({
 
       {/* Reasons / Why */}
       {inventar?.reasons && inventar.reasons.length > 0 && (
-        <div className="mt-1 text-xs md:text-sm text-(--cold-blue) break-words">
+        <div className="mt-1 text-sm text-(--cold-blue) break-words">
           Årsak: {inventar.reasons.join("; ")}
         </div>
       )}
 
       {/* Sidecar Metadata */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-1 text-xs md:text-sm text-(--neon-green)/80 bg-black/60 border border-(--neon-green)/20 p-2 my-2">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-1 text-sm text-(--neon-green)/80 bg-black/60 border border-(--neon-green)/20 p-2 my-2">
         <div>
           <span className="text-(--neon-green)/50">Generator: </span>
           <span className="break-all">{inventar?.meta?.generator || "–"}</span>
