@@ -239,6 +239,20 @@ describe("sim", () => {
     expect(sving(1)).toBeLessThan(sving(0) * 0.95);
   });
 
+  it("climbing costs speed, diving gains it, a stall drops the nose", () => {
+    const fart = (climb: number, gass = 0) => {
+      const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
+      sim.s.alt = 300;
+      for (let i = 0; i < 120; i++) sim.step(1 / 60, { ...still, climb, gass });
+      return sim;
+    };
+    const flat = fart(0).s.fart;
+    expect(fart(0.5).s.fart).toBeLessThan(flat * 0.95);
+    expect(fart(-0.5).s.fart).toBeGreaterThan(flat * 1.05);
+    // Braking up a climb stalls: the sled climbs less than with the throttle open.
+    expect(fart(0.5, -1).s.alt).toBeLessThan(fart(0.5).s.alt - 30);
+  });
+
   it("reduced motion flies slower and still finishes", () => {
     const fast = fly("tundra", true);
     const slow = fly("tundra", true, true);

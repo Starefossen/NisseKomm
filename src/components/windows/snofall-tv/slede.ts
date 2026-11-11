@@ -727,6 +727,9 @@ export const ALT_MAX = 450;
 export const SKADE_PER_TREFF = 0.34;
 export const ALT_CRUISE = 120;
 
+/** Climbing at full stick costs this share of speed, diving gains it. */
+export const AERO = 0.15;
+
 /** Seconds for a turn to build or fade; higher feels heavier. */
 export const STYRE_TREGHET = 0.5;
 
@@ -743,6 +746,8 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     vx: 0,
     /** The stick as the reins feel it: eases in and out over STYRE_TREGHET. */
     styr: 0,
+    /** Speed factor from climbing and diving (AERO). */
+    aero: 1,
     /** Sideways velocity the sleigh trails behind the reindeer with (render yaw). */
     slep: 0,
     alt: ALT_CRUISE,
@@ -851,7 +856,17 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     mult *= gass > 0 ? 1 + 0.2 * gass : 1 + 0.3 * gass;
     // The course gets faster towards the finish, so the last third is the test.
     const ramp = 1 + RAMP * Math.min(1, s.dist / e.lengde);
+    // Climbing costs speed, diving gains it; it builds over a second or two.
+    s.aero += (1 - AERO * inn.climb - s.aero) * Math.min(1, dt * 1.2);
+    mult *= s.aero;
     s.fart = e.fart * mult * motion * ramp;
+    // Too slow and the nose drops: braking up a climb stalls gently.
+    if (
+      !opts.assist &&
+      s.tid >= s.sakteTil &&
+      s.fart < e.fart * ramp * motion * 0.7
+    )
+      s.alt = Math.max(ALT_MIN, s.alt - 60 * dt);
     s.dist += s.fart * dt;
 
     if (inn.slipp && !s.pakke && hus.length) {

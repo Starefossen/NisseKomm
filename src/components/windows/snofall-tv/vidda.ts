@@ -14,6 +14,7 @@ import {
   NÆR_M,
   PIPE_POENG,
   åpnerTekst,
+  AERO,
   type Styring,
 } from "./slede";
 
@@ -398,6 +399,7 @@ export function createFri(o: FriOpts) {
     sving: 0,
     /** The stick as the reins feel it (first lag stage), and the sleigh's trailing turn. */
     styr: 0,
+    aero: 1,
     slep: 0,
     bank: 0,
     fart: 0,
@@ -471,7 +473,10 @@ export function createFri(o: FriOpts) {
     const gass = Math.max(-1, Math.min(1, inn.gass ?? 0));
     let mult = gass > 0 ? 1 + 0.25 * gass : 1 + 0.35 * gass;
     if (s.tid < s.sakteTil) mult *= 0.45;
+    s.aero += (1 - AERO * inn.climb - s.aero) * Math.min(1, dt * 1.2);
+    mult *= s.aero;
     s.fart = FART * mult * motion;
+    if (s.tid >= s.sakteTil && s.fart < FART * motion * 0.7) s.alt -= 60 * dt;
     const fx = Math.sin(s.kurs);
     const fz = -Math.cos(s.kurs);
 
