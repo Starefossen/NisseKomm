@@ -84,6 +84,11 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - Radio dag 12 og 15 beholdes med Rampenissen som øyenvitne fra Snøfall. Hvorfor: lyden er laget og replikkene er redigert av Hans.
 - E-posten dag 4 («NisseKrypto åpner i kveld») er et unntak fra regelen om at opplåsinger meldes i appen, som dag 8 (SLEDEFLUKT). Hvorfor: NisseKrypto er et milepæl i historien.
 
+## Sledeflukt (2026-11-11)
+
+- Julius sitter ved tømmene og Pil bak med pakkene i SLEDEFLUKT (etapper og fri flyging). Hvorfor: sleden var tom; to kjente figurer gir liv og reaksjoner.
+- Mellomrom slipper pakke i SLEDEFLUKT (Enter virker fortsatt), SPRANG flyttet til E; fra dag 14 har alle etapper noen valgfrie piper. Hvorfor: én tast for det man gjør oftest, og pakkeslipp skal alltid gi bonus.
+
 ## Ugleposten (2026-11-11)
 
 - Kartplata over Snøfall står over kapittellista. Hvorfor: barna ser hvor kapitlene foregår før de velger.

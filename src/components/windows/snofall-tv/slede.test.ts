@@ -185,6 +185,8 @@ describe("sim", () => {
       expect(Math.max(...h)).toBeLessThanOrEqual(400);
       spenn.set(e.id, Math.max(...h) - Math.min(...h));
       for (let i = 1; i < ringer.length; i++) {
+        // A wall gate between two rings clears the approach; that pair is not consecutive.
+        if (ringer[i].z - ringer[i - 1].z > e.blanding.varde * 440) continue;
         const sek = (ringer[i].z - ringer[i - 1].z) / (e.fart * (1 + RAMP));
         const steg = Math.abs(ringer[i].h - ringer[i - 1].h);
         expect(steg).toBeLessThanOrEqual(KLATRE * sek);
@@ -632,5 +634,54 @@ describe("pipelevering", () => {
     }
     expect(ev).toContain("krasj");
     expect(sim.s.skade).toBeLessThan(SKADE_PER_TREFF * 2);
+  });
+});
+
+describe("ringløypa", () => {
+  it("spaces rings apart and steps sideways between every pair (gentle on stage 1)", () => {
+    const maks = new Map<string, number>();
+    for (const e of ETAPPER) {
+      const ringer = lagBane(e).filter((t) => t.type === "varde");
+      let m = 0;
+      for (let i = 1; i < ringer.length; i++) {
+        expect((ringer[i].z - ringer[i - 1].z) / e.fart).toBeGreaterThan(0.9);
+        const dx = Math.abs(ringer[i].x - ringer[i - 1].x);
+        if (e.dag === 8 && i === 1) continue; // two teaching rings dead ahead
+        if (ringer[i].z - ringer[i - 1].z > e.blanding.varde * 440) continue;
+        expect(dx).toBeGreaterThan(RING_X);
+        m = Math.max(m, dx);
+      }
+      maks.set(e.id, m);
+    }
+    expect(maks.get("tundra")!).toBeLessThan(0.5);
+    expect(maks.get("julenatt")!).toBeGreaterThan(maks.get("tundra")!);
+  });
+
+  it("an ideal pilot reaches every ring on every stage", () => {
+    for (const e of ETAPPER) {
+      const sim = createSim(e, { assist: false, reduceMotion: false, dag: 24 });
+      sim.s.liv = Infinity;
+      const ringer = sim.s.ting.filter((t) => t.type === "varde");
+      for (let i = 0; i < 40000 && !sim.s.ferdig; i++) {
+        const s = sim.s;
+        const mål = ringer.find((t) => t.z > s.dist);
+        const tx = mål?.x ?? 0;
+        const th = mål?.h ?? ALT_CRUISE;
+        // Aim where the sled will be once the reins have caught up.
+        const steer = Math.max(-1, Math.min(1, (tx - s.px - s.vx * 0.3) * 6));
+        const climb = Math.max(-1, Math.min(1, (th - s.alt) / 25));
+        sim.step(1 / 60, { steer, climb, sprang: false });
+      }
+      expect([e.id, sim.s.varder]).toEqual([e.id, sim.s.varderTotalt]);
+    }
+  });
+
+  it("from day 14 every stage has chimneys; earlier stages keep no delivery target", () => {
+    for (const e of ETAPPER) {
+      expect(lagBane(e, 24).some((t) => t.type === "hus")).toBe(true);
+      expect(lagBane(e, 24)).toEqual(lagBane(e, 24));
+    }
+    expect(lagBane(ETAPPER[0], 13).some((t) => t.type === "hus")).toBe(false);
+    expect(leveringsoppdrag(24, ETAPPER[0])).toBeNull();
   });
 });

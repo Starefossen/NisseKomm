@@ -44,6 +44,14 @@ import { hex, identity, multiply, transform, type Mat4, type Vec3 } from "./gl";
 import { Renderer } from "./renderer";
 import { RadioBoks } from "./RadioBoks";
 import {
+  erSlipp,
+  type Held,
+  slippAlle,
+  stikkeVerdi,
+  tast,
+  tomHeld,
+} from "./taster";
+import {
   BEIN,
   fjernMesh,
   gardinMesh,
@@ -54,6 +62,7 @@ import {
   murMesh,
   REIN,
   REIN_SKALA,
+  mannskap,
   RUTE,
   SKALA,
   SPOR,
@@ -89,27 +98,6 @@ const HIMMEL = {
   horisont: hex(0x1a2448),
   dis: hex(0x9fb0cc),
   nordlys: 0.4,
-};
-
-type Held = {
-  L: boolean;
-  R: boolean;
-  U: boolean;
-  D: boolean;
-  G: boolean;
-  B: boolean;
-};
-const KEYS: Record<string, keyof Held> = {
-  ArrowLeft: "L",
-  ArrowRight: "R",
-  ArrowUp: "U",
-  ArrowDown: "D",
-  a: "L",
-  d: "R",
-  w: "U",
-  s: "D",
-  Shift: "G",
-  x: "B",
 };
 
 interface Hud {
@@ -157,14 +145,7 @@ export function FriFlyging({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const kartRef = useRef<HTMLCanvasElement>(null);
   const kompassRef = useRef<HTMLCanvasElement>(null);
-  const held = useRef<Held>({
-    L: false,
-    R: false,
-    U: false,
-    D: false,
-    G: false,
-    B: false,
-  });
+  const held = useRef<Held>(tomHeld());
   const touch = useRef({ steer: 0, climb: 0, gass: 0 });
   const slipp = useRef(false);
   const simRef = useRef<FriSim | null>(null);
@@ -251,6 +232,10 @@ export function FriFlyging({
     let id = 0;
     let eye: Vec3 | null = null;
     let hopp = 0;
+    // Crew animations (verden.mannskap): seconds left.
+    let vink = 0;
+    let kast = 0;
+    let dukk = 0;
     // Crash tumble: a full barrel roll of the sled over RULL seconds.
     let rull = 0;
     let radioTil = 0;
@@ -272,6 +257,9 @@ export function FriFlyging({
     };
 
     const hendelse = (h: FriHendelse) => {
+      if (h === "krasj") dukk = 1;
+      if (h === "slipp") kast = 0.6;
+      if (h === "oppdaget") vink = 1.5;
       const l = lyd.current;
       const now = performance.now() / 1000;
       switch (h) {
@@ -517,6 +505,9 @@ export function FriFlyging({
       }
       shake = Math.max(0, shake - dt);
       hopp = Math.max(0, hopp - dt);
+      vink = Math.max(0, vink - dt);
+      kast = Math.max(0, kast - dt);
+      dukk = Math.max(0, dukk - dt);
       rull = Math.max(0, rull - dt);
 
       const { x, z, alt, kurs, bank } = sim.s;
@@ -731,13 +722,20 @@ export function FriFlyging({
         1,
       );
       // The sleigh swings out behind the reindeer while a turn builds.
-      r.tegn(
-        M.slede,
-        multiply(
-          base,
-          transform([0, 0, 0], [0, (sim.s.sving - sim.s.slep) * 0.35, 0]),
-        ),
+      const sledeM = multiply(
+        base,
+        transform([0, 0, 0], [0, (sim.s.sving - sim.s.slep) * 0.35, 0]),
       );
+      r.tegn(M.slede, sledeM);
+      // Julius at the reins and Pil with the packages lean, wave, throw and duck.
+      for (const [m, mat] of mannskap(sledeM, {
+        t: reduceMotion ? 0 : t,
+        lean: -sim.s.sving,
+        vink,
+        kast,
+        krasj: dukk,
+      }))
+        r.tegn(m, mat);
       r.tegn(M.tømmer, base);
       for (let i = 0; i < 3; i++) {
         const fase = gange + i * 2.1;
@@ -820,23 +818,24 @@ export function FriFlyging({
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      const k = KEYS[e.key];
+      const k = tast(e);
       if (k) {
         held.current[k] = true;
         if (faseRef.current === "spiller") e.preventDefault();
       }
       if (e.key === "Escape" || e.key === "p")
         setFase(faseRef.current === "spiller" ? "pause" : "spiller");
-      if (e.key === "Enter") {
-        if (faseRef.current === "spiller") slipp.current = true;
-        else setFase("spiller");
-      }
+      if (erSlipp(e) && faseRef.current === "spiller") {
+        slipp.current = true;
+        e.preventDefault();
+      } else if (e.key === "Enter") setFase("spiller");
     };
     const up = (e: KeyboardEvent) => {
-      const k = KEYS[e.key];
+      const k = tast(e);
       if (k) held.current[k] = false;
     };
     const pause = () => {
+      slippAlle(held.current);
       if (faseRef.current === "spiller") setFase("pause");
     };
     const skjult = () => {
@@ -870,16 +869,18 @@ export function FriFlyging({
     }
     const s = stikke.current;
     if (!s || s.id !== ev.pointerId) return;
-    if (ev.type === "pointerup" || ev.type === "pointercancel") {
+    if (
+      ev.type === "pointerup" ||
+      ev.type === "pointercancel" ||
+      ev.type === "lostpointercapture"
+    ) {
       stikke.current = null;
       touch.current.steer = 0;
       touch.current.climb = 0;
       return;
     }
-    const dead = (v: number) =>
-      Math.abs(v) < 0.08 ? 0 : Math.max(-1, Math.min(1, v));
-    touch.current.steer = dead((nx - s.x0) / 0.12);
-    touch.current.climb = dead((s.y0 - ny) / 0.2);
+    touch.current.steer = stikkeVerdi((nx - s.x0) / 0.12);
+    touch.current.climb = stikkeVerdi((s.y0 - ny) / 0.2);
   };
   const slippGass = () => {
     touch.current.gass = 0;
@@ -896,7 +897,7 @@ export function FriFlyging({
     "w-16 h-16 border-4 text-base font-bold cursor-pointer select-none touch-none";
 
   return (
-    <div className="relative aspect-video w-full bg-black select-none touch-none overflow-hidden font-retro">
+    <div className="@container relative aspect-video w-full bg-black select-none touch-none overflow-hidden font-retro">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 block w-full h-full"
@@ -908,6 +909,7 @@ export function FriFlyging({
         onPointerMove={onPointer}
         onPointerUp={onPointer}
         onPointerCancel={onPointer}
+        onLostPointerCapture={onPointer}
         onContextMenu={(e) => e.preventDefault()}
         aria-hidden="true"
       />
@@ -1092,8 +1094,8 @@ export function FriFlyging({
               Fri flyging over Snøfall-vidda
             </div>
             <div className="text-sm opacity-60 leading-tight">
-              PILTASTER / WASD · SHIFT = FART · X = BREMS · ENTER = SLIPP PAKKE
-              · ESC = PAUSE
+              PILTASTER / WASD · SHIFT = FART · X = BREMS · MELLOMROM = SLIPP
+              PAKKE · ESC = PAUSE
             </div>
             <button
               type="button"

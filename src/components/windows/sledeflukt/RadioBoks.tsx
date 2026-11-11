@@ -31,7 +31,8 @@ function knitring() {
 }
 
 /**
- * Rampenissen on the sled radio: a small box at the top centre, one line at a
+ * Rampenissen on the sled radio: a small box low on the left (clear of the
+ * bars, the minimap and the buttons), one line at a
  * time; lines that arrive meanwhile wait in `kø` and `onFerdig` drops the head.
  */
 export function RadioBoks({
@@ -55,12 +56,18 @@ export function RadioBoks({
     <div
       key={nå.id}
       role="status"
-      className="absolute top-12 left-1/2 -translate-x-1/2 max-w-[60%] flex gap-2 items-center border-2 border-(--brass) bg-black/85 p-1 pr-2 pointer-events-none"
+      className="absolute bottom-2 left-12 max-w-[calc(50%-7rem)] flex gap-2 items-center border-2 border-(--brass) bg-black/85 p-1 pr-2 pointer-events-none"
     >
-      <Portrett navn="rampenissen" />
+      <div className="@max-[720px]:hidden">
+        <Portrett navn="rampenissen" />
+      </div>
       <div className="text-left leading-tight">
-        <div className="text-sm text-(--gold)">RADIO · RAMPENISSEN</div>
-        <div className="text-lg text-(--neon-green)">«{nå.tekst}»</div>
+        <div className="text-sm text-(--gold) @max-[720px]:hidden">
+          RADIO · RAMPENISSEN
+        </div>
+        <div className="text-lg @max-[720px]:text-sm text-(--neon-green)">
+          «{nå.tekst}»
+        </div>
       </div>
     </div>
   );

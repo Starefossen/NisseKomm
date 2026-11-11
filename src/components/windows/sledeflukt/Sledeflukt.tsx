@@ -42,6 +42,14 @@ import { Renderer } from "./renderer";
 import { FriFlyging } from "./FriFlyging";
 import { RadioBoks } from "./RadioBoks";
 import {
+  erSlipp,
+  type Held,
+  slippAlle,
+  stikkeVerdi,
+  tast,
+  tomHeld,
+} from "./taster";
+import {
   bakke,
   BEIN,
   FLIS,
@@ -54,6 +62,7 @@ import {
   nøkkel,
   REIN,
   REIN_SKALA,
+  mannskap,
   SKALA,
   tilVerden,
   type Hus,
@@ -114,29 +123,6 @@ interface Hud {
   ring: number | null;
 }
 
-type Held = {
-  L: boolean;
-  R: boolean;
-  U: boolean;
-  D: boolean;
-  S: boolean;
-  G: boolean;
-  B: boolean;
-};
-const KEYS: Record<string, keyof Held> = {
-  ArrowLeft: "L",
-  ArrowRight: "R",
-  ArrowUp: "U",
-  ArrowDown: "D",
-  a: "L",
-  d: "R",
-  w: "U",
-  s: "D",
-  " ": "S",
-  Shift: "G",
-  x: "B",
-};
-
 const IDENT = identity();
 const LYS: Vec3 = [0.35, 0.8, 0.5];
 const farge = (s: string) => hex(parseInt(s.slice(1), 16));
@@ -173,15 +159,7 @@ function Etappeflukt({
 }: SpillProps & { onFri: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const kartRef = useRef<HTMLCanvasElement>(null);
-  const held = useRef<Held>({
-    L: false,
-    R: false,
-    U: false,
-    D: false,
-    S: false,
-    G: false,
-    B: false,
-  });
+  const held = useRef<Held>(tomHeld());
   const touch = useRef({ steer: 0, climb: 0, gass: 0 });
   const simRef = useRef<Sim | null>(null);
   const faseRef = useRef<Fase>("start");
@@ -263,6 +241,15 @@ function Etappeflukt({
   useEffect(() => {
     leveringRef.current = levering;
   }, [levering]);
+  // From day 14 every stage has chimneys; a stage without a target pays them as a bonus.
+  const harHus = useMemo(
+    () => lagBane(etappe, day).some((t) => t.type === "hus"),
+    [etappe, day],
+  );
+  const harHusRef = useRef(harHus);
+  useEffect(() => {
+    harHusRef.current = harHus;
+  }, [harHus]);
   // The kids' letters name the packages; read when a run starts.
   const brev = useRef<{ from?: string }[]>([]);
 
@@ -336,7 +323,7 @@ function Etappeflukt({
     const motion = reduceMotion.current ? 0.35 : 1;
     lyd.current = new SledeLyd();
     const M = meshes();
-    let verden: Verden = lagVerden(etappeRef.current);
+    let verden: Verden = lagVerden(etappeRef.current, day);
     const fliser = new Map<number, Float32Array>();
     const husM = new Map<Hus, Mat4>();
     const kart = kartRef.current?.getContext("2d") ?? null;
@@ -355,6 +342,10 @@ function Etappeflukt({
     const puff: { p: Vec3; t0: number }[] = [];
     // Reindeer reaction (a hop) and Rampenissen's radio: seconds left, and lines said.
     let hopp = 0;
+    // Crew animations (verden.mannskap): seconds left.
+    let vink = 0;
+    let kast = 0;
+    let dukk = 0;
     // Crash tumble: a full barrel roll of the sled over RULL seconds.
     let rull = 0;
     let radioTil = 0;
@@ -381,6 +372,9 @@ function Etappeflukt({
     let målAt = 0;
 
     const hendelse = (h: Hendelse, sim: Sim) => {
+      if (h === "krasj") dukk = 1;
+      if (h === "slipp") kast = 0.6;
+      if (h === "bjelle" && sim.s.rekke >= 3) vink = 1.5;
       const l = lyd.current;
       radioen(h, performance.now() / 1000);
       switch (h) {
@@ -545,9 +539,11 @@ function Etappeflukt({
       last = now;
       const sim = simRef.current;
       if (!sim) return;
+      // The dev page (fps) exposes the live sim to browser tests.
+      if (fps) (window as unknown as { __slede?: Sim["s"] }).__slede = sim.s;
       const e = etappeRef.current;
       if (verden.etappe !== e) {
-        verden = lagVerden(e);
+        verden = lagVerden(e, day);
         husM.clear();
         eye = null;
       }
@@ -648,6 +644,9 @@ function Etappeflukt({
       shake = Math.max(0, shake - dt);
       nyser = Math.max(0, nyser - dt);
       hopp = Math.max(0, hopp - dt);
+      vink = Math.max(0, vink - dt);
+      kast = Math.max(0, kast - dt);
+      dukk = Math.max(0, dukk - dt);
       rull = Math.max(0, rull - dt);
       const { px, alt, bank, dist } = sim.s;
       if (spiller) gange += dt * (sim.s.fart / e.fart) * 9;
@@ -870,7 +869,7 @@ function Etappeflukt({
           M.pakke,
           transform(tilVerden(q.x, q.alt, q.z), [t * 3, t * 2, 0], 1.6),
         );
-      } else if (spiller && leveringRef.current) {
+      } else if (spiller && harHusRef.current) {
         const bane = forutsiPakke(sim.s, sim.s.gust);
         for (let i = 3; i < bane.length - 1; i += 2) {
           const q = bane[i];
@@ -902,13 +901,20 @@ function Etappeflukt({
         1,
       );
       // The sleigh swings out behind the reindeer while a turn builds.
-      r.tegn(
-        M.slede,
-        multiply(
-          base,
-          transform([0, 0, 0], [0, (sim.s.vx - sim.s.slep) * 0.35, 0]),
-        ),
+      const sledeM = multiply(
+        base,
+        transform([0, 0, 0], [0, (sim.s.vx - sim.s.slep) * 0.35, 0]),
       );
+      r.tegn(M.slede, sledeM);
+      // Julius at the reins and Pil with the packages lean, wave, throw and duck.
+      for (const [m, mat] of mannskap(sledeM, {
+        t: reduceMotion.current ? 0 : t,
+        lean: -sim.s.vx,
+        vink,
+        kast,
+        krasj: dukk,
+      }))
+        r.tegn(m, mat);
       r.tegn(M.tømmer, base);
       for (let i = 0; i < 3; i++) {
         const fase = gange + i * 2.1;
@@ -988,7 +994,7 @@ function Etappeflukt({
           nyser: nyser > 0,
           ned: Math.max(0, Math.ceil(nedtelling.current)),
           pakker: sim.s.pakker,
-          neste: leveringRef.current
+          neste: harHusRef.current
             ? pakkenavn(brev.current, sim.s.slipp)
             : null,
           gass:
@@ -1011,7 +1017,7 @@ function Etappeflukt({
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      const k = KEYS[e.key];
+      const k = tast(e);
       if (k) {
         held.current[k] = true;
         if (k === "S") sprang.current = true;
@@ -1021,19 +1027,22 @@ function Etappeflukt({
         if (faseRef.current === "spiller") setFase("pause");
         else if (faseRef.current === "pause") setFase("spiller");
       }
-      if (e.key === "Enter" && faseRef.current === "spiller")
+      if (erSlipp(e) && faseRef.current === "spiller") {
         slipp.current = true;
+        e.preventDefault();
+      }
       if (e.key === "Enter" && faseRef.current !== "spiller") {
         if (faseRef.current === "pause") setFase("spiller");
         else if (faseRef.current !== "nedtelling") startRef.current();
       }
     };
     const up = (e: KeyboardEvent) => {
-      const k = KEYS[e.key];
+      const k = tast(e);
       if (k) held.current[k] = false;
     };
     // Losing focus (tab switch, home button) pauses; nothing flies unseen.
     const pause = () => {
+      slippAlle(held.current);
       if (faseRef.current === "spiller" || faseRef.current === "nedtelling")
         setFase("pause");
     };
@@ -1068,16 +1077,18 @@ function Etappeflukt({
     }
     const s = stikke.current;
     if (!s || s.id !== ev.pointerId) return;
-    if (ev.type === "pointerup" || ev.type === "pointercancel") {
+    if (
+      ev.type === "pointerup" ||
+      ev.type === "pointercancel" ||
+      ev.type === "lostpointercapture"
+    ) {
       stikke.current = null;
       touch.current.steer = 0;
       touch.current.climb = 0;
       return;
     }
-    const dead = (v: number) =>
-      Math.abs(v) < 0.08 ? 0 : Math.max(-1, Math.min(1, v));
-    touch.current.steer = dead((nx - s.x0) / 0.12);
-    touch.current.climb = dead((s.y0 - ny) / 0.2);
+    touch.current.steer = stikkeVerdi((nx - s.x0) / 0.12);
+    touch.current.climb = stikkeVerdi((s.y0 - ny) / 0.2);
   };
 
   const velg = (e: SledeEtappe) => {
@@ -1107,7 +1118,7 @@ function Etappeflukt({
   };
 
   return (
-    <div className="relative aspect-video w-full bg-black select-none touch-none overflow-hidden font-retro">
+    <div className="@container relative aspect-video w-full bg-black select-none touch-none overflow-hidden font-retro">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 block w-full h-full"
@@ -1119,6 +1130,7 @@ function Etappeflukt({
         onPointerMove={onPointer}
         onPointerUp={onPointer}
         onPointerCancel={onPointer}
+        onLostPointerCapture={onPointer}
         onContextMenu={(e) => e.preventDefault()}
         aria-hidden="true"
       />
@@ -1302,7 +1314,7 @@ function Etappeflukt({
       {fase === "spiller" && (
         <>
           <div className="absolute bottom-3 right-3 flex gap-2">
-            {levering && (
+            {harHus && (
               <button
                 type="button"
                 aria-label="Slipp pakke"
@@ -1553,10 +1565,9 @@ function Etappeflukt({
                   {assist
                     ? "Assistenten holder høyden og krasjer aldri."
                     : "Tre forsøk, full kastevind."}{" "}
-                  · PILTASTER / WASD · SHIFT = FART · X = BREMS · MELLOMROM =
-                  SPRANG
-                  {levering
-                    ? " · ENTER = SLIPP PAKKE · BREMS GIR TID TIL Å SIKTE"
+                  · PILTASTER / WASD · SHIFT = FART · X = BREMS · E = SPRANG
+                  {harHus
+                    ? " · MELLOMROM = SLIPP PAKKE · BREMS GIR TID TIL Å SIKTE"
                     : ""}{" "}
                   · ESC = PAUSE
                 </div>

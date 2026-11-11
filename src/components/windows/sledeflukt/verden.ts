@@ -6,7 +6,7 @@
  * Nothing here touches the DOM or WebGL, so it is testable.
  */
 
-import { hex, type Mat4, Mesh, transform, type Vec3 } from "./gl";
+import { hex, type Mat4, Mesh, multiply, transform, type Vec3 } from "./gl";
 import {
   HUS_PIPE,
   lagBane,
@@ -382,10 +382,10 @@ function sledeMesh() {
   m.box([0, 2.9, 3.3], [4.2, 0.3, 1], GULL, 1);
   m.box([0, 1.9, 2.1], [3.4, 0.5, 1.8], hex(0x1f5a3c));
   for (const x of [-2.15, 2.15]) m.box([x, 1.9, 0.4], [0.3, 0.3, 6.6], GULL, 1);
-  m.box([0, 2.5, -0.9], [2.8, 1.8, 2.4], GRAN_LYS);
-  m.box([-0.6, 3.6, -1.1], [0.9, 0.9, 0.9], RØD);
-  m.box([0.7, 3.5, -0.6], [0.8, 0.8, 0.8], GULL, 1);
-  m.box([0.1, 3.8, -1.5], [0.6, 0.6, 0.6], VINDU, 1);
+  m.box([0, 2.5, 0.2], [2.8, 1.8, 2.2], GRAN_LYS);
+  m.box([-0.6, 3.6, 0], [0.9, 0.9, 0.9], RØD);
+  m.box([0.7, 3.5, 0.5], [0.8, 0.8, 0.8], GULL, 1);
+  m.box([0.1, 3.8, -0.4], [0.6, 0.6, 0.6], VINDU, 1);
   for (const s of [-1, 1]) {
     const x = s * 1.9;
     m.rod([x, -0.4, 4.2], [x, -0.4, -3.2], 0.3, GULL, 4);
@@ -396,6 +396,93 @@ function sledeMesh() {
     m.rod([x, -0.4, -1.8], [x, 0.4, -1.8], 0.22, STEIN, 4);
   }
   return m.build();
+}
+
+const HUD = hex(0xe8b48f);
+const SKJEGG = hex(0xece4d2);
+
+/**
+ * Julius at the reins, seated, facing -z, without arms (they are posed per
+ * frame): red coat with a white trim, off-white beard, red cap with a bobble.
+ */
+function juliusMesh() {
+  const m = new Mesh();
+  m.box([0, 3.3, 0], [1.9, 1.7, 1.3], RØD);
+  m.box([0, 2.55, 0], [2, 0.3, 1.4], SKJEGG);
+  m.box([0, 4.6, 0], [1.1, 1, 1], HUD);
+  m.box([0, 4.15, -0.45], [1.2, 1, 0.4], SKJEGG);
+  m.box([0, 5.25, 0], [1.25, 0.45, 1.15], RØD);
+  m.box([0, 5.05, 0], [1.3, 0.2, 1.2], SKJEGG);
+  m.box([0, 5.6, 0.35], [0.4, 0.4, 0.4], SKJEGG);
+  return m.build();
+}
+
+/** Pil, IQ's apprentice, in the back with the packages: a smaller boy in a green tunic and a blue knit cap. */
+function pilMesh() {
+  const m = new Mesh();
+  m.box([0, 3, 0], [1.3, 1.3, 1], GRAN_LYS);
+  m.box([0, 3.95, 0], [0.85, 0.8, 0.8], HUD);
+  m.box([0, 4.45, 0], [0.95, 0.35, 0.9], hex(0x3a6fb0));
+  m.box([0, 4.7, 0.25], [0.3, 0.3, 0.3], SKJEGG);
+  return m.build();
+}
+
+/** One arm hanging from the shoulder at the origin, mitten at the end; posed by rotating about x. */
+function armMesh(farge: Vec3, lengde: number) {
+  const m = new Mesh();
+  m.box([0, -lengde / 2, 0], [0.42, lengde, 0.42], farge);
+  m.box([0, -lengde - 0.15, 0], [0.5, 0.45, 0.5], hex(0x3a2a1e));
+  return m.build();
+}
+
+/** Seconds left of each crew animation, and the sled's turn to lean into. */
+export interface Positur {
+  t: number;
+  /** Sideways lean, about -1..1. */
+  lean: number;
+  /** Julius waves (ring streak, a new place). */
+  vink: number;
+  /** Pil throws a package. */
+  kast: number;
+  /** Both duck and flail. */
+  krasj: number;
+}
+
+/** Julius and Pil in the sleigh: meshes and model matrices, given the sleigh's own matrix. */
+export function mannskap(slede: Mat4, p: Positur): [Float32Array, Mat4][] {
+  const M = meshes();
+  const ut: [Float32Array, Mat4][] = [];
+  const flaks = p.krasj > 0 ? Math.sin(p.t * 30) * 0.8 : 0;
+  const dukk = Math.min(1, p.krasj * 2) * 0.55;
+  const lean = Math.max(-0.35, Math.min(0.35, p.lean * 0.35));
+  const figur = (z: number, kropp: Float32Array, skulder: Vec3) => {
+    const seat = multiply(slede, transform([0, 0, z], [dukk, 0, lean]));
+    ut.push([kropp, seat]);
+    return (side: number, rot: Vec3, mesh: Float32Array) =>
+      ut.push([
+        mesh,
+        multiply(
+          seat,
+          transform([side * skulder[0], skulder[1], skulder[2]], rot),
+        ),
+      ]);
+  };
+  // Rotating an arm about -x swings it forward and up.
+  const julius = figur(-2, M.julius, [1.1, 4, -0.1]);
+  julius(-1, [-1.1 - flaks, 0, 0], M.juliusArm);
+  julius(
+    1,
+    p.vink > 0
+      ? [-2.8, 0, 0.4 + Math.sin(p.t * 14) * 0.45]
+      : [-1.1 + flaks, 0, 0],
+    M.juliusArm,
+  );
+  const pil = figur(2.4, M.pil, [0.8, 3.5, 0]);
+  pil(-1, [-0.3 - flaks, 0, -0.15], M.pilArm);
+  // A throw: from behind the back, over the head, out forward.
+  const kast = p.kast > 0 ? 1.2 - (1 - p.kast / 0.6) * 4 : -0.3 + flaks;
+  pil(1, [kast, 0, 0.15], M.pilArm);
+  return ut;
 }
 
 /** A reindeer without legs, facing -z; the lead animal gets a red nose. */
@@ -517,6 +604,10 @@ export interface Meshes {
   lås: Float32Array;
   nordlysport: Float32Array;
   slede: Float32Array;
+  julius: Float32Array;
+  juliusArm: Float32Array;
+  pil: Float32Array;
+  pilArm: Float32Array;
   rein: [Float32Array, Float32Array];
   bein: Float32Array;
   tømmer: Float32Array;
@@ -546,6 +637,10 @@ export function meshes(): Meshes {
       lås: låsMesh(),
       nordlysport: nordlysportMesh(),
       slede: sledeMesh(),
+      julius: juliusMesh(),
+      juliusArm: armMesh(RØD, 1.5),
+      pil: pilMesh(),
+      pilArm: armMesh(GRAN_LYS, 1.1),
       rein: [reinMesh(true), reinMesh(false)],
       bein: beinMesh(),
       tømmer: tømmerMesh(),
@@ -593,7 +688,7 @@ function rng(seed: number) {
 }
 
 /** Houses and trees for a stage: Snøfall at the start, farms along the way, a hamlet at the finish. */
-export function lagVerden(e: SledeEtappe): Verden {
+export function lagVerden(e: SledeEtappe, dag = 0): Verden {
   let seed = 7;
   for (const c of e.id) seed = (seed * 31 + c.charCodeAt(0)) >>> 0;
   const r = rng(seed);
@@ -638,7 +733,7 @@ export function lagVerden(e: SledeEtappe): Verden {
     }
   }
   const spesial = new Map<string, Float32Array>();
-  for (const t of lagBane(e)) {
+  for (const t of lagBane(e, dag)) {
     if (t.type === "tre") {
       const p = tilVerden(t.x, 0, t.z);
       trær.push(p[0], bakke(p[0], t.z) - 0.3, p[2], t.h / 160);

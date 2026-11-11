@@ -73,7 +73,7 @@ const MUREN = { fil: "feed/slede-muren.jpg", linje: 0.69 };
 const JULENATT = { fil: "feed/slede-julenatt.jpg", linje: 0.72 };
 
 const ROLIG: Blanding = {
-  varde: 3,
+  varde: 5,
   høyde: 45,
   tre: 0.25,
   stjerne: 0.3,
@@ -116,7 +116,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
       "Ringene henger tett i kveld, høyt og lavt. Treff midt i ringen, så ringer bjella høyest.",
     lengde: 34000,
     fart: 850,
-    blanding: { ...ROLIG, varde: 2, høyde: 55, tre: 0.2, stjerne: 0.2 },
+    blanding: { ...ROLIG, varde: 4, høyde: 55, tre: 0.2, stjerne: 0.2 },
     horisont: TUNDRA,
     himmel: ["#070a1c", "#1a2448"],
     snø: ["#dbe7f7", "#c3d4ee"],
@@ -393,8 +393,16 @@ export const KLATRE = 190;
 export const ringAvvik = (px: number, alt: number, t: Ting) =>
   Math.hypot((px - t.x) / RING_X, (alt - t.h) / RING_ALT);
 
-export function lagBane(e: SledeEtappe): Ting[] {
-  const out = lagLøype(e);
+/** Calendar day from which every stage has chimneys to drop into; stages without a delivery target get a few optional ones. */
+export const PIPER_FRA_DAG = 14;
+const VALGFRIE_HUS = 13;
+
+export function lagBane(e: SledeEtappe, dag = 0): Ting[] {
+  const out = lagLøype(
+    dag >= PIPER_FRA_DAG && !e.blanding.hus
+      ? { ...e, blanding: { ...e.blanding, hus: VALGFRIE_HUS } }
+      : e,
+  );
   // A teaser of the next stage: its peak stands locked beside the finish, out of
   // the sled's reach (|x| > 1.75), until that stage's day.
   const neste = ETAPPER[ETAPPER.indexOf(e) + 1];
@@ -428,11 +436,18 @@ function lagLøype(e: SledeEtappe): Ting[] {
   const lav = Math.max(RING_ALT_MIN, ALT_CRUISE - m.høyde);
   const høy = Math.min(RING_ALT_MAX, ALT_CRUISE + m.høyde);
   let ring = 0;
+  // Sideways step between rings: gentle on stage 1, wider with the stage's height swing.
+  const sving = m.høyde / 100;
+  let side = 1;
   for (let z = 1500, i = 0; z < slutt; z += SEG, i++) {
     const u = r();
     // Rings weave left and right so the course is a slalom, never a straight line.
     if (i % m.varde === 0) {
-      lane = Math.max(-0.7, Math.min(0.7, lane + (r() - 0.5) * 0.9));
+      // Mostly alternate sides, so every ring needs a deliberate steer.
+      if (r() < 0.7) side = -side;
+      const dx = sving * (0.6 + r() * 0.4);
+      if (Math.abs(lane + side * dx) > 0.9) side = -side;
+      lane += side * dx;
       // The last stretch is a spike: the full climb the stage allows.
       const d =
         z > slutt - 3500
@@ -463,7 +478,7 @@ function lagLøype(e: SledeEtappe): Ting[] {
       continue;
     }
     // Houses stand beside the ring line, within reach; h is the chimney top (three sizes).
-    if (m.hus && i % m.hus === 5) {
+    if (m.hus && i % m.hus === 3) {
       const side = r() < 0.5 ? -1 : 1;
       out.push({
         z,
@@ -475,7 +490,11 @@ function lagLøype(e: SledeEtappe): Ting[] {
     }
     // Obstacles in the path ramp up by stage: halfway between rings there is
     // time to read them, go over or round, and line up for the next ring.
-    if (m.varde >= 3 && i % m.varde === 1 && (m.sti || m.klippe)) {
+    if (
+      m.varde >= 3 &&
+      i % m.varde === Math.floor(m.varde / 2) &&
+      (m.sti || m.klippe)
+    ) {
       // Own draw, so the odds of birds and stars in the other slots stay put.
       const v = hinder();
       if (v < (m.sti ?? 0)) {
@@ -777,7 +796,7 @@ export const AERO = 0.15;
 export const STYRE_TREGHET = 0.5;
 
 export function createSim(e: SledeEtappe, opts: SimOpts) {
-  const ting = lagBane(e);
+  const ting = lagBane(e, opts.dag);
   for (const t of ting)
     t.låst = t.lås !== undefined && (opts.dag ?? 24) < t.lås;
   const soner = ting.filter((t) => t.type === "vind");
