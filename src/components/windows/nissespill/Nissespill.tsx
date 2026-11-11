@@ -47,6 +47,8 @@ const UTE = [
   "spill/antenne-tarn.jpg",
   "feed/antenne-tarn.png",
   "spill/port-aapen.jpg",
+  "spill/julebodene.jpg",
+  "spill/klokketaarnet.jpg",
 ];
 const FNUGG = Array.from({ length: 28 }, (_, i) => i);
 
@@ -518,7 +520,11 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   bruk(M.losPuslespill(kap, save, puslespill));
                 }}
                 onTips={() => {
-                  const u = M.tips(kap, save);
+                  const u = M.tips(
+                    kap,
+                    save,
+                    kap.puslespill?.[puslespill]?.flagg,
+                  );
                   setSave(u.save);
                   SoundManager.playSound("click");
                   return u.tekst ?? "";

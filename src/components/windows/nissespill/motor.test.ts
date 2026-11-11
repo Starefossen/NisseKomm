@@ -189,8 +189,11 @@ describe("motor: ingen stille trykk", () => {
     expect(M.trykk(k1, s, hot("husene"), "snakk", null).tekst).toMatch(
       /husene/i,
     );
-    // BRUK without a bruk line never returns an empty text
-    expect(M.trykk(k1, s, hot("husene"), "bruk", null).tekst).toBeTruthy();
+    // BRUK without a bruk line never returns an empty text (the café window only has SE)
+    const vindu = k1.scener
+      .find((x) => x.id === "kafeen")!
+      .hotspots.find((h) => h.id === "vinduet")!;
+    expect(M.trykk(k1, s, vindu, "bruk", null).tekst).toBeTruthy();
   });
 });
 
@@ -215,12 +218,13 @@ describe("motor: oppsummering", () => {
   it("teller fjær og tips (maks 3 per gåte) og velger linje etter tips", () => {
     const k1 = KAPITLER[0];
     const s = M.nyttKapittel(k1);
-    expect(M.oppsummering(k1, s).kort).toBe("Fjær 0/2 · Ingen tips");
+    const n = k1.scener.filter((x) => x.fjaer).length;
+    expect(M.oppsummering(k1, s).kort).toBe(`Fjær 0/${n} · Ingen tips`);
     const mange = { ...s, hints: { winter: 3, stempel: 5, ukjent: 9 } };
     expect(M.oppsummering(k1, mange).tips).toBe(6);
     expect(M.oppsummering(k1, mange).linje).toContain("en del");
     expect(M.oppsummering(k1, { ...s, hints: { winter: 1 } }).kort).toBe(
-      "Fjær 0/2 · 1 tips",
+      `Fjær 0/${n} · 1 tips`,
     );
   });
 });

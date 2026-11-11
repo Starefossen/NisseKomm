@@ -108,6 +108,8 @@ describe("Nissespill: kapitler låses opp etter dag", () => {
   });
 });
 
+const FJAER_K1 = KAPITLER[0].scener.filter((s) => s.fjaer).length;
+
 describe("Nissespill: kapittel 1 spilles gjennom", () => {
   beforeEach(() => {
     localStorage.clear();
@@ -246,11 +248,13 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     jest.useRealTimers();
     expect(el.textContent).toContain("TIL KAPITLENE");
     expect(el.textContent).toContain("KAPITTEL 1 FULLFØRT");
-    expect(el.textContent).toContain("Fjær 0/2 · Ingen tips");
+    expect(el.textContent).toContain(`Fjær 0/${FJAER_K1} · Ingen tips`);
     const save = GameEngine.getEventyrSave();
     expect(save?.flags).toContain("k1_ferdig");
     tap(el, "TIL KAPITLENE");
-    expect(el.textContent).toContain("Fullført · Fjær 0/2 · Ingen tips");
+    expect(el.textContent).toContain(
+      `Fullført · Fjær 0/${FJAER_K1} · Ingen tips`,
+    );
   });
 
   it("fjæra plukkes med SE, telles og overlever nytt kapittel", () => {
@@ -259,7 +263,7 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     tap(el, "HOPP OVER");
     tap(el, "SE");
     tap(el, "Noe lite");
-    expect(el.textContent).toContain("Fjær 1/2");
+    expect(el.textContent).toContain(`Fjær 1/${FJAER_K1}`);
     expect(find(el, "Noe lite")).toBeUndefined();
     expect(GameEngine.getEventyrSave()?.fjaer).toEqual(["1:torget"]);
   });

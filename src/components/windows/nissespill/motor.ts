@@ -431,9 +431,15 @@ export function velgSvar(
   return medItem(utenItem(s, v.tar), v.gir);
 }
 
-/** The open puzzle's next hint; levels stick at 3 so the answer stays visible. */
-export function tips(kap: Kapittel, save: EventyrSave): Utfall {
-  const g = kap.gaater.find((x) => !has(save, x.ferdig));
+/**
+ * Next hint for the first unsolved goal, or for the goal that ends in `flagg`
+ * (an open side puzzle); levels stick at 3 so the answer stays visible.
+ */
+export function tips(kap: Kapittel, save: EventyrSave, flagg?: string): Utfall {
+  const g =
+    (flagg &&
+      kap.gaater.find((x) => x.ferdig === flagg && !has(save, flagg))) ||
+    kap.gaater.find((x) => !has(save, x.ferdig));
   if (!g) {
     return {
       save,

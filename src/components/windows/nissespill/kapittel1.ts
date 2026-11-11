@@ -61,6 +61,15 @@ export const KAPITTEL_1: Kapittel = {
       ikon: "file",
       se: "Samme skjema, nå med IQs underskrift i felt 3-A og et brunsvidd hjørne. Signaturen ser ut som en fjær som har gått på et tannhjul. Felt 7-C, stempel, er fortsatt tomt og hvitt.",
     },
+    bolle: {
+      id: "bolle",
+      navn: "Hjerteruds kanelbolle",
+      ikon: "cake",
+      se:
+        "En kanelbolle, fortsatt varm, med perlesukker på toppen. " +
+        R +
+        "«Den e te å spis. Ikkje alt e en gåte. Men ikkje spis den FØR dokker e ferdig, da får æ ikkje smak.»",
+    },
     syltetoey: {
       id: "syltetoey",
       navn: "IQs syltetøyglass",
@@ -70,7 +79,7 @@ export const KAPITTEL_1: Kapittel = {
   },
   fjaerBelonning:
     R +
-    "«To uglefjær! Floke mista dem ikkje. Ho legg dem igjen med vilje. Det e sånn ho skriv navnet sitt.»",
+    "«Seks uglefjær! Floke mista dem ikkje. Ho legg dem igjen med vilje. Det e sånn ho skriv navnet sitt.»",
   puslespill: {
     skrin: {
       type: "laas",
@@ -114,7 +123,10 @@ export const KAPITTEL_1: Kapittel = {
       id: "torget",
       navn: "Torget i Snøfall",
       bilde: "spill/torget.jpg",
-      utganger: [{ til: "verksted", navn: "Opp trappa til verkstedet" }],
+      utganger: [
+        { til: "verksted", navn: "Opp trappa til verkstedet" },
+        { til: "kafeen", navn: "Inn på kaféen" },
+      ],
       // In the snow in front of the clock tower, between the stalls and the mailbox
       fjaer: { x: 49, y: 86, w: 4, h: 6 },
       hotspots: [
@@ -145,18 +157,15 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 52, y: 0, w: 14, h: 62 },
           smart: "se",
           prat: "Du roper «hva er klokka?» opp til tårnet. Klokka slår ett slag, midt mellom to timer, som for å si at det er dens sak.",
-          se: "Klokkeskiva har fire visere: timer, minutter, sekunder og «tid til neste julekake». Den fjerde er bøyd fordi noen har prøvd å dytte den framover med en kjepp.",
-          bruk:
-            "Du når ikke opp til klokka. " +
-            R +
-            "«Æ nådde den. Én gang. Det e derfor den e bøyd. Og det e derfor julekakan kom tre tima for tidlig i 2023. Ingen klagde.»",
+          se: "Klokkeskiva har fire visere: timer, minutter, sekunder og «tid til neste julekake». Den fjerde er bøyd fordi noen har prøvd å dytte den framover med en kjepp. Floke kan fly opp dit. Hun er den eneste på torget som kan.",
         },
         {
           id: "husene",
           navn: "Husene",
           rect: { x: 24, y: 14, w: 28, h: 26 },
           smart: "se",
-          se: "Fargerike tømmerhus med snø på takene. I et vindu står en nisse og vinker. Nei, han pusser vinduet. Nei, han vinker. Han gjør begge deler. Han er effektiv.",
+          gaaTil: "kafeen",
+          se: "Fargerike tømmerhus med snø på takene. I et vindu står en nisse og vinker. Nei, han pusser vinduet. Nei, han vinker. Han gjør begge deler. Han er effektiv. Det huset som lukter kanel, er Hjerteruds kafé.",
         },
         {
           id: "postkassen",
@@ -338,6 +347,8 @@ export const KAPITTEL_1: Kapittel = {
             },
           ],
           feil: {
+            bolle:
+              "Winter ser på bollen i fire sekunder. «Jeg spiser ikke i arbeidstiden.» Fire sekunder til. «Legg den på hylla. Til dokumentasjon.» Du beholder den. Han noterer det.",
             skjema:
               "Winter holder skjemaet mot lyset. «Felt 3-A, eier av funnsted: tomt. Felt 7-C, stempel: tomt. To mangler. Jeg teller.» Han gir det tilbake.",
             skjema_signert:
@@ -440,6 +451,8 @@ export const KAPITTEL_1: Kapittel = {
               "Du skyver koppen mot døra. Den passer ikke under. IQ: «Hvis det er kaffen min: behold den. Jeg har en til. Jeg har alltid en til.»",
             tyttebaer:
               "Du triller et bær under døra. Det kommer tilbake. Raskere. IQ har en fjær der inne.",
+            bolle:
+              "Bollen passer ikke under døra. IQ, innenfra: «Jeg lukter kanel. Det er grusomt å gjøre mot en mann bak en dør.» Han åpner likevel ikke.",
           },
         },
         {
@@ -543,6 +556,121 @@ export const KAPITTEL_1: Kapittel = {
             },
           ],
           bruk: "Skruene og tannhjulene får stå. De har ikke navn på seg, men de ser ut som de hører til.",
+        },
+      ],
+    },
+    {
+      id: "kafeen",
+      navn: "Hjerteruds kafé",
+      bilde: "spill/kafeen.jpg",
+      utganger: [{ til: "torget", navn: "Ut på torget" }],
+      // On the floorboards between the flour sack and the chair
+      fjaer: { x: 55, y: 88, w: 4, h: 6 },
+      hotspots: [
+        {
+          id: "lampa",
+          navn: "Lampa",
+          rect: { x: 20, y: 8, w: 7, h: 19 },
+          smart: "se",
+          se: "En messinglampe i kjetting fra bjelken. Den svinger litt hver gang ovnsdøra går. Hjerterud sier det er trekk. Rampenissen sier det er lampa som danser.",
+          bruk: "Du dytter lampa med nebbet. Den svinger. Skyggene i kaféen danser. Hjerterud, uten å snu seg: «Ikke lampa, Floke.»",
+        },
+        {
+          id: "disken",
+          navn: "Disken",
+          rect: { x: 0, y: 46, w: 21, h: 26 },
+          smart: "se",
+          se: "Boller under glassklokker, kringler på et fat og mel over alt. Under den ene klokka ligger fire boller. Under den andre lå det fire kringler. Nå ligger det tre. Ingen sier noe.",
+          bruk: "Du løfter på glassklokka med nebbet. Hjerterud: «Spør, så får du. Det er regelen her. Det er den eneste regelen her.»",
+          prat: "Du sier «hallo» til bollene. De sier ingenting, men de lukter kanel tilbake, og det er et slags svar.",
+        },
+        {
+          id: "krusene",
+          navn: "Krusene",
+          rect: { x: 0, y: 72, w: 16, h: 22 },
+          smart: "se",
+          se: "Krus i alle størrelser. Det største har en hank som er limt tre ganger. Det tilhører IQ. Det minste tilhører Pil. Det med klementin på tilhører ingen. Alle vet hvem det tilhører.",
+          bruk: "Du tar i det minste kruset. Det er tomt og rent. Hjerterud vasker opp før noen er ferdige med å drikke. Det er en gave og en forbannelse.",
+        },
+        {
+          id: "kakaokanna",
+          navn: "Kakaokanna",
+          rect: { x: 21, y: 38, w: 9, h: 24 },
+          smart: "se",
+          se: "En blank messingkanne som damper. Innholdet er varmt, brunt og tykt nok til å stå på egne bein. Hjerterud kaller det kakao. Winter kaller det «ikke tillatt på torget, paragraf 14».",
+          bruk:
+            "Du strekker deg mot kanna. Hjerterud setter den lenger inn. «Varm! Og kakao på en ugle vasker seg ikke ut. Jeg vet det. Spør ikke hvordan jeg vet det.» " +
+            R +
+            "«Det va mæ. Det e bestandig mæ.»",
+          feil: {
+            tyttebaer:
+              "Du holder bærene over kanna. Hjerterud griper dem i lufta. «Ikke i kakaoen! Kakao med bær er suppe, og suppe er en annen kanne.» Hun gir dem tilbake. Fortsatt frosne.",
+            kaffekopp:
+              "Du holder IQs kopp fram. Hjerterud ser ned i den. «Skruer. Og en rosin. Nei, Floke, jeg fyller ikke kakao på det der. Det ville vært stygt mot kakaoen.»",
+          },
+        },
+        {
+          id: "hjerterud",
+          navn: "Hjerterud",
+          rect: { x: 31, y: 26, w: 17, h: 70 },
+          smart: "snakk",
+          snakk: "hjerterud",
+          se: "Hjerterud bak disken med et brett nystekte boller. Kinnene er røde av ovnen, håret har rømt fra knuten, og forkleet har mer mel enn stoff. Hun smiler før hun ser hvem det er. Hun smiler alltid før.",
+          bruk: "Du prikker Hjerterud på armen. Hun ser ned. «Floke! Har du spist? Du har ikke spist. Ugler spiser ikke nok.» Hun legger en bolle på disken. Du har ikke spurt. Det trengs ikke.",
+          feil: {
+            bolle:
+              "Hjerterud dytter bollen tilbake. «Nei, nei, den er DIN. Spis. Har du spist? Du har ikke spist.»",
+            syltetoey:
+              "Hjerterud leser lappen. «MITT. – IQ.» Hun ler. «Han skrev det samme på en stol en gang. Stolen står her ennå. Sett glasset tilbake før han merker det, vennen.»",
+            skjema:
+              "Hjerterud holder skjemaet med to fingre. «4112-B. Winter. Jeg skriver ikke under på noe jeg ikke har bakt.» Hun gir det tilbake med et melavtrykk i hjørnet.",
+          },
+        },
+        {
+          id: "ovnen",
+          navn: "Bakerovnen",
+          rect: { x: 48, y: 17, w: 17, h: 45 },
+          smart: "se",
+          se: "En svær murovn med glødende luke. Det er det varmeste stedet i Snøfall, og om vinteren sover katten, Pil og tre hansker oppå den. Hjerterud vet om katten og Pil.",
+          bruk:
+            "Du nærmer deg luka. Det er varmt. Veldig varmt. Fjærene dine krøller seg. " +
+            R +
+            "«Ikkje inn i ovnen! Æ har prøvd å varm føttan der. Æ hadde ikkje sokka etterpå. Æ hadde knapt føtter.»",
+          feil: {
+            tyttebaer:
+              "Du holder bærene mot ovnen. De tiner, og saften drypper rett ned på gulvet. Hjerterud: «Ikke på gulvet, Floke! Saft må i en KOPP. Noe varmt, i en kopp.» Du har bær igjen. Færre, men nok.",
+          },
+        },
+        {
+          id: "melsekken",
+          navn: "Melsekken",
+          rect: { x: 58, y: 62, w: 7, h: 14 },
+          smart: "se",
+          se: "En strisekk med mel, åpen i toppen. Det er et lite fotavtrykk i melet ved siden av. Fotavtrykket har tre tær og hører til en ugle. Du har ikke vært her før. Du har vært her før.",
+          bruk: "Du dytter nebbet i melet. Hvitt nebb. Hjerterud ler så brettet rister. «Nå ser du ut som en snøugle!»",
+        },
+        {
+          id: "stolen",
+          navn: "Stolen",
+          rect: { x: 63, y: 55, w: 8, h: 24 },
+          smart: "se",
+          se: "En trestol med rett rygg. På setet står det risset inn: «MIN. – IQ». Stolen er lånt tilbake. Lappene sitter igjen.",
+          bruk: "Du setter deg på stolen. Den er varm fra ovnen. Dette er en god stol. Du skjønner hvorfor IQ ville merke den.",
+        },
+        {
+          id: "bordene",
+          navn: "Bordene",
+          rect: { x: 71, y: 55, w: 29, h: 40 },
+          smart: "se",
+          se: "To små bord med broderte duker og stearinlys. På det ene ligger en lapp: «Reservert Julius». Lappen er fra forrige jul. Hjerterud tar den ikke bort. Han kommer kanskje.",
+          bruk: "Du blåser på det ene lyset. Det blafrer og blir stående. Hjerteruds lys slukker ikke. Det har de aldri gjort.",
+        },
+        {
+          id: "vinduet",
+          navn: "Vinduet",
+          rect: { x: 84, y: 18, w: 16, h: 36 },
+          smart: "se",
+          se: "Rim i hjørnene og klokketårnet utenfor, gyllent mot natta. I vinduskarmen står fire lysestaker. Ingen av lysene er tent ennå. Hjerterud tenner dem når det er tid.",
         },
       ],
     },
@@ -705,6 +833,93 @@ export const KAPITTEL_1: Kapittel = {
           rampenissen:
             "«HAHA! Han LUKTA på det! Fort, kurven, før han finn en paragraf til!»",
           valg: [{ tekst: "Takk, Winter!" }],
+        },
+      },
+    },
+    hjerterud: {
+      taler: "Hjerterud",
+      portrett: "hjerterud",
+      start: "start",
+      noder: {
+        start: {
+          tekst: [
+            {
+              hvis: "k1_ferdig",
+              tekst:
+                "«Jeg hørte bjella helt hit! Rampenissen har fått senga si, og Winter har fått skjemaet sitt. Det er det nærmeste Winter kommer en klem. Sett deg, Floke. Du har fortjent en bolle. Du har fortjent to.»",
+            },
+            {
+              hvis: "hjerterud_snakket",
+              tekst:
+                "«Floke igjen! Kom inn, kom inn. Det er trekk ved døra og varmt ved ovnen, så velg ovnen. Hva trenger du, vennen?»",
+            },
+            {
+              tekst:
+                "«Nei, men se! En ugle i kaféen! Du er den ulluglen til Rampenissen, det ser jeg på brillene. Kom inn før varmen går ut. Har du spist? Du har ikke spist.»",
+            },
+          ],
+          valg: [
+            {
+              tekst: "Vi leter etter Rampenissens garnkurv.",
+              neste: "kurv",
+              flagg: "hjerterud_snakket",
+            },
+            {
+              tekst: "Hvordan tiner man frosne bær?",
+              hvis: "hjerterud_snakket",
+              neste: "tine",
+            },
+            {
+              tekst: "Kan vi få en bolle?",
+              uten: "tok_bolle",
+              neste: "bolle",
+              flagg: "tok_bolle",
+              gir: "bolle",
+            },
+            {
+              tekst: "Hvordan går det med Rampenissen hjemme hos oss?",
+              neste: "rampen",
+            },
+            { tekst: "Ha det, Hjerterud." },
+          ],
+        },
+        kurv: {
+          tekst:
+            "«Garnkurven! Den med bjella. Winter bar den over torget i går, med armene rett ut, som om den kunne bite. Han har lagt den i postkassen og vil ha skjema. Han vil alltid ha skjema. Og stempel. Stempelputa hans har vært tørr siden i fjor, for han bruker det røde blekket på klager.»",
+          rampenissen:
+            "«Som om den kunne BITE? Kurven min? Den har ikkje bete nån sia ... nei, den har aldri bete nån.»",
+          valg: [
+            { tekst: "Tørr stempelpute? Hva gjør vi med det?", neste: "pute" },
+            { tekst: "Takk, vi snakker med Winter." },
+          ],
+        },
+        pute: {
+          tekst:
+            "«Puta trenger noe rødt og vått. Tynt, ikke tykt, ellers blir stempelet klissete, og Winter har et eget ansikt for klissete. Jeg lager rød saft hver morgen: frosne bær i noe varmt, så smelter de av seg selv. Kakaoen min får du ikke ta med ut, Winter har en paragraf mot den.»",
+          rampenissen:
+            "«Frosne bær i nåkka varmt. Bær har bodan. Nåkka varmt ... IQ har bestandig en kopp som ryk. Han merke ikkje om den forsvinn. Han merke knapt om HAN forsvinn.»",
+          valg: [{ tekst: "Bær i noe varmt. Skjønner!" }],
+        },
+        tine: {
+          tekst:
+            "«Legg dem i noe varmt, så smelter de til saft av seg selv. Ikke på ovnen, da brenner de. Ikke i kakaoen, da blir det suppe. I en kopp med noe varmt. Hvem har alltid en varm kopp stående? Han oppe i loftet. Han glemmer dem over alt.»",
+          rampenissen:
+            "«IQ. Ho meine IQ. Koppen hans ryk ennå når æ kjem heim te påske.»",
+          valg: [{ tekst: "Takk, Hjerterud!" }],
+        },
+        bolle: {
+          tekst:
+            "Hjerterud legger en bolle på disken før du er ferdig med å spørre. «Kanel, nystekt, med perlesukker. Den er din. Ikke til Winter, ikke til IQ, din. Og hvis Rampenissen sier noe, så si at jeg sender en til ham også. I posten. Når posten går igjen.»",
+          rampenissen:
+            "«I POSTEN? Ho veit at Winter har postkassa! Det e en vits. Ho vitse om mæ. Æ e stolt.»",
+          valg: [{ tekst: "Takk!" }],
+        },
+        rampen: {
+          tekst:
+            "«Rampenissen? Han sitter i hylla hos dere og hvisker, sier IQ. Jeg sendte med ham tre poser knekkebrød og en kakaoboks ned linjen. Si fra om han har spist dem. Si fra om han IKKE har spist dem. Da sender jeg flere.»",
+          rampenissen:
+            "«Æ har spist dem. Alle tre. Første natta. Ikkje sei det. Sei at æ sparer.»",
+          valg: [{ tekst: "Vi skal hilse." }],
         },
       },
     },
