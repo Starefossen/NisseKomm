@@ -460,7 +460,7 @@ Kulde-nivå 1. Svak knitring, ett juletrelys slukner i segment 3 (etterarbeid). 
    - Varighet: 15 s (22 ord)
    - Handling: Snur seg mot vinduet og blir sittende vendt dit.
    - Kulde: Svak knitring, et svakt grønt skjær i vinduet. Ett juletrelys slukner.
-4. **Replikk:** «Og så det siste. De gamle her oppe hadde et navn på det grønne. Det man kan høre på himmelen, sa de gamle.»
+4. **Replikk:** «Og så det siste. De gamle her oppe hadde et navn på det grønne lyset. De sa at himmelen snakket når det kom.»
    - Varighet: 15 s (23 ord) · låst
    - Handling: Holder venstre hånd bak øret, lukker øynene et øyeblikk.
    - Kulde: Svak knitring.
@@ -535,9 +535,9 @@ Kulde-nivå 2. Bildet flimrer (lampen flakker, etterarbeid), og juletrelysene sl
    - Varighet: 15 s (26 ord) · låst
    - Handling: Retter seg opp, peker mot taket der verkstedet er, med venstre hånd, og holder pekefingeren der.
    - Kulde: Svak knitring.
-4. **Replikk:** «IQ elsker ordet. Han sier det med armene, og motoren hviner når han sier det. I natt bygger IQ en mur av varme rundt linjen.»
-   - Varighet: 15 s (25 ord) · låst
-   - Handling: Strekker venstre arm rett fram som IQ, så tegner han en firkant på bordet med fingeren.
+4. **Replikk:** «IQ elsker ordet. Han roper det hver gang motoren starter, og motoren hviner tilbake. I natt bygger IQ en mur av varme rundt linjen.»
+   - Varighet: 15 s (24 ord) · låst
+   - Handling: Kaster venstre hånd i været som IQ, så tegner han en firkant på bordet med fingeren.
    - Kulde: Svak knitring. Lampen flakker på «mur».
 5. **Replikk:** «Jeg har bedt om én port. Den står der jeg tegnet sirkelen på Trixters kart. Kristian, se på kartet i kveld.»
    - Varighet: 15 s (21 ord) · låst

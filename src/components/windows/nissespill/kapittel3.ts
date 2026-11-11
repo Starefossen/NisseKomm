@@ -132,6 +132,7 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 4, y: 0, w: 30, h: 84 },
           smart: "se",
           se: "Et juletre med levende lys, røde kuler og småkaker. Én av småkakene mangler en bit. Bitene er på størrelse med et nissegap. Det finnes bare ett nissegap på den størrelsen i Snøfall, og det sitter i Bergen.",
+          prat: "Du uler lavt mot juletreet. Et lys blafrer. Hjerterud: «Ikke blås på lysene, Floke. De er Julius'. Han teller dem.»",
           bruk: "Du rister forsiktig i ei grein. En kule svinger. En småkake faller. Floke spiser den. Bevis fjernet. Floke lærer fort.",
         },
         {
@@ -147,6 +148,7 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 42, y: 0, w: 12, h: 30 },
           smart: "se",
           se: "Gamle bøker med gullskrift på ryggen: «Snøfall gjennom tidene», «Reinsdyrstell», «Alt om sirup». Den siste er mest slitt. Den har et bittemerke på ryggen. Noen har lest den med tennene.",
+          prat: "Du spør bokhylla etter en bok om grotter. Den har én: «Hull i fjellet, og hva som bor der». Noen har satt den inn med ryggen innover. Dårlig gjemt. Som alt annet som gjemmes i Snøfall.",
         },
         {
           id: "bamsen",
@@ -166,6 +168,10 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 56, y: 0, w: 40, h: 40 },
           smart: "se",
           se: "Et stort buevindu med rim på rutene. Utenfor ligger Snøfall blått og stille, og langt der ute lyser ei rød lampe på ei mast, jevnt og rolig. Noen har peilet den riktig. Det var dere.",
+          prat:
+            "Du puster på ruta og ser den røde lampa der ute gjennom duggen. " +
+            R +
+            "«Den blinke te oss. Nei. Den blinke te alle. Men æ tar det personlig, på den gode måten.»",
         },
         {
           id: "lysene",
@@ -214,6 +220,7 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 22, y: 70, w: 20, h: 12 },
           smart: "se",
           se: "Brev til Julius, ordnet etter land, bundet med rød tråd. Det øverste er fra Bergen og lukter regn. Det nest øverste er også fra Bergen. Bergen skriver mye. Bergen har tid, det regner jo.",
+          prat: "Du sier «hei» til brevbunken fra Bergen. Det lukter regn tilbake. Det er Bergens måte å si hei på.",
         },
         {
           id: "boka",
@@ -221,6 +228,7 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 17, y: 78, w: 12, h: 12 },
           smart: "se",
           se: "Ei tykk, brun bok uten tittel. Du åpner den på måfå: «Snillhet, se: å se noen». Du lukker den igjen. Det var hele siden. Det var nok.",
+          prat: "Du spør boka om et ord til. Den åpner seg på «Tålmodighet, se: å vente uten å se på klokka». Du lukker den. Du så på klokka.",
         },
         {
           id: "blekkhuset",
@@ -296,16 +304,42 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 57, y: 85, w: 7, h: 8 },
           smart: "se",
           se: "Julius' lesebriller, pent brettet sammen ved boka. Han glemmer dem hver gang han går ut. Hver gang. Hjerterud har sluttet å si fra. Hun legger dem her i stedet.",
+          prat: "Du sier «han kommer snart» til brillene. De ligger der og venter. De er flinke til det. De har øvd.",
         },
         {
           id: "dagboka",
           navn: "Den åpne boka",
+          prat: "Du hvisker «unnskyld» til dagboka for at du nesten leste. Den ligger åpen likevel. Den stoler på deg. Det er verre enn en lås.",
           rect: { x: 65, y: 76, w: 18, h: 18 },
           smart: "se",
           se:
             "Julius' dagbok, åpen. Du leser ikke andres dagbøker. Floke leser ikke andres dagbøker. " +
             R +
             "«Æ les ... Nei. Æ gjør ikkje det. Fly videre. Fly videre, sa æ. Okei, bare overskrifta. Nei!»",
+        },
+        {
+          id: "bokstabelen",
+          navn: "Bøkene på gulvet",
+          rect: { x: 0, y: 60, w: 15, h: 16 },
+          smart: "se",
+          se: "Bøker i stabler på gulvet, der hylla tok slutt. Øverst: «Reinsdyr og andre meninger» og «Hundre år med snø, bind 3». Bind 1 og 2 står under juletreet. Som fot.",
+          bruk: "Du dytter stabelen. Den vipper, tenker seg om og blir stående. Bøker i dette rommet har lært seg balanse. De har hatt tid.",
+        },
+        {
+          id: "rattet",
+          navn: "Rattet på veggen",
+          rect: { x: 91, y: 27, w: 9, h: 9 },
+          smart: "se",
+          se: "Et trehjul med eiker, hengt på veggen som et bilde. Det er rattet fra IQs første slede, den eneste sleden i Snøfall som noen gang har hatt ratt. Den kjørte én gang, i sirkel, og IQ hengte rattet her som et minne. Julius kaller det et varsel.",
+          prat: "Du uler mot rattet. Det svarer ikke, men det har snurret én gang siden, i søvne, sier Julius. Han så det. Han hadde ikke brillene på.",
+        },
+        {
+          id: "pakken",
+          navn: "Pakken i vinduskarmen",
+          rect: { x: 76, y: 52, w: 7, h: 8 },
+          smart: "se",
+          se: "En liten pakke i rødt papir i vinduskarmen, ved lysene. Lapp: «ÅPNES JULAFTEN. IKKE LILLE JULAFTEN. – H.» Hjerterud legger en der hver desember. Julius åpner den alltid lille julaften. Hun vet det. Hun pakker inn to.",
+          bruk: "Du rister pakken forsiktig. Noe mykt. Noe strikket. Noe som sannsynligvis er en vott uten make.",
         },
       ],
     },
@@ -323,6 +357,10 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 42, y: 0, w: 16, h: 40 },
           smart: "se",
           se: "En lang sprekk i taket. Det drysser snø ned gjennom den hele tiden, og med snøen kommer trekken: en lang, kald pust som aldri stopper. Den har holdt på lenge. Den er ikke sliten.",
+          prat:
+            "Du uler opp i sprekken. Ekkoet kommer tilbake langsomt, som om det måtte tenke seg om først. " +
+            R +
+            "«Ikkje rop. Vi e på besøk. Hviske, vess dokker må.»",
           bruk: "Floke flyr opp mot sprekken. Trekken dytter henne ned igjen. Hun prøver en gang til. Samme svar. Trekken diskuterer ikke.",
         },
         {
@@ -331,6 +369,7 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 14, y: 0, w: 26, h: 18 },
           smart: "se",
           se: "Istapper så lange som Floke er høy. En av dem drypper. Dråpen treffer en krystall og sier «pling». Samme tone hver gang. Den har holdt tonen i mange år. Ingen har klappet.",
+          prat: "Du hvisker til istappen som drypper. Den drypper. Pling. Samme tone. Den har ikke tenkt å skifte for deg.",
         },
         {
           id: "blaakrystallene",
@@ -361,6 +400,7 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 64, y: 20, w: 32, h: 58 },
           smart: "bruk",
           vis: { uten: "skaar_satt" },
+          prat: "Du hvisker til de klare krystallene. Hviskingen kommer tilbake fra hundre kanter, litt lysere. De beholder ingenting. De sender videre.",
           se: [
             {
               hvis: "tok_krystallskaar",
@@ -512,6 +552,7 @@ export const KAPITTEL_3: Kapittel = {
           navn: "Sokkelen",
           rect: { x: 33, y: 82, w: 34, h: 18 },
           smart: "bruk",
+          prat: "Du sier «unnskyld at vi forstyrrer» til sokkelen. Steinen sier ingenting. Den har stått her lenge uten besøk. Den tar det pent.",
           se: [
             {
               hvis: "krystall_satt",
@@ -605,6 +646,7 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 0, y: 56, w: 14, h: 44 },
           smart: "se",
           se: "En krystall høyere enn Floke, med ei lapp nederst: «NR. 1». Den første. Noen begynte her, en gang, med stor tro på det. Lappen er skrevet med samme skrift som lappen på IQs dør. Yngre skrift. Samme hånd.",
+          prat: "Du hvisker «nummer én» til den store krystallen. Lyset inni den flytter seg litt, som om den hørte navnet sitt. Det gjorde den sikkert ikke. Du går likevel litt lenger unna.",
         },
         {
           id: "hoyrekrystallen",
@@ -612,6 +654,22 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 84, y: 72, w: 16, h: 28 },
           smart: "se",
           se: "Et knippe klare krystaller som vokser rett opp av gulvet. Speilbildet av Floke står i hver av dem. Sju ugler. Alle like forbauset. Den åttende er ekte, og hun er mest forbauset.",
+          prat: "Du sier «hei» til de sju speilbildene. Sju ugler sier «hei» tilbake, lydløst. Den åttende sier det høyt. Det var deg.",
+        },
+        {
+          id: "istappene_h",
+          navn: "Istappene til høyre",
+          rect: { x: 60, y: 0, w: 24, h: 16 },
+          smart: "se",
+          se: "Flere istapper, tettere, over de klare hyllene. Disse er blanke som glass og har små bobler inni, frosset fast midt i en bevegelse. Bobler som var på vei opp for lenge siden og aldri kom fram.",
+        },
+        {
+          id: "steinene",
+          navn: "Steinene ved sokkelen",
+          rect: { x: 68, y: 84, w: 16, h: 16 },
+          smart: "se",
+          se: "Løse steiner og is i små hauger ved foten av sokkelen. Mellom dem ligger en liten skrutrekker med trehåndtak, rusten. Noen glemte den her. Noen som alltid glemmer verktøy. Den har ligget her like lenge som lappene.",
+          bruk: "Du drar i skrutrekkeren. Den sitter fast i isen. Den får bli. Den hører til her nå, på sin måte.",
         },
       ],
     },

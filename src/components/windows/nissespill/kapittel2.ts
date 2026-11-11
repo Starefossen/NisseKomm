@@ -164,6 +164,10 @@ export const KAPITTEL_2: Kapittel = {
           rect: { x: 0, y: 0, w: 44, h: 30 },
           smart: "se",
           se: "Grønt lys bølger over fjella. Stjernene står tett. Én av dem er nordstjerna, og du aner ikke hvilken. Det gjør ikke Floke heller. Hun er ei ugle, ikke et kart.",
+          prat:
+            "Du uler mot det grønne lyset. Det bølger. " +
+            R +
+            "«Det svare! Nei. Det gjør sånn uansett. Æ har prøvd heile natta.»",
         },
         {
           id: "fjella",
@@ -171,6 +175,7 @@ export const KAPITTEL_2: Kapittel = {
           rect: { x: 56, y: 16, w: 44, h: 14 },
           smart: "se",
           se: "Lave fjell med snø helt ned. Et sted bak dem ligger Nordtoppen. Et sted langt bak dem igjen ligger Landås, en sofa, og en nisse som venter på bedre bilde og har spist opp alt godteriet mens han ventet.",
+          prat: "Du roper «HALLO» mot fjella. Ekkoet kommer tilbake tre ganger, svakere og svakere, til det høres ut som Rampenissen i søvne.",
         },
         {
           id: "lampa",
@@ -178,10 +183,12 @@ export const KAPITTEL_2: Kapittel = {
           rect: { x: 46, y: 6, w: 8, h: 8 },
           smart: "se",
           se: "Ei rød lampe på toppen av masta. Den blinker. IQ sier det er så flyene ser antenna. Rampenissen sier det er så Julius finner hjem. Rudolf tror det er en veldig høy nese.",
+          prat: "Du uler mot den røde lampa. Den blinker. Du uler igjen. Den blinker igjen. Den blinker i samme takt uansett, men det kjennes som en samtale.",
         },
         {
           id: "peileskiva",
           navn: "Peileskiva på masta",
+          prat: "Du spør skiva hvor nord er. Den snurrer ikke og sier ingenting. Den har to måter å ikke svare på, og bruker begge.",
           rect: { x: 44, y: 30, w: 12, h: 26 },
           smart: "bruk",
           se: [
@@ -432,6 +439,7 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "hytta",
           navn: "Hytta",
+          prat: "Du banker og sier «hallo» inn gjennom nøkkelhullet. Innenfra sier noe «pling». Det er mottakeren. Den sier det til alle.",
           rect: { x: 58, y: 56, w: 14, h: 20 },
           smart: "bruk",
           puslespill: "hyttelaas",
@@ -539,7 +547,40 @@ export const KAPITTEL_2: Kapittel = {
           rect: { x: 28, y: 80, w: 30, h: 18 },
           smart: "se",
           se: "Tre tykke svarte kabler slynger seg over snøen fra hytta til masta. Én av dem har merker. Bittemerker. Store. Med mellomrom som passer akkurat til ei reinsdyrkjeft, hvis noen skulle lure.",
+          prat: "Du hvisker til kablene om å holde ut. De ligger stille i snøen. Én av dem har bittemerker og et uttrykk av å ha holdt ut lenge nok.",
           bruk: "Du drar i en kabel. Inne i hytta sier noe «pling». Du slipper kabelen. Det sier «pling» igjen. Det var ikke deg.",
+        },
+        {
+          id: "bjoerka",
+          navn: "Bjørka",
+          rect: { x: 0, y: 66, w: 10, h: 18 },
+          smart: "se",
+          se: "Ei naken bjørk ved tjernet med rim på hver kvist. Nederst på stammen er barken gnagd bort i en ring. Reinhøyde. Bjørka står fortsatt. Den har sett verre vintre, men ingen med Rudolf i.",
+          bruk: "Floke lander i bjørka. Greina bøyer seg. Rimet drysser ned over henne som sukker. Hun ser ut som en bolle med briller.",
+        },
+        {
+          id: "sporene",
+          navn: "Sporene i snøen",
+          rect: { x: 72, y: 84, w: 28, h: 16 },
+          smart: "se",
+          se: "Et spor av hover går fra bjørka til masta, rundt masta tre ganger, bort til hytta og tilbake til masta. Og ett spor av små støvler rett fra hytta til masta og rett hjem igjen, fort. IQ. Han ble kald. Han blir alltid kald.",
+          bruk: "Floke setter tre tær i snøen ved siden av hovsporet. Nå er det to mistenkte. Den ene har alibi. Det er deg.",
+        },
+        {
+          id: "smaabuskene",
+          navn: "Småtrærne",
+          rect: { x: 22, y: 42, w: 11, h: 9 },
+          smart: "se",
+          se: "Små grantrær, knapt høyere enn en nisse, i snøen bortenfor tjernet. IQ plantet dem for å skjerme masta for vind. Masta er ti meter høy. Trærne er en halv. Det er en langsiktig plan.",
+          prat: "Du uler mot småtrærne. Snøen på det ene glir av. Det ser ut som det bukket.",
+        },
+        {
+          id: "bardunene",
+          navn: "Bardunene",
+          rect: { x: 34, y: 30, w: 10, h: 22 },
+          smart: "se",
+          se: "Tre stålwire holder masta oppe, strukket fra toppen og ned i snøen. De er dekket av rim og synger lavt i vinden, hver sin tone. IQ stemte dem. Han sier det var tilfeldig. Han har notene.",
+          bruk: "Du klyper en bardun med nebbet. Den synger. Masta dirrer litt. Innenfra hytta sier noe «pling». Alt her oppe henger sammen, også lydene.",
         },
       ],
     },
@@ -557,6 +598,7 @@ export const KAPITTEL_2: Kapittel = {
           rect: { x: 0, y: 22, w: 20, h: 40 },
           smart: "se",
           se: "Alle målerne står på midten. Lappen «ALDRI MER KAFFETRAKTER» henger der fortsatt. Noen har lagt til en ny lapp under: «ELLER VAFFELJERN». Lista blir lengre hvert år.",
+          prat: "Du spør skapet hva som skjedde med vaffeljernet. Det klikker én gang. Det er alt du får vite, og det er sannsynligvis nok.",
           bruk: "Du lar skapet være. Du har lært. Du lærte det sist, og du lærte det av IQ sine øyenbryn.",
         },
         {
@@ -588,6 +630,7 @@ export const KAPITTEL_2: Kapittel = {
           rect: { x: 20, y: 58, w: 9, h: 18 },
           smart: "se",
           se: "Den grønne streken hakker i dag. Hopp, hopp, pause, hopp. Det ser ut som noen som tygger. Det ER noen som tygger. IQ har koblet det til Rudolf.",
+          prat: "Du snakker til streken. Den hakker i takt med stemmen din. Så i takt med Rudolf. Rudolf vinner. Rudolf har kjevene.",
           bruk: "Du vrir på knotten. Nå ser det ut som noen som tygger fortere. Ute ved tjernet tygger Rudolf fortere. Det er sikkert tilfeldig.",
         },
         {
@@ -643,6 +686,10 @@ export const KAPITTEL_2: Kapittel = {
           rect: { x: 54, y: 18, w: 10, h: 28 },
           smart: "se",
           se: "Rim på rutene. Smilefjeset fra sist er der fortsatt. Noen har tegnet en rein ved siden av. Reinen har kabel i munnen. Noen har tegnet et kryss over reinen. Reinen har tegnet et kryss over krysset. Trolig.",
+          prat:
+            "Du puster på ruta ved siden av reinen. " +
+            R +
+            "«Tegn et knekkebrød te han. Så får han nåkka å se på mens vi jobbe.»",
         },
         {
           id: "skiltet",
@@ -706,6 +753,7 @@ export const KAPITTEL_2: Kapittel = {
           navn: "Krakken",
           rect: { x: 67, y: 65, w: 10, h: 15 },
           smart: "bruk",
+          prat: "Du spør krakken om den savner noe under setet. Den vipper. Det er alt krakken sier om saken.",
           se: [
             {
               hvis: "tok_grytevott",
@@ -748,6 +796,51 @@ export const KAPITTEL_2: Kapittel = {
               "Du tar sirupsflaska. Lappen sier «TIL VAFLER». Dette er ikke vafler. Dette er viktigere. Si det til Hjerterud, ikke til oss.",
           },
           bruk: "Syltetøyet får stå. Det har navn på seg, og eieren har kamera på det. Dere husker.",
+        },
+        {
+          id: "lyspaera",
+          navn: "Lyspæra",
+          rect: { x: 31, y: 0, w: 6, h: 14 },
+          smart: "se",
+          se: "Lyspæra i taket blunker i takt med noe ute ved tjernet. IQ har koblet den til masta. Når bildet hakker, blunker pæra. Akkurat nå blunker den mye.",
+          bruk: "Du dytter pæra. Den svinger og blunker samtidig. Nå er det både mørkt og hakkete. Du stopper den med vingen.",
+        },
+        {
+          id: "radioen",
+          navn: "Den gamle radioen",
+          rect: { x: 57, y: 8, w: 7, h: 9 },
+          smart: "se",
+          se: "IQs første mottaker, radioen av tre øverst på hylla. I dag suser den. Den tar bare én kanal, og den kanalen kommer fra masta ved tjernet. Når masta peker feil, hører radioen snø.",
+          prat:
+            "Du uler mot radioen. Susen svarer. " +
+            R +
+            "«Det e sånn det høres ut hos mæ òg. Snø. Æ har hørt snø i tre tima. Æ begynne å like det. Det e det som bekymre mæ.»",
+        },
+        {
+          id: "skrivebordslampa",
+          navn: "Skrivebordslampa",
+          rect: { x: 80, y: 41, w: 8, h: 9 },
+          smart: "se",
+          se: "Messinglampa over sidebordet er bøyd ned mot skuffen med nødrasjonen. Den lyser rett på ordet NØD. IQ har stilt den sånn med vilje. Han vil at nøden skal være lett å finne.",
+        },
+        {
+          id: "tengene",
+          navn: "Tengene",
+          rect: { x: 0, y: 88, w: 18, h: 12 },
+          smart: "se",
+          se: "Tenger og skrutrekkere i «systemet». I dag ligger det en tang for seg selv, pent, med en lapp: «TIL KABEL. HVIS RUDOLF.» Han visste. Han visste, og han gikk inn likevel.",
+          bruk: "Du dytter tanga. Lappen glir av. Du legger den tilbake. Lappen er viktigere enn tanga. Det er sånn det er med lapper her.",
+        },
+        {
+          id: "oppfinnelsen",
+          navn: "Den lille oppfinnelsen",
+          rect: { x: 29, y: 68, w: 8, h: 12 },
+          smart: "se",
+          se: "Den lille oppfinnelsen på benken gløder som før. Lappen «VIRKER. IKKE SPØR HVORDAN» har fått en ny linje: «VIRKER FORTSATT. SLUTT Å SPØRRE.» Noen har spurt.",
+          bruk: "Du trykker på knappen. Gløden blir sterkere. Innenfra døra: «Var det knappen? Det var knappen.» Du trekker vingen til deg.",
+          prat:
+            R +
+            "«Æ spurte korsen den virke. Én gang. IQ snakka i to tima. Æ veit fortsatt ikkje. Men æ veit mye om spola.»",
         },
       ],
     },

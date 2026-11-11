@@ -18,6 +18,14 @@
     {
       "fra_dag": 16,
       "tekst": "det fjerde adventslyset står i vinduet mot nord"
+    },
+    {
+      "fra_dag": 4,
+      "tekst": "innrammet ved ovnen: «Bevilling for skjenking av kakao, paragraf 14, unntak 1. – W.», Winters eneste unntak, gitt etter fire kopper (fem)"
+    },
+    {
+      "fra_dag": 4,
+      "tekst": "katten og Pil sover oppå bakerovnen; Hjerterud stabler veden selv"
     }
   ]
 }

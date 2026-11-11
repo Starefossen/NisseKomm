@@ -7,10 +7,17 @@
   "refs": {},
   "avledet_fra": "torget",
   "fakta": [
-    { "fra_dag": 1, "tekst": "små boder med lanterner på torget i Snøfall" },
+    {
+      "fra_dag": 1,
+      "tekst": "små boder med lanterner på torget i Snøfall"
+    },
     {
       "fra_dag": 4,
       "tekst": "to boder selger frosne bær, den ene med skiltet «BEDRE»; Ugleposten besøker dem fra torget"
+    },
+    {
+      "fra_dag": 4,
+      "tekst": "bodnissene har stått side om side i førti år og bor i hver sin etasje i det grønne huset bak bodene; «BEDRE»-skiltet males på nytt hver morgen og har «LIKE» på baksiden"
     }
   ]
 }

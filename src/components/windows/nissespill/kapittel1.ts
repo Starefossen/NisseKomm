@@ -86,7 +86,7 @@ export const KAPITTEL_1: Kapittel = {
       tittel: "Stempelskrinet",
       flagg: "skrin_aapent",
       tekst:
-        "1-6-4-0. Det siste hjulet klikker, og lokket spretter opp. Inni ligger stempelet «SNØFALL POSTVESEN» på rød fløyel, som en liten konge. Winter ser opp: «Tømmetiden. Selvsagt. Jeg visste det.» Han visste det ikke.",
+        "1-6-4-0. Det siste hjulet klikker, og lokket spretter opp. Inni ligger stempelet «SNØFALL POSTVESEN» på rød fløyel, som en liten konge. Winter ser opp: «Tømmetiden. Selvsagt. Eg visste det.» Han visste det ikke.",
       hjul: [
         ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
         ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
@@ -170,6 +170,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "trappa",
           navn: "Trappa",
+          prat: "Du sier «unnskyld» til trappa før du går opp. Det tredje trinnet knirker likevel. Det er ikke personlig. Det knirker for alle.",
           rect: { x: 0, y: 34, w: 19, h: 58 },
           smart: "bruk",
           gaaTil: "verksted",
@@ -178,6 +179,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "bodene",
           navn: "Julebodene",
+          prat: "Du roper «hei» bort til bodene. Begge bodnissene vinker. Så ser de at den andre vinket, og slutter samtidig.",
           rect: { x: 20, y: 40, w: 22, h: 42 },
           smart: "bruk",
           se: "To små boder med lanterner. Den ene selger kurver med frosne bær. Den andre selger også frosne bær, men med skilt: «BEDRE». Konkurransen er hard og helt lik.",
@@ -200,6 +202,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "husene",
           navn: "Husene",
+          prat: "Du uler mot husene. Et vindu går opp, en nisse ser ut, ser ei ugle og lukker igjen. Rolig. Ugler på torget er ikke nyheter i Snøfall.",
           rect: { x: 24, y: 14, w: 18, h: 26 },
           smart: "se",
           gaaTil: "kafeen",
@@ -260,13 +263,13 @@ export const KAPITTEL_1: Kapittel = {
               R +
               "«Ikkje søl saft på postkassa! Winter kjem te å notere det i tre protokolla og en kalender.»",
             tyttebaer:
-              "Du dytter et bær inn i brevsprekken. Winter: «Det der er ikke et brev. Det er ikke engang et postkort.»",
+              "Du dytter et bær inn i brevsprekken. Winter: «Det der er ikkje et brev. Det er ikkje engang et postkort.»",
             skjema:
-              "Du dytter skjemaet mot låsen. Ingenting. Winter: «Skjemaet leveres til meg, ikke til møbler.»",
+              "Du dytter skjemaet mot låsen. Ingenting. Winter: «Skjemaet leveres til meg, ikkje til møbler.»",
             skjema_signert:
-              "Du vifter med skjemaet foran låsen. Låsen er ikke imponert. Winter: «Jeg er låsen. Snakk med meg.»",
+              "Du vifter med skjemaet foran låsen. Låsen er ikke imponert. Winter: «Eg er låsen. Snakk med meg.»",
             syltetoey:
-              "Du holder syltetøyglasset mot postkassen. Winter: «Jeg skal late som jeg ikke så det.» Han så det.",
+              "Du holder syltetøyglasset mot postkassen. Winter: «Eg skal late som eg ikkje så det.» Han så det.",
           },
         },
         {
@@ -292,6 +295,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "stempelputa",
           navn: "Stempelputa",
+          prat: "Du spør puta om den er tørst. Den svarer ikke, men den har aldri sett tørrere ut.",
           rect: { x: 66, y: 78, w: 6, h: 10 },
           smart: "se",
           se: [
@@ -323,9 +327,9 @@ export const KAPITTEL_1: Kapittel = {
               R +
               "«Dem e for harde. Dem må tines, sjø. Nåkka varmt.»",
             kaffekopp:
-              "Du heller en dråpe kaffe på puta. Brun. Winter: «Brunt er ikke en godkjent stempelfarge. Brunt er en godkjent kaffefarge. Det er to forskjellige skjemaer.»",
+              "Du heller en dråpe kaffe på puta. Brun. Winter: «Brunt er ikkje en godkjent stempelfarge. Brunt er en godkjent kaffefarge. Det er to forskjellige skjemaer.»",
             syltetoey:
-              "Du smører en klatt syltetøy på puta. Rødt! Vått! Winter trykker stempelet i det. SMATT. Det sitter fast. «Klissete er ikke en farge.» Puta er like tørr under klatten. " +
+              "Du smører en klatt syltetøy på puta. Rødt! Vått! Winter trykker stempelet i det. SMATT. Det sitter fast. «Klissete er ikkje en farge.» Puta er like tørr under klatten. " +
               R +
               "«Nesten! Det må vær tynt og rødt, ikkje tjukt og rødt.»",
           },
@@ -333,6 +337,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "skrinet",
           navn: "Stempelskrinet",
+          prat: "Du hvisker «sesam» til skrinet. Winter, uten å se opp: «Det er fire tall. Ikkje et ord. Ord er for brev.»",
           rect: { x: 72, y: 76, w: 7, h: 12 },
           smart: "bruk",
           puslespill: "skrin",
@@ -381,25 +386,41 @@ export const KAPITTEL_1: Kapittel = {
               hvis: "stempel_vaat",
               uten: "skrin_aapent",
               tekst:
-                "Winter leser felt 3-A og nikker. Så ser han på den våte puta, og så på skrinet. «Puta er godkjent. Stempelet ligger i skrinet. Skrinet er låst. Jeg åpner ikke skrin i arbeidstiden.» Han gir skjemaet tilbake.",
+                "Winter leser felt 3-A og nikker. Så ser han på den våte puta, og så på skrinet. «Puta er godkjent. Stempelet ligger i skrinet. Skrinet er låst. Eg åpner ikkje skrin i arbeidstiden.» Han gir skjemaet tilbake.",
             },
           ],
           feil: {
             bolle:
-              "Winter ser på bollen i fire sekunder. «Jeg spiser ikke i arbeidstiden.» Fire sekunder til. «Legg den på hylla. Til dokumentasjon.» Du beholder den. Han noterer det.",
+              "Winter ser på bollen i fire sekunder. «Eg spiser ikkje i arbeidstiden.» Fire sekunder til. «Legg den på hylla. Til dokumentasjon.» Du beholder den. Han noterer det.",
             skjema:
-              "Winter holder skjemaet mot lyset. «Felt 3-A, eier av funnsted: tomt. Felt 7-C, stempel: tomt. To mangler. Jeg teller.» Han gir det tilbake.",
+              "Winter holder skjemaet mot lyset. «Felt 3-A, eier av funnsted: tomt. Felt 7-C, stempel: tomt. To mangler. Eg teller.» Han gir det tilbake.",
             skjema_signert:
               "Winter leser felt 3-A. «IQ. Brunsvidd, men gyldig.» Så felt 7-C. «Tomt. Et halvt skjema er et helt nei.» Han gir det tilbake og peker på den tørre stempelputa uten å se på den.",
             tyttebaer:
-              "Winter: «Jeg tar ikke imot bestikkelser. Særlig ikke frosne. Frosne bestikkelser holder lenger, og det gjør det verre.»",
+              "Winter: «Eg tar ikkje imot bestikkelser. Særlig ikkje frosne. Frosne bestikkelser holder lenger, og det gjør det verre.»",
             kaffekopp:
-              "Winter: «Jeg drikker ikke i arbeidstiden. Og slett ikke av en kopp som kaller noen eksplosiv.»",
+              "Winter: «Eg drikker ikkje i arbeidstiden. Og slett ikkje av en kopp som kaller noen eksplosiv.»",
             baersaft:
-              "Winter: «Hva er DET? Nei. Ikke svar. Jeg vil ikke ha det i protokollen.»",
+              "Winter: «Hva er DET? Nei. Ikkje svar. Eg vil ikkje ha det i protokollen.»",
             syltetoey:
-              "Winter leser lappen. «MITT. – IQ.» Han ser på deg. «Dette er det best merkede løsøret i hele Snøfall. Lever det tilbake før jeg må lage et skjema for det.»",
+              "Winter leser lappen. «MITT. – IQ.» Han ser på deg. «Dette er det best merkede løsøret i hele Snøfall. Lever det tilbake før eg må lage et skjema for det.»",
           },
+        },
+        {
+          id: "himmelen",
+          navn: "Himmelen",
+          rect: { x: 22, y: 0, w: 30, h: 14 },
+          smart: "se",
+          se: "Svart himmel med stjerner tett i tett, og røyk fra pipene som står rett opp. Ingen vind i kveld. Snøen faller som om den har god tid.",
+          prat: "Du uler mot stjernene. Én av dem blinker. Det kan være et fly. Det kan være IQ som tester noe. Det er som regel IQ.",
+        },
+        {
+          id: "snoen",
+          navn: "Snøen på torget",
+          rect: { x: 24, y: 82, w: 24, h: 18 },
+          smart: "se",
+          se: "Snøen er tråkket til en sti mellom bodene og postkassen. Ett spor går fram og tilbake så mange ganger at det har blitt en grøft. Winters. Han går samme vei hver dag, på minuttet. Snøen har gitt opp å dekke den.",
+          bruk: "Floke tegner en sirkel i snøen med foten. Så en til. Winter ser bort og noterer: «Ugle. Tegner. Sirkler. Ukjent formål.»",
         },
       ],
     },
@@ -417,6 +438,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 0, y: 22, w: 20, h: 40 },
           smart: "se",
           se: "Et skap fullt av målere og visere. Alle står pent på midten, som om ingenting noen gang har skjedd her. Noen har limt på en lapp: «ALDRI MER KAFFETRAKTER». Lappen er svidd i kanten.",
+          prat: "Du spør skapet om det er trygt. Det svarer med et lite klikk. Det er enten ja eller en sikring. Du går ikke nærmere for å finne ut.",
           bruk: "Du åpner luka og lukker den igjen. Fort. Inni sto det tre sikringer og en liten lapp til: «IKKE DEN RØDE».",
         },
         {
@@ -425,6 +447,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 22, y: 25, w: 13, h: 26 },
           smart: "se",
           se: "Formler, piler og en tegning av noe rundt. Nederst står det «IKKE VISK UT», og rett under har noen visket ut noe. Det som er visket ut, var større enn det som står igjen.",
+          prat: "Du sier «hallo» til tavla. Krittstøvet svarer med å drysse. Det er hele svaret, og det er et ærlig et.",
         },
         {
           id: "oscilloskopet",
@@ -432,6 +455,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 20, y: 58, w: 9, h: 18 },
           smart: "se",
           se: "Den grønne streken tegner en kurve som ser nøyaktig ut som profilen til en gretten grevling. Hver gang noen tråkker på gulvet, hopper halen.",
+          prat: "Du snakker til grevlingen på skjermen. Halen hopper når du snakker. Den hopper mer når Rampenissen snakker. Den har god smak.",
           bruk: "Du vrir på en knott. Grevlingen blir et pinnsvin. Du vrir tilbake. Grevlingen ser ikke fornøyd ut, men det gjorde den ikke før heller.",
         },
         {
@@ -451,6 +475,10 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 54, y: 18, w: 10, h: 28 },
           smart: "se",
           se: "Rim på rutene og snø utenfor. På innsiden har noen tegnet et smilefjes i duggen. Med nesa, ser det ut som. Nesa var kald etterpå, ser det også ut som.",
+          prat:
+            "Du puster på ruta og får et nytt duggfelt. " +
+            R +
+            "«Tegn ei ugle! Nei, tegn mæ! Nei, ugle. Æ e ikkje forfengelig. Tegn mæ.»",
         },
         {
           id: "skiltet",
@@ -554,6 +582,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 67, y: 65, w: 10, h: 15 },
           smart: "se",
           se: "IQs krakk. Den har tre bein og en bok under det fjerde. Boka heter «Balanse for viderekomne». Den er ikke åpnet.",
+          prat: "Du spør krakken hvordan det går med balansen. Den vipper. Det er svaret, og det har vært svaret siden boka kom under.",
         },
         {
           id: "hyllene",
@@ -595,6 +624,51 @@ export const KAPITTEL_1: Kapittel = {
           ],
           bruk: "Skruene og tannhjulene får stå. De har ikke navn på seg, men de ser ut som de hører til.",
         },
+        {
+          id: "lyspaera",
+          navn: "Lyspæra",
+          rect: { x: 31, y: 0, w: 6, h: 14 },
+          smart: "se",
+          se: "Én naken lyspære i en ledning fra bjelken. Den har hengt der siden sikring nummer én. Den blunker når IQ tenker. Akkurat nå blunker den fort.",
+          bruk: "Du dytter pæra med vingen. Skyggene i verkstedet svinger fram og tilbake, og et øyeblikk ser alt dobbelt så rotete ut. Det er ikke mulig. Det skjer likevel.",
+        },
+        {
+          id: "radioen",
+          navn: "Den gamle radioen",
+          rect: { x: 57, y: 8, w: 7, h: 9 },
+          smart: "se",
+          se: "En gammel radio av tre øverst på hylla, med stoff foran høyttaleren og ett eneste ratt. IQs første mottaker, bygd for å høre Julius lese julefortellinger fra kontoret. Den tar fortsatt bare én kanal. Det er den kanalen.",
+          prat:
+            "Du uler mot radioen. Den knitrer tilbake, og i knitringen er det nesten en stemme. " +
+            R +
+            "«Det e Julius fra gamle daga. Han les ennå. Radioen glømte å slutte.»",
+        },
+        {
+          id: "skrivebordslampa",
+          navn: "Skrivebordslampa",
+          rect: { x: 80, y: 41, w: 8, h: 9 },
+          smart: "se",
+          se: "Ei bøyelig messinglampe over sidebordet. Den er bøyd i tre vinkler for å lyse under, over og bak noe som ikke står der lenger. IQ flyttet det. Lampa fikk ikke beskjed.",
+        },
+        {
+          id: "tengene",
+          navn: "Tengene",
+          rect: { x: 0, y: 88, w: 18, h: 12 },
+          smart: "se",
+          se: "Tenger, skrutrekkere og en loddebolt, spredt utover benkekanten i det IQ kaller «systemet». Systemet er at den han trenger, alltid ligger nederst.",
+          bruk: "Du dytter en tang. Den drar med seg en skrutrekker, som drar med seg loddebolten, som stopper rett før kanten. Du står helt stille. Systemet holdt.",
+        },
+        {
+          id: "oppfinnelsen",
+          navn: "Den lille oppfinnelsen",
+          rect: { x: 29, y: 68, w: 8, h: 12 },
+          smart: "se",
+          se: "Noe lite av messing og glass som gløder på benken. Det har en spole, en knapp og en lapp: «VIRKER. IKKE SPØR HVORDAN.» IQ bygde den for å holde kaffen varm. Den holder rommet varmt. Han tar det som en bonus.",
+          bruk: "Du trykker på knappen. Gløden blir sterkere, så svakere, så normal. Innenfra døra: «Hørte jeg knappen?» Du rører den ikke mer.",
+          prat:
+            R +
+            "«Æ snakka te den i fjor. Den svarte ikkje, men kaffen blei kald. Æ trur den blei fornærma.»",
+        },
       ],
     },
     {
@@ -611,6 +685,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 20, y: 8, w: 7, h: 19 },
           smart: "se",
           se: "En messinglampe i kjetting fra bjelken. Den svinger litt hver gang ovnsdøra går. Hjerterud sier det er trekk. Rampenissen sier det er lampa som danser.",
+          prat: "Du uler opp mot lampa. Den svinger, som om den nikker. Hjerterud: «Ikke oppmuntre henne, Floke.»",
           bruk: "Du dytter lampa med nebbet. Den svinger. Skyggene i kaféen danser. Hjerterud, uten å snu seg: «Ikke lampa, Floke.»",
         },
         {
@@ -628,6 +703,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 0, y: 72, w: 16, h: 22 },
           smart: "se",
           se: "Krus i alle størrelser. Det største har en hank som er limt tre ganger. Det tilhører IQ. Det minste tilhører Pil. Det med klementin på tilhører ingen. Alle vet hvem det tilhører.",
+          prat: "Du sier «skål» til krusene. Det klinger svakt i det største. Det er IQs. Det klinger alltid litt, hank nummer tre er løs.",
           bruk: "Du tar i det minste kruset. Det er tomt og rent. Hjerterud vasker opp før noen er ferdige med å drikke. Det er en gave og en forbannelse.",
         },
         {
@@ -635,7 +711,8 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Kakaokanna",
           rect: { x: 21, y: 38, w: 9, h: 24 },
           smart: "se",
-          se: "En blank messingkanne som damper. Innholdet er varmt, brunt og tykt nok til å stå på egne bein. Hjerterud kaller det kakao. Winter kaller det «ikke tillatt på torget, paragraf 14».",
+          se: "En blank messingkanne som damper. Innholdet er varmt, brunt og tykt nok til å stå på egne bein. Hjerterud kaller det kakao. Winter kaller det «ikkje tillatt på torget, paragraf 14».",
+          prat: "Du hvisker «snart?» til kakaokanna. Den damper tilbake. Hjerterud: «Når du har spist. Kakao på tom mage er bare brunt.»",
           bruk:
             "Du strekker deg mot kanna. Hjerterud setter den lenger inn. «Varm! Og kakao på en ugle vasker seg ikke ut. Jeg vet det. Spør ikke hvordan jeg vet det.» " +
             R +
@@ -670,6 +747,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 48, y: 17, w: 17, h: 45 },
           smart: "se",
           se: "En svær murovn med glødende luke. Det er det varmeste stedet i Snøfall, og om vinteren sover katten, Pil og tre hansker oppå den. Hjerterud vet om katten og Pil.",
+          prat: "Du sier «hei» inn i ovnsluka. Noe oppå ovnen svarer med å strekke seg. Det er katten. Eller Pil. Begge svarer sånn.",
           bruk:
             "Du nærmer deg luka. Det er varmt. Veldig varmt. Fjærene dine krøller seg. " +
             R +
@@ -693,6 +771,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 63, y: 55, w: 8, h: 24 },
           smart: "se",
           se: "En trestol med rett rygg. På setet står det risset inn: «MIN. – IQ». Stolen er lånt tilbake. Lappene sitter igjen.",
+          prat: "Du spør stolen om den savner IQ. Den sier ingenting, men den står litt vendt mot døra.",
           bruk: "Du setter deg på stolen. Den er varm fra ovnen. Dette er en god stol. Du skjønner hvorfor IQ ville merke den.",
         },
         {
@@ -709,6 +788,39 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 84, y: 18, w: 16, h: 36 },
           smart: "se",
           se: "Rim i hjørnene og klokketårnet utenfor, gyllent mot natta. I vinduskarmen står fire lysestaker. Ingen av lysene er tent ennå. Hjerterud tenner dem når det er tid.",
+          prat: "Du banker på ruta. Utenfor ser Winter opp fra postkassen, finner deg i vinduet og noterer. Hjerterud, uten å snu seg: «La ham. Han har så lite.»",
+        },
+        {
+          id: "tallerkenhylla",
+          navn: "Tallerkenhylla",
+          rect: { x: 26, y: 28, w: 8, h: 7 },
+          smart: "se",
+          se: "Ei hylle med tallerkener i stabel og ei krukke med tresleiver. Den øverste tallerkenen har et hakk. Den er Julius'. Han insisterer på den. Han sier et hakk er et minne. Hjerterud sier det er et hakk.",
+          bruk: "Du strekker deg etter en tallerken. Hjerterud: «Nei. Jeg har sett ugler med tallerkener. Jeg har sett gulvet etterpå.»",
+        },
+        {
+          id: "veden",
+          navn: "Veden under ovnen",
+          rect: { x: 49, y: 62, w: 9, h: 12 },
+          smart: "se",
+          se: "Bjørkeved stablet i buen under ovnen, med barken ut, så tørr at den synger når den brenner. Hjerterud stabler selv. Hun har sendt hjem to nisser som stablet feil vei. De kom tilbake. Alle kommer tilbake.",
+          bruk: "Du drar i en vedkubbe. Stabelen svaier. Du dytter den tilbake. Hjerterud har allerede snudd seg. Hun snur seg alltid i tide.",
+        },
+        {
+          id: "bildet",
+          navn: "Bildet på veggen",
+          rect: { x: 73, y: 32, w: 4, h: 9 },
+          smart: "se",
+          se: "Et lite innrammet ark på veggen ved ovnen: «Bevilling for skjenking av kakao, paragraf 14, unntak 1. – W.» Winters eneste unntak. Hjerterud fikk det ved å servere ham kakao til han signerte. Det tok fire kopper.",
+          prat: "Du leser bevillingen høyt. Hjerterud ler. «Fire kopper. Han sa nei etter hver av dem, og ja etter den femte. Han tror det var fire.»",
+        },
+        {
+          id: "gulvet",
+          navn: "Snøen på gulvet",
+          rect: { x: 59, y: 88, w: 12, h: 12 },
+          smart: "se",
+          se: "Smeltende snø i gangen fra døra, i små hauger med fotspor i. Støvler, støvler, hover, støvler. Hover. Hjerterud slipper inn alle som fryser. Rudolf fryser aldri. Han kommer likevel.",
+          bruk: "Du hopper i den minste snøhaugen. Den sprer seg utover gulvet. Hjerterud, uten å se: «Mopp i kroken, Floke.» Det er en spøk. Ugler mopper ikke. Du ser på moppen likevel.",
         },
       ],
     },
@@ -739,6 +851,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 0, y: 60, w: 44, h: 40 },
           smart: "se",
           se: "Et samlebånd av tre og messing som går i en stor sløyfe gjennom hallen. Pakkene reiser inn i maskinen, kommer ut igjen og reiser inn på nytt. Noen av dem har reist siden i fjor. De ser ikke ut til å ha noe imot det.",
+          prat: "Du sier «stopp» til båndet. Det ruller videre. Du sier «vær så snill». Det ruller videre, litt saktere. Det var høflighet, ikke lydighet.",
           bruk: "Du hopper opp på båndet. Det ruller deg sakte mot maskinen. Du hopper av igjen rett før trakta. Hjertet dunker. Det var det morsomste du har gjort i dag.",
         },
         {
@@ -747,6 +860,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 14, y: 64, w: 14, h: 16 },
           smart: "se",
           se: "Brune pakker med hyssing. Den øverste er adressert «Rampenissen, hylla i stua, Landås». Avsender: «H.» Den lukter knekkebrød. Under den ligger en pakke merket «IQ – IKKE RIST». Den tikker ikke. Den summer.",
+          prat: "Du hvisker til pakken som summer. Summingen går opp en tone. Du går ett skritt tilbake. Den går ned igjen. Dere har en avtale.",
           bruk: "Du rister forsiktig på pakken til Rampenissen. Det knaser. Knekkebrød. Du rister ikke på den andre.",
           feil: {
             bolle:
@@ -760,7 +874,7 @@ export const KAPITTEL_1: Kapittel = {
           smart: "se",
           se: "Winters stolthet: en messingmaskin med tre trakter, fire hjul og en liten luke merket «VENTER». Den sorterer pakker etter vekt, adresse, lukt og paragraf. Mest paragraf. Alt som er i tvil, går i «VENTER». «VENTER» er full.",
           bruk:
-            "Du drar i spaken. Maskinen tenker seg om, sukker med damp og slipper en pakke ned i «VENTER». Utenfra, gjennom vinduet, roper Winter: «Jeg hørte det!» " +
+            "Du drar i spaken. Maskinen tenker seg om, sukker med damp og slipper en pakke ned i «VENTER». Utenfra, gjennom vinduet, roper Winter: «Eg hørte det!» " +
             R +
             "«Han hør alt. Han hørte mæ spis en klementin gjennom to vegga i 2022.»",
           prat: "Du uler lavt mot maskinen. Den summer tilbake i samme tone. Dere har en forståelse nå.",
@@ -779,6 +893,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 69, y: 20, w: 12, h: 40 },
           smart: "se",
           se: "Tunge, innbundne protokoller i rekke: «Klager på IQ, bind 1 til 14», «Klager på Rampenissen, bind 1 til 31», og én tynn liten en: «Ros». Den er ikke åpnet. Den er ikke støvete heller. Winter tørker den.",
+          prat: "Du spør protokollene om det står noe om deg. Fra bind 31 stikker det ut en lapp: «Ugle: se Rampenissen, side 400 og utover.» Du åpner den ikke.",
           bruk: "Du drar ut «Ros». Det står én linje i den: «Hjerterud. Bollene. Alltid.» Så lukker du den fort, før noen ser at du så.",
         },
         {
@@ -787,6 +902,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 72, y: 56, w: 28, h: 36 },
           smart: "se",
           se: "En høy skrivepult med grønn lampe, en bunke papir som er så rett at du blir svimmel, og en liste merket «I DAG». Punkt 1: Tømme postkassen. Punkt 2: Stille klokka i tårnet etter tømmingen. Punkt 3: Spisse blyant. Punkt 3 er krysset av. Tre ganger.",
+          prat: "Du spør pulten hvor Winter er. Lista «I DAG» svarer for ham: punkt 1 er ikke krysset av. Han står ute til det er gjort. Han kommer til å stå der lenge.",
           bruk: "Du dytter bunken en millimeter. Den ser verre ut enn den burde. Du dytter den tilbake. Den ser fortsatt verre ut. Du går derfra i håp om at det var innbilning.",
           feil: {
             skjema_signert:
@@ -801,7 +917,8 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 80, y: 53, w: 8, h: 9 },
           smart: "se",
           se: "Fire stempler i rekke: «GODKJENT», «AVVIST», «VENTER» og ett som bare sier «HM». Det er pakkestempler. Postvesenets eget stempel ligger ikke her. Det ligger i skrinet på hylla utenfor, låst, mellom hver stempling.",
-          bruk: "Du trykker «HM» mot pulten. HM. Det kjennes riktig. Utenfra: «Jeg hørte det!»",
+          prat: "Du sier «HM» til stemplene. «HM» ser ut som det er enig.",
+          bruk: "Du trykker «HM» mot pulten. HM. Det kjennes riktig. Utenfra: «Eg hørte det!»",
           feil: {
             skjema_signert:
               "Du stempler skjemaet med «HM». Winter, gjennom vinduet, uten å snu seg: «Feil stempel. Feil pute. Feil person.» Blekket er tørt uansett, og det lille HM-et teller ikke.",
@@ -820,7 +937,7 @@ export const KAPITTEL_1: Kapittel = {
             tyttebaer:
               "Du dytter et frossent bær ned i blekkhuset. Det sitter fast. Hardt, rødt og helt tørt. Du fisker det opp igjen. Frosne bær gir ikke fra seg noe før de tiner.",
             baersaft:
-              "Du heller litt saft i blekkhuset. Winter, gjennom vinduet: «Det der er ikke blekk. Det er bær. Blekkhuset er for blekk. Puta er for farge.» Saften er fortsatt varm. Puta står ute.",
+              "Du heller litt saft i blekkhuset. Winter, gjennom vinduet: «Det der er ikkje blekk. Det er bær. Blekkhuset er for blekk. Puta er for farge.» Saften er fortsatt varm. Puta står ute.",
           },
         },
         {
@@ -829,7 +946,23 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 88, y: 20, w: 12, h: 30 },
           smart: "se",
           se: "Gjennom vinduet ser du postkassen bakfra og Winter forfra. Han ser rett på deg. Han ser alltid rett på deg. Han løfter blyanten og noterer: «Ugle. Innendørs. Kl. 16.41.»",
+          prat: "Du vinker til Winter gjennom ruta. Han løfter blyanten til hilsen. Det er det nærmeste han kommer å vinke, og det er mer enn de fleste får.",
           bruk: "Du banker på ruta. Winter banker tilbake. Én gang. Presist.",
+        },
+        {
+          id: "lampa",
+          navn: "Den grønne lampa",
+          rect: { x: 75, y: 40, w: 9, h: 13 },
+          smart: "se",
+          se: "Ei bankierlampe med grønn skjerm, den eneste i Snøfall. Winter bestilte den fra en katalog i 1987 og fylte ut skjema for import, toll og «grønt lys innendørs». Han godkjente alle tre selv. Det var en lang dag.",
+          bruk: "Du trekker i snora. Lampa slukner. Hallen blir blå. Du trekker igjen. Grønn. Utenfra: «Eg SÅ det!»",
+        },
+        {
+          id: "gulvet",
+          navn: "Gulvet",
+          rect: { x: 44, y: 86, w: 20, h: 14 },
+          smart: "se",
+          se: "Gulvplanker bonet så blanke at du ser deg selv nedenfra. Det går en stripe slitasje fra pulten til maskinen og tilbake. Winters. Ingen andre går i den. Ingen andre tør.",
         },
       ],
     },
@@ -847,6 +980,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 0, y: 0, w: 16, h: 44 },
           smart: "se",
           se: "Tannhjul i alle størrelser, fra tallerken til knapp, som griper i hverandre og tikker. Ett av de minste er av tre. Det er IQs. Det var en nødløsning i 2019. Det går fortsatt. Ingen tør å bytte det.",
+          prat: "Du sier «tikk» til urverket. Det sier «takk». Det er det høfligste i hele tårnet.",
           bruk:
             "Du stikker nebbet mot det største hjulet. Det stopper ikke. Det tar deg med en kvart runde før du slipper. " +
             R +
@@ -885,6 +1019,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 25, y: 28, w: 7, h: 18 },
           smart: "se",
           se: "En lanterne på en krok. Den som tenner den, er den som er først oppe om morgenen. Det er alltid Winter. Han har en liste over hvem som har vært først oppe. Den har ett navn.",
+          prat: "Du hvisker «god natt» til lanterna. Flammen bukker. Den har gjort det for Winter hver kveld i tretti år. Han har aldri sett det. Han ser ned i lista.",
           bruk: "Du blåser på flammen. Den bøyer seg og retter seg opp igjen. Den har vært med på verre. Den har vært med på Rampenissen.",
         },
         {
@@ -932,11 +1067,13 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 31, y: 84, w: 13, h: 13 },
           smart: "se",
           se: "En firkantet luke i gulvet med stigen ned. Fra åpningen kommer det kald luft og lyden av Winter som kremter ved postkassen. Lyden bærer godt oppover. Det vet han.",
+          prat: "Du roper «hallo» ned gjennom luka. Nede på torget svarer Winter: «Ikkje rop i luka.» Han så ikke opp. Han trengte ikke.",
           bruk: "Du titter ned gjennom luka. Mørkt, så lysere, så torget. Og øverst på postkassen, Winters flosshatt sett ovenfra. Nei. Han har ikke hatt på seg i dag. Det er skriveplata.",
         },
         {
           id: "urskiva",
           navn: "Den store urskiva",
+          prat: "Du spør den store urskiva hva klokka er. Den viser det. Den har vist det i tre hundre år, og det er fortsatt det eneste den sier.",
           rect: { x: 83, y: 8, w: 17, h: 72 },
           smart: "se",
           se: [
@@ -954,6 +1091,24 @@ export const KAPITTEL_1: Kapittel = {
           ],
           bruk: "Du legger vingen mot glasset. Det er lunkent av lampene. Utenfor går snøen forbi viserne som små lys. Du blir stående litt. Det er lov.",
         },
+        {
+          id: "istappene",
+          navn: "Istappene",
+          rect: { x: 16, y: 0, w: 13, h: 8 },
+          smart: "se",
+          se: "Istapper i rad langs bjelken, lange som strikkepinner. De drypper ikke. Det er for kaldt til å dryppe, og det har vært det siden første desember. Winter har målt dem. Den lengste har navn.",
+          bruk: "Du dytter til en istapp. Den klirrer mot naboen som en liten klokke. Det er en lyd Snøfall aldri har hørt før, og du er den eneste som hørte den.",
+        },
+        {
+          id: "gulvet",
+          navn: "Gulvet",
+          rect: { x: 45, y: 80, w: 26, h: 10 },
+          smart: "se",
+          se:
+            "Slitte gulvplanker med snø i sprekkene. Midt på gulvet er det en lysere flekk, firkantet, der noe har stått lenge og nettopp er flyttet. En kasse, kanskje. En kurv. " +
+            R +
+            "«Ei KURV? ... Winter sa kurven min va i postkassa. Han sa ikkje kor den va FØR.»",
+        },
       ],
     },
     {
@@ -970,6 +1125,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 5, y: 35, w: 6, h: 14 },
           smart: "se",
           se: "En lanterne i takskjegget, med en flamme som er mer gul enn varm. Bodnissen har hengt den der for å se bærene. Bærene ser like ut i mørket. De ser like ut i lyset også.",
+          prat: "Du sier «lys her» til lanterna. Den lyser der. Den gjorde det før også, men nå er det på bestilling.",
           bruk: "Du dytter lanterna. Den svinger, og skyggen av to boder, to bodnisser og én ugle danser over snøen. Uglen er størst. Det er skyggens fortjeneste.",
         },
         {
@@ -1007,6 +1163,10 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "klementinene",
           navn: "Klementinkassa",
+          prat:
+            "Du uler lavt mot klementinene. " +
+            R +
+            "«Ikkje snakk te dem. Æ har snakka te klementina. Dem svare ikkje, og så ete du dem, og så e det ingen å snakke med.»",
           rect: { x: 17, y: 83, w: 19, h: 17 },
           smart: "se",
           se:
@@ -1021,6 +1181,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 36, y: 79, w: 15, h: 21 },
           smart: "se",
           se: "En kurv med strikkede votter i alle farger. Ingen av dem har make. Hjerterud strikker én og én, når hun venter på at noe skal heve. Så går hun. Vottene er like lange som en bolle tar.",
+          prat: "Du spør vottene hvor makene deres er. Hjerterud vet det. Hjerterud sier det ikke. Hun sier at en vott alene er en halv gave, og at halve gaver også er gaver.",
           bruk: "Du drar fram en grønn vott med nebbet. Den passer ikke på en ugle. Du prøver likevel. Bodnissen til venstre ler så sjalet sklir ned. Det var verdt det.",
         },
         {
@@ -1037,6 +1198,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 63, y: 80, w: 11, h: 18 },
           smart: "se",
           se: "En liten messinggryte på et bord, med damp som stiger opp. Du kikker nedi. Tom. Det er bare dampen igjen. Bodnissen til høyre: «Utsolgt siden tre. Dampen er gratis.»",
+          prat: "Du sier «hallo» ned i gryta. Det kommer et ekko. Et lite ett. Gryta er tom, men den har akustikk.",
           bruk: "Du holder vingene over gryta. Dampen er varm, men den varmer ikke noe. Hadde det vært noe i gryta, hadde det vært noe å tine bær i. Det er ikke noe i gryta.",
           feil: {
             tyttebaer:
@@ -1083,7 +1245,38 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 86, y: 36, w: 12, h: 16 },
           smart: "se",
           se: "Et håndmalt treskilt: «BEDRE». Bare det. Malingen er ny. Den males på nytt hver morgen, før naboen kommer, for å være sikker. Under ligger førti lag med «BEDRE».",
+          prat: "Du leser skiltet høyt: «BEDRE.» Bodnissen til venstre, uten å snu seg: «Les baksiden.» Bodnissen til høyre: «IKKE les baksiden.»",
           bruk: "Du snur skiltet med nebbet. På baksiden står det, med mindre bokstaver: «LIKE». Du snur det fort tilbake. Noen ting skal to bodnisser få ordne opp i selv.",
+        },
+        {
+          id: "himmelen",
+          navn: "Himmelen",
+          rect: { x: 25, y: 0, w: 28, h: 18 },
+          smart: "se",
+          se: "Stjerner mellom bodtakene og ett lite, mørkt punkt som flytter seg. En brevfugl på vei hjem, med noe i nebbet som er større enn nebbet. De klarer det alltid.",
+          prat: "Du uler mot brevfuglen der oppe. Den svinger én gang over bodene og flyr videre. Det var en hilsen. Brevfugler hilser kort, de har mye å bære.",
+        },
+        {
+          id: "lanterne_h",
+          navn: "Lanterna til høyre",
+          rect: { x: 63, y: 38, w: 5, h: 11 },
+          smart: "se",
+          se: "Lanterna i den bedre boden. Den er nøyaktig like stor som den til venstre. Bodnissen til høyre pusser glasset to ganger om dagen, så den skal lyse bedre. Den lyser likt. Han pusser likevel.",
+        },
+        {
+          id: "hjoernekurven",
+          navn: "Kurven i hjørnet",
+          rect: { x: 88, y: 78, w: 12, h: 22 },
+          smart: "se",
+          se: "En kurv med blå bær i hjørnet av den bedre boden, bortgjemt under disken. Bodnissen til høyre: «De er til meg. Man må smake på varene. Hver dag. Flere ganger.» Han har blå tunge. Det har han hatt i førti år.",
+          bruk: "Du prøver å nå et blått bær. Bodnissen flytter kurven en tomme. Du prøver igjen. En tomme til. Det er en dans, og han kan den.",
+        },
+        {
+          id: "huset",
+          navn: "Huset bak bodene",
+          rect: { x: 36, y: 24, w: 17, h: 20 },
+          smart: "se",
+          se: "Et grønt tømmerhus med balkong og lys i alle vinduer, rett bak bodene. Der bor bodnissene. Begge. I hver sin etasje. De har bodd over hverandre i førti år og krangler gjennom gulvet om hvem som har de beste bærene. Gulvet er nøytralt.",
         },
       ],
     },
@@ -1099,12 +1292,12 @@ export const KAPITTEL_1: Kapittel = {
             {
               hvis: "postkasse_opplaast",
               tekst:
-                "«Postkassen er låst opp i henhold til nødparagraf 99. Resten er deres problem. Og hengslets. Hengslet er ikke mitt ansvar. Det står i paragraf 100.»",
+                "«Postkassen er låst opp i henhold til nødparagraf 99. Resten er deres problem. Og hengslets. Hengslet er ikkje mitt ansvar. Det står i paragraf 100.»",
             },
             {
               hvis: "winter_snakket",
               tekst:
-                "«Dere igjen. Skjema 4112-B. Utfylt, signert av eier av funnsted, stemplet. Jeg gjentar ikke mer enn tre ganger, og dette var nummer to.»",
+                "«Dere igjen. Skjema 4112-B. Utfylt, signert av eier av funnsted, stemplet. Eg gjentar ikkje mer enn tre ganger, og dette var nummer to.»",
             },
             {
               tekst:
@@ -1159,7 +1352,7 @@ export const KAPITTEL_1: Kapittel = {
         },
         kurv: {
           tekst:
-            "«Garnkurven. Funnet på loftet til IQ, full av ull og klementinskall. Umerket løsøre. Den ligger i postkassen til jeg får Skjema 4112-B: utfylt, signert av eieren av funnstedet, og stemplet. Tre ting.»",
+            "«Garnkurven. Funnet på loftet til IQ, full av ull og klementinskall. Umerket løsøre. Den ligger i postkassen til eg får Skjema 4112-B: utfylt, signert av eieren av funnstedet, og stemplet. Tre ting.»",
           rampenissen:
             "«POSTKASSEN?! Han har lagt SENGA mi i postkassen! Og ‘umerka’? Den lukte mæ! Lukt e merking!»",
           valg: [
@@ -1171,7 +1364,7 @@ export const KAPITTEL_1: Kapittel = {
         },
         skjema: {
           tekst:
-            "«Skjema 4112-B deles ut i verkstedet til IQ. Han har en hel bunke. Han bruker dem som kaffebrikker. Jeg har sendt tre klager. Han bruker klagene som kaffebrikker også.»",
+            "«Skjema 4112-B deles ut i verkstedet til IQ. Han har en hel bunke. Han bruker dem som kaffebrikker. Eg har sendt tre klager. Han bruker klagene som kaffebrikker også.»",
           rampenissen:
             "«Kaffebrikke! Det e jo helt genialt. Æ meine: fryktelig. Fryktelig genialt.»",
           valg: [
@@ -1182,7 +1375,7 @@ export const KAPITTEL_1: Kapittel = {
         },
         eier: {
           tekst:
-            "«Loftet tilhører IQ. Altså signerer IQ, i felt 3-A. Han åpner ikke døra for noen, men han signerer alt som kommer under den. Jeg har sett ham signere en pizzaeske.»",
+            "«Loftet tilhører IQ. Altså signerer IQ, i felt 3-A. Han åpner ikkje døra for noen, men han signerer alt som kommer under den. Eg har sett ham signere en pizzaeske.»",
           rampenissen:
             "«Under døra. Æ har prøvd å kom under den døra sjøl. Æ e for tjukk. Det e klementinan.»",
           valg: [
@@ -1192,7 +1385,7 @@ export const KAPITTEL_1: Kapittel = {
         },
         tort: {
           tekst:
-            "«Stempelputa er tørr. Tørr som julekake fra i fjor. Uten farge, intet stempel. Uten stempel, intet skjema. Uten skjema, ingen kurv. Det er ikke meg. Det er systemet. Jeg er bare systemets skjerf.»",
+            "«Stempelputa er tørr. Tørr som julekake fra i fjor. Uten farge, intet stempel. Uten stempel, intet skjema. Uten skjema, ingen kurv. Det er ikkje meg. Det er systemet. Eg er bare systemets skjerf.»",
           rampenissen:
             "«Tørr pute? Da treng vi nåkka vått og rødt. Tynt. Og helst varmt, for alt her e frossent, inkludert Winter.»",
           valg: [
@@ -1202,14 +1395,14 @@ export const KAPITTEL_1: Kapittel = {
         },
         skrin: {
           tekst:
-            "«Stempelet ligger i skrinet på hylla. Låst, selvsagt. Skrinet åpnes med tømmetiden. Jeg husker ikke tømmetiden. Den står på skiltet. Jeg skriver skilt, jeg leser dem ikke.»",
+            "«Stempelet ligger i skrinet på hylla. Låst, selvsagt. Skrinet åpnes med tømmetiden. Eg husker ikkje tømmetiden. Den står på skiltet. Eg skriver skilt, eg leser dem ikkje.»",
           rampenissen:
             "«Tallhjul og et skilt. Det e nesten for lett. Æ sei nesten.»",
           valg: [{ tekst: "Vi leser skiltet." }],
         },
         skrin_laast: {
           tekst:
-            "Winter kikker på puta. «Våt. Godkjent rød.» Så på skrinet. «Låst. Jeg åpner ikke skrin i arbeidstiden. Tømmetiden står på skiltet. Hjulene står på skrinet. Resten er hoderegning, og det er ikke min paragraf.»",
+            "Winter kikker på puta. «Våt. Godkjent rød.» Så på skrinet. «Låst. Eg åpner ikkje skrin i arbeidstiden. Tømmetiden står på skiltet. Hjulene står på skrinet. Resten er hoderegning, og det er ikkje min paragraf.»",
           rampenissen:
             "«Han veit koden sjøl og lar oss gjør jobben. Æ har respekt for det. Litt.»",
           valg: [{ tekst: "Vi åpner skrinet." }],
@@ -1236,7 +1429,7 @@ export const KAPITTEL_1: Kapittel = {
         },
         signert_tort: {
           tekst:
-            "Winter leser felt 3-A. «IQ. Brunsvidd hjørne. Han har signert pizzaesker penere.» Så løfter han stempelet, trykker det i puta og holder det opp. Ingenting. «Tørr. Jeg stempler ikke med luft. Luft er ikke sporbart.»",
+            "Winter leser felt 3-A. «IQ. Brunsvidd hjørne. Han har signert pizzaesker penere.» Så løfter han stempelet, trykker det i puta og holder det opp. Ingenting. «Tørr. Eg stempler ikkje med luft. Luft er ikkje sporbart.»",
           rampenissen: "«Luft e ikkje sporbart. Æ ska huske den.»",
           valg: [{ tekst: "Vi fikser puta." }],
         },

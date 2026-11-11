@@ -150,6 +150,10 @@ export const KAPITTEL_4: Kapittel = {
           rect: { x: 0, y: 0, w: 100, h: 12 },
           smart: "se",
           se: "Grønne slør over takene og stjerner mellom dem. Det er den slags himmel en slede liker. Sleden har ikke sagt det, men den står og peker oppover.",
+          prat:
+            "Du uler mot himmelen. Det grønne sløret bølger én gang. " +
+            R +
+            "«Den sa god tur. Æ hørte det. Æ e litt rørt. Det e klementinen.»",
         },
         {
           id: "urtaarnet",
@@ -157,6 +161,7 @@ export const KAPITTEL_4: Kapittel = {
           rect: { x: 56, y: 10, w: 8, h: 20 },
           smart: "se",
           se: "Urtårnet med de fire viserne. Den fjerde viseren, «tid til neste julekake», er fortsatt bøyd. Den peker nå på «snart». Det stemmer. Den har stemt siden første desember, men nå mener den det.",
+          prat: "Du roper «hva er klokka?» opp mot urtårnet. Det slår ett slag. Winter ser på lommeuret: «Feil.» Han noterer. Han noterer tårnet.",
         },
         {
           id: "husene_v",
@@ -164,6 +169,7 @@ export const KAPITTEL_4: Kapittel = {
           rect: { x: 0, y: 14, w: 30, h: 32 },
           smart: "se",
           se: "Gule og røde tømmerhus med røyk fra pipene. I ett vindu står en nisse og pakker. I et annet står en nisse og pakker opp det den første pakket. De er brødre. De har gjort dette i førti år. Ingen har sagt noe.",
+          prat: "Du uler mot husene. Begge brødrene ser ut. Begge vinker. Begge ser at den andre vinket. Begge slutter.",
         },
         {
           id: "husene_h",
@@ -178,6 +184,15 @@ export const KAPITTEL_4: Kapittel = {
           rect: { x: 38, y: 12, w: 24, h: 30 },
           smart: "se",
           se: "En portbue av stein og tømmer, med snø på taket og to drager skåret ut øverst. Dragene ser på hverandre. De har gjort det i tre hundre år. De er ikke ferdige med å snakke. Den ene har tydeligvis sagt noe dumt rundt år 1800.",
+          prat: "Du sier «god kveld» til dragene øverst i buen. Den ene ser ut som den ville svart, hvis den andre ikke hørte på. Den andre hører alltid på. Det er problemet.",
+        },
+        {
+          id: "portfloey_v",
+          navn: "Venstre portfløy",
+          rect: { x: 41, y: 44, w: 3, h: 30 },
+          smart: "se",
+          se: "Venstre portfløy, tung av eik og jernbeslag, står åpen og stille. Den har aldri hylt. Den er like gammel som den høyre, hengslet er like rustent, men den hyler ikke. Winter har et skjema for det. Feltet «årsak» er tomt.",
+          prat: "Du sier «takk for at du er stille» til venstre portfløy. Den knirker svakt. Det er det nærmeste den kommer «bare hyggelig». Den høyre hører det og hyler, av prinsipp.",
         },
         {
           id: "lanterne_v",
@@ -216,7 +231,7 @@ export const KAPITTEL_4: Kapittel = {
             fjaer:
               "Du kiler haspen med fjærpennen. Haspen ler ikke. Winter gjør det heller ikke. Nesten.",
             fiskesnoere:
-              "Du fisker etter haspen. Magneten klikker fast i lanterna. Winter: «Offentlig belysning er ikke fiskevann.» Du drar den løs.",
+              "Du fisker etter haspen. Magneten klikker fast i lanterna. Winter: «Offentlig belysning er ikkje fiskevann.» Du drar den løs.",
           },
         },
         {
@@ -225,6 +240,7 @@ export const KAPITTEL_4: Kapittel = {
           rect: { x: 60, y: 52, w: 6, h: 13 },
           smart: "se",
           se: "Samme lanterne som til venstre, bare speilvendt. Flammen inni lener seg mot venstre, som om den savner noen. Haspen her er rustet fast. Den har aldri vært åpnet. Winter har et skjema for det også.",
+          prat: "Du hvisker til lanterna til høyre. Flammen lener seg mot venstre. Den hører ikke på deg. Den hører på den andre.",
         },
         {
           id: "sleden",
@@ -261,7 +277,7 @@ export const KAPITTEL_4: Kapittel = {
           ],
           feil: {
             klementin:
-              "Du legger klementinen i sleden. Winter: «Proviant registreres av Hjerterud, ikke av ugler.» Du tar den igjen. Klementinen hadde gledet seg.",
+              "Du legger klementinen i sleden. Winter: «Proviant registreres av Hjerterud, ikkje av ugler.» Du tar den igjen. Klementinen hadde gledet seg.",
             noett:
               "Du legger nøtta i sleden. Winter: «Nei.» Han sa det før du var ferdig. Du tar den igjen.",
             fiskesnoere:
@@ -330,6 +346,7 @@ export const KAPITTEL_4: Kapittel = {
           rect: { x: 64, y: 58, w: 6, h: 22 },
           smart: "se",
           se: "To par ski lent mot muren. Det ene paret er for en nisse. Det andre er for en rein. Rudolf har aldri brukt dem. Han vil ikke snakke om det. IQ vil gjerne snakke om det. Ingen spør IQ.",
+          prat: "Du spør skiene om de har vært i bruk. Reinskiene sier ingenting. Nisseskiene har et merke etter et tre. Ett tre. Det var nok.",
         },
         {
           id: "winter",
@@ -341,11 +358,11 @@ export const KAPITTEL_4: Kapittel = {
           bruk: "Du prikker Winter på armen. Han noterer: «Prikket. Igjen. Kl. 17.12.» Han har en egen side for prikk. Den er nesten full.",
           feil: {
             bjelle:
-              "Du viser Winter bjella. «Punkt to henger på sleden, ikke på meg. Jeg er ikke en slede. Jeg har sjekket.»",
+              "Du viser Winter bjella. «Punkt to henger på sleden, ikkje på meg. Eg er ikkje en slede. Eg har sjekket.»",
             briller:
-              "Du viser Winter brillene. «Punkt én er Julius' øyne, ikke mine. Jeg ser utmerket. Jeg ser alt. Det er problemet.»",
+              "Du viser Winter brillene. «Punkt én er Julius' øyne, ikkje mine. Eg ser utmerket. Eg ser alt. Det er problemet.»",
             talgstump:
-              "Du holder talgstumpen mot Winter. Han tar et skritt bakover. «Hengslet. Ikke skjerfet.»",
+              "Du holder talgstumpen mot Winter. Han tar et skritt bakover. «Hengslet. Ikkje skjerfet.»",
             klementin:
               "Winter ser på klementinen. «Bestikkelse nummer to i år. Den første var frossen. Denne er bedre. Fortsatt nei.»",
           },
@@ -376,6 +393,14 @@ export const KAPITTEL_4: Kapittel = {
           rect: { x: 0, y: 50, w: 36, h: 24 },
           smart: "se",
           se: "Bymuren: en lav steinmur med snø på toppen, bygd for tre hundre år siden sammen med porten. Steinen er varm der sola har vært. Det har den ikke vært på lenge. Steinen husker likevel.",
+          prat: "Du sier «hei» til muren. Steinen sier ingenting, men det er en varm stillhet. Tre hundre år med folk som gikk forbi og sa hei, det setter seg.",
+        },
+        {
+          id: "muren_h",
+          navn: "Muren til høyre",
+          rect: { x: 66, y: 46, w: 34, h: 12 },
+          smart: "se",
+          se: "Muren fortsetter mot høyre, med snø på toppen og et gjerde av staur over. Ved porten er steinen slitt blank der en arm pleier å hvile. Winters arm. Han lener seg der når han venter. Han venter mye.",
         },
         {
           id: "veien",
@@ -401,6 +426,7 @@ export const KAPITTEL_4: Kapittel = {
           rect: { x: 4, y: 0, w: 30, h: 76 },
           smart: "se",
           se: "Juletreet, nå med fire småkaker færre enn sist. Floke ser i gulvet. Floke vet ingenting om småkaker. Floke har smuler på nebbet.",
+          prat: "Du uler mot juletreet. Ei kule svinger. Julius, uten å se opp: «Floke. Ikke treet. Vi har snakket om treet.»",
         },
         {
           id: "vedkassa",
@@ -485,6 +511,7 @@ export const KAPITTEL_4: Kapittel = {
           rect: { x: 36, y: 14, w: 7, h: 14 },
           smart: "se",
           se: "Vegglampa lyser som vanlig. Under den henger en tom knagg. Det er der bjella pleier å henge. Pleide. Det er et hovavtrykk på veggen under knaggen. Høyt oppe. Han sto på bakbeina.",
+          prat: "Du spør knaggen under lampa hvor bjella ble av. Hovavtrykket på veggen svarer for den. Rudolf sto her. Rudolf sto høyt.",
         },
         {
           id: "bokhylla",
@@ -507,6 +534,7 @@ export const KAPITTEL_4: Kapittel = {
           rect: { x: 56, y: 0, w: 40, h: 40 },
           smart: "se",
           se: "Gjennom buevinduet ser du porten der nede, vidåpen og gul av lys, og en liten figur med skriveplate som ikke har rørt seg på en time. Han rørte seg nettopp. Han rettet på skjerfet. Nå står han stille igjen.",
+          prat: "Du banker på ruta. Nede ved porten løfter den lille figuren blyanten. Han så det. Han ser alt, også fra hundre meter og gjennom rim.",
         },
         {
           id: "lysene",
@@ -652,6 +680,7 @@ export const KAPITTEL_4: Kapittel = {
           rect: { x: 17, y: 78, w: 12, h: 12 },
           smart: "se",
           se: "Den brune boka uten tittel. Du åpner den igjen. «Takk, se: det man sier når noen har gjort noe uten å bli bedt.» Du lukker den. Det var hele siden. De er korte, sidene i den boka. De trenger ikke være lange.",
+          prat: "Du spør boka om et ord til. «Avgang, se: når noen reiser og noen blir igjen, og begge er glade.» Du lukker den. Rampenissen sier ingenting. Det er sjelden.",
         },
         {
           id: "blekkhuset",
@@ -756,12 +785,14 @@ export const KAPITTEL_4: Kapittel = {
           rect: { x: 46, y: 74, w: 16, h: 7 },
           smart: "se",
           se: "Julius' lupe, tilbake på plass siden sist. Han har prøvd å lese listen med den. Bokstavene ble store, men like uklare. Store og uklare er verre. Han har sagt det til lupa.",
+          prat: "Du sier «ikke ta det personlig» til lupa. Den ligger der og gjør alt større. Også det.",
         },
         {
           id: "listen",
           navn: "Den åpne boka",
           rect: { x: 65, y: 76, w: 18, h: 18 },
           smart: "se",
+          prat: "Du hvisker «står vi der?» til listen. Julius legger hånda tyngre over den. «Alle som spør, står der. Det er sånn den virker.»",
           se: [
             {
               hvis: "briller_levert",
@@ -773,6 +804,21 @@ export const KAPITTEL_4: Kapittel = {
                 "Snill-listen ligger åpen på skrivebordet. Julius holder hånda over den. «Ikke før brillene. Jeg vil lese den selv.» Han har holdt hånda der i to dager. Den er litt stiv.",
             },
           ],
+        },
+        {
+          id: "bokstabelen",
+          navn: "Bøkene på gulvet",
+          rect: { x: 0, y: 60, w: 15, h: 16 },
+          smart: "se",
+          se: "Bøkene på gulvet er pakket i en kasse merket «SLEDEN». «Reinsdyr og andre meninger» ligger øverst. Julius tar den med hvert år og leser høyt for reinen underveis. Reinen er uenig i alt.",
+          prat: "Du spør kassa om den er tung. Julius svarer for den: «Bøker er aldri tunge. Det er bare mange av dem.»",
+        },
+        {
+          id: "rattet",
+          navn: "Rattet på veggen",
+          rect: { x: 91, y: 27, w: 9, h: 9 },
+          smart: "se",
+          se: "Rattet fra IQs første slede henger på veggen og snurrer ikke. Julius har bedt det om å la være i kveld. Han ber det hvert år. Det har hørt etter siden den første turen.",
         },
       ],
     },
@@ -788,21 +834,21 @@ export const KAPITTEL_4: Kapittel = {
             {
               hvis: "k4_ferdig",
               tekst:
-                "«Avgangslisten er komplett. Tre av tre. Jeg har aldri hatt tre av tre. Jeg vet ikke helt hva jeg skal gjøre med hendene. Jeg tror jeg skal ta av en runde til.»",
+                "«Avgangslisten er komplett. Tre av tre. Eg har aldri hatt tre av tre. Eg vet ikkje helt hva eg skal gjøre med hendene. Eg tror eg skal ta av en runde til.»",
             },
             {
               hvis: "klar_til_stempel",
               tekst:
-                "«Tre av tre, bekreftet. Skjemaet ligger på skriveplata. Stempelblokka ligger ved siden av. Jeg ser på. Jeg ser alltid på, men nå ser jeg på med vilje.»",
+                "«Tre av tre, bekreftet. Skjemaet ligger på skriveplata. Stempelblokka ligger ved siden av. Eg ser på. Eg ser alltid på, men nå ser eg på med vilje.»",
             },
             {
               hvis: "winter_snakket",
               tekst:
-                "«Avgangslisten. Punkt én: briller. Punkt to: bjelle. Punkt tre: port. Rekkefølgen er veiledende. Det er nytt i år. Jeg prøver noe. Si fra når dere mener dere er ferdige, så sjekker jeg.»",
+                "«Avgangslisten. Punkt én: briller. Punkt to: bjelle. Punkt tre: port. Rekkefølgen er veiledende. Det er nytt i år. Eg prøver noe. Si fra når dere mener dere er ferdige, så sjekker eg.»",
             },
             {
               tekst:
-                "«Halt. Porten er reservert for avgangsforberedelser. Jeg har en liste. Listen har tre punkter. Ingen flyr før alle tre er krysset av. Ikke engang Julius. Særlig ikke Julius.»",
+                "«Halt. Porten er reservert for avgangsforberedelser. Eg har en liste. Listen har tre punkter. Ingen flyr før alle tre er krysset av. Ikkje engang Julius. Særlig ikkje Julius.»",
             },
           ],
           valg: [
@@ -850,7 +896,7 @@ export const KAPITTEL_4: Kapittel = {
         },
         liste: {
           tekst:
-            "«Punkt én: Julius leser Snill-listen. Han finner ikke brillene sine. Punkt to: lykkebjella henger på sleden. Den er borte fra knaggen. Punkt tre: høyre portfløy smøres. Den hyler. Begynn hvor dere vil. Jeg sa det. Det gjorde vondt, men jeg sa det.»",
+            "«Punkt én: Julius leser Snill-listen. Han finner ikkje brillene sine. Punkt to: lykkebjella henger på sleden. Den er borte fra knaggen. Punkt tre: høyre portfløy smøres. Den hyler. Begynn kor dere vil. Eg sa det. Det gjorde vondt, men eg sa det.»",
           rampenissen:
             "«Bjella MI? Æ hang ho på knaggen hos Julius! ... Æ trur æ hang ho der. Æ hang NÅKKA der. Og ‘begynn kor dokker vil’? Fra WINTER? Det snør oppover.»",
           valg: [
@@ -860,35 +906,35 @@ export const KAPITTEL_4: Kapittel = {
         },
         rekkefolge: {
           tekst:
-            "«I fjor sto Julius og ventet på punkt én mens punkt tre hylte, og ingen gjorde noe, for rekkefølgen. Det var ikke byråkrati. Det var dumt. Jeg skrev det opp.» Han viser lappen. Det står «DUMT». Understreket.",
+            "«I fjor sto Julius og ventet på punkt én mens punkt tre hylte, og ingen gjorde noe, for rekkefølgen. Det var ikkje byråkrati. Det var dumt. Eg skrev det opp.» Han viser lappen. Det står «DUMT». Understreket.",
           rampenissen:
             "«Han har skrive ‘dumt’ på ei lapp om sæ sjøl. Det e det modigaste æ har sett i Snøfall.»",
           valg: [{ tekst: "Respekt, Winter." }],
         },
         talg: {
           tekst:
-            "«Lanternene er offentlig belysning, paragraf 14.» Han ser på listen. På porten. På deg. «Paragraf 15: avgangen går foran alt. Jeg åpner haspen på den venstre. Ta en stump. Én. Den høyre har jeg ikke paragraf for.»",
+            "«Lanternene er offentlig belysning, paragraf 14.» Han ser på listen. På porten. På deg. «Paragraf 15: avgangen går foran alt. Eg åpner haspen på den venstre. Ta en stump. Én. Den høyre har eg ikkje paragraf for.»",
           rampenissen:
             "«ÉN. Han sa én. Ta én. Ikkje to. Æ kjenne dokker. Æ kjenne mæ sjøl.»",
           valg: [{ tekst: "Én stump. Takk, Winter." }],
         },
         hyl: {
           tekst:
-            "«Fordi ingen har smurt den siden den sist var helt åpen. Det er lenge siden. Jeg har sendt tre klager. Til meg selv. Jeg har ikke svart. Jeg har begynt på et svar. Det er på side fire.»",
+            "«Fordi ingen har smurt den siden den sist var helt åpen. Det er lenge siden. Eg har sendt tre klager. Til meg selv. Eg har ikkje svart. Eg har begynt på et svar. Det er på side fire.»",
           rampenissen:
             "«Han klage te sæ sjøl og svare ikkje. Æ elske han litt. Ikkje si det te han.»",
           valg: [{ tekst: "Vi finner noe fett." }],
         },
         skjerf: {
           tekst:
-            "Winter ser ned på skjerfet. «To runder i dag. Det er mildere. Jeg vet ikke hvorfor. Det er ingen paragraf for det.» Han retter på skriveplata. «Jeg har det bra. Takk for at du spurte. Ingen spør. Jeg har et skjema for det, og det er tomt.»",
+            "Winter ser ned på skjerfet. «To runder i dag. Det er mildere. Eg vet ikkje hvorfor. Det er ingen paragraf for det.» Han retter på skriveplata. «Eg har det bra. Takk for at du spurte. Ingen spør. Eg har et skjema for det, og det er tomt.»",
           rampenissen:
             "«Han har tatt av en runde! Det e tøvær i Winter! Nån må ring IQ, det e sikkert vitenskap.»",
           valg: [{ tekst: "Vi spør igjen i morgen." }],
         },
         stempel: {
           tekst:
-            "Winter løfter blyanten. «Punkt én.» Julius vinker fra kontorvinduet, briller på nesa. «Punkt to.» Bjella gnistrer i tømmene. «Punkt tre.» Han dytter portfløyen med én finger. Stille. «Tre av tre. Paragraf 16: den som gjorde jobben, stempler. Det er dere. Jeg ser på.»",
+            "Winter løfter blyanten. «Punkt én.» Julius vinker fra kontorvinduet, briller på nesa. «Punkt to.» Bjella gnistrer i tømmene. «Punkt tre.» Han dytter portfløyen med én finger. Stille. «Tre av tre. Paragraf 16: den som gjorde jobben, stempler. Det er dere. Eg ser på.»",
           rampenissen:
             "«Vi får STEMPLE? Med Winter sitt stempel? Æ må sett mæ. Æ sitt allerede. Æ må sett mæ meir.»",
           valg: [{ tekst: "Vi stempler." }],
@@ -898,16 +944,16 @@ export const KAPITTEL_4: Kapittel = {
             {
               uten: "briller_levert",
               tekst:
-                "Winter ser opp mot kontorvinduet. Julius myser mot ruta uten briller og vinker til feil vindu. «Punkt én mangler. Jeg har stått her siden i morges. Jeg kan stå litt til. Jeg er flink til å stå.» Han står.",
+                "Winter ser opp mot kontorvinduet. Julius myser mot ruta uten briller og vinker til feil vindu. «Punkt én mangler. Eg har stått her siden i morges. Eg kan stå litt til. Eg er flink til å stå.» Han står.",
             },
             {
               uten: "bjelle_montert",
               tekst:
-                "Winter ser bort på sleden. Tømmene er tomme. «Punkt to mangler. Jeg har stått her siden i morges. Jeg kan stå litt til. Jeg er flink til å stå.» Han står.",
+                "Winter ser bort på sleden. Tømmene er tomme. «Punkt to mangler. Eg har stått her siden i morges. Eg kan stå litt til. Eg er flink til å stå.» Han står.",
             },
             {
               tekst:
-                "Winter dytter høyre portfløy med én finger. HYYYYL. «Punkt tre mangler. Det hørte hele Snøfall. Jeg har stått her siden i morges. Jeg kan stå litt til.» Han står.",
+                "Winter dytter høyre portfløy med én finger. HYYYYL. «Punkt tre mangler. Det hørte hele Snøfall. Eg har stått her siden i morges. Eg kan stå litt til.» Han står.",
             },
           ],
           rampenissen:

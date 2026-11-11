@@ -32,6 +32,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - Flytregel 7: Åpningen følger dag 1-malen: hilsen, dato og noe fysisk sammen. «I natt» kommer alltid før julefakta.
 - Flytregel 8: Ordtak for 9 år: ingen «motsatt av det motsatte», «sier det med armene», «høre på himmelen». Test: kan Håkon gjenfortelle segmentet med én setning?
 - Mailer skrives som lest etter husjakten (fortid).
+- 2026-11-11: De to låste segmentene dag 17-4 og dag 20-4 er skrevet om uten «høre på himmelen» og «sier det med armene», samme mening og innenfor ordbudsjettet. Hvorfor: flytregel 8 gjelder også låste linjer.
 
 ## Spill (2026-11-10/11)
 
@@ -47,6 +48,8 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - Låste ting vises (GTA-stil), unntatt noen overraskelser.
 - Opplåsinger annonseres i appen med progressivt dytt, ikke i manus.
 - Dag 8 heter «Lampene som Lyver».
+- 2026-11-11: Winters replikker i Ugleposten er lett bergensk («eg», «ikkje», «kor»), fortsatt lette å lese for en niåring. Hvorfor: han snakker bergensk, og spillet er tale; resten av teksten hans er bokmål.
+- 2026-11-11: Trixter, ikke Rudolf, leder sleden i Sledeflukts radiolinjer og HUD; Rudolf kan få en liten gjesterolle. Hvorfor: Trixter er sledens rein i historien.
 
 ## Hjemskjerm (2026-11-10/11)
 
