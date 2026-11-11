@@ -334,22 +334,26 @@ describe("Nissespill: motor", () => {
     ]);
   });
 
-  it("kapittel 4 kan spilles gjennom", () => {
+  it("kapittel 4 kan spilles gjennom i valgfri rekkefølge", () => {
+    // Port first, then bell, then glasses: Winter's list is no longer ordered
     spill(KAPITLER[3], [
       ["?", "winter", "Hva står på listen?"],
-      ["kontor", "blekkhuset"],
-      ["kontor", "brevfuglen", "fjaer"],
-      ["kontor", "skaala"],
-      ["kontor", "brevfuglen", "klementin"],
+      ["?", "winter", "Kan vi få litt talg fra lanterna?"],
+      ["porten", "lanterne_v"],
+      ["porten", "hengslet", "talgstump"],
       ["kontor", "taletrakten"],
       ["kontor", "brevbunken"],
       ["+", "magnet", "hyssing"],
       ["kontor", "vedkassa", "fiskesnoere"],
-      ["kontor", "julius", "briller"],
       ["porten", "sleden", "bjelle"],
-      ["?", "winter", "Kan vi få litt talg fra lanterna?"],
-      ["porten", "lanterne_v"],
-      ["porten", "hengslet", "talgstump"],
+      ["kontor", "blekkhuset"],
+      ["kontor", "brevfuglen", "fjaer"],
+      ["kontor", "skaala"],
+      ["kontor", "brevfuglen", "klementin"],
+      ["kontor", "julius", "briller"],
+      ["?", "winter", "Alt på lista er gjort. Sjekk!"],
+      ["?", "winter", "Punkt to: bjella henger."],
+      ["?", "winter", "Punkt tre: porten er smurt."],
     ]);
   });
 });

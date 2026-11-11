@@ -14,7 +14,7 @@ const DEV =
   process.env.NODE_ENV !== "production" ||
   process.env.NEXT_PUBLIC_TEST_MODE === "true";
 
-// Icons next to the verb labels: quicker to hit on an iPad than text alone.
+// Icons so Hanna (5) can tell the verbs apart without reading.
 const VERBS: { id: M.Verb; label: string; ikon: string }[] = [
   { id: "se", label: "SE", ikon: "eye" },
   { id: "bruk", label: "BRUK", ikon: "hand" },
