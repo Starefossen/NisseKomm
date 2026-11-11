@@ -153,7 +153,7 @@ Generated from `assets/characters/<id>/entitet.md`, the one source for look, per
 
 - **Navn:** Winter, Ole Winter; **pronomen:** han; **fra dag:** 1
 - **Personlighet:** Pedantisk og formell. Aldri kald eller uvennlig: han brenner for at alt skal bli riktig, og blir synlig lettet, nesten mild, når alt er godkjent.
-- **Stemme:** Presist og forretningsmessig, i paragrafer og lister («Paragraf 101»), med skjemanumre (4112-B). Flosshatten bare ved porten og når han opptrer formelt (FLOSSHATT i beskrivelse.txt).
+- **Stemme:** Presist og forretningsmessig, i paragrafer og lister («Paragraf 101»), med skjemanumre (4112-B). Flosshatten bare ved porten og når han opptrer formelt (FLOSSHATT i beskrivelse.txt). Skriftlig: bokmål. Muntlig (hvis han noen gang får stemme i TTS eller video): typisk bergensk, med skarre-r, «eg», «ikkje» og bergensk tonefall, men like presist og formelt.
 - **Forhold:** julius: sjef; iq: kollega, irritert over rot; barna: krever skjemaer, blir mild når alt er i orden
 - **Aldri:** «Ole Vinter», «fru Winter», «frøken Winter»
 

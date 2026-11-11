@@ -318,7 +318,7 @@ def entiteter(root: Path = ROOT):
              "voice, relations and facts. Edit there, then run `mise run entiteter`.", ""]
     for c in cs:
         sek = c["seksjoner"]
-        voice = sek["Stemme"].split("\n\nTTS:")[0].replace("\n", " ")
+        voice = sek["Stemme"].split("\n\nTTS:")[0]; voice = " ".join(voice.split())
         lines += [f"#### {c['navn'][0]} (`assets/characters/{c['id']}/entitet.md`)", "",
                   f"- **Navn:** {', '.join(c['navn'])}; **pronomen:** {c['pronomen']}; **fra dag:** {c['fra_dag']}",
                   f"- **Personlighet:** {sek['Personlighet']}",

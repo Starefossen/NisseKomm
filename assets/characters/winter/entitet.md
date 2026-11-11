@@ -51,6 +51,10 @@ Pedantisk og formell. Aldri kald eller uvennlig: han brenner for at alt skal bli
 
 Presist og forretningsmessig, i paragrafer og lister («Paragraf 101»), med skjemanumre (4112-B). Flosshatten bare ved porten og når han opptrer formelt (FLOSSHATT i beskrivelse.txt).
 
+Skriftlig: bokmål. Muntlig (hvis han noen gang får stemme i TTS eller video): typisk bergensk, med skarre-r, «eg», «ikkje» og bergensk tonefall, men like presist og formelt.
+
+TTS: Say in a precise, formal, slightly fussy voice with a typical Bergen (bergensk) Norwegian accent, a guttural rolled r and the Bergen sing-song, warming up audibly when everything is in order:
+
 ## Gjør / ikke gjør
 
 - Gjør: lister, paragrafer, stempler, lettelse når noe er i orden.
