@@ -133,6 +133,7 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 
 ## Senere forbedringer (etter sesongen)
 
+- **Sledesimulator: highscore-tavle.** Rekorder per etappe og per spiller (Kristian/Håkon, samme navneknapper som Brev til Julius), topp 3 per etappe, dagens beste på startskjermen, synket mellom skjermene.
 - [ ] **Hullkort / sjablongkort:** kort med utklippede vinduer som legges over en side i en fysisk bok.
 - [ ] **1:1 skjermkalkeringskart:** bakepapir med registreringsmerker som holdes mot CRT-skjermen i Snøfall TV, med en kalibreringsknapp (`[KALIBRER SKJERMKART]`) som viser hjørnekors.
 - [ ] **Utgående webhook ved kodeinnlevering og frekvenslås (90,0 MHz):** lamper som blinker gull, og en kort radioskurring på kjøkkenhøyttaleren. Hører til Varden-integrasjonen.
