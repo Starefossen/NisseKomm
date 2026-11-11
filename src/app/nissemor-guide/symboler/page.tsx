@@ -254,8 +254,8 @@ function SymbolerContent() {
             Skriv ut alle kort
           </button>
           <p>
-            {collectedSymbols.length}/9 samlet. Trykk på et kort for å merke
-            det som funnet eller ikke funnet.
+            {collectedSymbols.length}/9 samlet. Trykk på et kort for å merke det
+            som funnet eller ikke funnet.
           </p>
         </div>
 

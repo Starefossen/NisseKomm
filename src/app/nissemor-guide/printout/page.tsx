@@ -12,12 +12,17 @@ const laget = (navn: string) =>
 
 const perDag = DAGER.map((d) => ({
   tittel: `Dag ${d.dag}`,
-  filer: d.utskrifter.filter((u) => (UTSKRIFTER as readonly string[]).includes(u)),
+  filer: d.utskrifter.filter((u) =>
+    (UTSKRIFTER as readonly string[]).includes(u),
+  ),
 })).filter((g) => g.filer.length);
-const brukt = new Set(perDag.flatMap((g) => g.filer));
+const brukt = new Set<string>(perDag.flatMap((g) => g.filer));
 const grupper = [
   ...perDag,
-  { tittel: "Andre", filer: UTSKRIFTER.filter((u) => !brukt.has(u)) },
+  {
+    tittel: "Andre",
+    filer: UTSKRIFTER.filter((u) => !brukt.has(u)) as string[],
+  },
 ].filter((g) => g.filer.length);
 
 export default function PrintoutPage() {

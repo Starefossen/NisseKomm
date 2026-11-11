@@ -135,10 +135,9 @@ function BibliotekInnhold() {
     const aapne = () => {
       const id = decodeURIComponent(location.hash.slice(1));
       const el = id && document.getElementById(id);
-      if (el instanceof HTMLDetailsElement) {
-        el.open = true;
-        el.scrollIntoView();
-      }
+      if (!el) return;
+      if (el instanceof HTMLDetailsElement) el.open = true;
+      el.scrollIntoView();
     };
     aapne();
     window.addEventListener("hashchange", aapne);

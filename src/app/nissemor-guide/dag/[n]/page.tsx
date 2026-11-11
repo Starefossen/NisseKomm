@@ -7,6 +7,7 @@ import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { MediaListe, useMediaData } from "../../media/kort";
 import type { dagInnhold } from "@/lib/guide-innhold";
+import { Foreldredel } from "./foreldre";
 
 type Dag = Awaited<ReturnType<typeof dagInnhold>>;
 
@@ -55,6 +56,12 @@ function DagInnhold() {
       aktiv = false;
     };
   }, [n]);
+
+  // Content loads after the page, so the browser misses #kveld, #fasit and the like.
+  useEffect(() => {
+    if (dag && location.hash)
+      document.getElementById(location.hash.slice(1))?.scrollIntoView();
+  }, [dag]);
 
   const q = dag?.oppdrag;
   const t = (s: string | undefined | null) => skjul(ren(s ?? ""), q?.kode, vis);
@@ -126,6 +133,11 @@ function DagInnhold() {
               </div>
             </header>
 
+            <Foreldredel n={n} t={t} />
+
+            <h2 className="text-2xl text-(--gold) mt-8 mb-2">
+              Manus og media for dagen
+            </h2>
             <Seksjon tittel="Julius' video">
               <MediaListe paths={[dag.medier[0]]} data={media} />
               {dag.julius ? (

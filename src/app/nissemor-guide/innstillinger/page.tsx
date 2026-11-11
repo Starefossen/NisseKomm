@@ -215,7 +215,9 @@ function Simulering() {
       </div>
       <button
         className={knapp}
-        onClick={() => kjør(GameEngine.resetAllBadges, "Alle merker er fjernet.")}
+        onClick={() =>
+          kjør(GameEngine.resetAllBadges, "Alle merker er fjernet.")
+        }
       >
         Fjern alle merker
       </button>

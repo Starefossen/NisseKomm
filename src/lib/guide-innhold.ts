@@ -60,7 +60,9 @@ export function lintSegment(replikk: string, sek: number, laast: boolean) {
       `${n} ord trenger ${need.toFixed(1)} s med 2 s hale, bestilt ${sek} s`,
     );
   else if (sek >= 15 && need > 13)
-    varsler.push(`${n} ord trenger ${need.toFixed(1)} s; modellen leverer ofte 13 s på 15`);
+    varsler.push(
+      `${n} ord trenger ${need.toFixed(1)} s; modellen leverer ofte 13 s på 15`,
+    );
   return { n, varsler };
 }
 

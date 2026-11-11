@@ -46,13 +46,13 @@ describe("kveldsdata fra gaater-2026", () => {
     expect(BYGGEPLAN).toHaveLength(3);
   });
 
-  // The guide is a copy of the locked doc; a doc edit must reach the parents too
+  // The guide is a copy of the locked doc; a doc edit must reach the parents too.
+  // mekanikk is the exception: rewritten for parents without the doc's design notes.
   it.each(DAGER.map((d) => [d.dag, d] as const))(
     "dag %i står ordrett i gaater-2026.md",
     (_, d) => {
       const felt = [
         d.tittel,
-        d.mekanikk,
         d.brikkeH,
         d.brikkeS,
         d.hanna,

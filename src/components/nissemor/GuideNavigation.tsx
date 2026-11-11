@@ -2,56 +2,73 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useGuideAuth } from "./GuideAuth";
+import { getCurrentDate } from "@/lib/date-utils";
+import { Icon } from "@/lib/icons";
 
-const SIDER = [
-  ["/nissemor-guide/i-kveld", "I kveld"],
-  ["/nissemor-guide/forberedelser", "Forberedelser"],
-  ["/nissemor-guide/fasit", "Dag for dag"],
-  ["/nissemor-guide/dag/1", "Dagsvisning"],
-  ["/nissemor-guide/bibliotek", "Bibliotek"],
-  ["/nissemor-guide/sok", "Søk"],
-  ["/nissemor-guide/printout", "Utskrifter"],
-  ["/nissemor-guide/media", "Media"],
-  ["/nissemor-guide/bonusoppdrag", "Bonus"],
-  ["/nissemor-guide/brevfugler", "Brev fra barna"],
-  ["/nissemor-guide/innstillinger", "Innstillinger"],
-] as const;
+/** Day of December 1–24 at `offset` days from now, else null. */
+function desemberdag(offset: number): number | null {
+  const d = getCurrentDate();
+  d.setDate(d.getDate() + offset);
+  return d.getMonth() === 11 && d.getDate() <= 24 ? d.getDate() : null;
+}
 
-/** Shared navigation for the parent guide. Wraps to several rows on a phone. */
+/** Shared navigation for the parent guide: one row on a phone. */
 export function GuideNavigation() {
-  const { logout } = useGuideAuth();
   const sti = usePathname();
+  const iKveld = desemberdag(1) ?? 1;
+  const iDag = desemberdag(0) ?? 1;
+  const dagSti = (n: number) => `/nissemor-guide/dag/${n}`;
+  const faner = [
+    [`${dagSti(iKveld)}#kveld`, "I kveld", sti === dagSti(iKveld)],
+    [dagSti(iDag), "I dag", sti === dagSti(iDag) && iDag !== iKveld],
+    [
+      "/nissemor-guide/dag",
+      "Dager",
+      sti.startsWith("/nissemor-guide/dag") &&
+        sti !== dagSti(iKveld) &&
+        sti !== dagSti(iDag),
+    ],
+    [
+      "/nissemor-guide/bibliotek",
+      "Bibliotek",
+      sti === "/nissemor-guide/bibliotek",
+    ],
+    ["/nissemor-guide/sok", "Søk", sti === "/nissemor-guide/sok"],
+  ] as const;
+  const tannhjul = sti === "/nissemor-guide/innstillinger";
+  const fane = (aktiv: boolean) =>
+    `flex items-center justify-center px-2 sm:px-3 min-h-11 min-w-11 border-2 whitespace-nowrap ${
+      aktiv
+        ? "border-(--gold) bg-(--gold) text-black"
+        : "border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20"
+    }`;
   return (
     <nav className="max-w-4xl mx-auto mb-6 print:hidden font-retro">
-      <ul className="flex flex-wrap gap-2 text-lg">
-        {SIDER.map(([href, navn]) => {
-          // The day view links to day 1 but stays marked on every day.
-          const rot = href.replace(/\/dag\/1$/, "/dag");
-          const aktiv = sti === href || sti.startsWith(rot + "/");
-          return (
-            <li key={href}>
-              <Link
-                href={href}
-                aria-current={aktiv ? "page" : undefined}
-                className={`flex items-center px-3 min-h-11 border-2 ${
-                  aktiv
-                    ? "border-(--gold) bg-(--gold) text-black"
-                    : "border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20"
-                }`}
-              >
-                {navn}
-              </Link>
-            </li>
-          );
-        })}
-        <li>
-          <button
-            onClick={logout}
-            className="px-3 min-h-11 border-2 border-(--christmas-red) text-(--christmas-red) hover:bg-(--christmas-red)/20"
+      <ul className="flex gap-1 sm:gap-2 text-base sm:text-lg">
+        {faner.map(([href, navn, aktiv]) => (
+          <li key={navn}>
+            <Link
+              href={href}
+              aria-current={aktiv ? "page" : undefined}
+              className={fane(aktiv)}
+            >
+              {navn}
+            </Link>
+          </li>
+        ))}
+        <li className="ml-auto">
+          <Link
+            href="/nissemor-guide/innstillinger"
+            aria-label="Innstillinger"
+            aria-current={tannhjul ? "page" : undefined}
+            className={fane(tannhjul)}
           >
-            Logg ut
-          </button>
+            <Icon
+              name="settings-cog"
+              size={24}
+              color={tannhjul ? "gray" : "green"}
+            />
+          </Link>
         </li>
       </ul>
     </nav>
