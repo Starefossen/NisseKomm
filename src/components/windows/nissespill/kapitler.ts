@@ -7,6 +7,7 @@
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 import { KAPITTEL_1 } from "./kapittel1";
 import { KAPITTEL_2 } from "./kapittel2";
+import { KAPITTEL_3 } from "./kapittel3";
 import type { Kapittel, Scene } from "./motor";
 
 const TODO = "TODO: tekst kommer.";
@@ -53,25 +54,6 @@ const stub = (
   scener,
   gaater: gaater.map((g) => ({ ...g, tips: [TODO, TODO, TODO] })),
 });
-
-/**
- * Kapittel 3 (dag 16, after Vintervokteren is known): bring warmth and a light into
- * Krystallgrotten. Puzzles: ember in a brass tea strainer (draught-proof); a crystal
- * shard in the dripstone bends the glow onto the pedestal. No fighting: a greeting.
- */
-const KAPITTEL_3 = stub(
-  3,
-  "Gufset fra dypet",
-  16,
-  [
-    stubScene("kontor3", "Julius' kontor", "feed/julius-kontor.jpg", "grotten"),
-    stubScene("grotten", "Krystallgrotten", "feed/kulde-grotte.png", "kontor3"),
-  ],
-  [
-    { id: "glo", ferdig: "tesil_med_glo" },
-    { id: "krystall", ferdig: "k3_ferdig" },
-  ],
-);
 
 /**
  * Kapittel 4 (dag 22, gate open, sleigh readied): Julius' glasses under a brooding

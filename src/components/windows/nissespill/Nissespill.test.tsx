@@ -254,6 +254,17 @@ describe("Nissespill: motor", () => {
         save = u.save;
         continue;
       }
+      if (st[0] === "?") {
+        // Dialog choice by its text; must be offered in the current save
+        const d = kap.dialoger[st[1]];
+        const n = Object.values(d.noder).find((x) =>
+          x.valg?.some((v) => v.tekst === st[2]),
+        )!;
+        const v = M.valgSomVises(n, save).find((x) => x.tekst === st[2]);
+        expect(v?.tekst).toBe(st[2]);
+        save = M.velgSvar(save, v!);
+        continue;
+      }
       save = M.gaa(save, st[0]).save;
       const u = M.trykk(kap, save, hot(st[0], st[1]), null, st[2] ?? null);
       expect([u.tekst, u.lyd]).toEqual([u.tekst, "success"]);
@@ -278,6 +289,23 @@ describe("Nissespill: motor", () => {
       ["tjernet", "rudolf", "sirupbroed"],
       ["tjernet", "tannhjulet", "varmboks"],
       ["tjernet", "peileskiva", "magnetnaal"],
+    ]);
+  });
+
+  it("kapittel 3 kan spilles gjennom", () => {
+    spill(KAPITLER[2], [
+      ["kontor", "lysene"],
+      ["?", "nissemor", "Rampenissen vil gi et lys til han i grotten."],
+      ["?", "nissemor", "Vi skal passe på den."],
+      ["kontor", "tekoppen"],
+      ["+", "stearinlys", "tesil"],
+      ["?", "julius", "Rampenissen vil gi et lys til han i grotten."],
+      ["?", "julius", "Klare, høyre, foran flammen."],
+      ["grotten", "klarekrystallene"],
+      ["grotten", "sokkelen", "tesil_lanterne"],
+      ["grotten", "sokkelen", "krystallskaar"],
+      ["?", "radioen", "God jul fra Landås."],
+      ["?", "radioen", "Vi kommer tilbake."],
     ]);
   });
 });
