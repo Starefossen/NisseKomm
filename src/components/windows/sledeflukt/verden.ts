@@ -339,10 +339,10 @@ function røykMesh() {
 function prikkMesh() {
   return new Mesh().box([0, 0, 0], [0.9, 0.9, 0.9], GULL, 1).build();
 }
-function merkeMesh() {
+function merkeMesh(farge = GULL) {
   const m = new Mesh();
-  m.box([0, 0, 0], [7, 0.4, 1], GULL, 1);
-  m.box([0, 0, 0], [1, 0.4, 7], GULL, 1);
+  m.box([0, 0, 0], [7, 0.4, 1], farge, 1);
+  m.box([0, 0, 0], [1, 0.4, 7], farge, 1);
   return m.build();
 }
 
@@ -414,6 +414,8 @@ export interface Meshes {
   røyk: Float32Array;
   prikk: Float32Array;
   merke: Float32Array;
+  /** Green cross over a house that got a close (not chimney) delivery. */
+  merkeNær: Float32Array;
 }
 
 let cache: Meshes | null = null;
@@ -435,6 +437,7 @@ export function meshes(): Meshes {
       røyk: røykMesh(),
       prikk: prikkMesh(),
       merke: merkeMesh(),
+      merkeNær: merkeMesh(GRØNN),
     };
   return cache;
 }

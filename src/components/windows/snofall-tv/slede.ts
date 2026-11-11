@@ -289,6 +289,8 @@ export interface Ting {
   /** Set once the thing has been passed (hit or missed). */
   ferdig?: boolean;
   treff?: boolean;
+  /** Houses: best delivery points so far (before the run multiplier); only an improvement pays. */
+  nær?: number;
 }
 
 // Deterministic per stage so a course is the same for every kid and every test.
@@ -505,6 +507,25 @@ export interface Pakke {
   vz: number;
 }
 
+/** Metres per track unit sideways and per sim unit along the course (verden.ts SPOR and SKALA). */
+const M_X = 45;
+const M_Z = 0.1;
+/** Full delivery points; they fall linearly to 0 at NÆR_M metres from the chimney. */
+export const PIPE_POENG = 200;
+export const NÆR_M = 30;
+
+/** Ground distance in metres from a landed package to a house's chimney. */
+export const meterFraPipa = (p: { x: number; z: number }, t: Ting) =>
+  Math.hypot((p.x - t.x) * M_X, (p.z - t.z) * M_Z);
+
+/** Points for a package landing m metres from the chimney (0 = in it). */
+export const nærPoeng = (m: number) =>
+  Math.round(PIPE_POENG * Math.max(0, 1 - m / NÆR_M));
+
+/** «RETT I PIPA!» or «3,2 m fra pipa». */
+export const landingTekst = (m: number) =>
+  m <= 0 ? "RETT I PIPA!" : `${m.toFixed(1).replace(".", ",")} m fra pipa`;
+
 const G = 200;
 /** One step of a package's fall: gravity, a little air drag forward, wind drift sideways. */
 function fallPakke(p: Pakke, dt: number, gust: number) {
@@ -568,6 +589,7 @@ export type Hendelse =
   | "slipp"
   | "levering"
   | "pakkebom"
+  | "nærLevering"
   | "leveringKlart"
   | "runde"
   | "mål";
@@ -667,6 +689,8 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     pakker: 0,
     pakkerTotalt: hus.length,
     pakkebom: 0,
+    /** Metres from the chimney for the last package that scored (0 = in it). */
+    sisteMeter: 0,
     leveringKlart: false,
     /** Boost meter 0..1, filled by beacons; full = sprang available. */
     kraft: 0,
@@ -746,13 +770,35 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
       if (mål) {
         mål.treff = true;
         s.pakker++;
-        s.poeng += 200 * rekkeMult(s.rekke);
+        s.poeng += (PIPE_POENG - (mål.nær ?? 0)) * rekkeMult(s.rekke);
+        mål.nær = PIPE_POENG;
+        s.sisteMeter = 0;
         s.pakke = null;
         ev.push("levering");
       } else if (p.alt <= 0) {
-        s.pakkebom++;
+        // Close counts too: points fall with distance, and per house only an improvement pays.
+        let nærmest: Ting | null = null;
+        let m = NÆR_M;
+        for (const h of hus) {
+          const d = meterFraPipa(p, h);
+          if (d < m) {
+            m = d;
+            nærmest = h;
+          }
+        }
+        const poeng = nærPoeng(m);
+        if (nærmest && poeng > 0) {
+          if (poeng > (nærmest.nær ?? 0)) {
+            s.poeng += (poeng - (nærmest.nær ?? 0)) * rekkeMult(s.rekke);
+            nærmest.nær = poeng;
+          }
+          s.sisteMeter = Math.max(0.1, m);
+          ev.push("nærLevering");
+        } else {
+          s.pakkebom++;
+          ev.push("pakkebom");
+        }
         s.pakke = null;
-        ev.push("pakkebom");
       }
     }
 
@@ -783,6 +829,7 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
         for (const t of ting) {
           t.ferdig = false;
           t.treff = false;
+          t.nær = 0;
         }
         ev.push("runde");
       }

@@ -16,6 +16,10 @@ import {
   leveringsoppdrag,
   nesteLandemerke,
   pakkenavn,
+  nærPoeng,
+  landingTekst,
+  PIPE_POENG,
+  NÆR_M,
   RAMP,
   rekkeMult,
   UTFORDRING_BONUS,
@@ -335,6 +339,40 @@ describe("pipelevering", () => {
     expect(sim.s.pakker).toBe(1);
     expect(hus.treff).toBe(true);
     expect(sim.s.poeng).toBeGreaterThanOrEqual(200);
+  });
+
+  it("close landings score by distance, and per house only an improvement counts", () => {
+    expect(nærPoeng(0)).toBe(PIPE_POENG);
+    expect(nærPoeng(15)).toBe(PIPE_POENG / 2);
+    expect(nærPoeng(NÆR_M)).toBe(0);
+    expect(landingTekst(0)).toBe("RETT I PIPA!");
+    expect(landingTekst(3.24)).toBe("3,2 m fra pipa");
+    const e = ETAPPER.find((x) => x.id === "stjernedrysset")!;
+    const sim = createSim(e, { assist: true, reduceMotion: false });
+    const hus = sim.s.ting.find((t) => t.type === "hus")!;
+    const land = (dx: number) => {
+      sim.s.pakke = {
+        x: hus.x + dx / 45,
+        alt: 0.1,
+        z: hus.z,
+        vx: 0,
+        vy: -10,
+        vz: 0,
+      };
+      return sim.step(1 / 60, still);
+    };
+    expect(land(15)).toContain("nærLevering");
+    expect(sim.s.sisteMeter).toBeCloseTo(15, 0);
+    expect(hus.nær).toBeGreaterThan(80);
+    const etter = sim.s.poeng;
+    land(20);
+    expect(sim.s.poeng).toBe(etter);
+    const før = hus.nær!;
+    land(6);
+    expect(hus.nær).toBe(nærPoeng(6));
+    expect(sim.s.poeng - etter).toBe(nærPoeng(6) - før);
+    expect(land(40)).toContain("pakkebom");
+    expect(sim.s.pakker).toBe(0);
   });
 
   it("a package dropped over nothing lands in the snow", () => {

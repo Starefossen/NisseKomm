@@ -24,6 +24,7 @@ import {
   landemerker,
   leveringsoppdrag,
   nesteLandemerke,
+  landingTekst,
   pakkenavn,
   rekkeMult,
   utfordringStatus,
@@ -362,7 +363,13 @@ export function SledefluktSpill({
           break;
         case "levering":
           l?.stjerne();
-          say(`${pakkenavn(brev.current, sim.s.slipp - 1)} LEVERT`);
+          say(
+            `RETT I PIPA!  ${pakkenavn(brev.current, sim.s.slipp - 1)} LEVERT`,
+          );
+          break;
+        case "nærLevering":
+          l?.tikk(true);
+          say(landingTekst(sim.s.sisteMeter), "#00ff8a");
           break;
         case "pakkebom":
           say("PAKKEN HAVNET I SNØEN", "#8aa0c0");
@@ -627,7 +634,12 @@ export function SledefluktSpill({
           if (o.treff) {
             pos[1] += 3;
             r.tegn(M.stjerne, transform(pos, [0, t * 2, 0]));
-          } else
+          } else {
+            if (o.nær) {
+              pos[1] += 3;
+              r.tegn(M.merkeNær, transform(pos, [0, t, 0]));
+              pos[1] -= 3;
+            }
             // Three puffs rising from the chimney, drifting with the wind.
             for (let k = 0; k < 3; k++) {
               const f = (t * 0.5 * motion + k / 3) % 1;
@@ -640,6 +652,7 @@ export function SledefluktSpill({
                 ),
               );
             }
+          }
           continue;
         }
         if (o.type === "stjerne") {
@@ -923,6 +936,11 @@ export function SledefluktSpill({
                       NESTE: {b.neste}
                     </span>
                   )}
+                  {b?.neste && fase === "spiller" && (
+                    <span className="block text-base text-(--cold-blue)">
+                      BREMS = MER TID TIL Å SIKTE
+                    </span>
+                  )}
                 </div>
               )}
             </>
@@ -1200,7 +1218,11 @@ export function SledefluktSpill({
                     ? "Assistenten holder høyden og krasjer aldri."
                     : "Tre forsøk, full kastevind."}{" "}
                   · PILTASTER / WASD · SHIFT = FART · X = BREMS · MELLOMROM =
-                  SPRANG{levering ? " · ENTER = SLIPP PAKKE" : ""} · ESC = PAUSE
+                  SPRANG
+                  {levering
+                    ? " · ENTER = SLIPP PAKKE · BREMS GIR TID TIL Å SIKTE"
+                    : ""}{" "}
+                  · ESC = PAUSE
                 </div>
               </>
             )}
