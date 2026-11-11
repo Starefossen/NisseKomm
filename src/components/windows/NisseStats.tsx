@@ -7,6 +7,8 @@ import { LEDIndicator } from "../ui/LEDIndicator";
 import { useSounds } from "@/lib/sounds";
 import { getCurrentDate } from "@/lib/date-utils";
 import { TIDBITS, visible } from "@/lib/tidbits";
+import { KAPITLER } from "./nissespill/kapitler";
+import { ETAPPER } from "./snofall-tv/slede";
 
 interface NisseStatsProps {
   onClose: () => void;
@@ -212,6 +214,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
 
   // Feed state
   const [feedItems, setFeedItems] = useState<string[]>([]);
+  const [tab, setTab] = useState<"malere" | "live" | "snofall">("malere");
 
   // Update countdown every second
   useEffect(() => {
@@ -257,123 +260,195 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
   const urgencyStyles = URGENCY_STYLES[countdown.urgencyLevel];
   const urgencyLabel = URGENCY_LABELS[countdown.urgencyLevel];
   const questProgress = GameEngine.getCompletedQuestCount();
+  const completedDays = GameEngine.getCompletedDays();
+  const save = GameEngine.getEventyrSave();
+  const fjaerTotal = KAPITLER.reduce(
+    (n, k) => n + k.scener.filter((sc) => sc.fjaer).length,
+    0,
+  );
+  const slede = GameEngine.getSledeResultater();
+  const etapper = ETAPPER.filter((e) => e.dag <= currentDay);
+  const sledeMaks = Math.max(1, ...etapper.map((e) => slede[e.id]?.poeng ?? 0));
+  const sledeBest = Math.max(0, ...etapper.map((e) => slede[e.id]?.poeng ?? 0));
+
+  const tabs: { id: typeof tab; label: string }[] = [
+    { id: "malere", label: "MÅLERE" },
+    { id: "live", label: "LIVE" },
+    ...(snofallStats.length > 0
+      ? [{ id: "snofall" as const, label: "SNØFALL" }]
+      : []),
+  ];
 
   return (
     <RetroWindow title="NISSESTATS - SANNTIDSDATA" onClose={onClose}>
-      <div className="p-4 lg:p-6 h-full overflow-y-auto space-y-4">
-        {/* Countdown Hero Section */}
-        <div
-          className={`relative p-4 lg:p-6 border-4 ${urgencyStyles.borderColor} bg-black/30 ${urgencyStyles.animation}`}
-        >
-          <div className="text-center space-y-2">
-            <div className={`text-base ${urgencyStyles.textColor} mb-2`}>
-              ┌─[ NEDTELLING TIL JULAFTEN ]─┐
+      <div className="p-3 lg:p-4 h-full overflow-y-auto flex flex-col gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {/* Countdown */}
+          <div
+            className={`relative p-3 border-4 ${urgencyStyles.borderColor} bg-black/30 ${urgencyStyles.animation} text-center`}
+          >
+            <div className={`text-base ${urgencyStyles.textColor}`}>
+              JULAFTEN OM
             </div>
-
             {countdown.isChristmas ? (
-              <div className="space-y-2">
-                <div className="text-4xl lg:text-6xl font-bold text-(--gold) animate-[gold-flash_1s_ease-in-out_infinite]">
-                  GOD JUL!
-                </div>
-                <div className="text-lg lg:text-xl text-(--gold)/80">
-                  JULIUS ER PÅ VEI!
-                </div>
+              <div className="text-3xl font-bold text-(--gold) animate-[gold-flash_1s_ease-in-out_infinite]">
+                GOD JUL!
               </div>
             ) : (
-              <div className="space-y-1">
+              <>
                 <div
-                  className={`text-3xl lg:text-5xl font-bold ${urgencyStyles.textColor} tracking-wider`}
+                  className={`text-3xl font-bold ${urgencyStyles.textColor} tracking-wider`}
                 >
-                  {countdown.days}
-                  <span className="text-xl lg:text-3xl hidden lg:inline">
-                    {" "}
-                    dager
-                  </span>
-                  <span className="text-xl lg:text-3xl lg:hidden">d</span>
-                </div>
-                <div
-                  className={`text-xl lg:text-3xl font-bold ${urgencyStyles.textColor}`}
-                >
-                  {String(countdown.hours).padStart(2, "0")}:
+                  {countdown.days}d {String(countdown.hours).padStart(2, "0")}:
                   {String(countdown.minutes).padStart(2, "0")}:
                   {String(countdown.seconds).padStart(2, "0")}
                 </div>
-                <div
-                  className={`text-base lg:text-base ${urgencyStyles.textColor}/70`}
-                >
+                <div className={`text-base ${urgencyStyles.textColor}/70`}>
                   {urgencyLabel}
                 </div>
-              </div>
-            )}
-
-            {questProgress >= 5 && (
-              <div className="absolute top-2 right-2 px-2 py-1 border border-(--gold) bg-(--gold)/10">
-                <div className="text-base text-(--gold) opacity-70">
-                  ★ +{questProgress}%
-                </div>
-              </div>
+              </>
             )}
           </div>
+
+          <Tile label="OPPDRAG" value={`${questProgress}/24`}>
+            <div className="grid grid-cols-12 gap-0.5">
+              {Array.from({ length: 24 }, (_, i) => (
+                <div
+                  key={i}
+                  className={`h-2 ${completedDays.has(i + 1) ? "bg-(--gold)" : i + 1 <= currentDay ? "bg-(--neon-green)/40" : "bg-(--neon-green)/10"}`}
+                />
+              ))}
+            </div>
+          </Tile>
+
+          <Tile
+            label="UGLEPOSTEN"
+            value={`${save?.fjaer?.length ?? 0}/${fjaerTotal}`}
+            unit="fjær"
+          >
+            <div className="text-base opacity-70">
+              {save
+                ? `Kapittel ${save.kapittel}/${KAPITLER.length}`
+                : "Ikke startet"}
+            </div>
+          </Tile>
+
+          <Tile
+            label="SLEDEFLUKT"
+            value={sledeBest.toLocaleString("no-NO")}
+            unit="beste"
+          >
+            <div className="flex items-end gap-0.5 h-6">
+              {etapper.map((e) => {
+                const p = slede[e.id]?.poeng ?? 0;
+                return (
+                  <div
+                    key={e.id}
+                    title={`${e.navn}: ${p}`}
+                    className={`flex-1 ${p ? "bg-(--gold)" : "bg-(--neon-green)/15"}`}
+                    style={{
+                      height: `${Math.max(12, (p / sledeMaks) * 100)}%`,
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </Tile>
         </div>
 
-        {/* Production Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {metrics.map((metric, index) => {
-            if (index >= 10) {
-              return (
-                <div key={metric.navn} className="hidden md:block">
-                  <MetricCard metric={metric} glitchFrame={glitchFrame} />
-                </div>
-              );
-            }
+        <div role="tablist" className="flex gap-2">
+          {tabs.map((t) => (
+            <button
+              key={t.id}
+              role="tab"
+              aria-selected={tab === t.id}
+              onClick={() => {
+                playSound("click");
+                setTab(t.id);
+              }}
+              className={`min-h-11 px-4 border-2 text-base tracking-wider transition-colors ${tab === t.id ? "border-(--gold) bg-(--gold) text-black" : "border-(--neon-green)/50 text-(--neon-green) hover:bg-(--neon-green)/10"}`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
 
-            return (
+        {tab === "malere" && (
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2">
+            {metrics.map((metric) => (
               <MetricCard
                 key={metric.navn}
                 metric={metric}
                 glitchFrame={glitchFrame}
               />
-            );
-          })}
-        </div>
-
-        {/* Live Updates Feed */}
-        <div className="border-2 border-(--neon-green)/30">
-          <div className="p-2 bg-(--neon-green)/10 border-b-2 border-(--neon-green)/30">
-            <div className="text-base tracking-wider text-(--neon-green)">
-              ● LIVE OPPDATERINGER
-            </div>
+            ))}
+            {etapper.some((e) => slede[e.id]) && (
+              <div className="col-span-full p-2 border-2 border-dashed border-(--neon-green)/50 bg-(--neon-green)/5">
+                <div className="text-base opacity-70 mb-1">
+                  SLEDEFLUKT - BESTE PER ETAPPE
+                </div>
+                <dl className="grid grid-cols-1 md:grid-cols-3 gap-x-4 text-base">
+                  {etapper.map((e) => (
+                    <div key={e.id} className="flex justify-between gap-2">
+                      <dt className="opacity-70 truncate">{e.navn}</dt>
+                      <dd className="text-(--gold) tabular-nums">
+                        {slede[e.id]
+                          ? `${slede[e.id].poeng.toLocaleString("no-NO")} · ${slede[e.id].bjeller} bj.`
+                          : "-"}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            )}
           </div>
-          <div className="divide-y divide-(--neon-green)/10">
+        )}
+
+        {tab === "live" && (
+          <div className="border-2 border-(--neon-green)/30 divide-y divide-(--neon-green)/10">
             {feedItems.map((item, i) => (
-              <div
-                key={i}
-                className="p-2 text-base text-(--neon-green)/70 transition-opacity"
-                style={{ animationDelay: `${i * 100}ms` }}
-              >
+              <div key={i} className="p-2 text-base text-(--neon-green)/70">
                 [{getCurrentDate().toLocaleTimeString("no-NO")}] {item}
               </div>
             ))}
           </div>
-        </div>
+        )}
 
-        {snofallStats.length > 0 && (
-          <div className="p-3 border-2 border-dashed border-(--cold-blue)/60">
-            <div className="text-base text-(--cold-blue) mb-2">
-              ┌─[ SNØFALL-STATISTIKK ]─┐
-            </div>
-            <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1 text-base">
-              {snofallStats.map((s) => (
-                <div key={s.navn} className="flex justify-between gap-3">
-                  <dt className="opacity-70">{s.navn}</dt>
-                  <dd className="text-(--gold) tabular-nums">{s.verdi}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+        {tab === "snofall" && (
+          <dl className="p-3 border-2 border-dashed border-(--cold-blue)/60 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1 text-base">
+            {snofallStats.map((s) => (
+              <div key={s.navn} className="flex justify-between gap-3">
+                <dt className="opacity-70">{s.navn}</dt>
+                <dd className="text-(--gold) tabular-nums">{s.verdi}</dd>
+              </div>
+            ))}
+          </dl>
         )}
       </div>
     </RetroWindow>
+  );
+}
+
+function Tile({
+  label,
+  value,
+  unit,
+  children,
+}: {
+  label: string;
+  value: string;
+  unit?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="p-3 border-2 border-(--neon-green)/50 bg-(--neon-green)/5 flex flex-col gap-1">
+      <div className="text-base opacity-70">{label}</div>
+      <div className="text-3xl font-bold text-(--gold) tabular-nums">
+        {value}
+        {unit && <span className="text-base opacity-70"> {unit}</span>}
+      </div>
+      <div className="mt-auto">{children}</div>
+    </div>
   );
 }
 
@@ -550,7 +625,9 @@ function NormalDisplay({
         <div className={`text-xl font-bold ${statusColor} mb-1`}>
           {metric.verdi}%
         </div>
-        <div className={`text-base font-retro ${statusColor}/50`}>
+        <div
+          className={`text-base font-retro ${statusColor}/50 whitespace-nowrap overflow-hidden`}
+        >
           {DisplayRenderers.waveform(metric.verdi, metric.maks)}
         </div>
       </div>
@@ -565,7 +642,9 @@ function NormalDisplay({
         <div className={`text-xl font-bold ${statusColor} mb-1`}>
           {percent}%
         </div>
-        <div className={`text-base font-retro ${statusColor}/50`}>
+        <div
+          className={`text-base font-retro ${statusColor}/50 whitespace-nowrap overflow-hidden`}
+        >
           {DisplayRenderers.gauge(metric.verdi, metric.maks)}
         </div>
       </div>
@@ -580,7 +659,9 @@ function NormalDisplay({
         <div className={`text-xl font-bold ${statusColor} mb-1`}>
           {metric.verdi.toLocaleString("no-NO")}
         </div>
-        <div className={`text-base ${statusColor}/50`}>
+        <div
+          className={`text-base ${statusColor}/50 whitespace-nowrap overflow-hidden`}
+        >
           {DisplayRenderers.hexgrid(metric.verdi, metric.maks)}
         </div>
       </div>
@@ -590,7 +671,10 @@ function NormalDisplay({
   return (
     <div className="flex-1 flex flex-col justify-center">
       {displayComponents[metric.displayType]()}
-      <div className="text-base opacity-60 mt-auto pt-2">
+      <div
+        className="text-base opacity-60 mt-auto pt-1 truncate"
+        title={metric.description}
+      >
         {metric.description}
       </div>
     </div>
@@ -682,11 +766,11 @@ function MetricCard({ metric, glitchFrame }: MetricCardProps) {
 
   return (
     <div
-      className={`p-3 border-2 border-dashed transition-all will-change-transform min-h-[140px] flex flex-col ${crisisAnimation} ${borderClass}`}
+      className={`p-2 border-2 border-dashed transition-all will-change-transform flex flex-col ${crisisAnimation} ${borderClass}`}
     >
       <div className="flex flex-col h-full">
         {/* Header */}
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-1">
           <div className="text-base opacity-70">{metric.navn}</div>
           <LEDIndicator color={ledColor} />
         </div>
