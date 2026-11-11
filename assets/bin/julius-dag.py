@@ -12,6 +12,7 @@ Reads docs/manus/julius-2026.md, generates one clip per segment with julius.sh
 adds Kulde's effects in post (see kulde_fx), joins them with alternating framing (hard cuts, 40 ms audio crossfades, -16 LUFS) and writes
 public/video/julius/dag-NN.mp4, compressed for the app.
 """
+import os
 import re
 import shutil
 import subprocess
@@ -69,7 +70,7 @@ def coverage(clip: Path, line: str):
     import urllib.error
     import urllib.request
 
-    key = subprocess.run(["fnox", "get", "GEMINI_API_KEY"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
+    key = os.environ.get("GEMINI_API_KEY") or subprocess.run(["fnox", "get", "GEMINI_API_KEY"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
     mp3 = subprocess.run(
         ["ffmpeg", "-nostdin", "-v", "error", "-i", str(clip), "-vn", "-ac", "1", "-ar", "16000", "-f", "mp3", "-"],
         capture_output=True, check=True,
