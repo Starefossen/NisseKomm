@@ -191,14 +191,14 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
 
   const valgListe = node ? M.valgSomVises(node, save) : [];
   const PANEL =
-    "absolute inset-x-0 bottom-0 max-h-[75%] overflow-y-auto bg-black/85 border-t-2 border-(--brass) px-3 py-2";
+    "w-full overflow-y-auto border-t-2 border-(--brass) px-3 py-2 landscape:absolute landscape:inset-x-0 landscape:bottom-0 landscape:max-h-[40%] landscape:bg-black/70 portrait:bg-black portrait:max-h-[calc(100cqh-56.25cqw)]";
   const LITEN =
     "min-h-11 px-2 rounded border-2 text-lg active:scale-95 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold)";
   const MENYPUNKT =
     "min-h-11 px-3 text-left text-lg hover:text-(--gold) focus-visible:text-(--gold) focus-visible:outline-none";
 
   return (
-    <RetroWindow title={`UGLEPOSTEN: KAPITTEL ${kap.n}`} onClose={onClose}>
+    <RetroWindow title={`UGLEPOSTEN: KAPITTEL ${kap.n}`} onClose={onClose} stor>
       <div
         className="h-full flex flex-col select-none"
         style={{
@@ -208,67 +208,69 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
         }}
       >
         {/* Size container: the 16:9 stage is as large as fits, so percent hotspots stay on the image */}
-        <div className="flex-1 min-h-0 bg-black flex items-center justify-center [container-type:size]">
-          <div
-            className="relative aspect-video w-[min(100cqw,calc(100cqh*16/9))] overflow-hidden"
-            onClick={(e) => {
-              if (
-                e.target === e.currentTarget ||
-                e.target instanceof HTMLImageElement
-              )
-                setHint(true);
-            }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={
-                bildeFeil === scene.bilde
-                  ? "/village-day.jpg"
-                  : mediaUrl(scene.bilde)
-              }
-              alt={scene.navn}
-              draggable={false}
-              className="absolute inset-0 w-full h-full object-cover"
-              onError={() => setBildeFeil(scene.bilde)}
-            />
-            {!iIntro &&
-              !iUtro &&
-              !dialog &&
-              hotspots.map((h) => (
-                <button
-                  key={h.id}
-                  type="button"
-                  aria-label={h.navn}
-                  onClick={() => bruk(M.trykk(kap, save, h, verb, holder))}
-                  className={`absolute rounded min-w-11 min-h-11 ${visSoner || hint ? "border-2 border-dashed border-(--gold)" : ""} active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) focus-visible:bg-white/20`}
-                  style={{
-                    left: `${h.rect.x}%`,
-                    top: `${h.rect.y}%`,
-                    width: `${h.rect.w}%`,
-                    height: `${h.rect.h}%`,
-                  }}
-                />
-              ))}
-
-            <div className="absolute top-2 left-2 px-2 bg-black/70 text-base text-(--cold-blue) uppercase tracking-wider pointer-events-none">
-              {status}
-            </div>
-
-            {!iIntro && !iUtro && !dialog && (
-              <div className="absolute top-2 right-2 flex flex-col items-end gap-2">
-                {scene.utganger.map((u) => (
+        <div className="flex-1 min-h-0 bg-black flex items-center portrait:items-start justify-center [container-type:size]">
+          {/* Landscape: panels overlay the lower part of the scene. Portrait: they sit below it */}
+          <div className="relative w-[min(100cqw,calc(100cqh*16/9))]">
+            <div
+              className="relative aspect-video w-full overflow-hidden"
+              onClick={(e) => {
+                if (
+                  e.target === e.currentTarget ||
+                  e.target instanceof HTMLImageElement
+                )
+                  setHint(true);
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={
+                  bildeFeil === scene.bilde
+                    ? "/village-day.jpg"
+                    : mediaUrl(scene.bilde)
+                }
+                alt={scene.navn}
+                draggable={false}
+                className="absolute inset-0 w-full h-full object-cover"
+                onError={() => setBildeFeil(scene.bilde)}
+              />
+              {!iIntro &&
+                !iUtro &&
+                !dialog &&
+                hotspots.map((h) => (
                   <button
-                    key={u.til}
+                    key={h.id}
                     type="button"
-                    onClick={() => bruk(M.gaa(save, u.til))}
-                    className={`${LITEN} bg-black/70 border-(--cold-blue) text-(--cold-blue)`}
-                  >
-                    → {u.navn}
-                  </button>
+                    aria-label={h.navn}
+                    onClick={() => bruk(M.trykk(kap, save, h, verb, holder))}
+                    className={`absolute rounded min-w-11 min-h-11 ${visSoner || hint ? "border-2 border-dashed border-(--gold)" : ""} active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) focus-visible:bg-white/20`}
+                    style={{
+                      left: `${h.rect.x}%`,
+                      top: `${h.rect.y}%`,
+                      width: `${h.rect.w}%`,
+                      height: `${h.rect.h}%`,
+                    }}
+                  />
                 ))}
-              </div>
-            )}
 
+              <div className="absolute top-2 left-2 px-2 bg-black/70 text-base text-(--cold-blue) uppercase tracking-wider pointer-events-none">
+                {status}
+              </div>
+
+              {!iIntro && !iUtro && !dialog && (
+                <div className="absolute top-2 right-2 flex flex-col items-end gap-2">
+                  {scene.utganger.map((u) => (
+                    <button
+                      key={u.til}
+                      type="button"
+                      onClick={() => bruk(M.gaa(save, u.til))}
+                      className={`${LITEN} bg-black/70 border-(--cold-blue) text-(--cold-blue)`}
+                    >
+                      → {u.navn}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             {(iIntro || iUtro) && (
               <div className={`${PANEL} flex items-start gap-3`}>
                 <Portrett navn="rampenissen" />
