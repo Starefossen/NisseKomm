@@ -43,7 +43,7 @@
     "kode": "KRETSKORT",
     "reveals": {
       "files": ["feilrapport-uke-1.txt"],
-      "modules": []
+      "modules": ["SLEDEFLUKT"]
     },
     "eventyr": {
       "id": "spokelseskoden",

@@ -422,6 +422,8 @@ export interface Styring {
   steer: number;
   climb: number;
   sprang: boolean;
+  /** Held throttle, -1 (brake) to 1 (boost); SLEDEFLUKT's held buttons. */
+  gass?: number;
 }
 
 export type Hendelse =
@@ -529,6 +531,9 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     if (s.tid < s.sprangTil) mult *= 1.8;
     if (s.tid < s.løftTil) mult *= 1.3;
     if (s.tid < s.sakteTil) mult *= 0.45;
+    // Boost is a risk for the time bonus; the brake buys reading time at its cost.
+    const gass = Math.max(-1, Math.min(1, inn.gass ?? 0));
+    mult *= gass > 0 ? 1 + 0.2 * gass : 1 + 0.3 * gass;
     // The course gets faster towards the finish, so the last third is the test.
     const ramp = 1 + RAMP * Math.min(1, s.dist / e.lengde);
     s.fart = e.fart * mult * motion * ramp;
