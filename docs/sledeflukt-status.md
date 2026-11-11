@@ -62,6 +62,20 @@ simens `RING_X` × `RING_ALT`), i ulik høyde per etappe (`Blanding.høyde`: 45 
 julenatt; aldri et steg sleden ikke rekker å klatre). Like utenfor ringen: «NESTEN!». Oppløsningen er
 hevet til 640×360 med 64 farger; målinger og skjermbilder (`ringer-*.png`) ligger i scratchpad.
 
+Fase 2 på samme gren (foreldrebeslutninger 11. november):
+
+| Steg                    | Status | Hvor                                                                                                                                                                                                                                                                                   |
+| ----------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A Fri flyging på vidda  | ferdig | `VIDDA`/`VIDDA_BERGEN` og `VIDDA_STEDER` i `slede.ts` (`lagVidda`): antenna ved tjernet, Nordtoppen, Muren, Krystallgrotten, gårdene; etter løst dag 24 Nordlysporten og Bergen, «LANDÅS» bare etter løst dag 22. `antenneMesh`, `nordlysportMesh`, tette hus i `lagVerden` for Bergen |
+| B Låste steder          | ferdig | `Ting.lås` → `låst` fra `SimOpts.dag`; `passer` hopper over, `Renderer.grå` + `låsMesh`, «ÅPNER DAG N» (24 = «ÅPNER JULAFTEN», fordi 24 er en kode) på kart og HUD; startskjermen viser låste etapper uten navn, julenatt skjult                                                       |
+| C Mer å gjøre           | ferdig | Brevfugler (`fugl`, +75, kraft), rein som hopper (`hopp`), pipe som blåser tilbake (`sisteHus` + `puff`), Rampenissen på radio (`RADIO`, nordlandsk, høyst hvert 6. sekund)                                                                                                            |
+| D Toppliste per spiller | ferdig | `SPILLERE`, `GameEngine.getSledeSpiller/setSledeSpiller`, `recordSledeResultat(..., spiller, utfordringDag)` → «Navn/etappe» i `nissekomm-slede` (samme server-merge)                                                                                                                  |
+
+Målt i Playwright (ANGLE/Metal): 640×360 ligger på vsync med vidda, Bergen og låste steder (p95 16,8 ms).
+Skjermbilder: `ringer-start-dag10.png`, `ringer-vidda-antenne.png`, `ringer-vidda-laast.png`, `ringer-bergen-port.png`, `ringer-bergen.png`.
+
+Å sjekke på iPaden: p95 på 640×360 i Bergen (flest hus); om låste tinder leses som «ikke åpnet» for Håkon; om Rampenissens radiolinjer er for mange.
+
 ## Kjente hull
 
 - Ingen søskentavle (todo.md).

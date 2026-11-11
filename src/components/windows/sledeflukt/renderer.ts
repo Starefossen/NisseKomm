@@ -34,8 +34,11 @@ void main(){
 
 const FRAG = `
 precision mediump float;
-varying vec3 vCol; varying float vFog; uniform vec3 uDis;
-void main(){ gl_FragColor = vec4(mix(vCol, uDis, vFog), 1.0); }`;
+varying vec3 vCol; varying float vFog; uniform vec3 uDis; uniform float uGraa;
+void main(){
+  vec3 c = mix(vCol, vec3(0.47, 0.50, 0.56), uGraa);
+  gl_FragColor = vec4(mix(c, uDis, vFog), 1.0);
+}`;
 
 const QUAD_VERT = `
 attribute vec2 aPos; varying vec2 vUv;
@@ -179,7 +182,15 @@ export class Renderer {
       glow: 3,
       inst: 4,
     };
-    for (const n of ["uModel", "uVP", "uLys", "uKamera", "uTaake", "uDis"])
+    for (const n of [
+      "uModel",
+      "uVP",
+      "uLys",
+      "uKamera",
+      "uTaake",
+      "uDis",
+      "uGraa",
+    ])
       this.u[n] = gl.getUniformLocation(this.prog, n);
     this.sky = this.program(QUAD_VERT, SKY_FRAG, ["aPos"]);
     for (const n of [
@@ -376,6 +387,7 @@ export class Renderer {
     gl.uniform3fv(this.u.uLys, lys);
     gl.uniform2f(this.u.uTaake, h.tåke[0], h.tåke[1]);
     gl.uniform3fv(this.u.uDis, h.dis);
+    gl.uniform1f(this.u.uGraa, 0);
     gl.enableVertexAttribArray(this.a.pos);
     gl.enableVertexAttribArray(this.a.norm);
     gl.enableVertexAttribArray(this.a.col);
@@ -437,6 +449,11 @@ export class Renderer {
     this.inst.drawArraysInstancedANGLE(gl.TRIANGLES, 0, n, antall);
     this.inst.vertexAttribDivisorANGLE(this.a.inst, 0);
     gl.disableVertexAttribArray(this.a.inst);
+  }
+
+  /** Grey out what is drawn next (0 = full colour, 1 = stone grey): locked places. */
+  grå(x: number) {
+    this.gl.uniform1f(this.u.uGraa, x);
   }
 
   /** Is a world point in front of the camera and within reach? Cheap cull for per-thing draws. */

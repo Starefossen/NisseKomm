@@ -30,6 +30,11 @@ import {
   UTFORDRING_BONUS,
   utfordringKlart,
   utfordringStatus,
+  VIDDA,
+  VIDDA_BERGEN,
+  VIDDA_STEDER,
+  BERGEN_PORT,
+  BERGEN_START,
 } from "./slede";
 import { dagensUtfordring } from "./slede";
 
@@ -551,6 +556,77 @@ describe("fri flyging", () => {
     expect(maks).toBeGreaterThan(e.lengde + FRI_SLUTT - 100);
     expect(sim.s.dist).toBeLessThan(e.lengde);
     expect(sim.s.ting.every((t) => !t.ferdig || t.z <= sim.s.dist)).toBe(true);
+  });
+
+  it("the vidda has the story's places set in, locked until their day", () => {
+    const bane = lagBane(VIDDA);
+    expect(bane.filter((t) => t.type === "antenne")).toHaveLength(1);
+    expect(bane.filter((t) => t.type === "topp")).toHaveLength(5);
+    expect(bane.filter((t) => t.type === "mur")).toHaveLength(1);
+    expect(bane.filter((t) => t.type === "grotte")).toHaveLength(1);
+    expect(bane.some((t) => t.type === "nordlysport")).toBe(false);
+    for (const s of VIDDA_STEDER)
+      for (const t of bane)
+        if (Math.abs(t.z - s.z) < 1400) expect(t.lås).toBe(s.dag);
+    expect(landemerker(VIDDA, { dag: 8 }).map((l) => l.navn)).toEqual([
+      "SNØFALL",
+      "ANTENNA VED TJERNET",
+      "ÅPNER DAG 20",
+      "ÅPNER DAG 21",
+      "ÅPNER JULAFTEN",
+      "GÅRDENE",
+    ]);
+    expect(landemerker(VIDDA, { dag: 24 }).map((l) => l.navn)).toContain(
+      "KRYSTALLGROTTEN",
+    );
+    // A locked wall is scenery: flying straight at it costs nothing and pays nothing.
+    const mur = bane.find((t) => t.type === "mur")!;
+    const inn = (dag: number) => {
+      const sim = createSim(VIDDA, {
+        assist: false,
+        reduceMotion: false,
+        fri: true,
+        dag,
+      });
+      const m = sim.s.ting.find((t) => t.type === "mur")!;
+      sim.s.px = -1;
+      sim.s.alt = 100;
+      sim.s.dist = m.z - 1;
+      sim.s.first = sim.s.ting.indexOf(m);
+      return sim.step(1 / 60, still);
+    };
+    expect(mur.port).toBe(0.5);
+    expect(inn(8)).toEqual([]);
+    expect(inn(21)).toContain("krasj");
+  });
+
+  it("with day 24 solved the loop goes on through the aurora gate to Bergen", () => {
+    const bane = lagBane(VIDDA_BERGEN);
+    expect(bane.find((t) => t.type === "nordlysport")?.z).toBe(BERGEN_PORT);
+    expect(
+      bane.filter((t) => t.type === "hus" && t.z >= BERGEN_START).length,
+    ).toBeGreaterThan(15);
+    const navn = (landås: boolean) =>
+      landemerker(VIDDA_BERGEN, { dag: 24, landås }).map((l) => l.navn);
+    expect(navn(false)).toContain("BERGEN");
+    expect(navn(false)).not.toContain("LANDÅS");
+    expect(navn(true)).toContain("LANDÅS");
+    expect(landemerker(VIDDA, { dag: 24 }).map((l) => l.navn)).not.toContain(
+      "BERGEN",
+    );
+    const sim = createSim(VIDDA_BERGEN, {
+      assist: true,
+      reduceMotion: false,
+      fri: true,
+      dag: 24,
+    });
+    sim.s.dist = BERGEN_PORT - 500;
+    sim.s.first = sim.s.ting.findIndex((t) => t.z >= sim.s.dist);
+    const ev: string[] = [];
+    for (let i = 0; i < 3000 && !ev.includes("runde"); i++)
+      ev.push(...sim.step(1 / 60, still));
+    expect(ev).toContain("bergen");
+    expect(ev).toContain("runde");
   });
 
   it("names the landmarks in course order and points at the next one", () => {

@@ -8,6 +8,7 @@
 
 import { hex, type Mat4, Mesh, transform, type Vec3 } from "./gl";
 import {
+  BERGEN_START,
   HUS_PIPE,
   lagBane,
   RING_ALT,
@@ -244,6 +245,48 @@ function stjerneMesh() {
   return m.build();
 }
 
+/** The antenna by the tarn: a tall mast with a red light, the frozen tarn dark beside it. */
+function antenneMesh() {
+  const m = new Mesh();
+  m.rod([0, 0, 0], [0, 32, 0], 0.6, STEIN_LYS, 4, 0.3);
+  for (const y of [10, 20, 28])
+    m.box([0, y, 0], [5 - y / 10, 0.4, 0.4], STEIN_LYS);
+  m.box([0, 33, 0], [1.2, 1.2, 1.2], RØD, 1);
+  m.box([-52, 0.05, 0], [40, 0.3, 56], hex(0x1a2448));
+  return m.build();
+}
+
+/** Padlock over a place that has not opened yet. */
+function låsMesh() {
+  const m = new Mesh();
+  const LÅS = hex(0x9fb0cc);
+  m.box([0, 0, 0], [5, 4, 1.6], LÅS, 1);
+  for (const s of [-1, 1])
+    m.rod([s * 1.6, 2, 0], [s * 1.6, 5, 0], 0.5, LÅS, 4, 0.5, 1);
+  m.rod([-1.6, 5, 0], [1.6, 5, 0], 0.5, LÅS, 4, 0.5, 1);
+  m.box([0, -0.4, 0.9], [0.8, 1.4, 0.2], STEIN);
+  return m.build();
+}
+
+/** The aurora gate to Bergen: a green glowing arch across the lane. */
+function nordlysportMesh() {
+  const m = new Mesh();
+  const n = 10;
+  const rx = 1.3 * SPOR;
+  for (let i = 0; i < n; i++) {
+    const a0 = (i / n) * Math.PI;
+    const a1 = ((i + 1) / n) * Math.PI;
+    const p = (a: number, r: number): Vec3 => [
+      Math.cos(a) * r,
+      Math.sin(a) * 26 * (r / rx),
+      0,
+    ];
+    m.quad(p(a0, rx), p(a0, rx - 6), p(a1, rx - 6), p(a1, rx), GRØNN, 1);
+    m.quad(p(a1, rx), p(a1, rx - 6), p(a0, rx - 6), p(a0, rx), GRØNN, 1);
+  }
+  return m.build();
+}
+
 /** Rock peak, 23 units tall (sim h = 230), snow on top. */
 function toppMesh() {
   const m = new Mesh();
@@ -443,6 +486,9 @@ export interface Meshes {
   stjerne: Float32Array;
   topp: Float32Array;
   band: Float32Array;
+  antenne: Float32Array;
+  lås: Float32Array;
+  nordlysport: Float32Array;
   slede: Float32Array;
   rein: [Float32Array, Float32Array];
   bein: Float32Array;
@@ -467,6 +513,9 @@ export function meshes(): Meshes {
       stjerne: stjerneMesh(),
       topp: toppMesh(),
       band: bandMesh(),
+      antenne: antenneMesh(),
+      lås: låsMesh(),
+      nordlysport: nordlysportMesh(),
       slede: sledeMesh(),
       rein: [reinMesh(true), reinMesh(false)],
       bein: beinMesh(),
@@ -543,6 +592,10 @@ export function lagVerden(e: SledeEtappe): Verden {
     if (r() < 0.45) settHus(z, r() < 0.5 ? -1 : 1);
   for (let z = e.lengde - 1200; z < e.lengde + 900; z += 300)
     for (const s of [-1, 1]) if (r() < 0.7) settHus(z + r() * 120, s);
+  // Bergen: streets of houses on both sides, far denser than any farm road.
+  if (e.id === "vidda-bergen")
+    for (let z = BERGEN_START; z < e.lengde - 1500; z += 180)
+      for (const s of [-1, 1]) if (r() < 0.9) settHus(z + r() * 90, s);
 
   const trær: number[] = [];
   const tett = 0.5 + e.blanding.tre;
