@@ -1,10 +1,18 @@
-import { describe, it, expect, beforeEach, afterEach } from "@jest/globals";
+import {
+  describe,
+  it,
+  expect,
+  beforeEach,
+  afterEach,
+  jest,
+} from "@jest/globals";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { Nissespill } from "./Nissespill";
 import { KAPITLER, erLaastOpp, spilldag } from "./kapitler";
 import { KAPITTEL_1 } from "./kapittel1";
 import * as M from "./motor";
+import * as P from "./minispill";
 import { GameEngine } from "@/lib/game-engine";
 
 (
@@ -31,6 +39,37 @@ const tap = (el: HTMLElement, label: string) =>
     if (!btn) throw new Error(`no button ${label}`);
     btn.click();
   });
+
+/** Tile labels to tap, in order, that solve the sliding puzzle shown in the DOM (BFS). */
+function skyvLoesning(el: HTMLElement): string[] {
+  const start = [...el.querySelectorAll("button")]
+    .map((b) => b.getAttribute("aria-label") ?? "")
+    .filter((l) => l === "Tomt felt" || /^Brikke \d$/.test(l))
+    .map((l) => (l === "Tomt felt" ? P.HULL : Number(l.slice(7)) - 1));
+  expect(start).toHaveLength(9);
+  const key = (s: number[]) => s.join("");
+  const forrige = new Map<string, [string, number] | null>([
+    [key(start), null],
+  ]);
+  const koe = [start];
+  while (koe.length) {
+    const s = koe.shift()!;
+    if (P.skyvLost(s)) {
+      const ut: string[] = [];
+      for (let k = key(s), p = forrige.get(k); p; k = p[0], p = forrige.get(k))
+        ut.unshift(`Brikke ${p[1] + 1}`);
+      return ut;
+    }
+    for (let i = 0; i < 9; i++) {
+      const n = P.skyvFlytt(s, i);
+      if (n !== s && !forrige.has(key(n))) {
+        forrige.set(key(n), [key(s), s[i]]);
+        koe.push(n);
+      }
+    }
+  }
+  throw new Error("uløselig");
+}
 
 const env = process.env as Record<string, string | undefined>;
 
@@ -163,19 +202,56 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     ]);
     tap(el, "Skjema 4112-B, signert");
     tap(el, "Winter");
+    expect(el.textContent).toContain("Skrinet er låst");
+
+    // The stamp box: wheels to 1-6-4-0 (the sign's emptying time)
+    jest.useFakeTimers();
+    tap(el, "Stempelskrinet");
+    expect(el.textContent).toContain("Stempelskrinet");
+    for (const [hjul, n] of [
+      [1, 1],
+      [2, 6],
+      [3, 4],
+    ])
+      for (let i = 0; i < n; i++) tap(el, `Hjul ${hjul} ned`);
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+    expect(el.textContent).toContain("som en liten konge");
+    tap(el, "Skjema 4112-B, signert");
+    tap(el, "Winter");
     expect(el.textContent).toContain("til nød gyldig");
 
-    // Frozen hatch: warm cup
+    // Frozen hatch: warm cup, then the postcard tiles
     tap(el, "Postkassen");
     expect(el.textContent).toContain("frosset fast");
     tap(el, "IQs kaffekopp");
     tap(el, "Postkassen");
+    expect(el.textContent).toContain("Paragraf 101");
+    tap(el, "Luka");
+    for (const brikke of skyvLoesning(el)) tap(el, brikke);
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+    jest.useRealTimers();
     expect(el.textContent).toContain("TIL KAPITLENE");
     const save = GameEngine.getEventyrSave();
     expect(save?.flags).toContain("k1_ferdig");
-    expect(save?.inventory).toEqual(["bjelle"]);
     tap(el, "TIL KAPITLENE");
     expect(el.textContent).toContain("Fullført");
+  });
+
+  it("fjæra plukkes med SE, telles og overlever nytt kapittel", () => {
+    const el = mount();
+    tap(el, "SPILL");
+    tap(el, "VIDERE");
+    tap(el, "VIDERE");
+    tap(el, "VIDERE");
+    tap(el, "SE");
+    tap(el, "Noe lite");
+    expect(el.textContent).toContain("Fjær 1/2");
+    expect(find(el, "Noe lite")).toBeUndefined();
+    expect(GameEngine.getEventyrSave()?.fjaer).toEqual(["1:torget"]);
   });
 
   it("TIPS følger første uløste gåte og stopper på nivå 3", () => {
@@ -263,6 +339,17 @@ describe("Nissespill: motor", () => {
         save = u.save;
         continue;
       }
+      if (st[0] === "!") {
+        // Mini-puzzle: BRUK on the hotspot must open it, then the UI reports it solved
+        const [scene, id] = st[1].split("/");
+        save = M.gaa(save, scene).save;
+        const u = M.trykk(kap, save, hot(scene, id), null, null);
+        expect(u.puslespill).toBe(st[2]);
+        const l = M.losPuslespill(kap, save, st[2]!);
+        expect(l.lyd).toBe("success");
+        save = l.save;
+        continue;
+      }
       if (st[0] === "?") {
         // Dialog choice by its text; must be offered in the current save
         const d = kap.dialoger[st[1]];
@@ -291,8 +378,10 @@ describe("Nissespill: motor", () => {
       ["verksted", "doera", "skjema"],
       ["+", "tyttebaer", "kaffekopp"],
       ["torget", "stempelputa", "baersaft"],
+      ["!", "torget/skrinet", "skrin"],
       ["torget", "winter", "skjema_signert"],
       ["torget", "postkassen", "kaffekopp"],
+      ["!", "torget/luka", "frostluke"],
     ]);
   });
 

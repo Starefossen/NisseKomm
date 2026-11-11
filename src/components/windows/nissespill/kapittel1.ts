@@ -66,11 +66,35 @@ export const KAPITTEL_1: Kapittel = {
       ikon: "potion",
       se: "Et glass rød syltetøy med lappen «MITT. – IQ». Under lappen står det med mindre skrift: «JA, OGSÅ DU, RAMPENISSEN». Rødt, vått og dessverre eid av noen.",
     },
-    bjelle: {
-      id: "bjelle",
-      navn: "Lykkebjella",
-      ikon: "bell",
-      se: "En liten messingbjelle med en rød garntråd. Den klinger ikke. Den gnistrer. Rampenissen puster tungt gjennom skjermen.",
+  },
+  fjaerBelonning:
+    R +
+    "«To uglefjær! Knerten mista dem ikkje. Ho legg dem igjen med vilje. Det e sånn ho skriv navnet sitt.»",
+  puslespill: {
+    skrin: {
+      type: "laas",
+      tittel: "Stempelskrinet",
+      flagg: "skrin_aapent",
+      tekst:
+        "1-6-4-0. Det siste hjulet klikker, og lokket spretter opp. Inni ligger stempelet «SNØFALL POSTVESEN» på rød fløyel, som en liten konge. Winter ser opp fra skriveplata: «Tømmetiden. Selvsagt. Jeg visste det.» Han visste det ikke.",
+      hjul: [
+        ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+        ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+        ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+        ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+      ],
+      svar: ["1", "6", "4", "0"],
+    },
+    frostluke: {
+      type: "skyv",
+      tittel: "Postkortet på luka",
+      flagg: "k1_ferdig",
+      tekst:
+        "Siste bit glir på plass, og torget er helt igjen. KLIKK. Luka svinger opp. Inni ligger garnkurven, og oppi den: lykkebjella. Den klinger ikke. Den gnistrer. " +
+        R +
+        "«BJELLA MI! Og kurven lukte fortsatt mæ. Det e et kompliment. Æ tar det som et kompliment.»",
+      bilde: "spill/torget.jpg",
+      trekk: 30,
     },
   },
   kombinasjoner: [
@@ -90,6 +114,8 @@ export const KAPITTEL_1: Kapittel = {
       navn: "Torget i Snøfall",
       bilde: "spill/torget.jpg",
       utganger: [{ til: "verksted", navn: "Opp trappa til verkstedet" }],
+      // In the snow in front of the clock tower, between the stalls and the mailbox
+      fjaer: { x: 49, y: 86, w: 4, h: 6 },
       hotspots: [
         {
           id: "trappa",
@@ -135,12 +161,8 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Postkassen",
           rect: { x: 66, y: 42, w: 16, h: 36 },
           smart: "bruk",
+          vis: { uten: "hengsel_tint" },
           se: [
-            {
-              hvis: "k1_ferdig",
-              tekst:
-                "Tom. Bortsett fra ett brev til Julius og en uleselig klage på grøten. Klagen er signert «R.». Du sier ingenting.",
-            },
             {
               hvis: "postkasse_opplaast",
               tekst:
@@ -148,15 +170,10 @@ export const KAPITTEL_1: Kapittel = {
             },
             {
               tekst:
-                "En rød postkasse med messingkant. På siden henger et skilt: «Brev til Julius legges her. Klager på havregrynsgrøten sendes til feieren.» Innenfra lukter det ... ull? Og klementin.",
+                "En rød postkasse med messingkant. På siden henger et skilt: «Brev til Julius legges her. Tømmes kl. 16.40. Klager på havregrynsgrøten sendes til feieren.» Innenfra lukter det ... ull? Og klementin.",
             },
           ],
           bruk: [
-            {
-              hvis: "k1_ferdig",
-              tekst:
-                "Kurven er hentet. Luka står og slenger. Winter ser på den som om den skylder ham penger.",
-            },
             {
               hvis: "postkasse_opplaast",
               tekst:
@@ -171,14 +188,12 @@ export const KAPITTEL_1: Kapittel = {
             {
               item: "kaffekopp",
               hvis: "postkasse_opplaast",
-              uten: "k1_ferdig",
-              flagg: "k1_ferdig",
-              gir: "bjelle",
+              flagg: "hengsel_tint",
               forbruker: true,
               tekst:
-                "Du holder den varme koppen mot hengslet. Det drypper, det knaker ... og luka glir opp! Inni ligger garnkurven, og oppi den: lykkebjella. " +
+                "Du holder den varme koppen mot hengslet. Det drypper, det knaker ... og luka glir opp en tomme. Så stopper den. På innsiden av luka har Winter limt et postkort av torget, og frosten har skjøvet det i ni biter. Winter: «Frostlås. Paragraf 101. Luka åpnes når bildet er helt.» " +
                 R +
-                "«BJELLA MI! Og kurven lukte fortsatt mæ. Det e et kompliment. Æ tar det som et kompliment.»",
+                "«Han har PARAGRAF på det! Skyv bitan på plass, så e vi inne.»",
             },
             {
               item: "kaffekopp",
@@ -202,22 +217,42 @@ export const KAPITTEL_1: Kapittel = {
           },
         },
         {
+          id: "luka",
+          navn: "Luka",
+          rect: { x: 66, y: 42, w: 16, h: 36 },
+          smart: "bruk",
+          vis: { hvis: "hengsel_tint" },
+          puslespill: "frostluke",
+          se: [
+            {
+              hvis: "k1_ferdig",
+              tekst:
+                "Tom. Bortsett fra ett brev til Julius og en uleselig klage på grøten. Klagen er signert «R.». Du sier ingenting.",
+            },
+            {
+              tekst:
+                "Luka står på gløtt. På innsiden sitter et postkort av torget i ni biter, skjøvet hulter til bulter av frosten. Én rute er tom. Bitene kan skyves dit.",
+            },
+          ],
+          bruk: "Kurven er hentet. Luka står og slenger. Winter ser på den som om den skylder ham penger.",
+        },
+        {
           id: "stempelputa",
           navn: "Stempelputa",
-          rect: { x: 65, y: 78, w: 17, h: 12 },
+          rect: { x: 65, y: 78, w: 8, h: 12 },
           smart: "se",
           se: [
             {
               hvis: "stempel_vaat",
               tekst:
-                "Puta er knallrød og våt. Stempelet ved siden av ser nesten lettet ut. Det har ventet på dette siden i fjor.",
+                "Puta er knallrød og våt. Skrinet ved siden av ser nesten lettet ut. Det har ventet på dette siden i fjor.",
             },
             {
               tekst:
-                "På messinghylla på postkassen ligger et stempel og ei stempelpute. Puta er tørr som en kjeks fra i fjor. Det lukter svakt av rødt, hvis rødt har en lukt. Det har det her.",
+                "På messinghylla på postkassen ligger ei stempelpute og et lite skrin. Puta er tørr som en kjeks fra i fjor. Det lukter svakt av rødt, hvis rødt har en lukt. Det har det her.",
             },
           ],
-          bruk: "Du trykker stempelet mot puta. Tørt klikk. Ikke en flekk. Stempelet sier «SNØFALL POSTVESEN» og mener det, men ingen kan se det.",
+          bruk: "Du trykker fingeren mot puta. Tørr. Ikke en flekk. Stempelet ligger i skrinet ved siden av og venter.",
           bruker: [
             {
               item: "baersaft",
@@ -243,6 +278,32 @@ export const KAPITTEL_1: Kapittel = {
           },
         },
         {
+          id: "skrinet",
+          navn: "Stempelskrinet",
+          rect: { x: 74, y: 78, w: 8, h: 12 },
+          smart: "bruk",
+          puslespill: "skrin",
+          se: [
+            {
+              hvis: "skrin_aapent",
+              tekst:
+                "Skrinet står åpent. Stempelet ligger på rød fløyel og ser viktig ut. Hjulene står på 1-6-4-0. Winter har allerede notert at noen åpnet det.",
+            },
+            {
+              tekst:
+                "Et lite messingskrin med fire tallhjul, fastskrudd i hylla. Gravert i lokket: «STEMPEL. ÅPNES VED TØMMING.» Winter låser inn stempelet mellom hver stempling. Hver eneste.",
+            },
+          ],
+          bruk: "Skrinet står åpent. Stempelet får ligge, det er Winter som skal bruke det. Han har et eget grep for stempler.",
+          feil: {
+            kaffekopp:
+              "Du setter koppen på skrinet. Det blir en ring. Winter: «Det der skrinet har stått ringfritt siden 1987.» Du tørker den vekk. Han noterer likevel.",
+            baersaft:
+              R +
+              "«Ikkje på skrinet! Saften ska på PUTA. Skrinet ska bare opnes.»",
+          },
+        },
+        {
           id: "winter",
           navn: "Winter",
           rect: { x: 82, y: 28, w: 18, h: 70 },
@@ -253,14 +314,21 @@ export const KAPITTEL_1: Kapittel = {
           bruker: [
             {
               item: "skjema_signert",
-              hvis: "stempel_vaat",
+              alle: [{ hvis: "stempel_vaat" }, { hvis: "skrin_aapent" }],
               uten: "postkasse_opplaast",
               flagg: "postkasse_opplaast",
               forbruker: true,
               tekst:
-                "Winter tar skjemaet med to fingertupper, leser felt 3-A, nikker, trykker stempelet i puta og ... SMAKK. Et knallrødt avtrykk. Han snuser på det. «Ureglementert bærlukt. Brunsvidd hjørne. Men til nød gyldig.» Han låser opp postkassen med en liten messingnøkkel. " +
+                "Winter tar skjemaet med to fingertupper, leser felt 3-A, nikker, løfter stempelet ut av skrinet, trykker det i puta og ... SMAKK. Et knallrødt avtrykk. Han snuser på det. «Ureglementert bærlukt. Brunsvidd hjørne. Men til nød gyldig.» Han låser opp postkassen med en liten messingnøkkel. " +
                 R +
                 "«HAHA! Han lukta på det! Fort, før han finn en paragraf til!»",
+            },
+            {
+              item: "skjema_signert",
+              hvis: "stempel_vaat",
+              uten: "skrin_aapent",
+              tekst:
+                "Winter leser felt 3-A og nikker. Så ser han på den våte puta, og så på skrinet. «Puta er godkjent. Stempelet ligger i skrinet. Skrinet er låst. Jeg åpner ikke skrin i arbeidstiden.» Han gir skjemaet tilbake.",
             },
           ],
           feil: {
@@ -276,8 +344,6 @@ export const KAPITTEL_1: Kapittel = {
               "Winter: «Hva er DET? Nei. Ikke svar. Jeg vil ikke ha det i protokollen.»",
             syltetoey:
               "Winter leser lappen. «MITT. – IQ.» Han ser på deg. «Dette er det best merkede løsøret i hele Snøfall. Lever det tilbake før jeg må lage et skjema for det.»",
-            bjelle:
-              "Winter kikker på bjella. «Umerket løsøre.» Du gjemmer den fort under vingen.",
           },
         },
       ],
@@ -287,6 +353,8 @@ export const KAPITTEL_1: Kapittel = {
       navn: "IQs verksted",
       bilde: "spill/iq-verksted.jpg",
       utganger: [{ til: "torget", navn: "Ned trappa til torget" }],
+      // On the bench between the blackboard and the coffee cup
+      fjaer: { x: 38, y: 62, w: 4, h: 6 },
       hotspots: [
         {
           id: "sikringsskapet",
@@ -516,9 +584,16 @@ export const KAPITTEL_1: Kapittel = {
               flagg: "winter_snakket",
             },
             {
-              tekst: "Vær så god: signert skjema, og stempelputa er våt!",
+              tekst: "Puta er våt! Stempel nå.",
               harItem: "skjema_signert",
               hvis: "stempel_vaat",
+              uten: "skrin_aapent",
+              neste: "skrin_laast",
+            },
+            {
+              tekst: "Vær så god: signert skjema, våt pute og åpent skrin!",
+              harItem: "skjema_signert",
+              alle: [{ hvis: "stempel_vaat" }, { hvis: "skrin_aapent" }],
               uten: "postkasse_opplaast",
               neste: "stemplet",
               flagg: "postkasse_opplaast",
@@ -573,7 +648,24 @@ export const KAPITTEL_1: Kapittel = {
             "«Stempelputa er tørr. Tørr som julekake fra i fjor. Uten farge, intet stempel. Uten stempel, intet skjema. Uten skjema, ingen kurv. Det er ikke meg. Det er systemet. Jeg er bare systemets skjerf.»",
           rampenissen:
             "«Tørr pute? Da treng vi nåkka vått og rødt. Tynt. Og helst varmt, for alt her e frossent, inkludert Winter.»",
-          valg: [{ tekst: "Skjønner. Vi finner noe rødt." }],
+          valg: [
+            { tekst: "Og selve stempelet?", neste: "skrin" },
+            { tekst: "Skjønner. Vi finner noe rødt." },
+          ],
+        },
+        skrin: {
+          tekst:
+            "«Stempelet ligger i skrinet på hylla. Låst, selvsagt. Skrinet åpnes med tømmetiden. Jeg husker ikke tømmetiden. Den står på skiltet. Jeg skriver skilt, jeg leser dem ikke.»",
+          rampenissen:
+            "«Tallhjul og et skilt. Det e nesten for lett. Æ sei nesten.»",
+          valg: [{ tekst: "Vi leser skiltet." }],
+        },
+        skrin_laast: {
+          tekst:
+            "Winter kikker på puta. «Våt. Godkjent rød.» Så på skrinet. «Låst. Stempelet ligger der inne, og jeg åpner ikke skrin i arbeidstiden. Tømmetiden står på skiltet. Hjulene står på skrinet. Resten er hoderegning, og hoderegning er ikke min paragraf.»",
+          rampenissen:
+            "«Han veit koden sjøl og lar oss gjør jobben. Æ har respekt for det. Litt.»",
+          valg: [{ tekst: "Vi åpner skrinet." }],
         },
         rampen: {
           tekst:
@@ -719,15 +811,37 @@ export const KAPITTEL_1: Kapittel = {
       ],
     },
     {
+      id: "skrin",
+      ferdig: "skrin_aapent",
+      tips: [
+        R +
+          "«Stempelet ligg i skrinet på hylla, med fire tallhjul. Det står nåkka gravert på lokket. SE på det.»",
+        R +
+          "«Åpnes ved tømming. Når tømmes postkassa? Det står på skiltet på postkassa. SE på ho.»",
+        R +
+          "«Tømmes klokka 16.40. Still hjulan på 1, 6, 4 og 0. Winter later som han ikkje ser på.»",
+      ],
+    },
+    {
       id: "skjema",
       ferdig: "postkasse_opplaast",
       tips: [
         R +
-          "«Signert skjema og våt pute. No mangle bare at Winter gjør jobben sin.»",
+          "«Signert skjema, våt pute og åpent skrin. No mangle bare at Winter gjør jobben sin.»",
         R +
           "«Gi det signerte skjemaet te Winter, eller SNAKK med han og vis det fram.»",
         R +
-          "«Bruk «Skjema 4112-B, signert» på Winter når stempelputa e våt. Han stemple, og han låse opp.»",
+          "«Bruk «Skjema 4112-B, signert» på Winter når stempelputa e våt og skrinet e åpent. Han stemple, og han låse opp.»",
+      ],
+    },
+    {
+      id: "hengsel",
+      ferdig: "hengsel_tint",
+      tips: [
+        R +
+          "«Låsen e åpen, men luka sitt fast. Frossen. Ka e det som smelte is? Ikkje paragrafa.»",
+        R + "«Nåkka varmt mot hengslet. Har vi nåkka varmt i lomma ennå?»",
+        R + "«Bruk den varme kaffekoppen på postkassa.»",
       ],
     },
     {
@@ -735,9 +849,11 @@ export const KAPITTEL_1: Kapittel = {
       ferdig: "k1_ferdig",
       tips: [
         R +
-          "«Låsen e åpen, men luka sitt fast. Frossen. Ka e det som smelte is? Ikkje paragrafa.»",
-        R + "«Nåkka varmt mot hengslet. Har vi nåkka varmt i lomma ennå?»",
-        R + "«Bruk den varme kaffekoppen på postkassa.»",
+          "«Postkortet på innsida av luka e i ni bita. Winter vil ha bildet heilt før luka går opp. Sjølsagt vil han det.»",
+        R +
+          "«Trykk på en bit ved sida av det tomme feltet, så glir han dit. Få hjørnan på plass først, så resten.»",
+        R +
+          "«Øverste rad først: trapp, hus, urtårn. Så midten. Dem to siste bitan nederst går rundt det tomme feltet te dem sitt. Ta deg tid, æ har heile dagen. Æ har ikkje nåkka anna.»",
       ],
     },
   ],
