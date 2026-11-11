@@ -13,6 +13,9 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - Serie-Håkon brukes ikke, fordi han har samme navn som sønnen.
 - Karakterene skal være tro mot arket. Ikke alt trenger å være politisk korrekt; litt kantete voksenhumor er velkommen.
 - Julius skal være levende og engasjerende. Vi godtar noen feil i videoene framfor en Julius som ikke gjør noe.
+- 2026-11-11: Rampenissen bor i familiens hus hele desember. IQ sendte ham ned direktelinjen fra loftet i Snøfall natt til 1. desember; han sitter i hylla i stua og rapporterer til Snøfall over radio og linjen. Han er ikke i Snøfall i egen person før han reiser. Hvorfor: barna skal kjenne ham som den som er fysisk hos dem.
+- 2026-11-11: Rampenissens oppdrag er også det klassiske: han ser hva barna gjør og rapporterer til Julius (rapporten i videoene, Snill-listen dag 22–24). Dag 24 sies det rett ut at alle tre sto på listen. Hvorfor: det er nissens jobb, og det gir finalen en grunn.
+- 2026-11-11: Dag 24: han reiser natt til 24. desember, like brått som han kom (bakpå Trixters slede når krystallet legges under treet). Om morgenen er dukken borte; gullkonvolutten med avskjedsbrevet henger der han satt i treet. Brevet er bokmål og personlig: hva han så hos hver av Kristian, Håkon og Hanna, at de sto på listen, og ett lite råd. Radioklippet dag 24 er sendt fra loftet i Snøfall etter hjemkomsten (landsbylyd bak): hilsener fra IQ, Hjerterud, Winter, Trixter og Julius i hans ord, så «te neste år». Hvorfor: avskjeden skal kjennes, og den siste hilsenen kommer hjemmefra.
 
 ## Julius-manus (2026-11-10/11)
 

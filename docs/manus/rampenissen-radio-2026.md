@@ -1,6 +1,6 @@
 # Rampenissen på Morgenrådet 2026 – radioklipp
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «død. Nesten.», 15 skåla, 23 tempus) etter ja fra Hans. Klargjort for TTS 11. november etter ja fra Hans: lengde og bekreftelser (dag 6, 14, 15, 24), tallet i dag 8, Hanna i dag 21, apokope (7, 16, 17, 18, 22), dag 23 tempus.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «død. Nesten.», 15 skåla, 23 tempus) etter ja fra Hans. Klargjort for TTS 11. november etter ja fra Hans: lengde og bekreftelser (dag 6, 14, 15, 24), tallet i dag 8, Hanna i dag 21, apokope (7, 16, 17, 18, 22), dag 23 tempus. Dag 24 skrevet om 11. november etter ja fra Hans: sendt fra Snøfall etter hjemkomsten, hilsener fra de andre, rapporten levert (se `docs/beslutninger.md`).
 
 Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storyboard-2026.md` (§2 kunnskapstidslinje, §3 radiolinjer), `docs/gaater-2026.md`. Format: `varden-morgenradet.md`.
 
@@ -23,7 +23,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 - Ett ferdiginnspilt klipp per dag med Rampenissens faste stemme, 30–50 s. Leveres til Morgenrådet som gjesteinnslag og spilles ordrett. Birk og Lyng introduserer og reagerer; de kjenner ikke Snøfall og sier aldri noe om koder.
 - `intro_hint` er én linje Birk eller Lyng kan bruke før klippet. Den røper ingenting.
 - Hverdager går klippet i 06-sendingen, helg (5, 6, 12, 13, 19, 20) i 09-sendingen; helgeklippene er skrevet for en familie som er hjemme.
-- Klippet bærer tre ting: hva som skjedde i natt (sett fra gulvet på Landås), hvordan Rampenissen har det, og en bekreftelse av gårsdagen. Det bærer aldri bokstaver, tall fra koden eller hvor noe ligger. Streken omtaler han fra sin egen side, uten å innrømme alt.
+- Klippet bærer tre ting: hva som skjedde i natt (sett fra gulvet på Landås; dag 24 fra loftet i Snøfall, dit han reiste i natt), hvordan Rampenissen har det, og en bekreftelse av gårsdagen. Det bærer aldri bokstaver, tall fra koden eller hvor noe ligger. Streken omtaler han fra sin egen side, uten å innrømme alt.
 - Kunnskapstidslinje (storyboard §2): han sier ikke navnet på radio dag 7, hører sukket dag 12, vet hvem Vintervokteren er fra kvelden dag 15, og bruker aldri «fiende» etter det. Dag 20–21: holde varmen inne, porten åpen. Dag 23 vet han ikke hva som ligger under treet.
 - Rampenissen sier «Kulde» om det som sender fra dag 8. Slang bare dag 8 og 20 (dag 3 står på speilet, ikke i klippet).
 - Lydregi står på egen linje (`Lydregi:`) og er for produksjonen. Inne i klippet står bare det som skal sies.
@@ -218,11 +218,13 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 24 (to) – God Jul på Landås · M6
 
-**Strek:** sover inni gullkonvolutten under treet med sløyfe på hodet, liten pappeske som koffert ved siden av.
+**Strek:** ingen dukke. Han reiste i natt, like brått som han kom: der han satt i treet henger gullkonvolutten med avskjedsbrevet, og under treet står pappesken med sløyfe som pakket koffert. Klippet er sendt fra loftet i Snøfall etter hjemkomsten.
 
-**Klipp:** «God morra. Det e julaften. Det e Rampenissen, og æ kviskre, for æ har nettopp våkna i en konvolutt. En stor gullkonvolutt. Med sløyfe på hodet. Men hør, hør: dem landa. Æ såg det. Æ sto i vinduet til dem va forbi. Så sovna æ. Dem fløy over grotta først, lavt, med alle lysan på. Og nåkka blått fløy opp og møtte dem. Rolig. Ikkje redd. Så fløy dem videre, hit, over fjellet. Kofferten min e pakka. Æ reise i kveld, tilbake til loftet. Takk for fruktskåla. Takk for sofaen. Takk for at dokker holdt varmen. God jul, Kristian. God jul, Håkon. God jul, Hanna. Over. Og ut.»
+**Lydregi:** landsbylyd lavt bak hele klippet (bjeller, en dør, verkstedet til IQ); ingen skurr.
 
-**intro_hint:** «Siste melding fra gjesten vår i år. Han hvisker.»
+**Klipp:** «God morra, og god jul! Det e Rampenissen, og æ e heime. På loftet i Snøfall, i garnkurven. Trixter la krystallet under treet dokkers i natt, og æ hoppa bakpå. Ingen vekking; sånn kom æ også. Rapporten e levert. Julius las ho med brilla på, og dokker sto på lista, alle tre. Hilsena: IQ sei linja holdt, og at han aldri va bekymra. Han va bekymra. Hjerterud sei takk for at dokker spiste klementinan. Winter sei tallan stemte. Trixter sei æ va tung bakpå. Julius sei sitt sjøl i dag. Brevet mitt heng der æ satt. Takk for fruktskåla. God jul, Kristian, Håkon og Hanna. Te neste år. Over og ut.»
+
+**intro_hint:** «Siste melding fra gjesten vår i år. Han ringer hjemmefra, sier han. Vi vet ikke hvor det er.»
 
 ---
 
@@ -230,31 +232,31 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 Ord = talte ord i klippet. Sek = ord × 0,44 (målt tempo på dag 1–5). «Kode/hvor» = klippet sier ingen bokstav eller tall fra koden, ikke selve kodeordet, og ikke hvor brikke H ligger. Streken beskriver han alltid fra sin egen plass; den er synlig for barna uansett.
 
-| Dag | Kode         | Ord | Sek | Sending | Kode/hvor       | Merknad                                                                      |
-| --- | ------------ | --- | --- | ------- | --------------- | ---------------------------------------------------------------------------- |
-| 1   | SIGNAL       | 101 | 44  | 06      | ok              |                                                                              |
-| 2   | 48           | 98  | 43  | 06      | ok              | «Tre sikringer» er antall, ikke tall fra koden (gåtedok. reserve)            |
-| 3   | PRISME       | 105 | 46  | 06      | ok              |                                                                              |
-| 4   | KOMPASS      | 115 | 51  | 06      | ok              | «Jeg har laget en pil. Av noe.» (låst storyboard), ingen plass               |
-| 5   | ULRIKEN      | 107 | 47  | 09      | ok              | Fuglen nevnes uten sted                                                      |
-| 6   | LYKT         | 110 | 48  | 09      | ok              | Storyboardets «lommelykten» er byttet til «den lille lampen», som i e-posten |
-| 7   | KULDE        | 109 | 48  | 06      | ok, med merknad | «Det som skurrer, er kaldt» er låst storyboardlinje; navnet sies ikke        |
-| 8   | KRETSKORT    | 100 | 44  | 06      | ok              | Slang 1 av 2                                                                 |
-| 9   | 24           | 100 | 44  | 06      | ok              | Ingen antall eller armer                                                     |
-| 10  | SPEKTER      | 109 | 48  | 06      | ok              | «rundt i stua» fra historiedok. er tatt ut                                   |
-| 11  | 75           | 101 | 44  | 06      | ok              |                                                                              |
-| 12  | MELODI       | 110 | 48  | 09      | ok              | Glassene nevnes ikke                                                         |
-| 13  | SAFRAN       | 105 | 46  | 09      | ok              |                                                                              |
-| 14  | ORIGAMI      | 111 | 49  | 06      | ok              |                                                                              |
-| 15  | KARAMELL     | 110 | 48  | 06      | ok              | Verken sukker eller sirup nevnes                                             |
-| 16  | SORTERING    | 110 | 48  | 06      | ok              | «ryddet», aldri «sortere»                                                    |
-| 17  | NORDLYS      | 105 | 46  | 06      | ok              | «grønt over Ulriken», aldri «nord» + «lys»                                   |
-| 18  | TURBULENS    | 106 | 47  | 06      | ok              | «hoppet», ikke «ristet»                                                      |
-| 19  | GULROT       | 109 | 48  | 09      | ok              | «førti av dem», aldri hva                                                    |
-| 20  | TURBO        | 108 | 48  | 09      | ok              | Slang 2 av 2; varme inne, ingen ute                                          |
-| 21  | BRANNMUR     | 113 | 50  | 06      | ok, med merknad | «bokmuren»/«muren» er låst framing; første ledd sies ikke                    |
-| 22  | LANDÅS       | 108 | 48  | 06      | ok              | Stedsnavnet unngås hele klippet; «landingen» byttet til «julenatt»           |
-| 23  | STJERNEKLART | 111 | 49  | 06      | ok              |                                                                              |
-| 24  | JULEMAGI     | 108 | 48  | 06      | ok              | «God jul» er høytidsnavnet Julius selv ber dem sette foran                   |
+| Dag | Kode         | Ord | Sek | Sending | Kode/hvor       | Merknad                                                                                    |
+| --- | ------------ | --- | --- | ------- | --------------- | ------------------------------------------------------------------------------------------ |
+| 1   | SIGNAL       | 101 | 42  | 06      | ok              |                                                                                            |
+| 2   | 48           | 98  | 41  | 06      | ok              | «Tre sikringer» er antall, ikke tall fra koden (gåtedok. reserve)                          |
+| 3   | PRISME       | 105 | 44  | 06      | ok              |                                                                                            |
+| 4   | KOMPASS      | 115 | 48  | 06      | ok              | «Jeg har laget en pil. Av noe.» (låst storyboard), ingen plass                             |
+| 5   | ULRIKEN      | 107 | 45  | 09      | ok              | Fuglen nevnes uten sted                                                                    |
+| 6   | LYKT         | 110 | 46  | 09      | ok              | Storyboardets «lommelykten» er byttet til «den lille lampen», som i e-posten               |
+| 7   | KULDE        | 109 | 45  | 06      | ok, med merknad | «Det som skurrer, er kaldt» er låst storyboardlinje; navnet sies ikke                      |
+| 8   | KRETSKORT    | 100 | 42  | 06      | ok              | Slang 1 av 2                                                                               |
+| 9   | 24           | 100 | 42  | 06      | ok              | Ingen antall eller armer                                                                   |
+| 10  | SPEKTER      | 109 | 45  | 06      | ok              | «rundt i stua» fra historiedok. er tatt ut                                                 |
+| 11  | 75           | 101 | 42  | 06      | ok              |                                                                                            |
+| 12  | MELODI       | 110 | 46  | 09      | ok              | Glassene nevnes ikke                                                                       |
+| 13  | SAFRAN       | 105 | 44  | 09      | ok              |                                                                                            |
+| 14  | ORIGAMI      | 111 | 46  | 06      | ok              |                                                                                            |
+| 15  | KARAMELL     | 110 | 46  | 06      | ok              | Verken sukker eller sirup nevnes                                                           |
+| 16  | SORTERING    | 110 | 46  | 06      | ok              | «ryddet», aldri «sortere»                                                                  |
+| 17  | NORDLYS      | 105 | 44  | 06      | ok              | «grønt over Ulriken», aldri «nord» + «lys»                                                 |
+| 18  | TURBULENS    | 106 | 44  | 06      | ok              | «hoppet», ikke «ristet»                                                                    |
+| 19  | GULROT       | 109 | 45  | 09      | ok              | «førti av dem», aldri hva                                                                  |
+| 20  | TURBO        | 108 | 45  | 09      | ok              | Slang 2 av 2; varme inne, ingen ute                                                        |
+| 21  | BRANNMUR     | 113 | 47  | 06      | ok, med merknad | «bokmuren»/«muren» er låst framing; første ledd sies ikke                                  |
+| 22  | LANDÅS       | 108 | 45  | 06      | ok              | Stedsnavnet unngås hele klippet; «landingen» byttet til «julenatt»                         |
+| 23  | STJERNEKLART | 111 | 46  | 06      | ok              |                                                                                            |
+| 24  | JULEMAGI     | 111 | 46  | 06      | ok              | «God jul» er høytidsnavnet Julius selv ber dem sette foran; sendt fra Snøfall, ingen strek |
 
-Sum: 2 569 ord, snitt 107 per dag (cirka 47 s).
+Sum: 2 572 ord, snitt 107 per dag (cirka 45 s).

@@ -526,7 +526,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 ### Dag 14 (ma) – Hemmeligheten i Papirvingene · ORIGAMI · Den blå fuglen
 
 - `tittel`: Hemmeligheten i Papirvingene
-- `nissemail_tekst` (80 ord): Winter åpnet brevfuglene i natt! 🕊️ Og det kom én fugl ingen hadde sendt. Blå. Den satt i vinduskarmen til Julius, med et brev fryst fast til vingen. Jeg brettet serviettene deres til fugler og sov i en båt i vasken. Håkon, du fant arket i båten. Ser du bokstaver uten plass, har arket en brett til. Hanna, hvis du vil: hold lykten. Kristian: Winter har et ord for det vi gjør med papir i dag. Se radaren i Brevfugler i kveld. – Rampenissen
+- `nissemail_tekst` (82 ord): Winter åpnet brevfuglene i natt! 🕊️ Og det kom én fugl ingen hadde sendt. Blå. Den satt i vinduskarmen til Julius, med et brev fryst fast til vingen. Jeg brettet serviettene deres til fugler og sov i en båt i vasken. Håkon, du fant arket i båten. Ser du bokstaver uten plass, har arket en brett til. Hanna, hvis du vil: hold lykten. Kristian: Winter har et ord for det vi gjør med papir i dag. Se radaren i Brevfugler i kveld. – Rampenissen
 - `julius_ps`: Winter har aldri fått en fugl han ikke har sendt. Han sover ikke i natt. Serviettene deres er visst fugler nå, alle sammen; Rampenissen kaller det «en flokk». Den blå fuglen vises på radaren i Brevfugler.
 - `daily_alerts`: 🕊️ WINTER: Brevfuglene er sluppet. Én fugl ingen har sendt.
 - NisseNet: `SNOFALL-HISTORIER/brevfugl-finale.txt` **erstattes** av `brevfugl-historie.txt` (`afterDay: 14`):
@@ -765,22 +765,27 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 ### Dag 24 (to) – God Jul på Landås · JULEMAGI · M6 Tøvær
 
 - `tittel`: God Jul på Landås
-- `nissemail_tekst` (80 ord): De landet. 🎄 Jeg så det. De fløy over grotten først, lavt, med alle lysene på, og noe blått fløy opp og møtte dem. Jeg reiser hjem i kveld. I kofferten min lå tre ting dere kjenner igjen fra desember. Takk for at du leste brevet mitt høyt, Håkon. Kristian: rutekortet lå i konvolutten, lappene har tegn, og Julius sier resten. Hanna, hvis du vil: du vet hvilken dag hver ting kommer fra. Takk for lånet av fruktskålen. Og takk for alt. – Rampenissen
-- `julius_ps`: Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Ved siden av ligger den siste klementinen fra Hjerteruds niste. Varmt og kaldt, side om side. Rampenissen sov i gullkonvolutten med sløyfe på hodet og fraktesken fra første desember som koffert. God jul, Kristian, Håkon og Hanna.
-- `daily_alerts` (fem): 🎅 JULIUS: God jul, Kristian, Håkon og Hanna. Det er ikke kaldt der nede lenger. · ❄️ ORAKELET: Frostgrad 0 %. Tøvær. · 🎄 HJERTERUD: God jul til hele huset på Landås. · 🧝 RAMPENISSEN: Takk for lånet av fruktskålen. Vi ses neste desember. · 🕊️ WINTER: Den blå fuglen fløy hjem. Brevet har tint.
+- `nissemail_tekst` (74 ord): Jeg er hjemme i Snøfall. 🎄 Trixter la krystallet under treet deres i natt, og jeg hoppet bakpå da han dro. Ingen vekking; det var sånn jeg kom også. Brevet mitt henger der jeg satt. Håkon: les det høyt. Kristian: rutekortet ligger i konvolutten, lappene har tegn, og Julius sier resten. Hanna, hvis du vil: du vet hvilken dag hver ting i esken kommer fra. Takk for lånet av fruktskålen. Og takk for alt. – Rampenissen
+- `julius_ps`: Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Ved siden av ligger den siste klementinen fra Hjerteruds niste. Varmt og kaldt, side om side. Rampenissen kom hjem i natt, bakpå sleden, like brått som han dro ned. Han leverte rapporten sin før han la seg i garnkurven, og jeg har lest den. Alle tre. God jul, Kristian, Håkon og Hanna.
+- `daily_alerts` (fem): 🎅 JULIUS: God jul, Kristian, Håkon og Hanna. Det er ikke kaldt der nede lenger. · ❄️ ORAKELET: Frostgrad 0 %. Tøvær. · 🎄 HJERTERUD: God jul til hele huset på Landås. · 🧝 RAMPENISSEN: Heime på loftet. Brevet heng der æ satt. Te neste år! · 🕊️ WINTER: Den blå fuglen fløy hjem. Brevet har tint.
 - NisseNet: ingen nye. Fargesamlerens arkiv står komplett.
 - Kulde: Brevfugler, brevet tiner (A8). Skjerm-kort «God jul fra Snøfall».
-- Avskjedsbrevet fra Rampenissen (i gullkonvolutten, trykkes med `dag24-suvenirlapper.pdf`):
+- Avskjedsbrevet fra Rampenissen (i gullkonvolutten der han satt i treet; skrives av for hånd eller skrives ut fra denne teksten, `dag24-suvenirlapper.pdf` har bare lappene og rutekortet):
 
   > Kjære Kristian, Håkon og Hanna.
-  > Jeg reiser hjem i kveld. Jeg har sovet i fruktskålen deres, i fryseren deres, i en sokk og i brødboksen. Det var det beste året jeg har hatt.
-  > I kofferten ligger tre ting dere har brukt før. Lappene har tegn; tavla deres vet resten. Legg dem i rutene.
-  > Hvis noe mangler, ligger IQs kopier under dette brevet. Han stoler ikke på meg.
-  > Takk for lånet av fruktskålen. Vi ses neste desember.
+  > Jeg dro i natt. Like brått som jeg kom, bare uten klementiner. Trixter hadde ikke tid til å vente, og jeg er dårlig til å si ha det. Så jeg skriver det i stedet.
+  > Kristian: du så tegnene før alle andre, og du lot de andre finne dem likevel. Det er det vanskeligste som finnes.
+  > Håkon: du leste høyt når det knitret, og du lette der ingen andre gadd å lete. Og du fant det.
+  > Hanna: du fant alt som lå lavt, og du flyttet meg forsiktig hver eneste gang. Ingen andre gjorde det.
+  > Rapporten min er levert. Julius leste den i natt, med briller på. Dere sto på listen, alle tre. Listen har ingen slem side, men jeg sjekket likevel.
+  > I esken ligger tre ting dere har brukt før. Lappene har tegn; tavla deres vet resten. Legg dem i rutene. Hvis noe mangler, ligger IQs kopier under dette brevet. Han stoler ikke på meg.
+  > Et råd fra en som har sittet fast i en sokk: å rope på hjelp er ikke juks. Det er sånn man kommer løs.
+  > Takk for lånet av fruktskålen. Og for sofaen, fryseren og brødboksen. Det var det beste året jeg har hatt.
+  > Vi ses neste desember. Jeg lander mykt.
   > – Rampenissen
 
-- `rampenissen_rampestrek`: Ligger og sover inni den store gullkonvolutten under treet med en sløyfe på hodet og en liten pappeske som pakket koffert ved siden av.
-- `fysisk_hint`: Pappesken med sløyfe ved konvolutten: perlen (dag 3) med lapp `tegn U · 2`, rødfilteret (dag 10) `tegn E · 4`, båndbiten (dag 17) `tegn G · 7` (`dag24-suvenirlapper.pdf`). I konvolutten: avskjedsbrevet, rutekort med åtte ruter og **alltid** de tre reservelappene («IQs kopi») under brevet. Krystallet som ikke smelter under treet, med `dag24-krystallkort.pdf`: «TAKK FOR LYSET» i tegn. Løsning: Håkon leser brevet og legger lappene, Kristian slår opp tegnene: `_ U _ E _ _ G _`. Julius: høytiden foran, pluss det trollmenn later som de har. Kode JULEMAGI. Så brevet i Brevfugler, finale, diplom, merket Snøfalls venn. Lett med vilje; mangler tavla et tegn, er bokstavene U, E, G. Hanna, hvis hun vil: åpner kofferten og sier hvilken dag hver ting kommer fra.
+- `rampenissen_rampestrek`: Borte. Reiste i natt, like brått som han kom. Der han satt i treet henger den store gullkonvolutten med avskjedsbrevet, og under treet står den lille pappesken med sløyfe, pakket som en koffert han lot stå igjen.
+- `fysisk_hint`: Dukken legges bort natt til 24. Pappesken med sløyfe under treet, konvolutten i treet der han satt: perlen (dag 3) med lapp `tegn U · 2`, rødfilteret (dag 10) `tegn E · 4`, båndbiten (dag 17) `tegn G · 7` (`dag24-suvenirlapper.pdf`). I konvolutten: avskjedsbrevet, rutekort med åtte ruter og **alltid** de tre reservelappene («IQs kopi») under brevet. Krystallet som ikke smelter under treet, med `dag24-krystallkort.pdf`: «TAKK FOR LYSET» i tegn. Løsning: Håkon leser brevet og legger lappene, Kristian slår opp tegnene: `_ U _ E _ _ G _`. Julius: høytiden foran, pluss det trollmenn later som de har. Kode JULEMAGI. Så brevet i Brevfugler, finale, diplom, merket Snøfalls venn. Lett med vilje; mangler tavla et tegn, er bokstavene U, E, G. Hanna, hvis hun vil: åpner kofferten og sier hvilken dag hver ting kommer fra.
 - `materialer_nødvendig`: liten pappeske (den tomme fraktesken fra dag 1) · sløyfe · gullkonvolutt · den siste klementinen, ved krystallet, uten lapp · perle, filter og båndbit fra konvolutten «24» · `dag24-suvenirlapper.pdf` · `dag24-krystallkort.pdf` · diplomene «Snøfalls venn» (3) · iskrystall i glass eller akryl
 - `oppsett_tid`: 4 min
 - frost: 12 → 0

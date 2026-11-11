@@ -14,7 +14,7 @@
   "forhold": {
     "julius": "sjef",
     "iq": "beundrer oppfinnelsene",
-    "barna": "feltagent hos familien på Landås; trenger hjelpen deres"
+    "barna": "feltagent hos familien på Landås; ser etter dem og rapporterer til Julius; trenger hjelpen deres"
   },
   "fakta": [
     {
@@ -23,7 +23,23 @@
     },
     {
       "fra_dag": 1,
-      "tekst": "ringer inn på Morgenrådet med radioklipp"
+      "tekst": "bor i familiens hus hele desember: IQ sendte ham ned direktelinjen fra loftet i Snøfall natt til 1. desember; han sitter i hylla i stua (Ugleposten, puff) og er i Snøfall bare over radio og linjen, aldri i egen person før han reiser"
+    },
+    {
+      "fra_dag": 1,
+      "tekst": "ringer inn på Morgenrådet med radioklipp; dag 1–23 fra gulvet på Landås, dag 24 fra loftet i Snøfall etter hjemkomsten"
+    },
+    {
+      "fra_dag": 1,
+      "tekst": "oppdraget er også det klassiske: han ser hva barna gjør og rapporterer til Julius (rapporten Julius leser i videoene, Snill-listen dag 22–24); på listen kommer man for å ha prøvd igjen, ikke for å ha gjort alt riktig"
+    },
+    {
+      "fra_dag": 24,
+      "tekst": "reiser natt til 24. desember, like brått som han kom: hopper bakpå Trixters slede når krystallet legges under treet; om morgenen er dukken borte, og gullkonvolutten med avskjedsbrevet henger der han satt i treet"
+    },
+    {
+      "fra_dag": 24,
+      "tekst": "dag 24: rapporten er levert og lest, alle tre sto på listen; radioklippet bærer hilsener fra IQ, Hjerterud, Winter, Trixter og Julius og slutter med «te neste år»"
     }
   ],
   "ikke": ["Rampe-nissen", "RampeNissen"]

@@ -854,12 +854,13 @@ export const DAGER = [
     reserve:
       "Reservelappene ligger i konvolutten. Mangler tavla et tegn, står de tre bokstavene i Nissemor-guiden; julaften er ikke dagen for å stå fast.",
     iKveld:
-      "Koffert med perle, filter og båndbit (tegnlapper); rutekort og reservelapper i konvolutten; krystall med runekort under treet. Legg perlen (3. des.), filteret (10. des.) og en bit av båndet (17. des.) i konvolutten merket «24» samme kveld. Reservelappene dekker uansett.",
+      "Natt til 24.: dukken forsvinner. Legg Rampenissen bort (ut av syne til neste desember) og heng gullkonvolutten med avskjedsbrevet der han satt i treet. Koffert med perle, filter og båndbit (tegnlapper) under treet; rutekort og reservelapper i konvolutten; krystall med runekort under treet. Legg perlen (3. des.), filteret (10. des.) og en bit av båndet (17. des.) i konvolutten merket «24» samme kveld. Reservelappene dekker uansett.",
     strek: {
       tekst:
-        "Ligger og sover inni den store gullkonvolutten under treet med en sløyfe på hodet og en liten pappeske som pakket koffert ved siden av.",
+        "Borte. Reiste i natt, like brått som han kom. Der han satt i treet henger den store gullkonvolutten med avskjedsbrevet, og under treet står den lille pappesken med sløyfe, pakket som en koffert han lot stå igjen.",
       type: "uventet",
-      materialer: "konvolutt, sløyfe, liten pappeske",
+      materialer:
+        "gullkonvolutt med brevet, sløyfe, liten pappeske; dukken legges bort",
       minutter: 3,
       brikke: "ja (konvolutten)",
     },
