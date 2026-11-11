@@ -42,6 +42,7 @@ import {
 import { SledeLyd } from "../snofall-tv/slede-lyd";
 import { hex, identity, multiply, transform, type Mat4, type Vec3 } from "./gl";
 import { Renderer } from "./renderer";
+import { RadioBoks } from "./RadioBoks";
 import {
   BEIN,
   fjernMesh,
@@ -174,7 +175,7 @@ export function FriFlyging({
   const [touchHint, setTouchHint] = useState(false);
   const [melding, setMelding] = useState<Melding | null>(null);
   const [pluss, setPluss] = useState<Melding | null>(null);
-  const [radio, setRadio] = useState<Melding | null>(null);
+  const [radio, setRadio] = useState<Melding[]>([]);
   const [feil, setFeil] = useState<string | null>(null);
   const [stat, setStat] = useState({
     p50: 0,
@@ -264,8 +265,10 @@ export function FriFlyging({
     const radioen = (linje: string | null, now: number) => {
       if (!linje || now < radioTil) return;
       radioN++;
-      radioTil = now + 6;
-      setRadio({ tekst: linje, farge: "#ffb347", id: ++id });
+      radioTil = now + 4;
+      setRadio((k) =>
+        [...k, { tekst: linje, farge: "#ffb347", id: ++id }].slice(-3),
+      );
     };
 
     const hendelse = (h: FriHendelse) => {
@@ -1003,18 +1006,8 @@ export function FriFlyging({
             {melding.tekst}
           </div>
         )}
-        {radio && fase === "spiller" && (
-          <div
-            key={radio.id}
-            className="absolute inset-x-0 bottom-[22%] text-center text-xl px-24"
-            style={{
-              color: radio.farge,
-              textShadow: "0 0 8px #000",
-              animation: "rise 4s ease-out forwards",
-            }}
-          >
-            RADIO · RAMPENISSEN: «{radio.tekst}»
-          </div>
+        {fase === "spiller" && (
+          <RadioBoks kø={radio} onFerdig={() => setRadio((k) => k.slice(1))} />
         )}
         {pluss && fase === "spiller" && (
           <div

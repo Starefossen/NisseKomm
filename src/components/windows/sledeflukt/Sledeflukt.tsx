@@ -40,6 +40,7 @@ import { SledeLyd } from "../snofall-tv/slede-lyd";
 import { hex, identity, multiply, transform, type Mat4, type Vec3 } from "./gl";
 import { Renderer } from "./renderer";
 import { FriFlyging } from "./FriFlyging";
+import { RadioBoks } from "./RadioBoks";
 import {
   bakke,
   BEIN,
@@ -237,7 +238,7 @@ function Etappeflukt({
   const [touchHint, setTouchHint] = useState(false);
   const [melding, setMelding] = useState<Melding | null>(null);
   const [pluss, setPluss] = useState<Melding | null>(null);
-  const [radio, setRadio] = useState<Melding | null>(null);
+  const [radio, setRadio] = useState<Melding[]>([]);
   const [feil, setFeil] = useState<string | null>(null);
   const [stat, setStat] = useState({
     p50: 0,
@@ -369,8 +370,10 @@ function Etappeflukt({
       const l = radiolinje(h, radioN);
       if (!l) return;
       radioN++;
-      radioTil = now + 6;
-      setRadio({ tekst: l, farge: "#ffb347", id: ++id });
+      radioTil = now + 4;
+      setRadio((k) =>
+        [...k, { tekst: l, farge: "#ffb347", id: ++id }].slice(-3),
+      );
     };
     // Frame-time ring for the auto resolution and the dev overlay.
     const tider = new Float32Array(180);
@@ -1238,7 +1241,7 @@ function Etappeflukt({
                   : ""
             }
           >
-            RUDOLF: {b?.nyser ? "NYSER" : b?.sprang ? "GLØDER" : "I FORM"}
+            TRIXTER: {b?.nyser ? "NYSER" : b?.sprang ? "GLØDER" : "I FORM"}
           </div>
           {(b?.gass ?? 0) !== 0 && (
             <div className="text-(--cold-blue)">
@@ -1268,18 +1271,8 @@ function Etappeflukt({
             {melding.tekst}
           </div>
         )}
-        {radio && (fase === "spiller" || fase === "slutt") && (
-          <div
-            key={radio.id}
-            className="absolute inset-x-0 bottom-[22%] text-center text-xl px-24"
-            style={{
-              color: radio.farge,
-              textShadow: "0 0 8px #000",
-              animation: "rise 4s ease-out forwards",
-            }}
-          >
-            RADIO · RAMPENISSEN: «{radio.tekst}»
-          </div>
+        {(fase === "spiller" || fase === "slutt") && (
+          <RadioBoks kø={radio} onFerdig={() => setRadio((k) => k.slice(1))} />
         )}
         {pluss && fase === "spiller" && (
           <div
@@ -1664,9 +1657,9 @@ function Etappeflukt({
                 )}
                 <div className="text-base text-(--cold-blue) leading-tight">
                   {fase === "tapt"
-                    ? "Rudolf trenger en pause og et nytt forsøk."
+                    ? "Trixter trenger en pause og et nytt forsøk."
                     : etappe.id === "julenatt" && resultat.bjeller >= 3
-                      ? "Ruten er klar. God jul fra IQ og Rudolf!"
+                      ? "Ruten er klar. God jul fra IQ og Trixter!"
                       : nesteBjelle(resultat, krav)}
                 </div>
                 <div className="flex gap-2">
