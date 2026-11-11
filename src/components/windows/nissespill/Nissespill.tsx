@@ -192,7 +192,10 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
         }}
       >
         {/* Scene: 16:9 still with percent-positioned hotspots */}
-        <div className="relative w-full max-w-4xl mx-auto aspect-video max-h-[55%] bg-black overflow-hidden">
+        {/* The still shrinks a little during dialog so both bubbles and the choices fit */}
+        <div
+          className={`relative w-full max-w-4xl mx-auto aspect-video ${dialog ? "max-h-[40%]" : "max-h-[55%]"} bg-black overflow-hidden`}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={mediaUrl(scene.bilde)}
