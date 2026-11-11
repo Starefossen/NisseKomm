@@ -778,6 +778,7 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "winter",
       ferdig: "winter_snakket",
+      maal: "Finn ut hvem som tok garnkurven. Han med skjerfet vet noe.",
       tips: [
         R +
           "«Kurven min e borte fra loftet. Nån på torget veit sikkert nåkka. Han med skjerfet står og glor på postkassa som om han eie ho.»",
@@ -789,6 +790,8 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "stempel",
       ferdig: "stempel_vaat",
+      maal: "Gjør stempelputa til Winter våt. Noe rødt og tynt.",
+      kjent: { hvis: "winter_snakket" },
       tips: [
         R +
           "«Stempelputa te Winter e tørr. Vi treng nåkka vått og rødt og tynt. Ikkje syltetøy, det e tjukt. Og varmt, for alt e frossent her.»",
@@ -801,6 +804,8 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "signatur",
       ferdig: "skjema_signert",
+      maal: "Få Skjema 4112-B signert av IQ.",
+      kjent: { hvis: "winter_snakket" },
       tips: [
         R +
           "«Winter vil ha skjema 4112-B, signert av han som eie loftet. Det e IQ. IQ har skjemaan sjøl, oppe i verkstedet, under lampa.»",
@@ -813,6 +818,8 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "skrin",
       ferdig: "skrin_aapent",
+      maal: "Åpne stempelskrinet på hylla.",
+      kjent: { hvis: "stempel_vaat" },
       tips: [
         R +
           "«Stempelet ligg i skrinet på hylla, med fire tallhjul. Det står nåkka gravert på lokket. SE på det.»",
@@ -825,6 +832,8 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "skjema",
       ferdig: "postkasse_opplaast",
+      maal: "Lever det signerte skjemaet til Winter.",
+      kjent: { hvis: "skjema_signert" },
       tips: [
         R +
           "«Signert skjema, våt pute og åpent skrin. No mangle bare at Winter gjør jobben sin.»",
@@ -837,6 +846,7 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "hengsel",
       ferdig: "hengsel_tint",
+      maal: "Få opp den frosne luka på postkassen.",
       tips: [
         R +
           "«Låsen e åpen, men luka sitt fast. Frossen. Ka e det som smelte is? Ikkje paragrafa.»",
@@ -847,6 +857,7 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "luke",
       ferdig: "k1_ferdig",
+      maal: "Legg postkortet i luka riktig, så kurven kan hentes.",
       tips: [
         R +
           "«Postkortet på innsida av luka e i ni bita. Winter vil ha bildet heilt før luka går opp. Sjølsagt vil han det.»",

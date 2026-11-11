@@ -854,6 +854,7 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "hytta",
       ferdig: "hytta_aapen",
+      maal: "Kom inn i hytta ved antenna. Døra har kodelås, og skiltet sier TELL.",
       tips: [
         R +
           "«Nåkka tungt og varmt, sa IQ. Boksen hans ligg i hytta ved antenna. Men døra har kodelås, og skiltet på døra sei meir enn det burde.»",
@@ -866,6 +867,8 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "rudolf",
       ferdig: "rudolf_flyttet",
+      maal: "Få Rudolf vekk fra kabelen.",
+      kjent: {},
       tips: [
         R +
           "«Rudolf går ikkje fra kabelen frivillig. Han treng nåkka BEDRE å tygge på. Alt e bedre med sirup, sei IQ. Rudolf e enig.»",
@@ -878,6 +881,8 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "tannhjul",
       ferdig: "tannhjul_tint",
+      maal: "Tin tannhjulet nederst på masta. Noe tungt og varmt.",
+      kjent: {},
       tips: [
         R +
           "«Tannhjulet nederst på masta e frosse. Det treng nåkka tungt og varmt inntil sæ. Lenge. Håndvarmeren e ikkje nok, den e lunken som en unnskyldning.»",
@@ -890,6 +895,7 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "kopp",
       ferdig: "kopp_tint",
+      maal: "Tin isen i koppen på peileskiva.",
       tips: [
         R +
           "«Nåla ska flyte i vann, sei IQ. Koppen på skiva e full av is. Is e ikkje vann, samme ka isen sei.»",
@@ -902,6 +908,7 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "peiling",
       ferdig: "antenne_peilet",
+      maal: "Få antenna til å finne retningen mot Landås. Noe som vet hvor nord er.",
       tips: [
         R +
           "«Antenna snurre, koppen har vann, og IQ har rissa en L i skiva. No mangle bare nåkka som veit kor nord e.»",
@@ -914,6 +921,7 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "mottaker",
       ferdig: "k2_ferdig",
+      maal: "Still mottakeren i hyttevinduet på riktig tall.",
       tips: [
         R +
           "«Antenna står rett, men bildet e snø. Mottakeren i hyttevinduet suse. Nån har rørt rattet. Æ sei ikkje kem.»",

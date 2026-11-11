@@ -254,6 +254,20 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     expect(GameEngine.getEventyrSave()?.fjaer).toEqual(["1:torget"]);
   });
 
+  it("NOTAT åpner notatboka med dagens mål", () => {
+    const el = mount();
+    tap(el, "SPILL");
+    tap(el, "VIDERE");
+    tap(el, "VIDERE");
+    tap(el, "VIDERE");
+    tap(el, "NOTAT");
+    expect(el.textContent).toContain("Hva gjør vi nå?");
+    expect(el.textContent).toContain("garnkurven");
+    expect(el.textContent).not.toContain("Noe rødt og tynt");
+    tap(el, "Lukk notatboka");
+    expect(el.textContent).not.toContain("Hva gjør vi nå?");
+  });
+
   it("TIPS følger første uløste gåte og stopper på nivå 3", () => {
     const el = mount();
     tap(el, "SPILL");

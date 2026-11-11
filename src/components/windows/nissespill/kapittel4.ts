@@ -966,6 +966,8 @@ export const KAPITTEL_4: Kapittel = {
     {
       id: "briller",
       ferdig: "briller_levert",
+      maal: "Lista, punkt 1: Finn brillene til Julius.",
+      kjent: {},
       tips: [
         R +
           "«Julius finn ikkje brillan. Spør han kor han la dem. Han veit det, han ser dem bare ikkje. Det e nån som sitt på dem.»",
@@ -978,6 +980,8 @@ export const KAPITTEL_4: Kapittel = {
     {
       id: "fiske",
       ferdig: "snoere_nede",
+      maal: "Lista, punkt 2: Få tak i lykkebjella bak vedkassa hos Julius.",
+      kjent: {},
       tips: [
         R +
           "«Bjella ligg bak vedkassa hos Julius. For trangt for hender og ugler. Men ikkje for nåkka på ei snor, med nåkka i enden som bjella heng sæ fast på.»",
@@ -990,6 +994,8 @@ export const KAPITTEL_4: Kapittel = {
     {
       id: "sprekk",
       ferdig: "snoere_fram",
+      maal: "Få snøret løs fra kubbene i sprekken.",
+      kjent: { hvis: "snoere_nede" },
       tips: [
         R +
           "«Snora sitt fast mellom kubban. Sprekken går i sikksakk. BRUK sprekken bak vedkassa og vipp på kubban.»",
@@ -1002,6 +1008,8 @@ export const KAPITTEL_4: Kapittel = {
     {
       id: "bjelle",
       ferdig: "bjelle_montert",
+      maal: "Heng lykkebjella på sleden innenfor porten.",
+      kjent: { hvis: "snoere_fram" },
       tips: [
         R +
           "«Magneten har tak i bjella. Dra ho opp, og tenk på kor ho ska henge. Winter sa det. Æ sa det. Sleden sa det nesten.»",
@@ -1012,6 +1020,8 @@ export const KAPITTEL_4: Kapittel = {
     {
       id: "talg",
       ferdig: "tok_talgstump",
+      maal: "Lista, punkt 3: Få fett til porthengslet. Lanterna ved porten brenner talg.",
+      kjent: {},
       tips: [
         R +
           "«Porten hyle. Hengslet treng fett. Ka e det som brenn i lanternan ved porten? Talg. Fett. Det renn jo nedover.»",
@@ -1024,6 +1034,8 @@ export const KAPITTEL_4: Kapittel = {
     {
       id: "port",
       ferdig: "port_smurt",
+      maal: "Smør hengslet på høyre portfløy.",
+      kjent: { hvis: "tok_talgstump" },
       tips: [
         R + "«Talg i lomma, hengsel som hyle. Dokker veit ka som skjer no.»",
         R + "«Høyre portfløy. Hengslet.»",
@@ -1033,6 +1045,14 @@ export const KAPITTEL_4: Kapittel = {
     {
       id: "liste",
       ferdig: "klar_til_stempel",
+      maal: "Få Winter til å krysse av hele lista.",
+      kjent: {
+        alle: [
+          { hvis: "briller_levert" },
+          { hvis: "bjelle_montert" },
+          { hvis: "port_smurt" },
+        ],
+      },
       tips: [
         R + "«Alt e gjort? Da må nån krysse av. Han med lista og to blyanta.»",
         R +
@@ -1043,6 +1063,7 @@ export const KAPITTEL_4: Kapittel = {
     {
       id: "stempel",
       ferdig: "k4_ferdig",
+      maal: "Still hjulene på skriveplata og stemple avgangen.",
       tips: [
         R +
           "«Tre felt på skjemaet, tre hjul på blokka. Les felta. Ordet som mangle i hvert felt, e ordet som ska stå på hjulet.»",

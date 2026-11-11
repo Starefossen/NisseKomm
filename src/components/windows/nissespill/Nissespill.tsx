@@ -144,6 +144,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
     null,
   );
   const [puslespill, setPuslespill] = useState<string | null>(null);
+  const [notat, setNotat] = useState(false);
   const [introSteg, setIntroSteg] = useState(0);
   const [visSoner, setVisSoner] = useState(false);
   const [valg, setValg] = useState(false);
@@ -484,6 +485,51 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 }}
               />
             )}
+            {notat && (
+              <div
+                role="dialog"
+                aria-label="Notatbok"
+                className="absolute inset-0 z-20 bg-black/90 overflow-y-auto p-3 flex flex-col gap-2"
+                style={{ animation: "fadeIn 0.3s ease-out" }}
+              >
+                <div className="flex items-center gap-2 border-b-2 border-(--brass) pb-2">
+                  <h3 className="flex-1 text-2xl text-(--gold) tracking-wider uppercase">
+                    Hva gjør vi nå?
+                  </h3>
+                  <button
+                    type="button"
+                    aria-label="Lukk notatboka"
+                    className={`${LITEN} border-(--brass)`}
+                    onClick={() => setNotat(false)}
+                  >
+                    Lukk
+                  </button>
+                </div>
+                <ul className="flex-1 space-y-1 text-xl leading-tight">
+                  {M.notater(kap, save).map((n) => (
+                    <li
+                      key={n.tekst}
+                      className={
+                        n.gjort
+                          ? "line-through opacity-60"
+                          : "text-(--neon-green)"
+                      }
+                    >
+                      {n.gjort ? "✓ " : "› "}
+                      {n.tekst}
+                    </li>
+                  ))}
+                  {M.has(save, kap.slutt) && (
+                    <li className="text-(--gold)">Kapittelet er ferdig.</li>
+                  )}
+                </ul>
+                {M.fjaerTelling(kap, save)[1] > 0 && (
+                  <p className="text-lg text-(--cold-blue)">
+                    Uglefjær funnet: {M.fjaerTelling(kap, save).join("/")}
+                  </p>
+                )}
+              </div>
+            )}
             {(iIntro || iUtro) && (
               <div className={`${PANEL} flex items-start gap-3`}>
                 <Portrett navn="rampenissen" />
@@ -638,6 +684,17 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
               />
             ))}
           </div>
+          <button
+            type="button"
+            aria-expanded={notat}
+            onClick={() => {
+              SoundManager.playSound("click");
+              setNotat(!notat);
+            }}
+            className={`${LITEN} border-(--cold-blue) text-(--cold-blue)`}
+          >
+            NOTAT
+          </button>
           <button
             type="button"
             onClick={() => bruk(M.tips(kap, save))}

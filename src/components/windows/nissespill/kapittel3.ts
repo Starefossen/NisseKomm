@@ -834,6 +834,7 @@ export const KAPITTEL_3: Kapittel = {
     {
       id: "tesil",
       ferdig: "tok_tesil",
+      maal: "Finn noe som skjermer et lys mot trekk. Spør Nissemor.",
       tips: [
         R +
           "«Trekken der nede blås ut alt. Nissemor veit sikkert ka gruvefolk gjord med lys i trekk. Spør ho. Ho sitt rett der og skriv.»",
@@ -846,6 +847,8 @@ export const KAPITTEL_3: Kapittel = {
     {
       id: "skaar",
       ferdig: "tok_krystallskaar",
+      maal: "Løsne skåret som sitter fast i rim på den klare hylla i grotta.",
+      kjent: { hvis: "tok_tesil" },
       tips: [
         R +
           "«Lys i vinduskarmen hos Nissemor, tesil i lomma. Sett lyset INNI tesilen, så har vi ei lanterne. Og nede i grotta: nån av krystallan gjør nåkka med lys. Prøv dokker fram, men ikkje på de blå.»",
@@ -858,6 +861,8 @@ export const KAPITTEL_3: Kapittel = {
     {
       id: "sokkel",
       ferdig: "lys_paa_sokkelen",
+      maal: "Sett lanterna et sted midt i grotta der trekken ikke tar den.",
+      kjent: { hvis: "tok_tesil" },
       tips: [
         R +
           "«Lanterna må stå i ro et sted midt i grotta, der trekken ikkje tar ho og ho ser begge hyllene.»",
@@ -868,6 +873,7 @@ export const KAPITTEL_3: Kapittel = {
     {
       id: "skaar_satt",
       ferdig: "skaar_satt",
+      maal: "Få lyset fra lanterna til å nå hyllene.",
       tips: [
         R +
           "«Lanterna står, men lyset når ikkje hyllene. Dokker såg sjøl ka de klare krystallan gjør med lys. Vi har et stykke av en.»",
@@ -878,6 +884,7 @@ export const KAPITTEL_3: Kapittel = {
     {
       id: "krystall",
       ferdig: "krystall_satt",
+      maal: "Vri krystallene så lyset går hele veien fra S til M.",
       tips: [
         R +
           "«Den nederste krystallen lyse, men lyset går ut te veggen. Krystallan sitt i ringa og kan vris. BRUK den klare hylla.»",
@@ -890,6 +897,7 @@ export const KAPITTEL_3: Kapittel = {
     {
       id: "stemme",
       ferdig: "radio_stilt",
+      maal: "Still radioen på sokkelen på riktig tall.",
       tips: [
         R +
           "«Heile grotta lyse, og no ser vi skiva på radioen. Nåla står feil. Han hører ikkje oss før ho står der han e.»",
@@ -902,6 +910,7 @@ export const KAPITTEL_3: Kapittel = {
     {
       id: "hilsen",
       ferdig: "k3_ferdig",
+      maal: "Si hei til han som hører på.",
       tips: [
         R +
           "«No lyse heile grotta, og radioen hører. Da mangle bare det viktigaste: å sei hei. Det e det vanskeligaste. Spør mæ.»",

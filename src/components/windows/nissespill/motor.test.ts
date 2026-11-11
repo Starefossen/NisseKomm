@@ -178,6 +178,30 @@ describe("motor: fjær", () => {
   });
 });
 
+describe("motor: notatbok", () => {
+  const k1 = KAPITLER[0];
+  it("viser løste mål, det første uløste og kjente parallelle mål", () => {
+    const fersk = M.notater(k1, M.nyttKapittel(k1));
+    expect(fersk.map((n) => n.gjort)).toEqual([false]);
+    expect(fersk[0].tekst).toContain("garnkurven");
+    const etter = M.notater(k1, save("winter_snakket"));
+    expect(etter.map((n) => [n.gjort, n.tekst.split(" ")[0]])).toEqual([
+      [true, "Finn"],
+      [false, "Gjør"],
+      [false, "Få"],
+    ]);
+  });
+
+  it.each(KAPITLER.map((k) => [k.n, k] as const))(
+    "kapittel %i: hvert mål har notat, og notatene er unike",
+    (_, k) => {
+      const maal = k.gaater.map((g) => g.maal ?? "");
+      expect(maal.every(Boolean)).toBe(true);
+      expect(new Set(maal).size).toBe(maal.length);
+    },
+  );
+});
+
 describe("motor: kapitlenes minispill er gyldige", () => {
   it.each([KAP, ...KAPITLER].map((k) => [k.n, k] as const))(
     "kapittel %i",

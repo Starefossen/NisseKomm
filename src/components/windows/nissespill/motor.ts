@@ -20,6 +20,9 @@
  *       S start, M goal, | straight, L corner, T tee, + cross, . empty.
  *   TIPS: add a `Gaate` with `ferdig` = the puzzle's `flagg`; the overlay's TIPS
  *   button uses it. A test rejects unsolvable or pre-solved routes and bad locks.
+ * - Notebook (NOTAT): every `Gaate` has `maal`, one bokmål line without the answer.
+ *   It shows when solved (crossed out) or when it is the first unsolved goal; goals
+ *   that run in parallel get `kjent` (a condition, `{}` = from the start).
  */
 import type { EventyrSave } from "@/lib/storage";
 import type { PuslespillDef } from "./minispill";
@@ -133,6 +136,10 @@ export interface Gaate {
   /** Solved when this flag is set; the first unsolved one owns the TIPS button. */
   ferdig: string;
   tips: [string, string, string];
+  /** Notebook line (bokmål, no spoilers). Shown when solved, when it is the first unsolved, or when `kjent` holds. */
+  maal?: string;
+  /** Extra condition for showing `maal` early (`{}` = from the start) for goals that run in parallel. */
+  kjent?: Vilkaar;
 }
 
 export interface Kapittel {
@@ -388,6 +395,20 @@ export function tips(kap: Kapittel, save: EventyrSave): Utfall {
     tekst: g.tips[nivaa],
     lyd: "click",
   };
+}
+
+/** Notebook («Hva gjør vi nå?»): solved goals, the current one, and goals already known. */
+export function notater(
+  kap: Kapittel,
+  save: EventyrSave,
+): { tekst: string; gjort: boolean }[] {
+  const naa = kap.gaater.findIndex((g) => !has(save, g.ferdig));
+  return kap.gaater.flatMap((g, i) => {
+    if (!g.maal) return [];
+    const gjort = has(save, g.ferdig);
+    if (!gjort && i !== naa && !(g.kjent && ok(g.kjent, save))) return [];
+    return [{ tekst: g.maal, gjort }];
+  });
 }
 
 /** The UI reports a solved mini-puzzle; the engine sets its flag. */
