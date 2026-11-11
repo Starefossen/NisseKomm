@@ -1115,19 +1115,26 @@ export class GameEngine {
       type: "info" as const,
       etterKode: o.etterKode,
     }));
-    alerts.push(
-      ...convertDailyAlerts(
-        unlocks.filter((a) => !a.etterKode || completedDays.has(a.day)),
-        day,
-      ),
+    const synlige = unlocks.filter(
+      (a) => !a.etterKode || completedDays.has(a.day),
     );
-    // One nudge a day in total (the stalest item), below the day's story lines
-    const puff = OPPLASINGER.map((o) =>
-      puffTekst(
-        o,
-        nivaa(o, day, completedDays.has(day), this.isIntroSeen(settNokkel(o))),
-      ),
-    ).find(Boolean);
+    alerts.push(...convertDailyAlerts(synlige, day));
+    // One unlock line a day: today's alert if there is one, otherwise a nudge
+    // for the stalest unopened item, below the day's story lines
+    const puff = synlige.some((a) => a.day === day)
+      ? null
+      : OPPLASINGER.map((o) =>
+          puffTekst(
+            o,
+            nivaa(
+              o,
+              day,
+              completedDays.has(day),
+              this.isIntroSeen(settNokkel(o)),
+            ),
+            day,
+          ),
+        ).find(Boolean);
     if (puff)
       alerts.push({
         tekst: puff,

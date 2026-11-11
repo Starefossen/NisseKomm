@@ -54,7 +54,13 @@ describe("opplasinger", () => {
 });
 
 describe("nivaa (escalation)", () => {
-  const o = { dag: 10, vindu: "nissespill" as const, tekst: "x", varsel: "y" };
+  const o = {
+    dag: 10,
+    vindu: "nissespill" as const,
+    tekst: "x",
+    navn: "kapittel 9 i X",
+    varsel: "y",
+  };
   const hud = { ...o, vindu: "nordpol_tv" as const, etterKode: true };
   it("quiet before the day, after opening and after three days", () => {
     expect(nivaa(o, 9, true, false)).toBe(0);
@@ -73,9 +79,21 @@ describe("nivaa (escalation)", () => {
     expect(nivaa(hud, 10, false, false)).toBe(0);
     expect(nivaa(hud, 10, true, false)).toBe(2);
   });
-  it("a sidebar line only for levels 2-4", () => {
+  it("a sidebar line only for levels 2-4, with the item's name in it", () => {
     expect(puffTekst(o, 1)).toBeNull();
-    expect(puffTekst(o, 2)).toMatch(/^RAMPENISSEN/);
-    expect(puffTekst(o, 3)).toMatch(/^IQ/);
+    expect(puffTekst(o, 2)).toMatch(/^RAMPENISSEN: .*kapittel 9 i X/);
+    expect(puffTekst(o, 3)).toMatch(/^IQ: .*kapittel 9 i X/);
+    expect(puffTekst(o, 4)).toMatch(/^RAMPENISSEN: .*kapittel 9 i X/);
+  });
+});
+
+describe("day 16 opens three things", () => {
+  const tre = opplasingerPaaDag(16);
+  it("one combined line after the code, naming all of them", () => {
+    expect(tre).toHaveLength(3);
+    const med = tre.filter((o) => o.varsel);
+    expect(med).toHaveLength(1);
+    expect(med[0].etterKode).toBe(true);
+    for (const o of tre) expect(med[0].varsel).toContain(o.navn);
   });
 });
