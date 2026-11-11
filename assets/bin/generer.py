@@ -3,12 +3,13 @@
 
 Usage:
   generer.py plan [--til-dag N] [--bare KAT] [--force]
-  generer.py kjør [--til-dag N] [--bare julius|rampenissen|tv|port|test|musikk]
+  generer.py kjør [--til-dag N] [--bare julius|rampenissen|tv|port|test|musikk|slede]
                   [--maks-forespørsler N] [--stopp-etter julius:5] [--force]
   generer.py --selvtest
 
 Order: (a) named tests, (b) Julius days ✗/⚠, (c) Rampenissen ✗/⚠, (d) TV loops and
-events, (e) gate entrances, (f) the hidden NisseMusikk track. ✓ current and ? unknown
+events, (e) gate entrances, (f) the hidden NisseMusikk track, (g) sleigh horizon stills
+(images, 0 video requests). ✓ current and ? unknown
 are skipped. Items marked «Lag på nytt» in media-vurdering.json are queued (and their
 mark removed on success), while «Godkjent» items are skipped unless --force.
 A daily-limit or spending-cap error stops the run with exit code 75.
@@ -39,6 +40,8 @@ DAY_LIMIT = 200
 RETRY = 1.5  # expected takes per clip (julius-dag.py retries up to 3)
 EXIT_LIMIT = 75  # EX_TEMPFAIL: try again after the quota resets
 LIMIT_RE = re.compile(r"per day|spending cap|Stoppet: (dagsgrensen|månedlig)", re.I)
+SLEDE = ("tundra", "nordtoppen", "muren", "julenatt")  # prompts: assets/locations/sledeflukt/varianter
+SLEDE_REF = "assets/locations/snofall-landsby/nokkelramme-rolig.jpg"
 RETRY_RE = re.compile(r'retryDelay"?:\s*"?(\d+)s|retry in ([\d.]+)\s*s', re.I)
 
 # Named tests: one Julius clip each, made with julius.sh into assets/out/<name>.mp4.
@@ -103,6 +106,8 @@ def item_path(item_id: str) -> str:
         return f"video/julius/dag-{int(key):02d}.mp4" if key.isdigit() else ""
     if cat == "rampenissen":
         return f"audio/rampenissen/dag-{int(key):02d}.mp3" if key.isdigit() else ""
+    if cat == "slede":
+        return f"feed/slede-{key}.jpg"
     if cat in ("tv", "port"):
         return f"video/tv/{key}.mp4"
     if cat == "musikk":
@@ -150,6 +155,15 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
         if should_queue(p, st.get(p, medie.MISSING)):
             cat = "port" if n.startswith("port-") else "tv"
             q.append((f"{cat}:{n}", cat, RETRY, ["bash", str(BIN / "tv-loops.sh"), "--bare", n]))
+    for v in SLEDE:
+        p = f"feed/slede-{v}.jpg"
+        if should_queue(p, st.get(p, medie.MISSING)):
+            prompt = f"assets/locations/sledeflukt/varianter/{v}.still.prompt.txt"
+            # still.sh makes the image; medie.py skriv records the sidecar so it counts as current
+            sh = ('mkdir -p "$(dirname "$3")" && bash "$4/still.sh" "$1" "$2" "$3" && '
+                  'python3 "$4/medie.py" skriv still.sh "$3" "$2" - gemini-3-pro-image "$1"')
+            q.append((f"slede:{v}", "slede", 0, ["bash", "-c", sh, "_", str(root / SLEDE_REF),
+                                                 str(root / prompt), str(media_dir() / p), str(BIN)]))
     p_music = "music/rampenissen-synger.mp3"
     if should_queue(p_music, st.get(p_music, medie.MISSING)):
         q.append(("musikk:rampenissen-synger", "musikk", 0, ["bash", str(BIN / "rampenissen-tts.sh"), "synger"]))
@@ -294,9 +308,14 @@ def selftest():
                 {"path": "video/julius/dag-03.mp4", "status": medie.STALE},
                 {"path": "audio/rampenissen/dag-01.mp3", "status": medie.UNKNOWN},
                 {"path": "video/tv/landsby-rolig.mp4", "status": medie.UNKNOWN},
-                {"path": "music/rampenissen-synger.mp3", "status": medie.CURRENT}]
+                {"path": "music/rampenissen-synger.mp3", "status": medie.CURRENT},
+                *({"path": f"feed/slede-{v}.jpg", "status": medie.CURRENT} for v in SLEDE)]
         q = queue(rows, ["landsby-rolig", "landsby-morgen", "port-iq"], root)
         assert [i[0] for i in q] == ["test-klementin", "julius:2", "julius:3", "tv:landsby-morgen", "port:port-iq"], q
+        # sleigh stills: queued when missing, as images (estimate 0, so never counted against the video quota)
+        qs = queue(rows[:-1], [], root, til_dag=0)
+        assert [(i[0], i[2]) for i in qs if i[1] == "slede"] == [("slede:julenatt", 0)], qs
+        assert item_path("slede:muren") == "feed/slede-muren.jpg"
         calls, made = [], set()
 
         def fake(cmd, env, fail_on=3):
