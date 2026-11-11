@@ -102,12 +102,15 @@ describe("sledeflukt verden", () => {
     const lukket = gardinMesh(false);
     expect(lukket.length).toBeGreaterThan(åpen.length);
     expect(tilVidda(1000, 120, -2000)).toEqual([100, 12, -200]);
-    // A house's chimney stands at its (x, z) whichever way it faces.
-    for (const h of lagHus(true).slice(0, 12)) {
+    // Every house's chimney (Snøfall, farms, Bergen) sits on its own roof, at
+    // its (x, z) whichever way it faces and at h above the ground, where the
+    // sim scores it and the smoke rises: the farms stand on slopes.
+    for (const h of lagHus(true)) {
       const { pipe } = meshes().hus[h.variant];
       const p = apply(husPlassFri(h), pipe);
       expect(p[0]).toBeCloseTo(h.x * SKALA, 3);
       expect(p[2]).toBeCloseTo(h.z * SKALA, 3);
+      expect(Math.abs(p[1] - h.h * SKALA)).toBeLessThan(0.3);
       expect(h.z < GRENSE || h.z > GRENSE).toBe(true);
     }
   });

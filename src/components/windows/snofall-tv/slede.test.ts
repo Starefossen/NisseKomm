@@ -573,6 +573,7 @@ describe("pipelevering", () => {
     for (const e of ETAPPER) {
       const sim = createSim(e, { assist: true, reduceMotion: false, dag: 8 });
       const harHus = lagBane(e, 8).some((t) => t.type === "hus");
+      sim.s.rekke = 3;
       let ev: string[] = sim.step(1 / 60, { ...still, slipp: true });
       expect(ev).toContain("slipp");
       for (let i = 0; i < 600 && sim.s.pakke; i++)
@@ -582,6 +583,7 @@ describe("pipelevering", () => {
         expect(ev).toContain("pakkebom");
         expect(sim.s.pakkebom).toBe(0);
         expect(sim.s.poeng).toBe(0);
+        expect(sim.s.rekke).toBe(3);
       }
     }
     const sim = createSim(ETAPPER[0], {

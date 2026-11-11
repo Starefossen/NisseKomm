@@ -351,7 +351,7 @@ export function vindStyrke(x: number, z: number, alt: number) {
 export interface FriHus {
   x: number;
   z: number;
-  /** Chimney top in altitude units (one of HUS_PIPE). */
+  /** Chimney top in absolute altitude units: the ground at (x, z) plus HUS_PIPE × sk. */
   h: number;
   rot: number;
   /** verden.meshes().hus index: 0–2 sizes, 3 ochre, 4 dark green. */
@@ -379,7 +379,7 @@ export function lagHus(bergen: boolean): FriHus[] {
   const ut: FriHus[] = [];
   const sett = (x: number, z: number, rot: number) => {
     const variant = Math.floor(r() * 3);
-    ut.push({ x, z, h: HUS_PIPE[variant], rot, variant });
+    ut.push({ x, z, h: høyde(x, z) + HUS_PIPE[variant], rot, variant });
   };
   // Snøfall: houses at twice the farms' size, packed in two rings along the ring
   // street and in rows along the main street, gables to the street; ochre to the
@@ -411,7 +411,15 @@ export function lagHus(bergen: boolean): FriHus[] {
     if (ut.some((h) => Math.hypot(h.x - x, h.z - z) < 250)) continue;
     const variant =
       x < -500 ? 3 : z < -700 ? 1 : x > 500 ? 4 : Math.floor(r() * 3);
-    ut.push({ x, z, h: HUS_PIPE[variant % 3] * SK, rot, variant, sk: SK });
+    ut.push({
+      x,
+      z,
+      // Ochre (3) and dark green (4) use the size 0 and size 2 meshes.
+      h: høyde(x, z) + HUS_PIPE[[0, 1, 2, 0, 2][variant]] * SK,
+      rot,
+      variant,
+      sk: SK,
+    });
   }
   const g = topp("gaardene");
   for (let i = 0; i < 5; i++)

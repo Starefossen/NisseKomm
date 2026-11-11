@@ -999,11 +999,8 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
           s.sisteMeter = Math.max(0.1, m);
           ev.push("nærLevering");
         } else {
-          // Without chimneys a package in the snow is just fun, not a miss.
-          if (hus.length) {
-            s.pakkebom++;
-            s.rekke = 0;
-          }
+          // A package in the snow scores nothing but costs nothing either: the ring streak stays.
+          if (hus.length) s.pakkebom++;
           ev.push("pakkebom");
         }
         s.landing = { x: p.x, z: p.z };
