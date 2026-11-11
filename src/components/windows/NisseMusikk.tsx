@@ -207,7 +207,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
           </div>
         )}
         {/* inert: the overlay hides the controls, keyboard must not reach them either */}
-        <div className="p-6 space-y-6" inert={frozen}>
+        <div className="p-4 space-y-4" inert={frozen}>
           {/* Header */}
           <div className="flex items-center gap-4 pb-4 border-b-4 border-(--neon-green)/30">
             <Icons.Music size={32} color="blue" />
@@ -234,7 +234,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
           </div>
 
           {/* Now Playing Display */}
-          <div className="border-4 border-(--neon-green) bg-black p-6 space-y-4">
+          <div className="border-4 border-(--neon-green) bg-black p-4 space-y-3">
             <div className="text-center space-y-1">
               <div className="text-base text-(--cold-blue) tracking-wider">
                 {isPlaying ? "NÅ SPILLER PÅ 90.0 MHz" : "VALGT SPOR"}
@@ -353,7 +353,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
                 8-BIT AUDIO ENGINE
               </div>
             </div>
-            <div className="max-h-64 overflow-y-auto">
+            <div>
               {playlist.map((t, index) => (
                 <button
                   key={t.id}

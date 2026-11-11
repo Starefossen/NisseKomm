@@ -194,7 +194,7 @@ export function KodeTerminal({
 
   return (
     <RetroWindow title="KODETERMINAL" onClose={onClose}>
-      <div className="p-6 h-full overflow-y-auto space-y-6">
+      <div className="p-4 h-full overflow-y-auto space-y-4">
         {/* Header */}
         <div className="flex items-center gap-4 pb-4 border-b-4 border-(--neon-green)/30">
           <Icons.Code size={32} color="blue" />
@@ -412,7 +412,7 @@ export function KodeTerminal({
             INNSENDTE KODER ({submittedCodes.length})
           </div>
 
-          <div className="max-h-[200px] overflow-y-auto space-y-2">
+          <div className="space-y-2">
             {submittedCodes.length === 0 ? (
               <div className="text-base opacity-50 text-center py-4">
                 Ingen koder innsendt ennå

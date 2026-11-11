@@ -338,7 +338,7 @@ export function NisseStats({ onClose, currentDay }: NisseStatsProps) {
         </div>
 
         {/* Live Updates Feed */}
-        <div className="border-2 border-(--neon-green)/30 max-h-32 lg:max-h-40 overflow-y-auto">
+        <div className="border-2 border-(--neon-green)/30">
           <div className="p-2 bg-(--neon-green)/10 border-b-2 border-(--neon-green)/30">
             <div className="text-base tracking-wider text-(--neon-green)">
               ● LIVE OPPDATERINGER
