@@ -93,6 +93,13 @@ export class SoundManager {
     }
   }
 
+  /** The shared context for synthesized sounds (sledesimulator); null when sounds are off. */
+  static context(): AudioContext | null {
+    if (!this.enabled || !this.audioContext) return null;
+    if (this.audioContext.state === "suspended") this.audioContext.resume();
+    return this.audioContext;
+  }
+
   static playJingle() {
     if (!this.musicEnabled || typeof window === "undefined") return;
 

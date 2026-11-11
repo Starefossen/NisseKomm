@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { SoundManager } from "@/lib/sounds";
+import { SledeSimulator } from "./SledeSimulator";
 
 /**
  * Antenna-HUD toys. Pure play, shown only after today's code is in:
@@ -14,7 +15,7 @@ type GameId = "kretslop" | "sorterer" | "slede" | "sentrifuge" | "porten";
 const GAMES: [GameId, string, number][] = [
   ["kretslop", "KRETSLØP", 8],
   ["sorterer", "SORTERER", 16],
-  ["slede", "SLEDE-RADAR", 18],
+  ["slede", "SLEDESIMULATOR", 18],
   ["sentrifuge", "SENTRIFUGE", 19],
   ["porten", "PORTEN", 21],
 ];
@@ -67,7 +68,6 @@ export function MiniGames({
     return games[games.length - 1][0];
   });
   const [sorted, setSorted] = useState(0);
-  const [sleigh, setSleigh] = useState(40);
   const [rpm, setRpm] = useState(0);
 
   return (
@@ -127,33 +127,7 @@ export function MiniGames({
           )}
         </>
       )}
-      {game === "slede" && (
-        <>
-          <div className="flex gap-2">
-            {["▲ NORD", "▼ SØR"].map((l) => (
-              <button
-                key={l}
-                onClick={() => {
-                  click();
-                  setSleigh((p) => Math.min(100, p + 15));
-                }}
-                className={`${btn} border-(--neon-green)`}
-              >
-                {l}
-              </button>
-            ))}
-          </div>
-          <div className="h-4 border border-(--neon-green)/50">
-            <div
-              className="h-full bg-(--gold) transition-all"
-              style={{ width: `${sleigh}%` }}
-            />
-          </div>
-          {sleigh >= 100 && (
-            <div className="text-(--gold)">KORRIDOR SIKRET!</div>
-          )}
-        </>
-      )}
+      {game === "slede" && <SledeSimulator day={day} />}
       {game === "sentrifuge" && (
         <>
           <div>Sentrifuger prøvene ({rpm} RPM):</div>

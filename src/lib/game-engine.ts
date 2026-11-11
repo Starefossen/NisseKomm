@@ -13,7 +13,11 @@
  * 5. Testable - Pure functions for game logic, side effects isolated
  */
 
-import { StorageManager, type SantaLetter } from "./storage";
+import {
+  StorageManager,
+  type SantaLetter,
+  type SledeResultat,
+} from "./storage";
 import { BadgeManager } from "./badge-system";
 import { getEventyr, getEventyrDays, getEventyrForDay } from "./eventyr";
 import {
@@ -350,6 +354,26 @@ export class GameEngine {
 
   static markIntroSeen(id: IntroId): void {
     StorageManager.markIntroSeen(id);
+  }
+
+  /** IQs sledesimulator: best score and bells per stage id. */
+  static getSledeResultater(): Record<string, SledeResultat> {
+    return StorageManager.getSledeResultater();
+  }
+
+  /** Keeps the best of each; a worse run never lowers a saved result. */
+  static recordSledeResultat(
+    etappe: string,
+    poeng: number,
+    bjeller: number,
+  ): SledeResultat {
+    const prev = this.getSledeResultater()[etappe];
+    const best = {
+      poeng: Math.max(prev?.poeng ?? 0, poeng),
+      bjeller: Math.max(prev?.bjeller ?? 0, bjeller),
+    };
+    StorageManager.setSledeResultat(etappe, best);
+    return best;
   }
 
   /** Frostgraden (0–100) for a day, or null on days 1–6 when it is hidden. */
