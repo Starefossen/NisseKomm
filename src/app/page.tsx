@@ -96,7 +96,7 @@ const UTFORSK: Tool[] = [
   },
 ];
 
-// A future sleigh module slots in after UGLEPOSTEN (grid goes to 5 columns)
+// Three columns: the last slot stays empty until NISSESTATS appears on day 16
 const SPILL: Tool[] = [
   {
     window: "nissespill",
@@ -445,138 +445,159 @@ export default function Home() {
             )}
             <div className="flex-1 overflow-auto">
               {!openWindow ? (
-                // Desktop in two rows: today's line, then the tools (design-revisjon P2 #8)
-                <div className="flex flex-col items-center justify-center min-h-full gap-3 p-3 md:p-4">
-                  <section className="w-full max-w-4xl">
-                    <h2 className="mb-1 text-lg tracking-wider text-(--brass)">
-                      I DAG
-                    </h2>
-                    <div className="grid grid-cols-3 gap-2">
-                      <button
-                        onClick={() => {
-                          SoundManager.playSound("click");
-                          handleIconClick("dagbok");
-                        }}
-                        className="relative col-span-2 row-span-3 min-h-36 flex flex-col justify-end p-3 border-2 border-(--brass)/70 bg-cover bg-center text-left hover:border-(--gold) active:scale-[0.98] transition-transform"
-                        style={{
-                          backgroundImage: `linear-gradient(transparent 40%, rgba(10,6,4,0.85)), ${juliusPosters()}url("${mediaUrl("feed/julius-kontor.jpg")}"), url("/village-day.jpg")`,
-                        }}
-                      >
-                        {!GameEngine.isJuliusVideoWatched(getCurrentDay()) && (
-                          <span
-                            className="absolute top-3 right-3 w-5 h-5 rounded-full bg-(--christmas-red) shadow-[0_0_10px_var(--christmas-red)]"
-                            aria-label="Ny melding fra Julius"
-                          />
-                        )}
-                        <span className="text-3xl tracking-widest text-(--gold)">
-                          JULIUS
-                        </span>
-                        <span className="text-lg tracking-wider text-(--neon-green)">
-                          DAGBOK
-                        </span>
-                      </button>
-                      <DesktopIcon
-                        icon="file"
-                        inline
-                        label="NISSEMAIL"
-                        color="green"
-                        unreadCount={unreadEmailCount}
-                        onClick={() => handleIconClick("nissemail")}
-                      />
-                      <DesktopIcon
-                        icon="code"
-                        inline
-                        label="KODETERMINAL"
-                        color="blue"
-                        onClick={() => handleIconClick("kodeterminal")}
-                      />
-                      <DesktopIcon
-                        icon="image"
-                        inline
-                        label="SNØFALL TV"
-                        color="green"
-                        disabled={isFrozen("nordpol_tv")}
-                        onClick={() => handleIconClick("nordpol_tv")}
-                      />
-                    </div>
-                  </section>
-                  {lockedMsg && (
-                    <p
-                      role="status"
-                      className="fixed bottom-24 left-1/2 -translate-x-1/2 z-30 w-[min(90%,40rem)] px-4 py-2 text-lg text-center bg-(--dark-crt) text-(--cold-blue) border-2 border-(--cold-blue)/50"
-                    >
-                      {lockedMsg}
-                    </p>
-                  )}
-                  {(
-                    [
-                      ["UTFORSK", UTFORSK, "grid-cols-4"],
-                      ["SPILL OG MORO", SPILL, "grid-cols-4"],
-                    ] as const
-                  ).map(([title, tools, cols]) => (
-                    <section key={title} className="w-full max-w-4xl">
+                // Desktop: I DAG (4:3 Julius widget plus today's tools) beside UTFORSK and
+                // SPILL OG MORO on wide screens; stacked on portrait iPad (design-revisjon P2 #8)
+                <div className="flex items-center justify-center min-h-full p-3 pt-16 md:p-4 md:pt-16 lg:pt-4">
+                  <div className="w-full max-w-7xl 2xl:max-w-[88rem] grid gap-3 md:gap-4 lg:grid-cols-[2fr_3fr] lg:items-start">
+                    <section>
                       <h2 className="mb-1 text-lg tracking-wider text-(--brass)">
-                        {title}
+                        I DAG
                       </h2>
-                      <div className={`grid ${cols} gap-2`}>
-                        {tools.map((t) => {
-                          const locked =
-                            !!t.unlock && !unlockedModules.includes(t.unlock);
-                          const unlockDay = t.unlock
-                            ? GameEngine.getModuleUnlockDay(t.unlock)
-                            : null;
-                          if (locked && t.hidden)
-                            return <div key={t.window} aria-hidden />;
-                          const isNew =
-                            !!t.unlock &&
-                            !locked &&
-                            !GameEngine.isIntroSeen(`ny-${t.window}`);
-                          return (
-                            <div
-                              key={t.window}
-                              data-modul={t.unlock}
-                              data-laast={locked ? "ja" : undefined}
-                            >
-                              <DesktopIcon
-                                icon={t.icon}
-                                label={t.label}
-                                color={t.color}
-                                unreadCount={
-                                  t.window === "nissenet" ? unreadFileCount : 0
-                                }
-                                disabled={locked || isFrozen(t.window)}
-                                locked={locked}
-                                teaser={locked ? opensIn(unlockDay) : undefined}
-                                isNew={isNew}
-                                onLockedClick={
-                                  locked
-                                    ? () => {
-                                        const n = daysLeft(unlockDay);
-                                        setTimeout(
-                                          () => setLockedMsg(null),
-                                          3500,
-                                        );
-                                        setLockedMsg(
-                                          n === 1
-                                            ? `Rampenissen: «Heisann, ikkje så fort! ${t.label} e klar i morra.»`
-                                            : `${t.hint}. Rampenissen: «Ho-ho, vent ${n ?? "nokka"} daga te!»`,
-                                        );
-                                      }
-                                    : undefined
-                                }
-                                onClick={() => {
-                                  if (isNew)
-                                    GameEngine.markIntroSeen(`ny-${t.window}`);
-                                  setLockedMsg(null);
-                                  handleIconClick(t.window);
-                                }}
-                              />
-                            </div>
-                          );
-                        })}
+                      <div className="grid grid-cols-2 gap-2 lg:grid-cols-1">
+                        <button
+                          onClick={() => {
+                            SoundManager.playSound("click");
+                            handleIconClick("dagbok");
+                          }}
+                          className="relative aspect-4/3 flex flex-col justify-end p-3 border-2 border-(--brass)/70 bg-cover bg-center text-left hover:border-(--gold) active:scale-[0.98] transition-transform"
+                          style={{
+                            backgroundImage: `linear-gradient(transparent 50%, rgba(10,6,4,0.9)), ${juliusPosters()}url("${mediaUrl("feed/julius-kontor.jpg")}"), url("/village-day.jpg")`,
+                          }}
+                        >
+                          {!GameEngine.isJuliusVideoWatched(
+                            getCurrentDay(),
+                          ) && (
+                            <span className="absolute top-2 right-2 flex items-center gap-2 px-2 py-0.5 bg-black/70 border-2 border-(--christmas-red) text-(--christmas-red) text-base tracking-widest">
+                              <span className="w-3 h-3 rounded-full bg-(--christmas-red) shadow-[0_0_10px_var(--christmas-red)] animate-pulse" />
+                              NY MELDING
+                            </span>
+                          )}
+                          <span className="text-3xl tracking-widest text-(--gold)">
+                            JULIUS
+                          </span>
+                          <span className="flex gap-3 text-lg tracking-wider text-(--neon-green)">
+                            <span>DAGBOK</span>
+                            <span className="text-(--brass)">
+                              DAG {Math.min(getCurrentDay(), 24)}
+                            </span>
+                          </span>
+                        </button>
+                        <div className="grid grid-rows-3 gap-2 lg:grid-rows-none">
+                          <DesktopIcon
+                            icon="file"
+                            inline
+                            label="NISSEMAIL"
+                            color="green"
+                            unreadCount={unreadEmailCount}
+                            onClick={() => handleIconClick("nissemail")}
+                          />
+                          <DesktopIcon
+                            icon="code"
+                            inline
+                            label="KODETERMINAL"
+                            color="blue"
+                            onClick={() => handleIconClick("kodeterminal")}
+                          />
+                          <DesktopIcon
+                            icon="image"
+                            inline
+                            label="SNØFALL TV"
+                            color="green"
+                            disabled={isFrozen("nordpol_tv")}
+                            onClick={() => handleIconClick("nordpol_tv")}
+                          />
+                        </div>
                       </div>
                     </section>
-                  ))}
+                    {lockedMsg && (
+                      <p
+                        role="status"
+                        className="fixed bottom-24 left-1/2 -translate-x-1/2 z-30 w-[min(90%,40rem)] px-4 py-2 text-lg text-center bg-(--dark-crt) text-(--cold-blue) border-2 border-(--cold-blue)/50"
+                      >
+                        {lockedMsg}
+                      </p>
+                    )}
+                    <div className="grid gap-3 md:gap-4">
+                      {(
+                        [
+                          ["UTFORSK", UTFORSK],
+                          ["SPILL OG MORO", SPILL],
+                        ] as const
+                      ).map(([title, tools]) => (
+                        <section key={title}>
+                          <h2 className="mb-1 text-lg tracking-wider text-(--brass)">
+                            {title}
+                          </h2>
+                          {/* Three columns: six and five tiles fill two rows with no orphan */}
+                          <div className="grid grid-cols-3 gap-2 auto-rows-fr">
+                            {tools.map((t) => {
+                              const locked =
+                                !!t.unlock &&
+                                !unlockedModules.includes(t.unlock);
+                              const unlockDay = t.unlock
+                                ? GameEngine.getModuleUnlockDay(t.unlock)
+                                : null;
+                              if (locked && t.hidden)
+                                return <div key={t.window} aria-hidden />;
+                              const isNew =
+                                !!t.unlock &&
+                                !locked &&
+                                !GameEngine.isIntroSeen(`ny-${t.window}`);
+                              return (
+                                <div
+                                  key={t.window}
+                                  data-modul={t.unlock}
+                                  data-laast={locked ? "ja" : undefined}
+                                >
+                                  <DesktopIcon
+                                    icon={t.icon}
+                                    className="lg:min-h-24 xl:min-h-28 2xl:min-h-32"
+                                    label={t.label}
+                                    color={t.color}
+                                    unreadCount={
+                                      t.window === "nissenet"
+                                        ? unreadFileCount
+                                        : 0
+                                    }
+                                    disabled={locked || isFrozen(t.window)}
+                                    locked={locked}
+                                    teaser={
+                                      locked ? opensIn(unlockDay) : undefined
+                                    }
+                                    isNew={isNew}
+                                    onLockedClick={
+                                      locked
+                                        ? () => {
+                                            const n = daysLeft(unlockDay);
+                                            setTimeout(
+                                              () => setLockedMsg(null),
+                                              3500,
+                                            );
+                                            setLockedMsg(
+                                              n === 1
+                                                ? `Rampenissen: «Heisann, ikkje så fort! ${t.label} e klar i morra.»`
+                                                : `${t.hint}. Rampenissen: «Ho-ho, vent ${n ?? "nokka"} daga te!»`,
+                                            );
+                                          }
+                                        : undefined
+                                    }
+                                    onClick={() => {
+                                      if (isNew)
+                                        GameEngine.markIntroSeen(
+                                          `ny-${t.window}`,
+                                        );
+                                      setLockedMsg(null);
+                                      handleIconClick(t.window);
+                                    }}
+                                  />
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </section>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               ) : (
                 // Active window
