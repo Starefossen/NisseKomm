@@ -203,7 +203,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 ### Dag 1 (ti) – Direktelinjen · SIGNAL · M1
 
 - `tittel`: Direktelinjen (gammel: «Direktelinje Landås»; avgjort, se A0)
-- `nissemail_tekst` (86 ord): Hei Kristian, Håkon og Hanna! 🎄 Jeg er tilbake! I natt sendte IQ meg ned linjen sammen med Hjerteruds niste. Nistesekken landet først. Dere har sett hvordan det gikk. Linjen går fra Snøfall til stua deres, med Snøfall TV og video fra Julius. Men den hakker. Noe knitrer på den, og det er ikke meg. Håkon, du fulgte den røde tråden min: bare det som hang på linjen, teller. Det som falt av i skredet, teller ikke. Kristian: se Julius, og heng opp tavla fra IQ. – Rampenissen
+- `nissemail_tekst` (86 ord): Hei Kristian, Håkon og Hanna! 🎄 Jeg er tilbake! I natt sendte IQ meg ned linjen sammen med Hjerteruds niste. Eskene landet først. Dere har sett hvordan det gikk. Linjen går fra Snøfall til stua deres, med Snøfall TV og video fra Julius. Men den hakker. Noe knitrer på den, og det er ikke meg. Håkon, du fulgte den røde tråden min: bare det som hang på linjen, teller. Det som falt av i skredet, teller ikke. Kristian: se Julius, og heng opp tavla fra IQ. – Rampenissen
 - `julius_ps`: Rampenissen kom ned linjen sammen med tre esker se-vitamin, og landet under dem. Med en banan som pute. Jeg har sett ham lande i verre ting. Linjen bærer nå; takk for at dere kom. IQ skal koble kaffetrakteren på forsterkeren i natt. Hva kan vel gå galt.
 - `daily_alerts`: 🎅 JULIUS: Direktelinjen er åpen. Ny video på kanal 3.
 - NisseNet: `SYSTEM/om-snofall.txt` **skrives om** (åpen fra dag 1):
