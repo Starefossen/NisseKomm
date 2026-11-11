@@ -199,6 +199,11 @@ function husMesh(variant: number, farge?: Vec3): HusMesh {
   m.quad(r[1], r[2], møne1, møne0, SNØ_SKYGGE);
   m.triangle(r[0], r[1], møne0, vegg);
   m.triangle(r[3], møne1, r[2], vegg);
+  // Dark eaves and ridge: a snowy roof against snowy ground otherwise vanishes
+  // from the side, and the chimney seems to float beside the house.
+  for (const x of [-w / 2 - 0.8, w / 2 + 0.8])
+    m.box([x, h, 0], [0.6, 0.6, d + 1.6], STAMME);
+  m.box([0, topp, 0], [0.6, 0.6, d + 1.6], STAMME);
   // Windows glow; the door is dark wood.
   for (const x of [-w / 4, w / 4]) {
     m.box([x, h * 0.55, d / 2 + 0.05], [1.6, 1.6, 0.1], VINDU, 1);
