@@ -222,7 +222,8 @@ const clickText = (label) =>
     const el = [...document.querySelectorAll('button, [role=button], div, span')]
       .find((e) => e.offsetParent !== null && e.innerText?.trim() === ${JSON.stringify(label)});
     if (!el) return false;
-    (el.closest('button,[role=button]') ?? el).click();
+    // A wrapper div can carry the same text as the button inside it
+    (el.closest('button,[role=button]') ?? el.querySelector('button,[role=button]') ?? el).click();
     return true;
   })()`);
 const typeInto = async (selector, value) => {
@@ -376,12 +377,16 @@ for (const day of days) {
     const expected = missions
       .filter((x) => x.dag <= day)
       .flatMap((x) => x.reveals?.modules ?? []);
+    // Locked apps stay on the desktop (greyed with a teaser), so check the lock, not visibility.
+    const laast = await evaluate(
+      "JSON.stringify([...document.querySelectorAll('[data-modul]')].map(e => [e.dataset.modul, !!e.dataset.laast]))",
+    ).then((j) => new Map(JSON.parse(j)));
     for (const mod of expected)
-      check(desktop.includes(mod), `modul ${mod} mangler`);
+      check(laast.get(mod) === false, `modul ${mod} mangler eller er låst`);
     for (const later of missions
       .filter((x) => x.dag > day)
       .flatMap((x) => x.reveals?.modules ?? []))
-      check(!desktop.includes(later), `modul ${later} synlig for tidlig`);
+      check(laast.get(later) !== false, `modul ${later} åpen for tidlig`);
     for (const x of missions.filter((x) => x.dag >= day)) {
       // Pure numbers (48, 24, 75) collide with dates and percentages; only words are checked
       // World names (komponentlekkasje.test.ts) appear in ordinary text by design
