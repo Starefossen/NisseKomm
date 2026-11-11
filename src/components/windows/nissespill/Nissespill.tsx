@@ -140,10 +140,15 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   const [verb, setVerb] = useState<M.Verb | null>(null);
   const [holder, setHolder] = useState<string | null>(null);
   const [tekst, setTekst] = useState("");
+  // Caption over the text: what was tapped (iPad has no hover label)
+  const [emne, setEmne] = useState<{ navn: string; ikon?: string } | null>(
+    null,
+  );
   const [dialog, setDialog] = useState<{ id: string; node: string } | null>(
     null,
   );
   const [puslespill, setPuslespill] = useState<string | null>(null);
+  const [notat, setNotat] = useState(false);
   const [introSteg, setIntroSteg] = useState(0);
   const [visSoner, setVisSoner] = useState(false);
   const [valg, setValg] = useState(false);
@@ -154,6 +159,13 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
     const t = setTimeout(() => setHint(false), 1500);
     return () => clearTimeout(t);
   }, [hint]);
+  // Autosave is silent; a short «LAGRET» after progress tells the kids it stuck
+  const [lagret, setLagret] = useState(false);
+  useEffect(() => {
+    if (!lagret) return;
+    const t = setTimeout(() => setLagret(false), 1200);
+    return () => clearTimeout(t);
+  }, [lagret]);
   const sceneRef = useRef<HTMLDivElement>(null);
   const lommeRef = useRef<HTMLDivElement>(null);
   const [ring, setRing] = useState<{ n: number; x: number; y: number } | null>(
@@ -179,7 +191,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
 
   const dag = spilldag();
 
-  const bruk = (u: M.Utfall) => {
+  const bruk = (u: M.Utfall, om?: { navn: string; ikon?: string }) => {
     if (save) {
       const ny = u.save.inventory.find((i) => !save.inventory.includes(i));
       // After render: the new slot flies down from the scene into the pocket
@@ -204,10 +216,14 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
         { transform: "translateX(0)" },
       ]);
     setSave(u.save);
-    if (u.tekst !== undefined) setTekst(u.tekst);
+    if (u.tekst !== undefined) {
+      setTekst(u.tekst);
+      setEmne(om ?? null);
+    }
     if (u.dialog) setDialog({ id: u.dialog, node: "start" });
     if (u.puslespill) setPuslespill(u.puslespill);
     if (u.lyd) SoundManager.playSound(u.lyd);
+    if (u.lyd === "success") setLagret(true);
     setVerb(null);
     setHolder(null);
   };
@@ -246,8 +262,8 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                       Kapittel {k.n}: {k.tittel}
                     </div>
                     <div className="text-base text-(--cold-blue)">
-                      {ferdig
-                        ? "Fullført"
+                      {ferdig && save
+                        ? `Fullført · ${M.oppsummering(k, save).kort}`
                         : !erLaastOpp(k, dag)
                           ? `Låses opp ${k.dag}. desember`
                           : !k.klar
@@ -288,19 +304,24 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   const taler = dialog ? kap.dialoger[dialog.id] : null;
 
   const tapItem = (id: string) => {
+    const g = kap.gjenstander[id];
     if (verb === "se") {
-      setTekst(kap.gjenstander[id].se);
+      setTekst(g.se);
+      setEmne(g);
       setVerb(null);
       return;
     }
     setVerb(null);
-    if (holder && holder !== id) bruk(M.kombiner(kap, save, holder, id));
+    if (holder && holder !== id)
+      bruk(M.kombiner(kap, save, holder, id), {
+        navn: `${kap.gjenstander[holder].navn} + ${g.navn}`,
+      });
     else setHolder(holder === id ? null : id);
   };
 
   const tapValg = (v: M.Valg) => {
     SoundManager.playSound("click");
-    setSave(M.velgSvar(save, v));
+    setSave(M.velgSvar(save, v, dialog?.id));
     setDialog(v.neste && dialog ? { id: dialog.id, node: v.neste } : null);
   };
 
@@ -379,7 +400,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                         x: h.rect.x + h.rect.w / 2,
                         y: h.rect.y + h.rect.h / 2,
                       });
-                      bruk(M.trykk(kap, save, h, verb, holder));
+                      bruk(M.trykk(kap, save, h, verb, holder), h);
                     }}
                     className={`group absolute rounded min-w-11 min-h-11 ${visSoner || hint ? "border-2 border-dashed border-(--gold)" : ""} active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) focus-visible:bg-white/20`}
                     style={{
@@ -434,6 +455,14 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   }}
                 />
               )}
+              {lagret && (
+                <span
+                  className="absolute bottom-2 right-2 px-2 bg-black/70 border border-(--neon-green) text-base text-(--neon-green) tracking-wider pointer-events-none"
+                  style={{ animation: "fadeIn 0.3s ease-out" }}
+                >
+                  LAGRET
+                </span>
+              )}
               {ring && (
                 <span
                   key={ring.n}
@@ -484,6 +513,51 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 }}
               />
             )}
+            {notat && (
+              <div
+                role="dialog"
+                aria-label="Notatbok"
+                className="absolute inset-0 z-20 bg-black/90 overflow-y-auto p-3 flex flex-col gap-2"
+                style={{ animation: "fadeIn 0.3s ease-out" }}
+              >
+                <div className="flex items-center gap-2 border-b-2 border-(--brass) pb-2">
+                  <h3 className="flex-1 text-2xl text-(--gold) tracking-wider uppercase">
+                    Hva gjør vi nå?
+                  </h3>
+                  <button
+                    type="button"
+                    aria-label="Lukk notatboka"
+                    className={`${LITEN} border-(--brass)`}
+                    onClick={() => setNotat(false)}
+                  >
+                    Lukk
+                  </button>
+                </div>
+                <ul className="flex-1 space-y-1 text-xl leading-tight">
+                  {M.notater(kap, save).map((n) => (
+                    <li
+                      key={n.tekst}
+                      className={
+                        n.gjort
+                          ? "line-through opacity-60"
+                          : "text-(--neon-green)"
+                      }
+                    >
+                      {n.gjort ? "✓ " : "› "}
+                      {n.tekst}
+                    </li>
+                  ))}
+                  {M.has(save, kap.slutt) && (
+                    <li className="text-(--gold)">Kapittelet er ferdig.</li>
+                  )}
+                </ul>
+                {M.fjaerTelling(kap, save)[1] > 0 && (
+                  <p className="text-lg text-(--cold-blue)">
+                    Uglefjær funnet: {M.fjaerTelling(kap, save).join("/")}
+                  </p>
+                )}
+              </div>
+            )}
             {(iIntro || iUtro) && (
               <div className={`${PANEL} flex items-start gap-3`}>
                 <Portrett navn="rampenissen" />
@@ -495,6 +569,19 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                       tekst={iIntro ? kap.intro[introSteg] : kap.utro}
                     />
                   </p>
+                  {iUtro && (
+                    <div className="mt-2 border-2 border-(--gold) px-3 py-2 space-y-1">
+                      <p className="text-2xl text-(--gold) tracking-wider">
+                        KAPITTEL {kap.n} FULLFØRT
+                      </p>
+                      <p className="text-lg text-(--cold-blue)">
+                        {M.oppsummering(kap, save).kort}
+                      </p>
+                      <p className="text-lg">
+                        {M.oppsummering(kap, save).linje}
+                      </p>
+                    </div>
+                  )}
                   <button
                     type="button"
                     className={`${MENYPUNKT} text-(--gold)`}
@@ -548,7 +635,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                     <button
                       key={v.tekst}
                       type="button"
-                      className={MENYPUNKT}
+                      className={`${MENYPUNKT} ${M.erSpurt(save, dialog.id, v) ? "opacity-50" : ""}`}
                       onClick={() => tapValg(v)}
                     >
                       › {v.tekst}
@@ -574,6 +661,14 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 onClick={() => setTekst("")}
                 className={`${PANEL} text-left text-xl leading-tight`}
               >
+                {emne && (
+                  <span className="flex items-center gap-1 text-base text-(--gold) uppercase tracking-wider">
+                    {emne.ikon && (
+                      <Icon name={emne.ikon} size={16} color="gold" />
+                    )}
+                    {emne.navn}
+                  </span>
+                )}
                 <Skriv key={tekst} tekst={tekst} />
               </button>
             )}
@@ -638,6 +733,17 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
               />
             ))}
           </div>
+          <button
+            type="button"
+            aria-expanded={notat}
+            onClick={() => {
+              SoundManager.playSound("click");
+              setNotat(!notat);
+            }}
+            className={`${LITEN} border-(--cold-blue) text-(--cold-blue)`}
+          >
+            NOTAT
+          </button>
           <button
             type="button"
             onClick={() => bruk(M.tips(kap, save))}

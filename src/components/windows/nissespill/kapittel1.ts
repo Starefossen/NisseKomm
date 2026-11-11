@@ -143,6 +143,7 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Urtårnet",
           rect: { x: 52, y: 0, w: 14, h: 62 },
           smart: "se",
+          prat: "Du roper «hva er klokka?» opp til tårnet. Klokka slår ett slag, midt mellom to timer, som for å si at det er dens sak.",
           se: "Klokkeskiva har fire visere: timer, minutter, sekunder og «tid til neste julekake». Den fjerde er bøyd fordi noen har prøvd å dytte den framover med en kjepp.",
           bruk:
             "Du når ikke opp til klokka. " +
@@ -161,6 +162,10 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Postkassen",
           rect: { x: 66, y: 42, w: 16, h: 36 },
           smart: "bruk",
+          prat:
+            "Du hvisker «hallo?» inn i brevsprekken. Det lukter ull og klementin tilbake. Ingen svarer. " +
+            R +
+            "«Det e SENGA mi der inne. Senger svare ikkje. Dem lytte.»",
           vis: { uten: "hengsel_tint" },
           se: [
             {
@@ -778,6 +783,7 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "winter",
       ferdig: "winter_snakket",
+      maal: "Finn ut hvem som tok garnkurven. Han med skjerfet vet noe.",
       tips: [
         R +
           "«Kurven min e borte fra loftet. Nån på torget veit sikkert nåkka. Han med skjerfet står og glor på postkassa som om han eie ho.»",
@@ -789,6 +795,8 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "stempel",
       ferdig: "stempel_vaat",
+      maal: "Gjør stempelputa til Winter våt. Noe rødt og tynt.",
+      kjent: { hvis: "winter_snakket" },
       tips: [
         R +
           "«Stempelputa te Winter e tørr. Vi treng nåkka vått og rødt og tynt. Ikkje syltetøy, det e tjukt. Og varmt, for alt e frossent her.»",
@@ -801,6 +809,8 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "signatur",
       ferdig: "skjema_signert",
+      maal: "Få Skjema 4112-B signert av IQ.",
+      kjent: { hvis: "winter_snakket" },
       tips: [
         R +
           "«Winter vil ha skjema 4112-B, signert av han som eie loftet. Det e IQ. IQ har skjemaan sjøl, oppe i verkstedet, under lampa.»",
@@ -813,6 +823,8 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "skrin",
       ferdig: "skrin_aapent",
+      maal: "Åpne stempelskrinet på hylla.",
+      kjent: { hvis: "stempel_vaat" },
       tips: [
         R +
           "«Stempelet ligg i skrinet på hylla, med fire tallhjul. Det står nåkka gravert på lokket. SE på det.»",
@@ -825,6 +837,8 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "skjema",
       ferdig: "postkasse_opplaast",
+      maal: "Lever det signerte skjemaet til Winter.",
+      kjent: { hvis: "skjema_signert" },
       tips: [
         R +
           "«Signert skjema, våt pute og åpent skrin. No mangle bare at Winter gjør jobben sin.»",
@@ -837,6 +851,7 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "hengsel",
       ferdig: "hengsel_tint",
+      maal: "Få opp den frosne luka på postkassen.",
       tips: [
         R +
           "«Låsen e åpen, men luka sitt fast. Frossen. Ka e det som smelte is? Ikkje paragrafa.»",
@@ -847,6 +862,7 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "luke",
       ferdig: "k1_ferdig",
+      maal: "Legg postkortet i luka riktig, så kurven kan hentes.",
       tips: [
         R +
           "«Postkortet på innsida av luka e i ni bita. Winter vil ha bildet heilt før luka går opp. Sjølsagt vil han det.»",

@@ -289,6 +289,7 @@ export const KAPITTEL_2: Kapittel = {
           navn: "Rudolf",
           rect: { x: 38, y: 56, w: 22, h: 22 },
           smart: "bruk",
+          prat: "«Rudolf?» Rudolf tygger. «Rudolf, kabelen.» Rudolf tygger litt fortere. Han hører. Han prioriterer.",
           vis: { uten: "rudolf_flyttet" },
           se: "Rudolf står ved foten av masta med en svart kabel i munnen. Nesa lyser rødt hver gang han tygger. Bak ham skimter du et tannhjul dekket av is. Han står ikke i veien. Han ER veien.",
           bruk:
@@ -407,6 +408,7 @@ export const KAPITTEL_2: Kapittel = {
           navn: "Rudolf",
           rect: { x: 82, y: 40, w: 18, h: 40 },
           smart: "se",
+          prat: "Rudolf åpner ett øye, tygger ferdig, og lukker det igjen. Det var hele samtalen, og det var en god en.",
           vis: { hvis: "rudolf_flyttet" },
           se: "Rudolf står mellom buskene og tygger knekkebrød med lukkede øyne. Nesa lyser rolig. Han er den lykkeligste reinen nord for Nordtoppen, og han vet det.",
           bruk: "Du klapper Rudolf på mulen. Han tygger videre. Han har det bra. Han har det bedre enn deg.",
@@ -416,6 +418,10 @@ export const KAPITTEL_2: Kapittel = {
           navn: "Tjernet",
           rect: { x: 10, y: 52, w: 28, h: 22 },
           smart: "se",
+          prat:
+            "Du snakker til fisken under isen. Den stopper, ser opp, og svømmer videre. " +
+            R +
+            "«Fisken har hørt verre spørsmål. Fra mæ. I fjor.»",
           se: "Tjernet er frosset blankt som en tallerken. Under isen går det en liten fisk fram og tilbake og lurer på hvor taket kom fra. Den har spurt de andre fiskene. De vet heller ikke.",
           bruk: "Knerten prøver isen med én fot. Den holder. Hun prøver med to. Den holder. Hun går tilbake på land. Ugler har et godt forhold til land.",
         },
@@ -854,6 +860,7 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "hytta",
       ferdig: "hytta_aapen",
+      maal: "Kom inn i hytta ved antenna. Døra har kodelås, og skiltet sier TELL.",
       tips: [
         R +
           "«Nåkka tungt og varmt, sa IQ. Boksen hans ligg i hytta ved antenna. Men døra har kodelås, og skiltet på døra sei meir enn det burde.»",
@@ -866,6 +873,8 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "rudolf",
       ferdig: "rudolf_flyttet",
+      maal: "Få Rudolf vekk fra kabelen.",
+      kjent: {},
       tips: [
         R +
           "«Rudolf går ikkje fra kabelen frivillig. Han treng nåkka BEDRE å tygge på. Alt e bedre med sirup, sei IQ. Rudolf e enig.»",
@@ -878,6 +887,8 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "tannhjul",
       ferdig: "tannhjul_tint",
+      maal: "Tin tannhjulet nederst på masta. Noe tungt og varmt.",
+      kjent: {},
       tips: [
         R +
           "«Tannhjulet nederst på masta e frosse. Det treng nåkka tungt og varmt inntil sæ. Lenge. Håndvarmeren e ikkje nok, den e lunken som en unnskyldning.»",
@@ -890,6 +901,7 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "kopp",
       ferdig: "kopp_tint",
+      maal: "Tin isen i koppen på peileskiva.",
       tips: [
         R +
           "«Nåla ska flyte i vann, sei IQ. Koppen på skiva e full av is. Is e ikkje vann, samme ka isen sei.»",
@@ -902,6 +914,7 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "peiling",
       ferdig: "antenne_peilet",
+      maal: "Få antenna til å finne retningen mot Landås. Noe som vet hvor nord er.",
       tips: [
         R +
           "«Antenna snurre, koppen har vann, og IQ har rissa en L i skiva. No mangle bare nåkka som veit kor nord e.»",
@@ -914,6 +927,7 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "mottaker",
       ferdig: "k2_ferdig",
+      maal: "Still mottakeren i hyttevinduet på riktig tall.",
       tips: [
         R +
           "«Antenna står rett, men bildet e snø. Mottakeren i hyttevinduet suse. Nån har rørt rattet. Æ sei ikkje kem.»",

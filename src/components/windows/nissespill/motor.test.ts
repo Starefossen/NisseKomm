@@ -178,6 +178,77 @@ describe("motor: fjær", () => {
   });
 });
 
+describe("motor: ingen stille trykk", () => {
+  it("SNAKK bruker prat når den finnes, ellers en generisk linje med navnet", () => {
+    const k1 = KAPITLER[0];
+    const hot = (id: string) => k1.scener[0].hotspots.find((h) => h.id === id)!;
+    const s = M.nyttKapittel(k1);
+    expect(M.trykk(k1, s, hot("urtaarnet"), "snakk", null).tekst).toContain(
+      "hva er klokka",
+    );
+    expect(M.trykk(k1, s, hot("husene"), "snakk", null).tekst).toMatch(
+      /husene/i,
+    );
+    // BRUK without a bruk line never returns an empty text
+    expect(M.trykk(k1, s, hot("husene"), "bruk", null).tekst).toBeTruthy();
+  });
+});
+
+describe("motor: dialog husker spurte valg", () => {
+  it("valg med neste gråes etter bruk, avslutninger ikke, og nytt kapittel glemmer", () => {
+    const k1 = KAPITLER[0];
+    const start = k1.dialoger.winter.noder.start;
+    const skjerf = start.valg!.find((v) => v.tekst.startsWith("Hvorfor"))!;
+    const hade = start.valg!.find((v) => v.tekst.startsWith("Ha det"))!;
+    let s = M.nyttKapittel(k1);
+    expect(M.erSpurt(s, "winter", skjerf)).toBe(false);
+    s = M.velgSvar(s, skjerf, "winter");
+    s = M.velgSvar(s, hade, "winter");
+    expect(M.erSpurt(s, "winter", skjerf)).toBe(true);
+    expect(M.erSpurt(s, "winter", hade)).toBe(false);
+    expect(M.erSpurt(s, "iq", skjerf)).toBe(false);
+    expect(M.erSpurt(M.nyttKapittel(k1, s), "winter", skjerf)).toBe(false);
+  });
+});
+
+describe("motor: oppsummering", () => {
+  it("teller fjær og tips (maks 3 per gåte) og velger linje etter tips", () => {
+    const k1 = KAPITLER[0];
+    const s = M.nyttKapittel(k1);
+    expect(M.oppsummering(k1, s).kort).toBe("Fjær 0/2 · Ingen tips");
+    const mange = { ...s, hints: { winter: 3, stempel: 5, ukjent: 9 } };
+    expect(M.oppsummering(k1, mange).tips).toBe(6);
+    expect(M.oppsummering(k1, mange).linje).toContain("en del");
+    expect(M.oppsummering(k1, { ...s, hints: { winter: 1 } }).kort).toBe(
+      "Fjær 0/2 · 1 tips",
+    );
+  });
+});
+
+describe("motor: notatbok", () => {
+  const k1 = KAPITLER[0];
+  it("viser løste mål, det første uløste og kjente parallelle mål", () => {
+    const fersk = M.notater(k1, M.nyttKapittel(k1));
+    expect(fersk.map((n) => n.gjort)).toEqual([false]);
+    expect(fersk[0].tekst).toContain("garnkurven");
+    const etter = M.notater(k1, save("winter_snakket"));
+    expect(etter.map((n) => [n.gjort, n.tekst.split(" ")[0]])).toEqual([
+      [true, "Finn"],
+      [false, "Gjør"],
+      [false, "Få"],
+    ]);
+  });
+
+  it.each(KAPITLER.map((k) => [k.n, k] as const))(
+    "kapittel %i: hvert mål har notat, og notatene er unike",
+    (_, k) => {
+      const maal = k.gaater.map((g) => g.maal ?? "");
+      expect(maal.every(Boolean)).toBe(true);
+      expect(new Set(maal).size).toBe(maal.length);
+    },
+  );
+});
+
 describe("motor: kapitlenes minispill er gyldige", () => {
   it.each([KAP, ...KAPITLER].map((k) => [k.n, k] as const))(
     "kapittel %i",

@@ -153,6 +153,7 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     // Berries, then up to the workshop for the cup and the form
     tap(el, "Julebodene");
     expect(GameEngine.getEventyrSave()?.inventory).toEqual(["tyttebaer"]);
+    expect(el.textContent).toContain("LAGRET");
     tap(el, "Trappa");
     expect(el.textContent).toContain("IQs verksted");
     tap(el, "Kaffekoppen");
@@ -235,10 +236,12 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     });
     jest.useRealTimers();
     expect(el.textContent).toContain("TIL KAPITLENE");
+    expect(el.textContent).toContain("KAPITTEL 1 FULLFØRT");
+    expect(el.textContent).toContain("Fjær 0/2 · Ingen tips");
     const save = GameEngine.getEventyrSave();
     expect(save?.flags).toContain("k1_ferdig");
     tap(el, "TIL KAPITLENE");
-    expect(el.textContent).toContain("Fullført");
+    expect(el.textContent).toContain("Fullført · Fjær 0/2 · Ingen tips");
   });
 
   it("fjæra plukkes med SE, telles og overlever nytt kapittel", () => {
@@ -252,6 +255,20 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     expect(el.textContent).toContain("Fjær 1/2");
     expect(find(el, "Noe lite")).toBeUndefined();
     expect(GameEngine.getEventyrSave()?.fjaer).toEqual(["1:torget"]);
+  });
+
+  it("NOTAT åpner notatboka med dagens mål", () => {
+    const el = mount();
+    tap(el, "SPILL");
+    tap(el, "VIDERE");
+    tap(el, "VIDERE");
+    tap(el, "VIDERE");
+    tap(el, "NOTAT");
+    expect(el.textContent).toContain("Hva gjør vi nå?");
+    expect(el.textContent).toContain("garnkurven");
+    expect(el.textContent).not.toContain("Noe rødt og tynt");
+    tap(el, "Lukk notatboka");
+    expect(el.textContent).not.toContain("Hva gjør vi nå?");
   });
 
   it("TIPS følger første uløste gåte og stopper på nivå 3", () => {

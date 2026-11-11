@@ -20,6 +20,11 @@
  *       S start, M goal, | straight, L corner, T tee, + cross, . empty.
  *   TIPS: add a `Gaate` with `ferdig` = the puzzle's `flagg`; the overlay's TIPS
  *   button uses it. A test rejects unsolvable or pre-solved routes and bad locks.
+ * - SNAKK on a thing: `Hotspot.prat` (a Linje). Hotspots without `bruk`/`prat` get
+ *   a rotating generic line, so no tap is ever silent.
+ * - Notebook (NOTAT): every `Gaate` has `maal`, one bokmål line without the answer.
+ *   It shows when solved (crossed out) or when it is the first unsolved goal; goals
+ *   that run in parallel get `kjent` (a condition, `{}` = from the start).
  */
 import type { EventyrSave } from "@/lib/storage";
 import type { PuslespillDef } from "./minispill";
@@ -80,6 +85,8 @@ export interface Hotspot {
   /** Custom lines for wrong items; others get a generic shrug. */
   feil?: Record<string, string>;
   snakk?: string;
+  /** SNAKK on a thing that has no dialog; otherwise a rotating generic line. */
+  prat?: Linje;
   /** BRUK walks to this scene (stairs, doors); exits also get a button. */
   gaaTil?: string;
   /** BRUK opens this mini-puzzle (key in `Kapittel.puslespill`) until it is solved. */
@@ -133,6 +140,10 @@ export interface Gaate {
   /** Solved when this flag is set; the first unsolved one owns the TIPS button. */
   ferdig: string;
   tips: [string, string, string];
+  /** Notebook line (bokmål, no spoilers). Shown when solved, when it is the first unsolved, or when `kjent` holds. */
+  maal?: string;
+  /** Extra condition for showing `maal` early (`{}` = from the start) for goals that run in parallel. */
+  kjent?: Vilkaar;
 }
 
 export interface Kapittel {
@@ -164,7 +175,7 @@ export interface Utfall {
   dialog?: string;
   /** Open this mini-puzzle. */
   puslespill?: string;
-  lyd?: "click" | "success" | "error";
+  lyd?: "click" | "success" | "error" | "open";
 }
 
 const SKULDERTREKK = [
@@ -173,6 +184,27 @@ const SKULDERTREKK = [
   "Rampenissen: «Æ ser ka du tenke, men nei.»",
   "Rampenissen: «Kreativt! Feil, men kreativt.»",
 ];
+
+/** BRUK on something with no `bruk` line; rotates per hotspot so repeats stay fresh. */
+const INGENTING = [
+  "Det skjer ingenting. Absolutt ingenting.",
+  "Rampenissen: «Knerten dytte på det med nebbet. Ingenting. Ho prøve med den andre sida av nebbet. Like lite.»",
+  "Rampenissen: «Nei, det der e bare te å se på. Æ veit, æ har òg prøvd å ta på alt.»",
+  "Rampenissen: «Det sitt fast, eller så e det ikkje meint å flyttes på. Sannsynligvis begge dela.»",
+  "Rampenissen: «Knerten ser på det. Det ser tilbake. Ingen av dem gir sæ. Vi går videre.»",
+];
+
+/** SNAKK on something with neither `snakk` nor `prat`. */
+const SVARER_IKKE = [
+  (n: string) => `${n} svarer ikke. Forståelig nok.`,
+  (n: string) =>
+    `Du sier «hallo» til ${n.toLowerCase()}. Det blir stille. Rampenissen: «Æ har snakka med verre. Æ har snakka med ei dørmatte i tre tima.»`,
+  (n: string) =>
+    `Knerten uler lavt mot ${n.toLowerCase()}. Rampenissen: «Ugler snakke ikkje med sånt. Dem har standard.»`,
+  (n: string) => `${n} sier ingenting, men du får en følelse av å bli vurdert.`,
+];
+
+const hash = (s: string) => [...s].reduce((a, c) => a + c.charCodeAt(0), 0);
 
 export const has = (save: EventyrSave, flag: string) =>
   save.flags.includes(flag);
@@ -279,7 +311,7 @@ export const synlige = (s: Scene, save: EventyrSave) =>
   s.hotspots.filter((h) => ok(h.vis, save));
 
 export function gaa(save: EventyrSave, til: string): Utfall {
-  return { save: { ...save, sceneId: til }, lyd: "click" };
+  return { save: { ...save, sceneId: til }, lyd: "open" };
 }
 
 /** A tap on a hotspot, with a chosen verb and/or an item in hand. */
@@ -328,14 +360,16 @@ export function trykk(
       save,
       tekst: h.bruk
         ? velg(h.bruk, save)
-        : "Det skjer ingenting. Absolutt ingenting.",
+        : INGENTING[hash(h.id) % INGENTING.length],
       lyd: "click",
     };
   }
   if (h.snakk) return { save, dialog: h.snakk, lyd: "click" };
   return {
     save,
-    tekst: `${h.navn} svarer ikke. Forståelig nok.`,
+    tekst: h.prat
+      ? velg(h.prat, save)
+      : SVARER_IKKE[hash(h.id) % SVARER_IKKE.length](h.navn),
     lyd: "click",
   };
 }
@@ -369,8 +403,23 @@ export const valgSomVises = (n: Node, save: EventyrSave) =>
     (v) => ok(v, save) && (!v.harItem || save.inventory.includes(v.harItem)),
   );
 
-export function velgSvar(save: EventyrSave, v: Valg): EventyrSave {
-  return medItem(utenItem(medFlagg(save, v.flagg), v.tar), v.gir);
+const spurtFlagg = (dialog: string, v: Valg) => `spurt:${dialog}:${v.tekst}`;
+
+/** Choices that lead somewhere are remembered (greyed) until the chapter restarts. */
+export const erSpurt = (save: EventyrSave, dialog: string, v: Valg) =>
+  !!v.neste && has(save, spurtFlagg(dialog, v));
+
+export function velgSvar(
+  save: EventyrSave,
+  v: Valg,
+  dialog?: string,
+): EventyrSave {
+  const s = medFlagg(
+    save,
+    v.flagg,
+    dialog && v.neste ? spurtFlagg(dialog, v) : undefined,
+  );
+  return medItem(utenItem(s, v.tar), v.gir);
 }
 
 /** The open puzzle's next hint; levels stick at 3 so the answer stays visible. */
@@ -388,6 +437,44 @@ export function tips(kap: Kapittel, save: EventyrSave): Utfall {
     tekst: g.tips[nivaa],
     lyd: "click",
   };
+}
+
+/** Notebook («Hva gjør vi nå?»): solved goals, the current one, and goals already known. */
+/** End card and chapter list: feathers, hints used, and one line from Rampenissen. */
+export function oppsummering(kap: Kapittel, save: EventyrSave) {
+  const [x, n] = fjaerTelling(kap, save);
+  const tips = kap.gaater.reduce(
+    (sum, g) => sum + Math.min(save.hints?.[g.id] ?? 0, 3),
+    0,
+  );
+  const deler = [
+    n > 0 ? `Fjær ${x}/${n}` : "",
+    tips === 0 ? "Ingen tips" : tips === 1 ? "1 tips" : `${tips} tips`,
+  ].filter(Boolean);
+  return {
+    fjaer: [x, n] as const,
+    tips,
+    kort: deler.join(" · "),
+    linje:
+      tips === 0
+        ? "Rampenissen: «Null tips. Dokker e skumle gode. Æ fikk ikkje hviska en gang.»"
+        : tips <= 3
+          ? "Rampenissen: «Nesten heilt uten hjelp. Æ hviska litt, det teller ikkje.»"
+          : "Rampenissen: «Æ hviska en del. Det e lov. Det e det æ e her for.»",
+  };
+}
+
+export function notater(
+  kap: Kapittel,
+  save: EventyrSave,
+): { tekst: string; gjort: boolean }[] {
+  const naa = kap.gaater.findIndex((g) => !has(save, g.ferdig));
+  return kap.gaater.flatMap((g, i) => {
+    if (!g.maal) return [];
+    const gjort = has(save, g.ferdig);
+    if (!gjort && i !== naa && !(g.kjent && ok(g.kjent, save))) return [];
+    return [{ tekst: g.maal, gjort }];
+  });
 }
 
 /** The UI reports a solved mini-puzzle; the engine sets its flag. */
