@@ -98,7 +98,6 @@ export function NisseMail({
     },
   );
 
-  const [showInbox, setShowInbox] = useState(true);
   // SPAM folder (tidbits.json): read-only, no unread state
   const [showSpam, setShowSpam] = useState(false);
   const [spam, setSpam] = useState<SpamMail | null>(null);
@@ -156,6 +155,8 @@ export function NisseMail({
         ),
   );
 
+  // Below lg the opening mail shows first; the inbox list stays folded
+  const [showInbox, setShowInbox] = useState(!initialEmail);
   // The content pane needs both, so the opening mail must set both
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(
     initialEmail,
@@ -211,7 +212,7 @@ export function NisseMail({
 
   return (
     <RetroWindow title="NISSEMAIL" onClose={onClose}>
-      <div className="flex flex-col lg:flex-row h-full gap-4 p-4 md:p-6">
+      <div className="flex flex-col lg:flex-row h-full gap-4 p-4 md:p-6 overflow-y-auto lg:overflow-hidden">
         {/* Inbox List - Collapsible on mobile, left 30% on desktop */}
         <div className="w-full lg:w-[30%] lg:border-r-4 border-(--neon-green)/30 flex flex-col overflow-hidden shrink-0">
           <div className="flex flex-col h-full">
@@ -245,9 +246,7 @@ export function NisseMail({
             {/* Email list - Collapsible on mobile, always visible on desktop */}
             <div
               className={`space-y-2 overflow-y-auto mt-2 pb-2 transition-all lg:flex-1 ${
-                showInbox
-                  ? "max-h-[40vh] lg:max-h-full"
-                  : "max-h-0 lg:max-h-full"
+                showInbox ? "lg:max-h-full" : "hidden lg:block lg:max-h-full"
               }`}
             >
               {[...emails].reverse().map((email, index) => {
@@ -363,9 +362,9 @@ export function NisseMail({
         </div>
 
         {/* Email Content - Stacks below inbox on mobile, right 70% on desktop */}
-        <div className="w-full lg:w-[70%] flex flex-col min-h-0 flex-1 overflow-hidden">
+        <div className="w-full lg:w-[70%] flex flex-col lg:min-h-0 flex-1 lg:overflow-hidden">
           {spam ? (
-            <div className="flex-1 overflow-y-auto space-y-3">
+            <div className="flex-1 lg:overflow-y-auto space-y-3">
               <div className="pb-3 border-b-4 border-(--gray)/50 space-y-1">
                 <div className="text-base opacity-70">FRA: {spam.fra}</div>
                 <div className="text-xl font-bold">{spam.emne}</div>
@@ -378,7 +377,7 @@ export function NisseMail({
               </div>
             </div>
           ) : selectedMission && selectedEmail ? (
-            <div className="flex-1 flex flex-col min-h-0">
+            <div className="flex-1 flex flex-col lg:min-h-0">
               {/* Render side-quest email */}
               {selectedEmail.type === "side-quest" &&
               selectedMission.bonusoppdrag ? (
@@ -417,7 +416,7 @@ export function NisseMail({
                   </div>
 
                   {/* Bonusoppdrag Body */}
-                  <div className="flex-1 overflow-y-auto space-y-4 min-h-0 pr-2">
+                  <div className="flex-1 lg:overflow-y-auto space-y-4 lg:min-h-0 pr-2">
                     {/* CRT Crisis Surveillance Feed */}
                     <div className="relative h-28 w-full overflow-hidden border-2 border-(--christmas-red) bg-black">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -597,7 +596,7 @@ export function NisseMail({
                   </div>
 
                   {/* Email Body - Scrollable */}
-                  <div className="flex-1 overflow-y-auto space-y-4 min-h-0 pr-2">
+                  <div className="flex-1 lg:overflow-y-auto space-y-4 lg:min-h-0 pr-2">
                     {/* Mission description */}
                     <div className="p-4 border-2 border-(--neon-green)/50 bg-black/30">
                       <div className="text-lg leading-relaxed whitespace-pre-wrap">
