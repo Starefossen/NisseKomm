@@ -438,18 +438,18 @@ export default function Home() {
             <div className="flex-1 overflow-auto">
               {!openWindow ? (
                 // Desktop in two rows: today's line, then the tools (design-revisjon P2 #8)
-                <div className="flex flex-col items-center justify-center min-h-full gap-6 p-4 md:p-6">
+                <div className="flex flex-col items-center justify-center min-h-full gap-3 p-3 md:p-4">
                   <section className="w-full max-w-4xl">
-                    <h2 className="mb-2 text-lg tracking-wider text-(--brass)">
+                    <h2 className="mb-1 text-lg tracking-wider text-(--brass)">
                       I DAG
                     </h2>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                    <div className="grid grid-cols-3 gap-2">
                       <button
                         onClick={() => {
                           SoundManager.playSound("click");
                           handleIconClick("dagbok");
                         }}
-                        className="relative col-span-2 row-span-2 min-h-48 flex flex-col justify-end p-3 border-2 border-(--brass)/70 bg-cover bg-center text-left hover:border-(--gold) active:scale-[0.98] transition-transform"
+                        className="relative col-span-2 row-span-3 min-h-36 flex flex-col justify-end p-3 border-2 border-(--brass)/70 bg-cover bg-center text-left hover:border-(--gold) active:scale-[0.98] transition-transform"
                         style={{
                           backgroundImage: `linear-gradient(transparent 40%, rgba(10,6,4,0.85)), ${juliusPosters()}url("${mediaUrl("feed/julius-kontor.jpg")}"), url("/village-day.jpg")`,
                         }}
@@ -469,6 +469,7 @@ export default function Home() {
                       </button>
                       <DesktopIcon
                         icon="file"
+                        inline
                         label="NISSEMAIL"
                         color="green"
                         unreadCount={unreadEmailCount}
@@ -476,13 +477,14 @@ export default function Home() {
                       />
                       <DesktopIcon
                         icon="code"
+                        inline
                         label="KODETERMINAL"
                         color="blue"
                         onClick={() => handleIconClick("kodeterminal")}
                       />
                       <DesktopIcon
-                        className="col-span-2"
                         icon="image"
+                        inline
                         label="SNØFALL TV"
                         color="green"
                         disabled={isFrozen("nordpol_tv")}
@@ -500,15 +502,15 @@ export default function Home() {
                   )}
                   {(
                     [
-                      ["UTFORSK", UTFORSK, "grid-cols-3"],
-                      ["SPILL OG MORO", SPILL, "grid-cols-2 md:grid-cols-4"],
+                      ["UTFORSK", UTFORSK, "grid-cols-4"],
+                      ["SPILL OG MORO", SPILL, "grid-cols-4"],
                     ] as const
                   ).map(([title, tools, cols]) => (
                     <section key={title} className="w-full max-w-4xl">
-                      <h2 className="mb-2 text-lg tracking-wider text-(--brass)">
+                      <h2 className="mb-1 text-lg tracking-wider text-(--brass)">
                         {title}
                       </h2>
-                      <div className={`grid ${cols} gap-3 md:gap-4`}>
+                      <div className={`grid ${cols} gap-2`}>
                         {tools.map((t) => {
                           const locked =
                             !!t.unlock && !unlockedModules.includes(t.unlock);
@@ -532,11 +534,7 @@ export default function Home() {
                               }
                               disabled={locked || isFrozen(t.window)}
                               locked={locked}
-                              teaser={
-                                locked
-                                  ? `${opensIn(unlockDay)} · ${t.hint}`
-                                  : undefined
-                              }
+                              teaser={locked ? opensIn(unlockDay) : undefined}
                               isNew={isNew}
                               onLockedClick={
                                 locked
@@ -549,7 +547,7 @@ export default function Home() {
                                       setLockedMsg(
                                         n === 1
                                           ? `Rampenissen: «Heisann, ikkje så fort! ${t.label} e klar i morra.»`
-                                          : `Rampenissen: «Ho-ho, den her e låst! Vent ${n ?? "nokka"} dag${n === 1 ? "" : "a"} te.»`,
+                                          : `${t.hint}. Rampenissen: «Ho-ho, vent ${n ?? "nokka"} daga te!»`,
                                       );
                                     }
                                   : undefined

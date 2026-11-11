@@ -16,6 +16,8 @@ interface DesktopIconProps {
   isNew?: boolean;
   onLockedClick?: () => void;
   className?: string;
+  /** Icon beside the label, for the compact I DAG stack */
+  inline?: boolean;
 }
 
 export function DesktopIcon({
@@ -30,6 +32,7 @@ export function DesktopIcon({
   isNew = false,
   onLockedClick,
   className = "",
+  inline = false,
 }: DesktopIconProps) {
   const [isShaking, setIsShaking] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -54,8 +57,8 @@ export function DesktopIcon({
       disabled={disabled && false} // Allow clicks on disabled for animation
       aria-label={teaser ? `${label}, låst: ${teaser}` : undefined}
       className={`${className}
-        flex flex-col items-center gap-2 p-3 md:p-4 relative
-        w-full min-w-16 min-h-24
+        flex ${inline ? "flex-row gap-3" : "flex-col gap-1"} items-center justify-center px-2 py-1.5 relative
+        w-full min-w-16 min-h-11
         border-2 transition-all focus-visible:outline-2 focus-visible:outline-(--gold)
         ${isNew ? "border-(--gold)!" : ""}
         ${
@@ -73,7 +76,7 @@ export function DesktopIcon({
         </div>
       )}
       {isNew && (
-        <div className="absolute -top-1 -left-1 px-1 bg-(--gold) text-black text-base z-10 animate-[pulse-led_1.5s_ease-in-out_infinite]">
+        <div className="absolute -top-2 -left-2 px-2 py-0.5 border-2 border-black bg-(--gold) text-black text-lg leading-none tracking-widest z-10 shadow-[0_0_10px_var(--gold)] ">
           NY
         </div>
       )}
@@ -87,9 +90,9 @@ export function DesktopIcon({
       )}
       <Icon
         name={icon}
-        size={48}
+        size={36}
         color={disabled ? "gray" : color}
-        className="md:w-14 md:h-14"
+        className="md:w-10 md:h-10"
       />
       <span
         className={`text-base md:text-lg tracking-wider ${
@@ -105,7 +108,7 @@ export function DesktopIcon({
         {label}
       </span>
       {teaser && (
-        <span className="text-sm leading-tight text-center text-(--gray)">
+        <span className="text-sm leading-none whitespace-nowrap text-(--gray)">
           {teaser}
         </span>
       )}
