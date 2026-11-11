@@ -102,15 +102,14 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     tap(el, "VIDERE");
     expect(GameEngine.getEventyrSave()?.flags).toContain("k1_intro");
 
-    // Stempelputa is hidden until Winter has explained the system
-    expect(find(el, "Stempelputa")).toBeUndefined();
+    // The pad is in plain sight; Winter explains what it is for
+    expect(find(el, "Stempelputa")).toBeDefined();
     tap(el, "Winter");
     expect(el.textContent).toContain("Halt!");
     tap(el, "Vi leter etter en garnkurv. Med en bjelle i.");
     expect(el.textContent).toContain("SENGA mi i postkassen");
     tap(el, "Og stempelet?");
     tap(el, "Skjønner. Vi finner noe rødt.");
-    expect(find(el, "Stempelputa")).toBeDefined();
 
     // Berries, then up to the workshop for the cup and the form
     tap(el, "Julebodene");
@@ -137,23 +136,32 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
       "baersaft",
     ]);
 
+    // The form goes under IQ's door for a signature
+    tap(el, "Skjema 4112-B");
+    tap(el, "IQs dør");
+    expect(el.textContent).toContain("brunsvidd hjørne");
+    expect(GameEngine.getEventyrSave()?.inventory).toEqual([
+      "baersaft",
+      "skjema_signert",
+    ]);
+
     // Remount mid-game: same scene and pockets
     el = mount();
     expect(el.textContent).toContain("IQs verksted");
     tap(el, "→ Ned trappa til torget");
 
-    // Unstamped form is refused, juice wets the pad, stamped form opens the lock
-    tap(el, "Skjema 4112-B");
+    // Signed form with a dry pad is refused, juice wets the pad, then it passes
+    tap(el, "Skjema 4112-B, signert");
     tap(el, "Winter");
-    expect(el.textContent).toContain("Felt 7-C");
+    expect(el.textContent).toContain("helt nei");
     tap(el, "Kopp med tyttebærsaft");
     tap(el, "Stempelputa");
     expect(el.textContent).toContain("skogsbær");
     expect(GameEngine.getEventyrSave()?.inventory).toEqual([
-      "skjema",
+      "skjema_signert",
       "kaffekopp",
     ]);
-    tap(el, "Skjema 4112-B");
+    tap(el, "Skjema 4112-B, signert");
     tap(el, "Winter");
     expect(el.textContent).toContain("til nød gyldig");
 
@@ -273,6 +281,19 @@ describe("Nissespill: motor", () => {
     expect(save.flags).toContain(kap.slutt);
     return save;
   };
+
+  it("kapittel 1 kan spilles gjennom", () => {
+    spill(KAPITLER[0], [
+      ["torget", "bodene"],
+      ["verksted", "kaffekoppen"],
+      ["verksted", "sidebordet"],
+      ["verksted", "doera", "skjema"],
+      ["+", "tyttebaer", "kaffekopp"],
+      ["torget", "stempelputa", "baersaft"],
+      ["torget", "winter", "skjema_signert"],
+      ["torget", "postkassen", "kaffekopp"],
+    ]);
+  });
 
   it("kapittel 2 kan spilles gjennom", () => {
     spill(KAPITLER[1], [
