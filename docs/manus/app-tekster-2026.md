@@ -281,7 +281,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - `tittel`: Skotoget i Gangen
 - `nissemail_tekst` (76 ord): Rudolf fløy rett i snøfonna i natt. 🦌 Det lå en tåke over fjorden som ikke var vanlig tåke, og han mistet retningen. Derfor satte jeg skoene deres i ring rundt meg, så Rudolf kan øve. Jeg satt i den første. Hvilken vei dere skal telle, må dere finne ut selv. Håkon, du har kortene fra skoene. Hanna, hvis du vil: tell skoene høyt rundt ringen. Kristian: Julius vet hva Rudolf trenger. NisseKrypto åpner i kveld. – Rampenissen
 - `julius_ps`: Rudolf er hjemme og tørr. Rampenissen har visst lånt pappas solbriller. Innendørs. I desember. Ikke spør meg.
-- `daily_alerts`: 🦌 RUDOLF: Fløy feil i tåka. NisseKrypto åpner i kveld.
+- `daily_alerts`: 🦌 RUDOLF: Fløy feil i tåka. NisseKrypto og Ugleposten åpner i kveld.
 - NisseNet: ingen.
 - `rampenissen_rampestrek`: Har tatt pappas solbriller og sitter i pappas sko i gangen, med de andre skoene i ring rundt seg og kosedyrene i en ytre ring, som om han holder kurs.
 - `fysisk_hint`: Sju sko i ring på gulvet i gangen, pappas (med Rampenissen i) som start, kosedyrene i ring utenfor. Kort i hver sko, talt **med klokka** fra Rampenissen: sko 3 **M**, sko 5 **A**, resten ❄ (tegn i hjørnet, prikker bak med klokka). Retningen sies ikke. Løsning: Håkon legger kortene foran skoene, Kristian skriver begge lesninger (`_ _ M _ A _ _` med klokka, `_ _ _ A _ M _` mot klokka), Julius: det som peker samme vei uansett hvor man snur seg. Bare den første passer. Kode KOMPASS. Før K, O, M, P, A, S på tavla. Hanna, hvis hun vil: teller skoene høyt.
@@ -362,8 +362,8 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
   > IQ – FEILRAPPORT UKE 1
   >
-  > Mandag: direktelinje åpnet. Bærebølge ustabil. Ikke min feil.
-  > Tirsdag: tre sikringer. Kaffetrakter på forsterkeren. Delvis min feil.
+  > Tirsdag: direktelinje åpnet. Bærebølge ustabil. Ikke min feil.
+  > Onsdag: tre sikringer. Kaffetrakter på forsterkeren. Delvis min feil.
   > Torsdag: blått glimt på 85,0. Orakelets avdeling.
   > Fredag: Rudolf i snøfonn. Tåke med feil temperatur.
   > Søndag: 40 lys hengt rundt antennen. Batteri til 20. desember.
@@ -426,7 +426,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
   >
   > Fargesamleren var den første i Snøfall som samlet på farger. Ikke maling. Lys. Rødt fra bålene, grønt fra granene, blått fra isen under Nordtoppen, fanget i iskrystaller så de aldri skulle blekne.
   >
-  > Samlingen ligger i Krystallgrotten under fjellet, der det er kaldt nok til at ingenting smelter. Over inngangen står én regel: «Farger må ses. Ellers forsvinner de.»
+  > Samlingen ligger i en grotte under fjellet, der det er kaldt nok til at ingenting smelter. Over inngangen står én regel: «Farger må ses. Ellers forsvinner de.»
   >
   > Del 2 åpner når linjen er varmere.
 
@@ -523,12 +523,12 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - `oppsett_tid`: 4 min
 - frost: 44 → 36
 
-### Dag 14 (ma) – Hemmeligheten i Papirvingene · ORIGAMI · Brevfugler åpner
+### Dag 14 (ma) – Hemmeligheten i Papirvingene · ORIGAMI · Den blå fuglen
 
 - `tittel`: Hemmeligheten i Papirvingene
-- `nissemail_tekst` (80 ord): Winter åpnet brevfuglene i natt! 🕊️ Og det kom én fugl ingen hadde sendt. Blå. Den satt i vinduskarmen til Julius, med et brev fryst fast til vingen. Jeg brettet serviettene deres til fugler og sov i en båt i vasken. Håkon, du fant arket i båten. Ser du bokstaver uten plass, har arket en brett til. Hanna, hvis du vil: hold lykten. Kristian: Winter har et ord for det vi gjør med papir i dag. Brevfugler åpner i kveld. – Rampenissen
-- `julius_ps`: Winter har aldri fått en fugl han ikke har sendt. Han sover ikke i natt. Serviettene deres er visst fugler nå, alle sammen; Rampenissen kaller det «en flokk». Brevfugler er åpen, og den blå fuglen vises på radaren.
-- `daily_alerts`: 🕊️ WINTER: Brevfuglene er åpnet. Én fugl ingen har sendt.
+- `nissemail_tekst` (80 ord): Winter åpnet brevfuglene i natt! 🕊️ Og det kom én fugl ingen hadde sendt. Blå. Den satt i vinduskarmen til Julius, med et brev fryst fast til vingen. Jeg brettet serviettene deres til fugler og sov i en båt i vasken. Håkon, du fant arket i båten. Ser du bokstaver uten plass, har arket en brett til. Hanna, hvis du vil: hold lykten. Kristian: Winter har et ord for det vi gjør med papir i dag. Se radaren i Brevfugler i kveld. – Rampenissen
+- `julius_ps`: Winter har aldri fått en fugl han ikke har sendt. Han sover ikke i natt. Serviettene deres er visst fugler nå, alle sammen; Rampenissen kaller det «en flokk». Den blå fuglen vises på radaren i Brevfugler.
+- `daily_alerts`: 🕊️ WINTER: Brevfuglene er sluppet. Én fugl ingen har sendt.
 - NisseNet: `SNOFALL-HISTORIER/brevfugl-finale.txt` **erstattes** av `brevfugl-historie.txt` (`afterDay: 14`):
 
   > BREVFUGLENE
@@ -676,7 +676,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - `julius_ps`: Hjerterud har tent det fjerde lyset i kaféen. Hun lot det stå i vinduet mot nord. Rampenissen har bygd fort «for å øve på å holde varmen»; popcornet er visst niste. I morgen trenger dere ikke være redde. Dere trenger å være hjemme.
 - `julius_ps_krypto_mangler` (vises når `stjernetegn` ikke er dekryptert): Hjerterud har tent det fjerde lyset i kaféen. Men dere har ikke åpnet Trixters kart ennå; det ligger i NisseKrypto, bak seks symboler. Åpne det i kveld, for porten står der jeg tegnet sirkelen. Rampenissen har bygd fort «for å øve på å holde varmen».
 - `daily_alerts`: 🔮 ORAKELET: 88 %. I morgen er den mørkeste dagen. Vær hjemme.
-- `symbol_clue.description`: Grønn måne funnet under den innerste puten i fortet
+- `symbol_clue.description`: Grønn måne funnet under den minste puten i fortet
 - NisseNet: ingen.
 - Kulde: iMac-melding 09:00–12:00 (A6).
 - `rampenissen_rampestrek`: Har bygd fort av et teppe over to stoler med skiltet «KUN FOR SIGMAS. 6-7.», tatt pappas hodetelefoner og fjernkontrollen, og sitter med en skål popcorn.

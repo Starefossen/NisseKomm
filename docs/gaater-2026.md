@@ -56,7 +56,7 @@ Snitt oppsett for gåten: 4,3 minutter. Med rampestreken fra §8: cirka 9. Vente
 
 Hvert kort har et tegn i hjørnet (se reglene). Runetavla (A4, 29 tomme ruter A–Å, med IQs linje øverst) ligger i ferdskriveren dag 1 og henger på operasjonsbrettet. Barna fyller inn tegn etter hvert som ord løses.
 
-Lært før dag 7: dag 1 S, I, G, N, A, L (+ E, T fra de løse kortene), dag 3 P, R, M, E, dag 4 K, O, dag 6 Y, T. **Dag 7:** det fryste kortet har bare tegn for L (rute 3) og E (rute 5); `_ _ L _ E` + ovnssetningen = KULDE. Julius peker til tavla i segment 3. **Dag 17:** O og L i tegn. **Dag 20:** U (lært dag 7) og B (lært dag 18; reserve i fasit hvis dag 18 er hoppet over). **Dag 24:** U, E, G.
+Lært før dag 7: dag 1 S, I, G, N, A, L (+ E, T fra de løse kortene), dag 3 P, R, M, E, dag 4 K, O, dag 6 Y, T. **Dag 7:** det fryste kortet har bare tegn for L (rute 3) og E (rute 5); `_ _ L _ E` + ovnssetningen = KULDE. Julius peker til tegnene på kortet i segment 2. **Dag 17:** O og L i tegn. **Dag 20:** U (lært dag 7) og B (lært dag 18; reserve i fasit hvis dag 18 er hoppet over). **Dag 24:** U, E, G.
 
 Kuldes spøkelsesbilde får én linje i tegn under den norske teksten (`transcript_runer`): dag 10 «SE MEG», dag 13 «ALENE», dag 16 «SE OPP», dag 21 «LYSET DERES». Fargesamlerens siste side (dag 23) ender med «KOM NED MED LYS», og kortet ved krystallet dag 24 sier «TAKK FOR LYSET». Alt er historie, aldri kode. Alle bokstavene i disse linjene er lært før dagen de vises (Å læres aldri og brukes ikke).
 
@@ -163,7 +163,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Kode:** KULDE (uendret).
 - **Mekanikk:** tine lappen ut av is, som før. Nytt: kortet har ingen bokstaver, bare to tegn og tre ❄. Rute 3 har tegnet for **L**, rute 5 tegnet for **E** (begge lært dag 1 og 3). Først tine, så kjenne igjen tegnene fra tavla, så Julius. Første utbetaling av meta 1.
 - **Brikke H:** frostkortet (fem ruter: ❄, ❄, tegn L, ❄, tegn E; ❄-rutene har tegn i hjørnet som vanlig) i liten plastpose, fryst flatt i et **plastbeger** med 1 cm vann, ved Rampenissens lue i fryseren. Lapp fra Rampenissen (teipet på begeret i fryseren, håndskrevet): «Tin meg! Lunkent vann, og en voksen. – R»
-- **Brikke S:** Julius: «Navnet er det motsatte av det Hjerterud har i ovnen akkurat nå. Ikke bollene. Det som slår mot ansiktet når hun åpner ovnsdøra.» Bildet fryser 1–2 sekunder der han ellers ville sagt navnet. I segment 3 sier han at Orakelet skrev navnet «med tegnene i hjørnet av kortene».
+- **Brikke S:** Julius: «Navnet er det motsatte av det Hjerterud har i ovnen akkurat nå. Ikke bollene. Det som slår mot ansiktet når hun åpner ovnsdøra.» Bildet fryser 1–2 sekunder der han ellers ville sagt navnet. I segment 2 sier han at Orakelet skrev navnet «med tegnene i hjørnet av kortene».
 - **Slik løses den:** 1) H9 finner begeret og tiner det under lunkent vann med en voksen (2–3 min). 2) K12 ser to tegn uten bokstav, husker Julius og tavla, slår opp: L i rute 3, E i rute 5: `_ _ L _ E`. 3) Motsatt av ovnsvarme, fem bokstaver. KULDE. Frostgraden vises for første gang. 4) Tegnene for K, U, D føres på tavla.
 - **Hanna (hvis hun vil):** holder begeret under springen.
 - **Andel per flate:** hus 2 av 5 (40 %), og bare for den som har holdt tavla. Video: beskrivelse, ingen bokstaver; pluss pekeren til tavla.

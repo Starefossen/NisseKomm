@@ -654,7 +654,7 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 | 4   | KOMPASS      | 125 | 62     | 74      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5), video regenereres               |
 | 5   | ULRIKEN      | 117 | 58     | 70      | 5     | 26      | nøkkel som oppslag (dag 2)         | Segm. 4 ny: «like mange som sikringer onsdag»                         |
 | 6   | LYKT         | 122 | 61     | 72      | 5     | 26      | 0 % (velger figur)                 |                                                                       |
-| 7   | KULDE        | 126 | 63     | 74      | 5     | 26      | 0 % + peker til tavla              | Bildet fryser der navnet skulle vært sagt; segm. 3 og 5 nye           |
+| 7   | KULDE        | 126 | 63     | 74      | 5     | 26      | 0 % + peker til kortet             | Bildet fryser der navnet skulle vært sagt; segm. 3 og 5 nye           |
 | 8   | KRETSKORT    | 119 | 60     | 71      | 5     | 26      | 0 % + regel om strøm               | Låst brikke delt over segm. 4–5; segm. 3 ny; mikrofonen sitter fast   |
 | 9   | 24           | 125 | 62     | 74      | 5     | 26      | armer (6), ikke antall, ikke regel | Låst brikke delt over segm. 4–5; morgensangen andre gang (går)        |
 | 10  | SPEKTER      | 128 | 64     | 74      | 5     | 26      | 0 %                                | Brikken gjentas i segm. 5 pga. hakking (låst)                         |

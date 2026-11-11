@@ -23,7 +23,7 @@
     },
     {
       "day": 4,
-      "tekst": "RUDOLF: Fløy feil i tåka. NisseKrypto åpner i kveld.",
+      "tekst": "RUDOLF: Fløy feil i tåka. NisseKrypto og Ugleposten åpner i kveld.",
       "type": "info"
     },
     {
@@ -74,7 +74,7 @@
     },
     {
       "day": 14,
-      "tekst": "WINTER: Brevfuglene er åpnet. Én fugl ingen har sendt.",
+      "tekst": "WINTER: Brevfuglene er sluppet. Én fugl ingen har sendt.",
       "type": "info"
     },
     {
@@ -226,7 +226,7 @@
             {
               "navn": "feilrapport-uke-1.txt",
               "type": "fil",
-              "innhold": "IQ – FEILRAPPORT UKE 1\n\nMandag: direktelinje åpnet. Bærebølge ustabil. Ikke min feil.\nTirsdag: tre sikringer. Kaffetrakter på forsterkeren. Delvis min feil.\nTorsdag: blått glimt på 85,0. Orakelets avdeling.\nFredag: Rudolf i snøfonn. Tåke med feil temperatur.\nSøndag: 40 lys hengt rundt antennen. Batteri til 20. desember.\nMandag: signaturen har navn. Lodder nå noe som skal holde den ute av kanal 1–4. Ferdig i morgen.\n\nKonklusjon: alt virker, bortsett fra det som ikke virker.",
+              "innhold": "IQ – FEILRAPPORT UKE 1\n\nTirsdag: direktelinje åpnet. Bærebølge ustabil. Ikke min feil.\nOnsdag: tre sikringer. Kaffetrakter på forsterkeren. Delvis min feil.\nTorsdag: blått glimt på 85,0. Orakelets avdeling.\nFredag: Rudolf i snøfonn. Tåke med feil temperatur.\nSøndag: 40 lys hengt rundt antennen. Batteri til 20. desember.\nMandag: signaturen har navn. Lodder nå noe som skal holde den ute av kanal 1–4. Ferdig i morgen.\n\nKonklusjon: alt virker, bortsett fra det som ikke virker.",
               "unlockConditions": {
                 "afterDay": 8
               }
@@ -342,7 +342,7 @@
         {
           "navn": "01-fargene.txt",
           "type": "fil",
-          "innhold": "FARGESAMLERENS ARKIV – DEL 1: FARGENE\n\nFargesamleren var den første i Snøfall som samlet på farger. Ikke maling. Lys. Rødt fra bålene, grønt fra granene, blått fra isen under Nordtoppen, fanget i iskrystaller så de aldri skulle blekne.\n\nSamlingen ligger i Krystallgrotten under fjellet, der det er kaldt nok til at ingenting smelter. Over inngangen står én regel: «Farger må ses. Ellers forsvinner de.»\n\nDel 2 åpner når linjen er varmere.",
+          "innhold": "FARGESAMLERENS ARKIV – DEL 1: FARGENE\n\nFargesamleren var den første i Snøfall som samlet på farger. Ikke maling. Lys. Rødt fra bålene, grønt fra granene, blått fra isen under Nordtoppen, fanget i iskrystaller så de aldri skulle blekne.\n\nSamlingen ligger i en grotte under fjellet, der det er kaldt nok til at ingenting smelter. Over inngangen står én regel: «Farger må ses. Ellers forsvinner de.»\n\nDel 2 åpner når linjen er varmere.",
           "unlockConditions": {
             "afterDay": 10
           }

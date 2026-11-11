@@ -56,9 +56,9 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 4 (fr) – Skotoget i Gangen
 
-**Strek:** pappas solbriller, sitter i pappas sko ytterst i gangen, kosedyr i kø bak.
+**Strek:** pappas solbriller, sitter i pappas sko i gangen, sko og kosedyr i ring rundt.
 
-**Klipp:** «Fredag! Rampenissen rapportere fra… et høgt sted. Et sko-høgt sted. Rudolf fløy rett i snøfonna i natt. Det låg ei tåke over fjorden som va kald på feil måte, og han sa han fant veien med nesa. Nesa! Han kom heim med snø i begge øra. Så æ tenkt: nån må vis retning her i huset. Æ har laga en pil. Av nåkka. Ikkje si ka. Kosedyra står i kø for å få prøv. Dem får ikkje. Solbrillan e for sikkerhets skyld, det e veldig blankt i snøen. Pappa treng dem ikkje i desember uansett, det e mørkt heile tida. Logisk, sjø. Dokker fikk regnbuen i går, heile Snøfall såg den. God helg snart!»
+**Klipp:** «Fredag! Rampenissen rapportere fra… et høgt sted. Et sko-høgt sted. Rudolf fløy rett i snøfonna i natt. Det låg ei tåke over fjorden som va kald på feil måte, og han sa han fant veien med nesa. Nesa! Han kom heim med snø i begge øra. Så æ tenkt: nån må vis retning her i huset. Æ har laga en pil. Av nåkka. Ikkje si ka. Kosedyra står i ring rundt mæ og vil prøv. Dem får ikkje. Solbrillan e for sikkerhets skyld, det e veldig blankt i snøen. Pappa treng dem ikkje i desember uansett, det e mørkt heile tida. Logisk, sjø. Dokker fikk regnbuen i går, heile Snøfall såg den. God helg snart!»
 
 **intro_hint:** «En liten fyr med altfor store solbriller vil si noe om retning.»
 
