@@ -693,7 +693,8 @@ export function SledeSimulator({
       const k = KEYS[e.key];
       if (k) {
         held.current[k] = true;
-        e.preventDefault();
+        // Only while flying: on the panels space and arrows still work the buttons.
+        if (faseRef.current === "spiller") e.preventDefault();
       }
       if (e.key === "Escape" || e.key === "p") {
         if (faseRef.current === "spiller") setFase("pause");
