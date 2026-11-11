@@ -37,7 +37,7 @@ Entusiastisk, rotete og litt klønete. Aldri slem; alt rot er godt ment. Trenger
 
 ## Stemme
 
-Skriftlig (NisseMail, apptekst): bokmål, direkte til barna, emojier (🎄 ❄️ 🎁 ⭐), litt selvironi, Gen Alpha-slang sparsomt (høyst 2–4 per uke). Muntlig (radioklipp, Ugleposten): nordlandsk, Bodø/Salten; reglene står i docs/manus/rampenissen-radio-2026.md «Skrivemåte». Navn, steder og gåteord står som i bokmål.
+Skriftlig (NisseMail, apptekst): nordlandsk, direkte til barna, emojier (🎄 ❄️ 🎁 ⭐), litt selvironi, Gen Alpha-slang sparsomt (høyst 2–4 per uke). Muntlig (radioklipp, Ugleposten): nordlandsk, Bodø/Salten; reglene står i docs/manus/rampenissen-radio-2026.md «Skrivemåte». Navn, steder og gåteord står som i bokmål.
 
 TTS: Say cheerfully in a sweet, silly, breathless voice with a clear Northern Norwegian accent from Bodø and Salten (nordlandsk: lilting, sing-song intonation, rolled r, Bodø/Salten words such as «æ» for «jeg» and «ka» for «hva») and short giggles:
 
