@@ -223,7 +223,7 @@ export function NisseMail({
                 SoundManager.playSound("click");
                 setShowInbox(!showInbox);
               }}
-              className="lg:cursor-default flex items-center gap-2 pb-2 border-b-2 border-(--neon-green)/30 shrink-0 lg:pointer-events-none"
+              className="min-h-11 lg:cursor-default flex items-center gap-2 pb-2 border-b-2 border-(--neon-green)/30 shrink-0 lg:pointer-events-none"
             >
               <Icons.File size={20} color="green" />
               <span className="text-xl font-bold">INNBOKS</span>

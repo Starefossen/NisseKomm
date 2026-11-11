@@ -12,7 +12,7 @@ import { NyttIDag } from "@/components/ui/NyttIDag";
 import { gamesFor, type GameId } from "./hud";
 export { gamesFor };
 
-const btn = "min-h-11 px-2 border text-base font-bold cursor-pointer";
+const btn = "min-h-11 min-w-11 px-2 border text-base font-bold cursor-pointer";
 const click = () => SoundManager.playSound("click");
 
 function Toggles({ labels, done }: { labels: string[]; done: string }) {

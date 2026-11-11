@@ -325,7 +325,7 @@ function SymbolerContent() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 print:hidden">
           <button
             onClick={handleAddSymbol}
-            className="p-4 bg-purple-700 hover:bg-purple-600 text-white font-bold text-lg border-2 border-black transition-colors"
+            className="p-4 bg-(--cold-blue) hover:bg-(--cold-blue)/80 text-black font-bold text-lg border-2 border-black transition-colors"
           >
             LEGG TIL ETT SYMBOL
             <p className="text-sm font-normal mt-2 opacity-80">
@@ -335,7 +335,7 @@ function SymbolerContent() {
 
           <button
             onClick={handleViewStatus}
-            className="p-4 bg-purple-800 hover:bg-purple-700 text-white font-bold text-lg border-2 border-black transition-colors"
+            className="p-4 bg-(--cold-blue)/80 hover:bg-(--cold-blue)/60 text-black font-bold text-lg border-2 border-black transition-colors"
           >
             VIS STATUS
             <p className="text-sm font-normal mt-2 opacity-80">

@@ -4,7 +4,6 @@ import { Suspense, useState, useEffect } from "react";
 import Image from "next/image";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
-import { BadgeManager } from "@/lib/badge-system";
 import { GameEngine } from "@/lib/game-engine";
 import { Icon } from "@/lib/icons";
 
@@ -41,8 +40,8 @@ function MerkerContent() {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  const allBadges = BadgeManager.getAllBadges();
-  const earnedBadges = BadgeManager.getEarnedBadges();
+  const allBadges = GameEngine.getAllBadges();
+  const earnedBadges = GameEngine.getEarnedBadges();
   const earnedIds = new Set(earnedBadges.map((b) => b.badgeId));
 
   // Calculate stats
@@ -51,7 +50,7 @@ function MerkerContent() {
   const percentage = Math.round((earnedCount / totalCount) * 100);
 
   const handleAwardBadge = (badgeId: string) => {
-    const badge = BadgeManager.getBadge(badgeId);
+    const badge = GameEngine.getBadge(badgeId);
     if (!badge) return;
 
     const confirmed = confirm(
@@ -66,7 +65,7 @@ function MerkerContent() {
   };
 
   const handleRevokeBadge = (badgeId: string) => {
-    const badge = BadgeManager.getBadge(badgeId);
+    const badge = GameEngine.getBadge(badgeId);
     if (!badge) return;
 
     const confirmed = confirm(
@@ -86,7 +85,7 @@ function MerkerContent() {
     );
 
     if (confirmed) {
-      BadgeManager.resetAllBadges();
+      GameEngine.resetAllBadges();
       alert("Alle merker fjernet");
       forceUpdate({});
     }
@@ -314,14 +313,14 @@ function MerkerContent() {
                 {!isEarned ? (
                   <button
                     onClick={() => handleAwardBadge(badge.id)}
-                    className="px-6 py-2 bg-(--gold) text-black font-bold hover:opacity-80 transition-opacity"
+                    className="min-h-11 px-6 py-2 bg-(--gold) text-black font-bold hover:opacity-80 transition-opacity"
                   >
                     Tildel merke manuelt
                   </button>
                 ) : (
                   <button
                     onClick={() => handleRevokeBadge(badge.id)}
-                    className="px-6 py-2 bg-(--christmas-red) text-white font-bold hover:opacity-80 transition-opacity"
+                    className="min-h-11 px-6 py-2 bg-(--christmas-red) text-white font-bold hover:opacity-80 transition-opacity"
                   >
                     Fjern merke
                   </button>

@@ -1,8 +1,8 @@
 "use client";
 
+import { GameEngine } from "@/lib/game-engine";
 import Image from "next/image";
 import { Icons } from "@/lib/icons";
-import { BadgeManager } from "@/lib/badge-system";
 import { useEffect, useState } from "react";
 import type { Badge } from "@/types/innhold";
 
@@ -24,8 +24,8 @@ export function BadgeRow() {
     if (typeof window === "undefined") return;
 
     const loadBadges = () => {
-      const allBadges = BadgeManager.getAllBadges();
-      const earned = BadgeManager.getEarnedBadges();
+      const allBadges = GameEngine.getAllBadges();
+      const earned = GameEngine.getEarnedBadges();
       const earnedIds = new Set(earned.map((b) => b.badgeId));
 
       setBadges(allBadges);
@@ -46,7 +46,7 @@ export function BadgeRow() {
       }, 10000);
     };
 
-    BadgeManager.onBadgeAwarded(handleBadgeAwarded);
+    GameEngine.onBadgeAwarded(handleBadgeAwarded);
 
     // Listen for storage changes (for Nissemor Guide updates)
     const handleStorageChange = (e: StorageEvent) => {
@@ -59,7 +59,7 @@ export function BadgeRow() {
 
     // Cleanup
     return () => {
-      BadgeManager.offBadgeAwarded(handleBadgeAwarded);
+      GameEngine.offBadgeAwarded(handleBadgeAwarded);
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);

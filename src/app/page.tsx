@@ -41,7 +41,7 @@ import { useHourTick } from "@/lib/use-clock";
 import {
   getCurrentDay,
   getCurrentMonth,
-  isCalendarActive as isDateCalendarActive,
+  isCalendarActive,
 } from "@/lib/date-utils";
 import statiskInnholdData from "@/data/statisk_innhold.json";
 import { Varsel, FilNode } from "@/types/innhold";
@@ -150,14 +150,6 @@ function opensIn(unlockDay: number | null): string {
   const n = daysLeft(unlockDay);
   if (n === null) return "LÅST";
   return n === 1 ? "ÅPNER I MORGEN" : `ÅPNER OM ${n} DAGER`;
-}
-
-/**
- * Check if current date is within the calendar period (December 1-24)
- * Delegates to centralized date utility
- */
-function isCalendarActive(testMode: boolean): boolean {
-  return isDateCalendarActive(testMode);
 }
 
 /**

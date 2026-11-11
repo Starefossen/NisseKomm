@@ -54,6 +54,7 @@ import {
 } from "./systems/symbol-system";
 import { getAllQuests, getQuestByDay } from "./data-loader";
 import {
+  Badge,
   Oppdrag,
   FilNode,
   Varsel,
@@ -999,6 +1000,30 @@ export class GameEngine {
 
   static removeEarnedBadge(badgeId: string): void {
     StorageManager.removeEarnedBadge(badgeId);
+  }
+
+  static getAllBadges() {
+    return BadgeManager.getAllBadges();
+  }
+
+  static getBadge(badgeId: string) {
+    return BadgeManager.getBadge(badgeId);
+  }
+
+  static getEarnedBadges() {
+    return BadgeManager.getEarnedBadges();
+  }
+
+  static resetAllBadges(): void {
+    BadgeManager.resetAllBadges();
+  }
+
+  static onBadgeAwarded(callback: (badge: Badge) => void): void {
+    BadgeManager.onBadgeAwarded(callback);
+  }
+
+  static offBadgeAwarded(callback: (badge: Badge) => void): void {
+    BadgeManager.offBadgeAwarded(callback);
   }
 
   /**
