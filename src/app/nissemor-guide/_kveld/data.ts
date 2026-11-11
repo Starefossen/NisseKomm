@@ -235,7 +235,7 @@ export const DAGER = [
     brikkeH:
       "frostkortet (fem ruter: ✱, ✱, tegn L, ✱, tegn E; ✱-rutene har tegn i hjørnet som vanlig) i liten plastpose, fryst flatt i et plastbeger med 1 cm vann, ved Rampenissens lue i fryseren. Lapp fra Rampenissen (teipet på begeret i fryseren, håndskrevet): «Tin meg! Lunkent vann, og en voksen. – R»",
     brikkeS:
-      "Julius: «Navnet er det motsatte av det Hjerterud har i ovnen akkurat nå. Ikke bollene. Det som slår mot ansiktet når hun åpner ovnsdøra.» Bildet fryser 1–2 sekunder der han ellers ville sagt navnet. I segment 3 sier han at Orakelet skrev navnet «med tegnene i hjørnet av kortene».",
+      "Julius: «Navnet er det motsatte av det Hjerterud har i ovnen akkurat nå. Ikke bollene. Det som slår mot ansiktet når hun åpner ovnsdøra.» Bildet fryser 1–2 sekunder der han ellers ville sagt navnet. I segment 2 sier han at Orakelet skrev navnet «med tegnene i hjørnet av kortene».",
     slikLoses: [
       "H9 finner begeret og tiner det under lunkent vann med en voksen (2–3 min).",
       "K12 ser to tegn uten bokstav, husker Julius og tavla, slår opp: L i rute 3, E i rute 5: _ _ L _ E.",
