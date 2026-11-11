@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { describe, it, expect } from "@jest/globals";
 import {
   assetFil,
@@ -131,5 +132,15 @@ describe("assetFil whitelist", () => {
     [["characters", "winter", "ref.jpg\0"]],
   ])("refuses %j", (parts) => {
     expect(assetFil(parts)).toBeNull();
+  });
+});
+
+describe("guide-innhold.json", () => {
+  it("matches docs/manus and assets (node scripts/guide-innhold.mjs)", () => {
+    expect(() =>
+      execFileSync("node", ["scripts/guide-innhold.mjs", "--sjekk"], {
+        stdio: "pipe",
+      }),
+    ).not.toThrow();
   });
 });

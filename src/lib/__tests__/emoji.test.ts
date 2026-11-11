@@ -39,7 +39,10 @@ function hits(file: string): string[] {
 
 describe("no emoji in visible text", () => {
   it("src/data/*.json", () => {
-    const found = files(path.join(ROOT, "data"), /\.json$/).flatMap(hits);
+    // guide-innhold.json is the parent guide's raw manus, never shown to kids.
+    const found = files(path.join(ROOT, "data"), /\.json$/)
+      .filter((f) => !f.endsWith("guide-innhold.json"))
+      .flatMap(hits);
     expect(found).toEqual([]);
   });
 

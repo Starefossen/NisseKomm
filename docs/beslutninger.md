@@ -100,3 +100,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - Krystallgrotten flyttes til foten av Nordtoppen mot nordøst. Hvorfor: teksten sier «under Nordtoppen».
 - Bergen-korridoren går mot nordøst, bak grotten. Hvorfor: julenattsruta går over Nordtoppen og lavt over grotten.
 - Snøfall er et rundt tun med klokketårnet i midten, porten rett mot sør og fire murtårn med løkkupler; rutenettgatene går ut. Hvorfor: alle bilder og tekster viser et rundt tun.
+
+## Nissemor-guiden i Docker (2026-11-11)
+
+- Dagvisning, søk og bibliotek leser manus og entitet.md fra en JSON som bygges inn (`src/data/guide-innhold.json`), ikke fra disk. Hvorfor: produksjonsbildet har verken docs/ eller assets/, så guiden var tom på hjemmeserveren.

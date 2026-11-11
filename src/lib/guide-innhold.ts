@@ -1,20 +1,22 @@
 /**
  * Server-side reader for the parent guide's day view, library and search.
- * Reads the repo's manus (docs/manus), app data (src/data) and entity files
- * (assets/*) from disk, so it only works where the repo is checked out
- * (lan mode on the dev box). Every route using it is parent-only.
+ * Manus and entity texts come from src/data/guide-innhold.json (baked by
+ * scripts/guide-innhold.mjs, since the image has no docs/ or assets/); only
+ * reference images are read from disk (dev box). Every route using it is
+ * parent-only, so the JSON stays out of the kid bundle.
  */
-import { readdir, readFile } from "node:fs/promises";
+import { readdir } from "node:fs/promises";
 import path from "node:path";
 import { getQuestByDay } from "./data-loader";
 import statisk from "@/data/statisk_innhold.json";
+import bakt from "@/data/guide-innhold.json";
 import { opplasingerPaaDag } from "./opplasinger";
 import { KAPITLER } from "@/components/windows/nissespill/kapitler";
 import { ETAPPER } from "@/components/windows/snofall-tv/slede";
 
 const ROOT = () => process.cwd();
-const read = (rel: string) =>
-  readFile(path.join(ROOT(), rel), "utf8").catch(() => "");
+const filer: Record<string, string> = bakt;
+const read = async (rel: string) => filer[rel] ?? "";
 
 export const MANUS = {
   julius: "docs/manus/julius-2026.md",
@@ -199,9 +201,13 @@ export async function bibliotek() {
   );
   const ut = [];
   for (const type of ENTITET_TYPER) {
-    const ids = (
-      await readdir(path.join(ROOT(), "assets", type)).catch(() => [])
-    )
+    const ids = [
+      ...new Set(
+        Object.keys(filer).flatMap(
+          (f) => f.match(new RegExp(`^assets/${type}/([^/]+)/`))?.[1] ?? [],
+        ),
+      ),
+    ]
       .filter((id) => ID.test(id))
       .sort();
     for (const id of ids) {
