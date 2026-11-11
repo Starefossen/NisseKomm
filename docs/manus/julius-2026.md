@@ -14,6 +14,8 @@
 
 **Revisjon 11. november (flyt, godkjent):** dag 2–24 skrevet om i én omgang etter flytreglene fra dag 1-visningen, fordi hvert segment er et hardt klipp i både bilde og lyd: hvert segment åpner og lukker på en hel setning med eget subjekt (ingen fragment eller pronomen som peker til forrige klipp), én tanke per segment, siste setning er en bro og ikke en punchline, oppsett og vits i samme segment, brikken får innledning i samme segment og avskjeden står i halen (ingen segment under 12 ord), handlingen varer hele segmentet, og «i natt» kommer før julefakta. Brikkene står ordrett som i `gaater-2026.md`; der brikken er delt, åpner andre del med en kort setning med eget subjekt foran den låste ordlyden. Kontinuitet mot radio og PS: dag 9 (Pil lurt to ganger, så telte han), 12 (Julius innrømmer feilen og lover å si unnskyld), 18 (hjelmen har en grunn), 20 (bøkene), 24 (krystallet fra Vintervokteren). Dag 19 nevner ikke lenger lys på Landås-siden (betinget innhold).
 
+**Revisjon 11. november (dag 1, godkjent):** to nye segmenter på dag 1 (3 og 6) setter opp sesongens oppdrag: NisseKomm er hovedkvarteret og linjen IQ åpnet inn i stua, Julius trenger hjelpen deres i år, rimet legger seg på linjen om natten og IQ teller det i prosent, og hver kode holder linjen varm. Det som lytter, er fortsatt uten navn (M2 dag 7); brikke S, klementinene, hilsen og avskjeden er uendret.
+
 Steg 2. Kilder (låst): `docs/historie-2026.md`, `docs/storyboard-2026.md`, `docs/gaater-2026.md`. Stemme og rom: `assets/characters/julius/*`, `assets/locations/julius-kontor/beskrivelse.txt`, `assets/stil.md`.
 
 ## Slik leses manuset
@@ -30,7 +32,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md`, `docs/storyboard-2026.md`, `doc
 
 ## Dag 1 (ti) – Direktelinjen · SIGNAL · M1
 
-Kulde-nivå 1. Svak knitring i lyden hele klippet, lett snø i bildet. Rommet er ellers som på referansebildet. Seks segmenter (åpneren er lengre, godkjent). Skrevet om 11. november etter tilbakemelding fra visning (hakkete flyt, «én nisse» uforståelig): hvert segment er hele setninger som slutter på en naturlig pause, klementinene og Rampenissen sies rett ut, og brikke S står ordrett. Etter klippet legger appen på en 4 s hale (T14: snø, «LINJE 90,0 · BÆREBØLGE USTABIL», frekvensen sklir til 85,0 og tilbake); den er kode, ikke en del av videofilen.
+Kulde-nivå 1. Svak knitring i lyden hele klippet, lett snø i bildet. Rommet er ellers som på referansebildet. Åtte segmenter (åpneren er lengre, godkjent). Skrevet om 11. november etter tilbakemelding fra visning (hakkete flyt, «én nisse» uforståelig): hvert segment er hele setninger som slutter på en naturlig pause, klementinene og Rampenissen sies rett ut, og brikke S står ordrett. Segment 3 og 6 er nye (godkjent 11. november) og setter opp sesongen: NisseKomm er hovedkvarteret og linjen inn i stua, Julius trenger hjelpen deres i år, rimet legger seg om natten, og hver kode holder linjen varm. Det som lytter, har ikke navn før dag 7; prosenten IQ teller, vises i sidepanelet fra dag 7 (A7). Etter klippet legger appen på en 4 s hale (T14: snø, «LINJE 90,0 · BÆREBØLGE USTABIL», frekvensen sklir til 85,0 og tilbake); den er kode, ikke en del av videofilen.
 
 1. **Replikk:** «Ja… hallo? Er det liv i jernvaren? Jo, der! Gooood morgen, Snøfall! Kristian, Håkon og Hanna, velkommen tilbake. I natt åpnet IQ direktelinjen til stua deres.»
    - Varighet: 15 s (26 ord)
@@ -40,19 +42,27 @@ Kulde-nivå 1. Svak knitring i lyden hele klippet, lett snø i bildet. Rommet er
    - Varighet: 15 s (26 ord)
    - Handling: Holder venstre hånd opp som om han har en klementin i den, skreller den med tommelen, lukter på fingrene og smiler.
    - Kulde: Svak knitring.
-3. **Replikk:** «Advent betyr ankomst. Julen er på vei, og Rampenissen var den første som kom. Derfor teller vi dagene i stedet for å hoppe rett til julaften.»
+3. **Replikk:** «Det dere ser nå, er NisseKomm, hovedkvarteret vårt. Alt som skjer i Snøfall, kommer ned linjen til dere: TV-en, brevene og meg.»
+   - Varighet: 13 s (22 ord)
+   - Handling: Følger en ledning på sentralbordet med venstre pekefinger, fra tavla og ut mot kanten, og legger hånden på brystet på «og meg».
+   - Kulde: Svak knitring.
+4. **Replikk:** «Advent betyr ankomst. Julen er på vei, og Rampenissen var den første som kom. Derfor teller vi dagene i stedet for å hoppe rett til julaften.»
    - Varighet: 15 s (26 ord)
    - Handling: Blar i den store boka med venstre hånd, legger den flat på siden.
    - Kulde: Svak knitring.
-4. **Replikk:** «Men linjen er ikke helt i orden ennå. Bærebølgen hakker, og Orakelet sier det ligger noe under lyden. Noe som lytter.»
+5. **Replikk:** «Men linjen er ikke helt i orden ennå. Bærebølgen hakker, og Orakelet sier det ligger noe under lyden. Noe som lytter.»
    - Varighet: 13 s (21 ord)
    - Handling: Lener seg nærmere mikrofonen, senker stemmen på «noe som lytter».
    - Kulde: Knitringen blir tydeligere i to sekunder, så normal.
-5. **Replikk:** «Når linjen bærer, roper IQ ett ord fra verkstedet. Det er det ordet radioen deres leter etter når den skurrer, rett før stemmen kommer gjennom.»
+6. **Replikk:** «I år trenger jeg dere. Hver natt legger det seg rim på linjen, og IQ teller det i prosent. Hver kode dere løser, holder linjen varm.»
+   - Varighet: 15 s (26 ord)
+   - Handling: Legger venstre hånd rundt trekoppen og holder den der, som for å varme seg, til «varm».
+   - Kulde: Et kort hopp i bildet på «rim», så svak knitring.
+7. **Replikk:** «Når linjen bærer, roper IQ ett ord fra verkstedet. Det er det ordet radioen deres leter etter når den skurrer, rett før stemmen kommer gjennom.»
    - Varighet: 15 s (25 ord)
    - Handling: Peker mot taket der IQ holder til, så holder han venstre hånd bak øret.
    - Kulde: Svak knitring.
-6. **Replikk:** «Ta vare på hverandre, og ikke spis for mye snø. Julius over og ut… hvis mikrofonen slipper hånda mi, da. Ha en riktig fin dag!»
+8. **Replikk:** «Ta vare på hverandre, og ikke spis for mye snø. Julius over og ut… hvis mikrofonen slipper hånda mi, da. Ha en riktig fin dag!»
    - Varighet: 15 s (25 ord)
    - Handling: Humrer, rister mikrofonen i høyre hånd som om den sitter fast, ler.
    - Kulde: Svak knitring, klikk når mikrofonen slås av.
@@ -648,7 +658,7 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 
 | Dag | Kode         | Ord | Tale s | Klipp s | Segm. | Lengste | Brikke S-andel                     | Merknad                                                               |
 | --- | ------------ | --- | ------ | ------- | ----- | ------- | ---------------------------------- | --------------------------------------------------------------------- |
-| 1   | SIGNAL       | 149 | 74     | 88      | 6     | 26      | 0 % (bruk, ingen bokstaver)        | Omskrevet 11. nov (flyt, seks segm.); 85,0-hale i appen, ikke i filen |
+| 1   | SIGNAL       | 197 | 98     | 116     | 8     | 26      | 0 % (bruk, ingen bokstaver)        | Omskrevet 11. nov (flyt, åtte segm.); 85,0-hale i appen, ikke i filen |
 | 2   | 48           | 118 | 59     | 70      | 5     | 26      | regel, ingen tall                  | Morgensangen første gang (skjærer seg)                                |
 | 3   | PRISME       | 121 | 60     | 72      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                       |
 | 4   | KOMPASS      | 125 | 62     | 74      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5), video regenereres               |
@@ -673,4 +683,4 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 | 23  | STJERNEKLART | 123 | 62     | 73      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 3–4                                       |
 | 24  | JULEMAGI     | 151 | 76     | 89      | 6     | 26      | 0 %                                | Låst brikke (50 ord) delt over segm. 4–6; morgensangen går hele veien |
 
-Sum: 3 033 ord, snitt 126 per dag (cirka 60 s tale, 70 s med klippause). Ingen segmenter over 26 ord; alle klipp 13–15 s.
+Sum: 3 081 ord, snitt 128 per dag (cirka 60 s tale, 70 s med klippause). Ingen segmenter over 26 ord; alle klipp 13–15 s.
