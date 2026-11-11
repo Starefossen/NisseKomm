@@ -332,6 +332,9 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
         }
       }
       this.retryMs = 1000;
+    } catch {
+      // A proxy's HTML error page instead of JSON: retry, never stall sync.
+      retry = true;
     } finally {
       this.flushing = false;
     }

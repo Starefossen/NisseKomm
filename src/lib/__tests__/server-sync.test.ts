@@ -162,6 +162,23 @@ describe("ServerSyncAdapter", () => {
     expect((await store.getState())["nissekomm-codes"]).toBeUndefined();
   });
 
+  it("retries after a non-JSON reply instead of stalling", async () => {
+    const a = new ServerSyncAdapter();
+    await a.start();
+    global.fetch = jest.fn(async () => ({
+      ok: true,
+      status: 200,
+      json: async () => {
+        throw new SyntaxError("<html>");
+      },
+    })) as unknown as typeof fetch;
+    a.set(KEY, [3]);
+    await flush(a);
+    global.fetch = jest.fn(fakeFetch) as unknown as typeof fetch;
+    await jest.advanceTimersByTimeAsync(1000);
+    expect((await store.getState())[KEY]).toEqual([3]);
+  });
+
   it("keeps progress made while the server was down", async () => {
     await store.putState(KEY, [1]);
     global.fetch = jest.fn(async () => {
