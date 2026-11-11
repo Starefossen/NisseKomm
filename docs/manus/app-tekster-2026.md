@@ -753,7 +753,8 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
   >
   > «Hvis noen leser dette etter meg: Vintervokteren er ikke bygd for å være alene. Det er bygd for å passe på noe til noen kommer. Hvis ingen kommer, vil det begynne å lete etter dere. Ikke lås det ute. Gå ned med lys.»
   >
-  > Under, i Snøfalls gamle skrift (vises i tegnsettet): KOM NED MED LYS
+  > Under, i Snøfalls gamle skrift:
+  > ᚱ:KOM NED MED LYS
 
 - `rampenissen_rampestrek`: Har pakket opp et hjørne av en gave under treet, teipet det igjen med altfor mye teip, og sitter nå i treet som pynt med dårlig samvittighet.
 - `fysisk_hint`: Tolv papirstjerner (`dag23-stjerner.pdf`, klippet og tredd i november) i treet, de laveste i Hannas høyde. Forside: nr. 5 **R**, nr. 8 **K**, nr. 10 **A**, resten ❄ (tegn i hjørnet). Bakside: romertall I–XII. Rampenissen i treet med blått måne-kort. Løsning: Håkon plukker (en voksen løfter til de høye), legger dem etter romertallet og snur: `_ _ _ _ R _ _ K _ A _ _`. Julius: Orakelets værord for en natt der alt som blinker der oppe er synlig, og ordet begynner med det som blinker. Kode STJERNEKLART. Så NisseKrypto 3. Hanna, hvis hun vil: tar de lave stjernene og skanner måne-kortet.

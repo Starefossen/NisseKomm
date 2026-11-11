@@ -5,16 +5,37 @@ Source: docs/manus/app-tekster-2026.md (section A and B). Day 1 is left alone
 (its section may still change). Codes, symbols and challenge sequences are
 never touched. Safe to re-run.
 
-Run: python3 scripts/oppdrag-innhold.py
+Run: python3 scripts/oppdrag-innhold.py [--check]
+--check writes nothing and exits 1 if src/data differs from the manus.
 """
 
 import json
 import re
+import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "src/data"
 DOC = (ROOT / "docs/manus/app-tekster-2026.md").read_text(encoding="utf-8")
+CHECK = "--check" in sys.argv
+STALE = []
+
+
+def write(p, text):
+    # Format like `pnpm check` does, so a re-run on an unchanged manus is a no-op.
+    text = subprocess.run(
+        ["npx", "--no-install", "prettier", "--stdin-filepath", str(p)],
+        input=text, capture_output=True, text=True, check=True, cwd=ROOT,
+    ).stdout
+    if p.read_text(encoding="utf-8") == text:
+        return
+    if CHECK:
+        STALE.append(str(p.relative_to(ROOT)))
+    else:
+        p.write_text(text, encoding="utf-8")
+
+
 DAYS = range(2, 25)
 EVENTYR_ID = "spokelseskoden"
 
@@ -46,7 +67,7 @@ def strip_note(t):
 
 
 def quote_block(sec, path):
-    m = re.search(re.escape(f"`{path}`") + r".*?\n\n((?:  >.*\n)+)", sec, re.S)
+    m = re.search(re.escape(f"`{path}`") + r".*?\n\n((?:  >[^\n]*\n)+)", sec, re.S)
     lines = [l[4:] if l.startswith("  > ") else "" for l in m.group(1).rstrip("\n").split("\n")]
     lines = [l.replace(" (vises i tegnsettet)", "") for l in lines if l != "```"]
     return "\n".join(lines).strip()
@@ -157,7 +178,7 @@ for f in ("uke1", "uke2", "uke3", "uke4"):
             mods.remove("SNØFALL_TV")
         if d == 3 and "SYMBOLSKANNER" not in mods:
             mods.append("SYMBOLSKANNER")
-    p.write_text(no_emoji(json.dumps(quests, ensure_ascii=False, indent=2), frost=True) + "\n", encoding="utf-8")
+    write(p, no_emoji(json.dumps(quests, ensure_ascii=False, indent=2), frost=True) + "\n")
 
 # --- statisk_innhold ---
 p = DATA / "statisk_innhold.json"
@@ -212,6 +233,8 @@ for path, name, d, doc_path, after in NEW_FILES:
     else:
         siblings[i] = node
 
-p.write_text(no_emoji(json.dumps(s, ensure_ascii=False, indent=2)) + "\n", encoding="utf-8")
+write(p, no_emoji(json.dumps(s, ensure_ascii=False, indent=2)) + "\n")
+if CHECK:
+    sys.exit(f"Ute av synk med manus: {', '.join(STALE)}" if STALE else 0)
 for d in DAYS:
     print(d, days[d]["tittel"])
