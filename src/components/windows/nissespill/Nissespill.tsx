@@ -254,8 +254,8 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                       Kapittel {k.n}: {k.tittel}
                     </div>
                     <div className="text-base text-(--cold-blue)">
-                      {ferdig
-                        ? "Fullført"
+                      {ferdig && save
+                        ? `Fullført · ${M.oppsummering(k, save).kort}`
                         : !erLaastOpp(k, dag)
                           ? `Låses opp ${k.dag}. desember`
                           : !k.klar
@@ -553,6 +553,19 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                       tekst={iIntro ? kap.intro[introSteg] : kap.utro}
                     />
                   </p>
+                  {iUtro && (
+                    <div className="mt-2 border-2 border-(--gold) px-3 py-2 space-y-1">
+                      <p className="text-2xl text-(--gold) tracking-wider">
+                        KAPITTEL {kap.n} FULLFØRT
+                      </p>
+                      <p className="text-lg text-(--cold-blue)">
+                        {M.oppsummering(kap, save).kort}
+                      </p>
+                      <p className="text-lg">
+                        {M.oppsummering(kap, save).linje}
+                      </p>
+                    </div>
+                  )}
                   <button
                     type="button"
                     className={`${MENYPUNKT} text-(--gold)`}

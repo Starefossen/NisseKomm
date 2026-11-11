@@ -440,6 +440,30 @@ export function tips(kap: Kapittel, save: EventyrSave): Utfall {
 }
 
 /** Notebook («Hva gjør vi nå?»): solved goals, the current one, and goals already known. */
+/** End card and chapter list: feathers, hints used, and one line from Rampenissen. */
+export function oppsummering(kap: Kapittel, save: EventyrSave) {
+  const [x, n] = fjaerTelling(kap, save);
+  const tips = kap.gaater.reduce(
+    (sum, g) => sum + Math.min(save.hints?.[g.id] ?? 0, 3),
+    0,
+  );
+  const deler = [
+    n > 0 ? `Fjær ${x}/${n}` : "",
+    tips === 0 ? "Ingen tips" : tips === 1 ? "1 tips" : `${tips} tips`,
+  ].filter(Boolean);
+  return {
+    fjaer: [x, n] as const,
+    tips,
+    kort: deler.join(" · "),
+    linje:
+      tips === 0
+        ? "Rampenissen: «Null tips. Dokker e skumle gode. Æ fikk ikkje hviska en gang.»"
+        : tips <= 3
+          ? "Rampenissen: «Nesten heilt uten hjelp. Æ hviska litt, det teller ikkje.»"
+          : "Rampenissen: «Æ hviska en del. Det e lov. Det e det æ e her for.»",
+  };
+}
+
 export function notater(
   kap: Kapittel,
   save: EventyrSave,

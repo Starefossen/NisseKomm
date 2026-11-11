@@ -235,10 +235,12 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     });
     jest.useRealTimers();
     expect(el.textContent).toContain("TIL KAPITLENE");
+    expect(el.textContent).toContain("KAPITTEL 1 FULLFØRT");
+    expect(el.textContent).toContain("Fjær 0/2 · Ingen tips");
     const save = GameEngine.getEventyrSave();
     expect(save?.flags).toContain("k1_ferdig");
     tap(el, "TIL KAPITLENE");
-    expect(el.textContent).toContain("Fullført");
+    expect(el.textContent).toContain("Fullført · Fjær 0/2 · Ingen tips");
   });
 
   it("fjæra plukkes med SE, telles og overlever nytt kapittel", () => {

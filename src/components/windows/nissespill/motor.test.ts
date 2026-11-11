@@ -211,6 +211,20 @@ describe("motor: dialog husker spurte valg", () => {
   });
 });
 
+describe("motor: oppsummering", () => {
+  it("teller fjær og tips (maks 3 per gåte) og velger linje etter tips", () => {
+    const k1 = KAPITLER[0];
+    const s = M.nyttKapittel(k1);
+    expect(M.oppsummering(k1, s).kort).toBe("Fjær 0/2 · Ingen tips");
+    const mange = { ...s, hints: { winter: 3, stempel: 5, ukjent: 9 } };
+    expect(M.oppsummering(k1, mange).tips).toBe(6);
+    expect(M.oppsummering(k1, mange).linje).toContain("en del");
+    expect(M.oppsummering(k1, { ...s, hints: { winter: 1 } }).kort).toBe(
+      "Fjær 0/2 · 1 tips",
+    );
+  });
+});
+
 describe("motor: notatbok", () => {
   const k1 = KAPITLER[0];
   it("viser løste mål, det første uløste og kjente parallelle mål", () => {
