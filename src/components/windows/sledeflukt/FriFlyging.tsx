@@ -17,7 +17,9 @@ import {
 } from "../snofall-tv/slede";
 import {
   ALT_MIN,
+  BERGEN_KURS,
   BERGEN_SLUTT,
+  fraKorridor,
   createFri,
   FJELL,
   forutsiFri,
@@ -27,12 +29,14 @@ import {
   GRENSE,
   høyde,
   MUR,
+  murPunkt,
   nærmesteSted,
   peiling,
   PORT_BREDDE,
   STEDER,
   stedÅpent,
   stedsnavn,
+  TUN,
   vinkelTil,
   type FriHendelse,
   type FriHus,
@@ -43,6 +47,7 @@ import { SledeLyd } from "../snofall-tv/slede-lyd";
 import { hex, identity, multiply, transform, type Mat4, type Vec3 } from "./gl";
 import { Renderer } from "./renderer";
 import { RadioBoks } from "./RadioBoks";
+import { snofallMesh } from "./snofall";
 import {
   erSlipp,
   type Held,
@@ -201,6 +206,14 @@ export function FriFlyging({
     opts.current = o;
     const sim = createFri(o);
     simRef.current = sim;
+    // Dev page only: screenshots can place the sled and the camera.
+    const dev = fps
+      ? (window as unknown as {
+          friSim?: FriSim;
+          friKamera?: { eye: Vec3; target: Vec3 };
+        })
+      : null;
+    if (dev) dev.friSim = sim;
     const brev = GameEngine.getSantaLetters();
     lyd.current = new SledeLyd();
     lyd.current.startVind();
@@ -209,6 +222,8 @@ export function FriFlyging({
     const gardin = gardinMesh(o.bergen);
     const grotte = grotteMesh(1600);
     const portMesh = murMesh(0);
+    const snofall = snofallMesh();
+    const BERGEN_PORT = fraKorridor(GRENSE, 0);
     const ruter = new Map<number, Rute>();
     const husM = new Map<FriHus, Mat4>();
     const kart = kartRef.current?.getContext("2d") ?? null;
@@ -219,7 +234,7 @@ export function FriFlyging({
     antennePos[1] = høyde(antenna.x, antenna.z) * SKALA - 0.2;
     const grottePos = tilVidda(grotten.x + 800, 0, grotten.z + 300);
     grottePos[1] = høyde(grotten.x, grotten.z + 300) * SKALA;
-    const portPos = tilVidda(0, 0, GRENSE);
+    const portPos = tilVidda(BERGEN_PORT[0], 0, BERGEN_PORT[1]);
     const murPos = tilVidda(MUR.x, 0, MUR.z);
     murPos[1] = høyde(MUR.x, MUR.z) * SKALA - 0.2;
     const åpne = STEDER.filter((s) => stedÅpent(s, o)).length;
@@ -340,7 +355,7 @@ export function FriFlyging({
       const W = kart.canvas.width;
       const H = kart.canvas.height;
       const cx = W / 2;
-      const cy = o.bergen ? H * 0.42 : H / 2;
+      const cy = H / 2;
       const k = (Math.min(W, H) / 2 - 8) / GRENSE;
       const mx = (x: number) => cx + x * k;
       const my = (z: number) => cy + z * k;
@@ -352,33 +367,60 @@ export function FriFlyging({
       kart.setLineDash([3, 3]);
       kart.beginPath();
       const gap = o.bergen ? Math.asin((PORT_BREDDE + 300) / GRENSE) : 0;
-      kart.arc(
-        cx,
-        cy,
-        GRENSE * k,
-        Math.PI / 2 + gap,
-        Math.PI / 2 - gap + Math.PI * 2,
-      );
+      // Canvas angles run clockwise from east; the corridor leaves on bearing BERGEN_KURS.
+      const ut = BERGEN_KURS - Math.PI / 2;
+      kart.arc(cx, cy, GRENSE * k, ut + gap, ut - gap + Math.PI * 2);
       kart.stroke();
       if (o.bergen) {
         kart.beginPath();
         for (const s of [-1, 1]) {
-          kart.moveTo(mx(s * (PORT_BREDDE + 300)), my(GRENSE));
-          kart.lineTo(mx(s * (PORT_BREDDE + 300)), my(BERGEN_SLUTT));
+          const a = fraKorridor(GRENSE, s * (PORT_BREDDE + 300));
+          const b = fraKorridor(BERGEN_SLUTT, s * (PORT_BREDDE + 300));
+          kart.moveTo(mx(a[0]), my(a[1]));
+          kart.lineTo(mx(b[0]), my(b[1]));
         }
         kart.stroke();
       }
       kart.setLineDash([]);
+      // Snøfall's round wall with the gate gap to the south, and IQ's wall arc with its gate.
+      kart.strokeStyle = "#c0a070";
+      kart.lineWidth = 2;
+      kart.beginPath();
+      kart.arc(
+        cx,
+        cy,
+        Math.max(4, TUN.r * k),
+        Math.PI / 2 + 0.5,
+        Math.PI / 2 - 0.5 + Math.PI * 2,
+      );
+      kart.stroke();
+      kart.strokeStyle = stedÅpent(
+        STEDER.find((s) => s.id === "muren")!,
+        o,
+      )
+        ? "#ffb347"
+        : "#5a6b8a";
+      kart.lineWidth = 3;
+      for (const side of [-1, 1]) {
+        kart.beginPath();
+        for (let i = 0; i <= 8; i++) {
+          const [px, pz] = murPunkt(
+            side * (MUR.port + ((MUR.halv - MUR.port) * i) / 8),
+          );
+          if (i) kart.lineTo(mx(px), my(pz));
+          else kart.moveTo(mx(px), my(pz));
+        }
+        kart.stroke();
+      }
       kart.font = "9px monospace";
       kart.fillStyle = "#8aa0c0";
       kart.textAlign = "center";
       for (const f of FJELL) kart.fillText("▲", mx(f.x), my(f.z) + 3);
-      kart.fillRect(mx(MUR.x - MUR.halv), my(MUR.z) - 1, MUR.halv * 2 * k, 2);
       for (const s of STEDER) {
         const åpen = stedÅpent(s, o);
         // Bergen's dot sits at the gate: the rest of it is off the bottom of the map.
-        const x = mx(s.x);
-        const y = s.id === "bergen" ? my(GRENSE) : my(s.z);
+        const x = s.id === "bergen" ? mx(BERGEN_PORT[0]) : mx(s.x);
+        const y = s.id === "bergen" ? my(BERGEN_PORT[1]) : my(s.z);
         kart.fillStyle = åpen ? "#ffd700" : "#5a6b8a";
         kart.fillRect(x - 2, y - 2, 4, 4);
         if (!åpen) {
@@ -391,12 +433,12 @@ export function FriFlyging({
         }
         // Label beside the dot, away from the map's edge; the east side reads leftwards.
         kart.fillStyle = åpen ? "#d9e4f5" : "#9fb0cc";
-        const høyre = s.x > 4000;
+        // The cave sits close by Nordtoppen: its label reads to the right of the dot.
+        const høyre = s.x > 4000 && s.id !== "grotten";
         const venstre = s.x < -4000;
         kart.textAlign = høyre ? "right" : venstre ? "left" : "center";
         const tx = høyre ? x - 6 : venstre ? x + 6 : x;
-        const ty =
-          s.z < -10000 || s.id === "bergen" ? y - (åpen ? 5 : 12) : y + 13;
+        const ty = s.z < -10000 ? y - (åpen ? 5 : 12) : y + 13;
         kart.fillText(
           stedsnavn(s, o, true),
           tx,
@@ -540,7 +582,12 @@ export function FriFlyging({
       // Horizon pass: the coarse vidda, the curtain and the gate. One fog for both
       // passes, so the near tiles fade into the horizon mesh instead of ending in a wall of haze.
       r.begynn(
-        { eye: kam, target, fov: (62 * Math.PI) / 180, fjern: HORISONT + 200 },
+        {
+          eye: dev?.friKamera?.eye ?? kam,
+          target: dev?.friKamera?.target ?? target,
+          fov: (62 * Math.PI) / 180,
+          fjern: HORISONT + 200,
+        },
         { ...HIMMEL, tåke: [FJERN * 0.5, HORISONT * 0.6] },
         LYS,
         t,
@@ -550,15 +597,15 @@ export function FriFlyging({
       if (!o.bergen) r.grå(0.85);
       r.tegn(
         M.nordlysport,
-        transform(portPos, [0, 0, Math.sin(t) * 0.05], 2.5),
+        transform(portPos, [0, -BERGEN_KURS, Math.sin(t) * 0.05], 2.5),
       );
       r.grå(0);
       // A padlock turns over every locked place (Bergen's at the gate), sized by
       // distance so it reads as a marker from across the vidda.
       for (const s of STEDER) {
         if (stedÅpent(s, o)) continue;
-        const lx = s.id === "bergen" ? 0 : s.x;
-        const lz = s.id === "bergen" ? GRENSE : s.z;
+        const lx = s.id === "bergen" ? BERGEN_PORT[0] : s.x;
+        const lz = s.id === "bergen" ? BERGEN_PORT[1] : s.z;
         const q = tilVidda(lx, 0, lz);
         const d = Math.hypot(q[0] - p[0], q[2] - p[2]);
         const sk = Math.max(3, Math.min(14, d / 70));
@@ -616,10 +663,13 @@ export function FriFlyging({
           portMesh,
           transform(
             murPos,
-            [0, 0, 0],
+            [0, -MUR.kurs, 0],
             [(MUR.port * SKALA) / (0.4 * SPOR), 1.35, 1],
           ),
         );
+
+      // Snøfall: wall, gate, turrets, clock tower and named houses in one mesh.
+      if (Math.hypot(x, z) < FJERN_SIM + TUN.r) r.tegn(snofall, IDENT);
 
       // Houses with smoke, stars on the ones that got a package.
       for (const h of sim.s.hus) {
@@ -1024,7 +1074,7 @@ export function FriFlyging({
           </div>
         )}
         {fps && (
-          <div className="absolute bottom-2 left-2 text-base text-(--neon-green) bg-black/70 px-1 tabular-nums">
+          <div className="absolute top-16 left-1/2 -translate-x-1/2 text-base text-(--neon-green) bg-black/70 px-1 tabular-nums pointer-events-none">
             {stat.res}×{OPPLØSNINGER[stat.res][1]} · p50 {stat.p50.toFixed(1)}{" "}
             ms · p95 {stat.p95.toFixed(1)} ms
           </div>

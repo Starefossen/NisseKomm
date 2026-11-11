@@ -1,7 +1,13 @@
 import { describe, expect, it } from "@jest/globals";
 import { ALT_MAX, type Styring } from "./slede";
 import {
+  BERGEN_KURS,
   BERGEN_SLUTT,
+  bygg,
+  fraKorridor,
+  iKorridor,
+  murPunkt,
+  TUN,
   createFri,
   FJELL,
   FUGLER,
@@ -104,24 +110,37 @@ describe("fri flyging på vidda", () => {
   });
 
   it("opens the corridor to Bergen only with day 24 solved, and names Landås only with day 22", () => {
-    expect(utenfor(0, GRENSE + 5000, true).ute).toBe(0);
-    expect(utenfor(0, BERGEN_SLUTT + 100, true).ute).toBe(100);
+    expect(utenfor(...fraKorridor(GRENSE + 5000, 0), true).ute).toBe(0);
+    expect(
+      utenfor(...fraKorridor(BERGEN_SLUTT + 100, 0), true).ute,
+    ).toBeCloseTo(100);
+    // The corridor leaves north-east, behind the cave; south is curtain.
+    expect(BERGEN_KURS).toBeGreaterThan(0.1);
+    expect(BERGEN_KURS).toBeLessThan(Math.PI / 2);
+    expect(utenfor(0, GRENSE + 5000, true).ute).toBe(5000);
+    const g = sted("grotten");
+    expect(Math.abs(iKorridor(g.x, g.z).v)).toBeLessThan(1);
     expect(stedsnavn(sted("bergen"), dag8)).toBe("ÅPNER JULAFTEN");
     expect(stedsnavn(sted("bergen"), { ...julaften, landås: false })).toBe(
       "BERGEN",
     );
     expect(stedsnavn(sted("bergen"), julaften)).toBe("LANDÅS");
-    expect(lagHus(false).every((h) => h.z < GRENSE)).toBe(true);
-    expect(lagHus(true).filter((h) => h.z > GRENSE).length).toBeGreaterThan(20);
+    const u = (h: { x: number; z: number }) => iKorridor(h.x, h.z).u;
+    expect(lagHus(false).every((h) => u(h) < GRENSE)).toBe(true);
+    expect(lagHus(true).filter((h) => u(h) > GRENSE).length).toBeGreaterThan(
+      20,
+    );
     const sim = createFri(julaften);
-    sim.s.kurs = Math.PI;
-    sim.s.z = GRENSE - 1500;
+    sim.s.kurs = BERGEN_KURS;
+    [sim.s.x, sim.s.z] = fraKorridor(GRENSE - 1500, 0);
+    sim.s.alt = 200;
     const ev = fly(sim, 6);
     expect(ev).toContain("bergen");
-    expect(sim.s.z).toBeGreaterThan(GRENSE + 1000);
+    expect(u(sim.s)).toBeGreaterThan(GRENSE + 1000);
     const låst = createFri({ ...julaften, bergen: false });
-    låst.s.kurs = Math.PI;
-    låst.s.z = GRENSE - 1500;
+    låst.s.kurs = BERGEN_KURS;
+    [låst.s.x, låst.s.z] = fraKorridor(GRENSE - 1500, 0);
+    låst.s.alt = 200;
     const ev2 = fly(låst, 10);
     expect(ev2).not.toContain("bergen");
     expect(ev2).toContain("låst");
@@ -132,7 +151,15 @@ describe("fri flyging på vidda", () => {
       ALT_MAX,
     );
     expect(høyde(MUR.x, MUR.z)).toBeLessThan(40);
-    expect(høyde(MUR.x + MUR.port * 2.5, MUR.z)).toBeGreaterThan(200);
+    expect(høyde(...murPunkt(MUR.port * 2.5))).toBeGreaterThan(200);
+    expect(høyde(...murPunkt(-MUR.port * 2.5))).toBeGreaterThan(200);
+    // IQ's wall lies between Snøfall and the cave, the cave at Nordtoppen's north-east foot.
+    const g = sted("grotten");
+    const n2 = sted("nordtoppen");
+    expect(Math.hypot(MUR.x, MUR.z)).toBeLessThan(Math.hypot(g.x, g.z));
+    expect(g.x).toBeGreaterThan(n2.x);
+    expect(g.z).toBeLessThan(n2.z);
+    expect(Math.hypot(g.x - n2.x, g.z - n2.z)).toBeLessThan(4000);
     const n = sted("nordtoppen");
     const sim = createFri({ ...dag8, dag: 20 });
     sim.s.x = n.x;
@@ -148,6 +175,62 @@ describe("fri flyging på vidda", () => {
     lav.s.alt = 120;
     expect(fly(lav, 5)).not.toContain("krasj");
     expect(lav.s.z).toBeLessThan(-6000);
+  });
+
+  it("flies in under Snøfall's gate arch, but the wall, the gable and the turrets stop it", () => {
+    const inn = createFri({ ...dag8, reduceMotion: true });
+    const ev = fly(inn, 2.5);
+    expect(ev).not.toContain("krasj");
+    expect(inn.s.z).toBeLessThan(TUN.r - 200);
+    expect(bygg(0, TUN.r, 90)).toBe(0);
+    expect(bygg(0, TUN.r, 150)).toBeGreaterThan(150);
+    expect(bygg(TUN.r, 0, 90)).toBe(TUN.h);
+    expect(bygg(0, 0, 100)).toBeGreaterThan(200);
+    const gavl = createFri({ ...dag8, reduceMotion: true });
+    gavl.s.alt = 150;
+    expect(fly(gavl, 2)).toContain("krasj");
+    const mur = createFri(dag8);
+    [mur.s.x, mur.s.z, mur.s.kurs, mur.s.alt] = [
+      TUN.r + 600,
+      0,
+      -Math.PI / 2,
+      70,
+    ];
+    expect(fly(mur, 1.5)).toContain("krasj");
+    expect(mur.s.x).toBeGreaterThan(TUN.r);
+    const over = createFri(dag8);
+    [over.s.x, over.s.z, over.s.kurs, over.s.alt] = [
+      TUN.r + 600,
+      0,
+      -Math.PI / 2,
+      150,
+    ];
+    expect(fly(over, 1.5)).not.toContain("krasj");
+    expect(over.s.x).toBeLessThan(TUN.r);
+  });
+
+  it("finds Muren and the cave on the days they open, and keeps the sled out before", () => {
+    for (const [id, dag] of [
+      ["muren", 21],
+      ["grotten", 24],
+    ] as const) {
+      const st = sted(id);
+      const b = Math.atan2(st.x, -st.z);
+      const start = (o: FriOpts) => {
+        const sim = createFri(o);
+        sim.s.x = st.x - Math.sin(b) * (st.r + 600);
+        sim.s.z = st.z + Math.cos(b) * (st.r + 600);
+        sim.s.kurs = b;
+        sim.s.alt = 300;
+        return sim;
+      };
+      const før = start({ ...dag8, dag: dag - 1 });
+      expect(fly(før, 3)).toContain("låst");
+      expect(Math.hypot(før.s.x - st.x, før.s.z - st.z)).toBeGreaterThan(st.r);
+      const på = start({ ...dag8, dag });
+      expect(fly(på, 3)).toContain("oppdaget");
+      expect(på.s.oppdaget.has(id)).toBe(true);
+    }
   });
 
   it("catches a bird in the air and drops a package down a chimney", () => {
@@ -173,7 +256,10 @@ describe("fri flyging på vidda", () => {
       if (treff.includes("levering")) expect(p.s.pakker).toBe(1);
     }
     expect(treff).toContain("levering");
-    expect(treff).toContain("pakkebom");
+    const bom = createFri(dag8);
+    [bom.s.z, bom.s.alt] = [9000, 200];
+    bom.step(1 / 60, { ...still, slipp: true });
+    expect(fly(bom, 2)).toContain("pakkebom");
   });
 
   it("a dive into the ground crashes, stops the sled, then sets it down behind and higher", () => {

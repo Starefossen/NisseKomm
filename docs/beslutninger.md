@@ -93,3 +93,10 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 
 - Kartplata over Snøfall står over kapittellista. Hvorfor: barna ser hvor kapitlene foregår før de velger.
 - Flokes fjærbok (`flokes_fjaerbok.txt`) vises i MORO-mappa som låst med fjærteller («LÅST · 3/8 FJÆR») til åtte fjær, så åpnes den. Hvorfor: en synlig belønning lokker mer enn en skjult.
+
+## Snøfall i fri flyging (2026-11-11)
+
+- Muren er IQs egen murbue med varm port mellom Snøfall og Krystallgrotten, synlig som silhuett før dag 21. Ikke landsbymuren. Hvorfor: teksten sier IQ bygde muren mot grotten.
+- Krystallgrotten flyttes til foten av Nordtoppen mot nordøst. Hvorfor: teksten sier «under Nordtoppen».
+- Bergen-korridoren går mot nordøst, bak grotten. Hvorfor: julenattsruta går over Nordtoppen og lavt over grotten.
+- Snøfall er et rundt tun med klokketårnet i midten, porten rett mot sør og fire murtårn med løkkupler; rutenettgatene går ut. Hvorfor: alle bilder og tekster viser et rundt tun.

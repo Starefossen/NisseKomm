@@ -1304,7 +1304,7 @@ function Etappeflukt({
           </div>
         )}
         {fps && (
-          <div className="absolute bottom-2 left-2 text-base text-(--neon-green) bg-black/70 px-1 tabular-nums">
+          <div className="absolute top-16 left-1/2 -translate-x-1/2 text-base text-(--neon-green) bg-black/70 px-1 tabular-nums pointer-events-none">
             {stat.res}×{OPPLØSNINGER[stat.res][1]} · p50 {stat.p50.toFixed(1)}{" "}
             ms · p95 {stat.p95.toFixed(1)} ms
           </div>

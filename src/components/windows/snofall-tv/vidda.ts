@@ -20,12 +20,34 @@ import {
 
 /** Radius of the vidda; the aurora curtain hangs here. */
 export const GRENSE = 22000;
-/** Half-width of the corridor south through the gate to Bergen, and where it ends. */
+/** Half-width of the corridor through the curtain gate to Bergen, and where it ends (along the corridor). */
 export const PORT_BREDDE = 1400;
 export const BERGEN_SLUTT = GRENSE + 15000;
 export const FART = 800;
 export const ALT_MIN = 60;
-export const ALT_START = 150;
+/** Low enough to fly in under Snøfall's gate arch, straight ahead at the start. */
+export const ALT_START = 90;
+
+/** Krystallgrotten at Nordtoppen's north-east foot (Hans, 2026-11-11). */
+const GROTTE = { x: 4200, z: -18200 };
+/**
+ * The Bergen corridor runs out through the curtain behind the cave, on the
+ * bearing from Snøfall over the cave (radians clockwise from north).
+ */
+export const BERGEN_KURS = Math.atan2(GROTTE.x, -GROTTE.z);
+const KS = Math.sin(BERGEN_KURS);
+const KC = Math.cos(BERGEN_KURS);
+/** Sim point at `u` along the corridor's axis from Snøfall and `v` to its right. */
+export const fraKorridor = (u: number, v: number): [number, number] => [
+  u * KS + v * KC,
+  -u * KC + v * KS,
+];
+/** A point in corridor coordinates: `u` along the axis, `v` across it. */
+export const iKorridor = (x: number, z: number) => ({
+  u: x * KS - z * KC,
+  v: x * KC + z * KS,
+});
+const BERGEN_PORT = fraKorridor(GRENSE + 6000, 0);
 /** Full stick turns this fast (a circle in about six seconds). */
 const SVING = 1.05;
 /** Seconds for a turn to build or fade; higher feels heavier. */
@@ -94,8 +116,9 @@ export const STEDER: readonly Sted[] = [
     id: "muren",
     navn: "MUREN",
     kort: "MUREN",
-    x: -14000,
-    z: 3500,
+    // IQ's wall (day 21): an arc on the way from Snøfall to the cave, the gate on the axis (see MUR).
+    x: Math.round(Math.sin(BERGEN_KURS) * 9000),
+    z: Math.round(-Math.cos(BERGEN_KURS) * 9000),
     r: 2800,
     dag: 21,
     radio: "Muren. Én port e åpen, og den har varme i sæ. Sikt på gullet.",
@@ -104,8 +127,8 @@ export const STEDER: readonly Sted[] = [
     id: "grotten",
     navn: "KRYSTALLGROTTEN",
     kort: "GROTTEN",
-    x: 13500,
-    z: -12500,
+    x: GROTTE.x,
+    z: GROTTE.z,
     r: 1700,
     dag: 24,
     radio: "Grotta! Fly lavt over sprekken, så kjem lyset ned.",
@@ -115,8 +138,8 @@ export const STEDER: readonly Sted[] = [
     navn: "BERGEN",
     kort: "BERGEN",
     // Reaches a little inside the curtain, so the closed gate bumps and says «ÅPNER JULAFTEN».
-    x: 0,
-    z: GRENSE + 6000,
+    x: BERGEN_PORT[0],
+    z: BERGEN_PORT[1],
     r: 7000,
     dag: 24,
     radio:
@@ -166,36 +189,135 @@ export const FJELL: readonly Fjell[] = [
   { x: 8000, z: -15000, r: 1000, h: 140 },
 ];
 
-/** The wall: a ridge too high to cross, with one gate at its middle. */
+/**
+ * IQ's wall: an arc of ridge round Snøfall at radius R, centred on the bearing
+ * to the cave, too high to cross, with one warm gate on that bearing.
+ */
 export const MUR = {
   x: topp("muren").x,
   z: topp("muren").z,
-  /** Half-length along x, in sim units. */
-  halv: 2200,
+  kurs: BERGEN_KURS,
+  R: 9000,
+  /** Half-length along the arc, in sim units. */
+  halv: 3600,
   h: 520,
   /** Half-width of the gap in the ridge. */
   port: 420,
 };
 
+/** The point `s` sim units along the wall's arc from its gate (+ = clockwise, east). */
+export const murPunkt = (s: number): [number, number] => {
+  const a = MUR.kurs + s / MUR.R;
+  return [Math.sin(a) * MUR.R, -Math.cos(a) * MUR.R];
+};
+
+/** Flat ground in Snøfall's tun and round the tarn, so streets and ice lie level. */
+const FLATE = [
+  { x: 0, z: 0, r: 1700 },
+  { x: -10020, z: -11000, r: 600 },
+] as const;
+
 /** Ground height in altitude units (0.1 m) at a point on the vidda. */
 export function høyde(x: number, z: number) {
+  let flat = 1;
+  for (const f of FLATE) {
+    const d = Math.hypot(x - f.x, z - f.z) / f.r;
+    if (d < 1.5) flat *= Math.max(0, Math.min(1, (d - 1) * 2));
+  }
   let h =
-    8 * Math.sin(x / 1900) * Math.sin(z / 2300) +
-    5 * Math.sin(x / 700 + z / 900);
+    flat *
+    (8 * Math.sin(x / 1900) * Math.sin(z / 2300) +
+      5 * Math.sin(x / 700 + z / 900));
   for (const f of FJELL) {
     const dx = x - f.x;
     const dz = z - f.z;
     const d2 = (dx * dx + dz * dz) / (f.r * f.r);
     if (d2 < 7) h += f.h * Math.exp(-d2);
   }
-  const mx = Math.max(0, Math.abs(x - MUR.x) - MUR.halv);
-  const mz = z - MUR.z;
-  const md2 = (mx * mx + mz * mz) / (350 * 350);
-  if (md2 < 7) {
-    const gap = (x - MUR.x) / MUR.port;
-    h += MUR.h * Math.exp(-md2) * (1 - Math.exp(-gap * gap));
+  const fi = vinkelTil(MUR.kurs, peiling(0, 0, x, z));
+  if (Math.abs(fi) < 1.2) {
+    const s = fi * MUR.R;
+    const mx = Math.max(0, Math.abs(s) - MUR.halv);
+    const mz = Math.hypot(x, z) - MUR.R;
+    const md2 = (mx * mx + mz * mz) / (350 * 350);
+    if (md2 < 7) {
+      const gap = s / MUR.port;
+      h += MUR.h * Math.exp(-md2) * (1 - Math.exp(-gap * gap));
+    }
   }
   return h;
+}
+
+/**
+ * Snøfall: the round 300-year-old wall with the gate due south and four
+ * onion-domed turrets, the clock tower in the middle of the tun, and the named
+ * houses. Sim units; Hans 2026-11-11, layout from docs (`snofall-layout`).
+ */
+export const TUN = {
+  r: 1500,
+  /** Wall half-thickness, stone 60 plus palisade 30. */
+  tykk: 12.5,
+  h: 90,
+  /** Gate opening half-width and height; the gatehouse is 300 wide, its gable 200. */
+  port: 80,
+  portH: 120,
+  portHalv: 150,
+  gavl: 200,
+  tårnR: 50,
+  tårnH: 180,
+  /** Turrets on the wall at 45°, 135°, 225° and 315° (bearing). */
+  tårn: [1, 3, 5, 7].map((i) => (i * Math.PI) / 4),
+};
+
+export interface Bygg {
+  id: string;
+  x: number;
+  z: number;
+  /** Footprint along x and z, and roof ridge height. */
+  b: number;
+  d: number;
+  h: number;
+}
+
+/** Named buildings (spec positions; kafé and IQ's house are guesses from the text). */
+export const BYGG: readonly Bygg[] = [
+  { id: "klokketaarn", x: 0, z: 0, b: 60, d: 60, h: 240 },
+  { id: "postkasse", x: 160, z: 60, b: 10, d: 10, h: 20 },
+  { id: "pakkesentral", x: 450, z: 0, b: 220, d: 180, h: 110 },
+  { id: "hovedhus", x: 0, z: -900, b: 300, d: 200, h: 170 },
+  { id: "gront", x: -650, z: -350, b: 120, d: 100, h: 110 },
+  { id: "kafe", x: 450, z: 500, b: 130, d: 110, h: 90 },
+  { id: "iq", x: -900, z: 100, b: 120, d: 100, h: 120 },
+  { id: "bod", x: -300, z: 120, b: 40, d: 30, h: 35 },
+  { id: "bod", x: -300, z: 230, b: 40, d: 30, h: 35 },
+  { id: "bod", x: -360, z: -60, b: 40, d: 30, h: 35 },
+  { id: "bod", x: -200, z: 330, b: 40, d: 30, h: 35 },
+  { id: "bod", x: 300, z: -230, b: 40, d: 30, h: 35 },
+  { id: "bod", x: 250, z: 260, b: 40, d: 30, h: 35 },
+];
+
+/**
+ * Top of whatever stands at (x, z) in Snøfall, in altitude units (0 = nothing).
+ * The gate is open below its arch; above the arch the gable is in the way.
+ */
+export function bygg(x: number, z: number, alt: number) {
+  const d = Math.hypot(x, z);
+  if (d > TUN.r + 80) return 0;
+  if (Math.abs(d - TUN.r) < 40 && z > 0 && Math.abs(x) < TUN.portHalv) {
+    if (Math.abs(x) >= TUN.port) return TUN.gavl;
+    return alt < TUN.portH - 5 ? 0 : TUN.gavl;
+  }
+  for (const a of TUN.tårn)
+    if (
+      Math.hypot(x - Math.sin(a) * TUN.r, z + Math.cos(a) * TUN.r) <
+      TUN.tårnR + 10
+    )
+      return TUN.tårnH;
+  if (Math.abs(d - TUN.r) < TUN.tykk + 8) return TUN.h;
+  for (const b of BYGG)
+    if (Math.abs(x - b.x) < b.b / 2 + 10 && Math.abs(z - b.z) < b.d / 2 + 10)
+      return b.h;
+  return 0;
 }
 
 /** Gust push at full strength, in sim units/s sideways (the sled flies FART). */
@@ -217,6 +339,7 @@ export interface FriHus {
   /** Chimney top in altitude units (one of HUS_PIPE). */
   h: number;
   rot: number;
+  /** verden.meshes().hus index: 0–2 sizes, 3 ochre, 4 dark green. */
   variant: number;
   treff?: boolean;
   nær?: number;
@@ -241,21 +364,19 @@ export function lagHus(bergen: boolean): FriHus[] {
     const variant = Math.floor(r() * 3);
     ut.push({ x, z, h: HUS_PIPE[variant], rot, variant });
   };
-  // Snøfall: two streets crossing, houses on both sides, the square in the middle left open.
-  for (let i = -3; i <= 3; i++) {
-    if (!i) continue;
-    for (const s of [-1, 1]) {
-      sett(
-        i * 380 + (r() - 0.5) * 80,
-        s * 260 + (r() - 0.5) * 60,
-        (s * Math.PI) / 2,
-      );
-      sett(
-        s * 260 + (r() - 0.5) * 60,
-        i * 380 + (r() - 0.5) * 80,
-        s > 0 ? 0 : Math.PI,
-      );
-    }
+  // Snøfall: houses round the tun inside the wall, gables in to the ring street;
+  // ochre to the west, red to the north, dark green to the east. None by the gate or the main house.
+  for (let i = 0; i < 16; i++) {
+    const a = (i / 16) * Math.PI * 2 + 0.2;
+    const sør = Math.abs(vinkelTil(a, Math.PI / 2));
+    const nord = Math.abs(vinkelTil(a, -Math.PI / 2));
+    if (sør < 0.4 || nord < 0.3) continue;
+    const rr = 1080 + r() * 200;
+    const x = Math.cos(a) * rr;
+    const z = Math.sin(a) * rr;
+    const variant =
+      x < -500 ? 3 : z < -700 ? 1 : x > 500 ? 4 : Math.floor(r() * 3);
+    ut.push({ x, z, h: HUS_PIPE[variant % 3], rot: Math.PI / 2 - a, variant });
   }
   const g = topp("gaardene");
   for (let i = 0; i < 5; i++)
@@ -265,9 +386,11 @@ export function lagHus(bergen: boolean): FriHus[] {
       r() * Math.PI * 2,
     );
   if (bergen)
-    for (let z = GRENSE + 4000; z < BERGEN_SLUTT - 1500; z += 420)
-      for (const s of [-1, 1])
-        sett(s * (380 + r() * 160), z + r() * 120, (s * Math.PI) / 2);
+    for (let u = GRENSE + 4000; u < BERGEN_SLUTT - 1500; u += 420)
+      for (const s of [-1, 1]) {
+        const [x, z] = fraKorridor(u + r() * 120, s * (380 + r() * 160));
+        sett(x, z, (s * Math.PI) / 2 + Math.PI - BERGEN_KURS);
+      }
   return ut;
 }
 
@@ -375,11 +498,12 @@ export function utenfor(x: number, z: number, bergen: boolean) {
   const ut = Math.hypot(x, z) - GRENSE;
   let ute = ut;
   let mål: [number, number] = [0, 0];
-  if (bergen && z > 0) {
-    const k = Math.max(Math.abs(x) - PORT_BREDDE, z - BERGEN_SLUTT);
+  const { u, v } = iKorridor(x, z);
+  if (bergen && u > 0) {
+    const k = Math.max(Math.abs(v) - PORT_BREDDE, u - BERGEN_SLUTT);
     if (k < ute) {
       ute = k;
-      mål = [0, Math.min(z, BERGEN_SLUTT - 3000)];
+      mål = fraKorridor(Math.min(u, BERGEN_SLUTT - 3000), 0);
     }
   }
   return { ute: Math.max(0, ute), mål };
@@ -403,8 +527,9 @@ export function createFri(o: FriOpts) {
   const hus = lagHus(o.bergen);
   const grotte = topp("grotten");
   const s = {
+    // South of the gate, lined up to fly in under the arch.
     x: 0,
-    z: 3200,
+    z: 2600,
     alt: ALT_START,
     /** Heading, radians clockwise from north (-z). */
     kurs: 0,
@@ -496,7 +621,10 @@ export function createFri(o: FriOpts) {
     const fz = -Math.cos(s.kurs);
 
     // Terrain: a gentle rise ahead lifts the nose; a wall, or ground above the ceiling, is a crash.
-    const fram = høyde(s.x + fx * SE_FRAM, s.z + fz * SE_FRAM) + 40;
+    // Snøfall's wall, gate and houses are read close ahead; the top of one is a hard edge.
+    let fram = høyde(s.x + fx * SE_FRAM, s.z + fz * SE_FRAM) + 40;
+    for (const k of [60, 100, 150])
+      fram = Math.max(fram, bygg(s.x + fx * k, s.z + fz * k, s.alt) + 60);
     if (fram > ALT_MAX || fram > s.alt + KLATRE_FRITT) {
       if (s.tid >= s.sakteTil) krasj(ev, fx, fz);
     } else if (s.tid < s.stoppTil) {
@@ -557,10 +685,11 @@ export function createFri(o: FriOpts) {
       }
     }
     if (o.bergen) {
-      if (!s.iBergen && s.z > GRENSE && Math.abs(s.x) < PORT_BREDDE) {
+      const { u, v } = iKorridor(s.x, s.z);
+      if (!s.iBergen && u > GRENSE && Math.abs(v) < PORT_BREDDE) {
         s.iBergen = true;
         ev.push("bergen");
-      } else if (s.z < GRENSE - 800) s.iBergen = false;
+      } else if (u < GRENSE - 800) s.iBergen = false;
     }
 
     // The cave: light dropped by flying low over the crack in front of its hill (once).

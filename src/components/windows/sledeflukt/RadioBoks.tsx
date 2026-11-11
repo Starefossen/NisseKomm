@@ -56,7 +56,7 @@ export function RadioBoks({
     <div
       key={nå.id}
       role="status"
-      className="absolute bottom-2 left-12 max-w-[calc(50%-7rem)] flex gap-2 items-center border-2 border-(--brass) bg-black/85 p-1 pr-2 pointer-events-none"
+      className="absolute bottom-2 left-12 max-w-[calc(50%-7rem)] flex gap-2 items-start border-2 border-(--brass) bg-black/85 p-1 pr-2 pointer-events-none"
     >
       <div className="@max-[720px]:hidden">
         <Portrett navn="rampenissen" />
@@ -65,7 +65,7 @@ export function RadioBoks({
         <div className="text-sm text-(--gold) @max-[720px]:hidden">
           RADIO · RAMPENISSEN
         </div>
-        <div className="text-lg @max-[720px]:text-sm text-(--neon-green)">
+        <div className="text-lg @max-[720px]:text-sm text-(--neon-green) line-clamp-3 pb-0.5">
           «{nå.tekst}»
         </div>
       </div>

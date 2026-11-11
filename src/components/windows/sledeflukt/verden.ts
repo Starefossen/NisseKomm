@@ -19,6 +19,8 @@ import {
   BERGEN_SLUTT,
   GRENSE,
   høyde,
+  iKorridor,
+  fraKorridor,
   PORT_BREDDE,
   STEDER,
   type FriHus,
@@ -152,6 +154,8 @@ const PELS_MØRK = hex(0x6b4e35);
 const PELS_LYS = hex(0xc9b08a);
 const RØD = hex(0xc62828);
 const GRØNN = hex(0x00ff8a);
+const OKER = hex(0xb07a2a);
+const MØRKGRØNN = hex(0x2f4a3a);
 
 /** Spruce, 16 units tall at scale 1 (a sim tree is h = 160). Instanced. */
 function treMesh() {
@@ -173,12 +177,12 @@ export interface HusMesh {
 }
 
 /** A Snøfall house: timber walls, snowy gable roof, lit windows and a chimney. */
-function husMesh(variant: number): HusMesh {
+function husMesh(variant: number, farge?: Vec3): HusMesh {
   const m = new Mesh();
   const w = 9 + variant * 2;
   const h = 5 + variant;
   const d = 8 + variant;
-  const vegg = variant === 1 ? RØDMALING : TØMMER;
+  const vegg = farge ?? (variant === 1 ? RØDMALING : TØMMER);
   m.box([0, h / 2, 0], [w, h, d], vegg);
   const topp = h + 4 + variant;
   const r: Vec3[] = [
@@ -270,7 +274,20 @@ function antenneMesh() {
   for (const y of [10, 20, 28])
     m.box([0, y, 0], [5 - y / 10, 0.4, 0.4], STEIN_LYS);
   m.box([0, 33, 0], [1.2, 1.2, 1.2], RØD, 1);
-  m.box([-52, 0.05, 0], [40, 0.3, 56], hex(0x1a2448));
+  for (let i = 0; i < 3; i++) {
+    const a = (i / 3) * Math.PI * 2 + 0.5;
+    m.rod(
+      [0, 26, 0],
+      [Math.cos(a) * 14, 0, Math.sin(a) * 14],
+      0.08,
+      STEIN_LYS,
+      3,
+    );
+  }
+  // IQ's little hut with one lit window, and the frozen tarn, flat and blue, at the mast's edge.
+  m.box([7, 1.5, 5], [4, 3, 3], TØMMER);
+  m.box([7, 1.6, 6.55], [1, 1, 0.1], VINDU, 1);
+  m.box([-52, 0.45, 0], [96, 0.3, 70], hex(0x5a7ab0));
   return m.build();
 }
 
@@ -627,7 +644,14 @@ export function meshes(): Meshes {
   if (!cache)
     cache = {
       tre: treMesh(),
-      hus: [0, 1, 2].map(husMesh),
+      // Variants 3 and 4 are Snøfall's ochre and dark green houses, sized as 0 and 2.
+      hus: [
+        husMesh(0),
+        husMesh(1),
+        husMesh(2),
+        husMesh(0, OKER),
+        husMesh(2, MØRKGRØNN),
+      ],
       ring: ringMesh(),
       fugl: fuglMesh(),
       stjerne: stjerneMesh(),
@@ -786,11 +810,15 @@ export function lagRute(
     if (h > 120) continue;
     if (
       STEDER.some(
-        (s) => s.id !== "muren" && Math.hypot(xs - s.x, zs - s.z) < s.r * 0.7,
+        (s) =>
+          s.id !== "muren" &&
+          Math.hypot(xs - s.x, zs - s.z) <
+            (s.id === "snofall" ? s.r : s.r * 0.7),
       )
     )
       continue;
-    if (zs > GRENSE - 500 && Math.abs(xs) < PORT_BREDDE + 400) continue;
+    const k = iKorridor(xs, zs);
+    if (k.u > GRENSE - 500 && Math.abs(k.v) < PORT_BREDDE + 400) continue;
     trær.push(x, h * SKALA - 0.3, z, 0.6 + hash(i, ix + iz) * 0.7);
   }
   return { mesh: m.build(), trær: new Float32Array(trær) };
@@ -800,21 +828,36 @@ export function lagRute(
 export function fjernMesh(): Float32Array {
   const m = new Mesh();
   const rand = (GRENSE + 6000) * SKALA;
-  const sør = (BERGEN_SLUTT + 4000) * SKALA;
   const p = (x: number, z: number): Vec3 => [
     x,
     høyde(x / SKALA, z / SKALA) * SKALA - 1.5,
     z,
   ];
-  for (let z = -rand; z < sør; z += FJERN_CELLE)
+  const celle = (a: Vec3, b: Vec3, d: Vec3, e: Vec3) => {
+    m.triangle(a, b, d, skråfarge(a, b, d));
+    m.triangle(a, d, e, skråfarge(a, d, e));
+  };
+  // The corridor to Bergen runs out at an angle, so it gets its own strip of cells.
+  const STRIPE = PORT_BREDDE + 6000;
+  const u0 = GRENSE + 1000;
+  const iStripe = (x: number, z: number) => {
+    const k = iKorridor(x / SKALA, z / SKALA);
+    return k.u > u0 && Math.abs(k.v) < STRIPE;
+  };
+  for (let z = -rand; z < rand; z += FJERN_CELLE)
     for (let x = -rand; x < rand; x += FJERN_CELLE) {
-      const a = p(x, z);
-      const b = p(x + FJERN_CELLE, z);
-      const d = p(x + FJERN_CELLE, z + FJERN_CELLE);
-      const e = p(x, z + FJERN_CELLE);
-      m.triangle(a, b, d, skråfarge(a, b, d));
-      m.triangle(a, d, e, skråfarge(a, d, e));
+      if (iStripe(x + FJERN_CELLE / 2, z + FJERN_CELLE / 2)) continue;
+      const C = FJERN_CELLE;
+      celle(p(x, z), p(x + C, z), p(x + C, z + C), p(x, z + C));
     }
+  const C = FJERN_CELLE / SKALA;
+  const q = (u: number, v: number) => {
+    const [x, z] = fraKorridor(u, v);
+    return p(x * SKALA, z * SKALA);
+  };
+  for (let u = u0; u < BERGEN_SLUTT + 4000; u += C)
+    for (let v = -STRIPE; v < STRIPE; v += C)
+      celle(q(u, v), q(u + C, v), q(u + C, v + C), q(u, v + C));
   return m.build();
 }
 
@@ -830,7 +873,8 @@ export function gardinMesh(bergen: boolean): Float32Array {
     const a = (i / n) * Math.PI * 2;
     const x = Math.sin(a) * r;
     const z = Math.cos(a) * r;
-    if (bergen && z > 0 && Math.abs(x) < PORT_BREDDE * SKALA + 30) continue;
+    const k = iKorridor(x / SKALA, z / SKALA);
+    if (bergen && k.u > 0 && Math.abs(k.v) < PORT_BREDDE + 300) continue;
     const h = 70 + ((i * 7) % 5) * 16;
     const w = 5;
     const dx = Math.cos(a) * w;
