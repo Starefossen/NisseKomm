@@ -3,7 +3,7 @@
 
 Usage:
   generer.py plan [--til-dag N] [--bare KAT] [--force]
-  generer.py kjør [--til-dag N] [--bare julius|rampenissen|tv|port|test|musikk|slede]
+  generer.py kjør [--til-dag N] [--bare KAT|ID] [--tørrkjør]   (ID: port:port-winter; --tørrkjør prints commands, no API calls)
                   [--maks-forespørsler N] [--stopp-etter julius:5] [--force]
   generer.py --selvtest
 
@@ -22,6 +22,7 @@ State: assets/out/generer-tilstand.json (requests per quota day, last error, per
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -34,7 +35,7 @@ import inventar  # noqa: E402
 import medie  # noqa: E402
 
 ROOT = medie.ROOT
-BIN = ROOT / "assets/bin"
+BIN = Path(__file__).resolve().parent  # the scripts next to this file, also when NISSEKOMM_ROOT points elsewhere
 STATE = ROOT / "assets/out/generer-tilstand.json"
 DAY_LIMIT = 200
 RETRY = 1.5  # expected takes per clip (julius-dag.py retries up to 3)
@@ -299,6 +300,24 @@ def plan(q, used: int):
           f"{used} brukt i dag av {DAY_LIMIT}, {days:g} dag(er) med full kvote.")
 
 
+def dry_run(q):
+    """Print each command with its absolute paths, no API calls; TV loops expand via tv-loops.sh --tørrkjør.
+    Exit 1 if an input file is missing."""
+    bad = 0
+    for item_id, cat, _, cmd in q:
+        print(f"▶ {item_id}", flush=True)
+        if cmd[0] == "bash" and cmd[1].endswith("tv-loops.sh"):
+            bad |= subprocess.run([*cmd, "--tørrkjør"], stdin=subprocess.DEVNULL).returncode != 0
+            continue
+        print("  " + shlex.join(cmd))
+        if cmd[:2] == ["bash", "-c"]:  # still/portrett: the positional args are the inputs
+            for f in (cmd[5:6] + cmd[9:]) if cat == "portrett" else (cmd[4:6] + cmd[8:]):
+                if not Path(f).is_file():
+                    print(f"  mangler inndata: '{f}'")
+                    bad = 1
+    return bad
+
+
 def arg(argv, name, default=None):
     return argv[argv.index(name) + 1] if name in argv else default
 
@@ -313,10 +332,12 @@ def main(argv):
     vurd = load_vurderinger(vpath)
     q = queue(inventar.scan(media_dir()), tv_jobs(), til_dag=til, vurderinger=vurd, force=force)
     if bare:
-        q = [i for i in q if i[1] == bare]
+        q = [i for i in q if bare in (i[1], i[0])]  # a category (port) or an item id (port:port-winter)
     if argv[0] == "plan":
         plan(q, load_state(STATE)["forespørsler"].get(quota_day(), 0))
         return 0
+    if "--tørrkjør" in argv:
+        return dry_run(q)
     maks = arg(argv, "--maks-forespørsler")
     return run(q, STATE, int(maks) if maks else None, arg(argv, "--stopp-etter"), vurdering_fil=vpath)
 

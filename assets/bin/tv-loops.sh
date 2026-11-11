@@ -1,51 +1,74 @@
 #!/usr/bin/env bash
 # tv-loops.sh: make all Snøfall TV loops from the reference stills and prompt files.
 # Remakes only missing or out-of-date loops (medie.py); loops made before sidecars are kept.
-# Usage: assets/bin/tv-loops.sh [--force] [--liste] [--bare <navn>] [--upload <base-url>]
+# Usage: assets/bin/tv-loops.sh [--force] [--liste] [--bare <navn>] [--tørrkjør] [--upload <base-url>]
 #   --liste: print every job name (no API calls); --bare <navn>: make only that job (generer.py uses both)
+#   --tørrkjør: print the commands with their absolute paths instead of running them (no API calls)
+# Exits 1 if any job fails or an input file is missing.
 set -uo pipefail
-A="$(cd "$(dirname "$0")/.." && pwd)"; L="$A/locations"; T="$A/../public/video/tv"; mkdir -p "$T"
-FORCE= LIST= ONLY=
+A="${NISSEKOMM_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}/assets"; T="$A/../public/video/tv"
+FORCE= LIST= ONLY= DRY= FAIL=
 ARGS=()
 while [ $# -gt 0 ]; do
-  case $1 in --force) FORCE=1 ;; --liste) LIST=1 ;; --bare) ONLY=$2; shift ;; *) ARGS+=("$1") ;; esac
+  case $1 in --force) FORCE=1 ;; --liste) LIST=1 ;; --bare) ONLY=$2; shift ;; --tørrkjør) DRY=1 ;; *) ARGS+=("$1") ;; esac
   shift
 done
 [ ${#ARGS[@]} -gt 0 ] && set -- "${ARGS[@]}" || set --
-M="python3 $A/bin/medie.py"
+[ -n "$DRY$LIST" ] || mkdir -p "$T"
+M="python3 $(dirname "$0")/medie.py"
+export NISSEKOMM_ROOT="$A/.."
+JOBS=$($M tv) || { echo "medie.py tv feilet" >&2; exit 1; }
+[ -z "$ONLY" ] || grep -q "^$ONLY|" <<<"$JOBS" || { echo "ukjent TV-jobb: $ONLY" >&2; exit 1; }
 # unknown (made before the inventory) counts as keep; only stale or missing is remade
 want() { [ -n "$LIST" ] && { echo "$1"; return 1; }; [ -z "$ONLY" ] || [ "$ONLY" = "$1" ]; }
-keep() { want "$(basename "$1" .mp4)" || return 0; [ -z "$FORCE" ] && [ -f "$1" ] && [ "$($M status "$1" | head -1)" != stale ]; }
-meta() { $M skriv tv-loops.sh "$1" "$2" - gemini-omni-1.2-flash "${@:3}"; } # out prompt image [ref]
+keep() {
+  want "$(basename "$1" .mp4)" || return 0
+  [ -z "$FORCE$DRY" ] && [ -f "$1" ] && [ "$($M status "$1" | head -1)" != stale ]
+}
+run() { if [ -n "$DRY" ]; then printf '%q ' "$@"; echo; else "$@"; fi; }
+need() { # every input must exist; an empty path is the bug this guards against
+  local f; for f in "$@"; do [ -n "$f" ] && [ -f "$f" ] || { echo "mangler inndata: '${f}'" >&2; return 1; }; done
+}
+meta() { run $M skriv tv-loops.sh "$1" "$2" - gemini-omni-1.2-flash "${@:3}"; } # out prompt image [ref]
 # The jobs live in assets/medier.json (generator "loop"); medie.py tv gives one line per loop.
 # Intermediate stills (generator "mellomstill") are made only when a job that needs them runs.
 first() { # state loop -> its first frame as jpg
   local k="$A/out/forste-$1.jpg"
   [ -f "$T/$1.mp4" ] || { echo "mangler $T/$1.mp4 (lag tilstanden før hendelsene)" >&2; return 1; }
-  ffmpeg -nostdin -y -v error -i "$T/$1.mp4" -frames:v 1 -q:v 2 "$k" && echo "$k"
+  [ -n "$DRY" ] || ffmpeg -nostdin -y -v error -i "$T/$1.mp4" -frames:v 1 -q:v 2 "$k" || return 1
+  echo "$k"
 }
 loop() { # name prompt image state anchor refs
-  local name=$1 prompt=$2 img=$3 state=$4 anchor=$5 refs=$6 b p u
+  local name=$1 prompt=$2 img=$3 state=$4 anchor=$5 refs=$6 b p u made=
   keep "$T/$name.mp4" && return 0
+  [ -n "$DRY" ] && echo "# $name"
   while IFS='|' read -r b p u <&4; do
-    [ -f "$u" ] || "$A/bin/still.sh" "$b" "$p" "$u" >/dev/null || return 1
+    [ -f "$u" ] && continue
+    [ "$b" = "$made" ] || need "$b" || return 1  # the previous still is made by this run
+    need "$p" && run "$A/bin/still.sh" "$b" "$p" "$u" || return 1
+    made=$u
   done 4< <($M stiller "tv/$name")
   # Events are cut only into their own state loop, anchored to its first frame (10 s with first+last frame)
   [ -n "$state" ] && { img=$(first "$state") || return 1; anchor=1; }
+  # shellcheck disable=SC2086
+  need "$prompt" $refs || return 1
+  # a dry run has not made the intermediate still or the state frame yet
+  if [ -z "$DRY" ] || { [ "$img" != "$made" ] && [ -z "$state" ]; }; then need "$img" || return 1; fi
   if [ -n "$anchor" ]; then
     # shellcheck disable=SC2086
-    "$A/bin/loop.sh" "$img" "$prompt" "$name.raw" 10 $refs \
-      && "$A/bin/anchor.sh" "$A/out/$name.raw.mp4" "$img" "$T/$name.mp4" \
+    run "$A/bin/loop.sh" "$img" "$prompt" "$name.raw" 10 $refs \
+      && run "$A/bin/anchor.sh" "$A/out/$name.raw.mp4" "$img" "$T/$name.mp4" \
       && meta "$T/$name.mp4" "$prompt" "$img" $refs
   else
-    "$A/bin/loop.sh" "$img" "$prompt" "$name" 10 && cp "$A/out/$name.mp4" "$T/$name.mp4" \
+    run "$A/bin/loop.sh" "$img" "$prompt" "$name" 10 && run cp "$A/out/$name.mp4" "$T/$name.mp4" \
       && meta "$T/$name.mp4" "$prompt" "$img"
   fi
 }
 while IFS='|' read -r name prompt img state anchor refs <&3; do
-  loop "$name" "$prompt" "$img" "$state" "$anchor" "$refs"
-done 3< <($M tv)
-[ -n "$LIST$ONLY" ] && exit 0
+  loop "$name" "$prompt" "$img" "$state" "$anchor" "$refs" || { echo "feil: $name" >&2; FAIL=1; }
+done 3<<<"$JOBS"
+[ -n "$FAIL" ] && exit 1
+[ -n "$LIST$ONLY$DRY" ] && exit 0
 ls "$T"
 # --upload <base-url>: PUT every loop with NISSEKOMM_UPLOAD_TOKEN, then check sizes via GET /api/media.
 if [ "${1:-}" = "--upload" ]; then

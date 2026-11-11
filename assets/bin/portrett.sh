@@ -2,6 +2,8 @@
 # portrett.sh <prompt.txt> <ut.png> [ref.jpg ...]: square portrait from a prompt, with optional
 # reference images (the prompt says what each one is for). Pixel version for the app: bin/piksel.sh.
 set -euo pipefail
+# process substitutions below swallow errors, so a missing input must be caught here
+for f in "$1" "${@:3}"; do [ -f "$f" ] || { echo "portrett.sh: mangler inndata: '$f'" >&2; exit 1; }; done
 source "$(dirname "$0")/_key.sh"
 P=$1; OUT=$2; shift 2
 TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT

@@ -2,6 +2,8 @@
 # still.sh <inn.jpg> <prompt.txt> <ut.jpg> [ref.jpg ...]: new still from a reference image;
 # extra refs (e.g. a character) follow it, and the prompt says what each one is for
 set -euo pipefail
+# process substitutions below swallow errors, so a missing input must be caught here
+for f in "$1" "$2" "${@:4}"; do [ -f "$f" ] || { echo "still.sh: mangler inndata: '$f'" >&2; exit 1; }; done
 source "$(dirname "$0")/_key.sh"
 P=$2; OUT=$3; TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
 i=0; for img in "$1" "${@:4}"; do i=$((i+1))

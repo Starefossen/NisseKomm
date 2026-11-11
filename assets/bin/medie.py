@@ -14,17 +14,21 @@ CLI (for the shell generators):
   medie.py flytt                        move gitignored refs and stills to their new paths (assets/flyttet.json)
   medie.py tv                           the TV loops of medier.json, one line each (tv-loops.sh)
   medie.py stiller <id>                   intermediate stills of a job: image|prompt|out, first one first
+  medie.py inndata                        every job's template, image, refs exist; exit 1 if one is missing
   medie.py entiteter [--sjekk]            src/data/entiteter.json + CONTENT_GUIDE block from characters/*/entitet.md
   medie.py --selvtest
 """
 import hashlib
 import json
+import os
 import re
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+# NISSEKOMM_ROOT: use another checkout's assets (a dry run from a worktree against the real refs)
+ROOT = Path(os.environ.get("NISSEKOMM_ROOT") or Path(__file__).resolve().parents[2]).resolve()
 BIN = ROOT / "assets" / "bin"
 JULIUS_MS = "docs/manus/julius-2026.md"
 RAMPE_MS = "docs/manus/rampenissen-radio-2026.md"
@@ -276,6 +280,33 @@ def stills(job_id: str, root: Path = ROOT, table=None):
     return out
 
 
+def missing_inputs(root: Path = ROOT, table=None):
+    """(missing, skipped) inputs of every medier.json job: template, base image, refs, state loop.
+    An absent image that git does not track (gitignored refs in CI) is skipped, not missing."""
+    table = table or jobs(root)
+    outs = {j["ut"] for j in table.values() if "ut" in j}
+    missing, skipped = [], []
+    for k, j in table.items():
+        if j.get("generator") == "hånd":
+            continue
+        if j.get("tilstand") and f"tv/{j['tilstand']}" not in table:
+            missing.append(f"{k}: tilstand {j['tilstand']}")
+        try:
+            prompt, img, refs = render(k, root, table)
+        except (ValueError, KeyError, OSError) as e:
+            missing.append(f"{k}: {e}")
+            continue
+        if prompt and not (root / prompt).exists():
+            missing.append(f"{k}: {prompt}")
+        for f in ([img] if img else []) + refs:
+            if f in outs or (root / f).exists():
+                continue
+            tracked = subprocess.run(["git", "-C", str(root), "ls-files", "--error-unmatch", f],
+                                     capture_output=True).returncode == 0
+            (missing if tracked else skipped).append(f"{k}: {f}")
+    return missing, skipped
+
+
 def used_by(entity: str, root: Path = ROOT, table=None):
     """medier.json jobs that use an entity (winter, objects/postkasse …): as place, image, ref or in the template."""
     table = table or jobs(root)
@@ -401,7 +432,13 @@ def selftest():
                 raise AssertionError("plassholderen ble godtatt")
             except ValueError:
                 pass
-    print("selvtest ok")
+        mi = missing_inputs(r, {"m": {"mal": "p/borte.txt", "tilstand": "nei"},
+                                "n": {"mal": "p/b.txt", "bilde": "assets/x.jpg"}})
+        assert mi[0][0] == "m: tilstand nei" and "borte.txt" in mi[0][1] and len(mi[0]) == 2, mi
+        assert mi[1] == ["n: assets/x.jpg"], mi  # untracked image: skipped
+    missing, skipped = missing_inputs()  # the real medier.json
+    assert not missing, missing
+    print(f"selvtest ok (inndata: {len(skipped)} bilder utenfor git hoppet over)")
 
 
 def main(argv):
@@ -424,9 +461,19 @@ def main(argv):
     elif cmd == "flytt":
         flytt()
     elif cmd == "tv":
-        print(*tv_lines(), sep="\n")
+        for line in tv_lines():
+            print(line)
     elif cmd == "stiller":
-        print(*("|".join(str(ROOT / p) for p in s) for s in stills(args[0])), sep="\n")
+        # print(*[], sep="\n") would emit one empty line, which tv-loops.sh read as a still with no inputs
+        for s in stills(args[0]):
+            print("|".join(str(ROOT / p) for p in s))
+    elif cmd == "inndata":
+        missing, skipped = missing_inputs()
+        for m in skipped:
+            print(f"hoppet over (ikke i git): {m}")
+        for m in missing:
+            print(f"mangler: {m}")
+        sys.exit(1 if missing else 0)
     elif cmd == "entiteter":
         ok = write_entiteter(check="--sjekk" in args)
         if "--sjekk" in args and not ok:
