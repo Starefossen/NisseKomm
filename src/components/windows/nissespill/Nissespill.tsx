@@ -188,7 +188,7 @@ function Figur({ id, rect }: { id: string; rect: M.Rect }) {
           src={mediaUrl(`spill/piksel/figur/${id}.png`)}
           alt=""
           draggable={false}
-          className="max-w-full max-h-full object-contain object-bottom pixelated"
+          className="w-full h-full object-contain object-bottom pixelated"
           onError={() => setMangler(true)}
         />
       )}
