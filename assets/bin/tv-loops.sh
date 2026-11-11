@@ -38,8 +38,8 @@ first() { # state loop -> its first frame as jpg
   [ -n "$DRY" ] || ffmpeg -nostdin -y -v error -i "$T/$1.mp4" -frames:v 1 -q:v 2 "$k" || return 1
   echo "$k"
 }
-loop() { # name prompt image state anchor refs
-  local name=$1 prompt=$2 img=$3 state=$4 anchor=$5 refs=$6 b p u made=
+loop() { # name prompt image state anchor refs first_only
+  local name=$1 prompt=$2 img=$3 state=$4 anchor=$5 refs=$6 forste=$7 b p u made=
   keep "$T/$name.mp4" && return 0
   [ -n "$DRY" ] && echo "# $name"
   while IFS='|' read -r b p u r <&4; do
@@ -59,7 +59,7 @@ loop() { # name prompt image state anchor refs
   # morphs into it. Look comes from the prompt text; refs only feed intermediate stills.
   if [ -n "$anchor" ]; then
     local key=$img; [ "$anchor" = 1 ] || { need "$anchor" || return 1; key=$anchor; }
-    run env SEAM=0 "$A/bin/loop.sh" "$img" "$prompt" "$name.raw" 10 \
+    run env SEAM=0 FORSTE="$forste" "$A/bin/loop.sh" "$img" "$prompt" "$name.raw" 10 \
       && run "$A/bin/anchor.sh" "$A/out/$name.raw.mp4" "$key" "$T/$name.mp4" \
       && meta "$T/$name.mp4" "$prompt" "$img" ${key#"$img"}
   else
@@ -67,8 +67,8 @@ loop() { # name prompt image state anchor refs
       && meta "$T/$name.mp4" "$prompt" "$img"
   fi
 }
-while IFS='|' read -r name prompt img state anchor refs <&3; do
-  loop "$name" "$prompt" "$img" "$state" "$anchor" "$refs" || { echo "feil: $name" >&2; FAIL=1; }
+while IFS='|' read -r name prompt img state anchor refs forste <&3; do
+  loop "$name" "$prompt" "$img" "$state" "$anchor" "$refs" "$forste" || { echo "feil: $name" >&2; FAIL=1; }
 done 3<<<"$JOBS"
 [ -n "$FAIL" ] && exit 1
 [ -n "$LIST$ONLY$DRY" ] && exit 0

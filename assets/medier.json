@@ -121,7 +121,8 @@
   "portrett/hjerterud": {
     "generator": "portrett",
     "ut": "spill/portrett-hjerterud.png",
-    "mal": "assets/prompts/portrett/hjerterud.txt"
+    "mal": "assets/prompts/portrett/hjerterud.txt",
+    "refs": ["public/spill/portrett-julius.png"]
   },
   "portrett/iq": {
     "generator": "portrett",
@@ -134,6 +135,12 @@
     "ut": "spill/portrett-julius.png",
     "mal": "assets/prompts/portrett/julius.txt",
     "refs": ["characters/julius#standard"]
+  },
+  "portrett/floke": {
+    "generator": "portrett",
+    "ut": "spill/portrett-floke.png",
+    "mal": "assets/prompts/portrett/floke.txt",
+    "refs": ["public/spill/portrett-julius.png"]
   },
   "portrett/rampenissen": {
     "generator": "portrett",
@@ -531,6 +538,7 @@
     "ut": "video/tv/port-julius.mp4",
     "bilde": "locations/porten#open",
     "mal": "assets/prompts/tv/snofall-landsby/port-julius.txt",
+    "bare_forste": true,
     "anker": "locations/porten#standard"
   },
   "tv/port-hjerterud": {
@@ -555,6 +563,7 @@
     "ut": "video/tv/port-winter.mp4",
     "bilde": "locations/porten#open",
     "mal": "assets/prompts/tv/snofall-landsby/port-winter.txt",
+    "bare_forste": true,
     "anker": "locations/porten#standard"
   }
 }

@@ -331,13 +331,14 @@ def anchor(a, root: Path = ROOT) -> str:
 
 
 def tv_lines(root: Path = ROOT):
-    """One line per TV loop for tv-loops.sh: name|prompt|image|state|anchor|refs (absolute, refs space-separated)."""
+    """One line per TV loop for tv-loops.sh: name|prompt|image|state|anchor|refs|first_only (absolute, refs space-separated)."""
     table = jobs(root)
     for k, j in table.items():
         if j["generator"] == "loop":
             prompt, img, refs = render(k, root, table)
             yield "|".join([k.split("/", 1)[1], str(root / prompt), str(root / img) if img else "",
-                            j.get("tilstand", ""), anchor(j.get("anker"), root), " ".join(str(root / r) for r in refs)])
+                            j.get("tilstand", ""), anchor(j.get("anker"), root), " ".join(str(root / r) for r in refs),
+                            "1" if j.get("bare_forste") else ""])
 
 
 FIXTURE = "src/data/entiteter.json"

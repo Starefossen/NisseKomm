@@ -7,7 +7,7 @@
   "pronomen": "hun",
   "fra_dag": 4,
   "refs": {},
-  "notat": "ingen bildereferanse ennå; portrettet (spill/portrett-floke.png) mangler, Ugleposten viser initialen",
+  "notat": "portrett: spill/portrett-floke.png (assets/prompts/portrett/floke.txt)",
   "forhold": {
     "rampenissen": "laget henne av garnrester på IQs loft; hun er øynene hans i Snøfall",
     "barna": "barna styrer henne gjennom IQs kameraer i Ugleposten",
