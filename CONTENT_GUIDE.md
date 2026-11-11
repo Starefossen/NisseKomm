@@ -111,6 +111,56 @@
 
 ## Character Voices
 
+### Canonical character data
+
+<!-- entiteter:start (mise run entiteter) -->
+
+Generated from `assets/characters/<id>/entitet.md`, the one source for look, personality, voice, relations and facts. Edit there, then run `mise run entiteter`.
+
+#### Hjerterud (`assets/characters/hjerterud/entitet.md`)
+
+- **Navn:** Hjerterud; **pronomen:** hun; **fra dag:** 1
+- **Personlighet:** Boblende, varm og litt overveldende. Klemmer først og spør etterpå. Sørger for at ingen går kalde eller sultne, og tar det personlig om noen prøver.
+- **Stemme:** Hjertelig, rask og omsorgsfull; alltid én bolle til og ett spørsmål om du har spist.
+- **Forhold:** julius: venn; ikke en del av husstanden hans; pil: baker sammen; rampenissen: sendte proviant ned linjen med ham
+- **Aldri:** «Nissemor», «Mor Nisse»
+
+#### IQ (`assets/characters/iq/entitet.md`)
+
+- **Navn:** IQ; **pronomen:** han; **fra dag:** 1
+- **Personlighet:** Genial, distré og hjertevarm. Elsker tekniske ord og forkortelser. Har dårlig samvittighet i år.
+- **Stemme:** Tekniske ord og ivrige forklaringer, gjerne forkortelser. Lys, rask og ivrig, mild trøndersk i lyd.
+- **Forhold:** julius: sjef; pil: lærling; winter: kollega; Winter blir irritert over rotet; kulde: laget Vintervokteren for mange år siden og glemte den
+- **Aldri:** «I.Q.», «Iq»
+
+#### Julius (`assets/characters/julius/entitet.md`)
+
+- **Navn:** Julius; **pronomen:** han; **fra dag:** 1
+- **Personlighet:** Klok, varm og jordnær, en bestefar og travel håndverker. Av og til oppgitt over Rampenissen og over teknikk som svikter. Bryr seg om hvordan det går med barna.
+- **Stemme:** Faderlig og vennlig, med autoritet uten å bli kald. Takker barna. Reflekterende i videologgen. Snakker inn i mikrofonen som i en radiosending, ikke inn i kameraet. Gir aldri koden selv; han peker på regelen eller ordet (historie-2026 §3.4).
+- **Forhold:** rampenissen: sjef; oppgitt, men glad i ham; iq: stoler på oppfinnelsene; winter: sekretær; lar ham passe papirene; hjerterud: venn; drikker kakaoen hennes
+- **Aldri:** «Julenissen Julius», «julenisse-Julius»
+
+#### Rampenissen (`assets/characters/rampenissen/entitet.md`)
+
+- **Navn:** Rampenissen; **pronomen:** han; **fra dag:** 1
+- **Personlighet:** Entusiastisk, rotete og litt klønete. Aldri slem; alt rot er godt ment. Trenger barnas hjelp og sier det.
+- **Stemme:** Skriftlig (NisseMail, apptekst): bokmål, direkte til barna, emojier (🎄 ❄️ 🎁 ⭐), litt selvironi, Gen Alpha-slang sparsomt (høyst 2–4 per uke). Muntlig (radioklipp, Ugleposten): nordlandsk, Bodø/Salten; reglene står i docs/manus/rampenissen-radio-2026.md «Skrivemåte». Navn, steder og gåteord står som i bokmål.
+- **Forhold:** julius: sjef; iq: beundrer oppfinnelsene; barna: feltagent hos familien på Landås; trenger hjelpen deres
+- **Aldri:** «Rampe-nissen», «RampeNissen»
+
+#### Winter (`assets/characters/winter/entitet.md`)
+
+- **Navn:** Winter, Ole Winter; **pronomen:** han; **fra dag:** 1
+- **Personlighet:** Pedantisk og formell. Aldri kald eller uvennlig: han brenner for at alt skal bli riktig, og blir synlig lettet, nesten mild, når alt er godkjent.
+- **Stemme:** Presist og forretningsmessig, i paragrafer og lister («Paragraf 101»), med skjemanumre (4112-B). Flosshatten bare ved porten og når han opptrer formelt (FLOSSHATT i beskrivelse.txt).
+- **Forhold:** julius: sjef; iq: kollega, irritert over rot; barna: krever skjemaer, blir mild når alt er i orden
+- **Aldri:** «Ole Vinter», «fru Winter», «frøken Winter»
+
+<!-- entiteter:slutt -->
+
+The sections below add examples and writing advice; when they disagree with the block above, the block wins.
+
 ### Rampenissen (The Mischievous Elf)
 
 **Role**: Julius' assistant stationed with the kids who does humorous mischiefs during advent while keeping a watchful eye on them. This year he needs the kids' help with an important mission.

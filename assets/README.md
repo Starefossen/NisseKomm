@@ -8,9 +8,9 @@ Kildene for alt generert innhold: referansebilder, beskrivelser og nøyaktige pr
 assets/
   stil.md                     Felles visuell stil og lyd for hele sesongen
   bin/                        Skript for generering og etterbehandling
-  characters/<navn>/          Figurer: beskrivelse, entitet.json, ref-*.jpg, replikker
-  locations/<sted>/           Steder: beskrivelse, entitet.json, ref-*.jpg
-  objects/<ting>/             Ting som går igjen: beskrivelse, entitet.json
+  characters/<navn>/          Figurer: beskrivelse, entitet.md, ref-*.jpg, replikker
+  locations/<sted>/           Steder: beskrivelse, entitet.md, ref-*.jpg
+  objects/<ting>/             Ting som går igjen: beskrivelse, entitet.md
   prompts/<app>/              Promptmaler (tv, spill, slede, portrett); {{winter}}, {{iq.KLÆR}}, {{objects/postkasse}}, {{stil}}
   medier.json                 Alle avledede filer: mal, grunnbilde, refs og sted -> ut-sti
   flyttet.json                Gammel -> ny sti for flyttede filer; sidefilene beholder gamle stier
@@ -27,6 +27,7 @@ Etter `git pull` som flytter refs: kjør `python3 assets/bin/medie.py flytt` (fl
 4. **Skjøten skjules i etterkant.** `bin/seamless.sh` krysstoner slutten inn i starten, så loopen går rundt uten hopp.
 5. **Én ting endres per variant.** Tom versjon, nordlys, frost og lignende lages ved å endre bare det ene og beskrive resten som «nøyaktig samme».
 6. **Ferdige filer flyttes til `public/`.** `out/` er arbeidsmappe og ligger ikke i git. Det som skal brukes i appen, kopieres til `public/feed/` eller `public/video/`.
+7. **Håndlagde filer overskrives aldri.** Lager du et bilde selv, legg originalen som variant hos entiteten (`ref-spill.jpg` i `entitet.md`) og sett jobben i `medier.json` til `"generator": "hånd"` med `bilde` og et `notat`. `generer.py` legger den da aldri i køen, heller ikke med `--force`.
 
 ## Skript
 

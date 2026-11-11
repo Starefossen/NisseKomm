@@ -1,7 +1,9 @@
+# Julius' kontor
+
+```json
 {
-  "navn": [
-    "Julius' kontor"
-  ],
+  "id": "julius-kontor",
+  "navn": ["Julius' kontor"],
   "refs": {
     "standard": "ref.jpg",
     "tom": "ref-tom.jpg",
@@ -10,3 +12,8 @@
   },
   "standard_ref": "standard"
 }
+```
+
+## Utseende
+
+Står i `beskrivelse.txt` (`{{locations/julius-kontor}}`).

@@ -1,8 +1,9 @@
+# Snøfall
+
+```json
 {
-  "navn": [
-    "Snøfall",
-    "landsbyen"
-  ],
+  "id": "snofall-landsby",
+  "navn": ["Snøfall", "landsbyen"],
   "refs": {
     "nokkel": "ref-nokkel.jpg",
     "v2": "ref-v2.jpg",
@@ -13,3 +14,8 @@
   "standard_ref": "v2",
   "notat": "ref-v2.jpg er mellomstillbildet still/landsby-v2 (tomt torg, lukket port, rød postkasse)"
 }
+```
+
+## Utseende
+
+Står i `beskrivelse.txt` (`{{locations/snofall-landsby}}`).

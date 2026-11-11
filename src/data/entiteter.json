@@ -1,0 +1,37 @@
+[
+  {
+    "id": "hjerterud",
+    "navn": ["Hjerterud"],
+    "pronomen": "hun",
+    "fra_dag": 1,
+    "ikke": ["Nissemor", "Mor Nisse"]
+  },
+  {
+    "id": "iq",
+    "navn": ["IQ"],
+    "pronomen": "han",
+    "fra_dag": 1,
+    "ikke": ["I.Q.", "Iq"]
+  },
+  {
+    "id": "julius",
+    "navn": ["Julius"],
+    "pronomen": "han",
+    "fra_dag": 1,
+    "ikke": ["Julenissen Julius", "julenisse-Julius"]
+  },
+  {
+    "id": "rampenissen",
+    "navn": ["Rampenissen"],
+    "pronomen": "han",
+    "fra_dag": 1,
+    "ikke": ["Rampe-nissen", "RampeNissen"]
+  },
+  {
+    "id": "winter",
+    "navn": ["Winter", "Ole Winter"],
+    "pronomen": "han",
+    "fra_dag": 1,
+    "ikke": ["Ole Vinter", "fru Winter", "frøken Winter"]
+  }
+]

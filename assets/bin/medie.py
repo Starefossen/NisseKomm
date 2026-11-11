@@ -14,6 +14,7 @@ CLI (for the shell generators):
   medie.py flytt                        move gitignored refs and stills to their new paths (assets/flyttet.json)
   medie.py tv                           the TV loops of medier.json, one line each (tv-loops.sh)
   medie.py stiller <id>                   intermediate stills of a job: image|prompt|out, first one first
+  medie.py entiteter [--sjekk]            src/data/entiteter.json + CONTENT_GUIDE block from characters/*/entitet.md
   medie.py --selvtest
 """
 import hashlib
@@ -27,8 +28,22 @@ ROOT = Path(__file__).resolve().parents[2]
 BIN = ROOT / "assets" / "bin"
 JULIUS_MS = "docs/manus/julius-2026.md"
 RAMPE_MS = "docs/manus/rampenissen-radio-2026.md"
-RAMPE_STYLE = ("Say cheerfully in a sweet, silly, breathless voice with a clear Northern Norwegian (Tromsø) "
-               "singsong accent and short giggles:")
+
+
+def entity(ent: str, root: Path = ROOT) -> dict:
+    """assets/<kind>/<id>/entitet.md: its ```json block, plus each «## Overskrift» section under "seksjoner"."""
+    p = root / "assets" / ent / "entitet.md"
+    if not p.exists():
+        return {}
+    t = p.read_text()
+    meta = json.loads(re.search(r"```json\n(.*?)\n```", t, re.S)[1])
+    parts = re.split(r"^## (.+)$", t, flags=re.M)
+    meta["seksjoner"] = {h.strip(): b.strip() for h, b in zip(parts[1::2], parts[2::2])}
+    return meta
+
+
+# the TTS line in Rampenissen's «## Stemme»; a changed line marks every clip stale (prompt_version)
+RAMPE_STYLE = re.search(r"^TTS: (.+)$", entity("characters/rampenissen")["seksjoner"]["Stemme"], re.M)[1]
 
 CURRENT, STALE, UNKNOWN, MISSING = "current", "stale", "unknown", "missing"
 
@@ -202,6 +217,12 @@ def entity_text(name: str, root: Path = ROOT) -> str:
     name, _, field = name.partition(".")
     if field:
         m = re.search(rf"^{re.escape(field)}: (.*)$", entity_text(name, root), re.M)
+        if not m:  # {{winter.personlighet}}: a section of entitet.md
+            ent = name if "/" in name else next((f"{k}/{name}" for k in ("characters", "locations", "objects")
+                                                 if (root / "assets" / k / name).is_dir()), name)
+            sec = {h.lower(): b for h, b in entity(ent, root).get("seksjoner", {}).items()}
+            if field.lower() in sec:
+                return sec[field.lower()]
         if not m:
             raise ValueError(f"{{{{{name}.{field}}}}}: ingen linje «{field}:»")
         return m[1].strip()
@@ -218,12 +239,11 @@ def fill(text: str, root: Path = ROOT) -> str:
 
 
 def image(spec: str, root: Path = ROOT) -> str:
-    """'characters/winter#tophat' -> refs.tophat in its entitet.json, else ref-tophat.jpg; a plain path is kept."""
+    """'characters/winter#tophat' -> refs.tophat in its entitet.md, else ref-tophat.jpg; a plain path is kept."""
     if "#" not in spec:
         return spec
     ent, var = spec.split("#")
-    meta = root / "assets" / ent / "entitet.json"
-    refs = json.loads(meta.read_text()).get("refs", {}) if meta.exists() else {}
+    refs = entity(ent, root).get("refs", {})
     return f"assets/{ent}/{refs.get(var, f'ref-{var}.jpg')}"
 
 
@@ -280,13 +300,56 @@ def tv_lines(root: Path = ROOT):
                             j.get("tilstand", ""), "1" if j.get("anker") else "", " ".join(str(root / r) for r in refs)])
 
 
+FIXTURE = "src/data/entiteter.json"
+GUIDE = "CONTENT_GUIDE.md"
+MARK = ("<!-- entiteter:start (mise run entiteter) -->", "<!-- entiteter:slutt -->")
+
+
+def characters(root: Path = ROOT):
+    return [entity(f"characters/{p.name}", root) for p in sorted((root / "assets/characters").iterdir())
+            if (p / "entitet.md").exists()]
+
+
+def entiteter(root: Path = ROOT):
+    """(fixture JSON for entiteter.test.ts, CONTENT_GUIDE block), both from characters/*/entitet.md."""
+    cs = characters(root)
+    fx = [{k: c[k] for k in ("id", "navn", "pronomen", "fra_dag", "ikke")} for c in cs]
+    lines = [MARK[0], "", "Generated from `assets/characters/<id>/entitet.md`, the one source for look, personality, "
+             "voice, relations and facts. Edit there, then run `mise run entiteter`.", ""]
+    for c in cs:
+        sek = c["seksjoner"]
+        voice = sek["Stemme"].split("\n\nTTS:")[0].replace("\n", " ")
+        lines += [f"#### {c['navn'][0]} (`assets/characters/{c['id']}/entitet.md`)", "",
+                  f"- **Navn:** {', '.join(c['navn'])}; **pronomen:** {c['pronomen']}; **fra dag:** {c['fra_dag']}",
+                  f"- **Personlighet:** {sek['Personlighet']}",
+                  f"- **Stemme:** {voice}",
+                  f"- **Forhold:** {'; '.join(f'{k}: {v}' for k, v in c['forhold'].items())}",
+                  f"- **Aldri:** {', '.join(f'«{x}»' for x in c['ikke'])}", ""]
+    return json.dumps(fx, ensure_ascii=False, indent=2) + "\n", "\n".join(lines + [MARK[1]])
+
+
+def write_entiteter(root: Path = ROOT, check=False) -> bool:
+    """Write the fixture and the CONTENT_GUIDE block; with check, only report whether they are current."""
+    fx, blk = entiteter(root)
+    g = (root / GUIDE).read_text()
+    i, j = g.index(MARK[0]), g.index(MARK[1]) + len(MARK[1])
+    new_g = g[:i] + blk + g[j:]
+    f = root / FIXTURE
+    ok = f.exists() and json.loads(f.read_text()) == json.loads(fx) and new_g == g  # prettier may reflow the JSON
+    if not check:
+        f.write_text(fx)
+        (root / GUIDE).write_text(new_g)
+    return ok
+
+
 def selftest():
     import tempfile
     with tempfile.TemporaryDirectory() as d:
         r = Path(d)
         for f, t in {"assets/stil.md": "STIL\n",
                      "assets/characters/winter/beskrivelse.txt": "KARAKTER: lang mann\nKLÆR: hatt \n",
-                     "assets/characters/winter/entitet.json": '{"refs": {"tophat": "ref-v1-tophat.jpg"}}',
+                     "assets/characters/winter/entitet.md":
+                         '# W\n```json\n{"refs": {"tophat": "ref-v1-tophat.jpg"}}\n```\n## Personlighet\nordentlig\n',
                      "assets/objects/postkasse/beskrivelse.txt": "rød kasse",
                      "assets/locations/torg/beskrivelse.txt": "torg",
                      "assets/locations/winter/beskrivelse.txt": "dobbel",
@@ -304,6 +367,7 @@ def selftest():
         assert refs == ["assets/characters/winter/ref-v1-tophat.jpg", "assets/x.jpg"]
         assert render("b", r, t) == ("p/b.txt", None, [])  # unchanged text keeps the tracked path
         assert (r / render("c", r, t)[0]).read_text() == "torg"  # bare name, one hit
+        assert fill("{{characters/winter.personlighet}}", r) == "ordentlig"  # a section of entitet.md
         t |= {"s1": {"ut": "o/s1.jpg", "bilde": "assets/base.jpg", "mal": "p/b.txt"},
               "s2": {"ut": "o/s2.jpg", "bilde": "s1", "mal": "p/b.txt"}, "e": {"bilde": "s2", "mal": "p/b.txt"}}
         assert render("e", r, t)[1] == "o/s2.jpg"  # base image is an intermediate still
@@ -363,6 +427,10 @@ def main(argv):
         print(*tv_lines(), sep="\n")
     elif cmd == "stiller":
         print(*("|".join(str(ROOT / p) for p in s) for s in stills(args[0])), sep="\n")
+    elif cmd == "entiteter":
+        ok = write_entiteter(check="--sjekk" in args)
+        if "--sjekk" in args and not ok:
+            sys.exit(f"{FIXTURE} eller blokken i {GUIDE} er utdatert: kjør mise run entiteter")
     elif cmd == "--selvtest":
         selftest()
     elif cmd == "status":

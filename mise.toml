@@ -91,6 +91,10 @@ EOF
 description = "Kjør typesjekk, lint, knip, formatering og alle tester"
 run = "pnpm check"
 
+[tasks.entiteter]
+description = "Skriv src/data/entiteter.json og figurblokken i CONTENT_GUIDE fra assets/characters/*/entitet.md"
+run = "python3 assets/bin/medie.py entiteter"
+
 [tasks.inventar]
 description = "Medieinventar: skriv assets/INVENTAR.md og public/media-inventar.json"
 run = "python3 assets/bin/inventar.py --selvtest && python3 assets/bin/inventar.py"
