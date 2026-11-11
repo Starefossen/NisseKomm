@@ -6,10 +6,10 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Type | ✓ | ⚠ | ? | ✗ |
 |---|---:|---:|---:|---:|
-| julius | 0 | 5 | 7 | 12 |
+| julius | 3 | 2 | 7 | 12 |
 | rampenissen | 5 | 0 | 2 | 17 |
 | music | 0 | 0 | 13 | 1 |
-| tv | 3 | 0 | 21 | 0 |
+| tv | 0 | 3 | 21 | 0 |
 | port | 1 | 2 | 0 | 1 |
 | feed | 0 | 4 | 7 | 0 |
 
@@ -17,9 +17,9 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| video/julius/dag-01.mp4 | 5.4 MB | 2026-11-10 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 1 |
-| video/julius/dag-02.mp4 | 4.2 MB | 2026-11-10 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 2 |
-| video/julius/dag-03.mp4 | 4.5 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 3 |
+| video/julius/dag-01.mp4 | 5.3 MB | 2026-11-11 | ✓ |
+| video/julius/dag-02.mp4 | 4.2 MB | 2026-11-11 | ✓ |
+| video/julius/dag-03.mp4 | 4.4 MB | 2026-11-11 | ✓ |
 | video/julius/dag-04.mp4 | 4.4 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 4 |
 | video/julius/dag-05.mp4 | 4.3 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 5 |
 | video/julius/dag-06.mp4 | 10.3 MB | 2026-11-10 | ? |
@@ -102,7 +102,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/tv/landsby-hverdag.mp4 | 2.2 MB | 2026-11-10 | ? |
 | video/tv/landsby-aking.mp4 | 3.1 MB | 2026-11-10 | ? |
 | video/tv/landsby-stjerneskudd.mp4 | 3.0 MB | 2026-11-10 | ? |
-| video/tv/landsby-winter.mp4 | 2.3 MB | 2026-11-11 | ✓ |
+| video/tv/landsby-winter.mp4 | 2.3 MB | 2026-11-11 | ⚠ promptversjonen er endret |
 | video/tv/verksted-iq-inne.mp4 | 0.5 MB | 2026-11-10 | ? |
 | video/tv/verksted-tom.mp4 | 0.4 MB | 2026-11-10 | ? |
 | video/tv/kontor-julius.mp4 | 0.4 MB | 2026-11-10 | ? |
@@ -116,16 +116,16 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/tv/grotte-dag21.mp4 | 0.3 MB | 2026-11-10 | ? |
 | video/tv/grotte-dag23.mp4 | 0.3 MB | 2026-11-10 | ? |
 | video/tv/grotte-dag24.mp4 | 0.2 MB | 2026-11-10 | ? |
-| video/tv/landsby-iq.mp4 | 2.7 MB | 2026-11-11 | ✓ ikke i manifestet |
-| video/tv/landsby-julius.mp4 | 2.2 MB | 2026-11-11 | ✓ ikke i manifestet |
+| video/tv/landsby-iq.mp4 | 2.7 MB | 2026-11-11 | ⚠ promptversjonen er endret; ikke i manifestet |
+| video/tv/landsby-julius.mp4 | 2.2 MB | 2026-11-11 | ⚠ promptversjonen er endret; ikke i manifestet |
 
 ## port
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| video/tv/port-julius.mp4 | 3.9 MB | 2026-11-11 | ⚠ kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-julius.txt; promptversjonen er endret |
+| video/tv/port-julius.mp4 | 4.3 MB | 2026-11-11 | ✓ |
 | video/tv/port-hjerterud.mp4 |  |  | ✗ |
-| video/tv/port-iq.mp4 | 4.7 MB | 2026-11-11 | ✓ |
+| video/tv/port-iq.mp4 | 4.7 MB | 2026-11-11 | ⚠ promptversjonen er endret |
 | video/tv/port-winter.mp4 | 3.8 MB | 2026-11-11 | ⚠ kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-winter.txt; promptversjonen er endret |
 
 ## feed
