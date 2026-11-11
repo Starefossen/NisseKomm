@@ -127,73 +127,71 @@ export function SnøfallTV({ onClose, currentDay }: SnøfallTVProps) {
   return (
     <RetroWindow title="SNØFALL TV" onClose={onClose}>
       <div className="p-3 lg:p-5 h-full overflow-y-auto space-y-3 select-none">
-        <div className="relative w-full aspect-video border-4 border-(--neon-green) bg-black overflow-hidden">
-          {shownChannel === 3 ? (
-            <div className="absolute inset-0 overflow-y-auto">
-              <JuliusVideo day={day} />
-            </div>
-          ) : shownChannel === 2 && day === 2 && !solved ? (
-            <DarkChannel />
-          ) : (
-            <>
-              <LiveCam
-                key={`${shownChannel}`}
-                src={
-                  // Day 1: a channel shows snow until its carrier comes in.
-                  shownChannel > tunedChannels && !sweeping
-                    ? null
-                    : odd
-                      ? odd.bilde
-                        ? mediaUrl(odd.bilde)
-                        : null
-                      : channelSource(
-                          shownChannel,
-                          day,
-                          hour,
-                          shownFreq,
-                          solved,
-                        )
-                }
-                fallback={channelFallback(shownChannel, shownFreq, day)}
-                label={label}
-                {...fx}
-                eventAt={
-                  // Overlays are placed on the calm loop's framing only.
-                  shownChannel === 1 &&
-                  channelSource(1, day, hour, FREQ_HOME, solved)?.endsWith(
-                    "landsby-rolig.mp4",
-                  )
-                    ? () => activeLandsbyEvent(getCurrentDate(), day, solved)
-                    : undefined
-                }
+        {/* K3 is the bare player; a transcript inside the 16:9 screen scrolled out of sight */}
+        {shownChannel === 3 ? (
+          <JuliusVideo day={day} videoOnly />
+        ) : (
+          <div className="relative w-full aspect-video border-4 border-(--neon-green) bg-black overflow-hidden">
+            {shownChannel === 2 && day === 2 && !solved ? (
+              <DarkChannel />
+            ) : (
+              <>
+                <LiveCam
+                  key={`${shownChannel}`}
+                  src={
+                    // Day 1: a channel shows snow until its carrier comes in.
+                    shownChannel > tunedChannels && !sweeping
+                      ? null
+                      : odd
+                        ? odd.bilde
+                          ? mediaUrl(odd.bilde)
+                          : null
+                        : channelSource(
+                            shownChannel,
+                            day,
+                            hour,
+                            shownFreq,
+                            solved,
+                          )
+                  }
+                  fallback={channelFallback(shownChannel, shownFreq, day)}
+                  label={label}
+                  {...fx}
+                  eventAt={
+                    // Overlays are placed on the calm loop's framing only.
+                    shownChannel === 1 &&
+                    channelSource(1, day, hour, FREQ_HOME, solved)?.endsWith(
+                      "landsby-rolig.mp4",
+                    )
+                      ? () => activeLandsbyEvent(getCurrentDate(), day, solved)
+                      : undefined
+                  }
+                />
+                {shownChannel === 2 && day === 20 && <PressureGauge />}
+              </>
+            )}
+            {day >= 7 && day < 24 && (
+              <div className="absolute top-2 left-1/2 -translate-x-1/2 px-2 bg-black/70 border border-(--cold-blue) text-(--cold-blue) text-base pointer-events-none">
+                FROST {frost} %
+              </div>
+            )}
+            {odd && (
+              <div
+                aria-live="polite"
+                className="absolute bottom-2 inset-x-2 px-2 bg-black/70 border border-(--neon-green) text-(--neon-green) text-base text-center pointer-events-none"
+              >
+                {odd.tekst}
+              </div>
+            )}
+            {playing && (
+              <MiniGames
+                day={day}
+                initialGame={channel === 2 ? "sentrifuge" : undefined}
+                onClose={() => setPlaying(false)}
               />
-              {shownChannel === 2 && day === 20 && <PressureGauge />}
-            </>
-          )}
-          {shownChannel === 3 && (
-            <div className="absolute inset-0 pointer-events-none bg-[repeating-linear-gradient(0deg,rgba(0,0,0,0.18)_0px,rgba(0,0,0,0.18)_1px,transparent_1px,transparent_3px)]" />
-          )}
-          {shownChannel !== 3 && day >= 7 && day < 24 && (
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 px-2 bg-black/70 border border-(--cold-blue) text-(--cold-blue) text-base pointer-events-none">
-              FROST {frost} %
-            </div>
-          )}
-          {odd && (
-            <div
-              aria-live="polite"
-              className="absolute bottom-2 inset-x-2 px-2 bg-black/70 border border-(--neon-green) text-(--neon-green) text-base text-center pointer-events-none"
-            >
-              {odd.tekst}
-            </div>
-          )}
-          {playing && (
-            <MiniGames
-              day={day}
-              initialGame={channel === 2 ? "sentrifuge" : undefined}
-              onClose={() => setPlaying(false)}
-            />
-          )}
-        </div>
+            )}
+          </div>
+        )}
 
         {intercept && (
           <div className="border-2 border-(--cold-blue) bg-black/80 p-2 text-(--cold-blue)">

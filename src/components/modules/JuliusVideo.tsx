@@ -15,6 +15,8 @@ interface JuliusVideoProps {
   preload?: "none" | "metadata";
   /** Dagbok starts today's unwatched video; iPad Safari ignores it without a tap, controls stay */
   autoPlay?: boolean;
+  /** Snøfall TV K3 shows the video only; transcript and PS live in Dagbok */
+  videoOnly?: boolean;
 }
 
 export function JuliusVideo({
@@ -22,6 +24,7 @@ export function JuliusVideo({
   onWatched,
   preload = "metadata",
   autoPlay = false,
+  videoOnly = false,
 }: JuliusVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [watched, setWatched] = useState(() =>
@@ -39,10 +42,13 @@ export function JuliusVideo({
   }
 
   const isToday = day === getCurrentDay();
-  const transcript = transcripts.find((t) => t.dag === day)?.transkripsjon;
-  const ps = GameEngine.isQuestCompleted(day)
-    ? GameEngine.getJuliusPs(day)
-    : undefined;
+  const transcript = videoOnly
+    ? undefined
+    : transcripts.find((t) => t.dag === day)?.transkripsjon;
+  const ps =
+    !videoOnly && GameEngine.isQuestCompleted(day)
+      ? GameEngine.getJuliusPs(day)
+      : undefined;
   const src = mediaUrl(`video/julius/dag-${String(day).padStart(2, "0")}.mp4`);
 
   const markWatched = () => {
