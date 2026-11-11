@@ -1,0 +1,1119 @@
+"use client";
+
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
+import { RetroWindow } from "@/components/ui/RetroWindow";
+import { GameEngine } from "@/lib/game-engine";
+import { SoundManager } from "@/lib/sounds";
+import {
+  ALT_MAX,
+  ALT_MIN,
+  bjelleKrav,
+  bjeller,
+  createSim,
+  dagensUtfordring,
+  ETAPPER,
+  etapperFor,
+  lagBane,
+  rekkeMult,
+  utfordringStatus,
+  type Hendelse,
+  type Sim,
+  type SledeEtappe,
+  type Styring,
+} from "../snofall-tv/slede";
+import { SledeLyd } from "../snofall-tv/slede-lyd";
+import { hex, identity, multiply, transform, type Mat4, type Vec3 } from "./gl";
+import { Renderer } from "./renderer";
+import {
+  bakke,
+  BEIN,
+  FLIS,
+  lagFlis,
+  lagVerden,
+  meshes,
+  nøkkel,
+  REIN_Z,
+  SKALA,
+  tilVerden,
+  type Hus,
+  type Verden,
+} from "./verden";
+
+/**
+ * SLEDEFLUKT: IQ's sleigh simulator in retro-pixel 3D. The pure sim in
+ * snofall-tv/slede.ts flies the course; this file maps it to the valley,
+ * drives the renderer, listens to keys and fingers, and keeps IQ's panel.
+ */
+
+type Fase = "start" | "nedtelling" | "spiller" | "pause" | "slutt" | "tapt";
+const NEDTELLING = 3;
+/** Draw distance in render units; fog hides the end of it. */
+const FJERN = 420;
+const FJERN_SIM = FJERN / SKALA;
+const OPPLØSNINGER = { 480: [480, 270], 320: [320, 180] } as const;
+export type Oppløsning = keyof typeof OPPLØSNINGER;
+/** p95 frame time (ms) above which the auto mode drops to 320×180. */
+const GRENSE_MS = 18;
+
+interface Hud {
+  alt: number;
+  fart: number;
+  poeng: number;
+  varder: number;
+  varderTotalt: number;
+  liv: number;
+  kraft: number;
+  sprang: boolean;
+  mult: number;
+  utf: string;
+  vind: number;
+  framdrift: number;
+  nyser: boolean;
+  gass: number;
+  /** Seconds left of 3–2–1, 0 when flying. */
+  ned: number;
+}
+
+type Held = {
+  L: boolean;
+  R: boolean;
+  U: boolean;
+  D: boolean;
+  S: boolean;
+  G: boolean;
+  B: boolean;
+};
+const KEYS: Record<string, keyof Held> = {
+  ArrowLeft: "L",
+  ArrowRight: "R",
+  ArrowUp: "U",
+  ArrowDown: "D",
+  a: "L",
+  d: "R",
+  w: "U",
+  s: "D",
+  " ": "S",
+  Shift: "G",
+  x: "B",
+};
+
+const IDENT = identity();
+const LYS: Vec3 = [0.35, 0.8, 0.5];
+const farge = (s: string) => hex(parseInt(s.slice(1), 16));
+
+interface Melding {
+  tekst: string;
+  farge: string;
+  id: number;
+}
+
+export function SledefluktSpill({
+  day,
+  fps = false,
+  oppløsning,
+}: {
+  day: number;
+  /** Dev only: frame-time overlay. */
+  fps?: boolean;
+  /** Fixed internal resolution; unset = 480 with automatic fallback to 320. */
+  oppløsning?: Oppløsning;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const kartRef = useRef<HTMLCanvasElement>(null);
+  const held = useRef<Held>({
+    L: false,
+    R: false,
+    U: false,
+    D: false,
+    S: false,
+    G: false,
+    B: false,
+  });
+  const touch = useRef({ steer: 0, climb: 0, gass: 0 });
+  const simRef = useRef<Sim | null>(null);
+  const faseRef = useRef<Fase>("start");
+  const lyd = useRef<SledeLyd | null>(null);
+  const [resultat, setResultat] = useState({
+    poeng: 0,
+    bjeller: 0,
+    beste: 0,
+    varder: 0,
+    varderTotalt: 0,
+    stjerner: 0,
+    besteRekke: 0,
+    nære: 0,
+    tidsbonus: 0,
+    krasj: 0,
+    utfordringKlart: false,
+  });
+
+  const åpne = etapperFor(day);
+  const [etappe, setEtappe] = useState<SledeEtappe>(
+    åpne[åpne.length - 1] ?? ETAPPER[0],
+  );
+  const etappeRef = useRef(etappe);
+  const [assist, setAssist] = useState(true);
+  const [fase, setFaseState] = useState<Fase>("start");
+  const [hud, setHud] = useState<Hud | null>(null);
+  const [beste, setBeste] = useState(() => GameEngine.getSledeResultater());
+  const [touchHint, setTouchHint] = useState(false);
+  const [melding, setMelding] = useState<Melding | null>(null);
+  const [pluss, setPluss] = useState<Melding | null>(null);
+  const [feil, setFeil] = useState<string | null>(null);
+  const [stat, setStat] = useState({
+    p50: 0,
+    p95: 0,
+    res: (oppløsning ?? 480) as number,
+  });
+  const reduceMotion = useRef(false);
+  const krav = useMemo(
+    () => bjelleKrav(lagBane(etappe).filter((t) => t.type === "varde").length),
+    [etappe],
+  );
+  const utfordring = useMemo(
+    () => dagensUtfordring(day, etappe),
+    [day, etappe],
+  );
+  const utfordringRef = useRef(utfordring);
+  useEffect(() => {
+    utfordringRef.current = utfordring;
+  }, [utfordring]);
+
+  const sprang = useRef(false);
+  const nedtelling = useRef(-1);
+
+  const setFase = (f: Fase) => {
+    if (f !== "spiller") lyd.current?.stop();
+    if (f !== "spiller" && f !== "nedtelling") nedtelling.current = -1;
+    if (f === "start")
+      simRef.current = createSim(etappeRef.current, {
+        assist: true,
+        reduceMotion: true,
+      });
+    faseRef.current = f;
+    setFaseState(f);
+  };
+
+  const start = () => {
+    SoundManager.playSound("click");
+    simRef.current = createSim(etappe, {
+      assist,
+      reduceMotion: reduceMotion.current,
+      utfordring,
+    });
+    nedtelling.current = NEDTELLING;
+    setFase("nedtelling");
+  };
+  const startRef = useRef(start);
+  useEffect(() => {
+    startRef.current = start;
+  });
+
+  useEffect(() => {
+    etappeRef.current = etappe;
+    simRef.current = createSim(etappe, { assist: true, reduceMotion: true });
+  }, [etappe]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    let r: Renderer;
+    try {
+      r = new Renderer(canvas);
+    } catch (err) {
+      console.error("SLEDEFLUKT", err);
+      const id = requestAnimationFrame(() =>
+        setFeil("3D-visningen kunne ikke starte på denne enheten."),
+      );
+      return () => cancelAnimationFrame(id);
+    }
+    let res: Oppløsning = oppløsning ?? 480;
+    r.setOppløsning(OPPLØSNINGER[res][0], OPPLØSNINGER[res][1]);
+    reduceMotion.current =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+    const motion = reduceMotion.current ? 0.35 : 1;
+    lyd.current = new SledeLyd();
+    const M = meshes();
+    let verden: Verden = lagVerden(etappeRef.current);
+    const fliser = new Map<number, Float32Array>();
+    const husM = new Map<Hus, Mat4>();
+    const kart = kartRef.current?.getContext("2d") ?? null;
+
+    let last = 0;
+    let hudAt = 0;
+    let raf = 0;
+    let shake = 0;
+    let nyser = 0;
+    let gange = 0;
+    let id = 0;
+    let eye: Vec3 | null = null;
+    // Frame-time ring for the auto resolution and the dev overlay.
+    const tider = new Float32Array(180);
+    let nTid = 0;
+    let målAt = 0;
+
+    const say = (tekst: string, farge = "#ffd700") =>
+      setMelding({ tekst, farge, id: ++id });
+
+    const hendelse = (h: Hendelse, sim: Sim) => {
+      const l = lyd.current;
+      switch (h) {
+        case "bjelle":
+          l?.bjelle(rekkeMult(sim.s.rekke));
+          if (sim.s.rekke % 3 === 0 && sim.s.rekke > 0)
+            say(`REKKE x${rekkeMult(sim.s.rekke)}`, "#00ff8a");
+          break;
+        case "bom":
+          if (sim.s.besteRekke >= 3) say("REKKEN RØK", "#8aa0c0");
+          break;
+        case "nære":
+          l?.stjerne();
+          say("NÆRE PÅ!", "#ffb347");
+          break;
+        case "stjerne":
+          l?.stjerne();
+          break;
+        case "band":
+          l?.stjerne();
+          say("LØFT!", "#00ff8a");
+          break;
+        case "port":
+          l?.port();
+          say("PORTEN STÅR ÅPEN  +500");
+          break;
+        case "grotte":
+          l?.port();
+          say("LYS NED I GROTTEN  +150");
+          break;
+        case "sprang":
+          l?.sprang();
+          say("SPRANG!", "#ff8a5a");
+          break;
+        case "krasj":
+          l?.krasj();
+          nyser = 1.5;
+          if (!reduceMotion.current) shake = 0.45;
+          say(
+            sim.s.tapt ? "IQ KOBLER INN NØDBREMSEN" : "KLONK! SNØ I ANSIKTET",
+            "#f0624a",
+          );
+          break;
+        case "utfordring":
+          l?.port();
+          say(`UTFORDRING KLART  +${utfordringRef.current.bonus}`);
+          break;
+        case "mål":
+          l?.fanfare();
+          break;
+      }
+    };
+
+    const tegnKart = (sim: Sim) => {
+      if (!kart) return;
+      const W = kart.canvas.width;
+      const H = kart.canvas.height;
+      kart.clearRect(0, 0, W, H);
+      kart.fillStyle = "rgba(0,0,0,0.55)";
+      kart.fillRect(0, 0, W, H);
+      const sx = (x: number) => W / 2 + (x / 1.4) * (W / 2 - 4);
+      const sy = (z: number) => H - 10 - ((z - sim.s.dist) / 1500) * (H - 16);
+      for (let i = Math.max(0, sim.s.first - 1); i < sim.s.ting.length; i++) {
+        const t = sim.s.ting[i];
+        if (t.z > sim.s.dist + 1500) break;
+        if (t.treff || t.type === "vind") continue;
+        kart.fillStyle =
+          t.type === "varde"
+            ? "#ffb347"
+            : t.type === "stjerne"
+              ? "#ffd700"
+              : t.type === "mur"
+                ? "#9fb0cc"
+                : t.type === "band"
+                  ? "#00ff8a"
+                  : "#2e7a4f";
+        const y = sy(t.z);
+        if (t.type === "mur") {
+          kart.fillRect(2, y - 1, W - 4, 2);
+          kart.fillStyle = "#ffd700";
+          kart.fillRect(sx(t.port ?? 0) - 5, y - 1, 10, 2);
+        } else kart.fillRect(sx(t.x) - 1.5, y - 1.5, 3, 3);
+      }
+      kart.fillStyle = "#f0624a";
+      const px = sx(sim.s.px);
+      kart.beginPath();
+      kart.moveTo(px, H - 14);
+      kart.lineTo(px - 4, H - 6);
+      kart.lineTo(px + 4, H - 6);
+      kart.fill();
+      kart.fillStyle = "#d9e4f5";
+      kart.font = "10px monospace";
+      kart.fillText("N", W / 2 - 3, 10);
+    };
+
+    const draw = (now: number) => {
+      raf = requestAnimationFrame(draw);
+      if (r.tapt) return;
+      const dt = last ? Math.min((now - last) / 1000, 0.05) : 0;
+      last = now;
+      const sim = simRef.current;
+      if (!sim) return;
+      const e = etappeRef.current;
+      if (verden.etappe !== e) {
+        verden = lagVerden(e);
+        husM.clear();
+        eye = null;
+      }
+      const t = now / 1000;
+      const spiller = faseRef.current === "spiller";
+
+      if (faseRef.current === "nedtelling") {
+        const før = Math.ceil(nedtelling.current);
+        nedtelling.current -= dt;
+        const nå = Math.ceil(nedtelling.current);
+        if (nå < før) lyd.current?.tikk(nå <= 0);
+        if (nedtelling.current <= 0) {
+          lyd.current?.startVind();
+          setFase("spiller");
+        }
+      }
+
+      let climb = 0;
+      if (spiller) {
+        const k = held.current;
+        const inn: Styring = {
+          steer: Math.max(
+            -1,
+            Math.min(1, (k.R ? 1 : 0) - (k.L ? 1 : 0) + touch.current.steer),
+          ),
+          climb: Math.max(
+            -1,
+            Math.min(1, (k.U ? 1 : 0) - (k.D ? 1 : 0) + touch.current.climb),
+          ),
+          sprang: k.S || sprang.current,
+          gass: Math.max(
+            -1,
+            Math.min(1, (k.G ? 1 : 0) - (k.B ? 1 : 0) + touch.current.gass),
+          ),
+        };
+        climb = inn.climb;
+        sprang.current = false;
+        const før = sim.s.poeng;
+        for (const h of sim.step(dt, inn)) hendelse(h, sim);
+        if (sim.s.poeng > før)
+          setPluss({
+            tekst: `+${sim.s.poeng - før}`,
+            farge: "#ffd700",
+            id: ++id,
+          });
+        lyd.current?.setVind(sim.s.fart / e.fart, sim.s.vind);
+        if (sim.s.ferdig || sim.s.tapt) {
+          const b = sim.s.ferdig
+            ? bjeller(sim.s.varder, sim.s.varderTotalt, sim.s.krasj)
+            : 0;
+          const saved = GameEngine.recordSledeResultat(e.id, sim.s.poeng, b);
+          setResultat({
+            poeng: sim.s.poeng,
+            bjeller: b,
+            beste: saved.poeng,
+            varder: sim.s.varder,
+            varderTotalt: sim.s.varderTotalt,
+            stjerner: sim.s.stjerner,
+            besteRekke: sim.s.besteRekke,
+            nære: sim.s.nære,
+            tidsbonus: sim.s.tidsbonus,
+            krasj: sim.s.krasj,
+            utfordringKlart: sim.s.utfordringKlart,
+          });
+          setBeste(GameEngine.getSledeResultater());
+          setFase(sim.s.ferdig ? "slutt" : "tapt");
+        }
+      } else if (faseRef.current === "start") {
+        sim.s.dist += 160 * dt * motion;
+        sim.s.px = Math.sin(t * 0.3) * 0.4;
+        sim.s.bank = Math.cos(t * 0.3) * 0.12;
+        while (
+          sim.s.first < sim.s.ting.length &&
+          sim.s.ting[sim.s.first].z <= sim.s.dist
+        )
+          sim.s.first++;
+      }
+
+      shake = Math.max(0, shake - dt);
+      nyser = Math.max(0, nyser - dt);
+      const { px, alt, bank, dist } = sim.s;
+      if (spiller) gange += dt * (sim.s.fart / e.fart) * 9;
+
+      // Chase camera: behind along the course, looking a little ahead; attract mode orbits.
+      const p = tilVerden(px, alt, dist);
+      let ønsket: Vec3;
+      let target: Vec3;
+      if (faseRef.current === "start") {
+        const a = t * 0.18 * motion;
+        ønsket = [p[0] + Math.sin(a) * 24, p[1] + 7, p[2] + Math.cos(a) * 24];
+        target = [p[0], p[1] + 1, p[2]];
+      } else {
+        const bak = tilVerden(px, alt, dist - 170);
+        ønsket = [bak[0], p[1] + 6.5, bak[2]];
+        const fram = tilVerden(px, alt, dist + 160);
+        target = [fram[0], p[1] + 1.2, fram[2]];
+      }
+      if (!eye) eye = ønsket;
+      const k = 1 - Math.exp(-8 * dt);
+      eye = [
+        eye[0] + (ønsket[0] - eye[0]) * k,
+        eye[1] + (ønsket[1] - eye[1]) * k,
+        eye[2] + (ønsket[2] - eye[2]) * k,
+      ];
+      const sh = shake * 0.8;
+      const kam: Vec3 = sh
+        ? [
+            eye[0] + (Math.random() - 0.5) * sh,
+            eye[1] + (Math.random() - 0.5) * sh,
+            eye[2],
+          ]
+        : eye;
+
+      r.begynn(
+        { eye: kam, target, fov: (62 * Math.PI) / 180 },
+        {
+          topp: farge(e.himmel[0]),
+          horisont: farge(e.himmel[1]),
+          dis: farge(e.dis),
+          nordlys: e.nordlys,
+          tåke: e.tåke ? [30, 140] : [150, FJERN],
+        },
+        LYS,
+        t,
+      );
+
+      // Valley tiles around the sleigh; tiles behind are freed.
+      const zr = dist * SKALA;
+      const i0 = Math.floor((zr - 60) / FLIS);
+      const i1 = Math.floor((zr + FJERN) / FLIS);
+      for (const [i, f] of fliser)
+        if (i < i0 - 1 || i > i1 + 1) {
+          r.slipp(f);
+          fliser.delete(i);
+        }
+      for (let i = i0; i <= i1; i++) {
+        let f = fliser.get(i);
+        if (!f) {
+          f = lagFlis(i);
+          fliser.set(i, f);
+        }
+        r.tegn(f, IDENT);
+      }
+      r.tegnMange(M.tre, verden.trær, IDENT);
+      for (const h of verden.hus) {
+        if (Math.abs(h.zSim - dist) > FJERN_SIM + 300) continue;
+        let m = husM.get(h);
+        if (!m) {
+          m = transform(h.pos, [0, h.rot, 0]);
+          husM.set(h, m);
+        }
+        r.tegn(M.hus[h.variant].mesh, m);
+      }
+
+      const ting = sim.s.ting;
+      for (let i = Math.max(0, sim.s.first - 4); i < ting.length; i++) {
+        const o = ting[i];
+        if (o.z > dist + FJERN_SIM) break;
+        if (
+          o.type === "tre" ||
+          o.type === "vind" ||
+          (o.treff && o.type !== "varde" && o.type !== "mur")
+        )
+          continue;
+        const pos = tilVerden(o.x, 0, o.z);
+        if (o.type === "stjerne") {
+          pos[1] = o.h * SKALA;
+          r.tegn(M.stjerne, transform(pos, [0, t * 2, 0]));
+          continue;
+        }
+        if (o.type === "band") {
+          pos[1] = o.h * SKALA;
+          r.tegn(M.band, transform(pos, [0, 0, Math.sin(t) * 0.1]));
+          continue;
+        }
+        pos[1] = bakke(pos[0], o.z) - 0.2;
+        if (o.type === "varde") r.tegn(M.varde, transform(pos));
+        else if (o.type === "topp") r.tegn(M.topp, transform(pos));
+        else {
+          const s = verden.spesial.get(nøkkel(o));
+          if (s) r.tegn(s, transform(pos));
+        }
+      }
+
+      // The rig: sleigh, reins and three reindeer with swinging legs.
+      const yaw = Math.atan2(
+        tilVerden(0, 0, dist + 100)[0] - tilVerden(0, 0, dist - 100)[0],
+        20,
+      );
+      const base = transform(p, [-climb * 0.12, -yaw, -bank * 1.1], 1);
+      r.tegn(M.slede, base);
+      r.tegn(M.tømmer, base);
+      for (let i = 0; i < 3; i++) {
+        const fase = gange + i * 2.1;
+        const bob = spiller ? Math.sin(fase * 2) * 0.2 : 0;
+        const rein = multiply(
+          base,
+          transform(
+            [0, 0.9 + bob, -REIN_Z[i]],
+            [Math.sin(fase * 2) * 0.05, 0, 0],
+          ),
+        );
+        r.tegn(M.rein[i === 2 ? 0 : 1], rein);
+        for (let j = 0; j < 4; j++) {
+          const sving = spiller
+            ? Math.sin(fase + (j === 0 || j === 3 ? 0 : Math.PI)) * 0.6
+            : 0;
+          r.tegn(M.bein, multiply(rein, transform(BEIN[j], [sving, 0, 0])));
+        }
+      }
+      r.avslutt();
+
+      // Frame statistics: auto fallback after three seconds over the limit.
+      if (dt > 0) {
+        tider[nTid % tider.length] = dt * 1000;
+        nTid++;
+      }
+      if (now - målAt > 3000 && nTid >= 60) {
+        målAt = now;
+        const sorted = Array.from(
+          tider.subarray(0, Math.min(nTid, tider.length)),
+        ).sort((a, b) => a - b);
+        const p50 = sorted[Math.floor(sorted.length * 0.5)];
+        const p95 = sorted[Math.floor(sorted.length * 0.95)];
+        if (!oppløsning && res === 480 && p95 > GRENSE_MS) {
+          res = 320;
+          r.setOppløsning(OPPLØSNINGER[res][0], OPPLØSNINGER[res][1]);
+        }
+        setStat({ p50, p95, res });
+      }
+
+      if (now - hudAt > 100) {
+        hudAt = now;
+        tegnKart(sim);
+        setHud({
+          alt,
+          fart: sim.s.fart,
+          poeng: sim.s.poeng,
+          varder: sim.s.varder,
+          varderTotalt: sim.s.varderTotalt,
+          liv: sim.s.liv,
+          kraft: sim.s.kraft,
+          sprang: sim.s.tid < sim.s.sprangTil,
+          mult: rekkeMult(sim.s.rekke),
+          utf: utfordringStatus(utfordringRef.current, sim.s),
+          vind: sim.s.vind,
+          framdrift: Math.min(1, dist / e.lengde),
+          nyser: nyser > 0,
+          ned: Math.max(0, Math.ceil(nedtelling.current)),
+          gass:
+            (held.current.G ? 1 : 0) -
+            (held.current.B ? 1 : 0) +
+            touch.current.gass,
+        });
+      }
+    };
+
+    raf = requestAnimationFrame(draw);
+    return () => {
+      cancelAnimationFrame(raf);
+      lyd.current?.stop();
+      r.dispose();
+    };
+    // Renderer and loop are built once; stage changes are read through refs.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      const k = KEYS[e.key];
+      if (k) {
+        held.current[k] = true;
+        if (k === "S") sprang.current = true;
+        if (faseRef.current === "spiller") e.preventDefault();
+      }
+      if (e.key === "Escape" || e.key === "p") {
+        if (faseRef.current === "spiller") setFase("pause");
+        else if (faseRef.current === "pause") setFase("spiller");
+      }
+      if (e.key === "Enter" && faseRef.current !== "spiller") {
+        if (faseRef.current === "pause") setFase("spiller");
+        else if (faseRef.current !== "nedtelling") startRef.current();
+      }
+    };
+    const up = (e: KeyboardEvent) => {
+      const k = KEYS[e.key];
+      if (k) held.current[k] = false;
+    };
+    // Losing focus (tab switch, home button) pauses; nothing flies unseen.
+    const pause = () => {
+      if (faseRef.current === "spiller" || faseRef.current === "nedtelling")
+        setFase("pause");
+    };
+    const skjult = () => {
+      if (document.hidden) pause();
+    };
+    window.addEventListener("keydown", down);
+    window.addEventListener("keyup", up);
+    window.addEventListener("blur", pause);
+    document.addEventListener("visibilitychange", skjult);
+    return () => {
+      window.removeEventListener("keydown", down);
+      window.removeEventListener("keyup", up);
+      window.removeEventListener("blur", pause);
+      document.removeEventListener("visibilitychange", skjult);
+    };
+  }, []);
+
+  // One relative stick: where the finger lands is neutral, drag sideways for course and up/down for altitude.
+  const stikke = useRef<{ id: number; x0: number; y0: number } | null>(null);
+  const onPointer = (ev: ReactPointerEvent<HTMLDivElement>) => {
+    const el = ev.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const nx = (ev.clientX - rect.left) / rect.width;
+    const ny = (ev.clientY - rect.top) / rect.height;
+    if (ev.type === "pointerdown") {
+      if (stikke.current) return;
+      el.setPointerCapture(ev.pointerId);
+      stikke.current = { id: ev.pointerId, x0: nx, y0: ny };
+      if (ev.pointerType !== "mouse") setTouchHint(true);
+      return;
+    }
+    const s = stikke.current;
+    if (!s || s.id !== ev.pointerId) return;
+    if (ev.type === "pointerup" || ev.type === "pointercancel") {
+      stikke.current = null;
+      touch.current.steer = 0;
+      touch.current.climb = 0;
+      return;
+    }
+    const dead = (v: number) =>
+      Math.abs(v) < 0.08 ? 0 : Math.max(-1, Math.min(1, v));
+    touch.current.steer = dead((nx - s.x0) / 0.12);
+    touch.current.climb = dead((s.y0 - ny) / 0.2);
+  };
+
+  const velg = (e: SledeEtappe) => {
+    SoundManager.playSound("click");
+    setEtappe(e);
+  };
+
+  const b = hud;
+  const altPct = b ? (b.alt - ALT_MIN) / (ALT_MAX - ALT_MIN) : 0.4;
+  const knop = b ? Math.round(b.fart / 12) : 0;
+  const panel =
+    "border-2 border-(--brass) bg-black/70 text-(--neon-green) px-2 py-1 text-lg leading-tight";
+  const knapp =
+    "min-h-11 min-w-11 px-3 border-2 text-lg font-bold cursor-pointer";
+  const holdKnapp =
+    "w-16 h-16 border-4 text-base font-bold cursor-pointer select-none touch-none";
+  const slippGass = () => {
+    touch.current.gass = 0;
+  };
+
+  return (
+    <div className="relative aspect-video w-full bg-black select-none touch-none overflow-hidden font-retro">
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 block w-full h-full"
+        style={{ imageRendering: "pixelated" }}
+      />
+      <div
+        className="absolute inset-0"
+        onPointerDown={onPointer}
+        onPointerMove={onPointer}
+        onPointerUp={onPointer}
+        onPointerCancel={onPointer}
+        onContextMenu={(e) => e.preventDefault()}
+        aria-hidden="true"
+      />
+      {feil && (
+        <div className="absolute inset-0 flex items-center justify-center text-(--christmas-red) text-xl p-4 text-center">
+          {feil}
+        </div>
+      )}
+      {touchHint && fase === "spiller" && (
+        <div className="absolute bottom-2 left-3 text-(--neon-green)/40 text-base pointer-events-none">
+          DRA FOR Å STYRE: SIDELENGS = KURS, OPP/NED = HØYDE
+        </div>
+      )}
+
+      {/* IQ's panel */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className={`absolute top-1 left-1 ${panel}`}>
+          <div className="text-(--gold) uppercase">{etappe.navn}</div>
+          <div>
+            VARDER {b?.varder ?? 0}/{b?.varderTotalt ?? 0}
+          </div>
+          <div className="text-(--cold-blue)">UTFORDRING {b?.utf ?? ""}</div>
+        </div>
+        <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1/3">
+          <div className="h-2 border border-(--brass) bg-black/60">
+            <div
+              className="h-full bg-(--gold)"
+              style={{ width: `${(b?.framdrift ?? 0) * 100}%` }}
+            />
+          </div>
+          {Math.abs(b?.vind ?? 0) > 0.3 && (
+            <div className="text-center text-(--cold-blue) text-base animate-pulse">
+              KASTEVIND {(b?.vind ?? 0) < 0 ? "<<" : ">>"}
+            </div>
+          )}
+        </div>
+        <div className={`absolute top-1 right-14 ${panel} text-right`}>
+          <div className="text-(--gold) tabular-nums text-2xl">
+            {b?.poeng ?? 0}
+            {(b?.mult ?? 1) > 1 && (
+              <span className="ml-2 text-(--neon-green) text-xl">
+                x{b?.mult}
+              </span>
+            )}
+          </div>
+          {!assist && (
+            <div
+              className="tracking-widest"
+              aria-label={`${b?.liv ?? 3} forsøk igjen`}
+            >
+              {"|".repeat(Math.max(0, Math.min(3, b?.liv ?? 3)))}
+              <span className="opacity-30">
+                {"|".repeat(3 - Math.max(0, Math.min(3, b?.liv ?? 3)))}
+              </span>
+            </div>
+          )}
+        </div>
+        <div className="absolute left-1 top-1/2 -translate-y-1/2 flex flex-col items-center gap-1">
+          <div className="text-base text-(--neon-green)/80">HØYDE</div>
+          <div className="relative w-4 h-28 border-2 border-(--brass) bg-black/60">
+            <div
+              className={`absolute bottom-0 inset-x-0 ${altPct < 0.15 ? "bg-(--christmas-red)" : altPct < 0.35 ? "bg-(--gold)" : "bg-(--neon-green)"}`}
+              style={{ height: `${altPct * 100}%` }}
+            />
+          </div>
+          <div className="text-base tabular-nums text-(--neon-green)/80">
+            {b ? Math.round(b.alt / 10) : 12} FV
+          </div>
+        </div>
+        <div
+          className={`absolute right-1 top-1/2 -translate-y-1/2 ${panel} text-right`}
+        >
+          <div className="tabular-nums">{knop} KNOP</div>
+          <div
+            className={
+              b?.nyser
+                ? "text-(--christmas-red)"
+                : b?.sprang
+                  ? "text-(--gold)"
+                  : ""
+            }
+          >
+            RUDOLF: {b?.nyser ? "NYSER" : b?.sprang ? "GLØDER" : "I FORM"}
+          </div>
+          {(b?.gass ?? 0) !== 0 && (
+            <div className="text-(--cold-blue)">
+              {(b?.gass ?? 0) > 0 ? "FULL FART" : "BREMSER"}
+            </div>
+          )}
+        </div>
+        {/* Minimap: the next stretch of course from above, north up */}
+        <canvas
+          ref={kartRef}
+          width={72}
+          height={96}
+          className="absolute bottom-2 left-1/2 -translate-x-1/2 border-2 border-(--brass)"
+          style={{ imageRendering: "pixelated" }}
+          aria-label="Kart over løypa"
+        />
+        {melding && (
+          <div
+            key={melding.id}
+            className="absolute inset-x-0 top-[38%] text-center text-3xl"
+            style={{
+              color: melding.farge,
+              textShadow: "0 0 8px #000",
+              animation: "rise 1.4s ease-out forwards",
+            }}
+          >
+            {melding.tekst}
+          </div>
+        )}
+        {pluss && fase === "spiller" && (
+          <div
+            key={pluss.id}
+            className="absolute inset-x-0 top-[52%] text-center text-2xl text-(--gold)"
+            style={{
+              textShadow: "0 0 8px #000",
+              animation: "rise 1s ease-out forwards",
+            }}
+          >
+            {pluss.tekst}
+          </div>
+        )}
+        {fase === "nedtelling" && (
+          <div className="absolute inset-0 flex items-center justify-center text-(--gold) text-7xl">
+            {Math.max(1, b?.ned ?? NEDTELLING)}
+          </div>
+        )}
+        {fps && (
+          <div className="absolute bottom-2 left-2 text-base text-(--neon-green) bg-black/70 px-1 tabular-nums">
+            {stat.res}×{stat.res === 480 ? 270 : 180} · p50{" "}
+            {stat.p50.toFixed(1)} ms · p95 {stat.p95.toFixed(1)} ms
+          </div>
+        )}
+      </div>
+
+      {fase === "spiller" && (
+        <>
+          <div className="absolute bottom-3 right-3 flex gap-2">
+            <button
+              type="button"
+              aria-label="Brems"
+              className={`${holdKnapp} border-(--brass) bg-black/60 text-(--neon-green)/80`}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                e.currentTarget.setPointerCapture(e.pointerId);
+                touch.current.gass = -1;
+              }}
+              onPointerUp={slippGass}
+              onPointerCancel={slippGass}
+            >
+              BREMS
+            </button>
+            <button
+              type="button"
+              aria-label="Fart, og sprang når måleren er full"
+              className={`${holdKnapp} rounded-full ${
+                (b?.kraft ?? 0) >= 1
+                  ? "border-(--gold) bg-(--gold) text-black animate-pulse"
+                  : "border-(--brass) bg-black/60 text-(--neon-green)/80"
+              }`}
+              style={{
+                backgroundImage:
+                  (b?.kraft ?? 0) < 1
+                    ? `conic-gradient(var(--brass) ${(b?.kraft ?? 0) * 360}deg, transparent 0)`
+                    : undefined,
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                e.currentTarget.setPointerCapture(e.pointerId);
+                touch.current.gass = 1;
+                sprang.current = true;
+              }}
+              onPointerUp={slippGass}
+              onPointerCancel={slippGass}
+            >
+              {(b?.kraft ?? 0) >= 1 ? "SPRANG" : "FART"}
+            </button>
+          </div>
+          <button
+            type="button"
+            aria-label="Pause"
+            className={`absolute top-1 right-1 ${knapp} border-(--brass) bg-black/70 text-(--neon-green)`}
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={() => setFase("pause")}
+          >
+            II
+          </button>
+        </>
+      )}
+
+      {fase !== "spiller" && fase !== "nedtelling" && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/55 p-2 overflow-y-auto">
+          <div className="border-2 border-(--brass) bg-black/85 p-2 max-w-lg w-full max-h-full overflow-y-auto text-(--neon-green) space-y-1.5 text-center">
+            {fase === "start" && (
+              <>
+                <div className="text-(--gold) text-xl leading-none">
+                  SLEDEFLUKT
+                </div>
+                <div className="text-sm opacity-70 leading-none">
+                  IQs sledesimulator
+                </div>
+                <div className="flex flex-wrap gap-1 justify-center">
+                  {åpne.map((e) => (
+                    <button
+                      key={e.id}
+                      type="button"
+                      onClick={() => velg(e)}
+                      className={`min-h-11 px-2 border-2 text-base leading-none cursor-pointer ${e.id === etappe.id ? "border-(--gold) bg-(--gold) text-black" : "border-(--neon-green)/50"}`}
+                    >
+                      {e.navn}
+                      <span className="block text-sm tracking-widest">
+                        {bjelletegn(beste[e.id]?.bjeller ?? 0)}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+                <div className="text-base leading-tight">«{etappe.intro}»</div>
+                <div className="text-sm opacity-70 tabular-nums leading-tight">
+                  ● {krav[0]} varder · ●● {krav[1]} · ●●● {krav[2]} og ingen
+                  krasj
+                </div>
+                <div className="border border-(--cold-blue)/60 px-2 py-0.5 text-base leading-tight">
+                  <span className="text-(--cold-blue)">
+                    DAGENS UTFORDRING:{" "}
+                  </span>
+                  {utfordring.tekst}
+                  <span className="opacity-70">
+                    {" "}
+                    · +{utfordring.bonus} poeng
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      SoundManager.playSound("click");
+                      setAssist((a) => !a);
+                    }}
+                    title={
+                      assist
+                        ? "Sleden holder høyden selv og krasjer aldri."
+                        : "Tre forsøk, full kastevind."
+                    }
+                    className={`${knapp} ${assist ? "border-(--cold-blue) text-(--cold-blue)" : "border-(--christmas-red) text-(--christmas-red)"}`}
+                  >
+                    IQ-ASSISTENT: {assist ? "PÅ" : "AV"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={start}
+                    className={`${knapp} border-(--gold) text-(--gold) flex-1`}
+                  >
+                    START
+                  </button>
+                </div>
+                <div className="text-sm opacity-60 leading-tight">
+                  {assist
+                    ? "Assistenten holder høyden og krasjer aldri."
+                    : "Tre forsøk, full kastevind."}{" "}
+                  · PILTASTER / WASD · SHIFT = FART · X = BREMS · MELLOMROM =
+                  SPRANG · ESC = PAUSE
+                </div>
+              </>
+            )}
+            {fase === "pause" && (
+              <>
+                <div className="text-(--gold) text-2xl">PAUSE</div>
+                <button
+                  type="button"
+                  onClick={() => setFase("spiller")}
+                  className={`${knapp} border-(--gold) text-(--gold) w-full`}
+                >
+                  FORTSETT
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFase("start")}
+                  className={`${knapp} border-(--neon-green)/50 w-full`}
+                >
+                  AVBRYT
+                </button>
+              </>
+            )}
+            {(fase === "slutt" || fase === "tapt") && (
+              <>
+                <div className="text-(--gold) text-xl leading-none">
+                  {fase === "slutt"
+                    ? `GODKJENT AV IQ!  ${bjelletegn(resultat.bjeller)}`
+                    : "IQ KOBLER INN NØDBREMSEN"}
+                </div>
+                <div className="text-lg tabular-nums leading-tight">
+                  POENG {resultat.poeng} · BESTE {resultat.beste}
+                </div>
+                <dl className="grid grid-cols-[auto_auto_auto_auto] gap-x-3 gap-y-0 text-left text-base leading-tight tabular-nums mx-auto w-fit">
+                  {(
+                    [
+                      ["VARDER", `${resultat.varder}/${resultat.varderTotalt}`],
+                      ["STJERNER", resultat.stjerner],
+                      [
+                        "BESTE REKKE",
+                        `${resultat.besteRekke} (x${rekkeMult(resultat.besteRekke)})`,
+                      ],
+                      ["NÆRE PÅ", resultat.nære],
+                      ["TIDSBONUS", `+${resultat.tidsbonus}`],
+                      ["KRASJ", resultat.krasj],
+                    ] as const
+                  ).map(([k, v]) => (
+                    <div key={k} className="contents">
+                      <dt className="opacity-70">{k}</dt>
+                      <dd className="text-right">{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <div
+                  className={`text-base leading-tight ${resultat.utfordringKlart ? "text-(--gold)" : "opacity-70"}`}
+                >
+                  UTFORDRING:{" "}
+                  {resultat.utfordringKlart
+                    ? `KLART  +${utfordring.bonus}`
+                    : fase === "slutt"
+                      ? "ikke denne gangen"
+                      : "-"}
+                </div>
+                <div className="text-base text-(--cold-blue) leading-tight">
+                  {fase === "tapt"
+                    ? "Rudolf trenger en gulrot og et nytt forsøk."
+                    : etappe.id === "julenatt" && resultat.bjeller >= 3
+                      ? "Ruten er klar. God jul fra IQ og Rudolf!"
+                      : nesteBjelle(resultat, krav)}
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={start}
+                    className={`${knapp} border-(--gold) text-(--gold) flex-1`}
+                  >
+                    EN GANG TIL
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFase("start")}
+                    className={`${knapp} border-(--neon-green)/50`}
+                  >
+                    VELG ETAPPE
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+const bjelletegn = (n: number) => "●".repeat(n) + "○".repeat(3 - n);
+
+function nesteBjelle(
+  r: { bjeller: number; varder: number; krasj: number },
+  krav: number[],
+) {
+  if (r.bjeller >= 3) return "Alle tre bjeller. IQ bukker!";
+  const mangler = krav[r.bjeller] - r.varder;
+  if (mangler > 0)
+    return `${mangler} ${mangler === 1 ? "varde" : "varder"} til neste bjelle.`;
+  return "Fly uten krasj, så henger den tredje bjellen.";
+}
+
+/** The desktop module: IQ's simulator in its own large window from day 8. */
+export function Sledeflukt({
+  day,
+  onClose,
+}: {
+  day: number;
+  onClose: () => void;
+}) {
+  return (
+    <RetroWindow title="SLEDEFLUKT: IQs SLEDESIMULATOR" onClose={onClose} stor>
+      <SledefluktSpill day={day} />
+    </RetroWindow>
+  );
+}
