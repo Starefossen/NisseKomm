@@ -222,7 +222,8 @@ const clickText = (label) =>
     const el = [...document.querySelectorAll('button, [role=button], div, span')]
       .find((e) => e.offsetParent !== null && e.innerText?.trim() === ${JSON.stringify(label)});
     if (!el) return false;
-    (el.closest('button,[role=button]') ?? el).click();
+    // A wrapper div can carry the same text as the button inside it
+    (el.closest('button,[role=button]') ?? el.querySelector('button,[role=button]') ?? el).click();
     return true;
   })()`);
 const typeInto = async (selector, value) => {
