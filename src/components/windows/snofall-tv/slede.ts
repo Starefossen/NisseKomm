@@ -409,7 +409,7 @@ const RING_ALT_MAX = 240;
  * a thumb sideways, but a ring 80 above cruise is missed until the sled climbs.
  */
 export const RING_X = 0.35;
-export const RING_ALT = 55;
+export const RING_ALT = 38;
 /** Climb rate in altitude units per second (step), used to keep ring steps reachable. */
 const KLATRE = 150;
 
@@ -417,8 +417,17 @@ const KLATRE = 150;
 export const ringAvvik = (px: number, alt: number, t: Ting) =>
   Math.hypot((px - t.x) / RING_X, (alt - t.h) / RING_ALT);
 
-export const lagBane = (e: SledeEtappe): Ting[] =>
-  e.id.startsWith("vidda") ? lagVidda(e) : lagLøype(e);
+export function lagBane(e: SledeEtappe): Ting[] {
+  if (e.id.startsWith("vidda")) return lagVidda(e);
+  const out = lagLøype(e);
+  // A teaser of the next stage: its peak stands locked beside the finish, out of
+  // the sled's reach (|x| > 1.75), until that stage's day.
+  const neste = ETAPPER[ETAPPER.indexOf(e) + 1];
+  if (neste)
+    for (const [dz, x] of [[-2200, 1.9], [-1600, -2.1]] as const)
+      out.push({ z: e.lengde + dz, x, type: "topp", h: 230, lås: neste.dag });
+  return out.sort((a, b) => a.z - b.z);
+}
 
 /** The vidda: a sparse course with the story's places set in, and Bergen's streets past the gate. */
 function lagVidda(e: SledeEtappe): Ting[] {
@@ -475,24 +484,37 @@ function lagLøype(e: SledeEtappe): Ting[] {
   const out: Ting[] = [];
   const slutt = e.lengde - 2500;
   let lane = 0;
-  // Rings ride a slow wave in altitude; no step is more than the sled can climb
-  // between two rings at the stage's speed, so the course stays flyable on touch.
+  // Consecutive rings step up or down by most of the stage's height, so
+  // the player has to climb and dive between every pair, never just steer. No
+  // step is more than the sled can climb between two rings at the stage's speed.
   let alt = ALT_CRUISE;
   const steg = ((KLATRE * m.varde * SEG) / e.fart) * 0.7;
-  const periode = 5 + r() * 4;
-  const fase = r() * Math.PI * 2;
+  const minSteg = Math.min(steg, Math.max(RING_ALT + 4, Math.min(steg * 0.6, m.høyde * 0.9)));
+  const lav = Math.max(RING_ALT_MIN, ALT_CRUISE - m.høyde);
+  const høy = Math.min(RING_ALT_MAX, ALT_CRUISE + m.høyde);
   let ring = 0;
   for (let z = 1500, i = 0; z < slutt; z += SEG, i++) {
     const u = r();
     // Rings weave left and right so the course is a slalom, never a straight line.
     if (i % m.varde === 0) {
       lane = Math.max(-0.7, Math.min(0.7, lane + (r() - 0.5) * 0.9));
-      const ønsket =
-        ALT_CRUISE +
-        m.høyde * Math.sin((ring++ / periode) * Math.PI * 2 + fase) +
-        (r() - 0.5) * 20;
-      alt += Math.max(-steg, Math.min(steg, ønsket - alt));
-      alt = Math.max(RING_ALT_MIN, Math.min(RING_ALT_MAX, alt));
+      // The last stretch is a spike: the full climb the stage allows.
+      const d =
+        z > slutt - 3500
+          ? steg
+          : minSteg + r() * (Math.min(steg, m.høyde * 1.6) - minSteg);
+      let opp = r() < 0.5;
+      // Turn back when the band runs out, so the step is never clamped away.
+      // the band is at least 90 tall, so the roomier side always fits a real step.
+      if (opp ? alt + d > høy : alt - d < lav) opp = høy - alt > alt - lav;
+      alt += opp ? d : -d;
+      alt = Math.max(lav, Math.min(høy, alt));
+      // Teaching rings on the first stage: one low, one high, both dead ahead.
+      if (e.dag === 8 && ring < 2) {
+        alt = ring ? Math.min(høy, lav + steg * 0.9) : lav;
+        lane = 0;
+      }
+      ring++;
       out.push({ z, x: lane, type: "varde", h: Math.round(alt) });
       continue;
     }

@@ -14,6 +14,7 @@ import { SoundManager } from "@/lib/sounds";
 import {
   ALT_MAX,
   ALT_MIN,
+  RING_ALT,
   bjelleKrav,
   bjeller,
   createSim,
@@ -79,7 +80,11 @@ const OPPLØSNINGER = {
 } as const;
 export type Oppløsning = keyof typeof OPPLØSNINGER;
 const TRINN: readonly Oppløsning[] = [640, 480, 320];
-/** p95 frame time (ms) above which the auto mode drops one resolution step. */
+/**
+ * Median frame time (ms) above which the auto mode drops one resolution step.
+ * The median, not p95: HUD renders, GC and shader warm-up spike single frames
+ * and used to drop a vsync-bound 640×360 to 320×180 within six seconds.
+ */
 const GRENSE_MS = 18;
 
 interface Hud {
@@ -104,6 +109,8 @@ interface Hud {
   neste: string | null;
   /** Free flight: the next named place ahead. */
   landemerke: string | null;
+  /** Altitude of the next ring ahead, null when none is in sight. */
+  ring: number | null;
 }
 
 type Held = {
@@ -727,6 +734,16 @@ export function SledefluktSpill({
             o.type !== "hus")
         )
           continue;
+        // Airborne things the sled has passed would sit between it and the
+        // camera: drawn huge across the bottom of the screen, or through the rig.
+        if (
+          o.z < dist &&
+          (o.type === "varde" ||
+            o.type === "stjerne" ||
+            o.type === "fugl" ||
+            o.type === "band")
+        )
+          continue;
         const pos = tilVerden(o.x, 0, o.z);
         // Locked places are drawn stone grey with a padlock turning above them.
         if (o.låst) {
@@ -781,7 +798,9 @@ export function SledefluktSpill({
           continue;
         }
         if (o.type === "varde") {
-          // Rings hang in the air and turn slowly; a ring flown through spins up.
+          // Rings hang in the air and turn slowly; the shadow below reads their height.
+          pos[1] = bakke(pos[0], o.z) + 0.15;
+          r.tegn(M.ringSkygge, transform(pos));
           pos[1] = o.h * SKALA;
           r.tegn(M.ring, transform(pos, [0, 0, t * (o.treff ? 3 : 0.5)]));
           continue;
@@ -864,6 +883,9 @@ export function SledefluktSpill({
         tilVerden(0, 0, dist + 100)[0] - tilVerden(0, 0, dist - 100)[0],
         20,
       );
+      const sk = tilVerden(px, 0, dist);
+      sk[1] = bakke(sk[0], dist) + 0.15;
+      r.tegn(M.skygge, transform(sk, [0, -yaw, 0]));
       const base = transform(p, [-climb * 0.12, -yaw, -bank * 1.1], 1);
       r.tegn(M.slede, base);
       r.tegn(M.tømmer, base);
@@ -894,7 +916,7 @@ export function SledefluktSpill({
       r.avslutt();
 
       // Frame statistics: auto fallback after three seconds over the limit.
-      if (dt > 0) {
+      if (dt > 0 && dt < 0.1) {
         tider[nTid % tider.length] = dt * 1000;
         nTid++;
       }
@@ -906,7 +928,7 @@ export function SledefluktSpill({
         const p50 = sorted[Math.floor(sorted.length * 0.5)];
         const p95 = sorted[Math.floor(sorted.length * 0.95)];
         const neste = TRINN[TRINN.indexOf(res) + 1];
-        if (!oppløsning && neste && p95 > GRENSE_MS) {
+        if (!oppløsning && neste && p50 > GRENSE_MS) {
           res = neste;
           r.setOppløsning(OPPLØSNINGER[res][0], OPPLØSNINGER[res][1]);
           nTid = 0;
@@ -917,7 +939,17 @@ export function SledefluktSpill({
       if (now - hudAt > 100) {
         hudAt = now;
         tegnKart(sim);
+        let ring: number | null = null;
+        for (let i = sim.s.first; i < sim.s.ting.length; i++) {
+          const o = sim.s.ting[i];
+          if (o.z > dist + 1500) break;
+          if (o.type === "varde" && !o.låst && !o.treff) {
+            ring = o.h;
+            break;
+          }
+        }
         setHud({
+          ring,
           alt,
           fart: sim.s.fart,
           poeng: sim.s.poeng,
@@ -1039,6 +1071,14 @@ export function SledefluktSpill({
 
   const b = hud;
   const altPct = b ? (b.alt - ALT_MIN) / (ALT_MAX - ALT_MIN) : 0.4;
+  const ringPct =
+    b?.ring != null ? (b.ring - ALT_MIN) / (ALT_MAX - ALT_MIN) : null;
+  const ringRetning =
+    b?.ring == null || Math.abs(b.ring - b.alt) < RING_ALT * 0.6
+      ? null
+      : b.ring > b.alt
+        ? "OPP"
+        : "NED";
   const knop = b ? Math.round(b.fart / 12) : 0;
   const panel =
     "border-2 border-(--brass) bg-black/70 text-(--neon-green) px-2 py-1 text-lg leading-tight";
@@ -1165,6 +1205,18 @@ export function SledefluktSpill({
               className={`absolute bottom-0 inset-x-0 ${altPct < 0.15 ? "bg-(--christmas-red)" : altPct < 0.35 ? "bg-(--gold)" : "bg-(--neon-green)"}`}
               style={{ height: `${altPct * 100}%` }}
             />
+            {ringPct != null && (
+              <div
+                className="absolute -inset-x-2 h-1 bg-(--gold)"
+                style={{ bottom: `calc(${ringPct * 100}% - 2px)` }}
+                aria-hidden
+              />
+            )}
+          </div>
+          <div
+            className={`text-base h-5 text-(--gold) ${ringRetning ? "animate-pulse" : "invisible"}`}
+          >
+            {ringRetning === "NED" ? "▼ NED" : "▲ OPP"}
           </div>
           <div className="text-base tabular-nums text-(--neon-green)/80">
             {b ? Math.round(b.alt / 10) : 12} FV

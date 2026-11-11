@@ -425,6 +425,15 @@ function merkeMesh(farge = GULL) {
   return m.build();
 }
 
+/** Flat dark oval on the snow: shows where a ring or the rig is over the ground. */
+function skyggeMesh(b: number, d: number) {
+  const m = new Mesh();
+  const MØRK = hex(0x2e3448);
+  m.box([0, 0, 0], [b, 0.1, d * 0.6], MØRK);
+  m.box([0, 0, 0], [b * 0.7, 0.1, d], MØRK);
+  return m.build();
+}
+
 /** House size from a sim house's chimney height. */
 export const husVariant = (h: number) => Math.max(0, HUS_PIPE.indexOf(h));
 
@@ -499,6 +508,8 @@ export interface Meshes {
   merke: Float32Array;
   /** Green cross over a house that got a close (not chimney) delivery. */
   merkeNær: Float32Array;
+  skygge: Float32Array;
+  ringSkygge: Float32Array;
 }
 
 let cache: Meshes | null = null;
@@ -525,6 +536,8 @@ export function meshes(): Meshes {
       prikk: prikkMesh(),
       merke: merkeMesh(),
       merkeNær: merkeMesh(GRØNN),
+      skygge: skyggeMesh(4, 9),
+      ringSkygge: skyggeMesh(RING_RX * 2, 1.6),
     };
   return cache;
 }

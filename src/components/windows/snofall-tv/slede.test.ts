@@ -189,14 +189,28 @@ describe("sim", () => {
       spenn.set(e.id, Math.max(...h) - Math.min(...h));
       for (let i = 1; i < ringer.length; i++) {
         const sek = (ringer[i].z - ringer[i - 1].z) / (e.fart * (1 + RAMP));
-        expect(Math.abs(ringer[i].h - ringer[i - 1].h)).toBeLessThanOrEqual(
-          150 * sek,
-        );
+        const steg = Math.abs(ringer[i].h - ringer[i - 1].h);
+        expect(steg).toBeLessThanOrEqual(150 * sek);
+        // Every pair needs a real climb or dive: the next ring is out of the current one's opening.
+        expect(steg).toBeGreaterThan(RING_ALT * 0.9);
       }
     }
     expect(spenn.get("tundra")!).toBeGreaterThan(40);
     expect(spenn.get("tundra")!).toBeLessThan(spenn.get("julenatt")!);
     expect(spenn.get("tundra")!).toBeLessThan(spenn.get("stjernedrysset")!);
+  });
+
+  it("day 8 teaches low then high, and every stage teases the next one locked out of reach", () => {
+    const [a, b] = lagBane(ETAPPER[0]).filter((t) => t.type === "varde");
+    expect(a.h).toBeLessThan(ALT_CRUISE);
+    expect(b.h).toBeGreaterThan(ALT_CRUISE);
+    for (let i = 0; i + 1 < ETAPPER.length; i++) {
+      const teaser = lagBane(ETAPPER[i]).filter(
+        (t) => t.type === "topp" && t.lås === ETAPPER[i + 1].dag,
+      );
+      expect(teaser).toHaveLength(2);
+      for (const t of teaser) expect(Math.abs(t.x)).toBeGreaterThan(1.75);
+    }
   });
 
   it("steering has inertia and the course speeds up towards the finish", () => {
@@ -554,7 +568,7 @@ describe("fri flyging", () => {
     expect(sim.s.ferdig).toBe(false);
     expect(runder).toBeGreaterThanOrEqual(1);
     expect(maks).toBeGreaterThan(e.lengde + FRI_SLUTT - 100);
-    expect(sim.s.dist).toBeLessThan(e.lengde);
+    expect(sim.s.dist).toBeLessThan(e.lengde + FRI_SLUTT);
     expect(sim.s.ting.every((t) => !t.ferdig || t.z <= sim.s.dist)).toBe(true);
   });
 

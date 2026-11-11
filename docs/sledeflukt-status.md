@@ -27,7 +27,7 @@ iPad er ikke målt ennå, og det er den som avgjør.
 Skjermbilder fra kjøringen (skrivebord med ikon, startskjerm, flukt, 320×180) ligger i
 scratchpad `sledeflukt/` for denne økta; ingen er sjekket inn.
 
-Automatikk: starter på 640×360 (16-bit-utseende, 64 farger, dithering i kildepiksler); faller ett trinn (480×270, så 320×180) når p95 over tre sekunder er over 18 ms (`GRENSE_MS`).
+Automatikk: starter på 640×360 (16-bit-utseende, 64 farger, dithering i kildepiksler); faller ett trinn (480×270, så 320×180) når medianen over tre sekunder er over 18 ms (`GRENSE_MS`; p95 felte en vsync-bundet 640×360 på enkeltstøt).
 
 ### Å gjøre på iPaden (Hans)
 
