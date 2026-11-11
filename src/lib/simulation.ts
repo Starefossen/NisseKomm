@@ -17,12 +17,20 @@ function goTo(day: number, time = "08:00"): void {
 }
 
 /** Solves days 1..day with the real codes, as if the kids typed them. */
-async function solveUntil(day: number, { bonus = false } = {}) {
+async function solveUntil(
+  day: number,
+  { bonus = false, symbols = false } = {},
+) {
   for (const q of GameEngine.getAllQuests()) {
     if (q.dag > day) continue;
     await GameEngine.submitCode(q.kode, q.kode, q.dag);
     GameEngine.markJuliusVideoWatched(q.dag);
     if (bonus && q.bonusoppdrag) GameEngine.completeBonusOppdrag(q.dag);
+    // Playthrough shards start mid-season and need the cards a kid would have scanned
+    if (symbols && q.symbol_clue)
+      GameEngine.collectSymbolByCode(
+        GameEngine.getSymbolShortCode(q.symbol_clue.symbolId),
+      );
   }
 }
 

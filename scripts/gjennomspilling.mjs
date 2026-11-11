@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // Automated playthrough of day 1..24 in a headless browser.
 // Usage: node scripts/gjennomspilling.mjs   (or BASE_URL=http://localhost:3000, DAYS=10,21, WIDTH=1024 HEIGHT=768)
+// SHARDS=4 splits the days into contiguous ranges, one browser each against one dev server.
+// A shard starts from sim.solveUntil (codes + symbol cards) instead of playing earlier days.
 // Talks raw CDP to chrome-headless-shell (Playwright's cache) or $CHROME, so no new dependency.
 import { spawn } from "node:child_process";
 import { createServer } from "node:net";
@@ -136,6 +138,55 @@ if (!base) {
   // and lets the retry through; a human terminal never sees this.
   await sleep(10000);
   if (dev.exitCode !== null || dev.signalCode !== null) await startDev();
+}
+
+const SHARD = process.env.SHARD;
+const SHARDS = Number(process.env.SHARDS ?? 1);
+if (!SHARD && SHARDS > 1) {
+  rmSync(SHOTS, { recursive: true, force: true });
+  mkdirSync(SHOTS, { recursive: true });
+  const size = Math.ceil(days.length / SHARDS);
+  const chunks = [];
+  for (let i = 0; i < days.length; i += size)
+    chunks.push(days.slice(i, i + size));
+  const codes = await Promise.all(
+    chunks.map(
+      (chunk, i) =>
+        new Promise((res) => {
+          const c = spawn(process.execPath, [process.argv[1]], {
+            env: {
+              ...process.env,
+              BASE_URL: base,
+              KID_CODE,
+              PARENT_CODE,
+              DAYS: chunk.join(","),
+              SHARD: String(i + 1),
+              // GUIDE=0 skips the guide check (needs MEDIA_DIR); otherwise only the last shard runs it
+              GUIDE:
+                process.env.GUIDE !== "0" && i === chunks.length - 1
+                  ? "1"
+                  : "0",
+            },
+            stdio: ["ignore", "pipe", "pipe"],
+          });
+          let out = "";
+          c.stdout.on("data", (d) => (out += d));
+          c.stderr.on("data", (d) => (out += d));
+          c.on("exit", (code) => {
+            console.log(
+              `--- shard ${i + 1}: dag ${chunk[0]}–${chunk.at(-1)}\n${out.trim()}`,
+            );
+            res(code);
+          });
+        }),
+    ),
+  );
+  const bad = codes.filter((c) => c !== 0).length;
+  console.log(
+    `\n${bad ? "FEIL" : "OK"}: ${chunks.length - bad}/${chunks.length} shards. Skjermbilder: ${SHOTS}`,
+  );
+  if (log) writeFileSync(join(SHOTS, "next-dev.log"), log);
+  process.exit(bad ? 1 : 0);
 }
 
 const cdpPort = await freePort();
@@ -297,7 +348,7 @@ await send("Emulation.setDeviceMetricsOverride", {
   deviceScaleFactor: 1,
   mobile: false,
 });
-rmSync(SHOTS, { recursive: true, force: true });
+if (!SHARD) rmSync(SHOTS, { recursive: true, force: true });
 mkdirSync(SHOTS, { recursive: true });
 
 // Fresh storage, then log in once; progress carries across days like a real December
@@ -314,6 +365,14 @@ await waitFor(
   "window.nissekomm.sim: dev server not ready / restart it (BASE_URL-serveren må kjøre i lan-modus med NEXT_PUBLIC_TEST_MODE=true; ellers stopp og start `mise run dev` på nytt, eller slett .next etter en Next-oppgradering)",
 );
 await evaluate("localStorage.clear()");
+if (days[0] > 1) {
+  // Reload first: the app stamps the season on load and wipes progress without the stamp
+  await send("Page.navigate", { url: base });
+  await waitFor(() => evaluate("!!window.nissekomm?.sim"), 30000, "sim");
+  await evaluate(
+    `(async () => { window.nissekomm.sim.goTo(${days[0] - 1}, "20:00"); await window.nissekomm.sim.solveUntil(${days[0] - 1}, { symbols: true }); })()`,
+  );
+}
 
 const results = [];
 for (const day of days) {
@@ -333,8 +392,7 @@ for (const day of days) {
       await shot("innlogging.png");
       await typeInto(LOGIN, KID_CODE);
       await waitFor(async () => !(await has(LOGIN)), 15000, "innlogging");
-    }
-    // T14: Day1Boot covers the desktop on the first login of 1 December; skip it like a kid would
+    } // T14: Day1Boot covers the desktop on the first login of 1 December; skip it like a kid would
     if (day === 1) {
       await waitFor(
         () => has("[aria-label='Hopp over']"),
@@ -694,31 +752,33 @@ for (const day of days) {
 // «Vis hendelse» in the guide's Snøfall TV review: a village overlay on the calm loop.
 // Last, since the parent login replaces the kid session.
 const guideFails = [];
-try {
-  await send("Page.navigate", { url: base + "/nissemor-guide/media" });
-  await waitFor(() => has("#parentCode"), 30000, "guide-innlogging");
-  await typeInto("#parentCode", PARENT_CODE);
-  await waitFor(
-    () => clickButton("Vis hendelse: Brevfugler"),
-    30000,
-    "«Vis hendelse: Brevfugler» i guiden",
+if (process.env.GUIDE !== "0")
+  try {
+    await send("Page.navigate", { url: base + "/nissemor-guide/media" });
+    await waitFor(() => has("#parentCode"), 30000, "guide-innlogging");
+    await typeInto("#parentCode", PARENT_CODE);
+    await waitFor(
+      () => clickButton("Vis hendelse: Brevfugler"),
+      30000,
+      "«Vis hendelse: Brevfugler» i guiden",
+    );
+    await waitFor(
+      async () =>
+        await evaluate(
+          `!!document.querySelector('[data-testid=livecam][data-event=brevfugler]')`,
+        ),
+      8000,
+      "brevfugl-hendelsen tegnes ikke over landsby-rolig (mangler MEDIA_DIR?)",
+    );
+    await shot("tv-hendelse-brevfugler.png");
+  } catch (e) {
+    guideFails.push(e.message);
+    await shot("tv-hendelse-feil.png").catch(() => {});
+  }
+if (process.env.GUIDE !== "0")
+  console.log(
+    `${guideFails.length ? "FEIL" : "OK  "} guide: Vis hendelse${guideFails.map((f) => `\n       - ${f}`).join("")}`,
   );
-  await waitFor(
-    async () =>
-      await evaluate(
-        `!!document.querySelector('[data-testid=livecam][data-event=brevfugler]')`,
-      ),
-    8000,
-    "brevfugl-hendelsen tegnes ikke over landsby-rolig (mangler MEDIA_DIR?)",
-  );
-  await shot("tv-hendelse-brevfugler.png");
-} catch (e) {
-  guideFails.push(e.message);
-  await shot("tv-hendelse-feil.png").catch(() => {});
-}
-console.log(
-  `${guideFails.length ? "FEIL" : "OK  "} guide: Vis hendelse${guideFails.map((f) => `\n       - ${f}`).join("")}`,
-);
 
 ws.close();
 const failed = results.filter((r) => !r.ok).length + guideFails.length;
