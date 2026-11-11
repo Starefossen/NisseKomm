@@ -220,7 +220,7 @@ export function UgleIntro({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const kamera = `IQ-KAM 0${kap.n + 2} · SNØFALL\nKAMERA ${kap.n + 2} TILKOBLET\nSIGNAL: SVAKT, MEN OK`;
+  const kamera = `UGLE-KAM 0${kap.n} · SNØFALL\nFLOKE TILKOBLET\nSIGNAL: SVAKT, MEN OK`;
 
   return (
     <div
@@ -260,7 +260,7 @@ export function UgleIntro({
         <div className="absolute top-2 left-2 px-2 bg-black/70 text-base text-(--cold-blue) tracking-wider uppercase pointer-events-none">
           {steg === 1
             ? `Floke våkner · ${sceneNavn}`
-            : `Kamera ${kap.n + 2} · ${sceneNavn}`}
+            : `Ugle-kam ${kap.n} · ${sceneNavn}`}
         </div>
       )}
       {steg === 1 && (

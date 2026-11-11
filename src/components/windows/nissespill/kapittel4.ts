@@ -1,8 +1,10 @@
 /**
- * Kapittel 4: «Klar til avgang» (dag 22). The gate has stood open since the
- * solstice and Winter holds the departure list: Julius' glasses (a letter bird
- * broods on them), Rampenissen's lucky bell from chapter 1 (behind the wood
- * box), and the screaming right gate wing (tallow from the gate lantern).
+ * Kapittel 4: «Klar til avgang» (dag 22). The sleigh stands inside the old
+ * town gate (byporten, three hundred years old; not IQ's warm gate in the cave
+ * from day 21) and Winter holds the departure list: Julius' glasses (a letter
+ * bird broods on them), Rampenissen's lucky bell from chapter 1 (behind the
+ * wood box; luck, not navigation: Winter's numbers and Trixter's map find
+ * Landås), and the screaming right gate wing (tallow from the gate lantern).
  * Written for Håkon (9) and Kristian (12): the three points can be done in any
  * order (one `alle` condition on Winter's check), the magnet line must be
  * guided down the gap behind the wood box (route), and the chapter ends when
@@ -27,15 +29,15 @@ export const KAPITTEL_4: Kapittel = {
   slutt: "k4_ferdig",
   intro: [
     R +
-      "«Dokker! Det e snart. Porten står åpen, sleden e pakka, og Winter står ved porten med ei LISTE. Tre punkt. Ingen flyg før alle tre e kryssa av. Han har to blyanta. Det betyr alvor.»",
+      "«Dokker! Det e snart. Byporten står åpen, sleden e pakka, og Winter står ved porten med flosshatt og ei LISTE. Tre punkt. Ingen flyg før alle tre e kryssa av. Han har to blyanta. Det betyr alvor.»",
     R +
       "«Julius finn ikkje brillan sine. Lykkebjella mi, den vi redda fra postkassen, e BORTE fra knaggen. Og porten hyle som en katt hver gang nån tar i den. Æ har hørt den heilt te Bergen. Naboen trudde det va mæ.»",
     R +
-      "«Floke står ved porten. Winter har lista, Julius har kontoret, og dokker har hodan. Dokker kan dette no. Æ sitt her og spise klementin og e nervøs. Det e sånn æ hjelpe.»",
+      "«Floke står ved byporten. Winter har lista, Julius har kontoret, og dokker har hodan. Dokker kan dette no. Æ sitt her og spise klementin og e nervøs. Det e sånn æ hjelpe.»",
   ],
   utro:
     R +
-    "«Briller, bjelle, port. Tre av tre, i den rekkefølgen dokker valgte sjøl. Winter godtok det. WINTER. Lykkebjella heng der ho ska, så Julius finn fram te stua dokkers. Det va dokker som gjord det. Æ må gå og finn ei klementin. Det e nåkka i øyet. Over og ut. Og god jul!»",
+    "«Briller, bjelle, port. Tre av tre, i den rekkefølgen dokker valgte sjøl. Winter godtok det. WINTER. Lykkebjella heng der ho ska. Sleden finn fram uansett, sei IQ, Winter har tall og Trixter har kart. Men no finn den fram med LYKKE. Det va dokker som gjord det. Æ må gå og finn ei klementin. Det e nåkka i øyet. Over og ut. Og god jul!»",
   gjenstander: {
     fjaer: {
       id: "fjaer",
@@ -136,7 +138,7 @@ export const KAPITTEL_4: Kapittel = {
   scener: [
     {
       id: "porten",
-      navn: "Porten til Snøfall",
+      navn: "Byporten",
       bilde: "spill/port-aapen.jpg",
       utganger: [{ til: "kontor", navn: "Fly opp til Julius' kontor" }],
       // In the snow by the wall, bottom left of the road
@@ -237,11 +239,11 @@ export const KAPITTEL_4: Kapittel = {
             {
               hvis: "bjelle_montert",
               tekst:
-                "Julius' slede står rett innenfor porten, pakket og pusset, og i tømmene henger lykkebjella og gnistrer. Nå finner den fram. Den vet allerede hvor stua ligger. Det er bjella som bekrefter.",
+                "Julius' slede står rett innenfor byporten, pakket og pusset, og i tømmene henger lykkebjella og gnistrer. Sleden finner fram uansett, sier IQ. Men nå finner den fram med lykke. Det er ikke det samme. Spør en nisse.",
             },
             {
               tekst:
-                "Julius' slede står rett innenfor porten, pakket og pusset. Det mangler noe i tømmene. Noe lite som pleier å gnistre, og som en viss nisse snakker om i søvne.",
+                "Julius' slede står rett innenfor byporten, pakket og pusset. Det mangler noe i tømmene. Noe lite som pleier å gnistre, og som en viss nisse snakker om i søvne.",
             },
           ],
           bruk: "Du klapper på sleden. Den er kald og blank og klar. Den venter bare på en bjelle og en nisse. Og at Winter er ferdig med lista. Den venter mest på det siste.",
@@ -254,7 +256,7 @@ export const KAPITTEL_4: Kapittel = {
               tekst:
                 "Du knytter lykkebjella fast i tømmene med den røde garntråden. Den klinger ikke. Den gnistrer. Winter krysser av punkt to uten å se opp. " +
                 R +
-                "«BJELLA MI! På sleden! No finn han HEIM. Te stua dokkers, meine æ. Det e det samme.»",
+                "«BJELLA MI! På sleden! No har han LYKKA med sæ heile veien. Te stua dokkers, meine æ. Det e det samme.»",
             },
           ],
           feil: {
@@ -315,7 +317,9 @@ export const KAPITTEL_4: Kapittel = {
             fiskesnoere:
               "Du fisker etter hengslet. Magneten klikker fast. Du drar. Hengslet hyler. Du slipper. Hengslet hyler litt til, for sikkerhets skyld.",
             bjelle:
-              "Du henger bjella på hengslet. Nå hyler det med bjelle på. Winter: «Nei.» Rampenissen: «NEI.» De er enige. Det er første gang.",
+              "Du henger bjella på hengslet. Nå hyler det med bjelle på. Winter: «Nei.» " +
+              R +
+              "«NEI.» Dem e enige. Dem veit det ikkje. Det e første gang.",
             fjaer:
               "Du stikker fjærpennen i hengslet. Grønt blekk på rust. Nå er det et rustent, hylende, grønt hengsel.",
           },
@@ -333,7 +337,7 @@ export const KAPITTEL_4: Kapittel = {
           rect: { x: 72, y: 58, w: 14, h: 28 },
           smart: "snakk",
           snakk: "winter",
-          se: "Winter står ved høyre portstolpe med skriveplate og blyant. To runder med skjerf i dag. Bare to. Blyanten er spisset til en nål, og reserveblyanten er spisset til en mindre nål.",
+          se: "Winter står ved høyre portstolpe med flosshatt, skriveplate og blyant. Flosshatten er for porten. Han har den bare her og ved offisielle anledninger, og i dag er det begge deler. To runder med skjerf i dag. Bare to. Blyanten er spisset til en nål, og reserveblyanten er spisset til en mindre nål.",
           bruk: "Du prikker Winter på armen. Han noterer: «Prikket. Igjen. Kl. 17.12.» Han har en egen side for prikk. Den er nesten full.",
           feil: {
             bjelle:
@@ -371,7 +375,7 @@ export const KAPITTEL_4: Kapittel = {
           navn: "Muren",
           rect: { x: 0, y: 50, w: 36, h: 24 },
           smart: "se",
-          se: "En lav steinmur med snø på toppen, bygd for lenge siden av noen som ville holde varmen inne, ikke folk ute. Steinen er varm der sola har vært. Det har den ikke vært på lenge. Steinen husker likevel.",
+          se: "Bymuren: en lav steinmur med snø på toppen, bygd for tre hundre år siden sammen med porten. Steinen er varm der sola har vært. Det har den ikke vært på lenge. Steinen husker likevel.",
         },
         {
           id: "veien",
@@ -387,7 +391,7 @@ export const KAPITTEL_4: Kapittel = {
       id: "kontor",
       navn: "Julius' kontor",
       bilde: "spill/julius-kontor.jpg",
-      utganger: [{ til: "porten", navn: "Ned til porten" }],
+      utganger: [{ til: "porten", navn: "Ned til byporten" }],
       // On the shelf edge between the lamp and the bear
       fjaer: { x: 40, y: 46, w: 4, h: 6 },
       hotspots: [
@@ -509,7 +513,7 @@ export const KAPITTEL_4: Kapittel = {
           navn: "Lysene i vinduskarmen",
           rect: { x: 65, y: 46, w: 11, h: 13 },
           smart: "se",
-          se: "Begge lysene brenner i kveld. Hjerterud sier de skal brenne hver kveld til sleden er hjemme igjen. Hun har kjøpt inn mange lys. Hun har kjøpt inn flere lys enn Snøfall har kvelder.",
+          se: "Begge lysene brenner i kveld. Hjerterud kom opp med dem fra kaféen: de skal brenne hver kveld til sleden er hjemme igjen. Hun har flere lys enn Snøfall har kvelder.",
         },
         {
           id: "skaala",
@@ -532,7 +536,7 @@ export const KAPITTEL_4: Kapittel = {
             tekst:
               "Du tar den rundeste klementinen. " +
               R +
-              "«Ikkje spis den. Ikkje spis den. Æ sei det te mæ sjøl òg. Æ sei det til skjermen. Skjermen høre ikkje.»",
+              "«Ikkje spis den. Ikkje spis den. Æ sei det te mæ sjøl òg. Æ sei det te skjermen. Skjermen høre ikkje.»",
           },
           bruk: "Én klementin er nok. Resten er til Julius. Han trenger energi, og nøttene teller ikke, sier han.",
         },
@@ -570,7 +574,7 @@ export const KAPITTEL_4: Kapittel = {
           ta: {
             item: "magnet",
             tekst:
-              "Du tar hestesko-magneten. Tre lapper seiler ned på gulvet. Du legger dem pent på skapet. Julius glemmer ikke. Han har tre lapper. Og Hjerterud.",
+              "Du tar hestesko-magneten. Tre lapper seiler ned på gulvet. Du legger dem pent på skapet. Julius glemmer ikke. Han har tre lapper. Og Winter.",
           },
           bruk: "Du blåser i trakten. Ute ved tjernet sier IQ «hva i all verden». Han sier det hver gang. Han sover. Han sier det i søvne.",
         },
@@ -584,7 +588,7 @@ export const KAPITTEL_4: Kapittel = {
             {
               hvis: "briller_levert",
               tekst:
-                "Julius sitter i stolen med brillene på nesa og listen i fanget. Han leser sakte og smiler for hvert navn. Noen navn smiler han ekstra for. Tre av dem bor i Bergen.",
+                "Julius sitter i stolen med brillene på nesa og listen i fanget. Han leser sakte og smiler for hvert navn. Noen navn smiler han ekstra for. Han sier ikke hvilke. Winter sier det kommer flere i kveld.",
             },
             {
               tekst:
@@ -961,7 +965,7 @@ export const KAPITTEL_4: Kapittel = {
         },
         liste: {
           tekst:
-            "«Navn. Alle som har hjulpet noen i år uten å bli bedt om det. Det er en lang liste. Den blir lengre hvert år, og det gjør meg gladere hvert år. I år er det tre navn jeg gleder meg spesielt til å lese. Jeg sier ikke hvilke.»",
+            "«Navn. Alle som har hjulpet noen i år uten å bli bedt om det. Det er en lang liste. Den blir lengre hvert år, og det gjør meg gladere hvert år. Winter sier det kommer noen navn til i kveld, fra Bergen. Jeg gleder meg til dem. Jeg sier ikke hvorfor.»",
           rampenissen:
             "«Står æ der? Ikkje svar. Jo, svar. Nei. Ikkje svar. Blunk én gang vess æ står der.»",
           valg: [{ tekst: "Det er en fin liste." }],
@@ -1009,19 +1013,19 @@ export const KAPITTEL_4: Kapittel = {
         R +
           "«Start øverst ved S. Hver kubbe har to åpninga. Vipp dem te åpninga peke mot neste kubbe, heilt ned te M.»",
         R +
-          "«Fra S rett ned, så te høyre, så ned gjennom den rette kubben, og det nederste hjørnet snur te høyre inn på M. De to andre kubban e bare i veien.»",
+          "«Fra S rett ned, så te høyre, så ned gjennom den rette kubben, og det nederste hjørnet snur te høyre inn på M. Dem to andre kubban e bare i veien.»",
       ],
     },
     {
       id: "bjelle",
       ferdig: "bjelle_montert",
-      maal: "Heng lykkebjella på sleden innenfor porten.",
+      maal: "Heng lykkebjella på sleden innenfor byporten.",
       kjent: { hvis: "snoere_fram" },
       tips: [
         R +
           "«Magneten har tak i bjella. Dra ho opp, og tenk på kor ho ska henge. Winter sa det. Æ sa det. Sleden sa det nesten.»",
-        R + "«BRUK vedkassa for å dra opp bjella. Så ned te porten.»",
-        R + "«Bruk lykkebjella på sleden innenfor porten.»",
+        R + "«BRUK vedkassa for å dra opp bjella. Så ned te byporten.»",
+        R + "«Bruk lykkebjella på sleden innenfor byporten.»",
       ],
     },
     {

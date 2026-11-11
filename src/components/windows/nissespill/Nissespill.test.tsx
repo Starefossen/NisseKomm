@@ -136,7 +136,7 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     let el = mount();
     tap(el, "SPILL");
     // Opener: camera boots, Floke wakes, then Rampenissen's three lines
-    expect(el.textContent).toContain("KAMERA 3 TILKOBLET");
+    expect(el.textContent).toContain("FLOKE TILKOBLET");
     tap(el, "VIDERE");
     expect(el.textContent).toContain("Floke våkner");
     tap(el, "VIDERE");
