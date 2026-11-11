@@ -27,7 +27,7 @@ iPad er ikke målt ennå, og det er den som avgjør.
 Skjermbilder fra kjøringen (skrivebord med ikon, startskjerm, flukt, 320×180) ligger i
 scratchpad `sledeflukt/` for denne økta; ingen er sjekket inn.
 
-Automatikk: starter på 480×270; faller til 320×180 når p95 over tre sekunder er over 18 ms (`GRENSE_MS`).
+Automatikk: starter på 640×360 (16-bit-utseende, 64 farger, dithering i kildepiksler); faller ett trinn (480×270, så 320×180) når p95 over tre sekunder er over 18 ms (`GRENSE_MS`).
 
 ### Å gjøre på iPaden (Hans)
 
@@ -54,6 +54,13 @@ hus med røyk, fri flyging med landemerke, pause.
 1. Pipelevering på dag 14 (`/dev/sledeflukt?dag=14`): er landingskrysset lesbart i 480×270, og treffer en 9-åring med tommelen på SLIPP?
 2. Snøen: for tett eller for glissen? `e.snøfall / 400` i `Sledeflukt.tsx` er knotten.
 3. Bildetid med snø og røyk: p95 fortsatt under 18 ms?
+
+## Ringer (gren `feat/sledeflukt-ringer`)
+
+Foreldretest 11. november: vardene på bakken ble gylne ringer i lufta (`ringMesh`, oval åpning lik
+simens `RING_X` × `RING_ALT`), i ulik høyde per etappe (`Blanding.høyde`: 45 på dag 8, opp til 85 på
+julenatt; aldri et steg sleden ikke rekker å klatre). Like utenfor ringen: «NESTEN!». Oppløsningen er
+hevet til 640×360 med 64 farger; målinger og skjermbilder (`ringer-*.png`) ligger i scratchpad.
 
 ## Kjente hull
 

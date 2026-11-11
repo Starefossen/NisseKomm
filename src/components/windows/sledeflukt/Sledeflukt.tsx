@@ -65,9 +65,15 @@ const NEDTELLING = 3;
 /** Draw distance in render units; fog hides the end of it. */
 const FJERN = 420;
 const FJERN_SIM = FJERN / SKALA;
-const OPPLØSNINGER = { 480: [480, 270], 320: [320, 180] } as const;
+/** Internal framebuffers, best first; the auto mode steps down this list. */
+const OPPLØSNINGER = {
+  640: [640, 360],
+  480: [480, 270],
+  320: [320, 180],
+} as const;
 export type Oppløsning = keyof typeof OPPLØSNINGER;
-/** p95 frame time (ms) above which the auto mode drops to 320×180. */
+const TRINN: readonly Oppløsning[] = [640, 480, 320];
+/** p95 frame time (ms) above which the auto mode drops one resolution step. */
 const GRENSE_MS = 18;
 
 interface Hud {
@@ -135,7 +141,7 @@ export function SledefluktSpill({
   day: number;
   /** Dev only: frame-time overlay. */
   fps?: boolean;
-  /** Fixed internal resolution; unset = 480 with automatic fallback to 320. */
+  /** Fixed internal resolution; unset = 640 with automatic fallback to 480, then 320. */
   oppløsning?: Oppløsning;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -186,7 +192,7 @@ export function SledefluktSpill({
   const [stat, setStat] = useState({
     p50: 0,
     p95: 0,
-    res: (oppløsning ?? 480) as number,
+    res: (oppløsning ?? 640) as Oppløsning,
   });
   const reduceMotion = useRef(false);
   const krav = useMemo(
@@ -282,7 +288,7 @@ export function SledefluktSpill({
       );
       return () => cancelAnimationFrame(id);
     }
-    let res: Oppløsning = oppløsning ?? 480;
+    let res: Oppløsning = oppløsning ?? 640;
     r.setOppløsning(OPPLØSNINGER[res][0], OPPLØSNINGER[res][1]);
     reduceMotion.current =
       window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
@@ -774,9 +780,11 @@ export function SledefluktSpill({
         ).sort((a, b) => a - b);
         const p50 = sorted[Math.floor(sorted.length * 0.5)];
         const p95 = sorted[Math.floor(sorted.length * 0.95)];
-        if (!oppløsning && res === 480 && p95 > GRENSE_MS) {
-          res = 320;
+        const neste = TRINN[TRINN.indexOf(res) + 1];
+        if (!oppløsning && neste && p95 > GRENSE_MS) {
+          res = neste;
           r.setOppløsning(OPPLØSNINGER[res][0], OPPLØSNINGER[res][1]);
+          nTid = 0;
         }
         setStat({ p50, p95, res });
       }
@@ -1092,8 +1100,8 @@ export function SledefluktSpill({
         )}
         {fps && (
           <div className="absolute bottom-2 left-2 text-base text-(--neon-green) bg-black/70 px-1 tabular-nums">
-            {stat.res}×{stat.res === 480 ? 270 : 180} · p50{" "}
-            {stat.p50.toFixed(1)} ms · p95 {stat.p95.toFixed(1)} ms
+            {stat.res}×{OPPLØSNINGER[stat.res][1]} · p50 {stat.p50.toFixed(1)}{" "}
+            ms · p95 {stat.p95.toFixed(1)} ms
           </div>
         )}
       </div>
