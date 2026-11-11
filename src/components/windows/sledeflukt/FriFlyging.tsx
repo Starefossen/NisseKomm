@@ -4,7 +4,6 @@ import {
   useEffect,
   useRef,
   useState,
-  type PointerEvent as ReactPointerEvent,
 } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { SoundManager } from "@/lib/sounds";
@@ -45,17 +44,16 @@ import {
 } from "../snofall-tv/vidda";
 import { SledeLyd } from "../snofall-tv/slede-lyd";
 import { hex, identity, multiply, transform, type Mat4, type Vec3 } from "./gl";
-import { Renderer } from "./renderer";
-import { RadioBoks } from "./RadioBoks";
-import { PYNTETRÆR, snofallMesh } from "./snofall";
 import {
-  erSlipp,
-  type Held,
-  slippAlle,
-  stikkeVerdi,
-  tast,
-  tomHeld,
-} from "./taster";
+  GRENSE_MS,
+  OPPLØSNINGER,
+  Renderer,
+  TRINN,
+  type Oppløsning,
+} from "./renderer";
+import { RadioBoks } from "./RadioBoks";
+import { useKontroller } from "./kontroller";
+import { PYNTETRÆR, snofallMesh } from "./snofall";
 import {
   BEIN,
   fjernMesh,
@@ -88,14 +86,6 @@ const RULL = 0.8;
 const FJERN = 600;
 const FJERN_SIM = FJERN / SKALA;
 const HORISONT = 4200;
-const OPPLØSNINGER = {
-  640: [640, 360],
-  480: [480, 270],
-  320: [320, 180],
-} as const;
-type Oppløsning = keyof typeof OPPLØSNINGER;
-const TRINN: readonly Oppløsning[] = [640, 480, 320];
-const GRENSE_MS = 18;
 
 const IDENT = identity();
 const LYS: Vec3 = [0.35, 0.8, 0.5];
@@ -142,24 +132,26 @@ export function FriFlyging({
   fps = false,
   oppløsning,
   onAvslutt,
+  onTapt,
 }: {
   day: number;
   fps?: boolean;
   oppløsning?: Oppløsning;
   onAvslutt: () => void;
+  onTapt?: () => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const onTaptRef = useRef(onTapt);
+  useEffect(() => {
+    onTaptRef.current = onTapt;
+  });
   const kartRef = useRef<HTMLCanvasElement>(null);
   const kompassRef = useRef<HTMLCanvasElement>(null);
-  const held = useRef<Held>(tomHeld());
-  const touch = useRef({ steer: 0, climb: 0, gass: 0 });
-  const slipp = useRef(false);
   const simRef = useRef<FriSim | null>(null);
   const faseRef = useRef<Fase>("spiller");
   const lyd = useRef<SledeLyd | null>(null);
   const [fase, setFaseState] = useState<Fase>("spiller");
   const [hud, setHud] = useState<Hud | null>(null);
-  const [touchHint, setTouchHint] = useState(false);
   const [melding, setMelding] = useState<Melding | null>(null);
   const [pluss, setPluss] = useState<Melding | null>(null);
   const [radio, setRadio] = useState<Melding[]>([]);
@@ -178,6 +170,24 @@ export function FriFlyging({
     faseRef.current = f;
     setFaseState(f);
   };
+  const {
+    held: heldRef,
+    touch: touchRef,
+    slipp: slippRef,
+    touchHint,
+    onPointer,
+    slippGass,
+  } = useKontroller(
+    () => faseRef.current === "spiller",
+    (e) => {
+      if (e.key === "Escape" || e.key === "p")
+        setFase(faseRef.current === "spiller" ? "pause" : "spiller");
+      else if (e.key === "Enter") setFase("spiller");
+    },
+    () => {
+      if (faseRef.current === "spiller") setFase("pause");
+    },
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -192,6 +202,7 @@ export function FriFlyging({
       );
       return () => cancelAnimationFrame(id);
     }
+    r.påTapt = () => onTaptRef.current?.();
     let res: Oppløsning = oppløsning ?? 640;
     r.setOppløsning(OPPLØSNINGER[res][0], OPPLØSNINGER[res][1]);
     const reduceMotion =
@@ -560,6 +571,8 @@ export function FriFlyging({
     const draw = (now: number) => {
       raf = requestAnimationFrame(draw);
       if (r.tapt) return;
+      // Last frame's draw calls, for the dev page.
+      if (fps) (window as unknown as { __trekk?: number }).__trekk = r.trekk;
       const dt = last ? Math.min((now - last) / 1000, 0.05) : 0;
       last = now;
       const t = now / 1000;
@@ -567,25 +580,25 @@ export function FriFlyging({
 
       let climb = 0;
       if (spiller) {
-        const k = held.current;
+        const k = heldRef.current;
         const inn: Styring = {
           steer: Math.max(
             -1,
-            Math.min(1, (k.R ? 1 : 0) - (k.L ? 1 : 0) + touch.current.steer),
+            Math.min(1, (k.R ? 1 : 0) - (k.L ? 1 : 0) + touchRef.current.steer),
           ),
           climb: Math.max(
             -1,
-            Math.min(1, (k.U ? 1 : 0) - (k.D ? 1 : 0) + touch.current.climb),
+            Math.min(1, (k.U ? 1 : 0) - (k.D ? 1 : 0) + touchRef.current.climb),
           ),
           sprang: false,
           gass: Math.max(
             -1,
-            Math.min(1, (k.G ? 1 : 0) - (k.B ? 1 : 0) + touch.current.gass),
+            Math.min(1, (k.G ? 1 : 0) - (k.B ? 1 : 0) + touchRef.current.gass),
           ),
-          slipp: slipp.current,
+          slipp: slippRef.current,
         };
         climb = inn.climb;
-        slipp.current = false;
+        slippRef.current = false;
         const før = sim.s.poeng;
         for (const h of sim.step(dt, inn)) hendelse(h);
         if (sim.s.poeng > før)
@@ -906,9 +919,9 @@ export function FriFlyging({
           funnet: sim.s.oppdaget.size,
           åpne,
           gass:
-            (held.current.G ? 1 : 0) -
-            (held.current.B ? 1 : 0) +
-            touch.current.gass,
+            (heldRef.current.G ? 1 : 0) -
+            (heldRef.current.B ? 1 : 0) +
+            touchRef.current.gass,
         });
       }
     };
@@ -922,76 +935,6 @@ export function FriFlyging({
     // Renderer and loop are built once per flight.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      const k = tast(e);
-      if (k) {
-        held.current[k] = true;
-        if (faseRef.current === "spiller") e.preventDefault();
-      }
-      if (e.key === "Escape" || e.key === "p")
-        setFase(faseRef.current === "spiller" ? "pause" : "spiller");
-      if (erSlipp(e) && faseRef.current === "spiller") {
-        slipp.current = true;
-        e.preventDefault();
-      } else if (e.key === "Enter") setFase("spiller");
-    };
-    const up = (e: KeyboardEvent) => {
-      const k = tast(e);
-      if (k) held.current[k] = false;
-    };
-    const pause = () => {
-      slippAlle(held.current);
-      if (faseRef.current === "spiller") setFase("pause");
-    };
-    const skjult = () => {
-      if (document.hidden) pause();
-    };
-    window.addEventListener("keydown", down);
-    window.addEventListener("keyup", up);
-    window.addEventListener("blur", pause);
-    document.addEventListener("visibilitychange", skjult);
-    return () => {
-      window.removeEventListener("keydown", down);
-      window.removeEventListener("keyup", up);
-      window.removeEventListener("blur", pause);
-      document.removeEventListener("visibilitychange", skjult);
-    };
-  }, []);
-
-  // One relative stick: where the finger lands is neutral, sideways turns, up and down climbs.
-  const stikke = useRef<{ id: number; x0: number; y0: number } | null>(null);
-  const onPointer = (ev: ReactPointerEvent<HTMLDivElement>) => {
-    const el = ev.currentTarget;
-    const rect = el.getBoundingClientRect();
-    const nx = (ev.clientX - rect.left) / rect.width;
-    const ny = (ev.clientY - rect.top) / rect.height;
-    if (ev.type === "pointerdown") {
-      if (stikke.current) return;
-      el.setPointerCapture(ev.pointerId);
-      stikke.current = { id: ev.pointerId, x0: nx, y0: ny };
-      if (ev.pointerType !== "mouse") setTouchHint(true);
-      return;
-    }
-    const s = stikke.current;
-    if (!s || s.id !== ev.pointerId) return;
-    if (
-      ev.type === "pointerup" ||
-      ev.type === "pointercancel" ||
-      ev.type === "lostpointercapture"
-    ) {
-      stikke.current = null;
-      touch.current.steer = 0;
-      touch.current.climb = 0;
-      return;
-    }
-    touch.current.steer = stikkeVerdi((nx - s.x0) / 0.12);
-    touch.current.climb = stikkeVerdi((s.y0 - ny) / 0.2);
-  };
-  const slippGass = () => {
-    touch.current.gass = 0;
-  };
 
   const b = hud;
   const altPct = b ? (b.alt - ALT_MIN) / (ALT_MAX - ALT_MIN) : 0.4;
@@ -1147,7 +1090,7 @@ export function FriFlyging({
               className={`${holdKnapp} border-(--gold) text-(--gold) bg-black/60`}
               onPointerDown={(e) => {
                 e.stopPropagation();
-                slipp.current = true;
+                slippRef.current = true;
               }}
             >
               SLIPP
@@ -1159,7 +1102,7 @@ export function FriFlyging({
               onPointerDown={(e) => {
                 e.stopPropagation();
                 e.currentTarget.setPointerCapture(e.pointerId);
-                touch.current.gass = -1;
+                touchRef.current.gass = -1;
               }}
               onPointerUp={slippGass}
               onPointerCancel={slippGass}
@@ -1173,7 +1116,7 @@ export function FriFlyging({
               onPointerDown={(e) => {
                 e.stopPropagation();
                 e.currentTarget.setPointerCapture(e.pointerId);
-                touch.current.gass = 1;
+                touchRef.current.gass = 1;
               }}
               onPointerUp={slippGass}
               onPointerCancel={slippGass}

@@ -718,14 +718,20 @@ describe("ringløypa", () => {
 describe("gulv og stall (review-sledeflukt)", () => {
   const etappe = (id: string) => ETAPPER.find((x) => x.id === id)!;
   it("a stick held at the floor crashes once, not every 1.2 s", () => {
-    const sim = createSim(etappe("vardeloypa"), {});
+    const sim = createSim(etappe("vardeloypa"), {
+      assist: false,
+      reduceMotion: false,
+    });
     for (let i = 0; i < 60 * 8 && !sim.s.tapt; i++)
       sim.step(1 / 60, { ...still, climb: -1 });
     expect(sim.s.krasj).toBe(1);
     expect(sim.s.tapt).toBe(false);
   });
   it("stage 1 has a soft floor: diving into the snow only scrapes", () => {
-    const sim = createSim(etappe("tundra"), {});
+    const sim = createSim(etappe("tundra"), {
+      assist: false,
+      reduceMotion: false,
+    });
     sim.s.ting.length = 0; // only the snow, no trees to hit
     for (let i = 0; i < 60 * 10; i++) sim.step(1 / 60, { ...still, climb: -1 });
     expect(sim.s.krasj).toBe(0);
@@ -733,7 +739,10 @@ describe("gulv og stall (review-sledeflukt)", () => {
     expect(sim.s.skade).toBeLessThan(1);
   });
   it("braking after a climb does not stall the sled down", () => {
-    const sim = createSim(etappe("vardeloypa"), {});
+    const sim = createSim(etappe("vardeloypa"), {
+      assist: false,
+      reduceMotion: false,
+    });
     for (let i = 0; i < 60; i++) sim.step(1 / 60, { ...still, climb: 1 });
     const alt = sim.s.alt;
     for (let i = 0; i < 120; i++) sim.step(1 / 60, { ...still, gass: -1 });

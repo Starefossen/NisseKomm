@@ -590,8 +590,7 @@ export const UTFORDRING_BONUS = 500;
 
 // The numeric day codes are plain numbers; a target that spells one would
 // trip kodelekkasje, so those two counts are nudged by one.
-const trygtTall = (n: number) =>
-  n === 24 || n === 48 || n === 75 ? n + 1 : n;
+const trygtTall = (n: number) => (n === 24 || n === 48 || n === 75 ? n + 1 : n);
 
 /**
  * The day's challenge: one of six, cycling with the date so every open day

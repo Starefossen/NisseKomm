@@ -134,6 +134,21 @@ export interface Himmel {
   tåke: [number, number];
 }
 
+/** Internal framebuffers, best first; the auto mode steps down this list. */
+export const OPPLØSNINGER = {
+  640: [640, 360],
+  480: [480, 270],
+  320: [320, 180],
+} as const;
+export type Oppløsning = keyof typeof OPPLØSNINGER;
+export const TRINN: readonly Oppløsning[] = [640, 480, 320];
+/**
+ * Median frame time (ms) above which the auto mode drops one resolution step.
+ * The median, not p95: HUD renders, GC and shader warm-up spike single frames
+ * and used to drop a vsync-bound 640×360 to 320×180 within six seconds.
+ */
+export const GRENSE_MS = 18;
+
 export class Renderer {
   private gl: WebGLRenderingContext;
   private prog: WebGLProgram;
@@ -158,6 +173,10 @@ export class Renderer {
   bredde = 640;
   høyde = 360;
   tapt = false;
+  /** Draw calls since begynn; the dev page reads it. */
+  trekk = 0;
+  /** Called once when the browser drops the GL context (iPad in the background). */
+  påTapt?: () => void;
 
   constructor(private canvas: HTMLCanvasElement) {
     const gl = canvas.getContext("webgl", {
@@ -172,6 +191,7 @@ export class Renderer {
     canvas.addEventListener("webglcontextlost", (e) => {
       e.preventDefault();
       this.tapt = true;
+      this.påTapt?.();
     });
 
     this.prog = this.program(VERT, FRAG, [
@@ -363,6 +383,7 @@ export class Renderer {
   begynn(k: Kamera, h: Himmel, lys: Vec3, tid: number) {
     const gl = this.gl;
     this.resize();
+    this.trekk = 0;
     gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
     gl.viewport(0, 0, this.bredde, this.høyde);
     gl.disable(gl.DEPTH_TEST);
@@ -427,6 +448,7 @@ export class Renderer {
     gl.disableVertexAttribArray(this.a.inst);
     gl.vertexAttrib4f(this.a.inst, 0, 0, 0, 1);
     gl.drawArrays(gl.TRIANGLES, 0, n);
+    this.trekk++;
   }
 
   /** Many copies of one mesh at [x, y, z, scale] each; falls back to a loop without the extension. */
@@ -446,6 +468,7 @@ export class Renderer {
           instanser[i * 4 + 3],
         );
         gl.drawArrays(gl.TRIANGLES, 0, n);
+        this.trekk++;
       }
       return;
     }
@@ -461,6 +484,7 @@ export class Renderer {
     gl.vertexAttribPointer(this.a.inst, 4, gl.FLOAT, false, 16, 0);
     this.inst.vertexAttribDivisorANGLE(this.a.inst, 1);
     this.inst.drawArraysInstancedANGLE(gl.TRIANGLES, 0, n, antall);
+    this.trekk++;
     this.inst.vertexAttribDivisorANGLE(this.a.inst, 0);
     gl.disableVertexAttribArray(this.a.inst);
   }

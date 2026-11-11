@@ -1,15 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { SoundManager } from "@/lib/sounds";
 import { Portrett } from "../nissespill/UgleIntro";
 
-/** Seconds each radio line stays up before the next in the queue. */
-export const RADIO_SEK = 3;
+/** Seconds a radio line stays up: long enough for a 9-year-old to read it. */
+export const radioSek = (tekst: string) =>
+  Math.max(3, 0.5 + 0.07 * tekst.length);
 
 /** A short burst of filtered noise, the radio keying up. */
 function knitring() {
+  const ctx = SoundManager.context();
+  if (!ctx) return;
   try {
-    const ctx = new AudioContext();
     const n = Math.floor(ctx.sampleRate * 0.18);
     const buf = ctx.createBuffer(1, n, ctx.sampleRate);
     const d = buf.getChannelData(0);
@@ -23,7 +26,6 @@ function knitring() {
     const g = ctx.createGain();
     g.gain.value = 0.12;
     src.connect(bp).connect(g).connect(ctx.destination);
-    src.onended = () => void ctx.close();
     src.start();
   } catch {
     // No audio (tests, old browsers): the box still shows.
@@ -43,14 +45,21 @@ export function RadioBoks({
   onFerdig: () => void;
 }) {
   const nå = kø[0];
+  const ferdig = useRef(onFerdig);
   useEffect(() => {
-    if (!nå) return;
+    ferdig.current = onFerdig;
+  });
+  const id = nå?.id;
+  const tekst = nå?.tekst ?? "";
+  useEffect(() => {
+    if (id === undefined) return;
     knitring();
-    const t = setTimeout(onFerdig, RADIO_SEK * 1000);
+  }, [id]);
+  useEffect(() => {
+    if (id === undefined) return;
+    const t = setTimeout(() => ferdig.current(), radioSek(tekst) * 1000);
     return () => clearTimeout(t);
-    // onFerdig is a fresh closure each render; the line's id is what matters.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nå?.id]);
+  }, [id, tekst]);
   if (!nå) return null;
   return (
     <div

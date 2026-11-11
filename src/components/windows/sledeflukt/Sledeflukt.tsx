@@ -6,7 +6,6 @@ import {
   useMemo,
   useRef,
   useState,
-  type PointerEvent as ReactPointerEvent,
 } from "react";
 import { RetroWindow } from "@/components/ui/RetroWindow";
 import { GameEngine } from "@/lib/game-engine";
@@ -38,17 +37,17 @@ import {
 } from "../snofall-tv/slede";
 import { SledeLyd } from "../snofall-tv/slede-lyd";
 import { hex, identity, multiply, transform, type Mat4, type Vec3 } from "./gl";
-import { Renderer } from "./renderer";
+import {
+  GRENSE_MS,
+  OPPLØSNINGER,
+  Renderer,
+  TRINN,
+  type Oppløsning,
+} from "./renderer";
+export type { Oppløsning } from "./renderer";
 import { FriFlyging } from "./FriFlyging";
 import { RadioBoks } from "./RadioBoks";
-import {
-  erSlipp,
-  type Held,
-  slippAlle,
-  stikkeVerdi,
-  tast,
-  tomHeld,
-} from "./taster";
+import { useKontroller } from "./kontroller";
 import {
   bakke,
   BEIN,
@@ -81,20 +80,6 @@ const NEDTELLING = 3;
 /** Draw distance in render units; fog hides the end of it. */
 const FJERN = 420;
 const FJERN_SIM = FJERN / SKALA;
-/** Internal framebuffers, best first; the auto mode steps down this list. */
-const OPPLØSNINGER = {
-  640: [640, 360],
-  480: [480, 270],
-  320: [320, 180],
-} as const;
-export type Oppløsning = keyof typeof OPPLØSNINGER;
-const TRINN: readonly Oppløsning[] = [640, 480, 320];
-/**
- * Median frame time (ms) above which the auto mode drops one resolution step.
- * The median, not p95: HUD renders, GC and shader warm-up spike single frames
- * and used to drop a vsync-bound 640×360 to 320×180 within six seconds.
- */
-const GRENSE_MS = 18;
 
 interface Hud {
   alt: number;
@@ -139,15 +124,33 @@ interface SpillProps {
   fps?: boolean;
   /** Fixed internal resolution; unset = 640 with automatic fallback to 480, then 320. */
   oppløsning?: Oppløsning;
+  /** The GL context was lost; the parent remounts with a fresh canvas. */
+  onTapt?: () => void;
 }
 
 /** The stages, or free flight over the vidda; each mounts its own renderer. */
 export function SledefluktSpill(props: SpillProps) {
   const [fri, setFri] = useState(false);
+  const [tapt, setTapt] = useState(false);
+  const [runde, setRunde] = useState(0);
+  if (tapt)
+    return (
+      <button
+        type="button"
+        className="w-full h-full min-h-48 flex items-center justify-center bg-black text-(--neon-green) text-2xl p-4"
+        onClick={() => {
+          setTapt(false);
+          setRunde((n) => n + 1);
+        }}
+      >
+        BILDET FORSVANT · TRYKK FOR Å STARTE PÅ NYTT
+      </button>
+    );
+  const p = { ...props, onTapt: () => setTapt(true) };
   return fri ? (
-    <FriFlyging {...props} onAvslutt={() => setFri(false)} />
+    <FriFlyging key={runde} {...p} onAvslutt={() => setFri(false)} />
   ) : (
-    <Etappeflukt {...props} onFri={() => setFri(true)} />
+    <Etappeflukt key={runde} {...p} onFri={() => setFri(true)} />
   );
 }
 
@@ -155,12 +158,15 @@ function Etappeflukt({
   day,
   fps = false,
   oppløsning,
+  onTapt,
   onFri,
 }: SpillProps & { onFri: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const onTaptRef = useRef(onTapt);
+  useEffect(() => {
+    onTaptRef.current = onTapt;
+  });
   const kartRef = useRef<HTMLCanvasElement>(null);
-  const held = useRef<Held>(tomHeld());
-  const touch = useRef({ steer: 0, climb: 0, gass: 0 });
   const simRef = useRef<Sim | null>(null);
   const faseRef = useRef<Fase>("start");
   const lyd = useRef<SledeLyd | null>(null);
@@ -213,7 +219,6 @@ function Etappeflukt({
     () => (spiller ? GameEngine.getSledeResultaterFor(spiller) : alle),
     [spiller, alle],
   );
-  const [touchHint, setTouchHint] = useState(false);
   const [melding, setMelding] = useState<Melding | null>(null);
   const [pluss, setPluss] = useState<Melding | null>(null);
   const [radio, setRadio] = useState<Melding[]>([]);
@@ -253,8 +258,6 @@ function Etappeflukt({
   // The kids' letters name the packages; read when a run starts.
   const brev = useRef<{ from?: string }[]>([]);
 
-  const sprang = useRef(false);
-  const slipp = useRef(false);
   const nedtelling = useRef(-1);
 
   const setFase = (f: Fase) => {
@@ -268,6 +271,18 @@ function Etappeflukt({
       });
     faseRef.current = f;
     setFaseState(f);
+  };
+  // A pause remembers where it came from, so a countdown resumes as a countdown.
+  const pauseFra = useRef<Fase>("spiller");
+  const pauser = () => {
+    if (faseRef.current !== "spiller" && faseRef.current !== "nedtelling")
+      return;
+    pauseFra.current = faseRef.current;
+    setFase("pause");
+  };
+  const fortsett = () => {
+    if (pauseFra.current === "nedtelling") nedtelling.current = NEDTELLING;
+    setFase(pauseFra.current);
   };
 
   const start = () => {
@@ -293,6 +308,28 @@ function Etappeflukt({
   useEffect(() => {
     startRef.current = start;
   });
+  const {
+    held: heldRef,
+    touch: touchRef,
+    slipp: slippRef,
+    sprang: sprangRef,
+    touchHint,
+    onPointer,
+    slippGass,
+  } = useKontroller(
+    () => faseRef.current === "spiller",
+    (e) => {
+      const f = faseRef.current;
+      if (e.key === "Escape" || e.key === "p") {
+        if (f === "pause") fortsett();
+        else pauser();
+      } else if (e.key === "Enter" && f !== "spiller") {
+        if (f === "pause") fortsett();
+        else if (f !== "nedtelling") startRef.current();
+      }
+    },
+    pauser,
+  );
 
   useEffect(() => {
     etappeRef.current = etappe;
@@ -316,6 +353,7 @@ function Etappeflukt({
       );
       return () => cancelAnimationFrame(id);
     }
+    r.påTapt = () => onTaptRef.current?.();
     let res: Oppløsning = oppløsning ?? 640;
     r.setOppløsning(OPPLØSNINGER[res][0], OPPLØSNINGER[res][1]);
     reduceMotion.current =
@@ -541,6 +579,8 @@ function Etappeflukt({
     const draw = (now: number) => {
       raf = requestAnimationFrame(draw);
       if (r.tapt) return;
+      // Last frame's draw calls, for the dev page.
+      if (fps) (window as unknown as { __trekk?: number }).__trekk = r.trekk;
       const dt = last ? Math.min((now - last) / 1000, 0.05) : 0;
       last = now;
       const sim = simRef.current;
@@ -569,26 +609,26 @@ function Etappeflukt({
 
       let climb = 0;
       if (spiller) {
-        const k = held.current;
+        const k = heldRef.current;
         const inn: Styring = {
           steer: Math.max(
             -1,
-            Math.min(1, (k.R ? 1 : 0) - (k.L ? 1 : 0) + touch.current.steer),
+            Math.min(1, (k.R ? 1 : 0) - (k.L ? 1 : 0) + touchRef.current.steer),
           ),
           climb: Math.max(
             -1,
-            Math.min(1, (k.U ? 1 : 0) - (k.D ? 1 : 0) + touch.current.climb),
+            Math.min(1, (k.U ? 1 : 0) - (k.D ? 1 : 0) + touchRef.current.climb),
           ),
-          sprang: k.S || sprang.current,
+          sprang: k.S || sprangRef.current,
           gass: Math.max(
             -1,
-            Math.min(1, (k.G ? 1 : 0) - (k.B ? 1 : 0) + touch.current.gass),
+            Math.min(1, (k.G ? 1 : 0) - (k.B ? 1 : 0) + touchRef.current.gass),
           ),
-          slipp: slipp.current,
+          slipp: slippRef.current,
         };
         climb = inn.climb;
-        sprang.current = false;
-        slipp.current = false;
+        sprangRef.current = false;
+        slippRef.current = false;
         const før = sim.s.poeng;
         for (const h of sim.step(dt, inn)) hendelse(h, sim);
         if (sim.s.poeng > før)
@@ -1004,9 +1044,9 @@ function Etappeflukt({
             ? pakkenavn(brev.current, sim.s.slipp)
             : null,
           gass:
-            (held.current.G ? 1 : 0) -
-            (held.current.B ? 1 : 0) +
-            touch.current.gass,
+            (heldRef.current.G ? 1 : 0) -
+            (heldRef.current.B ? 1 : 0) +
+            touchRef.current.gass,
         });
       }
     };
@@ -1020,82 +1060,6 @@ function Etappeflukt({
     // Renderer and loop are built once; stage changes are read through refs.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      const k = tast(e);
-      if (k) {
-        held.current[k] = true;
-        if (k === "S") sprang.current = true;
-        if (faseRef.current === "spiller") e.preventDefault();
-      }
-      if (e.key === "Escape" || e.key === "p") {
-        if (faseRef.current === "spiller") setFase("pause");
-        else if (faseRef.current === "pause") setFase("spiller");
-      }
-      if (erSlipp(e) && faseRef.current === "spiller") {
-        slipp.current = true;
-        e.preventDefault();
-      }
-      if (e.key === "Enter" && faseRef.current !== "spiller") {
-        if (faseRef.current === "pause") setFase("spiller");
-        else if (faseRef.current !== "nedtelling") startRef.current();
-      }
-    };
-    const up = (e: KeyboardEvent) => {
-      const k = tast(e);
-      if (k) held.current[k] = false;
-    };
-    // Losing focus (tab switch, home button) pauses; nothing flies unseen.
-    const pause = () => {
-      slippAlle(held.current);
-      if (faseRef.current === "spiller" || faseRef.current === "nedtelling")
-        setFase("pause");
-    };
-    const skjult = () => {
-      if (document.hidden) pause();
-    };
-    window.addEventListener("keydown", down);
-    window.addEventListener("keyup", up);
-    window.addEventListener("blur", pause);
-    document.addEventListener("visibilitychange", skjult);
-    return () => {
-      window.removeEventListener("keydown", down);
-      window.removeEventListener("keyup", up);
-      window.removeEventListener("blur", pause);
-      document.removeEventListener("visibilitychange", skjult);
-    };
-  }, []);
-
-  // One relative stick: where the finger lands is neutral, drag sideways for course and up/down for altitude.
-  const stikke = useRef<{ id: number; x0: number; y0: number } | null>(null);
-  const onPointer = (ev: ReactPointerEvent<HTMLDivElement>) => {
-    const el = ev.currentTarget;
-    const rect = el.getBoundingClientRect();
-    const nx = (ev.clientX - rect.left) / rect.width;
-    const ny = (ev.clientY - rect.top) / rect.height;
-    if (ev.type === "pointerdown") {
-      if (stikke.current) return;
-      el.setPointerCapture(ev.pointerId);
-      stikke.current = { id: ev.pointerId, x0: nx, y0: ny };
-      if (ev.pointerType !== "mouse") setTouchHint(true);
-      return;
-    }
-    const s = stikke.current;
-    if (!s || s.id !== ev.pointerId) return;
-    if (
-      ev.type === "pointerup" ||
-      ev.type === "pointercancel" ||
-      ev.type === "lostpointercapture"
-    ) {
-      stikke.current = null;
-      touch.current.steer = 0;
-      touch.current.climb = 0;
-      return;
-    }
-    touch.current.steer = stikkeVerdi((nx - s.x0) / 0.12);
-    touch.current.climb = stikkeVerdi((s.y0 - ny) / 0.2);
-  };
 
   const velg = (e: SledeEtappe) => {
     SoundManager.playSound("click");
@@ -1119,9 +1083,6 @@ function Etappeflukt({
     "min-h-11 min-w-11 px-3 border-2 text-lg font-bold cursor-pointer";
   const holdKnapp =
     "w-16 h-16 border-4 text-base font-bold cursor-pointer select-none touch-none";
-  const slippGass = () => {
-    touch.current.gass = 0;
-  };
 
   return (
     <div className="@container relative aspect-video w-full bg-black select-none touch-none overflow-hidden font-retro">
@@ -1327,7 +1288,7 @@ function Etappeflukt({
                 className={`${holdKnapp} ${b?.neste ? "border-(--gold) text-(--gold)" : "border-(--brass) text-(--neon-green)/50"} bg-black/60`}
                 onPointerDown={(e) => {
                   e.stopPropagation();
-                  slipp.current = true;
+                  slippRef.current = true;
                 }}
               >
                 SLIPP
@@ -1340,7 +1301,7 @@ function Etappeflukt({
               onPointerDown={(e) => {
                 e.stopPropagation();
                 e.currentTarget.setPointerCapture(e.pointerId);
-                touch.current.gass = -1;
+                touchRef.current.gass = -1;
               }}
               onPointerUp={slippGass}
               onPointerCancel={slippGass}
@@ -1364,8 +1325,8 @@ function Etappeflukt({
               onPointerDown={(e) => {
                 e.stopPropagation();
                 e.currentTarget.setPointerCapture(e.pointerId);
-                touch.current.gass = 1;
-                sprang.current = true;
+                touchRef.current.gass = 1;
+                sprangRef.current = true;
               }}
               onPointerUp={slippGass}
               onPointerCancel={slippGass}
@@ -1378,7 +1339,7 @@ function Etappeflukt({
             aria-label="Pause"
             className={`absolute top-1 right-1 ${knapp} border-(--brass) bg-black/70 text-(--neon-green)`}
             onPointerDown={(e) => e.stopPropagation()}
-            onClick={() => setFase("pause")}
+            onClick={pauser}
           >
             II
           </button>
@@ -1457,7 +1418,7 @@ function Etappeflukt({
                       key={n}
                       type="button"
                       onClick={() => setSpiller(n)}
-                      className={`min-h-11 px-3 border-2 leading-none cursor-pointer ${n === spiller ? "border-(--gold) bg-(--gold) text-black" : "border-(--neon-green)/50"}`}
+                      className={`min-h-11 min-w-11 px-3 border-2 leading-none cursor-pointer ${n === spiller ? "border-(--gold) bg-(--gold) text-black" : "border-(--neon-green)/50"}`}
                     >
                       {n.toUpperCase()}
                     </button>
@@ -1469,7 +1430,7 @@ function Etappeflukt({
                       key={e.id}
                       type="button"
                       onClick={() => velg(e)}
-                      className={`min-h-11 px-2 border-2 text-base leading-none cursor-pointer ${e.id === etappe.id ? "border-(--gold) bg-(--gold) text-black" : "border-(--neon-green)/50"}`}
+                      className={`min-h-11 min-w-11 px-2 border-2 text-base leading-none cursor-pointer ${e.id === etappe.id ? "border-(--gold) bg-(--gold) text-black" : "border-(--neon-green)/50"}`}
                     >
                       {e.navn}
                       <span className="block text-sm tracking-widest">
@@ -1582,7 +1543,7 @@ function Etappeflukt({
                 <div className="text-(--gold) text-2xl">PAUSE</div>
                 <button
                   type="button"
-                  onClick={() => setFase("spiller")}
+                  onClick={fortsett}
                   className={`${knapp} border-(--gold) text-(--gold) w-full`}
                 >
                   FORTSETT
