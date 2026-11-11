@@ -10,7 +10,7 @@ CODES = {1:"SIGNAL",2:"48",3:"PRISME",4:"KOMPASS",5:"ULRIKEN",6:"LYKT",7:"KULDE"
  10:"SPEKTER",11:"75",12:"MELODI",13:"SAFRAN",14:"ORIGAMI",15:"KARAMELL",16:"SORTERING",17:"NORDLYS",
  18:"TURBULENS",19:"GULROT",20:"TURBO",21:"BRANNMUR",22:"LANDÅS",23:"STJERNEKLART",24:"JULEMAGI"}
 wc = lambda s: len(s.split())
-dur = lambda n: min(15, math.ceil(n / 2) + 2)
+dur = lambda n: min(15, math.ceil(0.5 + n / 1.79 + 2))  # as julius-dag.py: START + n/WPS + TAIL
 
 def split_days(text):
     parts = re.split(r"^#{2,3} Dag (\d+)", text, flags=re.M)
