@@ -11,6 +11,16 @@
 import { getAllQuests } from "./data-loader";
 import { KAPITLER } from "@/components/windows/nissespill/kapitler";
 import { ETAPPER } from "@/components/windows/snofall-tv/slede";
+import { STEDER } from "@/components/windows/snofall-tv/vidda";
+
+// Places that open in free flight on a stage's day ride along in its nudge;
+// Bergen stays a surprise.
+const nyeSteder = (dag: number) => {
+  const n = STEDER.filter((s) => s.dag === dag && s.id !== "bergen");
+  return n.length
+    ? `, og i fri flyging: ${n.map((s) => s.navn).join(" og ")}`
+    : "";
+};
 import { GAMES } from "@/components/windows/snofall-tv/hud";
 
 /** Desktop window that holds the unlock (page.tsx window ids). */
@@ -86,9 +96,9 @@ function bygg(): Opplasing[] {
     ...ETAPPER.map((e, i) => ({
       dag: e.dag,
       vindu: "sledeflukt" as const,
-      tekst: `Ny etappe i SLEDEFLUKT: ${e.navn}`,
+      tekst: `Ny etappe i SLEDEFLUKT: ${e.navn}${nyeSteder(e.dag)}`,
       navn: `etappen ${e.navn} i SLEDEFLUKT`,
-      varsel: `IQ: Ny etappe i SLEDEFLUKT: ${e.navn}. ${rull(SLEDE_HALE, i)}`,
+      varsel: `IQ: Ny etappe i SLEDEFLUKT: ${e.navn}${nyeSteder(e.dag)}. ${rull(SLEDE_HALE, i)}`,
     })),
     // The HUD sleigh toy only points to SLEDEFLUKT now
     ...GAMES.filter(([id]) => id !== "slede").map(([, navn, dag], i) => ({
@@ -139,7 +149,7 @@ export const opplasingerPaaDag = (dag: number) =>
  * today's code is in, so the daily riddle comes first:
  * 1 badge (+ the unlock alert on its day), 2 Rampenissen asks (unlock day,
  * after the code), 3 tile glow and IQ teaser (next two days), 4 last nudge
- * (day 3), then quiet.
+ * (day 3), then only the badge until opened.
  */
 export type Nivaa = 0 | 1 | 2 | 3 | 4;
 
@@ -150,7 +160,9 @@ export function nivaa(
   sett: boolean,
 ): Nivaa {
   const alder = dag - o.dag;
-  if (sett || alder < 0 || alder > 3) return 0;
+  if (sett || alder < 0) return 0;
+  // Back after days away: the badge stays until the window is opened.
+  if (alder > 3) return 1;
   if (o.etterKode && alder === 0 && !kodeLost) return 0;
   if (!kodeLost) return 1;
   return alder === 0 ? 2 : alder === 3 ? 4 : 3;

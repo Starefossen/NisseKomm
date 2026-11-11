@@ -1413,6 +1413,14 @@ function Etappeflukt({
                       className={`min-h-11 min-w-11 px-2 border-2 text-base leading-none cursor-pointer ${e.id === etappe.id ? "border-(--gold) bg-(--gold) text-black" : "border-(--neon-green)/50"}`}
                     >
                       {e.navn}
+                      {/* Never flown by anyone in the family: new since last time. */}
+                      {!alle[e.id] && (
+                        <span
+                          className={`ml-1 text-sm font-bold ${e.id === etappe.id ? "" : "text-(--gold)"}`}
+                        >
+                          NY
+                        </span>
+                      )}
                       <span className="block text-sm tracking-widest">
                         {bjelletegn(beste[e.id]?.bjeller ?? 0)}
                       </span>

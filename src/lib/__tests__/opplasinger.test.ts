@@ -69,10 +69,11 @@ describe("nivaa (escalation)", () => {
     varsel: "y",
   };
   const hud = { ...o, vindu: "nordpol_tv" as const, etterKode: true };
-  it("quiet before the day, after opening and after three days", () => {
+  it("quiet before the day and after opening; only the badge after three days", () => {
     expect(nivaa(o, 9, true, false)).toBe(0);
     expect(nivaa(o, 11, true, true)).toBe(0);
-    expect(nivaa(o, 14, true, false)).toBe(0);
+    expect(nivaa(o, 14, true, false)).toBe(1);
+    expect(nivaa(o, 20, true, true)).toBe(0);
   });
   it("only the badge until today's code is in", () => {
     for (const d of [10, 11, 12, 13]) expect(nivaa(o, d, false, false)).toBe(1);
