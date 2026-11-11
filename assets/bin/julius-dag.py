@@ -38,6 +38,11 @@ def words(s: str):
     return re.findall(r"[a-zæøå]+", s.lower())
 
 
+def wcount(s: str) -> int:
+    """Speech-budget words: a hyphenated token («Lucia-morgen», «TV-en») is spoken as one word."""
+    return len(re.findall(r"[a-zæøå0-9]+(?:-[a-zæøå0-9]+)*", s.lower()))
+
+
 def speech_at_end(clip: Path) -> bool:
     """True if the voice is still going in the clip's last 0.15 s: the model ran out of time mid-line.
 
@@ -110,11 +115,11 @@ MAX_WORDS = 22  # ceiling per segment; locked brikke lines are exempt
 
 def timing(line: str, secs: int):
     """Warning if the line does not fit the requested clip, or the 13 s the model often returns for 15."""
-    need = START + len(words(line)) / WPS + TAIL
+    need = START + wcount(line) / WPS + TAIL
     if need > secs:
-        return f"{len(words(line))} ord trenger {need:.1f} s med 2 s hale, bestilt {secs} s"
+        return f"{wcount(line)} ord trenger {need:.1f} s med 2 s hale, bestilt {secs} s"
     if secs >= 15 and need > 13:
-        return f"{len(words(line))} ord trenger {need:.1f} s; modellen leverer ofte 13 s på 15"
+        return f"{wcount(line)} ord trenger {need:.1f} s; modellen leverer ofte 13 s på 15"
     return None
 
 
@@ -123,7 +128,7 @@ def lint(days) -> int:
     over = 0
     for day in days:
         for i, (line, secs, _a, _k, locked) in enumerate(medie.julius_segments(day), 1):
-            n = len(words(line))
+            n = wcount(line)
             if n > MAX_WORDS and not locked:
                 over += 1
                 print(f"dag {day}-{i}: {n} ord (maks {MAX_WORDS}): {line[:60]}…")
@@ -153,7 +158,7 @@ FX = {
 def kulde_fx(kulde: str, line: str, locked: bool, dur: float, drained: bool):
     """(video filters, audio filters, stutter time or None, drained after, prompt text) for one segment."""
     vf, af, stutter, keep = [], [], None, []
-    at = lambda clause: next((START + len(words(line.lower().split(q)[0])) / WPS
+    at = lambda clause: next((START + wcount(line.lower().split(q)[0]) / WPS
                               for q in re.findall(r"«(.+?)»", clause) if q.lower() in line.lower()), dur / 2)
     hits = set()
     for clause in filter(None, (c.strip() for c in re.split(r"[.;,]\s*", kulde))):
@@ -370,6 +375,7 @@ def join(segs, dest: Path, kulde=None):
 
 
 def selftest():
+    assert wcount("Lucia-morgen i TV-en, ja") == 4 and len(words("Lucia-morgen")) == 2
     assert tail_missing("ja hallo IQ sier linjen er", "IQ sier linjen er åpen.") == ["åpen"]
     assert tail_missing("IQ sier linjen er åpen", "IQ sier linjen er åpen.") == []
     assert timing("ord " * 10, 15) is None and "13 s" in timing("ord " * 20, 15) and "bestilt" in timing("ord " * 24, 15)
