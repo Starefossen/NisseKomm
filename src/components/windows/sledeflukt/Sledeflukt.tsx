@@ -88,6 +88,9 @@ const GRENSE_MS = 18;
 
 interface Hud {
   alt: number;
+  skade: number;
+  /** A hit just now: the screen edge flashes red. */
+  treff: boolean;
   fart: number;
   poeng: number;
   varder: number;
@@ -410,6 +413,15 @@ function Etappeflukt({
         case "sprang":
           l?.sprang();
           say("SPRANG!", "#ff8a5a");
+          break;
+        case "skrape":
+          l?.krasj();
+          hopp = 0.4;
+          gnister.push({
+            p: tilVerden(sim.s.px, sim.s.alt, sim.s.dist),
+            t0: performance.now() / 1000,
+          });
+          say("AU! SLEDEN TOK SKADE", "#f0624a");
           break;
         case "krasj":
           l?.krasj();
@@ -786,6 +798,9 @@ function Etappeflukt({
         if (o.låst) r.grå(0);
       }
 
+      // A badly damaged sled throws sparks now and then.
+      if (sim.s.skade >= 0.5 && Math.random() < dt * 5)
+        gnister.push({ p: tilVerden(px, alt, dist), t0: t });
       // Sparks fan out from a ring for half a second, then are forgotten.
       while (gnister.length && t - gnister[0].t0 > 0.5) gnister.shift();
       for (const g of gnister) {
@@ -857,7 +872,10 @@ function Etappeflukt({
         [
           -climb * 0.12,
           -yaw,
-          -bank * 1.1 + (rull ? (1 - rull / RULL) * Math.PI * 2 : 0),
+          -bank * 1.1 +
+            (rull ? (1 - rull / RULL) * Math.PI * 2 : 0) +
+            // A damaged sled wobbles.
+            (reduceMotion.current ? 0 : Math.sin(t * 18) * sim.s.skade * 0.15),
         ],
         1,
       );
@@ -923,6 +941,8 @@ function Etappeflukt({
           }
         }
         setHud({
+          skade: sim.s.skade,
+          treff: sim.s.tid - sim.s.sisteSkade < 0.35,
           ring,
           alt,
           fart: sim.s.fart,
@@ -1135,14 +1155,27 @@ function Etappeflukt({
               className="tracking-widest"
               aria-label={`${b?.liv ?? 3} forsøk igjen`}
             >
-              {"|".repeat(Math.max(0, Math.min(3, b?.liv ?? 3)))}
+              LIV {"●".repeat(Math.max(0, Math.min(3, b?.liv ?? 3)))}
               <span className="opacity-30">
-                {"|".repeat(3 - Math.max(0, Math.min(3, b?.liv ?? 3)))}
+                {"●".repeat(3 - Math.max(0, Math.min(3, b?.liv ?? 3)))}
               </span>
             </div>
           )}
         </div>
+        {b?.treff && (
+          <div className="pointer-events-none absolute inset-0 border-8 border-(--christmas-red)/70" />
+        )}
         <div className="absolute left-1 top-1/2 -translate-y-1/2 flex flex-col items-center gap-1">
+          <div className="text-base text-(--neon-green)/80">SLEDE</div>
+          <div
+            className="relative w-4 h-12 border-2 border-(--brass) bg-black/60"
+            aria-label={`Skade ${Math.round((b?.skade ?? 0) * 100)} prosent`}
+          >
+            <div
+              className="absolute bottom-0 inset-x-0 bg-(--christmas-red)"
+              style={{ height: `${(b?.skade ?? 0) * 100}%` }}
+            />
+          </div>
           <div className="text-base text-(--neon-green)/80">HØYDE</div>
           <div className="relative w-4 h-28 border-2 border-(--brass) bg-black/60">
             <div

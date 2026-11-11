@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach } from "@jest/globals";
 import { GameEngine } from "@/lib/game-engine";
 import {
   ALT_CRUISE,
+  ALT_MIN,
+  SKADE_PER_TREFF,
   bjelleKrav,
   bjeller,
   createSim,
@@ -558,5 +560,23 @@ describe("pipelevering", () => {
     const trygg = createSim(ETAPPER[0], { assist: true, reduceMotion: false });
     for (let i = 0; i < 180; i++)
       expect(trygg.step(1 / 60, ned)).not.toContain("krasj");
+  });
+
+  it("small hits add damage; a full meter is a crash and starts the meter over", () => {
+    const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
+    const ev: string[] = [];
+    // Skimming the snow without diving: a scrape every 0.6 s.
+    for (let i = 0; i < 60 * 1.1; i++) {
+      sim.s.alt = ALT_MIN + 2;
+      ev.push(...sim.step(1 / 60, still));
+    }
+    expect(ev.filter((h) => h === "skrape")).toHaveLength(2);
+    expect(sim.s.skade).toBeCloseTo(SKADE_PER_TREFF * 2);
+    for (let i = 0; i < 60; i++) {
+      sim.s.alt = ALT_MIN + 2;
+      ev.push(...sim.step(1 / 60, still));
+    }
+    expect(ev).toContain("krasj");
+    expect(sim.s.skade).toBeLessThan(SKADE_PER_TREFF * 2);
   });
 });

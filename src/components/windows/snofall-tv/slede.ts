@@ -687,6 +687,7 @@ export type Hendelse =
   | "nesten"
   | "fugl"
   | "krasj"
+  | "skrape"
   | "stjerne"
   | "band"
   | "port"
@@ -722,6 +723,8 @@ export const RAMP = 0.2;
 
 export const ALT_MIN = 40;
 export const ALT_MAX = 450;
+/** Damage per small hit (a grazed tree or peak, a scrape along the snow); at 1 the hit is a crash. */
+export const SKADE_PER_TREFF = 0.34;
 export const ALT_CRUISE = 120;
 
 export function createSim(e: SledeEtappe, opts: SimOpts) {
@@ -749,6 +752,9 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     fugler: 0,
     nære: 0,
     krasj: 0,
+    /** Sled damage 0–1 from small hits; reaching 1 is a crash and starts it over. */
+    skade: 0,
+    sisteSkade: -Infinity,
     /** Rings in a row without a miss; the multiplier is rekkeMult(rekke). */
     rekke: 0,
     besteRekke: 0,
@@ -814,7 +820,7 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     ) {
       krasj(ev);
       s.alt = ALT_MIN + 40;
-    }
+    } else if (!opts.assist && s.alt < ALT_MIN + 8) skrape(ev);
     s.alt = Math.max(ALT_MIN, Math.min(ALT_MAX, s.alt));
     s.bank += (s.vx * 0.2 - s.bank) * Math.min(1, dt * 6);
 
@@ -986,10 +992,12 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
         break;
       case "tre":
         if (dx < 0.22 && s.alt < t.h - 10) krasj(ev);
+        else if (dx < 0.28 && s.alt < t.h) skrape(ev);
         else if (dx < 0.4 && s.alt < t.h + 30) nære(ev);
         break;
       case "topp":
         if (dx < 0.45 && s.alt < (opts.assist ? 190 : t.h)) krasj(ev);
+        else if (dx < 0.55 && s.alt < t.h) skrape(ev);
         else if (dx < 0.7 && s.alt < t.h + 40) nære(ev);
         break;
       case "mur":
@@ -1010,8 +1018,20 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     ev.push("nære");
   }
 
+  function skrape(ev: Hendelse[]) {
+    // One scrape per pass, not one per frame.
+    if (s.tid - s.sisteSkade < 0.6) return;
+    s.sisteSkade = s.tid;
+    s.skade += SKADE_PER_TREFF;
+    if (s.skade >= 1) {
+      s.skade = 0;
+      krasj(ev);
+    } else ev.push("skrape");
+  }
+
   function krasj(ev: Hendelse[]) {
     s.krasj++;
+    s.sisteSkade = s.tid;
     s.rekke = 0;
     s.sakteTil = s.tid + 1.2;
     s.sprangTil = 0;

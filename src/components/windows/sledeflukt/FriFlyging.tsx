@@ -113,6 +113,9 @@ const KEYS: Record<string, keyof Held> = {
 
 interface Hud {
   alt: number;
+  skade: number;
+  /** A hit just now: the screen edge flashes red. */
+  treff: boolean;
   fart: number;
   poeng: number;
   pakker: number;
@@ -298,6 +301,11 @@ export function FriFlyging({
           l?.stjerne();
           hopp = 0.5;
           say("BREVFUGL FANGET  +80", "#c0d2ec");
+          break;
+        case "skrape":
+          l?.krasj();
+          hopp = 0.4;
+          say("AU! SLEDEN TOK SKADE", "#f0624a");
           break;
         case "krasj":
           l?.krasj();
@@ -712,7 +720,10 @@ export function FriFlyging({
         [
           -climb * 0.12,
           -kurs,
-          -bank * 1.1 + (rull ? (1 - rull / RULL) * Math.PI * 2 : 0),
+          -bank * 1.1 +
+            (rull ? (1 - rull / RULL) * Math.PI * 2 : 0) +
+            // A damaged sled wobbles.
+            (reduceMotion ? 0 : Math.sin(t * 18) * sim.s.skade * 0.15),
         ],
         1,
       );
@@ -767,6 +778,8 @@ export function FriFlyging({
         hudAt = now;
         tegnKart();
         setHud({
+          skade: sim.s.skade,
+          treff: sim.s.tid - sim.s.sisteSkade < 0.35,
           alt,
           fart: sim.s.fart,
           poeng: sim.s.poeng,
@@ -926,7 +939,20 @@ export function FriFlyging({
             {b?.poeng ?? 0}
           </div>
         </div>
+        {b?.treff && (
+          <div className="pointer-events-none absolute inset-0 border-8 border-(--christmas-red)/70" />
+        )}
         <div className="absolute left-1 top-1/2 -translate-y-1/2 flex flex-col items-center gap-1">
+          <div className="text-base text-(--neon-green)/80">SLEDE</div>
+          <div
+            className="relative w-4 h-12 border-2 border-(--brass) bg-black/60"
+            aria-label={`Skade ${Math.round((b?.skade ?? 0) * 100)} prosent`}
+          >
+            <div
+              className="absolute bottom-0 inset-x-0 bg-(--christmas-red)"
+              style={{ height: `${(b?.skade ?? 0) * 100}%` }}
+            />
+          </div>
           <div className="text-base text-(--neon-green)/80">HØYDE</div>
           <div className="relative w-4 h-28 border-2 border-(--brass) bg-black/60">
             <div

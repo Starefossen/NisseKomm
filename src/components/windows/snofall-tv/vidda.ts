@@ -8,6 +8,7 @@
 
 import {
   ALT_MAX,
+  SKADE_PER_TREFF,
   HUS_PIPE,
   nærPoeng,
   NÆR_M,
@@ -371,6 +372,7 @@ export function utenfor(x: number, z: number, bergen: boolean) {
 export type FriHendelse =
   | "fugl"
   | "krasj"
+  | "skrape"
   | "oppdaget"
   | "låst"
   | "snu"
@@ -406,6 +408,9 @@ export function createFri(o: FriOpts) {
     sakteTil: 0,
     /** After a crash the sled stands still until this time, then flies on slowly. */
     stoppTil: 0,
+    /** Sled damage 0–1 from scrapes; 1 is a crash, a respawn starts it over. */
+    skade: 0,
+    sisteSkade: -Infinity,
     låstTil: 0,
     /** Places found so far, and the last one found or bumped (its name for the HUD). */
     oppdaget: new Set<string>(),
@@ -426,6 +431,7 @@ export function createFri(o: FriOpts) {
     s.x -= fx * 600;
     s.z -= fz * 600;
     s.alt = Math.max(s.alt, høyde(s.x, s.z) + 30) + 60;
+    s.skade = 0;
     ev.push("krasj");
   }
 
@@ -469,6 +475,13 @@ export function createFri(o: FriOpts) {
     } else {
       s.x += fx * s.fart * dt;
       s.z += fz * s.fart * dt;
+      // A steep rise drags the runners along the slope: a scrape.
+      if (fram > s.alt + 25 && s.tid - s.sisteSkade > 0.6) {
+        s.sisteSkade = s.tid;
+        s.skade += SKADE_PER_TREFF;
+        if (s.skade >= 1) krasj(ev, fx, fz);
+        else ev.push("skrape");
+      }
       if (fram > s.alt) s.alt += (fram - s.alt) * Math.min(1, dt * 4);
     }
     s.alt += inn.climb * KLATRE * dt;
