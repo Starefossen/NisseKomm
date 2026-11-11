@@ -27,6 +27,7 @@ import {
   landingTekst,
   pakkenavn,
   rekkeMult,
+  SPILLERE,
   utfordringStatus,
   type Hendelse,
   type Sim,
@@ -184,7 +185,23 @@ export function SledefluktSpill({
   const [assist, setAssist] = useState(true);
   const [fase, setFaseState] = useState<Fase>("start");
   const [hud, setHud] = useState<Hud | null>(null);
-  const [beste, setBeste] = useState(() => GameEngine.getSledeResultater());
+  const [alle, setAlle] = useState(() => GameEngine.getSledeResultater());
+  // Who is flying: their own bells and best show on the start and result screens.
+  const [spiller, setSpillerState] = useState<string | null>(() => {
+    const s = GameEngine.getSledeSpiller();
+    return s && (SPILLERE as readonly string[]).includes(s) ? s : null;
+  });
+  const spillerRef = useRef(spiller);
+  const setSpiller = (n: string) => {
+    SoundManager.playSound("click");
+    spillerRef.current = n;
+    setSpillerState(n);
+    GameEngine.setSledeSpiller(n);
+  };
+  const beste = useMemo(
+    () => (spiller ? GameEngine.getSledeResultaterFor(spiller) : alle),
+    [spiller, alle],
+  );
   const [touchHint, setTouchHint] = useState(false);
   const [melding, setMelding] = useState<Melding | null>(null);
   const [pluss, setPluss] = useState<Melding | null>(null);
@@ -519,7 +536,13 @@ export function SledefluktSpill({
           const b = sim.s.ferdig
             ? bjeller(sim.s.varder, sim.s.varderTotalt, sim.s.krasj)
             : 0;
-          const saved = GameEngine.recordSledeResultat(e.id, sim.s.poeng, b);
+          const saved = GameEngine.recordSledeResultat(
+            e.id,
+            sim.s.poeng,
+            b,
+            spillerRef.current,
+            sim.s.utfordringKlart ? day : undefined,
+          );
           setResultat({
             poeng: sim.s.poeng,
             bjeller: b,
@@ -536,7 +559,7 @@ export function SledefluktSpill({
             pakkebom: sim.s.pakkebom,
             leveringKlart: sim.s.leveringKlart,
           });
-          setBeste(GameEngine.getSledeResultater());
+          setAlle(GameEngine.getSledeResultater());
           setFase(sim.s.ferdig ? "slutt" : "tapt");
         }
       } else if (faseRef.current === "start") {
@@ -1185,6 +1208,19 @@ export function SledefluktSpill({
                 <div className="text-sm opacity-70 leading-none">
                   IQs sledesimulator
                 </div>
+                <div className="flex gap-1 justify-center items-center text-base">
+                  <span className="opacity-70">HVEM FLYR?</span>
+                  {SPILLERE.map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      onClick={() => setSpiller(n)}
+                      className={`min-h-11 px-3 border-2 leading-none cursor-pointer ${n === spiller ? "border-(--gold) bg-(--gold) text-black" : "border-(--neon-green)/50"}`}
+                    >
+                      {n.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
                 <div className="flex flex-wrap gap-1 justify-center">
                   {åpne.map((e) => (
                     <button
@@ -1201,6 +1237,18 @@ export function SledefluktSpill({
                   ))}
                 </div>
                 <div className="text-base leading-tight">«{etappe.intro}»</div>
+                <div className="text-sm opacity-80 tabular-nums leading-tight">
+                  {SPILLERE.map((n) => {
+                    const r = GameEngine.getSledeResultaterFor(n)[etappe.id];
+                    return (
+                      <span key={n} className="mx-1">
+                        {n.toUpperCase()} {r ? r.poeng : "–"}{" "}
+                        {bjelletegn(r?.bjeller ?? 0)}
+                        {r?.utfordringDag === day ? " ✓ UTFORDRING" : ""}
+                      </span>
+                    );
+                  })}
+                </div>
                 <div className="text-sm opacity-70 tabular-nums leading-tight">
                   ● {krav[0]} ringer · ●● {krav[1]} · ●●● {krav[2]} og ingen
                   krasj
@@ -1302,7 +1350,9 @@ export function SledefluktSpill({
                     : "IQ KOBLER INN NØDBREMSEN"}
                 </div>
                 <div className="text-lg tabular-nums leading-tight">
-                  POENG {resultat.poeng} · BESTE {resultat.beste}
+                  POENG {resultat.poeng} ·{" "}
+                  {spiller ? `${spiller.toUpperCase()}S ` : ""}BESTE{" "}
+                  {resultat.beste}
                 </div>
                 <dl className="grid grid-cols-[auto_auto_auto_auto] gap-x-3 gap-y-0 text-left text-base leading-tight tabular-nums mx-auto w-fit">
                   {(

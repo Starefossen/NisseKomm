@@ -239,6 +239,31 @@ describe("GameEngine.recordSledeResultat", () => {
       muren: { poeng: 1200, bjeller: 1 },
     });
   });
+
+  it("keeps a best per player beside the family's, with the day the challenge was cleared", () => {
+    expect(GameEngine.recordSledeResultat("tundra", 800, 2, "Håkon")).toEqual({
+      poeng: 800,
+      bjeller: 2,
+    });
+    GameEngine.recordSledeResultat("tundra", 1500, 1, "Kristian", 9);
+    // A worse run that clears today's challenge keeps the best but notes the day.
+    expect(
+      GameEngine.recordSledeResultat("tundra", 100, 0, "Håkon", 10),
+    ).toEqual({ poeng: 800, bjeller: 2, utfordringDag: 10 });
+    expect(GameEngine.getSledeResultaterFor("Håkon")).toEqual({
+      tundra: { poeng: 800, bjeller: 2, utfordringDag: 10 },
+    });
+    expect(GameEngine.getSledeResultaterFor("Kristian").tundra.poeng).toBe(
+      1500,
+    );
+    expect(GameEngine.getSledeResultaterFor(null)).toEqual({});
+    expect(GameEngine.getSledeResultater().tundra).toEqual({
+      poeng: 800,
+      bjeller: 2,
+    });
+    GameEngine.setSledeSpiller("Håkon");
+    expect(GameEngine.getSledeSpiller()).toBe("Håkon");
+  });
 });
 
 describe("rekke og nære på", () => {

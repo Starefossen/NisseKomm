@@ -289,6 +289,9 @@ export const ETAPPER: readonly SledeEtappe[] = [
 
 export const etapperFor = (day: number) => ETAPPER.filter((e) => day >= e.dag);
 
+/** The two pilots with their own high scores (Hanna, 5, flies on a brother's name). */
+export const SPILLERE = ["Kristian", "Håkon"] as const;
+
 export type TingType =
   | "varde"
   | "tre"
