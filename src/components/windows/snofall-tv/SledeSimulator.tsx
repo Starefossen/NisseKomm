@@ -799,8 +799,11 @@ export function SledeSimulator({ day }: { day: number }) {
     };
   }, []);
 
-  // Touch: left half slides the course, right half the altitude; several fingers at once.
-  const pointers = useRef(new Map<number, "kurs" | "høyde">());
+  // Touch: left half steers, right half sets altitude; several fingers at once.
+  // Each finger is a stick centred where it landed, so no spot on the glass is «straight».
+  const pointers = useRef(
+    new Map<number, { zone: "kurs" | "høyde"; x0: number; y0: number }>(),
+  );
   const onPointer = (ev: ReactPointerEvent<HTMLDivElement>) => {
     const el = ev.currentTarget;
     const r = el.getBoundingClientRect();
@@ -808,23 +811,28 @@ export function SledeSimulator({ day }: { day: number }) {
     const ny = (ev.clientY - r.top) / r.height;
     if (ev.type === "pointerdown") {
       el.setPointerCapture(ev.pointerId);
-      pointers.current.set(ev.pointerId, nx < 0.5 ? "kurs" : "høyde");
+      pointers.current.set(ev.pointerId, {
+        zone: nx < 0.5 ? "kurs" : "høyde",
+        x0: nx,
+        y0: ny,
+      });
       if (ev.pointerType !== "mouse") setTouchHint(true);
     }
-    const zone = pointers.current.get(ev.pointerId);
-    if (!zone) return;
+    const p = pointers.current.get(ev.pointerId);
+    if (!p) return;
     if (ev.type === "pointerup" || ev.type === "pointercancel") {
       pointers.current.delete(ev.pointerId);
       // Another finger may still hold this zone; it sets the value on its next move.
-      if ([...pointers.current.values()].includes(zone)) return;
-      if (zone === "kurs") touch.current.steer = 0;
+      for (const q of pointers.current.values()) if (q.zone === p.zone) return;
+      if (p.zone === "kurs") touch.current.steer = 0;
       else touch.current.climb = 0;
       return;
     }
+    // Full deflection ~1/8 of the width sideways, ~1/5 of the height up or down.
     const dead = (v: number) =>
-      Math.abs(v) < 0.12 ? 0 : Math.max(-1, Math.min(1, v));
-    if (zone === "kurs") touch.current.steer = dead((nx - 0.25) / 0.18);
-    else touch.current.climb = dead((0.5 - ny) / 0.28);
+      Math.abs(v) < 0.08 ? 0 : Math.max(-1, Math.min(1, v));
+    if (p.zone === "kurs") touch.current.steer = dead((nx - p.x0) / 0.12);
+    else touch.current.climb = dead((p.y0 - ny) / 0.2);
   };
 
   const velg = (e: SledeEtappe) => {
@@ -862,10 +870,10 @@ export function SledeSimulator({ day }: { day: number }) {
       {touchHint && fase === "spiller" && (
         <>
           <div className="absolute bottom-2 left-3 text-(--neon-green)/40 text-base pointer-events-none">
-            ← → KURS
+            DRA ← → KURS
           </div>
-          <div className="absolute bottom-2 right-3 text-(--neon-green)/40 text-base pointer-events-none">
-            ▲ ▼ HØYDE
+          <div className="absolute bottom-2 right-20 text-(--neon-green)/40 text-base pointer-events-none">
+            DRA ▲ ▼ HØYDE
           </div>
         </>
       )}
