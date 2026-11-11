@@ -14,6 +14,7 @@ import merker from "@/data/merker.json";
 import videoer from "@/data/julius_videoer.json";
 import { TIDBITS } from "@/lib/tidbits";
 import { KAPITLER } from "@/components/windows/nissespill/kapitler";
+import { ETAPPER } from "@/components/windows/snofall-tv/slede";
 import type { FilNode } from "@/types/innhold";
 
 const quests = getAllOppdrag();
@@ -126,6 +127,9 @@ for (const k of KAPITLER) {
     JSON.stringify(k, (_, v) => (typeof v === "number" ? undefined : v)),
   );
 }
+
+// Sledesimulator: stage name and IQ's intro show on the start screen from the stage's day.
+for (const e of ETAPPER) add(e.dag, `slede ${e.id}`, `${e.navn} ${e.intro}`);
 
 const pattern = (code: string) =>
   /^\d+$/.test(code)

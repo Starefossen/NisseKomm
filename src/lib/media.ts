@@ -160,6 +160,8 @@ export const MEDIA_GROUPS = [
     prefix: "audio/rampenissen/",
   },
   { id: "tv", title: "TV-looper", prefix: "video/tv/" },
+  // Before stills: feed/slede-* are game art, not camera stills.
+  { id: "slede", title: "Sledesimulator", prefix: "feed/slede-" },
   { id: "stills", title: "Kamerabilder", prefix: "feed/" },
   { id: "spill", title: "Nissespill", prefix: "spill/" },
   { id: "music", title: "Musikk", prefix: "music/" },

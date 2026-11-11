@@ -22,6 +22,7 @@ describe("manifest groups", () => {
       "julius",
       "rampenissen",
       "tv",
+      "slede",
       "stills",
       "spill",
       "music",
