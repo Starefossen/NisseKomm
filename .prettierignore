@@ -21,3 +21,4 @@ coverage
 assets/out/
 assets/locations/**/*.json
 .claude/
+assets/INVENTAR.md
