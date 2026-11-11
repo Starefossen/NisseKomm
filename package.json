@@ -8,7 +8,7 @@
     "icons": "node -e \"require('fs').cpSync('node_modules/pixelarticons/svg','public/icons',{recursive:true})\"",
     "postinstall": "pnpm icons",
     "prebuild": "pnpm icons",
-    "check": "tsc --noEmit && eslint . && knip && prettier --write --list-different . && jest --silent",
+    "check": "tsc --noEmit && eslint . && knip && prettier --check . && jest --silent",
     "dev": "next dev",
     "format": "prettier --write --list-different .",
     "format:check": "prettier --check .",
