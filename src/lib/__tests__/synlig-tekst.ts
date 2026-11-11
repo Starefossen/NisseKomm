@@ -20,6 +20,7 @@ import {
   pakkenavn,
 } from "@/components/windows/snofall-tv/slede";
 import type { FilNode } from "@/types/innhold";
+import { OPPLASINGER, puffTekst } from "@/lib/opplasinger";
 
 export const quests = getAllOppdrag();
 
@@ -63,6 +64,19 @@ const alerts = statisk.daily_alerts as Array<{
 }>;
 for (const a of alerts) {
   add(a.etterKode ? a.day + 1 : a.day, `dag ${a.day} varsel`, a.tekst);
+}
+
+// Unlock alerts, banners and nudges (lib/opplasinger.ts); nudges only follow a solved code
+for (const o of OPPLASINGER) {
+  const fra = o.etterKode ? o.dag + 1 : o.dag;
+  add(fra, `opplåsing dag ${o.dag} ${o.vindu}`, o.tekst);
+  add(fra, `opplåsing dag ${o.dag} ${o.vindu} varsel`, o.varsel);
+  for (const n of [2, 3, 4] as const)
+    add(
+      o.dag + 1,
+      `opplåsing dag ${o.dag} ${o.vindu} puff ${n}`,
+      puffTekst(o, n) ?? undefined,
+    );
 }
 
 const challengeDay = new Map(

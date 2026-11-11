@@ -41,6 +41,7 @@ import { findFileNode } from "./utils/file-tree-utils";
 import {
   convertDailyAlerts,
   sortAlertsByPriority,
+  generateAlertTimestamp,
 } from "./generators/alert-generator";
 import {
   getAllSymbols,
@@ -60,6 +61,15 @@ import {
   DecryptionSymbol,
 } from "@/types/innhold";
 import statiskInnhold from "@/data/statisk_innhold.json";
+import {
+  OPPLASINGER,
+  nivaa,
+  puffTekst,
+  settNokkel,
+  type Nivaa,
+  type Opplasing,
+  type OpplasingVindu,
+} from "./opplasinger";
 
 const ALL_QUESTS = getAllQuests();
 
@@ -356,6 +366,32 @@ export class GameEngine {
 
   static markIntroSeen(id: IntroId): void {
     StorageManager.markIntroSeen(id);
+  }
+
+  /** Nudge level for one unlock today (lib/opplasinger.ts). */
+  static getOpplasingNivaa(o: Opplasing, day = getCurrentDay()): Nivaa {
+    return nivaa(
+      o,
+      day,
+      this.isQuestCompleted(day),
+      this.isIntroSeen(settNokkel(o)),
+    );
+  }
+
+  /** Highest nudge level among a window's unlocks (home tile). */
+  static getNyttNivaa(vindu: OpplasingVindu, day = getCurrentDay()): Nivaa {
+    if (getCurrentMonth() !== 12) return 0;
+    return OPPLASINGER.filter((o) => o.vindu === vindu).reduce<Nivaa>(
+      (m, o) => Math.max(m, this.getOpplasingNivaa(o, day)) as Nivaa,
+      0,
+    );
+  }
+
+  /** Opening a window counts as having seen everything unlocked in it so far. */
+  static markOpplasingerSett(vindu: OpplasingVindu, day = getCurrentDay()) {
+    OPPLASINGER.filter((o) => o.vindu === vindu && o.dag <= day).forEach((o) =>
+      this.markIntroSeen(settNokkel(o)),
+    );
   }
 
   /** Adventure (Ugleposten) save; null until the first move. */
@@ -1062,6 +1098,34 @@ export class GameEngine {
     ).daily_alerts.filter((a) => !a.etterKode || completedDays.has(a.day));
 
     alerts.push(...convertDailyAlerts(dailyAlertsData, day));
+
+    // Unlock alerts on their day, then at most one nudge per unopened item today
+    const unlocks = OPPLASINGER.filter((o) => o.varsel).map((o) => ({
+      day: o.dag,
+      tekst: o.varsel!,
+      type: "info" as const,
+      etterKode: o.etterKode,
+    }));
+    alerts.push(
+      ...convertDailyAlerts(
+        unlocks.filter((a) => !a.etterKode || completedDays.has(a.day)),
+        day,
+      ),
+    );
+    // One nudge a day in total (the stalest item), below the day's story lines
+    const puff = OPPLASINGER.map((o) =>
+      puffTekst(
+        o,
+        nivaa(o, day, completedDays.has(day), this.isIntroSeen(settNokkel(o))),
+      ),
+    ).find(Boolean);
+    if (puff)
+      alerts.push({
+        tekst: puff,
+        type: "info",
+        tidspunkt: generateAlertTimestamp(),
+        day,
+      });
 
     // Newest day first, priority as tiebreaker
     sortAlertsByPriority(alerts);

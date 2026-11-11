@@ -8,18 +8,8 @@ import { SoundManager } from "@/lib/sounds";
  * nothing here gives letters, numbers or hints.
  */
 
-type GameId = "kretslop" | "sorterer" | "slede" | "sentrifuge" | "porten";
-
-// Storyboard day each toy first appears (8 kretskort and slede, 16 sorterer, 19 sentrifuge, 21 zapper).
-const GAMES: [GameId, string, number][] = [
-  ["kretslop", "KRETSLØP", 8],
-  ["sorterer", "SORTERER", 16],
-  ["slede", "SLEDESIMULATOR", 8],
-  ["sentrifuge", "SENTRIFUGE", 19],
-  ["porten", "PORTEN", 21],
-];
-
-export const gamesFor = (day: number) => GAMES.filter(([, , d]) => day >= d);
+import { gamesFor, type GameId } from "./hud";
+export { gamesFor };
 
 const btn = "min-h-11 px-2 border text-base font-bold cursor-pointer";
 const click = () => SoundManager.playSound("click");
