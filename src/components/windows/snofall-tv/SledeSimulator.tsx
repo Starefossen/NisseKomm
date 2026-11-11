@@ -292,13 +292,11 @@ export function SledeSimulator({
         case "bjelle":
           l?.bjelle();
           flash = 0.25;
-          say(`+${sim.s.tid < sim.s.sprangTil ? 200 : 100}`);
           break;
         case "bom":
           break;
         case "stjerne":
           l?.stjerne();
-          say("+25", "#ffe066");
           break;
         case "band":
           l?.stjerne();
@@ -392,7 +390,9 @@ export function SledeSimulator({
           ),
           sprang: k.S,
         };
+        const før = sim.s.poeng;
         for (const h of sim.step(dt, inn)) hendelse(h, sim);
+        if (sim.s.poeng > før) say(`+${sim.s.poeng - før}`);
         lyd.current?.setVind(sim.s.fart / e.fart, sim.s.vind);
         if (sim.s.ferdig || sim.s.tapt) {
           lyd.current?.stop();
