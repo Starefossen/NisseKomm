@@ -91,6 +91,17 @@ describe("ServerSyncAdapter", () => {
     expect((await store.getState())[KEY]).toEqual([6]);
   });
 
+  it("dropping an object key is sent as replace", async () => {
+    const a = new ServerSyncAdapter();
+    await a.start();
+    a.set("nissekomm-slede", { tundra: 1, muren: 2 });
+    await flush(a);
+    const v = Number((await store.getState())[VERSION_KEY] ?? 0);
+    a.set("nissekomm-slede", { tundra: 1 });
+    await flush(a);
+    expect((await store.getState())[VERSION_KEY]).toBe(v + 1);
+  });
+
   it("a reset on one screen empties another screen with stale data", async () => {
     const a = new ServerSyncAdapter();
     const b = new ServerSyncAdapter();
