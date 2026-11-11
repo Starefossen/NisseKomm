@@ -93,9 +93,9 @@ export function Kalender({
   return (
     <>
       <RetroWindow title="KALENDER" onClose={onClose}>
-        <div className="p-6 space-y-4 h-full overflow-y-auto">
+        <div className="p-4 space-y-3 h-full overflow-y-auto">
           {/* Header */}
-          <div className="flex items-center gap-4 pb-4 border-b-4 border-(--neon-green)/30">
+          <div className="flex items-center gap-4 pb-3 border-b-4 border-(--neon-green)/30">
             <Icons.Calendar size={32} color="gold" />
             <div>
               <div className="text-2xl font-bold tracking-wider">
@@ -108,7 +108,7 @@ export function Kalender({
           </div>
 
           {/* Calendar grid - responsive (3/4/6 columns) */}
-          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-3 p-2 md:p-4 pb-8">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3 p-2">
             {Array.from({ length: 24 }, (_, i) => i + 1).map((day) => {
               const status = getDayStatus(day);
 
@@ -119,7 +119,7 @@ export function Kalender({
                   disabled={status === "locked"}
                   aria-label={`${day}. desember, ${STATUS_LABEL[status]}`}
                   className={`
-                    aspect-square min-h-12 flex flex-col items-center justify-center p-1 md:p-2
+                    aspect-square landscape:aspect-[3/2] min-h-12 flex flex-col items-center justify-center p-1 md:p-2
                     border-4 font-bold text-lg md:text-xl lg:text-2xl transition-all relative
                     ${
                       status === "locked"
@@ -159,7 +159,7 @@ export function Kalender({
           </div>
 
           {/* Legend */}
-          <div className="flex items-center justify-center gap-6 text-base py-4 border-t-2 border-(--neon-green)/30">
+          <div className="flex items-center justify-center gap-6 text-base py-2 border-t-2 border-(--neon-green)/30">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 border-2 border-(--gray) bg-black/30" />
               <span className="opacity-70">Låst</span>
