@@ -426,7 +426,7 @@ describe("Nissespill: motor", () => {
   it("kapittel 3 kan spilles gjennom", () => {
     spill(KAPITLER[2], [
       ["kontor", "lysene"],
-      ["?", "hjerterud", "Rampenissen vil gi et lys til han i grotten."],
+      ["?", "hjerterud", "Rampenissen vil gi et lys til det som er i grotta."],
       ["?", "hjerterud", "Vi skal passe på den."],
       ["kontor", "tekoppen"],
       ["+", "stearinlys", "tesil"],
@@ -437,15 +437,16 @@ describe("Nissespill: motor", () => {
       ["grotten", "sokkelen", "krystallskaar"],
       ["!", "grotten/lyshylla", "lysveien"],
       ["!", "grotten/knottene", "stemme"],
-      ["?", "radioen", "God jul fra Landås."],
-      ["?", "radioen", "Vi kommer tilbake."],
+      ["?", "radioen", "Skal vi si noe?"],
+      ["?", "radioen", "Vi lar lyset stå."],
+      ["?", "radioen", "Vi går. Lyset blir."],
     ]);
   });
 
   it("kapittel 3: lanterna kan stå på sokkelen før skåret er løst", () => {
     spill(KAPITLER[2], [
       ["kontor", "lysene"],
-      ["?", "hjerterud", "Rampenissen vil gi et lys til han i grotten."],
+      ["?", "hjerterud", "Rampenissen vil gi et lys til det som er i grotta."],
       ["?", "hjerterud", "Vi skal passe på den."],
       ["kontor", "tekoppen"],
       ["+", "stearinlys", "tesil"],
@@ -455,8 +456,8 @@ describe("Nissespill: motor", () => {
       ["grotten", "sokkelen", "krystallskaar"],
       ["!", "grotten/lyshylla", "lysveien"],
       ["!", "grotten/knottene", "stemme"],
-      ["?", "radioen", "Hei. Vi vet at du er der."],
-      ["?", "radioen", "Vi kommer tilbake."],
+      ["?", "radioen", "Vi lar lyset stå."],
+      ["?", "radioen", "Vi går. Lyset blir."],
     ]);
   });
 

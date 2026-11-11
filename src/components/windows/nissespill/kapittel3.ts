@@ -1,15 +1,19 @@
 /**
- * Kapittel 3: «Gufset fra dypet» (dag 16). The children know who sits in
- * Krystallgrotten (M4, day 15) and Rampenissen wants to bring him a light, not
- * a fight. The chapter ends with a greeting and no answer: the first real
- * answer belongs to the main story (day 17). Written for Håkon (9) and Kristian
- * (12): nobody tells them which crystals pass light on; the lantern held to the
- * clear shelf shows it and thaws the shard loose; the lantern may also stand on
- * the pedestal first (en_av), its light reaches the lowest crystal. Two
- * mini-puzzles: turn the clear crystals so the light runs shelf by shelf to the
- * roof (route), and set the radio dial to the number scratched into the
- * pedestal (radio). Julius' magnifier is a red herring. Side story only: no
- * clues or codes for the daily puzzles.
+ * Kapittel 3: «Gufset fra dypet» (dag 16). The children know what sits in
+ * Krystallgrotten (M4, day 15: Kulde is «det», the Vintervokter IQ built) and
+ * Rampenissen wants to leave it a light. The chapter stays a step behind the
+ * main story: one small lantern lights one shelf, nobody speaks to it, nothing
+ * answers. The gate (day 21), the light from above (day 23) and the thanks
+ * (day 24) belong to Julius. Written for Håkon (9) and Kristian (12): nobody
+ * tells them which crystals pass light on; the lantern held to the clear shelf
+ * shows it and thaws the shard loose; the lantern may also stand on the
+ * pedestal first (en_av), its light reaches the lowest crystal. Two
+ * mini-puzzles: turn the clear crystals so the light runs along the lowest
+ * shelf (route), and set the old radio to 85,0 MHz, the number scratched into
+ * the pedestal, to hear the humming clearly (radio; listening only). Julius'
+ * magnifier is a red herring. Hjerterud runs the café and is only visiting
+ * with buns; Winter is the secretary. Side story only: no clues or codes for
+ * the daily puzzles.
  * Rampenissen speaks nordlandsk, everyone else bokmål.
  *
  * Images: reuses feed/julius-kontor.jpg and feed/kulde-grotte.png. New:
@@ -31,15 +35,15 @@ export const KAPITTEL_3: Kapittel = {
   slutt: "k3_ferdig",
   intro: [
     R +
-      "«Dokker. Hør. Æ har tenkt. Det skjer ikkje ofte, så hør godt etter. Heilt sia æ hørte sukket i isen har æ tenkt. Og no veit vi kem han e, han der nede i grotta. IQ bygde han. Og så glømte alle han. Alle. I mange år.»",
+      "«Dokker. Hør. Æ har tenkt. Det skjer ikkje ofte, så hør godt etter. Heilt sia æ hørte sukket i isen har æ tenkt. Og no veit vi ka det e, det der nede i grotta. IQ bygde det. Og så glømte alle det. Alle. I mange år.»",
     R +
-      "«Æ vil ikkje slåss med han. Æ vil gi han nåkka. Et lys. Grotta e det mørkaste stedet i heile Snøfall, mørkare enn under senga mi. Floke sitt hos Julius no. Julius e ute, men Hjerterud e der med bolla. Ho veit ting.»",
+      "«Æ vil ikkje skremme det. Æ vil gi det nåkka. Et lys. Grotta e det mørkaste stedet i heile Snøfall, mørkare enn under senga mi. Floke sitt hos Julius no. Julius e ute, men Hjerterud e der med bolla. Ho veit ting.»",
     R +
-      "«Problemet: det trekk nåkka forferdelig der nede. Alt som brenn, blås ut. Vi treng et lys som trekken ikkje tar, og det må nå heile grotta. Og så sei vi hei. Bare det. Æ klare å sei bare det. Trur æ.»",
+      "«Problemet: det trekk nåkka forferdelig der nede. Alt som brenn, blås ut. Vi treng et lys som trekken ikkje tar, og det må nå bort te hylla der det bor. Og så går vi igjen. Stille. Æ klare å vær stille. Trur æ.»",
   ],
   utro:
     R +
-    "«Han svarte ikkje. Men han slo ikkje av lyset heller. Det står der no, nede i mørket, og krystallan sende det videre. Hjerterud sei det e det snillaste æ har gjort. Æ sa det va dokker. Ho sa ‘ja, det òg’. Neste gang ska nån reise. Æ sei ikkje meir. Over og ut!»",
+    "«Det merka oss ikkje. Trur æ. Men lyset står der no, nede i mørket, på ei hylle av hundre, og krystallan sende det bortover. Hjerterud sei det e det snillaste æ har gjort. Æ sa det va dokker. Ho sa ‘ja, det òg’. Resten e ikkje vår jobb. Neste gang ska nån reise. Æ sei ikkje meir. Over og ut!»",
   gjenstander: {
     stearinlys: {
       id: "stearinlys",
@@ -78,12 +82,12 @@ export const KAPITTEL_3: Kapittel = {
   puslespill: {
     lysveien: {
       type: "rute",
-      tittel: "Lyset gjennom hylla",
+      tittel: "Lyset langs hylla",
       flagg: "krystall_satt",
       tekst:
-        "Den siste krystallen vrir seg på plass, og lyset hopper. Hylle etter hylle, helt opp til taket. Hele grotta lyser gull og blått. " +
+        "Den siste krystallen vrir seg på plass, og lyset hopper. Krystall etter krystall, bortover den nederste hylla, helt til veggen. Én hylle av hundre lyser gull. Resten er mørkt. " +
         R +
-        "«... Æ har ikkje ord. Æ har bestandig ord, sei Hjerterud. Men ikkje no.»",
+        "«Ei hylle. Det e ikkje heile grotta. Men det e ei hylle meir enn i går. Resten må nån andre ta.»",
       rutenett: ["L.M", "L|L", "S.L"],
     },
     stemme: {
@@ -91,15 +95,15 @@ export const KAPITTEL_3: Kapittel = {
       tittel: "Skiva på radioen",
       flagg: "radio_stilt",
       tekst:
-        "880. Susen glir bort, og summingen kommer gjennom høyttaleren. Dyp og rolig, som noen som nynner og nettopp har merket at døra sto åpen. " +
+        "85,0. Susen glir bort, og summingen kommer gjennom høyttaleren. Dyp og rolig, som noen som nynner for seg selv og ikke vet at døra står på gløtt. " +
         R +
-        "«No hører han oss. Og vi hører han. Æ e ikkje klar. Æ e klar. Æ e begge deler.»",
-      min: 500,
-      max: 1600,
-      maal: 880,
-      toleranse: 10,
-      steg: 5,
-      enhet: "kHz",
+        "«Det nynne. Det har ikkje merka oss. Bra. Vi e ikkje her for å bli sett. Vi e her for å la nåkka stå igjen.»",
+      min: 80,
+      max: 100,
+      maal: 85.0,
+      toleranse: 0.2,
+      steg: 0.1,
+      enhet: "MHz",
     },
   },
   kombinasjoner: [
@@ -118,7 +122,7 @@ export const KAPITTEL_3: Kapittel = {
       id: "kontor",
       navn: "Julius' kontor",
       bilde: "spill/julius-kontor.jpg",
-      utganger: [{ til: "grotten", navn: "Ut vinduet og ned i grotta" }],
+      utganger: [{ til: "grotten", navn: "Fly til grotta under Nordtoppen" }],
       // On the desk between the window candles and the open diary
       fjaer: { x: 72, y: 64, w: 4, h: 6 },
       hotspots: [
@@ -135,7 +139,7 @@ export const KAPITTEL_3: Kapittel = {
           navn: "Lampa",
           rect: { x: 36, y: 14, w: 7, h: 14 },
           smart: "se",
-          se: "Ei liten vegglampe med skjerm. Den lyser varmt og gult, akkurat nok til å lese julekort ved. Hjerterud har lest fire hundre. Hun har to hundre igjen og én kopp te, og teen er kald.",
+          se: "Ei liten vegglampe med skjerm. Den lyser varmt og gult, akkurat nok til å lese brev ved. Julius leser her om kveldene. Hjerterud sier han leser for lenge. Hun har rett, og han vet det.",
         },
         {
           id: "bokhylla",
@@ -201,8 +205,8 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 48, y: 57, w: 17, h: 16 },
           smart: "snakk",
           snakk: "hjerterud",
-          se: "Hjerterud har satt seg i Julius' stol med en bunke julekort og en penn. Hun skriver fort og pent. Ved siden av står en kopp te som har sluttet å ryke for lenge siden. Hun har ikke merket det. Hun merker alt annet.",
-          bruk: "Du prikker Hjerterud på armen. Hun ser opp fra julekortene og smiler. «Ja, Floke?» Hun visste at du kom. Hun vet alltid.",
+          se: "Hjerterud sitter i den myke stolen ved pulten med en kurv boller på fanget. Bollene er til Julius. Han er ikke her. Hun venter. Ved siden av står en kopp te som har sluttet å ryke for lenge siden. Hun har ikke merket det. Hun merker alt annet.",
+          bruk: "Du prikker Hjerterud på armen. Hun ser opp fra bollene og smiler. «Ja, Floke? Har du spist?» Hun visste at du kom. Hun vet alltid.",
         },
         {
           id: "brevbunken",
@@ -309,7 +313,7 @@ export const KAPITTEL_3: Kapittel = {
       id: "grotten",
       navn: "Krystallgrotten",
       bilde: "spill/kulde-grotte.jpg",
-      utganger: [{ til: "kontor", navn: "Opp igjen til kontoret" }],
+      utganger: [{ til: "kontor", navn: "Fly tilbake til kontoret" }],
       // On the cave floor between the big crystal and the pedestal
       fjaer: { x: 22, y: 88, w: 4, h: 6 },
       hotspots: [
@@ -338,7 +342,7 @@ export const KAPITTEL_3: Kapittel = {
             R +
             "«Ikkje gi dem fleire ord. Dem samle på sånt.»",
           se: "Hyller skåret rett inn i isen, fulle av krystaller med blå glød. Hver har en liten lapp med tall, skrevet med stø hånd for lenge siden. Noen bygde dette nøye. Noen hadde tid. Noen hadde kanskje for mye tid.",
-          bruk: "Du tar i en blå krystall. Den er kald, tung, og det kjennes som om den drikker lyset ut av øynene dine. Du slipper. Du blunker. Lyset kommer tilbake. Det var på lån.",
+          bruk: "Du tar i en blå krystall. Den er kald og tung, og lyset fra lanterna blir borte i den som i dypt vann. Du slipper. Foten er kald lenge etterpå.",
           feil: {
             tesil_lanterne:
               "Du holder lanterna mot en blå krystall. Lyset forsvinner inn i den og kommer ikke ut igjen. Krystallen gløder litt mer blått, som om den har spist. " +
@@ -388,7 +392,7 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "tok_krystallskaar",
               tekst:
-                "Resten får stå. De holder lyset sammen, hylle for hylle, når de får noe å holde.",
+                "Resten får stå. De holder lyset sammen, krystall for krystall, når de får noe å holde.",
             },
             {
               en_av: [{ hvis: "skaar_loes" }, { hvis: "lys_paa_sokkelen" }],
@@ -408,7 +412,7 @@ export const KAPITTEL_3: Kapittel = {
               uten: "skaar_loes",
               flagg: "skaar_loes",
               tekst:
-                "Du holder lanterna inntil den nederste klare krystallen. Den lyser opp. Og den bak. Og den bak der igjen, helt opp mot taket. Så drypper det: rimet smelter, og skåret løsner. " +
+                "Du holder lanterna inntil den nederste klare krystallen. Den lyser opp. Og den ved siden av. Og den ved siden av der igjen, bortover hylla. Så drypper det: rimet smelter, og skåret løsner. " +
                 R +
                 "«SÅG dokker det? Dem klare SENDE lyset videre! Og skåret e løst! To fluer, ei tesil!»",
             },
@@ -440,11 +444,11 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "krystall_satt",
               tekst:
-                "Hylle etter hylle med klare krystaller, alle tent. Lyset går i sikksakk fra den nederste til den øverste, som en trapp av gull. Noen bygde dette for akkurat dette. Det tok bare noen år.",
+                "Den nederste hylla med klare krystaller, alle tent. Lyset går i sikksakk fra den første til den siste, som en liten trapp av gull. Over den: hylle på hylle i mørket. De får vente. Noen bygde dette for akkurat dette. Det tok bare noen år.",
             },
             {
               tekst:
-                "Den nederste krystallen lyser. Den neste er mørk. Krystallene sitter i små messingringer og kan vris. Hver har to slipte sider, og lyset går bare ut der siden peker. Noen må vri dem så lyset finner veien opp.",
+                "Den første krystallen på den nederste hylla lyser. Den neste er mørk. Krystallene sitter i små messingringer og kan vris. Hver har to slipte sider, og lyset går bare ut der siden peker. Noen må vri dem så lyset finner veien bortover hylla.",
             },
           ],
           bruk: "Lyset står. Du rører ikke en eneste krystall. Floke holder til og med pusten.",
@@ -459,7 +463,7 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "krystall_satt",
               tekst:
-                "Nå som hele grotta lyser, ser du små bokstaver på knottene, slitt ned av fingre for lenge siden. Rørene gløder litt sterkere enn i sted. Det kan være lyset. Det kan være noe annet.",
+                "I lyset fra lanterna og hylla ser du små bokstaver på knottene, slitt ned av fingre for lenge siden. Rørene gløder like svakt som før. Det er ikke noe som har merket noe. Det er bare en radio.",
             },
             {
               hvis: "lys_paa_sokkelen",
@@ -494,14 +498,14 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "radio_stilt",
               tekst:
-                "Nåla står på 880. Summingen kommer rolig ut av høyttaleren. Frosten på skiva har begynt å smelte i en liten ring rundt tallet.",
+                "Nåla står på 85,0. Summingen kommer rolig ut av høyttaleren. Frosten på skiva har begynt å smelte i en liten ring rundt tallet.",
             },
             {
               tekst:
-                "I lyset ser du skiva: tall fra 500 til 1600, og en nål som skjelver mellom dem. Summingen kommer fra rørene, ikke fra høyttaleren. Skiva står ikke der han er. Noen risset et tall i sokkelen for å huske det.",
+                "I lyset ser du skiva: tall fra 80 til 100, og en nål som skjelver mellom dem. Summingen kommer fra rørene, ikke fra høyttaleren. Skiva står ikke der summingen sender fra. Noen risset et tall i sokkelen for å huske det.",
             },
           ],
-          bruk: "Skiva står på 880, og du lar den stå. Han hører dere nå. Det er nok.",
+          bruk: "Skiva står på 85,0, og du lar den stå. Dere har hørt det. Det er nok.",
         },
         {
           id: "sokkelen",
@@ -512,7 +516,7 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "krystall_satt",
               tekst:
-                "Lanterna står på sokkelen med skåret foran, og hele grotta lyser gull og blått. I lyset ser du at noen har risset et tall i steinen ved lanterna, med samme hånd som lappene: «880». Det er ikke mørkt her lenger. Det har det vært lenge.",
+                "Lanterna står på sokkelen med skåret foran, og den nederste hylla lyser gull. I lyset ser du at noen har risset et tall i steinen ved lanterna, med samme hånd som lappene: «85,0». Det er fortsatt mørkt her. Men mindre.",
             },
             {
               hvis: "skaar_satt",
@@ -581,7 +585,7 @@ export const KAPITTEL_3: Kapittel = {
             {
               item: "stearinlys",
               tekst:
-                "Du setter lyset på sokkelen. Trekken tar det med ett pust. Floke flyr opp og tenner det igjen på lyset i vinduskarmen hos Julius, og later som ingenting. " +
+                "Du setter lyset på sokkelen. Trekken tar det med ett pust. Floke flyr hele veien tilbake til kontoret og tenner det igjen på lyset i vinduskarmen, og later som ingenting. " +
                 R +
                 "«Trekken tar alt som står bart. Lyset treng nåkka rundt sæ. Nåkka med hull i, så det får puste.»",
             },
@@ -623,7 +627,7 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "k3_ferdig",
               tekst:
-                "«Så du gjorde det, Floke. Og Rampenissen tenkte det ut selv. Jeg skal skrive det i et julekort. Til ham. Han kommer til å ramme det inn. Han har ikke ramme. Han kommer til å lage en.»",
+                "«Så du gjorde det, Floke. Og Rampenissen tenkte det ut selv. Jeg skal bake ham en bolle med navnet på. Han kommer til å ramme den inn. Han har ikke ramme. Han kommer til å lage en.»",
             },
             {
               hvis: "hjerterud_snakket",
@@ -632,12 +636,12 @@ export const KAPITTEL_3: Kapittel = {
             },
             {
               tekst:
-                "«Å, Floke! Kom inn, kom inn. Julius er ute ved tjernet med IQ, de ser på antenna igjen. Jeg sitter her og skriver julekort for ham. Fire hundre igjen. Hva kan jeg hjelpe med? Si det fort, pennen tørker.»",
+                "«Å, Floke! Kom inn, kom inn. Julius er ute ved tjernet med IQ, de ser på antenna igjen. Jeg kom opp fra kaféen med boller. De blir kalde, og han kommer ikke. Hva kan jeg hjelpe med? Si det fort, teen også.»",
             },
           ],
           valg: [
             {
-              tekst: "Rampenissen vil gi et lys til han i grotten.",
+              tekst: "Rampenissen vil gi et lys til det som er i grotta.",
               neste: "lys",
               flagg: "hjerterud_snakket",
             },
@@ -652,17 +656,17 @@ export const KAPITTEL_3: Kapittel = {
               neste: "lyset",
             },
             {
-              tekst: "Er han farlig, han der nede?",
+              tekst: "Er det farlig, det der nede?",
               hvis: "hjerterud_snakket",
               neste: "farlig",
             },
-            { tekst: "Hva skriver du?", neste: "kort" },
+            { tekst: "Hvorfor sitter du her?", neste: "kort" },
             { tekst: "Ha det, Hjerterud." },
           ],
         },
         lys: {
           tekst:
-            "Hjerterud legger fra seg pennen. «Et lys. Til ham. Det er det snilleste jeg har hørt fra Rampenissen siden han var liten. Men det trekker fra sprekken i taket der nede. Et vanlig lys blåser ut før du er halvveis. Og ett lys er lite i en så stor grotte. Det må nå hyllene.»",
+            "Hjerterud setter fra seg koppen. «Et lys. Til det. Det er det snilleste Rampenissen har funnet på siden han var liten. Men det trekker fra sprekken i taket der nede. Et vanlig lys blåser ut før du er halvveis. Og ett lys er lite i en så stor grotte. Få det bort til hylla, i det minste. Det er der det bor.»",
           rampenissen:
             "«Æ va aldri liten. Æ va kompakt. Æ e fortsatt kompakt.»",
           valg: [
@@ -680,20 +684,20 @@ export const KAPITTEL_3: Kapittel = {
         },
         lyset: {
           tekst:
-            "«Ta ett av lysene i vinduskarmen. Jeg tenner dem for at de som er ute, skal finne hjem. Ett mindre gjør ingen forskjell. Og kanskje er han der nede også en som skal finne hjem. Da er det jo riktig bruk.»",
+            "«Ta ett av lysene i vinduskarmen. Jeg tenner dem for at de som er ute, skal finne hjem. Ett mindre gjør ingen forskjell. Og kanskje er det der nede også noe som skal finne hjem. Da er det jo riktig bruk.»",
           valg: [{ tekst: "Takk." }],
         },
         farlig: {
           tekst:
-            "«Nei. Han er alene. Det er ikke det samme som farlig, selv om det kan høres likt ut gjennom en radio. Alt høres farlig ut gjennom en radio. Også Rampenissen.»",
+            "«Nei. Det er alene. Det er ikke det samme som farlig, selv om det kan høres likt ut gjennom en radio. Alt høres farlig ut gjennom en radio. Også Rampenissen.»",
           rampenissen:
             "«Ho sei det bedre enn mæ. Ho sei alt bedre enn mæ. Æ sei det høgare, det e min ting.»",
           valg: [{ tekst: "Skjønner." }],
         },
         kort: {
           tekst:
-            "«Julekort. Til alle som har skrevet til Julius i år. Han svarer alle, men jeg skriver konvoluttene, for skriften hans ser ut som et reinsdyr har gått over arket. Et reinsdyr som har det travelt.» Hun viser et kort. Det er sant.",
-          valg: [{ tekst: "Lykke til med de fire hundre." }],
+            "«Boller. Julius glemmer å spise når IQ måler noe, og IQ måler alltid noe. Så jeg går opp fra kaféen med en kurv og venter. Winter sier det ikke står i noen instruks. Nei. Det er derfor det virker.» Hun løfter på kluten. Det lukter kardemomme. Det er sant.",
+          valg: [{ tekst: "Lykke til med ventingen." }],
         },
       },
     },
@@ -707,7 +711,7 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "k3_ferdig",
               tekst:
-                "«Floke. Jeg ser lyset herfra. Hele grotta. IQ sa ingenting på fem minutter, og det har aldri skjedd før. Jeg tok tiden.»",
+                "«Floke. Et lys der nede, sier Hjerterud. Ett lite. IQ sa ingenting på fem minutter da jeg fortalte det, og det har aldri skjedd før. Jeg tok tiden.»",
             },
             {
               hvis: "julius_snakket",
@@ -721,7 +725,7 @@ export const KAPITTEL_3: Kapittel = {
           ],
           valg: [
             {
-              tekst: "Rampenissen vil gi et lys til han i grotten.",
+              tekst: "Rampenissen vil gi et lys til det som er i grotta.",
               neste: "lys",
               flagg: "julius_snakket",
             },
@@ -736,7 +740,7 @@ export const KAPITTEL_3: Kapittel = {
         },
         lys: {
           tekst:
-            "Det blir stille i trakten. Så: «Da er han klokere enn jeg var i høst. Ja. Gjør det. Men ett lys blir lite i en så stor grotte. Det må nå lenger enn til sokkelen, ellers ser han bare en prikk, og en prikk har han hatt lenge.»",
+            "Det blir stille i trakten. Så: «Da er han klokere enn jeg var i høst. Ja. Gjør det. Men ett lys blir lite i en så stor grotte. Få det bort til hylla, der krystallene står. Lite er ikke ingenting. Lite er der det begynner.»",
           rampenissen:
             "«Klokere enn Julius. Skriv det ned, nån. Kem som helst. Hjerterud, du har penn!»",
           valg: [
@@ -776,12 +780,12 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "radio_stilt",
               tekst:
-                "Radioen summer gjennom høyttaleren. Hele grotta lyser rundt den. Det er nå eller aldri. Hva sier man til noen som ikke har hørt en stemme på lenge?",
+                "Summingen kommer rolig ut av høyttaleren nå. Dyp og langsom, som noen som nynner for seg selv. Det har ikke merket dere. Det nynner bare. Lanterna lyser på hylla bak.",
             },
             {
               hvis: "krystall_satt",
               tekst:
-                "Radioen summer. Hele grotta lyser rundt den, og i lyset ser du skiva. Nåla står feil. Han hører ikke dere ennå, bare seg selv.",
+                "Radioen summer. Den nederste hylla lyser bak den, og i lyset fra lanterna ser du skiva. Nåla står feil. Du hører bare sus.",
             },
             {
               hvis: "lys_paa_sokkelen",
@@ -795,21 +799,13 @@ export const KAPITTEL_3: Kapittel = {
           ],
           valg: [
             {
-              tekst: "Hei. Vi vet at du er der.",
+              tekst: "Skal vi si noe?",
               hvis: "radio_stilt",
               uten: "hilst",
-              neste: "svar",
-              flagg: "hilst",
+              neste: "ikkje",
             },
             {
-              tekst: "God jul fra Landås.",
-              hvis: "radio_stilt",
-              uten: "hilst",
-              neste: "svar",
-              flagg: "hilst",
-            },
-            {
-              tekst: "Lyset er til deg. Du kan beholde det.",
+              tekst: "Vi lar lyset stå.",
               hvis: "radio_stilt",
               uten: "hilst",
               neste: "svar",
@@ -824,17 +820,23 @@ export const KAPITTEL_3: Kapittel = {
           ],
         },
         stille: {
-          tekst: "Summingen fortsetter. Ingen svarer. Ikke ennå.",
+          tekst: "Summingen fortsetter. Du hører den bare så vidt, bak suset.",
           rampenissen:
-            "«Vent med å snakk. Først lyset, så heile grotta, så skiva på radioen. Og så hilse vi. Han ska SE oss og HØRE oss når vi sei hei. Æ vil ikkje vær en stemme i mørket. Han har nok av dem.»",
+            "«Ikkje rop. Først lyset, så hylla, så skiva på radioen. Så hører vi. Bare hører. Vi e på besøk.»",
+          valg: [{ tekst: "Greit." }],
+        },
+        ikkje: {
+          tekst: "Summingen fortsetter, dyp og rolig. Den vet ikke at dere er her.",
+          rampenissen:
+            "«Nei. Ikkje i dag. Det har ikkje hørt en stemme på mange år, og den første ska ikkje vær mi. La det få lyset først. Ord kjem seinare, fra nån som e flinkare te det enn mæ.»",
           valg: [{ tekst: "Greit." }],
         },
         svar: {
           tekst:
-            "Summingen stopper. Ett sekund. To. Tre. Så starter den igjen, litt dypere og litt roligere enn før. Ingen svarer. Men ingen slår av lyset heller.",
+            "Dere står stille. Summingen fortsetter, dyp og rolig. Lanterna lyser på den nederste hylla, og krystallene sender lyset bortover til veggen. Ingenting forandrer seg. Og likevel.",
           rampenissen:
-            "«Han hørte oss. Æ veit det. Det der va ... det va nok for i dag. Vi kjem tilbake. Æ sa det ikkje så høgt no. Det e nytt.»",
-          valg: [{ tekst: "Vi kommer tilbake.", flagg: "k3_ferdig" }],
+            "«Det merka oss ikkje. Det e greit. Lyset e ikkje for at det ska sjå oss. Det e for at det ikkje ska vær heilt mørkt der nede. Vi går no. Æ sa det ikkje så høgt. Det e nytt.»",
+          valg: [{ tekst: "Vi går. Lyset blir.", flagg: "k3_ferdig" }],
         },
       },
     },
@@ -860,7 +862,7 @@ export const KAPITTEL_3: Kapittel = {
       kjent: { hvis: "tok_tesil" },
       tips: [
         R +
-          "«Lys i vinduskarmen på kontoret, tesil i lomma. Sett lyset INNI tesilen, så har vi ei lanterne. Og nede i grotta: nån av krystallan gjør nåkka med lys. Prøv dokker fram, men ikkje på de blå.»",
+          "«Lys i vinduskarmen på kontoret, tesil i lomma. Sett lyset INNI tesilen, så har vi ei lanterne. Og nede i grotta: nån av krystallan gjør nåkka med lys. Prøv dokker fram, men ikkje på dem blå.»",
         R +
           "«Nederst på den klare hylla sitt et skår fast i rim. Rim e is, og vi har ei varm lanterne. Hold ho inntil hylla, eller la ho lyse på hylla fra sokkelen.»",
         R +
@@ -874,7 +876,7 @@ export const KAPITTEL_3: Kapittel = {
       kjent: { hvis: "tok_tesil" },
       tips: [
         R +
-          "«Lanterna må stå i ro et sted midt i grotta, der trekken ikkje tar ho og ho ser begge hyllene.»",
+          "«Lanterna må stå i ro et sted midt i grotta, der trekken ikkje tar ho og ho ser begge hyllan.»",
         R + "«Steinen med snø på, foran radioen. Den e som et bord.»",
         R + "«Sett tesil-lanterna på sokkelen foran radioen.»",
       ],
@@ -885,7 +887,7 @@ export const KAPITTEL_3: Kapittel = {
       maal: "Få lyset fra lanterna til å nå hyllene.",
       tips: [
         R +
-          "«Lanterna står, men lyset når ikkje hyllene. Dokker såg sjøl ka de klare krystallan gjør med lys. Vi har et stykke av en.»",
+          "«Lanterna står, men lyset når ikkje hylla. Dokker såg sjøl ka dem klare krystallan gjør med lys. Vi har et stykke av en.»",
         R + "«Skåret ska stå rett foran flammen, vendt mot den klare hylla.»",
         R + "«Bruk krystallskåret på sokkelen, der lanterna står.»",
       ],
@@ -893,39 +895,39 @@ export const KAPITTEL_3: Kapittel = {
     {
       id: "krystall",
       ferdig: "krystall_satt",
-      maal: "Vri krystallene så lyset går hele veien fra S til M.",
+      maal: "Vri krystallene så lyset går langs hylla fra S til M.",
       tips: [
         R +
-          "«Den nederste krystallen lyse, men lyset går ut te veggen. Krystallan sitt i ringa og kan vris. BRUK den klare hylla.»",
+          "«Den første krystallen lyse, men lyset går ut te veggen. Krystallan sitt i ringa og kan vris. BRUK den klare hylla.»",
         R +
           "«Lyset går bare ut der den slipte sida peke. Start nederst ved S og vri hver krystall te lyset treff neste. Hjørnekrystallan snur lyset, den rette sende det videre.»",
         R +
-          "«Fra S: opp te hjørnet, snu det mot høyre, gjennom den rette, og hjørnet øverst te høyre snur det opp te M. De to andre hjørnan e bare pynt.»",
+          "«Fra S: opp te hjørnet, snu det mot høyre, gjennom den rette, og hjørnet øverst te høyre snur det opp te M. Dem to andre hjørnan e bare pynt.»",
       ],
     },
     {
       id: "stemme",
       ferdig: "radio_stilt",
-      maal: "Still radioen på sokkelen på riktig tall.",
+      maal: "Still radioen på sokkelen på riktig tall, og hør.",
       tips: [
         R +
-          "«Heile grotta lyse, og no ser vi skiva på radioen. Nåla står feil. Han hører ikkje oss før ho står der han e.»",
+          "«Hylla lyse, og no ser vi skiva på radioen. Nåla står feil. Vi hører ikkje nåkka før ho står der summingen kjem fra.»",
         R +
-          "«Han som bygde alt her, skreiv tall på alt. SE på sokkelen no som det e lyst. Der står tallet.»",
+          "«Han som bygde alt her, skreiv tall på alt. SE på sokkelen no som det e lyst der. Der står tallet. Dokker har sett det tallet før, heime.»",
         R +
-          "«BRUK skiva på radioen og dra nåla te 880. Summingen blir sterkare jo nærmare du kjem. Trykk LÅS FREKVENS.»",
+          "«BRUK skiva på radioen og dra nåla te 85,0. Summingen blir sterkare jo nærmare du kjem. Trykk LÅS FREKVENS.»",
       ],
     },
     {
       id: "hilsen",
       ferdig: "k3_ferdig",
-      maal: "Si hei til han som hører på.",
+      maal: "La lyset stå, og gå stille igjen.",
       tips: [
         R +
-          "«No lyse heile grotta, og radioen hører. Da mangle bare det viktigaste: å sei hei. Det e det vanskeligaste. Spør mæ.»",
+          "«Hylla lyse, og vi har hørt det nynne. Da mangle bare det vanskeligaste: å gå igjen uten å sei nåkka. Spør mæ.»",
         R + "«SNAKK med radioen på sokkelen.»",
         R +
-          "«Trykk på radioen, velg ei hilsen, og sei at vi kjem tilbake. Det held. Det held lenge.»",
+          "«Trykk på radioen og velg «Vi lar lyset stå». Det held. Det held lenge.»",
       ],
     },
   ],
