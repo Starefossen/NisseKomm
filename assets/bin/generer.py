@@ -131,6 +131,10 @@ def tv_jobs():
     return out.split()
 
 
+# Held until Hans has made new base images of Winter (todo.md: Winters karakterdesign).
+VENTER = {"port:port-winter", "tv:landsby-winter"}
+
+
 def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force=False):
     """[(id, category, estimated video requests, command)] in priority order."""
     st = {r["path"]: r["status"] for r in rows}
@@ -181,7 +185,7 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
     p_music = "music/rampenissen-synger.mp3"
     if should_queue(p_music, st.get(p_music, medie.MISSING)):
         q.append(("musikk:rampenissen-synger", "musikk", 0, ["bash", str(BIN / "rampenissen-tts.sh"), "synger"]))
-    return q
+    return [j for j in q if j[0] not in VENTER]
 
 
 def load_state(path: Path):
