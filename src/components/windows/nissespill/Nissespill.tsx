@@ -7,6 +7,7 @@ import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import type { EventyrSave } from "@/lib/storage";
 import { mediaUrl } from "@/lib/media";
+import { SoneEditor } from "./SoneEditor";
 import { KAPITLER, kapittel, erLaastOpp, spilldag } from "./kapitler";
 import * as M from "./motor";
 import { Puslespill } from "./Puslespill";
@@ -17,6 +18,8 @@ const DEV =
 
 // Icons make the verbs readable at a glance.
 // Old scene images stay as fallback until the new spill/ stills are generated.
+// Hotspots in scenes still showing these fallbacks were checked against the
+// fallback; recheck with «Vis soner (dev)» when the new still lands.
 const GAMLE_BILDER: Record<string, string> = {
   "spill/iq-verksted.jpg": "feed/iq-verksted.png",
   "spill/julius-kontor.jpg": "feed/julius-kontor.jpg",
@@ -377,16 +380,19 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 ].find((u) => !bildeFeil.includes(u))}
                 alt={scene.navn}
                 draggable={false}
-                className="absolute inset-0 w-full h-full object-cover"
-                onError={(e) =>
-                  setBildeFeil((f) => [
-                    ...f,
-                    e.currentTarget.getAttribute("src") ?? "",
-                  ])
-                }
+                // Fill, not cover: hotspot percents are of the image, so the image
+                // must span the 16:9 stage exactly (stills are 16:9 ±1 %).
+                className="absolute inset-0 w-full h-full object-fill"
+                onError={(e) => {
+                  // Read now: currentTarget is null by the time the updater runs
+                  const src = e.currentTarget.getAttribute("src") ?? "";
+                  setBildeFeil((f) => [...f, src]);
+                }}
               />
               <Stemning bilde={scene.bilde} />
-              {!iIntro &&
+              {visSoner && <SoneEditor key={scene.id} scene={scene} />}
+              {!visSoner &&
+                !iIntro &&
                 !iUtro &&
                 !dialog &&
                 hotspots.map((h) => (
@@ -402,7 +408,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                       });
                       bruk(M.trykk(kap, save, h, verb, holder), h);
                     }}
-                    className={`group absolute rounded min-w-11 min-h-11 ${visSoner || hint ? "border-2 border-dashed border-(--gold)" : ""} active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) focus-visible:bg-white/20`}
+                    className={`group absolute rounded min-w-11 min-h-11 ${hint ? "border-2 border-dashed border-(--gold)" : ""} active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) focus-visible:bg-white/20`}
                     style={{
                       left: `${h.rect.x}%`,
                       top: `${h.rect.y}%`,
@@ -415,7 +421,8 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                     </span>
                   </button>
                 ))}
-              {!iIntro &&
+              {!visSoner &&
+                !iIntro &&
                 !iUtro &&
                 !dialog &&
                 scene.fjaer &&
