@@ -177,13 +177,7 @@ function groundPalette(e: SledeEtappe) {
   });
 }
 
-export function SledeSimulator({
-  day,
-  dev = false,
-}: {
-  day: number;
-  dev?: boolean;
-}) {
+export function SledeSimulator({ day }: { day: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const held = useRef<Held>({
     L: false,
@@ -207,7 +201,6 @@ export function SledeSimulator({
   const [assist, setAssist] = useState(true);
   const [fase, setFaseState] = useState<Fase>("start");
   const [hud, setHud] = useState<Hud | null>(null);
-  const [fps, setFps] = useState(0);
   const [beste, setBeste] = useState(() => GameEngine.getSledeResultater());
   const [touchHint, setTouchHint] = useState(false);
   const reduceMotion = useRef(false);
@@ -277,8 +270,6 @@ export function SledeSimulator({
     let nyser = 0;
     let streaks = 0;
     let last = 0;
-    let frames = 0;
-    let fpsAt = 0;
     let hudAt = 0;
     let raf = 0;
     let sprangGlow = 0;
@@ -360,12 +351,6 @@ export function SledeSimulator({
       raf = requestAnimationFrame(draw);
       const dt = last ? Math.min((now - last) / 1000, 0.05) : 0;
       last = now;
-      frames++;
-      if (dev && now - fpsAt > 500) {
-        setFps(Math.round((frames * 1000) / (now - fpsAt)));
-        frames = 0;
-        fpsAt = now;
-      }
       const sim = simRef.current;
       if (!sim) return;
       const e = etappeRef.current;
@@ -686,7 +671,7 @@ export function SledeSimulator({
     };
     // Sprites and loop are built once; stage changes are read through refs.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dev]);
+  }, []);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -886,12 +871,6 @@ export function SledeSimulator({
             II
           </button>
         </>
-      )}
-
-      {dev && (
-        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 text-base text-(--gold) pointer-events-none">
-          {fps} FPS
-        </div>
       )}
 
       {fase !== "spiller" && (
