@@ -3,14 +3,21 @@ import { ETAPPER, lagBane } from "../snofall-tv/slede";
 import { apply, STRIDE, transform } from "./gl";
 import {
   bakke,
+  fjernMesh,
+  gardinMesh,
+  husPlassFri,
+  kursYaw,
   lagFlis,
+  lagRute,
   lagVerden,
   meshes,
   murMesh,
   SKALA,
   SPOR,
   tilVerden,
+  tilVidda,
 } from "./verden";
+import { GRENSE, høyde, lagHus } from "../snofall-tv/vidda";
 
 describe("sledeflukt verden", () => {
   it("maps sim units to the valley: forward is -z, altitude scales, the lane bends", () => {
@@ -64,6 +71,43 @@ describe("sledeflukt verden", () => {
     expect(v.trær.length / 4).toBeGreaterThan(trær);
     const muren = lagVerden(ETAPPER.find((x) => x.id === "muren")!);
     expect(muren.spesial.size).toBe(3);
+  });
+
+  it("rings face along the bend: the course yaw is small and follows midt()", () => {
+    expect(Math.abs(kursYaw(0))).toBeLessThan(0.3);
+    expect(kursYaw(2600 * Math.PI)).toBeCloseTo(-kursYaw(0), 2);
+  });
+
+  it("builds the vidda: square tiles on høyde(), trees off the places, a horizon mesh and the curtain", () => {
+    const r = lagRute(3, -2);
+    expect(r.mesh.length % (STRIDE * 3)).toBe(0);
+    expect(r.mesh.length).toBe(10 * 10 * 2 * 3 * STRIDE);
+    expect(r.mesh[1]).toBeCloseTo(høyde(600 / SKALA, -400 / SKALA) * SKALA);
+    expect(r.trær.length % 4).toBe(0);
+    let trær = 0;
+    for (let ix = -12; ix <= 12; ix++)
+      for (let iz = -12; iz <= 12; iz++) {
+        const t = lagRute(ix, iz).trær;
+        trær += t.length / 4;
+        for (let i = 0; i < t.length; i += 4)
+          expect(Math.hypot(t[i], t[i + 2])).toBeGreaterThan(
+            1800 * 0.7 * SKALA,
+          );
+      }
+    expect(trær).toBeGreaterThan(200);
+    expect(fjernMesh().length % (STRIDE * 3)).toBe(0);
+    const åpen = gardinMesh(true);
+    const lukket = gardinMesh(false);
+    expect(lukket.length).toBeGreaterThan(åpen.length);
+    expect(tilVidda(1000, 120, -2000)).toEqual([100, 12, -200]);
+    // A house's chimney stands at its (x, z) whichever way it faces.
+    for (const h of lagHus(true).slice(0, 12)) {
+      const { pipe } = meshes().hus[h.variant];
+      const p = apply(husPlassFri(h), pipe);
+      expect(p[0]).toBeCloseTo(h.x * SKALA, 3);
+      expect(p[2]).toBeCloseTo(h.z * SKALA, 3);
+      expect(h.z < GRENSE || h.z > GRENSE).toBe(true);
+    }
   });
 
   it("transform composes translation and rotation", () => {

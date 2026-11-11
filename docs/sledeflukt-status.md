@@ -76,6 +76,26 @@ Skjermbilder: `ringer-start-dag10.png`, `ringer-vidda-antenne.png`, `ringer-vidd
 
 Å sjekke på iPaden: p95 på 640×360 i Bergen (flest hus); om låste tinder leses som «ikke åpnet» for Håkon; om Rampenissens radiolinjer er for mange.
 
+## Fri flyging som åpen verden (gren `feat/fri-flyging`)
+
+Foreldretest 11. november: «null forskjell fra utfordringsspillet». Løypeløkken er borte; fri flyging er nå
+`FriFlyging.tsx` over den rene simen `snofall-tv/vidda.ts` (egen fil, egne tester i `vidda.test.ts`).
+
+| Del       | Hvor                                                                                                                                                                                                                                                         |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Bevegelse | `createFri`: posisjon (x, z), høyde og kurs; stikke = sving (sirkel på ca. seks sekunder), opp/ned = høyde, FART/BREMS holdt. Ingen mål, ingen klokke, ingenting lagres                                                                                      |
+| Terreng   | `høyde(x, z)`: rullende snø, runde fjell (`FJELL`, Nordtoppen 390 er for høy å krysse på toppen), Murens rygg med én port (`MUR`). Vegg foran eller bakke over taket = «krasj» og 30 m tilbake; slak stigning løfter nesa                                    |
+| Steder    | `STEDER` med dag: Snøfall, antenna, gårdene (8), Nordtoppen (20), Muren (21), Krystallgrotten (24), Bergen (dag 24 løst; «LANDÅS» bare med dag 22 løst). Funnet én gang («oppdaget», egen radiolinje); låste steder dytter sleden ut («låst», «ÅPNER DAG N») |
+| Kant      | Lysgardin ved `GRENSE` (2,2 km): sleden snus mykt («snu»), aldri mer enn 450 m utenfor. Korridor sørover gjennom porten til Bergen når dag 24 er løst                                                                                                        |
+| Å gjøre   | Brevfugler i sirkler (`FUGLER`, tilbake etter 25 s), piper i Snøfall, på gårdene og i Bergen (`lagHus`), lys ned i grotta, Rampenissen på radio per sted                                                                                                     |
+| Tegning   | Kvadratiske fliser `lagRute` rundt sleden (låste steders fliser grå), grov `fjernMesh` for horisonten tegnet først og `nullstillDybde()` før nærpasset (felles tåke), `gardinMesh`, hengelåser skalert med avstand, kompassbånd og nord-opp-kart (184 px)    |
+| Ringer    | Etappene: ringene står stille og vender langs svingen (`kursYaw`), ikke lenger roterende                                                                                                                                                                     |
+
+Målt i Playwright (ANGLE/Metal, 1180×760): 640×360 på vsync i landsbyen, ved antenna og i Bergen (p95 16,8 ms).
+Skjermbilder i scratchpad `sledeflukt/`: `fri-landsby.png`, `fri-vidda.png`, `fri-laast.png`, `fri-minikart.png`, `fri-port.png`, `fri-bergen.png`.
+
+Å sjekke på iPaden: svingfølelsen med tommelen (`SVING` i vidda.ts), om Håkon finner porten i Muren, p95 i Bergen.
+
 ## Kjente hull
 
 - Ingen søskentavle (todo.md).

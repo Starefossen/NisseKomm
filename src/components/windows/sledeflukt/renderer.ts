@@ -117,6 +117,8 @@ export interface Kamera {
   eye: Vec3;
   target: Vec3;
   fov: number;
+  /** Far plane in render units; free flight pushes it out for the horizon pass. */
+  fjern?: number;
 }
 
 export interface Himmel {
@@ -378,7 +380,7 @@ export class Renderer {
     gl.useProgram(this.prog);
     const aspect = this.bredde / this.høyde;
     this.vp = multiply(
-      perspective(k.fov, aspect, 0.5, 900),
+      perspective(k.fov, aspect, 0.5, k.fjern ?? 900),
       lookAt(k.eye, k.target),
     );
     this.kamera = k.eye;
@@ -449,6 +451,11 @@ export class Renderer {
     this.inst.drawArraysInstancedANGLE(gl.TRIANGLES, 0, n, antall);
     this.inst.vertexAttribDivisorANGLE(this.a.inst, 0);
     gl.disableVertexAttribArray(this.a.inst);
+  }
+
+  /** Forget depth so far: the near terrain is drawn over the coarse horizon mesh under it. */
+  nullstillDybde() {
+    this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
   }
 
   /** Grey out what is drawn next (0 = full colour, 1 = stone grey): locked places. */

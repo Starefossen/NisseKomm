@@ -15,13 +15,15 @@ import {
   dagensUtfordring,
   ETAPPER,
   lagBane,
-  landemerker,
   leveringsoppdrag,
   pakkenavn,
   RADIO,
-  VIDDA,
-  VIDDA_BERGEN,
 } from "@/components/windows/snofall-tv/slede";
+import {
+  STEDER,
+  stedsnavn,
+  type FriOpts,
+} from "@/components/windows/snofall-tv/vidda";
 import type { FilNode } from "@/types/innhold";
 import { OPPLASINGER, puffTekst } from "@/lib/opplasinger";
 import {
@@ -164,26 +166,24 @@ for (const e of ETAPPER) {
     const l = leveringsoppdrag(d, e);
     if (l) add(d, `slede ${e.id} levering dag ${d}`, l.tekst);
   }
-  add(
-    e.dag,
-    `slede ${e.id} landemerker`,
-    landemerker(e)
-      .map((l) => l.navn)
-      .join(" "),
-  );
 }
 add(14, "slede pakkenavn", [0, 1, 2, 3].map((i) => pakkenavn([], i)).join(" "));
 add(8, "slede radio", Object.values(RADIO).flat().join(" "));
-// Free flight: the vidda's places as they are named on day d (locked ones say when they open),
-// Bergen past the gate once day 24 is solved, and its last stop by name once day 22 is solved.
-const steder = (e: typeof VIDDA, dag: number, landås = false) =>
-  landemerker(e, { dag, landås })
-    .map((l) => l.navn)
-    .join(" ");
-for (let d = 8; d <= 24; d++) add(d, `slede vidda dag ${d}`, steder(VIDDA, d));
-add(8, "slede vidda", `${VIDDA.navn} ${VIDDA.intro}`);
-add(25, "slede bergen", steder(VIDDA_BERGEN, 24));
-add(23, "slede landås", steder(VIDDA_BERGEN, 24, true));
+// Free flight: the vidda's places as the map and the HUD name them on day d (locked
+// ones say when they open), Rampenissen's line when each is found, Bergen past the
+// gate once day 24 is solved, and its last stop by name once day 22 is solved.
+const steder = (o: FriOpts) =>
+  STEDER.map((s) => `${stedsnavn(s, o)} ${stedsnavn(s, o, true)}`).join(" ");
+for (let d = 8; d <= 24; d++)
+  add(
+    d,
+    `slede vidda dag ${d}`,
+    steder({ dag: d, bergen: false, landås: false }),
+  );
+for (const s of STEDER)
+  add(s.id === "bergen" ? 25 : s.dag, `slede vidda radio ${s.id}`, s.radio);
+add(25, "slede bergen", steder({ dag: 24, bergen: true, landås: false }));
+add(23, "slede landås", steder({ dag: 24, bergen: true, landås: true }));
 
 // Inline strings in components: every literal and JSX text in the file, from the
 // day the window can first show it (stricter than per-string gating).
@@ -202,6 +202,11 @@ add(
   8,
   "Sledeflukt",
   literaler(kilde("src/components/windows/sledeflukt/Sledeflukt.tsx")),
+);
+add(
+  8,
+  "FriFlyging",
+  literaler(kilde("src/components/windows/sledeflukt/FriFlyging.tsx")),
 );
 for (const [d, t] of Object.entries(KULDE_INTERCEPTS))
   add(Number(d), `Snøfall TV Kulde dag ${d}`, t);

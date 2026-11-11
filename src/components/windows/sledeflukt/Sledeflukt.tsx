@@ -23,17 +23,13 @@ import {
   etapperFor,
   forutsiPakke,
   lagBane,
-  landemerker,
   leveringsoppdrag,
-  nesteLandemerke,
   landingTekst,
   pakkenavn,
   radiolinje,
   rekkeMult,
   SPILLERE,
   utfordringStatus,
-  VIDDA,
-  VIDDA_BERGEN,
   åpnerTekst,
   type Hendelse,
   type Sim,
@@ -43,12 +39,14 @@ import {
 import { SledeLyd } from "../snofall-tv/slede-lyd";
 import { hex, identity, multiply, transform, type Mat4, type Vec3 } from "./gl";
 import { Renderer } from "./renderer";
+import { FriFlyging } from "./FriFlyging";
 import {
   bakke,
   BEIN,
   FLIS,
   husPlass,
   husVariant,
+  kursYaw,
   lagFlis,
   lagVerden,
   meshes,
@@ -107,8 +105,6 @@ interface Hud {
   pakker: number;
   /** Name of the next package to drop; null on stages without houses. */
   neste: string | null;
-  /** Free flight: the next named place ahead. */
-  landemerke: string | null;
   /** Altitude of the next ring ahead, null when none is in sight. */
   ring: number | null;
 }
@@ -146,17 +142,30 @@ interface Melding {
   id: number;
 }
 
-export function SledefluktSpill({
-  day,
-  fps = false,
-  oppløsning,
-}: {
+interface SpillProps {
   day: number;
   /** Dev only: frame-time overlay. */
   fps?: boolean;
   /** Fixed internal resolution; unset = 640 with automatic fallback to 480, then 320. */
   oppløsning?: Oppløsning;
-}) {
+}
+
+/** The stages, or free flight over the vidda; each mounts its own renderer. */
+export function SledefluktSpill(props: SpillProps) {
+  const [fri, setFri] = useState(false);
+  return fri ? (
+    <FriFlyging {...props} onAvslutt={() => setFri(false)} />
+  ) : (
+    <Etappeflukt {...props} onFri={() => setFri(true)} />
+  );
+}
+
+function Etappeflukt({
+  day,
+  fps = false,
+  oppløsning,
+  onFri,
+}: SpillProps & { onFri: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const kartRef = useRef<HTMLCanvasElement>(null);
   const held = useRef<Held>({
@@ -249,24 +258,16 @@ export function SledefluktSpill({
   const sprang = useRef(false);
   const slipp = useRef(false);
   const nedtelling = useRef(-1);
-  const friRef = useRef(false);
-  const [fri, setFri] = useState(false);
-  // Free flight flies the vidda; with day 24 solved the loop continues to Bergen,
-  // and the last stop is named only once day 22 (its code word) is solved.
-  const viddaRef = useRef<SledeEtappe>(VIDDA);
-  const landåsRef = useRef(false);
 
   const setFase = (f: Fase) => {
     if (f !== "spiller") lyd.current?.stop();
     if (f !== "spiller" && f !== "nedtelling") nedtelling.current = -1;
-    if (f === "start") {
-      friRef.current = false;
-      setFri(false);
+    if (f === "start")
       simRef.current = createSim(etappeRef.current, {
         assist: true,
         reduceMotion: true,
+        dag: day,
       });
-    }
     faseRef.current = f;
     setFaseState(f);
   };
@@ -274,35 +275,15 @@ export function SledefluktSpill({
   const start = () => {
     SoundManager.playSound("click");
     brev.current = GameEngine.getSantaLetters();
-    friRef.current = false;
-    setFri(false);
     simRef.current = createSim(etappe, {
       assist,
       reduceMotion: reduceMotion.current,
       utfordring,
       levering: levering ?? undefined,
+      dag: day,
     });
     nedtelling.current = NEDTELLING;
     setFase("nedtelling");
-  };
-
-  /** Fri flyging: the open vidda with no finish line, no timer and no result; straight in, no countdown. */
-  const startFri = () => {
-    SoundManager.playSound("click");
-    brev.current = GameEngine.getSantaLetters();
-    const løst = GameEngine.getCompletedDays();
-    viddaRef.current = løst.has(24) ? VIDDA_BERGEN : VIDDA;
-    landåsRef.current = løst.has(22);
-    friRef.current = true;
-    setFri(true);
-    simRef.current = createSim(viddaRef.current, {
-      assist: true,
-      reduceMotion: reduceMotion.current,
-      fri: true,
-      dag: day,
-    });
-    lyd.current?.startVind();
-    setFase("spiller");
   };
   const startRef = useRef(start);
   useEffect(() => {
@@ -311,8 +292,12 @@ export function SledefluktSpill({
 
   useEffect(() => {
     etappeRef.current = etappe;
-    simRef.current = createSim(etappe, { assist: true, reduceMotion: true });
-  }, [etappe]);
+    simRef.current = createSim(etappe, {
+      assist: true,
+      reduceMotion: true,
+      dag: day,
+    });
+  }, [etappe, day]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -415,10 +400,6 @@ export function SledefluktSpill({
           l?.port();
           say("PORTEN STÅR ÅPEN  +500");
           break;
-        case "bergen":
-          l?.fanfare();
-          say("VELKOMMEN TIL BERGEN", "#00ff8a");
-          break;
         case "grotte":
           l?.port();
           say("LYS NED I GROTTEN  +150");
@@ -471,9 +452,6 @@ export function SledefluktSpill({
           l?.port();
           say(`LEVERING KLART  +${leveringRef.current?.bonus ?? 0}`);
           break;
-        case "runde":
-          say("TILBAKE OVER SNØFALL", "#8aa0c0");
-          break;
         case "mål":
           l?.fanfare();
           break;
@@ -515,19 +493,6 @@ export function SledefluktSpill({
           kart.fillRect(sx(t.port ?? 0) - 5, y - 1, 10, 2);
         } else kart.fillRect(sx(t.x) - 1.5, y - 1.5, 3, 3);
       }
-      if (friRef.current) {
-        kart.font = "10px monospace";
-        for (const l of landemerker(viddaRef.current, {
-          dag: day,
-          landås: landåsRef.current,
-        })) {
-          const y = sy(l.z);
-          if (y < 12 || y > H - 16) continue;
-          kart.fillStyle = "#d9e4f5";
-          kart.fillRect(2, y, W - 4, 1);
-          kart.fillText(l.navn.slice(0, 14), 3, y - 2);
-        }
-      }
       kart.fillStyle = "#f0624a";
       const px = sx(sim.s.px);
       kart.beginPath();
@@ -547,7 +512,7 @@ export function SledefluktSpill({
       last = now;
       const sim = simRef.current;
       if (!sim) return;
-      const e = friRef.current ? viddaRef.current : etappeRef.current;
+      const e = etappeRef.current;
       if (verden.etappe !== e) {
         verden = lagVerden(e);
         husM.clear();
@@ -798,18 +763,15 @@ export function SledefluktSpill({
           continue;
         }
         if (o.type === "varde") {
-          // Rings hang in the air and turn slowly; the shadow below reads their height.
+          // Rings hang still in the air, facing the course where it bends; the shadow below reads their height.
           pos[1] = bakke(pos[0], o.z) + 0.15;
           r.tegn(M.ringSkygge, transform(pos));
           pos[1] = o.h * SKALA;
-          r.tegn(M.ring, transform(pos, [0, 0, t * (o.treff ? 3 : 0.5)]));
+          r.tegn(M.ring, transform(pos, [0, -kursYaw(o.z), 0]));
           continue;
         }
         pos[1] = bakke(pos[0], o.z) - 0.2;
         if (o.type === "topp") r.tegn(M.topp, transform(pos));
-        else if (o.type === "antenne") r.tegn(M.antenne, transform(pos));
-        else if (o.type === "nordlysport")
-          r.tegn(M.nordlysport, transform(pos, [0, 0, Math.sin(t) * 0.05]));
         else {
           const s = verden.spesial.get(nøkkel(o));
           if (s) r.tegn(s, transform(pos));
@@ -879,10 +841,7 @@ export function SledefluktSpill({
       }
 
       // The rig: sleigh, reins and three reindeer with swinging legs.
-      const yaw = Math.atan2(
-        tilVerden(0, 0, dist + 100)[0] - tilVerden(0, 0, dist - 100)[0],
-        20,
-      );
+      const yaw = kursYaw(dist);
       const sk = tilVerden(px, 0, dist);
       sk[1] = bakke(sk[0], dist) + 0.15;
       r.tegn(M.skygge, transform(sk, [0, -yaw, 0]));
@@ -965,15 +924,8 @@ export function SledefluktSpill({
           nyser: nyser > 0,
           ned: Math.max(0, Math.ceil(nedtelling.current)),
           pakker: sim.s.pakker,
-          neste:
-            leveringRef.current || (friRef.current && sim.s.pakkerTotalt)
-              ? pakkenavn(brev.current, sim.s.slipp)
-              : null,
-          landemerke: friRef.current
-            ? nesteLandemerke(e, dist, {
-                dag: day,
-                landås: landåsRef.current,
-              })
+          neste: leveringRef.current
+            ? pakkenavn(brev.current, sim.s.slipp)
             : null,
           gass:
             (held.current.G ? 1 : 0) -
@@ -1120,51 +1072,28 @@ export function SledefluktSpill({
       {/* IQ's panel */}
       <div className="absolute inset-0 pointer-events-none">
         <div className={`absolute top-1 left-1 ${panel}`}>
-          <div className="text-(--gold) uppercase">
-            {fri ? VIDDA.navn : etappe.navn}
+          <div className="text-(--gold) uppercase">{etappe.navn}</div>
+          <div>
+            RINGER {b?.varder ?? 0}/{b?.varderTotalt ?? 0}
           </div>
-          {fri ? (
-            <>
-              <div>FRI FLYGING</div>
-              <div className="text-(--cold-blue)">{b?.landemerke ?? ""}</div>
-              {b?.neste && (
-                <div className="text-(--gold)">
-                  PAKKER {b.pakker}
-                  <span className="block text-base text-(--neon-green)/80">
-                    NESTE: {b.neste}
-                  </span>
-                </div>
+          <div className="text-(--cold-blue)">UTFORDRING {b?.utf ?? ""}</div>
+          {levering && (
+            <div className="text-(--gold)">
+              PAKKER {b?.pakker ?? 0}/{levering.mål}
+              {b?.neste && fase === "spiller" && (
+                <span className="block text-base text-(--neon-green)/80">
+                  NESTE: {b.neste}
+                </span>
               )}
-            </>
-          ) : (
-            <>
-              <div>
-                RINGER {b?.varder ?? 0}/{b?.varderTotalt ?? 0}
-              </div>
-              <div className="text-(--cold-blue)">
-                UTFORDRING {b?.utf ?? ""}
-              </div>
-              {levering && (
-                <div className="text-(--gold)">
-                  PAKKER {b?.pakker ?? 0}/{levering.mål}
-                  {b?.neste && fase === "spiller" && (
-                    <span className="block text-base text-(--neon-green)/80">
-                      NESTE: {b.neste}
-                    </span>
-                  )}
-                  {b?.neste && fase === "spiller" && (
-                    <span className="block text-base text-(--cold-blue)">
-                      BREMS = MER TID TIL Å SIKTE
-                    </span>
-                  )}
-                </div>
+              {b?.neste && fase === "spiller" && (
+                <span className="block text-base text-(--cold-blue)">
+                  BREMS = MER TID TIL Å SIKTE
+                </span>
               )}
-            </>
+            </div>
           )}
         </div>
-        <div
-          className={`absolute top-1 left-1/2 -translate-x-1/2 w-1/3 ${fri ? "invisible" : ""}`}
-        >
+        <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1/3">
           <div className="h-2 border border-(--brass) bg-black/60">
             <div
               className="h-full bg-(--gold)"
@@ -1306,7 +1235,7 @@ export function SledefluktSpill({
       {fase === "spiller" && (
         <>
           <div className="absolute bottom-3 right-3 flex gap-2">
-            {(levering || (fri && b?.neste)) && (
+            {levering && (
               <button
                 type="button"
                 aria-label="Slipp pakke"
@@ -1483,7 +1412,7 @@ export function SledefluktSpill({
                   </button>
                   <button
                     type="button"
-                    onClick={startFri}
+                    onClick={onFri}
                     title="Fly fritt over vidda rundt Snøfall, uten mål og klokke."
                     className={`${knapp} border-(--neon-green)/50`}
                   >
@@ -1506,11 +1435,6 @@ export function SledefluktSpill({
             {fase === "pause" && (
               <>
                 <div className="text-(--gold) text-2xl">PAUSE</div>
-                {fri && (
-                  <div className="text-base opacity-70">
-                    Fri flyging over {VIDDA.navn}
-                  </div>
-                )}
                 <button
                   type="button"
                   onClick={() => setFase("spiller")}
@@ -1605,7 +1529,7 @@ export function SledefluktSpill({
                   </button>
                   <button
                     type="button"
-                    onClick={startFri}
+                    onClick={onFri}
                     className={`${knapp} border-(--neon-green)/50`}
                   >
                     FRI FLYGING

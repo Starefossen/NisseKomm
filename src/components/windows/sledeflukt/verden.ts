@@ -8,7 +8,6 @@
 
 import { hex, type Mat4, Mesh, transform, type Vec3 } from "./gl";
 import {
-  BERGEN_START,
   HUS_PIPE,
   lagBane,
   RING_ALT,
@@ -16,6 +15,14 @@ import {
   type SledeEtappe,
   type Ting,
 } from "../snofall-tv/slede";
+import {
+  BERGEN_SLUTT,
+  GRENSE,
+  høyde,
+  PORT_BREDDE,
+  STEDER,
+  type FriHus,
+} from "../snofall-tv/vidda";
 
 /** Render units per sim unit; the sim's 900 units/s becomes 90 units/s. */
 export const SKALA = 0.1;
@@ -64,6 +71,17 @@ export function terreng(xr: number, zr: number) {
 export const bakke = (xVerden: number, zSim: number) =>
   terreng(xVerden - midt(zSim), zSim * SKALA);
 
+/** Yaw of the course at a sim distance, so rings and the rig face along the bend. */
+export const kursYaw = (zSim: number) =>
+  Math.atan2(midt(zSim + 100) - midt(zSim - 100), 20);
+
+/** Free flight: sim position (x, altitude, z; north is -z) to world coordinates, 1 unit = 1 m. */
+export const tilVidda = (x: number, alt: number, z: number): Vec3 => [
+  x * SKALA,
+  alt * SKALA,
+  z * SKALA,
+];
+
 const SNØ = hex(0xeef3fb);
 const SNØ_SKYGGE = hex(0xc0d2ec);
 const STEIN = hex(0x4a5060);
@@ -85,6 +103,21 @@ const KOLONNER = (() => {
 })();
 const RADER = 8;
 
+/** Snow on the flat, stone where it is steep: colour from a triangle's slope. */
+const skråfarge = (p: Vec3, q: Vec3, s: Vec3): Vec3 => {
+  const ux = q[0] - p[0],
+    uy = q[1] - p[1],
+    uz = q[2] - p[2];
+  const vx = s[0] - p[0],
+    vy = s[1] - p[1],
+    vz = s[2] - p[2];
+  const ny =
+    (uz * vx - ux * vz) /
+    Math.hypot(uy * vz - uz * vy, uz * vx - ux * vz, ux * vy - uy * vx);
+  const bratt = smooth(0.55, 0.85, Math.abs(ny));
+  return [0, 1, 2].map((k) => STEIN[k] + (SNØ[k] - STEIN[k]) * bratt) as Vec3;
+};
+
 /** One strip of valley: zr in [i·FLIS, (i+1)·FLIS], the lane bent by midt(). */
 export function lagFlis(i: number): Float32Array {
   const m = new Mesh();
@@ -99,24 +132,9 @@ export function lagFlis(i: number): Float32Array {
       const b = punkt(c + 1, r);
       const d = punkt(c + 1, r + 1);
       const e = punkt(c, r + 1);
-      const farge = (p: Vec3, q: Vec3, s: Vec3): Vec3 => {
-        const ux = q[0] - p[0],
-          uy = q[1] - p[1],
-          uz = q[2] - p[2];
-        const vx = s[0] - p[0],
-          vy = s[1] - p[1],
-          vz = s[2] - p[2];
-        const ny =
-          (uz * vx - ux * vz) /
-          Math.hypot(uy * vz - uz * vy, uz * vx - ux * vz, ux * vy - uy * vx);
-        const bratt = smooth(0.55, 0.85, Math.abs(ny));
-        return [0, 1, 2].map(
-          (k) => STEIN[k] + (SNØ[k] - STEIN[k]) * bratt,
-        ) as Vec3;
-      };
       // Winding so normals point up (counter-clockwise seen from above with -z forward).
-      m.triangle(a, d, b, farge(a, d, b));
-      m.triangle(a, e, d, farge(a, e, d));
+      m.triangle(a, d, b, skråfarge(a, d, b));
+      m.triangle(a, e, d, skråfarge(a, e, d));
     }
   return m.build();
 }
@@ -310,7 +328,7 @@ export function murMesh(port: number) {
 }
 
 /** The cave: a dark crack in the snow, its edges marked by a dashed line of ice lights. */
-function grotteMesh(lengde: number) {
+export function grotteMesh(lengde: number) {
   const m = new Mesh();
   const l = lengde * SKALA;
   m.box([0, 0.1, -l / 2], [0.8 * SPOR * 2, 0.6, l], hex(0x0b1430));
@@ -605,10 +623,6 @@ export function lagVerden(e: SledeEtappe): Verden {
     if (r() < 0.45) settHus(z, r() < 0.5 ? -1 : 1);
   for (let z = e.lengde - 1200; z < e.lengde + 900; z += 300)
     for (const s of [-1, 1]) if (r() < 0.7) settHus(z + r() * 120, s);
-  // Bergen: streets of houses on both sides, far denser than any farm road.
-  if (e.id === "vidda-bergen")
-    for (let z = BERGEN_START; z < e.lengde - 1500; z += 180)
-      for (const s of [-1, 1]) if (r() < 0.9) settHus(z + r() * 90, s);
 
   const trær: number[] = [];
   const tett = 0.5 + e.blanding.tre;
@@ -633,4 +647,116 @@ export function lagVerden(e: SledeEtappe): Verden {
       spesial.set(nøkkel(t), grotteMesh(t.lengde ?? 1600));
   }
   return { etappe: e, hus, trær: new Float32Array(trær), spesial };
+}
+
+/* ---- Fri flyging: the open vidda ---- */
+
+/** Square terrain tile in render units; the near world is RUTE_N cells per side. */
+export const RUTE = 200;
+const RUTE_N = 10;
+/** One cell of the coarse horizon mesh, in render units. */
+const FJERN_CELLE = 80;
+
+/** A square of the vidda at tile (ix, iz), with the trees that grow on it. */
+export function lagRute(
+  ix: number,
+  iz: number,
+): { mesh: Float32Array; trær: Float32Array } {
+  const m = new Mesh();
+  const punkt = (c: number, r: number): Vec3 => {
+    const x = (ix + c / RUTE_N) * RUTE;
+    const z = (iz + r / RUTE_N) * RUTE;
+    return [x, høyde(x / SKALA, z / SKALA) * SKALA, z];
+  };
+  for (let r = 0; r < RUTE_N; r++)
+    for (let c = 0; c < RUTE_N; c++) {
+      const a = punkt(c, r);
+      const b = punkt(c + 1, r);
+      const d = punkt(c + 1, r + 1);
+      const e = punkt(c, r + 1);
+      // The tile's +z is south, so the winding is mirrored from lagFlis to keep normals up.
+      m.triangle(a, b, d, skråfarge(a, b, d));
+      m.triangle(a, d, e, skråfarge(a, d, e));
+    }
+  // Forests in patches, thinning on the heights, none in the villages or Bergen's streets.
+  const trær: number[] = [];
+  const tett = smooth(0.35, 0.75, hash(Math.floor(ix / 2), Math.floor(iz / 2)));
+  const n = Math.floor(tett * 26);
+  for (let i = 0; i < n; i++) {
+    const x = (ix + hash(ix * 7 + i, iz)) * RUTE;
+    const z = (iz + hash(ix, iz * 5 + i)) * RUTE;
+    const xs = x / SKALA;
+    const zs = z / SKALA;
+    const h = høyde(xs, zs);
+    if (h > 120) continue;
+    if (
+      STEDER.some(
+        (s) => s.id !== "muren" && Math.hypot(xs - s.x, zs - s.z) < s.r * 0.7,
+      )
+    )
+      continue;
+    if (zs > GRENSE - 500 && Math.abs(xs) < PORT_BREDDE + 400) continue;
+    trær.push(x, h * SKALA - 0.3, z, 0.6 + hash(i, ix + iz) * 0.7);
+  }
+  return { mesh: m.build(), trær: new Float32Array(trær) };
+}
+
+/** The whole vidda and the Bergen corridor as one coarse mesh for the horizon beyond the near tiles. */
+export function fjernMesh(): Float32Array {
+  const m = new Mesh();
+  const rand = (GRENSE + 6000) * SKALA;
+  const sør = (BERGEN_SLUTT + 4000) * SKALA;
+  const p = (x: number, z: number): Vec3 => [
+    x,
+    høyde(x / SKALA, z / SKALA) * SKALA - 1.5,
+    z,
+  ];
+  for (let z = -rand; z < sør; z += FJERN_CELLE)
+    for (let x = -rand; x < rand; x += FJERN_CELLE) {
+      const a = p(x, z);
+      const b = p(x + FJERN_CELLE, z);
+      const d = p(x + FJERN_CELLE, z + FJERN_CELLE);
+      const e = p(x, z + FJERN_CELLE);
+      m.triangle(a, b, d, skråfarge(a, b, d));
+      m.triangle(a, d, e, skråfarge(a, d, e));
+    }
+  return m.build();
+}
+
+/**
+ * The aurora curtain at the edge of the vidda: tall green rays around the circle,
+ * with the gate's stretch left out once Bergen is open.
+ */
+export function gardinMesh(bergen: boolean): Float32Array {
+  const m = new Mesh();
+  const r = GRENSE * SKALA;
+  const n = 180;
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2;
+    const x = Math.sin(a) * r;
+    const z = Math.cos(a) * r;
+    if (bergen && z > 0 && Math.abs(x) < PORT_BREDDE * SKALA + 30) continue;
+    const h = 70 + ((i * 7) % 5) * 16;
+    const w = 5;
+    const dx = Math.cos(a) * w;
+    const dz = -Math.sin(a) * w;
+    const farge = i % 2 ? GRØNN : hex(0x5ef0b8);
+    m.quad(
+      [x - dx, 0, z - dz],
+      [x + dx, 0, z + dz],
+      [x + dx, h, z + dz],
+      [x - dx, h, z - dz],
+      farge,
+      1,
+    );
+  }
+  return m.build();
+}
+
+/** Model matrix for a house on the vidda: its chimney stands at the house's (x, z). */
+export function husPlassFri(h: FriHus): Mat4 {
+  const { pipe } = meshes().hus[h.variant];
+  const x = h.x * SKALA - pipe[0] * Math.cos(h.rot);
+  const z = h.z * SKALA + pipe[0] * Math.sin(h.rot);
+  return transform([x, høyde(h.x, h.z) * SKALA - 0.2, z], [0, h.rot, 0]);
 }
