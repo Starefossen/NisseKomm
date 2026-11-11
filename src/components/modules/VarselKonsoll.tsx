@@ -37,7 +37,8 @@ export function VarselKonsoll({ alerts, currentDay }: VarselKonsollProps) {
         return (
           <li
             key={`alert-${index}`}
-            className={`min-h-11 flex items-start gap-2 px-2 py-1 border-l-2 ${border}`}
+            // iPad landscape: the third alert pushed the sidebar into a scroll
+            className={`min-h-11 flex items-start gap-2 px-2 py-1 border-l-2 ${border} ${index === 2 ? "[@media(max-height:800px)]:hidden" : ""}`}
           >
             <Icons.Alert size={16} color={icon} className="mt-1 shrink-0" />
             <div className="min-w-0">
