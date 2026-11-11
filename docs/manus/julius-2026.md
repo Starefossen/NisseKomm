@@ -379,7 +379,7 @@ Kulde-nivå 1, uke 3: mikrofonen faller ut med et klikk i starten. Den blå fugl
    - Varighet: 14 s (24 ord)
    - Handling: Bøyer et brev fra bunken to ganger med venstre hånd, holder det opp som en fugl.
    - Kulde: Svak knitring.
-5. **Replikk:** «Hun uttaler det feil med vilje, så ingen på linjen skal forstå. Vær snille med fuglen. Ha en riktig fin dag!»
+5. **Replikk:** «Han uttaler det feil med vilje, så ingen på linjen skal forstå. Vær snille med fuglen. Ha en riktig fin dag!»
    - Varighet: 13 s (21 ord)
    - Handling: Legger brevet forsiktig ned, nikker mot vinduet.
    - Kulde: Svak knitring, klikk.
@@ -583,7 +583,7 @@ Kulde-nivå 0. Rent bilde og ren lyd. Rimen på vinduet er borte, bare dugg i hj
    - Varighet: 13 s (22 ord)
    - Handling: Skriver i luften med venstre hånd, teller videre med fingeren bortover bordet.
    - Kulde: Ingen.
-5. **Replikk:** «Og hun legger alltid tre til hvert tall, for sikkerhets skyld. Trekk dem fra. Skriv navnene deres pent etterpå. Ha en riktig fin dag!»
+5. **Replikk:** «Og han legger alltid tre til hvert tall, for sikkerhets skyld. Trekk dem fra. Skriv navnene deres pent etterpå. Ha en riktig fin dag!»
    - Varighet: 14 s (24 ord)
    - Handling: Smiler, legger fra seg brevet med venstre hånd og vinker kort.
    - Kulde: Ingen.

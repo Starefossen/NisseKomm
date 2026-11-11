@@ -103,9 +103,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
     return (
       <RetroWindow title="NISSESPILL" onClose={onClose}>
         <div className="p-4 md:p-6 max-w-2xl mx-auto space-y-4">
-          <h2 className="text-3xl text-(--gold) tracking-wider">
-            UGLEPOSTEN
-          </h2>
+          <h2 className="text-3xl text-(--gold) tracking-wider">UGLEPOSTEN</h2>
           <p className="text-xl leading-tight">
             Rampenissen har glemt noe i Snøfall. Styr Knerten, ull-ugla hans,
             gjennom IQs kameraer og hjelp ham, ett kapittel om gangen. Trykk på
