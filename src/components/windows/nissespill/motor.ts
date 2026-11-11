@@ -14,10 +14,15 @@ export interface Rect {
   h: number;
 }
 
-/** Both must hold: `hvis` flag set, `uten` flag not set. */
+/**
+ * Every given part must hold: `hvis` flag set, `uten` flag not set, every
+ * condition in `alle`, at least one in `en_av`. Parts nest.
+ */
 export interface Vilkaar {
   hvis?: string;
   uten?: string;
+  alle?: Vilkaar[];
+  en_av?: Vilkaar[];
 }
 
 /** One string, or the first variant whose condition holds. */
@@ -148,6 +153,8 @@ export function ok(v: Vilkaar | undefined, save: EventyrSave): boolean {
   if (!v) return true;
   if (v.hvis && !has(save, v.hvis)) return false;
   if (v.uten && has(save, v.uten)) return false;
+  if (v.alle && !v.alle.every((x) => ok(x, save))) return false;
+  if (v.en_av && !v.en_av.some((x) => ok(x, save))) return false;
   return true;
 }
 
