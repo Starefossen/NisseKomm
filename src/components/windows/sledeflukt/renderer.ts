@@ -35,9 +35,13 @@ void main(){
 const FRAG = `
 precision mediump float;
 varying vec3 vCol; varying float vFog; uniform vec3 uDis; uniform float uGraa;
+uniform vec3 uTopp; uniform vec3 uHorisont; uniform float uLinje; uniform float uHoyde;
 void main(){
   vec3 c = mix(vCol, vec3(0.47, 0.50, 0.56), uGraa);
-  gl_FragColor = vec4(mix(c, uDis, vFog), 1.0);
+  // Haze turns into the sky behind it at full fog, so where the drawn world ends
+  // (valley walls, far tiles) there is no hard edge against the night sky.
+  vec3 sky = mix(uHorisont, uTopp, smoothstep(uLinje - 0.05, uLinje + 0.55, gl_FragCoord.y / uHoyde));
+  gl_FragColor = vec4(mix(c, mix(uDis, sky, vFog * vFog), vFog), 1.0);
 }`;
 
 const QUAD_VERT = `
@@ -192,6 +196,10 @@ export class Renderer {
       "uTaake",
       "uDis",
       "uGraa",
+      "uTopp",
+      "uHorisont",
+      "uLinje",
+      "uHoyde",
     ])
       this.u[n] = gl.getUniformLocation(this.prog, n);
     this.sky = this.program(QUAD_VERT, SKY_FRAG, ["aPos"]);
@@ -389,6 +397,10 @@ export class Renderer {
     gl.uniform3fv(this.u.uLys, lys);
     gl.uniform2f(this.u.uTaake, h.tåke[0], h.tåke[1]);
     gl.uniform3fv(this.u.uDis, h.dis);
+    gl.uniform3fv(this.u.uTopp, h.topp);
+    gl.uniform3fv(this.u.uHorisont, h.horisont);
+    gl.uniform1f(this.u.uLinje, linje);
+    gl.uniform1f(this.u.uHoyde, this.høyde);
     gl.uniform1f(this.u.uGraa, 0);
     gl.enableVertexAttribArray(this.a.pos);
     gl.enableVertexAttribArray(this.a.norm);

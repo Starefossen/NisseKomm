@@ -349,17 +349,17 @@ export const HUS_PIPE: readonly number[] = [105, 125, 145];
 /** The sleigh is clamped to ±1.3, so nothing is placed where it cannot be reached. */
 const X_MAX = 1.25;
 /** Rings hang between these altitudes, a margin inside what the sled can fly. */
-const RING_ALT_MIN = 70;
-const RING_ALT_MAX = 240;
+const RING_ALT_MIN = 110;
+const RING_ALT_MAX = 400;
 /**
  * Half-axes of a ring's opening: track units sideways, altitude units up and down.
- * The sky is only ~23 render units tall, so the hoop is a wide oval: generous for
- * a thumb sideways, but a ring 80 above cruise is missed until the sled climbs.
+ * Rounder in the world (9.9 × 6 render units) than the old wide oval, so it reads as a hoop
+ * standing up across the course, not one lying flat.
  */
-export const RING_X = 0.35;
-export const RING_ALT = 38;
+export const RING_X = 0.22;
+export const RING_ALT = 60;
 /** Climb rate in altitude units per second (step), used to keep ring steps reachable. */
-const KLATRE = 150;
+export const KLATRE = 190;
 
 /** 0 at the ring's centre, 1 on its rim, more outside; the ring is an ellipse in sim units. */
 export const ringAvvik = (px: number, alt: number, t: Ting) =>
@@ -721,7 +721,7 @@ export const rekkeMult = (rekke: number) =>
 export const RAMP = 0.2;
 
 export const ALT_MIN = 40;
-export const ALT_MAX = 270;
+export const ALT_MAX = 450;
 export const ALT_CRUISE = 120;
 
 export function createSim(e: SledeEtappe, opts: SimOpts) {
@@ -801,9 +801,19 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     s.px = Math.max(-1.3, Math.min(1.3, s.px + s.vx * dt));
     if (Math.abs(s.px) >= 1.3) s.vx = 0;
     if (inn.climb !== 0) {
-      s.alt += inn.climb * 150 * dt;
+      s.alt += inn.climb * KLATRE * dt;
     } else if (opts.assist) {
       s.alt += (ALT_CRUISE - s.alt) * Math.min(1, dt * 0.8);
+    }
+    // Diving into the snow is a crash; with the assistant the floor is soft.
+    if (
+      !opts.assist &&
+      inn.climb < 0 &&
+      s.alt <= ALT_MIN &&
+      s.tid >= s.sakteTil
+    ) {
+      krasj(ev);
+      s.alt = ALT_MIN + 40;
     }
     s.alt = Math.max(ALT_MIN, Math.min(ALT_MAX, s.alt));
     s.bank += (s.vx * 0.2 - s.bank) * Math.min(1, dt * 6);

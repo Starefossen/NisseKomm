@@ -21,6 +21,7 @@ import {
   radiolinje,
   RAMP,
   rekkeMult,
+  KLATRE,
   RING_ALT,
   RING_X,
   ringAvvik,
@@ -156,7 +157,9 @@ describe("sim", () => {
       sim.s.dist = v.z - 1;
       return [sim.step(1 / 60, still), sim.s.poeng] as const;
     };
-    expect(ringAvvik(0.35, 120, { x: 0, h: 120, z: 0, type: "varde" })).toBe(1);
+    expect(ringAvvik(RING_X, 120, { x: 0, h: 120, z: 0, type: "varde" })).toBe(
+      1,
+    );
     expect(ved(RING_ALT * 0.8)[0]).toContain("bjelle");
     expect(ved(RING_ALT * 0.8)[1]).toBe(100);
     expect(ved(RING_ALT * 1.3)[0]).toContain("nesten");
@@ -176,13 +179,13 @@ describe("sim", () => {
     for (const e of ETAPPER) {
       const ringer = lagBane(e).filter((t) => t.type === "varde");
       const h = ringer.map((t) => t.h);
-      expect(Math.min(...h)).toBeGreaterThanOrEqual(70);
-      expect(Math.max(...h)).toBeLessThanOrEqual(240);
+      expect(Math.min(...h)).toBeGreaterThanOrEqual(110);
+      expect(Math.max(...h)).toBeLessThanOrEqual(400);
       spenn.set(e.id, Math.max(...h) - Math.min(...h));
       for (let i = 1; i < ringer.length; i++) {
         const sek = (ringer[i].z - ringer[i - 1].z) / (e.fart * (1 + RAMP));
         const steg = Math.abs(ringer[i].h - ringer[i - 1].h);
-        expect(steg).toBeLessThanOrEqual(150 * sek);
+        expect(steg).toBeLessThanOrEqual(KLATRE * sek);
         // Every pair needs a real climb or dive: the next ring is out of the current one's opening.
         expect(steg).toBeGreaterThan(RING_ALT * 0.9);
       }
@@ -543,5 +546,17 @@ describe("pipelevering", () => {
       ev = ev.concat(sim.step(1 / 60, still));
     expect(ev).toContain("leveringKlart");
     expect(sim.s.leveringKlart).toBe(true);
+  });
+
+  it("diving into the snow is a crash without the assistant, never with it", () => {
+    const ned = { steer: 0, climb: -1, sprang: false };
+    const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
+    const ev: string[] = [];
+    for (let i = 0; i < 180; i++) ev.push(...sim.step(1 / 60, ned));
+    expect(ev).toContain("krasj");
+    expect(sim.s.liv).toBeLessThan(3);
+    const trygg = createSim(ETAPPER[0], { assist: true, reduceMotion: false });
+    for (let i = 0; i < 180; i++)
+      expect(trygg.step(1 / 60, ned)).not.toContain("krasj");
   });
 });

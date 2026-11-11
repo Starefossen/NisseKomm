@@ -68,6 +68,7 @@ import {
 
 type Fase = "spiller" | "pause";
 /** Near draw distance in render units; the horizon mesh takes over beyond it. */
+const RULL = 0.8;
 const FJERN = 600;
 const FJERN_SIM = FJERN / SKALA;
 const HORISONT = 4200;
@@ -246,6 +247,8 @@ export function FriFlyging({
     let id = 0;
     let eye: Vec3 | null = null;
     let hopp = 0;
+    // Crash tumble: a full barrel roll of the sled over RULL seconds.
+    let rull = 0;
     let radioTil = 0;
     let radioN = 0;
     const puff: { p: Vec3; t0: number }[] = [];
@@ -299,7 +302,10 @@ export function FriFlyging({
         case "krasj":
           l?.krasj();
           hopp = 0.7;
-          if (!reduceMotion) shake = 0.45;
+          if (!reduceMotion) {
+            shake = 0.45;
+            rull = RULL;
+          }
           say("KLONK! FJELLET STÅR STILLE", "#f0624a");
           break;
         case "grotte":
@@ -500,6 +506,7 @@ export function FriFlyging({
       }
       shake = Math.max(0, shake - dt);
       hopp = Math.max(0, hopp - dt);
+      rull = Math.max(0, rull - dt);
 
       const { x, z, alt, kurs, bank } = sim.s;
       const fx = Math.sin(kurs);
@@ -700,7 +707,15 @@ export function FriFlyging({
       // The rig, its shadow on the snow, three reindeer with swinging legs.
       const sk = tilVidda(x, høyde(x, z) + 1.5, z);
       r.tegn(M.skygge, transform(sk, [0, -kurs, 0]));
-      const base = transform(p, [-climb * 0.12, -kurs, -bank * 1.1], 1);
+      const base = transform(
+        p,
+        [
+          -climb * 0.12,
+          -kurs,
+          -bank * 1.1 + (rull ? (1 - rull / RULL) * Math.PI * 2 : 0),
+        ],
+        1,
+      );
       r.tegn(M.slede, base);
       r.tegn(M.tømmer, base);
       for (let i = 0; i < 3; i++) {

@@ -151,7 +151,7 @@ const topp = (id: string) => STEDER.find((s) => s.id === id)!;
 
 /** Round mountains: Nordtoppen too tall to cross at the summit, the cave's hill, and hills to fly over or around. */
 export const FJELL: readonly Fjell[] = [
-  { x: topp("nordtoppen").x, z: topp("nordtoppen").z, r: 1500, h: 390 },
+  { x: topp("nordtoppen").x, z: topp("nordtoppen").z, r: 1500, h: 600 },
   { x: topp("grotten").x, z: topp("grotten").z - 900, r: 1200, h: 170 },
   { x: -4000, z: -6000, r: 1100, h: 130 },
   { x: 6000, z: -3500, r: 900, h: 110 },
@@ -168,7 +168,7 @@ export const MUR = {
   z: topp("muren").z,
   /** Half-length along x, in sim units. */
   halv: 2200,
-  h: 270,
+  h: 520,
   /** Half-width of the gap in the ridge. */
   port: 420,
 };
@@ -404,6 +404,8 @@ export function createFri(o: FriOpts) {
     sisteMeter: 0,
     sisteHus: null as FriHus | null,
     sakteTil: 0,
+    /** After a crash the sled stands still until this time, then flies on slowly. */
+    stoppTil: 0,
     låstTil: 0,
     /** Places found so far, and the last one found or bumped (its name for the HUD). */
     oppdaget: new Set<string>(),
@@ -416,6 +418,16 @@ export function createFri(o: FriOpts) {
     hus,
   };
   const motion = o.reduceMotion ? 0.72 : 1;
+
+  // A crash stops the sled for a second, then sets it down a stretch back and a bit higher.
+  function krasj(ev: FriHendelse[], fx: number, fz: number) {
+    s.stoppTil = s.tid + 1;
+    s.sakteTil = s.tid + 2.2;
+    s.x -= fx * 600;
+    s.z -= fz * 600;
+    s.alt = Math.max(s.alt, høyde(s.x, s.z) + 30) + 60;
+    ev.push("krasj");
+  }
 
   function step(dt: number, inn: Styring): FriHendelse[] {
     const ev: FriHendelse[] = [];
@@ -451,18 +463,19 @@ export function createFri(o: FriOpts) {
     // Terrain: a gentle rise ahead lifts the nose; a wall, or ground above the ceiling, is a crash.
     const fram = høyde(s.x + fx * SE_FRAM, s.z + fz * SE_FRAM) + 40;
     if (fram > ALT_MAX || fram > s.alt + KLATRE_FRITT) {
-      if (s.tid >= s.sakteTil) {
-        s.sakteTil = s.tid + 1.2;
-        s.x -= fx * 300;
-        s.z -= fz * 300;
-        ev.push("krasj");
-      }
+      if (s.tid >= s.sakteTil) krasj(ev, fx, fz);
+    } else if (s.tid < s.stoppTil) {
+      // Just crashed: the sled sits still in the snow for a moment.
     } else {
       s.x += fx * s.fart * dt;
       s.z += fz * s.fart * dt;
       if (fram > s.alt) s.alt += (fram - s.alt) * Math.min(1, dt * 4);
     }
     s.alt += inn.climb * KLATRE * dt;
+    // Diving into the ground is a crash too.
+    const gulv = Math.max(ALT_MIN, høyde(s.x, s.z) + 30);
+    if (inn.climb < 0 && s.alt <= gulv && s.tid >= s.sakteTil)
+      krasj(ev, fx, fz);
     s.alt = Math.max(ALT_MIN, høyde(s.x, s.z) + 30, Math.min(ALT_MAX, s.alt));
 
     // Places: a locked one is a soft wall, an open one is found once.

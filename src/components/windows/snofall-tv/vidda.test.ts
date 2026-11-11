@@ -172,4 +172,14 @@ describe("fri flyging på vidda", () => {
     expect(treff).toContain("levering");
     expect(treff).toContain("pakkebom");
   });
+
+  it("a dive into the ground crashes, stops the sled, then sets it down behind and higher", () => {
+    const sim = createFri(dag8);
+    const ev = fly(sim, 3, { steer: 0, climb: -1, sprang: false });
+    expect(ev).toContain("krasj");
+    const { x, z } = sim.s;
+    sim.s.stoppTil = sim.s.tid + 1;
+    fly(sim, 0.5);
+    expect([sim.s.x, sim.s.z]).toEqual([x, z]);
+  });
 });

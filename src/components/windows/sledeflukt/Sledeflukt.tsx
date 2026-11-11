@@ -66,6 +66,7 @@ import {
  */
 
 type Fase = "start" | "nedtelling" | "spiller" | "pause" | "slutt" | "tapt";
+const RULL = 0.8;
 const NEDTELLING = 3;
 /** Draw distance in render units; fog hides the end of it. */
 const FJERN = 420;
@@ -338,6 +339,8 @@ function Etappeflukt({
     const puff: { p: Vec3; t0: number }[] = [];
     // Reindeer reaction (a hop) and Rampenissen's radio: seconds left, and lines said.
     let hopp = 0;
+    // Crash tumble: a full barrel roll of the sled over RULL seconds.
+    let rull = 0;
     let radioTil = 0;
     let radioN = 0;
 
@@ -412,7 +415,10 @@ function Etappeflukt({
           l?.krasj();
           nyser = 1.5;
           hopp = 0.7;
-          if (!reduceMotion.current) shake = 0.45;
+          if (!reduceMotion.current) {
+            shake = 0.45;
+            rull = RULL;
+          }
           say(
             sim.s.tapt ? "IQ KOBLER INN NØDBREMSEN" : "KLONK! SNØ I ANSIKTET",
             "#f0624a",
@@ -608,6 +614,7 @@ function Etappeflukt({
       shake = Math.max(0, shake - dt);
       nyser = Math.max(0, nyser - dt);
       hopp = Math.max(0, hopp - dt);
+      rull = Math.max(0, rull - dt);
       const { px, alt, bank, dist } = sim.s;
       if (spiller) gange += dt * (sim.s.fart / e.fart) * 9;
 
@@ -845,7 +852,15 @@ function Etappeflukt({
       const sk = tilVerden(px, 0, dist);
       sk[1] = bakke(sk[0], dist) + 0.15;
       r.tegn(M.skygge, transform(sk, [0, -yaw, 0]));
-      const base = transform(p, [-climb * 0.12, -yaw, -bank * 1.1], 1);
+      const base = transform(
+        p,
+        [
+          -climb * 0.12,
+          -yaw,
+          -bank * 1.1 + (rull ? (1 - rull / RULL) * Math.PI * 2 : 0),
+        ],
+        1,
+      );
       r.tegn(M.slede, base);
       r.tegn(M.tømmer, base);
       for (let i = 0; i < 3; i++) {
