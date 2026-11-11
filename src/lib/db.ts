@@ -48,7 +48,19 @@ const itemId = (x: unknown) => {
  * Union of stored and incoming lists, incoming wins per day. Shrinking a
  * list (reset, revoked bonus) goes through putState(..., replace).
  */
+type Slede = Record<string, { poeng: number; bjeller: number }>;
+const rank = (r?: { poeng: number; bjeller: number }) =>
+  r ? r.bjeller * 1e9 + r.poeng : -1;
+
 export function mergeValue(key: string, stored: unknown, incoming: unknown) {
+  // Sledesimulator: two screens each keep their best run per stage
+  // (same order as GameEngine.recordSledeResultat: bells, then points).
+  if (key === "nissekomm-slede" && stored && incoming) {
+    const out: Slede = { ...(stored as Slede) };
+    for (const [id, r] of Object.entries(incoming as Slede))
+      if (rank(r) > rank(out[id])) out[id] = r;
+    return out;
+  }
   if (!MERGED_KEYS.has(key) || !Array.isArray(stored)) return incoming;
   if (!Array.isArray(incoming)) return incoming;
   const byId = new Map(stored.map((x) => [itemId(x), x]));

@@ -217,3 +217,24 @@ describe("/api/state removals and validation", () => {
     }
   });
 });
+
+describe("nissekomm-slede sync merge", () => {
+  it("keeps each screen's best run per stage", () => {
+    expect(
+      mergeValue(
+        "nissekomm-slede",
+        {
+          tundra: { poeng: 900, bjeller: 3 },
+          muren: { poeng: 100, bjeller: 0 },
+        },
+        {
+          tundra: { poeng: 1500, bjeller: 2 },
+          muren: { poeng: 300, bjeller: 1 },
+        },
+      ),
+    ).toEqual({
+      tundra: { poeng: 900, bjeller: 3 },
+      muren: { poeng: 300, bjeller: 1 },
+    });
+  });
+});

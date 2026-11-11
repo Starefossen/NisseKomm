@@ -378,12 +378,17 @@ export class GameEngine {
     bjeller: number,
   ): SledeResultat {
     const prev = this.getSledeResultater()[etappe];
-    const best = {
-      poeng: Math.max(prev?.poeng ?? 0, poeng),
-      bjeller: Math.max(prev?.bjeller ?? 0, bjeller),
-    };
-    StorageManager.setSledeResultat(etappe, best);
-    return best;
+    // One whole run is kept: most bells, then most points. A failed run
+    // (0 bells) still counts as a best score until a finished one beats it.
+    const run = { poeng, bjeller };
+    if (
+      prev &&
+      (prev.bjeller > bjeller ||
+        (prev.bjeller === bjeller && prev.poeng >= poeng))
+    )
+      return prev;
+    StorageManager.setSledeResultat(etappe, run);
+    return run;
   }
 
   /** Frostgraden (0–100) for a day, or null on days 1–6 when it is hidden. */

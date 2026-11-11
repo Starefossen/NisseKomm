@@ -109,13 +109,14 @@ describe("sim", () => {
 describe("GameEngine.recordSledeResultat", () => {
   beforeEach(() => localStorage.clear());
 
-  it("keeps the best score and bells per stage", () => {
+  it("keeps one whole run per stage: most bells, then most points", () => {
     expect(GameEngine.getSledeResultater()).toEqual({});
     GameEngine.recordSledeResultat("tundra", 800, 2);
     GameEngine.recordSledeResultat("tundra", 500, 3);
+    GameEngine.recordSledeResultat("tundra", 2000, 0);
     GameEngine.recordSledeResultat("muren", 1200, 1);
     expect(GameEngine.getSledeResultater()).toEqual({
-      tundra: { poeng: 800, bjeller: 3 },
+      tundra: { poeng: 500, bjeller: 3 },
       muren: { poeng: 1200, bjeller: 1 },
     });
   });
