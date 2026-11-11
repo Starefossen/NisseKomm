@@ -448,18 +448,18 @@ export default function Home() {
                 // Desktop: I DAG (4:3 Julius widget plus today's tools) beside UTFORSK and
                 // SPILL OG MORO on wide screens; stacked on portrait iPad (design-revisjon P2 #8)
                 <div className="flex items-center justify-center min-h-full p-3 pt-16 md:p-4 md:pt-16 lg:pt-4">
-                  <div className="w-full max-w-7xl 2xl:max-w-[88rem] grid gap-3 md:gap-4 lg:grid-cols-[2fr_3fr] lg:items-start">
-                    <section>
+                  <div className="w-full max-w-7xl 2xl:max-w-[88rem] grid gap-2 lg:gap-4 lg:grid-cols-[2fr_3fr] lg:items-start">
+                    <section className="w-full max-w-xl mx-auto">
                       <h2 className="mb-1 text-lg tracking-wider text-(--brass)">
                         I DAG
                       </h2>
-                      <div className="grid grid-cols-2 gap-2 lg:grid-cols-1">
+                      <div className="grid gap-2">
                         <button
                           onClick={() => {
                             SoundManager.playSound("click");
                             handleIconClick("dagbok");
                           }}
-                          className="relative aspect-4/3 flex flex-col justify-end p-3 border-2 border-(--brass)/70 bg-cover bg-center text-left hover:border-(--gold) active:scale-[0.98] transition-transform"
+                          className="relative w-full max-lg:max-w-[26vh] max-lg:mx-auto aspect-4/3 flex flex-col justify-end p-3 border-2 border-(--brass)/70 bg-cover bg-center text-left hover:border-(--gold) active:scale-[0.98] transition-transform"
                           style={{
                             backgroundImage: `linear-gradient(transparent 50%, rgba(10,6,4,0.9)), ${juliusPosters()}url("${mediaUrl("feed/julius-kontor.jpg")}"), url("/village-day.jpg")`,
                           }}
@@ -482,10 +482,9 @@ export default function Home() {
                             </span>
                           </span>
                         </button>
-                        <div className="grid grid-rows-3 gap-2 lg:grid-rows-none">
+                        <div className="grid grid-cols-3 gap-2">
                           <DesktopIcon
                             icon="file"
-                            inline
                             label="NISSEMAIL"
                             color="green"
                             unreadCount={unreadEmailCount}
@@ -493,14 +492,12 @@ export default function Home() {
                           />
                           <DesktopIcon
                             icon="code"
-                            inline
                             label="KODETERMINAL"
                             color="blue"
                             onClick={() => handleIconClick("kodeterminal")}
                           />
                           <DesktopIcon
                             icon="image"
-                            inline
                             label="SNØFALL TV"
                             color="green"
                             disabled={isFrozen("nordpol_tv")}
@@ -517,19 +514,22 @@ export default function Home() {
                         {lockedMsg}
                       </p>
                     )}
-                    <div className="grid gap-3 md:gap-4">
+                    <div className="grid gap-2 lg:gap-4">
                       {(
                         [
                           ["UTFORSK", UTFORSK],
                           ["SPILL OG MORO", SPILL],
                         ] as const
                       ).map(([title, tools]) => (
-                        <section key={title}>
+                        <section
+                          key={title}
+                          className="w-full max-w-xl mx-auto"
+                        >
                           <h2 className="mb-1 text-lg tracking-wider text-(--brass)">
                             {title}
                           </h2>
                           {/* Three columns: six and five tiles fill two rows with no orphan */}
-                          <div className="grid grid-cols-3 gap-2 auto-rows-fr">
+                          <div className="grid grid-cols-3 gap-x-2 gap-y-1 lg:gap-y-2 auto-rows-fr">
                             {tools.map((t) => {
                               const locked =
                                 !!t.unlock &&
@@ -551,7 +551,7 @@ export default function Home() {
                                 >
                                   <DesktopIcon
                                     icon={t.icon}
-                                    className="lg:min-h-24 xl:min-h-28 2xl:min-h-32"
+                                    className="h-full"
                                     label={t.label}
                                     color={t.color}
                                     unreadCount={
