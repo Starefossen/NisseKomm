@@ -9,6 +9,7 @@ import type { EventyrSave } from "@/lib/storage";
 import { mediaUrl } from "@/lib/media";
 import { SoneEditor } from "./SoneEditor";
 import { KAPITLER, kapittel, erLaastOpp, spilldag } from "./kapitler";
+import { NyttIDag } from "@/components/ui/NyttIDag";
 import * as M from "./motor";
 import { Puslespill } from "./Puslespill";
 import { Portrett, Skriv, UgleIntro } from "./UgleIntro";
@@ -211,6 +212,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
             gjennom IQs kameraer og hjelp ham, ett kapittel om gangen. Trykk på
             ting for å SE, BRUK og SNAKK.
           </p>
+          <NyttIDag vindu="nissespill" />
           <ul className="space-y-2">
             {KAPITLER.map((k) => {
               const laast = !erLaastOpp(k, dag);

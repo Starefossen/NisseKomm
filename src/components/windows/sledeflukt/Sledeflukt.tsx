@@ -1,4 +1,5 @@
 "use client";
+import { NyttIDag } from "@/components/ui/NyttIDag";
 
 import {
   useEffect,
@@ -1141,6 +1142,7 @@ export function SledefluktSpill({
                 <div className="text-sm opacity-70 leading-none">
                   IQs sledesimulator
                 </div>
+                <NyttIDag vindu="sledeflukt" />
                 <div className="flex flex-wrap gap-1 justify-center">
                   {åpne.map((e) => (
                     <button

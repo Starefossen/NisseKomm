@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { SoundManager } from "@/lib/sounds";
+import { NyttIDag } from "@/components/ui/NyttIDag";
 
 /**
  * Antenna-HUD toys. Pure play, shown only after today's code is in:
@@ -62,6 +63,7 @@ export function MiniGames({
   return (
     // Top and bottom bands stay clear for the channel OSD (label, REC, clock, TEMP)
     <div className="absolute inset-x-2 top-[15%] bottom-[12%] overflow-y-auto z-30 bg-black/85 border-2 border-(--neon-green) p-3 flex flex-col gap-3 text-(--neon-green)">
+      <NyttIDag vindu="nordpol_tv" />
       <div className="flex flex-wrap gap-2 items-center">
         {games.map(([id, label]) => (
           <button

@@ -138,6 +138,16 @@ export function Kalender({
                     {status === "locked" && (
                       <Icons.Lock size={12} color="gray" />
                     )}
+                  </div>
+
+                  {/* Teaser: something opens this day, never what */}
+                  {status === "locked" &&
+                    GameEngine.getOpplasinger(day).length > 0 && (
+                      <span className="absolute bottom-0.5 left-0 right-0 text-sm text-(--gold) opacity-100 tracking-wider">
+                        NOE ÅPNER
+                      </span>
+                    )}
+                  <div className="absolute top-1 right-1">
                     {status === "completed" && (
                       <Icons.CheckCircle size={14} color="gold" />
                     )}
@@ -207,6 +217,20 @@ export function Kalender({
             {isDayRevealed(selectedDay) && (
               <div className="text-lg">
                 {selectedMission.nissemail_tekst.substring(0, 150)}...
+              </div>
+            )}
+
+            {GameEngine.getOpplasinger(selectedDay).length > 0 && (
+              <div className="p-3 border-2 border-(--gold) bg-(--gold)/10 text-lg text-(--gold)">
+                <div className="font-bold tracking-wider">
+                  ÅPNET DENNE DAGEN
+                </div>
+                {GameEngine.getOpplasinger(selectedDay).map((o) => (
+                  <div key={o.tekst}>
+                    {o.tekst}
+                    {GameEngine.getOpplasingNivaa(o) > 0 && " · IKKE SETT ENNÅ"}
+                  </div>
+                ))}
               </div>
             )}
 

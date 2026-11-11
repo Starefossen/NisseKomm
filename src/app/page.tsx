@@ -267,6 +267,7 @@ export default function Home() {
 
   const handleIconClick = (windowId: string) => {
     setMusicAutoPlay(false);
+    GameEngine.markOpplasingerSett(windowId);
     if (openWindow === windowId) {
       setOpenWindow(null);
       playSound("close");
@@ -501,6 +502,12 @@ export default function Home() {
                             icon="image"
                             label="SNØFALL TV"
                             color="green"
+                            className={
+                              GameEngine.getNyttNivaa("nordpol_tv") >= 3
+                                ? "motion-safe:animate-pulse"
+                                : ""
+                            }
+                            isNew={GameEngine.getNyttNivaa("nordpol_tv") > 0}
                             disabled={isFrozen("nordpol_tv")}
                             onClick={() => handleIconClick("nordpol_tv")}
                           />
@@ -540,10 +547,15 @@ export default function Home() {
                                 : null;
                               if (locked && t.hidden)
                                 return <div key={t.window} aria-hidden />;
+                              // Module still unopened, or something new inside it (lib/opplasinger.ts)
+                              const nytt = locked
+                                ? 0
+                                : GameEngine.getNyttNivaa(t.window);
                               const isNew =
-                                !!t.unlock &&
-                                !locked &&
-                                !GameEngine.isIntroSeen(`ny-${t.window}`);
+                                (!!t.unlock &&
+                                  !locked &&
+                                  !GameEngine.isIntroSeen(`ny-${t.window}`)) ||
+                                nytt > 0;
                               return (
                                 <div
                                   key={t.window}
@@ -552,7 +564,7 @@ export default function Home() {
                                 >
                                   <DesktopIcon
                                     icon={t.icon}
-                                    className="h-full"
+                                    className={`h-full ${nytt >= 3 ? "motion-safe:animate-pulse" : ""}`}
                                     label={t.label}
                                     color={t.color}
                                     unreadCount={

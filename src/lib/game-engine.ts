@@ -68,7 +68,6 @@ import {
   settNokkel,
   type Nivaa,
   type Opplasing,
-  type OpplasingVindu,
 } from "./opplasinger";
 
 const ALL_QUESTS = getAllQuests();
@@ -378,8 +377,18 @@ export class GameEngine {
     );
   }
 
+  /** Unlocks on a day a child may see now (after-code ones wait for the code). */
+  static getOpplasinger(day: number, vindu?: string): Opplasing[] {
+    return OPPLASINGER.filter(
+      (o) =>
+        o.dag === day &&
+        (!vindu || o.vindu === vindu) &&
+        (!o.etterKode || this.isQuestCompleted(day)),
+    );
+  }
+
   /** Highest nudge level among a window's unlocks (home tile). */
-  static getNyttNivaa(vindu: OpplasingVindu, day = getCurrentDay()): Nivaa {
+  static getNyttNivaa(vindu: string, day = getCurrentDay()): Nivaa {
     if (getCurrentMonth() !== 12) return 0;
     return OPPLASINGER.filter((o) => o.vindu === vindu).reduce<Nivaa>(
       (m, o) => Math.max(m, this.getOpplasingNivaa(o, day)) as Nivaa,
@@ -388,7 +397,7 @@ export class GameEngine {
   }
 
   /** Opening a window counts as having seen everything unlocked in it so far. */
-  static markOpplasingerSett(vindu: OpplasingVindu, day = getCurrentDay()) {
+  static markOpplasingerSett(vindu: string, day = getCurrentDay()) {
     OPPLASINGER.filter((o) => o.vindu === vindu && o.dag <= day).forEach((o) =>
       this.markIntroSeen(settNokkel(o)),
     );
