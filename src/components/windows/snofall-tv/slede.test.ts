@@ -7,6 +7,7 @@ import {
   ETAPPER,
   etapperFor,
   lagBane,
+  rekkeMult,
 } from "./slede";
 
 const still = { steer: 0, climb: 0, sprang: false };
@@ -119,5 +120,43 @@ describe("GameEngine.recordSledeResultat", () => {
       tundra: { poeng: 500, bjeller: 3 },
       muren: { poeng: 1200, bjeller: 1 },
     });
+  });
+});
+
+describe("rekke og nære på", () => {
+  it("multiplies beacons after 3, 6 and 9 in a row, and a miss resets", () => {
+    expect([0, 2, 3, 5, 6, 9, 30].map(rekkeMult)).toEqual([
+      1, 1, 2, 2, 3, 4, 4,
+    ]);
+    const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
+    const varder = sim.s.ting.filter((t) => t.type === "varde");
+    for (let i = 0; i < 4; i++) {
+      sim.s.px = varder[i].x;
+      sim.s.dist = varder[i].z - 1;
+      sim.s.first = sim.s.ting.indexOf(varder[i]);
+      sim.step(1 / 60, still);
+    }
+    expect(sim.s.rekke).toBe(4);
+    // Fourth beacon paid double (x2 from the third onwards).
+    expect(sim.s.poeng).toBe(150 * 3 + 300);
+    sim.s.px = varder[4].x + 1;
+    sim.s.dist = varder[4].z - 1;
+    sim.s.first = sim.s.ting.indexOf(varder[4]);
+    expect(sim.step(1 / 60, still)).toContain("bom");
+    expect(sim.s.rekke).toBe(0);
+    expect(sim.s.besteRekke).toBe(4);
+  });
+
+  it("rewards skimming a tree without hitting it", () => {
+    const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
+    const tre = sim.s.ting.find((t) => t.type === "tre")!;
+    sim.s.px = tre.x + 0.3;
+    sim.s.dist = tre.z - 1;
+    sim.s.alt = 60;
+    sim.s.first = sim.s.ting.indexOf(tre);
+    expect(sim.step(1 / 60, still)).toContain("nære");
+    expect(sim.s.nære).toBe(1);
+    expect(sim.s.poeng).toBe(40);
+    expect(sim.s.liv).toBe(3);
   });
 });

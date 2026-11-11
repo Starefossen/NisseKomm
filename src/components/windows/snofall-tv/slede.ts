@@ -214,6 +214,7 @@ export type Hendelse =
   | "port"
   | "grotte"
   | "sprang"
+  | "nære"
   | "mål";
 
 export interface SimOpts {
@@ -221,6 +222,10 @@ export interface SimOpts {
   assist: boolean;
   reduceMotion: boolean;
 }
+
+/** Score multiplier for a run of beacons without a miss: x1, x2 at 3, x3 at 6, x4 at 9. */
+export const rekkeMult = (rekke: number) =>
+  1 + Math.min(3, Math.floor(rekke / 3));
 
 export const ALT_MIN = 40;
 export const ALT_MAX = 270;
@@ -241,7 +246,13 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     liv: opts.assist ? Infinity : 3,
     varder: 0,
     varderTotalt: ting.filter((t) => t.type === "varde").length,
+    stjerner: 0,
+    nære: 0,
     krasj: 0,
+    /** Beacons in a row without a miss; the multiplier is rekkeMult(rekke). */
+    rekke: 0,
+    besteRekke: 0,
+    tidsbonus: 0,
     /** Boost meter 0..1, filled by beacons; full = sprang available. */
     kraft: 0,
     sprangTil: 0,
@@ -310,11 +321,11 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
 
     if (s.dist >= e.lengde) {
       s.ferdig = true;
-      if (!opts.assist)
-        s.poeng += Math.max(
-          0,
-          Math.round((e.lengde / e.fart) * 1.5 - s.tid) * 20,
-        );
+      if (!opts.assist) {
+        s.tidsbonus =
+          Math.max(0, Math.round((e.lengde / e.fart) * 1.5 - s.tid)) * 20;
+        s.poeng += s.tidsbonus;
+      }
       ev.push("mål");
     }
     return ev;
@@ -322,7 +333,7 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
 
   function passer(t: Ting, ev: Hendelse[]) {
     const dx = Math.abs(s.px - t.x);
-    const boost = s.tid < s.sprangTil ? 2 : 1;
+    const boost = (s.tid < s.sprangTil ? 2 : 1) * rekkeMult(s.rekke);
     switch (t.type) {
       case "varde":
         if (dx < 0.4 * widen && s.alt < 230) {
@@ -330,12 +341,18 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
           s.varder++;
           s.poeng += (dx < 0.15 ? 150 : 100) * boost;
           s.kraft = Math.min(1, s.kraft + 0.25);
+          s.rekke++;
+          s.besteRekke = Math.max(s.besteRekke, s.rekke);
           ev.push("bjelle");
-        } else ev.push("bom");
+        } else {
+          s.rekke = 0;
+          ev.push("bom");
+        }
         break;
       case "stjerne":
         if (dx < 0.2 * widen && Math.abs(s.alt - t.h) < 35 * widen) {
           t.treff = true;
+          s.stjerner++;
           s.poeng += 25 * boost;
           ev.push("stjerne");
         }
@@ -350,9 +367,11 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
         break;
       case "tre":
         if (dx < 0.22 && s.alt < t.h - 10) krasj(ev);
+        else if (dx < 0.4 && s.alt < t.h + 30) nære(ev);
         break;
       case "topp":
         if (dx < 0.45 && s.alt < (opts.assist ? 190 : t.h)) krasj(ev);
+        else if (dx < 0.7 && s.alt < t.h + 40) nære(ev);
         break;
       case "mur":
         if (Math.abs(s.px - (t.port ?? 0)) < 0.35 * widen || s.alt > t.h + 10) {
@@ -364,8 +383,17 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     }
   }
 
+  // Skimming past an obstacle is rewarded, so the brave line is the fast line.
+  function nære(ev: Hendelse[]) {
+    s.nære++;
+    s.poeng += 40;
+    s.kraft = Math.min(1, s.kraft + 0.1);
+    ev.push("nære");
+  }
+
   function krasj(ev: Hendelse[]) {
     s.krasj++;
+    s.rekke = 0;
     s.sakteTil = s.tid + 1.2;
     s.sprangTil = 0;
     if (!opts.assist) {

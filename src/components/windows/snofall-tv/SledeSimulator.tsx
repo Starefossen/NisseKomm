@@ -16,6 +16,7 @@ import {
   createSim,
   ETAPPER,
   etapperFor,
+  rekkeMult,
   type Hendelse,
   type Sim,
   type SledeEtappe,
@@ -50,6 +51,7 @@ interface Hud {
   liv: number;
   kraft: number;
   sprang: boolean;
+  mult: number;
   vind: number;
   framdrift: number;
   nyser: boolean;
@@ -294,10 +296,17 @@ export function SledeSimulator({ day }: { day: number }) {
       const l = lyd.current;
       switch (h) {
         case "bjelle":
-          l?.bjelle();
+          l?.bjelle(rekkeMult(sim.s.rekke));
           flash = 0.25;
+          if (sim.s.rekke % 3 === 0 && sim.s.rekke > 0)
+            say(`REKKE x${rekkeMult(sim.s.rekke)}`, "#00ff8a");
           break;
         case "bom":
+          if (sim.s.besteRekke >= 3) say("REKKEN RØK", "#8aa0c0");
+          break;
+        case "nære":
+          l?.stjerne();
+          say("NÆRE PÅ!", "#ffb347");
           break;
         case "stjerne":
           l?.stjerne();
@@ -678,6 +687,7 @@ export function SledeSimulator({ day }: { day: number }) {
           liv: sim.s.liv,
           kraft: sim.s.kraft,
           sprang: sim.s.tid < sim.s.sprangTil,
+          mult: rekkeMult(sim.s.rekke),
           vind: sim.s.vind,
           framdrift: Math.min(1, sim.s.dist / e.lengde),
           nyser: nyser > 0,
@@ -815,6 +825,11 @@ export function SledeSimulator({ day }: { day: number }) {
         <div className={`absolute top-1 right-14 ${panel} text-right`}>
           <div className="text-(--gold) tabular-nums text-2xl">
             {b?.poeng ?? 0}
+            {(b?.mult ?? 1) > 1 && (
+              <span className="ml-2 text-(--neon-green) text-xl">
+                x{b?.mult}
+              </span>
+            )}
           </div>
           {!assist && (
             <div
