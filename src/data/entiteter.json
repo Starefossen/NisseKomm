@@ -1,90 +1,51 @@
 [
   {
     "id": "floke",
-    "navn": [
-      "Floke"
-    ],
+    "navn": ["Floke"],
     "pronomen": "hun",
     "fra_dag": 4,
-    "ikke": [
-      "Knerten",
-      "Flokke"
-    ]
+    "ikke": ["Knerten", "Flokke"]
   },
   {
     "id": "hjerterud",
-    "navn": [
-      "Hjerterud"
-    ],
+    "navn": ["Hjerterud"],
     "pronomen": "hun",
     "fra_dag": 1,
-    "ikke": [
-      "Nissemor",
-      "Mor Nisse"
-    ]
+    "ikke": ["Nissemor", "Mor Nisse"]
   },
   {
     "id": "iq",
-    "navn": [
-      "IQ"
-    ],
+    "navn": ["IQ"],
     "pronomen": "han",
     "fra_dag": 1,
-    "ikke": [
-      "I.Q.",
-      "Iq"
-    ]
+    "ikke": ["I.Q.", "Iq"]
   },
   {
     "id": "julius",
-    "navn": [
-      "Julius"
-    ],
+    "navn": ["Julius"],
     "pronomen": "han",
     "fra_dag": 1,
-    "ikke": [
-      "Julenissen Julius",
-      "julenisse-Julius"
-    ]
+    "ikke": ["Julenissen Julius", "julenisse-Julius"]
   },
   {
     "id": "pil",
-    "navn": [
-      "Pil",
-      "PIL"
-    ],
+    "navn": ["Pil", "PIL"],
     "pronomen": "han",
     "fra_dag": 1,
-    "ikke": [
-      "Pila",
-      "jenta Pil",
-      "Pil, hun"
-    ]
+    "ikke": ["Pila", "jenta Pil", "Pil, hun"]
   },
   {
     "id": "rampenissen",
-    "navn": [
-      "Rampenissen"
-    ],
+    "navn": ["Rampenissen"],
     "pronomen": "han",
     "fra_dag": 1,
-    "ikke": [
-      "Rampe-nissen",
-      "RampeNissen"
-    ]
+    "ikke": ["Rampe-nissen", "RampeNissen"]
   },
   {
     "id": "winter",
-    "navn": [
-      "Winter",
-      "Ole Winter"
-    ],
+    "navn": ["Winter", "Ole Winter"],
     "pronomen": "han",
     "fra_dag": 1,
-    "ikke": [
-      "Ole Vinter",
-      "fru Winter",
-      "frøken Winter"
-    ]
+    "ikke": ["Ole Vinter", "fru Winter", "frøken Winter"]
   }
 ]
