@@ -22,6 +22,7 @@ export const KAPITTEL_4: Kapittel = {
   tittel: "Klar til avgang",
   dag: 22,
   klar: true,
+  teaser: "Porten står åpen. Winter har en liste og to blyanter.",
   start: "porten",
   slutt: "k4_ferdig",
   intro: [

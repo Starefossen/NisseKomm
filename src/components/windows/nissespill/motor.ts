@@ -153,6 +153,8 @@ export interface Kapittel {
   dag: number;
   /** False while the chapter is an outline (TODO text). */
   klar: boolean;
+  /** One mysterious line shown under a locked chapter; no spoilers, no code words. */
+  teaser?: string;
   start: string;
   intro: string[];
   /** Flag that ends the chapter. */

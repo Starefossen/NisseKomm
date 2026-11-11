@@ -26,6 +26,7 @@ export const KAPITTEL_3: Kapittel = {
   tittel: "Gufset fra dypet",
   dag: 16,
   klar: true,
+  teaser: "Det er mørkt der nede. Noen trenger et lys.",
   start: "kontor",
   slutt: "k3_ferdig",
   intro: [

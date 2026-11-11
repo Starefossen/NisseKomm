@@ -21,6 +21,7 @@ export const KAPITTEL_2: Kapittel = {
   tittel: "Antenna i permafrost",
   dag: 10,
   klar: true,
+  teaser: "Bildet hakker. Noe tygger på noe det ikke burde.",
   start: "tjernet",
   slutt: "k2_ferdig",
   intro: [

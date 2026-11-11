@@ -16,6 +16,7 @@ export const KAPITTEL_1: Kapittel = {
   tittel: "Senga i postkassen",
   dag: 4,
   klar: true,
+  teaser: "Rampenissen har mistet senga si. Og noe som ringer.",
   start: "torget",
   slutt: "k1_ferdig",
   intro: [

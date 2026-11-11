@@ -213,29 +213,38 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
           </p>
           <ul className="space-y-2">
             {KAPITLER.map((k) => {
-              const aapen = erLaastOpp(k, dag) && k.klar;
+              const laast = !erLaastOpp(k, dag);
+              const aapen = !laast && k.klar;
               const ferdig = save?.flags.includes(k.slutt);
               const paagaar = save?.kapittel === k.n && !ferdig;
               return (
                 <li
                   key={k.n}
-                  className="flex items-center gap-3 border-2 border-(--brass) px-3 py-2"
+                  className={`flex items-center gap-3 border-2 px-3 py-2 ${laast ? "border-(--brass)/40 text-gray-400" : "border-(--brass)"}`}
                 >
+                  {laast && <Icon name="lock" size={28} color="gray" />}
                   <div className="flex-1 min-w-0">
                     <div className="text-2xl truncate">
                       Kapittel {k.n}: {k.tittel}
                     </div>
-                    <div className="text-base text-(--cold-blue)">
+                    <div
+                      className={`text-base ${laast ? "text-gray-500" : "text-(--cold-blue)"}`}
+                    >
                       {ferdig && save
                         ? `Fullført · ${M.oppsummering(k, save).kort}`
-                        : !erLaastOpp(k, dag)
-                          ? `Låses opp ${k.dag}. desember`
+                        : laast
+                          ? `ÅPNER DAG ${k.dag}`
                           : !k.klar
                             ? "Under arbeid i Snøfall"
                             : paagaar
                               ? "Påbegynt"
                               : "Klar"}
                     </div>
+                    {laast && (
+                      <div className="text-lg italic text-gray-400 leading-tight">
+                        {k.teaser}
+                      </div>
+                    )}
                   </div>
                   {aapen && (
                     <button
