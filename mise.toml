@@ -121,17 +121,18 @@ run = """
 #!/usr/bin/env bash
 set -euo pipefail
 if env | grep -qE '^NEXT_PUBLIC_(MOCK_|TEST_MODE)'; then echo "Fjern NEXT_PUBLIC_MOCK_*/TEST_MODE før bygging" >&2; exit 1; fi
-docker build -t nissekomm:local .
+docker build --platform linux/amd64 -t nissekomm:local .
 """
 
 [tasks."image:push"]
-description = "Bygg og push multi-arch image (amd64+arm64) til registry.intern.flaatten.org:5000"
+description = "Bygg og push linux/amd64-image til registry.intern.flaatten.org:5000 (:<unix-tid> og :latest)"
 run = """
 #!/usr/bin/env bash
 set -euo pipefail
 if env | grep -qE '^NEXT_PUBLIC_(MOCK_|TEST_MODE)'; then echo "Fjern NEXT_PUBLIC_MOCK_*/TEST_MODE før bygging" >&2; exit 1; fi
-TAG="registry.intern.flaatten.org:5000/nissekomm:$(date +%s)"
-docker buildx build --platform linux/amd64,linux/arm64 -t "$TAG" --push .
+REPO=registry.intern.flaatten.org:5000/nissekomm
+TAG="$REPO:$(date +%s)"
+docker buildx build --platform linux/amd64 -t "$TAG" -t "$REPO:latest" --push .
 echo "$TAG"
 """
 

@@ -11,6 +11,9 @@ RUN corepack enable
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# Prod bakes NEXT_PUBLIC_* at build time: refuse test mode or mocked dates
+RUN if ls -a | grep -q '^\.env' || env | grep -qE '^NEXT_PUBLIC_(MOCK_|TEST_MODE)'; then \
+      echo "Byggekonteksten har .env* eller NEXT_PUBLIC_MOCK_*/TEST_MODE" >&2; exit 1; fi
 RUN pnpm build \
  && cp -r public .next/standalone/public \
  && cp -r .next/static .next/standalone/.next/static

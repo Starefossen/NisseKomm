@@ -136,8 +136,8 @@ export async function readJsonBody(
   request: NextRequest,
 ): Promise<Record<string, unknown> | NextResponse> {
   const origin = request.headers.get("origin");
-  const host =
-    request.headers.get("x-forwarded-host") ?? request.headers.get("host");
+  // Host only: the gateway enforces Host == SNI; X-Forwarded-Host is client-set.
+  const host = request.headers.get("host");
   let originHost: string | null = null;
   try {
     originHost = origin ? new URL(origin).host : null;

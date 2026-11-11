@@ -27,11 +27,11 @@ async function login(
     { status: number; text: string; cookie: string | null } | undefined;
   await testApiHandler({
     appHandler: loginRoute,
+    // Fixed Host so the same-origin check holds without TRUST_PROXY too.
+    requestPatcher: (req) => req.headers.set("host", "nissekomm.no"),
     test: async ({ fetch }) => {
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
-        // Behind Kourier the public host arrives as X-Forwarded-Host.
-        "X-Forwarded-Host": "nissekomm.no",
         "X-Forwarded-Proto": proto,
       };
       if (origin) headers.Origin = origin;
@@ -137,12 +137,12 @@ describe("POST /api/auth/login", () => {
     let cleared = "";
     await testApiHandler({
       appHandler: logoutRoute,
+      requestPatcher: (req) => req.headers.set("host", "nissekomm.no"),
       test: async ({ fetch }) => {
         const res = await fetch({
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-Forwarded-Host": "nissekomm.no",
             "X-Forwarded-Proto": "https",
             Origin: ORIGIN,
             Cookie: jar,
@@ -198,6 +198,25 @@ describe("POST /api/auth/login", () => {
     ).toBe(403);
     expect((await login({ code: "snø lykt elg" }, null)).status).toBe(403);
     expect((await login({ code: "x".repeat(17_000) })).status).toBe(413);
+  });
+
+  it("ignores X-Forwarded-Host", async () => {
+    await testApiHandler({
+      appHandler: loginRoute,
+      requestPatcher: (req) => req.headers.set("host", "nissekomm.no"),
+      test: async ({ fetch }) => {
+        const r = await fetch({
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Forwarded-Host": "evil.example",
+            Origin: "https://evil.example",
+          },
+          body: JSON.stringify({ code: "snø lykt elg" }),
+        });
+        expect(r.status).toBe(403);
+      },
+    });
   });
 
   it("returns generic errors without stack traces", async () => {

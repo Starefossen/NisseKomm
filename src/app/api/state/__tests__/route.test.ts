@@ -25,11 +25,11 @@ async function call(
   let out: { status: number; json: unknown } | undefined;
   await testApiHandler({
     appHandler: stateRoute,
+    requestPatcher: (req) => req.headers.set("host", "nissekomm.no"),
     test: async ({ fetch }) => {
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
         Origin: "https://nissekomm.no",
-        "X-Forwarded-Host": "nissekomm.no",
       };
       if (cookie)
         headers.Cookie = `__Host-nissekomm=${TOKEN}; __Host-nissekomm-guide=${TOKEN}`;
