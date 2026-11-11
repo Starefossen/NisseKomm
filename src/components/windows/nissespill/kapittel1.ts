@@ -23,7 +23,7 @@ export const KAPITTEL_1: Kapittel = {
     R +
       "«Psst. Dokker trur kanskje æ bare sitt i hylla og glor? Feil. IQ har kobla kameraan i Snøfall te skjermen dokkers, og no e DOKKER Floke: ull-ugla mi med messingbrilla. Dokker ser det ho ser, og folk i Snøfall snakke te ho som om det va dokker. Æ sitt her i hylla og hviske. Ingen der borte hør mæ. Heldigvis.»",
     R +
-      "«Saka e sånn: Æ sov i ei garnkurv på loftet te IQ heile året. I kurven ligg lykkebjella mi, og uten den finn ikkje sleden fram te stua dokkers på julaften. No e kurven BORTE. Æ har mistanka. Han har skjerf.»",
+      "«Saka e sånn: Æ sov i ei garnkurv på loftet te IQ heile året. I kurven ligg lykkebjella mi. Den har hengt på sleden hver julaften sia æ va liten, for lykke. Ikkje for retning, Winter har tall te sånt. For LYKKE. No e kurven BORTE. Æ har mistanka. Han har skjerf.»",
     R +
       "«Dokker kan sånt her. SE, BRUK, SNAKK, lomma nederst. Står dokker fast, e TIPS-knappen mæ som hviske. Æ hviske høgt.»",
   ],
@@ -106,7 +106,7 @@ export const KAPITTEL_1: Kapittel = {
       tekst:
         "Du slipper de frosne bærene i den varme kaffen. Det freser, det damper, og kaffen blir knallrød. " +
         R +
-        "«Tyttebærkaffe! Det der har æ faktisk prøvd. Æ sov ikkje på tre dager. Det va ikkje kaffen, det va bæran.»",
+        "«Tyttebærkaffe! Det der har æ faktisk prøvd. Æ sov ikkje på tre daga. Det va ikkje kaffen, det va bæran.»",
     },
   ],
   scener: [
@@ -493,7 +493,7 @@ export const KAPITTEL_1: Kapittel = {
             tekst:
               "Du tar det øverste skjemaet. «Skjema 4112-B». Kafferingen er heldigvis bare på baksiden. " +
               R +
-              "«Det e DET skjemaet! Winter elske det skjemaet. Han har det innramma heime. Trur æ. Æ har ikkje vore heime hos han. Ingen har det.»",
+              "«Det e DET skjemaet! Winter elske det skjemaet. Han har det innramma heime. Trur æ. Æ har ikkje vært heime hos han. Ingen har det.»",
           },
           bruk: "Resten av bunken får ligge. IQ trenger kaffebrikker, og Winter trenger noe å klage på.",
         },
@@ -682,8 +682,8 @@ export const KAPITTEL_1: Kapittel = {
         },
         skjerf: {
           tekst:
-            "«Én runde for trekken fra tjernet. Én runde for luftingen fra klokketårnet. Og én runde fordi det er pent. En hals uten skjerf er et åpent sår.»",
-          rampenissen: "«Æ har null runda. Æ e et åpent sår med lue.»",
+            "«Én runde for trekken fra tjernet. Én runde for luftingen fra klokketårnet. Og én runde fordi det er pent. En hals uten skjerf er en hals som fryser.»",
+          rampenissen: "«Æ har null runda. Æ e en hals med lue.»",
           valg: [{ tekst: "Logisk." }],
         },
         ustemplet: {
@@ -746,7 +746,7 @@ export const KAPITTEL_1: Kapittel = {
           tekst:
             "«Kurven! Winter tok den. Han sa den var umerket løsøre. Jeg sa den var merket, den luktet jo Rampenissen. Han godtok ikke lukt som merking. Han godtok heller ikke klementinskall som adresse.»",
           rampenissen:
-            "«Lukt E merking! Det står sikkert i en paragraf. En av de gode.»",
+            "«Lukt E merking! Det står sikkert i en paragraf. En av dem gode.»",
           valg: [
             { tekst: "Har du et skjema til Winter?", neste: "skjema" },
             { tekst: "Winter vil ha signaturen din.", neste: "signer" },
