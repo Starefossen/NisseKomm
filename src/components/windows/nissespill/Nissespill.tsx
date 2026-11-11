@@ -74,6 +74,51 @@ function Skriv({ tekst }: { tekst: string }) {
   );
 }
 
+// Outdoor stills get snow; indoor ones a warm lamp flicker.
+const UTE = [
+  "spill/torget.jpg",
+  "feed/antenne-tarn.png",
+  "spill/port-aapen.jpg",
+];
+const FNUGG = Array.from({ length: 28 }, (_, i) => i);
+
+function Stemning({ bilde }: { bilde: string }) {
+  return (
+    <div
+      aria-hidden
+      className="absolute inset-0 pointer-events-none overflow-hidden motion-reduce:hidden"
+    >
+      {UTE.includes(bilde) ? (
+        FNUGG.map((i) => (
+          <span
+            key={i}
+            className="absolute -top-2 rounded-full bg-white/80"
+            style={
+              {
+                left: `${(i * 37) % 100}%`,
+                width: 2 + (i % 3),
+                height: 2 + (i % 3),
+                "--x-mid": `${(i % 2 ? 1 : -1) * 12}px`,
+                "--x-end": `${(i % 2 ? -1 : 1) * 8}px`,
+                animation: `snowfall ${7 + (i % 5)}s linear ${-i * 0.8}s infinite`,
+              } as React.CSSProperties
+            }
+          />
+        ))
+      ) : (
+        <div
+          className="absolute inset-0 mix-blend-screen"
+          style={{
+            background:
+              "radial-gradient(ellipse at 50% 30%, rgba(255,180,80,0.18), transparent 60%)",
+            animation: "flicker 2.5s ease-in-out infinite alternate",
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
 /** Cheap feedback on iPad: transform/opacity only, via the Web Animations API. */
 function animer(el: Element | null | undefined, frames: Keyframe[], ms = 350) {
   el?.animate?.(frames, { duration: ms, easing: "ease-out" });
@@ -295,6 +340,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 className="absolute inset-0 w-full h-full object-cover"
                 onError={() => setBildeFeil(scene.bilde)}
               />
+              <Stemning bilde={scene.bilde} />
               {!iIntro &&
                 !iUtro &&
                 !dialog &&
