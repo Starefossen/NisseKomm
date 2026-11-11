@@ -1,12 +1,15 @@
 /**
  * Kapittel 2: «Antenna i permafrost» (dag 10). The turning gear at the tarn
- * antenna has frozen because Rudolf chewed through the heater cable, so the
- * picture to Landås stutters. Written for Håkon (9) and Kristian (12): the tin
- * box is heated on the tubes and carried in the oven glove, and it has to be
- * reheated for the frozen water cup; the hand warmer is a red herring. Two
- * mini-puzzles: the hut's combination lock (count what the sign lists) and the
- * receiver that must be tuned to the number on the note in the hut. Side
- * story only: ordinary frost and a bored reindeer, nothing from the main story.
+ * antenna is frozen in the rime that has crept down the line since day 1
+ * (Kulde's, named on day 7; the real jamming is the main story's day 11), and
+ * a bored Rudolf has knocked the bearing dial off north and stands chewing a
+ * cable in front of the gear, so the picture to Landås stutters. Written for
+ * Håkon (9) and Kristian (12): the tin box is heated on the tubes and carried
+ * in the oven glove, and it has to be reheated for the frozen water cup; the
+ * hand warmer is a red herring. Two mini-puzzles: the hut's combination lock
+ * (count what the sign lists) and the receiver that must be tuned to the line's
+ * 90,0 MHz, the number on the note in the hut. Side story only: nothing is
+ * solved for the main story.
  * Rampenissen speaks nordlandsk (docs/manus/rampenissen-radio-2026.md
  * «Skrivemåte»), everyone else bokmål.
  *
@@ -28,9 +31,9 @@ export const KAPITTEL_2: Kapittel = {
     R +
       "«Psst, dokker! Det e kaldt, og bildet fra Snøfall HAKKE. Floke sitt ute ved tjernet, og æ ser bare halve ugla. Den bakerste halvdelen. Det e ikkje den beste.»",
     R +
-      "«Antenna ved tjernet har frøse fast. Og veit dokker kem som står og TYGG på kabelen? Rudolf. Han med nesa. Han tygg på alt når han kjede sæ. I fjor åt han ei dørmatte og halve skriveplata te Winter.»",
+      "«Antenna ved tjernet har frøse fast. Rim fra linja, heilt ned i tannhjulet. Det e Kulde sitt, det. Men veit dokker kem som står foran tannhjulet og TYGG på en kabel? Rudolf. Han med nesa. Han tygg på alt når han kjede sæ, og han har klødd sæ på masta så peileskiva peke på ingenting. I fjor åt han ei dørmatte og halve skriveplata te Winter.»",
     R +
-      "«Vi må få Rudolf vekk, tine antenna og peile ho mot Landås igjen. IQ sitt bak døra si som vanlig og roper. TIPS-knappen e fortsatt mæ, men dokker treng den sikkert ikkje. Sikkert.»",
+      "«Vi må få Rudolf vekk, tine tannhjulet og peile antenna mot Landås igjen. IQ sitt bak døra si som vanlig og roper. TIPS-knappen e fortsatt mæ, men dokker treng den sikkert ikkje. Sikkert.»",
   ],
   utro:
     R +
@@ -40,7 +43,7 @@ export const KAPITTEL_2: Kapittel = {
       id: "blikkboks",
       navn: "Blikkboks",
       ikon: "box",
-      se: "En tung blikkboks full av gamle skruer. Iskald. På lokket står det «SKRUER (DIVERSE)», og under har noen skrevet «OG ÉN MUTTER». Mutteren er ikke merket. Den skal finnes.",
+      se: "En liten blikkboks full av gamle skruer. Iskald. På lokket står det «SKRUER (DIVERSE)», og under har noen skrevet «OG ÉN MUTTER». Mutteren er ikke merket. Den skal finnes.",
     },
     grytevott: {
       id: "grytevott",
@@ -115,12 +118,12 @@ export const KAPITTEL_2: Kapittel = {
       tittel: "Mottakeren i hytta",
       flagg: "k2_ferdig",
       tekst:
-        "97,3. Susen dør, nåla står stille, og lampa på toppen av masta lyser jevnt. " +
+        "90,0. Susen dør, nåla står stille, og lampa på toppen av masta lyser jevnt. " +
         R +
         "«BILDET! Æ ser heile ugla! Æ ser FJÆRAN hennes! Æ ser at ho treng et bad!»",
       min: 88,
       max: 108,
-      maal: 97.3,
+      maal: 90.0,
       toleranse: 0.2,
       steg: 0.1,
       enhet: "MHz",
@@ -343,7 +346,7 @@ export const KAPITTEL_2: Kapittel = {
             },
             {
               tekst:
-                "Et stort tannhjul ved foten av masta, støpt inn i en klump is. Fra isen stikker det ut en kabel med merker etter reinsdyrtenner. Det var varmekabelen. Nå er det bare kabel. Med smak av Rudolf.",
+                "Et stort tannhjul ved foten av masta, støpt inn i en klump is. Isen er hvit og tynn og vokser mens du ser på. Den kom ikke med været. Den kom nedover linja. Ved siden av ligger kabelen Rudolf tygget på. Den gikk til lampa på toppen. Lampa blinker fortsatt, bare litt fornærmet.",
             },
           ],
           bruk: [
@@ -393,7 +396,7 @@ export const KAPITTEL_2: Kapittel = {
             haandvarmer:
               "Du legger håndvarmeren på isen. Lunken mot frossen. Det smelter en flekk på størrelse med et frimerke, og så gir posen opp. " +
               R +
-              "«Varmt, ja. Men ikkje nok, og ikkje lenge nok. Vi treng nåkka TUNGT og varmt.»",
+              "«Varmt, ja. Men ikkje nok, og ikkje lenge nok. Vi treng nåkka av METALL som hold på varmen.»",
           },
         },
         {
@@ -441,7 +444,7 @@ export const KAPITTEL_2: Kapittel = {
             {
               hvis: "hytta_aapen",
               tekst:
-                "Døra står åpen. Inni: en benk, ei lampe som lyser gult, en tung blikkboks på benken, og noe smått ved siden av.",
+                "Døra står åpen. Inni: en benk, ei lampe som lyser gult, en blikkboks på benken, og noe smått ved siden av.",
             },
             {
               tekst:
@@ -462,7 +465,7 @@ export const KAPITTEL_2: Kapittel = {
             item: "blikkboks",
             hvis: "hytta_aapen",
             tekst:
-              "Du løfter blikkboksen fra benken. Den er tung og iskald. Floke må ta to tak og si et ord ugler ikke skal si.",
+              "Du løfter blikkboksen fra benken. Den er iskald. Floke tar den i klørne og ser på deg som om du skylder henne noe.",
           },
           feil: {
             sirupbroed:
@@ -483,11 +486,11 @@ export const KAPITTEL_2: Kapittel = {
             {
               hvis: "tok_haandvarmer",
               tekst:
-                "Benken, lampa og et tomt sted. Alt som var varmt, er tatt. Alt som var lunkent, også. På lampa henger lappen: «LANDÅS 97,3. IKKE RØR RATTET. – IQ».",
+                "Benken, lampa og et tomt sted. Alt som var varmt, er tatt. Alt som var lunkent, også. På lampa henger lappen: «LANDÅS 90,0. IKKE RØR RATTET. – IQ».",
             },
             {
               tekst:
-                "Ved siden av der boksen står, ligger ei lita pose: «RIST FOR VARME». IQ har tydeligvis sittet her og frosset. På lampa henger en lapp: «LANDÅS 97,3. IKKE RØR RATTET. – IQ». Noen har rørt rattet.",
+                "Ved siden av der boksen står, ligger ei lita pose: «RIST FOR VARME». IQ har tydeligvis sittet her og frosset. På lampa henger en lapp: «LANDÅS 90,0. IKKE RØR RATTET. – IQ». Noen har rørt rattet.",
             },
           ],
           ta: {
@@ -510,7 +513,7 @@ export const KAPITTEL_2: Kapittel = {
             {
               hvis: "k2_ferdig",
               tekst:
-                "Mottakeren står på 97,3 og suser ikke. Nåla står stille som en lydig hund. IQ har allerede teipet fast rattet.",
+                "Mottakeren står på 90,0 og suser ikke. Nåla står stille som en lydig hund. IQ har allerede teipet fast rattet.",
             },
             {
               tekst:
@@ -603,7 +606,7 @@ export const KAPITTEL_2: Kapittel = {
               gir: "varmboks",
               forbruker: true,
               tekst:
-                "Du setter boksen på de tre rørene og holder den der med votten. Rørene dupper under vekta, men holder. Snart ryker boksen. Du løfter den av. Glovarm, tung og trygg i votten. " +
+                "Du setter boksen på de tre rørene og holder den der med votten. Rørene dupper under vekta, men holder. Snart ryker boksen. Du løfter den av. Glovarm og trygg i votten. " +
                 R +
                 "«No e den varm. Veldig varm. Fly fort, før den blir fornuftig igjen.»",
             },
@@ -619,7 +622,7 @@ export const KAPITTEL_2: Kapittel = {
               R +
               "«IKKJE med fingran! Ka har IQ på handa når han tar i varme ting? Når han HUSKE det?»",
             grytevott:
-              "Du klapper rørene med votten. De summer fornøyd. Votten blir varm. Votten er ikke tung nok til å tine noe som helst.",
+              "Du klapper rørene med votten. De summer fornøyd. Votten blir varm. Votten holder ikke på varmen lenge nok til å tine noe som helst.",
             sirupbroed:
               "Du holder knekkebrødet over rørene. Sirupen bobler. Det lukter brent jul. Du tar det vekk.",
             knekkebroed:
@@ -802,9 +805,9 @@ export const KAPITTEL_2: Kapittel = {
         },
         antenne: {
           tekst:
-            "«Jeg VET det! Tannhjulet som snur antenna er frosset fast. Det hadde en varmekabel. Hadde. Rudolf tygget den i to i natt. Nå må tannhjulet tines med noe varmt. Ikke en kaffekopp, den er kald før du er ute av døra. Noe tungt. Metall. Som holder på varmen.»",
+            "«Jeg VET det! Tannhjulet som snur antenna er frosset fast. Det er ikke vanlig is. Det er rimen fra linja, den samme som har krøpet nedover alt mitt siden første desember. Og Rudolf har klødd seg på masta, så peileskiva peker på skogen. Tannhjulet må tines med noe varmt. Ikke en kaffekopp, den er kald før du er ute av døra. Metall. Som holder på varmen.»",
           rampenissen:
-            "«Nåkka tungt og varmt. Og nåkka å hold det med, for æ kjenne IQ sine varme ting. Dem e varme på en personlig måte.»",
+            "«Nåkka av metall, og varmt. Og nåkka å hold det med, for æ kjenne IQ sine varme ting. Dem e varme på en personlig måte.»",
           valg: [
             { tekst: "Hvordan får vi Rudolf vekk?", neste: "rudolf" },
             { tekst: "Hva varmer vi tannhjulet med?", neste: "boks" },
@@ -864,7 +867,7 @@ export const KAPITTEL_2: Kapittel = {
       maal: "Kom inn i hytta ved antenna. Døra har kodelås, og skiltet sier TELL.",
       tips: [
         R +
-          "«Nåkka tungt og varmt, sa IQ. Boksen hans ligg i hytta ved antenna. Men døra har kodelås, og skiltet på døra sei meir enn det burde.»",
+          "«Nåkka av metall som hold på varmen, sa IQ. Boksen hans ligg i hytta ved antenna. Men døra har kodelås, og skiltet på døra sei meir enn det burde.»",
         R +
           "«Skiltet sei TELL. Lamper på masta, kabler i snøen, reinsdyr. SE på lampa, SE på kablan, og tell reinsdyr. Det går fort.»",
         R +
@@ -888,11 +891,11 @@ export const KAPITTEL_2: Kapittel = {
     {
       id: "tannhjul",
       ferdig: "tannhjul_tint",
-      maal: "Tin tannhjulet nederst på masta. Noe tungt og varmt.",
+      maal: "Tin tannhjulet nederst på masta. Noe av metall, og varmt.",
       kjent: {},
       tips: [
         R +
-          "«Tannhjulet nederst på masta e frosse. Det treng nåkka tungt og varmt inntil sæ. Lenge. Håndvarmeren e ikkje nok, den e lunken som en unnskyldning.»",
+          "«Tannhjulet nederst på masta e frosse. Det treng nåkka varmt av metall inntil sæ. Lenge. Håndvarmeren e ikkje nok, den e lunken som en unnskyldning.»",
         R +
           "«Blikkboksen kan varmes på radiorøran hos IQ. Men ikkje med fingran. Hjerterud sin grytevott heng under krakken te IQ. Boks og vott i lag først.»",
         R +
@@ -935,7 +938,7 @@ export const KAPITTEL_2: Kapittel = {
         R +
           "«IQ skriv alt på lappa. SE på benken i hytta. Der står tallet mottakeren ska stå på.»",
         R +
-          "«BRUK mottakeren i vinduet og dra rattet te 97,3. Når søylene e fulle, trykk LÅS FREKVENS.»",
+          "«BRUK mottakeren i vinduet og dra rattet te 90,0. Når søylene e fulle, trykk LÅS FREKVENS.»",
       ],
     },
   ],
