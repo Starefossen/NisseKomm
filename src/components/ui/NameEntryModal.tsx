@@ -47,9 +47,9 @@ export function NameEntryModal({ onComplete }: NameEntryModalProps) {
       role="dialog"
       aria-modal="true"
       aria-label="Snill-listen"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
     >
-      <div className="w-full max-w-2xl mx-4 border-8 border-(--gold) bg-black p-8 space-y-6 animate-[scale-in_0.3s_ease-out]">
+      <div className="w-full max-w-2xl max-h-full overflow-y-auto border-8 border-(--gold) bg-black p-8 space-y-6 animate-[scale-in_0.3s_ease-out]">
         {/* Header */}
         <div className="text-center space-y-2 pb-4 border-b-4 border-(--gold)/30">
           <div className="flex items-center justify-center gap-3">
