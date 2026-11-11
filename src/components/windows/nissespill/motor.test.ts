@@ -178,6 +178,23 @@ describe("motor: fjær", () => {
   });
 });
 
+describe("motor: dialog husker spurte valg", () => {
+  it("valg med neste gråes etter bruk, avslutninger ikke, og nytt kapittel glemmer", () => {
+    const k1 = KAPITLER[0];
+    const start = k1.dialoger.winter.noder.start;
+    const skjerf = start.valg!.find((v) => v.tekst.startsWith("Hvorfor"))!;
+    const hade = start.valg!.find((v) => v.tekst.startsWith("Ha det"))!;
+    let s = M.nyttKapittel(k1);
+    expect(M.erSpurt(s, "winter", skjerf)).toBe(false);
+    s = M.velgSvar(s, skjerf, "winter");
+    s = M.velgSvar(s, hade, "winter");
+    expect(M.erSpurt(s, "winter", skjerf)).toBe(true);
+    expect(M.erSpurt(s, "winter", hade)).toBe(false);
+    expect(M.erSpurt(s, "iq", skjerf)).toBe(false);
+    expect(M.erSpurt(M.nyttKapittel(k1, s), "winter", skjerf)).toBe(false);
+  });
+});
+
 describe("motor: notatbok", () => {
   const k1 = KAPITLER[0];
   it("viser løste mål, det første uløste og kjente parallelle mål", () => {

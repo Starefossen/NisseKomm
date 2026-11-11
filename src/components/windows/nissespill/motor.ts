@@ -376,8 +376,23 @@ export const valgSomVises = (n: Node, save: EventyrSave) =>
     (v) => ok(v, save) && (!v.harItem || save.inventory.includes(v.harItem)),
   );
 
-export function velgSvar(save: EventyrSave, v: Valg): EventyrSave {
-  return medItem(utenItem(medFlagg(save, v.flagg), v.tar), v.gir);
+const spurtFlagg = (dialog: string, v: Valg) => `spurt:${dialog}:${v.tekst}`;
+
+/** Choices that lead somewhere are remembered (greyed) until the chapter restarts. */
+export const erSpurt = (save: EventyrSave, dialog: string, v: Valg) =>
+  !!v.neste && has(save, spurtFlagg(dialog, v));
+
+export function velgSvar(
+  save: EventyrSave,
+  v: Valg,
+  dialog?: string,
+): EventyrSave {
+  const s = medFlagg(
+    save,
+    v.flagg,
+    dialog && v.neste ? spurtFlagg(dialog, v) : undefined,
+  );
+  return medItem(utenItem(s, v.tar), v.gir);
 }
 
 /** The open puzzle's next hint; levels stick at 3 so the answer stays visible. */

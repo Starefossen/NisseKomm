@@ -301,7 +301,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
 
   const tapValg = (v: M.Valg) => {
     SoundManager.playSound("click");
-    setSave(M.velgSvar(save, v));
+    setSave(M.velgSvar(save, v, dialog?.id));
     setDialog(v.neste && dialog ? { id: dialog.id, node: v.neste } : null);
   };
 
@@ -594,7 +594,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                     <button
                       key={v.tekst}
                       type="button"
-                      className={MENYPUNKT}
+                      className={`${MENYPUNKT} ${M.erSpurt(save, dialog.id, v) ? "opacity-50" : ""}`}
                       onClick={() => tapValg(v)}
                     >
                       › {v.tekst}
