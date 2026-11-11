@@ -286,3 +286,49 @@ describe("motor: kapitlenes minispill er gyldige", () => {
     },
   );
 });
+
+describe("motor: plukk", () => {
+  it("nye ting merkes til de er sett, hint ved to ting, kort-tekst fra se", () => {
+    const foer = save();
+    const { save: s, nye } = M.merkNye(foer, {
+      ...foer,
+      inventory: ["a", "b"],
+    });
+    expect(nye).toEqual(["a", "b"]);
+    expect(M.erNy(s, "a")).toBe(true);
+    expect(M.erNy(M.sett(s, "a"), "a")).toBe(false);
+    expect(M.visBrukHint(s)).toBe(true);
+    expect(M.visBrukHint(M.medFlagg(s, "hint_bruk"))).toBe(false);
+    expect(
+      M.funnetTekst({
+        id: "x",
+        navn: "X",
+        ikon: "file",
+        se: "Én ting. To ting.",
+      }),
+    ).toBe("Én ting.");
+    const alle = KAPITLER.flatMap((k) => Object.values(k.gjenstander));
+    expect(alle.every((g) => M.funnetTekst(g).length > 0)).toBe(true);
+  });
+});
+
+describe("motor: Rampenissen på forespørsel", () => {
+  it("replikker og nye ting køes til de er hørt", () => {
+    const kap = KAPITLER.find((k) =>
+      Object.values(k.dialoger).some((d) =>
+        Object.values(d.noder).some((n) => n.rampenissen),
+      ),
+    )!;
+    const [d, dlg] = Object.entries(kap.dialoger).find(([, x]) =>
+      Object.values(x.noder).some((n) => n.rampenissen),
+    )!;
+    const node = Object.keys(dlg.noder).find((n) => dlg.noder[n].rampenissen)!;
+    const item = Object.keys(kap.gjenstander)[0];
+    let s = M.merkReplikk(kap, save(), d, node);
+    s = M.merkNye(s, { ...s, inventory: [item] }).save;
+    const nytt = M.rampenissenNytt(kap, s);
+    expect(nytt).toHaveLength(2);
+    expect(nytt[1].tekst).toBe(dlg.noder[node].rampenissen);
+    expect(M.rampenissenNytt(kap, M.hoer(s, nytt))).toEqual([]);
+  });
+});

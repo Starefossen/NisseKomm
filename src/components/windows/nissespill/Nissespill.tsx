@@ -153,21 +153,47 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
 
   const dag = spilldag();
 
+  // The pickup card shows first; the slot flies in once it is dismissed.
+  const [plukk, setPlukk] = useState<string | null>(null);
+  // Rampenissen's panel: what he said on opening, plus the hint asked for there.
+  const [rp, setRp] = useState<{ nytt: string[]; tips?: string } | null>(null);
+  const flyInn = (id: string) =>
+    setTimeout(() =>
+      animer(
+        lommeRef.current?.querySelector(`[data-gjenstand="${id}"]`),
+        [
+          { transform: "translateY(-45vh) scale(2.5)", opacity: 0 },
+          { transform: "translateY(0) scale(1)", opacity: 1 },
+        ],
+        600,
+      ),
+    );
+  const lukkPlukk = () => {
+    if (plukk) flyInn(plukk);
+    setPlukk(null);
+  };
+  /** Marks new items and opens the card for the first one. */
+  const medNye = (foer: EventyrSave, etter: EventyrSave) => {
+    const { save: s, nye } = M.merkNye(foer, etter);
+    if (nye[0] && kapittel(etter.kapittel).gjenstander[nye[0]]) {
+      setPlukk(nye[0]);
+      [0, 120, 240].forEach((ms, i) =>
+        setTimeout(
+          () => SoundManager.playSound(i === 2 ? "success" : "type"),
+          ms,
+        ),
+      );
+    }
+    return s;
+  };
+
   const bruk = (u: M.Utfall, om?: { navn: string; ikon?: string }) => {
     if (save) {
-      const ny = u.save.inventory.find((i) => !save.inventory.includes(i));
-      // After render: the new slot flies down from the scene into the pocket
-      if (ny)
-        setTimeout(() =>
-          animer(
-            lommeRef.current?.querySelector(`[data-gjenstand="${ny}"]`),
-            [
-              { transform: "translateY(-45vh) scale(2.5)", opacity: 0 },
-              { transform: "translateY(0) scale(1)", opacity: 1 },
-            ],
-            600,
-          ),
-        );
+      let s = medNye(save, u.save);
+      if (holder) s = M.sett(s, holder);
+      if (u.dialog)
+        s = M.merkReplikk(kapittel(s.kapittel), s, u.dialog, "start");
+      u = { ...u, save: s };
     }
     if (u.lyd === "error")
       animer(sceneRef.current, [
@@ -287,6 +313,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   const tapItem = (id: string) => {
     const g = kap.gjenstander[id];
     if (verb === "se") {
+      setSave(M.sett(save, id));
       setTekst(g.se);
       setEmne(g);
       setVerb(null);
@@ -302,7 +329,9 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
 
   const tapValg = (v: M.Valg) => {
     SoundManager.playSound("click");
-    setSave(M.velgSvar(save, v, dialog?.id));
+    let s = medNye(save, M.velgSvar(save, v, dialog?.id));
+    if (v.neste && dialog) s = M.merkReplikk(kap, s, dialog.id, v.neste);
+    setSave(s);
     setDialog(
       v.neste && dialog
         ? { id: dialog.id, node: v.neste, sagt: v.tekst }
@@ -496,6 +525,113 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 }}
               />
             )}
+            {plukk && kap.gjenstander[plukk] && (
+              <div
+                role="dialog"
+                aria-label={`Funnet: ${kap.gjenstander[plukk].navn}`}
+                tabIndex={-1}
+                ref={(el) => el?.focus()}
+                onClick={lukkPlukk}
+                onKeyDown={(e) => {
+                  if (["Enter", " ", "Escape"].includes(e.key)) {
+                    e.preventDefault();
+                    lukkPlukk();
+                  }
+                }}
+                className="absolute inset-0 z-30 bg-black/80 flex items-center justify-center p-3 cursor-pointer focus:outline-none"
+                style={{ animation: "fadeIn 0.2s ease-out" }}
+              >
+                <div className="max-w-md w-full border-4 border-(--gold) bg-black p-4 flex flex-col items-center gap-2 text-center [image-rendering:pixelated]">
+                  <p className="text-lg text-(--cold-blue) tracking-widest">
+                    FUNNET!
+                  </p>
+                  <div className="w-24 h-24 border-2 border-(--brass) flex items-center justify-center motion-safe:animate-pulse">
+                    <Icon
+                      name={kap.gjenstander[plukk].ikon}
+                      size={72}
+                      color="gold"
+                    />
+                  </div>
+                  <h3 className="text-3xl text-(--gold) tracking-wider">
+                    {kap.gjenstander[plukk].navn}
+                  </h3>
+                  <p className="text-xl text-(--neon-green) leading-tight">
+                    {M.funnetTekst(kap.gjenstander[plukk])}
+                  </p>
+                  <button
+                    type="button"
+                    className={`${LITEN} border-(--gold) text-(--gold)`}
+                  >
+                    Legg i lomma
+                  </button>
+                </div>
+              </div>
+            )}
+            {!plukk && !rp && !dialog && M.visBrukHint(save) && (
+              <div className="absolute bottom-2 left-2 right-2 z-10 flex items-center gap-2 bg-black/85 border-2 border-(--cold-blue) p-2 text-lg text-(--cold-blue)">
+                <span className="flex-1">
+                  Prøv BRUK med en ting på noe i scenen, eller trykk to ting i
+                  lomma etter hverandre.
+                </span>
+                <button
+                  type="button"
+                  className={`${LITEN} border-(--cold-blue)`}
+                  onClick={() => setSave(M.medFlagg(save, "hint_bruk"))}
+                >
+                  OK
+                </button>
+              </div>
+            )}
+            {rp && (
+              <div
+                role="dialog"
+                aria-label="Rampenissen"
+                className={`${PANEL} z-20 flex items-start gap-3`}
+              >
+                <Portrett navn="rampenissen" />
+                <div className="flex-1 min-w-0 space-y-1">
+                  <p className="text-lg text-(--gold)">
+                    Rampenissen (hvisker fra hylla)
+                  </p>
+                  {rp.nytt.map((t) => (
+                    <p key={t} className="text-xl leading-tight">
+                      {t}
+                    </p>
+                  ))}
+                  {rp.nytt.length === 0 && !rp.tips && (
+                    <p className="text-xl leading-tight">
+                      «Æ e her. Treng du et tips, bare spør.»
+                    </p>
+                  )}
+                  {rp.tips && (
+                    <p className="text-xl leading-tight text-(--cold-blue)">
+                      {rp.tips}
+                    </p>
+                  )}
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      className={`${LITEN} border-(--gold) text-(--gold)`}
+                      onClick={() => {
+                        const u = M.tips(kap, save);
+                        SoundManager.playSound("click");
+                        setSave(u.save);
+                        setRp({ nytt: [], tips: u.tekst });
+                      }}
+                    >
+                      TIPS
+                    </button>
+                    <button
+                      type="button"
+                      className={`${LITEN} border-(--brass)`}
+                      onClick={() => setRp(null)}
+                    >
+                      Lukk
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
             {notat && (
               <div
                 role="dialog"
@@ -530,6 +666,15 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                       {n.tekst}
                     </li>
                   ))}
+                  {save.inventory.some((i) => M.erNy(save, i)) && (
+                    <li className="text-(--cold-blue)">
+                      Kanskje nyttig:{" "}
+                      {save.inventory
+                        .filter((i) => M.erNy(save, i) && kap.gjenstander[i])
+                        .map((i) => kap.gjenstander[i].navn)
+                        .join(", ")}
+                    </li>
+                  )}
                   {M.has(save, kap.slutt) && (
                     <li className="text-(--gold)">Kapittelet er ferdig.</li>
                   )}
@@ -611,20 +756,6 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                     </p>
                   </div>
                 </div>
-                {node.rampenissen && (
-                  // Rampenissen sits on the shelf at home; nobody in Snøfall hears him
-                  <div className="flex items-start gap-3 pl-6 italic">
-                    <Portrett navn="rampenissen" />
-                    <div className="min-w-0">
-                      <p className="text-lg text-(--gold)">
-                        Rampenissen (hvisker fra hylla)
-                      </p>
-                      <p className="text-xl leading-tight">
-                        {node.rampenissen}
-                      </p>
-                    </div>
-                  </div>
-                )}
                 <div className="grid landscape:grid-cols-2 gap-x-4 border-t border-(--brass)/50 pt-1">
                   {valgListe.map((v) => (
                     <button
@@ -649,7 +780,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
               </div>
             )}
 
-            {!dialog && !iIntro && !iUtro && tekst && (
+            {!dialog && !rp && !iIntro && !iUtro && tekst && (
               <button
                 type="button"
                 aria-label="Lukk tekst"
@@ -710,8 +841,13 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                     SoundManager.playSound("click");
                     tapItem(id);
                   }}
-                  className={`shrink-0 w-11 h-11 border-2 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) ${holder === id ? "bg-(--gold) border-(--gold)" : "border-(--brass)"}`}
+                  className={`relative shrink-0 w-11 h-11 border-2 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) ${holder === id ? "bg-(--gold) border-(--gold)" : M.erNy(save, id) ? "border-(--gold) motion-safe:animate-pulse" : "border-(--brass)"}`}
                 >
+                  {M.erNy(save, id) && (
+                    <span className="absolute -top-1 -right-1 px-0.5 bg-(--gold) text-black text-xs leading-none">
+                      NY
+                    </span>
+                  )}
                   <Icon
                     name={kap.gjenstander[id].ikon}
                     size={26}
@@ -741,10 +877,26 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
           </button>
           <button
             type="button"
-            onClick={() => bruk(M.tips(kap, save))}
-            className={`${LITEN} border-(--gold) text-(--gold)`}
+            aria-expanded={!!rp}
+            onClick={() => {
+              SoundManager.playSound("click");
+              if (rp) return setRp(null);
+              const nytt = M.rampenissenNytt(kap, save);
+              setSave(M.hoer(save, nytt));
+              setRp({ nytt: nytt.map((n) => n.tekst) });
+            }}
+            className={`${LITEN} relative flex items-center gap-1 border-(--gold) text-(--gold)`}
           >
-            TIPS
+            <span className="w-7 h-7 [&>div]:w-7 [&>div]:h-7 [&>div]:border">
+              <Portrett navn="rampenissen" />
+            </span>
+            RAMPENISSEN
+            {M.rampenissenNytt(kap, save).length > 0 && (
+              <span
+                aria-label="Nytt fra Rampenissen"
+                className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-(--gold) motion-safe:animate-pulse"
+              />
+            )}
           </button>
           <div className="relative">
             <button

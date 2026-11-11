@@ -151,9 +151,13 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     tap(el, "Winter");
     expect(el.textContent).toContain("Halt!");
     tap(el, "Vi leter etter en garnkurv. Med en bjelle i.");
-    expect(el.textContent).toContain("SENGA mi i postkassen");
+    // Rampenissen's aside waits for his button instead of cutting in
+    expect(el.textContent).not.toContain("SENGA mi i postkassen");
     tap(el, "Og stempelet?");
     tap(el, "Skjønner. Vi finner noe rødt.");
+    tap(el, "RAMPENISSEN");
+    expect(el.textContent).toContain("SENGA mi i postkassen");
+    tap(el, "RAMPENISSEN");
 
     // Berries, then up to the workshop for the cup and the form
     tap(el, "Julebodene");
@@ -272,10 +276,11 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
     expect(el.textContent).not.toContain("Hva gjør vi nå?");
   });
 
-  it("TIPS følger første uløste gåte og stopper på nivå 3", () => {
+  it("RAMPENISSEN-knappens TIPS følger første uløste gåte og stopper på nivå 3", () => {
     const el = mount();
     tap(el, "SPILL");
     tap(el, "HOPP OVER");
+    tap(el, "RAMPENISSEN");
     tap(el, "TIPS");
     expect(el.textContent).toContain("Han med skjerfet");
     tap(el, "TIPS");

@@ -58,6 +58,8 @@ export interface Gjenstand {
   /** pixelarticons name (lib/icons.tsx). */
   ikon: string;
   se: string;
+  /** One line on the pickup card; defaults to the first sentence of `se`. */
+  funnet?: string;
 }
 
 /** Using an inventory item on a hotspot. */
@@ -234,6 +236,11 @@ export const medFlagg = (
     ...save.flags,
     ...flags.filter((f): f is string => !!f && !save.flags.includes(f)),
   ],
+});
+
+const utenFlagg = (save: EventyrSave, flag: string) => ({
+  ...save,
+  flags: save.flags.filter((f) => f !== flag),
 });
 
 const utenItem = (save: EventyrSave, id?: string) =>
@@ -489,3 +496,71 @@ export function losPuslespill(
   if (!p) return { save };
   return { save: medFlagg(save, p.flagg), tekst: p.tekst, lyd: "success" };
 }
+
+/** Rampenissen's tease about a new item, heard on demand from his button. */
+const HVISK = [
+  "«Den der… den ska sikkert brukes te nåkka. Æ sir ikkje ka.»",
+  "«Ta vare på den. Æ har en følelse. Æ har ofte følelsa.»",
+  "«Hm. Prøv den på nåkka i scenen. Eller på nåkka anna i lomma.»",
+  "«Ingen plukke opp sånt for moro skyld. Bortsett fra mæ. Men du e smartere.»",
+];
+
+export const funnetTekst = (g: Gjenstand) =>
+  g.funnet ?? g.se.match(/^.*?[.!?»](?=\s|$)/)?.[0] ?? g.se;
+
+export const hvisk = (id: string) => HVISK[hash(id) % HVISK.length];
+
+/** Items that came in between two saves get an `ny:` flag until examined or used. */
+export function merkNye(foer: EventyrSave, etter: EventyrSave) {
+  const nye = etter.inventory.filter((i) => !foer.inventory.includes(i));
+  return { save: medFlagg(etter, ...nye.map((i) => `ny:${i}`)), nye };
+}
+
+export const erNy = (save: EventyrSave, id: string) => has(save, `ny:${id}`);
+
+export const sett = (save: EventyrSave, id: string) =>
+  utenFlagg(save, `ny:${id}`);
+
+/** One-time nudge once two items are in the pocket. */
+export const visBrukHint = (save: EventyrSave) =>
+  save.inventory.length >= 2 && !has(save, "hint_bruk");
+
+/**
+ * Rampenissen never cuts in on his own. Dialog asides (`Node.rampenissen`)
+ * queue as `rp:` flags when the node is shown; new items queue a tease.
+ * His button shows them, newest first, and marks them heard.
+ */
+export function merkReplikk(
+  kap: Kapittel,
+  save: EventyrSave,
+  dialog: string,
+  node: string,
+) {
+  return kap.dialoger[dialog]?.noder[node]?.rampenissen
+    ? medFlagg(save, `rp:${dialog}:${node}`)
+    : save;
+}
+
+export function rampenissenNytt(kap: Kapittel, save: EventyrSave) {
+  const replikker = save.flags.flatMap((f) => {
+    const [t, d, n] = f.split(":");
+    const tekst = t === "rp" && kap.dialoger[d]?.noder[n]?.rampenissen;
+    return tekst && !has(save, `hoert:${d}:${n}`)
+      ? [{ tekst, flagg: `hoert:${d}:${n}` }]
+      : [];
+  });
+  const ting = save.inventory.flatMap((id) =>
+    erNy(save, id) && kap.gjenstander[id] && !has(save, `hoert:ting:${id}`)
+      ? [
+          {
+            tekst: `${kap.gjenstander[id].navn}? ${hvisk(id)}`,
+            flagg: `hoert:ting:${id}`,
+          },
+        ]
+      : [],
+  );
+  return [...replikker, ...ting].reverse();
+}
+
+export const hoer = (save: EventyrSave, nytt: { flagg: string }[]) =>
+  medFlagg(save, ...nytt.map((n) => n.flagg));
