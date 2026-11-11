@@ -42,6 +42,8 @@ export interface NisseNetTidbit extends Tidbit {
   navn: string;
   /** Case-insensitive; the text stays hidden until it is typed. */
   passord?: string;
+  /** Hidden until this many owl feathers are found in Ugleposten (opplasinger FJAER_MAAL). */
+  fjaer?: number;
 }
 
 export interface Tidbits {

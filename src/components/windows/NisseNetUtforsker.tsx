@@ -33,7 +33,9 @@ export function NisseNetUtforsker({
   );
   const [selectedFile, setSelectedFile] = useState<FilNode | null>(null);
   // MORO folder (tidbits.json): outside the file and hemmeligheter counters
-  const moroFiles = visible(TIDBITS.nissenet.filer, currentDay);
+  const moroFiles = visible(TIDBITS.nissenet.filer, currentDay).filter(
+    (f) => !f.fjaer || GameEngine.getUglefjaer() >= f.fjaer,
+  );
   const [moro, setMoro] = useState<NisseNetTidbit | null>(null);
   const [opened, setOpened] = useState<Set<string>>(new Set());
   const [password, setPassword] = useState("");
@@ -42,6 +44,7 @@ export function NisseNetUtforsker({
   const openMoro = (f: NisseNetTidbit) => {
     setSelectedFile(null);
     setMoro(f);
+    if (f.fjaer) GameEngine.markIntroSeen("ny-nissenet-fjaer");
     setPassword("");
     setWrongLine(null);
   };

@@ -446,7 +446,7 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Tavla",
           rect: { x: 22, y: 25, w: 13, h: 26 },
           smart: "se",
-          se: "Formler, piler og en tegning av noe rundt. Nederst står det «IKKE VISK UT», og rett under har noen visket ut noe. Det som er visket ut, var større enn det som står igjen.",
+          se: "Formler, piler og en tegning av noe rundt. Nederst står det «IKKE VISK UT», og rett under har noen visket ut noe. Det som er visket ut, var større enn det som står igjen. Oppe i hjørnet henger en lapp med frostruner, IQs håndskrift: ᚱ:SE OPP",
           prat: "Du sier «hallo» til tavla. Krittstøvet svarer med å drysse. Det er hele svaret, og det er et ærlig et.",
         },
         {

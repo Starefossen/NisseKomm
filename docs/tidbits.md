@@ -16,7 +16,7 @@ a secret word is a real or bonus code.
 | `kalender`              | `dag`                            | Extra line in a completed door's modal                                                                                                                |
 | `stats`                 | `navn`, `verdi`                  | NisseStats «Snøfall-statistikk»                                                                                                                       |
 | `musikk.skjultSpor`     | `path`, `tittel`, `etterLøstDag` | Hidden NisseMusikk track once that day is solved and the file exists in the media library                                                             |
-| `nissenet.filer`        | `navn`, `passord?`               | NisseNet MORO folder; not counted as hemmeligheter                                                                                                    |
+| `nissenet.filer`        | `navn`, `passord?`, `fjaer?`     | NisseNet MORO folder; not counted as hemmeligheter. `fjaer` hides the file until that many owl feathers are found in Ugleposten                       |
 | `nissenet.feilPassord`  |                                  | Rotating reply to a wrong password                                                                                                                    |
 
 ## Slang til sjekk

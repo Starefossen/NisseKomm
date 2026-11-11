@@ -13,6 +13,8 @@ import { NyttIDag } from "@/components/ui/NyttIDag";
 import * as M from "./motor";
 import { Puslespill } from "./Puslespill";
 import { Portrett, Skriv, UgleIntro } from "./UgleIntro";
+import { Kartplate } from "./Kartplate";
+import { Tekst } from "./kobling";
 
 const DEV =
   process.env.NODE_ENV !== "production" ||
@@ -241,6 +243,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
             ting for å SE, BRUK og SNAKK.
           </p>
           <NyttIDag vindu="nissespill" />
+          <Kartplate dag={dag} save={save} />
           <ul className="space-y-2">
             {KAPITLER.map((k) => {
               const laast = !erLaastOpp(k, dag);
@@ -777,7 +780,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   <div className="min-w-0">
                     <p className="text-lg text-(--gold)">{taler.taler}</p>
                     <p className="text-xl leading-tight">
-                      <Skriv
+                      <Tekst
                         key={dialog.node}
                         tekst={M.velg(node.tekst, save)}
                       />
@@ -823,7 +826,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                     {emne.navn}
                   </span>
                 )}
-                <Skriv key={tekst} tekst={tekst} />
+                <Tekst key={tekst} tekst={tekst} />
               </button>
             )}
           </div>

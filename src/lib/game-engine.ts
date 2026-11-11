@@ -75,6 +75,8 @@ export type MetricDisplayType =
   | "binary"
   | "hexgrid";
 import {
+  FJAER_MAAL,
+  FJAER_VARSEL,
   OPPLASINGER,
   nivaa,
   puffTekst,
@@ -424,6 +426,11 @@ export class GameEngine {
 
   static saveEventyr(save: EventyrSave): void {
     StorageManager.setEventyrSave(save);
+  }
+
+  /** Owl feathers found in Ugleposten (all chapters); FJAER_MAAL opens a MORO file. */
+  static getUglefjaer(): number {
+    return this.getEventyrSave()?.fjaer?.length ?? 0;
   }
 
   /** IQs sledesimulator: best score and bells per stage id, and per «Navn/etappe». */
@@ -1199,6 +1206,17 @@ export class GameEngine {
     if (puff)
       alerts.push({
         tekst: puff,
+        type: "info",
+        tidspunkt: generateAlertTimestamp(),
+        day,
+      });
+    // Eight owl feathers: Rampenissen points to the new MORO file until it is opened
+    if (
+      this.getUglefjaer() >= FJAER_MAAL &&
+      !this.isIntroSeen("ny-nissenet-fjaer")
+    )
+      alerts.push({
+        tekst: FJAER_VARSEL,
         type: "info",
         tidspunkt: generateAlertTimestamp(),
         day,

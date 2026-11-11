@@ -144,6 +144,13 @@
     "mal": "assets/prompts/spill/piksel-julebodene.txt",
     "notat": "Ugleposten K1, ny scene fra torget: bodene på torget, nærbilde. Torgets pikselbilde er bare stil- og palettreferanse (prompts/spill/piksel-ny-scene)"
   },
+  "spill-piksel/kart": {
+    "generator": "piksel",
+    "ut": "spill/piksel/kart.png",
+    "bilde": "public/spill/piksel/torget.png",
+    "mal": "assets/prompts/spill/piksel-kart.txt",
+    "notat": "Ugleposten: liten kartplansje over Snøfall bak kapittellista (Kartplate.tsx). Torgets pikselbilde er bare stil- og palettreferanse. Plassering må følge malen: tjern med antenne til venstre, torget midt, Julius' hus til høyre, byporten nederst; koden tegner merkene oppå"
+  },
   "portrett/winter": {
     "generator": "portrett",
     "ut": "spill/portrett-winter.png",

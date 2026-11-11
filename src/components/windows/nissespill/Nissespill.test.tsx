@@ -13,7 +13,9 @@ import { KAPITLER, erLaastOpp, spilldag } from "./kapitler";
 import { KAPITTEL_1 } from "./kapittel1";
 import * as M from "./motor";
 import * as P from "./minispill";
+import * as K from "./kobling";
 import { GameEngine } from "@/lib/game-engine";
+import { FJAER_VARSEL } from "@/lib/opplasinger";
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
@@ -553,5 +555,95 @@ describe("Nissespill: motor", () => {
     expect(med("briller_levert", "bjelle_montert", "port_smurt")).toContain(
       "Alt på lista er gjort. Sjekk!",
     );
+  });
+});
+
+describe("Nissespill: kartplate og koblinger til NisseKomm", () => {
+  const lagre = (save: Partial<ReturnType<typeof M.nyttKapittel>>) =>
+    GameEngine.saveEventyr({
+      kapittel: 1,
+      sceneId: "torget",
+      inventory: [],
+      flags: [],
+      hints: {},
+      fjaer: [],
+      ...save,
+    });
+  beforeEach(() => {
+    localStorage.clear();
+    env.NEXT_PUBLIC_MOCK_MONTH = "12";
+  });
+  afterEach(() => {
+    delete env.NEXT_PUBLIC_MOCK_DAY;
+    delete env.NEXT_PUBLIC_MOCK_MONTH;
+  });
+
+  it("kartplata viser låste steder med ÅPNER DAG N, åpne uten", () => {
+    env.NEXT_PUBLIC_MOCK_DAY = "4";
+    let kart = mount().querySelector("[data-testid=kartplate]")!;
+    expect(kart.textContent).toContain("Torget i Snøfall");
+    for (const k of KAPITLER.slice(1))
+      expect(kart.textContent).toContain(`ÅPNER DAG ${k.dag}`);
+    env.NEXT_PUBLIC_MOCK_DAY = "22";
+    kart = mount().querySelector("[data-testid=kartplate]")!;
+    expect(kart.textContent).not.toContain("ÅPNER DAG");
+    expect(kart.textContent).toContain("Byporten");
+  });
+
+  it("brevene til Julius ligger på pulten med navn og utdrag", () => {
+    env.NEXT_PUBLIC_MOCK_DAY = "16";
+    GameEngine.addSantaLetter(3, "Kjære Julius, jeg ønsker meg ski", "Håkon");
+    GameEngine.addSantaLetter(5, "Hei Julius. Takk for i fjor", "Kristian");
+    lagre({ kapittel: 3, sceneId: "kontor", flags: ["k3_intro"] });
+    const el = mount();
+    tap(el, "Brevbunken");
+    expect(el.textContent).toContain(
+      "ett fra Håkon («Kjære Julius, jeg ønsker meg ski»)",
+    );
+    expect(el.textContent).toContain("ett fra Kristian");
+    expect(el.textContent).not.toContain("{{brev}}");
+  });
+
+  it("uten brev står plassen tom", () => {
+    expect(K.brevTekst([])).toContain("tom plass");
+  });
+
+  it("lappen på tavla tegnes i frostruner, ulærte bokstaver som frost", () => {
+    env.NEXT_PUBLIC_MOCK_DAY = "4";
+    lagre({ sceneId: "verksted", flags: ["k1_intro"] });
+    const el = mount();
+    tap(el, "Tavla");
+    expect(el.textContent).not.toContain("ᚱ:");
+    // Nothing solved yet, so every letter of «SE OPP» is frost
+    expect(el.querySelector('[role=img][aria-label="** ***"]')).not.toBeNull();
+  });
+
+  it("Winters bakside viser Sledeflukt-rekorder per spiller", () => {
+    env.NEXT_PUBLIC_MOCK_DAY = "22";
+    GameEngine.recordSledeResultat("tundra", 1240, 3, "Kristian");
+    GameEngine.recordSledeResultat("ringer", 980, 2, "Kristian");
+    lagre({
+      kapittel: 4,
+      sceneId: "porten",
+      flags: ["k4_intro", "winter_snakket"],
+    });
+    const el = mount();
+    tap(el, "Winter");
+    tap(el, "Hva står på baksiden av skriveplata?");
+    expect(el.textContent).toContain(
+      "Kristian: 1 240 poeng på Tundra-testen, 3 bjeller.",
+    );
+    expect(el.textContent).not.toContain("Håkon:");
+    expect(K.rekordTekst({})).toContain("Tomme linjer");
+  });
+
+  it("åtte fjær åpner MORO-fila og Rampenissens linje til den er lest", () => {
+    env.NEXT_PUBLIC_MOCK_DAY = "10";
+    lagre({ fjaer: ["1:a", "1:b", "1:c", "1:d", "1:e", "1:f", "2:a", "2:b"] });
+    expect(GameEngine.getUglefjaer()).toBe(8);
+    const varsler = () => GameEngine.getDailyAlerts(10).map((a) => a.tekst);
+    expect(varsler()).toContain(FJAER_VARSEL);
+    GameEngine.markIntroSeen("ny-nissenet-fjaer");
+    expect(varsler()).not.toContain(FJAER_VARSEL);
   });
 });

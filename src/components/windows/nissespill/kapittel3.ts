@@ -140,7 +140,7 @@ export const KAPITTEL_3: Kapittel = {
           navn: "Lampa",
           rect: { x: 36, y: 14, w: 7, h: 14 },
           smart: "se",
-          se: "Ei liten vegglampe med skjerm. Den lyser varmt og gult, akkurat nok til å lese brev ved. Julius leser her om kveldene. Hjerterud sier han leser for lenge. Hun har rett, og han vet det.",
+          se: "Ei lita vegglampe med skjerm. Den lyser varmt og gult, akkurat nok til å lese brev ved. Julius leser her om kveldene. Hjerterud sier han leser for lenge. Hun har rett, og han vet det.",
         },
         {
           id: "bokhylla",
@@ -219,7 +219,7 @@ export const KAPITTEL_3: Kapittel = {
           navn: "Brevbunken",
           rect: { x: 22, y: 70, w: 20, h: 12 },
           smart: "se",
-          se: "Brev til Julius, ordnet etter land, bundet med rød tråd. Det øverste er fra Bergen og lukter regn. Det nest øverste er også fra Bergen. Bergen skriver mye. Bergen har tid, det regner jo.",
+          se: "Brev til Julius, ordnet etter land, bundet med rød tråd. Det øverste er fra Bergen og lukter regn. Det nest øverste er også fra Bergen. Bergen skriver mye. Bergen har tid, det regner jo. {{brev}}",
           prat: "Du sier «hei» til brevbunken fra Bergen. Det lukter regn tilbake. Det er Bergens måte å si hei på.",
         },
         {
@@ -668,7 +668,7 @@ export const KAPITTEL_3: Kapittel = {
           navn: "Steinene ved sokkelen",
           rect: { x: 68, y: 84, w: 16, h: 16 },
           smart: "se",
-          se: "Løse steiner og is i små hauger ved foten av sokkelen. Mellom dem ligger en liten skrutrekker med trehåndtak, rusten. Noen glemte den her. Noen som alltid glemmer verktøy. Den har ligget her like lenge som lappene.",
+          se: "Løse steiner og is i små hauger ved foten av sokkelen. Mellom dem ligger en liten skrutrekker med trehåndtak, rusten. Noen glemte den her. Noen som alltid glemmer verktøy. Den har ligget her like lenge som lappene. På den største steinen er det risset inn ett ord i frostruner, dypt og langsomt: ᚱ:ALENE",
           bruk: "Du drar i skrutrekkeren. Den sitter fast i isen. Den får bli. Den hører til her nå, på sin måte.",
         },
       ],

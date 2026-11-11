@@ -787,7 +787,7 @@ export const KAPITTEL_2: Kapittel = {
             },
             {
               tekst:
-                "Syltetøyglass med skruer, tannhjul og ett med syltetøy («MITT. – IQ»). Innerst står ei flaske sirup som ser ut som den har gjemt seg. Den har gjemt seg dårlig. Som alt annet her.",
+                "Syltetøyglass med skruer, tannhjul og ett med syltetøy («MITT. – IQ»). Innerst står ei flaske sirup som ser ut som den har gjemt seg. Den har gjemt seg dårlig. Som alt annet her. Hylla har en merkelapp i frostruner, for IQ merker alt: ᚱ:SKRUER",
             },
           ],
           ta: {

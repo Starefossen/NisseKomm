@@ -521,6 +521,12 @@
         "navn": "snackkart_HEMMELIG.txt",
         "passord": "TØFFEL",
         "tekst": "RAMPENISSENS SNACKKART\n(topphemmelig, ikke vis til Hjerterud)\n\nX1: Bak kakeboksen. Tom. Det var meg.\nX2: Under sofaputen, venstre side. Tre pepperkaker. Nå to.\nX3: Inne i en sokk i vaskekurven. Ikke spør.\nX4: Garnkurven på loftet i Snøfall. Fra i fjor. Ikke spis.\n\nReserve: Hjerteruds kjøkken. Alltid åpent. Alltid nok."
+      },
+      {
+        "fraDag": 4,
+        "fjaer": 8,
+        "navn": "flokes_fjaerbok.txt",
+        "tekst": "FLOKES FJÆRBOK\n(skrevet ned av Rampenissen, for ugler har ikke tomler)\n\nFloke har funnet åtte fjær i Snøfall. Åtte! Jeg spurte hvor de kom fra.\nHun så på meg. Lenge. Så sa hun det, på uglespråk, og jeg oversetter:\n\nFjær én: Mistet på torget da Winter nøs. Winter nekter for å ha nyst.\nFjær to: Falt av i verkstedet. IQ tok den og brukte den som pensel. Den er grønn nå.\nFjær tre: Hjerterud fant den i en bolle. Hun bakte den inn på nytt. Med vilje.\nFjær fire: Lå i pakkesentralen. Winter stemplet den. «MOTTATT.»\nFjær fem: Blåste opp i klokketårnet. Klokka slo ett slag ekstra. Winter noterte.\nFjær seks: Julebodene. En tyttebærselger prøvde å selge den tilbake til henne.\nFjær sju: Ved tjernet. Den frøs fast. Den er fortsatt der, egentlig. Hun tok en annen.\nFjær åtte: Jeg sier ikke hvor. Floke ba meg la være. Ugler har hemmeligheter òg.\n\nFloke har like mange fjær som før. Det er det rare. IQ sier det er «ullfysikk».\nJeg sier det er magi. Floke sier ingenting. Hun er ei ugle av garn.\n\nPS: Hvis dere finner flere, får hun se på dere på den måten hun ser på folk.\nDet er en kompliment. Tror jeg."
       }
     ],
     "feilPassord": [

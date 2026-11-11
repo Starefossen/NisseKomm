@@ -25,6 +25,10 @@
  * - Notebook (NOTAT): every `Gaate` has `maal`, one bokmål line without the answer.
  *   It shows when solved (crossed out) or when it is the first unsolved goal; goals
  *   that run in parallel get `kjent` (a condition, `{}` = from the start).
+ * - Live values (kobling.tsx, via GameEngine): `{{brev}}` the kids' letters to
+ *   Julius, `{{rekorder}}` Sledeflukt bests, and `ᚱ:ORD` at the end of a line
+ *   drawn in frostrunes (unlearned letters frosted). Rune words are story words
+ *   with letters the quests teach, never codes.
  */
 import type { EventyrSave } from "@/lib/storage";
 import type { PuslespillDef } from "./minispill";

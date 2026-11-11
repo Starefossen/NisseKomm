@@ -50,6 +50,8 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - Dag 8 heter «Lampene som Lyver».
 - 2026-11-11: Winters replikker i Ugleposten er lett bergensk («eg», «ikkje», «kor»), fortsatt lette å lese for en niåring. Hvorfor: han snakker bergensk, og spillet er tale; resten av teksten hans er bokmål.
 - 2026-11-11: Trixter, ikke Rudolf, leder sleden i Sledeflukts radiolinjer og HUD; Rudolf kan få en liten gjesterolle. Hvorfor: Trixter er sledens rein i historien.
+- 2026-11-11: Ugleposten får en liten pikselplansje av Snøfall over kapittellista, med stedene og låste steder gråe med hengelås og «ÅPNER DAG N», ingen ny navigasjon. Hvorfor: barna skal se hva som finnes (GTA-stil), uten eget reisekart før spillet har flere scener per kapittel.
+- 2026-11-11: Fire koblinger mellom Ugleposten og NisseKomm, alle via GameEngine: brevene til Julius ligger på pulten (skriver og utdrag), lærte frostruner på lapper og hyllemerker (ulærte bokstaver som frost), åtte uglefjær åpner et hemmelig MORO-dokument på NisseNet og en Rampenissen-linje, og Sledeflukt-rekorder per spiller står på baksiden av Winters liste. Hvorfor: fjærjakten og brevene får en grunn, uten å røre dagens gåter.
 
 ## Hjemskjerm (2026-11-10/11)
 

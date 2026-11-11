@@ -1,6 +1,8 @@
 /** The unlock schedule must match each game's own gate, day by day. */
 import { describe, it, expect } from "@jest/globals";
 import {
+  FJAER_MAAL,
+  FJAER_VARSEL,
   OPPLASINGER,
   nivaa,
   opplasingerPaaDag,
@@ -10,6 +12,7 @@ import { KAPITLER, erLaastOpp } from "@/components/windows/nissespill/kapitler";
 import { etapperFor } from "@/components/windows/snofall-tv/slede";
 import { gamesFor } from "@/components/windows/snofall-tv/hud";
 import { GameEngine } from "../game-engine";
+import { TIDBITS } from "../tidbits";
 
 const dager = Array.from({ length: 24 }, (_, i) => i + 1);
 // Days on which a gate's open count grows
@@ -99,5 +102,23 @@ describe("day 16 opens three things", () => {
     expect(med).toHaveLength(1);
     expect(med[0].etterKode).toBe(true);
     for (const o of tre) expect(med[0].varsel).toContain(o.navn);
+  });
+});
+
+describe("owl feathers open a MORO file", () => {
+  it("the file asks for FJAER_MAAL, which the chapters can supply", () => {
+    const fil = TIDBITS.nissenet.filer.find((f) => f.fjaer);
+    expect(fil?.fjaer).toBe(FJAER_MAAL);
+    const totalt = KAPITLER.flatMap((k) =>
+      k.scener.filter((s) => s.fjaer),
+    ).length;
+    expect(totalt).toBeGreaterThanOrEqual(FJAER_MAAL);
+    // Visible from the first chapter's day; found feathers gate it, not the date
+    expect(fil?.fraDag).toBe(KAPITLER[0].dag);
+  });
+  it("Rampenissen's line has no digits and names the folder", () => {
+    expect(FJAER_VARSEL).toMatch(/^RAMPENISSEN: /);
+    expect(FJAER_VARSEL).not.toMatch(/\d/);
+    expect(FJAER_VARSEL).toContain("MORO");
   });
 });

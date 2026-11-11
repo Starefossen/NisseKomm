@@ -518,7 +518,7 @@ export const KAPITTEL_4: Kapittel = {
           navn: "Bokhylla",
           rect: { x: 42, y: 0, w: 12, h: 30 },
           smart: "se",
-          se: "«Alt om sirup» er lånt ut. Det står en lapp i hullet: «LÅNT. – IQ». Under står det «LÅNT FRA IQ. – RUDOLF». Rudolf kan ikke skrive. Noen hjalp ham. Skriften er Rampenissens. Ingen sier noe.",
+          se: "«Alt om sirup» er lånt ut. Det står en lapp i hullet: «LÅNT. – IQ». Under står det «LÅNT FRA IQ. – RUDOLF». Rudolf kan ikke skrive. Noen hjalp ham. Skriften er Rampenissens. Ingen sier noe. Hyllekanten har en merkelapp i frostruner, Julius' egen: ᚱ:SNILL",
         },
         {
           id: "bamsen",
@@ -660,11 +660,11 @@ export const KAPITTEL_4: Kapittel = {
             {
               hvis: "tok_hyssing",
               tekst:
-                "Brevbunken fra Bergen ligger løs nå. Den holder seg likevel. Brevene liker hverandre. De er fra samme by.",
+                "Brevbunken fra Bergen ligger løs nå. Den holder seg likevel. Brevene liker hverandre. De er fra samme by. {{brev}}",
             },
             {
               tekst:
-                "Brev til Julius, bundet med en lang rød hyssing. Bunken fra Bergen er tykkest. Den er alltid tykkest. Hyssingen er lang nok til å gå rundt tre ganger og ned i en sprekk.",
+                "Brev til Julius, bundet med en lang rød hyssing. Bunken fra Bergen er tykkest. Den er alltid tykkest. Hyssingen er lang nok til å gå rundt tre ganger og ned i en sprekk. {{brev}}",
             },
           ],
           ta: {
@@ -672,7 +672,7 @@ export const KAPITTEL_4: Kapittel = {
             tekst:
               "Du løsner den røde hyssingen fra bunken og vikler den opp. Lang. Sterk. Brevene blir liggende pent. De har vært på reise, de vet hvordan man oppfører seg.",
           },
-          bruk: "Brevene ligger løst og pent. Du lar dem ligge. Det øverste er fra noen som heter Håkon. Du leser ikke videre.",
+          bruk: "Brevene ligger løst og pent. Du lar dem ligge. {{brev}}",
         },
         {
           id: "boka",
@@ -890,9 +890,18 @@ export const KAPITTEL_4: Kapittel = {
               hvis: "winter_snakket",
               neste: "hyl",
             },
+            {
+              tekst: "Hva står på baksiden av skriveplata?",
+              hvis: "winter_snakket",
+              neste: "rekorder",
+            },
             { tekst: "Har du det bra, Winter?", neste: "skjerf" },
             { tekst: "Ha det, Winter." },
           ],
+        },
+        rekorder: {
+          tekst:
+            "«Baksiden er IQs register for sledesimulatoren. Han flyr ikkje selv, så eg fører den. {{rekorder}} Eg fører alt. Nokon må.»",
         },
         liste: {
           tekst:
