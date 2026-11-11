@@ -322,7 +322,7 @@ describe("rekke og nære på", () => {
     sim.s.first = sim.s.ting.indexOf(f);
     expect(sim.step(1 / 60, still)).toContain("fugl");
     expect(sim.s.fugler).toBe(1);
-    expect(sim.s.poeng).toBe(75);
+    expect(sim.s.poeng).toBe(80);
     expect(sim.s.kraft).toBeCloseTo(0.15);
     expect(radiolinje("fugl", 0)).toMatch(/brevfugl/i);
     expect(radiolinje("fugl", 3)).toBe(radiolinje("fugl", 0));

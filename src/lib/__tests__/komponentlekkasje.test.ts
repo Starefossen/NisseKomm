@@ -25,7 +25,7 @@ function walk(dir: string): string[] {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
     const p = path.join(dir, e.name);
     if (e.isDirectory()) return e.name === "__tests__" ? [] : walk(p);
-    return /\.tsx?$/.test(e.name) ? [p] : [];
+    return /\.tsx?$/.test(e.name) && !/\.test\.tsx?$/.test(e.name) ? [p] : [];
   });
 }
 
@@ -40,6 +40,22 @@ function pattern(code: string): RegExp {
   return new RegExp(`(?<!\\p{L})(?:${code}|${spelled})(?!\\p{L})`, "u");
 }
 
+// Kid-visible text: string literals and JSX text, outside the parent guide.
+// Matched case-insensitively ("gulrot" leaks as much as "GULROT"); identifiers are skipped.
+const tekst = (src: string) =>
+  (
+    src.match(/"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|`[^`]*`|>[^<>{}]+</g) ??
+    []
+  ).join("\n");
+// Parent guide is not kid-visible; slede.ts and channels.ts text is checked per day
+// in synlig-tekst.ts. TODO(fix/nissestats-2026): drop NisseStats once rewritten.
+const barnefiler = files.filter(
+  (f) =>
+    !/nissemor-guide|snofall-tv\/(slede|channels)\.ts$|NisseStats\.tsx$/.test(
+      f,
+    ),
+);
+
 describe("kodelekkasje", () => {
   it("finds codes to check", () => {
     expect(codes.length).toBeGreaterThan(10);
@@ -48,6 +64,14 @@ describe("kodelekkasje", () => {
   it.each(codes)("%s appears in no component source", (code) => {
     const re = pattern(code);
     const hits = files.filter((f) => re.test(fs.readFileSync(f, "utf8")));
+    expect(hits.map((f) => path.relative(root, f))).toEqual([]);
+  });
+
+  it.each(codes)("%s appears in no kid-visible string, any case", (code) => {
+    const re = new RegExp(pattern(code).source, "iu");
+    const hits = barnefiler.filter((f) =>
+      re.test(tekst(fs.readFileSync(f, "utf8"))),
+    );
     expect(hits.map((f) => path.relative(root, f))).toEqual([]);
   });
 });

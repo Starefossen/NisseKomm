@@ -388,7 +388,7 @@ export function SledefluktSpill({
         case "fugl":
           l?.stjerne();
           hopp = 0.5;
-          say("BREVFUGL FANGET  +75", "#c0d2ec");
+          say("BREVFUGL FANGET  +80", "#c0d2ec");
           break;
         case "bom":
           if (sim.s.besteRekke >= 3) say("REKKEN RØK", "#8aa0c0");
@@ -1538,7 +1538,7 @@ export function SledefluktSpill({
                 )}
                 <div className="text-base text-(--cold-blue) leading-tight">
                   {fase === "tapt"
-                    ? "Rudolf trenger en gulrot og et nytt forsøk."
+                    ? "Rudolf trenger en pause og et nytt forsøk."
                     : etappe.id === "julenatt" && resultat.bjeller >= 3
                       ? "Ruten er klar. God jul fra IQ og Rudolf!"
                       : nesteBjelle(resultat, krav)}

@@ -92,7 +92,7 @@ export function Day1Boot({ onDone }: { onDone: () => void }) {
           </div>
         )}
         {BOOT_CHANNELS.slice(0, channels).map((c) => (
-          <div key={c}>{c} … SIGNAL</div>
+          <div key={c}>{c} … OK</div>
         ))}
         {carrier && (
           <div className="text-(--gold) pt-2">BÆREBØLGE 90,0: USTABIL</div>

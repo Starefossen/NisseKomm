@@ -300,7 +300,7 @@ export const KULDE_INTERCEPTS: Record<number, string> = {
   10: "Fargene er hos meg nå. Jeg skal passe godt på dem.",
   11: "Jeg la is på antennen deres, så den kunne høre på meg i stedet.",
   13: "Lysene deres. Jeg husker ikke når jeg så lys sist.",
-  16: "Jeg snudde båndet til Winter. Nå ser hun hit.",
+  16: "Jeg snudde båndet til Winter. Nå ser han hit.",
   21: "Det er kaldt her nede. Jeg ville bare se lyset deres.",
 };
 

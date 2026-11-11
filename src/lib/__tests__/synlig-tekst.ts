@@ -24,6 +24,12 @@ import {
 } from "@/components/windows/snofall-tv/slede";
 import type { FilNode } from "@/types/innhold";
 import { OPPLASINGER, puffTekst } from "@/lib/opplasinger";
+import {
+  CHANNELS,
+  KULDE_INTERCEPTS,
+} from "@/components/windows/snofall-tv/channels";
+import fs from "fs";
+import path from "path";
 
 export const quests = getAllOppdrag();
 
@@ -178,3 +184,46 @@ for (let d = 8; d <= 24; d++) add(d, `slede vidda dag ${d}`, steder(VIDDA, d));
 add(8, "slede vidda", `${VIDDA.navn} ${VIDDA.intro}`);
 add(25, "slede bergen", steder(VIDDA_BERGEN, 24));
 add(23, "slede landås", steder(VIDDA_BERGEN, 24, true));
+
+// Inline strings in components: every literal and JSX text in the file, from the
+// day the window can first show it (stricter than per-string gating).
+const kilde = (fil: string) =>
+  fs.readFileSync(path.join(__dirname, "../../..", fil), "utf8");
+export const literaler = (src: string) =>
+  (
+    src.match(/"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|`[^`]*`|>[^<>{}]+</g) ??
+    []
+  )
+    // shown text has a capital letter; paths, urls and class names do not count
+    .filter((s) => /\p{Lu}/u.test(s) && !/\/|\.(mp4|png|jpg|webm|mp3)/.test(s))
+    .join("\n");
+add(1, "Day1Opener", literaler(kilde("src/components/ui/Day1Opener.tsx")));
+add(
+  8,
+  "Sledeflukt",
+  literaler(kilde("src/components/windows/sledeflukt/Sledeflukt.tsx")),
+);
+for (const [d, t] of Object.entries(KULDE_INTERCEPTS))
+  add(Number(d), `Snøfall TV Kulde dag ${d}`, t);
+add(1, "Snøfall TV kanaler", CHANNELS.map((c) => c.name).join(" "));
+
+// NisseStats opens the evening of day 16 (dag 16 julius_ps). TODO: the metrics and
+// feed are 2025 text and leak later codes; rewritten on fix/nissestats-2026, so
+// kodelekkasje lists these sources in EXPECTED_FAIL until that branch lands.
+add(
+  17,
+  "NisseStats metrics",
+  JSON.stringify(statisk.nissestats_global_metrics),
+);
+add(
+  17,
+  "NisseStats",
+  literaler(kilde("src/components/windows/NisseStats.tsx")),
+);
+const motor = kilde("src/lib/game-engine.ts");
+const fra = motor.indexOf("static getGlobalProductionMetrics");
+add(
+  17,
+  "NisseStats game-engine",
+  literaler(motor.slice(fra, motor.indexOf("\n  static ", fra + 1))),
+);

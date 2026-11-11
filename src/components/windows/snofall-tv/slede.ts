@@ -1117,7 +1117,7 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
         if (dx < 0.3 * widen && Math.abs(s.alt - t.h) < 45 * widen) {
           t.treff = true;
           s.fugler++;
-          s.poeng += 75 * boost;
+          s.poeng += 80 * boost;
           s.kraft = Math.min(1, s.kraft + 0.15);
           ev.push("fugl");
         }
