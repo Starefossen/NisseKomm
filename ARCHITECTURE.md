@@ -115,6 +115,11 @@ CRTFrame (fullscreen container)
    - Letters to Julius, stored in `nissekomm-santa-letters` and synced between screens
    - Origami-style paper birds
 
+5. **NISSESPILL** (`windows/nissespill/`)
+   - **Unlocks**: Day 4 (chapters on day 4/10/16/22)
+   - Ugleposten: point-and-click side story; engine `motor.ts`, chapters as data
+   - Save in `nissekomm-eventyr` via `GameEngine.getEventyrSave/saveEventyr`, synced
+
 ### Module Unlock Logic
 
 Unlocks are configured in quest JSON files (`uke1-4_oppdrag.json`):
