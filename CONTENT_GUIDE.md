@@ -195,7 +195,7 @@ With occasional slang (sparingly):
 
 **Tone**: Precise language, business-like but not cold, uses lists.
 
-**Look** (`assets/characters/winter/beskrivelse.txt`, refs `ref-v1-*.jpg`): late 30s, clean-shaven with dark sideburns, dark slicked-back hair, round glasses, pencil behind the ear, light beige wool coat with a grey rosette, grey waistcoat, dark grey scarf, ledgers under the arm or a clipboard.
+**Look** (`assets/characters/winter/beskrivelse.txt`, refs `ref-outside.jpg`, `ref-tophat.jpg`): late 30s, clean-shaven with dark sideburns, dark slicked-back hair, round glasses, pencil behind the ear, light beige wool coat with a grey rosette, grey waistcoat, dark grey scarf, ledgers under the arm or a clipboard.
 
 ### IQ (Inventor)
 

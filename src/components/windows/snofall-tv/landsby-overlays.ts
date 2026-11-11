@@ -2,7 +2,7 @@ import type { LandsbyEventKind } from "./channels";
 
 /**
  * Village events drawn over landsby-rolig.mp4. Positions are fractions of
- * the 1280×720 frame (same framing as nokkelramme-v2.jpg), so they follow
+ * the 1280×720 frame (same framing as assets/locations/snofall-landsby/ref-v2.jpg), so they follow
  * the cover-fit and handheld drift LiveCam applies to the video.
  */
 export const LANDSBY_POINTS = {

@@ -139,7 +139,7 @@ export const MEDIA_MANIFEST: readonly ManifestEntry[] = [
   ...["rampenissen", "iq", "winter", "julius", "hjerterud"].map(
     (n) => `spill/portrett-${n}.png`,
   ),
-  // Painted horizons for IQs sledesimulator (assets/locations/sledeflukt)
+  // Painted horizons for IQs sledesimulator (assets/prompts/slede, medier.json)
   "feed/slede-tundra.jpg",
   "feed/slede-nordtoppen.jpg",
   "feed/slede-muren.jpg",

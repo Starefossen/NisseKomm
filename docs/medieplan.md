@@ -52,13 +52,13 @@ Hver fil får en sidefil `<fil>.meta.json` som inventaret bruker.
 ## Beslutninger
 
 - Julius lages fra `ref-v3.jpg`.
-- Winter lages fra `assets/characters/winter/ref-v1-outside.jpg` og `ref-v1-tophat.jpg` (portrett, `spill/torget.jpg`, `port-winter`, `landsby-winter`; gitignorert som Julius' ref).
+- Winter lages fra `assets/characters/winter/ref-outside.jpg` og `ref-tophat.jpg` (portrett, `spill/torget.jpg`, `port-winter`, `landsby-winter`; gitignorert som Julius' ref).
 - Julius-innslag klippes med vekslende utsnitt (annethvert innslag 1,15x nærmere), harde kutt og sammenhengende lyd.
 - Mykere klikk i opptaksfilteret (kort, dempet «tape»-dunk).
 - Rampenissen: stemmen Fenrir, nordlandsk tonefall, +4 halvtoner, -16 LUFS. Teksten er bokmål.
 - Ingen fargefilter på lang sikt: tid på døgnet blir egne loops. Fargefilteret på `rolig` er en mellomløsning.
 - Hendelser klippes bare inn i sin egen tilstandsloop og ankres til første bilde i den loopen.
-- Portentréene bruker den lukkede porten (`port-nokkelramme.jpg`) som første og siste bilde. Porten åpner og lukker seg i klippet.
+- Portentréene bruker den lukkede porten (`locations/porten/ref.jpg`) som første og siste bilde. Porten åpner og lukker seg i klippet.
 - Dagsgrensen er 200 videoforespørsler.
 
 ## Bilder som bør lages på nytt (inventar 11. november)
@@ -73,13 +73,13 @@ Gamle 2025-bilder i K1, K2 og K4 er byttet ut med første bilde fra loopene (gra
 
 **Ugleposten (nissespill, K1–K4).** Scenebildene er stillbilder (ingen videokvote, ca. 0,13 USD per bilde, 4 bilder). Kø: `python3 assets/bin/generer.py plan` (`--bare spill`), prompter i `assets/locations/<sted>/varianter/spill.still.prompt.txt`. Kapitlene peker nå på `spill/*.jpg`; til de er laget viser spillet de gamle bildene under `feed/`.
 
-| Bilde                                                    | Brukt i | Referanse                       | Status                                                                                 |
-| -------------------------------------------------------- | ------- | ------------------------------- | -------------------------------------------------------------------------------------- |
-| `spill/iq-verksted.jpg` (var `feed/iq-verksted.png`)     | K1, K2  | `iq-verksted/vidvinkel-tom.jpg` | i kø                                                                                   |
-| `spill/julius-kontor.jpg` (var `feed/julius-kontor.jpg`) | K3, K4  | `julius-kontor/ref-tom.jpg`     | i kø                                                                                   |
-| `spill/antenne-tarn.jpg` (var `feed/antenne-tarn.png`)   | K2      | `antenne-tjern/ref.jpg`         | i kø                                                                                   |
-| `spill/kulde-grotte.jpg` (var `feed/kulde-grotte.png`)   | K3      | `krystallgrotten/ref.jpg`       | i kø                                                                                   |
-| `spill/torget.jpg`, `spill/port-aapen.jpg`               | K1, K4  | –                               | nye, finnes                                                                            |
-| `spill/portrett-radio.png`                               | K3      | –                               | mangler (pikselportrett, bokstav-reserve vises); lages med `portrett.sh` + `piksel.sh` |
+| Bilde                                                    | Brukt i | Referanse                           | Status                                                                                 |
+| -------------------------------------------------------- | ------- | ----------------------------------- | -------------------------------------------------------------------------------------- |
+| `spill/iq-verksted.jpg` (var `feed/iq-verksted.png`)     | K1, K2  | `iq-verksted/ref-vidvinkel-tom.jpg` | i kø                                                                                   |
+| `spill/julius-kontor.jpg` (var `feed/julius-kontor.jpg`) | K3, K4  | `julius-kontor/ref-tom.jpg`         | i kø                                                                                   |
+| `spill/antenne-tarn.jpg` (var `feed/antenne-tarn.png`)   | K2      | `antenne-tjern/ref.jpg`             | i kø                                                                                   |
+| `spill/kulde-grotte.jpg` (var `feed/kulde-grotte.png`)   | K3      | `krystallgrotten/ref.jpg`           | i kø                                                                                   |
+| `spill/torget.jpg`, `spill/port-aapen.jpg`               | K1, K4  | –                                   | nye, finnes                                                                            |
+| `spill/portrett-radio.png`                               | K3      | –                                   | mangler (pikselportrett, bokstav-reserve vises); lages med `portrett.sh` + `piksel.sh` |
 
 **Slettes** etter at ingen kode peker på dem: `public/feed/snøfall-night.png` (ubrukt), og v1/v2-restene `assets/locations/snofall-landsby/{still-storm,still-dag24,nokkelramme}.jpg` og `assets/characters/julius/ref-v2*.jpg`. Sjekk først at ingen skript i `assets/bin/` bruker dem.

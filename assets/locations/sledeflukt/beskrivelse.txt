@@ -2,4 +2,4 @@ STED: Utsikten fra IQs sledesimulator: lav flyhøyde over en flat, øde snøvidd
 LYS: Samme palett som landsbyen: kald, mørkeblå polarnatt mot varme, gylne lys. Filmkorn, dempede farger, låst kamera.
 VARIANTER: «tundra» (dag 18, lave fjell, fjerne lykter), «nordtoppen» (dag 20, spiss topp og nordlys), «muren» (dag 21, snøføyke og steinmur med én lysende port), «julenatt» (dag 24, stjerneklart, landsbyen i det fjerne og lys opp av grotten).
 - Bildene brukes bare som himmel- og horisontbånd i spillet (public/feed/slede-<variant>.jpg); alt under horisonten males over av prosedyrisk snø.
-- Referanse for farger og lys: snofall-landsby/nokkelramme-rolig.jpg. Ingen slede, ingen reinsdyr, ingen personer, ingen tekst.
+- Referanse for farger og lys: torget/ref.jpg. Ingen slede, ingen reinsdyr, ingen personer, ingen tekst.

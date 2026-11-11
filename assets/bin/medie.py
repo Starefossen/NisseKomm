@@ -10,7 +10,8 @@ CLI (for the shell generators):
   medie.py skriv <generator> <fil> <kilde> <seksjon|-> <modell> [bilde ...]
   medie.py status <fil>                   prints the status; exit 0 only if ✓ current
   medie.py render <id>                    prompt, base image and refs of a medier.json job, one per line
-  medie.py tv                             the TV loops of medier.json, one line each (tv-loops.sh)
+  medie.py flytt                          move gitignored refs and stills to their new paths (assets/flyttet.json)
+  medie.py tv                           the TV loops of medier.json, one line each (tv-loops.sh)
   medie.py stiller <id>                   intermediate stills of a job: image|prompt|out, first one first
   medie.py --selvtest
 """
@@ -70,9 +71,37 @@ def rampenissen_text(day: int, root: Path = ROOT) -> str:
     return "\n".join(out)
 
 
+FLYTTET = "assets/flyttet.json"  # old -> new path of moved prompts, stills and refs
+
+
+def moves(root: Path = ROOT) -> dict:
+    return json.loads((root / FLYTTET).read_text()) if (root / FLYTTET).exists() else {}
+
+
+def located(path: str, root: Path = ROOT) -> Path:
+    """Where a path recorded in a sidecar is now. Sidecars keep their old paths (also absolute ones from
+    another checkout); a file that has moved is found through assets/flyttet.json, so no sidecar is rewritten."""
+    p = root / path
+    if p.exists():
+        return p
+    i = str(path).find("assets/")
+    key = str(path)[i:] if i >= 0 else str(path)
+    return root / moves(root)[key] if key in moves(root) else p
+
+
+def flytt(root: Path = ROOT):
+    """Move every file in flyttet.json that is still at its old place (gitignored refs and stills; idempotent)."""
+    for old, new in moves(root).items():
+        o, n = root / old, root / new
+        if o.exists() and not n.exists():
+            n.parent.mkdir(parents=True, exist_ok=True)
+            o.rename(n)
+            print(f"{old} -> {new}")
+
+
 def source_text(path: str, section, root: Path = ROOT):
     """The exact text a generator used from <path> (a day section, or the whole file); None if gone."""
-    p = root / path
+    p = located(path, root)
     if not p.exists():
         return None
     if section is None:  # a template counts as the text it renders to, so moving text into {{…}} changes nothing
@@ -104,7 +133,7 @@ def filter_version(root: Path = ROOT) -> str:
 
 
 def file_sha(path: str, root: Path = ROOT):
-    p = root / path
+    p = located(path, root)
     return sha(p.read_bytes()) if p.exists() else None
 
 
@@ -272,6 +301,16 @@ def selftest():
         assert status(r / "ut.jpg", root=r)[0] == CURRENT
         (r / "p/a.txt").write_text("{{characters/winter.KARAKTER}} ved rød kasse, {{characters/winter.KLÆR}}. STIL")
         assert status(r / "ut.jpg", root=r)[0] == CURRENT  # same rendered text, still current
+        # moves: the sidecar keeps the old path, flyttet.json finds the new one
+        (r / FLYTTET).write_text(json.dumps({"p/a.txt": "q/a.txt", "assets/gml.jpg": "assets/ny.jpg"}))
+        flytt(r)
+        flytt(r)  # idempotent
+        assert (r / "q/a.txt").exists() and not (r / "p/a.txt").exists()
+        assert status(r / "ut.jpg", root=r)[0] == CURRENT
+        (r / "assets/ny.jpg").write_text("x")
+        assert located("/en/annen/sjekkut/assets/gml.jpg", r) == r / "assets/ny.jpg"
+        (r / "p/a.txt").parent.mkdir(exist_ok=True)
+        (r / "q/a.txt").rename(r / "p/a.txt")
         (r / "assets/characters/winter/beskrivelse.txt").write_text("KARAKTER: kort mann\nKLÆR: hatt\n")
         assert status(r / "ut.jpg", root=r)[0] == STALE
         for bad in (lambda: render("d", r, t), lambda: fill("{{ukjent}}", r),  # ambiguous, unknown
@@ -299,6 +338,8 @@ def main(argv):
     elif cmd == "render":
         prompt, img, refs = render(args[0])
         print(*(str(ROOT / p) for p in (prompt, img, *refs) if p), sep="\n")
+    elif cmd == "flytt":
+        flytt()
     elif cmd == "tv":
         print(*tv_lines(), sep="\n")
     elif cmd == "stiller":

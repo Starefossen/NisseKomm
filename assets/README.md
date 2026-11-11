@@ -8,11 +8,16 @@ Kildene for alt generert innhold: referansebilder, beskrivelser og nøyaktige pr
 assets/
   stil.md                     Felles visuell stil og lyd for hele sesongen
   bin/                        Skript for generering og etterbehandling
-  characters/<navn>/          Figurer: beskrivelse, referansebilde, replikker
-  locations/<sted>/           Steder: beskrivelse, referansebilder, varianter
-    varianter/<variant>.prompt.txt   Nøyaktig prompt for hver variant
-  out/                        Genererte filer (ikke i git)
+  characters/<navn>/          Figurer: beskrivelse, entitet.json, ref-*.jpg, replikker
+  locations/<sted>/           Steder: beskrivelse, entitet.json, ref-*.jpg
+  objects/<ting>/             Ting som går igjen: beskrivelse, entitet.json
+  prompts/<app>/              Promptmaler (tv, spill, slede, portrett); {{winter}}, {{iq.KLÆR}}, {{objects/postkasse}}, {{stil}}
+  medier.json                 Alle avledede filer: mal, grunnbilde, refs og sted -> ut-sti
+  flyttet.json                Gammel -> ny sti for flyttede filer; sidefilene beholder gamle stier
+  out/                        Genererte filer og mellomstillbilder (out/stills/, ikke i git)
 ```
+
+Etter `git pull` som flytter refs: kjør `python3 assets/bin/medie.py flytt` (flytter gitignorerte bilder, trygt å kjøre flere ganger). Plan og status: `docs/asset-struktur.md`.
 
 ## Regler
 
