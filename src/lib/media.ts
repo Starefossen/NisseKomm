@@ -140,6 +140,11 @@ export const MEDIA_MANIFEST: readonly ManifestEntry[] = [
   ...["rampenissen", "iq", "winter", "julius", "nissemor"].map(
     (n) => `spill/portrett-${n}.png`,
   ),
+  // Painted horizons for IQs sledesimulator (assets/locations/sledeflukt)
+  "feed/slede-tundra.jpg",
+  "feed/slede-nordtoppen.jpg",
+  "feed/slede-muren.jpg",
+  "feed/slede-julenatt.jpg",
   ...MUSIC,
   "music/christmas-dreams-jingle-bells-268299.mp3",
   // Hidden NisseMusikk track (tidbits.json)

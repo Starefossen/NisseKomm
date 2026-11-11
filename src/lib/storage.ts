@@ -19,6 +19,12 @@ import {
   type StorageAdapter,
 } from "./storage-adapter";
 
+/** Best run per stage in IQs sledesimulator (0–3 bells). */
+export interface SledeResultat {
+  poeng: number;
+  bjeller: number;
+}
+
 /** A letter to Julius. Letters from before 2026 have no `from`. */
 export interface SantaLetter {
   day: number;
@@ -60,6 +66,7 @@ const KEYS = {
   UNLOCKED_MODULES: "nissekomm-unlocked-modules",
   SANTA_LETTERS: "nissekomm-santa-letters",
   INTROS_SEEN: "nissekomm-intros-seen",
+  SLEDE: "nissekomm-slede",
   IDLE_PEEK: "nissekomm-idle-peek",
   EVENTYR: "nissekomm-eventyr",
   SEASON: "nissekomm-season",
@@ -773,6 +780,14 @@ export class StorageManager {
 
   static setEventyrSave(save: EventyrSave): void {
     this.setItem(KEYS.EVENTYR, save);
+  }
+
+  static getSledeResultater(): Record<string, SledeResultat> {
+    return this.getItem<Record<string, SledeResultat>>(KEYS.SLEDE, {});
+  }
+
+  static setSledeResultat(etappe: string, r: SledeResultat): void {
+    this.setItem(KEYS.SLEDE, { ...this.getSledeResultater(), [etappe]: r });
   }
 
   static markJuliusWatched(day: number): void {
