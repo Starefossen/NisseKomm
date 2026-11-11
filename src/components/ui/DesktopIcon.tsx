@@ -16,7 +16,7 @@ interface DesktopIconProps {
   isNew?: boolean;
   onLockedClick?: () => void;
   className?: string;
-  /** Icon beside the label, for the compact I DAG stack */
+  /** Icon beside the label on wide screens, for the I DAG stack under Julius */
   inline?: boolean;
 }
 
@@ -57,7 +57,7 @@ export function DesktopIcon({
       disabled={disabled && false} // Allow clicks on disabled for animation
       aria-label={teaser ? `${label}, låst: ${teaser}` : undefined}
       className={`${className}
-        flex ${inline ? "flex-row gap-3" : "flex-col gap-1"} items-center justify-center px-2 py-1.5 relative
+        flex ${inline ? "flex-col gap-1 lg:flex-row lg:gap-3 lg:justify-start lg:px-4" : "flex-col gap-1"} items-center justify-center px-2 py-1.5 relative
         w-full min-w-16 min-h-11
         border-2 transition-all focus-visible:outline-2 focus-visible:outline-(--gold)
         ${isNew ? "border-(--gold)!" : ""}
@@ -71,7 +71,9 @@ export function DesktopIcon({
     >
       {/* Unread badge */}
       {unreadCount > 0 && (
-        <div className="absolute -top-1 -right-1 w-6 h-6 bg-(--christmas-red) border-2 border-(--christmas-red) flex items-center justify-center z-10">
+        <div
+          className={`absolute -top-1 -right-1 w-6 h-6 bg-(--christmas-red) border-2 border-(--christmas-red) flex items-center justify-center z-10 ${inline ? "lg:static lg:order-last" : ""}`}
+        >
           <span className="text-white text-base font-bold">{unreadCount}</span>
         </div>
       )}
