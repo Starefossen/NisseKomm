@@ -27,6 +27,8 @@ export interface SantaLetter {
 }
 
 export interface EventyrSave {
+  /** Chapter in play (components/windows/nissespill/kapitler.ts). */
+  kapittel: number;
   sceneId: string;
   inventory: string[];
   flags: string[];
@@ -764,7 +766,7 @@ export class StorageManager {
     if (!seen.includes(id)) this.setItem(KEYS.INTROS_SEEN, [...seen, id]);
   }
 
-  /** Point-and-click adventure save (spike): scene, inventory, flags, hint levels. */
+  /** Point-and-click adventure (NISSESPILL) save: chapter, scene, inventory, flags, hint levels. */
   static getEventyrSave(): EventyrSave | null {
     return this.getItem<EventyrSave | null>(KEYS.EVENTYR, null);
   }

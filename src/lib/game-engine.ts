@@ -960,7 +960,7 @@ export class GameEngine {
       },
       modules: {
         unlocked: state.unlockedModules.size,
-        total: 5, // NISSEKRYPTO, SYMBOLSKANNER, NISSEMUSIKK, BREVFUGLER, NISSESTATS
+        total: 6, // NISSEKRYPTO, SYMBOLSKANNER, NISSESPILL, NISSEMUSIKK, BREVFUGLER, NISSESTATS
       },
       isComplete: this.isGameComplete(),
     };

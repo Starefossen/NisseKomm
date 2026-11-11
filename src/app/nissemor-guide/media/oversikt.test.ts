@@ -17,6 +17,7 @@ describe("manifest groups", () => {
       "rampenissen",
       "tv",
       "stills",
+      "spill",
       "music",
     ]);
   });

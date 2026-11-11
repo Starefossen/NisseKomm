@@ -1,0 +1,312 @@
+/**
+ * Klementin-Ekspressen: the point-and-click rules as pure functions over the save.
+ * Scenes are data (kapittel*.ts); the UI (Nissespill.tsx) only renders and dispatches.
+ * Hotspot rects are percent of the 16:9 still so they follow the image on any screen.
+ */
+import type { EventyrSave } from "@/lib/storage";
+
+export type Verb = "se" | "bruk" | "snakk";
+
+export interface Rect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+/** Both must hold: `hvis` flag set, `uten` flag not set. */
+export interface Vilkaar {
+  hvis?: string;
+  uten?: string;
+}
+
+/** One string, or the first variant whose condition holds. */
+export type Linje = string | ({ tekst: string } & Vilkaar)[];
+
+export interface Gjenstand {
+  id: string;
+  navn: string;
+  /** pixelarticons name (lib/icons.tsx). */
+  ikon: string;
+  se: string;
+}
+
+/** Using an inventory item on a hotspot. */
+export interface Bruk extends Vilkaar {
+  item: string;
+  tekst: string;
+  flagg?: string;
+  gir?: string;
+  forbruker?: boolean;
+}
+
+export interface Hotspot {
+  id: string;
+  navn: string;
+  rect: Rect;
+  /** What a bare tap does when no verb is chosen. */
+  smart: Verb;
+  vis?: Vilkaar;
+  se: Linje;
+  /** BRUK with empty hands (after a possible `ta`). */
+  bruk?: Linje;
+  /** BRUK with empty hands picks this up once (flag `tok_<item>`). */
+  ta?: { item: string; tekst: string } & Vilkaar;
+  bruker?: Bruk[];
+  /** Custom lines for wrong items; others get a generic shrug. */
+  feil?: Record<string, string>;
+  snakk?: string;
+  /** BRUK walks to this scene (stairs, doors); exits also get a button. */
+  gaaTil?: string;
+}
+
+export interface Kombinasjon {
+  a: string;
+  b: string;
+  gir: string;
+  tekst: string;
+}
+
+export interface Valg extends Vilkaar {
+  tekst: string;
+  /** Only offered while holding this item. */
+  harItem?: string;
+  neste?: string;
+  flagg?: string;
+  tar?: string;
+  gir?: string;
+}
+
+export interface Node {
+  tekst: Linje;
+  /** Rampenissen cuts in from the living room; shown in a second bubble. */
+  rampenissen?: string;
+  valg?: Valg[];
+}
+
+export interface Dialog {
+  taler: string;
+  /** Portrait key (spill/portrett-<key>.png). */
+  portrett: string;
+  start: string;
+  noder: Record<string, Node>;
+}
+
+export interface Scene {
+  id: string;
+  navn: string;
+  bilde: string;
+  hotspots: Hotspot[];
+  utganger: { til: string; navn: string }[];
+}
+
+export interface Gaate {
+  id: string;
+  /** Solved when this flag is set; the first unsolved one owns the TIPS button. */
+  ferdig: string;
+  tips: [string, string, string];
+}
+
+export interface Kapittel {
+  n: number;
+  tittel: string;
+  /** December day it unlocks. */
+  dag: number;
+  /** False while the chapter is an outline (TODO text). */
+  klar: boolean;
+  start: string;
+  intro: string[];
+  /** Flag that ends the chapter. */
+  slutt: string;
+  utro: string;
+  scener: Scene[];
+  gjenstander: Record<string, Gjenstand>;
+  kombinasjoner: Kombinasjon[];
+  dialoger: Record<string, Dialog>;
+  gaater: Gaate[];
+}
+
+export interface Utfall {
+  save: EventyrSave;
+  tekst?: string;
+  /** Open this dialog. */
+  dialog?: string;
+  lyd?: "click" | "success" | "error";
+}
+
+const SKULDERTREKK = [
+  "Rampenissen: «Nei. Nei nei nei. Det der gir ikkje mening, ikkje engang for mæ.»",
+  "Rampenissen: «Prøvd det i 2021. Det gikk ikkje bra. Spør ikkje.»",
+  "Rampenissen: «Æ ser ka du tenke, men nei.»",
+  "Rampenissen: «Kreativt! Feil, men kreativt.»",
+];
+
+export const has = (save: EventyrSave, flag: string) =>
+  save.flags.includes(flag);
+
+export function ok(v: Vilkaar | undefined, save: EventyrSave): boolean {
+  if (!v) return true;
+  if (v.hvis && !has(save, v.hvis)) return false;
+  if (v.uten && has(save, v.uten)) return false;
+  return true;
+}
+
+export function velg(linje: Linje, save: EventyrSave): string {
+  if (typeof linje === "string") return linje;
+  return linje.find((l) => ok(l, save))?.tekst ?? "";
+}
+
+export const medFlagg = (
+  save: EventyrSave,
+  ...flags: (string | undefined)[]
+) => ({
+  ...save,
+  flags: [
+    ...save.flags,
+    ...flags.filter((f): f is string => !!f && !save.flags.includes(f)),
+  ],
+});
+
+const utenItem = (save: EventyrSave, id?: string) =>
+  id ? { ...save, inventory: save.inventory.filter((i) => i !== id) } : save;
+const medItem = (save: EventyrSave, id?: string) =>
+  id && !save.inventory.includes(id)
+    ? { ...save, inventory: [...save.inventory, id] }
+    : save;
+
+/**
+ * Fresh start of a chapter. Only other chapters' `k<m>_…` facts survive, so a
+ * replay («SPILL IGJEN», dev «nullstill») clears this chapter's flags and hints.
+ */
+export function nyttKapittel(
+  kap: Kapittel,
+  forrige?: EventyrSave | null,
+): EventyrSave {
+  const egne = new Set(kap.gaater.map((g) => g.id));
+  return {
+    kapittel: kap.n,
+    sceneId: kap.start,
+    inventory: [],
+    flags: (forrige?.flags ?? []).filter(
+      (f) => /^k\d+_/.test(f) && !f.startsWith(`k${kap.n}_`),
+    ),
+    hints: Object.fromEntries(
+      Object.entries(forrige?.hints ?? {}).filter(([id]) => !egne.has(id)),
+    ),
+  };
+}
+
+export const scene = (kap: Kapittel, save: EventyrSave): Scene =>
+  kap.scener.find((s) => s.id === save.sceneId) ?? kap.scener[0];
+
+export const synlige = (s: Scene, save: EventyrSave) =>
+  s.hotspots.filter((h) => ok(h.vis, save));
+
+export function gaa(save: EventyrSave, til: string): Utfall {
+  return { save: { ...save, sceneId: til }, lyd: "click" };
+}
+
+/** A tap on a hotspot, with a chosen verb and/or an item in hand. */
+export function trykk(
+  kap: Kapittel,
+  save: EventyrSave,
+  h: Hotspot,
+  verb: Verb | null,
+  holder: string | null,
+): Utfall {
+  if (holder) {
+    const b = h.bruker?.find((x) => x.item === holder && ok(x, save));
+    if (b) {
+      let s = medFlagg(save, b.flagg);
+      if (b.forbruker) s = utenItem(s, holder);
+      s = medItem(s, b.gir);
+      return { save: s, tekst: b.tekst, lyd: "success" };
+    }
+    const navn = kap.gjenstander[holder]?.navn ?? holder;
+    const i = (holder.length + h.id.length) % SKULDERTREKK.length;
+    return {
+      save,
+      tekst:
+        h.feil?.[holder] ??
+        `${navn} på ${h.navn.toLowerCase()}? ${SKULDERTREKK[i]}`,
+      lyd: "error",
+    };
+  }
+  const v = verb ?? h.smart;
+  if (v === "se") return { save, tekst: velg(h.se, save), lyd: "click" };
+  if (v === "bruk") {
+    if (h.gaaTil) return gaa(save, h.gaaTil);
+    const t = h.ta;
+    const tok = t ? `tok_${t.item}` : "";
+    if (t && !has(save, tok) && ok(t, save)) {
+      return {
+        save: medItem(medFlagg(save, tok), t.item),
+        tekst: t.tekst,
+        lyd: "success",
+      };
+    }
+    return {
+      save,
+      tekst: h.bruk
+        ? velg(h.bruk, save)
+        : "Det skjer ingenting. Absolutt ingenting.",
+      lyd: "click",
+    };
+  }
+  if (h.snakk) return { save, dialog: h.snakk, lyd: "click" };
+  return {
+    save,
+    tekst: `${h.navn} svarer ikke. Forståelig nok.`,
+    lyd: "click",
+  };
+}
+
+/** Item on item in the inventory. */
+export function kombiner(
+  kap: Kapittel,
+  save: EventyrSave,
+  a: string,
+  b: string,
+): Utfall {
+  const k = kap.kombinasjoner.find(
+    (x) => (x.a === a && x.b === b) || (x.a === b && x.b === a),
+  );
+  if (!k) {
+    return {
+      save,
+      tekst: `${kap.gjenstander[a].navn} og ${kap.gjenstander[b].navn.toLowerCase()}? ${SKULDERTREKK[(a.length + b.length) % SKULDERTREKK.length]}`,
+      lyd: "error",
+    };
+  }
+  return {
+    save: medItem(utenItem(utenItem(save, a), b), k.gir),
+    tekst: k.tekst,
+    lyd: "success",
+  };
+}
+
+export const valgSomVises = (n: Node, save: EventyrSave) =>
+  (n.valg ?? []).filter(
+    (v) => ok(v, save) && (!v.harItem || save.inventory.includes(v.harItem)),
+  );
+
+export function velgSvar(save: EventyrSave, v: Valg): EventyrSave {
+  return medItem(utenItem(medFlagg(save, v.flagg), v.tar), v.gir);
+}
+
+/** The open puzzle's next hint; levels stick at 3 so the answer stays visible. */
+export function tips(kap: Kapittel, save: EventyrSave): Utfall {
+  const g = kap.gaater.find((x) => !has(save, x.ferdig));
+  if (!g) {
+    return {
+      save,
+      tekst: "Rampenissen: «Tips? Du e jo ferdig! Gå og spis en klementin.»",
+    };
+  }
+  const nivaa = Math.min(save.hints[g.id] ?? 0, 2);
+  return {
+    save: { ...save, hints: { ...save.hints, [g.id]: nivaa + 1 } },
+    tekst: g.tips[nivaa],
+    lyd: "click",
+  };
+}
