@@ -15,4 +15,6 @@ jq -n --rawfile p "$P" --slurpfile imgs "$TMP/parts" \
 | curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image:generateContent" -H "x-goog-api-key: $K" -H 'Content-Type: application/json' -d @- > "$OUT.json"
 jq -e '.error' "$OUT.json" >/dev/null && { jq -c .error "$OUT.json"; rm "$OUT.json"; exit 1; }
 jq -r '.candidates[0].content.parts[] | select(.inlineData) | .inlineData.data' "$OUT.json" | head -1 | base64 -d > "$OUT"
+# no image part (e.g. a safety block) gives an empty file and exit 0 above
+[ -s "$OUT" ] || { echo "still.sh: ingen bilde i svaret, se $OUT.json" >&2; rm -f "$OUT"; exit 1; }
 rm "$OUT.json"; echo "$OUT"

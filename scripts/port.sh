@@ -4,7 +4,7 @@
 # only when app code changed, and pushes main only if all of it passed.
 # The playthrough needs a dev server (`mise run dev`) serving this checkout at BASE_URL.
 set -uo pipefail
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/.." || exit 1
 
 DRY=0
 [[ "${1:-}" == "--dry-run" ]] && DRY=1 && shift
