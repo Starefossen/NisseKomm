@@ -126,6 +126,7 @@ export const KAPITTEL_1: Kapittel = {
       utganger: [
         { til: "verksted", navn: "Opp trappa til verkstedet" },
         { til: "kafeen", navn: "Inn på kaféen" },
+        { til: "pakkesentralen", navn: "Inn i pakkesentralen" },
       ],
       // In the snow in front of the clock tower, between the stalls and the mailbox
       fjaer: { x: 49, y: 86, w: 4, h: 6 },
@@ -671,6 +672,127 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 84, y: 18, w: 16, h: 36 },
           smart: "se",
           se: "Rim i hjørnene og klokketårnet utenfor, gyllent mot natta. I vinduskarmen står fire lysestaker. Ingen av lysene er tent ennå. Hjerterud tenner dem når det er tid.",
+        },
+      ],
+    },
+    {
+      id: "pakkesentralen",
+      navn: "Winters pakkesentral",
+      bilde: "spill/pakkesentralen.jpg",
+      utganger: [{ til: "torget", navn: "Ut på torget" }],
+      // On the floor between the machine and the desk
+      fjaer: { x: 65, y: 90, w: 4, h: 6 },
+      hotspots: [
+        {
+          id: "skjemahyllene",
+          navn: "Skjemahyllene",
+          rect: { x: 0, y: 0, w: 29, h: 58 },
+          smart: "se",
+          se: "Hyller fra gulv til tak med skjemaer i bunker, alle nøyaktig like høye. Alle bortsett fra én. Plassen for 4112-B er tom. En lapp: «Utlånt til IQ. Brukes som kaffebrikker. Klage sendt. Klage brukt som kaffebrikke. Ny klage sendt.»",
+          bruk: "Du drar forsiktig i et skjema. Hele hylla ser på deg. Du legger det tilbake på millimeteren. Det er fortsatt skjevt. Det kommer Winter til å merke.",
+          prat: "Du spør hyllene om de har et 4112-B til overs. Lappen svarer for dem: IQ har alle. IQ har alltid alle.",
+          feil: {
+            skjema:
+              "Du prøver å legge skjemaet tilbake på plassen sin. Nei. Det er DITT skjema nå. Winter vil ha det utfylt, ikke sortert bort.",
+          },
+        },
+        {
+          id: "samlebaandet",
+          navn: "Samlebåndet",
+          rect: { x: 0, y: 60, w: 44, h: 40 },
+          smart: "se",
+          se: "Et samlebånd av tre og messing som går i en stor sløyfe gjennom hallen. Pakkene reiser inn i maskinen, kommer ut igjen og reiser inn på nytt. Noen av dem har reist siden i fjor. De ser ikke ut til å ha noe imot det.",
+          bruk: "Du hopper opp på båndet. Det ruller deg sakte mot maskinen. Du hopper av igjen rett før trakta. Hjertet dunker. Det var det morsomste du har gjort i dag.",
+        },
+        {
+          id: "pakkene",
+          navn: "Pakkene",
+          rect: { x: 14, y: 64, w: 14, h: 16 },
+          smart: "se",
+          se: "Brune pakker med hyssing. Den øverste er adressert «Rampenissen, hylla i stua, Landås». Avsender: «H.» Den lukter knekkebrød. Under den ligger en pakke merket «IQ – IKKE RIST». Den tikker ikke. Den summer.",
+          bruk: "Du rister forsiktig på pakken til Rampenissen. Det knaser. Knekkebrød. Du rister ikke på den andre.",
+          feil: {
+            bolle:
+              "Du legger bollen oppå pakken til Rampenissen. Det ser riktig ut. Så tar du den tilbake. Hjerterud sa den var din.",
+          },
+        },
+        {
+          id: "maskinen",
+          navn: "Maskinen",
+          rect: { x: 38, y: 0, w: 28, h: 86 },
+          smart: "se",
+          se: "Winters stolthet: en messingmaskin med tre trakter, fire hjul og en liten luke merket «VENTER». Den sorterer pakker etter vekt, adresse, lukt og paragraf. Mest paragraf. Alt som er i tvil, går i «VENTER». «VENTER» er full.",
+          bruk:
+            "Du drar i spaken. Maskinen tenker seg om, sukker med damp og slipper en pakke ned i «VENTER». Utenfra, gjennom vinduet, roper Winter: «Jeg hørte det!» " +
+            R +
+            "«Han hør alt. Han hørte mæ spis en klementin gjennom to vegga i 2022.»",
+          prat: "Du uler lavt mot maskinen. Den summer tilbake i samme tone. Dere har en forståelse nå.",
+          feil: {
+            tyttebaer:
+              "Du slipper et bær i trakta. Maskinen klikker, veier, snuser og legger det i «VENTER». Du får det ikke tilbake. Du har bær nok likevel.",
+            skjema:
+              "Du mater skjemaet inn i trakta. Maskinen spytter det ut igjen med en gang. Tomme skjemaer har ingen adresse. Maskinen er enig med Winter i alt.",
+            skjema_signert:
+              "Du prøver skjemaet i trakta. Maskinen spytter det ut. På baksiden står det nå, stemplet med maskinskrift: «IKKE EN PAKKE».",
+          },
+        },
+        {
+          id: "protokollene",
+          navn: "Protokollene",
+          rect: { x: 69, y: 20, w: 12, h: 40 },
+          smart: "se",
+          se: "Tunge, innbundne protokoller i rekke: «Klager på IQ, bind 1 til 14», «Klager på Rampenissen, bind 1 til 31», og én tynn liten en: «Ros». Den er ikke åpnet. Den er ikke støvete heller. Winter tørker den.",
+          bruk: "Du drar ut «Ros». Det står én linje i den: «Hjerterud. Bollene. Alltid.» Så lukker du den fort, før noen ser at du så.",
+        },
+        {
+          id: "pulten",
+          navn: "Winters pult",
+          rect: { x: 72, y: 56, w: 28, h: 36 },
+          smart: "se",
+          se: "En høy skrivepult med grønn lampe, en bunke papir som er så rett at du blir svimmel, og en liste merket «I DAG». Punkt 1: Tømme postkassen. Punkt 2: Stille klokka i tårnet etter tømmingen. Punkt 3: Spisse blyant. Punkt 3 er krysset av. Tre ganger.",
+          bruk: "Du dytter bunken en millimeter. Den ser verre ut enn den burde. Du dytter den tilbake. Den ser fortsatt verre ut. Du går derfra i håp om at det var innbilning.",
+          feil: {
+            skjema_signert:
+              "Du legger skjemaet på pulten. Det ligger der. Winter er ikke her. Han er ute ved postkassen. Skjemaer som ligger uten Winter, blir ikke stemplet, de blir bare kalde.",
+            skjema:
+              "Du legger skjemaet på pulten og venter. Ingenting. Winter står ute på torget. Han stempler ikke per post.",
+          },
+        },
+        {
+          id: "stemplene",
+          navn: "Stemplene",
+          rect: { x: 80, y: 53, w: 8, h: 9 },
+          smart: "se",
+          se: "Fire stempler i rekke: «GODKJENT», «AVVIST», «VENTER» og ett som bare sier «HM». Det er pakkestempler. Postvesenets eget stempel ligger ikke her. Det ligger i skrinet på hylla utenfor, låst, mellom hver stempling.",
+          bruk: "Du trykker «HM» mot pulten. HM. Det kjennes riktig. Utenfra: «Jeg hørte det!»",
+          feil: {
+            skjema_signert:
+              "Du stempler skjemaet med «HM». Winter, gjennom vinduet, uten å snu seg: «Feil stempel. Feil pute. Feil person.» Blekket er tørt uansett, og det lille HM-et teller ikke.",
+            skjema:
+              "Du prøver «GODKJENT» på skjemaet. Puta på pulten er like tørr som den ute. Winter har brukt opp det røde blekket. På klager.",
+          },
+        },
+        {
+          id: "blekkhuset",
+          navn: "Blekkhuset",
+          rect: { x: 88, y: 58, w: 5, h: 8 },
+          smart: "se",
+          se: "Et lite blekkhus med etiketten «RØDT. Til stempelputa.» Det er tomt. Helt tomt. Bunnen er skrapt med en blyant. Den siste dråpen gikk med til en klage på IQ, understreket to ganger.",
+          bruk: "Du snur blekkhuset. Ingenting kommer ut. Ikke engang lukt. Hvis puta skal bli rød, må det rødt fra et annet sted.",
+          feil: {
+            tyttebaer:
+              "Du dytter et frossent bær ned i blekkhuset. Det sitter fast. Hardt, rødt og helt tørt. Du fisker det opp igjen. Frosne bær gir ikke fra seg noe før de tiner.",
+            baersaft:
+              "Du heller litt saft i blekkhuset. Winter, gjennom vinduet: «Det der er ikke blekk. Det er bær. Blekkhuset er for blekk. Puta er for farge.» Saften er fortsatt varm. Puta står ute.",
+          },
+        },
+        {
+          id: "vinduet",
+          navn: "Vinduet",
+          rect: { x: 88, y: 20, w: 12, h: 30 },
+          smart: "se",
+          se: "Gjennom vinduet ser du postkassen bakfra og Winter forfra. Han ser rett på deg. Han ser alltid rett på deg. Han løfter blyanten og noterer: «Ugle. Innendørs. Kl. 16.41.»",
+          bruk: "Du banker på ruta. Winter banker tilbake. Én gang. Presist.",
         },
       ],
     },
