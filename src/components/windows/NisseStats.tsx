@@ -600,6 +600,8 @@ function NormalDisplay({
   glitchFrame,
 }: NormalDisplayProps) {
   const percent = DisplayRenderers.percentage(metric.verdi, metric.maks);
+  // Tooltip fungerer ikke på touch: trykk utvider beskrivelsen på stedet
+  const [open, setOpen] = useState(false);
 
   const displayComponents: Record<
     MetricType["displayType"],
@@ -671,12 +673,14 @@ function NormalDisplay({
   return (
     <div className="flex-1 flex flex-col justify-center">
       {displayComponents[metric.displayType]()}
-      <div
-        className="text-base opacity-60 mt-auto pt-1 truncate"
-        title={metric.description}
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className={`text-base opacity-60 mt-auto pt-1 text-left min-h-11 w-full ${open ? "" : "truncate"}`}
       >
         {metric.description}
-      </div>
+      </button>
     </div>
   );
 }
