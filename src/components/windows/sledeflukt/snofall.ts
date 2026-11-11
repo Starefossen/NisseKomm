@@ -7,7 +7,7 @@
  */
 
 import { hex, Mesh, transform, type Vec3 } from "./gl";
-import { BYGG, TUN, type Bygg } from "../snofall-tv/vidda";
+import { BYGG, lagHus, TUN, type Bygg } from "../snofall-tv/vidda";
 import { SKALA } from "./verden";
 
 const STEIN = hex(0x6a6258);
@@ -30,6 +30,47 @@ const MESSING = hex(0xd8b04a);
 const URSKIVE = hex(0xfff4d6);
 
 const S = SKALA;
+/** Top of the main house's spire, sim units. */
+const SPIR = 520;
+const VED = hex(0x8a6440);
+const GRAN = hex(0x1f5a3c);
+const LYSPÆRE = [hex(0xff4a3c), hex(0xffd700), hex(0x7dd0ff)];
+
+const HUS = lagHus(false);
+
+/** Is (x, z) clear of named buildings, ring houses, streets and the wall, by `m` sim units? */
+function ledig(x: number, z: number, m: number) {
+  const d = Math.hypot(x, z);
+  if (d > TUN.r - 80 - m || d < 380) return false;
+  if (Math.abs(x) < 60 + m && z > 0) return false;
+  if (Math.abs(d - 800) < 30 + m) return false;
+  if (
+    BYGG.some(
+      (b) => Math.abs(x - b.x) < b.b / 2 + m && Math.abs(z - b.z) < b.d / 2 + m,
+    )
+  )
+    return false;
+  return !HUS.some(
+    (h) => Math.hypot(h.x - x, h.z - z) < (130 * (h.sk ?? 1)) / 2 + m + 60,
+  );
+}
+
+/**
+ * Small spruces round the tun, as [x, y, z, scale] instances of verden's tree mesh
+ * (render units); their fairy lights are baked into snofallMesh.
+ */
+export const PYNTETRÆR: Float32Array = (() => {
+  const ut: number[] = [];
+  for (let i = 0; i < 400 && ut.length < 18 * 4; i++) {
+    const a = i * 2.39996;
+    const r = 420 + ((i * 97) % 1000);
+    const x = Math.sin(a) * r;
+    const z = -Math.cos(a) * r;
+    if (!ledig(x, z, 40)) continue;
+    ut.push(x * S, 0, z * S, 0.45);
+  }
+  return new Float32Array(ut);
+})();
 
 /**
  * A gabled house at sim (x, z), footprint b×d and ridge height h (sim units);
@@ -87,7 +128,7 @@ function hus(
 function mur(m: Mesh) {
   const r0 = (TUN.r - TUN.tykk) * S;
   const r1 = (TUN.r + TUN.tykk) * S;
-  const hs = 6;
+  const hs = TUN.h * S * 0.65;
   const hp = TUN.h * S;
   const gap = TUN.portHalv / TUN.r;
   const n = 64;
@@ -254,8 +295,8 @@ function hovedhus(m: Mesh, b: Bygg) {
   for (let i = 0; i < 3; i++)
     m.box([x, 0.4 * i + 0.2, zf + 4.5 + i * 0.8], [6, 0.4, 0.8], SNØ_SKYGGE);
   m.box([x, b.h * S * 0.45, zf + 0.06], [3, 3, 0.1], VINDU, 1);
-  m.cone([x, b.h * S - 2, b.z * S], 1.8, 260 * S - b.h * S + 2, RØD, 6);
-  m.box([x, 260 * S, b.z * S], [0.6, 0.6, 0.6], GLØD, 1);
+  m.cone([x, b.h * S - 2, b.z * S], 2.6, SPIR * S - b.h * S + 2, RØD, 6);
+  m.box([x, SPIR * S, b.z * S], [0.9, 0.9, 0.9], GLØD, 1);
 }
 
 function bod(m: Mesh, b: Bygg) {
@@ -308,6 +349,76 @@ function spor(m: Mesh) {
   );
 }
 
+/** Lamp posts, fences, a Christmas tree on the square, lights on the spruces, stall clutter. */
+function pynt(m: Mesh) {
+  const lampe = (x: number, z: number) => {
+    m.rod([x * S, 0, z * S], [x * S, 4.5, z * S], 0.15, EIK, 4);
+    m.box([x * S, 4.9, z * S], [0.8, 0.8, 0.8], GLØD, 1);
+  };
+  for (let z = 420; z < TUN.r - 60; z += 170)
+    for (const s of [-1, 1]) lampe(s * 45, z);
+  for (let i = 0; i < 14; i++) {
+    const a = (i / 14) * Math.PI * 2 + 0.2;
+    lampe(Math.sin(a) * 375, -Math.cos(a) * 375);
+  }
+  for (let i = 0; i < 24; i++) {
+    const a = (i / 24) * Math.PI * 2;
+    lampe(Math.sin(a) * 840, -Math.cos(a) * 840);
+  }
+  // Picket fences along the main street.
+  for (const s of [-1, 1]) {
+    const x = s * 70 * S;
+    for (const y of [0.6, 1.2]) m.box([x, y, 93], [0.15, 0.15, 56], PALISADE);
+    for (let z = 65; z <= 121; z += 4)
+      m.box([x, 0.7, z], [0.2, 1.4, 0.2], PALISADE);
+  }
+  // The Christmas tree on the square, south of the tower, lit.
+  const [jx, jz] = [-150 * S, 200 * S];
+  m.rod([jx, 0, jz], [jx, 2, jz], 0.5, EIK, 4);
+  for (let i = 0; i < 4; i++)
+    m.cone([jx, 2 + i * 3.4, jz], 5 - i * 1.1, 5, GRAN, 8);
+  m.box([jx, 16.4, jz], [1.2, 1.2, 1.2], hex(0xffd700), 1);
+  for (let i = 0; i < 24; i++) {
+    const y = 2.5 + (i / 24) * 12;
+    const r = 5 - (y - 2) * 0.33;
+    const a = i * 2.4;
+    m.box(
+      [jx + Math.cos(a) * r, y, jz + Math.sin(a) * r],
+      [0.45, 0.45, 0.45],
+      LYSPÆRE[i % 3],
+      1,
+    );
+  }
+  for (let i = 0; i < PYNTETRÆR.length; i += 4) {
+    const [x, z] = [PYNTETRÆR[i], PYNTETRÆR[i + 2]];
+    for (let k = 0; k < 4; k++) {
+      const a = k * 1.7 + i;
+      m.box(
+        [x + Math.cos(a) * 1.3, 2.5 + k * 1.4, z + Math.sin(a) * 1.3],
+        [0.35, 0.35, 0.35],
+        LYSPÆRE[k % 3],
+        1,
+      );
+    }
+  }
+  // By each stall: a barrel, a crate, and a woodpile or a little sled.
+  BYGG.filter((b) => b.id === "bod").forEach((b, i) => {
+    const sx = b.x > 0 ? 1 : -1;
+    const x = (b.x + sx * (b.b / 2 + 14)) * S;
+    const z = b.z * S;
+    m.cone([x, 0, z - 1.2], 0.6, 1.4, VED, 6, 0.6);
+    m.box([x, 0.5, z + 1], [1, 1, 1], TØMMER);
+    if (i % 2) {
+      m.box([x + sx * 2, 0.6, z], [1.2, 1.2, 3], VED);
+      m.box([x + sx * 2, 1.25, z], [1.3, 0.2, 3.1], SNØ);
+    } else {
+      m.box([x + sx * 2.2, 0.5, z], [1, 0.25, 2], RØD);
+      for (const k of [-0.45, 0.45])
+        m.box([x + sx * 2.2 + k, 0.2, z], [0.1, 0.4, 2.3], EIK);
+    }
+  });
+}
+
 /** Snøfall's static mesh, built once. */
 let cache: Float32Array | null = null;
 export function snofallMesh(): Float32Array {
@@ -316,6 +427,7 @@ export function snofallMesh(): Float32Array {
   mur(m);
   port(m);
   spor(m);
+  pynt(m);
   for (const b of BYGG) {
     switch (b.id) {
       case "klokketaarn":

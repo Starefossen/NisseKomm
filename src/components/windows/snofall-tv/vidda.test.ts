@@ -187,11 +187,11 @@ describe("fri flyging på vidda", () => {
     expect(ev).not.toContain("krasj");
     expect(inn.s.z).toBeLessThan(TUN.r - 200);
     expect(bygg(0, TUN.r, 90)).toBe(0);
-    expect(bygg(0, TUN.r, 150)).toBeGreaterThan(150);
+    expect(bygg(0, TUN.r, 200)).toBeGreaterThan(200);
     expect(bygg(TUN.r, 0, 90)).toBe(TUN.h);
     expect(bygg(0, 0, 100)).toBeGreaterThan(200);
     const gavl = createFri({ ...dag8, reduceMotion: true });
-    [gavl.s.alt, gavl.s.kurs] = [150, 0];
+    [gavl.s.alt, gavl.s.kurs] = [220, 0];
     expect(fly(gavl, 2)).toContain("krasj");
     const mur = createFri(dag8);
     [mur.s.x, mur.s.z, mur.s.kurs, mur.s.alt] = [
@@ -207,16 +207,20 @@ describe("fri flyging på vidda", () => {
       TUN.r + 600,
       0,
       -Math.PI / 2,
-      150,
+      200,
     ];
-    expect(fly(over, 1.5)).not.toContain("krasj");
+    expect(fly(over, 1)).not.toContain("krasj");
     expect(over.s.x).toBeLessThan(TUN.r);
   });
 
   it("starts above the roofs, over the gate, past the clock tower without a crash", () => {
     const sim = createFri({ ...dag8, reduceMotion: true });
     expect(sim.s.alt).toBeGreaterThan(TUN.gavl + 35);
-    const ev = fly(sim, 6);
+    const ev: string[] = [];
+    for (let i = 0; i < 360; i++) {
+      const e = sim.step(1 / 60, still);
+      ev.push(...e);
+    }
     expect(ev).not.toContain("krasj");
     expect(ev).not.toContain("skrape");
     expect(sim.s.z).toBeLessThan(-200);

@@ -47,7 +47,7 @@ import { SledeLyd } from "../snofall-tv/slede-lyd";
 import { hex, identity, multiply, transform, type Mat4, type Vec3 } from "./gl";
 import { Renderer } from "./renderer";
 import { RadioBoks } from "./RadioBoks";
-import { snofallMesh } from "./snofall";
+import { PYNTETRÆR, snofallMesh } from "./snofall";
 import {
   erSlipp,
   type Held,
@@ -424,6 +424,14 @@ export function FriFlyging({
       kart.fillStyle = "#8aa0c0";
       kart.textAlign = "center";
       for (const f of FJELL) kart.fillText("▲", mx(f.x), my(f.z) + 3);
+      const prikker: {
+        s: (typeof STEDER)[number];
+        x: number;
+        y: number;
+        åpen: boolean;
+      }[] = [];
+      const px0 = mx(sim.s.x);
+      const py0 = my(sim.s.z);
       for (const s of STEDER) {
         const åpen = stedÅpent(s, o);
         // Bergen's dot sits at the gate: the rest of it is off the bottom of the map.
@@ -439,20 +447,55 @@ export function FriFlyging({
           kart.arc(x, y - 10, 2, Math.PI, 0);
           kart.stroke();
         }
-        // Label beside the dot, away from the map's edge; the east side reads leftwards.
-        kart.fillStyle = åpen ? "#d9e4f5" : "#9fb0cc";
-        // The cave sits close by Nordtoppen: Nordtoppen reads left of its dot, the cave right.
-        const høyre =
-          (s.x > 4000 && s.id !== "grotten") || s.id === "nordtoppen";
-        const venstre = s.x < -4000 || s.id === "grotten";
-        kart.textAlign = høyre ? "right" : venstre ? "left" : "center";
-        const tx = høyre ? x - 6 : venstre ? x + 6 : x;
-        const ty = s.z < -10000 ? y - (åpen ? 5 : 12) : y + 13;
-        kart.fillText(
-          stedsnavn(s, o, true),
-          tx,
-          Math.max(9, Math.min(H - 3, ty)),
+        prikker.push({ s, x, y, åpen });
+      }
+      // Labels: only the nearest locked place says when it opens, the rest give
+      // their name. Each label takes the first free spot round its dot (right,
+      // left, below, above) and is left out if none is free.
+      const låste = prikker.filter((p) => !p.åpen);
+      const nærmest = låste.reduce<(typeof låste)[number] | null>(
+        (b, p) =>
+          !b ||
+          Math.hypot(p.x - px0, p.y - py0) < Math.hypot(b.x - px0, b.y - py0)
+            ? p
+            : b,
+        null,
+      );
+      const tatt = prikker.map((p) => ({
+        x: p.x - 3,
+        y: p.y - 11,
+        w: 7,
+        h: 14,
+      }));
+      kart.textAlign = "left";
+      for (const p of prikker) {
+        const tekst =
+          p.åpen || p === nærmest ? stedsnavn(p.s, o, true) : p.s.kort;
+        const w = kart.measureText(tekst).width;
+        const h = 9;
+        const plass = [
+          { x: p.x + 6, y: p.y - 4 },
+          { x: p.x - 6 - w, y: p.y - 4 },
+          { x: p.x - w / 2, y: p.y + 4 },
+          { x: p.x - w / 2, y: p.y - 13 - h },
+        ].find(
+          (q) =>
+            q.x >= 1 &&
+            q.x + w <= W - 1 &&
+            q.y >= 1 &&
+            q.y + h <= H - 1 &&
+            !tatt.some(
+              (t) =>
+                q.x < t.x + t.w &&
+                q.x + w > t.x &&
+                q.y < t.y + t.h &&
+                q.y + h > t.y,
+            ),
         );
+        if (!plass) continue;
+        tatt.push({ ...plass, w, h });
+        kart.fillStyle = p.åpen ? "#d9e4f5" : "#9fb0cc";
+        kart.fillText(tekst, plass.x, plass.y + h - 1);
       }
       kart.fillStyle = "#c0d2ec";
       for (let i = 0; i < FUGLER.length; i++) {
@@ -680,7 +723,10 @@ export function FriFlyging({
         );
 
       // Snøfall: wall, gate, turrets, clock tower and named houses in one mesh.
-      if (Math.hypot(x, z) < FJERN_SIM + TUN.r) r.tegn(snofall, IDENT);
+      if (Math.hypot(x, z) < FJERN_SIM + TUN.r) {
+        r.tegn(snofall, IDENT);
+        r.tegnMange(M.tre, PYNTETRÆR, IDENT);
+      }
 
       // Houses with smoke, stars on the ones that got a package.
       for (const h of sim.s.hus) {

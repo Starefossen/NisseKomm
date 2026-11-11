@@ -897,9 +897,10 @@ export function gardinMesh(bergen: boolean): Float32Array {
 /** Model matrix for a house on the vidda: its chimney stands at the house's (x, z). */
 export function husPlassFri(h: FriHus): Mat4 {
   const { pipe } = meshes().hus[h.variant];
-  const x = h.x * SKALA - pipe[0] * Math.cos(h.rot);
-  const z = h.z * SKALA + pipe[0] * Math.sin(h.rot);
-  return transform([x, høyde(h.x, h.z) * SKALA - 0.2, z], [0, h.rot, 0]);
+  const sk = h.sk ?? 1;
+  const x = h.x * SKALA - pipe[0] * sk * Math.cos(h.rot);
+  const z = h.z * SKALA + pipe[0] * sk * Math.sin(h.rot);
+  return transform([x, høyde(h.x, h.z) * SKALA - 0.2, z], [0, h.rot, 0], sk);
 }
 
 /** IQ's wall once it is open (day 21): a warm gold band along the ridge crest, gate gap left out. */

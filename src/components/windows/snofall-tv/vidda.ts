@@ -26,9 +26,9 @@ export const BERGEN_SLUTT = GRENSE + 15000;
 export const FART = 800;
 export const ALT_MIN = 60;
 /** Above the roofs and the gate's gable at the start (Hans, 2026-11-11). */
-export const ALT_START = 260;
+export const ALT_START = 340;
 /** Start heading: over the gate, with the clock tower ahead but left of the line. */
-export const KURS_START = -0.12;
+export const KURS_START = -0.16;
 /** Footprint radius round a ring house's chimney that the sled can hit. */
 export const HUS_R = 70;
 
@@ -36,7 +36,10 @@ export const HUS_R = 70;
 export const husTopp = (hus: readonly FriHus[], x: number, z: number) => {
   let t = 0;
   for (const h of hus)
-    if (Math.abs(h.x - x) < HUS_R && Math.abs(h.z - z) < HUS_R)
+    if (
+      Math.abs(h.x - x) < HUS_R * (h.sk ?? 1) &&
+      Math.abs(h.z - z) < HUS_R * (h.sk ?? 1)
+    )
       t = Math.max(t, h.h);
   return t;
 };
@@ -270,14 +273,14 @@ export const TUN = {
   r: 1500,
   /** Wall half-thickness, stone 60 plus palisade 30. */
   tykk: 12.5,
-  h: 90,
+  h: 140,
   /** Gate opening half-width and height; the gatehouse is 300 wide, its gable 200. */
-  port: 80,
-  portH: 120,
-  portHalv: 150,
-  gavl: 200,
-  tårnR: 50,
-  tårnH: 180,
+  port: 100,
+  portH: 160,
+  portHalv: 200,
+  gavl: 300,
+  tårnR: 70,
+  tårnH: 300,
   /** Turrets on the wall at 45°, 135°, 225° and 315° (bearing). */
   tårn: [1, 3, 5, 7].map((i) => (i * Math.PI) / 4),
 };
@@ -294,19 +297,19 @@ export interface Bygg {
 
 /** Named buildings (spec positions; kafé and IQ's house are guesses from the text). */
 export const BYGG: readonly Bygg[] = [
-  { id: "klokketaarn", x: 0, z: 0, b: 60, d: 60, h: 240 },
-  { id: "postkasse", x: 160, z: 60, b: 10, d: 10, h: 20 },
-  { id: "pakkesentral", x: 450, z: 0, b: 220, d: 180, h: 110 },
-  { id: "hovedhus", x: 0, z: -900, b: 300, d: 200, h: 170 },
-  { id: "gront", x: -650, z: -350, b: 120, d: 100, h: 110 },
-  { id: "kafe", x: 450, z: 500, b: 130, d: 110, h: 90 },
-  { id: "iq", x: -900, z: 100, b: 120, d: 100, h: 120 },
-  { id: "bod", x: -300, z: 120, b: 40, d: 30, h: 35 },
-  { id: "bod", x: -300, z: 230, b: 40, d: 30, h: 35 },
-  { id: "bod", x: -360, z: -60, b: 40, d: 30, h: 35 },
-  { id: "bod", x: -200, z: 330, b: 40, d: 30, h: 35 },
-  { id: "bod", x: 300, z: -230, b: 40, d: 30, h: 35 },
-  { id: "bod", x: 250, z: 260, b: 40, d: 30, h: 35 },
+  { id: "klokketaarn", x: 0, z: 0, b: 80, d: 80, h: 480 },
+  { id: "postkasse", x: 170, z: 70, b: 14, d: 14, h: 30 },
+  { id: "pakkesentral", x: 530, z: 0, b: 340, d: 280, h: 220 },
+  { id: "hovedhus", x: 0, z: -950, b: 460, d: 300, h: 340 },
+  { id: "gront", x: -650, z: -400, b: 190, d: 160, h: 220 },
+  { id: "kafe", x: 500, z: 540, b: 210, d: 170, h: 180 },
+  { id: "iq", x: -950, z: 100, b: 190, d: 160, h: 240 },
+  { id: "bod", x: -300, z: 110, b: 64, d: 48, h: 55 },
+  { id: "bod", x: -300, z: 230, b: 64, d: 48, h: 55 },
+  { id: "bod", x: -380, z: -60, b: 64, d: 48, h: 55 },
+  { id: "bod", x: -200, z: 340, b: 64, d: 48, h: 55 },
+  { id: "bod", x: 280, z: -260, b: 64, d: 48, h: 55 },
+  { id: "bod", x: 250, z: 290, b: 64, d: 48, h: 55 },
 ];
 
 /**
@@ -354,6 +357,8 @@ export interface FriHus {
   rot: number;
   /** verden.meshes().hus index: 0–2 sizes, 3 ochre, 4 dark green. */
   variant: number;
+  /** Mesh scale; Snøfall's houses are drawn twice the size of the farms'. */
+  sk?: number;
   treff?: boolean;
   nær?: number;
 }
@@ -377,19 +382,37 @@ export function lagHus(bergen: boolean): FriHus[] {
     const variant = Math.floor(r() * 3);
     ut.push({ x, z, h: HUS_PIPE[variant], rot, variant });
   };
-  // Snøfall: houses round the tun inside the wall, gables in to the ring street;
-  // ochre to the west, red to the north, dark green to the east. None by the gate or the main house.
-  for (let i = 0; i < 16; i++) {
-    const a = (i / 16) * Math.PI * 2 + 0.2;
-    const sør = Math.abs(vinkelTil(a, Math.PI / 2));
-    const nord = Math.abs(vinkelTil(a, -Math.PI / 2));
-    if (sør < 0.4 || nord < 0.3) continue;
-    const rr = 1080 + r() * 200;
-    const x = Math.cos(a) * rr;
-    const z = Math.sin(a) * rr;
+  // Snøfall: houses at twice the farms' size, packed in two rings along the ring
+  // street and in rows along the main street, gables to the street; ochre to the
+  // west, red to the north, dark green to the east. None on a street, by a named building or the gate.
+  const SK = 2;
+  const kandidater: [number, number, number][] = [];
+  for (let i = 0; i < 22; i++) {
+    const a = (i / 22) * Math.PI * 2;
+    kandidater.push([Math.cos(a) * 1010, Math.sin(a) * 1010, Math.PI / 2 - a]);
+  }
+  for (let i = 0; i < 26; i++) {
+    const a = ((i + 0.5) / 26) * Math.PI * 2;
+    kandidater.push([Math.cos(a) * 1310, Math.sin(a) * 1310, Math.PI / 2 - a]);
+  }
+  for (const side of [-1, 1])
+    for (const z of [470, 1040, 1280])
+      kandidater.push([side * 220, z, (-side * Math.PI) / 2]);
+  for (const [x, z, rot] of kandidater) {
+    if (Math.abs(x) < 170 && z > 0) continue;
+    if (Math.abs(Math.hypot(x, z) - 800) < 140) continue;
+    if (
+      BYGG.some(
+        (b) =>
+          Math.abs(x - b.x) < b.b / 2 + 130 &&
+          Math.abs(z - b.z) < b.d / 2 + 130,
+      )
+    )
+      continue;
+    if (ut.some((h) => Math.hypot(h.x - x, h.z - z) < 250)) continue;
     const variant =
       x < -500 ? 3 : z < -700 ? 1 : x > 500 ? 4 : Math.floor(r() * 3);
-    ut.push({ x, z, h: HUS_PIPE[variant % 3], rot: Math.PI / 2 - a, variant });
+    ut.push({ x, z, h: HUS_PIPE[variant % 3] * SK, rot, variant, sk: SK });
   }
   const g = topp("gaardene");
   for (let i = 0; i < 5; i++)
