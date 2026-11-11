@@ -427,8 +427,8 @@ describe("Nissespill: motor", () => {
   it("kapittel 3 kan spilles gjennom", () => {
     spill(KAPITLER[2], [
       ["kontor", "lysene"],
-      ["?", "nissemor", "Rampenissen vil gi et lys til han i grotten."],
-      ["?", "nissemor", "Vi skal passe på den."],
+      ["?", "hjerterud", "Rampenissen vil gi et lys til han i grotten."],
+      ["?", "hjerterud", "Vi skal passe på den."],
       ["kontor", "tekoppen"],
       ["+", "stearinlys", "tesil"],
       // The lantern held to the clear shelf shows the chain and thaws the shard
@@ -446,8 +446,8 @@ describe("Nissespill: motor", () => {
   it("kapittel 3: lanterna kan stå på sokkelen før skåret er løst", () => {
     spill(KAPITLER[2], [
       ["kontor", "lysene"],
-      ["?", "nissemor", "Rampenissen vil gi et lys til han i grotten."],
-      ["?", "nissemor", "Vi skal passe på den."],
+      ["?", "hjerterud", "Rampenissen vil gi et lys til han i grotten."],
+      ["?", "hjerterud", "Vi skal passe på den."],
       ["kontor", "tekoppen"],
       ["+", "stearinlys", "tesil"],
       ["grotten", "sokkelen", "tesil_lanterne"],

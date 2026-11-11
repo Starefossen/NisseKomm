@@ -350,7 +350,7 @@ describe("pipelevering", () => {
   });
 
   it("names packages after the kids' letters, generic sacks without", () => {
-    expect(pakkenavn([], 0)).toBe("PAKKE FRA NISSEMOR");
+    expect(pakkenavn([], 0)).toBe("PAKKE FRA HJERTERUD");
     expect(pakkenavn([], 5)).toBe("PAKKE FRA IQ");
     const brev = [
       { from: "Håkon" },

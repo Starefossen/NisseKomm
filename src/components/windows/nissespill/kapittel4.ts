@@ -258,7 +258,7 @@ export const KAPITTEL_4: Kapittel = {
           ],
           feil: {
             klementin:
-              "Du legger klementinen i sleden. Winter: «Last registreres av Nissemor, ikke av ugler.» Du tar den igjen. Klementinen hadde gledet seg.",
+              "Du legger klementinen i sleden. Winter: «Last registreres av Hjerterud, ikke av ugler.» Du tar den igjen. Klementinen hadde gledet seg.",
             noett:
               "Du legger nøtta i sleden. Winter: «Nei.» Han sa det før du var ferdig. Du tar den igjen.",
             fiskesnoere:
@@ -508,7 +508,7 @@ export const KAPITTEL_4: Kapittel = {
           navn: "Lysene i vinduskarmen",
           rect: { x: 65, y: 46, w: 11, h: 13 },
           smart: "se",
-          se: "Begge lysene brenner i kveld. Nissemor sier de skal brenne hver kveld til sleden er hjemme igjen. Hun har kjøpt inn mange lys. Hun har kjøpt inn flere lys enn Snøfall har kvelder.",
+          se: "Begge lysene brenner i kveld. Hjerterud sier de skal brenne hver kveld til sleden er hjemme igjen. Hun har kjøpt inn mange lys. Hun har kjøpt inn flere lys enn Snøfall har kvelder.",
         },
         {
           id: "skaala",
@@ -569,7 +569,7 @@ export const KAPITTEL_4: Kapittel = {
           ta: {
             item: "magnet",
             tekst:
-              "Du tar hestesko-magneten. Tre lapper seiler ned på gulvet. Du legger dem pent på skapet. Julius glemmer ikke. Han har tre lapper. Og Nissemor.",
+              "Du tar hestesko-magneten. Tre lapper seiler ned på gulvet. Du legger dem pent på skapet. Julius glemmer ikke. Han har tre lapper. Og Hjerterud.",
           },
           bruk: "Du blåser i trakten. Ute ved tjernet sier IQ «hva i all verden». Han sier det hver gang. Han sover. Han sier det i søvne.",
         },

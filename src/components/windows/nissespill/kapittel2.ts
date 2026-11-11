@@ -45,7 +45,7 @@ export const KAPITTEL_2: Kapittel = {
       id: "grytevott",
       navn: "Grytevott",
       ikon: "hand",
-      se: "En rutete grytevott med et brennmerke formet som et radiorør. Nissemor har sydd «IQ» på kanten, så den finner veien hjem. Det har den ikke gjort.",
+      se: "En rutete grytevott med et brennmerke formet som et radiorør. Hjerterud har sydd «IQ» på kanten, så den finner veien hjem. Det har den ikke gjort.",
     },
     boks_i_vott: {
       id: "boks_i_vott",
@@ -69,7 +69,7 @@ export const KAPITTEL_2: Kapittel = {
       id: "sirup",
       navn: "Sirupsflaske",
       ikon: "potion",
-      se: "Ei flaske mørk sirup. Lapp: «TIL VAFLER. IKKE TIL EKSPERIMENT. – NISSEMOR». Noen har tegnet et vaffelhjerte under. Noen andre har tegnet et reinsdyr som spiser vaffelhjertet.",
+      se: "Ei flaske mørk sirup. Lapp: «TIL VAFLER. IKKE TIL EKSPERIMENT. – HJERTERUD». Noen har tegnet et vaffelhjerte under. Noen andre har tegnet et reinsdyr som spiser vaffelhjertet.",
     },
     sirupbroed: {
       id: "sirupbroed",
@@ -142,7 +142,7 @@ export const KAPITTEL_2: Kapittel = {
       tekst:
         "Du tar votten på og griper boksen. Kald boks, varm hånd. " +
         R +
-        "«No kan den bli så varm den vil. Det e votten som tar støyten. Takk, Nissemor.»",
+        "«No kan den bli så varm den vil. Det e votten som tar støyten. Takk, Hjerterud.»",
     },
   ],
   scener: [
@@ -718,7 +718,7 @@ export const KAPITTEL_2: Kapittel = {
             tekst:
               "Du tar grytevotten fra kroken under krakken. Den lukter brent sokk. " +
               R +
-              "«Nissemor sin! Ho har leita etter den sia i fjor. IQ sa det va Rudolf. Alle sei det e Rudolf. Som regel e det Rudolf.»",
+              "«Hjerterud sin! Ho har leita etter den sia i fjor. IQ sa det va Rudolf. Alle sei det e Rudolf. Som regel e det Rudolf.»",
           },
           bruk: "Kroken under krakken er tom. Krakken står like skjevt. Boka hjelper ikke. Den er ikke åpnet.",
         },
@@ -731,7 +731,7 @@ export const KAPITTEL_2: Kapittel = {
             {
               hvis: "tok_sirup",
               tekst:
-                "Syltetøyglass med skruer, tannhjul og ett med syltetøy («MITT. – IQ»). Og en ledig plass med en klissete ring der sirupsflaska sto. Nissemor kommer til å finne ringen. Nissemor finner alt.",
+                "Syltetøyglass med skruer, tannhjul og ett med syltetøy («MITT. – IQ»). Og en ledig plass med en klissete ring der sirupsflaska sto. Hjerterud kommer til å finne ringen. Hjerterud finner alt.",
             },
             {
               tekst:
@@ -741,7 +741,7 @@ export const KAPITTEL_2: Kapittel = {
           ta: {
             item: "sirup",
             tekst:
-              "Du tar sirupsflaska. Lappen sier «TIL VAFLER». Dette er ikke vafler. Dette er viktigere. Si det til Nissemor, ikke til oss.",
+              "Du tar sirupsflaska. Lappen sier «TIL VAFLER». Dette er ikke vafler. Dette er viktigere. Si det til Hjerterud, ikke til oss.",
           },
           bruk: "Syltetøyet får stå. Det har navn på seg, og eieren har kamera på det. Dere husker.",
         },
@@ -821,8 +821,8 @@ export const KAPITTEL_2: Kapittel = {
         },
         vott: {
           tekst:
-            "«Med votten. Nissemors grytevott. Den er ikke her. Jeg har ikke tatt den. Hvis dere finner den under noe jeg sitter på, så var det Rudolf.»",
-          rampenissen: "«Æ sei det te Nissemor. Æ sei det med glede.»",
+            "«Med votten. Hjerteruds grytevott. Den er ikke her. Jeg har ikke tatt den. Hvis dere finner den under noe jeg sitter på, så var det Rudolf.»",
+          rampenissen: "«Æ sei det te Hjerterud. Æ sei det med glede.»",
           valg: [{ tekst: "Under noe du sitter på. Notert." }],
         },
         rudolf: {
@@ -837,7 +837,7 @@ export const KAPITTEL_2: Kapittel = {
         },
         sirup: {
           tekst:
-            "«Nissemor har gjemt ei flaske et sted her inne. Hun tror jeg ikke vet hvor. Jeg vet hvor. Jeg vet ikke hvor dere skal smøre den, men jeg erklærer herved nødsituasjon, så alt merket NØD er åpent.»",
+            "«Hjerterud har gjemt ei flaske et sted her inne. Hun tror jeg ikke vet hvor. Jeg vet hvor. Jeg vet ikke hvor dere skal smøre den, men jeg erklærer herved nødsituasjon, så alt merket NØD er åpent.»",
           valg: [{ tekst: "Herved notert." }],
         },
         landaas: {
@@ -879,7 +879,7 @@ export const KAPITTEL_2: Kapittel = {
         R +
           "«Rudolf går ikkje fra kabelen frivillig. Han treng nåkka BEDRE å tygge på. Alt e bedre med sirup, sei IQ. Rudolf e enig.»",
         R +
-          "«Sirup har Nissemor gjømt i verkstedet, og nøden ligg i en skuff. I lag blir det nåkka Rudolf vil ha.»",
+          "«Sirup har Hjerterud gjømt i verkstedet, og nøden ligg i en skuff. I lag blir det nåkka Rudolf vil ha.»",
         R +
           "«Ta sirupen fra hylla og knekkebrødet fra skuffen i sidebordet. Trykk på sirupen i lomma, så på knekkebrødet. Gi det te Rudolf.»",
       ],
@@ -893,7 +893,7 @@ export const KAPITTEL_2: Kapittel = {
         R +
           "«Tannhjulet nederst på masta e frosse. Det treng nåkka tungt og varmt inntil sæ. Lenge. Håndvarmeren e ikkje nok, den e lunken som en unnskyldning.»",
         R +
-          "«Blikkboksen kan varmes på radiorøran hos IQ. Men ikkje med fingran. Nissemor sin grytevott heng under krakken te IQ. Boks og vott i lag først.»",
+          "«Blikkboksen kan varmes på radiorøran hos IQ. Men ikkje med fingran. Hjerterud sin grytevott heng under krakken te IQ. Boks og vott i lag først.»",
         R +
           "«Kombiner boksen og grytevotten i lomma. Bruk dem på radiorøran. Fly te tjernet og hold den varme boksen mot tannhjulet.»",
       ],

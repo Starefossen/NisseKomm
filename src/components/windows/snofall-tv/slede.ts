@@ -481,7 +481,7 @@ export function leveringsoppdrag(
 }
 
 const GENERISKE_PAKKER = [
-  "PAKKE FRA NISSEMOR",
+  "PAKKE FRA HJERTERUD",
   "PAKKE FRA IQ",
   "PAKKE FRA JULIUS",
   "PAKKE FRA RAMPENISSEN",

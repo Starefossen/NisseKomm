@@ -136,7 +136,7 @@ export const KAPITTEL_1: Kapittel = {
             tekst:
               "Du tar ei neve frosne tyttebær fra kurven. Ingen ser det. Bortsett fra Winter, som noterer: «Bær. Ei neve. Kl. 16.40.»",
           },
-          bruk: "Du har bær nok. Tar du mer, blir det syltetøy av det, sier Nissemor, og da må du stå og røre til påske.",
+          bruk: "Du har bær nok. Tar du mer, blir det syltetøy av det, sier Hjerterud, og da må du stå og røre til påske.",
         },
         {
           id: "urtaarnet",
@@ -773,7 +773,7 @@ export const KAPITTEL_1: Kapittel = {
         },
         hemmelig: {
           tekst:
-            "«Noe hemmelig. Så hemmelig at jeg ikke husker det selv akkurat nå. Det summer, i hvert fall. Det er et godt tegn. Som regel. Sist det summet sånn, fikk Nissemor ny kjøkkenvegg.»",
+            "«Noe hemmelig. Så hemmelig at jeg ikke husker det selv akkurat nå. Det summer, i hvert fall. Det er et godt tegn. Som regel. Sist det summet sånn, fikk Hjerterud ny kjøkkenvegg.»",
           valg: [{ tekst: "Lykke til med summingen." }],
         },
       },

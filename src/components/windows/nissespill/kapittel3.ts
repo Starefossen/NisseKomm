@@ -32,13 +32,13 @@ export const KAPITTEL_3: Kapittel = {
     R +
       "«Dokker. Hør. Æ har tenkt. Det skjer ikkje ofte, så hør godt etter. Heilt sia æ hørte sukket i isen har æ tenkt. Og no veit vi kem han e, han der nede i grotta. IQ bygde han. Og så glømte alle han. Alle. I mange år.»",
     R +
-      "«Æ vil ikkje slåss med han. Æ vil gi han nåkka. Et lys. Grotta e det mørkaste stedet i heile Snøfall, mørkare enn under senga mi. Knerten sitt hos Julius no. Julius e ute, men Nissemor e der. Ho veit ting.»",
+      "«Æ vil ikkje slåss med han. Æ vil gi han nåkka. Et lys. Grotta e det mørkaste stedet i heile Snøfall, mørkare enn under senga mi. Knerten sitt hos Julius no. Julius e ute, men Hjerterud e der med bolla. Ho veit ting.»",
     R +
       "«Problemet: det trekk nåkka forferdelig der nede. Alt som brenn, blås ut. Vi treng et lys som trekken ikkje tar, og det må nå heile grotta. Og så sei vi hei. Bare det. Æ klare å sei bare det. Trur æ.»",
   ],
   utro:
     R +
-    "«Han svarte ikkje. Men han slo ikkje av lyset heller. Det står der no, nede i mørket, og krystallan sende det videre. Nissemor sei det e det snillaste æ har gjort. Æ sa det va dokker. Ho sa ‘ja, det òg’. Neste gang ska nån reise. Æ sei ikkje meir. Over og ut!»",
+    "«Han svarte ikkje. Men han slo ikkje av lyset heller. Det står der no, nede i mørket, og krystallan sende det videre. Hjerterud sei det e det snillaste æ har gjort. Æ sa det va dokker. Ho sa ‘ja, det òg’. Neste gang ska nån reise. Æ sei ikkje meir. Over og ut!»",
   gjenstander: {
     stearinlys: {
       id: "stearinlys",
@@ -48,9 +48,9 @@ export const KAPITTEL_3: Kapittel = {
     },
     tesil: {
       id: "tesil",
-      navn: "Nissemors tesil",
+      navn: "Hjerteruds tesil",
       ikon: "tea",
-      se: "En rund tesil av messing med fine, små hull. Lokk som smekker igjen. Lukter kamille. Nissemor vil ha den tilbake. Hun sa det to ganger. Hun mente det tre.",
+      se: "En rund tesil av messing med fine, små hull. Lokk som smekker igjen. Lukter kamille. Hjerterud vil ha den tilbake. Hun sa det to ganger. Hun mente det tre.",
     },
     tesil_lanterne: {
       id: "tesil_lanterne",
@@ -82,7 +82,7 @@ export const KAPITTEL_3: Kapittel = {
       tekst:
         "Den siste krystallen vrir seg på plass, og lyset hopper. Hylle etter hylle, helt opp til taket. Hele grotta lyser gull og blått. " +
         R +
-        "«... Æ har ikkje ord. Æ har bestandig ord, sei Nissemor. Men ikkje no.»",
+        "«... Æ har ikkje ord. Æ har bestandig ord, sei Hjerterud. Men ikkje no.»",
       rutenett: ["L.M", "L|L", "S.L"],
     },
     stemme: {
@@ -109,7 +109,7 @@ export const KAPITTEL_3: Kapittel = {
       tekst:
         "Du setter lyset inni tesilen og smekker lokket igjen. Flammen står rolig bak messingnettet og lyser gjennom alle hullene. " +
         R +
-        "«Ei lanterne av ei tesil! Gruvefolk gjord sånt. Nissemor veit alt. Det e ikkje alltid praktisk, men no va det det.»",
+        "«Ei lanterne av ei tesil! Gruvefolk gjord sånt. Hjerterud veit alt. Det e ikkje alltid praktisk, men no va det det.»",
     },
   ],
   scener: [
@@ -134,7 +134,7 @@ export const KAPITTEL_3: Kapittel = {
           navn: "Lampa",
           rect: { x: 36, y: 14, w: 7, h: 14 },
           smart: "se",
-          se: "Ei liten vegglampe med skjerm. Den lyser varmt og gult, akkurat nok til å lese julekort ved. Nissemor har lest fire hundre. Hun har to hundre igjen og én kopp te, og teen er kald.",
+          se: "Ei liten vegglampe med skjerm. Den lyser varmt og gult, akkurat nok til å lese julekort ved. Hjerterud har lest fire hundre. Hun har to hundre igjen og én kopp te, og teen er kald.",
         },
         {
           id: "bokhylla",
@@ -175,7 +175,7 @@ export const KAPITTEL_3: Kapittel = {
             },
             {
               tekst:
-                "To hvite stearinlys i vinduskarmen. Nissemor tenner dem hver kveld, så de som er ute, finner veien hjem. De har aldri brent for noen som ikke kom.",
+                "To hvite stearinlys i vinduskarmen. Hjerterud tente dem da hun kom, slik hun gjør i kaféen hver kveld, så de som er ute, finner veien hjem. De har aldri brent for noen som ikke kom.",
             },
           ],
           ta: {
@@ -191,17 +191,17 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 84, y: 36, w: 16, h: 46 },
           smart: "snakk",
           snakk: "julius",
-          se: "En messingtrakt med slange ned i et skap fullt av plugger og ledninger. Det er Julius' telefon. Ett rør går til tjernet, ett til verkstedet, og ett har en lapp: «LANDÅS (ikke etter leggetid)». Lappen er skrevet av Nissemor. Regelen er for Julius.",
+          se: "En messingtrakt med slange ned i et skap fullt av plugger og ledninger. Det er Julius' telefon. Ett rør går til tjernet, ett til verkstedet, og ett har en lapp: «LANDÅS (ikke etter leggetid)». Lappen er skrevet av Hjerterud. Regelen er for Julius.",
           bruk: "Du blåser i trakten. Langt borte sier noen «hva i all verden». Du slutter. Noen andre langt borte sier «var det deg?». Du slutter mer.",
         },
         {
-          id: "nissemor",
-          navn: "Nissemor",
+          id: "hjerterud",
+          navn: "Hjerterud",
           rect: { x: 48, y: 57, w: 17, h: 16 },
           smart: "snakk",
-          snakk: "nissemor",
-          se: "Nissemor sitter i Julius' stol med en bunke julekort og en penn. Hun skriver fort og pent. Ved siden av står en kopp te som har sluttet å ryke for lenge siden. Hun har ikke merket det. Hun merker alt annet.",
-          bruk: "Du prikker Nissemor på armen. Hun ser opp over brillekanten og smiler. «Ja, Knerten?» Hun visste at du kom. Hun vet alltid.",
+          snakk: "hjerterud",
+          se: "Hjerterud har satt seg i Julius' stol med en bunke julekort og en penn. Hun skriver fort og pent. Ved siden av står en kopp te som har sluttet å ryke for lenge siden. Hun har ikke merket det. Hun merker alt annet.",
+          bruk: "Du prikker Hjerterud på armen. Hun ser opp over brillekanten og smiler. «Ja, Knerten?» Hun visste at du kom. Hun vet alltid.",
         },
         {
           id: "brevbunken",
@@ -233,18 +233,18 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "tok_tesil",
               tekst:
-                "Nissemors tekopp. Kald te, og en krok på kanten uten tesil. Koppen ser naken ut. Den klarer seg.",
+                "Hjerteruds tekopp. Kald te, og en krok på kanten uten tesil. Koppen ser naken ut. Den klarer seg.",
             },
             {
               tekst:
-                "Nissemors tekopp, av tre, med en liten tesil av messing hengende på kanten. Teen er kald. Tesilen er fin. Den er full av små hull, som alle tesiler, og det er poenget med den.",
+                "Hjerteruds tekopp, av tre, med en liten tesil av messing hengende på kanten. Teen er kald. Tesilen er fin. Den er full av små hull, som alle tesiler, og det er poenget med den.",
             },
           ],
           ta: {
             item: "tesil",
-            hvis: "nissemor_ja",
+            hvis: "hjerterud_ja",
             tekst:
-              "Du løfter tesilen av koppen. Nissemor nikker uten å se opp. «Tilbake etterpå.» " +
+              "Du løfter tesilen av koppen. Hjerterud nikker uten å se opp. «Tilbake etterpå.» " +
               R +
               "«Ho sei det te mæ òg. Om alt. Om ting æ ikkje har tatt ennå.»",
           },
@@ -256,7 +256,7 @@ export const KAPITTEL_3: Kapittel = {
             },
             {
               tekst:
-                "Du tar ikke ting fra Nissemor uten å spørre. Ikke engang Knerten. Særlig ikke Knerten. Nissemor ser opp akkurat idet du tenker tanken.",
+                "Du tar ikke ting fra Hjerterud uten å spørre. Ikke engang Knerten. Særlig ikke Knerten. Hjerterud ser opp akkurat idet du tenker tanken.",
             },
           ],
         },
@@ -279,7 +279,7 @@ export const KAPITTEL_3: Kapittel = {
           ta: {
             item: "lupe",
             tekst:
-              "Du tar lupa. Nissemor ser opp. «Den også? Greit. Tilbake etterpå.» " +
+              "Du tar lupa. Hjerterud ser opp. «Den også? Greit. Tilbake etterpå.» " +
               R +
               "«Ei lupe gjør ting større. Lys e en ting. Æ e ikkje sikker på matematikken, men æ like den.»",
           },
@@ -290,7 +290,7 @@ export const KAPITTEL_3: Kapittel = {
           navn: "Brillene",
           rect: { x: 57, y: 85, w: 7, h: 8 },
           smart: "se",
-          se: "Julius' lesebriller, pent brettet sammen ved boka. Han glemmer dem hver gang han går ut. Hver gang. Nissemor har sluttet å si fra. Hun legger dem her i stedet.",
+          se: "Julius' lesebriller, pent brettet sammen ved boka. Han glemmer dem hver gang han går ut. Hver gang. Hjerterud har sluttet å si fra. Hun legger dem her i stedet.",
         },
         {
           id: "dagboka",
@@ -580,7 +580,7 @@ export const KAPITTEL_3: Kapittel = {
             {
               item: "stearinlys",
               tekst:
-                "Du setter lyset på sokkelen. Trekken tar det med ett pust. Knerten flyr opp og tenner det igjen på lyset i vinduskarmen hos Nissemor, og later som ingenting. " +
+                "Du setter lyset på sokkelen. Trekken tar det med ett pust. Knerten flyr opp og tenner det igjen på lyset i vinduskarmen hos Julius, og later som ingenting. " +
                 R +
                 "«Trekken tar alt som står bart. Lyset treng nåkka rundt sæ. Nåkka med hull i, så det får puste.»",
             },
@@ -612,9 +612,9 @@ export const KAPITTEL_3: Kapittel = {
     },
   ],
   dialoger: {
-    nissemor: {
-      taler: "Nissemor",
-      portrett: "nissemor",
+    hjerterud: {
+      taler: "Hjerterud",
+      portrett: "hjerterud",
       start: "start",
       noder: {
         start: {
@@ -625,49 +625,49 @@ export const KAPITTEL_3: Kapittel = {
                 "«Så du gjorde det, Knerten. Og Rampenissen tenkte det ut selv. Jeg skal skrive det i et julekort. Til ham. Han kommer til å ramme det inn. Han har ikke ramme. Han kommer til å lage en.»",
             },
             {
-              hvis: "nissemor_snakket",
+              hvis: "hjerterud_snakket",
               tekst:
                 "«Fortsatt her? Lysene står i vinduskarmen. Tesilen er på koppen. Og jeg vil ha den tilbake, hører du. Og lupa, hvis den også blir med.»",
             },
             {
               tekst:
-                "«Å, Knerten! Kom inn, kom inn. Julius er ute ved tjernet med IQ, de ser på antenna igjen. Jeg sitter her og skriver julekort. Fire hundre igjen. Hva kan jeg hjelpe med? Si det fort, pennen tørker.»",
+                "«Å, Knerten! Kom inn, kom inn. Julius er ute ved tjernet med IQ, de ser på antenna igjen. Jeg sitter her og skriver julekort for ham. Fire hundre igjen. Hva kan jeg hjelpe med? Si det fort, pennen tørker.»",
             },
           ],
           valg: [
             {
               tekst: "Rampenissen vil gi et lys til han i grotten.",
               neste: "lys",
-              flagg: "nissemor_snakket",
+              flagg: "hjerterud_snakket",
             },
             {
               tekst: "Hva kan skjerme et lys mot trekk?",
-              hvis: "nissemor_snakket",
+              hvis: "hjerterud_snakket",
               neste: "skjerm",
             },
             {
               tekst: "Hvor får vi tak i et lys?",
-              hvis: "nissemor_snakket",
+              hvis: "hjerterud_snakket",
               neste: "lyset",
             },
             {
               tekst: "Er han farlig, han der nede?",
-              hvis: "nissemor_snakket",
+              hvis: "hjerterud_snakket",
               neste: "farlig",
             },
             { tekst: "Hva skriver du?", neste: "kort" },
-            { tekst: "Ha det, Nissemor." },
+            { tekst: "Ha det, Hjerterud." },
           ],
         },
         lys: {
           tekst:
-            "Nissemor legger fra seg pennen. «Et lys. Til ham. Det er det snilleste jeg har hørt fra Rampenissen siden han var liten. Men det trekker fra sprekken i taket der nede. Et vanlig lys blåser ut før du er halvveis. Og ett lys er lite i en så stor grotte. Det må nå hyllene.»",
+            "Hjerterud legger fra seg pennen. «Et lys. Til ham. Det er det snilleste jeg har hørt fra Rampenissen siden han var liten. Men det trekker fra sprekken i taket der nede. Et vanlig lys blåser ut før du er halvveis. Og ett lys er lite i en så stor grotte. Det må nå hyllene.»",
           rampenissen:
             "«Æ va aldri liten. Æ va kompakt. Æ e fortsatt kompakt.»",
           valg: [
             { tekst: "Hva kan skjerme et lys mot trekk?", neste: "skjerm" },
             { tekst: "Hvor får vi tak i et lys?", neste: "lyset" },
-            { tekst: "Takk, Nissemor." },
+            { tekst: "Takk, Hjerterud." },
           ],
         },
         skjerm: {
@@ -675,7 +675,7 @@ export const KAPITTEL_3: Kapittel = {
             "«Gruvefolk hadde lanterner med netting rundt flammen. Luft kommer inn, vind kommer ikke. Jeg har ikke netting.» Hun ser på tekoppen sin. Så på deg. «Jeg har messing med hull i. Sett lyset inni og lukk lokket. Og jeg vil ha den tilbake.»",
           rampenissen:
             "«Ho meine tesila! Ho sa det ikkje, men ho meine det. Ho har svar på alt. Det e litt irriterande. Æ sei det med kjærlighet.»",
-          valg: [{ tekst: "Vi skal passe på den.", flagg: "nissemor_ja" }],
+          valg: [{ tekst: "Vi skal passe på den.", flagg: "hjerterud_ja" }],
         },
         lyset: {
           tekst:
@@ -715,7 +715,7 @@ export const KAPITTEL_3: Kapittel = {
             },
             {
               tekst:
-                "«Hallo? Er det deg, Nissemor? Nei ... det er Knerten! Jeg ser deg i det lille kameraet til IQ. Vi står ute ved tjernet. Antenna peker på Landås nå, takket være noen jeg tror jeg kjenner. Jeg kjenner alle, så det er ikke et stort hint.»",
+                "«Hallo? Er det deg, Hjerterud? Nei ... det er Knerten! Jeg ser deg i det lille kameraet til IQ. Vi står ute ved tjernet. Antenna peker på Landås nå, takket være noen jeg tror jeg kjenner. Jeg kjenner alle, så det er ikke et stort hint.»",
             },
           ],
           valg: [
@@ -737,7 +737,7 @@ export const KAPITTEL_3: Kapittel = {
           tekst:
             "Det blir stille i trakten. Så: «Da er han klokere enn jeg var i høst. Ja. Gjør det. Men ett lys blir lite i en så stor grotte. Det må nå lenger enn til sokkelen, ellers ser han bare en prikk, og en prikk har han hatt lenge.»",
           rampenissen:
-            "«Klokere enn Julius. Skriv det ned, nån. Kem som helst. Nissemor, du har penn!»",
+            "«Klokere enn Julius. Skriv det ned, nån. Kem som helst. Hjerterud, du har penn!»",
           valg: [
             {
               tekst: "Hvordan får vi lyset til å nå lenger?",
@@ -842,14 +842,14 @@ export const KAPITTEL_3: Kapittel = {
     {
       id: "tesil",
       ferdig: "tok_tesil",
-      maal: "Finn noe som skjermer et lys mot trekk. Spør Nissemor.",
+      maal: "Finn noe som skjermer et lys mot trekk. Spør Hjerterud.",
       tips: [
         R +
-          "«Trekken der nede blås ut alt. Nissemor veit sikkert ka gruvefolk gjord med lys i trekk. Spør ho. Ho sitt rett der og skriv.»",
+          "«Trekken der nede blås ut alt. Hjerterud veit sikkert ka gruvefolk gjord med lys i trekk. Spør ho. Ho sitt rett der og skriv.»",
         R +
-          "«Nissemor snakka om netting rundt flammen, og så såg ho på tekoppen sin. Ka heng det på en tekopp som e av messing og full av hull?»",
+          "«Hjerterud snakka om netting rundt flammen, og så såg ho på tekoppen sin. Ka heng det på en tekopp som e av messing og full av hull?»",
         R +
-          "«SNAKK med Nissemor, spør ka som kan skjerme et lys mot trekk, si at vi passe på den, og ta tesilen fra tekoppen hennes.»",
+          "«SNAKK med Hjerterud, spør ka som kan skjerme et lys mot trekk, si at vi passe på den, og ta tesilen fra tekoppen hennes.»",
       ],
     },
     {
@@ -859,7 +859,7 @@ export const KAPITTEL_3: Kapittel = {
       kjent: { hvis: "tok_tesil" },
       tips: [
         R +
-          "«Lys i vinduskarmen hos Nissemor, tesil i lomma. Sett lyset INNI tesilen, så har vi ei lanterne. Og nede i grotta: nån av krystallan gjør nåkka med lys. Prøv dokker fram, men ikkje på de blå.»",
+          "«Lys i vinduskarmen på kontoret, tesil i lomma. Sett lyset INNI tesilen, så har vi ei lanterne. Og nede i grotta: nån av krystallan gjør nåkka med lys. Prøv dokker fram, men ikkje på de blå.»",
         R +
           "«Nederst på den klare hylla sitt et skår fast i rim. Rim e is, og vi har ei varm lanterne. Hold ho inntil hylla, eller la ho lyse på hylla fra sokkelen.»",
         R +
