@@ -2,6 +2,8 @@
 # loop.sh <inn.jpg> <prompt.txt> <navn> [sek] [ref.jpg]: loop from a still (first = last frame), seam hidden;
 # an optional ref (a character's look) is sent after the two frames, and the prompt says so
 set -euo pipefail
+# process substitutions below swallow errors, so a missing input must be caught here
+for f in "$1" "$2" ${5:+"$5"}; do [ -f "$f" ] || { echo "loop.sh: mangler inndata: '$f'" >&2; exit 1; }; done
 source "$(dirname "$0")/_key.sh"
 OUT="$ROOT/assets/out"; mkdir -p "$OUT"; N=$3; S=${4:-10}
 R=${5:-}
