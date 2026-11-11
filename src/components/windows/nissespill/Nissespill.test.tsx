@@ -209,6 +209,7 @@ describe("Nissespill: motor", () => {
       inventory: [],
       flags: ["k2_ferdig"],
       hints: { rudolf: 1 },
+      fjaer: [],
     });
   });
 

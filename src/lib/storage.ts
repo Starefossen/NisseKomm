@@ -39,6 +39,8 @@ export interface EventyrSave {
   inventory: string[];
   flags: string[];
   hints: Record<string, number>;
+  /** Owl feathers found, `<chapter>:<sceneId>`; kept across replays. Missing in old saves. */
+  fjaer?: string[];
 }
 
 // Storage keys

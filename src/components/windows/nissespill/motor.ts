@@ -103,6 +103,8 @@ export interface Scene {
   bilde: string;
   hotspots: Hotspot[];
   utganger: { til: string; navn: string }[];
+  /** Optional hidden owl feather (small rect, percent like hotspots). */
+  fjaer?: Rect;
 }
 
 export interface Gaate {
@@ -129,6 +131,8 @@ export interface Kapittel {
   kombinasjoner: Kombinasjon[];
   dialoger: Record<string, Dialog>;
   gaater: Gaate[];
+  /** Line shown when the last feather of the chapter is found. */
+  fjaerBelonning?: string;
 }
 
 export interface Utfall {
@@ -200,6 +204,43 @@ export function nyttKapittel(
     hints: Object.fromEntries(
       Object.entries(forrige?.hints ?? {}).filter(([id]) => !egne.has(id)),
     ),
+    fjaer: forrige?.fjaer ?? [],
+  };
+}
+
+const fjaerId = (kap: Kapittel, sceneId: string) => `${kap.n}:${sceneId}`;
+
+export const harFjaer = (kap: Kapittel, save: EventyrSave, sceneId: string) =>
+  (save.fjaer ?? []).includes(fjaerId(kap, sceneId));
+
+/** [found, total] feathers in the chapter. */
+export function fjaerTelling(
+  kap: Kapittel,
+  save: EventyrSave,
+): [number, number] {
+  const med = kap.scener.filter((s) => s.fjaer);
+  return [med.filter((s) => harFjaer(kap, save, s.id)).length, med.length];
+}
+
+/** Tap on the scene's feather: SE (or a bare tap) picks it up. */
+export function taFjaer(
+  kap: Kapittel,
+  save: EventyrSave,
+  sceneId: string,
+  verb: Verb | null,
+): Utfall {
+  if (verb && verb !== "se")
+    return { save, tekst: "Noe lite og mykt. Se nærmere på det.", lyd: "click" };
+  if (harFjaer(kap, save, sceneId)) return { save };
+  const s = { ...save, fjaer: [...(save.fjaer ?? []), fjaerId(kap, sceneId)] };
+  const [x, n] = fjaerTelling(kap, s);
+  return {
+    save: s,
+    tekst:
+      x === n && kap.fjaerBelonning
+        ? `En uglefjær! Fjær ${x}/${n}. ${kap.fjaerBelonning}`
+        : `En uglefjær! Fjær ${x}/${n}.`,
+    lyd: "success",
   };
 }
 

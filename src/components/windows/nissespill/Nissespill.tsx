@@ -157,6 +157,9 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   const [ring, setRing] = useState<{ n: number; x: number; y: number } | null>(
     null,
   );
+  const [glimt, setGlimt] = useState<{ n: number; x: number; y: number } | null>(
+    null,
+  );
   const [bildeFeil, setBildeFeil] = useState<string[]>([]);
 
   // Storage is browser-only: load after mount, persist every change.
@@ -386,6 +389,46 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                     </span>
                   </button>
                 ))}
+              {!iIntro &&
+                !iUtro &&
+                !dialog &&
+                scene.fjaer &&
+                !M.harFjaer(kap, save, scene.id) && (
+                  <button
+                    type="button"
+                    aria-label="Noe lite"
+                    onClick={() => {
+                      const f = scene.fjaer!;
+                      const u = M.taFjaer(kap, save, scene.id, verb);
+                      if (u.lyd === "success")
+                        setGlimt({
+                          n: (glimt?.n ?? 0) + 1,
+                          x: f.x + f.w / 2,
+                          y: f.y + f.h / 2,
+                        });
+                      bruk(u);
+                    }}
+                    className="absolute min-w-11 min-h-11 -translate-x-1/2 -translate-y-1/2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold)"
+                    style={{
+                      left: `${scene.fjaer.x + scene.fjaer.w / 2}%`,
+                      top: `${scene.fjaer.y + scene.fjaer.h / 2}%`,
+                      width: `${scene.fjaer.w}%`,
+                      height: `${scene.fjaer.h}%`,
+                    }}
+                  />
+                )}
+              {glimt && (
+                <span
+                  key={`g${glimt.n}`}
+                  aria-hidden
+                  className="absolute w-8 h-8 -ml-4 -mt-4 rotate-45 border-2 border-(--gold) pointer-events-none motion-reduce:hidden"
+                  style={{
+                    left: `${glimt.x}%`,
+                    top: `${glimt.y}%`,
+                    animation: "ug-ring 0.8s ease-out forwards",
+                  }}
+                />
+              )}
               {ring && (
                 <span
                   key={ring.n}
@@ -591,6 +634,11 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
             </button>
             {valg && (
               <div className="absolute bottom-full right-0 mb-1 z-10 w-64 flex flex-col bg-black border-2 border-(--brass) py-1">
+                {M.fjaerTelling(kap, save)[1] > 0 && (
+                  <p className="px-3 min-h-11 flex items-center text-lg text-(--gold)">
+                    Fjær {M.fjaerTelling(kap, save).join("/")}
+                  </p>
+                )}
                 <button
                   type="button"
                   className={MENYPUNKT}
