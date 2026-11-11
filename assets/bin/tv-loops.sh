@@ -42,10 +42,11 @@ loop() { # name prompt image state anchor refs
   local name=$1 prompt=$2 img=$3 state=$4 anchor=$5 refs=$6 b p u made=
   keep "$T/$name.mp4" && return 0
   [ -n "$DRY" ] && echo "# $name"
-  while IFS='|' read -r b p u <&4; do
+  while IFS='|' read -r b p u r <&4; do
     [ -f "$u" ] && continue
     [ "$b" = "$made" ] || need "$b" || return 1  # the previous still is made by this run
-    need "$p" && run "$A/bin/still.sh" "$b" "$p" "$u" || return 1
+    # shellcheck disable=SC2086
+    need "$p" $r && run "$A/bin/still.sh" "$b" "$p" "$u" $r || return 1
     made=$u
   done 4< <($M stiller "tv/$name")
   # Events are cut only into their own state loop, anchored to its first frame (10 s with first+last frame)

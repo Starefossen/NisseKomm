@@ -329,26 +329,53 @@
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-brevfugler.txt",
     "tilstand": "landsby-rolig"
   },
+  "still/landsby-julius": {
+    "generator": "mellomstill",
+    "sted": "snofall-landsby",
+    "ut": "assets/out/stills/snofall-landsby/still-julius.jpg",
+    "bilde": "assets/out/forste-landsby-rolig.jpg",
+    "mal": "assets/prompts/tv/snofall-landsby/julius.still.txt",
+    "refs": ["characters/julius#standard"]
+  },
   "tv/landsby-julius": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-julius.mp4",
+    "bilde": "still/landsby-julius",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-julius.txt",
-    "tilstand": "landsby-rolig"
+    "anker": "assets/out/forste-landsby-rolig.jpg"
+  },
+  "still/landsby-iq": {
+    "generator": "mellomstill",
+    "sted": "snofall-landsby",
+    "ut": "assets/out/stills/snofall-landsby/still-iq.jpg",
+    "bilde": "assets/out/forste-landsby-rolig.jpg",
+    "mal": "assets/prompts/tv/snofall-landsby/iq.still.txt",
+    "refs": ["characters/iq#standard"]
   },
   "tv/landsby-iq": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-iq.mp4",
+    "bilde": "still/landsby-iq",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-iq.txt",
-    "tilstand": "landsby-rolig"
+    "anker": "assets/out/forste-landsby-rolig.jpg"
+  },
+  "still/landsby-winter": {
+    "generator": "mellomstill",
+    "sted": "snofall-landsby",
+    "ut": "assets/out/stills/snofall-landsby/still-winter.jpg",
+    "bilde": "assets/out/forste-landsby-rolig.jpg",
+    "mal": "assets/prompts/tv/snofall-landsby/winter.still.txt",
+    "refs": ["characters/winter#outside"]
   },
   "tv/landsby-winter": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-winter.mp4",
+    "bilde": "still/landsby-winter",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-winter.txt",
-    "tilstand": "landsby-rolig"
+    "anker": "assets/out/forste-landsby-rolig.jpg"
   },
   "tv/landsby-reinsdyr": {
     "generator": "loop",

@@ -13,7 +13,7 @@ CLI (for the shell generators):
   medie.py brukt-av <entitet>             medier.json jobs that use winter, torget, objects/postkasse …
   medie.py flytt                        move gitignored refs and stills to their new paths (assets/flyttet.json)
   medie.py tv                           the TV loops of medier.json, one line each (tv-loops.sh)
-  medie.py stiller <id>                   intermediate stills of a job: image|prompt|out, first one first
+  medie.py stiller <id>                   intermediate stills of a job: image|prompt|out|refs, first one first
   medie.py inndata                        every job's template, image, refs exist; exit 1 if one is missing
   medie.py entiteter [--sjekk]            src/data/entiteter.json + CONTENT_GUIDE block from characters/*/entitet.md
   medie.py --selvtest
@@ -274,8 +274,8 @@ def stills(job_id: str, root: Path = ROOT, table=None):
     table = table or jobs(root)
     out, b = [], table[job_id].get("bilde")
     while b in table:
-        prompt, img, _ = render(b, root, table)
-        out.insert(0, (img, prompt, table[b]["ut"]))
+        prompt, img, refs = render(b, root, table)  # refs (a character) are fine for the image model
+        out.insert(0, (img, prompt, table[b]["ut"], *refs))
         b = table[b].get("bilde")
     return out
 
@@ -472,7 +472,7 @@ def main(argv):
     elif cmd == "stiller":
         # print(*[], sep="\n") would emit one empty line, which tv-loops.sh read as a still with no inputs
         for s in stills(args[0]):
-            print("|".join(str(ROOT / p) for p in s))
+            print("|".join([*(str(ROOT / p) for p in s[:3]), " ".join(str(ROOT / p) for p in s[3:])]))
     elif cmd == "inndata":
         missing, skipped = missing_inputs()
         for m in skipped:
