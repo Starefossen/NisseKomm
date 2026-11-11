@@ -95,6 +95,20 @@ export const KAPITTEL_1: Kapittel = {
       ],
       svar: ["1", "6", "4", "0"],
     },
+    taarnuret: {
+      type: "laas",
+      tittel: "Tårnuret",
+      flagg: "klokka_stilt",
+      tekst:
+        "16.40. Urverket tar et dypt pust, tannhjulene griper, og de tre klokkene slår så hele rommet synger. Nede på torget ser Winter opp fra skriveplata, nikker én gang og noterer: «Klokka stemmer.» " +
+        R +
+        "«Det e ikkje 16.40. Det e det aldri. Men no e det tømmetid når Winter sei det e tømmetid, og det e det viktigaste for han.»",
+      hjul: [
+        Array.from({ length: 24 }, (_, i) => String(i)),
+        Array.from({ length: 12 }, (_, i) => String(i * 5).padStart(2, "0")),
+      ],
+      svar: ["16", "40"],
+    },
     frostluke: {
       type: "skyv",
       tittel: "Postkortet på luka",
@@ -127,6 +141,7 @@ export const KAPITTEL_1: Kapittel = {
         { til: "verksted", navn: "Opp trappa til verkstedet" },
         { til: "kafeen", navn: "Inn på kaféen" },
         { til: "pakkesentralen", navn: "Inn i pakkesentralen" },
+        { til: "klokketaarnet", navn: "Opp i klokketårnet" },
       ],
       // In the snow in front of the clock tower, between the stalls and the mailbox
       fjaer: { x: 49, y: 86, w: 4, h: 6 },
@@ -157,6 +172,7 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Urtårnet",
           rect: { x: 52, y: 0, w: 14, h: 62 },
           smart: "se",
+          gaaTil: "klokketaarnet",
           prat: "Du roper «hva er klokka?» opp til tårnet. Klokka slår ett slag, midt mellom to timer, som for å si at det er dens sak.",
           se: "Klokkeskiva har fire visere: timer, minutter, sekunder og «tid til neste julekake». Den fjerde er bøyd fordi noen har prøvd å dytte den framover med en kjepp. Floke kan fly opp dit. Hun er den eneste på torget som kan.",
         },
@@ -796,6 +812,129 @@ export const KAPITTEL_1: Kapittel = {
         },
       ],
     },
+    {
+      id: "klokketaarnet",
+      navn: "Klokketårnet",
+      bilde: "spill/klokketaarnet.jpg",
+      utganger: [{ til: "torget", navn: "Ned til torget" }],
+      // On the floor under the big clock face
+      fjaer: { x: 72, y: 89, w: 4, h: 6 },
+      hotspots: [
+        {
+          id: "urverket",
+          navn: "Urverket",
+          rect: { x: 0, y: 0, w: 16, h: 44 },
+          smart: "se",
+          se: "Tannhjul i alle størrelser, fra tallerken til knapp, som griper i hverandre og tikker. Ett av de minste er av tre. Det er IQs. Det var en nødløsning i 2019. Det går fortsatt. Ingen tør å bytte det.",
+          bruk:
+            "Du stikker nebbet mot det største hjulet. Det stopper ikke. Det tar deg med en kvart runde før du slipper. " +
+            R +
+            "«Æ satt fast der i to tima en gang. Klokka gikk baklengs. Winter måtte stille heile landsbyen.»",
+        },
+        {
+          id: "skiva",
+          navn: "Den lille skiva",
+          rect: { x: 7, y: 46, w: 8, h: 18 },
+          smart: "bruk",
+          puslespill: "taarnuret",
+          se: [
+            {
+              hvis: "klokka_stilt",
+              tekst:
+                "Den lille messingskiva viser 16.40 og tikker fornøyd. Over den en plate: «Tårnuret stilles etter tømmingen av postkassen. Ikke omvendt. – W.»",
+            },
+            {
+              tekst:
+                "En liten messingskive med to visere, koblet til hele urverket. Den har stoppet. Over den sitter en gravert plate: «Tårnuret stilles etter tømmingen av postkassen. Ikke omvendt. – W.» Visere kan vris på. Tiden står et annet sted.",
+            },
+          ],
+          bruk: "Klokka er stilt. Du lar den være. Winter har allerede notert at den stemmer, og det får han ikke oppleve ofte.",
+        },
+        {
+          id: "loddet",
+          navn: "Loddet",
+          rect: { x: 15, y: 50, w: 6, h: 12 },
+          smart: "se",
+          se: "Et tungt lodd av jern i en kjetting. Det synker en tomme i timen og trekkes opp hver søndag. Av Winter. Med hansker. Han har en egen hanske for lodd.",
+          bruk: "Du henger deg på loddet. Det synker en tomme. Klokka går ett minutt fortere. Winter kommer til å merke det neste søndag. Du skal være langt unna neste søndag.",
+        },
+        {
+          id: "lanterna",
+          navn: "Lanterna",
+          rect: { x: 25, y: 28, w: 7, h: 18 },
+          smart: "se",
+          se: "En lanterne på en krok. Den som tenner den, er den som er først oppe om morgenen. Det er alltid Winter. Han har en liste over hvem som har vært først oppe. Den har ett navn.",
+          bruk: "Du blåser på flammen. Den bøyer seg og retter seg opp igjen. Den har vært med på verre. Den har vært med på Rampenissen.",
+        },
+        {
+          id: "klokkene",
+          navn: "Klokkene",
+          rect: { x: 29, y: 0, w: 48, h: 28 },
+          smart: "se",
+          se: "Tre messingklokker i bjelkene: en stor, en mellomstor og en liten. Den lille er sprukket og klinger litt skjevt. Det er den alle i Snøfall liker best. Den høres ut som noen som ler.",
+          bruk: "Du dytter til den lille klokka. KLING. Nede på torget ser Winter opp. Han ser rett på tårnet. Han ser rett på deg. Du står helt stille. Han noterer.",
+          prat: "Du uler mot den store klokka. Den svarer med en dyp, lang tone som varer lenger enn den burde. Floke blåser seg opp. Hun har fått svar.",
+        },
+        {
+          id: "utsikten",
+          navn: "Utsikten",
+          rect: { x: 36, y: 30, w: 28, h: 50 },
+          smart: "se",
+          se: [
+            {
+              hvis: "k1_ferdig",
+              tekst:
+                "Hele Snøfall under deg: snødekte tak, lanterner, røyk fra pipene og bodene nede på torget. Postkassen står med luka på gløtt, tom. Og på loftet hos IQ brenner det lys i vinduet igjen. Noen sover der. Snart.",
+            },
+            {
+              tekst:
+                "Hele Snøfall under deg: snødekte tak, lanterner, røyk fra pipene og bodene på torget som to små lysende esker. Bak husene ligger tjernet som en mørk flekk. Lenger borte, muren og porten. Og langt der ute, helt i kanten, noe du ikke kan se, men vet er der: linja hjem.",
+            },
+          ],
+          bruk:
+            "Du lener deg ut i buen. Vinden tar i fjærene. Du kunne fløyet herfra. Du kunne fløyet HVOR SOM HELST herfra. " +
+            R +
+            "«Ikkje fly nån plass! Æ har bare det ene kameraet, og IQ har bare den ene ugla. Kom ned igjen når dokker e ferdig med å se.»",
+          prat: "Du roper «HALLO» ut over landsbyen. Ekkoet svarer «hallo». Noen nede på torget roper «hallo» tilbake. Winter noterer at noen ropte.",
+        },
+        {
+          id: "stigen",
+          navn: "Stigen",
+          rect: { x: 17, y: 60, w: 15, h: 40 },
+          smart: "bruk",
+          gaaTil: "torget",
+          se: "En bratt stige ned gjennom luka i gulvet, med trinn slitt av tre hundre år med Winter-forgjengere. Floke trenger ikke stigen. Hun bruker den likevel. Det er høflig.",
+        },
+        {
+          id: "luka",
+          navn: "Luka i gulvet",
+          rect: { x: 31, y: 84, w: 13, h: 13 },
+          smart: "se",
+          se: "En firkantet luke i gulvet med stigen ned. Fra åpningen kommer det kald luft og lyden av Winter som kremter ved postkassen. Lyden bærer godt oppover. Det vet han.",
+          bruk: "Du titter ned gjennom luka. Mørkt, så lysere, så torget. Og øverst på postkassen, Winters flosshatt sett ovenfra. Nei. Han har ikke hatt på seg i dag. Det er skriveplata.",
+        },
+        {
+          id: "urskiva",
+          navn: "Den store urskiva",
+          rect: { x: 83, y: 8, w: 17, h: 72 },
+          smart: "se",
+          se: [
+            {
+              hvis: "klokka_stilt",
+              tekst:
+                "Baksiden av den store urskiva, lysende gul av lampene bak. Viserne står på 16.40. Alle fire. Også den bøyde julekake-viseren, som nå peker på 16.40 av ren lojalitet.",
+            },
+            {
+              tekst:
+                "Baksiden av den store urskiva, lysende gul av lampene bak. Viserne ses som mørke streker gjennom glasset. Den fjerde, den bøyde, peker på «tid til neste julekake». " +
+                R +
+                "«Æ nådde den. Én gang. Det e derfor den e bøyd. Og det e derfor julekakan kom tre tima for tidlig i 2023. Ingen klagde.»",
+            },
+          ],
+          bruk: "Du legger vingen mot glasset. Det er lunkent av lampene. Utenfor går snøen forbi viserne som små lys. Du blir stående litt. Det er lov.",
+        },
+      ],
+    },
   ],
   dialoger: {
     winter: {
@@ -1208,6 +1347,19 @@ export const KAPITTEL_1: Kapittel = {
           "«Trykk på en bit ved sida av det tomme feltet, så glir han dit. Få hjørnan på plass først, så resten.»",
         R +
           "«Øverste rad først: trapp, hus, urtårn. Så midten. Dem to siste bitan nederst går rundt det tomme feltet te dem sitt. Ta dæ tid, æ har heile dagen. Æ har ikkje nåkka anna.»",
+      ],
+    },
+    {
+      id: "klokka",
+      ferdig: "klokka_stilt",
+      maal: "Still den lille skiva i klokketårnet.",
+      tips: [
+        R +
+          "«Klokka ska stilles etter nåkka. Det står på plata over skiva. Winter har skrevet den sjøl, så det e regla.»",
+        R +
+          "«Etter tømminga av postkassa. Når tømmes ho? Det står på skiltet på postkassa nede på torget.»",
+        R +
+          "«Klokka 16.40. Sett det første hjulet på 16 og det andre på 40. Så slår klokkan, og Winter får en god dag.»",
       ],
     },
   ],

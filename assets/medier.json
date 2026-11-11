@@ -128,6 +128,14 @@
     "mal": "assets/prompts/spill/piksel-pakkesentralen.txt",
     "notat": "Ugleposten K1, ny scene fra torget: Winters pakkesentral. Torgets pikselbilde er bare stil- og palettreferanse (prompts/spill/piksel-ny-scene)"
   },
+  "spill-piksel/klokketarnet": {
+    "generator": "piksel",
+    "sted": "klokketarnet",
+    "ut": "spill/piksel/klokketarnet.png",
+    "bilde": "public/spill/piksel/torget.png",
+    "mal": "assets/prompts/spill/piksel-klokketarnet.txt",
+    "notat": "Ugleposten K1, ny scene fra torget: toppen av klokketårnet. Torgets pikselbilde er bare stil- og palettreferanse (prompts/spill/piksel-ny-scene)"
+  },
   "portrett/winter": {
     "generator": "portrett",
     "ut": "spill/portrett-winter.png",
