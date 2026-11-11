@@ -148,5 +148,5 @@ Tillegg ca. 9 t, til sammen ca. 20 t. Steg 7–9 må vente på Hjerterud-renamen
 
 ## Status
 
-- [ ] Steg 1: `render()` i medie.py
+- [x] Steg 1: `render()` i medie.py fyller `{{navn}}`, `{{kind/id}}`, `{{stil}}` og `vars`; `#variant` → ref-sti via entitet.json. Mal uten plassholdere brukes som den er. Selvtest: `medie.py --selvtest` (kjøres også av `generer.py --selvtest`)
 - [ ] Steg 2: `assets/medier.json`

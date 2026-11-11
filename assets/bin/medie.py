@@ -9,6 +9,8 @@ CLI (for the shell generators):
   medie.py stil rampenissen               the TTS style line
   medie.py skriv <generator> <fil> <kilde> <seksjon|-> <modell> [bilde ...]
   medie.py status <fil>                   prints the status; exit 0 only if ✓ current
+  medie.py render <id>                    prompt, base image and refs of a medier.json job, one per line
+  medie.py --selvtest
 """
 import hashlib
 import json
@@ -148,6 +150,91 @@ def status(out: Path, key: str = "", root: Path = ROOT):
     return (STALE if why else CURRENT), why
 
 
+MEDIER = "assets/medier.json"
+PLACEHOLDER = re.compile(r"\{\{([\w/.-]+)\}\}")
+
+
+def jobs(root: Path = ROOT) -> dict:
+    return json.loads((root / MEDIER).read_text())
+
+
+def entity_text(name: str, root: Path = ROOT) -> str:
+    """{{stil}} = assets/stil.md, {{objects/x}} = assets/objects/x/beskrivelse.txt, {{winter}} = the one
+    characters|locations|objects/winter/beskrivelse.txt."""
+    a = root / "assets"
+    if name == "stil":
+        return (a / "stil.md").read_text().strip()
+    hits = [a / name / "beskrivelse.txt"] if "/" in name else \
+        [a / k / name / "beskrivelse.txt" for k in ("characters", "locations", "objects")]
+    hits = [h for h in hits if h.exists()]
+    if len(hits) != 1:
+        raise ValueError(f"{{{{{name}}}}}: {'ingen' if not hits else 'flere'} beskrivelse.txt")
+    return hits[0].read_text().strip()
+
+
+def fill(text: str, vars=None, root: Path = ROOT) -> str:
+    vars = vars or {}
+    return PLACEHOLDER.sub(lambda m: vars[m[1]] if m[1] in vars else entity_text(m[1], root), text)
+
+
+def image(spec: str, root: Path = ROOT) -> str:
+    """'characters/winter#tophat' -> refs.tophat in its entitet.json, else ref-tophat.jpg; a plain path is kept."""
+    if "#" not in spec:
+        return spec
+    ent, var = spec.split("#")
+    meta = root / "assets" / ent / "entitet.json"
+    refs = json.loads(meta.read_text()).get("refs", {}) if meta.exists() else {}
+    return f"assets/{ent}/{refs.get(var, f'ref-{var}.jpg')}"
+
+
+def render(job_id: str, root: Path = ROOT, table=None):
+    """(prompt, image, refs) of one medier.json job, relative to root. A template with placeholders is
+    written filled to assets/out/prompts/<id>.txt; one without is used as is, so sidecars keep
+    pointing at the tracked file."""
+    j = (table or jobs(root))[job_id]
+    prompt = j.get("mal")
+    if prompt:
+        text = (root / prompt).read_text()
+        filled = fill(text, j.get("vars"), root)
+        if filled != text:
+            prompt = f"assets/out/prompts/{job_id}.txt"
+            (root / prompt).parent.mkdir(parents=True, exist_ok=True)
+            (root / prompt).write_text(filled)
+    return prompt, image(j["bilde"], root) if j.get("bilde") else None, [image(r, root) for r in j.get("refs", [])]
+
+
+def selftest():
+    import tempfile
+    with tempfile.TemporaryDirectory() as d:
+        r = Path(d)
+        for f, t in {"assets/stil.md": "STIL\n", "assets/characters/winter/beskrivelse.txt": "lang mann\n",
+                     "assets/characters/winter/entitet.json": '{"refs": {"tophat": "ref-v1-tophat.jpg"}}',
+                     "assets/objects/postkasse/beskrivelse.txt": "rød kasse",
+                     "assets/locations/torg/beskrivelse.txt": "torg",
+                     "assets/locations/winter/beskrivelse.txt": "dobbel",
+                     "p/a.txt": "{{characters/winter}} ved {{objects/postkasse}}, {{hvem}}. {{stil}}",
+                     "p/b.txt": "uten plassholdere", "p/c.txt": "{{torg}}", "p/d.txt": "{{winter}}"}.items():
+            (r / f).parent.mkdir(parents=True, exist_ok=True)
+            (r / f).write_text(t)
+        t = {"a": {"mal": "p/a.txt", "vars": {"hvem": "Kari"}, "bilde": "locations/torg#rolig",
+                   "refs": ["characters/winter#tophat", "assets/x.jpg"]},
+             "b": {"mal": "p/b.txt"}, "c": {"mal": "p/c.txt"}, "d": {"mal": "p/d.txt"}}
+        prompt, img, refs = render("a", r, t)
+        assert prompt == "assets/out/prompts/a.txt"
+        assert (r / prompt).read_text() == "lang mann ved rød kasse, Kari. STIL", (r / prompt).read_text()
+        assert img == "assets/locations/torg/ref-rolig.jpg"
+        assert refs == ["assets/characters/winter/ref-v1-tophat.jpg", "assets/x.jpg"]
+        assert render("b", r, t) == ("p/b.txt", None, [])  # unchanged text keeps the tracked path
+        assert (r / render("c", r, t)[0]).read_text() == "torg"  # bare name, one hit
+        for bad in (lambda: render("d", r, t), lambda: fill("{{ukjent}}", root=r)):  # ambiguous, unknown
+            try:
+                bad()
+                raise AssertionError("plassholderen ble godtatt")
+            except ValueError:
+                pass
+    print("selvtest ok")
+
+
 def main(argv):
     if not argv:
         print(__doc__)
@@ -160,6 +247,11 @@ def main(argv):
     elif cmd == "skriv":
         gen, out, src, section, model, *images = args
         write(gen, out, rel(src), None if section == "-" else section, model, [rel(i) for i in images])
+    elif cmd == "render":
+        prompt, img, refs = render(args[0])
+        print(*(str(ROOT / p) for p in (prompt, img, *refs) if p), sep="\n")
+    elif cmd == "--selvtest":
+        selftest()
     elif cmd == "status":
         out = Path(args[0]).resolve()
         key = rel(out).removeprefix("public/")

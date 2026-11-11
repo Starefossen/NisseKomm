@@ -332,6 +332,7 @@ def main(argv):
 
 def selftest():
     """Fake inventory and a fake API that hits the daily limit on call N; then resume."""
+    medie.selftest()
     with tempfile.TemporaryDirectory() as t:
         root = Path(t)
         (root / "docs/manus").mkdir(parents=True)
