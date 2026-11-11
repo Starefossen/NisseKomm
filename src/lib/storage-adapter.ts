@@ -128,11 +128,19 @@ export const SERVER_KEYS = ["frost-override", "day-offset"];
 export const VERSION_KEY = "state-version";
 
 const json = (x: unknown) => JSON.stringify(x);
-/** True when `next` drops something `prev` had, so a server merge would undo it. */
+const isObj = (x: unknown): x is Record<string, unknown> =>
+  !!x && typeof x === "object" && !Array.isArray(x);
+/**
+ * True when `next` drops a list item or an object key `prev` had, so a server
+ * merge would undo it. Nested values don't count: a game save drops inventory
+ * items all the time, and every replace makes other screens' next write 409.
+ */
 const shrinks = (prev: unknown, next: unknown) =>
-  Array.isArray(prev) &&
-  (!Array.isArray(next) ||
-    prev.some((x) => !next.some((y) => json(y) === json(x))));
+  Array.isArray(prev)
+    ? !Array.isArray(next) ||
+      prev.some((x) => !next.some((y) => json(y) === json(x)))
+    : isObj(prev) &&
+      (!isObj(next) || Object.keys(prev).some((k) => !(k in next)));
 
 type Pending = { value: unknown; replace: boolean };
 

@@ -1,126 +1,13 @@
 /**
- * Chapter registry and day gating for Klementin-Ekspressen. Chapters 2–4 are
- * outlines (klar: false): scene and puzzle stubs with TODO text, so writing can
- * continue in data without touching the engine. Story timeline per
+ * Chapter registry and day gating for Ugleposten. Story timeline per
  * docs/storyboard-2026.md: no Kulde before day 7, Vintervokteren known from day 15.
  */
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 import { KAPITTEL_1 } from "./kapittel1";
-import type { Kapittel, Scene } from "./motor";
-
-const TODO = "TODO: tekst kommer.";
-
-const stubScene = (
-  id: string,
-  navn: string,
-  bilde: string,
-  til: string,
-): Scene => ({
-  id,
-  navn,
-  bilde,
-  utganger: [{ til, navn: `Gå til ${til}` }],
-  hotspots: [
-    {
-      id: `${id}_todo`,
-      navn: navn,
-      rect: { x: 30, y: 30, w: 40, h: 40 },
-      smart: "se",
-      se: TODO,
-    },
-  ],
-});
-
-const stub = (
-  n: number,
-  tittel: string,
-  dag: number,
-  scener: Scene[],
-  gaater: { id: string; ferdig: string }[],
-): Kapittel => ({
-  n,
-  tittel,
-  dag,
-  klar: false,
-  start: scener[0].id,
-  slutt: `k${n}_ferdig`,
-  intro: [TODO],
-  utro: TODO,
-  gjenstander: {},
-  kombinasjoner: [],
-  dialoger: {},
-  scener,
-  gaater: gaater.map((g) => ({ ...g, tips: [TODO, TODO, TODO] })),
-});
-
-/**
- * Kapittel 2 (dag 10, Frostgraden stiger): antenna at the tarn is frozen and Rudolf
- * chews the cable. Puzzles: syrup on crispbread lures Rudolf; a tin warmed under the
- * radio tubes (oven mitt!) thaws the gear; a magnet needle aims the antenna.
- */
-const KAPITTEL_2 = stub(
-  2,
-  "Antenna i permafrost",
-  10,
-  [
-    stubScene("verksted2", "IQs verksted", "feed/iq-verksted.png", "tjernet"),
-    stubScene(
-      "tjernet",
-      "Antenna ved tjernet",
-      "feed/antenne-tarn.png",
-      "verksted2",
-    ),
-  ],
-  [
-    { id: "rudolf", ferdig: "rudolf_flyttet" },
-    { id: "tannhjul", ferdig: "tannhjul_tint" },
-    { id: "peiling", ferdig: "k2_ferdig" },
-  ],
-);
-
-/**
- * Kapittel 3 (dag 16, after Vintervokteren is known): bring warmth and a light into
- * Krystallgrotten. Puzzles: ember in a brass tea strainer (draught-proof); a crystal
- * shard in the dripstone bends the glow onto the pedestal. No fighting: a greeting.
- */
-const KAPITTEL_3 = stub(
-  3,
-  "Gufset fra dypet",
-  16,
-  [
-    stubScene("kontor3", "Julius' kontor", "feed/julius-kontor.jpg", "grotten"),
-    stubScene("grotten", "Krystallgrotten", "feed/kulde-grotte.png", "kontor3"),
-  ],
-  [
-    { id: "glo", ferdig: "tesil_med_glo" },
-    { id: "krystall", ferdig: "k3_ferdig" },
-  ],
-);
-
-/**
- * Kapittel 4 (dag 22, gate open, sleigh readied): Julius' glasses under a brooding
- * letter bird (tickle with a feather), the bell fished out from behind the wood box
- * with magnet and twine, tallow on the gate winch. Ends with Julius' thumbs-up.
- */
-const KAPITTEL_4 = stub(
-  4,
-  "Klar til avgang",
-  22,
-  [
-    stubScene(
-      "porten",
-      "Porten til Snøfall",
-      "spill/port-aapen.jpg",
-      "kontor4",
-    ),
-    stubScene("kontor4", "Julius' kontor", "feed/julius-kontor.jpg", "porten"),
-  ],
-  [
-    { id: "briller", ferdig: "briller_levert" },
-    { id: "bjelle", ferdig: "bjelle_montert" },
-    { id: "port", ferdig: "k4_ferdig" },
-  ],
-);
+import { KAPITTEL_2 } from "./kapittel2";
+import { KAPITTEL_3 } from "./kapittel3";
+import { KAPITTEL_4 } from "./kapittel4";
+import type { Kapittel } from "./motor";
 
 export const KAPITLER: Kapittel[] = [
   KAPITTEL_1,

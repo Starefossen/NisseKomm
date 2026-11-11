@@ -146,7 +146,7 @@ Kulde-nivå 1. Svak knitring.
    - Varighet: 15 s (25 ord)
    - Handling: Tar opp et ark fra brevbunken med venstre hånd, leser, og ler.
    - Kulde: Svak knitring.
-3. **Replikk:** «I natt kom årets første fugl over byfjellene. Men Winter stoler ikke på linjen lenger. Noen lytter. Så nå skriver hun alt i hemmelig skrift.»
+3. **Replikk:** «I natt kom årets første fugl over byfjellene. Men Winter stoler ikke på linjen lenger. Noen lytter. Så nå skriver han alt i hemmelig skrift.»
    - Varighet: 15 s (25 ord)
    - Handling: Tar opp et ark fra papirbunken med venstre hånd, ser på det, legger det ned.
    - Kulde: Kort hopp i bildet på «noen lytter».
@@ -379,7 +379,7 @@ Kulde-nivå 1, uke 3: mikrofonen faller ut med et klikk i starten. Den blå fugl
    - Varighet: 14 s (24 ord)
    - Handling: Bøyer et brev fra bunken to ganger med venstre hånd, holder det opp som en fugl.
    - Kulde: Svak knitring.
-5. **Replikk:** «Hun uttaler det feil med vilje, så ingen på linjen skal forstå. Vær snille med fuglen. Ha en riktig fin dag!»
+5. **Replikk:** «Han uttaler det feil med vilje, så ingen på linjen skal forstå. Vær snille med fuglen. Ha en riktig fin dag!»
    - Varighet: 13 s (21 ord)
    - Handling: Legger brevet forsiktig ned, nikker mot vinduet.
    - Kulde: Svak knitring, klikk.
@@ -425,7 +425,7 @@ Kulde-nivå 2. Lampen flakker, mikrofonen faller ut et øyeblikk i segment 3, bi
    - Varighet: 15 s (25 ord)
    - Handling: Snurrer venstre hånd baklengs, stopper, ser tankefull ut.
    - Kulde: Mikrofonen faller ut et halvt sekund på «haug», bildet fryser 1–2 s etterpå.
-4. **Replikk:** «Winters ord for å legge alt i riktig hylle. Hun sier det med stor S og har et skilt med det over døra.»
+4. **Replikk:** «Winters ord for å legge alt i riktig hylle. Han sier det med stor S og har et skilt med det over døra.»
    - Varighet: 14 s (23 ord)
    - Handling: Tegner en stor S i luften med venstre hånd, peker over sin egen dør.
    - Kulde: Lampen flakker.
@@ -571,11 +571,11 @@ Kulde-nivå 0. Rent bilde og ren lyd. Rimen på vinduet er borte, bare dugg i hj
    - Varighet: 15 s (26 ord)
    - Handling: Legger venstre hånd på den store boka, blar til en tom side.
    - Kulde: Ingen.
-2. **Replikk:** «I natt kom ingenting gjennom porten ennå. Men Orakelet sier det er varmere der nede. Og Winter maser: hun trenger stedet i tall, ikke i ord.»
+2. **Replikk:** «I natt kom ingenting gjennom porten ennå. Men Orakelet sier det er varmere der nede. Og Winter maser: han trenger stedet i tall, ikke i ord.»
    - Varighet: 15 s (26 ord)
    - Handling: Holder opp et brev med rød skrift og tall på med venstre hånd, rister lett på det.
    - Kulde: Ingen.
-3. **Replikk:** «Hun stoler ikke på ord, Winter. Hør godt etter nå, Kristian. Winter skriver tall i stedet for bokstaver når noe er viktig.»
+3. **Replikk:** «Han stoler ikke på ord, Winter. Hør godt etter nå, Kristian. Winter skriver tall i stedet for bokstaver når noe er viktig.»
    - Varighet: 13 s (22 ord)
    - Handling: Holder brevet med tall på opp mot lampen, så peker han rett fram.
    - Kulde: Ingen.
@@ -583,7 +583,7 @@ Kulde-nivå 0. Rent bilde og ren lyd. Rimen på vinduet er borte, bare dugg i hj
    - Varighet: 13 s (22 ord)
    - Handling: Skriver i luften med venstre hånd, teller videre med fingeren bortover bordet.
    - Kulde: Ingen.
-5. **Replikk:** «Og hun legger alltid tre til hvert tall, for sikkerhets skyld. Trekk dem fra. Skriv navnene deres pent etterpå. Ha en riktig fin dag!»
+5. **Replikk:** «Og han legger alltid tre til hvert tall, for sikkerhets skyld. Trekk dem fra. Skriv navnene deres pent etterpå. Ha en riktig fin dag!»
    - Varighet: 14 s (24 ord)
    - Handling: Smiler, legger fra seg brevet med venstre hånd og vinker kort.
    - Kulde: Ingen.

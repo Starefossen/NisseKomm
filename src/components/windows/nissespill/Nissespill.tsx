@@ -14,10 +14,11 @@ const DEV =
   process.env.NODE_ENV !== "production" ||
   process.env.NEXT_PUBLIC_TEST_MODE === "true";
 
-const VERBS: { id: M.Verb; label: string }[] = [
-  { id: "se", label: "SE" },
-  { id: "bruk", label: "BRUK" },
-  { id: "snakk", label: "SNAKK" },
+// Icons so Hanna (5) can tell the verbs apart without reading.
+const VERBS: { id: M.Verb; label: string; ikon: string }[] = [
+  { id: "se", label: "SE", ikon: "eye" },
+  { id: "bruk", label: "BRUK", ikon: "hand" },
+  { id: "snakk", label: "SNAKK", ikon: "message" },
 ];
 
 const BTN =
@@ -58,6 +59,14 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   );
   const [introSteg, setIntroSteg] = useState(0);
   const [visSoner, setVisSoner] = useState(false);
+  // A tap on empty scene briefly outlines the hotspots (no pixel-hunting on iPad).
+  const [hint, setHint] = useState(false);
+  useEffect(() => {
+    if (!hint) return;
+    const t = setTimeout(() => setHint(false), 1500);
+    return () => clearTimeout(t);
+  }, [hint]);
+  const [bildeFeil, setBildeFeil] = useState<string | null>(null);
 
   // Storage is browser-only: load after mount, persist every change.
   useEffect(() => {
@@ -94,9 +103,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
     return (
       <RetroWindow title="NISSESPILL" onClose={onClose}>
         <div className="p-4 md:p-6 max-w-2xl mx-auto space-y-4">
-          <h2 className="text-3xl text-(--gold) tracking-wider">
-            KLEMENTIN-EKSPRESSEN
-          </h2>
+          <h2 className="text-3xl text-(--gold) tracking-wider">UGLEPOSTEN</h2>
           <p className="text-xl leading-tight">
             Rampenissen har glemt noe i Snøfall. Styr Knerten, ull-ugla hans,
             gjennom IQs kameraer og hjelp ham, ett kapittel om gangen. Trykk på
@@ -176,7 +183,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   };
 
   const status = holder
-    ? `Bruk ${kap.gjenstander[holder].navn} på …`
+    ? `Bruk ${kap.gjenstander[holder]?.navn ?? holder} på …`
     : verb
       ? `${VERBS.find((x) => x.id === verb)?.label} hva?`
       : scene.navn;
@@ -193,63 +200,80 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
       >
         {/* Scene: 16:9 still with percent-positioned hotspots */}
         {/* The still shrinks a little during dialog so both bubbles and the choices fit */}
+        {/* Inner box keeps 16:9 when max-h clamps, so percent hotspots stay on the image */}
         <div
-          className={`relative w-full max-w-4xl mx-auto aspect-video ${dialog ? "max-h-[40%]" : "max-h-[55%]"} bg-black overflow-hidden`}
+          className={`w-full max-w-4xl mx-auto aspect-video ${dialog ? "max-h-[40%]" : "max-h-[55%]"} bg-black overflow-hidden`}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={mediaUrl(scene.bilde)}
-            alt={scene.navn}
-            draggable={false}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          {!iIntro &&
-            !iUtro &&
-            !dialog &&
-            hotspots.map((h) => (
-              <button
-                key={h.id}
-                type="button"
-                aria-label={h.navn}
-                onClick={() => bruk(M.trykk(kap, save, h, verb, holder))}
-                className={`absolute rounded ${visSoner ? "border-2 border-dashed border-(--gold)" : ""} active:bg-white/20`}
-                style={{
-                  left: `${h.rect.x}%`,
-                  top: `${h.rect.y}%`,
-                  width: `${h.rect.w}%`,
-                  height: `${h.rect.h}%`,
-                }}
-              />
-            ))}
-          {(iIntro || iUtro) && (
-            <div className="absolute inset-0 bg-black/75 flex items-end p-4">
-              <div className="flex items-start gap-3 w-full">
-                <Portrett navn="rampenissen" stor />
-                <div className="flex-1 space-y-3">
-                  <p className="text-2xl leading-tight">
-                    {iIntro ? kap.intro[introSteg] : kap.utro}
-                  </p>
-                  <button
-                    type="button"
-                    className={`${BTN} border-(--gold) text-(--gold)`}
-                    onClick={() => {
-                      SoundManager.playSound("click");
-                      if (iUtro) {
-                        setSave(M.medFlagg(save, utroFlagg));
-                        setMeny(true);
-                      } else if (introSteg + 1 < kap.intro.length) {
-                        setIntroSteg(introSteg + 1);
-                      } else {
-                        setSave(M.medFlagg(save, introFlagg));
-                      }
-                    }}
-                  >
-                    {iUtro ? "TIL KAPITLENE" : "VIDERE"}
-                  </button>
+          <div
+            className="relative h-full max-w-full aspect-video mx-auto"
+            onClick={(e) => {
+              if (
+                e.target === e.currentTarget ||
+                e.target instanceof HTMLImageElement
+              )
+                setHint(true);
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={
+                bildeFeil === scene.bilde
+                  ? "/village-day.jpg"
+                  : mediaUrl(scene.bilde)
+              }
+              alt={scene.navn}
+              draggable={false}
+              className="absolute inset-0 w-full h-full object-cover"
+              onError={() => setBildeFeil(scene.bilde)}
+            />
+            {!iIntro &&
+              !iUtro &&
+              !dialog &&
+              hotspots.map((h) => (
+                <button
+                  key={h.id}
+                  type="button"
+                  aria-label={h.navn}
+                  onClick={() => bruk(M.trykk(kap, save, h, verb, holder))}
+                  className={`absolute rounded min-w-11 min-h-11 ${visSoner || hint ? "border-2 border-dashed border-(--gold)" : ""} active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) focus-visible:bg-white/20`}
+                  style={{
+                    left: `${h.rect.x}%`,
+                    top: `${h.rect.y}%`,
+                    width: `${h.rect.w}%`,
+                    height: `${h.rect.h}%`,
+                  }}
+                />
+              ))}
+            {(iIntro || iUtro) && (
+              <div className="absolute inset-0 bg-black/75 flex items-end p-4">
+                <div className="flex items-start gap-3 w-full">
+                  <Portrett navn="rampenissen" stor />
+                  <div className="flex-1 space-y-3">
+                    <p className="text-2xl leading-tight">
+                      {iIntro ? kap.intro[introSteg] : kap.utro}
+                    </p>
+                    <button
+                      type="button"
+                      className={`${BTN} border-(--gold) text-(--gold)`}
+                      onClick={() => {
+                        SoundManager.playSound("click");
+                        if (iUtro) {
+                          setSave(M.medFlagg(save, utroFlagg));
+                          setMeny(true);
+                        } else if (introSteg + 1 < kap.intro.length) {
+                          setIntroSteg(introSteg + 1);
+                        } else {
+                          setSave(M.medFlagg(save, introFlagg));
+                        }
+                      }}
+                    >
+                      {iUtro ? "TIL KAPITLENE" : "VIDERE"}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* Status line + speech / dialog */}
@@ -260,7 +284,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
           {dialog && node && taler ? (
             <div className="mt-1 space-y-2">
               <div className="flex items-start gap-3">
-                <Portrett navn={taler.portrett} />
+                <Portrett key={taler.portrett} navn={taler.portrett} />
                 <div>
                   <p className="text-xl text-(--gold)">{taler.taler}</p>
                   <p className="text-2xl leading-tight">
@@ -331,7 +355,14 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 }}
                 className={`${BTN} min-w-16 ${verb === v.id ? "bg-(--neon-green) text-black border-(--neon-green)" : "border-(--neon-green)"}`}
               >
-                {v.label}
+                <span className="flex items-center gap-1">
+                  <Icon
+                    name={v.ikon}
+                    size={20}
+                    color={verb === v.id ? "gray" : "green"}
+                  />
+                  {v.label}
+                </span>
               </button>
             ))}
           </div>
@@ -339,22 +370,24 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
             {save.inventory.length === 0 && (
               <span className="text-lg opacity-50">Tomme lommer</span>
             )}
-            {save.inventory.map((id) => (
-              <button
-                key={id}
-                type="button"
-                aria-label={kap.gjenstander[id].navn}
-                title={kap.gjenstander[id].navn}
-                onClick={() => tapItem(id)}
-                className={`min-w-12 min-h-12 rounded border-2 flex items-center justify-center ${holder === id ? "bg-(--gold) border-(--gold)" : "border-(--gold)"}`}
-              >
-                <Icon
-                  name={kap.gjenstander[id].ikon}
-                  size={28}
-                  color={holder === id ? "gray" : "gold"}
-                />
-              </button>
-            ))}
+            {save.inventory
+              .filter((id) => kap.gjenstander[id])
+              .map((id) => (
+                <button
+                  key={id}
+                  type="button"
+                  aria-label={kap.gjenstander[id].navn}
+                  title={kap.gjenstander[id].navn}
+                  onClick={() => tapItem(id)}
+                  className={`min-w-12 min-h-12 rounded border-2 flex items-center justify-center ${holder === id ? "bg-(--gold) border-(--gold)" : "border-(--gold)"}`}
+                >
+                  <Icon
+                    name={kap.gjenstander[id].ikon}
+                    size={28}
+                    color={holder === id ? "gray" : "gold"}
+                  />
+                </button>
+              ))}
           </div>
           <button
             type="button"
@@ -366,7 +399,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
           <button
             type="button"
             onClick={() => setMeny(true)}
-            className="text-sm opacity-60 min-h-11 px-2"
+            className="text-sm opacity-60 min-h-11 min-w-11 px-2"
           >
             kapitler
           </button>

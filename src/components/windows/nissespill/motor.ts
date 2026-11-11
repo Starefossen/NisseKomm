@@ -1,5 +1,5 @@
 /**
- * Klementin-Ekspressen: the point-and-click rules as pure functions over the save.
+ * Ugleposten: the point-and-click rules as pure functions over the save.
  * Scenes are data (kapittel*.ts); the UI (Nissespill.tsx) only renders and dispatches.
  * Hotspot rects are percent of the 16:9 still so they follow the image on any screen.
  */
@@ -303,7 +303,7 @@ export function tips(kap: Kapittel, save: EventyrSave): Utfall {
       tekst: "Rampenissen: «Tips? Du e jo ferdig! Gå og spis en klementin.»",
     };
   }
-  const nivaa = Math.min(save.hints[g.id] ?? 0, 2);
+  const nivaa = Math.min(save.hints?.[g.id] ?? 0, 2);
   return {
     save: { ...save, hints: { ...save.hints, [g.id]: nivaa + 1 } },
     tekst: g.tips[nivaa],

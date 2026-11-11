@@ -268,7 +268,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Kode:** ORIGAMI (uendret).
 - **Mekanikk:** brett og hold mot lyset, som før. Nytt: to brettelinjer. Brettet langs den loddrette og holdt mot lys: bokstavene **R** og **G** i to vinduer. Brettet langs den vannrette: tallene **2** og **4** ved de samme vinduene. Arket sier «Brett. Hold en lykt bak.» uten å si hvor mange ganger.
 - **Brikke H:** arket sammenrullet i papirbåten i vasken. Flatt: tilfeldige streker og sju tomme ruter med tegn i hjørnene. Bretteanvisning for serviettfugl ved (bare moro).
-- **Brikke S:** Julius: «Winter har ett ord for å gi et flatt ark vinger uten saks og lim, bare ved å bøye det. Hun uttaler det feil med vilje, så ingen på linjen skal forstå.» (Omskrevet: verken «japansk» eller «brette»; uten arket kan det være fly, fugl eller kunst; med `_ R _ G _ _ _` er det ORIGAMI.)
+- **Brikke S:** Julius: «Winter har ett ord for å gi et flatt ark vinger uten saks og lim, bare ved å bøye det. Han uttaler det feil med vilje, så ingen på linjen skal forstå.» (Omskrevet: verken «japansk» eller «brette»; uten arket kan det være fly, fugl eller kunst; med `_ R _ G _ _ _` er det ORIGAMI.)
 - **Slik løses den:** 1) H9 bretter langs den ene linjen og ser to bokstaver, men ikke hvor de hører hjemme. 2) K12 prøver den andre linjen: tallene. R i 2, G i 4: `_ R _ G _ _ _`. 3) Ark som får vinger ved å bøyes, sju bokstaver med R og G. ORIGAMI. Den blå fuglen vises i Brevfugler.
 - **Hanna (hvis hun vil):** holder lykten bak arket.
 - **Andel per flate:** hus 2 av 7 (29 %), bare brettet to ganger og mot lys. Video: beskrivelse.
@@ -298,7 +298,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Kode:** SORTERING (uendret). Bonus: lykt i vinduet mot nord, foreldrekode `LYKT2026`, −20 % frost.
 - **Mekanikk:** legg tilbake, og tingen får plassens nummer, som før. Nytt: en fjerde feilplassert ting (ostehøvelen i badeskapet) med bokstaven **K**; på dens riktige plass ligger ingen tallapp. Uten tall, ingen rute: den hører ikke til ordet.
 - **Brikke H:** bokstavlapper på fjernkontrollen (i brødboksen) **O**, tannbørsteglasset (i bestikkskuffen) **E**, brødposen (i TV-benken) **I**, ostehøvelen (i badeskapet) **K**. Tallapper på de riktige plassene: «2» i TV-benken, «5» på badehyllen, «7» i brødboksen; ingen i bestikkskuffen der ostehøvelen hører hjemme. Rutekort 1–9 i brødboksen under Rampenissen. Lapp fra Rampenissen (på brødbokslokket, håndskrevet): «Jeg har ryddet! Bær hver ting dit den hører hjemme, og se hva som ligger der. – R»
-- **Brikke S:** Julius: «Winters ord for å legge alt i riktig hylle. Hun sier det med stor S og har et skilt med det over døra.»
+- **Brikke S:** Julius: «Winters ord for å legge alt i riktig hylle. Han sier det med stor S og har et skilt med det over døra.»
 - **Slik løses den:** 1) H9 bærer hver ting dit den hører hjemme og finner tallappen der, eller ikke. 2) K12 fyller rutekortet: O i 2, E i 5, I i 7; K har ingen plass og legges bort: `_ O _ _ E _ I _ _`. 3) Winters ord for riktig hylle, ni bokstaver. SORTERING. NisseStats åpner.
 - **Hanna (hvis hun vil):** sier hvor hver ting hører hjemme.
 - **Andel per flate:** hus 3 av 9 (33 %) pluss ett blindspor, og bare etter rydding. Video: beskrivelse.
@@ -388,7 +388,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Kode:** LANDÅS (uendret).
 - **Mekanikk:** A = 1, pluss tre. Uendret; dagen holder nivået.
 - **Brikke H:** tre sokker merket 1, 2, 3 med **to separate tallkort** i hver, uten bindestrek eller minustegn (et tankestrek leses lett som minus): sokk 1 (stua) `15` og `4`, sokk 2 (kjøkkenet) `17` og `7`, sokk 3 (Hannas sokk i gangen, med Rampenissen i) `32` og `22` og det røde måne-kortet. Kortene har et lite a/b i hjørnet for rekkefølgen. Ingen bokstaver, ingen regnetegn. Lapp fra Rampenissen (i sokk 3, ved Rampenissen, håndskrevet): «Jeg er sokk 3. Sokk 1 og 2 er et annet sted i huset. – R»
-- **Brikke S:** Julius: «Winter skriver tall i stedet for bokstaver når noe er viktig. A er alltid først, og så følger resten, helt til de tre siste som bare vi i nord har. Og hun legger alltid tre til hvert tall, for sikkerhets skyld. Trekk dem fra.»
+- **Brikke S:** Julius: «Winter skriver tall i stedet for bokstaver når noe er viktig. A er alltid først, og så følger resten, helt til de tre siste som bare vi i nord har. Og han legger alltid tre til hvert tall, for sikkerhets skyld. Trekk dem fra.»
 - **Slik løses den:** 1) H9 finner sokkene og drar Rampenissen ut av den tredje. 2) K12 hører begge reglene, trekker fra tre og teller på strimmelen: 12 = L, 1 = A, 14 = N, 4 = D, 29 = Å, 19 = S. LANDÅS. 3) Navneregistrering etter koden.
 - **Hanna (hvis hun vil):** drar Rampenissen ut av sin egen sokk. Skanner måne-kortet (symbol 8/9).
 - **Andel per flate:** hus 6 tall uten regler. Video: to regler uten tall.

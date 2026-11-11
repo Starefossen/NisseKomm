@@ -357,7 +357,7 @@ export class GameEngine {
     StorageManager.markIntroSeen(id);
   }
 
-  /** Adventure (Klementin-Ekspressen) save; null until the first move. */
+  /** Adventure (Ugleposten) save; null until the first move. */
   static getEventyrSave(): EventyrSave | null {
     return StorageManager.getEventyrSave();
   }

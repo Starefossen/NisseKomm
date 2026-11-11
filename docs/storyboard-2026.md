@@ -297,7 +297,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Flater.** Brevfugler: radar får én blå fugl som flyr i sirkel rundt Nordtoppen, og et kort «FRYST BREV: tiner når linjen er varm». Skriv-til-Julius kan stå; løftet om svar i NisseMail fjernes. Snøfall TV: ny kontor-loop med frossen brevfugl i vinduskarmen. NisseNet: `brevfugl-finale.txt` → `brevfugl-historie.txt` (lore). Frost 50 → 40.
 
-**Belønning.** Den blå fuglen i Brevfugler. PS: «Winter har aldri fått en fugl hun ikke har sendt. Hun sover ikke i natt.»
+**Belønning.** Den blå fuglen i Brevfugler. PS: «Winter har aldri fått en fugl han ikke har sendt. Han sover ikke i natt.»
 
 **Kontinuitet.** Den blå fuglen bærer brevet som tiner dag 24. Uke 3: brevene og pakkene.
 
@@ -319,7 +319,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Morgen.** Strek: «ryddet»: fjernkontroller i brødboksen, brød i TV-benken, tannbørster i bestikkskuffen, ostehøvel i badeskapet, selv i brødboksen med lokket på hodet. Radio: «Alt i pakkesentralen ligger i én haug. Winter gråter. Nesten. Jeg ryddet hos dere for å hjelpe. Jeg tror jeg gjorde det verre.»
 
-**Innlogging.** Tema: hvorfor vi gir gaver (lore: Nikolaus, og Snøfalls regel om at den beste gaven er den noen trengte uten å vite det). I natt: Kulde snudde samlebåndet, ikke for å ødelegge, men fordi det er det eneste som får Winter til å se opp. Brikke S: «Winters ord for å legge alt i riktig hylle. Hun sier det med stor S. Hun har et skilt med det.» Kulde 2.
+**Innlogging.** Tema: hvorfor vi gir gaver (lore: Nikolaus, og Snøfalls regel om at den beste gaven er den noen trengte uten å vite det). I natt: Kulde snudde samlebåndet, ikke for å ødelegge, men fordi det er det eneste som får Winter til å se opp. Brikke S: «Winters ord for å legge alt i riktig hylle. Han sier det med stor S. Han har et skilt med det.» Kulde 2.
 
 **Gåte.** H: frostlapp `S _ R T _ R _ N G` i brødboksen; før de får den må tre ting tilbake på plass (fjernkontroller, brød, tannbørster): Hanna sier hvor hver ting hører hjemme (H5), Håkon flytter (H9). S: Winters ord. Kristian: SORTERING (K12). Kode **SORTERING**.
 

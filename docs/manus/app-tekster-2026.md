@@ -141,7 +141,7 @@ Alltid rolig, kort, ensom. Aldri trusler, aldri utropstegn. Spøkelsesbildet (`k
 | 10  | FARGENE                   | Fargene er hos meg nå. Rødt. Grønt. Jeg hadde glemt hvordan de så ut. Jeg skal passe godt på dem.                           | 85,0 MHz // KROMATISK DRENERING 71 %       | SE MEG             |
 | 11  | ANTENNEN                  | Antennen deres roper så høyt mot Bergen. Jeg la is på den, så den kunne høre på meg i stedet. Ingen hører på meg.           | 85,0 MHz // ANTENNEN VED TJERNET // IS     | –                  |
 | 13  | LYSENE                    | Lysene deres. Jeg så dem gjennom linjen i natt. Jeg husker ikke når jeg så lys sist.                                        | 85,0 MHz // UNDER NORDTOPPEN // STILLE     | ALENE              |
-| 16  | BÅNDET                    | Jeg snudde båndet til Winter. Nå ser hun opp. Nå ser hun hit. Det var alt jeg ville.                                        | 85,0 MHz // PAKKESENTRALEN // BÅNDET SNUDD | SE OPP             |
+| 16  | BÅNDET                    | Jeg snudde båndet til Winter. Nå ser han opp. Nå ser han hit. Det var alt jeg ville.                                        | 85,0 MHz // PAKKESENTRALEN // BÅNDET SNUDD | SE OPP             |
 | 21  | DET ER KALDT HER NEDE     | Det er kaldt her nede. Jeg ville bare se lyset deres.                                                                       | 85,0 MHz // 94 % // …                      | LYSET DERES        |
 
 Reservetekst (dager uten egen linje, erstatter dagens «Is-krystallene mine vokser»): `transcript`: «…» · `telemetry`: `85,0 MHz // KRYSTALLGROTTEN // INGEN STEMME` (til og med dag 13: `UNDER NORDTOPPEN`; grotta navngis først fra dag 15).
@@ -292,8 +292,8 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 ### Dag 5 (lø) – Brevfuglen over Byfjellene · ULRIKEN · jakt
 
 - `tittel`: Brevfuglen over Byfjellene
-- `nissemail_tekst` (0 ord): Det har vært krig i stua. 🍬 Jeg og kosedyrene, marshmallows, hvert vårt fort. Og: i natt landet årets første brevfugl i Bergen. Winter har skrevet noe rart på vingen, for hun er sikker på at noen leser alt som flyr over linjen. Fant dere fuglen, og hopperen ved den? Hanna, hvis du vil: du legger hopperen inntil. Kristian: Winter har en regel for det hun skrev. Julius sier den, men ikke med tall. Dere har hørt tallet før. – Rampenissen
-- `julius_ps`: Marshmallows i sofaen, marshmallows i gardinene, én bamse med plaster. Rampenissen kaller det «forsvar av linjen». Winter er lettet over at fuglen kom fram; hun sender alt kryptert fra nå.
+- `nissemail_tekst` (0 ord): Det har vært krig i stua. 🍬 Jeg og kosedyrene, marshmallows, hvert vårt fort. Og: i natt landet årets første brevfugl i Bergen. Winter har skrevet noe rart på vingen, for han er sikker på at noen leser alt som flyr over linjen. Fant dere fuglen, og hopperen ved den? Hanna, hvis du vil: du legger hopperen inntil. Kristian: Winter har en regel for det han skrev. Julius sier den, men ikke med tall. Dere har hørt tallet før. – Rampenissen
+- `julius_ps`: Marshmallows i sofaen, marshmallows i gardinene, én bamse med plaster. Rampenissen kaller det «forsvar av linjen». Winter er lettet over at fuglen kom fram; han sender alt kryptert fra nå.
 - `daily_alerts`: 📋 WINTER: Første brevfugl over Bergen. Alt jeg sender er kryptert fra nå.
 - NisseNet: `SNOFALL-HISTORIER/alfabet.txt` **ny** (`afterDay: 5`, brukes igjen dag 22):
 
@@ -527,7 +527,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
 - `tittel`: Hemmeligheten i Papirvingene
 - `nissemail_tekst` (0 ord): Winter åpnet brevfuglene i natt! 🕊️ Og det kom én fugl ingen hadde sendt. Blå. Den satt i vinduskarmen til Julius, med et brev fryst fast til vingen. Jeg brettet serviettene deres til fugler og sov i en båt i vasken. Håkon, du fant arket i båten. Ser du bokstaver uten plass, har arket en brett til. Hanna, hvis du vil: hold lykten. Kristian: Winter har et ord for det vi gjør med papir i dag. Brevfugler åpner i kveld. – Rampenissen
-- `julius_ps`: Winter har aldri fått en fugl hun ikke har sendt. Hun sover ikke i natt. Serviettene deres er visst fugler nå, alle sammen; Rampenissen kaller det «en flokk». Brevfugler er åpen, og den blå fuglen vises på radaren.
+- `julius_ps`: Winter har aldri fått en fugl han ikke har sendt. Han sover ikke i natt. Serviettene deres er visst fugler nå, alle sammen; Rampenissen kaller det «en flokk». Brevfugler er åpen, og den blå fuglen vises på radaren.
 - `daily_alerts`: 🕊️ WINTER: Brevfuglene er åpnet. Én fugl ingen har sendt.
 - NisseNet: `SNOFALL-HISTORIER/brevfugl-finale.txt` **erstattes** av `brevfugl-historie.txt` (`afterDay: 14`):
 
@@ -702,7 +702,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 ### Dag 22 (ti) – Winters Tall · LANDÅS · rød måne · Snill-listen åpner · jakt
 
 - `tittel`: Winters Tall (ny: den låste «Landingskoordinatene» gir LAND = 4 av 6; se åpne spørsmål)
-- `nissemail_tekst` (0 ord): Julius vil vite nøyaktig hvor dere bor. 📍 Winter vil ha stedet i tall, og hun skriver tall på sin egen måte. Sokk 3 er min; sokk 1 og 2 ligger et annet sted i huset. Takk for at dere dro meg ut! Hanna, hvis du vil: det røde kortet er ditt. Kristian: strimmelen fra brevfuglen, og Winter har to regler. Julius sier begge. Etterpå vil Julius ha navnene deres. – Rampenissen
+- `nissemail_tekst` (0 ord): Julius vil vite nøyaktig hvor dere bor. 📍 Winter vil ha stedet i tall, og han skriver tall på sin egen måte. Sokk 3 er min; sokk 1 og 2 ligger et annet sted i huset. Takk for at dere dro meg ut! Hanna, hvis du vil: det røde kortet er ditt. Kristian: strimmelen fra brevfuglen, og Winter har to regler. Julius sier begge. Etterpå vil Julius ha navnene deres. – Rampenissen
 - `julius_ps`: Tre navn. Jeg skrev dem selv. Ingenting har kommet gjennom porten ennå, men Orakelet sier det er varmere der nede. Rampenissen satt fast i en julesokk i to timer før noen dro.
 - `daily_alerts`: 📋 WINTER: Jeg mangler stedet i tall. Snill-listen åpner i kveld.
 - `symbol_clue.description`: Rød måne funnet innerst i Hannas julesokk

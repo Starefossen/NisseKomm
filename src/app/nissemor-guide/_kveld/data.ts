@@ -482,7 +482,7 @@ export const DAGER = [
     brikkeH:
       "arket sammenrullet i papirbåten i vasken. Flatt: tilfeldige streker og sju tomme ruter med tegn i hjørnene. Bretteanvisning for serviettfugl ved (bare moro).",
     brikkeS:
-      "Julius: «Winter har ett ord for å gi et flatt ark vinger uten saks og lim, bare ved å bøye det. Hun uttaler det feil med vilje, så ingen på linjen skal forstå.» (Omskrevet: verken «japansk» eller «brette»; uten arket kan det være fly, fugl eller kunst; med _ R _ G _ _ _ er det {14}.)",
+      "Julius: «Winter har ett ord for å gi et flatt ark vinger uten saks og lim, bare ved å bøye det. Han uttaler det feil med vilje, så ingen på linjen skal forstå.» (Omskrevet: verken «japansk» eller «brette»; uten arket kan det være fly, fugl eller kunst; med _ R _ G _ _ _ er det {14}.)",
     slikLoses: [
       "H9 bretter langs den ene linjen og ser to bokstaver, men ikke hvor de hører hjemme.",
       "K12 prøver den andre linjen: tallene. R i 2, G i 4: _ R _ G _ _ _.",
@@ -552,7 +552,7 @@ export const DAGER = [
     brikkeH:
       "bokstavlapper på fjernkontrollen (i brødboksen) O, tannbørsteglasset (i bestikkskuffen) E, brødposen (i TV-benken) I, ostehøvelen (i badeskapet) K. Tallapper på de riktige plassene: «2» i TV-benken, «5» på badehyllen, «7» i brødboksen; ingen i bestikkskuffen der ostehøvelen hører hjemme. Rutekort 1–9 i brødboksen under Rampenissen. Lapp fra Rampenissen (på brødbokslokket, håndskrevet): «Jeg har ryddet! Bær hver ting dit den hører hjemme, og se hva som ligger der. – R»",
     brikkeS:
-      "Julius: «Winters ord for å legge alt i riktig hylle. Hun sier det med stor S og har et skilt med det over døra.»",
+      "Julius: «Winters ord for å legge alt i riktig hylle. Han sier det med stor S og har et skilt med det over døra.»",
     slikLoses: [
       "H9 bærer hver ting dit den hører hjemme og finner tallappen der, eller ikke.",
       "K12 fyller rutekortet: O i 2, E i 5, I i 7; K har ingen plass og legges bort: _ O _ _ E _ I _ _.",
@@ -766,7 +766,7 @@ export const DAGER = [
     brikkeH:
       "tre sokker merket 1, 2, 3 med to separate tallkort i hver, uten bindestrek eller minustegn (et tankestrek leses lett som minus): sokk 1 (stua) 15 og 4, sokk 2 (kjøkkenet) 17 og 7, sokk 3 (Hannas sokk i gangen, med Rampenissen i) 32 og 22 og det røde måne-kortet. Kortene har et lite a/b i hjørnet for rekkefølgen. Ingen bokstaver, ingen regnetegn. Lapp fra Rampenissen (i sokk 3, ved Rampenissen, håndskrevet): «Jeg er sokk 3. Sokk 1 og 2 er et annet sted i huset. – R»",
     brikkeS:
-      "Julius: «Winter skriver tall i stedet for bokstaver når noe er viktig. A er alltid først, og så følger resten, helt til de tre siste som bare vi i nord har. Og hun legger alltid tre til hvert tall, for sikkerhets skyld. Trekk dem fra.»",
+      "Julius: «Winter skriver tall i stedet for bokstaver når noe er viktig. A er alltid først, og så følger resten, helt til de tre siste som bare vi i nord har. Og han legger alltid tre til hvert tall, for sikkerhets skyld. Trekk dem fra.»",
     slikLoses: [
       "H9 finner sokkene og drar Rampenissen ut av den tredje.",
       "K12 hører begge reglene, trekker fra tre og teller på strimmelen: 12 = L, 1 = A, 14 = N, 4 = D, 29 = Å, 19 = S. {22}.",
