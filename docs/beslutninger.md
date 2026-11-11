@@ -42,6 +42,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - Spillene er for Håkon (9) og Kristian (12), ikke Hanna (5).
 - Sledeflukt er egen app fra dag 8: retro 16-bit 3D, ringer i lufta, fri flyging på vidda, highscore per spiller.
 - Sledeflukt ender i Bergen via nordlysporten dag 24. Landås vises aldri før dag 22 er løst.
+- Sledeflukt (2026-11-11) viser rekordliste etter hver tur og en REKORDER-tavle; alle etapper får variasjon (hindringer i løypa øker etappe for etappe), etappe 1 forblir lett; tre krasj avslutter en etappe. Hvorfor: barna vil konkurrere med hverandre og trenger stigende utfordring.
 - 2026-11-11: Fri flyging er en åpen verden, ikke en løype: egen kurs og høyde, kart og kompass, steder i valgfri rekkefølge, låste steder som tåkete silhuetter med hengelås og «ÅPNER DAG N», lysgardin i kartkanten. Hvorfor: foreldretesten fant «null forskjell» fra utfordringsspillet.
 - Låste ting vises (GTA-stil), unntatt noen overraskelser.
 - Opplåsinger annonseres i appen med progressivt dytt, ikke i manus.
