@@ -449,8 +449,13 @@ export function getKidContext(state: State, at?: Date) {
   /** Unsolved days (up to today) a piece is for; empty = may be shown. */
   const blocks = (match: (p: Piece) => boolean) =>
     PIECES.filter((p) => match(p) && open(p.dag)).map((p) => p.dag);
+  /** Solved days a piece was for; open or future days would point at a clue. */
   const pieceFor = (match: (p: Piece) => boolean) => [
-    ...new Set(PIECES.filter(match).map((p) => p.dag)),
+    ...new Set(
+      PIECES.filter((p) => match(p) && p.dag <= today && solved.has(p.dag)).map(
+        (p) => p.dag,
+      ),
+    ),
   ];
   const text = (t: string | null, blockedBy: number[]) =>
     t === null ? null : blockedBy.length ? HIDDEN : t;
@@ -460,13 +465,11 @@ export function getKidContext(state: State, at?: Date) {
   for (let day = 1; day <= today; day++) {
     const q = getAllOppdrag().find((x) => x.dag === day)!;
     if (!solved.has(day)) {
-      if (day === today) {
-        items.push({
-          age: day,
-          kind: "days",
-          v: { day, solved: false, mail: HIDDEN, video_transcript: HIDDEN },
-        });
-      }
+      items.push({
+        age: day,
+        kind: "days",
+        v: { day, solved: false, mail: HIDDEN, video_transcript: HIDDEN },
+      });
       continue;
     }
     const of = (type: string) => (p: Piece) =>

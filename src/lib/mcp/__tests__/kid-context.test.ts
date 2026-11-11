@@ -233,11 +233,8 @@ describe("get_kid_context", () => {
       ps: "[skjult]",
       video_transcript: "[skjult]",
     });
-    expect(day2.piece_for).toEqual({
-      mail: [5],
-      video_transcript: [5],
-      ps: [5],
-    });
+    // piece_for names only solved days; [5] would point at today's clue.
+    expect(day2.piece_for).toBeUndefined();
     memoryStore.reset();
     await play(21, 20);
     const map = (await kid()).files.find((f: { path: string }) =>
@@ -246,7 +243,39 @@ describe("get_kid_context", () => {
     expect(map).toEqual({
       path: "/DEKRYPTERT/stjernetegn.txt",
       content: "[skjult]",
-      piece_for: [18, 21],
+      piece_for: [18],
+    });
+  });
+
+  it("piece_for peker aldri på en framtidig eller uløst dag", async () => {
+    for (let d = 1; d <= 24; d++) {
+      await play(d, d - 1);
+      const out = await kid();
+      for (const x of [...out.days, ...out.files, ...out.symbols]) {
+        const days = Array.isArray(x.piece_for)
+          ? x.piece_for
+          : Object.values(x.piece_for ?? {}).flat();
+        for (const n of days) expect([d, n < d]).toEqual([d, true]);
+      }
+      memoryStore.reset();
+    }
+  });
+
+  it("en uløst eldre dag står som skjult, ikke utelatt", async () => {
+    await play(10, 9);
+    await memoryStore.putState(
+      "nissekomm-codes",
+      quests
+        .filter((q) => q.dag <= 9 && q.dag !== 3)
+        .map((q) => ({ kode: q.kode, dato: "x" })),
+      true,
+    );
+    const day3 = (await kid()).days.find((x: { day: number }) => x.day === 3);
+    expect(day3).toEqual({
+      day: 3,
+      solved: false,
+      mail: "[skjult]",
+      video_transcript: "[skjult]",
     });
   });
 
