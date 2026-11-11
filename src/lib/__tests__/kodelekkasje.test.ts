@@ -14,7 +14,12 @@ import merker from "@/data/merker.json";
 import videoer from "@/data/julius_videoer.json";
 import { TIDBITS } from "@/lib/tidbits";
 import { KAPITLER } from "@/components/windows/nissespill/kapitler";
-import { ETAPPER } from "@/components/windows/snofall-tv/slede";
+import {
+  bjelleKrav,
+  dagensUtfordring,
+  ETAPPER,
+  lagBane,
+} from "@/components/windows/snofall-tv/slede";
 import type { FilNode } from "@/types/innhold";
 
 const quests = getAllOppdrag();
@@ -128,8 +133,15 @@ for (const k of KAPITLER) {
   );
 }
 
-// Sledesimulator: stage name and IQ's intro show on the start screen from the stage's day.
-for (const e of ETAPPER) add(e.dag, `slede ${e.id}`, `${e.navn} ${e.intro}`);
+// Sledesimulator: stage name, IQ's intro and the day's challenge show on the
+// start screen from the stage's day.
+for (const e of ETAPPER) {
+  add(e.dag, `slede ${e.id}`, `${e.navn} ${e.intro}`);
+  const varder = lagBane(e).filter((t) => t.type === "varde").length;
+  add(e.dag, `slede ${e.id} bjellekrav`, bjelleKrav(varder).join(" "));
+  for (let d = e.dag; d <= 24; d++)
+    add(d, `slede ${e.id} utfordring dag ${d}`, dagensUtfordring(d, e).tekst);
+}
 
 const pattern = (code: string) =>
   /^\d+$/.test(code)

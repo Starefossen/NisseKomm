@@ -1,15 +1,41 @@
 /**
- * IQs sledesimulator: stages, course generation and the pure simulation.
+ * IQs sledesimulator: stages, course generation, daily challenges and the pure simulation.
  * No DOM here, so stage gating, scoring and the assist rules are testable.
  * The player moves in x (track units, 0 = centre) and altitude; the world
  * rolls towards the camera in z. Collisions are checked when a thing crosses z = 0.
  */
 
-export type EtappeId = "tundra" | "nordtoppen" | "muren" | "julenatt";
+export type EtappeId =
+  | "tundra"
+  | "vardeloypa"
+  | "granskogen"
+  | "stjernedrysset"
+  | "kastevind"
+  | "tindeflukten"
+  | "nordtoppen"
+  | "muren"
+  | "julenatt";
+
+/** What a course is made of; lagBane draws one thing per segment from these odds. */
+export interface Blanding {
+  /** Every n-th segment is a beacon. */
+  varde: number;
+  /** Odds per free segment. */
+  tre: number;
+  stjerne: number;
+  topp: number;
+  vind: number;
+  /** Gust strength relative to the first stages. */
+  vindKraft: number;
+  /** Every n-th segment is an aurora band (0 = none). */
+  band: number;
+  grotte?: boolean;
+  mur?: boolean;
+}
 
 export interface SledeEtappe {
   id: EtappeId;
-  /** First December day the stage can be flown (storyboard days 18, 20, 21, 24). */
+  /** First December day the stage can be flown. Story stages keep 20, 21 and 24. */
   dag: number;
   navn: string;
   /** One line from IQ on the start screen. */
@@ -17,6 +43,7 @@ export interface SledeEtappe {
   /** Course length in world units; ~900 units/s. */
   lengde: number;
   fart: number;
+  blanding: Blanding;
   /** Painted horizon in MEDIA_DIR (feed/slede-*.jpg), with its horizon line as a fraction of image height. */
   horisont: { fil: string; linje: number };
   himmel: [string, string];
@@ -28,16 +55,38 @@ export interface SledeEtappe {
   snøfall: number;
 }
 
+const TUNDRA = { fil: "feed/slede-tundra.jpg", linje: 0.69 };
+const NORDTOPPEN = { fil: "feed/slede-nordtoppen.jpg", linje: 0.735 };
+const MUREN = { fil: "feed/slede-muren.jpg", linje: 0.69 };
+const JULENATT = { fil: "feed/slede-julenatt.jpg", linje: 0.72 };
+
+const ROLIG: Blanding = {
+  varde: 3,
+  tre: 0.25,
+  stjerne: 0.3,
+  topp: 0,
+  vind: 0.15,
+  vindKraft: 1,
+  band: 0,
+};
+
+/**
+ * A new stage every few days from 8 December (8, 9, 12, 14, 18, 19, then the
+ * story days 20, 21, 24); each turns one knob further (beacon density, trees,
+ * stars, wind, peaks) before the story stages.
+ * Names and intros are visible from the stage's day: no day codes (kodelekkasje.test.ts).
+ */
 export const ETAPPER: readonly SledeEtappe[] = [
   {
     id: "tundra",
-    dag: 18,
+    dag: 8,
     navn: "Tundra-testen",
     intro:
       "Nyoverhalt slede. Hold kursen etter vardene, så ser vi om tømmene holder!",
-    lengde: 40000,
-    fart: 900,
-    horisont: { fil: "feed/slede-tundra.jpg", linje: 0.69 },
+    lengde: 30000,
+    fart: 800,
+    blanding: ROLIG,
+    horisont: TUNDRA,
     himmel: ["#050816", "#141c3a"],
     snø: ["#d2e1f5", "#b9cdeb"],
     dis: "#93a6c6",
@@ -46,13 +95,106 @@ export const ETAPPER: readonly SledeEtappe[] = [
     snøfall: 40,
   },
   {
+    id: "vardeloypa",
+    dag: 9,
+    navn: "Vardeløypa",
+    intro:
+      "Vardene står tett i kveld. Treff midt i ringen, så ringer bjella høyest.",
+    lengde: 34000,
+    fart: 850,
+    blanding: { ...ROLIG, varde: 2, tre: 0.2, stjerne: 0.2 },
+    horisont: TUNDRA,
+    himmel: ["#070a1c", "#1a2448"],
+    snø: ["#dbe7f7", "#c3d4ee"],
+    dis: "#9fb0cc",
+    nordlys: 0.4,
+    tåke: false,
+    snøfall: 25,
+  },
+  {
+    id: "granskogen",
+    dag: 12,
+    navn: "Granskogen",
+    intro:
+      "Skogen står tett som en børste. Lavt mellom stammene, eller høyt over toppene!",
+    lengde: 38000,
+    fart: 880,
+    blanding: { ...ROLIG, tre: 0.6, stjerne: 0.15, vind: 0.05 },
+    horisont: TUNDRA,
+    himmel: ["#04070f", "#0f1a2c"],
+    snø: ["#c8d8ea", "#adc1dc"],
+    dis: "#7f93b0",
+    nordlys: 0.1,
+    tåke: false,
+    snøfall: 60,
+  },
+  {
+    id: "stjernedrysset",
+    dag: 14,
+    navn: "Stjernedrysset",
+    intro:
+      "Det drysser stjerner over vidda. Opp og ned, opp og ned, plukk alt som glitrer!",
+    lengde: 40000,
+    fart: 900,
+    blanding: { ...ROLIG, tre: 0.2, stjerne: 0.55, vind: 0.05 },
+    horisont: JULENATT,
+    himmel: ["#02040c", "#0b1430"],
+    snø: ["#d9e4f5", "#c0d2ec"],
+    dis: "#8ea4c8",
+    nordlys: 0.15,
+    tåke: false,
+    snøfall: 10,
+  },
+  {
+    id: "kastevind",
+    dag: 18,
+    navn: "Kastevind-dalen",
+    intro:
+      "Vinden kaster fra begge sider i dalen. Len deg mot kastet, ikke med det!",
+    lengde: 42000,
+    fart: 920,
+    blanding: { ...ROLIG, tre: 0.3, stjerne: 0.2, vind: 0.4, vindKraft: 1.6 },
+    horisont: TUNDRA,
+    himmel: ["#0d1322", "#263046"],
+    snø: ["#c9d2df", "#b1bccd"],
+    dis: "#aab4c6",
+    nordlys: 0,
+    tåke: false,
+    snøfall: 90,
+  },
+  {
+    id: "tindeflukten",
+    dag: 19,
+    navn: "Tindeflukten",
+    intro:
+      "Tindene stikker opp som tenner. Opp i god tid, Rudolf liker ikke stein i pelsen.",
+    lengde: 46000,
+    fart: 950,
+    blanding: { ...ROLIG, tre: 0.1, stjerne: 0.25, topp: 0.35, vind: 0.1 },
+    horisont: NORDTOPPEN,
+    himmel: ["#03060f", "#0e1a30"],
+    snø: ["#c9dff0", "#aac6e4"],
+    dis: "#a3b7cf",
+    nordlys: 0.5,
+    tåke: false,
+    snøfall: 35,
+  },
+  {
     id: "nordtoppen",
     dag: 20,
     navn: "Nordlys-strømmen",
     intro: "Himmelen knitrer! Fly inn i lysbåndene, de gir løft over tindene.",
     lengde: 60000,
     fart: 1000,
-    horisont: { fil: "feed/slede-nordtoppen.jpg", linje: 0.735 },
+    blanding: {
+      ...ROLIG,
+      tre: 0.15,
+      stjerne: 0.25,
+      topp: 0.35,
+      vind: 0.1,
+      band: 9,
+    },
+    horisont: NORDTOPPEN,
     himmel: ["#03060f", "#0e1a30"],
     snø: ["#c9dff0", "#aac6e4"],
     dis: "#a3b7cf",
@@ -67,8 +209,9 @@ export const ETAPPER: readonly SledeEtappe[] = [
     intro:
       "Tett føyke. Muren har én åpen port med varme i. Se etter det gylne skjæret.",
     lengde: 54000,
-    fart: 900,
-    horisont: { fil: "feed/slede-muren.jpg", linje: 0.69 },
+    fart: 950,
+    blanding: { ...ROLIG, tre: 1, stjerne: 0, vind: 0, mur: true },
+    horisont: MUREN,
     himmel: ["#1a2030", "#3a4458"],
     snø: ["#c3ccd8", "#aab4c3"],
     dis: "#b9c3d1",
@@ -83,8 +226,16 @@ export const ETAPPER: readonly SledeEtappe[] = [
     intro:
       "Stjerneklart. Fly lavt over grotten så lyset når ned, så setter vi kursen mot Landås.",
     lengde: 70000,
-    fart: 950,
-    horisont: { fil: "feed/slede-julenatt.jpg", linje: 0.72 },
+    fart: 1000,
+    blanding: {
+      ...ROLIG,
+      tre: 0.3,
+      stjerne: 0.3,
+      vind: 0.2,
+      vindKraft: 1.3,
+      grotte: true,
+    },
+    horisont: JULENATT,
     himmel: ["#02040c", "#0b1430"],
     snø: ["#d9e4f5", "#c0d2ec"],
     dis: "#8ea4c8",
@@ -127,34 +278,40 @@ function rng(seed: number) {
 }
 
 const SEG = 220;
+/** The sleigh is clamped to ±1.3, so nothing is placed where it cannot be reached. */
+const X_MAX = 1.25;
 
 export function lagBane(e: SledeEtappe): Ting[] {
-  const r = rng(e.dag * 7919 + e.lengde);
+  let seed = e.lengde;
+  for (const c of e.id) seed = (seed * 31 + c.charCodeAt(0)) >>> 0;
+  const r = rng(seed);
+  const m = e.blanding;
   const out: Ting[] = [];
   const slutt = e.lengde - 2500;
   let lane = 0;
   for (let z = 1500, i = 0; z < slutt; z += SEG, i++) {
     const u = r();
     // Beacons weave left and right so the course is a slalom, never a straight line.
-    if (i % 3 === 0) {
+    if (i % m.varde === 0) {
       lane = Math.max(-0.7, Math.min(0.7, lane + (r() - 0.5) * 0.9));
       out.push({ z, x: lane, type: "varde", h: 90 });
       continue;
     }
-    if (e.id === "julenatt" && i % 23 === 11) {
+    if (m.grotte && i % 23 === 11) {
       out.push({ z, x: 0, type: "grotte", h: 0, lengde: 1600 });
       z += 1600;
       continue;
     }
-    if (e.id === "nordtoppen" && i % 9 === 4) {
+    if (m.band && i % m.band === 4) {
       out.push({ z, x: lane * 0.5, type: "band", h: 200 });
       continue;
     }
-    if (e.id === "nordtoppen" && u < 0.35) {
+    let p = m.topp;
+    if (u < p) {
       out.push({ z, x: (r() - 0.5) * 1.6, type: "topp", h: 230 });
       continue;
     }
-    if (u < 0.3 && e.id !== "muren") {
+    if (u < (p += m.stjerne)) {
       out.push({
         z,
         x: lane + (r() - 0.5) * 1.2,
@@ -163,17 +320,18 @@ export function lagBane(e: SledeEtappe): Ting[] {
       });
       continue;
     }
-    if (u < 0.55 || e.id === "muren") {
+    if (u < (p += m.tre)) {
       const side = r() < 0.5 ? -1 : 1;
+      const x = lane + side * (0.55 + r() * 0.9);
       out.push({
         z,
-        x: lane + side * (0.55 + r() * 0.9),
+        x: Math.max(-X_MAX, Math.min(X_MAX, x)),
         type: "tre",
         h: 160,
       });
       continue;
     }
-    if (u < 0.7) {
+    if (u < p + m.vind) {
       out.push({
         z,
         x: 0,
@@ -184,7 +342,7 @@ export function lagBane(e: SledeEtappe): Ting[] {
       });
     }
   }
-  if (e.id === "muren") {
+  if (m.mur) {
     for (const [f, port] of [
       [0.4, -0.5],
       [0.72, 0.55],
@@ -197,6 +355,67 @@ export function lagBane(e: SledeEtappe): Ting[] {
     }
   }
   return out.filter((t) => !t.ferdig).sort((a, b) => a.z - b.z);
+}
+
+export type UtfordringType =
+  "varder" | "renflyging" | "stjerner" | "tid" | "rekke" | "nære";
+
+export interface Utfordring {
+  type: UtfordringType;
+  mål: number;
+  tekst: string;
+  bonus: number;
+}
+
+const UTFORDRINGER: readonly UtfordringType[] = [
+  "varder",
+  "renflyging",
+  "stjerner",
+  "tid",
+  "rekke",
+  "nære",
+];
+export const UTFORDRING_BONUS = 500;
+
+// The numeric day codes are plain numbers; a target that spells one would
+// trip kodelekkasje, so those two counts are nudged by one.
+const trygtTall = (n: number) => (n === 24 || n === 75 ? n + 1 : n);
+
+/**
+ * The day's challenge: one of six, cycling with the date so every open day
+ * asks for something new, with the target scaled to the chosen stage.
+ */
+export function dagensUtfordring(day: number, e: SledeEtappe): Utfordring {
+  const bane = lagBane(e);
+  const antall = (type: TingType) => bane.filter((t) => t.type === type).length;
+  let type = UTFORDRINGER[day % UTFORDRINGER.length];
+  if (type === "stjerner" && !antall("stjerne")) type = "nære";
+  const bonus = UTFORDRING_BONUS;
+  switch (type) {
+    case "varder": {
+      const mål = trygtTall(Math.ceil(antall("varde") * 0.6));
+      return { type, mål, tekst: `Ta minst ${mål} varder`, bonus };
+    }
+    case "renflyging":
+      return { type, mål: 0, tekst: "Fly hele veien uten krasj", bonus };
+    case "stjerner": {
+      const mål = trygtTall(Math.ceil(antall("stjerne") * 0.5));
+      return { type, mål, tekst: `Plukk ${mål} stjerner`, bonus };
+    }
+    case "tid": {
+      const mål = Math.ceil(((e.lengde / e.fart) * 1.15) / 10) * 10;
+      return { type, mål, tekst: `I mål på under ${mål} sekunder`, bonus };
+    }
+    case "rekke":
+      return { type, mål: 6, tekst: "Seks varder på rad", bonus };
+    case "nære":
+      return {
+        type,
+        mål: 3,
+        tekst: "Skli tett forbi tre trær eller tinder",
+        bonus,
+      };
+  }
 }
 
 export interface Styring {
@@ -215,12 +434,15 @@ export type Hendelse =
   | "grotte"
   | "sprang"
   | "nære"
+  | "utfordring"
   | "mål";
 
 export interface SimOpts {
   /** IQ-assistent: never game over, soft altitude hold, wider targets. */
   assist: boolean;
   reduceMotion: boolean;
+  /** The day's challenge; met at the finish line it pays its bonus. */
+  utfordring?: Utfordring;
 }
 
 /** Score multiplier for a run of beacons without a miss: x1, x2 at 3, x3 at 6, x4 at 9. */
@@ -258,6 +480,7 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     rekke: 0,
     besteRekke: 0,
     tidsbonus: 0,
+    utfordringKlart: false,
     /** Boost meter 0..1, filled by beacons; full = sprang available. */
     kraft: 0,
     sprangTil: 0,
@@ -283,7 +506,7 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
       (t) => t.z <= s.dist && t.z + (t.lengde ?? 0) > s.dist,
     );
     s.vind += ((sone?.kraft ?? 0) - s.vind) * Math.min(1, dt * 3);
-    const gust = s.vind * (opts.assist ? 0.25 : 0.55);
+    const gust = s.vind * (opts.assist ? 0.25 : 0.55) * e.blanding.vindKraft;
 
     // Inertia: a quick tap nudges, a held stick builds to full speed in ~0.3 s.
     s.vx += (inn.steer * 1.9 + gust - s.vx) * Math.min(1, dt * 9);
@@ -335,6 +558,12 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
         s.tidsbonus =
           Math.max(0, Math.round((e.lengde / e.fart) * 1.5 - s.tid)) * 20;
         s.poeng += s.tidsbonus;
+      }
+      const u = opts.utfordring;
+      if (u && utfordringKlart(u, s)) {
+        s.utfordringKlart = true;
+        s.poeng += u.bonus;
+        ev.push("utfordring");
       }
       ev.push("mål");
     }
@@ -417,6 +646,50 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
 }
 
 export type Sim = ReturnType<typeof createSim>;
+
+type Telling = {
+  varder: number;
+  krasj: number;
+  stjerner: number;
+  tid: number;
+  besteRekke: number;
+  nære: number;
+};
+
+export function utfordringKlart(u: Utfordring, s: Telling) {
+  switch (u.type) {
+    case "varder":
+      return s.varder >= u.mål;
+    case "renflyging":
+      return s.krasj === 0;
+    case "stjerner":
+      return s.stjerner >= u.mål;
+    case "tid":
+      return s.tid < u.mål;
+    case "rekke":
+      return s.besteRekke >= u.mål;
+    case "nære":
+      return s.nære >= u.mål;
+  }
+}
+
+/** Progress line for the HUD: «12/20», «38 s / 50», «REN» or «KRASJ». */
+export function utfordringStatus(u: Utfordring, s: Telling) {
+  switch (u.type) {
+    case "varder":
+      return `${s.varder}/${u.mål}`;
+    case "renflyging":
+      return s.krasj === 0 ? "REN" : "KRASJ";
+    case "stjerner":
+      return `${s.stjerner}/${u.mål}`;
+    case "tid":
+      return `${Math.floor(s.tid)} s / ${u.mål}`;
+    case "rekke":
+      return `${s.besteRekke}/${u.mål}`;
+    case "nære":
+      return `${s.nære}/${u.mål}`;
+  }
+}
 
 /** Beacons needed for one, two and three bells (40, 70 and 90 %). */
 export const bjelleKrav = (totalt: number) =>

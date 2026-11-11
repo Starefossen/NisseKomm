@@ -10,7 +10,11 @@ import {
   lagBane,
   RAMP,
   rekkeMult,
+  UTFORDRING_BONUS,
+  utfordringKlart,
+  utfordringStatus,
 } from "./slede";
+import { dagensUtfordring } from "./slede";
 
 const still = { steer: 0, climb: 0, sprang: false };
 
@@ -29,26 +33,58 @@ function fly(
 }
 
 describe("etapper", () => {
-  it("opens one stage per storyboard day: 18, 20, 21, 24", () => {
+  it("opens new stages from 8 December; story days 20, 21, 24", () => {
+    expect(ETAPPER.map((e) => e.dag)).toEqual([
+      8, 9, 12, 14, 18, 19, 20, 21, 24,
+    ]);
     const ids = (d: number) => etapperFor(d).map((e) => e.id);
-    expect(ids(17)).toEqual([]);
-    expect(ids(18)).toEqual(["tundra"]);
-    expect(ids(19)).toEqual(["tundra"]);
-    expect(ids(20)).toEqual(["tundra", "nordtoppen"]);
-    expect(ids(21)).toEqual(["tundra", "nordtoppen", "muren"]);
-    expect(ids(23)).toEqual(["tundra", "nordtoppen", "muren"]);
-    expect(ids(24)).toHaveLength(4);
+    expect(ids(7)).toEqual([]);
+    expect(ids(8)).toEqual(["tundra"]);
+    expect(ids(9)).toEqual(["tundra", "vardeloypa"]);
+    expect(ids(17)).toHaveLength(4);
+    expect(ids(19)).toHaveLength(6);
+    expect(ids(20)).toContain("nordtoppen");
+    expect(ids(21)).toContain("muren");
+    expect(ids(23)).not.toContain("julenatt");
+    expect(ids(24)).toHaveLength(ETAPPER.length);
   });
 
-  it("builds the same course every time, sorted by distance", () => {
+  it("gets harder stage by stage: faster, longer, never a slower later stage", () => {
+    // Six progression stages speed up one by one; the story stages are at least as fast
+    // (the fog stage is tuned a notch down because the draw distance is short).
+    const fart = ETAPPER.map((e) => e.fart);
+    for (let i = 1; i < 6; i++)
+      expect(fart[i]).toBeGreaterThanOrEqual(fart[i - 1]);
+    for (let i = 6; i < fart.length; i++)
+      expect(fart[i]).toBeGreaterThanOrEqual(fart[5]);
+    const trær = (id: string) =>
+      lagBane(ETAPPER.find((e) => e.id === id)!).filter((t) => t.type === "tre")
+        .length;
+    expect(trær("granskogen")).toBeGreaterThan(trær("tundra") * 1.5);
+    const bane = (id: string) => lagBane(ETAPPER.find((e) => e.id === id)!);
+    expect(
+      bane("vardeloypa").filter((t) => t.type === "varde").length,
+    ).toBeGreaterThan(bane("tundra").filter((t) => t.type === "varde").length);
+    expect(bane("tindeflukten").some((t) => t.type === "topp")).toBe(true);
+    expect(
+      bane("kastevind").filter((t) => t.type === "vind").length,
+    ).toBeGreaterThan(bane("tundra").filter((t) => t.type === "vind").length);
+  });
+
+  it("builds the same course every time, sorted by distance, within reach", () => {
     for (const e of ETAPPER) {
       const a = lagBane(e);
       expect(a).toEqual(lagBane(e));
       expect(a.every((t, i) => i === 0 || t.z >= a[i - 1].z)).toBe(true);
       expect(a.filter((t) => t.type === "varde").length).toBeGreaterThan(20);
+      expect(a.every((t) => t.type !== "tre" || Math.abs(t.x) <= 1.25)).toBe(
+        true,
+      );
     }
-    expect(lagBane(ETAPPER[2]).filter((t) => t.type === "mur")).toHaveLength(3);
-    expect(lagBane(ETAPPER[3]).some((t) => t.type === "grotte")).toBe(true);
+    const av = (id: string) => lagBane(ETAPPER.find((e) => e.id === id)!);
+    expect(av("muren").filter((t) => t.type === "mur")).toHaveLength(3);
+    expect(av("julenatt").some((t) => t.type === "grotte")).toBe(true);
+    expect(av("nordtoppen").some((t) => t.type === "band")).toBe(true);
   });
 });
 
@@ -72,10 +108,13 @@ describe("sim", () => {
 
   it("pilot mode loses a life per crash and ends after three", () => {
     const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
-    const tre = sim.s.ting.find((t) => t.type === "tre")!;
+    const tre = sim.s.ting.find(
+      (t) => t.type === "tre" && Math.abs(t.x) < 0.9,
+    )!;
     sim.s.px = tre.x;
     sim.s.dist = tre.z - 1;
     sim.s.alt = 60;
+    sim.s.first = sim.s.ting.indexOf(tre);
     expect(sim.step(1 / 60, still)).toContain("krasj");
     expect(sim.s.liv).toBe(2);
     sim.step(1 / 60, still);
@@ -168,7 +207,9 @@ describe("rekke og nære på", () => {
 
   it("rewards skimming a tree without hitting it", () => {
     const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
-    const tre = sim.s.ting.find((t) => t.type === "tre")!;
+    const tre = sim.s.ting.find(
+      (t) => t.type === "tre" && Math.abs(t.x) < 0.9,
+    )!;
     sim.s.px = tre.x + 0.3;
     sim.s.dist = tre.z - 1;
     sim.s.alt = 60;
@@ -177,5 +218,72 @@ describe("rekke og nære på", () => {
     expect(sim.s.nære).toBe(1);
     expect(sim.s.poeng).toBe(40);
     expect(sim.s.liv).toBe(3);
+  });
+});
+
+describe("dagens utfordring", () => {
+  it("cycles through six kinds with the date, scaled to the stage", () => {
+    const typer = Array.from(
+      { length: 6 },
+      (_, i) => dagensUtfordring(8 + i, ETAPPER[0]).type,
+    );
+    expect(new Set(typer).size).toBe(6);
+    expect(dagensUtfordring(8, ETAPPER[0])).toEqual(
+      dagensUtfordring(8, ETAPPER[0]),
+    );
+    expect(dagensUtfordring(14, ETAPPER[0]).type).toBe(
+      dagensUtfordring(8, ETAPPER[0]).type,
+    );
+    const muren = ETAPPER.find((e) => e.id === "muren")!;
+    for (let d = 21; d < 27; d++)
+      expect(dagensUtfordring(d, muren).type).not.toBe("stjerner");
+    for (const e of ETAPPER)
+      for (let d = e.dag; d <= 24; d++) {
+        const u = dagensUtfordring(d, e);
+        expect(u.tekst).not.toMatch(/(?<!\d)(24|75)(?!\d)/);
+        expect(u.bonus).toBe(UTFORDRING_BONUS);
+      }
+  });
+
+  it("pays the bonus at the finish line when the challenge is met", () => {
+    const e = ETAPPER[0];
+    const ren = { type: "renflyging", mål: 0, tekst: "", bonus: 500 } as const;
+    // Hands off the stick: the finish is certain, so the time target is what is tested.
+    const sim = createSim(e, {
+      assist: true,
+      reduceMotion: false,
+      utfordring: { ...ren, type: "tid", mål: 9999 },
+    });
+    let ev: string[] = [];
+    for (let i = 0; i < 20000 && !sim.s.ferdig; i++)
+      ev = ev.concat(sim.step(1 / 60, still));
+    expect(sim.s.utfordringKlart).toBe(true);
+    expect(sim.s.poeng).toBeGreaterThanOrEqual(500);
+    expect(ev).toContain("utfordring");
+    const telling = {
+      varder: 5,
+      krasj: 1,
+      stjerner: 2,
+      tid: 48,
+      besteRekke: 4,
+      nære: 0,
+    };
+    expect(utfordringKlart({ ...ren, type: "varder", mål: 5 }, telling)).toBe(
+      true,
+    );
+    expect(utfordringKlart({ ...ren, type: "varder", mål: 6 }, telling)).toBe(
+      false,
+    );
+    expect(utfordringKlart(ren, telling)).toBe(false);
+    expect(utfordringKlart({ ...ren, type: "tid", mål: 50 }, telling)).toBe(
+      true,
+    );
+    expect(utfordringKlart({ ...ren, type: "rekke", mål: 6 }, telling)).toBe(
+      false,
+    );
+    expect(utfordringStatus({ ...ren, type: "tid", mål: 50 }, telling)).toBe(
+      "48 s / 50",
+    );
+    expect(utfordringStatus(ren, telling)).toBe("KRASJ");
   });
 });
