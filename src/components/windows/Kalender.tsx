@@ -6,7 +6,7 @@ import { RetroModal } from "../ui/RetroModal";
 import { TIDBITS, visible } from "@/lib/tidbits";
 import { Icons } from "@/lib/icons";
 import { GameEngine } from "@/lib/game-engine";
-import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
+import { getAdventDay, getCurrentDay } from "@/lib/date-utils";
 import type { Oppdrag, CalendarEvent } from "@/types/innhold";
 
 interface KalenderProps {
@@ -54,26 +54,18 @@ export function Kalender({
   );
 
   const isDayLocked = (day: number) => {
-    const currentDay = getCurrentDay();
-    const month = getCurrentMonth();
-
     // In test mode, allow all days
     if (process.env.NEXT_PUBLIC_TEST_MODE === "true") {
       return false;
     }
 
-    // Lock future days in December
-    if (month === 12 && day > currentDay) {
-      return true;
-    }
-
-    return false;
+    return day > getAdventDay();
   };
 
   // Titles and mail text can leak codes, so never show them before their day, even in test mode
   const isDayRevealed = (day: number) =>
     completedDays.has(day) ||
-    (getCurrentMonth() === 12 && day <= getCurrentDay());
+    day <= getAdventDay();
 
   const getDayStatus = (day: number): "locked" | "available" | "completed" => {
     if (completedDays.has(day)) return "completed";
@@ -142,7 +134,7 @@ export function Kalender({
 
                   {/* Teaser: something opens this day, never what */}
                   {(status === "locked" ||
-                    (getCurrentMonth() === 12 && day > getCurrentDay())) &&
+                    day > getAdventDay()) &&
                     GameEngine.getOpplasinger(day).length > 0 && (
                       <span className="absolute bottom-0.5 left-0 right-0 text-sm text-(--gold) opacity-100 tracking-wider">
                         NOE ÅPNER

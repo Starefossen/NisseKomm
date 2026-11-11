@@ -3,7 +3,7 @@ import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { JuliusVideo } from "./JuliusVideo";
 import { GameEngine } from "@/lib/game-engine";
-import { getCurrentDay, setTimeOverride } from "@/lib/date-utils";
+import { getAdventDay, getCurrentDay, setTimeOverride } from "@/lib/date-utils";
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
@@ -51,5 +51,26 @@ describe("JuliusVideo autoplay", () => {
   it("sends nothing before December", () => {
     setTimeOverride({ day: 11, month: 11, hour: 8, minute: 0 });
     expect(render(1)).toBeNull();
+  });
+
+  it("shows all 24 after Christmas", () => {
+    setTimeOverride({ day: 27, month: 12, hour: 8, minute: 0 });
+    expect(render(24)).not.toBeNull();
+    setTimeOverride({ day: 5, month: 1, hour: 8, minute: 0 });
+    expect(render(24)).not.toBeNull();
+  });
+});
+
+describe("getAdventDay", () => {
+  it.each([
+    [11, 30, 0],
+    [12, 1, 1],
+    [12, 24, 24],
+    [12, 25, 24],
+    [1, 10, 24],
+    [3, 1, 0],
+  ])("month %i day %i -> %i", (month, day, want) => {
+    setTimeOverride({ day, month, hour: 8, minute: 0 });
+    expect(getAdventDay()).toBe(want);
   });
 });

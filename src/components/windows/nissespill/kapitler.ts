@@ -2,7 +2,7 @@
  * Chapter registry and day gating for Ugleposten. Story timeline per
  * docs/storyboard-2026.md: no Kulde before day 7, Vintervokteren known from day 15.
  */
-import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
+import { getAdventDay, getCurrentDay } from "@/lib/date-utils";
 import { KAPITTEL_1 } from "./kapittel1";
 import { KAPITTEL_2 } from "./kapittel2";
 import { KAPITTEL_3 } from "./kapittel3";
@@ -22,7 +22,7 @@ export const kapittel = (n: number) =>
 /** December day for unlocking; outside December nothing is open unless test mode. */
 export function spilldag(): number {
   if (process.env.NEXT_PUBLIC_TEST_MODE === "true") return getCurrentDay();
-  return getCurrentMonth() === 12 ? getCurrentDay() : 0;
+  return getAdventDay();
 }
 
 export const erLaastOpp = (k: Kapittel, dag = spilldag()) => dag >= k.dag;

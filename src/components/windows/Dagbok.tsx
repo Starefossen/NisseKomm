@@ -3,7 +3,7 @@
 import { RetroWindow } from "../ui/RetroWindow";
 import { JuliusVideo } from "../modules/JuliusVideo";
 import { Oppdrag } from "@/types/innhold";
-import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
+import { getAdventDay } from "@/lib/date-utils";
 
 interface DagbokProps {
   missions: Oppdrag[];
@@ -13,7 +13,7 @@ interface DagbokProps {
 
 /** Julius' video diary: today's video on top, earlier days below */
 export function Dagbok({ missions, onClose, onWatched }: DagbokProps) {
-  const today = getCurrentMonth() === 12 ? Math.min(24, getCurrentDay()) : 0;
+  const today = getAdventDay();
   const days = missions
     .filter((m) => m.dag <= today)
     .sort((a, b) => b.dag - a.dag);

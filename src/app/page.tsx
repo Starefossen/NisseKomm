@@ -39,6 +39,7 @@ import { HamburgerMenu } from "@/components/ui/HamburgerMenu";
 import { GameEngine } from "@/lib/game-engine";
 import { useHourTick } from "@/lib/use-clock";
 import {
+  getAdventDay,
   getCurrentDay,
   getCurrentMonth,
   isCalendarActive,
@@ -160,7 +161,7 @@ function opensIn(unlockDay: number | null): string {
  * transparent layer, so the newest existing poster shows. Never a future day.
  */
 function juliusPosters(): string {
-  const today = getCurrentMonth() === 12 ? Math.min(getCurrentDay(), 24) : 0;
+  const today = getAdventDay();
   return Array.from(
     { length: today },
     (_, i) =>

@@ -3,7 +3,7 @@
 import { mediaUrl } from "@/lib/media";
 import { useRef, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
-import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
+import { getAdventDay, getCurrentDay } from "@/lib/date-utils";
 import transcripts from "@/data/julius_videoer.json";
 import { Day1Tail } from "../ui/Day1Opener";
 
@@ -33,7 +33,7 @@ export function JuliusVideo({
   const [missing, setMissing] = useState(false);
   const [tail, setTail] = useState(false);
 
-  if (getCurrentMonth() !== 12 || day > getCurrentDay()) {
+  if (day > getAdventDay()) {
     return (
       <div className="p-4 border-2 border-(--gray) text-(--gray) text-center">
         Ikke sendt ennå.

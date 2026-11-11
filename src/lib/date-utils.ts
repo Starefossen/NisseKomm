@@ -128,6 +128,17 @@ export function getCurrentMonth(): number {
 }
 
 /**
+ * Last advent day whose content is out: 0 before 1 Dec, today on 1–24 Dec,
+ * 24 from 25 Dec through January (rewatching after Christmas).
+ * ponytail: Feb–Nov counts as "before"; a new season starts empty.
+ */
+export function getAdventDay(): number {
+  const month = getCurrentMonth();
+  if (month === 12) return Math.min(24, getCurrentDay());
+  return month === 1 ? 24 : 0;
+}
+
+/**
  * Check if current date is within the calendar period (December 1-24)
  * @param testMode - If true, bypass date restrictions for development
  */
