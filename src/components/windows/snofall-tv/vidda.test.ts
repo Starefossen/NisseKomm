@@ -3,6 +3,7 @@ import { ALT_MAX, type Styring } from "./slede";
 import {
   BERGEN_SLUTT,
   createFri,
+  FJELL,
   FUGLER,
   fuglPos,
   GRENSE,
@@ -15,6 +16,7 @@ import {
   STEDER,
   stedsnavn,
   utenfor,
+  vindStyrke,
   vinkelTil,
   type FriOpts,
 } from "./vidda";
@@ -36,7 +38,8 @@ describe("fri flyging på vidda", () => {
     const z0 = sim.s.z;
     fly(sim, 2);
     expect(sim.s.z).toBeLessThan(z0 - 1000);
-    expect(Math.abs(sim.s.x)).toBeLessThan(1);
+    // The wind drifts it a little sideways, never off course.
+    expect(Math.abs(sim.s.x)).toBeLessThan(300);
     fly(sim, 3, { ...still, steer: 1 });
     expect(sim.s.kurs).toBeGreaterThan(Math.PI / 2);
     expect(sim.s.x).toBeGreaterThan(500);
@@ -181,5 +184,14 @@ describe("fri flyging på vidda", () => {
     sim.s.stoppTil = sim.s.tid + 1;
     fly(sim, 0.5);
     expect([sim.s.x, sim.s.z]).toEqual([x, z]);
+  });
+
+  it("wind is gentle on the plain, gusty by the peaks and high up", () => {
+    const n = FJELL[0];
+    expect(vindStyrke(0, 9000, 100)).toBeLessThan(0.4);
+    expect(vindStyrke(n.x + n.r, n.z, 100)).toBeGreaterThan(0.5);
+    expect(vindStyrke(0, 9000, ALT_MAX)).toBeGreaterThan(
+      vindStyrke(0, 9000, 100) + 0.2,
+    );
   });
 });

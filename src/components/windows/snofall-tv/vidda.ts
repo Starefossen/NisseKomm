@@ -198,6 +198,19 @@ export function høyde(x: number, z: number) {
   return h;
 }
 
+/** Gust push at full strength, in sim units/s sideways (the sled flies FART). */
+export const VIND_FRI = 140;
+
+/** How hard the wind blows here, 0..1: calm on the plain, gusty near peaks and high up. */
+export function vindStyrke(x: number, z: number, alt: number) {
+  let fjell = 0;
+  for (const f of FJELL) {
+    const d2 = ((x - f.x) ** 2 + (z - f.z) ** 2) / (f.r * f.r);
+    if (d2 < 16) fjell = Math.max(fjell, Math.exp(-d2 / 4));
+  }
+  return Math.min(1, 0.2 + fjell * 0.5 + (alt / ALT_MAX) * 0.35);
+}
+
 export interface FriHus {
   x: number;
   z: number;
@@ -400,6 +413,8 @@ export function createFri(o: FriOpts) {
     /** The stick as the reins feel it (first lag stage), and the sleigh's trailing turn. */
     styr: 0,
     aero: 1,
+    /** Sideways wind on the sled, -1..1 (+ = from the left); the snow drifts with it. */
+    vind: 0,
     slep: 0,
     bank: 0,
     fart: 0,
@@ -504,6 +519,18 @@ export function createFri(o: FriOpts) {
     if (inn.climb < 0 && s.alt <= gulv && s.tid >= s.sakteTil)
       krasj(ev, fx, fz);
     s.alt = Math.max(ALT_MIN, høyde(s.x, s.z) + 30, Math.min(ALT_MAX, s.alt));
+
+    // Wind: like the stages' gust zones it eases in, but here it never stops,
+    // turning slowly, and blows hardest by the peaks and high up.
+    const retning =
+      Math.sin(s.tid * 0.31) * 0.7 + Math.sin(s.tid * 0.11 + 2) * 0.5;
+    const vindMål =
+      Math.max(-1, Math.min(1, retning)) * vindStyrke(s.x, s.z, s.alt);
+    s.vind += (vindMål - s.vind) * Math.min(1, dt * 1.5);
+    if (s.tid >= s.stoppTil) {
+      s.x += Math.cos(s.kurs) * s.vind * VIND_FRI * motion * dt;
+      s.z += Math.sin(s.kurs) * s.vind * VIND_FRI * motion * dt;
+    }
 
     // Places: a locked one is a soft wall, an open one is found once.
     for (const st of STEDER) {

@@ -757,7 +757,8 @@ export function FriFlyging({
           r.tegn(M.bein, multiply(rein, transform(BEIN[j], [sving, 0, 0])));
         }
       }
-      if (!reduceMotion) r.snø(30 / 400, t, 0);
+      if (!reduceMotion)
+        r.snø((30 + Math.abs(sim.s.vind) * 50) / 400, t, sim.s.vind);
       r.avslutt();
       tegnKompass();
 
