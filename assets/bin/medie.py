@@ -321,6 +321,12 @@ def used_by(entity: str, root: Path = ROOT, table=None):
     return hits
 
 
+def anchor(a, root: Path = ROOT) -> str:
+    """'anker': true -> "1" (anchor to the job's own image); a ref spec -> that image, absolute (e.g. a closed
+    gate the clip of the open gate fades from and back to)."""
+    return "" if not a else "1" if a is True else str(root / image(a, root))
+
+
 def tv_lines(root: Path = ROOT):
     """One line per TV loop for tv-loops.sh: name|prompt|image|state|anchor|refs (absolute, refs space-separated)."""
     table = jobs(root)
@@ -328,7 +334,7 @@ def tv_lines(root: Path = ROOT):
         if j["generator"] == "loop":
             prompt, img, refs = render(k, root, table)
             yield "|".join([k.split("/", 1)[1], str(root / prompt), str(root / img) if img else "",
-                            j.get("tilstand", ""), "1" if j.get("anker") else "", " ".join(str(root / r) for r in refs)])
+                            j.get("tilstand", ""), anchor(j.get("anker"), root), " ".join(str(root / r) for r in refs)])
 
 
 FIXTURE = "src/data/entiteter.json"

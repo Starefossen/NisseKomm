@@ -14,5 +14,6 @@ if [ -n "${GENERER_LOGG:-}" ]; then echo "video $N" >> "$GENERER_LOGG"; fi  # ge
 jq -e '.error' "$OUT/$N.json" >/dev/null && { jq -c .error "$OUT/$N.json"; rm "$OUT/$N.json"; exit 1; }
 jq -r '.steps[] | select(.type=="model_output") | (.content // .output)[] | select(.type=="video") | .data' "$OUT/$N.json" | base64 -d > "$OUT/$N.raw.mp4"
 rm "$OUT/$N.json"
-"$(dirname "$0")/seamless.sh" "$OUT/$N.raw.mp4" "$OUT/$N.mp4" 1.5
+# SEAM=0 (anchored events): keep the full raw clip; a seam crossfade would cut the event's ending
+if [ "${SEAM:-1}" = 0 ]; then cp "$OUT/$N.raw.mp4" "$OUT/$N.mp4"; else "$(dirname "$0")/seamless.sh" "$OUT/$N.raw.mp4" "$OUT/$N.mp4" 1.5; fi
 echo "$OUT/$N.mp4"

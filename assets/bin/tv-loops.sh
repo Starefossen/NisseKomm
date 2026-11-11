@@ -54,11 +54,13 @@ loop() { # name prompt image state anchor refs
   need "$prompt" $refs || return 1
   # a dry run has not made the intermediate still or the state frame yet
   if [ -z "$DRY" ] || { [ "$img" != "$made" ] && [ -z "$state" ]; }; then need "$img" || return 1; fi
+  # Never send a character ref to the video model: it treats a third image as a target scene and
+  # morphs into it. Look comes from the prompt text; refs only feed intermediate stills.
   if [ -n "$anchor" ]; then
-    # shellcheck disable=SC2086
-    run "$A/bin/loop.sh" "$img" "$prompt" "$name.raw" 10 $refs \
-      && run "$A/bin/anchor.sh" "$A/out/$name.raw.mp4" "$img" "$T/$name.mp4" \
-      && meta "$T/$name.mp4" "$prompt" "$img" $refs
+    local key=$img; [ "$anchor" = 1 ] || { need "$anchor" || return 1; key=$anchor; }
+    run env SEAM=0 "$A/bin/loop.sh" "$img" "$prompt" "$name.raw" 10 \
+      && run "$A/bin/anchor.sh" "$A/out/$name.raw.mp4" "$key" "$T/$name.mp4" \
+      && meta "$T/$name.mp4" "$prompt" "$img" ${key#"$img"}
   else
     run "$A/bin/loop.sh" "$img" "$prompt" "$name" 10 && run cp "$A/out/$name.mp4" "$T/$name.mp4" \
       && meta "$T/$name.mp4" "$prompt" "$img"
