@@ -9,7 +9,30 @@ import { isLanMode } from "@/lib/mode";
 
 export type { Role };
 
-export const SESSION_COOKIE = "__Host-nissekomm";
+// One cookie per role, so a kid login in one tab doesn't end the guide
+// session in another. Browsers drop Secure cookies (and so __Host-) on plain
+// http to a LAN IP, so http gets unprefixed, non-Secure names.
+const COOKIE_BASE: Record<Role, string> = {
+  kid: "nissekomm",
+  parent: "nissekomm-guide",
+};
+const ROLES: Role[] = ["parent", "kid"];
+
+function isHttps(request: NextRequest): boolean {
+  const proto = request.headers.get("x-forwarded-proto")?.split(",")[0].trim();
+  return (proto ?? request.nextUrl.protocol.replace(":", "")) === "https";
+}
+
+export const cookieName = (role: Role, https: boolean) =>
+  (https ? "__Host-" : "") + COOKIE_BASE[role];
+
+// Both schemes are read: a proxy that drops X-Forwarded-Proto must not log
+// the kids out. A token only counts if it is in the session store.
+function sessionTokens(request: NextRequest): string[] {
+  return ROLES.flatMap((r) => [true, false].map((h) => cookieName(r, h)))
+    .map((n) => request.cookies.get(n)?.value)
+    .filter((t): t is string => !!t);
+}
 const MAX_AGE: Record<Role, number> = {
   kid: 45 * 24 * 60 * 60,
   parent: 12 * 60 * 60,
@@ -38,9 +61,7 @@ function matches(input: Buffer, envValue: string | undefined): boolean {
 
 const sha256 = (s: string) => createHash("sha256").update(s).digest("hex");
 
-export async function getRole(request: NextRequest): Promise<Role | null> {
-  const token = request.cookies.get(SESSION_COOKIE)?.value;
-  if (!token) return null;
+async function roleFor(token: string): Promise<Role | null> {
   const key = sha256(token);
   const s = await getStore().getSession(key);
   if (!s) return null;
@@ -52,9 +73,31 @@ export async function getRole(request: NextRequest): Promise<Role | null> {
   return s.role;
 }
 
-export async function deleteSession(request: NextRequest): Promise<void> {
-  const token = request.cookies.get(SESSION_COOKIE)?.value;
-  if (token) await getStore().deleteSession(sha256(token));
+/** The strongest valid role among the request's session cookies. */
+export async function getRole(request: NextRequest): Promise<Role | null> {
+  const roles = await Promise.all(sessionTokens(request).map(roleFor));
+  return ROLES.find((r) => roles.includes(r)) ?? null;
+}
+
+/** Deletes every session the request carries and clears their cookies. */
+export async function endSessions(
+  request: NextRequest,
+  response: NextResponse,
+): Promise<void> {
+  for (const t of sessionTokens(request)) {
+    await getStore().deleteSession(sha256(t));
+  }
+  for (const r of ROLES) {
+    for (const https of [true, false]) {
+      response.cookies.set(cookieName(r, https), "", {
+        maxAge: 0,
+        path: "/",
+        secure: https,
+        httpOnly: true,
+        sameSite: "lax",
+      });
+    }
+  }
 }
 
 export const jsonError = (error: string, status: number) =>
@@ -113,19 +156,21 @@ export async function checkCode(code: string): Promise<Role | null> {
 }
 
 export async function startSession(
+  request: NextRequest,
   response: NextResponse,
   role: Role,
 ): Promise<void> {
+  const https = isHttps(request);
   const token = randomBytes(32).toString("base64url");
   await getStore().setSession(sha256(token), {
     role,
     expires: Date.now() + MAX_AGE[role] * 1000,
   });
-  response.cookies.set(SESSION_COOKIE, token, {
+  response.cookies.set(cookieName(role, https), token, {
     maxAge: MAX_AGE[role],
     path: "/",
     sameSite: "lax",
-    secure: true,
+    secure: https,
     httpOnly: true,
   });
 }

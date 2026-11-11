@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
         ? { role, kidCode: normalizeCode(body.code).toUpperCase() }
         : { role },
     );
-    await startSession(response, role);
+    await startSession(request, response, role);
     return response;
   } catch {
     return jsonError("Noe gikk galt", 500);

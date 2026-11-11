@@ -12,10 +12,15 @@ import { NextRequest } from "next/server";
 import * as loginRoute from "../route";
 import { memoryStore } from "@/lib/db";
 import { proxy } from "@/proxy";
+import { getRole } from "@/lib/auth";
 
 const ORIGIN = "https://nissekomm.no";
 
-async function login(body: unknown, origin: string | null = ORIGIN) {
+async function login(
+  body: unknown,
+  origin: string | null = ORIGIN,
+  proto = "https",
+) {
   let result:
     { status: number; text: string; cookie: string | null } | undefined;
   await testApiHandler({
@@ -25,6 +30,7 @@ async function login(body: unknown, origin: string | null = ORIGIN) {
         "Content-Type": "application/json",
         // Behind Kourier the public host arrives as X-Forwarded-Host.
         "X-Forwarded-Host": "nissekomm.no",
+        "X-Forwarded-Proto": proto,
       };
       if (origin) headers.Origin = origin;
       const res = await fetch({
@@ -74,6 +80,34 @@ describe("POST /api/auth/login", () => {
     expect(JSON.parse((await login({ code })).text).role).toBe("parent");
     env.NISSEKOMM_MODE = "public";
     expect((await login({ code })).status).toBe(401);
+  });
+
+  it("keeps parent and kid sessions apart, also on http to a LAN IP", async () => {
+    // Browsers drop Secure/__Host- cookies on http://192.168.x.x, which
+    // logged the guide out on every navigation.
+    const parent = await login(
+      { code: "bjelle kakao reinsdyr vott" },
+      ORIGIN,
+      "http",
+    );
+    expect(parent.cookie).toMatch(/^nissekomm-guide=[\w-]{43};/);
+    expect(parent.cookie).not.toMatch(/Secure/);
+    expect(parent.cookie).toMatch(/HttpOnly/);
+    const kid = await login({ code: "snø lykt elg" }, ORIGIN, "http");
+    expect(kid.cookie).toMatch(/^nissekomm=[\w-]{43};/);
+
+    const jar = [parent.cookie!, kid.cookie!].map((c) => c.split(";")[0]);
+    const roleWith = (cookie: string, proto = "http") =>
+      getRole(
+        new NextRequest("http://lan/api/auth/verify", {
+          headers: { cookie, "x-forwarded-proto": proto },
+        }),
+      );
+    expect(await roleWith(jar.join("; "))).toBe("parent");
+    expect(await roleWith(jar[1])).toBe("kid");
+    // An https session cookie is still honoured if the proxy drops the proto.
+    const https = await login({ code: "snø lykt elg" });
+    expect(await roleWith(https.cookie!.split(";")[0])).toBe("kid");
   });
 
   it("rejects a wrong code with a generic error and no cookie", async () => {
