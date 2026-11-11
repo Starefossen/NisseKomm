@@ -10,11 +10,13 @@ const DAYS = (process.env.DAYS ?? "10,22").split(",").map(Number);
 const OUT = process.env.OUT;
 const KID = process.env.KID_CODE ?? "snø lykt rein";
 const PARENT = process.env.PARENT_CODE ?? "NORDPOL-DEV2026";
-const SIZES = [
-  [1024, 768],
-  [768, 1024],
-  [1440, 900],
-];
+const SIZES = process.env.SIZES
+  ? JSON.parse(process.env.SIZES)
+  : [
+      [1024, 768],
+      [768, 1024],
+      [1440, 900],
+    ];
 const APPS = [
   "JULIUS DAGBOK",
   "NISSEMAIL",
@@ -67,7 +69,11 @@ const report = async (page, name) => {
   await page.waitForTimeout(1200);
   const m = await page.evaluate(measure);
   const worst = Math.max(m.page, ...m.inner.map((i) => i.over), 0);
-  rows.push({ name, page: m.page, inner: m.inner.map((i) => i.over).join("/") });
+  rows.push({
+    name,
+    page: m.page,
+    inner: m.inner.map((i) => i.over).join("/"),
+  });
   console.log(
     `${name.padEnd(40)} page=${String(m.page).padStart(5)} inner=${m.inner.map((i) => `${i.over}(${i.h})`).join(" ") || "-"}`,
   );
@@ -122,10 +128,18 @@ for (const day of DAYS) {
     // Parent guide
     await page.goto(`${BASE}/nissemor-guide`);
     const gp = page.locator("input").first();
-    if (await gp.waitFor({ timeout: 5000 }).then(() => true, () => false)) {
+    if (
+      await gp.waitFor({ timeout: 5000 }).then(
+        () => true,
+        () => false,
+      )
+    ) {
       await gp.fill(PARENT);
       await page.getByRole("button", { name: "LOGG INN" }).click();
-      await page.waitForTimeout(1500);
+      await page
+        .getByRole("button", { name: "LOGG INN" })
+        .waitFor({ state: "detached", timeout: 10000 })
+        .catch(() => console.log("guide login failed"));
     }
     for (const p of GUIDE) {
       await page.goto(`${BASE}/nissemor-guide${p}`);
