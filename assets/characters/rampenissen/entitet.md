@@ -6,8 +6,11 @@
   "navn": ["Rampenissen"],
   "pronomen": "han",
   "fra_dag": 1,
-  "refs": {},
-  "notat": "ingen bildereferanse; portrettet bruker spill/portrett-julius.png som stilreferanse",
+  "refs": {
+    "ekte": "ref-ekte.jpg"
+  },
+  "standard_ref": "ekte",
+  "notat": "ref-ekte.jpg er familiens ekte nissedukke (gitignorert); portrettet bruker spill/portrett-julius.png som stilreferanse",
   "forhold": {
     "julius": "sjef",
     "iq": "beundrer oppfinnelsene",

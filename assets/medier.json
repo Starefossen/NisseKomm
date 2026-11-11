@@ -139,7 +139,7 @@
     "generator": "portrett",
     "ut": "spill/portrett-rampenissen.png",
     "mal": "assets/prompts/portrett/rampenissen.txt",
-    "refs": ["public/spill/portrett-julius.png"]
+    "refs": ["characters/rampenissen#ekte", "public/spill/portrett-julius.png"]
   },
   "tv/antenne-rolig": {
     "generator": "loop",
