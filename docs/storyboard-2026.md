@@ -203,7 +203,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Kontinuitet.** M2. Fra nå teller Frostgraden. «Kan snakke til» peker mot dag 21 (porten) og 23.
 
-### Dag 8 (ti) – Floken i Verkstedet · KRETSKORT
+### Dag 8 (ti) – Lampene som Lyver · KRETSKORT
 
 **Morgen.** Strek: tårn av frokostblandingspakker, skilt «SIGMA-TÅRN», sitter på toppen med suppeøse. Radio: «Uke én er ferdig! IQ feirer med å bygge noe. Jeg feiret med å bygge noe. Mitt er høyere. Hilsen fra toppen.»
 

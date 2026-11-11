@@ -352,9 +352,9 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - `oppsett_tid`: 3 min + frysetid
 - frost: 30 → 22
 
-### Dag 8 (ti) – Floken i Verkstedet · KRETSKORT
+### Dag 8 (ti) – Lampene som Lyver · KRETSKORT
 
-- `tittel`: Floken i Verkstedet (ny: den låste tittelen «Bestikk-Kretsløpet» gir KRETS = 5 av 9; se åpne spørsmål)
+- `tittel`: Lampene som Lyver (ny: den låste tittelen «Bestikk-Kretsløpet» gir KRETS = 5 av 9; se åpne spørsmål)
 - `nissemail_tekst` (79 ord): Uke én er ferdig! 🎉 IQ feirer med å lodde noe som skal holde Kulde ute av kanal 1 til 4. Jeg feiret med å bygge noe. Mitt var høyere. Håkon, du fikk ned arket IQ sendte. Følg hver ledning fra batteriet med fingeren. Hanna, hvis du vil: hvor mange pakker var det? Kristian: IQ sier noe om strøm i dag; hør etter. Og hør hva han kaller tingen han lodder på. Etterpå åpner IQs sledesimulator på skrivebordet: SLEDEFLUKT. – Rampenissen
 - `julius_ps`: Et tårn av frokostblanding med skilt. Jeg spurte Hjerterud hva «sigma» betyr. Hun sa «spør Kristian». IQ sov på loddebordet i natt med plata som pute; han sier den er ferdig i morgen tidlig.
 - `daily_alerts`: 🎉 NISSENE: Uke én fullført. IQ lodder noe grønt og sover ikke.
@@ -800,7 +800,7 @@ Sjekket per dag: `tittel`, `nissemail_tekst`, `julius_ps` (+ bonusvariant), `dai
 | 5   | ULRIKEN      | nei                                                                                     | –                                                                                                                                                                       |
 | 6   | LYKT         | **ja**, låst tittel «Lommelykt-Sporet» = 4 av 4                                         | ny tittel «Skyggene i Gangen»; e-posten sier «lampen», ikke lommelykt                                                                                                   |
 | 7   | KULDE        | nei (navnet står ingen steder før koden; Kuldes linje dag 7 sier det ikke)              | Kulde-bildet skrevet uten navn                                                                                                                                          |
-| 8   | KRETSKORT    | **ja**, låst tittel «Bestikk-Kretsløpet» = KRETS 5 av 9                                 | ny tittel «Floken i Verkstedet»                                                                                                                                         |
+| 8   | KRETSKORT    | **ja**, låst tittel «Bestikk-Kretsløpet» = KRETS 5 av 9                                 | ny tittel «Lampene som Lyver»                                                                                                                                           |
 | 9   | 24           | nei                                                                                     | –                                                                                                                                                                       |
 | 10  | SPEKTER      | nei                                                                                     | –                                                                                                                                                                       |
 | 11  | 75           | nei (storyboard-tittelen «… på 75 MHz» er borte)                                        | tittel «Antenne-Krisen»                                                                                                                                                 |
@@ -840,7 +840,7 @@ Etter vanskelighetsrevisjonen: ingen ny tekst nevner et kodeord eller et skjelet
 
 ## E. Åpne spørsmål til Hans
 
-1. **Fire låste titler lekker koden** (dag 6, 8, 22, 23) og én er på grensen (17). **Venter på avgjørelse.** Dokumentet viser både gammel og foreslått tittel per dag («Skyggene i Gangen», «Floken i Verkstedet», «Grønt over Polarhimmelen», «Winters Tall», «Nattevakt»). Alternativet er å beholde titlene og akseptere lekkasjen i Kalender og iCal fra morgenen.
+1. **Fire låste titler lekker koden** (dag 6, 8, 22, 23) og én er på grensen (17). **Venter på avgjørelse.** Dokumentet viser både gammel og foreslått tittel per dag («Skyggene i Gangen», «Lampene som Lyver», «Grønt over Polarhimmelen», «Winters Tall», «Nattevakt»). Alternativet er å beholde titlene og akseptere lekkasjen i Kalender og iCal fra morgenen.
 2. **«Landås» i linjenavnet.** Avgjort: linjen heter «Direktelinjen», aldri med stedsnavn. Byggeliste i A0.
 3. **Dag 7-varselet.** Avgjort: vises først når dag 7-koden er inne.
 4. **Avskjedsbrevet dag 24.** Avgjort: beholdes.

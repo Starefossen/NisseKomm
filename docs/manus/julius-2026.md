@@ -207,7 +207,7 @@ Kulde-nivå 2. Første dag med rim på innsiden av vinduet og langs bordkanten, 
    - Handling: Legger venstre hånd rundt trekoppen, nikker rolig.
    - Kulde: Synlig pust, klikk.
 
-## Dag 8 (ti) – Floken i Verkstedet · KRETSKORT
+## Dag 8 (ti) – Lampene som Lyver · KRETSKORT
 
 Kulde-nivå 1. Rim på vinduet, synlig pust. Mikrofonen «sitter fast» i hånda hans hele klippet.
 

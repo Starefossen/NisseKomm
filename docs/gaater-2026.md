@@ -173,7 +173,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Utskrifter:** `dag07-frostlapp.pdf` (1 side, tykt papir).
 - **Reserve:** Mangler tavla tegn for L eller E, henger kortene fra dag 1 og 3 på brettet, og `runer-fasit.pdf` ligger i Nissemor-guiden (aldri på brettet). Blir det ikke fryst, legges posen i isbitskuffen.
 
-### Dag 8 (ti) – Floken i Verkstedet · KRETSKORT
+### Dag 8 (ti) – Lampene som Lyver · KRETSKORT
 
 - **Kode:** KRETSKORT (uendret).
 - **Mekanikk:** følg ledningen i floken, som før. Nytt: arket har ikke lenger teksten «kun lamper med strøm teller»; den regelen sier Julius. En fjerde ledning går fra batteriet til lampe 4 gjennom en **åpen bryter** (tegnet som brudd med hendel). Lampe 4 har bokstaven **E**. Den som tar den med, får `_ R _ E S _ O _ _` og finner ikke ordet. Kristian har hatt strømkrets på skolen; Håkon har ikke.

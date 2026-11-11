@@ -62,7 +62,7 @@ def field(sec, name):
 
 
 def strip_note(t):
-    # "Floken i Verkstedet (ny: ...)" -> "Floken i Verkstedet"
+    # "Lampene som Lyver (ny: ...)" -> "Lampene som Lyver"
     return re.sub(r"\s*\((gammel|ny|uten)\b.*\)$", "", t)
 
 

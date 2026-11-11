@@ -263,7 +263,7 @@ export const DAGER = [
   },
   {
     dag: 8,
-    tittel: "Floken i Verkstedet · {8}",
+    tittel: "Lampene som Lyver · {8}",
     kode: "{8}",
     mekanikk:
       "følg ledningen i floken, som før. Nytt: arket har ikke lenger teksten «kun lamper med strøm teller»; den regelen sier Julius. En fjerde ledning går fra batteriet til lampe 4 gjennom en åpen bryter (tegnet som brudd med hendel). Lampe 4 har bokstaven E. Den som tar den med, får _ R _ E S _ O _ _ og finner ikke ordet. Kristian har hatt strømkrets på skolen; Håkon har ikke.",
