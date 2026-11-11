@@ -66,7 +66,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** marshmallow-krig mellom Rampenissen og kosedyrene, én bamse med plaster. Helg, 09-sendingen.
 
-**Klipp:** «God lørdag, sovetryna! Klokka e ni, og dokker e sikkert våkne. Æ har vært våken sia fire. Det har vært krig i stua. Æ og bamsan. Vi vant. Begge lag vant, det va litt uklart. Én bamse blei truffa i magen og har plaster, han e tapper. Kulene va myke og kvite, og æ ska rydd. Seinere. Og hør: en brevfugl landa i natt, den første over Bergen i år! Winter oppi Snøfall stole ikkje på nån no. Ho skriv alt i hemmelig skrift fordi nån lytte. Fuglen har nåkka rart på vingen. Æ skjønne det ikkje. Æ e bare agent, ikkje sekretær. Kos dokker i regnet!»
+**Klipp:** «God lørdag, sovetryna! Klokka e ni, og dokker e sikkert våkne. Æ har vært våken sia fire. Det har vært krig i stua. Æ og bamsan. Vi vant. Begge lag vant, det va litt uklart. Én bamse blei truffa i magen og har plaster, han e tapper. Kulene va myke og kvite, og æ ska rydd. Seinere. Og hør: en brevfugl landa i natt, den første over Bergen i år! Winter oppi Snøfall stole ikkje på nån no. Han skriv alt i hemmelig skrift fordi nån lytte. Fuglen har nåkka rart på vingen. Æ skjønne det ikkje. Æ e bare agent, ikkje sekretær. Kos dokker i regnet!»
 
 **intro_hint:** «Det skal ha vært krig i en stue på Landås i natt. Vi har et øyenvitne på linjen.»
 
@@ -156,7 +156,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** «ryddet»: fjernkontroller i brødboksen, brød i TV-benken, tannbørster i bestikkskuffen, sitter i brødboksen med lokket på hodet. Han vet nå hvem Kulde er.
 
-**Klipp:** «God morra fra brødboksen. Ja, sjø, æ sitt i den. Lokket e hatt. I natt blei heile pakkesentralen snudd på hodet. Alt ligg i én haug, og Winter gråte. Nesten. Ho har aldri grått. Og dokker veit jo kem det e no. Dokker lest boka i går, og æ satt i stua og hørt. Det e ikkje nåkka slemt der nede. Det e nåkka som vil bli sett. Æ trur den snudde båndet fordi det e det einaste som får Winter til å se opp. Så æ tenkt: æ hjelpe til heime! Æ rydda. Æ trur æ gjord det verre. Fjernkontrollan e trygge. En plass. Tannbørstan også. Ikkje spør. Over.»
+**Klipp:** «God morra fra brødboksen. Ja, sjø, æ sitt i den. Lokket e hatt. I natt blei heile pakkesentralen snudd på hodet. Alt ligg i én haug, og Winter gråte. Nesten. Han har aldri grått. Og dokker veit jo kem det e no. Dokker lest boka i går, og æ satt i stua og hørt. Det e ikkje nåkka slemt der nede. Det e nåkka som vil bli sett. Æ trur den snudde båndet fordi det e det einaste som får Winter til å se opp. Så æ tenkt: æ hjelpe til heime! Æ rydda. Æ trur æ gjord det verre. Fjernkontrollan e trygge. En plass. Tannbørstan også. Ikkje spør. Over.»
 
 **intro_hint:** «Noen har ryddet. Han vil gjerne forklare seg.»
 
@@ -204,7 +204,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** krøpet inn i Hannas julesokk, bare føttene ut. Han sier ikke stedsnavnet deres i dag.
 
-**Klipp:** «Rampenissen her, og det e varmt igjen! Muren holdt i går. Porten står åpen. Alle såg det, heile Snøfall, og Orakelet sei det e varmare der nede no. Æ sov godt for første gang på lenge. Men så ringt Julius klokka fem. Han vil vit nøyaktig kor dokker bor. Til julenatt. Æ sa «ved sofaen». Det holdt ikkje. Æ sa «i Bergen». Det holdt heller ikkje. Winter vil ha det i tall, ho stole ikkje på ord, og æ kan ikkje tall. Så æ blei stressa og gjømte mæ i en sokk. Det va en feil. Den e liten. Føttan mine e ute. Resten e inne. Hjelp. Over.»
+**Klipp:** «Rampenissen her, og det e varmt igjen! Muren holdt i går. Porten står åpen. Alle såg det, heile Snøfall, og Orakelet sei det e varmare der nede no. Æ sov godt for første gang på lenge. Men så ringt Julius klokka fem. Han vil vit nøyaktig kor dokker bor. Til julenatt. Æ sa «ved sofaen». Det holdt ikkje. Æ sa «i Bergen». Det holdt heller ikkje. Winter vil ha det i tall, han stole ikkje på ord, og æ kan ikkje tall. Så æ blei stressa og gjømte mæ i en sokk. Det va en feil. Den e liten. Føttan mine e ute. Resten e inne. Hjelp. Over.»
 
 **intro_hint:** «Gjesten vår sitter fast i noe lite og ber om hjelp.»
 
