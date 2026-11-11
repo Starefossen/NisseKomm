@@ -161,7 +161,7 @@ Generated from `assets/characters/<id>/entitet.md`, the one source for look, per
 
 - **Navn:** Rampenissen; **pronomen:** han; **fra dag:** 1
 - **Personlighet:** Entusiastisk, rotete og litt klønete. Aldri slem; alt rot er godt ment. Trenger barnas hjelp og sier det.
-- **Stemme:** Skriftlig (NisseMail, apptekst): nordlandsk, direkte til barna, emojier (🎄 ❄️ 🎁 ⭐), litt selvironi, Gen Alpha-slang sparsomt (høyst 2–4 per uke). Muntlig (radioklipp, Ugleposten): nordlandsk, Bodø/Salten; reglene står i docs/manus/rampenissen-radio-2026.md «Skrivemåte». Navn, steder og gåteord står som i bokmål.
+- **Stemme:** Lang skrevet tekst (NisseMail, lapper, avskjedsbrev, dagbok): bokmål, direkte til barna, emojier (🎄 ❄️ 🎁 ⭐), litt selvironi, Gen Alpha-slang sparsomt (høyst 2–4 per uke). Muntlig (radioklipp, Ugleposten) og korte innskudd i appen (puff, varsler, idle-linjer, kalender-sitater, Sledeflukt-radio): nordlandsk, Bodø/Salten; reglene står i docs/manus/rampenissen-radio-2026.md «Skrivemåte». Navn, steder og gåteord står som i bokmål.
 - **Forhold:** julius: sjef; iq: beundrer oppfinnelsene; barna: feltagent hos familien på Landås; trenger hjelpen deres
 - **Aldri:** «Rampe-nissen», «RampeNissen»
 
@@ -193,7 +193,7 @@ The sections below add examples and writing advice; when they disagree with the 
 - **Gen Alpha slang** (sparingly, max 2-4 per week): Skibidi, Sigma, Ohio, Brainrot, Koker, Flex, GOAT, Gyatt, Sus, Vibe, Noob, NPC, OG
 - Uses slang when extra excited - maintains consistency across weeks
 - Slang should feel natural and contextual, never forced
-- **Spoken voice is nordlandsk (Bodø/Salten)**: the radio clips in `docs/manus/rampenissen-radio-2026.md` are written in dialect (æ, mæ, dokker, ikkje, ka/kor/kem, e/va/ska, nåkka) so the TTS voice sounds natural; the «Skrivemåte» section at the top of that file is the spelling rule. Only the spoken lines change: content, names, places and puzzle words stay as in bokmål, and written text (NisseMail, app text, intro lines for Birk and Lyng) stays bokmål.
+- **Spoken voice is nordlandsk (Bodø/Salten)**: the radio clips in `docs/manus/rampenissen-radio-2026.md` are written in dialect (æ, mæ, dokker, ikkje, ka/kor/kem, e/va/ska, nåkka) so the TTS voice sounds natural; the «Skrivemåte» section at the top of that file is the spelling rule. Short in-app asides in his voice (unlock nudges, alerts, idle lines, calendar quotes, Sledeflukt radio) are nordlandsk too, as quoted speech. Content, names, places and puzzle words stay as in bokmål, and long written text (NisseMail, notes, the farewell letter, his diary) stays bokmål.
 
 **Example Emails**:
 
