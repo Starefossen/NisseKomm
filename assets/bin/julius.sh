@@ -7,7 +7,8 @@ P="Bruk referansebildet som første bilde: samme mann, samme rom, samme lys, sam
 $(cat "$A/characters/julius/beskrivelse.txt")
 HANDLING: $ACTION
 REPLIKK (sies inn i mikrofonen, ordrett): \"$LINE\"
-Lengde: $SECS sekunder. Single continuous shot, no scene cuts.
+Lengde: $SECS sekunder. Replikken er ferdig uttalt senest 2 sekunder før klippet slutter; de siste sekundene er han stille og smiler inn i mikrofonen.
+Single continuous shot, no scene cuts.
 Do not add, remove or change any object: no telephone, no cups other than the wooden mug, no bells, bottles, vases, quills or magnifying glass. Do not move the microphone to the left hand, do not use both hands on it, do not let it disappear. Do not show a third hand. Everything on the desk in the first frame is still there in the last frame."
 jq -n --arg p "$P" --arg secs "$SECS" --rawfile img <(base64 -i "$A/characters/julius/ref-v3.jpg" | tr -d '\n') \
   '{model:"gemini-omni-1.2-flash",input:[{type:"image",data:$img,mime_type:"image/jpeg"},{type:"text",text:$p}],response_format:{type:"video",duration:($secs+"s")}}' > "$D/$NAME.req.json"

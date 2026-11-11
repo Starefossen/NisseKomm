@@ -88,6 +88,8 @@ export function JuliusVideo({
             ref={videoRef}
             key={src}
             src={src}
+            // Kulde's effects (day 10's grey, freezes, frost) are baked into the file by julius-dag.py,
+            // so Snøfall TV K3 shows the same; no CSS filter here
             // The clips open on black; a still from 3 s in sits next to each mp4
             poster={src.replace(/\.mp4$/, ".jpg")}
             controls

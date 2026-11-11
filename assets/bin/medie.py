@@ -63,19 +63,26 @@ def sha(data) -> str:
 
 
 def julius_segments(day: int, root: Path = ROOT):
-    """[(line, secs, action, kulde)] for one day of the Julius script; [] if the day is missing."""
+    """[(line, secs, action, kulde, locked)] for one day of the Julius script; [] if the day is missing.
+
+    Tolerant of field order and missing fields (the script is rewritten by hand): a segment is a
+    **Replikk:** «…» followed by «- Varighet: N s», «- Handling:», «- Kulde:» lines. locked = the
+    segment is marked as a locked brikke («låst» or «brikke» on the Varighet line or after the line)."""
     text = (root / JULIUS_MS).read_text()
     block = re.search(rf"^## Dag {day} \(.*?(?=^## Dag |\Z)", text, re.S | re.M)
     if not block:
         return []
-    return [
-        (line.strip(), int(secs), action.strip(), kulde.strip())
-        for line, secs, action, kulde in re.findall(
-            r"\*\*Replikk:\*\* «(.+?)»\s*\n\s*- Varighet: (\d+) s.*?\n\s*- Handling: (.+?)\n\s*- Kulde: (.+?)\n",
-            block.group(0),
-            re.S,
-        )
-    ]
+    out = []
+    for seg in re.split(r"\*\*Replikk:\*\*", block.group(0))[1:]:
+        line = re.match(r"\s*«(.+?)»(.*)", seg, re.S)
+        secs = re.search(r"^\s*- Varighet: (\d+) s(.*)$", seg, re.M)
+        if not line or not secs:
+            continue
+        field = lambda k: (m.group(1).strip() if (m := re.search(rf"^\s*- {k}: (.+)$", seg, re.M)) else "")
+        tag = (line.group(2).split("\n")[0] + secs.group(2)).lower()
+        out.append((line.group(1).strip(), int(secs.group(1)), field("Handling"), field("Kulde"),
+                    "låst" in tag or "brikke" in tag))
+    return out
 
 
 def rampenissen_text(day: int, root: Path = ROOT) -> str:
@@ -387,6 +394,13 @@ def selftest():
     import tempfile
     with tempfile.TemporaryDirectory() as d:
         r = Path(d)
+        (r / JULIUS_MS).parent.mkdir(parents=True, exist_ok=True)
+        (r / JULIUS_MS).write_text("## Dag 3 (x)\n1. **Replikk:** «Hei.»\n   - Varighet: 13 s (2 ord)\n   - Handling: Vinker.\n"
+                                   "   - Kulde: Svak knitring.\n2. **Replikk:** «Brikke her.» (låst)\n   - Varighet: 15 s\n"
+                                   "   - Kulde: Fargene renner ut.\n## Dag 4 (y)\n")
+        assert julius_segments(3, r) == [("Hei.", 13, "Vinker.", "Svak knitring.", False),
+                                         ("Brikke her.", 15, "", "Fargene renner ut.", True)], julius_segments(3, r)
+        assert julius_segments(4, r) == []
         for f, t in {"assets/stil.md": "STIL\n",
                      "assets/characters/winter/beskrivelse.txt": "KARAKTER: lang mann\nKLÆR: hatt \n",
                      "assets/characters/winter/entitet.md":
