@@ -18,7 +18,8 @@ want() { [ -n "$LIST" ] && { echo "$1"; return 1; }; [ -z "$ONLY" ] || [ "$ONLY"
 keep() { want "$(basename "$1" .mp4)" || return 0; [ -z "$FORCE" ] && [ -f "$1" ] && [ "$($M status "$1" | head -1)" != stale ]; }
 meta() { $M skriv tv-loops.sh "$1" "$2" - gemini-omni-1.2-flash "${@:3}"; } # out prompt image [ref]
 # Winter's look comes from his reference photo (gitignored, like Julius' ref-v3.jpg)
-ref() { case $1 in *winter) echo "$A/characters/winter/ref-v1-outside.jpg" ;; esac; }
+# The gate is official business, so Winter wears the top hat there (beskrivelse.txt: FLOSSHATT)
+ref() { case $1 in port-winter) echo "$A/characters/winter/ref-v1-tophat.jpg" ;; *winter) echo "$A/characters/winter/ref-v1-outside.jpg" ;; esac; }
 job() { # name base-image location variant
   local name=$1 img=$2 loc=$3 var=$4
   keep "$T/$name.mp4" && return 0
