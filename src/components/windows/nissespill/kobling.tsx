@@ -65,8 +65,8 @@ export function rekordTekst(alle: Record<string, SledeResultat>): string {
 /** Replaces the live markers in a chapter line. */
 export function fyll(tekst: string): string {
   return tekst
-    .replace("{{brev}}", () => brevTekst(GameEngine.getSantaLetters()))
-    .replace("{{rekorder}}", () =>
+    .replaceAll("{{brev}}", () => brevTekst(GameEngine.getSantaLetters()))
+    .replaceAll("{{rekorder}}", () =>
       rekordTekst(GameEngine.getSledeResultater()),
     );
 }

@@ -80,7 +80,11 @@ export function Day1Boot({ onDone }: { onDone: () => void }) {
       tabIndex={0}
       aria-label="Hopp over"
       onClick={finish}
-      onKeyDown={(e) => SKIP_KEYS.includes(e.key) && finish()}
+      onKeyDown={(e) => {
+        if (!SKIP_KEYS.includes(e.key)) return;
+        e.preventDefault(); // Space would scroll the page behind
+        finish();
+      }}
       className="fixed inset-0 z-[60] bg-(--crt-bg) flex items-center justify-center cursor-pointer"
     >
       <Static />

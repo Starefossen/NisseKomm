@@ -3,7 +3,7 @@
 import { mediaUrl } from "@/lib/media";
 import { useRef, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
-import { getAdventDay, getCurrentDay } from "@/lib/date-utils";
+import { getAdventDay, getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 import transcripts from "@/data/julius_videoer.json";
 import { Day1Tail } from "../ui/Day1Opener";
 
@@ -41,7 +41,8 @@ export function JuliusVideo({
     );
   }
 
-  const isToday = day === getCurrentDay();
+  // January rewatching: no day is "new" then.
+  const isToday = getCurrentMonth() === 12 && day === getCurrentDay();
   const transcript = videoOnly
     ? undefined
     : transcripts.find((t) => t.dag === day)?.transkripsjon;

@@ -6,7 +6,7 @@ import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
-import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
+import { getAdventDay, getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 import { TIDBITS, visible } from "@/lib/tidbits";
 
 export interface Track {
@@ -65,7 +65,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
   useEffect(() => {
     const skjult = TIDBITS.musikk.skjultSpor;
     const hidden =
-      visible([skjult], getCurrentDay()).length > 0 &&
+      visible([skjult], getAdventDay()).length > 0 &&
       GameEngine.isQuestCompleted(skjult.etterLøstDag)
         ? fetch(mediaUrl(skjult.path), { method: "HEAD" })
             .then((r) => r.ok)
