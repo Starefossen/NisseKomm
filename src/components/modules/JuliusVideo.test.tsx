@@ -10,10 +10,13 @@ import { getCurrentDay, setTimeOverride } from "@/lib/date-utils";
 ).IS_REACT_ACT_ENVIRONMENT = true;
 
 describe("JuliusVideo", () => {
-  beforeEach(() => localStorage.clear());
+  beforeEach(() => {
+    localStorage.clear();
+    setTimeOverride({ day: 3, month: 12, hour: 8, minute: 0 });
+  });
 
   it("a failed video load does not count as watched", () => {
-    const day = Math.max(1, getCurrentDay());
+    const day = getCurrentDay();
     const el = document.createElement("div");
     act(() => createRoot(el).render(<JuliusVideo day={day} />));
 
@@ -43,5 +46,10 @@ describe("JuliusVideo autoplay", () => {
     expect(render(4).autoplay).toBe(false);
     GameEngine.markJuliusVideoWatched(5);
     expect(render(5).autoplay).toBe(false);
+  });
+
+  it("sends nothing before December", () => {
+    setTimeOverride({ day: 11, month: 11, hour: 8, minute: 0 });
+    expect(render(1)).toBeNull();
   });
 });
