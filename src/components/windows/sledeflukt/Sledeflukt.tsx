@@ -890,7 +890,7 @@ function Etappeflukt({
         p,
         [
           -climb * 0.12,
-          -yaw,
+          -yaw - sim.s.vx * 0.12,
           -bank * 1.1 +
             (rull ? (1 - rull / RULL) * Math.PI * 2 : 0) +
             // A damaged sled wobbles.
@@ -898,7 +898,14 @@ function Etappeflukt({
         ],
         1,
       );
-      r.tegn(M.slede, base);
+      // The sleigh swings out behind the reindeer while a turn builds.
+      r.tegn(
+        M.slede,
+        multiply(
+          base,
+          transform([0, 0, 0], [0, (sim.s.vx - sim.s.slep) * 0.35, 0]),
+        ),
+      );
       r.tegn(M.tømmer, base);
       for (let i = 0; i < 3; i++) {
         const fase = gange + i * 2.1;

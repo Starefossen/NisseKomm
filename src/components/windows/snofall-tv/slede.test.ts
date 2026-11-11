@@ -216,12 +216,27 @@ describe("sim", () => {
     const nudge = sim.s.px;
     expect(nudge).toBeGreaterThan(0);
     expect(nudge).toBeLessThan(1.9 / 60 / 2);
-    for (let i = 0; i < 30; i++) sim.step(1 / 60, { ...still, steer: 1 });
-    expect(sim.s.vx).toBeGreaterThan(1.8);
+    // Eases in: little after 0.1 s, most of the way after STYRE_TREGHET.
+    for (let i = 0; i < 5; i++) sim.step(1 / 60, { ...still, steer: 1 });
+    expect(sim.s.vx).toBeLessThan(0.6);
+    for (let i = 0; i < 40; i++) sim.step(1 / 60, { ...still, steer: 1 });
+    expect(sim.s.vx).toBeGreaterThan(1.5);
+    // The sleigh trails the reindeer while the turn builds.
+    expect(sim.s.slep).toBeLessThan(sim.s.vx);
     const start = sim.s.fart;
     sim.s.dist = ETAPPER[0].lengde - 10;
     sim.step(1 / 600, still);
     expect(sim.s.fart / start).toBeCloseTo(1 + RAMP, 1);
+  });
+
+  it("turns slower at full boost", () => {
+    const sving = (gass: number) => {
+      const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
+      for (let i = 0; i < 40; i++)
+        sim.step(1 / 60, { ...still, steer: 1, gass });
+      return sim.s.vx;
+    };
+    expect(sving(1)).toBeLessThan(sving(0) * 0.95);
   });
 
   it("reduced motion flies slower and still finishes", () => {

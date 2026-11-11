@@ -27,6 +27,8 @@ export const ALT_MIN = 60;
 export const ALT_START = 150;
 /** Full stick turns this fast (a circle in about six seconds). */
 const SVING = 1.05;
+/** Seconds for a turn to build or fade; higher feels heavier. */
+export const STYRE_TREGHET = 0.5;
 const KLATRE = 150;
 /** How far ahead the sled reads the terrain; a wall higher than this over the sled is a crash. */
 const SE_FRAM = 400;
@@ -394,6 +396,9 @@ export function createFri(o: FriOpts) {
     kurs: 0,
     /** Smoothed stick, drives the turn and the bank. */
     sving: 0,
+    /** The stick as the reins feel it (first lag stage), and the sleigh's trailing turn. */
+    styr: 0,
+    slep: 0,
     bank: 0,
     fart: 0,
     tid: 0,
@@ -438,9 +443,13 @@ export function createFri(o: FriOpts) {
   function step(dt: number, inn: Styring): FriHendelse[] {
     const ev: FriHendelse[] = [];
     s.tid += dt;
-    const k = Math.min(1, dt * 6);
-    s.sving += (Math.max(-1, Math.min(1, inn.steer)) - s.sving) * k;
-    let sving = s.sving * SVING;
+    // Two lag stages: the turn eases in and out over STYRE_TREGHET, and is slower at speed.
+    const k = Math.min(1, (dt * 4) / STYRE_TREGHET);
+    s.styr += (Math.max(-1, Math.min(1, inn.steer)) - s.styr) * k;
+    s.sving += (s.styr - s.sving) * k;
+    s.slep += (s.sving - s.slep) * Math.min(1, dt * 2.5);
+    const fartsforhold = s.fart > 0 ? s.fart / FART : 1;
+    let sving = s.sving * SVING * Math.min(1.1, 1 / Math.sqrt(fartsforhold));
 
     // Past the curtain the sled is turned back; far past it, carried back.
     const { ute, mål } = utenfor(s.x, s.z, o.bergen);

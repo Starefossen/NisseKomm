@@ -727,6 +727,9 @@ export const ALT_MAX = 450;
 export const SKADE_PER_TREFF = 0.34;
 export const ALT_CRUISE = 120;
 
+/** Seconds for a turn to build or fade; higher feels heavier. */
+export const STYRE_TREGHET = 0.5;
+
 export function createSim(e: SledeEtappe, opts: SimOpts) {
   const ting = lagBane(e);
   for (const t of ting)
@@ -738,6 +741,10 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     px: 0,
     /** Sideways velocity in track units/s; the stick sets a target it glides to. */
     vx: 0,
+    /** The stick as the reins feel it: eases in and out over STYRE_TREGHET. */
+    styr: 0,
+    /** Sideways velocity the sleigh trails behind the reindeer with (render yaw). */
+    slep: 0,
     alt: ALT_CRUISE,
     bank: 0,
     dist: 0,
@@ -802,8 +809,14 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     const gust = s.vind * (opts.assist ? 0.25 : 0.55) * e.blanding.vindKraft;
     s.gust = gust;
 
-    // Inertia: a quick tap nudges, a held stick builds to full speed in ~0.3 s.
-    s.vx += (inn.steer * 1.9 + gust - s.vx) * Math.min(1, dt * 9);
+    // Weight: two lagged stages give an S-curve, so a turn eases in and out
+    // over about STYRE_TREGHET; at high speed the reindeer turn less.
+    const k = Math.min(1, (dt * 4) / STYRE_TREGHET);
+    s.styr += (inn.steer - s.styr) * k;
+    const fartsforhold = s.fart > 0 ? s.fart / e.fart : 1;
+    const maks = 1.9 * Math.min(1.1, 1 / Math.sqrt(fartsforhold));
+    s.vx += (s.styr * maks + gust - s.vx) * k;
+    s.slep += (s.vx - s.slep) * Math.min(1, dt * 2.5);
     s.px = Math.max(-1.3, Math.min(1.3, s.px + s.vx * dt));
     if (Math.abs(s.px) >= 1.3) s.vx = 0;
     if (inn.climb !== 0) {
@@ -822,7 +835,7 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
       s.alt = ALT_MIN + 40;
     } else if (!opts.assist && s.alt < ALT_MIN + 8) skrape(ev);
     s.alt = Math.max(ALT_MIN, Math.min(ALT_MAX, s.alt));
-    s.bank += (s.vx * 0.2 - s.bank) * Math.min(1, dt * 6);
+    s.bank += (s.vx * 0.28 - s.bank) * Math.min(1, dt * 6);
 
     if (inn.sprang && s.kraft >= 1 && s.tid > s.sprangTil) {
       s.kraft = 0;
