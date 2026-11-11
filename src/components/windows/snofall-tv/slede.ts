@@ -37,6 +37,10 @@ export interface Blanding {
   band: number;
   /** Every n-th segment is a house with a smoking chimney to deliver to (0 = none). */
   hus?: number;
+  /** Odds that a tree stands on the ring line halfway between two rings (over it or round it). */
+  sti?: number;
+  /** Odds of a cliff (a peak) on the ring line in the same slot; climb over or go round. */
+  klippe?: number;
   grotte?: boolean;
   mur?: boolean;
 }
@@ -129,7 +133,15 @@ export const ETAPPER: readonly SledeEtappe[] = [
       "Skogen står tett som en børste. Lavt mellom stammene, eller høyt over toppene!",
     lengde: 38000,
     fart: 880,
-    blanding: { ...ROLIG, høyde: 65, tre: 0.6, stjerne: 0.15, vind: 0.05 },
+    blanding: {
+      ...ROLIG,
+      sti: 0.2,
+      fugl: 0.06,
+      høyde: 65,
+      tre: 0.6,
+      stjerne: 0.15,
+      vind: 0.05,
+    },
     horisont: TUNDRA,
     himmel: ["#04070f", "#0f1a2c"],
     snø: ["#c8d8ea", "#adc1dc"],
@@ -148,6 +160,8 @@ export const ETAPPER: readonly SledeEtappe[] = [
     fart: 900,
     blanding: {
       ...ROLIG,
+      sti: 0.15,
+      fugl: 0.07,
       høyde: 75,
       tre: 0.2,
       stjerne: 0.55,
@@ -172,6 +186,9 @@ export const ETAPPER: readonly SledeEtappe[] = [
     fart: 920,
     blanding: {
       ...ROLIG,
+      sti: 0.2,
+      klippe: 0.1,
+      fugl: 0.08,
       høyde: 60,
       tre: 0.3,
       stjerne: 0.2,
@@ -197,6 +214,9 @@ export const ETAPPER: readonly SledeEtappe[] = [
     fart: 950,
     blanding: {
       ...ROLIG,
+      sti: 0.15,
+      klippe: 0.3,
+      fugl: 0.08,
       høyde: 80,
       tre: 0.1,
       stjerne: 0.25,
@@ -221,6 +241,9 @@ export const ETAPPER: readonly SledeEtappe[] = [
     fart: 1000,
     blanding: {
       ...ROLIG,
+      sti: 0.2,
+      klippe: 0.3,
+      fugl: 0.1,
       høyde: 80,
       tre: 0.15,
       stjerne: 0.25,
@@ -247,6 +270,8 @@ export const ETAPPER: readonly SledeEtappe[] = [
     fart: 950,
     blanding: {
       ...ROLIG,
+      sti: 0.3,
+      fugl: 0.06,
       høyde: 50,
       tre: 1,
       stjerne: 0,
@@ -272,6 +297,9 @@ export const ETAPPER: readonly SledeEtappe[] = [
     fart: 1000,
     blanding: {
       ...ROLIG,
+      sti: 0.25,
+      klippe: 0.2,
+      fugl: 0.1,
       høyde: 85,
       tre: 0.3,
       stjerne: 0.3,
@@ -383,6 +411,7 @@ function lagLøype(e: SledeEtappe): Ting[] {
   let seed = e.lengde;
   for (const c of e.id) seed = (seed * 31 + c.charCodeAt(0)) >>> 0;
   const r = rng(seed);
+  const hinder = rng(seed ^ 0x5bd1e995);
   const m = e.blanding;
   const out: Ting[] = [];
   const slutt = e.lengde - 2500;
@@ -443,6 +472,20 @@ function lagLøype(e: SledeEtappe): Ting[] {
         h: HUS_PIPE[i % 3],
       });
       continue;
+    }
+    // Obstacles in the path ramp up by stage: halfway between rings there is
+    // time to read them, go over or round, and line up for the next ring.
+    if (m.varde >= 3 && i % m.varde === 1 && (m.sti || m.klippe)) {
+      // Own draw, so the odds of birds and stars in the other slots stay put.
+      const v = hinder();
+      if (v < (m.sti ?? 0)) {
+        out.push({ z, x: lane, type: "tre", h: 160 });
+        continue;
+      }
+      if (v < (m.sti ?? 0) + (m.klippe ?? 0)) {
+        out.push({ z, x: lane, type: "topp", h: 230 });
+        continue;
+      }
     }
     let p = m.topp;
     if (u < p) {

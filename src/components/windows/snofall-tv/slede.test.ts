@@ -253,6 +253,31 @@ describe("sim", () => {
     expect(fart(0.5, -1).s.alt).toBeLessThan(fart(0.5).s.alt - 30);
   });
 
+  it("obstacles in the path ramp up by stage; stage 1 has none", () => {
+    const iBanen = (e: (typeof ETAPPER)[number]) => {
+      const bane = lagBane(e);
+      let x = 0;
+      let n = 0;
+      for (const t of bane) {
+        if (t.type === "varde") x = t.x;
+        else if (
+          (t.type === "tre" || t.type === "topp") &&
+          !t.lås &&
+          Math.abs(t.x - x) < 0.01
+        )
+          n++;
+      }
+      return n;
+    };
+    const n = ETAPPER.map(iBanen);
+    expect(n[0]).toBe(0);
+    expect(n.slice(5).reduce((a, b) => a + b)).toBeGreaterThan(
+      n.slice(1, 5).reduce((a, b) => a + b),
+    );
+    // Deterministic: the same course every time.
+    expect(lagBane(ETAPPER[5])).toEqual(lagBane(ETAPPER[5]));
+  });
+
   it("reduced motion flies slower and still finishes", () => {
     const fast = fly("tundra", true);
     const slow = fly("tundra", true, true);
