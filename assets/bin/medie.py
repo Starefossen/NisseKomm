@@ -10,6 +10,8 @@ CLI (for the shell generators):
   medie.py skriv <generator> <fil> <kilde> <seksjon|-> <modell> [bilde ...]
   medie.py status <fil>                   prints the status; exit 0 only if ✓ current
   medie.py render <id>                    prompt, base image and refs of a medier.json job, one per line
+  medie.py tv                             the TV loops of medier.json, one line each (tv-loops.sh)
+  medie.py stiller <id>                   intermediate stills of a job: image|prompt|out, first one first
   medie.py --selvtest
 """
 import hashlib
@@ -191,7 +193,8 @@ def render(job_id: str, root: Path = ROOT, table=None):
     """(prompt, image, refs) of one medier.json job, relative to root. A template with placeholders is
     written filled to assets/out/prompts/<id>.txt; one without is used as is, so sidecars keep
     pointing at the tracked file."""
-    j = (table or jobs(root))[job_id]
+    table = table or jobs(root)
+    j = table[job_id]
     prompt = j.get("mal")
     if prompt:
         text = (root / prompt).read_text()
@@ -200,7 +203,30 @@ def render(job_id: str, root: Path = ROOT, table=None):
             prompt = f"assets/out/prompts/{job_id}.txt"
             (root / prompt).parent.mkdir(parents=True, exist_ok=True)
             (root / prompt).write_text(filled)
-    return prompt, image(j["bilde"], root) if j.get("bilde") else None, [image(r, root) for r in j.get("refs", [])]
+    img = j.get("bilde")
+    img = table[img]["ut"] if img in table else img and image(img, root)  # an intermediate still: its output
+    return prompt, img, [image(r, root) for r in j.get("refs", [])]
+
+
+def stills(job_id: str, root: Path = ROOT, table=None):
+    """[(image, prompt, out)] intermediate stills a job's base image is made from, first one first."""
+    table = table or jobs(root)
+    out, b = [], table[job_id].get("bilde")
+    while b in table:
+        prompt, img, _ = render(b, root, table)
+        out.insert(0, (img, prompt, table[b]["ut"]))
+        b = table[b].get("bilde")
+    return out
+
+
+def tv_lines(root: Path = ROOT):
+    """One line per TV loop for tv-loops.sh: name|prompt|image|state|anchor|refs (absolute, refs space-separated)."""
+    table = jobs(root)
+    for k, j in table.items():
+        if j["generator"] == "loop":
+            prompt, img, refs = render(k, root, table)
+            yield "|".join([k.split("/", 1)[1], str(root / prompt), str(root / img) if img else "",
+                            j.get("tilstand", ""), "1" if j.get("anker") else "", " ".join(str(root / r) for r in refs)])
 
 
 def selftest():
@@ -226,6 +252,10 @@ def selftest():
         assert refs == ["assets/characters/winter/ref-v1-tophat.jpg", "assets/x.jpg"]
         assert render("b", r, t) == ("p/b.txt", None, [])  # unchanged text keeps the tracked path
         assert (r / render("c", r, t)[0]).read_text() == "torg"  # bare name, one hit
+        t |= {"s1": {"ut": "o/s1.jpg", "bilde": "assets/base.jpg", "mal": "p/b.txt"},
+              "s2": {"ut": "o/s2.jpg", "bilde": "s1", "mal": "p/b.txt"}, "e": {"bilde": "s2", "mal": "p/b.txt"}}
+        assert render("e", r, t)[1] == "o/s2.jpg"  # base image is an intermediate still
+        assert stills("e", r, t) == [("assets/base.jpg", "p/b.txt", "o/s1.jpg"), ("o/s1.jpg", "p/b.txt", "o/s2.jpg")]
         for bad in (lambda: render("d", r, t), lambda: fill("{{ukjent}}", root=r)):  # ambiguous, unknown
             try:
                 bad()
@@ -250,6 +280,10 @@ def main(argv):
     elif cmd == "render":
         prompt, img, refs = render(args[0])
         print(*(str(ROOT / p) for p in (prompt, img, *refs) if p), sep="\n")
+    elif cmd == "tv":
+        print(*tv_lines(), sep="\n")
+    elif cmd == "stiller":
+        print(*("|".join(str(ROOT / p) for p in s) for s in stills(args[0])), sep="\n")
     elif cmd == "--selvtest":
         selftest()
     elif cmd == "status":

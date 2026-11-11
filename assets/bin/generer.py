@@ -40,21 +40,15 @@ DAY_LIMIT = 200
 RETRY = 1.5  # expected takes per clip (julius-dag.py retries up to 3)
 EXIT_LIMIT = 75  # EX_TEMPFAIL: try again after the quota resets
 LIMIT_RE = re.compile(r"per day|spending cap|Stoppet: (dagsgrensen|månedlig)", re.I)
-SLEDE = ("tundra", "nordtoppen", "muren", "julenatt")  # prompts: assets/locations/sledeflukt/varianter
-SLEDE_REF = "assets/locations/snofall-landsby/nokkelramme-rolig.jpg"
-WINTER_REFS = ("assets/characters/winter/ref-v1-outside.jpg", "assets/characters/winter/ref-v1-tophat.jpg")  # gitignored
-# Ugleposten pixel portraits: name -> (prompt, refs); output spill/portrett-<name>.png (portrett.sh + piksel.sh)
-PORTRETT = {"winter": ("assets/characters/winter/portrett.prompt.txt", WINTER_REFS),
-            "hjerterud": ("assets/characters/hjerterud/portrett.prompt.txt", ())}
-# Ugleposten scene stills (nissespill/kapittel1-4.ts): id -> (reference, prompt); output spill/<id>.jpg
-SPILL = {
-    "iq-verksted": ("assets/locations/iq-verksted/vidvinkel-tom.jpg", "assets/locations/iq-verksted/varianter/spill.still.prompt.txt"),
-    "julius-kontor": ("assets/locations/julius-kontor/ref-tom.jpg", "assets/locations/julius-kontor/varianter/spill.still.prompt.txt"),
-    "antenne-tarn": ("assets/locations/antenne-tjern/ref.jpg", "assets/locations/antenne-tjern/varianter/spill.still.prompt.txt"),
-    "kulde-grotte": ("assets/locations/krystallgrotten/ref.jpg", "assets/locations/krystallgrotten/varianter/spill.still.prompt.txt"),
-    "torget": ("assets/locations/snofall-landsby/nokkelramme-rolig.jpg", "assets/locations/snofall-landsby/varianter/torget-spill.still.prompt.txt",
-               *WINTER_REFS),
-}
+MEDIER = medie.jobs()  # assets/medier.json; TV loops are listed by tv-loops.sh --liste
+IMAGE_CATS = ("slede", "spill", "portrett")  # sleigh horizons, Ugleposten stills, pixel portraits (0 video requests)
+
+
+def names(cat):
+    return [k.split("/", 1)[1] for k in MEDIER if k.startswith(cat + "/")]
+
+
+SLEDE, SPILL, PORTRETT = (names(c) for c in IMAGE_CATS)
 STILL_SH = ('mkdir -p "$(dirname "$3")" && bash "$4/still.sh" "$1" "$2" "$3" "${@:5}" && '
             'python3 "$4/medie.py" skriv still.sh "$3" "$2" - gemini-3-pro-image "$1" "${@:5}"')
 PORTRETT_SH = ('mkdir -p "$(dirname "$3")" "$5" && bash "$4/portrett.sh" "$2" "$5/$(basename "$3")" "${@:6}" && '
@@ -180,25 +174,19 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
         if should_queue(p, st.get(p, medie.MISSING)):
             cat = "port" if n.startswith("port-") else "tv"
             q.append((f"{cat}:{n}", cat, RETRY, ["bash", str(BIN / "tv-loops.sh"), "--bare", n]))
-    for v in SLEDE:
-        p = f"feed/slede-{v}.jpg"
-        if should_queue(p, st.get(p, medie.MISSING)):
-            prompt = f"assets/locations/sledeflukt/varianter/{v}.still.prompt.txt"
-            # still.sh makes the image; medie.py skriv records the sidecar so it counts as current
-            q.append((f"slede:{v}", "slede", 0, ["bash", "-c", STILL_SH, "_", str(root / SLEDE_REF),
-                                                 str(root / prompt), str(media_dir() / p), str(BIN)]))
-    for n, (ref, prompt, *extra) in SPILL.items():
-        p = f"spill/{n}.jpg"
-        if should_queue(p, st.get(p, medie.MISSING)):
-            q.append((f"spill:{n}", "spill", 0, ["bash", "-c", STILL_SH, "_", str(root / ref),
-                                                 str(root / prompt), str(media_dir() / p), str(BIN),
-                                                 *(str(root / e) for e in extra)]))
-    for n, (prompt, refs) in PORTRETT.items():
-        p = f"spill/portrett-{n}.png"
-        if should_queue(p, st.get(p, medie.MISSING)):
-            q.append((f"portrett:{n}", "portrett", 0, ["bash", "-c", PORTRETT_SH, "_", "", str(root / prompt),
-                                                       str(media_dir() / p), str(BIN), str(root / "assets/out"),
-                                                       *(str(root / r) for r in refs)]))
+    for cat in IMAGE_CATS:
+        for n in names(cat):
+            p = MEDIER[f"{cat}/{n}"]["ut"]
+            if not should_queue(p, st.get(p, medie.MISSING)):
+                continue
+            prompt, img, refs = medie.render(f"{cat}/{n}", ROOT, MEDIER)
+            refs = [str(root / r) for r in refs]
+            if cat == "portrett":
+                cmd = [PORTRETT_SH, "_", "", str(root / prompt), str(media_dir() / p), str(BIN),
+                       str(root / "assets/out"), *refs]
+            else:  # still.sh makes the image; medie.py skriv records the sidecar so it counts as current
+                cmd = [STILL_SH, "_", str(root / img), str(root / prompt), str(media_dir() / p), str(BIN), *refs]
+            q.append((f"{cat}:{n}", cat, 0, ["bash", "-c", *cmd]))
     p_music = "music/rampenissen-synger.mp3"
     if should_queue(p_music, st.get(p_music, medie.MISSING)):
         q.append(("musikk:rampenissen-synger", "musikk", 0, ["bash", str(BIN / "rampenissen-tts.sh"), "synger"]))
