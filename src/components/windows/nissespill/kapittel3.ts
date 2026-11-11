@@ -192,7 +192,7 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 84, y: 36, w: 16, h: 46 },
           smart: "snakk",
           snakk: "julius",
-          se: "En messingtrakt med slange ned i et skap fullt av plugger og ledninger. Det er Julius' telefon. Ett rør går til tjernet, ett til verkstedet, og ett har en lapp: «LANDÅS (ikke etter leggetid)». Lappen er skrevet av Hjerterud. Regelen er for Julius.",
+          se: "En messingtrakt med slange ned i et skap fullt av plugger og ledninger. Det er Snøfall-radioen. Ett rør går til tjernet, ett til verkstedet, og ett har en lapp: «LANDÅS (ikke etter leggetid)». Lappen er skrevet av Hjerterud. Regelen er for Julius.",
           bruk: "Du blåser i trakten. Langt borte sier noen «hva i all verden». Du slutter. Noen andre langt borte sier «var det deg?». Du slutter mer.",
         },
         {
