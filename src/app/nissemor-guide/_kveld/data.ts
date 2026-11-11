@@ -5,7 +5,7 @@ export const DAGER = [
     tittel: "Direktelinjen · {1}",
     kode: "{1}",
     mekanikk:
-      "tråden er rekkefølgen, som før (storyboard avgjørelse 1). Nytt: to løse kort med bokstav ligger i klementinelva uten klype, som om de falt av i skredet. Bare det som henger på linjen, teller. Scenen (klementinskredet, ferdskriveren, IQs konvolutt) står i «Dag 1: byggeplan» nederst i dokumentet; her står bare gåten. Runetavla introduseres (se «Meta-gåter»).",
+      "tråden er rekkefølgen. To løse kort med bokstav ligger i klementinelva uten klype, som om de falt av i skredet; bare det som henger på linjen, teller. Runetavla kommer i dag.",
     brikkeH:
       "rød garntråd fra TV-en («LINJE 90,0») ned skråningen og langs elva til Rampenissens håndledd. Seks A7-kort med klesklyper, talt fra TV-en: ✱, I, ✱, N, ✱, ✱, hvert med tegn i hjørnet. Prikker 1–6 på baksiden. To løse kort, E og T, ligger blant klementinene (med riktig tegn ved bokstaven). I ferdskriveren, sammen med IQs konvolutt og operasjonsbrettet, ligger runetavla (A4, 29 tomme ruter A–Å) med IQs linje øverst: «Tegnene i hjørnet av kortene er Snøfalls gamle skrift. Ett tegn, én bokstav. Fyll inn når dere vet.»",
     brikkeS:
@@ -18,7 +18,7 @@ export const DAGER = [
     ],
     hanna: "tar kortene av tråden mens H9 holder den stram.",
     oppsett:
-      "3 min for gåten; scenen tar 25 min kvelden 30. november pluss cirka 75 min forarbeid 28.–29. november (se «Dag 1: byggeplan»).",
+      "3 min for gåten; scenen tar 25 min kvelden 30. november pluss cirka 75 min forarbeid 28.–29. november.",
     minutter: 3,
     materialer:
       "rødt garn, 6 små klesklyper, maskeringsteip, kortene, runetavla. Scenen: 3 esker klementiner (2,3 kg), 3–4 tomme klementinesker, lyst laken, klesvaskkurv og badehåndkle, avispapir, skoeske kledd i svart med oransje striper (ferdskriveren), C6-konvolutt, fruktskål, banan, 2 servietter, dorullhylse, hårstrikk, binders, limstift, tapetkniv, tusj, 6 gullklistremerker.",
@@ -36,10 +36,10 @@ export const DAGER = [
     reserve:
       "Blir rekkefølgen rotet, teller de prikkene på baksiden. Tar de med de løse kortene, får de åtte bokstaver til seks ruter og må velge bort. Er videoen hoppet over, ligger transkriptet under spilleren.",
     iKveld:
-      "Dag 1-scenen, se «Dag 1: byggeplan»: fredag ferdskriver og utskrifter (50 min), lørdag klementiner, etiketter og tråd (25 min), søndag kveld plassering (25–30 min): skred, tråd med seks kort, to løse kort i elva, ferdskriver med konvolutt, logg, runetavle og brett",
+      "Dag 1-scenen: fredag ferdskriver og utskrifter (50 min), lørdag klementiner, etiketter og tråd (25 min), søndag kveld plassering (25–30 min): skred, tråd med seks kort, to løse kort i elva, ferdskriver med konvolutt, logg, runetavle og brett",
     strek: {
       tekst:
-        "Har kommet ned linjen sammen med Hjerteruds proviant: et skred av klementiner fra TV-benken utover gulvet, to revnede fraktesker fra Snøfall oppå, og bare nisseluen og én vinkende arm stikker opp av haugen, banan som pute, serviettfallskjerm bak. Den røde garntråden går fra TV-en over skredet til håndleddet hans. I skredet ligger en svart ferdskriver med IQs konvolutt (passordet), flyloggen, runetavla og operasjonsbrettet. (Scene og bygging: «Dag 1: byggeplan» i gaater-2026.md.)",
+        "Har kommet ned linjen sammen med Hjerteruds proviant: et skred av klementiner fra TV-benken utover gulvet, to revnede fraktesker fra Snøfall oppå, og bare nisseluen og én vinkende arm stikker opp av haugen, banan som pute, serviettfallskjerm bak. Den røde garntråden går fra TV-en over skredet til håndleddet hans. I skredet ligger en svart ferdskriver med IQs konvolutt (passordet), flyloggen, runetavla og operasjonsbrettet.",
       type: "uventet",
       materialer:
         "3 esker klementiner, 3–4 tomme esker, laken, skoeske (svart), banan, 2 servietter, rødt garn",
@@ -52,7 +52,7 @@ export const DAGER = [
     tittel: "Sikringsboksen til IQ · 48 · jakt",
     kode: "48",
     mekanikk:
-      "tre tall i huset, regneregelen på skjermen. Nytt: hvert kort er et lite regnestykke i romertall med subtraktiv skrivemåte: IX + III (12), XIX − III (16), XIV + VI (20). Kristian må kjenne IX, XIX og XIV; Håkon kjenner romertall fra klokker og trenger hjelp. Så Julius' regel for de tre svarene. Videoen er ferdig og røres ikke.",
+      "tre tall i huset, regneregelen på skjermen. Hvert kort er et lite regnestykke i romertall: IX + III (12), XIX − III (16), XIV + VI (20). Kristian må kjenne IX, XIX og XIV; Håkon kjenner romertall fra klokker og trenger hjelp. Så Julius' regel for de tre svarene.",
     brikkeH:
       "tre A7-kort teipet under tre spisestoler, hvert med ett regnestykke i romertall i stor skrift og et lite iskrystall. Ingen instruks om hva som skal gjøres med de tre svarene. Lapp fra Rampenissen (i sukkerskålen ved Rampenissen, håndskrevet): «Tre sikringer røk. Jeg gjemte dem lavt. Veldig lavt. Krabb! – R»",
     brikkeS:
@@ -87,7 +87,7 @@ export const DAGER = [
     tittel: "Rimfrost på Ruten · {3} + grønt hjerte",
     kode: "{3}",
     mekanikk:
-      "duggskrift, som før. Nytt: skriften er speilvendt. Sett forfra står det _ _ Ƨ _ Я _; bokstavene er speilvendte og rekkefølgen baklengs, som om Rampenissen skrev fra innsiden av speilet. Lest riktig: _ R _ S _ _. Videoen er ferdig og røres ikke.",
+      "duggskrift i speilet. Skriften er speilvendt: sett forfra står det _ _ Ƨ _ Я _; bokstavene er speilvendte og rekkefølgen baklengs, som om Rampenissen skrev fra innsiden av speilet. Lest riktig: _ R _ S _ _.",
     brikkeH:
       "kvelden før skriver forelderen _ _ Ƨ _ Я _ på badespeilet med en q-tips dyppet i oppvaskmiddel (speilvendt R og S, seks streker for rutene). Tannkremtaggingen «RAMPEN VAR HER. NO CAP.» og lappen «Pust på meg.» som før. I vinduskarmen: glassperlen, det grønne hjerte-kortet og en liten konvolutt merket «ETTER KODEN – IQ» med frostkortet _ R _ S _ _ (tegn i alle seks hjørner) i. Konvolutten gir ingenting speilet ikke gir, men sørger for at tegnene P, R, I, S, M, E alltid kommer på tavla; E trengs dag 7.",
     brikkeS:
@@ -125,7 +125,7 @@ export const DAGER = [
     tittel: "Skotoget i Gangen · {4} · jakt",
     kode: "{4}",
     mekanikk:
-      "skoene er tellerammen, som før, men de står i ring rundt Rampenissen (en kompassrose), ikke i tog. Pappas sko med Rampenissen er start. Hvilken vei man teller, sies ikke. Med klokka: _ _ M _ A _ _; mot klokka (sko 1, 7, 6, 5, 4, 3, 2): _ _ _ A _ M _. Bare den ene passer Julius' setning. Julius' brikke er skrevet om slik at den ikke gir ordet alene (segment 4 og 5 regenereres); tittelen «Skotoget» beholdes (toget har kjørt i ring).",
+      "skoene er en telleramme i ring rundt Rampenissen (en kompassrose). Pappas sko med Rampenissen er start. Hvilken vei man teller, sies ikke. Med klokka: _ _ M _ A _ _; mot klokka (sko 1, 7, 6, 5, 4, 3, 2): _ _ _ A _ M _. Bare den ene passer Julius' setning.",
     brikkeH:
       "sju sko i ring på gulvet i gangen, pappas (med Rampenissen i) som start, kosedyrene i ring utenfor. I hver sko et A7-kort. Talt med klokka fra Rampenissen: sko 3 M, sko 5 A, de fem andre ✱. Alle kort har tegn i hjørnet. Prikker på baksiden gir avstand fra start (1–7 begge veier er umulig; prikkene følger klokka og er reserve, ikke løsning).",
     brikkeS:
@@ -160,7 +160,7 @@ export const DAGER = [
     tittel: "5 (lø) – Brevfuglen over Byfjellene · {5} · jakt",
     kode: "{5}",
     mekanikk:
-      "Cæsar-chiffer med tre skritt, som før. Nytt: Julius sier ikke tallet. Nøkkelen er «like mange skritt som IQ sprengte sikringer onsdag» (dag 2: tre). Første oppslag på tvers av dager; transkriptet fra dag 2 ligger i arkivet. Standardvalg, kan endres: alternativet er å la Julius si «tre skritt» som før.",
+      "Cæsar-chiffer med tre skritt. Julius sier ikke tallet: nøkkelen er «like mange skritt som IQ sprengte sikringer onsdag» (dag 2: tre). Transkriptet fra dag 2 ligger i arkivet.",
     brikkeH:
       "papirfugl gjemt høyt i stua med X O U L N H Q på vingen, alfabetstrimmel A–Å og «trehopper» (papirbit tre ruter bred) ved fuglen. Ingen tall og ingen piler. (Hopperen er tre ruter bred fordi svaret er tre; den gir ikke tallet bort for den som ikke har tenkt tanken, men er reserve for den som har.) Lapp fra Rampenissen (ved marshmallowfortet, håndskrevet): «Årets første brevfugl landet i natt. Den satte seg et sted høyt oppe i stua. – R»",
     brikkeS:
@@ -195,7 +195,7 @@ export const DAGER = [
     tittel: "6 (sø) – Skyggene i Gangen · {6} + rødt hjerte · 2. advent · jakt",
     kode: "{6}",
     mekanikk:
-      "skyggefigurer, velg riktig. Uendret: taket tillater bare 1 av 4 bokstaver, så valget mellom figurene er gåten. Kortene får tegn (Y læres bare her).",
+      "skyggefigurer, velg riktig. Taket tillater bare 1 av 4 bokstaver, så valget mellom figurene er gåten. Kortene har tegn (Y læres bare her).",
     brikkeH:
       "tre silhuetter (stearinlys, bål, lykt med hank) i papprullen med lommelykten, ved det røde hjerte-kortet. Bakside lykt: _ Y _ _ med tegn i alle fire hjørner. Bakside stearinlys _ A _ _ og bål _ O _ _: tegn bare ved den synlige bokstaven (blindspor lærer ingen tegn for ✱). Lapp fra Rampenissen (i melet ved Rampenissen, håndskrevet): «Jeg har laget et instrument! Det ligger i en papprull, sammen med lampen. Slukk lyset og lys mot veggen, én om gangen. – R»",
     brikkeS:
@@ -231,7 +231,7 @@ export const DAGER = [
     tittel: "Inntrengeren i Fryseren · {7} · M2 Navnet",
     kode: "{7}",
     mekanikk:
-      "tine lappen ut av is, som før. Nytt: kortet har ingen bokstaver, bare to tegn og tre ✱. Rute 3 har tegnet for L, rute 5 tegnet for E (begge lært dag 1 og 3). Først tine, så kjenne igjen tegnene fra tavla, så Julius. Første utbetaling av meta 1.",
+      "tine lappen ut av is. Kortet har ingen bokstaver, bare to tegn og tre ✱. Rute 3 har tegnet for L, rute 5 tegnet for E (begge lært dag 1 og 3). Først tine, så kjenne igjen tegnene fra tavla, så Julius.",
     brikkeH:
       "frostkortet (fem ruter: ✱, ✱, tegn L, ✱, tegn E; ✱-rutene har tegn i hjørnet som vanlig) i liten plastpose, fryst flatt i et plastbeger med 1 cm vann, ved Rampenissens lue i fryseren. Lapp fra Rampenissen (teipet på begeret i fryseren, håndskrevet): «Tin meg! Lunkent vann, og en voksen. – R»",
     brikkeS:
@@ -266,7 +266,7 @@ export const DAGER = [
     tittel: "Lampene som Lyver · {8}",
     kode: "{8}",
     mekanikk:
-      "følg ledningen i floken, som før. Nytt: arket har ikke lenger teksten «kun lamper med strøm teller»; den regelen sier Julius. En fjerde ledning går fra batteriet til lampe 4 gjennom en åpen bryter (tegnet som brudd med hendel). Lampe 4 har bokstaven E. Den som tar den med, får _ R _ E S _ O _ _ og finner ikke ordet. Kristian har hatt strømkrets på skolen; Håkon har ikke.",
+      "følg ledningen i floken. Regelen «bare lamper med strøm teller» sier Julius. En fjerde ledning går fra batteriet til lampe 4 gjennom en åpen bryter (tegnet som brudd med hendel). Lampe 4 har bokstaven E; den som tar den med, får _ R _ E S _ O _ _ og finner ikke ordet. Kristian har hatt strømkrets på skolen; Håkon har ikke.",
     brikkeH:
       "arket på toppen av Sigma-tårnet. Lampe 2 R, lampe 5 S, lampe 7 O med strøm; lampe 4 E bak åpen bryter; de fem andre ✱ med ledninger som ender i ingenting. Synlige bokstaver har tegn; ✱ på de døde lampene har tegn i hjørnet (de er ekte ruter i ordet). Lapp fra Rampenissen (på tårnet, håndskrevet): «IQs ark ligger på toppen. Ta ned pakkene én og én. Ingen klatring! – R»",
     brikkeS:
@@ -301,7 +301,7 @@ export const DAGER = [
     tittel: "Krystall-Matematikk · 24 + blått hjerte",
     kode: "24",
     mekanikk:
-      "sortere ekte og falske, så gange. Nytt: ni krystaller, ikke sju, og de falske er vanskeligere: fem armer, sju armer, seks armer der én er halvparten så lang, firkantet midte, og én med seks armer der to sitter på samme side. Tellingen må gjøres nøye.",
+      "sortere ekte og falske, så gange. Ni krystaller: de falske har fem armer, sju armer, seks armer der én er halvparten så lang, firkantet midte, og én med seks armer der to sitter på samme side. Tellingen må gjøres nøye.",
     brikkeH:
       "ni papirkrystaller på kjøleskapsdøra, fire ekte (seks like armer) og fem falske. Det blå hjerte-kortet mellom dem. Ingen tall noe sted.",
     brikkeS:
@@ -335,7 +335,7 @@ export const DAGER = [
     tittel: "Fargene som Forsvant · {10} · frost nivå 1 · jakt",
     kode: "{10}",
     mekanikk:
-      "rødfilter og regnbuerekkefølge, som før. Nytt: et åttende kort, HVIT, med bokstaven R under støyen. Hvitt er ikke en regnbuefarge, og farge-koder.txt lister sju. Den som tar det med, har åtte kort til sju ruter.",
+      "rødfilter og regnbuerekkefølge. Et åttende kort, HVIT, har bokstaven R under støyen. Hvitt er ikke en regnbuefarge, og farge-koder.txt lister sju; den som tar det med, har åtte kort til sju ruter.",
     brikkeH:
       "åtte A7-kort med fargekant og fargenavn, gjemt lavt og høyt i stua. Under rødt støymønster, i cyan: ORANSJE → P, BLÅ → T, HVIT → R, de fem andre → ✱. Tegn ved synlige bokstaver; ✱ på regnbuekortene har tegn, HVIT-kortet har tegn bare ved R. Rødfilteret ved tusjene. Lapp fra Rampenissen (i Rampenissens hånd, håndskrevet): «Kulde tok fargene! Jeg gjemte dem i stua. Det røde filteret ligger ved tusjene. Se gjennom det. – R»",
     brikkeS:
@@ -373,7 +373,7 @@ export const DAGER = [
     tittel: "Antenne-Krisen · 75 + bonus · jakt",
     kode: "75",
     mekanikk:
-      "tall i tre rom, regneregelen på skjermen. Nytt: fem kort, ikke tre. IQs sendere er 15, 25, 35; Kuldes falske er 20 og 40. Regelen som skiller dem, sier Julius: alt IQ bygger ender på fem. Så legge sammen.",
+      "tall i tre rom, regneregelen på skjermen. Fem kort: IQs sendere er 15, 25, 35; Kuldes falske er 20 og 40. Regelen som skiller dem, sier Julius: alt IQ bygger ender på fem. Så legge sammen.",
     brikkeH:
       "fem A7-kort med tall og et lite antennesymbol, like i utseende: stua (under en pute: 15 og 40), kjøkkenet (brødboksen: 25), gangen (Hannas jakkelomme: 35; pappas jakkelomme: 20). Ingen regnetegn, ingen merking av de falske. Lapp fra Rampenissen (på stekebrettet, håndskrevet): «SKURR! IQ sendte tre sendere til dere, i tre rom. Kulde la ut sine egne. Ta med alt dere finner. – R»",
     brikkeS:
@@ -408,7 +408,7 @@ export const DAGER = [
       "12 (lø) – Lydbølgene som Smelter Is · {12} + grønn sol · M3 · krypto 1",
     kode: "{12}",
     mekanikk:
-      "sortere etter tonehøyde, som før. Nytt: fire beholdere, ikke tre: tre glass med vann og ett keramikkrus som gir dunk, ikke tone. Kruset bærer biten _ A. Julius sier «tre toner»; den som ikke klinger, er ikke Hjerteruds. Krypto 1 strammes også: hintet navngir ikke fargene lenger (se app-tekster A5); fargenes betydning står i PS dag 3, 6 og 9.",
+      "sortere etter tonehøyde. Fire beholdere: tre glass med vann og ett keramikkrus som gir dunk, ikke tone. Kruset bærer biten _ A. Julius sier «tre toner»; den som ikke klinger, er ikke Hjerteruds. Fargenes betydning i Krypto 1 står i PS dag 3, 6 og 9.",
     brikkeH:
       "tre like glass med 2, 5 og 9 cm vann og ett krus med litt vann, i tilfeldig rekkefølge i enden av dorullen. Biter teipet nederst på utsiden med forsiden inn: dypeste glass _ E, midterste _ O, lyseste _ _, kruset _ A. Tegn ved E, O og A; ✱ på de tre glassbitene har tegn, kruset ikke. Teskje ved. Grønt sol-kort mot midtglasset. Lapp fra Rampenissen (ved glassene, håndskrevet): «Slå forsiktig på hver av dem med skjeen. Lappene sitter nederst, utenpå. – R»",
     brikkeS:
@@ -444,7 +444,7 @@ export const DAGER = [
     tittel: "13 (sø) – Luciadagens Gylne Krydder · {13} · 3. advent",
     kode: "{13}",
     mekanikk:
-      "velg riktig krydder, som før. Nytt: fire poser, to av dem gule: ekte safran (tråder) og gurkemeie (pulver). Gurkemeieposens kort er _ _ R _ _ _ _ _ _ (ni ruter; GURKEMEIE passer, og mange lussekatter er faktisk farget med det). Julius' «krokus, tre tråder per blomst, dyrere enn gull» skiller dem. Standardvalg, kan endres: kjøp en liten konvolutt ekte safran (40–80 kr, lokalt).",
+      "velg riktig krydder. Fire poser, to av dem gule: ekte safran (tråder) og gurkemeie (pulver). Gurkemeieposens kort er _ _ R _ _ _ _ _ _ (ni ruter; GURKEMEIE passer). Julius' «krokus, tre tråder per blomst, dyrere enn gull» skiller dem. Kjøp en liten konvolutt ekte safran (40–80 kr).",
     brikkeH:
       "fire små zip-poser på servietten ved Rampenissen: kanel _ _ N _ _, gurkemeie _ _ R _ _ _ _ _ _, safran _ _ F _ _ _, nellik _ _ L _ _ _. Like kort, ingen navn. Tegn ved synlige bokstaver; ✱ på safrankortet har tegn, blindsporene ikke. Lussekatten ved.",
     brikkeS:
@@ -478,7 +478,7 @@ export const DAGER = [
     tittel: "Hemmeligheten i Papirvingene · {14}",
     kode: "{14}",
     mekanikk:
-      "brett og hold mot lyset, som før. Nytt: to brettelinjer. Brettet langs den loddrette og holdt mot lys: bokstavene R og G i to vinduer. Brettet langs den vannrette: tallene 2 og 4 ved de samme vinduene. Arket sier «Brett. Hold en lykt bak.» uten å si hvor mange ganger.",
+      "brett og hold mot lyset. To brettelinjer: brettet langs den loddrette og holdt mot lys gir bokstavene R og G i to vinduer; brettet langs den vannrette gir tallene 2 og 4 ved de samme vinduene. Arket sier «Brett. Hold en lykt bak.» uten å si hvor mange ganger.",
     brikkeH:
       "arket sammenrullet i papirbåten i vasken. Flatt: tilfeldige streker og sju tomme ruter med tegn i hjørnene. Bretteanvisning for serviettfugl ved (bare moro).",
     brikkeS:
@@ -512,7 +512,7 @@ export const DAGER = [
     tittel: "Fargesamlerens Notatbok · {15} + rød sol · M4",
     kode: "{15}",
     mekanikk:
-      "følg sporet til redskaper, som før. Nytt: sporet går mot fem redskaper, men to spor stopper underveis (blindspor til kjevle og øse, med ✱-kort under). Lappene under gryte, sleiv og visp har bare bokstav, ingen tall. Rutetallene står i Fargesamlerens notatbok (fil, åpner samme dag) som Hjerteruds margnotat: «Gryta på to. Rør med sleiva fem ganger. Vispen til sju.» Fil gir regel, hus gir bokstaver, Julius gir ordet.",
+      "følg sporet til redskaper. Sporet går mot fem redskaper, men to spor stopper underveis (blindspor til kjevle og øse, med ✱-kort under). Lappene under gryte, sleiv og visp har bare bokstav. Rutetallene står i Fargesamlerens notatbok (fil som åpner samme dag): «Gryta på to. Rør med sleiva fem ganger. Vispen til sju.» Fil gir regel, hus gir bokstaver, Julius gir ordet.",
     brikkeH:
       "fem redskaper på benken: gryte, sleiv, visp, kjevle, øse. Sporene er papirstrimler med trykte, sukkerfargede fotspor (fra PDF-en), lagt fra skålen mot alle fem; strimlene til kjevle og øse slutter halvveis. Ikke sukker på benken: tirsdag morgen er det ingen tid til vask. Rampenissen står ved siden av en liten skål med et par skjeer sirup (streken), ellers tørt. Under gryten A, under sleiva M, under vispen L (med tegn); under kjevle og øse ✱-kort uten tegn. Rutekort 1–8 og rødt sol-kort ved skålen. Sirupflasken og sukkeret ryddes bort. Lapp fra Rampenissen (ved sirupskålen, håndskrevet): «Følg fotsporene mine, og løft det de ender ved. – R»",
     brikkeS:
@@ -548,7 +548,7 @@ export const DAGER = [
     tittel: "Pakkesentralen i Spinn · {16} + bonus",
     kode: "{16}",
     mekanikk:
-      "legg tilbake, og tingen får plassens nummer, som før. Nytt: en fjerde feilplassert ting (ostehøvelen i badeskapet) med bokstaven K; på dens riktige plass ligger ingen tallapp. Uten tall, ingen rute: den hører ikke til ordet.",
+      "legg tilbake, og tingen får plassens nummer. En fjerde feilplassert ting (ostehøvelen i badeskapet) har bokstaven K; på dens riktige plass ligger ingen tallapp. Uten tall, ingen rute: den hører ikke til ordet.",
     brikkeH:
       "bokstavlapper på fjernkontrollen (i brødboksen) O, tannbørsteglasset (i bestikkskuffen) E, brødposen (i TV-benken) I, ostehøvelen (i badeskapet) K. Tallapper på de riktige plassene: «2» i TV-benken, «5» på badehyllen, «7» i brødboksen; ingen i bestikkskuffen der ostehøvelen hører hjemme. Rutekort 1–9 i brødboksen under Rampenissen. Lapp fra Rampenissen (på brødbokslokket, håndskrevet): «Jeg har ryddet! Bær hver ting dit den hører hjemme, og se hva som ligger der. – R»",
     brikkeS:
@@ -584,7 +584,7 @@ export const DAGER = [
     tittel: "Grønt over Polarhimmelen · {17}",
     kode: "{17}",
     mekanikk:
-      "båndet er et målebånd, som før. Nytt: merke 2 og 5 bærer tegnene for O og L, ikke bokstavene. Meta 1 brukes igjen midt i måneden.",
+      "båndet er et målebånd. Merke 2 og 5 bærer tegnene for O og L, ikke bokstavene.",
     brikkeH:
       "1,5 m grønt gavebånd med sju sølvmerker med lik avstand og en tegnet sløyfe før merke 1. Sju små kort fra dag17-baandkort.pdf teipes ved merkene: 1 ✱, 2 tegn O, 3 ✱, 4 ✱, 5 tegn L, 6 ✱, 7 ✱ (✱-kortene har tegn i hjørnet). Båndet rundt Rampenissen og stolen med én enkel sløyfe. Lapp fra Rampenissen (ved løsepengebrevet, håndskrevet): «Strekk båndet ut mellom to stoler, og les fra sløyfen. – R»",
     brikkeS:
@@ -619,7 +619,7 @@ export const DAGER = [
     tittel: "Kastevind rundt Ulriken · {18} + blå sol · krypto 2",
     kode: "{18}",
     mekanikk:
-      "tell rosinhaugene, som før. Nytt: en fjerde haug med 9 rosiner over et ✱-kort (rute 9 er ✱ uansett; harmløst, men må telles). Kortene U og B har tegn: B læres her for første gang (trengs dag 20), U bekreftes (lært dag 7). Meta 2 plantes: stjernetegn.txt (belønningen for krypto 2) er Trixters kart med åtte varder og Julius' sirkel på varde 5.",
+      "tell rosinhaugene. En fjerde haug med 9 rosiner ligger over et ✱-kort (rute 9 er ✱ uansett, men må telles). Kortene U og B har tegn: B læres her (trengs dag 20). stjernetegn.txt (belønningen for Krypto 2) er Trixters kart med åtte varder og Julius' sirkel på varde 5.",
     brikkeH:
       "sjokoladerosiner i et spor; fire hauger på hver sin serviett: 2 rosiner over U, 4 over B, 7 over E, 9 over ✱. Rutekort 1–9 i pappas jakkelomme med Rampenissen; blått sol-kort i den andre lommen. Lapp fra Rampenissen (i jakkelommen hos Rampenissen, håndskrevet): «Følg sporet baklengs fra kjøleskapet. Tell rosinene i hver haug, og løft det som ligger under. – R»",
     brikkeS:
@@ -656,7 +656,7 @@ export const DAGER = [
     tittel: "19 (lø) – Eksplosjon i Fôringsautomaten · {19} · pusterom · jakt",
     kode: "{19}",
     mekanikk:
-      "legg i rutenett etter tall, som før. Dagen er pusterom med vilje (Kulde-nivå 0) og holdes lett. Lappene får tegn.",
+      "legg i rutenett etter tall. Dagen er et pusterom uten Kulde og holdes lett. Lappene har tegn.",
     brikkeH:
       "merkelapper på hyssing rundt foliepakkene: stue U · 2, kjøkken O · 5, gang ✱ · 3. Ruteark med seks ruter under «BEVIS»-pakken. Pakkene åpnes først etter koden. Lapp fra Rampenissen (på rutearket i teipomrisset, håndskrevet): «Tre bevis landet i tre rom. Ikke pakk dem opp! Legg hver pakke på ruten med samme tall. – R»",
     brikkeS:
@@ -689,7 +689,7 @@ export const DAGER = [
     tittel: "20 (sø) – Sofa-Sleden · {20} + grønn måne · 4. advent · varselet",
     kode: "{20}",
     mekanikk:
-      "puter inne i fortet, som før, men i rot. Rekkefølgen er størrelsen: Rampenissen «stablet etter størrelse, den største som nummer én» og veltet alt. Putene må sorteres etter størrelse før kortene gir rekkefølge. Kortene bærer tegn for U (lært dag 7) og B (lært dag 18). Meta 2 utløses: Julius sier hvor porten står.",
+      "puter inne i fortet, i rot. Rampenissen «stablet etter størrelse, den største som nummer én» og veltet alt: putene må sorteres etter størrelse før kortene gir rekkefølge. Kortene bærer tegn for U og B. Julius sier hvor porten står.",
     brikkeH:
       "fem puter i tydelig ulik størrelse inne i fortet, hulter til bulter. Bruk hva som helst som er pute: sofaputer, pynteputer, en hodepute, en barnepute; det viktige er at ingen to er like store. Under den nest største: tegn U. Under den fjerde største: tegn B. Under de tre andre ✱ (med tegn i hjørnet). Grønt måne-kort under den minste. Skiltet «KUN FOR SIGMAS. 6-7.» ved inngangen. Lapp fra Rampenissen (ved inngangen til fortet, håndskrevet): «Putene lå etter størrelse, den største som nummer én. Så veltet jeg. Unnskyld. – R»",
     brikkeS:
@@ -727,7 +727,7 @@ export const DAGER = [
     tittel: "Vintersolverv · {21} · M5 · frost nivå 2",
     kode: "{21}",
     mekanikk:
-      "bokmur lest fra venstre, som før. Nytt: bare én bokstav står på ryggene. Den andre ligger som kort inne i én bok, porten. Hvilken bok som er porten, sa Julius dag 20: der sirkelen står på Trixters kart (varde 5). Boka Rampenissen satte på gløtt (bok 3) er feil og inneholder et ✱-kort med teksten «Feil bok. Hvor satte Julius sirkelen?». Meta 2 betaler seg. Standardvalg, kan endres: dagen løses etter skolen; frosten varer til koden er inne (nødstopp 20:00).",
+      "bokmur lest fra venstre. Bare én bokstav står på ryggene; den andre ligger som kort inne i én bok, porten. Hvilken bok, sa Julius dag 20: der sirkelen står på Trixters kart (varde 5). Boka Rampenissen satte på gløtt (bok 3) er feil og har et ✱-kort: «Feil bok. Hvor satte Julius sirkelen?». Dagen løses etter skolen; frosten varer til koden er inne (nødstopp 20:00).",
     brikkeH:
       "åtte bøker som lav mur foran skjermen. Ryggkort fra venstre: 1 ✱, 2 R, 3 ✱, 4 ✱, 5 ✱, 6 ✱, 7 ✱, 8 ✱, alle med lite rutetall i hjørnet og tegn. Inne i bok 5: kortet U · 7 (med tegn). Inne i bok 3 (på gløtt): et ✱-kort med teksten «Feil bok. Hvor satte Julius sirkelen?». Grytelokket og vispen står inntil. Skjerm og app er fryst fra morgenen.",
     brikkeS:
@@ -762,7 +762,7 @@ export const DAGER = [
     dag: 22,
     tittel: "Winters Tall · {22} + rød måne · Snill-listen · jakt",
     kode: "{22}",
-    mekanikk: "A = 1, pluss tre. Uendret; dagen holder nivået.",
+    mekanikk: "A = 1, pluss tre.",
     brikkeH:
       "tre sokker merket 1, 2, 3 med to separate tallkort i hver, uten bindestrek eller minustegn (et tankestrek leses lett som minus): sokk 1 (stua) 15 og 4, sokk 2 (kjøkkenet) 17 og 7, sokk 3 (Hannas sokk i gangen, med Rampenissen i) 32 og 22 og det røde måne-kortet. Kortene har et lite a/b i hjørnet for rekkefølgen. Ingen bokstaver, ingen regnetegn. Lapp fra Rampenissen (i sokk 3, ved Rampenissen, håndskrevet): «Jeg er sokk 3. Sokk 1 og 2 er et annet sted i huset. – R»",
     brikkeS:
@@ -797,7 +797,7 @@ export const DAGER = [
     tittel: "Nattevakt · {23} + blå måne · sannheten · krypto 3",
     kode: "{23}",
     mekanikk:
-      "nummererte stjerner i treet, som før. Nytt: tallene på baksiden er romertall (I–XII), tilbakeblikk til dag 2. Fargesamlerens siste side (fil etter krypto 3) får en siste linje i tegn: «KOM NED MED LYS», lesbar for den som har holdt tavla (Å læres aldri; derfor ikke «gå»).",
+      "nummererte stjerner i treet. Tallene på baksiden er romertall (I–XII), som dag 2. Fargesamlerens siste side (fil etter Krypto 3) får en siste linje i tegn: «KOM NED MED LYS».",
     brikkeH:
       "tolv stjerner i treet, de laveste i Hannas høyde. Forside: nr. 5 R, nr. 8 K, nr. 10 A, resten ✱; alle med tegn. Bakside: I–XII. Rampenissen i treet med det blå måne-kortet.",
     brikkeS:
@@ -832,7 +832,7 @@ export const DAGER = [
     tittel: "God Jul på Landås · {24} · M6 Tøvær",
     kode: "{24}",
     mekanikk:
-      "tre suvenirer fra desember, som før. Nytt: lappene bærer tegn (U, E, G) og rutetall, ikke bokstaver. Dekodingen er enkel for den som har tavla, og det er poenget. Standardvalg, kan endres: finalen er lett med vilje; den handler om følelsen, ikke om en ny prøve. Ved krystallet under treet ligger et kort med «TAKK FOR LYSET» i tegn: Vintervokterens eneste ord til dem.",
+      "tre suvenirer fra desember. Lappene bærer tegn (U, E, G) og rutetall, ikke bokstaver. Finalen er lett med vilje. Ved krystallet under treet ligger et kort med «TAKK FOR LYSET» i tegn: Vintervokterens eneste ord til dem.",
     brikkeH:
       "pappesken med sløyfe ved konvolutten: perlen med lapp tegn U · 2, filteret tegn E · 4, båndbiten tegn G · 7. I gullkonvolutten: avskjedsbrevet, rutekort med åtte ruter og alltid de tre reservelappene (samme tegn og tall, «IQs kopi»). Krystallet under treet med runekortet.",
     brikkeS:

@@ -77,6 +77,7 @@ const KEYS = {
   SLEDE_SPILLER: "nissekomm-slede-spiller",
   IDLE_PEEK: "nissekomm-idle-peek",
   EVENTYR: "nissekomm-eventyr",
+  FORELDRE_AVKRYSNING: "nissekomm-foreldre-avkrysning",
   SEASON: "nissekomm-season",
 } as const;
 
@@ -666,6 +667,18 @@ export class StorageManager {
     );
     delete attempts[day];
     this.setItem(KEYS.FAILED_ATTEMPTS, attempts);
+  }
+
+  /** Parent guide checklists, per list: ticked items. Synced so both parents see them. */
+  static getForeldreAvkrysning(): Record<string, string[]> {
+    return this.getItem(KEYS.FORELDRE_AVKRYSNING, {});
+  }
+
+  static setForeldreAvkrysning(liste: string, krysset: string[]): void {
+    this.setItem(KEYS.FORELDRE_AVKRYSNING, {
+      ...this.getForeldreAvkrysning(),
+      [liste]: krysset,
+    });
   }
 
   static clearAllFailedAttempts(): void {

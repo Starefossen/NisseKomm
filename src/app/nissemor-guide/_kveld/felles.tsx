@@ -1,10 +1,11 @@
 "use client";
 
-import { Suspense, useState, type ReactNode } from "react";
+import { Suspense, useEffect, useState, type ReactNode } from "react";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { getCurrentDate } from "@/lib/date-utils";
 import { GameEngine } from "@/lib/game-engine";
+import { StorageManager } from "@/lib/storage";
 import { DAGER } from "./data";
 
 /** data.ts stores codes as {dag} so they never sit in component source; fill them from the quest data. */
@@ -27,21 +28,41 @@ export function morgendagen(): number | null {
   return d.getMonth() === 11 && d.getDate() <= 24 ? d.getDate() : null;
 }
 
-// ponytail: parent checklists live in this browser only; move to StorageManager if parents need cross-device sync
+/**
+ * Re-renders when the shared state changes: pulls /api/state on mount and every
+ * 30 s, so the guide shows the kids' progress and the other parent's ticks.
+ */
+export function useSynk() {
+  const [, setTikk] = useState(0);
+  useEffect(() => {
+    let aktiv = true;
+    const hent = () =>
+      StorageManager.sync().then(() => aktiv && setTikk((t) => t + 1));
+    void hent();
+    const id = setInterval(hent, 30_000);
+    return () => {
+      aktiv = false;
+      clearInterval(id);
+    };
+  }, []);
+}
+
+/** A parent checklist, synced between both parents' phones. */
 export function useAvkrysning(nokkel: string) {
-  const key = `nissekomm-foreldre-${nokkel}`;
-  // GuideAuth renders children only client-side after login, so localStorage is available
-  const [krysset, setKrysset] = useState<string[]>(() =>
-    typeof window === "undefined"
-      ? []
-      : JSON.parse(localStorage.getItem(key) ?? "[]"),
-  );
+  useSynk();
+  // Ticks made before sync lived in this browser only; keep them.
+  const krysset =
+    StorageManager.getForeldreAvkrysning()[nokkel] ??
+    (JSON.parse(
+      localStorage.getItem(`nissekomm-foreldre-${nokkel}`) ?? "[]",
+    ) as string[]);
+  const [, setTikk] = useState(0);
   const veksle = (id: string) => {
-    const neste = krysset.includes(id)
-      ? krysset.filter((x) => x !== id)
-      : [...krysset, id];
-    setKrysset(neste);
-    localStorage.setItem(key, JSON.stringify(neste));
+    StorageManager.setForeldreAvkrysning(
+      nokkel,
+      krysset.includes(id) ? krysset.filter((x) => x !== id) : [...krysset, id],
+    );
+    setTikk((t) => t + 1);
   };
   return { krysset, veksle };
 }

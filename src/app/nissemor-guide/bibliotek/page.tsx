@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
+import { GameEngine } from "@/lib/game-engine";
 import { MediaListe, useMediaData } from "../media/kort";
 import type { bibliotek } from "@/lib/guide-innhold";
 
@@ -30,7 +31,7 @@ function EntitetKort({
     >
       <summary className="min-h-11 flex items-center px-3 cursor-pointer text-xl">
         {e.navn}
-        <span className="ml-auto text-sm text-(--neon-green)/60">
+        <span className="ml-auto text-sm text-(--neon-green)/80">
           {e.bilder.length} bilder · {e.medier.length} medier
         </span>
       </summary>
@@ -89,6 +90,34 @@ function EntitetKort({
   );
 }
 
+const SIDER = [
+  ["/nissemor-guide/printout", "Utskrifter"],
+  ["/nissemor-guide/media", "Media"],
+  ["/nissemor-guide/brevfugler", "Brev fra barna"],
+  ["/nissemor-guide/symboler", "Symbolkort med QR-koder"],
+  ["/nissemor-guide/forberedelser", "Forberedelser og handleliste"],
+] as const;
+
+function Merker() {
+  const tjent = new Set(GameEngine.getEarnedBadges().map((b) => b.badgeId));
+  return (
+    <section id="merker" className="mb-6 scroll-mt-4">
+      <h2 className="text-2xl text-(--gold) mb-2">Merker</h2>
+      <ul>
+        {GameEngine.getAllBadges().map((b) => (
+          <li key={b.id} className="mb-2">
+            <span className={tjent.has(b.id) ? "text-(--gold)" : ""}>
+              {tjent.has(b.id) ? "✓ " : "☐ "}
+              {b.navn}
+            </span>
+            : {b.beskrivelse}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function BibliotekInnhold() {
   const [liste, setListe] = useState<Entitet[] | null>(null);
   const [feil, setFeil] = useState(false);
@@ -121,6 +150,19 @@ function BibliotekInnhold() {
       <GuideNavigation />
       <div className="max-w-4xl mx-auto text-lg">
         <h1 className="text-3xl mb-4">Bibliotek</h1>
+        <ul className="grid sm:grid-cols-2 gap-2 mb-6">
+          {SIDER.map(([href, navn]) => (
+            <li key={href}>
+              <Link
+                href={href}
+                className="flex items-center min-h-11 px-3 border-2 border-(--neon-green) hover:bg-(--neon-green)/20"
+              >
+                {navn}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <Merker />
         {feil && <p className="text-(--christmas-red)">Kunne ikke laste.</p>}
         {!liste && !feil && <p>Laster …</p>}
         {liste &&

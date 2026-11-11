@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useGuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideSettings } from "@/components/nissemor/GuideSettings";
 import { GameEngine } from "@/lib/game-engine";
 import {
@@ -57,6 +57,36 @@ const knapp =
 const felt =
   "bg-black border border-(--neon-green) text-(--neon-green) min-h-11 px-2";
 
+function Nullstill() {
+  const [sikker, setSikker] = useState(false);
+  const [ferdig, setFerdig] = useState(false);
+  if (ferdig)
+    return <p className="text-(--gold)">All fremdrift er nullstilt.</p>;
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <button
+        className="px-4 min-h-11 border-2 border-(--christmas-red) text-(--christmas-red) hover:bg-(--christmas-red)/20"
+        onClick={async () => {
+          if (!sikker) return setSikker(true);
+          await sim.reset();
+          setFerdig(true);
+        }}
+      >
+        {sikker ? "Ja, nullstill alt" : "Nullstill all fremdrift"}
+      </button>
+      {sikker && (
+        <button className={knapp} onClick={() => setSikker(false)}>
+          Avbryt
+        </button>
+      )}
+      <p className="w-full">
+        Gjelder alle skjermer for hele familien. Innlogging og klokkeslett
+        beholdes.
+      </p>
+    </div>
+  );
+}
+
 function Simulering() {
   const [dag, setDag] = useState(() => Math.min(24, getCurrentDay()));
   const [tid, setTid] = useState("08:00");
@@ -75,12 +105,6 @@ function Simulering() {
 
   return (
     <div className="space-y-4">
-      {!isTimeMachineEnabled() && (
-        <p className="text-(--christmas-red)">
-          Tidsmaskinen er av i denne bygget (krever next dev eller
-          NEXT_PUBLIC_TEST_MODE=true). Dag og klokkeslett virker ikke.
-        </p>
-      )}
       <div className="flex flex-wrap items-center gap-2">
         <select
           value={dag}
@@ -114,6 +138,7 @@ function Simulering() {
         <label className="flex items-center gap-2 min-h-11">
           <input
             type="checkbox"
+            className="w-6 h-6 accent-(--gold)"
             checked={bonus}
             onChange={(e) => setBonus(e.target.checked)}
           />
@@ -184,26 +209,30 @@ function Simulering() {
           value={bilde}
           onChange={(e) => setBilde(e.target.value)}
           rows={3}
-          className="w-full bg-black border border-(--neon-green) text-(--neon-green) p-2 text-xs"
+          className="w-full bg-black border border-(--neon-green) text-(--neon-green) p-2 text-sm"
           aria-label="Øyeblikksbilde (JSON)"
         />
       </div>
       <button
-        className="px-4 min-h-11 border-2 border-(--christmas-red) text-(--christmas-red) hover:bg-(--christmas-red)/20"
-        onClick={() => {
-          if (
-            confirm(
-              "Nullstille all fremdrift på alle skjermer for hele familien? Innlogging og klokkeslett beholdes.",
-            )
-          ) {
-            kjør(sim.reset, "All fremdrift er nullstilt på alle skjermer.");
-          }
-        }}
+        className={knapp}
+        onClick={() => kjør(GameEngine.resetAllBadges, "Alle merker er fjernet.")}
       >
-        Nullstill all fremdrift
+        Fjern alle merker
       </button>
       {melding && <p className="text-(--gold)">{melding}</p>}
     </div>
+  );
+}
+
+function LoggUt() {
+  const { logout } = useGuideAuth();
+  return (
+    <button
+      onClick={logout}
+      className="px-4 min-h-11 border-2 border-(--christmas-red) text-(--christmas-red) hover:bg-(--christmas-red)/20"
+    >
+      Logg ut
+    </button>
   );
 }
 
@@ -218,29 +247,18 @@ export default function InnstillingerSide() {
       <Kort tittel="Feil koder" farge="border-(--cold-blue)">
         <Feilforsok />
       </Kort>
-      <Kort tittel="Simulering">
-        <Simulering />
+      <Kort tittel="Ny sesong" farge="border-(--christmas-red)">
+        <Nullstill />
       </Kort>
-      <Kort tittel="Mer">
-        <ul className="list-disc pl-6">
-          <li>
-            <Link
-              href="/nissemor-guide/merker"
-              className="underline inline-block py-3"
-            >
-              Merker
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/nissemor-guide/symboler"
-              className="underline inline-block py-3"
-            >
-              Symbolkort med QR-koder
-            </Link>
-          </li>
-        </ul>
-      </Kort>
+      {isTimeMachineEnabled() && (
+        <details className="border-4 border-(--neon-green) p-4">
+          <summary className="min-h-11 flex items-center cursor-pointer text-2xl font-bold text-(--gold)">
+            Simulering (testmodus)
+          </summary>
+          <Simulering />
+        </details>
+      )}
+      <LoggUt />
     </GuideSide>
   );
 }

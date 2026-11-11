@@ -121,6 +121,8 @@ export const SYNCED_KEYS = new Set([
   "nissekomm-viewed-emails",
   "nissekomm-viewed-bonusoppdrag-emails",
   "nissekomm-eventyr",
+  "nissekomm-failed-attempts",
+  "nissekomm-foreldre-avkrysning",
 ]);
 /** Written by MCP (set_frost, skip_day); clients only read them. */
 export const SERVER_KEYS = ["frost-override", "day-offset"];
