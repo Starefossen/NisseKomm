@@ -507,55 +507,55 @@ Kulde-nivå 0. Helt rent bilde og ren lyd for første gang siden dag 1. Barna sk
 
 ## Dag 20 (sø) – Sofa-Sleden · TURBO · grønn måne · 4. advent · varselet
 
-Kulde-nivå 2. Bildet flimrer oftere enn før, juletrelysene slukner ett og ett gjennom klippet. Brikken kommer i segment 3; varselet om i morgen og en rolig avskjed er siste segment (som i gåtedokumentet). Ingen tull i dag; stemmen er rolig og nær.
+Kulde-nivå 2. Bildet flimrer oftere enn før, juletrelysene slukner ett og ett gjennom klippet. Varselet i segment 2, brikken i segment 3–4, porten i 5, bøkene (som på radioen og i e-posten) og en rolig avskjed i 6. Ingen tull i dag; stemmen er rolig og nær.
 
 1. **Replikk:** «God morgen, Snøfall. Fjerde lys. Det første er håp. Det andre fred. Det tredje glede. Det fjerde kjærlighet. Hjerterud sier man ikke kan hoppe over noen.»
    - Varighet: 15 s (26 ord)
    - Handling: Teller fire lys med fingrene på venstre hånd, ett om gangen, langsomt.
    - Kulde: Bildet flimrer, ett juletrelys slukner.
-2. **Replikk:** «Orakelet målte åttiåtte prosent i natt. I morgen, den mørkeste dagen, når Kulde huset deres. Ikke for å skade. Det er bare der lyset er.»
-   - Varighet: 15 s (25 ord)
-   - Handling: Lener seg nærmere mikrofonen, snakker lavt og rolig.
+2. **Replikk:** «Orakelet målte Frostgraden i natt: åttiåtte prosent. I morgen, den mørkeste dagen, når Kulde huset deres. Ikke for å skade. Kulde vil bare dit lyset er.»
+   - Varighet: 15 s (26 ord)
+   - Handling: Lener seg nærmere mikrofonen, snakker lavt og rolig, venstre hånd stille på bordet.
    - Kulde: Flimring, enda et juletrelys slukner.
-3. **Replikk:** «Men først dagens ord fra verkstedet. IQ ga sledemotoren det samme som biler får når de skal forbi noen i bakken.»
-   - Varighet: 13 s (21 ord)
-   - Handling: Retter seg opp, peker mot taket der verkstedet er, med venstre hånd.
+3. **Replikk:** «Hør nå godt etter, for her kommer dagens ord fra verkstedet. IQ ga sledemotoren det samme som biler får når de skal forbi noen i bakken.»
+   - Varighet: 15 s (26 ord)
+   - Handling: Retter seg opp, peker mot taket der verkstedet er, med venstre hånd, og holder pekefingeren der.
    - Kulde: Flimring.
-4. **Replikk:** «Han sier det med armene, og motoren hviner når han sier det. IQ bygger en mur av varme rundt linjen, så det er noe å dele.»
+4. **Replikk:** «IQ elsker det ordet. Han sier det med armene, og motoren hviner når han sier det. I natt bygger IQ en mur av varme rundt linjen.»
    - Varighet: 15 s (26 ord)
    - Handling: Strekker venstre arm rett fram som IQ, så tegner han en firkant på bordet med fingeren.
    - Kulde: Flimring, enda et juletrelys slukner.
-5. **Replikk:** «Jeg har bedt om én port. Den står der jeg tegnet sirkelen på Trixters kart.»
-   - Varighet: 10 s (15 ord)
-   - Handling: Tegner en liten sirkel på bordet med venstre pekefinger.
+5. **Replikk:** «Jeg har bedt om én port. Den står der jeg tegnet sirkelen på Trixters kart. Kristian, se på kartet i kveld.»
+   - Varighet: 13 s (21 ord)
+   - Handling: Tegner en liten sirkel på bordet med venstre pekefinger og lar fingeren stå der.
    - Kulde: Flimring.
-6. **Replikk:** «I morgen trenger dere bare å være hjemme. Ha en rolig dag, dere tre.»
-   - Varighet: 9 s (14 ord)
+6. **Replikk:** «I morgen trenger dere bare å være hjemme. Jeg har bedt Rampenissen finne fram bøker, for bøker holder på varmen. Ha en rolig dag, dere tre.»
+   - Varighet: 15 s (26 ord)
    - Handling: Legger venstre hånd flatt på bordet, ser rolig fram.
    - Kulde: Tredje juletrelys slukner, men lampen står. Klikk.
 
 ## Dag 21 (ma) – Vintersolverv · BRANNMUR · M5 Muren og porten · frost nivå 2
 
-Kulde-nivå 3 i segment 1–2 (nesten frosset bilde, rim over hele vinduet, lyd og bilde hakker), renser seg i segment 3 og er 0 i segment 4. Muren holder. Ingen tull i dag.
+Kulde-nivå 3 i segment 1–2 (nesten frosset bilde, rim over hele vinduet, lyd og bilde hakker), renser seg i segment 3–4 og er 0 i segment 5. Muren holder. Ingen tull i dag; «i natt» kommer først, så solverv.
 
-1. **Replikk:** «Vintersolverv i dag, den korteste dagen. I gamle dager het det jól. Folk tente bål den mørkeste natten, for de visste at lyset snur i morgen.»
+1. **Replikk:** «I natt nådde Kulde huset deres, og IQ bygde muren. En mur er ikke mot noen. Den holder varmen inne, så det er noe å dele.»
    - Varighet: 15 s (26 ord)
-   - Handling: Sitter nesten urørlig, venstre hånd flat på bordet, pusten står som røyk, stemmen er rolig.
-   - Kulde: Nesten frosset bilde, rim over hele vinduet, lyden hakker i korte biter.
-2. **Replikk:** «I natt nådde Kulde huset deres, og IQ bygde muren. En mur er ikke mot noen. Den holder varmen inne, så det er noe å dele.»
+   - Handling: Sitter nesten urørlig, venstre hånd rundt trekoppen som for å holde på varmen, pusten står som røyk.
+   - Kulde: Nesten frosset bilde, rim over hele vinduet, lyden hakker i korte biter. Bildet fryser 1–2 s på «muren».
+2. **Replikk:** «Vintersolverv i dag, den korteste dagen. I gamle dager het det jól. Folk tente bål den mørkeste natten, for de visste at lyset snur i morgen.»
    - Varighet: 15 s (26 ord)
-   - Handling: Legger venstre hånd rundt trekoppen som for å holde på varmen.
-   - Kulde: Bildet fryser 1–2 s på «muren», så fortsetter det hakkende.
-3. **Replikk:** «Derfor ba jeg om en port, og det kommer jeg tilbake til. Hør nå. IQ bygde en vegg av varme rundt linjen.»
-   - Varighet: 13 s (22 ord)
-   - Handling: Tegner en linje over bordet med venstre håndkant.
+   - Handling: Venstre hånd flat på bordet, stemmen er rolig.
+   - Kulde: Nesten frosset bilde, lyden hakker.
+3. **Replikk:** «Hør nå godt etter, for her kommer dagens ord. IQ bygde en vegg av varme rundt linjen.»
+   - Varighet: 11 s (17 ord)
+   - Handling: Tegner en linje over bordet med venstre håndkant og holder hånden der.
    - Kulde: Hakkingen avtar; bildet står nesten stille, men lyden er klar.
-4. **Replikk:** «De som kjemper mot flammene i skogen, bygger det samme, bare av det motsatte, og kaller den etter det de kjemper mot.»
-   - Varighet: 13 s (22 ord)
+4. **Replikk:** «Veggen har et navn. De som kjemper mot flammene i skogen, bygger det samme, bare av det motsatte, og kaller den etter det de kjemper mot.»
+   - Varighet: 15 s (26 ord)
    - Handling: Peker på linjen han tegnet, holder blikket der.
    - Kulde: Bildet renser seg ord for ord; på siste ord er det helt rent.
-5. **Replikk:** «Jeg lot ham la én port stå åpen. Inn mot grotten. Med varme i. Kom hjem i kveld, dere tre. Vi er her.»
-   - Varighet: 14 s (23 ord)
+5. **Replikk:** «Muren har én åpning. Jeg lot ham la én port stå åpen. Inn mot grotten. Med varme i. Kom hjem i kveld. Vi er her.»
+   - Varighet: 15 s (25 ord)
    - Handling: Åpner en liten glipe i linjen med to fingre på venstre hånd, ser opp og smiler.
    - Kulde: Ingen. Rent bilde og ren lyd.
 
@@ -563,42 +563,42 @@ Kulde-nivå 3 i segment 1–2 (nesten frosset bilde, rim over hele vinduet, lyd 
 
 Kulde-nivå 0. Rent bilde og ren lyd. Rimen på vinduet er borte, bare dugg i hjørnene.
 
-1. **Replikk:** «Gooooood morgen, Snøfall! Folk tror Snill-listen handler om å være lydig. Det gjør den ikke. Snill er å se noen som står utenfor, og gå bort.»
+1. **Replikk:** «Gooooood morgen, Snøfall! I dag åpner Snill-listen, og den handler ikke om å være lydig. Snill er å se noen som står utenfor, og gå bort.»
    - Varighet: 15 s (26 ord)
-   - Handling: Legger venstre hånd på den store boka, blar til en tom side.
+   - Handling: Legger venstre hånd på den store boka, blar til en tom side og lar hånden ligge.
    - Kulde: Ingen.
 2. **Replikk:** «I natt kom ingenting gjennom porten ennå. Men Orakelet sier det er varmere der nede. Og Winter maser: han trenger stedet i tall, ikke i ord.»
    - Varighet: 15 s (26 ord)
    - Handling: Holder opp et brev med rød skrift og tall på med venstre hånd, rister lett på det.
    - Kulde: Ingen.
-3. **Replikk:** «Han stoler ikke på ord, Winter. Hør godt etter nå, Kristian. Winter skriver tall i stedet for bokstaver når noe er viktig.»
-   - Varighet: 13 s (22 ord)
-   - Handling: Holder brevet med tall på opp mot lampen, så peker han rett fram.
+3. **Replikk:** «Hør godt etter nå, Kristian. Winter skriver tall i stedet for bokstaver når noe er viktig. Og han har en regel.»
+   - Varighet: 13 s (21 ord)
+   - Handling: Holder brevet med tall på opp mot lampen hele segmentet.
    - Kulde: Ingen.
 4. **Replikk:** «Her kommer regelen. A er alltid først, og så følger resten, helt til de tre siste som bare vi i nord har.»
    - Varighet: 13 s (22 ord)
    - Handling: Skriver i luften med venstre hånd, teller videre med fingeren bortover bordet.
    - Kulde: Ingen.
-5. **Replikk:** «Og han legger alltid tre til hvert tall, for sikkerhets skyld. Trekk dem fra. Skriv navnene deres pent etterpå. Ha en riktig fin dag!»
-   - Varighet: 14 s (24 ord)
+5. **Replikk:** «Winter er forsiktig også. Og han legger alltid tre til hvert tall, for sikkerhets skyld. Trekk dem fra. Skriv navnene deres pent etterpå. Vi ses!»
+   - Varighet: 15 s (25 ord)
    - Handling: Smiler, legger fra seg brevet med venstre hånd og vinker kort.
    - Kulde: Ingen.
 
 ## Dag 23 (on) – Nattevakt · STJERNEKLART · blå måne · sannheten
 
-Kulde-nivå 0. Rent. Lys siver ned gjennom vinduet, mer enn vanlig.
+Kulde-nivå 0. Rent. Lys siver ned gjennom vinduet, mer enn vanlig. Rolig hilsen (som dag 10, 15 og 20).
 
 1. **Replikk:** «God morgen, Snøfall. Lille julaften. Rampenissen rapporterer: «Æ har bare kikka litt på en pakke.» Litt! Teipen var tom etterpå. Jeg kjenner meg igjen.»
    - Varighet: 14 s (24 ord)
    - Handling: Tar opp et ark fra brevbunken med venstre hånd, leser, og smiler skjevt.
    - Kulde: Ingen.
-2. **Replikk:** «I natt så Orakelet ned i grotten. Det som er der nede, har ventet på lys i ett år. Nå flyr vi over det.»
-   - Varighet: 14 s (24 ord)
-   - Handling: Lener seg inn mot mikrofonen, rolig og bestemt.
+2. **Replikk:** «I natt så Orakelet ned i grotten. Det der nede har ventet lenge på lys. I natt flyr sleden lavt over det, med alle lysene på.»
+   - Varighet: 15 s (26 ord)
+   - Handling: Senker venstre hånd flatt over bordet som en slede, langsomt, og lar den gli hele segmentet.
    - Kulde: Ingen.
-3. **Replikk:** «Lavt, med alle lysene på. Trixter pakker sleden mens vi snakker. Og så flyværet. Orakelet meldte flyværet i ett ord. Ikke en sky, ikke én.»
+3. **Replikk:** «Trixter pakker sleden mens vi snakker, og Rudolf har spist. Hør nå godt etter. Orakelet meldte flyværet i ett ord. Ikke en sky, ikke én.»
    - Varighet: 15 s (25 ord)
-   - Handling: Senker venstre hånd flatt over bordet som en slede, så ser han opp mot taket.
+   - Handling: Ser opp mot taket og holder blikket der, venstre hånd rolig på bordet.
    - Kulde: Ingen.
 4. **Replikk:** «Været har et ord for en natt der alt som blinker der oppe er synlig hele veien, og det ordet begynner med det som blinker.»
    - Varighet: 15 s (25 ord)
@@ -611,30 +611,30 @@ Kulde-nivå 0. Rent. Lys siver ned gjennom vinduet, mer enn vanlig.
 
 ## Dag 24 (to) – God Jul på Landås · JULEMAGI · M6 Tøvær
 
-Kulde-nivå 0. Alt virker. Rommet er varmere enn noen gang: alle juletrelys tent, mer gull i lyset, dampen fra trekoppen. Julius smiler hele veien. Seks segmenter: morgensangen går hele veien for første gang.
+Kulde-nivå 0. Alt virker. Rommet er varmere enn noen gang: alle juletrelys tent, mer gull i lyset, dampen fra trekoppen. Julius smiler hele veien. Seks segmenter: morgensangen går hele veien for første gang. Krystallet fra Vintervokteren sies rett ut (som i PS).
 
 1. **Replikk:** «Gooooooood morgen, Snøfall, og god jul! Morgensangen, hele veien: God morgen, kopp. God morgen, bok. God morgen, Kristian, Håkon, Hanna. God morgen, Landås. Den satt!»
    - Varighet: 15 s (25 ord)
    - Handling: Dirigerer med venstre pekefinger, nikker til koppen og boka, så mot vinduet, og ler høyt og lykkelig.
    - Kulde: Ingen. Alle lys tent.
-2. **Replikk:** «Alt virker. Hele kontoret er varmt. Vi feirer ikke fordi alt er perfekt, men fordi det er fred i huset.»
-   - Varighet: 12 s (20 ord)
+2. **Replikk:** «I natt fløy sleden over grotten, og isen tiner. Den blå fuglen fløy hjem. Vintervokteren sendte et krystall med Trixter. Det ligger under treet deres nå.»
+   - Varighet: 15 s (26 ord)
+   - Handling: Nikker mot vinduskarmen, som nå er tom, og blir vendt mot vinduet hele segmentet.
+   - Kulde: Ingen.
+3. **Replikk:** «Alt virker, og hele kontoret er varmt. Vi feirer ikke fordi alt er perfekt, men fordi det er fred i huset. Og nå kommer det siste.»
+   - Varighet: 15 s (26 ord)
    - Handling: Slår ut med venstre arm mot rommet, så legger han hånden på trekoppen.
    - Kulde: Ingen.
-3. **Replikk:** «I natt fløy sleden over grotten med alle lysene på. Isen tiner. Den blå fuglen fløy hjem med brevet sitt. Og Vintervokteren sendte noe med Trixter.»
-   - Varighet: 15 s (26 ord)
-   - Handling: Nikker mot vinduskarmen, som nå er tom. Peker ut av bildet med venstre hånd, mot dem.
-   - Kulde: Ingen.
-4. **Replikk:** «Til dere. Dere har laget noe hele desember uten å vite det. Ikke koden, den tastet dere. Ikke varmen, den kom fra ovnen.»
-   - Varighet: 14 s (23 ord)
+4. **Replikk:** «Hør nå, alle tre. Dere har laget noe hele desember uten å vite det. Ikke koden, den tastet dere. Ikke varmen, den kom fra ovnen.»
+   - Varighet: 15 s (25 ord)
    - Handling: Peker ut av bildet med venstre hånd, mot dem. Rister rolig på hodet to ganger.
    - Kulde: Ingen.
-5. **Replikk:** «Hør nå godt etter, alle tre. Det trollmenn later som de har, og som dere faktisk har hatt: tre søsken som holder sammen i mørket.»
+5. **Replikk:** «Det dere har laget, er dette. Det trollmenn later som de har, og som dere faktisk har hatt: tre søsken som holder sammen i mørket.»
    - Varighet: 15 s (25 ord)
    - Handling: Holder opp tre fingre på venstre hånd og lukker dem langsomt til en knyttneve.
    - Kulde: Ingen.
-6. **Replikk:** «Og Hjerterud setter alltid navnet på høytiden foran ordet, slik hun gjør med grøten og treet. God jul, dere tre. Ha en riktig fin julaften!»
-   - Varighet: 15 s (25 ord)
+6. **Replikk:** «Hør det siste også. Og Hjerterud setter alltid navnet på høytiden foran ordet, slik hun gjør med grøten og treet. God jul, dere tre!»
+   - Varighet: 14 s (24 ord)
    - Handling: Lener seg tilbake, lykkelig, løfter trekoppen med venstre hånd som en skål.
    - Kulde: Ingen. Ingen klikk; bildet toner ut i gull.
 
@@ -665,10 +665,10 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 | 17  | NORDLYS      | 123 | 62     | 73      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5; «i nord» (låst)                      |
 | 18  | TURBULENS    | 120 | 60     | 70      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                  |
 | 19  | GULROT       | 125 | 62     | 73      | 5     | 26      | 0 %                                | Kulde 0; brikke delt over segm. 4–5                                   |
-| 20  | TURBO        | 127 | 64     | 77      | 6     | 26      | 0 %                                | Brikke i segm. 3–4; segm. 5 ny: porten = sirkelen på kartet           |
-| 21  | BRANNMUR     | 119 | 60     | 70      | 5     | 26      | 0 %                                | Brikke strammet 10. nov; delt over segm. 3–4                          |
-| 22  | LANDÅS       | 120 | 60     | 70      | 5     | 26      | to regler, ingen tall              | Låst brikke (43 ord) delt over segm. 3–5                              |
-| 23  | STJERNEKLART | 121 | 60     | 72      | 5     | 25      | 0 %                                | Låst brikke delt over segm. 3–4                                       |
-| 24  | JULEMAGI     | 144 | 72     | 86      | 6     | 26      | 0 %                                | Låst brikke (50 ord) delt over segm. 4–6; morgensangen går hele veien |
+| 20  | TURBO        | 151 | 76     | 88      | 6     | 26      | 0 %                                | Brikke i segm. 3–4; segm. 5 ny: porten = sirkelen på kartet           |
+| 21  | BRANNMUR     | 120 | 60     | 71      | 5     | 26      | 0 %                                | Brikke strammet 10. nov; delt over segm. 3–4                          |
+| 22  | LANDÅS       | 120 | 60     | 71      | 5     | 26      | to regler, ingen tall              | Låst brikke (43 ord) delt over segm. 3–5                              |
+| 23  | STJERNEKLART | 123 | 62     | 73      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 3–4                                       |
+| 24  | JULEMAGI     | 151 | 76     | 89      | 6     | 26      | 0 %                                | Låst brikke (50 ord) delt over segm. 4–6; morgensangen går hele veien |
 
-Sum: 3 000 ord, snitt 125 per dag (cirka 60 s tale, 70 s med klippause). Ingen segmenter over 26 ord; alle klipp 13–15 s.
+Sum: 3 034 ord, snitt 126 per dag (cirka 60 s tale, 70 s med klippause). Ingen segmenter over 26 ord; alle klipp 13–15 s.
