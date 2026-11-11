@@ -35,15 +35,28 @@ Automatikk: starter på 480×270; faller til 320×180 når p95 over tre sekunder
 2. Gjenta med `&res=320`. Grense: p95 under 18 ms.
 3. Sjekk at pipene på husene er lesbare i 480×270, og varme etter fem minutter.
 
-## Klart for fase 2 (pipelevering fra dag 14, fri flukt mellom etapper)
+## Fase 2 (gren `feat/sledeflukt-fase2`)
 
-- `Hus.pipe` i `verden.ts` er pipetoppen i verdenskoordinater for hvert hus; `lagVerden(etappe)` gir lista.
-- `Verden` bygges per etappe og kan utvides med leveringsmål; `Ting`-løkka i `Sledeflukt.tsx` tegner alt fra `sim.s.first` og framover.
-- Styringen har `gass` i `Styring`; en slipp-knapp kan gjenbruke `sprang`-låsen.
-- Navn på pakker: `GameEngine.getSantaLetters()` (se vurderingen, pkt. 2).
-- Mangler: røyk fra pipa (partikler), pakkebane, leveringspoeng i `slede.ts` (ny `Hendelse`), fri flukt uten `lengde`-mål (sim avslutter ved `dist >= e.lengde`).
+| Steg                    | Status | Hvor                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ----------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 Visuell finpuss       | ferdig | `verden.ts`: slede med skrog, gulltrim, sekk og meier på stag; reinspann i V (`REIN`, `REIN_SKALA`); varde med glødende topp; grottens grønne kanter er stiplede islys. `renderer.ts`: `snø()`, tre lag pikselsnø i det lille bufferet, drift med vinden, av ved `prefers-reduced-motion`. Kameraet ligger høyere og litt til høyre (`Sledeflukt.tsx`)                                                                                                                                                           |
+| 2 Pipelevering (dag 14) | ferdig | `slede.ts`: `Blanding.hus` gir `Ting` «hus» langs løypa på etappene fra 14. desember (`HUS_PIPE` = pipetopp per størrelse); `Styring.slipp`, `Pakke`, `fallPakke`/`forutsiPakke` (tyngde, luftmotstand, vinddrift), treff ved pipetoppen (200 × rekke), `leveringsoppdrag(day, e)` (+300 i mål), `pakkenavn(brev, n)`. `verden.ts`: `husPlass`, pakke-, røyk-, prikk- og merkemesh. `Sledeflukt.tsx`: SLIPP-knapp/Enter, røyk fra piper, stjerne på leverte hus, siktelinje og landingskryss, HUD/start/resultat |
+| 3 Fri flyging           | ferdig | `SimOpts.fri`: ingen mållinje, loop fra `lengde + FRI_SLUTT` til `FRI_START` med løypa nullstilt (`Hendelse` «runde»); `landemerker(e)`/`nesteLandemerke(e, dist)` i HUD og på minikartet; knapp på start- og sluttskjerm, pause sier hvor de flyr; ingen resultat lagres                                                                                                                                                                                                                                        |
+
+Pakkefysikk: pakken slippes med sledens fart og faller rett ned under spannet, der det høye kameraet ser den.
+Et kast framover ble prøvd først, men banen lå i skyggen av sleden og reinsdyrene fra jaktkameraet.
+
+Skjermbilder (`fase2-*.png` i scratchpad `sledeflukt/`): startskjerm med LEVERING og FRI FLYGING, sikte, pakke i fall,
+hus med røyk, fri flyging med landemerke, pause.
+
+### Å sjekke på iPaden (Hans)
+
+1. Pipelevering på dag 14 (`/dev/sledeflukt?dag=14`): er landingskrysset lesbart i 480×270, og treffer en 9-åring med tommelen på SLIPP?
+2. Snøen: for tett eller for glissen? `e.snøfall / 400` i `Sledeflukt.tsx` er knotten.
+3. Bildetid med snø og røyk: p95 fortsatt under 18 ms?
 
 ## Kjente hull
 
-- Ingen snøpartikler og ingen søskentavle (todo.md).
+- Ingen søskentavle (todo.md).
+- Pakkene har navn fra brevskriveren («PAKKE TIL HÅKON»), ikke fra ønsket i brevet.
 - Horisontbildene `feed/slede-*.jpg` brukes ikke lenger; himmelen er en gradient med stjerner og nordlysbånd i shaderen.
