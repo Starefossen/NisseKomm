@@ -59,6 +59,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   );
   const [introSteg, setIntroSteg] = useState(0);
   const [visSoner, setVisSoner] = useState(false);
+  const [valg, setValg] = useState(false);
   // A tap on empty scene briefly outlines the hotspots (no pixel-hunting on iPad).
   const [hint, setHint] = useState(false);
   useEffect(() => {
@@ -101,7 +102,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
 
   if (meny || !save) {
     return (
-      <RetroWindow title="NISSESPILL" onClose={onClose}>
+      <RetroWindow title="UGLEPOSTEN" onClose={onClose}>
         <div className="p-4 md:p-6 max-w-2xl mx-auto space-y-4">
           <h2 className="text-3xl text-(--gold) tracking-wider">UGLEPOSTEN</h2>
           <p className="text-xl leading-tight">
@@ -188,8 +189,16 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
       ? `${VERBS.find((x) => x.id === verb)?.label} hva?`
       : scene.navn;
 
+  const valgListe = node ? M.valgSomVises(node, save) : [];
+  const PANEL =
+    "absolute inset-x-0 bottom-0 max-h-[75%] overflow-y-auto bg-black/85 border-t-2 border-(--brass) px-3 py-2";
+  const LITEN =
+    "min-h-11 px-2 rounded border-2 text-lg active:scale-95 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold)";
+  const MENYPUNKT =
+    "min-h-11 px-3 text-left text-lg hover:text-(--gold) focus-visible:text-(--gold) focus-visible:outline-none";
+
   return (
-    <RetroWindow title={`NISSESPILL: KAPITTEL ${kap.n}`} onClose={onClose}>
+    <RetroWindow title={`UGLEPOSTEN: KAPITTEL ${kap.n}`} onClose={onClose}>
       <div
         className="h-full flex flex-col select-none"
         style={{
@@ -198,14 +207,10 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
           WebkitTapHighlightColor: "transparent",
         }}
       >
-        {/* Scene: 16:9 still with percent-positioned hotspots */}
-        {/* The still shrinks a little during dialog so both bubbles and the choices fit */}
-        {/* Inner box keeps 16:9 when max-h clamps, so percent hotspots stay on the image */}
-        <div
-          className={`w-full max-w-4xl mx-auto aspect-video ${dialog ? "max-h-[40%]" : "max-h-[55%]"} bg-black overflow-hidden`}
-        >
+        {/* Size container: the 16:9 stage is as large as fits, so percent hotspots stay on the image */}
+        <div className="flex-1 min-h-0 bg-black flex items-center justify-center [container-type:size]">
           <div
-            className="relative h-full max-w-full aspect-video mx-auto"
+            className="relative aspect-video w-[min(100cqw,calc(100cqh*16/9))] overflow-hidden"
             onClick={(e) => {
               if (
                 e.target === e.currentTarget ||
@@ -244,132 +249,141 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   }}
                 />
               ))}
-            {(iIntro || iUtro) && (
-              <div className="absolute inset-0 bg-black/75 flex items-end p-4">
-                <div className="flex items-start gap-3 w-full">
-                  <Portrett navn="rampenissen" stor />
-                  <div className="flex-1 space-y-3">
-                    <p className="text-2xl leading-tight">
-                      {iIntro ? kap.intro[introSteg] : kap.utro}
-                    </p>
-                    <button
-                      type="button"
-                      className={`${BTN} border-(--gold) text-(--gold)`}
-                      onClick={() => {
-                        SoundManager.playSound("click");
-                        if (iUtro) {
-                          setSave(M.medFlagg(save, utroFlagg));
-                          setMeny(true);
-                        } else if (introSteg + 1 < kap.intro.length) {
-                          setIntroSteg(introSteg + 1);
-                        } else {
-                          setSave(M.medFlagg(save, introFlagg));
-                        }
-                      }}
-                    >
-                      {iUtro ? "TIL KAPITLENE" : "VIDERE"}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
 
-        {/* Status line + speech / dialog */}
-        <div className="w-full max-w-4xl mx-auto px-3 py-2 flex-1 min-h-0 overflow-auto">
-          <div className="text-base text-(--cold-blue) uppercase tracking-wider">
-            {status}
-          </div>
-          {dialog && node && taler ? (
-            <div className="mt-1 space-y-2">
-              <div className="flex items-start gap-3">
-                <Portrett key={taler.portrett} navn={taler.portrett} />
-                <div>
-                  <p className="text-xl text-(--gold)">{taler.taler}</p>
-                  <p className="text-2xl leading-tight">
-                    {M.velg(node.tekst, save)}
-                  </p>
-                </div>
-              </div>
-              {node.rampenissen && (
-                <div className="flex items-start gap-3 pl-6">
-                  <Portrett navn="rampenissen" />
-                  <div>
-                    <p className="text-xl text-(--gold)">
-                      Rampenissen (hvisker)
-                    </p>
-                    <p className="text-2xl leading-tight">{node.rampenissen}</p>
-                  </div>
-                </div>
-              )}
-              <div className="flex flex-col gap-2">
-                {M.valgSomVises(node, save).map((v) => (
+            <div className="absolute top-2 left-2 px-2 bg-black/70 text-base text-(--cold-blue) uppercase tracking-wider pointer-events-none">
+              {status}
+            </div>
+
+            {!iIntro && !iUtro && !dialog && (
+              <div className="absolute top-2 right-2 flex flex-col items-end gap-2">
+                {scene.utganger.map((u) => (
                   <button
-                    key={v.tekst}
+                    key={u.til}
                     type="button"
-                    className={`${BTN} border-(--neon-green) text-left`}
-                    onClick={() => tapValg(v)}
+                    onClick={() => bruk(M.gaa(save, u.til))}
+                    className={`${LITEN} bg-black/70 border-(--cold-blue) text-(--cold-blue)`}
                   >
-                    › {v.tekst}
+                    → {u.navn}
                   </button>
                 ))}
-                {M.valgSomVises(node, save).length === 0 && (
+              </div>
+            )}
+
+            {(iIntro || iUtro) && (
+              <div className={`${PANEL} flex items-start gap-3`}>
+                <Portrett navn="rampenissen" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-lg text-(--gold)">Rampenissen</p>
+                  <p className="text-xl leading-tight">
+                    {iIntro ? kap.intro[introSteg] : kap.utro}
+                  </p>
                   <button
                     type="button"
-                    className={`${BTN} border-(--gold) text-(--gold)`}
-                    onClick={() => setDialog(null)}
+                    className={`${MENYPUNKT} text-(--gold)`}
+                    onClick={() => {
+                      SoundManager.playSound("click");
+                      if (iUtro) {
+                        setSave(M.medFlagg(save, utroFlagg));
+                        setMeny(true);
+                      } else if (introSteg + 1 < kap.intro.length) {
+                        setIntroSteg(introSteg + 1);
+                      } else {
+                        setSave(M.medFlagg(save, introFlagg));
+                      }
+                    }}
                   >
-                    Ferdig
+                    {iUtro ? "TIL KAPITLENE" : "VIDERE"}
                   </button>
-                )}
+                </div>
               </div>
-            </div>
-          ) : (
-            <p className="mt-1 text-2xl leading-tight min-h-14">
-              {tekst || "Rampenissen: «Trykk på ting, da vel!»"}
-            </p>
-          )}
+            )}
+
+            {dialog && node && taler && (
+              <div className={`${PANEL} space-y-2`}>
+                <div className="flex items-start gap-3">
+                  <Portrett key={taler.portrett} navn={taler.portrett} />
+                  <div className="min-w-0">
+                    <p className="text-lg text-(--gold)">{taler.taler}</p>
+                    <p className="text-xl leading-tight">
+                      {M.velg(node.tekst, save)}
+                    </p>
+                  </div>
+                </div>
+                {node.rampenissen && (
+                  <div className="flex items-start gap-3">
+                    <Portrett navn="rampenissen" />
+                    <div className="min-w-0">
+                      <p className="text-lg text-(--gold)">
+                        Rampenissen (hvisker)
+                      </p>
+                      <p className="text-xl leading-tight">
+                        {node.rampenissen}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                <div className="flex flex-col border-t border-(--brass)/50 pt-1">
+                  {valgListe.map((v) => (
+                    <button
+                      key={v.tekst}
+                      type="button"
+                      className={MENYPUNKT}
+                      onClick={() => tapValg(v)}
+                    >
+                      › {v.tekst}
+                    </button>
+                  ))}
+                  {valgListe.length === 0 && (
+                    <button
+                      type="button"
+                      className={`${MENYPUNKT} text-(--gold)`}
+                      onClick={() => setDialog(null)}
+                    >
+                      Ferdig
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {!dialog && !iIntro && !iUtro && tekst && (
+              <button
+                type="button"
+                aria-label="Lukk tekst"
+                onClick={() => setTekst("")}
+                className={`${PANEL} text-left text-xl leading-tight`}
+              >
+                {tekst}
+              </button>
+            )}
+          </div>
         </div>
 
-        {/* Exits, verbs, inventory, tips */}
-        <div className="w-full max-w-4xl mx-auto px-3 pb-3 flex items-center gap-2 flex-wrap">
-          {scene.utganger.map((u) => (
+        {/* Verb bar, inventory slots, tips and the menu */}
+        <div className="flex items-center gap-2 px-2 py-1 border-t-2 border-(--brass)">
+          {VERBS.map((v) => (
             <button
-              key={u.til}
+              key={v.id}
               type="button"
-              onClick={() => bruk(M.gaa(save, u.til))}
-              className={`${BTN} border-(--cold-blue) text-(--cold-blue)`}
+              aria-pressed={verb === v.id}
+              onClick={() => {
+                setHolder(null);
+                setVerb(verb === v.id ? null : v.id);
+              }}
+              className={`${LITEN} flex items-center gap-1 ${verb === v.id ? "bg-(--neon-green) text-black border-(--neon-green)" : "border-(--neon-green)/60"}`}
             >
-              → {u.navn}
+              <Icon
+                name={v.ikon}
+                size={18}
+                color={verb === v.id ? "gray" : "green"}
+              />
+              {v.label}
             </button>
           ))}
-          <div className="flex gap-2">
-            {VERBS.map((v) => (
-              <button
-                key={v.id}
-                type="button"
-                onClick={() => {
-                  setHolder(null);
-                  setVerb(verb === v.id ? null : v.id);
-                }}
-                className={`${BTN} min-w-16 ${verb === v.id ? "bg-(--neon-green) text-black border-(--neon-green)" : "border-(--neon-green)"}`}
-              >
-                <span className="flex items-center gap-1">
-                  <Icon
-                    name={v.ikon}
-                    size={20}
-                    color={verb === v.id ? "gray" : "green"}
-                  />
-                  {v.label}
-                </span>
-              </button>
-            ))}
-          </div>
-          <div className="flex-1 flex gap-2 overflow-x-auto min-h-12 items-center border-2 border-dashed border-(--neon-green)/40 rounded px-2">
-            {save.inventory.length === 0 && (
-              <span className="text-lg opacity-50">Tomme lommer</span>
-            )}
+          <div
+            className="flex-1 min-w-0 flex gap-1 overflow-x-auto"
+            aria-label="Lommene"
+          >
             {save.inventory
               .filter((id) => kap.gjenstander[id])
               .map((id) => (
@@ -379,60 +393,91 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   aria-label={kap.gjenstander[id].navn}
                   title={kap.gjenstander[id].navn}
                   onClick={() => tapItem(id)}
-                  className={`min-w-12 min-h-12 rounded border-2 flex items-center justify-center ${holder === id ? "bg-(--gold) border-(--gold)" : "border-(--gold)"}`}
+                  className={`shrink-0 w-11 h-11 border-2 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) ${holder === id ? "bg-(--gold) border-(--gold)" : "border-(--brass)"}`}
                 >
                   <Icon
                     name={kap.gjenstander[id].ikon}
-                    size={28}
+                    size={26}
                     color={holder === id ? "gray" : "gold"}
                   />
                 </button>
               ))}
+            {Array.from({
+              length: Math.max(0, 4 - save.inventory.length),
+            }).map((_, i) => (
+              <div
+                key={i}
+                className="shrink-0 w-11 h-11 border-2 border-(--brass)/30"
+              />
+            ))}
           </div>
           <button
             type="button"
             onClick={() => bruk(M.tips(kap, save))}
-            className={`${BTN} border-(--gold) text-(--gold) animate-pulse`}
+            className={`${LITEN} border-(--gold) text-(--gold)`}
           >
             TIPS
           </button>
-          <button
-            type="button"
-            onClick={() => setMeny(true)}
-            className="text-sm opacity-60 min-h-11 min-w-11 px-2"
-          >
-            kapitler
-          </button>
-          {DEV && (
-            <>
-              <select
-                aria-label="Hopp til scene"
-                className="bg-black text-sm opacity-60 min-h-11 border border-(--brass)"
-                value={scene.id}
-                onChange={(e) => bruk(M.gaa(save, e.target.value))}
-              >
-                {kap.scener.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.navn}
-                  </option>
-                ))}
-              </select>
-              <button
-                type="button"
-                onClick={() => setVisSoner(!visSoner)}
-                className="text-sm opacity-60 min-h-11 px-2"
-              >
-                {visSoner ? "skjul soner" : "vis soner"}
-              </button>
-              <button
-                type="button"
-                onClick={() => startKapittel(kap.n)}
-                className="text-sm opacity-60 min-h-11 px-2"
-              >
-                nullstill
-              </button>
-            </>
-          )}
+          <div className="relative">
+            <button
+              type="button"
+              aria-expanded={valg}
+              onClick={() => setValg(!valg)}
+              className={`${LITEN} border-(--brass)`}
+            >
+              MENY
+            </button>
+            {valg && (
+              <div className="absolute bottom-full right-0 mb-1 z-10 w-64 flex flex-col bg-black border-2 border-(--brass) py-1">
+                <button
+                  type="button"
+                  className={MENYPUNKT}
+                  onClick={() => {
+                    setValg(false);
+                    setMeny(true);
+                  }}
+                >
+                  Kapitler
+                </button>
+                <button
+                  type="button"
+                  className={MENYPUNKT}
+                  onClick={() => {
+                    setValg(false);
+                    startKapittel(kap.n);
+                  }}
+                >
+                  Start kapittelet på nytt
+                </button>
+                {DEV && (
+                  <>
+                    <button
+                      type="button"
+                      className={`${MENYPUNKT} opacity-60`}
+                      onClick={() => setVisSoner(!visSoner)}
+                    >
+                      {visSoner ? "Skjul soner (dev)" : "Vis soner (dev)"}
+                    </button>
+                    <select
+                      aria-label="Hopp til scene"
+                      className="mx-3 my-1 bg-black text-base opacity-60 min-h-11 border border-(--brass)"
+                      value={scene.id}
+                      onChange={(e) => {
+                        setValg(false);
+                        bruk(M.gaa(save, e.target.value));
+                      }}
+                    >
+                      {kap.scener.map((s) => (
+                        <option key={s.id} value={s.id}>
+                          {s.navn}
+                        </option>
+                      ))}
+                    </select>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </RetroWindow>
