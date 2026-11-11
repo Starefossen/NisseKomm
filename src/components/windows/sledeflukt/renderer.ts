@@ -1,8 +1,9 @@
 /**
  * SLEDEFLUKT renderer: WebGL1, flat shading, one directional light and fog,
- * drawn to a small framebuffer (480×270 or 320×180) and blown up with nearest
- * sampling through a palette-and-dither pass. No shadow map, no noise shaders:
- * the iPad's cost is the fill rate of the small buffer plus one cheap full-size pass.
+ * drawn to a small framebuffer (640×360, falling back to 480×270 or 320×180) and
+ * blown up with nearest sampling through a palette-and-dither pass. No shadow map,
+ * no noise shaders: the iPad's cost is the fill rate of the small buffer plus one
+ * full-size pass whose only work is the 64-colour snap.
  */
 
 import {
@@ -33,8 +34,11 @@ void main(){
 
 const FRAG = `
 precision mediump float;
-varying vec3 vCol; varying float vFog; uniform vec3 uDis;
-void main(){ gl_FragColor = vec4(mix(vCol, uDis, vFog), 1.0); }`;
+varying vec3 vCol; varying float vFog; uniform vec3 uDis; uniform float uGraa;
+void main(){
+  vec3 c = mix(vCol, vec3(0.47, 0.50, 0.56), uGraa);
+  gl_FragColor = vec4(mix(c, uDis, vFog), 1.0);
+}`;
 
 const QUAD_VERT = `
 attribute vec2 aPos; varying vec2 vUv;
@@ -83,14 +87,17 @@ void main(){
   gl_FragColor = vec4(0.93, 0.95, 1.0, 1.0);
 }`;
 
-// Post: nearest sample of the small buffer, 4×4 Bayer dither, snap to the palette.
+// Post: nearest sample of the small buffer, 4×4 Bayer dither in the small buffer's
+// own pixels (so the dither is made of the same chunky pixels as the scene), snap to the palette.
+// ponytail: the 64-entry search runs per screen pixel; if an iPad shows it, move the
+// snap into a second small framebuffer and blit that.
 const POST_FRAG = `
 precision mediump float;
 varying vec2 vUv;
-uniform sampler2D uTex; uniform sampler2D uBayer; uniform vec3 uPalett[${PALETT.length}]; uniform float uDither;
+uniform sampler2D uTex; uniform sampler2D uBayer; uniform vec3 uPalett[${PALETT.length}]; uniform float uDither; uniform vec2 uSize;
 void main(){
   vec3 c = texture2D(uTex, vUv).rgb;
-  float b = texture2D(uBayer, gl_FragCoord.xy / 4.0).r - 0.5;
+  float b = texture2D(uBayer, floor(vUv * uSize) / 4.0).r - 0.5;
   c += b * uDither;
   vec3 best = uPalett[0]; float bd = 1e9;
   for (int i = 0; i < ${PALETT.length}; i++) {
@@ -142,8 +149,8 @@ export class Renderer {
   private instBufs = new Map<Float32Array, WebGLBuffer>();
   private vp: Mat4 = new Float32Array(16);
   private kamera: Vec3 = [0, 0, 0];
-  bredde = 480;
-  høyde = 270;
+  bredde = 640;
+  høyde = 360;
   tapt = false;
 
   constructor(private canvas: HTMLCanvasElement) {
@@ -175,7 +182,15 @@ export class Renderer {
       glow: 3,
       inst: 4,
     };
-    for (const n of ["uModel", "uVP", "uLys", "uKamera", "uTaake", "uDis"])
+    for (const n of [
+      "uModel",
+      "uVP",
+      "uLys",
+      "uKamera",
+      "uTaake",
+      "uDis",
+      "uGraa",
+    ])
       this.u[n] = gl.getUniformLocation(this.prog, n);
     this.sky = this.program(QUAD_VERT, SKY_FRAG, ["aPos"]);
     for (const n of [
@@ -191,7 +206,7 @@ export class Renderer {
     for (const n of ["uTid", "uTetthet", "uDrift", "uSize"])
       this.usn[n] = gl.getUniformLocation(this.snow, n);
     this.post = this.program(QUAD_VERT, POST_FRAG, ["aPos"]);
-    for (const n of ["uTex", "uBayer", "uPalett", "uDither"])
+    for (const n of ["uTex", "uBayer", "uPalett", "uDither", "uSize"])
       this.up[n] = gl.getUniformLocation(this.post, n);
 
     this.quad = gl.createBuffer()!;
@@ -224,11 +239,11 @@ export class Renderer {
 
     gl.useProgram(this.post);
     gl.uniform3fv(this.up.uPalett, new Float32Array(PALETT.flat()));
-    gl.uniform1f(this.up.uDither, 1 / 14);
+    gl.uniform1f(this.up.uDither, 1 / 24);
     gl.uniform1i(this.up.uTex, 0);
     gl.uniform1i(this.up.uBayer, 1);
 
-    this.setOppløsning(480, 270);
+    this.setOppløsning(640, 360);
   }
 
   private program(vs: string, fs: string, attribs: string[]) {
@@ -372,6 +387,7 @@ export class Renderer {
     gl.uniform3fv(this.u.uLys, lys);
     gl.uniform2f(this.u.uTaake, h.tåke[0], h.tåke[1]);
     gl.uniform3fv(this.u.uDis, h.dis);
+    gl.uniform1f(this.u.uGraa, 0);
     gl.enableVertexAttribArray(this.a.pos);
     gl.enableVertexAttribArray(this.a.norm);
     gl.enableVertexAttribArray(this.a.col);
@@ -435,6 +451,11 @@ export class Renderer {
     gl.disableVertexAttribArray(this.a.inst);
   }
 
+  /** Grey out what is drawn next (0 = full colour, 1 = stone grey): locked places. */
+  grå(x: number) {
+    this.gl.uniform1f(this.u.uGraa, x);
+  }
+
   /** Is a world point in front of the camera and within reach? Cheap cull for per-thing draws. */
   synlig(p: Vec3, rekkevidde: number) {
     const dx = p[0] - this.kamera[0];
@@ -461,6 +482,7 @@ export class Renderer {
     gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     gl.disable(gl.DEPTH_TEST);
     gl.useProgram(this.post);
+    gl.uniform2f(this.up.uSize, this.bredde, this.høyde);
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, this.tex);
     gl.activeTexture(gl.TEXTURE1);

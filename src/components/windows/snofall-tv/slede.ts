@@ -3,6 +3,8 @@
  * No DOM here, so stage gating, scoring and the assist rules are testable.
  * The player moves in x (track units, 0 = centre) and altitude; the world
  * rolls towards the camera in z. Collisions are checked when a thing crosses z = 0.
+ * «varde» in the code is the golden ring the sled flies through (RINGER in the HUD);
+ * the name stays because saved results and stage ids use it.
  */
 
 export type EtappeId =
@@ -14,15 +16,21 @@ export type EtappeId =
   | "tindeflukten"
   | "nordtoppen"
   | "muren"
-  | "julenatt";
+  | "julenatt"
+  | "vidda"
+  | "vidda-bergen";
 
 /** What a course is made of; lagBane draws one thing per segment from these odds. */
 export interface Blanding {
-  /** Every n-th segment is a beacon. */
+  /** Every n-th segment is a ring. */
   varde: number;
+  /** How far the rings swing above and below cruise altitude, in altitude units. */
+  høyde: number;
   /** Odds per free segment. */
   tre: number;
   stjerne: number;
+  /** Letter birds to catch in the air; odds per free segment. */
+  fugl: number;
   topp: number;
   vind: number;
   /** Gust strength relative to the first stages. */
@@ -64,8 +72,10 @@ const JULENATT = { fil: "feed/slede-julenatt.jpg", linje: 0.72 };
 
 const ROLIG: Blanding = {
   varde: 3,
+  høyde: 45,
   tre: 0.25,
   stjerne: 0.3,
+  fugl: 0.05,
   topp: 0,
   vind: 0.15,
   vindKraft: 1,
@@ -74,7 +84,7 @@ const ROLIG: Blanding = {
 
 /**
  * A new stage every few days from 8 December (8, 9, 12, 14, 18, 19, then the
- * story days 20, 21, 24); each turns one knob further (beacon density, trees,
+ * story days 20, 21, 24); each turns one knob further (ring density, trees,
  * stars, wind, peaks) before the story stages.
  * Names and intros are visible from the stage's day: no day codes (kodelekkasje.test.ts).
  */
@@ -84,7 +94,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
     dag: 8,
     navn: "Tundra-testen",
     intro:
-      "Nyoverhalt slede. Hold kursen etter vardene, så ser vi om tømmene holder!",
+      "Nyoverhalt slede. Fly gjennom de gylne ringene, så ser vi om tømmene holder!",
     lengde: 30000,
     fart: 800,
     blanding: ROLIG,
@@ -99,12 +109,12 @@ export const ETAPPER: readonly SledeEtappe[] = [
   {
     id: "vardeloypa",
     dag: 9,
-    navn: "Vardeløypa",
+    navn: "Ringløypa",
     intro:
-      "Vardene står tett i kveld. Treff midt i ringen, så ringer bjella høyest.",
+      "Ringene henger tett i kveld, høyt og lavt. Treff midt i ringen, så ringer bjella høyest.",
     lengde: 34000,
     fart: 850,
-    blanding: { ...ROLIG, varde: 2, tre: 0.2, stjerne: 0.2 },
+    blanding: { ...ROLIG, varde: 2, høyde: 55, tre: 0.2, stjerne: 0.2 },
     horisont: TUNDRA,
     himmel: ["#070a1c", "#1a2448"],
     snø: ["#dbe7f7", "#c3d4ee"],
@@ -121,7 +131,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
       "Skogen står tett som en børste. Lavt mellom stammene, eller høyt over toppene!",
     lengde: 38000,
     fart: 880,
-    blanding: { ...ROLIG, tre: 0.6, stjerne: 0.15, vind: 0.05 },
+    blanding: { ...ROLIG, høyde: 65, tre: 0.6, stjerne: 0.15, vind: 0.05 },
     horisont: TUNDRA,
     himmel: ["#04070f", "#0f1a2c"],
     snø: ["#c8d8ea", "#adc1dc"],
@@ -138,7 +148,14 @@ export const ETAPPER: readonly SledeEtappe[] = [
       "Det drysser stjerner over vidda. Opp og ned, opp og ned, plukk alt som glitrer!",
     lengde: 40000,
     fart: 900,
-    blanding: { ...ROLIG, tre: 0.2, stjerne: 0.55, vind: 0.05, hus: 10 },
+    blanding: {
+      ...ROLIG,
+      høyde: 75,
+      tre: 0.2,
+      stjerne: 0.55,
+      vind: 0.05,
+      hus: 10,
+    },
     horisont: JULENATT,
     himmel: ["#02040c", "#0b1430"],
     snø: ["#d9e4f5", "#c0d2ec"],
@@ -157,6 +174,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
     fart: 920,
     blanding: {
       ...ROLIG,
+      høyde: 60,
       tre: 0.3,
       stjerne: 0.2,
       vind: 0.4,
@@ -181,6 +199,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
     fart: 950,
     blanding: {
       ...ROLIG,
+      høyde: 80,
       tre: 0.1,
       stjerne: 0.25,
       topp: 0.35,
@@ -204,6 +223,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
     fart: 1000,
     blanding: {
       ...ROLIG,
+      høyde: 80,
       tre: 0.15,
       stjerne: 0.25,
       topp: 0.35,
@@ -227,7 +247,15 @@ export const ETAPPER: readonly SledeEtappe[] = [
       "Tett føyke. Muren har én åpen port med varme i. Se etter det gylne skjæret.",
     lengde: 54000,
     fart: 950,
-    blanding: { ...ROLIG, tre: 1, stjerne: 0, vind: 0, mur: true, hus: 13 },
+    blanding: {
+      ...ROLIG,
+      høyde: 50,
+      tre: 1,
+      stjerne: 0,
+      vind: 0,
+      mur: true,
+      hus: 13,
+    },
     horisont: MUREN,
     himmel: ["#1a2030", "#3a4458"],
     snø: ["#c3ccd8", "#aab4c3"],
@@ -246,6 +274,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
     fart: 1000,
     blanding: {
       ...ROLIG,
+      høyde: 85,
       tre: 0.3,
       stjerne: 0.3,
       vind: 0.2,
@@ -265,6 +294,61 @@ export const ETAPPER: readonly SledeEtappe[] = [
 
 export const etapperFor = (day: number) => ETAPPER.filter((e) => day >= e.dag);
 
+/**
+ * Fri flyging: the open vidda around Snøfall, one long loop past the tarn and
+ * the antenna, Nordtoppen, the wall, the crystal cave and the farms. Places
+ * open with the story (VIDDA_STEDER); before their day they stand grey with a
+ * lock. With day 24 solved the loop goes on through the aurora gate to a snowy Bergen.
+ */
+export const VIDDA: SledeEtappe = {
+  id: "vidda",
+  dag: 8,
+  navn: "Snøfall-vidda",
+  intro: "Fly dit du vil. Kartet sier hva som ligger foran.",
+  lengde: 60000,
+  fart: 900,
+  blanding: {
+    ...ROLIG,
+    varde: 4,
+    høyde: 60,
+    tre: 0.15,
+    stjerne: 0.2,
+    fugl: 0.08,
+    vind: 0.1,
+    hus: 12,
+  },
+  horisont: TUNDRA,
+  himmel: ["#070a1c", "#1a2448"],
+  snø: ["#dbe7f7", "#c3d4ee"],
+  dis: "#9fb0cc",
+  nordlys: 0.4,
+  tåke: false,
+  snøfall: 30,
+};
+export const VIDDA_BERGEN: SledeEtappe = {
+  ...VIDDA,
+  id: "vidda-bergen",
+  lengde: 78000,
+};
+
+/** Places on the vidda: distance, name, and the day the place opens. */
+export const VIDDA_STEDER = [
+  { z: 9000, navn: "ANTENNA VED TJERNET", dag: 8 },
+  { z: 22000, navn: "NORDTOPPEN", dag: 20 },
+  { z: 36000, navn: "MUREN", dag: 21 },
+  { z: 48000, navn: "KRYSTALLGROTTEN", dag: 24 },
+] as const;
+/** The aurora gate and the first Bergen houses, past the farms (vidda-bergen only). */
+export const BERGEN_PORT = 62000;
+export const BERGEN_START = 66000;
+
+/** «ÅPNER DAG 21»; day 24 is spelled out because its number is also a code. */
+export const åpnerTekst = (dag: number) =>
+  dag === 24 ? "ÅPNER JULAFTEN" : `ÅPNER DAG ${dag}`;
+
+/** The two pilots with their own high scores (Hanna, 5, flies on a brother's name). */
+export const SPILLERE = ["Kristian", "Håkon"] as const;
+
 export type TingType =
   | "varde"
   | "tre"
@@ -274,13 +358,16 @@ export type TingType =
   | "stjerne"
   | "mur"
   | "grotte"
-  | "hus";
+  | "hus"
+  | "fugl"
+  | "antenne"
+  | "nordlysport";
 
 export interface Ting {
   z: number;
   x: number;
   type: TingType;
-  /** Height for obstacles, target altitude for stars, chimney top for houses. */
+  /** Height for obstacles, centre altitude for rings and stars, chimney top for houses. */
   h: number;
   /** Wind: force sign and length in z. Gate (mur): the open gate's x. */
   kraft?: number;
@@ -291,6 +378,9 @@ export interface Ting {
   treff?: boolean;
   /** Houses: best delivery points so far (before the run multiplier); only an improvement pays. */
   nær?: number;
+  /** Vidda places: the day this opens; låst is set by createSim from SimOpts.dag. */
+  lås?: number;
+  låst?: boolean;
 }
 
 // Deterministic per stage so a course is the same for every kid and every test.
@@ -310,8 +400,74 @@ const SEG = 220;
 export const HUS_PIPE: readonly number[] = [105, 125, 145];
 /** The sleigh is clamped to ±1.3, so nothing is placed where it cannot be reached. */
 const X_MAX = 1.25;
+/** Rings hang between these altitudes, a margin inside what the sled can fly. */
+const RING_ALT_MIN = 70;
+const RING_ALT_MAX = 240;
+/**
+ * Half-axes of a ring's opening: track units sideways, altitude units up and down.
+ * The sky is only ~23 render units tall, so the hoop is a wide oval: generous for
+ * a thumb sideways, but a ring 80 above cruise is missed until the sled climbs.
+ */
+export const RING_X = 0.35;
+export const RING_ALT = 55;
+/** Climb rate in altitude units per second (step), used to keep ring steps reachable. */
+const KLATRE = 150;
 
-export function lagBane(e: SledeEtappe): Ting[] {
+/** 0 at the ring's centre, 1 on its rim, more outside; the ring is an ellipse in sim units. */
+export const ringAvvik = (px: number, alt: number, t: Ting) =>
+  Math.hypot((px - t.x) / RING_X, (alt - t.h) / RING_ALT);
+
+export const lagBane = (e: SledeEtappe): Ting[] =>
+  e.id.startsWith("vidda") ? lagVidda(e) : lagLøype(e);
+
+/** The vidda: a sparse course with the story's places set in, and Bergen's streets past the gate. */
+function lagVidda(e: SledeEtappe): Ting[] {
+  const out = lagLøype(VIDDA).filter(
+    (t) => !VIDDA_STEDER.some((s) => Math.abs(t.z - s.z) < 1400),
+  );
+  const [tjern, topp, mur, grotte] = VIDDA_STEDER;
+  out.push({ z: tjern.z, x: 0.9, type: "antenne", h: 0, lås: tjern.dag });
+  for (const [dz, x] of [
+    [-800, -0.9],
+    [-300, 0.6],
+    [200, -0.2],
+    [700, 1],
+    [1100, -1.1],
+  ])
+    out.push({ z: topp.z + dz, x, type: "topp", h: 230, lås: topp.dag });
+  out.push({ z: mur.z, x: 0, type: "mur", h: 200, port: 0.5, lås: mur.dag });
+  out.push({
+    z: grotte.z,
+    x: 0,
+    type: "grotte",
+    h: 0,
+    lengde: 1600,
+    lås: grotte.dag,
+  });
+  if (e.id === "vidda-bergen") {
+    out.push({ z: BERGEN_PORT, x: 0, type: "nordlysport", h: 150 });
+    const r = rng(2024);
+    for (let z = BERGEN_START, i = 0; z < e.lengde - 2000; z += 500, i++) {
+      const side = i % 2 ? -1 : 1;
+      out.push({
+        z,
+        x: side * (0.5 + r() * 0.5),
+        type: "hus",
+        h: HUS_PIPE[i % 3],
+      });
+      if (i % 3 === 0)
+        out.push({
+          z: z + 250,
+          x: -side * 0.6,
+          type: "varde",
+          h: 100 + Math.round(r() * 100),
+        });
+    }
+  }
+  return out.sort((a, b) => a.z - b.z);
+}
+
+function lagLøype(e: SledeEtappe): Ting[] {
   let seed = e.lengde;
   for (const c of e.id) seed = (seed * 31 + c.charCodeAt(0)) >>> 0;
   const r = rng(seed);
@@ -319,12 +475,25 @@ export function lagBane(e: SledeEtappe): Ting[] {
   const out: Ting[] = [];
   const slutt = e.lengde - 2500;
   let lane = 0;
+  // Rings ride a slow wave in altitude; no step is more than the sled can climb
+  // between two rings at the stage's speed, so the course stays flyable on touch.
+  let alt = ALT_CRUISE;
+  const steg = ((KLATRE * m.varde * SEG) / e.fart) * 0.7;
+  const periode = 5 + r() * 4;
+  const fase = r() * Math.PI * 2;
+  let ring = 0;
   for (let z = 1500, i = 0; z < slutt; z += SEG, i++) {
     const u = r();
-    // Beacons weave left and right so the course is a slalom, never a straight line.
+    // Rings weave left and right so the course is a slalom, never a straight line.
     if (i % m.varde === 0) {
       lane = Math.max(-0.7, Math.min(0.7, lane + (r() - 0.5) * 0.9));
-      out.push({ z, x: lane, type: "varde", h: 90 });
+      const ønsket =
+        ALT_CRUISE +
+        m.høyde * Math.sin((ring++ / periode) * Math.PI * 2 + fase) +
+        (r() - 0.5) * 20;
+      alt += Math.max(-steg, Math.min(steg, ønsket - alt));
+      alt = Math.max(RING_ALT_MIN, Math.min(RING_ALT_MAX, alt));
+      out.push({ z, x: lane, type: "varde", h: Math.round(alt) });
       continue;
     }
     if (m.grotte && i % 23 === 11) {
@@ -336,7 +505,7 @@ export function lagBane(e: SledeEtappe): Ting[] {
       out.push({ z, x: lane * 0.5, type: "band", h: 200 });
       continue;
     }
-    // Houses stand beside the beacon line, within reach; h is the chimney top (three sizes).
+    // Houses stand beside the ring line, within reach; h is the chimney top (three sizes).
     if (m.hus && i % m.hus === 5) {
       const side = r() < 0.5 ? -1 : 1;
       out.push({
@@ -350,6 +519,15 @@ export function lagBane(e: SledeEtappe): Ting[] {
     let p = m.topp;
     if (u < p) {
       out.push({ z, x: (r() - 0.5) * 1.6, type: "topp", h: 230 });
+      continue;
+    }
+    if (u < (p += m.fugl)) {
+      out.push({
+        z,
+        x: Math.max(-1, Math.min(1, lane + (r() - 0.5))),
+        type: "fugl",
+        h: 100 + r() * 110,
+      });
       continue;
     }
     if (u < (p += m.stjerne)) {
@@ -435,7 +613,7 @@ export function dagensUtfordring(day: number, e: SledeEtappe): Utfordring {
   switch (type) {
     case "varder": {
       const mål = trygtTall(Math.ceil(antall("varde") * 0.6));
-      return { type, mål, tekst: `Ta minst ${mål} varder`, bonus };
+      return { type, mål, tekst: `Fly gjennom minst ${mål} ringer`, bonus };
     }
     case "renflyging":
       return { type, mål: 0, tekst: "Fly hele veien uten krasj", bonus };
@@ -448,7 +626,7 @@ export function dagensUtfordring(day: number, e: SledeEtappe): Utfordring {
       return { type, mål, tekst: `I mål på under ${mål} sekunder`, bonus };
     }
     case "rekke":
-      return { type, mål: 6, tekst: "Seks varder på rad", bonus };
+      return { type, mål: 6, tekst: "Seks ringer på rad", bonus };
     case "nære":
       return {
         type,
@@ -578,6 +756,9 @@ export interface Styring {
 export type Hendelse =
   | "bjelle"
   | "bom"
+  | "nesten"
+  | "fugl"
+  | "bergen"
   | "krasj"
   | "stjerne"
   | "band"
@@ -604,6 +785,8 @@ export interface SimOpts {
   levering?: Leveringsoppdrag;
   /** Fri flyging: no finish line, no result; the valley loops back to Snøfall. */
   fri?: boolean;
+  /** Today's date: vidda places with a later `lås` are locked (grey, no points, no crash). */
+  dag?: number;
 }
 
 /** Free flight loops from the far farms (lengde + FRI_SLUTT) back to the village (FRI_START). */
@@ -615,9 +798,30 @@ export interface Landemerke {
   navn: string;
 }
 
+/** Day for the vidda's locks, and whether day 22 is solved (Bergen's last stop may be named). */
+export interface LandemerkeValg {
+  dag?: number;
+  landås?: boolean;
+}
+
 /** Named places along a stage, for free flight: the village, the course's features, the farms at the end. */
-export function landemerker(e: SledeEtappe): Landemerke[] {
+export function landemerker(
+  e: SledeEtappe,
+  valg: LandemerkeValg = {},
+): Landemerke[] {
   const ut: Landemerke[] = [{ z: 0, navn: "SNØFALL" }];
+  if (e.id.startsWith("vidda")) {
+    const dag = valg.dag ?? 24;
+    for (const s of VIDDA_STEDER)
+      ut.push({ z: s.z, navn: dag >= s.dag ? s.navn : åpnerTekst(s.dag) });
+    ut.push({ z: VIDDA.lengde, navn: "GÅRDENE" });
+    if (e.id === "vidda-bergen")
+      ut.push(
+        { z: BERGEN_PORT, navn: "NORDLYSPORTEN" },
+        { z: BERGEN_START + 4000, navn: valg.landås ? "LANDÅS" : "BERGEN" },
+      );
+    return ut;
+  }
   const bane = lagBane(e);
   const første = (type: TingType) => bane.find((t) => t.type === type)?.z;
   const mur = første("mur");
@@ -635,8 +839,12 @@ export function landemerker(e: SledeEtappe): Landemerke[] {
 }
 
 /** The next landmark ahead of `dist`, as «NAVN 2,4 KM»; past the last it is the village again, around the loop. */
-export function nesteLandemerke(e: SledeEtappe, dist: number) {
-  const alle = landemerker(e);
+export function nesteLandemerke(
+  e: SledeEtappe,
+  dist: number,
+  valg: LandemerkeValg = {},
+) {
+  const alle = landemerker(e, valg);
   const neste = alle.find((l) => l.z > dist + 200);
   const avstand = neste
     ? neste.z - dist
@@ -645,7 +853,7 @@ export function nesteLandemerke(e: SledeEtappe, dist: number) {
   return `${(neste ?? alle[0]).navn} ${km.toFixed(1).replace(".", ",")} KM`;
 }
 
-/** Score multiplier for a run of beacons without a miss: x1, x2 at 3, x3 at 6, x4 at 9. */
+/** Score multiplier for a run of rings without a miss: x1, x2 at 3, x3 at 6, x4 at 9. */
 export const rekkeMult = (rekke: number) =>
   1 + Math.min(3, Math.floor(rekke / 3));
 
@@ -658,6 +866,8 @@ export const ALT_CRUISE = 120;
 
 export function createSim(e: SledeEtappe, opts: SimOpts) {
   const ting = lagBane(e);
+  for (const t of ting)
+    t.låst = t.lås !== undefined && (opts.dag ?? 24) < t.lås;
   const soner = ting.filter((t) => t.type === "vind");
   const grotter = ting.filter((t) => t.type === "grotte");
   const hus = ting.filter((t) => t.type === "hus");
@@ -675,9 +885,11 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     varder: 0,
     varderTotalt: ting.filter((t) => t.type === "varde").length,
     stjerner: 0,
+    /** Letter birds caught. */
+    fugler: 0,
     nære: 0,
     krasj: 0,
-    /** Beacons in a row without a miss; the multiplier is rekkeMult(rekke). */
+    /** Rings in a row without a miss; the multiplier is rekkeMult(rekke). */
     rekke: 0,
     besteRekke: 0,
     tidsbonus: 0,
@@ -691,8 +903,10 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     pakkebom: 0,
     /** Metres from the chimney for the last package that scored (0 = in it). */
     sisteMeter: 0,
+    /** The house a landed package was aimed at (nearest within reach), for the chimney's reply. */
+    sisteHus: null as Ting | null,
     leveringKlart: false,
-    /** Boost meter 0..1, filled by beacons; full = sprang available. */
+    /** Boost meter 0..1, filled by rings; full = sprang available. */
     kraft: 0,
     sprangTil: 0,
     løftTil: 0,
@@ -779,11 +993,17 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
         // Close counts too: points fall with distance, and per house only an improvement pays.
         let nærmest: Ting | null = null;
         let m = NÆR_M;
+        s.sisteHus = null;
+        let nærZ = 1500;
         for (const h of hus) {
           const d = meterFraPipa(p, h);
           if (d < m) {
             m = d;
             nærmest = h;
+          }
+          if (Math.abs(h.z - p.z) < nærZ) {
+            nærZ = Math.abs(h.z - p.z);
+            s.sisteHus = h;
           }
         }
         const poeng = nærPoeng(m);
@@ -804,7 +1024,8 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
 
     // Light is dropped by flying low anywhere over the cave crack (stage 4).
     for (const g of grotter) {
-      if (g.treff || g.z > s.dist || g.z + (g.lengde ?? 0) < s.dist) continue;
+      if (g.låst || g.treff || g.z > s.dist || g.z + (g.lengde ?? 0) < s.dist)
+        continue;
       if (s.alt < 100 && Math.abs(s.px - g.x) < 0.8) {
         g.treff = true;
         s.poeng += 150;
@@ -861,29 +1082,44 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
   }
 
   function passer(t: Ting, ev: Hendelse[]) {
+    // A locked place is only scenery: nothing to score, nothing to hit.
+    if (t.låst) return;
     const dx = Math.abs(s.px - t.x);
     const boost = (s.tid < s.sprangTil ? 2 : 1) * rekkeMult(s.rekke);
     switch (t.type) {
-      case "varde":
-        if (dx < 0.4 * widen && s.alt < 230) {
+      case "varde": {
+        // Through the ring: an ellipse around its centre; the bullseye pays more.
+        const avvik = ringAvvik(s.px, s.alt, t);
+        if (avvik < widen) {
           t.treff = true;
           s.varder++;
-          s.poeng += (dx < 0.15 ? 150 : 100) * boost;
+          s.poeng += (avvik < 0.4 ? 150 : 100) * boost;
           s.kraft = Math.min(1, s.kraft + 0.25);
           s.rekke++;
           s.besteRekke = Math.max(s.besteRekke, s.rekke);
           ev.push("bjelle");
         } else {
           s.rekke = 0;
-          ev.push("bom");
+          ev.push(avvik < widen * 1.8 ? "nesten" : "bom");
         }
         break;
+      }
       case "stjerne":
         if (dx < 0.2 * widen && Math.abs(s.alt - t.h) < 35 * widen) {
           t.treff = true;
           s.stjerner++;
           s.poeng += 25 * boost;
           ev.push("stjerne");
+        }
+        break;
+      case "fugl":
+        // A letter bird flies into the sack: a bonus and a little boost.
+        if (dx < 0.3 * widen && Math.abs(s.alt - t.h) < 45 * widen) {
+          t.treff = true;
+          s.fugler++;
+          s.poeng += 75 * boost;
+          s.kraft = Math.min(1, s.kraft + 0.15);
+          ev.push("fugl");
         }
         break;
       case "band":
@@ -901,6 +1137,10 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
       case "topp":
         if (dx < 0.45 && s.alt < (opts.assist ? 190 : t.h)) krasj(ev);
         else if (dx < 0.7 && s.alt < t.h + 40) nære(ev);
+        break;
+      case "nordlysport":
+        t.treff = true;
+        ev.push("bergen");
         break;
       case "mur":
         if (Math.abs(s.px - (t.port ?? 0)) < 0.35 * widen || s.alt > t.h + 10) {
@@ -981,11 +1221,57 @@ export function utfordringStatus(u: Utfordring, s: Telling) {
   }
 }
 
-/** Beacons needed for one, two and three bells (40, 70 and 90 %). */
+/**
+ * Rampenissen on the sled radio: one short line per event, nordlandsk
+ * (docs/manus/rampenissen-radio-2026.md «Skrivemåte»). No clues, no codes;
+ * names stay in bokmål. Visible from day 8 (synlig-tekst.ts).
+ */
+export const RADIO: Partial<Record<Hendelse, readonly string[]>> = {
+  fugl: [
+    "Ka du sei! Du fanga en brevfugl. Den hadde post te Julius.",
+    "Brevfugl i sekken! Æ håpe den ikkje bæsja på pakkan.",
+    "Fin fangst! Fuglen sei takk, trur æ.",
+  ],
+  krasj: [
+    "Klonk. Æ såg ingenting, æ. Rudolf såg alt.",
+    "Snø i ansiktet e bra for huden, sei Hjerterud.",
+    "Æ sa et ord Julius ikkje like. Inni mæ.",
+  ],
+  nesten: [
+    "Nesten! Æ telte den, men IQ gjord det ikkje.",
+    "Så nære at ringen blei nervøs.",
+  ],
+  levering: [
+    "Rett i pipa! Dem får sot på gaven, men gave e gave.",
+    "Bra jobba! Kaffen te pappaen der inne blei akkurat svart.",
+  ],
+  pakkebom: [
+    "Pakken ligg i snøen. Nån finn den te påske.",
+    "Oi. Det der va ikkje pipa. Det va en hage.",
+  ],
+  utfordring: ["Utfordring klart! Æ sei det på Morgenrådet i morra."],
+  mål: [
+    "I mål! Rudolf vil ha nåkka godt og æ vil ha kaffe.",
+    "Landa! IQ nikke. Det e det nærmaste han kjem et smil.",
+  ],
+  sprang: ["SPRANG! Hold dæ fast, det her e ikkje lov på jorda."],
+  port: ["Gjennom porten! Varmen slapp dæ inn."],
+  bergen: [
+    "Velkommen te Bergen! Her regne det, men i natt snør det for dokker.",
+  ],
+};
+
+/** The n-th radio line for an event, or null when Rampenissen has nothing to say. */
+export const radiolinje = (h: Hendelse, n: number) => {
+  const l = RADIO[h];
+  return l ? l[n % l.length] : null;
+};
+
+/** Rings needed for one, two and three bells (40, 70 and 90 %). */
 export const bjelleKrav = (totalt: number) =>
   [0.4, 0.7, 0.9].map((a) => Math.ceil(a * totalt));
 
-/** 0–3 bells: how many beacons were taken, and a clean run for the third. */
+/** 0–3 bells: how many rings were taken, and a clean run for the third. */
 export function bjeller(varder: number, totalt: number, krasj: number): number {
   if (!totalt) return 0;
   const [en, to, tre] = bjelleKrav(totalt);

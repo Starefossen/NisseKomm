@@ -20,11 +20,21 @@ import {
   landingTekst,
   PIPE_POENG,
   NÆR_M,
+  RADIO,
+  radiolinje,
   RAMP,
   rekkeMult,
+  RING_ALT,
+  RING_X,
+  ringAvvik,
   UTFORDRING_BONUS,
   utfordringKlart,
   utfordringStatus,
+  VIDDA,
+  VIDDA_BERGEN,
+  VIDDA_STEDER,
+  BERGEN_PORT,
+  BERGEN_START,
 } from "./slede";
 import { dagensUtfordring } from "./slede";
 
@@ -133,15 +143,60 @@ describe("sim", () => {
     expect(sim.s.fart).toBeLessThan(ETAPPER[0].fart * 0.5);
   });
 
-  it("scores a beacon when passing through its ring", () => {
+  it("scores a ring when flying through its centre", () => {
     const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
     const v = sim.s.ting.find((t) => t.type === "varde")!;
     sim.s.px = v.x;
+    sim.s.alt = v.h;
     sim.s.dist = v.z - 1;
     expect(sim.step(1 / 60, still)).toContain("bjelle");
     expect(sim.s.poeng).toBe(150);
     expect(sim.s.varder).toBe(1);
     expect(sim.s.kraft).toBe(0.25);
+  });
+
+  it("rings hang at an altitude: too high or too low is a near miss, then a miss", () => {
+    const ved = (dAlt: number, dx = 0) => {
+      const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
+      const v = sim.s.ting.find((t) => t.type === "varde")!;
+      sim.s.px = v.x + dx;
+      sim.s.alt = v.h + dAlt;
+      sim.s.dist = v.z - 1;
+      return [sim.step(1 / 60, still), sim.s.poeng] as const;
+    };
+    expect(ringAvvik(0.35, 120, { x: 0, h: 120, z: 0, type: "varde" })).toBe(1);
+    expect(ved(RING_ALT * 0.8)[0]).toContain("bjelle");
+    expect(ved(RING_ALT * 0.8)[1]).toBe(100);
+    expect(ved(RING_ALT * 1.3)[0]).toContain("nesten");
+    expect(ved(RING_ALT * 1.3)[1]).toBe(0);
+    expect(ved(0, RING_X * 2.5)[0]).toContain("bom");
+    // The assistant's wider ring forgives a little more.
+    const sim = createSim(ETAPPER[0], { assist: true, reduceMotion: false });
+    const v = sim.s.ting.find((t) => t.type === "varde")!;
+    sim.s.px = v.x;
+    sim.s.alt = v.h + RING_ALT * 1.3;
+    sim.s.dist = v.z - 1;
+    expect(sim.step(1 / 60, still)).toContain("bjelle");
+  });
+
+  it("ring altitudes vary within reach: gentle on day 8, wider later, every step climbable", () => {
+    const spenn = new Map<string, number>();
+    for (const e of ETAPPER) {
+      const ringer = lagBane(e).filter((t) => t.type === "varde");
+      const h = ringer.map((t) => t.h);
+      expect(Math.min(...h)).toBeGreaterThanOrEqual(70);
+      expect(Math.max(...h)).toBeLessThanOrEqual(240);
+      spenn.set(e.id, Math.max(...h) - Math.min(...h));
+      for (let i = 1; i < ringer.length; i++) {
+        const sek = (ringer[i].z - ringer[i - 1].z) / (e.fart * (1 + RAMP));
+        expect(Math.abs(ringer[i].h - ringer[i - 1].h)).toBeLessThanOrEqual(
+          150 * sek,
+        );
+      }
+    }
+    expect(spenn.get("tundra")!).toBeGreaterThan(40);
+    expect(spenn.get("tundra")!).toBeLessThan(spenn.get("julenatt")!);
+    expect(spenn.get("tundra")!).toBeLessThan(spenn.get("stjernedrysset")!);
   });
 
   it("steering has inertia and the course speeds up towards the finish", () => {
@@ -191,10 +246,35 @@ describe("GameEngine.recordSledeResultat", () => {
       muren: { poeng: 1200, bjeller: 1 },
     });
   });
+
+  it("keeps a best per player beside the family's, with the day the challenge was cleared", () => {
+    expect(GameEngine.recordSledeResultat("tundra", 800, 2, "Håkon")).toEqual({
+      poeng: 800,
+      bjeller: 2,
+    });
+    GameEngine.recordSledeResultat("tundra", 1500, 1, "Kristian", 9);
+    // A worse run that clears today's challenge keeps the best but notes the day.
+    expect(
+      GameEngine.recordSledeResultat("tundra", 100, 0, "Håkon", 10),
+    ).toEqual({ poeng: 800, bjeller: 2, utfordringDag: 10 });
+    expect(GameEngine.getSledeResultaterFor("Håkon")).toEqual({
+      tundra: { poeng: 800, bjeller: 2, utfordringDag: 10 },
+    });
+    expect(GameEngine.getSledeResultaterFor("Kristian").tundra.poeng).toBe(
+      1500,
+    );
+    expect(GameEngine.getSledeResultaterFor(null)).toEqual({});
+    expect(GameEngine.getSledeResultater().tundra).toEqual({
+      poeng: 800,
+      bjeller: 2,
+    });
+    GameEngine.setSledeSpiller("Håkon");
+    expect(GameEngine.getSledeSpiller()).toBe("Håkon");
+  });
 });
 
 describe("rekke og nære på", () => {
-  it("multiplies beacons after 3, 6 and 9 in a row, and a miss resets", () => {
+  it("multiplies rings after 3, 6 and 9 in a row, and a miss resets", () => {
     expect([0, 2, 3, 5, 6, 9, 30].map(rekkeMult)).toEqual([
       1, 1, 2, 2, 3, 4, 4,
     ]);
@@ -202,6 +282,7 @@ describe("rekke og nære på", () => {
     const varder = sim.s.ting.filter((t) => t.type === "varde");
     for (let i = 0; i < 4; i++) {
       sim.s.px = varder[i].x;
+      sim.s.alt = varder[i].h;
       sim.s.dist = varder[i].z - 1;
       sim.s.first = sim.s.ting.indexOf(varder[i]);
       sim.step(1 / 60, still);
@@ -209,12 +290,45 @@ describe("rekke og nære på", () => {
     expect(sim.s.rekke).toBe(4);
     // Fourth beacon paid double (x2 from the third onwards).
     expect(sim.s.poeng).toBe(150 * 3 + 300);
-    sim.s.px = varder[4].x + 1;
+    sim.s.px = varder[4].x > 0 ? varder[4].x - 1 : varder[4].x + 1;
+    sim.s.alt = varder[4].h;
     sim.s.dist = varder[4].z - 1;
     sim.s.first = sim.s.ting.indexOf(varder[4]);
     expect(sim.step(1 / 60, still)).toContain("bom");
     expect(sim.s.rekke).toBe(0);
     expect(sim.s.besteRekke).toBe(4);
+  });
+
+  it("catches a letter bird at its altitude for a bonus and a little boost", () => {
+    for (const e of ETAPPER) {
+      const fugler = lagBane(e).filter((t) => t.type === "fugl");
+      expect(fugler.length).toBeGreaterThanOrEqual(2);
+      for (const f of fugler) {
+        expect(Math.abs(f.x)).toBeLessThanOrEqual(1);
+        expect(f.h).toBeGreaterThanOrEqual(100);
+        expect(f.h).toBeLessThanOrEqual(210);
+      }
+    }
+    const sim = createSim(ETAPPER[0], { assist: false, reduceMotion: false });
+    const f = sim.s.ting.find((t) => t.type === "fugl")!;
+    sim.s.px = f.x;
+    sim.s.alt = f.h + 100;
+    sim.s.dist = f.z - 1;
+    sim.s.first = sim.s.ting.indexOf(f);
+    expect(sim.step(1 / 60, still)).not.toContain("fugl");
+    f.ferdig = false;
+    sim.s.alt = f.h;
+    sim.s.dist = f.z - 1;
+    sim.s.first = sim.s.ting.indexOf(f);
+    expect(sim.step(1 / 60, still)).toContain("fugl");
+    expect(sim.s.fugler).toBe(1);
+    expect(sim.s.poeng).toBe(75);
+    expect(sim.s.kraft).toBeCloseTo(0.15);
+    expect(radiolinje("fugl", 0)).toMatch(/brevfugl/i);
+    expect(radiolinje("fugl", 3)).toBe(radiolinje("fugl", 0));
+    expect(radiolinje("stjerne", 0)).toBeNull();
+    for (const l of Object.values(RADIO).flat())
+      expect(l.length).toBeLessThan(70);
   });
 
   it("rewards skimming a tree without hitting it", () => {
@@ -442,6 +556,77 @@ describe("fri flyging", () => {
     expect(maks).toBeGreaterThan(e.lengde + FRI_SLUTT - 100);
     expect(sim.s.dist).toBeLessThan(e.lengde);
     expect(sim.s.ting.every((t) => !t.ferdig || t.z <= sim.s.dist)).toBe(true);
+  });
+
+  it("the vidda has the story's places set in, locked until their day", () => {
+    const bane = lagBane(VIDDA);
+    expect(bane.filter((t) => t.type === "antenne")).toHaveLength(1);
+    expect(bane.filter((t) => t.type === "topp")).toHaveLength(5);
+    expect(bane.filter((t) => t.type === "mur")).toHaveLength(1);
+    expect(bane.filter((t) => t.type === "grotte")).toHaveLength(1);
+    expect(bane.some((t) => t.type === "nordlysport")).toBe(false);
+    for (const s of VIDDA_STEDER)
+      for (const t of bane)
+        if (Math.abs(t.z - s.z) < 1400) expect(t.lås).toBe(s.dag);
+    expect(landemerker(VIDDA, { dag: 8 }).map((l) => l.navn)).toEqual([
+      "SNØFALL",
+      "ANTENNA VED TJERNET",
+      "ÅPNER DAG 20",
+      "ÅPNER DAG 21",
+      "ÅPNER JULAFTEN",
+      "GÅRDENE",
+    ]);
+    expect(landemerker(VIDDA, { dag: 24 }).map((l) => l.navn)).toContain(
+      "KRYSTALLGROTTEN",
+    );
+    // A locked wall is scenery: flying straight at it costs nothing and pays nothing.
+    const mur = bane.find((t) => t.type === "mur")!;
+    const inn = (dag: number) => {
+      const sim = createSim(VIDDA, {
+        assist: false,
+        reduceMotion: false,
+        fri: true,
+        dag,
+      });
+      const m = sim.s.ting.find((t) => t.type === "mur")!;
+      sim.s.px = -1;
+      sim.s.alt = 100;
+      sim.s.dist = m.z - 1;
+      sim.s.first = sim.s.ting.indexOf(m);
+      return sim.step(1 / 60, still);
+    };
+    expect(mur.port).toBe(0.5);
+    expect(inn(8)).toEqual([]);
+    expect(inn(21)).toContain("krasj");
+  });
+
+  it("with day 24 solved the loop goes on through the aurora gate to Bergen", () => {
+    const bane = lagBane(VIDDA_BERGEN);
+    expect(bane.find((t) => t.type === "nordlysport")?.z).toBe(BERGEN_PORT);
+    expect(
+      bane.filter((t) => t.type === "hus" && t.z >= BERGEN_START).length,
+    ).toBeGreaterThan(15);
+    const navn = (landås: boolean) =>
+      landemerker(VIDDA_BERGEN, { dag: 24, landås }).map((l) => l.navn);
+    expect(navn(false)).toContain("BERGEN");
+    expect(navn(false)).not.toContain("LANDÅS");
+    expect(navn(true)).toContain("LANDÅS");
+    expect(landemerker(VIDDA, { dag: 24 }).map((l) => l.navn)).not.toContain(
+      "BERGEN",
+    );
+    const sim = createSim(VIDDA_BERGEN, {
+      assist: true,
+      reduceMotion: false,
+      fri: true,
+      dag: 24,
+    });
+    sim.s.dist = BERGEN_PORT - 500;
+    sim.s.first = sim.s.ting.findIndex((t) => t.z >= sim.s.dist);
+    const ev: string[] = [];
+    for (let i = 0; i < 3000 && !ev.includes("runde"); i++)
+      ev.push(...sim.step(1 / 60, still));
+    expect(ev).toContain("bergen");
+    expect(ev).toContain("runde");
   });
 
   it("names the landmarks in course order and points at the next one", () => {

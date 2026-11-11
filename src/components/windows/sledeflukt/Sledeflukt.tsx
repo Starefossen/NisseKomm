@@ -27,8 +27,13 @@ import {
   nesteLandemerke,
   landingTekst,
   pakkenavn,
+  radiolinje,
   rekkeMult,
+  SPILLERE,
   utfordringStatus,
+  VIDDA,
+  VIDDA_BERGEN,
+  åpnerTekst,
   type Hendelse,
   type Sim,
   type SledeEtappe,
@@ -66,9 +71,15 @@ const NEDTELLING = 3;
 /** Draw distance in render units; fog hides the end of it. */
 const FJERN = 420;
 const FJERN_SIM = FJERN / SKALA;
-const OPPLØSNINGER = { 480: [480, 270], 320: [320, 180] } as const;
+/** Internal framebuffers, best first; the auto mode steps down this list. */
+const OPPLØSNINGER = {
+  640: [640, 360],
+  480: [480, 270],
+  320: [320, 180],
+} as const;
 export type Oppløsning = keyof typeof OPPLØSNINGER;
-/** p95 frame time (ms) above which the auto mode drops to 320×180. */
+const TRINN: readonly Oppløsning[] = [640, 480, 320];
+/** p95 frame time (ms) above which the auto mode drops one resolution step. */
 const GRENSE_MS = 18;
 
 interface Hud {
@@ -136,7 +147,7 @@ export function SledefluktSpill({
   day: number;
   /** Dev only: frame-time overlay. */
   fps?: boolean;
-  /** Fixed internal resolution; unset = 480 with automatic fallback to 320. */
+  /** Fixed internal resolution; unset = 640 with automatic fallback to 480, then 320. */
   oppløsning?: Oppløsning;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -161,6 +172,7 @@ export function SledefluktSpill({
     varder: 0,
     varderTotalt: 0,
     stjerner: 0,
+    fugler: 0,
     besteRekke: 0,
     nære: 0,
     tidsbonus: 0,
@@ -179,15 +191,32 @@ export function SledefluktSpill({
   const [assist, setAssist] = useState(true);
   const [fase, setFaseState] = useState<Fase>("start");
   const [hud, setHud] = useState<Hud | null>(null);
-  const [beste, setBeste] = useState(() => GameEngine.getSledeResultater());
+  const [alle, setAlle] = useState(() => GameEngine.getSledeResultater());
+  // Who is flying: their own bells and best show on the start and result screens.
+  const [spiller, setSpillerState] = useState<string | null>(() => {
+    const s = GameEngine.getSledeSpiller();
+    return s && (SPILLERE as readonly string[]).includes(s) ? s : null;
+  });
+  const spillerRef = useRef(spiller);
+  const setSpiller = (n: string) => {
+    SoundManager.playSound("click");
+    spillerRef.current = n;
+    setSpillerState(n);
+    GameEngine.setSledeSpiller(n);
+  };
+  const beste = useMemo(
+    () => (spiller ? GameEngine.getSledeResultaterFor(spiller) : alle),
+    [spiller, alle],
+  );
   const [touchHint, setTouchHint] = useState(false);
   const [melding, setMelding] = useState<Melding | null>(null);
   const [pluss, setPluss] = useState<Melding | null>(null);
+  const [radio, setRadio] = useState<Melding | null>(null);
   const [feil, setFeil] = useState<string | null>(null);
   const [stat, setStat] = useState({
     p50: 0,
     p95: 0,
-    res: (oppløsning ?? 480) as number,
+    res: (oppløsning ?? 640) as Oppløsning,
   });
   const reduceMotion = useRef(false);
   const krav = useMemo(
@@ -215,6 +244,10 @@ export function SledefluktSpill({
   const nedtelling = useRef(-1);
   const friRef = useRef(false);
   const [fri, setFri] = useState(false);
+  // Free flight flies the vidda; with day 24 solved the loop continues to Bergen,
+  // and the last stop is named only once day 22 (its code word) is solved.
+  const viddaRef = useRef<SledeEtappe>(VIDDA);
+  const landåsRef = useRef(false);
 
   const setFase = (f: Fase) => {
     if (f !== "spiller") lyd.current?.stop();
@@ -246,16 +279,20 @@ export function SledefluktSpill({
     setFase("nedtelling");
   };
 
-  /** Fri flyging: the same valley with no finish line, no timer and no result; straight in, no countdown. */
+  /** Fri flyging: the open vidda with no finish line, no timer and no result; straight in, no countdown. */
   const startFri = () => {
     SoundManager.playSound("click");
     brev.current = GameEngine.getSantaLetters();
+    const løst = GameEngine.getCompletedDays();
+    viddaRef.current = løst.has(24) ? VIDDA_BERGEN : VIDDA;
+    landåsRef.current = løst.has(22);
     friRef.current = true;
     setFri(true);
-    simRef.current = createSim(etappe, {
+    simRef.current = createSim(viddaRef.current, {
       assist: true,
       reduceMotion: reduceMotion.current,
       fri: true,
+      dag: day,
     });
     lyd.current?.startVind();
     setFase("spiller");
@@ -283,7 +320,7 @@ export function SledefluktSpill({
       );
       return () => cancelAnimationFrame(id);
     }
-    let res: Oppløsning = oppløsning ?? 480;
+    let res: Oppløsning = oppløsning ?? 640;
     r.setOppløsning(OPPLØSNINGER[res][0], OPPLØSNINGER[res][1]);
     reduceMotion.current =
       window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
@@ -304,21 +341,54 @@ export function SledefluktSpill({
     let id = 0;
     let eye: Vec3 | null = null;
     let sistDist = 0;
+    // Gold sparks from the last rings flown through, and smoke a chimney puffs back: where and when.
+    const gnister: { p: Vec3; t0: number }[] = [];
+    const puff: { p: Vec3; t0: number }[] = [];
+    // Reindeer reaction (a hop) and Rampenissen's radio: seconds left, and lines said.
+    let hopp = 0;
+    let radioTil = 0;
+    let radioN = 0;
+
+    const say = (tekst: string, farge = "#ffd700") =>
+      setMelding({ tekst, farge, id: ++id });
+
+    /** Rampenissen cuts in at most every six seconds; near misses only now and then. */
+    const radioen = (h: Hendelse, now: number) => {
+      if (now < radioTil) return;
+      if (h === "nesten" && radioN % 3) return;
+      const l = radiolinje(h, radioN);
+      if (!l) return;
+      radioN++;
+      radioTil = now + 6;
+      setRadio({ tekst: l, farge: "#ffb347", id: ++id });
+    };
     // Frame-time ring for the auto resolution and the dev overlay.
     const tider = new Float32Array(180);
     let nTid = 0;
     let målAt = 0;
 
-    const say = (tekst: string, farge = "#ffd700") =>
-      setMelding({ tekst, farge, id: ++id });
-
     const hendelse = (h: Hendelse, sim: Sim) => {
       const l = lyd.current;
+      radioen(h, performance.now() / 1000);
       switch (h) {
         case "bjelle":
           l?.bjelle(rekkeMult(sim.s.rekke));
+          gnister.push({
+            p: tilVerden(sim.s.px, sim.s.alt, sim.s.dist),
+            t0: performance.now() / 1000,
+          });
           if (sim.s.rekke % 3 === 0 && sim.s.rekke > 0)
             say(`REKKE x${rekkeMult(sim.s.rekke)}`, "#00ff8a");
+          break;
+        case "nesten":
+          l?.tikk(false);
+          hopp = 0.5;
+          say("NESTEN!", "#8aa0c0");
+          break;
+        case "fugl":
+          l?.stjerne();
+          hopp = 0.5;
+          say("BREVFUGL FANGET  +75", "#c0d2ec");
           break;
         case "bom":
           if (sim.s.besteRekke >= 3) say("REKKEN RØK", "#8aa0c0");
@@ -338,6 +408,10 @@ export function SledefluktSpill({
           l?.port();
           say("PORTEN STÅR ÅPEN  +500");
           break;
+        case "bergen":
+          l?.fanfare();
+          say("VELKOMMEN TIL BERGEN", "#00ff8a");
+          break;
         case "grotte":
           l?.port();
           say("LYS NED I GROTTEN  +150");
@@ -349,6 +423,7 @@ export function SledefluktSpill({
         case "krasj":
           l?.krasj();
           nyser = 1.5;
+          hopp = 0.7;
           if (!reduceMotion.current) shake = 0.45;
           say(
             sim.s.tapt ? "IQ KOBLER INN NØDBREMSEN" : "KLONK! SNØ I ANSIKTET",
@@ -374,6 +449,16 @@ export function SledefluktSpill({
           break;
         case "pakkebom":
           say("PAKKEN HAVNET I SNØEN", "#8aa0c0");
+          // The chimney you missed puffs a cloud back at you.
+          if (sim.s.sisteHus)
+            puff.push({
+              p: tilVerden(
+                sim.s.sisteHus.x,
+                sim.s.sisteHus.h,
+                sim.s.sisteHus.z,
+              ),
+              t0: performance.now() / 1000,
+            });
           break;
         case "leveringKlart":
           l?.port();
@@ -401,18 +486,21 @@ export function SledefluktSpill({
         const t = sim.s.ting[i];
         if (t.z > sim.s.dist + 1500) break;
         if (t.treff || t.type === "vind") continue;
-        kart.fillStyle =
-          t.type === "varde"
+        kart.fillStyle = t.låst
+          ? "#5a6b8a"
+          : t.type === "varde"
             ? "#ffb347"
-            : t.type === "stjerne"
-              ? "#ffd700"
-              : t.type === "mur"
-                ? "#9fb0cc"
-                : t.type === "band"
-                  ? "#00ff8a"
-                  : t.type === "hus"
-                    ? "#d9e4f5"
-                    : "#2e7a4f";
+            : t.type === "fugl"
+              ? "#c0d2ec"
+              : t.type === "stjerne"
+                ? "#ffd700"
+                : t.type === "mur"
+                  ? "#9fb0cc"
+                  : t.type === "band"
+                    ? "#00ff8a"
+                    : t.type === "hus"
+                      ? "#d9e4f5"
+                      : "#2e7a4f";
         const y = sy(t.z);
         if (t.type === "mur") {
           kart.fillRect(2, y - 1, W - 4, 2);
@@ -422,12 +510,15 @@ export function SledefluktSpill({
       }
       if (friRef.current) {
         kart.font = "10px monospace";
-        for (const l of landemerker(etappeRef.current)) {
+        for (const l of landemerker(viddaRef.current, {
+          dag: day,
+          landås: landåsRef.current,
+        })) {
           const y = sy(l.z);
           if (y < 12 || y > H - 16) continue;
           kart.fillStyle = "#d9e4f5";
           kart.fillRect(2, y, W - 4, 1);
-          kart.fillText(l.navn.slice(0, 11), 3, y - 2);
+          kart.fillText(l.navn.slice(0, 14), 3, y - 2);
         }
       }
       kart.fillStyle = "#f0624a";
@@ -449,7 +540,7 @@ export function SledefluktSpill({
       last = now;
       const sim = simRef.current;
       if (!sim) return;
-      const e = etappeRef.current;
+      const e = friRef.current ? viddaRef.current : etappeRef.current;
       if (verden.etappe !== e) {
         verden = lagVerden(e);
         husM.clear();
@@ -504,7 +595,13 @@ export function SledefluktSpill({
           const b = sim.s.ferdig
             ? bjeller(sim.s.varder, sim.s.varderTotalt, sim.s.krasj)
             : 0;
-          const saved = GameEngine.recordSledeResultat(e.id, sim.s.poeng, b);
+          const saved = GameEngine.recordSledeResultat(
+            e.id,
+            sim.s.poeng,
+            b,
+            spillerRef.current,
+            sim.s.utfordringKlart ? day : undefined,
+          );
           setResultat({
             poeng: sim.s.poeng,
             bjeller: b,
@@ -512,6 +609,7 @@ export function SledefluktSpill({
             varder: sim.s.varder,
             varderTotalt: sim.s.varderTotalt,
             stjerner: sim.s.stjerner,
+            fugler: sim.s.fugler,
             besteRekke: sim.s.besteRekke,
             nære: sim.s.nære,
             tidsbonus: sim.s.tidsbonus,
@@ -521,7 +619,7 @@ export function SledefluktSpill({
             pakkebom: sim.s.pakkebom,
             leveringKlart: sim.s.leveringKlart,
           });
-          setBeste(GameEngine.getSledeResultater());
+          setAlle(GameEngine.getSledeResultater());
           setFase(sim.s.ferdig ? "slutt" : "tapt");
         }
       } else if (faseRef.current === "start") {
@@ -537,6 +635,7 @@ export function SledefluktSpill({
 
       shake = Math.max(0, shake - dt);
       nyser = Math.max(0, nyser - dt);
+      hopp = Math.max(0, hopp - dt);
       const { px, alt, bank, dist } = sim.s;
       if (spiller) gange += dt * (sim.s.fart / e.fart) * 9;
 
@@ -629,6 +728,15 @@ export function SledefluktSpill({
         )
           continue;
         const pos = tilVerden(o.x, 0, o.z);
+        // Locked places are drawn stone grey with a padlock turning above them.
+        if (o.låst) {
+          r.grå(0.85);
+          const topp = tilVerden(o.x, 0, o.z);
+          topp[1] = bakke(topp[0], o.z) + 30;
+          r.grå(0);
+          r.tegn(M.lås, transform(topp, [0, t, 0], 1.6));
+          r.grå(0.85);
+        }
         if (o.type === "hus") {
           r.tegn(M.hus[husVariant(o.h)].mesh, husPlass(o));
           pos[1] = o.h * SKALA;
@@ -661,18 +769,73 @@ export function SledefluktSpill({
           r.tegn(M.stjerne, transform(pos, [0, t * 2, 0]));
           continue;
         }
+        if (o.type === "fugl") {
+          // Hovers and flaps in place; the sim's hit box is where it hangs.
+          pos[1] = o.h * SKALA + Math.sin(t * 3 + o.z) * 0.6;
+          r.tegn(M.fugl, transform(pos, [0, 0, Math.sin(t * 12) * 0.25]));
+          continue;
+        }
         if (o.type === "band") {
           pos[1] = o.h * SKALA;
           r.tegn(M.band, transform(pos, [0, 0, Math.sin(t) * 0.1]));
           continue;
         }
+        if (o.type === "varde") {
+          // Rings hang in the air and turn slowly; a ring flown through spins up.
+          pos[1] = o.h * SKALA;
+          r.tegn(M.ring, transform(pos, [0, 0, t * (o.treff ? 3 : 0.5)]));
+          continue;
+        }
         pos[1] = bakke(pos[0], o.z) - 0.2;
-        if (o.type === "varde") r.tegn(M.varde, transform(pos));
-        else if (o.type === "topp") r.tegn(M.topp, transform(pos));
+        if (o.type === "topp") r.tegn(M.topp, transform(pos));
+        else if (o.type === "antenne") r.tegn(M.antenne, transform(pos));
+        else if (o.type === "nordlysport")
+          r.tegn(M.nordlysport, transform(pos, [0, 0, Math.sin(t) * 0.05]));
         else {
           const s = verden.spesial.get(nøkkel(o));
           if (s) r.tegn(s, transform(pos));
         }
+        if (o.låst) r.grå(0);
+      }
+
+      // Sparks fan out from a ring for half a second, then are forgotten.
+      while (gnister.length && t - gnister[0].t0 > 0.5) gnister.shift();
+      for (const g of gnister) {
+        const alder = t - g.t0;
+        for (let k = 0; k < 8; k++) {
+          const a = (k / 8) * Math.PI * 2 + g.t0;
+          r.tegn(
+            M.prikk,
+            transform(
+              [
+                g.p[0] + Math.cos(a) * alder * 40,
+                g.p[1] + Math.sin(a) * alder * 40 - alder * alder * 30,
+                g.p[2] - alder * 12,
+              ],
+              [0, 0, a],
+              0.8 * (1 - alder),
+            ),
+          );
+        }
+      }
+
+      // A missed chimney answers with a fat grey cloud rising for a second.
+      while (puff.length && t - puff[0].t0 > 1.2) puff.shift();
+      for (const g of puff) {
+        const alder = t - g.t0;
+        for (let k = 0; k < 6; k++)
+          r.tegn(
+            M.røyk,
+            transform(
+              [
+                g.p[0] + Math.sin(k * 2.1) * alder * 6,
+                g.p[1] + alder * 9 + k * 0.8,
+                g.p[2] + alder * 10 + Math.cos(k * 1.7) * alder * 4,
+              ],
+              [0, t + k, 0],
+              1.5 + alder * 4,
+            ),
+          );
       }
 
       // Packages: the one in the air, and where the next would land.
@@ -706,7 +869,10 @@ export function SledefluktSpill({
       r.tegn(M.tømmer, base);
       for (let i = 0; i < 3; i++) {
         const fase = gange + i * 2.1;
-        const bob = spiller ? Math.sin(fase * 2) * 0.2 : 0;
+        // Reindeer hop when startled: a near miss, a bird, a crash.
+        const bob =
+          (spiller ? Math.sin(fase * 2) * 0.2 : 0) +
+          Math.sin(Math.min(1, hopp / 0.5) * Math.PI) * (1 + i * 0.3);
         const rein = multiply(
           base,
           transform(
@@ -739,9 +905,11 @@ export function SledefluktSpill({
         ).sort((a, b) => a - b);
         const p50 = sorted[Math.floor(sorted.length * 0.5)];
         const p95 = sorted[Math.floor(sorted.length * 0.95)];
-        if (!oppløsning && res === 480 && p95 > GRENSE_MS) {
-          res = 320;
+        const neste = TRINN[TRINN.indexOf(res) + 1];
+        if (!oppløsning && neste && p95 > GRENSE_MS) {
+          res = neste;
           r.setOppløsning(OPPLØSNINGER[res][0], OPPLØSNINGER[res][1]);
+          nTid = 0;
         }
         setStat({ p50, p95, res });
       }
@@ -769,7 +937,12 @@ export function SledefluktSpill({
             leveringRef.current || (friRef.current && sim.s.pakkerTotalt)
               ? pakkenavn(brev.current, sim.s.slipp)
               : null,
-          landemerke: friRef.current ? nesteLandemerke(e, dist) : null,
+          landemerke: friRef.current
+            ? nesteLandemerke(e, dist, {
+                dag: day,
+                landås: landåsRef.current,
+              })
+            : null,
           gass:
             (held.current.G ? 1 : 0) -
             (held.current.B ? 1 : 0) +
@@ -907,7 +1080,9 @@ export function SledefluktSpill({
       {/* IQ's panel */}
       <div className="absolute inset-0 pointer-events-none">
         <div className={`absolute top-1 left-1 ${panel}`}>
-          <div className="text-(--gold) uppercase">{etappe.navn}</div>
+          <div className="text-(--gold) uppercase">
+            {fri ? VIDDA.navn : etappe.navn}
+          </div>
           {fri ? (
             <>
               <div>FRI FLYGING</div>
@@ -924,7 +1099,7 @@ export function SledefluktSpill({
           ) : (
             <>
               <div>
-                VARDER {b?.varder ?? 0}/{b?.varderTotalt ?? 0}
+                RINGER {b?.varder ?? 0}/{b?.varderTotalt ?? 0}
               </div>
               <div className="text-(--cold-blue)">
                 UTFORDRING {b?.utf ?? ""}
@@ -1038,6 +1213,19 @@ export function SledefluktSpill({
             {melding.tekst}
           </div>
         )}
+        {radio && (fase === "spiller" || fase === "slutt") && (
+          <div
+            key={radio.id}
+            className="absolute inset-x-0 bottom-[22%] text-center text-xl px-24"
+            style={{
+              color: radio.farge,
+              textShadow: "0 0 8px #000",
+              animation: "rise 4s ease-out forwards",
+            }}
+          >
+            RADIO · RAMPENISSEN: «{radio.tekst}»
+          </div>
+        )}
         {pluss && fase === "spiller" && (
           <div
             key={pluss.id}
@@ -1057,8 +1245,8 @@ export function SledefluktSpill({
         )}
         {fps && (
           <div className="absolute bottom-2 left-2 text-base text-(--neon-green) bg-black/70 px-1 tabular-nums">
-            {stat.res}×{stat.res === 480 ? 270 : 180} · p50{" "}
-            {stat.p50.toFixed(1)} ms · p95 {stat.p95.toFixed(1)} ms
+            {stat.res}×{OPPLØSNINGER[stat.res][1]} · p50 {stat.p50.toFixed(1)}{" "}
+            ms · p95 {stat.p95.toFixed(1)} ms
           </div>
         )}
       </div>
@@ -1143,6 +1331,19 @@ export function SledefluktSpill({
                   IQs sledesimulator
                 </div>
                 <NyttIDag vindu="sledeflukt" />
+                <div className="flex gap-1 justify-center items-center text-base">
+                  <span className="opacity-70">HVEM FLYR?</span>
+                  {SPILLERE.map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      onClick={() => setSpiller(n)}
+                      className={`min-h-11 px-3 border-2 leading-none cursor-pointer ${n === spiller ? "border-(--gold) bg-(--gold) text-black" : "border-(--neon-green)/50"}`}
+                    >
+                      {n.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
                 <div className="flex flex-wrap gap-1 justify-center">
                   {åpne.map((e) => (
                     <button
@@ -1157,10 +1358,32 @@ export function SledefluktSpill({
                       </span>
                     </button>
                   ))}
+                  {/* What is coming, without its name; julenatt stays a surprise. */}
+                  {ETAPPER.filter((e) => e.dag > day && e.dag < 24).map((e) => (
+                    <span
+                      key={e.id}
+                      className="min-h-11 px-2 border-2 border-dashed border-(--neon-green)/30 text-(--neon-green)/50 text-base leading-none flex flex-col justify-center"
+                    >
+                      LÅST
+                      <span className="block text-sm">{åpnerTekst(e.dag)}</span>
+                    </span>
+                  ))}
                 </div>
                 <div className="text-base leading-tight">«{etappe.intro}»</div>
+                <div className="text-sm opacity-80 tabular-nums leading-tight">
+                  {SPILLERE.map((n) => {
+                    const r = GameEngine.getSledeResultaterFor(n)[etappe.id];
+                    return (
+                      <span key={n} className="mx-1">
+                        {n.toUpperCase()} {r ? r.poeng : "–"}{" "}
+                        {bjelletegn(r?.bjeller ?? 0)}
+                        {r?.utfordringDag === day ? " ✓ UTFORDRING" : ""}
+                      </span>
+                    );
+                  })}
+                </div>
                 <div className="text-sm opacity-70 tabular-nums leading-tight">
-                  ● {krav[0]} varder · ●● {krav[1]} · ●●● {krav[2]} og ingen
+                  ● {krav[0]} ringer · ●● {krav[1]} · ●●● {krav[2]} og ingen
                   krasj
                 </div>
                 <div className="border border-(--cold-blue)/60 px-2 py-0.5 text-base leading-tight">
@@ -1209,7 +1432,7 @@ export function SledefluktSpill({
                   <button
                     type="button"
                     onClick={startFri}
-                    title="Fly fritt over dalen uten mål og klokke."
+                    title="Fly fritt over vidda rundt Snøfall, uten mål og klokke."
                     className={`${knapp} border-(--neon-green)/50`}
                   >
                     FRI FLYGING
@@ -1233,7 +1456,7 @@ export function SledefluktSpill({
                 <div className="text-(--gold) text-2xl">PAUSE</div>
                 {fri && (
                   <div className="text-base opacity-70">
-                    Fri flyging over {etappe.navn}
+                    Fri flyging over {VIDDA.navn}
                   </div>
                 )}
                 <button
@@ -1260,13 +1483,16 @@ export function SledefluktSpill({
                     : "IQ KOBLER INN NØDBREMSEN"}
                 </div>
                 <div className="text-lg tabular-nums leading-tight">
-                  POENG {resultat.poeng} · BESTE {resultat.beste}
+                  POENG {resultat.poeng} ·{" "}
+                  {spiller ? `${spiller.toUpperCase()}S ` : ""}BESTE{" "}
+                  {resultat.beste}
                 </div>
                 <dl className="grid grid-cols-[auto_auto_auto_auto] gap-x-3 gap-y-0 text-left text-base leading-tight tabular-nums mx-auto w-fit">
                   {(
                     [
-                      ["VARDER", `${resultat.varder}/${resultat.varderTotalt}`],
+                      ["RINGER", `${resultat.varder}/${resultat.varderTotalt}`],
                       ["STJERNER", resultat.stjerner],
+                      ["BREVFUGLER", resultat.fugler],
                       [
                         "BESTE REKKE",
                         `${resultat.besteRekke} (x${rekkeMult(resultat.besteRekke)})`,
@@ -1358,7 +1584,7 @@ function nesteBjelle(
   if (r.bjeller >= 3) return "Alle tre bjeller. IQ bukker!";
   const mangler = krav[r.bjeller] - r.varder;
   if (mangler > 0)
-    return `${mangler} ${mangler === 1 ? "varde" : "varder"} til neste bjelle.`;
+    return `${mangler} ${mangler === 1 ? "ring" : "ringer"} til neste bjelle.`;
   return "Fly uten krasj, så henger den tredje bjellen.";
 }
 

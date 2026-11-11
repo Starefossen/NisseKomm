@@ -35,7 +35,7 @@ describe("sledeflukt verden", () => {
     const m = meshes();
     for (const mesh of [
       m.tre,
-      m.varde,
+      m.ring,
       m.stjerne,
       m.topp,
       m.band,

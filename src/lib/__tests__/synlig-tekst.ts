@@ -18,6 +18,9 @@ import {
   landemerker,
   leveringsoppdrag,
   pakkenavn,
+  RADIO,
+  VIDDA,
+  VIDDA_BERGEN,
 } from "@/components/windows/snofall-tv/slede";
 import type { FilNode } from "@/types/innhold";
 import { OPPLASINGER, puffTekst } from "@/lib/opplasinger";
@@ -164,3 +167,14 @@ for (const e of ETAPPER) {
   );
 }
 add(14, "slede pakkenavn", [0, 1, 2, 3].map((i) => pakkenavn([], i)).join(" "));
+add(8, "slede radio", Object.values(RADIO).flat().join(" "));
+// Free flight: the vidda's places as they are named on day d (locked ones say when they open),
+// Bergen past the gate once day 24 is solved, and its last stop by name once day 22 is solved.
+const steder = (e: typeof VIDDA, dag: number, landås = false) =>
+  landemerker(e, { dag, landås })
+    .map((l) => l.navn)
+    .join(" ");
+for (let d = 8; d <= 24; d++) add(d, `slede vidda dag ${d}`, steder(VIDDA, d));
+add(8, "slede vidda", `${VIDDA.navn} ${VIDDA.intro}`);
+add(25, "slede bergen", steder(VIDDA_BERGEN, 24));
+add(23, "slede landås", steder(VIDDA_BERGEN, 24, true));

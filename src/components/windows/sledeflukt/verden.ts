@@ -2,14 +2,17 @@
  * SLEDEFLUKT: the 3D world around the pure sim in snofall-tv/slede.ts.
  * The sim keeps its units (x in track units, altitude and z in sim units); this
  * module maps them to render units (SKALA) and builds every mesh: valley tiles,
- * trees, Snøfall houses with chimneys, the things on the course and the rig.
+ * trees, Snøfall houses with chimneys, the rings and things on the course and the rig.
  * Nothing here touches the DOM or WebGL, so it is testable.
  */
 
 import { hex, type Mat4, Mesh, transform, type Vec3 } from "./gl";
 import {
+  BERGEN_START,
   HUS_PIPE,
   lagBane,
+  RING_ALT,
+  RING_X,
   type SledeEtappe,
   type Ting,
 } from "../snofall-tv/slede";
@@ -184,20 +187,54 @@ function husMesh(variant: number): HusMesh {
   return { mesh: m.build(), pipe };
 }
 
-/** Beacon: stone cairn, a lantern and a tall light so it reads from afar. */
-function vardeMesh() {
+/** The ring's opening in render units: exactly the sim's hit ellipse, so what you see is what counts. */
+export const RING_RX = RING_X * SPOR;
+export const RING_RY = RING_ALT * SKALA;
+
+/**
+ * Golden ring in the air, facing the course (the xy plane): a dotted hoop of
+ * glowing beads on a thin band, all unlit so it reads through fog from afar.
+ */
+function ringMesh() {
   const m = new Mesh();
-  m.cone([0, 0, 0], 2.4, 1.6, STEIN, 6, 1.8);
-  m.cone([0, 1.6, 0], 1.8, 1.4, STEIN_LYS, 6, 1.2);
-  m.cone([0, 3, 0], 1.2, 1.2, STEIN, 6, 0.7);
-  m.box([0, 4.8, 0], [1.2, 1.2, 1.2], ORANSJE, 1);
-  m.box([0, 12, 0], [0.7, 14, 0.7], VINDU, 1);
-  m.cone([0, 19, 0], 1.6, 2, GULL, 4, 0, 1);
-  m.cone([0, 19, 0], 1.6, -2, GULL, 4, 0, 1);
-  for (let i = 0; i < 8; i++) {
-    const a = (i / 8) * Math.PI * 2;
-    m.box([Math.cos(a) * 7, 10, Math.sin(a) * 7], [1, 1, 1], GULL, 1);
+  const n = 16;
+  const BÅND = hex(0xc9962a);
+  const ved = (i: number): Vec3 => {
+    const a = (i / n) * Math.PI * 2;
+    return [Math.cos(a) * RING_RX, Math.sin(a) * RING_RY, 0];
+  };
+  for (let i = 0; i < n; i++) {
+    m.rod(ved(i), ved(i + 1), 0.35, BÅND, 4, 0.35, 1);
+    m.box(ved(i), [1.4, 1.4, 1.4], i % 2 ? GULL : VINDU, 1);
   }
+  return m.build();
+}
+
+/** Letter bird, facing -z: ice-blue body, white wings spread, gold beak, a letter in its claws. */
+function fuglMesh() {
+  const m = new Mesh();
+  const BLÅ = hex(0x8ea4c8);
+  m.ellipsoid([0, 0, 0], [0.7, 0.6, 1.2], BLÅ, 6, 3);
+  m.ellipsoid([0, 0.5, -1.1], [0.5, 0.5, 0.5], BLÅ, 6, 3);
+  m.box([0, 0.45, -1.7], [0.25, 0.2, 0.5], GULL, 1);
+  for (const s of [-1, 1]) {
+    m.quad(
+      [s * 0.4, 0.2, -0.6],
+      [s * 2.6, 0.9, -0.2],
+      [s * 2.4, 0.9, 0.8],
+      [s * 0.4, 0.2, 0.6],
+      SNØ,
+    );
+    m.quad(
+      [s * 0.4, 0.2, 0.6],
+      [s * 2.4, 0.9, 0.8],
+      [s * 2.6, 0.9, -0.2],
+      [s * 0.4, 0.2, -0.6],
+      SNØ_SKYGGE,
+    );
+  }
+  m.box([0, -0.9, 0], [0.9, 0.1, 0.7], SNØ, 1);
+  m.box([0, -0.85, 0], [0.3, 0.12, 0.3], RØD, 1);
   return m.build();
 }
 
@@ -205,6 +242,48 @@ function stjerneMesh() {
   const m = new Mesh();
   m.cone([0, 0, 0], 1.4, 1.6, GULL, 4, 0, 1);
   m.cone([0, 0, 0], 1.4, -1.6, GULL, 4, 0, 1);
+  return m.build();
+}
+
+/** The antenna by the tarn: a tall mast with a red light, the frozen tarn dark beside it. */
+function antenneMesh() {
+  const m = new Mesh();
+  m.rod([0, 0, 0], [0, 32, 0], 0.6, STEIN_LYS, 4, 0.3);
+  for (const y of [10, 20, 28])
+    m.box([0, y, 0], [5 - y / 10, 0.4, 0.4], STEIN_LYS);
+  m.box([0, 33, 0], [1.2, 1.2, 1.2], RØD, 1);
+  m.box([-52, 0.05, 0], [40, 0.3, 56], hex(0x1a2448));
+  return m.build();
+}
+
+/** Padlock over a place that has not opened yet. */
+function låsMesh() {
+  const m = new Mesh();
+  const LÅS = hex(0x9fb0cc);
+  m.box([0, 0, 0], [5, 4, 1.6], LÅS, 1);
+  for (const s of [-1, 1])
+    m.rod([s * 1.6, 2, 0], [s * 1.6, 5, 0], 0.5, LÅS, 4, 0.5, 1);
+  m.rod([-1.6, 5, 0], [1.6, 5, 0], 0.5, LÅS, 4, 0.5, 1);
+  m.box([0, -0.4, 0.9], [0.8, 1.4, 0.2], STEIN);
+  return m.build();
+}
+
+/** The aurora gate to Bergen: a green glowing arch across the lane. */
+function nordlysportMesh() {
+  const m = new Mesh();
+  const n = 10;
+  const rx = 1.3 * SPOR;
+  for (let i = 0; i < n; i++) {
+    const a0 = (i / n) * Math.PI;
+    const a1 = ((i + 1) / n) * Math.PI;
+    const p = (a: number, r: number): Vec3 => [
+      Math.cos(a) * r,
+      Math.sin(a) * 26 * (r / rx),
+      0,
+    ];
+    m.quad(p(a0, rx), p(a0, rx - 6), p(a1, rx - 6), p(a1, rx), GRØNN, 1);
+    m.quad(p(a1, rx), p(a1, rx - 6), p(a0, rx - 6), p(a0, rx), GRØNN, 1);
+  }
   return m.build();
 }
 
@@ -402,10 +481,14 @@ function tømmerMesh() {
 export interface Meshes {
   tre: Float32Array;
   hus: HusMesh[];
-  varde: Float32Array;
+  ring: Float32Array;
+  fugl: Float32Array;
   stjerne: Float32Array;
   topp: Float32Array;
   band: Float32Array;
+  antenne: Float32Array;
+  lås: Float32Array;
+  nordlysport: Float32Array;
   slede: Float32Array;
   rein: [Float32Array, Float32Array];
   bein: Float32Array;
@@ -425,10 +508,14 @@ export function meshes(): Meshes {
     cache = {
       tre: treMesh(),
       hus: [0, 1, 2].map(husMesh),
-      varde: vardeMesh(),
+      ring: ringMesh(),
+      fugl: fuglMesh(),
       stjerne: stjerneMesh(),
       topp: toppMesh(),
       band: bandMesh(),
+      antenne: antenneMesh(),
+      lås: låsMesh(),
+      nordlysport: nordlysportMesh(),
       slede: sledeMesh(),
       rein: [reinMesh(true), reinMesh(false)],
       bein: beinMesh(),
@@ -505,6 +592,10 @@ export function lagVerden(e: SledeEtappe): Verden {
     if (r() < 0.45) settHus(z, r() < 0.5 ? -1 : 1);
   for (let z = e.lengde - 1200; z < e.lengde + 900; z += 300)
     for (const s of [-1, 1]) if (r() < 0.7) settHus(z + r() * 120, s);
+  // Bergen: streets of houses on both sides, far denser than any farm road.
+  if (e.id === "vidda-bergen")
+    for (let z = BERGEN_START; z < e.lengde - 1500; z += 180)
+      for (const s of [-1, 1]) if (r() < 0.9) settHus(z + r() * 90, s);
 
   const trær: number[] = [];
   const tett = 0.5 + e.blanding.tre;

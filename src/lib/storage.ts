@@ -19,10 +19,15 @@ import {
   type StorageAdapter,
 } from "./storage-adapter";
 
-/** Best run per stage in IQs sledesimulator (0–3 bells). */
+/**
+ * Best run per stage in IQs sledesimulator (0–3 bells). Keyed by stage id for
+ * the family, and by «Navn/etappe» per player; utfordringDag is the last day
+ * that player cleared the day's challenge on the stage.
+ */
 export interface SledeResultat {
   poeng: number;
   bjeller: number;
+  utfordringDag?: number;
 }
 
 /** A letter to Julius. Letters from before 2026 have no `from`. */
@@ -69,6 +74,7 @@ const KEYS = {
   SANTA_LETTERS: "nissekomm-santa-letters",
   INTROS_SEEN: "nissekomm-intros-seen",
   SLEDE: "nissekomm-slede",
+  SLEDE_SPILLER: "nissekomm-slede-spiller",
   IDLE_PEEK: "nissekomm-idle-peek",
   EVENTYR: "nissekomm-eventyr",
   SEASON: "nissekomm-season",
@@ -790,6 +796,15 @@ export class StorageManager {
 
   static setSledeResultat(etappe: string, r: SledeResultat): void {
     this.setItem(KEYS.SLEDE, { ...this.getSledeResultater(), [etappe]: r });
+  }
+
+  /** Who last sat at the sled on this screen (UI state, not synced). */
+  static getSledeSpiller(): string | null {
+    return this.getItem<string | null>(KEYS.SLEDE_SPILLER, null);
+  }
+
+  static setSledeSpiller(navn: string | null): void {
+    this.setItem(KEYS.SLEDE_SPILLER, navn);
   }
 
   static markJuliusWatched(day: number): void {

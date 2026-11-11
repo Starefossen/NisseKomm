@@ -412,29 +412,63 @@ export class GameEngine {
     StorageManager.setEventyrSave(save);
   }
 
-  /** IQs sledesimulator: best score and bells per stage id. */
+  /** IQs sledesimulator: best score and bells per stage id, and per «Navn/etappe». */
   static getSledeResultater(): Record<string, SledeResultat> {
     return StorageManager.getSledeResultater();
   }
 
-  /** Keeps the best of each; a worse run never lowers a saved result. */
+  /** A player's best runs by stage id (empty when nobody is chosen). */
+  static getSledeResultaterFor(
+    spiller: string | null,
+  ): Record<string, SledeResultat> {
+    if (!spiller) return {};
+    const ut: Record<string, SledeResultat> = {};
+    for (const [k, r] of Object.entries(this.getSledeResultater()))
+      if (k.startsWith(`${spiller}/`)) ut[k.slice(spiller.length + 1)] = r;
+    return ut;
+  }
+
+  /**
+   * Keeps the best of each; a worse run never lowers a saved result. With a
+   * player the run is also kept under «Navn/etappe», and a cleared challenge is
+   * remembered for the day even when the run itself was not a best.
+   * Returns the player's record when there is one, else the family's.
+   */
   static recordSledeResultat(
     etappe: string,
     poeng: number,
     bjeller: number,
+    spiller?: string | null,
+    utfordringDag?: number,
   ): SledeResultat {
-    const prev = this.getSledeResultater()[etappe];
+    const alle = this.getSledeResultater();
     // One whole run is kept: most bells, then most points. A failed run
     // (0 bells) still counts as a best score until a finished one beats it.
-    const run = { poeng, bjeller };
-    if (
+    const beste = (prev: SledeResultat | undefined) =>
       prev &&
       (prev.bjeller > bjeller ||
         (prev.bjeller === bjeller && prev.poeng >= poeng))
-    )
-      return prev;
-    StorageManager.setSledeResultat(etappe, run);
-    return run;
+        ? prev
+        : { poeng, bjeller };
+    const fam = beste(alle[etappe]);
+    if (fam !== alle[etappe]) StorageManager.setSledeResultat(etappe, fam);
+    if (!spiller) return fam;
+    const id = `${spiller}/${etappe}`;
+    const dag = utfordringDag ?? alle[id]?.utfordringDag;
+    const egen = { ...beste(alle[id]), utfordringDag: dag };
+    if (dag === undefined) delete egen.utfordringDag;
+    if (JSON.stringify(egen) !== JSON.stringify(alle[id]))
+      StorageManager.setSledeResultat(id, egen);
+    return egen;
+  }
+
+  /** Last player chosen on this screen; UI state, not game state. */
+  static getSledeSpiller(): string | null {
+    return StorageManager.getSledeSpiller();
+  }
+
+  static setSledeSpiller(navn: string | null): void {
+    StorageManager.setSledeSpiller(navn);
   }
 
   /** Frostgraden (0–100) for a day, or null on days 1–6 when it is hidden. */
