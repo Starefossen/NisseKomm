@@ -123,9 +123,19 @@ export const KAPITTEL_3: Kapittel = {
       navn: "Julius' kontor",
       bilde: "spill/julius-kontor.jpg",
       utganger: [{ til: "grotten", navn: "Fly til grotta under Nordtoppen" }],
-      // On the desk between the window candles and the open diary
-      fjaer: { x: 72, y: 64, w: 4, h: 6 },
+      // On the desk, right of the open diary
+      fjaer: { x: 87, y: 86, w: 4, h: 6 },
       hotspots: [
+        {
+          id: "hjerterud",
+          figur: "hjerterud",
+          navn: "Hjerterud",
+          rect: { x: 60, y: 40, w: 20, h: 36 },
+          smart: "snakk",
+          snakk: "hjerterud",
+          se: "Hjerterud sitter i den myke stolen ved pulten med en kurv boller på fanget. Bollene er til Julius. Han er ikke her. Hun venter. Ved siden av står en kopp te som har sluttet å ryke for lenge siden. Hun har ikke merket det. Hun merker alt annet.",
+          bruk: "Du prikker Hjerterud på armen. Hun ser opp fra bollene og smiler. «Ja, Floke? Har du spist?» Hun visste at du kom. Hun vet alltid.",
+        },
         {
           id: "juletreet",
           navn: "Juletreet",
@@ -204,16 +214,6 @@ export const KAPITTEL_3: Kapittel = {
           snakk: "julius",
           se: "En messingtrakt med slange ned i et skap fullt av plugger og ledninger. Det er Snøfall-radioen. Ett rør går til tjernet, ett til verkstedet, og ett har en lapp: «LANDÅS (ikke etter leggetid)». Lappen er skrevet av Hjerterud. Regelen er for Julius.",
           bruk: "Du blåser i trakten. Langt borte sier noen «hva i all verden». Du slutter. Noen andre langt borte sier «var det deg?». Du slutter mer.",
-        },
-        {
-          id: "hjerterud",
-          figur: "hjerterud",
-          navn: "Hjerterud",
-          rect: { x: 60, y: 40, w: 20, h: 36 },
-          smart: "snakk",
-          snakk: "hjerterud",
-          se: "Hjerterud sitter i den myke stolen ved pulten med en kurv boller på fanget. Bollene er til Julius. Han er ikke her. Hun venter. Ved siden av står en kopp te som har sluttet å ryke for lenge siden. Hun har ikke merket det. Hun merker alt annet.",
-          bruk: "Du prikker Hjerterud på armen. Hun ser opp fra bollene og smiler. «Ja, Floke? Har du spist?» Hun visste at du kom. Hun vet alltid.",
         },
         {
           id: "brevbunken",

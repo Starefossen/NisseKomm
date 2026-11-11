@@ -424,6 +424,52 @@ export const KAPITTEL_4: Kapittel = {
       fjaer: { x: 40, y: 46, w: 4, h: 6 },
       hotspots: [
         {
+          id: "julius",
+          figur: "julius",
+          navn: "Julius",
+          rect: { x: 60, y: 40, w: 20, h: 36 },
+          smart: "snakk",
+          snakk: "julius",
+          se: [
+            {
+              hvis: "briller_levert",
+              tekst:
+                "Julius sitter i stolen med brillene på nesa og listen i fanget. Han leser sakte og smiler for hvert navn. Noen navn smiler han ekstra for. Han sier ikke hvilke. Winter sier det kommer flere i kveld.",
+            },
+            {
+              tekst:
+                "Julius sitter i stolen og myser mot den åpne boka. Han holder den helt opp mot nesa. Så langt fra nesa. Så opp igjen. Det hjelper ikke. Han prøver med ett øye. Det hjelper halvparten så lite.",
+            },
+          ],
+          bruk: "Du setter deg på Julius' skulder. Han klapper deg på hodet uten å se. «Floke. Du lukter talg. Eller klementin. Eller begge.»",
+          bruker: [
+            {
+              item: "briller",
+              uten: "briller_levert",
+              flagg: "briller_levert",
+              forbruker: true,
+              tekst:
+                "Julius tar brillene, blåser bort ei fjær og setter dem på nesa. «Å.» Han ser på listen. «Å!» Han ser på deg. «Floke, du har sot på nebbet.» Nede ved porten krysser Winter av punkt én. " +
+                R +
+                "«Han ser! Han ser lista! Han ser alt! Æ må gjømme klementinskallet.»",
+            },
+          ],
+          feil: {
+            klementin:
+              "Julius tar klementinen, takker og legger den i lomma. Så gir han den tilbake. «Du trenger den til noe, tror jeg. Jeg ser det på deg. Jeg ser ikke mye, men det ser jeg.»",
+            noett:
+              "Julius tar nøtta, knekker den med tennene og gir deg kjernen. «Takk. Hva var spørsmålet?» Du spiser kjernen. Nøtta er borte. Du har en nøtt mindre og et spørsmål mer.",
+            fjaerpenn:
+              "Du kiler Julius under nesa med fjærpennen. Han nyser så listen flyr. Du henter den. Han nyser igjen. Du henter den igjen. Du legger fjæra bort.",
+            bjelle:
+              "Julius lytter. «Rampenissens bjelle. Den skal på sleden, ikke på meg. Jeg har prøvd å fly med bjelle på. Det ble en lang kveld.»",
+            fiskesnoere:
+              "Du fisker etter Julius. Magneten setter seg fast i brillekjedet hans. Det er ikke briller i det. Bare kjede. Han har hatt kjedet uten briller i to dager.",
+            talgstump:
+              "Du holder talgstumpen fram. Julius snuser. «Sau. Noen har gitt deg talg. Winter? Da er det virkelig snart jul.»",
+          },
+        },
+        {
           id: "juletreet",
           navn: "Juletreet",
           rect: { x: 4, y: 0, w: 30, h: 76 },
@@ -608,52 +654,6 @@ export const KAPITTEL_4: Kapittel = {
               "Du tar hestesko-magneten. Tre lapper seiler ned på gulvet. Du legger dem pent på skapet. Julius glemmer ikke. Han har tre lapper. Og Winter.",
           },
           bruk: "Du blåser i trakten. Ute ved tjernet sier IQ «hva i all verden». Han sier det hver gang. Han sover. Han sier det i søvne.",
-        },
-        {
-          id: "julius",
-          figur: "julius",
-          navn: "Julius",
-          rect: { x: 60, y: 40, w: 20, h: 36 },
-          smart: "snakk",
-          snakk: "julius",
-          se: [
-            {
-              hvis: "briller_levert",
-              tekst:
-                "Julius sitter i stolen med brillene på nesa og listen i fanget. Han leser sakte og smiler for hvert navn. Noen navn smiler han ekstra for. Han sier ikke hvilke. Winter sier det kommer flere i kveld.",
-            },
-            {
-              tekst:
-                "Julius sitter i stolen og myser mot den åpne boka. Han holder den helt opp mot nesa. Så langt fra nesa. Så opp igjen. Det hjelper ikke. Han prøver med ett øye. Det hjelper halvparten så lite.",
-            },
-          ],
-          bruk: "Du setter deg på Julius' skulder. Han klapper deg på hodet uten å se. «Floke. Du lukter talg. Eller klementin. Eller begge.»",
-          bruker: [
-            {
-              item: "briller",
-              uten: "briller_levert",
-              flagg: "briller_levert",
-              forbruker: true,
-              tekst:
-                "Julius tar brillene, blåser bort ei fjær og setter dem på nesa. «Å.» Han ser på listen. «Å!» Han ser på deg. «Floke, du har sot på nebbet.» Nede ved porten krysser Winter av punkt én. " +
-                R +
-                "«Han ser! Han ser lista! Han ser alt! Æ må gjømme klementinskallet.»",
-            },
-          ],
-          feil: {
-            klementin:
-              "Julius tar klementinen, takker og legger den i lomma. Så gir han den tilbake. «Du trenger den til noe, tror jeg. Jeg ser det på deg. Jeg ser ikke mye, men det ser jeg.»",
-            noett:
-              "Julius tar nøtta, knekker den med tennene og gir deg kjernen. «Takk. Hva var spørsmålet?» Du spiser kjernen. Nøtta er borte. Du har en nøtt mindre og et spørsmål mer.",
-            fjaerpenn:
-              "Du kiler Julius under nesa med fjærpennen. Han nyser så listen flyr. Du henter den. Han nyser igjen. Du henter den igjen. Du legger fjæra bort.",
-            bjelle:
-              "Julius lytter. «Rampenissens bjelle. Den skal på sleden, ikke på meg. Jeg har prøvd å fly med bjelle på. Det ble en lang kveld.»",
-            fiskesnoere:
-              "Du fisker etter Julius. Magneten setter seg fast i brillekjedet hans. Det er ikke briller i det. Bare kjede. Han har hatt kjedet uten briller i to dager.",
-            talgstump:
-              "Du holder talgstumpen fram. Julius snuser. «Sau. Noen har gitt deg talg. Winter? Da er det virkelig snart jul.»",
-          },
         },
         {
           id: "brevbunken",

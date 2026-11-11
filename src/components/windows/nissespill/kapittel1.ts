@@ -429,8 +429,8 @@ export const KAPITTEL_1: Kapittel = {
       navn: "IQs verksted",
       bilde: "spill/iq-verksted.jpg",
       utganger: [{ til: "torget", navn: "Ned trappa til torget" }],
-      // On the bench between the blackboard and the coffee cup
-      fjaer: { x: 38, y: 62, w: 4, h: 6 },
+      // On the floor between the coffee cup and the stool
+      fjaer: { x: 57, y: 88, w: 4, h: 6 },
       hotspots: [
         {
           id: "sikringsskapet",
@@ -677,7 +677,7 @@ export const KAPITTEL_1: Kapittel = {
       bilde: "spill/kafe.jpg",
       utganger: [{ til: "torget", navn: "Ut på torget" }],
       // On the floorboards between the flour sack and the chair
-      fjaer: { x: 55, y: 88, w: 4, h: 6 },
+      fjaer: { x: 52, y: 88, w: 4, h: 6 },
       hotspots: [
         {
           id: "lampa",
