@@ -45,7 +45,7 @@ const KAP: M.Kapittel = {
       navn: "A",
       bilde: "",
       utganger: [],
-      fjaer: { x: 10, y: 10, w: 3, h: 3 },
+      fjaer: { x: 30, y: 30, w: 3, h: 3 },
       hotspots: [
         {
           id: "skap",
@@ -183,9 +183,18 @@ describe("motor: kapitlenes minispill er gyldige", () => {
     "kapittel %i",
     (_, k) => {
       const ider = Object.keys(k.puslespill ?? {});
-      for (const s of k.scener)
-        for (const h of s.hotspots)
+      const overlapper = (a: M.Rect, b: M.Rect) =>
+        a.x < b.x + b.w &&
+        b.x < a.x + a.w &&
+        a.y < b.y + b.h &&
+        b.y < a.y + a.h;
+      for (const s of k.scener) {
+        for (const h of s.hotspots) {
           if (h.puslespill) expect(ider).toContain(h.puslespill);
+          // A feather under a hotspot could never be tapped
+          if (s.fjaer) expect(overlapper(s.fjaer, h.rect)).toBe(false);
+        }
+      }
       for (const p of Object.values(k.puslespill ?? {})) {
         if (p.type === "rute") expect(P.ruteFeil(p)).toEqual([]);
         if (p.type === "laas") {

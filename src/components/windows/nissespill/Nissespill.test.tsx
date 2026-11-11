@@ -455,6 +455,8 @@ describe("Nissespill: motor", () => {
       ["kontor", "brevbunken"],
       ["+", "magnet", "hyssing"],
       ["kontor", "vedkassa", "fiskesnoere"],
+      ["!", "kontor/sprekken", "fiskevei"],
+      ["kontor", "vedkassa"],
       ["porten", "sleden", "bjelle"],
       ["kontor", "blekkhuset"],
       ["kontor", "brevfuglen", "fjaer"],
@@ -462,8 +464,25 @@ describe("Nissespill: motor", () => {
       ["kontor", "brevfuglen", "klementin"],
       ["kontor", "julius", "briller"],
       ["?", "winter", "Alt på lista er gjort. Sjekk!"],
-      ["?", "winter", "Punkt to: bjella henger."],
-      ["?", "winter", "Punkt tre: porten er smurt."],
+      ["!", "porten/skriveplata", "avgangsstempel"],
     ]);
+  });
+
+  it("kapittel 4: Winter godtar ikke sjekk før alle tre punkter er gjort", () => {
+    const kap = KAPITLER[3];
+    const start = kap.dialoger.winter.noder.start;
+    const med = (...flags: string[]) =>
+      M.valgSomVises(start, { ...M.nyttKapittel(kap), flags }).map(
+        (v) => v.tekst,
+      );
+    expect(med("winter_snakket", "briller_levert", "port_smurt")).toContain(
+      "Vi tror vi er ferdige. Sjekk!",
+    );
+    expect(med("briller_levert", "port_smurt")).not.toContain(
+      "Alt på lista er gjort. Sjekk!",
+    );
+    expect(med("briller_levert", "bjelle_montert", "port_smurt")).toContain(
+      "Alt på lista er gjort. Sjekk!",
+    );
   });
 });
