@@ -167,7 +167,8 @@ function Gjennomsyn({ present }: { present: Set<string> | null }) {
           >
             <option value={8}>08 (morgen)</option>
             <option value={12}>12 (dag)</option>
-            <option value={21}>21 (kveld)</option>
+            <option value={16}>16 (skumring)</option>
+            <option value={21}>21 (natt)</option>
           </select>
         </label>
         <label className="flex items-center gap-2 min-h-11">
@@ -204,6 +205,8 @@ function Gjennomsyn({ present }: { present: Set<string> | null }) {
                     [
                       ["brevfugler", "Brevfugler"],
                       ["tarnklokke", "Tårnklokka"],
+                      ["blafugl", "Blå fugl"],
+                      ["luciatog", "Luciatog"],
                     ] as const
                   ).map(([kind, name]) => (
                     <button
