@@ -133,7 +133,9 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 
 ## Senere forbedringer (etter sesongen)
 
-- [ ] **Sledesimulator: highscore-tavle.** Rekorder per etappe og per spiller (Kristian/Håkon, samme navneknapper som Brev til Julius), topp 3 per etappe, dagens beste på startskjermen, synket mellom skjermene.
+- [ ] **Fjær gir noe tilbake (Ugleposten):** alle 8 fjær låser opp `MORO/knerten.txt` i NisseNet, og en variant av Julius' PS dag 24 (PS-teksten er låst, krever Hans' ja). Innsats M. Se `docs/minispill-sesong.md`.
+- [ ] **Lykkebjella på tvers av spill:** fullført Ugleposten kapittel 4 gir sleden bjella fra kapittel 1: lyd og «LYKKEBJELLA OM BORD» på julenatt-etappen. Innsats S.
+- [ ] **Sledesimulator: highscore-tavle.** Fable anbefaler å trekke den fram før sesongen (søskentavle med navneknapper, beste per etappe og dagens utfordring per spiller; innsats M). Rekorder per etappe og per spiller (Kristian/Håkon, samme navneknapper som Brev til Julius), topp 3 per etappe, dagens beste på startskjermen, synket mellom skjermene.
 - [ ] **Hullkort / sjablongkort:** kort med utklippede vinduer som legges over en side i en fysisk bok.
 - [ ] **1:1 skjermkalkeringskart:** bakepapir med registreringsmerker som holdes mot CRT-skjermen i Snøfall TV, med en kalibreringsknapp (`[KALIBRER SKJERMKART]`) som viser hjørnekors.
 - [ ] **Utgående webhook ved kodeinnlevering og frekvenslås (90,0 MHz):** lamper som blinker gull, og en kort radioskurring på kjøkkenhøyttaleren. Hører til Varden-integrasjonen.
