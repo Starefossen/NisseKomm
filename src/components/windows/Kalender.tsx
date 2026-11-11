@@ -141,7 +141,8 @@ export function Kalender({
                   </div>
 
                   {/* Teaser: something opens this day, never what */}
-                  {status === "locked" &&
+                  {(status === "locked" ||
+                    (getCurrentMonth() === 12 && day > getCurrentDay())) &&
                     GameEngine.getOpplasinger(day).length > 0 && (
                       <span className="absolute bottom-0.5 left-0 right-0 text-sm text-(--gold) opacity-100 tracking-wider">
                         NOE ÅPNER

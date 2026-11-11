@@ -11,7 +11,7 @@ interface RetroModalProps {
 
 export function RetroModal({ title, children, onClose }: RetroModalProps) {
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-40 bg-black/70">
+    <div className="fixed inset-0 flex items-center justify-center z-60 bg-black/70">
       <div
         className="relative w-[500px] max-w-[90%] bg-(--dark-crt) border-2 border-(--brass) shadow-[0_8px_40px_rgba(0,0,0,0.6)]"
         style={{ animation: "scale-in 0.2s ease-out" }}

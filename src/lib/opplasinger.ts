@@ -53,13 +53,13 @@ function bygg(): Opplasing[] {
     ...KAPITLER.map((k) => ({
       dag: k.dag,
       vindu: "nissespill" as const,
-      tekst: `Kapittel ${k.n}: «${k.tittel}»`,
+      tekst: `Kapittel ${k.n} i UGLEPOSTEN er åpent`,
       varsel: `UGLEPOSTEN: Kapittel ${k.n} er åpent. «${k.tittel}»`,
     })),
     ...ETAPPER.map((e) => ({
       dag: e.dag,
       vindu: "sledeflukt" as const,
-      tekst: `Ny etappe: ${e.navn}`,
+      tekst: `Ny etappe i SLEDEFLUKT: ${e.navn}`,
       varsel: `IQ: Ny etappe i SLEDEFLUKT: ${e.navn}.`,
     })),
     // The HUD sleigh toy only points to SLEDEFLUKT now
@@ -109,25 +109,10 @@ export function nivaa(
 
 export const settNokkel = (o: Opplasing) => `ny-${o.vindu}-${o.dag}` as const;
 
-const NAVN: Record<OpplasingVindu, string> = {
-  nissekrypto: "NISSEKRYPTO",
-  symbolskanner: "SYMBOLSKANNER",
-  nissespill: "UGLEPOSTEN",
-  sledeflukt: "SLEDEFLUKT",
-  nissemusikk: "NISSEMUSIKK",
-  brevfugler: "BREVFUGLER",
-  nissestats: "NISSESTATS",
-  nordpol_tv: "SNØFALL TV",
-};
-
 /** Sidebar line for nudge level 2–4; none for 0–1. */
 export function puffTekst(o: Opplasing, n: Nivaa): string | null {
-  const navn = NAVN[o.vindu];
-  if (n === 2)
-    return `RAMPENISSEN: Har dokker sett det nye i ${navn}? ${o.tekst}.`;
-  if (n === 3)
-    return `IQ: ${o.tekst} venter fortsatt i ${navn}. Jeg har prøvd selv!`;
-  if (n === 4)
-    return `RAMPENISSEN: Æ sie det bare én gang te: ${o.tekst} i ${navn}.`;
+  if (n === 2) return `RAMPENISSEN: Har dokker sjekka? ${o.tekst}.`;
+  if (n === 3) return `IQ: ${o.tekst}, og ingen har vært innom ennå!`;
+  if (n === 4) return `RAMPENISSEN: Siste gang æ mase: ${o.tekst}.`;
   return null;
 }
