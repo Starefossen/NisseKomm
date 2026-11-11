@@ -201,7 +201,12 @@ function Etappeflukt({
     pakker: 0,
     pakkebom: 0,
     leveringKlart: false,
+    nyRekord: false,
+    nyFamilierekord: false,
   });
+  const [rekorder, setRekorder] = useState(false);
+  // Set when START is pressed with nobody chosen; the choice then starts the run.
+  const [spørHvem, setSpørHvem] = useState(false);
 
   const åpne = etapperFor(day);
   const [etappe, setEtappe] = useState<SledeEtappe>(
@@ -223,6 +228,7 @@ function Etappeflukt({
     spillerRef.current = n;
     setSpillerState(n);
     GameEngine.setSledeSpiller(n);
+    if (spørHvem) startRef.current();
   };
   const beste = useMemo(
     () => (spiller ? GameEngine.getSledeResultaterFor(spiller) : alle),
@@ -278,6 +284,12 @@ function Etappeflukt({
 
   const start = () => {
     SoundManager.playSound("click");
+    if (!spillerRef.current) {
+      setSpørHvem(true);
+      setFase("start");
+      return;
+    }
+    setSpørHvem(false);
     brev.current = GameEngine.getSantaLetters();
     simRef.current = createSim(etappe, {
       assist,
@@ -585,6 +597,9 @@ function Etappeflukt({
           const b = sim.s.ferdig
             ? bjeller(sim.s.varder, sim.s.varderTotalt, sim.s.krasj)
             : 0;
+          const før = GameEngine.getSledeResultater();
+          const bedre = (p?: { poeng: number; bjeller: number }) =>
+            !p || b > p.bjeller || (b === p.bjeller && sim.s.poeng > p.poeng);
           const saved = GameEngine.recordSledeResultat(
             e.id,
             sim.s.poeng,
@@ -608,6 +623,10 @@ function Etappeflukt({
             pakker: sim.s.pakker,
             pakkebom: sim.s.pakkebom,
             leveringKlart: sim.s.leveringKlart,
+            nyRekord:
+              !!spillerRef.current &&
+              bedre(før[`${spillerRef.current}/${e.id}`]),
+            nyFamilierekord: bedre(før[e.id]),
           });
           setAlle(GameEngine.getSledeResultater());
           setFase(sim.s.ferdig ? "slutt" : "tapt");
@@ -1351,7 +1370,56 @@ function Etappeflukt({
       {fase !== "spiller" && fase !== "nedtelling" && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/55 p-2 overflow-y-auto">
           <div className="border-2 border-(--brass) bg-black/85 p-2 max-w-lg w-full max-h-full overflow-y-auto text-(--neon-green) space-y-1.5 text-center">
-            {fase === "start" && (
+            {fase === "start" && rekorder && (
+              <>
+                <div className="text-(--gold) text-xl leading-none">
+                  REKORDER
+                </div>
+                <table className="mx-auto text-base leading-tight tabular-nums text-left">
+                  <thead>
+                    <tr className="opacity-70">
+                      <th className="pr-3 font-normal">ETAPPE</th>
+                      {[...SPILLERE, "FAMILIEN"].map((n) => (
+                        <th key={n} className="px-2 font-normal text-right">
+                          {n.toUpperCase()}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {åpne.map((e) => (
+                      <tr key={e.id}>
+                        <td className="pr-3">{e.navn}</td>
+                        {[...SPILLERE.map((n) => `${n}/${e.id}`), e.id].map(
+                          (k) => (
+                            <td key={k} className="px-2 text-right">
+                              {alle[k] ? (
+                                <>
+                                  {alle[k].poeng}{" "}
+                                  <span className="text-sm">
+                                    {bjelletegn(alle[k].bjeller)}
+                                  </span>
+                                </>
+                              ) : (
+                                "–"
+                              )}
+                            </td>
+                          ),
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <button
+                  type="button"
+                  onClick={() => setRekorder(false)}
+                  className={`${knapp} border-(--gold) text-(--gold) w-full`}
+                >
+                  TILBAKE
+                </button>
+              </>
+            )}
+            {fase === "start" && !rekorder && (
               <>
                 <div className="text-(--gold) text-xl leading-none">
                   SLEDEFLUKT
@@ -1360,8 +1428,12 @@ function Etappeflukt({
                   IQs sledesimulator
                 </div>
                 <NyttIDag vindu="sledeflukt" />
-                <div className="flex gap-1 justify-center items-center text-base">
-                  <span className="opacity-70">HVEM FLYR?</span>
+                <div
+                  className={`flex gap-1 justify-center items-center text-lg border-2 p-1 ${spiller ? "border-transparent" : "border-(--gold) animate-pulse"}`}
+                >
+                  <span className={spiller ? "opacity-70" : "text-(--gold)"}>
+                    {spørHvem ? "VELG HVEM SOM FLYR:" : "HVEM FLYR?"}
+                  </span>
                   {SPILLERE.map((n) => (
                     <button
                       key={n}
@@ -1460,6 +1532,16 @@ function Etappeflukt({
                   </button>
                   <button
                     type="button"
+                    onClick={() => {
+                      SoundManager.playSound("click");
+                      setRekorder(true);
+                    }}
+                    className={`${knapp} border-(--neon-green)/50`}
+                  >
+                    REKORDER
+                  </button>
+                  <button
+                    type="button"
                     onClick={onFri}
                     title="Fly fritt over vidda rundt Snøfall, uten mål og klokke."
                     className={`${knapp} border-(--neon-green)/50`}
@@ -1511,6 +1593,19 @@ function Etappeflukt({
                   {spiller ? `${spiller.toUpperCase()}S ` : ""}BESTE{" "}
                   {resultat.beste}
                 </div>
+                {(resultat.nyRekord || resultat.nyFamilierekord) && (
+                  <div className="text-(--gold) text-2xl leading-none animate-pulse">
+                    {resultat.nyFamilierekord
+                      ? "NY REKORD! BESTE I FAMILIEN!"
+                      : "NY REKORD!"}
+                  </div>
+                )}
+                <Rekordliste
+                  etappe={etappe}
+                  alle={alle}
+                  spiller={spiller}
+                  tur={resultat}
+                />
                 <dl className="grid grid-cols-[auto_auto_auto_auto] gap-x-3 gap-y-0 text-left text-base leading-tight tabular-nums mx-auto w-fit">
                   {(
                     [
@@ -1600,6 +1695,53 @@ function Etappeflukt({
 }
 
 const bjelletegn = (n: number) => "●".repeat(n) + "○".repeat(3 - n);
+
+/** The stage's list after a run: each player's best, the family best and this run. */
+function Rekordliste({
+  etappe,
+  alle,
+  spiller,
+  tur,
+}: {
+  etappe: SledeEtappe;
+  alle: Record<string, { poeng: number; bjeller: number }>;
+  spiller: string | null;
+  tur: { poeng: number; bjeller: number };
+}) {
+  const rader: [
+    string,
+    { poeng: number; bjeller: number } | undefined,
+    boolean,
+  ][] = [
+    ...SPILLERE.map(
+      (
+        n,
+      ): [string, { poeng: number; bjeller: number } | undefined, boolean] => [
+        n.toUpperCase(),
+        alle[`${n}/${etappe.id}`],
+        false,
+      ],
+    ),
+    ["FAMILIEN", alle[etappe.id], false],
+    [`DENNE TUREN${spiller ? ` (${spiller.toUpperCase()})` : ""}`, tur, true],
+  ];
+  return (
+    <div className="mx-auto w-fit text-base leading-tight tabular-nums text-left">
+      <div className="text-sm opacity-70 text-center">
+        REKORDER · {etappe.navn.toUpperCase()}
+      </div>
+      {rader.map(([navn, r, denne]) => (
+        <div
+          key={navn}
+          className={`flex gap-3 justify-between px-1 ${denne ? "bg-(--gold) text-black" : ""}`}
+        >
+          <span>{navn}</span>
+          <span>{r ? `${r.poeng} ${bjelletegn(r.bjeller)}` : "–"}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function nesteBjelle(
   r: { bjeller: number; varder: number; krasj: number },
