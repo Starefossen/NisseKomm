@@ -228,11 +228,7 @@ describe("get_kid_context", () => {
   it("eldre biter i dagens gåte er skjult og merket (dag 5: dag 2, dag 21: stjernetegn)", async () => {
     await play(5, 4);
     const day2 = (await kid()).days.find((x: { day: number }) => x.day === 2);
-    expect(day2).toMatchObject({
-      mail: "[skjult]",
-      ps: "[skjult]",
-      video_transcript: "[skjult]",
-    });
+    expect(day2).toMatchObject({ ps: "[skjult]", recap: "[skjult]" });
     // piece_for names only solved days; [5] would point at today's clue.
     expect(day2.piece_for).toBeUndefined();
     memoryStore.reset();
@@ -292,9 +288,27 @@ describe("get_kid_context", () => {
     expect(out.schema_version).toBe(1);
     expect(out.now).toBe("2026-12-24T21:00:00+01:00");
     expect(out.truncated).toBe(true);
-    // The newest day stays; the oldest went first.
     expect(out.days[0].day).toBe(24);
-    expect(out.days.some((x: { day: number }) => x.day === 1)).toBe(false);
+  });
+
+  it("dag 24 med alt løst holder seg under 10 KB, med guidance og alle dager", async () => {
+    await play(24, 24);
+    await memoryStore.putState("nissekomm-earned-badges", ["varmebaerer"]);
+    const text = await callTool("read", "get_kid_context");
+    expect(Buffer.byteLength(text)).toBeLessThan(10 * 1024);
+    const out = JSON.parse(text);
+    expect(out.guidance).toBe(KID_GUIDANCE);
+    expect(out.days).toHaveLength(24);
+    expect(out.symbols).toHaveLength(9);
+    expect(
+      out.files.some((f: { path: string }) => f.path.endsWith(".log")),
+    ).toBe(false);
+    expect(out.days[1]).toEqual({
+      day: 23,
+      solved: true,
+      title: expect.any(String),
+      recap: expect.any(String),
+    });
   });
 
   it("read og parent får det samme; bare operatørens falske klokke gjelder for operatøren", async () => {

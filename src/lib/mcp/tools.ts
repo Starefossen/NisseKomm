@@ -398,6 +398,10 @@ export const KID_GUIDANCE =
 type Piece = (typeof gaatebiter.biter)[number];
 const PIECES: Piece[] = gaatebiter.biter;
 const HIDDEN = "[skjult]";
+/** get_kid_context aims for this; MAX_RESPONSE_BYTES is only the ceiling. */
+export const KID_TARGET_BYTES = 9 * 1024;
+const clip = (s: string, n: number) =>
+  s.length > n ? `${s.slice(0, n).trimEnd()}…` : s;
 
 type FileNode = {
   navn: string;
@@ -460,7 +464,11 @@ export function getKidContext(state: State, at?: Date) {
   const text = (t: string | null, blockedBy: number[]) =>
     t === null ? null : blockedBy.length ? HIDDEN : t;
 
-  type Item = { age: number; kind: "days" | "files" | "symbols"; v: object };
+  type Item = {
+    age: number;
+    kind: "days" | "files" | "symbols";
+    v: Record<string, unknown>;
+  };
   const items: Item[] = [];
   for (let day = 1; day <= today; day++) {
     const q = getAllOppdrag().find((x) => x.dag === day)!;
@@ -485,20 +493,39 @@ export function getKidContext(state: State, at?: Date) {
         .map(([k, t]) => [k, pieceFor(of(t))])
         .filter(([, v]) => v.length),
     );
+    const mail = text(q.nissemail_tekst, blocks(of("epost")));
+    const ps = text(psFor(state, day), blocks(of("ps")));
+    const pf = Object.keys(piece_for).length ? { piece_for } : {};
+    // Today keeps the full texts; older days get a one-sentence recap (size).
     items.push({
       age: day,
       kind: "days",
-      v: {
-        day,
-        solved: true,
-        mail: text(q.nissemail_tekst, blocks(of("epost"))),
-        video_transcript: text(
-          videoer.find((v) => v.dag === day)?.transkripsjon ?? null,
-          blocks(of("transkripsjon")),
-        ),
-        ps: text(psFor(state, day), blocks(of("ps"))),
-        ...(Object.keys(piece_for).length && { piece_for }),
-      },
+      v:
+        day === today
+          ? {
+              day,
+              solved: true,
+              mail,
+              video_transcript: text(
+                videoer.find((v) => v.dag === day)?.transkripsjon ?? null,
+                blocks(of("transkripsjon")),
+              ),
+              ps,
+              ...pf,
+            }
+          : {
+              day,
+              solved: true,
+              title: q.tittel,
+              ps,
+              recap:
+                mail === HIDDEN
+                  ? HIDDEN
+                  : (mail?.match(/^.*?[.!?](\s|$)/)?.[0] ?? mail ?? "")
+                      .trim()
+                      .slice(0, 200),
+              ...pf,
+            },
     });
   }
 
@@ -521,12 +548,13 @@ export function getKidContext(state: State, at?: Date) {
         q.decryption_challenge?.challengeId === c?.requiresSolvedDecryption,
     )?.dag;
     const piece_for = pieceFor(isIt);
+    const content = text(node.innhold ?? "", blocks(isIt))!;
     items.push({
       age: c?.afterDay ?? decryptDay ?? 0,
       kind: "files",
       v: {
         path,
-        content: text(node.innhold ?? "", blocks(isIt)),
+        content: clip(content, 300),
         ...(piece_for.length && { piece_for }),
       },
     });
@@ -570,12 +598,32 @@ export function getKidContext(state: State, at?: Date) {
     symbols: list.filter((i) => i.kind === "symbols").map((i) => i.v),
     truncated,
   });
-  // Oldest material goes first; guidance and today's entry always stay.
   const keep = [...items].sort((a, b) => b.age - a.age);
   const earned = earnedCodes(state, at);
   const size = (x: object) =>
     Buffer.byteLength(redact(JSON.stringify(x), earned));
+  const files = keep.filter((i) => i.kind === "files");
+  const oldSolved = keep
+    .filter((i) => i.kind === "days" && i.v.solved && i.v.day !== today)
+    .reverse();
+  // Eviction order toward KID_TARGET_BYTES; days, symbols and guidance stay.
+  const steps: (() => void)[] = [
+    () => {
+      for (const f of files.filter((i) => String(i.v.path).endsWith(".log")))
+        keep.splice(keep.indexOf(f), 1);
+    },
+    () => {
+      for (const f of files) f.v.content = clip(String(f.v.content), 150);
+    },
+    ...oldSolved.map((i) => () => delete i.v.ps),
+  ];
   let out = build(keep, false);
+  for (const step of steps) {
+    if (size(out) <= KID_TARGET_BYTES) break;
+    step();
+    out = build(keep, true);
+  }
+  // Last resort under the hard ceiling: oldest material goes first.
   while (size(out) > MAX_RESPONSE_BYTES - 256 && keep.length > 1) {
     keep.pop();
     out = build(keep, true);
