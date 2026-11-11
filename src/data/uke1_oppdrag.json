@@ -3,8 +3,8 @@
     "dag": 1,
     "tittel": "Direktelinjen",
     "skjerm_teaser": "Noe knitrer i huset. Rampenissen er tilbake.",
-    "nissemail_tekst": "Hei Kristian, Håkon og Hanna! Jeg er tilbake! I natt sendte IQ meg ned linjen sammen med Nissemors niste. Nistesekken landet først. Dere har sett hvordan det gikk. Linjen går fra Snøfall til stua deres, med Snøfall TV og video fra Julius. Men den hakker. Noe knitrer på den, og det er ikke meg. Håkon, du fulgte den røde tråden min: bare det som hang på linjen, teller. Det som falt av i skredet, teller ikke. Kristian: se Julius, og heng opp tavla fra IQ. – Rampenissen",
-    "rampenissen_rampestrek": "Har kommet ned linjen sammen med Nissemors niste: et skred av klementiner fra TV-benken utover gulvet, revnede fraktesker fra Snøfall oppå, og bare nisseluen og én vinkende arm stikker opp av haugen, banan som pute, serviettfallskjerm bak. Den røde garntråden går fra TV-en over skredet til håndleddet hans. I skredet ligger den svarte ferdskriveren med IQs konvolutt (passordet), flyloggen, runetavla og operasjonsbrettet.",
+    "nissemail_tekst": "Hei Kristian, Håkon og Hanna! Jeg er tilbake! I natt sendte IQ meg ned linjen sammen med Hjerteruds niste. Nistesekken landet først. Dere har sett hvordan det gikk. Linjen går fra Snøfall til stua deres, med Snøfall TV og video fra Julius. Men den hakker. Noe knitrer på den, og det er ikke meg. Håkon, du fulgte den røde tråden min: bare det som hang på linjen, teller. Det som falt av i skredet, teller ikke. Kristian: se Julius, og heng opp tavla fra IQ. – Rampenissen",
+    "rampenissen_rampestrek": "Har kommet ned linjen sammen med Hjerteruds niste: et skred av klementiner fra TV-benken utover gulvet, revnede fraktesker fra Snøfall oppå, og bare nisseluen og én vinkende arm stikker opp av haugen, banan som pute, serviettfallskjerm bak. Den røde garntråden går fra TV-en over skredet til håndleddet hans. I skredet ligger den svarte ferdskriveren med IQs konvolutt (passordet), flyloggen, runetavla og operasjonsbrettet.",
     "fysisk_hint": "Rød garntråd fra TV-en («LINJE 90,0») ned skråningen og langs klementinelva til Rampenissens håndledd (scene: «Dag 1: byggeplan» i `gaater-2026.md`). Seks A7-kort med klesklyper, talt fra TV-en: ✱, **I**, ✱, **N**, ✱, ✱, tegn i hjørnet, prikker 1–6 bak. To løse kort **E** og **T** uten klype blant klementinene (blindspor). Runetavla (`runetavle.pdf`) i ferdskriveren sammen med IQs konvolutt. Løsning: Håkon tar kortene av tråden i rekkefølge, de løse legges bort, Kristian ser `_ I _ N _ _` og hører Julius (ordet radioen leter etter når den skurrer). Kode SIGNAL. Etterpå: skriv ordet på kortene og før tegnene for S, I, G, N, A, L, E, T inn på tavla. Hanna, hvis hun vil: tar kortene av mens Håkon holder tråden.",
     "materialer_nødvendig": [
       "rødt garn",
@@ -85,7 +85,7 @@
       "symbolColor": "green",
       "description": "Grønt hjerte funnet i vinduskarmen på badet"
     },
-    "julius_ps": "Tannkrem på speilet. Hele tuben. Nissemor spør om dere har mer. Orakelet så glimtet på 85,0 samtidig som dere; vi er tre som har sett det nå. Pil sier grønt er håpets farge; derfor er hjertet grønt."
+    "julius_ps": "Tannkrem på speilet. Hele tuben. Hjerterud spør om dere har mer. Orakelet så glimtet på 85,0 samtidig som dere; vi er tre som har sett det nå. Pil sier grønt er håpets farge; derfor er hjertet grønt."
   },
   {
     "dag": 4,
@@ -172,6 +172,6 @@
       "symbolColor": "red",
       "description": "Rødt hjerte funnet ved papprullen i gangen"
     },
-    "julius_ps": "Snøengler i mel. På kjøkkenbordet. Nissemor sier det er sløsing, men hun smilte da hun sa det. Lysene rundt antennen brenner til 20. desember; IQ byttet batterier to ganger. Rødt hjerte er varme, sier Pil; derfor er dagens kort rødt."
+    "julius_ps": "Snøengler i mel. På kjøkkenbordet. Hjerterud sier det er sløsing, men hun smilte da hun sa det. Lysene rundt antennen brenner til 20. desember; IQ byttet batterier to ganger. Rødt hjerte er varme, sier Pil; derfor er dagens kort rødt."
   }
 ]

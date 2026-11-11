@@ -23,7 +23,7 @@
       "id": "spokelseskoden",
       "phase": 7
     },
-    "julius_ps": "Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Nissemor ringte. Hun sier han så ut som en liten skiltstolpe."
+    "julius_ps": "Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Hjerterud ringte. Hun sier han så ut som en liten skiltstolpe."
   },
   {
     "dag": 8,
@@ -49,7 +49,7 @@
       "id": "spokelseskoden",
       "phase": 8
     },
-    "julius_ps": "Et tårn av frokostblanding med skilt. Jeg spurte Nissemor hva «sigma» betyr. Hun sa «spør Kristian». IQ sov på loddebordet i natt med plata som pute; han sier den er ferdig i morgen tidlig."
+    "julius_ps": "Et tårn av frokostblanding med skilt. Jeg spurte Hjerterud hva «sigma» betyr. Hun sa «spør Kristian». IQ sov på loddebordet i natt med plata som pute; han sier den er ferdig i morgen tidlig."
   },
   {
     "dag": 9,
@@ -147,7 +147,7 @@
     "dag": 12,
     "tittel": "Lydbølgene som Smelter Is",
     "skjerm_teaser": "Lørdag. Det er helt stille ute, nesten for stille.",
-    "nissemail_tekst": "Jeg hørte noe sukke i isen i natt. Ikke knurre. Sukke. Nissemor bare nynnet ved slusen, og da sprakk isen litt. Lydbølgen min endte ved fire ting på bordet. Bare tre av dem er Nissemors. Håkon: hvilke sang da du slo på dem, og hvilken var dypest? Rekkefølgen er lyden, og lappene følger den. Hanna, hvis du vil: det grønne kortet er ditt. Kristian: tre hjerter. Pil har sagt hva fargene betyr. – Rampenissen",
+    "nissemail_tekst": "Jeg hørte noe sukke i isen i natt. Ikke knurre. Sukke. Hjerterud bare nynnet ved slusen, og da sprakk isen litt. Lydbølgen min endte ved fire ting på bordet. Bare tre av dem er Hjerteruds. Håkon: hvilke sang da du slo på dem, og hvilken var dypest? Rekkefølgen er lyden, og lappene følger den. Hanna, hvis du vil: det grønne kortet er ditt. Kristian: tre hjerter. Pil har sagt hva fargene betyr. – Rampenissen",
     "rampenissen_rampestrek": "Har rullet ut 1,5–2 m dorull som «lydbølge» bortover kjøkkenet og ligger utslått i enden ved tre glass.",
     "fysisk_hint": "Tre like glass med 2, 5 og 9 cm vann og ett keramikkrus med litt vann, i tilfeldig rekkefølge, teskje ved. Kortet `dag12-frostlapp-tredelt.pdf` klippet i fire, teipet nederst på utsiden med forsiden inn: dypeste glass `_ E`, midterste `_ O`, lyseste `_ _`, kruset `_ A` (blindspor: det gir dunk, ikke tone; Julius sier «tre toner»). Grønt sol-kort mot midtglasset. Løsning: Håkon slår på alle, legger bort kruset, sorterer glassene fra dypest til lysest, bitene i samme rekkefølge: `_ E _ O _ _`. Julius: det tonene lager når de kommer etter hverandre. Kode MELODI. Så NisseKrypto 1: «varmt, håper, alene» = rødt (PS dag 6), grønt (PS dag 3), blått (PS dag 9, eller ved utelukkelse) → merket Varmebærer. Hører de ikke forskjell: mest vann = dypest. Prikker 1–3 bak de ekte bitene. Hanna, hvis hun vil: slår på glassene og sier hvilken som ikke synger. Lapp fra Rampenissen ved glassene (håndskrevet): «Slå forsiktig på hver av dem med skjeen. Lappene sitter nederst, utenpå. – R»",
     "materialer_nødvendig": [
@@ -183,6 +183,6 @@
       "rewardText": "DEKRYPTERT. Orakelets logg fra slusen ligger i DEKRYPTERT/frosne-koder.txt. Les den sammen.",
       "unlocksFiles": ["frosne-koder.txt"]
     },
-    "julius_ps": "Jeg sa til Rampenissen at han innbilte seg det. Jeg tok feil. Les det Orakelet skrev fra slusen, sammen. Og dorullen: fra badet til kjøkkenet, hele rullen. Nissemor spør om dere har mer av det også."
+    "julius_ps": "Jeg sa til Rampenissen at han innbilte seg det. Jeg tok feil. Les det Orakelet skrev fra slusen, sammen. Og dorullen: fra badet til kjøkkenet, hele rullen. Hjerterud spør om dere har mer av det også."
   }
 ]

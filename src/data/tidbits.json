@@ -13,7 +13,7 @@
       },
       {
         "fraDag": 5,
-        "tekst": "Psst. Æ har spist opp alle pepperkakan. Ikkje si det til Nissemor."
+        "tekst": "Psst. Æ har spist opp alle pepperkakan. Ikkje si det til Hjerterud."
       },
       {
         "fraDag": 8,
@@ -82,8 +82,8 @@
       },
       {
         "fraDag": 1,
-        "ord": ["NISSEMOR"],
-        "tekst": "Nissemor sier: Har du spist? Spis først. Så kan du kode."
+        "ord": ["HJERTERUD"],
+        "tekst": "Hjerterud sier: Har du spist? Spis først. Så kan du kode."
       },
       {
         "fraDag": 1,
@@ -178,7 +178,7 @@
       { "fraDag": 6, "tekst": "Pil sier: Jeg trodde også det! Så nei." },
       {
         "fraDag": 7,
-        "tekst": "Nissemor sier: Pust. Prøv igjen. Spis en bolle først."
+        "tekst": "Hjerterud sier: Pust. Prøv igjen. Spis en bolle først."
       },
       {
         "fraDag": 8,
@@ -221,7 +221,7 @@
     {
       "fraDag": 6,
       "frekvens": 83.5,
-      "tekst": "Nissemor leser kveldshistorie for noen som allerede sover. Hun leser ferdig likevel.",
+      "tekst": "Hjerterud leser kveldshistorie for noen som allerede sover. Hun leser ferdig likevel.",
       "bilde": "feed/landsby-rolig.jpg"
     },
     {
@@ -288,7 +288,7 @@
     },
     {
       "fraDag": 14,
-      "fra": "NISSEMORS KJØKKEN",
+      "fra": "HJERTERUDS KJØKKEN",
       "emne": "Oppskrift: Boller uten bolle",
       "tekst": "Steg 1: Ta fram en bolle. Steg 2: Rampenissen har tatt bollen. Steg 3: Lag grøt i stedet."
     },
@@ -302,7 +302,7 @@
       "fraDag": 18,
       "fra": "SNØFALL SLEDEPARKERING",
       "emne": "Bot: feilparkert slede",
-      "tekst": "Sleden sto på taket. Taket er ikke parkering. Gebyr: én klem. Betales til Nissemor."
+      "tekst": "Sleden sto på taket. Taket er ikke parkering. Gebyr: én klem. Betales til Hjerterud."
     },
     {
       "fraDag": 19,
@@ -377,7 +377,7 @@
     {
       "fraDag": 13,
       "dag": 13,
-      "tekst": "Snøfall-fakta: Lussekattene til Nissemor har aldri blitt brent. De tør ikke."
+      "tekst": "Snøfall-fakta: Lussekattene til Hjerterud har aldri blitt brent. De tør ikke."
     },
     {
       "fraDag": 14,
@@ -473,7 +473,7 @@
     },
     {
       "fraDag": 22,
-      "navn": "BOLLER NISSEMOR HAR BAKT",
+      "navn": "BOLLER HJERTERUD HAR BAKT",
       "verdi": "nok. Alltid nok."
     }
   ],
@@ -520,7 +520,7 @@
         "fraDag": 10,
         "navn": "snackkart_HEMMELIG.txt",
         "passord": "TØFFEL",
-        "tekst": "RAMPENISSENS SNACKKART\n(topphemmelig, ikke vis til Nissemor)\n\nX1: Bak kakeboksen. Tom. Det var meg.\nX2: Under sofaputen, venstre side. Tre pepperkaker. Nå to.\nX3: Inne i en sokk i vaskekurven. Ikke spør.\nX4: Garnkurven på loftet i Snøfall. Fra i fjor. Ikke spis.\n\nReserve: Nissemors kjøkken. Alltid åpent. Alltid nok."
+        "tekst": "RAMPENISSENS SNACKKART\n(topphemmelig, ikke vis til Hjerterud)\n\nX1: Bak kakeboksen. Tom. Det var meg.\nX2: Under sofaputen, venstre side. Tre pepperkaker. Nå to.\nX3: Inne i en sokk i vaskekurven. Ikke spør.\nX4: Garnkurven på loftet i Snøfall. Fra i fjor. Ikke spis.\n\nReserve: Hjerteruds kjøkken. Alltid åpent. Alltid nok."
       }
     ],
     "feilPassord": [

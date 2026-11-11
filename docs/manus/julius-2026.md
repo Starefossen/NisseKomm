@@ -34,7 +34,7 @@ Kulde-nivå 1. Svak knitring i lyden hele klippet, lett snø i bildet. Rommet er
    - Varighet: 14 s (24 ord)
    - Handling: Banker to ganger på mikrofonen med venstre pekefinger, lytter, så lyser han opp.
    - Kulde: Knitring i lyden, et kort hopp i bildet idet han sier «åpen».
-2. **Replikk:** «Hele Snøfall har ventet på dette. I natt sendte IQ forsyninger ned linjen. Mest se-vitamin, sier Nissemor.»
+2. **Replikk:** «Hele Snøfall har ventet på dette. I natt sendte IQ forsyninger ned linjen. Mest se-vitamin, sier Hjerterud.»
    - Varighet: 11 s (17 ord)
    - Handling: Lener seg bakover, ser mot vinduet og landsbyen, smiler.
    - Kulde: Svak knitring.
@@ -42,7 +42,7 @@ Kulde-nivå 1. Svak knitring i lyden hele klippet, lett snø i bildet. Rommet er
    - Varighet: 6 s (8 ord)
    - Handling: Lener seg fram mot mikrofonen, sier det lavt og varmt.
    - Kulde: Ingen.
-3. **Replikk:** «Advent betyr ankomst. Noen er på vei. Derfor teller vi dagene i stedet for å hoppe rett til julaften. Ventingen er halve gleden, sier Nissemor.»
+3. **Replikk:** «Advent betyr ankomst. Noen er på vei. Derfor teller vi dagene i stedet for å hoppe rett til julaften. Ventingen er halve gleden, sier Hjerterud.»
    - Varighet: 15 s (25 ord)
    - Handling: Blar i den store boka med venstre hånd, legger den flat på siden.
    - Kulde: Svak knitring.
@@ -113,8 +113,8 @@ Kulde-nivå 1 med ett kort blått blaff i bildet i segment 3 (første spor av gr
 
 Kulde-nivå 1. Svak knitring, lett snø.
 
-1. **Replikk:** «Goooooood morgen, Snøfall! Ja, nå skal vi se… hvor la jeg lappen? Under mikrofonen. Fjerde desember. Barbro-dagen. Nissemor har skrevet den opp med rød penn.»
-   - Varighet: 15 s (25 ord)
+1. **Replikk:** «Goooooood morgen, Snøfall! Ja, nå skal vi se… hvor la jeg lappen? Under mikrofonen. Fjerde desember. Barbro-dagen. Hjerterud skrev den opp for meg med rød penn.»
+   - Varighet: 15 s (26 ord)
    - Handling: Roter i brevbunken med venstre hånd, løfter så mikrofonen og finner lappen under den, holder den langt fra øynene.
    - Kulde: Svak knitring.
 2. **Replikk:** «Her står det mer med rød penn: Julius, husk votter. Julius, ikke spis snø. Håkon, hun har skrevet opp deg også: husk lua.»
@@ -142,7 +142,7 @@ Kulde-nivå 1. Svak knitring.
    - Varighet: 15 s (25 ord)
    - Handling: Legger venstre hånd rundt trekoppen på bordet uten å løfte den, puster synlig ut.
    - Kulde: Svak knitring.
-2. **Replikk:** «Rapport fra Rampenissen: «Snøballkrig i stua. Med marshmallows. Én bamse såra.» Såret! Med plaster på. Nissemor sier det er sløsing. Jeg sier det er trening.»
+2. **Replikk:** «Rapport fra Rampenissen: «Snøballkrig i stua. Med marshmallows. Én bamse såra.» Såret! Med plaster på. Hjerterud sier det er sløsing. Jeg sier det er trening.»
    - Varighet: 15 s (25 ord)
    - Handling: Tar opp et ark fra brevbunken med venstre hånd, leser, og ler.
    - Kulde: Svak knitring.
@@ -163,11 +163,11 @@ Kulde-nivå 1. Svak knitring.
 
 Kulde-nivå 1. Svak knitring.
 
-1. **Replikk:** «Gooood morgen, Snøfall, og god andre advent! To lys i kransen, og Nikolaus-dagen, den sjette desember. Nissemor tente dem før jeg våknet. Hun vinner hver søndag.»
+1. **Replikk:** «Gooood morgen, Snøfall, og god andre advent! To lys i kransen, og Nikolaus-dagen, den sjette desember. Hjerterud tente sine før jeg våknet. Hun vinner hver søndag.»
    - Varighet: 15 s (26 ord)
    - Handling: Holder opp to fingre på venstre hånd, så lar han hånden falle og ler av seg selv.
    - Kulde: Svak knitring.
-2. **Replikk:** «Rampenissen rapporterer: «Æ har laga snøengla på kjøkkenet. Det va ikkje snø.» Det var mel. Nissemor sukket. Jeg lo så jeg måtte holde meg fast.»
+2. **Replikk:** «Rampenissen rapporterer: «Æ har laga snøengla på kjøkkenet. Det va ikkje snø.» Det var mel. Hjerterud sukket. Jeg lo så jeg måtte holde meg fast.»
    - Varighet: 15 s (25 ord)
    - Handling: Tar opp et ark fra brevbunken med venstre hånd, leser, og ler høyt.
    - Kulde: Svak knitring.
@@ -200,7 +200,7 @@ Kulde-nivå 2. Første dag med rim på innsiden av vinduet og langs bordkanten, 
    - Varighet: 15 s (26 ord)
    - Handling: Lener seg inn mot mikrofonen, stopper opp, ser forvirret på den, så løfter han et lite kort fra brevbunken med venstre hånd og peker i hjørnet av det.
    - Kulde: Bildet fryser helt i 1–2 s etter «kaller seg», lyden faller bort, så kommer begge tilbake.
-4. **Replikk:** «Navnet er det motsatte av det Nissemor har i ovnen akkurat nå. Ikke bollene. Det som slår mot ansiktet når hun åpner ovnsdøra.»
+4. **Replikk:** «Navnet er det motsatte av det Hjerterud har i ovnen akkurat nå. Ikke bollene. Det som slår mot ansiktet når hun åpner ovnsdøra.»
    - Varighet: 14 s (23 ord)
    - Handling: Vifter venstre hånd foran ansiktet som fra ovnsvarme, smiler.
    - Kulde: Synlig pust, klikk.
@@ -246,7 +246,7 @@ Kulde-nivå 1. Rim, synlig pust, svak knitring. Morgensangen, andre forsøk, og 
    - Varighet: 15 s (25 ord)
    - Handling: Sprer fingrene på venstre hånd og holder dem opp mot lampelyset.
    - Kulde: Rim på vinduet glitrer når han løfter hånden.
-3. **Replikk:** «Nissemor klappet for sangen. Én gang. Men i natt la Kulde falske krystaller inn i radaren vår, så Orakelet mistet tellingen.»
+3. **Replikk:** «Hjerterud klappet for sangen. Én gang. Men i natt la Kulde falske krystaller inn i radaren vår, så Orakelet mistet tellingen.»
    - Varighet: 13 s (21 ord)
    - Handling: Bukker lett mot døren og ler, så legger han venstre hånd flatt på boka og blir alvorlig.
    - Kulde: Knitring, kort hopp i bildet.
@@ -292,7 +292,7 @@ Kulde-nivå 2 (senket fra 3, intensitetskurven). Kraftig knitring, bildet hopper
    - Varighet: 15 s (26 ord)
    - Handling: Banker på mikrofonen med venstre pekefinger, rister den lett i høyre hånd.
    - Kulde: Knitring, lyden faller ut på «ikke mye».
-2. **Replikk:** «Rampenissen rapporterer: «Æ har pakka mæ inn i folie. Som en bakt potet.» En potet! Nissemor spurte om han var ferdigstekt. Jeg lo i ti minutter.»
+2. **Replikk:** «Rampenissen rapporterer: «Æ har pakka mæ inn i folie. Som en bakt potet.» En potet! Hjerterud spurte om han var ferdigstekt. Jeg lo i ti minutter.»
    - Varighet: 15 s (26 ord)
    - Handling: Tar opp et ark fra brevbunken med venstre hånd, leser, og ler lavt.
    - Kulde: Bildet hopper to ganger.
@@ -313,19 +313,19 @@ Kulde-nivå 2 (senket fra 3, intensitetskurven). Kraftig knitring, bildet hopper
 
 Kulde-nivå 2. Rim, synlig pust, bildet fryser 1–2 s i segment 3.
 
-1. **Replikk:** «Goooood morgen, Snøfall! Jeg skal fortelle dere noe i dag som jeg ikke trodde på i går. Det skjer ikke ofte, spør Nissemor.»
+1. **Replikk:** «Goooood morgen, Snøfall! Jeg skal fortelle dere noe i dag som jeg ikke trodde på i går. Det skjer ikke ofte, spør Hjerterud.»
    - Varighet: 14 s (23 ord)
    - Handling: Sitter rolig, legger venstre hånd på bordet.
    - Kulde: Synlig pust.
-2. **Replikk:** «Rapport fra Rampenissen: «Æ har laga ei lydbølge. Av dorull. Heile kjøkkenet.» En hel rull, folkens. Jeg lo så trekoppen hoppet. Nissemor lo ikke.»
+2. **Replikk:** «Rapport fra Rampenissen: «Æ har laga ei lydbølge. Av dorull. Heile kjøkkenet.» En hel rull, folkens. Jeg lo så trekoppen hoppet. Hjerterud lo ikke.»
    - Varighet: 14 s (24 ord)
    - Handling: Tar opp et ark fra brevbunken med venstre hånd, leser, og ler.
    - Kulde: Svak knitring.
-3. **Replikk:** «I natt gikk Nissemor ned til slusen. Hun nynnet. Isen sprakk. Noe inni svarte. Rampenissen hørte det først. Jeg trodde ham ikke. Én null til ham.»
+3. **Replikk:** «I natt gikk Hjerterud ned til slusen. Hun nynnet. Isen sprakk. Noe inni svarte. Rampenissen hørte det først. Jeg trodde ham ikke. Én null til ham.»
    - Varighet: 15 s (26 ord)
    - Handling: Ser ned, stryker seg over skjegget med venstre hånd, litt flau, så ler han.
    - Kulde: Bildet fryser 1–2 s på «sprakk».
-4. **Replikk:** «Nå kommer det viktigste, og det er til deg, Håkon. Nissemor nynnet tre toner ved slusen, den dypeste først. Ingen ord.»
+4. **Replikk:** «Nå kommer det viktigste, og det er til deg, Håkon. Hjerterud nynnet tre toner ved slusen, den dypeste først. Ingen ord.»
    - Varighet: 13 s (21 ord)
    - Handling: Holder venstre hånd lavt, så litt høyere, så høyest, som tre trappetrinn.
    - Kulde: Synlig pust.
@@ -338,11 +338,11 @@ Kulde-nivå 2. Rim, synlig pust, bildet fryser 1–2 s i segment 3.
 
 Kulde-nivå 1. Rim, synlig pust, svak knitring.
 
-1. **Replikk:** «Gooood Lucia-morgen, Snøfall! Tredje lys i dag, og det trettende i måneden. To ting på én dag, favorittdagen min. Nissemor har bakt siden fire.»
+1. **Replikk:** «Gooood Lucia-morgen, Snøfall! Tredje lys i dag, og det trettende i måneden. To ting på én dag, favorittdagen min. Hjerterud har bakt siden fire.»
    - Varighet: 14 s (24 ord)
    - Handling: Holder opp tre fingre på venstre hånd, så snuser han i luften og smiler.
    - Kulde: Synlig pust.
-2. **Replikk:** «Rapport fra Rampenissen: «Æ har spist elleve lussekatta. Æ e død no. Kosedyra sørge.» Død! Av boller. Jeg har vært nær selv. Nissemor teller mine.»
+2. **Replikk:** «Rapport fra Rampenissen: «Æ har spist elleve lussekatta. Æ e død no. Kosedyra sørge.» Død! Av boller. Jeg har vært nær selv. Hjerterud teller mine.»
    - Varighet: 15 s (25 ord)
    - Handling: Tar opp et ark fra brevbunken med venstre hånd, leser, og ler rungende.
    - Kulde: Svak knitring.
@@ -350,11 +350,11 @@ Kulde-nivå 1. Rim, synlig pust, svak knitring.
    - Varighet: 15 s (26 ord)
    - Handling: Blir stille, ser mot vinduet, snur seg sakte tilbake.
    - Kulde: Rimen på vinduet vokser litt mens han snakker.
-4. **Replikk:** «Og så det Nissemor ikke vil jeg skal si. Det gule i bollene er krydderet fra en krokus. Tre tråder per blomst, plukket for hånd.»
+4. **Replikk:** «Og så det Hjerterud ikke vil jeg skal si. Det gule i bollene er krydderet fra en krokus. Tre tråder per blomst, plukket for hånd.»
    - Varighet: 15 s (25 ord)
    - Handling: Ser seg over skulderen mot døren, senker stemmen, gnir tommel mot pekefinger på venstre hånd.
    - Kulde: Synlig pust.
-5. **Replikk:** «Derfor koster det mer enn gull, og derfor låser Nissemor det inn. God tredje advent, dere tre. Ha en riktig fin dag!»
+5. **Replikk:** «Derfor koster det mer enn gull, og derfor låser Hjerterud det inn. God tredje advent, dere tre. Ha en riktig fin dag!»
    - Varighet: 13 s (22 ord)
    - Handling: Later som han vrir om en nøkkel med venstre hånd, smiler.
    - Kulde: Synlig pust, klikk.
@@ -400,7 +400,7 @@ Kulde-nivå 1. Lampen flakker svakt, ett juletrelys slukner. Julius er stillere 
    - Varighet: 15 s (25 ord)
    - Handling: Lar venstre hånd ligge stille på boka, ser lenge ned på den.
    - Kulde: Ett juletrelys slukner på «alene».
-4. **Replikk:** «Nissemor prøvde å varme opp IQ med det hun lager når sukker blir brunt og varmt i gryta, og som stivner til gull når det kjølner.»
+4. **Replikk:** «Hjerterud prøvde å varme opp IQ med det hun lager når sukker blir brunt og varmt i gryta, og som stivner til gull når det kjølner.»
    - Varighet: 15 s (26 ord)
    - Handling: Rører i en usynlig gryte med venstre hånd, så lar han hånden falle.
    - Kulde: Lampen flakker, klikk.
@@ -467,7 +467,7 @@ Kulde-nivå 2. Lampen flakker, to juletrelys slukner, bildet fryser 1–2 s i se
    - Varighet: 15 s (25 ord)
    - Handling: Rister på hele overkroppen med venstre hånd i været, ler, ser mot døren og rister på hodet.
    - Kulde: Lampen flakker.
-2. **Replikk:** «Trixter har hjelm på ved frokosten. Ikke på grunn av sleden. På grunn av Rampenissen. Kristian, spiser du frokost med hjelm? Jeg prøvde. Nissemor lo.»
+2. **Replikk:** «Trixter har hjelm på ved frokosten. Ikke på grunn av sleden. På grunn av Rampenissen. Kristian, spiser du frokost med hjelm? Jeg prøvde. Hjerterud lo.»
    - Varighet: 15 s (25 ord)
    - Handling: Banker seg lett i hodet med venstre hånd, ler.
    - Kulde: Svak knitring.
@@ -513,7 +513,7 @@ Kulde-nivå 0. Helt rent bilde og ren lyd for første gang siden dag 1. Barna sk
 
 Kulde-nivå 2. Bildet flimrer oftere enn før, juletrelysene slukner ett og ett gjennom klippet. Brikken kommer i segment 3; varselet om i morgen og en rolig avskjed er siste segment (som i gåtedokumentet). Ingen tull i dag; stemmen er rolig og nær.
 
-1. **Replikk:** «God morgen, Snøfall. Fjerde lys. Det første er håp. Det andre fred. Det tredje glede. Det fjerde kjærlighet. Nissemor sier man ikke kan hoppe over noen.»
+1. **Replikk:** «God morgen, Snøfall. Fjerde lys. Det første er håp. Det andre fred. Det tredje glede. Det fjerde kjærlighet. Hjerterud sier man ikke kan hoppe over noen.»
    - Varighet: 15 s (26 ord)
    - Handling: Teller fire lys med fingrene på venstre hånd, ett om gangen, langsomt.
    - Kulde: Bildet flimrer, ett juletrelys slukner.
@@ -637,7 +637,7 @@ Kulde-nivå 0. Alt virker. Rommet er varmere enn noen gang: alle juletrelys tent
    - Varighet: 15 s (25 ord)
    - Handling: Holder opp tre fingre på venstre hånd og lukker dem langsomt til en knyttneve.
    - Kulde: Ingen.
-6. **Replikk:** «Og Nissemor setter alltid navnet på høytiden foran ordet, slik hun gjør med grøten og treet. God jul, dere tre. Ha en riktig fin julaften!»
+6. **Replikk:** «Og Hjerterud setter alltid navnet på høytiden foran ordet, slik hun gjør med grøten og treet. God jul, dere tre. Ha en riktig fin julaften!»
    - Varighet: 15 s (25 ord)
    - Handling: Lener seg tilbake, lykkelig, løfter trekoppen med venstre hånd som en skål.
    - Kulde: Ingen. Ingen klikk; bildet toner ut i gull.
@@ -653,7 +653,7 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 | 1   | SIGNAL       | 139 | 70     | 84      | 6     | 25      | 0 % (bruk, ingen bokstaver)        | Åpneren: +1 velkomstsegment (godkjent); 85,0-hale i appen, ikke i filen |
 | 2   | 48           | 114 | 57     | 68      | 5     | 25      | regel, ingen tall                  | Morgensangen første gang (skjærer seg)                                  |
 | 3   | PRISME       | 122 | 61     | 72      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                         |
-| 4   | KOMPASS      | 122 | 61     | 73      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5), video regenereres                 |
+| 4   | KOMPASS      | 123 | 62     | 73      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5), video regenereres                 |
 | 5   | ULRIKEN      | 117 | 58     | 70      | 5     | 26      | nøkkel som oppslag (dag 2)         | Segm. 4 ny: «like mange som sikringer onsdag»                           |
 | 6   | LYKT         | 119 | 60     | 71      | 5     | 26      | 0 % (velger figur)                 |                                                                         |
 | 7   | KULDE        | 122 | 61     | 72      | 5     | 26      | 0 % + peker til tavla              | Bildet fryser der navnet skulle vært sagt; segm. 3 og 5 nye             |
@@ -675,4 +675,4 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodelle
 | 23  | STJERNEKLART | 121 | 60     | 72      | 5     | 25      | 0 %                                | Låst brikke delt over segm. 3–4                                         |
 | 24  | JULEMAGI     | 144 | 72     | 86      | 6     | 26      | 0 %                                | Låst brikke (50 ord) delt over segm. 4–6; morgensangen går hele veien   |
 
-Sum: 2 918 ord, snitt 122 per dag (cirka 60 s tale, 70 s med klippause). Ingen segmenter over 26 ord; alle klipp 13–15 s.
+Sum: 2 919 ord, snitt 122 per dag (cirka 60 s tale, 70 s med klippause). Ingen segmenter over 26 ord; alle klipp 13–15 s.

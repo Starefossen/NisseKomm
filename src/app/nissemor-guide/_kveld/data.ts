@@ -39,7 +39,7 @@ export const DAGER = [
       "Dag 1-scenen, se «Dag 1: byggeplan»: fredag ferdskriver og utskrifter (50 min), lørdag klementiner, etiketter og tråd (25 min), søndag kveld plassering (25–30 min): skred, tråd med seks kort, to løse kort i elva, ferdskriver med konvolutt, logg, runetavle og brett",
     strek: {
       tekst:
-        "Har kommet ned linjen sammen med Nissemors proviant: et skred av klementiner fra TV-benken utover gulvet, to revnede fraktesker fra Snøfall oppå, og bare nisseluen og én vinkende arm stikker opp av haugen, banan som pute, serviettfallskjerm bak. Den røde garntråden går fra TV-en over skredet til håndleddet hans. I skredet ligger en svart ferdskriver med IQs konvolutt (passordet), flyloggen, runetavla og operasjonsbrettet. (Scene og bygging: «Dag 1: byggeplan» i gaater-2026.md.)",
+        "Har kommet ned linjen sammen med Hjerteruds proviant: et skred av klementiner fra TV-benken utover gulvet, to revnede fraktesker fra Snøfall oppå, og bare nisseluen og én vinkende arm stikker opp av haugen, banan som pute, serviettfallskjerm bak. Den røde garntråden går fra TV-en over skredet til håndleddet hans. I skredet ligger en svart ferdskriver med IQs konvolutt (passordet), flyloggen, runetavla og operasjonsbrettet. (Scene og bygging: «Dag 1: byggeplan» i gaater-2026.md.)",
       type: "uventet",
       materialer:
         "3 esker klementiner, 3–4 tomme esker, laken, skoeske (svart), banan, 2 servietter, rødt garn",
@@ -235,7 +235,7 @@ export const DAGER = [
     brikkeH:
       "frostkortet (fem ruter: ✱, ✱, tegn L, ✱, tegn E; ✱-rutene har tegn i hjørnet som vanlig) i liten plastpose, fryst flatt i et plastbeger med 1 cm vann, ved Rampenissens lue i fryseren. Lapp fra Rampenissen (teipet på begeret i fryseren, håndskrevet): «Tin meg! Lunkent vann, og en voksen. – R»",
     brikkeS:
-      "Julius: «Navnet er det motsatte av det Nissemor har i ovnen akkurat nå. Ikke bollene. Det som slår mot ansiktet når hun åpner ovnsdøra.» Bildet fryser 1–2 sekunder der han ellers ville sagt navnet. I segment 3 sier han at Orakelet skrev navnet «med tegnene i hjørnet av kortene».",
+      "Julius: «Navnet er det motsatte av det Hjerterud har i ovnen akkurat nå. Ikke bollene. Det som slår mot ansiktet når hun åpner ovnsdøra.» Bildet fryser 1–2 sekunder der han ellers ville sagt navnet. I segment 3 sier han at Orakelet skrev navnet «med tegnene i hjørnet av kortene».",
     slikLoses: [
       "H9 finner begeret og tiner det under lunkent vann med en voksen (2–3 min).",
       "K12 ser to tegn uten bokstav, husker Julius og tavla, slår opp: L i rute 3, E i rute 5: _ _ L _ E.",
@@ -408,11 +408,11 @@ export const DAGER = [
       "12 (lø) – Lydbølgene som Smelter Is · {12} + grønn sol · M3 · krypto 1",
     kode: "{12}",
     mekanikk:
-      "sortere etter tonehøyde, som før. Nytt: fire beholdere, ikke tre: tre glass med vann og ett keramikkrus som gir dunk, ikke tone. Kruset bærer biten _ A. Julius sier «tre toner»; den som ikke klinger, er ikke Nissemors. Krypto 1 strammes også: hintet navngir ikke fargene lenger (se app-tekster A5); fargenes betydning står i PS dag 3, 6 og 9.",
+      "sortere etter tonehøyde, som før. Nytt: fire beholdere, ikke tre: tre glass med vann og ett keramikkrus som gir dunk, ikke tone. Kruset bærer biten _ A. Julius sier «tre toner»; den som ikke klinger, er ikke Hjerteruds. Krypto 1 strammes også: hintet navngir ikke fargene lenger (se app-tekster A5); fargenes betydning står i PS dag 3, 6 og 9.",
     brikkeH:
       "tre like glass med 2, 5 og 9 cm vann og ett krus med litt vann, i tilfeldig rekkefølge i enden av dorullen. Biter teipet nederst på utsiden med forsiden inn: dypeste glass _ E, midterste _ O, lyseste _ _, kruset _ A. Tegn ved E, O og A; ✱ på de tre glassbitene har tegn, kruset ikke. Teskje ved. Grønt sol-kort mot midtglasset. Lapp fra Rampenissen (ved glassene, håndskrevet): «Slå forsiktig på hver av dem med skjeen. Lappene sitter nederst, utenpå. – R»",
     brikkeS:
-      "Julius: «Nissemor nynnet tre toner ved slusen, den dypeste først. Ingen ord. Bare det tonene lager når de kommer etter hverandre. Isen kjente det igjen.» (Omskrevet: uten glassene kan det være sang, låt, rytme eller musikk; med _ E _ O _ _ er det {12}.)",
+      "Julius: «Hjerterud nynnet tre toner ved slusen, den dypeste først. Ingen ord. Bare det tonene lager når de kommer etter hverandre. Isen kjente det igjen.» (Omskrevet: uten glassene kan det være sang, låt, rytme eller musikk; med _ E _ O _ _ er det {12}.)",
     slikLoses: [
       "H9 slår på alle fire. Kruset synger ikke og legges bort.",
       "H9 sorterer glassene fra dypest til lysest, bitene i samme rekkefølge: _ E _ O _ _.",
@@ -448,7 +448,7 @@ export const DAGER = [
     brikkeH:
       "fire små zip-poser på servietten ved Rampenissen: kanel _ _ N _ _, gurkemeie _ _ R _ _ _ _ _ _, safran _ _ F _ _ _, nellik _ _ L _ _ _. Like kort, ingen navn. Tegn ved synlige bokstaver; ✱ på safrankortet har tegn, blindsporene ikke. Lussekatten ved.",
     brikkeS:
-      "Julius: «Det gule i bollene er krydderet fra en krokus. Tre tråder per blomst, plukket for hånd. Derfor koster det mer enn gull, og derfor låser Nissemor det inn.»",
+      "Julius: «Det gule i bollene er krydderet fra en krokus. Tre tråder per blomst, plukket for hånd. Derfor koster det mer enn gull, og derfor låser Hjerterud det inn.»",
     slikLoses: [
       "H9 åpner posene; to er gule.",
       "K12 hører «tråder» og ser at én gul pose har tråder, den andre pulver. Google er lov («krydder fra krokus»).",
@@ -512,11 +512,11 @@ export const DAGER = [
     tittel: "Fargesamlerens Notatbok · {15} + rød sol · M4",
     kode: "{15}",
     mekanikk:
-      "følg sporet til redskaper, som før. Nytt: sporet går mot fem redskaper, men to spor stopper underveis (blindspor til kjevle og øse, med ✱-kort under). Lappene under gryte, sleiv og visp har bare bokstav, ingen tall. Rutetallene står i Fargesamlerens notatbok (fil, åpner samme dag) som Nissemors margnotat: «Gryta på to. Rør med sleiva fem ganger. Vispen til sju.» Fil gir regel, hus gir bokstaver, Julius gir ordet.",
+      "følg sporet til redskaper, som før. Nytt: sporet går mot fem redskaper, men to spor stopper underveis (blindspor til kjevle og øse, med ✱-kort under). Lappene under gryte, sleiv og visp har bare bokstav, ingen tall. Rutetallene står i Fargesamlerens notatbok (fil, åpner samme dag) som Hjerteruds margnotat: «Gryta på to. Rør med sleiva fem ganger. Vispen til sju.» Fil gir regel, hus gir bokstaver, Julius gir ordet.",
     brikkeH:
       "fem redskaper på benken: gryte, sleiv, visp, kjevle, øse. Sporene er papirstrimler med trykte, sukkerfargede fotspor (fra PDF-en), lagt fra skålen mot alle fem; strimlene til kjevle og øse slutter halvveis. Ikke sukker på benken: tirsdag morgen er det ingen tid til vask. Rampenissen står ved siden av en liten skål med et par skjeer sirup (streken), ellers tørt. Under gryten A, under sleiva M, under vispen L (med tegn); under kjevle og øse ✱-kort uten tegn. Rutekort 1–8 og rødt sol-kort ved skålen. Sirupflasken og sukkeret ryddes bort. Lapp fra Rampenissen (ved sirupskålen, håndskrevet): «Følg fotsporene mine, og løft det de ender ved. – R»",
     brikkeS:
-      "Julius: «Nissemor prøvde å varme opp IQ med det hun lager når sukker blir brunt og varmt i gryta, og som stivner til gull når det kjølner. Han spiste ikke engang det.»",
+      "Julius: «Hjerterud prøvde å varme opp IQ med det hun lager når sukker blir brunt og varmt i gryta, og som stivner til gull når det kjølner. Han spiste ikke engang det.»",
     slikLoses: [
       "H9 følger sporene og løfter det de ender ved; to spor ender i ingenting.",
       "K12 har A, M, L uten plass. Notatboken åpner i NisseNet; margnotatet gir 2, 5, 7. _ A _ _ M _ L _.",
@@ -836,7 +836,7 @@ export const DAGER = [
     brikkeH:
       "pappesken med sløyfe ved konvolutten: perlen med lapp tegn U · 2, filteret tegn E · 4, båndbiten tegn G · 7. I gullkonvolutten: avskjedsbrevet, rutekort med åtte ruter og alltid de tre reservelappene (samme tegn og tall, «IQs kopi»). Krystallet under treet med runekortet.",
     brikkeS:
-      "Julius: «Dere har laget noe hele desember uten å vite det. Ikke koden, den tastet dere. Ikke varmen, den kom fra ovnen. Det trollmenn later som de har, og som dere faktisk har hatt: tre søsken som holder sammen i mørket. Og Nissemor setter alltid navnet på høytiden foran ordet, slik hun gjør med grøten og treet.»",
+      "Julius: «Dere har laget noe hele desember uten å vite det. Ikke koden, den tastet dere. Ikke varmen, den kom fra ovnen. Det trollmenn later som de har, og som dere faktisk har hatt: tre søsken som holder sammen i mørket. Og Hjerterud setter alltid navnet på høytiden foran ordet, slik hun gjør med grøten og treet.»",
     slikLoses: [
       "Kofferten åpnes; de tre tingene kjennes igjen.",
       "H9 leser avskjedsbrevet høyt og legger lappene i rutekortet; K12 slår opp tegnene: _ U _ E _ _ G _.",
@@ -847,7 +847,7 @@ export const DAGER = [
     oppsett: "4 min.",
     minutter: 4,
     materialer:
-      "liten pappeske (den tomme fraktesken fra dag 1), sløyfe, gullkonvolutt, perlen, filteret og båndbiten, krystallet, runekortet, og den siste klementinen fra Nissemors proviant ved siden av krystallet (uten lapp, så den ikke forveksles med merkelappene).",
+      "liten pappeske (den tomme fraktesken fra dag 1), sløyfe, gullkonvolutt, perlen, filteret og båndbiten, krystallet, runekortet, og den siste klementinen fra Hjerteruds proviant ved siden av krystallet (uten lapp, så den ikke forveksles med merkelappene).",
     utskrifterTekst:
       "dag24-suvenirlapper.pdf (1 side, tykt papir, 3 lapper med tegn, rutekort, 3 reservelapper), dag24-krystallkort.pdf (1 side, tykt papir) og diplomene «Snøfalls venn» (3 sider).",
     utskrifter: ["dag24-suvenirlapper", "dag24-krystallkort", "diplom"],

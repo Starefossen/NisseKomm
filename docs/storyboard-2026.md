@@ -107,9 +107,9 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 ### Dag 1 (ti) – Direktelinjen · SIGNAL · M1 Linjen
 
-**Morgen.** Strek (stor, åpneren): Rampenissen har kommet ned linjen sammen med Nissemors proviant. Fra TV-benken velter et skred av klementiner utover gulvet i en smal elv mot stuedøra, med revnede fraktesker «SNØFALL FRAKT · VITAMIN C TIL LANDÅS» på toppen. I enden stikker bare nisseluen og én vinkende arm opp av haugen; banan som pute, serviettfallskjerm bak. Halvveis nede i skredet ligger en svart ferdskriver med oransje striper, forseglet av IQ. Den røde garntråden går fra TV-en («LINJE 90,0») over skredet til håndleddet hans. Scene og bygging: «Dag 1: byggeplan» i `gaater-2026.md`. Radio: «Jeg er tilbake! Jeg sov i en garnkurv på loftet i Snøfall hele året. IQ sendte meg ned i natt. Noe knitrer på linjen, og det er ikke meg.» Bananen i haugen gjør at «noe gult og buet» stemmer. Stemning: glad, litt søvnig.
+**Morgen.** Strek (stor, åpneren): Rampenissen har kommet ned linjen sammen med Hjerteruds proviant. Fra TV-benken velter et skred av klementiner utover gulvet i en smal elv mot stuedøra, med revnede fraktesker «SNØFALL FRAKT · VITAMIN C TIL LANDÅS» på toppen. I enden stikker bare nisseluen og én vinkende arm opp av haugen; banan som pute, serviettfallskjerm bak. Halvveis nede i skredet ligger en svart ferdskriver med oransje striper, forseglet av IQ. Den røde garntråden går fra TV-en («LINJE 90,0») over skredet til håndleddet hans. Scene og bygging: «Dag 1: byggeplan» i `gaater-2026.md`. Radio: «Jeg er tilbake! Jeg sov i en garnkurv på loftet i Snøfall hele året. IQ sendte meg ned i natt. Noe knitrer på linjen, og det er ikke meg.» Bananen i haugen gjør at «noe gult og buet» stemmer. Stemning: glad, litt søvnig.
 
-**Innlogging.** Boot dag 1 (T14): strøm på, passordskjerm (A1), og etter riktig passord fra IQs konvolutt blir «KOBLER TIL SNØFALL…» til en innsøking: frekvenstall ruller 85,0 → 90,0 og låser, så kommer K1, K2, K4 og K3 inn én etter én med stillbilde og støy mellom, siste linje i gult «BÆREBØLGE 90,0: USTABIL». Så skrivebordet, og videoen åpner seg selv: «NY MELDING FRA JULIUS». Tema: advent betyr ankomst; hvorfor vi venter og teller dager i stedet for å hoppe rett til julaften. Velkomst: hele Snøfall har ventet; IQ sendte forsyninger ned linjen i natt («mest se-vitamin, sier Nissemor. Og én nisse»). I natt: IQ åpnet direktelinjen 90,0 MHz, men bærebølgen hakker; Orakelet hører noe under den. Brikke S: «Når linjen bærer, roper IQ ett ord fra verkstedet. Det er det ordet radioen deres leter etter når den skurrer, rett før stemmen kommer gjennom.» Kulde-nivå 1 (lett snø). Etter mikrofon-klikket legger appen på en 4 s hale (T14): bildet står, lampen flakker, snø stiger, HUD «LINJE 90,0 · BÆREBØLGE USTABIL», frekvensen sklir til 85,0 i ett sekund og tilbake til «90,0 · STABIL». Ingen stemme, ingen blåfarge; første spøkelsesbilde er fortsatt dag 3.
+**Innlogging.** Boot dag 1 (T14): strøm på, passordskjerm (A1), og etter riktig passord fra IQs konvolutt blir «KOBLER TIL SNØFALL…» til en innsøking: frekvenstall ruller 85,0 → 90,0 og låser, så kommer K1, K2, K4 og K3 inn én etter én med stillbilde og støy mellom, siste linje i gult «BÆREBØLGE 90,0: USTABIL». Så skrivebordet, og videoen åpner seg selv: «NY MELDING FRA JULIUS». Tema: advent betyr ankomst; hvorfor vi venter og teller dager i stedet for å hoppe rett til julaften. Velkomst: hele Snøfall har ventet; IQ sendte forsyninger ned linjen i natt («mest se-vitamin, sier Hjerterud. Og én nisse»). I natt: IQ åpnet direktelinjen 90,0 MHz, men bærebølgen hakker; Orakelet hører noe under den. Brikke S: «Når linjen bærer, roper IQ ett ord fra verkstedet. Det er det ordet radioen deres leter etter når den skurrer, rett før stemmen kommer gjennom.» Kulde-nivå 1 (lett snø). Etter mikrofon-klikket legger appen på en 4 s hale (T14): bildet står, lampen flakker, snø stiger, HUD «LINJE 90,0 · BÆREBØLGE USTABIL», frekvensen sklir til 85,0 i ett sekund og tilbake til «90,0 · STABIL». Ingen stemme, ingen blåfarge; første spøkelsesbilde er fortsatt dag 3.
 
 **Gåte.** Som i `gaater-2026.md` dag 1: seks A7-kort med klesklyper på tråden, talt fra TV-en ❄ I ❄ N ❄ ❄, tegn i hjørnet, prikker 1–6 bak; to løse kort E og T uten klype i klementinelva (blindspor: bare det som henger på linjen, teller). Håkon følger tråden fra TV-en til luen og tar av kortene i rekkefølge (H9), Kristian ser `_ I _ N _ _` og hører Julius (K12). Kode **SIGNAL**. I ferdskriveren: IQs konvolutt med passordet, flyloggen, runetavla (meta 1) og operasjonsbrettet. Hanna, hvis hun vil: graver fram Rampenissen og tar kortene av mens Håkon holder tråden.
 
@@ -117,7 +117,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Belønning.** PS fra Julius: kommenterer skredet og varsler kaffetrakteren (dag 2). Operasjonsbrettet henges opp med runetavla; første gullmerke i milepælsirkel 1. Appen og Snøfall TV er åpne.
 
-**Kontinuitet.** Setter opp: hakkingen (dag 3 blir et glimt, dag 7 et navn), 85,0 som et tall som rullet forbi. Klementinene er Nissemors forsyning mot mørket; at oransje er den varme siden, sies først dag 7 (PS) og dag 10 (det eneste i stua med farge). Fraktesken «SNØFALL FORRÅD» står ved TV-en til den er spist; den tomme esken er kofferten dag 24, og den siste klementinen ligger ved krystallet. Garnkurven som Rampenissen takker for dag 24.
+**Kontinuitet.** Setter opp: hakkingen (dag 3 blir et glimt, dag 7 et navn), 85,0 som et tall som rullet forbi. Klementinene er Hjerteruds forsyning mot mørket; at oransje er den varme siden, sies først dag 7 (PS) og dag 10 (det eneste i stua med farge). Fraktesken «SNØFALL FORRÅD» står ved TV-en til den er spist; den tomme esken er kofferten dag 24, og den siste klementinen ligger ved krystallet. Garnkurven som Rampenissen takker for dag 24.
 
 ### Dag 2 (on) – Sikringsboksen til IQ · 48 · jakt
 
@@ -193,7 +193,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Morgen.** Strek: fastfryst i fryserdøra, lua inne i fryseren, vottene stive. (Nikker til historien.) Radio: «Lua mi sitter fast i fryseren deres. Jeg prøvde å kjøle ned modemet, for Orakelet sa at noe varmt skurret. Det var feil. Det som skurrer er kaldt. Orakelet fant navnet i natt. Jeg sier det ikke på radio.» Skjerm-kort 06:00–08:30: «ORAKELET: ukjent signatur på 85,0 MHz».
 
-**Innlogging.** Tema: mørketid; hvorfor sola ikke står opp nord for polarsirkelen, og at kulde ikke er ondskap, bare fravær av varme. I natt: Orakelet fanget signaturen. Det har et navn. Frostgraden kan måles nå. Brikke S: «Navnet er det motsatte av det Nissemor har i ovnen akkurat nå. Ikke bollene. Det som kommer ut når hun åpner døra.» Kulde 2 (bildet fryser 1–2 s idet han sier navnet, så han sier det ikke).
+**Innlogging.** Tema: mørketid; hvorfor sola ikke står opp nord for polarsirkelen, og at kulde ikke er ondskap, bare fravær av varme. I natt: Orakelet fanget signaturen. Det har et navn. Frostgraden kan måles nå. Brikke S: «Navnet er det motsatte av det Hjerterud har i ovnen akkurat nå. Ikke bollene. Det som kommer ut når hun åpner døra.» Kulde 2 (bildet fryser 1–2 s idet han sier navnet, så han sier det ikke).
 
 **Gåte.** H: frostkortet ligger i en liten pose fryst flatt i et plastbeger med 1 cm vann i fryseren; Hanna holder glasset under varmt vann med en voksen til posen slipper (H5): varme smelter kulde, uten at noen sier det. Håkon tørker og leser (H9). S: motsatt av varme. Kristian: KULDE (K12). Kode **KULDE**.
 
@@ -213,7 +213,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Flater.** Mail: uke én, IQ lodder. K4 Kretskort-Kobler åpner som lek etter koden. NisseNet: `IQ-VERKSTED/magisk-sekk-test.txt` → ren feilrapport uten K-O-R-T. Frost 34 → 28.
 
-**Belønning.** Minispill. PS: Julius om Sigma-tårnet (han spør Nissemor hva sigma betyr).
+**Belønning.** Minispill. PS: Julius om Sigma-tårnet (han spør Hjerterud hva sigma betyr).
 
 **Kontinuitet.** Sikkerhetskortet er det Kulde bryter dag 10. Slang brukt (1 av 3).
 
@@ -261,9 +261,9 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 ### Dag 12 (lø) – Lydbølgene som Smelter Is · MELODI + grønn sol · M3 Sukket i isen · krypto 1
 
-**Morgen.** Strek (helg): 1,5–2 m dorull som «lydbølge» bortover kjøkkenet, ligger utslått ved tre glass. Radio: «Jeg hørte noe sukke i isen i natt. Ikke knurre. Sukke. Julius sier jeg innbilte meg det. Nissemor sa ingenting, hun bare nynnet. Antennen deres står rett igjen, forresten.»
+**Morgen.** Strek (helg): 1,5–2 m dorull som «lydbølge» bortover kjøkkenet, ligger utslått ved tre glass. Radio: «Jeg hørte noe sukke i isen i natt. Ikke knurre. Sukke. Julius sier jeg innbilte meg det. Hjerterud sa ingenting, hun bare nynnet. Antennen deres står rett igjen, forresten.»
 
-**Innlogging.** Tema: hvorfor vi synger i mørket (lore: det første julekoret i Snøfall var tre nisser som sang for å holde seg våkne på vakt). I natt: Nissemor nynnet uten ord ved slusen, og isen sprakk. Noe inni svarte. Brikke S: «Nissemor nynnet uten ord, og isen sprakk. Ikke en sang med tekst. Bare det som er igjen når ordene er borte.» Kulde 2.
+**Innlogging.** Tema: hvorfor vi synger i mørket (lore: det første julekoret i Snøfall var tre nisser som sang for å holde seg våkne på vakt). I natt: Hjerterud nynnet uten ord ved slusen, og isen sprakk. Noe inni svarte. Brikke S: «Hjerterud nynnet uten ord, og isen sprakk. Ikke en sang med tekst. Bare det som er igjen når ordene er borte.» Kulde 2.
 
 **Gåte.** H: de tre glassene har ulik mengde vann; Håkon slår på dem med teskje og hører tre toner (H9); under det midterste glasset ligger frostlappen `M _ L _ D _` (må løftes), grønn sol-kort ved siden av (Hanna skanner, H5). S: sang uten ord. Kristian: MELODI (K12). Kode **MELODI**.
 
@@ -271,19 +271,19 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Belønning.** Merke **Varmebærer**. Musikk. PS: «Jeg sa til Rampenissen at han innbilte seg det. Jeg tok feil.»
 
-**Kontinuitet.** M3: første gang Kulde er noe annet enn en fiende. Nissemors nynning kommer igjen dag 24.
+**Kontinuitet.** M3: første gang Kulde er noe annet enn en fiende. Hjerteruds nynning kommer igjen dag 24.
 
 ### Dag 13 (sø) – Luciadagens Gylne Krydder · SAFRAN · 3. advent
 
-**Morgen.** Strek: sin egen begravelse etter 11 lussekatter; serviett, blomst, kosedyr i sørgerekke, skilt «HER HVILER RAMPEN. HAN SPISTE 11.» Radio: «Nissemor bakte 500 boller. Jeg spiste 11. Jeg er død nå. Hilsen fra den andre siden. Kulde satt og så på lysene i verkstedet i natt. Bare så. Jeg vet ikke hva jeg skal mene om det.»
+**Morgen.** Strek: sin egen begravelse etter 11 lussekatter; serviett, blomst, kosedyr i sørgerekke, skilt «HER HVILER RAMPEN. HAN SPISTE 11.» Radio: «Hjerterud bakte 500 boller. Jeg spiste 11. Jeg er død nå. Hilsen fra den andre siden. Kulde satt og så på lysene i verkstedet i natt. Bare så. Jeg vet ikke hva jeg skal mene om det.»
 
-**Innlogging.** Tema: Lucia, hvem hun var, lys på hodet, hvorfor 13. desember, hva som er 3. søndag i advent. I natt: Kulde stirret på Lucia-lysene gjennom linjen uten å ta noe. Brikke S: «Det gule i bollene er krydderet fra en krokus. Tre tråder per blomst, plukket for hånd. Derfor koster det mer enn gull. Nissemor låser det inn.» Kulde 1.
+**Innlogging.** Tema: Lucia, hvem hun var, lys på hodet, hvorfor 13. desember, hva som er 3. søndag i advent. I natt: Kulde stirret på Lucia-lysene gjennom linjen uten å ta noe. Brikke S: «Det gule i bollene er krydderet fra en krokus. Tre tråder per blomst, plukket for hånd. Derfor koster det mer enn gull. Hjerterud låser det inn.» Kulde 1.
 
 **Gåte.** H: frostlapp `S _ F _ A _` på gravskiltet; ved «liket» ligger en liten pose med gule tråder (ekte safran eller gul tråd) og en lussekatt. Hanna lukter og ser fargen (H5). Håkon teller kosedyrene i sørgerekken (11, bare moro) (H9). S: krokus-krydder, dyrere enn gull. Kristian: SAFRAN (K12). Kode **SAFRAN**. Ordet er vanskelig for en 9-åring; skjelettet gjør det mulig for Kristian.
 
 **Flater.** Mail: Lucia, 500 boller, «Rampenissen er død». Snøfall TV: spøkelsesbilde dag 13 skrives om fra hån til lengsel: «Lysene deres. Jeg så dem. Jeg husker ikke når jeg så lys sist.» NisseNet: `lucia-tradisjon.txt` som lore; `lucia_lussekatt_hemmelig.txt` fjernes. Frost 44 → 36.
 
-**Belønning.** PS: Julius om begravelsen («Nissemor sendte blomster»).
+**Belønning.** PS: Julius om begravelsen («Hjerterud sendte blomster»).
 
 **Kontinuitet.** Kulde ser på lys = setter opp dag 21 («jeg ville bare se lyset deres»).
 
@@ -305,7 +305,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Morgen.** Strek: står ved siden av en liten skål sirup, fotspor av papirstrimler (tørt) over benken, sleiv i hånden. Radio: «Jeg prøvde å lage varme på kjøkkenet. Det ble klissete. IQ er stille i dag. Han fant en gammel bok i arkivet i natt og har ikke sagt et ord siden. Det har aldri skjedd før.»
 
-**Innlogging.** Tema: Fargesamleren og Snøfalls eldste arkiv (lore: Fargesamleren samlet de første iskrystallene og ba IQ bygge noe som kunne holde dem kalde for alltid). I natt: notatboken forteller at IQ bygde Vintervokteren, et program som skulle holde Krystallgrotten kald. Strømstøtet i fjor kuttet lyset der nede. Det er det som sender på 85,0. Brikke S: «Nissemor prøvde å varme opp IQ med det hun lager når sukker blir brunt og varmt i gryta. Han spiste ikke engang det.» Kulde 1, Julius er stillere enn vanlig.
+**Innlogging.** Tema: Fargesamleren og Snøfalls eldste arkiv (lore: Fargesamleren samlet de første iskrystallene og ba IQ bygge noe som kunne holde dem kalde for alltid). I natt: notatboken forteller at IQ bygde Vintervokteren, et program som skulle holde Krystallgrotten kald. Strømstøtet i fjor kuttet lyset der nede. Det er det som sender på 85,0. Brikke S: «Hjerterud prøvde å varme opp IQ med det hun lager når sukker blir brunt og varmt i gryta. Han spiste ikke engang det.» Kulde 1, Julius er stillere enn vanlig.
 
 **Gåte.** H: frostlapp `K _ R _ M _ L L` ved sirupskålen; Hanna smaker én fingertupp sirup og sier «søtt» (H5); Håkon følger fotsporene fra benken til der lappen ligger (H9). S: brunt, varmt sukker. Kristian: KARAMELL (K12). Kode **KARAMELL**.
 
@@ -381,7 +381,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Flater.** Mail: 88 %, «finn fram bøker til i morgen, bøker holder på varmen», og én linje fra Rampenissen: «Vi stenger ingen ute. Vi holder varmen inne.» Sidepanel: Frost 88 → 76, blinker. Snøfall TV: alle kanaler flimrer oftere (kode); Orakelets varsel som tekst-TV på K3 etter videoen. K2 trykkmåler som lek. Symbol 7/9.
 
-**Belønning.** PS: «Nissemor har tent det fjerde lyset. Hun lot det stå i vinduet mot nord.»
+**Belønning.** PS: «Hjerterud har tent det fjerde lyset i kaféen. Hun lot det stå i vinduet mot nord.»
 
 **Kontinuitet.** Varselet. Bøkene = muren dag 21. Slang brukt (3 av 3).
 
@@ -431,7 +431,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Morgen.** Skjerm-kort hele dagen: «God jul fra Snøfall». Strek: sover inni gullkonvolutten under treet med sløyfe på hodet og en liten pappeske som koffert. Radio (Rampenissen, eventuelt Julius ringer inn): «De landet. Jeg så det. De fløy over grotten først, lavt, med alle lysene. Noe blått fløy opp og møtte dem. Jeg reiser i kveld. Takk for garnkurven.»
 
-**Innlogging.** Tema: julaften; hvorfor vi feirer, fred i huset, hva julemagi faktisk er. I natt: sleden fløy gjennom porten med lys; grotten tiner; den blå fuglen fløy hjem med brevet; Vintervokteren sendte noe med Trixter. Brikke S: «Dere har laget noe hele desember uten å vite det. Ikke koden, den tastet dere. Ikke varmen, den kom fra ovnen. Det tredje: det Nissemor kaller det når tre søsken holder sammen i mørket, og som trollmenn bruker det samme ordet om, selv om de jukser.» Kulde 0, full farge, Julius smiler.
+**Innlogging.** Tema: julaften; hvorfor vi feirer, fred i huset, hva julemagi faktisk er. I natt: sleden fløy gjennom porten med lys; grotten tiner; den blå fuglen fløy hjem med brevet; Vintervokteren sendte noe med Trixter. Brikke S: «Dere har laget noe hele desember uten å vite det. Ikke koden, den tastet dere. Ikke varmen, den kom fra ovnen. Det tredje: det Hjerterud kaller det når tre søsken holder sammen i mørket, og som trollmenn bruker det samme ordet om, selv om de jukser.» Kulde 0, full farge, Julius smiler.
 
 **Gåte.** H: frostlapp `J U L E _ _ _ _` i gullkonvolutten (Rampenissen må flyttes forsiktig; Hanna gjør det, H5), Håkon åpner konvolutten og finner avskjedsbrevet (H9). S: ordet trollmenn jukser med. Kristian: JULEMAGI (K12). Kode **JULEMAGI**. _Brikken er den svakeste i måneden; alternativ: Julius sier «Rampenissen skrev første halvdel på konvolutten. Andre halvdel er det trollmenn later som de har, og dere faktisk har.»_ Avgjørelse 3.
 

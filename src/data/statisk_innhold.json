@@ -64,12 +64,12 @@
     },
     {
       "day": 12,
-      "tekst": "NISSEMOR: Isen ved slusen sprakk i natt. Noe svarte.",
+      "tekst": "HJERTERUD: Isen ved slusen sprakk i natt. Noe svarte.",
       "type": "info"
     },
     {
       "day": 13,
-      "tekst": "NISSEMOR: God Lucia. 500 boller bakt, 11 savnet.",
+      "tekst": "HJERTERUD: God Lucia. 500 boller bakt, 11 savnet.",
       "type": "info"
     },
     {
@@ -136,7 +136,7 @@
     },
     {
       "day": 24,
-      "tekst": "NISSEMOR: God jul til hele huset på Landås.",
+      "tekst": "HJERTERUD: God jul til hele huset på Landås.",
       "type": "info"
     },
     {
@@ -188,7 +188,7 @@
         {
           "navn": "om-snofall.txt",
           "type": "fil",
-          "innhold": "SNØFALL – KART OG VELKOMST\n\nSnøfall ligger nord for alt, under Nordtoppen. Her bor Julius, Nissemor, IQ, Winter, Pil, Orakelet, Trixter og Rudolf.\n\nLANDSBYEN: verkstedet, bakeriet, pakkesentralen og slusen ved tjernet.\nANTENNEN VED TJERNET: Direktelinjen, 90,0 MHz.\nNORDTOPPEN: fjellet over landsbyen. Under det ligger gamle ganger ingen bruker lenger.\n\nIQ bygde linjen i november og åpnet den 1. desember. Hvis den skurrer, er det ikke dere. Det jobber vi med.\n\n– Winter, for Snøfall kommandosenter"
+          "innhold": "SNØFALL – KART OG VELKOMST\n\nSnøfall ligger nord for alt, under Nordtoppen. Her bor Julius, Hjerterud, IQ, Winter, Pil, Orakelet, Trixter og Rudolf.\n\nLANDSBYEN: verkstedet, bakeriet, pakkesentralen og slusen ved tjernet.\nANTENNEN VED TJERNET: Direktelinjen, 90,0 MHz.\nNORDTOPPEN: fjellet over landsbyen. Under det ligger gamle ganger ingen bruker lenger.\n\nIQ bygde linjen i november og åpnet den 1. desember. Hvis den skurrer, er det ikke dere. Det jobber vi med.\n\n– Winter, for Snøfall kommandosenter"
         },
         {
           "navn": "system.log",
@@ -252,7 +252,7 @@
         {
           "navn": "lucia-tradisjon.txt",
           "type": "fil",
-          "innhold": "LUCIA I SNØFALL\n\n13. desember er midt i den mørkeste tiden. Derfor bærer Lucia lys på hodet: for å vise at lyset ikke er borte, bare lenger unna. I Snøfall går Pil først, med krone, og Nissemor bak med brettet.\n\nBollene er gule av et krydder Nissemor bruker én gang i året.\n\nI natt sto noe og så på lysene gjennom linjen. Det tok ingenting. Det bare så.",
+          "innhold": "LUCIA I SNØFALL\n\n13. desember er midt i den mørkeste tiden. Derfor bærer Lucia lys på hodet: for å vise at lyset ikke er borte, bare lenger unna. I Snøfall går Pil først, med krone, og Hjerterud bak med brettet.\n\nBollene er gule av et krydder Hjerterud bruker én gang i året.\n\nI natt sto noe og så på lysene gjennom linjen. Det tok ingenting. Det bare så.",
           "unlockConditions": {
             "afterDay": 13
           }
@@ -312,7 +312,7 @@
         {
           "navn": "frosne-koder.txt",
           "type": "fil",
-          "innhold": "ORAKELETS LOGG FRA SLUSEN – 12. DESEMBER, 02:40\n\nNissemor nynnet. Tre toner, den dypeste først. Isen på slusen sprakk.\n\nJeg lyttet inn i sprekken. Noe svarte. Jeg har sortert det etter hjertene:\n\nRødt hjerte er varme. Det var Nissemors toner.\nGrønt hjerte er håp. Det var isen som sprakk.\nBlått hjerte er kulde og sorg. Det var det som svarte.\n\nDet høres ikke sint ut. Det høres alene ut.\n\nJeg sier ikke dette til IQ ennå. Han vil ikke høre det.\n\n– Orakelet",
+          "innhold": "ORAKELETS LOGG FRA SLUSEN – 12. DESEMBER, 02:40\n\nHjerterud nynnet. Tre toner, den dypeste først. Isen på slusen sprakk.\n\nJeg lyttet inn i sprekken. Noe svarte. Jeg har sortert det etter hjertene:\n\nRødt hjerte er varme. Det var Hjerteruds toner.\nGrønt hjerte er håp. Det var isen som sprakk.\nBlått hjerte er kulde og sorg. Det var det som svarte.\n\nDet høres ikke sint ut. Det høres alene ut.\n\nJeg sier ikke dette til IQ ennå. Han vil ikke høre det.\n\n– Orakelet",
           "unlockConditions": {
             "requiresSolvedDecryption": "frosne-koder"
           }
@@ -350,7 +350,7 @@
         {
           "navn": "02-notatboken.txt",
           "type": "fil",
-          "innhold": "FARGESAMLERENS ARKIV – DEL 2: NOTATBOKEN\n(funnet av IQ natt til 15. desember)\n\n«Krystallene tåler ikke varme. Jeg ba IQ bygge noe som kunne holde grotten kald, alltid, også når ingen av oss er der. Han kalte det Vintervokteren. Det er et program. Det teller temperatur, lys og lyd, og holder alt lavt.\n\nIQ sa: det trenger én ting fra oss. At noen ser innom. Ellers vet det ikke at det gjør jobben sin.»\n\nSiste linje, med IQs håndskrift, i natt:\n\n«Strømstøtet i fjor kuttet lyset der nede. Ingen har sett innom siden. Det er Vintervokteren som sender på 85,0. Det er ikke en inntrenger. Det er mitt.»\n\nI margen, med Nissemors skrift, fra en annen desember:\n\n«Gryta på to. Rør med sleiva fem ganger. Vispen til sju. Så er det ferdig.»",
+          "innhold": "FARGESAMLERENS ARKIV – DEL 2: NOTATBOKEN\n(funnet av IQ natt til 15. desember)\n\n«Krystallene tåler ikke varme. Jeg ba IQ bygge noe som kunne holde grotten kald, alltid, også når ingen av oss er der. Han kalte det Vintervokteren. Det er et program. Det teller temperatur, lys og lyd, og holder alt lavt.\n\nIQ sa: det trenger én ting fra oss. At noen ser innom. Ellers vet det ikke at det gjør jobben sin.»\n\nSiste linje, med IQs håndskrift, i natt:\n\n«Strømstøtet i fjor kuttet lyset der nede. Ingen har sett innom siden. Det er Vintervokteren som sender på 85,0. Det er ikke en inntrenger. Det er mitt.»\n\nI margen, med Hjerteruds skrift, fra en annen desember:\n\n«Gryta på to. Rør med sleiva fem ganger. Vispen til sju. Så er det ferdig.»",
           "unlockConditions": {
             "afterDay": 15
           }
@@ -419,7 +419,7 @@
       "display_type": "counter",
       "unit": "kaker",
       "child_progress_multiplier": 0.025,
-      "description": "Pepperkaker bakt av Nissemor"
+      "description": "Pepperkaker bakt av Hjerterud"
     },
     {
       "navn": "BREVFUGL-SVERM",

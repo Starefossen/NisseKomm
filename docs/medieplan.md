@@ -15,7 +15,7 @@ mise run media:test-klementin             # ett testklipp
 2. Julius-dager som mangler (✗) eller er utdatert (⚠), laveste dag først.
 3. Rampenissen-klipp ✗/⚠ (TTS, teller ikke mot videokvoten).
 4. Snøfall TV: tid på døgnet (`landsby-morgen`, `-dag`, `-natt`; skumring er `rolig`) og hendelser per tilstand.
-5. Portentréer: Julius, Nissemor, IQ og Winter.
+5. Portentréer: Julius, Hjerterud, IQ og Winter.
 6. Det skjulte NisseMusikk-sporet `music/rampenissen-synger.mp3` (tekst i `assets/characters/rampenissen/synger.txt`).
 
 ✓ oppdatert og ? ukjent (laget før sidefiler) hoppes over.
