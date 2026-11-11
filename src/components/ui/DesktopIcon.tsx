@@ -16,8 +16,6 @@ interface DesktopIconProps {
   isNew?: boolean;
   onLockedClick?: () => void;
   className?: string;
-  /** Icon beside the label on wide screens, for the I DAG stack under Julius */
-  inline?: boolean;
 }
 
 export function DesktopIcon({
@@ -32,7 +30,6 @@ export function DesktopIcon({
   isNew = false,
   onLockedClick,
   className = "",
-  inline = false,
 }: DesktopIconProps) {
   const [isShaking, setIsShaking] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -57,8 +54,8 @@ export function DesktopIcon({
       disabled={disabled && false} // Allow clicks on disabled for animation
       aria-label={teaser ? `${label}, låst: ${teaser}` : undefined}
       className={`${className}
-        flex ${inline ? "flex-col gap-1 lg:flex-row lg:gap-3 lg:justify-start lg:px-4" : "flex-col gap-1"} items-center justify-center px-2 py-1.5 relative
-        w-full min-w-16 min-h-11
+        flex flex-col gap-1 items-center justify-center px-2 py-1.5 relative
+        w-full max-w-40 mx-auto min-w-16 min-h-11
         border-2 transition-all focus-visible:outline-2 focus-visible:outline-(--gold)
         ${isNew ? "border-(--gold)!" : ""}
         ${
@@ -69,16 +66,8 @@ export function DesktopIcon({
         ${isShaking ? "animate-[lock-shake_0.3s_ease-in-out]" : ""}
       `}
     >
-      {/* Unread badge */}
-      {unreadCount > 0 && (
-        <div
-          className={`absolute -top-1 -right-1 w-6 h-6 bg-(--christmas-red) border-2 border-(--christmas-red) flex items-center justify-center z-10 ${inline ? "lg:static lg:order-last" : ""}`}
-        >
-          <span className="text-white text-base font-bold">{unreadCount}</span>
-        </div>
-      )}
       {isNew && (
-        <div className="absolute -top-2 -left-2 px-2 py-0.5 border-2 border-black bg-(--gold) text-black text-lg leading-none tracking-widest z-10 shadow-[0_0_10px_var(--gold)] ">
+        <div className="absolute top-0.5 right-0.5 px-1 border border-black bg-(--gold) text-black text-sm leading-none tracking-wider z-10">
           NY
         </div>
       )}
@@ -90,14 +79,21 @@ export function DesktopIcon({
           className="absolute top-1 right-1"
         />
       )}
-      <Icon
-        name={icon}
-        size={36}
-        color={disabled ? "gray" : color}
-        className="md:w-10 md:h-10"
-      />
+      <span className="relative">
+        <Icon
+          name={icon}
+          size={36}
+          color={disabled ? "gray" : color}
+          className="md:w-10 md:h-10"
+        />
+        {unreadCount > 0 && (
+          <span className="absolute -top-2 -right-3 min-w-5 h-5 px-1 bg-(--christmas-red) flex items-center justify-center text-white text-sm font-bold leading-none z-10">
+            {unreadCount}
+          </span>
+        )}
+      </span>
       <span
-        className={`text-base md:text-lg tracking-wider ${
+        className={`text-base md:text-lg tracking-wider whitespace-nowrap ${
           disabled
             ? "text-(--gray)"
             : color === "gold"
