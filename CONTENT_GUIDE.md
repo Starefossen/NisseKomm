@@ -193,6 +193,8 @@ With occasional slang (sparingly):
 
 **Tone**: Precise language, business-like but not cold, uses lists.
 
+**Look** (`assets/characters/winter/beskrivelse.txt`, refs `ref-v1-*.jpg`): late 30s, clean-shaven with dark sideburns, dark slicked-back hair, round glasses, pencil behind the ear, light beige wool coat with a grey rosette, grey waistcoat, dark grey scarf, ledgers under the arm or a clipboard.
+
 ### IQ (Inventor)
 
 **Personality**: Genius but absent-minded, uses technical jargon, enthusiastic about gadgets.

@@ -28,7 +28,8 @@ CURRENT, STALE, UNKNOWN, MISSING = "current", "stale", "unknown", "missing"
 
 # Files made before sidecars whose source is known to be wrong. Only used while the file has no sidecar.
 OVERRIDES = {
-    f"audio/rampenissen/dag-{d:02d}.mp3": "instruksjonen ble lest opp (laget før sidefiler)" for d in range(1, 5)
+    **{f"audio/rampenissen/dag-{d:02d}.mp3": "instruksjonen ble lest opp (laget før sidefiler)" for d in range(1, 5)},
+    "video/tv/landsby-winter.mp4": "Winter har nytt design (laget før sidefiler)",
 }
 
 
