@@ -765,9 +765,9 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 ### Dag 24 (to) – God Jul på Landås · JULEMAGI · M6 Tøvær
 
 - `tittel`: God Jul på Landås
-- `nissemail_tekst` (80 ord): De landet. 🎄 Jeg så det. De fløy over grotten først, lavt, med alle lysene på, og noe blått fløy opp og møtte dem. Jeg reiser hjem i kveld. I kofferten min lå tre ting dere kjenner igjen fra desember. Takk for at du leste brevet mitt høyt, Håkon. Kristian: rutekortet lå i konvolutten, lappene har tegn, og Julius sier resten. Hanna, hvis du vil: du vet hvilken dag hver ting kommer fra. Takk for garnkurven. Og takk for alt. – Rampenissen
+- `nissemail_tekst` (80 ord): De landet. 🎄 Jeg så det. De fløy over grotten først, lavt, med alle lysene på, og noe blått fløy opp og møtte dem. Jeg reiser hjem i kveld. I kofferten min lå tre ting dere kjenner igjen fra desember. Takk for at du leste brevet mitt høyt, Håkon. Kristian: rutekortet lå i konvolutten, lappene har tegn, og Julius sier resten. Hanna, hvis du vil: du vet hvilken dag hver ting kommer fra. Takk for lånet av fruktskålen. Og takk for alt. – Rampenissen
 - `julius_ps`: Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Ved siden av ligger den siste klementinen fra Hjerteruds niste. Varmt og kaldt, side om side. Rampenissen sov i gullkonvolutten med sløyfe på hodet og fraktesken fra første desember som koffert. God jul, Kristian, Håkon og Hanna.
-- `daily_alerts` (fem): 🎅 JULIUS: God jul, Kristian, Håkon og Hanna. Det er ikke kaldt der nede lenger. · ❄️ ORAKELET: Frostgrad 0 %. Tøvær. · 🎄 HJERTERUD: God jul til hele huset på Landås. · 🧝 RAMPENISSEN: Takk for garnkurven. Vi ses neste desember. · 🕊️ WINTER: Den blå fuglen fløy hjem. Brevet har tint.
+- `daily_alerts` (fem): 🎅 JULIUS: God jul, Kristian, Håkon og Hanna. Det er ikke kaldt der nede lenger. · ❄️ ORAKELET: Frostgrad 0 %. Tøvær. · 🎄 HJERTERUD: God jul til hele huset på Landås. · 🧝 RAMPENISSEN: Takk for lånet av fruktskålen. Vi ses neste desember. · 🕊️ WINTER: Den blå fuglen fløy hjem. Brevet har tint.
 - NisseNet: ingen nye. Fargesamlerens arkiv står komplett.
 - Kulde: Brevfugler, brevet tiner (A8). Skjerm-kort «God jul fra Snøfall».
 - Avskjedsbrevet fra Rampenissen (i gullkonvolutten, trykkes med `dag24-suvenirlapper.pdf`):
@@ -776,7 +776,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
   > Jeg reiser hjem i kveld. Jeg har sovet i fruktskålen deres, i fryseren deres, i en sokk og i brødboksen. Det var det beste året jeg har hatt.
   > I kofferten ligger tre ting dere har brukt før. Lappene har tegn; tavla deres vet resten. Legg dem i rutene.
   > Hvis noe mangler, ligger IQs kopier under dette brevet. Han stoler ikke på meg.
-  > Takk for garnkurven. Vi ses neste desember.
+  > Takk for lånet av fruktskålen. Vi ses neste desember.
   > – Rampenissen
 
 - `rampenissen_rampestrek`: Ligger og sover inni den store gullkonvolutten under treet med en sløyfe på hodet og en liten pappeske som pakket koffert ved siden av.

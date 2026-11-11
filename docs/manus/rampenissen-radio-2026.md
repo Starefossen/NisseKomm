@@ -220,7 +220,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** sover inni gullkonvolutten under treet med sløyfe på hodet, liten pappeske som koffert ved siden av.
 
-**Klipp:** «God morra. Det e julaften. Det e Rampenissen, og æ kviskre, for æ har nettopp våkna i en konvolutt. En stor gullkonvolutt. Med sløyfe på hodet. Men hør, hør: dem landa. Æ såg det. Æ sto i vinduet til dem va forbi. Så sovna æ. Dem fløy over grotta først, lavt, med alle lysan på. Og nåkka blått fløy opp og møtte dem. Rolig. Ikkje redd. Så fløy dem videre, hit, over fjellet. Kofferten min e pakka. Æ reise i kveld, tilbake til loftet. Takk for garnkurven. Takk for sofaen. Takk for at dokker holdt varmen. God jul, Kristian. God jul, Håkon. God jul, Hanna. Over. Og ut.»
+**Klipp:** «God morra. Det e julaften. Det e Rampenissen, og æ kviskre, for æ har nettopp våkna i en konvolutt. En stor gullkonvolutt. Med sløyfe på hodet. Men hør, hør: dem landa. Æ såg det. Æ sto i vinduet til dem va forbi. Så sovna æ. Dem fløy over grotta først, lavt, med alle lysan på. Og nåkka blått fløy opp og møtte dem. Rolig. Ikkje redd. Så fløy dem videre, hit, over fjellet. Kofferten min e pakka. Æ reise i kveld, tilbake til loftet. Takk for fruktskåla. Takk for sofaen. Takk for at dokker holdt varmen. God jul, Kristian. God jul, Håkon. God jul, Hanna. Over. Og ut.»
 
 **intro_hint:** «Siste melding fra gjesten vår i år. Han hvisker.»
 
