@@ -42,6 +42,15 @@ EXIT_LIMIT = 75  # EX_TEMPFAIL: try again after the quota resets
 LIMIT_RE = re.compile(r"per day|spending cap|Stoppet: (dagsgrensen|månedlig)", re.I)
 SLEDE = ("tundra", "nordtoppen", "muren", "julenatt")  # prompts: assets/locations/sledeflukt/varianter
 SLEDE_REF = "assets/locations/snofall-landsby/nokkelramme-rolig.jpg"
+# Ugleposten scene stills (nissespill/kapittel1-4.ts): id -> (reference, prompt); output spill/<id>.jpg
+SPILL = {
+    "iq-verksted": ("assets/locations/iq-verksted/vidvinkel-tom.jpg", "assets/locations/iq-verksted/varianter/spill.still.prompt.txt"),
+    "julius-kontor": ("assets/locations/julius-kontor/ref-tom.jpg", "assets/locations/julius-kontor/varianter/spill.still.prompt.txt"),
+    "antenne-tarn": ("assets/locations/antenne-tjern/ref.jpg", "assets/locations/antenne-tjern/varianter/spill.still.prompt.txt"),
+    "kulde-grotte": ("assets/locations/krystallgrotten/ref.jpg", "assets/locations/krystallgrotten/varianter/spill.still.prompt.txt"),
+}
+STILL_SH = ('mkdir -p "$(dirname "$3")" && bash "$4/still.sh" "$1" "$2" "$3" && '
+            'python3 "$4/medie.py" skriv still.sh "$3" "$2" - gemini-3-pro-image "$1"')
 RETRY_RE = re.compile(r'retryDelay"?:\s*"?(\d+)s|retry in ([\d.]+)\s*s', re.I)
 
 # Named tests: one Julius clip each, made with julius.sh into assets/out/<name>.mp4.
@@ -108,6 +117,8 @@ def item_path(item_id: str) -> str:
         return f"audio/rampenissen/dag-{int(key):02d}.mp3" if key.isdigit() else ""
     if cat == "slede":
         return f"feed/slede-{key}.jpg"
+    if cat == "spill":
+        return f"spill/{key}.jpg"
     if cat in ("tv", "port"):
         return f"video/tv/{key}.mp4"
     if cat == "musikk":
@@ -160,9 +171,12 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
         if should_queue(p, st.get(p, medie.MISSING)):
             prompt = f"assets/locations/sledeflukt/varianter/{v}.still.prompt.txt"
             # still.sh makes the image; medie.py skriv records the sidecar so it counts as current
-            sh = ('mkdir -p "$(dirname "$3")" && bash "$4/still.sh" "$1" "$2" "$3" && '
-                  'python3 "$4/medie.py" skriv still.sh "$3" "$2" - gemini-3-pro-image "$1"')
-            q.append((f"slede:{v}", "slede", 0, ["bash", "-c", sh, "_", str(root / SLEDE_REF),
+            q.append((f"slede:{v}", "slede", 0, ["bash", "-c", STILL_SH, "_", str(root / SLEDE_REF),
+                                                 str(root / prompt), str(media_dir() / p), str(BIN)]))
+    for n, (ref, prompt) in SPILL.items():
+        p = f"spill/{n}.jpg"
+        if should_queue(p, st.get(p, medie.MISSING)):
+            q.append((f"spill:{n}", "spill", 0, ["bash", "-c", STILL_SH, "_", str(root / ref),
                                                  str(root / prompt), str(media_dir() / p), str(BIN)]))
     p_music = "music/rampenissen-synger.mp3"
     if should_queue(p_music, st.get(p_music, medie.MISSING)):
@@ -309,12 +323,16 @@ def selftest():
                 {"path": "audio/rampenissen/dag-01.mp3", "status": medie.UNKNOWN},
                 {"path": "video/tv/landsby-rolig.mp4", "status": medie.UNKNOWN},
                 {"path": "music/rampenissen-synger.mp3", "status": medie.CURRENT},
-                *({"path": f"feed/slede-{v}.jpg", "status": medie.CURRENT} for v in SLEDE)]
+                *({"path": f"feed/slede-{v}.jpg", "status": medie.CURRENT} for v in SLEDE),
+                *({"path": f"spill/{n}.jpg", "status": medie.CURRENT} for n in SPILL)]
         q = queue(rows, ["landsby-rolig", "landsby-morgen", "port-iq"], root)
         assert [i[0] for i in q] == ["test-klementin", "julius:2", "julius:3", "tv:landsby-morgen", "port:port-iq"], q
         # sleigh stills: queued when missing, as images (estimate 0, so never counted against the video quota)
-        qs = queue(rows[:-1], [], root, til_dag=0)
+        qs = queue([r for r in rows if r["path"] != "feed/slede-julenatt.jpg"], [], root, til_dag=0)
         assert [(i[0], i[2]) for i in qs if i[1] == "slede"] == [("slede:julenatt", 0)], qs
+        qp = queue([r for r in rows if not r["path"].startswith("spill/")], [], root, til_dag=0)
+        assert sorted(i[0] for i in qp if i[1] == "spill") == sorted(f"spill:{n}" for n in SPILL)
+        assert all(i[2] == 0 for i in qp if i[1] == "spill") and item_path("spill:torget") == "spill/torget.jpg"
         assert item_path("slede:muren") == "feed/slede-muren.jpg"
         calls, made = [], set()
 
