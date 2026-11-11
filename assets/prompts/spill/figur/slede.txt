@@ -1,0 +1,2 @@
+{{prompts/spill/figur-stil}}
+The sprite: Julius' sleigh seen from the front at a three-quarter angle: a red and gold wooden sleigh with curved runners, a few wrapped parcels in the back, and one reindeer in harness standing in front of it, both facing the viewer. Slightly taller than wide, standing on snow-free magenta. {{objects/slede}}

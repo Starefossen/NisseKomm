@@ -42,17 +42,18 @@ RETRY = 1.5  # expected takes per clip (julius-dag.py retries up to 3)
 EXIT_LIMIT = 75  # EX_TEMPFAIL: try again after the quota resets
 LIMIT_RE = re.compile(r"per day|spending cap|Stoppet: (dagsgrensen|månedlig)", re.I)
 MEDIER = medie.jobs()  # assets/medier.json; TV loops are listed by tv-loops.sh --liste
-# sleigh horizons, Ugleposten stills and their pixel-art versions, pixel portraits (0 video requests)
-IMAGE_CATS = ("slede", "spill", "spill-piksel", "portrett")
+# sleigh horizons, Ugleposten stills and their pixel-art versions, pixel portraits, figure overlays
+# and pocket icons (0 video requests)
+IMAGE_CATS = ("slede", "spill", "spill-piksel", "portrett", "spill-figur", "spill-ikon")
 
 
 def names(cat):
     """Jobs made by an image model; others (generator «skaler», «hånd») are only tracked in medier.json."""
     return [k.split("/", 1)[1] for k, j in MEDIER.items()
-            if k.startswith(cat + "/") and j["generator"] in ("still", "piksel", "portrett")]
+            if k.startswith(cat + "/") and j["generator"] in ("still", "piksel", "portrett", "figur", "ikon")]
 
 
-SLEDE, SPILL, PIKSEL, PORTRETT = (names(c) for c in IMAGE_CATS)
+SLEDE, SPILL, PIKSEL, PORTRETT, FIGUR, IKON = (names(c) for c in IMAGE_CATS)
 STILL_SH = ('mkdir -p "$(dirname "$3")" && bash "$4/still.sh" "$1" "$2" "$3" "${@:5}" && '
             'python3 "$4/medie.py" skriv still.sh "$3" "$2" - gemini-3-pro-image "$1" "${@:5}"')
 # same inputs as STILL_SH; the model answers JPEG or PNG at will, ffmpeg makes the .png real
@@ -62,6 +63,11 @@ PIKSEL_SH = ('mkdir -p "$(dirname "$3")" && T=$(mktemp -d) && bash "$4/still.sh"
 PORTRETT_SH = ('mkdir -p "$(dirname "$3")" "$5" && bash "$4/portrett.sh" "$2" "$5/$(basename "$3")" "${@:6}" && '
                'bash "$4/piksel.sh" "$5/$(basename "$3")" "$3" && '
                'python3 "$4/medie.py" skriv portrett.sh "$3" "$2" - gemini-3-pro-image "${@:6}"')
+# $6 is the size spec of piksel-sprite.py («ikon» or BxH in scene pixels); the model's magenta original
+# stays in assets/out/<name>.raa.png for review
+SPRITE_SH = ('mkdir -p "$(dirname "$3")" "$5" && R="$5/$(basename "$3" .png).raa.png" && bash "$4/portrett.sh" "$2" "$R" "${@:7}" && '
+             'python3 "$4/piksel-sprite.py" "$R" "$3" "$6" && '
+             'python3 "$4/medie.py" skriv portrett.sh "$3" "$2" - gemini-3-pro-image "${@:7}"')
 RETRY_RE = re.compile(r'retryDelay"?:\s*"?(\d+)s|retry in ([\d.]+)\s*s', re.I)
 
 # Named tests: one Julius clip each, made with julius.sh into assets/out/<name>.mp4.
@@ -134,6 +140,10 @@ def item_path(item_id: str) -> str:
         return f"spill/piksel/{key}.png"
     if cat == "portrett":
         return f"spill/portrett-{key}.png"
+    if cat == "spill-figur":
+        return f"spill/piksel/figur/{key}.png"
+    if cat == "spill-ikon":
+        return f"spill/piksel/ikon/{key}.png"
     if cat in ("tv", "port"):
         return f"video/tv/{key}.mp4"
     if cat == "musikk":
@@ -201,6 +211,10 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
             if cat == "portrett":
                 cmd = [PORTRETT_SH, "_", "", str(root / prompt), str(media_dir() / p), str(BIN),
                        str(root / "assets/out"), *refs]
+            elif cat in ("spill-figur", "spill-ikon"):
+                spec = "ikon" if cat == "spill-ikon" else MEDIER[f"{cat}/{n}"]["px"]
+                cmd = [SPRITE_SH, "_", "", str(root / prompt), str(media_dir() / p), str(BIN),
+                       str(root / "assets/out"), spec, *refs]
             else:  # still.sh makes the image; medie.py skriv records the sidecar so it counts as current
                 sh = PIKSEL_SH if cat == "spill-piksel" else STILL_SH
                 cmd = [sh, "_", str(infile(img, root)), str(root / prompt), str(media_dir() / p), str(BIN), *refs]
@@ -325,7 +339,8 @@ def dry_run(q):
             continue
         print("  " + shlex.join(cmd))
         if cmd[:2] == ["bash", "-c"]:  # still/portrett: the positional args are the inputs
-            for f in (cmd[5:6] + cmd[9:]) if cat == "portrett" else (cmd[4:6] + cmd[8:]):
+            refs_from = {"portrett": 9, "spill-figur": 10, "spill-ikon": 10}.get(cat)
+            for f in (cmd[5:6] + cmd[refs_from:]) if refs_from else (cmd[4:6] + cmd[8:]):
                 if not Path(f).is_file():
                     print(f"  mangler inndata: '{f}'")
                     bad = 1
@@ -376,7 +391,9 @@ def selftest():
                 *({"path": f"feed/slede-{v}.jpg", "status": medie.CURRENT} for v in SLEDE),
                 *({"path": f"spill/{n}.jpg", "status": medie.CURRENT} for n in SPILL),
                 *({"path": f"spill/piksel/{n}.png", "status": medie.CURRENT} for n in PIKSEL),
-                *({"path": f"spill/portrett-{n}.png", "status": medie.CURRENT} for n in PORTRETT)]
+                *({"path": f"spill/portrett-{n}.png", "status": medie.CURRENT} for n in PORTRETT),
+                *({"path": f"spill/piksel/figur/{n}.png", "status": medie.CURRENT} for n in FIGUR),
+                *({"path": f"spill/piksel/ikon/{n}.png", "status": medie.CURRENT} for n in IKON)]
         q = queue(rows, ["landsby-rolig", "landsby-morgen", "port-iq"], root)
         assert [i[0] for i in q] == ["test-klementin", "julius:2", "julius:3", "tv:landsby-morgen", "port:port-iq"], q
         # sleigh stills: queued when missing, as images (estimate 0, so never counted against the video quota)
@@ -395,6 +412,14 @@ def selftest():
         assert infile("assets/x.jpg", root) == root / "assets/x.jpg"
         qr = queue([r for r in rows if r["path"] != "spill/portrett-winter.png"], [], root, til_dag=0)
         assert [i[0] for i in qr if i[1] == "portrett"] == ["portrett:winter"], qr
+        # figure overlays and pocket icons: portrett.sh on magenta, then piksel-sprite.py with the size spec
+        assert item_path("spill-figur:rudolf") == "spill/piksel/figur/rudolf.png"
+        assert item_path("spill-ikon:bolle") == "spill/piksel/ikon/bolle.png"
+        qf = queue([r for r in rows if r["path"] not in ("spill/piksel/figur/rudolf.png", "spill/piksel/ikon/bolle.png")],
+                   [], root, til_dag=0)
+        (fig,), (ik,) = [i for i in qf if i[1] == "spill-figur"], [i for i in qf if i[1] == "spill-ikon"]
+        assert fig[3][2].startswith(SPRITE_SH) and fig[3][9] == MEDIER["spill-figur/rudolf"]["px"], fig
+        assert ik[3][9] == "ikon", ik
         calls, made = [], set()
 
         def fake(cmd, env, fail_on=3):

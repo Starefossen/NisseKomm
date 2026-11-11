@@ -1,0 +1,2 @@
+{{prompts/spill/figur-stil}}
+The sprite: Hjerterud, exactly the woman in the pixel-art café scene among the references (same hair, cheeks, dress, cardigan and apron), seen from the front, sitting: head, shoulders and arms only, hands folded in front of her, the picture ending in a straight horizontal line just below the elbows as if the rest is hidden behind a desk. Wide sprite, about twice as wide as tall. {{hjerterud.KARAKTER}}

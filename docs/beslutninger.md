@@ -100,6 +100,10 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - Figurer og ting som mangler i bildene tegnes som sprites (`public/spill/piksel/figur/<id>.png`) i hotspotens rect, med piksel-silhuett til PNG-en finnes. Hvorfor: barna skal se det de blir bedt om å snakke med og bruke ting på.
 - Gjenstander får egne 32×32 pikselikoner (`public/spill/piksel/ikon/<id>.png`), med pixelarticons som reserve. Hvorfor: generiske glyfer viste ikke hva man holdt.
 
+- Ugleposten er pikselkunst hele veien: kafeen og IQs verksted tegnes som nye scener etter sonene (ikke omtegning av foto), alle seks portretter i én pikselstil tro mot figurarkene, Hjerterud inkludert. Hvorfor: live-action-portretter og fotoomtegninger brøt med stilen, og IQs verksted var uleselig i 8-bit.
+- Figurer og ting gåtene handler om (Rudolf, tannhjul, peileskive, Hjerterud, Julius, brevfugl, Winter, slede, skriveplate) legges som gjennomsiktige sprite-overlegg i hotspotens sone (`spill/piksel/figur/<id>.png`). Hvorfor: barna skal se det de blir bedt om å snakke med og bruke ting på.
+- Hver gjenstand i lomma får et eget 32×32-pikselikon på gjennomsiktig bunn (`spill/piksel/ikon/<id>.png`), tegnet på magenta og låst til felles palett. Hvorfor: generiske glyfer sa ikke hva barnet holdt.
+
 ## Snøfall i fri flyging (2026-11-11)
 
 - Muren er IQs egen murbue med varm port mellom Snøfall og Krystallgrotten, synlig som silhuett før dag 21. Ikke landsbymuren. Hvorfor: teksten sier IQ bygde muren mot grotten.

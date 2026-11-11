@@ -1,0 +1,2 @@
+{{prompts/spill/figur-stil}}
+The sprite: A small grey letter bird: an origami bird folded from a grey-white paper envelope, sitting still with folded paper wings, seen from the side, a faint warm glow in the folds. Wide sprite, wider than tall. {{objects/brevfugl}}

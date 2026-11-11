@@ -1,0 +1,2 @@
+{{prompts/spill/figur-stil}}
+The sprite: Julius, the man in the photo reference redrawn as pixel art, seen from the front, sitting: head, shoulders and arms only, hands resting in front of him, the picture ending in a straight horizontal line just below the elbows as if the rest is hidden behind a desk. Wide sprite, about twice as wide as tall. No microphone. {{julius.KARAKTER}}

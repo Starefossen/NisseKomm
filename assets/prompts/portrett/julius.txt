@@ -1,2 +1,2 @@
-Head-and-shoulders portrait for a dialogue box in a retro computer game, square 1:1, face centred with headroom, looking slightly past the camera with a friendly expression, mouth closed. Warm golden lamplight from one side against a dark, out-of-focus timber-cabin background with a hint of cold blue window light. Cinematic live-action look with film grain: not a cartoon, not a doll, not a glossy advert. An original character who resembles no real actor.
-The person is the man in the reference image: {{julius.KARAKTER}} Match his face and beard exactly. No microphone in frame.
+{{prompts/portrett/piksel-stil}}
+The person is the man in the photo reference, redrawn as pixel art: {{julius.KARAKTER}} Match his face, bald head and rough beard. No microphone in frame. The pixel-art scene reference shows only the style and palette.

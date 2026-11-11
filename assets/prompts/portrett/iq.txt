@@ -1,2 +1,2 @@
-Head-and-shoulders portrait for a dialogue box in a retro computer game, square 1:1, face centred with headroom, looking slightly past the camera with a friendly expression, mouth closed. Warm golden lamplight from one side against a dark, out-of-focus timber-cabin background with a hint of cold blue window light. Cinematic live-action look with film grain: not a cartoon, not a doll, not a glossy advert. An original character who resembles no real actor.
-The person is the inventor in the first reference image: {{iq.KARAKTER}} {{iq.KLÆR}} The second reference image shows only the painting style and framing to match; it is a different person.
+{{prompts/portrett/piksel-stil}}
+The person is the inventor in the photo reference, redrawn as pixel art: {{iq.KARAKTER}} {{iq.KLÆR}} Keep the welding goggles on the hat and the singed copper beard. The pixel-art scene reference shows only the style and palette.

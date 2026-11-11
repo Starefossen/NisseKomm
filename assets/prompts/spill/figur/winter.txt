@@ -1,0 +1,2 @@
+{{prompts/spill/figur-stil}}
+The sprite: Winter, the man in the photo reference redrawn as pixel art, standing upright in full figure facing the viewer, formal: tall grey top hat on, buttoned light beige wool coat, grey waistcoat, dark grey scarf tied neatly, small round glasses, a pencil behind his ear, holding a wooden clipboard with blank papers against his chest with one hand. Slightly taller than wide. {{winter.KARAKTER}}

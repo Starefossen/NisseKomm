@@ -81,8 +81,9 @@
     "generator": "piksel",
     "sted": "iq-verksted",
     "ut": "spill/piksel/iq-verksted.png",
-    "bilde": "public/feed/iq-verksted.png",
-    "mal": "assets/prompts/spill/piksel-iq-verksted.txt"
+    "bilde": "public/spill/piksel/klokketarnet.png",
+    "mal": "assets/prompts/spill/piksel-iq-verksted.txt",
+    "notat": "Ugleposten K1/K2: IQs verksted tegnet som ny scene etter sonene i kapittel1.ts, ikke som omtegning av fotoet (prompts/spill/piksel-ny-scene). Klokketårnets pikselbilde er bare stil- og palettreferanse"
   },
   "spill-piksel/julius-kontor": {
     "generator": "piksel",
@@ -116,9 +117,9 @@
     "generator": "piksel",
     "sted": "kafe",
     "ut": "spill/piksel/kafe.png",
-    "bilde": "public/spill/piksel/torget.png",
+    "bilde": "public/spill/piksel/klokketarnet.png",
     "mal": "assets/prompts/spill/piksel-kafe.txt",
-    "notat": "Ugleposten K1, ny scene fra torget: Hjerteruds kafé. Torgets pikselbilde er bare stil- og palettreferanse (prompts/spill/piksel-ny-scene)"
+    "notat": "Ugleposten K1, ny scene: Hjerteruds kafé, komponert etter sonene i kapittel1.ts (prompts/spill/piksel-ny-scene). Klokketårnets pikselbilde er bare stil- og palettreferanse"
   },
   "spill-piksel/pakkesentralen": {
     "generator": "piksel",
@@ -155,37 +156,52 @@
     "generator": "portrett",
     "ut": "spill/portrett-winter.png",
     "mal": "assets/prompts/portrett/winter.txt",
-    "refs": ["characters/winter#outside", "characters/winter#tophat"]
+    "refs": [
+      "public/spill/piksel/klokketarnet.png",
+      "characters/winter#outside"
+    ],
+    "notat": "pikselportrett (prompts/portrett/piksel-stil); portrett.sh lager 1024², piksel.sh skalerer til 96 px"
   },
   "portrett/hjerterud": {
     "generator": "portrett",
     "ut": "spill/portrett-hjerterud.png",
     "mal": "assets/prompts/portrett/hjerterud.txt",
-    "refs": ["public/spill/portrett-julius.png"]
+    "refs": ["public/spill/piksel/kafe.png"],
+    "notat": "pikselportrett (prompts/portrett/piksel-stil); portrett.sh lager 1024², piksel.sh skalerer til 96 px"
   },
   "portrett/iq": {
     "generator": "portrett",
     "ut": "spill/portrett-iq.png",
     "mal": "assets/prompts/portrett/iq.txt",
-    "refs": ["characters/iq#standard", "public/spill/portrett-julius.png"]
+    "refs": ["public/spill/piksel/klokketarnet.png", "characters/iq#standard"],
+    "notat": "pikselportrett (prompts/portrett/piksel-stil); portrett.sh lager 1024², piksel.sh skalerer til 96 px"
   },
   "portrett/julius": {
     "generator": "portrett",
     "ut": "spill/portrett-julius.png",
     "mal": "assets/prompts/portrett/julius.txt",
-    "refs": ["characters/julius#standard"]
+    "refs": [
+      "public/spill/piksel/klokketarnet.png",
+      "characters/julius#standard"
+    ],
+    "notat": "pikselportrett (prompts/portrett/piksel-stil); portrett.sh lager 1024², piksel.sh skalerer til 96 px"
   },
   "portrett/floke": {
     "generator": "portrett",
     "ut": "spill/portrett-floke.png",
     "mal": "assets/prompts/portrett/floke.txt",
-    "refs": ["public/spill/portrett-julius.png"]
+    "refs": ["public/spill/piksel/klokketarnet.png"],
+    "notat": "pikselportrett (prompts/portrett/piksel-stil); portrett.sh lager 1024², piksel.sh skalerer til 96 px"
   },
   "portrett/rampenissen": {
     "generator": "portrett",
     "ut": "spill/portrett-rampenissen.png",
     "mal": "assets/prompts/portrett/rampenissen.txt",
-    "refs": ["characters/rampenissen#ekte", "public/spill/portrett-julius.png"]
+    "refs": [
+      "public/spill/piksel/klokketarnet.png",
+      "characters/rampenissen#ekte"
+    ],
+    "notat": "pikselportrett (prompts/portrett/piksel-stil); portrett.sh lager 1024², piksel.sh skalerer til 96 px"
   },
   "tv/antenne-rolig": {
     "generator": "loop",
@@ -604,5 +620,233 @@
     "mal": "assets/prompts/tv/snofall-landsby/port-winter.txt",
     "bare_forste": true,
     "anker": "locations/porten#standard"
+  },
+  "spill-figur/rudolf": {
+    "generator": "figur",
+    "ut": "spill/piksel/figur/rudolf.png",
+    "px": "303x169",
+    "mal": "assets/prompts/spill/figur/rudolf.txt",
+    "refs": ["public/spill/piksel/antenne-tarn.png"],
+    "notat": "Ugleposten figurer: tegnet på magenta, piksel-sprite.py skjærer ut, skalerer til sonen (px = sonens størrelse i scenepiksler, 4× logiske) og låser til paletten. Refs: scenen figuren legges i (stil og lys), så personen"
+  },
+  "spill-figur/rudolf-busk": {
+    "generator": "figur",
+    "ut": "spill/piksel/figur/rudolf-busk.png",
+    "px": "248x307",
+    "mal": "assets/prompts/spill/figur/rudolf-busk.txt",
+    "refs": ["public/spill/piksel/antenne-tarn.png"]
+  },
+  "spill-figur/tannhjul": {
+    "generator": "figur",
+    "ut": "spill/piksel/figur/tannhjul.png",
+    "px": "248x138",
+    "mal": "assets/prompts/spill/figur/tannhjul.txt",
+    "refs": ["public/spill/piksel/antenne-tarn.png"]
+  },
+  "spill-figur/peileskive": {
+    "generator": "figur",
+    "ut": "spill/piksel/figur/peileskive.png",
+    "px": "165x200",
+    "mal": "assets/prompts/spill/figur/peileskive.txt",
+    "refs": ["public/spill/piksel/antenne-tarn.png"]
+  },
+  "spill-figur/hjerterud": {
+    "generator": "figur",
+    "ut": "spill/piksel/figur/hjerterud.png",
+    "px": "234x123",
+    "mal": "assets/prompts/spill/figur/hjerterud.txt",
+    "refs": [
+      "public/spill/piksel/julius-kontor.png",
+      "public/spill/piksel/kafe.png"
+    ]
+  },
+  "spill-figur/julius": {
+    "generator": "figur",
+    "ut": "spill/piksel/figur/julius.png",
+    "px": "234x123",
+    "mal": "assets/prompts/spill/figur/julius.txt",
+    "refs": [
+      "public/spill/piksel/julius-kontor.png",
+      "characters/julius#standard"
+    ]
+  },
+  "spill-figur/brevfugl": {
+    "generator": "figur",
+    "ut": "spill/piksel/figur/brevfugl.png",
+    "px": "124x77",
+    "mal": "assets/prompts/spill/figur/brevfugl.txt",
+    "refs": ["public/spill/piksel/julius-kontor.png"]
+  },
+  "spill-figur/winter": {
+    "generator": "figur",
+    "ut": "spill/piksel/figur/winter.png",
+    "px": "193x215",
+    "mal": "assets/prompts/spill/figur/winter.txt",
+    "refs": ["public/spill/piksel/port-aapen.png", "characters/winter#tophat"]
+  },
+  "spill-figur/slede": {
+    "generator": "figur",
+    "ut": "spill/piksel/figur/slede.png",
+    "px": "138x154",
+    "mal": "assets/prompts/spill/figur/slede.txt",
+    "refs": ["public/spill/piksel/port-aapen.png"]
+  },
+  "spill-figur/skriveplate": {
+    "generator": "figur",
+    "ut": "spill/piksel/figur/skriveplate.png",
+    "px": "110x92",
+    "mal": "assets/prompts/spill/figur/skriveplate.txt",
+    "refs": ["public/spill/piksel/port-aapen.png"]
+  },
+  "spill-ikon/tyttebaer": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/tyttebaer.png",
+    "mal": "assets/prompts/spill/ikon/tyttebaer.txt",
+    "notat": "Ugleposten lommeikoner: tegnet på magenta, piksel-sprite.py skjærer ut, skalerer til 32×32 (objektet 26 px, 1 px kontur) og låser til paletten"
+  },
+  "spill-ikon/kaffekopp": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/kaffekopp.png",
+    "mal": "assets/prompts/spill/ikon/kaffekopp.txt"
+  },
+  "spill-ikon/baersaft": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/baersaft.png",
+    "mal": "assets/prompts/spill/ikon/baersaft.txt"
+  },
+  "spill-ikon/skjema": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/skjema.png",
+    "mal": "assets/prompts/spill/ikon/skjema.txt"
+  },
+  "spill-ikon/skjema_signert": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/skjema_signert.png",
+    "mal": "assets/prompts/spill/ikon/skjema_signert.txt"
+  },
+  "spill-ikon/bolle": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/bolle.png",
+    "mal": "assets/prompts/spill/ikon/bolle.txt"
+  },
+  "spill-ikon/syltetoey": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/syltetoey.png",
+    "mal": "assets/prompts/spill/ikon/syltetoey.txt"
+  },
+  "spill-ikon/blikkboks": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/blikkboks.png",
+    "mal": "assets/prompts/spill/ikon/blikkboks.txt"
+  },
+  "spill-ikon/grytevott": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/grytevott.png",
+    "mal": "assets/prompts/spill/ikon/grytevott.txt"
+  },
+  "spill-ikon/boks_i_vott": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/boks_i_vott.png",
+    "mal": "assets/prompts/spill/ikon/boks_i_vott.txt"
+  },
+  "spill-ikon/varmboks": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/varmboks.png",
+    "mal": "assets/prompts/spill/ikon/varmboks.txt"
+  },
+  "spill-ikon/knekkebroed": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/knekkebroed.png",
+    "mal": "assets/prompts/spill/ikon/knekkebroed.txt"
+  },
+  "spill-ikon/sirup": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/sirup.png",
+    "mal": "assets/prompts/spill/ikon/sirup.txt"
+  },
+  "spill-ikon/sirupbroed": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/sirupbroed.png",
+    "mal": "assets/prompts/spill/ikon/sirupbroed.txt"
+  },
+  "spill-ikon/magnetnaal": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/magnetnaal.png",
+    "mal": "assets/prompts/spill/ikon/magnetnaal.txt"
+  },
+  "spill-ikon/haandvarmer": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/haandvarmer.png",
+    "mal": "assets/prompts/spill/ikon/haandvarmer.txt"
+  },
+  "spill-ikon/stearinlys": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/stearinlys.png",
+    "mal": "assets/prompts/spill/ikon/stearinlys.txt"
+  },
+  "spill-ikon/tesil": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/tesil.png",
+    "mal": "assets/prompts/spill/ikon/tesil.txt"
+  },
+  "spill-ikon/tesil_lanterne": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/tesil_lanterne.png",
+    "mal": "assets/prompts/spill/ikon/tesil_lanterne.txt"
+  },
+  "spill-ikon/krystallskaar": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/krystallskaar.png",
+    "mal": "assets/prompts/spill/ikon/krystallskaar.txt"
+  },
+  "spill-ikon/lupe": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/lupe.png",
+    "mal": "assets/prompts/spill/ikon/lupe.txt"
+  },
+  "spill-ikon/fjaerpenn": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/fjaerpenn.png",
+    "mal": "assets/prompts/spill/ikon/fjaerpenn.txt"
+  },
+  "spill-ikon/klementin": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/klementin.png",
+    "mal": "assets/prompts/spill/ikon/klementin.txt"
+  },
+  "spill-ikon/noett": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/noett.png",
+    "mal": "assets/prompts/spill/ikon/noett.txt"
+  },
+  "spill-ikon/briller": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/briller.png",
+    "mal": "assets/prompts/spill/ikon/briller.txt"
+  },
+  "spill-ikon/magnet": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/magnet.png",
+    "mal": "assets/prompts/spill/ikon/magnet.txt"
+  },
+  "spill-ikon/hyssing": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/hyssing.png",
+    "mal": "assets/prompts/spill/ikon/hyssing.txt"
+  },
+  "spill-ikon/fiskesnoere": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/fiskesnoere.png",
+    "mal": "assets/prompts/spill/ikon/fiskesnoere.txt"
+  },
+  "spill-ikon/bjelle": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/bjelle.png",
+    "mal": "assets/prompts/spill/ikon/bjelle.txt"
+  },
+  "spill-ikon/talgstump": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/talgstump.png",
+    "mal": "assets/prompts/spill/ikon/talgstump.txt"
   }
 }
