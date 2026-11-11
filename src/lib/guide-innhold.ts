@@ -35,7 +35,9 @@ const WPS = 1.79;
 const START = 0.5;
 const TAIL = 2.0;
 const MAX_WORDS = 22;
-const ord = (s: string) => s.toLowerCase().match(/[a-zæøå]+/g) ?? [];
+/** julius-dag.py wcount: a hyphenated token («TV-en») is spoken as one word. */
+export const wcount = (s: string) =>
+  (s.toLowerCase().match(/[a-zæøå0-9]+(?:-[a-zæøå0-9]+)*/g) ?? []).length;
 
 export interface JuliusSegment {
   replikk: string;
@@ -49,14 +51,16 @@ export interface JuliusSegment {
 }
 
 export function lintSegment(replikk: string, sek: number, laast: boolean) {
-  const n = ord(replikk).length;
+  const n = wcount(replikk);
   const need = START + n / WPS + TAIL;
   const varsler: string[] = [];
   if (n > MAX_WORDS && !laast) varsler.push(`${n} ord (maks ${MAX_WORDS})`);
   if (need > sek)
-    varsler.push(`${n} ord trenger ${need.toFixed(1)} s, bestilt ${sek} s`);
+    varsler.push(
+      `${n} ord trenger ${need.toFixed(1)} s med 2 s hale, bestilt ${sek} s`,
+    );
   else if (sek >= 15 && need > 13)
-    varsler.push(`${n} ord trenger ${need.toFixed(1)} s; ofte bare 13 s`);
+    varsler.push(`${n} ord trenger ${need.toFixed(1)} s; modellen leverer ofte 13 s på 15`);
   return { n, varsler };
 }
 
@@ -70,14 +74,16 @@ export function parseJulius(md: string, dag: number) {
   for (const seg of deler) {
     // Greedy within the line: a quoted Rampenissen line inside the replikk has its own «».
     const linje = seg.match(/^\s*«(.+)»([^»\n]*)/);
+    // medie.julius_segments takes the shortest «…» (it stops at a nested »); count what the pipeline counts.
+    const py = seg.match(/^\s*«([\s\S]+?)»(.*)/);
     const sek = seg.match(/^\s*- Varighet: (\d+) s(.*)$/m);
-    if (!linje || !sek) continue;
+    if (!linje || !py || !sek) continue;
     const felt = (k: string) =>
       seg.match(new RegExp(`^\\s*- ${k}: (.+)$`, "m"))?.[1].trim() ?? "";
-    const tag = (linje[2] + sek[2]).toLowerCase();
+    const tag = (py[2] + sek[2]).toLowerCase();
     const laast = tag.includes("låst") || tag.includes("brikke");
     const replikk = linje[1].trim();
-    const { n, varsler } = lintSegment(replikk, Number(sek[1]), laast);
+    const { n, varsler } = lintSegment(py[1].trim(), Number(sek[1]), laast);
     segmenter.push({
       replikk,
       sek: Number(sek[1]),

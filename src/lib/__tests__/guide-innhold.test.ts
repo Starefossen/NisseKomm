@@ -8,6 +8,7 @@ import {
   MANUS,
   parseJulius,
   parseRadio,
+  wcount,
 } from "@/lib/guide-innhold";
 
 const md = (f: string) => readFileSync(f, "utf8");
@@ -48,6 +49,26 @@ describe("manus parsers", () => {
     const lang = Array(25).fill("ord").join(" ");
     expect(lintSegment(lang, 15, false).varsler.join()).toMatch(/maks 22/);
     expect(lintSegment(lang, 15, true).varsler.join()).not.toMatch(/maks/);
+    expect(wcount("TV-en og Lucia-morgen, 85,0")).toBe(5);
+  });
+
+  it("matches julius-dag.py lint on day 13", () => {
+    // Expected values from: julius-dag.py wcount/timing over medie.julius_segments(13)
+    const segs = parseJulius(md(MANUS.julius), 13)!.segmenter;
+    expect(segs.map((s) => [s.ord, s.sek, s.laast])).toEqual([
+      [19, 14, false],
+      [9, 14, false],
+      [21, 15, false],
+      [25, 15, true],
+      [26, 15, true],
+    ]);
+    expect(segs.map((s) => s.varsler)).toEqual([
+      [],
+      [],
+      ["21 ord trenger 14.2 s; modellen leverer ofte 13 s på 15"],
+      ["25 ord trenger 16.5 s med 2 s hale, bestilt 15 s"],
+      ["26 ord trenger 17.0 s med 2 s hale, bestilt 15 s"],
+    ]);
   });
 });
 
