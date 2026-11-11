@@ -49,10 +49,10 @@ const MODULER: Record<string, [OpplasingVindu, string]> = {
 
 // Tails rotate so repeated alerts don't read as copies. No digits (number codes) and no code words.
 const UGLE_HALE = [
-  "Æ har pussa brillan te Knerten. Med genseren. Ikkje sei det te Winter.",
-  "Knerten har fått nye batteri. Altså, æ fant dem i ei skuff hos IQ.",
-  "Knerten e lada. Æ e lada. Kaffen te IQ e sterk.",
-  "Siste kapittel. Æ e ikkje nervøs. Det e brillan te Knerten som dogge.",
+  "Æ har pussa brillan te Floke. Med genseren. Ikkje sei det te Winter.",
+  "Floke har fått nye batteri. Altså, æ fant dem i ei skuff hos IQ.",
+  "Floke e lada. Æ e lada. Kaffen te IQ e sterk.",
+  "Siste kapittel. Æ e ikkje nervøs. Det e brillan te Floke som dogge.",
 ];
 const SLEDE_HALE = [
   "Kalibrert og testet. Av Pil. Han lever.",
