@@ -300,15 +300,19 @@ describe("Nissespill: motor", () => {
       ["tjernet", "snoehaugen"],
       ["tjernet", "hytta", "noekkel"],
       ["tjernet", "hytta"],
+      ["tjernet", "benken"],
       ["verksted", "tavla"],
       ["verksted", "hyllene"],
       ["verksted", "sidebordet"],
       ["verksted", "krakken"],
       ["+", "sirup", "knekkebroed"],
-      ["verksted", "radioroerene", "blikkboks"],
-      ["verksted", "radioroerene", "grytevott"],
+      ["+", "blikkboks", "grytevott"],
+      ["verksted", "radioroerene", "boks_i_vott"],
       ["tjernet", "rudolf", "sirupbroed"],
       ["tjernet", "tannhjulet", "varmboks"],
+      // The box is cold again; the frozen water cup needs a second round
+      ["verksted", "radioroerene", "boks_i_vott"],
+      ["tjernet", "peileskiva", "varmboks"],
       ["tjernet", "peileskiva", "magnetnaal"],
     ]);
   });
