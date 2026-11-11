@@ -122,6 +122,12 @@ for (const k of KAPITLER) {
     `nissespill kapittel ${k.n}`,
     JSON.stringify(k, (_, v) => (typeof v === "number" ? undefined : v)),
   );
+  // Locked chapters show title and teaser in the list from the first chapter's day.
+  add(
+    KAPITLER[0].dag,
+    `nissespill kapittel ${k.n} låst`,
+    `${k.tittel} ${k.teaser ?? ""}`,
+  );
 }
 
 // Sledesimulator: stage name, IQ's intro and the day's challenge show on the

@@ -11,6 +11,7 @@ import { SoneEditor } from "./SoneEditor";
 import { KAPITLER, kapittel, erLaastOpp, spilldag } from "./kapitler";
 import * as M from "./motor";
 import { Puslespill } from "./Puslespill";
+import { Portrett, Skriv, UgleIntro } from "./UgleIntro";
 
 const DEV =
   process.env.NODE_ENV !== "production" ||
@@ -26,6 +27,9 @@ const GAMLE_BILDER: Record<string, string> = {
   "spill/antenne-tarn.jpg": "feed/antenne-tarn.png",
   "spill/kulde-grotte.jpg": "feed/kulde-grotte.png",
 };
+// Ugleposten is pixel art (medier.json spill-piksel/*), the photo is the fallback.
+const piksel = (bilde: string) =>
+  bilde.replace(/^spill\/(.+)\.\w+$/, "spill/piksel/$1.png");
 
 const VERBS: { id: M.Verb; label: string; ikon: string }[] = [
   { id: "se", label: "SE", ikon: "eye" },
@@ -35,56 +39,6 @@ const VERBS: { id: M.Verb; label: string; ikon: string }[] = [
 
 const BTN =
   "min-h-12 px-3 rounded border-2 text-xl active:scale-95 transition-transform";
-
-/** Brass-framed pixel portrait; the name's initial until the file exists. */
-function Portrett({ navn, stor }: { navn: string; stor?: boolean }) {
-  const [mangler, setMangler] = useState(false);
-  const size = stor ? "w-20 h-20" : "w-12 h-12";
-  return (
-    <div
-      className={`${size} shrink-0 border-2 border-(--brass) bg-black flex items-center justify-center overflow-hidden`}
-    >
-      {mangler ? (
-        <span className="text-3xl text-(--gold)">{navn[0].toUpperCase()}</span>
-      ) : (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={mediaUrl(`spill/portrett-${navn}.png`)}
-          alt={navn}
-          draggable={false}
-          className="w-full h-full pixelated"
-          onError={() => setMangler(true)}
-        />
-      )}
-    </div>
-  );
-}
-
-/**
- * Typewriter line; a tap finishes it. The untyped rest stays in the DOM, invisible,
- * so the box never jumps and the full text is there for screen readers and tests.
- */
-function Skriv({ tekst }: { tekst: string }) {
-  const [n, setN] = useState(0);
-  useEffect(() => {
-    if (n >= tekst.length) return;
-    const t = setTimeout(() => setN(n + 2), 22);
-    return () => clearTimeout(t);
-  }, [n, tekst]);
-  return (
-    <span
-      onClick={(e) => {
-        if (n < tekst.length) {
-          e.stopPropagation();
-          setN(tekst.length);
-        }
-      }}
-    >
-      {tekst.slice(0, n)}
-      <span className="invisible">{tekst.slice(n)}</span>
-    </span>
-  );
-}
 
 // Outdoor stills get snow; indoor ones a warm lamp flicker.
 const UTE = [
@@ -155,7 +109,8 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   } | null>(null);
   const [puslespill, setPuslespill] = useState<string | null>(null);
   const [notat, setNotat] = useState(false);
-  const [introSteg, setIntroSteg] = useState(0);
+  // MENY «Se introen igjen» replays the chapter opener
+  const [introIgjen, setIntroIgjen] = useState(false);
   const [visSoner, setVisSoner] = useState(false);
   const [valg, setValg] = useState(false);
   // A tap on empty scene briefly outlines the hotspots (no pixel-hunting on iPad).
@@ -236,10 +191,13 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
 
   const startKapittel = (n: number) => {
     SoundManager.playSound("open");
-    setSave(M.nyttKapittel(kapittel(n), save));
+    const ny = M.nyttKapittel(kapittel(n), save);
+    // The opener plays once per chapter; a replay goes straight to the scene
+    setSave(
+      GameEngine.isIntroSeen(`ugle-k${n}`) ? M.medFlagg(ny, `k${n}_intro`) : ny,
+    );
     setTekst("");
     setDialog(null);
-    setIntroSteg(0);
     setMeny(false);
   };
 
@@ -249,35 +207,44 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
         <div className="p-4 md:p-6 max-w-2xl mx-auto space-y-4">
           <h2 className="text-3xl text-(--gold) tracking-wider">UGLEPOSTEN</h2>
           <p className="text-xl leading-tight">
-            Rampenissen har glemt noe i Snøfall. Styr Knerten, ull-ugla hans,
+            Rampenissen har glemt noe i Snøfall. Styr Floke, ull-ugla hans,
             gjennom IQs kameraer og hjelp ham, ett kapittel om gangen. Trykk på
             ting for å SE, BRUK og SNAKK.
           </p>
           <ul className="space-y-2">
             {KAPITLER.map((k) => {
-              const aapen = erLaastOpp(k, dag) && k.klar;
+              const laast = !erLaastOpp(k, dag);
+              const aapen = !laast && k.klar;
               const ferdig = save?.flags.includes(k.slutt);
               const paagaar = save?.kapittel === k.n && !ferdig;
               return (
                 <li
                   key={k.n}
-                  className="flex items-center gap-3 border-2 border-(--brass) px-3 py-2"
+                  className={`flex items-center gap-3 border-2 px-3 py-2 ${laast ? "border-(--brass)/40 text-gray-400" : "border-(--brass)"}`}
                 >
+                  {laast && <Icon name="lock" size={28} color="gray" />}
                   <div className="flex-1 min-w-0">
                     <div className="text-2xl truncate">
                       Kapittel {k.n}: {k.tittel}
                     </div>
-                    <div className="text-base text-(--cold-blue)">
+                    <div
+                      className={`text-base ${laast ? "text-gray-500" : "text-(--cold-blue)"}`}
+                    >
                       {ferdig && save
                         ? `Fullført · ${M.oppsummering(k, save).kort}`
-                        : !erLaastOpp(k, dag)
-                          ? `Låses opp ${k.dag}. desember`
+                        : laast
+                          ? `ÅPNER DAG ${k.dag}`
                           : !k.klar
                             ? "Under arbeid i Snøfall"
                             : paagaar
                               ? "Påbegynt"
                               : "Klar"}
                     </div>
+                    {laast && (
+                      <div className="text-lg italic text-gray-400 leading-tight">
+                        {k.teaser}
+                      </div>
+                    )}
                   </div>
                   {aapen && (
                     <button
@@ -302,6 +269,12 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   const kap = kapittel(save.kapittel);
   const scene = M.scene(kap, save);
   const hotspots = M.synlige(scene, save);
+  const bildeSrc = [
+    mediaUrl(piksel(scene.bilde)),
+    mediaUrl(scene.bilde),
+    ...(GAMLE_BILDER[scene.bilde] ? [mediaUrl(GAMLE_BILDER[scene.bilde])] : []),
+    "/village-day.jpg",
+  ].find((u) => !bildeFeil.includes(u));
   const introFlagg = `k${kap.n}_intro`;
   const utroFlagg = `k${kap.n}_utro`;
   const iIntro = !M.has(save, introFlagg);
@@ -378,18 +351,12 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
               <img
                 key={scene.bilde}
                 style={{ animation: "fadeIn 0.5s ease-out" }}
-                src={[
-                  mediaUrl(scene.bilde),
-                  ...(GAMLE_BILDER[scene.bilde]
-                    ? [mediaUrl(GAMLE_BILDER[scene.bilde])]
-                    : []),
-                  "/village-day.jpg",
-                ].find((u) => !bildeFeil.includes(u))}
+                src={bildeSrc}
                 alt={scene.navn}
                 draggable={false}
                 // Fill, not cover: hotspot percents are of the image, so the image
                 // must span the 16:9 stage exactly (stills are 16:9 ±1 %).
-                className="absolute inset-0 w-full h-full object-fill"
+                className={`absolute inset-0 w-full h-full object-fill ${bildeSrc === mediaUrl(piksel(scene.bilde)) ? "pixelated" : ""}`}
                 onError={(e) => {
                   // Read src now: React clears currentTarget before the updater runs
                   const src = e.currentTarget.getAttribute("src") ?? "";
@@ -415,7 +382,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                       });
                       bruk(M.trykk(kap, save, h, verb, holder), h);
                     }}
-                    className={`group absolute rounded min-w-11 min-h-11 ${hint ? "border-2 border-dashed border-(--gold)" : ""} active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) focus-visible:bg-white/20`}
+                    className={`group absolute rounded min-w-11 min-h-11 ${hint ? "border-2 border-dashed border-(--gold)" : "hover:border-2 hover:border-dashed hover:border-(--gold)/60"} active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--gold) focus-visible:bg-white/20`}
                     style={{
                       left: `${h.rect.x}%`,
                       top: `${h.rect.y}%`,
@@ -572,46 +539,46 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 )}
               </div>
             )}
-            {(iIntro || iUtro) && (
+            {(iIntro || introIgjen) && (
+              <UgleIntro
+                key={`${kap.n}-${introIgjen}`}
+                kap={kap}
+                bilde={bildeSrc}
+                sceneNavn={scene.navn}
+                onDone={() => {
+                  GameEngine.markIntroSeen(`ugle-k${kap.n}`);
+                  setIntroIgjen(false);
+                  if (iIntro) setSave(M.medFlagg(save, introFlagg));
+                }}
+              />
+            )}
+            {iUtro && (
               <div className={`${PANEL} flex items-start gap-3`}>
                 <Portrett navn="rampenissen" />
                 <div className="flex-1 min-w-0">
                   <p className="text-lg text-(--gold)">Rampenissen</p>
                   <p className="text-xl leading-tight">
-                    <Skriv
-                      key={iIntro ? kap.intro[introSteg] : kap.utro}
-                      tekst={iIntro ? kap.intro[introSteg] : kap.utro}
-                    />
+                    <Skriv key={kap.utro} tekst={kap.utro} />
                   </p>
-                  {iUtro && (
-                    <div className="mt-2 border-2 border-(--gold) px-3 py-2 space-y-1">
-                      <p className="text-2xl text-(--gold) tracking-wider">
-                        KAPITTEL {kap.n} FULLFØRT
-                      </p>
-                      <p className="text-lg text-(--cold-blue)">
-                        {M.oppsummering(kap, save).kort}
-                      </p>
-                      <p className="text-lg">
-                        {M.oppsummering(kap, save).linje}
-                      </p>
-                    </div>
-                  )}
+                  <div className="mt-2 border-2 border-(--gold) px-3 py-2 space-y-1">
+                    <p className="text-2xl text-(--gold) tracking-wider">
+                      KAPITTEL {kap.n} FULLFØRT
+                    </p>
+                    <p className="text-lg text-(--cold-blue)">
+                      {M.oppsummering(kap, save).kort}
+                    </p>
+                    <p className="text-lg">{M.oppsummering(kap, save).linje}</p>
+                  </div>
                   <button
                     type="button"
                     className={`${MENYPUNKT} text-(--gold)`}
                     onClick={() => {
                       SoundManager.playSound("click");
-                      if (iUtro) {
-                        setSave(M.medFlagg(save, utroFlagg));
-                        setMeny(true);
-                      } else if (introSteg + 1 < kap.intro.length) {
-                        setIntroSteg(introSteg + 1);
-                      } else {
-                        setSave(M.medFlagg(save, introFlagg));
-                      }
+                      setSave(M.medFlagg(save, utroFlagg));
+                      setMeny(true);
                     }}
                   >
-                    {iUtro ? "TIL KAPITLENE" : "VIDERE"}
+                    TIL KAPITLENE
                   </button>
                 </div>
               </div>
@@ -621,10 +588,10 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
               <div className={`${PANEL} space-y-2`}>
                 {dialog.sagt && (
                   <div className="flex items-start gap-3">
-                    <Portrett navn="knerten" />
+                    <Portrett navn="floke" />
                     <div className="min-w-0">
                       <p className="text-lg text-(--cold-blue)">
-                        Dere (gjennom Knerten)
+                        Dere (gjennom Floke)
                       </p>
                       <p className="text-xl leading-tight">«{dialog.sagt}»</p>
                     </div>
@@ -812,6 +779,16 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                   }}
                 >
                   Start kapittelet på nytt
+                </button>
+                <button
+                  type="button"
+                  className={MENYPUNKT}
+                  onClick={() => {
+                    setValg(false);
+                    setIntroIgjen(true);
+                  }}
+                >
+                  Se introen igjen
                 </button>
                 {DEV && (
                   <>

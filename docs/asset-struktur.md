@@ -63,7 +63,7 @@ assets/
 }
 ```
 
-En mal skriver `{{winter}}` (beskrivelse.txt), `{{objects/postkasse}}`, `{{stil}}` eller `{{hvem}}`. Én funksjon i `medie.py`, `render(id)`, setter inn tekstene og løser `#variant` til en bildesti. Den rendrede prompten skrives til `out/prompts/<id>.txt`, og det er den filen shell-generatorene (still.sh, loop.sh, portrett.sh) får. De endres ikke. Sidefilen hasher den rendrede teksten og hver ref. Derfor gjør en endring i `winter/beskrivelse.txt` eller `ref-tophat.jpg` alle Winter-filer ⚠, uten egen avhengighetslogikk.
+En mal skriver `{{winter}}` (beskrivelse.txt), `{{objects/postkasse}}`, `{{stil}}`, `{{prompts/spill/piksel-stil}}` (en felles blokk i `prompts/`) eller `{{hvem}}`. Én funksjon i `medie.py`, `render(id)`, setter inn tekstene og løser `#variant` til en bildesti. Den rendrede prompten skrives til `out/prompts/<id>.txt`, og det er den filen shell-generatorene (still.sh, loop.sh, portrett.sh) får. De endres ikke. Sidefilen hasher den rendrede teksten og hver ref. Derfor gjør en endring i `winter/beskrivelse.txt` eller `ref-tophat.jpg` alle Winter-filer ⚠, uten egen avhengighetslogikk.
 
 Julius (`julius.sh`, `julius-dag.py`) bruker allerede `cat beskrivelse.txt`; den eneste endringen er at ref-stien hentes fra `entitet.json`. Rampenissen-TTS har ingen bildekilde og blir som den er.
 

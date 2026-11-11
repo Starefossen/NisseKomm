@@ -104,7 +104,8 @@ interface GameEngineDependencies {
   kidCodeResolver?: () => Promise<string | null>;
 }
 
-type IntroId = "boot" | "tail" | "brev-tint" | `ny-${string}`;
+type IntroId =
+  "boot" | "tail" | "brev-tint" | `ny-${string}` | `ugle-k${number}`;
 
 export class GameEngine {
   private static dependencies: GameEngineDependencies = {};
@@ -348,7 +349,7 @@ export class GameEngine {
     StorageManager.markJuliusWatched(day);
   }
 
-  /** One-off sequences: day-1 opener (T14) "boot" after the password and "tail" after Julius' video; "brev-tint" is Brevfugler's day-24 thaw. */
+  /** One-off sequences: day-1 opener (T14) "boot" after the password and "tail" after Julius' video; "brev-tint" is Brevfugler's day-24 thaw; "ugle-k<n>" is Ugleposten's chapter opener. */
   static isIntroSeen(id: IntroId): boolean {
     return StorageManager.getIntrosSeen().includes(id);
   }

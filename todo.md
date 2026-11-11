@@ -154,7 +154,7 @@ Hvert delsystem gjennomgås for seg: integrasjon med resten, design, kodekvalite
 
 ## Senere forbedringer (etter sesongen)
 
-- [ ] **Fjær gir noe tilbake (Ugleposten):** alle 8 fjær låser opp `MORO/knerten.txt` i NisseNet, og en variant av Julius' PS dag 24 (PS-teksten er låst, krever Hans' ja). Innsats M. Se `docs/minispill-sesong.md`.
+- [ ] **Fjær gir noe tilbake (Ugleposten):** alle 8 fjær låser opp `MORO/floke.txt` i NisseNet, og en variant av Julius' PS dag 24 (PS-teksten er låst, krever Hans' ja). Innsats M. Se `docs/minispill-sesong.md`.
 - [ ] **Lykkebjella på tvers av spill:** fullført Ugleposten kapittel 4 gir sleden bjella fra kapittel 1: lyd og «LYKKEBJELLA OM BORD» på julenatt-etappen. Innsats S.
 - [ ] **Sledesimulator: highscore-tavle.** Fable anbefaler å trekke den fram før sesongen (søskentavle med navneknapper, beste per etappe og dagens utfordring per spiller; innsats M). Rekorder per etappe og per spiller (Kristian/Håkon, samme navneknapper som Brev til Julius), topp 3 per etappe, dagens beste på startskjermen, synket mellom skjermene.
 - [ ] **Hullkort / sjablongkort:** kort med utklippede vinduer som legges over en side i en fysisk bok.

@@ -21,11 +21,12 @@ export const KAPITTEL_2: Kapittel = {
   tittel: "Antenna i permafrost",
   dag: 10,
   klar: true,
+  teaser: "Bildet hakker. Noe tygger på noe det ikke burde.",
   start: "tjernet",
   slutt: "k2_ferdig",
   intro: [
     R +
-      "«Psst, dokker! Det e kaldt, og bildet fra Snøfall HAKKE. Knerten sitt ute ved tjernet, og æ ser bare halve ugla. Den bakerste halvdelen. Det e ikkje den beste.»",
+      "«Psst, dokker! Det e kaldt, og bildet fra Snøfall HAKKE. Floke sitt ute ved tjernet, og æ ser bare halve ugla. Den bakerste halvdelen. Det e ikkje den beste.»",
     R +
       "«Antenna ved tjernet har frøse fast. Og veit dokker kem som står og TYGG på kabelen? Rudolf. Han med nesa. Han tygg på alt når han kjede sæ. I fjor åt han ei dørmatte og halve skriveplata te Winter.»",
     R +
@@ -75,7 +76,7 @@ export const KAPITTEL_2: Kapittel = {
       id: "sirupbroed",
       navn: "Knekkebrød med sirup",
       ikon: "cake",
-      se: "Knekkebrød med et tykt lag sirup. Det drypper. Det lukter så godt at Knerten blunker to ganger og Rampenissen blunker tre.",
+      se: "Knekkebrød med et tykt lag sirup. Det drypper. Det lukter så godt at Floke blunker to ganger og Rampenissen blunker tre.",
     },
     magnetnaal: {
       id: "magnetnaal",
@@ -92,7 +93,7 @@ export const KAPITTEL_2: Kapittel = {
   },
   fjaerBelonning:
     R +
-    "«To fjær te! Knerten mista ei fjær hver gang ho e stolt. Ho e stolt ofte. Det e en av tingan vi har felles.»",
+    "«To fjær te! Floke mista ei fjær hver gang ho e stolt. Ho e stolt ofte. Det e en av tingan vi har felles.»",
   puslespill: {
     hyttelaas: {
       type: "laas",
@@ -159,7 +160,7 @@ export const KAPITTEL_2: Kapittel = {
           navn: "Himmelen",
           rect: { x: 0, y: 0, w: 44, h: 30 },
           smart: "se",
-          se: "Grønt lys bølger over fjella. Stjernene står tett. Én av dem er nordstjerna, og du aner ikke hvilken. Det gjør ikke Knerten heller. Hun er ei ugle, ikke et kart.",
+          se: "Grønt lys bølger over fjella. Stjernene står tett. Én av dem er nordstjerna, og du aner ikke hvilken. Det gjør ikke Floke heller. Hun er ei ugle, ikke et kart.",
         },
         {
           id: "fjella",
@@ -227,7 +228,7 @@ export const KAPITTEL_2: Kapittel = {
               flagg: "antenne_peilet",
               forbruker: true,
               tekst:
-                "Du legger korken med nåla i vannkoppen. Den røde enden snur seg mot nord. Knerten vrir skiva til N møter nåla, og antenna svinger rundt og stopper på L. " +
+                "Du legger korken med nåla i vannkoppen. Den røde enden snur seg mot nord. Floke vrir skiva til N møter nåla, og antenna svinger rundt og stopper på L. " +
                 R +
                 "«Æ ser ... SNØ. Antenna peke rett, men mottakeren i hytta står på feil tall. Alt hos IQ står på en lapp.»",
             },
@@ -235,7 +236,7 @@ export const KAPITTEL_2: Kapittel = {
               item: "magnetnaal",
               hvis: "tannhjul_tint",
               tekst:
-                "Du legger korken oppå isen i koppen. Den ligger der. Den peker på Knerten. Knerten er ikke nord. " +
+                "Du legger korken oppå isen i koppen. Den ligger der. Den peker på Floke. Floke er ikke nord. " +
                 R +
                 "«Nåla må FLYTE, sa IQ. Is e ikkje vann. Det e vann som har gitt opp.»",
             },
@@ -353,7 +354,7 @@ export const KAPITTEL_2: Kapittel = {
             },
             {
               tekst:
-                "Knerten hakker på isen med nebbet. Isen vinner. " +
+                "Floke hakker på isen med nebbet. Isen vinner. " +
                 R +
                 "«Det der treng nåkka varmt. Og ikkje bare et sekund. Nåkka som HOLD på varmen.»",
             },
@@ -423,7 +424,7 @@ export const KAPITTEL_2: Kapittel = {
             R +
             "«Fisken har hørt verre spørsmål. Fra mæ. I fjor.»",
           se: "Tjernet er frosset blankt som en tallerken. Under isen går det en liten fisk fram og tilbake og lurer på hvor taket kom fra. Den har spurt de andre fiskene. De vet heller ikke.",
-          bruk: "Knerten prøver isen med én fot. Den holder. Hun prøver med to. Den holder. Hun går tilbake på land. Ugler har et godt forhold til land.",
+          bruk: "Floke prøver isen med én fot. Den holder. Hun prøver med to. Den holder. Hun går tilbake på land. Ugler har et godt forhold til land.",
         },
         {
           id: "hytta",
@@ -461,7 +462,7 @@ export const KAPITTEL_2: Kapittel = {
             item: "blikkboks",
             hvis: "hytta_aapen",
             tekst:
-              "Du løfter blikkboksen fra benken. Den er tung og iskald. Knerten må ta to tak og si et ord ugler ikke skal si.",
+              "Du løfter blikkboksen fra benken. Den er tung og iskald. Floke må ta to tak og si et ord ugler ikke skal si.",
           },
           feil: {
             sirupbroed:
@@ -525,7 +526,7 @@ export const KAPITTEL_2: Kapittel = {
           smart: "bruk",
           se: "En liten snøhaug rett foran døra. Akkurat der ei dørmatte ville ligget, hvis noen hadde eid ei dørmatte. Noen eide ei. Rudolf åt den.",
           bruk:
-            "Knerten graver med begge føttene. Snø til alle kanter. Ingen nøkkel. Ingen matte. " +
+            "Floke graver med begge føttene. Snø til alle kanter. Ingen nøkkel. Ingen matte. " +
             R +
             "«Alle gjømme nøkla under matta. IQ har ikkje matte. Så han har kodelås. Og skilt. Han e trygg på en veldig utrygg måte.»",
         },

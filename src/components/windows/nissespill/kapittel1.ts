@@ -16,11 +16,12 @@ export const KAPITTEL_1: Kapittel = {
   tittel: "Senga i postkassen",
   dag: 4,
   klar: true,
+  teaser: "Rampenissen har mistet senga si. Og noe som ringer.",
   start: "torget",
   slutt: "k1_ferdig",
   intro: [
     R +
-      "«Psst. Dokker trur kanskje æ bare sitt i hylla og glor? Feil. IQ har kobla kameraan i Snøfall te skjermen dokkers, og no e DOKKER Knerten: ull-ugla mi med messingbrilla. Dokker ser det ho ser, og folk i Snøfall snakke te ho som om det va dokker. Æ sitt her i hylla og hviske. Ingen der borte hør mæ. Heldigvis.»",
+      "«Psst. Dokker trur kanskje æ bare sitt i hylla og glor? Feil. IQ har kobla kameraan i Snøfall te skjermen dokkers, og no e DOKKER Floke: ull-ugla mi med messingbrilla. Dokker ser det ho ser, og folk i Snøfall snakke te ho som om det va dokker. Æ sitt her i hylla og hviske. Ingen der borte hør mæ. Heldigvis.»",
     R +
       "«Saka e sånn: Æ sov i ei garnkurv på loftet te IQ heile året. I kurven ligg lykkebjella mi, og uten den finn ikkje sleden fram te stua dokkers på julaften. No e kurven BORTE. Æ har mistanka. Han har skjerf.»",
     R +
@@ -28,7 +29,7 @@ export const KAPITTEL_1: Kapittel = {
   ],
   utro:
     R +
-    "«Dokker klarte det! Lykkebjella e trygg, og Knerten flyg kurven opp på loftet igjen. Winter fikk skjemaet sitt, IQ fikk glasset sitt, og æ fikk senga mi. Alle vant. Neste gang treng æ hjelp med nåkka ... kaldere. Æ sei ikkje meir. Over og ut!»",
+    "«Dokker klarte det! Lykkebjella e trygg, og Floke flyg kurven opp på loftet igjen. Winter fikk skjemaet sitt, IQ fikk glasset sitt, og æ fikk senga mi. Alle vant. Neste gang treng æ hjelp med nåkka ... kaldere. Æ sei ikkje meir. Over og ut!»",
   gjenstander: {
     tyttebaer: {
       id: "tyttebaer",
@@ -69,7 +70,7 @@ export const KAPITTEL_1: Kapittel = {
   },
   fjaerBelonning:
     R +
-    "«To uglefjær! Knerten mista dem ikkje. Ho legg dem igjen med vilje. Det e sånn ho skriv navnet sitt.»",
+    "«To uglefjær! Floke mista dem ikkje. Ho legg dem igjen med vilje. Det e sånn ho skriv navnet sitt.»",
   puslespill: {
     skrin: {
       type: "laas",
@@ -182,7 +183,7 @@ export const KAPITTEL_1: Kapittel = {
             {
               hvis: "postkasse_opplaast",
               tekst:
-                "Du drar i luka. Den rikker seg ikke. Hengslet er frosset fast, og Knerten har ikke armer til å dra med. Hun har prøvd. Det er pinlig for alle.",
+                "Du drar i luka. Den rikker seg ikke. Hengslet er frosset fast, og Floke har ikke armer til å dra med. Hun har prøvd. Det er pinlig for alle.",
             },
             {
               tekst:

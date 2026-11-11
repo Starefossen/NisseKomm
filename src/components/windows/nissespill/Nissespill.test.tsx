@@ -122,7 +122,8 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
   it("menyen viser bare kapittel 1 som spillbart på dag 4", () => {
     const el = mount();
     expect(el.textContent).toContain("Kapittel 1: Senga i postkassen");
-    expect(el.textContent).toContain("Låses opp 10. desember");
+    expect(el.textContent).toContain("ÅPNER DAG 10");
+    expect(el.textContent).toContain("Noe tygger på noe");
     expect(find(el, "SPILL")).toBeDefined();
     expect(
       [...el.querySelectorAll("button")].filter(
@@ -134,12 +135,16 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
   it("hele kjeden i jsdom, lagret gjennom GameEngine, gjenopptas etter remount", () => {
     let el = mount();
     tap(el, "SPILL");
-    // Intro: three bubbles from Rampenissen
-    expect(el.textContent).toContain("Knerten");
+    // Opener: camera boots, Floke wakes, then Rampenissen's three lines
+    expect(el.textContent).toContain("KAMERA 3 TILKOBLET");
     tap(el, "VIDERE");
+    expect(el.textContent).toContain("Floke våkner");
     tap(el, "VIDERE");
-    tap(el, "VIDERE");
+    expect(el.textContent).toContain("hvisker fra hylla");
+    expect(el.textContent).toContain("DOKKER Floke");
+    tap(el, "HOPP OVER");
     expect(GameEngine.getEventyrSave()?.flags).toContain("k1_intro");
+    expect(GameEngine.isIntroSeen("ugle-k1")).toBe(true);
 
     // The pad is in plain sight; Winter explains what it is for
     expect(find(el, "Stempelputa")).toBeDefined();
@@ -247,9 +252,7 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
   it("fjæra plukkes med SE, telles og overlever nytt kapittel", () => {
     const el = mount();
     tap(el, "SPILL");
-    tap(el, "VIDERE");
-    tap(el, "VIDERE");
-    tap(el, "VIDERE");
+    tap(el, "HOPP OVER");
     tap(el, "SE");
     tap(el, "Noe lite");
     expect(el.textContent).toContain("Fjær 1/2");
@@ -260,9 +263,7 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
   it("NOTAT åpner notatboka med dagens mål", () => {
     const el = mount();
     tap(el, "SPILL");
-    tap(el, "VIDERE");
-    tap(el, "VIDERE");
-    tap(el, "VIDERE");
+    tap(el, "HOPP OVER");
     tap(el, "NOTAT");
     expect(el.textContent).toContain("Hva gjør vi nå?");
     expect(el.textContent).toContain("garnkurven");
@@ -274,9 +275,7 @@ describe("Nissespill: kapittel 1 spilles gjennom", () => {
   it("TIPS følger første uløste gåte og stopper på nivå 3", () => {
     const el = mount();
     tap(el, "SPILL");
-    tap(el, "VIDERE");
-    tap(el, "VIDERE");
-    tap(el, "VIDERE");
+    tap(el, "HOPP OVER");
     tap(el, "TIPS");
     expect(el.textContent).toContain("Han med skjerfet");
     tap(el, "TIPS");

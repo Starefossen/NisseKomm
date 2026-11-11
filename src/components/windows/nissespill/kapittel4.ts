@@ -22,6 +22,7 @@ export const KAPITTEL_4: Kapittel = {
   tittel: "Klar til avgang",
   dag: 22,
   klar: true,
+  teaser: "Porten står åpen. Winter har en liste og to blyanter.",
   start: "porten",
   slutt: "k4_ferdig",
   intro: [
@@ -30,7 +31,7 @@ export const KAPITTEL_4: Kapittel = {
     R +
       "«Julius finn ikkje brillan sine. Lykkebjella mi, den vi redda fra postkassen, e BORTE fra knaggen. Og porten hyle som en katt hver gang nån tar i den. Æ har hørt den heilt te Bergen. Naboen trudde det va mæ.»",
     R +
-      "«Knerten står ved porten. Winter har lista, Julius har kontoret, og dokker har hodan. Dokker kan dette no. Æ sitt her og spise klementin og e nervøs. Det e sånn æ hjelpe.»",
+      "«Floke står ved porten. Winter har lista, Julius har kontoret, og dokker har hodan. Dokker kan dette no. Æ sitt her og spise klementin og e nervøs. Det e sånn æ hjelpe.»",
   ],
   utro:
     R +
@@ -40,7 +41,7 @@ export const KAPITTEL_4: Kapittel = {
       id: "fjaer",
       navn: "Fjærpenn",
       ikon: "feather",
-      se: "Julius' fjærpenn, med grønt blekk på spissen og en veldig myk fjær i den andre enden. Den kiler bare av å se på den. Knerten ser på den og rister på seg.",
+      se: "Julius' fjærpenn, med grønt blekk på spissen og en veldig myk fjær i den andre enden. Den kiler bare av å se på den. Floke ser på den og rister på seg.",
     },
     klementin: {
       id: "klementin",
@@ -64,7 +65,7 @@ export const KAPITTEL_4: Kapittel = {
       id: "magnet",
       navn: "Hestesko-magnet",
       ikon: "zap",
-      se: "En rød hestesko-magnet. Den holdt fast tre lapper på skapet til taletrakten. Nå holder den fast i Knertens fot. Hun får den løs. Så vidt. Den vil ha foten tilbake.",
+      se: "En rød hestesko-magnet. Den holdt fast tre lapper på skapet til taletrakten. Nå holder den fast i Flokes fot. Hun får den løs. Så vidt. Den vil ha foten tilbake.",
     },
     hyssing: {
       id: "hyssing",
@@ -93,7 +94,7 @@ export const KAPITTEL_4: Kapittel = {
   },
   fjaerBelonning:
     R +
-    "«Siste fjær! Åtte te sammen, heile veien fra postkassa te porten. Knerten sei ingenting. Ho ser bare på dokker med dem store brillan. Det e takk, det. På ugle.»",
+    "«Siste fjær! Åtte te sammen, heile veien fra postkassa te porten. Floke sei ingenting. Ho ser bare på dokker med dem store brillan. Det e takk, det. På ugle.»",
   puslespill: {
     fiskevei: {
       type: "rute",
@@ -127,7 +128,7 @@ export const KAPITTEL_4: Kapittel = {
       b: "hyssing",
       gir: "fiskesnoere",
       tekst:
-        "Du knytter hyssingen rundt magneten med en dobbel knute. Knerten strammer med nebbet. " +
+        "Du knytter hyssingen rundt magneten med en dobbel knute. Floke strammer med nebbet. " +
         R +
         "«Fiskestang! Æ fiska en gang. Æ fikk en sokk. Det va min egen sokk. Æ hadde den på mæ da æ kasta ut.»",
     },
@@ -378,7 +379,7 @@ export const KAPITTEL_4: Kapittel = {
           rect: { x: 20, y: 80, w: 60, h: 20 },
           smart: "se",
           se: "Snøen foran porten er tråkket flat av støvler og hover. Ett spor går i sirkel tre ganger og ender ved lanterna. Det er reinsdyrspor. Han ville bare se på lyset. Og smake på det. Det er et bittemerke i snøen under lanterna.",
-          bruk: "Knerten tegner en ugle i snøen med foten. Den ligner. Litt. Den ligner mer på Winter. Du visker den ut før han ser.",
+          bruk: "Floke tegner en ugle i snøen med foten. Den ligner. Litt. Den ligner mer på Winter. Du visker den ut før han ser.",
         },
       ],
     },
@@ -395,7 +396,7 @@ export const KAPITTEL_4: Kapittel = {
           navn: "Juletreet",
           rect: { x: 4, y: 0, w: 30, h: 76 },
           smart: "se",
-          se: "Juletreet, nå med fire småkaker færre enn sist. Knerten ser i gulvet. Knerten vet ingenting om småkaker. Knerten har smuler på nebbet.",
+          se: "Juletreet, nå med fire småkaker færre enn sist. Floke ser i gulvet. Floke vet ingenting om småkaker. Floke har smuler på nebbet.",
         },
         {
           id: "vedkassa",
@@ -434,7 +435,7 @@ export const KAPITTEL_4: Kapittel = {
             },
             {
               tekst:
-                "Knerten stikker nebbet ned i sprekken. For trangt. Hun stikker foten ned. For trangt. Hun stikker hodet ned. Nei. " +
+                "Floke stikker nebbet ned i sprekken. For trangt. Hun stikker foten ned. For trangt. Hun stikker hodet ned. Nei. " +
                 R +
                 "«For trangt for hender og ugler. Men ikkje for nåkka på ei snor. Nåkka som bjella vil HENGE på.»",
             },
@@ -453,13 +454,13 @@ export const KAPITTEL_4: Kapittel = {
           ],
           feil: {
             magnet:
-              "Du slipper magneten ned i sprekken. KLIKK, den sitter fast i bjella der nede. Og du når ikke ned. Knerten river den opp igjen med nebbet, med nød og neppe. Du trenger noe å senke den ned MED. Og dra opp med.",
+              "Du slipper magneten ned i sprekken. KLIKK, den sitter fast i bjella der nede. Og du når ikke ned. Floke river den opp igjen med nebbet, med nød og neppe. Du trenger noe å senke den ned MED. Og dra opp med.",
             hyssing:
               "Du senker hyssingen ned. Den henger der og gjør ingenting. Bjella er ikke imponert. Noe må sitte i enden. Noe bjeller liker.",
             fjaer:
               "Du stikker fjærpennen ned i sprekken. Det kiler bjella. Den ler ikke. Bjeller ler ikke, de ringer, og denne gjør ikke det engang.",
             klementin:
-              "Du triller klementinen inn i sprekken. Nå er det to ting der nede. Knerten får den ut igjen etter en stund. Dette gikk feil vei.",
+              "Du triller klementinen inn i sprekken. Nå er det to ting der nede. Floke får den ut igjen etter en stund. Dette gikk feil vei.",
             noett:
               "Du triller nøtta inn i sprekken. Den finner en venn der nede. Nå er de to nøtter. Du har ikke hjelp av noen av dem.",
           },
@@ -563,7 +564,7 @@ export const KAPITTEL_4: Kapittel = {
             },
             {
               tekst:
-                "Taletrakten og skapet med plugger. På skapdøra holder en rød hestesko-magnet tre lapper fast. Den øverste: «RING LANDÅS JULAFTEN. IKKE GLEM.» Magneten holder godt. Den holder alt av jern i nærheten. Den holder nesten i Knerten.",
+                "Taletrakten og skapet med plugger. På skapdøra holder en rød hestesko-magnet tre lapper fast. Den øverste: «RING LANDÅS JULAFTEN. IKKE GLEM.» Magneten holder godt. Den holder alt av jern i nærheten. Den holder nesten i Floke.",
             },
           ],
           ta: {
@@ -590,7 +591,7 @@ export const KAPITTEL_4: Kapittel = {
                 "Julius sitter i stolen og myser mot den åpne boka. Han holder den helt opp mot nesa. Så langt fra nesa. Så opp igjen. Det hjelper ikke. Han prøver med ett øye. Det hjelper halvparten så lite.",
             },
           ],
-          bruk: "Du setter deg på Julius' skulder. Han klapper deg på hodet uten å se. «Knerten. Du lukter talg. Eller klementin. Eller begge.»",
+          bruk: "Du setter deg på Julius' skulder. Han klapper deg på hodet uten å se. «Floke. Du lukter talg. Eller klementin. Eller begge.»",
           bruker: [
             {
               item: "briller",
@@ -598,7 +599,7 @@ export const KAPITTEL_4: Kapittel = {
               flagg: "briller_levert",
               forbruker: true,
               tekst:
-                "Julius tar brillene, blåser bort ei fjær og setter dem på nesa. «Å.» Han ser på listen. «Å!» Han ser på deg. «Knerten, du har sot på nebbet.» Nede ved porten krysser Winter av punkt én. " +
+                "Julius tar brillene, blåser bort ei fjær og setter dem på nesa. «Å.» Han ser på listen. «Å!» Han ser på deg. «Floke, du har sot på nebbet.» Nede ved porten krysser Winter av punkt én. " +
                 R +
                 "«Han ser! Han ser lista! Han ser alt! Æ må gjømme klementinskallet.»",
             },
@@ -661,7 +662,7 @@ export const KAPITTEL_4: Kapittel = {
             },
             {
               tekst:
-                "Blekkhuset med fjærpennen i. Fjæra er lang og myk og vipper hver gang noen puster. Knerten puster. Den vipper. Knerten puster igjen. Dette kan hun holde på med lenge.",
+                "Blekkhuset med fjærpennen i. Fjæra er lang og myk og vipper hver gang noen puster. Floke puster. Den vipper. Floke puster igjen. Dette kan hun holde på med lenge.",
             },
           ],
           ta: {
@@ -761,7 +762,7 @@ export const KAPITTEL_4: Kapittel = {
             {
               hvis: "briller_levert",
               tekst:
-                "Snill-listen ligger åpen, og Julius leser den selv nå. Du kikker ikke. Knerten kikker ikke. Nesten ikke. Det står en H øverst på siden. Det kan være hvem som helst.",
+                "Snill-listen ligger åpen, og Julius leser den selv nå. Du kikker ikke. Floke kikker ikke. Nesten ikke. Det står en H øverst på siden. Det kan være hvem som helst.",
             },
             {
               tekst:
@@ -921,16 +922,16 @@ export const KAPITTEL_4: Kapittel = {
             {
               hvis: "k4_ferdig",
               tekst:
-                "«Tre av tre, sier Winter. Jeg har aldri sett ham så ... fornøyd? Han smilte nesten. Nesten. Og du, Knerten: hils Rampenissen og si at bjella henger. Han vet det. Si det likevel. Si det to ganger.»",
+                "«Tre av tre, sier Winter. Jeg har aldri sett ham så ... fornøyd? Han smilte nesten. Nesten. Og du, Floke: hils Rampenissen og si at bjella henger. Han vet det. Si det likevel. Si det to ganger.»",
             },
             {
               hvis: "briller_levert",
               tekst:
-                "«Brillene! Nå ser jeg listen. Og nå ser jeg deg, Knerten. Du har fortsatt sot på nebbet. Og klementin. Og noe som kan være talg. Du har hatt en kveld.»",
+                "«Brillene! Nå ser jeg listen. Og nå ser jeg deg, Floke. Du har fortsatt sot på nebbet. Og klementin. Og noe som kan være talg. Du har hatt en kveld.»",
             },
             {
               tekst:
-                "«Knerten! Kom hit. Jeg ser ikke stort uten brillene mine. Jeg la dem her ved boka i går kveld, og nå er det bare ... fjær der. Og noe som ser på meg. Med ett øye. Det er verre enn to.»",
+                "«Floke! Kom hit. Jeg ser ikke stort uten brillene mine. Jeg la dem her ved boka i går kveld, og nå er det bare ... fjær der. Og noe som ser på meg. Med ett øye. Det er verre enn to.»",
             },
           ],
           valg: [

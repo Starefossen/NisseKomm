@@ -26,13 +26,14 @@ export const KAPITTEL_3: Kapittel = {
   tittel: "Gufset fra dypet",
   dag: 16,
   klar: true,
+  teaser: "Det er mørkt der nede. Noen trenger et lys.",
   start: "kontor",
   slutt: "k3_ferdig",
   intro: [
     R +
       "«Dokker. Hør. Æ har tenkt. Det skjer ikkje ofte, så hør godt etter. Heilt sia æ hørte sukket i isen har æ tenkt. Og no veit vi kem han e, han der nede i grotta. IQ bygde han. Og så glømte alle han. Alle. I mange år.»",
     R +
-      "«Æ vil ikkje slåss med han. Æ vil gi han nåkka. Et lys. Grotta e det mørkaste stedet i heile Snøfall, mørkare enn under senga mi. Knerten sitt hos Julius no. Julius e ute, men Hjerterud e der med bolla. Ho veit ting.»",
+      "«Æ vil ikkje slåss med han. Æ vil gi han nåkka. Et lys. Grotta e det mørkaste stedet i heile Snøfall, mørkare enn under senga mi. Floke sitt hos Julius no. Julius e ute, men Hjerterud e der med bolla. Ho veit ting.»",
     R +
       "«Problemet: det trekk nåkka forferdelig der nede. Alt som brenn, blås ut. Vi treng et lys som trekken ikkje tar, og det må nå heile grotta. Og så sei vi hei. Bare det. Æ klare å sei bare det. Trur æ.»",
   ],
@@ -44,7 +45,7 @@ export const KAPITTEL_3: Kapittel = {
       id: "stearinlys",
       navn: "Tent stearinlys",
       ikon: "fire",
-      se: "Et hvitt stearinlys som brenner rolig. Flammen bøyer seg når Knerten puster på den. Den liker ikke vind. Den har ikke møtt trekken i grotta ennå. Den kommer til å mislike den.",
+      se: "Et hvitt stearinlys som brenner rolig. Flammen bøyer seg når Floke puster på den. Den liker ikke vind. Den har ikke møtt trekken i grotta ennå. Den kommer til å mislike den.",
     },
     tesil: {
       id: "tesil",
@@ -68,12 +69,12 @@ export const KAPITTEL_3: Kapittel = {
       id: "lupe",
       navn: "Julius' lupe",
       ikon: "search",
-      se: "Julius' lupe med messingkant. Han bruker den til å lese små bokstaver i brev fra små barn. Gjennom den ser Knertens fot ut som en drage. Hun ser på den ofte.",
+      se: "Julius' lupe med messingkant. Han bruker den til å lese små bokstaver i brev fra små barn. Gjennom den ser Flokes fot ut som en drage. Hun ser på den ofte.",
     },
   },
   fjaerBelonning:
     R +
-    "«Begge fjæran! Knerten mista fjær når ho e redd òg. Ho e ikkje redd her nede. Ikkje lenger.»",
+    "«Begge fjæran! Floke mista fjær når ho e redd òg. Ho e ikkje redd her nede. Ikkje lenger.»",
   puslespill: {
     lysveien: {
       type: "rute",
@@ -127,7 +128,7 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 4, y: 0, w: 30, h: 84 },
           smart: "se",
           se: "Et juletre med levende lys, røde kuler og småkaker. Én av småkakene mangler en bit. Bitene er på størrelse med et nissegap. Det finnes bare ett nissegap på den størrelsen i Snøfall, og det sitter i Bergen.",
-          bruk: "Du rister forsiktig i ei grein. En kule svinger. En småkake faller. Knerten spiser den. Bevis fjernet. Knerten lærer fort.",
+          bruk: "Du rister forsiktig i ei grein. En kule svinger. En småkake faller. Floke spiser den. Bevis fjernet. Floke lærer fort.",
         },
         {
           id: "lampa",
@@ -181,7 +182,7 @@ export const KAPITTEL_3: Kapittel = {
           ta: {
             item: "stearinlys",
             tekst:
-              "Du tar det ene lyset. Knerten holder det med begge føttene og flyr veldig forsiktig. Flammen holder seg. Så vidt. Knerten holder pusten. Ugler kan det, viser det seg.",
+              "Du tar det ene lyset. Floke holder det med begge føttene og flyr veldig forsiktig. Flammen holder seg. Så vidt. Floke holder pusten. Ugler kan det, viser det seg.",
           },
           bruk: "Det siste lyset får stå. Noen skal finne veien hjem i kveld også. Kanskje flere enn vanlig.",
         },
@@ -201,7 +202,7 @@ export const KAPITTEL_3: Kapittel = {
           smart: "snakk",
           snakk: "hjerterud",
           se: "Hjerterud har satt seg i Julius' stol med en bunke julekort og en penn. Hun skriver fort og pent. Ved siden av står en kopp te som har sluttet å ryke for lenge siden. Hun har ikke merket det. Hun merker alt annet.",
-          bruk: "Du prikker Hjerterud på armen. Hun ser opp over brillekanten og smiler. «Ja, Knerten?» Hun visste at du kom. Hun vet alltid.",
+          bruk: "Du prikker Hjerterud på armen. Hun ser opp over brillekanten og smiler. «Ja, Floke?» Hun visste at du kom. Hun vet alltid.",
         },
         {
           id: "brevbunken",
@@ -252,11 +253,11 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "tok_tesil",
               tekst:
-                "Kald kamillete. Knerten smaker. Knerten angrer. Knerten smaker igjen, for å være sikker. Knerten angrer igjen.",
+                "Kald kamillete. Floke smaker. Floke angrer. Floke smaker igjen, for å være sikker. Floke angrer igjen.",
             },
             {
               tekst:
-                "Du tar ikke ting fra Hjerterud uten å spørre. Ikke engang Knerten. Særlig ikke Knerten. Hjerterud ser opp akkurat idet du tenker tanken.",
+                "Du tar ikke ting fra Hjerterud uten å spørre. Ikke engang Floke. Særlig ikke Floke. Hjerterud ser opp akkurat idet du tenker tanken.",
             },
           ],
         },
@@ -273,7 +274,7 @@ export const KAPITTEL_3: Kapittel = {
             },
             {
               tekst:
-                "Julius' lupe. Han bruker den til å lese små bokstaver i brev. Gjennom den ser Knertens fot ut som en drage. Hun blir litt stolt. Den gjør alt større. Alt.",
+                "Julius' lupe. Han bruker den til å lese små bokstaver i brev. Gjennom den ser Flokes fot ut som en drage. Hun blir litt stolt. Den gjør alt større. Alt.",
             },
           ],
           ta: {
@@ -298,7 +299,7 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 65, y: 76, w: 18, h: 18 },
           smart: "se",
           se:
-            "Julius' dagbok, åpen. Du leser ikke andres dagbøker. Knerten leser ikke andres dagbøker. " +
+            "Julius' dagbok, åpen. Du leser ikke andres dagbøker. Floke leser ikke andres dagbøker. " +
             R +
             "«Æ les ... Nei. Æ gjør ikkje det. Fly videre. Fly videre, sa æ. Okei, bare overskrifta. Nei!»",
         },
@@ -318,14 +319,14 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 42, y: 0, w: 16, h: 40 },
           smart: "se",
           se: "En lang sprekk i taket. Det drysser snø ned gjennom den hele tiden, og med snøen kommer trekken: en lang, kald pust som aldri stopper. Den har holdt på lenge. Den er ikke sliten.",
-          bruk: "Knerten flyr opp mot sprekken. Trekken dytter henne ned igjen. Hun prøver en gang til. Samme svar. Trekken diskuterer ikke.",
+          bruk: "Floke flyr opp mot sprekken. Trekken dytter henne ned igjen. Hun prøver en gang til. Samme svar. Trekken diskuterer ikke.",
         },
         {
           id: "istappene",
           navn: "Istappene",
           rect: { x: 14, y: 0, w: 26, h: 18 },
           smart: "se",
-          se: "Istapper så lange som Knerten er høy. En av dem drypper. Dråpen treffer en krystall og sier «pling». Samme tone hver gang. Den har holdt tonen i mange år. Ingen har klappet.",
+          se: "Istapper så lange som Floke er høy. En av dem drypper. Dråpen treffer en krystall og sier «pling». Samme tone hver gang. Den har holdt tonen i mange år. Ingen har klappet.",
         },
         {
           id: "blaakrystallene",
@@ -392,11 +393,11 @@ export const KAPITTEL_3: Kapittel = {
             {
               en_av: [{ hvis: "skaar_loes" }, { hvis: "lys_paa_sokkelen" }],
               tekst:
-                "Skåret ligger løst nå. Det er bare å ta det. Knerten strekker foten og nøler, for det er fint, og fint er man forsiktig med.",
+                "Skåret ligger løst nå. Det er bare å ta det. Floke strekker foten og nøler, for det er fint, og fint er man forsiktig med.",
             },
             {
               tekst:
-                "Knerten hakker på rimet rundt skåret med nebbet. Rim: 1, nebb: 0. " +
+                "Floke hakker på rimet rundt skåret med nebbet. Rim: 1, nebb: 0. " +
                 R +
                 "«Rim e is. Is smelte av varme. Vi har nåkka varmt. Nåkka varmt med lokk på.»",
             },
@@ -446,7 +447,7 @@ export const KAPITTEL_3: Kapittel = {
                 "Den nederste krystallen lyser. Den neste er mørk. Krystallene sitter i små messingringer og kan vris. Hver har to slipte sider, og lyset går bare ut der siden peker. Noen må vri dem så lyset finner veien opp.",
             },
           ],
-          bruk: "Lyset står. Du rører ikke en eneste krystall. Knerten holder til og med pusten.",
+          bruk: "Lyset står. Du rører ikke en eneste krystall. Floke holder til og med pusten.",
         },
         {
           id: "radioen",
@@ -532,7 +533,7 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "lys_paa_sokkelen",
               tekst:
-                "Du retter litt på lanterna. Den sto bra. Nå står den bra igjen. Knerten er fornøyd med seg selv.",
+                "Du retter litt på lanterna. Den sto bra. Nå står den bra igjen. Floke er fornøyd med seg selv.",
             },
             {
               tekst:
@@ -580,7 +581,7 @@ export const KAPITTEL_3: Kapittel = {
             {
               item: "stearinlys",
               tekst:
-                "Du setter lyset på sokkelen. Trekken tar det med ett pust. Knerten flyr opp og tenner det igjen på lyset i vinduskarmen hos Julius, og later som ingenting. " +
+                "Du setter lyset på sokkelen. Trekken tar det med ett pust. Floke flyr opp og tenner det igjen på lyset i vinduskarmen hos Julius, og later som ingenting. " +
                 R +
                 "«Trekken tar alt som står bart. Lyset treng nåkka rundt sæ. Nåkka med hull i, så det får puste.»",
             },
@@ -599,14 +600,14 @@ export const KAPITTEL_3: Kapittel = {
           navn: "Den store krystallen",
           rect: { x: 0, y: 56, w: 14, h: 44 },
           smart: "se",
-          se: "En krystall høyere enn Knerten, med ei lapp nederst: «NR. 1». Den første. Noen begynte her, en gang, med stor tro på det. Lappen er skrevet med samme skrift som lappen på IQs dør. Yngre skrift. Samme hånd.",
+          se: "En krystall høyere enn Floke, med ei lapp nederst: «NR. 1». Den første. Noen begynte her, en gang, med stor tro på det. Lappen er skrevet med samme skrift som lappen på IQs dør. Yngre skrift. Samme hånd.",
         },
         {
           id: "hoyrekrystallen",
           navn: "Krystallene ved veggen",
           rect: { x: 84, y: 72, w: 16, h: 28 },
           smart: "se",
-          se: "Et knippe klare krystaller som vokser rett opp av gulvet. Speilbildet av Knerten står i hver av dem. Sju ugler. Alle like forbauset. Den åttende er ekte, og hun er mest forbauset.",
+          se: "Et knippe klare krystaller som vokser rett opp av gulvet. Speilbildet av Floke står i hver av dem. Sju ugler. Alle like forbauset. Den åttende er ekte, og hun er mest forbauset.",
         },
       ],
     },
@@ -622,7 +623,7 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "k3_ferdig",
               tekst:
-                "«Så du gjorde det, Knerten. Og Rampenissen tenkte det ut selv. Jeg skal skrive det i et julekort. Til ham. Han kommer til å ramme det inn. Han har ikke ramme. Han kommer til å lage en.»",
+                "«Så du gjorde det, Floke. Og Rampenissen tenkte det ut selv. Jeg skal skrive det i et julekort. Til ham. Han kommer til å ramme det inn. Han har ikke ramme. Han kommer til å lage en.»",
             },
             {
               hvis: "hjerterud_snakket",
@@ -631,7 +632,7 @@ export const KAPITTEL_3: Kapittel = {
             },
             {
               tekst:
-                "«Å, Knerten! Kom inn, kom inn. Julius er ute ved tjernet med IQ, de ser på antenna igjen. Jeg sitter her og skriver julekort for ham. Fire hundre igjen. Hva kan jeg hjelpe med? Si det fort, pennen tørker.»",
+                "«Å, Floke! Kom inn, kom inn. Julius er ute ved tjernet med IQ, de ser på antenna igjen. Jeg sitter her og skriver julekort for ham. Fire hundre igjen. Hva kan jeg hjelpe med? Si det fort, pennen tørker.»",
             },
           ],
           valg: [
@@ -706,16 +707,16 @@ export const KAPITTEL_3: Kapittel = {
             {
               hvis: "k3_ferdig",
               tekst:
-                "«Knerten. Jeg ser lyset herfra. Hele grotta. IQ sa ingenting på fem minutter, og det har aldri skjedd før. Jeg tok tiden.»",
+                "«Floke. Jeg ser lyset herfra. Hele grotta. IQ sa ingenting på fem minutter, og det har aldri skjedd før. Jeg tok tiden.»",
             },
             {
               hvis: "julius_snakket",
               tekst:
-                "«Knerten igjen! Vi står fortsatt her ute. IQ måler noe. Han sier det er viktig. Det sier han om alt. En gang sa han det om en vaffel.»",
+                "«Floke igjen! Vi står fortsatt her ute. IQ måler noe. Han sier det er viktig. Det sier han om alt. En gang sa han det om en vaffel.»",
             },
             {
               tekst:
-                "«Hallo? Er det deg, Hjerterud? Nei ... det er Knerten! Jeg ser deg i det lille kameraet til IQ. Vi står ute ved tjernet. Antenna peker på Landås nå, takket være noen jeg tror jeg kjenner. Jeg kjenner alle, så det er ikke et stort hint.»",
+                "«Hallo? Er det deg, Hjerterud? Nei ... det er Floke! Jeg ser deg i det lille kameraet til IQ. Vi står ute ved tjernet. Antenna peker på Landås nå, takket være noen jeg tror jeg kjenner. Jeg kjenner alle, så det er ikke et stort hint.»",
             },
           ],
           valg: [
