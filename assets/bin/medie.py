@@ -213,11 +213,14 @@ def jobs(root: Path = ROOT) -> dict:
 
 
 def entity_text(name: str, root: Path = ROOT) -> str:
-    """{{stil}} = assets/stil.md, {{objects/x}} = assets/objects/x/beskrivelse.txt, {{winter}} = the one
-    characters|locations|objects/winter/beskrivelse.txt; {{iq.KLÆR}} = its line «KLÆR: …» without the label."""
+    """{{stil}} = assets/stil.md, {{prompts/x/y}} = assets/prompts/x/y.txt, {{objects/x}} = assets/objects/x/
+    beskrivelse.txt, {{winter}} = the one characters|locations|objects/winter/beskrivelse.txt;
+    {{iq.KLÆR}} = its line «KLÆR: …» without the label."""
     a = root / "assets"
     if name == "stil":
         return (a / "stil.md").read_text().strip()
+    if name.startswith("prompts/"):  # {{prompts/spill/piksel-stil}}: a block shared by several templates
+        return (a / f"{name}.txt").read_text().strip()
     name, _, field = name.partition(".")
     if field:
         m = re.search(rf"^{re.escape(field)}: (.*)$", entity_text(name, root), re.M)
@@ -391,7 +394,8 @@ def selftest():
                      "assets/locations/torg/beskrivelse.txt": "torg",
                      "assets/locations/winter/beskrivelse.txt": "dobbel",
                      "p/a.txt": "{{characters/winter.KARAKTER}} ved {{objects/postkasse}}, {{characters/winter.KLÆR}}. {{stil}}",
-                     "p/b.txt": "uten plassholdere", "p/c.txt": "{{torg}}", "p/d.txt": "{{winter}}"}.items():
+                     "p/b.txt": "uten plassholdere", "p/c.txt": "{{torg}}", "p/d.txt": "{{winter}}",
+                     "assets/prompts/x/felles.txt": "FELLES\n", "p/f.txt": "{{prompts/x/felles}} her"}.items():
             (r / f).parent.mkdir(parents=True, exist_ok=True)
             (r / f).write_text(t)
         t = {"a": {"mal": "p/a.txt", "bilde": "locations/torg#rolig",
@@ -405,6 +409,7 @@ def selftest():
         assert render("b", r, t) == ("p/b.txt", None, [])  # unchanged text keeps the tracked path
         assert (r / render("c", r, t)[0]).read_text() == "torg"  # bare name, one hit
         assert fill("{{characters/winter.personlighet}}", r) == "ordentlig"  # a section of entitet.md
+        assert fill((r / "p/f.txt").read_text(), r) == "FELLES her"  # a shared prompt block
         t |= {"s1": {"ut": "o/s1.jpg", "bilde": "assets/base.jpg", "mal": "p/b.txt"},
               "s2": {"ut": "o/s2.jpg", "bilde": "s1", "mal": "p/b.txt"}, "e": {"bilde": "s2", "mal": "p/b.txt"}}
         assert render("e", r, t)[1] == "o/s2.jpg"  # base image is an intermediate still

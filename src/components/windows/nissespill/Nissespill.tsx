@@ -26,6 +26,9 @@ const GAMLE_BILDER: Record<string, string> = {
   "spill/antenne-tarn.jpg": "feed/antenne-tarn.png",
   "spill/kulde-grotte.jpg": "feed/kulde-grotte.png",
 };
+// Ugleposten is pixel art (medier.json spill-piksel/*), the photo is the fallback.
+const piksel = (bilde: string) =>
+  bilde.replace(/^spill\/(.+)\.\w+$/, "spill/piksel/$1.png");
 
 const VERBS: { id: M.Verb; label: string; ikon: string }[] = [
   { id: "se", label: "SE", ikon: "eye" },
@@ -302,6 +305,12 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
   const kap = kapittel(save.kapittel);
   const scene = M.scene(kap, save);
   const hotspots = M.synlige(scene, save);
+  const bildeSrc = [
+    mediaUrl(piksel(scene.bilde)),
+    mediaUrl(scene.bilde),
+    ...(GAMLE_BILDER[scene.bilde] ? [mediaUrl(GAMLE_BILDER[scene.bilde])] : []),
+    "/village-day.jpg",
+  ].find((u) => !bildeFeil.includes(u));
   const introFlagg = `k${kap.n}_intro`;
   const utroFlagg = `k${kap.n}_utro`;
   const iIntro = !M.has(save, introFlagg);
@@ -378,18 +387,12 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
               <img
                 key={scene.bilde}
                 style={{ animation: "fadeIn 0.5s ease-out" }}
-                src={[
-                  mediaUrl(scene.bilde),
-                  ...(GAMLE_BILDER[scene.bilde]
-                    ? [mediaUrl(GAMLE_BILDER[scene.bilde])]
-                    : []),
-                  "/village-day.jpg",
-                ].find((u) => !bildeFeil.includes(u))}
+                src={bildeSrc}
                 alt={scene.navn}
                 draggable={false}
                 // Fill, not cover: hotspot percents are of the image, so the image
                 // must span the 16:9 stage exactly (stills are 16:9 ±1 %).
-                className="absolute inset-0 w-full h-full object-fill"
+                className={`absolute inset-0 w-full h-full object-fill ${bildeSrc === mediaUrl(piksel(scene.bilde)) ? "pixelated" : ""}`}
                 onError={(e) => {
                   // Read src now: React clears currentTarget before the updater runs
                   const src = e.currentTarget.getAttribute("src") ?? "";

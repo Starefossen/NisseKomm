@@ -69,6 +69,49 @@
     "bilde": "locations/porten#open",
     "notat": "nedskalert kopi av ref-open.jpg (1280 px bred), ingen API; generer.py legger den ikke i køen"
   },
+  "spill-piksel/torget": {
+    "generator": "piksel",
+    "sted": "torget",
+    "ut": "spill/piksel/torget.png",
+    "bilde": "public/spill/torget.jpg",
+    "mal": "assets/prompts/spill/piksel-torget.txt",
+    "notat": "Ugleposten i pikselstil: samme komposisjon som bildet spillet viser i dag (public/ = MEDIA_DIR), så sonene passer"
+  },
+  "spill-piksel/iq-verksted": {
+    "generator": "piksel",
+    "sted": "iq-verksted",
+    "ut": "spill/piksel/iq-verksted.png",
+    "bilde": "public/feed/iq-verksted.png",
+    "mal": "assets/prompts/spill/piksel-iq-verksted.txt"
+  },
+  "spill-piksel/julius-kontor": {
+    "generator": "piksel",
+    "sted": "julius-kontor",
+    "ut": "spill/piksel/julius-kontor.png",
+    "bilde": "public/feed/julius-kontor.jpg",
+    "mal": "assets/prompts/spill/piksel-julius-kontor.txt"
+  },
+  "spill-piksel/antenne-tarn": {
+    "generator": "piksel",
+    "sted": "antenne-tjern",
+    "ut": "spill/piksel/antenne-tarn.png",
+    "bilde": "public/feed/antenne-tarn.png",
+    "mal": "assets/prompts/spill/piksel-antenne-tarn.txt"
+  },
+  "spill-piksel/kulde-grotte": {
+    "generator": "piksel",
+    "sted": "krystallgrotten",
+    "ut": "spill/piksel/kulde-grotte.png",
+    "bilde": "public/feed/kulde-grotte.png",
+    "mal": "assets/prompts/spill/piksel-kulde-grotte.txt"
+  },
+  "spill-piksel/port-aapen": {
+    "generator": "piksel",
+    "sted": "porten",
+    "ut": "spill/piksel/port-aapen.png",
+    "bilde": "public/spill/port-aapen.jpg",
+    "mal": "assets/prompts/spill/piksel-port-aapen.txt"
+  },
   "portrett/winter": {
     "generator": "portrett",
     "ut": "spill/portrett-winter.png",

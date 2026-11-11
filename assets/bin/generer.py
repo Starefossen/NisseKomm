@@ -8,8 +8,8 @@ Usage:
   generer.py --selvtest
 
 Order: (a) named tests, (b) Julius days ✗/⚠, (c) Rampenissen ✗/⚠, (d) TV loops and
-events, (e) gate entrances, (f) the hidden NisseMusikk track, (g) sleigh horizon stills
-(images, 0 video requests). ✓ current and ? unknown
+events, (e) gate entrances, (f) the hidden NisseMusikk track, (g) sleigh horizons, Ugleposten
+stills and pixel scenes, portraits (images, 0 video requests). ✓ current and ? unknown
 are skipped. Items marked «Lag på nytt» in media-vurdering.json are queued (and their
 mark removed on success), while «Godkjent» items are skipped unless --force.
 A daily-limit or spending-cap error stops the run with exit code 75.
@@ -42,18 +42,23 @@ RETRY = 1.5  # expected takes per clip (julius-dag.py retries up to 3)
 EXIT_LIMIT = 75  # EX_TEMPFAIL: try again after the quota resets
 LIMIT_RE = re.compile(r"per day|spending cap|Stoppet: (dagsgrensen|månedlig)", re.I)
 MEDIER = medie.jobs()  # assets/medier.json; TV loops are listed by tv-loops.sh --liste
-IMAGE_CATS = ("slede", "spill", "portrett")  # sleigh horizons, Ugleposten stills, pixel portraits (0 video requests)
+# sleigh horizons, Ugleposten stills and their pixel-art versions, pixel portraits (0 video requests)
+IMAGE_CATS = ("slede", "spill", "spill-piksel", "portrett")
 
 
 def names(cat):
-    """Jobs made by an image model; others (generator «skaler») are only tracked in medier.json."""
+    """Jobs made by an image model; others (generator «skaler», «hånd») are only tracked in medier.json."""
     return [k.split("/", 1)[1] for k, j in MEDIER.items()
-            if k.startswith(cat + "/") and j["generator"] in ("still", "portrett")]
+            if k.startswith(cat + "/") and j["generator"] in ("still", "piksel", "portrett")]
 
 
-SLEDE, SPILL, PORTRETT = (names(c) for c in IMAGE_CATS)
+SLEDE, SPILL, PIKSEL, PORTRETT = (names(c) for c in IMAGE_CATS)
 STILL_SH = ('mkdir -p "$(dirname "$3")" && bash "$4/still.sh" "$1" "$2" "$3" "${@:5}" && '
             'python3 "$4/medie.py" skriv still.sh "$3" "$2" - gemini-3-pro-image "$1" "${@:5}"')
+# same inputs as STILL_SH; the model answers JPEG or PNG at will, ffmpeg makes the .png real
+PIKSEL_SH = ('mkdir -p "$(dirname "$3")" && T=$(mktemp -d) && bash "$4/still.sh" "$1" "$2" "$T/bilde" "${@:5}" && '
+             'ffmpeg -v error -y -i "$T/bilde" -pix_fmt rgb24 "$3" && rm -rf "$T" && '
+             'python3 "$4/medie.py" skriv piksel "$3" "$2" - gemini-3-pro-image "$1" "${@:5}"')
 PORTRETT_SH = ('mkdir -p "$(dirname "$3")" "$5" && bash "$4/portrett.sh" "$2" "$5/$(basename "$3")" "${@:6}" && '
                'bash "$4/piksel.sh" "$5/$(basename "$3")" "$3" && '
                'python3 "$4/medie.py" skriv portrett.sh "$3" "$2" - gemini-3-pro-image "${@:6}"')
@@ -125,6 +130,8 @@ def item_path(item_id: str) -> str:
         return f"feed/slede-{key}.jpg"
     if cat == "spill":
         return f"spill/{key}.jpg"
+    if cat == "spill-piksel":
+        return f"spill/piksel/{key}.png"
     if cat == "portrett":
         return f"spill/portrett-{key}.png"
     if cat in ("tv", "port"):
@@ -140,6 +147,12 @@ def tv_jobs():
 
 
 VENTER = set()  # item ids held back from the queue
+
+
+def infile(path: str, root: Path) -> Path:
+    """A job input on disk. public/… in medier.json is a finished media file, so it lives in MEDIA_DIR
+    (which defaults to <root>/public); everything else is relative to the checkout."""
+    return media_dir() / path[len("public/"):] if path.startswith("public/") else root / path
 
 
 def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force=False):
@@ -184,12 +197,13 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
             if not should_queue(p, st.get(p) or medie.status(media_dir() / p, p, ROOT)[0]):
                 continue
             prompt, img, refs = medie.render(f"{cat}/{n}", ROOT, MEDIER)
-            refs = [str(root / r) for r in refs]
+            refs = [str(infile(r, root)) for r in refs]
             if cat == "portrett":
                 cmd = [PORTRETT_SH, "_", "", str(root / prompt), str(media_dir() / p), str(BIN),
                        str(root / "assets/out"), *refs]
             else:  # still.sh makes the image; medie.py skriv records the sidecar so it counts as current
-                cmd = [STILL_SH, "_", str(root / img), str(root / prompt), str(media_dir() / p), str(BIN), *refs]
+                sh = PIKSEL_SH if cat == "spill-piksel" else STILL_SH
+                cmd = [sh, "_", str(infile(img, root)), str(root / prompt), str(media_dir() / p), str(BIN), *refs]
             q.append((f"{cat}:{n}", cat, 0, ["bash", "-c", *cmd]))
     p_music = "music/rampenissen-synger.mp3"
     if should_queue(p_music, st.get(p_music, medie.MISSING)):
@@ -361,6 +375,7 @@ def selftest():
                 {"path": "music/rampenissen-synger.mp3", "status": medie.CURRENT},
                 *({"path": f"feed/slede-{v}.jpg", "status": medie.CURRENT} for v in SLEDE),
                 *({"path": f"spill/{n}.jpg", "status": medie.CURRENT} for n in SPILL),
+                *({"path": f"spill/piksel/{n}.png", "status": medie.CURRENT} for n in PIKSEL),
                 *({"path": f"spill/portrett-{n}.png", "status": medie.CURRENT} for n in PORTRETT)]
         q = queue(rows, ["landsby-rolig", "landsby-morgen", "port-iq"], root)
         assert [i[0] for i in q] == ["test-klementin", "julius:2", "julius:3", "tv:landsby-morgen", "port:port-iq"], q
@@ -372,6 +387,12 @@ def selftest():
         assert all(i[2] == 0 for i in qp if i[1] == "spill") and item_path("spill:torget") == "spill/torget.jpg"
         assert item_path("slede:muren") == "feed/slede-muren.jpg"
         assert item_path("portrett:winter") == "spill/portrett-winter.png"
+        # pixel-art scenes: their own category, read the shown photo from MEDIA_DIR (public/…) and convert to png
+        assert item_path("spill-piksel:torget") == "spill/piksel/torget.png"
+        qx = queue([r for r in rows if r["path"] != "spill/piksel/torget.png"], [], root, til_dag=0)
+        (px,) = [i for i in qx if i[1] == "spill-piksel"]
+        assert px[0] == "spill-piksel:torget" and px[3][2].startswith(PIKSEL_SH) and px[3][4] == str(root / "media/spill/torget.jpg"), px
+        assert infile("assets/x.jpg", root) == root / "assets/x.jpg"
         qr = queue([r for r in rows if r["path"] != "spill/portrett-winter.png"], [], root, til_dag=0)
         assert [i[0] for i in qr if i[1] == "portrett"] == ["portrett:winter"], qr
         calls, made = [], set()
