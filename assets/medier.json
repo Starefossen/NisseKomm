@@ -56,12 +56,11 @@
     "mal": "assets/prompts/spill/kulde-grotte.txt"
   },
   "spill/torget": {
-    "generator": "still",
+    "generator": "hånd",
     "sted": "torget",
     "ut": "spill/torget.jpg",
-    "bilde": "locations/torget#standard",
-    "mal": "assets/prompts/spill/torget.txt",
-    "refs": ["characters/winter#outside", "characters/winter#tophat"]
+    "bilde": "locations/torget#spill",
+    "notat": "håndlaget av forfatteren (beskåret til 1920×1080 fra ref-spill.jpg); generer.py legger den aldri i køen. Gammel mal: assets/prompts/spill/torget.txt"
   },
   "spill/port-aapen": {
     "generator": "skaler",

@@ -3,7 +3,8 @@
     "torget"
   ],
   "refs": {
-    "standard": "ref.jpg"
+    "standard": "ref.jpg",
+    "spill": "ref-spill.jpg"
   },
   "standard_ref": "standard",
   "avledet_fra": "snofall-landsby"

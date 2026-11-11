@@ -244,7 +244,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "stempelputa",
           navn: "Stempelputa",
-          rect: { x: 65, y: 78, w: 8, h: 12 },
+          rect: { x: 66, y: 78, w: 6, h: 10 },
           smart: "se",
           se: [
             {
@@ -285,7 +285,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "skrinet",
           navn: "Stempelskrinet",
-          rect: { x: 74, y: 78, w: 8, h: 12 },
+          rect: { x: 72, y: 76, w: 7, h: 12 },
           smart: "bruk",
           puslespill: "skrin",
           se: [
@@ -311,7 +311,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "winter",
           navn: "Winter",
-          rect: { x: 82, y: 28, w: 18, h: 70 },
+          rect: { x: 82, y: 22, w: 17, h: 76 },
           smart: "snakk",
           snakk: "winter",
           se: "Winter står rank som en tinnsoldat. Skjerfet er surret tre ganger. Han har spisset blyanten så mye at den er halvparten så lang som i morges. Han har en reserveblyant. Den er også spisset.",
