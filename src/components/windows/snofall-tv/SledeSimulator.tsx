@@ -40,7 +40,9 @@ const FADE_STEPS = 48;
 /** Longest thing on a course (the cave in lagBane). */
 const GROTTE_MAX = 1600;
 
-type Fase = "start" | "spiller" | "pause" | "slutt" | "tapt";
+type Fase = "start" | "nedtelling" | "spiller" | "pause" | "slutt" | "tapt";
+/** Seconds of 3–2–1 before the sleigh is handed over, then «FLY!» overlaps the first stretch. */
+const NEDTELLING = 3;
 
 interface Hud {
   alt: number;
@@ -211,10 +213,13 @@ export function SledeSimulator({ day }: { day: number }) {
 
   // A tap can start and end between two frames; the loop consumes this latch.
   const sprang = useRef(false);
+  /** Countdown clock; the draw loop counts it down and flips to spiller at 0. */
+  const nedtelling = useRef(-1);
 
   const setFase = (f: Fase) => {
     // Wind restarts on its own via setVind when flying resumes.
     if (f !== "spiller") lyd.current?.stop();
+    if (f !== "spiller" && f !== "nedtelling") nedtelling.current = -1;
     // Back on the start screen: a fresh course for attract mode.
     if (f === "start")
       simRef.current = createSim(etappeRef.current, {
@@ -231,8 +236,8 @@ export function SledeSimulator({ day }: { day: number }) {
       assist,
       reduceMotion: reduceMotion.current,
     });
-    lyd.current?.startVind();
-    setFase("spiller");
+    nedtelling.current = NEDTELLING;
+    setFase("nedtelling");
   };
 
   // Painted horizon for the chosen stage; the ridge fallback is drawn until it loads.
@@ -381,6 +386,17 @@ export function SledeSimulator({ day }: { day: number }) {
       }
       const t = now / 1000;
       const spiller = faseRef.current === "spiller";
+
+      if (faseRef.current === "nedtelling") {
+        const før = Math.ceil(nedtelling.current);
+        nedtelling.current -= dt;
+        const nå = Math.ceil(nedtelling.current);
+        if (nå < før) lyd.current?.tikk(nå <= 0);
+        if (nedtelling.current <= 0) {
+          lyd.current?.startVind();
+          setFase("spiller");
+        }
+      }
 
       if (spiller) {
         const k = held.current;
@@ -657,6 +673,22 @@ export function SledeSimulator({ day }: { day: number }) {
         ctx.fillRect(0, 0, W, H);
       }
 
+      // Countdown: the number pops in large and shrinks; «FLY!» rides into the first second.
+      const ned = nedtelling.current;
+      if (ned > -0.7) {
+        const frac = ned > 0 ? ned - Math.floor(ned) : 0;
+        ctx.textAlign = "center";
+        ctx.font = `${Math.round(72 + frac * 40)}px ${font}`;
+        ctx.globalAlpha = ned > 0 ? 0.6 + frac * 0.4 : 1 + ned / 0.7;
+        ctx.fillStyle = ned > 0 ? "#ffd700" : "#00ff8a";
+        ctx.fillText(
+          ned > 0 ? String(Math.ceil(ned)) : "FLY!",
+          W / 2,
+          H * 0.42,
+        );
+        ctx.globalAlpha = 1;
+      }
+
       // Floating feedback text.
       ctx.textAlign = "center";
       ctx.font = `22px ${font}`;
@@ -674,6 +706,7 @@ export function SledeSimulator({ day }: { day: number }) {
       ctx.globalAlpha = 1;
       ctx.restore();
 
+      if (spiller) nedtelling.current -= dt;
       if (spiller && now - hudAt > 100) {
         hudAt = now;
         setHud({
@@ -909,7 +942,7 @@ export function SledeSimulator({ day }: { day: number }) {
         </>
       )}
 
-      {fase !== "spiller" && (
+      {fase !== "spiller" && fase !== "nedtelling" && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/55 p-2 overflow-y-auto">
           <div className="border-2 border-(--brass) bg-black/85 p-3 max-w-md w-full max-h-full overflow-y-auto text-(--neon-green) space-y-2 text-center">
             {fase === "start" && (
