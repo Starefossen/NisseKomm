@@ -407,7 +407,7 @@ export const KAPITTEL_1: Kapittel = {
             },
             {
               tekst:
-                "«Halt! Torget er i dag reservert for reglementert postbehandling i henhold til Snøfall-vedtekt paragraf 12. Har dere gyldig ærend, eller sprer dere bare snøslaps?»",
+                "«Halt! Torget er for post i dag. Paragraf 12. Har dere et ærend, eller er dere bare her og drysser snø?»",
             },
           ],
           valg: [
@@ -446,7 +446,7 @@ export const KAPITTEL_1: Kapittel = {
         },
         kurv: {
           tekst:
-            "«Garnkurven. Umerket løsøre, funnet på loftet til IQ, full av ull og klementinskall. Deponert i postkassen i påvente av Skjema 4112-B. Utfylt. Stemplet.»",
+            "«Garnkurven. Funnet på loftet til IQ, full av ull og klementinskall. Den ligger i postkassen til jeg får Skjema 4112-B. Utfylt. Stemplet.»",
           rampenissen: "«POSTKASSEN?! Han har lagt SENGA mi i postkassen!»",
           valg: [
             { tekst: "Hvor får vi tak i et sånt skjema?", neste: "skjema" },
@@ -480,7 +480,7 @@ export const KAPITTEL_1: Kapittel = {
         },
         skjerf: {
           tekst:
-            "«Én runde for trekken fra tjernet. Én runde for luftingen fra klokketårnet. Og én runde for alminnelig anstendighet. En hals uten skjerf er et åpent sår i kontorlandskapet.»",
+            "«Én runde for trekken fra tjernet. Én runde for luftingen fra klokketårnet. Og én runde fordi det er pent. En hals uten skjerf er et åpent sår.»",
           rampenissen: "«Æ har null runda. Æ e et åpent sår.»",
           valg: [{ tekst: "Logisk." }],
         },
