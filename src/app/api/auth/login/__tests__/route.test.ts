@@ -12,7 +12,8 @@ import { NextRequest } from "next/server";
 import * as loginRoute from "../route";
 import { memoryStore } from "@/lib/db";
 import { proxy } from "@/proxy";
-import { getRole } from "@/lib/auth";
+import { hasRole } from "@/lib/auth";
+import * as logoutRoute from "../../logout/route";
 
 const ORIGIN = "https://nissekomm.no";
 
@@ -20,6 +21,7 @@ async function login(
   body: unknown,
   origin: string | null = ORIGIN,
   proto = "https",
+  cookie?: string,
 ) {
   let result:
     { status: number; text: string; cookie: string | null } | undefined;
@@ -33,6 +35,7 @@ async function login(
         "X-Forwarded-Proto": proto,
       };
       if (origin) headers.Origin = origin;
+      if (cookie) headers.Cookie = cookie;
       const res = await fetch({
         method: "POST",
         headers,
@@ -54,6 +57,7 @@ beforeEach(() => {
   env.KID_CODE = "snø lykt elg";
   env.PARENT_CODE = "bjelle kakao reinsdyr vott";
   env.NISSEKOMM_MODE = "lan";
+  env.TRUST_PROXY = "1";
   memoryStore.reset();
 });
 
@@ -97,17 +101,74 @@ describe("POST /api/auth/login", () => {
     expect(kid.cookie).toMatch(/^nissekomm=[\w-]{43};/);
 
     const jar = [parent.cookie!, kid.cookie!].map((c) => c.split(";")[0]);
-    const roleWith = (cookie: string, proto = "http") =>
-      getRole(
-        new NextRequest("http://lan/api/auth/verify", {
-          headers: { cookie, "x-forwarded-proto": proto },
-        }),
-      );
-    expect(await roleWith(jar.join("; "))).toBe("parent");
-    expect(await roleWith(jar[1])).toBe("kid");
+    const req = (cookie: string, proto = "http") =>
+      new NextRequest("http://lan/api/auth/verify", {
+        headers: { cookie, "x-forwarded-proto": proto },
+      });
+    // Each role reads only its own cookie: the guide session in the same
+    // browser does not make a kid-only check pass as parent, or vice versa.
+    expect(await hasRole(req(jar.join("; ")), "parent")).toBe(true);
+    expect(await hasRole(req(jar[1]), "parent")).toBe(false);
+    expect(await hasRole(req(jar[1]), "kid")).toBe(true);
+    expect(await hasRole(req(jar[0]), "kid")).toBe(false);
+    // A parent token under the kid cookie name is not a kid session.
+    const swapped = jar[0].replace("nissekomm-guide=", "nissekomm=");
+    expect(await hasRole(req(swapped), "kid", "parent")).toBe(false);
     // An https session cookie is still honoured if the proxy drops the proto.
     const https = await login({ code: "snø lykt elg" });
-    expect(await roleWith(https.cookie!.split(";")[0])).toBe("kid");
+    expect(await hasRole(req(https.cookie!.split(";")[0]), "kid")).toBe(true);
+    // On https an unprefixed (tossable) cookie is ignored.
+    expect(await hasRole(req(jar[1], "https"), "kid")).toBe(false);
+  });
+
+  it("ignores X-Forwarded-Proto unless TRUST_PROXY=1", async () => {
+    delete env.TRUST_PROXY;
+    const kid = await login({ code: "snø lykt elg" });
+    expect(kid.cookie).toMatch(/^nissekomm=/);
+    expect(kid.cookie).not.toMatch(/Secure/);
+  });
+
+  it("logs out one role and keeps the other", async () => {
+    const parent = await login({ code: "bjelle kakao reinsdyr vott" });
+    const kid = await login({ code: "snø lykt elg" });
+    const jar = [parent.cookie!, kid.cookie!]
+      .map((c) => c.split(";")[0])
+      .join("; ");
+    let cleared = "";
+    await testApiHandler({
+      appHandler: logoutRoute,
+      test: async ({ fetch }) => {
+        const res = await fetch({
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Forwarded-Host": "nissekomm.no",
+            "X-Forwarded-Proto": "https",
+            Origin: ORIGIN,
+            Cookie: jar,
+          },
+          body: JSON.stringify({ role: "kid" }),
+        });
+        expect(res.status).toBe(200);
+        cleared = res.headers.get("set-cookie") ?? "";
+      },
+    });
+    expect(cleared).not.toMatch(/nissekomm-guide/);
+    const req = new NextRequest("https://nissekomm.no/", {
+      headers: { cookie: jar, "x-forwarded-proto": "https" },
+    });
+    expect(await hasRole(req, "kid")).toBe(false);
+    expect(await hasRole(req, "parent")).toBe(true);
+  });
+
+  it("re-login drops the role's old session and other-scheme cookie", async () => {
+    const first = (await login({ code: "snø lykt elg" })).cookie!.split(";")[0];
+    const again = await login({ code: "snø lykt elg" }, ORIGIN, "https", first);
+    expect(again.cookie).toMatch(/(^|, )nissekomm=; /);
+    const old = new NextRequest("https://nissekomm.no/", {
+      headers: { cookie: first },
+    });
+    expect(await hasRole(old, "kid")).toBe(false);
   });
 
   it("rejects a wrong code with a generic error and no cookie", async () => {

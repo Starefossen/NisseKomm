@@ -11,7 +11,7 @@ import {
 import { StorageManager } from "./storage";
 import { GameEngine } from "./game-engine";
 import { getCurrentDay } from "./date-utils";
-import { getSessionId, clearSessionId, clearParentAuth } from "./auth-cookies";
+import { getSessionId, clearSessionId } from "./auth-cookies";
 import { CalendarEvent } from "@/types/innhold";
 
 /**
@@ -139,7 +139,6 @@ export function AppProvider({ children }: AppProviderProps) {
   );
 
   const logout = useCallback(() => {
-    clearParentAuth();
     clearSessionId();
     StorageManager.clearAll();
     setSessionIdState(null);

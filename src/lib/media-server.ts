@@ -14,7 +14,7 @@ import { Readable } from "node:stream";
 import type { NextRequest } from "next/server";
 import { MEDIA_MANIFEST, mediaPath, type MediaStatus } from "./media";
 import { isLanMode } from "./mode";
-import { getRole } from "./auth";
+import { hasRole } from "./auth";
 import { authenticate } from "./mcp/auth";
 import { getStore } from "./db";
 
@@ -97,9 +97,8 @@ export async function authorizeMedia(
     if (!caller) return unauthorized();
     return caller.level === "parent" ? null : forbidden();
   }
-  const role = await getRole(req);
-  if (!role) return unauthorized();
-  return role === "parent" ? null : forbidden();
+  if (await hasRole(req, "parent")) return null;
+  return (await hasRole(req, "kid")) ? forbidden() : unauthorized();
 }
 
 /** Absolute path inside MEDIA_DIR, or null if the path escapes it or has an unknown type. */

@@ -30,7 +30,9 @@ beforeEach(async () => {
 test("needs a parent cookie or parent bearer", async () => {
   expect(await status(req())).toBe(401);
   expect(await status(req({ cookie: "__Host-nissekomm=kid" }))).toBe(403);
-  expect(await status(req({ cookie: "__Host-nissekomm=parent" }))).toBe(200);
+  expect(await status(req({ cookie: "__Host-nissekomm-guide=parent" }))).toBe(
+    200,
+  );
   expect(await status(req({ authorization: "Bearer parenttoken1" }))).toBe(200);
   expect(await status(req({ authorization: "Bearer readtoken1" }))).toBe(403);
   expect(await status(req({ authorization: "Bearer nope-nope" }))).toBe(401);

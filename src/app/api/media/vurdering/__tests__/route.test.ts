@@ -76,7 +76,7 @@ describe("API /api/media/vurdering - Authentication", () => {
       makeReq(
         "POST",
         { path: "video/julius/dag-01.mp4", vurdering: "godkjent" },
-        { cookie: "__Host-nissekomm=parent" },
+        { cookie: "__Host-nissekomm-guide=parent" },
       ),
     );
     expect(resParentCookie.status).toBe(200);
@@ -108,7 +108,7 @@ describe("API /api/media/vurdering - Authentication", () => {
       makeReq(
         "POST",
         { path: "video/julius/dag-01.mp4", vurdering: "godkjent" },
-        { cookie: "__Host-nissekomm=parent" },
+        { cookie: "__Host-nissekomm-guide=parent" },
       ),
     );
     expect(res.status).toBe(404);
@@ -116,7 +116,7 @@ describe("API /api/media/vurdering - Authentication", () => {
 });
 
 describe("API /api/media/vurdering - Validation", () => {
-  const auth = { cookie: "__Host-nissekomm=parent" };
+  const auth = { cookie: "__Host-nissekomm-guide=parent" };
 
   it("rejects invalid json or non-object bodies with 400", async () => {
     const rawReq = new NextRequest("http://lan/api/media/vurdering", {
@@ -197,7 +197,7 @@ describe("API /api/media/vurdering - Validation", () => {
 });
 
 describe("API /api/media/vurdering - Functionality", () => {
-  const auth = { cookie: "__Host-nissekomm=parent" };
+  const auth = { cookie: "__Host-nissekomm-guide=parent" };
 
   it("saves verdicts and notes, and serves them via GET", async () => {
     // Initial GET returns empty map

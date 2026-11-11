@@ -16,20 +16,26 @@ const COOKIE_BASE: Record<Role, string> = {
   kid: "nissekomm",
   parent: "nissekomm-guide",
 };
-const ROLES: Role[] = ["parent", "kid"];
-
+// X-Forwarded-Proto is client-controlled unless a proxy overwrites it, so it
+// only counts with TRUST_PROXY=1 (set it behind a TLS-terminating proxy).
 function isHttps(request: NextRequest): boolean {
-  const proto = request.headers.get("x-forwarded-proto")?.split(",")[0].trim();
+  const proto =
+    process.env.TRUST_PROXY === "1"
+      ? request.headers.get("x-forwarded-proto")?.split(",")[0].trim()
+      : undefined;
   return (proto ?? request.nextUrl.protocol.replace(":", "")) === "https";
 }
 
 export const cookieName = (role: Role, https: boolean) =>
   (https ? "__Host-" : "") + COOKIE_BASE[role];
 
-// Both schemes are read: a proxy that drops X-Forwarded-Proto must not log
-// the kids out. A token only counts if it is in the session store.
-function sessionTokens(request: NextRequest): string[] {
-  return ROLES.flatMap((r) => [true, false].map((h) => cookieName(r, h)))
+// __Host- names can't be planted by a sibling host or over http, so they are
+// always read (a proxy that drops the proto must not log the kids out).
+// Unprefixed names only count on http, where nothing better exists.
+function sessionTokens(request: NextRequest, role: Role): string[] {
+  const names = [cookieName(role, true)];
+  if (!isHttps(request)) names.push(cookieName(role, false));
+  return names
     .map((n) => request.cookies.get(n)?.value)
     .filter((t): t is string => !!t);
 }
@@ -61,43 +67,65 @@ function matches(input: Buffer, envValue: string | undefined): boolean {
 
 const sha256 = (s: string) => createHash("sha256").update(s).digest("hex");
 
-async function roleFor(token: string): Promise<Role | null> {
+async function isValid(token: string, role: Role): Promise<boolean> {
   const key = sha256(token);
   const s = await getStore().getSession(key);
-  if (!s) return null;
+  if (!s || s.role !== role) return false;
   if (s.expires < Date.now()) {
     await getStore().deleteSession(key);
-    return null;
+    return false;
   }
-  if (s.role === "parent" && !isLanMode()) return null;
-  return s.role;
+  return role !== "parent" || isLanMode();
 }
 
-/** The strongest valid role among the request's session cookies. */
-export async function getRole(request: NextRequest): Promise<Role | null> {
-  const roles = await Promise.all(sessionTokens(request).map(roleFor));
-  return ROLES.find((r) => roles.includes(r)) ?? null;
+/**
+ * True if the request holds a valid session for one of `roles`, read only
+ * from those roles' own cookies: a guide session in the same browser never
+ * lends parent rights to a request that only accepts "kid".
+ */
+export async function hasRole(
+  request: NextRequest,
+  ...roles: Role[]
+): Promise<boolean> {
+  for (const role of roles) {
+    for (const t of sessionTokens(request, role)) {
+      if (await isValid(t, role)) return true;
+    }
+  }
+  return false;
 }
 
-/** Deletes every session the request carries and clears their cookies. */
+export const isRole = (v: unknown): v is Role => v === "kid" || v === "parent";
+
+function clearCookies(response: NextResponse, role: Role, schemes: boolean[]) {
+  for (const https of schemes) {
+    response.cookies.set(cookieName(role, https), "", {
+      maxAge: 0,
+      path: "/",
+      secure: https,
+      httpOnly: true,
+      sameSite: "lax",
+    });
+  }
+}
+
+// Every cookie name of the role, whatever the scheme, so logout and re-login
+// leave no old token alive in the store.
+async function dropSessions(request: NextRequest, role: Role) {
+  for (const https of [true, false]) {
+    const t = request.cookies.get(cookieName(role, https))?.value;
+    if (t) await getStore().deleteSession(sha256(t));
+  }
+}
+
+/** Ends this role's session only; the other role stays logged in. */
 export async function endSessions(
   request: NextRequest,
   response: NextResponse,
+  role: Role,
 ): Promise<void> {
-  for (const t of sessionTokens(request)) {
-    await getStore().deleteSession(sha256(t));
-  }
-  for (const r of ROLES) {
-    for (const https of [true, false]) {
-      response.cookies.set(cookieName(r, https), "", {
-        maxAge: 0,
-        path: "/",
-        secure: https,
-        httpOnly: true,
-        sameSite: "lax",
-      });
-    }
-  }
+  await dropSessions(request, role);
+  clearCookies(response, role, [true, false]);
 }
 
 export const jsonError = (error: string, status: number) =>
@@ -161,6 +189,7 @@ export async function startSession(
   role: Role,
 ): Promise<void> {
   const https = isHttps(request);
+  await dropSessions(request, role);
   const token = randomBytes(32).toString("base64url");
   await getStore().setSession(sha256(token), {
     role,
@@ -173,4 +202,7 @@ export async function startSession(
     secure: https,
     httpOnly: true,
   });
+  // Browsers refuse Secure cookies from http, so only https can clear the
+  // other name; the old token is dead in the store either way.
+  if (https) clearCookies(response, role, [false]);
 }

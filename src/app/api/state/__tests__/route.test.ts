@@ -31,7 +31,8 @@ async function call(
         Origin: "https://nissekomm.no",
         "X-Forwarded-Host": "nissekomm.no",
       };
-      if (cookie) headers.Cookie = `__Host-nissekomm=${TOKEN}`;
+      if (cookie)
+        headers.Cookie = `__Host-nissekomm=${TOKEN}; __Host-nissekomm-guide=${TOKEN}`;
       const res = await fetch({
         method,
         headers,

@@ -14,15 +14,18 @@ export function setSessionId(kidCode: string): void {
   localStorage.setItem(KID_CODE_KEY, kidCode);
 }
 
-function serverLogout(): void {
-  fetch("/api/auth/logout", { method: "POST", body: "{}" }).catch(() => {});
+function serverLogout(role: "kid" | "parent"): void {
+  fetch("/api/auth/logout", {
+    method: "POST",
+    body: JSON.stringify({ role }),
+  }).catch(() => {});
 }
 
 export function clearSessionId(): void {
   if (typeof localStorage !== "undefined") {
     localStorage.removeItem(KID_CODE_KEY);
   }
-  serverLogout();
+  serverLogout("kid");
 }
 
-export const clearParentAuth = serverLogout;
+export const clearParentAuth = () => serverLogout("parent");

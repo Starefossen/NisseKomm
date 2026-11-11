@@ -1,7 +1,12 @@
-/** POST /api/auth/verify  Returns { role } for the session cookie, or null. */
+/** POST /api/auth/verify  Returns { role } for the session cookies, or null. */
 import { NextRequest, NextResponse } from "next/server";
-import { getRole } from "@/lib/auth";
+import { hasRole } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
-  return NextResponse.json({ role: await getRole(request) });
+  const role = (await hasRole(request, "parent"))
+    ? "parent"
+    : (await hasRole(request, "kid"))
+      ? "kid"
+      : null;
+  return NextResponse.json({ role });
 }

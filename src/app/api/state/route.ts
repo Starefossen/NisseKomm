@@ -9,7 +9,7 @@
  * (day solved, bonus approved, frost off) fan out through notify().
  */
 import { NextRequest, NextResponse } from "next/server";
-import { getRole, jsonError, readJsonBody } from "@/lib/auth";
+import { hasRole, jsonError, readJsonBody } from "@/lib/auth";
 import {
   STATE_KEYS,
   VERSION_KEY,
@@ -29,7 +29,8 @@ const frostNotified = new Set<number>();
 export async function GET(request: NextRequest) {
   if (storageBackend() !== "server")
     return new NextResponse(null, { status: 204 });
-  if (!(await getRole(request))) return jsonError("Ikke innlogget", 401);
+  if (!(await hasRole(request, "kid", "parent")))
+    return jsonError("Ikke innlogget", 401);
   const state = await getStore().getState();
   const now = getServerDate(state["day-offset"]);
   const frost = frostOnEvent(
@@ -52,7 +53,8 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   if (storageBackend() !== "server")
     return new NextResponse(null, { status: 204 });
-  if (!(await getRole(request))) return jsonError("Ikke innlogget", 401);
+  if (!(await hasRole(request, "kid", "parent")))
+    return jsonError("Ikke innlogget", 401);
   const body = await readJsonBody(request);
   if (body instanceof NextResponse) return body;
   const { key, value, replace, version } = body;
@@ -80,9 +82,11 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   if (storageBackend() !== "server")
     return new NextResponse(null, { status: 204 });
-  const role = await getRole(request);
-  if (!role) return jsonError("Ikke innlogget", 401);
-  if (role !== "parent") return jsonError("Bare for foreldre", 403);
+  if (!(await hasRole(request, "parent"))) {
+    return (await hasRole(request, "kid"))
+      ? jsonError("Bare for foreldre", 403)
+      : jsonError("Ikke innlogget", 401);
+  }
   await resetState();
   return NextResponse.json({ reset: true });
 }

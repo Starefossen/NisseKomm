@@ -193,12 +193,15 @@ NEXT_PUBLIC_MOCK_MONTH=                  # 1-12 for testing
 KID_CODE=                                # Kids' login (three words, e.g. "snø lykt rein")
 PARENT_CODE=                             # Parent guide login
 NISSEKOMM_MODE=lan                       # 'public' (kid app only) or 'lan' (guide, dev pages)
+TRUST_PROXY=                             # 1 = trust X-Forwarded-Proto (set in production behind Kourier, both modes)
 
 # Storage and media
 DATABASE_URL=                            # PostgreSQL; progress is synced via /api/state
 MEDIA_DIR=                               # Video/audio library (not in the repo), served at /media/*
 STORAGE_BACKEND=                         # server | localStorage; unset = server when DATABASE_URL is set
 ```
+
+**Sessions**: one cookie per role (`nissekomm` kid, `nissekomm-guide` parent); each API checks only the role it needs (`hasRole` in `lib/auth.ts`), and logout ends one role. On https the names are `__Host-`/Secure; on plain http (local dev, LAN laptop) they are unprefixed. Production (public and lan/mcp) sits behind Kourier, which terminates TLS, so it needs `TRUST_PROXY=1` to see https from `X-Forwarded-Proto`; without it the header is ignored and the request URL decides.
 
 `mise run dev` sets dev codes and lan mode. Multi-tenancy, Sanity and Resend are gone; one family logs in with `KID_CODE` (parent guide: `PARENT_CODE`). `NISSEKOMM_MODE=lan` enables the guide, `/dev`, `/mcp` and the simulation panel; `public` serves the kid app only (the default in production). Progress lives in Postgres (in-memory store without `DATABASE_URL`); a season reset (`DELETE /api/state`, parent only) clears the server too, so every screen resets. The MCP server at `/mcp` (Bearer JWT, tools in `src/lib/mcp/tools.ts`) is the home integration; `/api/home-bridge` is gone. `get_kid_context` (Varden) hides an unsolved day's pieces as «[skjult]»; the piece list is `src/data/gaatebiter.json`, tested against `docs/gaater-2026.md`. It aims for 9 KB (`KID_TARGET_BYTES`): older solved days as title, PS and a one-sentence recap, files capped at 300 characters; then logs, file text and old PS go first.
 
