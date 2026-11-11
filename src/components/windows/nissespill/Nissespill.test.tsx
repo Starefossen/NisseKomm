@@ -419,7 +419,27 @@ describe("Nissespill: motor", () => {
       ["grotten", "klarekrystallene"],
       ["grotten", "sokkelen", "tesil_lanterne"],
       ["grotten", "sokkelen", "krystallskaar"],
+      ["!", "grotten/lyshylla", "lysveien"],
+      ["!", "grotten/knottene", "stemme"],
       ["?", "radioen", "God jul fra Landås."],
+      ["?", "radioen", "Vi kommer tilbake."],
+    ]);
+  });
+
+  it("kapittel 3: lanterna kan stå på sokkelen før skåret er løst", () => {
+    spill(KAPITLER[2], [
+      ["kontor", "lysene"],
+      ["?", "nissemor", "Rampenissen vil gi et lys til han i grotten."],
+      ["?", "nissemor", "Vi skal passe på den."],
+      ["kontor", "tekoppen"],
+      ["+", "stearinlys", "tesil"],
+      ["grotten", "sokkelen", "tesil_lanterne"],
+      // The pedestal light reaches the lowest crystal, so the shard is loose (en_av)
+      ["grotten", "klarekrystallene"],
+      ["grotten", "sokkelen", "krystallskaar"],
+      ["!", "grotten/lyshylla", "lysveien"],
+      ["!", "grotten/knottene", "stemme"],
+      ["?", "radioen", "Hei. Vi vet at du er der."],
       ["?", "radioen", "Vi kommer tilbake."],
     ]);
   });
