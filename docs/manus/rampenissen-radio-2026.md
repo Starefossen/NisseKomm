@@ -1,6 +1,6 @@
 # Rampenissen på Morgenrådet 2026 – radioklipp
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «nesten død», 15 skåla, 23 tempus) etter ja fra Hans.
 
 Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storyboard-2026.md` (§2 kunnskapstidslinje, §3 radiolinjer), `docs/gaater-2026.md`. Format: `varden-morgenradet.md`.
 
@@ -74,7 +74,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** snøengler i 1 dl mel i et stekebrett på kjøkkenbordet, ligger midt i den største. Helg, 09-sendingen.
 
-**Klipp:** «God søndag og god andre advent! Rampenissen her, litt kvit i ansiktet. Det e mel. Ikkje spør. Jo, spør: æ skull lag snøengla, og det e ikkje snø inne, så æ brukt det nærmeste. Kjøkkenbordet e no et vinterlandskap. Æ ligg i den største engelen. Det va ikkje meininga at golvet skull bli med. Melet e rot, det innrømme æ. Men! I natt sa Orakelet at det som fryse linja, ikkje tåle lys. IQ hengt lys rundt heile antenna, den ser ut som et juletre. Og æ fant den lille lampa dokkers. Og en papprull. Æ har laga nåkka. Det e ikkje rot. Det e et instrument. God helg!»
+**Klipp:** «God søndag og god andre advent! Rampenissen her, litt kvit i ansiktet. Det e mel. Ikkje spør. Jo, spør: æ skull lag snøengla, og det e ikkje snø inne, så æ brukt det nærmeste. Kjøkkenbordet e no et vinterlandskap. Æ ligg i den største engelen. Det va ikkje meininga at golvet skull bli med. Melet e rot, det innrømme æ. Men! I natt sa Orakelet at det som fryse linja, ikkje tåle lys. IQ hengt lys rundt heile antenna, den ser ut som et juletre. Og æ har laga nåkka av den lille lampa dokkers og en papprull. Det ligg ikkje i melet, det e for fint til det. Det e ikkje rot. Det e et instrument. God helg!»
 
 **intro_hint:** «Gjesten vår er litt hvit i ansiktet i dag. Han sier det ikke er snø.»
 
@@ -98,7 +98,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** krøpet inn i grønnsaksskuffen i kjøleskapet, bare beina stikker ut.
 
-**Klipp:** «Hei. Det e mæ. Det e kaldt her. Æ ligg i grønnsaksskuffen i kjøleskapet, ved sia av en agurk som ikkje sei nåkka. Koffer? Fordi Kulde har begynt å lag krystalla som ser ekte ut, men ikkje e det. Pil blei lurt to ganga i natt og e heilt flat. Så æ tenkt: ska æ kjenn igjen et ekte iskrystall, må æ bli ett. Det går dårlig. Æ e bare kald og lukte purre. Dokker va kjempeflink med tårnet i går, forresten. IQ fikk kortet sitt ferdig takka være dokker. Kan nån hent mæ? Æ kjem ikkje opp. Agurken hjelpe ikkje.»
+**Klipp:** «Hei. Det e mæ. Det e kaldt her. Æ ligg i grønnsaksskuffen i kjøleskapet, ved sia av en agurk som ikkje sei nåkka. Koffer? Fordi Kulde har begynt å lag krystalla som ser ekte ut, men ikkje e det. Pil blei lurt to ganga i natt og e heilt flat. Så æ tenkt: ska æ kjenn igjen et ekte iskrystall, må æ bli ett. Det går dårlig. Æ e bare kald og lukte purre. Dokker va kjempeflink med kortet i går, forresten. IQ fikk det ferdig takka være dokker. Kan nån hent mæ? Æ kjem ikkje opp. Agurken hjelpe ikkje.»
 
 **intro_hint:** «Dagens gjest ringer fra et kjølig sted og ber om å bli hentet.»
 
@@ -124,7 +124,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** 1,5–2 m dorull som «lydbølge» bortover kjøkkenet, ligger utslått i enden. Helg, 09-sendingen.
 
-**Klipp:** «God lørdag. Æ snakke lavt i dag. Æ hørt nåkka sukk i isen i natt. Ikkje knurr. Ikkje fres. Sukk. Sånn som når en e aleina og trur ingen høre. Julius sei æ innbilt mæ det. Hjerterud sa ingenting, ho bare nynna og gikk ned mot slusa med lykt. Æ veit ka æ hørt. Så æ prøvd å lag ei lydbølge, ei stor ei, for å send lyd tilbake. Det blei en dorull. Heile dorullen. Fra badet til kjøkkenet. Det e vitenskap, ikkje rot. Antenna i Snøfall står rett igjen, forresten, takka være dokker. IQ har sagt takk tolv ganga. Hør etter i dag. Hør ordentlig.»
+**Klipp:** «God lørdag. Æ snakke lavt i dag. Æ hørt nåkka sukk i isen i natt. Ikkje knurr. Ikkje fres. Sukk. Sånn som når en e aleina og trur ingen høre. Julius sa i går kveld at æ innbilt mæ det. Hjerterud sa ingenting, ho bare nynna og gikk ned mot slusa med lykt. Æ veit ka æ hørt. Så æ prøvd å lag ei lydbølge, ei stor ei, for å send lyd tilbake. Det blei en dorull. Heile dorullen. Fra badet til kjøkkenet. Det e vitenskap, ikkje rot. Antenna i Snøfall står rett igjen, forresten, takka være dokker. IQ har sagt takk tolv ganga. Hør etter i dag. Hør ordentlig.»
 
 **intro_hint:** «En som hørte noe i natt. Han vil at vi skal snakke lavt.»
 
@@ -132,7 +132,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** sin egen begravelse etter elleve lussekatter: serviett, blomst, kosedyr i sørgerekke, skilt «HER HVILER RAMPEN. HAN SPISTE 11.» Helg, 09-sendingen.
 
-**Klipp:** «God Lucia-morra. Dette e Rampenissen, og æ e død. Hjerterud bakt fem hundre bolla til Lucia. Æ spist elleve. Ikkje tolv. Elleve. Kosedyra hold begravelse, og dem e veldig verdige, bortsett fra kaninen som ler. Hilsen fra den andre sida. Det e ganske koselig her, æ har blomst. Men hør: i går hørt dokker det samme som mæ. Isen sukka. Julius sa unnskyld. Det har aldri skjedd. Og i natt satt Kulde og såg på Lucia-lysan i verkstedet gjennom linja. Bare såg. Tok ingenting. Æ veit ikkje ka æ ska mein om det. Syng høgt i dag. Og ikkje spis elleve. Ti e grensa.»
+**Klipp:** «God Lucia-morra. Dette e Rampenissen, og æ e nesten død. Hjerterud bakt fem hundre bolla til Lucia. Æ spist elleve. Ikkje tolv. Elleve. Kosedyra hold begravelse, og dem e veldig verdige, bortsett fra kaninen som ler. Hilsen fra den andre sida av bordet. Det e ganske koselig her, æ har blomst. Men hør: i går hørt dokker det samme som mæ. Isen sukka. Julius sa unnskyld. Det har aldri skjedd. Og i natt satt Kulde og såg på Lucia-lysan i verkstedet gjennom linja. Bare såg. Tok ingenting. Æ veit ikkje ka æ ska mein om det. Syng høgt i dag. Og ikkje spis elleve. Ti e grensa.»
 
 **intro_hint:** «Vi har fått en hilsen fra, sitat, den andre siden. Han høres ganske opplagt ut til å være død.»
 
@@ -148,7 +148,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** står ved siden av en liten skål sirup, fotspor av papir over benken, sleiva i hånden. Han vet ikke om Vintervokteren før i kveld.
 
-**Klipp:** «Rampenissen her, og æ har ikkje smakt. Nesten ikkje. Æ prøvd å lag varme på kjøkkenet i natt, sånn ekte varme, for det e kaldt på linja. Det blei ei lita skål. Æ står ved sida av ho no og passe på. Sleiva va med på det. Men det e ikkje det viktigaste i dag. IQ e stille. IQ e aldri stille. Han fant ei gammel bok i arkivet i natt, og han har ikkje sagt et ord sia. Ikkje ett. Han bare sitt. Hjerterud satte ei skål med nåkka søtt og brunt foran han, og den står der enda. Det har aldri skjedd før. Æ e litt urolig. Snakk lavt når dokker kjem heim i dag. Og ta med en klut.»
+**Klipp:** «Rampenissen her, og æ har ikkje smakt. Nesten ikkje. Æ prøvd å lag nåkka varmt på kjøkkenet i natt, for det e kaldt på linja, og varmt må en jo ha. Det blei ei lita skål med nåkka klissete. Æ står ved sida av ho no og passe på. Sleiva va med på det. Men det e ikkje det viktigaste i dag. IQ e stille. IQ e aldri stille. Han fant ei gammel bok i arkivet i natt, og han har ikkje sagt et ord sia. Ikkje ett. Han bare sitt. Hjerterud satte ei skål med nåkka søtt og brunt foran han, og den står der enda. Det har aldri skjedd før. Æ e litt urolig. Snakk lavt når dokker kjem heim i dag. Og ta med en klut, for det klissete e på benken.»
 
 **intro_hint:** «Gjesten vår står vakt ved ei skål på benken, og han er bekymret for en venn.»
 
@@ -212,7 +212,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** pakket opp et hjørne av en gave, teipet igjen med altfor mye teip, sitter i treet som pynt.
 
-**Klipp:** «Lille julaften! Rampenissen her, fra treet. Æ sitt i juletreet. Som pynt. Frivillig. Det har ingenting å gjør med at en gave fikk et lite hull i hjørnet i natt. Det e teipa. Med mye teip. Det e meir teip enn gave no, og æ har dårlig samvittighet, og derfor sitt æ her og tenke. Men hør: i natt fly dem. Over Nordtoppen. Med alle lysan på. Julius sa dem ska fly lavt over grotta, så den som e der nede får se. Trixter har pakka sleden. Rudolf har spist. Æ gråte ikkje. Det e teip i øya mine. Navna dokkers sto på lista i går. Æ såg dem. Over.»
+**Klipp:** «Lille julaften! Rampenissen her, fra treet. Æ sitt i juletreet. Som pynt. Frivillig. Det har ingenting å gjør med at en gave fikk et lite hull i hjørnet i natt. Det e teipa. Med mye teip. Det e meir teip enn gave no, og æ har dårlig samvittighet, og derfor sitt æ her og tenke. Men hør: i natt ska dem fly. Over Nordtoppen. Med alle lysan på. Julius sa dem ska fly lavt over grotta, så den som e der nede får se. Trixter har pakka sleden. Rudolf har spist. Æ gråte ikkje. Det e teip i øya mine. Navna dokkers sto på lista i går. Æ såg dem. Over.»
 
 **intro_hint:** «Han ringer fra et tre. Han sier han er pynt.»
 
@@ -237,16 +237,16 @@ Ord = talte ord i klippet. Sek = ord / 2,4. «Kode/hvor» = klippet sier ingen b
 | 3   | PRISME       | 105 | 44  | 06      | ok              |                                                                              |
 | 4   | KOMPASS      | 114 | 48  | 06      | ok              | «Jeg har laget en pil. Av noe.» (låst storyboard), ingen plass               |
 | 5   | ULRIKEN      | 107 | 45  | 09      | ok              | Fuglen nevnes uten sted                                                      |
-| 6   | LYKT         | 109 | 45  | 09      | ok              | Storyboardets «lommelykten» er byttet til «den lille lampen», som i e-posten |
+| 6   | LYKT         | 119 | 50  | 09      | ok              | Storyboardets «lommelykten» er byttet til «den lille lampen», som i e-posten |
 | 7   | KULDE        | 109 | 45  | 06      | ok, med merknad | «Det som skurrer, er kaldt» er låst storyboardlinje; navnet sies ikke        |
 | 8   | KRETSKORT    | 99  | 41  | 06      | ok              | Slang 1 av 2                                                                 |
-| 9   | 24           | 101 | 42  | 06      | ok              | Ingen antall eller armer                                                     |
+| 9   | 24           | 100 | 42  | 06      | ok              | Ingen antall eller armer                                                     |
 | 10  | SPEKTER      | 109 | 45  | 06      | ok              | «rundt i stua» fra historiedok. er tatt ut                                   |
 | 11  | 75           | 101 | 42  | 06      | ok              |                                                                              |
-| 12  | MELODI       | 106 | 44  | 09      | ok              | Glassene nevnes ikke                                                         |
-| 13  | SAFRAN       | 104 | 43  | 09      | ok              |                                                                              |
+| 12  | MELODI       | 110 | 46  | 09      | ok              | Glassene nevnes ikke                                                         |
+| 13  | SAFRAN       | 107 | 45  | 09      | ok              |                                                                              |
 | 14  | ORIGAMI      | 108 | 45  | 06      | ok              |                                                                              |
-| 15  | KARAMELL     | 122 | 51  | 06      | ok              | Verken sukker eller sirup nevnes                                             |
+| 15  | KARAMELL     | 135 | 56  | 06      | ok              | Verken sukker eller sirup nevnes                                             |
 | 16  | SORTERING    | 110 | 46  | 06      | ok              | «ryddet», aldri «sortere»                                                    |
 | 17  | NORDLYS      | 105 | 44  | 06      | ok              | «grønt over Ulriken», aldri «nord» + «lys»                                   |
 | 18  | TURBULENS    | 106 | 44  | 06      | ok              | «hoppet», ikke «ristet»                                                      |
@@ -254,7 +254,7 @@ Ord = talte ord i klippet. Sek = ord / 2,4. «Kode/hvor» = klippet sier ingen b
 | 20  | TURBO        | 108 | 45  | 09      | ok              | Slang 2 av 2; varme inne, ingen ute                                          |
 | 21  | BRANNMUR     | 109 | 45  | 06      | ok, med merknad | «bokmuren»/«muren» er låst framing; første ledd sies ikke                    |
 | 22  | LANDÅS       | 108 | 45  | 06      | ok              | Stedsnavnet unngås hele klippet; «landingen» byttet til «julenatt»           |
-| 23  | STJERNEKLART | 110 | 46  | 06      | ok              |                                                                              |
+| 23  | STJERNEKLART | 111 | 46  | 06      | ok              |                                                                              |
 | 24  | JULEMAGI     | 112 | 47  | 06      | ok              | «God jul» er høytidsnavnet Julius selv ber dem sette foran                   |
 
-Sum: 2 570 ord, snitt 107 per dag (cirka 45 s).
+Sum: 2 600 ord, snitt 108 per dag (cirka 45 s).

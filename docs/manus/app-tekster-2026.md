@@ -355,7 +355,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 ### Dag 8 (ti) – Floken i Verkstedet · KRETSKORT
 
 - `tittel`: Floken i Verkstedet (ny: den låste tittelen «Bestikk-Kretsløpet» gir KRETS = 5 av 9; se åpne spørsmål)
-- `nissemail_tekst` (79 ord): Uke én er ferdig! 🎉 IQ feirer med å lodde noe som skal holde Kulde ute av kanal 1 til 4. Jeg feiret med å bygge noe. Mitt var høyere. Håkon, du fikk ned arket IQ sendte. Følg hver ledning fra batteriet med fingeren. Hanna, hvis du vil: hvor mange pakker var det? Kristian: IQ sier noe om strøm i dag; hør etter. Og hør hva han kaller tingen han lodder på. Etterpå åpner et spill på kanal 4. – Rampenissen
+- `nissemail_tekst` (79 ord): Uke én er ferdig! 🎉 IQ feirer med å lodde noe som skal holde Kulde ute av kanal 1 til 4. Jeg feiret med å bygge noe. Mitt var høyere. Håkon, du fikk ned arket IQ sendte. Følg hver ledning fra batteriet med fingeren. Hanna, hvis du vil: hvor mange pakker var det? Kristian: IQ sier noe om strøm i dag; hør etter. Og hør hva han kaller tingen han lodder på. Etterpå åpner IQs sledesimulator på skrivebordet: SLEDEFLUKT. – Rampenissen
 - `julius_ps`: Et tårn av frokostblanding med skilt. Jeg spurte Hjerterud hva «sigma» betyr. Hun sa «spør Kristian». IQ sov på loddebordet i natt med plata som pute; han sier den er ferdig i morgen tidlig.
 - `daily_alerts`: 🎉 NISSENE: Uke én fullført. IQ lodder noe grønt og sover ikke.
 - NisseNet: `SNOFALL-HISTORIER/IQ-VERKSTED/magisk-sekk-test.txt` **erstattes** av `IQ-VERKSTED/feilrapport-uke-1.txt` (`afterDay: 8`):
