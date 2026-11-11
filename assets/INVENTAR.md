@@ -10,7 +10,8 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | rampenissen |   0 |   5 |   2 |  17 |
 | music       |   0 |   0 |  13 |   1 |
 | tv          |   0 |   0 |  23 |   0 |
-| feed        |   0 |   0 |   7 |   0 |
+| port        |   0 |   0 |   0 |   4 |
+| feed        |   0 |   4 |   7 |   0 |
 
 ## julius
 
@@ -117,17 +118,30 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/tv/grotte-dag23.mp4         |    0.3 MB | 2026-11-10 | ?      |
 | video/tv/grotte-dag24.mp4         |    0.2 MB | 2026-11-10 | ?      |
 
+## port
+
+| Fil                        | Størrelse | Dato | Status |
+| -------------------------- | --------: | ---- | ------ |
+| video/tv/port-julius.mp4   |           |      | ✗      |
+| video/tv/port-nissemor.mp4 |           |      | ✗      |
+| video/tv/port-iq.mp4       |           |      | ✗      |
+| video/tv/port-winter.mp4   |           |      | ✗      |
+
 ## feed
 
-| Fil                    | Størrelse | Dato       | Status |
-| ---------------------- | --------: | ---------- | ------ |
-| feed/antenne-tarn.png  |    0.6 MB | 2026-11-11 | ?      |
-| feed/kulde-grotte.png  |    1.0 MB | 2026-11-11 | ?      |
-| feed/snøfall-storm.png |    0.7 MB | 2026-11-11 | ?      |
-| feed/snøfall-day.png   |    1.0 MB | 2026-11-11 | ?      |
-| feed/iq-verksted.png   |    1.1 MB | 2026-11-11 | ?      |
-| feed/julius-kontor.jpg |    0.2 MB | 2026-11-10 | ?      |
-| feed/landsby-rolig.jpg |    0.2 MB | 2026-11-10 | ?      |
+| Fil                       | Størrelse | Dato       | Status                                                                                                            |
+| ------------------------- | --------: | ---------- | ----------------------------------------------------------------------------------------------------------------- |
+| feed/antenne-tarn.png     |    0.6 MB | 2026-11-11 | ?                                                                                                                 |
+| feed/kulde-grotte.png     |    1.0 MB | 2026-11-11 | ?                                                                                                                 |
+| feed/snøfall-storm.png    |    0.7 MB | 2026-11-11 | ?                                                                                                                 |
+| feed/snøfall-day.png      |    1.0 MB | 2026-11-11 | ?                                                                                                                 |
+| feed/iq-verksted.png      |    1.1 MB | 2026-11-11 | ?                                                                                                                 |
+| feed/julius-kontor.jpg    |    0.2 MB | 2026-11-10 | ?                                                                                                                 |
+| feed/landsby-rolig.jpg    |    0.2 MB | 2026-11-10 | ?                                                                                                                 |
+| feed/slede-julenatt.jpg   |    0.6 MB | 2026-11-11 | ⚠ kilden finnes ikke lenger: assets/locations/sledeflukt/varianter/julenatt.still.prompt.txt; ikke i manifestet   |
+| feed/slede-muren.jpg      |    0.5 MB | 2026-11-11 | ⚠ kilden finnes ikke lenger: assets/locations/sledeflukt/varianter/muren.still.prompt.txt; ikke i manifestet      |
+| feed/slede-nordtoppen.jpg |    0.6 MB | 2026-11-11 | ⚠ kilden finnes ikke lenger: assets/locations/sledeflukt/varianter/nordtoppen.still.prompt.txt; ikke i manifestet |
+| feed/slede-tundra.jpg     |    0.5 MB | 2026-11-11 | ⚠ kilden finnes ikke lenger: assets/locations/sledeflukt/varianter/tundra.still.prompt.txt; ikke i manifestet     |
 
 ## Gamle filer
 
