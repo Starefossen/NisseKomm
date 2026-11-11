@@ -18,6 +18,7 @@ function serverLogout(role: "kid" | "parent"): void {
   fetch("/api/auth/logout", {
     method: "POST",
     body: JSON.stringify({ role }),
+    keepalive: true, // survives a reload right after logout
   }).catch(() => {});
 }
 

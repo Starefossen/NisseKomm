@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface BootSequenceProps {
   onComplete: () => void;
@@ -9,6 +9,10 @@ interface BootSequenceProps {
 
 export function BootSequence({ onComplete, duration = 2 }: BootSequenceProps) {
   const [progress, setProgress] = useState(0);
+  const done = useRef(onComplete);
+  useEffect(() => {
+    done.current = onComplete;
+  });
 
   useEffect(() => {
     if (duration === 0) {
@@ -17,18 +21,18 @@ export function BootSequence({ onComplete, duration = 2 }: BootSequenceProps) {
     }
 
     const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(onComplete, 300);
-          return 100;
-        }
-        return prev + 100 / (duration * 10);
-      });
+      setProgress((prev) => Math.min(100, prev + 100 / (duration * 10)));
     }, 100);
 
     return () => clearInterval(interval);
   }, [duration, onComplete]);
+
+  // Not inside the updater: React may run updaters twice (StrictMode).
+  useEffect(() => {
+    if (progress < 100) return;
+    const t = setTimeout(() => done.current(), 300);
+    return () => clearTimeout(t);
+  }, [progress]);
 
   if (duration === 0) {
     return null;

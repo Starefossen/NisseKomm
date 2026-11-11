@@ -2,6 +2,7 @@ import { mkdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { NextRequest } from "next/server";
 import { authorizeMedia, mediaDir } from "@/lib/media-server";
+import { getISOString } from "@/lib/date-utils";
 
 export interface MediaVurderingItem {
   vurdering?: "godkjent" | "lag_paa_nytt";
@@ -103,7 +104,7 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const now = new Date().toISOString();
+  const now = getISOString();
   const prev = current[cleanPath] || {};
 
   const nextVerdict =

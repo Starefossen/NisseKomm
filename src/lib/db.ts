@@ -153,6 +153,8 @@ CREATE TABLE IF NOT EXISTS sessions (
   expires      timestamptz NOT NULL
 );
 CREATE TABLE IF NOT EXISTS auth_failures (at timestamptz NOT NULL);
+CREATE INDEX IF NOT EXISTS sessions_expires ON sessions (expires);
+CREATE INDEX IF NOT EXISTS auth_failures_at ON auth_failures (at);
 `;
 const LOCK_ID = 501224;
 
