@@ -106,7 +106,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Strek:** hender, nese og halve ansiktet i fire tusjfarger, bart på post-it over bildet av mamma og pappa. Skjerm er grå fra 05:30.
 
-**Klipp:** «Høre dokker mæ? Skjermen dokkers e GRÅ. Æ såg det klokka fire i natt, og herregud, æ blei så redd at æ gjord nåkka. Æ gjømt alle fargan æ fant. Noen på mæ, resten gjømt i stua. Hendan, nesa, halve ansiktet. No e æ den mest fargerike tingen i huset, og det e et ansvar. Mamma og pappa fikk bart på bildet, men det e en post-it, det går av, æ sjekka. Kulde har tatt fargan fra Snøfall TV også. Alt e grått der oppe. Hjerterud bake grå bolla. IQ sei dokker e dem einaste med farga igjen. Så pass på dem. Ikkje vask mæ. Æ meine det. Over.»
+**Klipp:** «Høre dokker mæ? Skjermen dokkers e GRÅ. Æ såg det klokka fire i natt, og herregud, æ blei så redd at æ gjord nåkka. Æ gjømt alle fargan æ fant. Nån på mæ, resten gjømt i stua. Hendan, nesa, halve ansiktet. No e æ den mest fargerike tingen i huset, og det e et ansvar. Mamma og pappa fikk bart på bildet, men det e en post-it, det går av, æ sjekka. Kulde har tatt fargan fra Snøfall TV også. Alt e grått der oppe. Hjerterud bake grå bolla. IQ sei dokker e dem einaste med farga igjen. Så pass på dem. Ikkje vask mæ. Æ meine det. Over.»
 
 **intro_hint:** «Han sier han er den mest fargerike tingen i huset i dag. Han høres bekymret ut.»
 

@@ -22,7 +22,7 @@ export const KAPITTEL_4: Kapittel = {
   tittel: "Klar til avgang",
   dag: 22,
   klar: true,
-  teaser: "Porten står åpen. Winter har en liste og to blyanter.",
+  teaser: "Sleden pakkes. Winter har en liste og to blyanter.",
   start: "porten",
   slutt: "k4_ferdig",
   intro: [
@@ -259,7 +259,7 @@ export const KAPITTEL_4: Kapittel = {
           ],
           feil: {
             klementin:
-              "Du legger klementinen i sleden. Winter: «Last registreres av Hjerterud, ikke av ugler.» Du tar den igjen. Klementinen hadde gledet seg.",
+              "Du legger klementinen i sleden. Winter: «Proviant registreres av Hjerterud, ikke av ugler.» Du tar den igjen. Klementinen hadde gledet seg.",
             noett:
               "Du legger nøtta i sleden. Winter: «Nei.» Han sa det før du var ferdig. Du tar den igjen.",
             fiskesnoere:

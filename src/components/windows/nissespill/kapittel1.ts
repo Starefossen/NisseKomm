@@ -29,7 +29,7 @@ export const KAPITTEL_1: Kapittel = {
   ],
   utro:
     R +
-    "«Dokker klarte det! Lykkebjella e trygg, og Floke flyg kurven opp på loftet igjen. Winter fikk skjemaet sitt, IQ fikk glasset sitt, og æ fikk senga mi. Alle vant. Neste gang treng æ hjelp med nåkka ... kaldere. Æ sei ikkje meir. Over og ut!»",
+    "«Dokker klarte det! Lykkebjella e trygg, og Floke har dytta kurven på plass på loftet igjen. Winter fikk skjemaet sitt, IQ fikk glasset sitt, og æ fikk senga mi. Alle vant. Neste gang treng æ hjelp med nåkka ... kaldere. Æ sei ikkje meir. Over og ut!»",
   gjenstander: {
     tyttebaer: {
       id: "tyttebaer",
@@ -870,7 +870,7 @@ export const KAPITTEL_1: Kapittel = {
         R +
           "«Trykk på en bit ved sida av det tomme feltet, så glir han dit. Få hjørnan på plass først, så resten.»",
         R +
-          "«Øverste rad først: trapp, hus, urtårn. Så midten. Dem to siste bitan nederst går rundt det tomme feltet te dem sitt. Ta deg tid, æ har heile dagen. Æ har ikkje nåkka anna.»",
+          "«Øverste rad først: trapp, hus, urtårn. Så midten. Dem to siste bitan nederst går rundt det tomme feltet te dem sitt. Ta dæ tid, æ har heile dagen. Æ har ikkje nåkka anna.»",
       ],
     },
   ],

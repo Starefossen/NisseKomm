@@ -517,7 +517,7 @@
       "display_type": "counter",
       "unit": "lister",
       "child_progress_multiplier": 0.035,
-      "description": "Origami-brevfugler dekryptert av Winter",
+      "description": "Origami-brevfugler sortert av Winter",
       "crisis_behavior": {
         "day": 16,
         "crisis_type": "stuck",

@@ -12,7 +12,7 @@
 
 **Revisjon 11. november (rapporten, til godkjenning):** på dag 5, 6, 8, 11, 12, 13, 17 og 23 leser Julius én linje fra Rampenissens rapport om nattens strek (arket tas fra brevbunken, Rampenissens linje på nordlandsk) og reagerer varmt. Ett segment per dag, høyst 26 ord, i stedet for et fyllsegment (dag 6, 11 og 17: kroken, som var eneste fyll); brikkene, «i natt»-setningene, hilsen og avskjed er uendret. Bare streken slik barna så den, aldri det den bærer; dager der streken selv bærer brikke H (3, 4, 7, 9, 14, 16, 18, 21, 22, 24) og dager uten tull (10, 15, 20) er ikke med. Dag 19 er utelatt fordi streken sier koden.
 
-**Revisjon 11. november (flyt, godkjent):** dag 2–24 skrevet om i én omgang etter flytreglene fra dag 1-visningen, fordi hvert segment er et hardt klipp i både bilde og lyd: hvert segment åpner og lukker på en hel setning med eget subjekt (ingen fragment eller pronomen som peker til forrige klipp), én tanke per segment, siste setning er en bro og ikke en punchline, oppsett og vits i samme segment, brikken får innledning i samme segment og avskjeden står i halen (ingen segment under 12 ord), handlingen varer hele segmentet, og «i natt» kommer før julefakta. Brikkene står ordrett som i `gaater-2026.md`; der brikken er delt, åpner andre del med en kort setning med eget subjekt foran den låste ordlyden. Kontinuitet mot radio og PS: dag 9 (Pil lurt to ganger, så telte hun), 12 (Julius innrømmer feilen og lover å si unnskyld), 18 (hjelmen har en grunn), 20 (bøkene), 24 (krystallet fra Vintervokteren). Dag 19 nevner ikke lenger lys på Landås-siden (betinget innhold).
+**Revisjon 11. november (flyt, godkjent):** dag 2–24 skrevet om i én omgang etter flytreglene fra dag 1-visningen, fordi hvert segment er et hardt klipp i både bilde og lyd: hvert segment åpner og lukker på en hel setning med eget subjekt (ingen fragment eller pronomen som peker til forrige klipp), én tanke per segment, siste setning er en bro og ikke en punchline, oppsett og vits i samme segment, brikken får innledning i samme segment og avskjeden står i halen (ingen segment under 12 ord), handlingen varer hele segmentet, og «i natt» kommer før julefakta. Brikkene står ordrett som i `gaater-2026.md`; der brikken er delt, åpner andre del med en kort setning med eget subjekt foran den låste ordlyden. Kontinuitet mot radio og PS: dag 9 (Pil lurt to ganger, så telte han), 12 (Julius innrømmer feilen og lover å si unnskyld), 18 (hjelmen har en grunn), 20 (bøkene), 24 (krystallet fra Vintervokteren). Dag 19 nevner ikke lenger lys på Landås-siden (betinget innhold).
 
 Steg 2. Kilder (låst): `docs/historie-2026.md`, `docs/storyboard-2026.md`, `docs/gaater-2026.md`. Stemme og rom: `assets/characters/julius/*`, `assets/locations/julius-kontor/beskrivelse.txt`, `assets/stil.md`.
 
@@ -336,7 +336,7 @@ Kulde-nivå 2. Rim, synlig pust, bildet fryser 1–2 s i segment 3. Julius innr�
 
 Kulde-nivå 1. Rim, synlig pust, svak knitring.
 
-1. **Replikk:** «Gooood Lucia-morgen, Snøfall! Tredje lys i dag, og det er den trettende desember. Hjerterud har bakt siden klokka fire, og hele huset lukter.»
+1. **Replikk:** «Gooood Lucia-morgen, Snøfall! Tredje lys i dag, og det er den trettende desember. Hjerterud har bakt siden klokka fire, og hele landsbyen lukter.»
    - Varighet: 14 s (23 ord)
    - Handling: Holder opp tre fingre på venstre hånd, så snuser han i luften og smiler.
    - Kulde: Synlig pust.

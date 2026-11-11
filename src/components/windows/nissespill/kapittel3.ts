@@ -202,7 +202,7 @@ export const KAPITTEL_3: Kapittel = {
           smart: "snakk",
           snakk: "hjerterud",
           se: "Hjerterud har satt seg i Julius' stol med en bunke julekort og en penn. Hun skriver fort og pent. Ved siden av står en kopp te som har sluttet å ryke for lenge siden. Hun har ikke merket det. Hun merker alt annet.",
-          bruk: "Du prikker Hjerterud på armen. Hun ser opp over brillekanten og smiler. «Ja, Floke?» Hun visste at du kom. Hun vet alltid.",
+          bruk: "Du prikker Hjerterud på armen. Hun ser opp fra julekortene og smiler. «Ja, Floke?» Hun visste at du kom. Hun vet alltid.",
         },
         {
           id: "brevbunken",

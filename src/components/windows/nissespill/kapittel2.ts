@@ -920,7 +920,7 @@ export const KAPITTEL_2: Kapittel = {
         R +
           "«Antenna snurre, koppen har vann, og IQ har rissa en L i skiva. No mangle bare nåkka som veit kor nord e.»",
         R +
-          "«Nåla på tavla hos IQ peke alltid mot nord. Ta ho med, med kork og alt.»",
+          "«Nåla på tavla hos IQ peke bestandig mot nord. Ta ho med, med kork og alt.»",
         R +
           "«Ta magnetnåla fra tavla og bruk den på peileskiva på masta. Så finn antenna L sjøl.»",
       ],
