@@ -28,26 +28,22 @@ Steg 2. Kilder (låst): `docs/historie-2026.md`, `docs/storyboard-2026.md`, `doc
 
 ## Dag 1 (ti) – Direktelinjen · SIGNAL · M1
 
-Kulde-nivå 1. Svak knitring i lyden hele klippet, lett snø i bildet. Rommet er ellers som på referansebildet. Seks segmenter (åpneren er lengre, godkjent): velkomsten i segment 2 er ny. Etter klippet legger appen på en 4 s hale (T14: snø, «LINJE 90,0 · BÆREBØLGE USTABIL», frekvensen sklir til 85,0 og tilbake); den er kode, ikke en del av videofilen.
+Kulde-nivå 1. Svak knitring i lyden hele klippet, lett snø i bildet. Rommet er ellers som på referansebildet. Seks segmenter (åpneren er lengre, godkjent). Skrevet om 11. november etter tilbakemelding fra visning (hakkete flyt, «én nisse» uforståelig): hvert segment er hele setninger som slutter på en naturlig pause, klementinene og Rampenissen sies rett ut, og brikke S står ordrett. Etter klippet legger appen på en 4 s hale (T14: snø, «LINJE 90,0 · BÆREBØLGE USTABIL», frekvensen sklir til 85,0 og tilbake); den er kode, ikke en del av videofilen.
 
-1. **Replikk:** «Ja… hallo, ja? Er det liv i jernvaren? Jo, der! Gooood morgen, Snøfall! Kristian, Håkon og Hanna, velkommen tilbake. IQ sier linjen er åpen.»
-   - Varighet: 14 s (24 ord)
+1. **Replikk:** «Ja… hallo? Er det liv i jernvaren? Jo, der! Gooood morgen, Snøfall! Kristian, Håkon og Hanna, velkommen tilbake. I natt åpnet IQ direktelinjen til stua deres.»
+   - Varighet: 15 s (26 ord)
    - Handling: Banker to ganger på mikrofonen med venstre pekefinger, lytter, så lyser han opp.
-   - Kulde: Knitring i lyden, et kort hopp i bildet idet han sier «åpen».
-2. **Replikk:** «Hele Snøfall har ventet på dette. I natt sendte IQ forsyninger ned linjen. Mest se-vitamin, sier Nissemor.»
-   - Varighet: 11 s (17 ord)
-   - Handling: Lener seg bakover, ser mot vinduet og landsbyen, smiler.
+   - Kulde: Knitring i lyden, et kort hopp i bildet idet han sier «stua deres».
+2. **Replikk:** «Det første han sendte ned fra verkstedet, var Nissemors niste: tre esker klementiner. Se-vitamin, kaller hun det. Rampenissen satt oppå eskene. Dere så hvordan det endte.»
+   - Varighet: 15 s (26 ord)
+   - Handling: Holder venstre hånd opp som om han har en klementin i den, skreller den med tommelen, lukter på fingrene og smiler.
    - Kulde: Svak knitring.
-     2b. **Replikk:** «Og én nisse. Vi husker dere. Alle tre.»
-   - Varighet: 6 s (8 ord)
-   - Handling: Lener seg fram mot mikrofonen, sier det lavt og varmt.
-   - Kulde: Ingen.
-3. **Replikk:** «Advent betyr ankomst. Noen er på vei. Derfor teller vi dagene i stedet for å hoppe rett til julaften. Ventingen er halve gleden, sier Nissemor.»
-   - Varighet: 15 s (25 ord)
+3. **Replikk:** «Advent betyr ankomst. Julen er på vei, og Rampenissen var den første som kom. Derfor teller vi dagene i stedet for å hoppe rett til julaften.»
+   - Varighet: 15 s (26 ord)
    - Handling: Blar i den store boka med venstre hånd, legger den flat på siden.
    - Kulde: Svak knitring.
-4. **Replikk:** «I natt åpnet IQ direktelinjen fra verkstedet til stua deres. Men bærebølgen hakker. Orakelet sier det ligger noe under lyden. Noe som lytter.»
-   - Varighet: 14 s (23 ord)
+4. **Replikk:** «Men linjen er ikke helt i orden ennå. Bærebølgen hakker, og Orakelet sier det ligger noe under lyden. Noe som lytter.»
+   - Varighet: 13 s (21 ord)
    - Handling: Lener seg nærmere mikrofonen, senker stemmen på «noe som lytter».
    - Kulde: Knitringen blir tydeligere i to sekunder, så normal.
 5. **Replikk:** «Når linjen bærer, roper IQ ett ord fra verkstedet. Det er det ordet radioen deres leter etter når den skurrer, rett før stemmen kommer gjennom.»
@@ -648,31 +644,31 @@ Kulde-nivå 0. Alt virker. Rommet er varmere enn noen gang: alle juletrelys tent
 
 Ord = talte ord i alle segmenter. Tale = ord / 2,0 (målt tempo for videomodellen). Klipp = sum av segmentvarigheter (ord/2 rundet opp + 2 s pause per klipp, maks 15). Brikke S-andel = hvor mye av koden videoen gir alene. Alle brikker er kopiert ordrett fra `gaater-2026.md`; der brikken er lengre enn 26 ord, er den delt i to segmenter ved setningsgrense, uten endret ordlyd.
 
-| Dag | Kode         | Ord | Tale s | Klipp s | Segm. | Lengste | Brikke S-andel                     | Merknad                                                                 |
-| --- | ------------ | --- | ------ | ------- | ----- | ------- | ---------------------------------- | ----------------------------------------------------------------------- |
-| 1   | SIGNAL       | 139 | 70     | 84      | 6     | 25      | 0 % (bruk, ingen bokstaver)        | Åpneren: +1 velkomstsegment (godkjent); 85,0-hale i appen, ikke i filen |
-| 2   | 48           | 114 | 57     | 68      | 5     | 25      | regel, ingen tall                  | Morgensangen første gang (skjærer seg)                                  |
-| 3   | PRISME       | 122 | 61     | 72      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                         |
-| 4   | KOMPASS      | 122 | 61     | 73      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5), video regenereres                 |
-| 5   | ULRIKEN      | 117 | 58     | 70      | 5     | 26      | nøkkel som oppslag (dag 2)         | Segm. 4 ny: «like mange som sikringer onsdag»                           |
-| 6   | LYKT         | 119 | 60     | 71      | 5     | 26      | 0 % (velger figur)                 |                                                                         |
-| 7   | KULDE        | 122 | 61     | 72      | 5     | 26      | 0 % + peker til tavla              | Bildet fryser der navnet skulle vært sagt; segm. 3 og 5 nye             |
-| 8   | KRETSKORT    | 117 | 58     | 70      | 5     | 26      | 0 % + regel om strøm               | Låst brikke delt over segm. 4–5; segm. 3 ny; mikrofonen sitter fast     |
-| 9   | 24           | 120 | 60     | 72      | 5     | 26      | armer (6), ikke antall, ikke regel | Låst brikke delt over segm. 4–5; morgensangen andre gang (går)          |
-| 10  | SPEKTER      | 125 | 62     | 74      | 5     | 26      | 0 %                                | Brikken gjentas i segm. 5 pga. hakking (låst)                           |
-| 11  | 75           | 114 | 57     | 67      | 5     | 26      | to regler, ingen tall              | Segm. 4 ny («ender på fem»), segm. 5 nytt                               |
-| 12  | MELODI       | 117 | 58     | 70      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                    |
-| 13  | SAFRAN       | 122 | 61     | 72      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                         |
-| 14  | ORIGAMI      | 122 | 61     | 72      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                    |
-| 15  | KARAMELL     | 123 | 62     | 73      | 5     | 26      | 0 %                                | Låst brikke er 26 ord alene; «Han spiste ikke engang det» i segm. 5     |
-| 16  | SORTERING    | 105 | 52     | 64      | 5     | 26      | 0 %                                | Brikken sier «stor S» (låst); morgensangen tredje gang (lampen)         |
-| 17  | NORDLYS      | 123 | 62     | 73      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5; «i nord» (låst)                        |
-| 18  | TURBULENS    | 121 | 60     | 72      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                    |
-| 19  | GULROT       | 123 | 62     | 73      | 5     | 25      | 0 %                                | Kulde 0; brikke delt over segm. 4–5                                     |
-| 20  | TURBO        | 127 | 64     | 77      | 6     | 26      | 0 %                                | Brikke i segm. 3–4; segm. 5 ny: porten = sirkelen på kartet             |
-| 21  | BRANNMUR     | 119 | 60     | 70      | 5     | 26      | 0 %                                | Brikke strammet 10. nov; delt over segm. 3–4                            |
-| 22  | LANDÅS       | 120 | 60     | 70      | 5     | 26      | to regler, ingen tall              | Låst brikke (43 ord) delt over segm. 3–5                                |
-| 23  | STJERNEKLART | 121 | 60     | 72      | 5     | 25      | 0 %                                | Låst brikke delt over segm. 3–4                                         |
-| 24  | JULEMAGI     | 144 | 72     | 86      | 6     | 26      | 0 %                                | Låst brikke (50 ord) delt over segm. 4–6; morgensangen går hele veien   |
+| Dag | Kode         | Ord | Tale s | Klipp s | Segm. | Lengste | Brikke S-andel                     | Merknad                                                               |
+| --- | ------------ | --- | ------ | ------- | ----- | ------- | ---------------------------------- | --------------------------------------------------------------------- |
+| 1   | SIGNAL       | 149 | 74     | 88      | 6     | 26      | 0 % (bruk, ingen bokstaver)        | Omskrevet 11. nov (flyt, seks segm.); 85,0-hale i appen, ikke i filen |
+| 2   | 48           | 114 | 57     | 68      | 5     | 25      | regel, ingen tall                  | Morgensangen første gang (skjærer seg)                                |
+| 3   | PRISME       | 122 | 61     | 72      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                       |
+| 4   | KOMPASS      | 122 | 61     | 73      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5), video regenereres               |
+| 5   | ULRIKEN      | 117 | 58     | 70      | 5     | 26      | nøkkel som oppslag (dag 2)         | Segm. 4 ny: «like mange som sikringer onsdag»                         |
+| 6   | LYKT         | 119 | 60     | 71      | 5     | 26      | 0 % (velger figur)                 |                                                                       |
+| 7   | KULDE        | 122 | 61     | 72      | 5     | 26      | 0 % + peker til tavla              | Bildet fryser der navnet skulle vært sagt; segm. 3 og 5 nye           |
+| 8   | KRETSKORT    | 117 | 58     | 70      | 5     | 26      | 0 % + regel om strøm               | Låst brikke delt over segm. 4–5; segm. 3 ny; mikrofonen sitter fast   |
+| 9   | 24           | 120 | 60     | 72      | 5     | 26      | armer (6), ikke antall, ikke regel | Låst brikke delt over segm. 4–5; morgensangen andre gang (går)        |
+| 10  | SPEKTER      | 125 | 62     | 74      | 5     | 26      | 0 %                                | Brikken gjentas i segm. 5 pga. hakking (låst)                         |
+| 11  | 75           | 114 | 57     | 67      | 5     | 26      | to regler, ingen tall              | Segm. 4 ny («ender på fem»), segm. 5 nytt                             |
+| 12  | MELODI       | 117 | 58     | 70      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                  |
+| 13  | SAFRAN       | 122 | 61     | 72      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5                                       |
+| 14  | ORIGAMI      | 122 | 61     | 72      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                  |
+| 15  | KARAMELL     | 123 | 62     | 73      | 5     | 26      | 0 %                                | Låst brikke er 26 ord alene; «Han spiste ikke engang det» i segm. 5   |
+| 16  | SORTERING    | 105 | 52     | 64      | 5     | 26      | 0 %                                | Brikken sier «stor S» (låst); morgensangen tredje gang (lampen)       |
+| 17  | NORDLYS      | 123 | 62     | 73      | 5     | 26      | 0 %                                | Låst brikke delt over segm. 4–5; «i nord» (låst)                      |
+| 18  | TURBULENS    | 121 | 60     | 72      | 5     | 26      | 0 %                                | Brikke omskrevet 10. nov (segm. 4–5)                                  |
+| 19  | GULROT       | 123 | 62     | 73      | 5     | 25      | 0 %                                | Kulde 0; brikke delt over segm. 4–5                                   |
+| 20  | TURBO        | 127 | 64     | 77      | 6     | 26      | 0 %                                | Brikke i segm. 3–4; segm. 5 ny: porten = sirkelen på kartet           |
+| 21  | BRANNMUR     | 119 | 60     | 70      | 5     | 26      | 0 %                                | Brikke strammet 10. nov; delt over segm. 3–4                          |
+| 22  | LANDÅS       | 120 | 60     | 70      | 5     | 26      | to regler, ingen tall              | Låst brikke (43 ord) delt over segm. 3–5                              |
+| 23  | STJERNEKLART | 121 | 60     | 72      | 5     | 25      | 0 %                                | Låst brikke delt over segm. 3–4                                       |
+| 24  | JULEMAGI     | 144 | 72     | 86      | 6     | 26      | 0 %                                | Låst brikke (50 ord) delt over segm. 4–6; morgensangen går hele veien |
 
-Sum: 2 918 ord, snitt 122 per dag (cirka 60 s tale, 70 s med klippause). Ingen segmenter over 26 ord; alle klipp 13–15 s.
+Sum: 2 928 ord, snitt 122 per dag (cirka 60 s tale, 70 s med klippause). Ingen segmenter over 26 ord; alle klipp 13–15 s.
