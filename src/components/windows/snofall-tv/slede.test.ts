@@ -7,7 +7,12 @@ import {
   createSim,
   ETAPPER,
   etapperFor,
+  forutsiPakke,
+  HUS_PIPE,
   lagBane,
+  LEVERING_BONUS,
+  leveringsoppdrag,
+  pakkenavn,
   RAMP,
   rekkeMult,
   UTFORDRING_BONUS,
@@ -285,5 +290,97 @@ describe("dagens utfordring", () => {
       "48 s / 50",
     );
     expect(utfordringStatus(ren, telling)).toBe("KRASJ");
+  });
+});
+
+describe("pipelevering", () => {
+  it("puts smoking houses within reach on stages from day 14 only", () => {
+    for (const e of ETAPPER) {
+      const hus = lagBane(e).filter((t) => t.type === "hus");
+      if (e.dag < 14) expect(hus).toHaveLength(0);
+      else {
+        expect(hus.length).toBeGreaterThan(3);
+        for (const h of hus) {
+          expect(Math.abs(h.x)).toBeLessThanOrEqual(1);
+          expect(HUS_PIPE).toContain(h.h);
+        }
+      }
+    }
+  });
+
+  it("drops one package at a time; the preview lands where the package lands", () => {
+    const e = ETAPPER.find((x) => x.id === "stjernedrysset")!;
+    const sim = createSim(e, { assist: true, reduceMotion: false });
+    const hus = sim.s.ting.find((t) => t.type === "hus")!;
+    sim.s.px = hus.x;
+    sim.s.dist = hus.z - 3000;
+    sim.step(1 / 60, still);
+    // Fly until the preview crosses the chimney, then drop.
+    for (let i = 0; i < 2000 && !sim.s.pakke; i++) {
+      const bane = forutsiPakke(sim.s, 0);
+      const ved = bane.find((p) => Math.abs(p.z - hus.z) < 60);
+      const treff = !!ved && ved.alt <= hus.h && ved.alt > hus.h - 45;
+      const ev = sim.step(1 / 60, { ...still, slipp: treff });
+      if (treff) expect(ev).toContain("slipp");
+    }
+    expect(sim.s.pakke).not.toBeNull();
+    expect(sim.step(1 / 60, { ...still, slipp: true })).not.toContain("slipp");
+    let ev: string[] = [];
+    for (let i = 0; i < 600 && sim.s.pakke; i++)
+      ev = ev.concat(sim.step(1 / 60, still));
+    expect(ev).toContain("levering");
+    expect(sim.s.pakker).toBe(1);
+    expect(hus.treff).toBe(true);
+    expect(sim.s.poeng).toBeGreaterThanOrEqual(200);
+  });
+
+  it("a package dropped over nothing lands in the snow", () => {
+    const e = ETAPPER.find((x) => x.id === "stjernedrysset")!;
+    const sim = createSim(e, { assist: true, reduceMotion: false });
+    let ev: string[] = sim.step(1 / 60, { ...still, slipp: true });
+    for (let i = 0; i < 600 && sim.s.pakke; i++)
+      ev = ev.concat(sim.step(1 / 60, still));
+    expect(ev).toContain("slipp");
+    expect(ev).toContain("pakkebom");
+    expect(sim.s.pakkebom).toBe(1);
+    expect(sim.s.pakker).toBe(0);
+  });
+
+  it("names packages after the kids' letters, generic sacks without", () => {
+    expect(pakkenavn([], 0)).toBe("PAKKE FRA NISSEMOR");
+    expect(pakkenavn([], 5)).toBe("PAKKE FRA IQ");
+    const brev = [
+      { from: "Håkon" },
+      { from: "Kristian" },
+      { from: "Håkon" },
+      { from: "" },
+    ];
+    expect(pakkenavn(brev, 0)).toBe("PAKKE TIL HÅKON");
+    expect(pakkenavn(brev, 1)).toBe("PAKKE TIL KRISTIAN");
+    expect(pakkenavn(brev, 2)).toBe("PAKKE TIL HÅKON");
+  });
+
+  it("the delivery mission scales with the houses and pays at the finish", () => {
+    expect(leveringsoppdrag(14, ETAPPER[0])).toBeNull();
+    const e = ETAPPER.find((x) => x.id === "julenatt")!;
+    const hus = lagBane(e).filter((t) => t.type === "hus").length;
+    for (let d = 14; d <= 24; d++) {
+      const l = leveringsoppdrag(d, e)!;
+      expect(l.mål).toBeGreaterThan(0);
+      expect(l.mål).toBeLessThanOrEqual(hus);
+      expect(l.tekst).not.toMatch(/(?<!\d)(24|75)(?!\d)/);
+      expect(l.bonus).toBe(LEVERING_BONUS);
+    }
+    const sim = createSim(e, {
+      assist: true,
+      reduceMotion: false,
+      levering: { mål: 1, tekst: "", bonus: LEVERING_BONUS },
+    });
+    sim.s.pakker = 1;
+    let ev: string[] = [];
+    for (let i = 0; i < 20000 && !sim.s.ferdig; i++)
+      ev = ev.concat(sim.step(1 / 60, still));
+    expect(ev).toContain("leveringKlart");
+    expect(sim.s.leveringKlart).toBe(true);
   });
 });

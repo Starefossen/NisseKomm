@@ -19,6 +19,8 @@ import {
   dagensUtfordring,
   ETAPPER,
   lagBane,
+  leveringsoppdrag,
+  pakkenavn,
 } from "@/components/windows/snofall-tv/slede";
 import type { FilNode } from "@/types/innhold";
 
@@ -139,9 +141,13 @@ for (const e of ETAPPER) {
   add(e.dag, `slede ${e.id}`, `${e.navn} ${e.intro}`);
   const varder = lagBane(e).filter((t) => t.type === "varde").length;
   add(e.dag, `slede ${e.id} bjellekrav`, bjelleKrav(varder).join(" "));
-  for (let d = e.dag; d <= 24; d++)
+  for (let d = e.dag; d <= 24; d++) {
     add(d, `slede ${e.id} utfordring dag ${d}`, dagensUtfordring(d, e).tekst);
+    const l = leveringsoppdrag(d, e);
+    if (l) add(d, `slede ${e.id} levering dag ${d}`, l.tekst);
+  }
 }
+add(14, "slede pakkenavn", [0, 1, 2, 3].map((i) => pakkenavn([], i)).join(" "));
 
 const pattern = (code: string) =>
   /^\d+$/.test(code)

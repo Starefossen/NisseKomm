@@ -6,8 +6,13 @@
  * Nothing here touches the DOM or WebGL, so it is testable.
  */
 
-import { hex, Mesh, transform, type Vec3 } from "./gl";
-import { lagBane, type SledeEtappe, type Ting } from "../snofall-tv/slede";
+import { hex, type Mat4, Mesh, transform, type Vec3 } from "./gl";
+import {
+  HUS_PIPE,
+  lagBane,
+  type SledeEtappe,
+  type Ting,
+} from "../snofall-tv/slede";
 
 /** Render units per sim unit; the sim's 900 units/s becomes 90 units/s. */
 export const SKALA = 0.1;
@@ -187,8 +192,8 @@ function vardeMesh() {
   m.cone([0, 3, 0], 1.2, 1.2, STEIN, 6, 0.7);
   m.box([0, 4.8, 0], [1.2, 1.2, 1.2], ORANSJE, 1);
   m.box([0, 12, 0], [0.7, 14, 0.7], VINDU, 1);
-  m.cone([0, 19, 0], 2.2, 2.6, GULL, 4, 0, 1);
-  m.cone([0, 19, 0], 2.2, -2.6, GULL, 4, 0, 1);
+  m.cone([0, 19, 0], 1.6, 2, GULL, 4, 0, 1);
+  m.cone([0, 19, 0], 1.6, -2, GULL, 4, 0, 1);
   for (let i = 0; i < 8; i++) {
     const a = (i / 8) * Math.PI * 2;
     m.box([Math.cos(a) * 7, 10, Math.sin(a) * 7], [1, 1, 1], GULL, 1);
@@ -315,6 +320,42 @@ function reinMesh(leder: boolean) {
   return m.build();
 }
 
+/** A present in the air: red box with a gold ribbon and bow. */
+function pakkeMesh() {
+  const m = new Mesh();
+  m.box([0, 0, 0], [1.6, 1.4, 1.6], RØD);
+  m.box([0, 0, 0], [1.7, 0.4, 0.5], GULL, 1);
+  m.box([0, 0, 0], [0.5, 0.4, 1.7], GULL, 1);
+  m.box([0, 0.9, 0], [0.7, 0.5, 0.7], GULL, 1);
+  return m.build();
+}
+
+/** One puff of chimney smoke, unit size; scaled and lifted per frame. */
+function røykMesh() {
+  return new Mesh().box([0, 0, 0], [1, 1, 1], hex(0x9fb0cc), 0.6).build();
+}
+
+/** Drop aim: a dot along the predicted fall, and the landing cross on the ground. */
+function prikkMesh() {
+  return new Mesh().box([0, 0, 0], [0.9, 0.9, 0.9], GULL, 1).build();
+}
+function merkeMesh() {
+  const m = new Mesh();
+  m.box([0, 0, 0], [7, 0.4, 1], GULL, 1);
+  m.box([0, 0, 0], [1, 0.4, 7], GULL, 1);
+  return m.build();
+}
+
+/** House size from a sim house's chimney height. */
+export const husVariant = (h: number) => Math.max(0, HUS_PIPE.indexOf(h));
+
+/** Model matrix for a delivery house on the course: its chimney sits at the sim's (x, z). */
+export function husPlass(t: Ting): Mat4 {
+  const { pipe } = meshes().hus[husVariant(t.h)];
+  const p = tilVerden(t.x, 0, t.z);
+  return transform([p[0] - pipe[0], bakke(p[0], t.z) - 0.2, p[2] - pipe[2]]);
+}
+
 /** One leg hanging from the hip at the origin; swung by rotating about x. */
 function beinMesh() {
   const m = new Mesh();
@@ -369,6 +410,10 @@ export interface Meshes {
   rein: [Float32Array, Float32Array];
   bein: Float32Array;
   tømmer: Float32Array;
+  pakke: Float32Array;
+  røyk: Float32Array;
+  prikk: Float32Array;
+  merke: Float32Array;
 }
 
 let cache: Meshes | null = null;
@@ -386,6 +431,10 @@ export function meshes(): Meshes {
       rein: [reinMesh(true), reinMesh(false)],
       bein: beinMesh(),
       tømmer: tømmerMesh(),
+      pakke: pakkeMesh(),
+      røyk: røykMesh(),
+      prikk: prikkMesh(),
+      merke: merkeMesh(),
     };
   return cache;
 }

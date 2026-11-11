@@ -19,7 +19,10 @@ import {
   dagensUtfordring,
   ETAPPER,
   etapperFor,
+  forutsiPakke,
   lagBane,
+  leveringsoppdrag,
+  pakkenavn,
   rekkeMult,
   utfordringStatus,
   type Hendelse,
@@ -34,6 +37,8 @@ import {
   bakke,
   BEIN,
   FLIS,
+  husPlass,
+  husVariant,
   lagFlis,
   lagVerden,
   meshes,
@@ -79,6 +84,9 @@ interface Hud {
   gass: number;
   /** Seconds left of 3–2–1, 0 when flying. */
   ned: number;
+  pakker: number;
+  /** Name of the next package to drop; null on stages without houses. */
+  neste: string | null;
 }
 
 type Held = {
@@ -152,6 +160,9 @@ export function SledefluktSpill({
     tidsbonus: 0,
     krasj: 0,
     utfordringKlart: false,
+    pakker: 0,
+    pakkebom: 0,
+    leveringKlart: false,
   });
 
   const åpne = etapperFor(day);
@@ -185,8 +196,16 @@ export function SledefluktSpill({
   useEffect(() => {
     utfordringRef.current = utfordring;
   }, [utfordring]);
+  const levering = useMemo(() => leveringsoppdrag(day, etappe), [day, etappe]);
+  const leveringRef = useRef(levering);
+  useEffect(() => {
+    leveringRef.current = levering;
+  }, [levering]);
+  // The kids' letters name the packages; read when a run starts.
+  const brev = useRef<{ from?: string }[]>([]);
 
   const sprang = useRef(false);
+  const slipp = useRef(false);
   const nedtelling = useRef(-1);
 
   const setFase = (f: Fase) => {
@@ -203,10 +222,12 @@ export function SledefluktSpill({
 
   const start = () => {
     SoundManager.playSound("click");
+    brev.current = GameEngine.getSantaLetters();
     simRef.current = createSim(etappe, {
       assist,
       reduceMotion: reduceMotion.current,
       utfordring,
+      levering: levering ?? undefined,
     });
     nedtelling.current = NEDTELLING;
     setFase("nedtelling");
@@ -309,6 +330,20 @@ export function SledefluktSpill({
           l?.port();
           say(`UTFORDRING KLART  +${utfordringRef.current.bonus}`);
           break;
+        case "slipp":
+          l?.tikk(false);
+          break;
+        case "levering":
+          l?.stjerne();
+          say(`${pakkenavn(brev.current, sim.s.slipp - 1)} LEVERT`);
+          break;
+        case "pakkebom":
+          say("PAKKEN HAVNET I SNØEN", "#8aa0c0");
+          break;
+        case "leveringKlart":
+          l?.port();
+          say(`LEVERING KLART  +${leveringRef.current?.bonus ?? 0}`);
+          break;
         case "mål":
           l?.fanfare();
           break;
@@ -337,7 +372,9 @@ export function SledefluktSpill({
                 ? "#9fb0cc"
                 : t.type === "band"
                   ? "#00ff8a"
-                  : "#2e7a4f";
+                  : t.type === "hus"
+                    ? "#d9e4f5"
+                    : "#2e7a4f";
         const y = sy(t.z);
         if (t.type === "mur") {
           kart.fillRect(2, y - 1, W - 4, 2);
@@ -401,9 +438,11 @@ export function SledefluktSpill({
             -1,
             Math.min(1, (k.G ? 1 : 0) - (k.B ? 1 : 0) + touch.current.gass),
           ),
+          slipp: slipp.current,
         };
         climb = inn.climb;
         sprang.current = false;
+        slipp.current = false;
         const før = sim.s.poeng;
         for (const h of sim.step(dt, inn)) hendelse(h, sim);
         if (sim.s.poeng > før)
@@ -430,6 +469,9 @@ export function SledefluktSpill({
             tidsbonus: sim.s.tidsbonus,
             krasj: sim.s.krasj,
             utfordringKlart: sim.s.utfordringKlart,
+            pakker: sim.s.pakker,
+            pakkebom: sim.s.pakkebom,
+            leveringKlart: sim.s.leveringKlart,
           });
           setBeste(GameEngine.getSledeResultater());
           setFase(sim.s.ferdig ? "slutt" : "tapt");
@@ -459,8 +501,10 @@ export function SledefluktSpill({
         ønsket = [p[0] + Math.sin(a) * 24, p[1] + 7, p[2] + Math.cos(a) * 24];
         target = [p[0], p[1] + 1, p[2]];
       } else {
-        const bak = tilVerden(px, alt, dist - 170);
-        ønsket = [bak[0], p[1] + 8, bak[2]];
+        // High and a little to the right: a dropped package and its landing
+        // mark stay visible below and beside the rig instead of behind it.
+        const bak = tilVerden(px, alt, dist - 240);
+        ønsket = [bak[0] + 8, p[1] + 14, bak[2]];
         const fram = tilVerden(px, alt, dist + 160);
         target = [fram[0], p[1] + 1.2, fram[2]];
       }
@@ -528,10 +572,34 @@ export function SledefluktSpill({
         if (
           o.type === "tre" ||
           o.type === "vind" ||
-          (o.treff && o.type !== "varde" && o.type !== "mur")
+          (o.treff &&
+            o.type !== "varde" &&
+            o.type !== "mur" &&
+            o.type !== "hus")
         )
           continue;
         const pos = tilVerden(o.x, 0, o.z);
+        if (o.type === "hus") {
+          r.tegn(M.hus[husVariant(o.h)].mesh, husPlass(o));
+          pos[1] = o.h * SKALA;
+          if (o.treff) {
+            pos[1] += 3;
+            r.tegn(M.stjerne, transform(pos, [0, t * 2, 0]));
+          } else
+            // Three puffs rising from the chimney, drifting with the wind.
+            for (let k = 0; k < 3; k++) {
+              const f = (t * 0.5 * motion + k / 3) % 1;
+              r.tegn(
+                M.røyk,
+                transform(
+                  [pos[0] + f * f * 4 * sim.s.vind, pos[1] + f * 6, pos[2]],
+                  [0, t + k, 0],
+                  0.8 + f * 1.4,
+                ),
+              );
+            }
+          continue;
+        }
         if (o.type === "stjerne") {
           pos[1] = o.h * SKALA;
           r.tegn(M.stjerne, transform(pos, [0, t * 2, 0]));
@@ -548,6 +616,27 @@ export function SledefluktSpill({
         else {
           const s = verden.spesial.get(nøkkel(o));
           if (s) r.tegn(s, transform(pos));
+        }
+      }
+
+      // Packages: the one in the air, and where the next would land.
+      if (sim.s.pakke) {
+        const q = sim.s.pakke;
+        r.tegn(
+          M.pakke,
+          transform(tilVerden(q.x, q.alt, q.z), [t * 3, t * 2, 0], 1.6),
+        );
+      } else if (spiller && leveringRef.current) {
+        const bane = forutsiPakke(sim.s, sim.s.gust);
+        for (let i = 3; i < bane.length - 1; i += 2) {
+          const q = bane[i];
+          r.tegn(M.prikk, transform(tilVerden(q.x, q.alt, q.z)));
+        }
+        const siste = bane[bane.length - 1];
+        if (siste) {
+          const m = tilVerden(siste.x, 0, siste.z);
+          m[1] = bakke(m[0], siste.z) + 0.3;
+          r.tegn(M.merke, transform(m));
         }
       }
 
@@ -619,6 +708,10 @@ export function SledefluktSpill({
           framdrift: Math.min(1, dist / e.lengde),
           nyser: nyser > 0,
           ned: Math.max(0, Math.ceil(nedtelling.current)),
+          pakker: sim.s.pakker,
+          neste: leveringRef.current
+            ? pakkenavn(brev.current, sim.s.slipp)
+            : null,
           gass:
             (held.current.G ? 1 : 0) -
             (held.current.B ? 1 : 0) +
@@ -649,6 +742,8 @@ export function SledefluktSpill({
         if (faseRef.current === "spiller") setFase("pause");
         else if (faseRef.current === "pause") setFase("spiller");
       }
+      if (e.key === "Enter" && faseRef.current === "spiller")
+        slipp.current = true;
       if (e.key === "Enter" && faseRef.current !== "spiller") {
         if (faseRef.current === "pause") setFase("spiller");
         else if (faseRef.current !== "nedtelling") startRef.current();
@@ -759,6 +854,16 @@ export function SledefluktSpill({
             VARDER {b?.varder ?? 0}/{b?.varderTotalt ?? 0}
           </div>
           <div className="text-(--cold-blue)">UTFORDRING {b?.utf ?? ""}</div>
+          {levering && (
+            <div className="text-(--gold)">
+              PAKKER {b?.pakker ?? 0}/{levering.mål}
+              {b?.neste && fase === "spiller" && (
+                <span className="block text-base text-(--neon-green)/80">
+                  NESTE: {b.neste}
+                </span>
+              )}
+            </div>
+          )}
         </div>
         <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1/3">
           <div className="h-2 border border-(--brass) bg-black/60">
@@ -877,6 +982,19 @@ export function SledefluktSpill({
       {fase === "spiller" && (
         <>
           <div className="absolute bottom-3 right-3 flex gap-2">
+            {levering && (
+              <button
+                type="button"
+                aria-label="Slipp pakke"
+                className={`${holdKnapp} ${b?.neste ? "border-(--gold) text-(--gold)" : "border-(--brass) text-(--neon-green)/50"} bg-black/60`}
+                onPointerDown={(e) => {
+                  e.stopPropagation();
+                  slipp.current = true;
+                }}
+              >
+                SLIPP
+              </button>
+            )}
             <button
               type="button"
               aria-label="Brems"
@@ -970,6 +1088,16 @@ export function SledefluktSpill({
                     · +{utfordring.bonus} poeng
                   </span>
                 </div>
+                {levering && (
+                  <div className="border border-(--gold)/60 px-2 py-0.5 text-base leading-tight">
+                    <span className="text-(--gold)">LEVERING: </span>
+                    {levering.tekst}
+                    <span className="opacity-70">
+                      {" "}
+                      · +{levering.bonus} poeng
+                    </span>
+                  </div>
+                )}
                 <div className="flex gap-2">
                   <button
                     type="button"
@@ -999,7 +1127,7 @@ export function SledefluktSpill({
                     ? "Assistenten holder høyden og krasjer aldri."
                     : "Tre forsøk, full kastevind."}{" "}
                   · PILTASTER / WASD · SHIFT = FART · X = BREMS · MELLOMROM =
-                  SPRANG · ESC = PAUSE
+                  SPRANG{levering ? " · ENTER = SLIPP PAKKE" : ""} · ESC = PAUSE
                 </div>
               </>
             )}
@@ -1044,6 +1172,12 @@ export function SledefluktSpill({
                       ["NÆRE PÅ", resultat.nære],
                       ["TIDSBONUS", `+${resultat.tidsbonus}`],
                       ["KRASJ", resultat.krasj],
+                      ...(levering
+                        ? ([
+                            ["PAKKER", `${resultat.pakker}/${levering.mål}`],
+                            ["I SNØEN", resultat.pakkebom],
+                          ] as const)
+                        : []),
                     ] as const
                   ).map(([k, v]) => (
                     <div key={k} className="contents">
@@ -1062,6 +1196,18 @@ export function SledefluktSpill({
                       ? "ikke denne gangen"
                       : "-"}
                 </div>
+                {levering && (
+                  <div
+                    className={`text-base leading-tight ${resultat.leveringKlart ? "text-(--gold)" : "opacity-70"}`}
+                  >
+                    LEVERING:{" "}
+                    {resultat.leveringKlart
+                      ? `KLART  +${levering.bonus}`
+                      : fase === "slutt"
+                        ? `${resultat.pakker} av ${levering.mål} pakker`
+                        : "-"}
+                  </div>
+                )}
                 <div className="text-base text-(--cold-blue) leading-tight">
                   {fase === "tapt"
                     ? "Rudolf trenger en gulrot og et nytt forsøk."

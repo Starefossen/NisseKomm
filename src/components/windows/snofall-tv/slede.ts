@@ -29,6 +29,8 @@ export interface Blanding {
   vindKraft: number;
   /** Every n-th segment is an aurora band (0 = none). */
   band: number;
+  /** Every n-th segment is a house with a smoking chimney to deliver to (0 = none). */
+  hus?: number;
   grotte?: boolean;
   mur?: boolean;
 }
@@ -136,7 +138,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
       "Det drysser stjerner over vidda. Opp og ned, opp og ned, plukk alt som glitrer!",
     lengde: 40000,
     fart: 900,
-    blanding: { ...ROLIG, tre: 0.2, stjerne: 0.55, vind: 0.05 },
+    blanding: { ...ROLIG, tre: 0.2, stjerne: 0.55, vind: 0.05, hus: 10 },
     horisont: JULENATT,
     himmel: ["#02040c", "#0b1430"],
     snø: ["#d9e4f5", "#c0d2ec"],
@@ -153,7 +155,14 @@ export const ETAPPER: readonly SledeEtappe[] = [
       "Vinden kaster fra begge sider i dalen. Len deg mot kastet, ikke med det!",
     lengde: 42000,
     fart: 920,
-    blanding: { ...ROLIG, tre: 0.3, stjerne: 0.2, vind: 0.4, vindKraft: 1.6 },
+    blanding: {
+      ...ROLIG,
+      tre: 0.3,
+      stjerne: 0.2,
+      vind: 0.4,
+      vindKraft: 1.6,
+      hus: 10,
+    },
     horisont: TUNDRA,
     himmel: ["#0d1322", "#263046"],
     snø: ["#c9d2df", "#b1bccd"],
@@ -170,7 +179,14 @@ export const ETAPPER: readonly SledeEtappe[] = [
       "Tindene stikker opp som tenner. Opp i god tid, Rudolf liker ikke stein i pelsen.",
     lengde: 46000,
     fart: 950,
-    blanding: { ...ROLIG, tre: 0.1, stjerne: 0.25, topp: 0.35, vind: 0.1 },
+    blanding: {
+      ...ROLIG,
+      tre: 0.1,
+      stjerne: 0.25,
+      topp: 0.35,
+      vind: 0.1,
+      hus: 11,
+    },
     horisont: NORDTOPPEN,
     himmel: ["#03060f", "#0e1a30"],
     snø: ["#c9dff0", "#aac6e4"],
@@ -193,6 +209,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
       topp: 0.35,
       vind: 0.1,
       band: 9,
+      hus: 12,
     },
     horisont: NORDTOPPEN,
     himmel: ["#03060f", "#0e1a30"],
@@ -210,7 +227,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
       "Tett føyke. Muren har én åpen port med varme i. Se etter det gylne skjæret.",
     lengde: 54000,
     fart: 950,
-    blanding: { ...ROLIG, tre: 1, stjerne: 0, vind: 0, mur: true },
+    blanding: { ...ROLIG, tre: 1, stjerne: 0, vind: 0, mur: true, hus: 13 },
     horisont: MUREN,
     himmel: ["#1a2030", "#3a4458"],
     snø: ["#c3ccd8", "#aab4c3"],
@@ -234,6 +251,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
       vind: 0.2,
       vindKraft: 1.3,
       grotte: true,
+      hus: 9,
     },
     horisont: JULENATT,
     himmel: ["#02040c", "#0b1430"],
@@ -248,13 +266,21 @@ export const ETAPPER: readonly SledeEtappe[] = [
 export const etapperFor = (day: number) => ETAPPER.filter((e) => day >= e.dag);
 
 export type TingType =
-  "varde" | "tre" | "topp" | "vind" | "band" | "stjerne" | "mur" | "grotte";
+  | "varde"
+  | "tre"
+  | "topp"
+  | "vind"
+  | "band"
+  | "stjerne"
+  | "mur"
+  | "grotte"
+  | "hus";
 
 export interface Ting {
   z: number;
   x: number;
   type: TingType;
-  /** Height for obstacles, target altitude for stars. */
+  /** Height for obstacles, target altitude for stars, chimney top for houses. */
   h: number;
   /** Wind: force sign and length in z. Gate (mur): the open gate's x. */
   kraft?: number;
@@ -278,6 +304,8 @@ function rng(seed: number) {
 }
 
 const SEG = 220;
+/** Chimney top per house size, in altitude units (verden.ts builds the matching mesh). */
+export const HUS_PIPE: readonly number[] = [105, 125, 145];
 /** The sleigh is clamped to ±1.3, so nothing is placed where it cannot be reached. */
 const X_MAX = 1.25;
 
@@ -304,6 +332,17 @@ export function lagBane(e: SledeEtappe): Ting[] {
     }
     if (m.band && i % m.band === 4) {
       out.push({ z, x: lane * 0.5, type: "band", h: 200 });
+      continue;
+    }
+    // Houses stand beside the beacon line, within reach; h is the chimney top (three sizes).
+    if (m.hus && i % m.hus === 5) {
+      const side = r() < 0.5 ? -1 : 1;
+      out.push({
+        z,
+        x: Math.max(-1, Math.min(1, lane + side * 0.8)),
+        type: "hus",
+        h: HUS_PIPE[i % 3],
+      });
       continue;
     }
     let p = m.topp;
@@ -418,10 +457,99 @@ export function dagensUtfordring(day: number, e: SledeEtappe): Utfordring {
   }
 }
 
+export interface Leveringsoppdrag {
+  mål: number;
+  tekst: string;
+  bonus: number;
+}
+
+export const LEVERING_BONUS = 300;
+
+/** The day's delivery mission on stages with houses: half to most of the chimneys, varying with the date. */
+export function leveringsoppdrag(
+  day: number,
+  e: SledeEtappe,
+): Leveringsoppdrag | null {
+  const hus = lagBane(e).filter((t) => t.type === "hus").length;
+  if (!hus) return null;
+  const mål = trygtTall(Math.max(1, Math.ceil(hus * [0.4, 0.5, 0.6][day % 3])));
+  return {
+    mål,
+    tekst: `Lever ${mål} ${mål === 1 ? "pakke" : "pakker"} ned pipa`,
+    bonus: LEVERING_BONUS,
+  };
+}
+
+const GENERISKE_PAKKER = [
+  "PAKKE FRA NISSEMOR",
+  "PAKKE FRA IQ",
+  "PAKKE FRA JULIUS",
+  "PAKKE FRA RAMPENISSEN",
+];
+
+/** Name of the n-th package: the kids' own letters first, then the generic sacks. */
+export function pakkenavn(brev: { from?: string }[], n: number) {
+  const navn = [
+    ...new Set(brev.map((b) => b.from?.trim()).filter((f): f is string => !!f)),
+  ].map((f) => `PAKKE TIL ${f.toUpperCase()}`);
+  const alle = navn.length ? navn : GENERISKE_PAKKER;
+  return alle[n % alle.length];
+}
+
+export interface Pakke {
+  x: number;
+  alt: number;
+  z: number;
+  vx: number;
+  vy: number;
+  vz: number;
+}
+
+const G = 200;
+/** One step of a package's fall: gravity, a little air drag forward, wind drift sideways. */
+function fallPakke(p: Pakke, dt: number, gust: number) {
+  p.vy -= G * dt;
+  p.vz *= Math.max(0, 1 - 0.15 * dt);
+  p.x += (p.vx + gust * 0.6) * dt;
+  p.alt += p.vy * dt;
+  p.z += p.vz * dt;
+}
+
+type Slipper = {
+  px: number;
+  alt: number;
+  dist: number;
+  vx: number;
+  fart: number;
+};
+
+const nyPakke = (s: Slipper): Pakke => ({
+  x: s.px,
+  alt: s.alt,
+  z: s.dist,
+  vx: s.vx,
+  vy: 0,
+  // Let go at the sleigh's speed: it falls straight down under the rig, where the camera sees it.
+  vz: s.fart,
+});
+
+/** Where a package dropped now would fly: points every tenth of a second until it lands. */
+export function forutsiPakke(s: Slipper, gust: number): Pakke[] {
+  const p = nyPakke(s);
+  const ut: Pakke[] = [];
+  for (let i = 0; i < 40 && p.alt > 0; i++) {
+    fallPakke(p, 0.1, gust);
+    ut.push({ ...p });
+  }
+  return ut;
+}
+
 export interface Styring {
   steer: number;
   climb: number;
   sprang: boolean;
+  /** Drop a package (edge: set for the frame the button was pressed). */
+  slipp?: boolean;
   /** Held throttle, -1 (brake) to 1 (boost); SLEDEFLUKT's held buttons. */
   gass?: number;
 }
@@ -437,6 +565,10 @@ export type Hendelse =
   | "sprang"
   | "nære"
   | "utfordring"
+  | "slipp"
+  | "levering"
+  | "pakkebom"
+  | "leveringKlart"
   | "mål";
 
 export interface SimOpts {
@@ -445,6 +577,8 @@ export interface SimOpts {
   reduceMotion: boolean;
   /** The day's challenge; met at the finish line it pays its bonus. */
   utfordring?: Utfordring;
+  /** The day's delivery mission on stages with houses. */
+  levering?: Leveringsoppdrag;
 }
 
 /** Score multiplier for a run of beacons without a miss: x1, x2 at 3, x3 at 6, x4 at 9. */
@@ -462,6 +596,7 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
   const ting = lagBane(e);
   const soner = ting.filter((t) => t.type === "vind");
   const grotter = ting.filter((t) => t.type === "grotte");
+  const hus = ting.filter((t) => t.type === "hus");
   const s = {
     px: 0,
     /** Sideways velocity in track units/s; the stick sets a target it glides to. */
@@ -483,12 +618,22 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     besteRekke: 0,
     tidsbonus: 0,
     utfordringKlart: false,
+    /** The package in the air, if any; one at a time. */
+    pakke: null as Pakke | null,
+    /** Packages dropped so far (names the next one), delivered, and lost in the snow. */
+    slipp: 0,
+    pakker: 0,
+    pakkerTotalt: hus.length,
+    pakkebom: 0,
+    leveringKlart: false,
     /** Boost meter 0..1, filled by beacons; full = sprang available. */
     kraft: 0,
     sprangTil: 0,
     løftTil: 0,
     sakteTil: 0,
     vind: 0,
+    /** Sideways push on the sleigh this step; packages drift with it (forutsiPakke). */
+    gust: 0,
     ferdig: false,
     tapt: false,
     ting,
@@ -509,6 +654,7 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     );
     s.vind += ((sone?.kraft ?? 0) - s.vind) * Math.min(1, dt * 3);
     const gust = s.vind * (opts.assist ? 0.25 : 0.55) * e.blanding.vindKraft;
+    s.gust = gust;
 
     // Inertia: a quick tap nudges, a held stick builds to full speed in ~0.3 s.
     s.vx += (inn.steer * 1.9 + gust - s.vx) * Math.min(1, dt * 9);
@@ -538,6 +684,35 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
     const ramp = 1 + RAMP * Math.min(1, s.dist / e.lengde);
     s.fart = e.fart * mult * motion * ramp;
     s.dist += s.fart * dt;
+
+    if (inn.slipp && !s.pakke && hus.length) {
+      s.pakke = nyPakke(s);
+      s.slipp++;
+      ev.push("slipp");
+    }
+    if (s.pakke) {
+      const p = s.pakke;
+      fallPakke(p, dt, gust);
+      const mål = hus.find(
+        (t) =>
+          !t.treff &&
+          Math.abs(t.z - p.z) < 140 &&
+          Math.abs(t.x - p.x) < 0.22 * widen &&
+          p.alt <= t.h &&
+          p.alt > t.h - 45,
+      );
+      if (mål) {
+        mål.treff = true;
+        s.pakker++;
+        s.poeng += 200 * rekkeMult(s.rekke);
+        s.pakke = null;
+        ev.push("levering");
+      } else if (p.alt <= 0) {
+        s.pakkebom++;
+        s.pakke = null;
+        ev.push("pakkebom");
+      }
+    }
 
     // Light is dropped by flying low anywhere over the cave crack (stage 4).
     for (const g of grotter) {
@@ -569,6 +744,12 @@ export function createSim(e: SledeEtappe, opts: SimOpts) {
         s.utfordringKlart = true;
         s.poeng += u.bonus;
         ev.push("utfordring");
+      }
+      const l = opts.levering;
+      if (l && s.pakker >= l.mål) {
+        s.leveringKlart = true;
+        s.poeng += l.bonus;
+        ev.push("leveringKlart");
       }
       ev.push("mål");
     }
