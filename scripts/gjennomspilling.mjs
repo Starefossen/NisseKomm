@@ -161,7 +161,11 @@ if (!SHARD && SHARDS > 1) {
               PARENT_CODE,
               DAYS: chunk.join(","),
               SHARD: String(i + 1),
-              GUIDE: i === chunks.length - 1 ? "1" : "0",
+              // GUIDE=0 skips the guide check (needs MEDIA_DIR); otherwise only the last shard runs it
+              GUIDE:
+                process.env.GUIDE !== "0" && i === chunks.length - 1
+                  ? "1"
+                  : "0",
             },
             stdio: ["ignore", "pipe", "pipe"],
           });
