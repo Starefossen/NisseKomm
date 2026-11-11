@@ -580,7 +580,7 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "kafeen",
       navn: "Hjerteruds kafé",
-      bilde: "spill/kafeen.jpg",
+      bilde: "spill/kafe.jpg",
       utganger: [{ til: "torget", navn: "Ut på torget" }],
       // On the floorboards between the flour sack and the chair
       fjaer: { x: 55, y: 88, w: 4, h: 6 },
@@ -816,7 +816,7 @@ export const KAPITTEL_1: Kapittel = {
     {
       id: "klokketaarnet",
       navn: "Klokketårnet",
-      bilde: "spill/klokketaarnet.jpg",
+      bilde: "spill/klokketarnet.jpg",
       utganger: [{ til: "torget", navn: "Ned til torget" }],
       // On the floor under the big clock face
       fjaer: { x: 72, y: 89, w: 4, h: 6 },

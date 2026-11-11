@@ -48,7 +48,7 @@ const UTE = [
   "feed/antenne-tarn.png",
   "spill/port-aapen.jpg",
   "spill/julebodene.jpg",
-  "spill/klokketaarnet.jpg",
+  "spill/klokketarnet.jpg",
 ];
 const FNUGG = Array.from({ length: 28 }, (_, i) => i);
 
