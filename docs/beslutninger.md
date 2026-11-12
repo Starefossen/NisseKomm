@@ -36,6 +36,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - 2026-11-11: Dag 21-4 (låst, BRANNMUR-brikken) sier «bygger samme slags vegg, og kaller den etter det de kjemper mot» i stedet for «bygger det samme, bare av det motsatte». Hvorfor: «bare av det motsatte» er for abstrakt for en niåring; brikken står.
 - 2026-11-12: Dag 4–24 har 4–6 segmenter (fire der det går, fem der brikken trenger tre) og rundt 20 ord per segment, høyst 20 i vanlige segmenter og 22 i låste, bare når halen er en avskjed. Dag 1–3 er filmet og står. Hvorfor: videomodellen stopper på rundt 15 s og mister de siste ordene på 22–25 ord, og hvert segment er én forespørsel; færre og kortere segmenter gir færre klipp som må lages på nytt. Julius skal fortsatt være levende: fyll og julefakta ryker først, aldri «i natt», oppsett og utbetaling eller brikken.
 - 2026-11-12: Julius beholder Omni-stemmen; ingen TTS fra dag 4. Kuttene glattes i klippen (siste bilde som start for neste segment, kort krysstoning i halen, ett B-rull-innklipp per dag), og ett betalt prøvekall tester Omni Extend med ny replikk. Hvorfor: barna hører et stemmebytte; lengre tagninger er bare verdt det hvis Extend tåler ny tekst.
+- 2026-11-12: Omni Extend droppes for Julius: forlengelsen gir høyst 10 s og kutter siste ord, og hver forlengelse leser hele kjeden på nytt (dag 1 kostet ~2,5M tokens). Dagene lages som 15 s-segmenter der neste starter fra forrige siste bilde, med 0,25 s krysstoning. Hvorfor: alle ord kommer med, billigere, mykere kutt.
 
 ## Spill (2026-11-10/11)
 
