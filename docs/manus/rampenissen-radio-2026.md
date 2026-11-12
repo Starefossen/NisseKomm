@@ -6,7 +6,7 @@ Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storybo
 
 ## Skrivemåte
 
-Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi stemmen (Gemini Fenrir, +4 halvtoner, nordnorsk aksent) skal høres naturlig ut. Alt annet i fila er bokmål: `Strek:`, `Lydregi:`, `intro_hint` (Birk og Lyng, Bergen) og sjekktabellen. Innholdet er det samme som i bokmålsversjonen: samme vitser, samme fakta, samme bekreftelser i samme rekkefølge, ingen nye hint og ingen koder. Reglene:
+Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi stemmen (Gemini Fenrir, +4 halvtoner, nordnorsk aksent) skal høres naturlig ut. Alt annet i fila er bokmål: `Strek:`, `Lydregi:`, `intro_hint` og `reaksjon_hint` (forslag til Varden) og sjekktabellen. Innholdet er det samme som i bokmålsversjonen: samme vitser, samme fakta, samme bekreftelser i samme rekkefølge, ingen nye hint og ingen koder. Reglene:
 
 - Pronomen: æ, mæ, dæ, sæ, han/ho, vi/oss, dokker/dokkers (dere/deres), dem (de/dem; også «dem kalde fingran»), en (man; «da pusse en tenna»). Eiendom gjerne etterstilt: «skjermen dokkers», «pappa si jakkelomme».
 - Nekting: ikkje. Spørreord: ka, kor, kem, kossen, koffer (hvorfor). Vilkår: vess (hvis).
@@ -21,7 +21,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 ## Slik brukes klippene
 
 - Ett ferdiginnspilt klipp per dag med Rampenissens faste stemme, 30–50 s. Dag 1 er sesongåpningen og får 60–75 s; dag 24 får 50–65 s. Leveres til Morgenrådet som gjesteinnslag og spilles ordrett. Birk og Lyng introduserer og reagerer; de kjenner ikke Snøfall og sier aldri noe om koder.
-- `intro_hint` er det Birk eller Lyng sier før klippet: én linje, eller dag 1 og 24 en kort replikkveksling («Birk: … Lyng: …»). `reaksjon_hint` er reaksjonen etter klippet, på dagene som har en. Begge er bergensfarget bokmål (eg, e, dokker, ka, kor, kem, ikkje; aldri «ba», aldri «me»), og de røper ingenting: ingen bokstaver, tall, steder eller gjenstander fra gåten. Dagens Morgenrådet-manus lages av produksjonen; disse linjene er det den skal bygge på.
+- `intro_hint` er det Birk eller Lyng sier før klippet: én linje, eller dag 1 og 24 en kort replikkveksling («Birk: … Lyng: …»). `reaksjon_hint` er reaksjonen etter klippet, på dagene som har en. Begge er innholdsforslag til Varden, som eier Birk og Lyng (stemme, dialekt og framtoning); Varden skriver dem om i sin egen stil. De røper ingenting: ingen bokstaver, tall, steder eller gjenstander fra gåten. Dagens Morgenrådet-manus lages av produksjonen; disse linjene er det den skal bygge på.
 - Førsesongen (24.–30. november) står nederst i fila: Birk og Lyng hinter om at noe er på vei, uten Rampenissen (han kommer natt til 1. desember). Navnet NisseKomm sies første gang 30. november.
 - Hverdager går klippet i 06-sendingen, helg (5, 6, 12, 13, 19, 20) i 09-sendingen; helgeklippene er skrevet for en familie som er hjemme.
 - Klippet bærer tre ting: hva som skjedde i natt (sett fra gulvet på Landås; dag 24 fra loftet i Snøfall, dit han reiste i natt), hvordan Rampenissen har det, og en bekreftelse av gårsdagen. Det bærer aldri bokstaver, tall fra koden eller hvor noe ligger. Streken omtaler han fra sin egen side, uten å innrømme alt.
