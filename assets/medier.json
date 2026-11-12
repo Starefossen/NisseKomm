@@ -591,10 +591,9 @@
     "generator": "loop",
     "sted": "porten",
     "ut": "video/tv/port-julius.mp4",
-    "bilde": "locations/porten#open",
+    "bilde": "locations/porten#standard",
     "mal": "assets/prompts/tv/snofall-landsby/port-julius.txt",
-    "bare_forste": true,
-    "anker": "locations/porten#standard"
+    "anker": true
   },
   "tv/port-hjerterud": {
     "generator": "loop",
@@ -616,10 +615,9 @@
     "generator": "loop",
     "sted": "porten",
     "ut": "video/tv/port-winter.mp4",
-    "bilde": "locations/porten#open",
+    "bilde": "locations/porten#standard",
     "mal": "assets/prompts/tv/snofall-landsby/port-winter.txt",
-    "bare_forste": true,
-    "anker": "locations/porten#standard"
+    "anker": true
   },
   "spill-figur/rudolf": {
     "generator": "figur",
