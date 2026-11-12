@@ -11,7 +11,7 @@ import Dag04Skokort from "./dager01-12/dag04-skokort";
 import Dag05Brevfugl from "./dager01-12/dag05-brevfugl";
 import Dag06Silhuetter from "./dager01-12/dag06-silhuetter";
 import Dag07Frostlapp from "./dager01-12/dag07-frostlapp";
-import Dag08Kretskort from "./dager01-12/dag08-lamper";
+import Dag08Lampekort from "./dager01-12/dag08-lamper";
 import Dag09Krystallark from "./dager01-12/dag09-krystallark";
 import Dag10Fargekort from "./dager01-12/dag10-fargekort";
 import Dag10Testark from "./dager01-12/dag10-testark";
@@ -26,7 +26,7 @@ import Dag13Gravskilt from "./dager13-16/dag13-gravskilt";
 import Dag14Brettark from "./dager13-16/dag14-brettark";
 import Dag14Serviettfugl from "./dager13-16/dag14-serviettfugl";
 import Dag15Redskapskort from "./dager13-16/dag15-redskapskort";
-import Dag16Sorteringslapper from "./dager13-16/dag16-sorteringslapper";
+import Dag16Hyllelapper from "./dager13-16/dag16-hyllelapper";
 
 /** Printables in the <Utskrift> frame (days 1–16), per docs/gaater-2026.md; served by [fil]/page.tsx. */
 export const SIDER_01_12: Record<string, ComponentType> = {
@@ -42,7 +42,7 @@ export const SIDER_01_12: Record<string, ComponentType> = {
   "dag05-brevfugl": Dag05Brevfugl,
   "dag06-silhuetter": Dag06Silhuetter,
   "dag07-frostlapp": Dag07Frostlapp,
-  "dag08-lamper": Dag08Kretskort,
+  "dag08-lamper": Dag08Lampekort,
   "dag09-krystallark": Dag09Krystallark,
   "dag10-fargekort": Dag10Fargekort,
   "dag10-testark": Dag10Testark,
@@ -53,7 +53,7 @@ export const SIDER_01_12: Record<string, ComponentType> = {
   "dag14-brettark": Dag14Brettark,
   "dag14-serviettfugl": Dag14Serviettfugl,
   "dag15-redskapskort": Dag15Redskapskort,
-  "dag16-sorteringslapper": Dag16Sorteringslapper,
+  "dag16-hyllelapper": Dag16Hyllelapper,
   operasjonsbrett: Operasjonsbrett,
   "rodfilter-ramme": RodfilterRamme,
   runetavle: Runetavle,

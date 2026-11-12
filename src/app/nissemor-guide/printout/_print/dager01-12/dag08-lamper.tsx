@@ -157,7 +157,7 @@ function Ark8() {
   );
 }
 
-export default function Dag08Kretskort() {
+export default function Dag08Lampekort() {
   return (
     <Utskrift
       navn="dag08-lamper"

@@ -14,10 +14,10 @@ const HVOR = [
   "brødboksen",
 ];
 
-export default function Dag16Sorteringslapper() {
+export default function Dag16Hyllelapper() {
   return (
     <Utskrift
-      navn="dag16-sorteringslapper"
+      navn="dag16-hyllelapper"
       papir="tykt"
       deler={[
         {

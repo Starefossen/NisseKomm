@@ -15,7 +15,10 @@ import { Oppfrisk } from "./Oppfrisk";
 export const dynamic = "force-dynamic";
 
 // Renamed so the printout list in client code does not spell a day code.
-const FLYTTET: Record<string, string> = { "dag08-kretskort": "dag08-lamper" };
+const FLYTTET: Record<string, string> = {
+  "dag08-kretskort": "dag08-lamper",
+  "dag16-sorteringslapper": "dag16-hyllelapper",
+};
 
 export default async function Utskriftside({
   params,

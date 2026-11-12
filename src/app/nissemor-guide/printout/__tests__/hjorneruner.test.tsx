@@ -35,7 +35,7 @@ const KORT: Record<string, { dag: number; skjult: string; kopier?: number }> = {
   "dag13-krydderkort": { dag: 13, skjult: "SARAN" },
   "dag14-brettark": { dag: 14, skjult: "ORIGAMI" },
   "dag15-redskapskort": { dag: 15, skjult: "" },
-  "dag16-sorteringslapper": { dag: 16, skjult: "" },
+  "dag16-hyllelapper": { dag: 16, skjult: "" },
   "dag17-baandkort": { dag: 17, skjult: "NRDYS" },
   "dag18-rosinkort": { dag: 18, skjult: "S" },
   "dag19-bevislapper": { dag: 19, skjult: "L" },

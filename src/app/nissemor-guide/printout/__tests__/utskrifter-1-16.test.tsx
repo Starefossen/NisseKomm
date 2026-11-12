@@ -16,7 +16,7 @@ import Brevfugl from "../_print/dager01-12/dag05-brevfugl";
 import Alfabetstrimmel from "../_print/dager01-12/alfabetstrimmel";
 import Silhuetter from "../_print/dager01-12/dag06-silhuetter";
 import Frostlapp7 from "../_print/dager01-12/dag07-frostlapp";
-import Kretskort from "../_print/dager01-12/dag08-lamper";
+import Lampekort from "../_print/dager01-12/dag08-lamper";
 import Krystallark from "../_print/dager01-12/dag09-krystallark";
 import Testark from "../_print/dager01-12/dag10-testark";
 import Fargekort from "../_print/dager01-12/dag10-fargekort";
@@ -28,7 +28,7 @@ import Gravskilt from "../_print/dager13-16/dag13-gravskilt";
 import Brettark from "../_print/dager13-16/dag14-brettark";
 import Serviettfugl from "../_print/dager13-16/dag14-serviettfugl";
 import Redskapskort from "../_print/dager13-16/dag15-redskapskort";
-import Sorteringslapper from "../_print/dager13-16/dag16-sorteringslapper";
+import Hyllelapper from "../_print/dager13-16/dag16-hyllelapper";
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
@@ -117,7 +117,7 @@ const SIDER: [string, ComponentType, { har: string[]; ikke?: string }][] = [
   ["dag07-frostlapp", Frostlapp7, { har: [], ikke: "KULDE" }],
   [
     "dag08-lamper",
-    Kretskort,
+    Lampekort,
     {
       har: ["R", "S", "O", "E"],
       ikke: "KRETSKORT",
@@ -176,8 +176,8 @@ const SIDER: [string, ComponentType, { har: string[]; ikke?: string }][] = [
     },
   ],
   [
-    "dag16-sorteringslapper",
-    Sorteringslapper,
+    "dag16-hyllelapper",
+    Hyllelapper,
     {
       har: ["O", "E", "I", "K", "2", "5", "7", "123456789"],
       ikke: "SORTERING",
