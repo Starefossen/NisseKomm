@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { mediaUrl, type MediaStatus } from "@/lib/media";
-import { variantLabel } from "./oversikt";
+import { groupVersions, variantLabel, versionKey } from "./oversikt";
 import type {
   MediaVurderingItem,
   MediaVurderinger,
@@ -437,7 +437,23 @@ export function useMediaData() {
   };
 }
 
-/** Review cards for the given paths; paths outside the manifest show as missing. */
+const VURDERT = {
+  godkjent: "godkjent",
+  lag_paa_nytt: "lag på nytt",
+} as const;
+
+/** Short version name for a summary line: «i bruk», «v2», «gammel 1». */
+const versjonsnavn = (path: string, key: string) =>
+  path === key
+    ? "i bruk"
+    : (path.match(/-(v\d+)\.\w+$/)?.[1] ??
+      path.replace(/.*\.old-(\d+)\.\w+$/, "gammel $1"));
+
+/**
+ * Review cards for the given paths. Each path stands for its version family
+ * (plain name, -vN, .old-N): the newest is a full card, the rest sit folded
+ * under «Eldre versjoner» with label and review state in the summary.
+ */
 export function MediaListe({
   paths,
   data,
@@ -447,19 +463,51 @@ export function MediaListe({
 }) {
   if (data.unavailable) return null;
   const byPath = new Map(data.files?.map((f) => [f.path, f]));
+  const keys = [...new Set(paths.map(versionKey))];
+  const members = [
+    ...new Set([...paths, ...(data.files ?? []).map((f) => f.path)]),
+  ]
+    .filter((p) => keys.includes(versionKey(p)))
+    .map((p) => byPath.get(p) ?? { path: p, size: null });
+  const card = (f: MediaStatus, iBruk: boolean, merknad?: string) => (
+    <ReviewItemCard
+      key={f.path + (data.vurderinger[f.path]?.oppdatert ?? "")}
+      file={f}
+      inventar={data.inventar.get(f.path)}
+      vurdering={data.vurderinger[f.path]}
+      isSaving={data.savingMap[f.path]}
+      onSaveVerdict={data.handleSaveVerdict}
+      onUpload={data.upload}
+      iBruk={iBruk}
+      merknad={merknad}
+    />
+  );
+  const tilstand = (p: string) =>
+    VURDERT[data.vurderinger[p]?.vurdering as keyof typeof VURDERT] ??
+    "ikke vurdert";
   return (
     <>
-      {paths.map((p) => (
-        <ReviewItemCard
-          key={p + (data.vurderinger[p]?.oppdatert ?? "")}
-          file={byPath.get(p) ?? { path: p, size: null }}
-          inventar={data.inventar.get(p)}
-          vurdering={data.vurderinger[p]}
-          isSaving={data.savingMap[p]}
-          onSaveVerdict={data.handleSaveVerdict}
-          onUpload={data.upload}
-        />
-      ))}
+      {groupVersions(members)
+        .sort((a, b) => keys.indexOf(a.key) - keys.indexOf(b.key))
+        .map((v) => (
+          <div key={v.key}>
+            {card(v.newest, v.newest.path === v.key)}
+            {v.older.length > 0 && (
+              <details className="mb-3 ml-4">
+                <summary className="min-h-11 flex items-center cursor-pointer underline">
+                  Eldre versjoner ({v.older.length}):{" "}
+                  {v.older
+                    .map(
+                      (f) =>
+                        `${versjonsnavn(f.path, v.key)} ${tilstand(f.path)}`,
+                    )
+                    .join(" · ")}
+                </summary>
+                {v.older.map((f) => card(f, f.path === v.key))}
+              </details>
+            )}
+          </div>
+        ))}
       {data.message && <p className="text-sm text-(--gold)">{data.message}</p>}
     </>
   );
