@@ -1,15 +1,12 @@
 "use client";
 
 import {
-  BYGGEPLAN,
-  HANDLELISTE,
-  HANDLELISTE_INTRO,
-  HANDLELISTE_SUM,
-  INNEN_25_NOV,
-  MORGEN_1_DES,
-  SJEKKLISTE_DAG1,
-} from "../_kveld/data";
-import { Avkrysning, GuideSide, Kort, useAvkrysning } from "../_kveld/felles";
+  Avkrysning,
+  GuideSide,
+  Kort,
+  useAvkrysning,
+  useSesong,
+} from "../_kveld/felles";
 
 const KILDE = {
   hjemme: "text-(--neon-green)",
@@ -20,11 +17,42 @@ const KILDE = {
 function Forberedelser() {
   const avkrysning = useAvkrysning("forberedelser");
   const handel = useAvkrysning("handleliste");
+  const sesong = useSesong();
+  if (!sesong) return <p>Laster …</p>;
+  const {
+    innen25: INNEN_25_NOV,
+    byggeplan: BYGGEPLAN,
+    morgen1: MORGEN_1_DES,
+    sjekkliste: SJEKKLISTE_DAG1,
+    handleliste: {
+      intro: HANDLELISTE_INTRO,
+      grupper: HANDLELISTE,
+      sum: HANDLELISTE_SUM,
+    },
+    radio,
+  } = sesong.for;
   return (
     <>
       <h1 className="text-4xl font-bold text-(--gold) text-center">
-        FORBEREDELSER 25.–30. NOVEMBER
+        FØR SESONGEN 24.–30. NOVEMBER
       </h1>
+
+      <Kort tittel="Morgenrådet før 1. desember" farge="border-(--cold-blue)">
+        <p>
+          Birk og Lyng hinter om at noe er på vei. Rampenissen er ikke med ennå;
+          han kommer ned linjen natt til 1. desember.
+        </p>
+        <dl className="space-y-2">
+          {radio.map((r) => (
+            <div key={r.dato}>
+              <dt className="text-(--gold)">
+                {Number(r.dato.slice(8))}. november
+              </dt>
+              <dd>{r.tekst}</dd>
+            </div>
+          ))}
+        </dl>
+      </Kort>
 
       <Kort tittel="Innen 25. november">
         <Avkrysning punkter={INNEN_25_NOV} {...avkrysning} />
@@ -73,7 +101,9 @@ function Forberedelser() {
                           : ""
                       }
                     >
-                      <span className={KILDE[v.kilde]}>[{v.kilde}]</span>{" "}
+                      <span className={KILDE[v.kilde as keyof typeof KILDE]}>
+                        [{v.kilde}]
+                      </span>{" "}
                       {v.vare}
                       {v.mengde && ` · ${v.mengde}`}
                       {v.pris && ` · ${v.pris}`}

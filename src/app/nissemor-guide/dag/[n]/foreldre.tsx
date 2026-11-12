@@ -4,13 +4,8 @@ import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { utskriftHref } from "../../printout/filer";
-import {
-  Avkrysning,
-  fyll,
-  hentDag,
-  useAvkrysning,
-  useSynk,
-} from "../../_kveld/felles";
+import type { kveldDag } from "@/lib/guide-sesong";
+import { Avkrysning, useAvkrysning, useSynk } from "../../_kveld/felles";
 
 const box =
   "border-2 border-(--neon-green) bg-black p-3 sm:p-4 mb-4 scroll-mt-4";
@@ -48,14 +43,21 @@ const klokka = (iso: string) =>
  * Morning status, hints, answer, tonight's preparation and bonus for one day.
  * `t` hides the code until «Vis fasit» is on.
  */
-export function Foreldredel({ n, t }: { n: number; t: (s: string) => string }) {
+export function Foreldredel({
+  n,
+  d,
+  t,
+}: {
+  n: number;
+  d: ReturnType<typeof kveldDag>;
+  t: (s: string) => string;
+}) {
   useSynk();
-  const d = hentDag(n);
   const q = GameEngine.getAllQuests().find((x) => x.dag === n);
   const { krysset, veksle } = useAvkrysning(`kveld-${n}`);
   const [, setTikk] = useState(0);
   if (!d || !q) return null;
-  const f = (s: string) => t(fyll(s));
+  const f = t;
 
   const lost = GameEngine.isQuestCompleted(n);
   const nar = GameEngine.getSubmittedCodes().find((c) => c.day === n)?.dato;
@@ -129,7 +131,7 @@ export function Foreldredel({ n, t }: { n: number; t: (s: string) => string }) {
 
       <Seksjon id="fasit" tittel="Fasit" farge="border-(--gold)">
         <p>
-          <b>Kode:</b> <span className="text-(--gold)">{f(d.kode)}</span>
+          <b>Kode:</b> <span className="text-(--gold)">{f(q.kode)}</span>
         </p>
         <p>{f(d.mekanikk)}</p>
         <p>

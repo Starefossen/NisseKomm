@@ -1,3 +1,4 @@
+/** @jest-environment node */
 import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { describe, it, expect } from "@jest/globals";

@@ -4,22 +4,27 @@ import { Suspense, useEffect, useState, type ReactNode } from "react";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { getCurrentDate } from "@/lib/date-utils";
-import { GameEngine } from "@/lib/game-engine";
 import { StorageManager } from "@/lib/storage";
-import { DAGER } from "./data";
+import type { dagListe, forSesongen, historien } from "@/lib/guide-sesong";
 
-/** data.ts stores codes as {dag} so they never sit in component source; fill them from the quest data. */
-export const fyll = (tekst: string) =>
-  tekst.replace(
-    /\{(\d+)\}/g,
-    (_, dag) =>
-      GameEngine.getAllQuests().find((q) => q.dag === Number(dag))?.kode ?? "?",
-  );
+export interface Sesong {
+  dager: ReturnType<typeof dagListe>;
+  for: ReturnType<typeof forSesongen>;
+  historien: ReturnType<typeof historien>;
+  figurer: { id: string; navn: string; om: string }[];
+}
 
-export type Dag = (typeof DAGER)[number];
-
-export const hentDag = (dag: number): Dag | undefined =>
-  DAGER.find((d) => d.dag === dag);
+/** Day list, pre-season and Historien, baked from the docs (parent-only API). */
+export function useSesong(): Sesong | null {
+  const [s, setS] = useState<Sesong | null>(null);
+  useEffect(() => {
+    fetch("/api/guide/sesong")
+      .then((r) => (r.ok ? r.json() : null))
+      .then(setS)
+      .catch(() => setS(null));
+  }, []);
+  return s;
+}
 
 /** The day the parents prepare tonight: tomorrow, if it is Dec 1–24. */
 export function morgendagen(): number | null {

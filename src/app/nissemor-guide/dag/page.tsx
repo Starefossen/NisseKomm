@@ -3,17 +3,18 @@
 import Link from "next/link";
 import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 import { GameEngine } from "@/lib/game-engine";
-import { DAGER } from "../_kveld/data";
-import { GuideSide, morgendagen, useSynk } from "../_kveld/felles";
+import { GuideSide, morgendagen, useSesong, useSynk } from "../_kveld/felles";
 
 function Dager() {
   useSynk();
   const idag =
     getCurrentMonth() === 12 && getCurrentDay() <= 24 ? getCurrentDay() : 0;
   const iKveld = morgendagen();
+  const sesong = useSesong();
+  if (!sesong) return <p>Laster …</p>;
   return (
     <ol className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-      {DAGER.map((d) => {
+      {sesong.dager.map((d) => {
         const lost = GameEngine.isQuestCompleted(d.dag);
         const status = lost
           ? "løst"
@@ -38,9 +39,7 @@ function Dager() {
             >
               <span className="text-2xl">{d.dag}</span> · {status}
               {/* The title's first part never holds the code. */}
-              <span className="block">
-                {d.tittel.split(" · ")[0].replace(/^\d+ \(\S+\) – /, "")}
-              </span>
+              <span className="block">{d.tittel.split(" · ")[0]}</span>
             </Link>
           </li>
         );

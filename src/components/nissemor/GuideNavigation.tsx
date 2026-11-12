@@ -17,16 +17,33 @@ export function GuideNavigation() {
   const sti = usePathname();
   const iKveld = desemberdag(1) ?? 1;
   const iDag = desemberdag(0) ?? 1;
+  // Before December «I dag» is the pre-season page (24–30 Nov).
+  const forSesong = getCurrentDate().getMonth() === 10;
   const dagSti = (n: number) => `/nissemor-guide/dag/${n}`;
   const faner = [
     [`${dagSti(iKveld)}#kveld`, "I kveld", sti === dagSti(iKveld)],
-    [dagSti(iDag), "I dag", sti === dagSti(iDag) && iDag !== iKveld],
+    forSesong
+      ? ([
+          "/nissemor-guide/forberedelser",
+          "I dag",
+          sti === "/nissemor-guide/forberedelser",
+        ] as const)
+      : ([
+          dagSti(iDag),
+          "I dag",
+          sti === dagSti(iDag) && iDag !== iKveld,
+        ] as const),
     [
       "/nissemor-guide/dag",
       "Dager",
       sti.startsWith("/nissemor-guide/dag") &&
         sti !== dagSti(iKveld) &&
         sti !== dagSti(iDag),
+    ],
+    [
+      "/nissemor-guide/historien",
+      "Historien",
+      sti === "/nissemor-guide/historien",
     ],
     [
       "/nissemor-guide/bibliotek",
@@ -44,7 +61,7 @@ export function GuideNavigation() {
     }`;
   return (
     <nav className="max-w-4xl mx-auto mb-6 print:hidden font-retro">
-      <ul className="flex gap-1 sm:gap-2 text-base sm:text-lg">
+      <ul className="flex gap-1 sm:gap-2 text-base sm:text-lg overflow-x-auto">
         {faner.map(([href, navn, aktiv]) => (
           <li key={navn}>
             <Link

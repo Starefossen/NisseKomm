@@ -133,7 +133,51 @@ function DagInnhold() {
               </div>
             </header>
 
-            <Foreldredel n={n} t={t} />
+            <details className={box} open>
+              <summary className="text-2xl text-(--gold) cursor-pointer min-h-11">
+                Dagen i storyboardet
+              </summary>
+              <p className="whitespace-pre-wrap mt-2">
+                {t(dag.sammendrag.replace(/^#+ .*\n/, ""))}
+              </p>
+            </details>
+
+            <Foreldredel n={n} d={dag.kveld} t={t} />
+
+            <Seksjon tittel="Delsystemer i dag">
+              <dl className="space-y-2">
+                {dag.delsystemer.map(([k, v]) => (
+                  <div key={k}>
+                    <dt className="text-(--gold)">{k}</dt>
+                    <dd>{t(v)}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Seksjon>
+
+            <Seksjon tittel="Varden (get_kid_context)">
+              <p className="text-sm mb-2">
+                Det hjemmeassistenten ser kl. 12 denne dagen, når alle tidligere
+                dager er løst. «[skjult]» betyr at Varden ikke får se teksten.
+              </p>
+              {(
+                [
+                  ["Før koden", dag.varden.uloest],
+                  ["Etter koden", dag.varden.loest],
+                ] as const
+              ).map(([k, v]) => (
+                <div key={k} className="mb-3">
+                  <h3 className="text-(--gold)">{k}</h3>
+                  <p className="text-sm break-words font-mono">{t(v.dag)}</p>
+                  <p className="text-sm">
+                    {v.filer} filer, {v.symboler} symboler, {v.bytes} byte
+                    {v.avkortet && " (avkortet)"}
+                    {v.skjulte.length > 0 &&
+                      ` · skjult: ${v.skjulte.join(", ")}`}
+                  </p>
+                </div>
+              ))}
+            </Seksjon>
 
             <h2 className="text-2xl text-(--gold) mt-8 mb-2">
               Manus og media for dagen
