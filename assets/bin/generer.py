@@ -44,7 +44,7 @@ LIMIT_RE = re.compile(r"per day|spending cap|Stoppet: (dagsgrensen|månedlig)", 
 MEDIER = medie.jobs()  # assets/medier.json; TV loops are listed by tv-loops.sh --liste
 # sleigh horizons, Ugleposten stills and their pixel-art versions, pixel portraits, figure overlays
 # and pocket icons (0 video requests)
-IMAGE_CATS = ("slede", "spill", "spill-piksel", "portrett", "spill-figur", "spill-ikon")
+IMAGE_CATS = ("slede", "spill", "spill-piksel", "portrett", "spill-figur", "spill-ikon", "strek")
 
 
 def names(cat):
@@ -53,7 +53,7 @@ def names(cat):
             if k.startswith(cat + "/") and j["generator"] in ("still", "piksel", "portrett", "figur", "ikon")]
 
 
-SLEDE, SPILL, PIKSEL, PORTRETT, FIGUR, IKON = (names(c) for c in IMAGE_CATS)
+SLEDE, SPILL, PIKSEL, PORTRETT, FIGUR, IKON, STREK = (names(c) for c in IMAGE_CATS)
 STILL_SH = ('mkdir -p "$(dirname "$3")" && bash "$4/still.sh" "$1" "$2" "$3" "${@:5}" && '
             'python3 "$4/medie.py" skriv still.sh "$3" "$2" - gemini-3-pro-image "$1" "${@:5}"')
 # same inputs as STILL_SH; the model answers JPEG or PNG at will, ffmpeg makes the .png real
@@ -144,6 +144,8 @@ def item_path(item_id: str) -> str:
         return f"spill/piksel/figur/{key}.png"
     if cat == "spill-ikon":
         return f"spill/piksel/ikon/{key}.png"
+    if cat == "strek":
+        return f"strek/{key}.png"
     if cat in ("tv", "port"):
         return f"video/tv/{key}.mp4"
     if cat == "musikk":
@@ -203,6 +205,8 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
     for cat in IMAGE_CATS:
         for n in names(cat):
             p = MEDIER[f"{cat}/{n}"]["ut"]
+            if MEDIER[f"{cat}/{n}"].get("dag", 0) > til_dag:  # a per-day sketch: only up to --til-dag
+                continue
             # not every image is in the inventory (media.ts manifest); then ask its sidecar
             if not should_queue(p, st.get(p) or medie.status(media_dir() / p, p, ROOT)[0]):
                 continue
@@ -216,7 +220,9 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
                 cmd = [SPRITE_SH, "_", "", str(root / prompt), str(media_dir() / p), str(BIN),
                        str(root / "assets/out"), spec, *refs]
             else:  # still.sh makes the image; medie.py skriv records the sidecar so it counts as current
-                sh = PIKSEL_SH if cat == "spill-piksel" else STILL_SH
+                sh = PIKSEL_SH if cat in ("spill-piksel", "strek") else STILL_SH
+                fmt = MEDIER[f"{cat}/{n}"].get("format")
+                sh = f"export ASPECT={fmt}; {sh}" if fmt else sh
                 cmd = [sh, "_", str(infile(img, root)), str(root / prompt), str(media_dir() / p), str(BIN), *refs]
             q.append((f"{cat}:{n}", cat, 0, ["bash", "-c", *cmd]))
     p_music = "music/rampenissen-synger.mp3"
@@ -393,9 +399,12 @@ def selftest():
                 *({"path": f"spill/piksel/{n}.png", "status": medie.CURRENT} for n in PIKSEL),
                 *({"path": f"spill/portrett-{n}.png", "status": medie.CURRENT} for n in PORTRETT),
                 *({"path": f"spill/piksel/figur/{n}.png", "status": medie.CURRENT} for n in FIGUR),
-                *({"path": f"spill/piksel/ikon/{n}.png", "status": medie.CURRENT} for n in IKON)]
+                *({"path": f"spill/piksel/ikon/{n}.png", "status": medie.CURRENT} for n in IKON),
+                *({"path": f"strek/{n}.png", "status": medie.CURRENT} for n in STREK)]
         q = queue(rows, ["landsby-rolig", "landsby-morgen", "port-iq"], root)
         assert [i[0] for i in q] == ["test-klementin", "julius:2", "julius:3", "tv:landsby-morgen", "port:port-iq"], q
+        strek = [r for r in rows if r["path"] not in ("strek/dag02.png", "strek/dag09.png")]
+        assert [i[0] for i in queue(strek, [], root, til_dag=5) if i[1] == "strek"] == ["strek:dag02"]
         # sleigh stills: queued when missing, as images (estimate 0, so never counted against the video quota)
         qs = queue([r for r in rows if r["path"] != "feed/slede-julenatt.jpg"], [], root, til_dag=0)
         assert [(i[0], i[2]) for i in qs if i[1] == "slede"] == [("slede:julenatt", 0)], qs

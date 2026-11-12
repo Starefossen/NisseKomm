@@ -848,5 +848,221 @@
     "generator": "ikon",
     "ut": "spill/piksel/ikon/talgstump.png",
     "mal": "assets/prompts/spill/ikon/talgstump.txt"
+  },
+  "strek/dag01": {
+    "generator": "still",
+    "dag": 1,
+    "format": "1:1",
+    "ut": "strek/dag01.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag02": {
+    "generator": "still",
+    "dag": 2,
+    "format": "1:1",
+    "ut": "strek/dag02.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag03": {
+    "generator": "still",
+    "dag": 3,
+    "format": "1:1",
+    "ut": "strek/dag03.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag04": {
+    "generator": "still",
+    "dag": 4,
+    "format": "1:1",
+    "ut": "strek/dag04.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag05": {
+    "generator": "still",
+    "dag": 5,
+    "format": "1:1",
+    "ut": "strek/dag05.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag06": {
+    "generator": "still",
+    "dag": 6,
+    "format": "1:1",
+    "ut": "strek/dag06.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag07": {
+    "generator": "still",
+    "dag": 7,
+    "format": "1:1",
+    "ut": "strek/dag07.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag08": {
+    "generator": "still",
+    "dag": 8,
+    "format": "1:1",
+    "ut": "strek/dag08.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag09": {
+    "generator": "still",
+    "dag": 9,
+    "format": "1:1",
+    "ut": "strek/dag09.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag10": {
+    "generator": "still",
+    "dag": 10,
+    "format": "1:1",
+    "ut": "strek/dag10.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag11": {
+    "generator": "still",
+    "dag": 11,
+    "format": "1:1",
+    "ut": "strek/dag11.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag12": {
+    "generator": "still",
+    "dag": 12,
+    "format": "1:1",
+    "ut": "strek/dag12.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag13": {
+    "generator": "still",
+    "dag": 13,
+    "format": "1:1",
+    "ut": "strek/dag13.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag14": {
+    "generator": "still",
+    "dag": 14,
+    "format": "1:1",
+    "ut": "strek/dag14.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag15": {
+    "generator": "still",
+    "dag": 15,
+    "format": "1:1",
+    "ut": "strek/dag15.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag16": {
+    "generator": "still",
+    "dag": 16,
+    "format": "1:1",
+    "ut": "strek/dag16.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag17": {
+    "generator": "still",
+    "dag": 17,
+    "format": "1:1",
+    "ut": "strek/dag17.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag18": {
+    "generator": "still",
+    "dag": 18,
+    "format": "1:1",
+    "ut": "strek/dag18.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag19": {
+    "generator": "still",
+    "dag": 19,
+    "format": "1:1",
+    "ut": "strek/dag19.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag20": {
+    "generator": "still",
+    "dag": 20,
+    "format": "1:1",
+    "ut": "strek/dag20.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag21": {
+    "generator": "still",
+    "dag": 21,
+    "format": "1:1",
+    "ut": "strek/dag21.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag22": {
+    "generator": "still",
+    "dag": 22,
+    "format": "1:1",
+    "ut": "strek/dag22.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag23": {
+    "generator": "still",
+    "dag": 23,
+    "format": "1:1",
+    "ut": "strek/dag23.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "strek/dag24": {
+    "generator": "still",
+    "dag": 24,
+    "format": "1:1",
+    "ut": "strek/dag24.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/skisse.txt",
+    "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
   }
 }

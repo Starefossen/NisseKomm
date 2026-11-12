@@ -254,14 +254,37 @@ export function Rampestrek({
       id="rampestrek"
       tittel={`Rampestrek (${d.strek.minutter} min, ${d.strek.type})`}
     >
-      <p>{t(d.strek.tekst)}</p>
-      <p>
-        <b>Materialer:</b> {d.strek.materialer}
-      </p>
-      <p>
-        <b>Bærer dagens brikke:</b> {d.strek.brikke}
-      </p>
+      <div className="flex flex-col gap-4 md:flex-row">
+        <div className="flex-1 space-y-2">
+          <p>{t(d.strek.tekst)}</p>
+          <p>
+            <b>Materialer:</b> {d.strek.materialer}
+          </p>
+          <p>
+            <b>Bærer dagens brikke:</b> {d.strek.brikke}
+          </p>
+        </div>
+        <Skisse key={n} n={n} />
+      </div>
       <Vurder id={`dag/${String(n).padStart(2, "0")}/rampestrek`} />
     </Seksjon>
+  );
+}
+
+/** strek/dagNN.png from MEDIA_DIR (assets/medier.json); nothing while it doesn't exist. */
+function Skisse({ n }: { n: number }) {
+  const [finnes, setFinnes] = useState(true);
+  const src = `/media/strek/dag${String(n).padStart(2, "0")}.png`;
+  if (!finnes) return null;
+  return (
+    <a href={src} target="_blank" rel="noreferrer" className="md:w-1/3">
+      {/* eslint-disable-next-line @next/next/no-img-element -- MEDIA_DIR, not in the build */}
+      <img
+        src={src}
+        alt="Skisse av rampestreken"
+        className="aspect-square w-full border border-(--neon-green) bg-white"
+        onError={() => setFinnes(false)}
+      />
+    </a>
   );
 }

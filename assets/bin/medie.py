@@ -98,6 +98,17 @@ def rampenissen_text(day: int, root: Path = ROOT) -> str:
     return "\n".join(out)
 
 
+def strek_text(day: int, root: Path = ROOT) -> str:
+    """The **Strek:** line of one day in the Rampenissen script ('' if none)."""
+    m = re.search(rf"^## Dag {day} .*?^\*\*Strek:\*\* (.+?)$", (root / RAMPE_MS).read_text(), re.S | re.M)
+    return m[1].strip() if m and "\n## " not in m[0] else ""
+
+
+def fill_day(text: str, day, root: Path = ROOT) -> str:
+    """A template for one day: {{strek}} = that day's Strek line, then the usual placeholders."""
+    return fill(text.replace("{{strek}}", strek_text(int(day), root)) if day else text, root)
+
+
 FLYTTET = "assets/flyttet.json"  # old -> new path of moved prompts, stills and refs
 
 
@@ -134,6 +145,8 @@ def source_text(path: str, section, root: Path = ROOT):
     if section is None:  # a template counts as the text it renders to, so moving text into {{…}} changes nothing
         return fill(p.read_text(), root=root)
     day = int(section.split()[-1])
+    if path.startswith("assets/prompts/"):  # a per-day template (strek/skisse)
+        return fill_day(p.read_text(), day, root)
     if path == JULIUS_MS:
         segs = julius_segments(day, root)
         return json.dumps(segs, ensure_ascii=False) if segs else None
@@ -172,7 +185,8 @@ def rel(p) -> str:
 def write(generator, out, source, section, model, images=(), root: Path = ROOT, extra=None):
     """Write <out>.meta.json recording the inputs as they are now."""
     if source.startswith(RENDERED):  # record the template, so a changed description marks the file stale
-        source = jobs(root)[source.removeprefix(RENDERED).removesuffix(".txt")]["mal"]
+        j = jobs(root)[source.removeprefix(RENDERED).removesuffix(".txt")]
+        source, section = j["mal"], (f"Dag {j['dag']}" if "dag" in j else section)
     text = source_text(source, section, root)
     if text is None:
         raise ValueError(f"kilden finnes ikke: {source} {section or ''}".strip())
@@ -269,7 +283,7 @@ def render(job_id: str, root: Path = ROOT, table=None):
     prompt = j.get("mal")
     if prompt:
         text = (root / prompt).read_text()
-        filled = fill(text, root)
+        filled = fill_day(text, j.get("dag"), root)
         if filled != text:
             prompt = f"{RENDERED}{job_id}.txt"
             (root / prompt).parent.mkdir(parents=True, exist_ok=True)

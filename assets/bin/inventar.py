@@ -20,10 +20,10 @@ sys.path.insert(0, str(Path(__file__).parent))
 import medie  # noqa: E402
 
 ROOT = medie.ROOT
-DIRS = ("video", "audio", "music", "feed")
+DIRS = ("video", "audio", "music", "feed", "strek")
 KINDS = [("video/julius/", "julius"), ("audio/rampenissen/", "rampenissen"),
          ("video/tv/port-", "port"), ("video/tv/", "tv"),
-         ("feed/", "feed"), ("music/", "music")]
+         ("feed/", "feed"), ("music/", "music"), ("strek/", "strek")]
 MARK = {medie.CURRENT: "✓", medie.STALE: "⚠", medie.UNKNOWN: "?", medie.MISSING: "✗"}
 
 
