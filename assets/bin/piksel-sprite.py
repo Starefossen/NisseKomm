@@ -3,12 +3,13 @@
 flat magenta (#FF00FF). Keys out the magenta, crops to the drawing, scales it down by area averaging
 (alpha = coverage, hard edge at 50 %), snaps every colour to the shared Snøfall palette and writes RGBA.
 
-  ikon   32×32 for the Ugleposten pocket: the object fits 26 px and is centred, 1 px dark outline.
+  ikon   32×32 for the Ugleposten pocket: the object fits 30 px and is centred, 1 px dark outline.
   BxH    a figure overlay sized in scene pixels (scenes are 4× their logical pixels): fit B/4×H/4
          logical pixels, keep the drawing's aspect, scale back up 4× nearest. No outline (the scenes
          have none).
 
 ffmpeg decodes the input (any format); the rest is stdlib, there is no PIL on this machine.
+  piksel-sprite.py --tett <ikon.png>...   crop finished 32×32 icons to the drawing and refit it to 30 px
   piksel-sprite.py --selvtest
 """
 import struct
@@ -18,17 +19,20 @@ import zlib
 from pathlib import Path
 
 # 40 colours from palettegen over klokketarnet/torget/julebodene/antenne-tarn, plus the reds, greens,
-# brass, tin and whites the scenes rarely use but the items need (berries, mitt, leaf, bell, tin can)
+# brass, tin and whites the scenes rarely use but the items need (berries, mitt, leaf, bell, tin can),
+# and skin tones (without them faces snap to pink and yellow blotches)
 PALETT = [int(c[1:], 16) for c in (
     "#010001 #070406 #0e2751 #112953 #130a0b #18151e #18243b #1e395d #242d42 #251109 #295074 #341c14 "
     "#36679c #3c6475 #3d3c43 #482717 #4b7ebf #537e77 #577fa6 #5b361f #664f45 #7794c2 #7d481d #8e6c51 "
     "#9097a8 #9a5927 #9ac6de #a5cee5 #ad915f #afb6c4 #b0692e #cab098 #cdebf6 #cf7e37 #def5fb #dff4fc "
     "#e7dcbd #e8a44a #f1f8d7 #fbd27c "
     "#7a1a1a #b3202a #e04040 #f08080 #2e7d4f #5aa860 #1d4a30 #ffffff #f4f1e8 #c8a24a #e3b23c #8a7a66 "
-    "#c9b99a #ff9933 #ffd84a #6b6b70 #b8b8be #3a3128 #d9d9dc #4a4a50").split()]
+    "#c9b99a #ff9933 #ffd84a #6b6b70 #b8b8be #3a3128 #d9d9dc #4a4a50 "
+    "#f6dcc4 #eec3a0 #dba07c #c27e5e #9c5c44 #e8b0a0").split()]
 PALETT_RGB = [((c >> 16) & 255, (c >> 8) & 255, c & 255) for c in PALETT]
 KONTUR = (0x18, 0x15, 0x1e)
 SKALA = 4  # scene pixels per logical pixel
+FIT = 30  # icon object size in the 32 px square
 
 
 def les(path):
@@ -114,7 +118,7 @@ def sprite(inn, ut, spec):
     bw, bh = box[2] - box[0], box[3] - box[1]
     if spec == "ikon":
         W = H = 32
-        fit, opp, outline = 26, 1, True
+        fit, opp, outline = FIT, 1, True
         mw, mh = fit, fit
     else:
         W, H = (int(v) for v in spec.lower().split("x"))
@@ -122,7 +126,7 @@ def sprite(inn, ut, spec):
         opp, outline = SKALA, False
     s = min(mw / bw, mh / bh)
     tw, th = max(1, round(bw * s)), max(1, round(bh * s))
-    if outline:  # leave room for the outline inside the 26 px
+    if outline:  # leave room for the outline inside FIT
         tw, th = max(1, tw - 2), max(1, th - 2)
     cells = nedskaler(w, h, d, box, tw, th)
     if outline:
@@ -144,6 +148,31 @@ def sprite(inn, ut, spec):
                     px[i:i + 4] = bytes((*c, 255))
     skriv_png(ut, cw, ch, bytes(px))
     print(f"{ut} {cw}×{ch}")
+
+
+def tett(path):
+    """Crop a finished RGBA icon to its opaque pixels and refit nearest-neighbour to FIT, centred in 32×32."""
+    W, H = 32, 32
+    d = subprocess.run(["ffmpeg", "-v", "error", "-i", str(path), "-f", "rawvideo", "-pix_fmt", "rgba", "-"],
+                       capture_output=True, check=True).stdout
+    on = [(i % W, i // W) for i in range(W * H) if d[i * 4 + 3]]
+    if not on:
+        return
+    x0, y0 = min(x for x, _ in on), min(y for _, y in on)
+    bw, bh = max(x for x, _ in on) - x0 + 1, max(y for _, y in on) - y0 + 1
+    s = min(FIT / bw, FIT / bh)
+    if s >= 2:
+        s = int(s)  # whole steps keep every pixel square
+    tw, th = max(1, round(bw * s)), max(1, round(bh * s))
+    ox, oy = (W - tw) // 2, (H - th) // 2
+    px = bytearray(W * H * 4)
+    for y in range(th):
+        for x in range(tw):
+            sx, sy = x0 + min(bw - 1, int(x / s)), y0 + min(bh - 1, int(y / s))
+            i = ((oy + y) * W + ox + x) * 4
+            px[i:i + 4] = d[(sy * W + sx) * 4:(sy * W + sx) * 4 + 4]
+    skriv_png(path, W, H, bytes(px))
+    print(f"{path} {bw}×{bh} -> {tw}×{th}")
 
 
 def selvtest():
@@ -169,12 +198,20 @@ def selvtest():
         assert les(ut)[:2] == (80, 40), les(ut)[:2]
         sprite(inn, ut, "40x80")  # width-bound: 10×5 logical
         assert les(ut)[:2] == (40, 20), les(ut)[:2]
+        sprite(inn, ut, "ikon")
+        tett(ut)  # already at FIT: unchanged size
+        a = subprocess.run(["ffmpeg", "-v", "error", "-i", str(ut), "-f", "rawvideo", "-pix_fmt", "rgba", "-"],
+                           capture_output=True, check=True).stdout
+        assert max(i % 32 for i in range(1024) if a[i * 4 + 3]) - min(i % 32 for i in range(1024) if a[i * 4 + 3]) + 1 == FIT
     print("selvtest ok")
 
 
 if __name__ == "__main__":
     if "--selvtest" in sys.argv:
         selvtest()
+    elif sys.argv[1:2] == ["--tett"]:
+        for f in sys.argv[2:]:
+            tett(f)
     elif len(sys.argv) == 4:
         sprite(*sys.argv[1:])
     else:

@@ -130,7 +130,7 @@ export const KAPITTEL_3: Kapittel = {
           id: "hjerterud",
           figur: "hjerterud",
           navn: "Hjerterud",
-          rect: { x: 60, y: 40, w: 20, h: 36 },
+          rect: { x: 55, y: 46, w: 13, h: 32 },
           smart: "snakk",
           snakk: "hjerterud",
           se: "Hjerterud sitter i den myke stolen ved pulten med en kurv boller på fanget. Bollene er til Julius. Han er ikke her. Hun venter. Ved siden av står en kopp te som har sluttet å ryke for lenge siden. Hun har ikke merket det. Hun merker alt annet.",

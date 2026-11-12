@@ -90,8 +90,10 @@
     "generator": "piksel",
     "sted": "julius-kontor",
     "ut": "spill/piksel/julius-kontor.png",
-    "bilde": "public/feed/julius-kontor.jpg",
-    "mal": "assets/prompts/spill/piksel-julius-kontor.txt"
+    "bilde": "public/spill/piksel/julius-kontor.old-1.png",
+    "mal": "assets/prompts/spill/piksel-julius-kontor.txt",
+    "refs": ["public/spill/piksel/kafe.png"],
+    "notat": "Tegnet på nytt over den grove 8-bit-versjonen (.old-1) i kafeens pikselskala; kafeen er stilreferanse"
   },
   "spill-piksel/antenne-tarn": {
     "generator": "piksel",
@@ -710,21 +712,23 @@
   "spill-figur/hjerterud": {
     "generator": "figur",
     "ut": "spill/piksel/figur/hjerterud.png",
-    "px": "234x123",
+    "px": "180x248",
     "mal": "assets/prompts/spill/figur/hjerterud.txt",
     "refs": [
-      "public/spill/piksel/julius-kontor.png",
-      "public/spill/piksel/kafe.png"
+      "public/spill/piksel/kafe.png",
+      "public/spill/portrett-hjerterud.png",
+      "public/spill/piksel/julius-kontor.png"
     ]
   },
   "spill-figur/julius": {
     "generator": "figur",
     "ut": "spill/piksel/figur/julius.png",
-    "px": "234x123",
+    "px": "180x248",
     "mal": "assets/prompts/spill/figur/julius.txt",
     "refs": [
       "public/spill/piksel/julius-kontor.png",
-      "characters/julius#portrett"
+      "characters/julius#portrett",
+      "public/spill/piksel/kafe.png"
     ]
   },
   "spill-figur/brevfugl": {
