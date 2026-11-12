@@ -1,9 +1,10 @@
 import { Frostrune } from "@/components/ui/Frostrune";
+import { skjultRune } from "@/lib/runeorden";
 import { Utskrift } from "../Utskrift";
 import { Iskrystall } from "./felles";
 import { Rodstoy } from "./Rodstoy";
 
-// Rainbow order; ORANSJE → P, BLÅ → T. HVIT is the decoy (R). Rainbow cards carry their code letter's rune; HVIT only R.
+// Rainbow order; ORANSJE → P, BLÅ → T. HVIT is the decoy (R). Visible letters carry their rune; ❄ cards only a new one (none on day 10).
 const KORT: {
   navn: string;
   farge: string;
@@ -22,6 +23,7 @@ const KORT: {
 
 function Kort({ i, tom }: { i: number; tom?: boolean }) {
   const k = KORT[i];
+  const rune = k.vis ?? skjultRune(10, k.rune);
   return (
     <div className="h-full p-[2mm] font-retro">
       <div
@@ -32,9 +34,12 @@ function Kort({ i, tom }: { i: number; tom?: boolean }) {
         <div className="flex-1 text-[44mm] leading-none">
           {!tom && <Rodstoy>{k.vis ?? <Iskrystall size={70} />}</Rodstoy>}
         </div>
-        {!tom && (
-          <span className="absolute top-[1mm] right-[1mm]">
-            <Frostrune letter={k.rune} size={20} />
+        {!tom && rune && (
+          <span
+            className="absolute top-[1mm] right-[1mm]"
+            data-skjult={!k.vis || undefined}
+          >
+            <Frostrune letter={rune} size={20} />
           </span>
         )}
       </div>

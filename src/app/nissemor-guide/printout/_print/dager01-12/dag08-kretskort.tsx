@@ -1,8 +1,9 @@
 import { Frostrune } from "@/components/ui/Frostrune";
+import { skjultRune } from "@/lib/runeorden";
 import { Utskrift } from "../Utskrift";
 
 // Lamps 2, 5, 7 are powered; lamp 4 sits behind an open switch (decoy E);
-// the other five are dead ends. Every lamp carries its rune; the decoy E only its own.
+// the other five are dead ends. Visible letters carry their rune; dead lamps only a new one (none on day 8).
 const LAMPER: {
   vis: string | null;
   rune: string;
@@ -138,14 +139,17 @@ function Ark8() {
             >
               {i + 1}
             </text>
-            <foreignObject
-              x={lampeX(i) + 3}
-              y={LAMPE_Y - 26}
-              width="8"
-              height="12"
-            >
-              <Frostrune letter={l.rune} size={7} />
-            </foreignObject>
+            {(l.vis ?? skjultRune(8, l.rune)) && (
+              <foreignObject
+                x={lampeX(i) + 3}
+                y={LAMPE_Y - 26}
+                width="8"
+                height="12"
+                data-skjult={!l.vis || undefined}
+              >
+                <Frostrune letter={(l.vis ?? l.rune)!} size={7} />
+              </foreignObject>
+            )}
           </g>
         ))}
       </svg>

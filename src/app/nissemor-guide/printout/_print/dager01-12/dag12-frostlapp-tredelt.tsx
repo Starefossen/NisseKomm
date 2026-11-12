@@ -1,8 +1,9 @@
+import { skjultRune } from "@/lib/runeorden";
 import { Utskrift } from "../Utskrift";
 import { Prikker, Ruter } from "./felles";
 
 // Order comes only from the sound, so the cells carry no numbers. The mug piece is the decoy: rune only at A.
-// The glass pieces carry the code rune on their ❄ cell too.
+// ❄ cells carry their code rune only when it is new that day (none on day 12).
 const BITER = [
   { hvor: "dypeste glass", celler: [null, "E"], runer: ["M", "E"], prikker: 1 },
   {
@@ -34,7 +35,9 @@ export default function Dag12FrostlappTredelt() {
             <div className="h-full flex items-center justify-center font-retro">
               <Ruter
                 celler={BITER[i].celler}
-                runer={BITER[i].runer}
+                runer={BITER[i].runer?.map(
+                  (l, j) => BITER[i].celler[j] ?? skjultRune(12, l),
+                )}
                 storrelse="w-[28mm] h-[40mm]"
               />
             </div>

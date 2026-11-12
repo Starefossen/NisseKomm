@@ -210,7 +210,7 @@ describe("utskrifter dag 1–16", () => {
 
   it("frostkortet dag 7 har ingen bokstaver, bare tegn", () => {
     const { tekst } = render(Frostlapp7);
-    expect(tekst.replace(/FROSTLAPP|\d|\s/g, "")).toBe("");
+    expect(tekst.replace(/FROSTLAPP|✂ ?klipp|\d|\s/g, "")).toBe("");
   });
 
   // CutCard is flex-col, so the strip printed as a column over two pages

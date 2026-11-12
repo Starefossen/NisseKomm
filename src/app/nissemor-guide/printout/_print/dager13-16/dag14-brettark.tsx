@@ -1,4 +1,5 @@
 import { Frostrune } from "@/components/ui/Frostrune";
+import { skjultRune } from "@/lib/runeorden";
 import { Utskrift } from "../Utskrift";
 
 /*
@@ -78,17 +79,25 @@ export default function Dag14Brettark() {
                 className="absolute flex gap-[1mm]"
                 style={{ left: "7mm", top: "30mm" }}
               >
-                {/* Corner runes for the hidden word (Meta 1). */}
-                {["O", "R", "I", "G", "A", "M", "I"].map((r, i) => (
-                  <div
-                    key={i}
-                    className="relative w-[11mm] h-[14mm] border-[0.5mm] border-black bg-white"
-                  >
-                    <span className="absolute top-[0.5mm] right-[0.5mm]">
-                      <Frostrune letter={r} size={9} />
-                    </span>
-                  </div>
-                ))}
+                {/* ❄ boxes: a rune only when new that day (Meta 1; none on day 14). */}
+                {["O", "R", "I", "G", "A", "M", "I"].map((l, i) => {
+                  const r = skjultRune(14, l);
+                  return (
+                    <div
+                      key={i}
+                      className="relative w-[11mm] h-[14mm] border-[0.5mm] border-black bg-white"
+                    >
+                      {r && (
+                        <span
+                          className="absolute top-[0.5mm] right-[0.5mm]"
+                          data-skjult
+                        >
+                          <Frostrune letter={r} size={9} />
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
               {LOKK.map((l) => (
                 <span

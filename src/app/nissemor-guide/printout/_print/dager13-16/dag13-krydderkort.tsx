@@ -1,10 +1,12 @@
 import { Frostrune } from "@/components/ui/Frostrune";
+import { klipphjorner, skjultRune } from "@/lib/runeorden";
 import { Utskrift } from "../Utskrift";
-import { Iskrystall } from "../dager01-12/felles";
+import { Iskrystall, Klipphjorne } from "../dager01-12/felles";
 
 // Cinnamon, turmeric, saffron, clove. Same look, no names; "_" is ❄.
 const KORT = ["__N__", "__R______", "__F___", "__L___"];
-// Saffron is the real skeleton: its ❄ cells carry the code runes. Decoys only at the letter.
+// Saffron is the real skeleton: its ❄ cells carry a rune only when new. F (visible) is new: a cut-off
+// corner, bottom right; the cells sit high on every card so the corner never clips them).
 const RUNER: (string[] | undefined)[] = [
   undefined,
   undefined,
@@ -13,10 +15,29 @@ const RUNER: (string[] | undefined)[] = [
 ];
 const POSE = ["kanel", "gurkemeie", "safran", "nellik (eller pepper)"];
 
-function Frostlapp({ m, runer }: { m: string; runer?: string[] }) {
+const SKJULT = RUNER.map((r, k) =>
+  r?.map((l, i) => (KORT[k][i] === "_" ? skjultRune(13, l) : undefined)),
+);
+const HJORNE = KORT.map((m, k) =>
+  klipphjorner(
+    13,
+    [...m].map((c, i) => (c === "_" ? SKJULT[k]?.[i] : c)),
+  ).find(Boolean),
+);
+
+function Frostlapp({
+  m,
+  runer,
+  hjorne,
+}: {
+  m: string;
+  runer?: (string | undefined)[];
+  hjorne?: string;
+}) {
   const b = Math.min(13, 86 / m.length - 1);
   return (
-    <div className="h-full flex flex-col items-center justify-center gap-[3mm] font-retro">
+    <div className="h-full relative flex flex-col items-center pt-[4mm] gap-[3mm] font-retro">
+      {hjorne && <Klipphjorne letter={hjorne} hjorne="br" />}
       <div className="text-[5mm] tracking-widest flex items-center gap-[2mm]">
         <Iskrystall size={16} /> FROSTLAPP <Iskrystall size={16} />
       </div>
@@ -31,9 +52,12 @@ function Frostlapp({ m, runer }: { m: string; runer?: string[] }) {
               {i + 1}
             </span>
             {c === "_" ? <Iskrystall size={Math.round(b * 2.6)} /> : c}
-            {(runer?.[i] ?? c) !== "_" && (
-              <span className="absolute top-[0.5mm] right-[0.5mm]">
-                <Frostrune letter={runer?.[i] ?? c} size={10} />
+            {(c !== "_" || runer?.[i]) && (
+              <span
+                className="absolute top-[0.5mm] right-[0.5mm]"
+                data-skjult={c === "_" || undefined}
+              >
+                <Frostrune letter={c === "_" ? runer![i]! : c} size={10} />
               </span>
             )}
           </div>
@@ -52,10 +76,13 @@ export default function Dag13Krydderkort() {
         {
           str: "A7",
           antall: KORT.length,
-          forside: (i) => <Frostlapp m={KORT[i]} runer={RUNER[i]} />,
+          forside: (i) => (
+            <Frostlapp m={KORT[i]} runer={SKJULT[i]} hjorne={HJORNE[i]} />
+          ),
         },
       ]}
       instruks={{
+        hjorne: true,
         klipp: "fire kort.",
         hvor: `Kvelden før dag 13: ett kort i hver zip-pose på servietten ved Rampenissen, lussekatten ved. Rad for rad på arket: ${POSE.join(", ")}.`,
       }}

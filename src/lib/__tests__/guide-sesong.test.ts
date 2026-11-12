@@ -1,8 +1,10 @@
 /** @jest-environment node */
 import { describe, it, expect } from "@jest/globals";
 import bakt from "@/data/guide-innhold.json";
+import { nyeRuner } from "@/lib/runeorden";
 import {
   DOK,
+  RESERVESETT,
   SEKSJONER,
   delsystemer,
   forSesongen,
@@ -67,5 +69,15 @@ describe("guide-sesong", () => {
     const v = varden(7);
     expect(v.uloest.dag).toContain("[skjult]");
     expect(v.loest.dag).not.toContain('"mail":"[skjult]"');
+  });
+});
+
+describe("reservesett", () => {
+  it("hver dag med nye runer har reservesett i kveldslista", () => {
+    for (let d = 1; d <= 24; d++)
+      if (nyeRuner(d).size)
+        expect([d, kveldDag(d)?.reservesett]).toEqual([d, RESERVESETT[d]]);
+    for (const [d, u] of Object.entries(RESERVESETT))
+      expect(kveldDag(Number(d))?.reservesett).toBe(u);
   });
 });

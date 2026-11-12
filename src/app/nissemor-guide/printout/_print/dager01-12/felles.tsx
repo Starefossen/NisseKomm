@@ -3,8 +3,9 @@ import { Frostrune } from "@/components/ui/Frostrune";
 
 /*
  * Helpers for the printables in the <Utskrift> frame.
- * Every card carries the rune for its letter in the corner, ❄ squares
- * included (gaater-2026 Meta 1); decoys only at their visible letter.
+ * Visible letters carry their rune in the corner; a ❄ square only when its
+ * rune is new that day (gaater-2026 Meta 1, `@/lib/runeorden`). Runes on ❄
+ * squares are marked `data-skjult`.
  */
 
 import { Iskrystall } from "@/components/ui/Iskrystall";
@@ -23,7 +24,7 @@ export function Ruter({
   celler: (ReactNode | null)[];
   nummer?: boolean;
   /** Per-cell runes, overriding the default (rune on visible letters only):
-   *  the hidden letter of each ❄ cell in a real skeleton. */
+   *  `skjultRune` for each ❄ cell in a real skeleton. */
   runer?: (string | undefined)[];
   storrelse?: string;
 }) {
@@ -40,7 +41,10 @@ export function Ruter({
             </span>
           )}
           {(runer ? runer[i] : typeof c === "string" && c) && (
-            <span className="absolute top-[1mm] right-[1mm]">
+            <span
+              className="absolute top-[1mm] right-[1mm]"
+              data-skjult={c === null || undefined}
+            >
               <Frostrune letter={runer ? runer[i]! : (c as string)} size={12} />
             </span>
           )}
@@ -50,6 +54,47 @@ export function Ruter({
     </div>
   );
 }
+
+/** Side of the cut-off corner in mm: 1–2 mm under a runetavle box (26.4 mm wide). */
+export const HJORNE = 25;
+const PLASS = {
+  tr: "top-0 right-0",
+  tl: "top-0 left-0",
+  br: "bottom-0 right-0",
+  bl: "bottom-0 left-0",
+} as const;
+
+/**
+ * A dotted cut-off corner with a NEW rune, big, for the runetavle
+ * (gaater-2026 Meta 1). The parent must be `relative`.
+ */
+export function Klipphjorne({
+  letter,
+  hjorne = "tr",
+}: {
+  letter: string;
+  hjorne?: keyof typeof PLASS;
+}) {
+  const kant = {
+    tr: "border-l-2 border-b-2",
+    tl: "border-r-2 border-b-2",
+    br: "border-l-2 border-t-2",
+    bl: "border-r-2 border-t-2",
+  }[hjorne];
+  return (
+    <div
+      data-klipp={letter}
+      className={`absolute ${PLASS[hjorne]} ${kant} border-dotted border-black bg-white flex flex-col items-center justify-center font-retro`}
+      style={{ width: `${HJORNE}mm`, height: `${HJORNE}mm` }}
+    >
+      <Frostrune letter={letter} size={40} />
+      <span className="text-[2.8mm] leading-none text-gray-500">✂ klipp</span>
+    </div>
+  );
+}
+
+/** Corners in fill order when one card carries several new runes. */
+export const HJORNER = ["tr", "tl", "br", "bl"] as const;
 
 /** n dots, for the order dots on card backs. */
 export function Prikker({ n }: { n: number }) {

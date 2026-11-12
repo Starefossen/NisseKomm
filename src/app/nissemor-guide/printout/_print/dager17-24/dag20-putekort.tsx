@@ -1,7 +1,8 @@
+import { skjultRune } from "@/lib/runeorden";
 import { Utskrift } from "../Utskrift";
 import { Kort, Prikker, midt } from "./felles";
 
-// By size rank (1 = largest): 2 = U, 4 = B, the rest ❄ with the code rune in the corner. Runes only.
+// By size rank (1 = largest): 2 = U, 4 = B, the rest ❄ (no new runes on day 20). Runes only.
 const KORT = [null, "U", null, "B", null];
 const ORD = ["T", "U", "R", "B", "O"];
 
@@ -15,7 +16,9 @@ export default function Dag20Putekort() {
         {
           str: "A7",
           antall: KORT.length,
-          forside: (i) => <Kort bokstav={KORT[i]} tegn={ORD[i]} vis="tegn" />,
+          forside: (i) => (
+            <Kort bokstav={KORT[i]} tegn={skjultRune(20, ORD[i])} vis="tegn" />
+          ),
           bakside: (i) => midt(<Prikker n={i + 1} />),
         },
       ]}

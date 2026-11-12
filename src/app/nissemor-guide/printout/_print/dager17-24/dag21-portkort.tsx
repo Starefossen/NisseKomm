@@ -1,3 +1,4 @@
+import { skjultRune } from "@/lib/runeorden";
 import { Utskrift } from "../Utskrift";
 import { Iskrystall, Kort, midt } from "./felles";
 
@@ -16,7 +17,12 @@ export default function Dag21Portkort() {
           str: { b: 24, h: 80 },
           antall: RYGG.length,
           forside: (i) => (
-            <Kort bokstav={RYGG[i]} tegn={ORD[i]} nr={i + 1} stor={14} />
+            <Kort
+              bokstav={RYGG[i]}
+              tegn={skjultRune(21, ORD[i])}
+              nr={i + 1}
+              stor={14}
+            />
           ),
         },
         {

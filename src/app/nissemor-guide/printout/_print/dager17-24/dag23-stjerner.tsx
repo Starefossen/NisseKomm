@@ -1,10 +1,14 @@
 import type { ReactNode } from "react";
+import { klipphjorner, skjultRune } from "@/lib/runeorden";
 import { Utskrift } from "../Utskrift";
+import { HJORNE as SIDE, Klipphjorne } from "../dager01-12/felles";
 import { Kort } from "./felles";
 
-// Front: 5 R, 8 K, 10 A, the rest ❄ with the code rune. Back: Roman numeral (look back to day 2).
+// Front: 5 R, 8 K, 10 A, the rest ❄; only the new rune J (star 3) shows, on a loose cut-off corner. Back: Roman numeral (look back to day 2).
 const FORSIDE: Record<number, string> = { 5: "R", 8: "K", 10: "A" };
 const ORD = ["S", "T", "J", "E", "R", "N", "E", "K", "L", "A", "R", "T"];
+const RUNE = ORD.map((l, i) => FORSIDE[i + 1] ?? skjultRune(23, l));
+const HJORNE = klipphjorner(23, RUNE);
 const ROMER = "I II III IV V VI VII VIII IX X XI XII".split(" ");
 
 function Stjerne({ children }: { children: ReactNode }) {
@@ -36,7 +40,7 @@ export default function Dag23Stjerner() {
           antall: 12,
           forside: (i) => (
             <Stjerne>
-              <Kort bokstav={FORSIDE[i + 1] ?? null} tegn={ORD[i]} stor={13} />
+              <Kort bokstav={FORSIDE[i + 1] ?? null} tegn={RUNE[i]} stor={13} />
             </Stjerne>
           ),
           bakside: (i) => (
@@ -47,11 +51,27 @@ export default function Dag23Stjerner() {
             </Stjerne>
           ),
         },
+        // A star is cut along its points, so the new rune's corner is a loose tile.
+        ...HJORNE.flatMap((l) =>
+          l
+            ? [
+                {
+                  str: { b: SIDE, h: SIDE },
+                  forside: () => (
+                    <div className="h-full relative">
+                      <Klipphjorne letter={l} />
+                    </div>
+                  ),
+                },
+              ]
+            : [],
+        ),
       ]}
       instruks={{
         klipp:
           "tolv stjerner langs stjernekanten, stikk hull i ringen og tre hyssing.",
-        hvor: "I november: klipp og tre. Kvelden 22. des.: heng dem i treet, de laveste i Hannas høyde, Rampenissen med det blå måne-kortet.",
+        hjorne: true,
+        hvor: "I november: klipp og tre. Det løse tegnhjørnet teipes på baksiden av stjerne III. Kvelden 22. des.: heng dem i treet, de laveste i Hannas høyde, Rampenissen med det blå måne-kortet.",
       }}
     />
   );

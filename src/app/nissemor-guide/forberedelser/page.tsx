@@ -22,6 +22,7 @@ function Forberedelser() {
   const {
     innen25: INNEN_25_NOV,
     byggeplan: BYGGEPLAN,
+    runetavler: RUNETAVLER,
     morgen1: MORGEN_1_DES,
     sjekkliste: SJEKKLISTE_DAG1,
     handleliste: {
@@ -58,12 +59,15 @@ function Forberedelser() {
         <Avkrysning punkter={INNEN_25_NOV} {...avkrysning} />
       </Kort>
 
-      {BYGGEPLAN.map((b) => (
+      {BYGGEPLAN.map((b, i) => (
         <Kort key={b.tittel} tittel={`Dag 1-scenen: ${b.tittel}`}>
           <Avkrysning
-            punkter={b.steg.map((s) =>
-              s.min === "–" ? s.tekst : `${s.tekst} (${s.min} min)`,
-            )}
+            punkter={[
+              ...b.steg.map((s) =>
+                s.min === "–" ? s.tekst : `${s.tekst} (${s.min} min)`,
+              ),
+              ...(i === 0 ? [RUNETAVLER] : []),
+            ]}
             {...avkrysning}
           />
         </Kort>

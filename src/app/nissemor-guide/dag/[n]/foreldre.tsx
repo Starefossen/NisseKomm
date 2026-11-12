@@ -83,7 +83,13 @@ export function Foreldredel({
           `${b.tittel.split(" (")[0]}: ${st.tekst}${st.min !== "–" ? ` (${st.min} min)` : ""}`,
       ),
     ) ?? []),
+    ...(plan?.runetavler ? [plan.runetavler] : []),
     ...d.utskrifter.map((u) => `Skriv ut ${utskriftTittel(u)}`),
+    ...(d.reservesett
+      ? [
+          `Skriv ut reservesett: ${utskriftTittel(d.reservesett)} (i Nissemor-mappen; kortene brukes igjen senere)`,
+        ]
+      : []),
     `Finn fram: ${d.materialer}`,
     ...(d.iKveld ? [`I kveld: ${d.iKveld}`] : []),
     ...hus,
@@ -168,6 +174,13 @@ export function Foreldredel({
                   </Link>
                 </li>
               ))}
+              {d.reservesett && (
+                <li>
+                  <Link href={utskriftHref(d.reservesett)} className={lenke}>
+                    Skriv ut reservesett: {utskriftTittel(d.reservesett)}
+                  </Link>
+                </li>
+              )}
             </ul>
             <p>{f(d.utskrifterTekst)}</p>
           </div>

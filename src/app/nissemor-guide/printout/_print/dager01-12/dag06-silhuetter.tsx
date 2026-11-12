@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
+import { klipphjorner, skjultRune } from "@/lib/runeorden";
 import { Utskrift } from "../Utskrift";
-import { Ruter } from "./felles";
+import { Klipphjorne, Ruter } from "./felles";
 
-// The lantern is the real skeleton: runes on all four. Decoys only at the visible letter.
+// The lantern is the real skeleton; its ❄ cells carry a rune only when new. Y is new: cut-off corner.
+// All three backs are the same size so the corner's space doesn't stand out.
 const FIGURER: {
   form: ReactNode;
   celler: (string | null)[];
@@ -32,6 +34,14 @@ const FIGURER: {
   },
 ];
 
+const RUNER = FIGURER.map((f) =>
+  f.celler.map((c, j) => c ?? skjultRune(6, f.runer?.[j])),
+);
+const ALLE = klipphjorner(6, RUNER.flat());
+const HJORNE = FIGURER.map((_, i) =>
+  ALLE.slice(i * 4, i * 4 + 4).find(Boolean),
+);
+
 export default function Dag06Silhuetter() {
   return (
     <Utskrift
@@ -54,13 +64,14 @@ export default function Dag06Silhuetter() {
           ),
         },
         {
-          str: { b: 52, h: 22 },
+          str: { b: 82, h: 28 },
           antall: FIGURER.length,
           forside: (i) => (
-            <div className="h-full flex items-center justify-center font-retro">
+            <div className="h-full relative flex items-center pl-[4mm] font-retro">
+              {HJORNE[i] && <Klipphjorne letter={HJORNE[i]!} />}
               <Ruter
                 celler={FIGURER[i].celler}
-                runer={FIGURER[i].runer}
+                runer={RUNER[i]}
                 nummer
                 storrelse="w-[10mm] h-[15mm]"
               />
@@ -69,6 +80,7 @@ export default function Dag06Silhuetter() {
         },
       ]}
       instruks={{
+        hjorne: true,
         klipp:
           "i november: klipp ut de tre figurene langs omrisset og de tre bakside-kortene langs rammen.",
         merk: "Teip en ispinne nederst på hver figur og lim bakside-kortet på ispinnen, under figuren, så det ikke lager skygge: stearinlys A, bål O, lykt Y.",

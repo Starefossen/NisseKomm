@@ -107,6 +107,25 @@ function kveldRad(n: number): string {
   return ren(rader.find((r) => ren(r[0]) === kveld)?.[1] ?? "");
 }
 
+/**
+ * Cards used again after their day: new runes in cut-off corners (Meta 1),
+ * backup dots, rune sources for day 7 and 17, Meta 2 (18 → 21), and the
+ * alphabet strip (day 5 → 22). The evening checklist asks for a spare set.
+ */
+export const RESERVESETT: Record<number, string> = {
+  1: "dag01-tradkort",
+  3: "dag03-frostlapp",
+  4: "dag04-skokort",
+  5: "alfabetstrimmel",
+  6: "dag06-silhuetter",
+  7: "dag07-frostlapp",
+  12: "dag12-frostlapp-tredelt",
+  13: "dag13-krydderkort",
+  18: "dag18-rosinkort",
+  20: "dag20-putekort",
+  23: "dag23-stjerner",
+};
+
 export function kveldDag(n: number) {
   const blokk = dagBlokk(del("gaater", "Dag for dag"), n);
   if (!blokk) return null;
@@ -140,6 +159,7 @@ export function kveldDag(n: number) {
       .map((m) => m[1])
       .filter((u) => (UTSKRIFTER as readonly string[]).includes(u)),
     reserve: felt("Reserve"),
+    reservesett: RESERVESETT[n] as string | undefined,
     iKveld: kveldRad(n),
     strek: {
       tekst: ren(s[2] ?? ""),
@@ -212,6 +232,9 @@ export function forSesongen() {
               acc),
         [],
       ),
+    // Not in gaater: the board's corners get glued in, so keep a spare board.
+    runetavler:
+      "Skriv ut runetavla i to eksemplarer: én til brettet, én i Nissemor-mappen som reserve.",
     morgen1: ren(plan.match(/^Morgenen 1\. desember.+$/m)?.[0] ?? ""),
     sjekkliste: (
       del("gaater", "Sjekkliste").match(/```\n([\s\S]*?)```/)?.[1] ?? ""

@@ -184,7 +184,14 @@ export function Utskrift({
   tosidig?: boolean;
   farge?: boolean;
   deler: Del[];
-  instruks: { klipp?: string; brett?: string; hvor: string; merk?: string };
+  instruks: {
+    klipp?: string;
+    brett?: string;
+    hvor: string;
+    merk?: string;
+    /** The print has cut-off corners with new runes (Meta 1). */
+    hjorne?: boolean;
+  };
 }) {
   const ark = pakk(deler);
   const sider = ark.flatMap((a) => {
@@ -240,6 +247,12 @@ export function Utskrift({
           <b>Hvor og når:</b> {instruks.hvor}
         </p>
         {instruks.merk && <p>{instruks.merk}</p>}
+        {instruks.hjorne && (
+          <p>
+            <b>Tegnhjørne:</b> Klipp av hjørnet med det nye tegnet og lim det i
+            riktig rute på runetavla når dere vet bokstaven.
+          </p>
+        )}
         <button
           onClick={() => window.print()}
           className="px-6 py-3 min-h-11 bg-(--neon-green) text-black font-bold hover:opacity-80"

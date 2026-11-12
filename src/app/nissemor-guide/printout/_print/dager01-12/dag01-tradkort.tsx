@@ -1,19 +1,17 @@
-import { Frostrune } from "@/components/ui/Frostrune";
+import { klipphjorner } from "@/lib/runeorden";
 import { Utskrift } from "../Utskrift";
-import { Iskrystall, Prikker } from "./felles";
+import { Iskrystall, Klipphjorne, Prikker } from "./felles";
 
 // Thread order from the TV: ❄ I ❄ N ❄ ❄; then the two loose cards in the river.
 const KORT = [null, "I", null, "N", null, null, "E", "T"];
 const TRAAD = 6;
-// Corner rune: the card's letter, hidden or not (Meta 1 teaches S, G, A, L here).
-const RUNE = [..."SIGNALET"];
+// Every rune is new on day 1, so every card gets a cut-off corner (Meta 1).
+const HJORNE = klipphjorner(1, [..."SIGNALET"]);
 
-function Forside({ vis, rune }: { vis: string | null; rune: string }) {
+function Forside({ vis, rune }: { vis: string | null; rune?: string }) {
   return (
     <div className="h-full relative flex items-center justify-center font-retro text-[40mm] leading-none">
-      <span className="absolute top-[3mm] right-[3mm]">
-        <Frostrune letter={rune} size={36} />
-      </span>
+      {rune && <Klipphjorne letter={rune} />}
       {vis ?? <Iskrystall size={150} />}
     </div>
   );
@@ -29,7 +27,7 @@ export default function Dag01Tradkort() {
         {
           str: "A7",
           antall: KORT.length,
-          forside: (i) => <Forside vis={KORT[i]} rune={RUNE[i]} />,
+          forside: (i) => <Forside vis={KORT[i]} rune={HJORNE[i]} />,
           bakside: (i) =>
             i < TRAAD ? (
               <div className="h-full flex items-center justify-center">
@@ -39,6 +37,7 @@ export default function Dag01Tradkort() {
         },
       ]}
       instruks={{
+        hjorne: true,
         klipp:
           "åtte kort langs de stiplede linjene. Kort 1–6 har prikker bak (1–6); E og T har ingen.",
         hvor: "Lørdag 29. november: klyp kort 1–6 på 4 m rødt garn i rekkefølge fra TV-enden (krystall, I, krystall, N, krystall, krystall), første 40 cm fra TV-en, så cirka 55 cm mellom. Søndag kveld: tråden fra TV-foten til Rampenissens arm, kortene opp. E og T løse mellom klementinene i elva, uten klype.",
