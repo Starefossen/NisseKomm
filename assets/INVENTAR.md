@@ -6,7 +6,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Type | ✓ | ⚠ | ? | ✗ | ○ | ◇ | - |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| julius | 2 | 10 | 0 | 12 | 0 | 18 | 3 |
+| julius | 2 | 10 | 0 | 12 | 0 | 19 | 3 |
 | rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 4 |
 | music | 13 | 0 | 0 | 1 | 0 | 0 | 0 |
 | tv | 19 | 5 | 0 | 0 | 15 | 0 | 17 |
@@ -64,6 +64,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-09-v2.mp4 | 9.6 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-10-v2.mp4 | 9.6 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-11-v2.mp4 | 10.0 MB | 2026-11-12 | ◇ ikke i manifestet |
+| video/julius/dag-12-v2.mp4 | 8.4 MB | 2026-11-12 | ◇ ikke i manifestet |
 
 ## rampenissen
 
