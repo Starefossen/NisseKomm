@@ -2,7 +2,7 @@
 
 Steg 1 i byggerekkefølgen. Kilder: `docs/historie-2026.md` (låst), `docs/storyboard-2026.md`, `CONTENT_GUIDE.md` og kodene i `src/data/uke1–4_oppdrag.json`. Ingen kode er endret. Historiebeats er ikke rørt; det som er bestemt her, er hvordan hver dags to brikker ser ut, hva de faktisk gjør med dem, og hva en forelder må ha klart.
 
-**Status: LÅST 10. november 2026.** De seks avgjørelsene i (d) er godtatt av Hans, og uavhengig gjennomgang (21 funn) er innarbeidet. Endringer krever eksplisitt ja. Endret etter ja fra Hans 10. november; materiallister rettet 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 8, 10 og 13 endret 13.11 etter ja fra Hans.
+**Status: LÅST 10. november 2026.** De seks avgjørelsene i (d) er godtatt av Hans, og uavhengig gjennomgang (21 funn) er innarbeidet. Endringer krever eksplisitt ja. Endret etter ja fra Hans 10. november; materiallister rettet 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 8, 10 og 13 endret 13.11 etter ja fra Hans. Feltet «Sjekkliste» lagt til per dag 12.11 etter ønske fra Hans; gåtene er ikke endret.
 
 **Revisjon 10. november 2026 (vanskelighet).** Godkjent av Hans: gåtene er for Kristian (12) og Håkon (9); Hanna (5) har valgfrie roller som aldri blokkerer. To meta-gåter (Frostrunene, Trixters kart), blindspor med feil bokstav der Julius' setning avgjør, og hevet nivå på 21 dager. Alle koder, brikke H + S, taket på 40 % og oppsett under 5 minutter på hverdager står. Julius-videoene dag 2–4 er ferdige og uendret. Standardvalg merket «standardvalg, kan endres» i (e).
 
@@ -81,6 +81,17 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 2 av 6 bokstaver (33 %) pluss lengde; de løse kortene er støy, ikke informasjon. Video: bruksbeskrivelse, ingen bokstaver.
 - **Vanskelighet:** 2.
 - **Oppsett:** 3 min for gåten; scenen tar 25 min kvelden 30. november pluss cirka 75 min forarbeid 28.–29. november (se «Dag 1: byggeplan»).
+- **Sjekkliste:**
+  - Skriv ut gåten: `dag01-tradkort.pdf`, `runetavle.pdf`
+  - Skriv ut scenen: `dag01-linjekort.pdf`, `dag01-frakt.pdf`, `dag01-ferdskriver.pdf`, `dag01-flylogg.pdf`, `operasjonsbrett.pdf`
+  - Skriv ut reservesett: `dag01-tradkort.pdf`, `runetavle.pdf`
+  - Fredag 28.: kle ferdskriveren, fyll den, lag fallskjermen
+  - Lørdag 29.: kjøp klementiner, merk eskene, klyp kortene på tråden
+  - Søndag 30.: bygg skredet fra TV-benken mot stuedøra
+  - Tråden fra TV-en til Rampenissens håndledd, seks kort: ❄ I ❄ N ❄ ❄
+  - De løse kortene E og T blant klementinene i elva
+  - Ferdskriveren forseglet i skredet: konvolutt, flylogg, runetavle, brett
+  - Rampestrek: bare lua og én vinkende arm stikker opp av klementinhaugen
 - **Materialer:** rødt garn, 6 små klesklyper, maskeringsteip, kortene, runetavla. Scenen: 3 esker klementiner (2,3 kg), 3–4 tomme klementinesker, lyst laken, klesvaskkurv og badehåndkle, avispapir, skoeske kledd i svart med oransje striper (ferdskriveren), C6-konvolutt, fruktskål, banan, 2 servietter, dorullhylse, hårstrikk, binders, limstift, tapetkniv, tusj, 6 gullklistremerker.
 - **Utskrifter:** `dag01-tradkort.pdf` (1 side, tykt papir, tosidig: 6 trådkort med prikker bak + 2 løse kort), `runetavle.pdf` (1 side, tykt papir), `dag01-linjekort.pdf` (1 side, tykt: linjekort med passordfelt + konvoluttpåskrift), `dag01-frakt.pdf` (4 sider, vanlig: fraktetiketter, SKJØRT-merker, stempler), `dag01-ferdskriver.pdf` (1 side, vanlig: merker og «FORSEGLET»-lapp), `dag01-flylogg.pdf` (1 side, vanlig: to loggstrimler), `operasjonsbrett.pdf` (A3, eller 2 × A4 med skjøtemerke, tykt).
 - **Reserve:** Blir rekkefølgen rotet, teller de prikkene på baksiden. Tar de med de løse kortene, får de åtte bokstaver til seks ruter og må velge bort. Er videoen hoppet over, ligger transkriptet under spilleren.
@@ -97,6 +108,11 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus tre tall uten regel (cirka 33 %), og bare for den som leser romertall med subtraktiv skrivemåte. Video: regel uten tall.
 - **Vanskelighet:** 3.
 - **Oppsett:** 3 min.
+- **Sjekkliste:**
+  - Skriv ut: `dag02-tallkort.pdf`
+  - Teip ett kort under hver av tre spisestoler
+  - Lapp i sukkerskålen: «Tre sikringer røk … Krabb! – R»
+  - Rampestrek: Rampenissen i sukkerskålen med teskje og sukker rundt munnen
 - **Materialer:** maskeringsteip, kortene.
 - **Utskrifter:** `dag02-tallkort.pdf` (1 side, tykt papir, 3 kort med regnestykker i romertall).
 - **Reserve:** Finner de bare to kort, står det «tre sikringer» i e-posten og radioen. Leser de IX som 11 eller XIV som 16, blir summen feil og terminalen sier fra; e-posten nevner «slik gamle klokker skriver tall». Nissemor-guiden har de tre svarene.
@@ -113,6 +129,13 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 2 av 6 (33 %), og bare etter speilvending. Video: bruk, ingen bokstaver.
 - **Vanskelighet:** 3.
 - **Oppsett:** 4 min. Test såpeskrift i november.
+- **Sjekkliste:**
+  - Skriv ut: `dag03-frostlapp.pdf`
+  - Skriv ut reservesett: `dag03-frostlapp.pdf`
+  - Skriv `_ _ Ƨ _ Я _` på badespeilet med q-tips og oppvaskmiddel
+  - Lapp ved speilet: «Pust på meg.»
+  - Vinduskarmen: glassperle, grønt hjerte-kort, konvolutt «ETTER KODEN – IQ» med frostkortet
+  - Rampestrek: tannkrem på speilet: «RAMPEN VAR HER. NO CAP.»
 - **Materialer:** oppvaskmiddel, q-tips, tannkrem, liten konvolutt, glassperle, hjerte-kortet.
 - **Utskrifter:** symbolkort «grønt hjerte» (fra QR-siden). `dag03-frostlapp.pdf` (1 side, tykt papir: ett kort rettvendt med tegn til konvolutten, ett speilvendt som reserve).
 - **Reserve:** Det speilvendte reservekortet legges i tannkremtuben hvis speilet svikter. Leser de rekka uten å snu den, passer ingen ord med S som tredje og R som femte bokstav til Julius' setning.
@@ -129,6 +152,12 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 2 av 7 (29 %) pluss lengde, i to mulige rekkefølger. Video: bruk, ingen bokstaver.
 - **Vanskelighet:** 3.
 - **Oppsett:** 5 min (sju sko i ring, sju kort, kosedyr i ring bak).
+- **Sjekkliste:**
+  - Skriv ut: `dag04-skokort.pdf`
+  - Skriv ut reservesett: `dag04-skokort.pdf`
+  - Sett sju sko i ring i gangen, kosedyrene i ring utenfor
+  - Ett kort i hver sko, etter prikkene bak, med klokka fra pappas
+  - Rampestrek: Rampenissen i pappas sko med pappas solbriller
 - **Materialer:** sju sko, 4–6 kosedyr, kortene.
 - **Utskrifter:** `dag04-skokort.pdf` (1 side, tykt papir, 7 kort, tegn i hjørnet, prikker bak).
 - **Reserve:** Blir ringen sparket i stykker, teller de prikkene på baksiden (med klokka).
@@ -145,6 +174,13 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus: chiffertekst uten nøkkel. Video: nøkkel som oppslag, uten tekst. Dag 2: tallet, uten at noen vet det trengs igjen.
 - **Vanskelighet:** 4.
 - **Oppsett:** 6 min.
+- **Sjekkliste:**
+  - Skriv ut: `dag05-brevfugl.pdf`, `alfabetstrimmel.pdf`
+  - Skriv ut reservesett: `alfabetstrimmel.pdf`
+  - Brett fuglen og gjem den høyt i stua
+  - Legg alfabetstrimmelen og trehopperen ved fuglen
+  - Lapp ved marshmallowfortet: «Årets første brevfugl landet i natt … – R»
+  - Rampestrek: marshmallowkrig mellom to putefort på salongbordet, én bamse med plaster
 - **Materialer:** ett ark til fuglen, tusj.
 - **Utskrifter:** `dag05-brevfugl.pdf` (1 side, vanlig papir) og `alfabetstrimmel.pdf` (1 side, tykt papir, med trehopper; brukes igjen dag 22).
 - **Reserve:** Teller de feil vei, får de ÆRØOQKT. Husker de ikke dag 2, står det «tre sikringer» i e-posten dag 2 og i PS dag 2. Hopperen er tre ruter bred.
@@ -161,6 +197,13 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 1 av 4 (25 %) i hvert av tre kort. Video: velger formen, ingen bokstaver.
 - **Vanskelighet:** 2.
 - **Oppsett:** 5 min kvelden før (silhuettene klippes i november).
+- **Sjekkliste:**
+  - Skriv ut: `dag06-silhuetter.pdf`
+  - Skriv ut reservesett: `dag06-silhuetter.pdf`
+  - Teip silhuettene på ispinner og legg dem i papprullen
+  - Papprullen, en lampe og rødt hjerte-kort i gangen
+  - Lapp i melet: «Jeg har laget et instrument! … – R»
+  - Rampestrek: snøengler i 1 dl mel på et stekebrett, kjøkkenbordet
 - **Materialer:** 3 ispinner, teip, papprull, mobillykt, hjerte-kortet.
 - **Utskrifter:** `dag06-silhuetter.pdf` (1 side, tykt papir, tre figurer med bakside-kort).
 - **Reserve:** Er skyggen utydelig, holder det å se på silhuetten. Feil valg gir et ord som ikke passer «med hank».
@@ -177,6 +220,12 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 2 av 5 (40 %), og bare for den som har holdt tavla. Video: beskrivelse, ingen bokstaver; pluss pekeren til tavla.
 - **Vanskelighet:** 4.
 - **Oppsett:** 3 min kvelden før, pluss frysetid. **Legg begeret i fryseren senest søndag 6. kl. 20.**
+- **Sjekkliste:**
+  - Skriv ut: `dag07-frostlapp.pdf`
+  - Skriv ut reservesett: `dag07-frostlapp.pdf`
+  - Senest kl. 20: frys kortet i zip-pose i 1 cm vann
+  - Lapp teipet på begeret: «Tin meg! Lunkent vann, og en voksen. – R»
+  - Rampestrek: fastfryst i fryserdøra, lua inne i fryseren, vottene rett ut
 - **Materialer:** plastbeger eller silikonform, liten zip-pose, frostkortet.
 - **Utskrifter:** `dag07-frostlapp.pdf` (1 side, tykt papir).
 - **Reserve:** Mangler tavla tegn for L eller E, henger kortene fra dag 1 og 3 på brettet, og `runer-fasit.pdf` ligger i Nissemor-guiden (aldri på brettet). Blir det ikke fryst, legges posen i isbitskuffen.
@@ -193,6 +242,11 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 3 av 9 (33 %) pluss ett blindspor. Video: beskrivelse og regelen om strøm.
 - **Vanskelighet:** 4.
 - **Oppsett:** 3 min.
+- **Sjekkliste:**
+  - Skriv ut: `dag08-lamper.pdf`
+  - Legg arket på toppen av tårnet
+  - Lapp på tårnet: «IQs ark ligger på toppen … Ingen klatring! – R»
+  - Rampestrek: tårn av frokostpakker, skilt «SIGMA-TÅRN», Rampenissen på toppen med suppeøse
 - **Materialer:** arket.
 - **Utskrifter:** `dag08-lamper.pdf` (1 side, vanlig papir, farge anbefalt).
 - **Reserve:** Tar de med E, passer ikke ordet Julius beskriver, og de går tilbake til floken. Følger de en død ledning, får de ❄.
@@ -209,6 +263,11 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus: antall (4), ikke armer og ikke regel. Video: armer (6). Fil: regel. Ingen flate har to av tre.
 - **Vanskelighet:** 4.
 - **Oppsett:** 5 min (klipp ni krystaller, heng opp).
+- **Sjekkliste:**
+  - Skriv ut: `dag09-krystallark.pdf`
+  - Klipp ut de ni krystallene og heng dem på kjøleskapsdøra
+  - Blått hjerte-kort mellom krystallene
+  - Rampestrek: Rampenissen i grønnsaksskuffen, bare beina stikker ut
 - **Materialer:** magneter eller teip, arket, hjerte-kortet.
 - **Utskrifter:** `dag09-krystallark.pdf` (1 side, tykt papir, ni krystaller til utklipp, de falske ikke merket).
 - **Reserve:** Ganger de 9 × 6 = 54 eller 5 × 6 = 30, sier terminalen feil, og e-posten minner om at «noen av dem er ikke ekte».
@@ -225,6 +284,12 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 2 av 7 (29 %) pluss ett blindspor, bare med filter. Fil: rekkefølge, ingen bokstaver. Video: beskrivelse.
 - **Vanskelighet:** 4.
 - **Oppsett:** 6 min (gjem åtte kort, legg fram filteret). Filter og testark lages i november som før.
+- **Sjekkliste:**
+  - Skriv ut i farge: `dag10-fargekort.pdf`
+  - Gjem de åtte fargekortene lavt og høyt i stua
+  - Legg rødfilteret ved tusjene
+  - Lapp i Rampenissens hånd: «Kulde tok fargene! … Se gjennom det. – R»
+  - Rampestrek: tusjfarger på hender og nese, bart på familiebildet (post-it)
 - **Materialer:** rødt cellofan, papp til ramme, teip, kortene. Krever fargeutskrift.
 - **Utskrifter:** `dag10-testark.pdf`, `dag10-fargekort.pdf` (2 sider, tykt papir, **farge**: åtte kort; side 2 blank variant for håndskrift), `rodfilter-ramme.pdf`.
 - **Reserve:** Virker ikke filteret, hold kortet skrått under en lampe. Tar de med HVIT, har de ett kort for mye og går til filen.
@@ -241,6 +306,13 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus fem tall uten regel. Video: to regler (hvilke, og pluss) uten tall.
 - **Vanskelighet:** 3.
 - **Oppsett:** 5 min.
+- **Sjekkliste:**
+  - Skriv ut: `dag11-tallkort.pdf`
+  - Stua, under en pute: kortene 15 og 40
+  - Kjøkkenet, i brødboksen: kortet 25
+  - Gangen: 35 i Hannas jakkelomme, 20 i pappas
+  - Lapp på stekebrettet: «SKURR! IQ sendte tre sendere til dere … – R»
+  - Rampestrek: pakket i aluminiumsfolie som en bakt potet, på stekebrettet
 - **Materialer:** kortene. Bonus: aluminiumsfolie.
 - **Utskrifter:** `dag11-tallkort.pdf` (1 side, tykt papir, 5 kort).
 - **Reserve:** Legger de sammen alle fem (135), sier terminalen feil; transkriptet sier «ender på fem». Mangler ett av IQs kort, står det «tre sendere» i videoen.
@@ -257,6 +329,14 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 2 av 6 (33 %) pluss ett blindspor; rekkefølgen bare via lyd. Video: sorteringsregel og beskrivelse. Krypto: hint uten farger; PS-tekster gir to av tre.
 - **Vanskelighet:** 4.
 - **Oppsett:** 4 min.
+- **Sjekkliste:**
+  - Skriv ut: `dag12-frostlapp-tredelt.pdf`
+  - Skriv ut reservesett: `dag12-frostlapp-tredelt.pdf`
+  - Tre like glass: 2, 5 og 9 cm vann. Krus, teskje
+  - Biter nederst, forsiden inn: E dypest, O midterst, tom grunnest, A kruset
+  - Grønt sol-kort mot det midterste glasset
+  - Lapp ved glassene: «Slå forsiktig på hver av dem med skjeen … – R»
+  - Rampestrek: 2 m dorull bortover kjøkkenet, Rampenissen utslått i enden ved glassene
 - **Materialer:** 3 glass, 1 keramikkrus, teskje, teip, kortet, sol-kortet.
 - **Utskrifter:** `dag12-frostlapp-tredelt.pdf` (1 side, tykt papir, tre biter med klippelinjer pluss én blindsporbit).
 - **Reserve:** Hører de ikke forskjell, gjelder mengden vann (står i Nissemor-guiden). Tar de med `_ A`, får de åtte ruter til et ord Julius beskriver med «tre toner». Prikker 1–3 på baksiden av de ekte bitene.
@@ -273,6 +353,13 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 1 av 6 (17 %) i riktig pose, med tre blindspor som alle er krydder. Video: beskrivelse.
 - **Vanskelighet:** 4.
 - **Oppsett:** 4 min.
+- **Sjekkliste:**
+  - Skriv ut: `dag13-krydderkort.pdf`, `dag13-gravskilt.pdf`
+  - Skriv ut reservesett: `dag13-krydderkort.pdf`
+  - Ett kort i hver krydderpose: like mange ruter som bokstaver i krydderet
+  - Posene og en lussekatt på servietten ved Rampenissen
+  - Gravskiltet med lappen bak Rampenissen
+  - Rampestrek: Rampenissens begravelse på servietten, blomst i hendene, kosedyr i sørgerekke
 - **Materialer:** 4 små zip-poser, kanel, gurkemeie, safran, nellik (eller pepper), en lussekatt, serviett, gravskiltet.
 - **Utskrifter:** `dag13-krydderkort.pdf` (1 side, tykt papir, 4 kort), `dag13-gravskilt.pdf` (1 side, tykt papir, skiltet med lappen fra Rampenissen).
 - **Reserve:** Velger de gurkemeie, passer ikke «tråder» og «dyrere enn gull», og de prøver neste. Har huset ikke nellik, brukes pepper.
@@ -289,6 +376,11 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 2 av 7 (29 %), bare brettet to ganger og mot lys. Video: beskrivelse.
 - **Vanskelighet:** 3.
 - **Oppsett:** 3 min.
+- **Sjekkliste:**
+  - Skriv ut: `dag14-brettark.pdf`
+  - Brett en papirbåt og sett den i den tørre vasken
+  - Rull brettarket sammen og legg det i båten
+  - Rampestrek: skjeve serviettfugler over hele kjøkkenet, Rampenissen i papirbåten
 - **Materialer:** arket, et ark til papirbåten, mobillykt.
 - **Utskrifter:** `dag14-brettark.pdf` (1 side, vanlig 80 g papir, to stiplede linjer; test gjennomlys i november) og `dag14-serviettfugl.pdf` (valgfri).
 - **Reserve:** Lyser bokstavene dårlig gjennom, hold arket rett mot lykten. Finner de ikke tallene, gir ordet seg likevel av bokstavene og Julius; tallene bekrefter.
@@ -305,6 +397,14 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 3 av 8 (38 %) uten posisjon. Fil: posisjon uten bokstaver. Video: beskrivelse.
 - **Vanskelighet:** 4.
 - **Oppsett:** 5 min.
+- **Sjekkliste:**
+  - Skriv ut: `dag15-redskapskort.pdf`
+  - Gryte, sleiv, visp, kjevle og øse på benken
+  - Kort under: gryte A, sleiv M, visp L, kjevle og øse ❄
+  - Fotsporstrimler fra skålen til alle fem; de korte mot kjevle og øse
+  - Rutekort og rødt sol-kort ved sirupskålen
+  - Lapp ved sirupskålen: «Følg fotsporene mine … – R»
+  - Rampestrek: Rampenissen ved en liten skål sirup; rydd bort flasken og sukkeret
 - **Materialer:** gryte, sleiv, visp, kjevle, øse (finnes), kortene, sol-kortet, en liten skål med litt sirup.
 - **Utskrifter:** `dag15-redskapskort.pdf` (2 sider: tykt papir med tre bokstavlapper, to ❄-lapper og ett rutekort; vanlig papir med fem fotsporstrimler, to av dem korte).
 - **Reserve:** Flytter noen strimlene, står redskapene på benken uansett; ❄-kortene sier hvilke som ikke teller. Leser de ikke filen, gir bokstavene og Julius ordet likevel; filen bekrefter plasseringen.
@@ -321,6 +421,14 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 3 av 9 (33 %) pluss ett blindspor, og bare etter rydding. Video: beskrivelse.
 - **Vanskelighet:** 3.
 - **Oppsett:** 4 min utover streken.
+- **Sjekkliste:**
+  - Skriv ut: `dag16-sorteringslapper.pdf`
+  - Fjernkontrollen med O i brødboksen, tannbørsteglasset med E i bestikkskuffen
+  - Brødposen med I i TV-benken, ostehøvelen med K i badeskapet
+  - Tallapper: 2 i TV-benken, 5 på badehyllen, 7 i brødboksen
+  - Rutekortet i brødboksen under Rampenissen
+  - Lapp på brødbokslokket: «Jeg har ryddet! … – R»
+  - Rampestrek: Rampenissen i brødboksen med lokket på hodet
 - **Materialer:** teip, lappene, fjernkontroll, tannbørsteglass, brødpose, ostehøvel, brødboks. Bonus: syltetøyglass, batterilys.
 - **Utskrifter:** `dag16-sorteringslapper.pdf` (1 side, tykt papir, 4 bokstavlapper, 3 tallapper, 1 rutekort).
 - **Reserve:** Setter de en ting feil, mangler tallappen der, og de prøver neste plass. Presser de K inn, blir det et ord Julius ikke beskriver.
@@ -337,6 +445,14 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 2 av 7 (29 %), bare for den som har tavla. Video: beskrivelse av fenomenet.
 - **Vanskelighet:** 3.
 - **Oppsett:** 4 min (merk båndet, teip kortene, bind).
+- **Sjekkliste:**
+  - Skriv ut: `dag17-baandkort.pdf`, `dag17-losepengebrev.pdf`
+  - Sett sju sølvmerker med lik avstand på 1,5 m grønt bånd
+  - Tegn en sløyfe på båndet før merke 1
+  - Teip kortene ved merkene: O på 2, L på 5, ❄ på resten
+  - Bind Rampenissen til en stol med båndet, én enkel sløyfe
+  - Lapp ved løsepengebrevet: «Strekk båndet ut … les fra sløyfen. – R»
+  - Rampestrek: kosedyrene står vakt, løsepengebrev: «GI OSS ALLE PEPPERKAKENE. ELLERS.»
 - **Materialer:** grønt gavebånd, sølvpenn, teip, kortene.
 - **Utskrifter:** `dag17-baandkort.pdf` (1 side, tykt papir, 7 små kort). Valgfri: `dag17-losepengebrev.pdf`.
 - **Reserve:** Blir båndet klippet, legges bitene etter hverandre med sløyfen først. Mangler tavla O eller L, henger kortene fra dag 4 og 1 på brettet.
@@ -353,6 +469,14 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 3 av 9 (33 %). Video: beskrivelse.
 - **Vanskelighet:** 3.
 - **Oppsett:** 4 min.
+- **Sjekkliste:**
+  - Skriv ut: `dag18-rosinkort.pdf`
+  - Skriv ut reservesett: `dag18-rosinkort.pdf`
+  - Rosinspor på gråpapir fra ytterdøra mot kjøleskapet, fire servietter med kort under
+  - Rosiner på hver serviett: like mange som prikkene bak kortet
+  - Rutekortet i pappas jakkelomme med Rampenissen, blått sol-kort i den andre
+  - Lapp i jakkelommen: «Følg sporet baklengs fra kjøleskapet … – R»
+  - Rampestrek: Rampenissen fast i jakkelommen, peker anklagende på «reinsdyrbæsjen»
 - **Materialer:** én pose sjokoladerosiner, grått papir eller løper til sporet, 4 servietter, pappas jakke, kortene.
 - **Utskrifter:** `dag18-rosinkort.pdf` (1 side, tykt papir, 3 bokstavkort, 1 ❄-kort og 1 rutekort).
 - **Reserve:** Spiser noen av sporet før telling, står tallet som prikker på baksiden av hvert kort.
@@ -369,6 +493,13 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 2 av 6 (33 %). Video: beskrivelse.
 - **Vanskelighet:** 2.
 - **Oppsett:** 6 min (helg).
+- **Sjekkliste:**
+  - Skriv ut: `dag19-bevislapper.pdf`
+  - Pakk fire gulrøtter i folie; hyssing med merkelapp rundt tre
+  - Pakkene: U · 2 i stua, O · 5 på kjøkkenet, ❄ · 3 i gangen
+  - Teipomriss på kjøkkengulvet, med rutearket og «BEVIS»-pakken i
+  - Lapp på rutearket: «Tre bevis landet i tre rom … – R»
+  - Rampestrek: Rampenissen flat i teipomrisset med plaster på pannen
 - **Materialer:** 4 små gulrøtter, aluminiumsfolie, hyssing, maskeringsteip, arket.
 - **Utskrifter:** `dag19-bevislapper.pdf` (1 side, tykt papir).
 - **Reserve:** Pakker noen opp for tidlig, er skjelettet fortsatt bare 2 av 6.
@@ -385,6 +516,14 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 2 av 5 (40 %), bare etter sortering og med tavla. Video: beskrivelse.
 - **Vanskelighet:** 3.
 - **Oppsett:** 4 min utover fortet (teppe over to stoler, popcorn i skål).
+- **Sjekkliste:**
+  - Skriv ut: `dag20-putekort.pdf`, `dag20-fortskilt.pdf`
+  - Skriv ut reservesett: `dag20-putekort.pdf`
+  - Fem puter i tydelig ulik størrelse, hulter til bulter i fortet
+  - Kort under hver pute etter prikkene bak: 1 under den største
+  - Grønt måne-kort under den minste puten
+  - Lapp ved inngangen: «Putene lå etter størrelse … Så veltet jeg. Unnskyld. – R»
+  - Rampestrek: teppefort over to stoler med skilt, hodetelefoner og popcorn
 - **Materialer:** 5 puter av hvilket som helst slag i ulik størrelse, kortene, måne-kortet, 8 bøker klare til mandag.
 - **Utskrifter:** `dag20-putekort.pdf` (1 side, tykt papir, 5 kort med prikker 1–5 på baksiden).
 - **Reserve:** Er to puter like store, teller prikkene på baksiden. Er dag 18 hoppet over, mangler tavla B: `runer-fasit.pdf` i Nissemor-guiden, eller si at B er bokstaven under pute 4.
@@ -401,6 +540,13 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 1 av 8 synlig (13 %), 2 av 8 (25 %) etter at porten er funnet. Fil (dag 18): tallet, ingen bokstaver. Video: beskrivelse.
 - **Vanskelighet:** 5.
 - **Oppsett:** 4 min (åtte ryggkort, to kort i to bøker). Ingenting digitalt kvelden før.
+- **Sjekkliste:**
+  - Skriv ut: `dag21-portkort.pdf`
+  - Åtte bøker som lav mur foran skjermen
+  - Teip ryggkortene på bøkene etter rutetallet, fra venstre
+  - Kortet U · 7 inne i bok 5
+  - ❄-kortet «Feil bok» inne i bok 3, som står på gløtt
+  - Rampestrek: Rampenissen bak muren med grytelokk og visp
 - **Materialer:** 8 bøker, teip, kortene, grytelokk, visp.
 - **Utskrifter:** `dag21-portkort.pdf` (1 side, tykt papir: 8 ryggkort, kortet `U · 7`, ett ❄-kort). Erstatter post-it og den valgfrie `dag21-bokryggkort.pdf`.
 - **Reserve:** Er krypto 2 ikke løst, sier PS dag 20 fra (betinget variant), og Nissemor-guiden har fasit. Faller muren, har ryggkortene tall i hjørnet. Åpner de alle bøkene, finner de kortet likevel; det koster bare tid.
@@ -417,6 +563,14 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 6 tall uten regler. Video: to regler uten tall.
 - **Vanskelighet:** 4.
 - **Oppsett:** 5 min.
+- **Sjekkliste:**
+  - Skriv ut: `dag22-sokkelapper.pdf`
+  - Sett sokkemerkene 1, 2 og 3 på tre julesokker
+  - Sokk 1 i stua (1a, 1b), sokk 2 på kjøkkenet (2a, 2b)
+  - Sokk 3 (Hannas) i gangen: 3a, 3b og rødt måne-kort
+  - Legg fram alfabetstrimmelen fra dag 5
+  - Lapp i sokk 3: «Jeg er sokk 3 … – R»
+  - Rampestrek: Rampenissen i sokk 3 med bare føttene ut
 - **Materialer:** 3 julesokker, lappene, strimmelen fra dag 5, måne-kortet.
 - **Utskrifter:** `dag22-sokkelapper.pdf` (1 side, tykt papir, seks tallkort merket 1a, 1b, 2a, 2b, 3a, 3b og tre sokkemerker).
 - **Reserve:** Glemmer de å trekke fra, får de tull og går tilbake til transkriptet.
@@ -433,6 +587,12 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 3 av 12 (25 %). Video: beskrivelse i to ledd.
 - **Vanskelighet:** 4.
 - **Oppsett:** 3 min (klipping og tråd i november).
+- **Sjekkliste:**
+  - Skriv ut: `dag23-stjerner.pdf`
+  - Skriv ut reservesett: `dag23-stjerner.pdf`
+  - Heng de tolv stjernene i treet, de laveste i Hannas høyde
+  - Rampenissen i treet med blått måne-kort
+  - Rampestrek: en gave under treet teipet igjen med altfor mye teip
 - **Materialer:** hyssing, stjernearket, måne-kortet.
 - **Utskrifter:** `dag23-stjerner.pdf` (1 side, tykt papir, tolv stjerner med romertall bak).
 - **Reserve:** Mangler én stjerne, er krystallstjernene ikke nødvendige for ordet, bare for plasseringen.
@@ -449,6 +609,12 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Andel per flate:** hus 3 av 8 (38 %), for den som har tavla. Video: to ledd uten å si noen av dem.
 - **Vanskelighet:** 3.
 - **Oppsett:** 4 min.
+- **Sjekkliste:**
+  - Skriv ut: `dag24-suvenirlapper.pdf`, `dag24-krystallkort.pdf`, `diplom.pdf`
+  - Pappesken med sløyfe: perlen (U · 2), filteret (E · 4), båndbiten (G · 7)
+  - Gullkonvolutten i treet: avskjedsbrev, rutekort, tre reservelapper
+  - Krystallet med runekortet og den siste klementinen under treet
+  - Rampestrek: Rampenissen er borte; pappesken står under treet som koffert
 - **Materialer:** liten pappeske (den tomme fraktesken fra dag 1), sløyfe, gullkonvolutt, perlen, filteret og båndbiten, krystallet, runekortet, og den siste klementinen fra Hjerteruds proviant ved siden av krystallet (uten lapp, så den ikke forveksles med merkelappene).
 - **Utskrifter:** `dag24-suvenirlapper.pdf` (1 side, tykt papir, 3 lapper med tegn, rutekort, 3 reservelapper), `dag24-krystallkort.pdf` (1 side, tykt papir) og diplomene «Snøfalls venn» (3 sider).
 - **Reserve:** Reservelappene ligger i konvolutten. Mangler tavla et tegn, står de tre bokstavene i Nissemor-guiden; julaften er ikke dagen for å stå fast.

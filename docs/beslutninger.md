@@ -43,6 +43,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - 2026-11-13 (omgjort samme dag): ❄-kort bærer runen for sin skjulte bokstav, slik gaater-2026.md Meta 1 sier. Hvorfor: det er slik barna lærer nye runer (S, G, A, L dag 1), og dag 7 bygger på det; en rune på et ❄-kort sier ingenting før ordet er løst.
 - 2026-11-13: ❄-kort får rune bare for bokstaver som er nye den dagen; synlige bokstaver har alltid rune. Kort med ny rune får et stiplet hjørne (ca. 26 mm, passer i runetavlas rute) som barna klipper av og limer på tavla. Alle utskrifter kan skrives ut igjen fra guiden, og kveldslista har «Skriv ut reservesett» for kort som brukes igjen senere. Hvorfor: kjente runer på ❄-kort lot barna lese svaret rett av (dag 17 NORDLYS), og kortene blir borte.
 - 2026-11-13: Fortellingstekst med kodeord (dag 1, 7, 22 og fremtidige dagers tekster) får ligge i klientkoden; bare kodefelt og fasit holdes på serveren (3208199). Hvorfor: barna måtte grave i utviklerverktøy og vite hva de leter etter; ikke verdt arbeidet før 1. desember.
+- 2026-11-13: Kveldens sjekkliste i guiden viser bare feltet «Sjekkliste» fra gaater-2026.md: 3–7 korte handlinger per dag (skriv ut, plasser, lapp, rampestrek). H-brikker, «Finn fram» og henvisninger står i Gåtekartet. Hvorfor: den genererte lista var for lang og omstendelig til å sette opp scenen etter.
 
 ## Spill (2026-11-10/11)
 

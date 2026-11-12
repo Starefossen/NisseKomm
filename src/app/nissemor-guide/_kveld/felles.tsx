@@ -83,10 +83,13 @@ export function Avkrysning({
   punkter,
   krysset,
   veksle,
+  vis = (p) => p,
 }: {
   punkter: readonly string[];
   krysset: string[];
   veksle: (id: string) => void;
+  /** How a line is drawn; the tick is keyed on the string itself. */
+  vis?: (p: string) => ReactNode;
 }) {
   return (
     <ul className="space-y-1">
@@ -102,7 +105,7 @@ export function Avkrysning({
             <span
               className={krysset.includes(p) ? "line-through opacity-60" : ""}
             >
-              {p}
+              {vis(p)}
             </span>
           </label>
         </li>

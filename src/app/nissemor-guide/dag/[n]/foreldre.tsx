@@ -82,30 +82,29 @@ export function Foreldredel({
   const bonus = q.bonusoppdrag;
   const bonusOk = GameEngine.isBonusOppdragCompleted(q);
 
-  // Same strings as the house pieces in the Gåtekart, so H1… match.
-  const hus = d.hus.map((x, i) => `H${i + 1}: ${x}`);
-  const punkter = [
-    ...(plan?.byggeplan.flatMap((b) =>
-      b.steg.map(
-        (st) =>
-          `${b.tittel.split(" (")[0]}: ${st.tekst}${st.min !== "–" ? ` (${st.min} min)` : ""}`,
+  // Day 1: the build plan keeps its own list (same ticks as before).
+  const bygg = plan
+    ? [
+        ...plan.byggeplan.flatMap((b) =>
+          b.steg.map(
+            (st) =>
+              `${b.tittel.split(" (")[0]}: ${st.tekst}${st.min !== "–" ? ` (${st.min} min)` : ""}`,
+          ),
+        ),
+        plan.morgen1,
+      ]
+    : [];
+  // `dag02-tallkort.pdf` in a line shows as the print's title, linked.
+  const medLenker = (p: string) =>
+    p.split(/([\w-]+\.pdf)/).map((x, i) =>
+      i % 2 ? (
+        <Link key={i} href={utskriftHref(x.slice(0, -4))} className="underline">
+          {f(utskriftTittel(x.slice(0, -4)).replace(/ \(dag \d+\)$/, ""))}
+        </Link>
+      ) : (
+        f(x)
       ),
-    ) ?? []),
-    ...(plan?.runetavler ? [plan.runetavler] : []),
-    ...d.utskrifter.map((u) => `Skriv ut ${utskriftTittel(u)}`),
-    ...(d.reservesett
-      ? [
-          `Skriv ut reservesett: ${utskriftTittel(d.reservesett)} (i Nissemor-mappen; kortene brukes igjen senere)`,
-        ]
-      : []),
-    `Finn fram: ${d.materialer}`,
-    ...(d.iKveld ? [`I kveld: ${d.iKveld}`] : []),
-    ...hus,
-    "Sett rampestreken (se Rampestrek øverst)",
-    ...(symbol ? [`Gjem symbolkortet: ${symbol.description}`] : []),
-    "Les «Hvis noe er borte» under Hint i Gåtekartet",
-    ...(plan?.morgen1 ? [plan.morgen1] : []),
-  ];
+    );
 
   return (
     <>
@@ -160,37 +159,27 @@ export function Foreldredel({
       )}
 
       <Seksjon id="kveld" tittel={`I kveld: klar til dag ${n}`}>
-        {d.utskrifter.length > 0 && (
-          <div className="border-2 border-(--gold) p-3">
-            <h3 className="text-xl text-(--gold)">Skriv ut i kveld</h3>
-            <ul className="list-disc pl-6">
-              {d.utskrifter.map((u) => (
-                <li key={u}>
-                  <Link href={utskriftHref(u)} className={lenke}>
-                    {utskriftTittel(u)}
-                  </Link>
-                </li>
-              ))}
-              {d.reservesett && (
-                <li>
-                  <Link href={utskriftHref(d.reservesett)} className={lenke}>
-                    Skriv ut reservesett: {utskriftTittel(d.reservesett)}
-                  </Link>
-                </li>
-              )}
-            </ul>
-            <p>{f(d.utskrifterTekst)}</p>
-          </div>
-        )}
-        <h3 className="text-xl text-(--gold)">Sjekkliste</h3>
         <p>Avkrysningen deles med den andre forelderen.</p>
-        <Avkrysning punkter={punkter} krysset={krysset} veksle={veksle} />
-        <h3 className="text-xl text-(--gold)">Gåten ({d.oppsett})</h3>
-        <p>
-          <b>Gjør i kveld:</b> {f(d.iKveld)}
-        </p>
+        <Avkrysning
+          punkter={d.sjekkliste}
+          krysset={krysset}
+          veksle={veksle}
+          vis={medLenker}
+        />
+        {bygg.length > 0 && (
+          <>
+            <h3 className="text-xl text-(--gold)">
+              Byggeplan 28.–30. november
+            </h3>
+            <Avkrysning punkter={bygg} krysset={krysset} veksle={veksle} />
+          </>
+        )}
+        <h3 className="text-xl text-(--gold)">Trenger ({d.oppsett})</h3>
         <p>
           <b>Materialer:</b> {f(d.materialer)}
+        </p>
+        <p>
+          <b>Utskrifter:</b> {f(d.utskrifterTekst)}
         </p>
         {symbol && (
           <>
@@ -272,7 +261,14 @@ export function Rampestrek({
             <b>Materialer:</b> {d.strek.materialer}
           </p>
           <p>
-            <b>Bærer dagens brikke:</b> {d.strek.brikke}
+            {d.strek.brikke.startsWith("ja") ? (
+              <>
+                <b>Gåten ligger i rampestreken:</b>{" "}
+                {d.strek.brikke.match(/\((.+)\)/)?.[1]}
+              </>
+            ) : (
+              <b>Gåten ligger et annet sted: se Gåtekart</b>
+            )}
           </p>
         </div>
       </div>

@@ -141,8 +141,6 @@ export function kveldDag(n: number) {
     tittel: ren(blokk.split("\n")[0].replace(/^#+ Dag \d+ \(\S+\) – /, "")),
     mekanikk: felt("Mekanikk"),
     brikkeH: felt("Brikke H"),
-    /** H1… in the Gåtekart, plain text for the setup checklist. */
-    hus: setninger(felt("Brikke H")).map(ren),
     brikkeS: felt("Brikke S"),
     slikLoses: felt("Slik løses den")
       .split(/(?:^|\s)\d+\)\s+/)
@@ -155,6 +153,12 @@ export function kveldDag(n: number) {
       .filter(Boolean),
     hanna: felt("Hanna"),
     oppsett,
+    /** Tonight's checklist, the only lines the guide ticks off; `x.pdf` names a print. */
+    sjekkliste: [
+      ...(
+        blokk.match(/^- \*\*Sjekkliste:\*\*\n((?:  - .+\n)+)/m)?.[1] ?? ""
+      ).matchAll(/^  - (.+)$/gm),
+    ].map((m) => ren(m[1])),
     minutter: Number(oppsett.match(/\d+/)?.[0] ?? 0),
     materialer: felt("Materialer"),
     utskrifterTekst,
