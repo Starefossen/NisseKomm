@@ -5,7 +5,7 @@ import { authorizeMedia, mediaDir, mediaStatus } from "@/lib/media-server";
 
 interface Row {
   path: string;
-  status: "current" | "stale" | "unknown" | "missing";
+  status: "current" | "stale" | "unknown" | "missing" | "kandidat" | "arkiv";
   reasons: string[];
   meta?: unknown;
 }

@@ -31,7 +31,7 @@ function formatCreated(iso: string | undefined): string {
 /** One row of media-inventar.json (assets/bin/inventar.py). */
 interface Inventar {
   path: string;
-  status: "current" | "stale" | "unknown" | "missing";
+  status: "current" | "stale" | "unknown" | "missing" | "kandidat" | "arkiv";
   reasons: string[];
   meta?: {
     generator?: string;
@@ -50,6 +50,8 @@ const INVENTAR_LABEL: Record<Inventar["status"], [string, string]> = {
   stale: ["[!] Utdatert", "text-(--christmas-red)"],
   unknown: ["[?] Ukjent", "text-(--neon-green)/80"],
   missing: ["[✗ Mangler]", "text-(--christmas-red)"],
+  kandidat: ["[◇ Kandidat]", "text-(--cold-blue)"],
+  arkiv: ["[- Arkiv]", "text-(--gray)"],
 };
 
 function InlinePlayer({ path, missing }: { path: string; missing: boolean }) {

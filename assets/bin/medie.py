@@ -51,6 +51,8 @@ def entity(ent: str, root: Path = ROOT) -> dict:
 RAMPE_STYLE = re.search(r"^TTS: (.+)$", entity("characters/rampenissen")["seksjoner"]["Stemme"], re.M)[1]
 
 CURRENT, STALE, UNKNOWN, MISSING = "current", "stale", "unknown", "missing"
+# history, not something to regenerate: a replaced file (.old-N) and a candidate (-vN), see VERSION
+ARKIV, KANDIDAT = "arkiv", "kandidat"
 
 # Files made before sidecars whose source is known to be wrong. Only used while the file has no sidecar.
 OVERRIDES = {
@@ -156,16 +158,30 @@ def source_text(path: str, section, root: Path = ROOT):
     raise ValueError(f"ukjent seksjonert kilde: {path}")
 
 
-def prompt_version(generator: str, root: Path = ROOT) -> str:
-    """Hash of everything that shapes the prompt besides the source text."""
-    parts = {
-        "julius-dag.py": ["assets/bin/julius.sh", "assets/characters/julius/beskrivelse.txt"],
-        "tv-loops.sh": ["assets/bin/loop.sh", "assets/bin/anchor.sh"],
-    }.get(generator)
-    if parts is None:
+JULIUS_P = re.compile(r'^P="(.*?)(?<!\\)"$', re.S | re.M)  # the main prompt in julius.sh (not the Extend one)
+
+# prompt_version used to hash all of julius.sh above curl, so usage comments and request plumbing marked every
+# clip stale. Sidecars keep the old value: map it to the prompt-only hash of the same julius.sh version.
+LEGACY_PROMPT = {
+    "ff0515e6d7f6623dbdc0bc4a8f8e28c4588bed9362942c03c7f08bb3a73f08be": "d9bac58060f6d96a7782757a00d0c859dd40a97b9b7dfff0123497e8261451f2",  # b5dd51c
+    "5ad2b60f7d8da9ca504826453678a59226d16ad3894a5078c703cbb3b500a9c7": "d9bac58060f6d96a7782757a00d0c859dd40a97b9b7dfff0123497e8261451f2",  # c39ad2d
+    "4ccb7645b65a70b56c455313b8993aa329a890dd1377fcabb398c937ef9e6fdc": "d9bac58060f6d96a7782757a00d0c859dd40a97b9b7dfff0123497e8261451f2",  # 56a6abf
+    "1cdc4ac9cfc1ac1cdecd09fd47d41ecda2226e6bbfa54f2afe9b2384f68927de": "cff6292629a6901bab54b28d63965700c3ddb7f125d7aa0ebaa3cc93897dd1ae",  # 60d1445
+    "a9b0d8f47535499dfa28d2798ee34000add42f66d8fc199a8ee5fc18c468552c": "da1787e99358514f7fe57a72b6e45a23608369fb62ea79ccc19459fc0a2eab72",  # 0ef820e
+}
+
+
+def prompt_version(generator: str, root: Path = ROOT):
+    """Hash of the prompt text a generator adds besides the source text; None when it adds none.
+
+    Only prompt text counts, not request plumbing: the TV and image scripts send the source template as
+    the whole prompt (refs are checked on their own), so they have no prompt version."""
+    if generator == "julius-dag.py":
+        m = JULIUS_P.search((root / "assets/bin/julius.sh").read_text())
+        return sha((m[1] if m else "") + (root / "assets/characters/julius/beskrivelse.txt").read_text())
+    if generator == "rampenissen-tts.sh":
         return sha(RAMPE_STYLE)
-    # julius.sh: only the prompt part, above the API call; the post-filter lives in julius-filter.sh
-    return sha("".join(((root / p).read_text().split("\ncurl ")[0]) if (root / p).exists() else "" for p in parts))
+    return None
 
 
 def filter_version(root: Path = ROOT) -> str:
@@ -209,9 +225,16 @@ def write(generator, out, source, section, model, images=(), root: Path = ROOT, 
 
 
 def status(out: Path, key: str = "", root: Path = ROOT):
-    """(status, reasons) for one output file. key is its media path, for OVERRIDES."""
+    """(status, reasons) for one output file. key is its media path, for OVERRIDES and versions."""
     if not out.exists():
         return MISSING, []
+    v = VERSION.search(key or out.name)
+    if v:  # reasons still say how it differs from today's inputs
+        return (ARKIV if v[1].startswith(".old") else KANDIDAT), _status(out, "", root)[1]
+    return _status(out, key, root)
+
+
+def _status(out: Path, key: str, root: Path):
     side = Path(str(out) + ".meta.json")
     if not side.exists():
         return (STALE, [OVERRIDES[key]]) if key in OVERRIDES else (UNKNOWN, [])
@@ -221,17 +244,22 @@ def status(out: Path, key: str = "", root: Path = ROOT):
     s = m["source"]
     if "sha256" not in s:  # a backfilled sidecar records the source but not its hash
         return UNKNOWN, ["sidefil uten hash (bakfylt)"]
-    why = []
+    why, gone = [], []
     text = source_text(s["path"], s["section"], root)
     if text is None:
         why.append(f"kilden finnes ikke lenger: {s['path']} {s['section'] or ''}".strip())
     elif sha(text) != s["sha256"]:
         why.append(f"kildeteksten er endret: {s['path']} {s['section'] or ''}".strip())
-    why += [f"referansebildet er endret: {i['path']}" for i in m["reference_images"]
-            if file_sha(i["path"], root) != i["sha256"]]
-    if prompt_version(m["generator"], root) != m["prompt_version"]:
+    for i in m["reference_images"]:
+        now = file_sha(i["path"], root)
+        if now is None:  # refs are gitignored: a fresh worktree has none, which is not a change
+            gone.append(f"referansebildet finnes ikke her: {i['path']}")
+        elif now != i["sha256"]:
+            why.append(f"referansebildet er endret: {i['path']}")
+    pv = prompt_version(m["generator"], root)
+    if pv is not None and pv != LEGACY_PROMPT.get(m.get("prompt_version"), m.get("prompt_version")):
         why.append("promptversjonen er endret")
-    return (STALE if why else CURRENT), why
+    return (STALE if why else UNKNOWN if gone else CURRENT), why + gone
 
 
 MEDIA_DIRS = ("video", "audio", "music", "feed", "strek", "spill", "promo", "icons")
@@ -563,6 +591,34 @@ def selftest():
         write("still.sh", r / "public/strek/dag02.png", "assets/prompts/strek/skisse.txt", None, "m", root=r)
         assert json.loads((r / "public/strek/dag02.png.meta.json").read_text())["source"]["section"] == "Dag 2"
         assert status(r / "public/strek/dag02.png", root=r)[0] == CURRENT
+        # false alarms: a changed TTS style or a missing (gitignored) ref does not make an image stale
+        sp = r / "public/strek/dag02.png.meta.json"
+        m = json.loads(sp.read_text())
+        sp.write_text(json.dumps(m | {"prompt_version": "gammel", "reference_images": [{"path": "assets/borte.jpg", "sha256": "a"}]}))
+        assert status(r / "public/strek/dag02.png", root=r)[0] == UNKNOWN  # ref not here: can't tell
+        (r / "assets/borte.jpg").write_text("ny")
+        assert status(r / "public/strek/dag02.png", root=r)[0] == STALE  # ref really changed
+        # versions are history: a candidate and a replaced file are never stale, whatever changed
+        for v, want in (("dag02-v3.png", KANDIDAT), ("dag02.old-1.png", ARKIV)):
+            (r / "public/strek" / v).write_text("x")
+            (r / "public/strek" / (v + ".meta.json")).write_text(sp.read_text())
+            st, why = status(r / "public/strek" / v, f"strek/{v}", r)
+            assert st == want and why, (st, why)
+        (r / "assets/borte.jpg").unlink()
+        (r / RAMPE_MS).write_text("## Dag 2 (x)\n**Strek:** Noe annet.\n## Dag 3 (y)\n")
+        assert status(r / "public/strek/dag02.png", root=r)[0] == STALE  # the filled {{strek}} changed
+        # Julius: only the prompt text in julius.sh counts; an old full-script hash maps through LEGACY_PROMPT
+        (r / "assets/bin").mkdir(parents=True, exist_ok=True)
+        js = r / "assets/bin/julius.sh"
+        (r / "assets/characters/julius").mkdir(parents=True)
+        (r / "assets/characters/julius/beskrivelse.txt").write_text("B")
+        js.write_text('# Usage: a\nP="Si \\"$LINE\\" nå."\njq x\ncurl y\n')
+        pv = prompt_version("julius-dag.py", r)
+        js.write_text('# Usage: b [REF]\nP="Si \\"$LINE\\" nå."\nif true; then jq z; fi\ncurl y\n')
+        assert prompt_version("julius-dag.py", r) == pv  # comment and plumbing changed
+        js.write_text('P="Si \\"$LINE\\" i morgen."\ncurl y\n')
+        assert prompt_version("julius-dag.py", r) != pv
+        assert prompt_version("still.sh", r) is None and prompt_version("tv-loops.sh", r) is None
     missing, skipped = missing_inputs()  # the real medier.json
     assert not missing, missing
     print(f"selvtest ok (inndata: {len(skipped)} bilder utenfor git hoppet over)")
