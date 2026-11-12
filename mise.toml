@@ -10,7 +10,7 @@ set -euo pipefail
 DAY="${MOCK_DAY:-10}"
 cat <<EOF
 ================================================================================
-🎄 NISSEKOMM 2026: OPERASJON SPØKELSESKODE (DEV SERVER - LOCALSTORAGE)
+🎄 NISSEKOMM 2026: OPERASJON SPØKELSESKODE (DEV SERVER)
 ================================================================================
 🌐 URL-er:
    • Hovedterminal (Barna)   : http://localhost:3000
@@ -28,16 +28,17 @@ cat <<EOF
    • Hele sesongen automatisk: mise run test:gjennomspilling
 ================================================================================
 EOF
+if DB=$(mise run dev:pg 2>/dev/null | tail -1); then export "$DB"
+else echo "Postgres utilgjengelig (Colima kjører ikke) – bruker filbutikk"; export DEV_STORE_FILE="${DEV_STORE_FILE:-.data/dev-store.json}"; fi
 KID_CODE="${KID_CODE:-snø lykt rein}" \
 PARENT_CODE="${PARENT_CODE:-NORDPOL-DEV2026}" \
 NISSEKOMM_MODE="${NISSEKOMM_MODE:-lan}" \
-DEV_STORE_FILE="${DEV_STORE_FILE:-.data/dev-store.json}" \
 MCP_DEV_TOKEN="${MCP_DEV_TOKEN:-parent:parenttoken1}" \
 NEXT_PUBLIC_TEST_MODE=true \
 NEXT_PUBLIC_BOOT_ANIMATION_DURATION=0 \
 NEXT_PUBLIC_MOCK_MONTH=12 \
 NEXT_PUBLIC_MOCK_DAY="${DAY}" \
-pnpm dev
+pnpm dev ${PORT:+-p $PORT}
 """
 
 
@@ -138,14 +139,29 @@ echo "$TAG"
 """
 
 [tasks."dev:pg"]
-description = "Start en midlertidig Postgres i Docker (Colima) og skriv ut DATABASE_URL"
+description = "Start (eller gjenbruk) lokal Postgres nissekomm-pg på 127.0.0.1:54329, data i volumet nissekomm-pg-data"
 run = """
 #!/usr/bin/env bash
 set -euo pipefail
-ID=$(docker run -d --rm -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=nissekomm -p 127.0.0.1::5432 postgres:17-alpine)
-PORT=$(docker port "$ID" 5432/tcp | head -1 | sed 's/.*://')
-echo "DATABASE_URL=postgres://postgres:dev@127.0.0.1:${PORT}/nissekomm"
-echo "Stopp med: docker stop ${ID:0:12}"
+# Fails (exit 1) without touching Colima when Docker does not answer in 2 s.
+docker ps >/dev/null 2>&1 & P=$!; for _ in 1 2 3 4 5 6 7 8 9 10; do kill -0 $P 2>/dev/null || break; sleep 0.2; done
+if kill -0 $P 2>/dev/null || ! wait $P; then kill $P 2>/dev/null || true; echo "Docker svarer ikke (Colima kjører ikke?)" >&2; exit 1; fi
+if [ -n "$(docker ps -q -f name=^nissekomm-pg$)" ]; then :
+elif [ -n "$(docker ps -aq -f name=^nissekomm-pg$)" ]; then docker start nissekomm-pg >/dev/null
+else docker run -d --name nissekomm-pg --restart unless-stopped -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=nissekomm \\
+  -v nissekomm-pg-data:/var/lib/postgresql/data -p 127.0.0.1:54329:5432 postgres:17-alpine >/dev/null
+fi
+for _ in $(seq 30); do docker exec nissekomm-pg pg_isready -U postgres -q && break; sleep 0.5; done
+echo "DATABASE_URL=postgres://postgres:dev@127.0.0.1:54329/nissekomm"
+"""
+
+[tasks."dev:db-import"]
+description = "Flytt .data/dev-store.json (økter og fremgang) inn i lokal Postgres (trygt å kjøre flere ganger)"
+run = """
+#!/usr/bin/env bash
+set -euo pipefail
+export $(mise run dev:pg | tail -1)
+pnpm exec jiti scripts/dev-db-import.mjs
 """
 
 [tasks.vurderinger]

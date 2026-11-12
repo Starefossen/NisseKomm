@@ -1,7 +1,8 @@
 /**
  * Server-side store: game state (kv), sessions and login failures.
- * Postgres when DATABASE_URL is set, else a JSON file with DEV_STORE_FILE
- * (mise run dev), otherwise in memory (tests).
+ * Postgres when DATABASE_URL is set (mise run dev: local nissekomm-pg), else a
+ * JSON file with DEV_STORE_FILE (dev fallback without Docker),
+ * otherwise in memory (tests).
  */
 import fs from "node:fs";
 import path from "node:path";

@@ -115,6 +115,9 @@ if (!base) {
         KID_CODE,
         PARENT_CODE,
         NISSEKOMM_MODE: "lan",
+        // Own in-memory store, never mise dev's Postgres or file store.
+        DATABASE_URL: "",
+        DEV_STORE_FILE: "",
       },
       stdio: ["pipe", "pipe", "pipe"],
       detached: true,

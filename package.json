@@ -48,6 +48,7 @@
     "eslint-config-next": "^16.4.6",
     "jest": "^30.5.2",
     "jest-environment-jsdom": "^30.5.2",
+    "jiti": "2.7.0",
     "knip": "^6.44.2",
     "next-test-api-route-handler": "^5.0.7",
     "pg-mem": "^3.0.14",
