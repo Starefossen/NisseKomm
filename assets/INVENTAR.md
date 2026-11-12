@@ -6,14 +6,14 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Type | ✓ | ⚠ | ? | ✗ | ○ | ◇ | - |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| julius | 2 | 10 | 0 | 12 | 0 | 22 | 3 |
+| julius | 4 | 8 | 0 | 12 | 0 | 19 | 6 |
 | rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 4 |
 | music | 13 | 0 | 0 | 1 | 0 | 0 | 0 |
 | tv | 19 | 5 | 0 | 0 | 15 | 0 | 17 |
 | port | 2 | 1 | 0 | 1 | 0 | 0 | 9 |
 | feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
 | spill | 56 | 3 | 0 | 4 | 0 | 0 | 23 |
-| strek | 9 | 14 | 0 | 1 | 0 | 11 | 1 |
+| strek | 10 | 14 | 0 | 0 | 0 | 2 | 9 |
 
 ## julius
 
@@ -29,8 +29,8 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-08.mp4 | 10.6 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (43 % ordlikhet) |
 | video/julius/dag-09.mp4 | 10.4 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (46 % ordlikhet) |
 | video/julius/dag-10.mp4 | 10.6 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (51 % ordlikhet) |
-| video/julius/dag-11.mp4 | 10.1 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (53 % ordlikhet) |
-| video/julius/dag-12.mp4 | 10.5 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (41 % ordlikhet) |
+| video/julius/dag-11.mp4 | 10.0 MB | 2026-11-12 | ✓ |
+| video/julius/dag-12.mp4 | 8.5 MB | 2026-11-12 | ✓ |
 | video/julius/dag-13.mp4 |  |  | ✗ |
 | video/julius/dag-14.mp4 |  |  | ✗ |
 | video/julius/dag-15.mp4 |  |  | ✗ |
@@ -65,9 +65,9 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-08-v2.mp4 | 9.7 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-09-v2.mp4 | 9.6 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-10-v2.mp4 | 9.6 MB | 2026-11-12 | ◇ ikke i manifestet |
-| video/julius/dag-11-v2.mp4 | 10.0 MB | 2026-11-12 | ◇ ikke i manifestet |
-| video/julius/dag-12-v2.mp4 | 8.4 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 12; ikke i manifestet |
-| video/julius/dag-12-v3.mp4 | 8.5 MB | 2026-11-12 | ◇ ikke i manifestet |
+| video/julius/dag-11.old-1.mp4 | 10.1 MB | 2026-11-10 | - laget før manusrevisjonen (53 % ordlikhet); ikke i manifestet |
+| video/julius/dag-12.old-1.mp4 | 10.5 MB | 2026-11-10 | - laget før manusrevisjonen (41 % ordlikhet); ikke i manifestet |
+| video/julius/dag-12.old-2.mp4 | 8.4 MB | 2026-11-12 | - kildeteksten er endret: docs/manus/julius-2026.md Dag 12; ikke i manifestet |
 
 ## rampenissen
 
@@ -311,7 +311,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| strek/dag01.png | 1.2 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/strek/skisse.txt Dag 1 |
+| strek/dag01.png | 1.2 MB | 2026-11-12 | ✓ |
 | strek/dag02.png | 1.1 MB | 2026-11-12 | ✓ |
 | strek/dag03.png | 1.1 MB | 2026-11-12 | ✓ |
 | strek/dag04.png | 1.3 MB | 2026-11-12 | ✓ |
@@ -326,7 +326,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | strek/dag13.png | 1.2 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/strek/skisse-dag13.txt Dag 13 |
 | strek/dag14.png | 1.3 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/strek/skisse-dag14.txt Dag 14 |
 | strek/dag15.png | 1.1 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/strek/skisse-dag15.txt Dag 15 |
-| strek/dag16.png |  |  | ✗ |
+| strek/dag16.png | 1.3 MB | 2026-11-12 | ⚠ kildeteksten er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/assets/out/prompts/strek/dag16.txt |
 | strek/dag17.png | 1.5 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/strek/skisse-dag17.txt Dag 17 |
 | strek/dag18.png | 1.3 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/strek/skisse-dag18.txt Dag 18 |
 | strek/dag19.png | 1.1 MB | 2026-11-12 | ✓ |
@@ -335,17 +335,16 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | strek/dag22.png | 1.2 MB | 2026-11-12 | ✓ |
 | strek/dag23.png | 1.2 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/strek/skisse-dag23.txt Dag 23 |
 | strek/dag24.png | 1.2 MB | 2026-11-12 | ✓ |
-| strek/dag01-v1.png | 1.2 MB | 2026-11-12 | ◇ kildeteksten er endret: assets/prompts/strek/skisse-dag01.txt Dag 1; ikke i manifestet |
-| strek/dag01-v2.png | 1.2 MB | 2026-11-12 | ◇ kildeteksten er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/assets/out/prompts/strek/dag01.txt; ikke i manifestet |
-| strek/dag01-v3.png | 1.2 MB | 2026-11-12 | ◇ kildeteksten er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/assets/out/prompts/strek/dag01.txt; ikke i manifestet |
-| strek/dag01-v4.png | 1.2 MB | 2026-11-12 | ◇ ikke i manifestet |
 | strek/dag01.old-1.png | 1.3 MB | 2026-11-12 | - ikke i manifestet |
+| strek/dag01.old-2.png | 1.2 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/strek/skisse.txt Dag 1; ikke i manifestet |
+| strek/dag01.old-3.png | 1.2 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/strek/skisse-dag01.txt Dag 1; ikke i manifestet |
+| strek/dag01.old-4.png | 1.2 MB | 2026-11-12 | - kildeteksten er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/assets/out/prompts/strek/dag01.txt; ikke i manifestet |
+| strek/dag01.old-5.png | 1.2 MB | 2026-11-12 | - kildeteksten er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/assets/out/prompts/strek/dag01.txt; ikke i manifestet |
 | strek/dag10-v1.png | 1.4 MB | 2026-11-12 | ◇ ikke i manifestet |
-| strek/dag16-v1.png | 1.3 MB | 2026-11-12 | ◇ ikke i manifestet |
-| strek/dag16-v2.png | 1.2 MB | 2026-11-12 | ◇ kildeteksten er endret: assets/prompts/strek/skisse-dag16.txt Dag 16; ikke i manifestet |
-| strek/dag16-v3.png | 1.2 MB | 2026-11-12 | ◇ kildeteksten er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/assets/out/prompts/strek/dag16.txt; ikke i manifestet |
-| strek/dag16-v4.png | 1.3 MB | 2026-11-12 | ◇ kildeteksten er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/assets/out/prompts/strek/dag16.txt; ikke i manifestet |
-| strek/dag16-v5.png | 1.3 MB | 2026-11-12 | ◇ ikke i manifestet |
+| strek/dag16.old-1.png | 1.3 MB | 2026-11-12 | - ikke i manifestet |
+| strek/dag16.old-2.png | 1.2 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/strek/skisse-dag16.txt Dag 16; ikke i manifestet |
+| strek/dag16.old-3.png | 1.2 MB | 2026-11-12 | - kildeteksten er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/assets/out/prompts/strek/dag16.txt; ikke i manifestet |
+| strek/dag16.old-4.png | 1.3 MB | 2026-11-12 | - ikke i manifestet |
 | strek/dag22-v1.png | 1.3 MB | 2026-11-12 | ◇ ikke i manifestet |
 
 ## Gamle filer
