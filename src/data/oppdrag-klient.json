@@ -80,7 +80,7 @@
     },
     {
       "dag": 5,
-      "tittel": "Brevfuglen over Byfjellene",
+      "tittel": "Brevfuglen fra Winter",
       "skjerm_teaser": "Lørdag i advent. God tid til å tenke i dag.",
       "nissemail_tekst": "Det har vært krig i stua. Jeg og kosedyrene, marshmallows, hvert vårt fort. Og: i natt landet årets første brevfugl i Bergen. Winter har skrevet noe rart på vingen, for han er sikker på at noen leser alt som flyr over linjen. Fant dere fuglen, og hopperen ved den? Hanna, hvis du vil: du legger hopperen inntil. Kristian: Winter har en regel for det han skrev. Julius sier den, men ikke med tall. Dere har hørt tallet før. – Rampenissen",
       "julius_ps": "Marshmallows i sofaen, marshmallows i gardinene, én bamse med plaster. Rampenissen kaller det «forsvar av linjen». Winter er lettet over at fuglen kom fram; han sender alt kryptert fra nå.",
@@ -346,9 +346,9 @@
     },
     {
       "dag": 17,
-      "tittel": "Grønt over Polarhimmelen",
+      "tittel": "Grotten svarer",
       "skjerm_teaser": "Torsdag. Rampenissen sitter stille, for en gangs skyld.",
-      "nissemail_tekst": "Det var grønt over Ulriken i natt. IQ sier det var et svar. Lyktene han hang rundt antennen har brent siden 2. advent, og i natt svarte grotten. Takk for at dere fikk meg løs fra kosedyrene. Send pepperkaker likevel. Håkon, du leste båndet fra sløyfen og utover. Det står tegn på det, ikke bokstaver. Kristian: tavla, og Julius forteller hva de gamle kalte det grønne. Klikk på himmelen på kanal 1 etterpå. – Rampenissen",
+      "nissemail_tekst": "Grotten svarte i natt. Lyktene IQ hang rundt antennen har brent siden 2. advent, og i natt kom svaret. Takk for at dere fikk meg løs fra kosedyrene. Send pepperkaker likevel. Håkon, du leste båndet fra sløyfen og utover. Det står tegn på det, ikke bokstaver. Kristian: tavla, og Julius forteller hva de gamle kalte svaret. Klikk på himmelen på kanal 1 etterpå. – Rampenissen",
       "julius_ps": "Grotten svarte. Jeg har ikke hørt fra den på et år. Kosedyrene krevde pepperkaker for Rampenissen; Hjerterud sier dere bør betale, hun har sett løsepengebrevet. Jeg står i vinduet i natt også.",
       "julius_ps_bonus": "Grotten svarte. Orakelet mener den svarte på to lykter: én ved tjernet og én lenger sør, i et vindu. Kosedyrene krevde pepperkaker for Rampenissen; Hjerterud sier dere bør betale. Jeg står i vinduet i natt også.",
       "eventyr": {
@@ -465,8 +465,8 @@
       "dag": 22,
       "tittel": "Winters Tall",
       "skjerm_teaser": "Tirsdag. Tre dager igjen. Julius følger med.",
-      "nissemail_tekst": "Julius vil vite nøyaktig hvor dere bor. Winter vil ha stedet i tall, og han skriver tall på sin egen måte. Sokk 3 er min; sokk 1 og 2 ligger et annet sted i huset. Takk for at dere dro meg ut! Hanna, hvis du vil: det røde kortet er ditt. Kristian: strimmelen fra brevfuglen, og Winter har to regler. Julius sier begge. Etterpå vil Julius ha navnene deres. – Rampenissen",
-      "julius_ps": "Tre navn. Jeg skrev dem selv. Ingenting har kommet gjennom porten ennå, men Orakelet sier det er varmere der nede. Rampenissen satt fast i en julesokk i to timer før noen dro.",
+      "nissemail_tekst": "Winter har skrevet noe viktig til Julius, og han skrev det i tall. Han skriver tall på sin egen måte. Sokk 3 er min; sokk 1 og 2 ligger et annet sted i huset. Takk for at dere dro meg ut! Hanna, hvis du vil: det røde kortet er ditt. Kristian: strimmelen fra brevfuglen, og Winter har to regler. Julius sier begge. Etterpå vil Julius ha navnene deres. – Rampenissen",
+      "julius_ps": "Nå vet vi nøyaktig hvor dere bor. Tre navn. Jeg skrev dem selv. Ingenting har kommet gjennom porten ennå, men Orakelet sier det er varmere der nede. Rampenissen satt fast i en julesokk i to timer før noen dro.",
       "eventyr": {
         "id": "spokelseskoden",
         "phase": 22

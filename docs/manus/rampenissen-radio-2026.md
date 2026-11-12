@@ -1,6 +1,6 @@
 # Rampenissen på Morgenrådet 2026 – radioklipp
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Strek-linjene dag 13 og 20 endret 13.11 etter ja fra Hans. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «død. Nesten.», 15 skåla, 23 tempus) etter ja fra Hans. Klargjort for TTS 11. november etter ja fra Hans: lengde og bekreftelser (dag 6, 14, 15, 24), tallet i dag 8, Hanna i dag 21, apokope (7, 16, 17, 18, 22), dag 23 tempus. Dag 24 skrevet om 11. november etter ja fra Hans: sendt fra Snøfall etter hjemkomsten, hilsener fra de andre, rapporten levert (se `docs/beslutninger.md`). Utvidet 12. november etter ja fra Hans: dag 1 er sesongåpning (60–75 s), dag 24 litt lengre (50–65 s), Birk og Lyng får introduksjon og reaksjon dag 1 og 24 og én reaksjonslinje (`reaksjon_hint`) på utvalgte dager, og førsesongen 24.–30. november står nederst. Lyd for dag 1 og 24 må lages på nytt; Hans leser teksten først. `rampestrek_hint` og `utfordring_hint` for alle 24 dager lagt til 13.11 etter ja fra Hans. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Strek-linjene dag 13 og 20 endret 13.11 etter ja fra Hans. Klipp dag 17 og 22 og `reaksjon_hint` dag 17 endret 13.11 etter ja fra Hans (klippene røpet svaret); lyden for dag 17 og 22 må lages på nytt. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «død. Nesten.», 15 skåla, 23 tempus) etter ja fra Hans. Klargjort for TTS 11. november etter ja fra Hans: lengde og bekreftelser (dag 6, 14, 15, 24), tallet i dag 8, Hanna i dag 21, apokope (7, 16, 17, 18, 22), dag 23 tempus. Dag 24 skrevet om 11. november etter ja fra Hans: sendt fra Snøfall etter hjemkomsten, hilsener fra de andre, rapporten levert (se `docs/beslutninger.md`). Utvidet 12. november etter ja fra Hans: dag 1 er sesongåpning (60–75 s), dag 24 litt lengre (50–65 s), Birk og Lyng får introduksjon og reaksjon dag 1 og 24 og én reaksjonslinje (`reaksjon_hint`) på utvalgte dager, og førsesongen 24.–30. november står nederst. Lyd for dag 1 og 24 må lages på nytt; Hans leser teksten først. `rampestrek_hint` og `utfordring_hint` for alle 24 dager lagt til 13.11 etter ja fra Hans. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`.
 
 Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storyboard-2026.md` (§2 kunnskapstidslinje, §3 radiolinjer), `docs/gaater-2026.md`. Format: `varden-morgenradet.md`.
 
@@ -84,7 +84,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **utfordring_hint:** «Dagens utfordring er en letejakt i gangen: Rampenissen har gjemt noe der, og Julius har en ledetråd i videoen. Det trengs både øyne og tålmodighet.»
 
-## Dag 5 (lø) – Brevfuglen over Byfjellene
+## Dag 5 (lø) – Brevfuglen fra Winter
 
 **Strek:** marshmallow-krig mellom Rampenissen og kosedyrene, én bamse med plaster.
 
@@ -258,15 +258,15 @@ _Skjerm er grå fra 05:30._
 
 **utfordring_hint:** «Dagens utfordring er å rydde opp etter ham og legge tingene tilbake der de hører hjemme. Underveis dukker det opp lapper, og Julius har en ledetråd i videoen.»
 
-## Dag 17 (to) – Grønt over Polarhimmelen
+## Dag 17 (to) – Grotten svarer
 
 **Strek:** kidnappet av kosedyrene, bundet til en stol med grønt gavebånd, løsepengebrev «GI OSS ALLE PEPPERKAKENE. ELLERS.»
 
-**Klipp:** «Dette e Rampenissen, og æ e kidnappa. Av kosedyra. Dem har bunde mæ til en stol med gavebånd og skreve et kravbrev med utklipte bokstava. Dem vil ha alle pepperkakan. Ellers. Det står bare «ellers». Æ veit ikkje ka som skjer ellers. Men hør, det viktigaste: det va grønt over Ulriken i natt. Æ såg det fra stolen. Ikkje en bil. Ikkje ei lampe. Grønt over heile fjellet, ka du sei! IQ sei det va et svar. Et svar fra grotta, på lyktan ved antenna. Første gang nåkka svare. Æ fikk gåsehud under båndet. Send pepperkaka. Og nån som kan dra i ei sløyfe. Over.»
+**Klipp:** «Dette e Rampenissen, og æ e kidnappa. Av kosedyra. Dem har bunde mæ til en stol med gavebånd og skreve et kravbrev med utklipte bokstava. Dem vil ha alle pepperkakan. Ellers. Det står bare «ellers». Æ veit ikkje ka som skjer ellers. Men hør, det viktigaste: det kom et svar i natt. Æ såg det fra stolen. Ikkje en bil. Ikkje ei lampe. Nåkka heilt anna, ka du sei! IQ sei det kom fra grotta. Et svar fra grotta, på lyktan ved antenna. Første gang nåkka svare. Æ fikk gåsehud under båndet. Send pepperkaka. Og nån som kan dra i ei sløyfe. Over.»
 
 **intro_hint:** «Vi har mottatt et løsepengekrav. Og offeret ringer selv.»
 
-**reaksjon_hint:** «Birk: Grønt over Ulriken i natt. Eg så det fra vinduet på Varden, og eg sa det til ingen, for eg trodde ingen ville tro meg.»
+**reaksjon_hint:** «Birk: Noe svarte i natt. Eg sto i vinduet på Varden og merket det, og eg sa det til ingen, for eg trodde ingen ville tro meg.»
 
 **rampestrek_hint:** «Kosedyrene har kidnappet Rampenissen og bundet ham til en stol med grønt gavebånd. Løsepengebrevet krever alle pepperkakene.»
 
@@ -336,7 +336,7 @@ _Skjerm er grå fra 05:30._
 
 **Merk:** Han sier ikke stedsnavnet deres i dag.
 
-**Klipp:** «Rampenissen her, og det e varmt igjen! Muren holdt i går. Porten står åpen. Alle såg det, heile Snøfall, og Orakelet sei det e varmare der nede no. Æ sov godt for første gang på lenge. Men så ringt Julius klokka fem. Han vil vit nøyaktig kor dokker bor. Til julenatt. Æ sa «ved sofaen». Det holdt ikkje. Æ sa «i Bergen». Det holdt heller ikkje. Winter vil ha det i tall, han stole ikkje på ord, og æ kan ikkje tall. Så æ blei stressa og gjømt mæ i en sokk. Det va en feil. Den e liten. Føttan mine e ute. Resten e inne. Hjelp. Over.»
+**Klipp:** «Rampenissen her, og det e varmt igjen! Muren holdt i går. Porten står åpen. Alle såg det, heile Snøfall, og Orakelet sei det e varmare der nede no. Æ sov godt for første gang på lenge. Men så ringt Julius klokka fem. Winter har sendt han nåkka viktig. Til julenatt. Æ sa «les det høgt». Det gikk ikkje. Æ sa «les det sakte». Det gikk heller ikkje. Winter skriv alt i tall, han stole ikkje på ord, og æ kan ikkje tall. Så æ blei stressa og gjømt mæ i en sokk. Det va en feil. Den e liten. Føttan mine e ute. Resten e inne. Hjelp. Over.»
 
 **intro_hint:** «Gjesten vår sitter fast i noe lite og ber om hjelp.»
 
@@ -400,16 +400,16 @@ Ord = talte ord i klippet. Sek = ord × 0,44 (målt tempo på dag 1–5). «Kode
 | 14  | ORIGAMI      | 111 | 46  | 06      | ok              |                                                                                                                                |
 | 15  | KARAMELL     | 110 | 46  | 06      | ok              | Verken sukker eller sirup nevnes                                                                                               |
 | 16  | SORTERING    | 110 | 46  | 06      | ok              | «ryddet», aldri «sortere»                                                                                                      |
-| 17  | NORDLYS      | 105 | 44  | 06      | ok              | «grønt over Ulriken», aldri «nord» + «lys»                                                                                     |
+| 17  | NORDLYS      | 103 | 43  | 06      | ok              | «et svar i natt»; aldri «grønt», «himmel», «nord» + «lys»                                                                      |
 | 18  | TURBULENS    | 106 | 44  | 06      | ok              | «hoppet», ikke «ristet»                                                                                                        |
 | 19  | GULROT       | 109 | 45  | 09      | ok              | «førti av dem», aldri hva                                                                                                      |
 | 20  | TURBO        | 108 | 45  | 09      | ok              | Slang 2 av 2; varme inne, ingen ute                                                                                            |
 | 21  | BRANNMUR     | 113 | 47  | 06      | ok, med merknad | «bokmuren»/«muren» er låst framing; første ledd sies ikke                                                                      |
-| 22  | LANDÅS       | 108 | 45  | 06      | ok              | Stedsnavnet unngås hele klippet; «landingen» byttet til «julenatt»                                                             |
+| 22  | LANDÅS       | 108 | 45  | 06      | ok              | Verken stedsnavn eller «hvor dere bor» (13.11); «landingen» byttet til «julenatt»                                              |
 | 23  | STJERNEKLART | 111 | 46  | 06      | ok              |                                                                                                                                |
 | 24  | JULEMAGI     | 144 | 60  | 06      | ok              | «God jul» er høytidsnavnet Julius selv ber dem sette foran; sendt fra Snøfall, ingen strek; 50–65 s, Birk og Lyng før og etter |
 
-Sum: 2 664 ord, snitt 111 per dag (cirka 46 s).
+Sum: 2 662 ord, snitt 111 per dag (cirka 46 s).
 
 ---
 

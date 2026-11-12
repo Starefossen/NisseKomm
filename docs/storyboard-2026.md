@@ -1,6 +1,6 @@
 # NisseKomm 2026 – Storyboard «Spøkelseskoden»
 
-Utkast 10. november 2026. Kilde: `docs/historie-2026.md` (låst historie), dagens JSON i `src/data/`, komponentene i `src/components/` og `src/lib/game-engine.ts`. Repoet er ikke endret. Justert mot gåter og manus 10. november, etter ja fra Hans. Kontinuitet rettet 11. november etter ja fra Hans.
+Utkast 10. november 2026. Kilde: `docs/historie-2026.md` (låst historie), dagens JSON i `src/data/`, komponentene i `src/components/` og `src/lib/game-engine.ts`. Repoet er ikke endret. Justert mot gåter og manus 10. november, etter ja fra Hans. Kontinuitet rettet 11. november etter ja fra Hans. Titler dag 5 og 17 og radiositatene dag 17 og 22 endret 13.11 etter ja fra Hans.
 
 Beslutninger som er nyere enn deler av historiedokumentet, og som dette storyboardet følger:
 
@@ -161,7 +161,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Kontinuitet.** Kuldes tåke = første gang Kulde gjør noe ute. Sleden og Rudolf forberedes (dag 18, 23).
 
-### Dag 5 (lø) – Brevfuglen over Byfjellene · ULRIKEN · jakt
+### Dag 5 (lø) – Brevfuglen fra Winter · ULRIKEN · jakt
 
 **Morgen.** Strek (helg, større): marshmallow-krig mellom Rampenissen og kosedyrene fra hvert sitt putefort, én bamse med plaster. Radio: «Det har vært krig i stua. Vi vant. Og: en brevfugl landet i natt, første på Bergen i år. Den hadde skrevet noe rart på vingen. Winter er paranoid.» _Ikke_ «på lampen».
 
@@ -329,9 +329,9 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Kontinuitet.** Lykten i vinduet er ett av lysene Kulde «ser» dag 21; Kuldes linje er skrevet slik at den er sann også uten bonus («lyset deres» = huset). Fristen fredag 18 nevnes i mail og PS, håndheves ikke i koden (avgjort). Videoene dag 17–19 nevner aldri lykten direkte (se regelen om betinget innhold).
 
-### Dag 17 (to) – Grønt over Polarhimmelen · NORDLYS
+### Dag 17 (to) – Grotten svarer · NORDLYS
 
-**Morgen.** Strek: kidnappet av kosedyrene, bundet til stol med grønt gavebånd, løsepengebrev «GI OSS ALLE PEPPERKAKENE. ELLERS.» Radio: «Det var grønt over Ulriken i natt. Ikke en bil. IQ sier det var et svar. Jeg er for øvrig kidnappet. Send pepperkaker.»
+**Morgen.** Strek: kidnappet av kosedyrene, bundet til stol med grønt gavebånd, løsepengebrev «GI OSS ALLE PEPPERKAKENE. ELLERS.» Radio: «Det kom et svar i natt. Ikke en bil. IQ sier det kom fra grotten. Jeg er for øvrig kidnappet. Send pepperkaker.»
 
 **Innlogging.** Tema: nordlys slik nissene forteller det (radioen tar fysikken): himmelen som sender brev tilbake. I natt: lyktene IQ hengte rundt antennen (dag 6) brant hele natten, og grotten svarte med grønt lys over Nordtoppen. Første signal tilbake. Julius: «Orakelet sier det kom et svar på lys. Hvilket lys, vet vi ikke. Jeg ser mot nord i natt også.» Sant uansett om bonusen er gjort; lykten på Landås nevnes bare i PS (betinget). Brikke S: «De sa at himmelen snakket når det kom. Nissene sier det er himmelen som sender brev. Det har et navn med retning i seg.» Kulde 1.
 
@@ -401,7 +401,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 ### Dag 22 (ti) – Winters Tall · LANDÅS + rød måne · Snill-listen åpner · jakt
 
-**Morgen.** Strek: krøpet inn i Hannas julesokk med bare føttene ut. Radio: «Julius vil vite nøyaktig hvor dere bor. Jeg sa 'ved sofaen'. Det holdt ikke. Jeg sa 'i Bergen'. Det holdt heller ikke. Jeg gjemte meg i en sokk. Det var en feil. Muren holdt i går, forresten. Alle så det.»
+**Morgen.** Strek: krøpet inn i Hannas julesokk med bare føttene ut. Radio: «Winter har sendt Julius noe viktig. Jeg sa 'les det høyt'. Det gikk ikke. Jeg sa 'les det sakte'. Det gikk heller ikke. Jeg gjemte meg i en sokk. Det var en feil. Muren holdt i går, forresten. Alle så det.»
 
 **Innlogging.** Tema: Snill-listen, hva «snill» betyr for Julius (ikke lydig, men å se noen), om å bli sett. I natt: ingenting kom gjennom porten ennå, men det er varmere der nede. Winter trenger landingsstedet i tall. Brikke S: «Winter skriver tall i stedet for bokstaver når noe er viktig. A er alltid først. Resten følger.» Kulde 0.
 

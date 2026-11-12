@@ -69,7 +69,7 @@
     "skjerm_teaser": "Årets mørkeste dag. Hold sammen i dag.",
     "nissemail_tekst": "Alt er hvitt. Skjermen hjemme, Snøfall TV, alt. Men bokmuren står, og den holder varmen inne. Jeg satte én bok på gløtt, men jeg husker ikke om det var den Julius mente. Kartet vet. IQ bygde en vegg av varme rundt linjen i natt, og Julius lot én port stå åpen, inn mot grotten. Håkon, du har lest ryggene fra venstre. Bare én bokstav står ute; den andre ligger inne i porten. Kristian: Julius sa i går hvor porten står. Kom hjem. – Rampenissen",
     "rampenissen_rampestrek": "Står bak en lav mur av bøker foran skjermen med et grytelokk mot trekken og en visp han glemte å legge fra seg; én bok står på gløtt (feil bok, han gjettet).",
-    "fysisk_hint": "Åtte bøker som lav mur foran skjermen, ryggkort fra `dag21-portkort.pdf` teipet på hver rygg, fra venstre: ✱, **R**, ✱, ✱, ✱, ✱, ✱, ✱ (rutetall i hjørnet, tegn). Inne i bok 5 (porten, varde 5 på Trixters kart): kortet `U · 7`. Inne i bok 3: et ✱-kort; bok 3 står på gløtt (blindspor). Ingenting digitalt kvelden før. Løsning: Håkon leser ryggene (bare R), Kristian husker dag 20 (porten = sirkelen på kartet) og åpner bok 5: `_ R _ _ _ _ U _`. Julius: IQs vegg av varme, brannfolk bygger det samme og kaller den etter det de kjemper mot. Kode BRANNMUR. Merket Portvokter. Er kartet ikke lest: PS dag 20 sa fra; fasit her: bok 5. Nødutgang: «Frost av» i guiden. Hanna, hvis hun vil: sier «bokstav» eller «is».",
+    "fysisk_hint": "Åtte bøker som lav mur foran skjermen, ryggkort fra `dag21-portkort.pdf` teipet på hver rygg, fra venstre: ✱, **R**, ✱, ✱, ✱, ✱, ✱, ✱ (rutetall i hjørnet, tegn). Inne i bok 5 (porten, varde 5 på Trixters kart): kortet `U · 7`. Inne i bok 3: et ✱-kort; bok 3 står på gløtt (blindspor). Ingenting digitalt kvelden før. Løsning: Håkon leser ryggene (bare R), Kristian husker dag 20 (porten = sirkelen på kartet) og åpner bok 5: `_ R _ _ _ _ U _`. Julius: IQs vegg av varme; gamle byer med trehus har samme slags vegg mellom husene og kaller den etter det den skal stoppe. Kode BRANNMUR. Merket Portvokter. Er kartet ikke lest: PS dag 20 sa fra; fasit her: bok 5. Nødutgang: «Frost av» i guiden. Hanna, hvis hun vil: sier «bokstav» eller «is».",
     "materialer_nødvendig": [
       "8 bøker",
       "teip",
@@ -93,7 +93,7 @@
     "dag": 22,
     "tittel": "Winters Tall",
     "skjerm_teaser": "Tirsdag. Tre dager igjen. Julius følger med.",
-    "nissemail_tekst": "Julius vil vite nøyaktig hvor dere bor. Winter vil ha stedet i tall, og han skriver tall på sin egen måte. Sokk 3 er min; sokk 1 og 2 ligger et annet sted i huset. Takk for at dere dro meg ut! Hanna, hvis du vil: det røde kortet er ditt. Kristian: strimmelen fra brevfuglen, og Winter har to regler. Julius sier begge. Etterpå vil Julius ha navnene deres. – Rampenissen",
+    "nissemail_tekst": "Winter har skrevet noe viktig til Julius, og han skrev det i tall. Han skriver tall på sin egen måte. Sokk 3 er min; sokk 1 og 2 ligger et annet sted i huset. Takk for at dere dro meg ut! Hanna, hvis du vil: det røde kortet er ditt. Kristian: strimmelen fra brevfuglen, og Winter har to regler. Julius sier begge. Etterpå vil Julius ha navnene deres. – Rampenissen",
     "rampenissen_rampestrek": "Har krøpet inn i Hannas julesokk med bare føttene ut, og kommer ikke løs.",
     "fysisk_hint": "Tre julesokker merket 1, 2, 3 med to separate tallkort i hver (`dag22-sokkelapper.pdf`, merket 1a/1b osv., ingen bindestrek og ingen minustegn): sokk 1 (stua) `15` og `4`, sokk 2 (kjøkkenet) `17` og `7`, sokk 3 (Hannas, i gangen, med Rampenissen og rødt måne-kort) `32` og `22`. Ingen bokstaver. Løsning: Julius: A er alltid først, alfabetet slutter på Å, og Winter legger tre til hvert tall; trekk fra. 12 L, 1 A, 14 N, 4 D, 29 Å, 19 S. Kode LANDÅS. Så navneregistrering. Lapp fra Rampenissen i sokk 3, ved Rampenissen (håndskrevet): «Jeg er sokk 3. Sokk 1 og 2 er et annet sted i huset. – R»",
     "materialer_nødvendig": [
@@ -119,7 +119,7 @@
       "symbolColor": "red",
       "description": "Rød måne funnet innerst i Hannas julesokk"
     },
-    "julius_ps": "Tre navn. Jeg skrev dem selv. Ingenting har kommet gjennom porten ennå, men Orakelet sier det er varmere der nede. Rampenissen satt fast i en julesokk i to timer før noen dro."
+    "julius_ps": "Nå vet vi nøyaktig hvor dere bor. Tre navn. Jeg skrev dem selv. Ingenting har kommet gjennom porten ennå, men Orakelet sier det er varmere der nede. Rampenissen satt fast i en julesokk i to timer før noen dro."
   },
   {
     "dag": 23,

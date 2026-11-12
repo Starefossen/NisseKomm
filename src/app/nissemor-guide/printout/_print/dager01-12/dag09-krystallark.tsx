@@ -1,46 +1,37 @@
 import { Utskrift } from "../Utskrift";
 
-type Krystall = {
-  armer: { vinkel: number; lengde?: number }[];
-  firkant?: boolean;
-};
+type Krystall = { armer: { vinkel: number }[] };
 
 const jevn = (n: number) =>
   Array.from({ length: n }, (_, i) => ({ vinkel: (360 / n) * i }));
 
 const EKTE: Krystall = { armer: jevn(6) };
-// Four real, five fakes that only an honest count catches. Order is mixed and nothing is marked.
+// Four real, five fakes. Every fake has the wrong number of arms, because the filmed Julius line
+// says so ("De falske hadde feil tall"): a fake with six arms would make several codes fit.
 const KRYSTALLER: Krystall[] = [
   EKTE,
   { armer: jevn(5) },
   EKTE,
-  { armer: jevn(6).map((a, i) => (i === 2 ? { ...a, lengde: 0.5 } : a)) },
+  { armer: jevn(6).filter((_, i) => i !== 2) },
   { armer: jevn(7) },
   EKTE,
-  { armer: jevn(6), firkant: true },
+  { armer: jevn(8) },
   EKTE,
-  { armer: [0, 28, 120, 180, 240, 300].map((vinkel) => ({ vinkel })) },
+  { armer: [...jevn(6), { vinkel: 30 }] },
 ];
 
 function Tegning({ k }: { k: Krystall }) {
   return (
     <svg viewBox="-50 -50 100 100" className="w-[56mm] h-[56mm]" aria-hidden>
       <g stroke="black" strokeWidth="4" strokeLinecap="round" fill="none">
-        {k.armer.map(({ vinkel, lengde = 1 }, i) => {
-          const l = 42 * lengde;
-          return (
-            <g key={i} transform={`rotate(${vinkel})`}>
-              <path d={`M0 0 V${-l}`} />
-              <path d={`M0 ${-l * 0.6} l-9 -9 M0 ${-l * 0.6} l9 -9`} />
-            </g>
-          );
-        })}
+        {k.armer.map(({ vinkel }, i) => (
+          <g key={i} transform={`rotate(${vinkel})`}>
+            <path d="M0 0 V-42" />
+            <path d="M0 -25.2 l-9 -9 M0 -25.2 l9 -9" />
+          </g>
+        ))}
       </g>
-      {k.firkant ? (
-        <rect x="-9" y="-9" width="18" height="18" fill="black" />
-      ) : (
-        <circle r="7" fill="black" />
-      )}
+      <circle r="7" fill="black" />
     </svg>
   );
 }
@@ -64,7 +55,7 @@ export default function Dag09Krystallark() {
       instruks={{
         klipp: "ni krystaller langs de stiplede linjene.",
         hvor: "Kvelden før dag 9: heng alle ni på kjøleskapsdøra med magneter eller teip, i blandet rekkefølge, med det blå hjerte-kortet mellom dem.",
-        merk: "Fasit for deg: nr. 1, 3, 6 og 8 (talt rad for rad på arket) er ekte. Falske: fem armer, én kort arm, sju armer, firkantet midte, to armer på samme side.",
+        merk: "Fasit for deg: nr. 1, 3, 6 og 8 (talt rad for rad på arket) er ekte. Falske, alle med feil antall armer: fem, fem med et hull der den sjette mangler, sju, åtte, og sju der én er klemt inn.",
       }}
     />
   );

@@ -1,6 +1,6 @@
 # Julius' videodagbok 2026 – manus
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans. Dag 5 seg 1 og dag 6 seg 1 endret 13.11 etter ja fra Hans (for lange for 15 s). Dag 8 seg 4, dag 10 seg 4 og dag 11 seg 2–4 endret 13.11 etter ja fra Hans.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans. Dag 5 seg 1 og dag 6 seg 1 endret 13.11 etter ja fra Hans (for lange for 15 s). Dag 8 seg 4, dag 10 seg 4 og dag 11 seg 2–4 endret 13.11 etter ja fra Hans. Dag 15 seg 4–5, dag 16 seg 3–4, dag 17 seg 2–4 og dag 21 seg 1 og 4 endret 13.11 etter ja fra Hans (replikken gir ikke ordet alene; huset trengs). Tittel dag 5 og 17 endret 13.11 etter ja fra Hans.
 
 **Revisjon 10. november (vanskelighet, godkjent):** nye segmenter dag 5/4, 7/3, 7/5, 8/3, 9/4, 11/4 og 11/5 (nytt), 20/5. Etter uavhengig gjennomgang også 4/4, 4/5, 12/4, 12/5, 14/4, 14/5, 18/4, 18/5 (brikken ga ordet alene). Brikkene står ordrett som i `gaater-2026.md` etter revisjonen.
 
@@ -138,11 +138,11 @@ Kulde-nivå 1. Svak knitring, lett snø. Lappen fra Hjerterud er et ark fra brev
    - Handling: Snur seg i stolen til begge sider mens venstre pekefinger står stille i luften.
    - Kulde: Svak knitring.
 4. **Replikk:** «Det er ikke et kart og ikke en stjerne. Sjøfolk hadde den i lomma, Rudolf har den i nesa. Ha en fin dag!»
-   - Varighet: 14 s (20 ord) · låst
+   - Varighet: 15 s (23 ord) · låst
    - Handling: Rister på hodet to ganger, klapper seg på brystet med venstre hånd, så på nesen, ler.
    - Kulde: Svak knitring, klikk.
 
-## Dag 5 (lø) – Brevfuglen over Byfjellene · ULRIKEN
+## Dag 5 (lø) – Brevfuglen fra Winter · ULRIKEN
 
 Kulde-nivå 1. Svak knitring. Rapporten fra Rampenissen står i åpningen. Fire segmenter: brikken delt over 3–4.
 
@@ -180,7 +180,7 @@ Kulde-nivå 1. Svak knitring. Rapporten fra Rampenissen står i åpningen. Fire 
    - Handling: Løfter venstre hånd som om han bærer noe i en hank, og holder den slik hele segmentet.
    - Kulde: Svak knitring.
 4. **Replikk:** «Det var ikke et bål og ikke et stearinlys. Det hadde hank, så man kunne henge det fra seg. Ha en riktig fin søndag!»
-   - Varighet: 14 s (20 ord) · låst
+   - Varighet: 15 s (24 ord) · låst
    - Handling: Henger det usynlige på en usynlig krok med venstre hånd, så vinker han kort.
    - Kulde: Svak knitring, klikk.
 
@@ -222,7 +222,7 @@ Kulde-nivå 1. Rim på vinduet, synlig pust. Rapporten fra Rampenissen står i �
    - Handling: Lener seg inn, former et lite rektangel med tommel og pekefinger på venstre hånd og holder det.
    - Kulde: Synlig pust.
 4. **Replikk:** «Den lille plata: IQ lodder på den, sover på den og kaller den to ord i ett. Vi ses!»
-   - Varighet: 14 s (20 ord) · låst
+   - Varighet: 14 s (19 ord) · låst
    - Handling: Legger kinnet på venstre hånd som på en pute, så vinker han kort.
    - Kulde: Svak knitring, klikk.
 
@@ -277,15 +277,15 @@ Kulde-nivå 2 (senket fra 3, intensitetskurven). Kraftig knitring, bildet hopper
    - Handling: Løfter et ark fra brevbunken med venstre hånd, leser, ler lavt og legger det ned.
    - Kulde: Knitring, rim på vinduet. Kort hopp i bildet på «potet».
 2. **Replikk:** «I natt delte Kulde senderen i tre, og antennen ved tjernet er full av is. Lytt godt, Kristian.»
-   - Varighet: 14 s (20 ord)
+   - Varighet: 13 s (18 ord)
    - Handling: Peker bak seg mot vinduet med venstre hånd og holder pekefingeren der.
    - Kulde: Knitring øker, rim på vinduet. Lyden faller ut et øyeblikk.
 3. **Replikk:** «IQ har en regel: alt han bygger ender på fem. Tre sendere er hans. Kulde satte ut sine egne.»
-   - Varighet: 12 s (16 ord) · låst
+   - Varighet: 14 s (19 ord) · låst
    - Handling: Tre fingre på venstre hånd, så fem, så legger han hånden flat på bordet.
    - Kulde: Svak knitring.
 4. **Replikk:** «Ikke gang IQs sendere. Legg dem sammen, så finner dere oss. Vi hører dere i biter. Vi er her. Vi ses!»
-   - Varighet: 14 s (20 ord) · låst
+   - Varighet: 15 s (21 ord) · låst
    - Handling: Rister på hodet, så legger han venstre hånd flatt på bordet foran seg og ser rolig fram.
    - Kulde: Knitring, klikk som nesten drukner i støy.
 
@@ -368,12 +368,12 @@ Kulde-nivå 1. Lampen flakker svakt (etterarbeid). Julius er stillere og langsom
    - Varighet: 14 s (20 ord)
    - Handling: Lar venstre hånd ligge stille på boka, ser lenge ned på den.
    - Kulde: Svak knitring. Lampen flakker på «alene».
-4. **Replikk:** «Hør nå. Hjerterud prøvde å varme opp IQ med det hun lager når sukker blir brunt og varmt i gryta.»
-   - Varighet: 14 s (20 ord) · låst
+4. **Replikk:** «Hør nå. Hjerterud prøvde å varme opp IQ med noe søtt hun koker i den store gryta si.»
+   - Varighet: 13 s (18 ord) · låst
    - Handling: Rører i en usynlig gryte med venstre hånd hele segmentet.
    - Kulde: Svak knitring.
-5. **Replikk:** «Det stivner til gull når det kjølner. Han spiste ikke engang det. Vær snille med IQ i dag. Vi ses.»
-   - Varighet: 14 s (20 ord) · låst
+5. **Replikk:** «Det blir hardt når det kjølner. Han spiste ikke engang det. Vær snille med IQ i dag. Vi ses.»
+   - Varighet: 14 s (19 ord) · låst
    - Handling: Lar hånden falle fra gryta, legger den rundt trekoppen, ser ned, så opp igjen.
    - Kulde: Svak knitring. Lampen flakker på «Vi ses». Klikk.
 
@@ -389,34 +389,34 @@ Kulde-nivå 2. Lampen flakker, lyden faller ut og bildet fryser i segment 2 (ett
    - Varighet: 14 s (19 ord)
    - Handling: Snurrer venstre hånd baklengs, stopper, så nikker han mot vinduet bak seg.
    - Kulde: Svak knitring. Lyden faller ut et øyeblikk, bildet fryser på «haug».
-3. **Replikk:** «Hør nå godt etter, Håkon, for her kommer dagens ord. Winters ord for å legge alt i riktig hylle.»
-   - Varighet: 14 s (19 ord) · låst
-   - Handling: Løfter venstre hånd som om han setter noe på en hylle, og holder den der.
-   - Kulde: Svak knitring. Lampen flakker på «hylle».
-4. **Replikk:** «Han sier det med stor S og har et skilt med det over døra. Ha en riktig fin dag!»
-   - Varighet: 14 s (19 ord) · låst
-   - Handling: Tegner en stor S i luften med venstre hånd, så peker han opp bak seg, der et skilt ville hengt, og vinker kort.
+3. **Replikk:** «Hør nå godt etter, Håkon. Winter har ett ord for å få hver pakke dit den skal.»
+   - Varighet: 12 s (17 ord) · låst
+   - Handling: Løfter en usynlig pakke med venstre hånd og setter den ned et annet sted på bordet.
+   - Kulde: Svak knitring. Lampen flakker på «pakke».
+4. **Replikk:** «Winter har ordet på et skilt over døra si. I natt lå skiltet under haugen. Ha en riktig fin dag!»
+   - Varighet: 14 s (20 ord) · låst
+   - Handling: Tegner et skilt i luften med venstre hånd, så peker han opp bak seg, der skiltet ville hengt, og vinker kort.
    - Kulde: Svak knitring. Lampen flakker på «døra». Klikk.
 
-## Dag 17 (to) – Grønt over Polarhimmelen · NORDLYS
+## Dag 17 (to) – Grotten svarer · NORDLYS
 
-Kulde-nivå 1. Svak knitring, ett juletrelys slukner i segment 2 (etterarbeid). Ingen omtale av lykten på Landås (betinget innhold, bare i PS). Kroken fra dag 16 (vinduet) løses i segment 2. Det grønne skjæret i vinduet står i prompten som ønske, ikke som krav. Rapporten fra Rampenissen står i åpningen. Fire segmenter: brikken delt over 3–4.
+Kulde-nivå 1. Svak knitring, ett juletrelys slukner i segment 2 (etterarbeid). Ingen omtale av lykten på Landås (betinget innhold, bare i PS). Kroken fra dag 16 (vinduet) løses i segment 2. Skjæret i vinduet står i prompten som ønske, ikke som krav, og uten farge: ingen sier «grønt» før koden (13.11). Rapporten fra Rampenissen står i åpningen. Fire segmenter: brikken delt over 3–4.
 
 1. **Replikk:** «Goooood morgen, Snøfall… unnskyld, jeg gjesper. Rampenissen rapporterer: «Kidnappa av kosedyra. Dem vil ha pepperkakan.» Jeg hadde gitt dem pepperkakene.»
    - Varighet: 14 s (20 ord)
    - Handling: Gjesper stort med venstre hånd foran munnen, så løfter han et ark fra brevbunken, leser, ler gjennom gjespen og legger det ned.
    - Kulde: Svak knitring.
-2. **Replikk:** «I natt sto jeg i vinduet, slik Orakelet ba om. Grønt kom over lyktene ved antennen. Grotten svarte. Hør nå.»
+2. **Replikk:** «I natt sto jeg i vinduet, slik Orakelet ba om. Det lyste over lyktene ved antennen. Grotten svarte. Hør nå.»
    - Varighet: 14 s (20 ord)
    - Handling: Snur seg mot vinduet og blir sittende vendt dit, snur seg tilbake på «Hør nå».
-   - Kulde: Svak knitring, et svakt grønt skjær i vinduet. Ett juletrelys slukner.
-3. **Replikk:** «De gamle her oppe hadde et navn på det grønne lyset. De sa at himmelen snakket når det kom.»
-   - Varighet: 14 s (19 ord) · låst
+   - Kulde: Svak knitring, et svakt skjær i vinduet. Ett juletrelys slukner.
+3. **Replikk:** «De gamle her oppe hadde et navn på lyset fra i natt. De sa at noen snakket når det kom.»
+   - Varighet: 14 s (20 ord) · låst
    - Handling: Holder venstre hånd bak øret, lukker øynene et øyeblikk.
    - Kulde: Svak knitring.
-4. **Replikk:** «Nissene sier det er himmelen som sender brev tilbake: grønt, bølgende, over fjellene, og bare når det er mørkt nok. Vi ses!»
-   - Varighet: 15 s (22 ord) · låst
-   - Handling: Lar venstre hånd bølge langsomt over hodet, så ned på bordet, og vinker kort.
+4. **Replikk:** «Nissene sier lyset er brev som kommer tilbake. Det kommer bare når det er kaldt og mørkt nok. Vi ses!»
+   - Varighet: 14 s (20 ord) · låst
+   - Handling: Tar et brev fra bunken med venstre hånd, holder det opp, legger det ned og vinker kort.
    - Kulde: Svak knitring, klikk.
 
 ## Dag 18 (fr) – Kastevind rundt Ulriken · TURBULENS · blå sol
@@ -490,10 +490,10 @@ Kulde-nivå 2. Bildet flimrer (lampen flakker, etterarbeid), og juletrelysene sl
 
 Kulde-nivå 3 i segment 1–2 (nesten frosset bilde, rim over hele vinduet, lyden hakker: etterarbeid; prompten ber om pust som røyk), renser seg i segment 3–4 og er 0 i segment 5. Muren holder. Ingen tull i dag; «i natt» kommer først, så solverv. Fem segmenter.
 
-1. **Replikk:** «I natt nådde Kulde huset. IQ bygde muren, ikke mot noen. Den holder varmen inne, så vi kan dele.»
-   - Varighet: 14 s (19 ord)
+1. **Replikk:** «I natt nådde Kulde huset. IQ bygde et vern, ikke mot noen. Det holder varmen inne, så vi kan dele.»
+   - Varighet: 14 s (20 ord)
    - Handling: Sitter nesten urørlig, venstre hånd rundt trekoppen som for å holde på varmen.
-   - Kulde: Pusten står som røyk. Nesten frosset bilde, rim over hele vinduet, lyden hakker. Bildet fryser på «muren».
+   - Kulde: Pusten står som røyk. Nesten frosset bilde, rim over hele vinduet, lyden hakker. Bildet fryser på «vern».
 2. **Replikk:** «I dag er det vintersolverv, den mørkeste dagen. Folk tente bål denne natten, for de visste at lyset snur.»
    - Varighet: 14 s (19 ord)
    - Handling: Venstre hånd flat på bordet, stemmen er rolig.
@@ -502,8 +502,8 @@ Kulde-nivå 3 i segment 1–2 (nesten frosset bilde, rim over hele vinduet, lyde
    - Varighet: 14 s (19 ord) · låst
    - Handling: Tegner en linje over bordet med venstre håndkant og holder hånden der.
    - Kulde: Synlig pust. Rim, bildet hakker, men lyden er klar.
-4. **Replikk:** «De som kjemper mot flammene i skogen, bygger samme slags vegg, og kaller den etter det de kjemper mot.»
-   - Varighet: 14 s (19 ord) · låst
+4. **Replikk:** «Gamle byer med trehus har samme slags vegg mellom husene, og kaller den etter det den skal stoppe.»
+   - Varighet: 13 s (18 ord) · låst
    - Handling: Peker på linjen han tegnet, holder blikket der.
    - Kulde: Svak knitring.
 5. **Replikk:** «Jeg lot ham la én port stå åpen. Inn mot grotten. Med varme i. Kom hjem i kveld. Vi er her.»
@@ -595,28 +595,28 @@ Ord = talte ord i alle segmenter. Tale = ord / 2,0 (grovt; målt tempo er 1,79 o
 | Dag | Kode         | Ord | Tale s | Klipp s | Segm. | Lengste | Brikke S-andel                     | Merknad                                                               |
 | --- | ------------ | --- | ------ | ------- | ----- | ------- | ---------------------------------- | --------------------------------------------------------------------- |
 | 1   | SIGNAL       | 177 | 88     | 120     | 8     | 25      | 0 % (bruk, ingen bokstaver)        | Omskrevet 11. nov (flyt, åtte segm.); 85,0-hale i appen, ikke i filen |
-| 2   | 48           | 109 | 54     | 74      | 5     | 23      | regel, ingen tall                  | Morgensangen første gang (skjærer seg)                                |
+| 2   | 48           | 107 | 54     | 74      | 5     | 22      | regel, ingen tall                  | Morgensangen første gang (skjærer seg)                                |
 | 3   | PRISME       | 113 | 56     | 75      | 5     | 25      | 0 %                                | Låst brikke delt over segm. 4–5                                       |
-| 4   | KOMPASS      | 78  | 39     | 56      | 4     | 20      | 0 %                                | Fire segm. 12. nov; brikke delt over segm. 3–4                        |
-| 5   | ULRIKEN      | 78  | 39     | 56      | 4     | 20      | nøkkel som oppslag (dag 2)         | Fire segm. 12. nov; rapporten i åpningen; brikke delt over 3–4        |
-| 6   | LYKT         | 73  | 36     | 53      | 4     | 20      | 0 % (velger figur)                 | Fire segm. 12. nov; rapporten i åpningen; brikke delt over 3–4        |
+| 4   | KOMPASS      | 81  | 40     | 57      | 4     | 23      | 0 %                                | Fire segm. 12. nov; brikke delt over segm. 3–4                        |
+| 5   | ULRIKEN      | 75  | 38     | 54      | 4     | 20      | nøkkel som oppslag (dag 2)         | Fire segm. 12. nov; rapporten i åpningen; brikke delt over 3–4        |
+| 6   | LYKT         | 72  | 36     | 51      | 4     | 24      | 0 % (velger figur)                 | Fire segm. 12. nov; rapporten i åpningen; brikke delt over 3–4        |
 | 7   | KULDE        | 76  | 38     | 54      | 4     | 20      | 0 % + peker til kortet             | Bildet fryser der navnet skulle vært sagt; Frostgraden i halen av 4   |
-| 8   | KRETSKORT    | 79  | 40     | 56      | 4     | 20      | 0 % + regel om strøm               | Fire segm. 12. nov; strømregelen i segm. 2; brikke delt over 3–4      |
+| 8   | KRETSKORT    | 78  | 39     | 56      | 4     | 20      | 0 % + regel om strøm               | Fire segm. 12. nov; strømregelen i segm. 2; brikke delt over 3–4      |
 | 9   | 24           | 77  | 38     | 55      | 4     | 20      | armer (6), ikke antall, ikke regel | Fire segm. 12. nov; morgensangen andre gang (går); brikke 3–4         |
 | 10  | SPEKTER      | 80  | 40     | 57      | 4     | 21      | 0 %                                | Første del av brikken gjentas i segm. 4 pga. hakking (låst)           |
-| 11  | 75           | 76  | 38     | 54      | 4     | 20      | to regler, ingen tall              | Fire segm. 12. nov; rapporten i åpningen; brikke delt over 3–4        |
+| 11  | 75           | 78  | 39     | 56      | 4     | 21      | to regler, ingen tall              | Fire segm. 12. nov; rapporten i åpningen; brikke delt over 3–4        |
 | 12  | MELODI       | 75  | 38     | 54      | 4     | 21      | 0 %                                | Fire segm. 12. nov; rapporten i åpningen; brikke delt over 3–4        |
 | 13  | SAFRAN       | 78  | 39     | 56      | 4     | 20      | 0 %                                | Fire segm. 12. nov; rapporten i åpningen; brikke delt over 3–4        |
 | 14  | ORIGAMI      | 79  | 40     | 56      | 4     | 20      | 0 %                                | Fire segm. 12. nov; brikke delt over segm. 3–4                        |
-| 15  | KARAMELL     | 99  | 50     | 70      | 5     | 20      | 0 %                                | Brikkesetningen delt i to 12. nov (speilet i gaater); segm. 4–5       |
-| 16  | SORTERING    | 76  | 38     | 56      | 4     | 19      | 0 %                                | Brikken sier «stor S» (låst); morgensangen tredje gang (lampen)       |
-| 17  | NORDLYS      | 81  | 40     | 57      | 4     | 22      | 0 %                                | Fire segm. 12. nov; rapporten i åpningen; brikke delt over 3–4        |
+| 15  | KARAMELL     | 96  | 48     | 69      | 5     | 20      | 0 %                                | Brikkesetningen delt i to 12. nov (speilet i gaater); segm. 4–5       |
+| 16  | SORTERING    | 75  | 38     | 54      | 4     | 20      | 0 %                                | Brikken uten «stor S» fra 13. nov; morgensangen tredje gang (lampen)  |
+| 17  | NORDLYS      | 80  | 40     | 56      | 4     | 20      | 0 %                                | Fire segm. 12. nov; rapporten i åpningen; brikke delt over 3–4        |
 | 18  | TURBULENS    | 79  | 40     | 56      | 4     | 20      | 0 %                                | Fire segm. 12. nov; brikke delt over segm. 3–4                        |
 | 19  | GULROT       | 79  | 40     | 56      | 4     | 20      | 0 %                                | Kulde 0; brikkens to første setninger i segm. 2, resten 3–4           |
 | 20  | TURBO        | 99  | 50     | 70      | 5     | 21      | 0 %                                | Fem segm. 12. nov; brikke i segm. 3–4; porten i 5                     |
-| 21  | BRANNMUR     | 97  | 48     | 71      | 5     | 21      | 0 %                                | Brikke delt over segm. 3–4; porten i 5                                |
+| 21  | BRANNMUR     | 97  | 48     | 70      | 5     | 21      | 0 %                                | Brikke delt over segm. 3–4; porten i 5                                |
 | 22  | LANDÅS       | 97  | 48     | 69      | 5     | 20      | to regler, ingen tall              | Låst brikke (42 ord) delt over segm. 3–5                              |
 | 23  | STJERNEKLART | 92  | 46     | 67      | 5     | 19      | 0 %                                | Brikkesetningen delt i to 12. nov (speilet i gaater); segm. 3–5       |
 | 24  | JULEMAGI     | 99  | 50     | 71      | 5     | 21      | 0 %                                | Låst brikke (55 ord) delt over segm. 3–5; morgensangen går hele veien |
 
-Sum: 2 146 ord, snitt 89 per dag (cirka 60 s tale, 70 s med klippause). Fra dag 4 ingen segmenter over 20 ord utenom låste (høyst 22, bare med avskjed i halen); dag 1–3 som filmet; alle klipp 11–15 s (`julius-dag.py lint` er grønn).
+Sum: 2 139 ord, snitt 89 per dag (cirka 60 s tale, 70 s med klippause). Fra dag 4 ingen segmenter over 20 ord utenom låste (høyst 22, bare med avskjed i halen); dag 1–3 som filmet; alle klipp 11–15 s (`julius-dag.py lint` er grønn).
