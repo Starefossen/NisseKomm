@@ -6,14 +6,14 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Type | ✓ | ⚠ | ? | ✗ | ○ | ◇ | - |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| julius | 2 | 10 | 0 | 12 | 0 | 13 | 1 |
+| julius | 2 | 10 | 0 | 12 | 0 | 11 | 3 |
 | rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 2 |
 | music | 13 | 0 | 0 | 1 | 0 | 0 | 0 |
-| tv | 24 | 0 | 0 | 0 | 15 | 0 | 3 |
-| port | 0 | 1 | 0 | 3 | 0 | 0 | 6 |
+| tv | 23 | 1 | 0 | 0 | 15 | 0 | 3 |
+| port | 3 | 0 | 0 | 1 | 0 | 0 | 6 |
 | feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
 | spill | 59 | 0 | 0 | 4 | 0 | 0 | 9 |
-| strek | 12 | 0 | 0 | 12 | 0 | 1 | 1 |
+| strek | 17 | 5 | 0 | 2 | 0 | 3 | 1 |
 
 ## julius
 
@@ -43,9 +43,9 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-22.mp4 |  |  | ✗ |
 | video/julius/dag-23.mp4 |  |  | ✗ |
 | video/julius/dag-24.mp4 |  |  | ✗ |
-| video/julius/dag-01-v2.mp4 | 5.1 MB | 2026-11-12 | ◇ ikke i manifestet |
-| video/julius/dag-01-v3.mp4 | 6.6 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-01.old-1.mp4 | 7.1 MB | 2026-11-11 | - ikke i manifestet |
+| video/julius/dag-01.old-2.mp4 | 5.1 MB | 2026-11-12 | - ikke i manifestet |
+| video/julius/dag-01.old-3.mp4 | 6.6 MB | 2026-11-12 | - ikke i manifestet |
 | video/julius/dag-02-v3.mp4 | 3.9 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 2; ikke i manifestet |
 | video/julius/dag-02-v4.mp4 | 10.3 MB | 2026-11-12 | ◇ referansebildet er endret: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
 | video/julius/dag-03-v3.mp4 | 4.2 MB | 2026-11-12 | ◇ ikke i manifestet |
@@ -139,7 +139,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/tv/landsby-natt.mp4 |  |  | ○ |
 | video/tv/landsby-brevfugler.mp4 |  |  | ○ |
 | video/tv/landsby-julius.mp4 | 2.2 MB | 2026-11-11 | ✓ |
-| video/tv/landsby-iq.mp4 | 2.7 MB | 2026-11-11 | ✓ |
+| video/tv/landsby-iq.mp4 | 2.7 MB | 2026-11-11 | ⚠ kildeteksten er endret: assets/prompts/tv/snofall-landsby/hendelse-iq.txt |
 | video/tv/landsby-reinsdyr.mp4 |  |  | ○ |
 | video/tv/landsby-tarnklokke.mp4 |  |  | ○ |
 | video/tv/landsby-morgen-brevfugler.mp4 |  |  | ○ |
@@ -159,16 +159,16 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| video/tv/port-julius.mp4 |  |  | ✗ |
+| video/tv/port-julius.mp4 | 3.5 MB | 2026-11-12 | ✓ |
 | video/tv/port-hjerterud.mp4 |  |  | ✗ |
-| video/tv/port-iq.mp4 | 4.5 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-iq.txt |
-| video/tv/port-winter.mp4 |  |  | ✗ |
+| video/tv/port-iq.mp4 | 4.5 MB | 2026-11-12 | ✓ |
+| video/tv/port-winter.mp4 | 4.6 MB | 2026-11-12 | ✓ |
 | video/tv/port-iq.old-1.mp4 | 4.7 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-iq.txt; ikke i manifestet |
-| video/tv/port-iq.old-2.mp4 | 4.7 MB | 2026-11-12 | - ikke i manifestet |
+| video/tv/port-iq.old-2.mp4 | 4.7 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-iq.txt; ikke i manifestet |
 | video/tv/port-julius.old-1.mp4 | 4.3 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-julius.txt; ikke i manifestet |
-| video/tv/port-julius.old-2.mp4 | 4.5 MB | 2026-11-12 | - ikke i manifestet |
+| video/tv/port-julius.old-2.mp4 | 4.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-julius.txt; ikke i manifestet |
 | video/tv/port-winter.old-1.mp4 | 3.8 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-winter.txt; ikke i manifestet |
-| video/tv/port-winter.old-2.mp4 | 4.5 MB | 2026-11-12 | - ikke i manifestet |
+| video/tv/port-winter.old-2.mp4 | 4.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-winter.txt; ikke i manifestet |
 
 ## feed
 
@@ -267,32 +267,34 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| strek/dag01.png | 1.2 MB | 2026-11-12 | ✓ |
+| strek/dag01.png | 1.2 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/strek/skisse.txt Dag 1 |
 | strek/dag02.png | 1.1 MB | 2026-11-12 | ✓ |
 | strek/dag03.png | 1.1 MB | 2026-11-12 | ✓ |
 | strek/dag04.png | 1.3 MB | 2026-11-12 | ✓ |
-| strek/dag05.png | 1.3 MB | 2026-11-12 | ✓ |
-| strek/dag06.png | 1.3 MB | 2026-11-12 | ✓ |
+| strek/dag05.png | 1.3 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/strek/skisse.txt Dag 5 |
+| strek/dag06.png | 1.3 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/strek/skisse.txt Dag 6 |
 | strek/dag07.png | 1.2 MB | 2026-11-12 | ✓ |
-| strek/dag08.png | 1.2 MB | 2026-11-12 | ✓ |
+| strek/dag08.png | 1.2 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/strek/skisse.txt Dag 8 |
 | strek/dag09.png | 1.1 MB | 2026-11-12 | ✓ |
 | strek/dag10.png | 1.3 MB | 2026-11-12 | ✓ |
 | strek/dag11.png | 1.2 MB | 2026-11-12 | ✓ |
-| strek/dag12.png | 1.0 MB | 2026-11-12 | ✓ |
-| strek/dag13.png |  |  | ✗ |
-| strek/dag14.png |  |  | ✗ |
-| strek/dag15.png |  |  | ✗ |
+| strek/dag12.png | 1.0 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/strek/skisse.txt Dag 12 |
+| strek/dag13.png | 1.2 MB | 2026-11-12 | ✓ |
+| strek/dag14.png | 1.3 MB | 2026-11-12 | ✓ |
+| strek/dag15.png | 1.1 MB | 2026-11-12 | ✓ |
 | strek/dag16.png |  |  | ✗ |
-| strek/dag17.png |  |  | ✗ |
-| strek/dag18.png |  |  | ✗ |
-| strek/dag19.png |  |  | ✗ |
-| strek/dag20.png |  |  | ✗ |
-| strek/dag21.png |  |  | ✗ |
+| strek/dag17.png | 1.5 MB | 2026-11-12 | ✓ |
+| strek/dag18.png | 1.3 MB | 2026-11-12 | ✓ |
+| strek/dag19.png | 1.1 MB | 2026-11-12 | ✓ |
+| strek/dag20.png | 1.5 MB | 2026-11-12 | ✓ |
+| strek/dag21.png | 1.3 MB | 2026-11-12 | ✓ |
 | strek/dag22.png |  |  | ✗ |
-| strek/dag23.png |  |  | ✗ |
-| strek/dag24.png |  |  | ✗ |
+| strek/dag23.png | 1.2 MB | 2026-11-12 | ✓ |
+| strek/dag24.png | 1.2 MB | 2026-11-12 | ✓ |
 | strek/dag01.old-1.png | 1.3 MB | 2026-11-12 | - ikke i manifestet |
 | strek/dag10-v1.png | 1.4 MB | 2026-11-12 | ◇ ikke i manifestet |
+| strek/dag16-v1.png | 1.3 MB | 2026-11-12 | ◇ ikke i manifestet |
+| strek/dag22-v1.png | 1.3 MB | 2026-11-12 | ◇ ikke i manifestet |
 
 ## Gamle filer
 
