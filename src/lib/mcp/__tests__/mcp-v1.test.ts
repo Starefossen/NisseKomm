@@ -314,6 +314,27 @@ describe("get_clips", () => {
     expect(out.clips).toEqual([]);
   });
 
+  it("hint fra manus, host_hint bare i førsesongen", async () => {
+    jest.useFakeTimers({ now: at(4, 5) });
+    const d3 = JSON.parse(
+      await callTool("read", "get_clips", { date: "2026-12-03" }),
+    );
+    expect(d3.clips[0].intro_hint).toMatch(/pusset tenner/);
+    expect(d3.clips[0]).not.toHaveProperty("reaksjon_hint");
+    expect(d3).not.toHaveProperty("host_hint");
+    const d2 = JSON.parse(
+      await callTool("read", "get_clips", { date: "2026-12-02" }),
+    );
+    expect(d2.clips[0].reaksjon_hint).toMatch(/^Lyng: En skål/);
+    jest.useFakeTimers({ now: at(25, 7, 11) });
+    const nov = JSON.parse(await callTool("read", "get_clips"));
+    expect(nov.clips).toEqual([]);
+    expect(nov.host_hint).toMatch(/^Lyng: Kem har strikket/);
+    jest.useFakeTimers({ now: at(1, 7) });
+    const des = JSON.parse(await callTool("read", "get_clips"));
+    expect(des).not.toHaveProperty("host_hint");
+  });
+
   it("mp3Duration leser Xing-rammetall", () => {
     const buf = Buffer.alloc(400);
     buf.set([0xff, 0xfb, 0x90, 0x00]);

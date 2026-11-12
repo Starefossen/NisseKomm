@@ -1,0 +1,97 @@
+{
+  "dag": {
+    "1": {
+      "intro_hint": "Birk: Vi har fått et lydklipp i innboksen i natt. Ingen avsender, bare et navn: Rampenissen. Han sier han e tilbake på jobb. Lyng: Tilbake fra kor? Og kem har sendt oss det? Eg stoler ikkje på klipp uten avsender. Birk: Mottakeren min knitret hele forrige uke. Kanskje det henger sammen. Vi spiller det, så får dokker dømme selv.",
+      "reaksjon_hint": "Lyng: Okei. Han sov i en garnkurv. I et helt år. Og landet i nokke gult og buet. Eg sier banan. Birk: Han sa ikkje banan. Men hørte du det bak stemmen hans? Det knitret. Det var ikkje vår linje. Lyng: Snøfall. Eg har aldri hørt om et sted som heter Snøfall. Eg skal finne det på kartet før i morgen. Birk: Han sa Snøfall trenger hjelp, og han sa det til tre barn i Bergen. Vi tar ham inn hver morgen i desember, så lenge han ringer."
+    },
+    "2": {
+      "intro_hint": "Han ringte inn fra en skål. Han ville ikke si hva slags skål.",
+      "reaksjon_hint": "Lyng: En skål. Han sov i en skål. Eg har sovnet på bussen, men aldri i en skål."
+    },
+    "3": {
+      "intro_hint": "Dagens gjest har sovet dårlig og har pusset tenner. Grundig."
+    },
+    "4": {
+      "intro_hint": "En liten fyr med altfor store solbriller vil si noe om retning."
+    },
+    "5": {
+      "intro_hint": "Det skal ha vært krig i en stue på Landås i natt. Vi har et øyenvitne på linjen.",
+      "reaksjon_hint": "Birk: Krig i en stue på Landås, og begge lag vant. Det e den beste nyheten vi har hatt på lenge."
+    },
+    "6": {
+      "intro_hint": "Gjesten vår er litt hvit i ansiktet i dag. Han sier det ikke er snø."
+    },
+    "7": {
+      "intro_hint": "Vi har en melding fra en som ikke kan bevege armene. Han sier det er midlertidig.",
+      "reaksjon_hint": "Birk: Det som skurrer, e kaldt, sa han. Mottakeren min på loftet skurrer òg mest når det fryser. Eg hadde ikkje tenkt på det før no."
+    },
+    "8": {
+      "intro_hint": "Noen ringer inn fra en høyde. En veldig lokal høyde."
+    },
+    "9": {
+      "intro_hint": "Dagens gjest ringer fra et kjølig sted og ber om å bli hentet."
+    },
+    "10": {
+      "intro_hint": "Han sier han er den mest fargerike tingen i huset i dag. Han høres bekymret ut.",
+      "reaksjon_hint": "Lyng: Han har gjemt fargene. Alle. Eg vet ikkje om eg skal le eller ringe noen."
+    },
+    "11": {
+      "intro_hint": "Det skurrer litt på linjen i dag. Gjesten vår har tatt sine forholdsregler."
+    },
+    "12": {
+      "intro_hint": "En som hørte noe i natt. Han vil at vi skal snakke lavt.",
+      "reaksjon_hint": "Lyng: Et sukk i isen. Birk, eg trur på han. Eg vet ikkje koffor, men eg gjør det."
+    },
+    "13": {
+      "intro_hint": "Vi har fått en hilsen fra, sitat, den andre siden. Han høres ganske opplagt ut til å være død."
+    },
+    "14": {
+      "intro_hint": "Dagens gjest ringer fra en båt. En veldig liten båt."
+    },
+    "15": {
+      "intro_hint": "Gjesten vår står vakt ved ei skål på benken, og han er bekymret for en venn.",
+      "reaksjon_hint": "Birk: Han var stillere i dag. Når den som alltid snakker blir stille, e det noe som har skjedd."
+    },
+    "16": {
+      "intro_hint": "Noen har ryddet. Han vil gjerne forklare seg."
+    },
+    "17": {
+      "intro_hint": "Vi har mottatt et løsepengekrav. Og offeret ringer selv.",
+      "reaksjon_hint": "Birk: Grønt over Ulriken i natt. Eg så det fra vinduet på Varden, og eg sa det til ingen, for eg trodde ingen ville tro meg."
+    },
+    "18": {
+      "intro_hint": "En som har vært ute og flydd i natt, og ikke vil gjøre det igjen."
+    },
+    "19": {
+      "intro_hint": "Dagens gjest beskriver seg selv som et åsted."
+    },
+    "20": {
+      "intro_hint": "Han ringer fra et fort, og han vil at dere skal finne fram noe til i morgen.",
+      "reaksjon_hint": "Birk: Han var alvorlig i dag. Ikkje noe rot, ikkje noe tull. Bare: vær hjemme i morgen."
+    },
+    "21": {
+      "intro_hint": "En rolig melding i dag, fra en som har stått vakt siden klokka fire.",
+      "reaksjon_hint": "Lyng: En dør i muren, som skal stå åpen. Det e det fineste eg har hørt noen si om en bokhylle."
+    },
+    "22": {
+      "intro_hint": "Gjesten vår sitter fast i noe lite og ber om hjelp."
+    },
+    "23": {
+      "intro_hint": "Han ringer fra et tre. Han sier han er pynt.",
+      "reaksjon_hint": "Lyng: Teip i øynene. Eg har hørt mange unnskyldninger for å gråte, men den var ny."
+    },
+    "24": {
+      "intro_hint": "Birk: Siste melding fra gjesten vår i år. Han ringer hjemmefra, sier han. Vi vet ikkje kor det e. Lyng: Eg fant det aldri på kartet. Eg leita hele desember.",
+      "reaksjon_hint": "Lyng: Te neste år, sa han. Så han kommer tilbake. Birk: Studio e stille no. Og den røde tråden rundt mikrofonstativet ditt e borte i dag. Vi tok den ikkje ned. Lyng: Nei. Vi tok den ikkje ned. God jul, Kristian, Håkon og Hanna."
+    }
+  },
+  "host": {
+    "2026-11-24": "Birk: Eg satt på loftet i går kveld med den gamle mottakeren min. Mellom to stasjoner, der det bare skal suse, knitret det. Tørt, som rim på en rute. Lyng: Det e november, Birk. Alt knitrer i november. Mottakeren din e eldre enn deg. Birk: Den har aldri knitret sånn før.",
+    "2026-11-25": "Lyng: Kem har strikket i studio? Det hang en rød garntråd rundt mikrofonstativet mitt da eg kom i dag. Ikkje lang. Akkurat lang nok til at eg så den. Birk: Ikkje eg. Eg kan ikkje strikke. Lyng: Eg lar den henge. Den som la den der, får hente den selv.",
+    "2026-11-26": "Birk: Vi har fått et spørsmål i innboksen uten navn. Kor langt e det fra Bergen til Nordpolen? Svaret e omtrent tre tusen tre hundre kilometer, rett nord. Lyng: Kem spør om Nordpolen i november? Uten navn? Birk: Det sto ikkje noe navn. Bare en liten tegning av en lue nederst.",
+    "2026-11-27": "Birk: Mottakeren igjen i natt. Og denne gangen var det ikkje bare knitring. Det var en rytme i det. Som når noen prøver en linje for å se om den holder. Lyng: Eller som når en gammel mottaker e gammel. Men okei. Eg kom innom i går kveld for å høre selv. Det var en rytme. Eg sier ikkje mer enn det.",
+    "2026-11-28": "Lyng: God lørdag! Det lå en klementin på miksebordet i morges. Ingen av oss hadde med klementin. Eg spiste den. Birk: Du spiste bevis. Lyng: Den var god. Og den røde tråden henger der fortsatt, eg sjekket.",
+    "2026-11-29": "Birk: Første søndag i advent. Mottakeren var helt stille i natt. For første gang på en uke. Lyng: Og det bekymrer deg? Birk: Det e som når det blir stille rett før noe skjer. Eg vet ikkje ka. Men noe. Lyng: Eg slo opp Nordpolen i går. Det bor ingen der. Så kem var det som spurte?",
+    "2026-11-30": "Birk: Vi har fått en melding med avsender denne gangen. Det sto ett ord i emnefeltet: NisseKomm. Og én setning: Gjesten dokkers kommer i morgen. Han ringer selv. Lyng: Kem e han? Kor ringer han fra? Ka e NisseKomm? Birk: Det sto ikkje. Men mottakeren knitret igjen i natt, og eg sov ikkje. Lyng: Og i morgen e det ikkje november lenger."
+  }
+}

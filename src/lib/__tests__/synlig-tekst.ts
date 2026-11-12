@@ -5,6 +5,7 @@
  */
 import { getAllOppdrag } from "@/lib/oppdrag";
 import statisk from "@/data/statisk_innhold.json";
+import radioHint from "@/data/radio-hint.json";
 import eventyrData from "@/data/eventyr.json";
 import merker from "@/data/merker.json";
 import videoer from "@/data/julius_videoer.json";
@@ -41,6 +42,19 @@ export const visible: Visible[] = [];
 const add = (from: number, where: string, text?: string) => {
   if (text) visible.push({ from, where, text });
 };
+
+// Birk and Lyng read these on air around the morning clip (get_clips).
+for (const [d, h] of Object.entries(
+  radioHint.dag as Record<
+    string,
+    { intro_hint?: string; reaksjon_hint?: string }
+  >,
+)) {
+  add(Number(d), `dag ${d} intro_hint`, h.intro_hint);
+  add(Number(d), `dag ${d} reaksjon_hint`, h.reaksjon_hint);
+}
+for (const [dato, t] of Object.entries(radioHint.host))
+  add(1, `host_hint ${dato}`, t);
 
 for (const q of quests) {
   const k = q.dag;

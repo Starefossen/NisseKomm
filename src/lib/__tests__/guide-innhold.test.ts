@@ -142,3 +142,13 @@ describe("guide-innhold.json", () => {
     ).not.toThrow();
   });
 });
+
+describe("radio-hint.json", () => {
+  it("matches the radio script (node scripts/radio-hint.mjs)", () => {
+    expect(() =>
+      execFileSync("node", ["scripts/radio-hint.mjs", "--sjekk"], {
+        stdio: "pipe",
+      }),
+    ).not.toThrow();
+  });
+});

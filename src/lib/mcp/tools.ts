@@ -7,6 +7,7 @@
 import uke1 from "@/data/uke1_oppdrag.json";
 import uke2 from "@/data/uke2_oppdrag.json";
 import uke3 from "@/data/uke3_oppdrag.json";
+import radioHintJson from "@/data/radio-hint.json";
 import uke4 from "@/data/uke4_oppdrag.json";
 import eventyr from "@/data/eventyr.json";
 import statisk from "@/data/statisk_innhold.json";
@@ -639,6 +640,11 @@ const intArg = (v: unknown, min: number, max: number) => {
   return n;
 };
 
+const radioHint = radioHintJson as {
+  dag: Record<string, { intro_hint?: string; reaksjon_hint?: string }>;
+  host: Record<string, string>;
+};
+
 const read = async () => getStore().getState();
 
 export const TOOLS: Record<string, Tool> = {
@@ -658,7 +664,7 @@ export const TOOLS: Record<string, Tool> = {
   get_clips: {
     level: "read",
     description:
-      "Rampenissens radioklipp for en dato (YYYY-MM-DD), aldri etter i dag.",
+      "Rampenissens radioklipp for en dato (YYYY-MM-DD), aldri etter i dag, med intro_hint/reaksjon_hint fra manus. host_hint: Birk og Lyngs førsesonglinjer 24.–30. november (bare dagens dato).",
     inputSchema: {
       type: "object",
       properties: { date: { type: "string" } },
@@ -673,8 +679,12 @@ export const TOOLS: Record<string, Tool> = {
       const day = m ? Number(m[1]) : 0;
       // A later date would be a spoiler; ISO dates compare as strings.
       const clips =
-        day >= 1 && day <= 24 && d <= today ? [await getClip(day)] : [];
-      return { date: d, clips };
+        day >= 1 && day <= 24 && d <= today
+          ? [{ ...(await getClip(day)), ...radioHint.dag[day] }]
+          : [];
+      // Pre-season chatter only on the day itself, never ahead.
+      const host_hint = d === today ? radioHint.host[d] : undefined;
+      return { date: d, clips, ...(host_hint && { host_hint }) };
     },
   },
   get_letters: {
