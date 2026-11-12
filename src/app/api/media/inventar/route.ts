@@ -5,7 +5,14 @@ import { authorizeMedia, mediaDir, mediaStatus } from "@/lib/media-server";
 
 interface Row {
   path: string;
-  status: "current" | "stale" | "unknown" | "missing" | "kandidat" | "arkiv";
+  status:
+    | "current"
+    | "stale"
+    | "unknown"
+    | "missing"
+    | "valgfri"
+    | "kandidat"
+    | "arkiv";
   reasons: string[];
   meta?: unknown;
 }
@@ -36,7 +43,7 @@ export async function GET(req: NextRequest) {
       if (f.size === null) {
         return {
           path: f.path,
-          status: "missing" as const,
+          status: row?.status === "valgfri" ? row.status : "missing",
           reasons: row?.reasons ?? [],
         };
       }
@@ -66,6 +73,15 @@ export async function GET(req: NextRequest) {
       }
       return { ...row, meta };
     }),
+  );
+  // medier.json jobs with no file yet that the upload manifest does not list
+  const listed = new Set(onDisk.map((f) => f.path));
+  rows.push(
+    ...inv.filter(
+      (r) =>
+        (r.status === "missing" || r.status === "valgfri") &&
+        !listed.has(r.path),
+    ),
   );
   return Response.json(rows);
 }
