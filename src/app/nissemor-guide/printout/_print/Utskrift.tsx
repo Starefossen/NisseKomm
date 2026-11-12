@@ -173,7 +173,11 @@ export function Utskrift({
   const a3 = ark.some((a) => a.a3);
   return (
     <div>
-      <style>{"@page { size: A4; margin: 8mm; }"}</style>
+      <style>
+        {
+          "@page { size: A4; margin: 8mm; } * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }"
+        }
+      </style>
       <div className="print:hidden max-w-[210mm] mx-auto mb-6 border-2 border-(--neon-green) bg-black p-4 space-y-2 text-(--neon-green) font-retro text-xl">
         <h1 className="text-4xl text-(--gold)">{utskriftTittel(navn)}</h1>
         <p>

@@ -12,7 +12,7 @@ export function RunetavleKids() {
         «Tegnene i hjørnet av kortene er Snøfalls gamle skrift. Ett tegn, én
         bokstav. Fyll inn når dere vet.» – IQ
       </p>
-      <div className="grid grid-cols-5 gap-[1.5mm] flex-1">
+      <div className="grid grid-cols-5 grid-rows-6 gap-[1.5mm] flex-1 min-h-0">
         {RUNE_ALPHABET.map((l) =>
           taught.has(l) ? (
             <div key={l} className="border-[0.5mm] border-black p-[1mm]">
@@ -26,7 +26,7 @@ export function RunetavleKids() {
               className="border-[0.5mm] border-gray-400"
             >
               <svg viewBox="0 0 10 10" className="w-full h-full" aria-hidden>
-                <path d="M1 1 9 9M9 1 1 9" stroke="#999" strokeWidth="0.6" />
+                <path d="M1 1 9 9M9 1 1 9" stroke="#555" strokeWidth="0.7" />
               </svg>
             </div>
           ),
