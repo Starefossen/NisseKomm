@@ -638,13 +638,21 @@
     "tilstand": "landsby-natt",
     "valgfri": true
   },
+  "still/port-julius": {
+    "generator": "mellomstill",
+    "sted": "porten",
+    "ut": "assets/out/stills/porten/still-julius.jpg",
+    "bilde": "locations/porten#standard",
+    "mal": "assets/prompts/tv/snofall-landsby/port-julius.still.txt",
+    "refs": ["characters/julius#portrett"]
+  },
   "tv/port-julius": {
     "generator": "loop",
     "sted": "porten",
     "ut": "video/tv/port-julius.mp4",
-    "bilde": "locations/porten#standard",
+    "bilde": "still/port-julius",
     "mal": "assets/prompts/tv/snofall-landsby/port-julius.txt",
-    "anker": true
+    "anker": "locations/porten#standard"
   },
   "tv/port-hjerterud": {
     "generator": "loop",
