@@ -40,6 +40,7 @@ const INFO = {
   "dag17-losepengebrev": ["Løsepengebrev (valgfritt)", 17],
   "dag13-gravskilt": ["Gravskilt", 13],
   "dag20-fortskilt": ["Fortskilt", 20],
+  rampestreker: ["Rampestrek-ark til deling (PNG: mise run strekark)", 0],
 } as const satisfies Record<string, readonly [string, number]>;
 
 export type Utskriftnavn = keyof typeof INFO;
@@ -59,6 +60,7 @@ export function utskriftTittel(navn: string) {
 /** Printouts that have their own page instead of [fil]. */
 export const FERDIGE: Record<string, string> = {
   diplom: "/nissemor-guide/printout/diplom",
+  rampestreker: "/nissemor-guide/printout/rampestreker",
 };
 
 export const utskriftHref = (navn: string) =>

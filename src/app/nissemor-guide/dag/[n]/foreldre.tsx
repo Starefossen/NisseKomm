@@ -251,6 +251,14 @@ export function Rampestrek({
               <b>Gåten ligger et annet sted: se Gåtekart</b>
             )}
           </p>
+          <p>
+            <Link
+              href="/nissemor-guide/printout/rampestreker"
+              className="underline min-h-11 inline-flex items-center"
+            >
+              Alle skissene på ett ark (til deling)
+            </Link>
+          </p>
         </div>
       </div>
       <Vurder id={`dag/${String(n).padStart(2, "0")}/rampestrek`} />

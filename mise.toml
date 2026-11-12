@@ -186,3 +186,7 @@ run = "scripts/port.sh"
 description = "Spill gjennom dager i WebKit med iPad-oppsett (1180x820 landscape)"
 env = { MEDIA_DIR = "/Users/hans/go/src/github.com/starefossen/NisseKomm/public" }
 run = "node scripts/gjennomspilling-webkit.mjs"
+
+[tasks.strekark]
+description = "Rampestrek-arkene som PNG (BASE_URL til kjørende server, UT=mappe)"
+run = "node scripts/strekark.mjs"
