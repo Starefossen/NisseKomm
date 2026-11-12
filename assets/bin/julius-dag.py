@@ -341,7 +341,7 @@ def main():
         if a == "--cutaway":
             f, k, s = (sys.argv[i + 1].split(":") + ["", ""])[:3]
             cuts.append((f, int(k) if k else worst_cut([OUT / f"{n}.raw.mp4" for n in names]), float(s or CUTAWAY)))
-    join([OUT / f"{n}.mp4" for n in names], dest, [(s[3], s[0], s[4]) for s in segs], cuts, arg("--plakat"))
+    join([OUT / f"{n}.mp4" for n in names], dest, [(s[3], s[0], s[4]) for s in segs], cuts, arg("--plakat"), "--no-trim" not in sys.argv)
     subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-ss", "3", "-i", str(dest), "-frames:v", "1",
                     "-q:v", "3", str(dest.with_suffix(".jpg"))], check=True)
     if not promo:
@@ -463,32 +463,62 @@ def worst_cut(raws) -> int:
     return scores.index(min(scores)) + 1
 
 
+LEAD, TRAIL = 0.25, 0.35  # silence kept before the first and after the last word when trimming
+
+
+def speech_span(clip: Path, dur: float):
+    """(start, end) to keep: leading and trailing silence cut to LEAD/TRAIL around the speech.
+
+    Sounds under 0.2 s at the edges (a click, a breath) count as silence.
+    -38 dB sits above the filtered room tone and crackle (-55 to -45); a word ending that fades below it
+    is inside the TRAIL margin."""
+    out = subprocess.run(["ffmpeg", "-nostdin", "-i", str(clip), "-vn", "-af", "silencedetect=n=-38dB:d=0.3", "-f", "null", "-"],
+                         capture_output=True, text=True).stderr
+    sil = [[float(a), float(b)] for a, b in re.findall(r"silence_start: (-?[\d.]+)[\s\S]*?silence_end: ([\d.]+)", out)]
+    if (m := re.findall(r"silence_start: ([\d.]+)", out)) and len(m) > len(sil):
+        sil.append([float(m[-1]), dur])  # silence running to the end has no silence_end
+    # ponytail: laughter and breathing louder than -38 dB count as speech; needs VAD or transcript timing
+    speech = [(a[1], b[0]) for a, b in zip([[0, 0]] + sil, sil + [[dur, dur]]) if b[0] - a[1] > 0.005]
+    while len(speech) > 1 and speech[0][1] - speech[0][0] < 0.2:
+        speech.pop(0)
+    while len(speech) > 1 and speech[-1][1] - speech[-1][0] < 0.2:
+        speech.pop()
+    if not speech:
+        return 0.0, dur
+    return max(0.0, speech[0][0] - LEAD), min(dur, speech[-1][1] + TRAIL)
+
+
 PLAKAT = 2.0  # seconds of end card after the last segment (promo)
 
 
-def join_graph(dur, kulde=None, cuts=(), plakat=False):
+def join_graph(dur, kulde=None, cuts=(), plakat=False, span=None):
     """The filter graph for join; kulde = [(kulde, line, locked)] per segment adds Kulde's effects;
     cuts = [(k, secs)] lays inputs n, n+1, … (TV loops, screen recordings) over cut k for secs, picture only:
     from the start of segment k's silent tail, so no word is lost; k = n covers the last tail.
-    plakat = input after the cutaways (a still) held PLAKAT s at the end."""
+    plakat = input after the cutaways (a still) held PLAKAT s at the end;
+    span = [(start, end)] per segment trims each clip after its effects (they keep the clip's own timeline)."""
     n = len(dur)
+    span = span or [(0.0, d) for d in dur]
+    full, dur = dur, [b - a for a, b in span]
+    tail = TRAIL if any(a > 0 or b < d for (a, b), d in zip(span, full)) else TAIL  # silence left after the last word
     w, h = int(1280 / 1.15) // 2 * 2, int(720 / 1.15) // 2 * 2
     fc, drained = "", False
     for i in range(n):
         vf, af, stutter = [], [], None
         if kulde:
-            vf, af, stutter, drained, _ = kulde_fx(*kulde[i], dur[i], drained)
+            vf, af, stutter, drained, _ = kulde_fx(*kulde[i], full[i], drained)
         fx = "".join("," + f for f in vf)
+        tv = f"trim=start={span[i][0]:.3f}:end={span[i][1]:.3f},setpts=PTS-STARTPTS"
         crop = f",crop={w}:{h}:(iw-{w})*0.6:(ih-{h})*0.25,scale=1280:720,setsar=1" if i % 2 else ""
         if stutter is None:
-            fc += f"[{i}:v]fps=24,scale=1280:720,setsar=1{fx}{crop},setpts=PTS-STARTPTS,format=yuv420p[v{i}];"
+            fc += f"[{i}:v]fps=24,scale=1280:720,setsar=1{fx}{crop},{tv},format=yuv420p[v{i}];"
         else:  # a 0.4 s hold from a 2.5 fps copy laid over the clip: the picture hangs, the sound runs on
             fc += (f"[{i}:v]fps=24,scale=1280:720,setsar=1{fx}{crop},split[s{i}][h{i}];[h{i}]fps=2.5,fps=24[q{i}];"
                    f"[s{i}][q{i}]overlay=enable='between(t,{stutter:.2f},{stutter + 0.4:.2f})',"
-                   f"setpts=PTS-STARTPTS,format=yuv420p[v{i}];")
+                   f"{tv},format=yuv420p[v{i}];")
         # ponytail: one-pass loudnorm per segment; two-pass (measure, then linear) if levels pump audibly
         afx = "".join("," + f for f in af)
-        fc += f"[{i}:a]loudnorm=I=-16:TP=-2:LRA=11{afx},aresample=48000,aformat=channel_layouts=stereo[a{i}];"
+        fc += f"[{i}:a]loudnorm=I=-16:TP=-2:LRA=11{afx},atrim=start={span[i][0]:.3f}:end={span[i][1]:.3f},asetpts=PTS-STARTPTS,aresample=48000,aformat=channel_layouts=stereo[a{i}];"
     vprev, aprev, t = "v0", "a0", 0.0
     for i in range(1, n):
         t += dur[i - 1] - XFADE
@@ -497,12 +527,12 @@ def join_graph(dur, kulde=None, cuts=(), plakat=False):
         vprev, aprev = f"y{i}", f"x{i}"
     total = sum(dur) - (n - 1) * XFADE
     ends = [sum(dur[:k]) - (k - 1) * XFADE for k in range(1, n + 1)]
-    over = max([0.0] + [ends[k - 1] - TAIL + s - total for k, s in cuts]) + (PLAKAT if plakat else 0)
+    over = max([0.0] + [ends[k - 1] - tail + s - total for k, s in cuts]) + (PLAKAT if plakat else 0)
     if over > 0:  # the last cutaway or the end card runs past Julius: hold his last frame, pad the sound
         fc += f"[{vprev}]tpad=stop_mode=clone:stop_duration={over:.3f}[vp];[{aprev}]apad=pad_dur={over:.3f}[ap];"
         vprev, aprev = "vp", "ap"
     for j, (k, s) in enumerate(cuts):
-        at = ends[k - 1] - TAIL if len(cuts) > 1 or k == n else ends[k - 1] - XFADE / 2 - s / 2
+        at = ends[k - 1] - tail if len(cuts) > 1 or k == n else ends[k - 1] - XFADE / 2 - s / 2
         fc += (f"[{n + j}:v]fps=24,scale=1280:720,setsar=1,trim=duration={s},format=yuv420p,"
                f"fade=t=in:d=0.15,fade=t=out:st={s - 0.15}:d=0.15,setpts=PTS-STARTPTS+{at:.3f}/TB[c{j}];"
                f"[{vprev}][c{j}]overlay=eof_action=pass[vc{j}];")
@@ -515,12 +545,13 @@ def join_graph(dur, kulde=None, cuts=(), plakat=False):
     return fc + f"[{aprev}]alimiter=limit=0.84:level=false[a]"  # 0.84 ≈ -1.5 dBTP
 
 
-def join(segs, dest: Path, kulde=None, cutaways=(), plakat=None):
+def join(segs, dest: Path, kulde=None, cutaways=(), plakat=None, trim=True):
     """Alternating framing (every other segment a 1.15x crop) with 0.25 s crossfades in the silent tail,
     each segment levelled to -16 LUFS and the whole day limited to -1.5 dBTP.
     cutaways = [(file, cut number, secs)] laid over cuts; plakat = still image shown PLAKAT s at the end."""
     dur = [float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(p)])) for p in segs]
-    fc = join_graph(dur, kulde, [(k, s) for _, k, s in cutaways], bool(plakat))
+    span = [speech_span(p, d) for p, d in zip(segs, dur)] if trim else None
+    fc = join_graph(dur, kulde, [(k, s) for _, k, s in cutaways], bool(plakat), span)
     extra = sum((["-stream_loop", "-1", "-i", str(f)] for f, _, _ in cutaways), [])
     if plakat:
         extra += ["-loop", "1", "-i", str(plakat)]
@@ -564,6 +595,13 @@ def selftest():
         subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-f", "lavfi", "-i", "color=s=320x180", "-frames:v", "1", str(png)], check=True)
         join(clips, Path(d) / "promo.mp4", None, [(clips[0], 1, 1.0), (clips[1], 3, 3.0)], png)
         assert abs(seconds(Path(d) / "promo.mp4") - (6 - 2 * XFADE + 3 - TAIL + PLAKAT)) < 0.2
+        q = Path(d) / "q.mp4"  # 1 s silence, 0.05 s click, 1 s tone, 2 s silence
+        subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-f", "lavfi", "-i", "testsrc=s=320x180:d=4", "-f", "lavfi", "-i",
+                        "aevalsrc='if(between(t,0.4,0.45)+between(t,1,2),sin(2*PI*440*t),0)':d=4", "-shortest", str(q)], check=True)
+        a, b = speech_span(q, 4.0)
+        assert abs(a - (1 - LEAD)) < 0.05 and abs(b - (2 + TRAIL)) < 0.05, (a, b)
+        join(clips[:1] + [q], Path(d) / "t.mp4")
+        assert abs(seconds(Path(d) / "t.mp4") - (2 + (b - a) - XFADE)) < 0.15
     print("selftest ok")
 
 
