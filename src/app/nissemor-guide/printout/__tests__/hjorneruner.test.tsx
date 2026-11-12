@@ -111,3 +111,22 @@ describe("hjørnerunene (Meta 1)", () => {
       expect([c, før.has(c), app.has(c)]).toEqual([c, true, true]);
   });
 });
+
+// The card's 40 mm letter must not leak into the corner: sizes are inline mm.
+it.each(Object.keys(KORT))(
+  "%s: klipphjørnet har eksplisitt mm-størrelse",
+  (navn) => {
+    const el = document.createElement("div");
+    const Side = SIDER[navn];
+    act(() => createRoot(el).render(<Side />));
+    for (const h of el.querySelectorAll<HTMLElement>("[data-klipp]")) {
+      expect(h.style.fontSize).toBe("2.5mm");
+      expect(h.style.width).toBe("25mm");
+      const t = h.querySelector<HTMLElement>("[data-klipp-tekst]")!;
+      expect(t.style.fontSize).toBe("2.5mm");
+      expect(
+        h.querySelector("svg[role=img]")?.getAttribute("width"),
+      ).toBeTruthy();
+    }
+  },
+);

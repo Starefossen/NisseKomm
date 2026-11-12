@@ -85,12 +85,29 @@ export function Klipphjorne({
     <div
       data-klipp={letter}
       className={`absolute ${PLASS[hjorne]} ${kant} border-dotted border-black bg-white flex flex-col items-center justify-center font-retro`}
-      style={{ width: `${HJORNE}mm`, height: `${HJORNE}mm` }}
+      // Inline mm, not Tailwind classes or em: the card's 40 mm letter must
+      // never leak into the corner (Safari showed «klipp» at card size).
+      style={{
+        width: `${HJORNE}mm`,
+        height: `${HJORNE}mm`,
+        fontSize: "2.5mm",
+        lineHeight: 1,
+      }}
     >
       <Frostrune letter={letter} size={40} />
-      <span className="flex items-center gap-[0.8mm] text-[2.8mm] leading-none text-gray-500">
+      <span
+        data-klipp-tekst
+        className="flex items-center text-gray-500"
+        style={{ fontSize: "2.5mm", gap: "0.8mm", marginTop: "1mm" }}
+      >
         {/* Scissors: two rings and crossed blades. */}
-        <svg viewBox="0 0 10 10" className="w-[3mm] h-[3mm]" aria-hidden>
+        <svg
+          viewBox="0 0 10 10"
+          width="10"
+          height="10"
+          style={{ width: "3mm", height: "3mm" }}
+          aria-hidden
+        >
           <g fill="none" stroke="currentColor" strokeWidth="1">
             <circle cx="2.2" cy="2.5" r="1.6" />
             <circle cx="2.2" cy="7.5" r="1.6" />
