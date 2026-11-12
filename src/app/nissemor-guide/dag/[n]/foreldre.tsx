@@ -254,8 +254,10 @@ export function Rampestrek({
       id="rampestrek"
       tittel={`Rampestrek (${d.strek.minutter} min, ${d.strek.type})`}
     >
-      <div className="flex flex-col gap-4 md:flex-row">
-        <div className="flex-1 space-y-2">
+      {/* Sketch floats right of the text on desktop; on a phone it sits small under it */}
+      <div className="flex flex-col gap-4 md:flow-root">
+        <Skisse key={n} n={n} />
+        <div className="space-y-2">
           <p>{t(d.strek.tekst)}</p>
           <p>
             <b>Materialer:</b> {d.strek.materialer}
@@ -264,7 +266,6 @@ export function Rampestrek({
             <b>Bærer dagens brikke:</b> {d.strek.brikke}
           </p>
         </div>
-        <Skisse key={n} n={n} />
       </div>
       <Vurder id={`dag/${String(n).padStart(2, "0")}/rampestrek`} />
     </Seksjon>
@@ -277,7 +278,13 @@ function Skisse({ n }: { n: number }) {
   const src = `/media/strek/dag${String(n).padStart(2, "0")}.png`;
   if (!finnes) return null;
   return (
-    <a href={src} target="_blank" rel="noreferrer" className="md:w-1/3">
+    <a
+      href={src}
+      target="_blank"
+      rel="noreferrer"
+      className="order-last w-40 md:float-right md:mb-2 md:ml-4 md:w-60"
+      title="Åpne i full størrelse"
+    >
       {/* eslint-disable-next-line @next/next/no-img-element -- MEDIA_DIR, not in the build */}
       <img
         src={src}

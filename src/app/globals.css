@@ -1,4 +1,6 @@
-@import "tailwindcss";
+/* Scan only src/: auto-detection from the repo root also walks public/ media,
+   assets/ and docs/, and in the main checkout missed guide classes (md:flex-row). */
+@import "tailwindcss" source("../");
 
 :root {
   /* Two temperatures (stil.md): warm Snøfall, cold Kulde. --frost (0–1) is set
