@@ -1,0 +1,43 @@
+# Selmas far
+
+```json
+{
+  "id": "selmas-far",
+  "navn": ["Selmas far"],
+  "pronomen": "han",
+  "fra_dag": 25,
+  "refs": {},
+  "notat": "kanon fra Hans 13.11.2026, ikke med i årets historie; fra_dag 25 gjør at entiteter.test.ts feiler hvis navnet havner i tekst barna ser i 2026",
+  "forhold": {
+    "julius": "sønnen hans",
+    "selma": "faren hennes"
+  },
+  "fakta": [
+    {
+      "fra_dag": 25,
+      "tekst": "Julius' sønn; forlot Snøfall for Verden Utenfor (VU) av kjærlighet"
+    },
+    {
+      "fra_dag": 25,
+      "tekst": "er med gjennom minner og brev: brevene, gjenstandene og sporene etter ham binder verdenene sammen"
+    }
+  ],
+  "ikke": []
+}
+```
+
+## Utseende
+
+Ikke beskrevet av Hans ennå.
+
+## Personlighet
+
+Ikke beskrevet av Hans ennå.
+
+## Stemme
+
+Ikke beskrevet av Hans ennå.
+
+## Navnet
+
+Hans' tekst kaller ham Håkon. Navnet står ikke i `navn`, for det er også navnet til sønnen i familien (9 år), som nevnes i tekst barna ser hver dag, og `docs/beslutninger.md` sier «Serie-Håkon brukes ikke, fordi han har samme navn som sønnen». Hans avgjør om han skal hete Håkon i tekst barna ser.

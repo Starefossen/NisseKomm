@@ -15,13 +15,18 @@
   "forhold": {
     "julius": "sjef",
     "iq": "kollega, irritert over rot",
+    "froya": "bibliotekaren i Lærdommens hus; han er overbibliotekar",
     "barna": "krever skjemaer, blir mild når alt er i orden",
     "brevfuglene": "arkiverer brevene de kommer med; hovedjobben hans er arkivet over hva alle barn ønsker seg til jul"
   },
   "fakta": [
     {
       "fra_dag": 1,
-      "tekst": "Julius' sekretær og sjef for pakkesentralen; hovedjobben er arkivet: han tømmer postkassen og arkiverer brevene fra brevfuglene, så alt barna ønsker seg til jul står i arkivet"
+      "tekst": "overbibliotekar i Lærdommens hus, der Frøya er bibliotekar (ikke med i årets historie)"
+    },
+    {
+      "fra_dag": 1,
+      "tekst": "Julius' sekretær og sjef for pakkesentralen; hovedjobben er arkivet: han tømmer postkassen og arkiverer brevene fra brevfuglene, så alt barna ønsker seg til jul står i arkivet; han loggfører ønskene som samles inn på torget"
     },
     {
       "fra_dag": 5,

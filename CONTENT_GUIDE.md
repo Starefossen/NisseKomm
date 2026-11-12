@@ -126,6 +126,22 @@ Generated from `assets/characters/<id>/entitet.md`, the one source for look, per
 - **Forhold:** rampenissen: laget henne av garnrester på IQs loft; hun er øynene hans i Snøfall; barna: barna styrer henne gjennom IQs kameraer i Ugleposten; iq: kameraene hans sender det hun ser til skjermen på Landås
 - **Aldri:** «Knerten», «Flokke»
 
+#### Frida (`assets/characters/frida/entitet.md`)
+
+- **Navn:** Frida; **pronomen:** hun; **fra dag:** 25
+- **Personlighet:** Vennlig og modig.
+- **Stemme:** Ikke beskrevet av Hans ennå.
+- **Forhold:** selma: nærmeste allierte; pil: nærmeste allierte
+- **Aldri:**
+
+#### Frøya (`assets/characters/froya/entitet.md`)
+
+- **Navn:** Frøya; **pronomen:** hun; **fra dag:** 25
+- **Personlighet:** Tålmodig, sindig og dypt kunnskapsrik. Der Winter er opptatt av dagens paragrafer og skjemaer, tenker Frøya i lange linjer, tradisjoner og gammel visdom. Hun dømmer aldri nysgjerrige spørsmål.
+- **Stemme:** Dempet og trygg.
+- **Forhold:** winter: overbibliotekaren; han tenker i paragrafer og skjemaer, hun i lange linjer; julius: vokter Mørkeboka sammen med ham; barna: dømmer aldri nysgjerrige spørsmål
+- **Aldri:** «Frøja», «Freya», «Freja»
+
 #### Hjerterud (`assets/characters/hjerterud/entitet.md`)
 
 - **Navn:** Hjerterud; **pronomen:** hun; **fra dag:** 1
@@ -158,6 +174,14 @@ Generated from `assets/characters/<id>/entitet.md`, the one source for look, per
 - **Forhold:** iq: læremester; Pil er lærlingen hans i verkstedet; hjerterud: baker sammen med henne; julius: sitter i døra på kontoret og tegner krystaller for ham
 - **Aldri:** «Pila», «jenta Pil», «Pil, hun»
 
+#### Portvokterne i Snøfall (`assets/characters/portvokterne/entitet.md`)
+
+- **Navn:** Portvokterne i Snøfall; **pronomen:** de; **fra dag:** 25
+- **Personlighet:** Ikke beskrevet av Hans ennå.
+- **Stemme:** Ikke beskrevet av Hans ennå.
+- **Forhold:** trixter: en av vaktene
+- **Aldri:**
+
 #### Rampenissen (`assets/characters/rampenissen/entitet.md`)
 
 - **Navn:** Rampenissen; **pronomen:** han; **fra dag:** 1
@@ -166,12 +190,36 @@ Generated from `assets/characters/<id>/entitet.md`, the one source for look, per
 - **Forhold:** julius: sjef; iq: beundrer oppfinnelsene; barna: feltagent hos familien på Landås; ser etter dem og rapporterer til Julius; trenger hjelpen deres
 - **Aldri:** «Rampe-nissen», «RampeNissen»
 
+#### Ruth (`assets/characters/ruth/entitet.md`)
+
+- **Navn:** Ruth; **pronomen:** hun; **fra dag:** 25
+- **Personlighet:** Streng, men omsorgsfull.
+- **Stemme:** Ikke beskrevet av Hans ennå.
+- **Forhold:** selma: vergen hennes
+- **Aldri:**
+
+#### Selma (`assets/characters/selma/entitet.md`)
+
+- **Navn:** Selma; **pronomen:** hun; **fra dag:** 25
+- **Personlighet:** Sammen med Frida og Pil avslører hun hemmeligheter og trosser forbud når de voksne ikke ser hele bildet.
+- **Stemme:** Ikke beskrevet av Hans ennå.
+- **Forhold:** julius: barnebarn og rettmessig arving til nisserollen; pil: nær alliert; frida: nær alliert; ruth: vergen hennes i Verden Utenfor; winter: hun utløser konflikten med ham
+- **Aldri:**
+
+#### Selmas far (`assets/characters/selmas-far/entitet.md`)
+
+- **Navn:** Selmas far; **pronomen:** han; **fra dag:** 25
+- **Personlighet:** Ikke beskrevet av Hans ennå.
+- **Stemme:** Ikke beskrevet av Hans ennå.
+- **Forhold:** julius: sønnen hans; selma: faren hennes
+- **Aldri:**
+
 #### Winter (`assets/characters/winter/entitet.md`)
 
 - **Navn:** Winter, Ole Winter; **pronomen:** han; **fra dag:** 1
 - **Personlighet:** Pedantisk og formell. Arkivet over barnas juleønsker er hovedjobben hans, og det viktigste han vet om. Aldri kald eller uvennlig: han brenner for at alt skal bli riktig, og blir synlig lettet, nesten mild, når alt er godkjent.
 - **Stemme:** Presist og forretningsmessig, i paragrafer og lister («Paragraf 101»), med skjemanumre (4112-B). Flosshatten bare ved porten og når han opptrer formelt (FLOSSHATT i beskrivelse.txt). Skriftlig: bokmål. Muntlig (hvis han noen gang får stemme i TTS eller video): typisk bergensk, med skarre-r, «eg», «ikkje» og bergensk tonefall, men like presist og formelt. Replikkene hans i Ugleposten er lett bergensk (beslutning 2026-11-11): «eg», «ikkje», «kor», ellers bokmål, så en niåring leser dem uten å stoppe.
-- **Forhold:** julius: sjef; iq: kollega, irritert over rot; barna: krever skjemaer, blir mild når alt er i orden; brevfuglene: arkiverer brevene de kommer med; hovedjobben hans er arkivet over hva alle barn ønsker seg til jul
+- **Forhold:** julius: sjef; iq: kollega, irritert over rot; froya: bibliotekaren i Lærdommens hus; han er overbibliotekar; barna: krever skjemaer, blir mild når alt er i orden; brevfuglene: arkiverer brevene de kommer med; hovedjobben hans er arkivet over hva alle barn ønsker seg til jul
 - **Aldri:** «Ole Vinter», «fru Winter», «frøken Winter»
 
 <!-- entiteter:slutt -->

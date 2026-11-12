@@ -519,7 +519,7 @@ def entiteter(root: Path = ROOT):
                   f"- **Personlighet:** {sek['Personlighet']}",
                   f"- **Stemme:** {voice}",
                   f"- **Forhold:** {'; '.join(f'{k}: {v}' for k, v in c['forhold'].items())}",
-                  f"- **Aldri:** {', '.join(f'«{x}»' for x in c['ikke'])}", ""]
+                  f"- **Aldri:** {', '.join(f'«{x}»' for x in c['ikke'])}".rstrip(), ""]  # no trailing space when the list is empty
     return json.dumps(fx, ensure_ascii=False, indent=2) + "\n", "\n".join(lines + [MARK[1]])
 
 

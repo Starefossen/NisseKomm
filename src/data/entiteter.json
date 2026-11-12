@@ -7,6 +7,20 @@
     "ikke": ["Knerten", "Flokke"]
   },
   {
+    "id": "frida",
+    "navn": ["Frida"],
+    "pronomen": "hun",
+    "fra_dag": 25,
+    "ikke": []
+  },
+  {
+    "id": "froya",
+    "navn": ["Frøya"],
+    "pronomen": "hun",
+    "fra_dag": 25,
+    "ikke": ["Frøja", "Freya", "Freja"]
+  },
+  {
     "id": "hjerterud",
     "navn": ["Hjerterud"],
     "pronomen": "hun",
@@ -44,11 +58,39 @@
     "ikke": ["Pila", "jenta Pil", "Pil, hun"]
   },
   {
+    "id": "portvokterne",
+    "navn": ["Portvokterne i Snøfall"],
+    "pronomen": "de",
+    "fra_dag": 25,
+    "ikke": []
+  },
+  {
     "id": "rampenissen",
     "navn": ["Rampenissen"],
     "pronomen": "han",
     "fra_dag": 1,
     "ikke": ["Rampe-nissen", "RampeNissen"]
+  },
+  {
+    "id": "ruth",
+    "navn": ["Ruth"],
+    "pronomen": "hun",
+    "fra_dag": 25,
+    "ikke": []
+  },
+  {
+    "id": "selma",
+    "navn": ["Selma"],
+    "pronomen": "hun",
+    "fra_dag": 25,
+    "ikke": []
+  },
+  {
+    "id": "selmas-far",
+    "navn": ["Selmas far"],
+    "pronomen": "han",
+    "fra_dag": 25,
+    "ikke": []
   },
   {
     "id": "winter",
