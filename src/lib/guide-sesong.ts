@@ -123,6 +123,8 @@ export function kveldDag(n: number) {
     tittel: ren(blokk.split("\n")[0].replace(/^#+ Dag \d+ \(\S+\) – /, "")),
     mekanikk: felt("Mekanikk"),
     brikkeH: felt("Brikke H"),
+    /** H1… in the Gåtekart, plain text for the setup checklist. */
+    hus: setninger(felt("Brikke H")).map(ren),
     brikkeS: felt("Brikke S"),
     slikLoses: felt("Slik løses den")
       .split(/(?:^|\s)\d+\)\s+/)
@@ -508,7 +510,17 @@ const setninger = (s: string) =>
   s
     .replace(/`/g, "")
     .replace(/\u2744\uFE0F?/g, "✱")
+    // Never split inside «…»: a quoted line stays one piece.
     .split(/(?<=[.!?»])\s+(?=[A-ZÆØÅ«*0-9])/)
+    .reduce<string[]>((acc, x) => {
+      const forrige = acc.at(-1);
+      const aapen = (t: string) =>
+        (t.match(/«/g) ?? []).length > (t.match(/»/g) ?? []).length;
+      if (forrige !== undefined && aapen(forrige))
+        acc[acc.length - 1] += ` ${x}`;
+      else acc.push(x);
+      return acc;
+    }, [])
     .map((x) => x.trim())
     .filter(Boolean);
 

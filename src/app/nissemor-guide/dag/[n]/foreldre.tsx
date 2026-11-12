@@ -75,9 +75,7 @@ export function Foreldredel({
   const bonusOk = GameEngine.isBonusOppdragCompleted(q);
 
   // Same strings as the house pieces in the Gåtekart, so H1… match.
-  const hus = d.brikkeH
-    .split(/(?<=[.!?»])\s+(?=[A-ZÆØÅ«0-9])/)
-    .map((x, i) => `H${i + 1}: ${x}`);
+  const hus = d.hus.map((x, i) => `H${i + 1}: ${x}`);
   const punkter = [
     ...(plan?.byggeplan.flatMap((b) =>
       b.steg.map(
