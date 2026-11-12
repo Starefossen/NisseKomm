@@ -423,8 +423,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
   - Fjernkontrollen med O i brødboksen, tannbørsteglasset med E i bestikkskuffen
   - Brødposen med I i TV-benken, ostehøvelen med K i badeskapet
   - Tallapper: 2 i TV-benken, 5 på badehyllen, 7 i brødboksen
-  - Rutekortet i brødboksen under Rampenissen
-  - Lapp på brødbokslokket: «Jeg har ryddet! … – R»
+  - Rutekortet i brødboksen, lapp på lokket: «Jeg har ryddet! … – R»
   - Syltetøyglass og batterilys til lykten i vinduet mot nord (bonus)
   - Rampestrek: Rampenissen i brødboksen med lokket på hodet
 - **Materialer:** teip, lappene, fjernkontroll, tannbørsteglass, brødpose, ostehøvel, brødboks. Bonus: syltetøyglass, batterilys.
@@ -518,8 +517,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
   - Skriv ut: `dag20-putekort.pdf`, `dag20-fortskilt.pdf`
   - Skriv ut reservesett: `dag20-putekort.pdf`
   - Fem puter i tydelig ulik størrelse, hulter til bulter i fortet
-  - Kort under hver pute etter prikkene bak: 1 under den største
-  - Grønt måne-kort under den minste puten
+  - Kort etter prikkene bak: 1 under største pute, måne-kortet under minste
   - Lapp ved inngangen: «Putene lå etter størrelse … Så veltet jeg. Unnskyld. – R»
   - Finn fram 8 bøker til i morgen
   - Rampestrek: teppefort over to stoler med skilt, hodetelefoner og popcorn
