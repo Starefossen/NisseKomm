@@ -71,12 +71,12 @@ describe("/api/state", () => {
     expect((await call("GET")).json).toEqual({});
   });
 
-  it("merges solved codes from two screens by day", async () => {
-    const a = { kode: "SIGNAL", dato: "x", day: 1 };
-    const b = { kode: "48", dato: "y", day: 2 };
-    await call("PUT", { key: "nissekomm-codes", value: [a] });
-    await call("PUT", { key: "nissekomm-codes", value: [b] });
-    expect((await call("GET")).json).toEqual({ "nissekomm-codes": [a, b] });
+  it("merges a list key from two screens", async () => {
+    await call("PUT", { key: "nissekomm-julius-watched", value: [1] });
+    await call("PUT", { key: "nissekomm-julius-watched", value: [2] });
+    expect((await call("GET")).json).toEqual({
+      "nissekomm-julius-watched": [1, 2],
+    });
   });
 });
 
@@ -155,18 +155,22 @@ describe("Postgres store (pg-mem)", () => {
 });
 
 describe("/api/state removals and validation", () => {
-  it("rejects codes that are not the real code for their day", async () => {
-    const fake = await call("PUT", {
-      key: "nissekomm-codes",
-      value: [{ kode: "JUKS", dato: "x", day: 1 }],
-    });
-    expect(fake.status).toBe(400);
-    const wrongDay = await call("PUT", {
-      key: "nissekomm-codes",
-      value: [{ kode: "SIGNAL", dato: "x", day: 2 }],
-    });
-    expect(wrongDay.status).toBe(400);
+  it("never takes solved codes from a client, real or not: no code oracle", async () => {
+    for (const value of [
+      [{ kode: "JUKS", dato: "x", day: 1 }],
+      [{ kode: "SIGNAL", dato: "x", day: 1 }],
+      [{ kode: "SIGNAL" }],
+    ]) {
+      const res = await call("PUT", { key: "nissekomm-codes", value });
+      expect(res.status).toBe(400);
+    }
     expect((await call("GET")).json).toEqual({});
+    const clear = await call("PUT", {
+      key: "nissekomm-codes",
+      value: null,
+      replace: true,
+    });
+    expect(clear.status).toBe(200);
   });
 
   it("replace shrinks a list and stale versions get 409", async () => {

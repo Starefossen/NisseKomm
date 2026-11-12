@@ -107,6 +107,8 @@ interface QuestResult {
   bonusDag?: number;
   /** Too many tries: seconds to wait (the server's rate limit). */
   ventSek?: number;
+  /** The check never got an answer (network, server error): not a wrong code. */
+  nettfeil?: boolean;
 }
 
 interface ContentUnlockResult {
@@ -283,6 +285,7 @@ export class GameEngine {
         success: false,
         isNewCompletion: false,
         message: "KUNNE IKKE SJEKKE KODEN - PRØV IGJEN",
+        nettfeil: true,
       };
     }
     if (!svar.ok) {

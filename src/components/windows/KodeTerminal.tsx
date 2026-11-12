@@ -155,7 +155,9 @@ export function KodeTerminal({
           : 0;
 
       setFailedAttempts(currentFailedAttempts);
-      if (result.ventSek) {
+      if (result.nettfeil) {
+        setTull("Linjen hakker, prøv igjen.");
+      } else if (result.ventSek) {
         setTull("FOR MANGE FORSØK. KODETERMINALEN MÅ KJØLE SEG NED ET MINUTT.");
       } else {
         setTull(rotate(TIDBITS.terminal.feilKode, jokeIndex, getCurrentDay()));

@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 /**
  * Fails when a day code reaches the client: any code (case-insensitive, whole
- * word), a `"kode":"…"` pair or a `foreldre_kode` key in .next/static or in
- * the prerendered HTML. Codes are never printed, only the day and file.
+ * word), a `"kode":"…"` pair (also escaped inside a JSON string) or a
+ * `foreldre_kode` key in .next/static, the prerendered files, or the HTML
+ * that `next start` in public mode serves for the public pages (every page is
+ * dynamic, so that HTML only exists when served). Codes are never printed,
+ * only the day and the file.
  *
  * Not searched as words: number codes (every minified constant would match;
  * the "kode" pair still catches the data), and the codes in STORYORD, which
@@ -13,7 +16,8 @@
  *   node scripts/sjekk-klientkoder.mjs          # checks the existing .next
  *   node scripts/sjekk-klientkoder.mjs --build  # NISSEKOMM_MODE=public build first
  */
-import { execSync } from "node:child_process";
+import { execSync, spawn } from "node:child_process";
+import { createServer } from "node:net";
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { join } from "node:path";
 
@@ -81,22 +85,72 @@ if (!html.some((f) => f.includes("/static/"))) {
   process.exit(2);
 }
 
+// Turbopack writes non-ASCII as \xNN or \uNNNN; JSON inside strings escapes quotes.
 const avkod = (s) =>
-  s.replace(/\\u([0-9a-fA-F]{4})/g, (_, h) =>
-    String.fromCharCode(parseInt(h, 16)),
-  );
+  s
+    .replace(/\\u([0-9a-fA-F]{4})/g, (_, h) =>
+      String.fromCharCode(parseInt(h, 16)),
+    )
+    .replace(/\\x([0-9a-fA-F]{2})/g, (_, h) =>
+      String.fromCharCode(parseInt(h, 16)),
+    )
+    .replace(/\\+(["'`])/g, "$1");
 let funn = 0;
-for (const f of html) {
-  const tekst = avkod(readFileSync(f, "utf8"));
+const sjekk = (navnFil, innhold) => {
+  const tekst = avkod(innhold);
   for (const [navn, re] of søk) {
     if (re.test(tekst)) {
       funn++;
-      console.error(`LEKKASJE: ${navn} i ${f.slice(rot.length)}`);
+      console.error(`LEKKASJE: ${navn} i ${navnFil}`);
     }
   }
+};
+for (const f of html) sjekk(f.slice(rot.length), readFileSync(f, "utf8"));
+
+// The public pages as `next start` serves them in public mode, without login.
+const port = await new Promise((r) => {
+  const srv = createServer().listen(0, () => {
+    const p = srv.address().port;
+    srv.close(() => r(p));
+  });
+});
+const server = spawn("node_modules/.bin/next", ["start", "-p", String(port)], {
+  cwd: rot,
+  env: {
+    ...process.env,
+    NISSEKOMM_MODE: "public",
+    KID_CODE: "sjekk sjekk sjekk",
+    DATABASE_URL: "",
+  },
+  stdio: "ignore",
+});
+const SIDER = ["/", "/nissemor-guide", "/nissemor-guide/printout/runetavle"];
+let sider = 0;
+try {
+  for (let i = 0; i < 60; i++) {
+    try {
+      await fetch(`http://localhost:${port}/`);
+      break;
+    } catch {
+      await new Promise((r) => setTimeout(r, 500));
+    }
+  }
+  for (const s of SIDER) {
+    const r = await fetch(`http://localhost:${port}${s}`);
+    sjekk(`GET ${s} (${r.status})`, await r.text());
+    sider++;
+  }
+} finally {
+  server.kill();
+}
+if (sider !== SIDER.length) {
+  console.error("Fikk ikke hentet de offentlige sidene fra next start");
+  process.exit(2);
 }
 if (funn) {
   console.error(`${funn} lekkasje(r) av dagskoder til klienten.`);
   process.exit(1);
 }
-console.log(`OK: ingen dagskoder i ${html.length} klientfiler.`);
+console.log(
+  `OK: ingen dagskoder i ${html.length} klientfiler og ${sider} offentlige sider.`,
+);

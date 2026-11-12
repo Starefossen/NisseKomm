@@ -111,8 +111,13 @@ global.fetch = async (url, init = {}) => {
   }
   if (sti === "/api/kode/fasit") {
     const { getAllOppdrag } = await import("@/lib/oppdrag");
+    const { til } = JSON.parse(init.body);
     return svar({
-      koder: Object.fromEntries(getAllOppdrag().map((o) => [o.dag, o.kode])),
+      koder: Object.fromEntries(
+        getAllOppdrag()
+          .filter((o) => o.dag <= til)
+          .map((o) => [o.dag, o.kode.toUpperCase()]),
+      ),
     });
   }
   return fetchUtenKode(url, init);

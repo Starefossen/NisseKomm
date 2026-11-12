@@ -124,6 +124,8 @@ export const SYNCED_KEYS = new Set([
   "nissekomm-failed-attempts",
   "nissekomm-foreldre-avkrysning",
 ]);
+/** Solved codes: written on the server by /api/kode, read here. */
+const CODES_KEY = "nissekomm-codes";
 /** Written by MCP (set_frost, skip_day); clients only read them. */
 export const SERVER_KEYS = ["frost-override", "day-offset"];
 /** Bumped by every replacing write; an older client must re-fetch. */
@@ -266,6 +268,8 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
 
   private queue(key: string, value: unknown, replace: boolean) {
     if (!SYNCED_KEYS.has(key)) return;
+    // The server writes solves itself (POST /api/kode); clients only clear them.
+    if (key === CODES_KEY && value != null) return;
     if (!this.live) {
       // Not removals: the season wipe runs before start() and stays local.
       if (value != null) this.markUnsynced([key], true);

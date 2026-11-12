@@ -16,9 +16,13 @@ function goTo(day: number, time = "08:00"): void {
   setTimeOverride({ day, month: 12, hour, minute });
 }
 
-/** The codes live on the server; lan mode hands them to a parent or to test mode. */
-async function hentKoder(): Promise<Record<string, string>> {
-  const r = await fetch("/api/kode/fasit");
+/** The codes live on the server; lan mode records the solves and hands them to a parent or to test mode. */
+async function hentKoder(til: number): Promise<Record<string, string>> {
+  const r = await fetch("/api/kode/fasit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ til }),
+  });
   if (!r.ok) throw new Error(`Fikk ikke kodene (${r.status})`);
   return (await r.json()).koder;
 }
@@ -28,7 +32,7 @@ async function solveUntil(
   day: number,
   { bonus = false, symbols = false } = {},
 ) {
-  const koder = await hentKoder();
+  const koder = await hentKoder(day);
   for (const q of GameEngine.getAllQuests()) {
     if (q.dag > day) continue;
     GameEngine.recordSolve(q.dag, koder[q.dag]);

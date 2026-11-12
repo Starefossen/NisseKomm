@@ -19,7 +19,6 @@ import {
   storageBackend,
 } from "@/lib/db";
 import { RESET_KEY, SERVER_KEYS } from "@/lib/storage-adapter";
-import { getAllOppdrag } from "@/lib/oppdrag";
 import { getServerDate } from "@/lib/date-utils";
 import { notify } from "@/lib/notify";
 import { eventsForWrite, frostOnEvent } from "@/lib/notify/events";
@@ -67,8 +66,10 @@ export async function PUT(request: NextRequest) {
   if (typeof key !== "string" || !STATE_KEYS.has(key) || value === undefined) {
     return jsonError("Ugyldig nøkkel", 400);
   }
-  if (key === "nissekomm-codes" && !realCodes(value)) {
-    return jsonError("Ugyldig kode", 400);
+  // Solves are written only by POST /api/kode (and the lan fasit route), so
+  // this PUT can't be used to test guesses; a client may only clear the key.
+  if (key === "nissekomm-codes" && value !== null) {
+    return jsonError("Løste koder skrives av /api/kode", 400);
   }
   const store = getStore();
   const state = await store.getState();
@@ -98,19 +99,4 @@ export async function DELETE(request: NextRequest) {
   }
   await resetState();
   return NextResponse.json({ reset: true });
-}
-
-/** Every entry must be the real code for its day, so «solved» can't be faked. */
-function realCodes(value: unknown): boolean {
-  if (value === null) return true;
-  if (!Array.isArray(value)) return false;
-  const quests = getAllOppdrag();
-  return value.every((c) => {
-    const kode = String(c?.kode ?? "").toUpperCase();
-    return quests.some(
-      (q) =>
-        q.kode.toUpperCase() === kode &&
-        (c.day === undefined || c.day === q.dag),
-    );
-  });
 }

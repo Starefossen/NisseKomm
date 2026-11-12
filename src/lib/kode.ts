@@ -4,6 +4,7 @@
  */
 import "server-only";
 import { getAllOppdrag } from "./oppdrag";
+import { getServerDate } from "./date-utils";
 
 export type KodeSvar =
   | { ok: true; dag: number; kode: string } // the day's code, canonical spelling
@@ -23,17 +24,35 @@ export function sjekkKode(dag: number, kode: string): KodeSvar {
 
 const VINDU_MS = 60_000;
 const MAKS = 10;
+// One bucket per role: one family, so a new login or a made-up cookie gives no
+// fresh tries. Only wrong answers count.
 // ponytail: per-process map; fine with one replica, move to the store if that changes.
-const forsøk = new Map<string, number[]>();
+const feil = new Map<string, number[]>();
 
-/** Seconds to wait before the next try, or 0 when this one may go ahead. */
+const ferske = (nøkkel: string, nå: number) => {
+  const t = (feil.get(nøkkel) ?? []).filter((x) => nå - x < VINDU_MS);
+  if (t.length) feil.set(nøkkel, t);
+  else feil.delete(nøkkel);
+  return t;
+};
+
+/** Seconds to wait before the next try, or 0 when it may go ahead. */
 export function ventSek(nøkkel: string, nå = Date.now()): number {
-  const t = (forsøk.get(nøkkel) ?? []).filter((x) => nå - x < VINDU_MS);
-  if (t.length >= MAKS) {
-    forsøk.set(nøkkel, t);
-    return Math.ceil((t[0] + VINDU_MS - nå) / 1000);
-  }
-  t.push(nå);
-  forsøk.set(nøkkel, t);
-  return 0;
+  const t = ferske(nøkkel, nå);
+  return t.length >= MAKS ? Math.ceil((t[0] + VINDU_MS - nå) / 1000) : 0;
+}
+
+/** Counts a wrong answer against the bucket. */
+export function feilForsøk(nøkkel: string, nå = Date.now()): void {
+  feil.set(nøkkel, [...ferske(nøkkel, nå), nå]);
+}
+
+/**
+ * Days whose code may be tried now: up to today's advent day (server clock,
+ * MCP skip_day offset included); every day in test mode.
+ */
+export function åpenTilDag(dayOffset: unknown): number {
+  if (process.env.NEXT_PUBLIC_TEST_MODE === "true") return 24;
+  const d = getServerDate(dayOffset);
+  return d.getMonth() === 11 ? Math.min(24, d.getDate()) : 0;
 }

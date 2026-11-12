@@ -2,7 +2,7 @@ import { describe, it, expect } from "@jest/globals";
 import { execFileSync } from "node:child_process";
 import klient from "@/data/oppdrag-klient.json";
 import { getAllOppdrag, getOppdrag } from "../oppdrag";
-import { sjekkKode, ventSek } from "../kode";
+import { feilForsøk, sjekkKode, ventSek } from "../kode";
 
 describe("dagskoder bare på serveren", () => {
   it("sjekkKode godtar dagens kode, uansett store og små bokstaver", () => {
@@ -24,11 +24,14 @@ describe("dagskoder bare på serveren", () => {
     });
   });
 
-  it("ventSek slipper ti forsøk i minuttet per økt", () => {
-    for (let i = 0; i < 10; i++) expect(ventSek("a", 1000 + i)).toBe(0);
+  it("ti feil i minuttet per nøkkel, så venting; gamle forsøk glemmes", () => {
+    for (let i = 0; i < 10; i++) {
+      expect(ventSek("a", 1000 + i)).toBe(0);
+      feilForsøk("a", 1000 + i);
+    }
     expect(ventSek("a", 2000)).toBeGreaterThan(0);
     expect(ventSek("b", 2000)).toBe(0);
-    expect(ventSek("a", 61_001)).toBe(0);
+    expect(ventSek("a", 61_010)).toBe(0);
   });
 
   it("oppdrag-klient.json har ingen koder og er bakt på nytt", () => {
