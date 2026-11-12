@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Make one Julius video diary entry from the locked script.
 
-Usage: julius-dag.py <dag> [--extend [--suffix -v2]] [--dry-run] [--force] [--join-only] [--refilter] [--no-chain] [--cutaway <loop.mp4>[:kutt]] [--upload <base-url>]
+Usage: julius-dag.py <dag> [--suffix -v3] [--extend] [--dry-run] [--force] [--join-only] [--refilter] [--no-chain] [--cutaway <loop.mp4>[:kutt]] [--upload <base-url>]
        julius-dag.py lint [dag ...]      segments over 22 words (locked brikke exempt), timing budget
        julius-dag.py selftest
 
@@ -263,7 +263,8 @@ def main():
     day = int(sys.argv[1])
     dry = "--dry-run" in sys.argv
     segs = segments(day)
-    dest = DEST / f"dag-{day:02d}.mp4"
+    suffix = sys.argv[sys.argv.index("--suffix") + 1] if "--suffix" in sys.argv else ""
+    dest = DEST / f"dag-{day:02d}{suffix}.mp4"
     if not dry and "--force" not in sys.argv and medie.status(dest)[0] == medie.CURRENT:
         print(f"{dest} er oppdatert; --force for å lage den på nytt")
         return
