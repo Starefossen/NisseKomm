@@ -172,7 +172,9 @@ export function tilstand(
   finnes: Set<string>,
 ): Tilstand {
   if (e.media.some((p) => !finnes.has(p))) return "mangler";
-  return vurd[e.id]?.vurdering ?? "ikke_vurdert";
+  const v = vurd[e.id]?.vurdering;
+  // Old entries hold «Lag på nytt» as display text.
+  return v === "godkjent" ? v : v ? "lag_paa_nytt" : "ikke_vurdert";
 }
 
 /** Next element after `id` without a verdict, wrapping around. */
