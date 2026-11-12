@@ -33,7 +33,8 @@ meta() { run $M skriv tv-loops.sh "$1" "$2" - gemini-omni-1.2-flash "${@:3}"; } 
 # The jobs live in assets/medier.json (generator "loop"); medie.py tv gives one line per loop.
 # Fading (Hans 12.11): both ends of a loop are blended, so anything not in the blended-to frame fades.
 # seamless.sh blends the clip's own tail into its head: people and doors fade. State loops therefore use
-# "anker": true (first+last frame = the still, anchor.sh blends only toward that same still) and the prompt
+# "anker": true (first+last frame = the still, anchor.sh blends only toward that same still; use the
+# still at the framing the model keeps, or the seam zooms) and the prompt
 # keeps the first and last two seconds empty. Events never start from a still with a figure in it:
 # figures walk in and out of frame or a door (an anchor without the figure fades it away).
 # Intermediate stills (generator "mellomstill") are made only when a job that needs them runs.

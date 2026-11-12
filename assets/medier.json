@@ -382,10 +382,10 @@
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-rolig.mp4",
-    "bilde": "assets/out/forste-landsby-rolig.jpg",
+    "bilde": "still/landsby-v2",
     "mal": "assets/prompts/tv/snofall-landsby/rolig.txt",
     "anker": true,
-    "notat": "Ankret til sitt eget første bilde (fast punkt): hendelsene klippes inn på det bildet. Tilstandsløkker ankres (anchor.sh) i stedet for seamless.sh, fordi sømmens krysstoning tonet folk og dører inn og ut (Hans 12.11)",
+    "notat": "Ankret til ref-v2 (vidt utsnitt): videomodellen zoomer alltid ut til det utsnittet, så et tettere anker gir et zoomhopp i sømmen; hendelsene ankres til første bilde herfra. Tilstandsløkker ankres (anchor.sh) i stedet for seamless.sh, fordi sømmens krysstoning tonet folk og dører inn og ut (Hans 12.11)",
     "beholdt": true
   },
   "tv/landsby-nordlys": {
