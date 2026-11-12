@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Make one Julius video diary entry from the locked script.
 
-Usage: julius-dag.py <dag> [--dry-run] [--force] [--join-only] [--refilter] [--upload <base-url>]
+Usage: julius-dag.py <dag> [--dry-run] [--force] [--join-only] [--refilter] [--no-chain] [--cutaway <loop.mp4>[:kutt]] [--upload <base-url>]
        julius-dag.py lint [dag ...]      segments over 22 words (locked brikke exempt), timing budget
        julius-dag.py selftest
 
@@ -9,7 +9,7 @@ Skips a day whose video is current (see medie.py) unless --force.
 
 Reads docs/manus/julius-2026.md, generates one clip per segment with julius.sh
 (retries on failure), audits each clip for continuity errors (up to 3 takes),
-adds Kulde's effects in post (see kulde_fx), joins them with alternating framing (hard cuts, 40 ms audio crossfades, -16 LUFS) and writes
+adds Kulde's effects in post (see kulde_fx), joins them with alternating framing (0.25 s crossfades in the silent tail, -16 LUFS) and writes
 public/video/julius/dag-NN.mp4, compressed for the app.
 """
 import os
@@ -245,6 +245,15 @@ def audit(clip: Path):
     return bad
 
 
+RESET = 3  # segments 1, 4, 7 start from ref-v3.jpg again so drift in light and look cannot pile up
+
+
+def last_frame(clip: Path, out: Path) -> Path:
+    """The clip's last frame as the next segment's start image: the cut lands on the same pose."""
+    subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-sseof", "-0.1", "-i", str(clip), "-update", "1", "-q:v", "2", str(out)], check=True)
+    return out
+
+
 # ponytail: word-set overlap, not alignment; catches dropped clauses, not swapped word order
 MIN_COVERAGE = 0.9
 ATTEMPTS = 3
@@ -271,10 +280,13 @@ def main():
         raw = OUT / f"{name}.raw.mp4"  # check the unfiltered audio; the radio filter hurts transcription
         if clip.exists() and not speech_at_end(raw) and (coverage(raw, line) or 0) >= MIN_COVERAGE:
             continue
+        env = dict(os.environ)
+        if i > 1 and (i - 1) % RESET and "--no-chain" not in sys.argv:
+            env["REF"] = str(last_frame(OUT / f"dag{day:02d}-{i - 1}.raw.mp4", OUT / f"{name}.start.jpg"))
         act = f"{action} Kuldes påvirkning: {kulde_fx(kulde, line, locked, secs, False)[4]}"
         best = (None, None)  # (score, problems); score = (clean, coverage)
         for attempt in range(1, ATTEMPTS + 1):
-            r = subprocess.run([str(BIN / "julius.sh"), name, line, act, str(secs)], stdin=subprocess.DEVNULL)
+            r = subprocess.run([str(BIN / "julius.sh"), name, line, act, str(secs)], stdin=subprocess.DEVNULL, env=env)
             if r.returncode != 0:
                 import time
 
@@ -318,7 +330,11 @@ def main():
         if speech_at_end(OUT / f"{n}.raw.mp4"):
             print(f"  REGENERER {n}: stemmen går til siste bilde, replikken er kuttet")
     DEST.mkdir(parents=True, exist_ok=True)
-    join([OUT / f"{n}.mp4" for n in names], dest, [(s[3], s[0], s[4]) for s in segs])
+    cut = None
+    if "--cutaway" in sys.argv:
+        f, _, k = sys.argv[sys.argv.index("--cutaway") + 1].partition(":")
+        cut = (f, int(k) if k else worst_cut([OUT / f"{n}.raw.mp4" for n in names]))
+    join([OUT / f"{n}.mp4" for n in names], dest, [(s[3], s[0], s[4]) for s in segs], cut)
     subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-ss", "3", "-i", str(dest), "-frames:v", "1",
                     "-q:v", "3", str(dest.with_suffix(".jpg"))], check=True)
     medie.write("julius-dag.py", dest, medie.JULIUS_MS, f"Dag {day}", "gemini-omni-1.2-flash",
@@ -328,11 +344,25 @@ def main():
         upload(sys.argv[sys.argv.index("--upload") + 1], dest)
 
 
-XFADE = 0.04  # audio crossfade at each join; the video loses the same time so lip sync holds
+XFADE = 0.25  # video and audio crossfade at each join, inside the 2 s silent tail so no word is blurred
+CUTAWAY = 1.5  # seconds of TV loop laid over one cut, Julius' sound runs on underneath
 
 
-def join_graph(dur, kulde=None):
-    """The filter graph for join; kulde = [(kulde, line, locked)] per segment adds Kulde's effects."""
+def worst_cut(raws) -> int:
+    """The cut (1-based) whose last and first frames differ most (lowest PSNR): the one a cutaway should hide."""
+    def psnr(a, b):
+        out = subprocess.run(["ffmpeg", "-nostdin", "-sseof", "-0.1", "-i", str(a), "-i", str(b), "-filter_complex",
+                              "[0:v]trim=end_frame=1,scale=320:180[x];[1:v]trim=end_frame=1,scale=320:180[y];[x][y]psnr",
+                              "-frames:v", "1", "-f", "null", "-"], capture_output=True, text=True).stderr
+        m = re.search(r"average:([\d.]+|inf)", out)
+        return float(m.group(1)) if m else 99.0
+    scores = [psnr(raws[i], raws[i + 1]) for i in range(len(raws) - 1)]
+    return scores.index(min(scores)) + 1
+
+
+def join_graph(dur, kulde=None, cut=None):
+    """The filter graph for join; kulde = [(kulde, line, locked)] per segment adds Kulde's effects;
+    cut = k lays input n (a TV loop) over cut k for CUTAWAY seconds."""
     n = len(dur)
     w, h = int(1280 / 1.15) // 2 * 2, int(720 / 1.15) // 2 * 2
     fc, drained = "", False
@@ -341,33 +371,42 @@ def join_graph(dur, kulde=None):
         if kulde:
             vf, af, stutter, drained, _ = kulde_fx(*kulde[i], dur[i], drained)
         fx = "".join("," + f for f in vf)
-        end = f",trim=duration={dur[i] - XFADE:.3f}" if i < n - 1 else ""
         crop = f",crop={w}:{h}:(iw-{w})*0.6:(ih-{h})*0.25,scale=1280:720,setsar=1" if i % 2 else ""
         if stutter is None:
-            fc += f"[{i}:v]fps=24,scale=1280:720,setsar=1{fx}{crop}{end},setpts=PTS-STARTPTS,format=yuv420p[v{i}];"
+            fc += f"[{i}:v]fps=24,scale=1280:720,setsar=1{fx}{crop},setpts=PTS-STARTPTS,format=yuv420p[v{i}];"
         else:  # a 0.4 s hold from a 2.5 fps copy laid over the clip: the picture hangs, the sound runs on
             fc += (f"[{i}:v]fps=24,scale=1280:720,setsar=1{fx}{crop},split[s{i}][h{i}];[h{i}]fps=2.5,fps=24[q{i}];"
-                   f"[s{i}][q{i}]overlay=enable='between(t,{stutter:.2f},{stutter + 0.4:.2f})'{end},"
+                   f"[s{i}][q{i}]overlay=enable='between(t,{stutter:.2f},{stutter + 0.4:.2f})',"
                    f"setpts=PTS-STARTPTS,format=yuv420p[v{i}];")
         # ponytail: one-pass loudnorm per segment; two-pass (measure, then linear) if levels pump audibly
         afx = "".join("," + f for f in af)
         fc += f"[{i}:a]loudnorm=I=-16:TP=-2:LRA=11{afx},aresample=48000,aformat=channel_layouts=stereo[a{i}];"
-    fc += "".join(f"[v{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=0[v];"
-    prev = "a0"
+    vprev, aprev, t = "v0", "a0", 0.0
     for i in range(1, n):
-        fc += f"[{prev}][a{i}]acrossfade=d={XFADE}:c1=tri:c2=tri[x{i}];"
-        prev = f"x{i}"
-    return fc + f"[{prev}]alimiter=limit=0.84:level=false[a]"  # 0.84 ≈ -1.5 dBTP
+        t += dur[i - 1] - XFADE
+        fc += f"[{vprev}][v{i}]xfade=transition=fade:duration={XFADE}:offset={t:.3f}[y{i}];"
+        fc += f"[{aprev}][a{i}]acrossfade=d={XFADE}:c1=tri:c2=tri[x{i}];"
+        vprev, aprev = f"y{i}", f"x{i}"
+    if cut:
+        at = sum(dur[:cut]) - cut * XFADE + XFADE / 2 - CUTAWAY / 2  # centred on the crossfade
+        fc += (f"[{n}:v]fps=24,scale=1280:720,setsar=1,trim=duration={CUTAWAY},format=yuv420p,"
+               f"fade=t=in:d=0.15,fade=t=out:st={CUTAWAY - 0.15}:d=0.15,setpts=PTS-STARTPTS+{at:.3f}/TB[c];"
+               f"[{vprev}][c]overlay=eof_action=pass[vc];")
+        vprev = "vc"
+    fc += f"[{vprev}]null[v];"
+    return fc + f"[{aprev}]alimiter=limit=0.84:level=false[a]"  # 0.84 ≈ -1.5 dBTP
 
 
-def join(segs, dest: Path, kulde=None):
-    """Alternating framing (every other segment a 1.15x crop, hard cut) with short audio crossfades,
-    each segment levelled to -16 LUFS and the whole day limited to -1.5 dBTP."""
+def join(segs, dest: Path, kulde=None, cutaway=None):
+    """Alternating framing (every other segment a 1.15x crop) with 0.25 s crossfades in the silent tail,
+    each segment levelled to -16 LUFS and the whole day limited to -1.5 dBTP.
+    cutaway = (loop file, cut number) hides that cut under a TV loop."""
     dur = [float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(p)])) for p in segs]
-    fc = join_graph(dur, kulde)
+    fc = join_graph(dur, kulde, cutaway and cutaway[1])
+    extra = ["-stream_loop", "-1", "-i", str(cutaway[0])] if cutaway else []
     # ponytail: crf 28 + 96k audio lands around 8–12 MB per minute at 720p; raise crf if files grow
     subprocess.run(
-        ["ffmpeg", "-nostdin", "-y", "-v", "error", *sum((["-i", str(p)] for p in segs), []),
+        ["ffmpeg", "-nostdin", "-y", "-v", "error", *sum((["-i", str(p)] for p in segs), []), *extra,
          "-filter_complex", fc, "-map", "[v]", "-map", "[a]",
          "-c:v", "libx264", "-crf", "28", "-preset", "slow", "-c:a", "aac", "-b:a", "96k",
          "-movflags", "+faststart", str(dest)],
@@ -398,7 +437,8 @@ def selftest():
                             "-i", "sine=d=2", "-shortest", str(c)], check=True)
             clips.append(c)
         join(clips, Path(d) / "dag.mp4", [("Fargene renner ut, lampen flakker på «a».", "a b", False),
-                                          ("Et hopp i bildet, lyden hakker, rim.", "c", False), ("Uttoning i gull.", "d", False)])
+                                          ("Et hopp i bildet, lyden hakker, rim.", "c", False), ("Uttoning i gull.", "d", False)],
+             (clips[0], worst_cut(clips)))
         assert (Path(d) / "dag.mp4").stat().st_size > 0
     print("selftest ok")
 

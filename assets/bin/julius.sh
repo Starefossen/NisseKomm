@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Usage: julius.sh <out-name> "<replikk på bokmål>" ["<handling>"] [seconds]
+# Usage: [REF=start.jpg] julius.sh <out-name> "<replikk på bokmål>" ["<handling>"] [seconds]
 # ponytail: one clip per call, synchronous; batch/parallel if we do all 24 days
 set -euo pipefail
 source "$(dirname "$0")/_key.sh"; A="$ROOT/assets"; D="$A/out"; mkdir -p "$D"; NAME=$1; LINE=$2; ACTION=${3:-"Han smiler lurt mot slutten."}; SECS=${4:-10}
@@ -10,7 +10,7 @@ REPLIKK (sies inn i mikrofonen, ordrett): \"$LINE\"
 Lengde: $SECS sekunder. Replikken er ferdig uttalt senest 2 sekunder før klippet slutter; de siste sekundene er han stille og smiler inn i mikrofonen.
 Single continuous shot, no scene cuts.
 Do not add, remove or change any object: no telephone, no cups other than the wooden mug, no bells, bottles, vases, quills or magnifying glass. Do not move the microphone to the left hand, do not use both hands on it, do not let it disappear. Do not show a third hand. Everything on the desk in the first frame is still there in the last frame."
-jq -n --arg p "$P" --arg secs "$SECS" --rawfile img <(base64 -i "$A/characters/julius/ref-v3.jpg" | tr -d '\n') \
+jq -n --arg p "$P" --arg secs "$SECS" --rawfile img <(base64 -i "${REF:-$A/characters/julius/ref-v3.jpg}" | tr -d '\n') \
   '{model:"gemini-omni-1.2-flash",input:[{type:"image",data:$img,mime_type:"image/jpeg"},{type:"text",text:$p}],response_format:{type:"video",duration:($secs+"s")}}' > "$D/$NAME.req.json"
 curl -s "https://generativelanguage.googleapis.com/v1beta/interactions" -H "x-goog-api-key: $K" -H 'Content-Type: application/json' -d @"$D/$NAME.req.json" > "$D/$NAME.resp.json"
 if [ -n "${GENERER_LOGG:-}" ]; then echo "video $NAME" >> "$GENERER_LOGG"; fi  # generer.py counts sent requests
