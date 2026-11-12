@@ -7,7 +7,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | Type | ✓ | ⚠ | ? | ✗ | ○ | ◇ | - |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | julius | 4 | 8 | 0 | 12 | 0 | 19 | 6 |
-| rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 4 |
+| rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 5 |
 | music | 13 | 0 | 0 | 1 | 0 | 0 | 0 |
 | tv | 19 | 5 | 0 | 0 | 15 | 0 | 17 |
 | port | 2 | 1 | 0 | 1 | 0 | 0 | 9 |
@@ -86,7 +86,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | audio/rampenissen/dag-11.mp3 | 0.6 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-12.mp3 | 0.8 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-13.mp3 | 0.9 MB | 2026-11-11 | ✓ |
-| audio/rampenissen/dag-14.mp3 | 0.9 MB | 2026-11-11 | ✓ |
+| audio/rampenissen/dag-14.mp3 | 0.8 MB | 2026-11-13 | ✓ |
 | audio/rampenissen/dag-15.mp3 | 0.6 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-16.mp3 | 0.7 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-17.mp3 | 1.0 MB | 2026-11-12 | ✓ |
@@ -98,6 +98,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | audio/rampenissen/dag-23.mp3 | 0.7 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-24.mp3 | 1.0 MB | 2026-11-12 | ✓ |
 | audio/rampenissen/dag-01.old-1.mp3 | 0.7 MB | 2026-11-12 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 1; ikke i manifestet |
+| audio/rampenissen/dag-14.old-1.mp3 | 0.9 MB | 2026-11-13 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 14; ikke i manifestet |
 | audio/rampenissen/dag-17.old-1.mp3 | 0.8 MB | 2026-11-11 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 17; ikke i manifestet |
 | audio/rampenissen/dag-22.old-1.mp3 | 0.6 MB | 2026-11-11 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 22; ikke i manifestet |
 | audio/rampenissen/dag-24.old-1.mp3 | 0.7 MB | 2026-11-12 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 24; ikke i manifestet |
