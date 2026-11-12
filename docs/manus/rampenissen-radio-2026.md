@@ -133,7 +133,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 12 (lø) – Lydbølgene som Smelter Is · M3
 
-**Strek:** 1,5–2 m dorull som «lydbølge» bortover kjøkkenet, ligger utslått i enden. Helg, 09-sendingen.
+**Strek:** 1,5–2 m dorull som «lydbølge» bortover kjøkkenet, ligger utslått i enden ved tre glass. Helg, 09-sendingen.
 
 **Klipp:** «God lørdag. Æ snakke lavt i dag. Æ hørt nåkka sukk i isen i natt. Ikkje knurr. Ikkje fres. Sukk. Sånn som når en e aleina og trur ingen høre. Julius sa i går kveld at æ innbilt mæ det. Hjerterud sa ingenting, ho bare nynna og gikk ned mot slusa med lykt. Æ veit ka æ hørt. Så æ prøvd å lag ei lydbølge, ei stor ei, for å send lyd tilbake. Det blei en dorull. Heile dorullen. Fra badet til kjøkkenet. Det e vitenskap, ikkje rot. Antenna i Snøfall står rett igjen, forresten, takka være dokker. IQ har sagt takk tolv ganga. Hør etter i dag. Hør ordentlig.»
 
