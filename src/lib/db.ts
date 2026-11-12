@@ -1,7 +1,10 @@
 /**
  * Server-side store: game state (kv), sessions and login failures.
- * Postgres when DATABASE_URL is set, otherwise in memory (dev, tests).
+ * Postgres when DATABASE_URL is set, else a JSON file with DEV_STORE_FILE
+ * (mise run dev), otherwise in memory (tests).
  */
+import fs from "node:fs";
+import path from "node:path";
 import { Pool } from "pg";
 import {
   RESET_KEY,
@@ -100,10 +103,16 @@ const ticketOk = (t: unknown, path: string) => {
   );
 };
 
-export function createMemoryStore(): Store & { reset(): void } {
-  let kv = new Map<string, unknown>();
-  let sessions = new Map<string, Session>();
+type Dump = { kv: [string, unknown][]; sessions: [string, Session][] };
+
+export function createMemoryStore(
+  init?: Dump,
+  onChange?: (d: Dump) => void,
+): Store & { reset(): void } {
+  let kv = new Map<string, unknown>(init?.kv);
+  let sessions = new Map<string, Session>(init?.sessions);
   let failures: number[] = [];
+  const save = () => onChange?.({ kv: [...kv], sessions: [...sessions] });
   const recent = (w: number) =>
     (failures = failures.filter((t) => Date.now() - t < w)).length;
   return {
@@ -111,6 +120,7 @@ export function createMemoryStore(): Store & { reset(): void } {
       kv = new Map();
       sessions = new Map();
       failures = [];
+      save();
     },
     async getState() {
       return Object.fromEntries(kv);
@@ -119,21 +129,27 @@ export function createMemoryStore(): Store & { reset(): void } {
       const stored = replace ? value : mergeValue(key, kv.get(key), value);
       kv.set(key, stored);
       if (replace) kv.set(VERSION_KEY, Number(kv.get(VERSION_KEY) ?? 0) + 1);
+      save();
       return stored;
     },
     async getSession(hash) {
       return sessions.get(hash) ?? null;
     },
     async setSession(hash, s) {
+      for (const [h, o] of sessions)
+        if (o.expires < Date.now()) sessions.delete(h);
       sessions.set(hash, s);
+      save();
     },
     async deleteSession(hash) {
       sessions.delete(hash);
+      save();
     },
     async consumeTicket(hash, path) {
       const key = `upload-ticket:${hash}`;
       const t = kv.get(key);
       kv.delete(key);
+      save();
       return ticketOk(t, path);
     },
     async addFailure(w) {
@@ -144,6 +160,23 @@ export function createMemoryStore(): Store & { reset(): void } {
       return recent(w);
     },
   };
+}
+
+/**
+ * Memory store mirrored to a JSON file, so `mise run dev` keeps sessions and
+ * progress across restarts. Written via tmp + rename so a crash never leaves
+ * half a file.
+ */
+export function createFileStore(file: string): Store & { reset(): void } {
+  let init: Dump | undefined;
+  try {
+    init = JSON.parse(fs.readFileSync(file, "utf8"));
+  } catch {}
+  return createMemoryStore(init, (d) => {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(`${file}.tmp`, JSON.stringify(d));
+    fs.renameSync(`${file}.tmp`, file);
+  });
 }
 
 const MIGRATION = `
@@ -284,7 +317,14 @@ function getPool(): Pool | undefined {
 let store: Store | undefined;
 export function getStore(): Store {
   const p = getPool();
-  return (store ??= p ? createPgStore(p) : memoryStore);
+  // Never in production: there DATABASE_URL is required.
+  const file =
+    process.env.NODE_ENV !== "production" && process.env.DEV_STORE_FILE;
+  return (store ??= p
+    ? createPgStore(p)
+    : file
+      ? createFileStore(file)
+      : memoryStore);
 }
 
 /** Called once from instrumentation.ts. */
