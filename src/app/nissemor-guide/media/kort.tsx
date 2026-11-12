@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { mediaUrl, type MediaStatus } from "@/lib/media";
+import { variantLabel } from "./oversikt";
 import type {
   MediaVurderingItem,
   MediaVurderinger,
@@ -139,6 +140,11 @@ export function ReviewItemCard({
       {/* Top row: Path & Inventory Status */}
       <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-(--neon-green)/30 pb-2">
         <span className="font-bold break-all text-base md:text-lg">
+          {variantLabel(file.path) && (
+            <span className="text-(--gold) mr-2">
+              {variantLabel(file.path)} ·
+            </span>
+          )}
           {file.path}
         </span>
         <div className="flex items-center gap-3">

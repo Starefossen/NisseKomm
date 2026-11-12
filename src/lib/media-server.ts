@@ -62,6 +62,21 @@ export async function extraMusic(dir = mediaDir()): Promise<MediaStatus[]> {
   );
 }
 
+/** Julius variants (video/julius/dag-NN-vK.mp4) beside the manifest files, for review. */
+export async function juliusVariants(dir = mediaDir()): Promise<MediaStatus[]> {
+  const names = await readdir(path.join(dir, "video/julius")).catch(() => []);
+  return Promise.all(
+    names
+      .filter((n) => /^dag-\d\d-v\d+\.mp4$/.test(n))
+      .sort()
+      .map(async (n) => {
+        const p = `video/julius/${n}`;
+        const info = await stat(path.join(dir, p)).catch(() => null);
+        return { path: p, size: info?.isFile() ? info.size : null };
+      }),
+  );
+}
+
 /** Single-use upload ticket for one manifest path, valid 10 minutes. */
 export async function createUploadTicket(rel: string): Promise<string> {
   if (!canUpload(rel)) throw new Error(`Ukjent fil: ${rel}`);
@@ -179,7 +194,11 @@ export async function mediaStatus(dir = mediaDir()): Promise<MediaStatus[]> {
       return { path: p, size: info?.isFile() ? info.size : null };
     }),
   );
-  return [...manifest, ...(await extraMusic(dir))];
+  return [
+    ...manifest,
+    ...(await extraMusic(dir)),
+    ...(await juliusVariants(dir)),
+  ];
 }
 
 /** Rejects a declared body larger than any media type allows, before it is read. */

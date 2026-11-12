@@ -49,6 +49,28 @@ export interface DayRow {
   tv: ItemStatus | null;
 }
 
+const variantOf = (path: string) =>
+  Number(path.match(/-v(\d+)\.mp4$/)?.[1] ?? 0);
+
+/** «Versjon vK» for a Julius variant, null for the main file. */
+export const variantLabel = (path: string) => {
+  const k = variantOf(path);
+  return k ? `Versjon v${k}` : null;
+};
+
+/** The day's Julius files in the listing: variants newest first, main file last. */
+export function juliusFiles(
+  day: number,
+  files: MediaStatus[] | null,
+): string[] {
+  const main = `video/julius/dag-${pad(day)}.mp4`;
+  const variants = (files ?? [])
+    .map((f) => f.path)
+    .filter((p) => p.startsWith(`video/julius/dag-${pad(day)}-v`))
+    .sort((a, b) => variantOf(b) - variantOf(a));
+  return [...variants, main];
+}
+
 export function dayRows(files: MediaStatus[]): DayRow[] {
   const present = new Set(
     files.filter((f) => f.size !== null).map((f) => f.path),
@@ -168,7 +190,7 @@ export function sortReviewItems<T extends { path: string }>(
       const matchB = b.path.match(/dag-(\d+)/);
       const dayA = matchA ? Number(matchA[1]) : 0;
       const dayB = matchB ? Number(matchB[1]) : 0;
-      return dayA - dayB;
+      return dayA - dayB || variantOf(b.path) - variantOf(a.path);
     });
   }
   return [...items].sort((a, b) => a.path.localeCompare(b.path));

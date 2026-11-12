@@ -7,6 +7,8 @@ import {
 } from "@/lib/media";
 import {
   dayRows,
+  juliusFiles,
+  variantLabel,
   lookThrough,
   REVIEW_GROUPS,
   reviewKind,
@@ -162,5 +164,26 @@ describe("review kinds and sorting", () => {
       "video/julius/dag-02.mp4",
       "video/julius/dag-10.mp4",
     ]);
+  });
+});
+
+describe("Julius variants", () => {
+  it("lists variants newest first, main file last", () => {
+    const files = [
+      "video/julius/dag-01.mp4",
+      "video/julius/dag-01-v2.mp4",
+      "video/julius/dag-01-v10.mp4",
+      "video/julius/dag-01-v3.mp4",
+      "video/julius/dag-02-v3.mp4",
+    ].map((path) => ({ path, size: 1 }));
+    expect(juliusFiles(1, files)).toEqual([
+      "video/julius/dag-01-v10.mp4",
+      "video/julius/dag-01-v3.mp4",
+      "video/julius/dag-01-v2.mp4",
+      "video/julius/dag-01.mp4",
+    ]);
+    expect(juliusFiles(3, null)).toEqual(["video/julius/dag-03.mp4"]);
+    expect(variantLabel("video/julius/dag-01-v3.mp4")).toBe("Versjon v3");
+    expect(variantLabel("video/julius/dag-01.mp4")).toBeNull();
   });
 });

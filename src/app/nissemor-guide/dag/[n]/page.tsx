@@ -6,6 +6,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { MediaListe, useMediaData } from "../../media/kort";
+import { juliusFiles } from "../../media/oversikt";
 import type { dagInnhold } from "@/lib/guide-innhold";
 import { Foreldredel } from "./foreldre";
 
@@ -183,7 +184,7 @@ function DagInnhold() {
               Manus og media for dagen
             </h2>
             <Seksjon tittel="Julius' video">
-              <MediaListe paths={[dag.medier[0]]} data={media} />
+              <MediaListe paths={juliusFiles(n, media.files)} data={media} />
               {dag.julius ? (
                 <>
                   <p className="text-sm text-(--cold-blue) whitespace-pre-wrap mb-3">
