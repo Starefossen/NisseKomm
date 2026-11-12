@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { utskriftHref, utskriftTittel } from "../../printout/filer";
-import type { kveldDag } from "@/lib/guide-sesong";
+import type { forSesongen, kveldDag } from "@/lib/guide-sesong";
 import { Avkrysning, useAvkrysning, useSynk } from "../../_kveld/felles";
 
 const box =
@@ -47,10 +47,13 @@ export function Foreldredel({
   n,
   d,
   t,
+  plan,
 }: {
   n: number;
   d: ReturnType<typeof kveldDag>;
   t: (s: string) => string;
+  /** Day 1 only: the build plan for 28.–30. November. */
+  plan?: ReturnType<typeof forSesongen> | null;
 }) {
   useSynk();
   const q = GameEngine.getAllQuests().find((x) => x.dag === n);
@@ -71,12 +74,25 @@ export function Foreldredel({
   const bonus = q.bonusoppdrag;
   const bonusOk = GameEngine.isBonusOppdragCompleted(q);
 
+  // Same strings as the house pieces in the Gåtekart, so H1… match.
+  const hus = d.brikkeH
+    .split(/(?<=[.!?»])\s+(?=[A-ZÆØÅ«0-9])/)
+    .map((x, i) => `H${i + 1}: ${x}`);
   const punkter = [
+    ...(plan?.byggeplan.flatMap((b) =>
+      b.steg.map(
+        (st) =>
+          `${b.tittel.split(" (")[0]}: ${st.tekst}${st.min !== "–" ? ` (${st.min} min)` : ""}`,
+      ),
+    ) ?? []),
     ...d.utskrifter.map((u) => `Skriv ut ${utskriftTittel(u)}`),
-    "Legg gåten (se Gåten under)",
+    `Finn fram: ${d.materialer}`,
+    ...(d.iKveld ? [`I kveld: ${d.iKveld}`] : []),
+    ...hus,
     "Sett rampestreken (se Rampestrek under)",
     ...(symbol ? [`Gjem symbolkortet: ${symbol.description}`] : []),
     "Les «Hvis noe er borte» i Hint å gi",
+    ...(plan?.morgen1 ? [plan.morgen1] : []),
   ];
 
   return (

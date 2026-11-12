@@ -1,7 +1,12 @@
 import type { NextRequest } from "next/server";
 import { authorizeMedia } from "@/lib/media-server";
 import { bibliotek } from "@/lib/guide-innhold";
-import { dagListe, forSesongen, historien } from "@/lib/guide-sesong";
+import {
+  dagListe,
+  forSesongen,
+  historien,
+  sesongKart,
+} from "@/lib/guide-sesong";
 
 /** First fact in an entitet.md JSON block, the figure's one-line introduction. */
 const forsteFakta = (md: string) => {
@@ -24,6 +29,7 @@ export async function GET(req: NextRequest) {
     dager: dagListe(),
     for: forSesongen(),
     historien: historien(),
+    kart: sesongKart(),
     figurer,
   });
 }

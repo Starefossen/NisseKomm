@@ -5,12 +5,18 @@ import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { getCurrentDate } from "@/lib/date-utils";
 import { StorageManager } from "@/lib/storage";
-import type { dagListe, forSesongen, historien } from "@/lib/guide-sesong";
+import type {
+  dagListe,
+  forSesongen,
+  historien,
+  sesongKart,
+} from "@/lib/guide-sesong";
 
 export interface Sesong {
   dager: ReturnType<typeof dagListe>;
   for: ReturnType<typeof forSesongen>;
   historien: ReturnType<typeof historien>;
+  kart: ReturnType<typeof sesongKart>;
   figurer: { id: string; navn: string; om: string }[];
 }
 

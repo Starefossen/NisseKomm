@@ -13,7 +13,9 @@ import { getQuestByDay } from "./data-loader";
 import { frostLevelFor, frostModeFor } from "./frost";
 import { GameEngine } from "./game-engine";
 import { getKidContext } from "./mcp/tools";
-import { dagBlokk } from "./guide-innhold";
+import juliusVideoer from "@/data/julius_videoer.json";
+import gaatebiter from "@/data/gaatebiter.json";
+import { dagBlokk, parseJulius } from "./guide-innhold";
 import { KULDE_RUNER } from "@/components/windows/snofall-tv/runer";
 import { interceptFor } from "@/components/windows/snofall-tv/channels";
 import {
@@ -452,3 +454,193 @@ export function varden(n: number) {
 /** Story-board summary of the day: «Dag N» under storyboard §3. */
 export const sammendrag = (n: number) =>
   ren(dagBlokk(del("storyboard", "3. Dag for dag"), n));
+
+// --- Gåtekart (riddle map) ---------------------------------------------
+
+/** Loose match: case, whitespace, «…» vs «...» and a trailing full stop don't count. */
+export const norm = (s: string) =>
+  s
+    .replace(/…/g, "...")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/[.!?]+$/, "")
+    .toLowerCase();
+
+const transkripsjon = (d: number) =>
+  juliusVideoer.find((v) => v.dag === d)?.transkripsjon ?? "";
+
+/** Path, unlock day and decryption of a NisseNet file by name. */
+function filInfo(navn: string) {
+  let funn: { sti: string; dag?: number; krypto?: string } | null = null;
+  (function gaa(noder: FilNode[], dir: string) {
+    for (const f of noder as (FilNode & {
+      unlockConditions?: { requiresSolvedDecryption?: string };
+    })[])
+      if (f.type === "fil" && f.navn === navn)
+        funn = {
+          sti: `${dir}/${f.navn}`,
+          dag: f.unlockConditions?.afterDay,
+          krypto: f.unlockConditions?.requiresSolvedDecryption,
+        };
+      else if (f.type !== "fil") gaa(f.barn ?? [], `${dir}/${f.navn}`);
+  })(statisk.filer as FilNode[], "");
+  return funn as { sti: string; dag?: number; krypto?: string } | null;
+}
+
+export type Kilde = "julius" | "epost" | "ps" | "fil" | "symbol";
+export interface Bit {
+  id: string;
+  /** Where the piece is, in plain words. */
+  hvor: string;
+  /** From when the kids can see it. */
+  naar: string;
+  tekst: string;
+  kilde?: Kilde;
+  /** Day whose text holds the piece (fra_dag for older pieces). */
+  kildeDag?: number;
+  /** Words the text must contain; tested against the kids' text. */
+  sitat?: string;
+  segment?: number;
+}
+
+/** Sentences of a gaater field; keeps ** around letters so the UI can hide them. */
+const setninger = (s: string) =>
+  s
+    .replace(/`/g, "")
+    .replace(/\u2744\uFE0F?/g, "✱")
+    .split(/(?<=[.!?»])\s+(?=[A-ZÆØÅ«*0-9])/)
+    .map((x) => x.trim())
+    .filter(Boolean);
+
+/** Piece list for one day: the house column from «Brikke H», the screen column from «Brikke S» quotes and gaatebiter.json. */
+export function gaatekart(n: number) {
+  const blokk = dagBlokk(del("gaater", "Dag for dag"), n);
+  const felt = (k: string) =>
+    blokk.match(new RegExp(`^- \\*\\*${k}[^:]*:\\*\\* (.+)$`, "m"))?.[1] ?? "";
+  const q = getQuestByDay(n);
+  const segs = parseJulius(
+    filer["docs/manus/julius-2026.md"] ?? "",
+    n,
+  )?.segmenter;
+  const hjemme: Bit[] = setninger(felt("Brikke H")).map((tekst, i) => ({
+    id: `H${i + 1}`,
+    hvor: "Hjemme",
+    naar: n === 1 ? "Morgenen 1. desember" : `Morgenen ${n}. desember`,
+    tekst,
+  }));
+
+  const skjerm: Bit[] = [];
+  const legg = (b: Omit<Bit, "id">) =>
+    skjerm.push({ id: `S${skjerm.length + 1}`, ...b });
+  for (const [, sitat] of felt("Brikke S").matchAll(/«([^«»]+)»/g)) {
+    const s = norm(sitat);
+    const seg = segs?.findIndex((x) => norm(x.replikk).includes(s)) ?? -1;
+    if (norm(transkripsjon(n)).includes(s) || seg >= 0)
+      legg({
+        hvor: `Julius' video${seg >= 0 ? `, segment ${seg + 1}` : ""}`,
+        naar: `${n}. desember; teksten under spilleren når videoen er sett`,
+        tekst: sitat,
+        kilde: "julius",
+        kildeDag: n,
+        sitat,
+        segment: seg >= 0 ? seg + 1 : undefined,
+      });
+    else if (q && norm(q.nissemail_tekst).includes(s))
+      legg({
+        hvor: "NisseMail",
+        naar: `${n}. desember`,
+        tekst: sitat,
+        kilde: "epost",
+        kildeDag: n,
+        sitat,
+      });
+    else
+      legg({
+        hvor: "Står ikke i Julius-teksten, e-posten eller PS-en (bare i gåteplanen)",
+        naar: "",
+        tekst: sitat,
+      });
+  }
+  const symbolDager = getAllOppdrag()
+    .filter((x) => x.symbol_clue)
+    .map((x) => x.dag);
+  for (const b of gaatebiter.biter.filter((x) => x.dag === n)) {
+    const fra = "fra_dag" in b ? Number(b.fra_dag) : n;
+    const fq = getQuestByDay(fra);
+    if (b.type === "fil") {
+      const f = filInfo(String(b.id));
+      legg({
+        hvor: `NisseNet ${f?.sti ?? b.id}`,
+        naar: f?.krypto
+          ? `når NisseKrypto «${f.krypto}» er løst`
+          : `fra ${f?.dag ?? "?"}. desember`,
+        tekst: b.sitat,
+        kilde: "fil",
+      });
+    } else if (b.type === "symbol") {
+      const sd = symbolDager.find(
+        (d) => getQuestByDay(d)?.symbol_clue?.symbolId === b.id,
+      );
+      legg({
+        hvor: `Symbolkort ${symbolDager.indexOf(sd ?? 0) + 1}/9`,
+        naar: `skannes ${sd}. desember`,
+        tekst: getQuestByDay(sd ?? 0)?.symbol_clue?.description ?? "",
+        kilde: "symbol",
+      });
+    } else if (b.type === "ps")
+      legg({
+        hvor: `Julius' PS fra dag ${fra}`,
+        naar: `etter koden ${fra}. desember`,
+        tekst: fq?.julius_ps ?? "",
+        kilde: "ps",
+        kildeDag: fra,
+      });
+    else if (b.type === "epost")
+      legg({
+        hvor: `NisseMail dag ${fra}`,
+        naar: `${fra}. desember`,
+        tekst: fq?.nissemail_tekst ?? "",
+        kilde: "epost",
+        kildeDag: fra,
+      });
+    else
+      legg({
+        hvor: `Julius' video dag ${fra} (arkivet)`,
+        naar: `teksten ligger i arkivet fra ${fra}. desember`,
+        tekst: transkripsjon(fra),
+        kilde: "julius",
+        kildeDag: fra,
+      });
+  }
+
+  const andel = felt("Andel per flate");
+  const hus = Number(andel.match(/(\d+)\s*%/)?.[1] ?? NaN);
+  return {
+    hjemme,
+    skjerm,
+    epost: q?.nissemail_tekst ?? "",
+    andel: ren(andel),
+    husProsent: Number.isFinite(hus) ? hus : null,
+  };
+}
+
+/** One row per day for the season map under Dager. */
+export const sesongKart = () =>
+  getAllOppdrag()
+    .filter((q) => q.dag <= 24)
+    .map((q) => {
+      const k = gaatekart(q.dag);
+      const d = kveldDag(q.dag);
+      const av = (f: (b: Bit) => boolean) =>
+        k.skjerm.filter(f).map((b) => `${b.id} ${b.hvor}`);
+      return {
+        dag: q.dag,
+        tittel: d?.tittel.split(" · ")[0] ?? q.tittel,
+        hjemme: k.hjemme.map((b) => b.tekst).join(" "),
+        epost: av((b) => b.kilde === "epost"),
+        julius: av((b) => b.kilde === "julius"),
+        annet: av((b) => !["epost", "julius"].includes(b.kilde ?? "")),
+        kode: q.kode,
+        oppsett: d?.oppsett ?? "",
+      };
+    });

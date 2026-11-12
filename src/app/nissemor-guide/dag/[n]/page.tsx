@@ -9,6 +9,7 @@ import { MediaListe, useMediaData } from "../../media/kort";
 import { juliusFiles } from "../../media/oversikt";
 import type { dagInnhold } from "@/lib/guide-innhold";
 import { Foreldredel } from "./foreldre";
+import { Gaatekart } from "./gaatekart";
 
 type Dag = Awaited<ReturnType<typeof dagInnhold>>;
 
@@ -134,7 +135,17 @@ function DagInnhold() {
               </div>
             </header>
 
-            <details className={box} open>
+            {dag.kveld && (
+              <Gaatekart
+                k={dag.kart}
+                d={dag.kveld}
+                epost={q?.nissemail_tekst ?? ""}
+                vis={vis}
+                t={(s) => skjul(s, q?.kode, vis)}
+              />
+            )}
+
+            <details className={box}>
               <summary className="text-2xl text-(--gold) cursor-pointer min-h-11">
                 Dagen i storyboardet
               </summary>
@@ -143,7 +154,7 @@ function DagInnhold() {
               </p>
             </details>
 
-            <Foreldredel n={n} d={dag.kveld} t={t} />
+            <Foreldredel n={n} d={dag.kveld} t={t} plan={dag.byggeplan} />
 
             <Seksjon tittel="Delsystemer i dag">
               <dl className="space-y-2">

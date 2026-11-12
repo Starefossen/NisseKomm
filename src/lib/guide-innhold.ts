@@ -13,7 +13,14 @@ import bakt from "@/data/guide-innhold.json";
 import { opplasingerPaaDag } from "./opplasinger";
 import { KAPITLER } from "@/components/windows/nissespill/kapitler";
 import { ETAPPER } from "@/components/windows/snofall-tv/slede";
-import { delsystemer, kveldDag, sammendrag, varden } from "./guide-sesong";
+import {
+  delsystemer,
+  forSesongen,
+  gaatekart,
+  kveldDag,
+  sammendrag,
+  varden,
+} from "./guide-sesong";
 
 const ROOT = () => process.cwd();
 const filer: Record<string, string> = bakt;
@@ -131,6 +138,8 @@ export async function dagInnhold(dag: number) {
     dag,
     sammendrag: sammendrag(dag),
     kveld: kveldDag(dag),
+    kart: gaatekart(dag),
+    byggeplan: dag === 1 ? forSesongen() : null,
     delsystemer: delsystemer(dag),
     varden: varden(dag),
     julius: parseJulius(julius, dag),

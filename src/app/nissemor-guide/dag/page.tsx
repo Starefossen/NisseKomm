@@ -52,6 +52,12 @@ export default function DagerSide() {
   return (
     <GuideSide>
       <h1 className="text-4xl font-bold text-(--gold) text-center">DAGER</h1>
+      <Link
+        href="/nissemor-guide/dag/kart"
+        className="block min-h-11 p-2 border-2 border-(--gold) text-center"
+      >
+        Gåtekart for hele sesongen
+      </Link>
       <Dager />
     </GuideSide>
   );
