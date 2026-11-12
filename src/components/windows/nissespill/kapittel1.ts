@@ -809,7 +809,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "bildet",
           navn: "Bildet på veggen",
-          rect: { x: 80, y: 32, w: 5, h: 16 },
+          rect: { x: 71, y: 32, w: 7, h: 15 },
           smart: "se",
           se: "Et lite innrammet ark på veggen ved ovnen: «Bevilling for skjenking av kakao, paragraf 14, unntak 1. – W.» Winters eneste unntak. Hjerterud fikk det ved å servere ham kakao til han signerte. Det tok fire kopper.",
           prat: "Du leser bevillingen høyt. Hjerterud ler. «Fire kopper. Han sa nei etter hver av dem, og ja etter den femte. Han tror det var fire.»",
@@ -817,7 +817,7 @@ export const KAPITTEL_1: Kapittel = {
         {
           id: "gulvet",
           navn: "Snøen på gulvet",
-          rect: { x: 58, y: 88, w: 13, h: 12 },
+          rect: { x: 42, y: 72, w: 14, h: 11 },
           smart: "se",
           se: "Smeltende snø i gangen fra døra, i små hauger med fotspor i. Støvler, støvler, hover, støvler. Hover. Hjerterud slipper inn alle som fryser. Rudolf fryser aldri. Han kommer likevel.",
           bruk: "Du hopper i den minste snøhaugen. Den sprer seg utover gulvet. Hjerterud, uten å se: «Mopp i kroken, Floke.» Det er en spøk. Ugler mopper ikke. Du ser på moppen likevel.",

@@ -681,7 +681,7 @@
     "mal": "assets/prompts/spill/figur/julius.txt",
     "refs": [
       "public/spill/piksel/julius-kontor.png",
-      "characters/julius#standard"
+      "characters/julius#portrett"
     ]
   },
   "spill-figur/brevfugl": {
