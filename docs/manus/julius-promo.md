@@ -17,7 +17,7 @@ Kulde-nivå 0. Rent bilde og ren lyd. Fire segmenter, 67 ord.
    - Kulde: Ingen.
 3. **Replikk:** «Rampenissen flytter inn hos dem. Han gjør rampestreker om natten og rapporterer til meg. Foreldrene sa ja, stakkars.»
    - Varighet: 13 s (18 ord)
-   - Handling: Løfter et ark fra brevbunken med venstre hånd, ser på det og rister på hodet, og legger det ned før siste setning.
+   - Handling: Holder mikrofonen fast i høyre hånd hele tiden, inntil munnen; den slippes aldri og svever aldri. Venstre hånd løfter et ark fra brevbunken, han ser på det og rister på hodet, og venstre hånd legger det ned før siste setning.
    - Kulde: Ingen.
 4. **Replikk:** «Hver dag får de en gåte. Halve svaret ligger i huset, resten på skjermen. Dere vet ingenting. Vi ses!»
    - Varighet: 14 s (19 ord)

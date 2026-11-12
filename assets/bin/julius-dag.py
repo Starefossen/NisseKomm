@@ -211,8 +211,12 @@ AUDIT = """You are a strict continuity supervisor for a short film. The man must
 - props appearing, disappearing, duplicating or changing shape/identity (book, letters, papers, ink pot, wooden mug, glasses, switchboard, mic, cable)
 - hands: extra/missing fingers, a third hand, hand passing through objects, objects merging with hands or each other, mic floating or held by no hand, mic switching hands
 - body or furniture morphing, background objects changing
+The microphone rule is absolute: if the mic floats, hangs in the air, is let go, is put down, or changes hands even for one frame, that is always severity "noticeable" and mic_hand_ok is false.
 Do not report lighting, film grain, style or lip sync. For each error: timestamp (mm:ss), short description, severity: "minor" (only seen when looking for it) or "noticeable" (a 9-year-old would notice on first viewing).
 Answer as JSON: {"errors":[{"t":"00:03","what":"...","severity":"minor|noticeable"}],"mic_hand_ok":true|false}"""
+
+
+MIC = re.compile(r"\bmic|microphone|mikrofon", re.I)
 
 
 def audit(clip: Path):
@@ -244,7 +248,7 @@ def audit(clip: Path):
     else:
         return None
     bad = [f"{e['t']} {e['what']}" for e in r.get("errors", []) if e.get("severity") == "noticeable"]
-    if not r.get("mic_hand_ok", True) and not bad:
+    if not r.get("mic_hand_ok", True) and not any(MIC.search(b) for b in bad):
         bad.append("mikrofonen bytter hånd eller forsvinner")
     return bad
 
@@ -619,6 +623,7 @@ def selftest():
         join(clips[:1] + [q], Path(d) / "t.mp4")
         assert abs(seconds(Path(d) / "t.mp4") - (2 + TRAIL + (b - a) - XFADE + OUTRO + BLACK)) < 0.15
         assert speech_span(clips[0], 2.0)[1] > 2.0  # speech to the very end: padded, not cut
+    assert "mic_hand_ok is false" in AUDIT and "floats" in AUDIT and MIC.search("mic floating")
     print("selftest ok")
 
 
