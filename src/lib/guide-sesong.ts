@@ -502,7 +502,7 @@ export function delsystemer(n: number) {
           : "Ingen ny hendelse; frostgraden styrer bildet.",
         interceptFor(n) && `85,0 MHz: «${interceptFor(n)}»`,
         n === 13 && "Luciatog over landsbyen 06–09.",
-        n === 14 && "Den blå brevfuglen sirkler klokketårnet.",
+        n === 14 && "Den blå fuglen sirkler klokketårnet.",
       ]
         .filter(Boolean)
         .join(" "),

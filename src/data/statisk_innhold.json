@@ -439,7 +439,7 @@
       "display_type": "radar",
       "unit": "fugler",
       "child_progress_multiplier": 0.025,
-      "description": "Brevfugler mellom Bergen og Snøfall akkurat nå"
+      "description": "Brevfugler på vei fra Bergen til Snøfall akkurat nå"
     },
     {
       "navn": "LYKTER VED ANTENNEN",

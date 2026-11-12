@@ -1,6 +1,6 @@
 # NisseKomm 2026 – Spøkelseskoden
 
-**Status: LÅST 10. november 2026.** Endringer krever eksplisitt ja fra Hans, og vi sjekker hvilke senere steg som påvirkes. Justert mot gåter og manus 10. november, etter ja fra Hans (rampestreker, Brevfugler dag 7, portkortet dag 21, tynnere is dag 7, Rampenissens lapper); selve historien er uendret. Kontinuitet rettet 11. november etter ja fra Hans. Strekene i §4 og §8 (dag 4, 6, 10, 13, 20) endret 13.11 etter ja fra Hans. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans (§8 og §8.1). Titler dag 5 og 17 og sitatene dag 15, 16, 17, 21 og 22 i §8 endret 13.11 etter ja fra Hans (vanskelighet). Bekreftet ved låsing: kunnskapstidslinjen, tak på 40 % av svaret per flate (hard regel i steg 1), dag 17 uavhengig av lyktbonusen, og SQLite-fremdrift før frosttilstand for hjemmeskjermer.
+**Status: LÅST 10. november 2026.** Endringer krever eksplisitt ja fra Hans, og vi sjekker hvilke senere steg som påvirkes. Justert mot gåter og manus 10. november, etter ja fra Hans (rampestreker, Brevfugler dag 7, portkortet dag 21, tynnere is dag 7, Rampenissens lapper); selve historien er uendret. Kontinuitet rettet 11. november etter ja fra Hans. Strekene i §4 og §8 (dag 4, 6, 10, 13, 20) endret 13.11 etter ja fra Hans. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans (§8 og §8.1). Titler dag 5 og 17 og sitatene dag 15, 16, 17, 21 og 22 i §8 endret 13.11 etter ja fra Hans (vanskelighet). Brevfuglenes retning (§1) lagt til 13.11 etter ja fra Hans. Bekreftet ved låsing: kunnskapstidslinjen, tak på 40 % av svaret per flate (hard regel i steg 1), dag 17 uavhengig av lyktbonusen, og SQLite-fremdrift før frosttilstand for hjemmeskjermer.
 
 Samlet historiedokument. Erstatter `REVISJON.md` og `KANALER.md` der de er uenige. Koder, symbolkort-dager, dekrypteringsdager og bonusdager er de samme som i dagens JSON. Ingen repo-filer er endret.
 
@@ -9,6 +9,8 @@ Beslutninger som ligger til grunn: Julius-video hver dag (24 bekreftet), åpnes 
 ## 1. Premiss og den ene historien
 
 **Premiss.** Etter fjorårets seier bygde IQ en direktelinje fra Snøfall (90,0 MHz) til stua på Landås, med Snøfall TV, videologg fra Julius og brevfugl-radar. Første desember hakker bærebølgen. Noe sender på 85,0 MHz og legger rim på linjen. Det kaller seg Kulde.
+
+**Brevfuglene.** Barna sender dem. Et brev til Julius, skrevet på Landås, blir en brevfugl som flyr til Snøfall gjennom nordlyset og lander i postkassen på torget. Winter tømmer postkassen; ingen i Snøfall sender brevfugler. Den blå fuglen (dag 14) er unntaket: ingen har sendt den. Kilde: `assets/objects/brevfugl/entitet.md`. Dag 5 går mot dette og venter på Hans.
 
 **Historien i én setning.** Tre søsken holder varmen i både hus og server gjennom desember, og oppdager at det som fryser linjen ikke er en fiende, men noe som har stått alene i mørket for lenge.
 

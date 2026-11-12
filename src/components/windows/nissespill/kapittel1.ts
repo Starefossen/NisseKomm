@@ -1229,7 +1229,7 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Himmelen",
           rect: { x: 25, y: 0, w: 28, h: 18 },
           smart: "se",
-          se: "Stjerner mellom bodtakene og ett lite, mørkt punkt som flytter seg. En brevfugl på vei hjem, med noe i nebbet som er større enn nebbet. De klarer det alltid.",
+          se: "Stjerner mellom bodtakene og ett lite, mørkt punkt som flytter seg. En brevfugl på vei til postkassen, med noe i nebbet som er større enn nebbet. De klarer det alltid.",
           prat: "Du uler mot brevfuglen der oppe. Den svinger én gang over bodene og flyr videre. Det var en hilsen. Brevfugler hilser kort, de har mye å bære.",
         },
         {
