@@ -644,7 +644,15 @@ const intArg = (v: unknown, min: number, max: number) => {
 };
 
 const radioHint = radioHintJson as {
-  dag: Record<string, { intro_hint?: string; reaksjon_hint?: string }>;
+  dag: Record<
+    string,
+    {
+      intro_hint?: string;
+      reaksjon_hint?: string;
+      rampestrek_hint?: string;
+      utfordring_hint?: string;
+    }
+  >;
   host: Record<string, string>;
 };
 
@@ -667,7 +675,7 @@ export const TOOLS: Record<string, Tool> = {
   get_clips: {
     level: "read",
     description:
-      "Rampenissens radioklipp for en dato (YYYY-MM-DD), aldri etter i dag, med intro_hint/reaksjon_hint fra manus. host_hint: Birk og Lyngs førsesonglinjer 24.–30. november (bare dagens dato).",
+      "Rampenissens radioklipp for en dato (YYYY-MM-DD), aldri etter i dag, med intro_hint/reaksjon_hint fra manus. rampestrek og utfordring (bare dagens klipp): det Birk og Lyng snakker om etter klippet, uten å gjette eller gi hint. host_hint: Birk og Lyngs førsesonglinjer 24.–30. november (bare dagens dato).",
     inputSchema: {
       type: "object",
       properties: { date: { type: "string" } },
@@ -681,9 +689,16 @@ export const TOOLS: Record<string, Tool> = {
       const m = /^2026-12-(\d\d)$/.exec(d);
       const day = m ? Number(m[1]) : 0;
       // A later date would be a spoiler; ISO dates compare as strings.
+      const {
+        rampestrek_hint: rampestrek,
+        utfordring_hint: utfordring,
+        ...hint
+      } = radioHint.dag[day] ?? {};
+      // The hosts only talk about today's prank and challenge.
+      const iDag = d === today && { rampestrek, utfordring };
       const clips =
         day >= 1 && day <= 24 && d <= today
-          ? [{ ...(await getClip(day)), ...radioHint.dag[day] }]
+          ? [{ ...(await getClip(day)), ...hint, ...iDag }]
           : [];
       // Pre-season chatter only on the day itself, never ahead.
       const host_hint = d === today ? radioHint.host[d] : undefined;

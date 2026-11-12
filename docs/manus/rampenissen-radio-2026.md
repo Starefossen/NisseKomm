@@ -1,12 +1,12 @@
 # Rampenissen på Morgenrådet 2026 – radioklipp
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Strek-linjene dag 13 og 20 endret 13.11 etter ja fra Hans. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «død. Nesten.», 15 skåla, 23 tempus) etter ja fra Hans. Klargjort for TTS 11. november etter ja fra Hans: lengde og bekreftelser (dag 6, 14, 15, 24), tallet i dag 8, Hanna i dag 21, apokope (7, 16, 17, 18, 22), dag 23 tempus. Dag 24 skrevet om 11. november etter ja fra Hans: sendt fra Snøfall etter hjemkomsten, hilsener fra de andre, rapporten levert (se `docs/beslutninger.md`). Utvidet 12. november etter ja fra Hans: dag 1 er sesongåpning (60–75 s), dag 24 litt lengre (50–65 s), Birk og Lyng får introduksjon og reaksjon dag 1 og 24 og én reaksjonslinje (`reaksjon_hint`) på utvalgte dager, og førsesongen 24.–30. november står nederst. Lyd for dag 1 og 24 må lages på nytt; Hans leser teksten først.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Strek-linjene dag 13 og 20 endret 13.11 etter ja fra Hans. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «død. Nesten.», 15 skåla, 23 tempus) etter ja fra Hans. Klargjort for TTS 11. november etter ja fra Hans: lengde og bekreftelser (dag 6, 14, 15, 24), tallet i dag 8, Hanna i dag 21, apokope (7, 16, 17, 18, 22), dag 23 tempus. Dag 24 skrevet om 11. november etter ja fra Hans: sendt fra Snøfall etter hjemkomsten, hilsener fra de andre, rapporten levert (se `docs/beslutninger.md`). Utvidet 12. november etter ja fra Hans: dag 1 er sesongåpning (60–75 s), dag 24 litt lengre (50–65 s), Birk og Lyng får introduksjon og reaksjon dag 1 og 24 og én reaksjonslinje (`reaksjon_hint`) på utvalgte dager, og førsesongen 24.–30. november står nederst. Lyd for dag 1 og 24 må lages på nytt; Hans leser teksten først. `rampestrek_hint` og `utfordring_hint` for alle 24 dager lagt til 13.11 etter ja fra Hans.
 
 Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storyboard-2026.md` (§2 kunnskapstidslinje, §3 radiolinjer), `docs/gaater-2026.md`. Format: `varden-morgenradet.md`.
 
 ## Skrivemåte
 
-Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi stemmen (Gemini Fenrir, +4 halvtoner, nordnorsk aksent) skal høres naturlig ut. Alt annet i fila er bokmål: `Strek:`, `Lydregi:`, `intro_hint` og `reaksjon_hint` (forslag til Varden) og sjekktabellen. Innholdet er det samme som i bokmålsversjonen: samme vitser, samme fakta, samme bekreftelser i samme rekkefølge, ingen nye hint og ingen koder. Reglene:
+Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi stemmen (Gemini Fenrir, +4 halvtoner, nordnorsk aksent) skal høres naturlig ut. Alt annet i fila er bokmål: `Strek:`, `Lydregi:`, `intro_hint`, `reaksjon_hint`, `rampestrek_hint` og `utfordring_hint` (forslag til Varden) og sjekktabellen. Innholdet er det samme som i bokmålsversjonen: samme vitser, samme fakta, samme bekreftelser i samme rekkefølge, ingen nye hint og ingen koder. Reglene:
 
 - Pronomen: æ, mæ, dæ, sæ, han/ho, vi/oss, dokker/dokkers (dere/deres), dem (de/dem; også «dem kalde fingran»), en (man; «da pusse en tenna»). Eiendom gjerne etterstilt: «skjermen dokkers», «pappa si jakkelomme».
 - Nekting: ikkje. Spørreord: ka, kor, kem, kossen, koffer (hvorfor). Vilkår: vess (hvis).
@@ -22,6 +22,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 - Ett ferdiginnspilt klipp per dag med Rampenissens faste stemme, 30–50 s. Dag 1 er sesongåpningen og får 60–75 s; dag 24 får 50–65 s. Leveres til Morgenrådet som gjesteinnslag og spilles ordrett. Birk og Lyng introduserer og reagerer; de kjenner ikke Snøfall og sier aldri noe om koder.
 - `intro_hint` er det Birk eller Lyng sier før klippet: én linje, eller dag 1 og 24 en kort replikkveksling («Birk: … Lyng: …»). `reaksjon_hint` er reaksjonen etter klippet, på dagene som har en. Begge er innholdsforslag til Varden, som eier Birk og Lyng (stemme, dialekt og framtoning); Varden skriver dem om i sin egen stil. De røper ingenting: ingen bokstaver, tall, steder eller gjenstander fra gåten. Dagens Morgenrådet-manus lages av produksjonen; disse linjene er det den skal bygge på.
+- `rampestrek_hint` og `utfordring_hint` er det Birk og Lyng snakker om etter klippet: hva barna ser når de står opp, og hva slags utfordring dagen har. De oppfordrer barna til å løse den i NisseKomm, og de gjetter aldri og gir aldri hint. Linjene er nøytralt bokmål som Varden skriver om, og `get_clips` gir dem bare for dagens klipp. De inneholder aldri koden, bokstaver eller tall fra den, eller noe som snevrer inn svaret (`radio-hint.test.ts`).
 - Førsesongen (24.–30. november) står nederst i fila: Birk og Lyng hinter om at noe er på vei, uten Rampenissen (han kommer natt til 1. desember). Navnet NisseKomm sies første gang 30. november.
 - Hverdager går klippet i 06-sendingen, helg (5, 6, 12, 13, 19, 20) i 09-sendingen; helgeklippene er skrevet for en familie som er hjemme.
 - Klippet bærer tre ting: hva som skjedde i natt (sett fra gulvet på Landås; dag 24 fra loftet i Snøfall, dit han reiste i natt), hvordan Rampenissen har det, og en bekreftelse av gårsdagen. Det bærer aldri bokstaver, tall fra koden eller hvor noe ligger. Streken omtaler han fra sin egen side, uten å innrømme alt.
@@ -41,6 +42,10 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **reaksjon_hint:** «Lyng: Okei. Han sov i en garnkurv. I et helt år. Og landet i nokke gult og buet. Eg sier banan. Birk: Han sa ikkje banan. Men hørte du det bak stemmen hans? Det knitret. Det var ikkje vår linje. Lyng: Snøfall. Eg har aldri hørt om et sted som heter Snøfall. Eg skal finne det på kartet før i morgen. Birk: Han sa Snøfall trenger hjelp, og han sa det til tre barn i Bergen. Vi tar ham inn hver morgen i desember, så lenge han ringer.»
 
+**rampestrek_hint:** «Rampenissen ligger begravd under et skred av klementiner foran TV-benken, med en banan som pute og rød garntråd viklet rundt seg.»
+
+**utfordring_hint:** «Dagens utfordring er den første: det ligger noe å finne i stua, og Julius har en ledetråd i videoen sin. Begge deler trengs for å finne koden til NisseKomm.»
+
 ## Dag 2 (on) – Sikringsboksen til IQ
 
 **Strek:** sitter i sukkerskålen med teskje, tatt på fersken.
@@ -51,6 +56,10 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **reaksjon_hint:** «Lyng: En skål. Han sov i en skål. Eg har sovnet på bussen, men aldri i en skål.»
 
+**rampestrek_hint:** «Rampenissen sitter i sukkerskålen med en teskje, tatt på fersken med sukker rundt munnen.»
+
+**utfordring_hint:** «Rampenissen har gjemt noe i huset, og det må letes godt. Julius forteller i videoen hva som skal gjøres med det som blir funnet.»
+
 ## Dag 3 (to) – Rimfrost på Ruten
 
 **Strek:** tannkrem på badespeilet, «RAMPEN VAR HER. NO CAP.», surt fjes, tom tube i vasken.
@@ -59,6 +68,10 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **intro_hint:** «Dagens gjest har sovet dårlig og har pusset tenner. Grundig.»
 
+**rampestrek_hint:** «På badespeilet står det «Rampen var her. No cap.» med tannkrem, og tuben i vasken er tom. Rampenissen ser sur ut.»
+
+**utfordring_hint:** «Dagens utfordring begynner på badet, der Rampenissen har lagt igjen en lapp. Julius har den andre halvdelen i videoen.»
+
 ## Dag 4 (fr) – Skotoget i Gangen
 
 **Strek:** pappas solbriller, sitter i pappas sko i gangen, sko og kosedyr i ring rundt.
@@ -66,6 +79,10 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 **Klipp:** «Fredag! Rampenissen rapportere fra… et høgt sted. Et sko-høgt sted. Rudolf fløy rett i snøfonna i natt. Det låg ei tåke over fjorden som va kald på feil måte, og han sa han fant veien med nesa. Nesa! Han kom heim med snø i begge øra. Så æ tenkt: nån må vis retning her i huset. Æ har laga en pil. Av nåkka. Ikkje si ka. Kosedyra står i ring rundt mæ og vil prøv. Dem får ikkje. Solbrillan e for sikkerhets skyld, det e veldig blankt i snøen. Pappa treng dem ikkje i desember uansett, det e mørkt heile tida. Logisk, sjø. Dokker fikk regnbuen i går, heile Snøfall såg den. God helg snart!»
 
 **intro_hint:** «En liten fyr med altfor store solbriller vil si noe om retning.»
+
+**rampestrek_hint:** «Rampenissen sitter i pappas sko i gangen med pappas solbriller på, og rundt ham står sko og kosedyr i ring.»
+
+**utfordring_hint:** «Dagens utfordring er en letejakt i gangen: Rampenissen har gjemt noe der, og Julius har en ledetråd i videoen. Det trengs både øyne og tålmodighet.»
 
 ## Dag 5 (lø) – Brevfuglen over Byfjellene
 
@@ -77,6 +94,10 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **reaksjon_hint:** «Birk: Krig i en stue på Landås, og begge lag vant. Det e den beste nyheten vi har hatt på lenge.»
 
+**rampestrek_hint:** «Det har vært marshmallow-krig i stua mellom Rampenissen og kosedyrene. En bamse har fått plaster.»
+
+**utfordring_hint:** «En brevfugl har landet et sted i huset med en beskjed i hemmelig skrift. Julius forklarer i videoen hvordan den skal leses.»
+
 ## Dag 6 (sø) – Skyggene i Gangen · 2. advent
 
 **Strek:** snøengler i 1 dl mel i et stekebrett på kjøkkenbordet, ligger midt i den største. Helg, 09-sendingen.
@@ -84,6 +105,10 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 **Klipp:** «God søndag og god andre advent! Rampenissen her, litt kvit i ansiktet. Det e mel. Ikkje spør. Jo, spør: æ skull lag snøengla, og det e ikkje snø inne, så æ brukt det nærmeste. Æ ligg i den største engelen. Melet e rot, det innrømme æ. Men! Fuglen kom fram i går, Winter pusta ut. Og i natt sa Orakelet at det som fryse linja, ikkje tåle lys. IQ hengt lys rundt heile antenna. Og æ har laga nåkka av den lille lampa dokkers og en papprull. Det ligg ikkje i melet, det e for fint til det. Det e ikkje rot. Det e et instrument. Kos dokker i dag!»
 
 **intro_hint:** «Gjesten vår er litt hvit i ansiktet i dag. Han sier det ikke er snø.»
+
+**rampestrek_hint:** «Rampenissen ligger midt i et stekebrett med mel på kjøkkenbordet, og rundt ham er det snøengler i melet.»
+
+**utfordring_hint:** «Rampenissen har laget et instrument og lagt det i gangen. Dagens utfordring handler om skygger, og Julius har en ledetråd i videoen.»
 
 ## Dag 7 (ma) – Inntrengeren i Fryseren · M2
 
@@ -97,6 +122,10 @@ _Skjerm-kort fra Orakelet om morgenen._
 
 **reaksjon_hint:** «Birk: Det som skurrer, e kaldt, sa han. Mottakeren min på loftet skurrer òg mest når det fryser. Eg hadde ikkje tenkt på det før no.»
 
+**rampestrek_hint:** «Rampenissen er fastfryst på innsiden av fryserdøra, med rim, istapper og votter som står rett ut.»
+
+**utfordring_hint:** «Noe ligger innefrosset og må tines med hjelp fra en voksen. Det som kommer fram, må leses sammen med det Julius sier i videoen.»
+
 ## Dag 8 (ti) – Lampene som Lyver
 
 **Strek:** tårn av frokostblandingspakker, skilt «SIGMA-TÅRN», sitter på toppen med suppeøse. Slang 1 av 2.
@@ -105,6 +134,10 @@ _Skjerm-kort fra Orakelet om morgenen._
 
 **intro_hint:** «Noen ringer inn fra en høyde. En veldig lokal høyde.»
 
+**rampestrek_hint:** «Rampenissen sitter på toppen av et tårn av frokostblandingspakker med en suppeøse i hånda. På skiltet står det «Sigma-tårn».»
+
+**utfordring_hint:** «På toppen av tårnet ligger et ark fra IQ med ledninger og lamper. Pakkene skal ned én og én, uten klatring, og Julius har resten i videoen.»
+
 ## Dag 9 (on) – Krystall-Matematikk
 
 **Strek:** krøpet inn i grønnsaksskuffen nederst i kjøleskapet, skuffen står litt åpen, bare de to beina stikker ut over skuffekanten.
@@ -112,6 +145,10 @@ _Skjerm-kort fra Orakelet om morgenen._
 **Klipp:** «Hei. Det e mæ. Det e kaldt her. Æ ligg i grønnsaksskuffen i kjøleskapet, ved sia av en agurk som ikkje sei nåkka. Koffer? Fordi Kulde har begynt å lag krystalla som ser ekte ut, men ikkje e det. Pil blei lurt to ganga i natt og e heilt flat. Så æ tenkt: ska æ kjenn igjen et ekte iskrystall, må æ bli ett. Det går dårlig. Æ e bare kald og lukte purre. Dokker va kjempeflink med kortet i går, forresten. IQ fikk det ferdig takka være dokker. Kan nån hent mæ? Æ kjem ikkje opp. Agurken hjelpe ikkje.»
 
 **intro_hint:** «Dagens gjest ringer fra et kjølig sted og ber om å bli hentet.»
+
+**rampestrek_hint:** «To bein stikker opp av grønnsaksskuffen i kjøleskapet. Resten av Rampenissen har krøpet nedi.»
+
+**utfordring_hint:** «Kjøleskapsdøra er full av papirkrystaller. Dagens utfordring er en regneoppgave der det gjelder å se nøye etter, og Julius har regelen i videoen.»
 
 ## Dag 10 (to) – Fargene som Forsvant · frost nivå 1
 
@@ -125,6 +162,10 @@ _Skjerm er grå fra 05:30._
 
 **reaksjon_hint:** «Lyng: Han har gjemt fargene. Alle. Eg vet ikkje om eg skal le eller ringe noen.»
 
+**rampestrek_hint:** «Rampenissen har tusj på hendene, nesa og halve ansiktet, og bildet av mamma og pappa har fått bart på en gul lapp.»
+
+**utfordring_hint:** «Rampenissen har gjemt fargene rundt i stua, og det trengs et rødt filter for å se hva som står på dem. Julius har en ledetråd i videoen.»
+
 ## Dag 11 (fr) – Antenne-Krisen · bonus
 
 **Strek:** pakket inn i aluminiumsfolie som en bakt potet, på et stekebrett på benken.
@@ -134,6 +175,10 @@ _Skjerm er grå fra 05:30._
 **Klipp:** «…hallo? Høre dokker mæ? Kulde forstyrre antenna ved tjernet, så det kan hend æ forsvinn midt i… Der. Æ har folie på hodet. Det hjelpe litt. Æ har også folie på resten. Det hjelpe ikkje, men no e æ varm, og æ ligg på et stekebrett, og ingen må skru på ovnen. INGEN. Viktig nyhet: dokker fikk fargan tilbake i går! Heile Snøfall såg det. IQ dansa. Pil dansa. Æ såg det på den lille skjermen min. Æ gråt ikkje. Det va folie i øyet. God fredag, og vess dokker høre skurr i dag, så e det ikkje mæ, det e…»
 
 **intro_hint:** «Det skurrer litt på linjen i dag. Gjesten vår har tatt sine forholdsregler.»
+
+**rampestrek_hint:** «Rampenissen ligger pakket inn i aluminiumsfolie på et stekebrett, som en bakt potet.»
+
+**utfordring_hint:** «Det ligger sendere gjemt i flere rom, og alt som blir funnet, skal tas med. Julius forteller i videoen hva som skal gjøres med dem.»
 
 ## Dag 12 (lø) – Lydbølgene som Smelter Is · M3
 
@@ -145,6 +190,10 @@ _Skjerm er grå fra 05:30._
 
 **reaksjon_hint:** «Lyng: Et sukk i isen. Birk, eg trur på han. Eg vet ikkje koffor, men eg gjør det.»
 
+**rampestrek_hint:** «En hel dorull er rullet ut i en bølgete stripe over kjøkkengulvet, og i enden ligger Rampenissen utslått på ryggen.»
+
+**utfordring_hint:** «Dagens utfordring skal høres: ved Rampenissen står det noe som kan spilles på med en teskje. Julius forteller i videoen hva det gjelder å lytte etter.»
+
 ## Dag 13 (sø) – Luciadagens Gylne Krydder · 3. advent
 
 **Strek:** sin egen begravelse etter elleve lussekatter: serviett, blomst, kosedyr i sørgerekke, fire små krydderposer på servietten, skilt «HER HVILER RAMPEN. HAN SPISTE 11.» med en liten lapp under. Helg, 09-sendingen.
@@ -153,6 +202,10 @@ _Skjerm er grå fra 05:30._
 
 **intro_hint:** «Vi har fått en hilsen fra, sitat, den andre siden. Han høres ganske opplagt ut til å være død.»
 
+**rampestrek_hint:** «Rampenissen har holdt sin egen begravelse etter elleve lussekatter, med blomst, kosedyr i sørgerekke og et skilt der det står «Her hviler Rampen».»
+
+**utfordring_hint:** «Ved Rampenissen ligger det små poser med krydder. Dagens utfordring er å finne ut hvilket av dem som var i lussekattene, og Julius har en ledetråd i videoen.»
+
 ## Dag 14 (ma) – Hemmeligheten i Papirvingene
 
 **Strek:** alle kjøkkenserviettene brettet til skjeve fugler, sitter selv i en papirbåt (A3 eller avis) i den tørre vasken.
@@ -160,6 +213,10 @@ _Skjerm er grå fra 05:30._
 **Klipp:** «Mandag, og æ e ikkje død lenger, det gikk over. Rampenissen her, fra en båt. En papirbåt. I vasken. Den e tørr, slapp av. Hjerterud fikk krydderet sitt igjen i går, takka være dokker. Winter åpna brevfuglan i natt! Fuglan fløy ut fra pakkesentralen som ei sky. Og så kom det én fugl ingen hadde sendt. Blå. Den satte sæ i vinduskarmen til Julius og sa ingenting. Winter vil legg den i ei eske med et håndkle over, sånn en gjør med redde fugla. Den blei sittanes. Æ blei inspirert og bretta alle serviettan dokkers til fugla. Dem e litt skjeive. Dem fly ikkje. Men dem prøve, og det telle. Over.»
 
 **intro_hint:** «Dagens gjest ringer fra en båt. En veldig liten båt.»
+
+**rampestrek_hint:** «Alle kjøkkenserviettene er brettet til skjeve fugler, og Rampenissen sitter i en papirbåt i vasken.»
+
+**utfordring_hint:** «Rampenissen har et ark med streker og tomme ruter som ser ut som ingenting. Dagens utfordring er å få det til å vise noe, og Julius har en ledetråd i videoen.»
 
 ## Dag 15 (ti) – Fargesamlerens Notatbok · M4
 
@@ -171,6 +228,10 @@ _Skjerm er grå fra 05:30._
 
 **reaksjon_hint:** «Birk: Han var stillere i dag. Når den som alltid snakker blir stille, e det noe som har skjedd.»
 
+**rampestrek_hint:** «Rampenissen står ved en liten skål med sirup med sleiva i hånda, og bortover kjøkkenbenken går det fotspor.»
+
+**utfordring_hint:** «Fotsporene på benken skal følges. Dagens utfordring har biter både på kjøkkenet og i NisseKomm, og Julius har en ledetråd i videoen.»
+
 ## Dag 16 (on) – Pakkesentralen i Spinn · bonus
 
 **Strek:** «ryddet»: fjernkontroller i brødboksen, brød i TV-benken, tannbørster i bestikkskuffen, sitter i brødboksen med lokket på hodet. Han vet nå hvem Kulde er.
@@ -178,6 +239,10 @@ _Skjerm er grå fra 05:30._
 **Klipp:** «God morra fra brødboksen. Ja, sjø, æ sitt i den. Lokket e hatt. I natt blei heile pakkesentralen snudd på hodet. Alt ligg i én haug, og Winter gråte. Nesten. Han har aldri grått. Og dokker veit jo kem det e no. Dokker lest boka i går, og æ satt i stua og hørt. Det e ikkje nåkka slemt der nede. Det e nåkka som vil bli sett. Æ trur den snudd båndet fordi det e det einaste som får Winter til å se opp. Så æ tenkt: æ hjelpe til heime! Æ rydda. Æ trur æ gjord det verre. Fjernkontrollan e trygge. En plass. Tannbørstan også. Ikkje spør. Over.»
 
 **intro_hint:** «Noen har ryddet. Han vil gjerne forklare seg.»
+
+**rampestrek_hint:** «Rampenissen har ryddet, og nå ligger tingene på helt feil plass, som brødet i TV-benken. Selv sitter han i brødboksen med lokket på hodet.»
+
+**utfordring_hint:** «Dagens utfordring er å rydde opp etter ham og legge tingene tilbake der de hører hjemme. Underveis dukker det opp lapper, og Julius har en ledetråd i videoen.»
 
 ## Dag 17 (to) – Grønt over Polarhimmelen
 
@@ -189,6 +254,10 @@ _Skjerm er grå fra 05:30._
 
 **reaksjon_hint:** «Birk: Grønt over Ulriken i natt. Eg så det fra vinduet på Varden, og eg sa det til ingen, for eg trodde ingen ville tro meg.»
 
+**rampestrek_hint:** «Kosedyrene har kidnappet Rampenissen og bundet ham til en stol med grønt gavebånd. Løsepengebrevet krever alle pepperkakene.»
+
+**utfordring_hint:** «Dagens utfordring sitter på gavebåndet. Det skal strekkes ut og leses, og Julius har en ledetråd i videoen.»
+
 ## Dag 18 (fr) – Kastevind rundt Ulriken
 
 **Strek:** spor av sjokoladerosiner på gråpapir fra ytterdøra mot kjøleskapet, sitter fast i pappas jakkelomme og peker anklagende.
@@ -197,6 +266,10 @@ _Skjerm er grå fra 05:30._
 
 **intro_hint:** «En som har vært ute og flydd i natt, og ikke vil gjøre det igjen.»
 
+**rampestrek_hint:** «Et spor av sjokoladerosiner går fra ytterdøra mot kjøleskapet, og Rampenissen sitter fast i pappas jakkelomme og peker anklagende.»
+
+**utfordring_hint:** «Dagens utfordring er å følge rosinsporet og telle nøye underveis. Rosinene bør ikke spises før koden er tastet, og Julius har en ledetråd i videoen.»
+
 ## Dag 19 (lø) – Eksplosjon i Fôringsautomaten · pusterom
 
 **Strek:** ligger flat på kjøkkengulvet med teipomriss, plaster på pannen, «BEVIS»-pakke i folie ved siden av. Helg, 09-sendingen.
@@ -204,6 +277,10 @@ _Skjerm er grå fra 05:30._
 **Klipp:** «God lørdag! Rampenissen her, fra golvet. Æ ligg inni et omriss av teip. Æ e et åsted no. Det som skjedde: IQ bygd en fôringsautomat til Rudolf, for å slepp å tenk. Den skjøt førti av dem gjennom taket på verkstedet. Førti! Tre landa hos dokker. Én landa på mæ. På panna. Æ har plaster. Beviset e pakka inn, og IQ sei ingen pakke opp bevis før saken e løst. Ellers va det stille i natt. Heilt stille. Grønt over Nordtoppen to netta på rad, og ingen rim på linja. Julius pusta ut, æ hørt det. Så i dag: pust dokker også. Men ikkje på mæ. Æ e åsted.»
 
 **intro_hint:** «Dagens gjest beskriver seg selv som et åsted.»
+
+**rampestrek_hint:** «Rampenissen ligger flat på kjøkkengulvet med plaster i panna og et omriss av teip rundt seg, som på et åsted. Ved siden av ligger en pakke merket «Bevis».»
+
+**utfordring_hint:** «Det har landet bevis i flere rom, pakket i folie. Dagens utfordring er å samle dem uten å pakke dem opp, og Julius har en ledetråd i videoen.»
 
 ## Dag 20 (sø) – Sofa-Sleden · 4. advent · varselet
 
@@ -215,6 +292,10 @@ _Skjerm er grå fra 05:30._
 
 **reaksjon_hint:** «Birk: Han var alvorlig i dag. Ikkje noe rot, ikkje noe tull. Bare: vær hjemme i morgen.»
 
+**rampestrek_hint:** «Rampenissen har bygd et fort av teppe, stoler og puter, med popcorn, pappas hodetelefoner og et skilt der det står «Kun for sigmas».»
+
+**utfordring_hint:** «Dagens utfordring ligger inne i fortet, mellom putene. Rampenissen har lagt igjen en lapp, og Julius har en ledetråd i videoen.»
+
 ## Dag 21 (ma) – Vintersolverv · M5
 
 **Strek:** bak en lav mur av bøker foran skjermen, grytelokk mot trekken, visp i hånden, én bok på gløtt. Skjerm er fryst fra 05:30. Rolig tone.
@@ -225,6 +306,10 @@ _Skjerm er grå fra 05:30._
 
 **reaksjon_hint:** «Lyng: En dør i muren, som skal stå åpen. Det e det fineste eg har hørt noen si om en bokhylle.»
 
+**rampestrek_hint:** «Rampenissen står vakt bak en lav mur av bøker foran skjermen, med grytelokk som skjold og visp i hånda. Skjermen er dekket av frost.»
+
+**utfordring_hint:** «Dagens utfordring står i bokmuren, og Julius har en ledetråd til den. Koden skal tastes inn i NisseKomm, som er frosset til den er løst.»
+
 ## Dag 22 (ti) – Winters Tall · Snill-listen
 
 **Strek:** krøpet inn i Hannas julesokk, bare føttene ut. Han sier ikke stedsnavnet deres i dag.
@@ -232,6 +317,10 @@ _Skjerm er grå fra 05:30._
 **Klipp:** «Rampenissen her, og det e varmt igjen! Muren holdt i går. Porten står åpen. Alle såg det, heile Snøfall, og Orakelet sei det e varmare der nede no. Æ sov godt for første gang på lenge. Men så ringt Julius klokka fem. Han vil vit nøyaktig kor dokker bor. Til julenatt. Æ sa «ved sofaen». Det holdt ikkje. Æ sa «i Bergen». Det holdt heller ikkje. Winter vil ha det i tall, han stole ikkje på ord, og æ kan ikkje tall. Så æ blei stressa og gjømt mæ i en sokk. Det va en feil. Den e liten. Føttan mine e ute. Resten e inne. Hjelp. Over.»
 
 **intro_hint:** «Gjesten vår sitter fast i noe lite og ber om hjelp.»
+
+**rampestrek_hint:** «Rampenissen har krøpet inn i julesokken til Hanna, og bare føttene stikker ut.»
+
+**utfordring_hint:** «Dagens utfordring er en tallkode. Kortene ligger i julesokker rundt om i huset, og Julius forklarer i videoen hvordan tall blir til bokstaver.»
 
 ## Dag 23 (on) – Nattevakt · sannheten
 
@@ -242,6 +331,10 @@ _Skjerm er grå fra 05:30._
 **intro_hint:** «Han ringer fra et tre. Han sier han er pynt.»
 
 **reaksjon_hint:** «Lyng: Teip i øynene. Eg har hørt mange unnskyldninger for å gråte, men den var ny.»
+
+**rampestrek_hint:** «Rampenissen sitter i juletreet og later som han er pynt. Under treet har en gave fått altfor mye teip på det ene hjørnet.»
+
+**utfordring_hint:** «Det henger noe nytt i juletreet i dag. Dagens utfordring er å finne alt sammen og lese det i riktig rekkefølge, og Julius har en ledetråd i videoen.»
 
 ## Dag 24 (to) – God Jul på Landås · M6
 
@@ -254,6 +347,10 @@ _Skjerm er grå fra 05:30._
 **intro_hint:** «Birk: Siste melding fra gjesten vår i år. Han ringer hjemmefra, sier han. Vi vet ikkje kor det e. Lyng: Eg fant det aldri på kartet. Eg leita hele desember.»
 
 **reaksjon_hint:** «Lyng: Te neste år, sa han. Så han kommer tilbake. Birk: Studio e stille no. Og den røde tråden rundt mikrofonstativet ditt e borte i dag. Vi tok den ikkje ned. Lyng: Nei. Vi tok den ikkje ned. God jul, Kristian, Håkon og Hanna.»
+
+**rampestrek_hint:** «Rampenissen er borte. Der han satt i juletreet, henger en gullkonvolutt, og under treet står en liten pappeske med sløyfe.»
+
+**utfordring_hint:** «Dagens utfordring er den siste. Esken har ting fra hele desember, og sammen med det Julius sier i videoen gir de årets siste kode.»
 
 ---
 

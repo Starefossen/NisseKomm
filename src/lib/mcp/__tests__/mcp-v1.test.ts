@@ -335,6 +335,20 @@ describe("get_clips", () => {
     expect(des).not.toHaveProperty("host_hint");
   });
 
+  it("rampestrek og utfordring bare for dagens klipp", async () => {
+    jest.useFakeTimers({ now: at(4, 7) });
+    const iDag = JSON.parse(await callTool("read", "get_clips"));
+    expect(iDag.clips[0].rampestrek).toMatch(/pappas sko/);
+    expect(iDag.clips[0].utfordring).toMatch(/gangen/);
+    expect(iDag.clips[0]).not.toHaveProperty("rampestrek_hint");
+    const d3 = JSON.parse(
+      await callTool("read", "get_clips", { date: "2026-12-03" }),
+    );
+    expect(d3.clips[0].intro_hint).toBeTruthy();
+    expect(d3.clips[0]).not.toHaveProperty("rampestrek");
+    expect(d3.clips[0]).not.toHaveProperty("utfordring");
+  });
+
   it("mp3Duration leser Xing-rammetall", () => {
     const buf = Buffer.alloc(400);
     buf.set([0xff, 0xfb, 0x90, 0x00]);

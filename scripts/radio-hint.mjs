@@ -12,7 +12,7 @@ for (const blokk of dager.split(/^## Dag /m).slice(1)) {
   const n = parseInt(blokk, 10);
   const felt = {};
   for (const m of blokk.matchAll(
-    /^\*\*(intro_hint|reaksjon_hint):\*\* (.+)$/gm,
+    /^\*\*(intro_hint|reaksjon_hint|rampestrek_hint|utfordring_hint):\*\* (.+)$/gm,
   ))
     felt[m[1]] = uten(m[2]);
   if (Object.keys(felt).length) dag[n] = felt;

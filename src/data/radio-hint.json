@@ -2,87 +2,135 @@
   "dag": {
     "1": {
       "intro_hint": "Birk: Vi har fått et lydklipp i innboksen i natt. Ingen avsender, bare et navn: Rampenissen. Han sier han e tilbake på jobb. Lyng: Tilbake fra kor? Og kem har sendt oss det? Eg stoler ikkje på klipp uten avsender. Birk: Mottakeren min knitret hele forrige uke. Kanskje det henger sammen. Vi spiller det, så får dokker dømme selv.",
-      "reaksjon_hint": "Lyng: Okei. Han sov i en garnkurv. I et helt år. Og landet i nokke gult og buet. Eg sier banan. Birk: Han sa ikkje banan. Men hørte du det bak stemmen hans? Det knitret. Det var ikkje vår linje. Lyng: Snøfall. Eg har aldri hørt om et sted som heter Snøfall. Eg skal finne det på kartet før i morgen. Birk: Han sa Snøfall trenger hjelp, og han sa det til tre barn i Bergen. Vi tar ham inn hver morgen i desember, så lenge han ringer."
+      "reaksjon_hint": "Lyng: Okei. Han sov i en garnkurv. I et helt år. Og landet i nokke gult og buet. Eg sier banan. Birk: Han sa ikkje banan. Men hørte du det bak stemmen hans? Det knitret. Det var ikkje vår linje. Lyng: Snøfall. Eg har aldri hørt om et sted som heter Snøfall. Eg skal finne det på kartet før i morgen. Birk: Han sa Snøfall trenger hjelp, og han sa det til tre barn i Bergen. Vi tar ham inn hver morgen i desember, så lenge han ringer.",
+      "rampestrek_hint": "Rampenissen ligger begravd under et skred av klementiner foran TV-benken, med en banan som pute og rød garntråd viklet rundt seg.",
+      "utfordring_hint": "Dagens utfordring er den første: det ligger noe å finne i stua, og Julius har en ledetråd i videoen sin. Begge deler trengs for å finne koden til NisseKomm."
     },
     "2": {
       "intro_hint": "Han ringte inn fra en skål. Han ville ikke si hva slags skål.",
-      "reaksjon_hint": "Lyng: En skål. Han sov i en skål. Eg har sovnet på bussen, men aldri i en skål."
+      "reaksjon_hint": "Lyng: En skål. Han sov i en skål. Eg har sovnet på bussen, men aldri i en skål.",
+      "rampestrek_hint": "Rampenissen sitter i sukkerskålen med en teskje, tatt på fersken med sukker rundt munnen.",
+      "utfordring_hint": "Rampenissen har gjemt noe i huset, og det må letes godt. Julius forteller i videoen hva som skal gjøres med det som blir funnet."
     },
     "3": {
-      "intro_hint": "Dagens gjest har sovet dårlig og har pusset tenner. Grundig."
+      "intro_hint": "Dagens gjest har sovet dårlig og har pusset tenner. Grundig.",
+      "rampestrek_hint": "På badespeilet står det «Rampen var her. No cap.» med tannkrem, og tuben i vasken er tom. Rampenissen ser sur ut.",
+      "utfordring_hint": "Dagens utfordring begynner på badet, der Rampenissen har lagt igjen en lapp. Julius har den andre halvdelen i videoen."
     },
     "4": {
-      "intro_hint": "En liten fyr med altfor store solbriller vil si noe om retning."
+      "intro_hint": "En liten fyr med altfor store solbriller vil si noe om retning.",
+      "rampestrek_hint": "Rampenissen sitter i pappas sko i gangen med pappas solbriller på, og rundt ham står sko og kosedyr i ring.",
+      "utfordring_hint": "Dagens utfordring er en letejakt i gangen: Rampenissen har gjemt noe der, og Julius har en ledetråd i videoen. Det trengs både øyne og tålmodighet."
     },
     "5": {
       "intro_hint": "Det skal ha vært krig i en stue på Landås i natt. Vi har et øyenvitne på linjen.",
-      "reaksjon_hint": "Birk: Krig i en stue på Landås, og begge lag vant. Det e den beste nyheten vi har hatt på lenge."
+      "reaksjon_hint": "Birk: Krig i en stue på Landås, og begge lag vant. Det e den beste nyheten vi har hatt på lenge.",
+      "rampestrek_hint": "Det har vært marshmallow-krig i stua mellom Rampenissen og kosedyrene. En bamse har fått plaster.",
+      "utfordring_hint": "En brevfugl har landet et sted i huset med en beskjed i hemmelig skrift. Julius forklarer i videoen hvordan den skal leses."
     },
     "6": {
-      "intro_hint": "Gjesten vår er litt hvit i ansiktet i dag. Han sier det ikke er snø."
+      "intro_hint": "Gjesten vår er litt hvit i ansiktet i dag. Han sier det ikke er snø.",
+      "rampestrek_hint": "Rampenissen ligger midt i et stekebrett med mel på kjøkkenbordet, og rundt ham er det snøengler i melet.",
+      "utfordring_hint": "Rampenissen har laget et instrument og lagt det i gangen. Dagens utfordring handler om skygger, og Julius har en ledetråd i videoen."
     },
     "7": {
       "intro_hint": "Vi har en melding fra en som ikke kan bevege armene. Han sier det er midlertidig.",
-      "reaksjon_hint": "Birk: Det som skurrer, e kaldt, sa han. Mottakeren min på loftet skurrer òg mest når det fryser. Eg hadde ikkje tenkt på det før no."
+      "reaksjon_hint": "Birk: Det som skurrer, e kaldt, sa han. Mottakeren min på loftet skurrer òg mest når det fryser. Eg hadde ikkje tenkt på det før no.",
+      "rampestrek_hint": "Rampenissen er fastfryst på innsiden av fryserdøra, med rim, istapper og votter som står rett ut.",
+      "utfordring_hint": "Noe ligger innefrosset og må tines med hjelp fra en voksen. Det som kommer fram, må leses sammen med det Julius sier i videoen."
     },
     "8": {
-      "intro_hint": "Noen ringer inn fra en høyde. En veldig lokal høyde."
+      "intro_hint": "Noen ringer inn fra en høyde. En veldig lokal høyde.",
+      "rampestrek_hint": "Rampenissen sitter på toppen av et tårn av frokostblandingspakker med en suppeøse i hånda. På skiltet står det «Sigma-tårn».",
+      "utfordring_hint": "På toppen av tårnet ligger et ark fra IQ med ledninger og lamper. Pakkene skal ned én og én, uten klatring, og Julius har resten i videoen."
     },
     "9": {
-      "intro_hint": "Dagens gjest ringer fra et kjølig sted og ber om å bli hentet."
+      "intro_hint": "Dagens gjest ringer fra et kjølig sted og ber om å bli hentet.",
+      "rampestrek_hint": "To bein stikker opp av grønnsaksskuffen i kjøleskapet. Resten av Rampenissen har krøpet nedi.",
+      "utfordring_hint": "Kjøleskapsdøra er full av papirkrystaller. Dagens utfordring er en regneoppgave der det gjelder å se nøye etter, og Julius har regelen i videoen."
     },
     "10": {
       "intro_hint": "Han sier han er den mest fargerike tingen i huset i dag. Han høres bekymret ut.",
-      "reaksjon_hint": "Lyng: Han har gjemt fargene. Alle. Eg vet ikkje om eg skal le eller ringe noen."
+      "reaksjon_hint": "Lyng: Han har gjemt fargene. Alle. Eg vet ikkje om eg skal le eller ringe noen.",
+      "rampestrek_hint": "Rampenissen har tusj på hendene, nesa og halve ansiktet, og bildet av mamma og pappa har fått bart på en gul lapp.",
+      "utfordring_hint": "Rampenissen har gjemt fargene rundt i stua, og det trengs et rødt filter for å se hva som står på dem. Julius har en ledetråd i videoen."
     },
     "11": {
-      "intro_hint": "Det skurrer litt på linjen i dag. Gjesten vår har tatt sine forholdsregler."
+      "intro_hint": "Det skurrer litt på linjen i dag. Gjesten vår har tatt sine forholdsregler.",
+      "rampestrek_hint": "Rampenissen ligger pakket inn i aluminiumsfolie på et stekebrett, som en bakt potet.",
+      "utfordring_hint": "Det ligger sendere gjemt i flere rom, og alt som blir funnet, skal tas med. Julius forteller i videoen hva som skal gjøres med dem."
     },
     "12": {
       "intro_hint": "En som hørte noe i natt. Han vil at vi skal snakke lavt.",
-      "reaksjon_hint": "Lyng: Et sukk i isen. Birk, eg trur på han. Eg vet ikkje koffor, men eg gjør det."
+      "reaksjon_hint": "Lyng: Et sukk i isen. Birk, eg trur på han. Eg vet ikkje koffor, men eg gjør det.",
+      "rampestrek_hint": "En hel dorull er rullet ut i en bølgete stripe over kjøkkengulvet, og i enden ligger Rampenissen utslått på ryggen.",
+      "utfordring_hint": "Dagens utfordring skal høres: ved Rampenissen står det noe som kan spilles på med en teskje. Julius forteller i videoen hva det gjelder å lytte etter."
     },
     "13": {
-      "intro_hint": "Vi har fått en hilsen fra, sitat, den andre siden. Han høres ganske opplagt ut til å være død."
+      "intro_hint": "Vi har fått en hilsen fra, sitat, den andre siden. Han høres ganske opplagt ut til å være død.",
+      "rampestrek_hint": "Rampenissen har holdt sin egen begravelse etter elleve lussekatter, med blomst, kosedyr i sørgerekke og et skilt der det står «Her hviler Rampen».",
+      "utfordring_hint": "Ved Rampenissen ligger det små poser med krydder. Dagens utfordring er å finne ut hvilket av dem som var i lussekattene, og Julius har en ledetråd i videoen."
     },
     "14": {
-      "intro_hint": "Dagens gjest ringer fra en båt. En veldig liten båt."
+      "intro_hint": "Dagens gjest ringer fra en båt. En veldig liten båt.",
+      "rampestrek_hint": "Alle kjøkkenserviettene er brettet til skjeve fugler, og Rampenissen sitter i en papirbåt i vasken.",
+      "utfordring_hint": "Rampenissen har et ark med streker og tomme ruter som ser ut som ingenting. Dagens utfordring er å få det til å vise noe, og Julius har en ledetråd i videoen."
     },
     "15": {
       "intro_hint": "Gjesten vår står vakt ved ei skål på benken, og han er bekymret for en venn.",
-      "reaksjon_hint": "Birk: Han var stillere i dag. Når den som alltid snakker blir stille, e det noe som har skjedd."
+      "reaksjon_hint": "Birk: Han var stillere i dag. Når den som alltid snakker blir stille, e det noe som har skjedd.",
+      "rampestrek_hint": "Rampenissen står ved en liten skål med sirup med sleiva i hånda, og bortover kjøkkenbenken går det fotspor.",
+      "utfordring_hint": "Fotsporene på benken skal følges. Dagens utfordring har biter både på kjøkkenet og i NisseKomm, og Julius har en ledetråd i videoen."
     },
     "16": {
-      "intro_hint": "Noen har ryddet. Han vil gjerne forklare seg."
+      "intro_hint": "Noen har ryddet. Han vil gjerne forklare seg.",
+      "rampestrek_hint": "Rampenissen har ryddet, og nå ligger tingene på helt feil plass, som brødet i TV-benken. Selv sitter han i brødboksen med lokket på hodet.",
+      "utfordring_hint": "Dagens utfordring er å rydde opp etter ham og legge tingene tilbake der de hører hjemme. Underveis dukker det opp lapper, og Julius har en ledetråd i videoen."
     },
     "17": {
       "intro_hint": "Vi har mottatt et løsepengekrav. Og offeret ringer selv.",
-      "reaksjon_hint": "Birk: Grønt over Ulriken i natt. Eg så det fra vinduet på Varden, og eg sa det til ingen, for eg trodde ingen ville tro meg."
+      "reaksjon_hint": "Birk: Grønt over Ulriken i natt. Eg så det fra vinduet på Varden, og eg sa det til ingen, for eg trodde ingen ville tro meg.",
+      "rampestrek_hint": "Kosedyrene har kidnappet Rampenissen og bundet ham til en stol med grønt gavebånd. Løsepengebrevet krever alle pepperkakene.",
+      "utfordring_hint": "Dagens utfordring sitter på gavebåndet. Det skal strekkes ut og leses, og Julius har en ledetråd i videoen."
     },
     "18": {
-      "intro_hint": "En som har vært ute og flydd i natt, og ikke vil gjøre det igjen."
+      "intro_hint": "En som har vært ute og flydd i natt, og ikke vil gjøre det igjen.",
+      "rampestrek_hint": "Et spor av sjokoladerosiner går fra ytterdøra mot kjøleskapet, og Rampenissen sitter fast i pappas jakkelomme og peker anklagende.",
+      "utfordring_hint": "Dagens utfordring er å følge rosinsporet og telle nøye underveis. Rosinene bør ikke spises før koden er tastet, og Julius har en ledetråd i videoen."
     },
     "19": {
-      "intro_hint": "Dagens gjest beskriver seg selv som et åsted."
+      "intro_hint": "Dagens gjest beskriver seg selv som et åsted.",
+      "rampestrek_hint": "Rampenissen ligger flat på kjøkkengulvet med plaster i panna og et omriss av teip rundt seg, som på et åsted. Ved siden av ligger en pakke merket «Bevis».",
+      "utfordring_hint": "Det har landet bevis i flere rom, pakket i folie. Dagens utfordring er å samle dem uten å pakke dem opp, og Julius har en ledetråd i videoen."
     },
     "20": {
       "intro_hint": "Han ringer fra et fort, og han vil at dere skal finne fram noe til i morgen.",
-      "reaksjon_hint": "Birk: Han var alvorlig i dag. Ikkje noe rot, ikkje noe tull. Bare: vær hjemme i morgen."
+      "reaksjon_hint": "Birk: Han var alvorlig i dag. Ikkje noe rot, ikkje noe tull. Bare: vær hjemme i morgen.",
+      "rampestrek_hint": "Rampenissen har bygd et fort av teppe, stoler og puter, med popcorn, pappas hodetelefoner og et skilt der det står «Kun for sigmas».",
+      "utfordring_hint": "Dagens utfordring ligger inne i fortet, mellom putene. Rampenissen har lagt igjen en lapp, og Julius har en ledetråd i videoen."
     },
     "21": {
       "intro_hint": "En rolig melding i dag, fra en som har stått vakt siden klokka fire.",
-      "reaksjon_hint": "Lyng: En dør i muren, som skal stå åpen. Det e det fineste eg har hørt noen si om en bokhylle."
+      "reaksjon_hint": "Lyng: En dør i muren, som skal stå åpen. Det e det fineste eg har hørt noen si om en bokhylle.",
+      "rampestrek_hint": "Rampenissen står vakt bak en lav mur av bøker foran skjermen, med grytelokk som skjold og visp i hånda. Skjermen er dekket av frost.",
+      "utfordring_hint": "Dagens utfordring står i bokmuren, og Julius har en ledetråd til den. Koden skal tastes inn i NisseKomm, som er frosset til den er løst."
     },
     "22": {
-      "intro_hint": "Gjesten vår sitter fast i noe lite og ber om hjelp."
+      "intro_hint": "Gjesten vår sitter fast i noe lite og ber om hjelp.",
+      "rampestrek_hint": "Rampenissen har krøpet inn i julesokken til Hanna, og bare føttene stikker ut.",
+      "utfordring_hint": "Dagens utfordring er en tallkode. Kortene ligger i julesokker rundt om i huset, og Julius forklarer i videoen hvordan tall blir til bokstaver."
     },
     "23": {
       "intro_hint": "Han ringer fra et tre. Han sier han er pynt.",
-      "reaksjon_hint": "Lyng: Teip i øynene. Eg har hørt mange unnskyldninger for å gråte, men den var ny."
+      "reaksjon_hint": "Lyng: Teip i øynene. Eg har hørt mange unnskyldninger for å gråte, men den var ny.",
+      "rampestrek_hint": "Rampenissen sitter i juletreet og later som han er pynt. Under treet har en gave fått altfor mye teip på det ene hjørnet.",
+      "utfordring_hint": "Det henger noe nytt i juletreet i dag. Dagens utfordring er å finne alt sammen og lese det i riktig rekkefølge, og Julius har en ledetråd i videoen."
     },
     "24": {
       "intro_hint": "Birk: Siste melding fra gjesten vår i år. Han ringer hjemmefra, sier han. Vi vet ikkje kor det e. Lyng: Eg fant det aldri på kartet. Eg leita hele desember.",
-      "reaksjon_hint": "Lyng: Te neste år, sa han. Så han kommer tilbake. Birk: Studio e stille no. Og den røde tråden rundt mikrofonstativet ditt e borte i dag. Vi tok den ikkje ned. Lyng: Nei. Vi tok den ikkje ned. God jul, Kristian, Håkon og Hanna."
+      "reaksjon_hint": "Lyng: Te neste år, sa han. Så han kommer tilbake. Birk: Studio e stille no. Og den røde tråden rundt mikrofonstativet ditt e borte i dag. Vi tok den ikkje ned. Lyng: Nei. Vi tok den ikkje ned. God jul, Kristian, Håkon og Hanna.",
+      "rampestrek_hint": "Rampenissen er borte. Der han satt i juletreet, henger en gullkonvolutt, og under treet står en liten pappeske med sløyfe.",
+      "utfordring_hint": "Dagens utfordring er den siste. Esken har ting fra hele desember, og sammen med det Julius sier i videoen gir de årets siste kode."
     }
   },
   "host": {
