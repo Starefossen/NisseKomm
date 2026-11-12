@@ -1,6 +1,6 @@
 # Julius' videodagbok 2026 – manus
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans. Dag 5 seg 1 og dag 6 seg 1 endret 13.11 etter ja fra Hans (for lange for 15 s).
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans. Dag 5 seg 1 og dag 6 seg 1 endret 13.11 etter ja fra Hans (for lange for 15 s). Dag 8 seg 4, dag 10 seg 4 og dag 11 seg 2–4 endret 13.11 etter ja fra Hans.
 
 **Revisjon 10. november (vanskelighet, godkjent):** nye segmenter dag 5/4, 7/3, 7/5, 8/3, 9/4, 11/4 og 11/5 (nytt), 20/5. Etter uavhengig gjennomgang også 4/4, 4/5, 12/4, 12/5, 14/4, 14/5, 18/4, 18/5 (brikken ga ordet alene). Brikkene står ordrett som i `gaater-2026.md` etter revisjonen.
 
@@ -221,9 +221,9 @@ Kulde-nivå 1. Rim på vinduet, synlig pust. Rapporten fra Rampenissen står i �
    - Varighet: 14 s (20 ord) · låst
    - Handling: Lener seg inn, former et lite rektangel med tommel og pekefinger på venstre hånd og holder det.
    - Kulde: Synlig pust.
-4. **Replikk:** «IQ lodder på én, sover på én, og kaller den alltid det samme, med to ord i ett. Vi ses!»
+4. **Replikk:** «Den lille plata: IQ lodder på den, sover på den og kaller den to ord i ett. Vi ses!»
    - Varighet: 14 s (20 ord) · låst
-   - Handling: Legger kinnet på venstre hånd som på en pute, ler, så vinker han kort.
+   - Handling: Legger kinnet på venstre hånd som på en pute, så vinker han kort.
    - Kulde: Svak knitring, klikk.
 
 ## Dag 9 (on) – Krystall-Matematikk · 24 · blått hjerte
@@ -263,7 +263,7 @@ Kulde-nivå 3. Fargene renner ut av bildet i segment 2 og er borte resten av dag
    - Varighet: 14 s (20 ord) · låst
    - Handling: Tegner en bue i luften med venstre hånd.
    - Kulde: Knitring. Bildet hakker gjennom segmentet.
-4. **Replikk:** «Han sier det når han er stolt. Én gang til: alle fargene på rekke, slik regnbuen stiller dem opp. Vi ses!»
+4. **Replikk:** «IQ sier ordet når han er stolt. Én gang til: alle fargene på rekke, slik regnbuen stiller dem opp. Vi ses!»
    - Varighet: 15 s (21 ord) · låst
    - Handling: Tegner buen en gang til, langsommere, ser bestemt ut, så vinker han kort.
    - Kulde: Svak knitring. Klikk.
@@ -276,15 +276,15 @@ Kulde-nivå 2 (senket fra 3, intensitetskurven). Kraftig knitring, bildet hopper
    - Varighet: 14 s (20 ord)
    - Handling: Løfter et ark fra brevbunken med venstre hånd, leser, ler lavt og legger det ned.
    - Kulde: Knitring, rim på vinduet. Kort hopp i bildet på «potet».
-2. **Replikk:** «I natt delte Kulde senderen i tre, og antennen ved tjernet er full av is. IQ har en regel, Kristian.»
+2. **Replikk:** «I natt delte Kulde senderen i tre, og antennen ved tjernet er full av is. Lytt godt, Kristian.»
    - Varighet: 14 s (20 ord)
    - Handling: Peker bak seg mot vinduet med venstre hånd og holder pekefingeren der.
    - Kulde: Knitring øker, rim på vinduet. Lyden faller ut et øyeblikk.
-3. **Replikk:** «Tre sendere, sa IQ, og alt han bygger ender på fem. Kulde satte ut sine egne.»
+3. **Replikk:** «IQ har en regel: alt han bygger ender på fem. Tre sendere er hans. Kulde satte ut sine egne.»
    - Varighet: 12 s (16 ord) · låst
    - Handling: Tre fingre på venstre hånd, så fem, så legger han hånden flat på bordet.
    - Kulde: Svak knitring.
-4. **Replikk:** «Ikke gang dem. Legg IQs sammen, så finner dere oss. Vi hører dere i biter. Vi er her. Vi ses!»
+4. **Replikk:** «Ikke gang IQs sendere. Legg dem sammen, så finner dere oss. Vi hører dere i biter. Vi er her. Vi ses!»
    - Varighet: 14 s (20 ord) · låst
    - Handling: Rister på hodet, så legger han venstre hånd flatt på bordet foran seg og ser rolig fram.
    - Kulde: Knitring, klikk som nesten drukner i støy.
