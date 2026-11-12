@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Make one Julius video diary entry from the locked script.
 
-Usage: julius-dag.py <dag> [--suffix -v3] [--extend] [--dry-run] [--force] [--join-only] [--refilter] [--no-chain] [--cutaway <loop.mp4>[:kutt]] [--upload <base-url>]
+Usage: julius-dag.py <dag> [--suffix -v3] [--extend] [--dry-run] [--force] [--join-only] [--refilter] [--no-chain] [--cutaway <klipp.mp4>[:kutt[:sek]]]... [--manus <fil>] [--dest <mappe>] [--plakat <bilde>] [--upload <base-url>]
        julius-dag.py lint [dag ...]      segments over 22 words (locked brikke exempt), timing budget
        julius-dag.py selftest
 
@@ -28,8 +28,12 @@ OUT = ROOT / "assets" / "out"
 DEST = ROOT / "public" / "video" / "julius"
 
 
+def arg(flag: str):
+    return sys.argv[sys.argv.index(flag) + 1] if flag in sys.argv else None
+
+
 def segments(day: int):
-    segs = medie.julius_segments(day)
+    segs = medie.julius_segments(day, ms=arg("--manus") or medie.JULIUS_MS)
     if not segs:
         sys.exit(f"Fant ikke dag {day}")
     return segs
@@ -264,8 +268,9 @@ def main():
     dry = "--dry-run" in sys.argv
     segs = segments(day)
     suffix = sys.argv[sys.argv.index("--suffix") + 1] if "--suffix" in sys.argv else ""
-    dest = DEST / f"dag-{day:02d}{suffix}.mp4"
-    if not dry and "--force" not in sys.argv and medie.status(dest)[0] == medie.CURRENT:
+    promo = "--manus" in sys.argv  # promo: own script, not in the media inventory
+    dest = Path(arg("--dest") or DEST) / f"dag-{day:02d}{suffix}.mp4"
+    if not dry and not promo and "--force" not in sys.argv and medie.status(dest)[0] == medie.CURRENT:
         print(f"{dest} er oppdatert; --force for å lage den på nytt")
         return
     names = []
@@ -330,16 +335,18 @@ def main():
     for n in names:
         if speech_at_end(OUT / f"{n}.raw.mp4"):
             print(f"  REGENERER {n}: stemmen går til siste bilde, replikken er kuttet")
-    DEST.mkdir(parents=True, exist_ok=True)
-    cut = None
-    if "--cutaway" in sys.argv:
-        f, _, k = sys.argv[sys.argv.index("--cutaway") + 1].partition(":")
-        cut = (f, int(k) if k else worst_cut([OUT / f"{n}.raw.mp4" for n in names]))
-    join([OUT / f"{n}.mp4" for n in names], dest, [(s[3], s[0], s[4]) for s in segs], cut)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    cuts = []
+    for i, a in enumerate(sys.argv):
+        if a == "--cutaway":
+            f, k, s = (sys.argv[i + 1].split(":") + ["", ""])[:3]
+            cuts.append((f, int(k) if k else worst_cut([OUT / f"{n}.raw.mp4" for n in names]), float(s or CUTAWAY)))
+    join([OUT / f"{n}.mp4" for n in names], dest, [(s[3], s[0], s[4]) for s in segs], cuts, arg("--plakat"))
     subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-ss", "3", "-i", str(dest), "-frames:v", "1",
                     "-q:v", "3", str(dest.with_suffix(".jpg"))], check=True)
-    medie.write("julius-dag.py", dest, medie.JULIUS_MS, f"Dag {day}", "gemini-omni-1.2-flash",
-                ["assets/characters/julius/ref-v3.jpg"], extra={"filter_version": medie.filter_version()})
+    if not promo:
+        medie.write("julius-dag.py", dest, medie.JULIUS_MS, f"Dag {day}", "gemini-omni-1.2-flash",
+                    ["assets/characters/julius/ref-v3.jpg"], extra={"filter_version": medie.filter_version()})
     print(dest)
     if "--upload" in sys.argv:
         upload(sys.argv[sys.argv.index("--upload") + 1], dest)
@@ -456,9 +463,14 @@ def worst_cut(raws) -> int:
     return scores.index(min(scores)) + 1
 
 
-def join_graph(dur, kulde=None, cut=None):
+PLAKAT = 2.0  # seconds of end card after the last segment (promo)
+
+
+def join_graph(dur, kulde=None, cuts=(), plakat=False):
     """The filter graph for join; kulde = [(kulde, line, locked)] per segment adds Kulde's effects;
-    cut = k lays input n (a TV loop) over cut k for CUTAWAY seconds."""
+    cuts = [(k, secs)] lays inputs n, n+1, … (TV loops, screen recordings) over cut k for secs, picture only:
+    from the start of segment k's silent tail, so no word is lost; k = n covers the last tail.
+    plakat = input after the cutaways (a still) held PLAKAT s at the end."""
     n = len(dur)
     w, h = int(1280 / 1.15) // 2 * 2, int(720 / 1.15) // 2 * 2
     fc, drained = "", False
@@ -483,23 +495,35 @@ def join_graph(dur, kulde=None, cut=None):
         fc += f"[{vprev}][v{i}]xfade=transition=fade:duration={XFADE}:offset={t:.3f}[y{i}];"
         fc += f"[{aprev}][a{i}]acrossfade=d={XFADE}:c1=tri:c2=tri[x{i}];"
         vprev, aprev = f"y{i}", f"x{i}"
-    if cut:
-        at = sum(dur[:cut]) - cut * XFADE + XFADE / 2 - CUTAWAY / 2  # centred on the crossfade
-        fc += (f"[{n}:v]fps=24,scale=1280:720,setsar=1,trim=duration={CUTAWAY},format=yuv420p,"
-               f"fade=t=in:d=0.15,fade=t=out:st={CUTAWAY - 0.15}:d=0.15,setpts=PTS-STARTPTS+{at:.3f}/TB[c];"
-               f"[{vprev}][c]overlay=eof_action=pass[vc];")
-        vprev = "vc"
+    total = sum(dur) - (n - 1) * XFADE
+    ends = [sum(dur[:k]) - (k - 1) * XFADE for k in range(1, n + 1)]
+    over = max([0.0] + [ends[k - 1] - TAIL + s - total for k, s in cuts]) + (PLAKAT if plakat else 0)
+    if over > 0:  # the last cutaway or the end card runs past Julius: hold his last frame, pad the sound
+        fc += f"[{vprev}]tpad=stop_mode=clone:stop_duration={over:.3f}[vp];[{aprev}]apad=pad_dur={over:.3f}[ap];"
+        vprev, aprev = "vp", "ap"
+    for j, (k, s) in enumerate(cuts):
+        at = ends[k - 1] - TAIL if len(cuts) > 1 or k == n else ends[k - 1] - XFADE / 2 - s / 2
+        fc += (f"[{n + j}:v]fps=24,scale=1280:720,setsar=1,trim=duration={s},format=yuv420p,"
+               f"fade=t=in:d=0.15,fade=t=out:st={s - 0.15}:d=0.15,setpts=PTS-STARTPTS+{at:.3f}/TB[c{j}];"
+               f"[{vprev}][c{j}]overlay=eof_action=pass[vc{j}];")
+        vprev = f"vc{j}"
+    if plakat:
+        fc += (f"[{n + len(cuts)}:v]scale=1280:720,setsar=1,format=yuv420p[pl];"
+               f"[{vprev}][pl]overlay=shortest=1:enable='gte(t,{total + over - PLAKAT:.3f})'[vpl];")
+        vprev = "vpl"
     fc += f"[{vprev}]null[v];"
     return fc + f"[{aprev}]alimiter=limit=0.84:level=false[a]"  # 0.84 ≈ -1.5 dBTP
 
 
-def join(segs, dest: Path, kulde=None, cutaway=None):
+def join(segs, dest: Path, kulde=None, cutaways=(), plakat=None):
     """Alternating framing (every other segment a 1.15x crop) with 0.25 s crossfades in the silent tail,
     each segment levelled to -16 LUFS and the whole day limited to -1.5 dBTP.
-    cutaway = (loop file, cut number) hides that cut under a TV loop."""
+    cutaways = [(file, cut number, secs)] laid over cuts; plakat = still image shown PLAKAT s at the end."""
     dur = [float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(p)])) for p in segs]
-    fc = join_graph(dur, kulde, cutaway and cutaway[1])
-    extra = ["-stream_loop", "-1", "-i", str(cutaway[0])] if cutaway else []
+    fc = join_graph(dur, kulde, [(k, s) for _, k, s in cutaways], bool(plakat))
+    extra = sum((["-stream_loop", "-1", "-i", str(f)] for f, _, _ in cutaways), [])
+    if plakat:
+        extra += ["-loop", "1", "-i", str(plakat)]
     # ponytail: crf 28 + 96k audio lands around 8–12 MB per minute at 720p; raise crf if files grow
     subprocess.run(
         ["ffmpeg", "-nostdin", "-y", "-v", "error", *sum((["-i", str(p)] for p in segs), []), *extra,
@@ -534,8 +558,12 @@ def selftest():
             clips.append(c)
         join(clips, Path(d) / "dag.mp4", [("Fargene renner ut, lampen flakker på «a».", "a b", False),
                                           ("Et hopp i bildet, lyden hakker, rim.", "c", False), ("Uttoning i gull.", "d", False)],
-             (clips[0], worst_cut(clips)))
+             [(clips[0], worst_cut(clips), CUTAWAY)])
         assert (Path(d) / "dag.mp4").stat().st_size > 0
+        png = Path(d) / "p.png"
+        subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-f", "lavfi", "-i", "color=s=320x180", "-frames:v", "1", str(png)], check=True)
+        join(clips, Path(d) / "promo.mp4", None, [(clips[0], 1, 1.0), (clips[1], 3, 3.0)], png)
+        assert abs(seconds(Path(d) / "promo.mp4") - (6 - 2 * XFADE + 3 - TAIL + PLAKAT)) < 0.2
     print("selftest ok")
 
 

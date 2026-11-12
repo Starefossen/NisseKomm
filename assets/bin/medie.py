@@ -62,13 +62,13 @@ def sha(data) -> str:
     return hashlib.sha256(data if isinstance(data, bytes) else data.encode()).hexdigest()
 
 
-def julius_segments(day: int, root: Path = ROOT):
+def julius_segments(day: int, root: Path = ROOT, ms: str = JULIUS_MS):
     """[(line, secs, action, kulde, locked)] for one day of the Julius script; [] if the day is missing.
 
     Tolerant of field order and missing fields (the script is rewritten by hand): a segment is a
     **Replikk:** «…» followed by «- Varighet: N s», «- Handling:», «- Kulde:» lines. locked = the
     segment is marked as a locked brikke («låst» or «brikke» on the Varighet line or after the line)."""
-    text = (root / JULIUS_MS).read_text()
+    text = (root / ms).read_text()
     block = re.search(rf"^## Dag {day} \(.*?(?=^## Dag |\Z)", text, re.S | re.M)
     if not block:
         return []
