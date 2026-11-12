@@ -91,6 +91,8 @@ export interface Versjon {
   path: string;
   navn: string;
   celle: Celle;
+  /** The review verdict alone: «utdatert» still reads as not reviewed here. */
+  vurdert: Celle;
   notat?: string;
 }
 
@@ -140,6 +142,8 @@ export function versjon(path: string, k: StatusKilde): Versjon {
   const finnes = k.filer.some((f) => f.path === path && f.size !== null);
   const v = k.vurderinger[path];
   // Old entries hold «Lag på nytt» as display text: any other verdict is a rejection.
+  const vurdert: Celle =
+    v?.vurdering && celleAv(v) === "lag_paa_nytt" ? "lag_paa_nytt" : celleAv(v);
   const celle: Celle = !finnes
     ? k.inventar?.get(path)?.status === "valgfri"
       ? "valgfri"
@@ -153,6 +157,7 @@ export function versjon(path: string, k: StatusKilde): Versjon {
     path,
     navn: versjonsnavn(path),
     celle,
+    vurdert,
     notat: v?.notat ?? forrigeTekst(v),
   };
 }

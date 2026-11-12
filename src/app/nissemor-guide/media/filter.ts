@@ -74,7 +74,11 @@ export interface Rad {
 }
 
 export function radAv(f: Familie): Rad {
-  const c = f.kandidat?.celle ?? f.iBruk.celle;
+  const v = f.kandidat ?? f.iBruk;
+  // A missing file has nothing to review; «utdatert» is an action, the verdict
+  // underneath still counts (an old file nobody reviewed is still to do).
+  const c =
+    v.celle === "mangler" || v.celle === "valgfri" ? v.celle : v.vurdert;
   return {
     path: f.key,
     tilstand: c,
