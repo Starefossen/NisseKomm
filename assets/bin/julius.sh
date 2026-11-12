@@ -22,6 +22,7 @@ else
 jq -n --arg p "$P" --arg secs "$SECS" --rawfile img <(base64 -i "${REF:-$A/characters/julius/ref-v3.jpg}" | tr -d '\n') \
   '{model:"gemini-omni-1.2-flash",input:[{type:"image",data:$img,mime_type:"image/jpeg"},{type:"text",text:$p}],response_format:{type:"video",duration:($secs+"s")}}' > "$D/$NAME.req.json"
 fi
+bruk video gemini-omni-1.2-flash "$NAME"
 curl -s "https://generativelanguage.googleapis.com/v1beta/interactions" -H "x-goog-api-key: $K" -H 'Content-Type: application/json' -d @"$D/$NAME.req.json" > "$D/$NAME.resp.json"
 if [ -n "${GENERER_LOGG:-}" ]; then echo "video $NAME" >> "$GENERER_LOGG"; fi  # generer.py counts sent requests
 jq -e .error "$D/$NAME.resp.json" && exit 1

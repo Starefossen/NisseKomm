@@ -9,6 +9,7 @@ P=$2; OUT=$3; TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
 i=0; for img in "$1" "${@:4}"; do i=$((i+1))
   jq -n --rawfile img <(base64 -i "$img" | tr -d '\n') '{inlineData:{mimeType:"image/jpeg",data:$img}}' > "$TMP/$(printf %02d $i).json"
 done
+bruk bilde gemini-3-pro-image "$OUT"
 jq -s . "$TMP"/*.json > "$TMP/parts"
 jq -n --arg ar "${ASPECT:-16:9}" --rawfile p "$P" --slurpfile imgs "$TMP/parts" \
   '{contents:[{parts:($imgs[0]+[{text:$p}])}],generationConfig:{responseModalities:["IMAGE"],imageConfig:{aspectRatio:$ar}}}' \

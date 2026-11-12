@@ -22,6 +22,7 @@ fi
 [ -z "$FORCE" ] && $M status "$F" >/dev/null && { echo "$F er oppdatert; --force for å lage den på nytt"; exit 0; }
 if [ "$D" = synger ]; then text=$(cat "$SRC"); else text=$($M tekst rampenissen "$D"); fi
 [ -n "$text" ] || { echo "Fant ikke klipp for dag $D"; exit 1; }
+bruk tts gemini-3.8-flash-tts "$F"
 jq -n --arg t "$STIL\n\n$text" --arg v "$V" \
   '{contents:[{parts:[{text:$t}]}],generationConfig:{responseModalities:["AUDIO"],speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:$v}}}}}' \
 | curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash-tts:generateContent" -H "x-goog-api-key: $K" -H 'Content-Type: application/json' -d @- > "$T/r.json"

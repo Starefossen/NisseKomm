@@ -10,6 +10,7 @@ TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
 for img in "$@"; do
   jq -n --rawfile img <(base64 -i "$img" | tr -d '\n') '{inlineData:{mimeType:"image/jpeg",data:$img}}' > "$TMP/$(basename "$img").json"
 done
+bruk bilde gemini-3-pro-image "$OUT"
 jq -s . "$TMP"/*.json > "$TMP/parts.json" 2>/dev/null || echo '[]' > "$TMP/parts.json"
 jq -n --rawfile p "$P" --slurpfile imgs "$TMP/parts.json" \
   '{contents:[{parts:($imgs[0]+[{text:$p}])}],generationConfig:{responseModalities:["IMAGE"],imageConfig:{aspectRatio:"1:1"}}}' \

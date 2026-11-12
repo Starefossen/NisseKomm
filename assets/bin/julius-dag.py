@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Make one Julius video diary entry from the locked script.
 
-Usage: julius-dag.py <dag> [--suffix -v3] [--extend] [--dry-run] [--force] [--alle] [--join-only] [--refilter] [--chain] [--cutaway <klipp.mp4>[:kutt[:sek]]]... [--manus <fil>] [--dest <mappe>] [--plakat <bilde>] [--upload <base-url>]
+Usage: julius-dag.py <dag> [--suffix -v3] [--extend] [--dry-run] [--force] [--alle] [--join-only] [--refilter] [--chain] [--forsøk N] [--over-budsjett] [--cutaway <klipp.mp4>[:kutt[:sek]]]... [--manus <fil>] [--dest <mappe>] [--plakat <bilde>] [--upload <base-url>]
        julius-dag.py lint [dag ...]      segments over 22 words (locked brikke exempt), timing budget
        julius-dag.py selftest
 
@@ -21,6 +21,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
+import forbruk  # noqa: E402
 import medie  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -105,6 +106,7 @@ def coverage(clip: Path, line: str):
         {"inlineData": {"mimeType": "audio/mp3", "data": base64.b64encode(mp3).decode()}},
         {"text": "Transcribe exactly what is said, in Norwegian. Write all numbers as words (85,0 = åttifem komma null). Output only the transcript."},
     ]}]}
+    forbruk.logg("transkripsjon", "gemini-3.5-flash", "julius-dag.py", clip.name)
     req = urllib.request.Request(
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent",
         data=json.dumps(body).encode(), headers={"x-goog-api-key": key, "Content-Type": "application/json"},
@@ -250,6 +252,7 @@ def audit(clip: Path):
     body = {"contents": [{"parts": [
         {"inlineData": {"mimeType": "video/mp4", "data": base64.b64encode(clip.read_bytes()).decode()}},
         {"text": AUDIT}]}], "generationConfig": {"responseMimeType": "application/json"}}
+    forbruk.logg("transkripsjon", "gemini-3.5-flash", "julius-dag.py", f"revisjon {clip.name}")
     req = urllib.request.Request(
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent",
         data=json.dumps(body).encode(), headers={"x-goog-api-key": key, "Content-Type": "application/json"},
@@ -289,7 +292,7 @@ def last_frame(clip: Path, out: Path) -> Path:
 
 # ponytail: word-set overlap, not alignment; catches dropped clauses, not swapped word order
 MIN_COVERAGE = 0.9
-ATTEMPTS = 3
+ATTEMPTS = 2  # takes per segment (every take is a paid video call); --forsøk N raises it
 
 
 def main():
@@ -332,6 +335,8 @@ def main():
         best = (None, None)  # (score, problems); score = (clean, coverage)
         for attempt in range(1, ATTEMPTS + 1):
             r = subprocess.run([str(BIN / "julius.sh"), name, line, act, str(secs)], stdin=subprocess.DEVNULL, env=env)
+            if r.returncode == 78:
+                sys.exit(1)  # julius.sh's budget guard has printed why
             if r.returncode != 0:
                 import time
 
@@ -435,6 +440,8 @@ def extend_day(day: int):
             best, capped = (None, None), False
             for attempt in range(1, ATTEMPTS + 1):
                 r = subprocess.run([str(BIN / "julius.sh"), name, line, act, str(length)], stdin=subprocess.DEVNULL, env=env)
+                if r.returncode == 78:
+                    sys.exit(1)
                 if r.returncode != 0:
                     resp = OUT / f"{name}.resp.json"
                     txt = resp.read_text() if resp.exists() else ""
@@ -704,6 +711,9 @@ def upload(base: str, f: Path):
 
 
 if __name__ == "__main__":
+    if "--over-budsjett" in sys.argv:
+        os.environ["OVER_BUDSJETT"] = "1"  # julius.sh checks it
+    ATTEMPTS = int(arg("--forsøk") or ATTEMPTS)
     if sys.argv[1:] == ["selftest"]:
         selftest()
     elif sys.argv[1:2] == ["lint"]:

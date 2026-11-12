@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # tv-loops.sh: make all Snøfall TV loops from the reference stills and prompt files.
 # Remakes only missing or out-of-date loops (medie.py); loops made before sidecars are kept.
-# Usage: assets/bin/tv-loops.sh [--force] [--liste] [--bare <navn>] [--tørrkjør] [--upload <base-url>]
+# Usage: assets/bin/tv-loops.sh [--force] [--liste] [--bare <navn>] [--tørrkjør] [--over-budsjett] [--upload <base-url>]
 #   --liste: print every job name (no API calls); --bare <navn>: make only that job (generer.py uses both)
 #   --tørrkjør: print the commands with their absolute paths instead of running them (no API calls)
 # Exits 1 if any job fails or an input file is missing.
@@ -10,7 +10,7 @@ A="${NISSEKOMM_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}/assets"; T="$A/../pub
 FORCE= LIST= ONLY= DRY= FAIL=
 ARGS=()
 while [ $# -gt 0 ]; do
-  case $1 in --force) FORCE=1 ;; --liste) LIST=1 ;; --bare) ONLY=$2; shift ;; --tørrkjør) DRY=1 ;; *) ARGS+=("$1") ;; esac
+  case $1 in --force) FORCE=1 ;; --liste) LIST=1 ;; --bare) ONLY=$2; shift ;; --tørrkjør) DRY=1 ;; --over-budsjett) export OVER_BUDSJETT=1 ;; *) ARGS+=("$1") ;; esac
   shift
 done
 [ ${#ARGS[@]} -gt 0 ] && set -- "${ARGS[@]}" || set --

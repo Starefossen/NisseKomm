@@ -4,7 +4,7 @@
 Usage:
   generer.py plan [--til-dag N] [--bare KAT] [--force]
   generer.py kjør [--til-dag N] [--bare KAT|ID] [--tørrkjør]   (ID: port:port-winter; --tørrkjør prints commands, no API calls)
-                  [--maks-forespørsler N] [--stopp-etter julius:5] [--force]
+                  [--maks-forespørsler N] [--stopp-etter julius:5] [--force] [--over-budsjett]
   generer.py --selvtest
 
 Order: (a) named tests, (b) Julius days ✗/⚠, (c) Rampenissen ✗/⚠, (d) TV loops and
@@ -31,6 +31,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).parent))
+import forbruk  # noqa: E402
 import inventar  # noqa: E402
 import medie  # noqa: E402
 
@@ -38,7 +39,7 @@ ROOT = medie.ROOT
 BIN = Path(__file__).resolve().parent  # the scripts next to this file, also when NISSEKOMM_ROOT points elsewhere
 STATE = ROOT / "assets/out/generer-tilstand.json"
 DAY_LIMIT = 200
-RETRY = 1.5  # expected takes per clip (julius-dag.py retries up to 3)
+RETRY = 1.5  # expected takes per clip (julius-dag.py takes at most 2 by default)
 EXIT_LIMIT = 75  # EX_TEMPFAIL: try again after the quota resets
 LIMIT_RE = re.compile(r"per day|spending cap|Stoppet: (dagsgrensen|månedlig)", re.I)
 MEDIER = medie.jobs()  # assets/medier.json; TV loops are listed by tv-loops.sh --liste
@@ -284,10 +285,17 @@ def run(q, state_path: Path, maks=None, stopp_etter=None, runner=run_cmd, check=
                 print(f"Stopper før {item_id}: {used} brukt, anslag {est:g}, grense {budget}")
                 save_state(state_path, s)
                 return 0
+            if est and (msg := forbruk.sjekk("video", est)):
+                print(msg)
+                save_state(state_path, s)
+                return forbruk.EXIT_BUDSJETT
             print(f"▶ {item_id} (anslag {est:g} videoforespørsler, {used} brukt i dag)")
             before = len(log.read_text().splitlines())
             rc, out = runner(cmd, env)
             sent = len(log.read_text().splitlines()) - before
+            if rc == forbruk.EXIT_BUDSJETT:  # a script's own guard (images, TTS) stopped
+                save_state(state_path, s)
+                return rc
             s["forespørsler"][today] = used + sent
             limit = LIMIT_RE.search(out)
             ok = rc == 0 and not limit and check(item_id)
@@ -360,6 +368,8 @@ def arg(argv, name, default=None):
 def main(argv):
     if not argv or argv[0] not in ("plan", "kjør"):
         sys.exit(__doc__)
+    if "--over-budsjett" in argv:
+        os.environ["OVER_BUDSJETT"] = "1"  # the scripts check it
     til = int(arg(argv, "--til-dag", 24))
     bare = arg(argv, "--bare")
     force = "--force" in argv
