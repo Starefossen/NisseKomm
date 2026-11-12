@@ -36,6 +36,7 @@ interface Inventar {
   meta?: {
     generator?: string;
     created?: string;
+    bakfylt?: boolean;
     source?: {
       path?: string;
       section?: string;
@@ -161,6 +162,9 @@ export function ReviewItemCard({
         <div>
           <span className="text-(--neon-green)/50">Opprettet: </span>
           <span>{formatCreated(inventar?.meta?.created)}</span>
+          {inventar?.meta?.bakfylt && (
+            <span className="text-(--neon-green)/40"> (bakfylt)</span>
+          )}
         </div>
         <div>
           <span className="text-(--neon-green)/50">Kildeseksjon: </span>

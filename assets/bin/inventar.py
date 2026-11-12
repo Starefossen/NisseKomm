@@ -69,6 +69,7 @@ def scan(media: Path, root: Path = ROOT):
                     "generator": m.get("generator"),
                     "created": m.get("created"),
                     "source": m.get("source"),
+                    "bakfylt": m.get("bakfylt"),
                 }
             except Exception:
                 pass

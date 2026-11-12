@@ -12,6 +12,7 @@ CLI (for the shell generators):
   medie.py render <id>                    prompt, base image and refs of a medier.json job, one per line
   medie.py brukt-av <entitet>             medier.json jobs that use winter, torget, objects/postkasse …
   medie.py flytt                        move gitignored refs and stills to their new paths (assets/flyttet.json)
+  medie.py bakfyll [mediemappe]           sidecar (bakfylt, status ukjent) for files made before the inventory
   medie.py tv                           the TV loops of medier.json, one line each (tv-loops.sh)
   medie.py stiller <id>                   intermediate stills of a job: image|prompt|out|refs, first one first
   medie.py inndata                        every job's template, image, refs exist; exit 1 if one is missing
@@ -210,6 +211,8 @@ def status(out: Path, key: str = "", root: Path = ROOT):
     if not side.exists():
         return (STALE, [OVERRIDES[key]]) if key in OVERRIDES else (UNKNOWN, [])
     m = json.loads(side.read_text())
+    if m.get("bakfylt"):  # made before the inventory: no inputs recorded, so nothing to compare
+        return UNKNOWN, []
     s = m["source"]
     if "sha256" not in s:  # a backfilled sidecar records the source but not its hash
         return UNKNOWN, ["sidefil uten hash (bakfylt)"]
@@ -224,6 +227,32 @@ def status(out: Path, key: str = "", root: Path = ROOT):
     if prompt_version(m["generator"], root) != m["prompt_version"]:
         why.append("promptversjonen er endret")
     return (STALE if why else CURRENT), why
+
+
+def bakfyll(media: Path, root: Path = ROOT):
+    """Write a sidecar (bakfylt, no prompt hash) for each mp4/mp3 under media that has none."""
+    table = {j["ut"]: j for j in jobs(root).values() if j.get("ut")}
+    n = 0
+    for d in ("video", "audio"):
+        for f in sorted((media / d).rglob("*")):
+            if f.suffix not in (".mp4", ".mp3") or Path(str(f) + ".meta.json").exists():
+                continue
+            key = str(f.relative_to(media))
+            m = re.fullmatch(r"video/julius/dag-(\d+)(-v2)?\.mp4", key)
+            if m and m[2]:
+                gen, src = "julius-dag.py (før inventar)", {"path": "Omni Extend test 12.11"}
+            elif m:
+                gen, src = "julius-dag.py (før inventar)", {"path": JULIUS_MS, "section": f"Dag {int(m[1])}"}
+            elif key in table:
+                gen, src = table[key]["generator"], {"path": table[key]["mal"]}
+            else:
+                gen, src = "ukjent (før inventar)", {}
+            created = datetime.fromtimestamp(f.stat().st_mtime, timezone.utc).isoformat(timespec="seconds")
+            Path(str(f) + ".meta.json").write_text(json.dumps(
+                {"generator": gen, "created": created, "source": src, "bakfylt": True},
+                ensure_ascii=False, indent=2) + "\n")
+            n += 1
+    return n
 
 
 MEDIER = "assets/medier.json"
@@ -479,6 +508,16 @@ def selftest():
                                 "n": {"mal": "p/b.txt", "bilde": "assets/x.jpg"}})
         assert mi[0][0] == "m: tilstand nei" and "borte.txt" in mi[0][1] and len(mi[0]) == 2, mi
         assert mi[1] == ["n: assets/x.jpg"], mi  # untracked image: skipped
+    with tempfile.TemporaryDirectory() as d:
+        r = Path(d)
+        (r / MEDIER).parent.mkdir(parents=True)
+        (r / MEDIER).write_text("{}")
+        (r / "public/video/julius").mkdir(parents=True)
+        (r / "public/video/julius/dag-07.mp4").write_text("x")
+        assert bakfyll(r / "public", r) == 1 and bakfyll(r / "public", r) == 0
+        side = json.loads((r / "public/video/julius/dag-07.mp4.meta.json").read_text())
+        assert side["source"]["section"] == "Dag 7" and side["bakfylt"]
+        assert status(r / "public/video/julius/dag-07.mp4", root=r)[0] == UNKNOWN
     missing, skipped = missing_inputs()  # the real medier.json
     assert not missing, missing
     print(f"selvtest ok (inndata: {len(skipped)} bilder utenfor git hoppet over)")
@@ -503,6 +542,8 @@ def main(argv):
         print(*used_by(args[0]), sep="\n")
     elif cmd == "flytt":
         flytt()
+    elif cmd == "bakfyll":
+        print(bakfyll(Path(args[0] if args else os.environ.get("MEDIA_DIR", ROOT / "public"))), "sidecars skrevet")
     elif cmd == "tv":
         for line in tv_lines():
             print(line)
