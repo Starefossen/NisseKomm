@@ -10,6 +10,7 @@ import { juliusFiles } from "../../media/oversikt";
 import type { dagInnhold } from "@/lib/guide-innhold";
 import { Foreldredel } from "./foreldre";
 import { Gaatekart } from "./gaatekart";
+import { Lukkbar, Vurder } from "../../vurdering";
 
 type Dag = Awaited<ReturnType<typeof dagInnhold>>;
 
@@ -47,6 +48,7 @@ function DagInnhold() {
   const [feil, setFeil] = useState(false);
   const [vis, setVis] = useState(false);
   const media = useMediaData();
+  const dd = String(n).padStart(2, "0");
 
   useEffect(() => {
     let aktiv = true;
@@ -137,6 +139,7 @@ function DagInnhold() {
 
             {dag.kveld && (
               <Gaatekart
+                vid={`dag/${dd}/gaatekart`}
                 k={dag.kart}
                 d={dag.kveld}
                 epost={q?.nissemail_tekst ?? ""}
@@ -156,7 +159,11 @@ function DagInnhold() {
 
             <Foreldredel n={n} d={dag.kveld} t={t} plan={dag.byggeplan} />
 
-            <Seksjon tittel="Delsystemer i dag">
+            <Lukkbar
+              id="delsystemer"
+              tittel="Delsystemer i dag"
+              className={box}
+            >
               <dl className="space-y-2">
                 {dag.delsystemer.map(([k, v]) => (
                   <div key={k}>
@@ -165,9 +172,14 @@ function DagInnhold() {
                   </div>
                 ))}
               </dl>
-            </Seksjon>
+              <Vurder id={`dag/${dd}/delsystemer`} />
+            </Lukkbar>
 
-            <Seksjon tittel="Varden (get_kid_context)">
+            <Lukkbar
+              id="varden"
+              tittel="Varden (get_kid_context)"
+              className={box}
+            >
               <p className="text-sm mb-2">
                 Det hjemmeassistenten ser kl. 12 denne dagen, når alle tidligere
                 dager er løst. «[skjult]» betyr at Varden ikke får se teksten.
@@ -189,7 +201,8 @@ function DagInnhold() {
                   </p>
                 </div>
               ))}
-            </Seksjon>
+              <Vurder id={`dag/${dd}/varden`} />
+            </Lukkbar>
 
             <h2 className="text-2xl text-(--gold) mt-8 mb-2">
               Manus og media for dagen

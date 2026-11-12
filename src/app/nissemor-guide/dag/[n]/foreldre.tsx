@@ -5,6 +5,7 @@ import { useState, type ReactNode } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { utskriftHref, utskriftTittel } from "../../printout/filer";
 import type { forSesongen, kveldDag } from "@/lib/guide-sesong";
+import { Vurder } from "../../vurdering";
 import { Avkrysning, useAvkrysning, useSynk } from "../../_kveld/felles";
 
 const box =
@@ -61,6 +62,7 @@ export function Foreldredel({
   const [, setTikk] = useState(0);
   if (!d || !q) return null;
   const f = t;
+  const dd = String(n).padStart(2, "0");
 
   const lost = GameEngine.isQuestCompleted(n);
   const nar = GameEngine.getSubmittedCodes().find((c) => c.day === n)?.dato;
@@ -198,6 +200,7 @@ export function Foreldredel({
         <p>
           <b>Bærer dagens brikke:</b> {d.strek.brikke}
         </p>
+        <Vurder id={`dag/${dd}/rampestrek`} />
         <h3 className="text-xl text-(--gold)">Gåten ({d.oppsett})</h3>
         <p>
           <b>Gjør i kveld:</b> {f(d.iKveld)}
@@ -216,6 +219,7 @@ export function Foreldredel({
             </p>
           </>
         )}
+        <Vurder id={`dag/${dd}/kveld`} />
       </Seksjon>
 
       {bonus && (

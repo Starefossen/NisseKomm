@@ -1,4 +1,5 @@
 "use client";
+import { Vurder } from "../../vurdering";
 
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -64,12 +65,14 @@ function Kolonne({
 
 /** Where each piece of the day's riddle is, at home and in the app. `t` hides the code. */
 export function Gaatekart({
+  vid,
   k,
   d,
   epost,
   vis,
   t,
 }: {
+  vid: string;
   k: ReturnType<typeof gaatekart>;
   d: NonNullable<ReturnType<typeof kveldDag>>;
   epost: string;
@@ -178,6 +181,7 @@ export function Gaatekart({
           <b>Reserve:</b> {t(d.reserve)}
         </p>
       )}
+      <Vurder id={vid} />
     </section>
   );
 }

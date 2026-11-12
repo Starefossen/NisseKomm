@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { GuideSide, Kort, useSesong } from "../_kveld/felles";
+import { slug, Vurder } from "../vurdering";
 
 const ren = (s: string) => s.replace(/[*`]/g, "");
 
@@ -65,6 +66,7 @@ function Historien() {
           {h.deler.map((d, i) => (
             <Markdown key={i} tekst={d} />
           ))}
+          <Vurder id={`historien/${slug(h.tittel)}`} />
         </Kort>
       ))}
       <Kort tittel="Figurene">

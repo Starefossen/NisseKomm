@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { mediaUrl, type MediaStatus } from "@/lib/media";
 import { variantLabel } from "./oversikt";
 import type {
@@ -121,20 +121,6 @@ export function ReviewItemCard({
       : "unknown";
   const [label, colorClass] = INVENTAR_LABEL[statusKey];
 
-  const currentVerdict = vurdering?.vurdering ?? null;
-  const [note, setNote] = useState(vurdering?.notat ?? "");
-
-  const handleVerdictClick = (targetVerdict: "godkjent" | "lag_paa_nytt") => {
-    const nextVerdict = currentVerdict === targetVerdict ? null : targetVerdict;
-    onSaveVerdict(file.path, nextVerdict, note);
-  };
-
-  const handleNoteBlur = () => {
-    if (note !== (vurdering?.notat ?? "")) {
-      onSaveVerdict(file.path, currentVerdict, note);
-    }
-  };
-
   return (
     <div className="border-2 border-(--neon-green) bg-black/90 p-3 mb-3 text-(--neon-green)">
       {/* Top row: Path & Inventory Status */}
@@ -189,56 +175,11 @@ export function ReviewItemCard({
       {/* Inline Player */}
       <InlinePlayer path={file.path} missing={missing} />
 
-      {/* Actions: Verdict Buttons, Note, Upload */}
-      <div className="mt-3 pt-2 border-t border-(--neon-green)/30 flex flex-col gap-2">
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Godkjent button */}
-          <button
-            type="button"
-            onClick={() => handleVerdictClick("godkjent")}
-            disabled={isSaving}
-            className={`min-h-11 min-w-28 px-4 py-2 font-bold cursor-pointer transition-colors border-2 ${
-              currentVerdict === "godkjent"
-                ? "bg-(--gold) text-black border-(--gold)"
-                : "border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20"
-            }`}
-          >
-            {currentVerdict === "godkjent" ? "[✓] Godkjent" : "Godkjent"}
-          </button>
-
-          {/* Lag på nytt button */}
-          <button
-            type="button"
-            onClick={() => handleVerdictClick("lag_paa_nytt")}
-            disabled={isSaving}
-            className={`min-h-11 min-w-28 px-4 py-2 font-bold cursor-pointer transition-colors border-2 ${
-              currentVerdict === "lag_paa_nytt"
-                ? "bg-(--christmas-red) text-white border-(--christmas-red)"
-                : "border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20"
-            }`}
-          >
-            {currentVerdict === "lag_paa_nytt"
-              ? "[!] Lag på nytt"
-              : "Lag på nytt"}
-          </button>
-
-          {currentVerdict && (
-            <button
-              type="button"
-              onClick={() => onSaveVerdict(file.path, null, note)}
-              disabled={isSaving}
-              className="min-h-11 px-3 py-2 text-sm text-(--neon-green)/70 underline cursor-pointer hover:text-(--neon-green)"
-            >
-              Fjern valg
-            </button>
-          )}
-
-          {isSaving && (
-            <span className="text-sm text-(--gold) animate-pulse ml-auto">
-              Lagrer...
-            </span>
-          )}
-
+      <Vurderingsknapper
+        vurdering={vurdering}
+        isSaving={isSaving}
+        onSave={(v, note) => onSaveVerdict(file.path, v, note)}
+        ekstra={
           <label className="min-h-11 flex items-center cursor-pointer underline ml-auto text-sm">
             {missing ? "Last opp fil" : "Erstatt fil"}
             <input
@@ -252,32 +193,111 @@ export function ReviewItemCard({
               }}
             />
           </label>
-        </div>
+        }
+      />
+    </div>
+  );
+}
 
-        {/* Short Note field */}
-        <div className="flex flex-wrap sm:flex-nowrap gap-2 items-center mt-1">
-          <input
-            type="text"
-            value={note}
-            placeholder="Kort notat..."
-            onChange={(e) => setNote(e.target.value)}
-            onBlur={handleNoteBlur}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                onSaveVerdict(file.path, currentVerdict, note);
-              }
-            }}
-            className="w-full min-h-11 bg-black border-2 border-(--neon-green) px-3 text-sm text-(--neon-green) focus:outline-none focus:border-(--gold)"
-          />
+/** Godkjent / Lag på nytt + note; shared by media cards and guide sections. */
+export function Vurderingsknapper({
+  vurdering,
+  isSaving,
+  onSave,
+  ekstra,
+}: {
+  vurdering?: MediaVurderingItem;
+  isSaving?: boolean;
+  onSave: (v: "godkjent" | "lag_paa_nytt" | null, note?: string) => void;
+  ekstra?: ReactNode;
+}) {
+  const currentVerdict = vurdering?.vurdering ?? null;
+  const [note, setNote] = useState(vurdering?.notat ?? "");
+
+  const handleVerdictClick = (targetVerdict: "godkjent" | "lag_paa_nytt") => {
+    onSave(currentVerdict === targetVerdict ? null : targetVerdict, note);
+  };
+
+  const handleNoteBlur = () => {
+    if (note !== (vurdering?.notat ?? "")) onSave(currentVerdict, note);
+  };
+
+  return (
+    <div className="mt-3 pt-2 border-t border-(--neon-green)/30 flex flex-col gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        {/* Godkjent button */}
+        <button
+          type="button"
+          onClick={() => handleVerdictClick("godkjent")}
+          disabled={isSaving}
+          className={`min-h-11 min-w-28 px-4 py-2 font-bold cursor-pointer transition-colors border-2 ${
+            currentVerdict === "godkjent"
+              ? "bg-(--gold) text-black border-(--gold)"
+              : "border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20"
+          }`}
+        >
+          {currentVerdict === "godkjent" ? "[✓] Godkjent" : "Godkjent"}
+        </button>
+
+        {/* Lag på nytt button */}
+        <button
+          type="button"
+          onClick={() => handleVerdictClick("lag_paa_nytt")}
+          disabled={isSaving}
+          className={`min-h-11 min-w-28 px-4 py-2 font-bold cursor-pointer transition-colors border-2 ${
+            currentVerdict === "lag_paa_nytt"
+              ? "bg-(--christmas-red) text-white border-(--christmas-red)"
+              : "border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20"
+          }`}
+        >
+          {currentVerdict === "lag_paa_nytt"
+            ? "[!] Lag på nytt"
+            : "Lag på nytt"}
+        </button>
+
+        {currentVerdict && (
           <button
             type="button"
-            onClick={() => onSaveVerdict(file.path, currentVerdict, note)}
+            onClick={() => onSave(null, note)}
             disabled={isSaving}
-            className="min-h-11 min-w-28 px-4 py-2 border-2 border-(--neon-green) hover:bg-(--neon-green)/20 text-sm font-bold cursor-pointer"
+            className="min-h-11 px-3 py-2 text-sm text-(--neon-green)/70 underline cursor-pointer hover:text-(--neon-green)"
           >
-            Lagre notat
+            Fjern valg
           </button>
-        </div>
+        )}
+
+        {isSaving && (
+          <span className="text-sm text-(--gold) animate-pulse ml-auto">
+            Lagrer...
+          </span>
+        )}
+
+        {ekstra}
+      </div>
+
+      {/* Short Note field */}
+      <div className="flex flex-wrap sm:flex-nowrap gap-2 items-center mt-1">
+        <input
+          type="text"
+          value={note}
+          placeholder="Kort notat..."
+          onChange={(e) => setNote(e.target.value)}
+          onBlur={handleNoteBlur}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onSave(currentVerdict, note);
+            }
+          }}
+          className="w-full min-h-11 bg-black border-2 border-(--neon-green) px-3 text-sm text-(--neon-green) focus:outline-none focus:border-(--gold)"
+        />
+        <button
+          type="button"
+          onClick={() => onSave(currentVerdict, note)}
+          disabled={isSaving}
+          className="min-h-11 min-w-28 px-4 py-2 border-2 border-(--neon-green) hover:bg-(--neon-green)/20 text-sm font-bold cursor-pointer"
+        >
+          Lagre notat
+        </button>
       </div>
     </div>
   );

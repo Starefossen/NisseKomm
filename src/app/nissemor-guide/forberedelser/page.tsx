@@ -1,5 +1,6 @@
 "use client";
 
+import { Vurder } from "../vurdering";
 import {
   Avkrysning,
   GuideSide,
@@ -50,6 +51,7 @@ function Forberedelser() {
                 {Number(r.dato.slice(8))}. november
               </dt>
               <dd>{r.tekst}</dd>
+              <Vurder id={`forsesong/${r.dato}`} />
             </div>
           ))}
         </dl>
