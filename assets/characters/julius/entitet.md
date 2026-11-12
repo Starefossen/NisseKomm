@@ -37,7 +37,16 @@
       "tekst": "flyr over Nordtoppen julenatt med lys"
     }
   ],
-  "ikke": ["Julenissen Julius", "julenisse-Julius"]
+  "ikke": [
+    "Julenissen Julius",
+    "julenisse-Julius",
+    "leketøysfabrikk",
+    "leketøysfabrikken",
+    "leketøyfabrikk",
+    "leketøyfabrikken",
+    "nissene lager leker",
+    "verkstedet der lekene lages"
+  ]
 }
 ```
 

@@ -25,7 +25,16 @@
     "navn": ["Julius"],
     "pronomen": "han",
     "fra_dag": 1,
-    "ikke": ["Julenissen Julius", "julenisse-Julius"]
+    "ikke": [
+      "Julenissen Julius",
+      "julenisse-Julius",
+      "leketøysfabrikk",
+      "leketøysfabrikken",
+      "leketøyfabrikk",
+      "leketøyfabrikken",
+      "nissene lager leker",
+      "verkstedet der lekene lages"
+    ]
   },
   {
     "id": "pil",

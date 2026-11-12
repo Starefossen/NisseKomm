@@ -12,7 +12,7 @@
     },
     {
       "fra_dag": 1,
-      "tekst": "her lander brevfuglene barna sender; Winter tømmer den (assets/objects/brevfugl)"
+      "tekst": "her lander brevfuglene barna sender; Winter tømmer den og arkiverer brevene (assets/objects/brevfugl)"
     }
   ]
 }

@@ -80,7 +80,7 @@
     },
     {
       "dag": 5,
-      "tittel": "Brevfuglen fra Winter",
+      "tittel": "Skriften på vingen",
       "skjerm_teaser": "Lørdag i advent. God tid til å tenke i dag.",
       "nissemail_tekst": "Det har vært krig i stua. Jeg og kosedyrene, marshmallows, hvert vårt fort. Og: i natt landet årets første brevfugl i Bergen. Winter har skrevet noe rart på vingen, for han er sikker på at noen leser alt som flyr over linjen. Fant dere fuglen, og hopperen ved den? Hanna, hvis du vil: du legger hopperen inntil. Kristian: Winter har en regel for det han skrev. Julius sier den, men ikke med tall. Dere har hørt tallet før. – Rampenissen",
       "julius_ps": "Marshmallows i sofaen, marshmallows i gardinene, én bamse med plaster. Rampenissen kaller det «forsvar av linjen». Winter er lettet over at fuglen kom fram; han sender alt kryptert fra nå.",
@@ -283,7 +283,7 @@
       "tittel": "Hemmeligheten i Papirvingene",
       "skjerm_teaser": "Mandag. Julius har noe han vil vise dere.",
       "nissemail_tekst": "Winter åpnet brevfuglene i natt! Og det kom én fugl ingen hadde sendt. Blå. Den satt i vinduskarmen til Julius, med et brev fryst fast til vingen. Jeg brettet serviettene deres til fugler og sov i en båt i vasken. Håkon, du fant arket i båten. Ser du bokstaver uten plass, har arket en brett til. Hanna, hvis du vil: hold lykten. Kristian: Winter har et ord for det vi gjør med papir i dag. Se radaren i Brevfugler i kveld. – Rampenissen",
-      "julius_ps": "Winter har aldri fått en fugl han ikke har sendt. Han sover ikke i natt. Serviettene deres er visst fugler nå, alle sammen; Rampenissen kaller det «en flokk». Den blå fuglen vises på radaren i Brevfugler.",
+      "julius_ps": "Winter har aldri fått en fugl uten avsender. Han sover ikke i natt. Serviettene deres er visst fugler nå, alle sammen; Rampenissen kaller det «en flokk». Den blå fuglen vises på radaren i Brevfugler.",
       "eventyr": {
         "id": "spokelseskoden",
         "phase": 14

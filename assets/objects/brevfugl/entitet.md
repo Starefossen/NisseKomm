@@ -8,7 +8,7 @@
   "fra_dag": 5,
   "forhold": {
     "postkasse": "her lander de",
-    "winter": "tømmer postkassen, åpner og nummererer fuglene",
+    "winter": "tømmer postkassen og arkiverer brevene",
     "julius": "mottaker"
   },
   "fakta": [
@@ -22,7 +22,19 @@
     },
     {
       "fra_dag": 1,
-      "tekst": "de lander i postkassen på torget i Snøfall; Winter tømmer den og åpner brevene, Julius leser dem"
+      "tekst": "de lander i postkassen på torget i Snøfall; Winter tømmer den og arkiverer brevene i arkivet over hva alle barn ønsker seg til jul, Julius leser dem"
+    },
+    {
+      "fra_dag": 1,
+      "tekst": "når brevet er levert, flyr fuglen hjem til avsenderen; Winter kan skrive et svar på vingen først"
+    },
+    {
+      "fra_dag": 5,
+      "tekst": "dag 5: Rampenissen sendte årets første brevfugl fra Bergen; den kom hjem med Winters hemmelige skrift på vingen"
+    },
+    {
+      "fra_dag": 1,
+      "tekst": "kremhvitt brettet papir, ikke fjær; den blå fuglen er eneste unntak i farge"
     },
     {
       "fra_dag": 7,
@@ -46,9 +58,11 @@
 
 ## Kanon (Hans, 13.11.2026)
 
-Barna sender brevfuglene. Et brev til Julius, skrevet hjemme på Landås, blir en fugl. Den flyr til Snøfall gjennom nordlyset og lander i postkassen på torget (`assets/objects/postkasse`). Winter tømmer postkassen og åpner brevene. Julius leser dem.
+Barna sender brevfuglene. Et brev til Julius, skrevet hjemme på Landås, blir en fugl. Den flyr til Snøfall gjennom nordlyset og lander i postkassen på torget (`assets/objects/postkasse`). Winter tømmer postkassen og arkiverer brevene. Det er hovedjobben hans: alt barna ønsker seg til jul, skal stå i arkivet. Julius leser dem.
 
-Ingen i Snøfall sender brevfugler. Winter og Julius tar imot dem.
+Når brevet er arkivert, flyr fuglen hjem til avsenderen. Winter kan skrive et svar på vingen først. Slik kom fuglen dag 5 («Skriften på vingen») til stua: Rampenissen sendte årets første fra Bergen, og den fløy hjem med Winters hemmelige skrift.
+
+Ingen i Snøfall sender egne brevfugler. Winter og Julius tar imot dem.
 
 Den blå fuglen (dag 14–24) bryter regelen, og det er poenget: «én fugl ingen hadde sendt». Den kom fra grotten, ikke fra et barn.
 
@@ -63,26 +77,6 @@ Den blå fuglen (dag 14–24) bryter regelen, og det er poenget: «én fugl inge
 
 - NORDLYS er kodeordet dag 17 og LANDÅS dag 22. I tekst barna ser før dagen er løst, heter ruten «nordover» og avsenderstedet «Bergen» (`kodelekkasje.test.ts`).
 - Skriv «en fugl uten avsender» om den blå fuglen, ikke «en fugl Winter ikke har sendt».
-
-## Åpent: venter på Hans
-
-Låste linjer og innspilt materiale som går mot kanon. Ingen av dem er endret.
-
-**Dag 5** («Brevfuglen fra Winter») lar en fugl med Winters skrift lande i stua. Julius-videoen er filmet og radioklippet spilt inn. To veier:
-
-- A, uten nye opptak: brevfugler flyr hjem til avsenderen når brevet er levert. Rampenissen sendte årets første fra Bergen, Winter skrev svaret i hemmelig skrift på vingen, og fuglen fløy hjem. Video, radio, lapp og mail står ordrett. Bare tittelen og varselet endres: «Alt jeg sender er kryptert fra nå.» → «Alt jeg skriver er kryptert fra nå.»
-- B, streng kanon: ingen fugl flyr sørover. Winters beskjed kom over linjen, og Rampenissen skrev den av på vingen til en fugl han brettet selv. Krever ny Julius-video (segment 2 og 4), nytt radioklipp, ny mail og ny lapp.
-
-Tittel dag 5, velg én: «Skriften på vingen», «Winters hemmelige skrift», «Fuglen som kom tilbake» (bare med A).
-
-**Dag 14**
-
-- PS: «Winter har aldri fått en fugl han ikke har sendt.» → «Winter har aldri fått en fugl uten avsender.» (også storyboard dag 14, «Belønning»)
-- Varsel (to steder): «WINTER: Brevfuglene er sluppet.» → «WINTER: Brevfuglene er åpnet.»
-- `brevfugl-historie.txt`: «Winter svarte med en fugl brettet av brevpapir. Siden har alle brev til og fra Snøfall fløyet selv.» → «Siden har brevene til Snøfall fløyet selv. De lander i postkassen på torget.»
-- Radio (spilt inn): «Fuglan fløy ut fra pakkesentralen som ei sky.» → strykes, eller «Postkassen va så full at lokket sto rett opp.»
-
-**Manus uten kode:** app-tekster A8, «Skriv til Julius. Winter sender brevet med neste fugl.» → «Skriv til Julius. Brevet flyr selv.» (teksten står ikke i appen i dag)
 
 ## Utseende
 

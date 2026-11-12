@@ -61,7 +61,7 @@ export const KAPITTEL_4: Kapittel = {
       id: "briller",
       navn: "Julius' briller",
       ikon: "sunglasses",
-      se: "Runde lesebriller med gullinnfatning. Litt varme, og med ei lita fjær på det ene glasset. Noen har ruget på dem. De har tatt det pent.",
+      se: "Runde lesebriller med gullinnfatning. Litt varme, og med en liten papirflis på det ene glasset. Noen har ruget på dem. De har tatt det pent.",
     },
     magnet: {
       id: "magnet",
@@ -449,7 +449,7 @@ export const KAPITTEL_4: Kapittel = {
               flagg: "briller_levert",
               forbruker: true,
               tekst:
-                "Julius tar brillene, blåser bort ei fjær og setter dem på nesa. «Å.» Han ser på listen. «Å!» Han ser på deg. «Floke, du har sot på nebbet.» Nede ved porten krysser Winter av punkt én. " +
+                "Julius tar brillene, blåser bort en papirflis og setter dem på nesa. «Å.» Han ser på listen. «Å!» Han ser på deg. «Floke, du har sot på nebbet.» Nede ved porten krysser Winter av punkt én. " +
                 R +
                 "«Han ser! Han ser lista! Han ser alt! Æ må gjømme klementinskallet.»",
             },
@@ -725,11 +725,11 @@ export const KAPITTEL_4: Kapittel = {
             {
               hvis: "fugl_kilt",
               tekst:
-                "En liten grå brevfugl sitter på skrivebordet ved den åpne boka. Du vet hva hun ruger på nå: briller. Runde, blanke briller. Hun vet at du vet. Hun flytter seg ikke. Hun har tid. Hun har mer tid enn deg.",
+                "En liten kremhvit brevfugl av brettet papir sitter på skrivebordet ved den åpne boka. Du vet hva hun ruger på nå: briller. Runde, blanke briller. Hun vet at du vet. Hun flytter seg ikke. Hun har tid. Hun har mer tid enn deg.",
             },
             {
               tekst:
-                "En liten grå brevfugl sitter på skrivebordet ved den åpne boka og ruger. På hva? Hun sitter helt i ro og ser på deg med ett øye. Det andre sover. Under henne glimter noe, men hun flytter seg ikke en fjær.",
+                "En liten kremhvit brevfugl av brettet papir sitter på skrivebordet ved den åpne boka og ruger. På hva? Hun sitter helt i ro og ser på deg med ett øye. Det andre sover. Under henne glimter noe, men hun flytter seg ikke en brett.",
             },
           ],
           bruk: [
@@ -740,7 +740,7 @@ export const KAPITTEL_4: Kapittel = {
             },
             {
               tekst:
-                "Du dytter forsiktig på fuglen. Hun dytter ikke tilbake. Hun bare blir. Brevfugler er laget av tålmodighet og fjær, og mest tålmodighet.",
+                "Du dytter forsiktig på fuglen. Hun dytter ikke tilbake. Hun bare blir. Brevfugler er laget av tålmodighet og papir, og mest tålmodighet.",
             },
           ],
           bruker: [
@@ -995,7 +995,7 @@ export const KAPITTEL_4: Kapittel = {
             },
             {
               tekst:
-                "«Floke! Kom hit. Jeg ser ikke stort uten brillene mine. Jeg la dem her ved boka i går kveld, og nå er det bare ... fjær der. Og noe som ser på meg. Med ett øye. Det er verre enn to.»",
+                "«Floke! Kom hit. Jeg ser ikke stort uten brillene mine. Jeg la dem her ved boka i går kveld, og nå er det bare ... papir der. Og noe som ser på meg. Med ett øye. Det er verre enn to.»",
             },
           ],
           valg: [

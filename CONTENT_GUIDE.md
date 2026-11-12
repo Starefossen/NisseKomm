@@ -101,7 +101,8 @@
 **Game Elements:**
 
 - **Julekuleblåsing** - Christmas ornament glass-blowing (Snøfall tradition)
-- **Brevfugler** - Paper birds that carry letters (origami-style)
+- **Brevfugler** - Paper birds that carry letters (origami-style). The kids send them; they land in the postkasse at Torget, Winter archives the letters, and the bird flies home (`assets/objects/brevfugl/entitet.md`)
+- **No toy factory** - Nobody makes toys in Snøfall. IQ's workshop is for inventions; pakkesentralen packs, sorts and archives (`assets/locations/snofall-landsby/entitet.md`)
 - **Grunnstein** - Foundation stone
 - **Månekrystall** - Moon crystal
 - **Snill liste** - Nice List
@@ -147,7 +148,7 @@ Generated from `assets/characters/<id>/entitet.md`, the one source for look, per
 - **Personlighet:** Klok, varm og jordnær, en bestefar og travel håndverker. Av og til oppgitt over Rampenissen og over teknikk som svikter. Bryr seg om hvordan det går med barna.
 - **Stemme:** Faderlig og vennlig, med autoritet uten å bli kald. Takker barna. Reflekterende i videologgen. Snakker inn i mikrofonen som i en radiosending, ikke inn i kameraet. Gir aldri koden selv; han peker på regelen eller ordet (historie-2026 §3.4).
 - **Forhold:** rampenissen: sjef; oppgitt, men glad i ham; iq: stoler på oppfinnelsene; winter: sekretær; lar ham passe papirene; hjerterud: venn; drikker kakaoen hennes
-- **Aldri:** «Julenissen Julius», «julenisse-Julius»
+- **Aldri:** «Julenissen Julius», «julenisse-Julius», «leketøysfabrikk», «leketøysfabrikken», «leketøyfabrikk», «leketøyfabrikken», «nissene lager leker», «verkstedet der lekene lages»
 
 #### Pil (`assets/characters/pil/entitet.md`)
 
@@ -168,9 +169,9 @@ Generated from `assets/characters/<id>/entitet.md`, the one source for look, per
 #### Winter (`assets/characters/winter/entitet.md`)
 
 - **Navn:** Winter, Ole Winter; **pronomen:** han; **fra dag:** 1
-- **Personlighet:** Pedantisk og formell. Aldri kald eller uvennlig: han brenner for at alt skal bli riktig, og blir synlig lettet, nesten mild, når alt er godkjent.
+- **Personlighet:** Pedantisk og formell. Arkivet over barnas juleønsker er hovedjobben hans, og det viktigste han vet om. Aldri kald eller uvennlig: han brenner for at alt skal bli riktig, og blir synlig lettet, nesten mild, når alt er godkjent.
 - **Stemme:** Presist og forretningsmessig, i paragrafer og lister («Paragraf 101»), med skjemanumre (4112-B). Flosshatten bare ved porten og når han opptrer formelt (FLOSSHATT i beskrivelse.txt). Skriftlig: bokmål. Muntlig (hvis han noen gang får stemme i TTS eller video): typisk bergensk, med skarre-r, «eg», «ikkje» og bergensk tonefall, men like presist og formelt. Replikkene hans i Ugleposten er lett bergensk (beslutning 2026-11-11): «eg», «ikkje», «kor», ellers bokmål, så en niåring leser dem uten å stoppe.
-- **Forhold:** julius: sjef; iq: kollega, irritert over rot; barna: krever skjemaer, blir mild når alt er i orden
+- **Forhold:** julius: sjef; iq: kollega, irritert over rot; barna: krever skjemaer, blir mild når alt er i orden; brevfuglene: arkiverer brevene de kommer med; hovedjobben hans er arkivet over hva alle barn ønsker seg til jul
 - **Aldri:** «Ole Vinter», «fru Winter», «frøken Winter»
 
 <!-- entiteter:slutt -->

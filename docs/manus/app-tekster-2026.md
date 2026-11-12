@@ -1,6 +1,6 @@
 # NisseKomm 2026 – App-tekster (steg 2)
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 10, 13 og 20 endret 13.11 etter ja fra Hans. Dag 5, 9, 15, 16, 17, 21 og 22 (vanskelighet) endret 13.11 etter ja fra Hans. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Brevfuglenes kanon: tittel og varsel dag 5, PS og varsel dag 14, `brevfugl-historie.txt` og A8 endret 13.11 etter ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 10, 13 og 20 endret 13.11 etter ja fra Hans. Dag 5, 9, 15, 16, 17, 21 og 22 (vanskelighet) endret 13.11 etter ja fra Hans. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`.
 
 **Revisjon 10. november (vanskelighet, godkjent):** e-poster, PS, krypto-hint, NisseNet-filer og Nissemor-tekster fulgt opp etter revisjonen i `gaater-2026.md` (to meta-gåter, blindspor, Hanna uten kodebærende steg). Nye felt: `transcript_runer` i `kulde_spokelsesbilde` (dag 10, 13, 16, 21) og `julius_ps_krypto_mangler` (dag 20).
 
@@ -173,7 +173,7 @@ Reservetekst (dager uten egen linje, erstatter dagens «Is-krystallene mine voks
 - NisseMusikk dag 12 før kode (overlegg): `FROSSET. Noe i isen holder på lyden.`
 - Brevfugler (fra dag 14, radarkort): `FRYST BREV · avsender ukjent · tiner når linjen er varm`
 - Brevfugler dag 24, brevet tiner (fire linjer, fra Vintervokteren): `Takk for lyset.` / `Jeg hadde glemt farger.` / `Krystallet smelter ikke.` / `Det er fra meg.`
-- Brevfugler, skriv til Julius (uendret funksjon, ny tekst): `Skriv til Julius. Winter sender brevet med neste fugl.` (Ingen løfte om svar.)
+- Brevfugler, skriv til Julius (uendret funksjon, ny tekst): `Skriv til Julius. Brevet flyr selv.` (Ingen løfte om svar.)
 - Dagbok, autoåpning: `NY MELDING FRA JULIUS` · knapp etter visning: `SE IGJEN` · under spilleren når løst: `PS fra Julius`
 - Kanal 4 dag 11 etter kode, HUD: `75,0 MHz · BILDET KLARNER` (vises bare etter at koden er inne)
 - Kanal 1 dag 17, klikk på himmelen: `SIGNAL MOTTATT FRA GROTTEN`
@@ -285,12 +285,12 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - `oppsett_tid`: 5 min
 - frost: ikke synlig
 
-### Dag 5 (lø) – Brevfuglen fra Winter · ULRIKEN · jakt
+### Dag 5 (lø) – Skriften på vingen · ULRIKEN · jakt
 
-- `tittel`: Brevfuglen fra Winter
+- `tittel`: Skriften på vingen
 - `nissemail_tekst` (79 ord): Det har vært krig i stua. 🍬 Jeg og kosedyrene, marshmallows, hvert vårt fort. Og: i natt landet årets første brevfugl i Bergen. Winter har skrevet noe rart på vingen, for han er sikker på at noen leser alt som flyr over linjen. Fant dere fuglen, og hopperen ved den? Hanna, hvis du vil: du legger hopperen inntil. Kristian: Winter har en regel for det han skrev. Julius sier den, men ikke med tall. Dere har hørt tallet før. – Rampenissen
 - `julius_ps`: Marshmallows i sofaen, marshmallows i gardinene, én bamse med plaster. Rampenissen kaller det «forsvar av linjen». Winter er lettet over at fuglen kom fram; han sender alt kryptert fra nå.
-- `daily_alerts`: 📋 WINTER: Første brevfugl over Bergen. Alt jeg sender er kryptert fra nå.
+- `daily_alerts`: 📋 WINTER: Første brevfugl over Bergen. Alt jeg skriver er kryptert fra nå.
 - NisseNet: `SNOFALL-HISTORIER/alfabet.txt` **ny** (`afterDay: 5`, brukes igjen dag 22):
 
   > ALFABETET, SLIK WINTER BRUKER DET
@@ -514,13 +514,13 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
 - `tittel`: Hemmeligheten i Papirvingene
 - `nissemail_tekst` (82 ord): Winter åpnet brevfuglene i natt! 🕊️ Og det kom én fugl ingen hadde sendt. Blå. Den satt i vinduskarmen til Julius, med et brev fryst fast til vingen. Jeg brettet serviettene deres til fugler og sov i en båt i vasken. Håkon, du fant arket i båten. Ser du bokstaver uten plass, har arket en brett til. Hanna, hvis du vil: hold lykten. Kristian: Winter har et ord for det vi gjør med papir i dag. Se radaren i Brevfugler i kveld. – Rampenissen
-- `julius_ps`: Winter har aldri fått en fugl han ikke har sendt. Han sover ikke i natt. Serviettene deres er visst fugler nå, alle sammen; Rampenissen kaller det «en flokk». Den blå fuglen vises på radaren i Brevfugler.
-- `daily_alerts`: 🕊️ WINTER: Brevfuglene er sluppet. Én fugl ingen har sendt.
+- `julius_ps`: Winter har aldri fått en fugl uten avsender. Han sover ikke i natt. Serviettene deres er visst fugler nå, alle sammen; Rampenissen kaller det «en flokk». Den blå fuglen vises på radaren i Brevfugler.
+- `daily_alerts`: 🕊️ WINTER: Brevfuglene er åpnet. Én fugl ingen har sendt.
 - NisseNet: `SNOFALL-HISTORIER/brevfugl-finale.txt` **erstattes** av `brevfugl-historie.txt` (`afterDay: 14`):
 
   > BREVFUGLENE
   >
-  > Det første brevet til Snøfall kom i en flaske fra Bergen i 1887. Winter svarte med en fugl brettet av brevpapir. Siden har alle brev til og fra Snøfall fløyet selv.
+  > Det første brevet til Snøfall kom i en flaske fra Bergen i 1887. Siden har brevene til Snøfall fløyet selv. De lander i postkassen på torget.
   >
   > Hver fugl har et nummer, en avsender og en rute. Winter vet hvor alle er. Alltid.
   >

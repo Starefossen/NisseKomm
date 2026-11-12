@@ -15,12 +15,13 @@
   "forhold": {
     "julius": "sjef",
     "iq": "kollega, irritert over rot",
-    "barna": "krever skjemaer, blir mild når alt er i orden"
+    "barna": "krever skjemaer, blir mild når alt er i orden",
+    "brevfuglene": "arkiverer brevene de kommer med; hovedjobben hans er arkivet over hva alle barn ønsker seg til jul"
   },
   "fakta": [
     {
       "fra_dag": 1,
-      "tekst": "Julius' sekretær og sjef for pakkesentralen"
+      "tekst": "Julius' sekretær og sjef for pakkesentralen; hovedjobben er arkivet: han tømmer postkassen og arkiverer brevene fra brevfuglene, så alt barna ønsker seg til jul står i arkivet"
     },
     {
       "fra_dag": 5,
@@ -45,7 +46,7 @@ Står i `beskrivelse.txt` ved siden av denne filen og brukes ordrett i bildeprom
 
 ## Personlighet
 
-Pedantisk og formell. Aldri kald eller uvennlig: han brenner for at alt skal bli riktig, og blir synlig lettet, nesten mild, når alt er godkjent.
+Pedantisk og formell. Arkivet over barnas juleønsker er hovedjobben hans, og det viktigste han vet om. Aldri kald eller uvennlig: han brenner for at alt skal bli riktig, og blir synlig lettet, nesten mild, når alt er godkjent.
 
 ## Stemme
 

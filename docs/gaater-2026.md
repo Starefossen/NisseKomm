@@ -2,7 +2,7 @@
 
 Steg 1 i byggerekkefølgen. Kilder: `docs/historie-2026.md` (låst), `docs/storyboard-2026.md`, `CONTENT_GUIDE.md` og kodene i `src/data/uke1–4_oppdrag.json`. Ingen kode er endret. Historiebeats er ikke rørt; det som er bestemt her, er hvordan hver dags to brikker ser ut, hva de faktisk gjør med dem, og hva en forelder må ha klart.
 
-**Status: LÅST 10. november 2026.** De seks avgjørelsene i (d) er godtatt av Hans, og uavhengig gjennomgang (21 funn) er innarbeidet. Endringer krever eksplisitt ja. Endret etter ja fra Hans 10. november; materiallister rettet 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 8, 10 og 13 endret 13.11 etter ja fra Hans. Vanskelighet strammet (dag 5 og 17 tittel, dag 9 utskrift, dag 15, 16, 17 og 21 Brikke S) endret 13.11 etter ja fra Hans. Feltet «Sjekkliste» lagt til per dag 12.11 etter ønske fra Hans; gåtene er ikke endret. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`.
+**Status: LÅST 10. november 2026.** De seks avgjørelsene i (d) er godtatt av Hans, og uavhengig gjennomgang (21 funn) er innarbeidet. Endringer krever eksplisitt ja. Endret etter ja fra Hans 10. november; materiallister rettet 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 8, 10 og 13 endret 13.11 etter ja fra Hans. Vanskelighet strammet (dag 5 og 17 tittel, dag 9 utskrift, dag 15, 16, 17 og 21 Brikke S) endret 13.11 etter ja fra Hans. Brevfuglenes kanon (13.11): tittel dag 5 «Skriften på vingen» og brevfugl-linjene dag 5 og 14 endret 13.11 etter ja fra Hans. Feltet «Sjekkliste» lagt til per dag 12.11 etter ønske fra Hans; gåtene er ikke endret. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`.
 
 **Revisjon 10. november 2026 (vanskelighet).** Godkjent av Hans: gåtene er for Kristian (12) og Håkon (9); Hanna (5) har valgfrie roller som aldri blokkerer. To meta-gåter (Frostrunene, Trixters kart), blindspor med feil bokstav der Julius' setning avgjør, og hevet nivå på 21 dager. Alle koder, brikke H + S, taket på 40 % og oppsett under 5 minutter på hverdager står. Julius-videoene dag 2–4 er ferdige og uendret. Standardvalg merket «standardvalg, kan endres» i (e).
 
@@ -157,7 +157,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Utskrifter:** `dag04-skokort.pdf` (1 side, tykt papir, 7 kort, tegn i hjørnet, prikker bak).
 - **Reserve:** Blir ringen sparket i stykker, teller de prikkene på baksiden (med klokka).
 
-### Dag 5 (lø) – Brevfuglen fra Winter · ULRIKEN · jakt
+### Dag 5 (lø) – Skriften på vingen · ULRIKEN · jakt
 
 - **Kode:** ULRIKEN (uendret).
 - **Mekanikk:** Cæsar-chiffer med tre skritt, som før. Nytt: Julius sier ikke tallet. Nøkkelen er «like mange skritt som IQ sprengte sikringer onsdag» (dag 2: tre). Første oppslag på tvers av dager; transkriptet fra dag 2 ligger i arkivet. **Standardvalg, kan endres:** alternativet er å la Julius si «tre skritt» som før.

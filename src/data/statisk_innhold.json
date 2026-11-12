@@ -28,7 +28,7 @@
     },
     {
       "day": 5,
-      "tekst": "WINTER: Første brevfugl over Bergen. Alt jeg sender er kryptert fra nå.",
+      "tekst": "WINTER: Første brevfugl over Bergen. Alt jeg skriver er kryptert fra nå.",
       "type": "info"
     },
     {
@@ -74,7 +74,7 @@
     },
     {
       "day": 14,
-      "tekst": "WINTER: Brevfuglene er sluppet. Én fugl ingen har sendt.",
+      "tekst": "WINTER: Brevfuglene er åpnet. Én fugl ingen har sendt.",
       "type": "info"
     },
     {
@@ -284,7 +284,7 @@
         {
           "navn": "brevfugl-historie.txt",
           "type": "fil",
-          "innhold": "BREVFUGLENE\n\nDet første brevet til Snøfall kom i en flaske fra Bergen i 1887. Winter svarte med en fugl brettet av brevpapir. Siden har alle brev til og fra Snøfall fløyet selv.\n\nHver fugl har et nummer, en avsender og en rute. Winter vet hvor alle er. Alltid.\n\n14. desember: én fugl uten nummer. Blå. Brevet er fryst fast til vingen. Den kom fra retningen 85,0.",
+          "innhold": "BREVFUGLENE\n\nDet første brevet til Snøfall kom i en flaske fra Bergen i 1887. Siden har brevene til Snøfall fløyet selv. De lander i postkassen på torget.\n\nHver fugl har et nummer, en avsender og en rute. Winter vet hvor alle er. Alltid.\n\n14. desember: én fugl uten nummer. Blå. Brevet er fryst fast til vingen. Den kom fra retningen 85,0.",
           "unlockConditions": {
             "afterDay": 14
           }
@@ -429,7 +429,7 @@
       "display_type": "counter",
       "unit": "pakker",
       "child_progress_multiplier": 0.03,
-      "description": "Pakker ferdige fra verkstedet i Snøfall"
+      "description": "Pakker ferdig pakket i pakkesentralen i Snøfall"
     },
     {
       "navn": "BREVFUGLER I LUFTA",
@@ -548,7 +548,7 @@
     },
     {
       "fra_dag": 14,
-      "tekst": "WINTER: Brevfuglene er sluppet. Én blå fugl ingen har sendt."
+      "tekst": "WINTER: Brevfuglene er åpnet. Én blå fugl ingen har sendt."
     },
     {
       "fra_dag": 16,

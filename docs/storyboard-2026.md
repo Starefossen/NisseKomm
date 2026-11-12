@@ -1,6 +1,6 @@
 # NisseKomm 2026 – Storyboard «Spøkelseskoden»
 
-Utkast 10. november 2026. Kilde: `docs/historie-2026.md` (låst historie), dagens JSON i `src/data/`, komponentene i `src/components/` og `src/lib/game-engine.ts`. Repoet er ikke endret. Justert mot gåter og manus 10. november, etter ja fra Hans. Kontinuitet rettet 11. november etter ja fra Hans. Titler dag 5 og 17 og radiositatene dag 17 og 22 endret 13.11 etter ja fra Hans.
+Utkast 10. november 2026. Kilde: `docs/historie-2026.md` (låst historie), dagens JSON i `src/data/`, komponentene i `src/components/` og `src/lib/game-engine.ts`. Repoet er ikke endret. Justert mot gåter og manus 10. november, etter ja fra Hans. Kontinuitet rettet 11. november etter ja fra Hans. Titler dag 5 og 17 og radiositatene dag 17 og 22 endret 13.11 etter ja fra Hans. Brevfuglenes kanon (13.11): tittel dag 5 «Skriften på vingen» og brevfugl-linjene dag 5 og 14 endret 13.11 etter ja fra Hans.
 
 Beslutninger som er nyere enn deler av historiedokumentet, og som dette storyboardet følger:
 
@@ -161,11 +161,11 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Kontinuitet.** Kuldes tåke = første gang Kulde gjør noe ute. Sleden og Rudolf forberedes (dag 18, 23).
 
-### Dag 5 (lø) – Brevfuglen fra Winter · ULRIKEN · jakt
+### Dag 5 (lø) – Skriften på vingen · ULRIKEN · jakt
 
 **Morgen.** Strek (helg, større): marshmallow-krig mellom Rampenissen og kosedyrene fra hvert sitt putefort, én bamse med plaster. Radio: «Det har vært krig i stua. Vi vant. Og: en brevfugl landet i natt, første på Bergen i år. Den hadde skrevet noe rart på vingen. Winter er paranoid.» _Ikke_ «på lampen».
 
-**Innlogging.** Tema: den første brevfuglen til Bergen (lore: Winter sendte den for 40 år siden, den landet på Fløyen og nektet å fly videre i regnet). I natt: Winter krypterer alt fordi noen lytter. Brikke S: «Winter flyttet hver bokstav ett skritt fram i alfabetet. Dere må gå ett tilbake.» Kulde 1.
+**Innlogging.** Tema: den første brevfuglen til Bergen (lore: for 40 år siden landet den på Fløyen på vei hjem og nektet å fly videre i regnet). I natt: Winter krypterer alt fordi noen lytter. Brikke S: «Winter flyttet hver bokstav ett skritt fram i alfabetet. Dere må gå ett tilbake.» Kulde 1.
 
 **Gåte.** H: papirfugl gjemt høyt (bokhylle/lampe) med «V M S J L F O» på vingen; Håkon finner og henter den (H9), Hanna holder alfabetstrimmelen (trykt, med Æ Ø Å) og peker på bokstaven foran hver gang (H5). S: ett tilbake. Kristian dekoder (K12): ULRIKEN. Kode **ULRIKEN**. Verktøy: `SNOFALL-HISTORIER/alfabet.txt` (åpner dag 5 på dato) er bare alfabetet, ingen regel.
 
@@ -297,7 +297,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Flater.** Brevfugler: radar får én blå fugl som flyr i sirkel rundt Nordtoppen, og et kort «FRYST BREV: tiner når linjen er varm». Skriv-til-Julius kan stå; løftet om svar i NisseMail fjernes. Snøfall TV: ny kontor-loop med frossen brevfugl i vinduskarmen. NisseNet: `brevfugl-finale.txt` → `brevfugl-historie.txt` (lore). Frost 50 → 40.
 
-**Belønning.** Den blå fuglen i Brevfugler. PS: «Winter har aldri fått en fugl han ikke har sendt. Han sover ikke i natt.»
+**Belønning.** Den blå fuglen i Brevfugler. PS: «Winter har aldri fått en fugl uten avsender. Han sover ikke i natt.»
 
 **Kontinuitet.** Den blå fuglen bærer brevet som tiner dag 24. Uke 3: brevene og pakkene.
 
