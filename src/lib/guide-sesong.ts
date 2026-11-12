@@ -169,10 +169,12 @@ export function forSesongen() {
       hvor: string;
       kilde: string;
       pris: string;
+      lenke: string;
+      sok: boolean;
     }[];
   }[] = [];
   let sum = "";
-  for (const [vare, mengde, dager, hvor, pris] of tabell(handel)) {
+  for (const [vare, mengde, dager, hvor, pris, lenke = ""] of tabell(handel)) {
     if (vare === "**Sum**") sum = ren(hvor);
     else if (vare.startsWith("**"))
       grupper.push({ navn: ren(vare), varer: [] });
@@ -189,6 +191,9 @@ export function forSesongen() {
             ? "hjemme"
             : "lokalt",
         pris,
+        lenke: lenke.split(" ")[0],
+        // «(søk)» marks a shop search, not a checked product page.
+        sok: lenke.includes("(søk)"),
       });
   }
   return {

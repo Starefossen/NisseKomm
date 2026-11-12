@@ -104,7 +104,20 @@ function Forberedelser() {
                       <span className={KILDE[v.kilde as keyof typeof KILDE]}>
                         [{v.kilde}]
                       </span>{" "}
-                      {v.vare}
+                      {v.lenke ? (
+                        <a
+                          href={v.lenke}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          {v.vare}
+                        </a>
+                      ) : (
+                        v.vare
+                      )}
+                      {v.sok && " (søk)"}
                       {v.mengde && ` · ${v.mengde}`}
                       {v.pris && ` · ${v.pris}`}
                       {v.dager && ` · dag ${v.dager}`}
