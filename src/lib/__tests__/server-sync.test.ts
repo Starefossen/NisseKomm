@@ -162,6 +162,30 @@ describe("ServerSyncAdapter", () => {
     expect((await store.getState())["nissekomm-codes"]).toBeUndefined();
   });
 
+  it("a 403 drops only a codes clear; any other 403 keeps retrying", async () => {
+    const a = new ServerSyncAdapter();
+    await a.start();
+    const puts: string[] = [];
+    let nekt = true;
+    global.fetch = jest.fn(async (url: unknown, init?: RequestInit) => {
+      if (init?.method !== "PUT") return fakeFetch(url, init);
+      const { key } = JSON.parse(String(init.body));
+      puts.push(key);
+      // The kids may not clear the codes; an Origin/Host mismatch hits any key.
+      if (key === "nissekomm-codes" || nekt)
+        return { ok: false, status: 403, json: async () => ({}) } as Response;
+      return fakeFetch(url, init);
+    }) as unknown as typeof fetch;
+    a.remove("nissekomm-codes");
+    a.set(KEY, [5]);
+    await flush(a);
+    expect((await store.getState())[KEY]).toBeUndefined();
+    nekt = false;
+    await jest.advanceTimersByTimeAsync(5000);
+    expect((await store.getState())[KEY]).toEqual([5]);
+    expect(puts.filter((k) => k === "nissekomm-codes")).toHaveLength(1);
+  });
+
   it("retries after a non-JSON reply instead of stalling", async () => {
     const a = new ServerSyncAdapter();
     await a.start();

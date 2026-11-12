@@ -300,9 +300,9 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
           retry = true;
           break;
         }
-        // 400/403: this key was refused (codes, or a kid clearing them); drop
+        // 400, or 403 on the codes (a kid clearing them): this key was refused; drop
         // only it, the server's value wins.
-        if (res.status === 400 || res.status === 403) {
+        if (res.status === 400 || (res.status === 403 && key === CODES_KEY)) {
           if (this.pending.get(key) === p) {
             this.pending.delete(key);
             this.markUnsynced([key], false);
