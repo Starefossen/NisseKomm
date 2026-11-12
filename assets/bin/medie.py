@@ -211,6 +211,8 @@ def status(out: Path, key: str = "", root: Path = ROOT):
         return (STALE, [OVERRIDES[key]]) if key in OVERRIDES else (UNKNOWN, [])
     m = json.loads(side.read_text())
     s = m["source"]
+    if "sha256" not in s:  # a backfilled sidecar records the source but not its hash
+        return UNKNOWN, ["sidefil uten hash (bakfylt)"]
     why = []
     text = source_text(s["path"], s["section"], root)
     if text is None:

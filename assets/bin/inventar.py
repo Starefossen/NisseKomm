@@ -34,7 +34,9 @@ def manifest(root: Path = ROOT):
     days = [f"video/julius/dag-{d:02d}.mp4" for d in range(1, 25)]
     days += [f"audio/rampenissen/dag-{d:02d}.mp3" for d in range(1, 25)]
     ports = [f"video/tv/port-{c}.mp4" for c in ("julius", "hjerterud", "iq", "winter")]
-    return list(dict.fromkeys(days + paths + ports))
+    strek = [j["ut"] for k, j in (medie.jobs(root) if (root / medie.MEDIER).exists() else {}).items()
+             if k.startswith("strek/")]
+    return list(dict.fromkeys(days + paths + ports + strek))
 
 
 def kind(path: str) -> str:
