@@ -351,6 +351,7 @@ def main():
     if not promo:
         medie.write("julius-dag.py", dest, medie.JULIUS_MS, f"Dag {day}", "gemini-omni-1.2-flash",
                     ["assets/characters/julius/ref-v3.jpg"], extra={"filter_version": medie.filter_version()})
+        medie.refresh_inventar()
     print(dest)
     if "--upload" in sys.argv:
         upload(sys.argv[sys.argv.index("--upload") + 1], dest)

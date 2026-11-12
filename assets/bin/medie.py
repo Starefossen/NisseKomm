@@ -523,6 +523,15 @@ def selftest():
     print(f"selvtest ok (inndata: {len(skipped)} bilder utenfor git hoppet over)")
 
 
+def refresh_inventar(media=None):
+    """Keep media-inventar.json in step with the sidecars; never fails a generator."""
+    try:
+        import inventar
+        inventar.refresh(Path(media or os.environ.get("MEDIA_DIR") or ROOT / "public"))
+    except Exception as e:
+        print(f"medieinventar ikke oppdatert: {e}", file=sys.stderr)
+
+
 def main(argv):
     if not argv:
         print(__doc__)
@@ -535,6 +544,7 @@ def main(argv):
     elif cmd == "skriv":
         gen, out, src, section, model, *images = args
         write(gen, out, rel(src), None if section == "-" else section, model, [rel(i) for i in images])
+        refresh_inventar()
     elif cmd == "render":
         prompt, img, refs = render(args[0])
         print(*(str(ROOT / p) for p in (prompt, img, *refs) if p), sep="\n")
@@ -543,7 +553,9 @@ def main(argv):
     elif cmd == "flytt":
         flytt()
     elif cmd == "bakfyll":
-        print(bakfyll(Path(args[0] if args else os.environ.get("MEDIA_DIR", ROOT / "public"))), "sidecars skrevet")
+        media = Path(args[0] if args else os.environ.get("MEDIA_DIR", ROOT / "public"))
+        print(bakfyll(media), "sidecars skrevet")
+        refresh_inventar(media)
     elif cmd == "tv":
         for line in tv_lines():
             print(line)

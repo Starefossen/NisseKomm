@@ -62,19 +62,21 @@ export async function extraMusic(dir = mediaDir()): Promise<MediaStatus[]> {
   );
 }
 
-/** Julius variants (video/julius/dag-NN-vK.mp4) beside the manifest files, for review. */
-export async function juliusVariants(dir = mediaDir()): Promise<MediaStatus[]> {
-  const names = await readdir(path.join(dir, "video/julius")).catch(() => []);
-  return Promise.all(
-    names
-      .filter((n) => /^dag-\d\d-v\d+\.mp4$/.test(n))
-      .sort()
-      .map(async (n) => {
-        const p = `video/julius/${n}`;
-        const info = await stat(path.join(dir, p)).catch(() => null);
-        return { path: p, size: info?.isFile() ? info.size : null };
-      }),
-  );
+const MEDIA_DIRS = ["video", "audio", "music", "feed", "strek", "spill"];
+
+/** Every media file under MEDIA_DIRS, so old versions, stills and sprites show up too. */
+async function walk(dir: string, rel = ""): Promise<string[]> {
+  const entries = await readdir(path.join(dir, rel), {
+    withFileTypes: true,
+  }).catch(() => []);
+  const out: string[] = [];
+  for (const e of entries) {
+    const p = rel ? `${rel}/${e.name.normalize("NFC")}` : e.name;
+    if (e.name.startsWith(".")) continue;
+    if (e.isDirectory()) out.push(...(await walk(dir, p)));
+    else if (path.extname(p).toLowerCase() in MEDIA_TYPES) out.push(p);
+  }
+  return out;
 }
 
 /** Single-use upload ticket for one manifest path, valid 10 minutes. */
@@ -187,18 +189,24 @@ export async function serveMedia(
 }
 
 export async function mediaStatus(dir = mediaDir()): Promise<MediaStatus[]> {
-  const manifest = await Promise.all(
-    MEDIA_MANIFEST.map(async (entry) => {
-      const p = mediaPath(entry);
+  const found = (await Promise.all(MEDIA_DIRS.map((d) => walk(dir, d)))).flat();
+  const all = new Set(found);
+  const manifest = MEDIA_MANIFEST.map(mediaPath);
+  const known = new Set(manifest);
+  const extra = found
+    .filter(
+      (p) =>
+        !known.has(p) &&
+        // a poster frame written beside its video is not a file of its own
+        !(p.endsWith(".jpg") && all.has(p.replace(/\.jpg$/, ".mp4"))),
+    )
+    .sort();
+  return Promise.all(
+    [...manifest, ...extra].map(async (p) => {
       const info = await stat(path.join(dir, p)).catch(() => null);
       return { path: p, size: info?.isFile() ? info.size : null };
     }),
   );
-  return [
-    ...manifest,
-    ...(await extraMusic(dir)),
-    ...(await juliusVariants(dir)),
-  ];
 }
 
 /** Rejects a declared body larger than any media type allows, before it is read. */

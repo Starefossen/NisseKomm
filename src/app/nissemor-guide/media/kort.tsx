@@ -102,8 +102,13 @@ export function ReviewItemCard({
   isSaving,
   onSaveVerdict,
   onUpload,
+  iBruk,
+  merknad,
 }: {
   file: MediaStatus;
+  /** The file the app plays (the plain name of a version group). */
+  iBruk?: boolean;
+  merknad?: string;
   inventar?: Inventar;
   vurdering?: MediaVurderingItem;
   isSaving?: boolean;
@@ -133,6 +138,7 @@ export function ReviewItemCard({
             </span>
           )}
           {file.path}
+          {iBruk && <span className="text-(--gold) ml-2">· i bruk</span>}
         </span>
         <div className="flex items-center gap-3">
           <span
@@ -145,6 +151,12 @@ export function ReviewItemCard({
           </span>
         </div>
       </div>
+
+      {merknad && (
+        <div className="mt-1 text-sm text-(--cold-blue) break-words">
+          {merknad}
+        </div>
+      )}
 
       {/* Reasons / Why */}
       {inventar?.reasons && inventar.reasons.length > 0 && (
@@ -330,12 +342,19 @@ export function useMediaData() {
         setUnavailable(true);
         return;
       }
-      setFiles(await resMedia.json());
-
+      const list: MediaStatus[] = await resMedia.json();
       if (resInv.ok) {
         const rows: Inventar[] = await resInv.json();
         setInventar(new Map(rows.map((r) => [r.path, r])));
+        // jobs in medier.json without a file yet
+        const have = new Set(list.map((f) => f.path));
+        list.push(
+          ...rows
+            .filter((r) => r.status === "missing" && !have.has(r.path))
+            .map((r) => ({ path: r.path, size: null })),
+        );
       }
+      setFiles(list);
 
       if (resVurd.ok) {
         const v: MediaVurderinger = await resVurd.json();

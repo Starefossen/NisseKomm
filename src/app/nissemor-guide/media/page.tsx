@@ -11,26 +11,56 @@ import {
 } from "@/components/windows/snofall-tv/channels";
 import {
   dayRows,
+  groupVersions,
   lookThrough,
   pathOf,
   REVIEW_GROUPS,
   reviewKind,
   sortReviewItems,
+  type CellState,
   type ItemStatus,
 } from "./oversikt";
 import { ReviewItemCard, useMediaData } from "./kort";
+import type { MediaStatus } from "@/lib/media";
 
 const box = "border-4 border-(--neon-green) bg-black p-4 mb-6";
 
+const CELL: Record<CellState, [string, string, string]> = {
+  godkjent: ["✓", "text-(--gold)", "godkjent"],
+  ikke_vurdert: ["○", "text-(--neon-green)/70", "finnes, ikke vurdert"],
+  lag_paa_nytt: ["↻", "text-amber-400", "lag på nytt"],
+  utdatert: ["!", "text-(--cold-blue)", "utdatert"],
+  mangler: ["✗", "text-(--christmas-red)", "mangler"],
+  kode: ["·", "text-(--neon-green)/70", "kode"],
+};
+
 function Status({ item }: { item: ItemStatus | null }) {
   if (!item) return <span className="text-(--neon-green)/80">–</span>;
+  const [mark, color, name] = CELL[item.state];
   return (
     <span
-      className={item.ok ? "text-(--gold)" : "text-(--christmas-red)"}
-      title={item.files.join(", ")}
+      className={color}
+      title={[name, item.note, item.files.join(", ")]
+        .filter(Boolean)
+        .join(" · ")}
     >
-      {item.ok ? "✓" : "✗"} {item.label}
+      {mark} {item.label}
+      {item.klar && <span className="text-(--gold)"> · {item.klar}</span>}
     </span>
+  );
+}
+
+/** «Julius: 3 godkjent · 9 ikke vurdert · 12 mangler» for one column. */
+function Antall({ name, items }: { name: string; items: ItemStatus[] }) {
+  const parts = (Object.keys(CELL) as CellState[])
+    .filter((k) => k !== "kode")
+    .map((k) => [k, items.filter((i) => i.state === k).length] as const)
+    .filter(([, n]) => n > 0)
+    .map(([k, n]) => `${n} ${CELL[k][2].replace("finnes, ", "")}`);
+  return (
+    <p>
+      {name}: {parts.join(" · ")}
+    </p>
   );
 }
 
@@ -169,6 +199,7 @@ function MediaContent() {
     ? new Set(files.filter((f) => f.size !== null).map((f) => f.path))
     : null;
 
+  const rows = files ? dayRows(files, { vurderinger, inventar }) : [];
   const totalFiles = files?.length ?? 0;
   const totalGodkjent =
     files?.filter((f) => vurderinger[f.path]?.vurdering === "godkjent")
@@ -219,10 +250,30 @@ function MediaContent() {
         {files && (
           <section className={box}>
             <h2 className="text-2xl mb-3">Status per dag</h2>
+            <p className="text-sm mb-2 flex flex-wrap gap-x-4">
+              {(Object.keys(CELL) as CellState[])
+                .filter((k) => k !== "kode")
+                .map((k) => (
+                  <span key={k} className={CELL[k][1]}>
+                    {CELL[k][0]} {CELL[k][2]}
+                  </span>
+                ))}
+            </p>
+            <div className="text-sm mb-3 text-(--neon-green)/80">
+              <Antall name="Julius" items={rows.map((r) => r.julius)} />
+              <Antall
+                name="Rampenissen"
+                items={rows.map((r) => r.rampenissen)}
+              />
+              <Antall
+                name="TV"
+                items={rows.flatMap((r) => (r.tv ? [r.tv] : []))}
+              />
+            </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <tbody>
-                  {dayRows(files).map((r) => (
+                  {rows.map((r) => (
                     <tr
                       key={r.day}
                       className="border-b border-(--neon-green)/30"
@@ -277,17 +328,23 @@ function MediaContent() {
         {/* Review Groups */}
         {files &&
           REVIEW_GROUPS.map((g) => {
-            const allInGroup = sortReviewItems(
-              files.filter((f) => reviewKind(f.path) === g.id),
-              g.id,
+            const versions = groupVersions(
+              sortReviewItems(
+                files.filter((f) => reviewKind(f.path) === g.id),
+                g.id,
+              ),
             );
+            // one card per item: the newest file, older versions folded below
+            const allInGroup = versions.map((v) => v.newest);
 
-            let shown = allInGroup;
+            let shown = versions;
             if (onlyMissing) {
-              shown = shown.filter((f) => f.size === null);
+              shown = shown.filter((v) => v.newest.size === null);
             }
             if (onlyUnrated) {
-              shown = shown.filter((f) => !vurderinger[f.path]?.vurdering);
+              shown = shown.filter(
+                (v) => !vurderinger[v.newest.path]?.vurdering,
+              );
             }
 
             const godkjentCount = allInGroup.filter(
@@ -327,17 +384,44 @@ function MediaContent() {
                   </p>
                 ) : (
                   <div>
-                    {shown.map((f) => (
-                      <ReviewItemCard
-                        key={`${f.path}-${vurderinger[f.path]?.oppdatert ?? ""}`}
-                        file={f}
-                        inventar={inventar.get(f.path)}
-                        vurdering={vurderinger[f.path]}
-                        isSaving={savingMap[f.path]}
-                        onSaveVerdict={handleSaveVerdict}
-                        onUpload={upload}
-                      />
-                    ))}
+                    {shown.map((v) => {
+                      const card = (
+                        f: MediaStatus,
+                        extra?: { iBruk?: boolean; merknad?: string },
+                      ) => (
+                        <ReviewItemCard
+                          key={`${f.path}-${vurderinger[f.path]?.oppdatert ?? ""}`}
+                          file={f}
+                          inventar={inventar.get(f.path)}
+                          vurdering={vurderinger[f.path]}
+                          isSaving={savingMap[f.path]}
+                          onSaveVerdict={handleSaveVerdict}
+                          onUpload={upload}
+                          {...extra}
+                        />
+                      );
+                      const newer = v.newest.path !== v.key;
+                      return (
+                        <div key={v.key}>
+                          {card(v.newest, {
+                            iBruk: !newer,
+                            merknad: newer
+                              ? `nyere versjon finnes: ${v.newest.path.match(/-(v\d+)\.\w+$/)?.[1] ?? "annen fil"} — ta i bruk?`
+                              : undefined,
+                          })}
+                          {v.older.length > 0 && (
+                            <details className="mb-3 ml-4">
+                              <summary className="min-h-11 flex items-center cursor-pointer underline">
+                                Eldre versjoner ({v.older.length})
+                              </summary>
+                              {v.older.map((f) =>
+                                card(f, { iBruk: f.path === v.key }),
+                              )}
+                            </details>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
 

@@ -7,6 +7,7 @@ import {
 } from "@/lib/media";
 import {
   dayRows,
+  groupVersions,
   juliusFiles,
   variantLabel,
   lookThrough,
@@ -131,7 +132,7 @@ describe("lookThrough", () => {
 });
 
 describe("review kinds and sorting", () => {
-  it("has exactly the 6 required review kinds", () => {
+  it("has the review kinds", () => {
     expect(REVIEW_GROUPS.map((g) => g.id)).toEqual([
       "julius",
       "rampenissen",
@@ -139,6 +140,8 @@ describe("review kinds and sorting", () => {
       "port",
       "music",
       "stills",
+      "strek",
+      "spill",
     ]);
   });
 
@@ -185,5 +188,64 @@ describe("Julius variants", () => {
     expect(juliusFiles(3, null)).toEqual(["video/julius/dag-03.mp4"]);
     expect(variantLabel("video/julius/dag-01-v3.mp4")).toBe("Versjon v3");
     expect(variantLabel("video/julius/dag-01.mp4")).toBeNull();
+  });
+});
+
+describe("versjonsgrupper", () => {
+  it("nyeste først, filen appen spiller er nøkkelen", () => {
+    const g = groupVersions(
+      [
+        "video/julius/dag-01.mp4",
+        "video/julius/dag-01-v2.mp4",
+        "video/julius/dag-01-v4.mp4",
+        "audio/rampenissen/dag-01.old.mp3",
+        "audio/rampenissen/dag-01.mp3",
+      ].map((path) => ({ path })),
+    );
+    expect(g.map((x) => x.key)).toEqual([
+      "video/julius/dag-01.mp4",
+      "audio/rampenissen/dag-01.mp3",
+    ]);
+    expect(g[0].newest.path).toBe("video/julius/dag-01-v4.mp4");
+    expect(g[0].older.map((o) => o.path)).toEqual([
+      "video/julius/dag-01-v2.mp4",
+      "video/julius/dag-01.mp4",
+    ]);
+    expect(g[1].newest.path).toBe("audio/rampenissen/dag-01.mp3");
+  });
+});
+
+describe("dagstabell", () => {
+  it("viser vurdering, utdatert og ny versjon", () => {
+    const f = (path: string, size: number | null = 5) => ({ path, size });
+    const rows = dayRows(
+      [
+        f("video/julius/dag-01.mp4"),
+        f("video/julius/dag-02.mp4"),
+        f("video/julius/dag-03-v4.mp4"),
+        f("video/julius/dag-04.mp4"),
+        f("video/julius/dag-05.mp4"),
+      ],
+      {
+        vurderinger: {
+          "video/julius/dag-01.mp4": { vurdering: "godkjent" },
+          "video/julius/dag-02.mp4": {
+            vurdering: "lag_paa_nytt",
+            notat: "munn",
+          },
+        },
+        inventar: new Map([["video/julius/dag-04.mp4", { status: "stale" }]]),
+      },
+    );
+    expect(rows.slice(0, 6).map((r) => r.julius.state)).toEqual([
+      "godkjent",
+      "lag_paa_nytt",
+      "ikke_vurdert",
+      "utdatert",
+      "ikke_vurdert",
+      "mangler",
+    ]);
+    expect(rows[1].julius.note).toBe("munn");
+    expect(rows[2].julius.klar).toBe("v4 klar");
   });
 });

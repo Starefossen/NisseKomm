@@ -20,10 +20,11 @@ sys.path.insert(0, str(Path(__file__).parent))
 import medie  # noqa: E402
 
 ROOT = medie.ROOT
-DIRS = ("video", "audio", "music", "feed", "strek")
+DIRS = ("video", "audio", "music", "feed", "strek", "spill")
+EXT = (".mp4", ".mp3", ".png", ".jpg", ".webp")
 KINDS = [("video/julius/", "julius"), ("audio/rampenissen/", "rampenissen"),
          ("video/tv/port-", "port"), ("video/tv/", "tv"),
-         ("feed/", "feed"), ("music/", "music"), ("strek/", "strek")]
+         ("feed/", "feed"), ("music/", "music"), ("strek/", "strek"), ("spill/", "spill")]
 MARK = {medie.CURRENT: "✓", medie.STALE: "⚠", medie.UNKNOWN: "?", medie.MISSING: "✗"}
 
 
@@ -34,9 +35,9 @@ def manifest(root: Path = ROOT):
     days = [f"video/julius/dag-{d:02d}.mp4" for d in range(1, 25)]
     days += [f"audio/rampenissen/dag-{d:02d}.mp3" for d in range(1, 25)]
     ports = [f"video/tv/port-{c}.mp4" for c in ("julius", "hjerterud", "iq", "winter")]
-    strek = [j["ut"] for k, j in (medie.jobs(root) if (root / medie.MEDIER).exists() else {}).items()
-             if k.startswith("strek/")]
-    return list(dict.fromkeys(days + paths + ports + strek))
+    # every medier.json job with an output in the media dirs: no file yet = «mangler»
+    jobs = [j["ut"] for j in (medie.jobs(root).values() if (root / medie.MEDIER).exists() else []) if j.get("ut", "").split("/")[0] in DIRS]
+    return list(dict.fromkeys(days + paths + ports + jobs))
 
 
 def kind(path: str) -> str:
@@ -47,7 +48,7 @@ def scan(media: Path, root: Path = ROOT):
     present = []
     for d in DIRS:
         for p in sorted((media / d).rglob("*")) if (media / d).is_dir() else []:
-            if not p.is_file() or p.name.endswith(".meta.json") or p.name.startswith("."):
+            if not p.is_file() or p.suffix not in EXT or p.name.startswith("."):
                 continue
             if p.suffix == ".jpg" and p.with_suffix(".mp4").exists():
                 continue  # poster frame written next to a video
@@ -109,6 +110,11 @@ def markdown(rows, old) -> str:
     out += ["", "## Gamle filer", "", "| Mappe | Filer |", "|---|---:|"]
     out += [f"| {d} | {n} |" for d, n in old.items()]
     return "\n".join(out) + "\n"
+
+
+def refresh(media: Path):
+    """Rewrite <media>/media-inventar.json only; generators call this after writing a sidecar."""
+    (media / "media-inventar.json").write_text(json.dumps(scan(media), ensure_ascii=False, indent=1) + "\n")
 
 
 def main(argv):
