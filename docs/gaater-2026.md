@@ -88,7 +88,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Kode:** 48 (uendret).
 - **Mekanikk:** tre tall i huset, regneregelen på skjermen. Nytt: hvert kort er et lite regnestykke i romertall med subtraktiv skrivemåte: **IX + III** (12), **XIX − III** (16), **XIV + VI** (20). Kristian må kjenne IX, XIX og XIV; Håkon kjenner romertall fra klokker og trenger hjelp. Så Julius' regel for de tre svarene. Videoen er ferdig og røres ikke.
 - **Brikke H:** tre A7-kort teipet under tre spisestoler, hvert med ett regnestykke i romertall i stor skrift og et lite iskrystall. Ingen instruks om hva som skal gjøres med de tre svarene. Lapp fra Rampenissen (i sukkerskålen ved Rampenissen, håndskrevet): «Tre sikringer røk. Jeg gjemte dem lavt. Veldig lavt. Krabb! – R»
-- **Brikke S:** Julius: «IQ sier man aldri bytter bare én sikring. Man legger alle sammen, ellers går den neste i morgen.»
+- **Brikke S:** Julius: «IQs regel er enkel: finn alle sikringene, og legg tallene sammen. Summen er koden til sikringsskapet.»
 - **Slik løses den:** 1) Lappen i sukkerskålen sier at sikringene er gjemt lavt. H9 krabber og finner alle tre. 2) K12 regner ut hvert kort: 12, 16, 20. 3) Julius: legg alle sammen. 48. 4) Etter koden lyser sikringsboksen på K2.
 - **Hanna (hvis hun vil):** krabber under stolene sammen med H9; ett kort henger lavt nok.
 - **Andel per flate:** hus tre tall uten regel (cirka 33 %), og bare for den som leser romertall med subtraktiv skrivemåte. Video: regel uten tall.

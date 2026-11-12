@@ -126,3 +126,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 ## Nissemor-guiden i Docker (2026-11-11)
 
 - Dagvisning, søk og bibliotek leser manus og entitet.md fra en JSON som bygges inn (`src/data/guide-innhold.json`), ikke fra disk. Hvorfor: produksjonsbildet har verken docs/ eller assets/, så guiden var tom på hjemmeserveren.
+
+## Julius dag 2 (2026-11-13)
+
+- Sikringsreplikken (Brikke S) er nå «IQs regel er enkel: finn alle sikringene, og legg tallene sammen. Summen er koden til sikringsskapet.» Hvorfor: den gamle var dårlig norsk og uklar for barna.

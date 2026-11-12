@@ -1,6 +1,6 @@
 # Julius' videodagbok 2026 – manus
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5 endret 13.11 etter ja fra Hans.
 
 **Revisjon 10. november (vanskelighet, godkjent):** nye segmenter dag 5/4, 7/3, 7/5, 8/3, 9/4, 11/4 og 11/5 (nytt), 20/5. Etter uavhengig gjennomgang også 4/4, 4/5, 12/4, 12/5, 14/4, 14/5, 18/4, 18/5 (brikken ga ordet alene). Brikkene står ordrett som i `gaater-2026.md` etter revisjonen.
 
@@ -91,8 +91,8 @@ Kulde-nivå 1. Svak knitring, lett snø. Morgensangen for første gang, og den s
    - Varighet: 15 s (22 ord)
    - Handling: Legger venstre hånd på sentralbordet ved siden av seg og lar den ligge.
    - Kulde: Svak knitring.
-5. **Replikk:** «IQ sier man aldri bytter bare én sikring. Man legger alle sammen, ellers går den neste i morgen. Ha en riktig fin dag!»
-   - Varighet: 15 s (23 ord) · låst
+5. **Replikk:** «IQs regel er enkel: finn alle sikringene, og legg tallene sammen. Summen er koden til sikringsskapet. Ha en riktig fin dag!»
+   - Varighet: 15 s (21 ord) · låst
    - Handling: Holder opp én finger på venstre hånd, så samler han fingrene til en knyttneve, og vinker kort.
    - Kulde: Svak knitring, klikk.
 
