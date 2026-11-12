@@ -15,7 +15,19 @@
   "fakta": [
     {
       "fra_dag": 1,
-      "tekst": "driver bakeriet og kaféen i Snøfall og bor i kaféen"
+      "tekst": "kafévertinne og bakermester i Snøfall; driver bakeriet og kaféen Sukkerstua og bor der"
+    },
+    {
+      "fra_dag": 1,
+      "tekst": "i slutten av 40-årene; fyldig, rødbrunt krøllete hår under bakerlue eller skaut, rosenrøde kinn"
+    },
+    {
+      "fra_dag": 1,
+      "tekst": "går i varmrød eller plommefarget ullkjole, kremhvitt linforkle og strikket sjal"
+    },
+    {
+      "fra_dag": 1,
+      "tekst": "har nesten alltid en tresleiv, en kurv kanelboller eller en krukke nissesirup med seg"
     },
     {
       "fra_dag": 12,
@@ -36,11 +48,11 @@ Står i `beskrivelse.txt` ved siden av denne filen og brukes ordrett i bildeprom
 
 ## Personlighet
 
-Boblende, varm og litt overveldende. Klemmer først og spør etterpå. Sørger for at ingen går kalde eller sultne, og tar det personlig om noen prøver.
+Sprudlende, omsorgsfull og herlig overveldende. Har alltid en klem på lur og mener bestemt at alle bekymringer, frosne tær og floker kan løses med varm kakao, nystekte boller og en skje ekstra sirup. Den naturlige motvekten til Winters stive paragrafer.
 
 ## Stemme
 
-Hjertelig, rask og omsorgsfull; alltid én bolle til og ett spørsmål om du har spist.
+Store, varme ord; hjertelig, rask og omsorgsfull, alltid én bolle til og ett spørsmål om du har spist.
 
 ## Gjør / ikke gjør
 

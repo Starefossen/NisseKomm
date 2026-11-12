@@ -1,9 +1,9 @@
-# Hjerteruds kafé
+# Sukkerstua (Hjerteruds bakeri og kafé)
 
 ```json
 {
   "id": "kafe",
-  "navn": ["kaféen", "Hjerteruds kafé", "bakeriet"],
+  "navn": ["Sukkerstua", "kaféen", "Hjerteruds kafé", "bakeriet", "Bakeriet i Snøfall"],
   "refs": {},
   "avledet_fra": "torget",
   "fakta": [
@@ -34,6 +34,18 @@
 ## Utseende
 
 Står i `beskrivelse.txt` (`{{locations/kafe}}`). Pikselscenen i Ugleposten er `spill/piksel/kafe.png` (`spill-piksel/kafe` i medier.json), tegnet med torgets pikselbilde som stil- og palettreferanse.
+
+## Rom
+
+Et lunt, romslig og rustikt tømmerrom, hjertet og varmestua i Snøfall. Grovt, mørkebrunt tømmer og slitte trepaneler som lukter kardemomme, kanel og nybakt brød. Dypt gyllent lys fra levende lys i smijernkroner, oljelamper på veggene og bakerovnen; kaldt, dypblått vintermørke i de smårutete, rimfrosne vinduene.
+
+## Interiør (hotspots)
+
+- **Steinovnen** (venstre): massiv, buet bakerovn av leire og stein, sotete kanter rundt smidd jernluke, bjørkeved som gløder inni, brett med boller til etterheving under rutete håndklær oppå kuplen, kløyvd bjørkeved ved foten.
+- **Arbeidsbordet** (forgrunn/midten): tungt, skuret trebord med mel, store glasskrukker med mel og sukker, brune deigboller, skålvekt i messing, tresleiver og en liten, klissete krukke Nissesirup med tre-øse.
+- **Spiskammer-hyllene** (bakveggen): gulv-til-tak-hyller med leirkrukker, kobberkjeler, brødkurver, krydderbokser; tørkede urtebunter fra takbjelkene.
+- **Kafékroken** (høyre): runde trebord med rød- og hvitstripete duker, kubbelys og krus med kakao og krem.
+- **Vinduet** (høyre): smårutete, rimfrost, blått vintermørke ute.
 
 ## Rolle i spillet
 

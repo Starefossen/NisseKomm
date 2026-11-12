@@ -128,8 +128,8 @@ Generated from `assets/characters/<id>/entitet.md`, the one source for look, per
 #### Hjerterud (`assets/characters/hjerterud/entitet.md`)
 
 - **Navn:** Hjerterud; **pronomen:** hun; **fra dag:** 1
-- **Personlighet:** Boblende, varm og litt overveldende. Klemmer først og spør etterpå. Sørger for at ingen går kalde eller sultne, og tar det personlig om noen prøver.
-- **Stemme:** Hjertelig, rask og omsorgsfull; alltid én bolle til og ett spørsmål om du har spist.
+- **Personlighet:** Sprudlende, omsorgsfull og herlig overveldende. Har alltid en klem på lur og mener bestemt at alle bekymringer, frosne tær og floker kan løses med varm kakao, nystekte boller og en skje ekstra sirup. Den naturlige motvekten til Winters stive paragrafer.
+- **Stemme:** Store, varme ord; hjertelig, rask og omsorgsfull, alltid én bolle til og ett spørsmål om du har spist.
 - **Forhold:** julius: venn; ikke en del av husstanden hans; pil: baker sammen; rampenissen: sendte proviant ned linjen med ham
 - **Aldri:** «Nissemor», «Mor Nisse»
 
