@@ -38,6 +38,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - 2026-11-12: Julius beholder Omni-stemmen; ingen TTS fra dag 4. Kuttene glattes i klippen (siste bilde som start for neste segment, kort krysstoning i halen, ett B-rull-innklipp per dag), og ett betalt prøvekall tester Omni Extend med ny replikk. Hvorfor: barna hører et stemmebytte; lengre tagninger er bare verdt det hvis Extend tåler ny tekst.
 - 2026-11-12: Omni Extend droppes for Julius: forlengelsen gir høyst 10 s og kutter siste ord, og hver forlengelse leser hele kjeden på nytt (dag 1 kostet ~2,5M tokens). Dagene lages som 15 s-segmenter der neste starter fra forrige siste bilde, med 0,25 s krysstoning. Hvorfor: alle ord kommer med, billigere, mykere kutt.
 - 2026-11-12: NisseKomm endrer ikke Birk og Lyng (stemme, dialekt, framtoning). Linjene deres i radiomanuset er innholdsforslag til Varden, som eier dem. Hvorfor: Hans vil holde Varden og NisseKomm adskilt; NisseKomm leverer innhold og integrasjon.
+- 2026-11-12: Nissemor-guiden viser hele sesongen fra kildene: «Historien»-side bakt fra historie-2026.md og storyboard-2026.md, dagssammendrag fra storyboard, kveldslista bakt fra gaater-2026.md (håndkopien `_kveld/data.ts` slettes), en førsesongsvisning 24.–30. november, og én linje per delsystem per dag (frost, runer, milepæl, TV, NisseNet, Varden før og etter løst kode, tidbits). Hvorfor: Hans skal kunne gå gjennom sesongen helhetlig, og hver ting redigeres bare ett sted.
 
 ## Spill (2026-11-10/11)
 
