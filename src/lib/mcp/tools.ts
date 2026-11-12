@@ -943,11 +943,25 @@ export const TOOLS: Record<string, Tool> = {
                 ([id, v]) => `${id} | ${v.notat!.replace(/\s*\n\s*/g, " / ")}`,
               )
           : [];
-      return [
-        `${aapne.length} åpne av ${rader.length}`,
+      const hode = `${aapne.length} åpne av ${rader.length}`;
+      const deler = [
         ...linjer,
         ...(laerdom.length ? ["lærdom:", ...laerdom] : []),
-      ].join("\n");
+      ];
+      // «alle» can pass the response ceiling (callTool throws it as «intern feil»):
+      // newest lines stay, the rest is cut with a pointer to siden/prefiks.
+      let ut = [hode, ...deler].join("\n");
+      let skjult = 0;
+      while (Buffer.byteLength(ut) > MAX_RESPONSE_BYTES - 256 && deler.length) {
+        deler.pop();
+        skjult++;
+        ut = [
+          hode,
+          ...deler,
+          `… ${skjult} linjer til utelatt, bruk siden eller prefiks`,
+        ].join("\n");
+      }
+      return ut;
     },
   },
   reset: {
