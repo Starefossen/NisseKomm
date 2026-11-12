@@ -267,7 +267,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** ORIGAMI (uendret).
 - **Mekanikk:** brett og hold mot lyset, som før. Nytt: to brettelinjer. Brettet langs den loddrette og holdt mot lys: bokstavene **R** og **G** i to vinduer. Brettet langs den vannrette: tallene **2** og **4** ved de samme vinduene. Arket sier «Brett. Hold en lykt bak.» uten å si hvor mange ganger.
-- **Brikke H:** arket sammenrullet i papirbåten i vasken. Flatt: tilfeldige streker og sju tomme ruter med tegn i hjørnene. Bretteanvisning for serviettfugl ved (bare moro).
+- **Brikke H:** arket sammenrullet i papirbåten i vasken. Flatt: tilfeldige streker og sju tomme ruter (ingen tegn: ORIGAMI har ingen nye bokstaver). Bretteanvisning for serviettfugl ved (bare moro).
 - **Brikke S:** Julius: «Winter har ett ord for å gi et flatt ark vinger uten saks og lim, bare ved å bøye det. Winter er lur. Han uttaler det feil med vilje, så ingen på linjen skal forstå.» (Omskrevet: verken _japansk_ eller _brette_; uten arket kan det være fly, fugl eller kunst; med `_ R _ G _ _ _` er det ORIGAMI.)
 - **Slik løses den:** 1) H9 bretter langs den ene linjen og ser to bokstaver, men ikke hvor de hører hjemme. 2) K12 prøver den andre linjen: tallene. R i 2, G i 4: `_ R _ G _ _ _`. 3) Ark som får vinger ved å bøyes, sju bokstaver med R og G. ORIGAMI. Den blå fuglen vises i Brevfugler.
 - **Hanna (hvis hun vil):** holder lykten bak arket.
