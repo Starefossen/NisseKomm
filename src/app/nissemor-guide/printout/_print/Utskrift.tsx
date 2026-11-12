@@ -211,6 +211,15 @@ export function Utskrift({
           <b>Skriv ut i 100 % / «Faktisk størrelse»</b>, ikke «Tilpass til
           side». Da blir målene riktige.
         </p>
+        <p>
+          <b>Slå av topptekst og bunntekst</b> (Safari: «Print headers and
+          footers»).
+        </p>
+        <p>
+          <b>
+            {tosidig ? "Tosidig: på, vend langs langsiden." : "Tosidig: av."}
+          </b>
+        </p>
         {a3 && (
           <p>
             <b>Skjøt:</b> klipp ark 1 langs nederkanten, lim det over limfeltet
