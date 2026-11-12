@@ -1,5 +1,4 @@
-import { PrintPage, CutCard } from "../PrintPage";
-import { Ark } from "./felles";
+import { Utskrift } from "../Utskrift";
 
 type Krystall = {
   armer: { vinkel: number; lengde?: number }[];
@@ -25,7 +24,7 @@ const KRYSTALLER: Krystall[] = [
 
 function Tegning({ k }: { k: Krystall }) {
   return (
-    <svg viewBox="-50 -50 100 100" className="w-[54mm] h-[54mm]" aria-hidden>
+    <svg viewBox="-50 -50 100 100" className="w-[56mm] h-[56mm]" aria-hidden>
       <g stroke="black" strokeWidth="4" strokeLinecap="round" fill="none">
         {k.armer.map(({ vinkel, lengde = 1 }, i) => {
           const l = 42 * lengde;
@@ -48,23 +47,25 @@ function Tegning({ k }: { k: Krystall }) {
 
 export default function Dag09Krystallark() {
   return (
-    <PrintPage
-      title="Dag 9 – ni krystaller"
-      paper="1 ark, tykt papir"
-      note="Klipp ut alle ni og heng dem på kjøleskapsdøra med det blå hjerte-kortet mellom. Fasit for deg: 1, 3, 6 og 8 (talt rad for rad) er ekte."
-    >
-      <Ark>
-        <div className="grid grid-cols-3 gap-[3mm] justify-items-center mt-[6mm]">
-          {KRYSTALLER.map((k, i) => (
-            <CutCard
-              key={i}
-              className="w-[60mm] h-[85mm] flex items-center justify-center"
-            >
-              <Tegning k={k} />
-            </CutCard>
-          ))}
-        </div>
-      </Ark>
-    </PrintPage>
+    <Utskrift
+      navn="dag09-krystallark"
+      papir="tykt"
+      deler={[
+        {
+          str: { b: 64, h: 93 },
+          antall: KRYSTALLER.length,
+          forside: (i) => (
+            <div className="h-full flex items-center justify-center">
+              <Tegning k={KRYSTALLER[i]} />
+            </div>
+          ),
+        },
+      ]}
+      instruks={{
+        klipp: "ni krystaller langs de stiplede linjene.",
+        hvor: "Kvelden før dag 9: heng alle ni på kjøleskapsdøra med magneter eller teip, i blandet rekkefølge, med det blå hjerte-kortet mellom dem.",
+        merk: "Fasit for deg: nr. 1, 3, 6 og 8 (talt rad for rad på arket) er ekte. Falske: fem armer, én kort arm, sju armer, firkantet midte, to armer på samme side.",
+      }}
+    />
   );
 }

@@ -2,28 +2,9 @@ import type { ReactNode } from "react";
 import { Frostrune } from "@/components/ui/Frostrune";
 
 /*
- * Helpers for the day 1–12 printables, on top of ../PrintPage.
+ * Helpers for the printables in the <Utskrift> frame.
  * Runes go only on visible letters, never on ❄ squares (decided by Hans).
  */
-
-/** One printed sheet; a new page starts before every sheet but the first. */
-export function Ark({
-  children,
-  stil = "barn",
-}: {
-  children: ReactNode;
-  stil?: "barn" | "forelder";
-}) {
-  const font = stil === "barn" ? "font-retro" : "font-sans";
-  return (
-    <div
-      data-ark={stil}
-      className={`${font} break-before-page first:break-before-auto pt-6 first:pt-0 print:pt-0`}
-    >
-      {children}
-    </div>
-  );
-}
 
 import { Iskrystall } from "@/components/ui/Iskrystall";
 export { Iskrystall };
@@ -69,23 +50,6 @@ export function Ruter({
   );
 }
 
-/** Card size that tiles an <Ark>: 8 «A7» (2 × 4) per sheet. */
-export const A7 = "w-[92mm] h-[66mm]";
-
-/**
- * Order for the back of a duplex sheet (long-edge flip): each row of a
- * grid with `kolonner` columns is reversed so backs land behind fronts.
- */
-export function bakside<T>(liste: T[], kolonner: number): (T | null)[] {
-  const ut: (T | null)[] = [];
-  for (let i = 0; i < liste.length; i += kolonner) {
-    const rad: (T | null)[] = liste.slice(i, i + kolonner);
-    while (rad.length < kolonner) rad.push(null);
-    ut.push(...rad.reverse());
-  }
-  return ut;
-}
-
 /** n dots, for the order dots on card backs. */
 export function Prikker({ n }: { n: number }) {
   return (
@@ -93,6 +57,25 @@ export function Prikker({ n }: { n: number }) {
       {Array.from({ length: n }, (_, i) => (
         <span key={i} className="w-[5mm] h-[5mm] rounded-full bg-black" />
       ))}
+    </div>
+  );
+}
+
+/** Empty numbered squares the kids fill in (days 15, 16). */
+export function Rutekort({ n }: { n: number }) {
+  return (
+    <div className="h-full flex flex-col items-center justify-center gap-[2mm] font-retro">
+      <div className="text-[5mm] tracking-widest">NISSEKOMM · RUTEKORT</div>
+      <div className="flex gap-[1.5mm]">
+        {Array.from({ length: n }, (_, i) => (
+          <div
+            key={i}
+            className="w-[17mm] h-[20mm] border-[0.8mm] border-black text-[3mm] text-gray-500 p-[0.5mm]"
+          >
+            {i + 1}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

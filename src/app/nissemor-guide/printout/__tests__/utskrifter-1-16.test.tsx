@@ -23,6 +23,12 @@ import Fargekort from "../_print/dager01-12/dag10-fargekort";
 import Rodfilter from "../_print/dager01-12/rodfilter-ramme";
 import Tallkort11 from "../_print/dager01-12/dag11-tallkort";
 import Tredelt from "../_print/dager01-12/dag12-frostlapp-tredelt";
+import Krydderkort from "../_print/dager13-16/dag13-krydderkort";
+import Gravskilt from "../_print/dager13-16/dag13-gravskilt";
+import Brettark from "../_print/dager13-16/dag14-brettark";
+import Serviettfugl from "../_print/dager13-16/dag14-serviettfugl";
+import Redskapskort from "../_print/dager13-16/dag15-redskapskort";
+import Sorteringslapper from "../_print/dager13-16/dag16-sorteringslapper";
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
@@ -162,6 +168,45 @@ const SIDER: [
     Tredelt,
     { har: ["E", "O", "A"], runer: ["E", "O", "A"], ikke: "MELODI" },
   ],
+  [
+    "dag13-krydderkort",
+    Krydderkort,
+    { har: ["N", "R", "F", "L"], runer: ["N", "R", "F", "L"], ikke: "SAFRAN" },
+  ],
+  [
+    "dag13-gravskilt",
+    Gravskilt,
+    { har: ["HER HVILER RAMPEN.", "HAN SPISTE 11."], ikke: "SAFRAN" },
+  ],
+  // No runes: by day 14 every letter of the answer is on the rune board.
+  [
+    "dag14-brettark",
+    Brettark,
+    { har: ["Brett. Hold en lykt bak.", "R", "G", "2", "4"], ikke: "ORIGAMI" },
+  ],
+  [
+    "dag14-serviettfugl",
+    Serviettfugl,
+    { har: ["SERVIETTFUGL"], ikke: "ORIGAMI" },
+  ],
+  [
+    "dag15-redskapskort",
+    Redskapskort,
+    {
+      har: ["A", "M", "L", "12345678"],
+      runer: ["A", "M", "L"],
+      ikke: "KARAMELL",
+    },
+  ],
+  [
+    "dag16-sorteringslapper",
+    Sorteringslapper,
+    {
+      har: ["O", "E", "I", "K", "2", "5", "7", "123456789"],
+      runer: ["O", "E", "I", "K"],
+      ikke: "SORTERING",
+    },
+  ],
 ];
 
 function render(Side: ComponentType) {
@@ -181,7 +226,7 @@ function render(Side: ComponentType) {
   };
 }
 
-describe("utskrifter dag 1–12", () => {
+describe("utskrifter dag 1–16", () => {
   it.each(SIDER)(
     "%s skriver ut det gaater-2026 krever",
     (_navn, Side, krav) => {

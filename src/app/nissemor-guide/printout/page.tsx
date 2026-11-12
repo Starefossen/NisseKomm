@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { GuideSide, Kort } from "../_kveld/felles";
 import { SIDER_01_12 } from "./_print/dager01-12";
-import { SIDER_13_24 } from "./_print/dager13-24";
+import { SIDER_17_24 } from "./_print/dager17-24";
 import {
   FERDIGE,
   UTSKRIFTER,
@@ -13,7 +13,7 @@ import {
 } from "./filer";
 
 const laget = (navn: string) =>
-  navn in FERDIGE || navn in SIDER_01_12 || navn in SIDER_13_24;
+  navn in FERDIGE || navn in SIDER_01_12 || navn in SIDER_17_24;
 
 const dager = [...new Set(UTSKRIFTER.map((u) => utskriftDag(u) ?? 0))].sort(
   (a, b) => a - b,

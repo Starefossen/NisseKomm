@@ -1,8 +1,14 @@
-import { PrintPage, CutCard } from "../PrintPage";
-import { A7, Ark } from "./felles";
+import { Utskrift } from "../Utskrift";
 
 // IQ's transmitters end in five; Kulde's fakes (20, 40) look exactly the same.
 const TALL = [15, 40, 25, 35, 20];
+const HVOR = [
+  "stua, under en pute",
+  "stua, under en pute",
+  "brødboksen",
+  "Hannas jakkelomme",
+  "pappas jakkelomme",
+];
 
 function Antenne() {
   return (
@@ -22,26 +28,27 @@ function Antenne() {
 
 export default function Dag11Tallkort() {
   return (
-    <PrintPage
-      title="Dag 11 – senderkortene"
-      paper="1 ark, tykt papir"
-      note="Stua under en pute: 15 og 40. Brødboksen: 25. Hannas jakkelomme: 35. Pappas jakkelomme: 20."
-    >
-      <Ark>
-        <div className="grid grid-cols-2 gap-[2mm]">
-          {TALL.map((t) => (
-            <CutCard
-              key={t}
-              className={`${A7} flex items-center justify-center text-[34mm] leading-none`}
-            >
+    <Utskrift
+      navn="dag11-tallkort"
+      papir="tykt"
+      deler={[
+        {
+          str: "A7",
+          antall: TALL.length,
+          forside: (i) => (
+            <div className="relative h-full flex items-center justify-center font-retro text-[34mm] leading-none">
               <span className="absolute top-[3mm] left-[3mm]">
                 <Antenne />
               </span>
-              {t}
-            </CutCard>
-          ))}
-        </div>
-      </Ark>
-    </PrintPage>
+              {TALL[i]}
+            </div>
+          ),
+        },
+      ]}
+      instruks={{
+        klipp: "fem kort.",
+        hvor: `Kvelden før dag 11: ${TALL.map((t, i) => `${t} i ${HVOR[i]}`).join(", ")}. Lappen fra Rampenissen på stekebrettet.`,
+      }}
+    />
   );
 }

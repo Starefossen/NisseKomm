@@ -1,13 +1,10 @@
-import { PrintPage, CutCard } from "../PrintPage";
-import { A7, Ark, Iskrystall } from "./felles";
+import { Frostrune } from "@/components/ui/Frostrune";
+import { Utskrift } from "../Utskrift";
+import { Iskrystall } from "./felles";
 import { Rodstoy } from "./Rodstoy";
 
 // Rainbow order; ORANSJE → P, BLÅ → T. HVIT is the decoy (R). Runes only on visible letters.
-const KORT: {
-  navn: string;
-  farge: string;
-  vis: string | null;
-}[] = [
+const KORT: { navn: string; farge: string; vis: string | null }[] = [
   { navn: "RØD", farge: "#e11d48", vis: null },
   { navn: "ORANSJE", farge: "#f97316", vis: "P" },
   { navn: "GUL", farge: "#facc15", vis: null },
@@ -18,46 +15,52 @@ const KORT: {
   { navn: "HVIT", farge: "#ffffff", vis: "R" },
 ];
 
-function Kort({ k, tom }: { k: (typeof KORT)[number]; tom?: boolean }) {
+function Kort({ i, tom }: { i: number; tom?: boolean }) {
+  const k = KORT[i];
   return (
-    <CutCard
-      rune={tom ? undefined : (k.vis ?? undefined)}
-      className={`${A7} p-[2mm]`}
-    >
+    <div className="h-full p-[2mm] font-retro">
       <div
-        className="h-full border-[4mm] flex flex-col"
-        style={{ borderColor: k.farge, outline: "1px solid #999" }}
+        className="relative h-full border-[4mm] flex flex-col outline-[0.2mm] outline-solid outline-gray-400"
+        style={{ borderColor: k.farge }}
       >
-        <div className="text-3xl text-center">{k.navn}</div>
+        <div className="text-[7mm] text-center">{k.navn}</div>
         <div className="flex-1 text-[24mm] leading-none">
-          {tom ? null : <Rodstoy>{k.vis ?? <Iskrystall size={70} />}</Rodstoy>}
+          {!tom && <Rodstoy>{k.vis ?? <Iskrystall size={70} />}</Rodstoy>}
         </div>
+        {!tom && k.vis && (
+          <span className="absolute top-[1mm] right-[1mm]">
+            <Frostrune letter={k.vis} size={20} />
+          </span>
+        )}
       </div>
-    </CutCard>
+    </div>
   );
 }
 
 export default function Dag10Fargekort() {
   return (
-    <PrintPage
-      title="Dag 10 – fargekortene"
-      paper="2 ark, tykt papir, fargeutskrift"
-      note="Åtte kort gjemmes lavt og høyt i stua; rødfilteret ved tusjene. Test med dag10-testark først. Side 2 er en blank variant: tegn bokstavene selv med cyan tusj og kruss over med rød hvis skriveren ikke gjør jobben."
-    >
-      <Ark>
-        <div className="grid grid-cols-2 gap-[2mm]">
-          {KORT.map((k) => (
-            <Kort key={k.navn} k={k} />
-          ))}
-        </div>
-      </Ark>
-      <Ark>
-        <div className="grid grid-cols-2 gap-[2mm]">
-          {KORT.map((k) => (
-            <Kort key={k.navn} k={k} tom />
-          ))}
-        </div>
-      </Ark>
-    </PrintPage>
+    <Utskrift
+      navn="dag10-fargekort"
+      papir="tykt"
+      farge
+      deler={[
+        {
+          str: "A7",
+          antall: KORT.length,
+          forside: (i) => <Kort i={i} />,
+        },
+        {
+          str: "A7",
+          antall: KORT.length,
+          forside: (i) => <Kort i={i} tom />,
+        },
+      ]}
+      instruks={{
+        klipp:
+          "åtte kort fra ark 1. Ark 2 er en blank reserve: skriv bare ut den hvis testarket viste at skriveren ikke klarer støyen.",
+        hvor: "Kvelden før dag 10: gjem de åtte kortene lavt og høyt i stua. Rødfilteret ved tusjene. Test med testarket først.",
+        merk: "Blank reserve: tegn bokstaven med cyan tusj (P på ORANSJE, T på BLÅ, R på HVIT, iskrystall på resten) og kruss over med rød tusj.",
+      }}
+    />
   );
 }
