@@ -682,6 +682,10 @@ export class GameEngine {
     }
   }
 
+  static isEmailViewed(day: number): boolean {
+    return StorageManager.isEmailViewed(day);
+  }
+
   /**
    * Get unread email count for current day
    */

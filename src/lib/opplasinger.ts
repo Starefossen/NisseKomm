@@ -192,6 +192,14 @@ const PUFF: Record<2 | 3 | 4, string[]> = {
   ],
 };
 
+// After Julius' video, until today's mail is read (JuliusVideo)
+const MAIL_PUFF = [
+  "RAMPENISSEN: Æ har skrevet te dokker! Ligg i NisseMail. Les den før dokker gjør nåkka anna.",
+  "RAMPENISSEN: Ferdig med Julius? Bra. No ligg det et brev fra mæ og vente.",
+  "RAMPENISSEN: Psst. Æ har sendt dokker en melding. Den e viktigare enn den ser ut.",
+];
+export const mailPuffTekst = (dag: number) => rull(MAIL_PUFF, dag);
+
 /** Sidebar line for nudge level 2–4; none for 0–1. Variant depends on item and day, so two nudges rarely match. */
 export function puffTekst(o: Opplasing, n: Nivaa, dag = o.dag): string | null {
   if (n !== 2 && n !== 3 && n !== 4) return null;

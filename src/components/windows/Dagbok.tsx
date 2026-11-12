@@ -9,10 +9,16 @@ interface DagbokProps {
   missions: Oppdrag[];
   onClose: () => void;
   onWatched?: () => void;
+  onOpenMail?: () => void;
 }
 
 /** Julius' video diary: today's video on top, earlier days below */
-export function Dagbok({ missions, onClose, onWatched }: DagbokProps) {
+export function Dagbok({
+  missions,
+  onClose,
+  onWatched,
+  onOpenMail,
+}: DagbokProps) {
   const today = getAdventDay();
   const days = missions
     .filter((m) => m.dag <= today)
@@ -32,7 +38,12 @@ export function Dagbok({ missions, onClose, onWatched }: DagbokProps) {
               <h2 className="text-(--gold) font-bold text-lg">
                 DAG {m.dag}. DESEMBER – {m.tittel}
               </h2>
-              <JuliusVideo day={m.dag} onWatched={onWatched} autoPlay />
+              <JuliusVideo
+                day={m.dag}
+                onWatched={onWatched}
+                onOpenMail={onOpenMail}
+                autoPlay
+              />
             </section>
           ) : (
             <details

@@ -96,7 +96,27 @@ export function Gaatekart({
         <b className="text-(--gold)">{b.id}</b> {b.hvor}
         {b.naar && <span className="text-sm"> · {b.naar}</span>}
       </p>
-      {b.kilde === "epost" && b.kildeDag === d.dag ? (
+      {b.merk ? (
+        <>
+          <p className="text-sm whitespace-pre-wrap">
+            {t(b.tekst)
+              .split(/(?<=[.!?])\s+/)
+              .map((x, i) => (
+                <span key={i}>
+                  {b.merk!.some((m) => t(m) === x) ? (
+                    <mark className="bg-(--gold) text-black">{x}</mark>
+                  ) : (
+                    x
+                  )}{" "}
+                </span>
+              ))}
+          </p>
+          {/* app-tekster: the mail tells what happened and who does what next. */}
+          <p className="text-sm opacity-80">
+            Gir: hva som skjedde i natt, og hvem gjør hva videre
+          </p>
+        </>
+      ) : b.kilde === "epost" && b.kildeDag === d.dag ? (
         <p className="text-sm whitespace-pre-wrap">
           <Merket tekst={t(epost)} sitat={b.sitat} />
         </p>

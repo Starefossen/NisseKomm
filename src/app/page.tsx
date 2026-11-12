@@ -699,6 +699,7 @@ export default function Home() {
                       missions={oppdrag}
                       onClose={handleCloseWindow}
                       onWatched={refreshGameState}
+                      onOpenMail={() => handleSelectDay(getCurrentDay())}
                     />
                   )}
                 </>

@@ -6,6 +6,7 @@ import { GameEngine } from "@/lib/game-engine";
 import { getAdventDay, getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 import transcripts from "@/data/julius_videoer.json";
 import { Day1Tail } from "../ui/Day1Opener";
+import { mailPuffTekst } from "@/lib/opplasinger";
 
 interface JuliusVideoProps {
   day: number;
@@ -17,6 +18,8 @@ interface JuliusVideoProps {
   autoPlay?: boolean;
   /** Snøfall TV K3 shows the video only; transcript and PS live in Dagbok */
   videoOnly?: boolean;
+  /** Opens NisseMail on today's mail; shows the nudge after the video */
+  onOpenMail?: () => void;
 }
 
 export function JuliusVideo({
@@ -25,6 +28,7 @@ export function JuliusVideo({
   preload = "metadata",
   autoPlay = false,
   videoOnly = false,
+  onOpenMail,
 }: JuliusVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [watched, setWatched] = useState(() =>
@@ -111,6 +115,28 @@ export function JuliusVideo({
           {tail && <Day1Tail onDone={() => setTail(false)} />}
         </div>
       )}
+
+      {isToday &&
+        watched &&
+        !tail &&
+        onOpenMail &&
+        !GameEngine.isEmailViewed(day) && (
+          <div
+            role="status"
+            className="border-2 border-(--gold) bg-(--gold)/15 p-3 space-y-2"
+          >
+            <div className="text-(--gold) font-bold text-xl tracking-wider">
+              Rampenissen har sendt dere en melding
+            </div>
+            <p className="text-(--gold)/90">{mailPuffTekst(day)}</p>
+            <button
+              onClick={onOpenMail}
+              className="min-h-12 px-4 bg-(--gold) text-black font-bold motion-safe:animate-pulse"
+            >
+              Åpne NisseMail
+            </button>
+          </div>
+        )}
 
       {watched && !missing && (
         <button

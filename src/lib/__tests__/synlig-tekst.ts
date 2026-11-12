@@ -26,7 +26,7 @@ import {
   type FriOpts,
 } from "@/components/windows/snofall-tv/vidda";
 import type { FilNode } from "@/types/innhold";
-import { OPPLASINGER, puffTekst } from "@/lib/opplasinger";
+import { OPPLASINGER, mailPuffTekst, puffTekst } from "@/lib/opplasinger";
 import {
   CHANNELS,
   KULDE_INTERCEPTS,
@@ -103,6 +103,8 @@ for (const o of OPPLASINGER) {
       puffTekst(o, n) ?? undefined,
     );
 }
+
+for (let d = 1; d <= 24; d++) add(d, `dag ${d} mail-puff`, mailPuffTekst(d));
 
 const challengeDay = new Map(
   quests

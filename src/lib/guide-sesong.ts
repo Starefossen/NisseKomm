@@ -536,6 +536,8 @@ export interface Bit {
   /** Words the text must contain; tested against the kids' text. */
   sitat?: string;
   segment?: number;
+  /** Sentences of `tekst` that a gaater quote points at (S0 only). */
+  merk?: string[];
 }
 
 /** Sentences of a gaater field; keeps ** around letters so the UI can hide them. */
@@ -656,6 +658,28 @@ export function gaatekart(n: number) {
         kilde: "julius",
         kildeDag: fra,
       });
+  }
+
+  // S0: the whole mail; marked are the sentences any «…» quote in the day's
+  // gaater block (Brikke S, Slik løses den, Hint) lands in.
+  const mail = q?.nissemail_tekst ?? "";
+  if (mail) {
+    const sitater = [...blokk.matchAll(/«([^«»]+)»/g)]
+      .map((m) => norm(m[1]))
+      .filter((x) => x.length > 8 && norm(mail).includes(x));
+    skjerm.unshift({
+      id: "S0",
+      hvor: "NisseMail (i dag)",
+      naar: `${n}. desember`,
+      tekst: mail,
+      kilde: "epost",
+      kildeDag: n,
+      merk: mail
+        .split(/(?<=[.!?])\s+/)
+        .filter((x) =>
+          sitater.some((z) => norm(x).includes(z) || z.includes(norm(x))),
+        ),
+    });
   }
 
   const andel = felt("Andel per flate");
