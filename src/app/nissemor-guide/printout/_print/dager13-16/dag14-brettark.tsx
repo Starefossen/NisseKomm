@@ -79,7 +79,7 @@ export default function Dag14Brettark() {
                 style={{ left: "7mm", top: "30mm" }}
               >
                 {/* Corner runes for the hidden word (Meta 1). */}
-                {[..."ORIGAMI"].map((r, i) => (
+                {["O", "R", "I", "G", "A", "M", "I"].map((r, i) => (
                   <div
                     key={i}
                     className="relative w-[11mm] h-[14mm] border-[0.5mm] border-black bg-white"

@@ -3,7 +3,7 @@ import { Utskrift } from "../Utskrift";
 import { Iskrystall } from "./felles";
 import { Rodstoy } from "./Rodstoy";
 
-// Rainbow order; ORANSJE → P, BLÅ → T. HVIT is the decoy (R). Rainbow cards carry their SPEKTER letter's rune; HVIT only R.
+// Rainbow order; ORANSJE → P, BLÅ → T. HVIT is the decoy (R). Rainbow cards carry their code letter's rune; HVIT only R.
 const KORT: {
   navn: string;
   farge: string;

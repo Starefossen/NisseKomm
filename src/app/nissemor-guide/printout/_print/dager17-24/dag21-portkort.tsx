@@ -2,9 +2,9 @@ import { Utskrift } from "../Utskrift";
 import { Iskrystall, Kort, midt } from "./felles";
 
 // Spines from the left: only book 2 shows R. Book 5 (the gate) holds U · 7.
-// Every spine carries its BRANNMUR rune; the «Feil bok» card is a decoy (none).
+// Every spine carries its code rune; the «Feil bok» card is a decoy (none).
 const RYGG = [null, "R", null, null, null, null, null, null];
-const ORD = "BRANNMUR";
+const ORD = ["B", "R", "A", "N", "N", "M", "U", "R"];
 
 export default function Dag21Portkort() {
   return (

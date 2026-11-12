@@ -2,7 +2,7 @@ import { Utskrift } from "../Utskrift";
 import { Prikker, Ruter } from "./felles";
 
 // Order comes only from the sound, so the cells carry no numbers. The mug piece is the decoy: rune only at A.
-// The glass pieces carry the MELODI rune on their ❄ cell too.
+// The glass pieces carry the code rune on their ❄ cell too.
 const BITER = [
   { hvor: "dypeste glass", celler: [null, "E"], runer: ["M", "E"], prikker: 1 },
   {

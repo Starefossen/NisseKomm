@@ -4,16 +4,16 @@ import { Iskrystall } from "../dager01-12/felles";
 
 // Cinnamon, turmeric, saffron, clove. Same look, no names; "_" is ❄.
 const KORT = ["__N__", "__R______", "__F___", "__L___"];
-// Saffron is the real skeleton: its ❄ cells carry the SAFRAN runes. Decoys only at the letter.
-const RUNER: (string | undefined)[] = [
+// Saffron is the real skeleton: its ❄ cells carry the code runes. Decoys only at the letter.
+const RUNER: (string[] | undefined)[] = [
   undefined,
   undefined,
-  "SAFRAN",
+  ["S", "A", "F", "R", "A", "N"],
   undefined,
 ];
 const POSE = ["kanel", "gurkemeie", "safran", "nellik (eller pepper)"];
 
-function Frostlapp({ m, runer }: { m: string; runer?: string }) {
+function Frostlapp({ m, runer }: { m: string; runer?: string[] }) {
   const b = Math.min(13, 86 / m.length - 1);
   return (
     <div className="h-full flex flex-col items-center justify-center gap-[3mm] font-retro">

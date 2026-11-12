@@ -8,8 +8,8 @@ const LAPPER = [
   { l: null, n: 3, rom: "gangen" },
 ];
 
-// GULROT: square 3 is L.
-const ORD = "GULROT";
+// Square 3 of the code is L.
+const ORD = ["G", "U", "L", "R", "O", "T"];
 
 function Lapp({ l, n }: { l: string | null; n: number }) {
   return (

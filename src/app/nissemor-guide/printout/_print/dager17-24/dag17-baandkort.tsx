@@ -1,9 +1,9 @@
 import { Utskrift } from "../Utskrift";
 import { Kort } from "./felles";
 
-// Read from the bow: ❄ O ❄ ❄ L ❄ ❄; O and L only as runes, ❄ cards with the NORDLYS rune in the corner.
+// Read from the bow: ❄ O ❄ ❄ L ❄ ❄; O and L only as runes, ❄ cards with the code rune in the corner.
 const KORT = [null, "O", null, null, "L", null, null];
-const ORD = "NORDLYS";
+const ORD = ["N", "O", "R", "D", "L", "Y", "S"];
 
 export default function Dag17Baandkort() {
   return (

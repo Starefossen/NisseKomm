@@ -2,9 +2,9 @@ import type { ReactNode } from "react";
 import { Utskrift } from "../Utskrift";
 import { Kort } from "./felles";
 
-// Front: 5 R, 8 K, 10 A, the rest ❄ with the STJERNEKLART rune. Back: Roman numeral (look back to day 2).
+// Front: 5 R, 8 K, 10 A, the rest ❄ with the code rune. Back: Roman numeral (look back to day 2).
 const FORSIDE: Record<number, string> = { 5: "R", 8: "K", 10: "A" };
-const ORD = "STJERNEKLART";
+const ORD = ["S", "T", "J", "E", "R", "N", "E", "K", "L", "A", "R", "T"];
 const ROMER = "I II III IV V VI VII VIII IX X XI XII".split(" ");
 
 function Stjerne({ children }: { children: ReactNode }) {

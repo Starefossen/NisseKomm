@@ -4,7 +4,7 @@ import { Iskrystall, Prikker } from "./felles";
 
 // Shoes counted clockwise from Rampenissen: shoe 3 M, shoe 5 A, the rest ❄.
 const SKO = [null, null, "M", null, "A", null, null];
-const RUNE = [..."KOMPASS"];
+const RUNE = ["K", "O", "M", "P", "A", "S", "S"];
 
 export default function Dag04Skokort() {
   return (

@@ -28,7 +28,7 @@ const FIGURER: {
       />
     ),
     celler: [null, "Y", null, null],
-    runer: [..."LYKT"],
+    runer: ["L", "Y", "K", "T"],
   },
 ];
 
