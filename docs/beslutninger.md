@@ -134,3 +134,10 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 ## Hinttrapp i guiden (2026-11-13)
 
 - «Hint» i Gåtekartet er en trapp på fire trinn per dag (feltet «Hint» i `docs/gaater-2026.md`), vist ett om gangen bak «Vis hint N»; koden står aldri i et hint. Hvorfor: de gamle hintene gjentok «Slik løses den» og ga svaret med en gang, så barna slapp å tenke.
+
+## Gåterettinger (2026-11-13)
+
+- Dag 10 beholder koden SPEKTER; NisseMail får linjen «IQ bruker den korte, gammeldagse formen av ordet sitt.» Hvorfor: barna kjenner ordet i den lange formen, og en ny kode ville krevd nye kort.
+- Dag 8: hint 4 sier at det første ordet er det strømmen går i, rundt og rundt. Nettsøk innføres ikke. Hvorfor: Håkon kan ikke ordet, og Kristian kanskje ikke.
+- Dag 16 står som den er. Hvorfor: Hans vil ha oppsettet slik.
+- Strekbeskrivelsene følger gåtene: dag 4 kortene i skoene, dag 6 sier lappen at rullen ligger i gangen, dag 10 åtte fargekort, dag 13 fire poser og en lapp fra Rampenissen på gravskiltet, dag 20 fem puter i tydelig ulik størrelse. Hvorfor: strektabellen beskrev noe annet enn det foreldrene skal sette opp.

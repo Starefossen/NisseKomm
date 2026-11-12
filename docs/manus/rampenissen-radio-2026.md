@@ -1,6 +1,6 @@
 # Rampenissen på Morgenrådet 2026 – radioklipp
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «død. Nesten.», 15 skåla, 23 tempus) etter ja fra Hans. Klargjort for TTS 11. november etter ja fra Hans: lengde og bekreftelser (dag 6, 14, 15, 24), tallet i dag 8, Hanna i dag 21, apokope (7, 16, 17, 18, 22), dag 23 tempus. Dag 24 skrevet om 11. november etter ja fra Hans: sendt fra Snøfall etter hjemkomsten, hilsener fra de andre, rapporten levert (se `docs/beslutninger.md`). Utvidet 12. november etter ja fra Hans: dag 1 er sesongåpning (60–75 s), dag 24 litt lengre (50–65 s), Birk og Lyng får introduksjon og reaksjon dag 1 og 24 og én reaksjonslinje (`reaksjon_hint`) på utvalgte dager, og førsesongen 24.–30. november står nederst. Lyd for dag 1 og 24 må lages på nytt; Hans leser teksten først.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Strek-linjene dag 13 og 20 endret 13.11 etter ja fra Hans. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «død. Nesten.», 15 skåla, 23 tempus) etter ja fra Hans. Klargjort for TTS 11. november etter ja fra Hans: lengde og bekreftelser (dag 6, 14, 15, 24), tallet i dag 8, Hanna i dag 21, apokope (7, 16, 17, 18, 22), dag 23 tempus. Dag 24 skrevet om 11. november etter ja fra Hans: sendt fra Snøfall etter hjemkomsten, hilsener fra de andre, rapporten levert (se `docs/beslutninger.md`). Utvidet 12. november etter ja fra Hans: dag 1 er sesongåpning (60–75 s), dag 24 litt lengre (50–65 s), Birk og Lyng får introduksjon og reaksjon dag 1 og 24 og én reaksjonslinje (`reaksjon_hint`) på utvalgte dager, og førsesongen 24.–30. november står nederst. Lyd for dag 1 og 24 må lages på nytt; Hans leser teksten først.
 
 Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storyboard-2026.md` (§2 kunnskapstidslinje, §3 radiolinjer), `docs/gaater-2026.md`. Format: `varden-morgenradet.md`.
 
@@ -143,7 +143,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 13 (sø) – Luciadagens Gylne Krydder · 3. advent
 
-**Strek:** sin egen begravelse etter elleve lussekatter: serviett, blomst, kosedyr i sørgerekke, skilt «HER HVILER RAMPEN. HAN SPISTE 11.» Helg, 09-sendingen.
+**Strek:** sin egen begravelse etter elleve lussekatter: serviett, blomst, kosedyr i sørgerekke, fire små krydderposer på servietten, skilt «HER HVILER RAMPEN. HAN SPISTE 11.» med en liten lapp under. Helg, 09-sendingen.
 
 **Klipp:** «God Lucia-morra. Dette e Rampenissen, og æ e død. Nesten. Hjerterud bakt fem hundre bolla til Lucia. Æ spist elleve. Ikkje tolv. Elleve. Kosedyra hold begravelse, og dem e veldig verdige, bortsett fra én som ler. Hilsen fra den andre sida. Det e ganske koselig her, æ har blomst. Men hør: i går hørt dokker det samme som mæ. Isen sukka. Julius sa unnskyld. Det har aldri skjedd. Og i natt satt Kulde og såg på Lucia-lysan i verkstedet gjennom linja. Bare såg. Tok ingenting. Æ veit ikkje ka æ ska mein om det. Syng høgt i dag. Og ikkje spis elleve. Ti e grensa.»
 
@@ -203,7 +203,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 20 (sø) – Sofa-Sleden · 4. advent · varselet
 
-**Strek:** fort av teppe over to stoler, skilt «KUN FOR SIGMAS. 6-7.», pappas hodetelefoner, skål med popcorn. iMac-ene grå 09–12. Helg, 09-sendingen. Slang 2 av 2.
+**Strek:** fort av teppe over to stoler, fem puter i ulik størrelse hulter til bulter inni, skilt «KUN FOR SIGMAS. 6-7.», pappas hodetelefoner, skål med popcorn. iMac-ene grå 09–12. Helg, 09-sendingen. Slang 2 av 2.
 
 **Klipp:** «God fjerde advent. Rampenissen her, fra fortet. Det e et teppe over to stola, og det står KUN FOR SIGMAS på skiltet, så dokker må si passordet. Passordet e seks sju. Ikkje spør koffer. Hør no, dette e viktig: Julius sa æ skull be dokker finn fram bøka. Mange bøka. Til i morra. Han sei bøka hold på varmen. I morra e den mørkaste dagen, og Kulde kjem heilt hit. Ikkje for å vær slem. Den vil bare dit lyset e. Så vi stenge ingen ute. Vi hold varmen inne. Æ øve i fortet. Popcornet e niste. Hodetelefonan e for konsentrasjon. Vær heime i morra. Æ treng dokker.»
 

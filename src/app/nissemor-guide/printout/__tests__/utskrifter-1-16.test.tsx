@@ -152,7 +152,10 @@ const SIDER: [string, ComponentType, { har: string[]; ikke?: string }][] = [
   [
     "dag13-gravskilt",
     Gravskilt,
-    { har: ["HER HVILER RAMPEN.", "HAN SPISTE 11."], ikke: "SAFRAN" },
+    {
+      har: ["HER HVILER RAMPEN.", "HAN SPISTE 11.", "Siste ord:"],
+      ikke: "SAFRAN",
+    },
   ],
   [
     "dag14-brettark",

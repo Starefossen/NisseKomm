@@ -11,7 +11,10 @@ import { UTSKRIFTER } from "../filer";
 // name → [code word that must never appear, content that must appear]
 // (corner runes: hjorneruner.test.tsx)
 const SPEC: Record<string, [string, string[]]> = {
-  "dag13-gravskilt": ["SAFRAN", ["HER HVILER RAMPEN.", "HAN SPISTE 11."]],
+  "dag13-gravskilt": [
+    "SAFRAN",
+    ["HER HVILER RAMPEN.", "HAN SPISTE 11.", "Siste ord:"],
+  ],
   "dag14-serviettfugl": ["ORIGAMI", ["SERVIETTFUGL"]],
   "dag17-baandkort": ["NORDLYS", ["❄"]],
   "dag17-losepengebrev": ["NORDLYS", ["Kosedyrene"]],

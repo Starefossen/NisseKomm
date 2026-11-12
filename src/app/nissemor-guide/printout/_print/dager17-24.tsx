@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import Dag13Gravskilt from "./dager17-24/dag13-gravskilt";
+import Dag13Gravskilt from "./dager13-16/dag13-gravskilt";
 import Dag14Serviettfugl from "./dager17-24/dag14-serviettfugl";
 import Dag17Baandkort from "./dager17-24/dag17-baandkort";
 import Dag17Losepengebrev from "./dager17-24/dag17-losepengebrev";

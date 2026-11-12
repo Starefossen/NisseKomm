@@ -5,19 +5,17 @@ export function Skilt({
   navn,
   linjer,
   hvor,
-  stein = false,
 }: {
   navn: string;
   linjer: string[];
   hvor: string;
-  stein?: boolean;
 }) {
   const side = (snu: boolean) => (
     <div
       className={`h-1/2 flex items-center justify-center p-[8mm] ${snu ? "rotate-180" : ""}`}
     >
       <div
-        className={`w-full h-full border-[2mm] border-double border-black flex flex-col items-center justify-center gap-[6mm] text-center font-retro ${stein ? "rounded-t-[40mm]" : ""}`}
+        className={`w-full h-full border-[2mm] border-double border-black flex flex-col items-center justify-center gap-[6mm] text-center font-retro`}
       >
         {linjer.map((l) => (
           <div key={l} className="text-[16mm] leading-none">

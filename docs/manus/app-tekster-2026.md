@@ -1,6 +1,6 @@
 # NisseKomm 2026 – App-tekster (steg 2)
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 10, 13 og 20 endret 13.11 etter ja fra Hans.
 
 **Revisjon 10. november (vanskelighet, godkjent):** e-poster, PS, krypto-hint, NisseNet-filer og Nissemor-tekster fulgt opp etter revisjonen i `gaater-2026.md` (to meta-gåter, blindspor, Hanna uten kodebærende steg). Nye felt: `transcript_runer` i `kulde_spokelsesbilde` (dag 10, 13, 16, 21) og `julius_ps_krypto_mangler` (dag 20).
 
@@ -320,7 +320,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - `symbol_clue.description`: Rødt hjerte funnet ved papprullen i gangen
 - NisseNet: ingen.
 - `rampenissen_rampestrek`: Har laget snøengler i 1 dl mel i et stekebrett på kjøkkenbordet og ligger midt i den største med mel på nesen.
-- `fysisk_hint`: Tre silhuetter på ispinne (`dag06-silhuetter.pdf`: stearinlys, bål, lykt med hank), rullet inn i papprull med lommelykten, i gang eller soverom, ved det røde hjerte-kortet. Bakside: lykt `_ Y _ _` (tegn i alle fire hjørner), stearinlys `_ A _ _` og bål `_ O _ _` (tegn bare ved bokstaven). Løsning: Håkon holder én silhuett mot veggen med mobillykt bak; Julius: det med hank. Snu lykten: `_ Y _ _`. Kode LYKT. Før L, Y, K, T på tavla. Hanna, hvis hun vil: skyggeteateret er hennes, og hun skanner kortet. Lapp fra Rampenissen i melet ved Rampenissen (håndskrevet): «Jeg har laget et instrument! Det ligger i en papprull, sammen med lampen. Slukk lyset og lys mot veggen, én om gangen. – R»
+- `fysisk_hint`: Tre silhuetter på ispinne (`dag06-silhuetter.pdf`: stearinlys, bål, lykt med hank), rullet inn i papprull med lommelykten, i gangen, ved det røde hjerte-kortet. Bakside: lykt `_ Y _ _` (tegn i alle fire hjørner), stearinlys `_ A _ _` og bål `_ O _ _` (tegn bare ved bokstaven). Løsning: Håkon holder én silhuett mot veggen med mobillykt bak; Julius: det med hank. Snu lykten: `_ Y _ _`. Kode LYKT. Før L, Y, K, T på tavla. Hanna, hvis hun vil: skyggeteateret er hennes, og hun skanner kortet. Lapp fra Rampenissen i melet ved Rampenissen (håndskrevet): «Jeg har laget et instrument! Det ligger i en papprull i gangen, sammen med lampen. Slukk lyset og lys mot veggen, én om gangen. – R»
 - `materialer_nødvendig`: `dag06-silhuetter.pdf` · 3 ispinner · teip · papprull · mobillykt · symbolkort rødt hjerte · mel
 - `oppsett_tid`: 5 min
 - frost: ikke synlig
@@ -403,7 +403,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 ### Dag 10 (to) – Fargene som Forsvant · SPEKTER · frost nivå 1 · jakt
 
 - `tittel`: Fargene som Forsvant
-- `nissemail_tekst` (76 ord): Skjermen deres var GRÅ i morges. Jeg så det klokka fire. 😶 Kulde har tatt fargene: fra Snøfall TV, fra linjen og fra skjermen på kjøkkenet. Jeg reddet alle fargene jeg fant og gjemte dem i stua. Fant dere alle kortene? Jeg husker ikke hvor mange det var. Hanna, hvis du vil: du er fargesjef med det røde filteret. Kristian: rekkefølgen kortene skal ligge i, står i NisseNet. Resten sier Julius, hvis bildet holder lenge nok. – Rampenissen
+- `nissemail_tekst` (85 ord): Skjermen deres var GRÅ i morges. Jeg så det klokka fire. 😶 Kulde har tatt fargene: fra Snøfall TV, fra linjen og fra skjermen på kjøkkenet. Jeg reddet alle fargene jeg fant og gjemte dem i stua. Fant dere alle kortene? Jeg husker ikke hvor mange det var. Hanna, hvis du vil: du er fargesjef med det røde filteret. Kristian: rekkefølgen kortene skal ligge i, står i NisseNet. Resten sier Julius, hvis bildet holder lenge nok. IQ bruker den korte, gammeldagse formen av ordet sitt. – Rampenissen
 - `julius_ps`: Dere fikk fargene tilbake. Hele Snøfall så det; Pil klappet. Rampenissen sier klementinene var det eneste i stua som holdt på fargen. Kulde tar fra linjen, ikke fra det som alt er framme. Han har selv fire farger i ansiktet og bart på bildet av mamma og pappa. Vaskbart, lover han.
 - `daily_alerts`: 📺 IQ: Fargene er borte fra alle kanaler. Kromatisk drenering 71 %.
 - NisseNet: `SNOFALL-HISTORIER/farge-koder.txt` **skrives om** (`afterDay: 10`):
@@ -517,9 +517,9 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
   **Slettes:** `SNOFALL-HISTORIER/lucia_lussekatt_hemmelig.txt`.
 
 - Kulde: spøkelsesbilde dag 13 (A6), `transcript_runer`: ALENE.
-- `rampenissen_rampestrek`: Har spist for mange lussekatter og holder sin egen begravelse: ligger på en serviett med en blomst i hendene, kosedyrene står i sørgerekke, skilt: «HER HVILER RAMPEN. HAN SPISTE 11.»
-- `fysisk_hint`: Fire små zip-poser på servietten (`dag13-krydderkort.pdf`): kanel `_ _ N _ _`, gurkemeie `_ _ R _ _ _ _ _ _` (blindspor, ni ruter), ekte safran `_ _ F _ _ _`, nellik (eller pepper) `_ _ L _ _ _`. Like kort, ingen navn. Lussekatt ved. Løsning: to poser er gule; Julius sier «tråder» og «dyrere enn gull», så den gule med tråder teller. Kristian: `_ _ F _ _ _`, krydderet fra en krokus. Kode SAFRAN. Google er lov («krydder fra krokus»). Hanna, hvis hun vil: lukter på alle fire.
-- `materialer_nødvendig`: 4 små zip-poser · kanel · gurkemeie · ekte safran (liten konvolutt) · nellik eller pepper · lussekatt · `dag13-krydderkort.pdf` · serviett, kunstig blomst, kosedyr, skilt
+- `rampenissen_rampestrek`: Har spist for mange lussekatter og holder sin egen begravelse: ligger på en serviett med en blomst i hendene, kosedyrene står i sørgerekke, skilt: «HER HVILER RAMPEN. HAN SPISTE 11.» Fire små krydderposer ligger på servietten ved ham, og under skiltteksten står en lapp fra ham.
+- `fysisk_hint`: Fire små zip-poser på servietten (`dag13-krydderkort.pdf`): kanel `_ _ N _ _`, gurkemeie `_ _ R _ _ _ _ _ _` (blindspor, ni ruter), ekte safran `_ _ F _ _ _`, nellik (eller pepper) `_ _ L _ _ _`. Like kort, ingen navn. Lussekatt ved. Lapp fra Rampenissen nederst på gravskiltet (trykt på `dag13-gravskilt.pdf`): «Siste ord: Ett av krydderne i posene var i bollene. Jeg smakte på alle fire for å finne ut hvilket. Ikke gjør det. – R» Løsning: to poser er gule; Julius sier «tråder» og «dyrere enn gull», så den gule med tråder teller. Kristian: `_ _ F _ _ _`, krydderet fra en krokus. Kode SAFRAN. Google er lov («krydder fra krokus»). Hanna, hvis hun vil: lukter på alle fire.
+- `materialer_nødvendig`: 4 små zip-poser · kanel · gurkemeie · ekte safran (liten konvolutt) · nellik eller pepper · lussekatt · `dag13-krydderkort.pdf` · `dag13-gravskilt.pdf` · serviett, kunstig blomst, kosedyr
 - `oppsett_tid`: 4 min
 - frost: 44 → 36
 
@@ -679,7 +679,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 - `symbol_clue.description`: Grønn måne funnet under den minste puten i fortet
 - NisseNet: ingen.
 - Kulde: iMac-melding 09:00–12:00 (A6).
-- `rampenissen_rampestrek`: Har bygd fort av et teppe over to stoler med skiltet «KUN FOR SIGMAS. 6-7.», tatt pappas hodetelefoner og fjernkontrollen, og sitter med en skål popcorn.
+- `rampenissen_rampestrek`: Har bygd fort av et teppe over to stoler med skiltet «KUN FOR SIGMAS. 6-7.», veltet fem puter i tydelig ulik størrelse inne i fortet, tatt pappas hodetelefoner og fjernkontrollen, og sitter med en skål popcorn.
 - `fysisk_hint`: Fem puter i tydelig ulik størrelse inne i fortet, hulter til bulter; bruk sofaputer, pynteputer, hodepute, barnepute, hva som helst, så lenge ingen to er like store. Kort (`dag20-putekort.pdf`, prikker bak etter størrelse): under den nest største tegn **U**, under den fjerde største tegn **B**, resten ❄ med tegn i hjørnet. Grønt måne-kort under den minste. Løsning: Håkon henter putene og legger dem etter størrelse (største = 1), Kristian slår opp tegnene: `_ U _ B _`. Julius: det biler får når de skal forbi i bakken. Kode TURBO. Finn fram 8 bøker til mandag. Minn barna på å lese Trixters kart (NisseKrypto) i kveld; i morgen er det meste fryst. Mangler tavla B (dag 18 hoppet over): `runer-fasit.pdf`, eller si at kortet under pute 4 er B. Hanna, hvis hun vil: kryper inn og rekker ut putene, skanner måne-kortet. Lapp fra Rampenissen ved inngangen til fortet (håndskrevet): «Putene lå etter størrelse, den største som nummer én. Så veltet jeg. Unnskyld. – R»
 - `materialer_nødvendig`: 5 puter av hvilket som helst slag, i ulik størrelse · teppe og to stoler · `dag20-putekort.pdf` · symbolkort grønn måne · popcorn · 8 bøker til i morgen
 - `oppsett_tid`: 4 min
