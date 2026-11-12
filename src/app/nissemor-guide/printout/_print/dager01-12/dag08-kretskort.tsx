@@ -75,9 +75,9 @@ function Ark8() {
         })()}
         <g>
           <rect
-            x={BATTERI.x - 18}
+            x={BATTERI.x - 24}
             y={BATTERI.y - 12}
-            width={36}
+            width={48}
             height={22}
             fill="white"
             stroke="black"
