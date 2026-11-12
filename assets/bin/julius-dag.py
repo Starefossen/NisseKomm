@@ -492,9 +492,18 @@ def speech_span(clip: Path, dur: float):
         sil.append([float(m[-1]), dur])  # silence running to the end has no silence_end
     # ponytail: laughter and breathing louder than -38 dB count as speech; needs VAD or transcript timing
     speech = [(a[1], b[0]) for a, b in zip([[0, 0]] + sil, sil + [[dur, dur]]) if b[0] - a[1] > 0.005]
+    def peak(a, b):
+        out = subprocess.run(["ffmpeg", "-nostdin", "-ss", f"{a:.3f}", "-t", f"{b - a:.3f}", "-i", str(clip), "-vn", "-af", "volumedetect",
+                              "-f", "null", "-"], capture_output=True, text=True).stderr
+        m = re.search(r"max_volume: (-?[\d.]+)", out)
+        return float(m.group(1)) if m else 0.0
+
     while len(speech) > 1 and speech[0][1] - speech[0][0] < 0.2:
         speech.pop(0)
-    while len(speech) > 1 and speech[-1][1] - speech[-1][0] < 0.2:
+    # at the end, also a faint (peak under -30 dB) sound under 0.5 s after 1.5 s of silence: a breath or click
+    # after the goodbye kept 4 s of silence in day 5; a spoken «nå.» peaks around -20 dB
+    while len(speech) > 1 and (speech[-1][1] - speech[-1][0] < 0.2 or (
+            speech[-1][1] - speech[-1][0] < 0.5 and speech[-1][0] - speech[-2][1] > 1.5 and peak(*speech[-1]) < -30)):
         speech.pop()
     if not speech:
         return 0.0, dur

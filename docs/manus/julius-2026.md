@@ -152,7 +152,7 @@ Kulde-nivå 1. Svak knitring. Rapporten fra Rampenissen står i åpningen. Fire 
    - Kulde: Svak knitring.
 2. **Replikk:** «I natt kom årets første brevfugl. Winter stoler ikke på linjen, for noen lytter. Nå skriver han i hemmelig skrift.»
    - Varighet: 14 s (20 ord)
-   - Handling: Tegner en fugl i luften med venstre hånd, så legger han hånden flatt på brevbunken og lar den ligge.
+   - Handling: Løfter en liten brettet papirfugl av en kremfarget konvolutt fra brevbunken med venstre hånd, ingen levende fugl, viser den kort fram og legger den tilbake på bunken, så lar han hånden ligge flatt på den.
    - Kulde: Svak knitring, kort hopp i bildet på «noen lytter».
 3. **Replikk:** «Winter flyttet hver bokstav så mange skritt fram som IQ sprengte sikringer onsdag. Dere må gå så mange tilbake.»
    - Varighet: 14 s (19 ord) · låst
