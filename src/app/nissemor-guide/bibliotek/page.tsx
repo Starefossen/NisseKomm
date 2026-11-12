@@ -150,6 +150,12 @@ function BibliotekInnhold() {
       <GuideNavigation />
       <div className="max-w-4xl mx-auto text-lg">
         <h1 className="text-3xl mb-4">Bibliotek</h1>
+        <Link
+          href="/nissemor-guide/gjennomgang"
+          className="flex items-center min-h-11 px-3 mb-2 border-4 border-(--gold) text-(--gold) text-2xl hover:bg-(--gold)/20"
+        >
+          Gjennomgang: hele sesongen, celle for celle
+        </Link>
         <ul className="grid sm:grid-cols-2 gap-2 mb-6">
           {SIDER.map(([href, navn]) => (
             <li key={href}>

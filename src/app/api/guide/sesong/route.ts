@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { authorizeMedia } from "@/lib/media-server";
-import { bibliotek } from "@/lib/guide-innhold";
+import { bibliotek, promoer } from "@/lib/guide-innhold";
 import {
   dagListe,
   forSesongen,
@@ -31,5 +31,6 @@ export async function GET(req: NextRequest) {
     historien: historien(),
     kart: sesongKart(),
     figurer,
+    promo: await promoer(),
   });
 }

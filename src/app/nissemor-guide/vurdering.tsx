@@ -1,6 +1,8 @@
 "use client";
 
 import {
+  createContext,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -44,7 +46,11 @@ export function useVurderinger(): MediaVurderinger | null {
   );
 }
 
-async function lagre(id: string, vurdering: string | null, notat: string) {
+export async function lagre(
+  id: string,
+  vurdering: string | null,
+  notat: string,
+) {
   const r = await fetch("/api/media/vurdering", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -71,11 +77,14 @@ export const slug = (s: string) =>
     .replace(/[^a-z0-9æøå§.]+/g, "-")
     .replace(/^-|-$/g, "");
 
+/** Gjennomgang renders its own buttons; sections embedded there hide theirs. */
+export const SkjulVurder = createContext(false);
+
 /** Godkjent / Lag på nytt + note for one guide section. */
 export function Vurder({ id }: { id: string }) {
   const alle = useVurderinger();
   const [lagrer, setLagrer] = useState(false);
-  if (!alle) return null;
+  if (useContext(SkjulVurder) || !alle) return null;
   const v: MediaVurderingItem | undefined = alle[id];
   return (
     <div id={`vurdering-${id.split("/").at(-1)}`} className="mt-3 scroll-mt-4">

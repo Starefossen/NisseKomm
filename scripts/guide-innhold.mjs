@@ -12,9 +12,12 @@ const sporet = execFileSync("git", ["ls-files", "docs", "assets"], {
 }).split("\n");
 const ENTITET =
   /^assets\/(characters|locations|objects)\/[a-z0-9-]+\/(entitet\.md|beskrivelse\.txt)$/;
-const MANUS = ["julius-2026", "rampenissen-radio-2026", "app-tekster-2026"].map(
-  (n) => `docs/manus/${n}.md`,
-);
+const MANUS = [
+  "julius-2026",
+  "rampenissen-radio-2026",
+  "app-tekster-2026",
+  "julius-promo",
+].map((n) => `docs/manus/${n}.md`);
 const DOKS = ["historie-2026", "storyboard-2026", "gaater-2026"].map(
   (n) => `docs/${n}.md`,
 );

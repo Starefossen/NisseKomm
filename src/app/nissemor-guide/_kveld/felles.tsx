@@ -18,6 +18,7 @@ export interface Sesong {
   historien: ReturnType<typeof historien>;
   kart: ReturnType<typeof sesongKart>;
   figurer: { id: string; navn: string; om: string }[];
+  promo: { id: string; tekst: string }[];
 }
 
 /** Day list, pre-season and Historien, baked from the docs (parent-only API). */

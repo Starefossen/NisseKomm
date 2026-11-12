@@ -30,7 +30,38 @@ export const MANUS = {
   julius: "docs/manus/julius-2026.md",
   radio: "docs/manus/rampenissen-radio-2026.md",
   app: "docs/manus/app-tekster-2026.md",
+  promo: "docs/manus/julius-promo.md",
 } as const;
+
+type Fil = {
+  navn: string;
+  innhold?: string;
+  barn?: Fil[];
+  unlockConditions?: { afterDay?: number };
+};
+
+/** NisseNet files that open with day `dag` (afterDay or the quest's reveals). */
+function dagFiler(dag: number, navn: string[]) {
+  const ut: { sti: string; innhold: string }[] = [];
+  const gå = (liste: Fil[], sti: string) => {
+    for (const f of liste) {
+      if (f.barn) gå(f.barn, `${sti}${f.navn}/`);
+      else if (f.unlockConditions?.afterDay === dag || navn.includes(f.navn))
+        ut.push({ sti: sti + f.navn, innhold: f.innhold ?? "" });
+    }
+  };
+  gå(statisk.filer as Fil[], "");
+  return ut;
+}
+
+/** The two promo films (A = Dag 90, B = Dag 91) as plain script text. */
+export async function promoer() {
+  const md = await read(MANUS.promo);
+  return (["A", "B"] as const).map((id, i) => ({
+    id,
+    tekst: dagBlokk(md, 90 + i),
+  }));
+}
 
 /** «## Dag 7 (ma) – …» (or ###) up to the next heading of the same level. */
 export function dagBlokk(md: string, dag: number): string {
@@ -145,6 +176,7 @@ export async function dagInnhold(dag: number) {
     julius: parseJulius(julius, dag),
     radio: parseRadio(radio, dag),
     oppdrag: q ?? null,
+    filer: dagFiler(dag, q?.reveals?.files ?? []),
     varsler: statisk.daily_alerts.filter((a) => a.day === dag),
     opplasinger: opplasingerPaaDag(dag).map((o) => ({
       tekst: o.tekst,
