@@ -64,11 +64,36 @@ describe("taIBruk", () => {
       inv.map((r: { path: string; status: string }) => [r.path, r.status]),
     ).toEqual([
       ["video/julius/dag-01.old-2.mp4", "arkiv"],
-      ["video/julius/dag-01.mp4", "unknown"],
+      ["video/julius/dag-01.mp4", "unknown"], // sidecar is not JSON here
     ]);
     expect(
       await readFile(path.join(dir, "media-promoteringer.log"), "utf8"),
     ).toContain("dag-01-v4.mp4 -> video/julius/dag-01.mp4");
+  });
+
+  it("gir den tatt i bruk-filen riktig status med en gang", async () => {
+    const { dir, j } = await oppsett({
+      "video/julius/dag-01-v4.mp4": { vurdering: "godkjent" },
+    });
+    // The candidate's sidecar travels with it; its source is gone, so the file reads «utdatert».
+    await writeFile(
+      path.join(j, "dag-01-v4.mp4.meta.json"),
+      JSON.stringify({
+        generator: "julius-dag.py",
+        created: "2026-11-12T00:00:00+00:00",
+        source: { path: "docs/finnes-ikke.md", section: "Dag 1", sha256: "x" },
+        reference_images: [],
+      }),
+    );
+    await taIBruk(dir, "video/julius/dag-01-v4.mp4");
+    const inv = JSON.parse(
+      await readFile(path.join(dir, "media-inventar.json"), "utf8"),
+    );
+    const rad = inv.find(
+      (r: { path: string }) => r.path === "video/julius/dag-01.mp4",
+    );
+    expect(rad.status).toBe("stale");
+    expect(rad.reasons[0]).toContain("kilden finnes ikke lenger");
   });
 
   it("nekter en kandidat som ikke er godkjent, og rører ingenting", async () => {

@@ -1,3 +1,5 @@
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import {
   appendFile,
   readFile,
@@ -88,7 +90,9 @@ export async function taIBruk(dir: string, kandidat: string) {
   const inv = await readJson<
     { path: string; status: string; reasons?: string[] }[] | null
   >(invPath, null);
-  if (inv)
+  if (inv) {
+    // The promoted file is the only row whose status is not known without computing it.
+    const nå = await statusFor(dir, key);
     await writeJson(
       invPath,
       inv.map((r) =>
@@ -96,19 +100,33 @@ export async function taIBruk(dir: string, kandidat: string) {
           ? r
           : versionKey(ny(r.path)) !== ny(r.path)
             ? { ...r, path: ny(r.path), status: "arkiv" }
-            : {
-                ...r,
-                path: ny(r.path),
-                status: "unknown",
-                reasons: [`tatt i bruk fra v${n}: kjør mise run inventar`],
-              },
+            : { ...r, path: ny(r.path), ...nå },
       ),
     );
+  }
 
   const linje = `${new Date(Date.now()).toISOString()} ${kandidat} -> ${key}; ${key} -> ${old}\n`;
   await appendFile(path.join(dir, "media-promoteringer.log"), linje);
   console.log(`[ta-i-bruk] ${linje.trim()}`);
   return { key, old, flyttet: flytt };
+}
+
+// Same computation as the inventory (medie.py), for one file; run from the repo root.
+async function statusFor(dir: string, key: string) {
+  try {
+    const { stdout } = await promisify(execFile)("python3", [
+      "assets/bin/medie.py",
+      "statusjson",
+      dir,
+      key,
+    ]);
+    return JSON.parse(stdout) as { status: string; reasons: string[] };
+  } catch {
+    return {
+      status: "unknown",
+      reasons: ["status kunne ikke beregnes: kjør mise run inventar"],
+    };
+  }
 }
 
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

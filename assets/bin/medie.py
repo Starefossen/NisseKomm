@@ -12,6 +12,7 @@ CLI (for the shell generators):
   medie.py render <id>                    prompt, base image and refs of a medier.json job, one per line
   medie.py brukt-av <entitet>             medier.json jobs that use winter, torget, objects/postkasse …
   medie.py flytt                        move gitignored refs and stills to their new paths (assets/flyttet.json)
+  medie.py statusjson <mediemappe> <nøkkel>  status and reasons of one file as JSON
   medie.py bakfyll [mediemappe]           sidecar (bakfylt, status ukjent) for files made before the inventory
   medie.py tv                           the TV loops of medier.json, one line each (tv-loops.sh)
   medie.py stiller <id>                   intermediate stills of a job: image|prompt|out|refs, first one first
@@ -67,13 +68,13 @@ def sha(data) -> str:
     return hashlib.sha256(data if isinstance(data, bytes) else data.encode()).hexdigest()
 
 
-def julius_segments(day: int, root: Path = ROOT, ms: str = JULIUS_MS):
+def julius_segments(day: int, root: Path = ROOT, ms: str = JULIUS_MS, text: str = None):
     """[(line, secs, action, kulde, locked)] for one day of the Julius script; [] if the day is missing.
 
     Tolerant of field order and missing fields (the script is rewritten by hand): a segment is a
     **Replikk:** «…» followed by «- Varighet: N s», «- Handling:», «- Kulde:» lines. locked = the
     segment is marked as a locked brikke («låst» or «brikke» on the Varighet line or after the line)."""
-    text = (root / ms).read_text()
+    text = text if text is not None else (root / ms).read_text()
     block = re.search(rf"^## Dag {day} \(.*?(?=^## Dag |\Z)", text, re.S | re.M)
     if not block:
         return []
@@ -243,13 +244,48 @@ def status(out: Path, key: str = "", root: Path = ROOT):
     return st, why
 
 
+JULIUS_UTDATERT = 0.8  # below this word match a backfilled Julius video predates the script revision
+
+
+def _words(text: str):
+    return re.findall(r"\w+", text.lower())
+
+
+def _bakfylt_julius(m: dict, root: Path):
+    """A backfilled Julius video has no hash, but its lines can be compared: the sidecar's transcript, else
+    the day's segments in the script as of `created` (git), against today's. None = cannot tell."""
+    s = m.get("source") or {}
+    day = re.fullmatch(r"Dag (\d+)", s.get("section") or "")
+    if s.get("path") != JULIUS_MS or not day:
+        return None
+    try:
+        now = _words(" ".join(x[0] for x in julius_segments(int(day[1]), root)))
+    except OSError:
+        return None
+    old = _words(m["transkripsjon"]) if m.get("transkripsjon") else None
+    if old is None:
+        try:  # the script as of the commit before the video was made
+            git = lambda *a: subprocess.run(["git", "-C", str(root), *a], capture_output=True, text=True, check=True).stdout
+            rev = git("log", f"--before={m['created']}", "-1", "--format=%H", "--", JULIUS_MS).strip()
+            old = _words(" ".join(x[0] for x in julius_segments(int(day[1]), root, text=git("show", f"{rev}:{JULIUS_MS}"))))
+        except Exception:
+            return None
+    if not old or not now:
+        return None
+    from collections import Counter
+    pct = sum((Counter(old) & Counter(now)).values()) / max(len(old), len(now))
+    if pct < JULIUS_UTDATERT:
+        return STALE, [f"laget før manusrevisjonen ({round(pct * 100)} % ordlikhet)"]
+    return None
+
+
 def _status(out: Path, key: str, root: Path):
     side = Path(str(out) + ".meta.json")
     if not side.exists():
         return (STALE, [OVERRIDES[key]]) if key in OVERRIDES else (UNKNOWN, [])
     m = json.loads(side.read_text())
     if m.get("bakfylt"):  # made before the inventory: no inputs recorded, so nothing to compare
-        return UNKNOWN, []
+        return _bakfylt_julius(m, root) or (UNKNOWN, [])
     s = m["source"]
     if "sha256" not in s:  # a backfilled sidecar records the source but not its hash
         return UNKNOWN, ["sidefil uten hash (bakfylt)"]
@@ -577,7 +613,20 @@ def selftest():
         assert bakfyll(r / "public", r) == 1 and bakfyll(r / "public", r) == 0
         side = json.loads((r / "public/video/julius/dag-07.mp4.meta.json").read_text())
         assert side["source"]["section"] == "Dag 7" and side["bakfylt"]
-        assert status(r / "public/video/julius/dag-07.mp4", root=r)[0] == UNKNOWN
+        assert status(r / "public/video/julius/dag-07.mp4", root=r)[0] == UNKNOWN  # no script at all: cannot tell
+        # backfilled Julius video: compare the script as of `created` with today's
+        (r / JULIUS_MS).parent.mkdir(parents=True, exist_ok=True)
+        ms = lambda t: f"## Dag 7 (x)\n\n1. **Replikk:** «{t}»\n   - Varighet: 5 s\n"
+        git = lambda *a: subprocess.run(["git", "-c", "commit.gpgsign=false", "-c", "user.name=t", "-c", "user.email=t@t", "-C", str(r), *a],
+                                        check=True, capture_output=True)
+        git("init"); (r / JULIUS_MS).write_text(ms("god morgen snøfall her er dagens beskjed fra julius")); git("add", "."); git("commit", "-m", "a")
+        side7 = r / "public/video/julius/dag-07.mp4.meta.json"
+        side7.write_text(json.dumps(json.loads(side7.read_text()) | {"created": "2999-01-01T00:00:00+00:00"}))
+        (r / JULIUS_MS).write_text(ms("helt andre ord om kaker og reinsdyr i dag"))
+        st, why = status(r / "public/video/julius/dag-07.mp4", root=r)
+        assert st == STALE and why == ["laget før manusrevisjonen (0 % ordlikhet)"], (st, why)
+        (r / JULIUS_MS).write_text(ms("god morgen snøfall her er dagens beskjed fra julius og"))
+        assert status(r / "public/video/julius/dag-07.mp4", root=r)[0] == UNKNOWN  # 90 % match
         for f in ("video/julius/dag-07.jpg", "feed/x.png", "icons/a.svg"):
             (r / "public" / f).parent.mkdir(parents=True, exist_ok=True)
             (r / "public" / f).write_text("x")
@@ -686,6 +735,12 @@ def main(argv):
             sys.exit(f"{FIXTURE} eller blokken i {GUIDE} er utdatert: kjør mise run entiteter")
     elif cmd == "--selvtest":
         selftest()
+    elif cmd == "statusjson":  # <mediemappe> <nøkkel>: one inventory row's status, for ta-i-bruk
+        try:
+            st, why = status(Path(args[0]) / args[1], args[1])
+        except Exception as e:
+            st, why = UNKNOWN, [f"status kunne ikke beregnes: {e}"]
+        print(json.dumps({"status": st, "reasons": why}, ensure_ascii=False))
     elif cmd == "status":
         out = Path(args[0]).resolve()
         key = rel(out).removeprefix("public/")
