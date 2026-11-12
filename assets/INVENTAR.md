@@ -6,13 +6,13 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Type | ✓ | ⚠ | ? | ✗ | ○ | ◇ | - |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| julius | 2 | 10 | 0 | 12 | 0 | 19 | 3 |
+| julius | 2 | 10 | 0 | 12 | 0 | 21 | 3 |
 | rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 4 |
 | music | 13 | 0 | 0 | 1 | 0 | 0 | 0 |
 | tv | 19 | 5 | 0 | 0 | 15 | 0 | 17 |
 | port | 3 | 0 | 0 | 1 | 0 | 0 | 9 |
 | feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
-| spill | 59 | 0 | 0 | 4 | 0 | 0 | 20 |
+| spill | 56 | 3 | 0 | 4 | 0 | 0 | 20 |
 | strek | 9 | 14 | 0 | 1 | 0 | 5 | 1 |
 
 ## julius
@@ -24,7 +24,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-03.mp4 | 4.4 MB | 2026-11-11 | ✓ |
 | video/julius/dag-04.mp4 | 4.4 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 4; promptversjonen er endret |
 | video/julius/dag-05.mp4 | 4.3 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 5; promptversjonen er endret |
-| video/julius/dag-06.mp4 | 10.3 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (45 % ordlikhet) |
+| video/julius/dag-06.mp4 | 10.3 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (48 % ordlikhet) |
 | video/julius/dag-07.mp4 | 10.5 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (50 % ordlikhet) |
 | video/julius/dag-08.mp4 | 10.6 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (43 % ordlikhet) |
 | video/julius/dag-09.mp4 | 10.4 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (46 % ordlikhet) |
@@ -58,13 +58,15 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-05-v5.mp4 | 8.7 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-06-v2.mp4 | 8.9 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
 | video/julius/dag-06-v3.mp4 | 8.4 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
-| video/julius/dag-06-v4.mp4 | 8.7 MB | 2026-11-12 | ◇ ikke i manifestet |
-| video/julius/dag-07-v2.mp4 | 8.6 MB | 2026-11-12 | ◇ ikke i manifestet |
+| video/julius/dag-06-v4.mp4 | 8.7 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
+| video/julius/dag-06-v5.mp4 | 8.7 MB | 2026-11-12 | ◇ ikke i manifestet |
+| video/julius/dag-07-v2.mp4 | 8.6 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 7; ikke i manifestet |
+| video/julius/dag-07-v3.mp4 | 8.9 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-08-v2.mp4 | 9.7 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-09-v2.mp4 | 9.6 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-10-v2.mp4 | 9.6 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-11-v2.mp4 | 10.0 MB | 2026-11-12 | ◇ ikke i manifestet |
-| video/julius/dag-12-v2.mp4 | 8.4 MB | 2026-11-12 | ◇ ikke i manifestet |
+| video/julius/dag-12-v2.mp4 | 8.4 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 12; ikke i manifestet |
 
 ## rampenissen
 
@@ -229,13 +231,13 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/antenne-tarn.png | 1.0 MB | 2026-11-11 | ✓ |
 | spill/piksel/kulde-grotte.png | 1.1 MB | 2026-11-11 | ✓ |
 | spill/piksel/port-aapen.png | 1.2 MB | 2026-11-11 | ✓ |
-| spill/piksel/kafe.png | 1.5 MB | 2026-11-12 | ✓ |
+| spill/piksel/kafe.png | 1.5 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/spill/piksel-kafe.txt |
 | spill/piksel/pakkesentralen.png | 1.4 MB | 2026-11-11 | ✓ |
 | spill/piksel/klokketarnet.png | 1.4 MB | 2026-11-11 | ✓ |
 | spill/piksel/julebodene.png | 1.4 MB | 2026-11-12 | ✓ |
 | spill/piksel/kart.png | 1.6 MB | 2026-11-12 | ✓ |
 | spill/portrett-winter.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/portrett-hjerterud.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/portrett-hjerterud.png | 0.0 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/portrett/hjerterud.txt |
 | spill/portrett-iq.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/portrett-julius.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/portrett-floke.png | 0.0 MB | 2026-11-12 | ✓ |
@@ -244,7 +246,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/figur/rudolf-busk.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/tannhjul.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/peileskive.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/piksel/figur/hjerterud.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/figur/hjerterud.png | 0.0 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/spill/figur/hjerterud.txt |
 | spill/piksel/figur/julius.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/brevfugl.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/winter.png | 0.0 MB | 2026-11-12 | ✓ |
@@ -298,7 +300,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/julius-kontor.old-1.png | 1.1 MB | 2026-11-11 | - kildeteksten er endret: assets/prompts/spill/piksel-julius-kontor.txt; ikke i manifestet |
 | spill/piksel/kafe.old-1.png | 1.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-kafe.txt; ikke i manifestet |
 | spill/piksel/kart.old-1.png | 1.2 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-kart.txt; ikke i manifestet |
-| spill/portrett-hjerterud.old-1.png | 0.0 MB | 2026-11-12 | - referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png; ikke i manifestet |
+| spill/portrett-hjerterud.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/hjerterud.txt; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png; ikke i manifestet |
 | spill/portrett-julius.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/julius.txt; ikke i manifestet |
 
 ## strek
