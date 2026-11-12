@@ -3,7 +3,13 @@
 ```json
 {
   "id": "kafe",
-  "navn": ["Sukkerstua", "kaféen", "Hjerteruds kafé", "bakeriet", "Bakeriet i Snøfall"],
+  "navn": [
+    "Sukkerstua",
+    "kaféen",
+    "Hjerteruds kafé",
+    "bakeriet",
+    "Bakeriet i Snøfall"
+  ],
   "refs": {},
   "avledet_fra": "torget",
   "fakta": [
