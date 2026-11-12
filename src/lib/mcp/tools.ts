@@ -873,7 +873,7 @@ export const TOOLS: Record<string, Tool> = {
   list_vurderinger: {
     level: "parent",
     description:
-      "Hans' vurderinger fra guiden, én linje per element: id | vurdering | oppdatert | notat (| gjeldende versjon: cellen fra media-status for mediefiler). status «åpne» (standard, alt som ikke er godkjent) eller «alle»; siden = ISO-tid; prefiks = id-start.",
+      "Hans' vurderinger fra guiden, én linje per element: id | vurdering | oppdatert | notat (| gjeldende versjon: cellen fra media-status for mediefiler). status «åpne» (standard, alt som ikke er godkjent eller ok) eller «alle» (ok med notat også samlet under «lærdom»); siden = ISO-tid; prefiks = id-start.",
     inputSchema: {
       type: "object",
       properties: {
@@ -906,7 +906,9 @@ export const TOOLS: Record<string, Tool> = {
         .sort(([, a], [, b]) =>
           (b.oppdatert ?? "").localeCompare(a.oppdatert ?? ""),
         );
-      const aapne = rader.filter(([, v]) => v.vurdering !== "godkjent");
+      const aapne = rader.filter(
+        ([, v]) => v.vurdering !== "godkjent" && v.vurdering !== "ok",
+      );
       const vis = status === "alle" ? rader : aapne;
       // Media ids get the same cell as the guide: the file in use, «→ vN».
       const dir = mediaDir();
@@ -932,7 +934,20 @@ export const TOOLS: Record<string, Tool> = {
         ([id, v]) =>
           `${id} | ${v.forrige ? `(ny versjon) forrige: ${v.forrige.vurdering}` : (v.vurdering ?? "-")} | ${(v.oppdatert ?? "").slice(0, 16).replace("T", " ")} | ${(v.forrige?.notat ?? v.notat ?? "").replace(/\s*\n\s*/g, " / ")}${celle(id)}`,
       );
-      return [`${aapne.length} åpne av ${rader.length}`, ...linjer].join("\n");
+      // OK with a note: usable, but the note is a lesson for the next generation.
+      const laerdom =
+        status === "alle"
+          ? rader
+              .filter(([, v]) => v.vurdering === "ok" && v.notat)
+              .map(
+                ([id, v]) => `${id} | ${v.notat!.replace(/\s*\n\s*/g, " / ")}`,
+              )
+          : [];
+      return [
+        `${aapne.length} åpne av ${rader.length}`,
+        ...linjer,
+        ...(laerdom.length ? ["lærdom:", ...laerdom] : []),
+      ].join("\n");
     },
   },
   reset: {

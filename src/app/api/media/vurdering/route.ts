@@ -4,8 +4,11 @@ import type { NextRequest } from "next/server";
 import { authorizeMedia, mediaDir } from "@/lib/media-server";
 import { medVersjon, versjonAv, type Forrige } from "@/lib/vurdering-versjon";
 
+/** «ok» = usable with flaws; its note is a lesson for later generation. */
+export type Verdikt = "godkjent" | "ok" | "lag_paa_nytt";
+
 export interface MediaVurderingItem {
-  vurdering?: "godkjent" | "lag_paa_nytt";
+  vurdering?: Verdikt;
   notat?: string;
   oppdatert?: string;
   /** What was reviewed: file size-mtime or a hash of the section text. */
@@ -77,7 +80,7 @@ export async function POST(req: NextRequest) {
 
   const cleanPath = relPath.trim();
 
-  const allowedVerdicts = ["godkjent", "lag_paa_nytt", null, ""];
+  const allowedVerdicts = ["godkjent", "ok", "lag_paa_nytt", null, ""];
   if (
     vurdering !== undefined &&
     !allowedVerdicts.includes(vurdering as string | null)
@@ -112,11 +115,14 @@ export async function POST(req: NextRequest) {
 
   const nextVerdict =
     vurdering !== undefined
-      ? (vurdering as "godkjent" | "lag_paa_nytt" | null | "")
+      ? (vurdering as Verdikt | null | "")
       : prev.vurdering;
 
   const nextNote =
     notat !== undefined ? (notat as string).trim() : (prev.notat ?? "");
+
+  // A redo without a note tells the generator nothing.
+  if (nextVerdict === "lag_paa_nytt" && !nextNote) return badRequest();
 
   if (!nextVerdict && !nextNote) {
     delete current[cleanPath];

@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { mediaUrl, type MediaStatus } from "@/lib/media";
 import { variantLabel } from "./oversikt";
 import {
@@ -14,6 +20,7 @@ import {
 import type {
   MediaVurderingItem,
   MediaVurderinger,
+  Verdikt,
 } from "@/app/api/media/vurdering/route";
 
 /** Shared by the media page, the day view and the library. */
@@ -130,11 +137,7 @@ export function ReviewItemCard({
   inventar?: Inventar;
   vurdering?: MediaVurderingItem;
   isSaving?: boolean;
-  onSaveVerdict: (
-    path: string,
-    v: "godkjent" | "lag_paa_nytt" | null,
-    note?: string,
-  ) => void;
+  onSaveVerdict: (path: string, v: Verdikt | null, note?: string) => void;
   onUpload: (path: string, file: File) => void;
 }) {
   const missing = file.size === null;
@@ -235,7 +238,23 @@ export function ReviewItemCard({
   );
 }
 
-/** Godkjent / Lag på nytt + note; shared by media cards and guide sections. */
+const KNAPPER: [Verdikt, string, string, string][] = [
+  [
+    "godkjent",
+    "Godkjent",
+    "[✓] Godkjent",
+    "bg-(--gold) text-black border-(--gold)",
+  ],
+  ["ok", "OK", "[◐] OK", "bg-amber-300 text-black border-amber-300"],
+  [
+    "lag_paa_nytt",
+    "Lag på nytt",
+    "[!] Lag på nytt",
+    "bg-(--christmas-red) text-white border-(--christmas-red)",
+  ],
+];
+
+/** Godkjent / OK / Lag på nytt + note, saved together; shared by media cards and guide sections. */
 export function Vurderingsknapper({
   vurdering,
   isSaving,
@@ -244,57 +263,57 @@ export function Vurderingsknapper({
 }: {
   vurdering?: MediaVurderingItem;
   isSaving?: boolean;
-  onSave: (v: "godkjent" | "lag_paa_nytt" | null, note?: string) => void;
+  onSave: (v: Verdikt | null, note?: string) => void;
   ekstra?: ReactNode;
 }) {
   const currentVerdict = vurdering?.vurdering ?? null;
   const [note, setNote] = useState(vurdering?.notat ?? "");
+  // Set by the Lag på nytt button or key L: Enter in the note saves that verdict.
+  const [mal, setMal] = useState<Verdikt | null>(null);
+  const felt = useRef<HTMLInputElement>(null);
 
-  const handleVerdictClick = (targetVerdict: "godkjent" | "lag_paa_nytt") => {
-    onSave(currentVerdict === targetVerdict ? null : targetVerdict, note);
+  const lagre = (v: Verdikt | null) => {
+    if (v === "lag_paa_nytt" && !note.trim()) {
+      setMal(v);
+      felt.current?.focus();
+      return;
+    }
+    setMal(null);
+    if (felt.current) delete felt.current.dataset.mal;
+    onSave(v, note);
   };
 
-  const handleNoteBlur = () => {
-    if (note !== (vurdering?.notat ?? "")) onSave(currentVerdict, note);
-  };
+  const plassholder =
+    mal === "lag_paa_nytt" || currentVerdict === "lag_paa_nytt"
+      ? "Hva må endres?"
+      : currentVerdict === "ok"
+        ? "Hva kunne vært bedre?"
+        : "Kort notat...";
 
   return (
     <div className="mt-3 pt-2 border-t border-(--neon-green)/30 flex flex-col gap-2">
       <div className="flex flex-wrap items-center gap-2">
-        {/* Godkjent button */}
-        <button
-          type="button"
-          onClick={() => handleVerdictClick("godkjent")}
-          disabled={isSaving}
-          className={`min-h-11 min-w-28 px-4 py-2 font-bold cursor-pointer transition-colors border-2 ${
-            currentVerdict === "godkjent"
-              ? "bg-(--gold) text-black border-(--gold)"
-              : "border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20"
-          }`}
-        >
-          {currentVerdict === "godkjent" ? "[✓] Godkjent" : "Godkjent"}
-        </button>
-
-        {/* Lag på nytt button */}
-        <button
-          type="button"
-          onClick={() => handleVerdictClick("lag_paa_nytt")}
-          disabled={isSaving}
-          className={`min-h-11 min-w-28 px-4 py-2 font-bold cursor-pointer transition-colors border-2 ${
-            currentVerdict === "lag_paa_nytt"
-              ? "bg-(--christmas-red) text-white border-(--christmas-red)"
-              : "border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20"
-          }`}
-        >
-          {currentVerdict === "lag_paa_nytt"
-            ? "[!] Lag på nytt"
-            : "Lag på nytt"}
-        </button>
+        {KNAPPER.map(([v, tekst, valgt, farge]) => (
+          <button
+            key={v}
+            type="button"
+            data-verdikt={v}
+            onClick={() => lagre(currentVerdict === v ? null : v)}
+            disabled={isSaving}
+            className={`min-h-11 min-w-28 px-4 py-2 font-bold cursor-pointer transition-colors border-2 ${
+              currentVerdict === v
+                ? farge
+                : "border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20"
+            }`}
+          >
+            {currentVerdict === v ? valgt : tekst}
+          </button>
+        ))}
 
         {currentVerdict && (
           <button
             type="button"
-            onClick={() => onSave(null, note)}
+            onClick={() => lagre(null)}
             disabled={isSaving}
             className="min-h-11 px-3 py-2 text-sm text-(--neon-green)/70 underline cursor-pointer hover:text-(--neon-green)"
           >
@@ -317,24 +336,35 @@ export function Vurderingsknapper({
         </p>
       )}
 
-      {/* Short Note field */}
+      {mal === "lag_paa_nytt" && !note.trim() && (
+        <p role="alert" className="text-sm text-(--christmas-red)">
+          Skriv hva som må endres
+        </p>
+      )}
+
       <div className="flex flex-wrap sm:flex-nowrap gap-2 items-center mt-1">
         <input
+          ref={felt}
           type="text"
           value={note}
-          placeholder="Kort notat..."
+          placeholder={plassholder}
           onChange={(e) => setNote(e.target.value)}
-          onBlur={handleNoteBlur}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
+          onFocus={(e) => {
+            if (e.currentTarget.dataset.mal === "lag_paa_nytt")
+              setMal("lag_paa_nytt");
+          }}
+          onBlur={() => {
+            if (!mal && note !== (vurdering?.notat ?? ""))
               onSave(currentVerdict, note);
-            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") lagre(mal ?? currentVerdict);
           }}
           className="w-full min-h-11 bg-black border-2 border-(--neon-green) px-3 text-sm text-(--neon-green) focus:outline-none focus:border-(--gold)"
         />
         <button
           type="button"
-          onClick={() => onSave(currentVerdict, note)}
+          onClick={() => lagre(mal ?? currentVerdict)}
           disabled={isSaving}
           className="min-h-11 min-w-28 px-4 py-2 border-2 border-(--neon-green) hover:bg-(--neon-green)/20 text-sm font-bold cursor-pointer"
         >
@@ -416,7 +446,7 @@ export function useMediaData() {
 
   const handleSaveVerdict = async (
     path: string,
-    v: "godkjent" | "lag_paa_nytt" | null,
+    v: Verdikt | null,
     note?: string,
   ) => {
     setSavingMap((prev) => ({ ...prev, [path]: true }));

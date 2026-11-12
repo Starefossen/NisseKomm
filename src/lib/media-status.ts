@@ -12,6 +12,7 @@
 
 export type Celle =
   | "godkjent"
+  | "ok"
   | "ikke_vurdert"
   | "ny_versjon"
   | "lag_paa_nytt"
@@ -22,6 +23,7 @@ export type Celle =
 /** Mark, colour class, name. */
 export const MERKE: Record<Celle, [string, string, string]> = {
   godkjent: ["✓", "text-(--gold)", "godkjent"],
+  ok: ["◐", "text-amber-300", "OK"],
   ikke_vurdert: ["○", "text-(--neon-green)/70", "ikke vurdert"],
   ny_versjon: ["○", "text-(--neon-green)/70", "ny versjon, ikke vurdert"],
   lag_paa_nytt: ["↻", "text-amber-400", "lag på nytt"],
@@ -41,8 +43,12 @@ export const VERST: Celle[] = [
   "ny_versjon",
   "ikke_vurdert",
   "valgfri",
+  "ok",
   "godkjent",
 ];
+
+/** Approved or OK: both may ship and count as done. */
+export const brukbar = (c?: Celle) => c === "godkjent" || c === "ok";
 export const verst = (c: Celle[]) =>
   VERST.find((v) => c.includes(v)) ?? "godkjent";
 
@@ -93,8 +99,8 @@ export const celleAv = (v?: {
   vurdering?: string;
   forrige?: unknown;
 }): Celle =>
-  v?.vurdering === "godkjent"
-    ? "godkjent"
+  v?.vurdering === "godkjent" || v?.vurdering === "ok"
+    ? (v.vurdering as Celle)
     : v?.vurdering
       ? "lag_paa_nytt"
       : v?.forrige
@@ -107,7 +113,10 @@ export function forrigeTekst(v?: {
 }) {
   const f = v?.forrige;
   if (!f) return undefined;
-  const hva = f.vurdering === "godkjent" ? "godkjent" : "lag på nytt";
+  const hva =
+    f.vurdering === "godkjent" || f.vurdering === "ok"
+      ? f.vurdering
+      : "lag på nytt";
   return `forrige versjon: ${hva}${f.notat ? ` – «${f.notat}»` : ""}`;
 }
 
@@ -135,7 +144,7 @@ export function versjon(path: string, k: StatusKilde): Versjon {
     ? k.inventar?.get(path)?.status === "valgfri"
       ? "valgfri"
       : "mangler"
-    : v?.vurdering && v.vurdering !== "godkjent"
+    : v?.vurdering && celleAv(v) === "lag_paa_nytt"
       ? "lag_paa_nytt"
       : k.inventar?.get(path)?.status === "stale"
         ? "utdatert"
@@ -172,7 +181,7 @@ export function familie(path: string, k: StatusKilde): Familie {
     versjoner,
     celle: iBruk.celle,
     tekst,
-    kanTaIBruk: kandidat?.celle === "godkjent",
+    kanTaIBruk: brukbar(kandidat?.celle),
   };
 }
 

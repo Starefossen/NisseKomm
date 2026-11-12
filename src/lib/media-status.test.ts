@@ -1,5 +1,5 @@
 import { describe, it, expect } from "@jest/globals";
-import { familie, type StatusKilde } from "./media-status";
+import { brukbar, familie, type StatusKilde } from "./media-status";
 import { dayRows } from "@/app/nissemor-guide/media/oversikt";
 import {
   dagElement,
@@ -56,5 +56,22 @@ describe("media-status", () => {
       expect(g.tekst).toBe(familie(`video/julius/dag-0${n}.mp4`, k).tekst);
       expect(familie(e.id, k).kandidat?.navn).toBe(m.kandidat?.navn);
     }
+  });
+
+  it("OK er brukbar: kan tas i bruk, eget merke", () => {
+    const ko: StatusKilde = {
+      filer: [f("a/x.mp4"), f("a/x-v2.mp4")],
+      vurderinger: {
+        "a/x.mp4": { vurdering: "ok", notat: "litt mørk" },
+        "a/x-v2.mp4": { vurdering: "ok" },
+      },
+    };
+    const fam = familie("a/x.mp4", ko);
+    expect(fam.celle).toBe("ok");
+    expect(fam.tekst).toBe("◐ → v2 ◐");
+    expect(fam.kanTaIBruk).toBe(true);
+    expect(
+      brukbar("ok") && brukbar("godkjent") && !brukbar("lag_paa_nytt"),
+    ).toBe(true);
   });
 });

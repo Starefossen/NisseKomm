@@ -145,3 +145,4 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - Dag 8: hint 4 sier at det første ordet er det strømmen går i, rundt og rundt. Nettsøk innføres ikke. Hvorfor: Håkon kan ikke ordet, og Kristian kanskje ikke.
 - Dag 16 står som den er. Hvorfor: Hans vil ha oppsettet slik.
 - Strekbeskrivelsene følger gåtene: dag 4 kortene i skoene, dag 6 sier lappen at rullen ligger i gangen, dag 10 åtte fargekort, dag 13 fire poser og en lapp fra Rampenissen på gravskiltet, dag 20 fem puter i tydelig ulik størrelse. Hvorfor: strektabellen beskrev noe annet enn det foreldrene skal sette opp.
+- 2026-11-12: Vurderinger får mellomtrinnet «OK» (brukbar, med feil), og «Lag på nytt» krever notat. Hvorfor: godkjente ting med notat er lærdom til neste generering, og en omgjøring uten notat sier ingenting om hva som skal endres.

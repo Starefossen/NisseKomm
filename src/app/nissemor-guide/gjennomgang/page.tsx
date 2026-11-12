@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { GuideSide, Kort, useSesong, type Sesong } from "../_kveld/felles";
 import { TaIBruk, kilde, useMediaData } from "../media/kort";
-import { FORKLARING, MERKE } from "@/lib/media-status";
-import { SkjulVurder, Vurder, lagre, useVurderinger } from "../vurdering";
+import { brukbar, FORKLARING, MERKE } from "@/lib/media-status";
+import { SkjulVurder, Vurder, useVurderinger, vurderTast } from "../vurdering";
 import {
   KOLONNER,
   alleElementer,
@@ -73,7 +73,7 @@ function Matrise({
   const t = (e: Element | null) => tt(e)?.celle;
   const celle = (e: Element | null) => <Celle key={e?.id} e={e} t={tt(e)} />;
   const alle = alleElementer("dag", sesong, d.media.files, d.krypto);
-  const ok = alle.filter((e) => t(e) === "godkjent").length;
+  const ok = alle.filter((e) => brukbar(t(e))).length;
   const ekstra = ekstraRader(sesong, d.media.files, d.krypto);
   const grupper = [...new Set(ekstra.map((e) => e.gruppe))];
   const dager = Array.from({ length: 24 }, (_, i) => i + 1);
@@ -113,8 +113,7 @@ function Matrise({
                   <th key={k} className="p-1">
                     {navn}
                     <span className="block text-sm text-(--neon-green)/80">
-                      {rad.filter((e) => t(e) === "godkjent").length}/
-                      {rad.length}
+                      {rad.filter((e) => brukbar(t(e))).length}/{rad.length}
                     </span>
                   </th>
                 );
@@ -142,7 +141,7 @@ function Matrise({
         return (
           <Kort
             key={g}
-            tittel={`${g} (${rad.filter((e) => t(e) === "godkjent").length}/${rad.length})`}
+            tittel={`${g} (${rad.filter((e) => brukbar(t(e))).length}/${rad.length})`}
           >
             <table className="w-full">
               <tbody>
@@ -202,28 +201,13 @@ function Vurdering({
       )
         return;
       const tast = ev.key.toLowerCase();
-      const v = vurd[id];
-      if (tast === "g")
-        lagre(
-          id,
-          v?.vurdering === "godkjent" ? null : "godkjent",
-          v?.notat ?? "",
-        );
-      else if (tast === "l") {
-        ev.preventDefault();
-        if (v?.vurdering !== "lag_paa_nytt")
-          lagre(id, "lag_paa_nytt", v?.notat ?? "");
-        document
-          .querySelector<HTMLInputElement>(
-            `#vurdering-${CSS.escape(id.split("/").at(-1)!)} input`,
-          )
-          ?.focus();
-      } else if (tast === "n" && neste) router.push(href(neste.id));
+      if (vurderTast(tast, id)) ev.preventDefault();
+      else if (tast === "n" && neste) router.push(href(neste.id));
       else if (tast === "p" && forrige) router.push(href(forrige.id));
     };
     window.addEventListener("keydown", ned);
     return () => window.removeEventListener("keydown", ned);
-  }, [id, vurd, neste, forrige, router]);
+  }, [id, neste, forrige, router]);
 
   if (!e) return <p>Fant ikke {id}.</p>;
   const st = tilstand(e, { ...kilde(d.media), vurderinger: vurd });
@@ -279,8 +263,8 @@ function Vurdering({
           <TaIBruk key={p} path={p} data={d.media} />
         ))}
         <p className="text-base text-(--neon-green)/80">
-          Tastatur: G godkjent · L lag på nytt (skriv notat) · N neste · P
-          forrige
+          Tastatur: G godkjent · O OK · L lag på nytt (skriv notat, Enter
+          lagrer) · N neste · P forrige
         </p>
       </Kort>
       <SkjulVurder.Provider value>

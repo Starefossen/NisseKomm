@@ -85,7 +85,11 @@ describe("API /api/media/vurdering - Authentication", () => {
     const resBearer = await POST(
       makeReq(
         "POST",
-        { path: "video/julius/dag-02.mp4", vurdering: "lag_paa_nytt" },
+        {
+          path: "video/julius/dag-02.mp4",
+          vurdering: "lag_paa_nytt",
+          notat: "for mørk",
+        },
         { authorization: "Bearer parenttoken1" },
       ),
     );
@@ -154,7 +158,7 @@ describe("API /api/media/vurdering - Validation", () => {
   });
 
   it("rejects unrecognized verdicts with 400", async () => {
-    for (const badVerdict of ["approved", "redo", "ok", 42, true]) {
+    for (const badVerdict of ["approved", "redo", "OK", 42, true]) {
       const res = await POST(
         makeReq(
           "POST",
@@ -252,6 +256,34 @@ describe("API /api/media/vurdering - Functionality", () => {
       vurdering: "lag_paa_nytt",
       notat: "Stemmen var litt uklar",
     });
+  });
+
+  it("rejects lag på nytt without a note and accepts ok", async () => {
+    const uten = await POST(
+      makeReq(
+        "POST",
+        {
+          path: "video/julius/dag-05.mp4",
+          vurdering: "lag_paa_nytt",
+          notat: "  ",
+        },
+        auth,
+      ),
+    );
+    expect(uten.status).toBe(400);
+    const ok = await POST(
+      makeReq(
+        "POST",
+        {
+          path: "video/julius/dag-05.mp4",
+          vurdering: "ok",
+          notat: "litt mørk",
+        },
+        auth,
+      ),
+    );
+    expect(ok.status).toBe(200);
+    expect((await ok.json()).entry).toMatchObject({ vurdering: "ok" });
   });
 
   it("can clear verdict or update note independently", async () => {

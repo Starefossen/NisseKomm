@@ -21,7 +21,7 @@ import {
   type ItemStatus,
 } from "./oversikt";
 import { MediaListe, useMediaData } from "./kort";
-import { FORKLARING, MERKE } from "@/lib/media-status";
+import { brukbar, celleAv, FORKLARING, MERKE } from "@/lib/media-status";
 
 const box = "border-4 border-(--neon-green) bg-black p-4 mb-6";
 
@@ -208,8 +208,7 @@ function MediaContent() {
   const rows = files ? dayRows(files, { vurderinger, inventar }) : [];
   const totalFiles = files?.length ?? 0;
   const totalGodkjent =
-    files?.filter((f) => vurderinger[f.path]?.vurdering === "godkjent")
-      .length ?? 0;
+    files?.filter((f) => brukbar(celleAv(vurderinger[f.path]))).length ?? 0;
   const totalLagPaaNytt =
     files?.filter((f) => vurderinger[f.path]?.vurdering === "lag_paa_nytt")
       .length ?? 0;
@@ -230,7 +229,9 @@ function MediaContent() {
                 {files.length - missing} av {files.length} filer på plass
               </p>
               <div className="flex flex-wrap justify-center gap-3 mt-1 text-sm sm:text-base">
-                <span className="text-(--gold)">{totalGodkjent} godkjent</span>
+                <span className="text-(--gold)">
+                  {totalGodkjent} godkjent/OK
+                </span>
                 <span>·</span>
                 <span className="text-(--christmas-red)">
                   {totalLagPaaNytt} lag på nytt
@@ -354,8 +355,8 @@ function MediaContent() {
               );
             }
 
-            const godkjentCount = allInGroup.filter(
-              (f) => vurderinger[f.path]?.vurdering === "godkjent",
+            const godkjentCount = allInGroup.filter((f) =>
+              brukbar(celleAv(vurderinger[f.path])),
             ).length;
             const lagPaaNyttCount = allInGroup.filter(
               (f) => vurderinger[f.path]?.vurdering === "lag_paa_nytt",
@@ -369,7 +370,7 @@ function MediaContent() {
                   <h2 className="text-2xl font-bold">{g.title}</h2>
                   <div className="flex flex-wrap items-center gap-2 text-sm sm:text-base">
                     <span className="text-(--gold)">
-                      {godkjentCount} godkjent
+                      {godkjentCount} godkjent/OK
                     </span>
                     <span>·</span>
                     <span className="text-(--christmas-red)">

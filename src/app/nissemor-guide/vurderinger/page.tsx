@@ -9,7 +9,10 @@ function Liste() {
   const alle = useVurderinger();
   if (!alle) return <p>Laster … (bare på hjemmenettet)</p>;
   const apne = Object.entries(alle)
-    .filter(([, v]) => v.vurdering !== "godkjent")
+    .filter(
+      ([, v]) =>
+        v.vurdering !== "godkjent" && (v.vurdering !== "ok" || v.notat),
+    )
     .sort(([, a], [, b]) =>
       (b.oppdatert ?? "").localeCompare(a.oppdatert ?? ""),
     );
@@ -28,10 +31,16 @@ function Liste() {
             className={
               v.vurdering === "lag_paa_nytt"
                 ? "text-(--christmas-red)"
-                : "text-(--cold-blue)"
+                : v.vurdering === "ok"
+                  ? "text-amber-300"
+                  : "text-(--cold-blue)"
             }
           >
-            {v.vurdering === "lag_paa_nytt" ? "Lag på nytt" : "Bare notat"}
+            {v.vurdering === "lag_paa_nytt"
+              ? "Lag på nytt"
+              : v.vurdering === "ok"
+                ? "◐ OK (lærdom)"
+                : "Bare notat"}
           </span>
           {v.notat && <p>{v.notat}</p>}
         </li>

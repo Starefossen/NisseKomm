@@ -27,6 +27,11 @@ writeFileSync(
       oppdatert: "2026-11-09T09:30:00.000Z",
       versjon: "000000000000",
     },
+    "historien/slutt": {
+      vurdering: "ok",
+      notat: "litt lang",
+      oppdatert: "2026-11-08T10:00:00.000Z",
+    },
     "historien/start": {
       vurdering: "godkjent",
       oppdatert: "2026-11-12T10:00:00.000Z",
@@ -42,7 +47,7 @@ describe("list_vurderinger", () => {
 
   it("viser åpne, nyeste først, som kompakt tekst", async () => {
     expect(await callTool("parent", "list_vurderinger")).toBe(
-      "3 åpne av 4\n" +
+      "3 åpne av 5\n" +
         "dag/04/gaatekart | - | 2026-11-11 09:30 | sjekk\n" +
         "video/julius/dag-01-v3.mp4 | lag_paa_nytt | 2026-11-10 08:00 | for mørk / lyd hakker\n" +
         "dag/05/gaatekart | (ny versjon) forrige: godkjent | 2026-11-09 09:30 | fin",
@@ -54,6 +59,8 @@ describe("list_vurderinger", () => {
       status: "alle",
     });
     expect(alle.split("\n")[1]).toMatch(/^historien\/start \| godkjent/);
+    // OK is usable, not open; its note is listed as a lesson.
+    expect(alle).toMatch(/\nlærdom:\nhistorien\/slutt \| litt lang$/);
     expect(
       await callTool("parent", "list_vurderinger", {
         siden: "2026-11-11T00:00:00Z",

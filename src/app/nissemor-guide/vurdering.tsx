@@ -101,6 +101,29 @@ export function Vurder({ id }: { id: string }) {
   );
 }
 
+/**
+ * Gjennomgang's keys G/O/L for the Vurder box of `id`. The buttons own the
+ * rules (note saved with the verdict, redo needs one); L focuses the note so
+ * Enter saves «lag på nytt». True when the key was handled.
+ */
+export function vurderTast(tast: string, id: string): boolean {
+  const boks = document.querySelector(
+    `#vurdering-${CSS.escape(id.split("/").at(-1)!)}`,
+  );
+  const knapp = (v: string) =>
+    boks?.querySelector<HTMLButtonElement>(`[data-verdikt="${v}"]`)?.click();
+  if (tast === "g") knapp("godkjent");
+  else if (tast === "o") knapp("ok");
+  else if (tast === "l") {
+    const felt = boks?.querySelector<HTMLInputElement>("input");
+    if (felt) {
+      felt.dataset.mal = "lag_paa_nytt";
+      felt.focus();
+    }
+  } else return false;
+  return true;
+}
+
 /** `<details>` closed by default, open state kept per id in localStorage. */
 export function Lukkbar({
   id,
