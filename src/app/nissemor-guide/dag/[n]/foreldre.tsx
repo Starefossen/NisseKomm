@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { GameEngine } from "@/lib/game-engine";
-import { utskriftHref } from "../../printout/filer";
+import { utskriftHref, utskriftTittel } from "../../printout/filer";
 import type { kveldDag } from "@/lib/guide-sesong";
 import { Avkrysning, useAvkrysning, useSynk } from "../../_kveld/felles";
 
@@ -72,7 +72,7 @@ export function Foreldredel({
   const bonusOk = GameEngine.isBonusOppdragCompleted(q);
 
   const punkter = [
-    ...d.utskrifter.map((u) => `Skriv ut ${u}`),
+    ...d.utskrifter.map((u) => `Skriv ut ${utskriftTittel(u)}`),
     "Legg gåten (se Gåten under)",
     "Sett rampestreken (se Rampestrek under)",
     ...(symbol ? [`Gjem symbolkortet: ${symbol.description}`] : []),
@@ -143,6 +143,21 @@ export function Foreldredel({
       </Seksjon>
 
       <Seksjon id="kveld" tittel={`I kveld: klar til dag ${n}`}>
+        {d.utskrifter.length > 0 && (
+          <div className="border-2 border-(--gold) p-3">
+            <h3 className="text-xl text-(--gold)">Skriv ut i kveld</h3>
+            <ul className="list-disc pl-6">
+              {d.utskrifter.map((u) => (
+                <li key={u}>
+                  <Link href={utskriftHref(u)} className={lenke}>
+                    {utskriftTittel(u)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p>{f(d.utskrifterTekst)}</p>
+          </div>
+        )}
         <h3 className="text-xl text-(--gold)">Sjekkliste</h3>
         <p>Avkrysningen deles med den andre forelderen.</p>
         <Avkrysning punkter={punkter} krysset={krysset} veksle={veksle} />
@@ -174,17 +189,6 @@ export function Foreldredel({
             </p>
           </>
         )}
-        <h3 className="text-xl text-(--gold)">Utskrifter</h3>
-        <ul className="list-disc pl-6">
-          {d.utskrifter.map((u) => (
-            <li key={u}>
-              <Link href={utskriftHref(u)} className={lenke}>
-                {u}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <p>{f(d.utskrifterTekst)}</p>
       </Seksjon>
 
       {bonus && (

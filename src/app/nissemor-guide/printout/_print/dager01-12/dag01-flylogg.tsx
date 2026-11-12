@@ -1,6 +1,4 @@
-import { PrintPage, CutCard } from "../PrintPage";
-import { Ark } from "./felles";
-
+import { Utskrift } from "../Utskrift";
 const LOGG = [
   "SNØFALL LUFTFART",
   "LOGG LINJE 90,0",
@@ -38,34 +36,44 @@ const LOGG = [
 ];
 const HALV = 15;
 
-function Strimmel({ linjer, lim }: { linjer: string[]; lim: "topp" | "bunn" }) {
+function Strimmel({ linjer, lim }: { linjer: string[]; lim: boolean }) {
   return (
-    <CutCard className="w-[70mm] h-[270mm] flex flex-col font-mono">
-      {lim === "topp" && (
-        <div className="h-[15mm] border-b-2 border-dashed border-gray-400 text-gray-400 text-xs flex items-center justify-center">
+    <div className="h-full flex flex-col font-mono">
+      {lim && (
+        <div className="h-[15mm] border-b-[0.3mm] border-dashed border-gray-400 text-gray-400 text-[3mm] flex items-center justify-center">
           LIM DEL 1 HER
         </div>
       )}
       <pre className="p-[4mm] text-[11pt] leading-[7mm] whitespace-pre-wrap font-mono">
         {linjer.join("\n")}
       </pre>
-    </CutCard>
+    </div>
   );
 }
 
 export default function Dag01Flylogg() {
   return (
-    <PrintPage
-      title="Dag 1 – flyloggen"
-      paper="1 ark, vanlig papir"
-      note="Klipp de to strimlene, lim enden av del 1 over limfeltet på del 2, rull sammen og hold med en binders."
-    >
-      <Ark>
-        <div className="flex gap-[10mm] justify-center">
-          <Strimmel linjer={LOGG.slice(0, HALV)} lim="bunn" />
-          <Strimmel linjer={LOGG.slice(HALV)} lim="topp" />
-        </div>
-      </Ark>
-    </PrintPage>
+    <Utskrift
+      navn="dag01-flylogg"
+      papir="vanlig"
+      deler={[
+        {
+          str: { b: 70, h: 270 },
+          antall: 2,
+          forside: (i) => (
+            <Strimmel
+              linjer={i ? LOGG.slice(HALV) : LOGG.slice(0, HALV)}
+              lim={i === 1}
+            />
+          ),
+        },
+      ]}
+      instruks={{
+        klipp: "de to strimlene. Lim enden av del 1 over limfeltet på del 2.",
+        brett:
+          "ikke brett: rull strimmelen fra slutten og hold den med en binders.",
+        hvor: "Fredag 28. november i ferdskriveren, etter IQs konvolutt.",
+      }}
+    />
   );
 }

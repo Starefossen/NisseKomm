@@ -1,62 +1,64 @@
-import { PrintPage, CutCard } from "../PrintPage";
-import { Ark } from "./felles";
+import { Utskrift } from "../Utskrift";
 
-// Orange on black boxes is the flight-recorder look; on paper it is black text on orange.
-const MERKE = "bg-orange-400 text-black border-4 border-black";
+// On paper the flight-recorder look is black text on orange.
+const MERKE =
+  "h-full m-[2mm] bg-orange-400 text-black border-[1mm] border-black flex flex-col items-center justify-center text-center font-retro";
 
 export default function Dag01Ferdskriver() {
   return (
-    <PrintPage
-      title="Dag 1 – merker til ferdskriveren"
-      paper="1 ark, vanlig papir"
-      note="Toppmerket på lokket, langsidemerket på esken, kortsidemerket i enden. «FORSEGLET»-strimlene limes på maskeringsteipen over lokkekanten."
-    >
-      <Ark>
-        <div className="flex flex-col gap-[3mm] items-center">
-          <CutCard className="w-[186mm] h-[70mm] p-[2mm]">
-            <div
-              className={`${MERKE} h-full flex flex-col items-center justify-center gap-[2mm] text-center`}
-            >
-              <div className="text-6xl">FERDSKRIVER</div>
-              <div className="text-3xl">SNØFALL LUFTFART · FLIGHT RECORDER</div>
-              <div className="text-3xl bg-black text-orange-400 px-[3mm]">
+    <Utskrift
+      navn="dag01-ferdskriver"
+      papir="vanlig"
+      farge
+      deler={[
+        {
+          str: { b: 194, h: 70 },
+          forside: () => (
+            <div className={`${MERKE} gap-[2mm]`} style={{ height: "66mm" }}>
+              <div className="text-[13mm] leading-none">FERDSKRIVER</div>
+              <div className="text-[6mm]">
+                SNØFALL LUFTFART · FLIGHT RECORDER
+              </div>
+              <div className="text-[6mm] bg-black text-orange-400 px-[3mm]">
                 IKKE ÅPNE UTEN K12 · H9 · H5
               </div>
-              <div className="text-2xl tracking-widest">SNF-FDR-2026-001</div>
+              <div className="text-[5mm] tracking-widest">SNF-FDR-2026-001</div>
             </div>
-          </CutCard>
-          <CutCard className="w-[186mm] h-[40mm] p-[2mm]">
-            <div
-              className={`${MERKE} h-full flex flex-col items-center justify-center text-center text-3xl`}
-            >
+          ),
+        },
+        {
+          str: { b: 194, h: 40 },
+          forside: () => (
+            <div className={`${MERKE} text-[7mm]`} style={{ height: "36mm" }}>
               <div>IKKE KAST I HAVET</div>
               <div>OM FUNNET, LEVER TIL IQ</div>
             </div>
-          </CutCard>
-          <CutCard className="w-[110mm] h-[45mm] p-[2mm]">
-            <div
-              className={`${MERKE} h-full flex flex-col items-center justify-center text-center text-2xl`}
-            >
+          ),
+        },
+        {
+          str: { b: 110, h: 45 },
+          forside: () => (
+            <div className={`${MERKE} text-[5.5mm]`} style={{ height: "41mm" }}>
               <div>LINJE 90,0 MHz</div>
               <div>NEDSTIGNING 01.12</div>
               <div>KL. 00:04</div>
             </div>
-          </CutCard>
-          <div className="flex gap-[3mm]">
-            {[0, 1].map((i) => (
-              <CutCard
-                key={i}
-                className="w-[90mm] h-[18mm] flex items-center justify-center text-3xl"
-              >
-                FORSEGLET – IQ
-              </CutCard>
-            ))}
-          </div>
-          <CutCard className="w-[186mm] h-[12mm] flex items-center justify-center text-xl tracking-widest">
-            SNF-FDR-2026-001 · SNF-FDR-2026-001 · SNF-FDR-2026-001
-          </CutCard>
-        </div>
-      </Ark>
-    </PrintPage>
+          ),
+        },
+        {
+          str: { b: 84, h: 22 },
+          antall: 2,
+          forside: () => (
+            <div className="h-full flex items-center justify-center font-retro text-[7mm]">
+              FORSEGLET – IQ
+            </div>
+          ),
+        },
+      ]}
+      instruks={{
+        klipp: "tre merker og to «FORSEGLET»-strimler.",
+        hvor: "Fredag 28. november, når skoesken er kledd i svart med to oransje striper: toppmerket på lokket, langsidemerket på esken, kortsidemerket i enden. Søndag kveld limes én «FORSEGLET – IQ» på maskeringsteipen over lokkekanten (den andre er reserve).",
+      }}
+    />
   );
 }

@@ -1,5 +1,5 @@
-import { PrintPage, CutCard } from "../PrintPage";
-import { Ark, Iskrystall } from "./felles";
+import { Utskrift } from "../Utskrift";
+import { Iskrystall } from "./felles";
 
 const STREKKODE = "90.0-SNF-0112";
 
@@ -70,12 +70,12 @@ function Strekkode() {
 
 function Fraktetikett() {
   return (
-    <CutCard className="w-[186mm] h-[134mm] p-[3mm]">
-      <div className="h-full border-4 border-black p-[4mm] flex flex-col gap-[3mm] text-2xl">
-        <div className="flex items-center gap-[6mm] border-b-4 border-black pb-[2mm]">
+    <div className="h-full p-[3mm] font-retro">
+      <div className="h-full border-[1mm] border-black p-[4mm] flex flex-col gap-[3mm] text-[5.5mm]">
+        <div className="flex items-center gap-[6mm] border-b-[1mm] border-black pb-[2mm]">
           <Logo />
           <div>
-            <div className="text-5xl">SNØFALL FRAKT</div>
+            <div className="text-[11mm] leading-none">SNØFALL FRAKT</div>
             <div>LUFTFRAKT · ADVENTSRUTEN</div>
           </div>
         </div>
@@ -83,85 +83,82 @@ function Fraktetikett() {
         <div>TIL: Rampenissen c/o K12 · H9 · H5, Landås</div>
         <div>INNHOLD: VITAMIN C, 2,3 KG</div>
         <div className="flex items-end justify-between mt-auto">
-          <div className="text-4xl">SENDING ___ AV 4</div>
+          <div className="text-[9mm]">SENDING ___ AV 4</div>
           <Strekkode />
         </div>
       </div>
-    </CutCard>
+    </div>
   );
 }
 
-function Stempel({
-  tekst,
-  farge,
-  rund,
-}: {
-  tekst: string;
-  farge: string;
-  rund?: boolean;
-}) {
+const STEMPLER = [
+  { tekst: "TRYKKSKADET", farge: "border-red-600 text-red-600" },
+  { tekst: "TRYKKSKADET", farge: "border-red-600 text-red-600" },
+  {
+    tekst: "KONTROLLERT – IQ",
+    farge: "border-blue-700 text-blue-700",
+    rund: true,
+  },
+  {
+    tekst: "KONTROLLERT – IQ",
+    farge: "border-blue-700 text-blue-700",
+    rund: true,
+  },
+  {
+    tekst: "KONTROLLERT – IQ",
+    farge: "border-blue-700 text-blue-700",
+    rund: true,
+  },
+  { tekst: "HASTER · ADVENT", farge: "border-black text-black" },
+  { tekst: "HASTER · ADVENT", farge: "border-black text-black" },
+  { tekst: "HASTER · ADVENT", farge: "border-black text-black" },
+];
+
+function Stempel({ i }: { i: number }) {
+  const { tekst, farge, rund } = STEMPLER[i];
   return (
-    <CutCard className="w-[90mm] h-[60mm] flex items-center justify-center">
+    <div className="h-full flex items-center justify-center font-retro">
       <div
-        className={`border-[1.5mm] ${farge} ${rund ? "rounded-full w-[52mm] h-[52mm]" : "px-[4mm] py-[3mm] -rotate-6"} flex items-center justify-center text-center text-4xl leading-none`}
+        className={`border-[1.5mm] ${farge} ${rund ? "rounded-full w-[52mm] h-[52mm]" : "px-[4mm] py-[3mm] -rotate-6"} flex items-center justify-center text-center text-[9mm] leading-none`}
       >
         {tekst}
       </div>
-    </CutCard>
+    </div>
   );
 }
 
 export default function Dag01Frakt() {
   return (
-    <PrintPage
-      title="Dag 1 – fraktetiketter og stempler"
-      paper="3 ark, vanlig papir. Skriv ut side 1 to ganger (4 etiketter)."
-      note="Nummerer etikettene for hånd: SENDING 1 AV 4 osv. «TRYKKSKADET» på den revnede esken. Stemplene limes skjevt."
-    >
-      <Ark>
-        <div className="flex flex-col gap-[3mm]">
-          <Fraktetikett />
-          <Fraktetikett />
-        </div>
-      </Ark>
-      <Ark>
-        <div className="grid grid-cols-2 gap-[2mm]">
-          {[0, 1, 2, 3].map((i) => (
-            <CutCard key={i} className="w-[92mm] h-[134mm] p-[3mm]">
+    <Utskrift
+      navn="dag01-frakt"
+      papir="vanlig"
+      farge
+      deler={[
+        { str: { b: 194, h: 140 }, antall: 4, forside: () => <Fraktetikett /> },
+        {
+          str: "A6",
+          antall: 4,
+          forside: () => (
+            <div className="h-full p-[3mm] font-retro">
               <div className="h-full border-[3mm] border-red-600 flex flex-col items-center justify-center gap-[6mm] text-center p-[3mm]">
-                <div className="text-6xl text-red-600">SKJØRT</div>
-                <div className="text-3xl">VITAMIN C TIL LANDÅS</div>
-                <div className="text-3xl">DENNE SIDE OPP</div>
-                <div className="text-8xl leading-none">↑</div>
+                <div className="text-[14mm] text-red-600">SKJØRT</div>
+                <div className="text-[6mm]">VITAMIN C TIL LANDÅS</div>
+                <div className="text-[6mm]">DENNE SIDE OPP</div>
+                <div className="text-[20mm] leading-none">↑</div>
               </div>
-            </CutCard>
-          ))}
-        </div>
-      </Ark>
-      <Ark>
-        <div className="grid grid-cols-2 gap-[2mm]">
-          <Stempel tekst="TRYKKSKADET" farge="border-red-600 text-red-600" />
-          <Stempel tekst="TRYKKSKADET" farge="border-red-600 text-red-600" />
-          <Stempel
-            tekst="KONTROLLERT – IQ"
-            farge="border-blue-700 text-blue-700"
-            rund
-          />
-          <Stempel
-            tekst="KONTROLLERT – IQ"
-            farge="border-blue-700 text-blue-700"
-            rund
-          />
-          <Stempel tekst="HASTER · ADVENT" farge="border-black text-black" />
-          <Stempel tekst="HASTER · ADVENT" farge="border-black text-black" />
-          <Stempel tekst="HASTER · ADVENT" farge="border-black text-black" />
-          <Stempel
-            tekst="KONTROLLERT – IQ"
-            farge="border-blue-700 text-blue-700"
-            rund
-          />
-        </div>
-      </Ark>
-    </PrintPage>
+            </div>
+          ),
+        },
+        {
+          str: "A7",
+          antall: STEMPLER.length,
+          forside: (i) => <Stempel i={i} />,
+        },
+      ]}
+      instruks={{
+        klipp: "4 fraktetiketter, 4 SKJØRT-merker og 8 stempler.",
+        hvor: "Lørdag 29. november: lim med limstift på klementineskene og de tomme eskene. Nummerer etikettene for hånd: SENDING 1 AV 4 osv. «TRYKKSKADET» skjevt over revnen på den revnede esken; de andre stemplene limes skjevt der det passer.",
+      }}
+    />
   );
 }

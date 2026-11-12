@@ -3,7 +3,8 @@ import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { GameEngine } from "@/lib/game-engine";
 import { RUNE_ALPHABET } from "@/components/ui/Frostrune";
-import { RunetavleKids, RunerFasit } from "../runer/page";
+import { RunetavleKids } from "../_print/dager01-12/runetavle";
+import { RunerFasit } from "../_print/dager01-12/runer-fasit";
 import { RuneTavle } from "@/components/windows/RuneTavle";
 
 (
@@ -30,7 +31,7 @@ describe("Runetavle (kids' board vs answer key)", () => {
     ]);
   });
 
-  it("kids' printable board hides exactly the untaught letters and renders empty squares with question marks", () => {
+  it("kids' printable board hides exactly the untaught letters and crosses out exactly the untaught squares", () => {
     const el = document.createElement("div");
     act(() => createRoot(el).render(<RunetavleKids />));
 
@@ -53,11 +54,11 @@ describe("Runetavle (kids' board vs answer key)", () => {
       expect(matchingLetters.length).toBeGreaterThanOrEqual(1);
     }
 
-    // Exactly 10 empty squares with a question mark for untaught runes
-    const questionMarks = [...el.querySelectorAll("span")].filter(
-      (s) => s.textContent === "?",
+    const kryss = [...el.querySelectorAll("[data-kryss]")].map((d) =>
+      d.getAttribute("data-kryss"),
     );
-    expect(questionMarks).toHaveLength(10);
+    expect(kryss).toEqual(untaught);
+    expect(el.textContent).not.toContain("?");
 
     // Kids' board has no glyphs (Frostrune)
     const glyphs = [...el.querySelectorAll("svg[role=img]")];

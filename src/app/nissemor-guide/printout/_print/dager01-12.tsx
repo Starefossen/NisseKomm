@@ -17,6 +17,8 @@ import Dag10Fargekort from "./dager01-12/dag10-fargekort";
 import Dag10Testark from "./dager01-12/dag10-testark";
 import Dag11Tallkort from "./dager01-12/dag11-tallkort";
 import Dag12FrostlappTredelt from "./dager01-12/dag12-frostlapp-tredelt";
+import RunerFasit from "./dager01-12/runer-fasit";
+import Runetavle from "./dager01-12/runetavle";
 import Operasjonsbrett from "./dager01-12/operasjonsbrett";
 import RodfilterRamme from "./dager01-12/rodfilter-ramme";
 
@@ -42,4 +44,6 @@ export const SIDER_01_12: Record<string, ComponentType> = {
   "dag12-frostlapp-tredelt": Dag12FrostlappTredelt,
   operasjonsbrett: Operasjonsbrett,
   "rodfilter-ramme": RodfilterRamme,
+  runetavle: Runetavle,
+  "runer-fasit": RunerFasit,
 };

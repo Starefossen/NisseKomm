@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { useParams } from "next/navigation";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
-import { UTSKRIFTER } from "../filer";
+import { UTSKRIFTER, utskriftTittel } from "../filer";
 import { SIDER_13_24 } from "../_print/dager13-24";
 import { SIDER_01_12 } from "../_print/dager01-12";
 
@@ -26,7 +26,9 @@ function StubContent() {
     <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-retro p-8">
       <div className="max-w-4xl mx-auto space-y-6">
         <GuideNavigation />
-        <h1 className="text-4xl font-bold text-center">{fil}.pdf</h1>
+        <h1 className="text-4xl font-bold text-center">
+          {utskriftTittel(fil)}
+        </h1>
         <p className="text-xl text-center opacity-80">
           {kjent
             ? "Denne utskriften er ikke laget ennå. Se docs/gaater-2026.md for innholdet."
