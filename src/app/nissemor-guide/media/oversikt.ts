@@ -222,7 +222,8 @@ export type ReviewKindId =
   | "music"
   | "stills"
   | "strek"
-  | "spill";
+  | "spill"
+  | "promo";
 
 export interface ReviewGroup {
   id: ReviewKindId;
@@ -238,6 +239,7 @@ export const REVIEW_GROUPS: readonly ReviewGroup[] = [
   { id: "stills", title: "Stillbilder" },
   { id: "strek", title: "Rampestrek" },
   { id: "spill", title: "Spillbilder og sprites" },
+  { id: "promo", title: "Promo" },
 ] as const;
 
 export function reviewKind(path: string): ReviewKindId {
@@ -249,6 +251,7 @@ export function reviewKind(path: string): ReviewKindId {
   if (path.startsWith("feed/")) return "stills";
   if (path.startsWith("strek/")) return "strek";
   if (path.startsWith("spill/")) return "spill";
+  if (path.startsWith("promo/")) return "promo";
   return "tv";
 }
 

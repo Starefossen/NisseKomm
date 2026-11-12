@@ -142,6 +142,7 @@ describe("review kinds and sorting", () => {
       "stills",
       "strek",
       "spill",
+      "promo",
     ]);
   });
 
@@ -153,6 +154,7 @@ describe("review kinds and sorting", () => {
     expect(reviewKind("video/tv/landsby-rolig.mp4")).toBe("tv");
     expect(reviewKind("music/Jingle Bells.mp3")).toBe("music");
     expect(reviewKind("feed/landsby-rolig.jpg")).toBe("stills");
+    expect(reviewKind("promo/julius-promo-A-v3.mp4")).toBe("promo");
   });
 
   it("sorts julius and rampenissen by day number", () => {
