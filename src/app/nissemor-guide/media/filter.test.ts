@@ -5,6 +5,7 @@ import {
   GJENSTAAR,
   fraQuery,
   passer,
+  synlig,
   radAv,
   STANDARD,
   tilQuery,
@@ -72,4 +73,24 @@ test("Julius counts: one per day, outdated and missing handled", () => {
   expect(n({ a: ["mangler"] })).toBe(12);
   expect(n({ a: ["utdatert"] })).toBe(6);
   expect(n({ a: ["klar"] })).toBe(1);
+});
+
+test("a card reviewed in this view stays visible until the filter changes", () => {
+  const godkjent = radAv(
+    familie("video/julius/dag-05.mp4", {
+      filer: [{ path: "video/julius/dag-05.mp4", size: 1 }],
+      vurderinger: { "video/julius/dag-05.mp4": { vurdering: "godkjent" } },
+    }),
+  );
+  expect(synlig(godkjent, STANDARD, "video/julius/dag-05", new Set())).toBe(
+    false,
+  );
+  expect(
+    synlig(
+      godkjent,
+      STANDARD,
+      "video/julius/dag-05",
+      new Set(["video/julius/dag-05"]),
+    ),
+  ).toBe(true);
 });

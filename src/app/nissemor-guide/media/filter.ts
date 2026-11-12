@@ -106,6 +106,10 @@ export function passer(r: Rad, f: Filter): boolean {
   );
 }
 
+/** A card reviewed in this view stays until the filter changes (festet = version keys). */
+export const synlig = (r: Rad, f: Filter, key: string, festet: Set<string>) =>
+  festet.has(key) || passer(r, f);
+
 export const antall = (rader: Rad[], f: Filter) =>
   rader.filter((r) => passer(r, f)).length;
 

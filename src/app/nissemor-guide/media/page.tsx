@@ -27,8 +27,9 @@ import {
   familie,
   FORKLARING,
   MERKE,
+  versionKey,
 } from "@/lib/media-status";
-import { passer, radAv } from "./filter";
+import { radAv, synlig } from "./filter";
 import { FilterLinje, useFilter } from "./FilterLinje";
 
 const SIDE = 50;
@@ -206,11 +207,20 @@ function MediaContent() {
   const [filter, settFilterRå] = useFilter();
   // Every card carries players and review controls: render a page at a time per group.
   const [antallVist, settAntallVist] = useState<Record<string, number>>({});
+  const [festet, settFestet] = useState<Set<string>>(new Set());
   const settFilter = (f: Parameters<typeof settFilterRå>[0]) => {
     settAntallVist({});
+    settFestet(new Set());
     settFilterRå(f);
   };
   const k = kilde(media);
+  const data = {
+    ...media,
+    handleSaveVerdict: ((p, ...rest) => {
+      settFestet((s) => new Set(s).add(versionKey(p)));
+      return media.handleSaveVerdict(p, ...rest);
+    }) as typeof media.handleSaveVerdict,
+  };
   const grupper = REVIEW_GROUPS.map((g) => ({
     g,
     versions: groupVersions(
@@ -336,7 +346,9 @@ function MediaContent() {
             // one card per item: the newest file, older versions folded below
             const allInGroup = versions.map((v) => v.newest);
 
-            const shown = versions.filter((v) => passer(v.rad, filter));
+            const shown = versions.filter((v) =>
+              synlig(v.rad, filter, v.key, festet),
+            );
             if (!shown.length && g.id !== "music") return null;
 
             const godkjentCount = allInGroup.filter((f) =>
@@ -380,7 +392,7 @@ function MediaContent() {
                       paths={shown
                         .slice(0, antallVist[g.id] ?? SIDE)
                         .map((v) => v.key)}
-                      data={media}
+                      data={data}
                       melding={false}
                     />
                     {shown.length > (antallVist[g.id] ?? SIDE) && (
