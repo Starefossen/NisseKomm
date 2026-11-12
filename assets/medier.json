@@ -314,7 +314,7 @@
     "generator": "mellomstill",
     "sted": "julius-kontor",
     "ut": "assets/out/stills/julius-kontor/still-julius.jpg",
-    "bilde": "locations/julius-kontor#vidvinkel",
+    "bilde": "still/julius-kontor-rom",
     "mal": "assets/prompts/tv/julius-kontor/julius.still.txt",
     "refs": ["characters/julius#standard"],
     "notat": "ref = Julius-videoens bilde (ref-v3): mikrofonen og sentralbordet skal se ut som der (Hans 12.11)"
