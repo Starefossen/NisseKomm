@@ -1,2 +1,2 @@
 {{prompts/portrett/piksel-stil}}
-The person: Hjerterud, exactly the woman standing behind the counter in the pixel-art café scene among the references (same hair, cheeks, dress, cardigan and apron). {{hjerterud.KARAKTER}} Any photo among the references is a different person and shows nothing to copy.
+The person: Hjerterud, exactly the woman in the photo portrait among the references (same face, rosy cheeks, flour on the nose, curly reddish-brown hair under a soft linen baker's cap, burgundy wool dress, knitted shawl, cream linen apron with a wooden spoon in the strap), redrawn as pixel art; the pixel-art bakery scene is only the style and palette reference. {{hjerterud.KARAKTER}}

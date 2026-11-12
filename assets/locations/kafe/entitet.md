@@ -10,7 +10,7 @@
     "bakeriet",
     "Bakeriet i Snøfall"
   ],
-  "refs": {},
+  "refs": { "tom": "ref.jpg" },
   "avledet_fra": "torget",
   "fakta": [
     {

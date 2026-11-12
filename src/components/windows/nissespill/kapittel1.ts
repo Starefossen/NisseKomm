@@ -673,45 +673,54 @@ export const KAPITTEL_1: Kapittel = {
     },
     {
       id: "kafeen",
-      navn: "Hjerteruds kafé",
+      navn: "Sukkerstua",
       bilde: "spill/kafe.jpg",
       utganger: [{ til: "torget", navn: "Ut på torget" }],
-      // On the floorboards between the flour sack and the chair
-      fjaer: { x: 52, y: 88, w: 4, h: 6 },
+      // In the bun basket between the shelves and the window
+      fjaer: { x: 67, y: 48, w: 4, h: 6 },
       hotspots: [
         {
-          id: "lampa",
-          navn: "Lampa",
-          rect: { x: 18, y: 2, w: 7, h: 28 },
+          id: "ovnen",
+          navn: "Steinovnen",
+          rect: { x: 0, y: 16, w: 32, h: 46 },
           smart: "se",
-          se: "En messinglampe i kjetting fra bjelken. Den svinger litt hver gang ovnsdøra går. Hjerterud sier det er trekk. Rampenissen sier det er lampa som danser.",
-          prat: "Du uler opp mot lampa. Den svinger, som om den nikker. Hjerterud: «Ikke oppmuntre henne, Floke.»",
-          bruk: "Du dytter lampa med nebbet. Den svinger. Skyggene i kaféen danser. Hjerterud, uten å snu seg: «Ikke lampa, Floke.»",
+          se:
+            "En svær, buet ovn av leire og stein med bjørkeved som gløder inni. Det er det varmeste stedet i Snøfall, og om vinteren sover katten, Pil og tre hansker oppå den. " +
+            R +
+            "«Sjå på den ovnen der! Den e så varm og god at til og med Vintervokteren hadde smelta om han stakk nesa inn.»",
+          prat: "Du sier «hei» inn i ovnsluka. Noe oppå ovnen svarer med å strekke seg. Det er katten. Eller Pil. Begge svarer sånn.",
+          bruk:
+            "Du nærmer deg luka. Det er varmt. Veldig varmt. Fjærene dine krøller seg. " +
+            R +
+            "«Ikkje inn i ovnen! Æ har prøvd å varm føttan der. Æ hadde ikkje sokka etterpå. Æ hadde knapt føtter.»",
+          feil: {
+            tyttebaer:
+              "Du holder bærene mot ovnen. De tiner, og saften drypper rett ned på gulvet. Hjerterud: «Ikke på gulvet, Floke! Saft må i en KOPP. Noe varmt, i en kopp.» Du har bær igjen. Færre, men nok.",
+          },
         },
         {
-          id: "disken",
-          navn: "Disken",
-          rect: { x: 0, y: 46, w: 18, h: 26 },
+          id: "veden",
+          navn: "Veden under ovnen",
+          rect: { x: 4, y: 70, w: 22, h: 30 },
           smart: "se",
-          se: "Boller under glassklokker, kringler på et fat og mel over alt. Under den ene klokka ligger fire boller. Under den andre lå det fire kringler. Nå ligger det tre. Ingen sier noe.",
-          bruk: "Du løfter på glassklokka med nebbet. Hjerterud: «Spør, så får du. Det er regelen her. Det er den eneste regelen her.»",
-          prat: "Du sier «hallo» til bollene. De sier ingenting, men de lukter kanel tilbake, og det er et slags svar.",
+          se: "Bjørkeved stablet i buen under ovnen, med barken ut, så tørr at den synger når den brenner. Hjerterud stabler selv. Hun har sendt hjem to nisser som stablet feil vei. De kom tilbake. Alle kommer tilbake.",
+          bruk: "Du drar i en vedkubbe. Stabelen svaier. Du dytter den tilbake. Hjerterud har allerede snudd seg. Hun snur seg alltid i tide.",
         },
         {
-          id: "krusene",
-          navn: "Krusene",
-          rect: { x: 0, y: 73, w: 19, h: 22 },
+          id: "hyllene",
+          navn: "Spiskammerhyllene",
+          rect: { x: 34, y: 4, w: 32, h: 42 },
           smart: "se",
-          se: "Krus i alle størrelser. Det største har en hank som er limt tre ganger. Det tilhører IQ. Det minste tilhører Pil. Det med klementin på tilhører ingen. Alle vet hvem det tilhører.",
-          prat: "Du sier «skål» til krusene. Det klinger svakt i det største. Det er IQs. Det klinger alltid litt, hank nummer tre er løs.",
-          bruk: "Du tar i det minste kruset. Det er tomt og rent. Hjerterud vasker opp før noen er ferdige med å drikke. Det er en gave og en forbannelse.",
+          se: "Hyller fra gulv til tak med leirkrukker, kobberkjeler og kurver med boller. Den øverste kjelen har en bulk. Den er Julius'. Han insisterer på den. Han sier en bulk er et minne. Hjerterud sier det er en bulk.",
+          prat: "Du uler opp mot kobberkjelene. De synger tilbake, litt falskt. Hjerterud: «Ikke oppmuntre dem, Floke.»",
+          bruk: "Du strekker deg etter en kjele. Hjerterud: «Nei. Jeg har sett ugler med kobberkjeler. Jeg har sett gulvet etterpå.»",
         },
         {
           id: "kakaokanna",
           navn: "Kakaokanna",
-          rect: { x: 18, y: 40, w: 10, h: 22 },
+          rect: { x: 50, y: 57, w: 8, h: 12 },
           smart: "se",
-          se: "En blank messingkanne som damper. Innholdet er varmt, brunt og tykt nok til å stå på egne bein. Hjerterud kaller det kakao. Winter kaller det «ikkje tillatt på torget, paragraf 14».",
+          se: "En brun leirkanne som damper. Innholdet er varmt, brunt og tykt nok til å stå på egne bein. Hjerterud kaller det kakao. Winter kaller det «ikkje tillatt på torget, paragraf 14».",
           prat: "Du hvisker «snart?» til kakaokanna. Den damper tilbake. Hjerterud: «Når du har spist. Kakao på tom mage er bare brunt.»",
           bruk:
             "Du strekker deg mot kanna. Hjerterud setter den lenger inn. «Varm! Og kakao på en ugle vasker seg ikke ut. Jeg vet det. Spør ikke hvordan jeg vet det.» " +
@@ -725,13 +734,61 @@ export const KAPITTEL_1: Kapittel = {
           },
         },
         {
+          id: "melkrukkene",
+          navn: "Melkrukkene",
+          rect: { x: 32, y: 49, w: 18, h: 17 },
+          smart: "se",
+          se:
+            "Store glasskrukker med mel, sukker og kardemomme. Det er et lite fotavtrykk i melet ved siden av. Det har tre tær og hører til en ugle. " +
+            R +
+            "«Krukke på krukke med hvetemel og kardemomme. Hvis Lille-Pjokk velte ei sånn, kommer han til å se ut som en snøball resten av desember!»",
+          bruk: "Du dytter nebbet i ei krukke. Hvitt nebb. Hjerterud ler så krukkene klirrer. «Nå ser du ut som en snøugle!»",
+        },
+        {
+          id: "arbeidsbordet",
+          navn: "Arbeidsbordet",
+          rect: { x: 25, y: 67, w: 48, h: 33 },
+          smart: "se",
+          se: "Et tungt, skuret trebord med spor etter kjevler og elting, mel over alt, en kjevle og en stabel knekkebrød. Det lå fire boller her i stad. Nå ligger det tre. Ingen sier noe.",
+          prat: "Du sier «hallo» til knekkebrødet. Det sier ingenting, men det knaser litt når du lener deg på det, og det er et slags svar.",
+          bruk: "Du triller kjevla med nebbet. Den ruller over bordkanten. Hjerterud fanger den uten å se. «Spør, så får du. Det er regelen her. Det er den eneste regelen her.»",
+        },
+        {
+          id: "sirupen",
+          navn: "Krukka med nissesirup",
+          rect: { x: 74, y: 68, w: 10, h: 17 },
+          smart: "se",
+          se:
+            "Ei lita, rav-glasert krukke med gyllen sirup og ei treøse i. Det renner en tråd ned på bordet. Den har rent der siden i fjor. " +
+            R +
+            "«Aha! Ekte, klissete nissesirup! Én dråpe av det der på et tørt knekkebrød, så kan du lokke med deg sjølvaste Rudolf helt til Fauske!»",
+          bruk: "Du stikker nebbet i sirupen. Det sitter fast. Det sitter fast lenge. Hjerterud løsner deg med tresleiva. «Sirup er for knekkebrød, vennen. Ikke for ugler.»",
+        },
+        {
+          id: "vinduet",
+          navn: "Vinduet",
+          rect: { x: 74, y: 20, w: 18, h: 35 },
+          smart: "se",
+          se: "Rim på rutene og blått vintermørke utenfor. I karmen brenner lysene. Hjerterud tenner dem tidlig.",
+          prat: "Du banker på ruta. Utenfor ser Winter opp fra postkassen, finner deg i vinduet og noterer. Hjerterud, uten å snu seg: «La ham. Han har så lite.»",
+        },
+        {
+          id: "kafekroken",
+          navn: "Kafékroken",
+          rect: { x: 76, y: 56, w: 10, h: 12 },
+          smart: "se",
+          se: "Et lite bord under vinduet med kubbelys og et fat boller. På det ligger en lapp: «Reservert Julius». Lappen er fra forrige jul. Hjerterud tar den ikke bort. Han kommer kanskje.",
+          bruk: "Du blåser på det ene lyset. Det blafrer og blir stående. Hjerteruds lys slukker ikke. Det har de aldri gjort.",
+        },
+        {
           id: "hjerterud",
+          figur: "hjerterud",
           navn: "Hjerterud",
-          rect: { x: 31, y: 29, w: 15, h: 63 },
+          rect: { x: 86, y: 58, w: 13, h: 40 },
           smart: "snakk",
           snakk: "hjerterud",
-          se: "Hjerterud bak disken med et brett nystekte boller. Kinnene er røde av ovnen, håret har rømt fra knuten, og forkleet har mer mel enn stoff. Hun smiler før hun ser hvem det er. Hun smiler alltid før.",
-          bruk: "Du prikker Hjerterud på armen. Hun ser ned. «Floke! Har du spist? Du har ikke spist. Ugler spiser ikke nok.» Hun legger en bolle på disken. Du har ikke spurt. Det trengs ikke.",
+          se: "Hjerterud i lenestolen i kafékroken med en kurv nystekte boller på fanget. Kinnene er røde av ovnen, det er mel på nesa, og forkleet har mer mel enn stoff. Hun smiler før hun ser hvem det er. Hun smiler alltid før.",
+          bruk: "Du prikker Hjerterud på armen. Hun ser ned. «Floke! Har du spist? Du har ikke spist. Ugler spiser ikke nok.» Hun legger en bolle på bordet. Du har ikke spurt. Det trengs ikke.",
           feil: {
             bolle:
               "Hjerterud dytter bollen tilbake. «Nei, nei, den er DIN. Spis. Har du spist? Du har ikke spist.»",
@@ -740,87 +797,6 @@ export const KAPITTEL_1: Kapittel = {
             skjema:
               "Hjerterud holder skjemaet med to fingre. «4112-B. Winter. Jeg skriver ikke under på noe jeg ikke har bakt.» Hun gir det tilbake med et melavtrykk i hjørnet.",
           },
-        },
-        {
-          id: "ovnen",
-          navn: "Bakerovnen",
-          rect: { x: 48, y: 15, w: 23, h: 47 },
-          smart: "se",
-          se: "En svær murovn med glødende luke. Det er det varmeste stedet i Snøfall, og om vinteren sover katten, Pil og tre hansker oppå den. Hjerterud vet om katten og Pil.",
-          prat: "Du sier «hei» inn i ovnsluka. Noe oppå ovnen svarer med å strekke seg. Det er katten. Eller Pil. Begge svarer sånn.",
-          bruk:
-            "Du nærmer deg luka. Det er varmt. Veldig varmt. Fjærene dine krøller seg. " +
-            R +
-            "«Ikkje inn i ovnen! Æ har prøvd å varm føttan der. Æ hadde ikkje sokka etterpå. Æ hadde knapt føtter.»",
-          feil: {
-            tyttebaer:
-              "Du holder bærene mot ovnen. De tiner, og saften drypper rett ned på gulvet. Hjerterud: «Ikke på gulvet, Floke! Saft må i en KOPP. Noe varmt, i en kopp.» Du har bær igjen. Færre, men nok.",
-          },
-        },
-        {
-          id: "melsekken",
-          navn: "Melsekken",
-          rect: { x: 63, y: 64, w: 9, h: 20 },
-          smart: "se",
-          se: "En strisekk med mel, åpen i toppen. Det er et lite fotavtrykk i melet ved siden av. Fotavtrykket har tre tær og hører til en ugle. Du har ikke vært her før. Du har vært her før.",
-          bruk: "Du dytter nebbet i melet. Hvitt nebb. Hjerterud ler så brettet rister. «Nå ser du ut som en snøugle!»",
-        },
-        {
-          id: "stolen",
-          navn: "Stolen",
-          rect: { x: 71, y: 55, w: 10, h: 40 },
-          smart: "se",
-          se: "En trestol med rett rygg. På setet står det risset inn: «MIN. – IQ». Stolen er lånt tilbake. Lappene sitter igjen.",
-          prat: "Du spør stolen om den savner IQ. Den sier ingenting, men den står litt vendt mot døra.",
-          bruk: "Du setter deg på stolen. Den er varm fra ovnen. Dette er en god stol. Du skjønner hvorfor IQ ville merke den.",
-        },
-        {
-          id: "bordene",
-          navn: "Bordene",
-          rect: { x: 81, y: 55, w: 19, h: 42 },
-          smart: "se",
-          se: "To små bord med broderte duker og stearinlys. På det ene ligger en lapp: «Reservert Julius». Lappen er fra forrige jul. Hjerterud tar den ikke bort. Han kommer kanskje.",
-          bruk: "Du blåser på det ene lyset. Det blafrer og blir stående. Hjerteruds lys slukker ikke. Det har de aldri gjort.",
-        },
-        {
-          id: "vinduet",
-          navn: "Vinduet",
-          rect: { x: 84, y: 17, w: 16, h: 37 },
-          smart: "se",
-          se: "Rim i hjørnene og klokketårnet utenfor, gyllent mot natta. Vinduskarmen er tom. Lysene står på bordene, og de er alt tent. Hjerterud tenner dem tidlig.",
-          prat: "Du banker på ruta. Utenfor ser Winter opp fra postkassen, finner deg i vinduet og noterer. Hjerterud, uten å snu seg: «La ham. Han har så lite.»",
-        },
-        {
-          id: "tallerkenhylla",
-          navn: "Tallerkenhylla",
-          rect: { x: 27, y: 21, w: 17, h: 9 },
-          smart: "se",
-          se: "Ei hylle med tallerkener i stabel og ei krukke med tresleiver. Den øverste tallerkenen har et hakk. Den er Julius'. Han insisterer på den. Han sier et hakk er et minne. Hjerterud sier det er et hakk.",
-          bruk: "Du strekker deg etter en tallerken. Hjerterud: «Nei. Jeg har sett ugler med tallerkener. Jeg har sett gulvet etterpå.»",
-        },
-        {
-          id: "veden",
-          navn: "Veden under ovnen",
-          rect: { x: 51, y: 64, w: 12, h: 17 },
-          smart: "se",
-          se: "Bjørkeved stablet i buen under ovnen, med barken ut, så tørr at den synger når den brenner. Hjerterud stabler selv. Hun har sendt hjem to nisser som stablet feil vei. De kom tilbake. Alle kommer tilbake.",
-          bruk: "Du drar i en vedkubbe. Stabelen svaier. Du dytter den tilbake. Hjerterud har allerede snudd seg. Hun snur seg alltid i tide.",
-        },
-        {
-          id: "bildet",
-          navn: "Bildet på veggen",
-          rect: { x: 71, y: 32, w: 7, h: 15 },
-          smart: "se",
-          se: "Et lite innrammet ark på veggen ved ovnen: «Bevilling for skjenking av kakao, paragraf 14, unntak 1. – W.» Winters eneste unntak. Hjerterud fikk det ved å servere ham kakao til han signerte. Det tok fire kopper.",
-          prat: "Du leser bevillingen høyt. Hjerterud ler. «Fire kopper. Han sa nei etter hver av dem, og ja etter den femte. Han tror det var fire.»",
-        },
-        {
-          id: "gulvet",
-          navn: "Snøen på gulvet",
-          rect: { x: 42, y: 72, w: 14, h: 11 },
-          smart: "se",
-          se: "Smeltende snø i gangen fra døra, i små hauger med fotspor i. Støvler, støvler, hover, støvler. Hover. Hjerterud slipper inn alle som fryser. Rudolf fryser aldri. Han kommer likevel.",
-          bruk: "Du hopper i den minste snøhaugen. Den sprer seg utover gulvet. Hjerterud, uten å se: «Mopp i kroken, Floke.» Det er en spøk. Ugler mopper ikke. Du ser på moppen likevel.",
         },
       ],
     },

@@ -120,9 +120,9 @@
     "generator": "piksel",
     "sted": "kafe",
     "ut": "spill/piksel/kafe.png",
-    "bilde": "public/spill/piksel/klokketarnet.png",
+    "bilde": "locations/kafe#tom",
     "mal": "assets/prompts/spill/piksel-kafe.txt",
-    "notat": "Ugleposten K1, ny scene: Hjerteruds kafé, komponert etter sonene i kapittel1.ts (prompts/spill/piksel-ny-scene). Klokketårnets pikselbilde er bare stil- og palettreferanse"
+    "notat": "Ugleposten K1: Sukkerstua tegnet om fra Hans' folketomme bakeri (locations/kafe/ref.jpg); Hjerterud er en egen figur"
   },
   "spill-piksel/pakkesentralen": {
     "generator": "piksel",
@@ -169,7 +169,7 @@
     "generator": "portrett",
     "ut": "spill/portrett-hjerterud.png",
     "mal": "assets/prompts/portrett/hjerterud.txt",
-    "refs": ["public/spill/piksel/kafe.png"],
+    "refs": ["public/spill/piksel/kafe.png", "characters/hjerterud#portrett"],
     "notat": "pikselportrett (prompts/portrett/piksel-stil); portrett.sh lager 1024², piksel.sh skalerer til 96 px"
   },
   "portrett/iq": {
@@ -734,7 +734,7 @@
     "mal": "assets/prompts/spill/figur/hjerterud.txt",
     "refs": [
       "public/spill/piksel/kafe.png",
-      "public/spill/portrett-hjerterud.png",
+      "characters/hjerterud#portrett",
       "public/spill/piksel/julius-kontor.png"
     ]
   },

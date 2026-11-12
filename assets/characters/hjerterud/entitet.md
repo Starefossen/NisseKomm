@@ -6,7 +6,7 @@
   "navn": ["Hjerterud"],
   "pronomen": "hun",
   "fra_dag": 1,
-  "refs": {},
+  "refs": { "portrett": "ref-portrett.jpg" },
   "forhold": {
     "julius": "venn; ikke en del av husstanden hans",
     "pil": "baker sammen",
