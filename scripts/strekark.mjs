@@ -18,6 +18,13 @@ if (!r.ok()) throw new Error(`innlogging feilet: ${r.status()}`);
 await page.goto(`${BASE}/nissemor-guide/printout/rampestreker`);
 await page.waitForSelector("[data-strekark]");
 await page.waitForFunction(() => [...document.images].every((i) => i.complete));
+// Guide-only marks and the dev TIDSMASKIN button must not end up in the PNG.
+await page.addStyleTag({ content: "[data-kandidat]{display:none!important}" });
+await page.evaluate(() =>
+  [...document.querySelectorAll("button")]
+    .filter((b) => b.textContent?.includes("TIDSMASKIN"))
+    .forEach((b) => b.remove()),
+);
 for (const n of [1, 2]) {
   const fil = path.join(UT, `strek-ark-${n}.png`);
   await page.locator(`[data-strekark="${n}"]`).screenshot({ path: fil });

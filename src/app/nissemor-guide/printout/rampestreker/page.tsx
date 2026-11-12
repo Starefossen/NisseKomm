@@ -58,7 +58,10 @@ export default async function Rampestreker() {
                               className="w-[52mm] h-[52mm] object-cover border border-gray-400"
                             />
                             {bilder[n - 1]!.kandidat && (
-                              <span className="print:hidden absolute top-1 left-1 bg-yellow-300 text-black text-xs px-1 rounded">
+                              <span
+                                data-kandidat
+                                className="print:hidden absolute top-1 left-1 bg-yellow-300 text-black text-xs px-1 rounded"
+                              >
                                 kandidat
                               </span>
                             )}
