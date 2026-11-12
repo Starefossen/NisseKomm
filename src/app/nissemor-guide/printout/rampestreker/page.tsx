@@ -3,8 +3,6 @@
  * friends: only the sketch and a short title, never codes.
  * PNG: `mise run strekark` screenshots each [data-strekark] sheet.
  */
-import { existsSync } from "node:fs";
-import path from "node:path";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { harRolle } from "@/lib/auth-server";
@@ -12,10 +10,9 @@ import { mediaDir } from "@/lib/media-server";
 import { Oppfrisk } from "../[fil]/Oppfrisk";
 import { Utskrift } from "../_print/Utskrift";
 import { strekTitler } from "@/lib/guide-sesong";
+import { strekBilder } from "@/lib/strek-bilder";
 
 export const dynamic = "force-dynamic";
-
-const fil = (n: number) => `strek/dag${String(n).padStart(2, "0")}.png`;
 
 export default async function Rampestreker() {
   if (!(await harRolle("parent")))
@@ -25,9 +22,7 @@ export default async function Rampestreker() {
       </GuideAuth>
     );
   const titler = strekTitler();
-  const finnes = titler.map((_, i) =>
-    existsSync(path.join(mediaDir(), fil(i + 1))),
-  );
+  const bilder = strekBilder(mediaDir());
   return (
     <div className="min-h-screen bg-(--dark-crt) p-8 print:min-h-0 print:bg-white print:p-0">
       <div className="max-w-4xl mx-auto mb-6 print:hidden">
@@ -54,13 +49,20 @@ export default async function Rampestreker() {
                     const n = a * 12 + j + 1;
                     return (
                       <figure key={n} className="flex flex-col items-center">
-                        {finnes[n - 1] ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={`/media/${fil(n)}`}
-                            alt=""
-                            className="w-[52mm] h-[52mm] object-cover border border-gray-400"
-                          />
+                        {bilder[n - 1] ? (
+                          <div className="relative">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={`/media/strek/${bilder[n - 1]!.fil}`}
+                              alt=""
+                              className="w-[52mm] h-[52mm] object-cover border border-gray-400"
+                            />
+                            {bilder[n - 1]!.kandidat && (
+                              <span className="print:hidden absolute top-1 left-1 bg-yellow-300 text-black text-xs px-1 rounded">
+                                kandidat
+                              </span>
+                            )}
+                          </div>
                         ) : (
                           <div className="w-[52mm] h-[52mm] border border-gray-300 flex items-center justify-center text-gray-400 text-[4mm]">
                             Skisse kommer
