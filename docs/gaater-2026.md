@@ -12,7 +12,7 @@ Steg 1 i byggerekkefølgen. Kilder: `docs/historie-2026.md` (låst), `docs/story
 - **Taket på 40 %.** Huset viser høyst 40 % av bokstavene (4–5 bokstaver: 1–2, 6–7: 2, 8–9: 3, 12: 4), aldri første og siste sammen, aldri to bokstaver ved siden av hverandre. Julius sier aldri ordet, et synonym eller første lyd. Verktøyfiler i NisseNet gir regel, aldri bokstaver. På talldager gir huset tallene og Julius regneregelen.
 - **Frostlappen.** Standardkortet for orddager: like mange ruter som bokstaver, de fleste fylt med iskrystall, noen med bokstav. Rutene er nummerert svakt i hjørnet, så rekkefølgen aldri går tapt. Trykkes som A6-kort på tykt papir fra `/nissemor-guide/printout`.
 - **Roller.** H9 = Håkon (9), K12 = Kristian (12). Gåten er deres: Håkon henter, teller, sorterer og bretter; Kristian slår opp, dekoder, regner og taster. Målet er at Håkon trenger Kristian, og at Kristian trenger 5–15 minutter ekte tenking på hverdager, lenger i helgene og på milepælsdagene 7, 12, 15, 21 og 24. **Hanna (5)** er med gjennom streken, radioen, historien og videoene. Hver dag har én linje «Hanna (hvis hun vil)»: en morsom ting hun kan gjøre, som Håkon eller Kristian alltid kan gjøre i stedet. Ingen tekst sier «bare Hanna». Symbolkortene skanner hun som ritual, ikke som steg.
-- **Tegnene (meta 1).** Kort med synlig bokstav har et lite tegn i hjørnet, ett per bokstav A–Å, fra et oppfunnet tegnsett («Snøfalls gamle skrift», aldri ekte runer). Synlige bokstaver viser sitt riktige tegn. ❄-kort har aldri tegn, unntatt der tegnene er selve gåten (dag 7, 17, 20 og 24). Tegn læres når ordet er løst. Tegnene erstatter bokstaver bare på posisjoner som uansett er åpne (taket gjelder etter dekoding). Fasit (`runer-fasit.pdf`) ligger i Nissemor-guiden og aldri på brettet. Se «Meta-gåter».
+- **Tegnene (meta 1).** Hvert kort huset legger igjen har et lite tegn i hjørnet, ett per bokstav A–Å, fra et oppfunnet tegnsett («Snøfalls gamle skrift», aldri ekte runer). Synlige bokstaver viser sitt riktige tegn. ❄-ruter i ekte skjeletter har tegn som læres når ordet er løst. Blindspor har tegn bare ved synlig bokstav. Tegnene erstatter bokstaver bare på posisjoner som uansett er åpne (taket gjelder etter dekoding). Fasit (`runer-fasit.pdf`) ligger i Nissemor-guiden og aldri på brettet. Se «Meta-gåter».
 - **Blindspor.** Ett ekstra kort, én ekstra pose, to ekstra sendere. Regelen som skiller ekte fra falskt kommer fra Julius eller en fil. Et blindspor gir ❄ eller en bokstav som gir et ord Julius ikke beskriver; det gir aldri et tilfeldig riktig svar. Blindspor med feil bokstav: dag 1, 8, 10, 11, 12, 13, 16.
 - **Lappen, ikke e-posten.** Barna er i huset før de åpner NisseMail. Alt de må vite for å gjøre noe på stedet, står på Rampenissens håndskrevne lapp ved brikken. E-posten viser tilbake til det de fant.
 - **Oppsett-minutter** under hver dag er gåten alene. Rampestreken (§8 i historien) kommer i tillegg; den er aldri selve gåten, men kan holde brikke H.
@@ -54,7 +54,7 @@ Snitt oppsett for gåten: 4,3 minutter. Med rampestreken fra §8: cirka 9. Vente
 
 ### Meta 1: Frostrunene (dag 1 → 7, lesenøkkel resten av måneden)
 
-Kort med synlig bokstav har et tegn i hjørnet (se reglene). Runetavla (A5, 29 ruter A–Å, bokstaver som aldri læres krysset ut, med IQs linje øverst) ligger i ferdskriveren dag 1 og henger på operasjonsbrettet. Barna fyller inn tegn etter hvert som ord løses.
+Hvert kort har et tegn i hjørnet (se reglene). Runetavla (A5, 29 ruter A–Å, bokstaver som aldri læres krysset ut, med IQs linje øverst) ligger i ferdskriveren dag 1 og henger på operasjonsbrettet. Barna fyller inn tegn etter hvert som ord løses.
 
 Lært før dag 7: dag 1 S, I, G, N, A, L (+ E, T fra de løse kortene), dag 3 P, R, M, E, dag 4 K, O, dag 6 Y, T. **Dag 7:** det fryste kortet har bare tegn for L (rute 3) og E (rute 5); `_ _ L _ E` + ovnssetningen = KULDE. Julius peker til tegnene på kortet i segment 2. **Dag 17:** O og L i tegn. **Dag 20:** U (lært dag 7) og B (lært dag 18; reserve i fasit hvis dag 18 er hoppet over). **Dag 24:** U, E, G.
 
@@ -72,7 +72,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** SIGNAL (uendret).
 - **Mekanikk:** tråden er rekkefølgen, som før (storyboard avgjørelse 1). Nytt: to løse kort med bokstav ligger i klementinelva uten klype, som om de falt av i skredet. Bare det som henger på linjen, teller. Scenen (klementinskredet, ferdskriveren, IQs konvolutt) står i «Dag 1: byggeplan» nederst i dokumentet; her står bare gåten. Runetavla introduseres (se «Meta-gåter»).
-- **Brikke H:** rød garntråd fra TV-en («LINJE 90,0») ned skråningen og langs elva til Rampenissens håndledd. Seks A7-kort med klesklyper, talt fra TV-en: ❄, **I**, ❄, **N**, ❄, ❄, tegn i hjørnet bare på I og N. Prikker 1–6 på baksiden. To løse kort, **E** og **T**, ligger blant klementinene (med riktig tegn ved bokstaven). I ferdskriveren, sammen med IQs konvolutt og operasjonsbrettet, ligger runetavla (A5, plass på operasjonsbrettet, 29 ruter A–Å) med IQs linje øverst: «Tegnene i hjørnet av kortene er Snøfalls gamle skrift. Ett tegn, én bokstav. Fyll inn når dere vet.»
+- **Brikke H:** rød garntråd fra TV-en («LINJE 90,0») ned skråningen og langs elva til Rampenissens håndledd. Seks A7-kort med klesklyper, talt fra TV-en: ❄, **I**, ❄, **N**, ❄, ❄, hvert med tegn i hjørnet. Prikker 1–6 på baksiden. To løse kort, **E** og **T**, ligger blant klementinene (med riktig tegn ved bokstaven). I ferdskriveren, sammen med IQs konvolutt og operasjonsbrettet, ligger runetavla (A5, plass på operasjonsbrettet, 29 ruter A–Å) med IQs linje øverst: «Tegnene i hjørnet av kortene er Snøfalls gamle skrift. Ett tegn, én bokstav. Fyll inn når dere vet.»
 - **Brikke S:** Julius, siste setning: «Når linjen bærer, roper IQ ett ord fra verkstedet. Det er det ordet radioen deres leter etter når den skurrer, rett før stemmen kommer gjennom.» Han sier ikke ordet.
 - **Slik løses den:** 1) H9 følger tråden fra TV-en til luen og tar av kortene i rekkefølge; K12 legger dem på bordet. De løse kortene legges til side: de henger ikke på linjen. 2) K12 ser `_ I _ N _ _` og hører Julius: ordet radioen leter etter. SIGNAL. 3) K12 taster. 4) Etterpå: ordet skrives på kortene, og tegnene for S, I, G, N, A, L (og E, T fra de løse) føres inn på tavla.
 - **Hanna (hvis hun vil):** tar kortene av tråden mens H9 holder den stram.
@@ -102,7 +102,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** PRISME (uendret).
 - **Mekanikk:** duggskrift, som før. Nytt: skriften er speilvendt. Sett forfra står det `_ _ Ƨ _ Я _`; bokstavene er speilvendte og rekkefølgen baklengs, som om Rampenissen skrev fra innsiden av speilet. Lest riktig: `_ R _ S _ _`. Videoen er ferdig og røres ikke.
-- **Brikke H:** kvelden før skriver forelderen `_ _ Ƨ _ Я _` på badespeilet med en q-tips dyppet i oppvaskmiddel (speilvendt R og S, seks streker for rutene). Tannkremtaggingen «RAMPEN VAR HER. NO CAP.» og lappen «Pust på meg.» som før. I vinduskarmen: glassperlen, det grønne hjerte-kortet og en liten konvolutt merket «ETTER KODEN – IQ» med frostkortet `_ R _ S _ _` (tegn ved R og S) i. Konvolutten gir ingenting speilet ikke gir, men sørger for at tegnene R og S alltid kommer på tavla; E trengs dag 7.
+- **Brikke H:** kvelden før skriver forelderen `_ _ Ƨ _ Я _` på badespeilet med en q-tips dyppet i oppvaskmiddel (speilvendt R og S, seks streker for rutene). Tannkremtaggingen «RAMPEN VAR HER. NO CAP.» og lappen «Pust på meg.» som før. I vinduskarmen: glassperlen, det grønne hjerte-kortet og en liten konvolutt merket «ETTER KODEN – IQ» med frostkortet `_ R _ S _ _` (tegn i alle seks hjørner) i. Konvolutten gir ingenting speilet ikke gir, men sørger for at tegnene P, R, I, S, M, E alltid kommer på tavla; E trengs dag 7.
 - **Brikke S:** Julius: «Pil holdt glassbiten mot lyset, og hele regnbuen falt på gulvet. Jeg sto midt i den. IQ sa navnet på en sånn glassbit tre ganger. Det er ikke et speil og ikke en lupe.»
 - **Slik løses den:** 1) En voksen setter på varmt vann; speilet dugger, og `_ _ Ƨ _ Я _` trer fram. H9 skriver det av. 2) K12 ser at R og S er speilvendte og snur hele rekka: `_ R _ S _ _`. 3) Julius: glassbit som lager regnbue, seks bokstaver med R og S. PRISME. 4) Konvolutten i vinduskarmen åpnes: tegnene for P, R, I, S, M, E føres på tavla; speilet har ingen tegn.
 - **Hanna (hvis hun vil):** puster på det som ikke er kommet fram, lager regnbue med perlen, skanner hjerte-kortet (symbol 1/9).
@@ -117,7 +117,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** KOMPASS (uendret).
 - **Mekanikk:** skoene er tellerammen, som før, men de står i **ring** rundt Rampenissen (en kompassrose), ikke i tog. Pappas sko med Rampenissen er start. Hvilken vei man teller, sies ikke. Med klokka: `_ _ M _ A _ _`; mot klokka (sko 1, 7, 6, 5, 4, 3, 2): `_ _ _ A _ M _`. Bare den ene passer Julius' setning. Julius' brikke er skrevet om slik at den ikke gir ordet alene (segment 4 og 5 regenereres); tittelen «Skotoget» beholdes (toget har kjørt i ring).
-- **Brikke H:** sju sko i ring på gulvet i gangen, pappas (med Rampenissen i) som start, kosedyrene i ring utenfor. I hver sko et A7-kort. Talt med klokka fra Rampenissen: sko 3 **M**, sko 5 **A**, de fem andre ❄. Tegn i hjørnet bare på M og A. Prikker på baksiden gir avstand fra start (1–7 begge veier er umulig; prikkene følger klokka og er reserve, ikke løsning).
+- **Brikke H:** sju sko i ring på gulvet i gangen, pappas (med Rampenissen i) som start, kosedyrene i ring utenfor. I hver sko et A7-kort. Talt med klokka fra Rampenissen: sko 3 **M**, sko 5 **A**, de fem andre ❄. Alle kort har tegn i hjørnet. Prikker på baksiden gir avstand fra start (1–7 begge veier er umulig; prikkene følger klokka og er reserve, ikke løsning).
 - **Brikke S:** Julius: «Rudolf trenger det samme som sjøfolk har hatt med seg: det som peker samme vei uansett hvor man snur seg. Ikke et kart, ikke en stjerne. Sjøfolk hadde den i lomma, Rudolf har den i nesa.»
 - **Slik løses den:** 1) H9 tar opp kortene og legger dem foran hver sko. 2) K12 skriver begge lesninger, `_ _ M _ A _ _` og `_ _ _ A _ M _`. 3) Julius: det som peker samme vei uansett. Uten skoene kunne det vært nål, pil eller værhane; med `_ _ M _ A _ _` er det KOMPASS. 4) Tegnene for K, O, M, P, A, S føres på tavla.
 - **Hanna (hvis hun vil):** teller skoene høyt rundt ringen.
@@ -125,7 +125,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 3.
 - **Oppsett:** 5 min (sju sko i ring, sju kort, kosedyr i ring bak).
 - **Materialer:** sju sko, 4–6 kosedyr, kortene.
-- **Utskrifter:** `dag04-skokort.pdf` (1 side, tykt papir, 7 kort, tegn på M og A, prikker bak).
+- **Utskrifter:** `dag04-skokort.pdf` (1 side, tykt papir, 7 kort, tegn i hjørnet, prikker bak).
 - **Reserve:** Blir ringen sparket i stykker, teller de prikkene på baksiden (med klokka).
 
 ### Dag 5 (lø) – Brevfuglen over Byfjellene · ULRIKEN · jakt
@@ -147,7 +147,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** LYKT (uendret).
 - **Mekanikk:** skyggefigurer, velg riktig. Uendret: taket tillater bare 1 av 4 bokstaver, så valget mellom figurene er gåten. Kortene får tegn (Y læres bare her).
-- **Brikke H:** tre silhuetter (stearinlys, bål, lykt med hank) i papprullen med lommelykten, ved det røde hjerte-kortet. Baksidene lykt `_ Y _ _`, stearinlys `_ A _ _` og bål `_ O _ _`: tegn bare ved den synlige bokstaven (❄ har aldri tegn). Lapp fra Rampenissen (i melet ved Rampenissen, håndskrevet): «Jeg har laget et instrument! Det ligger i en papprull, sammen med lampen. Slukk lyset og lys mot veggen, én om gangen. – R»
+- **Brikke H:** tre silhuetter (stearinlys, bål, lykt med hank) i papprullen med lommelykten, ved det røde hjerte-kortet. Bakside lykt: `_ Y _ _` med tegn i alle fire hjørner. Bakside stearinlys `_ A _ _` og bål `_ O _ _`: tegn bare ved den synlige bokstaven (blindspor lærer ingen tegn for ❄). Lapp fra Rampenissen (i melet ved Rampenissen, håndskrevet): «Jeg har laget et instrument! Det ligger i en papprull, sammen med lampen. Slukk lyset og lys mot veggen, én om gangen. – R»
 - **Brikke S:** Julius: «Det barna bar mellom gårdene da det var som mørkest. Ikke et bål. Ikke et stearinlys. Det med hank, som man kan henge fra seg.»
 - **Slik løses den:** 1) H9 finner rullen, slukker lyset og holder én silhuett av gangen mot veggen med mobillykten bak. 2) Julius' «med hank» avgjør hvilken bakside som teller. 3) `_ Y _ _`, fire bokstaver, med hank. LYKT. 4) Tegnene for L, Y, K, T føres på tavla.
 - **Hanna (hvis hun vil):** skyggeteateret er hennes: hun sier hva skyggen er. Skanner hjerte-kortet (symbol 2/9).
@@ -162,7 +162,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** KULDE (uendret).
 - **Mekanikk:** tine lappen ut av is, som før. Nytt: kortet har ingen bokstaver, bare to tegn og tre ❄. Rute 3 har tegnet for **L**, rute 5 tegnet for **E** (begge lært dag 1 og 3). Først tine, så kjenne igjen tegnene fra tavla, så Julius. Første utbetaling av meta 1.
-- **Brikke H:** frostkortet (fem ruter: ❄, ❄, tegn L, ❄, tegn E; ❄-rutene har tegn i hjørnet, unntaket fordi tegnene er gåten) i liten plastpose, fryst flatt i et **plastbeger** med 1 cm vann, ved Rampenissens lue i fryseren. Lapp fra Rampenissen (teipet på begeret i fryseren, håndskrevet): «Tin meg! Lunkent vann, og en voksen. – R»
+- **Brikke H:** frostkortet (fem ruter: ❄, ❄, tegn L, ❄, tegn E; ❄-rutene har tegn i hjørnet som vanlig) i liten plastpose, fryst flatt i et **plastbeger** med 1 cm vann, ved Rampenissens lue i fryseren. Lapp fra Rampenissen (teipet på begeret i fryseren, håndskrevet): «Tin meg! Lunkent vann, og en voksen. – R»
 - **Brikke S:** Julius: «Navnet er det motsatte av det Hjerterud har i ovnen akkurat nå. Ikke bollene. Tenk på ovnen. Det som slår mot ansiktet når hun åpner ovnsdøra.» Bildet fryser 1–2 sekunder der han ellers ville sagt navnet. I segment 2 sier han at Orakelet skrev navnet «med tegnene i hjørnet av kortene».
 - **Slik løses den:** 1) H9 finner begeret og tiner det under lunkent vann med en voksen (2–3 min). 2) K12 ser to tegn uten bokstav, husker Julius og tavla, slår opp: L i rute 3, E i rute 5: `_ _ L _ E`. 3) Motsatt av ovnsvarme, fem bokstaver. KULDE. Frostgraden vises for første gang. 4) Tegnene for K, U, D føres på tavla.
 - **Hanna (hvis hun vil):** holder begeret under springen.
@@ -177,7 +177,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** KRETSKORT (uendret).
 - **Mekanikk:** følg ledningen i floken, som før. Nytt: arket har ikke lenger teksten «kun lamper med strøm teller»; den regelen sier Julius. En fjerde ledning går fra batteriet til lampe 4 gjennom en **åpen bryter** (tegnet som brudd med hendel). Lampe 4 har bokstaven **E**. Den som tar den med, får `_ R _ E S _ O _ _` og finner ikke ordet. Kristian har hatt strømkrets på skolen; Håkon har ikke.
-- **Brikke H:** arket på toppen av Sigma-tårnet. Lampe 2 **R**, lampe 5 **S**, lampe 7 **O** med strøm; lampe 4 **E** bak åpen bryter; de fem andre ❄ med ledninger som ender i ingenting. Synlige bokstaver har tegn; ❄ på de døde lampene har ingen. Lapp fra Rampenissen (på tårnet, håndskrevet): «IQs ark ligger på toppen. Ta ned pakkene én og én. Ingen klatring! – R»
+- **Brikke H:** arket på toppen av Sigma-tårnet. Lampe 2 **R**, lampe 5 **S**, lampe 7 **O** med strøm; lampe 4 **E** bak åpen bryter; de fem andre ❄ med ledninger som ender i ingenting. Synlige bokstaver har tegn; ❄ på de døde lampene har tegn i hjørnet (de er ekte ruter i ordet). Lapp fra Rampenissen (på tårnet, håndskrevet): «IQs ark ligger på toppen. Ta ned pakkene én og én. Ingen klatring! – R»
 - **Brikke S:** Julius: «Den lille grønne plata alle ledningene sitter fast på. IQ lodder på én, sover på én, og kaller den alltid det samme, med to ord i ett.» I segment 2: «Bare lamper med strøm lyser, sier han.»
 - **Slik løses den:** 1) H9 river tårnet pakke for pakke og får arket. 2) H9 følger hver ledning fra batteriet. K12 ser bryteren på vei til lampe 4 og forklarer: åpen bryter, ingen strøm. 3) `_ R _ _ S _ O _ _`, grønn plate, to ord i ett. KRETSKORT. 4) Tegn føres på tavla.
 - **Hanna (hvis hun vil):** teller pakkene i tårnet.
@@ -207,7 +207,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** SPEKTER (uendret).
 - **Mekanikk:** rødfilter og regnbuerekkefølge, som før. Nytt: et åttende kort, **HVIT**, med bokstaven **R** under støyen. Hvitt er ikke en regnbuefarge, og `farge-koder.txt` lister sju. Den som tar det med, har åtte kort til sju ruter.
-- **Brikke H:** åtte A7-kort med fargekant og fargenavn, gjemt lavt og høyt i stua. Under rødt støymønster, i cyan: ORANSJE → **P**, BLÅ → **T**, HVIT → **R**, de fem andre → ❄. Tegn bare ved synlige bokstaver; ❄-kortene har ingen. Rødfilteret ved tusjene. Lapp fra Rampenissen (i Rampenissens hånd, håndskrevet): «Kulde tok fargene! Jeg gjemte dem i stua. Det røde filteret ligger ved tusjene. Se gjennom det. – R»
+- **Brikke H:** åtte A7-kort med fargekant og fargenavn, gjemt lavt og høyt i stua. Under rødt støymønster, i cyan: ORANSJE → **P**, BLÅ → **T**, HVIT → **R**, de fem andre → ❄. Tegn ved synlige bokstaver; ❄ på regnbuekortene har tegn, HVIT-kortet har tegn bare ved R. Rødfilteret ved tusjene. Lapp fra Rampenissen (i Rampenissens hånd, håndskrevet): «Kulde tok fargene! Jeg gjemte dem i stua. Det røde filteret ligger ved tusjene. Se gjennom det. – R»
 - **Brikke S:** Julius (hakker, gjentar setningen): «Alle fargene på rekke, slik regnbuen stiller dem opp. IQ har ett ord for hele rekka. Han sier det når han er stolt.»
 - **Slik løses den:** 1) H9 finner kortene. 2) K12 ser hvert kort gjennom filteret. 3) `farge-koder.txt`: regnbuens sju farger. HVIT står ikke der og legges bort. `_ P _ _ T _ _`. 4) Julius: ordet for hele regnbuerekka. SPEKTER. Fargene kommer tilbake.
 - **Hanna (hvis hun vil):** fargesjef: ser gjennom filteret og sier «bokstav» eller «krystall».
@@ -237,7 +237,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** MELODI (uendret).
 - **Mekanikk:** sortere etter tonehøyde, som før. Nytt: fire beholdere, ikke tre: tre glass med vann og **ett keramikkrus** som gir dunk, ikke tone. Kruset bærer biten `_ A`. Julius sier «tre toner»; den som ikke klinger, er ikke Hjerteruds. Krypto 1 strammes også: hintet navngir ikke fargene lenger (se app-tekster A5); fargenes betydning står i PS dag 3, 6 og 9.
-- **Brikke H:** tre like glass med 2, 5 og 9 cm vann og ett krus med litt vann, i tilfeldig rekkefølge i enden av dorullen. Biter teipet nederst på utsiden med forsiden inn: dypeste glass `_ E`, midterste `_ O`, lyseste `_ _`, kruset `_ A`. Tegn ved E, O og A; ❄ har ingen. Teskje ved. Grønt sol-kort mot midtglasset. Lapp fra Rampenissen (ved glassene, håndskrevet): «Slå forsiktig på hver av dem med skjeen. Lappene sitter nederst, utenpå. – R»
+- **Brikke H:** tre like glass med 2, 5 og 9 cm vann og ett krus med litt vann, i tilfeldig rekkefølge i enden av dorullen. Biter teipet nederst på utsiden med forsiden inn: dypeste glass `_ E`, midterste `_ O`, lyseste `_ _`, kruset `_ A`. Tegn ved E, O og A; ❄ på de tre glassbitene har tegn, kruset ikke. Teskje ved. Grønt sol-kort mot midtglasset. Lapp fra Rampenissen (ved glassene, håndskrevet): «Slå forsiktig på hver av dem med skjeen. Lappene sitter nederst, utenpå. – R»
 - **Brikke S:** Julius: «Hjerterud nynnet tre toner ved slusen, den dypeste først. Ingen ord. Hør: bare det tonene lager når de kommer etter hverandre. Isen kjente det igjen.» (Omskrevet: uten glassene kan det være sang, låt, rytme eller musikk; med `_ E _ O _ _` er det MELODI.)
 - **Slik løses den:** 1) H9 slår på alle fire. Kruset synger ikke og legges bort. 2) H9 sorterer glassene fra dypest til lysest, bitene i samme rekkefølge: `_ E _ O _ _`. 3) K12: det tonene lager etter hverandre, seks bokstaver med E og O. MELODI. NisseMusikk tiner. 4) NisseKrypto 1: rekkefølgen «varmt, håper, alene» må oversettes til rødt, grønt, blått via PS dag 6, 3 og 9 (to kjente, den tredje ved utelukkelse) → `frosne-koder.txt` og merket Varmebærer.
 - **Hanna (hvis hun vil):** slår på glassene og sier hvilken som ikke synger. Skanner sol-kortet (symbol 4/9).
@@ -252,7 +252,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** SAFRAN (uendret).
 - **Mekanikk:** velg riktig krydder, som før. Nytt: fire poser, to av dem gule: ekte safran (tråder) og gurkemeie (pulver). Gurkemeieposens kort er `_ _ R _ _ _ _ _ _` (ni ruter; GURKEMEIE passer, og mange lussekatter er faktisk farget med det). Julius' «krokus, tre tråder per blomst, dyrere enn gull» skiller dem. **Standardvalg, kan endres:** kjøp en liten konvolutt ekte safran (40–80 kr, lokalt).
-- **Brikke H:** fire små zip-poser på servietten ved Rampenissen: kanel `_ _ N _ _`, gurkemeie `_ _ R _ _ _ _ _ _`, safran `_ _ F _ _ _`, nellik `_ _ L _ _ _`. Like kort, ingen navn. Tegn bare ved synlige bokstaver; ❄ har ingen. Lussekatten ved.
+- **Brikke H:** fire små zip-poser på servietten ved Rampenissen: kanel `_ _ N _ _`, gurkemeie `_ _ R _ _ _ _ _ _`, safran `_ _ F _ _ _`, nellik `_ _ L _ _ _`. Like kort, ingen navn. Tegn ved synlige bokstaver; ❄ på safrankortet har tegn, blindsporene ikke. Lussekatten ved.
 - **Brikke S:** Julius: «Det gule i bollene er krydderet fra en krokus. Tre tråder per blomst, plukket for hånd. Tre tråder er lite. Derfor koster det mer enn gull, og derfor låser Hjerterud det inn.»
 - **Slik løses den:** 1) H9 åpner posene; to er gule. 2) K12 hører «tråder» og ser at én gul pose har tråder, den andre pulver. Google er lov («krydder fra krokus»). 3) `_ _ F _ _ _`, seks bokstaver. SAFRAN.
 - **Hanna (hvis hun vil):** lukter på alle fire og sier hvilke som er gule.
@@ -267,7 +267,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** ORIGAMI (uendret).
 - **Mekanikk:** brett og hold mot lyset, som før. Nytt: to brettelinjer. Brettet langs den loddrette og holdt mot lys: bokstavene **R** og **G** i to vinduer. Brettet langs den vannrette: tallene **2** og **4** ved de samme vinduene. Arket sier «Brett. Hold en lykt bak.» uten å si hvor mange ganger.
-- **Brikke H:** arket sammenrullet i papirbåten i vasken. Flatt: tilfeldige streker og sju tomme ruter uten tegn (❄ har aldri tegn). Bretteanvisning for serviettfugl ved (bare moro).
+- **Brikke H:** arket sammenrullet i papirbåten i vasken. Flatt: tilfeldige streker og sju tomme ruter med tegn i hjørnene. Bretteanvisning for serviettfugl ved (bare moro).
 - **Brikke S:** Julius: «Winter har ett ord for å gi et flatt ark vinger uten saks og lim, bare ved å bøye det. Winter er lur. Han uttaler det feil med vilje, så ingen på linjen skal forstå.» (Omskrevet: verken _japansk_ eller _brette_; uten arket kan det være fly, fugl eller kunst; med `_ R _ G _ _ _` er det ORIGAMI.)
 - **Slik løses den:** 1) H9 bretter langs den ene linjen og ser to bokstaver, men ikke hvor de hører hjemme. 2) K12 prøver den andre linjen: tallene. R i 2, G i 4: `_ R _ G _ _ _`. 3) Ark som får vinger ved å bøyes, sju bokstaver med R og G. ORIGAMI. Den blå fuglen vises i Brevfugler.
 - **Hanna (hvis hun vil):** holder lykten bak arket.
@@ -357,7 +357,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** TURBO (uendret).
 - **Mekanikk:** puter inne i fortet, som før, men i rot. Rekkefølgen er størrelsen: Rampenissen «stablet etter størrelse, den største som nummer én» og veltet alt. Putene må sorteres etter størrelse før kortene gir rekkefølge. Kortene bærer tegn for **U** (lært dag 7) og **B** (lært dag 18). Meta 2 utløses: Julius sier hvor porten står.
-- **Brikke H:** fem puter i tydelig ulik størrelse inne i fortet, hulter til bulter. Bruk hva som helst som er pute: sofaputer, pynteputer, en hodepute, en barnepute; det viktige er at ingen to er like store. Under den nest største: tegn U. Under den fjerde største: tegn B. Under de tre andre ❄ (uten tegn). Grønt måne-kort under den minste. Skiltet «KUN FOR SIGMAS. 6-7.» ved inngangen. Lapp fra Rampenissen (ved inngangen til fortet, håndskrevet): «Putene lå etter størrelse, den største som nummer én. Så veltet jeg. Unnskyld. – R»
+- **Brikke H:** fem puter i tydelig ulik størrelse inne i fortet, hulter til bulter. Bruk hva som helst som er pute: sofaputer, pynteputer, en hodepute, en barnepute; det viktige er at ingen to er like store. Under den nest største: tegn U. Under den fjerde største: tegn B. Under de tre andre ❄ (med tegn i hjørnet). Grønt måne-kort under den minste. Skiltet «KUN FOR SIGMAS. 6-7.» ved inngangen. Lapp fra Rampenissen (ved inngangen til fortet, håndskrevet): «Putene lå etter størrelse, den største som nummer én. Så veltet jeg. Unnskyld. – R»
 - **Brikke S:** Julius: «IQ ga sledemotoren det samme som biler får når de skal forbi noen i bakken. IQ elsker ordet. Han roper det hver gang motoren starter, og motoren hviner tilbake.» Deretter varselet og, i siste segment: «Jeg har bedt om én port. Den står der jeg tegnet sirkelen på Trixters kart.»
 - **Slik løses den:** 1) H9 henter putene ut og legger dem etter størrelse. 2) K12 slår opp tegnene: `_ U _ B _`. 3) Det biler får i bakken, fem bokstaver. TURBO. 4) E-post og radio: finn fram bøker til i morgen. K12 noterer: porten = sirkelen på kartet fra dag 18.
 - **Hanna (hvis hun vil):** kryper inn i fortet og rekker ut putene. Skanner måne-kortet (symbol 7/9).
@@ -372,7 +372,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** BRANNMUR (uendret).
 - **Mekanikk:** bokmur lest fra venstre, som før. Nytt: bare én bokstav står på ryggene. Den andre ligger som kort inne i én bok, porten. Hvilken bok som er porten, sa Julius dag 20: der sirkelen står på Trixters kart (varde 5). Boka Rampenissen satte på gløtt (bok 3) er feil og inneholder et ❄-kort med teksten «Feil bok. Hvor satte Julius sirkelen?». Meta 2 betaler seg. **Standardvalg, kan endres:** dagen løses etter skolen; frosten varer til koden er inne (nødstopp 20:00).
-- **Brikke H:** åtte bøker som lav mur foran skjermen. Ryggkort fra venstre: 1 ❄, 2 **R**, 3 ❄, 4 ❄, 5 ❄, 6 ❄, 7 ❄, 8 ❄, alle med lite rutetall i hjørnet; tegn bare på R. Inne i bok 5: kortet `U · 7` (med tegn). Inne i bok 3 (på gløtt): et ❄-kort med teksten «Feil bok. Hvor satte Julius sirkelen?». Grytelokket og vispen står inntil. Skjerm og app er fryst fra morgenen.
+- **Brikke H:** åtte bøker som lav mur foran skjermen. Ryggkort fra venstre: 1 ❄, 2 **R**, 3 ❄, 4 ❄, 5 ❄, 6 ❄, 7 ❄, 8 ❄, alle med lite rutetall i hjørnet og tegn. Inne i bok 5: kortet `U · 7` (med tegn). Inne i bok 3 (på gløtt): et ❄-kort med teksten «Feil bok. Hvor satte Julius sirkelen?». Grytelokket og vispen står inntil. Skjerm og app er fryst fra morgenen.
 - **Brikke S:** Julius: «IQ bygde en vegg av varme rundt linjen. Veggen har et navn. De som kjemper mot flammene i skogen, bygger samme slags vegg, og kaller den etter det de kjemper mot.» Så: «Jeg lot ham la én port stå åpen. Inn mot grotten. Med varme i.»
 - **Slik løses den:** 1) H9 leser ryggkortene fra venstre: bare R på 2. 2) K12 husker dag 20: porten er sirkelen på Trixters kart. Åpner `stjernetegn.txt`: varde 5. Åpner bok 5: `U · 7`. (Bok 3 på gløtt gir ❄ og «Feil bok».) 3) `_ R _ _ _ _ U _`, brannfolkenes vegg, dataordet for en vegg som slipper noe gjennom. BRANNMUR. Kanalene tiner, porten tegnes i sidepanelet, merket Portvokter.
 - **Hanna (hvis hun vil):** leser ryggkortene og sier «bokstav» eller «is».
@@ -402,7 +402,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** STJERNEKLART (uendret).
 - **Mekanikk:** nummererte stjerner i treet, som før. Nytt: tallene på baksiden er romertall (I–XII), tilbakeblikk til dag 2. Fargesamlerens siste side (fil etter krypto 3) får en siste linje i tegn: «KOM NED MED LYS», lesbar for den som har holdt tavla (Å læres aldri; derfor ikke «gå»).
-- **Brikke H:** tolv stjerner i treet, de laveste i Hannas høyde. Forside: nr. 5 **R**, nr. 8 **K**, nr. 10 **A**, resten ❄; tegn bare ved R, K og A. Bakside: I–XII. Rampenissen i treet med det blå måne-kortet.
+- **Brikke H:** tolv stjerner i treet, de laveste i Hannas høyde. Forside: nr. 5 **R**, nr. 8 **K**, nr. 10 **A**, resten ❄; alle med tegn. Bakside: I–XII. Rampenissen i treet med det blå måne-kortet.
 - **Brikke S:** Julius: «Orakelet meldte flyværet i ett ord. Ikke en sky, ikke én. Været har et ord for en natt der alt som blinker der oppe er synlig hele veien. Ordet begynner med det som blinker.» (Delt i to setninger 12. november, samme grunn.)
 - **Slik løses den:** 1) H9 plukker stjernene (en voksen løfter til de høye). 2) H9 legger dem etter romertallet og snur dem: `_ _ _ _ R _ _ K _ A _ _`. 3) K12: tolv bokstaver, værordet for en natt uten skyer. STJERNEKLART. 4) NisseKrypto 3 → `hjertets-hemmelighet.txt` og siste side.
 - **Hanna (hvis hun vil):** tar de lave stjernene. Skanner måne-kortet (symbol 9/9).
@@ -445,7 +445,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 **Revisjon vanskelighet (10. november, godkjent):**
 
-- Tegn i hjørnet av kort med synlig bokstav (meta 1), aldri på ❄ unntatt dag 7, 17, 20, 24; runetavle på brettet fra dag 1; kort i tegn dag 7, 17, 20, 24; runelinjer i spøkelsesbildet og i to filer.
+- Tegn i hjørnet av alle kort (meta 1); runetavle på brettet fra dag 1; kort i tegn dag 7, 17, 20, 24; runelinjer i spøkelsesbildet og i to filer.
 - Trixters kart med åtte varder og sirkel på varde 5 (meta 2); porten dag 21 er bok 5.
 - Posisjon tatt bort fra lappen: dag 14 (to bretter), 15 (margnotat i notatboken), 20 (sortering etter størrelse).
 - To steg: dag 2 (romertall), 3 (speilvendt), 4 (retning ukjent), 23 (romertall).
@@ -553,7 +553,7 @@ Alt ligger under `/nissemor-guide/printout` og samles i én PDF for måneden plu
 | Diplom «Snøfalls venn» | 3 | tykt | 24 | ett per barn |
 | Valgfritt: `dag14-serviettfugl.pdf`, `dag17-losepengebrev.pdf` | 2 | vanlig | 14, 17 | |
 
-Sum: 44 sider obligatorisk (29 tykt, 12 vanlig, 3 symbolkort-sider) pluss 2 valgfrie. Kort med synlig bokstav har tegn i hjørnet; ❄-kort har ingen (unntatt dag 7, 17, 20, 24). Dag 1-scenens utskrifter (frakt, ferdskriver, linjekort, flylogg, operasjonsbrett) er med i summen; hvordan de brukes står i «Dag 1: byggeplan».
+Sum: 44 sider obligatorisk (29 tykt, 12 vanlig, 3 symbolkort-sider) pluss 2 valgfrie. Alle kort-PDF-er har tegn i hjørnet. Dag 1-scenens utskrifter (frakt, ferdskriver, linjekort, flylogg, operasjonsbrett) er med i summen; hvordan de brukes står i «Dag 1: byggeplan».
 
 ## (c) Forberedelseskalender for foreldre
 
