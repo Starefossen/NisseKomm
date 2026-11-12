@@ -62,7 +62,15 @@ export async function extraMusic(dir = mediaDir()): Promise<MediaStatus[]> {
   );
 }
 
-const MEDIA_DIRS = ["video", "audio", "music", "feed", "strek", "spill", "promo"];
+const MEDIA_DIRS = [
+  "video",
+  "audio",
+  "music",
+  "feed",
+  "strek",
+  "spill",
+  "promo",
+];
 
 /** Every media file under MEDIA_DIRS, so old versions, stills and sprites show up too. */
 async function walk(dir: string, rel = ""): Promise<string[]> {

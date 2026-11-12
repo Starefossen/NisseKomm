@@ -4,6 +4,8 @@ To promovideoer for voksne (A) og en teaser (B). Ikke en del av sesongen: bakes 
 `python3 -u assets/bin/julius-dag.py 90 --manus docs/manus/julius-promo.md --dest <mappe utenfor public> --cutaway <klipp>:<kutt>:<sek> … --plakat <bilde>`.
 Innklippene er raske montasjer fra appen (0,7–1,4 s per bilde, glitch mellom): ta opp med Playwright mot en egen dev-server og klipp med `python3 assets/bin/promo-montasje.py <opptak-A> <opptak-B> <ut>`; bildelisten står i skriptet. B viser bare skrivebordet uskarpt, Snøfall TV og kalenderen uten «NOE ÅPNER».
 
+Full klipp (v4): lag Julius uten innklipp (`julius-dag.py 90 --manus … --join-only --dest <mappe> --plakat <bilde>`), ta opp appen med et skript som merker hvert bilde med navn, tid og et 16:9-utsnitt av vinduet, og kjør `python3 assets/bin/promo-montasje.py lag <julius.mp4> <opptak> A <ut.mp4>`. Den gir 1920×1080 med kort oppstart, skrivebordet og app-bilder over midten av hver replikk (Julius i bilde de første 2 s og siste 1 s); lyden hans går urørt under. Bildelisten står i `LAG`. Ferdige versjoner ligger i `MEDIA_DIR/promo/` (gamle som `.oldN`) og vises bare for foreldre.
+
 ## Dag 90 (promo) – Til de voksne
 
 Kulde-nivå 0. Rent bilde og ren lyd. Fire segmenter, 67 ord.
