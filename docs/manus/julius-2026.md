@@ -1,6 +1,6 @@
 # Julius' videodagbok 2026 – manus
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5 endret 13.11 etter ja fra Hans.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans.
 
 **Revisjon 10. november (vanskelighet, godkjent):** nye segmenter dag 5/4, 7/3, 7/5, 8/3, 9/4, 11/4 og 11/5 (nytt), 20/5. Etter uavhengig gjennomgang også 4/4, 4/5, 12/4, 12/5, 14/4, 14/5, 18/4, 18/5 (brikken ga ordet alene). Brikkene står ordrett som i `gaater-2026.md` etter revisjonen.
 
@@ -137,7 +137,7 @@ Kulde-nivå 1. Svak knitring, lett snø. Lappen fra Hjerterud er et ark fra brev
    - Varighet: 14 s (20 ord) · låst
    - Handling: Snur seg i stolen til begge sider mens venstre pekefinger står stille i luften.
    - Kulde: Svak knitring.
-4. **Replikk:** «Ikke et kart, ikke en stjerne. Sjøfolk hadde den i lomma, Rudolf har den i nesa. Ha en fin dag!»
+4. **Replikk:** «Det er ikke et kart og ikke en stjerne. Sjøfolk hadde den i lomma, Rudolf har den i nesa. Ha en fin dag!»
    - Varighet: 14 s (20 ord) · låst
    - Handling: Rister på hodet to ganger, klapper seg på brystet med venstre hånd, så på nesen, ler.
    - Kulde: Svak knitring, klikk.
@@ -175,11 +175,11 @@ Kulde-nivå 1. Svak knitring. Rapporten fra Rampenissen står i åpningen. Fire 
    - Varighet: 14 s (19 ord)
    - Handling: Nikker mot juletreet til venstre og holder blikket der, smiler.
    - Kulde: Svak knitring.
-3. **Replikk:** «Og nå dagens ord, Håkon. Det barna bar mellom gårdene da det var som mørkest.»
+3. **Replikk:** «Og nå dagens ord, Håkon. Barna bar noe mellom gårdene da det var som mørkest.»
    - Varighet: 11 s (15 ord) · låst
    - Handling: Løfter venstre hånd som om han bærer noe i en hank, og holder den slik hele segmentet.
    - Kulde: Svak knitring.
-4. **Replikk:** «Ikke et bål. Ikke et stearinlys. Det med hank, som man kan henge fra seg. Ha en riktig fin søndag!»
+4. **Replikk:** «Det var ikke et bål og ikke et stearinlys. Det hadde hank, så man kunne henge det fra seg. Ha en riktig fin søndag!»
    - Varighet: 14 s (20 ord) · låst
    - Handling: Henger det usynlige på en usynlig krok med venstre hånd, så vinker han kort.
    - Kulde: Svak knitring, klikk.

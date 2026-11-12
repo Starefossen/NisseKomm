@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Make one Julius video diary entry from the locked script.
 
-Usage: julius-dag.py <dag> [--suffix -v3] [--extend] [--dry-run] [--force] [--join-only] [--refilter] [--no-chain] [--cutaway <klipp.mp4>[:kutt[:sek]]]... [--manus <fil>] [--dest <mappe>] [--plakat <bilde>] [--upload <base-url>]
+Usage: julius-dag.py <dag> [--suffix -v3] [--extend] [--dry-run] [--force] [--join-only] [--refilter] [--chain] [--cutaway <klipp.mp4>[:kutt[:sek]]]... [--manus <fil>] [--dest <mappe>] [--plakat <bilde>] [--upload <base-url>]
        julius-dag.py lint [dag ...]      segments over 22 words (locked brikke exempt), timing budget
        julius-dag.py selftest
 
@@ -253,7 +253,13 @@ def audit(clip: Path):
     return bad
 
 
-RESET = 3  # segments 1, 4, 7 start from ref-v3.jpg again so drift in light and look cannot pile up
+RESET = 3  # with --chain, segments 1, 4, 7 start from ref-v3.jpg again so drift in light and look cannot pile up
+END = "Avslutter rolig med et smil, ingen latter."  # laughter after the goodbye read as sinister (Hans, dag 3)
+
+
+def chained(i: int, argv) -> bool:
+    """Start from the previous segment's last frame? Off by default: a wrong mic hand spread through the chain."""
+    return "--chain" in argv and i > 1 and bool((i - 1) % RESET)
 
 
 def last_frame(clip: Path, out: Path) -> Path:
@@ -291,9 +297,11 @@ def main():
         if clip.exists() and not speech_at_end(raw) and (coverage(raw, line) or 0) >= MIN_COVERAGE:
             continue
         env = dict(os.environ)
-        if i > 1 and (i - 1) % RESET and "--no-chain" not in sys.argv:
+        if chained(i, sys.argv):
             env["REF"] = str(last_frame(OUT / f"dag{day:02d}-{i - 1}.raw.mp4", OUT / f"{name}.start.jpg"))
         act = f"{action} Kuldes påvirkning: {kulde_fx(kulde, line, locked, secs, False)[4]}"
+        if i == len(segs):
+            act += " " + END
         best = (None, None)  # (score, problems); score = (clean, coverage)
         for attempt in range(1, ATTEMPTS + 1):
             r = subprocess.run([str(BIN / "julius.sh"), name, line, act, str(secs)], stdin=subprocess.DEVNULL, env=env)
@@ -624,6 +632,7 @@ def selftest():
         join(clips[:1] + [q], Path(d) / "t.mp4")
         assert abs(seconds(Path(d) / "t.mp4") - (2 + TRAIL + (b - a) - XFADE + OUTRO + BLACK)) < 0.15
         assert speech_span(clips[0], 2.0)[1] > 2.0  # speech to the very end: padded, not cut
+    assert not chained(2, []) and chained(2, ["--chain"]) and not chained(4, ["--chain"]) and not chained(1, ["--chain"])
     assert "mic_hand_ok is false" in AUDIT and "floats" in AUDIT and MIC.search("mic floating")
     print("selftest ok")
 

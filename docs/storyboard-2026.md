@@ -179,7 +179,7 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Morgen.** Strek (helg): snøengler i 1 dl mel i et stekebrett på kjøkkenbordet, Rampenissen midt i den største. Radio: «Jeg fant lommelykten deres. Og en papprull. Jeg har laget noe til dere. Det er ikke rot. Det er et instrument. Melet er rot.»
 
-**Innlogging.** Tema: St. Nikolaus, gaver i sko, lyktene folk bar mellom gårdene. I natt: Orakelet sier lys er det Kulde ikke tåler; IQ hengte lykter rundt antennen. Brikke S: «Det barna bar mellom gårdene da det var som mørkest. Ikke et bål, ikke et stearinlys. Det med håndtak.» Kulde 1.
+**Innlogging.** Tema: St. Nikolaus, gaver i sko, lyktene folk bar mellom gårdene. I natt: Orakelet sier lys er det Kulde ikke tåler; IQ hengte lykter rundt antennen. Brikke S: «Barna bar noe mellom gårdene da det var som mørkest. Det var ikke et bål og ikke et stearinlys. Det hadde hank, så man kunne henge det fra seg.» Kulde 1.
 
 **Gåte.** H: lommelykt + papprull med bakepapir og sjablong i enden, gjemt utenfor scenen (gang/soverom) sammen med rødt hjerte-kort. Sjablongen er skjelettet `L _ K _` skåret ut, så bokstavene står på veggen når Håkon lyser (H9); Hanna sier hva hun ser og leser bokstavene (H5). S: det med håndtak. Kristian: LYKT (K12). Kode **LYKT**. **Steg 1:** utskårne bokstaver i bakepapir gir bare diffust lys med en vanlig lommelykt; bokstavprojeksjon er ikke pålitelig. Bruk skyggefigurer (silhuett som kan være lykt, lampe eller fakkel; Julius' «med håndtak» avgjør) eller en lapp som bare kan leses med lykt under bordet, innenfor brikketaket.
 
