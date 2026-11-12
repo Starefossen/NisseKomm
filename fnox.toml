@@ -1,0 +1,2 @@
+[secrets]
+GEMINI_API_KEY= { provider = "keychain", value = "GEMINI_API_KEY" }
