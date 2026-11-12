@@ -9,6 +9,7 @@ mkdirSync(UT, { recursive: true });
 const browser = await chromium.launch();
 const page = await browser.newPage({ deviceScaleFactor: 3 });
 const r = await page.request.post(`${BASE}/api/auth/login`, {
+  headers: { origin: BASE },
   data: { code: process.env.PARENT_CODE ?? "NORDPOL-DEV2026" },
 });
 if (!r.ok()) throw new Error(`innlogging feilet: ${r.status()}`);
