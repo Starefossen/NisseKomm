@@ -88,29 +88,35 @@ export function pakk(deler: Del[]): Ark[] {
   return ark;
 }
 
+// Lines are inline borders, not Tailwind or outline: they must print even
+// when the stylesheet or background graphics are lost (Safari/Firefox print).
+const SVART = "0.3mm solid #000";
 const hjorner = [
-  "top-0 left-0 border-t border-l",
-  "top-0 right-0 border-t border-r",
-  "bottom-0 left-0 border-b border-l",
-  "bottom-0 right-0 border-b border-r",
+  { top: 0, left: 0, borderTop: SVART, borderLeft: SVART },
+  { top: 0, right: 0, borderTop: SVART, borderRight: SVART },
+  { bottom: 0, left: 0, borderBottom: SVART, borderLeft: SVART },
+  { bottom: 0, right: 0, borderBottom: SVART, borderRight: SVART },
 ];
 
 function Klipp({ p, bak }: { p: Plass; bak: boolean }) {
   const x = bak ? B - p.x - p.b : p.x;
   return (
     <div
-      className="absolute overflow-hidden outline-[0.2mm] outline-dashed outline-gray-400 -outline-offset-[0.1mm]"
       style={{
+        position: "absolute",
+        overflow: "hidden",
+        boxSizing: "border-box",
+        border: "0.2mm dashed #888",
         left: `${x}mm`,
         top: `${p.y}mm`,
         width: `${p.b}mm`,
         height: `${p.h}mm`,
       }}
     >
-      {hjorner.map((c) => (
+      {hjorner.map((c, i) => (
         <span
-          key={c}
-          className={`absolute w-[4mm] h-[4mm] border-black ${c}`}
+          key={i}
+          style={{ position: "absolute", width: "4mm", height: "4mm", ...c }}
         />
       ))}
       {bak ? p.del.bakside?.(p.i) : p.del.forside(p.i)}
@@ -132,13 +138,29 @@ function A3Halv({ p, halv }: { p: Plass; halv: "topp" | "bunn" }) {
       </div>
       {halv === "topp" ? (
         <>
-          <span className="absolute bottom-0 left-0 w-[8mm] border-b-[0.6mm] border-black" />
-          <span className="absolute bottom-0 right-0 w-[8mm] border-b-[0.6mm] border-black" />
+          <span
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: "8mm",
+              borderBottom: "0.6mm solid #000",
+            }}
+          />
+          <span
+            style={{
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+              width: "8mm",
+              borderBottom: "0.6mm solid #000",
+            }}
+          />
         </>
       ) : (
         <div
-          className="absolute top-0 left-0 w-full flex items-center justify-center text-[3mm] font-sans text-gray-600 bg-[repeating-linear-gradient(45deg,#0000_0_2mm,#0002_2mm_3mm)] border-b-[0.3mm] border-black"
-          style={{ height: `${LIM}mm` }}
+          className="absolute top-0 left-0 w-full flex items-center justify-center text-[3mm] font-sans text-gray-600 bg-[repeating-linear-gradient(45deg,#0000_0_2mm,#0002_2mm_3mm)] "
+          style={{ height: `${LIM}mm`, borderBottom: "0.3mm solid #000" }}
         >
           LIM HER · legg nederkanten av ark 1 langs streken
         </div>
@@ -223,8 +245,12 @@ export function Utskrift({
         >
           <div
             data-ark={bak ? "bak" : "for"}
-            className="relative overflow-hidden"
-            style={{ width: `${B}mm`, height: `${H}mm` }}
+            style={{
+              position: "relative",
+              overflow: "hidden",
+              width: `${B}mm`,
+              height: `${H}mm`,
+            }}
           >
             {a.a3 ? (
               <A3Halv p={a.plasser[0]} halv={a.a3} />

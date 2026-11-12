@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { describe, it, expect } from "@jest/globals";
 import { pakk, type Del } from "../_print/Utskrift";
 
@@ -27,5 +28,16 @@ describe("Utskrift.pakk", () => {
         expect(p.x + p.b).toBeLessThanOrEqual(194);
         expect(p.y + p.h).toBeLessThanOrEqual(280);
       }
+  });
+});
+
+describe("Utskrift lines print with default browser settings", () => {
+  it("draws cut lines and marks as inline borders, never background or outline", () => {
+    const src = (f: string) =>
+      readFileSync(`${__dirname}/../_print/${f}`, "utf8");
+    for (const f of ["Utskrift.tsx", "dager01-12/operasjonsbrett.tsx"]) {
+      expect(src(f)).not.toMatch(/outline-|border-black/);
+    }
+    expect(src("Utskrift.tsx")).toMatch(/border: "0\.2mm dashed/);
   });
 });
