@@ -1,0 +1,56 @@
+import { describe, it, expect } from "@jest/globals";
+import { familie, type StatusKilde } from "./media-status";
+import { dayRows } from "@/app/nissemor-guide/media/oversikt";
+import {
+  dagElement,
+  tilstand,
+} from "@/app/nissemor-guide/gjennomgang/elementer";
+import type { Sesong } from "@/app/nissemor-guide/_kveld/felles";
+
+const f = (path: string) => ({ path, size: 5 });
+// Hans' case: plain files in use not reviewed or stale, the newest -vN approved.
+const k: StatusKilde = {
+  filer: [
+    f("video/julius/dag-01.mp4"),
+    f("video/julius/dag-01-v3.mp4"),
+    f("video/julius/dag-01-v4.mp4"),
+    f("video/julius/dag-02.mp4"),
+    f("video/julius/dag-02-v4.mp4"),
+    f("video/julius/dag-03.mp4"),
+    f("video/julius/dag-03-v5.mp4"),
+  ],
+  vurderinger: {
+    "video/julius/dag-01-v3.mp4": { vurdering: "lag_paa_nytt" },
+    "video/julius/dag-01-v4.mp4": { vurdering: "godkjent" },
+    "video/julius/dag-02-v4.mp4": { vurdering: "godkjent" },
+    "video/julius/dag-03.mp4": { vurdering: "godkjent" },
+    "video/julius/dag-03-v5.mp4": { vurdering: "godkjent" },
+  },
+  inventar: new Map([["video/julius/dag-02.mp4", { status: "stale" }]]),
+};
+
+describe("media-status", () => {
+  it("cellen er filen i bruk, pluss nyeste kandidat", () => {
+    const d1 = familie("video/julius/dag-01-v3.mp4", k);
+    expect(d1.key).toBe("video/julius/dag-01.mp4");
+    expect(d1.tekst).toBe("○ → v4 ✓");
+    expect(d1.kanTaIBruk).toBe(true);
+    expect(d1.versjoner.map((v) => v.navn)).toEqual(["v4", "v3", "i bruk"]);
+    expect(familie("video/julius/dag-02.mp4", k).tekst).toBe("! → v4 ✓");
+    expect(familie("video/julius/dag-03.mp4", k).tekst).toBe("✓ → v5 ✓");
+    expect(familie("video/julius/dag-04.mp4", k).tekst).toBe("✗");
+  });
+
+  it("mediesiden og Gjennomgang gir samme celle", () => {
+    const rows = dayRows(k.filer, k);
+    const sesong = { dager: [] } as unknown as Sesong;
+    for (const n of [1, 2, 3, 4]) {
+      const e = dagElement("julius", n, sesong, k.filer)!;
+      const g = tilstand(e, k);
+      const m = rows[n - 1].julius;
+      expect(g.celle).toBe(m.state);
+      expect(g.tekst).toBe(familie(`video/julius/dag-0${n}.mp4`, k).tekst);
+      expect(familie(e.id, k).kandidat?.navn).toBe(m.kandidat?.navn);
+    }
+  });
+});

@@ -38,6 +38,7 @@ import path from "node:path";
 import { createUploadTicket, mediaDir, mediaStatus } from "@/lib/media-server";
 import type { Caller, Level } from "./auth";
 import { getClip } from "./clips";
+import { familie } from "@/lib/media-status";
 
 type State = Record<string, unknown>;
 type Tool = {
@@ -857,7 +858,7 @@ export const TOOLS: Record<string, Tool> = {
   list_vurderinger: {
     level: "parent",
     description:
-      "Hans' vurderinger fra guiden, én linje per element: id | vurdering | oppdatert | notat. status «åpne» (standard, alt som ikke er godkjent) eller «alle»; siden = ISO-tid; prefiks = id-start.",
+      "Hans' vurderinger fra guiden, én linje per element: id | vurdering | oppdatert | notat (| i bruk: cellen fra media-status for mediefiler). status «åpne» (standard, alt som ikke er godkjent) eller «alle»; siden = ISO-tid; prefiks = id-start.",
     inputSchema: {
       type: "object",
       properties: {
@@ -889,9 +890,29 @@ export const TOOLS: Record<string, Tool> = {
         );
       const aapne = rader.filter(([, v]) => v.vurdering !== "godkjent");
       const vis = status === "alle" ? rader : aapne;
+      // Media ids get the same cell as the guide: the file in use, «→ vN».
+      const dir = mediaDir();
+      const k = {
+        filer: await mediaStatus(dir),
+        vurderinger: alle,
+        inventar: new Map(
+          (
+            JSON.parse(
+              await readFile(
+                path.join(dir, "media-inventar.json"),
+                "utf8",
+              ).catch(() => "[]"),
+            ) as { path: string; status: string }[]
+          ).map((r) => [r.path, r]),
+        ),
+      };
+      const celle = (id: string) =>
+        k.filer.some((f) => f.path === id)
+          ? ` | i bruk: ${familie(id, k).tekst}`
+          : "";
       const linjer = vis.map(
         ([id, v]) =>
-          `${id} | ${v.vurdering ?? "-"} | ${(v.oppdatert ?? "").slice(0, 16).replace("T", " ")} | ${(v.notat ?? "").replace(/\s*\n\s*/g, " / ")}`,
+          `${id} | ${v.vurdering ?? "-"} | ${(v.oppdatert ?? "").slice(0, 16).replace("T", " ")} | ${(v.notat ?? "").replace(/\s*\n\s*/g, " / ")}${celle(id)}`,
       );
       return [`${aapne.length} åpne av ${rader.length}`, ...linjer].join("\n");
     },

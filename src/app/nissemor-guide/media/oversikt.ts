@@ -1,4 +1,11 @@
 import type { MediaStatus } from "@/lib/media";
+import {
+  celleFor,
+  familie,
+  variantOf,
+  type Celle,
+  type StatusKilde,
+} from "@/lib/media-status";
 import { frostLevelFor, frostModeFor } from "@/lib/frost";
 import {
   CHANNELS,
@@ -34,23 +41,18 @@ const TV_EVENTS: Record<number, { name: string; files: string[] }> = {
   },
 };
 
-export type CellState =
-  | "godkjent"
-  | "ikke_vurdert"
-  | "lag_paa_nytt"
-  | "utdatert"
-  | "mangler"
-  | "kode";
+export type CellState = Celle | "kode";
 
 export interface ItemStatus {
   label: string;
   files: string[];
-  /** Every file present (true for code-only TV events). */
+  /** Every file in use present (true for code-only TV events). */
   ok: boolean;
   state: CellState;
-  /** Verdict note, or the newer version waiting («v4 klar»). */
+  /** Verdict note on the file in use. */
   note?: string;
-  klar?: string;
+  /** The newer candidate and its state («→ v4 ✓»). */
+  kandidat?: { navn: string; celle: Celle };
 }
 
 export interface DayRow {
@@ -60,15 +62,6 @@ export interface DayRow {
   /** null: nothing changes on TV that day. */
   tv: ItemStatus | null;
 }
-
-/** Review and inventory data the day table reads; without it every present file is «ikke vurdert». */
-export interface Review {
-  vurderinger: Record<string, { vurdering?: string; notat?: string }>;
-  inventar: Map<string, { status: string }>;
-}
-
-const variantOf = (path: string) =>
-  Number(path.match(/-v(\d+)\.mp4$/)?.[1] ?? 0);
 
 /** «Versjon vK» for a Julius variant, null for the main file. */
 export const variantLabel = (path: string) => {
@@ -89,48 +82,24 @@ export function juliusFiles(
   return [...variants, main];
 }
 
-// Worst first: a cell shows the state that needs attention most.
-const WORST: CellState[] = [
-  "mangler",
-  "lag_paa_nytt",
-  "utdatert",
-  "ikke_vurdert",
-  "godkjent",
-];
-
-export function dayRows(files: MediaStatus[], review?: Review): DayRow[] {
-  const present = new Set(
-    files.filter((f) => f.size !== null).map((f) => f.path),
-  );
-  const stateOf = (p: string): { state: CellState; note?: string } => {
-    if (!present.has(p)) return { state: "mangler" };
-    const v = review?.vurderinger[p];
-    if (v?.vurdering === "lag_paa_nytt")
-      return { state: "lag_paa_nytt", note: v.notat };
-    if (review?.inventar.get(p)?.status === "stale")
-      return { state: "utdatert" };
-    return { state: v?.vurdering === "godkjent" ? "godkjent" : "ikke_vurdert" };
-  };
+export function dayRows(
+  files: MediaStatus[],
+  review: Omit<StatusKilde, "filer"> = { vurderinger: {} },
+): DayRow[] {
+  const k = { ...review, filer: files };
   const item = (label: string, paths: string[]): ItemStatus => {
-    // The plain name is what the app plays; with no plain file, the newest version stands in.
-    let klar: string | undefined;
-    const used = paths.map((p) => {
-      if (present.has(p)) return p;
-      const v = juliusVariantsOf(p, present)[0];
-      if (v) klar = v.match(/-(v\d+)\.\w+$/)?.[1];
-      return v ?? p;
-    });
-    const states = used.map(stateOf);
-    const state: CellState = paths.length
-      ? WORST.find((w) => states.some((s) => s.state === w))!
-      : "kode";
+    const { celle, familie: f } = celleFor(paths, k);
+    const state: CellState = paths.length ? celle : "kode";
     return {
       label,
       files: paths,
-      ok: paths.every((p) => present.has(p)),
+      ok: paths.every((p) => familie(p, k).iBruk.celle !== "mangler"),
       state,
-      note: states.find((s) => s.state === state)?.note,
-      klar: klar ? `${klar} klar` : undefined,
+      note: f?.iBruk.notat,
+      kandidat: f?.kandidat && {
+        navn: f.kandidat.navn,
+        celle: f.kandidat.celle,
+      },
     };
   };
   return Array.from({ length: 24 }, (_, i) => {
@@ -147,14 +116,6 @@ export function dayRows(files: MediaStatus[], review?: Review): DayRow[] {
         : null,
     };
   });
-}
-
-/** Present -vN files beside a plain path, newest first. */
-function juliusVariantsOf(path: string, present: Set<string>): string[] {
-  const stem = path.replace(/(\.\w+)$/, "");
-  return [...present]
-    .filter((p) => p.startsWith(`${stem}-v`))
-    .sort((a, b) => variantOf(b) - variantOf(a));
 }
 
 export interface ChannelView {
@@ -271,44 +232,4 @@ export function sortReviewItems<T extends { path: string }>(
   return [...items].sort((a, b) => a.path.localeCompare(b.path));
 }
 
-/**
- * The version convention (also in assets/bin/medie.py, VERSION): the plain name is
- * the file in use, <name>-vN.<ext> a newer candidate, <name>.old-N.<ext> a replaced
- * or rejected one. dag-01-v3.mp4 and dag-01.old-1.mp4 belong with dag-01.mp4.
- */
-export const versionKey = (path: string) =>
-  path.replace(/(?:-v\d+|\.old-\d+)(\.\w+)$/, "$1");
-
-/** .old-N oldest (higher N newer), the plain name next (it is what the app plays), then -vN by N. */
-const versionRank = (path: string) => {
-  const old = path.match(/\.old-(\d+)\.\w+$/);
-  if (old) return -1 / (1 + Number(old[1]));
-  return path === versionKey(path)
-    ? 0.5
-    : Number(path.match(/-v(\d+)\.\w+$/)?.[1] ?? 0);
-};
-
-export interface VersionGroup<T> {
-  /** The path the app uses: the plain name. */
-  key: string;
-  newest: T;
-  /** Everything but newest, newest first. */
-  older: T[];
-}
-
-/** Items grouped by versionKey, in the order the keys first appear. */
-export function groupVersions<T extends { path: string }>(
-  items: T[],
-): VersionGroup<T>[] {
-  const groups = new Map<string, T[]>();
-  for (const it of items) {
-    const k = versionKey(it.path);
-    groups.set(k, [...(groups.get(k) ?? []), it]);
-  }
-  return [...groups].map(([key, list]) => {
-    const [newest, ...older] = list.sort(
-      (a, b) => versionRank(b.path) - versionRank(a.path),
-    );
-    return { key, newest, older };
-  });
-}
+export { groupVersions, versionKey } from "@/lib/media-status";

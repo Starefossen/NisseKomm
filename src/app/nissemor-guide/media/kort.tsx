@@ -2,7 +2,14 @@
 
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { mediaUrl, type MediaStatus } from "@/lib/media";
-import { groupVersions, variantLabel, versionKey } from "./oversikt";
+import { variantLabel } from "./oversikt";
+import {
+  MERKE,
+  familie,
+  groupVersions,
+  versionKey,
+  type StatusKilde,
+} from "@/lib/media-status";
 import type {
   MediaVurderingItem,
   MediaVurderinger,
@@ -420,8 +427,23 @@ export function useMediaData() {
     }
   };
 
+  /** Promote the approved candidate of a version family (POST /api/media/ta-i-bruk). */
+  const taIBruk = async (key: string, kandidat: string) => {
+    setMessage(`Tar i bruk ${kandidat} ...`);
+    const res = await fetch("/api/media/ta-i-bruk", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ kandidat }),
+    });
+    setMessage(
+      res.ok ? `${kandidat} er nå ${key}` : `Feil: ${await res.text()}`,
+    );
+    load();
+  };
+
   return {
     files,
+    taIBruk,
     unavailable,
     message,
     setMessage,
@@ -437,17 +459,41 @@ export function useMediaData() {
   };
 }
 
-const VURDERT = {
-  godkjent: "godkjent",
-  lag_paa_nytt: "lag på nytt",
-} as const;
+/** Status kilde for media-status from the loaded data. */
+export const kilde = (data: ReturnType<typeof useMediaData>): StatusKilde => ({
+  filer: data.files ?? [],
+  vurderinger: data.vurderinger,
+  inventar: data.inventar,
+});
 
-/** Short version name for a summary line: «i bruk», «v2», «gammel 1». */
-const versjonsnavn = (path: string, key: string) =>
-  path === key
-    ? "i bruk"
-    : (path.match(/-(v\d+)\.\w+$/)?.[1] ??
-      path.replace(/.*\.old-(\d+)\.\w+$/, "gammel $1"));
+/** «Ta i bruk vN» for a family whose newest candidate is approved. */
+export function TaIBruk({
+  path,
+  data,
+}: {
+  path: string;
+  data: ReturnType<typeof useMediaData>;
+}) {
+  const f = familie(path, kilde(data));
+  if (data.unavailable || !f.kanTaIBruk || !f.kandidat) return null;
+  const k = f.kandidat;
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        if (
+          confirm(
+            `Erstatte ${f.key} med ${k.path}? Den gamle beholdes som .old-N.`,
+          )
+        )
+          data.taIBruk(f.key, k.path);
+      }}
+      className="min-h-11 px-4 my-2 border-2 border-(--gold) text-(--gold) hover:bg-(--gold)/20 font-bold cursor-pointer"
+    >
+      Ta i bruk {k.navn}
+    </button>
+  );
+}
 
 /**
  * Review cards for the given paths. Each path stands for its version family
@@ -457,9 +503,12 @@ const versjonsnavn = (path: string, key: string) =>
 export function MediaListe({
   paths,
   data,
+  melding = true,
 }: {
   paths: string[];
   data: ReturnType<typeof useMediaData>;
+  /** Show the save/upload message under the list. */
+  melding?: boolean;
 }) {
   if (data.unavailable) return null;
   const byPath = new Map(data.files?.map((f) => [f.path, f]));
@@ -482,25 +531,25 @@ export function MediaListe({
       merknad={merknad}
     />
   );
-  const tilstand = (p: string) =>
-    VURDERT[data.vurderinger[p]?.vurdering as keyof typeof VURDERT] ??
-    "ikke vurdert";
   return (
     <>
       {groupVersions(members)
         .sort((a, b) => keys.indexOf(a.key) - keys.indexOf(b.key))
         .map((v) => (
           <div key={v.key}>
+            <p className="text-base">
+              {familie(v.key, kilde(data)).tekst} · i bruk:{" "}
+              {MERKE[familie(v.key, kilde(data)).celle][2]}
+            </p>
+            <TaIBruk path={v.key} data={data} />
             {card(v.newest, v.newest.path === v.key)}
             {v.older.length > 0 && (
               <details className="mb-3 ml-4">
                 <summary className="min-h-11 flex items-center cursor-pointer underline">
                   Eldre versjoner ({v.older.length}):{" "}
-                  {v.older
-                    .map(
-                      (f) =>
-                        `${versjonsnavn(f.path, v.key)} ${tilstand(f.path)}`,
-                    )
+                  {familie(v.key, kilde(data))
+                    .versjoner.filter((x) => x.path !== v.newest.path)
+                    .map((x) => `${x.navn} ${MERKE[x.celle][2]}`)
                     .join(" · ")}
                 </summary>
                 {v.older.map((f) => card(f, f.path === v.key))}
@@ -508,7 +557,9 @@ export function MediaListe({
             )}
           </div>
         ))}
-      {data.message && <p className="text-sm text-(--gold)">{data.message}</p>}
+      {melding && data.message && (
+        <p className="text-sm text-(--gold)">{data.message}</p>
+      )}
     </>
   );
 }

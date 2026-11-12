@@ -6,7 +6,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { GuideSide, Kort, useSesong, type Sesong } from "../_kveld/felles";
-import { useMediaData } from "../media/kort";
+import { TaIBruk, kilde, useMediaData } from "../media/kort";
+import { FORKLARING, MERKE } from "@/lib/media-status";
 import { SkjulVurder, Vurder, lagre, useVurderinger } from "../vurdering";
 import {
   KOLONNER,
@@ -24,13 +25,6 @@ const SIDE = "/nissemor-guide/gjennomgang";
 const REKKEFOLGE = "nissekomm-guide-gjennomgang-rekkefolge";
 const href = (id: string) => `${SIDE}?id=${encodeURIComponent(id)}`;
 
-const MERKE: Record<Tilstand, [string, string, string]> = {
-  godkjent: ["✓", "text-(--gold)", "Godkjent"],
-  ikke_vurdert: ["○", "text-(--neon-green)/50", "Ikke vurdert"],
-  lag_paa_nytt: ["↻", "text-(--varm-aksent)", "Lag på nytt"],
-  mangler: ["✗", "text-(--christmas-red)", "Mangler"],
-};
-
 const knapp =
   "inline-flex items-center justify-center min-h-11 min-w-11 px-3 border-2 border-(--neon-green) hover:bg-(--neon-green)/20";
 
@@ -41,34 +35,26 @@ function useData() {
   const krypto = GameEngine.getAllQuests().filter(
     (q) => q.decryption_challenge,
   ).length;
-  const finnes = new Set(
-    (media.files ?? []).filter((f) => f.size !== null).map((f) => f.path),
-  );
-  return { sesong, media, vurd, krypto, finnes };
+  return { sesong, media, vurd, krypto };
 }
 
 function Celle({
   e,
   t,
-  notat,
-  stale,
 }: {
   e: Element | null;
-  t?: Tilstand;
-  notat?: string;
-  stale?: boolean;
+  t: ReturnType<typeof tilstand> | null;
 }) {
   if (!e || !t) return <td className="p-1 text-center opacity-40">–</td>;
-  const [tegn, farge, navn] = MERKE[t];
+  const [, farge, navn] = MERKE[t.celle];
   return (
     <td className="p-0 text-center">
       <Link
         href={href(e.id)}
-        title={`${e.tittel}: ${navn}${stale ? " (utdatert)" : ""}${notat ? ` – ${notat}` : ""}`}
-        className={`flex items-center justify-center min-h-11 min-w-11 hover:bg-(--neon-green)/20 ${farge}`}
+        title={`${e.tittel}: i bruk ${navn}${t.notat ? ` – ${t.notat}` : ""}`}
+        className={`flex items-center justify-center min-h-11 min-w-11 px-1 whitespace-nowrap hover:bg-(--neon-green)/20 ${farge}`}
       >
-        {tegn}
-        {stale && <span className="text-(--varm-aksent) text-sm">!</span>}
+        {t.tekst}
       </Link>
     </td>
   );
@@ -82,16 +68,10 @@ function Matrise({
   sesong: Sesong;
 }) {
   const vurd = d.vurd ?? {};
-  const t = (e: Element | null) => e && tilstand(e, vurd, d.finnes);
-  const celle = (e: Element | null) => (
-    <Celle
-      key={e?.id}
-      e={e}
-      t={t(e) ?? undefined}
-      notat={e ? vurd[e.id]?.notat : undefined}
-      stale={e?.media.some((p) => d.media.inventar.get(p)?.status === "stale")}
-    />
-  );
+  const k = { ...kilde(d.media), vurderinger: vurd };
+  const tt = (e: Element | null) => e && tilstand(e, k);
+  const t = (e: Element | null) => tt(e)?.celle;
+  const celle = (e: Element | null) => <Celle key={e?.id} e={e} t={tt(e)} />;
   const alle = alleElementer("dag", sesong, d.media.files, d.krypto);
   const ok = alle.filter((e) => t(e) === "godkjent").length;
   const ekstra = ekstraRader(sesong, d.media.files, d.krypto);
@@ -109,8 +89,10 @@ function Matrise({
           />
         </div>
         <p className="text-base">
-          ✓ godkjent · ○ ikke vurdert · ↻ lag på nytt (notatet vises når du
-          holder over) · ✗ filen mangler · ! utdatert
+          {(Object.keys(MERKE) as Tilstand[])
+            .map((c) => `${MERKE[c][0]} ${MERKE[c][2]}`)
+            .join(" · ")}{" "}
+          (notatet vises når du holder over). {FORKLARING}
         </p>
         {forste && (
           <Link href={href(forste.id)} className={knapp}>
@@ -244,7 +226,7 @@ function Vurdering({
   }, [id, vurd, neste, forrige, router]);
 
   if (!e) return <p>Fant ikke {id}.</p>;
-  const st = tilstand(e, vurd, d.finnes);
+  const st = tilstand(e, { ...kilde(d.media), vurderinger: vurd });
   return (
     <>
       <nav className="flex flex-wrap items-center gap-2">
@@ -279,8 +261,8 @@ function Vurdering({
       </nav>
       <Kort tittel={e.tittel}>
         <p className="text-base break-all">
-          <span className={MERKE[st][1]}>
-            {MERKE[st][0]} {MERKE[st][2]}
+          <span className={MERKE[st.celle][1]}>
+            {st.tekst} i bruk: {MERKE[st.celle][2]}
           </span>{" "}
           · {e.id} · {i + 1} av {liste.length}
           {e.dag && (
@@ -293,6 +275,9 @@ function Vurdering({
           )}
         </p>
         <Vurder id={e.id} />
+        {e.media.map((p) => (
+          <TaIBruk key={p} path={p} data={d.media} />
+        ))}
         <p className="text-base text-(--neon-green)/80">
           Tastatur: G godkjent · L lag på nytt (skriv notat) · N neste · P
           forrige

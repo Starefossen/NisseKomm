@@ -249,12 +249,15 @@ describe("dagstabell", () => {
     expect(rows.slice(0, 6).map((r) => r.julius.state)).toEqual([
       "godkjent",
       "lag_paa_nytt",
-      "ikke_vurdert",
+      "mangler", // only a candidate: nothing in use
       "utdatert",
       "ikke_vurdert",
       "mangler",
     ]);
     expect(rows[1].julius.note).toBe("munn");
-    expect(rows[2].julius.klar).toBe("v4 klar");
+    expect(rows[2].julius.kandidat).toEqual({
+      navn: "v4",
+      celle: "ikke_vurdert",
+    });
   });
 });

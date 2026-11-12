@@ -1,4 +1,10 @@
 import type { MediaVurderinger } from "@/app/api/media/vurdering/route";
+import {
+  MERKE,
+  celleFor,
+  type Celle,
+  type StatusKilde,
+} from "@/lib/media-status";
 import type { Sesong } from "../_kveld/felles";
 import { juliusFiles } from "../media/oversikt";
 import { slug } from "../vurdering";
@@ -166,17 +172,26 @@ export function alleElementer(
   ];
 }
 
-export type Tilstand = "godkjent" | "lag_paa_nytt" | "ikke_vurdert" | "mangler";
+export type Tilstand = Celle;
 
+/** The cell for an element: media through media-status (the file in use, «→ vN»), the rest by verdict. */
 export function tilstand(
   e: Element,
-  vurd: MediaVurderinger,
-  finnes: Set<string>,
-): Tilstand {
-  if (e.media.some((p) => !finnes.has(p))) return "mangler";
-  const v = vurd[e.id]?.vurdering;
+  k: StatusKilde,
+): { celle: Celle; tekst: string; notat?: string } {
+  if (e.media.length) {
+    const { celle, familie } = celleFor(e.media, k);
+    return { celle, tekst: familie!.tekst, notat: familie!.iBruk.notat };
+  }
+  const v = k.vurderinger[e.id];
   // Old entries hold «Lag på nytt» as display text.
-  return v === "godkjent" ? v : v ? "lag_paa_nytt" : "ikke_vurdert";
+  const celle: Celle =
+    v?.vurdering === "godkjent"
+      ? "godkjent"
+      : v?.vurdering
+        ? "lag_paa_nytt"
+        : "ikke_vurdert";
+  return { celle, tekst: MERKE[celle][0], notat: v?.notat };
 }
 
 /** Next element after `id` without a verdict, wrapping around. */

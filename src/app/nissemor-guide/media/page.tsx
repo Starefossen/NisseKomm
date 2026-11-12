@@ -20,32 +20,39 @@ import {
   type CellState,
   type ItemStatus,
 } from "./oversikt";
-import { ReviewItemCard, useMediaData } from "./kort";
-import type { MediaStatus } from "@/lib/media";
+import { MediaListe, useMediaData } from "./kort";
+import { FORKLARING, MERKE } from "@/lib/media-status";
 
 const box = "border-4 border-(--neon-green) bg-black p-4 mb-6";
 
 const CELL: Record<CellState, [string, string, string]> = {
-  godkjent: ["✓", "text-(--gold)", "godkjent"],
-  ikke_vurdert: ["○", "text-(--neon-green)/70", "finnes, ikke vurdert"],
-  lag_paa_nytt: ["↻", "text-amber-400", "lag på nytt"],
-  utdatert: ["!", "text-(--cold-blue)", "utdatert"],
-  mangler: ["✗", "text-(--christmas-red)", "mangler"],
+  ...MERKE,
   kode: ["·", "text-(--neon-green)/70", "kode"],
 };
 
 function Status({ item }: { item: ItemStatus | null }) {
   if (!item) return <span className="text-(--neon-green)/80">–</span>;
   const [mark, color, name] = CELL[item.state];
+  const k = item.kandidat;
   return (
     <span
       className={color}
-      title={[name, item.note, item.files.join(", ")]
+      title={[
+        `i bruk: ${name}`,
+        item.note,
+        k && `${k.navn}: ${MERKE[k.celle][2]}`,
+        item.files.join(", "),
+      ]
         .filter(Boolean)
         .join(" · ")}
     >
       {mark} {item.label}
-      {item.klar && <span className="text-(--gold)"> · {item.klar}</span>}
+      {k && (
+        <span className={MERKE[k.celle][1]}>
+          {" "}
+          → {k.navn} {MERKE[k.celle][0]}
+        </span>
+      )}
     </span>
   );
 }
@@ -56,7 +63,7 @@ function Antall({ name, items }: { name: string; items: ItemStatus[] }) {
     .filter((k) => k !== "kode")
     .map((k) => [k, items.filter((i) => i.state === k).length] as const)
     .filter(([, n]) => n > 0)
-    .map(([k, n]) => `${n} ${CELL[k][2].replace("finnes, ", "")}`);
+    .map(([k, n]) => `${n} ${CELL[k][2]}`);
   return (
     <p>
       {name}: {parts.join(" · ")}
@@ -179,6 +186,7 @@ function Gjennomsyn({ present }: { present: Set<string> | null }) {
 }
 
 function MediaContent() {
+  const media = useMediaData();
   const {
     files,
     unavailable,
@@ -189,10 +197,8 @@ function MediaContent() {
     setOnlyUnrated,
     inventar,
     vurderinger,
-    savingMap,
     upload,
-    handleSaveVerdict,
-  } = useMediaData();
+  } = media;
 
   const missing = files?.filter((f) => f.size === null).length ?? 0;
   const present = files
@@ -259,6 +265,7 @@ function MediaContent() {
                   </span>
                 ))}
             </p>
+            <p className="text-sm mb-2 text-(--neon-green)/80">{FORKLARING}</p>
             <div className="text-sm mb-3 text-(--neon-green)/80">
               <Antall name="Julius" items={rows.map((r) => r.julius)} />
               <Antall
@@ -383,46 +390,11 @@ function MediaContent() {
                     Ingen elementer matcher gjeldende filtre i denne gruppen.
                   </p>
                 ) : (
-                  <div>
-                    {shown.map((v) => {
-                      const card = (
-                        f: MediaStatus,
-                        extra?: { iBruk?: boolean; merknad?: string },
-                      ) => (
-                        <ReviewItemCard
-                          key={`${f.path}-${vurderinger[f.path]?.oppdatert ?? ""}`}
-                          file={f}
-                          inventar={inventar.get(f.path)}
-                          vurdering={vurderinger[f.path]}
-                          isSaving={savingMap[f.path]}
-                          onSaveVerdict={handleSaveVerdict}
-                          onUpload={upload}
-                          {...extra}
-                        />
-                      );
-                      const newer = v.newest.path !== v.key;
-                      return (
-                        <div key={v.key}>
-                          {card(v.newest, {
-                            iBruk: !newer,
-                            merknad: newer
-                              ? `nyere versjon finnes: ${v.newest.path.match(/-(v\d+)\.\w+$/)?.[1] ?? "annen fil"} — ta i bruk?`
-                              : undefined,
-                          })}
-                          {v.older.length > 0 && (
-                            <details className="mb-3 ml-4">
-                              <summary className="min-h-11 flex items-center cursor-pointer underline">
-                                Eldre versjoner ({v.older.length})
-                              </summary>
-                              {v.older.map((f) =>
-                                card(f, { iBruk: f.path === v.key }),
-                              )}
-                            </details>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
+                  <MediaListe
+                    paths={shown.map((v) => v.key)}
+                    data={media}
+                    melding={false}
+                  />
                 )}
 
                 {g.id === "music" && (
