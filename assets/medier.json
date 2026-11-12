@@ -67,7 +67,8 @@
     "sted": "porten",
     "ut": "spill/port-aapen.jpg",
     "bilde": "locations/porten#open",
-    "notat": "nedskalert kopi av ref-open.jpg (1280 px bred), ingen API; generer.py legger den ikke i køen"
+    "notat": "nedskalert kopi av ref-open.jpg (1280 px bred), ingen API; generer.py legger den ikke i køen",
+    "beholdt": true
   },
   "spill-piksel/torget": {
     "generator": "piksel",
@@ -208,7 +209,8 @@
     "sted": "antenne-tjern",
     "ut": "video/tv/antenne-rolig.mp4",
     "bilde": "locations/antenne-tjern#standard",
-    "mal": "assets/prompts/tv/antenne-tjern/rolig.txt"
+    "mal": "assets/prompts/tv/antenne-tjern/rolig.txt",
+    "beholdt": true
   },
   "still/antenne-tjern-dag11": {
     "generator": "mellomstill",
@@ -222,14 +224,16 @@
     "sted": "antenne-tjern",
     "ut": "video/tv/antenne-dag11.mp4",
     "bilde": "still/antenne-tjern-dag11",
-    "mal": "assets/prompts/tv/antenne-tjern/dag11.txt"
+    "mal": "assets/prompts/tv/antenne-tjern/dag11.txt",
+    "beholdt": true
   },
   "tv/grotte-rolig": {
     "generator": "loop",
     "sted": "krystallgrotten",
     "ut": "video/tv/grotte-rolig.mp4",
     "bilde": "locations/krystallgrotten#standard",
-    "mal": "assets/prompts/tv/krystallgrotten/rolig.txt"
+    "mal": "assets/prompts/tv/krystallgrotten/rolig.txt",
+    "beholdt": true
   },
   "still/krystallgrotten-dag12": {
     "generator": "mellomstill",
@@ -243,7 +247,8 @@
     "sted": "krystallgrotten",
     "ut": "video/tv/grotte-dag12.mp4",
     "bilde": "still/krystallgrotten-dag12",
-    "mal": "assets/prompts/tv/krystallgrotten/dag12.txt"
+    "mal": "assets/prompts/tv/krystallgrotten/dag12.txt",
+    "beholdt": true
   },
   "still/krystallgrotten-dag15": {
     "generator": "mellomstill",
@@ -257,7 +262,8 @@
     "sted": "krystallgrotten",
     "ut": "video/tv/grotte-dag15.mp4",
     "bilde": "still/krystallgrotten-dag15",
-    "mal": "assets/prompts/tv/krystallgrotten/dag15.txt"
+    "mal": "assets/prompts/tv/krystallgrotten/dag15.txt",
+    "beholdt": true
   },
   "still/krystallgrotten-dag21": {
     "generator": "mellomstill",
@@ -271,7 +277,8 @@
     "sted": "krystallgrotten",
     "ut": "video/tv/grotte-dag21.mp4",
     "bilde": "still/krystallgrotten-dag21",
-    "mal": "assets/prompts/tv/krystallgrotten/dag21.txt"
+    "mal": "assets/prompts/tv/krystallgrotten/dag21.txt",
+    "beholdt": true
   },
   "still/krystallgrotten-dag23": {
     "generator": "mellomstill",
@@ -285,7 +292,8 @@
     "sted": "krystallgrotten",
     "ut": "video/tv/grotte-dag23.mp4",
     "bilde": "still/krystallgrotten-dag23",
-    "mal": "assets/prompts/tv/krystallgrotten/dag23.txt"
+    "mal": "assets/prompts/tv/krystallgrotten/dag23.txt",
+    "beholdt": true
   },
   "still/krystallgrotten-dag24": {
     "generator": "mellomstill",
@@ -299,7 +307,8 @@
     "sted": "krystallgrotten",
     "ut": "video/tv/grotte-dag24.mp4",
     "bilde": "still/krystallgrotten-dag24",
-    "mal": "assets/prompts/tv/krystallgrotten/dag24.txt"
+    "mal": "assets/prompts/tv/krystallgrotten/dag24.txt",
+    "beholdt": true
   },
   "still/julius-kontor-julius": {
     "generator": "mellomstill",
@@ -314,7 +323,8 @@
     "ut": "video/tv/kontor-julius.mp4",
     "bilde": "still/julius-kontor-julius",
     "mal": "assets/prompts/tv/julius-kontor/vidvinkel-ref.txt",
-    "anker": true
+    "anker": true,
+    "beholdt": true
   },
   "still/julius-kontor-rom": {
     "generator": "mellomstill",
@@ -329,7 +339,8 @@
     "ut": "video/tv/kontor-tom.mp4",
     "bilde": "still/julius-kontor-rom",
     "mal": "assets/prompts/tv/julius-kontor/vidvinkel-tom.txt",
-    "anker": true
+    "anker": true,
+    "beholdt": true
   },
   "still/julius-kontor-dag14": {
     "generator": "mellomstill",
@@ -343,7 +354,8 @@
     "sted": "julius-kontor",
     "ut": "video/tv/kontor-dag14.mp4",
     "bilde": "still/julius-kontor-dag14",
-    "mal": "assets/prompts/tv/julius-kontor/dag14.txt"
+    "mal": "assets/prompts/tv/julius-kontor/dag14.txt",
+    "beholdt": true
   },
   "still/landsby-v2": {
     "generator": "mellomstill",
@@ -364,14 +376,16 @@
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-rolig.mp4",
     "bilde": "still/landsby-v2",
-    "mal": "assets/prompts/tv/snofall-landsby/rolig.txt"
+    "mal": "assets/prompts/tv/snofall-landsby/rolig.txt",
+    "beholdt": true
   },
   "tv/landsby-nordlys": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-nordlys.mp4",
     "bilde": "still/landsby-v2-nordlys",
-    "mal": "assets/prompts/tv/snofall-landsby/nordlys.txt"
+    "mal": "assets/prompts/tv/snofall-landsby/nordlys.txt",
+    "beholdt": true
   },
   "still/landsby-v2-storm": {
     "generator": "mellomstill",
@@ -385,7 +399,8 @@
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-storm.mp4",
     "bilde": "still/landsby-v2-storm",
-    "mal": "assets/prompts/tv/snofall-landsby/storm.txt"
+    "mal": "assets/prompts/tv/snofall-landsby/storm.txt",
+    "beholdt": true
   },
   "still/landsby-v2-dag24": {
     "generator": "mellomstill",
@@ -399,7 +414,8 @@
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-dag24.mp4",
     "bilde": "still/landsby-v2-dag24",
-    "mal": "assets/prompts/tv/snofall-landsby/dag24.txt"
+    "mal": "assets/prompts/tv/snofall-landsby/dag24.txt",
+    "beholdt": true
   },
   "still/landsby-tid-morgen": {
     "generator": "mellomstill",
@@ -413,7 +429,8 @@
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-morgen.mp4",
     "bilde": "still/landsby-tid-morgen",
-    "mal": "assets/prompts/tv/snofall-landsby/tid-morgen.txt"
+    "mal": "assets/prompts/tv/snofall-landsby/tid-morgen.txt",
+    "valgfri": true
   },
   "still/landsby-tid-dag": {
     "generator": "mellomstill",
@@ -427,7 +444,8 @@
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-dag.mp4",
     "bilde": "still/landsby-tid-dag",
-    "mal": "assets/prompts/tv/snofall-landsby/tid-dag.txt"
+    "mal": "assets/prompts/tv/snofall-landsby/tid-dag.txt",
+    "valgfri": true
   },
   "still/landsby-tid-natt": {
     "generator": "mellomstill",
@@ -441,14 +459,16 @@
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-natt.mp4",
     "bilde": "still/landsby-tid-natt",
-    "mal": "assets/prompts/tv/snofall-landsby/tid-natt.txt"
+    "mal": "assets/prompts/tv/snofall-landsby/tid-natt.txt",
+    "valgfri": true
   },
   "tv/landsby-brevfugler": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-brevfugler.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-brevfugler.txt",
-    "tilstand": "landsby-rolig"
+    "tilstand": "landsby-rolig",
+    "valgfri": true
   },
   "still/landsby-julius": {
     "generator": "mellomstill",
@@ -503,105 +523,120 @@
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-reinsdyr.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-reinsdyr.txt",
-    "tilstand": "landsby-rolig"
+    "tilstand": "landsby-rolig",
+    "valgfri": true
   },
   "tv/landsby-hverdag": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-hverdag.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-hverdag.txt",
-    "tilstand": "landsby-rolig"
+    "tilstand": "landsby-rolig",
+    "valgfri": true
   },
   "tv/landsby-aking": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-aking.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-aking.txt",
-    "tilstand": "landsby-rolig"
+    "tilstand": "landsby-rolig",
+    "valgfri": true
   },
   "tv/landsby-marked": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-marked.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-marked.txt",
-    "tilstand": "landsby-rolig"
+    "tilstand": "landsby-rolig",
+    "valgfri": true
   },
   "tv/landsby-tarnklokke": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-tarnklokke.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-tarnklokke.txt",
-    "tilstand": "landsby-rolig"
+    "tilstand": "landsby-rolig",
+    "valgfri": true
   },
   "tv/landsby-stjerneskudd": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-stjerneskudd.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-stjerneskudd.txt",
-    "tilstand": "landsby-rolig"
+    "tilstand": "landsby-rolig",
+    "valgfri": true
   },
   "tv/landsby-morgen-brevfugler": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-morgen-brevfugler.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-brevfugler.txt",
-    "tilstand": "landsby-morgen"
+    "tilstand": "landsby-morgen",
+    "valgfri": true
   },
   "tv/landsby-morgen-hverdag": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-morgen-hverdag.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-hverdag.txt",
-    "tilstand": "landsby-morgen"
+    "tilstand": "landsby-morgen",
+    "valgfri": true
   },
   "tv/landsby-morgen-reinsdyr": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-morgen-reinsdyr.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-reinsdyr.txt",
-    "tilstand": "landsby-morgen"
+    "tilstand": "landsby-morgen",
+    "valgfri": true
   },
   "tv/landsby-dag-aking": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-dag-aking.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-aking.txt",
-    "tilstand": "landsby-dag"
+    "tilstand": "landsby-dag",
+    "valgfri": true
   },
   "tv/landsby-dag-marked": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-dag-marked.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-marked.txt",
-    "tilstand": "landsby-dag"
+    "tilstand": "landsby-dag",
+    "valgfri": true
   },
   "tv/landsby-dag-hverdag": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-dag-hverdag.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-hverdag.txt",
-    "tilstand": "landsby-dag"
+    "tilstand": "landsby-dag",
+    "valgfri": true
   },
   "tv/landsby-natt-stjerneskudd": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-natt-stjerneskudd.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-stjerneskudd.txt",
-    "tilstand": "landsby-natt"
+    "tilstand": "landsby-natt",
+    "valgfri": true
   },
   "tv/landsby-natt-tarnklokke": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-natt-tarnklokke.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-tarnklokke.txt",
-    "tilstand": "landsby-natt"
+    "tilstand": "landsby-natt",
+    "valgfri": true
   },
   "tv/landsby-natt-reinsdyr": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-natt-reinsdyr.mp4",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-reinsdyr.txt",
-    "tilstand": "landsby-natt"
+    "tilstand": "landsby-natt",
+    "valgfri": true
   },
   "tv/port-julius": {
     "generator": "loop",
@@ -1078,5 +1113,115 @@
     "bilde": "characters/rampenissen#ekte",
     "mal": "assets/prompts/strek/skisse.txt",
     "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
+  },
+  "feed/julius-kontor": {
+    "generator": "hånd",
+    "ut": "feed/julius-kontor.jpg",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "feed/snøfall-day": {
+    "generator": "hånd",
+    "ut": "feed/snøfall-day.png",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "feed/snøfall-storm": {
+    "generator": "hånd",
+    "ut": "feed/snøfall-storm.png",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "feed/iq-verksted": {
+    "generator": "hånd",
+    "ut": "feed/iq-verksted.png",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "feed/antenne-tarn": {
+    "generator": "hånd",
+    "ut": "feed/antenne-tarn.png",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "feed/kulde-grotte": {
+    "generator": "hånd",
+    "ut": "feed/kulde-grotte.png",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "feed/landsby-rolig": {
+    "generator": "hånd",
+    "ut": "feed/landsby-rolig.jpg",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "tv/verksted-iq-inne": {
+    "generator": "hånd",
+    "ut": "video/tv/verksted-iq-inne.mp4",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "tv/verksted-tom": {
+    "generator": "hånd",
+    "ut": "video/tv/verksted-tom.mp4",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "musikk/All I Want for Christmas Is You (8-Bit Version)": {
+    "generator": "hånd",
+    "ut": "music/All I Want for Christmas Is You (8-Bit Version).mp3",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "musikk/Deck the Halls (8-Bit Version)": {
+    "generator": "hånd",
+    "ut": "music/Deck the Halls (8-Bit Version).mp3",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "musikk/Feliz Navidad (8-Bit Version)": {
+    "generator": "hånd",
+    "ut": "music/Feliz Navidad (8-Bit Version).mp3",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "musikk/Have Yourself a Merry Little Christmas (8-Bit Version)": {
+    "generator": "hånd",
+    "ut": "music/Have Yourself a Merry Little Christmas (8-Bit Version).mp3",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "musikk/I Saw Mommy Kissing Santa Claus (8-Bit Version)": {
+    "generator": "hånd",
+    "ut": "music/I Saw Mommy Kissing Santa Claus (8-Bit Version).mp3",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "musikk/Jingle Bells (8-Bit Version)": {
+    "generator": "hånd",
+    "ut": "music/Jingle Bells (8-Bit Version).mp3",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "musikk/Last Christmas (8-Bit Version)": {
+    "generator": "hånd",
+    "ut": "music/Last Christmas (8-Bit Version).mp3",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "musikk/Let It Snow, Let It Snow, Let It Snow (8-Bit Version)": {
+    "generator": "hånd",
+    "ut": "music/Let It Snow, Let It Snow, Let It Snow (8-Bit Version).mp3",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "musikk/Rockin' Around the Christmas Tree (8-Bit Version)": {
+    "generator": "hånd",
+    "ut": "music/Rockin' Around the Christmas Tree (8-Bit Version).mp3",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "musikk/Rudolph the Red Nosed Reindeer (8-Bit Version)": {
+    "generator": "hånd",
+    "ut": "music/Rudolph the Red Nosed Reindeer (8-Bit Version).mp3",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "musikk/Sleigh Ride (8-Bit Version)": {
+    "generator": "hånd",
+    "ut": "music/Sleigh Ride (8-Bit Version).mp3",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "musikk/Winter Wonderland (8-Bit Version)": {
+    "generator": "hånd",
+    "ut": "music/Winter Wonderland (8-Bit Version).mp3",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
+  },
+  "musikk/christmas-dreams-jingle-bells-268299": {
+    "generator": "hånd",
+    "ut": "music/christmas-dreams-jingle-bells-268299.mp3",
+    "notat": "laget før inventaret og beholdt (medierevisjon 12.11); generer.py legger den aldri i køen"
   }
 }

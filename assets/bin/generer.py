@@ -167,10 +167,10 @@ def infile(path: str, root: Path) -> Path:
     return media_dir() / path[len("public/"):] if path.startswith("public/") else root / path
 
 
-def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force=False):
+def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force=False, valgfri=False):
     """[(id, category, estimated video requests, command)] in priority order."""
     st = {r["path"]: r["status"] for r in rows}
-    todo = (medie.MISSING, medie.STALE)
+    todo = (medie.MISSING, medie.STALE) + ((medie.VALGFRI,) if valgfri else ())
     vurd = vurderinger or {}
     q = []
 
@@ -365,7 +365,7 @@ def main(argv):
     force = "--force" in argv
     vpath = vurdering_path()
     vurd = load_vurderinger(vpath)
-    q = queue(inventar.scan(media_dir()), tv_jobs(), til_dag=til, vurderinger=vurd, force=force)
+    q = queue(inventar.scan(media_dir()), tv_jobs(), til_dag=til, vurderinger=vurd, force=force, valgfri=bool(bare))
     if bare:
         q = [i for i in q if bare in (i[1], i[0])]  # a category (port) or an item id (port:port-winter)
     if argv[0] == "plan":

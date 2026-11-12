@@ -11,7 +11,12 @@
  */
 
 export type Celle =
-  "godkjent" | "ikke_vurdert" | "lag_paa_nytt" | "utdatert" | "mangler";
+  | "godkjent"
+  | "ikke_vurdert"
+  | "lag_paa_nytt"
+  | "utdatert"
+  | "mangler"
+  | "valgfri";
 
 /** Mark, colour class, name. */
 export const MERKE: Record<Celle, [string, string, string]> = {
@@ -20,10 +25,11 @@ export const MERKE: Record<Celle, [string, string, string]> = {
   lag_paa_nytt: ["↻", "text-amber-400", "lag på nytt"],
   utdatert: ["!", "text-(--cold-blue)", "utdatert"],
   mangler: ["✗", "text-(--christmas-red)", "mangler"],
+  valgfri: ["○", "text-(--gray)", "valgfri – ikke laget"],
 };
 
 export const FORKLARING =
-  "Merket er filen barna ser nå (i bruk). «→ v4 ✓» betyr at en nyere versjon finnes, med sin egen status; den tas i bruk med knappen «Ta i bruk v4».";
+  "Merket er gjeldende versjon (navnet uten -vN). «→ v4 ✓» betyr at en nyere versjon finnes, med sin egen status; den tas i bruk med knappen «Ta i bruk v4».";
 
 // Worst first: a cell over several files shows the one that needs attention most.
 export const VERST: Celle[] = [
@@ -31,6 +37,7 @@ export const VERST: Celle[] = [
   "lag_paa_nytt",
   "utdatert",
   "ikke_vurdert",
+  "valgfri",
   "godkjent",
 ];
 export const verst = (c: Celle[]) =>
@@ -49,10 +56,10 @@ const versionRank = (path: string) => {
   return path === versionKey(path) ? 0.5 : variantOf(path);
 };
 
-/** «i bruk», «v2», «gammel 1». */
+/** «gjeldende versjon», «v2», «gammel 1». */
 export const versjonsnavn = (path: string) =>
   path === versionKey(path)
-    ? "i bruk"
+    ? "gjeldende versjon"
     : (path.match(/-(v\d+)\.\w+$/)?.[1] ??
       path.replace(/.*\.old-(\d+)\.\w+$/, "gammel $1"));
 
@@ -91,7 +98,9 @@ export function versjon(path: string, k: StatusKilde): Versjon {
   const v = k.vurderinger[path];
   // Old entries hold «Lag på nytt» as display text: any other verdict is a rejection.
   const celle: Celle = !finnes
-    ? "mangler"
+    ? k.inventar?.get(path)?.status === "valgfri"
+      ? "valgfri"
+      : "mangler"
     : v?.vurdering && v.vurdering !== "godkjent"
       ? "lag_paa_nytt"
       : k.inventar?.get(path)?.status === "stale"

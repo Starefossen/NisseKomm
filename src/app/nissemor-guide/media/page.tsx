@@ -38,7 +38,7 @@ function Status({ item }: { item: ItemStatus | null }) {
     <span
       className={color}
       title={[
-        `i bruk: ${name}`,
+        `gjeldende versjon: ${name}`,
         item.note,
         k && `${k.navn}: ${MERKE[k.celle][2]}`,
         item.files.join(", "),

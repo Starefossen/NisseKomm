@@ -38,7 +38,14 @@ function formatCreated(iso: string | undefined): string {
 /** One row of media-inventar.json (assets/bin/inventar.py). */
 interface Inventar {
   path: string;
-  status: "current" | "stale" | "unknown" | "missing" | "kandidat" | "arkiv";
+  status:
+    | "current"
+    | "stale"
+    | "unknown"
+    | "missing"
+    | "valgfri"
+    | "kandidat"
+    | "arkiv";
   reasons: string[];
   meta?: {
     generator?: string;
@@ -57,6 +64,7 @@ const INVENTAR_LABEL: Record<Inventar["status"], [string, string]> = {
   stale: ["[!] Utdatert", "text-(--christmas-red)"],
   unknown: ["[?] Ukjent", "text-(--neon-green)/80"],
   missing: ["[✗ Mangler]", "text-(--christmas-red)"],
+  valgfri: ["[○ Valgfri – ikke laget]", "text-(--gray)"],
   kandidat: ["[◇ Kandidat]", "text-(--cold-blue)"],
   arkiv: ["[- Arkiv]", "text-(--gray)"],
 };
@@ -147,7 +155,9 @@ export function ReviewItemCard({
             </span>
           )}
           {file.path}
-          {iBruk && <span className="text-(--gold) ml-2">· i bruk</span>}
+          {iBruk && (
+            <span className="text-(--gold) ml-2">· gjeldende versjon</span>
+          )}
         </span>
         <div className="flex items-center gap-3">
           <span
@@ -359,7 +369,11 @@ export function useMediaData() {
         const have = new Set(list.map((f) => f.path));
         list.push(
           ...rows
-            .filter((r) => r.status === "missing" && !have.has(r.path))
+            .filter(
+              (r) =>
+                (r.status === "missing" || r.status === "valgfri") &&
+                !have.has(r.path),
+            )
             .map((r) => ({ path: r.path, size: null })),
         );
       }
@@ -538,7 +552,7 @@ export function MediaListe({
         .map((v) => (
           <div key={v.key}>
             <p className="text-base">
-              {familie(v.key, kilde(data)).tekst} · i bruk:{" "}
+              {familie(v.key, kilde(data)).tekst} · gjeldende versjon:{" "}
               {MERKE[familie(v.key, kilde(data)).celle][2]}
             </p>
             <TaIBruk path={v.key} data={data} />

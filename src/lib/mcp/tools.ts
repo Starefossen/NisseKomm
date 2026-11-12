@@ -858,7 +858,7 @@ export const TOOLS: Record<string, Tool> = {
   list_vurderinger: {
     level: "parent",
     description:
-      "Hans' vurderinger fra guiden, én linje per element: id | vurdering | oppdatert | notat (| i bruk: cellen fra media-status for mediefiler). status «åpne» (standard, alt som ikke er godkjent) eller «alle»; siden = ISO-tid; prefiks = id-start.",
+      "Hans' vurderinger fra guiden, én linje per element: id | vurdering | oppdatert | notat (| gjeldende versjon: cellen fra media-status for mediefiler). status «åpne» (standard, alt som ikke er godkjent) eller «alle»; siden = ISO-tid; prefiks = id-start.",
     inputSchema: {
       type: "object",
       properties: {
@@ -908,7 +908,7 @@ export const TOOLS: Record<string, Tool> = {
       };
       const celle = (id: string) =>
         k.filer.some((f) => f.path === id)
-          ? ` | i bruk: ${familie(id, k).tekst}`
+          ? ` | gjeldende versjon: ${familie(id, k).tekst}`
           : "";
       const linjer = vis.map(
         ([id, v]) =>

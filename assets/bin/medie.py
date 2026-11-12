@@ -53,6 +53,8 @@ RAMPE_STYLE = re.search(r"^TTS: (.+)$", entity("characters/rampenissen")["seksjo
 CURRENT, STALE, UNKNOWN, MISSING = "current", "stale", "unknown", "missing"
 # history, not something to regenerate: a replaced file (.old-N) and a candidate (-vN), see VERSION
 ARKIV, KANDIDAT = "arkiv", "kandidat"
+# a medier.json job marked "valgfri": nice to have, not made; generer.py queues it only with --bare
+VALGFRI = "valgfri"
 
 # Files made before sidecars whose source is known to be wrong. Only used while the file has no sidecar.
 OVERRIDES = {
@@ -226,12 +228,19 @@ def write(generator, out, source, section, model, images=(), root: Path = ROOT, 
 
 def status(out: Path, key: str = "", root: Path = ROOT):
     """(status, reasons) for one output file. key is its media path, for OVERRIDES and versions."""
+    j = next((j for j in jobs(root).values() if key and j.get("ut") == key), {}) \
+        if (root / MEDIER).exists() else {}
     if not out.exists():
-        return MISSING, []
+        return (VALGFRI if j.get("valgfri") else MISSING), []
     v = VERSION.search(key or out.name)
     if v:  # reasons still say how it differs from today's inputs
         return (ARKIV if v[1].startswith(".old") else KANDIDAT), _status(out, "", root)[1]
-    return _status(out, key, root)
+    if j.get("generator") == "hånd":  # hand-made: there are no inputs to compare, the file is the source
+        return CURRENT, []
+    st, why = _status(out, key, root)
+    if st == UNKNOWN and (j.get("beholdt") or j.get("valgfri")):  # made before sidecars, checked and kept
+        return CURRENT, ["beholdt (laget før sidefiler)"]
+    return st, why
 
 
 def _status(out: Path, key: str, root: Path):

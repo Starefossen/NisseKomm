@@ -262,7 +262,7 @@ function Vurdering({
       <Kort tittel={e.tittel}>
         <p className="text-base break-all">
           <span className={MERKE[st.celle][1]}>
-            {st.tekst} i bruk: {MERKE[st.celle][2]}
+            {st.tekst} gjeldende versjon: {MERKE[st.celle][2]}
           </span>{" "}
           · {e.id} · {i + 1} av {liste.length}
           {e.dag && (

@@ -35,7 +35,11 @@ describe("media-status", () => {
     expect(d1.key).toBe("video/julius/dag-01.mp4");
     expect(d1.tekst).toBe("○ → v4 ✓");
     expect(d1.kanTaIBruk).toBe(true);
-    expect(d1.versjoner.map((v) => v.navn)).toEqual(["v4", "v3", "i bruk"]);
+    expect(d1.versjoner.map((v) => v.navn)).toEqual([
+      "v4",
+      "v3",
+      "gjeldende versjon",
+    ]);
     expect(familie("video/julius/dag-02.mp4", k).tekst).toBe("! → v4 ✓");
     expect(familie("video/julius/dag-03.mp4", k).tekst).toBe("✓ → v5 ✓");
     expect(familie("video/julius/dag-04.mp4", k).tekst).toBe("✗");

@@ -26,7 +26,7 @@ KINDS = [("video/julius/", "julius"), ("audio/rampenissen/", "rampenissen"),
          ("video/tv/port-", "port"), ("video/tv/", "tv"),
          ("feed/", "feed"), ("music/", "music"), ("strek/", "strek"), ("spill/", "spill")]
 MARK = {medie.CURRENT: "✓", medie.STALE: "⚠", medie.UNKNOWN: "?", medie.MISSING: "✗",
-        medie.KANDIDAT: "◇", medie.ARKIV: "-"}
+        medie.KANDIDAT: "◇", medie.ARKIV: "-", medie.VALGFRI: "○"}
 
 
 def manifest(root: Path = ROOT):
@@ -99,10 +99,10 @@ def old_folders(root: Path):
 def markdown(rows, old) -> str:
     kinds = list(dict.fromkeys(r["kind"] for r in rows))
     count = Counter((r["kind"], r["status"]) for r in rows)
-    order = [medie.CURRENT, medie.STALE, medie.UNKNOWN, medie.MISSING, medie.KANDIDAT, medie.ARKIV]
+    order = [medie.CURRENT, medie.STALE, medie.UNKNOWN, medie.MISSING, medie.VALGFRI, medie.KANDIDAT, medie.ARKIV]
     out = ["# Medieinventar", "",
            "Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd.", "",
-           "✓ oppdatert · ⚠ utdatert · ? ukjent (laget før sidefiler) · ✗ mangler · ◇ kandidat (-vN) · - arkiv (.old-N)", "",
+           "✓ oppdatert · ⚠ utdatert · ? ukjent (laget før sidefiler) · ✗ mangler · ○ valgfri, ikke laget · ◇ kandidat (-vN) · - arkiv (.old-N)", "",
            "| Type | " + " | ".join(MARK[s] for s in order) + " |", "|---|" + "---:|" * len(order)]
     out += [f"| {k} | " + " | ".join(str(count[k, s]) for s in order) + " |" for k in kinds]
     for k in kinds:
