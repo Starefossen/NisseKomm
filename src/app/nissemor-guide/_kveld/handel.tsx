@@ -10,6 +10,8 @@ type Vare = ReturnType<typeof handleliste>[number];
 
 /** The shared shopping status (`nissekomm-handlet`), synced between both parents. */
 export function useHandlet() {
+  // Reads storage on every render; the React Compiler would cache it.
+  "use no memo";
   useSynk();
   const [, setTikk] = useState(0);
   const h = StorageManager.getHandlet();
@@ -17,8 +19,13 @@ export function useHandlet() {
   const gammel = StorageManager.getForeldreAvkrysning().handleliste ?? [];
   const status = (id: string, vare: string): Status | undefined =>
     h[id] ?? (gammel.includes(vare) ? "kjopt" : undefined);
-  const sett = (id: string, s: Status | null) => {
+  const sett = (id: string, vare: string, s: Status | null) => {
     StorageManager.setHandlet(id, s);
+    if (gammel.includes(vare))
+      StorageManager.setForeldreAvkrysning(
+        "handleliste",
+        gammel.filter((g) => g !== vare),
+      );
     setTikk((t) => t + 1);
   };
   return { status, sett };
@@ -36,7 +43,7 @@ function VareKnapp({ v, h }: { v: VareTreff; h: Handlet }) {
       className={`inline-flex items-center justify-center min-w-11 min-h-11 -my-3 align-middle ${s ? "text-(--gold)" : "text-(--cold-blue)"}`}
       onClick={(e) => {
         e.preventDefault();
-        h.sett(v.id, s ? null : "kjopt");
+        h.sett(v.id, v.vare, s ? null : "kjopt");
       }}
     >
       {s ? "✓" : "○"}
@@ -120,7 +127,7 @@ export function Handleliste({ varer }: { varer: Vare[] }) {
                         className="mt-1 w-6 h-6 shrink-0 accent-(--gold)"
                         checked={s === "kjopt"}
                         onChange={() =>
-                          h.sett(v.id, s === "kjopt" ? null : "kjopt")
+                          h.sett(v.id, v.vare, s === "kjopt" ? null : "kjopt")
                         }
                       />
                       <span className={s ? "line-through opacity-60" : ""}>
@@ -158,7 +165,7 @@ export function Handleliste({ varer }: { varer: Vare[] }) {
                       type="button"
                       className={`shrink-0 min-h-11 px-2 border-2 text-base ${s === "hjemme" ? "border-(--gold) text-(--gold)" : "border-(--neon-green)/50"}`}
                       onClick={() =>
-                        h.sett(v.id, s === "hjemme" ? null : "hjemme")
+                        h.sett(v.id, v.vare, s === "hjemme" ? null : "hjemme")
                       }
                     >
                       {s === "hjemme" ? "✓ hjemme" : "har hjemme"}
