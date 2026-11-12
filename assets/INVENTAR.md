@@ -10,10 +10,10 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 4 |
 | music | 13 | 0 | 0 | 1 | 0 | 0 | 0 |
 | tv | 19 | 5 | 0 | 0 | 15 | 0 | 17 |
-| port | 3 | 0 | 0 | 1 | 0 | 0 | 9 |
+| port | 2 | 1 | 0 | 1 | 0 | 0 | 9 |
 | feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
-| spill | 56 | 3 | 0 | 4 | 0 | 0 | 20 |
-| strek | 9 | 14 | 0 | 1 | 0 | 5 | 1 |
+| spill | 53 | 6 | 0 | 4 | 0 | 0 | 23 |
+| strek | 9 | 14 | 0 | 1 | 0 | 11 | 1 |
 
 ## julius
 
@@ -137,7 +137,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/tv/verksted-tom.mp4 | 0.4 MB | 2026-11-10 | ✓ |
 | video/tv/kontor-julius.mp4 | 2.8 MB | 2026-11-12 | ✓ |
 | video/tv/kontor-tom.mp4 | 3.4 MB | 2026-11-12 | ✓ |
-| video/tv/kontor-dag14.mp4 | 2.7 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/tv/julius-kontor/dag14.txt; referansebildet finnes ikke her: assets/out/stills/julius-kontor/still-dag14.jpg |
+| video/tv/kontor-dag14.mp4 | 2.7 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/tv/julius-kontor/dag14.txt; referansebildet er endret: assets/out/stills/julius-kontor/still-dag14.jpg |
 | video/tv/antenne-rolig.mp4 | 0.3 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/antenne-dag11.mp4 | 0.3 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/grotte-rolig.mp4 | 0.4 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
@@ -164,7 +164,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/tv/landsby-natt-tarnklokke.mp4 |  |  | ○ |
 | video/tv/landsby-natt-reinsdyr.mp4 |  |  | ○ |
 | video/tv/kontor-dag14.old-1.mp4 | 0.3 MB | 2026-11-10 | - ikke i manifestet |
-| video/tv/kontor-dag14.old-2.mp4 | 3.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/julius-kontor/dag14.txt; referansebildet finnes ikke her: assets/out/stills/julius-kontor/still-dag14.jpg; ikke i manifestet |
+| video/tv/kontor-dag14.old-2.mp4 | 3.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/julius-kontor/dag14.txt; referansebildet er endret: assets/out/stills/julius-kontor/still-dag14.jpg; ikke i manifestet |
 | video/tv/kontor-julius.old-1.mp4 | 0.4 MB | 2026-11-10 | - ikke i manifestet |
 | video/tv/kontor-julius.old-2.mp4 | 2.6 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/julius-kontor/vidvinkel-ref.txt; referansebildet er endret: assets/out/stills/julius-kontor/still-julius.jpg; ikke i manifestet |
 | video/tv/kontor-julius.old-3.mp4 | 2.9 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/julius-kontor/vidvinkel-ref.txt; referansebildet er endret: assets/out/stills/julius-kontor/still-julius.jpg; ikke i manifestet |
@@ -187,7 +187,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 |---|---:|---|---|
 | video/tv/port-julius.mp4 | 3.5 MB | 2026-11-12 | ✓ |
 | video/tv/port-hjerterud.mp4 |  |  | ✗ |
-| video/tv/port-iq.mp4 | 4.5 MB | 2026-11-12 | ✓ |
+| video/tv/port-iq.mp4 | 4.5 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-iq.txt |
 | video/tv/port-winter.mp4 | 3.6 MB | 2026-11-12 | ✓ |
 | video/tv/port-iq.old-1.mp4 | 4.7 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-iq.txt; ikke i manifestet |
 | video/tv/port-iq.old-2.mp4 | 4.7 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-iq.txt; ikke i manifestet |
@@ -227,27 +227,27 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/port-aapen.jpg | 0.1 MB | 2026-11-11 | ✓ beholdt (laget før sidefiler) |
 | spill/piksel/torget.png | 1.4 MB | 2026-11-11 | ✓ |
 | spill/piksel/iq-verksted.png | 1.4 MB | 2026-11-12 | ✓ |
-| spill/piksel/julius-kontor.png | 1.1 MB | 2026-11-12 | ✓ |
+| spill/piksel/julius-kontor.png | 1.1 MB | 2026-11-12 | ⚠ referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png |
 | spill/piksel/antenne-tarn.png | 1.0 MB | 2026-11-11 | ✓ |
 | spill/piksel/kulde-grotte.png | 1.1 MB | 2026-11-11 | ✓ |
 | spill/piksel/port-aapen.png | 1.2 MB | 2026-11-11 | ✓ |
-| spill/piksel/kafe.png | 1.5 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/spill/piksel-kafe.txt |
+| spill/piksel/kafe.png | 1.3 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/spill/piksel-kafe.txt; referansebildet finnes ikke her: assets/locations/kafe/ref.jpg |
 | spill/piksel/pakkesentralen.png | 1.4 MB | 2026-11-11 | ✓ |
 | spill/piksel/klokketarnet.png | 1.4 MB | 2026-11-11 | ✓ |
 | spill/piksel/julebodene.png | 1.4 MB | 2026-11-12 | ✓ |
 | spill/piksel/kart.png | 1.6 MB | 2026-11-12 | ✓ |
 | spill/portrett-winter.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/portrett-hjerterud.png | 0.0 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/portrett/hjerterud.txt |
+| spill/portrett-hjerterud.png | 0.0 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/portrett/hjerterud.txt; referansebildet finnes ikke her: assets/characters/hjerterud/ref-portrett.jpg |
 | spill/portrett-iq.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/portrett-julius.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/portrett-julius.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/julius/ref-portrett.jpg |
 | spill/portrett-floke.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/portrett-rampenissen.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/rudolf.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/rudolf-busk.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/tannhjul.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/peileskive.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/piksel/figur/hjerterud.png | 0.0 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/spill/figur/hjerterud.txt |
-| spill/piksel/figur/julius.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/figur/hjerterud.png | 0.0 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/spill/figur/hjerterud.txt; referansebildet finnes ikke her: assets/characters/hjerterud/ref-portrett.jpg |
+| spill/piksel/figur/julius.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/julius/ref-portrett.jpg; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png |
 | spill/piksel/figur/brevfugl.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/winter.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/slede.png | 0.0 MB | 2026-11-12 | ✓ |
@@ -284,9 +284,10 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/ikon/talgstump.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/brevfugl.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/brevfugl.txt; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/julius-kontor.png; ikke i manifestet |
 | spill/piksel/figur/hjerterud.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/hjerterud.txt; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/julius-kontor.png; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png; ikke i manifestet |
-| spill/piksel/figur/hjerterud.old-2.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/hjerterud.txt; referansebildet er endret: public/spill/piksel/julius-kontor.png; ikke i manifestet |
+| spill/piksel/figur/hjerterud.old-2.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/hjerterud.txt; referansebildet er endret: public/spill/piksel/julius-kontor.png; referansebildet er endret: public/spill/piksel/kafe.png; ikke i manifestet |
+| spill/piksel/figur/hjerterud.old-3.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/hjerterud.txt; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/portrett-hjerterud.png; ikke i manifestet |
 | spill/piksel/figur/julius.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/julius.txt; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/julius-kontor.png; ikke i manifestet |
-| spill/piksel/figur/julius.old-2.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/julius.txt; referansebildet er endret: public/spill/piksel/julius-kontor.png; ikke i manifestet |
+| spill/piksel/figur/julius.old-2.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/julius.txt; referansebildet er endret: public/spill/piksel/julius-kontor.png; referansebildet er endret: assets/characters/julius/ref-portrett.jpg; ikke i manifestet |
 | spill/piksel/ikon/baersaft.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/baersaft.txt; ikke i manifestet |
 | spill/piksel/ikon/boks_i_vott.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/boks_i_vott.txt; ikke i manifestet |
 | spill/piksel/ikon/fiskesnoere.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/fiskesnoere.txt; ikke i manifestet |
@@ -299,8 +300,10 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/julebodene.old-2.png | 1.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-julebodene.txt; ikke i manifestet |
 | spill/piksel/julius-kontor.old-1.png | 1.1 MB | 2026-11-11 | - kildeteksten er endret: assets/prompts/spill/piksel-julius-kontor.txt; ikke i manifestet |
 | spill/piksel/kafe.old-1.png | 1.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-kafe.txt; ikke i manifestet |
+| spill/piksel/kafe.old-2.png | 1.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-kafe.txt; ikke i manifestet |
 | spill/piksel/kart.old-1.png | 1.2 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-kart.txt; ikke i manifestet |
 | spill/portrett-hjerterud.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/hjerterud.txt; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png; ikke i manifestet |
+| spill/portrett-hjerterud.old-2.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/hjerterud.txt; referansebildet er endret: public/spill/piksel/kafe.png; ikke i manifestet |
 | spill/portrett-julius.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/julius.txt; ikke i manifestet |
 
 ## strek
@@ -331,11 +334,17 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | strek/dag22.png | 1.2 MB | 2026-11-12 | ✓ |
 | strek/dag23.png | 1.2 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/strek/skisse-dag23.txt Dag 23 |
 | strek/dag24.png | 1.2 MB | 2026-11-12 | ✓ |
-| strek/dag01-v1.png | 1.2 MB | 2026-11-12 | ◇ ikke i manifestet |
+| strek/dag01-v1.png | 1.2 MB | 2026-11-12 | ◇ kildeteksten er endret: assets/prompts/strek/skisse-dag01.txt Dag 1; ikke i manifestet |
+| strek/dag01-v2.png | 1.2 MB | 2026-11-12 | ◇ kildeteksten er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/assets/out/prompts/strek/dag01.txt; ikke i manifestet |
+| strek/dag01-v3.png | 1.2 MB | 2026-11-12 | ◇ kildeteksten er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/assets/out/prompts/strek/dag01.txt; ikke i manifestet |
+| strek/dag01-v4.png | 1.2 MB | 2026-11-12 | ◇ ikke i manifestet |
 | strek/dag01.old-1.png | 1.3 MB | 2026-11-12 | - ikke i manifestet |
 | strek/dag10-v1.png | 1.4 MB | 2026-11-12 | ◇ ikke i manifestet |
 | strek/dag16-v1.png | 1.3 MB | 2026-11-12 | ◇ ikke i manifestet |
-| strek/dag16-v2.png | 1.2 MB | 2026-11-12 | ◇ ikke i manifestet |
+| strek/dag16-v2.png | 1.2 MB | 2026-11-12 | ◇ kildeteksten er endret: assets/prompts/strek/skisse-dag16.txt Dag 16; ikke i manifestet |
+| strek/dag16-v3.png | 1.2 MB | 2026-11-12 | ◇ kildeteksten er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/assets/out/prompts/strek/dag16.txt; ikke i manifestet |
+| strek/dag16-v4.png | 1.3 MB | 2026-11-12 | ◇ kildeteksten er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/assets/out/prompts/strek/dag16.txt; ikke i manifestet |
+| strek/dag16-v5.png | 1.3 MB | 2026-11-12 | ◇ ikke i manifestet |
 | strek/dag22-v1.png | 1.3 MB | 2026-11-12 | ◇ ikke i manifestet |
 
 ## Gamle filer
