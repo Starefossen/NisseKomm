@@ -33,13 +33,15 @@ export async function POST(request: NextRequest) {
     typeof kode !== "string"
   )
     return jsonError("Ugyldig forespørsel", 400);
-  const vent = ventSek(rolle);
-  if (vent) return NextResponse.json({ ventSek: vent }, { status: 429 });
   const store = getStore();
   const state = await store.getState();
   if (dag > åpenTilDag(state["day-offset"]))
     return jsonError("Dagen er ikke åpnet ennå", 403);
 
+  // Limit check, code check and count with no await between them, so parallel
+  // requests can't all pass the limit before any of them is counted.
+  const vent = ventSek(rolle);
+  if (vent) return NextResponse.json({ ventSek: vent }, { status: 429 });
   const svar = sjekkKode(dag, kode);
   if (!svar.ok) feilForsøk(rolle);
   if (svar.ok && "kode" in svar && storageBackend() === "server") {

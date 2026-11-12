@@ -67,9 +67,12 @@ export async function PUT(request: NextRequest) {
     return jsonError("Ugyldig nøkkel", 400);
   }
   // Solves are written only by POST /api/kode (and the lan fasit route), so
-  // this PUT can't be used to test guesses; a client may only clear the key.
-  if (key === "nissekomm-codes" && value !== null) {
-    return jsonError("Løste koder skrives av /api/kode", 400);
+  // this PUT can't be used to test guesses; only a parent may clear the key.
+  if (key === "nissekomm-codes") {
+    if (value !== null)
+      return jsonError("Løste koder skrives av /api/kode", 400);
+    if (!(await hasRole(request, "parent")))
+      return jsonError("Bare for foreldre", 403);
   }
   const store = getStore();
   const state = await store.getState();

@@ -300,8 +300,9 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
           retry = true;
           break;
         }
-        // 400: this key was rejected (fake code); drop only it, the server's value wins.
-        if (res.status === 400) {
+        // 400/403: this key was refused (codes, or a kid clearing them); drop
+        // only it, the server's value wins.
+        if (res.status === 400 || res.status === 403) {
           if (this.pending.get(key) === p) {
             this.pending.delete(key);
             this.markUnsynced([key], false);

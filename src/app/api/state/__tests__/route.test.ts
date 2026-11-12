@@ -155,7 +155,7 @@ describe("Postgres store (pg-mem)", () => {
 });
 
 describe("/api/state removals and validation", () => {
-  it("never takes solved codes from a client, real or not: no code oracle", async () => {
+  it("never takes solved codes from a client (no code oracle); only a parent clears them", async () => {
     for (const value of [
       [{ kode: "JUKS", dato: "x", day: 1 }],
       [{ kode: "SIGNAL", dato: "x", day: 1 }],
@@ -165,12 +165,15 @@ describe("/api/state removals and validation", () => {
       expect(res.status).toBe(400);
     }
     expect((await call("GET")).json).toEqual({});
-    const clear = await call("PUT", {
-      key: "nissekomm-codes",
-      value: null,
-      replace: true,
+    const clear = { key: "nissekomm-codes", value: null, replace: true };
+    expect((await call("PUT", clear)).status).toBe(403);
+    process.env.NISSEKOMM_MODE = "lan";
+    await memoryStore.setSession(sha(TOKEN), {
+      role: "parent",
+      expires: Date.now() + 60_000,
     });
-    expect(clear.status).toBe(200);
+    expect((await call("PUT", clear)).status).toBe(200);
+    delete process.env.NISSEKOMM_MODE;
   });
 
   it("replace shrinks a list and stale versions get 409", async () => {

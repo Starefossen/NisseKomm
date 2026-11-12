@@ -3,7 +3,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 
 /*
- * No module a "use client" file reaches (through static imports) may load the
+ * No module a "use client" file reaches (static or dynamic imports) may load the
  * codes: lib/oppdrag, lib/kode or the uke*_oppdrag.json files. The build check
  * (scripts/sjekk-klientkoder.mjs) catches leaks after the fact; this names the
  * import chain.
@@ -33,9 +33,9 @@ function løs(fra: string, spec: string): string | null {
 const importer = (f: string) =>
   [
     ...readFileSync(f, "utf8").matchAll(
-      /^\s*(?:import|export)\s+(?!type\b)[^;]*?from\s+["']([^"']+)["']|^\s*import\s+["']([^"']+)["']/gm,
+      /^\s*(?:import|export)\s+(?!type\b)[^;]*?from\s+["']([^"']+)["']|^\s*import\s+["']([^"']+)["']|\bimport\(\s*["']([^"']+)["']\s*\)/gm,
     ),
-  ].map((m) => m[1] ?? m[2]);
+  ].map((m) => m[1] ?? m[2] ?? m[3]);
 
 describe("klientkode laster ingen koder", () => {
   it("ingen 'use client'-fil når lib/oppdrag, lib/kode eller uke*_oppdrag.json", () => {
