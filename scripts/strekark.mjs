@@ -1,10 +1,12 @@
 // Screenshots the two rampestrek sheets as PNG. Needs a running server in lan mode.
 import { chromium } from "playwright";
 import { mkdirSync } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 
 const BASE = process.env.BASE_URL ?? "http://localhost:3000";
-const UT = process.env.UT ?? ".";
+// Never the repo root: the PNGs are review output, not source.
+const UT = process.env.UT ?? path.join(os.tmpdir(), "nissekomm-strekark");
 mkdirSync(UT, { recursive: true });
 const browser = await chromium.launch();
 const page = await browser.newPage({ deviceScaleFactor: 3 });

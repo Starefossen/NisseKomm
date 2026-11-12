@@ -188,5 +188,5 @@ env = { MEDIA_DIR = "/Users/hans/go/src/github.com/starefossen/NisseKomm/public"
 run = "node scripts/gjennomspilling-webkit.mjs"
 
 [tasks.strekark]
-description = "Rampestrek-arkene som PNG (BASE_URL til kjørende server, UT=mappe)"
+description = "Rampestrek-arkene som PNG (BASE_URL til kjørende server, UT=mappe, ellers $TMPDIR/nissekomm-strekark)"
 run = "node scripts/strekark.mjs"

@@ -113,7 +113,11 @@ def strek_text(day: int, root: Path = ROOT) -> str:
 
 def fill_day(text: str, day, root: Path = ROOT) -> str:
     """A template for one day: {{strek}} = that day's Strek line, then the usual placeholders."""
-    return fill(text.replace("{{strek}}", strek_text(int(day), root)) if day else text, root)
+    if not day:
+        return fill(text, root)
+    strek = strek_text(int(day), root)
+    # again after fill: an included template (prompts/strek/skisse) carries its own {{strek}}
+    return fill(text.replace("{{strek}}", strek), root).replace("{{strek}}", strek)
 
 
 FLYTTET = "assets/flyttet.json"  # old -> new path of moved prompts, stills and refs

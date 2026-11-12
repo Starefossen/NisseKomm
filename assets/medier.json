@@ -912,7 +912,7 @@
     "format": "1:1",
     "ut": "strek/dag01.png",
     "bilde": "characters/rampenissen#ekte",
-    "mal": "assets/prompts/strek/skisse.txt",
+    "mal": "assets/prompts/strek/skisse-dag01.txt",
     "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen i radiomanuset, skrevet fra historie §8.1 Tegnbar"
   },
   "strek/dag02": {
