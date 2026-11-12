@@ -1,6 +1,6 @@
 # Julius' videodagbok 2026 – manus
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans. Dag 5 seg 1 og dag 6 seg 1 endret 13.11 etter ja fra Hans (for lange for 15 s). Dag 8 seg 4, dag 10 seg 4 og dag 11 seg 2–4 endret 13.11 etter ja fra Hans. Dag 15 seg 4–5, dag 16 seg 3–4, dag 17 seg 2–4 og dag 21 seg 1 og 4 endret 13.11 etter ja fra Hans (replikken gir ikke ordet alene; huset trengs). Dag 17 seg 2–3 endret igjen 13.11 etter ja fra Hans («lys» bare én gang). Tittel dag 5 og 17 endret 13.11 etter ja fra Hans.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans. Dag 5 seg 1 og dag 6 seg 1 endret 13.11 etter ja fra Hans (for lange for 15 s). Dag 8 seg 4, dag 10 seg 4 og dag 11 seg 2–4 endret 13.11 etter ja fra Hans. Dag 15 seg 4–5, dag 16 seg 3–4, dag 17 seg 2–4 og dag 21 seg 1 og 4 endret 13.11 etter ja fra Hans (replikken gir ikke ordet alene; huset trengs). Dag 17 seg 2–3 endret igjen 13.11 etter ja fra Hans («lys» bare én gang). Tittel dag 5 og 17 endret 13.11 etter ja fra Hans. Dag 6 seg 1 delt i to (hilsenen alene), dag 7 seg 2 («en stemme») og dag 12 seg 1 (kortere) endret 13.11 etter ja fra Hans.
 
 **Revisjon 10. november (vanskelighet, godkjent):** nye segmenter dag 5/4, 7/3, 7/5, 8/3, 9/4, 11/4 og 11/5 (nytt), 20/5. Etter uavhengig gjennomgang også 4/4, 4/5, 12/4, 12/5, 14/4, 14/5, 18/4, 18/5 (brikken ga ordet alene). Brikkene står ordrett som i `gaater-2026.md` etter revisjonen.
 
@@ -165,21 +165,25 @@ Kulde-nivå 1. Svak knitring. Rapporten fra Rampenissen står i åpningen. Fire 
 
 ## Dag 6 (sø) – Skyggene i Gangen · LYKT · rødt hjerte · 2. advent
 
-Kulde-nivå 1. Svak knitring. Rapporten fra Rampenissen står i åpningen. Fire segmenter: brikken delt over 3–4.
+Kulde-nivå 1. Svak knitring. Rapporten fra Rampenissen står i åpningen. Fem segmenter: hilsenen står alene, brikken delt over 4–5.
 
-1. **Replikk:** «Gooood morgen, Snøfall! Andre advent. Rampenissen rapporterer: «Æ laga snøengla i mel.» Hjerterud sukket.»
-   - Varighet: 11 s (14 ord)
+1. **Replikk:** «Gooood morgen, Snøfall!»
+   - Varighet: 5 s (3 ord)
+   - Handling: Løfter venstre hånd i en stor, rolig vinkende hilsen og smiler.
+   - Kulde: Svak knitring.
+2. **Replikk:** «I dag er det andre advent. Rampenissen rapporterer: «Æ laga snøengla i mel.» Hjerterud sukket.»
+   - Varighet: 11 s (15 ord)
    - Handling: Holder opp to fingre på venstre hånd, så løfter han et ark fra brevbunken, leser, ler og legger det ned.
    - Kulde: Svak knitring.
-2. **Replikk:** «I natt sa Orakelet at det som fryser linjen, tåler ikke lys. IQ hengte juletrelys rundt antennen ved tjernet.»
+3. **Replikk:** «I natt sa Orakelet at det som fryser linjen, tåler ikke lys. IQ hengte juletrelys rundt antennen ved tjernet.»
    - Varighet: 14 s (19 ord)
    - Handling: Nikker mot juletreet til venstre og holder blikket der, smiler.
    - Kulde: Svak knitring.
-3. **Replikk:** «Og nå dagens ord, Håkon. Barna bar noe mellom gårdene da det var som mørkest.»
+4. **Replikk:** «Og nå dagens ord, Håkon. Barna bar noe mellom gårdene da det var som mørkest.»
    - Varighet: 11 s (15 ord) · låst
    - Handling: Løfter venstre hånd som om han bærer noe i en hank, og holder den slik hele segmentet.
    - Kulde: Svak knitring.
-4. **Replikk:** «Det var ikke et bål og ikke et stearinlys. Det hadde hank, så man kunne henge det fra seg. Ha en riktig fin søndag!»
+5. **Replikk:** «Det var ikke et bål og ikke et stearinlys. Det hadde hank, så man kunne henge det fra seg. Ha en riktig fin søndag!»
    - Varighet: 15 s (24 ord) · låst
    - Handling: Henger det usynlige på en usynlig krok med venstre hånd, så vinker han kort.
    - Kulde: Svak knitring, klikk.
@@ -192,8 +196,8 @@ Kulde-nivå 2. Første dag med rim på innsiden av vinduet og langs bordkanten, 
    - Varighet: 14 s (19 ord)
    - Handling: Gnir venstre hånd mot overarmen, ser over skulderen mot vinduet, så hopper han litt i stolen.
    - Kulde: Synlig pust, rim i vinduskantene.
-2. **Replikk:** «I natt fanget Orakelet den på åttifem. Den kaller seg… ja. Orakelet skrev navnet med tegnene i hjørnet av kortene.»
-   - Varighet: 14 s (20 ord)
+2. **Replikk:** «I natt fanget Orakelet opp en stemme på åttifem. Den kaller seg… ja. Orakelet skrev navnet med tegnene i hjørnet av kortene.»
+   - Varighet: 15 s (22 ord)
    - Handling: Peker med venstre pekefinger i hjørnet av det øverste arket i brevbunken uten å løfte det, stopper opp på «kaller seg».
    - Kulde: Synlig pust, svak knitring. Bildet fryser på «kaller seg», lyden faller ut.
 3. **Replikk:** «Hør nå, Håkon. Navnet er det motsatte av det Hjerterud har i ovnen akkurat nå. Ikke bollene.»
@@ -293,8 +297,8 @@ Kulde-nivå 2 (senket fra 3, intensitetskurven). Kraftig knitring, bildet hopper
 
 Kulde-nivå 2. Rim, synlig pust, bildet fryser i segment 2 (etterarbeid). Julius innrømmer at han ikke trodde Rampenissen, og sier han skal si unnskyld i kveld; radioen samme morgen («Julius sa i går kveld at æ innbilt mæ det») og dag 13 («Julius sa unnskyld») stemmer uansett rekkefølge. Rapporten fra Rampenissen står i åpningen. Fire segmenter: brikken delt over 3–4.
 
-1. **Replikk:** «Goooood morgen, Snøfall! Rampenissen rapporterer: «Æ laga lydbølge av dorull. Heile kjøkkenet.» Jeg lo så trekoppen hoppet. Hjerterud lo ikke.»
-   - Varighet: 14 s (20 ord)
+1. **Replikk:** «Goooood morgen, Snøfall! Rampenissen rapporterer: «Æ laga lydbølge av dorull.» Jeg lo så trekoppen hoppet. Hjerterud lo ikke.»
+   - Varighet: 13 s (18 ord)
    - Handling: Løfter et ark fra brevbunken med venstre hånd, leser, ler og legger det ned.
    - Kulde: Synlig pust.
 2. **Replikk:** «I natt nynnet Hjerterud ved slusen. Isen sprakk, og noe svarte. Rampenissen hørte det først, og jeg trodde ham ikke.»
