@@ -87,7 +87,9 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 7 (ma) – Inntrengeren i Fryseren · M2
 
-**Strek:** fastfryst i fryserdøra, lua inne i fryseren, vottene stive. Skjerm-kort fra Orakelet om morgenen.
+**Strek:** fastfryst med rim og istapper, ryggen mot innsiden av den åpne fryserdøra, uten lue på hodet: lua ligger på en hylle inne i fryseren, vottene har stivnet rett ut.
+
+_Skjerm-kort fra Orakelet om morgenen._
 
 **Klipp:** «Mandag. Rampenissen her, og æ kan ikkje rør arman. Lua mi sitt fast i fryseren dokkers, og æ sitt fast i lua. Hør, æ prøvd å kjøl ned modemet, for Orakelet sa at nåkka varmt skurra på linja. Det va feil. Det som skurre, e kaldt. Og no e æ også det. Vottan har stivna rett ut, æ ser ut som en politimann. Men her e nyheta: Orakelet fant navnet i natt. Navnet på det som sende. Æ sei det ikkje på radio, for en veit aldri kem som lytte. Julius fortelle dokker det sjøl. Dokker klart lysan i går, forresten. Heile Snøfall sa åååh. Send varme. Bokstavelig talt.»
 
@@ -105,7 +107,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 9 (on) – Krystall-Matematikk
 
-**Strek:** krøpet inn i grønnsaksskuffen i kjøleskapet, bare beina stikker ut.
+**Strek:** krøpet inn i grønnsaksskuffen nederst i kjøleskapet, skuffen står litt åpen, bare de to beina stikker ut over skuffekanten.
 
 **Klipp:** «Hei. Det e mæ. Det e kaldt her. Æ ligg i grønnsaksskuffen i kjøleskapet, ved sia av en agurk som ikkje sei nåkka. Koffer? Fordi Kulde har begynt å lag krystalla som ser ekte ut, men ikkje e det. Pil blei lurt to ganga i natt og e heilt flat. Så æ tenkt: ska æ kjenn igjen et ekte iskrystall, må æ bli ett. Det går dårlig. Æ e bare kald og lukte purre. Dokker va kjempeflink med kortet i går, forresten. IQ fikk det ferdig takka være dokker. Kan nån hent mæ? Æ kjem ikkje opp. Agurken hjelpe ikkje.»
 
@@ -113,7 +115,9 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 10 (to) – Fargene som Forsvant · frost nivå 1
 
-**Strek:** hender, nese og halve ansiktet i fire tusjfarger, bart på post-it over bildet av mamma og pappa. Skjerm er grå fra 05:30.
+**Strek:** hender, nese og halve ansiktet i fire tusjfarger, fire vaskbare tusjer ligger på bordet ved siden av ham, bart tegnet på en post-it som er festet på glasset over bildet av mamma og pappa (selve bildet er urørt, ingen bart på det).
+
+_Skjerm er grå fra 05:30._
 
 **Klipp:** «Høre dokker mæ? Skjermen dokkers e GRÅ. Æ såg det klokka fire i natt, og herregud, æ blei så redd at æ gjord nåkka. Æ gjømt alle fargan æ fant. Nån på mæ, resten gjømt i stua. Hendan, nesa, halve ansiktet. No e æ den mest fargerike tingen i huset, og det e et ansvar. Mamma og pappa fikk bart på bildet, men det e en post-it, det går av, æ sjekka. Kulde har tatt fargan fra Snøfall TV også. Alt e grått der oppe. Hjerterud bake grå bolla. IQ sei dokker e dem einaste med farga igjen. Så pass på dem. Ikkje vask mæ. Æ meine det. Over.»
 
@@ -133,7 +137,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 12 (lø) – Lydbølgene som Smelter Is · M3
 
-**Strek:** 1,5–2 m dorull som «lydbølge» bortover kjøkkenet, ligger utslått i enden ved tre glass. Helg, 09-sendingen.
+**Strek:** én eneste dorull: rullen ligger ved den ene veggen, og papiret er rullet ut til en lang bølgete stripe («lydbølge») bortover kjøkkengulvet; stripen ender ved Rampenissen, som ligger utslått på ryggen, med tre drikkeglass ved siden av seg. Helg, 09-sendingen.
 
 **Klipp:** «God lørdag. Æ snakke lavt i dag. Æ hørt nåkka sukk i isen i natt. Ikkje knurr. Ikkje fres. Sukk. Sånn som når en e aleina og trur ingen høre. Julius sa i går kveld at æ innbilt mæ det. Hjerterud sa ingenting, ho bare nynna og gikk ned mot slusa med lykt. Æ veit ka æ hørt. Så æ prøvd å lag ei lydbølge, ei stor ei, for å send lyd tilbake. Det blei en dorull. Heile dorullen. Fra badet til kjøkkenet. Det e vitenskap, ikkje rot. Antenna i Snøfall står rett igjen, forresten, takka være dokker. IQ har sagt takk tolv ganga. Hør etter i dag. Hør ordentlig.»
 
