@@ -81,7 +81,7 @@
     "generator": "piksel",
     "sted": "iq-verksted",
     "ut": "spill/piksel/iq-verksted.png",
-    "bilde": "public/spill/piksel/klokketarnet.png",
+    "bilde": "public/spill/piksel/iq-verksted.old-1.png",
     "mal": "assets/prompts/spill/piksel-iq-verksted.txt",
     "notat": "Ugleposten K1/K2: IQs verksted tegnet som ny scene etter sonene i kapittel1.ts, ikke som omtegning av fotoet (prompts/spill/piksel-ny-scene). Klokketårnets pikselbilde er bare stil- og palettreferanse"
   },
@@ -141,14 +141,14 @@
     "generator": "piksel",
     "sted": "julebodene",
     "ut": "spill/piksel/julebodene.png",
-    "bilde": "public/spill/piksel/torget.png",
+    "bilde": "public/spill/piksel/julebodene.old-1.png",
     "mal": "assets/prompts/spill/piksel-julebodene.txt",
     "notat": "Ugleposten K1, ny scene fra torget: bodene på torget, nærbilde. Torgets pikselbilde er bare stil- og palettreferanse (prompts/spill/piksel-ny-scene)"
   },
   "spill-piksel/kart": {
     "generator": "piksel",
     "ut": "spill/piksel/kart.png",
-    "bilde": "public/spill/piksel/torget.png",
+    "bilde": "public/spill/piksel/kart.old-1.png",
     "mal": "assets/prompts/spill/piksel-kart.txt",
     "notat": "Ugleposten: liten kartplansje over Snøfall bak kapittellista (Kartplate.tsx). Torgets pikselbilde er bare stil- og palettreferanse. Plassering må følge malen: tjern med antenne til venstre, torget midt, Julius' hus til høyre, byporten nederst; koden tegner merkene oppå"
   },
