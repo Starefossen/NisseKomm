@@ -12,7 +12,7 @@ const skjulRad = (s: string, vis: boolean) =>
   vis
     ? s
     : s.replace(/[_A-ZÆØÅƧЯ](?: [_A-ZÆØÅƧЯ])+/g, (m) =>
-        m.includes("_") ? m.replace(/[^_ ]/g, "•") : m,
+        m.includes("_") ? m.replace(/[^_ ]/g, "▢") : m,
       );
 
 /** Bold in gaater marks the letters the kids find; hidden like the code. */
@@ -24,7 +24,7 @@ function Bokstaver({ tekst, vis }: { tekst: string; vis: boolean }) {
         .map((x, i) =>
           i % 2 ? (
             <strong key={i} className="text-(--gold)">
-              {vis ? x : "•".repeat(x.length)}
+              {vis ? x : "▢".repeat(x.length)}
             </strong>
           ) : (
             x
