@@ -1162,18 +1162,18 @@ export const KAPITTEL_1: Kapittel = {
         },
         {
           id: "klementinene",
-          navn: "Klementinkassa",
+          navn: "Lekekassa",
           prat:
-            "Du uler lavt mot klementinene. " +
+            "Du uler lavt mot trehestene. " +
             R +
-            "«Ikkje snakk te dem. Æ har snakka te klementina. Dem svare ikkje, og så ete du dem, og så e det ingen å snakke med.»",
+            "«Ikkje snakk te dem. Æ har snakka te en trehest. Han svare ikkje, men han ser ut som han vett nåkka.»",
           rect: { x: 17, y: 83, w: 19, h: 17 },
           smart: "se",
           se:
-            "En trekasse med klementiner, så oransje at de lyser i snøen. Det er en fordypning i kassa, akkurat stor nok til en nisse på tretti centimeter. " +
+            "En trekasse med hjemmelagde leker: trehester, en kjelke og en liten tromme, alle snekret i Snøfall. Det er en fordypning i kassa, akkurat stor nok til en nisse på tretti centimeter. " +
             R +
-            "«Æ har aldri ligge i den kassa. Æ har ligge VED SIDA av den kassa. Det e en viktig forskjell for en som selger klementina.»",
-          bruk: "Du ruller en klementin med nebbet. Den triller ut av kassa, over snøen og stopper mot boden til høyre. Bodnissen til høyre tar den opp og legger den i sin kasse. Han har ikke klementiner. Nå har han én.",
+            "«Æ har aldri ligge i den kassa. Æ har ligge VED SIDA av den kassa. Det e en viktig forskjell for en som ser ut som et leketøy.»",
+          bruk: "Du dytter en trehest med nebbet. Den triller ut av kassa, over snøen og stopper mot boden til høyre. Bodnissen til høyre tar den opp, smiler og setter den på disken sin. Han selger ikke leker. Nå gjør han det.",
         },
         {
           id: "vottene",
@@ -1212,7 +1212,7 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Bodnissen til høyre",
           rect: { x: 77, y: 36, w: 11, h: 25 },
           smart: "snakk",
-          se: "En høy, tynn bodnisse med spisse ører og et uttrykk som om han har vunnet noe. Han har et skilt. Det er det han har vunnet.",
+          se: "En høy, tynn bodnisse med langt fjes og et uttrykk som om han har vunnet noe. Han har et skilt. Det er det han har vunnet.",
           bruk: "Du prikker bodnissen på armen. Han bøyer seg ned og hvisker: «Mine er bedre. Jeg sier ikke hvorfor. Da hadde det ikke vært en hemmelighet.»",
           prat: [
             {
