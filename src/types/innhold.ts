@@ -85,7 +85,6 @@ export interface Bonusoppdrag {
   beskrivelse: string;
   fysisk_oppgave: string;
   validering: "forelder";
-  foreldre_kode: string; // Typed by a parent in KodeTerminal
   frost_effekt: number;
   belønning_tekst: string;
 }
@@ -163,24 +162,16 @@ export interface PrintMaterial {
   monospace?: boolean; // Use monospace font for ASCII art and code-like content
 }
 
-// Daily mission/riddle
+// Daily mission/riddle as the kids' browser gets it (src/data/oppdrag-klient.json)
 export interface Oppdrag {
   // Core properties (required)
   dag: number;
   tittel: string;
   skjerm_teaser?: string; // One line for the hallway screen from 06:00; never a code or a clue
   nissemail_tekst: string; // Mission description for children (available in app)
-  kode: string;
   julius_ps?: string; // Shown under Julius' video once the code is solved
   julius_ps_bonus?: string; // Replaces julius_ps once LYKT2026 (or the day's bonus) is approved
   julius_ps_krypto_mangler?: string; // Replaces julius_ps while the day's decryption is unsolved
-
-  // Physical setup for parents (required)
-  rampenissen_rampestrek: string; // Description of physical mischief scene for parent setup
-  fysisk_hint: string; // Physical clue location hint (e.g., "Sjekk skoene i gangen")
-  oppsett_tid: "enkel" | "moderat" | "avansert"; // Setup time: 5min | 15min | 30min+
-  materialer_nødvendig: string[]; // Items parents need to acquire
-  beste_rom: string; // Suggested room/location for mischief
 
   // Optional: Basic features
   hendelse?: string; // Optional public event description (shows on calendar)
@@ -192,6 +183,21 @@ export interface Oppdrag {
   requires?: ContentRequirements; // Content required to access this quest
   symbol_clue?: DecryptionSymbol; // Symbol clue hidden in the real world
   decryption_challenge?: DecryptionChallenge; // Symbol-based decryption puzzle
+}
+
+/**
+ * The full quest, server only (src/lib/oppdrag.ts): the day code and the
+ * parent fields never reach a client bundle (scripts/sjekk-klientkoder.mjs).
+ */
+export interface OppdragFull extends Omit<Oppdrag, "bonusoppdrag"> {
+  kode: string;
+  bonusoppdrag?: Bonusoppdrag & { foreldre_kode: string }; // Typed by a parent in KodeTerminal
+  rampenissen_rampestrek: string; // Description of physical mischief scene for parent setup
+  fysisk_hint: string; // Physical clue location hint (e.g., "Sjekk skoene i gangen")
+  oppsett_tid: "enkel" | "moderat" | "avansert"; // Setup time: 5min | 15min | 30min+
+  materialer_nødvendig: string[]; // Items parents need to acquire
+  beste_rom: string; // Suggested room/location for mischief
+
   print_materials?: PrintMaterial[]; // Additional print materials for parents
 }
 

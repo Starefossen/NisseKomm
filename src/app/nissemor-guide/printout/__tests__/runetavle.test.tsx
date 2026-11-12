@@ -13,7 +13,7 @@ import { RuneTavle } from "@/components/windows/RuneTavle";
 
 describe("Runetavle (kids' board vs answer key)", () => {
   it("derives exactly 19 taught runes and 10 untaught letters for day 24", () => {
-    const taught = GameEngine.getLearnedRunes(24);
+    const taught = GameEngine.getTaughtRunes();
     expect(taught.size).toBe(19);
 
     const untaught = RUNE_ALPHABET.filter((l) => !taught.has(l));
@@ -35,7 +35,7 @@ describe("Runetavle (kids' board vs answer key)", () => {
     const el = document.createElement("div");
     act(() => createRoot(el).render(<RunetavleKids />));
 
-    const taught = GameEngine.getLearnedRunes(24);
+    const taught = GameEngine.getTaughtRunes();
     const untaught = RUNE_ALPHABET.filter((l) => !taught.has(l));
 
     // Untaught letters must not be rendered anywhere on the kids' board
@@ -89,7 +89,7 @@ describe("Runetavle (kids' board vs answer key)", () => {
     const el = document.createElement("div");
     act(() => createRoot(el).render(<RuneTavle onClose={() => {}} />));
 
-    const taught = GameEngine.getLearnedRunes(24);
+    const taught = GameEngine.getTaughtRunes();
     const untaught = RUNE_ALPHABET.filter((l) => !taught.has(l));
 
     // Counter shows X AV 19 TEGN LÆRT

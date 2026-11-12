@@ -194,7 +194,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 4.
 - **Oppsett:** 3 min.
 - **Materialer:** arket.
-- **Utskrifter:** `dag08-kretskort.pdf` (1 side, vanlig papir, farge anbefalt).
+- **Utskrifter:** `dag08-lamper.pdf` (1 side, vanlig papir, farge anbefalt).
 - **Reserve:** Tar de med E, passer ikke ordet Julius beskriver, og de går tilbake til floken. Følger de en død ledning, får de ❄.
 
 ### Dag 9 (on) – Krystall-Matematikk · 24 + blått hjerte
@@ -554,7 +554,7 @@ Alt ligger under `/nissemor-guide/printout` og samles i én PDF for måneden plu
 | `dag06-silhuetter.pdf`  | 1     | tykt, tosidig           | 6     | klippes i november, på ispinne                    |
 
 | `dag07-frostlapp.pdf` | 1 | tykt | 7 | i pose, i plastbeger i fryseren fra 6. des. |
-| `dag08-kretskort.pdf` | 1 | vanlig, farge | 8 | |
+| `dag08-lamper.pdf` | 1 | vanlig, farge | 8 | |
 | `dag09-krystallark.pdf` | 1 | tykt | 9 | ni krystaller |
 | `dag10-testark.pdf` | 1 | vanlig, farge | 10 | testes i november |
 | `dag10-fargekort.pdf` | 2 | tykt, **farge** | 10 | åtte kort (HVIT er blindspor); side 2 blank variant |

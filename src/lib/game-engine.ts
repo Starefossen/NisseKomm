@@ -53,7 +53,7 @@ import {
   addCollectedSymbol,
   clearCollectedSymbols,
 } from "./systems/symbol-system";
-import { getAllQuests, getQuestByDay } from "./data-loader";
+import { ALLE_RUNER, getAllQuests, getQuestByDay } from "./data-loader";
 import {
   Badge,
   Oppdrag,
@@ -103,6 +103,10 @@ interface QuestResult {
   success: boolean;
   isNewCompletion: boolean;
   message: string;
+  /** A bonus quest's parent code was typed: the day it approves. */
+  bonusDag?: number;
+  /** Too many tries: seconds to wait (the server's rate limit). */
+  ventSek?: number;
 }
 
 interface ContentUnlockResult {
@@ -117,15 +121,44 @@ interface DecryptionValidationResult {
   correctCount: number;
 }
 
+/** Rune letters of the given solved days' codes; `kodeFor` looks a day's code up. */
+export function runerFor(
+  dager: Iterable<number>,
+  kodeFor: (dag: number) => string | undefined,
+): Set<string> {
+  const learned = new Set<string>();
+  for (const day of dager) {
+    if (day === 5 || day === 22) continue;
+    for (const ch of kodeFor(day)?.toUpperCase() ?? "")
+      if (/[A-ZÆØÅ]/.test(ch)) learned.add(ch);
+    if (day === 1) ["E", "T"].forEach((c) => learned.add(c));
+  }
+  return learned;
+}
+
+/** Answer from POST /api/kode (src/lib/kode.ts), or 429's wait. */
+export type KodeSvar =
+  | { ok: true; dag: number; kode: string }
+  | { ok: true; bonus: number }
+  | { ok: false; ventSek?: number };
+
 /**
  * Dependencies that can be injected for testing or customization
  */
 interface GameEngineDependencies {
-  /**
-   * Resolver for {{KID_CODE}} placeholder
-   * If not provided, will use default session-based resolver
-   */
-  kidCodeResolver?: () => Promise<string | null>;
+  /** Checks a typed code; the default asks the server, tests check locally. */
+  kodeSjekk?: (dag: number, kode: string) => Promise<KodeSvar>;
+}
+
+async function kodeSjekkServer(dag: number, kode: string): Promise<KodeSvar> {
+  const r = await fetch("/api/kode", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ dag, kode }),
+  });
+  if (r.status === 429) return { ok: false, ...(await r.json()) };
+  if (!r.ok) throw new Error(`kode: ${r.status}`);
+  return r.json();
 }
 
 type IntroId =
@@ -142,9 +175,7 @@ export class GameEngine {
    *
    * @example
    * // In tests
-   * GameEngine.configure({
-   *   kidCodeResolver: async () => "NISSEKRAFT2024"
-   * });
+   * GameEngine.configure({ kodeSjekk: async (dag, kode) => sjekkKode(dag, kode) });
    */
   static configure(deps: GameEngineDependencies): void {
     this.dependencies = { ...this.dependencies, ...deps };
@@ -169,19 +200,9 @@ export class GameEngine {
     const allQuests = ALL_QUESTS;
 
     const completedQuests = new Set<number>();
+    // Every entry has its day: the server writes it (api/kode, api/state).
     submittedCodes.forEach((entry) => {
-      // Prefer day-based matching (reliable with {{KID_CODE}} placeholder)
-      if (entry.day !== undefined) {
-        completedQuests.add(entry.day);
-      } else {
-        // Fallback to code-based matching for legacy data
-        const quest = allQuests.find(
-          (q) => q.kode.toUpperCase() === entry.kode.toUpperCase(),
-        );
-        if (quest) {
-          completedQuests.add(quest.dag);
-        }
-      }
+      if (entry.day !== undefined) completedQuests.add(entry.day);
     });
 
     const completedBonusOppdrag = new Set<number>();
@@ -249,68 +270,29 @@ export class GameEngine {
   }
 
   /**
-   * Submit a code and update game state accordingly
-   * Resolves {{KID_CODE}} placeholder if present in expectedCode
-   *
-   * @param code - User-submitted code
-   * @param expectedCode - Expected code (may contain {{KID_CODE}} placeholder)
-   * @param day - Quest day number
-   * @param kidCodeOverride - Optional kid code to use instead of fetching from session (for testing)
+   * Check a typed code on the server and record the solve.
+   * Bonus parent codes come back as bonusDag; the caller approves them.
    */
-  static async submitCode(
-    code: string,
-    expectedCode: string,
-    day: number,
-    kidCodeOverride?: string,
-  ): Promise<QuestResult> {
-    // Resolve placeholder if present
-    let resolvedExpectedCode = expectedCode;
-    if (expectedCode === "{{KID_CODE}}") {
-      console.debug(
-        "[GameEngine] Resolving {{KID_CODE}} placeholder for Day",
-        day,
-      );
-      let kidCode: string | null = null;
-
-      // Use override if provided (testing)
-      if (kidCodeOverride) {
-        kidCode = kidCodeOverride;
-        console.debug("[GameEngine] Using kidCodeOverride:", kidCode);
-      }
-      // Use injected resolver if available
-      else if (this.dependencies.kidCodeResolver) {
-        console.debug("[GameEngine] Using injected kidCodeResolver");
-        kidCode = await this.dependencies.kidCodeResolver();
-      }
-      // Fall back to default session resolver
-      else {
-        // The kid code is the session id in localStorage mode
-        const { getSessionId } = await import("./auth-cookies");
-        kidCode = getSessionId();
-        console.debug(
-          "[GameEngine] Got kidCode from session:",
-          kidCode ? "SUCCESS" : "NULL",
-        );
-      }
-
-      if (!kidCode) {
-        console.error(
-          "[GameEngine] Failed to resolve {{KID_CODE}} - no kidCode available",
-        );
+  static async submitCode(code: string, day: number): Promise<QuestResult> {
+    const sjekk = this.dependencies.kodeSjekk ?? kodeSjekkServer;
+    let svar: KodeSvar;
+    try {
+      svar = await sjekk(day, code);
+    } catch {
+      return {
+        success: false,
+        isNewCompletion: false,
+        message: "KUNNE IKKE SJEKKE KODEN - PRØV IGJEN",
+      };
+    }
+    if (!svar.ok) {
+      if (svar.ventSek)
         return {
           success: false,
           isNewCompletion: false,
-          message: "KUNNE IKKE HENTE KODE - PRØV IGJEN",
+          message: "FOR MANGE FORSØK - VENT LITT",
+          ventSek: svar.ventSek,
         };
-      }
-      resolvedExpectedCode = kidCode;
-      console.debug("[GameEngine] Resolved expected code for Day", day);
-    }
-
-    const isCorrect =
-      code.trim().toUpperCase() === resolvedExpectedCode.toUpperCase();
-
-    if (!isCorrect) {
       StorageManager.incrementFailedAttempts(day);
       return {
         success: false,
@@ -318,7 +300,22 @@ export class GameEngine {
         message: "FEIL KODE - PRØV IGJEN",
       };
     }
+    if ("bonus" in svar)
+      return {
+        success: false,
+        isNewCompletion: false,
+        message: "BONUSKODE",
+        bonusDag: svar.bonus,
+      };
 
+    return this.recordSolve(day, svar.kode);
+  }
+
+  /**
+   * Record a solved day with its server-checked code (submitCode, or
+   * sim.solveUntil with the codes from /api/kode/fasit).
+   */
+  static recordSolve(day: number, kode: string): QuestResult {
     const currentState = this.loadGameState();
     const isNewCompletion = !currentState.completedQuests.has(day);
 
@@ -331,7 +328,7 @@ export class GameEngine {
     }
 
     StorageManager.addSubmittedCode({
-      kode: code.trim().toUpperCase(),
+      kode,
       dato: getISOString(),
       day, // Store day for reliable matching
     });
@@ -535,29 +532,21 @@ export class GameEngine {
   }
 
   /**
-   * Frostrunene learned so far: every letter of a solved word code, plus E and
-   * T from the loose cards on day 1 (gaater-2026, meta 1). Day 5 (cipher) and
-   * day 22 (number cards) have no rune cards, so U comes on day 7 and Å never.
-   * When completed is provided (day number or iterable of days), returns the
-   * runes learned across those days (e.g. day 24 gives all 19 taught runes).
+   * Runes learned so far: the letters of every solved word code (from the
+   * submitted codes; the browser knows no other code), plus E and T on day 1.
+   * Day 5 (number code) and day 22 (number cards) teach none.
    */
-  static getLearnedRunes(
-    completed?: Set<number> | readonly number[] | number,
-  ): Set<string> {
-    const completedDays: Iterable<number> =
-      typeof completed === "number"
-        ? Array.from({ length: completed }, (_, i) => i + 1)
-        : (completed ?? this.getCompletedDays());
-    const learned = new Set<string>();
-    for (const day of completedDays) {
-      if (day === 5 || day === 22) continue;
-      const quest = ALL_QUESTS.find((q) => q.dag === day);
-      for (const ch of quest?.kode.toUpperCase() ?? "") {
-        if (/[A-ZÆØÅ]/.test(ch)) learned.add(ch);
-      }
-      if (day === 1) ["E", "T"].forEach((c) => learned.add(c));
-    }
-    return learned;
+  static getLearnedRunes(): Set<string> {
+    const koder = StorageManager.getSubmittedCodes();
+    return runerFor(
+      this.getCompletedDays(),
+      (d) => koder.find((c) => c.day === d)?.kode,
+    );
+  }
+
+  /** Every rune the season teaches (all 19), for the board and the stats. */
+  static getTaughtRunes(): ReadonlySet<string> {
+    return ALLE_RUNER;
   }
 
   static getCompletedDays(): Set<number> {
@@ -1302,7 +1291,7 @@ export class GameEngine {
     const live = {
       frost: [frost, 100],
       linje: [100 - frost, 100],
-      runer: [this.getLearnedRunes().size, this.getLearnedRunes(24).size],
+      runer: [this.getLearnedRunes().size, this.getTaughtRunes().size],
       spokelser: [
         Object.keys(KULDE_INTERCEPTS).filter((d) => Number(d) <= day).length,
         Object.keys(KULDE_INTERCEPTS).length,

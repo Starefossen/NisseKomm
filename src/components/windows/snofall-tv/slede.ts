@@ -292,7 +292,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
     dag: 24,
     navn: "Julenatt over grotten",
     intro:
-      "Stjerneklart. Fly lavt over grotten så lyset når ned, så setter vi kursen mot Landås.",
+      "Klar himmel. Fly lavt over grotten så lyset når ned, så setter vi kursen mot Landås.",
     lengde: 70000,
     fart: 1000,
     blanding: {

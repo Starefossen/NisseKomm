@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { GuideSide, Kort } from "../_kveld/felles";
 import { SIDER_01_12 } from "./_print/dager01-12";

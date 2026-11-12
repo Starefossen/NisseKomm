@@ -15,7 +15,7 @@ const INFO = {
   alfabetstrimmel: ["Alfabetstrimmel", 5],
   "dag06-silhuetter": ["Silhuetter", 6],
   "dag07-frostlapp": ["Frostkortet i fryseren", 7],
-  "dag08-kretskort": ["Kretskortarket", 8],
+  "dag08-lamper": ["Kretskortarket", 8],
   "dag09-krystallark": ["Krystallarket", 9],
   "dag10-testark": ["Testark for rødfilter", 10],
   "dag10-fargekort": ["Fargekort", 10],

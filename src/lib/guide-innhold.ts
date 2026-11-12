@@ -7,7 +7,7 @@
  */
 import { readdir } from "node:fs/promises";
 import path from "node:path";
-import { getQuestByDay } from "./data-loader";
+import { getOppdrag as getQuestByDay } from "./oppdrag";
 import statisk from "@/data/statisk_innhold.json";
 import bakt from "@/data/guide-innhold.json";
 import { opplasingerPaaDag } from "./opplasinger";

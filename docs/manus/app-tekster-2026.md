@@ -372,8 +372,8 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
   > Konklusjon: alt virker, bortsett fra det som ikke virker.
 
 - `rampenissen_rampestrek`: Har bygd tårn av alle frokostblandingspakkene på bordet med skiltet «SIGMA-TÅRN» og sitter på toppen med en suppeøse; litt corn flakes på gulvet.
-- `fysisk_hint`: Arket `dag08-kretskort.pdf` brettet under suppeøsen på toppen av tårnet: ni lamper, fire ledninger fra batteriet i en floke. Lampe 2 **R**, 5 **S**, 7 **O** har strøm; lampe 4 **E** sitter bak en **åpen bryter** (blindspor); resten ❄ med ledninger som ender i ingenting. Ingen regeltekst på arket. Løsning: Håkon følger ledningene, Kristian ser bryteren (åpen = ingen strøm; Julius: «bare lamper med strøm lyser») og skriver `_ R _ _ S _ O _ _`. Julius: den grønne plata, to ord i ett. Kode KRETSKORT. Tar de med E, passer ikke ordet. Hanna, hvis hun vil: teller pakkene. Lapp fra Rampenissen på tårnet (håndskrevet): «IQs ark ligger på toppen. Ta ned pakkene én og én. Ingen klatring! – R»
-- `materialer_nødvendig`: `dag08-kretskort.pdf` (farge om mulig) · frokostblandingspakker · suppeøse · lapp «SIGMA-TÅRN»
+- `fysisk_hint`: Arket `dag08-lamper.pdf` brettet under suppeøsen på toppen av tårnet: ni lamper, fire ledninger fra batteriet i en floke. Lampe 2 **R**, 5 **S**, 7 **O** har strøm; lampe 4 **E** sitter bak en **åpen bryter** (blindspor); resten ❄ med ledninger som ender i ingenting. Ingen regeltekst på arket. Løsning: Håkon følger ledningene, Kristian ser bryteren (åpen = ingen strøm; Julius: «bare lamper med strøm lyser») og skriver `_ R _ _ S _ O _ _`. Julius: den grønne plata, to ord i ett. Kode KRETSKORT. Tar de med E, passer ikke ordet. Hanna, hvis hun vil: teller pakkene. Lapp fra Rampenissen på tårnet (håndskrevet): «IQs ark ligger på toppen. Ta ned pakkene én og én. Ingen klatring! – R»
+- `materialer_nødvendig`: `dag08-lamper.pdf` (farge om mulig) · frokostblandingspakker · suppeøse · lapp «SIGMA-TÅRN»
 - `oppsett_tid`: 3 min
 - frost: 34 → 28
 

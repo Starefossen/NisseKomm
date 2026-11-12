@@ -7,7 +7,7 @@ import { GameEngine } from "@/lib/game-engine";
 
 export function RuneTavle({ onClose }: { onClose: () => void }) {
   const learned = GameEngine.getLearnedRunes();
-  const taught = GameEngine.getLearnedRunes(24);
+  const taught = GameEngine.getTaughtRunes();
 
   return (
     <RetroWindow title="RUNETAVLE" onClose={onClose}>

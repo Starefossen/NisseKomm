@@ -219,30 +219,6 @@ export class StorageManager {
     }
   }
 
-  static isCodeSubmitted(kode: string): boolean {
-    return this.getSubmittedCodes().some((c) => c.kode === kode);
-  }
-
-  static getCompletedDaysForMissions(
-    missions: Array<{ dag: number; kode: string }>,
-  ): Set<number> {
-    if (typeof window === "undefined") return new Set();
-
-    const submittedCodes = this.getSubmittedCodes().map((c) =>
-      c.kode.toUpperCase(),
-    );
-    const completedDays = new Set<number>();
-
-    // Match submitted codes against missions
-    missions.forEach((mission) => {
-      if (submittedCodes.includes(mission.kode.toUpperCase())) {
-        completedDays.add(mission.dag);
-      }
-    });
-
-    return completedDays;
-  }
-
   static clearSubmittedCodes(): void {
     if (typeof window === "undefined") return;
     this.removeItem(KEYS.SUBMITTED_CODES);
@@ -274,7 +250,6 @@ export class StorageManager {
     totalMissions: number,
     missions?: Array<{
       dag: number;
-      kode?: string;
       bonusoppdrag?: object;
     }>,
   ): number {
@@ -294,12 +269,7 @@ export class StorageManager {
         const mission = missions.find((m) => m.dag === day);
         if (mission?.bonusoppdrag) {
           // Check if main quest is completed (to know if bonus quest is accessible)
-          const isMainCompleted = submittedCodes.some(
-            (c) =>
-              c.day === day ||
-              (mission.kode &&
-                c.kode.toUpperCase() === mission.kode.toUpperCase()),
-          );
+          const isMainCompleted = submittedCodes.some((c) => c.day === day);
 
           // Side-quest is accessible if main mission is completed
           if (isMainCompleted && !viewedBonusOppdrag.has(day)) {
@@ -749,9 +719,7 @@ export class StorageManager {
   static hasUnreadNiceList(): boolean {
     // Check if Day 24 is completed
     const codes = this.getSubmittedCodes();
-    const day24Code = codes.find(
-      (c) => c.day === 24 || c.kode.toUpperCase() === "SNØFALLVENNER",
-    );
+    const day24Code = codes.find((c) => c.day === 24);
     if (!day24Code) return false;
 
     // Get last viewed timestamp

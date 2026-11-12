@@ -1,11 +1,18 @@
 import { describe, it, expect } from "@jest/globals";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
-import { GameEngine } from "@/lib/game-engine";
+import { runerFor } from "@/lib/game-engine";
+import { getOppdrag } from "@/lib/oppdrag";
 import { KULDE_RUNER } from "@/components/windows/snofall-tv/runer";
 import { kortRuner, nyeRuner, runerFør } from "@/lib/runeorden";
 import { SIDER_01_12 } from "../_print/dager01-12";
 import { SIDER_17_24 } from "../_print/dager17-24";
+
+const runer = (n: number) =>
+  runerFor(
+    Array.from({ length: n }, (_, i) => i + 1),
+    (d) => getOppdrag(d)?.kode,
+  );
 
 (
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
@@ -22,7 +29,7 @@ const KORT: Record<string, { dag: number; skjult: string; kopier?: number }> = {
   "dag04-skokort": { dag: 4, skjult: "KOPSS" },
   "dag06-silhuetter": { dag: 6, skjult: "LKT" },
   "dag07-frostlapp": { dag: 7, skjult: "KUD", kopier: 2 },
-  "dag08-kretskort": { dag: 8, skjult: "KEKRT" },
+  "dag08-lamper": { dag: 8, skjult: "KEKRT" },
   "dag10-fargekort": { dag: 10, skjult: "SEKER" },
   "dag12-frostlapp-tredelt": { dag: 12, skjult: "MLDI" },
   "dag13-krydderkort": { dag: 13, skjult: "SARAN" },
@@ -89,8 +96,8 @@ describe("hjørnerunene (Meta 1)", () => {
 
   it("lærerekkefølgen er den appen lærer bort", () => {
     for (let d = 1; d <= 24; d++) {
-      const før = GameEngine.getLearnedRunes(d - 1);
-      const app = [...GameEngine.getLearnedRunes(d)].filter((c) => !før.has(c));
+      const før = runer(d - 1);
+      const app = [...runer(d)].filter((c) => !før.has(c));
       expect([d, [...nyeRuner(d)].sort()]).toEqual([d, app.sort()]);
     }
   });
@@ -106,7 +113,7 @@ describe("hjørnerunene (Meta 1)", () => {
   };
   it.each(Object.entries(LINJER))("runelinje dag %s er lært før", (d, l) => {
     const før = runerFør(Number(d));
-    const app = GameEngine.getLearnedRunes(Number(d) - 1);
+    const app = runer(Number(d) - 1);
     for (const c of l.replace(/ /g, ""))
       expect([c, før.has(c), app.has(c)]).toEqual([c, true, true]);
   });

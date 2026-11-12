@@ -160,7 +160,7 @@ function Ark8() {
 export default function Dag08Kretskort() {
   return (
     <Utskrift
-      navn="dag08-kretskort"
+      navn="dag08-lamper"
       papir="vanlig"
       farge
       deler={[{ str: "A4", forside: () => <Ark8 /> }]}

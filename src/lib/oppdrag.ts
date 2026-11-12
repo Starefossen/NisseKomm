@@ -1,151 +1,55 @@
 /**
- * Oppdrag Loader - Validates and merges all weekly quest files
- *
- * Kept apart from data-loader.ts: eventyr.ts reads quests at load and
- * quest-validator imports eventyr, so data-loader would be a cycle.
- *
- * This module imports all 4 weekly quest files (uke1-4_oppdrag.json),
- * validates the data structure, and exports a single sorted array of all 24 days.
- *
- * Build-time validation ensures:
- * - Exactly 24 days present (1-24)
- * - All codes are unique
- * - All required fields are populated
- * - No duplicate day numbers
+ * The full quests, server only: day codes, parent fields and bonus parent
+ * codes. Client code reads src/lib/data-loader.ts (oppdrag-klient.json),
+ * which has none of them; scripts/sjekk-klientkoder.mjs fails the build check
+ * if a code reaches a client bundle anyway.
  */
-
-import type { Oppdrag } from "@/types/innhold";
+import "server-only";
+import type { FilNode, OppdragFull } from "@/types/innhold";
+import {
+  validateOppdrag,
+  validateFileReferences,
+  validateTopicDependencies,
+  validateEventyrReferences,
+  validateEventyr,
+  validateSymbolReferences,
+  validateQuestCollection,
+} from "./validators/quest-validator";
+import { extractFileIds } from "./utils/file-tree-utils";
 import uke1 from "@/data/uke1_oppdrag.json";
 import uke2 from "@/data/uke2_oppdrag.json";
 import uke3 from "@/data/uke3_oppdrag.json";
 import uke4 from "@/data/uke4_oppdrag.json";
+import statiskInnhold from "@/data/statisk_innhold.json";
 
-// Type assertion for imported JSON
-const week1 = uke1 as Oppdrag[];
-const week2 = uke2 as Oppdrag[];
-const week3 = uke3 as Oppdrag[];
-const week4 = uke4 as Oppdrag[];
+const uker = [uke1, uke2, uke3, uke4] as OppdragFull[][];
 
-/**
- * Validates a single quest (oppdrag) has all required fields
- */
-function validateOppdrag(oppdrag: Oppdrag, weekNumber: number): void {
-  const requiredFields: (keyof Oppdrag)[] = [
-    "dag",
-    "tittel",
-    "nissemail_tekst",
-    "kode",
-    "rampenissen_rampestrek",
-    "fysisk_hint",
-    "oppsett_tid",
-    "materialer_nødvendig",
-    "beste_rom",
-  ];
-
-  for (const field of requiredFields) {
-    if (
-      oppdrag[field] === undefined ||
-      oppdrag[field] === null ||
-      oppdrag[field] === ""
-    ) {
-      throw new Error(
-        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - Missing required field: ${field}`,
-      );
-    }
-  }
-
-  // Validate materialer_nødvendig is an array
-  if (!Array.isArray(oppdrag.materialer_nødvendig)) {
-    throw new Error(
-      `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - materialer_nødvendig must be an array`,
-    );
-  }
-
-  // Validate oppsett_tid is valid value
-  const validOppsettTid = ["enkel", "moderat", "avansert"];
-  if (!validOppsettTid.includes(oppdrag.oppsett_tid)) {
-    throw new Error(
-      `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - oppsett_tid must be one of: ${validOppsettTid.join(", ")}`,
-    );
-  }
-
-  // Validate side-quest structure if present
-  if (oppdrag.bonusoppdrag) {
-    const b = oppdrag.bonusoppdrag;
-    if (!b.tittel || !b.beskrivelse || !b.fysisk_oppgave || !b.foreldre_kode) {
-      throw new Error(
-        `Validation Error: Week ${weekNumber}, Day ${oppdrag.dag} - bonusoppdrag missing required fields`,
-      );
-    }
-  }
+function mergeAndValidate(): OppdragFull[] {
+  uker.forEach((uke, i) => uke.forEach((o) => validateOppdrag(o, i + 1)));
+  const alle = uker.flat();
+  validateQuestCollection(alle, {
+    week1: uke1.length,
+    week2: uke2.length,
+    week3: uke3.length,
+    week4: uke4.length,
+  });
+  validateFileReferences(
+    alle,
+    extractFileIds(statiskInnhold.filer as FilNode[]),
+  );
+  validateTopicDependencies(alle);
+  validateEventyrReferences(alle);
+  validateEventyr(alle);
+  validateSymbolReferences(alle);
+  return alle.sort((a, b) => a.dag - b.dag);
 }
 
-/**
- * Merges and validates all weekly quest files
- */
-function mergeAndValidate(): Oppdrag[] {
-  // Validate each week's quests
-  week1.forEach((oppdrag) => validateOppdrag(oppdrag, 1));
-  week2.forEach((oppdrag) => validateOppdrag(oppdrag, 2));
-  week3.forEach((oppdrag) => validateOppdrag(oppdrag, 3));
-  week4.forEach((oppdrag) => validateOppdrag(oppdrag, 4));
+const ALLE = mergeAndValidate();
 
-  // Merge all weeks
-  const allOppdrag = [...week1, ...week2, ...week3, ...week4];
-
-  // Validate we have exactly 24 days
-  if (allOppdrag.length !== 24) {
-    throw new Error(
-      `Validation Error: Expected 24 quests, found ${allOppdrag.length}. ` +
-        `Week counts: W1=${week1.length}, W2=${week2.length}, W3=${week3.length}, W4=${week4.length}`,
-    );
-  }
-
-  // Validate all day numbers 1-24 are present (no duplicates, no gaps)
-  const dayNumbers = allOppdrag.map((o) => o.dag).sort((a, b) => a - b);
-  for (let expectedDay = 1; expectedDay <= 24; expectedDay++) {
-    if (!dayNumbers.includes(expectedDay)) {
-      throw new Error(`Validation Error: Missing day ${expectedDay}`);
-    }
-  }
-
-  // Check for duplicate day numbers
-  const daySet = new Set(dayNumbers);
-  if (daySet.size !== 24) {
-    const duplicates = dayNumbers.filter(
-      (day, index) => dayNumbers.indexOf(day) !== index,
-    );
-    throw new Error(
-      `Validation Error: Duplicate day numbers found: ${duplicates.join(", ")}`,
-    );
-  }
-
-  // Validate all codes are unique (case-insensitive)
-  const codes = allOppdrag.map((o) => o.kode.toUpperCase());
-  const codeSet = new Set(codes);
-  if (codeSet.size !== allOppdrag.length) {
-    const duplicateCodes: string[] = [];
-    codes.forEach((code, index) => {
-      if (codes.indexOf(code) !== index && !duplicateCodes.includes(code)) {
-        duplicateCodes.push(code);
-      }
-    });
-    throw new Error(
-      `Validation Error: Duplicate codes found: ${duplicateCodes.join(", ")}. ` +
-        `All 24 codes must be unique.`,
-    );
-  }
-
-  // Sort by day number
-  return allOppdrag.sort((a, b) => a.dag - b.dag);
+export function getAllOppdrag(): OppdragFull[] {
+  return ALLE;
 }
 
-// Build-time validation and export
-const allOppdrag = mergeAndValidate();
-
-/**
- * Get all 24 quests (oppdrag) in day order
- */
-export function getAllOppdrag(): Oppdrag[] {
-  return allOppdrag;
+export function getOppdrag(dag: number): OppdragFull | undefined {
+  return ALLE.find((o) => o.dag === dag);
 }

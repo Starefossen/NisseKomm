@@ -9,7 +9,7 @@
 import eventyrData from "@/data/eventyr.json";
 import merkerData from "@/data/merker.json";
 import type { EventyrData, Eventyr } from "@/types/innhold";
-import { getAllOppdrag } from "@/lib/oppdrag";
+import { getAllQuests as getAllOppdrag } from "@/lib/data-loader";
 
 const EVENTYR: EventyrData = eventyrData as EventyrData;
 

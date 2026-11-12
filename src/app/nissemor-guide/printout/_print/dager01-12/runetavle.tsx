@@ -4,7 +4,7 @@ import { Utskrift } from "../Utskrift";
 
 /** The A5 board itself; empty boxes for the kids to draw in, never-taught letters crossed out. */
 export function RunetavleKids() {
-  const taught = GameEngine.getLearnedRunes(24);
+  const taught = GameEngine.getTaughtRunes();
   return (
     <div className="h-full p-[5mm] flex flex-col font-retro">
       <h2 className="text-[9mm] leading-none text-center">RUNETAVLE</h2>

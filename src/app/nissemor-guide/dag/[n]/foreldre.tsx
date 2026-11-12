@@ -50,8 +50,11 @@ export function Foreldredel({
   t,
   plan,
   bareKveld,
+  kode = "",
 }: {
   n: number;
+  /** The day code, from the parent-only /api/guide/dag/N. */
+  kode?: string;
   d: ReturnType<typeof kveldDag>;
   t: (s: string) => string;
   /** Day 1 only: the build plan for 28.–30. November. */
@@ -144,7 +147,7 @@ export function Foreldredel({
       {!bareKveld && (
         <Seksjon id="fasit" tittel="Fasit" farge="border-(--gold)">
           <p>
-            <b>Kode:</b> <span className="text-(--gold)">{f(q.kode)}</span>
+            <b>Kode:</b> <span className="text-(--gold)">{f(kode)}</span>
           </p>
           <p>{f(d.mekanikk)}</p>
           <p>

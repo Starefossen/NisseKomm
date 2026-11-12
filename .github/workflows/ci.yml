@@ -27,3 +27,6 @@ jobs:
       - run: pnpm format:check
       - run: pnpm test:silent
       - run: pnpm build
+        env:
+          NISSEKOMM_MODE: public
+      - run: node scripts/sjekk-klientkoder.mjs

@@ -372,7 +372,8 @@ if (days[0] > 1) {
   await send("Page.navigate", { url: base });
   await waitFor(() => evaluate("!!window.nissekomm?.sim"), 30000, "sim");
   await evaluate(
-    `(async () => { window.nissekomm.sim.goTo(${days[0] - 1}, "20:00"); await window.nissekomm.sim.solveUntil(${days[0] - 1}, { symbols: true }); })()`,
+    // The codes come from /api/kode/fasit, which needs a session: log in first
+    `(async () => { await fetch("/api/auth/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: ${JSON.stringify(KID_CODE)} }) }); window.nissekomm.sim.goTo(${days[0] - 1}, "20:00"); await window.nissekomm.sim.solveUntil(${days[0] - 1}, { symbols: true }); })()`,
   );
 }
 

@@ -16,14 +16,22 @@ function goTo(day: number, time = "08:00"): void {
   setTimeOverride({ day, month: 12, hour, minute });
 }
 
+/** The codes live on the server; lan mode hands them to a parent or to test mode. */
+async function hentKoder(): Promise<Record<string, string>> {
+  const r = await fetch("/api/kode/fasit");
+  if (!r.ok) throw new Error(`Fikk ikke kodene (${r.status})`);
+  return (await r.json()).koder;
+}
+
 /** Solves days 1..day with the real codes, as if the kids typed them. */
 async function solveUntil(
   day: number,
   { bonus = false, symbols = false } = {},
 ) {
+  const koder = await hentKoder();
   for (const q of GameEngine.getAllQuests()) {
     if (q.dag > day) continue;
-    await GameEngine.submitCode(q.kode, q.kode, q.dag);
+    GameEngine.recordSolve(q.dag, koder[q.dag]);
     GameEngine.markJuliusVideoWatched(q.dag);
     if (bonus && q.bonusoppdrag) GameEngine.completeBonusOppdrag(q.dag);
     // Playthrough shards start mid-season and need the cards a kid would have scanned

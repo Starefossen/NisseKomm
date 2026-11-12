@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "ignoreDependencies": ["pixelarticons"],
+  "ignoreDependencies": ["pixelarticons", "server-only"],
   "entry": ["scripts/*.mjs"],
   "ignoreExportsUsedInFile": true,
   "next": {

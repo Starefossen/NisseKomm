@@ -39,6 +39,10 @@ function sessionTokens(request: NextRequest, role: Role): string[] {
     .map((n) => request.cookies.get(n)?.value)
     .filter((t): t is string => !!t);
 }
+/** The request's session token for `role`, for per-session limits. */
+export const sessionToken = (request: NextRequest, role: Role) =>
+  sessionTokens(request, role)[0];
+
 const MAX_AGE: Record<Role, number> = {
   kid: 45 * 24 * 60 * 60,
   parent: 12 * 60 * 60,

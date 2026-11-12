@@ -16,7 +16,7 @@ import Brevfugl from "../_print/dager01-12/dag05-brevfugl";
 import Alfabetstrimmel from "../_print/dager01-12/alfabetstrimmel";
 import Silhuetter from "../_print/dager01-12/dag06-silhuetter";
 import Frostlapp7 from "../_print/dager01-12/dag07-frostlapp";
-import Kretskort from "../_print/dager01-12/dag08-kretskort";
+import Kretskort from "../_print/dager01-12/dag08-lamper";
 import Krystallark from "../_print/dager01-12/dag09-krystallark";
 import Testark from "../_print/dager01-12/dag10-testark";
 import Fargekort from "../_print/dager01-12/dag10-fargekort";
@@ -116,7 +116,7 @@ const SIDER: [string, ComponentType, { har: string[]; ikke?: string }][] = [
   ["dag06-silhuetter", Silhuetter, { har: ["Y", "A", "O"], ikke: "LYKT" }],
   ["dag07-frostlapp", Frostlapp7, { har: [], ikke: "KULDE" }],
   [
-    "dag08-kretskort",
+    "dag08-lamper",
     Kretskort,
     {
       har: ["R", "S", "O", "E"],

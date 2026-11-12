@@ -12,7 +12,7 @@
  * 5. Collection validation - Day numbers, unique codes
  */
 
-import { Oppdrag } from "@/types/innhold";
+import type { OppdragFull as Oppdrag } from "@/types/innhold";
 import { getAllEventyr } from "../eventyr";
 
 /**

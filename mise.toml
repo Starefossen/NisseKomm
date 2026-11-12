@@ -117,6 +117,10 @@ run = "python3 assets/bin/generer.py kjør --bare test"
 description = "Kjør Jest-testsuiten"
 run = "pnpm test"
 
+[tasks."sjekk-koder"]
+description = "Bygg (public) og feil hvis en dagskode ligger i klient-JS eller offentlig HTML"
+run = "node scripts/sjekk-klientkoder.mjs --build"
+
 [tasks."image:build"]
 description = "Bygg container-image lokalt (gjeldende arkitektur)"
 run = """
@@ -132,6 +136,7 @@ run = """
 #!/usr/bin/env bash
 set -euo pipefail
 if env | grep -qE '^NEXT_PUBLIC_(MOCK_|TEST_MODE)'; then echo "Fjern NEXT_PUBLIC_MOCK_*/TEST_MODE før bygging" >&2; exit 1; fi
+node scripts/sjekk-klientkoder.mjs --build
 REPO=registry.intern.flaatten.org:5000/nissekomm
 TAG="$REPO:$(date +%s)"
 docker buildx build --platform linux/amd64 -t "$TAG" -t "$REPO:latest" --push .

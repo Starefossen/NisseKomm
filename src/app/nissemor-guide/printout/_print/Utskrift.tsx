@@ -1,5 +1,3 @@
-"use client";
-
 /*
  * Utskrift: the shared print frame. Hans' printer takes A4 only.
  *
@@ -21,6 +19,7 @@
 
 import type { ReactNode } from "react";
 import { utskriftTittel } from "../filer";
+import { SkrivUt } from "./SkrivUt";
 
 export type Str = "A3" | "A4" | "A5" | "A6" | "A7" | { b: number; h: number };
 
@@ -253,12 +252,7 @@ export function Utskrift({
             riktig rute på runetavla når dere vet bokstaven.
           </p>
         )}
-        <button
-          onClick={() => window.print()}
-          className="px-6 py-3 min-h-11 bg-(--neon-green) text-black font-bold hover:opacity-80"
-        >
-          SKRIV UT
-        </button>
+        <SkrivUt />
       </div>
       {sider.map(({ a, bak }, n) => (
         <div

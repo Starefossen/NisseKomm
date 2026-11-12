@@ -1,0 +1,556 @@
+{
+  "runer": "ABDEFGIJKLMNOPRSTUY",
+  "oppdrag": [
+    {
+      "dag": 1,
+      "tittel": "Direktelinjen",
+      "skjerm_teaser": "Noe knitrer i huset. Rampenissen er tilbake.",
+      "nissemail_tekst": "Hei Kristian, Håkon og Hanna! Jeg er tilbake! I natt sendte IQ meg ned linjen sammen med Hjerteruds niste. Eskene landet først. Dere har sett hvordan det gikk. Linjen går fra Snøfall til stua deres, med Snøfall TV og video fra Julius. Men den hakker. Noe knitrer på den, og det er ikke meg. Håkon, du fulgte den røde tråden min: bare det som hang på linjen, teller. Det som falt av i skredet, teller ikke. Kristian: se Julius, og heng opp tavla fra IQ. – Rampenissen",
+      "julius_ps": "Rampenissen kom ned linjen sammen med tre esker se-vitamin, og landet under dem. Med en banan som pute. Jeg har sett ham lande i verre ting. Linjen bærer nå; takk for at dere kom. IQ skal koble kaffetrakteren på forsterkeren i natt. Hva kan vel gå galt.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 1
+      },
+      "reveals": {
+        "files": [
+          "om-snofall.txt"
+        ],
+        "topics": [
+          "velkommen-snøfall",
+          "brevfugl-intro"
+        ],
+        "modules": []
+      }
+    },
+    {
+      "dag": 2,
+      "tittel": "Sikringsboksen til IQ",
+      "skjerm_teaser": "Rampenissen smiler litt for mye i dag.",
+      "nissemail_tekst": "Det smalt i Snøfall i natt! IQ koblet kaffetrakteren på forsterkeren, og tre sikringer røk. Kanal 2 er mørk. IQ sier det ikke var kaffetrakteren. Det var kaffetrakteren. Jeg reddet sikringene og gjemte dem lavt. Fant dere alle tre? Takk for at dere krabbet, Håkon og Hanna. Kristian: IQ skriver tall slik gamle klokker gjør, og han har en regel for sikringer. Julius forteller den. Ikke gjett før dere har hørt den. – Rampenissen",
+      "julius_ps": "Tre sikringer. Én kaffetrakter. Én IQ. Rampenissen satt i sukkerskålen da jeg ringte, og påsto at det var «for å roe nervene». Kanal 2 har strøm igjen.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 2
+      },
+      "reveals": {
+        "files": [],
+        "modules": []
+      }
+    },
+    {
+      "dag": 3,
+      "tittel": "Rimfrost på Ruten",
+      "skjerm_teaser": "Kaldt og stille ute i dag. God morgen, Snøfall.",
+      "nissemail_tekst": "Jeg så et blått glimt på stueruten klokka tre i natt. Orakelet sier noen lytter på linjen. I kveld kan dere se på Snøfall TV etter noe som blør gjennom bildet på 85,0. Fikk dere fram det jeg skrev på badespeilet? Håkon, du skrev det av slik det sto. Hanna, hvis du vil: det grønne i vinduskarmen er ditt. Kristian: se godt på det Håkon skrev. Pil fant noe på verkstedet, og Julius forteller. – Rampenissen",
+      "julius_ps": "Tannkrem på speilet. Hele tuben. Hjerterud spør om dere har mer. Orakelet så glimtet på 85,0 samtidig som dere; vi er tre som har sett det nå. Pil sier grønt er håpets farge; derfor er hjertet grønt.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 3
+      },
+      "reveals": {
+        "files": [],
+        "modules": [
+          "SYMBOLSKANNER"
+        ]
+      },
+      "symbol_clue": {
+        "symbolId": "heart-green",
+        "symbolIcon": "heart",
+        "symbolColor": "green",
+        "description": "Grønt hjerte funnet i vinduskarmen på badet"
+      }
+    },
+    {
+      "dag": 4,
+      "tittel": "Skotoget i Gangen",
+      "skjerm_teaser": "Fredag! Julius venter på dere i NisseKomm.",
+      "nissemail_tekst": "Rudolf fløy rett i snøfonna i natt. Det lå en tåke over fjorden som ikke var vanlig tåke, og han mistet retningen. Derfor satte jeg skoene deres i ring rundt meg, så Rudolf kan øve. Jeg satt i den første. Hvilken vei dere skal telle, må dere finne ut selv. Håkon, du har kortene fra skoene. Hanna, hvis du vil: tell skoene høyt rundt ringen. Kristian: Julius vet hva Rudolf trenger. NisseKrypto åpner i kveld. – Rampenissen",
+      "julius_ps": "Rudolf er hjemme og tørr. Rampenissen har visst lånt pappas solbriller. Innendørs. I desember. Ikke spør meg.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 4
+      },
+      "reveals": {
+        "files": [],
+        "modules": [
+          "NISSEKRYPTO",
+          "NISSESPILL"
+        ]
+      }
+    },
+    {
+      "dag": 5,
+      "tittel": "Brevfuglen over Byfjellene",
+      "skjerm_teaser": "Lørdag i advent. God tid til å tenke i dag.",
+      "nissemail_tekst": "Det har vært krig i stua. Jeg og kosedyrene, marshmallows, hvert vårt fort. Og: i natt landet årets første brevfugl i Bergen. Winter har skrevet noe rart på vingen, for han er sikker på at noen leser alt som flyr over linjen. Fant dere fuglen, og hopperen ved den? Hanna, hvis du vil: du legger hopperen inntil. Kristian: Winter har en regel for det han skrev. Julius sier den, men ikke med tall. Dere har hørt tallet før. – Rampenissen",
+      "julius_ps": "Marshmallows i sofaen, marshmallows i gardinene, én bamse med plaster. Rampenissen kaller det «forsvar av linjen». Winter er lettet over at fuglen kom fram; han sender alt kryptert fra nå.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 5
+      },
+      "reveals": {
+        "files": [
+          "alfabet.txt"
+        ],
+        "modules": []
+      }
+    },
+    {
+      "dag": 6,
+      "tittel": "Skyggene i Gangen",
+      "skjerm_teaser": "Andre søndag i advent. Rampenissen vil ha pannekaker.",
+      "nissemail_tekst": "God 2. advent! I natt fant jeg den lille lampen deres og en papprull, og laget et instrument. Det er ikke rot. Melet på kjøkkenbordet er rot. Orakelet sier at det som fryser linjen, ikke tåler lys, så IQ har hengt lys rundt antennen ved tjernet. Håkon, du har lyst på veggen med det som lå i rullen. Hanna, hvis du vil: si hva skyggene var. Kristian: Julius sier hvilken som teller. – Rampenissen",
+      "julius_ps": "Snøengler i mel. På kjøkkenbordet. Hjerterud sier det er sløsing, men hun smilte da hun sa det. Lysene rundt antennen brenner til 20. desember; IQ byttet batterier to ganger. Rødt hjerte er varme, sier Pil; derfor er dagens kort rødt.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 6
+      },
+      "reveals": {
+        "files": [],
+        "modules": []
+      },
+      "symbol_clue": {
+        "symbolId": "heart-red",
+        "symbolIcon": "heart",
+        "symbolColor": "red",
+        "description": "Rødt hjerte funnet ved papprullen i gangen"
+      }
+    },
+    {
+      "dag": 7,
+      "tittel": "Inntrengeren i Fryseren",
+      "skjerm_teaser": "Mandag. Noe fremmed har vært nær i natt.",
+      "nissemail_tekst": "Lua mi satt fast i fryseren deres. Jeg prøvde å kjøle ned modemet. Det var feil. Takk for at dere reddet lua, og det som sto ved den! I natt fanget Orakelet signaturen, og den har et navn. Julius sier det ikke rett ut, men han sier nok. Kristian: det som kom ut av isen, har ingen bokstaver. Tavla deres vet mer enn dere tror. Fra i dag måler Orakelet frosten i serverrommet. Se sidepanelet. Brevfugler er åpen også, så nå kan dere skrive brev til Julius! – Rampenissen",
+      "julius_ps": "Nå har det et navn. Ting med navn kan man snakke til. Rampenissen sto fastfryst i fryserdøra med vottene rett ut da Hjerterud ringte. Hun sier han så ut som en liten skiltstolpe.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 7
+      },
+      "reveals": {
+        "files": [
+          "orakelets-rapport.txt"
+        ],
+        "modules": [
+          "NISSEMUSIKK",
+          "BREVFUGLER"
+        ]
+      }
+    },
+    {
+      "dag": 8,
+      "tittel": "Lampene som Lyver",
+      "skjerm_teaser": "Første uke er unnagjort. Verkstedet summer.",
+      "nissemail_tekst": "Uke én er ferdig! IQ feirer med å lodde noe som skal holde Kulde ute av kanal 1 til 4. Jeg feiret med å bygge noe. Mitt var høyere. Håkon, du fikk ned arket IQ sendte. Følg hver ledning fra batteriet med fingeren. Hanna, hvis du vil: hvor mange pakker var det? Kristian: IQ sier noe om strøm i dag; hør etter. Og hør hva han kaller tingen han lodder på. Etterpå åpner IQs sledesimulator på skrivebordet: SLEDEFLUKT. – Rampenissen",
+      "julius_ps": "Et tårn av frokostblanding med skilt. Jeg spurte Hjerterud hva «sigma» betyr. Hun sa «spør Kristian». IQ sov på loddebordet i natt med plata som pute; han sier den er ferdig i morgen tidlig.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 8
+      },
+      "reveals": {
+        "files": [
+          "feilrapport-uke-1.txt"
+        ],
+        "modules": [
+          "SLEDEFLUKT"
+        ]
+      }
+    },
+    {
+      "dag": 9,
+      "tittel": "Krystall-Matematikk",
+      "skjerm_teaser": "Midt i uken. Rampenissen er sulten som vanlig.",
+      "nissemail_tekst": "Noe hengte krystaller på kjøleskapet deres i natt. Noen av dem er ikke ekte, og de er godt laget. Kulde legger falske krystaller i Orakelets radar også, så tellingen blir feil. Pil ble lurt to ganger, så jeg la meg i grønnsaksskuffen for å lære forskjellen. Det gikk dårlig. Håkon: tell armene en gang til, nøye. Kristian: se over dem Håkon er usikker på. IQ har lagt en formel i NisseNet. Hanna, hvis du vil: hvilke så rare ut? – Rampenissen",
+      "julius_ps": "Rampenissen lå i grønnsaksskuffen i to timer for å «bli ekte iskrystall». Han ble en kald nisse med en kålbit i håret. Orakelets radar teller riktig igjen. Pil sier blått hjerte er fargen til det som fryser.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 9
+      },
+      "reveals": {
+        "files": [
+          "krystallformel.txt"
+        ],
+        "modules": []
+      },
+      "symbol_clue": {
+        "symbolId": "heart-blue",
+        "symbolIcon": "heart",
+        "symbolColor": "blue",
+        "description": "Blått hjerte funnet mellom krystallene på kjøleskapet"
+      }
+    },
+    {
+      "dag": 10,
+      "tittel": "Fargene som Forsvant",
+      "skjerm_teaser": "Morgenen kom blek. Rampenissen ber om hjelp.",
+      "nissemail_tekst": "Skjermen deres var GRÅ i morges. Jeg så det klokka fire. Kulde har tatt fargene: fra Snøfall TV, fra linjen og fra skjermen på kjøkkenet. Jeg reddet alle fargene jeg fant og gjemte dem i stua. Fant dere alle kortene? Jeg husker ikke hvor mange det var. Hanna, hvis du vil: du er fargesjef med det røde filteret. Kristian: rekkefølgen kortene skal ligge i, står i NisseNet. Resten sier Julius, hvis bildet holder lenge nok. IQ bruker den korte, gammeldagse formen av ordet sitt. – Rampenissen",
+      "julius_ps": "Dere fikk fargene tilbake. Hele Snøfall så det; Pil klappet. Rampenissen sier klementinene var det eneste i stua som holdt på fargen. Kulde tar fra linjen, ikke fra det som alt er framme. Han har selv fire farger i ansiktet og bart på bildet av mamma og pappa. Vaskbart, lover han.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 10
+      },
+      "reveals": {
+        "files": [
+          "farge-koder.txt",
+          "01-fargene.txt"
+        ],
+        "modules": []
+      }
+    },
+    {
+      "dag": 11,
+      "tittel": "Antenne-Krisen",
+      "skjerm_teaser": "Fredag. Rampenissen har glemt hvor han la lua.",
+      "nissemail_tekst": "SKURR. Hører dere meg? Kulde forstyrrer antennen ved tjernet. IQ sier senderen er delt i tre, og antennen står skjev og full av is. IQ sendte tre lapper til dere, i tre rom. Kulde la ut sine egne, og de ser helt like ut. Håkon, jeg håper du tok med alt. Hanna, sjekket du jakken din? Kristian: IQ har to regler, og Julius sier begge. BONUS: bygg en folieantenne, minst 20 cm, og vis en voksen. – Rampenissen",
+      "julius_ps": "Antennen står rett igjen, og kanal 4 er tilbake. Rampenissen lå på et stekebrett pakket inn som en bakt potet. Han sier folien «holder tankene inne».",
+      "julius_ps_bonus": "Antennen står rett igjen, og kanal 4 er tilbake. IQ så folieantennen deres på radaren og vil ha tegningen. Rampenissen lå på et stekebrett pakket inn som en bakt potet; han sier det var «prototypen».",
+      "bonusoppdrag": {
+        "tittel": "Nødantenne til Snøfall TV",
+        "beskrivelse": "Kulde forstyrrer antennen ved tjernet, og IQ trenger en antenne på Landås-siden også. Bygg en antenne av aluminiumsfolie, minst 20 cm høy, og sett den ved skjermen.",
+        "fysisk_oppgave": "Bygg antennen sammen og vis den til mamma eller pappa. De taster foreldrekoden i KodeTerminal.",
+        "validering": "forelder",
+        "frost_effekt": -20,
+        "belønning_tekst": "NØDANTENNE GODKJENT. IQ ser den på radaren og vil ha tegningen. Frostgraden faller 20 %."
+      },
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 11
+      },
+      "reveals": {
+        "files": [
+          "antennen-ved-tjernet.txt"
+        ],
+        "modules": []
+      }
+    },
+    {
+      "dag": 12,
+      "tittel": "Lydbølgene som Smelter Is",
+      "skjerm_teaser": "Lørdag. Det er helt stille ute, nesten for stille.",
+      "nissemail_tekst": "Jeg hørte noe sukke i isen i natt. Ikke knurre. Sukke. Hjerterud bare nynnet ved slusen, og da sprakk isen litt. Lydbølgen min endte ved fire ting på bordet. Bare tre av dem er Hjerteruds. Håkon: hvilke sang da du slo på dem, og hvilken var dypest? Rekkefølgen er lyden, og lappene følger den. Hanna, hvis du vil: det grønne kortet er ditt. Kristian: tre hjerter. Pil har sagt hva fargene betyr. – Rampenissen",
+      "julius_ps": "Jeg sa til Rampenissen at han innbilte seg det. Jeg tok feil. Les det Orakelet skrev fra slusen, sammen. Og dorullen: fra badet til kjøkkenet, hele rullen. Hjerterud spør om dere har mer av det også.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 12
+      },
+      "reveals": {
+        "files": [],
+        "modules": []
+      },
+      "symbol_clue": {
+        "symbolId": "sun-green",
+        "symbolIcon": "sun-alt",
+        "symbolColor": "green",
+        "description": "Grønn sol funnet ved de tre glassene på kjøkkenet"
+      },
+      "decryption_challenge": {
+        "challengeId": "frosne-koder",
+        "requiredSymbols": [
+          "heart-green",
+          "heart-red",
+          "heart-blue"
+        ],
+        "correctSequence": [
+          1,
+          0,
+          2
+        ],
+        "hint": "Orakelets logg fra slusen: først det som er varmt, så det som håper, til slutt det som er alene. (Fargene står ikke her; Pil har sagt dem i PS dag 3, 6 og 9.)",
+        "rewardText": "DEKRYPTERT. Orakelets logg fra slusen ligger i DEKRYPTERT/frosne-koder.txt. Les den sammen.",
+        "unlocksFiles": [
+          "frosne-koder.txt"
+        ]
+      }
+    },
+    {
+      "dag": 13,
+      "tittel": "Luciadagens Gylne Krydder",
+      "skjerm_teaser": "Tredje søndag i advent. Luciadagen er her.",
+      "nissemail_tekst": "God 3. advent, og god Lucia! Hjerterud bakte 500 boller i natt. Jeg spiste elleve. Jeg er død nå. Kulde satt og så på lysene i verkstedet hele natten. Bare så. Jeg vet ikke hva jeg skal mene om det. Ved meg lå fire små poser. To av dem er gule. Bare én teller, og Julius sier hvilken. Håkon: så du godt etter? Hanna, hvis du vil: lukt på alle fire. Kristian: Julius forteller hvor krydderet kommer fra, og hvordan det ser ut. – Rampenissen",
+      "julius_ps": "Hjerterud sendte blomster til begravelsen. Kunstige, så de holder til neste år. Kulde så på lysene i natt uten å ta noe; Orakelet sier det bare så. Jeg vet heller ikke hva jeg skal mene om det.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 13
+      },
+      "reveals": {
+        "files": [
+          "lucia-tradisjon.txt"
+        ],
+        "modules": []
+      }
+    },
+    {
+      "dag": 14,
+      "tittel": "Hemmeligheten i Papirvingene",
+      "skjerm_teaser": "Mandag. Julius har noe han vil vise dere.",
+      "nissemail_tekst": "Winter åpnet brevfuglene i natt! Og det kom én fugl ingen hadde sendt. Blå. Den satt i vinduskarmen til Julius, med et brev fryst fast til vingen. Jeg brettet serviettene deres til fugler og sov i en båt i vasken. Håkon, du fant arket i båten. Ser du bokstaver uten plass, har arket en brett til. Hanna, hvis du vil: hold lykten. Kristian: Winter har et ord for det vi gjør med papir i dag. Se radaren i Brevfugler i kveld. – Rampenissen",
+      "julius_ps": "Winter har aldri fått en fugl han ikke har sendt. Han sover ikke i natt. Serviettene deres er visst fugler nå, alle sammen; Rampenissen kaller det «en flokk». Den blå fuglen vises på radaren i Brevfugler.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 14
+      },
+      "reveals": {
+        "files": [
+          "brevfugl-historie.txt"
+        ],
+        "modules": []
+      }
+    },
+    {
+      "dag": 15,
+      "tittel": "Fargesamlerens Notatbok",
+      "skjerm_teaser": "Midt i desember. Det er stille hos IQ i dag.",
+      "nissemail_tekst": "IQ er stille i dag. Han fant en gammel notatbok i arkivet i natt, Fargesamlerens, og har ikke sagt et ord siden. Jeg prøvde å lage varme på kjøkkenet deres. Det ble klissete. Håkon, du fulgte fotsporene mine. Noen gikk helt fram, noen stoppet. Hanna, hvis du vil: det røde kortet er ditt. Kristian: rutekortet lå ved skålen, men tallene gjorde ikke det. Hjerterud skrev dem i margen på notatboken, som har åpnet i NisseNet. – Rampenissen",
+      "julius_ps": "IQ sa én setning i kveld: «Jeg glemte å slå det av.» Så gikk han ut til antennen og ble stående. Les notatboken sammen; Rampenissen sitter i stua og hører på, han også. Og sirupen: Hjerterud sier man skal stå _ved_ gryta, ikke _i_ den.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 15
+      },
+      "reveals": {
+        "files": [
+          "02-notatboken.txt"
+        ],
+        "modules": []
+      },
+      "symbol_clue": {
+        "symbolId": "sun-red",
+        "symbolIcon": "sun-alt",
+        "symbolColor": "red",
+        "description": "Rød sol funnet ved sirupskålen på benken"
+      }
+    },
+    {
+      "dag": 16,
+      "tittel": "Pakkesentralen i Spinn",
+      "skjerm_teaser": "Onsdag. Rampenissen har vært travel i natt.",
+      "nissemail_tekst": "Alt i pakkesentralen ligger i én haug. Kulde snudde samlebåndet i natt. Ikke for å ødelegge, tror Julius. Fordi det er det eneste som får Winter til å se opp. Jeg ryddet hos dere for å hjelpe. Håkon, du bar tingene hjem igjen. Ikke alt jeg rotet med, hører til. Hanna, hvis du vil: si hvor tingene bor. Kristian: rutekortet lå i brødboksen. BONUS: sett et batterilys i et syltetøyglass i vinduet mot nord, så noe der nede ser det. – Rampenissen",
+      "julius_ps": "Winter fant skiltet sitt igjen. Det lå under haugen. Rampenissen satt i brødboksen med lokket på hodet og kalte det «ferdig ryddet».",
+      "julius_ps_bonus": "Winter fant skiltet sitt igjen. Det lå under haugen. Orakelet ser et lys på Landås-siden som ikke var der før. Det er også blitt stillere på 85,0. Rampenissen satt i brødboksen med lokket på hodet.",
+      "bonusoppdrag": {
+        "tittel": "Lykt i vinduet mot nord",
+        "beskrivelse": "Kulde snudde samlebåndet for å bli sett. Orakelet tror et lys på Landås-siden blir lagt merke til der nede. Sett et batterilys i et syltetøyglass i et vindu som vender mot nord, og la det stå om kveldene.",
+        "fysisk_oppgave": "Finn vinduet mot nord sammen med en voksen (mobilen har kompass). Sett lykten der og vis mamma eller pappa, helst innen fredag. De taster foreldrekoden i KodeTerminal.",
+        "validering": "forelder",
+        "frost_effekt": -20,
+        "belønning_tekst": "LYKTEN ER SETT. Orakelet melder om et lys på Landås-siden som ikke var der før. Frostgraden faller 20 %."
+      },
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 16
+      },
+      "reveals": {
+        "files": [],
+        "modules": [
+          "NISSESTATS"
+        ]
+      }
+    },
+    {
+      "dag": 17,
+      "tittel": "Grønt over Polarhimmelen",
+      "skjerm_teaser": "Torsdag. Rampenissen sitter stille, for en gangs skyld.",
+      "nissemail_tekst": "Det var grønt over Ulriken i natt. IQ sier det var et svar. Lyktene han hang rundt antennen har brent siden 2. advent, og i natt svarte grotten. Takk for at dere fikk meg løs fra kosedyrene. Send pepperkaker likevel. Håkon, du leste båndet fra sløyfen og utover. Det står tegn på det, ikke bokstaver. Kristian: tavla, og Julius forteller hva de gamle kalte det grønne. Klikk på himmelen på kanal 1 etterpå. – Rampenissen",
+      "julius_ps": "Grotten svarte. Jeg har ikke hørt fra den på et år. Kosedyrene krevde pepperkaker for Rampenissen; Hjerterud sier dere bør betale, hun har sett løsepengebrevet. Jeg står i vinduet i natt også.",
+      "julius_ps_bonus": "Grotten svarte. Orakelet mener den svarte på to lykter: én ved tjernet og én lenger sør, i et vindu. Kosedyrene krevde pepperkaker for Rampenissen; Hjerterud sier dere bør betale. Jeg står i vinduet i natt også.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 17
+      },
+      "reveals": {
+        "files": [],
+        "modules": []
+      }
+    },
+    {
+      "dag": 18,
+      "tittel": "Kastevind rundt Ulriken",
+      "skjerm_teaser": "Fredag. Snart helg, men først en ny dag i Snøfall.",
+      "nissemail_tekst": "Trixter testet sleden i vestlandsvær i natt. Jeg satt bakpå. Rudolf var innom hos dere etterpå og la igjen noe på gulvet. Takk for at dere fikk meg ut av pappas jakkelomme. Håkon: hvor mange rosiner var det i hver haug, og hva lå under? Hanna, hvis du vil: tell med. Kristian: rutekortet lå i lommen hos meg. Trixter har ett ord for det sleden gjorde i vinden. Seks symboler nå: les det kartet gir dere, nøye. – Rampenissen",
+      "julius_ps": "Trixter vil fly utenom grotten julenatt. Jeg sa nei. Les rutekartet; jeg har tegnet en sirkel på det. Og sjokoladerosinene: Rudolf benekter alt.",
+      "julius_ps_bonus": "Trixter vil fly utenom grotten julenatt. Jeg sa nei. Orakelet sier lyset i vinduet deres fortsatt står på; det er det eneste i Bergen som peker rett mot nord. Og sjokoladerosinene: Rudolf benekter alt.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 18
+      },
+      "reveals": {
+        "files": [],
+        "modules": []
+      },
+      "symbol_clue": {
+        "symbolId": "sun-blue",
+        "symbolIcon": "sun-alt",
+        "symbolColor": "blue",
+        "description": "Blå sol funnet i pappas jakkelomme"
+      },
+      "decryption_challenge": {
+        "challengeId": "stjernetegn",
+        "requiredSymbols": [
+          "heart-green",
+          "heart-red",
+          "heart-blue",
+          "sun-green",
+          "sun-red",
+          "sun-blue"
+        ],
+        "correctSequence": [
+          3,
+          1,
+          0,
+          5,
+          2,
+          4
+        ],
+        "hint": "Trixters rute: grønn sol → rødt hjerte → grønt hjerte → blå sol → blått hjerte → rød sol.",
+        "rewardText": "DEKRYPTERT. Trixters rutekart for julenatt ligger i DEKRYPTERT/stjernetegn.txt. Julius har tegnet en sirkel på det.",
+        "unlocksFiles": [
+          "stjernetegn.txt"
+        ]
+      }
+    },
+    {
+      "dag": 19,
+      "tittel": "Eksplosjon i Fôringsautomaten",
+      "skjerm_teaser": "Lørdag. Rampenissen trenger en rolig dag.",
+      "nissemail_tekst": "IQ bygde en fôringsautomat til reinsdyrene i natt. Den skjøt førti av dem gjennom taket. Tre landet hos dere, i tre rom, pakket i folie. Én landet på meg. Jeg er et åsted nå. IQ sier: ikke pakk opp bevis. Håkon, ligger hver pakke på ruten med samme tall? Hanna, hvis du vil: du legger dem. Kristian: Julius forteller hva Rudolf vil ha før hver tur. Ingenting fra Kulde i natt. Snøfall puster. – Rampenissen",
+      "julius_ps": "Rudolf spiste bevisene. Alt sammen, også det med teip på. Det har vært grønt over Nordtoppen to netter nå, og Orakelet teller flere lys på Landås-siden enn i fjor. IQ bygde automaten for å slippe å tenke; det hjalp ikke.",
+      "julius_ps_bonus": "Rudolf spiste bevisene. Alt sammen, også det med teip på. Orakelet teller lys på Landås-siden og sier ett av dem står helt stille, i et vindu, hver kveld. IQ bygde automaten for å slippe å tenke; det hjalp ikke.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 19
+      },
+      "reveals": {
+        "files": [
+          "foringsautomat.log"
+        ],
+        "modules": []
+      }
+    },
+    {
+      "dag": 20,
+      "tittel": "Sofa-Sleden",
+      "skjerm_teaser": "Fjerde søndag i advent. Alle fire lys brenner.",
+      "nissemail_tekst": "God 4. advent. I morgen er den mørkeste dagen, og Julius sier Kulde når huset da. Ikke for å skade. Fordi det er der lyset er. Julius ber dere finne fram åtte bøker til i morgen. Bøker holder på varmen. Putene i fortet lå etter størrelse, den største som nummer én, før jeg veltet dem. Håkon, du har hentet dem ut. Kristian: tavla, og hør Julius helt til slutt. Les Trixters kart i kveld. – Rampenissen",
+      "julius_ps": "Hjerterud har tent det fjerde lyset i kaféen. Hun lot det stå i vinduet mot nord. Rampenissen har bygd fort «for å øve på å holde varmen»; popcornet er visst niste. I morgen trenger dere ikke være redde. Dere trenger å være hjemme.",
+      "julius_ps_krypto_mangler": "Hjerterud har tent det fjerde lyset i kaféen. Men dere har ikke åpnet Trixters kart ennå; det ligger i NisseKrypto, bak seks symboler. Åpne det i kveld, for porten står der jeg tegnet sirkelen. Rampenissen har bygd fort «for å øve på å holde varmen».",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 20
+      },
+      "reveals": {
+        "files": [],
+        "modules": []
+      },
+      "symbol_clue": {
+        "symbolId": "moon-green",
+        "symbolIcon": "moon",
+        "symbolColor": "green",
+        "description": "Grønn måne funnet under den minste puten i fortet"
+      }
+    },
+    {
+      "dag": 21,
+      "tittel": "Vintersolverv",
+      "skjerm_teaser": "Årets mørkeste dag. Hold sammen i dag.",
+      "nissemail_tekst": "Alt er hvitt. Skjermen hjemme, Snøfall TV, alt. Men bokmuren står, og den holder varmen inne. Jeg satte én bok på gløtt, men jeg husker ikke om det var den Julius mente. Kartet vet. IQ bygde en vegg av varme rundt linjen i natt, og Julius lot én port stå åpen, inn mot grotten. Håkon, du har lest ryggene fra venstre. Bare én bokstav står ute; den andre ligger inne i porten. Kristian: Julius sa i går hvor porten står. Kom hjem. – Rampenissen",
+      "julius_ps": "Muren holder. Porten står åpen. Nå venter vi på om noe kommer gjennom. Rampenissen sto bak bokmuren med et grytelokk mot trekken. Han holdt en visp han hadde glemt å legge fra seg, og sa den var «for sikkerhets skyld».",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 21
+      },
+      "reveals": {
+        "files": [],
+        "modules": []
+      }
+    },
+    {
+      "dag": 22,
+      "tittel": "Winters Tall",
+      "skjerm_teaser": "Tirsdag. Tre dager igjen. Julius følger med.",
+      "nissemail_tekst": "Julius vil vite nøyaktig hvor dere bor. Winter vil ha stedet i tall, og han skriver tall på sin egen måte. Sokk 3 er min; sokk 1 og 2 ligger et annet sted i huset. Takk for at dere dro meg ut! Hanna, hvis du vil: det røde kortet er ditt. Kristian: strimmelen fra brevfuglen, og Winter har to regler. Julius sier begge. Etterpå vil Julius ha navnene deres. – Rampenissen",
+      "julius_ps": "Tre navn. Jeg skrev dem selv. Ingenting har kommet gjennom porten ennå, men Orakelet sier det er varmere der nede. Rampenissen satt fast i en julesokk i to timer før noen dro.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 22
+      },
+      "reveals": {
+        "files": [
+          "snill-listen.txt"
+        ],
+        "modules": []
+      },
+      "symbol_clue": {
+        "symbolId": "moon-red",
+        "symbolIcon": "moon",
+        "symbolColor": "red",
+        "description": "Rød måne funnet innerst i Hannas julesokk"
+      }
+    },
+    {
+      "dag": 23,
+      "tittel": "Nattevakt",
+      "skjerm_teaser": "Lille julaften. Vær snille mot hverandre i dag.",
+      "nissemail_tekst": "I natt flyr de. Over Nordtoppen, lavt over grotten, med alle lysene på. Jeg gråter ikke. Orakelet så ned i grotten i natt. Det som er der nede har ventet på lys i ett år. Jeg pakket opp et hjørne av en gave, og angrer. Håkon: legg de tolv som henger i treet etter tallet bak, og snu dem. Tallene er skrevet slik IQ skriver dem. Hanna, hvis du vil: det blå kortet var hos meg. Kristian: hør Orakelets værmelding hos Julius. – Rampenissen",
+      "julius_ps": "Nå vet dere alt. Rampenissen også; han satt i treet og hørte. Men ingen av dere vet hva Trixter har i sleden til i morgen. Gaven med altfor mye teip på: la den ligge. Han mente det godt.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 23
+      },
+      "reveals": {
+        "files": [
+          "03-siste-side.txt"
+        ],
+        "modules": []
+      },
+      "symbol_clue": {
+        "symbolId": "moon-blue",
+        "symbolIcon": "moon",
+        "symbolColor": "blue",
+        "description": "Blå måne funnet hos Rampenissen i juletreet"
+      },
+      "decryption_challenge": {
+        "challengeId": "hjertets-hemmelighet",
+        "requiredSymbols": [
+          "heart-green",
+          "heart-red",
+          "heart-blue",
+          "sun-green",
+          "sun-red",
+          "sun-blue",
+          "moon-green",
+          "moon-red",
+          "moon-blue"
+        ],
+        "correctSequence": [
+          6,
+          3,
+          0,
+          7,
+          4,
+          1,
+          8,
+          5,
+          2
+        ],
+        "hint": "Tre farger, tre rader: måne → sol → hjerte i grønt, så i rødt, så i blått.",
+        "rewardText": "DEKRYPTERT. Hele historien ligger i DEKRYPTERT/hjertets-hemmelighet.txt. Det er den siste.",
+        "unlocksFiles": [
+          "hjertets-hemmelighet.txt"
+        ]
+      }
+    },
+    {
+      "dag": 24,
+      "tittel": "God Jul på Landås",
+      "skjerm_teaser": "God jul! Det ble en fin desember i Snøfall.",
+      "nissemail_tekst": "Jeg er hjemme i Snøfall. Trixter la krystallet under treet deres i natt, og jeg hoppet bakpå da han dro. Ingen vekking; det var sånn jeg kom også. Brevet mitt henger der jeg satt. Håkon: les det høyt. Kristian: rutekortet ligger i konvolutten, lappene har tegn, og Julius sier resten. Hanna, hvis du vil: du vet hvilken dag hver ting i esken kommer fra. Takk for lånet av fruktskålen. Og takk for alt. – Rampenissen",
+      "julius_ps": "Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Ved siden av ligger den siste klementinen fra Hjerteruds niste. Varmt og kaldt, side om side. Rampenissen kom hjem i natt, bakpå sleden, like brått som han dro ned. Han leverte rapporten sin før han la seg i garnkurven, og jeg har lest den. Alle tre. God jul, Kristian, Håkon og Hanna.",
+      "eventyr": {
+        "id": "spokelseskoden",
+        "phase": 24
+      },
+      "reveals": {
+        "files": [],
+        "modules": []
+      }
+    }
+  ]
+}

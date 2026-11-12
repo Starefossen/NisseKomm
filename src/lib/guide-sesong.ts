@@ -8,10 +8,9 @@ import statisk from "@/data/statisk_innhold.json";
 import eventyr from "@/data/eventyr.json";
 import tidbits from "@/data/tidbits.json";
 import radioHint from "@/data/radio-hint.json";
-import { getAllOppdrag } from "./oppdrag";
-import { getQuestByDay } from "./data-loader";
+import { getAllOppdrag, getOppdrag as getQuestByDay } from "./oppdrag";
 import { frostLevelFor, frostModeFor } from "./frost";
-import { GameEngine } from "./game-engine";
+import { runerFor } from "./game-engine";
 import { getKidContext } from "./mcp/tools";
 import juliusVideoer from "@/data/julius_videoer.json";
 import gaatebiter from "@/data/gaatebiter.json";
@@ -360,7 +359,8 @@ function filerPaa(n: number): string[] {
 }
 
 export function delsystemer(n: number) {
-  const runer = (d: number) => GameEngine.getLearnedRunes(dager(d));
+  const runer = (d: number) =>
+    runerFor(dager(d), (x) => getQuestByDay(x)?.kode);
   const nye = [...runer(n)].filter((r) => !runer(n - 1).has(r));
   const frost = frostLevelFor(n, false);
   const modus = frostModeFor({

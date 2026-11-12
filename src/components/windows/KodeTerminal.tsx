@@ -3,26 +3,22 @@
 import { useState } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
 import { Icons } from "@/lib/icons";
-import { Oppdrag, InnsendelseLog } from "@/types/innhold";
+import { InnsendelseLog } from "@/types/innhold";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
-import { getCurrentDay, getISOString } from "@/lib/date-utils";
+import { getCurrentDay } from "@/lib/date-utils";
 import { TIDBITS, rotate, secretReply } from "@/lib/tidbits";
 
 interface KodeTerminalProps {
   onClose: () => void;
-  expectedCode: string;
   currentDay: number;
-  allMissions: Oppdrag[];
   /** `day` is set only when a day was newly solved (not for bonus approvals). */
   onCodeSubmitted?: (day?: number) => void;
 }
 
 export function KodeTerminal({
   onClose,
-  expectedCode,
   currentDay,
-  allMissions,
   onCodeSubmitted,
 }: KodeTerminalProps) {
   const [code, setCode] = useState("");
@@ -63,13 +59,8 @@ export function KodeTerminal({
   // Get the solved code for display if already solved
   const solvedCode = (() => {
     if (typeof window !== "undefined" && isAlreadySolved) {
-      const codes = GameEngine.getSubmittedCodes();
-      const dayMission = allMissions.find((m) => m.dag === currentDay);
-      const entry = codes.find(
-        (c) =>
-          c.day === currentDay ||
-          (dayMission?.kode &&
-            c.kode.toUpperCase() === dayMission.kode.toUpperCase()),
+      const entry = GameEngine.getSubmittedCodes().find(
+        (c) => c.day === currentDay,
       );
       return entry?.kode || "";
     }
@@ -84,54 +75,41 @@ export function KodeTerminal({
     setFeedback(null);
     setTull(null);
 
-    // Parents approve bonus quests (day 11 and 16, foreldre_kode) here too,
-    // also after the day's main code is solved
-    const bonusQuest = allMissions.find(
-      (m) =>
-        m.bonusoppdrag?.foreldre_kode.toUpperCase() ===
-        code.trim().toUpperCase(),
-    );
+    // Simulate processing delay
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
     // A secret word is never a real or bonus code (tidbits.test.ts) and never
-    // reaches submitCode, so it does not count as a failed attempt.
-    const secret =
-      !bonusQuest &&
-      code.trim().toUpperCase() !== expectedCode.trim().toUpperCase()
-        ? secretReply(code, getCurrentDay())
-        : null;
+    // reaches the server, so it does not count as a failed attempt.
+    const secret = secretReply(code, getCurrentDay());
     if (secret) {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
       setTull(secret);
       setCode("");
       setProcessing(false);
       return;
     }
 
-    if (bonusQuest || isAlreadySolved) {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      // Retyping the day's own code is still the right answer
-      const sameCode =
-        code.trim().toUpperCase() === expectedCode.trim().toUpperCase();
-      const ok =
-        sameCode ||
-        (!!bonusQuest && GameEngine.isBonusOppdragAccessible(bonusQuest.dag));
-      if (ok && !sameCode && bonusQuest) {
-        GameEngine.completeBonusOppdrag(bonusQuest.dag);
-        setBonusMessage(bonusQuest.bonusoppdrag!.belønning_tekst);
+    // The server checks the code (POST /api/kode); the browser knows none.
+    const result = await GameEngine.submitCode(code, currentDay);
+
+    // Parents approve bonus quests (day 11 and 16) here too, also after the
+    // day's main code is solved
+    if (result.bonusDag) {
+      const dag = result.bonusDag;
+      const ok = GameEngine.isBonusOppdragAccessible(dag);
+      if (ok) {
+        GameEngine.completeBonusOppdrag(dag);
+        const tekst = GameEngine.getAllQuests().find((m) => m.dag === dag)
+          ?.bonusoppdrag?.belønning_tekst;
+        if (tekst) setBonusMessage(tekst);
         onCodeSubmitted?.();
+        setCode("");
       }
-      if (ok) setCode("");
       setFeedback(ok ? "success" : "error");
       SoundManager.playSound(ok ? "success" : "error");
       setProcessing(false);
       setTimeout(() => setFeedback(null), 2000);
       return;
     }
-
-    // Simulate processing delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    // Submit code through GameEngine (now async to handle placeholders)
-    const result = await GameEngine.submitCode(code, expectedCode, currentDay);
 
     if (result.success) {
       // Success!
@@ -140,12 +118,7 @@ export function KodeTerminal({
 
       if (result.isNewCompletion) {
         // Update local state
-        const newEntry: InnsendelseLog = {
-          kode: code.trim().toUpperCase(),
-          dato: getISOString(),
-        };
-        const updated = [...submittedCodes, newEntry];
-        setSubmittedCodes(updated);
+        setSubmittedCodes(GameEngine.getSubmittedCodes());
 
         // Mark as solved
         setIsAlreadySolved(true);
@@ -182,8 +155,12 @@ export function KodeTerminal({
           : 0;
 
       setFailedAttempts(currentFailedAttempts);
-      setTull(rotate(TIDBITS.terminal.feilKode, jokeIndex, getCurrentDay()));
-      setJokeIndex((n) => n + 1);
+      if (result.ventSek) {
+        setTull("FOR MANGE FORSØK. KODETERMINALEN MÅ KJØLE SEG NED ET MINUTT.");
+      } else {
+        setTull(rotate(TIDBITS.terminal.feilKode, jokeIndex, getCurrentDay()));
+        setJokeIndex((n) => n + 1);
+      }
     }
 
     setProcessing(false);

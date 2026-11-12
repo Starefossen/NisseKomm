@@ -11,7 +11,7 @@ import Dag04Skokort from "./dager01-12/dag04-skokort";
 import Dag05Brevfugl from "./dager01-12/dag05-brevfugl";
 import Dag06Silhuetter from "./dager01-12/dag06-silhuetter";
 import Dag07Frostlapp from "./dager01-12/dag07-frostlapp";
-import Dag08Kretskort from "./dager01-12/dag08-kretskort";
+import Dag08Kretskort from "./dager01-12/dag08-lamper";
 import Dag09Krystallark from "./dager01-12/dag09-krystallark";
 import Dag10Fargekort from "./dager01-12/dag10-fargekort";
 import Dag10Testark from "./dager01-12/dag10-testark";
@@ -42,7 +42,7 @@ export const SIDER_01_12: Record<string, ComponentType> = {
   "dag05-brevfugl": Dag05Brevfugl,
   "dag06-silhuetter": Dag06Silhuetter,
   "dag07-frostlapp": Dag07Frostlapp,
-  "dag08-kretskort": Dag08Kretskort,
+  "dag08-lamper": Dag08Kretskort,
   "dag09-krystallark": Dag09Krystallark,
   "dag10-fargekort": Dag10Fargekort,
   "dag10-testark": Dag10Testark,

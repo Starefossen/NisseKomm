@@ -14,13 +14,7 @@
 import { describe, it, expect, beforeEach } from "@jest/globals";
 import { StorageManager } from "../storage";
 import { GameEngine } from "../game-engine";
-
-// Helper to generate unique test passwords
-let testCounter = 0;
-const generateTestPassword = () => {
-  testCounter++;
-  return `TEST_${Date.now()}_${testCounter}`;
-};
+import { getOppdrag } from "../oppdrag";
 
 describe("Storage Manager - Basic Operations", () => {
   beforeEach(() => {
@@ -240,16 +234,10 @@ describe("GameEngine Integration", () => {
   });
 
   it("should work with GameEngine facade", async () => {
-    const password = generateTestPassword();
+    const password = getOppdrag(1)!.kode;
     await StorageManager.setAuthenticated(true);
 
-    // Configure GameEngine to use password as kid code (for Day 1 {{KID_CODE}} tests)
-    GameEngine.configure({
-      kidCodeResolver: async () => password,
-    });
-
-    // Day 1 uses {{KID_CODE}} placeholder which resolves to kid code
-    const result = await GameEngine.submitCode(password, "{{KID_CODE}}", 1);
+    const result = await GameEngine.submitCode(password, 1);
 
     expect(result.success).toBe(true);
 
@@ -260,23 +248,13 @@ describe("GameEngine Integration", () => {
     // Verify through GameEngine
     const state = GameEngine.loadGameState();
     expect(state.completedQuests.has(1)).toBe(true);
-
-    // Cleanup
-    GameEngine.resetDependencies();
   });
 
   it("should persist game progression", async () => {
-    const password = generateTestPassword();
     await StorageManager.setAuthenticated(true);
 
-    // Configure GameEngine for Day 1
-    GameEngine.configure({
-      kidCodeResolver: async () => password,
-    });
-
-    // Submit multiple codes (Day 1 uses {{KID_CODE}} placeholder, Day 2 uses 34)
-    await GameEngine.submitCode(password, "{{KID_CODE}}", 1);
-    await GameEngine.submitCode("34", "34", 2);
+    await GameEngine.submitCode(getOppdrag(1)!.kode, 1);
+    await GameEngine.submitCode(getOppdrag(2)!.kode, 2);
 
     const progression = GameEngine.getProgressionPercentage();
     expect(progression).toBeGreaterThan(0);
@@ -284,9 +262,6 @@ describe("GameEngine Integration", () => {
     // Verify progression persists in localStorage
     const newProgression = GameEngine.getProgressionPercentage();
     expect(newProgression).toBe(progression);
-
-    // Cleanup
-    GameEngine.resetDependencies();
   });
 });
 

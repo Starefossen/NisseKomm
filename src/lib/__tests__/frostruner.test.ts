@@ -1,15 +1,15 @@
 import { describe, it, expect, beforeEach } from "@jest/globals";
 import { GameEngine } from "../game-engine";
+import { getOppdrag } from "../oppdrag";
 import statisk from "@/data/statisk_innhold.json";
 import { KULDE_RUNER } from "@/components/windows/snofall-tv/runer";
 import { RUNE_ALPHABET } from "@/components/ui/Frostrune";
 
-const code = (day: number) =>
-  GameEngine.getAllQuests().find((q) => q.dag === day)!.kode;
+const code = (day: number) => getOppdrag(day)!.kode;
 
 async function solveThrough(last: number) {
   for (let d = 1; d <= last; d++) {
-    await GameEngine.submitCode(code(d), code(d), d);
+    await GameEngine.submitCode(code(d), d);
   }
 }
 
@@ -39,7 +39,7 @@ describe("Frostrunene (gaater-2026, meta 1)", () => {
   });
 
   it("derives exactly 19 taught runes and 10 untaught letters for day 24", () => {
-    const taught = GameEngine.getLearnedRunes(24);
+    const taught = GameEngine.getTaughtRunes();
     expect(taught.size).toBe(19);
     const untaught = RUNE_ALPHABET.filter((l) => !taught.has(l));
     expect(untaught).toEqual([

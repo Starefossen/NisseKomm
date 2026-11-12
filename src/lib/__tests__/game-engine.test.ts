@@ -12,19 +12,13 @@
 
 import { describe, it, expect, beforeEach, afterEach } from "@jest/globals";
 import { GameEngine } from "../game-engine";
+import { getAllOppdrag } from "../oppdrag";
 
-// Get actual quest codes from data for testing
-const allQuests = GameEngine.getAllQuests();
+// The real codes, from the server module (jest.setup.js answers /api/kode)
+const allQuests = getAllOppdrag();
 
-// Test kid code for Day 1 (which uses {{KID_CODE}} placeholder)
-const TEST_KID_CODE = "NISSEKRAFT2024";
-
-const getQuestCode = (day: number) => {
-  const quest = allQuests.find((q) => q.dag === day);
-  const code = quest?.kode || `CODE${day}`;
-  // Replace placeholder with test code
-  return code === "{{KID_CODE}}" ? TEST_KID_CODE : code;
-};
+const getQuestCode = (day: number) =>
+  allQuests.find((q) => q.dag === day)?.kode || `CODE${day}`;
 
 describe("GameEngine", () => {
   const originalEnv = { ...process.env };
@@ -37,16 +31,9 @@ describe("GameEngine", () => {
     // This ensures tests start with a clean state regardless of real date
     process.env.NEXT_PUBLIC_MOCK_DAY = "1";
     process.env.NEXT_PUBLIC_MOCK_MONTH = "12";
-
-    // Configure GameEngine with test kid code resolver
-    GameEngine.configure({
-      kidCodeResolver: async () => TEST_KID_CODE,
-    });
   });
 
   afterEach(() => {
-    // Reset dependencies after each test
-    GameEngine.resetDependencies();
     // Restore environment variables
     process.env = { ...originalEnv };
   });
@@ -64,7 +51,7 @@ describe("GameEngine", () => {
   describe("Quest Completion", () => {
     it("should accept correct code and mark quest as completed", async () => {
       const code8 = getQuestCode(8);
-      const result = await GameEngine.submitCode(code8, code8, 8);
+      const result = await GameEngine.submitCode(code8, 8);
 
       expect(result.success).toBe(true);
       expect(result.isNewCompletion).toBe(true);
@@ -72,8 +59,7 @@ describe("GameEngine", () => {
     });
 
     it("should reject incorrect code", async () => {
-      const code8 = getQuestCode(8);
-      const result = await GameEngine.submitCode("WRONG", code8, 8);
+      const result = await GameEngine.submitCode("WRONG", 8);
 
       expect(result.success).toBe(false);
       expect(result.isNewCompletion).toBe(false);
@@ -82,29 +68,25 @@ describe("GameEngine", () => {
 
     it("should be case-insensitive for code validation", async () => {
       const code8 = getQuestCode(8);
-      const result1 = await GameEngine.submitCode(
-        code8.toLowerCase(),
-        code8,
-        8,
-      );
+      const result1 = await GameEngine.submitCode(code8.toLowerCase(), 8);
       expect(result1.success).toBe(true);
 
       localStorage.clear();
 
       const mixed =
         code8.slice(0, 2).toLowerCase() + code8.slice(2).toUpperCase();
-      const result2 = await GameEngine.submitCode(mixed, code8, 8);
+      const result2 = await GameEngine.submitCode(mixed, 8);
       expect(result2.success).toBe(true);
     });
 
     it("should detect duplicate submissions", async () => {
       const code8 = getQuestCode(8);
       // First submission
-      const result1 = await GameEngine.submitCode(code8, code8, 8);
+      const result1 = await GameEngine.submitCode(code8, 8);
       expect(result1.isNewCompletion).toBe(true);
 
       // Second submission of same code
-      const result2 = await GameEngine.submitCode(code8, code8, 8);
+      const result2 = await GameEngine.submitCode(code8, 8);
       expect(result2.success).toBe(true);
       expect(result2.isNewCompletion).toBe(false);
       expect(result2.message).toContain("ALLEREDE REGISTRERT");
@@ -115,14 +97,14 @@ describe("GameEngine", () => {
       const code9 = getQuestCode(9);
       expect(GameEngine.getCompletedQuestCount()).toBe(0);
 
-      await GameEngine.submitCode(code8, code8, 8);
+      await GameEngine.submitCode(code8, 8);
       expect(GameEngine.getCompletedQuestCount()).toBe(1);
 
-      await GameEngine.submitCode(code9, code9, 9);
+      await GameEngine.submitCode(code9, 9);
       expect(GameEngine.getCompletedQuestCount()).toBe(2);
 
       // Duplicate shouldn't increase count
-      await GameEngine.submitCode(code8, code8, 8);
+      await GameEngine.submitCode(code8, 8);
       expect(GameEngine.getCompletedQuestCount()).toBe(2);
     });
 
@@ -130,7 +112,7 @@ describe("GameEngine", () => {
       const code8 = getQuestCode(8);
       expect(GameEngine.isQuestCompleted(8)).toBe(false);
 
-      await GameEngine.submitCode(code8, code8, 8);
+      await GameEngine.submitCode(code8, 8);
 
       expect(GameEngine.isQuestCompleted(8)).toBe(true);
       expect(GameEngine.isQuestCompleted(9)).toBe(false);
@@ -158,7 +140,7 @@ describe("GameEngine", () => {
       it("keeps the module open after the day's code is solved", async () => {
         setDay(4);
         const code4 = getQuestCode(4);
-        await GameEngine.submitCode(code4, code4, 4);
+        await GameEngine.submitCode(code4, 4);
         setDay(5);
         expect(GameEngine.isModuleUnlocked("NISSEKRYPTO")).toBe(true);
       });
@@ -192,7 +174,7 @@ describe("GameEngine", () => {
       expect(GameEngine.isModuleUnlocked("NISSEKRYPTO")).toBe(false);
 
       const code4 = getQuestCode(4);
-      await GameEngine.submitCode(code4, code4, 4);
+      await GameEngine.submitCode(code4, 4);
       expect(GameEngine.isModuleUnlocked("NISSEKRYPTO")).toBe(true);
     });
 
@@ -200,13 +182,13 @@ describe("GameEngine", () => {
       // Complete 6 quests - no unlock yet
       for (let i = 1; i <= 6; i++) {
         const code = getQuestCode(i);
-        await GameEngine.submitCode(code, code, i);
+        await GameEngine.submitCode(code, i);
       }
       expect(GameEngine.isModuleUnlocked("NISSEMUSIKK")).toBe(false);
 
       // Complete day 7 quest - should unlock NISSEMUSIKK
       const code7 = getQuestCode(7);
-      await GameEngine.submitCode(code7, code7, 7);
+      await GameEngine.submitCode(code7, 7);
       expect(GameEngine.isModuleUnlocked("NISSEMUSIKK")).toBe(true);
     });
 
@@ -214,7 +196,7 @@ describe("GameEngine", () => {
       expect(GameEngine.isModuleUnlocked("BREVFUGLER")).toBe(false);
 
       const code7 = getQuestCode(7);
-      await GameEngine.submitCode(code7, code7, 7);
+      await GameEngine.submitCode(code7, 7);
       expect(GameEngine.isModuleUnlocked("BREVFUGLER")).toBe(true);
     });
 
@@ -222,17 +204,17 @@ describe("GameEngine", () => {
       expect(GameEngine.isModuleUnlocked("NISSESTATS")).toBe(false);
 
       const code16 = getQuestCode(16);
-      await GameEngine.submitCode(code16, code16, 16);
+      await GameEngine.submitCode(code16, 16);
       expect(GameEngine.isModuleUnlocked("NISSESTATS")).toBe(true);
     });
 
     it("should not unlock module on duplicate submission", async () => {
       const code7 = getQuestCode(7);
-      await GameEngine.submitCode(code7, code7, 7);
+      await GameEngine.submitCode(code7, 7);
       expect(GameEngine.isModuleUnlocked("NISSEMUSIKK")).toBe(true);
 
       // Submit duplicate - module stays unlocked but no duplicate unlock
-      const result = await GameEngine.submitCode(code7, code7, 7);
+      const result = await GameEngine.submitCode(code7, 7);
       expect(result.isNewCompletion).toBe(false);
       expect(GameEngine.isModuleUnlocked("NISSEMUSIKK")).toBe(true);
     });
@@ -242,7 +224,7 @@ describe("GameEngine", () => {
 
       for (let i = 1; i <= 10; i++) {
         const code = getQuestCode(i);
-        await GameEngine.submitCode(code, code, i);
+        await GameEngine.submitCode(code, i);
       }
 
       const unlocked = GameEngine.getUnlockedModules();
@@ -291,7 +273,7 @@ describe("GameEngine", () => {
 
       // Complete day 11 main quest
       const code11 = getQuestCode(11);
-      await GameEngine.submitCode(code11, code11, 11);
+      await GameEngine.submitCode(code11, 11);
 
       // Now side-quest should be accessible
       expect(GameEngine.isBonusOppdragAccessible(11)).toBe(true);
@@ -303,7 +285,7 @@ describe("GameEngine", () => {
       // Complete 10 quests
       for (let i = 1; i <= 10; i++) {
         const code = getQuestCode(i);
-        await GameEngine.submitCode(code, code, i);
+        await GameEngine.submitCode(code, i);
       }
 
       const summary = GameEngine.getProgressionSummary();
@@ -324,7 +306,7 @@ describe("GameEngine", () => {
     it("should show game complete when all 24 quests done", async () => {
       for (let i = 1; i <= 24; i++) {
         const code = getQuestCode(i);
-        await GameEngine.submitCode(code, code, i);
+        await GameEngine.submitCode(code, i);
       }
 
       expect(GameEngine.isGameComplete()).toBe(true);
@@ -339,13 +321,12 @@ describe("GameEngine", () => {
   describe("Edge Cases", () => {
     it("should handle whitespace in code submission", async () => {
       const code8 = getQuestCode(8);
-      const result = await GameEngine.submitCode(`  ${code8}  `, code8, 8);
+      const result = await GameEngine.submitCode(`  ${code8}  `, 8);
       expect(result.success).toBe(true);
     });
 
     it("should handle empty code gracefully", async () => {
-      const code8 = getQuestCode(8);
-      const result = await GameEngine.submitCode("", code8, 8);
+      const result = await GameEngine.submitCode("", 8);
       expect(result.success).toBe(false);
     });
 
@@ -355,9 +336,9 @@ describe("GameEngine", () => {
       const code5 = getQuestCode(5);
       const code15 = getQuestCode(15);
 
-      await GameEngine.submitCode(code10, code10, 10);
-      await GameEngine.submitCode(code5, code5, 5);
-      await GameEngine.submitCode(code15, code15, 15);
+      await GameEngine.submitCode(code10, 10);
+      await GameEngine.submitCode(code5, 5);
+      await GameEngine.submitCode(code15, 15);
 
       expect(GameEngine.getCompletedQuestCount()).toBe(3);
       expect(GameEngine.isQuestCompleted(5)).toBe(true);
@@ -604,7 +585,7 @@ describe("GameEngine", () => {
         expect(d16.FROSTRUNER.verdi).toBe(0);
         expect(d16["KULDE PÅ 85,0"].verdi).toBe(6);
         const code1 = getQuestCode(1);
-        await GameEngine.submitCode(code1, code1, 1);
+        await GameEngine.submitCode(code1, 1);
         expect(by(16).FROSTRUNER.verdi).toBe(GameEngine.getLearnedRunes().size);
         expect(by(16).FROSTRUNER.verdi).toBeGreaterThan(0);
       });

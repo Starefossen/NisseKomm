@@ -93,3 +93,27 @@ beforeEach(() => {
 
 // Suppress console.debug in tests entirely (debug logging is for development only)
 console.debug = () => {};
+
+// The browser checks codes on the server (POST /api/kode, GET /api/kode/fasit).
+// Tests answer those two from the server module itself, without the rate limit.
+const fetchUtenKode = global.fetch;
+global.fetch = async (url, init = {}) => {
+  const sti = String(url);
+  const svar = (body) => ({
+    ok: true,
+    status: 200,
+    json: () => Promise.resolve(body),
+  });
+  if (sti === "/api/kode") {
+    const { dag, kode } = JSON.parse(init.body);
+    const { sjekkKode } = await import("@/lib/kode");
+    return svar(sjekkKode(dag, kode));
+  }
+  if (sti === "/api/kode/fasit") {
+    const { getAllOppdrag } = await import("@/lib/oppdrag");
+    return svar({
+      koder: Object.fromEntries(getAllOppdrag().map((o) => [o.dag, o.kode])),
+    });
+  }
+  return fetchUtenKode(url, init);
+};

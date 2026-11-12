@@ -22,3 +22,6 @@ assets/out/
 assets/locations/**/*.json
 .claude/
 assets/INVENTAR.md
+
+# baked by scripts/oppdrag-klient.mjs
+src/data/oppdrag-klient.json

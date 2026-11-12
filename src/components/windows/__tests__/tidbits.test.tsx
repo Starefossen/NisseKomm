@@ -57,16 +57,8 @@ afterEach(() => {
 });
 
 describe("KodeTerminal tidbits", () => {
-  const quests = GameEngine.getAllQuests();
   const terminal = () =>
-    mount(
-      <KodeTerminal
-        onClose={() => {}}
-        expectedCode={quests[0].kode}
-        currentDay={1}
-        allMissions={quests}
-      />,
-    );
+    mount(<KodeTerminal onClose={() => {}} currentDay={1} />);
 
   it("a secret word replies and is not a failed attempt", async () => {
     const el = terminal();

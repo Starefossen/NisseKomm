@@ -315,13 +315,15 @@ function getPool(): Pool | undefined {
   }));
 }
 
-let store: Store | undefined;
+// On globalThis: Next loads route handlers and server components as separate
+// module graphs in one process, and both must see the same sessions.
+const g = globalThis as { nissekommStore?: Store };
 export function getStore(): Store {
   const p = getPool();
   // Never in production: there DATABASE_URL is required.
   const file =
     process.env.NODE_ENV !== "production" && process.env.DEV_STORE_FILE;
-  return (store ??= p
+  return (g.nissekommStore ??= p
     ? createPgStore(p)
     : file
       ? createFileStore(file)
