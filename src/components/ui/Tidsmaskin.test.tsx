@@ -48,7 +48,7 @@ describe("Tidsmaskin", () => {
       select.dispatchEvent(new Event("change", { bubbles: true }));
     });
     const go = [...el.querySelectorAll("button")].find(
-      (b) => b.textContent === "Gå til dag med fremgang",
+      (b) => b.getAttribute("aria-label") === "Gå til dag med fremgang",
     )!;
     await act(async () => go.click());
     expect(getTimeOverride()?.day).toBe(5);
