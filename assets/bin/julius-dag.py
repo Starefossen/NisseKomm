@@ -8,7 +8,7 @@ Usage: julius-dag.py <dag> [--suffix -v3] [--extend] [--dry-run] [--force] [--al
 Skips a day whose video is current (see medie.py) unless --force.
 
 Reads docs/manus/julius-2026.md, generates one clip per segment with julius.sh
-(retries on failure), audits each clip for continuity errors (up to 3 takes),
+(retries on failure), audits each clip for continuity errors (one take by default; flagged segments are listed for review before take 2),
 adds Kulde's effects in post (see kulde_fx), joins them with alternating framing (0.25 s crossfades in the silent tail, -16 LUFS) and writes
 public/video/julius/dag-NN.mp4, compressed for the app.
 """
@@ -64,7 +64,20 @@ def speech_at_end(clip: Path) -> bool:
 
 
 # Known transcriber mishearings / spelling variants, each group counts as one word.
-SAMME = [{"tjernet", "kjernen"}, {"gooood", "god", "godt"}, {"ses", "sees"}, {"telte", "teltet"}]
+SAMME = [{"tjernet", "kjernen"}, {"god", "godt"}, {"ses", "sees"}, {"telte", "teltet"}]
+# The video model has not been tested on Norwegian (omni.md): names come out spelled freely, so the transcriber gets them
+NAVN = "IQ, Kristian, Håkon, Hanna, Hjerterud, Winter, Trixter, Pil, Rudolf, Orakelet, Vintervokteren, Fargesamleren, Rampenissen, Kulde, Snøfall, Nordtoppen, Landås"
+IQ = re.compile(r"\b(?:i[ .-]?q|iku|eq|i-ku)\b", re.I)
+
+
+def squash(w: str) -> str:
+    """«goooood» = «god», «sees» = «ses»: repeated letters count once on both sides."""
+    return re.sub(r"(.)\1+", r"\1", w)
+
+
+def spoken(line: str) -> str:
+    """The line without its quotes: a «…» inside the line is read in dialect and spelled freely, so it is not checked."""
+    return re.sub(r"«[^»]*»", " ", line)
 
 
 def lev1(a: str, b: str) -> bool:
@@ -81,17 +94,37 @@ def lev1(a: str, b: str) -> bool:
 
 def heard_as(w: str, heard) -> bool:
     """Is script word w in the transcript: exact, a known variant, or one edit away (words of 5+ letters)."""
-    return any(w == h or any(w in g and h in g for g in SAMME) or (len(w) >= 5 and len(h) >= 5 and lev1(w, h)) for h in heard)
+    w = squash(w)
+    return any(w == h or any(w in g and h in g for g in SAMME) or (len(w) >= 5 and len(h) >= 5 and lev1(w, h))
+               for h in map(squash, heard))
 
 
 def tail_missing(heard_text: str, line: str, n: int = 2) -> list:
-    """The script's last n words that the transcript lacks; a cut-off ending shows up here, not in the % heard."""
-    heard = words(heard_text)[-(n + 3):]
-    return [w for w in words(line)[-n:] if not heard_as(w, heard)]
+    """The script's last n words (outside quotes) that the transcript lacks anywhere; a cut-off ending shows up here."""
+    heard = words(IQ.sub("iq", heard_text))
+    return [w for w in words(spoken(line))[-n:] if not heard_as(w, heard)]
+
+
+def extra_words(heard_text: str, line: str) -> str:
+    """Words heard after the script's last word («Det var det hele, du»): the trim cannot remove them."""
+    heard, last = words(IQ.sub("iq", heard_text)), words(spoken(line))[-1:]
+    hits = [i for i, h in enumerate(heard) if last and heard_as(last[0], [h])]
+    return " ".join(heard[hits[-1] + 1:]) if hits else ""
+
+
+def check(text: str, line: str):
+    """(coverage, missing words, extra words) of a transcript against the line; coverage 0 if the end is missing."""
+    heard = words(IQ.sub("iq", text))
+    script = words(spoken(line))
+    missing = [w for w in script if not heard_as(w, heard)]
+    if tail_missing(text, line):
+        return 0.0, missing, extra_words(text, line)
+    return 1 - len(missing) / max(len(script), 1), missing, extra_words(text, line)
 
 
 def coverage(clip: Path, line: str):
-    """Share of the script's words heard in the clip (Gemini transcription); 0 if the last words are missing."""
+    """(share of the script's words heard, transcript, missing, extra) for the clip (Gemini transcription);
+    share 0 if the last words are missing, None if the API failed. The transcript is saved as <clip>.txt."""
     import base64
     import json
     import urllib.error
@@ -104,7 +137,8 @@ def coverage(clip: Path, line: str):
     ).stdout
     body = {"contents": [{"parts": [
         {"inlineData": {"mimeType": "audio/mp3", "data": base64.b64encode(mp3).decode()}},
-        {"text": "Transcribe exactly what is said, in Norwegian. Write all numbers as words (85,0 = åttifem komma null). Output only the transcript."},
+        {"text": "Transcribe exactly what is said, in Norwegian. Write all numbers as words (85,0 = åttifem komma null). "
+                 f"Names that may occur, spell them like this: {NAVN}. Output only the transcript."},
     ]}]}
     forbruk.logg("transkripsjon", "gemini-3.5-flash", "julius-dag.py", clip.name)
     req = urllib.request.Request(
@@ -124,14 +158,15 @@ def coverage(clip: Path, line: str):
                 sys.exit("Stoppet: dagsgrensen for Gemini er nådd (requests per day)")
             print(f"  transkripsjon feilet ({e}), prøver igjen")
     else:
-        return None  # unknown, not zero: keep the clip and flag it
-    heard = set(words(text))
-    script = words(line)
-    hit = lambda w: heard_as(w, heard)  # transcription spells names differently (Orakelet/Oraklet)
-    if tail_missing(text, line):
-        print(f"  slutten mangler: {tail_missing(text, line)} (hørt: …{text.strip()[-60:]})")
-        return 0.0
-    return sum(hit(w) for w in script) / max(len(script), 1)
+        return None, "", [], ""  # unknown, not zero: keep the clip and flag it
+    clip.with_suffix(".txt").write_text(text.strip() + "\n")  # lets a new rule be tried on old clips for free
+    c, missing, extra = check(text, line)
+    print(f"  hørt: {text.strip()}")
+    if missing:
+        print(f"  mangler: {' '.join(missing)}")
+    if extra:
+        print(f"  ekstra ord etter replikken: {extra}")
+    return c, text.strip(), missing, extra
 
 
 WPS = 1.79  # measured median speech rate of the video model (69 raw clips), words per second
@@ -140,25 +175,49 @@ MAX_WORDS = 22  # ceiling per segment; locked brikke lines are exempt
 
 
 def timing(line: str, secs: int):
-    """Warning if the line does not fit the requested clip, or the 13 s the model often returns for 15."""
+    """Warning if the line does not fit the clip as ordered (see ordered())."""
     need = START + wcount(line) / WPS + TAIL
-    if need > secs:
-        return f"{wcount(line)} ord trenger {need:.1f} s med 2 s hale, bestilt {secs} s"
-    if secs >= 15 and need > 13:
-        return f"{wcount(line)} ord trenger {need:.1f} s; modellen leverer ofte 13 s på 15"
+    if need > ordered(line, secs):
+        return f"{wcount(line)} ord trenger {need:.1f} s med 2 s hale, bestilt {ordered(line, secs)} s"
     return None
+
+
+def ordered(line: str, secs: int) -> int:
+    """Seconds asked of the model: one more from 19 words; the tail is where long lines fail (median 1.0 s silence)."""
+    return min(15, secs + 1) if wcount(line) >= 19 else secs
+
+
+# Before a paid call: phrasings that cost takes (herding-plan 3.2). Speech direction blocks a locked segment.
+TALEREGI = re.compile(r"senker stemmen|hvisker|snakker lavt|sammenbitt|biter tennene|gjesp|ler gjennom", re.I)
+VARSEL = {
+    "arket løftes": re.compile(r"(løfter|\btar\b|holder opp|blar|bøyer)[^.]*\b(ark|brev|side)", re.I),
+    "mime (tingen dukker opp)": re.compile(r"usynlig|later som|som om han holder", re.I),
+}
+
+
+def warnings(line: str, action: str, locked: bool):
+    """(warnings, blocking) for one segment."""
+    w, block = [f"{k}: {action}" for k, rx in VARSEL.items() if rx.search(action)], []
+    if TALEREGI.search(action):
+        (block if locked else w).append(f"taleregi i Handling: {action}")
+    last = re.split(r"(?<=[.!?])\s+", spoken(line).strip())[-1]
+    if wcount(last) <= 3 and not re.search(r"vi ses|fin dag|sov godt|ha det", last, re.I):
+        w.append(f"kort halesetning kan falle bort: «{last}»")
+    return w, block
 
 
 def lint(days) -> int:
     """Print over-long segments and timing warnings; return the number of over-long ones."""
     over = 0
     for day in days:
-        for i, (line, secs, _a, _k, locked) in enumerate(medie.julius_segments(day), 1):
+        for i, (line, secs, action, _k, locked) in enumerate(medie.julius_segments(day), 1):
             n = wcount(line)
             if n > MAX_WORDS and not locked:
                 over += 1
                 print(f"dag {day}-{i}: {n} ord (maks {MAX_WORDS}): {line[:60]}…")
-            if (w := timing(line, secs)):
+            warn, block = warnings(line, action, locked)
+            over += len(block)
+            for w in ([timing(line, secs)] if timing(line, secs) else []) + warn + block:
                 print(f"  dag {day}-{i}: {w}")
     return over
 
@@ -228,11 +287,13 @@ def kulde_fx(kulde: str, line: str, locked: bool, dur: float, drained: bool):
     return vf, af, stutter, drained, prompt + "."
 
 
-AUDIT = """You are a strict continuity supervisor for a short film. The man must hold a chrome microphone in his RIGHT hand the whole time. Watch every frame and list ONLY physics and continuity errors:
+# Either hand is fine (Hans, 13.11); only a mic held by no hand fails. «Left/right» confused the reviewer
+# (his right hand is on the LEFT of the picture), so the rule names no side.
+AUDIT = """You are a strict continuity supervisor for a short film. The man holds an old microphone (round, flat, dark grey head with small holes) in one hand. Which hand does not matter: in the first frame it is the hand on the LEFT side of the picture (his own right hand), and holding it in the other hand is fine. Watch every frame and list ONLY physics and continuity errors:
 - props appearing, disappearing, duplicating or changing shape/identity (book, letters, papers, ink pot, wooden mug, glasses, switchboard, mic, cable)
-- hands: extra/missing fingers, a third hand, hand passing through objects, objects merging with hands or each other, mic floating or held by no hand, mic switching hands
+- hands: extra/missing fingers, a third hand, hand passing through objects, objects merging with hands or each other, mic floating or held by no hand
 - body or furniture morphing, background objects changing
-The microphone rule is absolute: if the mic floats, hangs in the air, is let go, is put down, or changes hands even for one frame, that is always severity "noticeable" and mic_hand_ok is false.
+The microphone rule: if the mic floats, hangs in the air, is let go, is put down or disappears, even for one frame, that is always severity "noticeable" and mic_hand_ok is false. A mic held steadily in either hand is not an error; do not report which hand holds it.
 Do not report lighting, film grain, style or lip sync. For each error: timestamp (mm:ss), short description, severity: "minor" (only seen when looking for it) or "noticeable" (a 9-year-old would notice on first viewing).
 Answer as JSON: {"errors":[{"t":"00:03","what":"...","severity":"minor|noticeable"}],"mic_hand_ok":true|false}"""
 
@@ -271,12 +332,20 @@ def audit(clip: Path):
         return None
     bad = [f"{e['t']} {e['what']}" for e in r.get("errors", []) if e.get("severity") == "noticeable"]
     if not r.get("mic_hand_ok", True) and not any(MIC.search(b) for b in bad):
-        bad.append("mikrofonen bytter hånd eller forsvinner")
+        bad.append("mikrofonen svever eller forsvinner")
     return bad
 
 
 RESET = 3  # with --chain, segments 1, 4, 7 start from ref-v3.jpg again so drift in light and look cannot pile up
 END = "Avslutter rolig med et smil, ingen latter."  # laughter after the goodbye read as sinister (Hans, dag 3)
+# Appended to every action like END, so julius.sh's prompt hash (and days 1–11) stays put (herding-plan 3.1).
+# ponytail: six lines at most; a new line replaces one
+BLOKK = """
+Han sier bare ordene i replikken: ingen ord før, etter eller imellom, ingen kremting og ingen nynning.
+Han snakker i jevnt tempo uten lange pauser, med åpen munn og tydelig uttale.
+Alt utenfor «…» er bokmål med østlandsk uttale. Et sitat i «…» leser han høyt på nordnorsk, og første ord etter sitatet er bokmål igjen.
+Venstre hånd er tom hvis ikke handlingen sier at han tar i noe på bordet.
+Ingenting han snakker om, dukker opp i bildet. Bordet og vinduskarmen er som i referansebildet hele klippet."""
 
 
 def chained(i: int, argv) -> bool:
@@ -292,7 +361,7 @@ def last_frame(clip: Path, out: Path) -> Path:
 
 # ponytail: word-set overlap, not alignment; catches dropped clauses, not swapped word order
 MIN_COVERAGE = 0.9
-ATTEMPTS = 2  # takes per segment (every take is a paid video call); --forsøk N raises it
+ATTEMPTS = 1  # takes per segment; a flagged clip is seen and heard before anyone pays for take 2 (--forsøk N)
 
 
 def main():
@@ -305,7 +374,7 @@ def main():
     if not dry and not promo and "--force" not in sys.argv and medie.status(dest)[0] == medie.CURRENT:
         print(f"{dest} er oppdatert; --force for å lage den på nytt")
         return
-    names = []
+    names, flagged = [], []
     for i, (line, secs, action, kulde, locked) in enumerate(segs, 1):
         name = f"dag{day:02d}-{i}"
         names.append(name)
@@ -317,6 +386,8 @@ def main():
         clip = OUT / f"{name}.mp4"
         raw = OUT / f"{name}.raw.mp4"  # check the unfiltered audio; the radio filter hurts transcription
         act = f"{action} Kuldes påvirkning: {kulde_fx(kulde, line, locked, secs, False)[4]}"
+        if dry:
+            print("  PROMPT-HANDLING: " + act + BLOKK + (" " + END if i == len(segs) else ""))
         take = OUT / f"{name}.take.json"
         key = [line, secs, act]
         if "--alle" not in sys.argv and clip.exists():
@@ -324,17 +395,18 @@ def main():
             if take.exists() and json.loads(take.read_text()) == key:
                 print("  uendret og godkjent tidligere, beholdt")
                 continue
-            if not speech_at_end(raw) and (coverage(raw, line) or 0) >= MIN_COVERAGE:
+            if not speech_at_end(raw) and (coverage(raw, line)[0] or 0) >= MIN_COVERAGE:
                 take.write_text(json.dumps(key))
                 continue
         env = dict(os.environ)
         if chained(i, sys.argv):
             env["REF"] = str(last_frame(OUT / f"dag{day:02d}-{i - 1}.raw.mp4", OUT / f"{name}.start.jpg"))
+        act += BLOKK
         if i == len(segs):
             act += " " + END
-        best = (None, None)  # (score, problems); score = (clean, coverage)
+        best = (None, None, "")  # (score, problems, transcript); score = (whole line, clean, coverage)
         for attempt in range(1, ATTEMPTS + 1):
-            r = subprocess.run([str(BIN / "julius.sh"), name, line, act, str(secs)], stdin=subprocess.DEVNULL, env=env)
+            r = subprocess.run([str(BIN / "julius.sh"), name, line, act, str(ordered(line, secs))], stdin=subprocess.DEVNULL, env=env)
             if r.returncode == 78:
                 sys.exit(1)  # julius.sh's budget guard has printed why
             if r.returncode != 0:
@@ -350,18 +422,22 @@ def main():
 
                 time.sleep(60 * attempt)  # usually 429 from the video API; back off
                 continue
-            c = coverage(raw, line)
+            c, text, missing, extra = coverage(raw, line)
             c = 1.0 if c is None else c  # unknown: don't burn a take on an API hiccup
+            bad = audit(raw) or []
             if speech_at_end(raw):
                 print(f"  {name}: stemmen går til siste bilde, replikken er kuttet")
                 c = 0.0
-            bad = audit(raw) or []
+            if missing:
+                bad = bad + [f"mangler: {' '.join(missing)}"] if c < MIN_COVERAGE else bad
+            if extra:
+                bad = bad + [f"ekstra ord: {extra}"]
             print(f"  {name}: {c:.0%} av replikken hørt, feil: {bad or 'ingen'}")
-            score = (not bad, c)
+            score = (c >= MIN_COVERAGE, not bad, c)  # a cut-off line never beats a whole one
             if best[0] is None or score > best[0]:
                 for ext in ("mp4", "raw.mp4"):
                     shutil.copy(OUT / f"{name}.{ext}", OUT / f"{name}.best.{ext}")
-                best = (score, bad)
+                best = (score, bad, text)
             if not bad and c >= MIN_COVERAGE:
                 take.write_text(json.dumps(key))
                 break
@@ -370,8 +446,13 @@ def main():
         # ponytail: falls back to the best take instead of aborting; check flagged clips by hand
         for ext in ("mp4", "raw.mp4"):
             shutil.copy(OUT / f"{name}.best.{ext}", OUT / f"{name}.{ext}")
-        if best[1] or best[0][1] < MIN_COVERAGE:
-            print(f"  ADVARSEL {name}: beste versjon {best[0][1]:.0%}, feil: {best[1]}")
+        if best[1] or best[0][2] < MIN_COVERAGE:
+            print(f"  ADVARSEL {name}: beste versjon {best[0][2]:.0%}, feil: {best[1]}")
+            flagged.append(f"{name}: {best[0][2]:.0%} hørt; {'; '.join(best[1]) or 'under grensen'}\n  hørt: {best[2]}")
+    if flagged:  # the coordinator decides which need a new call; nothing more is paid automatically
+        log = OUT / f"dag{day:02d}{suffix}-flagget.txt"
+        log.write_text("\n".join(flagged) + "\n")
+        print(f"\nFLAGGET → se og hør før tagning 2 ({log}):\n" + "\n".join(flagged))
     if dry:
         return
     if "--refilter" in sys.argv:  # no API calls: redo look and sound from the kept raw clips
@@ -640,9 +721,23 @@ def join(segs, dest: Path, kulde=None, cutaways=(), plakat=None, trim=True, outr
 
 def selftest():
     assert wcount("Lucia-morgen i TV-en, ja") == 4 and len(words("Lucia-morgen")) == 2
-    assert tail_missing("ja hallo IQ sier linjen er", "IQ sier linjen er åpen.") == ["åpen"]
+    assert tail_missing("ja hallo IQ sier linjen", "IQ sier linjen er åpen.") == ["er", "åpen"]
     assert tail_missing("IQ sier linjen er åpen", "IQ sier linjen er åpen.") == []
-    assert timing("ord " * 10, 15) is None and "13 s" in timing("ord " * 20, 15) and "bestilt" in timing("ord " * 24, 15)
+    assert timing("ord " * 10, 15) is None and timing("ord " * 20, 15) is None and "bestilt 15" in timing("ord " * 24, 15)
+    assert ordered("ord " * 18, 12) == 12 and ordered("ord " * 19, 12) == 13 and ordered("ord " * 20, 15) == 15
+    # herding-plan 3.2: spelling, names, quotes, extra words
+    assert heard_as("goooood", ["god"]) and heard_as("gooood", ["godt"]) and heard_as("sees", ["ses"])
+    assert check("God morgen Snøfall. Rampenissen rapporterer: E laget lydbølger. Jeg lo så trekoppen hoppet.",
+                 "Goooood morgen, Snøfall! Rampenissen rapporterer: «Æ laga lydbølge av dorull.» Jeg lo så trekoppen hoppet.")[0] == 1.0
+    assert check("I natt fant Iku notatboken", "I natt fant IQ notatboken.")[0] == 1.0
+    assert check("I natt fant I Q notatboken", "I natt fant IQ notatboken.")[0] == 1.0
+    c, miss, extra = check("Vi ses. Vi ses. Det var det hele, du.", "Ha en fin dag. Vi ses.")
+    assert abs(c - 1 / 3) < 0.01 and miss == ["ha", "en", "fin", "dag"] and extra == "det var det hele du"
+    c, miss, _ = check("ja hallo IQ sier linjen", "IQ sier linjen er åpen.")
+    assert c == 0.0 and miss == ["er", "åpen"]
+    assert warnings("Ingen er like.", "Senker stemmen.", True)[1] and "kort" in warnings("Han kom. Ingen er like.", "x", False)[0][0]
+    assert not warnings("Ha en fin dag!", "x", False)[0] and warnings("x y z w v", "Løfter et ark og leser.", False)[0]
+    assert "usynlig" not in BLOKK and len(BLOKK.strip().splitlines()) <= 6
     vf, af, st, dr, pr = kulde_fx("Svak knitring, klikk når mikrofonen slås av.", "hei", False, 15, False)
     assert (vf, af, st, dr, pr) == ([], [], None, False, "Svak knitring.")
     vf, af, st, dr, pr = kulde_fx("Fargene renner ut. Lyden faller ut et øyeblikk.", "x", False, 15, False)
@@ -680,7 +775,7 @@ def selftest():
     assert heard_as("tjernet", ["kjernen"]) and heard_as("god", ["gooood"]) and heard_as("orakelet", ["oraklet"])
     assert not heard_as("rim", ["rik"]) and not heard_as("hvelv", ["hytte"])  # short words stay exact
     assert tail_missing("det er teltet", "det er telte.") == [] and tail_missing("det er", "det er telte") == ["telte"]
-    assert "mic_hand_ok is false" in AUDIT and "floats" in AUDIT and MIC.search("mic floating")
+    assert "mic_hand_ok is false" in AUDIT and "floats" in AUDIT and "either hand" in AUDIT and MIC.search("mic floating")
     print("selftest ok")
 
 

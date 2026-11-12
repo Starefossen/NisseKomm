@@ -7,7 +7,9 @@ P="Bruk referansebildet som første bilde: samme mann, samme rom, samme lys, sam
 $(cat "$A/characters/julius/beskrivelse.txt")
 HANDLING: $ACTION
 REPLIKK (sies inn i mikrofonen, ordrett): \"$LINE\"
-Lengde: $SECS sekunder. Replikken er ferdig uttalt senest 2 sekunder før klippet slutter; de siste sekundene er han stille og smiler inn i mikrofonen.
+Lengde: $SECS sekunder.
+[0–$((SECS-2)) s] Han sier replikken og er ferdig med siste ord.
+[$((SECS-2))–$SECS s] Han er stille med lukket munn og smiler inn i mikrofonen.
 Single continuous shot, no scene cuts.
 Do not add, remove or change any object: no telephone, no cups other than the wooden mug, no bells, bottles, vases, quills or magnifying glass. Do not move the microphone to the left hand, do not use both hands on it, do not let it disappear. Do not show a third hand. Everything on the desk in the first frame is still there in the last frame."
 if [ -n "${PREV:-}" ]; then  # Extend: the reply is the whole chain so far plus SECS (3-10) of new speech

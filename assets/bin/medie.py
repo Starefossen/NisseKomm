@@ -171,11 +171,12 @@ JULIUS_P = re.compile(r'^P="(.*?)(?<!\\)"$', re.S | re.M)  # the main prompt in 
 # prompt_version used to hash all of julius.sh above curl, so usage comments and request plumbing marked every
 # clip stale. Sidecars keep the old value: map it to the prompt-only hash of the same julius.sh version.
 LEGACY_PROMPT = {
-    "ff0515e6d7f6623dbdc0bc4a8f8e28c4588bed9362942c03c7f08bb3a73f08be": "d9bac58060f6d96a7782757a00d0c859dd40a97b9b7dfff0123497e8261451f2",  # b5dd51c
-    "5ad2b60f7d8da9ca504826453678a59226d16ad3894a5078c703cbb3b500a9c7": "d9bac58060f6d96a7782757a00d0c859dd40a97b9b7dfff0123497e8261451f2",  # c39ad2d
-    "4ccb7645b65a70b56c455313b8993aa329a890dd1377fcabb398c937ef9e6fdc": "d9bac58060f6d96a7782757a00d0c859dd40a97b9b7dfff0123497e8261451f2",  # 56a6abf
+    "ff0515e6d7f6623dbdc0bc4a8f8e28c4588bed9362942c03c7f08bb3a73f08be": "4aa414e38d9233aec70d9e4a62ee89bc99c37ed2cf96d67c92ee5df464d52559",  # b5dd51c
+    "5ad2b60f7d8da9ca504826453678a59226d16ad3894a5078c703cbb3b500a9c7": "4aa414e38d9233aec70d9e4a62ee89bc99c37ed2cf96d67c92ee5df464d52559",  # c39ad2d
+    "4ccb7645b65a70b56c455313b8993aa329a890dd1377fcabb398c937ef9e6fdc": "4aa414e38d9233aec70d9e4a62ee89bc99c37ed2cf96d67c92ee5df464d52559",  # 56a6abf
     "1cdc4ac9cfc1ac1cdecd09fd47d41ecda2226e6bbfa54f2afe9b2384f68927de": "cff6292629a6901bab54b28d63965700c3ddb7f125d7aa0ebaa3cc93897dd1ae",  # 60d1445
     "a9b0d8f47535499dfa28d2798ee34000add42f66d8fc199a8ee5fc18c468552c": "da1787e99358514f7fe57a72b6e45a23608369fb62ea79ccc19459fc0a2eab72",  # 0ef820e
+    "d9bac58060f6d96a7782757a00d0c859dd40a97b9b7dfff0123497e8261451f2": "4aa414e38d9233aec70d9e4a62ee89bc99c37ed2cf96d67c92ee5df464d52559",  # herding: tidskoder, mikrofon, ingen pauser
 }
 
 
