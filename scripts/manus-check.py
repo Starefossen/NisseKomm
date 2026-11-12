@@ -90,6 +90,8 @@ def spoken_surfaces(d):
     for rep in re.findall(r"\*\*Replikk:\*\* «(.*)»", jd[d]): out.append(("julius", rep))
     out.append(("radio", re.search(r"\*\*Klipp:\*\* «(.*?)»\n", rd[d], re.S).group(1)))
     out.append(("intro", re.search(r"\*\*intro_hint:\*\* «(.*?)»", rd[d]).group(1)))
+    r = re.search(r"\*\*reaksjon_hint:\*\* «(.*?)»", rd[d])
+    if r: out.append(("reaksjon", r.group(1)))
     body = ad[d]
     for key in ("tittel", "nissemail_tekst", "julius_ps", "julius_ps_bonus", "daily_alerts", "symbol_clue.description"):
         for m in re.finditer(r"^- `" + re.escape(key) + r"`[^:]*: (.*)$", body, re.M): out.append((key, m.group(1)))

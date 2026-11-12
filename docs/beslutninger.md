@@ -85,6 +85,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 ## Innhold (2026-11-11)
 
 - Radio dag 12 og 15 beholdes med Rampenissen som øyenvitne fra Snøfall. Hvorfor: lyden er laget og replikkene er redigert av Hans.
+- 2026-11-12: Radio dag 1 utvides til 60–75 s som sesongåpning (hjelp til Snøfall, noe nytt fra IQ, knitring på linjen; ingen hint) og dag 24 til 50–65 s. Birk og Lyng får introduksjon og reaksjon dag 1 og 24 og én reaksjonslinje på utvalgte dager; 24.–30. november hinter de om sesongen uten Rampenissen, og NisseKomm nevnes først 30. Hvorfor: bygge forventning før 1. desember og gi åpning og avslutning tyngde.
 - E-posten dag 4 («NisseKrypto åpner i kveld») er et unntak fra regelen om at opplåsinger meldes i appen, som dag 8 (SLEDEFLUKT). Hvorfor: NisseKrypto er et milepæl i historien.
 
 ## Sledeflukt (2026-11-11)

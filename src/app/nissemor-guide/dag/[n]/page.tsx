@@ -190,6 +190,7 @@ function DagInnhold() {
                     ["Strek", dag.radio.strek],
                     ["Rekvisitter", q?.materialer_nødvendig.join(" · ")],
                     ["Introlinje", dag.radio.intro_hint],
+                    ["Reaksjon", dag.radio.reaksjon_hint],
                     ["Lydregi", dag.radio.lydregi],
                     ["Klipp", dag.radio.klipp],
                   ]
