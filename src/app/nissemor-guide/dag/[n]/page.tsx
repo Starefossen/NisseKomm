@@ -8,7 +8,7 @@ import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { MediaListe, useMediaData } from "../../media/kort";
 import { juliusFiles } from "../../media/oversikt";
 import type { dagInnhold } from "@/lib/guide-innhold";
-import { Foreldredel } from "./foreldre";
+import { Foreldredel, Rampestrek } from "./foreldre";
 import { Gaatekart } from "./gaatekart";
 import { Lukkbar, Vurder } from "../../vurdering";
 
@@ -24,6 +24,8 @@ function skjul(tekst: string, kode: string | undefined, vis: boolean) {
   const esc = kode.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   return tekst.replace(new RegExp(esc, "gi"), "•".repeat(kode.length));
 }
+
+const SKJUL_KEY = "nissekomm-guide-skjul-fasit";
 
 const ren = (s: string) => s.replace(/\*\*/g, "").replace(/`/g, "");
 
@@ -46,7 +48,16 @@ function DagInnhold() {
   const n = Number(useParams<{ n: string }>().n);
   const [dag, setDag] = useState<Dag | null>(null);
   const [feil, setFeil] = useState(false);
-  const [vis, setVis] = useState(false);
+  // Parent guide: answers show unless «Skjul fasit» was chosen (kids nearby).
+  // GuideAuth mounts this only on the client, after login.
+  const [vis, setVisState] = useState(
+    () =>
+      typeof window === "undefined" || localStorage.getItem(SKJUL_KEY) !== "1",
+  );
+  const setVis = (v: boolean) => {
+    localStorage.setItem(SKJUL_KEY, v ? "0" : "1");
+    setVisState(v);
+  };
   const media = useMediaData();
   const dd = String(n).padStart(2, "0");
 
@@ -54,7 +65,7 @@ function DagInnhold() {
     let aktiv = true;
     fetch(`/api/guide/dag/${n}`)
       .then((r) => (r.ok ? r.json() : Promise.reject()))
-      .then((d) => aktiv && (setDag(d), setFeil(false), setVis(false)))
+      .then((d) => aktiv && (setDag(d), setFeil(false)))
       .catch(() => aktiv && setFeil(true));
     return () => {
       aktiv = false;
@@ -63,8 +74,10 @@ function DagInnhold() {
 
   // Content loads after the page, so the browser misses #kveld, #fasit and the like.
   useEffect(() => {
-    if (dag && location.hash)
-      document.getElementById(location.hash.slice(1))?.scrollIntoView();
+    if (!dag || !location.hash) return;
+    const el = document.getElementById(location.hash.slice(1));
+    if (el instanceof HTMLDetailsElement) el.setAttribute("open", "");
+    el?.scrollIntoView();
   }, [dag]);
 
   const q = dag?.oppdrag;
@@ -136,6 +149,8 @@ function DagInnhold() {
                 </span>
               </div>
             </header>
+
+            <Rampestrek n={n} d={dag.kveld} t={t} />
 
             {dag.kveld && (
               <Gaatekart

@@ -181,6 +181,22 @@ export function Gaatekart({
           <b>Reserve:</b> {t(d.reserve)}
         </p>
       )}
+      <details id="hint" className="mt-3 scroll-mt-4">
+        <summary className="text-xl text-(--gold) cursor-pointer min-h-11">
+          Hint ({d.slikLoses.length})
+        </summary>
+        <p>Gi ett trinn om gangen, og vent litt før neste.</p>
+        <ol className="list-decimal pl-6 space-y-1">
+          {d.slikLoses.map((s) => (
+            <li key={s}>{t(s)}</li>
+          ))}
+        </ol>
+        <p>
+          <b>Hanna (hvis hun vil):</b> {t(d.hanna)}
+        </p>
+        <h4 className="text-lg text-(--christmas-red)">Hvis noe er borte</h4>
+        <p>{t(d.reserve)}</p>
+      </details>
       <Vurder id={vid} />
     </section>
   );

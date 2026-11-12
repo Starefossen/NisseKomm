@@ -41,7 +41,7 @@ const klokka = (iso: string) =>
   });
 
 /**
- * Morning status, hints, answer, tonight's preparation and bonus for one day.
+ * Morning status, answer, tonight's preparation and bonus for one day.
  * `t` hides the code until «Vis fasit» is on.
  */
 export function Foreldredel({
@@ -95,9 +95,9 @@ export function Foreldredel({
     `Finn fram: ${d.materialer}`,
     ...(d.iKveld ? [`I kveld: ${d.iKveld}`] : []),
     ...hus,
-    "Sett rampestreken (se Rampestrek under)",
+    "Sett rampestreken (se Rampestrek øverst)",
     ...(symbol ? [`Gjem symbolkortet: ${symbol.description}`] : []),
-    "Les «Hvis noe er borte» i Hint å gi",
+    "Les «Hvis noe er borte» under Hint i Gåtekartet",
     ...(plan?.morgen1 ? [plan.morgen1] : []),
   ];
 
@@ -135,20 +135,6 @@ export function Foreldredel({
             </a>
           </p>
         )}
-      </Seksjon>
-
-      <Seksjon id="hint" tittel="Hint å gi">
-        <p>Gi ett trinn om gangen, og vent litt før neste.</p>
-        <ol className="list-decimal pl-6 space-y-1">
-          {d.slikLoses.map((s) => (
-            <li key={s}>{f(s)}</li>
-          ))}
-        </ol>
-        <p>
-          <b>Hanna (hvis hun vil):</b> {f(d.hanna)}
-        </p>
-        <h3 className="text-xl text-(--christmas-red)">Hvis noe er borte</h3>
-        <p>{f(d.reserve)}</p>
       </Seksjon>
 
       <Seksjon id="fasit" tittel="Fasit" farge="border-(--gold)">
@@ -190,17 +176,6 @@ export function Foreldredel({
         <h3 className="text-xl text-(--gold)">Sjekkliste</h3>
         <p>Avkrysningen deles med den andre forelderen.</p>
         <Avkrysning punkter={punkter} krysset={krysset} veksle={veksle} />
-        <h3 className="text-xl text-(--gold)">
-          Rampestrek ({d.strek.minutter} min, {d.strek.type})
-        </h3>
-        <p>{f(d.strek.tekst)}</p>
-        <p>
-          <b>Materialer:</b> {d.strek.materialer}
-        </p>
-        <p>
-          <b>Bærer dagens brikke:</b> {d.strek.brikke}
-        </p>
-        <Vurder id={`dag/${dd}/rampestrek`} />
         <h3 className="text-xl text-(--gold)">Gåten ({d.oppsett})</h3>
         <p>
           <b>Gjør i kveld:</b> {f(d.iKveld)}
@@ -260,5 +235,33 @@ export function Foreldredel({
         </Seksjon>
       )}
     </>
+  );
+}
+
+/** Tonight's prank, first on the page. */
+export function Rampestrek({
+  n,
+  d,
+  t,
+}: {
+  n: number;
+  d: ReturnType<typeof kveldDag>;
+  t: (s: string) => string;
+}) {
+  if (!d) return null;
+  return (
+    <Seksjon
+      id="rampestrek"
+      tittel={`Rampestrek (${d.strek.minutter} min, ${d.strek.type})`}
+    >
+      <p>{t(d.strek.tekst)}</p>
+      <p>
+        <b>Materialer:</b> {d.strek.materialer}
+      </p>
+      <p>
+        <b>Bærer dagens brikke:</b> {d.strek.brikke}
+      </p>
+      <Vurder id={`dag/${String(n).padStart(2, "0")}/rampestrek`} />
+    </Seksjon>
   );
 }
