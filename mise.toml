@@ -31,6 +31,7 @@ EOF
 KID_CODE="${KID_CODE:-snø lykt rein}" \
 PARENT_CODE="${PARENT_CODE:-NORDPOL-DEV2026}" \
 NISSEKOMM_MODE="${NISSEKOMM_MODE:-lan}" \
+MCP_DEV_TOKEN="${MCP_DEV_TOKEN:-parent:parenttoken1}" \
 NEXT_PUBLIC_TEST_MODE=true \
 NEXT_PUBLIC_BOOT_ANIMATION_DURATION=0 \
 NEXT_PUBLIC_MOCK_MONTH=12 \
@@ -145,6 +146,11 @@ PORT=$(docker port "$ID" 5432/tcp | head -1 | sed 's/.*://')
 echo "DATABASE_URL=postgres://postgres:dev@127.0.0.1:${PORT}/nissekomm"
 echo "Stopp med: docker stop ${ID:0:12}"
 """
+
+[tasks.vurderinger]
+description = "Hans' vurderinger fra guiden via MCP (--alle, --siden ISO, --nye, --prefiks P)"
+raw = true
+run = "scripts/vurderinger.sh"
 
 [tasks."test:gjennomspilling"]
 description = "Spill gjennom dag 1–24 i headless Chromium (DAYS=10,21 for utvalg, BASE_URL for kjørende server)"

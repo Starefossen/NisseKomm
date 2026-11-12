@@ -33,7 +33,9 @@ import {
 } from "@/components/windows/snofall-tv/channels";
 
 export { TV_GRADE_OVERRIDE };
-import { createUploadTicket, mediaStatus } from "@/lib/media-server";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { createUploadTicket, mediaDir, mediaStatus } from "@/lib/media-server";
 import type { Caller, Level } from "./auth";
 import { getClip } from "./clips";
 
@@ -852,6 +854,48 @@ export const TOOLS: Record<string, Tool> = {
       };
     },
   },
+  list_vurderinger: {
+    level: "parent",
+    description:
+      "Hans' vurderinger fra guiden, én linje per element: id | vurdering | oppdatert | notat. status «åpne» (standard, alt som ikke er godkjent) eller «alle»; siden = ISO-tid; prefiks = id-start.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        status: { type: "string", enum: ["åpne", "alle"] },
+        siden: { type: "string" },
+        prefiks: { type: "string" },
+      },
+    },
+    run: async ({ status, siden, prefiks }) => {
+      const fra = typeof siden === "string" ? Date.parse(siden) : NaN;
+      if (typeof siden === "string" && Number.isNaN(fra))
+        throw new ArgError("ugyldig argument: siden");
+      let alle: Record<
+        string,
+        { vurdering?: string; notat?: string; oppdatert?: string }
+      > = {};
+      try {
+        alle = JSON.parse(
+          await readFile(path.join(mediaDir(), "media-vurdering.json"), "utf8"),
+        );
+      } catch {}
+      const rader = Object.entries(alle)
+        .filter(([id]) => typeof prefiks !== "string" || id.startsWith(prefiks))
+        .filter(
+          ([, v]) => Number.isNaN(fra) || Date.parse(v.oppdatert ?? "") > fra,
+        )
+        .sort(([, a], [, b]) =>
+          (b.oppdatert ?? "").localeCompare(a.oppdatert ?? ""),
+        );
+      const aapne = rader.filter(([, v]) => v.vurdering !== "godkjent");
+      const vis = status === "alle" ? rader : aapne;
+      const linjer = vis.map(
+        ([id, v]) =>
+          `${id} | ${v.vurdering ?? "-"} | ${(v.oppdatert ?? "").slice(0, 16).replace("T", " ")} | ${(v.notat ?? "").replace(/\s*\n\s*/g, " / ")}`,
+      );
+      return [`${aapne.length} åpne av ${rader.length}`, ...linjer].join("\n");
+    },
+  },
   reset: {
     level: "parent",
     description: "Nullstill all delt spilltilstand.",
@@ -882,7 +926,7 @@ export async function callTool(
   if (out && typeof out === "object" && !Array.isArray(out)) {
     out = { schema_version: 1, ...out };
   }
-  let text = JSON.stringify(out);
+  let text = typeof out === "string" ? out : JSON.stringify(out);
   if (tool.level === "read") {
     text = redact(text, earnedCodes(await read(), clockFor(caller.sub)));
   }
