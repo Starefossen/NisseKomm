@@ -133,7 +133,7 @@ export const KAPITTEL_3: Kapittel = {
           rect: { x: 55, y: 46, w: 13, h: 32 },
           smart: "snakk",
           snakk: "hjerterud",
-          se: "Hjerterud sitter i den myke stolen ved pulten med en kurv boller på fanget. Bollene er til Julius. Han er ikke her. Hun venter. Ved siden av står en kopp te som har sluttet å ryke for lenge siden. Hun har ikke merket det. Hun merker alt annet.",
+          se: "Hjerterud sitter ved pulten og venter, med en kurv boller under en klut ved siden av seg. Bollene er til Julius. Han er ikke her. Hun venter. Ved siden av står en kopp te som har sluttet å ryke for lenge siden. Hun har ikke merket det. Hun merker alt annet.",
           bruk: "Du prikker Hjerterud på armen. Hun ser opp fra bollene og smiler. «Ja, Floke? Har du spist?» Hun visste at du kom. Hun vet alltid.",
         },
         {
@@ -476,7 +476,7 @@ export const KAPITTEL_3: Kapittel = {
         },
         {
           id: "lyshylla",
-          navn: "De klare krystallene",
+          navn: "Den nederste hylla",
           rect: { x: 64, y: 20, w: 32, h: 58 },
           smart: "bruk",
           vis: { hvis: "skaar_satt" },

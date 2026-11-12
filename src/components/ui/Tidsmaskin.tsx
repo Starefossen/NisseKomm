@@ -71,8 +71,9 @@ export function Tidsmaskin() {
       .finally(() => window.location.reload());
   };
 
+  // Bottom centre: bottom right covered Ugleposten's MENY at 1440×900.
   const corner =
-    "fixed bottom-2 right-2 z-[9999] font-retro text-sm print:hidden";
+    "fixed bottom-2 left-1/2 -translate-x-1/2 z-[9999] font-retro text-sm print:hidden";
   const btn =
     "min-h-11 px-2 border-2 border-(--gold) text-(--gold) hover:bg-(--gold)/20";
   const field =

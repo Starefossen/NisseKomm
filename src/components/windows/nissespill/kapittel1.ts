@@ -100,7 +100,7 @@ export const KAPITTEL_1: Kapittel = {
       tittel: "Tårnuret",
       flagg: "klokka_stilt",
       tekst:
-        "16.40. Urverket tar et dypt pust, tannhjulene griper, og de tre klokkene slår så hele rommet synger. Nede på torget ser Winter opp fra skriveplata, nikker én gang og noterer: «Klokka stemmer.» " +
+        "16.40. Urverket tar et dypt pust, tannhjulene griper, og de fire klokkene slår så hele rommet synger. Nede på torget ser Winter opp fra skriveplata, nikker én gang og noterer: «Klokka stemmer.» " +
         R +
         "«Det e ikkje 16.40. Det e det aldri. Men no e det tømmetid når Winter sei det e tømmetid, og det e det viktigaste for han.»",
       hjul: [
@@ -182,7 +182,7 @@ export const KAPITTEL_1: Kapittel = {
           prat: "Du roper «hei» bort til bodene. Begge bodnissene vinker. Så ser de at den andre vinket, og slutter samtidig.",
           rect: { x: 20, y: 40, w: 22, h: 42 },
           smart: "bruk",
-          se: "To små boder med lanterner. Den ene selger kurver med frosne bær. Den andre selger også frosne bær, men med skilt: «BEDRE». Konkurransen er hard og helt lik.",
+          se: "To små boder med lanterner. Den ene selger kurver med frosne bær. Den andre selger også frosne bær, under et blankt skilt der det sto «BEDRE» i går. Konkurransen er hard og helt lik.",
           ta: {
             item: "tyttebaer",
             tekst:
@@ -485,7 +485,7 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Skiltet",
           rect: { x: 67, y: 20, w: 12, h: 10 },
           smart: "se",
-          se: "«IKKE RØR (GJELDER OGSÅ RAMPENISSEN)». Under skiltet henger en lapp med klementin-klistremerker: «Æ rørte ikkje. Æ bare kikka med fingran. – R.»",
+          se: "Et blankt treskilt. Det sto «IKKE RØR (GJELDER OGSÅ RAMPENISSEN)» på det en gang. Bokstavene er gnidd bort, akkurat i fingerhøyde for en nisse på tretti centimeter.",
         },
         {
           id: "doera",
@@ -549,7 +549,7 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Tegningen",
           rect: { x: 15, y: 85, w: 30, h: 15 },
           smart: "se",
-          se: "En tegning av en slede med to svære trakter bak på meiene. Noen har skrevet «DREVET AV PEPPERKAKEGASS» med blyant, og Julius har satt et stort spørsmålstegn ved siden av med rød fargestift. IQ har satt et utropstegn ved spørsmålstegnet. Diskusjonen pågår.",
+          se: "Arket ser blankt ut. Med nebbet helt inntil ser du svake blyantstreker: en slede med to svære trakter bak på meiene. Noen har skrevet «DREVET AV PEPPERKAKEGASS» med blyant, og Julius har satt et stort spørsmålstegn ved siden av med rød fargestift. IQ har satt et utropstegn ved spørsmålstegnet. Diskusjonen pågår.",
         },
         {
           id: "sidebordet",
@@ -581,8 +581,8 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Krakken",
           rect: { x: 66, y: 72, w: 8, h: 27 },
           smart: "se",
-          se: "IQs krakk. Den har tre bein og en bok under det fjerde. Boka heter «Balanse for viderekomne». Den er ikke åpnet.",
-          prat: "Du spør krakken hvordan det går med balansen. Den vipper. Det er svaret, og det har vært svaret siden boka kom under.",
+          se: "IQs krakk. Fire bein, alle litt ulike lange. IQ har kjøpt boka «Balanse for viderekomne» til den. Boka er ikke åpnet.",
+          prat: "Du spør krakken hvordan det går med balansen. Den vipper. Det er svaret, og det har vært svaret lenge.",
         },
         {
           id: "hyllene",
@@ -787,7 +787,7 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Vinduet",
           rect: { x: 84, y: 17, w: 16, h: 37 },
           smart: "se",
-          se: "Rim i hjørnene og klokketårnet utenfor, gyllent mot natta. I vinduskarmen står fire lysestaker. Ingen av lysene er tent ennå. Hjerterud tenner dem når det er tid.",
+          se: "Rim i hjørnene og klokketårnet utenfor, gyllent mot natta. Vinduskarmen er tom. Lysene står på bordene, og de er alt tent. Hjerterud tenner dem tidlig.",
           prat: "Du banker på ruta. Utenfor ser Winter opp fra postkassen, finner deg i vinduet og noterer. Hjerterud, uten å snu seg: «La ham. Han har så lite.»",
         },
         {
@@ -945,7 +945,7 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Vinduet",
           rect: { x: 88, y: 20, w: 12, h: 30 },
           smart: "se",
-          se: "Gjennom vinduet ser du postkassen bakfra og Winter forfra. Han ser rett på deg. Han ser alltid rett på deg. Han løfter blyanten og noterer: «Ugle. Innendørs. Kl. 16.41.»",
+          se: "Gjennom vinduet ser du husene rundt torget og snøen som faller. Winter ser du ikke, men du hører blyanten hans der ute: «Ugle. Innendørs. Kl. 16.41.»",
           prat: "Du vinker til Winter gjennom ruta. Han løfter blyanten til hilsen. Det er det nærmeste han kommer å vinke, og det er mer enn de fleste får.",
           bruk: "Du banker på ruta. Winter banker tilbake. Én gang. Presist.",
         },
@@ -1027,7 +1027,7 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Klokkene",
           rect: { x: 29, y: 0, w: 48, h: 28 },
           smart: "se",
-          se: "Tre messingklokker i bjelkene: en stor, en mellomstor og en liten. Den lille er sprukket og klinger litt skjevt. Det er den alle i Snøfall liker best. Den høres ut som noen som ler.",
+          se: "Fire messingklokker i bjelkene: to store, en mellomstor og en liten. Den lille er sprukket og klinger litt skjevt. Det er den alle i Snøfall liker best. Den høres ut som noen som ler.",
           bruk: "Du dytter til den lille klokka. KLING. Nede på torget ser Winter opp. Han ser rett på tårnet. Han ser rett på deg. Du står helt stille. Han noterer.",
           prat: "Du uler mot den store klokka. Den svarer med en dyp, lang tone som varer lenger enn den burde. Floke blåser seg opp. Hun har fått svar.",
         },
@@ -1133,7 +1133,7 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Bodnissen til venstre",
           rect: { x: 11, y: 37, w: 13, h: 25 },
           smart: "snakk",
-          se: "En kort, rund bodnisse i ullsjal med sjalet trukket opp til nesa. Han har solgt bær på torget i førti år. De samme bærene, hevder naboen. Han hevder det motsatte, like lenge.",
+          se: "En rund, skjeggete bodnisse i ullsjal, med et smil som når helt opp til lua. Han har solgt bær på torget i førti år. De samme bærene, hevder naboen. Han hevder det motsatte, like lenge.",
           bruk: "Du prikker bodnissen på armen. Han ser på deg, så på bærene, så på deg. «Ei neve er gratis for ugler. To never er handel.»",
           prat: [
             {
@@ -1158,7 +1158,7 @@ export const KAPITTEL_1: Kapittel = {
             tekst:
               "Du tar ei neve frosne tyttebær fra kurven nærmest. Bodnissen nikker. Fra torget, langt borte, hører du Winter notere: «Bær. Ei neve. Boden til venstre.»",
           },
-          bruk: "Du har bær nok. Bodnissen løfter et øyenbryn under sjalet. Ett øyenbryn er alt han har å si om saken.",
+          bruk: "Du har bær nok. Bodnissen løfter et øyenbryn under lua. Ett øyenbryn er alt han har å si om saken.",
         },
         {
           id: "klementinene",
@@ -1170,7 +1170,7 @@ export const KAPITTEL_1: Kapittel = {
           rect: { x: 17, y: 83, w: 19, h: 17 },
           smart: "se",
           se:
-            "En trekasse med hjemmelagde leker: trehester, en kjelke og en liten tromme, alle snekret i Snøfall. Det er en fordypning i kassa, akkurat stor nok til en nisse på tretti centimeter. " +
+            "En trekasse med hjemmelagde leker: trehester og en kjelke, alle snekret i Snøfall. Det er en fordypning i kassa, akkurat stor nok til en nisse på tretti centimeter. " +
             R +
             "«Æ har aldri ligge i den kassa. Æ har ligge VED SIDA av den kassa. Det e en viktig forskjell for en som ser ut som et leketøy.»",
           bruk: "Du dytter en trehest med nebbet. Den triller ut av kassa, over snøen og stopper mot boden til høyre. Bodnissen til høyre tar den opp, smiler og setter den på disken sin. Han selger ikke leker. Nå gjør han det.",
@@ -1182,7 +1182,7 @@ export const KAPITTEL_1: Kapittel = {
           smart: "se",
           se: "En kurv med strikkede votter i alle farger. Ingen av dem har make. Hjerterud strikker én og én, når hun venter på at noe skal heve. Så går hun. Vottene er like lange som en bolle tar.",
           prat: "Du spør vottene hvor makene deres er. Hjerterud vet det. Hjerterud sier det ikke. Hun sier at en vott alene er en halv gave, og at halve gaver også er gaver.",
-          bruk: "Du drar fram en grønn vott med nebbet. Den passer ikke på en ugle. Du prøver likevel. Bodnissen til venstre ler så sjalet sklir ned. Det var verdt det.",
+          bruk: "Du drar fram en grønn vott med nebbet. Den passer ikke på en ugle. Du prøver likevel. Bodnissen til venstre ler så skjegget rister. Det var verdt det.",
         },
         {
           id: "taarnet",
@@ -1222,7 +1222,7 @@ export const KAPITTEL_1: Kapittel = {
             },
             {
               tekst:
-                "«Bedre bær! Les skiltet. Jeg har stått her i førti år ved siden av ham, og mine har alltid vært bedre. Samme skog, samme frost, samme kurv. Men bedre. Ta ei neve, så skjønner du.»",
+                "«Bedre bær! Det sto på skiltet i går. Jeg har stått her i førti år ved siden av ham, og mine har alltid vært bedre. Samme skog, samme frost, samme kurv. Men bedre. Ta ei neve, så skjønner du.»",
             },
           ],
         },
@@ -1244,8 +1244,8 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Skiltet",
           rect: { x: 86, y: 36, w: 12, h: 16 },
           smart: "se",
-          se: "Et håndmalt treskilt: «BEDRE». Bare det. Malingen er ny. Den males på nytt hver morgen, før naboen kommer, for å være sikker. Under ligger førti lag med «BEDRE».",
-          prat: "Du leser skiltet høyt: «BEDRE.» Bodnissen til venstre, uten å snu seg: «Les baksiden.» Bodnissen til høyre: «IKKE les baksiden.»",
+          se: "Et blankt treskilt. I går sto det «BEDRE» på det. I natt malte noen over. Bodnissen til høyre maler det på nytt hver morgen, men i dag har han ikke rukket det. Under ligger førti lag med «BEDRE».",
+          prat: "Du leser det blanke skiltet høyt. Det tar ikke lang tid. Bodnissen til venstre, uten å snu seg: «Les baksiden.» Bodnissen til høyre: «IKKE les baksiden.»",
           bruk: "Du snur skiltet med nebbet. På baksiden står det, med mindre bokstaver: «LIKE». Du snur det fort tilbake. Noen ting skal to bodnisser få ordne opp i selv.",
         },
         {
@@ -1558,7 +1558,7 @@ export const KAPITTEL_1: Kapittel = {
               uten: "skjema_signert",
               neste: "signer",
             },
-            { tekst: "Hvorfor står det IKKE RØR på skiltet?", neste: "skilt" },
+            { tekst: "Hvorfor er skiltet ditt blankt?", neste: "skilt" },
             { tekst: "Hva lager du der inne?", neste: "hemmelig" },
             { tekst: "Vi går igjen." },
           ],
@@ -1588,7 +1588,7 @@ export const KAPITTEL_1: Kapittel = {
         },
         skilt: {
           tekst:
-            "«Fordi folk rører. Særlig én bestemt person med rød lue. Skiltet gjelder forresten også dere, men dere er sikkert flinkere. Dere har i hvert fall ikke klistremerker.»",
+            "«Det sto IKKE RØR på det. Folk rørte likevel, særlig én bestemt person med rød lue, og nå er bokstavene borte. Skiltet gjelder forresten også dere, men dere er sikkert flinkere. Dere har i hvert fall ikke klistremerker.»",
           rampenissen:
             "«Æ rørte ikkje. Æ kikka med fingran. Det e nåkka heilt anna. Det e vitenskap.»",
           valg: [{ tekst: "Vi skal ikke røre." }],

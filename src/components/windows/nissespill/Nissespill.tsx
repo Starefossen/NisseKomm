@@ -1051,7 +1051,10 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
                 <div className="flex-1 min-w-0">
                   <p className="text-lg text-(--gold)">Rampenissen</p>
                   <p className="text-xl leading-tight">
-                    <Skriv key={kap.utro} tekst={kap.utro} />
+                    <Skriv
+                      key={kap.utro}
+                      tekst={kap.utro.replace(/^Rampenissen: /, "")}
+                    />
                   </p>
                   <div className="mt-2 border-2 border-(--gold) px-3 py-2 space-y-1">
                     <p className="text-2xl text-(--gold) tracking-wider">

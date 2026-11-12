@@ -302,7 +302,7 @@ export const KAPITTEL_2: Kapittel = {
           smart: "bruk",
           prat: "«Rudolf?» Rudolf tygger. «Rudolf, kabelen.» Rudolf tygger litt fortere. Han hører. Han prioriterer.",
           vis: { uten: "rudolf_flyttet" },
-          se: "Rudolf står ved foten av masta med en svart kabel i munnen. Nesa lyser rødt hver gang han tygger. Bak ham skimter du et tannhjul dekket av is. Han står ikke i veien. Han ER veien.",
+          se: "Rudolf ligger ved foten av masta med en svart kabel i munnen. Nesa lyser rødt hver gang han tygger. Bak ham skimter du et tannhjul dekket av is. Han ligger ikke i veien. Han ER veien.",
           bruk:
             "Du dytter Rudolf. Rudolf dytter tilbake. Rudolf vinner. " +
             R +
@@ -489,7 +489,7 @@ export const KAPITTEL_2: Kapittel = {
         {
           id: "benken",
           navn: "Benken i hytta",
-          rect: { x: 60, y: 66, w: 10, h: 8 },
+          rect: { x: 58, y: 67, w: 5, h: 8 },
           smart: "bruk",
           vis: { hvis: "hytta_aapen" },
           se: [
@@ -698,7 +698,7 @@ export const KAPITTEL_2: Kapittel = {
           navn: "Skiltet",
           rect: { x: 67, y: 20, w: 12, h: 10 },
           smart: "se",
-          se: "«IKKE RØR (GJELDER OGSÅ RAMPENISSEN)». Under henger en ny lapp: «GJELDER OGSÅ RUDOLF». Lappen har bittemerker. Lappen om bittemerkene har også bittemerker.",
+          se: "Det blanke skiltet. Bokstavene ble gnidd bort av Rampenissen. Nå har hjørnet bittemerker også. Rudolf har lest det på sin måte.",
         },
         {
           id: "doera",
@@ -725,7 +725,7 @@ export const KAPITTEL_2: Kapittel = {
           navn: "Tegningen",
           rect: { x: 15, y: 85, w: 30, h: 15 },
           smart: "se",
-          se: "Sledetegningen med pepperkakegass-traktene. Julius' røde spørsmålstegn og IQs utropstegn har fått selskap av et tredje tegn. Det er et bittemerke. Diskusjonen har fått en ny deltaker.",
+          se: "Det nesten blanke arket med den svake sledetegningen. Julius' røde spørsmålstegn og IQs utropstegn har fått selskap av et tredje tegn. Det er et bittemerke. Diskusjonen har fått en ny deltaker.",
         },
         {
           id: "sidebordet",
@@ -760,11 +760,11 @@ export const KAPITTEL_2: Kapittel = {
             {
               hvis: "tok_grytevott",
               tekst:
-                "IQs krakk med tre bein og boka «Balanse for viderekomne» under det fjerde. Kroken under setet er tom. Krakken står like skjevt som før.",
+                "IQs krakk på fire ulike lange bein. Kroken under setet er tom. Krakken står like skjevt som før.",
             },
             {
               tekst:
-                "IQs krakk med tre bein og boka «Balanse for viderekomne» under det fjerde. Under setet henger noe rutete på en krok. Det er gjemt. Dårlig.",
+                "IQs krakk på fire ulike lange bein. Under setet henger noe rutete på en krok. Det er gjemt. Dårlig.",
             },
           ],
           ta: {
