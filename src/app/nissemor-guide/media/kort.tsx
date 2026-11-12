@@ -380,8 +380,6 @@ export function useMediaData() {
   const [files, setFiles] = useState<MediaStatus[] | null>(null);
   const [unavailable, setUnavailable] = useState(false);
   const [message, setMessage] = useState("");
-  const [onlyMissing, setOnlyMissing] = useState(false);
-  const [onlyUnrated, setOnlyUnrated] = useState(false);
   const [inventar, setInventar] = useState<Map<string, Inventar>>(new Map());
   const [vurderinger, setVurderinger] = useState<MediaVurderinger>({});
   const [savingMap, setSavingMap] = useState<Record<string, boolean>>({});
@@ -498,10 +496,6 @@ export function useMediaData() {
     unavailable,
     message,
     setMessage,
-    onlyMissing,
-    setOnlyMissing,
-    onlyUnrated,
-    setOnlyUnrated,
     inventar,
     vurderinger,
     savingMap,

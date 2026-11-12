@@ -8,6 +8,7 @@ import { GameEngine } from "@/lib/game-engine";
 import { GuideSide, Kort, useSesong, type Sesong } from "../_kveld/felles";
 import { TaIBruk, kilde, useMediaData } from "../media/kort";
 import { brukbar, FORKLARING, MERKE } from "@/lib/media-status";
+import { GJENSTAAR } from "../media/filter";
 import { SkjulVurder, Vurder, useVurderinger, vurderTast } from "../vurdering";
 import {
   KOLONNER,
@@ -24,6 +25,56 @@ import { Innhold } from "./visning";
 const SIDE = "/nissemor-guide/gjennomgang";
 const REKKEFOLGE = "nissekomm-guide-gjennomgang-rekkefolge";
 const href = (id: string) => `${SIDE}?id=${encodeURIComponent(id)}`;
+const UTVALG_NOKKEL = "nissekomm-guide-gjennomgang-utvalg";
+
+// Quick choices, the same as the media page's «Hva gjenstår» and type chips.
+const UTVALG = [
+  ["gjenstaar", "Hva gjenstår"],
+  ["julius", "Bare Julius"],
+  ["radio", "Bare Radio"],
+  ["rampestrek", "Bare Rampestrek"],
+  ["alle", "Alt"],
+] as const;
+type Utvalg = (typeof UTVALG)[number][0];
+
+const passerUtvalg = (u: Utvalg, e: Element, celle: Tilstand) =>
+  u === "alle" ||
+  (u === "gjenstaar" ? GJENSTAAR.includes(celle) : e.gruppe === u);
+
+/** From `?f=`, else the last one used, else everything. */
+function useUtvalg(): [Utvalg, (u: Utvalg) => void] {
+  const fraUrl = useSearchParams().get("f");
+  const [u, setU] = useState<Utvalg>(() => {
+    const v = fraUrl ?? localStorage.getItem(UTVALG_NOKKEL);
+    return UTVALG.some(([k]) => k === v) ? (v as Utvalg) : "alle";
+  });
+  const sett = (ny: Utvalg) => {
+    localStorage.setItem(UTVALG_NOKKEL, ny);
+    const url = new URL(location.href);
+    url.searchParams.set("f", ny);
+    history.replaceState(history.state, "", url);
+    setU(ny);
+  };
+  return [u, sett];
+}
+
+function UtvalgValg({ u, sett }: { u: Utvalg; sett: (u: Utvalg) => void }) {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {UTVALG.map(([k, navn]) => (
+        <button
+          key={k}
+          type="button"
+          aria-pressed={u === k}
+          onClick={() => sett(k)}
+          className={`${knapp} text-lg ${u === k ? "bg-(--gold) text-black border-(--gold)" : ""}`}
+        >
+          {navn}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 const knapp =
   "inline-flex items-center justify-center min-h-11 min-w-11 px-3 border-2 border-(--neon-green) hover:bg-(--neon-green)/20";
@@ -71,16 +122,30 @@ function Matrise({
   const k = { ...kilde(d.media), vurderinger: vurd };
   const tt = (e: Element | null) => e && tilstand(e, k);
   const t = (e: Element | null) => tt(e)?.celle;
-  const celle = (e: Element | null) => <Celle key={e?.id} e={e} t={tt(e)} />;
+  const [u, settU] = useUtvalg();
+  const vis = (e: Element | null): e is Element =>
+    !!e && passerUtvalg(u, e, t(e)!);
+  const celle = (e: Element | null) => (
+    <Celle key={e?.id} e={vis(e) ? e : null} t={vis(e) ? tt(e) : null} />
+  );
+  const kolonner = KOLONNER.filter(
+    ([k]) => u === "alle" || u === "gjenstaar" || u === k,
+  );
   const alle = alleElementer("dag", sesong, d.media.files, d.krypto);
+  const utvalgt = alle.filter(vis);
   const ok = alle.filter((e) => brukbar(t(e))).length;
-  const ekstra = ekstraRader(sesong, d.media.files, d.krypto);
+  const ekstra = ekstraRader(sesong, d.media.files, d.krypto).filter(
+    (e) => KOLONNER.every(([k]) => k !== u) && vis(e),
+  );
   const grupper = [...new Set(ekstra.map((e) => e.gruppe))];
-  const dager = Array.from({ length: 24 }, (_, i) => i + 1);
-  const forste = nesteUvurdert(alle, "", vurd);
+  const dager = Array.from({ length: 24 }, (_, i) => i + 1).filter((n) =>
+    kolonner.some(([k]) => vis(dagElement(k, n, sesong, d.media.files))),
+  );
+  const forste = nesteUvurdert(utvalgt, "", vurd);
 
   return (
     <>
+      <UtvalgValg u={u} sett={settU} />
       <Kort tittel={`${ok} av ${alle.length} godkjent`} farge="border-(--gold)">
         <div className="h-4 border-2 border-(--neon-green)">
           <div
@@ -105,7 +170,7 @@ function Matrise({
           <thead>
             <tr className="text-(--gold)">
               <th className="p-1 text-left">Dag</th>
-              {KOLONNER.map(([k, navn]) => {
+              {kolonner.map(([k, navn]) => {
                 const rad = dager
                   .map((n) => dagElement(k, n, sesong, d.media.files))
                   .filter(Boolean);
@@ -128,7 +193,7 @@ function Matrise({
                     {n}
                   </Link>
                 </th>
-                {KOLONNER.map(([k]) =>
+                {kolonner.map(([k]) =>
                   celle(dagElement(k, n, sesong, d.media.files)),
                 )}
               </tr>
@@ -179,6 +244,8 @@ function Vurdering({
   );
   // Gjennomgang only mounts this once the verdicts have loaded.
   const vurd = d.vurd!;
+  const [u, settU] = useUtvalg();
+  const k = { ...kilde(d.media), vurderinger: vurd };
   const liste = alleElementer(rekkefolge, sesong, d.media.files, d.krypto);
   // An old link to dag-02.mp4 lands on the newest version of the group.
   const eksakt = liste.findIndex((e) => e.id === id);
@@ -188,7 +255,12 @@ function Vurdering({
       : liste.findIndex((e) => versionKey(e.id) === versionKey(id));
   const e = liste[i];
   const forrige = liste[i - 1];
-  const neste = nesteUvurdert(liste, e?.id ?? id, vurd);
+  // «Neste uvurdert» stays inside the chosen quick choice; the current item always counts.
+  const neste = nesteUvurdert(
+    liste.filter((x) => x === e || passerUtvalg(u, x, tilstand(x, k).celle)),
+    e?.id ?? id,
+    vurd,
+  );
 
   useEffect(() => {
     const ned = (ev: KeyboardEvent) => {
@@ -210,7 +282,7 @@ function Vurdering({
   }, [id, neste, forrige, router]);
 
   if (!e) return <p>Fant ikke {id}.</p>;
-  const st = tilstand(e, { ...kilde(d.media), vurderinger: vurd });
+  const st = tilstand(e, k);
   return (
     <>
       <nav className="flex flex-wrap items-center gap-2">
@@ -227,6 +299,7 @@ function Vurdering({
             Neste uvurdert (N)
           </Link>
         )}
+        <UtvalgValg u={u} sett={settU} />
         <label className="flex items-center gap-2 min-h-11 ml-auto text-base">
           Rekkefølge
           <select

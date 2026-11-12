@@ -20,8 +20,16 @@ import {
   type CellState,
   type ItemStatus,
 } from "./oversikt";
-import { MediaListe, useMediaData } from "./kort";
-import { brukbar, celleAv, FORKLARING, MERKE } from "@/lib/media-status";
+import { MediaListe, kilde, useMediaData } from "./kort";
+import {
+  brukbar,
+  celleAv,
+  familie,
+  FORKLARING,
+  MERKE,
+} from "@/lib/media-status";
+import { passer, radAv } from "./filter";
+import { FilterLinje, useFilter } from "./FilterLinje";
 
 const box = "border-4 border-(--neon-green) bg-black p-4 mb-6";
 
@@ -187,23 +195,25 @@ function Gjennomsyn({ present }: { present: Set<string> | null }) {
 
 function MediaContent() {
   const media = useMediaData();
-  const {
-    files,
-    unavailable,
-    message,
-    onlyMissing,
-    setOnlyMissing,
-    onlyUnrated,
-    setOnlyUnrated,
-    inventar,
-    vurderinger,
-    upload,
-  } = media;
+  const { files, unavailable, message, inventar, vurderinger, upload } = media;
 
   const missing = files?.filter((f) => f.size === null).length ?? 0;
   const present = files
     ? new Set(files.filter((f) => f.size !== null).map((f) => f.path))
     : null;
+
+  const [filter, settFilter] = useFilter();
+  const k = kilde(media);
+  const grupper = REVIEW_GROUPS.map((g) => ({
+    g,
+    versions: groupVersions(
+      sortReviewItems(
+        (files ?? []).filter((f) => reviewKind(f.path) === g.id),
+        g.id,
+      ),
+    ).map((v) => ({ ...v, rad: radAv(familie(v.key, k)) })),
+  }));
+  const alleRader = grupper.flatMap((x) => x.versions.map((v) => v.rad));
 
   const rows = files ? dayRows(files, { vurderinger, inventar }) : [];
   const totalFiles = files?.length ?? 0;
@@ -309,51 +319,18 @@ function MediaContent() {
         {/* TV Gjennomsyn */}
         <Gjennomsyn present={present} />
 
-        {/* Filter Controls */}
         {files && (
-          <div className="flex flex-wrap items-center gap-6 mb-6 p-4 border-2 border-(--neon-green) bg-black">
-            <label className="flex items-center gap-3 min-h-11 text-base sm:text-lg cursor-pointer">
-              <input
-                type="checkbox"
-                checked={onlyUnrated}
-                onChange={(e) => setOnlyUnrated(e.target.checked)}
-                className="w-5 h-5 accent-(--neon-green)"
-              />
-              Vis bare det som mangler vurdering
-            </label>
-            <label className="flex items-center gap-3 min-h-11 text-base sm:text-lg cursor-pointer">
-              <input
-                type="checkbox"
-                checked={onlyMissing}
-                onChange={(e) => setOnlyMissing(e.target.checked)}
-                className="w-5 h-5 accent-(--neon-green)"
-              />
-              Vis bare filer som mangler
-            </label>
-          </div>
+          <FilterLinje f={filter} sett={settFilter} rader={alleRader} />
         )}
 
         {/* Review Groups */}
         {files &&
-          REVIEW_GROUPS.map((g) => {
-            const versions = groupVersions(
-              sortReviewItems(
-                files.filter((f) => reviewKind(f.path) === g.id),
-                g.id,
-              ),
-            );
+          grupper.map(({ g, versions }) => {
             // one card per item: the newest file, older versions folded below
             const allInGroup = versions.map((v) => v.newest);
 
-            let shown = versions;
-            if (onlyMissing) {
-              shown = shown.filter((v) => v.newest.size === null);
-            }
-            if (onlyUnrated) {
-              shown = shown.filter(
-                (v) => !vurderinger[v.newest.path]?.vurdering,
-              );
-            }
+            const shown = versions.filter((v) => passer(v.rad, filter));
+            if (!shown.length && g.id !== "music") return null;
 
             const godkjentCount = allInGroup.filter((f) =>
               brukbar(celleAv(vurderinger[f.path])),
