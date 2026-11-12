@@ -7,12 +7,12 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | Type | ✓ | ⚠ | ? | ✗ | ○ | ◇ | - |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | julius | 4 | 8 | 0 | 12 | 0 | 19 | 6 |
-| rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 5 |
+| rampenissen | 23 | 1 | 0 | 0 | 0 | 0 | 11 |
 | music | 13 | 0 | 0 | 1 | 0 | 0 | 0 |
 | tv | 19 | 5 | 0 | 0 | 15 | 0 | 17 |
 | port | 2 | 1 | 0 | 1 | 0 | 0 | 9 |
 | feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
-| spill | 55 | 4 | 0 | 4 | 0 | 1 | 23 |
+| spill | 55 | 4 | 0 | 4 | 0 | 1 | 24 |
 | strek | 10 | 14 | 0 | 0 | 0 | 2 | 9 |
 
 ## julius
@@ -77,29 +77,35 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | audio/rampenissen/dag-02.mp3 | 0.6 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-03.mp3 | 0.7 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-04.mp3 | 0.8 MB | 2026-11-11 | ✓ |
-| audio/rampenissen/dag-05.mp3 | 0.9 MB | 2026-11-11 | ✓ |
-| audio/rampenissen/dag-06.mp3 | 0.6 MB | 2026-11-11 | ✓ |
+| audio/rampenissen/dag-05.mp3 | 0.6 MB | 2026-11-13 | ✓ |
+| audio/rampenissen/dag-06.mp3 | 0.7 MB | 2026-11-13 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 6 |
 | audio/rampenissen/dag-07.mp3 | 0.7 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-08.mp3 | 0.6 MB | 2026-11-11 | ✓ |
-| audio/rampenissen/dag-09.mp3 | 1.0 MB | 2026-11-11 | ✓ |
-| audio/rampenissen/dag-10.mp3 | 0.8 MB | 2026-11-11 | ✓ |
+| audio/rampenissen/dag-09.mp3 | 0.7 MB | 2026-11-13 | ✓ |
+| audio/rampenissen/dag-10.mp3 | 0.6 MB | 2026-11-13 | ✓ |
 | audio/rampenissen/dag-11.mp3 | 0.6 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-12.mp3 | 0.8 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-13.mp3 | 0.9 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-14.mp3 | 0.8 MB | 2026-11-13 | ✓ |
 | audio/rampenissen/dag-15.mp3 | 0.6 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-16.mp3 | 0.7 MB | 2026-11-11 | ✓ |
-| audio/rampenissen/dag-17.mp3 | 1.0 MB | 2026-11-12 | ✓ |
+| audio/rampenissen/dag-17.mp3 | 0.7 MB | 2026-11-13 | ✓ |
 | audio/rampenissen/dag-18.mp3 | 0.7 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-19.mp3 | 0.8 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-20.mp3 | 0.7 MB | 2026-11-11 | ✓ |
-| audio/rampenissen/dag-21.mp3 | 0.9 MB | 2026-11-11 | ✓ |
+| audio/rampenissen/dag-21.mp3 | 0.8 MB | 2026-11-13 | ✓ |
 | audio/rampenissen/dag-22.mp3 | 0.7 MB | 2026-11-12 | ✓ |
 | audio/rampenissen/dag-23.mp3 | 0.7 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-24.mp3 | 1.0 MB | 2026-11-12 | ✓ |
 | audio/rampenissen/dag-01.old-1.mp3 | 0.7 MB | 2026-11-12 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 1; ikke i manifestet |
+| audio/rampenissen/dag-05.old-1.mp3 | 0.9 MB | 2026-11-11 | - ikke i manifestet |
+| audio/rampenissen/dag-06.old-1.mp3 | 0.6 MB | 2026-11-13 | - ikke i manifestet |
+| audio/rampenissen/dag-09.old-1.mp3 | 1.0 MB | 2026-11-11 | - ikke i manifestet |
+| audio/rampenissen/dag-10.old-1.mp3 | 0.8 MB | 2026-11-11 | - ikke i manifestet |
 | audio/rampenissen/dag-14.old-1.mp3 | 0.9 MB | 2026-11-13 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 14; ikke i manifestet |
 | audio/rampenissen/dag-17.old-1.mp3 | 0.8 MB | 2026-11-11 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 17; ikke i manifestet |
+| audio/rampenissen/dag-17.old-2.mp3 | 1.0 MB | 2026-11-12 | - ikke i manifestet |
+| audio/rampenissen/dag-21.old-1.mp3 | 0.9 MB | 2026-11-11 | - ikke i manifestet |
 | audio/rampenissen/dag-22.old-1.mp3 | 0.6 MB | 2026-11-11 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 22; ikke i manifestet |
 | audio/rampenissen/dag-24.old-1.mp3 | 0.7 MB | 2026-11-12 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 24; ikke i manifestet |
 
@@ -239,7 +245,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/julebodene.png | 1.4 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/spill/piksel-julebodene.txt |
 | spill/piksel/kart.png | 1.6 MB | 2026-11-12 | ✓ |
 | spill/portrett-winter.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/portrett-hjerterud.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/portrett-hjerterud.png | 0.0 MB | 2026-11-13 | ✓ |
 | spill/portrett-iq.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/portrett-julius.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/julius/ref-portrett.jpg |
 | spill/portrett-floke.png | 0.0 MB | 2026-11-12 | ✓ |
@@ -307,6 +313,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/kart.old-1.png | 1.2 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-kart.txt; ikke i manifestet |
 | spill/portrett-hjerterud.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/hjerterud.txt; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png; ikke i manifestet |
 | spill/portrett-hjerterud.old-2.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/hjerterud.txt; referansebildet er endret: public/spill/piksel/kafe.png; ikke i manifestet |
+| spill/portrett-hjerterud.old-3.png | 0.0 MB | 2026-11-13 | - ikke i manifestet |
 | spill/portrett-julius.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/julius.txt; ikke i manifestet |
 
 ## strek
