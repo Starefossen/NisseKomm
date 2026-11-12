@@ -7,11 +7,12 @@ import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { UTSKRIFTER, utskriftTittel } from "../filer";
 import { SIDER_13_24 } from "../_print/dager13-24";
 import { SIDER_01_12 } from "../_print/dager01-12";
+import { SIDER_17_24 } from "../_print/dager17-24";
 
 // ponytail: placeholder for printouts not yet designed; each gets its own page when made
 function StubContent() {
   const { fil } = useParams<{ fil: string }>();
-  const Side = SIDER_01_12[fil] ?? SIDER_13_24[fil];
+  const Side = SIDER_01_12[fil] ?? SIDER_17_24[fil] ?? SIDER_13_24[fil];
   if (Side)
     return (
       <div className="min-h-screen bg-(--dark-crt) p-8 print:min-h-0 print:bg-white print:p-0">
