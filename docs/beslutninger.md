@@ -45,6 +45,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - 2026-11-13: Fortellingstekst med kodeord (dag 1, 7, 22 og fremtidige dagers tekster) får ligge i klientkoden; bare kodefelt og fasit holdes på serveren (3208199). Hvorfor: barna måtte grave i utviklerverktøy og vite hva de leter etter; ikke verdt arbeidet før 1. desember.
 - 2026-11-13: Kveldens sjekkliste i guiden viser bare feltet «Sjekkliste» fra gaater-2026.md: 3–7 korte handlinger per dag (skriv ut, plasser, lapp, rampestrek). H-brikker, «Finn fram» og henvisninger står i Gåtekartet. Hvorfor: den genererte lista var for lang og omstendelig til å sette opp scenen etter.
 - 2026-11-13: Alt som gjøres før 30. november kveld (innkjøp, utskrifter, ferdskriver, bygging) står på «Før sesongen», én avkrysningsliste per dato fra «Dag 1: byggeplan → Sjekkliste» i gaater-2026.md. Dag 1 har en vanlig kort sjekkliste og en lenke dit. Hvorfor: dag 1-lista ble for stor når hele forarbeidet lå i den.
+- 2026-11-13: Julius-segmenter starter alltid fra referansebildet (ikke fra forrige segments siste bilde), og siste segment hver dag avslutter rolig uten latter. Manus dag 4 seg 4 og dag 6 seg 3–4 skrevet om så hvert segment står alene. Hvorfor: mikrofonfeil smittet videre gjennom kjeding, og latter etter avskjeden virket nifs.
 
 ## Spill (2026-11-10/11)
 
