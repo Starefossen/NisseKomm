@@ -2,10 +2,11 @@ import type { ReactNode } from "react";
 import { Utskrift } from "../Utskrift";
 import { Ruter } from "./felles";
 
-// Runes only at the visible letter, on all three backs.
+// The lantern is the real skeleton: runes on all four. Decoys only at the visible letter.
 const FIGURER: {
   form: ReactNode;
   celler: (string | null)[];
+  runer?: string[];
 }[] = [
   {
     form: (
@@ -27,6 +28,7 @@ const FIGURER: {
       />
     ),
     celler: [null, "Y", null, null],
+    runer: [..."LYKT"],
   },
 ];
 
@@ -58,6 +60,7 @@ export default function Dag06Silhuetter() {
             <div className="h-full flex items-center justify-center font-retro">
               <Ruter
                 celler={FIGURER[i].celler}
+                runer={FIGURER[i].runer}
                 nummer
                 storrelse="w-[10mm] h-[15mm]"
               />

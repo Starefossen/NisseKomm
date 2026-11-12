@@ -5,18 +5,20 @@ export { Iskrystall };
 export { Prikker } from "../dager01-12/felles";
 
 /*
- * Card faces for days 17–24. A rune goes only on a letter the house shows
- * anyway (or replaces it); ❄ cards carry none, so the board never spells the
- * answer (decided by Hans, see dager01-12/felles.tsx).
+ * Card faces for days 17–24. Every card carries its letter's rune in the
+ * corner, ❄ cards via `tegn` (gaater-2026 Meta 1); decoys pass none.
  */
 export function Kort({
   bokstav,
+  tegn,
   vis = "begge",
   nr,
   stor = 30,
 }: {
   /** null = ❄ */
   bokstav: string | null;
+  /** Corner rune on a ❄ card: the hidden letter. */
+  tegn?: string;
   /** "tegn" = rune only, big in the middle (the board must be used). */
   vis?: "begge" | "tegn";
   nr?: string | number;
@@ -31,7 +33,14 @@ export function Kort({
         </span>
       )}
       {bokstav === null ? (
-        <Iskrystall size={stor * 3.2} />
+        <>
+          {tegn && (
+            <span className="absolute top-[2mm] right-[2mm]">
+              <Frostrune letter={tegn} size={stor * 0.7} />
+            </span>
+          )}
+          <Iskrystall size={stor * 3.2} />
+        </>
       ) : vis === "tegn" ? (
         <Frostrune letter={bokstav} size={stor * 2.2} />
       ) : (

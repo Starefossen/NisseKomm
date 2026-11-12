@@ -1,8 +1,9 @@
 import { Utskrift } from "../Utskrift";
 import { Kort, Prikker, midt } from "./felles";
 
-// By size rank (1 = largest): 2 = U, 4 = B, the rest ❄. Runes only.
+// By size rank (1 = largest): 2 = U, 4 = B, the rest ❄ with the TURBO rune in the corner. Runes only.
 const KORT = [null, "U", null, "B", null];
+const ORD = "TURBO";
 
 export default function Dag20Putekort() {
   return (
@@ -14,7 +15,7 @@ export default function Dag20Putekort() {
         {
           str: "A7",
           antall: KORT.length,
-          forside: (i) => <Kort bokstav={KORT[i]} vis="tegn" />,
+          forside: (i) => <Kort bokstav={KORT[i]} tegn={ORD[i]} vis="tegn" />,
           bakside: (i) => midt(<Prikker n={i + 1} />),
         },
       ]}

@@ -3,16 +3,21 @@ import { Utskrift } from "../Utskrift";
 import { Iskrystall } from "./felles";
 import { Rodstoy } from "./Rodstoy";
 
-// Rainbow order; ORANSJE → P, BLÅ → T. HVIT is the decoy (R). Runes only on visible letters.
-const KORT: { navn: string; farge: string; vis: string | null }[] = [
-  { navn: "RØD", farge: "#e11d48", vis: null },
-  { navn: "ORANSJE", farge: "#f97316", vis: "P" },
-  { navn: "GUL", farge: "#facc15", vis: null },
-  { navn: "GRØNN", farge: "#16a34a", vis: null },
-  { navn: "BLÅ", farge: "#2563eb", vis: "T" },
-  { navn: "INDIGO", farge: "#4338ca", vis: null },
-  { navn: "FIOLETT", farge: "#9333ea", vis: null },
-  { navn: "HVIT", farge: "#ffffff", vis: "R" },
+// Rainbow order; ORANSJE → P, BLÅ → T. HVIT is the decoy (R). Rainbow cards carry their SPEKTER letter's rune; HVIT only R.
+const KORT: {
+  navn: string;
+  farge: string;
+  vis: string | null;
+  rune: string;
+}[] = [
+  { navn: "RØD", farge: "#e11d48", vis: null, rune: "S" },
+  { navn: "ORANSJE", farge: "#f97316", vis: "P", rune: "P" },
+  { navn: "GUL", farge: "#facc15", vis: null, rune: "E" },
+  { navn: "GRØNN", farge: "#16a34a", vis: null, rune: "K" },
+  { navn: "BLÅ", farge: "#2563eb", vis: "T", rune: "T" },
+  { navn: "INDIGO", farge: "#4338ca", vis: null, rune: "E" },
+  { navn: "FIOLETT", farge: "#9333ea", vis: null, rune: "R" },
+  { navn: "HVIT", farge: "#ffffff", vis: "R", rune: "R" },
 ];
 
 function Kort({ i, tom }: { i: number; tom?: boolean }) {
@@ -27,9 +32,9 @@ function Kort({ i, tom }: { i: number; tom?: boolean }) {
         <div className="flex-1 text-[44mm] leading-none">
           {!tom && <Rodstoy>{k.vis ?? <Iskrystall size={70} />}</Rodstoy>}
         </div>
-        {!tom && k.vis && (
+        {!tom && (
           <span className="absolute top-[1mm] right-[1mm]">
-            <Frostrune letter={k.vis} size={20} />
+            <Frostrune letter={k.rune} size={20} />
           </span>
         )}
       </div>

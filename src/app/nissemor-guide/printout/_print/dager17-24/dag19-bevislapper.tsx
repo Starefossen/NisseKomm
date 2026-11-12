@@ -1,19 +1,22 @@
 import { Utskrift } from "../Utskrift";
 import { Kort } from "./felles";
 
-// Tags on the foil packs: stue U · 2, kjøkken O · 5, gang ❄ · 3, plus BEVIS.
+// Tags on the foil packs: stue U · 2, kjøkken O · 5, gang ❄ · 3 (rune L), plus BEVIS.
 const LAPPER = [
   { l: "U", n: 2, rom: "stua" },
   { l: "O", n: 5, rom: "kjøkkenet" },
   { l: null, n: 3, rom: "gangen" },
 ];
 
+// GULROT: square 3 is L.
+const ORD = "GULROT";
+
 function Lapp({ l, n }: { l: string | null; n: number }) {
   return (
     <div className="h-full flex items-center justify-center gap-[3mm] font-retro text-[16mm] leading-none">
       <span className="absolute top-[3mm] left-1/2 -translate-x-1/2 w-[3mm] h-[3mm] rounded-full border-[0.4mm] border-black" />
       <div className="w-[26mm] h-[28mm] relative">
-        <Kort bokstav={l} stor={16} />
+        <Kort bokstav={l} tegn={ORD[n - 1]} stor={16} />
       </div>
       <span>· {n}</span>
     </div>

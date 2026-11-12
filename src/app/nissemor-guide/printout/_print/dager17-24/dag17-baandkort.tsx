@@ -1,8 +1,9 @@
 import { Utskrift } from "../Utskrift";
 import { Kort } from "./felles";
 
-// Read from the bow: ❄ O ❄ ❄ L ❄ ❄; O and L only as runes.
+// Read from the bow: ❄ O ❄ ❄ L ❄ ❄; O and L only as runes, ❄ cards with the NORDLYS rune in the corner.
 const KORT = [null, "O", null, null, "L", null, null];
+const ORD = "NORDLYS";
 
 export default function Dag17Baandkort() {
   return (
@@ -14,7 +15,13 @@ export default function Dag17Baandkort() {
           str: { b: 48, h: 56 },
           antall: KORT.length,
           forside: (i) => (
-            <Kort bokstav={KORT[i]} vis="tegn" nr={i + 1} stor={14} />
+            <Kort
+              bokstav={KORT[i]}
+              tegn={ORD[i]}
+              vis="tegn"
+              nr={i + 1}
+              stor={14}
+            />
           ),
         },
       ]}

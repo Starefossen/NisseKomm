@@ -2,21 +2,22 @@ import { Frostrune } from "@/components/ui/Frostrune";
 import { Utskrift } from "../Utskrift";
 
 // Lamps 2, 5, 7 are powered; lamp 4 sits behind an open switch (decoy E);
-// the other five are dead ends. Runes only on visible letters.
+// the other five are dead ends. Every lamp carries its rune; the decoy E only its own.
 const LAMPER: {
   vis: string | null;
+  rune: string;
   ledning: "strom" | "bryter" | "dod";
   farge: string;
 }[] = [
-  { vis: null, ledning: "dod", farge: "#2563eb" },
-  { vis: "R", ledning: "strom", farge: "#dc2626" },
-  { vis: null, ledning: "dod", farge: "#16a34a" },
-  { vis: "E", ledning: "bryter", farge: "#9333ea" },
-  { vis: "S", ledning: "strom", farge: "#ea580c" },
-  { vis: null, ledning: "dod", farge: "#0891b2" },
-  { vis: "O", ledning: "strom", farge: "#65a30d" },
-  { vis: null, ledning: "dod", farge: "#db2777" },
-  { vis: null, ledning: "dod", farge: "#525252" },
+  { vis: null, rune: "K", ledning: "dod", farge: "#2563eb" },
+  { vis: "R", rune: "R", ledning: "strom", farge: "#dc2626" },
+  { vis: null, rune: "E", ledning: "dod", farge: "#16a34a" },
+  { vis: "E", rune: "E", ledning: "bryter", farge: "#9333ea" },
+  { vis: "S", rune: "S", ledning: "strom", farge: "#ea580c" },
+  { vis: null, rune: "K", ledning: "dod", farge: "#0891b2" },
+  { vis: "O", rune: "O", ledning: "strom", farge: "#65a30d" },
+  { vis: null, rune: "R", ledning: "dod", farge: "#db2777" },
+  { vis: null, rune: "T", ledning: "dod", farge: "#525252" },
 ];
 
 const BATTERI = { x: 93, y: 225 };
@@ -137,16 +138,14 @@ function Ark8() {
             >
               {i + 1}
             </text>
-            {l.vis && (
-              <foreignObject
-                x={lampeX(i) + 3}
-                y={LAMPE_Y - 26}
-                width="8"
-                height="12"
-              >
-                <Frostrune letter={l.vis} size={7} />
-              </foreignObject>
-            )}
+            <foreignObject
+              x={lampeX(i) + 3}
+              y={LAMPE_Y - 26}
+              width="8"
+              height="12"
+            >
+              <Frostrune letter={l.rune} size={7} />
+            </foreignObject>
           </g>
         ))}
       </svg>

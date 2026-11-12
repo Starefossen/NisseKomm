@@ -34,19 +34,10 @@ import Sorteringslapper from "../_print/dager13-16/dag16-sorteringslapper";
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
 ).IS_REACT_ACT_ENVIRONMENT = true;
 
-// har: text that must be printed. runer: exactly the runes printed
-// (only on visible letters, except day 3 and 7 where the meta puzzle teaches them).
+// har: text that must be printed (corner runes: hjorneruner.test.tsx).
 // ikke: the code, which must never appear on the sheets.
-const SIDER: [
-  string,
-  ComponentType,
-  { har: string[]; runer?: string[]; ikke?: string },
-][] = [
-  [
-    "dag01-tradkort",
-    Tradkort,
-    { har: ["I", "N", "E", "T"], runer: ["I", "N", "E", "T"], ikke: "SIGNAL" },
-  ],
+const SIDER: [string, ComponentType, { har: string[]; ikke?: string }][] = [
+  ["dag01-tradkort", Tradkort, { har: ["I", "N", "E", "T"], ikke: "SIGNAL" }],
   [
     "dag01-linjekort",
     Linjekort,
@@ -112,37 +103,23 @@ const SIDER: [
     Frostlapp3,
     {
       har: ["R", "S", "ETTER KODEN – IQ"],
-      runer: ["P", "R", "I", "S", "M", "E"],
       ikke: "PRISME",
     },
   ],
-  [
-    "dag04-skokort",
-    Skokort,
-    { har: ["M", "A"], runer: ["M", "A"], ikke: "KOMPASS" },
-  ],
+  ["dag04-skokort", Skokort, { har: ["M", "A"], ikke: "KOMPASS" }],
   ["dag05-brevfugl", Brevfugl, { har: ["X O U L N H Q"], ikke: "ULRIKEN" }],
   [
     "alfabetstrimmel",
     Alfabetstrimmel,
     { har: ["ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ"] },
   ],
-  [
-    "dag06-silhuetter",
-    Silhuetter,
-    { har: ["Y", "A", "O"], runer: ["Y", "A", "O"], ikke: "LYKT" },
-  ],
-  [
-    "dag07-frostlapp",
-    Frostlapp7,
-    { har: [], runer: ["K", "U", "L", "D", "E"], ikke: "KULDE" },
-  ],
+  ["dag06-silhuetter", Silhuetter, { har: ["Y", "A", "O"], ikke: "LYKT" }],
+  ["dag07-frostlapp", Frostlapp7, { har: [], ikke: "KULDE" }],
   [
     "dag08-kretskort",
     Kretskort,
     {
       har: ["R", "S", "O", "E"],
-      runer: ["R", "S", "O", "E"],
       ikke: "KRETSKORT",
     },
   ],
@@ -153,7 +130,6 @@ const SIDER: [
     Fargekort,
     {
       har: ["P", "T", "R", "HVIT", "INDIGO", "FIOLETT"],
-      runer: ["P", "T", "R"],
       ikke: "SPEKTER",
     },
   ],
@@ -166,19 +142,18 @@ const SIDER: [
   [
     "dag12-frostlapp-tredelt",
     Tredelt,
-    { har: ["E", "O", "A"], runer: ["E", "O", "A"], ikke: "MELODI" },
+    { har: ["E", "O", "A"], ikke: "MELODI" },
   ],
   [
     "dag13-krydderkort",
     Krydderkort,
-    { har: ["N", "R", "F", "L"], runer: ["N", "R", "F", "L"], ikke: "SAFRAN" },
+    { har: ["N", "R", "F", "L"], ikke: "SAFRAN" },
   ],
   [
     "dag13-gravskilt",
     Gravskilt,
     { har: ["HER HVILER RAMPEN.", "HAN SPISTE 11."], ikke: "SAFRAN" },
   ],
-  // No runes: by day 14 every letter of the answer is on the rune board.
   [
     "dag14-brettark",
     Brettark,
@@ -194,7 +169,6 @@ const SIDER: [
     Redskapskort,
     {
       har: ["A", "M", "L", "12345678"],
-      runer: ["A", "M", "L"],
       ikke: "KARAMELL",
     },
   ],
@@ -203,7 +177,6 @@ const SIDER: [
     Sorteringslapper,
     {
       har: ["O", "E", "I", "K", "2", "5", "7", "123456789"],
-      runer: ["O", "E", "I", "K"],
       ikke: "SORTERING",
     },
   ],
@@ -215,13 +188,6 @@ function render(Side: ComponentType) {
   const ark = [...el.querySelectorAll("[data-ark]")];
   return {
     tekst: ark.map((a) => a.textContent ?? "").join("\n"),
-    runer: new Set(
-      ark.flatMap((a) =>
-        [...a.querySelectorAll("svg[role=img]")].map((s) =>
-          s.getAttribute("aria-label"),
-        ),
-      ),
-    ),
     antallArk: ark.length,
   };
 }
@@ -230,11 +196,10 @@ describe("utskrifter dag 1–16", () => {
   it.each(SIDER)(
     "%s skriver ut det gaater-2026 krever",
     (_navn, Side, krav) => {
-      const { tekst, runer, antallArk } = render(Side);
+      const { tekst, antallArk } = render(Side);
       expect(antallArk).toBeGreaterThan(0);
       for (const t of krav.har)
         expect(tekst.replace(/\s+/g, "")).toContain(t.replace(/\s+/g, ""));
-      expect([...runer].sort()).toEqual([...new Set(krav.runer ?? [])].sort());
       if (krav.ikke) {
         expect(tekst.replace(/\s+/g, "").toUpperCase()).not.toContain(
           krav.ikke,

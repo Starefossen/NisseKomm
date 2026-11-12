@@ -3,7 +3,8 @@ import { Frostrune } from "@/components/ui/Frostrune";
 
 /*
  * Helpers for the printables in the <Utskrift> frame.
- * Runes go only on visible letters, never on ❄ squares (decided by Hans).
+ * Every card carries the rune for its letter in the corner, ❄ squares
+ * included (gaater-2026 Meta 1); decoys only at their visible letter.
  */
 
 import { Iskrystall } from "@/components/ui/Iskrystall";
@@ -11,7 +12,7 @@ export { Iskrystall };
 
 /**
  * A frostlapp row: one cell per letter; null = ice crystal. A letter cell
- * gets its rune in the corner; ❄ cells get none.
+ * gets its rune in the corner; ❄ cells only via `runer`.
  */
 export function Ruter({
   celler,
@@ -21,8 +22,8 @@ export function Ruter({
 }: {
   celler: (ReactNode | null)[];
   nummer?: boolean;
-  /** Per-cell runes, overriding the default (rune on visible letters only).
-   *  Only for cards where the meta puzzle teaches or tests the runes (day 3, 7). */
+  /** Per-cell runes, overriding the default (rune on visible letters only):
+   *  the hidden letter of each ❄ cell in a real skeleton. */
   runer?: (string | undefined)[];
   storrelse?: string;
 }) {

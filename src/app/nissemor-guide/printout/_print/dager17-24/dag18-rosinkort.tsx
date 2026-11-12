@@ -1,12 +1,12 @@
 import { Utskrift } from "../Utskrift";
 import { Kort, Prikker, Rutekort, midt } from "./felles";
 
-// Raisin piles: 2 over U, 4 over B, 7 over E, 9 over ❄. Dots behind = reserve.
+// Raisin piles: 2 over U, 4 over B, 7 over E, 9 over ❄ (rute 9, rune S). Dots behind = reserve.
 const KORT = [
   { l: "U", n: 2 },
   { l: "B", n: 4 },
   { l: "E", n: 7 },
-  { l: null, n: 9 },
+  { l: null, n: 9, tegn: "S" },
 ];
 
 export default function Dag18Rosinkort() {
@@ -19,7 +19,7 @@ export default function Dag18Rosinkort() {
         {
           str: "A7",
           antall: KORT.length,
-          forside: (i) => <Kort bokstav={KORT[i].l} />,
+          forside: (i) => <Kort bokstav={KORT[i].l} tegn={KORT[i].tegn} />,
           bakside: (i) => midt(<Prikker n={KORT[i].n} />),
         },
         { str: { b: 194, h: 40 }, forside: () => <Rutekort n={9} /> },

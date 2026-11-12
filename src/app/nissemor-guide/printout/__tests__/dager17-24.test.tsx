@@ -8,29 +8,21 @@ import { UTSKRIFTER } from "../filer";
   globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
 ).IS_REACT_ACT_ENVIRONMENT = true;
 
-// name → [code word that must never appear, content that must appear, exact runes]
-const SPEC: Record<string, [string, string[], string[]]> = {
-  "dag13-gravskilt": ["SAFRAN", ["HER HVILER RAMPEN.", "HAN SPISTE 11."], []],
-  "dag14-serviettfugl": ["ORIGAMI", ["SERVIETTFUGL"], []],
-  "dag17-baandkort": ["NORDLYS", ["❄"], ["O", "L"]],
-  "dag17-losepengebrev": ["NORDLYS", ["Kosedyrene"], []],
-  "dag18-rosinkort": [
-    "TURBULENS",
-    ["U", "B", "E", "❄", "RUTEKORT"],
-    ["U", "B", "E"],
-  ],
+// name → [code word that must never appear, content that must appear]
+// (corner runes: hjorneruner.test.tsx)
+const SPEC: Record<string, [string, string[]]> = {
+  "dag13-gravskilt": ["SAFRAN", ["HER HVILER RAMPEN.", "HAN SPISTE 11."]],
+  "dag14-serviettfugl": ["ORIGAMI", ["SERVIETTFUGL"]],
+  "dag17-baandkort": ["NORDLYS", ["❄"]],
+  "dag17-losepengebrev": ["NORDLYS", ["Kosedyrene"]],
+  "dag18-rosinkort": ["TURBULENS", ["U", "B", "E", "❄", "RUTEKORT"]],
   "dag19-bevislapper": [
     "GULROT",
     ["U", "· 2", "O", "· 5", "❄", "· 3", "BEVIS"],
-    ["U", "O"],
   ],
-  "dag20-putekort": ["TURBO", ["❄"], ["U", "B"]],
-  "dag20-fortskilt": ["TURBO", ["KUN FOR SIGMAS.", "6-7."], []],
-  "dag21-portkort": [
-    "BRANNMUR",
-    ["R", "U", "· 7", "❄", "Feil bok"],
-    ["R", "U"],
-  ],
+  "dag20-putekort": ["TURBO", ["❄"]],
+  "dag20-fortskilt": ["TURBO", ["KUN FOR SIGMAS.", "6-7."]],
+  "dag21-portkort": ["BRANNMUR", ["R", "U", "· 7", "❄", "Feil bok"]],
   "dag22-sokkelapper": [
     "LANDÅS",
     [
@@ -48,19 +40,10 @@ const SPEC: Record<string, [string, string[], string[]]> = {
       "22",
       "SOKK",
     ],
-    [],
   ],
-  "dag23-stjerner": [
-    "STJERNEKLART",
-    ["R", "K", "A", "❄", "XII", "IX"],
-    ["A", "K", "R"],
-  ],
-  "dag24-suvenirlapper": [
-    "JULEMAGI",
-    ["· 2", "· 4", "· 7", "IQS KOPI"],
-    ["E", "E", "G", "G", "U", "U"],
-  ],
-  "dag24-krystallkort": ["JULEMAGI", [], []],
+  "dag23-stjerner": ["STJERNEKLART", ["R", "K", "A", "❄", "XII", "IX"]],
+  "dag24-suvenirlapper": ["JULEMAGI", ["· 2", "· 4", "· 7", "IQS KOPI"]],
+  "dag24-krystallkort": ["JULEMAGI", []],
 };
 
 function render(navn: string) {
@@ -73,11 +56,6 @@ function render(navn: string) {
   return el;
 }
 
-const tegn = (el: Element) =>
-  [...el.querySelectorAll("svg[role=img]")]
-    .map((s) => s.getAttribute("aria-label"))
-    .sort();
-
 describe("printables days 17–24", () => {
   it("every page is listed in filer.ts and has a spec", () => {
     for (const navn of Object.keys(SIDER_17_24)) {
@@ -89,14 +67,11 @@ describe("printables days 17–24", () => {
   it.each(Object.keys(SPEC))(
     "%s prints its content and not the answer",
     (navn) => {
-      const [kode, innhold, runer] = SPEC[navn];
+      const [kode, innhold] = SPEC[navn];
       const el = render(navn);
       const tekst = el.textContent ?? "";
       expect(tekst.toUpperCase()).not.toContain(kode);
       for (const s of innhold) expect(tekst).toContain(s);
-      // Exactly these runes: a rune on a ❄ card would let the board spell the answer.
-      if (navn !== "dag24-krystallkort")
-        expect(tegn(el)).toEqual([...runer].sort());
     },
   );
 

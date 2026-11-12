@@ -1,3 +1,4 @@
+import { Frostrune } from "@/components/ui/Frostrune";
 import { Utskrift } from "../Utskrift";
 
 /*
@@ -77,11 +78,16 @@ export default function Dag14Brettark() {
                 className="absolute flex gap-[1mm]"
                 style={{ left: "7mm", top: "30mm" }}
               >
-                {Array.from({ length: 7 }, (_, i) => (
+                {/* Corner runes for the hidden word (Meta 1). */}
+                {[..."ORIGAMI"].map((r, i) => (
                   <div
                     key={i}
-                    className="w-[11mm] h-[14mm] border-[0.5mm] border-black bg-white"
-                  />
+                    className="relative w-[11mm] h-[14mm] border-[0.5mm] border-black bg-white"
+                  >
+                    <span className="absolute top-[0.5mm] right-[0.5mm]">
+                      <Frostrune letter={r} size={9} />
+                    </span>
+                  </div>
                 ))}
               </div>
               {LOKK.map((l) => (

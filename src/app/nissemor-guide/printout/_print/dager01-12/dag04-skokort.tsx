@@ -4,6 +4,7 @@ import { Iskrystall, Prikker } from "./felles";
 
 // Shoes counted clockwise from Rampenissen: shoe 3 M, shoe 5 A, the rest ❄.
 const SKO = [null, null, "M", null, "A", null, null];
+const RUNE = [..."KOMPASS"];
 
 export default function Dag04Skokort() {
   return (
@@ -17,11 +18,9 @@ export default function Dag04Skokort() {
           antall: SKO.length,
           forside: (i) => (
             <div className="h-full relative flex items-center justify-center font-retro text-[30mm] leading-none">
-              {SKO[i] && (
-                <span className="absolute top-[3mm] right-[3mm]">
-                  <Frostrune letter={SKO[i]} size={36} />
-                </span>
-              )}
+              <span className="absolute top-[3mm] right-[3mm]">
+                <Frostrune letter={RUNE[i]} size={36} />
+              </span>
               {SKO[i] ?? <Iskrystall size={110} />}
             </div>
           ),

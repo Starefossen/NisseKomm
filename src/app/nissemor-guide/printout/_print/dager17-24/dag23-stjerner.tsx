@@ -2,8 +2,9 @@ import type { ReactNode } from "react";
 import { Utskrift } from "../Utskrift";
 import { Kort } from "./felles";
 
-// Front: 5 R, 8 K, 10 A, the rest ❄. Back: Roman numeral (look back to day 2).
+// Front: 5 R, 8 K, 10 A, the rest ❄ with the STJERNEKLART rune. Back: Roman numeral (look back to day 2).
 const FORSIDE: Record<number, string> = { 5: "R", 8: "K", 10: "A" };
+const ORD = "STJERNEKLART";
 const ROMER = "I II III IV V VI VII VIII IX X XI XII".split(" ");
 
 function Stjerne({ children }: { children: ReactNode }) {
@@ -35,7 +36,7 @@ export default function Dag23Stjerner() {
           antall: 12,
           forside: (i) => (
             <Stjerne>
-              <Kort bokstav={FORSIDE[i + 1] ?? null} stor={13} />
+              <Kort bokstav={FORSIDE[i + 1] ?? null} tegn={ORD[i]} stor={13} />
             </Stjerne>
           ),
           bakside: (i) => (
