@@ -87,7 +87,10 @@ def old_folders(root: Path):
     out = {}
     for base in (root / "assets", root / "public"):
         for d in base.rglob("*"):
-            if d.is_dir() and (d.name == "forkastet" or d.name.startswith("original-pre-")):
+            if "_arkiv" in d.parts:  # public/_arkiv/<dato>/<mappe>: one row per folder
+                if d.is_dir() and d.parent.parent.name == "_arkiv":
+                    out[str(d.relative_to(root))] = sum(f.is_file() for f in d.rglob("*"))
+            elif d.is_dir() and (d.name == "forkastet" or d.name.startswith("original-pre-")):
                 out[str(d.relative_to(root))] = sum(f.is_file() for f in d.rglob("*"))
     return dict(sorted(out.items()))
 

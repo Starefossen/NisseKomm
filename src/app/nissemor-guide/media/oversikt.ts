@@ -271,17 +271,22 @@ export function sortReviewItems<T extends { path: string }>(
   return [...items].sort((a, b) => a.path.localeCompare(b.path));
 }
 
-/** dag-01-v3.mp4 and dag-01.old.mp3 belong with dag-01.mp4 / dag-01.mp3. */
+/**
+ * The version convention (also in assets/bin/medie.py, VERSION): the plain name is
+ * the file in use, <name>-vN.<ext> a newer candidate, <name>.old-N.<ext> a replaced
+ * or rejected one. dag-01-v3.mp4 and dag-01.old-1.mp4 belong with dag-01.mp4.
+ */
 export const versionKey = (path: string) =>
-  path.replace(/-v\d+(\.\w+)$/, "$1").replace(/\.old\d*(\.\w+)$/, "$1");
+  path.replace(/(?:-v\d+|\.old-\d+)(\.\w+)$/, "$1");
 
-/** .old oldest, the plain name next (it is what the app plays), then -vN by N. */
-const versionRank = (path: string) =>
-  /\.old\d*\.\w+$/.test(path)
-    ? 0
-    : path === versionKey(path)
-      ? 0.5
-      : Number(path.match(/-v(\d+)\.\w+$/)?.[1] ?? 0);
+/** .old-N oldest (higher N newer), the plain name next (it is what the app plays), then -vN by N. */
+const versionRank = (path: string) => {
+  const old = path.match(/\.old-(\d+)\.\w+$/);
+  if (old) return -1 / (1 + Number(old[1]));
+  return path === versionKey(path)
+    ? 0.5
+    : Number(path.match(/-v(\d+)\.\w+$/)?.[1] ?? 0);
+};
 
 export interface VersionGroup<T> {
   /** The path the app uses: the plain name. */

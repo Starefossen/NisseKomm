@@ -6,13 +6,14 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Type | ✓ | ⚠ | ? | ✗ |
 |---|---:|---:|---:|---:|
-| julius | 3 | 8 | 8 | 12 |
+| julius | 3 | 9 | 8 | 12 |
 | rampenissen | 24 | 2 | 0 | 0 |
 | music | 0 | 0 | 13 | 1 |
-| tv | 0 | 3 | 21 | 0 |
-| port | 0 | 3 | 0 | 1 |
+| tv | 0 | 3 | 21 | 15 |
+| port | 0 | 6 | 0 | 1 |
 | feed | 0 | 4 | 7 | 0 |
-| strek | 5 | 0 | 0 | 19 |
+| spill | 51 | 7 | 7 | 4 |
+| strek | 0 | 5 | 1 | 19 |
 
 ## julius
 
@@ -23,13 +24,13 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-03.mp4 | 4.4 MB | 2026-11-11 | ⚠ referansebildet er endret: assets/characters/julius/ref-v3.jpg; promptversjonen er endret |
 | video/julius/dag-04.mp4 | 4.4 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 4; referansebildet er endret: assets/characters/julius/ref-v3.jpg; promptversjonen er endret |
 | video/julius/dag-05.mp4 | 4.3 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 5; referansebildet er endret: assets/characters/julius/ref-v3.jpg; promptversjonen er endret |
-| video/julius/dag-06.mp4 | 10.3 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/julius/dag-07.mp4 | 10.5 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/julius/dag-08.mp4 | 10.6 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/julius/dag-09.mp4 | 10.4 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/julius/dag-10.mp4 | 10.6 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/julius/dag-11.mp4 | 10.1 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/julius/dag-12.mp4 | 10.5 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
+| video/julius/dag-06.mp4 | 10.3 MB | 2026-11-10 | ? |
+| video/julius/dag-07.mp4 | 10.5 MB | 2026-11-10 | ? |
+| video/julius/dag-08.mp4 | 10.6 MB | 2026-11-10 | ? |
+| video/julius/dag-09.mp4 | 10.4 MB | 2026-11-10 | ? |
+| video/julius/dag-10.mp4 | 10.6 MB | 2026-11-10 | ? |
+| video/julius/dag-11.mp4 | 10.1 MB | 2026-11-10 | ? |
+| video/julius/dag-12.mp4 | 10.5 MB | 2026-11-10 | ? |
 | video/julius/dag-13.mp4 |  |  | ✗ |
 | video/julius/dag-14.mp4 |  |  | ✗ |
 | video/julius/dag-15.mp4 |  |  | ✗ |
@@ -42,13 +43,14 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-22.mp4 |  |  | ✗ |
 | video/julius/dag-23.mp4 |  |  | ✗ |
 | video/julius/dag-24.mp4 |  |  | ✗ |
-| video/julius/dag-01-v2.mp4 | 5.1 MB | 2026-11-12 | ? sidefil uten hash (bakfylt); ikke i manifestet |
+| video/julius/dag-01-v2.mp4 | 5.1 MB | 2026-11-12 | ? ikke i manifestet |
 | video/julius/dag-01-v3.mp4 | 6.6 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
 | video/julius/dag-01-v4.mp4 | 12.8 MB | 2026-11-12 | ✓ ikke i manifestet |
 | video/julius/dag-02-v3.mp4 | 3.9 MB | 2026-11-12 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 2; referansebildet er endret: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
 | video/julius/dag-02-v4.mp4 | 10.3 MB | 2026-11-12 | ✓ ikke i manifestet |
 | video/julius/dag-03-v3.mp4 | 4.2 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
 | video/julius/dag-03-v4.mp4 | 9.9 MB | 2026-11-12 | ✓ ikke i manifestet |
+| video/julius/dag-03-v5.mp4 | 10.4 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
 
 ## rampenissen
 
@@ -78,8 +80,8 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | audio/rampenissen/dag-22.mp3 | 0.6 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-23.mp3 | 0.7 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-24.mp3 | 1.0 MB | 2026-11-12 | ✓ |
-| audio/rampenissen/dag-01.old.mp3 | 0.7 MB | 2026-11-12 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 1; ikke i manifestet |
-| audio/rampenissen/dag-24.old.mp3 | 0.7 MB | 2026-11-12 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 24; ikke i manifestet |
+| audio/rampenissen/dag-01.old-1.mp3 | 0.7 MB | 2026-11-12 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 1; ikke i manifestet |
+| audio/rampenissen/dag-24.old-1.mp3 | 0.7 MB | 2026-11-12 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 24; ikke i manifestet |
 
 ## music
 
@@ -104,39 +106,57 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| video/tv/landsby-rolig.mp4 | 3.1 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/landsby-nordlys.mp4 | 0.4 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/landsby-storm.mp4 | 0.6 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/landsby-dag24.mp4 | 0.5 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/landsby-marked.mp4 | 2.4 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/landsby-hverdag.mp4 | 2.2 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/landsby-aking.mp4 | 3.1 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/landsby-stjerneskudd.mp4 | 3.0 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
+| video/tv/landsby-rolig.mp4 | 3.1 MB | 2026-11-10 | ? |
+| video/tv/landsby-nordlys.mp4 | 0.4 MB | 2026-11-10 | ? |
+| video/tv/landsby-storm.mp4 | 0.6 MB | 2026-11-10 | ? |
+| video/tv/landsby-dag24.mp4 | 0.5 MB | 2026-11-10 | ? |
+| video/tv/landsby-marked.mp4 | 2.4 MB | 2026-11-10 | ? |
+| video/tv/landsby-hverdag.mp4 | 2.2 MB | 2026-11-10 | ? |
+| video/tv/landsby-aking.mp4 | 3.1 MB | 2026-11-10 | ? |
+| video/tv/landsby-stjerneskudd.mp4 | 3.0 MB | 2026-11-10 | ? |
 | video/tv/landsby-winter.mp4 | 2.3 MB | 2026-11-11 | ⚠ referansebildet er endret: assets/out/stills/snofall-landsby/still-winter.jpg; referansebildet er endret: assets/out/forste-landsby-rolig.jpg; promptversjonen er endret |
-| video/tv/verksted-iq-inne.mp4 | 0.5 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/verksted-tom.mp4 | 0.4 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/kontor-julius.mp4 | 0.4 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/kontor-tom.mp4 | 0.4 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/kontor-dag14.mp4 | 0.3 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/antenne-rolig.mp4 | 0.3 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/antenne-dag11.mp4 | 0.3 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/grotte-rolig.mp4 | 0.4 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/grotte-dag12.mp4 | 0.3 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/grotte-dag15.mp4 | 0.3 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/grotte-dag21.mp4 | 0.3 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/grotte-dag23.mp4 | 0.3 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/grotte-dag24.mp4 | 0.2 MB | 2026-11-10 | ? sidefil uten hash (bakfylt) |
-| video/tv/landsby-iq.mp4 | 2.7 MB | 2026-11-11 | ⚠ referansebildet er endret: assets/out/stills/snofall-landsby/still-iq.jpg; referansebildet er endret: assets/out/forste-landsby-rolig.jpg; promptversjonen er endret; ikke i manifestet |
-| video/tv/landsby-julius.mp4 | 2.2 MB | 2026-11-11 | ⚠ referansebildet er endret: assets/out/stills/snofall-landsby/still-julius.jpg; referansebildet er endret: assets/out/forste-landsby-rolig.jpg; promptversjonen er endret; ikke i manifestet |
+| video/tv/verksted-iq-inne.mp4 | 0.5 MB | 2026-11-10 | ? |
+| video/tv/verksted-tom.mp4 | 0.4 MB | 2026-11-10 | ? |
+| video/tv/kontor-julius.mp4 | 0.4 MB | 2026-11-10 | ? |
+| video/tv/kontor-tom.mp4 | 0.4 MB | 2026-11-10 | ? |
+| video/tv/kontor-dag14.mp4 | 0.3 MB | 2026-11-10 | ? |
+| video/tv/antenne-rolig.mp4 | 0.3 MB | 2026-11-10 | ? |
+| video/tv/antenne-dag11.mp4 | 0.3 MB | 2026-11-10 | ? |
+| video/tv/grotte-rolig.mp4 | 0.4 MB | 2026-11-10 | ? |
+| video/tv/grotte-dag12.mp4 | 0.3 MB | 2026-11-10 | ? |
+| video/tv/grotte-dag15.mp4 | 0.3 MB | 2026-11-10 | ? |
+| video/tv/grotte-dag21.mp4 | 0.3 MB | 2026-11-10 | ? |
+| video/tv/grotte-dag23.mp4 | 0.3 MB | 2026-11-10 | ? |
+| video/tv/grotte-dag24.mp4 | 0.2 MB | 2026-11-10 | ? |
+| video/tv/landsby-morgen.mp4 |  |  | ✗ |
+| video/tv/landsby-dag.mp4 |  |  | ✗ |
+| video/tv/landsby-natt.mp4 |  |  | ✗ |
+| video/tv/landsby-brevfugler.mp4 |  |  | ✗ |
+| video/tv/landsby-julius.mp4 | 2.2 MB | 2026-11-11 | ⚠ referansebildet er endret: assets/out/stills/snofall-landsby/still-julius.jpg; referansebildet er endret: assets/out/forste-landsby-rolig.jpg; promptversjonen er endret |
+| video/tv/landsby-iq.mp4 | 2.7 MB | 2026-11-11 | ⚠ referansebildet er endret: assets/out/stills/snofall-landsby/still-iq.jpg; referansebildet er endret: assets/out/forste-landsby-rolig.jpg; promptversjonen er endret |
+| video/tv/landsby-reinsdyr.mp4 |  |  | ✗ |
+| video/tv/landsby-tarnklokke.mp4 |  |  | ✗ |
+| video/tv/landsby-morgen-brevfugler.mp4 |  |  | ✗ |
+| video/tv/landsby-morgen-hverdag.mp4 |  |  | ✗ |
+| video/tv/landsby-morgen-reinsdyr.mp4 |  |  | ✗ |
+| video/tv/landsby-dag-aking.mp4 |  |  | ✗ |
+| video/tv/landsby-dag-marked.mp4 |  |  | ✗ |
+| video/tv/landsby-dag-hverdag.mp4 |  |  | ✗ |
+| video/tv/landsby-natt-stjerneskudd.mp4 |  |  | ✗ |
+| video/tv/landsby-natt-tarnklokke.mp4 |  |  | ✗ |
+| video/tv/landsby-natt-reinsdyr.mp4 |  |  | ✗ |
 
 ## port
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| video/tv/port-julius.mp4 | 4.3 MB | 2026-11-11 | ⚠ referansebildet er endret: assets/locations/porten/ref-open.jpg; referansebildet er endret: assets/locations/porten/ref.jpg |
+| video/tv/port-julius.mp4 | 4.5 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/locations/porten/ref.jpg |
 | video/tv/port-hjerterud.mp4 |  |  | ✗ |
-| video/tv/port-iq.mp4 | 4.7 MB | 2026-11-11 | ⚠ referansebildet er endret: assets/locations/porten/ref.jpg; promptversjonen er endret |
-| video/tv/port-winter.mp4 | 3.8 MB | 2026-11-11 | ⚠ kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-winter.txt; referansebildet er endret: assets/locations/porten/ref.jpg; referansebildet er endret: assets/characters/winter/ref-tophat.jpg; promptversjonen er endret |
+| video/tv/port-iq.mp4 | 4.7 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/locations/porten/ref.jpg |
+| video/tv/port-winter.mp4 | 4.5 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/locations/porten/ref.jpg |
+| video/tv/port-iq.old-1.mp4 | 4.7 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-iq.txt; referansebildet er endret: assets/locations/porten/ref.jpg; promptversjonen er endret; ikke i manifestet |
+| video/tv/port-julius.old-1.mp4 | 4.3 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-julius.txt; referansebildet er endret: assets/locations/porten/ref-open.jpg; referansebildet er endret: assets/locations/porten/ref.jpg; ikke i manifestet |
+| video/tv/port-winter.old-1.mp4 | 3.8 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-winter.txt; referansebildet er endret: assets/locations/porten/ref.jpg; referansebildet er endret: assets/characters/winter/ref-tophat.jpg; promptversjonen er endret; ikke i manifestet |
 
 ## feed
 
@@ -154,15 +174,89 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | feed/slede-muren.jpg | 0.5 MB | 2026-11-11 | ⚠ referansebildet er endret: assets/locations/snofall-landsby/nokkelramme-rolig.jpg; promptversjonen er endret |
 | feed/slede-julenatt.jpg | 0.6 MB | 2026-11-11 | ⚠ referansebildet er endret: assets/locations/snofall-landsby/nokkelramme-rolig.jpg; promptversjonen er endret |
 
+## spill
+
+| Fil | Størrelse | Dato | Status |
+|---|---:|---|---|
+| spill/iq-verksted.jpg |  |  | ✗ |
+| spill/julius-kontor.jpg |  |  | ✗ |
+| spill/antenne-tarn.jpg |  |  | ✗ |
+| spill/kulde-grotte.jpg |  |  | ✗ |
+| spill/torget.jpg | 0.3 MB | 2026-11-11 | ⚠ kildeteksten er endret: assets/locations/snofall-landsby/varianter/torget-spill.still.prompt.txt; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/assets/locations/snofall-landsby/nokkelramme-rolig.jpg; promptversjonen er endret |
+| spill/port-aapen.jpg | 0.1 MB | 2026-11-11 | ? |
+| spill/piksel/torget.png | 1.4 MB | 2026-11-11 | ✓ |
+| spill/piksel/iq-verksted.png | 1.3 MB | 2026-11-12 | ✓ |
+| spill/piksel/julius-kontor.png | 1.1 MB | 2026-11-11 | ✓ |
+| spill/piksel/antenne-tarn.png | 1.0 MB | 2026-11-11 | ✓ |
+| spill/piksel/kulde-grotte.png | 1.1 MB | 2026-11-11 | ✓ |
+| spill/piksel/port-aapen.png | 1.2 MB | 2026-11-11 | ✓ |
+| spill/piksel/kafe.png | 1.5 MB | 2026-11-12 | ✓ |
+| spill/piksel/pakkesentralen.png | 1.4 MB | 2026-11-11 | ✓ |
+| spill/piksel/klokketarnet.png | 1.4 MB | 2026-11-11 | ✓ |
+| spill/piksel/julebodene.png | 1.5 MB | 2026-11-11 | ✓ |
+| spill/piksel/kart.png | 1.2 MB | 2026-11-11 | ✓ |
+| spill/portrett-winter.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/winter/ref-outside.jpg |
+| spill/portrett-hjerterud.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/portrett-iq.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/iq/ref.jpg |
+| spill/portrett-julius.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/julius/ref-v3.jpg |
+| spill/portrett-floke.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/portrett-rampenissen.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/rampenissen/ref-ekte.jpg |
+| spill/piksel/figur/rudolf.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/figur/rudolf-busk.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/figur/tannhjul.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/figur/peileskive.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/figur/hjerterud.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/figur/julius.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/julius/ref-v3.jpg |
+| spill/piksel/figur/brevfugl.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/figur/winter.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/winter/ref-tophat.jpg |
+| spill/piksel/figur/slede.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/figur/skriveplate.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/tyttebaer.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/kaffekopp.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/baersaft.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/skjema.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/skjema_signert.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/bolle.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/syltetoey.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/blikkboks.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/grytevott.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/boks_i_vott.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/varmboks.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/knekkebroed.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/sirup.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/sirupbroed.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/magnetnaal.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/haandvarmer.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/stearinlys.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/tesil.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/tesil_lanterne.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/krystallskaar.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/lupe.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/fjaerpenn.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/klementin.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/noett.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/briller.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/magnet.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/hyssing.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/fiskesnoere.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/bjelle.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/talgstump.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/retro/antenne-tarn.png | 0.0 MB | 2026-11-11 | ? ikke i manifestet |
+| spill/retro/iq-verksted.png | 0.1 MB | 2026-11-11 | ? ikke i manifestet |
+| spill/retro/julius-kontor.png | 0.1 MB | 2026-11-11 | ? ikke i manifestet |
+| spill/retro/kulde-grotte.png | 0.1 MB | 2026-11-11 | ? ikke i manifestet |
+| spill/retro/port-aapen.png | 0.0 MB | 2026-11-11 | ? ikke i manifestet |
+| spill/retro/torget.png | 0.0 MB | 2026-11-11 | ? ikke i manifestet |
+
 ## strek
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| strek/dag01.png | 1.5 MB | 2026-11-12 | ✓ |
-| strek/dag02.png | 1.1 MB | 2026-11-12 | ✓ |
-| strek/dag03.png | 1.1 MB | 2026-11-12 | ✓ |
-| strek/dag04.png | 1.4 MB | 2026-11-12 | ✓ |
-| strek/dag05.png | 1.3 MB | 2026-11-12 | ✓ |
+| strek/dag01.png | 1.2 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/rampenissen/ref-ekte.jpg |
+| strek/dag02.png | 1.1 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/rampenissen/ref-ekte.jpg |
+| strek/dag03.png | 1.1 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/rampenissen/ref-ekte.jpg |
+| strek/dag04.png | 1.3 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/rampenissen/ref-ekte.jpg |
+| strek/dag05.png | 1.3 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/rampenissen/ref-ekte.jpg |
 | strek/dag06.png |  |  | ✗ |
 | strek/dag07.png |  |  | ✗ |
 | strek/dag08.png |  |  | ✗ |
@@ -182,11 +276,21 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | strek/dag22.png |  |  | ✗ |
 | strek/dag23.png |  |  | ✗ |
 | strek/dag24.png |  |  | ✗ |
+| strek/dag01.old-1.png | 1.3 MB | 2026-11-12 | ? ikke i manifestet |
 
 ## Gamle filer
 
 | Mappe | Filer |
 |---|---:|
-| assets/out/forkastet | 150 |
-| assets/out/original-pre-komprimering | 47 |
-| assets/out/original-pre-normalisering | 13 |
+| public/_arkiv/2026-11-12/d2take1 | 2 |
+| public/_arkiv/2026-11-12/d2take2 | 2 |
+| public/_arkiv/2026-11-12/d3-bak | 15 |
+| public/_arkiv/2026-11-12/forkastet | 150 |
+| public/_arkiv/2026-11-12/gammel-v1 | 108 |
+| public/_arkiv/2026-11-12/original-pre-komprimering | 47 |
+| public/_arkiv/2026-11-12/original-pre-normalisering | 13 |
+| public/_arkiv/2026-11-12/out-v1 | 7 |
+| public/_arkiv/2026-11-12/rej | 2 |
+| public/_arkiv/2026-11-12/take1 | 2 |
+| public/_arkiv/2026-11-12/take2 | 2 |
+| public/_arkiv/2026-11-12/v3-backup | 4 |

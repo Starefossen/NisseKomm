@@ -200,13 +200,20 @@ describe("versjonsgrupper", () => {
         "video/julius/dag-01.mp4",
         "video/julius/dag-01-v2.mp4",
         "video/julius/dag-01-v4.mp4",
-        "audio/rampenissen/dag-01.old.mp3",
+        "audio/rampenissen/dag-01.old-1.mp3",
         "audio/rampenissen/dag-01.mp3",
+        "audio/rampenissen/dag-01.old-2.mp3",
+        "strek/dag01.v-feil.png",
       ].map((path) => ({ path })),
     );
     expect(g.map((x) => x.key)).toEqual([
       "video/julius/dag-01.mp4",
       "audio/rampenissen/dag-01.mp3",
+      "strek/dag01.v-feil.png", // not the convention: a file of its own
+    ]);
+    expect(g[1].older.map((o) => o.path)).toEqual([
+      "audio/rampenissen/dag-01.old-2.mp3",
+      "audio/rampenissen/dag-01.old-1.mp3",
     ]);
     expect(g[0].newest.path).toBe("video/julius/dag-01-v4.mp4");
     expect(g[0].older.map((o) => o.path)).toEqual([

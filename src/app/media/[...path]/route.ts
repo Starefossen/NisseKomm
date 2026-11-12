@@ -6,8 +6,8 @@ export async function GET(
   { params }: { params: Promise<{ path: string[] }> },
 ) {
   const parts = (await params).path;
-  // Prank sketches show tonight's setup, promos show the app: parents only (lan mode).
-  if (parts[0] === "strek" || parts[0] === "promo") {
+  // Prank sketches show tonight's setup, promos show the app, _arkiv holds rejected takes: parents only (lan mode).
+  if (["strek", "promo", "_arkiv"].includes(parts[0])) {
     const nei = await authorizeMedia(req);
     if (nei) return nei;
   }

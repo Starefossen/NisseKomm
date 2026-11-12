@@ -188,6 +188,11 @@ def write(generator, out, source, section, model, images=(), root: Path = ROOT, 
     if source.startswith(RENDERED):  # record the template, so a changed description marks the file stale
         j = jobs(root)[source.removeprefix(RENDERED).removesuffix(".txt")]
         source, section = j["mal"], (f"Dag {j['dag']}" if "dag" in j else section)
+    elif section is None and source.startswith("assets/prompts/"):
+        # a per-day template ({{strek}}) passed as is: the job that writes <out> from it gives the day
+        j = next((j for j in jobs(root).values() if j.get("mal") == source and "dag" in j
+                  and str(out).endswith(j.get("ut") or "\0")), None)
+        section = f"Dag {j['dag']}" if j else None
     text = source_text(source, section, root)
     if text is None:
         raise ValueError(f"kilden finnes ikke: {source} {section or ''}".strip())
@@ -229,27 +234,45 @@ def status(out: Path, key: str = "", root: Path = ROOT):
     return (STALE if why else CURRENT), why
 
 
+MEDIA_DIRS = ("video", "audio", "music", "feed", "strek", "spill", "promo", "icons")
+
+# Versions of one media file. The plain name (dag-01.mp4) is the file in use; a newer candidate is
+# <name>-vN.<ext> (dag-01-v3.mp4); a replaced or rejected file is <name>.old-N.<ext> (dag-01.old-1.mp4).
+# Nothing else: oversikt.ts (versionKey) groups exactly these on the media page.
+VERSION = re.compile(r"(-v\d+|\.old-\d+)(\.\w+)$")
+
+
+def plain(key: str) -> str:
+    """The file in use that a -vN or .old-N version belongs to."""
+    return VERSION.sub(r"\2", key)
+
+
 def bakfyll(media: Path, root: Path = ROOT):
-    """Write a sidecar (bakfylt, no prompt hash) for each mp4/mp3 under media that has none."""
+    """Write a sidecar (bakfylt, no prompt hash) for each media file under media that has none."""
     table = {j["ut"]: j for j in jobs(root).values() if j.get("ut")}
     n = 0
-    for d in ("video", "audio"):
+    for d in MEDIA_DIRS:
         for f in sorted((media / d).rglob("*")):
-            if f.suffix not in (".mp4", ".mp3") or Path(str(f) + ".meta.json").exists():
+            if not f.is_file() or f.name.startswith(".") or f.name.endswith(".meta.json") \
+                    or Path(str(f) + ".meta.json").exists():
                 continue
             key = str(f.relative_to(media))
-            m = re.fullmatch(r"video/julius/dag-(\d+)(-v2)?\.mp4", key)
-            if m and m[2]:
+            m = re.fullmatch(r"video/julius/dag-(\d+)(-v\d+)?\.mp4", key)
+            extra = {}
+            if f.suffix == ".jpg" and f.with_suffix(".mp4").exists():  # a poster frame cut from its video
+                gen, src = "avledet (plakat)", {"path": key[:-4] + ".mp4"}
+                extra = {"avledet_fra": key[:-4] + ".mp4"}
+            elif m and m[2] == "-v2":
                 gen, src = "julius-dag.py (før inventar)", {"path": "Omni Extend test 12.11"}
-            elif m:
+            elif m and not m[2]:
                 gen, src = "julius-dag.py (før inventar)", {"path": JULIUS_MS, "section": f"Dag {int(m[1])}"}
-            elif key in table:
-                gen, src = table[key]["generator"], {"path": table[key]["mal"]}
+            elif plain(key) in table:
+                gen, src = table[plain(key)]["generator"], {"path": table[plain(key)].get("mal")}
             else:
-                gen, src = "ukjent (før inventar)", {}
+                gen, src = "hånd/ukjent (før inventar)", {}
             created = datetime.fromtimestamp(f.stat().st_mtime, timezone.utc).isoformat(timespec="seconds")
             Path(str(f) + ".meta.json").write_text(json.dumps(
-                {"generator": gen, "created": created, "source": src, "bakfylt": True},
+                {"generator": gen, "created": created, "source": src, "bakfylt": True, **extra},
                 ensure_ascii=False, indent=2) + "\n")
             n += 1
     return n
@@ -518,6 +541,28 @@ def selftest():
         side = json.loads((r / "public/video/julius/dag-07.mp4.meta.json").read_text())
         assert side["source"]["section"] == "Dag 7" and side["bakfylt"]
         assert status(r / "public/video/julius/dag-07.mp4", root=r)[0] == UNKNOWN
+        for f in ("video/julius/dag-07.jpg", "feed/x.png", "icons/a.svg"):
+            (r / "public" / f).parent.mkdir(parents=True, exist_ok=True)
+            (r / "public" / f).write_text("x")
+        assert bakfyll(r / "public", r) == 3
+        poster = json.loads((r / "public/video/julius/dag-07.jpg.meta.json").read_text())
+        assert poster["avledet_fra"] == "video/julius/dag-07.mp4"
+        assert json.loads((r / "public/icons/a.svg.meta.json").read_text())["generator"].startswith("hånd")
+        assert plain("video/julius/dag-01-v3.mp4") == plain("promo/a.old-2.mp4".replace("promo/a", "video/julius/dag-01")) \
+            == "video/julius/dag-01.mp4"
+        assert plain("strek/dag01.v-feil.png") == "strek/dag01.v-feil.png"  # not the convention
+        # a per-day template passed as is ({{strek}}): the job writing that file gives the day
+        (r / RAMPE_MS).parent.mkdir(parents=True, exist_ok=True)
+        (r / RAMPE_MS).write_text("## Dag 2 (x)\n**Strek:** Sokker på lampa.\n## Dag 3 (y)\n")
+        (r / "assets/prompts/strek").mkdir(parents=True)
+        (r / "assets/prompts/strek/skisse.txt").write_text("Scene: {{strek}}")
+        (r / MEDIER).write_text(json.dumps({"strek/dag02": {"mal": "assets/prompts/strek/skisse.txt", "dag": 2,
+                                                             "ut": "strek/dag02.png"}}))
+        (r / "public/strek").mkdir(parents=True)
+        (r / "public/strek/dag02.png").write_text("x")
+        write("still.sh", r / "public/strek/dag02.png", "assets/prompts/strek/skisse.txt", None, "m", root=r)
+        assert json.loads((r / "public/strek/dag02.png.meta.json").read_text())["source"]["section"] == "Dag 2"
+        assert status(r / "public/strek/dag02.png", root=r)[0] == CURRENT
     missing, skipped = missing_inputs()  # the real medier.json
     assert not missing, missing
     print(f"selvtest ok (inndata: {len(skipped)} bilder utenfor git hoppet over)")
