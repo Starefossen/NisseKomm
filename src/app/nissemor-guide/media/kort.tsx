@@ -80,6 +80,9 @@ const INVENTAR_LABEL: Record<Inventar["status"], [string, string]> = {
 function InlinePlayer({ path, missing }: { path: string; missing: boolean }) {
   const src = mediaUrl(path);
   const fileExt = ext(path);
+  // WebKit builds a full media pipeline per <video>/<audio>, even with
+  // preload="none": hundreds of them made filtering slow, so mount on click.
+  const [spill, setSpill] = useState(false);
 
   if (missing) {
     return (
@@ -91,9 +94,22 @@ function InlinePlayer({ path, missing }: { path: string; missing: boolean }) {
 
   if (fileExt === "mp4") {
     const poster = mediaUrl(path.replace(/\.mp4$/, ".jpg"));
+    if (!spill)
+      return (
+        <button
+          type="button"
+          onClick={() => setSpill(true)}
+          aria-label={`Spill av ${path}`}
+          className="my-2 w-full aspect-video max-h-72 flex items-center justify-center bg-black bg-contain bg-center bg-no-repeat border border-(--neon-green)/40 cursor-pointer text-4xl"
+          style={{ backgroundImage: `url("${poster}")` }}
+        >
+          <span className="bg-black/70 px-4 py-1">▶</span>
+        </button>
+      );
     return (
       <div className="my-2 bg-black">
         <video
+          autoPlay
           src={src}
           poster={poster}
           controls
@@ -105,9 +121,25 @@ function InlinePlayer({ path, missing }: { path: string; missing: boolean }) {
   }
 
   if (fileExt === "mp3") {
+    if (!spill)
+      return (
+        <button
+          type="button"
+          onClick={() => setSpill(true)}
+          className="my-2 w-full min-h-11 border border-(--neon-green)/40 cursor-pointer hover:bg-(--neon-green)/20"
+        >
+          ▶ Spill av lyd
+        </button>
+      );
     return (
       <div className="my-2">
-        <audio src={src} controls preload="none" className="w-full min-h-11" />
+        <audio
+          src={src}
+          controls
+          autoPlay
+          preload="none"
+          className="w-full min-h-11"
+        />
       </div>
     );
   }
@@ -115,7 +147,13 @@ function InlinePlayer({ path, missing }: { path: string; missing: boolean }) {
   return (
     <div className="my-2 flex justify-center bg-black/60 p-2 border border-(--neon-green)/40">
       {/* eslint-disable-next-line @next/next/no-img-element -- served from MEDIA_DIR */}
-      <img src={src} alt={path} className="max-h-72 w-auto object-contain" />
+      <img
+        src={src}
+        alt={path}
+        loading="lazy"
+        decoding="async"
+        className="max-h-72 min-h-24 w-auto object-contain"
+      />
     </div>
   );
 }

@@ -31,7 +31,7 @@ import {
 import { passer, radAv } from "./filter";
 import { FilterLinje, useFilter } from "./FilterLinje";
 
-const SIDE = 10;
+const SIDE = 50;
 const box = "border-4 border-(--neon-green) bg-black p-4 mb-6";
 
 const CELL: Record<CellState, [string, string, string]> = {
