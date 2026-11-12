@@ -672,13 +672,22 @@
     "mal": "assets/prompts/tv/snofall-landsby/port-iq.txt",
     "anker": true
   },
+  "still/port-winter": {
+    "generator": "mellomstill",
+    "sted": "porten",
+    "ut": "assets/out/stills/porten/still-winter.jpg",
+    "bilde": "locations/porten#standard",
+    "mal": "assets/prompts/tv/snofall-landsby/port-winter.still.txt",
+    "refs": ["characters/winter#tophat"]
+  },
   "tv/port-winter": {
     "generator": "loop",
     "sted": "porten",
     "ut": "video/tv/port-winter.mp4",
-    "bilde": "locations/porten#standard",
+    "bilde": "still/port-winter",
     "mal": "assets/prompts/tv/snofall-landsby/port-winter.txt",
-    "anker": true
+    "anker": "locations/porten#standard",
+    "notat": "Som port-julius: mellomstill med Winter liten i døråpningen (Hans 12.11: for stor, gjennom bjelken, hopper)"
   },
   "spill-figur/rudolf": {
     "generator": "figur",

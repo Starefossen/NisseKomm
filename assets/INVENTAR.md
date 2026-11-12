@@ -6,11 +6,11 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Type | ✓ | ⚠ | ? | ✗ | ○ | ◇ | - |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| julius | 2 | 10 | 0 | 12 | 0 | 17 | 3 |
+| julius | 2 | 10 | 0 | 12 | 0 | 18 | 3 |
 | rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 4 |
 | music | 13 | 0 | 0 | 1 | 0 | 0 | 0 |
-| tv | 22 | 2 | 0 | 0 | 15 | 0 | 11 |
-| port | 3 | 0 | 0 | 1 | 0 | 0 | 6 |
+| tv | 19 | 5 | 0 | 0 | 15 | 0 | 17 |
+| port | 3 | 0 | 0 | 1 | 0 | 0 | 9 |
 | feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
 | spill | 59 | 0 | 0 | 4 | 0 | 0 | 20 |
 | strek | 9 | 14 | 0 | 1 | 0 | 5 | 1 |
@@ -58,6 +58,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-05-v5.mp4 | 8.7 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-06-v2.mp4 | 8.9 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
 | video/julius/dag-06-v3.mp4 | 8.4 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
+| video/julius/dag-06-v4.mp4 | 8.7 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-07-v2.mp4 | 8.6 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-08-v2.mp4 | 9.7 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-09-v2.mp4 | 9.6 MB | 2026-11-12 | ◇ ikke i manifestet |
@@ -124,16 +125,16 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/tv/landsby-nordlys.mp4 | 0.4 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/landsby-storm.mp4 | 3.6 MB | 2026-11-12 | ✓ |
 | video/tv/landsby-dag24.mp4 | 0.5 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
-| video/tv/landsby-marked.mp4 | 2.8 MB | 2026-11-12 | ✓ |
+| video/tv/landsby-marked.mp4 | 2.8 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/tv/snofall-landsby/hendelse-marked.txt |
 | video/tv/landsby-hverdag.mp4 | 2.2 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/landsby-aking.mp4 | 3.1 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/landsby-stjerneskudd.mp4 | 2.8 MB | 2026-11-12 | ✓ |
-| video/tv/landsby-winter.mp4 | 2.6 MB | 2026-11-12 | ✓ |
+| video/tv/landsby-winter.mp4 | 2.6 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/tv/snofall-landsby/hendelse-winter.txt |
 | video/tv/verksted-iq-inne.mp4 | 0.5 MB | 2026-11-10 | ✓ |
 | video/tv/verksted-tom.mp4 | 0.4 MB | 2026-11-10 | ✓ |
-| video/tv/kontor-julius.mp4 | 2.9 MB | 2026-11-12 | ✓ |
-| video/tv/kontor-tom.mp4 | 2.6 MB | 2026-11-12 | ✓ |
-| video/tv/kontor-dag14.mp4 | 2.7 MB | 2026-11-12 | ✓ |
+| video/tv/kontor-julius.mp4 | 2.8 MB | 2026-11-12 | ✓ |
+| video/tv/kontor-tom.mp4 | 3.4 MB | 2026-11-12 | ✓ |
+| video/tv/kontor-dag14.mp4 | 2.7 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/tv/julius-kontor/dag14.txt; referansebildet finnes ikke her: assets/out/stills/julius-kontor/still-dag14.jpg |
 | video/tv/antenne-rolig.mp4 | 0.3 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/antenne-dag11.mp4 | 0.3 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/grotte-rolig.mp4 | 0.4 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
@@ -160,16 +161,22 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/tv/landsby-natt-tarnklokke.mp4 |  |  | ○ |
 | video/tv/landsby-natt-reinsdyr.mp4 |  |  | ○ |
 | video/tv/kontor-dag14.old-1.mp4 | 0.3 MB | 2026-11-10 | - ikke i manifestet |
-| video/tv/kontor-dag14.old-2.mp4 | 3.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/julius-kontor/dag14.txt; referansebildet er endret: assets/out/stills/julius-kontor/still-dag14.jpg; ikke i manifestet |
+| video/tv/kontor-dag14.old-2.mp4 | 3.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/julius-kontor/dag14.txt; referansebildet finnes ikke her: assets/out/stills/julius-kontor/still-dag14.jpg; ikke i manifestet |
 | video/tv/kontor-julius.old-1.mp4 | 0.4 MB | 2026-11-10 | - ikke i manifestet |
-| video/tv/kontor-julius.old-2.mp4 | 2.6 MB | 2026-11-12 | - referansebildet er endret: assets/out/stills/julius-kontor/still-julius.jpg; ikke i manifestet |
+| video/tv/kontor-julius.old-2.mp4 | 2.6 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/julius-kontor/vidvinkel-ref.txt; referansebildet er endret: assets/out/stills/julius-kontor/still-julius.jpg; ikke i manifestet |
+| video/tv/kontor-julius.old-3.mp4 | 2.9 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/julius-kontor/vidvinkel-ref.txt; referansebildet er endret: assets/out/stills/julius-kontor/still-julius.jpg; ikke i manifestet |
 | video/tv/kontor-tom.old-1.mp4 | 0.4 MB | 2026-11-10 | - ikke i manifestet |
 | video/tv/kontor-tom.old-2.mp4 | 2.6 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/julius-kontor/vidvinkel-tom.txt; referansebildet er endret: assets/out/stills/julius-kontor/still-rom.jpg; ikke i manifestet |
+| video/tv/kontor-tom.old-3.mp4 | 2.6 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/julius-kontor/vidvinkel-tom.txt; referansebildet er endret: assets/out/stills/julius-kontor/still-rom.jpg; ikke i manifestet |
 | video/tv/landsby-marked.old-1.mp4 | 2.4 MB | 2026-11-10 | - ikke i manifestet |
+| video/tv/landsby-marked.old-2.mp4 | 2.8 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/hendelse-marked.txt; ikke i manifestet |
+| video/tv/landsby-marked.old-4.mp4 | 2.6 MB | 2026-11-12 | - ikke i manifestet |
 | video/tv/landsby-rolig.old-1.mp4 | 3.1 MB | 2026-11-10 | - ikke i manifestet |
 | video/tv/landsby-stjerneskudd.old-1.mp4 | 3.0 MB | 2026-11-10 | - ikke i manifestet |
 | video/tv/landsby-storm.old-1.mp4 | 0.6 MB | 2026-11-10 | - ikke i manifestet |
 | video/tv/landsby-winter.old-1.mp4 | 2.3 MB | 2026-11-11 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/hendelse-winter.txt; referansebildet er endret: assets/out/forste-landsby-rolig.jpg; ikke i manifestet |
+| video/tv/landsby-winter.old-2.mp4 | 2.6 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/hendelse-winter.txt; ikke i manifestet |
+| video/tv/landsby-winter.old-4.mp4 | 2.6 MB | 2026-11-12 | - ikke i manifestet |
 
 ## port
 
@@ -178,13 +185,16 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/tv/port-julius.mp4 | 3.5 MB | 2026-11-12 | ✓ |
 | video/tv/port-hjerterud.mp4 |  |  | ✗ |
 | video/tv/port-iq.mp4 | 4.5 MB | 2026-11-12 | ✓ |
-| video/tv/port-winter.mp4 | 4.6 MB | 2026-11-12 | ✓ |
+| video/tv/port-winter.mp4 | 3.6 MB | 2026-11-12 | ✓ |
 | video/tv/port-iq.old-1.mp4 | 4.7 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-iq.txt; ikke i manifestet |
 | video/tv/port-iq.old-2.mp4 | 4.7 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-iq.txt; ikke i manifestet |
 | video/tv/port-julius.old-1.mp4 | 4.3 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-julius.txt; ikke i manifestet |
 | video/tv/port-julius.old-2.mp4 | 4.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-julius.txt; ikke i manifestet |
 | video/tv/port-winter.old-1.mp4 | 3.8 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-winter.txt; ikke i manifestet |
 | video/tv/port-winter.old-2.mp4 | 4.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-winter.txt; ikke i manifestet |
+| video/tv/port-winter.old-3.mp4 | 4.6 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-winter.txt; ikke i manifestet |
+| video/tv/port-winter.old-4.mp4 | 4.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-winter.txt; ikke i manifestet |
+| video/tv/port-winter.old-5.mp4 | 4.6 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-winter.txt; ikke i manifestet |
 
 ## feed
 
