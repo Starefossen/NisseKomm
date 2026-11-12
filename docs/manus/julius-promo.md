@@ -2,6 +2,7 @@
 
 To promovideoer for voksne (A) og en teaser (B). Ikke en del av sesongen: bakes ikke inn i guiden eller transkriptene. Lages med
 `python3 -u assets/bin/julius-dag.py 90 --manus docs/manus/julius-promo.md --dest <mappe utenfor public> --cutaway <klipp>:<kutt>:<sek> … --plakat <bilde>`.
+Innklippene er raske montasjer fra appen (0,7–1,4 s per bilde, glitch mellom): ta opp med Playwright mot en egen dev-server og klipp med `python3 assets/bin/promo-montasje.py <opptak-A> <opptak-B> <ut>`; bildelisten står i skriptet. B viser bare skrivebordet uskarpt, Snøfall TV og kalenderen uten «NOE ÅPNER».
 
 ## Dag 90 (promo) – Til de voksne
 
