@@ -315,7 +315,9 @@
     "sted": "julius-kontor",
     "ut": "assets/out/stills/julius-kontor/still-julius.jpg",
     "bilde": "locations/julius-kontor#vidvinkel",
-    "mal": "assets/prompts/tv/julius-kontor/julius.still.txt"
+    "mal": "assets/prompts/tv/julius-kontor/julius.still.txt",
+    "refs": ["characters/julius#standard"],
+    "notat": "ref = Julius-videoens bilde (ref-v3): mikrofonen og sentralbordet skal se ut som der (Hans 12.11)"
   },
   "tv/kontor-julius": {
     "generator": "loop",
@@ -331,7 +333,9 @@
     "sted": "julius-kontor",
     "ut": "assets/out/stills/julius-kontor/still-rom.jpg",
     "bilde": "locations/julius-kontor#vidvinkel-tom",
-    "mal": "assets/prompts/tv/julius-kontor/rom.still.txt"
+    "mal": "assets/prompts/tv/julius-kontor/rom.still.txt",
+    "refs": ["characters/julius#standard"],
+    "notat": "ref = Julius-videoens bilde (ref-v3): mikrofonen og sentralbordet skal se ut som der (Hans 12.11)"
   },
   "tv/kontor-tom": {
     "generator": "loop",
@@ -355,6 +359,7 @@
     "ut": "video/tv/kontor-dag14.mp4",
     "bilde": "still/julius-kontor-dag14",
     "mal": "assets/prompts/tv/julius-kontor/dag14.txt",
+    "anker": true,
     "beholdt": true
   },
   "still/landsby-v2": {
@@ -375,8 +380,10 @@
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-rolig.mp4",
-    "bilde": "still/landsby-v2",
+    "bilde": "assets/out/forste-landsby-rolig.jpg",
     "mal": "assets/prompts/tv/snofall-landsby/rolig.txt",
+    "anker": true,
+    "notat": "Ankret til sitt eget første bilde (fast punkt): hendelsene klippes inn på det bildet. Tilstandsløkker ankres (anchor.sh) i stedet for seamless.sh, fordi sømmens krysstoning tonet folk og dører inn og ut (Hans 12.11)",
     "beholdt": true
   },
   "tv/landsby-nordlys": {
@@ -400,6 +407,7 @@
     "ut": "video/tv/landsby-storm.mp4",
     "bilde": "still/landsby-v2-storm",
     "mal": "assets/prompts/tv/snofall-landsby/storm.txt",
+    "anker": true,
     "beholdt": true
   },
   "still/landsby-v2-dag24": {
@@ -502,21 +510,13 @@
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-iq.txt",
     "anker": "assets/out/forste-landsby-rolig.jpg"
   },
-  "still/landsby-winter": {
-    "generator": "mellomstill",
-    "sted": "snofall-landsby",
-    "ut": "assets/out/stills/snofall-landsby/still-winter.jpg",
-    "bilde": "assets/out/forste-landsby-rolig.jpg",
-    "mal": "assets/prompts/tv/snofall-landsby/winter.still.txt",
-    "refs": ["characters/winter#outside"]
-  },
   "tv/landsby-winter": {
     "generator": "loop",
     "sted": "snofall-landsby",
     "ut": "video/tv/landsby-winter.mp4",
-    "bilde": "still/landsby-winter",
     "mal": "assets/prompts/tv/snofall-landsby/hendelse-winter.txt",
-    "anker": "assets/out/forste-landsby-rolig.jpg"
+    "tilstand": "landsby-rolig",
+    "notat": "Winter går inn og ut gjennom en dør; et mellomstill med ham krysstonet ham bort mot det tomme ankeret (Hans 12.11: «fades out»)"
   },
   "tv/landsby-reinsdyr": {
     "generator": "loop",
