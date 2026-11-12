@@ -14,6 +14,20 @@ const VINDUER = [
   { x: 152, y: 222, bokstav: "G", tall: "4" },
 ];
 
+// Mirrored decoys in the same grey, so the real glyphs don't stand out on the flat sheet.
+// None sits at a window's mirror position.
+const LOKK = [
+  { x: 20, y: 60, t: "K", v: "x" },
+  { x: 60, y: 95, t: "S", v: "y" },
+  { x: 165, y: 75, t: "7", v: "y" },
+  { x: 25, y: 150, t: "B", v: "x" },
+  { x: 75, y: 245, t: "N", v: "x" },
+  { x: 120, y: 120, t: "3", v: "y" },
+  { x: 8, y: 190, t: "E", v: "x" },
+  { x: 165, y: 150, t: "P", v: "x" },
+  { x: 100, y: 255, t: "5", v: "y" },
+];
+
 // Seeded, so every print has the same decoy scribbles.
 function streker(n: number): string {
   let s = 1414;
@@ -70,6 +84,20 @@ export default function Dag14Brettark() {
                   />
                 ))}
               </div>
+              {LOKK.map((l) => (
+                <span
+                  key={l.t}
+                  className={`${glyf} ${l.v === "x" ? "-scale-x-100" : "-scale-y-100"}`}
+                  style={{
+                    left: `${l.x}mm`,
+                    top: `${l.y}mm`,
+                    width: `${W}mm`,
+                    height: `${W}mm`,
+                  }}
+                >
+                  {l.t}
+                </span>
+              ))}
               {VINDUER.map((v) => (
                 <div key={v.bokstav}>
                   <div

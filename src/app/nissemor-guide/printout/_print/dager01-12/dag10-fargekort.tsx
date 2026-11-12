@@ -24,7 +24,7 @@ function Kort({ i, tom }: { i: number; tom?: boolean }) {
         style={{ borderColor: k.farge }}
       >
         <div className="text-[7mm] text-center">{k.navn}</div>
-        <div className="flex-1 text-[24mm] leading-none">
+        <div className="flex-1 text-[44mm] leading-none">
           {!tom && <Rodstoy>{k.vis ?? <Iskrystall size={70} />}</Rodstoy>}
         </div>
         {!tom && k.vis && (
