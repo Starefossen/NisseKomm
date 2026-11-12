@@ -9,7 +9,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | julius | 2 | 10 | 0 | 12 | 0 | 12 | 3 |
 | rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 2 |
 | music | 13 | 0 | 0 | 1 | 0 | 0 | 0 |
-| tv | 18 | 3 | 0 | 1 | 17 | 0 | 11 |
+| tv | 22 | 2 | 0 | 0 | 15 | 0 | 11 |
 | port | 3 | 0 | 0 | 1 | 0 | 0 | 6 |
 | feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
 | spill | 59 | 0 | 0 | 4 | 0 | 0 | 20 |
@@ -26,10 +26,10 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-05.mp4 | 4.3 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 5; promptversjonen er endret |
 | video/julius/dag-06.mp4 | 10.3 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (45 % ordlikhet) |
 | video/julius/dag-07.mp4 | 10.5 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (50 % ordlikhet) |
-| video/julius/dag-08.mp4 | 10.6 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (48 % ordlikhet) |
+| video/julius/dag-08.mp4 | 10.6 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (43 % ordlikhet) |
 | video/julius/dag-09.mp4 | 10.4 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (46 % ordlikhet) |
-| video/julius/dag-10.mp4 | 10.6 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (52 % ordlikhet) |
-| video/julius/dag-11.mp4 | 10.1 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (54 % ordlikhet) |
+| video/julius/dag-10.mp4 | 10.6 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (51 % ordlikhet) |
+| video/julius/dag-11.mp4 | 10.1 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (53 % ordlikhet) |
 | video/julius/dag-12.mp4 | 10.5 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (42 % ordlikhet) |
 | video/julius/dag-13.mp4 |  |  | ✗ |
 | video/julius/dag-14.mp4 |  |  | ✗ |
@@ -113,15 +113,15 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| video/tv/landsby-rolig.mp4 | 2.5 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/out/forste-landsby-rolig.jpg |
+| video/tv/landsby-rolig.mp4 | 2.6 MB | 2026-11-12 | ✓ |
 | video/tv/landsby-nordlys.mp4 | 0.4 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/landsby-storm.mp4 | 3.6 MB | 2026-11-12 | ✓ |
 | video/tv/landsby-dag24.mp4 | 0.5 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
-| video/tv/landsby-marked.mp4 |  |  | ○ |
+| video/tv/landsby-marked.mp4 | 2.8 MB | 2026-11-12 | ✓ |
 | video/tv/landsby-hverdag.mp4 | 2.2 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/landsby-aking.mp4 | 3.1 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
-| video/tv/landsby-stjerneskudd.mp4 |  |  | ○ |
-| video/tv/landsby-winter.mp4 |  |  | ✗ |
+| video/tv/landsby-stjerneskudd.mp4 | 2.8 MB | 2026-11-12 | ✓ |
+| video/tv/landsby-winter.mp4 | 2.6 MB | 2026-11-12 | ✓ |
 | video/tv/verksted-iq-inne.mp4 | 0.5 MB | 2026-11-10 | ✓ |
 | video/tv/verksted-tom.mp4 | 0.4 MB | 2026-11-10 | ✓ |
 | video/tv/kontor-julius.mp4 | 2.9 MB | 2026-11-12 | ✓ |
