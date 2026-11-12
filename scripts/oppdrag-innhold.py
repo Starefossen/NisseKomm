@@ -85,10 +85,29 @@ for d in DAYS:
         julius_ps_krypto_mangler=field(s, "julius_ps_krypto_mangler"),
         alerts=field(s, "daily_alerts").split(" · "),
         symbol=field(s, "symbol_clue.description"),
-        rampestrek=field(s, "rampenissen_rampestrek"),
         fysisk_hint=field(s, "fysisk_hint"),
         materialer=[x.strip().strip("`") for x in field(s, "materialer_nødvendig").split("·")],
     )
+
+# --- Rampestrek: one source, historie §8 (long) and §8.1 (short forms) ---
+HISTORIE_P = ROOT / "docs/historie-2026.md"
+HISTORIE = HISTORIE_P.read_text(encoding="utf-8")
+
+
+def rader(tekst):
+    return {int(m[0]): [c.strip() for c in m[1].split("|")] for m in re.findall(r"^\| (\d+) +\|(.*)\|$", tekst, re.M)}
+
+
+S8 = re.search(r"^## 8\. Rampestreker.*?(?=^### 8\.1 )", HISTORIE, re.S | re.M).group(0)
+S81 = re.search(r"^### 8\.1 .*?(?=^## )", HISTORIE, re.S | re.M).group(0)
+STREK = rader(S8)  # [ukedag, tekst, type, materialer, min, brikke]
+KORT = rader(S81)  # [tittel, tegnbar, sjekkliste]
+
+
+def uten_merknad(t):
+    # "(Helg: større oppsett.)", "(Kulde var her.)": notes for the parent, not the scene
+    return re.sub(r"\s*\([^()]*\)$", "", t)
+
 
 # --- A4 bonus, A5 decryption ---
 a4 = re.search(r"^### A4\..*?(?=^### A5)", DOC, re.S | re.M).group(0)
@@ -148,6 +167,7 @@ for f in ("uke1", "uke2", "uke3", "uke4"):
     for q in quests:
         d = q["dag"]
         q["eventyr"] = {"id": EVENTYR_ID, "phase": d}
+        q["rampenissen_rampestrek"] = uten_merknad(STREK[d][1])
         if d not in days:
             continue
         x = days[d]
@@ -157,7 +177,6 @@ for f in ("uke1", "uke2", "uke3", "uke4"):
         for k in ("julius_ps_bonus", "julius_ps_krypto_mangler"):
             if x[k]:
                 q[k] = x[k]
-        q["rampenissen_rampestrek"] = x["rampestrek"]
         q["fysisk_hint"] = x["fysisk_hint"]
         q["materialer_nødvendig"] = x["materialer"]
         if x["symbol"]:
@@ -179,6 +198,38 @@ for f in ("uke1", "uke2", "uke3", "uke4"):
         if d == 3 and "SYMBOLSKANNER" not in mods:
             mods.append("SYMBOLSKANNER")
     write(p, no_emoji(json.dumps(quests, ensure_ascii=False, indent=2), frost=True) + "\n")
+
+# --- Rampestrek in the other docs ---
+def strek_i_dokumenter():
+    h = HISTORIE
+    s4 = re.search(r"^## 4\..*?(?=^## )", h, re.S | re.M).group(0)
+    lines = s4.split("\n")
+    kol = None
+    for i, l in enumerate(lines):
+        if not l.startswith("|"):
+            continue
+        celler = l.split("|")
+        if kol is None and "Strek" in [c.strip() for c in celler]:
+            kol = [c.strip() for c in celler].index("Strek")
+        elif kol and re.match(r"^\| \d+ ", l):
+            celler[kol] = " " + uten_merknad(STREK[int(celler[1])][1]) + " "
+            lines[i] = "|".join(celler)
+    write(HISTORIE_P, h.replace(s4, "\n".join(lines)))
+
+    p = ROOT / "docs/manus/rampenissen-radio-2026.md"
+    t = p.read_text(encoding="utf-8")
+    for d in range(1, 25):
+        t = re.sub(rf"(^## Dag {d} .*?^\*\*Strek:\*\* ).+?$", lambda m: m[1] + KORT[d][1], t, count=1, flags=re.S | re.M)
+    write(p, t)
+
+    p = ROOT / "docs/gaater-2026.md"
+    t = p.read_text(encoding="utf-8")
+    for d in range(1, 25):
+        t = re.sub(rf"(^##+ Dag {d} \(.*?^  - Rampestrek: ).+?$", lambda m: m[1] + KORT[d][2], t, count=1, flags=re.S | re.M)
+    write(p, t)
+
+
+strek_i_dokumenter()
 
 # --- statisk_innhold ---
 p = DATA / "statisk_innhold.json"

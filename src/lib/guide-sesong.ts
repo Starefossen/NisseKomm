@@ -57,6 +57,7 @@ export const SEKSJONER: readonly [keyof typeof DOK, string][] = [
   ["historie", "5. Belønninger"],
   ["historie", "6. Frost"],
   ["historie", "8. Rampestreker"],
+  ["historie", "8.1 Korte former"],
   ["historie", "9. Snøfall TV"],
   ["storyboard", "1. Flateoversikt"],
   ["storyboard", "2. Faste regler"],
@@ -92,6 +93,16 @@ export function tabell(tekst: string): string[][] {
 
 const tabellPerDag = (tekst: string) =>
   new Map(tabell(tekst).map((r) => [Number(r[0]), r]));
+
+/** historie §8, the one source of every rampestrek text; §8.1 holds its short forms. */
+const strekTabell = () =>
+  tabellPerDag(del("historie", "8. Rampestreker").split("### 8.1 ")[0]);
+
+/** Short title per day for the sharing sheet (historie §8.1 «Tittel»). */
+export const strekTitler = (): string[] => {
+  const kort = tabellPerDag(del("historie", "8.1 Korte former"));
+  return Array.from({ length: 24 }, (_, i) => kort.get(i + 1)?.[1] ?? "");
+};
 
 // --- Tonight (gaater-2026.md) ------------------------------------------
 
@@ -135,7 +146,7 @@ export function kveldDag(n: number) {
     );
   const oppsett = felt("Oppsett");
   const utskrifterTekst = felt("Utskrifter");
-  const s = tabellPerDag(del("historie", "8. Rampestreker")).get(n) ?? [];
+  const s = strekTabell().get(n) ?? [];
   const sjekkliste = [
     ...(
       blokk.match(/^- \*\*Sjekkliste:\*\*\n((?:  - .+\n)+)/m)?.[1] ?? ""

@@ -1,6 +1,6 @@
 # Rampenissen på Morgenrådet 2026 – radioklipp
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Strek-linjene dag 13 og 20 endret 13.11 etter ja fra Hans. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «død. Nesten.», 15 skåla, 23 tempus) etter ja fra Hans. Klargjort for TTS 11. november etter ja fra Hans: lengde og bekreftelser (dag 6, 14, 15, 24), tallet i dag 8, Hanna i dag 21, apokope (7, 16, 17, 18, 22), dag 23 tempus. Dag 24 skrevet om 11. november etter ja fra Hans: sendt fra Snøfall etter hjemkomsten, hilsener fra de andre, rapporten levert (se `docs/beslutninger.md`). Utvidet 12. november etter ja fra Hans: dag 1 er sesongåpning (60–75 s), dag 24 litt lengre (50–65 s), Birk og Lyng får introduksjon og reaksjon dag 1 og 24 og én reaksjonslinje (`reaksjon_hint`) på utvalgte dager, og førsesongen 24.–30. november står nederst. Lyd for dag 1 og 24 må lages på nytt; Hans leser teksten først. `rampestrek_hint` og `utfordring_hint` for alle 24 dager lagt til 13.11 etter ja fra Hans.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Strek-linjene dag 13 og 20 endret 13.11 etter ja fra Hans. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «død. Nesten.», 15 skåla, 23 tempus) etter ja fra Hans. Klargjort for TTS 11. november etter ja fra Hans: lengde og bekreftelser (dag 6, 14, 15, 24), tallet i dag 8, Hanna i dag 21, apokope (7, 16, 17, 18, 22), dag 23 tempus. Dag 24 skrevet om 11. november etter ja fra Hans: sendt fra Snøfall etter hjemkomsten, hilsener fra de andre, rapporten levert (se `docs/beslutninger.md`). Utvidet 12. november etter ja fra Hans: dag 1 er sesongåpning (60–75 s), dag 24 litt lengre (50–65 s), Birk og Lyng får introduksjon og reaksjon dag 1 og 24 og én reaksjonslinje (`reaksjon_hint`) på utvalgte dager, og førsesongen 24.–30. november står nederst. Lyd for dag 1 og 24 må lages på nytt; Hans leser teksten først. `rampestrek_hint` og `utfordring_hint` for alle 24 dager lagt til 13.11 etter ja fra Hans. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`.
 
 Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storyboard-2026.md` (§2 kunnskapstidslinje, §3 radiolinjer), `docs/gaater-2026.md`. Format: `varden-morgenradet.md`.
 
@@ -34,7 +34,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 1 (ti) – Direktelinjen
 
-**Strek:** begravd under et skred av klementiner fra TV-benken, banan som pute, viklet inn i rød garntråd.
+**Strek:** begravd under et skred av klementiner fra TV-benken, bare lua og én vinkende arm stikker opp, banan som pute, rød garntråd fra TV-en til håndleddet hans.
 
 **Klipp:** «Hallo? Hallo! E denne på? Det e mæ! Rampenissen! Æ e TILBAKE! Æ har sove i en garnkurv på loftet i Snøfall heile året, og i natt sendt IQ mæ ned gjennom den nye direktelinja. Hodestups. Æ landa mykt, i nåkka gult og buet. Æ sei ikkje meir. Og garnet? Garnet va der da æ kom. Nesten. Men hør no. Julius samla heile Snøfall før æ reist. Han sa det rett ut: i år treng Snøfall hjelp. Fra dokker. Æ sa ja før han va ferdig. IQ har bygd nåkka nytt på loftet. Æ får ikkje sei ka det e. Det va mørkt, og det summa. Dokker får se det sjøl, litt om gangen, heile desember. Og én ting til: det knitre nåkka på linja. Og det e ikkje mæ. IQ sei det e været. IQ sei bestandig at det e været. Æ sitt i hylla i stua til jul. Sulten, stolt og på jobb. God morra, Landås!»
 
@@ -86,7 +86,9 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 5 (lø) – Brevfuglen over Byfjellene
 
-**Strek:** marshmallow-krig mellom Rampenissen og kosedyrene, én bamse med plaster. Helg, 09-sendingen.
+**Strek:** marshmallow-krig mellom Rampenissen og kosedyrene, én bamse med plaster.
+
+**Merk:** Helg, 09-sendingen.
 
 **Klipp:** «God lørdag, sovetryna! Klokka e ni, og dokker e sikkert våkne. Æ har vært våken sia fire. Det har vært krig i stua. Æ og bamsan. Vi vant. Begge lag vant, det va litt uklart. Én bamse blei truffa i magen og har plaster, han e tapper. Kulene va myke og kvite, og æ ska rydd. Seinere. Og hør: en brevfugl landa i natt, den første over Bergen i år! Winter oppi Snøfall stole ikkje på nån no. Han skriv alt i hemmelig skrift fordi nån lytte. Fuglen har nåkka rart på vingen. Æ skjønne det ikkje. Æ e bare agent, ikkje sekretær. Kos dokker i regnet!»
 
@@ -100,7 +102,9 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 ## Dag 6 (sø) – Skyggene i Gangen · 2. advent
 
-**Strek:** snøengler i 1 dl mel i et stekebrett på kjøkkenbordet, ligger midt i den største. Helg, 09-sendingen.
+**Strek:** snøengler i 1 dl mel i et stekebrett på kjøkkenbordet, ligger midt i den største.
+
+**Merk:** Helg, 09-sendingen.
 
 **Klipp:** «God søndag og god andre advent! Rampenissen her, litt kvit i ansiktet. Det e mel. Ikkje spør. Jo, spør: æ skull lag snøengla, og det e ikkje snø inne, så æ brukt det nærmeste. Æ ligg i den største engelen. Melet e rot, det innrømme æ. Men! Fuglen kom fram i går, Winter pusta ut. Og i natt sa Orakelet at det som fryse linja, ikkje tåle lys. IQ hengt lys rundt heile antenna. Og æ har laga nåkka av den lille lampa dokkers og en papprull. Det ligg ikkje i melet, det e for fint til det. Det e ikkje rot. Det e et instrument. Kos dokker i dag!»
 
@@ -128,7 +132,9 @@ _Skjerm-kort fra Orakelet om morgenen._
 
 ## Dag 8 (ti) – Lampene som Lyver
 
-**Strek:** tårn av frokostblandingspakker, skilt «SIGMA-TÅRN», sitter på toppen med suppeøse. Slang 1 av 2.
+**Strek:** tårn av frokostblandingspakker, skilt «SIGMA-TÅRN», sitter på toppen med suppeøse.
+
+**Merk:** Slang 1 av 2.
 
 **Klipp:** «Hallo fra toppen! Rampenissen, høyde: alle frokostblandingan i huset. Uke én e ferdig, folkens! Og navnet e ute, dokker veit kem æ meine, den med dem kalde fingran. IQ feire med å bygg nåkka. Han har ikkje sove. Æ feira med å bygg nåkka. Mitt e høgare, sjø. Mitt har skilt. Mitt e, og æ sei det med respekt, sigma. Det e litt frokostblanding på golvet, men det e fordi tårnet trengt støtte. Øsa e flaggstang. Ikkje dytt. Æ meine det. Hjerterud sei frokost e dagens viktigaste måltid, og no e den også dagens høgaste. Hilsen fra toppen. Ikkje dytt!»
 
@@ -182,7 +188,9 @@ _Skjerm er grå fra 05:30._
 
 ## Dag 12 (lø) – Lydbølgene som Smelter Is · M3
 
-**Strek:** én eneste dorull: rullen ligger ved den ene veggen, og papiret er rullet ut til en lang bølgete stripe («lydbølge») bortover kjøkkengulvet; stripen ender ved Rampenissen, som ligger utslått på ryggen, med tre drikkeglass ved siden av seg. Helg, 09-sendingen.
+**Strek:** én eneste dorull: rullen ligger ved den ene veggen, og papiret er rullet ut til en lang bølgete stripe («lydbølge») bortover kjøkkengulvet; stripen ender ved Rampenissen, som ligger utslått på ryggen, med tre drikkeglass ved siden av seg.
+
+**Merk:** Helg, 09-sendingen.
 
 **Klipp:** «God lørdag. Æ snakke lavt i dag. Æ hørt nåkka sukk i isen i natt. Ikkje knurr. Ikkje fres. Sukk. Sånn som når en e aleina og trur ingen høre. Julius sa i går kveld at æ innbilt mæ det. Hjerterud sa ingenting, ho bare nynna og gikk ned mot slusa med lykt. Æ veit ka æ hørt. Så æ prøvd å lag ei lydbølge, ei stor ei, for å send lyd tilbake. Det blei en dorull. Heile dorullen. Fra badet til kjøkkenet. Det e vitenskap, ikkje rot. Antenna i Snøfall står rett igjen, forresten, takka være dokker. IQ har sagt takk tolv ganga. Hør etter i dag. Hør ordentlig.»
 
@@ -196,7 +204,9 @@ _Skjerm er grå fra 05:30._
 
 ## Dag 13 (sø) – Luciadagens Gylne Krydder · 3. advent
 
-**Strek:** sin egen begravelse etter elleve lussekatter: serviett, blomst, kosedyr i sørgerekke, fire små krydderposer på servietten, skilt «HER HVILER RAMPEN. HAN SPISTE 11.» med en liten lapp under. Helg, 09-sendingen.
+**Strek:** sin egen begravelse etter elleve lussekatter: serviett, blomst, kosedyr i sørgerekke, fire små krydderposer på servietten, skilt «HER HVILER RAMPEN. HAN SPISTE 11.» med en liten lapp under.
+
+**Merk:** Helg, 09-sendingen.
 
 **Klipp:** «God Lucia-morra. Dette e Rampenissen, og æ e død. Nesten. Hjerterud bakt fem hundre bolla til Lucia. Æ spist elleve. Ikkje tolv. Elleve. Kosedyra hold begravelse, og dem e veldig verdige, bortsett fra én som ler. Hilsen fra den andre sida. Det e ganske koselig her, æ har blomst. Men hør: i går hørt dokker det samme som mæ. Isen sukka. Julius sa unnskyld. Det har aldri skjedd. Og i natt satt Kulde og såg på Lucia-lysan i verkstedet gjennom linja. Bare såg. Tok ingenting. Æ veit ikkje ka æ ska mein om det. Syng høgt i dag. Og ikkje spis elleve. Ti e grensa.»
 
@@ -220,7 +230,9 @@ _Skjerm er grå fra 05:30._
 
 ## Dag 15 (ti) – Fargesamlerens Notatbok · M4
 
-**Strek:** står ved siden av en liten skål sirup, fotspor av papir over benken, sleiva i hånden. Han vet ikke om Vintervokteren før i kveld.
+**Strek:** står ved siden av en liten skål sirup, fotspor av papir over benken, sleiva i hånden.
+
+**Merk:** Han vet ikke om Vintervokteren før i kveld.
 
 **Klipp:** «Rampenissen her, og æ har ikkje smakt. Nesten ikkje. Æ prøvd å lag nåkka varmt på kjøkkenet i natt, for det e kaldt på linja. Det blei ei lita skål med nåkka klissete. Æ står ved sida av ho og passe på. Sleiva va med på det. IQ e stille. IQ e aldri stille. Han fant ei gammel bok i arkivet i natt, og han har ikkje sagt et ord sia. Han bare sitt. Hjerterud satte ei skål med nåkka godt foran han, og den står der enda. Det har aldri skjedd før. Æ e litt urolig. Snakk lavt når dokker kjem heim i dag. Og ta med en klut.»
 
@@ -234,7 +246,9 @@ _Skjerm er grå fra 05:30._
 
 ## Dag 16 (on) – Pakkesentralen i Spinn · bonus
 
-**Strek:** «ryddet»: fjernkontroller i brødboksen, brød i TV-benken, tannbørster i bestikkskuffen, sitter i brødboksen med lokket på hodet. Han vet nå hvem Kulde er.
+**Strek:** «ryddet»: fjernkontroller i brødboksen, brød i TV-benken, tannbørster i bestikkskuffen, sitter i brødboksen med lokket på hodet.
+
+**Merk:** Han vet nå hvem Kulde er.
 
 **Klipp:** «God morra fra brødboksen. Ja, sjø, æ sitt i den. Lokket e hatt. I natt blei heile pakkesentralen snudd på hodet. Alt ligg i én haug, og Winter gråte. Nesten. Han har aldri grått. Og dokker veit jo kem det e no. Dokker lest boka i går, og æ satt i stua og hørt. Det e ikkje nåkka slemt der nede. Det e nåkka som vil bli sett. Æ trur den snudd båndet fordi det e det einaste som får Winter til å se opp. Så æ tenkt: æ hjelpe til heime! Æ rydda. Æ trur æ gjord det verre. Fjernkontrollan e trygge. En plass. Tannbørstan også. Ikkje spør. Over.»
 
@@ -272,7 +286,9 @@ _Skjerm er grå fra 05:30._
 
 ## Dag 19 (lø) – Eksplosjon i Fôringsautomaten · pusterom
 
-**Strek:** ligger flat på kjøkkengulvet med teipomriss, plaster på pannen, «BEVIS»-pakke i folie ved siden av. Helg, 09-sendingen.
+**Strek:** ligger flat på kjøkkengulvet med teipomriss, plaster på pannen, «BEVIS»-pakke i folie ved siden av.
+
+**Merk:** Helg, 09-sendingen.
 
 **Klipp:** «God lørdag! Rampenissen her, fra golvet. Æ ligg inni et omriss av teip. Æ e et åsted no. Det som skjedde: IQ bygd en fôringsautomat til Rudolf, for å slepp å tenk. Den skjøt førti av dem gjennom taket på verkstedet. Førti! Tre landa hos dokker. Én landa på mæ. På panna. Æ har plaster. Beviset e pakka inn, og IQ sei ingen pakke opp bevis før saken e løst. Ellers va det stille i natt. Heilt stille. Grønt over Nordtoppen to netta på rad, og ingen rim på linja. Julius pusta ut, æ hørt det. Så i dag: pust dokker også. Men ikkje på mæ. Æ e åsted.»
 
@@ -284,7 +300,9 @@ _Skjerm er grå fra 05:30._
 
 ## Dag 20 (sø) – Sofa-Sleden · 4. advent · varselet
 
-**Strek:** fort av teppe over to stoler, fem puter i ulik størrelse hulter til bulter inni, skilt «KUN FOR SIGMAS. 6-7.», pappas hodetelefoner, skål med popcorn. iMac-ene grå 09–12. Helg, 09-sendingen. Slang 2 av 2.
+**Strek:** fort av teppe over to stoler, fem puter i ulik størrelse hulter til bulter inni, skilt «KUN FOR SIGMAS. 6-7.», pappas hodetelefoner, skål med popcorn.
+
+**Merk:** iMac-ene grå 09–12. Helg, 09-sendingen. Slang 2 av 2.
 
 **Klipp:** «God fjerde advent. Rampenissen her, fra fortet. Det e et teppe over to stola, og det står KUN FOR SIGMAS på skiltet, så dokker må si passordet. Passordet e seks sju. Ikkje spør koffer. Hør no, dette e viktig: Julius sa æ skull be dokker finn fram bøka. Mange bøka. Til i morra. Han sei bøka hold på varmen. I morra e den mørkaste dagen, og Kulde kjem heilt hit. Ikkje for å vær slem. Den vil bare dit lyset e. Så vi stenge ingen ute. Vi hold varmen inne. Æ øve i fortet. Popcornet e niste. Hodetelefonan e for konsentrasjon. Vær heime i morra. Æ treng dokker.»
 
@@ -298,7 +316,9 @@ _Skjerm er grå fra 05:30._
 
 ## Dag 21 (ma) – Vintersolverv · M5
 
-**Strek:** bak en lav mur av bøker foran skjermen, grytelokk mot trekken, visp i hånden, én bok på gløtt. Skjerm er fryst fra 05:30. Rolig tone.
+**Strek:** bak en lav mur av bøker foran skjermen, grytelokk mot trekken, visp i hånden, én bok på gløtt.
+
+**Merk:** Skjerm er fryst fra 05:30. Rolig tone.
 
 **Klipp:** «God morra. Det e Rampenissen, og æ snakke rolig, for det e en rolig dag. Skjermen dokkers e kvit. Alt e kvitt. Det e den mørkaste dagen i året, og Kulde e her. Men hør: bokmuren står. Bøkan dokker fant fram hold varmen inne. Æ har stått bak den sia klokka fire med et grytelokk mot trekken. Vispen veit æ ikkje koffer æ har. Og én bok står på gløtt, sånn Julius sa. Det e ei dør i muren. Den ska vær åpen. Ingen ska stå ute i kulda og se inn. Gå på skolen. Og i barnehagen, Hanna. Det går bra. Og så kjem dokker heim. Kom heim. Vi fikse det sammen.»
 
@@ -312,7 +332,9 @@ _Skjerm er grå fra 05:30._
 
 ## Dag 22 (ti) – Winters Tall · Snill-listen
 
-**Strek:** krøpet inn i Hannas julesokk, bare føttene ut. Han sier ikke stedsnavnet deres i dag.
+**Strek:** krøpet inn i Hannas julesokk, bare føttene ut.
+
+**Merk:** Han sier ikke stedsnavnet deres i dag.
 
 **Klipp:** «Rampenissen her, og det e varmt igjen! Muren holdt i går. Porten står åpen. Alle såg det, heile Snøfall, og Orakelet sei det e varmare der nede no. Æ sov godt for første gang på lenge. Men så ringt Julius klokka fem. Han vil vit nøyaktig kor dokker bor. Til julenatt. Æ sa «ved sofaen». Det holdt ikkje. Æ sa «i Bergen». Det holdt heller ikkje. Winter vil ha det i tall, han stole ikkje på ord, og æ kan ikkje tall. Så æ blei stressa og gjømt mæ i en sokk. Det va en feil. Den e liten. Føttan mine e ute. Resten e inne. Hjelp. Over.»
 
@@ -338,7 +360,9 @@ _Skjerm er grå fra 05:30._
 
 ## Dag 24 (to) – God Jul på Landås · M6
 
-**Strek:** ingen dukke. Han reiste i natt, like brått som han kom: der han satt i treet henger gullkonvolutten med avskjedsbrevet, og under treet står pappesken med sløyfe som pakket koffert. Klippet er sendt fra loftet i Snøfall etter hjemkomsten.
+**Strek:** ingen dukke. Der han satt i treet henger gullkonvolutten med avskjedsbrevet, og under treet står pappesken med sløyfe som pakket koffert.
+
+**Merk:** Klippet er sendt fra loftet i Snøfall etter hjemkomsten.
 
 **Lydregi:** landsbylyd lavt bak hele klippet (bjeller, en dør, verkstedet til IQ); ingen skurr.
 

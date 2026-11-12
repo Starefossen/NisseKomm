@@ -11,7 +11,7 @@ import { harRolle } from "@/lib/auth-server";
 import { mediaDir } from "@/lib/media-server";
 import { Oppfrisk } from "../[fil]/Oppfrisk";
 import { Utskrift } from "../_print/Utskrift";
-import { STREK_TITLER } from "./titler";
+import { strekTitler } from "@/lib/guide-sesong";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +24,8 @@ export default async function Rampestreker() {
         <Oppfrisk />
       </GuideAuth>
     );
-  const finnes = STREK_TITLER.map((_, i) =>
+  const titler = strekTitler();
+  const finnes = titler.map((_, i) =>
     existsSync(path.join(mediaDir(), fil(i + 1))),
   );
   return (
@@ -49,7 +50,7 @@ export default async function Rampestreker() {
                   Rampenissens rampestreker 2026 · {a + 1}/2
                 </h2>
                 <div className="grid grid-cols-3 grid-rows-4 gap-x-[5mm] gap-y-[3mm] flex-1">
-                  {STREK_TITLER.slice(a * 12, a * 12 + 12).map((t, j) => {
+                  {titler.slice(a * 12, a * 12 + 12).map((t, j) => {
                     const n = a * 12 + j + 1;
                     return (
                       <figure key={n} className="flex flex-col items-center">

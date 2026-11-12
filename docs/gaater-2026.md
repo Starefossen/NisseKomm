@@ -2,7 +2,7 @@
 
 Steg 1 i byggerekkefølgen. Kilder: `docs/historie-2026.md` (låst), `docs/storyboard-2026.md`, `CONTENT_GUIDE.md` og kodene i `src/data/uke1–4_oppdrag.json`. Ingen kode er endret. Historiebeats er ikke rørt; det som er bestemt her, er hvordan hver dags to brikker ser ut, hva de faktisk gjør med dem, og hva en forelder må ha klart.
 
-**Status: LÅST 10. november 2026.** De seks avgjørelsene i (d) er godtatt av Hans, og uavhengig gjennomgang (21 funn) er innarbeidet. Endringer krever eksplisitt ja. Endret etter ja fra Hans 10. november; materiallister rettet 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 8, 10 og 13 endret 13.11 etter ja fra Hans. Feltet «Sjekkliste» lagt til per dag 12.11 etter ønske fra Hans; gåtene er ikke endret.
+**Status: LÅST 10. november 2026.** De seks avgjørelsene i (d) er godtatt av Hans, og uavhengig gjennomgang (21 funn) er innarbeidet. Endringer krever eksplisitt ja. Endret etter ja fra Hans 10. november; materiallister rettet 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 8, 10 og 13 endret 13.11 etter ja fra Hans. Feltet «Sjekkliste» lagt til per dag 12.11 etter ønske fra Hans; gåtene er ikke endret. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`.
 
 **Revisjon 10. november 2026 (vanskelighet).** Godkjent av Hans: gåtene er for Kristian (12) og Håkon (9); Hanna (5) har valgfrie roller som aldri blokkerer. To meta-gåter (Frostrunene, Trixters kart), blindspor med feil bokstav der Julius' setning avgjør, og hevet nivå på 21 dager. Alle koder, brikke H + S, taket på 40 % og oppsett under 5 minutter på hverdager står. Julius-videoene dag 2–4 er ferdige og uendret. Standardvalg merket «standardvalg, kan endres» i (e).
 
@@ -332,7 +332,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
   - Biter nederst, forsiden inn: E dypest, O midterst, tom grunnest, A kruset
   - Grønt sol-kort mot det midterste glasset
   - Lapp ved glassene: «Slå forsiktig på hver av dem med skjeen … – R»
-  - Rampestrek: 2 m dorull bortover kjøkkenet, Rampenissen utslått i enden ved glassene
+  - Rampestrek: 1,5–2 m dorull bortover kjøkkenet, Rampenissen utslått i enden ved glassene
 - **Materialer:** 3 glass, 1 keramikkrus, teskje, teip, kortet, sol-kortet.
 - **Utskrifter:** `dag12-frostlapp-tredelt.pdf` (1 side, tykt papir, tre biter med klippelinjer pluss én blindsporbit).
 - **Reserve:** Hører de ikke forskjell, gjelder mengden vann (står i Nissemor-guiden). Tar de med `_ A`, får de åtte ruter til et ord Julius beskriver med «tre toner». Prikker 1–3 på baksiden av de ekte bitene.
