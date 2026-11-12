@@ -1,6 +1,6 @@
 # Julius' videodagbok 2026 – manus
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans. Dag 5 seg 1 og dag 6 seg 1 endret 13.11 etter ja fra Hans (for lange for 15 s). Dag 8 seg 4, dag 10 seg 4 og dag 11 seg 2–4 endret 13.11 etter ja fra Hans. Dag 15 seg 4–5, dag 16 seg 3–4, dag 17 seg 2–4 og dag 21 seg 1 og 4 endret 13.11 etter ja fra Hans (replikken gir ikke ordet alene; huset trengs). Tittel dag 5 og 17 endret 13.11 etter ja fra Hans.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans. Dag 5 seg 1 og dag 6 seg 1 endret 13.11 etter ja fra Hans (for lange for 15 s). Dag 8 seg 4, dag 10 seg 4 og dag 11 seg 2–4 endret 13.11 etter ja fra Hans. Dag 15 seg 4–5, dag 16 seg 3–4, dag 17 seg 2–4 og dag 21 seg 1 og 4 endret 13.11 etter ja fra Hans (replikken gir ikke ordet alene; huset trengs). Dag 17 seg 2–3 endret igjen 13.11 etter ja fra Hans («lys» bare én gang). Tittel dag 5 og 17 endret 13.11 etter ja fra Hans.
 
 **Revisjon 10. november (vanskelighet, godkjent):** nye segmenter dag 5/4, 7/3, 7/5, 8/3, 9/4, 11/4 og 11/5 (nytt), 20/5. Etter uavhengig gjennomgang også 4/4, 4/5, 12/4, 12/5, 14/4, 14/5, 18/4, 18/5 (brikken ga ordet alene). Brikkene står ordrett som i `gaater-2026.md` etter revisjonen.
 
@@ -406,12 +406,12 @@ Kulde-nivå 1. Svak knitring, ett juletrelys slukner i segment 2 (etterarbeid). 
    - Varighet: 14 s (20 ord)
    - Handling: Gjesper stort med venstre hånd foran munnen, så løfter han et ark fra brevbunken, leser, ler gjennom gjespen og legger det ned.
    - Kulde: Svak knitring.
-2. **Replikk:** «I natt sto jeg i vinduet, slik Orakelet ba om. Det lyste over lyktene ved antennen. Grotten svarte. Hør nå.»
+2. **Replikk:** «I natt sto jeg i vinduet, slik Orakelet ba om. Det glødet over lyktene ved antennen. Grotten svarte. Hør nå.»
    - Varighet: 14 s (20 ord)
    - Handling: Snur seg mot vinduet og blir sittende vendt dit, snur seg tilbake på «Hør nå».
    - Kulde: Svak knitring, et svakt skjær i vinduet. Ett juletrelys slukner.
-3. **Replikk:** «De gamle her oppe hadde et navn på lyset fra i natt. De sa at noen snakket når det kom.»
-   - Varighet: 14 s (20 ord) · låst
+3. **Replikk:** «De gamle hadde et navn på det som glødet i natt. De sa at noen snakket når det kom.»
+   - Varighet: 14 s (19 ord) · låst
    - Handling: Holder venstre hånd bak øret, lukker øynene et øyeblikk.
    - Kulde: Svak knitring.
 4. **Replikk:** «Nissene sier lyset er brev som kommer tilbake. Det kommer bare når det er kaldt og mørkt nok. Vi ses!»
