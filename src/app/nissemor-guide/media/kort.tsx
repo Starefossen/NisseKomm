@@ -137,7 +137,11 @@ export function ReviewItemCard({
   inventar?: Inventar;
   vurdering?: MediaVurderingItem;
   isSaving?: boolean;
-  onSaveVerdict: (path: string, v: Verdikt | null, note?: string) => void;
+  onSaveVerdict: (
+    path: string,
+    v: Verdikt | null,
+    note?: string,
+  ) => Promise<void>;
   onUpload: (path: string, file: File) => void;
 }) {
   const missing = file.size === null;
@@ -254,6 +258,14 @@ const KNAPPER: [Verdikt, string, string, string][] = [
   ],
 ];
 
+/** Throws the reason for a failed save, worded for «Ikke lagret: …». */
+export async function sjekkSvar(res: Response): Promise<void> {
+  if (res.ok) return;
+  if (res.status === 401) throw new Error("du er logget ut");
+  const tekst = (await res.text().catch(() => "")).trim();
+  throw new Error(tekst || `feil ${res.status}`);
+}
+
 /** Godkjent / OK / Lag på nytt + note, saved together; shared by media cards and guide sections. */
 export function Vurderingsknapper({
   vurdering,
@@ -263,10 +275,40 @@ export function Vurderingsknapper({
 }: {
   vurdering?: MediaVurderingItem;
   isSaving?: boolean;
-  onSave: (v: Verdikt | null, note?: string) => void;
+  /** Rejects with the reason shown in «Ikke lagret: …». */
+  onSave: (v: Verdikt | null, note?: string) => Promise<void>;
   ekstra?: ReactNode;
 }) {
-  const currentVerdict = vurdering?.vurdering ?? null;
+  // The clicked verdict shows at once; it falls back to the saved one on error.
+  const [valgt, setValgt] = useState<Verdikt | null | undefined>(undefined);
+  const currentVerdict = (
+    valgt === undefined ? (vurdering?.vurdering ?? null) : valgt
+  ) as Verdikt | null;
+  const [status, setStatus] = useState<
+    { s: "lagrer" } | { s: "lagret" } | { s: "feil"; grunn: string } | null
+  >(null);
+  const tidtaker = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const send = (v: Verdikt | null, n: string) => {
+    clearTimeout(tidtaker.current);
+    setValgt(v);
+    setStatus({ s: "lagrer" });
+    onSave(v, n).then(
+      () => {
+        setValgt(undefined);
+        setStatus({ s: "lagret" });
+        tidtaker.current = setTimeout(() => setStatus(null), 2000);
+      },
+      (e: unknown) => {
+        setValgt(undefined);
+        setStatus({
+          s: "feil",
+          grunn: e instanceof Error ? e.message : "ukjent feil",
+        });
+      },
+    );
+  };
+  useEffect(() => () => clearTimeout(tidtaker.current), []);
+  const lagrer = isSaving || status?.s === "lagrer";
   const [note, setNote] = useState(vurdering?.notat ?? "");
   // Set by the Lag på nytt button or key L: Enter in the note saves that verdict.
   const [mal, setMal] = useState<Verdikt | null>(null);
@@ -280,7 +322,7 @@ export function Vurderingsknapper({
     }
     setMal(null);
     if (felt.current) delete felt.current.dataset.mal;
-    onSave(v, note);
+    send(v, note);
   };
 
   const plassholder =
@@ -299,7 +341,7 @@ export function Vurderingsknapper({
             type="button"
             data-verdikt={v}
             onClick={() => lagre(currentVerdict === v ? null : v)}
-            disabled={isSaving}
+            disabled={lagrer}
             className={`min-h-11 min-w-28 px-4 py-2 font-bold cursor-pointer transition-colors border-2 ${
               currentVerdict === v
                 ? farge
@@ -314,18 +356,24 @@ export function Vurderingsknapper({
           <button
             type="button"
             onClick={() => lagre(null)}
-            disabled={isSaving}
+            disabled={lagrer}
             className="min-h-11 px-3 py-2 text-sm text-(--neon-green)/70 underline cursor-pointer hover:text-(--neon-green)"
           >
             Fjern valg
           </button>
         )}
 
-        {isSaving && (
-          <span className="text-sm text-(--gold) animate-pulse ml-auto">
-            Lagrer...
-          </span>
-        )}
+        <span aria-live="polite" className="text-sm ml-auto">
+          {lagrer ? (
+            <span className="text-(--gold) animate-pulse">Lagrer…</span>
+          ) : status?.s === "lagret" ? (
+            <span className="text-(--gold)">✓ Lagret</span>
+          ) : status?.s === "feil" ? (
+            <span className="text-(--christmas-red)">
+              Ikke lagret: {status.grunn}
+            </span>
+          ) : null}
+        </span>
 
         {ekstra}
       </div>
@@ -355,7 +403,7 @@ export function Vurderingsknapper({
           }}
           onBlur={() => {
             if (!mal && note !== (vurdering?.notat ?? ""))
-              onSave(currentVerdict, note);
+              send(currentVerdict, note);
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") lagre(mal ?? currentVerdict);
@@ -365,7 +413,7 @@ export function Vurderingsknapper({
         <button
           type="button"
           onClick={() => lagre(mal ?? currentVerdict)}
-          disabled={isSaving}
+          disabled={lagrer}
           className="min-h-11 min-w-28 px-4 py-2 border-2 border-(--neon-green) hover:bg-(--neon-green)/20 text-sm font-bold cursor-pointer"
         >
           Lagre notat
@@ -453,24 +501,20 @@ export function useMediaData() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ path, vurdering: v, notat: note }),
+      }).catch(() => {
+        throw new Error("får ikke svar fra serveren");
       });
-      if (res.ok) {
-        const data = await res.json();
-        setVurderinger((prev) => {
-          const next = { ...prev };
-          if (!data.entry) {
-            delete next[path];
-          } else {
-            next[path] = data.entry;
-          }
-          return next;
-        });
-        setMessage(`Lagret vurdering for ${path}`);
-      } else {
-        setMessage(`Feil ved lagring: ${await res.text()}`);
-      }
-    } catch {
-      setMessage("Nettverksfeil ved lagring");
+      await sjekkSvar(res);
+      const data = await res.json();
+      setVurderinger((prev) => {
+        const next = { ...prev };
+        if (!data.entry) {
+          delete next[path];
+        } else {
+          next[path] = data.entry;
+        }
+        return next;
+      });
     } finally {
       setSavingMap((prev) => ({ ...prev, [path]: false }));
     }
@@ -557,15 +601,18 @@ export function MediaListe({
 }) {
   if (data.unavailable) return null;
   const byPath = new Map(data.files?.map((f) => [f.path, f]));
-  const keys = [...new Set(paths.map(versionKey))];
+  const k = kilde(data);
+  const keys = new Map(
+    [...new Set(paths.map(versionKey))].map((k, i) => [k, i]),
+  );
   const members = [
     ...new Set([...paths, ...(data.files ?? []).map((f) => f.path)]),
   ]
-    .filter((p) => keys.includes(versionKey(p)))
+    .filter((p) => keys.has(versionKey(p)))
     .map((p) => byPath.get(p) ?? { path: p, size: null });
   const card = (f: MediaStatus, iBruk: boolean, merknad?: string) => (
     <ReviewItemCard
-      key={f.path + (data.vurderinger[f.path]?.oppdatert ?? "")}
+      key={f.path}
       file={f}
       inventar={data.inventar.get(f.path)}
       vurdering={data.vurderinger[f.path]}
@@ -579,12 +626,12 @@ export function MediaListe({
   return (
     <>
       {groupVersions(members)
-        .sort((a, b) => keys.indexOf(a.key) - keys.indexOf(b.key))
-        .map((v) => (
+        .sort((a, b) => keys.get(a.key)! - keys.get(b.key)!)
+        .map((v) => ({ v, fam: familie(v.key, k) }))
+        .map(({ v, fam }) => (
           <div key={v.key}>
             <p className="text-base">
-              {familie(v.key, kilde(data)).tekst} · gjeldende versjon:{" "}
-              {MERKE[familie(v.key, kilde(data)).celle][2]}
+              {fam.tekst} · gjeldende versjon: {MERKE[fam.celle][2]}
             </p>
             <TaIBruk path={v.key} data={data} />
             {card(v.newest, v.newest.path === v.key)}
@@ -592,8 +639,8 @@ export function MediaListe({
               <details className="mb-3 ml-4">
                 <summary className="min-h-11 flex items-center cursor-pointer underline">
                   Eldre versjoner ({v.older.length}):{" "}
-                  {familie(v.key, kilde(data))
-                    .versjoner.filter((x) => x.path !== v.newest.path)
+                  {fam.versjoner
+                    .filter((x) => x.path !== v.newest.path)
                     .map((x) => `${x.navn} ${MERKE[x.celle][2]}`)
                     .join(" · ")}
                 </summary>

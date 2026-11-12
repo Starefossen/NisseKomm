@@ -5,7 +5,6 @@ import {
   useContext,
   useEffect,
   useRef,
-  useState,
   useSyncExternalStore,
   type ReactNode,
 } from "react";
@@ -13,7 +12,7 @@ import type {
   MediaVurderingItem,
   MediaVurderinger,
 } from "@/app/api/media/vurdering/route";
-import { Vurderingsknapper } from "./media/kort";
+import { sjekkSvar, Vurderingsknapper } from "./media/kort";
 
 // Guide sections share the media verdict file: ids like `dag/04/gaatekart`
 // sit next to media paths in the same key space (parent-only API, lan mode).
@@ -55,8 +54,10 @@ export async function lagre(
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ path: id, vurdering, notat }),
+  }).catch(() => {
+    throw new Error("får ikke svar fra serveren");
   });
-  if (!r.ok) return;
+  await sjekkSvar(r);
   data = (await r.json()).vurderinger;
   varsle();
 }
@@ -83,19 +84,13 @@ export const SkjulVurder = createContext(false);
 /** Godkjent / Lag på nytt + note for one guide section. */
 export function Vurder({ id }: { id: string }) {
   const alle = useVurderinger();
-  const [lagrer, setLagrer] = useState(false);
   if (useContext(SkjulVurder) || !alle) return null;
   const v: MediaVurderingItem | undefined = alle[id];
   return (
     <div id={`vurdering-${id.split("/").at(-1)}`} className="mt-3 scroll-mt-4">
       <Vurderingsknapper
-        key={v?.oppdatert ?? ""}
         vurdering={v}
-        isSaving={lagrer}
-        onSave={(verdict, notat) => {
-          setLagrer(true);
-          lagre(id, verdict, notat ?? "").finally(() => setLagrer(false));
-        }}
+        onSave={(verdict, notat) => lagre(id, verdict, notat ?? "")}
       />
     </div>
   );

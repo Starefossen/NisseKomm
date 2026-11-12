@@ -17,10 +17,12 @@ import { vurderTast } from "../../vurdering";
 
 let boks: HTMLDivElement;
 let root: Root;
-const onSave = jest.fn();
+const onSave = jest.fn<(v: string | null, note?: string) => Promise<void>>();
+const flush = () => act(async () => {});
 
 beforeEach(() => {
   onSave.mockReset();
+  onSave.mockResolvedValue(undefined);
   boks = document.createElement("div");
   boks.id = "vurdering-gaatekart";
   document.body.appendChild(boks);
@@ -72,12 +74,41 @@ describe("Vurderingsknapper", () => {
     expect(onSave).toHaveBeenCalledWith("lag_paa_nytt", "lyd hakker");
   });
 
-  it("O gir OK og G godkjent, med notatet i feltet", () => {
+  it("O gir OK og G godkjent, med notatet i feltet", async () => {
     skriv("litt lang");
     act(() => vurderTast("o", "dag/04/gaatekart"));
     expect(onSave).toHaveBeenLastCalledWith("ok", "litt lang");
+    await flush();
     act(() => vurderTast("g", "dag/04/gaatekart"));
     expect(onSave).toHaveBeenLastCalledWith("godkjent", "litt lang");
     expect(vurderTast("x", "dag/04/gaatekart")).toBe(false);
+  });
+
+  it("viser Lagrer…, valget med en gang og så ✓ Lagret", async () => {
+    let ferdig!: () => void;
+    onSave.mockReturnValue(new Promise<void>((r) => (ferdig = r)));
+    const knapp = boks.querySelector<HTMLButtonElement>(
+      '[data-verdikt="godkjent"]',
+    )!;
+    const før = knapp.className;
+    act(() => knapp.click());
+    expect(boks.querySelector("[aria-live]")!.textContent).toBe("Lagrer…");
+    expect(knapp.className).not.toBe(før);
+    await act(async () => ferdig());
+    expect(boks.querySelector("[aria-live]")!.textContent).toBe("✓ Lagret");
+  });
+
+  it("feil: rød grunn som blir stående, og valget går tilbake", async () => {
+    onSave.mockRejectedValue(new Error("du er logget ut"));
+    const knapp = boks.querySelector<HTMLButtonElement>(
+      '[data-verdikt="godkjent"]',
+    )!;
+    const før = knapp.className;
+    act(() => knapp.click());
+    await flush();
+    expect(boks.querySelector("[aria-live]")!.textContent).toBe(
+      "Ikke lagret: du er logget ut",
+    );
+    expect(knapp.className).toBe(før);
   });
 });

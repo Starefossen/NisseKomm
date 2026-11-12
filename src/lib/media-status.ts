@@ -138,8 +138,42 @@ export interface Familie {
   kanTaIBruk: boolean;
 }
 
+type Fil = StatusKilde["filer"][number];
+const indekser = new WeakMap<
+  StatusKilde["filer"],
+  {
+    fil: Map<string, Fil>;
+    finnes: Set<string>;
+    n: number;
+    familier: Map<string, string[]>;
+  }
+>();
+/** Path and family lookups over `filer`, built once per list: the review page asks for every family on each render. */
+function indeks(filer: StatusKilde["filer"]) {
+  let ix = indekser.get(filer);
+  // length guards against a list grown in place (tests push onto filer)
+  if (!ix || ix.n !== filer.length) {
+    ix = {
+      fil: new Map(),
+      finnes: new Set(),
+      familier: new Map(),
+      n: filer.length,
+    };
+    for (const f of filer) {
+      if (f.size !== null) ix.finnes.add(f.path);
+      if (!ix.fil.has(f.path)) ix.fil.set(f.path, f);
+      const key = versionKey(f.path);
+      const l = ix.familier.get(key);
+      if (!l) ix.familier.set(key, [f.path]);
+      else if (!l.includes(f.path)) l.push(f.path);
+    }
+    indekser.set(filer, ix);
+  }
+  return ix;
+}
+
 export function versjon(path: string, k: StatusKilde): Versjon {
-  const finnes = k.filer.some((f) => f.path === path && f.size !== null);
+  const finnes = indeks(k.filer).finnes.has(path);
   const v = k.vurderinger[path];
   // Old entries hold «Lag på nytt» as display text: any other verdict is a rejection.
   const vurdert: Celle =
@@ -164,19 +198,14 @@ export function versjon(path: string, k: StatusKilde): Versjon {
 
 export function familie(path: string, k: StatusKilde): Familie {
   const key = versionKey(path);
-  const paths = [
-    ...new Set(
-      [key, ...k.filer.map((f) => f.path)].filter((p) => versionKey(p) === key),
-    ),
-  ]
-    .filter(
-      (p) => p === key || k.filer.some((f) => f.path === p && f.size !== null),
-    )
+  const ix = indeks(k.filer);
+  const paths = [...new Set([key, ...(ix.familier.get(key) ?? [])])]
+    .filter((p) => p === key || ix.finnes.has(p))
     .sort((a, b) => versionRank(b) - versionRank(a));
   const versjoner = paths.map((p) => versjon(p, k));
   const iBruk = versjoner.find((v) => v.path === key)!;
   // Only a -vK newer than the version in use is a candidate; older ones are history.
-  const fra = k.filer.find((f) => f.path === key)?.fraVersjon ?? 0;
+  const fra = ix.fil.get(key)?.fraVersjon ?? 0;
   const kandidat = versjoner.find((v) => variantOf(v.path) > fra);
   const tekst =
     MERKE[iBruk.celle][0] +

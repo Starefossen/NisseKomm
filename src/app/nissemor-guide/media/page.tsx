@@ -31,6 +31,7 @@ import {
 import { passer, radAv } from "./filter";
 import { FilterLinje, useFilter } from "./FilterLinje";
 
+const SIDE = 10;
 const box = "border-4 border-(--neon-green) bg-black p-4 mb-6";
 
 const CELL: Record<CellState, [string, string, string]> = {
@@ -202,7 +203,13 @@ function MediaContent() {
     ? new Set(files.filter((f) => f.size !== null).map((f) => f.path))
     : null;
 
-  const [filter, settFilter] = useFilter();
+  const [filter, settFilterRå] = useFilter();
+  // Every card carries players and review controls: render a page at a time per group.
+  const [antallVist, settAntallVist] = useState<Record<string, number>>({});
+  const settFilter = (f: Parameters<typeof settFilterRå>[0]) => {
+    settAntallVist({});
+    settFilterRå(f);
+  };
   const k = kilde(media);
   const grupper = REVIEW_GROUPS.map((g) => ({
     g,
@@ -368,11 +375,30 @@ function MediaContent() {
                     Ingen elementer matcher gjeldende filtre i denne gruppen.
                   </p>
                 ) : (
-                  <MediaListe
-                    paths={shown.map((v) => v.key)}
-                    data={media}
-                    melding={false}
-                  />
+                  <>
+                    <MediaListe
+                      paths={shown
+                        .slice(0, antallVist[g.id] ?? SIDE)
+                        .map((v) => v.key)}
+                      data={media}
+                      melding={false}
+                    />
+                    {shown.length > (antallVist[g.id] ?? SIDE) && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          settAntallVist({
+                            ...antallVist,
+                            [g.id]: (antallVist[g.id] ?? SIDE) + SIDE,
+                          })
+                        }
+                        className="min-h-11 px-3 border-2 border-(--neon-green) cursor-pointer text-lg hover:bg-(--neon-green)/20"
+                      >
+                        Vis {SIDE} til (
+                        {shown.length - (antallVist[g.id] ?? SIDE)} skjult)
+                      </button>
+                    )}
+                  </>
                 )}
 
                 {g.id === "music" && (
