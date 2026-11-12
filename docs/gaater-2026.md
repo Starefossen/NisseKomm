@@ -82,15 +82,10 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 2.
 - **Oppsett:** 3 min for gåten; scenen tar 25 min kvelden 30. november pluss cirka 75 min forarbeid 28.–29. november (se «Dag 1: byggeplan»).
 - **Sjekkliste:**
-  - Skriv ut gåten: `dag01-tradkort.pdf`, `runetavle.pdf`
-  - Skriv ut scenen: `dag01-linjekort.pdf`, `dag01-frakt.pdf`, `dag01-ferdskriver.pdf`, `dag01-flylogg.pdf`, `operasjonsbrett.pdf`
-  - Skriv ut reservesett: `dag01-tradkort.pdf`, `runetavle.pdf`
-  - Fredag 28.: kle ferdskriveren, fyll den, lag fallskjermen
-  - Lørdag 29.: kjøp klementiner, merk eskene, klyp kortene på tråden
-  - Søndag 30.: bygg skredet fra TV-benken mot stuedøra
+  - Bygg skredet fra TV-benken mot stuedøra: skråning, renne, haug
   - Tråden fra TV-en til Rampenissens håndledd, seks kort: ❄ I ❄ N ❄ ❄
   - De løse kortene E og T blant klementinene i elva
-  - Ferdskriveren forseglet i skredet: konvolutt, flylogg, runetavle, brett
+  - Ferdskriveren forseglet i skredet, halvveis ned skråningen
   - Rampestrek: bare lua og én vinkende arm stikker opp av klementinhaugen
 - **Materialer:** rødt garn, 6 små klesklyper, maskeringsteip, kortene, runetavla. Scenen: 3 esker klementiner (2,3 kg), 3–4 tomme klementinesker, lyst laken, klesvaskkurv og badehåndkle, avispapir, skoeske kledd i svart med oransje striper (ferdskriveren), C6-konvolutt, fruktskål, banan, 2 servietter, dorullhylse, hårstrikk, binders, limstift, tapetkniv, tusj, 6 gullklistremerker.
 - **Utskrifter:** `dag01-tradkort.pdf` (1 side, tykt papir, tosidig: 6 trådkort med prikker bak + 2 løse kort), `runetavle.pdf` (1 side, tykt papir), `dag01-linjekort.pdf` (1 side, tykt: linjekort med passordfelt + konvoluttpåskrift), `dag01-frakt.pdf` (4 sider, vanlig: fraktetiketter, SKJØRT-merker, stempler), `dag01-ferdskriver.pdf` (1 side, vanlig: merker og «FORSEGLET»-lapp), `dag01-flylogg.pdf` (1 side, vanlig: to loggstrimler), `operasjonsbrett.pdf` (A3, eller 2 × A4 med skjøtemerke, tykt).
@@ -853,40 +848,45 @@ Morgenen 1. desember: ingenting før barna er oppe; radioen 06:00 går av seg se
 
 ### Sjekkliste
 
+Guiden viser denne lista på «Før sesongen», én gruppe per dato. `x.pdf` blir lenke til utskriften.
+
 ```
-FØR 28. NOV
-[ ] Passordet til appen (A1) bestemt og skrevet på linjekortet
-[ ] Svart papir 2 ark, oransje teip 1 rull kjøpt
-[ ] Skoeske, laken, klesvaskkurv/puter, håndkle, fruktskål funnet
+Før 28. nov
+[ ] Bestem passordet til appen (A1)
+[ ] Kjøp svart papir (2 ark) og oransje teip (1 rull)
+[ ] Finn skoeske, laken, klesvaskkurv eller puter, håndkle og fruktskål
 
-FREDAG 28.
-[ ] 7 PDF-er skrevet ut (tykt: tradkort, linjekort, runetavle, brett)
-[ ] Ferdskriver kledd, striper, merker, serienummer
-[ ] Innhold: konvolutt m/ linjekort · flylogg · runetavle · brett · 6 klistremerker · 1 klementin «RESERVE»
-[ ] Fallskjerm knyttet
+Fre 28. nov
+[ ] Skriv ut på tykt papir: `dag01-tradkort.pdf`, `dag01-linjekort.pdf`, `runetavle.pdf`, `operasjonsbrett.pdf`
+[ ] Skriv ut på vanlig papir: `dag01-frakt.pdf`, `dag01-ferdskriver.pdf`, `dag01-flylogg.pdf`
+[ ] Skriv ut reservesett: `dag01-tradkort.pdf`, `runetavle.pdf`
+[ ] Kle ferdskriveren: svart papir, striper, merker, serienummer
+[ ] Skriv passordet på linjekortet
+[ ] Fyll ferdskriveren: konvolutt med linjekort, flylogg, runetavle, brett, 6 klistremerker, 1 klementin «RESERVE»
+[ ] Knyt fallskjermen
 
-LØRDAG 29.
-[ ] 3 esker klementiner (faste) + 3–4 tomme esker
-[ ] Etiketter, SKJØRT og stempler på alle esker, «TRYKKSKADET» på den revnede
-[ ] Revnet eske skåret og stappet
-[ ] Tråd med 6 kort i rekkefølge ❄ I ❄ N ❄ ❄ fra TV-enden, prikker bak; E og T løse
-[ ] Pose «30. nov» pakket, fulle esker gjemt
+Lør 29. nov
+[ ] Kjøp 3 esker klementiner (faste), be om 3–4 tomme esker
+[ ] Lim etiketter, SKJØRT og stempler på alle esker, «TRYKKSKADET» på den revnede
+[ ] Skjær opp og stapp den revnede esken
+[ ] Klyp 6 kort på tråden fra TV-enden: ❄ I ❄ N ❄ ❄, prikker bak; E og T løse
+[ ] Pakk posen «30. nov», gjem de fulle eskene
 
-SØNDAG 30. KVELD
-[ ] Bane ryddet, laken teipet
-[ ] Skråning + renne + haug
-[ ] Esker stablet, revnet eske øverst
-[ ] Rampenissen i skål: banan, serviett, hylse i lue, arm opp, fallskjerm
-[ ] Tråd fra TV («LINJE 90,0») til armen, ingen kryss, kort opp
-[ ] 15 / 20 / 35 / 20 klementiner, én under hver klype, E og T i elva
-[ ] Ferdskriver forseglet, i deltaet
-[ ] Sjekk fra døra på huk; bilde; lys av
+Søn 30. nov, kveld
+[ ] Rydd banen, teip lakenet
+[ ] Bygg skråning, renne og haug
+[ ] Stable eskene, den revnede øverst
+[ ] Rampenissen i skålen: banan, serviett, hylse i lua, arm opp, fallskjerm
+[ ] Legg tråden fra TV-en («LINJE 90,0») til armen, ingen kryss, kortene opp
+[ ] Legg 15 / 20 / 35 / 20 klementiner, én under hver klype, E og T i elva
+[ ] Forsegl ferdskriveren, legg den i deltaet
+[ ] Sjekk fra døra på huk, ta bilde, slukk lyset
 
-MANDAG 1. ETTER KODEN
+Man 1. des, etter koden
 [ ] Frukt i esker, til kjøkkenet; én eske «SNØFALL FORRÅD» ved TV-en
-[ ] Runetavle og brett på veggen, klistremerke 1 satt
-[ ] Ferdskriver ved skjermen (postkasse)
-[ ] Laken ristet, teip av gulvet
+[ ] Heng runetavle og brett på veggen, sett klistremerke 1
+[ ] Sett ferdskriveren ved skjermen (postkasse)
+[ ] Rist lakenet, ta teipen av gulvet
 ```
 
 ## (d) Avgjørelser for mennesket

@@ -5,6 +5,7 @@ import {
   Avkrysning,
   GuideSide,
   Kort,
+  medUtskrifter,
   useAvkrysning,
   useSesong,
 } from "../_kveld/felles";
@@ -23,7 +24,6 @@ function Forberedelser() {
   const {
     innen25: INNEN_25_NOV,
     byggeplan: BYGGEPLAN,
-    runetavler: RUNETAVLER,
     morgen1: MORGEN_1_DES,
     sjekkliste: SJEKKLISTE_DAG1,
     handleliste: {
@@ -61,29 +61,37 @@ function Forberedelser() {
         <Avkrysning punkter={INNEN_25_NOV} {...avkrysning} />
       </Kort>
 
-      {BYGGEPLAN.map((b, i) => (
-        <Kort key={b.tittel} tittel={`Dag 1-scenen: ${b.tittel}`}>
-          <Avkrysning
-            punkter={[
-              ...b.steg.map((s) =>
-                s.min === "–" ? s.tekst : `${s.tekst} (${s.min} min)`,
-              ),
-              ...(i === 0 ? [RUNETAVLER] : []),
-            ]}
-            {...avkrysning}
-          />
-        </Kort>
-      ))}
-
-      <Kort tittel="Sjekkliste dag 1" farge="border-(--gold)">
-        {SJEKKLISTE_DAG1.map((s) => (
-          <div key={s.tittel}>
-            <h3 className="text-(--gold)">{s.tittel}</h3>
-            <Avkrysning punkter={s.punkter} {...avkrysning} />
-          </div>
-        ))}
-        <p className="opacity-80">{MORGEN_1_DES}</p>
-      </Kort>
+      {SJEKKLISTE_DAG1.map((s) => {
+        // «Fre 28. nov» ↔ «Fredag 28. (cirka 50 min, …)» in the build plan.
+        const plan = BYGGEPLAN.find((b) =>
+          b.tittel.toLowerCase().startsWith(s.tittel.slice(0, 3).toLowerCase()),
+        );
+        return (
+          <Kort key={s.tittel} tittel={`Dag 1-scenen: ${s.tittel}`}>
+            <Avkrysning
+              punkter={s.punkter}
+              {...avkrysning}
+              vis={medUtskrifter()}
+            />
+            {plan && (
+              <details>
+                <summary className="cursor-pointer py-3 underline">
+                  Steg for steg: {plan.tittel}
+                </summary>
+                <ol className="list-decimal pl-6 space-y-1">
+                  {plan.steg.map((st) => (
+                    <li key={st.tekst}>
+                      {st.tekst}
+                      {st.min !== "–" && ` (${st.min} min)`}
+                    </li>
+                  ))}
+                </ol>
+              </details>
+            )}
+          </Kort>
+        );
+      })}
+      <p className="opacity-80">{MORGEN_1_DES}</p>
 
       <Kort tittel="Handleliste" farge="border-(--cold-blue)">
         <p className="opacity-80">{HANDLELISTE_INTRO}</p>

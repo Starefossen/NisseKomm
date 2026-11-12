@@ -15,7 +15,6 @@ import { KAPITLER } from "@/components/windows/nissespill/kapitler";
 import { ETAPPER } from "@/components/windows/snofall-tv/slede";
 import {
   delsystemer,
-  forSesongen,
   gaatekart,
   kveldDag,
   sammendrag,
@@ -170,7 +169,6 @@ export async function dagInnhold(dag: number) {
     sammendrag: sammendrag(dag),
     kveld: kveldDag(dag),
     kart: gaatekart(dag),
-    byggeplan: dag === 1 ? forSesongen() : null,
     delsystemer: delsystemer(dag),
     varden: varden(dag),
     julius: parseJulius(julius, dag),

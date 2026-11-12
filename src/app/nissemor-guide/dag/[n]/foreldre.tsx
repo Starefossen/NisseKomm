@@ -3,10 +3,14 @@
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { GameEngine } from "@/lib/game-engine";
-import { utskriftHref, utskriftTittel } from "../../printout/filer";
-import type { forSesongen, kveldDag } from "@/lib/guide-sesong";
+import type { kveldDag } from "@/lib/guide-sesong";
 import { Vurder } from "../../vurdering";
-import { Avkrysning, useAvkrysning, useSynk } from "../../_kveld/felles";
+import {
+  Avkrysning,
+  medUtskrifter,
+  useAvkrysning,
+  useSynk,
+} from "../../_kveld/felles";
 
 const box =
   "border-2 border-(--neon-green) bg-black p-3 sm:p-4 mb-4 scroll-mt-4";
@@ -48,7 +52,6 @@ export function Foreldredel({
   n,
   d,
   t,
-  plan,
   bareKveld,
   kode = "",
 }: {
@@ -57,8 +60,6 @@ export function Foreldredel({
   kode?: string;
   d: ReturnType<typeof kveldDag>;
   t: (s: string) => string;
-  /** Day 1 only: the build plan for 28.–30. November. */
-  plan?: ReturnType<typeof forSesongen> | null;
   /** Gjennomgang: tonight's checklist only. */
   bareKveld?: boolean;
 }) {
@@ -81,30 +82,6 @@ export function Foreldredel({
     );
   const bonus = q.bonusoppdrag;
   const bonusOk = GameEngine.isBonusOppdragCompleted(q);
-
-  // Day 1: the build plan keeps its own list (same ticks as before).
-  const bygg = plan
-    ? [
-        ...plan.byggeplan.flatMap((b) =>
-          b.steg.map(
-            (st) =>
-              `${b.tittel.split(" (")[0]}: ${st.tekst}${st.min !== "–" ? ` (${st.min} min)` : ""}`,
-          ),
-        ),
-        plan.morgen1,
-      ]
-    : [];
-  // `dag02-tallkort.pdf` in a line shows as the print's title, linked.
-  const medLenker = (p: string) =>
-    p.split(/([\w-]+\.pdf)/).map((x, i) =>
-      i % 2 ? (
-        <Link key={i} href={utskriftHref(x.slice(0, -4))} className="underline">
-          {f(utskriftTittel(x.slice(0, -4)).replace(/ \(dag \d+\)$/, ""))}
-        </Link>
-      ) : (
-        f(x)
-      ),
-    );
 
   return (
     <>
@@ -164,15 +141,15 @@ export function Foreldredel({
           punkter={d.sjekkliste}
           krysset={krysset}
           veksle={veksle}
-          vis={medLenker}
+          vis={medUtskrifter(f)}
         />
-        {bygg.length > 0 && (
-          <>
-            <h3 className="text-xl text-(--gold)">
-              Byggeplan 28.–30. november
-            </h3>
-            <Avkrysning punkter={bygg} krysset={krysset} veksle={veksle} />
-          </>
+        {n === 1 && (
+          <p>
+            Byggeplanen 28.–30. november:{" "}
+            <Link href="/nissemor-guide/forberedelser" className={lenke}>
+              se Før sesongen
+            </Link>
+          </p>
         )}
         <h3 className="text-xl text-(--gold)">Trenger ({d.oppsett})</h3>
         <p>

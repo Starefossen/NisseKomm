@@ -240,9 +240,6 @@ export function forSesongen() {
               acc),
         [],
       ),
-    // Not in gaater: the board's corners get glued in, so keep a spare board.
-    runetavler:
-      "Skriv ut runetavla i to eksemplarer: én til brettet, én i Nissemor-mappen som reserve.",
     morgen1: ren(plan.match(/^Morgenen 1\. desember.+$/m)?.[0] ?? ""),
     sjekkliste: (
       del("gaater", "Sjekkliste").match(/```\n([\s\S]*?)```/)?.[1] ?? ""

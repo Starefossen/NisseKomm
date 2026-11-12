@@ -172,13 +172,7 @@ function DagInnhold() {
               </p>
             </details>
 
-            <Foreldredel
-              n={n}
-              d={dag.kveld}
-              t={t}
-              plan={dag.byggeplan}
-              kode={q?.kode}
-            />
+            <Foreldredel n={n} d={dag.kveld} t={t} kode={q?.kode} />
 
             <Lukkbar
               id="delsystemer"

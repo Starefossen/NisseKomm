@@ -213,9 +213,7 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
     );
   }
   if (dag && e.gruppe === "oppsett")
-    return (
-      <Foreldredel n={n!} d={dag.kveld} t={t} plan={dag.byggeplan} bareKveld />
-    );
+    return <Foreldredel n={n!} d={dag.kveld} t={t} bareKveld />;
 
   const [del, nr] = e.id.split("/");
   if (del === "ugleposten") {

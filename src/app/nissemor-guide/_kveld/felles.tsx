@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { Suspense, useEffect, useState, type ReactNode } from "react";
+import { utskriftHref, utskriftTittel } from "../printout/filer";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { getCurrentDate } from "@/lib/date-utils";
@@ -78,6 +80,20 @@ export function useAvkrysning(nokkel: string) {
   };
   return { krysset, veksle };
 }
+
+/** `dag02-tallkort.pdf` in a checklist line shows as the print's title, linked. */
+export const medUtskrifter =
+  (f: (s: string) => string = (s) => s) =>
+  (p: string) =>
+    p.split(/([\w-]+\.pdf)/).map((x, i) =>
+      i % 2 ? (
+        <Link key={i} href={utskriftHref(x.slice(0, -4))} className="underline">
+          {f(utskriftTittel(x.slice(0, -4)).replace(/ \(dag \d+\)$/, ""))}
+        </Link>
+      ) : (
+        f(x)
+      ),
+    );
 
 export function Avkrysning({
   punkter,
