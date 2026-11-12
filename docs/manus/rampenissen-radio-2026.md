@@ -106,7 +106,7 @@ Klippene («Klipp:») er skrevet på nordlandsk, Bodø/Salten-varianten, fordi s
 
 **Merk:** Helg, 09-sendingen.
 
-**Klipp:** «God søndag og god andre advent! Rampenissen her, litt kvit i ansiktet. Det e mel. Ikkje spør. Jo, spør: æ skull lag snøengla, og det e ikkje snø inne, så æ brukt det nærmeste. Æ ligg i den største engelen. Melet e rot, det innrømme æ. Men! Fuglen kom fram i går, Winter pusta ut. Og i natt sa Orakelet at det som fryse linja, ikkje tåle lys. IQ hengt lys rundt heile antenna. Og æ har laga nåkka av den lille lampa dokkers og en papprull. Det ligg ikkje i melet, det e for fint til det. Det e ikkje rot. Det e et instrument. Kos dokker i dag!»
+**Klipp:** «God andre søndag i advent! Rampenissen her, litt kvit i ansiktet. Det e mel. Ikkje spør. Jo, spør: æ skull lag snøengla, og det e ikkje snø inne, så æ brukt det nærmeste. Æ ligg i den største engelen. Melet e rot, det innrømme æ. Men! Fuglen kom fram i går, Winter pusta ut. Og i natt sa Orakelet at det som fryse linja, ikkje tåle lys. IQ hengt lys rundt heile antenna. Og æ har laga nåkka av den lille lampa dokkers og en papprull. Det ligg ikkje i melet, det e for fint til det. Det e ikkje rot. Det e et instrument. Kos dokker i dag!»
 
 **intro_hint:** «Gjesten vår er litt hvit i ansiktet i dag. Han sier det ikke er snø.»
 
