@@ -73,3 +73,21 @@ test("upload_asset is parent-only; list_assets is read", async () => {
   const list = JSON.parse(await callTool("read", "list_assets"));
   expect(list.find((m: { path: string }) => m.path === P)).toBeDefined();
 });
+
+test("promo and strek under /media are parent-only", async () => {
+  const { GET } = await import("../../app/media/[...path]/route");
+  const get = async (p: string, cookie?: string) =>
+    (
+      await GET(
+        new NextRequest(`http://lan/media/${p}`, {
+          headers: cookie ? { cookie } : {},
+        }),
+        { params: Promise.resolve({ path: p.split("/") }) },
+      )
+    ).status;
+  for (const p of ["promo/julius-promo-A.mp4", "strek/dag01.png"]) {
+    expect(await get(p)).toBe(401);
+    expect(await get(p, "__Host-nissekomm=kid")).toBe(403);
+    expect(await get(p, "nissekomm=kid")).toBe(403);
+  }
+});
