@@ -90,6 +90,7 @@ const KEYS = {
   IDLE_PEEK: "nissekomm-idle-peek",
   EVENTYR: "nissekomm-eventyr",
   FORELDRE_AVKRYSNING: "nissekomm-foreldre-avkrysning",
+  HANDLET: "nissekomm-handlet",
   SEASON: "nissekomm-season",
 } as const;
 
@@ -661,6 +662,18 @@ export class StorageManager {
       ...this.getForeldreAvkrysning(),
       [liste]: krysset,
     });
+  }
+
+  /** Shopping list, per item id: bought or already at home. Synced between the parents. */
+  static getHandlet(): Record<string, "kjopt" | "hjemme"> {
+    return this.getItem(KEYS.HANDLET, {});
+  }
+
+  static setHandlet(id: string, status: "kjopt" | "hjemme" | null): void {
+    const h = { ...this.getHandlet() };
+    if (status) h[id] = status;
+    else delete h[id];
+    this.setItem(KEYS.HANDLET, h);
   }
 
   static clearAllFailedAttempts(): void {

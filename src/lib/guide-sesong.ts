@@ -136,6 +136,12 @@ export function kveldDag(n: number) {
   const oppsett = felt("Oppsett");
   const utskrifterTekst = felt("Utskrifter");
   const s = tabellPerDag(del("historie", "8. Rampestreker")).get(n) ?? [];
+  const sjekkliste = [
+    ...(
+      blokk.match(/^- \*\*Sjekkliste:\*\*\n((?:  - .+\n)+)/m)?.[1] ?? ""
+    ).matchAll(/^  - (.+)$/gm),
+  ].map((m) => ren(m[1]));
+  const materialer = felt("Materialer");
   return {
     dag: n,
     tittel: ren(blokk.split("\n")[0].replace(/^#+ Dag \d+ \(\S+\) – /, "")),
@@ -154,13 +160,11 @@ export function kveldDag(n: number) {
     hanna: felt("Hanna"),
     oppsett,
     /** Tonight's checklist, the only lines the guide ticks off; `x.pdf` names a print. */
-    sjekkliste: [
-      ...(
-        blokk.match(/^- \*\*Sjekkliste:\*\*\n((?:  - .+\n)+)/m)?.[1] ?? ""
-      ).matchAll(/^  - (.+)$/gm),
-    ].map((m) => ren(m[1])),
+    sjekkliste,
     minutter: Number(oppsett.match(/\d+/)?.[0] ?? 0),
-    materialer: felt("Materialer"),
+    materialer,
+    /** Shopping items in tonight's materials, checklist and prank. */
+    varer: vareTreff([materialer, ren(s[4] ?? ""), ...sjekkliste]),
     utskrifterTekst,
     // Only files the guide can print; the text also names replaced ones.
     utskrifter: [...utskrifterTekst.matchAll(/([\w-]+)\.pdf/g)]
@@ -179,6 +183,137 @@ export function kveldDag(n: number) {
   };
 }
 
+function byggeplan(plan: string) {
+  return plan
+    .split(/^\*\*(.+)\*\*$/m)
+    .slice(1)
+    .reduce<{ tittel: string; steg: { tekst: string; min: string }[] }[]>(
+      (acc, x, i) =>
+        i % 2 === 0
+          ? [...acc, { tittel: x, steg: [] }]
+          : ((acc.at(-1)!.steg = tabell(x).map((r) => ({
+              tekst: ren(r.at(-2)!),
+              min: r.at(-1)!,
+            }))),
+            acc),
+      [],
+    );
+}
+
+function sjekklisteDag1() {
+  return (del("gaater", "Sjekkliste").match(/```\n([\s\S]*?)```/)?.[1] ?? "")
+    .trim()
+    .split(/\n\s*\n/)
+    .map((b) => {
+      const [tittel, ...linjer] = b.split("\n");
+      return {
+        tittel,
+        punkter: linjer.map((l) => ren(l.replace(/^\[ \] /, ""))),
+      };
+    });
+}
+
+// --- Shopping list (gaater «(a) Handleliste») ---------------------------
+
+/** «Klementiner, 2,3 kg-esker» → «klementiner»: first part of the name, as a slug. */
+export const vareId = (vare: string) =>
+  ren(vare)
+    .split(/,|\(| eller /)[0]
+    .toLowerCase()
+    .replace(/[æå]/g, (c) => (c === "æ" ? "ae" : "a"))
+    .replace(/ø/g, "o")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+/**
+ * Words a day text uses for an item: each part of its name (split on «,»,
+ * «eller», «+», «i stedet for»; parentheses, numbers and units dropped)
+ * plus the table's «Ord» column for names the days spell differently.
+ */
+function vareOrd(vare: string, ord: string): string[] {
+  const deler = ren(vare)
+    .replace(/\([^)]*\)/g, "")
+    .toLowerCase()
+    .split(/,| eller | \+ | i stedet for /)
+    .map((d) =>
+      d
+        .replace(/[\d,.–×]+\s*(kg|cm|g|m)?(?![\p{L}])/gu, "")
+        .split(/\s+/)
+        .filter((w) => !["ekte", "små", "stor", "a4", "cirka"].includes(w))
+        .join(" ")
+        .trim(),
+    )
+    .filter((d) => /^\p{L}/u.test(d) && d.length >= 3);
+  return [
+    ...deler,
+    ...ord.split(",").map((o) => o.trim().toLowerCase()),
+  ].filter(Boolean);
+}
+
+/** A word matches as a whole word, in any of its Norwegian inflections. */
+const ordRegex = (o: string) => {
+  const stamme = o.length > 5 ? o.replace(/(er|e|r)$/, "") : o;
+  const esc = stamme.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(
+    `(?<![\\p{L}-])${esc}(?:er|ene|en|et|e|r|s|ne|a)?(?![\\p{L}])`,
+    "giu",
+  );
+};
+
+export function handleliste() {
+  let gruppe = "";
+  const ut = [];
+  for (const [vare, mengde, dager, hvor, pris, lenke = "", ord = ""] of tabell(
+    del("gaater", "(a) Handleliste"),
+  )) {
+    if (vare === "**Sum**") continue;
+    if (vare.startsWith("**")) {
+      gruppe = ren(vare);
+      continue;
+    }
+    const dagListe = [...dager.matchAll(/\d+/g)].map((m) => Number(m[0]));
+    ut.push({
+      id: vareId(vare),
+      vare: ren(vare),
+      gruppe,
+      mengde,
+      dager,
+      hvor: ren(hvor),
+      // First word of «Hvor»: «hjemme eller lokalt» is at home.
+      kilde: /^nett/i.test(hvor)
+        ? "nett"
+        : /^hjemme/i.test(hvor)
+          ? "hjemme"
+          : "lokalt",
+      pris,
+      lenke: lenke.split(" ")[0],
+      // «(søk)» marks a shop search, not a checked product page.
+      sok: lenke.includes("(søk)"),
+      /** Needed for the day-1 build 28.–30. Nov, or for every card. */
+      tidlig: dagListe.includes(1) || /alle/.test(dager),
+      /** No single day: paper for all cards, the catch-all row at home. */
+      generell: !dagListe.length,
+      ord: vareOrd(vare, ord),
+    });
+  }
+  return ut;
+}
+
+export type VareTreff = { id: string; vare: string; ord: string[] };
+
+/** Items named in these texts, with the exact words found (for marking them in place). */
+export function vareTreff(tekster: string[]): VareTreff[] {
+  const tekst = tekster.join("\n");
+  // The catch-all row of things at home would mark every «teip»; it isn't shopping.
+  return handleliste().flatMap((v) => {
+    if (v.generell && v.kilde === "hjemme") return [];
+    const funnet = new Set(
+      v.ord.flatMap((o) => [...tekst.matchAll(ordRegex(o))].map((m) => m[0])),
+    );
+    return funnet.size ? [{ id: v.id, vare: v.vare, ord: [...funnet] }] : [];
+  });
+}
+
 // --- Before the season (gaater + radio) --------------------------------
 
 const punkter = (tekst: string) =>
@@ -188,77 +323,25 @@ export function forSesongen() {
   const kal = del("gaater", "(c) Forberedelseskalender");
   const plan = del("gaater", "Byggeplan 28.–30. november");
   const handel = del("gaater", "(a) Handleliste");
-  const grupper: {
-    navn: string;
-    varer: {
-      vare: string;
-      mengde: string;
-      dager: string;
-      hvor: string;
-      kilde: string;
-      pris: string;
-      lenke: string;
-      sok: boolean;
-    }[];
-  }[] = [];
-  let sum = "";
-  for (const [vare, mengde, dager, hvor, pris, lenke = ""] of tabell(handel)) {
-    if (vare === "**Sum**") sum = ren(hvor);
-    else if (vare.startsWith("**"))
-      grupper.push({ navn: ren(vare), varer: [] });
-    else
-      grupper.at(-1)?.varer.push({
-        vare: ren(vare),
-        mengde,
-        dager,
-        hvor: ren(hvor),
-        // First word of «Hvor»: «hjemme eller lokalt» is at home.
-        kilde: /^nett/i.test(hvor)
-          ? "nett"
-          : /^hjemme/i.test(hvor)
-            ? "hjemme"
-            : "lokalt",
-        pris,
-        lenke: lenke.split(" ")[0],
-        // «(søk)» marks a shop search, not a checked product page.
-        sok: lenke.includes("(søk)"),
-      });
-  }
+  const plan1 = byggeplan(plan);
+  const sjekk1 = sjekklisteDag1();
+  const dag1 = vareTreff([
+    ...plan1.flatMap((b) => b.steg.map((s) => s.tekst)),
+    ...sjekk1.flatMap((s) => s.punkter),
+  ]);
   return {
     innen25: punkter(kal.split("**Kveld for kveld**")[0]),
-    byggeplan: plan
-      .split(/^\*\*(.+)\*\*$/m)
-      .slice(1)
-      .reduce<{ tittel: string; steg: { tekst: string; min: string }[] }[]>(
-        (acc, x, i) =>
-          i % 2 === 0
-            ? [...acc, { tittel: x, steg: [] }]
-            : ((acc.at(-1)!.steg = tabell(x).map((r) => ({
-                tekst: ren(r.at(-2)!),
-                min: r.at(-1)!,
-              }))),
-              acc),
-        [],
-      ),
+    byggeplan: plan1,
     morgen1: ren(plan.match(/^Morgenen 1\. desember.+$/m)?.[0] ?? ""),
-    sjekkliste: (
-      del("gaater", "Sjekkliste").match(/```\n([\s\S]*?)```/)?.[1] ?? ""
-    )
-      .trim()
-      .split(/\n\s*\n/)
-      .map((b) => {
-        const [tittel, ...linjer] = b.split("\n");
-        return {
-          tittel,
-          punkter: linjer.map((l) => ren(l.replace(/^\[ \] /, ""))),
-        };
-      }),
+    sjekkliste: sjekk1,
+    /** Shopping items named in the day-1 build plan and checklists. */
+    dag1,
     handleliste: {
       intro: ren(
         handel.split("\n").find((l) => l.startsWith("Nettbudsjett")) ?? "",
       ),
-      grupper,
-      sum,
+      varer: handleliste(),
+      sum: ren(tabell(handel).find((r) => r[0] === "**Sum**")?.[3] ?? ""),
     },
     radio: Object.entries(radioHint.host).map(([dato, tekst]) => ({
       dato,

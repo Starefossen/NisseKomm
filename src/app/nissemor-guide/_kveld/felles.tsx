@@ -83,7 +83,7 @@ export function useAvkrysning(nokkel: string) {
 
 /** `dag02-tallkort.pdf` in a checklist line shows as the print's title, linked. */
 export const medUtskrifter =
-  (f: (s: string) => string = (s) => s) =>
+  (f: (s: string) => ReactNode = (s) => s) =>
   (p: string) =>
     p.split(/([\w-]+\.pdf)/).map((x, i) =>
       i % 2 ? (

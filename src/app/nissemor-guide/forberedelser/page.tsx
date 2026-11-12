@@ -9,16 +9,11 @@ import {
   useAvkrysning,
   useSesong,
 } from "../_kveld/felles";
-
-const KILDE = {
-  hjemme: "text-(--neon-green)",
-  lokalt: "text-(--gold)",
-  nett: "text-(--christmas-red)",
-} as const;
+import { Handleliste, medVarer, useHandlet } from "../_kveld/handel";
 
 function Forberedelser() {
   const avkrysning = useAvkrysning("forberedelser");
-  const handel = useAvkrysning("handleliste");
+  const handlet = useHandlet();
   const sesong = useSesong();
   if (!sesong) return <p>Laster …</p>;
   const {
@@ -28,11 +23,13 @@ function Forberedelser() {
     sjekkliste: SJEKKLISTE_DAG1,
     handleliste: {
       intro: HANDLELISTE_INTRO,
-      grupper: HANDLELISTE,
+      varer: HANDLELISTE,
       sum: HANDLELISTE_SUM,
     },
     radio,
+    dag1,
   } = sesong.for;
+  const merk = medVarer(dag1, handlet);
   return (
     <>
       <h1 className="text-4xl font-bold text-(--gold) text-center">
@@ -71,7 +68,7 @@ function Forberedelser() {
             <Avkrysning
               punkter={s.punkter}
               {...avkrysning}
-              vis={medUtskrifter()}
+              vis={medUtskrifter(merk)}
             />
             {plan && (
               <details>
@@ -81,7 +78,7 @@ function Forberedelser() {
                 <ol className="list-decimal pl-6 space-y-1">
                   {plan.steg.map((st) => (
                     <li key={st.tekst}>
-                      {st.tekst}
+                      {merk(st.tekst)}
                       {st.min !== "–" && ` (${st.min} min)`}
                     </li>
                   ))}
@@ -95,56 +92,7 @@ function Forberedelser() {
 
       <Kort tittel="Handleliste" farge="border-(--cold-blue)">
         <p className="opacity-80">{HANDLELISTE_INTRO}</p>
-        {HANDLELISTE.map((g) => (
-          <div key={g.navn}>
-            <h3 className="text-(--gold)">{g.navn}</h3>
-            <ul className="space-y-1">
-              {g.varer.map((v) => (
-                <li key={v.vare}>
-                  <label className="flex gap-3 items-start min-h-11 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="mt-1 w-6 h-6 shrink-0 accent-(--gold)"
-                      checked={handel.krysset.includes(v.vare)}
-                      onChange={() => handel.veksle(v.vare)}
-                    />
-                    <span
-                      className={
-                        handel.krysset.includes(v.vare)
-                          ? "line-through opacity-60"
-                          : ""
-                      }
-                    >
-                      <span className={KILDE[v.kilde as keyof typeof KILDE]}>
-                        [{v.kilde}]
-                      </span>{" "}
-                      {v.lenke ? (
-                        <a
-                          href={v.lenke}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="underline"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          {v.vare}
-                        </a>
-                      ) : (
-                        v.vare
-                      )}
-                      {v.sok && " (søk)"}
-                      {v.mengde && ` · ${v.mengde}`}
-                      {v.pris && ` · ${v.pris}`}
-                      {v.dager && ` · dag ${v.dager}`}
-                      <span className="block text-base opacity-80">
-                        {v.hvor}
-                      </span>
-                    </span>
-                  </label>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <Handleliste varer={HANDLELISTE} />
         <p>
           <b>Sum:</b> {HANDLELISTE_SUM}
         </p>

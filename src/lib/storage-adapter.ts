@@ -123,6 +123,7 @@ export const SYNCED_KEYS = new Set([
   "nissekomm-eventyr",
   "nissekomm-failed-attempts",
   "nissekomm-foreldre-avkrysning",
+  "nissekomm-handlet",
 ]);
 /** Solved codes: written on the server by /api/kode, read here. */
 const CODES_KEY = "nissekomm-codes";

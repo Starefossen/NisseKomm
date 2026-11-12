@@ -9,6 +9,7 @@ import {
   SEKSJONER,
   delsystemer,
   forSesongen,
+  handleliste,
   historien,
   kveldDag,
   sammendrag,
@@ -72,7 +73,7 @@ describe("guide-sesong", () => {
     expect(f.innen25.length).toBeGreaterThan(5);
     expect(f.byggeplan.map((b) => b.steg.length)).toEqual([5, 5, 10]);
     expect(f.sjekkliste).toHaveLength(5);
-    expect(f.handleliste.grupper.length).toBeGreaterThanOrEqual(2);
+    expect(f.handleliste.varer.length).toBeGreaterThan(20);
     expect(f.handleliste.sum).toMatch(/kr/);
     expect(f.morgen1).toMatch(/^Morgenen 1\. desember/);
     expect(f.radio.map((r) => r.dato)).toContain("2026-11-30");
@@ -97,5 +98,44 @@ describe("reservesett", () => {
         expect([d, kveldDag(d)?.reservesett]).toEqual([d, RESERVESETT[d]]);
     for (const [d, u] of Object.entries(RESERVESETT))
       expect(kveldDag(Number(d))?.reservesett).toBe(u);
+  });
+
+  describe("handleliste", () => {
+    const varer = handleliste();
+    const dager = Array.from({ length: 24 }, (_, i) => kveldDag(i + 1)!);
+    const lenket = (id: string) =>
+      dager.filter((d) => d.varer.some((v) => v.id === id)).map((d) => d.dag);
+
+    it("har unike id-er som ikke endres", () => {
+      const ider = varer.map((v) => v.id);
+      expect(new Set(ider).size).toBe(ider.length);
+      // Synced ticks are keyed on these; renaming an item drops its tick.
+      expect(ider).toEqual(
+        expect.arrayContaining([
+          "klementiner",
+          "maskeringsteip",
+          "iskrystall-som-ikke-smelter",
+          "runde-gullklistremerker",
+        ]),
+      );
+    });
+
+    it("hver vare finnes på en dag eller er generell", () => {
+      const d1 = new Set(forSesongen().dag1.map((v) => v.id));
+      const mangler = varer.filter(
+        (v) => !v.generell && !lenket(v.id).length && !d1.has(v.id),
+      );
+      expect(mangler.map((v) => v.vare)).toEqual([]);
+    });
+
+    it("en vare med dager er lenket på minst én av dem", () => {
+      const feil = varer
+        .filter((v) => !v.generell)
+        .filter((v) => {
+          const egne = [...v.dager.matchAll(/\d+/g)].map((m) => Number(m[0]));
+          return !lenket(v.id).some((d) => egne.includes(d));
+        });
+      expect(feil.map((v) => `${v.vare}: ${v.dager}`)).toEqual([]);
+    });
   });
 });

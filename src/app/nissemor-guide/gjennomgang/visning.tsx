@@ -11,6 +11,7 @@ import videoer from "@/data/julius_videoer.json";
 import type { dagInnhold } from "@/lib/guide-innhold";
 import type { Sesong } from "../_kveld/felles";
 import { Foreldredel, Rampestrek } from "../dag/[n]/foreldre";
+import { Handleliste } from "../_kveld/handel";
 import { Markdown } from "../historien/markdown";
 import { Gaatekart } from "../dag/[n]/gaatekart";
 import { utskriftHref, utskriftTittel } from "../printout/filer";
@@ -351,16 +352,7 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
         </Felt>
       ));
     if (nr === "handleliste")
-      return f.handleliste.grupper.map((g) => (
-        <Felt key={g.navn} k={g.navn}>
-          {g.varer
-            .map(
-              (v) =>
-                `- ${v.vare}${v.mengde ? ` · ${v.mengde}` : ""}${v.pris ? ` · ${v.pris}` : ""}`,
-            )
-            .join("\n")}
-        </Felt>
-      ));
+      return <Handleliste varer={f.handleliste.varer} />;
     return <p>{f.radio.find((r) => r.dato === nr)?.tekst}</p>;
   }
   if (del === "historien") {

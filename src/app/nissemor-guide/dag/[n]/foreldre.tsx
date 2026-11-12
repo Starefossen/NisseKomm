@@ -11,6 +11,7 @@ import {
   useAvkrysning,
   useSynk,
 } from "../../_kveld/felles";
+import { medVarer, useHandlet } from "../../_kveld/handel";
 
 const box =
   "border-2 border-(--neon-green) bg-black p-3 sm:p-4 mb-4 scroll-mt-4";
@@ -66,8 +67,10 @@ export function Foreldredel({
   useSynk();
   const q = GameEngine.getAllQuests().find((x) => x.dag === n);
   const { krysset, veksle } = useAvkrysning(`kveld-${n}`);
+  const handlet = useHandlet();
   const [, setTikk] = useState(0);
   if (!d || !q) return null;
+  const merk = medVarer(d.varer, handlet);
   const f = t;
   const dd = String(n).padStart(2, "0");
 
@@ -141,7 +144,7 @@ export function Foreldredel({
           punkter={d.sjekkliste}
           krysset={krysset}
           veksle={veksle}
-          vis={medUtskrifter(f)}
+          vis={medUtskrifter((s) => merk(f(s)))}
         />
         {n === 1 && (
           <p>
@@ -153,7 +156,7 @@ export function Foreldredel({
         )}
         <h3 className="text-xl text-(--gold)">Trenger ({d.oppsett})</h3>
         <p>
-          <b>Materialer:</b> {f(d.materialer)}
+          <b>Materialer:</b> {merk(f(d.materialer))}
         </p>
         <p>
           <b>Utskrifter:</b> {f(d.utskrifterTekst)}
@@ -223,6 +226,7 @@ export function Rampestrek({
   d: ReturnType<typeof kveldDag>;
   t: (s: string) => string;
 }) {
+  const handlet = useHandlet();
   if (!d) return null;
   return (
     <Seksjon
@@ -235,7 +239,7 @@ export function Rampestrek({
         <div className="space-y-2">
           <p>{t(d.strek.tekst)}</p>
           <p>
-            <b>Materialer:</b> {d.strek.materialer}
+            <b>Materialer:</b> {medVarer(d.varer, handlet)(d.strek.materialer)}
           </p>
           <p>
             {d.strek.brikke.startsWith("ja") ? (
