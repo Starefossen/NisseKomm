@@ -18,6 +18,7 @@ CLI (for the shell generators):
   medie.py stiller <id>                   intermediate stills of a job: image|prompt|out|refs, first one first
   medie.py inndata                        every job's template, image, refs exist; exit 1 if one is missing
   medie.py entiteter [--sjekk]            src/data/entiteter.json + CONTENT_GUIDE block from characters/*/entitet.md
+  medie.py rydd-kandidater [mediemappe]  once: archive -vK older than a promoted file (media-promoteringer.log)
   medie.py --selvtest
 """
 import hashlib
@@ -691,6 +692,69 @@ def refresh_inventar(media=None):
         print(f"medieinventar ikke oppdatert: {e}", file=sys.stderr)
 
 
+def rydd_kandidater(media: Path) -> list:
+    """One-time: for families promoted before ta-i-bruk archived older candidates
+    (media-promoteringer.log), move every -vK with K <= the promoted N to .old-M,
+    with poster, sidecars, verdict and inventory row, and stamp fra_versjon."""
+    log = media / "media-promoteringer.log"
+    fra = {}
+    for line in (log.read_text().splitlines() if log.exists() else []):
+        m = re.match(r"\S+ (\S+)-v(\d+)(\.\w+) -> ", line)
+        if m:
+            key = m[1] + m[3]
+            fra[key] = max(fra.get(key, 0), int(m[2]))
+    flyttet = []
+    for key, n in fra.items():
+        stem, ext = key.rsplit(".", 1)
+        folder = (media / key).parent
+        base = Path(stem).name
+        names = [f.name for f in folder.iterdir()]
+        old = max([0] + [int(x[1]) for f in names if (x := re.match(rf"{re.escape(base)}\.old-(\d+)\.", f))])
+        ks = sorted(int(x[1]) for f in names if (x := re.fullmatch(rf"{re.escape(base)}-v(\d+)\.{ext}", f)) and int(x[1]) <= n)
+        exts = [ext, "jpg"] if ext == "mp4" else [ext]
+        par = []
+        for i, k in enumerate(ks):
+            for e in exts:
+                for side in ("", ".meta.json"):
+                    a, b = f"{stem}-v{k}.{e}{side}", f"{stem}.old-{old + 1 + i}.{e}{side}"
+                    if (media / a).exists():
+                        if (media / b).exists():
+                            sys.exit(f"{b} finnes fra før")
+                        par.append((a, b))
+        done = []
+        try:
+            for a, b in par:
+                os.rename(media / a, media / b)
+                done.append((a, b))
+        except Exception:
+            for a, b in reversed(done):
+                os.rename(media / b, media / a)
+            raise
+        sidecar = media / f"{key}.meta.json"
+        try:
+            meta = json.loads(sidecar.read_text()) if sidecar.exists() else {}
+            sidecar.write_text(json.dumps({**meta, "fra_versjon": n}, ensure_ascii=False, indent=2) + "\n")
+        except ValueError:
+            pass
+        ny = dict(par)
+        for navn in ("media-vurdering.json", "media-inventar.json"):
+            p = media / navn
+            if not p.exists() or not par:
+                continue
+            data = json.loads(p.read_text())
+            if isinstance(data, dict):
+                data = {ny.get(k, k): v for k, v in data.items()}
+            else:
+                data = [{**r, "path": ny[r["path"]], "status": "arkiv"} if r.get("path") in ny else r for r in data]
+            p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+        moved = [f"{a} -> {b}" for a, b in par if a.endswith("." + ext)]
+        if moved:
+            with log.open("a") as f:
+                f.write(f"{datetime.now(timezone.utc).isoformat()} rydd-kandidater {'; '.join(moved)}\n")
+        flyttet += par
+    return flyttet
+
+
 def main(argv):
     if not argv:
         print(__doc__)
@@ -733,6 +797,10 @@ def main(argv):
         ok = write_entiteter(check="--sjekk" in args)
         if "--sjekk" in args and not ok:
             sys.exit(f"{FIXTURE} eller blokken i {GUIDE} er utdatert: kjør mise run entiteter")
+    elif cmd == "rydd-kandidater":  # [mediemappe]: archive candidates older than a promoted file
+        media = Path(args[0] if args else os.environ.get("MEDIA_DIR", ROOT / "public"))
+        for a, b in rydd_kandidater(media):
+            print(f"{a} -> {b}")
     elif cmd == "--selvtest":
         selftest()
     elif cmd == "statusjson":  # <mediemappe> <nøkkel>: one inventory row's status, for ta-i-bruk

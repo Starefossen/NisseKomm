@@ -73,7 +73,7 @@ export const versjonsnavn = (path: string) =>
       path.replace(/.*\.old-(\d+)\.\w+$/, "gammel $1"));
 
 export interface StatusKilde {
-  filer: { path: string; size: number | null }[];
+  filer: { path: string; size: number | null; fraVersjon?: number }[];
   /** As served by /api/media/vurdering: `forrige` = verdict on an earlier version. */
   vurderinger: Record<
     string,
@@ -170,7 +170,9 @@ export function familie(path: string, k: StatusKilde): Familie {
     .sort((a, b) => versionRank(b) - versionRank(a));
   const versjoner = paths.map((p) => versjon(p, k));
   const iBruk = versjoner.find((v) => v.path === key)!;
-  const kandidat = versjoner.find((v) => variantOf(v.path) > 0);
+  // Only a -vK newer than the version in use is a candidate; older ones are history.
+  const fra = k.filer.find((f) => f.path === key)?.fraVersjon ?? 0;
+  const kandidat = versjoner.find((v) => variantOf(v.path) > fra);
   const tekst =
     MERKE[iBruk.celle][0] +
     (kandidat ? ` → ${kandidat.navn} ${MERKE[kandidat.celle][0]}` : "");

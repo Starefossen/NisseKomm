@@ -51,8 +51,21 @@ export async function taIBruk(dir: string, kandidat: string) {
       ["", ".meta.json"].map((side) => [from + e + side, to + e + side]),
     );
   const has = (rel: string) => names.includes(path.basename(rel));
+  // Older candidates (-vK, K < N) go to the archive too, or they would show as newer than v N.
+  const eldre = names
+    .map((f) =>
+      Number(
+        f.match(new RegExp(`^${escape(base)}-v(\\d+)${escape(ext)}$`))?.[1] ??
+          0,
+      ),
+    )
+    .filter((k) => k > 0 && k < n)
+    .sort((a, b) => a - b);
   const flytt = [
     ...pairs(stem, `${stem}.old-${oldN}`),
+    ...eldre.flatMap((k, i) =>
+      pairs(`${stem}-v${k}`, `${stem}.old-${oldN + 1 + i}`),
+    ),
     ...pairs(`${stem}-v${n}`, stem),
   ].filter(([from]) => has(from));
   if (!has(kandidat)) throw new Error(`${kandidat} finnes ikke`);
@@ -72,6 +85,13 @@ export async function taIBruk(dir: string, kandidat: string) {
       await rename(path.join(dir, to), path.join(dir, from)).catch(() => {});
     throw err;
   }
+
+  // The status source compares candidates against the version in use.
+  const side = path.join(dir, `${key}.meta.json`);
+  // A sidecar that is not JSON is left alone.
+  await readJson(side, {})
+    .then((m) => writeJson(side, { ...m, fra_versjon: n }))
+    .catch(() => {});
 
   const flyttet = new Map(flytt.map(([f, t]) => [f, t]));
   const ny = (p: string) => flyttet.get(p) ?? p;
@@ -105,7 +125,11 @@ export async function taIBruk(dir: string, kandidat: string) {
     );
   }
 
-  const linje = `${new Date(Date.now()).toISOString()} ${kandidat} -> ${key}; ${key} -> ${old}\n`;
+  const arkiv = flytt
+    .filter(([f, t]) => f !== key && f.endsWith(ext) && t.includes(".old-"))
+    .map(([f, t]) => `; ${f} -> ${t}`)
+    .join("");
+  const linje = `${new Date(Date.now()).toISOString()} ${kandidat} -> ${key}; ${key} -> ${old}${arkiv}\n`;
   await appendFile(path.join(dir, "media-promoteringer.log"), linje);
   console.log(`[ta-i-bruk] ${linje.trim()}`);
   return { key, old, flyttet: flytt };

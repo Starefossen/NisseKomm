@@ -175,4 +175,6 @@ export function mediaGroup(path: string): MediaGroupId | undefined {
 export interface MediaStatus {
   path: string;
   size: number | null;
+  /** The -vN this file was promoted from (its sidecar's fra_versjon). */
+  fraVersjon?: number;
 }

@@ -29,6 +29,27 @@ const k: StatusKilde = {
   inventar: new Map([["video/julius/dag-02.mp4", { status: "stale" }]]),
 };
 
+describe("familie etter ta i bruk", () => {
+  it("viser eldre -vK som historikk, ikke som nyere kandidat", () => {
+    const k2: StatusKilde = {
+      filer: [
+        { path: "video/julius/dag-01.mp4", size: 5, fraVersjon: 4 },
+        f("video/julius/dag-01-v2.mp4"),
+        f("video/julius/dag-01-v3.mp4"),
+      ],
+      vurderinger: {
+        "video/julius/dag-01.mp4": { vurdering: "godkjent" },
+        "video/julius/dag-01-v3.mp4": { vurdering: "lag_paa_nytt" },
+      },
+    };
+    const fam = familie("video/julius/dag-01.mp4", k2);
+    expect(fam.kandidat).toBeUndefined();
+    expect(fam.tekst).toBe("✓");
+    k2.filer.push(f("video/julius/dag-01-v5.mp4"));
+    expect(familie("video/julius/dag-01.mp4", k2).kandidat?.navn).toBe("v5");
+  });
+});
+
 describe("media-status", () => {
   it("cellen er filen i bruk, pluss nyeste kandidat", () => {
     const d1 = familie("video/julius/dag-01-v3.mp4", k);

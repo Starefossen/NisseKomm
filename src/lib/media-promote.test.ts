@@ -96,6 +96,45 @@ describe("taIBruk", () => {
     expect(rad.reasons[0]).toContain("kilden finnes ikke lenger");
   });
 
+  it("arkiverer eldre kandidater og lar nyere stå", async () => {
+    const { dir, j } = await oppsett({
+      "video/julius/dag-01-v3.mp4": { vurdering: "lag_paa_nytt" },
+      "video/julius/dag-01-v4.mp4": { vurdering: "godkjent" },
+    });
+    for (const f of [
+      "dag-01-v2.mp4",
+      "dag-01-v3.mp4",
+      "dag-01-v3.mp4.meta.json",
+      "dag-01-v3.jpg",
+      "dag-01-v5.mp4",
+    ])
+      await writeFile(path.join(j, f), f);
+    await writeFile(path.join(j, "dag-01-v4.mp4.meta.json"), "{}");
+    await taIBruk(dir, "video/julius/dag-01-v4.mp4");
+    const les = (f: string) => readFile(path.join(j, f), "utf8");
+    expect(await les("dag-01.old-2.mp4")).toBe("dag-01.mp4");
+    expect(await les("dag-01.old-3.mp4")).toBe("dag-01-v2.mp4");
+    expect(await les("dag-01.old-4.mp4")).toBe("dag-01-v3.mp4");
+    expect(await les("dag-01.old-4.mp4.meta.json")).toBe(
+      "dag-01-v3.mp4.meta.json",
+    );
+    expect(await les("dag-01.old-4.jpg")).toBe("dag-01-v3.jpg");
+    expect(await les("dag-01-v5.mp4")).toBe("dag-01-v5.mp4");
+    expect((await readdir(j)).filter((f) => /-v[234]/.test(f))).toEqual([]);
+    expect(JSON.parse(await les("dag-01.mp4.meta.json"))).toEqual({
+      fra_versjon: 4,
+    });
+    const vurd = JSON.parse(
+      await readFile(path.join(dir, "media-vurdering.json"), "utf8"),
+    );
+    expect(vurd["video/julius/dag-01.old-4.mp4"]).toEqual({
+      vurdering: "lag_paa_nytt",
+    });
+    expect(
+      await readFile(path.join(dir, "media-promoteringer.log"), "utf8"),
+    ).toContain("dag-01-v3.mp4 -> video/julius/dag-01.old-4.mp4");
+  });
+
   it("nekter en kandidat som ikke er godkjent, og rører ingenting", async () => {
     const { dir, j } = await oppsett({});
     const før = (await readdir(j)).sort();

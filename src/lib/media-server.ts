@@ -2,6 +2,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { createReadStream } from "node:fs";
 import {
   mkdir,
+  readFile,
   readdir,
   realpath,
   rename,
@@ -212,7 +213,16 @@ export async function mediaStatus(dir = mediaDir()): Promise<MediaStatus[]> {
   return Promise.all(
     [...manifest, ...extra].map(async (p) => {
       const info = await stat(path.join(dir, p)).catch(() => null);
-      return { path: p, size: info?.isFile() ? info.size : null };
+      const fra = info?.isFile()
+        ? await readFile(path.join(dir, `${p}.meta.json`), "utf8")
+            .then((t) => JSON.parse(t).fra_versjon as number | undefined)
+            .catch(() => undefined)
+        : undefined;
+      return {
+        path: p,
+        size: info?.isFile() ? info.size : null,
+        ...(fra ? { fraVersjon: fra } : {}),
+      };
     }),
   );
 }
