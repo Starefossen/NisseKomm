@@ -1,6 +1,6 @@
 # Julius' videodagbok 2026 – manus
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans. Dag 5 seg 1 og dag 6 seg 1 endret 13.11 etter ja fra Hans (for lange for 15 s).
 
 **Revisjon 10. november (vanskelighet, godkjent):** nye segmenter dag 5/4, 7/3, 7/5, 8/3, 9/4, 11/4 og 11/5 (nytt), 20/5. Etter uavhengig gjennomgang også 4/4, 4/5, 12/4, 12/5, 14/4, 14/5, 18/4, 18/5 (brikken ga ordet alene). Brikkene står ordrett som i `gaater-2026.md` etter revisjonen.
 
@@ -146,8 +146,8 @@ Kulde-nivå 1. Svak knitring, lett snø. Lappen fra Hjerterud er et ark fra brev
 
 Kulde-nivå 1. Svak knitring. Rapporten fra Rampenissen står i åpningen. Fire segmenter: brikken delt over 3–4.
 
-1. **Replikk:** «Gooooood morgen, Snøfall! Rampenissen rapporterer: «Snøballkrig med marshmallows. Én bamse såra.» Med plaster på! Jeg sier det er trening.»
-   - Varighet: 14 s (19 ord)
+1. **Replikk:** «Gooood morgen, Snøfall! Rampenissen rapporterer: «Marshmallowkrig. Én bamse såra.» Med plaster! Jeg sier det er trening.»
+   - Varighet: 12 s (16 ord)
    - Handling: Løfter et ark fra brevbunken med venstre hånd, leser, ler og legger det ned.
    - Kulde: Svak knitring.
 2. **Replikk:** «I natt kom årets første brevfugl. Winter stoler ikke på linjen, for noen lytter. Nå skriver han i hemmelig skrift.»
@@ -167,8 +167,8 @@ Kulde-nivå 1. Svak knitring. Rapporten fra Rampenissen står i åpningen. Fire 
 
 Kulde-nivå 1. Svak knitring. Rapporten fra Rampenissen står i åpningen. Fire segmenter: brikken delt over 3–4.
 
-1. **Replikk:** «Gooood morgen, Snøfall! Andre advent. Rampenissen rapporterer: «Æ laga snøengla. Det va ikkje snø.» Det var mel. Hjerterud sukket.»
-   - Varighet: 14 s (19 ord)
+1. **Replikk:** «Gooood morgen, Snøfall! Andre advent. Rampenissen rapporterer: «Æ laga snøengla i mel.» Hjerterud sukket.»
+   - Varighet: 11 s (14 ord)
    - Handling: Holder opp to fingre på venstre hånd, så løfter han et ark fra brevbunken, leser, ler og legger det ned.
    - Kulde: Svak knitring.
 2. **Replikk:** «I natt sa Orakelet at det som fryser linjen, tåler ikke lys. IQ hengte juletrelys rundt antennen ved tjernet.»
