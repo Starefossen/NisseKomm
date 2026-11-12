@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Make one Julius video diary entry from the locked script.
 
-Usage: julius-dag.py <dag> [--suffix -v3] [--extend] [--dry-run] [--force] [--join-only] [--refilter] [--chain] [--cutaway <klipp.mp4>[:kutt[:sek]]]... [--manus <fil>] [--dest <mappe>] [--plakat <bilde>] [--upload <base-url>]
+Usage: julius-dag.py <dag> [--suffix -v3] [--extend] [--dry-run] [--force] [--alle] [--join-only] [--refilter] [--chain] [--cutaway <klipp.mp4>[:kutt[:sek]]]... [--manus <fil>] [--dest <mappe>] [--plakat <bilde>] [--upload <base-url>]
        julius-dag.py lint [dag ...]      segments over 22 words (locked brikke exempt), timing budget
        julius-dag.py selftest
 
@@ -12,6 +12,7 @@ Reads docs/manus/julius-2026.md, generates one clip per segment with julius.sh
 adds Kulde's effects in post (see kulde_fx), joins them with alternating framing (0.25 s crossfades in the silent tail, -16 LUFS) and writes
 public/video/julius/dag-NN.mp4, compressed for the app.
 """
+import json
 import os
 import re
 import shutil
@@ -61,10 +62,31 @@ def speech_at_end(clip: Path) -> bool:
     return bool(rms) and rms[-1] != "-inf" and float(rms[-1]) > -35
 
 
+# Known transcriber mishearings / spelling variants, each group counts as one word.
+SAMME = [{"tjernet", "kjernen"}, {"gooood", "god", "godt"}, {"ses", "sees"}, {"telte", "teltet"}]
+
+
+def lev1(a: str, b: str) -> bool:
+    """Levenshtein distance <= 1."""
+    if abs(len(a) - len(b)) > 1:
+        return False
+    if len(a) > len(b):
+        a, b = b, a
+    i = 0
+    while i < len(a) and a[i] == b[i]:
+        i += 1
+    return a[i + 1:] == b[i + 1:] or a[i:] == b[i + 1:]
+
+
+def heard_as(w: str, heard) -> bool:
+    """Is script word w in the transcript: exact, a known variant, or one edit away (words of 5+ letters)."""
+    return any(w == h or any(w in g and h in g for g in SAMME) or (len(w) >= 5 and len(h) >= 5 and lev1(w, h)) for h in heard)
+
+
 def tail_missing(heard_text: str, line: str, n: int = 2) -> list:
     """The script's last n words that the transcript lacks; a cut-off ending shows up here, not in the % heard."""
-    heard = words(heard_text)
-    return [w for w in words(line)[-n:] if w not in heard[-(n + 3):]]
+    heard = words(heard_text)[-(n + 3):]
+    return [w for w in words(line)[-n:] if not heard_as(w, heard)]
 
 
 def coverage(clip: Path, line: str):
@@ -101,12 +123,9 @@ def coverage(clip: Path, line: str):
             print(f"  transkripsjon feilet ({e}), prøver igjen")
     else:
         return None  # unknown, not zero: keep the clip and flag it
-    import difflib
-
     heard = set(words(text))
     script = words(line)
-    # fuzzy: transcription spells names differently (Orakelet/Oraklet), so near matches count
-    hit = lambda w: w in heard or bool(difflib.get_close_matches(w, heard, n=1, cutoff=0.75))
+    hit = lambda w: heard_as(w, heard)  # transcription spells names differently (Orakelet/Oraklet)
     if tail_missing(text, line):
         print(f"  slutten mangler: {tail_missing(text, line)} (hørt: …{text.strip()[-60:]})")
         return 0.0
@@ -294,12 +313,20 @@ def main():
             continue
         clip = OUT / f"{name}.mp4"
         raw = OUT / f"{name}.raw.mp4"  # check the unfiltered audio; the radio filter hurts transcription
-        if clip.exists() and not speech_at_end(raw) and (coverage(raw, line) or 0) >= MIN_COVERAGE:
-            continue
+        act = f"{action} Kuldes påvirkning: {kulde_fx(kulde, line, locked, secs, False)[4]}"
+        take = OUT / f"{name}.take.json"
+        key = [line, secs, act]
+        if "--alle" not in sys.argv and clip.exists():
+            # accepted earlier with this exact line and action: don't pay for another take
+            if take.exists() and json.loads(take.read_text()) == key:
+                print("  uendret og godkjent tidligere, beholdt")
+                continue
+            if not speech_at_end(raw) and (coverage(raw, line) or 0) >= MIN_COVERAGE:
+                take.write_text(json.dumps(key))
+                continue
         env = dict(os.environ)
         if chained(i, sys.argv):
             env["REF"] = str(last_frame(OUT / f"dag{day:02d}-{i - 1}.raw.mp4", OUT / f"{name}.start.jpg"))
-        act = f"{action} Kuldes påvirkning: {kulde_fx(kulde, line, locked, secs, False)[4]}"
         if i == len(segs):
             act += " " + END
         best = (None, None)  # (score, problems); score = (clean, coverage)
@@ -331,6 +358,7 @@ def main():
                     shutil.copy(OUT / f"{name}.{ext}", OUT / f"{name}.best.{ext}")
                 best = (score, bad)
             if not bad and c >= MIN_COVERAGE:
+                take.write_text(json.dumps(key))
                 break
         if best[0] is None:
             sys.exit(f"{name}: ingen versjon ble laget")
@@ -642,6 +670,9 @@ def selftest():
         assert abs(seconds(Path(d) / "t.mp4") - (2 + TRAIL + (b - a) - XFADE + OUTRO + BLACK)) < 0.15
         assert speech_span(clips[0], 2.0)[1] > 2.0  # speech to the very end: padded, not cut
     assert not chained(2, []) and chained(2, ["--chain"]) and not chained(4, ["--chain"]) and not chained(1, ["--chain"])
+    assert heard_as("tjernet", ["kjernen"]) and heard_as("god", ["gooood"]) and heard_as("orakelet", ["oraklet"])
+    assert not heard_as("rim", ["rik"]) and not heard_as("hvelv", ["hytte"])  # short words stay exact
+    assert tail_missing("det er teltet", "det er telte.") == [] and tail_missing("det er", "det er telte") == ["telte"]
     assert "mic_hand_ok is false" in AUDIT and "floats" in AUDIT and MIC.search("mic floating")
     print("selftest ok")
 
