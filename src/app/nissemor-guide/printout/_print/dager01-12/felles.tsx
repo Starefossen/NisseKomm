@@ -88,7 +88,17 @@ export function Klipphjorne({
       style={{ width: `${HJORNE}mm`, height: `${HJORNE}mm` }}
     >
       <Frostrune letter={letter} size={40} />
-      <span className="text-[2.8mm] leading-none text-gray-500">✂ klipp</span>
+      <span className="flex items-center gap-[0.8mm] text-[2.8mm] leading-none text-gray-500">
+        {/* Scissors: two rings and crossed blades. */}
+        <svg viewBox="0 0 10 10" className="w-[3mm] h-[3mm]" aria-hidden>
+          <g fill="none" stroke="currentColor" strokeWidth="1">
+            <circle cx="2.2" cy="2.5" r="1.6" />
+            <circle cx="2.2" cy="7.5" r="1.6" />
+            <path d="M3.6 3.4 9.5 8M3.6 6.6 9.5 2" />
+          </g>
+        </svg>
+        klipp
+      </span>
     </div>
   );
 }

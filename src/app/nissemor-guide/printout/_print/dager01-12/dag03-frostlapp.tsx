@@ -4,7 +4,9 @@ import { HJORNER, Klipphjorne, Ruter } from "./felles";
 
 const CELLER = [null, "R", null, "S", null, null];
 // The envelope card shows R and S plus the new ❄ runes (P, M); each new rune also gets a cut-off corner.
-const RUNER = [..."PRISME"].map((l, i) => CELLER[i] ?? skjultRune(3, l));
+const RUNER = ["P", "R", "I", "S", "M", "E"].map(
+  (l, i) => CELLER[i] ?? skjultRune(3, l),
+);
 const NYE = klipphjorner(3, RUNER).filter((l) => l !== undefined);
 
 export default function Dag03Frostlapp() {
