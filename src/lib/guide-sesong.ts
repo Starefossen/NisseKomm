@@ -149,6 +149,11 @@ export function kveldDag(n: number) {
       .split(/(?:^|\s)\d+\)\s+/)
       .map((x) => x.trim())
       .filter(Boolean),
+    /** The ladder a parent gives one step at a time; never the code. */
+    hint: felt("Hint")
+      .split(/(?:^|\s)\d+\)\s+/)
+      .map((x) => x.trim())
+      .filter(Boolean),
     hanna: felt("Hanna"),
     oppsett,
     minutter: Number(oppsett.match(/\d+/)?.[0] ?? 0),

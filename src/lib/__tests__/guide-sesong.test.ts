@@ -1,6 +1,7 @@
 /** @jest-environment node */
 import { describe, it, expect } from "@jest/globals";
 import bakt from "@/data/guide-innhold.json";
+import { getAllOppdrag } from "@/lib/oppdrag";
 import { nyeRuner } from "@/lib/runeorden";
 import {
   DOK,
@@ -46,6 +47,23 @@ describe("guide-sesong", () => {
         expect(UTSKRIFTER as readonly string[]).toContain(u);
       expect(sammendrag(n)).toMatch(new RegExp(`^### Dag ${n} \\(`));
       expect(delsystemer(n).length).toBeGreaterThanOrEqual(10);
+    },
+  );
+
+  it.each(getAllOppdrag().map((q) => [q.dag, q.kode] as const))(
+    "dag %i har en hinttrapp på 3–4 trinn uten koden",
+    (n, kode) => {
+      const { hint } = kveldDag(n)!;
+      expect(hint.length).toBeGreaterThanOrEqual(3);
+      expect(hint.length).toBeLessThanOrEqual(4);
+      // Same rule as kodelekkasje.test.ts: digits as a whole number, words anywhere.
+      const lekk = /^\d+$/.test(kode)
+        ? new RegExp(`(?<!\\d)${kode}(?!\\d)`)
+        : new RegExp(kode, "i");
+      for (const h of hint) {
+        expect(h).not.toMatch(lekk);
+        expect(h.length).toBeGreaterThan(20);
+      }
     },
   );
 

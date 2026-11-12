@@ -2,7 +2,7 @@
 import { Vurder } from "../../vurdering";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { utskriftHref, utskriftTittel } from "../../printout/filer";
 import type { Bit, gaatekart, kveldDag } from "@/lib/guide-sesong";
 
@@ -79,6 +79,7 @@ export function Gaatekart({
   vis: boolean;
   t: (s: string) => string;
 }) {
+  const [vist, setVist] = useState(0);
   const ids = (s: string) =>
     k.skjerm
       .filter(
@@ -183,14 +184,32 @@ export function Gaatekart({
       )}
       <details id="hint" className="mt-3 scroll-mt-4">
         <summary className="text-xl text-(--gold) cursor-pointer min-h-11">
-          Hint ({d.slikLoses.length})
+          Hint ({d.hint.length})
         </summary>
-        <p>Gi ett trinn om gangen, og vent litt før neste.</p>
-        <ol className="list-decimal pl-6 space-y-1">
-          {d.slikLoses.map((s) => (
-            <li key={s}>{t(s)}</li>
-          ))}
+        <p>Gi ett hint om gangen, og vent litt før neste.</p>
+        <ol className="list-decimal pl-6 space-y-2">
+          {d.hint.slice(0, vist).map((s) => {
+            // «[…]» at the end says where in the house or the app the step points.
+            const [si, hvor] = t(s).split(/\s*\[(.*)\]$/);
+            return (
+              <li key={s}>
+                {si}
+                {hvor && (
+                  <span className="block text-sm opacity-60">{hvor}</span>
+                )}
+              </li>
+            );
+          })}
         </ol>
+        {vist < d.hint.length && (
+          <button
+            type="button"
+            onClick={() => setVist(vist + 1)}
+            className="mt-2 min-h-11 px-3 border-2 border-(--gold) text-(--gold)"
+          >
+            Vis hint {vist + 1}
+          </button>
+        )}
         <p>
           <b>Hanna (hvis hun vil):</b> {t(d.hanna)}
         </p>

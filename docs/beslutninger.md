@@ -130,3 +130,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 ## Julius dag 2 (2026-11-13)
 
 - Sikringsreplikken (Brikke S) er nå «IQs regel er enkel: finn alle sikringene, og legg tallene sammen. Summen er koden til sikringsskapet.» Hvorfor: den gamle var dårlig norsk og uklar for barna.
+
+## Hinttrapp i guiden (2026-11-13)
+
+- «Hint» i Gåtekartet er en trapp på fire trinn per dag (feltet «Hint» i `docs/gaater-2026.md`), vist ett om gangen bak «Vis hint N»; koden står aldri i et hint. Hvorfor: de gamle hintene gjentok «Slik løses den» og ga svaret med en gang, så barna slapp å tenke.
