@@ -32,3 +32,7 @@ brukt i `tidbits.json`; sjekk med guttene om de fortsatt er i bruk (desember
 - aura (dagbok, dag 8-innslaget)
 - cooked (feil kode, fra dag 8)
 - goated (kalender dag 14)
+- aura, cooked, locked in, yappe, glaze, crash out, rizz, chat (2026-11-13:
+  SLEDEFLUKT-radioen og resultatskjermen, Ugleposten K2–K4, feil kode fra dag
+  12 og 15, MORO-fila `iqs_ordbok.txt` fra dag 12; skibidi bare som «det sier
+  ingen lenger»)

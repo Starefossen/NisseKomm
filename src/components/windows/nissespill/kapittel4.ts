@@ -922,7 +922,7 @@ export const KAPITTEL_4: Kapittel = {
           tekst:
             "«I fjor sto Julius og ventet på punkt én mens punkt tre hylte, og ingen gjorde noe, for rekkefølgen. Det var ikkje byråkrati. Det var dumt. Eg skrev det opp.» Han viser lappen. Det står «DUMT». Understreket.",
           rampenissen:
-            "«Han har skrive ‘dumt’ på en lapp om sæ sjøl. Det e det modigaste æ har sett i Snøfall.»",
+            "«Han har skrive ‘dumt’ på en lapp om sæ sjøl. Pluss tusen aura. Det e det modigaste æ har sett i Snøfall.»",
           valg: [{ tekst: "Respekt, Winter." }],
         },
         talg: {

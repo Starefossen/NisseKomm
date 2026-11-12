@@ -175,7 +175,7 @@ export const KAPITTEL_2: Kapittel = {
           rect: { x: 56, y: 16, w: 44, h: 14 },
           smart: "se",
           se: "Lave fjell med snø helt ned. Et sted bak dem ligger Nordtoppen. Et sted langt bak dem igjen ligger Landås, en sofa, og en nisse som venter på bedre bilde og har spist opp alt godteriet mens han ventet.",
-          prat: "Du roper «HALLO» mot fjella. Ekkoet kommer tilbake tre ganger, svakere og svakere, til det høres ut som Rampenissen i søvne.",
+          prat: "Du roper «HALLO» mot fjella. Ekkoet kommer tilbake tre ganger, svakere og svakere, til det høres ut som Rampenissen i søvne. «Ekkoet yappe meir enn mæ,» sier han. «Respekt.»",
         },
         {
           id: "lampa",
@@ -912,7 +912,8 @@ export const KAPITTEL_2: Kapittel = {
         boks: {
           tekst:
             "«I antennehytta står en blikkboks med skruer. Varm den på noe her inne som er varmt nok. Det er mye her inne som er varmt nok. Det er problemet. Og hytta har kodelås. Koden står ikke på skiltet, jeg er ikke dum. Men hvordan man finner den, står der. Ikke si det til noen.»",
-          rampenissen: "«Det står på skiltet. Han har skrive det på SKILTET.»",
+          rampenissen:
+            "«Det står på skiltet. Han har skrive det på SKILTET. Minus aura, IQ.»",
           valg: [
             { tekst: "Og hvordan holder vi en glovarm boks?", neste: "vott" },
             { tekst: "Skjønner!" },
@@ -937,6 +938,8 @@ export const KAPITTEL_2: Kapittel = {
         sirup: {
           tekst:
             "«Hjerterud har gjemt ei flaske et sted her inne. Hun tror jeg ikke vet hvor. Jeg vet hvor. Jeg vet ikke hvor dere skal smøre den, men jeg erklærer herved nødsituasjon, så alt merket NØD er åpent.»",
+          rampenissen:
+            "«Nødsituasjon! No e han locked in. Æ har aldri sett han så våken. Det e fordi han ikkje har sove.»",
           valg: [{ tekst: "Herved notert." }],
         },
         landaas: {

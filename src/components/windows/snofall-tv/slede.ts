@@ -1213,11 +1213,14 @@ export const RADIO: Record<string, readonly string[]> = {
     "Ka du sei! Du fanga en brevfugl. Den hadde post te Julius.",
     "Brevfugl i sekken! Æ håpe den ikkje bæsja på pakkan.",
     "Fin fangst! Fuglen sei takk, trur æ.",
+    "Brevfugl! Ho yappe heile veien te Julius. Æ kjenne typen. Æ e typen.",
   ],
   krasj: [
     "Klonk. Æ såg ingenting, æ. Rudolf såg alt.",
     "Snø i ansiktet e bra for huden, sei Hjerterud.",
     "Æ sa et ord Julius ikkje like. Inni mæ.",
+    "Æ e cooked. Sleden e cooked. Rudolf e medium.",
+    "Ikkje crash out no. Det va bare et tre.",
   ],
   nesten: [
     "Nesten! Æ telte den, men IQ gjord det ikkje.",
@@ -1226,21 +1229,30 @@ export const RADIO: Record<string, readonly string[]> = {
   levering: [
     "Rett i pipa! Dem får sot på gaven, men gave e gave.",
     "Bra jobba! Kaffen te pappaen der inne blei akkurat svart.",
+    "Rett i pipa! Pluss tusen aura. Æ har telt.",
   ],
   pakkebom: [
     "Pakken ligg i snøen. Nån finn den te påske.",
     "Oi. Det der va ikkje pipa. Det va en hage.",
+    "Minus aura. Hagen fikk gaven. Hagen sei takk.",
+  ],
+  rekke: [
+    "Fem på rad! Du e locked in. Æ e locked ute, æ står på trappa.",
+    "Trixter e heilt locked in. Ikkje snakk te han no.",
   ],
   utfordring: ["Utfordring klart! Æ sei det på Morgenrådet i morra."],
   mål: [
     "I mål! Trixter vil ha nåkka godt og æ vil ha kaffe.",
     "Landa! IQ nikke. Det e det nærmaste han kjem et smil.",
+    "I mål! Chat, såg dokker det? Chat e bamsan. Dem såg det.",
+    "Æ ska ikkje glaze, men det der va pent. Ok, æ glaze litt.",
   ],
   sprang: ["SPRANG! Hold dæ fast, det her e ikkje lov på jorda."],
   port: ["Gjennom porten! Varmen slapp dæ inn."],
   låst: [
     "Stengt! Det der åpne seinar, sei IQ. Fly ein annen plass så lenge.",
     "Låst, sjø. Kom tilbake når dagen kjem.",
+    "Æ prøvd å rizze låsen. Låsen va ikkje interessert.",
   ],
   snu: [
     "Hei! Lysgardina e enden på kartet. Snu, Trixter!",

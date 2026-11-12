@@ -393,7 +393,7 @@ describe("rekke og nære på", () => {
     expect(sim.s.poeng).toBe(80);
     expect(sim.s.kraft).toBeCloseTo(0.15);
     expect(radiolinje("fugl", 0)).toMatch(/brevfugl/i);
-    expect(radiolinje("fugl", 3)).toBe(radiolinje("fugl", 0));
+    expect(radiolinje("fugl", RADIO.fugl.length)).toBe(radiolinje("fugl", 0));
     expect(radiolinje("stjerne", 0)).toBeNull();
     for (const l of Object.values(RADIO).flat())
       expect(l.length).toBeLessThan(70);

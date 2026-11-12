@@ -192,7 +192,15 @@
         "fraDag": 11,
         "tekst": "Den koden er gått ut på dato. Eller aldri inn."
       },
-      { "fraDag": 14, "tekst": "Feil, men med stil. Trixter nikket." }
+      {
+        "fraDag": 12,
+        "tekst": "Feil kode. Minus aura. Rampenissen fører regnskap."
+      },
+      { "fraDag": 14, "tekst": "Feil, men med stil. Trixter nikket." },
+      {
+        "fraDag": 15,
+        "tekst": "IQ: Negativ. Du er «cooked». Sa jeg det riktig?"
+      }
     ]
   },
   "tv": [
@@ -527,6 +535,11 @@
         "fjaer": 8,
         "navn": "flokes_fjaerbok.txt",
         "tekst": "FLOKES FJÆRBOK\n(skrevet ned av Rampenissen, for ugler har ikke tomler)\n\nFloke har funnet åtte fjær i Snøfall. Åtte! Jeg spurte hvor de kom fra.\nHun så på meg. Lenge. Så sa hun det, på uglespråk, og jeg oversetter:\n\nFjær én: Mistet på torget da Winter nøs. Winter nekter for å ha nyst.\nFjær to: Falt av i verkstedet. IQ tok den og brukte den som pensel. Den er grønn nå.\nFjær tre: Hjerterud fant den i en bolle. Hun bakte den inn på nytt. Med vilje.\nFjær fire: Lå i pakkesentralen. Winter stemplet den. «MOTTATT.»\nFjær fem: Blåste opp i klokketårnet. Klokka slo ett slag ekstra. Winter noterte.\nFjær seks: Julebodene. En tyttebærselger prøvde å selge den tilbake til henne.\nFjær sju: Ved tjernet. Den frøs fast. Den er fortsatt der, egentlig. Hun tok en annen.\nFjær åtte: Jeg sier ikke hvor. Floke ba meg la være. Ugler har hemmeligheter òg.\n\nFloke har like mange fjær som før. Det er det rare. IQ sier det er «ullfysikk».\nJeg sier det er magi. Floke sier ingenting. Hun er ei ugle av garn.\n\nPS: Hvis dere finner flere, får hun se på dere på den måten hun ser på folk.\nDet er en kompliment. Tror jeg."
+      },
+      {
+        "fraDag": 12,
+        "navn": "iqs_ordbok.txt",
+        "tekst": "IQS ORDBOK FOR UNGDOMSSPRÅK\n(utkast, ikke godkjent av noen)\n\nRampenissen bruker nye ord på radioen. Jeg har notert dem og forklart dem.\nRettelsene med tusj er hans. Jeg ba ikke om dem.\n\nAURA: Varme rundt hodet. Måles i grader.\n  Tusj: Nei. Æ trudde det va ei lue. Det e poeng for å vær tøff. Du har minus.\n\nCOOKED: Ferdig stekt. Brukes om boller.\n  Tusj: Det betyr at du e ferdig. Som da du mista kaffekoppen i sleden.\n\nLOCKED IN: Innelåst. Se: verkstedet, forrige tirsdag.\n  Tusj: Det betyr at du følge med. Men du VA innelåst på tirsdag, det stemme.\n\nYAPPING: Lyden en liten hund lager.\n  Tusj: Det e å snakk masse uten å si nåkka. Æ e proff.\n\nGLAZING: Sukkerlaget oppå en bolle. Hjerterud er ekspert.\n  Tusj: Det e å skryt altfor mykje av nån. Men bolla e også rett. Godkjent.\n\nCRASH OUT: Å krasje utendørs. Se: sledesimulatoren.\n  Tusj: Det e å bli kjempesint for ingenting. Som Winter da æ lånte stempelet.\n\nRIZZ: Ukjent. Muligens en kornsort.\n  Tusj: Det e sjarm. Æ trudde det va vaffel. Rudolf har mest.\n\nMEWING: Kattelyd.\n  Tusj: Du held munnen igjen og peke på kjeven. Ingen veit koffer.\n\nSKIBIDI: Ukjent. Muligens et nys.\n  Tusj: Det sei ingen lenger, IQ. Minus aura.\n\nKonklusjon: Ordene virker. Det er jeg som er cooked.\n  Tusj: DER brukt du det rett! Æ e stolt. Litt."
       }
     ],
     "feilPassord": [

@@ -395,7 +395,7 @@ function Etappeflukt({
       setMelding({ tekst, farge, id: ++id });
 
     /** Rampenissen cuts in at most every six seconds; near misses only now and then. */
-    const radioen = (h: Hendelse, now: number) => {
+    const radioen = (h: Hendelse | "rekke", now: number) => {
       if (now < radioTil) return;
       if (h === "nesten" && radioN % 3) return;
       const l = radiolinje(h, radioN);
@@ -426,6 +426,7 @@ function Etappeflukt({
           });
           if (sim.s.rekke % 3 === 0 && sim.s.rekke > 0)
             say(`REKKE x${rekkeMult(sim.s.rekke)}`, "#00ff8a");
+          if (sim.s.rekke === 5) radioen("rekke", performance.now() / 1000);
           break;
         case "nesten":
           l?.tikk(false);
@@ -1552,6 +1553,11 @@ function Etappeflukt({
                     ? `GODKJENT AV IQ!  ${bjelletegn(resultat.bjeller)}`
                     : "IQ KOBLER INN NØDBREMSEN"}
                 </div>
+                {fase === "tapt" && (
+                  <div className="text-(--cold-blue) text-lg leading-none">
+                    RAMPENISSEN: «AURA-GJELD. Æ BETALE.»
+                  </div>
+                )}
                 <div className="text-lg tabular-nums leading-tight">
                   POENG {resultat.poeng} ·{" "}
                   {spiller ? `${spiller.toUpperCase()}S ` : ""}BESTE{" "}
@@ -1562,6 +1568,9 @@ function Etappeflukt({
                     {resultat.nyFamilierekord
                       ? "NY REKORD! BESTE I FAMILIEN!"
                       : "NY REKORD!"}
+                    <div className="text-lg leading-tight">
+                      RAMPENISSEN: «PLUSS TUSEN AURA!»
+                    </div>
                   </div>
                 )}
                 <Rekordliste

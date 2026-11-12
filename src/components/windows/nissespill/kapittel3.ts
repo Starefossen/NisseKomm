@@ -738,7 +738,7 @@ export const KAPITTEL_3: Kapittel = {
           tekst:
             "«Gruvefolk hadde lanterner med netting rundt flammen. Luft kommer inn, vind kommer ikke. Jeg har ikke netting.» Hun ser på tekoppen sin. Så på deg. «Jeg har messing med hull i. Sett lyset inni og lukk lokket. Og jeg vil ha den tilbake.»",
           rampenissen:
-            "«Ho meine tesila! Ho sa det ikkje, men ho meine det. Ho har svar på alt. Det e litt irriterande. Æ sei det med kjærlighet.»",
+            "«Ho meine tesila! Ho sa det ikkje, men ho meine det. Æ ska ikkje glaze, men ho har svar på alt. Det e litt irriterande.»",
           valg: [{ tekst: "Vi skal passe på den.", flagg: "hjerterud_ja" }],
         },
         lyset: {
@@ -801,7 +801,7 @@ export const KAPITTEL_3: Kapittel = {
           tekst:
             "Det blir stille i trakten. Så: «Da er han klokere enn jeg var i høst. Ja. Gjør det. Men ett lys blir lite i en så stor grotte. Få det bort til hylla, der krystallene står. Lite er ikke ingenting. Lite er der det begynner.»",
           rampenissen:
-            "«Klokere enn Julius. Skriv det ned, nån. Kem som helst. Hjerterud, du har penn!»",
+            "«Klokere enn Julius! Chat, hørt dokker det? Skriv det ned, nån. Hjerterud, du har penn!»",
           valg: [
             {
               tekst: "Hvordan får vi lyset til å nå lenger?",
