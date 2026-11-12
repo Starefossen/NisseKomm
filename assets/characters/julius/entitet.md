@@ -8,10 +8,11 @@
   "fra_dag": 1,
   "refs": {
     "standard": "ref-v3.jpg",
-    "tom": "ref-v3-tom.jpg"
+    "tom": "ref-v3-tom.jpg",
+    "portrett": "ref-portrett.jpg"
   },
   "standard_ref": "standard",
-  "notat": "ref-v3.jpg beholder navnet: stien står i julius.sh, som inngår i promptversjonen",
+  "notat": "ref-v3.jpg beholder navnet: stien står i julius.sh, som inngår i promptversjonen. ref-portrett.jpg er et utsnitt av ref-v3.jpg (ffmpeg crop=iw*0.20:ih*0.50:iw*0.45:ih*0.20) slik at ansiktet fyller referansen",
   "forhold": {
     "rampenissen": "sjef; oppgitt, men glad i ham",
     "iq": "stoler på oppfinnelsene",

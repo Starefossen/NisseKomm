@@ -182,7 +182,7 @@
     "mal": "assets/prompts/portrett/julius.txt",
     "refs": [
       "public/spill/piksel/klokketarnet.png",
-      "characters/julius#standard"
+      "characters/julius#portrett"
     ],
     "notat": "pikselportrett (prompts/portrett/piksel-stil); portrett.sh lager 1024², piksel.sh skalerer til 96 px"
   },
@@ -950,7 +950,7 @@
     "format": "1:1",
     "ut": "strek/dag10.png",
     "bilde": "characters/rampenissen#ekte",
-    "mal": "assets/prompts/strek/skisse.txt",
+    "mal": "assets/prompts/strek/skisse-dag10.txt",
     "notat": "oppsettskisse av rampestreken (guiden, dag N); Strek-linjen fra docs/manus/rampenissen-radio-2026.md"
   },
   "strek/dag11": {
