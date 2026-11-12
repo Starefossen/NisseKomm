@@ -6,24 +6,24 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Type | ✓ | ⚠ | ? | ✗ | ○ | ◇ | - |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| julius | 0 | 2 | 10 | 12 | 0 | 9 | 0 |
+| julius | 3 | 2 | 7 | 12 | 0 | 9 | 0 |
 | rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 2 |
 | music | 13 | 0 | 0 | 1 | 0 | 0 | 0 |
-| tv | 21 | 0 | 3 | 0 | 15 | 0 | 3 |
-| port | 0 | 0 | 3 | 1 | 0 | 0 | 3 |
-| feed | 7 | 0 | 4 | 0 | 0 | 0 | 0 |
-| spill | 50 | 0 | 9 | 4 | 0 | 0 | 8 |
-| strek | 0 | 0 | 12 | 12 | 0 | 1 | 1 |
+| tv | 24 | 0 | 0 | 0 | 15 | 0 | 3 |
+| port | 3 | 0 | 0 | 1 | 0 | 0 | 3 |
+| feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
+| spill | 59 | 0 | 0 | 4 | 0 | 0 | 8 |
+| strek | 12 | 0 | 0 | 12 | 0 | 1 | 1 |
 
 ## julius
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| video/julius/dag-01.mp4 | 7.1 MB | 2026-11-11 | ? referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg |
-| video/julius/dag-02.mp4 | 10.3 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg |
-| video/julius/dag-03.mp4 | 4.4 MB | 2026-11-11 | ? referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg |
-| video/julius/dag-04.mp4 | 4.4 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 4; promptversjonen er endret; referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg |
-| video/julius/dag-05.mp4 | 4.3 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 5; promptversjonen er endret; referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg |
+| video/julius/dag-01.mp4 | 7.1 MB | 2026-11-11 | ✓ |
+| video/julius/dag-02.mp4 | 10.3 MB | 2026-11-12 | ✓ |
+| video/julius/dag-03.mp4 | 4.4 MB | 2026-11-11 | ✓ |
+| video/julius/dag-04.mp4 | 4.4 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 4; promptversjonen er endret |
+| video/julius/dag-05.mp4 | 4.3 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 5; promptversjonen er endret |
 | video/julius/dag-06.mp4 | 10.3 MB | 2026-11-10 | ? |
 | video/julius/dag-07.mp4 | 10.5 MB | 2026-11-10 | ? |
 | video/julius/dag-08.mp4 | 10.6 MB | 2026-11-10 | ? |
@@ -44,14 +44,14 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-23.mp4 |  |  | ✗ |
 | video/julius/dag-24.mp4 |  |  | ✗ |
 | video/julius/dag-01-v2.mp4 | 5.1 MB | 2026-11-12 | ◇ ikke i manifestet |
-| video/julius/dag-01-v3.mp4 | 6.6 MB | 2026-11-12 | ◇ referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
-| video/julius/dag-01-v4.mp4 | 12.8 MB | 2026-11-12 | ◇ referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
-| video/julius/dag-02-v3.mp4 | 3.9 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 2; referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
-| video/julius/dag-02-v4.mp4 | 10.3 MB | 2026-11-12 | ◇ referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
-| video/julius/dag-03-v3.mp4 | 4.2 MB | 2026-11-12 | ◇ referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
-| video/julius/dag-03-v4.mp4 | 9.9 MB | 2026-11-12 | ◇ referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
-| video/julius/dag-03-v5.mp4 | 10.4 MB | 2026-11-12 | ◇ referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
-| video/julius/dag-05-v2.mp4 | 8.4 MB | 2026-11-12 | ◇ referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
+| video/julius/dag-01-v3.mp4 | 6.6 MB | 2026-11-12 | ◇ ikke i manifestet |
+| video/julius/dag-01-v4.mp4 | 12.8 MB | 2026-11-12 | ◇ referansebildet er endret: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
+| video/julius/dag-02-v3.mp4 | 3.9 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 2; ikke i manifestet |
+| video/julius/dag-02-v4.mp4 | 10.3 MB | 2026-11-12 | ◇ referansebildet er endret: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
+| video/julius/dag-03-v3.mp4 | 4.2 MB | 2026-11-12 | ◇ ikke i manifestet |
+| video/julius/dag-03-v4.mp4 | 9.9 MB | 2026-11-12 | ◇ referansebildet er endret: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
+| video/julius/dag-03-v5.mp4 | 10.4 MB | 2026-11-12 | ◇ ikke i manifestet |
+| video/julius/dag-05-v2.mp4 | 8.4 MB | 2026-11-12 | ◇ ikke i manifestet |
 
 ## rampenissen
 
@@ -115,12 +115,12 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/tv/landsby-hverdag.mp4 | 2.2 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/landsby-aking.mp4 | 3.1 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/landsby-stjerneskudd.mp4 | 3.0 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
-| video/tv/landsby-winter.mp4 | 2.3 MB | 2026-11-11 | ? referansebildet finnes ikke her: assets/out/stills/snofall-landsby/still-winter.jpg; referansebildet finnes ikke her: assets/out/forste-landsby-rolig.jpg |
+| video/tv/landsby-winter.mp4 | 2.3 MB | 2026-11-11 | ✓ |
 | video/tv/verksted-iq-inne.mp4 | 0.5 MB | 2026-11-10 | ✓ |
 | video/tv/verksted-tom.mp4 | 0.4 MB | 2026-11-10 | ✓ |
-| video/tv/kontor-julius.mp4 | 2.6 MB | 2026-11-12 | ✓ beholdt (laget før sidefiler) |
-| video/tv/kontor-tom.mp4 | 2.6 MB | 2026-11-12 | ✓ beholdt (laget før sidefiler) |
-| video/tv/kontor-dag14.mp4 | 3.0 MB | 2026-11-12 | ✓ beholdt (laget før sidefiler) |
+| video/tv/kontor-julius.mp4 | 2.6 MB | 2026-11-12 | ✓ |
+| video/tv/kontor-tom.mp4 | 2.6 MB | 2026-11-12 | ✓ |
+| video/tv/kontor-dag14.mp4 | 3.0 MB | 2026-11-12 | ✓ |
 | video/tv/antenne-rolig.mp4 | 0.3 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/antenne-dag11.mp4 | 0.3 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/grotte-rolig.mp4 | 0.4 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
@@ -133,8 +133,8 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/tv/landsby-dag.mp4 |  |  | ○ |
 | video/tv/landsby-natt.mp4 |  |  | ○ |
 | video/tv/landsby-brevfugler.mp4 |  |  | ○ |
-| video/tv/landsby-julius.mp4 | 2.2 MB | 2026-11-11 | ? referansebildet finnes ikke her: assets/out/stills/snofall-landsby/still-julius.jpg; referansebildet finnes ikke her: assets/out/forste-landsby-rolig.jpg |
-| video/tv/landsby-iq.mp4 | 2.7 MB | 2026-11-11 | ? referansebildet finnes ikke her: assets/out/stills/snofall-landsby/still-iq.jpg; referansebildet finnes ikke her: assets/out/forste-landsby-rolig.jpg |
+| video/tv/landsby-julius.mp4 | 2.2 MB | 2026-11-11 | ✓ |
+| video/tv/landsby-iq.mp4 | 2.7 MB | 2026-11-11 | ✓ |
 | video/tv/landsby-reinsdyr.mp4 |  |  | ○ |
 | video/tv/landsby-tarnklokke.mp4 |  |  | ○ |
 | video/tv/landsby-morgen-brevfugler.mp4 |  |  | ○ |
@@ -154,13 +154,13 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| video/tv/port-julius.mp4 | 4.5 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/locations/porten/ref.jpg |
+| video/tv/port-julius.mp4 | 4.5 MB | 2026-11-12 | ✓ |
 | video/tv/port-hjerterud.mp4 |  |  | ✗ |
-| video/tv/port-iq.mp4 | 4.7 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/locations/porten/ref.jpg |
-| video/tv/port-winter.mp4 | 4.5 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/locations/porten/ref.jpg |
-| video/tv/port-iq.old-1.mp4 | 4.7 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-iq.txt; referansebildet finnes ikke her: assets/locations/porten/ref.jpg; ikke i manifestet |
-| video/tv/port-julius.old-1.mp4 | 4.3 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-julius.txt; referansebildet finnes ikke her: assets/locations/porten/ref-open.jpg; referansebildet finnes ikke her: assets/locations/porten/ref.jpg; ikke i manifestet |
-| video/tv/port-winter.old-1.mp4 | 3.8 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-winter.txt; referansebildet finnes ikke her: assets/locations/porten/ref.jpg; referansebildet finnes ikke her: assets/characters/winter/ref-tophat.jpg; ikke i manifestet |
+| video/tv/port-iq.mp4 | 4.7 MB | 2026-11-12 | ✓ |
+| video/tv/port-winter.mp4 | 4.5 MB | 2026-11-12 | ✓ |
+| video/tv/port-iq.old-1.mp4 | 4.7 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-iq.txt; ikke i manifestet |
+| video/tv/port-julius.old-1.mp4 | 4.3 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-julius.txt; ikke i manifestet |
+| video/tv/port-winter.old-1.mp4 | 3.8 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/snofall-landsby/port-winter.txt; ikke i manifestet |
 
 ## feed
 
@@ -173,10 +173,10 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | feed/iq-verksted.png | 1.1 MB | 2026-11-11 | ✓ |
 | feed/julius-kontor.jpg | 0.2 MB | 2026-11-10 | ✓ |
 | feed/landsby-rolig.jpg | 0.2 MB | 2026-11-10 | ✓ |
-| feed/slede-tundra.jpg | 0.5 MB | 2026-11-11 | ? referansebildet finnes ikke her: assets/locations/snofall-landsby/nokkelramme-rolig.jpg |
-| feed/slede-nordtoppen.jpg | 0.6 MB | 2026-11-11 | ? referansebildet finnes ikke her: assets/locations/snofall-landsby/nokkelramme-rolig.jpg |
-| feed/slede-muren.jpg | 0.5 MB | 2026-11-11 | ? referansebildet finnes ikke her: assets/locations/snofall-landsby/nokkelramme-rolig.jpg |
-| feed/slede-julenatt.jpg | 0.6 MB | 2026-11-11 | ? referansebildet finnes ikke her: assets/locations/snofall-landsby/nokkelramme-rolig.jpg |
+| feed/slede-tundra.jpg | 0.5 MB | 2026-11-11 | ✓ |
+| feed/slede-nordtoppen.jpg | 0.6 MB | 2026-11-11 | ✓ |
+| feed/slede-muren.jpg | 0.5 MB | 2026-11-11 | ✓ |
+| feed/slede-julenatt.jpg | 0.6 MB | 2026-11-11 | ✓ |
 
 ## spill
 
@@ -194,25 +194,25 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/antenne-tarn.png | 1.0 MB | 2026-11-11 | ✓ |
 | spill/piksel/kulde-grotte.png | 1.1 MB | 2026-11-11 | ✓ |
 | spill/piksel/port-aapen.png | 1.2 MB | 2026-11-11 | ✓ |
-| spill/piksel/kafe.png | 1.5 MB | 2026-11-12 | ? referansebildet finnes ikke her: public/spill/piksel/klokketarnet.png |
+| spill/piksel/kafe.png | 1.5 MB | 2026-11-12 | ✓ |
 | spill/piksel/pakkesentralen.png | 1.4 MB | 2026-11-11 | ✓ |
 | spill/piksel/klokketarnet.png | 1.4 MB | 2026-11-11 | ✓ |
 | spill/piksel/julebodene.png | 1.5 MB | 2026-11-12 | ✓ |
 | spill/piksel/kart.png | 1.6 MB | 2026-11-12 | ✓ |
-| spill/portrett-winter.png | 0.0 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/winter/ref-outside.jpg |
-| spill/portrett-hjerterud.png | 0.0 MB | 2026-11-12 | ? referansebildet finnes ikke her: public/spill/piksel/kafe.png |
-| spill/portrett-iq.png | 0.0 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/iq/ref.jpg |
-| spill/portrett-julius.png | 0.0 MB | 2026-11-12 | ? referansebildet finnes ikke her: public/spill/piksel/klokketarnet.png; referansebildet finnes ikke her: assets/characters/julius/ref-portrett.jpg |
+| spill/portrett-winter.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/portrett-hjerterud.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/portrett-iq.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/portrett-julius.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/portrett-floke.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/portrett-rampenissen.png | 0.0 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/rampenissen/ref-ekte.jpg |
+| spill/portrett-rampenissen.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/rudolf.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/rudolf-busk.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/tannhjul.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/peileskive.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/piksel/figur/hjerterud.png | 0.0 MB | 2026-11-12 | ? referansebildet finnes ikke her: public/spill/piksel/julius-kontor.png; referansebildet finnes ikke her: public/spill/piksel/kafe.png |
-| spill/piksel/figur/julius.png | 0.0 MB | 2026-11-12 | ? referansebildet finnes ikke her: public/spill/piksel/julius-kontor.png; referansebildet finnes ikke her: assets/characters/julius/ref-portrett.jpg |
+| spill/piksel/figur/hjerterud.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/figur/julius.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/brevfugl.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/piksel/figur/winter.png | 0.0 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/winter/ref-tophat.jpg |
+| spill/piksel/figur/winter.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/slede.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/skriveplate.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/ikon/tyttebaer.png | 0.0 MB | 2026-11-12 | ✓ |
@@ -246,30 +246,30 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/ikon/bjelle.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/ikon/talgstump.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/hjerterud.old-1.png | 0.0 MB | 2026-11-12 | - referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png; ikke i manifestet |
-| spill/piksel/figur/julius.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/julius.txt; referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
+| spill/piksel/figur/julius.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/julius.txt; ikke i manifestet |
 | spill/piksel/iq-verksted.old-1.png | 1.3 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-iq-verksted.txt; ikke i manifestet |
 | spill/piksel/julebodene.old-1.png | 1.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-julebodene.txt; ikke i manifestet |
 | spill/piksel/kafe.old-1.png | 1.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-kafe.txt; ikke i manifestet |
 | spill/piksel/kart.old-1.png | 1.2 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-kart.txt; ikke i manifestet |
 | spill/portrett-hjerterud.old-1.png | 0.0 MB | 2026-11-12 | - referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png; ikke i manifestet |
-| spill/portrett-julius.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/julius.txt; referansebildet finnes ikke her: assets/characters/julius/ref-v3.jpg; ikke i manifestet |
+| spill/portrett-julius.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/julius.txt; ikke i manifestet |
 
 ## strek
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| strek/dag01.png | 1.2 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/rampenissen/ref-ekte.jpg |
-| strek/dag02.png | 1.1 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/rampenissen/ref-ekte.jpg |
-| strek/dag03.png | 1.1 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/rampenissen/ref-ekte.jpg |
-| strek/dag04.png | 1.3 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/rampenissen/ref-ekte.jpg |
-| strek/dag05.png | 1.3 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/rampenissen/ref-ekte.jpg |
-| strek/dag06.png | 1.3 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/rampenissen/ref-ekte.jpg |
-| strek/dag07.png | 1.2 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/rampenissen/ref-ekte.jpg |
-| strek/dag08.png | 1.2 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/rampenissen/ref-ekte.jpg |
-| strek/dag09.png | 1.1 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/rampenissen/ref-ekte.jpg |
-| strek/dag10.png | 1.3 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/rampenissen/ref-ekte.jpg |
-| strek/dag11.png | 1.2 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/rampenissen/ref-ekte.jpg |
-| strek/dag12.png | 1.0 MB | 2026-11-12 | ? referansebildet finnes ikke her: assets/characters/rampenissen/ref-ekte.jpg |
+| strek/dag01.png | 1.2 MB | 2026-11-12 | ✓ |
+| strek/dag02.png | 1.1 MB | 2026-11-12 | ✓ |
+| strek/dag03.png | 1.1 MB | 2026-11-12 | ✓ |
+| strek/dag04.png | 1.3 MB | 2026-11-12 | ✓ |
+| strek/dag05.png | 1.3 MB | 2026-11-12 | ✓ |
+| strek/dag06.png | 1.3 MB | 2026-11-12 | ✓ |
+| strek/dag07.png | 1.2 MB | 2026-11-12 | ✓ |
+| strek/dag08.png | 1.2 MB | 2026-11-12 | ✓ |
+| strek/dag09.png | 1.1 MB | 2026-11-12 | ✓ |
+| strek/dag10.png | 1.3 MB | 2026-11-12 | ✓ |
+| strek/dag11.png | 1.2 MB | 2026-11-12 | ✓ |
+| strek/dag12.png | 1.0 MB | 2026-11-12 | ✓ |
 | strek/dag13.png |  |  | ✗ |
 | strek/dag14.png |  |  | ✗ |
 | strek/dag15.png |  |  | ✗ |
