@@ -341,7 +341,7 @@ def main():
         if a == "--cutaway":
             f, k, s = (sys.argv[i + 1].split(":") + ["", ""])[:3]
             cuts.append((f, int(k) if k else worst_cut([OUT / f"{n}.raw.mp4" for n in names]), float(s or CUTAWAY)))
-    join([OUT / f"{n}.mp4" for n in names], dest, [(s[3], s[0], s[4]) for s in segs], cuts, arg("--plakat"), "--no-trim" not in sys.argv)
+    join([OUT / f"{n}.mp4" for n in names], dest, [(s[3], s[0], s[4]) for s in segs], cuts, arg("--plakat"), "--no-trim" not in sys.argv, "--no-outro" not in sys.argv)
     subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-ss", "3", "-i", str(dest), "-frames:v", "1",
                     "-q:v", "3", str(dest.with_suffix(".jpg"))], check=True)
     if not promo:
@@ -485,18 +485,21 @@ def speech_span(clip: Path, dur: float):
         speech.pop()
     if not speech:
         return 0.0, dur
-    return max(0.0, speech[0][0] - LEAD), min(dur, speech[-1][1] + TRAIL)
+    # end may pass dur: a clip whose last word runs to its end gets padded, so the crossfade never eats that word
+    return max(0.0, speech[0][0] - LEAD), speech[-1][1] + TRAIL
 
 
+OUTRO, BLACK = 0.6, 0.4  # the line drops: static over the last frame, then black
 PLAKAT = 2.0  # seconds of end card after the last segment (promo)
 
 
-def join_graph(dur, kulde=None, cuts=(), plakat=False, span=None):
+def join_graph(dur, kulde=None, cuts=(), plakat=False, span=None, outro=False):
     """The filter graph for join; kulde = [(kulde, line, locked)] per segment adds Kulde's effects;
     cuts = [(k, secs)] lays inputs n, n+1, … (TV loops, screen recordings) over cut k for secs, picture only:
     from the start of segment k's silent tail, so no word is lost; k = n covers the last tail.
     plakat = input after the cutaways (a still) held PLAKAT s at the end;
-    span = [(start, end)] per segment trims each clip after its effects (they keep the clip's own timeline)."""
+    span = [(start, end)] per segment trims each clip after its effects (they keep the clip's own timeline);
+    outro = the line drops at the end: OUTRO s of static over the last frame, a click and hum, then black."""
     n = len(dur)
     span = span or [(0.0, d) for d in dur]
     full, dur = dur, [b - a for a, b in span]
@@ -508,7 +511,8 @@ def join_graph(dur, kulde=None, cuts=(), plakat=False, span=None):
         if kulde:
             vf, af, stutter, drained, _ = kulde_fx(*kulde[i], full[i], drained)
         fx = "".join("," + f for f in vf)
-        tv = f"trim=start={span[i][0]:.3f}:end={span[i][1]:.3f},setpts=PTS-STARTPTS"
+        pad = max(0.0, span[i][1] - full[i])
+        tv = f"tpad=stop_mode=clone:stop_duration={pad:.3f},trim=start={span[i][0]:.3f}:end={span[i][1]:.3f},setpts=PTS-STARTPTS"
         crop = f",crop={w}:{h}:(iw-{w})*0.6:(ih-{h})*0.25,scale=1280:720,setsar=1" if i % 2 else ""
         if stutter is None:
             fc += f"[{i}:v]fps=24,scale=1280:720,setsar=1{fx}{crop},{tv},format=yuv420p[v{i}];"
@@ -518,7 +522,7 @@ def join_graph(dur, kulde=None, cuts=(), plakat=False, span=None):
                    f"{tv},format=yuv420p[v{i}];")
         # ponytail: one-pass loudnorm per segment; two-pass (measure, then linear) if levels pump audibly
         afx = "".join("," + f for f in af)
-        fc += f"[{i}:a]loudnorm=I=-16:TP=-2:LRA=11{afx},atrim=start={span[i][0]:.3f}:end={span[i][1]:.3f},asetpts=PTS-STARTPTS,aresample=48000,aformat=channel_layouts=stereo[a{i}];"
+        fc += f"[{i}:a]loudnorm=I=-16:TP=-2:LRA=11{afx},apad=pad_dur={pad:.3f},atrim=start={span[i][0]:.3f}:end={span[i][1]:.3f},asetpts=PTS-STARTPTS,aresample=48000,aformat=channel_layouts=stereo[a{i}];"
     vprev, aprev, t = "v0", "a0", 0.0
     for i in range(1, n):
         t += dur[i - 1] - XFADE
@@ -541,17 +545,29 @@ def join_graph(dur, kulde=None, cuts=(), plakat=False, span=None):
         fc += (f"[{n + len(cuts)}:v]scale=1280:720,setsar=1,format=yuv420p[pl];"
                f"[{vprev}][pl]overlay=shortest=1:enable='gte(t,{total + over - PLAKAT:.3f})'[vpl];")
         vprev = "vpl"
+    if outro and not plakat:
+        t0 = total + over
+        fc += (f"[{vprev}]tpad=stop_mode=clone:stop_duration={OUTRO},hue=s=0:enable='gte(t,{t0:.3f})',noise=alls=100:allf=t+u:enable='gte(t,{t0:.3f})',"
+               f"noise=alls=100:allf=t+u:enable='gte(t,{t0 + 0.2:.3f})',"
+               f"eq=brightness=0.25:contrast=1.6:enable='between(t,{t0 + OUTRO - 0.12:.3f},{t0 + OUTRO:.3f})',"
+               f"tpad=stop_mode=add:stop_duration={BLACK}:color=black[vo];"
+               f"anoisesrc=d={OUTRO}:c=pink:a=0.3:r=48000[on];sine=f=50:d={OUTRO}:r=48000,volume=0.5[oh];"
+               f"[on][oh]amix=inputs=2,afade=t=out:st={OUTRO / 2}:d={OUTRO / 2},apad=pad_dur={BLACK}[ob];"
+               f"aevalsrc='0.9*exp(-t*300)*sin(2*PI*1200*t)':d={OUTRO + BLACK}:s=48000[ock];"
+               f"[ob][ock]amix=inputs=2:duration=first,aformat=sample_rates=48000:channel_layouts=stereo[ot];"
+               f"[{aprev}][ot]concat=n=2:v=0:a=1[ao];")
+        vprev, aprev = "vo", "ao"
     fc += f"[{vprev}]null[v];"
     return fc + f"[{aprev}]alimiter=limit=0.84:level=false[a]"  # 0.84 ≈ -1.5 dBTP
 
 
-def join(segs, dest: Path, kulde=None, cutaways=(), plakat=None, trim=True):
+def join(segs, dest: Path, kulde=None, cutaways=(), plakat=None, trim=True, outro=True):
     """Alternating framing (every other segment a 1.15x crop) with 0.25 s crossfades in the silent tail,
     each segment levelled to -16 LUFS and the whole day limited to -1.5 dBTP.
     cutaways = [(file, cut number, secs)] laid over cuts; plakat = still image shown PLAKAT s at the end."""
     dur = [float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(p)])) for p in segs]
     span = [speech_span(p, d) for p, d in zip(segs, dur)] if trim else None
-    fc = join_graph(dur, kulde, [(k, s) for _, k, s in cutaways], bool(plakat), span)
+    fc = join_graph(dur, kulde, [(k, s) for _, k, s in cutaways], bool(plakat), span, outro)
     extra = sum((["-stream_loop", "-1", "-i", str(f)] for f, _, _ in cutaways), [])
     if plakat:
         extra += ["-loop", "1", "-i", str(plakat)]
@@ -593,7 +609,7 @@ def selftest():
         assert (Path(d) / "dag.mp4").stat().st_size > 0
         png = Path(d) / "p.png"
         subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-f", "lavfi", "-i", "color=s=320x180", "-frames:v", "1", str(png)], check=True)
-        join(clips, Path(d) / "promo.mp4", None, [(clips[0], 1, 1.0), (clips[1], 3, 3.0)], png)
+        join(clips, Path(d) / "promo.mp4", None, [(clips[0], 1, 1.0), (clips[1], 3, 3.0)], png, trim=False)
         assert abs(seconds(Path(d) / "promo.mp4") - (6 - 2 * XFADE + 3 - TAIL + PLAKAT)) < 0.2
         q = Path(d) / "q.mp4"  # 1 s silence, 0.05 s click, 1 s tone, 2 s silence
         subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-f", "lavfi", "-i", "testsrc=s=320x180:d=4", "-f", "lavfi", "-i",
@@ -601,7 +617,8 @@ def selftest():
         a, b = speech_span(q, 4.0)
         assert abs(a - (1 - LEAD)) < 0.05 and abs(b - (2 + TRAIL)) < 0.05, (a, b)
         join(clips[:1] + [q], Path(d) / "t.mp4")
-        assert abs(seconds(Path(d) / "t.mp4") - (2 + (b - a) - XFADE)) < 0.15
+        assert abs(seconds(Path(d) / "t.mp4") - (2 + TRAIL + (b - a) - XFADE + OUTRO + BLACK)) < 0.15
+        assert speech_span(clips[0], 2.0)[1] > 2.0  # speech to the very end: padded, not cut
     print("selftest ok")
 
 
