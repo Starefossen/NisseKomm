@@ -21,6 +21,12 @@ writeFileSync(
       notat: "sjekk",
       oppdatert: "2026-11-11T09:30:00.000Z",
     },
+    "dag/05/gaatekart": {
+      vurdering: "godkjent",
+      notat: "fin",
+      oppdatert: "2026-11-09T09:30:00.000Z",
+      versjon: "000000000000",
+    },
     "historien/start": {
       vurdering: "godkjent",
       oppdatert: "2026-11-12T10:00:00.000Z",
@@ -36,9 +42,10 @@ describe("list_vurderinger", () => {
 
   it("viser åpne, nyeste først, som kompakt tekst", async () => {
     expect(await callTool("parent", "list_vurderinger")).toBe(
-      "2 åpne av 3\n" +
+      "3 åpne av 4\n" +
         "dag/04/gaatekart | - | 2026-11-11 09:30 | sjekk\n" +
-        "video/julius/dag-01-v3.mp4 | lag_paa_nytt | 2026-11-10 08:00 | for mørk / lyd hakker",
+        "video/julius/dag-01-v3.mp4 | lag_paa_nytt | 2026-11-10 08:00 | for mørk / lyd hakker\n" +
+        "dag/05/gaatekart | (ny versjon) forrige: godkjent | 2026-11-09 09:30 | fin",
     );
   });
 

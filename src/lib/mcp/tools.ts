@@ -895,7 +895,10 @@ export const TOOLS: Record<string, Tool> = {
           await readFile(path.join(mediaDir(), "media-vurdering.json"), "utf8"),
         );
       } catch {}
-      const rader = Object.entries(alle)
+      // Changed since the verdict: shown as «(ny versjon)» and counted as open.
+      const { medVersjon } = await import("@/lib/vurdering-versjon");
+      const sett = await medVersjon(mediaDir(), alle);
+      const rader = Object.entries(sett)
         .filter(([id]) => typeof prefiks !== "string" || id.startsWith(prefiks))
         .filter(
           ([, v]) => Number.isNaN(fra) || Date.parse(v.oppdatert ?? "") > fra,
@@ -909,7 +912,7 @@ export const TOOLS: Record<string, Tool> = {
       const dir = mediaDir();
       const k = {
         filer: await mediaStatus(dir),
-        vurderinger: alle,
+        vurderinger: sett,
         inventar: new Map(
           (
             JSON.parse(
@@ -927,7 +930,7 @@ export const TOOLS: Record<string, Tool> = {
           : "";
       const linjer = vis.map(
         ([id, v]) =>
-          `${id} | ${v.vurdering ?? "-"} | ${(v.oppdatert ?? "").slice(0, 16).replace("T", " ")} | ${(v.notat ?? "").replace(/\s*\n\s*/g, " / ")}${celle(id)}`,
+          `${id} | ${v.forrige ? `(ny versjon) forrige: ${v.forrige.vurdering}` : (v.vurdering ?? "-")} | ${(v.oppdatert ?? "").slice(0, 16).replace("T", " ")} | ${(v.forrige?.notat ?? v.notat ?? "").replace(/\s*\n\s*/g, " / ")}${celle(id)}`,
       );
       return [`${aapne.length} åpne av ${rader.length}`, ...linjer].join("\n");
     },

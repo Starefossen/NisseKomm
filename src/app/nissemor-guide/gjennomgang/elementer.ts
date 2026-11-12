@@ -1,7 +1,9 @@
 import type { MediaVurderinger } from "@/app/api/media/vurdering/route";
 import {
   MERKE,
+  celleAv,
   celleFor,
+  forrigeTekst,
   type Celle,
   type StatusKilde,
 } from "@/lib/media-status";
@@ -185,13 +187,8 @@ export function tilstand(
   }
   const v = k.vurderinger[e.id];
   // Old entries hold «Lag på nytt» as display text.
-  const celle: Celle =
-    v?.vurdering === "godkjent"
-      ? "godkjent"
-      : v?.vurdering
-        ? "lag_paa_nytt"
-        : "ikke_vurdert";
-  return { celle, tekst: MERKE[celle][0], notat: v?.notat };
+  const celle = celleAv(v);
+  return { celle, tekst: MERKE[celle][0], notat: v?.notat ?? forrigeTekst(v) };
 }
 
 /** Next element after `id` without a verdict, wrapping around. */

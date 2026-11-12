@@ -6,6 +6,7 @@ import { variantLabel } from "./oversikt";
 import {
   MERKE,
   familie,
+  forrigeTekst,
   groupVersions,
   versionKey,
   type StatusKilde,
@@ -309,6 +310,12 @@ export function Vurderingsknapper({
 
         {ekstra}
       </div>
+
+      {vurdering?.forrige && (
+        <p className="text-sm text-(--cold-blue)">
+          ○ Ny versjon, ikke vurdert. {forrigeTekst(vurdering)}
+        </p>
+      )}
 
       {/* Short Note field */}
       <div className="flex flex-wrap sm:flex-nowrap gap-2 items-center mt-1">

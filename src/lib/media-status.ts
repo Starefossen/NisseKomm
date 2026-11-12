@@ -13,6 +13,7 @@
 export type Celle =
   | "godkjent"
   | "ikke_vurdert"
+  | "ny_versjon"
   | "lag_paa_nytt"
   | "utdatert"
   | "mangler"
@@ -22,6 +23,7 @@ export type Celle =
 export const MERKE: Record<Celle, [string, string, string]> = {
   godkjent: ["✓", "text-(--gold)", "godkjent"],
   ikke_vurdert: ["○", "text-(--neon-green)/70", "ikke vurdert"],
+  ny_versjon: ["○", "text-(--neon-green)/70", "ny versjon, ikke vurdert"],
   lag_paa_nytt: ["↻", "text-amber-400", "lag på nytt"],
   utdatert: ["!", "text-(--cold-blue)", "utdatert"],
   mangler: ["✗", "text-(--christmas-red)", "mangler"],
@@ -36,6 +38,7 @@ export const VERST: Celle[] = [
   "mangler",
   "lag_paa_nytt",
   "utdatert",
+  "ny_versjon",
   "ikke_vurdert",
   "valgfri",
   "godkjent",
@@ -65,7 +68,15 @@ export const versjonsnavn = (path: string) =>
 
 export interface StatusKilde {
   filer: { path: string; size: number | null }[];
-  vurderinger: Record<string, { vurdering?: string; notat?: string }>;
+  /** As served by /api/media/vurdering: `forrige` = verdict on an earlier version. */
+  vurderinger: Record<
+    string,
+    {
+      vurdering?: string;
+      notat?: string;
+      forrige?: { vurdering?: string; notat?: string };
+    }
+  >;
   /** Inventory status per path (media-inventar.json). */
   inventar?: Map<string, { status: string }>;
 }
@@ -75,6 +86,29 @@ export interface Versjon {
   navn: string;
   celle: Celle;
   notat?: string;
+}
+
+/** Cell for a verdict alone (guide sections, and files that exist and are current). */
+export const celleAv = (v?: {
+  vurdering?: string;
+  forrige?: unknown;
+}): Celle =>
+  v?.vurdering === "godkjent"
+    ? "godkjent"
+    : v?.vurdering
+      ? "lag_paa_nytt"
+      : v?.forrige
+        ? "ny_versjon"
+        : "ikke_vurdert";
+
+/** «forrige versjon: lag på nytt – "…"» for a verdict given to an older file or text. */
+export function forrigeTekst(v?: {
+  forrige?: { vurdering?: string; notat?: string };
+}) {
+  const f = v?.forrige;
+  if (!f) return undefined;
+  const hva = f.vurdering === "godkjent" ? "godkjent" : "lag på nytt";
+  return `forrige versjon: ${hva}${f.notat ? ` – «${f.notat}»` : ""}`;
 }
 
 export interface Familie {
@@ -105,10 +139,13 @@ export function versjon(path: string, k: StatusKilde): Versjon {
       ? "lag_paa_nytt"
       : k.inventar?.get(path)?.status === "stale"
         ? "utdatert"
-        : v?.vurdering === "godkjent"
-          ? "godkjent"
-          : "ikke_vurdert";
-  return { path, navn: versjonsnavn(path), celle, notat: v?.notat };
+        : celleAv(v);
+  return {
+    path,
+    navn: versjonsnavn(path),
+    celle,
+    notat: v?.notat ?? forrigeTekst(v),
+  };
 }
 
 export function familie(path: string, k: StatusKilde): Familie {

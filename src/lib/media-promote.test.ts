@@ -52,7 +52,10 @@ describe("taIBruk", () => {
     );
     expect(vurd).toEqual({
       "video/julius/dag-01.old-2.mp4": { notat: "munn" },
-      "video/julius/dag-01.mp4": { vurdering: "godkjent" },
+      "video/julius/dag-01.mp4": {
+        vurdering: "godkjent",
+        versjon: expect.stringMatching(/^13-\d+$/),
+      },
     });
     const inv = JSON.parse(
       await readFile(path.join(dir, "media-inventar.json"), "utf8"),

@@ -2,11 +2,16 @@ import { mkdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { NextRequest } from "next/server";
 import { authorizeMedia, mediaDir } from "@/lib/media-server";
+import { medVersjon, versjonAv, type Forrige } from "@/lib/vurdering-versjon";
 
 export interface MediaVurderingItem {
   vurdering?: "godkjent" | "lag_paa_nytt";
   notat?: string;
   oppdatert?: string;
+  /** What was reviewed: file size-mtime or a hash of the section text. */
+  versjon?: string;
+  /** Set when served: the verdict given to an earlier version. */
+  forrige?: Forrige;
 }
 
 export type MediaVurderinger = Record<string, MediaVurderingItem>;
@@ -39,9 +44,7 @@ export async function GET(req: NextRequest) {
   const file = path.join(mediaDir(), "media-vurdering.json");
   try {
     const data = await readFile(file, "utf8");
-    return new Response(data, {
-      headers: { "Content-Type": "application/json" },
-    });
+    return Response.json(await medVersjon(mediaDir(), JSON.parse(data)));
   } catch (err: unknown) {
     const code = (err as NodeJS.ErrnoException).code;
     if (code === "ENOENT") {
@@ -118,10 +121,12 @@ export async function POST(req: NextRequest) {
   if (!nextVerdict && !nextNote) {
     delete current[cleanPath];
   } else {
+    const versjon = await versjonAv(dir, cleanPath);
     current[cleanPath] = {
       ...(nextVerdict ? { vurdering: nextVerdict } : {}),
       ...(nextNote ? { notat: nextNote } : {}),
       oppdatert: now,
+      ...(versjon ? { versjon } : {}),
     };
   }
 
@@ -139,6 +144,6 @@ export async function POST(req: NextRequest) {
     ok: true,
     path: cleanPath,
     entry: current[cleanPath] ?? null,
-    vurderinger: current,
+    vurderinger: await medVersjon(dir, current),
   });
 }
