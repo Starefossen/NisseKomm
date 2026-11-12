@@ -44,4 +44,3 @@ Kulde-nivå 1. Svak knitring i lyden. Tre segmenter, 56 ord. Ingen navn på barn
    - Kulde: Svak knitring, lampen blinker én gang på «kald», klikk når mikrofonen slås av.
 
 Lengde: 14 + 14 + 13 s minus to krysstoninger gir rundt 40 s. Med en plakat på 4 s til slutt («1. desember») blir det 44 s.
-
