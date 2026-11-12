@@ -1,47 +1,53 @@
 import { RUNE_ALPHABET } from "@/components/ui/Frostrune";
-import { PrintPage, CutCard } from "../PrintPage";
-import { Ark } from "./felles";
+import { Utskrift } from "../Utskrift";
 
-// 29 cells must fit the 190 mm printable width with the card padding
-const RUTE = "w-[6.2mm]";
+// The hopper must be exactly three cells wide, so both use the same cell width.
+const RUTE = 6.2;
 
 export default function Alfabetstrimmel() {
   return (
-    <PrintPage
-      title="Alfabetstrimmelen og trehopperen"
-      paper="1 ark, tykt papir"
-      note="Brukes dag 5 (ved brevfuglen) og igjen dag 22. To strimler og to hoppere: én til bruk, én i reserve. Hopperen er nøyaktig tre ruter bred; den har verken tall eller piler."
-    >
-      <Ark>
-        <div className="flex flex-col gap-[10mm] items-center mt-[10mm]">
-          {[0, 1].map((i) => (
-            <div key={i} className="flex flex-col gap-[6mm] items-center">
-              <CutCard>
-                <div className="flex">
-                  {RUNE_ALPHABET.map((l) => (
-                    <div
-                      key={l}
-                      className={`${RUTE} h-[18mm] border-r border-black last:border-r-0 flex items-center justify-center text-[6mm]`}
-                    >
-                      {l}
-                    </div>
-                  ))}
+    <Utskrift
+      navn="alfabetstrimmel"
+      papir="tykt"
+      deler={[
+        {
+          str: { b: RUTE * RUNE_ALPHABET.length, h: 18 },
+          antall: 2,
+          forside: () => (
+            <div className="h-full flex font-retro">
+              {RUNE_ALPHABET.map((l) => (
+                <div
+                  key={l}
+                  className="h-full border-r-[0.3mm] border-black last:border-r-0 flex items-center justify-center text-[6mm]"
+                  style={{ width: `${RUTE}mm` }}
+                >
+                  {l}
                 </div>
-              </CutCard>
-              <CutCard>
-                <div className="flex">
-                  {[0, 1, 2].map((j) => (
-                    <div
-                      key={j}
-                      className={`${RUTE} h-[24mm] border-r border-black last:border-r-0`}
-                    />
-                  ))}
-                </div>
-              </CutCard>
+              ))}
             </div>
-          ))}
-        </div>
-      </Ark>
-    </PrintPage>
+          ),
+        },
+        {
+          str: { b: RUTE * 3, h: 24 },
+          antall: 2,
+          forside: () => (
+            <div className="h-full flex">
+              {[0, 1, 2].map((j) => (
+                <div
+                  key={j}
+                  className="h-full border-r-[0.3mm] border-black last:border-r-0"
+                  style={{ width: `${RUTE}mm` }}
+                />
+              ))}
+            </div>
+          ),
+        },
+      ]}
+      instruks={{
+        klipp:
+          "to strimler og to hoppere, nøyaktig langs linjene (hopperen skal være tre ruter bred). Én av hver er reserve. Ingen tall eller piler.",
+        hvor: "Dag 5: strimmelen og hopperen ved brevfuglen høyt i stua. Ta vare på dem: de brukes igjen dag 22.",
+      }}
+    />
   );
 }

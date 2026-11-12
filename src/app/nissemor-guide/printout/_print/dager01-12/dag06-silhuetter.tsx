@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { PrintPage, CutCard } from "../PrintPage";
-import { A6, Ark, Ruter, bakside } from "./felles";
+import { Utskrift } from "../Utskrift";
+import { Ruter } from "./felles";
 
 // Runes only at the visible letter, on all three backs.
 const FIGURER: {
@@ -32,43 +32,45 @@ const FIGURER: {
 
 export default function Dag06Silhuetter() {
   return (
-    <PrintPage
-      title="Dag 6 – skyggefigurene"
-      paper="1 ark, tykt papir, tosidig (vend på langsiden)"
-      note="Klipp langs omrisset av hver figur i november, men behold kortet bak. Teip en ispinne nederst. Alle tre i papprullen med lommelykten."
-    >
-      <Ark>
-        <div className="grid grid-cols-2 gap-[2mm]">
-          {FIGURER.map((f, i) => (
-            <CutCard
-              key={i}
-              className={`${A6} flex items-center justify-center`}
-            >
+    <Utskrift
+      navn="dag06-silhuetter"
+      papir="tykt"
+      deler={[
+        {
+          str: "A6",
+          antall: FIGURER.length,
+          forside: (i) => (
+            <div className="h-full flex items-center justify-center">
               <svg
                 viewBox="0 0 100 100"
                 className="w-[80mm] h-[80mm]"
                 aria-hidden
               >
-                {f.form}
+                {FIGURER[i].form}
               </svg>
-            </CutCard>
-          ))}
-        </div>
-      </Ark>
-      <Ark>
-        <div className="grid grid-cols-2 gap-[2mm]">
-          {bakside(FIGURER, 2).map((f, i) => (
-            <CutCard
-              key={i}
-              className={`${A6} flex items-center justify-center`}
-            >
-              {f && (
-                <Ruter celler={f.celler} nummer storrelse="w-[18mm] h-[26mm]" />
-              )}
-            </CutCard>
-          ))}
-        </div>
-      </Ark>
-    </PrintPage>
+            </div>
+          ),
+        },
+        {
+          str: { b: 52, h: 22 },
+          antall: FIGURER.length,
+          forside: (i) => (
+            <div className="h-full flex items-center justify-center font-retro">
+              <Ruter
+                celler={FIGURER[i].celler}
+                nummer
+                storrelse="w-[10mm] h-[15mm]"
+              />
+            </div>
+          ),
+        },
+      ]}
+      instruks={{
+        klipp:
+          "i november: klipp ut de tre figurene langs omrisset og de tre bakside-kortene langs rammen.",
+        merk: "Teip en ispinne nederst på hver figur og lim bakside-kortet på ispinnen, under figuren, så det ikke lager skygge: stearinlys A, bål O, lykt Y.",
+        hvor: "Kvelden før dag 6: alle tre i papprullen med lommelykten, ved det røde hjerte-kortet. Rampenissens lapp i melet.",
+      }}
+    />
   );
 }

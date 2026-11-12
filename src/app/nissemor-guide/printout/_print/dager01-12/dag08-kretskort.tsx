@@ -1,6 +1,5 @@
 import { Frostrune } from "@/components/ui/Frostrune";
-import { PrintPage } from "../PrintPage";
-import { Ark } from "./felles";
+import { Utskrift } from "../Utskrift";
 
 // Lamps 2, 5, 7 are powered; lamp 4 sits behind an open switch (decoy E);
 // the other five are dead ends. Runes only on visible letters.
@@ -36,123 +35,136 @@ function ledning(i: number, type: string) {
   return `M${BATTERI.x} ${BATTERI.y - 12} C${c2} 120, ${c1} 160, ${x} ${LAMPE_Y + 10}`;
 }
 
-export default function Dag08Kretskort() {
+function Ark8() {
   return (
-    <PrintPage
-      title="Dag 8 – floken i verkstedet"
-      paper="1 ark, vanlig papir, farge anbefalt"
-      note="Arket legges øverst i Sigma-tårnet. Regelen om strøm står ikke på arket; den sier Julius."
-    >
-      <Ark>
-        <h1 className="text-4xl text-center">IQS VERKSTED · LAMPETEST</h1>
-        <svg viewBox="0 0 186 250" className="w-[186mm] h-[250mm]" aria-hidden>
-          {LAMPER.map((l, i) => (
-            <path
-              key={i}
-              d={ledning(i, l.ledning)}
-              stroke={l.farge}
-              strokeWidth="1.6"
-              fill="none"
-            />
-          ))}
-          {/* Open switch drawn on lamp 4's wire: two contacts and a raised lever. */}
-          {(() => {
-            // Midpoint (t = ½) of lamp 4's powered Bézier, so the switch sits on its wire.
-            const x4 = lampeX(3);
-            const x =
-              (BATTERI.x + 3 * ((x4 * 7) % 186) + 3 * (186 - x4) + x4) / 8;
-            const y = (BATTERI.y - 12 + 3 * 120 + 3 * 160 + LAMPE_Y + 10) / 8;
-            return (
-              <g>
-                <rect x={x - 9} y={y - 7} width={18} height={14} fill="white" />
-                <circle cx={x - 6} cy={y} r={1.6} fill="black" />
-                <circle cx={x + 6} cy={y} r={1.6} fill="black" />
-                <path
-                  d={`M${x - 6} ${y} L${x + 5} ${y - 8}`}
-                  stroke="black"
-                  strokeWidth="1.4"
-                />
-              </g>
-            );
-          })()}
-          <g>
-            <rect
-              x={BATTERI.x - 18}
-              y={BATTERI.y - 12}
-              width={36}
-              height={22}
+    <div className="h-full font-retro pt-[6mm]">
+      <h1 className="text-4xl text-center">IQS VERKSTED · LAMPETEST</h1>
+      <svg
+        viewBox="0 0 186 250"
+        className="w-[186mm] h-[250mm] mx-auto"
+        aria-hidden
+      >
+        {LAMPER.map((l, i) => (
+          <path
+            key={i}
+            d={ledning(i, l.ledning)}
+            stroke={l.farge}
+            strokeWidth="1.6"
+            fill="none"
+          />
+        ))}
+        {/* Open switch drawn on lamp 4's wire: two contacts and a raised lever. */}
+        {(() => {
+          // Midpoint (t = ½) of lamp 4's powered Bézier, so the switch sits on its wire.
+          const x4 = lampeX(3);
+          const x =
+            (BATTERI.x + 3 * ((x4 * 7) % 186) + 3 * (186 - x4) + x4) / 8;
+          const y = (BATTERI.y - 12 + 3 * 120 + 3 * 160 + LAMPE_Y + 10) / 8;
+          return (
+            <g>
+              <rect x={x - 9} y={y - 7} width={18} height={14} fill="white" />
+              <circle cx={x - 6} cy={y} r={1.6} fill="black" />
+              <circle cx={x + 6} cy={y} r={1.6} fill="black" />
+              <path
+                d={`M${x - 6} ${y} L${x + 5} ${y - 8}`}
+                stroke="black"
+                strokeWidth="1.4"
+              />
+            </g>
+          );
+        })()}
+        <g>
+          <rect
+            x={BATTERI.x - 18}
+            y={BATTERI.y - 12}
+            width={36}
+            height={22}
+            fill="white"
+            stroke="black"
+            strokeWidth="1.5"
+          />
+          <rect
+            x={BATTERI.x - 4}
+            y={BATTERI.y - 15}
+            width={8}
+            height={3}
+            fill="black"
+          />
+          <text
+            x={BATTERI.x}
+            y={BATTERI.y + 4}
+            textAnchor="middle"
+            fontSize="9"
+            fontFamily="monospace"
+          >
+            + BATTERI −
+          </text>
+        </g>
+        {LAMPER.map((l, i) => (
+          <g key={i}>
+            <circle
+              cx={lampeX(i)}
+              cy={LAMPE_Y}
+              r={8.5}
               fill="white"
               stroke="black"
               strokeWidth="1.5"
             />
-            <rect
-              x={BATTERI.x - 4}
-              y={BATTERI.y - 15}
-              width={8}
-              height={3}
-              fill="black"
-            />
-            <text
-              x={BATTERI.x}
-              y={BATTERI.y + 4}
-              textAnchor="middle"
-              fontSize="9"
-              fontFamily="monospace"
-            >
-              + BATTERI −
-            </text>
-          </g>
-          {LAMPER.map((l, i) => (
-            <g key={i}>
-              <circle
-                cx={lampeX(i)}
-                cy={LAMPE_Y}
-                r={8.5}
-                fill="white"
-                stroke="black"
-                strokeWidth="1.5"
-              />
-              {l.vis && (
-                <text
-                  x={lampeX(i)}
-                  y={LAMPE_Y + 4}
-                  textAnchor="middle"
-                  fontSize="12"
-                  fontFamily="monospace"
-                >
-                  {l.vis}
-                </text>
-              )}
-              {!l.vis && (
-                <path
-                  d={`M${lampeX(i)} ${LAMPE_Y - 5} V${LAMPE_Y + 5} M${lampeX(i) - 4.3} ${LAMPE_Y - 2.5} L${lampeX(i) + 4.3} ${LAMPE_Y + 2.5} M${lampeX(i) - 4.3} ${LAMPE_Y + 2.5} L${lampeX(i) + 4.3} ${LAMPE_Y - 2.5}`}
-                  stroke="black"
-                  strokeWidth="1"
-                />
-              )}
+            {l.vis && (
               <text
                 x={lampeX(i)}
-                y={LAMPE_Y - 13}
+                y={LAMPE_Y + 4}
                 textAnchor="middle"
-                fontSize="7"
+                fontSize="12"
                 fontFamily="monospace"
               >
-                {i + 1}
+                {l.vis}
               </text>
-              {l.vis && (
-                <foreignObject
-                  x={lampeX(i) + 3}
-                  y={LAMPE_Y - 26}
-                  width="8"
-                  height="12"
-                >
-                  <Frostrune letter={l.vis} size={7} />
-                </foreignObject>
-              )}
-            </g>
-          ))}
-        </svg>
-      </Ark>
-    </PrintPage>
+            )}
+            {!l.vis && (
+              <path
+                d={`M${lampeX(i)} ${LAMPE_Y - 5} V${LAMPE_Y + 5} M${lampeX(i) - 4.3} ${LAMPE_Y - 2.5} L${lampeX(i) + 4.3} ${LAMPE_Y + 2.5} M${lampeX(i) - 4.3} ${LAMPE_Y + 2.5} L${lampeX(i) + 4.3} ${LAMPE_Y - 2.5}`}
+                stroke="black"
+                strokeWidth="1"
+              />
+            )}
+            <text
+              x={lampeX(i)}
+              y={LAMPE_Y - 13}
+              textAnchor="middle"
+              fontSize="7"
+              fontFamily="monospace"
+            >
+              {i + 1}
+            </text>
+            {l.vis && (
+              <foreignObject
+                x={lampeX(i) + 3}
+                y={LAMPE_Y - 26}
+                width="8"
+                height="12"
+              >
+                <Frostrune letter={l.vis} size={7} />
+              </foreignObject>
+            )}
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+}
+
+export default function Dag08Kretskort() {
+  return (
+    <Utskrift
+      navn="dag08-kretskort"
+      papir="vanlig"
+      farge
+      deler={[{ str: "A4", forside: () => <Ark8 /> }]}
+      instruks={{
+        hvor: "Kvelden før dag 8: arket øverst i Sigma-tårnet. Regelen om strøm står ikke på arket; den sier Julius.",
+        merk: "Farge anbefalt, men svart-hvitt går også.",
+      }}
+    />
   );
 }

@@ -1,46 +1,53 @@
-import { PrintPage } from "../PrintPage";
-import { Ark } from "./felles";
+import { Utskrift } from "../Utskrift";
 
 // Winter's cipher, three steps forward. No numbers, no arrows on the bird.
 const CHIFFER = "X O U L N H Q";
 
+function Fugl() {
+  return (
+    <div className="relative h-full font-retro">
+      <div className="absolute inset-y-0 left-1/2 border-l-2 border-dashed border-gray-400" />
+      <svg
+        className="absolute inset-0 w-full h-full"
+        viewBox="0 0 194 280"
+        preserveAspectRatio="none"
+        aria-hidden
+      >
+        <path
+          d="M97 0 L0 73 M97 0 L194 73 M97 0 L21 280 M97 0 L173 280"
+          stroke="#9ca3af"
+          strokeWidth="0.5"
+          strokeDasharray="3 2"
+          fill="none"
+        />
+      </svg>
+      <div className="absolute top-[10mm] inset-x-0 text-center text-2xl">
+        BREVFUGL · SNØFALL
+      </div>
+      {["left-[3mm]", "right-[3mm]"].map((side) => (
+        <div
+          key={side}
+          className={`absolute bottom-[25mm] ${side} w-[82mm] text-center text-[13mm] leading-none tracking-wide`}
+        >
+          {CHIFFER}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function Dag05Brevfugl() {
   return (
-    <PrintPage
-      title="Dag 5 – brevfuglen"
-      paper="1 ark, vanlig papir"
-      note="Brett som et vanlig papirfly langs de stiplede linjene (midtlinja først, så de skrå). Bokstavene havner på vingene. Henges høyt i stua, med alfabetstrimmelen og trehopperen ved."
-    >
-      <Ark>
-        <div className="relative h-[273mm]">
-          <div className="absolute inset-y-0 left-1/2 border-l-2 border-dashed border-gray-400" />
-          <svg
-            className="absolute inset-0 w-full h-full"
-            viewBox="0 0 186 273"
-            preserveAspectRatio="none"
-            aria-hidden
-          >
-            <path
-              d="M93 0 L0 70 M93 0 L186 70 M93 0 L20 273 M93 0 L166 273"
-              stroke="#9ca3af"
-              strokeWidth="0.5"
-              strokeDasharray="3 2"
-              fill="none"
-            />
-          </svg>
-          <div className="absolute top-[8mm] inset-x-0 text-center text-2xl">
-            BREVFUGL · SNØFALL
-          </div>
-          {["left-[2mm]", "right-[2mm]"].map((side) => (
-            <div
-              key={side}
-              className={`absolute bottom-[25mm] ${side} w-[80mm] text-center text-[13mm] leading-none tracking-wide`}
-            >
-              {CHIFFER}
-            </div>
-          ))}
-        </div>
-      </Ark>
-    </PrintPage>
+    <Utskrift
+      navn="dag05-brevfugl"
+      papir="vanlig"
+      deler={[{ str: "A4", forside: () => <Fugl /> }]}
+      instruks={{
+        klipp: "langs den stiplede rammen.",
+        brett:
+          "som et vanlig papirfly: midtlinja først, så de skrå linjene. Bokstavene havner på vingene.",
+        hvor: "Kvelden før dag 5: heng fuglen høyt i stua, med alfabetstrimmelen og trehopperen ved. Rampenissens lapp ved marshmallowfortet.",
+      }}
+    />
   );
 }

@@ -69,9 +69,8 @@ export function Ruter({
   );
 }
 
-/** Card sizes that tile an <Ark>: 8 «A7» (2 × 4) or 4 «A6» (2 × 2) per sheet. */
+/** Card size that tiles an <Ark>: 8 «A7» (2 × 4) per sheet. */
 export const A7 = "w-[92mm] h-[66mm]";
-export const A6 = "w-[92mm] h-[134mm]";
 
 /**
  * Order for the back of a duplex sheet (long-edge flip): each row of a

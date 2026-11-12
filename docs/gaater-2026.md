@@ -54,7 +54,7 @@ Snitt oppsett for gåten: 4,3 minutter. Med rampestreken fra §8: cirka 9. Vente
 
 ### Meta 1: Frostrunene (dag 1 → 7, lesenøkkel resten av måneden)
 
-Hvert kort har et tegn i hjørnet (se reglene). Runetavla (A4, 29 tomme ruter A–Å, med IQs linje øverst) ligger i ferdskriveren dag 1 og henger på operasjonsbrettet. Barna fyller inn tegn etter hvert som ord løses.
+Hvert kort har et tegn i hjørnet (se reglene). Runetavla (A5, 29 ruter A–Å, bokstaver som aldri læres krysset ut, med IQs linje øverst) ligger i ferdskriveren dag 1 og henger på operasjonsbrettet. Barna fyller inn tegn etter hvert som ord løses.
 
 Lært før dag 7: dag 1 S, I, G, N, A, L (+ E, T fra de løse kortene), dag 3 P, R, M, E, dag 4 K, O, dag 6 Y, T. **Dag 7:** det fryste kortet har bare tegn for L (rute 3) og E (rute 5); `_ _ L _ E` + ovnssetningen = KULDE. Julius peker til tegnene på kortet i segment 2. **Dag 17:** O og L i tegn. **Dag 20:** U (lært dag 7) og B (lært dag 18; reserve i fasit hvis dag 18 er hoppet over). **Dag 24:** U, E, G.
 
@@ -72,7 +72,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** SIGNAL (uendret).
 - **Mekanikk:** tråden er rekkefølgen, som før (storyboard avgjørelse 1). Nytt: to løse kort med bokstav ligger i klementinelva uten klype, som om de falt av i skredet. Bare det som henger på linjen, teller. Scenen (klementinskredet, ferdskriveren, IQs konvolutt) står i «Dag 1: byggeplan» nederst i dokumentet; her står bare gåten. Runetavla introduseres (se «Meta-gåter»).
-- **Brikke H:** rød garntråd fra TV-en («LINJE 90,0») ned skråningen og langs elva til Rampenissens håndledd. Seks A7-kort med klesklyper, talt fra TV-en: ❄, **I**, ❄, **N**, ❄, ❄, hvert med tegn i hjørnet. Prikker 1–6 på baksiden. To løse kort, **E** og **T**, ligger blant klementinene (med riktig tegn ved bokstaven). I ferdskriveren, sammen med IQs konvolutt og operasjonsbrettet, ligger runetavla (A4, 29 tomme ruter A–Å) med IQs linje øverst: «Tegnene i hjørnet av kortene er Snøfalls gamle skrift. Ett tegn, én bokstav. Fyll inn når dere vet.»
+- **Brikke H:** rød garntråd fra TV-en («LINJE 90,0») ned skråningen og langs elva til Rampenissens håndledd. Seks A7-kort med klesklyper, talt fra TV-en: ❄, **I**, ❄, **N**, ❄, ❄, hvert med tegn i hjørnet. Prikker 1–6 på baksiden. To løse kort, **E** og **T**, ligger blant klementinene (med riktig tegn ved bokstaven). I ferdskriveren, sammen med IQs konvolutt og operasjonsbrettet, ligger runetavla (A5, plass på operasjonsbrettet, 29 ruter A–Å) med IQs linje øverst: «Tegnene i hjørnet av kortene er Snøfalls gamle skrift. Ett tegn, én bokstav. Fyll inn når dere vet.»
 - **Brikke S:** Julius, siste setning: «Når linjen bærer, roper IQ ett ord fra verkstedet. Det er det ordet radioen deres leter etter når den skurrer, rett før stemmen kommer gjennom.» Han sier ikke ordet.
 - **Slik løses den:** 1) H9 følger tråden fra TV-en til luen og tar av kortene i rekkefølge; K12 legger dem på bordet. De løse kortene legges til side: de henger ikke på linjen. 2) K12 ser `_ I _ N _ _` og hører Julius: ordet radioen leter etter. SIGNAL. 3) K12 taster. 4) Etterpå: ordet skrives på kortene, og tegnene for S, I, G, N, A, L (og E, T fra de løse) føres inn på tavla.
 - **Hanna (hvis hun vil):** tar kortene av tråden mens H9 holder den stram.
@@ -80,7 +80,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 2.
 - **Oppsett:** 3 min for gåten; scenen tar 25 min kvelden 30. november pluss cirka 75 min forarbeid 28.–29. november (se «Dag 1: byggeplan»).
 - **Materialer:** rødt garn, 6 små klesklyper, maskeringsteip, kortene, runetavla. Scenen: 3 esker klementiner (2,3 kg), 3–4 tomme klementinesker, lyst laken, klesvaskkurv og badehåndkle, avispapir, skoeske kledd i svart med oransje striper (ferdskriveren), C6-konvolutt, fruktskål, banan, 2 servietter, dorullhylse, hårstrikk, binders, limstift, tapetkniv, tusj, 6 gullklistremerker.
-- **Utskrifter:** `dag01-tradkort.pdf` (1 side, tykt papir, tosidig: 6 trådkort med prikker bak + 2 løse kort), `runetavle.pdf` (1 side, tykt papir), `dag01-linjekort.pdf` (1 side, tykt: linjekort med passordfelt + konvoluttpåskrift), `dag01-frakt.pdf` (3 sider, vanlig: fraktetiketter, SKJØRT-merker, stempler), `dag01-ferdskriver.pdf` (1 side, vanlig: merker og «FORSEGLET»-lapp), `dag01-flylogg.pdf` (1 side, vanlig: to loggstrimler), `operasjonsbrett.pdf` (A3, eller 2 × A4 med skjøtemerke, tykt).
+- **Utskrifter:** `dag01-tradkort.pdf` (1 side, tykt papir, tosidig: 6 trådkort med prikker bak + 2 løse kort), `runetavle.pdf` (1 side, tykt papir), `dag01-linjekort.pdf` (1 side, tykt: linjekort med passordfelt + konvoluttpåskrift), `dag01-frakt.pdf` (4 sider, vanlig: fraktetiketter, SKJØRT-merker, stempler), `dag01-ferdskriver.pdf` (1 side, vanlig: merker og «FORSEGLET»-lapp), `dag01-flylogg.pdf` (1 side, vanlig: to loggstrimler), `operasjonsbrett.pdf` (A3, eller 2 × A4 med skjøtemerke, tykt).
 - **Reserve:** Blir rekkefølgen rotet, teller de prikkene på baksiden. Tar de med de løse kortene, får de åtte bokstaver til seks ruter og må velge bort. Er videoen hoppet over, ligger transkriptet under spilleren.
 
 ### Dag 2 (on) – Sikringsboksen til IQ · 48 · jakt
@@ -511,22 +511,22 @@ Nettbudsjett: 1 000 kr inkludert frakt. Her er bare én post satt til nett, og b
 
 Alt ligger under `/nissemor-guide/printout` og samles i én PDF for måneden pluss symbolkortene fra QR-siden. «Tykt» = 160–200 g, «vanlig» = 80 g.
 
-| Fil                     | Sider | Papir                   | Dag   | Merknad                                                                |
-| ----------------------- | ----- | ----------------------- | ----- | ---------------------------------------------------------------------- |
-| `runetavle.pdf`         | 1     | tykt                    | 1     | 29 ruter A–Å, i ferdskriveren                                          |
-| `runer-fasit.pdf`       | 1     | vanlig                  | alle  | **bare Nissemor-guiden**                                               |
-| `dag01-tradkort.pdf`    | 1     | tykt, tosidig           | 1     | 6 trådkort + 2 løse, prikker bak                                       |
-| `dag01-linjekort.pdf`   | 1     | tykt                    | 1     | linjekort med passordfelt, i IQs konvolutt                             |
-| `dag01-frakt.pdf`       | 3     | vanlig                  | 1     | 4 fraktetiketter A5 (skriv ut side 1 to ganger), 4 SKJØRT A6, stempler |
-| `dag01-ferdskriver.pdf` | 1     | vanlig                  | 1     | merker topp/side/kortside, «FORSEGLET – IQ»                            |
-| `dag01-flylogg.pdf`     | 1     | vanlig                  | 1     | to loggstrimler, limes til én                                          |
-| `operasjonsbrett.pdf`   | 1     | tykt, A3 (eller 2 × A4) | 1     | 9 symbolruter + 6 milepælsirkler, i ferdskriveren                      |
-| `dag02-tallkort.pdf`    | 1     | tykt                    | 2     | romertall                                                              |
-| `dag03-frostlapp.pdf`   | 1     | tykt                    | 3     | speilvendt; reserve + tegnkilde                                        |
-| `dag04-skokort.pdf`     | 1     | tykt, tosidig           | 4     |                                                                        |
-| `dag05-brevfugl.pdf`    | 1     | vanlig                  | 5     |                                                                        |
-| `alfabetstrimmel.pdf`   | 1     | tykt                    | 5, 22 |                                                                        |
-| `dag06-silhuetter.pdf`  | 1     | tykt, tosidig           | 6     | klippes i november, på ispinne                                         |
+| Fil                     | Sider | Papir                   | Dag   | Merknad                                           |
+| ----------------------- | ----- | ----------------------- | ----- | ------------------------------------------------- |
+| `runetavle.pdf`         | 1     | tykt                    | 1     | A5, 29 ruter A–Å, i ferdskriveren, på brettet     |
+| `runer-fasit.pdf`       | 1     | vanlig                  | alle  | **bare Nissemor-guiden**                          |
+| `dag01-tradkort.pdf`    | 1     | tykt, tosidig           | 1     | 6 trådkort + 2 løse, prikker bak                  |
+| `dag01-linjekort.pdf`   | 1     | tykt                    | 1     | linjekort med passordfelt, i IQs konvolutt        |
+| `dag01-frakt.pdf`       | 4     | vanlig                  | 1     | 4 fraktetiketter A5, 4 SKJØRT A6, stempler        |
+| `dag01-ferdskriver.pdf` | 1     | vanlig                  | 1     | merker topp/side/kortside, «FORSEGLET – IQ»       |
+| `dag01-flylogg.pdf`     | 1     | vanlig                  | 1     | to loggstrimler, limes til én                     |
+| `operasjonsbrett.pdf`   | 1     | tykt, A3 (eller 2 × A4) | 1     | 9 symbolruter + 6 milepælsirkler, i ferdskriveren |
+| `dag02-tallkort.pdf`    | 1     | tykt                    | 2     | romertall                                         |
+| `dag03-frostlapp.pdf`   | 1     | tykt                    | 3     | speilvendt; reserve + tegnkilde                   |
+| `dag04-skokort.pdf`     | 1     | tykt, tosidig           | 4     |                                                   |
+| `dag05-brevfugl.pdf`    | 1     | vanlig                  | 5     |                                                   |
+| `alfabetstrimmel.pdf`   | 1     | tykt                    | 5, 22 |                                                   |
+| `dag06-silhuetter.pdf`  | 1     | tykt, tosidig           | 6     | klippes i november, på ispinne                    |
 
 | `dag07-frostlapp.pdf` | 1 | tykt | 7 | i pose, i plastbeger i fryseren fra 6. des. |
 | `dag08-kretskort.pdf` | 1 | vanlig, farge | 8 | |
@@ -625,13 +625,13 @@ Trygghet for Hanna: alt i gulvhøyde, ingenting i halshøyde, ingen frukt i trap
 
 **Fredag 28. (cirka 50 min, etter leggetid)**
 
-| Steg                                                                                                                                                                                                                    | Min |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| Skriv ut `dag01-frakt.pdf` (3 s. + 1 ekstra av side 1), `dag01-ferdskriver.pdf`, `dag01-linjekort.pdf` (tykt), `dag01-flylogg.pdf`, `operasjonsbrett.pdf`, `dag01-tradkort.pdf` (tykt, tosidig), `runetavle.pdf` (tykt) | 10  |
-| Klipp etiketter, merker, stempler, kort og loggstrimler; lim loggen til én strimmel, rull med binders                                                                                                                   | 10  |
-| Ferdskriveren: kle eske og lokk i svart, to oransje striper, skjær stripene langs lokkekanten, lim merkene, skriv serienummer                                                                                           | 20  |
-| Linjekortet: skriv passordet med tusj, i konvolutt med påskrift. Legg konvolutt, logg, runetavle, brett og klistremerker i ferdskriveren; lokk på, ikke forsegl                                                         | 5   |
-| Fallskjermen: serviett, fire garnbiter, hårstrikk                                                                                                                                                                       | 5   |
+| Steg                                                                                                                                                                                               | Min |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| Skriv ut `dag01-frakt.pdf` (4 s.), `dag01-ferdskriver.pdf`, `dag01-linjekort.pdf` (tykt), `dag01-flylogg.pdf`, `operasjonsbrett.pdf`, `dag01-tradkort.pdf` (tykt, tosidig), `runetavle.pdf` (tykt) | 10  |
+| Klipp etiketter, merker, stempler, kort og loggstrimler; lim loggen til én strimmel, rull med binders                                                                                              | 10  |
+| Ferdskriveren: kle eske og lokk i svart, to oransje striper, skjær stripene langs lokkekanten, lim merkene, skriv serienummer                                                                      | 20  |
+| Linjekortet: skriv passordet med tusj, i konvolutt med påskrift. Legg konvolutt, logg, runetavle, brett og klistremerker i ferdskriveren; lokk på, ikke forsegl                                    | 5   |
+| Fallskjermen: serviett, fire garnbiter, hårstrikk                                                                                                                                                  | 5   |
 
 **Lørdag 29. (cirka 25 min + handel)**
 
