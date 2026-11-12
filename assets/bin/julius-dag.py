@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Make one Julius video diary entry from the locked script.
 
-Usage: julius-dag.py <dag> [--dry-run] [--force] [--join-only] [--refilter] [--no-chain] [--cutaway <loop.mp4>[:kutt]] [--upload <base-url>]
+Usage: julius-dag.py <dag> [--extend [--suffix -v2]] [--dry-run] [--force] [--join-only] [--refilter] [--no-chain] [--cutaway <loop.mp4>[:kutt]] [--upload <base-url>]
        julius-dag.py lint [dag ...]      segments over 22 words (locked brikke exempt), timing budget
        julius-dag.py selftest
 
@@ -344,6 +344,101 @@ def main():
         upload(sys.argv[sys.argv.index("--upload") + 1], dest)
 
 
+EXT_SECS = 10  # Omni Extend adds 3-10 s per turn
+CHAIN_MAX = 40  # seconds before a chain stops and the next starts from its last frame (a cut)
+REFUSED = r"safety|policy|prohibited|blocked|RAI"
+
+
+def seconds(p: Path) -> float:
+    return float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(p)]))
+
+
+def tail(clip: Path, start: float, out: Path) -> Path:
+    subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-ss", f"{start:.3f}", "-i", str(clip), str(out)], check=True)
+    return out
+
+
+def extend_day(day: int):
+    """The Extend format: a 15 s clip, extended segment by segment through previous_interaction_id until about
+    CHAIN_MAX s; the next chain starts from the last frame. Checks only the new part of each extension."""
+    import json
+    import time
+
+    segs = segments(day)
+    suffix = sys.argv[sys.argv.index("--suffix") + 1] if "--suffix" in sys.argv else ""
+    dest = DEST / f"dag-{day:02d}{suffix}.mp4"
+    chains, cur, cap, tokens = [], None, CHAIN_MAX, 0
+    for i, (line, secs, action, kulde, locked) in enumerate(segs, 1):
+        name = f"dag{day:02d}x-{i}"
+        act = f"{action} Kuldes påvirkning: {kulde_fx(kulde, line, locked, secs, False)[4]}"
+        while True:
+            ext = cur is not None and seconds(OUT / f"{cur}.raw.mp4") + EXT_SECS <= cap
+            env, start, length = dict(os.environ), 0.0, secs
+            if ext:
+                env["PREV"], start, length = (OUT / f"{cur}.id").read_text().strip(), seconds(OUT / f"{cur}.raw.mp4"), EXT_SECS
+            elif chains and len(chains) % RESET:
+                env["REF"] = str(last_frame(OUT / f"{cur}.raw.mp4", OUT / f"{name}.start.jpg"))
+            key = env.get("PREV") or env.get("REF") or "ref"
+            print(f"{name} ({'forlengelse' if ext else 'ny kjede'}, {length} s): {line}")
+            done = OUT / f"{name}.key"
+            if done.exists() and done.read_text() == key and (OUT / f"{name}.mp4").exists():
+                break  # kept from an earlier run with the same start
+            best, capped = (None, None), False
+            for attempt in range(1, ATTEMPTS + 1):
+                r = subprocess.run([str(BIN / "julius.sh"), name, line, act, str(length)], stdin=subprocess.DEVNULL, env=env)
+                if r.returncode != 0:
+                    resp = OUT / f"{name}.resp.json"
+                    txt = resp.read_text() if resp.exists() else ""
+                    if "spending cap" in txt or "per day" in txt:
+                        sys.exit("Stoppet: utgiftstak eller dagsgrense i Gemini")
+                    if re.search(REFUSED, txt, re.I):
+                        sys.exit(f"Stoppet: avvist av retningslinjene ({name}): {txt[:300]}")
+                    if ext and re.search(r"duration|length|exceed|too long", txt, re.I):
+                        print(f"  {name}: forlengelsen avvist på lengde, ny kjede: {txt[:200]}")
+                        capped = True
+                        break
+                    time.sleep(60 * attempt)
+                    continue
+                tokens += json.loads((OUT / f"{name}.usage.json").read_text() or "{}").get("total_tokens", 0)
+                raw = OUT / f"{name}.raw.mp4"
+                c = coverage(tail(raw, start, OUT / f"{name}.ny.mp4"), line)
+                c = 1.0 if c is None else c
+                if speech_at_end(raw):
+                    print(f"  {name}: stemmen går til siste bilde")
+                    c = 0.0
+                bad = audit(tail(raw, max(start - 2, 0), OUT / f"{name}.sjekk.mp4")) or []
+                print(f"  {name}: {c:.0%} hørt, feil: {bad or 'ingen'}")
+                if best[0] is None or (not bad, c) > best[0]:
+                    for ext_ in ("mp4", "raw.mp4", "id"):
+                        shutil.copy(OUT / f"{name}.{ext_}", OUT / f"{name}.best.{ext_}")
+                    best = ((not bad, c), bad)
+                if not bad and c >= MIN_COVERAGE:
+                    break
+            if capped:
+                cap = seconds(OUT / f"{cur}.raw.mp4")
+                continue
+            if best[0] is None:
+                sys.exit(f"{name}: ingen versjon ble laget")
+            for ext_ in ("mp4", "raw.mp4", "id"):
+                shutil.copy(OUT / f"{name}.best.{ext_}", OUT / f"{name}.{ext_}")
+            done.write_text(key)
+            if best[1] or best[0][1] < MIN_COVERAGE:
+                print(f"  ADVARSEL {name}: beste versjon {best[0][1]:.0%}, feil: {best[1]}")
+            break
+        if ext:
+            chains[-1].append(i)
+        else:
+            chains.append([i])
+        cur = name
+    print(f"kjeder: {chains}, tokens: {tokens}")
+    clips = [OUT / f"dag{day:02d}x-{c[-1]}.mp4" for c in chains]
+    # one Kulde pass per chain: the cues are found by their quoted words in the joined lines
+    kulde = [(" ".join(segs[j - 1][3] for j in c), " ".join(segs[j - 1][0] for j in c), any(segs[j - 1][4] for j in c)) for c in chains]
+    DEST.mkdir(parents=True, exist_ok=True)
+    join(clips, dest, kulde)
+    print(dest, f"{seconds(dest):.1f} s, {len(chains) - 1} kutt")
+
+
 XFADE = 0.25  # video and audio crossfade at each join, inside the 2 s silent tail so no word is blurred
 CUTAWAY = 1.5  # seconds of TV loop laid over one cut, Julius' sound runs on underneath
 
@@ -474,5 +569,7 @@ if __name__ == "__main__":
         selftest()
     elif sys.argv[1:2] == ["lint"]:
         sys.exit(1 if lint([int(d) for d in sys.argv[2:]] or range(1, 25)) else 0)
+    elif "--extend" in sys.argv:
+        extend_day(int(sys.argv[1]))
     else:
         main()
