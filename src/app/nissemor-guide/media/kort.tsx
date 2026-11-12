@@ -100,10 +100,10 @@ function InlinePlayer({ path, missing }: { path: string; missing: boolean }) {
           type="button"
           onClick={() => setSpill(true)}
           aria-label={`Spill av ${path}`}
-          className="my-2 w-full aspect-video max-h-72 flex items-center justify-center bg-black bg-contain bg-center bg-no-repeat border border-(--neon-green)/40 cursor-pointer text-4xl"
+          className="my-2 w-full aspect-video max-h-72 flex items-center justify-center bg-black bg-contain bg-center bg-no-repeat border border-(--neon-green)/40 cursor-pointer"
           style={{ backgroundImage: `url("${poster}")` }}
         >
-          <span className="bg-black/70 px-4 py-1">▶</span>
+          <span className="bg-black/70 px-4 py-1 text-2xl">SPILL AV</span>
         </button>
       );
     return (
@@ -128,7 +128,7 @@ function InlinePlayer({ path, missing }: { path: string; missing: boolean }) {
           onClick={() => setSpill(true)}
           className="my-2 w-full min-h-11 border border-(--neon-green)/40 cursor-pointer hover:bg-(--neon-green)/20"
         >
-          ▶ Spill av lyd
+          Spill av lyd
         </button>
       );
     return (
