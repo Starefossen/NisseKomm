@@ -1,5 +1,6 @@
 "use client";
 
+import { versionKey } from "../media/oversikt";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -198,10 +199,15 @@ function Vurdering({
   // Gjennomgang only mounts this once the verdicts have loaded.
   const vurd = d.vurd!;
   const liste = alleElementer(rekkefolge, sesong, d.media.files, d.krypto);
-  const i = liste.findIndex((e) => e.id === id);
+  // An old link to dag-02.mp4 lands on the newest version of the group.
+  const eksakt = liste.findIndex((e) => e.id === id);
+  const i =
+    eksakt >= 0
+      ? eksakt
+      : liste.findIndex((e) => versionKey(e.id) === versionKey(id));
   const e = liste[i];
   const forrige = liste[i - 1];
-  const neste = nesteUvurdert(liste, id, vurd);
+  const neste = nesteUvurdert(liste, e?.id ?? id, vurd);
 
   useEffect(() => {
     const ned = (ev: KeyboardEvent) => {

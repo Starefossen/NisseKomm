@@ -28,6 +28,8 @@ export interface Element {
   dag?: number;
   /** Files that must exist; one missing marks the cell «mangler». */
   media: string[];
+  /** Older versions of the same file, newest first. */
+  eldre?: string[];
 }
 
 /** `<stamme>-vN.mp4` with the highest N, else `<stamme>.mp4`. */
@@ -67,8 +69,8 @@ export function dagElement(
     case "gaate":
       return e(`dag/${dd}/gaatekart`);
     case "julius": {
-      const fil = juliusFiles(n, filer)[0];
-      return e(fil, [fil]);
+      const [fil, ...eldre] = juliusFiles(n, filer);
+      return { ...e(fil, [fil]), eldre };
     }
     case "radio": {
       const fil = `audio/rampenissen/dag-${dd}.mp3`;

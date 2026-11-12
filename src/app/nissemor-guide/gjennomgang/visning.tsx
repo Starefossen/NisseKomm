@@ -11,6 +11,7 @@ import videoer from "@/data/julius_videoer.json";
 import type { dagInnhold } from "@/lib/guide-innhold";
 import type { Sesong } from "../_kveld/felles";
 import { Foreldredel, Rampestrek } from "../dag/[n]/foreldre";
+import { Markdown } from "../historien/markdown";
 import { Gaatekart } from "../dag/[n]/gaatekart";
 import { utskriftHref, utskriftTittel } from "../printout/filer";
 import { slug } from "../vurdering";
@@ -128,6 +129,19 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
       <>
         <p className="text-sm break-all">{e.id}</p>
         <Spiller path={e.id} />
+        {!!e.eldre?.length && (
+          <details className="my-2">
+            <summary className="min-h-11 py-2 cursor-pointer">
+              Eldre versjoner ({e.eldre.length})
+            </summary>
+            {e.eldre.map((p) => (
+              <div key={p} className="mb-2">
+                <p className="text-sm break-all">{p}</p>
+                <Spiller path={p} />
+              </div>
+            ))}
+          </details>
+        )}
         <Felt k="Transkripsjon">
           {videoer.find((v) => v.dag === n)?.transkripsjon}
         </Felt>
@@ -199,7 +213,9 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
     );
   }
   if (dag && e.gruppe === "oppsett")
-    return <Foreldredel n={n!} d={dag.kveld} t={t} plan={dag.byggeplan} />;
+    return (
+      <Foreldredel n={n!} d={dag.kveld} t={t} plan={dag.byggeplan} bareKveld />
+    );
 
   const [del, nr] = e.id.split("/");
   if (del === "ugleposten") {
@@ -351,7 +367,7 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
   }
   if (del === "historien") {
     const h = sesong.historien.find((x) => slug(x.tittel) === nr);
-    return <p className="whitespace-pre-wrap">{ren(h?.deler.join("\n\n"))}</p>;
+    return <Markdown tekst={h?.deler.join("\n\n") ?? ""} />;
   }
   if (e.gruppe === "Promo") {
     const x = e.id.match(/julius-promo-([AB])/)?.[1];

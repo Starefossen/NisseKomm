@@ -49,12 +49,15 @@ export function Foreldredel({
   d,
   t,
   plan,
+  bareKveld,
 }: {
   n: number;
   d: ReturnType<typeof kveldDag>;
   t: (s: string) => string;
   /** Day 1 only: the build plan for 28.–30. November. */
   plan?: ReturnType<typeof forSesongen> | null;
+  /** Gjennomgang: tonight's checklist only. */
+  bareKveld?: boolean;
 }) {
   useSynk();
   const q = GameEngine.getAllQuests().find((x) => x.dag === n);
@@ -103,52 +106,55 @@ export function Foreldredel({
 
   return (
     <>
-      <Seksjon
-        id="status"
-        tittel="Status"
-        farge={lost ? "border-(--gold)" : "border-(--cold-blue)"}
-      >
-        <p className="text-2xl">
-          {lost ? (
-            <span className="text-(--gold)">
-              ✓ Løst{nar && ` ${klokka(nar)}`}
-            </span>
-          ) : (
-            <span>Ikke løst ennå</span>
+      {!bareKveld && (
+        <Seksjon
+          id="status"
+          tittel="Status"
+          farge={lost ? "border-(--gold)" : "border-(--cold-blue)"}
+        >
+          <p className="text-2xl">
+            {lost ? (
+              <span className="text-(--gold)">
+                ✓ Løst{nar && ` ${klokka(nar)}`}
+              </span>
+            ) : (
+              <span>Ikke løst ennå</span>
+            )}
+          </p>
+          <p>
+            Feil forsøk: {feil}
+            {feil >= 3 && " (terminalen viser nå tipset fra Julius)"}
+          </p>
+          {symbol && (
+            <p>
+              Symbolkort ({symbol.description}):{" "}
+              {funnet ? "funnet ✓" : "ikke skannet ennå"}
+            </p>
           )}
-        </p>
-        <p>
-          Feil forsøk: {feil}
-          {feil >= 3 && " (terminalen viser nå tipset fra Julius)"}
-        </p>
-        {symbol && (
+          {bonus && (
+            <p>
+              Bonus ({bonus.tittel}): {bonusOk ? "godkjent ✓" : "ikke godkjent"}{" "}
+              <a href="#bonus" className={lenke}>
+                til bonus
+              </a>
+            </p>
+          )}
+        </Seksjon>
+      )}
+      {!bareKveld && (
+        <Seksjon id="fasit" tittel="Fasit" farge="border-(--gold)">
           <p>
-            Symbolkort ({symbol.description}):{" "}
-            {funnet ? "funnet ✓" : "ikke skannet ennå"}
+            <b>Kode:</b> <span className="text-(--gold)">{f(q.kode)}</span>
           </p>
-        )}
-        {bonus && (
+          <p>{f(d.mekanikk)}</p>
           <p>
-            Bonus ({bonus.tittel}): {bonusOk ? "godkjent ✓" : "ikke godkjent"}{" "}
-            <a href="#bonus" className={lenke}>
-              til bonus
-            </a>
+            <b>I huset:</b> {f(d.brikkeH)}
           </p>
-        )}
-      </Seksjon>
-
-      <Seksjon id="fasit" tittel="Fasit" farge="border-(--gold)">
-        <p>
-          <b>Kode:</b> <span className="text-(--gold)">{f(q.kode)}</span>
-        </p>
-        <p>{f(d.mekanikk)}</p>
-        <p>
-          <b>I huset:</b> {f(d.brikkeH)}
-        </p>
-        <p>
-          <b>Fra Julius:</b> {f(d.brikkeS)}
-        </p>
-      </Seksjon>
+          <p>
+            <b>Fra Julius:</b> {f(d.brikkeS)}
+          </p>
+        </Seksjon>
+      )}
 
       <Seksjon id="kveld" tittel={`I kveld: klar til dag ${n}`}>
         {d.utskrifter.length > 0 && (
@@ -197,7 +203,7 @@ export function Foreldredel({
         <Vurder id={`dag/${dd}/kveld`} />
       </Seksjon>
 
-      {bonus && (
+      {bonus && !bareKveld && (
         <Seksjon id="bonus" tittel={`Bonus: ${bonus.tittel}`}>
           <p>{bonus.fysisk_oppgave}</p>
           <p>
