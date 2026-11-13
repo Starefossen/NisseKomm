@@ -60,6 +60,30 @@ it("erSpørsmål: ends with ? or starts with a question word", () => {
   expect(erSpørsmål(undefined)).toBe(false);
 });
 
+it("erSpørsmål: Hans' real notes, English and modal verbs", () => {
+  for (const q of [
+    'automat? should this be "robot" instead',
+    'Hæ? "I natt fanget den…"?',
+    '"I dag er det 2. advent" ?',
+    '"Orakelet vil ha meg i vinduet" what does this mean?',
+    "Må dette være så langt",
+    "should we cut it",
+    '"Kan" dette sies sånn',
+  ])
+    expect([q, erSpørsmål(q)]).toEqual([q, true]);
+  for (const n of [
+    '"Sier man det?"',
+    "Bytt til «Sier man det?» i linje 2",
+    "For lang. Kutt slutten",
+    "Måneskinn er for lyst",
+    "Island er fint",
+  ])
+    expect([n, erSpørsmål(n)]).toEqual([n, false]);
+  // old approved notes keep the old rule
+  expect(erSpørsmål("Må dette kuttes", false)).toBe(false);
+  expect(erSpørsmål("Hvorfor blå", false)).toBe(true);
+});
+
 describe("svar", () => {
   it("validates id and tekst", async () => {
     for (const body of [

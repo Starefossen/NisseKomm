@@ -800,13 +800,32 @@ const tekstArg = (x: unknown, navn: string, maks: number) => {
   return t;
 };
 
-/** A note that asks something: ends with «?» or starts with a question word. */
-export const erSpørsmål = (t?: string) =>
-  !!t &&
-  (/\?\s*$/.test(t) ||
-    /^\s*(hvorfor|hva|hvordan|hvem|hvor|hvilken|hvilket|hvilke|når)\b/i.test(
-      t,
-    ));
+const SPM_ORD =
+  "hvorfor|hva|hvordan|hvem|hvor|hvilken|hvilket|hvilke|når|kan|skal|bør|burde|må|er|blir|går|stemmer|vil|hadde|what|why|how|where|when|who|which|should|can|could|would|is|are|does|do|did|will";
+const SPM_START = new RegExp(`^\\s*["«“'‘]?(?:${SPM_ORD})(?![\\p{L}])`, "iu");
+/** Fra denne datoen gjelder det brede spørsmålsbegrepet også for godkjente notater. */
+export const SPM_BRED_FRA = "2026-11-13";
+
+/**
+ * A note that asks something: a «?» outside quotes (a «?» only inside «»/""/''
+ * quotes from the script does not count), or a start with a question word.
+ * `bred` false = the old rule (ends with «?» or hv-word/«når» start) for old approved notes.
+ */
+export const erSpørsmål = (t?: string, bred = true) => {
+  if (!t) return false;
+  if (!bred)
+    return (
+      /\?\s*$/.test(t) ||
+      /^\s*(hvorfor|hva|hvordan|hvem|hvor|hvilken|hvilket|hvilke|når)(?![\p{L}])/iu.test(
+        t,
+      )
+    );
+  const utenSitat = t.replace(
+    /«[^»]*»|"[^"]*"|“[^”]*”|(?<!\p{L})'[^']*'/gu,
+    "",
+  );
+  return utenSitat.includes("?") || SPM_START.test(t);
+};
 
 export const ARBEID_MS = 2 * 3600_000;
 
@@ -841,7 +860,11 @@ export function sløyfe(l: Lager, nå = Date.now()) {
     for (const v of e.vurderinger) {
       const når = v.oppdatert ?? "";
       if (
-        erSpørsmål(v.notat) &&
+        erSpørsmål(
+          v.notat,
+          når >= SPM_BRED_FRA ||
+            !["godkjent", "ok"].includes(v.vurdering ?? ""),
+        ) &&
         !tråd.some((x) => x.når > når) &&
         !((e.spmLukket ?? "") > når)
       )
