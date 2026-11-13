@@ -3,6 +3,7 @@ import { createReadStream } from "node:fs";
 import {
   appendFile,
   mkdir,
+  open,
   readFile,
   rename,
   stat,
@@ -87,7 +88,8 @@ async function nå(dir: string, id: string) {
   return { stempel: v, hash: async () => v };
 }
 
-async function gjeldende(dir: string, v: Vurdering) {
+/** Is the verdict still given to what the file holds now? */
+export async function gjeldende(dir: string, v: Vurdering) {
   if (v.hash === ALLTID) return true;
   if (v.hash === UTDATERT) return false;
   const n = await nå(dir, v.fil);
@@ -232,6 +234,34 @@ export async function lesLager(dir: string, fil = path.join(dir, FIL)) {
   return lager;
 }
 
+/** <store>.lock (O_EXCL), shared with medie.lås in python: one read-modify-write at a time across processes. */
+export async function medLås<T>(fil: string, f: () => Promise<T>): Promise<T> {
+  const lås = `${fil}.lock`;
+  const frist = Date.now() + 10_000;
+  await mkdir(path.dirname(fil), { recursive: true });
+  for (;;) {
+    try {
+      await (await open(lås, "wx")).close();
+      break;
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code !== "EEXIST") throw err;
+      const info = await stat(lås).catch(() => null);
+      // A writer that died holding it.
+      if (info && Date.now() - info.mtimeMs > 30_000) {
+        await unlink(lås).catch(() => {});
+        continue;
+      }
+      if (Date.now() > frist) throw new Error(`${lås} er låst`);
+      await new Promise((r) => setTimeout(r, 20));
+    }
+  }
+  try {
+    return await f();
+  } finally {
+    await unlink(lås).catch(() => {});
+  }
+}
+
 // One writer at a time: «Godkjenn alle på dagen» posts in parallel.
 let kø: Promise<unknown> = Promise.resolve();
 export function endreLager<T>(
@@ -239,12 +269,14 @@ export function endreLager<T>(
   f: (l: Lager) => Promise<T> | T,
   fil = path.join(dir, FIL),
 ): Promise<T> {
-  const svar = kø.then(async () => {
-    const l = await lesLager(dir, fil);
-    const ut = await f(l);
-    await skriv(fil, l);
-    return ut;
-  });
+  const svar = kø.then(() =>
+    medLås(fil, async () => {
+      const l = await lesLager(dir, fil);
+      const ut = await f(l);
+      await skriv(fil, l);
+      return ut;
+    }),
+  );
   kø = svar.catch(() => {});
   return svar;
 }
@@ -255,6 +287,8 @@ export async function settVurdering(
   l: Lager,
   fil: string,
   o: Oppføring,
+  /** The content the verdict was given to, when it is not what is there now (a segment's seen take). */
+  sett?: string,
 ) {
   const e = (l.elementer[versionKey(fil)] ??= {
     vurderinger: [],
@@ -263,7 +297,9 @@ export async function settVurdering(
   e.historikk.push(...e.vurderinger.filter((v) => v.fil === fil));
   e.vurderinger = e.vurderinger.filter((v) => v.fil !== fil);
   if (!o.vurdering && !o.notat && !o.tagger?.length) return null;
-  const n = await nå(dir, fil);
+  const n = sett
+    ? { stempel: sett, hash: async () => sett }
+    : await nå(dir, fil);
   const v = ren<Vurdering>({
     ...o,
     versjon: n.stempel ?? undefined,

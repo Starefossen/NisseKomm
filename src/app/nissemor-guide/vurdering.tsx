@@ -61,7 +61,12 @@ export const lagreTagger = (
   o: { tagger?: string[]; tid?: number | null },
 ) => post({ path: id, ...o });
 
-async function post(body: object) {
+/** Segment id → the raw take hash in the video on screen (SegmentStripe fills it). */
+export const settTagning = new Map<string, string>();
+
+async function post(body: { path: string }) {
+  const raw = settTagning.get(body.path);
+  if (raw) body = { ...body, raw } as typeof body;
   const r = await fetch("/api/media/vurdering", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

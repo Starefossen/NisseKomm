@@ -162,3 +162,37 @@ describe("segmentvurdering følger råklippet", () => {
     ).toBe("godkjent");
   });
 });
+
+describe("fillås mot medie.py", () => {
+  it("parallelle lagringer fra python og serveren mister ingenting", async () => {
+    const { spawn } = await import("node:child_process");
+    const dir = await mkdtemp(path.join(tmpdir(), "lås-"));
+    const fil = path.join(dir, "media-vurdering.json");
+    const py = `
+import sys, time
+sys.path.insert(0, "assets/bin")
+import medie
+from pathlib import Path
+f = Path(sys.argv[1])
+for i in range(25):
+    with medie.lås(f):
+        d = medie.les_lager(f) or {"format": 2, "sesong": 2026, "elementer": {}}
+        time.sleep(0.004)
+        d["elementer"][f"py{i}"] = {"vurderinger": [{"fil": f"py{i}", "hash": "*", "notat": "x"}], "historikk": []}
+        medie.skriv_lager(f, d)
+`;
+    const python = new Promise<number | null>((ok) =>
+      spawn("python3", ["-c", py, fil], { stdio: "inherit" }).on("exit", ok),
+    );
+    for (let i = 0; i < 25; i++)
+      await endreLager(dir, async (l) => {
+        await new Promise((r) => setTimeout(r, 4));
+        await settVurdering(dir, l, `ts${i}`, { notat: "x" });
+      });
+    expect(await python).toBe(0);
+    const ider = Object.keys((await lesLager(dir)).elementer);
+    expect(ider.filter((k) => k.startsWith("py"))).toHaveLength(25);
+    expect(ider.filter((k) => k.startsWith("ts"))).toHaveLength(25);
+    expect(existsSync(`${fil}.lock`)).toBe(false);
+  }, 30_000);
+});

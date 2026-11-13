@@ -258,6 +258,62 @@ describe("API /api/media/vurdering - Functionality", () => {
     });
   });
 
+  it("tags alone never restamp a verdict onto changed content", async () => {
+    const fs = await import("node:fs/promises");
+    const fil = "video/julius/dag-03.mp4";
+    await fs.mkdir(path.join(testDir, "video/julius"), { recursive: true });
+    await fs.writeFile(path.join(testDir, fil), "tagning 1");
+    await POST(makeReq("POST", { path: fil, vurdering: "godkjent" }, auth));
+    await fs.writeFile(path.join(testDir, fil), "tagning nummer 2");
+    const res = await POST(
+      makeReq("POST", { path: fil, tagger: ["pause"], tid: 4 }, auth),
+    );
+    expect(res.status).toBe(200);
+    const all = await (await GET(makeReq("GET", undefined, auth))).json();
+    expect(all[fil].vurdering).toBeUndefined();
+    expect(all[fil].forrige).toMatchObject({ vurdering: "godkjent" });
+  });
+
+  it("stamps a segment verdict with the take that was watched", async () => {
+    const fs = await import("node:fs/promises");
+    const j = path.join(testDir, "video/julius");
+    await fs.mkdir(j, { recursive: true });
+    const side = (raw: string) =>
+      JSON.stringify([
+        { s: 3, start: 0, slutt: 1, hash: "h", raw, replikk: "", flagg: [] },
+      ]);
+    await fs.writeFile(
+      path.join(j, "dag-14.segmenter.json"),
+      side("aaaaaaaaaaaa"),
+    );
+    await fs.utimes(path.join(j, "dag-14.segmenter.json"), 1, 1);
+    await fs.writeFile(
+      path.join(j, "dag-14-v2.segmenter.json"),
+      side("bbbbbbbbbbbb"),
+    );
+    const id = "video/julius/dag-14#s3";
+    const bad = await POST(
+      makeReq(
+        "POST",
+        { path: id, vurdering: "godkjent", raw: "cccccccccccc" },
+        auth,
+      ),
+    );
+    expect(bad.status).toBe(400);
+    const res = await POST(
+      makeReq(
+        "POST",
+        { path: id, vurdering: "godkjent", raw: "aaaaaaaaaaaa" },
+        auth,
+      ),
+    );
+    expect((await res.json()).entry.versjon).toBe("aaaaaaaaaaaa");
+    // The newest join holds another take: the verdict is not on it.
+    const all = await (await GET(makeReq("GET", undefined, auth))).json();
+    expect(all[id].vurdering).toBeUndefined();
+    expect(all[id].forrige).toMatchObject({ vurdering: "godkjent" });
+  });
+
   it("stamps real time even when the app mocks the date", async () => {
     process.env.NEXT_PUBLIC_MOCK_MONTH = "12";
     process.env.NEXT_PUBLIC_MOCK_DAY = "10";

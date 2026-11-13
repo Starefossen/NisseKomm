@@ -20,6 +20,7 @@ import {
   KOLONNER,
   alleElementer,
   dagElement,
+  egenVurdering,
   ekstraRader,
   nesteUvurdert,
   tilstand,
@@ -133,7 +134,9 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
   const [valgt, setValgt] = useState(0);
   const linjer: Linje[] = ko ? ko[fane] : [];
   const lenke = (l: Linje) =>
-    liste.some((e) => e.id === l.id) ? href(l.id) : "/nissemor-guide/media";
+    liste.some((e) => e.id === l.id)
+      ? href(l.id) + (l.seg ? `&s=${l.seg}` : "")
+      : "/nissemor-guide/media";
 
   useEffect(() => {
     const ned = (ev: KeyboardEvent) => {
@@ -439,7 +442,10 @@ function Vurdering({
       )
         return;
       const tast = ev.key.toLowerCase();
-      if (taggTast(ev, id) || (!ev.shiftKey && vurderTast(tast, id)))
+      if (
+        egenVurdering(id) &&
+        (taggTast(ev, id) || (!ev.shiftKey && vurderTast(tast, id)))
+      )
         ev.preventDefault();
       else if (tast === "n" && neste) router.push(href(neste.id));
       else if (tast === "p" && forrige) router.push(href(forrige.id));
@@ -498,7 +504,14 @@ function Vurdering({
             </>
           )}
         </p>
-        <Vurder id={e.id} />
+        {egenVurdering(e.id) ? (
+          <Vurder id={e.id} />
+        ) : (
+          <p className="text-(--cold-blue)">
+            Manus vurderes per segment under (G/O/L på hvert segment, eller
+            «Godkjenn alle på dagen»).
+          </p>
+        )}
         {e.media.map((p) => (
           <TaIBruk key={p} path={p} data={d.media} />
         ))}

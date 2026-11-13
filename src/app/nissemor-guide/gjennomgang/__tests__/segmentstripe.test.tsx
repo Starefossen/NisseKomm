@@ -97,7 +97,12 @@ describe("SegmentStripe", () => {
     expect(boks.textContent).toContain("Maskinen fant:");
     await tast("g");
     expect(poster).toEqual([
-      { path: "video/julius/dag-13#s2", vurdering: "godkjent", notat: "" },
+      {
+        path: "video/julius/dag-13#s2",
+        vurdering: "godkjent",
+        notat: "",
+        raw: "r2",
+      },
     ]);
     // The page's G (the join) never saw it.
     expect(side).not.toHaveBeenCalledWith(

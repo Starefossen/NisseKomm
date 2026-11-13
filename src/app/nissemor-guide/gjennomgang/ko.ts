@@ -29,6 +29,8 @@ export interface Linje {
   kommando?: string;
   /** NOK for a retake (PRIS). */
   pris?: number;
+  /** Segment to open in the segment strip (`&s=`). */
+  seg?: number;
 }
 
 /** From /api/media/ko. */
@@ -38,6 +40,8 @@ export interface KoServer {
   jobber: Record<string, string>;
   /** Segment numbers per Julius day (julius-manus.json). */
   manus: Record<string, number[]>;
+  /** Machine flags per segment of the Julius video in use, by day. */
+  flagg?: Record<string, { s: number; flagg: string[] }[]>;
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -243,7 +247,19 @@ export function byggKo(
           ),
         });
     }
-    if (harVideo) continue;
+    if (harVideo) {
+      // A script changed after its video: the video may say the old lines.
+      const endret = segs.filter((n) => vurd[`${id}#s${n}`]?.forrige);
+      if (endret.length)
+        venter.push({
+          id,
+          tittel: `Manus dag ${dag}`,
+          type: "manus",
+          dag,
+          hva: `manus endret etter videoen (s${endret.join(", s")})`,
+        });
+      continue;
+    }
     const venterHer = åpne.filter((n) => !vurd[`${id}#s${n}`]?.vurdering);
     segmenter += venterHer.length;
     if (venterHer.length)
@@ -282,6 +298,23 @@ export function byggKo(
       pris: PRIS.video,
       kommando: segmentHint(id, "lag_paa_nytt").replace(/^ → /, ""),
     });
+  }
+
+  // Flagged segments Hans has not judged yet: one line each.
+  for (const [d, segs] of Object.entries(s.flagg ?? {})) {
+    const dag = Number(d);
+    const el = liste.find((e) => e.gruppe === "julius" && e.dag === dag)?.id;
+    for (const { s: n, flagg } of segs) {
+      if (vurd[`video/julius/dag-${pad(dag)}#s${n}`]?.vurdering) continue;
+      venter.push({
+        id: el ?? `video/julius/dag-${pad(dag)}.mp4`,
+        tittel: `Julius dag ${dag} s${n}`,
+        type: "julius",
+        dag,
+        seg: n,
+        hva: `dag ${dag} s${n}: ! ${flagg.join("; ")}`,
+      });
+    }
   }
 
   for (const [id, v] of Object.entries(vurd))

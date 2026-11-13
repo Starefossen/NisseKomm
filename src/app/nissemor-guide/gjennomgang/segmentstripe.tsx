@@ -11,6 +11,7 @@ import {
 } from "@/lib/segmenter";
 import type { MediaVurderingItem } from "@/app/api/media/vurdering/route";
 import {
+  settTagning,
   SkjulVurder,
   taggTast,
   useVurderinger,
@@ -42,7 +43,10 @@ export function SegmentStripe({
   children: ReactNode;
 }) {
   const [segs, setSegs] = useState<Segment[] | null>(null);
-  const [valgt, setValgt] = useState<number | null>(null);
+  // `&s=3` from a queue line opens that segment.
+  const [valgt, setValgt] = useState<number | null>(
+    () => Number(new URLSearchParams(location.search).get("s")) || null,
+  );
   const video = useRef<HTMLVideoElement>(null);
   const stopp = useRef<number | null>(null);
   const alle = useVurderinger();
@@ -51,7 +55,12 @@ export function SegmentStripe({
     let aktiv = true;
     fetch(`/api/guide/segmenter?fil=${encodeURIComponent(path)}`)
       .then((r) => (r.ok ? r.json() : []))
-      .then((s: Segment[]) => aktiv && setSegs(s))
+      .then((s: Segment[]) => {
+        if (!aktiv) return;
+        for (const x of s)
+          if (x.raw) settTagning.set(segmentId(path, x.s), x.raw);
+        setSegs(s);
+      })
       .catch(() => aktiv && setSegs([]));
     return () => {
       aktiv = false;

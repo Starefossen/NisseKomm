@@ -30,6 +30,8 @@ import os
 import re
 import subprocess
 import sys
+import time
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -86,6 +88,30 @@ def les_lager(f: Path) -> dict:
     return json.loads(f.read_text()) if f.exists() else {}
 
 
+@contextmanager
+def lås(f: Path, vent: float = 10.0):
+    """media-vurdering.json.lock (O_EXCL), shared with withLås in src/lib/vurdering-lager.ts: one read-modify-write at a time."""
+    lock, frist = f.with_name(f.name + ".lock"), time.monotonic() + vent
+    while True:
+        try:
+            os.close(os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY))
+            break
+        except FileExistsError:
+            try:  # a writer that died holding it
+                if time.time() - lock.stat().st_mtime > 30:
+                    lock.unlink(missing_ok=True)
+                    continue
+            except FileNotFoundError:
+                continue
+            if time.monotonic() > frist:
+                raise SystemExit(f"{lock} er låst; prøv igjen")
+            time.sleep(0.02)
+    try:
+        yield
+    finally:
+        lock.unlink(missing_ok=True)
+
+
 def skriv_lager(f: Path, data: dict):
     tmp = f.with_suffix(f".tmp.{os.getpid()}")
     try:
@@ -111,34 +137,36 @@ def vurderinger(f: Path = None) -> dict:
 
 def fjern_vurdering(f: Path, id: str):
     """A redo is done: the verdict goes to historikk, the note stays."""
-    data = les_lager(f)
-    if data.get("format") != 2:
-        v = data.get(id)
-        if isinstance(v, dict):
-            v.pop("vurdering", None)
-            v.pop("status", None)
-        if not isinstance(v, dict) or not v:
-            data.pop(id, None)
-    else:
-        for e in data["elementer"].values():
-            for v in [v for v in e["vurderinger"] if v["fil"] == id]:
-                e["historikk"].append(dict(v))
+    with lås(f):
+        data = les_lager(f)
+        if data.get("format") != 2:
+            v = data.get(id)
+            if isinstance(v, dict):
                 v.pop("vurdering", None)
-                if not v.get("notat"):
-                    e["vurderinger"].remove(v)
-    skriv_lager(f, data)
+                v.pop("status", None)
+            if not isinstance(v, dict) or not v:
+                data.pop(id, None)
+        else:
+            for e in data["elementer"].values():
+                for v in [v for v in e["vurderinger"] if v["fil"] == id]:
+                    e["historikk"].append(dict(v))
+                    v.pop("vurdering", None)
+                    if not v.get("notat"):
+                        e["vurderinger"].remove(v)
+        skriv_lager(f, data)
 
 
 def flytt_vurderinger(f: Path, ny: dict):
     """Files renamed on disk: verdicts follow (format 2 keeps their hash; -vN and .old-N stay in one element)."""
-    data = les_lager(f)
-    if data.get("format") != 2:
-        data = {ny.get(k, k): v for k, v in data.items()}
-    else:
-        for e in data["elementer"].values():
-            for v in e["vurderinger"] + e["historikk"]:
-                v["fil"] = ny.get(v["fil"], v["fil"])
-    skriv_lager(f, data)
+    with lås(f):
+        data = les_lager(f)
+        if data.get("format") != 2:
+            data = {ny.get(k, k): v for k, v in data.items()}
+        else:
+            for e in data["elementer"].values():
+                for v in e["vurderinger"] + e["historikk"]:
+                    v["fil"] = ny.get(v["fil"], v["fil"])
+        skriv_lager(f, data)
 
 
 def godkjent(vurd: dict, id: str, versjon: str) -> bool:
@@ -205,24 +233,25 @@ def radio_manus(root: Path = ROOT) -> dict:
 def radio_avled(media: Path, root: Path = ROOT) -> list:
     """Days whose clip is approved on the file there now and made from today's text: their script counts approved."""
     f = vurdering_fil(media)
-    data = les_lager(f)
-    if data.get("format") != 2:
-        raise SystemExit("media-vurdering.json er ikke format 2: åpne guiden én gang først")
-    vurd, el, nye = flat(data), data["elementer"], []
-    for d, m in radio_manus(root).items():
-        fil, id = f"audio/rampenissen/dag-{int(d):02d}.mp3", radio_id(int(d))
-        lyd = next((v for e in el.values() for v in e["vurderinger"] if v["fil"] == fil), None)
-        p = media / fil
-        if (id in vurd or not lyd or lyd.get("vurdering") not in ("godkjent", "ok") or not p.exists()
-                or lyd["hash"] != sha(p.read_bytes())[:12] or status(p, fil, root)[0] != CURRENT):
-            continue
-        el[id] = {"vurderinger": [{"vurdering": "godkjent", "oppdatert": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                                   "versjon": m["hash"], "hash": m["hash"], "fil": id,
-                                   "kilde": "avledet fra godkjent lydklipp"}], "historikk": []}
-        nye.append(id)
-    if nye:
-        skriv_lager(f, data)
-    return nye
+    with lås(f):
+        data = les_lager(f)
+        if data.get("format") != 2:
+            raise SystemExit("media-vurdering.json er ikke format 2: åpne guiden én gang først")
+        vurd, el, nye = flat(data), data["elementer"], []
+        for d, m in radio_manus(root).items():
+            fil, id = f"audio/rampenissen/dag-{int(d):02d}.mp3", radio_id(int(d))
+            lyd = next((v for e in el.values() for v in e["vurderinger"] if v["fil"] == fil), None)
+            p = media / fil
+            if (id in vurd or not lyd or lyd.get("vurdering") not in ("godkjent", "ok") or not p.exists()
+                    or lyd["hash"] != sha(p.read_bytes())[:12] or status(p, fil, root)[0] != CURRENT):
+                continue
+            el[id] = {"vurderinger": [{"vurdering": "godkjent", "oppdatert": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                                       "versjon": m["hash"], "hash": m["hash"], "fil": id,
+                                       "kilde": "avledet fra godkjent lydklipp"}], "historikk": []}
+            nye.append(id)
+        if nye:
+            skriv_lager(f, data)
+        return nye
 
 
 def strek_text(day: int, root: Path = ROOT) -> str:

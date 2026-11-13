@@ -11,7 +11,10 @@ Script gate: a segment that would cost a video call needs its script approved (g
 id manus/julius/dag-NN#sK, on the current hash of [line, secs, action] (the take.json key). Otherwise it stops
 and lists what is missing. --uten-manusgodkjenning skips the gate: use it ONLY when Hans has said yes explicitly.
 Segment lock: a segment whose clip is approved (video/julius/dag-NN#sK, godkjent/ok on the raw clip's hash)
-is never remade, not even with --alle. --segment N (repeatable) remakes only those segments and keeps the rest.
+is never remade, not even with --alle. --extend goes through the same gate and lock (it refuses if any
+segment is locked). Without media-vurdering.json (wrong MEDIA_DIR) both fail closed: it stops.
+Outside the gate: --manus <fil> (promo, own script, not reviewed), --dry-run/--join-only/--refilter (no calls),
+and generer.py --selvtest (no calls). --segment N (repeatable) remakes only those segments and keeps the rest.
 The join writes dag-NN-vN.segmenter.json next to the video (timecodes, take hash, transcript, flags).
 
 Skips a day whose video is current (see medie.py) unless --force.
@@ -394,6 +397,23 @@ def bake_manus() -> dict:
     return out
 
 
+def lager_eller_stopp(f: Path) -> dict:
+    """The verdicts, or stop: without the store the lock cannot be checked, so it fails closed."""
+    if not f.exists():
+        sys.exit(f"Stoppet: finner ikke {f} (riktig MEDIA_DIR?); uten vurderingene kan manusporten og låsen ikke sjekkes")
+    return medie.vurderinger(f)
+
+
+def sjekk_port(day: int, keys: list, raws: dict, trenger: set) -> set:
+    """Gate and lock before paid calls (main and --extend): the locked segments, or stop."""
+    locked, missing = port(day, keys, lager_eller_stopp(medie.vurdering_fil()), raws, trenger)
+    if missing and "--uten-manusgodkjenning" not in sys.argv:
+        sys.exit(f"Stoppet: manus ikke godkjent for dag {day} segment {', '.join(map(str, missing))}.\n"
+                 + "".join(f"  {manus_id(day, i)}: «{keys[i - 1][0][:70]}»\n" for i in missing)
+                 + f"Godkjenn i guiden: /nissemor-guide/gjennomgang?id=manus/julius/dag-{day:02d}")
+    return locked
+
+
 def port(day: int, keys: list, vurd: dict, raw: dict, trenger: set):
     """(locked, missing): segments whose clip is approved on its raw hash (never remade), and segments in
     `trenger` (would cost a call) whose script is not approved on the current hash."""
@@ -497,12 +517,11 @@ def main():
             return i in valgt
         return "--alle" in sys.argv or not clip.exists() or not take.exists() or json.loads(take.read_text()) != keys[i - 1]
 
-    locked_ok, missing = port(day, keys, medie.vurderinger(), raws, {i for i in raws if trenger(i)})
     offline = dry or "--join-only" in sys.argv or "--refilter" in sys.argv
-    if missing and not offline and not promo and "--uten-manusgodkjenning" not in sys.argv:
-        sys.exit(f"Stoppet: manus ikke godkjent for dag {day} segment {', '.join(map(str, missing))}.\n"
-                 + "".join(f"  {manus_id(day, i)}: «{keys[i - 1][0][:70]}»\n" for i in missing)
-                 + f"Godkjenn i guiden: /nissemor-guide/gjennomgang?id=manus/julius/dag-{day:02d}")
+    if offline or promo:
+        locked_ok = port(day, keys, medie.vurderinger(), raws, set())[0]
+    else:
+        locked_ok = sjekk_port(day, keys, raws, {i for i in raws if trenger(i)})
     for i, (line, secs, action, kulde, locked) in enumerate(segs, 1):
         name = f"dag{day:02d}-{i}"
         names.append(name)
@@ -636,6 +655,12 @@ def extend_day(day: int):
     import time
 
     segs = segments(day)
+    keys = [take_key(*seg) for seg in segs]
+    raws = {i: raw_hash(OUT / f"dag{day:02d}-{i}.raw.mp4") for i in range(1, len(segs) + 1)}
+    if "--dry-run" not in sys.argv:
+        # Extend remakes the whole day: every script approved, and no approved clip thrown away.
+        if locked := sjekk_port(day, keys, raws, set(raws)):
+            sys.exit(f"Stoppet: segment {', '.join(map(str, sorted(locked)))} er godkjent og låst; --extend lager hele dagen på nytt")
     suffix = sys.argv[sys.argv.index("--suffix") + 1] if "--suffix" in sys.argv else ""
     dest = DEST / f"dag-{day:02d}{suffix}.mp4"
     chains, cur, cap, tokens = [], None, CHAIN_MAX, 0
@@ -886,6 +911,11 @@ def test_port():
                        "hørt": "hei snøfall", "dekning": 1.0, "flagg": []}
     assert side[1]["raw"] is None and side[1]["hørt"] is None and side[1]["flagg"] == []
     assert segment_varsler("ord " * 30, 10, "Hvisker.", True)[-1].startswith("STOPPER")
+    try:  # a wrong MEDIA_DIR: the lock fails closed
+        lager_eller_stopp(Path("/finnes/ikke/media-vurdering.json"))
+        raise AssertionError("lager_eller_stopp slapp gjennom uten lager")
+    except SystemExit:
+        pass
 
 
 def selftest():

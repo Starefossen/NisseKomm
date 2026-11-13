@@ -104,7 +104,7 @@ describe("vurdering-versjon", () => {
     await writeFile(
       path.join(dir, "media-vurdering.json"),
       JSON.stringify({
-        "strek/dag01-v2.png": { vurdering: "godkjent", versjon: "gammel" },
+        "strek/dag01-v2.png": { vurdering: "godkjent", versjon: "2-1000" },
       }),
     );
     await taIBruk(dir, "strek/dag01-v2.png");

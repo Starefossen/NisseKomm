@@ -129,4 +129,33 @@ describe("byggKo", () => {
     ]);
     expect(ko.agent.map((l) => l.id)).toEqual(["audio/rampenissen/dag-07.mp3"]);
   });
+  it("lists flagged segments and scripts changed after the video", () => {
+    const ko = byggKo(
+      liste,
+      {
+        filer,
+        vurderinger: {
+          "manus/julius/dag-03#s1": {
+            forrige: { vurdering: "godkjent" },
+          } as never,
+          "video/julius/dag-03#s1": { vurdering: "godkjent" },
+        },
+      },
+      server({
+        flagg: {
+          "3": [
+            { s: 1, flagg: ["x"] },
+            { s: 2, flagg: ["mangler ord"] },
+          ],
+        },
+      }),
+    );
+    const hva = ko.venter.map((l) => l.hva);
+    expect(hva).toContain("dag 3 s2: ! mangler ord");
+    expect(hva.some((h) => h.includes("s1: !"))).toBe(false);
+    expect(hva).toContain("manus endret etter videoen (s1)");
+    expect(ko.venter.find((l) => l.seg === 2)?.id).toBe(
+      "video/julius/dag-03-v2.mp4",
+    );
+  });
 });

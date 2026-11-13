@@ -5,6 +5,7 @@ import manus from "@/data/julius-manus.json";
 import { forbruk } from "@/lib/forbruk";
 import { authorizeMedia, mediaDir, mediaStatus } from "@/lib/media-server";
 import { versionKey } from "@/lib/media-status";
+import type { KoServer } from "@/app/nissemor-guide/gjennomgang/ko";
 import { filHash, flat, lesLager } from "@/lib/vurdering-lager";
 
 /** The queue's server half: budget, duplicate files and image job ids (assets/ only exists in a checkout). */
@@ -50,7 +51,24 @@ export async function GET(req: NextRequest) {
       .filter(([, j]) => j.ut)
       .map(([k, j]) => [j.ut!, k.replace("/", ":")]),
   );
+  // Machine flags per segment of the video in use (the plain name's segmenter.json).
+  const flagg: KoServer["flagg"] = {};
+  await Promise.all(
+    Object.keys(manus).map(async (d) => {
+      const segs = await readFile(
+        path.join(dir, `video/julius/dag-${d.padStart(2, "0")}.segmenter.json`),
+        "utf8",
+      )
+        .then((t) => JSON.parse(t) as { s: number; flagg?: string[] }[])
+        .catch(() => []);
+      const f = segs
+        .filter((x) => x.flagg?.length)
+        .map((x) => ({ s: x.s, flagg: x.flagg! }));
+      if (f.length) flagg[d] = f;
+    }),
+  );
   return Response.json({
+    flagg,
     forbruk: forbruk(await readFile(logg, "utf8").catch(() => "")),
     duplikater,
     jobber,

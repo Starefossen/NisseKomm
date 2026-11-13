@@ -64,8 +64,8 @@ async function seksjonsInnhold(id: string): Promise<unknown> {
   return null;
 }
 
-/** Segment s's raw hash in the newest dag-NN*.segmenter.json under dir, or null. */
-async function segmentRaw(dir: string, dag: number, s: number) {
+/** Segment s's raw hashes in every dag-NN*.segmenter.json under dir, newest join first. */
+export async function segmentRaws(dir: string, dag: number, s: number) {
   const mappe = path.join(dir, "video/julius");
   const navn = await readdir(mappe).catch(() => [] as string[]);
   const filer = await Promise.all(
@@ -77,15 +77,16 @@ async function segmentRaw(dir: string, dag: number, s: number) {
       )
       .map(async (f) => ({ f, t: (await stat(path.join(mappe, f))).mtimeMs })),
   );
+  const ut: string[] = [];
   for (const { f } of filer.sort((a, b) => b.t - a.t)) {
     const segs = JSON.parse(await readFile(path.join(mappe, f), "utf8")) as {
       s: number;
       raw?: string | null;
     }[];
     const raw = segs.find((x) => x.s === s)?.raw;
-    if (raw) return raw;
+    if (raw) ut.push(raw);
   }
-  return null;
+  return ut;
 }
 
 /** Size and mtime for a media file, a hash of the baked text for a section, null when neither applies. */
@@ -102,8 +103,10 @@ export async function versjonAv(dir: string, id: string) {
       `dag${klipp[1]}-${klipp[2]}.raw.mp4`,
     );
     // Without assets/out (the lan pod): the raw hash the newest join recorded.
-    return readFile(raw).then(kort, () =>
-      segmentRaw(dir, Number(klipp[1]), Number(klipp[2])),
+    return readFile(raw).then(
+      kort,
+      async () =>
+        (await segmentRaws(dir, Number(klipp[1]), Number(klipp[2])))[0] ?? null,
     );
   }
   try {
