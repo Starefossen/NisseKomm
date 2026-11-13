@@ -38,7 +38,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 import forbruk  # noqa: E402
 import medie  # noqa: E402
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = medie.ROOT  # NISSEKOMM_ROOT: run this copy on another checkout's assets/out and public/
 BIN = ROOT / "assets" / "bin"
 OUT = ROOT / "assets" / "out"
 DEST = ROOT / "public" / "video" / "julius"
@@ -914,7 +914,7 @@ KUTT_SNAP = 0.6  # a cut point moves to the middle of a pause this close (Hans c
 
 
 def stillhet(clip: Path):
-    out = subprocess.run(["ffmpeg", "-nostdin", "-i", str(clip), "-vn", "-af", "silencedetect=n=-38dB:d=0.12", "-f", "null", "-"],
+    out = subprocess.run(["ffmpeg", "-nostdin", "-i", str(clip), "-vn", "-af", "silencedetect=n=-30dB:d=0.12", "-f", "null", "-"],
                          capture_output=True, text=True).stderr
     return [(float(a), float(b)) for a, b in re.findall(r"silence_start: (-?[\d.]+)[\s\S]*?silence_end: ([\d.]+)", out)]
 
