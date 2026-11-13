@@ -1067,6 +1067,14 @@ def main(argv):
         media = Path(args[0] if args else os.environ.get("MEDIA_DIR", ROOT / "public"))
         for a, b in rydd_kandidater(media):
             print(f"{a} -> {b}")
+    elif cmd == "arkiver":  # <fil>: file in use -> .old-N, for scripts run outside generer.py
+        archive(Path(args[0]))
+    elif cmd == "angre":  # <fil>: undo the newest arkiver when the run left no new file
+        f = Path(args[0])
+        old = sorted(f.parent.glob(f"{f.stem}.old-*{f.suffix}"), key=lambda q: int(q.name.split(".old-")[1].split(".")[0]))
+        if old:
+            unarchive([(f.parent / (f.name + side), old[-1].parent / (old[-1].name + side)) for side in ("", ".meta.json")
+                       if (old[-1].parent / (old[-1].name + side)).exists()])
     elif cmd == "unngaa":
         print(unngaa(args[0] if args and args[0] else laerdom_type(args[1] if len(args) > 1 else "")), end="")
     elif cmd == "--selvtest":

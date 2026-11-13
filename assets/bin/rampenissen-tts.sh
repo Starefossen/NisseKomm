@@ -21,7 +21,16 @@ done
 prompt() { printf "### DIRECTOR'S NOTES (never read aloud)\n%s\nKeep the pitch high and the tempo quick and bouncy; strong nordlandsk dialect throughout.\n\n#### TRANSCRIPT\n%s" "$STIL" "$1"; }
 if [ "${1:-}" = selftest ]; then
   p=$(STIL=S prompt "Hei.")
-  [[ $p == *"(never read aloud)"$'\n'S$'\n'*"pitch high"*$'\n\n'"#### TRANSCRIPT"$'\n'Hei. ]] && { echo ok; exit 0; }; echo "$p"; exit 1
+  [[ $p == *"(never read aloud)"$'\n'S$'\n'*"pitch high"*$'\n\n'"#### TRANSCRIPT"$'\n'Hei. ]] || { echo "$p"; exit 1; }
+  # archive + undo without a TTS call: arkiver moves the clip to .old-1, a failed run (no new file) brings it back
+  t=$(mktemp -d); m="python3 $(dirname "$0")/medie.py"; echo gammel > "$t/dag-01.mp3"; echo '{}' > "$t/dag-01.mp3.meta.json"
+  $m arkiver "$t/dag-01.mp3"
+  [ ! -e "$t/dag-01.mp3" ] && [ "$(cat "$t/dag-01.old-1.mp3")" = gammel ] && [ -e "$t/dag-01.old-1.mp3.meta.json" ] || { echo "arkiver feilet"; exit 1; }
+  $m angre "$t/dag-01.mp3"
+  [ "$(cat "$t/dag-01.mp3")" = gammel ] && [ -e "$t/dag-01.mp3.meta.json" ] && [ ! -e "$t/dag-01.old-1.mp3" ] || { echo "angre feilet"; exit 1; }
+  $m arkiver "$t/dag-01.mp3"; echo ny > "$t/dag-01.mp3"; $m angre "$t/dag-01.mp3"  # new file wins: nothing is overwritten
+  [ "$(cat "$t/dag-01.mp3")" = ny ] || { echo "angre overskrev ny fil"; exit 1; }
+  rm -rf "$t"; echo ok; exit 0
 fi
 D=$1; V=${2:-Fenrir}; O="$ROOT/public/audio/rampenissen"; T="$ROOT/assets/out/rampenissen"; mkdir -p "$O" "$T"
 M="python3 $ROOT/assets/bin/medie.py"; F="$O/dag-$(printf %02d "$D").mp3"
@@ -37,6 +46,11 @@ if [ "$D" = synger ]; then text=$(cat "$SRC"); else text=$($M tekst rampenissen 
 [ "$D" = synger ] || [ -n "$UTEN" ] || [ -n "$DRY" ] || $M radio-port "$D"
 STIL="$STIL$($M unngaa radio)"  # Hans' rules from Lærdom; the sidecar records them beside prompt_version
 [ -n "$DRY" ] && { prompt "$text"; echo; exit 0; }  # --dry-run: the prompt, no call
+# --force overwrites the plain name: keep the old clip as .old-N, and put it back if this run leaves no good new file.
+if [ -f "$F" ]; then
+  $M arkiver "$F"
+  trap '[ $? = 0 ] || { rm -f "$F" "$F.meta.json"; $M angre "$F"; }' EXIT
+fi
 # English read aloud at the start (radio-start.sh): one new try, at most 2 TTS calls.
 for forsok in 1 2; do
   bruk tts gemini-3.8-flash-tts "$F"
