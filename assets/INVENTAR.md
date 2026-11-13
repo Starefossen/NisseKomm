@@ -6,14 +6,14 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Type | ✓ | ⚠ | ? | ✗ | ○ | ◇ | - |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| julius | 4 | 8 | 0 | 12 | 0 | 26 | 6 |
+| julius | 4 | 8 | 0 | 12 | 0 | 27 | 6 |
 | rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 13 |
 | music | 13 | 0 | 0 | 1 | 0 | 0 | 0 |
 | tv | 20 | 4 | 0 | 0 | 15 | 0 | 18 |
 | port | 3 | 0 | 0 | 1 | 0 | 0 | 9 |
 | feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
-| spill | 56 | 3 | 0 | 4 | 0 | 0 | 25 |
-| strek | 10 | 14 | 0 | 0 | 0 | 2 | 9 |
+| spill | 54 | 5 | 0 | 4 | 0 | 0 | 25 |
+| strek | 15 | 14 | 0 | 0 | 0 | 2 | 14 |
 
 ## julius
 
@@ -75,6 +75,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-13-v3.mp4 | 8.3 MB | 2026-11-13 | ◇ ikke i manifestet |
 | video/julius/dag-14-v3.mp4 | 8.6 MB | 2026-11-13 | ◇ ikke i manifestet |
 | video/julius/dag-15-v1.mp4 | 8.9 MB | 2026-11-13 | ◇ ikke i manifestet |
+| video/julius/dag-18-v1.mp4 | 10.0 MB | 2026-11-13 | ◇ ikke i manifestet |
 
 ## rampenissen
 
@@ -255,7 +256,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/julebodene.png | 1.5 MB | 2026-11-13 | ✓ |
 | spill/piksel/kart.png | 1.6 MB | 2026-11-12 | ✓ |
 | spill/portrett-winter.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/portrett-hjerterud.png | 0.0 MB | 2026-11-13 | ✓ |
+| spill/portrett-hjerterud.png | 0.0 MB | 2026-11-13 | ⚠ referansebildet er endret: assets/characters/hjerterud/ref-portrett.jpg |
 | spill/portrett-iq.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/portrett-julius.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/julius/ref-portrett.jpg |
 | spill/portrett-floke.png | 0.0 MB | 2026-11-12 | ✓ |
@@ -264,7 +265,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/figur/rudolf-busk.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/tannhjul.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/peileskive.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/piksel/figur/hjerterud.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/figur/hjerterud.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/hjerterud/ref-portrett.jpg |
 | spill/piksel/figur/julius.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/julius/ref-portrett.jpg; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png |
 | spill/piksel/figur/brevfugl.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/winter.png | 0.0 MB | 2026-11-12 | ✓ |
@@ -323,13 +324,18 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/kart.old-1.png | 1.2 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-kart.txt; ikke i manifestet |
 | spill/portrett-hjerterud.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/hjerterud.txt; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png; ikke i manifestet |
 | spill/portrett-hjerterud.old-2.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/hjerterud.txt; referansebildet er endret: public/spill/piksel/kafe.png; ikke i manifestet |
-| spill/portrett-hjerterud.old-3.png | 0.0 MB | 2026-11-13 | - ikke i manifestet |
+| spill/portrett-hjerterud.old-3.png | 0.0 MB | 2026-11-13 | - referansebildet er endret: assets/characters/hjerterud/ref-portrett.jpg; ikke i manifestet |
 | spill/portrett-julius.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/julius.txt; ikke i manifestet |
 
 ## strek
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
+| strek/oppsett-dag04.png | 1.2 MB | 2026-11-13 | ✓ |
+| strek/oppsett-dag12.png | 1.0 MB | 2026-11-13 | ✓ |
+| strek/oppsett-dag15.png | 1.1 MB | 2026-11-13 | ✓ |
+| strek/oppsett-dag16.png | 1.1 MB | 2026-11-13 | ✓ |
+| strek/oppsett-dag21.png | 1.2 MB | 2026-11-13 | ✓ |
 | strek/dag01.png | 1.2 MB | 2026-11-12 | ✓ |
 | strek/dag02.png | 1.1 MB | 2026-11-12 | ✓ |
 | strek/dag03.png | 1.1 MB | 2026-11-12 | ✓ |
@@ -365,6 +371,11 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | strek/dag16.old-3.png | 1.2 MB | 2026-11-12 | - kildeteksten er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/assets/out/prompts/strek/dag16.txt; ikke i manifestet |
 | strek/dag16.old-4.png | 1.3 MB | 2026-11-12 | - ikke i manifestet |
 | strek/dag22-v1.png | 1.3 MB | 2026-11-12 | ◇ ikke i manifestet |
+| strek/oppsett-dag04.old-1.png | 1.4 MB | 2026-11-13 | - kildeteksten er endret: assets/prompts/strek/oppsett.txt Dag 4; ikke i manifestet |
+| strek/oppsett-dag04.old-2.png | 1.3 MB | 2026-11-13 | - kildeteksten er endret: assets/prompts/strek/oppsett.txt Dag 4; ikke i manifestet |
+| strek/oppsett-dag04.old-3.png | 1.4 MB | 2026-11-13 | - kildeteksten er endret: assets/prompts/strek/oppsett.txt Dag 4; ikke i manifestet |
+| strek/oppsett-dag16.old-1.png | 1.0 MB | 2026-11-13 | - kildeteksten er endret: assets/prompts/strek/oppsett.txt Dag 16; ikke i manifestet |
+| strek/oppsett-dag21.old-1.png | 1.1 MB | 2026-11-13 | - kildeteksten er endret: assets/prompts/strek/oppsett.txt Dag 21; ikke i manifestet |
 
 ## Gamle filer
 
