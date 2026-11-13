@@ -26,6 +26,14 @@ const ROOT = () => process.cwd();
 const filer: Record<string, string> = bakt;
 const read = async (rel: string) => filer[rel] ?? "";
 
+/** docs/gjennomganger/<dato>-<navn>.md, newest first. */
+export const gjennomganger = () =>
+  Object.keys(filer)
+    .filter((f) => f.startsWith("docs/gjennomganger/"))
+    .sort()
+    .reverse()
+    .map((f) => ({ navn: path.basename(f, ".md"), tekst: filer[f] }));
+
 export const MANUS = {
   julius: "docs/manus/julius-2026.md",
   radio: "docs/manus/rampenissen-radio-2026.md",

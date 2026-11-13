@@ -91,6 +91,7 @@ function EntitetKort({
 }
 
 const SIDER = [
+  ["/nissemor-guide/gjennomganger", "Gjennomganger (rapportene)"],
   ["/nissemor-guide/printout", "Utskrifter"],
   ["/nissemor-guide/media", "Filer"],
   ["/nissemor-guide/brevfugler", "Brev fra barna"],

@@ -1023,6 +1023,65 @@ export const TOOLS: Record<string, Tool> = {
       }
     },
   },
+  list_beslutninger: {
+    level: "parent",
+    description:
+      "Åpne valg for Hans (beslutning/<slug>), én blokk per beslutning: spørsmål, valg (★ = anbefalt) og svaret når Hans har svart. status «åpne» (standard) eller «alle».",
+    inputSchema: {
+      type: "object",
+      properties: { status: { type: "string", enum: ["åpne", "alle"] } },
+    },
+    run: async ({ status }) => {
+      const { lesBeslutninger } = await import("@/lib/beslutninger");
+      const alle = (await lesBeslutninger()).filter(
+        (b) => status === "alle" || !b.svar,
+      );
+      if (!alle.length) return "ingen beslutninger";
+      return alle
+        .map((b) =>
+          [
+            `beslutning/${b.slug} | ${b.svar ? `besvart ${b.svar.dato}: ${b.valg[b.svar.valg]}${b.svar.hvorfor ? ` (hvorfor: ${b.svar.hvorfor})` : ""}` : "åpen"} | ${b.spørsmål}`,
+            ...b.valg.map(
+              (v, i) => `  ${i + 1}${i === b.anbefalt ? "★" : ""}. ${v}`,
+            ),
+          ].join("\n"),
+        )
+        .join("\n");
+    },
+  },
+  opprett_beslutning: {
+    level: "parent",
+    description:
+      "Legg et valg i Hans' kø «Venter på deg» (høy prioritet): sporsmal, kontekst (kort), valg = 2–4 alternativer, anbefalt = indeks (0-basert) i valg, lenker = Gjennomgang-id-er det gjelder, slug (valgfri), av = agentnavn. Hans svarer i guiden; svaret havner i docs/beslutninger.md.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        sporsmal: { type: "string" },
+        kontekst: { type: "string" },
+        valg: { type: "array", items: { type: "string" } },
+        anbefalt: { type: "number" },
+        lenker: { type: "array", items: { type: "string" } },
+        slug: { type: "string" },
+        av: { type: "string" },
+      },
+    },
+    run: async (a) => {
+      const { opprettBeslutning, UgyldigBeslutning } =
+        await import("@/lib/beslutninger");
+      const navn =
+        String(a.av ?? "mcp")
+          .replace(/[^\w.-]/g, "")
+          .slice(0, 40) || "mcp";
+      try {
+        const b = await opprettBeslutning(a, `agent:${navn}`);
+        return { ok: true, id: `beslutning/${b.slug}` };
+      } catch (err) {
+        if (err instanceof UgyldigBeslutning)
+          throw new ArgError(`ugyldig argument: ${err.message}`);
+        throw err;
+      }
+    },
+  },
   svar_vurdering: {
     level: "parent",
     description:

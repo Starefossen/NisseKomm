@@ -176,3 +176,9 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - 2026-11-13: Feilene i de fire gjennomgangene 13.11 (dagtekster, guide og småspill, talemanus, Ugleposten runde 2) er rettet slik de ble foreslått; smak og «må ikke røres» står. Julius dag 16 seg 2 («i kveld») og dag 18 seg 2 («rundt Ulriken») tas om. Hvorfor: kontinuitet og lekkasjer, ikke smak.
 - 2026-11-13: Feilene i siste gjennomgang før manuslås (H1, M1–M4, L1–L4) er rettet; guidens «Dagen i storyboardet» viser ikke lenger utkastets gåte. Julius 4-4 og 6-5 er ikke godkjent i porten før Hans har lest dem. Hvorfor: guiden ga feil hint, og avskjedene var for lange for modellen.
 - 2026-11-13: Julius snakker aldri nordlandsk, heller ikke når han siterer Rampenissen; han gjengir ham på bokmål (6-2, 8-1, 11-1, 12-1, 13-1, 23-1 rettet, lint varsler). Hvorfor: nordlandsk er Rampenissens stemme, og videomodellen gjorde det til bokmål uansett.
+- 2026-11-13: Valg til Hans legges som beslutning i Gjennomgang (`docs/beslutninger-apne.json`), ikke i chat eller rapporter. Hvorfor: Hans vil gjøre all gjennomgang fra Nissemor-guiden.
+
+## Besvart i Gjennomgang
+
+Svar Hans gir på beslutninger i Gjennomgang (`docs/beslutninger-apne.json`) legges til her automatisk.
+

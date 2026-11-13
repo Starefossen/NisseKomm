@@ -469,7 +469,7 @@ export function SegmentStripe({
               onClick={() => spill(seg.start, seg.slutt)}
               className="min-h-11 px-3 border-2 border-(--neon-green)"
             >
-              Spill s{seg.s} ({tid(seg.start)}–{tid(seg.slutt)})
+              ▶ Hør segmentet s{seg.s} ({tid(seg.start)}–{tid(seg.slutt)})
             </button>
             {lytt && (
               <button
@@ -543,11 +543,11 @@ export function SegmentStripe({
             </p>
           )}
           <p>
-            <span className="text-(--gold)">Manus:</span> {seg.replikk}
+            <span className="text-(--gold)">Manus nå:</span> {seg.replikk}
           </p>
           {seg.hørt && (
             <p data-testid="ord-diff">
-              <span className="text-(--gold)">Hørt:</span>{" "}
+              <span className="text-(--gold)">Maskinen hørte i videoen:</span>{" "}
               {ordDiff(seg.replikk, seg.hørt).map((o, i) => (
                 <span
                   key={i}

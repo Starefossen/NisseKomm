@@ -2,7 +2,7 @@
 # Hans' vurderinger fra guiden via MCP-verktøyet list_vurderinger.
 # Bruk: mise run vurderinger [--alle] [--siden ISO] [--nye] [--prefiks P] [--historikk ID]
 #       mise run vurderinger --prioriter ID --grunn "…" [--hast] [--frist ISO] | --prioriter ID --fjern
-#       mise run vurderinger --svar ID "tekst" | --arbeid ID "hva" | --arbeid ID --ferdig | --regler TYPE
+#       mise run vurderinger --svar ID "tekst" | --arbeid ID "hva" | --arbeid ID --ferdig | --regler TYPE | --beslutninger [--alle]
 # (AGENT_NAVN navngir agenten i historikken)
 set -euo pipefail
 URL=${MCP_URL:-http://localhost:3000/mcp}
@@ -28,6 +28,7 @@ while [[ $# -gt 0 ]]; do
       tool=arbeid_vurdering; args=$(jq -c --arg v "$2" --arg a "${AGENT_NAVN:-cli}" '.id=$v|.av=$a' <<<"$args"); shift
       if [[ $# -gt 1 && $2 != --* ]]; then args=$(jq -c --arg t "$2" '.hva=$t' <<<"$args"); shift; fi ;;
     --ferdig) args=$(jq -c '.ferdig=true' <<<"$args") ;;
+    --beslutninger) tool=list_beslutninger ;;
     --regler) tool=regler_vurdering; args=$(jq -c --arg v "$2" '.type=$v' <<<"$args"); shift ;;
     *) echo "ukjent: $1" >&2; exit 2 ;;
   esac

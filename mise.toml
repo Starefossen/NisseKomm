@@ -180,7 +180,7 @@ pnpm exec jiti scripts/dev-db-import.mjs
 """
 
 [tasks.vurderinger]
-description = "Hans' vurderinger fra guiden via MCP (--alle, --siden ISO, --nye, --prefiks P, --historikk ID; --prioriter ID --grunn T [--hast] [--fjern]; --svar ID T; --arbeid ID T | --ferdig; --regler TYPE)"
+description = "Hans' vurderinger fra guiden via MCP (--alle, --siden ISO, --nye, --prefiks P, --historikk ID; --prioriter ID --grunn T [--hast] [--fjern]; --svar ID T; --arbeid ID T | --ferdig; --regler TYPE; --beslutninger [--alle])"
 raw = true
 run = "scripts/vurderinger.sh"
 

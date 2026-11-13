@@ -22,6 +22,7 @@ import { utskriftHref, utskriftTittel } from "../printout/filer";
 import { lagre, slug, SkjulVurder, useVurderinger, Vurder } from "../vurdering";
 import type { Element } from "./elementer";
 import { SegmentStripe } from "./segmentstripe";
+import { ordDiff, type Segment } from "@/lib/segmenter";
 import { SegmentBar } from "./celle";
 import { BildeVersjoner } from "./bilder";
 import { LysbordBilde } from "../lysbord";
@@ -63,6 +64,23 @@ function Manus({ d, port }: { d: Dag; port?: boolean }) {
   if (!j) return <p>Ikke noe manus for dagen.</p>;
   const id = (s: number) =>
     `manus/julius/dag-${String(d.dag).padStart(2, "0")}#s${s}`;
+  // What the video in use says per segment: a script read before a retake shows what changes.
+  const [hørt, setHørt] = useState<Record<number, string>>({});
+  useEffect(() => {
+    if (!port) return;
+    fetch(
+      `/api/guide/segmenter?fil=video/julius/dag-${String(d.dag).padStart(2, "0")}.mp4`,
+    )
+      .then((r) => (r.ok ? r.json() : []))
+      .then((x: Segment[]) =>
+        setHørt(
+          Object.fromEntries(
+            x.filter((g) => g.hørt).map((g) => [g.s, g.hørt as string]),
+          ),
+        ),
+      )
+      .catch(() => {});
+  }, [d.dag, port]);
   return (
     <SkjulVurder.Provider value={!port}>
       <p className="text-sm text-(--cold-blue) whitespace-pre-wrap mb-2">
@@ -96,6 +114,34 @@ function Manus({ d, port }: { d: Dag; port?: boolean }) {
                 )}
               </p>
               <p className="text-sm">Handling: {ren(s.handling)}</p>
+              {m && hørt[m.s] && (
+                <p className="text-sm" data-testid="manus-mot-video">
+                  <span className="text-(--cold-blue)">I videoen nå:</span>{" "}
+                  {ordDiff(ren(s.replikk), hørt[m.s]).map((o, k) => (
+                    <span
+                      key={k}
+                      className={
+                        o.t === "mangler"
+                          ? "text-(--christmas-red) underline"
+                          : o.t === "ekstra"
+                            ? "line-through opacity-60"
+                            : ""
+                      }
+                    >
+                      {o.w}{" "}
+                    </span>
+                  ))}
+                  (
+                  <span className="text-(--christmas-red) underline">
+                    nytt i manus
+                  </span>
+                  ,{" "}
+                  <span className="line-through opacity-60">
+                    bare i videoen
+                  </span>
+                  )
+                </p>
+              )}
               {port && m && <Vurder id={id(m.s)} />}
             </li>
           );

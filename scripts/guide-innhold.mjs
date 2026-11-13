@@ -30,6 +30,8 @@ const filer = [
     "assets/medier.json",
     ...maler,
     ...sporet.filter((f) => ENTITET.test(f)),
+    // Review reports for the guide's Gjennomganger page.
+    ...sporet.filter((f) => /^docs\/gjennomganger\/[\w-]+\.md$/.test(f)),
   ]),
 ]
   .filter((f) => sporet.includes(f))

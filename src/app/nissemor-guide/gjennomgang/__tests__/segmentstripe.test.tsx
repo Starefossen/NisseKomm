@@ -177,7 +177,7 @@ describe("SegmentStripe", () => {
     await act(async () => {
       boks.querySelector<HTMLButtonElement>('[data-seg="1"]')!.click();
     });
-    expect(boks.textContent).toContain("Spill s1");
+    expect(boks.textContent).toContain("Hør segmentet s1");
     await tast("Escape");
     await tast("g");
     expect(side).toHaveBeenCalledWith(expect.objectContaining({ key: "g" }));

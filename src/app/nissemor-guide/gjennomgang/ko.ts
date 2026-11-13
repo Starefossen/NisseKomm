@@ -15,6 +15,7 @@ import { juliusFiles } from "../media/oversikt";
 import { tilstand, type Element } from "./elementer";
 import { taggLinje } from "@/lib/vurdering-tagger";
 import type { Laerdom } from "@/lib/laerdom";
+import type { Beslutning } from "@/lib/beslutninger";
 import type { Arbeid, Prioritet, Spørsmål, Tråd } from "@/lib/vurdering-lager";
 
 /**
@@ -64,6 +65,8 @@ export interface KoServer {
   svar?: Record<string, Tråd>;
   spørsmål?: Record<string, Spørsmål>;
   arbeid?: Record<string, Arbeid & { stoppet?: boolean }>;
+  /** docs/beslutninger-apne.json: open ones wait on Hans, first in the queue. */
+  beslutninger?: Beslutning[];
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -595,6 +598,34 @@ export function byggKo(
     const p = prioritetFor(l.id, pr, liste.find((e) => e.id === l.id)?.media);
     if (p) l.prioritet = p;
   }
+  // A priority on something with no line yet (a script segment on a day with a video, a segment
+  // already OK): the priority is the reason to look, so it gets its own line until Hans judges it.
+  const brukt = new Set([...venter, ...agent].map((l) => l.prioritet?.fil));
+  for (const p of Object.values(pr))
+    if (!brukt.has(p.fil))
+      venter.push({
+        ...løs(p.fil),
+        tittel: p.fil.replace(/#s(\d+)$/, ", segment $1"),
+        seg: Number(p.fil.match(/^video\/.*#s(\d+)$/)?.[1]) || undefined,
+        hva: p.grunn,
+        prioritet: p,
+      });
+  for (const b of s.beslutninger ?? [])
+    if (!b.svar)
+      venter.push({
+        id: `beslutning/${b.slug}`,
+        tittel: b.spørsmål,
+        type: "beslutning",
+        dag: 0,
+        hva: "beslutning",
+        prioritet: {
+          fil: `beslutning/${b.slug}`,
+          nivaa: "høy",
+          grunn: "valg for Hans",
+          av: b.av,
+          når: b.opprettet,
+        },
+      });
   return {
     venter: venter.sort(medPrioritet),
     agent: agent.sort(sorter),

@@ -1,0 +1,55 @@
+[
+  {
+    "slug": "batteriene-ved-antennen",
+    "spørsmål": "Batteriene ved antennen: skal noe lukke tråden etter 20. desember?",
+    "kontekst": "PS dag 6 og feilrapporten dag 8 sier «batteri til 20. desember», men ingen tekst tar det opp 20.–21., og måleren sier «Flere for hver natt». Én logglinje fra dag 21 lukker den. (Siste gjennomgang 13.11, L5.)",
+    "lenker": ["dag/06/tekster", "dag/08/tekster", "dag/21/tekster"],
+    "valg": [
+      "Legg til logglinje dag 21: «IQ: Batteriene ved antennen byttet. Tredje gang.»",
+      "La det stå som nå"
+    ],
+    "anbefalt": 0,
+    "av": "agent:siste-gjennomgang",
+    "opprettet": "2026-11-13T12:00:00.000Z"
+  },
+  {
+    "slug": "ulriken-pa-vingen",
+    "spørsmål": "ULRIKEN: skal en tekst si hvorfor Winter skrev ordet på vingen?",
+    "kontekst": "Barna dekoder Winters ord på vingen dag 5, men ingen tekst sier hvorfor han skrev det. Fjellet kommer igjen dag 18 og på kartet. En halv setning i PS dag 5 holder. (L6.)",
+    "lenker": ["dag/05/tekster", "dag/18/tekster"],
+    "valg": [
+      "Legg til en halv setning i PS dag 5",
+      "La det stå som nå"
+    ],
+    "anbefalt": 0,
+    "av": "agent:siste-gjennomgang",
+    "opprettet": "2026-11-13T12:00:00.000Z"
+  },
+  {
+    "slug": "ps-dag-17-et-ar",
+    "spørsmål": "PS dag 17: «Jeg har ikke hørt fra den på et år»?",
+    "kontekst": "Linjen står mot en hel måned med 85,0 og «noe svarte» dag 12. Radio 17 ble rettet for det samme. Linjen er fin i seg selv. (L7.)",
+    "lenker": ["dag/17/tekster", "dag/12/tekster"],
+    "valg": [
+      "Bytt til «Det er første gang den svarer på noe vi har gjort.»",
+      "Behold linjen"
+    ],
+    "anbefalt": 0,
+    "av": "agent:siste-gjennomgang",
+    "opprettet": "2026-11-13T12:00:00.000Z"
+  },
+  {
+    "slug": "kalenderlinjen-dag-21",
+    "spørsmål": "Kalenderlinjen dag 21: «Rampenissen sov gjennom hele. Snorket i D-dur.»",
+    "kontekst": "Radioen dag 21 sier at han har stått vakt siden klokka fire, og dagen er uten tull ellers. (L8.)",
+    "lenker": ["dag/21/tekster", "audio/rampenissen/dag-21.mp3"],
+    "valg": [
+      "Bytt til en linje som passer med vakta",
+      "Fjern linjen",
+      "Behold linjen"
+    ],
+    "anbefalt": 0,
+    "av": "agent:siste-gjennomgang",
+    "opprettet": "2026-11-13T12:00:00.000Z"
+  }
+]

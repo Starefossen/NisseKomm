@@ -1,7 +1,17 @@
-const ren = (s: string) => s.replace(/[*`]/g, "");
+import type { ReactNode } from "react";
+
+const fjern = (s: string) => s.replace(/[*`]/g, "");
 
 /** Just enough markdown for the docs: headings, lists, tables, paragraphs. */
-export function Markdown({ tekst }: { tekst: string }) {
+export function Markdown({
+  tekst,
+  inline = (s) => s,
+}: {
+  tekst: string;
+  /** Turns a text run into nodes (e.g. item ids into links). */
+  inline?: (s: string) => ReactNode;
+}) {
+  const ren = (s: string) => inline(fjern(s));
   return tekst
     .trim()
     .split(/\n\s*\n/)

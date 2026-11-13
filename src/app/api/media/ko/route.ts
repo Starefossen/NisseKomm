@@ -16,6 +16,7 @@ import {
   sløyfe,
 } from "@/lib/vurdering-lager";
 import { lesLaerdom } from "@/lib/laerdom";
+import { lesBeslutninger } from "@/lib/beslutninger";
 
 /** The queue's server half: budget, duplicate files and image job ids (assets/ only exists in a checkout). */
 export async function GET(req: NextRequest) {
@@ -102,6 +103,7 @@ export async function GET(req: NextRequest) {
     kuttFeil,
     segtid,
     laerdom: await lesLaerdom(),
+    beslutninger: await lesBeslutninger(),
     forbruk: forbruk(await readFile(logg, "utf8").catch(() => "")),
     duplikater,
     jobber,

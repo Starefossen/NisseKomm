@@ -4,6 +4,7 @@ import { versionKey } from "../media/oversikt";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { BeslutningVisning } from "./beslutning";
 import { GuideSide, Kort, type Sesong } from "../_kveld/felles";
 import { TaIBruk, kilde } from "../media/kort";
 import { DagManus, DagManusFremdrift } from "./visning";
@@ -232,7 +233,7 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
     ko?.venter.filter((l) => l.prioritet).map((l) => l.prioritet!.fil),
   ).size;
   const lenke = (l: Linje) =>
-    liste.some((e) => e.id === l.id)
+    liste.some((e) => e.id === l.id) || l.id.startsWith("beslutning/")
       ? href(l.id, (l.seg ? `&s=${l.seg}` : "") + (st ? "" : `&k=${fane}`))
       : "/nissemor-guide/media";
 
@@ -319,7 +320,10 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
             {navn} (
             {k === "laerdom" || k === "arbeid"
               ? ko[k].length
-              : fd!.total.telling[k]}
+              : fd!.total.telling[k] +
+                (k === "venter"
+                  ? ko.venter.filter((l) => l.type === "beslutning").length
+                  : 0)}
             )
           </Link>
         ))}
@@ -1022,9 +1026,23 @@ function Sloyfe({
       .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nytt, fil]);
-  if (!tråd && !spm && !arb) return null;
+  // Every priority on the item (a Julius video can have one per segment): «lytt: …», «gjennomlesing før generering».
+  const pri = Object.values(s?.prioriteter ?? {}).filter((p) =>
+    prioritetFor(id, { [p.fil]: p }, media),
+  );
+  if (!tråd && !spm && !arb && !pri.length) return null;
   return (
     <Kort tittel="Agent og deg" farge="border-(--cold-blue)">
+      {pri.map((p) => (
+        <p
+          key={p.fil}
+          data-testid="prioritet"
+          className="text-(--christmas-red)"
+        >
+          {p.fil.includes("#s") ? `s${p.fil.split("#s")[1]}: ` : ""}
+          {prioritetTekst(p)}
+        </p>
+      ))}
       {arb && (
         <p
           data-testid="under-arbeid"
@@ -1132,6 +1150,7 @@ function Gjennomgang() {
           (e) => e.dag === dagF,
         )?.id
       : undefined;
+  if (id?.startsWith("beslutning/")) return <BeslutningVisning id={id} />;
   if (id || forsteIDag)
     return <Vurdering id={(id ?? forsteIDag)!} d={d} sesong={d.sesong} />;
   return (
