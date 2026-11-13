@@ -56,9 +56,11 @@ describe("byggKo", () => {
       server(),
     );
     expect(ko.venter.map((l) => l.id)).toEqual([
+      "dag/02/rampestrek",
       "video/julius/dag-03-v2.mp4",
       "manus/julius/dag-14",
     ]);
+    expect(ko.venter[0].hva).toBe("aldri vurdert");
     expect(ko.segmenter).toBe(1);
     expect(ko.agent.map((l) => [l.id, l.pris])).toEqual([
       ["dag/02/rampestrek", 1.4],
@@ -157,5 +159,54 @@ describe("byggKo", () => {
     expect(ko.venter.find((l) => l.seg === 2)?.id).toBe(
       "video/julius/dag-03-v2.mp4",
     );
+  });
+
+  it("never-reviewed day sections wait on Hans by day; Lærdom drops ruled and rejected ids", () => {
+    const sek = (dag: number, gruppe: string, id: string): Element => ({
+      id: `dag/${String(dag).padStart(2, "0")}/${id}`,
+      gruppe,
+      tittel: `Dag ${dag}: ${gruppe}`,
+      dag,
+      media: [],
+    });
+    const ko = byggKo(
+      [
+        sek(12, "gaate", "gaatekart"),
+        sek(3, "tekster", "tekster"),
+        sek(3, "gaate", "gaatekart"),
+      ],
+      {
+        filer: [],
+        vurderinger: {
+          "dag/12/gaatekart": { vurdering: "ok", notat: "a" },
+          "strek/dag04.png": { vurdering: "godkjent", notat: "b" },
+          "strek/dag05.png": { vurdering: "ok", tagger: ["farger"] },
+          "strek/dag06.png": { vurdering: "ok", notat: "c" },
+        },
+      },
+      server({
+        manus: {},
+        laerdom: {
+          regler: [
+            {
+              type: "strek",
+              regel: "unngå: a",
+              kilder: ["strek/dag04.png"],
+              dato: "2026-11-13",
+              aktiv: true,
+            },
+          ],
+          avvist: ["strek/dag06.png"],
+        },
+      }),
+    );
+    expect(ko.venter.map((l) => l.id)).toEqual([
+      "dag/03/gaatekart",
+      "dag/03/tekster",
+    ]);
+    expect(ko.laerdom.map((l) => l.id)).toEqual([
+      "strek/dag05.png",
+      "dag/12/gaatekart",
+    ]);
   });
 });

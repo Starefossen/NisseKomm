@@ -7,6 +7,7 @@ import { authorizeMedia, mediaDir, mediaStatus } from "@/lib/media-server";
 import { versionKey } from "@/lib/media-status";
 import type { KoServer } from "@/app/nissemor-guide/gjennomgang/ko";
 import { filHash, flat, lesLager } from "@/lib/vurdering-lager";
+import { lesLaerdom } from "@/lib/laerdom";
 
 /** The queue's server half: budget, duplicate files and image job ids (assets/ only exists in a checkout). */
 export async function GET(req: NextRequest) {
@@ -69,6 +70,7 @@ export async function GET(req: NextRequest) {
   );
   return Response.json({
     flagg,
+    laerdom: await lesLaerdom(),
     forbruk: forbruk(await readFile(logg, "utf8").catch(() => "")),
     duplikater,
     jobber,

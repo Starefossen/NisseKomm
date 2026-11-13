@@ -11,7 +11,7 @@ i=0; for img in "$1" "${@:4}"; do i=$((i+1))
 done
 bruk bilde gemini-3-pro-image "$OUT"
 jq -s . "$TMP"/*.json > "$TMP/parts"
-jq -n --arg ar "${ASPECT:-16:9}" --rawfile p "$P" --slurpfile imgs "$TMP/parts" \
+jq -n --arg ar "${ASPECT:-16:9}" --arg p "$(cat "$P")$(python3 "$(dirname "$0")/medie.py" unngaa "${LAERDOM_TYPE:-}" "$OUT")" --slurpfile imgs "$TMP/parts" \
   '{contents:[{parts:($imgs[0]+[{text:$p}])}],generationConfig:{responseModalities:["IMAGE"],imageConfig:{aspectRatio:$ar}}}' \
 | curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image:generateContent" -H "x-goog-api-key: $K" -H 'Content-Type: application/json' -d @- > "$OUT.json"
 jq -e '.error' "$OUT.json" >/dev/null && { jq -c .error "$OUT.json"; rm "$OUT.json"; exit 1; }

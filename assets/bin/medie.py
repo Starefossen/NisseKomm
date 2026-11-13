@@ -22,6 +22,7 @@ CLI (for the shell generators):
   medie.py radio-manus [--sjekk]          bake src/data/radio-manus.json (script gate hash per day)
   medie.py radio-port <dag>               exit 1 unless manus/radio/dag-NN is approved on today's text
   medie.py radio-avled [mediemappe]       once: approve the script of each approved, current radio clip
+  medie.py unngaa <type|""> [fil]          the «Unngå:» block of active rules (assets/laerdom.json); type from fil if empty
   medie.py --selvtest
 """
 import hashlib
@@ -342,6 +343,40 @@ def prompt_version(generator: str, root: Path = ROOT):
     return None
 
 
+LAERDOM = "assets/laerdom.json"
+UNNGAA_MAKS = 8
+# typeAv in src/app/nissemor-guide/media/filter.ts: the type a rule in Lærdom is filed under
+_TYPER = (("video/julius/", "julius"), ("audio/rampenissen/", "radio"), ("video/tv/", "tv"), ("strek/", "strek"),
+          ("portrett", "portrett"), ("spill/", "spill"), ("promo/", "promo"), ("feed/", "feed"), ("music/", "feed"))
+
+
+def laerdom_type(out) -> str:
+    """LAERDOM_TYPE, else the media type of an output path; "" when neither says."""
+    if os.environ.get("LAERDOM_TYPE"):
+        return os.environ["LAERDOM_TYPE"]
+    p = "/" + str(out).replace(os.sep, "/")
+    for pre, t in _TYPER:
+        if ("/" + pre if pre.endswith("/") else pre) in p:
+            return t
+    return ""
+
+
+def unngaa_regler(typ: str, root: Path = ROOT) -> list:
+    """Hans' active rules for a type, newest first, at most UNNGAA_MAKS."""
+    f = root / LAERDOM
+    regler = json.loads(f.read_text()).get("regler", []) if f.exists() and typ else []
+    # appended in order, so reversed = newest first within a date (sort is stable with reverse=True)
+    aktive = [r["regel"] for r in sorted(reversed(regler), key=lambda r: r.get("dato", ""), reverse=True)
+              if r.get("aktiv") and r.get("type") == typ]
+    return aktive[:UNNGAA_MAKS]
+
+
+def unngaa(typ: str, root: Path = ROOT) -> str:
+    """The fixed block the generators append to a prompt; "" without rules, so prompts stay byte-identical."""
+    r = unngaa_regler(typ, root)
+    return "\n\nUnngå:\n" + "\n".join(f"- {x}" for x in r) if r else ""
+
+
 def filter_version(root: Path = ROOT) -> str:
     m = re.search(r"^FILTER_VERSION=(\d+)", (root / "assets/bin/julius-filter.sh").read_text(), re.M)
     return m.group(1) if m else ""
@@ -377,6 +412,8 @@ def write(generator, out, source, section, model, images=(), root: Path = ROOT, 
         "reference_images": [{"path": i, "sha256": file_sha(i, root)} for i in images],
         "prompt_version": prompt_version(generator, root),
         "model": model,
+        # the rules sent with the prompt: a separate field, never in prompt_version, so new rules mark nothing stale
+        **({"unngaa": r} if (r := unngaa_regler(laerdom_type(out), root)) else {}),
         **(extra or {}),
     }
     Path(str(out) + ".meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n")
@@ -897,6 +934,19 @@ def selftest():
         js.write_text('P="Si \\"$LINE\\" i morgen."\ncurl y\n')
         assert prompt_version("julius-dag.py", r) != pv
         assert prompt_version("still.sh", r) is None and prompt_version("tv-loops.sh", r) is None
+        # Lærdom: active rules per type, newest first, capped; recorded beside prompt_version, never in it
+        assert unngaa("tv", r) == ""
+        regler = [{"type": "tv", "regel": f"unngå: {i}", "dato": f"2026-11-{10 + i % 3}", "aktiv": True} for i in range(10)]
+        (r / LAERDOM).write_text(json.dumps({"regler": regler + [{"type": "tv", "regel": "av", "dato": "2026-12-01", "aktiv": False},
+                                                                  {"type": "strek", "regel": "s", "dato": "2026-12-01", "aktiv": True}]}))
+        assert unngaa_regler("tv", r) == ["unngå: 8", "unngå: 5", "unngå: 2", "unngå: 7", "unngå: 4", "unngå: 1", "unngå: 9", "unngå: 6"]
+        assert unngaa("strek", r) == "\n\nUnngå:\n- s"
+        assert laerdom_type("/x/public/strek/dag02.png") == "strek" and laerdom_type("/m/video/tv/a.mp4") == "tv"
+        write("still.sh", r / "public/strek/dag02.png", "assets/prompts/strek/skisse.txt", None, "m", root=r)
+        side = json.loads((r / "public/strek/dag02.png.meta.json").read_text())
+        assert side["unngaa"] == ["s"] and side["prompt_version"] is None, side
+        (r / LAERDOM).write_text(json.dumps({"regler": []}))
+        assert status(r / "public/strek/dag02.png", root=r)[0] == CURRENT  # a changed rule set marks nothing stale
     missing, skipped = missing_inputs()  # the real medier.json
     assert not missing, missing
     print(f"selvtest ok (inndata: {len(skipped)} bilder utenfor git hoppet over)")
@@ -1017,6 +1067,8 @@ def main(argv):
         media = Path(args[0] if args else os.environ.get("MEDIA_DIR", ROOT / "public"))
         for a, b in rydd_kandidater(media):
             print(f"{a} -> {b}")
+    elif cmd == "unngaa":
+        print(unngaa(args[0] if args and args[0] else laerdom_type(args[1] if len(args) > 1 else "")), end="")
     elif cmd == "--selvtest":
         selftest()
     elif cmd == "radio-manus":

@@ -606,6 +606,7 @@ def main():
         log.write_text("\n".join(flagged) + "\n")
         print(f"\nFLAGGET → se og hør før tagning 2 ({log}):\n" + "\n".join(flagged))
     if dry:
+        print(f"lærdom julius:{medie.unngaa('julius') or ' ingen regler'}")
         return
     if "--refilter" in sys.argv:  # no API calls: redo look and sound from the kept raw clips
         for n in names:

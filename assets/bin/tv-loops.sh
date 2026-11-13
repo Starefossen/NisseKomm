@@ -16,7 +16,8 @@ done
 [ ${#ARGS[@]} -gt 0 ] && set -- "${ARGS[@]}" || set --
 [ -n "$DRY$LIST" ] || mkdir -p "$T"
 M="python3 $(dirname "$0")/medie.py"
-export NISSEKOMM_ROOT="$A/.."
+export NISSEKOMM_ROOT="$A/.."; export LAERDOM_TYPE=tv  # still.sh/loop.sh append the tv rules
+[ -n "$DRY" ] && { U=$($M unngaa tv); echo "# lærdom tv:${U:- ingen regler}"; }
 JOBS=$($M tv) || { echo "medie.py tv feilet" >&2; exit 1; }
 [ -z "$ONLY" ] || grep -q "^$ONLY|" <<<"$JOBS" || { echo "ukjent TV-jobb: $ONLY" >&2; exit 1; }
 # unknown (made before the inventory) counts as keep; only stale or missing is remade

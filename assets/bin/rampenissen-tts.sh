@@ -4,13 +4,14 @@
 # (Hans chose it 10 Nov). The clips are written in nordlandsk (Bodø/Salten) since 10 Nov; see «Skrivemåte» in the script.
 # Script gate: refuses TTS unless manus/radio/dag-NN is approved in the guide on today's text (medie.py radio-port).
 # --uten-manusgodkjenning skips it: use it ONLY when Hans has said yes explicitly.
+# --dry-run prints the director's notes (with the «Unngå:» block) and text, no call.
 # Skips a day whose clip is current (medie.py) unless --force; writes dag-NN.mp3.meta.json.
 set -euo pipefail
 source "$(dirname "$0")/_key.sh"
-FORCE=; UTEN=
+FORCE=; UTEN=; DRY=
 ARGS=()
 for a in "$@"; do
-  case $a in --force) FORCE=1 ;; --uten-manusgodkjenning) UTEN=1 ;; *) ARGS+=("$a") ;; esac
+  case $a in --dry-run) DRY=1 ;; --force) FORCE=1 ;; --uten-manusgodkjenning) UTEN=1 ;; *) ARGS+=("$a") ;; esac
 done
 [ ${#ARGS[@]} -gt 0 ] && set -- "${ARGS[@]}" || set --
 # The style as plain prose before the text was sometimes read aloud (days 5, 9, 10, 17, 21). systemInstruction is refused
@@ -30,10 +31,12 @@ if [ "$D" = synger ]; then
   SRC="$ROOT/assets/characters/rampenissen/synger.txt"; SEC=-; F="$ROOT/public/music/rampenissen-synger.mp3"; mkdir -p "$(dirname "$F")"
   STIL="Sing this short Christmas song badly and happily, off-key, too fast, with a giggle, in a sweet silly voice with a Northern Norwegian (Tromsø) accent:"
 fi
-[ -z "$FORCE" ] && $M status "$F" >/dev/null && { echo "$F er oppdatert; --force for å lage den på nytt"; exit 0; }
+[ -z "$FORCE$DRY" ] && $M status "$F" >/dev/null && { echo "$F er oppdatert; --force for å lage den på nytt"; exit 0; }
 if [ "$D" = synger ]; then text=$(cat "$SRC"); else text=$($M tekst rampenissen "$D"); fi
 [ -n "$text" ] || { echo "Fant ikke klipp for dag $D"; exit 1; }
-[ "$D" = synger ] || [ -n "$UTEN" ] || $M radio-port "$D"
+[ "$D" = synger ] || [ -n "$UTEN" ] || [ -n "$DRY" ] || $M radio-port "$D"
+STIL="$STIL$($M unngaa radio)"  # Hans' rules from Lærdom; the sidecar records them beside prompt_version
+[ -n "$DRY" ] && { prompt "$text"; echo; exit 0; }  # --dry-run: the prompt, no call
 # English read aloud at the start (radio-start.sh): one new try, at most 2 TTS calls.
 for forsok in 1 2; do
   bruk tts gemini-3.8-flash-tts "$F"

@@ -31,6 +31,8 @@ import {
 import { Innhold } from "./visning";
 import { taggTelling } from "@/lib/vurdering-tagger";
 import { byggKo, type KoServer, type Linje } from "./ko";
+import { Forslag, Regler } from "./laerdom";
+import type { Laerdom } from "@/lib/laerdom";
 
 const SIDE = "/nissemor-guide/gjennomgang";
 const REKKEFOLGE = "nissekomm-guide-gjennomgang-rekkefolge";
@@ -103,7 +105,9 @@ function useData() {
       .then(setServer)
       .catch(() => setServer(null));
   }, []);
-  return { sesong, media, vurd, krypto, server };
+  const settLaerdom = (laerdom: Laerdom) =>
+    setServer((s) => (s ? { ...s, laerdom } : s));
+  return { sesong, media, vurd, krypto, server, settLaerdom };
 }
 
 function useKo(d: ReturnType<typeof useData>, sesong: Sesong) {
@@ -199,6 +203,9 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
           Herav {ko.segmenter} manussegmenter på dager uten video.
         </p>
       )}
+      {fane === "laerdom" && d.server!.laerdom && (
+        <Regler d={d.server!.laerdom} ny={d.settLaerdom} />
+      )}
       {fane === "laerdom" && (
         <div data-testid="tagg-telling">
           {taggTelling(d.vurd ?? {}).map(([t, n]) => (
@@ -217,7 +224,7 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
             {linjer.map((l, i) =>
               g && l.type !== g ? null : (
                 <li
-                  key={`${l.id}-${l.tittel}`}
+                  key={`${l.id}-${l.tittel}-${l.hva}`}
                   data-ko={i}
                   aria-current={i === valgt}
                   className={`border-b border-(--neon-green)/30 p-2 ${i === valgt ? "bg-(--neon-green)/15 border-l-4 border-l-(--gold)" : ""}`}
@@ -230,6 +237,7 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
                   </Link>{" "}
                   <span>{l.hva}</span>
                   {l.notat && <p className="text-base">«{l.notat}»</p>}
+                  {fane === "laerdom" && <Forslag l={l} ny={d.settLaerdom} />}
                   {l.kommando && (
                     <p className="text-base">
                       <code className="break-all text-(--cold-blue)">

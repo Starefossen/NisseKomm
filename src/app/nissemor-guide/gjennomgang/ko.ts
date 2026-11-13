@@ -12,6 +12,7 @@ import { dagAv, typeAv } from "../media/filter";
 import { juliusFiles } from "../media/oversikt";
 import type { Element } from "./elementer";
 import { taggLinje } from "@/lib/vurdering-tagger";
+import type { Laerdom } from "@/lib/laerdom";
 
 /**
  * Gjennomgang's queue, derived from files and verdicts (no state of its own):
@@ -42,6 +43,8 @@ export interface KoServer {
   manus: Record<string, number[]>;
   /** Machine flags per segment of the Julius video in use, by day. */
   flagg?: Record<string, { s: number; flagg: string[] }[]>;
+  /** assets/laerdom.json: suggestions already made rules or turned down leave Lærdom. */
+  laerdom?: Laerdom;
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -198,9 +201,11 @@ export function byggKo(
     }
   }
 
-  // Guide sections: a changed text or a rejection; never-reviewed sections stay in Oversikt.
+  // Guide sections: a changed text or a rejection; never-reviewed day sections (gåte, tekster,
+  // utskrifter, oppsett, rampestrek) wait on Hans too, sorted by day like everything else.
   for (const e of liste) {
-    if (e.media.length || e.id.startsWith("manus/")) continue;
+    const dagSeksjon = e.id.startsWith("dag/") && !!e.dag;
+    if ((e.media.length && !dagSeksjon) || e.id.startsWith("manus/")) continue;
     const v = vurd[e.id];
     const linje = {
       id: e.id,
@@ -221,6 +226,8 @@ export function byggKo(
         ...linje,
         hva: v.forrige ? "ny versjon" : "notat uten vurdering",
       });
+    else if (!v && dagSeksjon)
+      venter.push({ ...linje, hva: "aldri vurdert" });
   }
 
   // Script gate: days without a video wait on their segments, then on the video call.
@@ -317,8 +324,16 @@ export function byggKo(
     }
   }
 
+  const behandlet = new Set([
+    ...(s.laerdom?.avvist ?? []),
+    ...(s.laerdom?.regler.flatMap((r) => r.kilder) ?? []),
+  ]);
   for (const [id, v] of Object.entries(vurd))
-    if (brukbar(celleAv(v)) && v.notat)
+    if (
+      brukbar(celleAv(v)) &&
+      (v.notat || v.tagger?.length) &&
+      !behandlet.has(id)
+    )
       laerdom.push({
         id,
         tittel: tittel.get(id) ?? id,

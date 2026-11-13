@@ -12,12 +12,14 @@ Lengde: $SECS sekunder.
 [$((SECS-2))–$SECS s] Han er stille med lukket munn og smiler inn i mikrofonen.
 Single continuous shot, no scene cuts.
 Do not add, remove or change any object: no telephone, no cups other than the wooden mug, no bells, bottles, vases, quills or magnifying glass. Do not move the microphone to the left hand, do not use both hands on it, do not let it disappear. Do not show a third hand. Everything on the desk in the first frame is still there in the last frame."
+# Hans' rules from Lærdom, outside the hashed P text above (medie.py records them in the sidecar)
+U=$(python3 "$(dirname "$0")/medie.py" unngaa julius); P="$P$U"
 if [ -n "${PREV:-}" ]; then  # Extend: the reply is the whole chain so far plus SECS (3-10) of new speech
 P="Fortsett det samme klippet uten kutt: samme mann, samme rom, samme lys, samme utsnitt, samme stemme.
 HANDLING: $ACTION
 REPLIKK (sies inn i mikrofonen, ordrett): \"$LINE\"
 Han begynner å snakke med en gang. Replikken er ferdig uttalt senest 1 sekund før klippet slutter; så er han stille og smiler inn i mikrofonen.
-Single continuous shot, no scene cuts. Do not add, remove or change any object. Keep the microphone in his right hand."
+Single continuous shot, no scene cuts. Do not add, remove or change any object. Keep the microphone in his right hand.$U"
 jq -n --arg p "$P" --arg secs "$SECS" --arg prev "$PREV" \
   '{model:"gemini-omni-1.2-flash",previous_interaction_id:$prev,input:[{type:"text",text:$p}],response_format:{type:"video",duration:($secs+"s")}}' > "$D/$NAME.req.json"
 else

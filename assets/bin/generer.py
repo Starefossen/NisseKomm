@@ -211,6 +211,7 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
                 sh = PIKSEL_SH if cat in ("spill-piksel", "strek") else STILL_SH
                 fmt = MEDIER[f"{cat}/{n}"].get("format")
                 sh = f"export ASPECT={fmt}; {sh}" if fmt else sh
+                sh = f"export LAERDOM_TYPE={medie.laerdom_type(p) or 'bilde'}; {sh}"  # PIKSEL writes to a temp file first
                 cmd = [sh, "_", str(infile(img, root)), str(root / prompt), str(media_dir() / p), str(BIN), *refs]
             q.append((f"{cat}:{n}", cat, 0, ["bash", "-c", *cmd]))
     p_music = "music/rampenissen-synger.mp3"
@@ -336,6 +337,8 @@ def dry_run(q):
             bad |= subprocess.run([*cmd, "--tørrkjør"], stdin=subprocess.DEVNULL).returncode != 0
             continue
         print("  " + shlex.join(cmd))
+        if (t := re.search(r"LAERDOM_TYPE=(\w+)", cmd[2] if len(cmd) > 2 else "")) and (u := medie.unngaa(t[1])):
+            print("  lærdom:" + u.replace("\n", "\n  "))
         if cmd[:2] == ["bash", "-c"]:  # still/portrett: the positional args are the inputs
             refs_from = {"portrett": 9, "spill-figur": 10, "spill-ikon": 10}.get(cat)
             for f in (cmd[5:6] + cmd[refs_from:]) if refs_from else (cmd[4:6] + cmd[8:]):
@@ -411,7 +414,7 @@ def selftest():
         assert item_path("spill-piksel:torget") == "spill/piksel/torget.png"
         qx = queue([r for r in rows if r["path"] != "spill/piksel/torget.png"], [], root, til_dag=0)
         (px,) = [i for i in qx if i[1] == "spill-piksel"]
-        assert px[0] == "spill-piksel:torget" and px[3][2].startswith(PIKSEL_SH) and px[3][4] == str(root / "media/spill/torget.jpg"), px
+        assert px[0] == "spill-piksel:torget" and px[3][2].endswith(PIKSEL_SH) and "LAERDOM_TYPE=spill;" in px[3][2] and px[3][4] == str(root / "media/spill/torget.jpg"), px
         assert infile("assets/x.jpg", root) == root / "assets/x.jpg"
         qr = queue([r for r in rows if r["path"] != "spill/portrett-winter.png"], [], root, til_dag=0)
         assert [i[0] for i in qr if i[1] == "portrett"] == ["portrett:winter"], qr
