@@ -47,21 +47,21 @@ export const KAPITTEL_2: Kapittel = {
     },
     grytevott: {
       id: "grytevott",
-      navn: "Grytevott",
+      navn: "Grytelapp",
       ikon: "hand",
-      se: "En rutete grytevott med et brennmerke formet som et radiorør. Hjerterud har sydd «IQ» på kanten, så den finner veien hjem. Det har den ikke gjort.",
+      se: "En rutete grytelapp med et brennmerke formet som et radiorør. Hjerterud har sydd «IQ» på kanten, så den finner veien hjem. Det har den ikke gjort.",
     },
     boks_i_vott: {
       id: "boks_i_vott",
-      navn: "Blikkboks i grytevott",
+      navn: "Blikkboks i grytelapp",
       ikon: "box",
-      se: "Blikkboksen, holdt med grytevotten. Kald boks, varm hånd. Nå kan du sette den på noe varmt uten å angre.",
+      se: "Blikkboksen, holdt med grytelappen. Kald boks, varm hånd. Nå kan du sette den på noe varmt uten å angre.",
     },
     varmboks: {
       id: "varmboks",
       navn: "Glovarm blikkboks",
       ikon: "fire",
-      se: "Blikkboksen ryker. Skruene inni klirrer av varme. Du holder den med grytevotten og er glad for det. Den holder seg varm akkurat lenge nok til én ting.",
+      se: "Blikkboksen ryker. Skruene inni klirrer av varme. Du holder den med grytelappen og er glad for det. Den holder seg varm akkurat lenge nok til én ting.",
     },
     knekkebroed: {
       id: "knekkebroed",
@@ -144,9 +144,9 @@ export const KAPITTEL_2: Kapittel = {
       b: "grytevott",
       gir: "boks_i_vott",
       tekst:
-        "Du tar votten på og griper boksen. Kald boks, varm hånd. " +
+        "Du tar grytelappen og griper boksen. Kald boks, varm hånd. " +
         R +
-        "«No kan den bli så varm den vil. Det e votten som tar støyten. Takk, Hjerterud.»",
+        "«No kan den bli så varm den vil. Det e grytelappen som tar støyten. Takk, Hjerterud.»",
     },
   ],
   scener: [
@@ -328,11 +328,11 @@ export const KAPITTEL_2: Kapittel = {
             blikkboks:
               "Du rister boksen. Det klirrer. Rudolf hever et øyenbryn. Reinsdyr har ikke øyenbryn, men han hever det likevel.",
             boks_i_vott:
-              "Du vifter med boks og vott. Rudolf tror det er en veldig stor sirupsflaske og blir skuffet på en stille måte.",
+              "Du vifter med boks og grytelapp. Rudolf tror det er en veldig stor sirupsflaske og blir skuffet på en stille måte.",
             varmboks:
               "Rudolf snuser på den varme boksen og tar ett skritt bakover. Ett. Så tygger han videre, et skritt lenger unna.",
             grytevott:
-              "Du vifter med grytevotten. Rudolf tror du vinker, og nikker høflig tilbake. Han er oppdratt.",
+              "Du vifter med grytelappen. Rudolf tror du vinker, og nikker høflig tilbake. Han er oppdratt.",
             magnetnaal:
               "Du holder nåla opp. Den peker mot nord. Rudolf peker mot kabelen. Begge har rett på hver sin måte.",
             haandvarmer:
@@ -394,9 +394,9 @@ export const KAPITTEL_2: Kapittel = {
               R +
               "«Boksen må bli VARM først. Kor e det varmt hos IQ? Overalt der han har brent sæ.»",
             boks_i_vott:
-              "Kald boks i varm vott mot kald is. Votten er den eneste som har det bra her.",
+              "Kald boks i varm grytelapp mot kald is. Grytelappen er den eneste som har det bra her.",
             grytevott:
-              "Votten er varm på innsiden, ikke på utsiden. Som de fleste votter. Og de fleste nisser.",
+              "Grytelappen er varm på innsiden, ikke på utsiden. Som de fleste grytelapper. Og de fleste nisser.",
             sirupbroed:
               "Du gnir sirup på isen. Nå er den både frossen og klissete. Rudolf titter opp fra buskene. Nei. Nei!",
             magnetnaal:
@@ -483,7 +483,7 @@ export const KAPITTEL_2: Kapittel = {
             magnetnaal:
               "Nåla peker mot nord. Hengelåsen peker ingen vei. Den er en hengelås.",
             grytevott:
-              "Du banker på med votten. Mykt. Ingen hører. Ingen bor her.",
+              "Du banker på med grytelappen. Mykt. Ingen hører. Ingen bor her.",
           },
         },
         {
@@ -651,7 +651,7 @@ export const KAPITTEL_2: Kapittel = {
               gir: "varmboks",
               forbruker: true,
               tekst:
-                "Du setter boksen på de tre rørene og holder den der med votten. Rørene dupper under vekta, men holder. Snart ryker boksen. Du løfter den av. Glovarm og trygg i votten. " +
+                "Du setter boksen på de tre rørene og holder den der med grytelappen. Rørene dupper under vekta, men holder. Snart ryker boksen. Du løfter den av. Glovarm og trygg i grytelappen. " +
                 R +
                 "«No e den varm. Veldig varm. Fly fort, før den blir fornuftig igjen.»",
             },
@@ -667,7 +667,7 @@ export const KAPITTEL_2: Kapittel = {
               R +
               "«IKKJE med fingran! Ka har IQ på handa når han tar i varme ting? Når han HUSKE det?»",
             grytevott:
-              "Du klapper rørene med votten. De summer fornøyd. Votten blir varm. Votten holder ikke på varmen lenge nok til å tine noe som helst.",
+              "Du klapper rørene med grytelappen. De summer fornøyd. Grytelappen blir varm. Den holder ikke på varmen lenge nok til å tine noe som helst.",
             sirupbroed:
               "Du holder knekkebrødet over rørene. Sirupen bobler. Det lukter brent jul. Du tar det vekk.",
             knekkebroed:
@@ -770,7 +770,7 @@ export const KAPITTEL_2: Kapittel = {
           ta: {
             item: "grytevott",
             tekst:
-              "Du tar grytevotten fra kroken under krakken. Den lukter brent sokk. " +
+              "Du tar grytelappen fra kroken under krakken. Den lukter brent sokk. " +
               R +
               "«Hjerterud sin! Ho har leita etter den sia i fjor. IQ sa det va Rudolf. Alle sei det e Rudolf. Som regel e det Rudolf.»",
           },
@@ -921,7 +921,7 @@ export const KAPITTEL_2: Kapittel = {
         },
         vott: {
           tekst:
-            "«Med votten. Hjerteruds grytevott. Den er ikke her. Jeg har ikke tatt den. Hvis dere finner den under noe jeg sitter på, så var det Rudolf.»",
+            "«Med grytelappen. Hjerteruds grytelapp. Den er ikke her. Jeg har ikke tatt den. Hvis dere finner den under noe jeg sitter på, så var det Rudolf.»",
           rampenissen: "«Æ sei det te Hjerterud. Æ sei det med glede.»",
           valg: [{ tekst: "Under noe du sitter på. Notert." }],
         },
@@ -995,9 +995,9 @@ export const KAPITTEL_2: Kapittel = {
         R +
           "«Tannhjulet nederst på masta e frosse. Det treng nåkka varmt av metall inntil sæ. Lenge. Håndvarmeren e ikkje nok, den e lunken som en unnskyldning.»",
         R +
-          "«Blikkboksen kan varmes på radiorøran hos IQ. Men ikkje med fingran. Hjerterud sin grytevott heng under krakken te IQ. Boks og vott i lag først.»",
+          "«Blikkboksen kan varmes på radiorøran hos IQ. Men ikkje med fingran. Hjerterud sin grytelapp heng under krakken te IQ. Boks og grytelapp i lag først.»",
         R +
-          "«Kombiner boksen og grytevotten i lomma. Bruk dem på radiorøran. Fly te tjernet og hold den varme boksen mot tannhjulet.»",
+          "«Kombiner boksen og grytelappen i lomma. Bruk dem på radiorøran. Fly te tjernet og hold den varme boksen mot tannhjulet.»",
       ],
     },
     {
