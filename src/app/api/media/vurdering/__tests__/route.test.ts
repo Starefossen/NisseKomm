@@ -39,6 +39,8 @@ beforeEach(async () => {
   process.env.MEDIA_DIR = testDir;
   process.env.NISSEKOMM_MODE = "lan";
   process.env.MCP_DEV_TOKEN = "read:readtoken1,parent:parenttoken1";
+  // The raw clip is read from cwd/assets/out; a checkout with real takes must not leak in.
+  jest.spyOn(process, "cwd").mockReturnValue(testDir);
   memoryStore.reset();
   for (const role of ["kid", "parent"] as const) {
     await memoryStore.setSession(sha(role), {
@@ -49,6 +51,7 @@ beforeEach(async () => {
 });
 
 afterEach(() => {
+  jest.restoreAllMocks();
   rmSync(testDir, { recursive: true, force: true });
   delete process.env.MEDIA_DIR;
   delete process.env.NISSEKOMM_MODE;
@@ -291,7 +294,7 @@ describe("API /api/media/vurdering - Functionality", () => {
       path.join(rot, "assets/bin/julius-dag.py"),
       "import sys\nprint(sys.argv[1:])\n",
     );
-    const cwd = jest.spyOn(process, "cwd").mockReturnValue(rot);
+    jest.spyOn(process, "cwd").mockReturnValue(rot);
     const exit = path.join(rot, "assets/out/kutt-14.exit");
     const id = "video/julius/dag-14#s3";
     const kutt = {
@@ -318,13 +321,22 @@ describe("API /api/media/vurdering - Functionality", () => {
         fs.readFileSync(path.join(rot, "assets/out/kutt-14.log"), "utf8"),
       ).toContain("['14', '--kutt']");
     } finally {
-      cwd.mockRestore();
+      jest.spyOn(process, "cwd").mockReturnValue(testDir);
     }
   });
 
   it("a cut check outlives notes and ends with the next verdict", async () => {
     const fs = await import("node:fs/promises");
     const id = "video/julius/dag-14#s3";
+    const j = path.join(testDir, "video/julius");
+    await fs.mkdir(j, { recursive: true });
+    const join = (f: string, raw: string) =>
+      fs.writeFile(
+        path.join(j, f),
+        JSON.stringify([{ s: 3, start: 0, slutt: 1, hash: "h", raw }]),
+      );
+    // The newest join holds the cut take the check was given to.
+    await join("dag-14.segmenter.json", "aaaaaaaaaaaa");
     await fs.writeFile(
       path.join(testDir, "media-vurdering.json"),
       JSON.stringify({
@@ -353,6 +365,13 @@ describe("API /api/media/vurdering - Functionality", () => {
       vurdering: "ok",
       kuttsjekk: { retning: "slutt" },
     });
+    // A newer take: the check belonged to the cut take, so it is not carried.
+    await join("dag-14-v2.segmenter.json", "bbbbbbbbbbbb");
+    const ny = await get();
+    expect(ny.forrige).toMatchObject({ vurdering: "ok", notat: "hørt" });
+    expect(ny.forrige.kuttsjekk).toBeUndefined();
+    expect(ny.kuttsjekk).toBeUndefined();
+    await fs.rm(path.join(j, "dag-14-v2.segmenter.json"));
     await POST(makeReq("POST", { path: id, vurdering: "godkjent" }, auth));
     const d = await get();
     expect(d.vurdering).toBe("godkjent");
