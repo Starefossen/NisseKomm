@@ -57,8 +57,8 @@ def entity(ent: str, root: Path = ROOT) -> dict:
     return meta
 
 
-# the TTS line in Rampenissen's «## Stemme»; a changed line marks every clip stale (prompt_version)
-RAMPE_STYLE = re.search(r"^TTS: (.+)$", entity("characters/rampenissen")["seksjoner"]["Stemme"], re.M)[1]
+# the frozen voice profile rampenissen-tts.sh sends as director's notes; a changed file marks every clip stale (prompt_version)
+RAMPE_STYLE = (ROOT / "assets/prompts/radio/rampenissen-profil.txt").read_text().strip()
 
 CURRENT, STALE, UNKNOWN, MISSING = "current", "stale", "unknown", "missing"
 # history, not something to regenerate: a replaced file (.old-N) and a candidate (-vN), see VERSION
@@ -344,6 +344,8 @@ LEGACY_PROMPT = {
     "4ccb7645b65a70b56c455313b8993aa329a890dd1377fcabb398c937ef9e6fdc": "4aa414e38d9233aec70d9e4a62ee89bc99c37ed2cf96d67c92ee5df464d52559",  # 56a6abf
     "1cdc4ac9cfc1ac1cdecd09fd47d41ecda2226e6bbfa54f2afe9b2384f68927de": "cff6292629a6901bab54b28d63965700c3ddb7f125d7aa0ebaa3cc93897dd1ae",  # 60d1445
     "a9b0d8f47535499dfa28d2798ee34000add42f66d8fc199a8ee5fc18c468552c": "da1787e99358514f7fe57a72b6e45a23608369fb62ea79ccc19459fc0a2eab72",  # 0ef820e
+    # the entity's TTS line (dd60512) → the frozen profile (13 Nov): Hans picks clips by ear, so no re-record on the switch
+    "af8dc5c26dd1a4705329527d1d63cf3e65a7e7d969484477381b87c703e94df6": "ad5785d1c3875853c672f8a1fb7c7ed8f84288553bf115c13a3a428b9975d2d8",
     "d9bac58060f6d96a7782757a00d0c859dd40a97b9b7dfff0123497e8261451f2": "4aa414e38d9233aec70d9e4a62ee89bc99c37ed2cf96d67c92ee5df464d52559",  # herding: tidskoder, mikrofon, ingen pauser
 }
 

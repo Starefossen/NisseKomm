@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # rampenissen-tts.sh <dag> [stemme] [--force]: Rampenissen's radio clip from the locked script, via Gemini TTS.
-# Writes public/audio/rampenissen/dag-NN.mp3. Default voice: Fenrir, nordnorsk delivery, +4 semitones, -16 LUFS
-# (Hans chose it 10 Nov). The clips are written in nordlandsk (Bodø/Salten) since 10 Nov; see «Skrivemåte» in the script.
+# Writes public/audio/rampenissen/dag-NN.mp3. Voice: Fenrir, +4 semitones, -16 LUFS (Hans chose it 10 Nov).
+# The director's notes are ONE frozen file, assets/prompts/radio/rampenissen-profil.txt (scene, notes, dialect rules);
+# only the script changes between days (A/B 13 Nov: assets/out/radio-ab-2026-11-13.md). The clips are written in nordlandsk (Bodø/Salten) since 10 Nov; see «Skrivemåte» in the script.
 # Script gate: refuses TTS unless manus/radio/dag-NN is approved in the guide on today's text (medie.py radio-port).
 # --uten-manusgodkjenning skips it: use it ONLY when Hans has said yes explicitly.
 # --dry-run prints the director's notes (with the «Unngå:» block) and text, no call.
@@ -17,25 +18,30 @@ done
 [ ${#ARGS[@]} -gt 0 ] && set -- "${ARGS[@]}" || set --
 # The style as plain prose before the text was sometimes read aloud (days 5, 9, 10, 17, 21). systemInstruction is refused
 # by the TTS model (400), so use the director's-notes/transcript layout Google documents: only TRANSCRIPT is spoken.
-# In that layout the model follows the style more weakly (lower, slower, less nordlandsk: dag 6/14, 13 Nov), so the notes
-# repeat pitch, tempo and dialect. A Norwegian style line was read aloud instead (test 13 Nov), so it stays English.
+# A Norwegian style line was read aloud (test 13 Nov), so the profile stays English.
+MODEL=gemini-3.8-flash-tts VOICE=Fenrir
 # The next free candidate beside $1: <stem>-vN.mp3 with N one above the highest (at least 2).
 kandidat() {
   local s=${1%.mp3} n=1 f
   for f in "$s"-v*.mp3; do [[ $f =~ -v([0-9]+)\.mp3$ ]] && ((BASH_REMATCH[1] > n)) && n=${BASH_REMATCH[1]}; done
   echo "$s-v$((n + 1)).mp3"
 }
-prompt() { printf "### DIRECTOR'S NOTES (never read aloud)\n%s\nKeep the pitch high and the tempo quick and bouncy; strong nordlandsk dialect throughout.\n\n#### TRANSCRIPT\n%s" "$STIL" "$1"; }
+# Only the words are spoken: drop markdown emphasis and (parenthesised) stage notes; English [tags] stay.
+renskriv() { sed -E 's/\*+//g; s/ *\([^)]*\)//g'; }
+prompt() { printf "### DIRECTOR'S NOTES (never read aloud)\n%s\n\n#### TRANSCRIPT\n%s" "$STIL" "$(renskriv <<<"$1")"; }
 if [ "${1:-}" = selftest ]; then
   p=$(STIL=S prompt "Hei.")
-  [[ $p == *"(never read aloud)"$'\n'S$'\n'*"pitch high"*$'\n\n'"#### TRANSCRIPT"$'\n'Hei. ]] || { echo "$p"; exit 1; }
+  [[ $p == *"(never read aloud)"$'\n'S$'\n\n'"#### TRANSCRIPT"$'\n'Hei. ]] || { echo "$p"; exit 1; }
+  p=$(STIL=S prompt "Æ e **her** (ler) [short pause] no.")
+  [[ $p == *$'\n'"Æ e her [short pause] no." ]] || { echo "renskriv: $p"; exit 1; }
+  grep -q "DIRECTOR'S NOTES" "$ROOT/assets/prompts/radio/rampenissen-profil.txt" || { echo "profil mangler"; exit 1; }
   t=$(mktemp -d)
   [ "$(kandidat "$t/dag-01.mp3")" = "$t/dag-01-v2.mp3" ] || { echo "kandidat uten -vN feilet"; exit 1; }
   touch "$t/dag-01-v2.mp3" "$t/dag-01-v10.mp3"
   [ "$(kandidat "$t/dag-01.mp3")" = "$t/dag-01-v11.mp3" ] || { echo "kandidat etter -v10 feilet"; exit 1; }
   rm -rf "$t"; echo ok; exit 0
 fi
-D=$1; V=${2:-Fenrir}; O="$ROOT/public/audio/rampenissen"; T="$ROOT/assets/out/rampenissen"; mkdir -p "$O" "$T"
+D=$1; V=${2:-$VOICE}; O="$ROOT/public/audio/rampenissen"; T="$ROOT/assets/out/rampenissen"; mkdir -p "$O" "$T"
 M="python3 $ROOT/assets/bin/medie.py"; F="$O/dag-$(printf %02d "$D").mp3"
 # «synger»: the hidden NisseMusikk track, Rampenissen sings a short carol badly (text in characters/rampenissen/synger.txt)
 SRC="$ROOT/docs/manus/rampenissen-radio-2026.md"; SEC="Dag $D"; STIL=$($M stil rampenissen)
@@ -55,23 +61,23 @@ STIL="$STIL$($M unngaa radio)"  # Hans' rules from Lærdom; the sidecar records 
 trap '[ $? = 0 ] || rm -f "$F" "$F.meta.json"' EXIT
 # English read aloud at the start (radio-start.sh): one new try, at most 2 TTS calls.
 for forsok in 1 2; do
-  bruk tts gemini-3.8-flash-tts "$F"
+  bruk tts "$MODEL" "$F"
   jq -n --arg t "$(prompt "$text")" --arg v "$V" \
     '{contents:[{parts:[{text:$t}]}],generationConfig:{responseModalities:["AUDIO"],speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:$v}}}}}' \
-  | curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash-tts:generateContent" -H "x-goog-api-key: $K" -H 'Content-Type: application/json' -d @- > "$T/r.json"
+  | curl -s "https://generativelanguage.googleapis.com/v1beta/models/$MODEL:generateContent" -H "x-goog-api-key: $K" -H 'Content-Type: application/json' -d @- > "$T/r.json"
   jq -e '.error' "$T/r.json" >/dev/null && { jq -c .error "$T/r.json"; exit 1; }
   jq -r '.candidates[0].content.parts[0].inlineData.data' "$T/r.json" | base64 -d > "$T/r.pcm"
   # +4 semitones via asetrate (rubberband is not available), then two-pass EBU R128 loudnorm to -16 LUFS / -1.5 dBTP
-  # (single-pass lands several LU off). Raw PCM is kept per day so post-processing can rerun without a TTS call.
+  # (single-pass lands several LU off), last in the chain; the output rate is set by -ar, not a filter after it. Raw PCM is kept per day so post-processing can rerun without a TTS call.
   cp "$T/r.pcm" "$T/$(basename "$F" .mp3).pcm"
   r=$(python3 -c "print(2**(4/12))")
   pre="asetrate=24000*$r,aresample=24000,atempo=1/$r"
   in=(-nostdin -y -f s16le -ar 24000 -ac 1 -i "$T/r.pcm")
   m=$(ffmpeg "${in[@]}" -af "$pre,loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json" -f null - 2>&1 | sed -n '/^{/,/^}/p')
   g() { echo "$m" | jq -r ".$1"; }
-  ffmpeg -v error "${in[@]}" -af "$pre,loudnorm=I=-16:TP=-1.5:LRA=11:measured_I=$(g input_i):measured_TP=$(g input_tp):measured_LRA=$(g input_lra):measured_thresh=$(g input_thresh):offset=$(g target_offset):linear=true,aresample=24000" -ac 1 -c:a libmp3lame -b:a 128k "$F"
+  ffmpeg -v error "${in[@]}" -af "$pre,loudnorm=I=-16:TP=-1.5:LRA=11:measured_I=$(g input_i):measured_TP=$(g input_tp):measured_LRA=$(g input_lra):measured_thresh=$(g input_thresh):offset=$(g target_offset):linear=true" -ar 24000 -ac 1 -c:a libmp3lame -b:a 128k "$F"
   "$ROOT/assets/bin/radio-start.sh" "$F" && break
   echo "Engelsk instruks hørt i starten av $F (forsøk $forsok)"; [ $forsok = 2 ] && exit 1
 done
-$M skriv rampenissen-tts.sh "$F" "$SRC" "$SEC" "gemini-3.8-flash-tts/$V"
+$M skriv rampenissen-tts.sh "$F" "$SRC" "$SEC" "$MODEL/$V"
 echo "$F"

@@ -186,7 +186,7 @@ Generated from `assets/characters/<id>/entitet.md`, the one source for look, per
 
 - **Navn:** Rampenissen; **pronomen:** han; **fra dag:** 1
 - **Personlighet:** Entusiastisk, rotete og litt klønete. Aldri slem; alt rot er godt ment. Trenger barnas hjelp og sier det.
-- **Stemme:** Lang skrevet tekst (NisseMail, lapper, avskjedsbrev, dagbok): bokmål, direkte til barna, emojier (🎄 ❄️ 🎁 ⭐), litt selvironi, Gen Alpha-slang sparsomt (høyst 2–4 per uke). Muntlig (radioklipp, Ugleposten) og korte innskudd i appen (puff, varsler, idle-linjer, kalender-sitater, Sledeflukt-radio): nordlandsk, Bodø/Salten; reglene står i docs/manus/rampenissen-radio-2026.md «Skrivemåte». Navn, steder og gåteord står som i bokmål.
+- **Stemme:** Lang skrevet tekst (NisseMail, lapper, avskjedsbrev, dagbok): bokmål, direkte til barna, emojier (🎄 ❄️ 🎁 ⭐), litt selvironi, Gen Alpha-slang sparsomt (høyst 2–4 per uke). Muntlig (radioklipp, Ugleposten) og korte innskudd i appen (puff, varsler, idle-linjer, kalender-sitater, Sledeflukt-radio): nordlandsk, Bodø/Salten; reglene står i docs/manus/rampenissen-radio-2026.md «Skrivemåte». Navn, steder og gåteord står som i bokmål. Radiostemmen (TTS) står i assets/prompts/radio/rampenissen-profil.txt: én frossen profil, bare manuset skifter.
 - **Forhold:** julius: sjef; iq: beundrer oppfinnelsene; barna: feltagent hos familien på Landås; ser etter dem og rapporterer til Julius; trenger hjelpen deres
 - **Aldri:** «Rampe-nissen», «RampeNissen»
 

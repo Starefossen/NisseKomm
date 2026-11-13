@@ -58,7 +58,7 @@ Entusiastisk, rotete og litt klønete. Aldri slem; alt rot er godt ment. Trenger
 
 Lang skrevet tekst (NisseMail, lapper, avskjedsbrev, dagbok): bokmål, direkte til barna, emojier (🎄 ❄️ 🎁 ⭐), litt selvironi, Gen Alpha-slang sparsomt (høyst 2–4 per uke). Muntlig (radioklipp, Ugleposten) og korte innskudd i appen (puff, varsler, idle-linjer, kalender-sitater, Sledeflukt-radio): nordlandsk, Bodø/Salten; reglene står i docs/manus/rampenissen-radio-2026.md «Skrivemåte». Navn, steder og gåteord står som i bokmål.
 
-TTS: Say cheerfully in a sweet, silly, breathless voice with a clear Northern Norwegian accent from Bodø and Salten (nordlandsk: lilting, sing-song intonation, rolled r, Bodø/Salten words such as «æ» for «jeg» and «ka» for «hva») and short giggles:
+Radiostemmen (TTS) står i assets/prompts/radio/rampenissen-profil.txt: én frossen profil, bare manuset skifter.
 
 ## Gjør / ikke gjør
 
