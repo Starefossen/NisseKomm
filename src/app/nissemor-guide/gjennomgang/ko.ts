@@ -141,13 +141,14 @@ export function byggKo(
       dag,
       notat: notatAv(v),
     };
-    // Radio gate: a clip to make or remake waits on its script first (rampenissen-tts.sh refuses without it).
+    // Radio gate: an unapproved script blocks TTS, so it waits on Hans when the clip is missing,
+    // not approved/OK (incl. unjudged or a new version), or older than a changed script.
     const radio = key.match(/^audio\/rampenissen\/dag-(\d+)\.mp3$/)?.[1];
+    const mid = `manus/radio/dag-${radio}`;
+    const mv = radio ? vurd[mid] : undefined;
     const lagRadio =
-      ny.celle === "mangler" || (!!v?.vurdering && !brukbar(celleAv(v)));
+      ny.celle === "mangler" || !brukbar(celleAv(v)) || !!mv?.forrige;
     if (radio && lagRadio) {
-      const mid = `manus/radio/dag-${radio}`;
-      const mv = vurd[mid];
       if (mv?.vurdering && !brukbar(celleAv(mv))) {
         agent.push({
           id: mid,

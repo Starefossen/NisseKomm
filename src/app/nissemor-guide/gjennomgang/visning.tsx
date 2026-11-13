@@ -295,6 +295,12 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
     return (
       <>
         <Spiller path={e.id} />
+        <Link
+          className={lenke}
+          href={`/nissemor-guide/gjennomgang?id=${encodeURIComponent(`manus/radio/dag-${String(n).padStart(2, "0")}`)}`}
+        >
+          Radiomanus dag {n}
+        </Link>
         {(
           [
             ["Strek", dag.radio?.strek],

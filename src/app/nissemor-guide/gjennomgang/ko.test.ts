@@ -131,6 +131,34 @@ describe("byggKo", () => {
     ]);
     expect(ko.agent.map((l) => l.id)).toEqual(["audio/rampenissen/dag-07.mp3"]);
   });
+  it("radio: an unapproved script shows when the clip is unjudged or older than the script", () => {
+    const r = (d: string): Element => ({
+      id: `audio/rampenissen/dag-${d}.mp3`,
+      gruppe: "radio",
+      tittel: `Dag ${Number(d)}: Radio`,
+      dag: Number(d),
+      media: [`audio/rampenissen/dag-${d}.mp3`],
+    });
+    const ko = byggKo(
+      [r("01"), r("02"), r("03")],
+      {
+        filer: ["01", "02", "03"].map((d) =>
+          f(`audio/rampenissen/dag-${d}.mp3`),
+        ),
+        vurderinger: {
+          "audio/rampenissen/dag-02.mp3": { vurdering: "godkjent" },
+          "audio/rampenissen/dag-03.mp3": { vurdering: "godkjent" },
+          "manus/radio/dag-03": { forrige: { vurdering: "godkjent" } } as never,
+        },
+      },
+      server({ manus: {} }),
+    );
+    // 01 unjudged clip; 02 approved clip, unapproved script unchanged: out; 03 script changed.
+    expect(ko.venter.map((l) => l.id)).toEqual([
+      "manus/radio/dag-01",
+      "manus/radio/dag-03",
+    ]);
+  });
   it("lists flagged segments and scripts changed after the video", () => {
     const ko = byggKo(
       liste,
