@@ -332,7 +332,8 @@ const livecam = () =>
   );
 const TV_LOOPS = {
   1: "landsby-rolig.mp4",
-  17: "landsby-nordlys.mp4",
+  // Before the code: the northern lights on K1 would give day 17 away.
+  17: "landsby-rolig.mp4",
   18: "landsby-storm.mp4",
 };
 let namesGiven = false;
