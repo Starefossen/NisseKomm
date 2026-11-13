@@ -7,7 +7,7 @@ import {
   versionKey,
   type StatusKilde,
 } from "@/lib/media-status";
-import { segmentHint } from "@/lib/segmenter";
+import { segmentHint, videoStatus } from "@/lib/segmenter";
 import { dagAv, typeAv } from "../media/filter";
 import { juliusFiles } from "../media/oversikt";
 import { tilstand, type Element } from "./elementer";
@@ -119,6 +119,20 @@ export function byggKo(
   for (const id of Object.keys(vurd))
     if (/\.\w+$/.test(id) && !id.includes("#")) familier.add(versionKey(id));
 
+  // A segmented Julius video waits on its segments (videoStatus): its own line
+  // only once they are all ✓/◐ («Klar for hele videoen»).
+  const segmenterVenter = (dag: number | undefined, type: string) => {
+    const segs = type === "julius" && dag ? s.manus[dag] : undefined;
+    const id = (n: number) => `video/julius/dag-${pad(dag!)}#s${n}`;
+    // Videos joined before segmenter.json have no segment verdicts: their own line as before.
+    if (!segs?.length || !segs.some((n) => vurd[id(n)])) return false;
+    const st = videoStatus(
+      segs.map((n) => ({ s: n })),
+      (n) => vurd[id(n)],
+    );
+    return st.steg !== "klar" && st.steg !== "ferdig";
+  };
+
   for (const key of familier) {
     const f = familie(key, k);
     const ny = f.kandidat ?? f.iBruk;
@@ -190,7 +204,11 @@ export function byggKo(
         hva: `lag på nytt (${ny.navn})`,
         ...omtak(key, s.jobber, segmenterPaa(dag)),
       });
-    } else if (!v?.vurdering && !dup.has(ny.path)) {
+    } else if (
+      !v?.vurdering &&
+      !dup.has(ny.path) &&
+      !segmenterVenter(dag, type)
+    ) {
       venter.push({
         ...linje,
         hva: v?.forrige
@@ -293,6 +311,21 @@ export function byggKo(
   for (const [id, v] of Object.entries(vurd)) {
     const m = id.match(/^video\/julius\/dag-(\d+)#s(\d+)$/);
     if (!m || !v.vurdering || brukbar(celleAv(v))) continue;
+    if (v.vurdering === "kutt") {
+      agent.push({
+        id:
+          liste.find((e) => e.gruppe === "julius" && e.dag === Number(m[1]))
+            ?.id ?? id,
+        tittel: `Julius dag ${Number(m[1])}, segment ${m[2]}`,
+        type: "julius",
+        dag: Number(m[1]),
+        hva: `kutt ${v.kutt?.retning ?? ""}`.trim(),
+        notat: notatAv(v),
+        pris: 0,
+        kommando: `python3 assets/bin/julius-dag.py ${Number(m[1])} --kutt`,
+      });
+      continue;
+    }
     agent.push({
       id:
         liste.find((e) => e.gruppe === "julius" && e.dag === Number(m[1]))

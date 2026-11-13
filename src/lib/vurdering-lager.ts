@@ -13,6 +13,7 @@ import {
 import { isDeepStrictEqual } from "node:util";
 import path from "node:path";
 import { versionKey } from "./media-status";
+import type { Kutt } from "./segmenter";
 import { medVersjon, versjonAv, type Forrige } from "./vurdering-versjon";
 
 /**
@@ -34,6 +35,9 @@ export interface Oppføring {
   /** Quick tags (src/data/vurdering-tagger.json) and a timecode in seconds. */
   tagger?: string[];
   tid?: number;
+  /** Julius segments: ✂ (with «kutt») and the cut julius-dag.py --kutt made, waiting for Hans' ear. */
+  kutt?: Kutt;
+  kuttsjekk?: Kutt;
 }
 
 /** `hash`: content hash; "*" = nothing to version (code, missing file), "utdatert" = changed before format 2. */

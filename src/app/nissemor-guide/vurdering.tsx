@@ -15,6 +15,7 @@ import type {
 import { sjekkSvar, Vurderingsknapper } from "./media/kort";
 import { Lagremelding, useLagring } from "./lagring";
 import { taggerFor, taggType, tidTekst } from "@/lib/vurdering-tagger";
+import type { Kutt } from "@/lib/segmenter";
 
 // Guide sections share the media verdict file: ids like `dag/04/gaatekart`
 // sit next to media paths in the same key space (parent-only API, lan mode).
@@ -60,6 +61,10 @@ export const lagreTagger = (
   id: string,
   o: { tagger?: string[]; tid?: number | null },
 ) => post({ path: id, ...o });
+
+/** ✂ on a Julius segment; the note stays as saved. */
+export const lagreKutt = (id: string, kutt: Kutt) =>
+  post({ path: id, vurdering: "kutt", kutt });
 
 /** Segment id → the raw take hash in the video on screen (SegmentStripe fills it). */
 export const settTagning = new Map<string, string>();

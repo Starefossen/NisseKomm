@@ -55,9 +55,9 @@ describe("byggKo", () => {
       },
       server(),
     );
+    // dag-03's s2 is ✗: the video waits on the agent, not on Hans (videoStatus).
     expect(ko.venter.map((l) => l.id)).toEqual([
       "dag/02/rampestrek",
-      "video/julius/dag-03-v2.mp4",
       "manus/julius/dag-14",
     ]);
     expect(ko.venter[0].hva).toBe("aldri vurdert");

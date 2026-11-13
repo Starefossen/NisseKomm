@@ -29,6 +29,8 @@ import {
   type Tilstand,
 } from "./elementer";
 import { Innhold } from "./visning";
+import { SegmentStatus } from "./segmentstripe";
+import type { VideoStatus } from "@/lib/segmenter";
 import { taggTelling } from "@/lib/vurdering-tagger";
 import { byggKo, FREMDRIFT, fremdrift, type KoServer, type Linje } from "./ko";
 import { Fremdriftslinjer } from "./fremdrift";
@@ -438,6 +440,8 @@ function Vurdering({
   // Gjennomgang only mounts this once the verdicts have loaded.
   const vurd = d.vurd!;
   const [u, settU] = useUtvalg();
+  // A segmented Julius video: its status comes from the segments (SegmentStripe).
+  const [segStatus, setSegStatus] = useState<VideoStatus | null>(null);
   const k = { ...kilde(d.media), vurderinger: vurd };
   const liste = alleElementer(rekkefolge, sesong, d.media.files, d.krypto);
   // An old link to dag-02.mp4 lands on the newest version of the group.
@@ -545,21 +549,24 @@ function Vurdering({
             </>
           )}
         </p>
-        {egenVurdering(e.id) ? (
+        {segStatus ? (
+          <p className="text-(--gold)">Status: {segStatus.tekst}</p>
+        ) : egenVurdering(e.id) ? (
           <Vurder id={e.id} />
         ) : (
           <DagManus n={e.dag ?? Number(e.id.slice(-2))} />
         )}
-        {e.media.map((p) => (
-          <TaIBruk key={p} path={p} data={d.media} />
-        ))}
+        {(!segStatus || segStatus.slutt) &&
+          e.media.map((p) => <TaIBruk key={p} path={p} data={d.media} />)}
         <p className="text-base text-(--neon-green)/80">
           Tastatur: G godkjent · O OK · L lag på nytt (skriv notat, Enter
           lagrer) · ⇧1–9 merke · T tidskode · N neste · P forrige
         </p>
       </Kort>
       <SkjulVurder.Provider value>
-        <Innhold key={e.id} e={e} sesong={sesong} />
+        <SegmentStatus.Provider value={setSegStatus}>
+          <Innhold key={e.id} e={e} sesong={sesong} />
+        </SegmentStatus.Provider>
       </SkjulVurder.Provider>
     </>
   );

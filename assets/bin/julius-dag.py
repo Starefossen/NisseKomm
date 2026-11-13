@@ -5,6 +5,8 @@ Usage: julius-dag.py <dag> [--suffix -v3] [--segment N]... [--uten-manusgodkjenn
        julius-dag.py lint [dag ...]      segments over 22 words (locked brikke exempt), timing budget
        julius-dag.py manus [--sjekk]      bake src/data/julius-manus.json (review hash and lint per segment)
        julius-dag.py segmenter [dag ...]  back-fill dag-NN*.segmenter.json from assets/out (ffmpeg only, no calls)
+       julius-dag.py <dag> --kutt [--suffix -v3]  ✂ verdicts: trim the raw takes with ffmpeg, join a new -vN (0 kr + transcription)
+       julius-dag.py lyd [dag ...]        back-fill <video>.lyd.json (audio peaks per 0.1 s, ffmpeg only)
        julius-dag.py selftest
 
 Script gate: a segment that would cost a video call needs its script approved (godkjent/ok) in the guide,
@@ -36,7 +38,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 import forbruk  # noqa: E402
 import medie  # noqa: E402
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = medie.ROOT  # NISSEKOMM_ROOT: run this copy on another checkout's assets/out and public/
 BIN = ROOT / "assets" / "bin"
 OUT = ROOT / "assets" / "out"
 DEST = ROOT / "public" / "video" / "julius"
@@ -624,6 +626,7 @@ def main():
     sjekk = {i: json.loads(f.read_text()) for i, n in enumerate(names, 1) if (f := OUT / f"{n}.sjekk.json").exists()}
     raws = {i: raw_hash(OUT / f"{n}.raw.mp4") for i, n in enumerate(names, 1)}
     (dest.parent / f"{dest.stem}.segmenter.json").write_text(json.dumps(sidefil(keys, tider, raws, sjekk), ensure_ascii=False, indent=1) + "\n")
+    lyd_kurve(dest)
     subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-ss", "3", "-i", str(dest), "-frames:v", "1",
                     "-q:v", "3", str(dest.with_suffix(".jpg"))], check=True)
     if not promo:
@@ -888,6 +891,159 @@ def tidskoder(dur) -> list:
     return [(a, a + d) for a, d in zip(starts, dur)]
 
 
+LYD_DT = 0.1  # seconds per peak in <video>.lyd.json
+
+
+def lyd_kurve(video: Path) -> Path:
+    """<video>.lyd.json: {"dt": 0.1, "topp": [0-99, ...]}, the loudest sample per 0.1 s (the guide's audio curve)."""
+    import array
+
+    rate = 8000
+    pcm = subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-i", str(video), "-vn", "-ac", "1", "-ar", str(rate),
+                          "-f", "s16le", "-"], capture_output=True, check=True).stdout
+    a = array.array("h", pcm[: len(pcm) // 2 * 2])
+    n = int(rate * LYD_DT)
+    topp = [round(max(map(abs, a[i:i + n]), default=0) / 32768 * 99) for i in range(0, len(a), n)]
+    out = video.with_name(f"{video.stem}.lyd.json")
+    out.write_text(json.dumps({"dt": LYD_DT, "topp": topp}, separators=(",", ":")) + "\n")
+    return out
+
+
+KUTT_FADE = 0.06  # s of fade at a cut: no click, too short to eat a syllable
+KUTT_SNAP = 0.6  # a cut point moves to the middle of a pause this close (Hans clicks by ear)
+
+
+def stillhet(clip: Path):
+    out = subprocess.run(["ffmpeg", "-nostdin", "-i", str(clip), "-vn", "-af", "silencedetect=n=-30dB:d=0.12", "-f", "null", "-"],
+                         capture_output=True, text=True).stderr
+    return [(float(a), float(b)) for a, b in re.findall(r"silence_start: (-?[\d.]+)[\s\S]*?silence_end: ([\d.]+)", out)]
+
+
+def kuttpunkt(t: float, pauser) -> float:
+    """t, or the middle of the nearest pause within KUTT_SNAP."""
+    nær = [((a + b) / 2, abs((a + b) / 2 - t)) for a, b in pauser if a - KUTT_SNAP <= t <= b + KUTT_SNAP]
+    return min(nær, key=lambda x: x[1])[0] if nær else t
+
+
+def nivå_ved(clip: Path, fra: float, lengde: float = 0.08) -> float:
+    """Mean volume (dB) of `lengde` s from `fra`: loud means a word runs through the cut."""
+    out = subprocess.run(["ffmpeg", "-nostdin", "-ss", f"{max(0, fra):.3f}", "-t", f"{lengde:.3f}", "-i", str(clip), "-vn",
+                          "-af", "volumedetect", "-f", "null", "-"], capture_output=True, text=True).stderr
+    m = re.search(r"mean_volume: (-?[\d.]+)", out)
+    return float(m[1]) if m else -91.0
+
+
+MIDT_I_ORD = -35  # dB just inside a cut; the filtered room tone sits around -55 to -45
+
+
+def trim(src: Path, dst: Path, retning: str, t: float):
+    """Keep [0, t] («slutt») or [t, end] («start») with a short fade at the cut. Re-encodes: a cut is frame exact."""
+    if retning == "slutt":
+        tid, af = ["-t", f"{t:.3f}"], f"afade=t=out:st={max(0, t - KUTT_FADE):.3f}:d={KUTT_FADE}"
+    else:
+        tid, af = ["-ss", f"{t:.3f}"], f"afade=t=in:d={KUTT_FADE}"
+    subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", *(tid if retning == "start" else []), "-i", str(src),
+                    *(tid if retning == "slutt" else []), "-af", af, "-c:v", "libx264", "-crf", "18", "-c:a", "aac",
+                    "-b:a", "192k", str(dst)], check=True)
+
+
+def kutt_klipp(raw: Path, clip: Path, retning: str, t: float) -> dict:
+    """Trim one segment's raw and filtered takes at t (seconds into the take, snapped to a pause).
+    The old takes stay as <navn>.før-kutt-<hash>.*. Returns {punkt, flagg}."""
+    punkt = round(kuttpunkt(t, stillhet(raw)), 2)
+    gammel = raw_hash(raw)
+    for f in (raw, clip):
+        kopi = f.with_name(f.name.replace(".", f".før-kutt-{gammel}.", 1))
+        if not kopi.exists():
+            shutil.copy(f, kopi)
+        tmp = f.with_name(f"{f.stem}.kutt.mp4")
+        trim(kopi, tmp, retning, punkt)
+        tmp.replace(f)
+    dur = seconds(raw)
+    db = nivå_ved(raw, dur - KUTT_FADE - 0.08) if retning == "slutt" else nivå_ved(raw, KUTT_FADE)
+    flagg = [f"kutt midt i ord? ({db:.0f} dB ved kuttet)"] if db > MIDT_I_ORD else []
+    return {"punkt": punkt, "flagg": flagg, "fra": gammel}
+
+
+def neste_suffix(day: int, dest: Path) -> str:
+    n = [int(m[1]) for f in dest.glob(f"dag-{day:02d}-v*.mp4") if (m := re.search(r"-v(\d+)\.mp4$", f.name))]
+    return f"-v{max(n, default=1) + 1}"
+
+
+def kutt_dag(day: int):
+    """✂ verdicts on the day's segments: trim each take at Hans' point (no new video call), check the trimmed
+    segment (transcription only, ~0.1 kr), join a new -vN and give the cut take a «kuttsjekk» with the old note."""
+    f = medie.vurdering_fil()
+    vurd = lager_eller_stopp(f)
+    segs = segments(day)
+    jobber = [(i, v) for i in range(1, len(segs) + 1) if (v := vurd.get(video_id(day, i)) or {}).get("vurdering") == "kutt"]
+    if not jobber:
+        sys.exit(f"Ingen ✂ på dag {day}")
+    gjort = {}
+    for i, v in jobber:
+        name = f"dag{day:02d}-{i}"
+        raw, clip = OUT / f"{name}.raw.mp4", OUT / f"{name}.mp4"
+        if raw_hash(raw) != v.get("versjon"):
+            sys.exit(f"Stoppet: {raw} er ikke tagningen Hans satte ✂ på ({v.get('versjon')})")
+        k = v["kutt"]
+        # Hans' point is in the joined video, counted from where the join starts the segment (speech_span).
+        t = speech_span(clip, seconds(clip))[0] + float(k["t"])
+        r = kutt_klipp(raw, clip, k["retning"], t)
+        line = segs[i - 1][0]
+        c, text, missing, extra = coverage(raw, line)
+        flagg = r["flagg"] + ([f"mangler: {' '.join(missing)}"] if missing else []) + ([f"ekstra ord: {extra}"] if extra else [])
+        (OUT / f"{name}.sjekk.json").write_text(json.dumps({"hørt": text, "dekning": round(c or 0, 2), "flagg": flagg}, ensure_ascii=False))
+        print(f"{name}: kuttet {k['retning']} ved {r['punkt']:.2f} s i tagningen (bedt om {t:.2f}); hørt: {text}; flagg: {flagg or 'ingen'}")
+        gjort[i] = (v, r)
+    dest = Path(arg("--dest") or DEST)
+    suffix = arg("--suffix") or neste_suffix(day, dest)
+    subprocess.run([sys.executable, __file__, str(day), "--join-only", "--suffix", suffix,
+                    *(["--dest", arg("--dest")] if arg("--dest") else [])], check=True)
+    nå = __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
+    with medie.lås(f):
+        data = medie.les_lager(f)
+        if data.get("format") != 2:
+            sys.exit(f"Stoppet: {f} er ikke format 2")
+        for i, (v, r) in gjort.items():
+            id = video_id(day, i)
+            e = data["elementer"].setdefault(id, {"vurderinger": [], "historikk": []})
+            e["historikk"] += [x for x in e["vurderinger"] if x["fil"] == id]
+            e["vurderinger"] = [x for x in e["vurderinger"] if x["fil"] != id]
+            ny = raw_hash(OUT / f"dag{day:02d}-{i}.raw.mp4")
+            # The cut only removes: the note and tags carry over; Hans hears the cut once (G/L).
+            e["vurderinger"].append({k: x for k, x in {
+                "notat": v.get("notat"), "tagger": v.get("tagger"), "kuttsjekk": v["kutt"], "oppdatert": nå,
+                "versjon": ny, "hash": ny, "fil": id}.items() if x})
+        medie.skriv_lager(f, data)
+    print(dest / f"dag-{day:02d}{suffix}.mp4")
+
+
+def test_kutt():
+    """The cut on a generated clip: tone, pause, tone; a cut in the pause is clean, one in the tone is flagged."""
+    import tempfile
+
+    d = Path(tempfile.mkdtemp())
+    src = d / "x.raw.mp4"
+    subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-f", "lavfi", "-i", "color=c=black:s=64x36:d=4:r=24",
+                    "-f", "lavfi", "-i", "sine=f=440:d=4,volume='if(between(t,1.5,2.5),0,1)':eval=frame",
+                    "-shortest", "-c:v", "libx264", "-c:a", "aac", str(src)], check=True)
+    pauser = stillhet(src)
+    assert pauser and abs(pauser[0][0] - 1.5) < 0.1, pauser
+    assert abs(kuttpunkt(1.2, pauser) - 2.0) < 0.1 and kuttpunkt(0.3, pauser) == 0.3
+    clip = d / "x.mp4"
+    shutil.copy(src, clip)
+    r = kutt_klipp(src, clip, "slutt", 1.2)
+    assert abs(seconds(src) - 2.0) < 0.1 and not r["flagg"], (seconds(src), r)
+    assert (d / f"x.før-kutt-{r['fra']}.raw.mp4").exists()
+    shutil.copy(d / f"x.før-kutt-{r['fra']}.raw.mp4", src)
+    r = kutt_klipp(src, clip, "start", 0.5)  # in the tone, nowhere near the pause
+    assert abs(seconds(src) - 3.5) < 0.1 and r["flagg"], (seconds(src), r)
+    k = json.loads(lyd_kurve(clip).read_text())
+    assert k["dt"] == LYD_DT and 30 <= len(k["topp"]) <= 40 and max(k["topp"]) >= 10 and min(k["topp"]) == 0, k
+    shutil.rmtree(d)
+    print("test_kutt ok")
+
+
 def test_port():
     """Gate, lock, hash and sidecar without files or API (julius-dag.py test-port; jest runs it)."""
     keys = [take_key("Hei, Snøfall.", 8, "Smiler.", "Svak knitring.", False), take_key("Vi ses.", 6, "Vinker.", "", False)]
@@ -921,6 +1077,7 @@ def test_port():
 
 def selftest():
     test_port()
+    test_kutt()
     assert wcount("Lucia-morgen i TV-en, ja") == 4 and len(words("Lucia-morgen")) == 2
     assert tail_missing("ja hallo IQ sier linjen", "IQ sier linjen er åpen.") == ["er", "åpen"]
     assert tail_missing("IQ sier linjen er åpen", "IQ sier linjen er åpen.") == []
@@ -1023,6 +1180,15 @@ if __name__ == "__main__":
         for d in [int(x) for x in sys.argv[2:] if x.isdigit()] or range(1, 25):
             for f in segmenter(d):
                 print(f)
+    elif sys.argv[1:] == ["test-kutt"]:
+        test_kutt()
+    elif sys.argv[1:2] == ["lyd"]:
+        for d in [int(x) for x in sys.argv[2:] if x.isdigit()] or range(1, 25):
+            for v in sorted(Path(arg("--dest") or DEST).glob(f"dag-{d:02d}*.mp4")):
+                if not v.with_name(f"{v.stem}.lyd.json").exists():
+                    print(lyd_kurve(v))
+    elif "--kutt" in sys.argv:
+        kutt_dag(int(sys.argv[1]))
     elif sys.argv[1:2] == ["lint"]:
         sys.exit(1 if lint([int(d) for d in sys.argv[2:]] or range(1, 25)) else 0)
     elif "--extend" in sys.argv:
