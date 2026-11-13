@@ -973,6 +973,40 @@ export const TOOLS: Record<string, Tool> = {
       return ut;
     },
   },
+  prioriter_vurdering: {
+    level: "parent",
+    description:
+      "Sett et element først i Hans' kø «Venter på deg» (det blokkerer generering eller utgivelse, f.eks. manus før betalt video). nivaa «hast» eller «høy» (standard), grunn = kort hvorfor, frist = ISO-dato (valgfri), av = agentnavn; fjern=true tar den bort. Fjernes også når Hans gir en vurdering. Ikke prioriter alt.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        nivaa: { type: "string", enum: ["hast", "høy"] },
+        grunn: { type: "string" },
+        frist: { type: "string" },
+        av: { type: "string" },
+        fjern: { type: "boolean" },
+      },
+    },
+    run: async (a) => {
+      const { prioriter, UgyldigPrioritet } =
+        await import("@/lib/vurdering-lager");
+      const navn =
+        String(a.av ?? "mcp")
+          .replace(/[^\w.-]/g, "")
+          .slice(0, 40) || "mcp";
+      try {
+        return {
+          ok: true,
+          prioritet: await prioriter(mediaDir(), a, `agent:${navn}`),
+        };
+      } catch (err) {
+        if (err instanceof UgyldigPrioritet)
+          throw new ArgError(`ugyldig argument: ${err.message}`);
+        throw err;
+      }
+    },
+  },
   reset: {
     level: "parent",
     description: "Nullstill all delt spilltilstand.",

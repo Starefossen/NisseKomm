@@ -72,6 +72,20 @@ export interface Vurdering extends Oppføring {
 export interface Element {
   vurderinger: Vurdering[];
   historikk: Vurdering[];
+  /** An agent's «look at this first»: not a verdict, gone when Hans gives one. */
+  prioritet?: Prioritet;
+}
+
+export type PrioritetNivaa = "hast" | "høy";
+export interface Prioritet {
+  fil: string;
+  nivaa: PrioritetNivaa;
+  grunn: string;
+  /** «agent:<navn>» */
+  av: string;
+  når: string;
+  /** ISO date. */
+  frist?: string;
 }
 
 export interface Lager {
@@ -745,4 +759,79 @@ export function kjentId(id: string): boolean {
     /^historien\/[^/]+$/,
     /^(finale|symboler)$/,
   ].some((r) => r.test(id));
+}
+
+export class UgyldigPrioritet extends Error {}
+
+/** Every open priority by id (the queue's sort and mark). */
+export const prioriteter = (l: Lager): Record<string, Prioritet> =>
+  Object.fromEntries(
+    Object.values(l.elementer)
+      .filter((e) => e.prioritet)
+      .map((e) => [e.prioritet!.fil, e.prioritet!]),
+  );
+
+/** Drop the element's priority with a history line; no-op when there is none. */
+export function lukkPrioritet(
+  l: Lager,
+  fil: string,
+  merknad: string,
+  når: string,
+) {
+  const e = l.elementer[versionKey(fil)];
+  if (!e?.prioritet) return false;
+  e.historikk.push({
+    hash: ALLTID,
+    fil: e.prioritet.fil,
+    oppdatert: når,
+    merknad,
+  });
+  delete e.prioritet;
+  return true;
+}
+
+/** Set (or with `fjern` remove) an agent's priority on one id; validated here for API, MCP and CLI. */
+export function prioriter(dir: string, a: Record<string, unknown>, av: string) {
+  const id = typeof a.id === "string" ? a.id.trim() : "";
+  if (!id || id.includes("..") || id.startsWith("/") || !kjentId(id))
+    throw new UgyldigPrioritet("ugyldig id");
+  const når = new Date(Date.now()).toISOString();
+  if (a.fjern === true)
+    return endreLager(dir, (l) =>
+      lukkPrioritet(l, id, `prioritet fjernet av ${av}`, når),
+    );
+  const nivaa = a.nivaa ?? "høy";
+  if (nivaa !== "hast" && nivaa !== "høy")
+    throw new UgyldigPrioritet("nivaa må være hast eller høy");
+  const grunn = typeof a.grunn === "string" ? a.grunn.trim() : "";
+  if (!grunn || grunn.length > 200)
+    throw new UgyldigPrioritet("grunn mangler (maks 200 tegn)");
+  if (
+    a.frist !== undefined &&
+    (typeof a.frist !== "string" || Number.isNaN(Date.parse(a.frist)))
+  )
+    throw new UgyldigPrioritet("frist må være en ISO-dato");
+  const p: Prioritet = {
+    fil: id,
+    nivaa,
+    grunn,
+    av,
+    når,
+    ...(a.frist ? { frist: a.frist as string } : {}),
+  };
+  return endreLager(dir, (l) => {
+    const e = (l.elementer[versionKey(id)] ??= {
+      vurderinger: [],
+      historikk: [],
+    });
+    e.prioritet = p;
+    e.historikk.push({
+      hash: ALLTID,
+      fil: id,
+      oppdatert: når,
+      av,
+      merknad: `prioritet satt (${nivaa}) av ${av}: ${grunn}${p.frist ? ` · frist ${p.frist}` : ""}`,
+    });
+    return p;
+  });
 }

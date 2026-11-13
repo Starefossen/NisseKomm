@@ -15,6 +15,7 @@ import { juliusFiles } from "../media/oversikt";
 import { tilstand, type Element } from "./elementer";
 import { taggLinje } from "@/lib/vurdering-tagger";
 import type { Laerdom } from "@/lib/laerdom";
+import type { Prioritet } from "@/lib/vurdering-lager";
 
 /**
  * Gjennomgang's queue, derived from files and verdicts (no state of its own):
@@ -36,6 +37,8 @@ export interface Linje {
   feil?: boolean;
   /** Segment to open in the segment strip (`&s=`). */
   seg?: number;
+  /** An agent's «look at this first» (prioriter_vurdering). */
+  prioritet?: Prioritet;
 }
 
 /** From /api/media/ko. */
@@ -53,6 +56,8 @@ export interface KoServer {
   segtid?: Record<string, { s: number; start: number; slutt: number }[]>;
   /** assets/laerdom.json: suggestions already made rules or turned down leave Lærdom. */
   laerdom?: Laerdom;
+  /** Open agent priorities by id. */
+  prioriteter?: Record<string, Prioritet>;
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -127,6 +132,33 @@ const sorter = (a: Linje, b: Linje) =>
   (a.dag ?? 99) - (b.dag ?? 99) ||
   a.type.localeCompare(b.type) ||
   a.id.localeCompare(b.id);
+
+const RANG = { hast: 0, høy: 1 } as const;
+/** «Venter på deg» unfiltered: hast, then høy, then the normal order. */
+export const medPrioritet = (a: Linje, b: Linje) =>
+  (a.prioritet ? RANG[a.prioritet.nivaa] : 2) -
+    (b.prioritet ? RANG[b.prioritet.nivaa] : 2) || sorter(a, b);
+
+/** The priority a line answers to: its id, its segment's base id, its family or one of its element's files. */
+export function prioritetFor(
+  id: string,
+  p: Record<string, Prioritet>,
+  media: string[] = [],
+): Prioritet | undefined {
+  return Object.values(p).find((x) => {
+    const f = x.fil.replace(/#.*/, "");
+    return (
+      x.fil === id ||
+      f === id ||
+      versionKey(f) === versionKey(id) ||
+      media.some((m) => versionKey(m) === versionKey(f))
+    );
+  });
+}
+
+/** «PRIORITERT · grunn · av agent (frist)» */
+export const prioritetTekst = (p: Prioritet) =>
+  `PRIORITERT${p.nivaa === "hast" ? " (HAST)" : ""} · ${p.grunn} · av ${p.av.replace(/^agent:/, "")}${p.frist ? ` · frist ${p.frist.slice(0, 10)}` : ""}`;
 
 export function byggKo(
   liste: Element[],
@@ -482,8 +514,13 @@ export function byggKo(
         notat: notatAv(v),
       });
 
+  const pr = s.prioriteter ?? {};
+  for (const l of [...venter, ...agent]) {
+    const p = prioritetFor(l.id, pr, liste.find((e) => e.id === l.id)?.media);
+    if (p) l.prioritet = p;
+  }
   return {
-    venter: venter.sort(sorter),
+    venter: venter.sort(medPrioritet),
     agent: agent.sort(sorter),
     laerdom: laerdom.sort(sorter),
     segmenter,

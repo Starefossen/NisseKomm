@@ -42,6 +42,8 @@ import {
   FREMDRIFT,
   type Fremdrift,
   omtak,
+  prioritetFor,
+  prioritetTekst,
   type KoServer,
   type Linje,
 } from "./ko";
@@ -202,13 +204,29 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
   const st = FREMDRIFT.find(([k]) => k === sp.get("s"));
   const g = sp.get("g");
 
+  // `p=1`: only the agents' priorities (the counter's link).
+  const bareP = sp.get("p") === "1";
+  const pr = d.server?.prioriteter ?? {};
   const linjer: Linje[] = !ko
     ? []
     : st
       ? fd!.poster
           .filter((p) => p.status === st[0] && (!g || p.type === g))
-          .map((p) => ({ ...p, hva: `${st[1]} · ${p.type}` }))
-      : ko[fane];
+          .map((p) => ({
+            ...p,
+            hva: `${st[1]} · ${p.type}`,
+            prioritet: prioritetFor(
+              p.id,
+              pr,
+              liste.find((e) => e.id === p.id)?.media,
+            ),
+          }))
+      : bareP
+        ? ko.venter.filter((l) => l.prioritet)
+        : ko[fane];
+  const antallP = new Set(
+    ko?.venter.filter((l) => l.prioritet).map((l) => l.prioritet!.fil),
+  ).size;
   const lenke = (l: Linje) =>
     liste.some((e) => e.id === l.id)
       ? href(l.id, (l.seg ? `&s=${l.seg}` : "") + (st ? "" : `&k=${fane}`))
@@ -256,6 +274,24 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
         igjen av {kr(f.budsjett)} kr
       </p>
       {fd && <Fremdriftslinjer total={fd.total} typer={fd.typer} side={SIDE} />}
+      {antallP > 0 && !bareP && (
+        <p className="text-lg" data-testid="prioritert">
+          <Link
+            href={`${SIDE}?k=venter&p=1`}
+            className="underline text-(--christmas-red)"
+          >
+            {antallP} prioritert
+          </Link>
+        </p>
+      )}
+      {bareP && (
+        <p className="text-lg">
+          Viser prioritert ({linjer.length}).{" "}
+          <Link href={SIDE} className="underline text-(--gold)">
+            Tilbake til køen
+          </Link>
+        </p>
+      )}
       {st && (
         <p className="text-lg">
           Viser {st[1].toLowerCase()}
@@ -328,6 +364,11 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
                   <span className={l.feil ? "text-(--christmas-red)" : ""}>
                     {l.hva}
                   </span>
+                  {l.prioritet && (
+                    <p className="text-base text-(--christmas-red)">
+                      {prioritetTekst(l.prioritet)}
+                    </p>
+                  )}
                   {l.notat && <p className="text-base">«{l.notat}»</p>}
                   {fane === "laerdom" && <Forslag l={l} ny={d.settLaerdom} />}
                   {l.kommando && (

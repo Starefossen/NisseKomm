@@ -12,6 +12,7 @@ import {
   flat,
   lesLager,
   nyesteSegmenter,
+  prioriteter,
 } from "@/lib/vurdering-lager";
 import { lesLaerdom } from "@/lib/laerdom";
 
@@ -83,6 +84,7 @@ export async function GET(req: NextRequest) {
     if (k.status === "feil") kuttFeil[d] = k.logg;
   }
   return Response.json({
+    prioriteter: prioriteter(lager),
     flagg,
     kuttFeil,
     segtid,

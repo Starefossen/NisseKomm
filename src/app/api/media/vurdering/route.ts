@@ -10,6 +10,7 @@ import {
   FinnesIkke,
   LagerNyere,
   kjentId,
+  lukkPrioritet,
   lesLager,
   oppføring,
   stemple,
@@ -347,6 +348,9 @@ export async function POST(req: NextRequest) {
           felt,
           raw as string | undefined,
         );
+      // A verdict answers an agent's «look at this first».
+      if (nextVerdict && vurdering !== undefined)
+        lukkPrioritet(l, cleanPath, "prioritet lukket av dom", now);
       const entry = v && oppføring(v);
       return Response.json({
         ok: true,
