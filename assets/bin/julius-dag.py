@@ -4,6 +4,7 @@
 Usage: julius-dag.py <dag> [--suffix -v3] [--segment N]... [--uten-manusgodkjenning] [--extend] [--dry-run] [--force] [--alle] [--join-only] [--refilter] [--chain] [--forsøk N] [--over-budsjett] [--cutaway <klipp.mp4>[:kutt[:sek]]]... [--manus <fil>] [--dest <mappe>] [--plakat <bilde>] [--upload <base-url>]
        julius-dag.py lint [dag ...]      segments over 22 words (locked brikke exempt), timing budget
        julius-dag.py manus [--sjekk]      bake src/data/julius-manus.json (review hash and lint per segment)
+       julius-dag.py segmenter [dag ...]  back-fill dag-NN*.segmenter.json from assets/out (ffmpeg only, no calls)
        julius-dag.py selftest
 
 Script gate: a segment that would cost a video call needs its script approved (godkjent/ok) in the guide,
@@ -408,6 +409,51 @@ def sidefil(keys: list, tider: list, raw: dict, sjekk: dict) -> list:
              "replikk": k[0], "hørt": sjekk.get(i, {}).get("hørt"), "dekning": sjekk.get(i, {}).get("dekning"),
              "flagg": sjekk.get(i, {}).get("flagg", [])}
             for i, (k, (a, b)) in enumerate(zip(keys, tider), 1)]
+
+
+def flagg_fra_fil(day: int, suffix: str) -> dict:
+    """{segment: {hørt, dekning, flagg}} from dagNN<suffix>-flagget.txt (the check's log before sjekk.json existed)."""
+    f = OUT / f"dag{day:02d}{suffix}-flagget.txt"
+    ut, cur = {}, None
+    for ln in (f.read_text().splitlines() if f.exists() else []):
+        if (m := re.match(rf"dag{day:02d}-(\d+): (\d+)% hørt; ?(.*)", ln)):
+            cur = int(m[1])
+            ut[cur] = {"dekning": int(m[2]) / 100, "flagg": [x.strip() for x in m[3].split("; ") if x.strip() and x != "under grensen"]}
+        elif cur and ln.strip().startswith("hørt:"):
+            ut[cur]["hørt"] = ln.split("hørt:", 1)[1].strip()
+    return ut
+
+
+def segmenter(day: int) -> list:
+    """Back-fill the sidecar for the day's videos whose length matches today's clips in assets/out
+    (trimmed as join trims them); other videos were joined from takes that are gone and get none."""
+    names = [f"dag{day:02d}-{i}" for i in range(1, len(medie.julius_segments(day)) + 1)]
+    clips = [OUT / f"{n}.mp4" for n in names]
+    if not names or not all(c.exists() for c in clips):
+        return []
+    dur = [seconds(c) for c in clips]
+    span = [speech_span(c, d) for c, d in zip(clips, dur)]
+    tider = tidskoder([b - a for a, b in span])
+    lengde = tider[-1][1] + OUTRO + BLACK
+    raws = {i: raw_hash(OUT / f"{n}.raw.mp4") for i, n in enumerate(names, 1)}
+    keys = []
+    for i, (n, seg) in enumerate(zip(names, medie.julius_segments(day)), 1):
+        take = OUT / f"{n}.take.json"
+        keys.append(json.loads(take.read_text()) if take.exists() else take_key(*seg))
+    laget = []
+    for v in sorted(Path(arg("--dest") or DEST).glob(f"dag-{day:02d}*.mp4")):
+        side = v.with_name(f"{v.stem}.segmenter.json")
+        if side.exists() or abs(seconds(v) - lengde) > 0.15:
+            continue
+        sjekk = flagg_fra_fil(day, v.stem.removeprefix(f"dag-{day:02d}"))
+        for i, n in enumerate(names, 1):
+            if (f := OUT / f"{n}.sjekk.json").exists():
+                sjekk[i] = json.loads(f.read_text())
+            elif (t := OUT / f"{n}.raw.txt").exists():
+                sjekk.setdefault(i, {}).setdefault("hørt", t.read_text().strip())
+        side.write_text(json.dumps(sidefil(keys, tider, raws, sjekk), ensure_ascii=False, indent=1) + "\n")
+        laget.append(side)
+    return laget
 
 
 def raw_hash(p: Path):
@@ -942,6 +988,10 @@ if __name__ == "__main__":
         if "--sjekk" in sys.argv:
             sys.exit(0 if MANUS_JSON.exists() and MANUS_JSON.read_text() == tekst else "src/data/julius-manus.json er utdatert: python3 assets/bin/julius-dag.py manus")
         MANUS_JSON.write_text(tekst)
+    elif sys.argv[1:2] == ["segmenter"]:
+        for d in [int(x) for x in sys.argv[2:] if x.isdigit()] or range(1, 25):
+            for f in segmenter(d):
+                print(f)
     elif sys.argv[1:2] == ["lint"]:
         sys.exit(1 if lint([int(d) for d in sys.argv[2:]] or range(1, 25)) else 0)
     elif "--extend" in sys.argv:

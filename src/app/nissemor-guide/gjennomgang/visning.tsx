@@ -17,6 +17,7 @@ import { Gaatekart } from "../dag/[n]/gaatekart";
 import { utskriftHref, utskriftTittel } from "../printout/filer";
 import { lagre, slug, SkjulVurder, useVurderinger, Vurder } from "../vurdering";
 import type { Element } from "./elementer";
+import { SegmentStripe } from "./segmentstripe";
 
 type Dag = Awaited<ReturnType<typeof dagInnhold>>;
 
@@ -160,7 +161,9 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
     return (
       <>
         <p className="text-sm break-all">{e.id}</p>
-        <Spiller path={e.id} />
+        <SegmentStripe path={e.id}>
+          <Spiller path={e.id} />
+        </SegmentStripe>
         {!!e.eldre?.length && (
           <details className="my-2">
             <summary className="min-h-11 py-2 cursor-pointer">

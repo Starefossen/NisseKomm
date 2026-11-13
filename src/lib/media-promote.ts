@@ -19,8 +19,8 @@ import {
 
 /**
  * «Ta i bruk vN»: the plain file becomes <name>.old-N.<ext>, <name>-vN.<ext> the
- * plain name. The poster (.jpg beside an .mp4) and every .meta.json sidecar move
- * with it; review state and inventory rows follow the paths. Nothing is
+ * plain name. The poster (.jpg beside an .mp4), the Julius segment sidecar
+ * (.segmenter.json) and every .meta.json sidecar move with it; review state and inventory rows follow the paths. Nothing is
  * overwritten: every target is checked first, and a failed rename rolls back the
  * ones before it. Each promotion is appended to media-promoteringer.log.
  */
@@ -50,10 +50,14 @@ export async function taIBruk(dir: string, kandidat: string) {
 
   // The file, its poster and their sidecars: [from, to] relative to dir.
   const exts = ext === ".mp4" ? [ext, ".jpg"] : [ext];
-  const pairs = (from: string, to: string) =>
-    exts.flatMap((e) =>
+  const pairs = (from: string, to: string) => [
+    ...exts.flatMap((e) =>
       ["", ".meta.json"].map((side) => [from + e + side, to + e + side]),
-    );
+    ),
+    ...(ext === ".mp4"
+      ? [[`${from}.segmenter.json`, `${to}.segmenter.json`]]
+      : []),
+  ];
   const has = (rel: string) => names.includes(path.basename(rel));
   // Older candidates (-vK, K < N) go to the archive too, or they would show as newer than v N.
   const eldre = names

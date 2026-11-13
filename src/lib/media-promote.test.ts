@@ -17,6 +17,7 @@ async function oppsett(vurd: Record<string, unknown>) {
     "dag-01-v4.mp4",
     "dag-01-v4.mp4.meta.json",
     "dag-01-v4.jpg",
+    "dag-01-v4.segmenter.json",
   ])
     await writeFile(path.join(j, f), f);
   await writeFile(path.join(dir, "media-vurdering.json"), JSON.stringify(vurd));
@@ -47,6 +48,7 @@ describe("taIBruk", () => {
     );
     expect(await les("dag-01.old-2.jpg")).toBe("dag-01.jpg");
     expect(await les("dag-01.old-1.mp4")).toBe("dag-01.old-1.mp4");
+    expect(await les("dag-01.segmenter.json")).toBe("dag-01-v4.segmenter.json");
     expect((await readdir(j)).filter((f) => f.includes("-v4"))).toEqual([]);
     const vurd = flat(await lesLager(dir));
     expect(vurd).toEqual({

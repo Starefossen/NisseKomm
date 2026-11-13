@@ -125,3 +125,40 @@ describe("vurdering-lager (format 2)", () => {
     600000,
   );
 });
+
+describe("segmentvurdering følger råklippet", () => {
+  it("video/julius/dag-NN#sK gjelder så lenge råklippet er det samme, også i neste video", async () => {
+    const dir = await mappe({});
+    const j = path.join(dir, "video/julius");
+    await mkdir(j, { recursive: true });
+    const side = (raw: string) =>
+      JSON.stringify([
+        { s: 1, start: 0, slutt: 5, hash: "h", raw, replikk: "x", flagg: [] },
+      ]);
+    await writeFile(
+      path.join(j, "dag-99-v2.segmenter.json"),
+      side("aaaaaaaaaaaa"),
+    );
+    const id = "video/julius/dag-99#s1";
+    await endreLager(dir, (l) =>
+      settVurdering(dir, l, id, { vurdering: "godkjent" }),
+    );
+    // A new join (v3) that reused the take: still approved.
+    await writeFile(
+      path.join(j, "dag-99-v3.segmenter.json"),
+      side("aaaaaaaaaaaa"),
+    );
+    expect((await visning(dir, await lesLager(dir)))[id].vurdering).toBe(
+      "godkjent",
+    );
+    // A new take for the segment: the verdict becomes history.
+    await new Promise((r) => setTimeout(r, 20));
+    await writeFile(
+      path.join(j, "dag-99-v4.segmenter.json"),
+      side("bbbbbbbbbbbb"),
+    );
+    expect(
+      (await visning(dir, await lesLager(dir)))[id].forrige?.vurdering,
+    ).toBe("godkjent");
+  });
+});

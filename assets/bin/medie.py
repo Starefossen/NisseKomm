@@ -415,6 +415,8 @@ def archive(path: Path) -> list:
             a = path.parent / f"{path.stem}{e}{side}"
             if a.exists():
                 par.append((a, path.parent / f"{path.stem}.old-{n}{e}{side}"))
+    if (seg := path.parent / f"{path.stem}.segmenter.json").exists():
+        par.append((seg, path.parent / f"{path.stem}.old-{n}.segmenter.json"))
     for a, b in par:
         os.rename(a, b)
     return par
@@ -432,7 +434,7 @@ def bakfyll(media: Path, root: Path = ROOT):
     n = 0
     for d in MEDIA_DIRS:
         for f in sorted((media / d).rglob("*")):
-            if not f.is_file() or f.name.startswith(".") or f.name.endswith(".meta.json") \
+            if not f.is_file() or f.name.startswith(".") or f.name.endswith((".meta.json", ".segmenter.json")) \
                     or Path(str(f) + ".meta.json").exists():
                 continue
             key = str(f.relative_to(media))

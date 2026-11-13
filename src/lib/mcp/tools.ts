@@ -38,6 +38,7 @@ import path from "node:path";
 import { createUploadTicket, mediaDir, mediaStatus } from "@/lib/media-server";
 import type { Caller, Level } from "./auth";
 import { getClip } from "./clips";
+import { segmentHint } from "../segmenter";
 import { familie } from "@/lib/media-status";
 
 type State = Record<string, unknown>;
@@ -86,15 +87,6 @@ export function earnedCodes(state: State, at?: Date): Set<string> {
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
-
-/** `…/dag-14#s3` verdicts: what the agent runs next (julius-dag.py's script gate and segment lock). */
-export function segmentHint(id: string, vurdering?: string) {
-  const m = id.match(/^(manus|video)\/julius\/dag-(\d+)#s(\d+)$/);
-  if (!m || vurdering !== "lag_paa_nytt") return "";
-  return m[1] === "manus"
-    ? ` → endre segment ${m[3]} i docs/manus/julius-2026.md, så python3 assets/bin/julius-dag.py manus`
-    : ` → python3 assets/bin/julius-dag.py ${Number(m[2])} --suffix -vN --segment ${m[3]}`;
-}
 
 const OSLO = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Europe/Oslo",

@@ -34,7 +34,7 @@ describe("manusport (julius-dag.py)", () => {
 
 describe("segmentHint (list_vurderinger)", () => {
   it("points a redo at the segment", async () => {
-    const { segmentHint } = await import("./mcp/tools");
+    const { segmentHint } = await import("./segmenter");
     expect(segmentHint("video/julius/dag-14#s3", "lag_paa_nytt")).toContain(
       "julius-dag.py 14 --suffix -vN --segment 3",
     );
