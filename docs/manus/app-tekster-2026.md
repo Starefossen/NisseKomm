@@ -1,6 +1,6 @@
 # NisseKomm 2026 – App-tekster (steg 2)
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Hilsen «God [tall] søndag i advent» (ikke «God [tall]. advent») endret 13.11 etter ja fra Hans. Brevfuglenes kanon: tittel og varsel dag 5, PS og varsel dag 14, `brevfugl-historie.txt` og A8 endret 13.11 etter ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 10, 13 og 20 endret 13.11 etter ja fra Hans. Dag 5, 9, 15, 16, 17, 21 og 22 (vanskelighet) endret 13.11 etter ja fra Hans. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Hilsen «God [tall] søndag i advent» (ikke «God [tall]. advent») endret 13.11 etter ja fra Hans. Brevfuglenes kanon: tittel og varsel dag 5, PS og varsel dag 14, `brevfugl-historie.txt` og A8 endret 13.11 etter ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 10, 13 og 20 endret 13.11 etter ja fra Hans. Dag 5, 9, 15, 16, 17, 21 og 22 (vanskelighet) endret 13.11 etter ja fra Hans. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`. Dag 24: «tre krystallbiter» (ikke «krystallet») i NisseMail, brevfuglbrevet og radioklippet endret 13.11 etter ja fra Hans.
 
 **Revisjon 10. november (vanskelighet, godkjent):** e-poster, PS, krypto-hint, NisseNet-filer og Nissemor-tekster fulgt opp etter revisjonen i `gaater-2026.md` (to meta-gåter, blindspor, Hanna uten kodebærende steg). Nye felt: `transcript_runer` i `kulde_spokelsesbilde` (dag 10, 13, 16, 21) og `julius_ps_krypto_mangler` (dag 20).
 
@@ -172,7 +172,7 @@ Reservetekst (dager uten egen linje, erstatter dagens «Is-krystallene mine voks
 - NisseMusikk (fra dag 7, liten linje i vinduet): `Varmekilden. Så lenge noe spiller her, fryser ikke serverrommet helt.`
 - NisseMusikk dag 12 før kode (overlegg): `FROSSET. Noe i isen holder på lyden.`
 - Brevfugler (fra dag 14, radarkort): `FRYST BREV · avsender ukjent · tiner når linjen er varm`
-- Brevfugler dag 24, brevet tiner (fire linjer, fra Vintervokteren): `Takk for lyset.` / `Jeg hadde glemt farger.` / `Krystallet smelter ikke.` / `Det er fra meg.`
+- Brevfugler dag 24, brevet tiner (fire linjer, fra Vintervokteren): `Takk for lyset.` / `Jeg hadde glemt farger.` / `Krystallbitene smelter ikke.` / `Det er fra meg.`
 - Brevfugler, skriv til Julius (uendret funksjon, ny tekst): `Skriv til Julius. Brevet flyr selv.` (Ingen løfte om svar.)
 - Dagbok, autoåpning: `NY MELDING FRA JULIUS` · knapp etter visning: `SE IGJEN` · under spilleren når løst: `PS fra Julius`
 - Kanal 4 dag 11 etter kode, HUD: `75,0 MHz · BILDET KLARNER` (vises bare etter at koden er inne)
@@ -742,7 +742,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 ### Dag 24 (to) – God Jul på Landås · JULEMAGI · M6 Tøvær
 
 - `tittel`: God Jul på Landås
-- `nissemail_tekst` (74 ord): Jeg er hjemme i Snøfall. 🎄 Trixter la krystallet under treet deres i natt, og jeg hoppet bakpå da han dro. Ingen vekking; det var sånn jeg kom også. Brevet mitt henger der jeg satt. Håkon: les det høyt. Kristian: rutekortet ligger i konvolutten, lappene har tegn, og Julius sier resten. Hanna, hvis du vil: du vet hvilken dag hver ting i esken kommer fra. Takk for lånet av fruktskålen. Og takk for alt. – Rampenissen
+- `nissemail_tekst` (74 ord): Jeg er hjemme i Snøfall. 🎄 Trixter la tre krystallbiter under treet i natt, og jeg hoppet bakpå da han dro. Ingen vekking; det var sånn jeg kom også. Brevet mitt henger der jeg satt. Håkon: les det høyt. Kristian: rutekortet ligger i konvolutten, lappene har tegn, og Julius sier resten. Hanna, hvis du vil: du vet hvilken dag hver ting i esken kommer fra. Takk for lånet av fruktskålen. Og takk for alt. – Rampenissen
 - `julius_ps`: Det er ikke kaldt der nede lenger. Vintervokteren sendte noe med Trixter; det ligger under treet, og det smelter ikke. Ved siden av ligger den siste klementinen fra Hjerteruds niste. Varmt og kaldt, side om side. Rampenissen kom hjem i natt, bakpå sleden, like brått som han dro ned. Han leverte rapporten sin før han la seg i garnkurven, og jeg har lest den. Alle tre. God jul, Kristian, Håkon og Hanna.
 - `daily_alerts` (fem): 🎅 JULIUS: God jul, Kristian, Håkon og Hanna. Det er ikke kaldt der nede lenger. · ❄️ ORAKELET: Frostgrad 0 %. Tøvær. · 🎄 HJERTERUD: God jul til hele huset på Landås. · 🧝 RAMPENISSEN: Heime på loftet. Brevet heng der æ satt. Te neste år! · 🕊️ WINTER: Den blå fuglen fløy hjem. Brevet har tint.
 - NisseNet: ingen nye. Fargesamlerens arkiv står komplett.

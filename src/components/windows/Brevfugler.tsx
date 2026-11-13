@@ -10,7 +10,7 @@ import { getCurrentDay } from "@/lib/date-utils";
 const TINT_BREV = [
   "Takk for lyset.",
   "Jeg hadde glemt farger.",
-  "Krystallet smelter ikke.",
+  "Krystallbitene smelter ikke.",
   "Det er fra meg.",
 ];
 
