@@ -62,16 +62,6 @@ export async function lagre(
   varsle();
 }
 
-/** `dag/04/gaatekart` → page link with the anchor Vurder renders. */
-export function vurderingHref(id: string): string {
-  const [side, ...rest] = id.split("/");
-  const anker = `#vurdering-${rest.at(-1)}`;
-  if (side === "dag") return `/nissemor-guide/dag/${Number(rest[0])}${anker}`;
-  if (side === "historien") return `/nissemor-guide/historien${anker}`;
-  if (side === "forsesong") return `/nissemor-guide/forberedelser${anker}`;
-  return "/nissemor-guide/media";
-}
-
 export const slug = (s: string) =>
   s
     .toLowerCase()

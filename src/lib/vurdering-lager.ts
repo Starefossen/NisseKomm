@@ -56,7 +56,7 @@ const UTDATERT = "utdatert";
 
 const hashCache = new Map<string, Promise<string>>();
 /** sha256 of the bytes, 12 hex; the same as kort() for raw clips and medie.fil_hash. */
-function filHash(full: string, stempel: string) {
+export function filHash(full: string, stempel: string) {
   const k = `${full}|${stempel}`;
   if (!hashCache.has(k))
     hashCache.set(

@@ -21,6 +21,7 @@ import {
   type Tilstand,
 } from "./elementer";
 import { Innhold } from "./visning";
+import { byggKo, type KoServer, type Linje } from "./ko";
 
 const SIDE = "/nissemor-guide/gjennomgang";
 const REKKEFOLGE = "nissekomm-guide-gjennomgang-rekkefolge";
@@ -86,7 +87,147 @@ function useData() {
   const krypto = GameEngine.getAllQuests().filter(
     (q) => q.decryption_challenge,
   ).length;
-  return { sesong, media, vurd, krypto };
+  const [server, setServer] = useState<KoServer | null>(null);
+  useEffect(() => {
+    fetch("/api/media/ko")
+      .then((r) => (r.ok ? r.json() : null))
+      .then(setServer)
+      .catch(() => setServer(null));
+  }, []);
+  return { sesong, media, vurd, krypto, server };
+}
+
+function useKo(d: ReturnType<typeof useData>, sesong: Sesong) {
+  const liste = alleElementer("dag", sesong, d.media.files, d.krypto);
+  const ko = d.server
+    ? byggKo(liste, { ...kilde(d.media), vurderinger: d.vurd ?? {} }, d.server)
+    : null;
+  return { liste, ko };
+}
+
+const FANER = [
+  ["venter", "Venter på deg"],
+  ["agent", "Hos agent"],
+  ["laerdom", "Lærdom"],
+] as const;
+type Fane = (typeof FANER)[number][0];
+
+const kr = (n: number) =>
+  n.toLocaleString("nb-NO", { maximumFractionDigits: 1 });
+
+/** The queue: what waits for Hans, what waits for an agent, and the lessons. */
+function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
+  const router = useRouter();
+  const { liste, ko } = useKo(d, sesong);
+  const fraUrl = useSearchParams().get("k");
+  const fane: Fane = FANER.some(([f]) => f === fraUrl)
+    ? (fraUrl as Fane)
+    : "venter";
+  const [valgt, setValgt] = useState(0);
+  const linjer: Linje[] = ko ? ko[fane] : [];
+  const lenke = (l: Linje) =>
+    liste.some((e) => e.id === l.id) ? href(l.id) : "/nissemor-guide/media";
+
+  useEffect(() => {
+    const ned = (ev: KeyboardEvent) => {
+      const mal = ev.target as HTMLElement;
+      if (
+        ev.metaKey ||
+        ev.ctrlKey ||
+        ev.altKey ||
+        ["INPUT", "TEXTAREA", "SELECT"].includes(mal.tagName)
+      )
+        return;
+      const tast = ev.key.toLowerCase();
+      if (tast === "j") setValgt((i) => Math.min(i + 1, linjer.length - 1));
+      else if (tast === "k") setValgt((i) => Math.max(i - 1, 0));
+      else if (ev.key === "Enter" && linjer[valgt])
+        router.push(lenke(linjer[valgt]));
+      else return;
+      ev.preventDefault();
+    };
+    window.addEventListener("keydown", ned);
+    return () => window.removeEventListener("keydown", ned);
+  });
+  useEffect(() => {
+    document
+      .querySelector(`[data-ko="${valgt}"]`)
+      ?.scrollIntoView({ block: "nearest" });
+  }, [valgt]);
+
+  if (!ko) return <p>Laster køen …</p>;
+  const f = d.server!.forbruk;
+  const grupper =
+    fane === "laerdom" ? [...new Set(linjer.map((l) => l.type))] : [null];
+  return (
+    <>
+      <p className="text-lg" data-testid="budsjett">
+        Forbruk siden {Number(f.fra.slice(8))}.{Number(f.fra.slice(5, 7))}.:{" "}
+        <span className="text-(--gold)">{kr(f.brukt)} kr</span> brukt,{" "}
+        <span className={f.igjen < 200 ? "text-(--christmas-red)" : ""}>
+          {kr(f.igjen)} kr
+        </span>{" "}
+        igjen av {kr(f.budsjett)} kr
+      </p>
+      <nav className="flex flex-wrap gap-2" role="tablist">
+        {FANER.map(([k, navn]) => (
+          <Link
+            key={k}
+            role="tab"
+            aria-selected={fane === k}
+            href={`${SIDE}?k=${k}`}
+            onClick={() => setValgt(0)}
+            className={`${knapp} text-lg ${fane === k ? "bg-(--gold) text-black border-(--gold)" : ""}`}
+          >
+            {navn} ({ko[k].length})
+          </Link>
+        ))}
+      </nav>
+      {fane === "venter" && ko.segmenter > 0 && (
+        <p className="text-base">
+          Herav {ko.segmenter} manussegmenter på dager uten video.
+        </p>
+      )}
+      {linjer.length === 0 && <p>Ingenting her.</p>}
+      {grupper.map((g) => (
+        <div key={g ?? "alle"}>
+          {g && <h2 className="text-2xl text-(--gold) mt-3">{g}</h2>}
+          <ul>
+            {linjer.map((l, i) =>
+              g && l.type !== g ? null : (
+                <li
+                  key={`${l.id}-${l.tittel}`}
+                  data-ko={i}
+                  aria-current={i === valgt}
+                  className={`border-b border-(--neon-green)/30 p-2 ${i === valgt ? "bg-(--neon-green)/15 border-l-4 border-l-(--gold)" : ""}`}
+                >
+                  <Link
+                    href={lenke(l)}
+                    className="underline text-(--gold) inline-block min-h-11 py-2 break-all"
+                  >
+                    {l.tittel}
+                  </Link>{" "}
+                  <span>{l.hva}</span>
+                  {l.notat && <p className="text-base">«{l.notat}»</p>}
+                  {l.kommando && (
+                    <p className="text-base">
+                      <code className="break-all text-(--cold-blue)">
+                        {l.kommando}
+                      </code>
+                      {l.pris ? ` · ca. ${kr(l.pris)} kr` : " · gratis"}
+                    </p>
+                  )}
+                </li>
+              ),
+            )}
+          </ul>
+        </div>
+      ))}
+      <p className="text-base text-(--neon-green)/80">
+        Tastatur: J neste · K forrige · Enter åpner
+      </p>
+    </>
+  );
 }
 
 function Celle({
@@ -255,12 +396,20 @@ function Vurdering({
       : liste.findIndex((e) => versionKey(e.id) === versionKey(id));
   const e = liste[i];
   const forrige = liste[i - 1];
+  const { ko } = useKo(d, sesong);
+  const koIder = (ko?.venter ?? [])
+    .map((l) => l.id)
+    .filter((x, j, a) => a.indexOf(x) === j && liste.some((y) => y.id === x));
+  const iKo = koIder.indexOf(e?.id ?? "");
+  // From the queue, «Neste» is the next line waiting for Hans.
+  const nesteIKo = iKo >= 0 ? koIder[iKo + 1] : koIder.find((x) => x !== e?.id);
   // «Neste uvurdert» stays inside the chosen quick choice; the current item always counts.
-  const neste = nesteUvurdert(
+  const nesteUv = nesteUvurdert(
     liste.filter((x) => x === e || passerUtvalg(u, x, tilstand(x, k).celle)),
     e?.id ?? id,
     vurd,
   );
+  const neste = nesteIKo ? liste.find((x) => x.id === nesteIKo) : nesteUv;
 
   useEffect(() => {
     const ned = (ev: KeyboardEvent) => {
@@ -287,7 +436,7 @@ function Vurdering({
     <>
       <nav className="flex flex-wrap items-center gap-2">
         <Link href={SIDE} className={knapp}>
-          ‹ Oversikten
+          ‹ Køen
         </Link>
         {forrige && (
           <Link href={href(forrige.id)} className={knapp}>
@@ -296,7 +445,7 @@ function Vurdering({
         )}
         {neste && (
           <Link href={href(neste.id)} className={`${knapp} border-(--gold)`}>
-            Neste uvurdert (N)
+            {nesteIKo ? "Neste i køen" : "Neste uvurdert"} (N)
           </Link>
         )}
         <UtvalgValg u={u} sett={settU} />
@@ -348,18 +497,39 @@ function Vurdering({
 }
 
 function Gjennomgang() {
-  const id = useSearchParams().get("id");
+  const sp = useSearchParams();
+  const id = sp.get("id");
+  const oversikt = sp.get("vis") === "oversikt";
   const d = useData();
   if (!d.sesong || !d.vurd || !d.media.files)
     return <p>Laster … (bare på hjemmenettet)</p>;
-  return id ? (
-    <Vurdering id={id} d={d} sesong={d.sesong} />
-  ) : (
+  if (id) return <Vurdering id={id} d={d} sesong={d.sesong} />;
+  return (
     <>
       <h1 className="text-4xl font-bold text-(--gold) text-center">
         GJENNOMGANG
       </h1>
-      <Matrise d={d} sesong={d.sesong} />
+      <nav className="flex gap-2">
+        <Link
+          href={SIDE}
+          aria-current={!oversikt}
+          className={`${knapp} text-xl ${!oversikt ? "border-(--gold) text-(--gold)" : ""}`}
+        >
+          Kø
+        </Link>
+        <Link
+          href={`${SIDE}?vis=oversikt`}
+          aria-current={oversikt}
+          className={`${knapp} text-xl ${oversikt ? "border-(--gold) text-(--gold)" : ""}`}
+        >
+          Oversikt
+        </Link>
+      </nav>
+      {oversikt ? (
+        <Matrise d={d} sesong={d.sesong} />
+      ) : (
+        <Ko d={d} sesong={d.sesong} />
+      )}
     </>
   );
 }

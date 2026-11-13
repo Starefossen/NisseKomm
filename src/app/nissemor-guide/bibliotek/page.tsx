@@ -93,7 +93,6 @@ function EntitetKort({
 const SIDER = [
   ["/nissemor-guide/printout", "Utskrifter"],
   ["/nissemor-guide/media", "Media"],
-  ["/nissemor-guide/vurderinger", "Vurderinger"],
   ["/nissemor-guide/brevfugler", "Brev fra barna"],
   ["/nissemor-guide/symboler", "Symbolkort med QR-koder"],
   ["/nissemor-guide/forberedelser", "Forberedelser og handleliste"],
