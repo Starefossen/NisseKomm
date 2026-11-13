@@ -937,6 +937,42 @@
     "mal": "assets/prompts/strek/oppsett.txt",
     "notat": "oppsettskisse av gåta (Gåtekart i guiden, dag N); Oppsettskisse-linjen i docs/gaater-2026.md"
   },
+  "oppsett/dag12": {
+    "generator": "still",
+    "dag": 12,
+    "format": "1:1",
+    "ut": "strek/oppsett-dag12.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/oppsett.txt",
+    "notat": "oppsettskisse av gåta (Gåtekart i guiden, dag N); Oppsettskisse-linjen i docs/gaater-2026.md"
+  },
+  "oppsett/dag15": {
+    "generator": "still",
+    "dag": 15,
+    "format": "1:1",
+    "ut": "strek/oppsett-dag15.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/oppsett.txt",
+    "notat": "oppsettskisse av gåta (Gåtekart i guiden, dag N); Oppsettskisse-linjen i docs/gaater-2026.md"
+  },
+  "oppsett/dag16": {
+    "generator": "still",
+    "dag": 16,
+    "format": "1:1",
+    "ut": "strek/oppsett-dag16.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/oppsett.txt",
+    "notat": "oppsettskisse av gåta (Gåtekart i guiden, dag N); Oppsettskisse-linjen i docs/gaater-2026.md"
+  },
+  "oppsett/dag21": {
+    "generator": "still",
+    "dag": 21,
+    "format": "1:1",
+    "ut": "strek/oppsett-dag21.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/oppsett.txt",
+    "notat": "oppsettskisse av gåta (Gåtekart i guiden, dag N); Oppsettskisse-linjen i docs/gaater-2026.md"
+  },
   "strek/dag01": {
     "generator": "still",
     "dag": 1,
