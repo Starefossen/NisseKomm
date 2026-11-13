@@ -808,7 +808,7 @@ function Vurdering({
           data-testid="vurderingsboks"
           className="flex flex-wrap lg:flex-nowrap items-start gap-x-3 gap-y-1 py-1 border-t border-(--neon-green)/20"
         >
-          <div className="flex items-center gap-2 min-w-0 lg:max-w-[40%]">
+          <div className="flex items-center gap-2 min-w-0 basis-full lg:basis-auto lg:max-w-[40%]">
             <h2 className="text-xl text-(--gold) truncate" title={e.id}>
               {e.tittel}
             </h2>
