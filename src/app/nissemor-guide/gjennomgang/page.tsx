@@ -42,6 +42,7 @@ import {
   FREMDRIFT,
   type Fremdrift,
   omtak,
+  arbeidTekst,
   prioritetFor,
   prioritetTekst,
   type KoServer,
@@ -49,6 +50,7 @@ import {
 } from "./ko";
 import { Fremdriftslinjer } from "./fremdrift";
 import { Forslag, Regler } from "./laerdom";
+import { Lagremelding, useLagring } from "../lagring";
 
 const SIDE = "/nissemor-guide/gjennomgang";
 const REKKEFOLGE = "nissekomm-guide-gjennomgang-rekkefolge";
@@ -185,6 +187,7 @@ const FANER = [
   ["venter", "Venter på deg"],
   ["agent", "Hos agent"],
   ["laerdom", "Lærdom"],
+  ["arbeid", "Under arbeid"],
 ] as const;
 type Fane = (typeof FANER)[number][0];
 
@@ -312,7 +315,11 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
             className={`${knapp} text-lg ${!st && fane === k ? "bg-(--gold) text-black border-(--gold)" : ""}`}
           >
             {/* Same number as the progress bar: elements, not lines (a video can have several segment lines). */}
-            {navn} ({k === "laerdom" ? ko[k].length : fd!.total.telling[k]})
+            {navn} (
+            {k === "laerdom" || k === "arbeid"
+              ? ko[k].length
+              : fd!.total.telling[k]}
+            )
           </Link>
         ))}
       </nav>
@@ -924,6 +931,7 @@ function Vurdering({
           <p className="whitespace-pre-line">{vurd[e.id].forklaring}</p>
         </Kort>
       )}
+      <Sloyfe id={e.id} media={e.media} d={d} />
       {!ikkeLaget &&
         (!segStatus || segStatus.slutt) &&
         e.media.map((p) => <TaIBruk key={p} path={p} data={d.media} />)}
@@ -934,6 +942,116 @@ function Vurdering({
       </SkjulVurder.Provider>
       <Historikk key={`h-${e.id}`} id={e.id} />
     </>
+  );
+}
+
+async function sendSvar(body: Record<string, unknown>) {
+  const r = await fetch("/api/media/svar", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!r.ok) throw new Error((await r.text()) || `HTTP ${r.status}`);
+}
+
+/** Agents' replies under Hans' note, his open question and who is working on it. */
+function Sloyfe({
+  id,
+  media,
+  d,
+}: {
+  id: string;
+  media: string[];
+  d: ReturnType<typeof useData>;
+}) {
+  const { status, lagrer, kjør } = useLagring();
+  const s = d.server;
+  const tråd = s && prioritetFor(id, s.svar ?? {}, media);
+  const spm = s && prioritetFor(id, s.spørsmål ?? {}, media);
+  const arb = s && prioritetFor(id, s.arbeid ?? {}, media);
+  const nøkkel = (x: { fil: string }) => versionKey(x.fil.replace(/#.*/, ""));
+  // Opening the item is seeing the replies.
+  const nytt = !!tråd?.nytt;
+  const fil = tråd?.fil;
+  useEffect(() => {
+    if (!nytt || !fil) return;
+    sendSvar({ id: fil, sett: true })
+      .then(() =>
+        d.settServer((x) => ({
+          ...x,
+          svar: Object.fromEntries(
+            Object.entries(x.svar ?? {}).map(([k, t]) => [
+              k,
+              t.fil === fil ? { ...t, nytt: false } : t,
+            ]),
+          ),
+        })),
+      )
+      .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nytt, fil]);
+  if (!tråd && !spm && !arb) return null;
+  return (
+    <Kort tittel="Agent og deg" farge="border-(--cold-blue)">
+      {arb && (
+        <p
+          data-testid="under-arbeid"
+          className={arb.stoppet ? "text-(--christmas-red)" : "text-(--gold)"}
+        >
+          ⚙ Under arbeid: {arbeidTekst(arb)}
+        </p>
+      )}
+      {spm && (
+        <div
+          data-testid="spørsmål"
+          className="flex flex-wrap gap-2 items-center"
+        >
+          <span>Spørsmål fra deg: «{spm.notat}»</span>
+          <button
+            type="button"
+            disabled={lagrer}
+            className="inline-flex items-center justify-center min-h-11 min-w-11 px-3 border-2 border-(--neon-green) hover:bg-(--neon-green)/20"
+            onClick={() =>
+              kjør(async () => {
+                await sendSvar({ id: spm.fil, lukk: true });
+                d.settServer((x) => ({
+                  ...x,
+                  spørsmål: Object.fromEntries(
+                    Object.entries(x.spørsmål ?? {}).filter(
+                      ([, q]) => nøkkel(q) !== nøkkel(spm),
+                    ),
+                  ),
+                }));
+              }, "✓ Lukket")
+            }
+          >
+            Lukk spørsmål
+          </button>
+          <Lagremelding status={status} />
+        </div>
+      )}
+      {tråd && (
+        <ul data-testid="svar-tråd">
+          {tråd.tråd.map((x) => (
+            <li
+              key={x.når}
+              className="border-l-2 border-(--cold-blue) pl-2 my-1"
+            >
+              <span className="text-base text-(--cold-blue)">
+                {x.av.replace(/^agent:/, "")} ·{" "}
+                {new Date(x.når).toLocaleString("nb-NO", {
+                  day: "numeric",
+                  month: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
+              <p className="whitespace-pre-line">{x.tekst}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Kort>
   );
 }
 

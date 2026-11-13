@@ -11,6 +11,7 @@ import {
   LagerNyere,
   kjentId,
   lukkPrioritet,
+  merkSvarSett,
   lesLager,
   oppføring,
   stemple,
@@ -351,6 +352,8 @@ export async function POST(req: NextRequest) {
       // A verdict answers an agent's «look at this first».
       if (nextVerdict && vurdering !== undefined)
         lukkPrioritet(l, cleanPath, "prioritet lukket av dom", now);
+      // A new verdict means Hans has read the agents' replies.
+      if (nextVerdict) merkSvarSett(l, cleanPath, now);
       const entry = v && oppføring(v);
       return Response.json({
         ok: true,

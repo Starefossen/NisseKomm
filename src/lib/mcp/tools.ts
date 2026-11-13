@@ -901,8 +901,17 @@ export const TOOLS: Record<string, Tool> = {
       if (typeof siden === "string" && Number.isNaN(fra))
         throw new ArgError("ugyldig argument: siden");
       // Changed since the verdict: shown as «(ny versjon)» and counted as open.
-      const { lesLager, visning } = await import("@/lib/vurdering-lager");
-      const sett = await visning(mediaDir(), await lesLager(mediaDir()));
+      const { lesLager, visning, sløyfe } =
+        await import("@/lib/vurdering-lager");
+      const lager = await lesLager(mediaDir());
+      const sett = await visning(mediaDir(), lager);
+      // Hans' open questions first, whatever the verdict: an agent answers with svar_vurdering.
+      const spm = Object.values(sløyfe(lager).spørsmål)
+        .filter((q) => typeof prefiks !== "string" || q.fil.startsWith(prefiks))
+        .map(
+          (q) =>
+            `${q.fil} | ${q.når.slice(0, 16).replace("T", " ")} | ${q.notat.replace(/\s*\n\s*/g, " / ")}`,
+        );
       const rader = Object.entries(sett)
         .filter(([id]) => typeof prefiks !== "string" || id.startsWith(prefiks))
         // Julius scripts count per segment (#sK); the day level is no verdict of its own.
@@ -954,6 +963,13 @@ export const TOOLS: Record<string, Tool> = {
           : [];
       const hode = `${aapne.length} åpne av ${rader.length}`;
       const deler = [
+        ...(spm.length
+          ? [
+              "SPØRSMÅL fra Hans (svar med svar_vurdering):",
+              ...spm,
+              "vurderinger:",
+            ]
+          : []),
         ...linjer,
         ...(laerdom.length ? ["lærdom:", ...laerdom] : []),
       ];
@@ -1005,6 +1021,116 @@ export const TOOLS: Record<string, Tool> = {
           throw new ArgError(`ugyldig argument: ${err.message}`);
         throw err;
       }
+    },
+  },
+  svar_vurdering: {
+    level: "parent",
+    description:
+      "Svar på Hans' notat eller spørsmål på et element: tekst vises rett under notatet hans, elementet kommer tilbake i «Venter på deg» som «Svar fra agent», og et åpent spørsmål lukkes. id = element-id, av = agentnavn.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        tekst: { type: "string" },
+        av: { type: "string" },
+      },
+    },
+    run: async (a) => {
+      const { svarVurdering, UgyldigPrioritet } =
+        await import("@/lib/vurdering-lager");
+      const navn =
+        String(a.av ?? "mcp")
+          .replace(/[^\w.-]/g, "")
+          .slice(0, 40) || "mcp";
+      try {
+        // Only a reply: sett/lukk are Hans' own.
+        return {
+          ok: true,
+          svar: await svarVurdering(
+            mediaDir(),
+            { id: a.id, tekst: a.tekst },
+            `agent:${navn}`,
+          ),
+        };
+      } catch (err) {
+        if (err instanceof UgyldigPrioritet)
+          throw new ArgError(`ugyldig argument: ${err.message}`);
+        throw err;
+      }
+    },
+  },
+  arbeid_vurdering: {
+    level: "parent",
+    description:
+      "Merk et element «under arbeid» (hva = kort hva du gjør), vist i Gjennomgang med navn og klokkeslett; oppdater minst hver 2. time, ellers vises det som «stoppet?». ferdig=true fjerner merket.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        id: { type: "string" },
+        hva: { type: "string" },
+        av: { type: "string" },
+        ferdig: { type: "boolean" },
+      },
+    },
+    run: async (a) => {
+      const { arbeidVurdering, UgyldigPrioritet } =
+        await import("@/lib/vurdering-lager");
+      const navn =
+        String(a.av ?? "mcp")
+          .replace(/[^\w.-]/g, "")
+          .slice(0, 40) || "mcp";
+      try {
+        return {
+          ok: true,
+          arbeid: await arbeidVurdering(mediaDir(), a, `agent:${navn}`),
+        };
+      } catch (err) {
+        if (err instanceof UgyldigPrioritet)
+          throw new ArgError(`ugyldig argument: ${err.message}`);
+        throw err;
+      }
+    },
+  },
+  regler_vurdering: {
+    level: "parent",
+    description:
+      "Aktive regler (assets/laerdom.json) og åpne lærdommer (OK med notat) for én medietype, som en kort «unngå:»-blokk å lime inn i en genereringsbrief.",
+    inputSchema: {
+      type: "object",
+      properties: { type: { type: "string" } },
+    },
+    run: async ({ type }) => {
+      const { TAGGER, taggType } = await import("@/lib/vurdering-tagger");
+      if (typeof type !== "string" || !Object.hasOwn(TAGGER, type))
+        throw new ArgError(
+          `ugyldig argument: type (${Object.keys(TAGGER).join(", ")})`,
+        );
+      const { lesLaerdom } = await import("@/lib/laerdom");
+      const { lesLager, flat } = await import("@/lib/vurdering-lager");
+      const l = await lesLaerdom();
+      const behandlet = new Set([
+        ...l.avvist,
+        ...l.regler.flatMap((r) => r.kilder),
+      ]);
+      const regler = l.regler
+        .filter((r) => r.aktiv && r.type === type)
+        .map((r) => `- ${r.regel.replace(/^unngå:\s*/i, "")}`);
+      const laerdom = Object.entries(flat(await lesLager(mediaDir())))
+        .filter(
+          ([id, v]) =>
+            v.vurdering === "ok" &&
+            v.notat &&
+            taggType(id) === type &&
+            !behandlet.has(id),
+        )
+        .map(([id, v]) => `- ${v.notat!.replace(/\s*\n\s*/g, " / ")} (${id})`);
+      if (!regler.length && !laerdom.length)
+        return `${type}: ingen regler eller åpne lærdommer`;
+      return [
+        `unngå (${type}):`,
+        ...regler,
+        ...(laerdom.length ? ["åpne lærdommer:", ...laerdom] : []),
+      ].join("\n");
     },
   },
   reset: {

@@ -2,6 +2,7 @@
 # Hans' vurderinger fra guiden via MCP-verktøyet list_vurderinger.
 # Bruk: mise run vurderinger [--alle] [--siden ISO] [--nye] [--prefiks P] [--historikk ID]
 #       mise run vurderinger --prioriter ID --grunn "…" [--hast] [--frist ISO] | --prioriter ID --fjern
+#       mise run vurderinger --svar ID "tekst" | --arbeid ID "hva" | --arbeid ID --ferdig | --regler TYPE
 # (AGENT_NAVN navngir agenten i historikken)
 set -euo pipefail
 URL=${MCP_URL:-http://localhost:3000/mcp}
@@ -22,6 +23,12 @@ while [[ $# -gt 0 ]]; do
     --frist) args=$(jq -c --arg v "$2" '.frist=$v' <<<"$args"); shift ;;
     --hast) args=$(jq -c '.nivaa="hast"' <<<"$args") ;;
     --fjern) args=$(jq -c '.fjern=true' <<<"$args") ;;
+    --svar) tool=svar_vurdering; args=$(jq -c --arg v "$2" --arg t "${3:-}" --arg a "${AGENT_NAVN:-cli}" '.id=$v|.tekst=$t|.av=$a' <<<"$args"); shift 2 ;;
+    --arbeid)
+      tool=arbeid_vurdering; args=$(jq -c --arg v "$2" --arg a "${AGENT_NAVN:-cli}" '.id=$v|.av=$a' <<<"$args"); shift
+      if [[ $# -gt 1 && $2 != --* ]]; then args=$(jq -c --arg t "$2" '.hva=$t' <<<"$args"); shift; fi ;;
+    --ferdig) args=$(jq -c '.ferdig=true' <<<"$args") ;;
+    --regler) tool=regler_vurdering; args=$(jq -c --arg v "$2" '.type=$v' <<<"$args"); shift ;;
     *) echo "ukjent: $1" >&2; exit 2 ;;
   esac
   shift

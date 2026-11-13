@@ -21,14 +21,23 @@ async function send(e: Endring): Promise<Laerdom> {
 
 /** «Gjør til regel» / «Avvis» under one Lærdom suggestion. */
 export function Forslag({ l, ny }: { l: Linje; ny: (d: Laerdom) => void }) {
-  const [tekst, setTekst] = useState<string | null>(null);
+  // Repeated 3+ times: the rule form opens pre-filled.
+  const [tekst, setTekst] = useState<string | null>(
+    l.gjentatt && taggType(l.id) ? `unngå: ${l.notat ?? ""}` : null,
+  );
   const { status, lagrer, kjør } = useLagring();
   const gjør = (e: Endring) => kjør(async () => ny(await send(e)));
   // A rule needs a type the generators read (vurdering-tagger.json); other notes can only be dismissed.
   const type = taggType(l.id);
+  const gjentatt = l.gjentatt ? (
+    <span className="text-(--christmas-red)" data-testid="gjentatt">
+      Gjentatt {l.gjentatt} ganger
+    </span>
+  ) : null;
   if (tekst === null || !type)
     return (
       <div className="flex flex-wrap gap-2 items-center">
+        {gjentatt}
         {type && (
           <button
             type="button"
@@ -57,10 +66,11 @@ export function Forslag({ l, ny }: { l: Linje; ny: (d: Laerdom) => void }) {
         gjør({ handling: "regel", type, regel: tekst, kilder: [l.id] });
       }}
     >
+      {gjentatt}
       <label className="flex-1 min-w-64">
         <span className="sr-only">Regel for {type}</span>
         <input
-          autoFocus
+          autoFocus={!l.gjentatt}
           value={tekst}
           maxLength={200}
           onChange={(ev) => setTekst(ev.target.value)}

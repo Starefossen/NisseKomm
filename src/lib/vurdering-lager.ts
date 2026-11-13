@@ -74,6 +74,28 @@ export interface Element {
   historikk: Vurdering[];
   /** An agent's «look at this first»: not a verdict, gone when Hans gives one. */
   prioritet?: Prioritet;
+  /** Agents' replies under Hans' note, oldest first. */
+  svar?: Svar[];
+  /** When Hans last saw the replies (opened the item or gave a verdict). */
+  svarSett?: string;
+  /** When Hans closed the question in his note himself («Lukk spørsmål»). */
+  spmLukket?: string;
+  /** An agent working on it now; «stoppet?» after ARBEID_MS without an update. */
+  arbeid?: Arbeid;
+}
+
+export interface Svar {
+  fil: string;
+  tekst: string;
+  /** «agent:<navn>» or «hans» */
+  av: string;
+  når: string;
+}
+export interface Arbeid {
+  fil: string;
+  av: string;
+  hva: string;
+  når: string;
 }
 
 export type PrioritetNivaa = "hast" | "høy";
@@ -763,6 +785,167 @@ export function kjentId(id: string): boolean {
 
 export class UgyldigPrioritet extends Error {}
 
+const sjekkId = (a: Record<string, unknown>) => {
+  const id = typeof a.id === "string" ? a.id.trim() : "";
+  if (!id || id.includes("..") || id.startsWith("/") || !kjentId(id))
+    throw new UgyldigPrioritet("ugyldig id");
+  return id;
+};
+const element = (l: Lager, id: string) =>
+  (l.elementer[versionKey(id)] ??= { vurderinger: [], historikk: [] });
+const tekstArg = (x: unknown, navn: string, maks: number) => {
+  const t = typeof x === "string" ? x.trim() : "";
+  if (!t || t.length > maks)
+    throw new UgyldigPrioritet(`${navn} mangler (maks ${maks} tegn)`);
+  return t;
+};
+
+/** A note that asks something: ends with «?» or starts with a question word. */
+export const erSpørsmål = (t?: string) =>
+  !!t &&
+  (/\?\s*$/.test(t) ||
+    /^\s*(hvorfor|hva|hvordan|hvem|hvor|hvilken|hvilket|hvilke|når)\b/i.test(
+      t,
+    ));
+
+export const ARBEID_MS = 2 * 3600_000;
+
+export interface Tråd {
+  fil: string;
+  tråd: Svar[];
+  /** Replies Hans has not seen. */
+  nytt: boolean;
+}
+export interface Spørsmål {
+  fil: string;
+  notat: string;
+  når: string;
+}
+
+/**
+ * The agent ↔ Hans loop by element: reply threads, open questions (a question in
+ * a note, any verdict, until a reply after it or Hans closes it) and work in progress.
+ */
+export function sløyfe(l: Lager, nå = Date.now()) {
+  const svar: Record<string, Tråd> = {};
+  const spørsmål: Record<string, Spørsmål> = {};
+  const arbeid: Record<string, Arbeid & { stoppet?: boolean }> = {};
+  for (const [k, e] of Object.entries(l.elementer)) {
+    const tråd = e.svar ?? [];
+    if (tråd.length)
+      svar[k] = {
+        fil: tråd.at(-1)!.fil,
+        tråd,
+        nytt: tråd.some((x) => x.når > (e.svarSett ?? "")),
+      };
+    for (const v of e.vurderinger) {
+      const når = v.oppdatert ?? "";
+      if (
+        erSpørsmål(v.notat) &&
+        !tråd.some((x) => x.når > når) &&
+        !((e.spmLukket ?? "") > når)
+      )
+        spørsmål[k] = { fil: v.fil, notat: v.notat!, når };
+    }
+    if (e.arbeid)
+      arbeid[k] = {
+        ...e.arbeid,
+        ...(nå - Date.parse(e.arbeid.når) > ARBEID_MS ? { stoppet: true } : {}),
+      };
+  }
+  return { svar, spørsmål, arbeid };
+}
+
+/** Hans has seen the replies (opened the item, or gave a verdict). */
+export function merkSvarSett(l: Lager, fil: string, når: string) {
+  const e = l.elementer[versionKey(fil)];
+  if (e?.svar?.some((x) => x.når > (e.svarSett ?? ""))) e.svarSett = når;
+}
+
+/**
+ * {id, tekst}: a reply under Hans' note (closes its question); {id, sett: true}: Hans
+ * saw the replies; {id, lukk: true}: Hans closes the question without a reply.
+ */
+export function svarVurdering(
+  dir: string,
+  a: Record<string, unknown>,
+  av: string,
+) {
+  const id = sjekkId(a);
+  const når = new Date(Date.now()).toISOString();
+  if (a.sett === true)
+    return endreLager(dir, (l) => {
+      merkSvarSett(l, id, når);
+      return { ok: true };
+    });
+  if (a.lukk === true)
+    return endreLager(dir, (l) => {
+      const e = element(l, id);
+      e.spmLukket = når;
+      e.historikk.push({
+        hash: ALLTID,
+        fil: id,
+        oppdatert: når,
+        av,
+        merknad: `spørsmål lukket av ${av}`,
+      });
+      return { ok: true };
+    });
+  const tekst = tekstArg(a.tekst, "tekst", 2000);
+  return endreLager(dir, (l) => {
+    const e = element(l, id);
+    const s: Svar = { fil: id, tekst, av, når };
+    (e.svar ??= []).push(s);
+    e.historikk.push({
+      hash: ALLTID,
+      fil: id,
+      oppdatert: når,
+      av,
+      merknad: `svar fra ${av}: ${tekst}`,
+    });
+    return s;
+  });
+}
+
+/** {id, hva}: an agent is working on it (refresh to keep it alive); {id, ferdig: true} ends it. */
+export function arbeidVurdering(
+  dir: string,
+  a: Record<string, unknown>,
+  av: string,
+) {
+  const id = sjekkId(a);
+  const når = new Date(Date.now()).toISOString();
+  if (a.ferdig === true)
+    return endreLager(dir, (l) => {
+      const e = l.elementer[versionKey(id)];
+      if (!e?.arbeid) return false;
+      e.historikk.push({
+        hash: ALLTID,
+        fil: e.arbeid.fil,
+        oppdatert: når,
+        av,
+        merknad: `arbeid ferdig (${e.arbeid.hva}) av ${av}`,
+      });
+      delete e.arbeid;
+      return true;
+    });
+  const hva = tekstArg(a.hva, "hva", 200);
+  return endreLager(dir, (l) => {
+    const e = element(l, id);
+    // A refresh of the same work is no history line.
+    if (e.arbeid?.av !== av || e.arbeid.hva !== hva)
+      e.historikk.push({
+        hash: ALLTID,
+        fil: id,
+        oppdatert: når,
+        av,
+        merknad: `under arbeid av ${av}: ${hva}`,
+      });
+    e.arbeid = { fil: id, av, hva, når };
+    return e.arbeid;
+  });
+}
+
 /** Every open priority by id (the queue's sort and mark). */
 export const prioriteter = (l: Lager): Record<string, Prioritet> =>
   Object.fromEntries(
@@ -792,9 +975,7 @@ export function lukkPrioritet(
 
 /** Set (or with `fjern` remove) an agent's priority on one id; validated here for API, MCP and CLI. */
 export function prioriter(dir: string, a: Record<string, unknown>, av: string) {
-  const id = typeof a.id === "string" ? a.id.trim() : "";
-  if (!id || id.includes("..") || id.startsWith("/") || !kjentId(id))
-    throw new UgyldigPrioritet("ugyldig id");
+  const id = sjekkId(a);
   const når = new Date(Date.now()).toISOString();
   if (a.fjern === true)
     return endreLager(dir, (l) =>

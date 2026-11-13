@@ -11,7 +11,14 @@ import { kilde, useMediaData } from "../media/kort";
 import { StatusI, useVurderinger } from "../vurdering";
 import { versionKey } from "@/lib/media-status";
 import { alleElementer, tilstand, type Element } from "./elementer";
-import { byggKo, fremdrift, type Fremdrift, type KoServer } from "./ko";
+import {
+  arbeidTekst,
+  byggKo,
+  fremdrift,
+  prioritetFor,
+  type Fremdrift,
+  type KoServer,
+} from "./ko";
 
 /** Everything Gjennomgang (and Filer) derive status from. */
 export function useData() {
@@ -30,7 +37,9 @@ export function useData() {
   }, []);
   const settLaerdom = (laerdom: Laerdom) =>
     setServer((s) => (s ? { ...s, laerdom } : s));
-  return { sesong, media, vurd, krypto, server, settLaerdom };
+  const settServer = (f: (s: KoServer) => KoServer) =>
+    setServer((s) => (s ? f(s) : s));
+  return { sesong, media, vurd, krypto, server, settLaerdom, settServer };
 }
 export type Data = ReturnType<typeof useData>;
 
@@ -70,6 +79,8 @@ export interface CelleData {
   kandidat?: string;
   notat?: string;
   celle: string;
+  /** «⚙ agent · hva · siden 14:32» while an agent works on it. */
+  arbeid?: string;
 }
 
 /** One element's matrix cell: the progress bar's status, Julius per segment. */
@@ -98,6 +109,7 @@ export function useCelle(d: Data, sesong: Sesong) {
       if (vs.steg === "vurder" && st === "venter")
         ord = `● ${ok}/${segs.length} ✓`;
     }
+    const arbeid = prioritetFor(e.id, d.server?.arbeid ?? {}, e.media);
     const fam = e.media.length ? celleFor(e.media, k).familie : undefined;
     const kand = fam?.kandidat;
     return {
@@ -108,6 +120,7 @@ export function useCelle(d: Data, sesong: Sesong) {
         ? `+${kand.navn} ${MERKE[kand.celle][0]}${brukbar(kand.celle) ? " klar" : ""}`
         : undefined,
       notat: ti.notat,
+      ...(arbeid ? { arbeid: arbeidTekst(arbeid) } : {}),
       celle:
         MERKE[ti.celle][2] +
         (fam?.iBruk.utdatert ? ` · ${fam.iBruk.utdatert}` : ""),
@@ -130,11 +143,16 @@ export function StatusBrikke({
     <Link
       href={href}
       data-status={c.status}
-      title={`${c.e.tittel}: i bruk ${c.celle}${c.notat ? ` – ${c.notat}` : ""}`}
+      title={`${c.e.tittel}: i bruk ${c.celle}${c.notat ? ` – ${c.notat}` : ""}${c.arbeid ? ` · under arbeid: ${c.arbeid}` : ""}`}
       className={`flex flex-col items-center justify-center min-h-11 min-w-11 px-1 whitespace-nowrap hover:opacity-70 ${farge} ${dempet ? "opacity-40" : ""}`}
     >
       {c.ord ?? ord}
       {c.kandidat && <span className="text-sm">{c.kandidat}</span>}
+      {c.arbeid && (
+        <span className="text-sm" title={c.arbeid}>
+          ⚙ under arbeid
+        </span>
+      )}
     </Link>
   );
 }

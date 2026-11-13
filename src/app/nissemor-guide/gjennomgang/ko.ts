@@ -15,7 +15,7 @@ import { juliusFiles } from "../media/oversikt";
 import { tilstand, type Element } from "./elementer";
 import { taggLinje } from "@/lib/vurdering-tagger";
 import type { Laerdom } from "@/lib/laerdom";
-import type { Prioritet } from "@/lib/vurdering-lager";
+import type { Arbeid, Prioritet, Spørsmål, Tråd } from "@/lib/vurdering-lager";
 
 /**
  * Gjennomgang's queue, derived from files and verdicts (no state of its own):
@@ -39,6 +39,8 @@ export interface Linje {
   seg?: number;
   /** An agent's «look at this first» (prioriter_vurdering). */
   prioritet?: Prioritet;
+  /** Lærdom: the same tag or note on the same type this many times (3+). */
+  gjentatt?: number;
 }
 
 /** From /api/media/ko. */
@@ -58,6 +60,10 @@ export interface KoServer {
   laerdom?: Laerdom;
   /** Open agent priorities by id. */
   prioriteter?: Record<string, Prioritet>;
+  /** The agent ↔ Hans loop (vurdering-lager sløyfe), by element. */
+  svar?: Record<string, Tråd>;
+  spørsmål?: Record<string, Spørsmål>;
+  arbeid?: Record<string, Arbeid & { stoppet?: boolean }>;
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -140,11 +146,11 @@ export const medPrioritet = (a: Linje, b: Linje) =>
     (b.prioritet ? RANG[b.prioritet.nivaa] : 2) || sorter(a, b);
 
 /** The priority a line answers to: its id, its segment's base id, its family or one of its element's files. */
-export function prioritetFor(
+export function prioritetFor<T extends { fil: string }>(
   id: string,
-  p: Record<string, Prioritet>,
+  p: Record<string, T>,
   media: string[] = [],
-): Prioritet | undefined {
+): T | undefined {
   return Object.values(p).find((x) => {
     const f = x.fil.replace(/#.*/, "");
     return (
@@ -159,6 +165,22 @@ export function prioritetFor(
 /** «PRIORITERT · grunn · av agent (frist)» */
 export const prioritetTekst = (p: Prioritet) =>
   `PRIORITERT${p.nivaa === "hast" ? " (HAST)" : ""} · ${p.grunn} · av ${p.av.replace(/^agent:/, "")}${p.frist ? ` · frist ${p.frist.slice(0, 10)}` : ""}`;
+
+const klokke = (iso: string) =>
+  new Date(iso).toLocaleTimeString("nb-NO", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+/** «agent · hva · siden 14:32» or «… · stoppet?» */
+export const arbeidTekst = (a: Arbeid & { stoppet?: boolean }) =>
+  `${a.av.replace(/^agent:/, "")} · ${a.hva} · ${a.stoppet ? "stoppet?" : `siden ${klokke(a.når)}`}`;
+
+/** Lærdom notes alike enough to count as the same lesson. ponytail: exact match after folding case and punctuation. */
+const likNote = (t: string) =>
+  t
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .trim();
 
 export function byggKo(
   liste: Element[],
@@ -514,6 +536,60 @@ export function byggKo(
         notat: notatAv(v),
       });
 
+  // The same tag or the same note 3+ times on one type: worth a rule.
+  const teller = new Map<string, number>();
+  const nøkler = (l: Linje) => {
+    const v = vurd[l.id];
+    return [
+      ...(v?.tagger ?? []).map((t) => `${l.type}|#${t}`),
+      ...(v?.notat ? [`${l.type}|${likNote(v.notat)}`] : []),
+    ];
+  };
+  for (const l of laerdom)
+    for (const n of nøkler(l)) teller.set(n, (teller.get(n) ?? 0) + 1);
+  for (const l of laerdom) {
+    const n = Math.max(0, ...nøkler(l).map((x) => teller.get(x) ?? 0));
+    if (n >= 3) l.gjentatt = n;
+  }
+
+  // Agents' replies and Hans' open questions.
+  const elFor = (fil: string) =>
+    liste.find(
+      (e) =>
+        e.id === fil ||
+        e.media.some(
+          (m) => versionKey(m) === versionKey(fil.replace(/#.*/, "")),
+        ),
+    )?.id ?? fil;
+  const løs = (fil: string) => {
+    const el = elFor(fil);
+    return {
+      id: el,
+      tittel: tittel.get(el) ?? fil,
+      type: typeFor(fil),
+      dag: dagFor(fil),
+    };
+  };
+  for (const t of Object.values(s.svar ?? {}))
+    if (t.nytt)
+      venter.push({
+        ...løs(t.fil),
+        hva: "Svar fra agent",
+        notat: t.tråd.at(-1)!.tekst,
+      });
+  for (const q of Object.values(s.spørsmål ?? {}))
+    agent.push({
+      ...løs(q.fil),
+      hva: `Spørsmål fra Hans: ${q.notat}`,
+      pris: 0,
+      kommando: `mise run vurderinger --svar ${q.fil} "…"`,
+    });
+  const arbeid: Linje[] = Object.values(s.arbeid ?? {}).map((a) => ({
+    ...løs(a.fil),
+    hva: arbeidTekst(a),
+    feil: a.stoppet,
+  }));
+
   const pr = s.prioriteter ?? {};
   for (const l of [...venter, ...agent]) {
     const p = prioritetFor(l.id, pr, liste.find((e) => e.id === l.id)?.media);
@@ -523,6 +599,7 @@ export function byggKo(
     venter: venter.sort(medPrioritet),
     agent: agent.sort(sorter),
     laerdom: laerdom.sort(sorter),
+    arbeid: arbeid.sort(sorter),
     segmenter,
     trengerTelling,
   };

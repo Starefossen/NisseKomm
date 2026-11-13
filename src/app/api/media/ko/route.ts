@@ -13,6 +13,7 @@ import {
   lesLager,
   nyesteSegmenter,
   prioriteter,
+  sløyfe,
 } from "@/lib/vurdering-lager";
 import { lesLaerdom } from "@/lib/laerdom";
 
@@ -79,12 +80,24 @@ export async function GET(req: NextRequest) {
   );
   // Automatic cuts that failed: a red line in «Hos agent» with the log path.
   const kuttFeil: Record<string, string> = {};
+  const sl = sløyfe(lager);
   for (let d = 1; d <= 24; d++) {
     const k = kuttStatus(d);
     if (k.status === "feil") kuttFeil[d] = k.logg;
+    // A running cut is «under arbeid» on its own: the run is the update.
+    if (k.status === "kjorer") {
+      const fil = `video/julius/dag-${String(d).padStart(2, "0")}.mp4`;
+      sl.arbeid[versionKey(fil)] = {
+        fil,
+        av: "agent:kutt",
+        hva: k.ko ? "kutter (en til i kø)" : "kutter",
+        når: new Date(Date.now()).toISOString(),
+      };
+    }
   }
   return Response.json({
     prioriteter: prioriteter(lager),
+    ...sl,
     flagg,
     kuttFeil,
     segtid,
