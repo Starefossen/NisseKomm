@@ -279,9 +279,7 @@ export function tilstand(
     const arvet = e.id.startsWith("dag/") && brukbar(celle);
     return {
       celle,
-      tekst: arvet
-        ? `${MERKE[celle][2]} (fra skissen)`
-        : familie!.tekst,
+      tekst: arvet ? `${MERKE[celle][2]} (fra skissen)` : familie!.tekst,
       notat: familie!.iBruk.notat,
     };
   }

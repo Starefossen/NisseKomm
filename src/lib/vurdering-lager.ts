@@ -184,7 +184,8 @@ export async function hvaEndret(
 ): Promise<Pick<Forrige, "endringer" | "fil" | "ukjent">> {
   if (v.tekst != null) {
     const t = await øyeblikkTekst(v.fil);
-    if (t != null) return {
+    if (t != null)
+      return {
         endringer: linjeDiff(utsnitt(v.fil, v.tekst), utsnitt(v.fil, t)),
       };
   }

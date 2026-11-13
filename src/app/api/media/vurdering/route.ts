@@ -257,7 +257,8 @@ export async function POST(req: NextRequest) {
       if (tb?.levert && !tb.lest && vurdering !== undefined && !tr)
         tb = { ...tb, lest: now };
       // A verdict while the request is still open answers it: Hans judged without waiting.
-      const lukket = !!tb && !tb.levert && !!nextVerdict && vurdering !== undefined && !tr;
+      const lukket =
+        !!tb && !tb.levert && !!nextVerdict && vurdering !== undefined && !tr;
       if (lukket) tb = undefined;
       const felt: Oppføring = {
         ...(tb ? { trenger: tb } : {}),

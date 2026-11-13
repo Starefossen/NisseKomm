@@ -216,9 +216,11 @@ describe("arvFraHeleVideoen", () => {
       "video/julius/dag-01#s1",
       "video/julius/dag-01#s2",
     ]);
-    expect(l.elementer["video/julius/dag-01#s2"].vurderinger[0]).toMatchObject(
-      { vurdering: "ok", hash: "bbb", merknad: "arvet fra hele videoen" },
-    );
+    expect(l.elementer["video/julius/dag-01#s2"].vurderinger[0]).toMatchObject({
+      vurdering: "ok",
+      hash: "bbb",
+      merknad: "arvet fra hele videoen",
+    });
     // Second run: nothing new.
     expect(await arvFraHeleVideoen(dir, l)).toEqual([]);
     await writeFile(path.join(dir, "media-vurdering.json"), JSON.stringify(l));

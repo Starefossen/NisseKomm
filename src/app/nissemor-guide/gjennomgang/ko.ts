@@ -221,8 +221,7 @@ export function byggKo(
       }
       if (!brukbar(celleAv(mv))) {
         // The clip has its own line too, so its element is in the tab it is counted in.
-        if (elementId)
-          venter.push({ ...linje, hva: "venter på radiomanuset" });
+        if (elementId) venter.push({ ...linje, hva: "venter på radiomanuset" });
         venter.push({
           id: mid,
           tittel: `Radiomanus dag ${Number(radio)}`,

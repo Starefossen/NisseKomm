@@ -87,8 +87,7 @@ export async function seksjonsTekst(
     await import("./guide-sesong");
   const [side, a, b] = id.split("/");
   if (side === "dag") {
-    if (b === "gaatekart")
-      return kutt(gaatekartKilde(Number(a)));
+    if (b === "gaatekart") return kutt(gaatekartKilde(Number(a)));
     if (["kveld", "utskrifter", "rampestrek"].includes(b))
       return kutt(kveldKilde(Number(a)));
     return null;
@@ -221,7 +220,11 @@ export async function versjonAv(dir: string, id: string) {
     const fraJoin = (await segmentRaws(dir, dag, s))[0];
     if (fraJoin) return fraJoin;
     return readFile(
-      path.join(process.cwd(), "assets/out", `dag${klipp[1]}-${klipp[2]}.raw.mp4`),
+      path.join(
+        process.cwd(),
+        "assets/out",
+        `dag${klipp[1]}-${klipp[2]}.raw.mp4`,
+      ),
     ).then(kort, () => null);
   }
   try {
