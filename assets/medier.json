@@ -914,6 +914,11 @@
     "ut": "spill/piksel/ikon/magnet.png",
     "mal": "assets/prompts/spill/ikon/magnet.txt"
   },
+  "spill-ikon/fuglemerke": {
+    "generator": "ikon",
+    "ut": "spill/piksel/ikon/fuglemerke.png",
+    "mal": "assets/prompts/spill/ikon/fuglemerke.txt"
+  },
   "spill-ikon/hyssing": {
     "generator": "ikon",
     "ut": "spill/piksel/ikon/hyssing.png",

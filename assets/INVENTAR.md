@@ -12,7 +12,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | tv | 20 | 4 | 0 | 0 | 15 | 0 | 18 |
 | port | 4 | 0 | 0 | 0 | 0 | 0 | 9 |
 | feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
-| spill | 56 | 3 | 0 | 4 | 0 | 0 | 45 |
+| spill | 54 | 6 | 0 | 4 | 0 | 3 | 48 |
 | strek | 15 | 14 | 0 | 0 | 0 | 2 | 14 |
 
 ## julius
@@ -301,15 +301,16 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/ikon/haandvarmer.png | 0.0 MB | 2026-11-13 | ✓ |
 | spill/piksel/ikon/stearinlys.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/ikon/tesil.png | 0.0 MB | 2026-11-13 | ✓ |
-| spill/piksel/ikon/tesil_lanterne.png | 0.0 MB | 2026-11-13 | ✓ |
-| spill/piksel/ikon/krystallskaar.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/tesil_lanterne.png | 0.0 MB | 2026-11-13 | ⚠ kildeteksten er endret: assets/prompts/spill/ikon/tesil_lanterne.txt |
+| spill/piksel/ikon/krystallskaar.png | 0.0 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/spill/ikon/krystallskaar.txt |
 | spill/piksel/ikon/lupe.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/ikon/fjaerpenn.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/ikon/klementin.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/ikon/noett.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/ikon/briller.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/ikon/magnet.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/piksel/ikon/hyssing.png | 0.0 MB | 2026-11-13 | ✓ |
+| spill/piksel/ikon/fuglemerke.png | 0.0 MB | 2026-11-13 | ✓ |
+| spill/piksel/ikon/hyssing.png | 0.0 MB | 2026-11-13 | ⚠ kildeteksten er endret: assets/prompts/spill/ikon/hyssing.txt |
 | spill/piksel/ikon/fiskesnoere.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/ikon/bjelle.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/ikon/talgstump.png | 0.0 MB | 2026-11-12 | ✓ |
@@ -331,17 +332,23 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/ikon/grytevott.old-2.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/grytevott.txt; ikke i manifestet |
 | spill/piksel/ikon/haandvarmer.old-1.png | 0.0 MB | 2026-11-13 | - kildeteksten er endret: assets/prompts/spill/ikon/haandvarmer.txt; ikke i manifestet |
 | spill/piksel/ikon/haandvarmer.old-2.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/haandvarmer.txt; ikke i manifestet |
+| spill/piksel/ikon/hyssing-v3.png | 0.0 MB | 2026-11-13 | ◇ ikke i manifestet |
 | spill/piksel/ikon/hyssing.old-1.png | 0.0 MB | 2026-11-13 | - kildeteksten er endret: assets/prompts/spill/ikon/hyssing.txt; ikke i manifestet |
 | spill/piksel/ikon/hyssing.old-2.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/hyssing.txt; ikke i manifestet |
+| spill/piksel/ikon/hyssing.old-3.png | 0.0 MB | 2026-11-13 | - kildeteksten er endret: assets/prompts/spill/ikon/hyssing.txt; ikke i manifestet |
+| spill/piksel/ikon/krystallskaar-v2.png | 0.0 MB | 2026-11-13 | ◇ ikke i manifestet |
+| spill/piksel/ikon/krystallskaar.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/krystallskaar.txt; ikke i manifestet |
 | spill/piksel/ikon/skjema.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/skjema.txt; ikke i manifestet |
 | spill/piksel/ikon/skjema_signert.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/skjema_signert.txt; ikke i manifestet |
 | spill/piksel/ikon/skjema_signert.old-2.png | 0.0 MB | 2026-11-13 | - ikke i manifestet |
 | spill/piksel/ikon/tesil.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/tesil.txt; ikke i manifestet |
 | spill/piksel/ikon/tesil.old-2.png | 0.0 MB | 2026-11-13 | - kildeteksten er endret: assets/prompts/spill/ikon/tesil.txt; ikke i manifestet |
 | spill/piksel/ikon/tesil.old-3.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/tesil.txt; ikke i manifestet |
+| spill/piksel/ikon/tesil_lanterne-v4.png | 0.0 MB | 2026-11-13 | ◇ ikke i manifestet |
 | spill/piksel/ikon/tesil_lanterne.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/tesil_lanterne.txt; ikke i manifestet |
 | spill/piksel/ikon/tesil_lanterne.old-2.png | 0.0 MB | 2026-11-13 | - kildeteksten er endret: assets/prompts/spill/ikon/tesil_lanterne.txt; ikke i manifestet |
 | spill/piksel/ikon/tesil_lanterne.old-3.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/tesil_lanterne.txt; ikke i manifestet |
+| spill/piksel/ikon/tesil_lanterne.old-4.png | 0.0 MB | 2026-11-13 | - kildeteksten er endret: assets/prompts/spill/ikon/tesil_lanterne.txt; ikke i manifestet |
 | spill/piksel/iq-verksted.old-1.png | 1.3 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-iq-verksted.txt; ikke i manifestet |
 | spill/piksel/julebodene.old-1.png | 1.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-julebodene.txt; ikke i manifestet |
 | spill/piksel/julebodene.old-2.png | 1.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-julebodene.txt; ikke i manifestet |
