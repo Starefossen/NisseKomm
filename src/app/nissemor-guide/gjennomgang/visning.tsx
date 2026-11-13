@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Lagremelding, useLagring } from "../lagring";
 import { useEffect, useState, type ReactNode } from "react";
 import { GameEngine } from "@/lib/game-engine";
+import { TekstDiff } from "@/components/ui/TekstDiff";
+import type { FeltDiff } from "@/lib/tekstdiff";
 import { mediaUrl } from "@/lib/media";
 import { KAPITLER } from "@/components/windows/nissespill/kapitler";
 import { ETAPPER } from "@/components/windows/snofall-tv/slede";
@@ -547,6 +549,7 @@ type Hendelse = {
   hva: string;
   tekst: string;
   diff?: string;
+  felter?: FeltDiff[];
 };
 const HVEM_FARGE = {
   Hans: "text-(--gold)",
@@ -586,10 +589,11 @@ export function Historikk({ id }: { id: string }) {
               </span>{" "}
               <span className={HVEM_FARGE[x.hvem]}>{x.hvem}</span> · {x.hva} ·{" "}
               {x.tekst}
+              {x.felter?.length ? <TekstDiff felter={x.felter} /> : null}
               {x.diff && (
                 <details>
                   <summary className="min-h-11 py-2 cursor-pointer">
-                    Diff
+                    {x.felter?.length ? "vis rå diff" : "Diff"}
                   </summary>
                   <pre className="whitespace-pre-wrap text-sm">{x.diff}</pre>
                 </details>

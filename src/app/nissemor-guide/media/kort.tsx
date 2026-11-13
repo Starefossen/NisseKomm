@@ -11,6 +11,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { TekstDiff } from "@/components/ui/TekstDiff";
+import { feltDiff } from "@/lib/tekstdiff";
 import { mediaUrl, type MediaStatus } from "@/lib/media";
 import { TRENGER, type TrengerHva } from "@/lib/trenger";
 import { variantLabel } from "./oversikt";
@@ -295,14 +297,18 @@ function HvaEndret({ f, behold }: { f: Forrige; behold?: () => void }) {
   if (f.endringer)
     return f.endringer.length ? (
       <div className="mt-1 border-2 border-(--cold-blue) p-2">
-        {f.endringer.map((d, i) => (
-          <p
-            key={i}
-            className={`whitespace-pre-wrap break-words ${d.t === "+" ? "text-(--aurora) bg-(--aurora)/10" : "text-(--christmas-red) line-through"}`}
-          >
-            {d.t} {d.l}
-          </p>
-        ))}
+        <TekstDiff
+          felter={feltDiff(
+            f.endringer
+              .filter((d) => d.t === "-")
+              .map((d) => d.l)
+              .join("\n"),
+            f.endringer
+              .filter((d) => d.t === "+")
+              .map((d) => d.l)
+              .join("\n"),
+          )}
+        />
       </div>
     ) : null;
   if (f.fil)

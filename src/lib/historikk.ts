@@ -5,6 +5,7 @@ import { promisify } from "node:util";
 import { versionKey } from "./media-status";
 import { SESONG, lesLager, type Vurdering } from "./vurdering-lager";
 import { TRENGER } from "./trenger";
+import { feltDiff, type FeltDiff } from "./tekstdiff";
 
 /**
  * «Historikk ▸» for one Gjennomgang element (statusmodell.md «Historikk per
@@ -20,6 +21,8 @@ export interface Hendelse {
   hva: string;
   tekst: string;
   diff?: string;
+  /** Source commits: the item's own fields, word-diffed before → after. */
+  felter?: FeltDiff[];
 }
 
 const PRIS: Record<string, number> = {
@@ -177,6 +180,23 @@ export const endredeFelt = (diff: string) => [
   ),
 ];
 
+/** The section a «/start/,/slutt/:fil» range names, cut from the file text. */
+export function utdrag(tekst: string, L: string): string {
+  const [, start, slutt] = L.match(/^\/(.+?)\/,\/(.+?)\/:/) ?? [];
+  const rader = tekst.split("\n");
+  const a = rader.findIndex((l) => new RegExp(start).test(l));
+  if (a < 0) return "";
+  const b = rader.findIndex((l, i) => i > a && new RegExp(slutt).test(l));
+  return rader.slice(a, b < 0 ? undefined : b).join("\n");
+}
+
+const git = promisify(execFile);
+const fil = (sha: string, f: string, repo: string) =>
+  git("git", ["show", `${sha}:${f}`], { cwd: repo, maxBuffer: 20e6 }).then(
+    (r) => r.stdout,
+    () => "",
+  );
+
 const gitCache = new Map<string, { til: number; v: Promise<Hendelse[]> }>();
 /** git log -L of the source section, cached a minute; nothing without git (the pod). */
 export function gitLogg(id: string, repo = process.cwd()): Promise<Hendelse[]> {
@@ -190,22 +210,33 @@ export function gitLogg(id: string, repo = process.cwd()): Promise<Hendelse[]> {
     { cwd: repo, maxBuffer: 20e6, timeout: 10_000 },
   ).then(
     ({ stdout }) =>
-      stdout
-        .split("\u0001")
-        .filter(Boolean)
-        .map((blokk) => {
-          const [hode, ...resten] = blokk.split("\n");
-          const [sha, t, ...msg] = hode.split("|");
-          const diff = resten.join("\n").trim().slice(0, 8000);
-          const felt = endredeFelt(diff);
-          return {
-            t,
-            hvem: "agent" as const,
-            hva: "kilde",
-            tekst: `${sha} ${msg.join("|")}${felt.length ? ` · felt: ${felt.join(", ")}` : ""}`,
-            diff,
-          };
-        }),
+      Promise.all(
+        stdout
+          .split("\u0001")
+          .filter(Boolean)
+          .map(async (blokk) => {
+            const [hode, ...resten] = blokk.split("\n");
+            const [sha, t, ...msg] = hode.split("|");
+            const diff = resten.join("\n").trim().slice(0, 8000);
+            const f = L.slice(L.lastIndexOf("/:") + 2);
+            const [før, nå] = await Promise.all([
+              fil(`${sha}^`, f, repo),
+              fil(sha, f, repo),
+            ]);
+            const felter = feltDiff(utdrag(før, L), utdrag(nå, L));
+            const felt = felter.length
+              ? felter.map((x) => x.felt)
+              : endredeFelt(diff);
+            return {
+              t,
+              hvem: "agent" as const,
+              hva: "kilde",
+              tekst: `${sha} ${msg.join("|")}${felt.length ? ` · felt: ${felt.join(", ")}` : ""}`,
+              diff,
+              felter,
+            };
+          }),
+      ),
     () => [],
   );
   gitCache.set(L, { til: Date.now() + 60_000, v });
