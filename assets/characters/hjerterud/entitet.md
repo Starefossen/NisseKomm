@@ -19,11 +19,11 @@
     },
     {
       "fra_dag": 1,
-      "tekst": "i slutten av 40-årene; fyldig, rødbrunt krøllete hår under bakerlue eller skaut, rosenrøde kinn"
+      "tekst": "rundt 45–50 år; varm brun hud, krøllete brunt hår med lysere tupper under et rustrødt skaut med en løs ende over skulderen, bredt og varmt smil"
     },
     {
       "fra_dag": 1,
-      "tekst": "går i varmrød eller plommefarget ullkjole, kremhvitt linforkle og strikket sjal"
+      "tekst": "går i kremhvit linbluse med åpen krage og et grovt, sennepsgult sekkestrieforkle med melflekker"
     },
     {
       "fra_dag": 1,
