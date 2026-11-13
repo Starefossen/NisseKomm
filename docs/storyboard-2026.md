@@ -435,9 +435,9 @@ Mal per dag: **Morgen** (strek, radio) · **Innlogging** (video) · **Gåte** (H
 
 **Gåte.** H: frostlapp `J U L E _ _ _ _` i gullkonvolutten (Hanna tar konvolutten ned fra treet, der Rampenissen satt, H5), Håkon åpner den og finner avskjedsbrevet (H9). S: ordet trollmenn jukser med. Kristian: JULEMAGI (K12). Kode **JULEMAGI**. _Brikken er den svakeste i måneden; alternativ: Julius sier «Rampenissen skrev første halvdel på konvolutten. Andre halvdel er det trollmenn later som de har, og dere faktisk har.»_ Avgjørelse 3.
 
-**Flater.** Brevfugler: brevet tiner (animasjon), teksten er fra Vintervokteren, fire linjer: «Takk for lyset. Jeg hadde glemt farger. Krystallbitene smelter ikke. Det er fra meg.» Snill-listen med finale (GrandFinaleModal + Julius' video). Diplom «Snøfalls venn» per barn fra `printout`. Snøfall TV: alle kanaler varme, sleden over Nordtoppen, grotten tiner (nye loops). Frost 12 → 0, sidepanelet viser «TØVÆR». Fysisk: tre klare bergkrystaller (3–5 cm, én til hvert barn; Hans kjøper og fotograferer dem først) under treet.
+**Flater.** Brevfugler: brevet tiner (animasjon), teksten er fra Vintervokteren, fire linjer: «Takk for lyset. Jeg hadde glemt farger. Lilla smelter ikke. Det er fra meg.» Snill-listen med finale (GrandFinaleModal + Julius' video). Diplom «Snøfalls venn» per barn fra `printout`. Snøfall TV: alle kanaler varme, sleden over Nordtoppen, grotten tiner (nye loops). Frost 12 → 0, sidepanelet viser «TØVÆR». Fysisk: tre små ametystklynger i eske (lilla, ca. 3–4 cm, én til hvert barn; Hans kjøper og fotograferer dem først) under treet; fargen kommer tilbake med tinen (endret 13.11 etter ja fra Hans).
 
-**Belønning.** Merke **Snøfalls venn**. Diplom. De tre krystallene. PS (siste): «Det er ikke kaldt der nede lenger. God jul, Kristian, Håkon og Hanna.»
+**Belønning.** Merke **Snøfalls venn**. Diplom. De tre ametystklyngene. PS (siste): «Det er ikke kaldt der nede lenger. God jul, Kristian, Håkon og Hanna.»
 
 **Kontinuitet.** M6. Garnkurven fra dag 1, nynningen fra dag 12, lykten fra dag 16, porten fra dag 21, brevet fra dag 14: alt lukkes.
 

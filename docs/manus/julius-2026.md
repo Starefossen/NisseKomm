@@ -567,15 +567,15 @@ Kulde-nivå 0. Rent. Lys siver ned gjennom vinduet, mer enn vanlig. Rolig hilsen
 
 ## Dag 24 (to) – God Jul på Landås · JULEMAGI · M6 Tøvær
 
-Kulde-nivå 0. Alt virker. Rommet er varmere enn noen gang: alle juletrelys tent, mer gull i lyset, dampen fra trekoppen. Julius smiler hele veien. Fem segmenter: morgensangen går hele veien for første gang. Krystallet fra Vintervokteren sies rett ut (som i PS): det sprakk i tre biter av bergkrystall, én til hvert barn (segment 2 endret 13.11 etter ja fra Hans; fotoet av de tre krystallene er referanse til videoen, `assets/objects/krystall/foto.jpg`). Den blå fuglens hjemkomst fortelles i Brevfugler (brevet tiner) og i Winters varsel, ikke i videoen. Brikken (55 ord) delt over 3–5. Uttoningen i gull til slutt er etterarbeid.
+Kulde-nivå 0. Alt virker. Rommet er varmere enn noen gang: alle juletrelys tent, mer gull i lyset, dampen fra trekoppen. Julius smiler hele veien. Fem segmenter: morgensangen går hele veien for første gang. Krystallet fra Vintervokteren sies rett ut (som i PS): isen tiner, fargen kommer tilbake, og krystallet sprakk i tre små lilla ametystklynger, én til hvert barn i en liten eske (segment 2 endret 13.11 etter ja fra Hans; fotoet av de tre ametystklyngene er referanse til videoen, `assets/objects/krystall/foto.jpg`). Den blå fuglens hjemkomst fortelles i Brevfugler (brevet tiner) og i Winters varsel, ikke i videoen. Brikken (55 ord) delt over 3–5. Uttoningen i gull til slutt er etterarbeid.
 
 1. **Replikk:** «Gooood morgen, Snøfall, og god jul! God morgen, kopp. God morgen, bok. God morgen, Kristian, Håkon, Hanna. Den satt!»
    - Varighet: 14 s (19 ord)
    - Handling: Dirigerer med venstre pekefinger, nikker til koppen og boka, så ut mot lytterne, og ler høyt og lykkelig.
    - Kulde: Ingen. Alle lys tent.
-2. **Replikk:** «I natt fløy sleden over grotten. Isen tiner. Krystallet sprakk i tre. Én bit til hver av dere, under treet.»
-   - Varighet: 14 s (19 ord)
-   - Handling: Holder tre klare bergkrystaller i venstre håndflate, blåser forsiktig på dem og smiler. Mikrofonen i høyre hånd. Ingen svevende eller glødende effekt. Rommet er som i referansebildet.
+2. **Replikk:** «I natt fløy sleden over grotten. Isen tiner, og fargen kom tilbake. Krystallet sprakk i tre. Én bit til hver av dere.»
+   - Varighet: 14 s (22 ord)
+   - Handling: Holder tre små lilla ametystklynger i venstre håndflate, blåser forsiktig på dem, smiler. Mikrofonen i høyre hånd. Ingen svevende eller glødende effekt. Rommet er som i referansebildet.
    - Kulde: Ingen.
 3. **Replikk:** «Dere har laget noe hele desember uten å vite det. Ikke koden, den tastet dere. Ikke varmen, den kom fra ovnen.»
    - Varighet: 15 s (21 ord) · låst

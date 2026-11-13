@@ -20,7 +20,7 @@ Beslutninger som ligger til grunn: Julius-video hver dag (24 bekreftet), åpnes 
 
 **Hva som står på spill.** Frostgraden. Hver natt stiger frosten i serverrommet (vises i sidepanelet som prosent); hver kode senker den. Uke for uke tar Kulde noe nytt: linjen (uke 1), navnet, fargene og lyden (uke 2), brevene og pakkene (uke 3), huset (uke 4). Hvis frosten når 100 % på vintersolverv, fryser linjen for godt og sleden finner ikke Landås.
 
-**Hvordan det løses.** Barna hjelper IQ å bygge muren med porten åpen (dag 21) og forstår det (dag 23, siste dekryptering). IQ bygger muren med én port åpen inn mot grotten, med varme i. Julius flyr over Nordtoppen julenatt med lys. Vintervokteren takker med tre biter av arkivets krystall, klar bergkrystall, én til hvert barn. De smelter ikke.
+**Hvordan det løses.** Barna hjelper IQ å bygge muren med porten åpen (dag 21) og forstår det (dag 23, siste dekryptering). IQ bygger muren med én port åpen inn mot grotten, med varme i. Julius flyr over Nordtoppen julenatt med lys. Arkivets krystall ble frosset blekt; når isen tiner på dag 24, kommer fargen tilbake (lukker «Fargene forsvinner» dag 10). Vintervokteren takker med tre små lilla ametystklynger, én i hver sin lille eske til hvert barn. De smelter ikke (endret 13.11 etter ja fra Hans).
 
 **Moral, uten å si den høyt.** Kulde er ikke ondskap, det er fravær av varme. Samhold, lys og å bli sett er det som virker. Barna skal merke det, ikke få det forklart.
 
@@ -30,14 +30,14 @@ Beslutninger som ligger til grunn: Julius-video hver dag (24 bekreftet), åpnes 
 
 Seks hendelser barna skal huske. Alt annet er dager imellom.
 
-| #   | Dag     | Milepæl             | Hva skjer                                                                                                                           | Hva som låses opp                         |
-| --- | ------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| M1  | 1 (ti)  | **Linjen**          | Direktelinjen åpnes, Julius' første video, bærebølgen hakker.                                                                       | NisseKomm, Snøfall TV                     |
-| M2  | 7 (ma)  | **Navnet**          | Orakelet fanger signaturen. Det kaller seg Kulde. Frostgraden blir synlig.                                                          | NisseMusikk («varmekilden») og Brevfugler |
-| M3  | 12 (lø) | **Sukket i isen**   | Melodien sprekker isen på slusen. Første dekryptering: «blått hjerte er kulde og sorg. Det høres ikke sint ut. Det høres alene ut.» | `frosne-koder.txt`, merke 1               |
-| M4  | 15 (ti) | **Vintervokteren**  | Fargesamlerens notatbok forteller hvem Kulde var og hvem som bygde det. IQ blir stille.                                             | Resten av Fargesamlerens arkiv            |
-| M5  | 21 (ma) | **Muren og porten** | Vintersolverv. Skjermen hjemme er fryst. Muren holder. IQ lar én port stå åpen.                                                     | Fargene hjemme, merke 2                   |
-| M6  | 24 (to) | **Tøvær**           | Sleden har fløyet over grotten med lys. Arkivets krystall har sprukket i tre klare bergkrystaller, én til hvert barn, under treet.  | Snill-listen med finale, merke 3, diplom  |
+| #   | Dag     | Milepæl             | Hva skjer                                                                                                                                                               | Hva som låses opp                         |
+| --- | ------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| M1  | 1 (ti)  | **Linjen**          | Direktelinjen åpnes, Julius' første video, bærebølgen hakker.                                                                                                           | NisseKomm, Snøfall TV                     |
+| M2  | 7 (ma)  | **Navnet**          | Orakelet fanger signaturen. Det kaller seg Kulde. Frostgraden blir synlig.                                                                                              | NisseMusikk («varmekilden») og Brevfugler |
+| M3  | 12 (lø) | **Sukket i isen**   | Melodien sprekker isen på slusen. Første dekryptering: «blått hjerte er kulde og sorg. Det høres ikke sint ut. Det høres alene ut.»                                     | `frosne-koder.txt`, merke 1               |
+| M4  | 15 (ti) | **Vintervokteren**  | Fargesamlerens notatbok forteller hvem Kulde var og hvem som bygde det. IQ blir stille.                                                                                 | Resten av Fargesamlerens arkiv            |
+| M5  | 21 (ma) | **Muren og porten** | Vintersolverv. Skjermen hjemme er fryst. Muren holder. IQ lar én port stå åpen.                                                                                         | Fargene hjemme, merke 2                   |
+| M6  | 24 (to) | **Tøvær**           | Sleden har fløyet over grotten med lys. Isen tiner og fargen kommer tilbake; arkivets krystall har sprukket i tre lilla ametystklynger, én til hvert barn, under treet. | Snill-listen med finale, merke 3, diplom  |
 
 Dag 23 er sannheten (siste dekryptering forteller hele historien), men barna opplever den som opptakten til M6, ikke som egen milepæl.
 
@@ -183,7 +183,7 @@ Fjernes: `antenne-ingenior`, `inventar-ekspert`, `oppfinner-assistent`, `morket-
 - **De tre dekrypterte filene** (12, 18, 23) er historiens tre avsløringer, ikke gratulasjoner.
 - **Fargene som kommer tilbake** på skjermen dag 10 og 21.
 - **PS fra Julius** under videoen etter hver kode.
-- **Dag 24:** Snill-listen med Julius' finalehilsen, ett utskrevet diplom per barn («Snøfalls venn», fra `print_materials`), og de tre bergkrystallene under treet (én til hvert barn).
+- **Dag 24:** Snill-listen med Julius' finalehilsen, ett utskrevet diplom per barn («Snøfalls venn», fra `print_materials`), og de tre ametystklyngene under treet (én i eske til hvert barn).
 
 ## 6. Frost dag 10 og 21
 
