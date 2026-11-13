@@ -15,10 +15,10 @@ export interface Kant {
   sikker: boolean;
 }
 
-// H9 and K12 are the kids (Håkon 9, Kristian 12), never piece ids.
+// Display text now says «Håkon (9)», but raw docs still use H9/K12; they are the kids (Håkon 9, Kristian 12), never piece ids.
 const BARN = new Set(["H9", "K12", "K4", "K1", "K2", "K3"]);
 const STOPP = new Set(
-  "det som med for til fra har den dem ved alle uten eller men når hva hvor kan skal vil ikke hun han seg sin sine der her hos inn opp ned nok bak foran hele etter julius rampenissen koden tegnene tegn føres tavla bokstaver bokstav hver finner legger leser ordet skriver husker åpnes åpner lappen kortet kortene ligger under ruter rutene samme første andre tredje alltid aldri noen ingen bare også mellom inntil etterpå deres hvert hvilken uansett sammen begge".split(
+  "det som med for til fra har den dem ved alle uten eller men når hva hvor kan skal vil ikke hun han seg sin sine der her hos inn opp ned nok bak foran hele etter julius rampenissen koden tegnene tegn føres tavla bokstaver bokstav hver finner legger leser ordet skriver husker åpnes åpner lappen kortet kortene ligger under ruter rutene samme første andre tredje alltid aldri noen ingen bare også mellom inntil etterpå deres hvert hvilken uansett sammen begge håkon kristian hanna".split(
     " ",
   ),
 );

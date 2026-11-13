@@ -174,6 +174,25 @@ function Oppsettskisse({ dag }: { dag: number }) {
 const kort = (s: string, n: number) =>
   s.length > n ? `${s.slice(0, n - 1)}…` : s;
 
+/** Word-wrap to at most `linjer` lines of `bredde` characters; the last is cut with «…». */
+function brytt(s: string, bredde: number, linjer: number) {
+  const ut: string[] = [];
+  let rest = s.trim();
+  while (rest && ut.length < linjer) {
+    if (rest.length <= bredde || ut.length === linjer - 1) {
+      ut.push(kort(rest, bredde));
+      break;
+    }
+    let i = rest.lastIndexOf(" ", bredde);
+    if (i < bredde / 2) i = bredde;
+    ut.push(rest.slice(0, i));
+    rest = rest.slice(i).trim();
+  }
+  return ut;
+}
+
+const VB = 900;
+
 /** Pieces → steps → answer, with the references the steps make (dashed = guessed). */
 function Flytdiagram({
   k,
@@ -192,151 +211,235 @@ function Flytdiagram({
 }) {
   const biter = [...k.hjemme, ...k.skjerm];
   const { kanter, ubrukt, stegUten } = diagramKanter(steg, k.hjemme, k.skjerm);
-  const RAD = 40;
+  // Hover, focus or tap on a card: its edges and neighbours stay lit, the rest dims.
+  const [aktiv, setAktiv] = useState<string | null>(null);
+  const [tips, setTips] = useState<{
+    x: number;
+    y: number;
+    tekst: string;
+  } | null>(null);
+  const RAD = 46;
+  const H = 40;
   const bitY = (i: number) => 20 + i * RAD;
   const stegRad = (biter.length * RAD) / Math.max(steg.length, 1);
-  const stegY = (i: number) => 20 + i * stegRad + (stegRad - RAD) / 2;
+  const stegY = (i: number) => 20 + i * stegRad + (stegRad - H) / 2;
   const h = Math.max(biter.length, steg.length) * RAD + 20;
   const merket = new Set(utskrifter.map((u) => utskriftBit(k.hjemme, u)));
-  const ren = (s: string) =>
-    kort(
-      skjulRad(t(s), vis)
-        .replace(/\*\*(.+?)\*\*/g, (_, x: string) =>
-          vis ? x : "▢".repeat(x.length),
-        )
-        .replace(/`/g, ""),
-      48,
-    );
+  const rens = (x: string) =>
+    skjulRad(t(x), vis)
+      .replace(/\*\*(.+?)\*\*/g, (_, y: string) =>
+        vis ? y : "▢".repeat(y.length),
+      )
+      .replace(/`/g, "");
+  const lit = new Set<string>();
+  if (aktiv) {
+    lit.add(aktiv);
+    for (const e of kanter) {
+      if (aktiv === `b:${e.bit}` || aktiv === `s:${e.steg}`) {
+        lit.add(`b:${e.bit}`);
+        lit.add(`s:${e.steg}`);
+      }
+    }
+  }
+  const dim = (id: string) => (aktiv && !lit.has(id) ? 0.2 : 1);
+  const kortProps = (id: string, x: number, y: number, tekst: string) => ({
+    tabIndex: 0,
+    role: "button" as const,
+    "aria-label": tekst,
+    style: { cursor: "pointer", outline: "none" },
+    opacity: dim(id),
+    onPointerEnter: () => {
+      setAktiv(id);
+      setTips({ x, y, tekst });
+    },
+    onPointerLeave: () => {
+      setAktiv(null);
+      setTips(null);
+    },
+    onFocus: () => {
+      setAktiv(id);
+      setTips({ x, y, tekst });
+    },
+    onBlur: () => {
+      setAktiv(null);
+      setTips(null);
+    },
+  });
   return (
     <div className="mb-3" data-testid="gaate-diagram">
       <h3 className="text-xl text-(--gold) mb-1">Flyt</h3>
       <div className="overflow-x-auto">
-        <svg
-          viewBox={`0 0 900 ${h}`}
-          className="min-w-[520px] w-full font-retro"
-          role="img"
-          aria-label={`Brikker til steg til svar. ${ubrukt.length} brikker brukes ikke.`}
-        >
-          {kanter.map((e) => {
-            const i = biter.findIndex((b) => b.id === e.bit);
-            const y1 = bitY(i) + 15,
-              y2 = stegY(e.steg) + 15;
-            return (
-              <path
-                key={`${e.steg}-${e.bit}`}
-                d={`M250 ${y1} C300 ${y1} 290 ${y2} 340 ${y2}`}
-                fill="none"
-                stroke={
-                  e.bit.startsWith("H") ? "var(--gold)" : "var(--cold-blue)"
-                }
-                strokeWidth={1.5}
-                strokeDasharray={e.sikker ? undefined : "5 4"}
-                opacity={0.8}
-              />
-            );
-          })}
-          {steg.map((_, i) => (
-            <path
-              key={i}
-              d={`M660 ${stegY(i) + 15} C690 ${stegY(i) + 15} 690 ${h / 2} 720 ${h / 2}`}
-              fill="none"
-              stroke="var(--neon-green)"
-              strokeWidth={1}
-              opacity={0.5}
-            />
-          ))}
-          {biter.map((b, i) => {
-            const rod = ubrukt.includes(b.id);
-            const farge = b.id.startsWith("H")
-              ? "var(--gold)"
-              : "var(--cold-blue)";
-            return (
-              <g key={b.id}>
-                <rect
-                  x={4}
-                  y={bitY(i)}
-                  width={246}
-                  height={30}
-                  fill="black"
-                  stroke={rod ? "var(--christmas-red)" : farge}
-                  strokeWidth={rod ? 2 : 1}
-                />
-                <rect x={4} y={bitY(i)} width={5} height={30} fill={farge} />
-                <text x={14} y={bitY(i) + 20} fontSize={15} fill={farge}>
-                  {b.id}
-                  <tspan
-                    fill={rod ? "var(--christmas-red)" : "var(--neon-green)"}
-                  >
-                    {" "}
-                    {kort(
-                      b.id === "S0"
-                        ? "NisseMail i dag"
-                        : b.tekst
-                          ? ren(b.tekst)
-                          : (b.hvor ?? ""),
-                      27,
-                    )}
-                  </tspan>
-                </text>
-                {merket.has(b.id) && (
-                  <a href="#utskrifter">
-                    <text
-                      x={232}
-                      y={bitY(i) + 20}
-                      fontSize={15}
-                      fill="var(--gold)"
-                    >
-                      ⎙<title>Utskrift</title>
-                    </text>
-                  </a>
-                )}
-              </g>
-            );
-          })}
-          {steg.map((s, i) => {
-            const rod = stegUten.includes(i);
-            return (
-              <g key={i}>
-                <rect
-                  x={340}
-                  y={stegY(i)}
-                  width={320}
-                  height={30}
-                  fill="black"
-                  stroke={rod ? "var(--christmas-red)" : "var(--neon-green)"}
-                  strokeWidth={rod ? 2 : 1}
-                />
-                <text
-                  x={348}
-                  y={stegY(i) + 20}
-                  fontSize={15}
-                  fill={rod ? "var(--christmas-red)" : "var(--neon-green)"}
-                >
-                  {i + 1}) {ren(s)}
-                  <title>{t(s)}</title>
-                </text>
-              </g>
-            );
-          })}
-          <rect
-            x={720}
-            y={h / 2 - 20}
-            width={170}
-            height={40}
-            fill="black"
-            stroke="var(--gold)"
-            strokeWidth={2}
-          />
-          <text
-            x={805}
-            y={h / 2 + 7}
-            fontSize={20}
-            textAnchor="middle"
-            fill="var(--gold)"
+        <div className="relative min-w-[560px]">
+          <svg
+            viewBox={`0 0 ${VB} ${h}`}
+            className="w-full font-retro"
+            role="group"
+            aria-label={`Brikker til steg til svar. ${ubrukt.length} brikker brukes ikke.`}
           >
-            {vis && kode ? kode : "SVAR ▢▢▢"}
-          </text>
-        </svg>
+            {kanter.map((e) => {
+              const i = biter.findIndex((b) => b.id === e.bit);
+              const y1 = bitY(i) + H / 2,
+                y2 = stegY(e.steg) + H / 2;
+              const paa =
+                aktiv && lit.has(`b:${e.bit}`) && lit.has(`s:${e.steg}`)
+                  ? aktiv === `b:${e.bit}` || aktiv === `s:${e.steg}`
+                  : false;
+              return (
+                <path
+                  key={`${e.steg}-${e.bit}`}
+                  d={`M260 ${y1} C300 ${y1} 290 ${y2} 330 ${y2}`}
+                  fill="none"
+                  stroke={
+                    e.bit.startsWith("H") ? "var(--gold)" : "var(--cold-blue)"
+                  }
+                  strokeWidth={paa ? 3 : 1.5}
+                  strokeDasharray={e.sikker ? undefined : "5 4"}
+                  opacity={aktiv ? (paa ? 1 : 0.1) : 0.8}
+                />
+              );
+            })}
+            {steg.map((_, i) => (
+              <path
+                key={i}
+                d={`M670 ${stegY(i) + H / 2} C695 ${stegY(i) + H / 2} 695 ${h / 2} 720 ${h / 2}`}
+                fill="none"
+                stroke="var(--neon-green)"
+                strokeWidth={1}
+                opacity={aktiv ? 0.1 : 0.5}
+              />
+            ))}
+            {biter.map((b, i) => {
+              const rod = ubrukt.includes(b.id);
+              const farge = b.id.startsWith("H")
+                ? "var(--gold)"
+                : "var(--cold-blue)";
+              const full =
+                b.id === "S0"
+                  ? "NisseMail i dag"
+                  : b.tekst
+                    ? rens(b.tekst)
+                    : (b.hvor ?? "");
+              const [l1, l2] = brytt(full, 30, 2);
+              const id = `b:${b.id}`;
+              return (
+                <g
+                  key={b.id}
+                  {...kortProps(id, 255, bitY(i), `${b.id} ${full}`)}
+                >
+                  <rect
+                    x={4}
+                    y={bitY(i)}
+                    width={256}
+                    height={H}
+                    fill="black"
+                    stroke={rod ? "var(--christmas-red)" : farge}
+                    strokeWidth={lit.has(id) ? 3 : rod ? 2 : 1}
+                  />
+                  <rect x={4} y={bitY(i)} width={5} height={H} fill={farge} />
+                  <text x={14} y={bitY(i) + 16} fontSize={14} fill={farge}>
+                    {b.id}
+                    <tspan
+                      fill={rod ? "var(--christmas-red)" : "var(--neon-green)"}
+                    >
+                      {" "}
+                      {l1}
+                    </tspan>
+                  </text>
+                  {l2 && (
+                    <text
+                      x={14}
+                      y={bitY(i) + 32}
+                      fontSize={14}
+                      fill={rod ? "var(--christmas-red)" : "var(--neon-green)"}
+                      opacity={0.75}
+                    >
+                      {l2}
+                    </text>
+                  )}
+                  {merket.has(b.id) && (
+                    <a href="#utskrifter">
+                      <text
+                        x={238}
+                        y={bitY(i) + 16}
+                        fontSize={14}
+                        fill="var(--gold)"
+                      >
+                        ⎙
+                      </text>
+                    </a>
+                  )}
+                </g>
+              );
+            })}
+            {steg.map((s, i) => {
+              const rod = stegUten.includes(i);
+              const [l1, l2] = brytt(`${i + 1}) ${rens(s)}`, 46, 2);
+              const farge = rod ? "var(--christmas-red)" : "var(--neon-green)";
+              const id = `s:${i}`;
+              return (
+                <g
+                  key={i}
+                  {...kortProps(id, 330, stegY(i), `${i + 1}) ${rens(s)}`)}
+                >
+                  <rect
+                    x={330}
+                    y={stegY(i)}
+                    width={340}
+                    height={H}
+                    fill="black"
+                    stroke={farge}
+                    strokeWidth={lit.has(id) ? 3 : rod ? 2 : 1}
+                  />
+                  <text x={338} y={stegY(i) + 16} fontSize={14} fill={farge}>
+                    {l1}
+                  </text>
+                  {l2 && (
+                    <text
+                      x={338}
+                      y={stegY(i) + 32}
+                      fontSize={14}
+                      fill={farge}
+                      opacity={0.75}
+                    >
+                      {l2}
+                    </text>
+                  )}
+                </g>
+              );
+            })}
+            <rect
+              x={720}
+              y={h / 2 - 20}
+              width={170}
+              height={40}
+              fill="black"
+              stroke="var(--gold)"
+              strokeWidth={2}
+            />
+            <text
+              x={805}
+              y={h / 2 + 7}
+              fontSize={20}
+              textAnchor="middle"
+              fill="var(--gold)"
+            >
+              {vis && kode ? kode : "SVAR ▢▢▢"}
+            </text>
+          </svg>
+          {tips && (
+            <div
+              role="tooltip"
+              className="pointer-events-none absolute z-10 max-w-xs border-2 border-(--gold) bg-black p-2 text-sm text-(--neon-green)"
+              style={{
+                left: `${(tips.x / VB) * 100}%`,
+                top: `${(tips.y / h) * 100}%`,
+                transform: "translate(0, -105%)",
+              }}
+            >
+              {tips.tekst}
+            </div>
+          )}
+        </div>
       </div>
       {(ubrukt.length > 0 || stegUten.length > 0) && (
         <p
@@ -350,7 +453,8 @@ function Flytdiagram({
         </p>
       )}
       <p className="text-xs opacity-60">
-        Stiplet linje: usikker kobling (bare ett felles ord).
+        Stiplet linje: usikker kobling (bare ett felles ord). Hold over eller
+        trykk på et kort for å følge linjene.
       </p>
     </div>
   );

@@ -77,6 +77,16 @@ const ren = (s: string) =>
     .replace(/\u2744\uFE0F?/g, "✱")
     .trim();
 
+// The docs abbreviate the kids (H9, K12, H5); H1–H8 are also house pieces, so
+// the guide shows name + age wherever those texts are displayed.
+const BARNENAVN: Record<string, string> = {
+  H9: "Håkon (9)",
+  K12: "Kristian (12)",
+  H5: "Hanna (5)",
+};
+export const barnenavn = (s: string) =>
+  s.replace(/\b(?:H9|K12|H5)\b/g, (m) => BARNENAVN[m]);
+
 /** Body rows of the first markdown table in `tekst`, cells trimmed. */
 export function tabell(tekst: string): string[][] {
   return tekst
@@ -180,16 +190,16 @@ export function kveldDag(n: number) {
     mekanikk: felt("Mekanikk"),
     brikkeH: felt("Brikke H"),
     brikkeS: felt("Brikke S"),
-    slikLoses: felt("Slik løses den")
+    slikLoses: barnenavn(felt("Slik løses den"))
       .split(/(?:^|\s)\d+\)\s+/)
       .map((x) => x.trim())
       .filter(Boolean),
     /** The ladder a parent gives one step at a time; never the code. */
-    hint: felt("Hint")
+    hint: barnenavn(felt("Hint"))
       .split(/(?:^|\s)\d+\)\s+/)
       .map((x) => x.trim())
       .filter(Boolean),
-    hanna: felt("Hanna"),
+    hanna: barnenavn(felt("Hanna")),
     oppsett,
     /** Tonight's checklist, the only lines the guide ticks off; `x.pdf` names a print. */
     sjekkliste,

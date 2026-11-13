@@ -42,6 +42,14 @@ describe("gåtediagram", () => {
     expect(r.kanter.some((e) => e.bit.startsWith("H"))).toBe(true);
   });
 
+  it.each(dager)("day %i: kid abbreviations shown as names", (n) => {
+    const d = kveldDag(n)!;
+    const tekst = [...d.slikLoses, ...d.hint, ...d.sjekkliste, d.hanna].join(
+      "\n",
+    );
+    expect(tekst).not.toMatch(/\b(?:H9|K12|H5)\b/);
+  });
+
   it("lists unused pieces (report, not a failure)", () => {
     const rad = dager
       .map((n) => {
