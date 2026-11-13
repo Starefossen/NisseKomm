@@ -82,10 +82,10 @@ export async function seksjonsTekst(id: string): Promise<string | null> {
     await import("./guide-sesong");
   const [side, a, b] = id.split("/");
   if (side === "dag") {
-    if (b === "gaatekart") return gaatekartKilde(Number(a)) || null;
-    // ponytail: kveld, utskrifter and rampestrek share one day's source; split it if one flags the others too often.
+    if (b === "gaatekart")
+      return utsnitt(id, gaatekartKilde(Number(a))) || null;
     if (["kveld", "utskrifter", "rampestrek"].includes(b))
-      return kveldKilde(Number(a)) || null;
+      return utsnitt(id, kveldKilde(Number(a))) || null;
     return null;
   }
   if (side === "historien") {
@@ -96,13 +96,50 @@ export async function seksjonsTekst(id: string): Promise<string | null> {
   return null;
 }
 
+/** The gaater fields each day section shows; «Oppsettskisse» is the sketch's prompt, judged on the image. */
+const FELT: Record<string, (felt: string) => boolean> = {
+  gaatekart: (f) =>
+    !/^(Oppsett|Sjekkliste|Materialer|Utskrifter|Reserve)/.test(f),
+  kveld: (f) => /^(Oppsett$|Sjekkliste|Materialer|Reserve)/.test(f),
+  utskrifter: (f) => /^Utskrifter/.test(f),
+  rampestrek: () => false,
+};
+
+/**
+ * One day section's lines of the day's source (the gaater block plus the rows
+ * after it). Every section once hashed the whole block, so an edit to any field
+ * («Oppsettskisse», the checklist) sent all four back to «ny versjon». Pure over
+ * text, so it also cuts an old whole-block snapshot down (restemple).
+ */
+export function utsnitt(id: string, tekst: string): string {
+  const b = id.match(/^dag\/\d+\/(\w+)$/)?.[1];
+  const behold = b && FELT[b];
+  if (!behold) return tekst;
+  let felt: string | null = null;
+  const ut: string[] = [];
+  for (const l of tekst.split("\n")) {
+    const f = l.match(/^- \*\*(.+?):\*\*/)?.[1];
+    if (f) felt = f;
+    else if (!l.trim()) felt = null;
+    else if (!l.startsWith(" ") && felt === null && !l.startsWith("#")) {
+      // After the block: strek rows (« | ») belong to rampestrek, the rest to gaatekart/kveld.
+      const strek = l.includes(" | ");
+      if (b === "rampestrek" ? strek : !strek && b !== "utskrifter") ut.push(l);
+      continue;
+    }
+    if (l.startsWith("#") || (felt !== null && behold(felt))) ut.push(l);
+  }
+  return ut.join("\n").trim();
+}
+
 /**
  * What hashing a non-file id means. Bump it whenever seksjonsTekst or
  * seksjonsInnhold changes what they cover: verdicts with a `tekst` snapshot
  * equal to today's text are then restamped (vurdering-lager `restemple`),
- * never shown as «ny versjon». 1 = the page object (before 13.11), 2 = source text.
+ * never shown as «ny versjon». 1 = the page object (before 13.11), 2 = the day's whole
+ * source text, 3 = each section's own fields (`utsnitt`).
  */
-export const HASH_VERSJON = 2;
+export const HASH_VERSJON = 3;
 
 /** The text a verdict on a non-file id is given to (sections and scripts), stored as its snapshot. */
 export async function øyeblikkTekst(id: string): Promise<string | null> {

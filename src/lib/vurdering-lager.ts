@@ -20,6 +20,7 @@ import {
   HASH_VERSJON,
   linjeDiff,
   medVersjon,
+  utsnitt,
   versjonAv,
   øyeblikkTekst,
   type Forrige,
@@ -118,7 +119,7 @@ export async function gjeldende(dir: string, v: Vurdering) {
   // A snapshot decides on its own: no change to how hashes are made can make it stale.
   if (v.tekst != null) {
     const t = await øyeblikkTekst(v.fil);
-    if (t != null) return t === v.tekst;
+    if (t != null) return t === utsnitt(v.fil, v.tekst);
   }
   if (v.hash === UTDATERT) return false;
   const n = await nå(dir, v.fil);
@@ -183,7 +184,7 @@ export async function hvaEndret(
 ): Promise<Pick<Forrige, "endringer" | "fil" | "ukjent">> {
   if (v.tekst != null) {
     const t = await øyeblikkTekst(v.fil);
-    if (t != null) return { endringer: linjeDiff(v.tekst, t) };
+    if (t != null) return { endringer: linjeDiff(utsnitt(v.fil, v.tekst), t) };
   }
   const full = path.join(dir, v.fil);
   const info = await stat(full).catch(() => null);
@@ -230,7 +231,9 @@ export async function restemple(
   for (const e of Object.values(l.elementer))
     for (const [i, v] of e.vurderinger.entries()) {
       if (v.tekst == null || (v.hashVersjon ?? 1) === def.versjon) continue;
-      if ((await øyeblikkTekst(v.fil)) !== v.tekst) continue;
+      // The snapshot cut to today's definition: an old whole-day text still matches its section.
+      const tekst = await øyeblikkTekst(v.fil);
+      if (tekst == null || utsnitt(v.fil, v.tekst) !== tekst) continue;
       const hash = await def.hash(v.fil);
       if (!hash) continue;
       e.historikk.push({
@@ -241,6 +244,7 @@ export async function restemple(
         ...v,
         hash,
         versjon: hash,
+        tekst,
         hashVersjon: def.versjon,
       };
       ut.push(v.fil);
