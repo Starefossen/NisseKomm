@@ -88,6 +88,10 @@ export async function seksjonsTekst(
   const [side, a, b] = id.split("/");
   if (side === "dag") {
     if (b === "gaatekart") return kutt(gaatekartKilde(Number(a)));
+    if (b === "tekster") {
+      const { teksterKilde } = await import("./guide-innhold");
+      return teksterKilde(Number(a)) || null;
+    }
     if (["kveld", "utskrifter", "rampestrek"].includes(b))
       return kutt(kveldKilde(Number(a)));
     return null;

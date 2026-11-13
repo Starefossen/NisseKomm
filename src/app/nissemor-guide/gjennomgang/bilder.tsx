@@ -55,7 +55,9 @@ export function BildeVersjoner({
           alt={p}
           gruppe="versjoner"
           gammel={mediaUrl(p === ny ? gammel : ny)}
-          vurderId={vurderId}
+          // Only the newest is the element's current version: G on an old one would judge the wrong file.
+          vurderId={p === ny ? vurderId : undefined}
+          gammelVersjon={p !== ny}
           className="w-full border border-(--neon-green)/40"
         />
         {rolle === "gammel" && (v?.vurdering || v?.notat) && (

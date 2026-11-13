@@ -36,6 +36,7 @@ export function Rutenett({
   const [sist, setSist] = useState<number | null>(null);
   const [notat, setNotat] = useState("");
   const [mangler, setMangler] = useState(false);
+  const [feilet, setFeilet] = useState<Map<string, string>>(new Map());
   const felt = useRef<HTMLInputElement>(null);
   const { status, kjør } = useLagring();
 
@@ -59,16 +60,26 @@ export function Rutenett({
     }
     setMangler(false);
     const ider = [...valgt];
-    // The server writes one at a time under its file lock.
-    void kjør(
-      () => Promise.all(ider.map((id) => lagre(id, v, notat))),
-      `✓ ${ider.length} lagret`,
-    ).then((ok) => {
-      if (ok) {
-        setValgt(new Set());
-        setNotat("");
-      }
-    });
+    // The server writes one at a time under its file lock; one refusal must not hide the rest.
+    void kjør(async () => {
+      const svar = await Promise.allSettled(
+        ider.map((id) => lagre(id, v, notat)),
+      );
+      const feil = new Map(
+        svar.flatMap((s, i) =>
+          s.status === "rejected"
+            ? [[ider[i], String((s.reason as Error)?.message ?? s.reason)]]
+            : [],
+        ) as [string, string][],
+      );
+      setFeilet(feil);
+      setValgt(new Set(feil.keys()));
+      if (!feil.size) setNotat("");
+      else
+        throw new Error(
+          `${feil.size} av ${ider.length} (de står valgt, rød kant): ${[...new Set(feil.values())].join("; ")}`,
+        );
+    }, `✓ ${ider.length} lagret`);
   };
 
   useEffect(() => {
@@ -139,10 +150,13 @@ export function Rutenett({
         {rad.map((e, i) => {
           const c = data(e);
           const på = valgt.has(e.id);
+          const feil = feilet.get(e.id);
           return (
             <li
               key={e.id}
-              className={`border-4 ${på ? "border-(--gold)" : "border-transparent"}`}
+              data-feilet={feil ? "1" : undefined}
+              title={feil ? `Ikke lagret: ${feil}` : undefined}
+              className={`border-4 ${feil ? "border-(--christmas-red)" : på ? "border-(--gold)" : "border-transparent"}`}
             >
               <button
                 type="button"

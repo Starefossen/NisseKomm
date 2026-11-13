@@ -10,12 +10,15 @@ import {
   lesLager,
   migrer,
   nyesteSegmenter,
+  ryddAlltid,
+  SESONG,
   settVurdering,
+  skrivbart,
   visning,
   type Flat,
   type Lager,
 } from "./vurdering-lager";
-import { medVersjon } from "./vurdering-versjon";
+import { HASH_VERSJON, medVersjon } from "./vurdering-versjon";
 import { celleAv, familie, type StatusKilde } from "./media-status";
 import { mediaStatus } from "./media-server";
 
@@ -211,5 +214,106 @@ describe("nyesteSegmenter", () => {
     await writeFile(path.join(j, "dag-16-v11.segmenter.json"), seg(["x"]));
     expect(await nyesteSegmenter(dir, 6)).toEqual([{ s: 1, flagg: ["ny"] }]);
     expect(await nyesteSegmenter(dir, 7)).toEqual([]);
+  });
+});
+
+describe("fable r3: «*» og eldre kode", () => {
+  it("settVurdering nekter en mediefil som mangler (ellers hash «*», godkjent for alltid)", async () => {
+    const dir = await mappe({});
+    const l: Lager = { format: 2, sesong: 2026, elementer: {} };
+    await expect(
+      settVurdering(dir, l, "spill/retro/x.png", { vurdering: "godkjent" }),
+    ).rejects.toThrow("filen finnes ikke");
+  });
+
+  it("ryddAlltid: fil nå → ny versjon, fil borte → historikk, tekster får hash", async () => {
+    const dir = await mappe({});
+    await mkdir(path.join(dir, "spill/retro"), { recursive: true });
+    await writeFile(path.join(dir, "spill/retro/kom.png"), "senere");
+    const v = (fil: string) => ({
+      vurderinger: [
+        {
+          hash: "*",
+          fil,
+          vurdering: "godkjent",
+          oppdatert: "2026-11-13T12:00:00Z",
+        },
+      ],
+      historikk: [],
+    });
+    const l: Lager = {
+      format: 2,
+      sesong: 2026,
+      elementer: {
+        "spill/retro/kom.png": v("spill/retro/kom.png"),
+        "spill/retro/borte.png": v("spill/retro/borte.png"),
+        "dag/01/tekster": v("dag/01/tekster"),
+        "dag/02/tekster": v("dag/02/tekster"),
+      },
+    };
+    const uendret = async () => uendretSvar.shift()!;
+    const uendretSvar = [true, false];
+    expect(await ryddAlltid(dir, l, uendret)).toEqual({
+      nyVersjon: 2,
+      fjernet: 1,
+      restemplet: 1,
+    });
+    const vis = await visning(dir, l);
+    expect(vis["spill/retro/kom.png"].vurdering).toBeUndefined();
+    expect(vis["spill/retro/borte.png"]).toBeUndefined();
+    expect(l.elementer["spill/retro/borte.png"].historikk).toHaveLength(1);
+    expect(vis["dag/01/tekster"].vurdering).toBe("godkjent");
+    expect(l.elementer["dag/01/tekster"].vurderinger[0].hash).toMatch(
+      /^[0-9a-f]{12}$/,
+    );
+    expect(vis["dag/02/tekster"].vurdering).toBeUndefined();
+    // Idempotent.
+    expect(await ryddAlltid(dir, l, uendret)).toEqual({
+      nyVersjon: 0,
+      fjernet: 0,
+      restemplet: 0,
+    });
+  });
+
+  it("endreLager nekter å skrive når lageret er fra nyere kode, og stempler hashVersjon", async () => {
+    const dir = await mappe({});
+    const fil = path.join(dir, "media-vurdering.json");
+    await endreLager(dir, () => {});
+    expect(JSON.parse(readFileSync(fil, "utf8")).hashVersjon).toBe(
+      HASH_VERSJON,
+    );
+    await writeFile(
+      fil,
+      JSON.stringify({
+        format: 2,
+        sesong: 2026,
+        hashVersjon: HASH_VERSJON + 1,
+        elementer: {},
+      }),
+    );
+    await expect(endreLager(dir, () => {})).rejects.toThrow(
+      "koden er eldre enn lageret",
+    );
+  });
+
+  it("dev: nekter MEDIA_DIR utenfor checkouten uten NISSEKOMM_TILLAT_EKSTERN_MEDIA", () => {
+    const env = process.env as Record<string, string | undefined>;
+    const før = env.NODE_ENV;
+    env.NODE_ENV = "development";
+    try {
+      expect(() => skrivbart("/tmp/annen")).toThrow("utenfor");
+      expect(() => skrivbart(path.join(process.cwd(), "public"))).not.toThrow();
+      env.NISSEKOMM_TILLAT_EKSTERN_MEDIA = "1";
+      expect(() => skrivbart("/tmp/annen")).not.toThrow();
+    } finally {
+      env.NODE_ENV = før;
+      delete env.NISSEKOMM_TILLAT_EKSTERN_MEDIA;
+    }
+  });
+
+  it("medie.py har samme HASH_VERSJON og SESONG", () => {
+    const py = readFileSync("assets/bin/medie.py", "utf8");
+    expect(Number(py.match(/^HASH_VERSJON = (\d+)/m)?.[1])).toBe(HASH_VERSJON);
+    expect(Number(py.match(/^SESONG = (\d+)/m)?.[1])).toBe(SESONG);
   });
 });

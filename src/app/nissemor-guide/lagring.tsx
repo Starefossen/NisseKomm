@@ -59,6 +59,15 @@ export function Lagremelding({
       ) : status?.s === "feil" ? (
         <span className="text-(--christmas-red)">
           Ikke lagret: {status.grunn}
+          {/last på nytt/.test(status.grunn) && (
+            <button
+              type="button"
+              onClick={() => location.reload()}
+              className="ml-2 min-h-11 px-3 border-2 border-(--christmas-red) text-(--christmas-red)"
+            >
+              Last på nytt
+            </button>
+          )}
         </span>
       ) : null}
     </span>

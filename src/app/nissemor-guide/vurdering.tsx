@@ -71,12 +71,31 @@ export const lagreTrenger = (id: string, hva: string | null, notat: string) =>
 export const lagreKutt = (id: string, kutt: Kutt) =>
   post({ path: id, vurdering: "kutt", kutt });
 
+/** Id → the version on screen when its box appeared; sent with the verdict (409 if it moved since). */
+const settVersjon = new Map<string, string>();
+export function useSettVersjon(id: string) {
+  useEffect(() => {
+    let aktiv = true;
+    fetch(`/api/media/vurdering?versjon=${encodeURIComponent(id)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((v: { versjon: string | null } | null) => {
+        if (aktiv && v?.versjon) settVersjon.set(id, v.versjon);
+      })
+      .catch(() => {});
+    return () => {
+      aktiv = false;
+    };
+  }, [id]);
+}
+
 /** Segment id → the raw take hash in the video on screen (SegmentStripe fills it). */
 export const settTagning = new Map<string, string>();
 
 export async function post(body: { path: string; [k: string]: unknown }) {
   const raw = settTagning.get(body.path);
   if (raw) body = { ...body, raw } as typeof body;
+  const versjon = settVersjon.get(body.path);
+  if (!raw && versjon && "vurdering" in body) body = { ...body, versjon };
   const r = await fetch("/api/media/vurdering", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -126,6 +145,7 @@ export function StatusFor({ ids }: { ids: string[] }) {
 /** Godkjent / Lag på nytt + note for one guide section. */
 export function Vurder({ id }: { id: string }) {
   const alle = useVurderinger();
+  useSettVersjon(id);
   const status = useContext(StatusI);
   if (useContext(SkjulVurder)) return null;
   if (status) return <div className="mt-2 flex">{status(id)}</div>;

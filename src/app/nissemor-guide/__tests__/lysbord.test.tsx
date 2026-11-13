@@ -104,6 +104,37 @@ describe("Lysbord", () => {
     rydd();
   });
 
+  it("G on an old version (V, or the old image itself) never approves the current file", () => {
+    const { godkjenn, rydd } = monter();
+    const side = jest.fn();
+    tast("f");
+    tast("v");
+    window.addEventListener("keydown", side);
+    tast("g");
+    expect(godkjenn).not.toHaveBeenCalled();
+    expect(side).not.toHaveBeenCalled();
+    expect(lysbord()!.textContent).toContain(
+      "Gammel versjon, kan ikke vurderes",
+    );
+    window.removeEventListener("keydown", side);
+    tast("Escape");
+    rydd();
+    const div = document.createElement("div");
+    document.body.appendChild(div);
+    const root = createRoot(div);
+    act(() =>
+      root.render(
+        <LysbordBilde src="/media/a.old-1.png" alt="gml" gammelVersjon />,
+      ),
+    );
+    act(() => document.querySelector<HTMLImageElement>("img")!.click());
+    tast("g");
+    expect(lysbord()!.textContent).toContain("kan ikke vurderes");
+    tast("Escape");
+    act(() => root.unmount());
+    div.remove();
+  });
+
   it("pixel art by path or small size", () => {
     expect(pikselkunst("/media/spill/piksel/torget.png")).toBe(true);
     expect(pikselkunst("/media/x/ikon/nokkel.png")).toBe(true);

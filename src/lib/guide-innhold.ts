@@ -54,6 +54,24 @@ function dagFiler(dag: number, navn: string[]) {
   return ut;
 }
 
+/** The kid-visible texts of one day as Gjennomgang's «Tekster» shows them: the verdict's content. */
+export function teksterKilde(dag: number): string {
+  const q = getQuestByDay(dag);
+  if (!q) return "";
+  return [
+    q.nissemail_tekst,
+    q.julius_ps,
+    q.julius_ps_bonus,
+    q.julius_ps_krypto_mangler,
+    ...statisk.daily_alerts.filter((a) => a.day === dag).map((a) => a.tekst),
+    ...dagFiler(dag, q.reveals?.files ?? []).map(
+      (f) => `${f.sti}\n${f.innhold}`,
+    ),
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
 /** The two promo films (A = Dag 90, B = Dag 91) as plain script text. */
 export async function promoer() {
   const md = await read(MANUS.promo);

@@ -2,13 +2,16 @@
  * @jest-environment node
  */
 import { describe, it, expect, afterAll } from "@jest/globals";
-import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { callTool } from "@/lib/mcp/tools";
 
 const dir = mkdtempSync(path.join(tmpdir(), "vurd-"));
 process.env.MEDIA_DIR = dir;
+// A verdict on a missing file is cleared on read (fable r3 #5): the file is there.
+mkdirSync(path.join(dir, "video/julius"), { recursive: true });
+writeFileSync(path.join(dir, "video/julius/dag-01-v3.mp4"), "v3");
 writeFileSync(
   path.join(dir, "media-vurdering.json"),
   JSON.stringify({
@@ -49,7 +52,7 @@ describe("list_vurderinger", () => {
     expect(await callTool("parent", "list_vurderinger")).toBe(
       "3 åpne av 5\n" +
         "dag/04/gaatekart | - | 2026-11-11 09:30 | sjekk\n" +
-        "video/julius/dag-01-v3.mp4 | lag_paa_nytt | 2026-11-10 08:00 | for mørk / lyd hakker\n" +
+        "video/julius/dag-01-v3.mp4 | lag_paa_nytt | 2026-11-10 08:00 | for mørk / lyd hakker | gjeldende versjon: ✗ → v3 ↻\n" +
         "dag/05/gaatekart | (ny versjon) forrige: godkjent | 2026-11-09 09:30 | fin",
     );
   });

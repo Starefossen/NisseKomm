@@ -1,10 +1,14 @@
+import { stat } from "node:fs/promises";
 import path from "node:path";
 import type { NextRequest } from "next/server";
 import { authorizeMedia, mediaDir } from "@/lib/media-server";
 import { versionKey } from "@/lib/media-status";
-import { segmentRaws, type Forrige } from "@/lib/vurdering-versjon";
+import { segmentRaws, versjonAv, type Forrige } from "@/lib/vurdering-versjon";
 import {
   endreLager,
+  erMediefil,
+  FinnesIkke,
+  LagerNyere,
   kjentId,
   lesLager,
   oppføring,
@@ -44,6 +48,12 @@ export type MediaVurderinger = Record<string, MediaVurderingItem>;
 const p0 = (v: Partial<Vurdering>) => v as MediaVurderingItem;
 const badRequest = () => new Response("Ugyldig forespørsel", { status: 400 });
 const serverError = () => new Response("Serverfeil", { status: 500 });
+const feilSvar = (err: unknown) =>
+  err instanceof FinnesIkke
+    ? new Response("filen finnes ikke", { status: 400 })
+    : err instanceof LagerNyere
+      ? new Response(err.message, { status: 409 })
+      : serverError();
 
 function isSafePath(p: string): boolean {
   if (typeof p !== "string" || !p.trim()) return false;
@@ -66,6 +76,12 @@ function isSafePath(p: string): boolean {
 export async function GET(req: NextRequest) {
   const denied = await authorizeMedia(req);
   if (denied) return denied;
+  // ?versjon=<id>: what the id holds now; the page sends it back with the verdict (409 if it moved).
+  const id = new URL(req.url).searchParams.get("versjon");
+  if (id !== null) {
+    if (!isSafePath(id)) return badRequest();
+    return Response.json({ versjon: await versjonAv(mediaDir(), id.trim()) });
+  }
   try {
     return Response.json(await visning(mediaDir(), await lesLager(mediaDir())));
   } catch {
@@ -100,7 +116,12 @@ export async function POST(req: NextRequest) {
     trenger,
     forklaring,
     levert,
+    versjon: sett,
   } = body as Record<string, unknown>;
+  // Guide session = Hans; a Bearer token = an agent (X-Agent names it).
+  const av = req.headers.get("authorization")
+    ? `agent:${(req.headers.get("x-agent") ?? "ukjent").replace(/[^\w.-]/g, "").slice(0, 40) || "ukjent"}`
+    : "hans";
 
   if (typeof relPath !== "string" || !isSafePath(relPath)) {
     return badRequest();
@@ -173,6 +194,24 @@ export async function POST(req: NextRequest) {
     return badRequest();
 
   const dir = mediaDir();
+  // A verdict on a file that is not there would approve whatever lands there later.
+  if (vurdering && erMediefil(cleanPath)) {
+    const fins = await stat(path.join(dir, cleanPath)).then(
+      (s) => s.isFile(),
+      () => false,
+    );
+    if (!fins) return new Response("filen finnes ikke", { status: 400 });
+  }
+  // The page sends the version it showed: a verdict never lands on content Hans has not seen.
+  if (
+    vurdering !== undefined &&
+    typeof sett === "string" &&
+    raw === undefined &&
+    (await versjonAv(dir, cleanPath)) !== sett
+  )
+    return new Response("innholdet er endret siden du så det, last på nytt", {
+      status: 409,
+    });
   // A segment verdict belongs to the take Hans watched (the video's segmenter.json),
   // not to whatever raw clip assets/out holds now.
   const seg = cleanPath.match(/^video\/julius\/dag-(\d+)#s(\d+)$/);
@@ -195,8 +234,8 @@ export async function POST(req: NextRequest) {
         await stemple(dir, l, cleanPath);
         return Response.json({ ok: true, vurderinger: await visning(dir, l) });
       });
-    } catch {
-      return serverError();
+    } catch (err) {
+      return feilSvar(err);
     }
   }
   // Real wall-clock time: TIDSMASKIN mocks date-utils, and review notes need the actual time.
@@ -268,6 +307,7 @@ export async function POST(req: NextRequest) {
         ...(nesteTid !== null ? { tid: Math.round(nesteTid * 10) / 10 } : {}),
         ...(nextVerdict ? { vurdering: nextVerdict } : {}),
         ...(nextNote ? { notat: nextNote } : {}),
+        av,
         ...(nextVerdict === "kutt"
           ? {
               kutt: k
@@ -319,7 +359,7 @@ export async function POST(req: NextRequest) {
     const dag = seg && vurdering === "kutt" ? kuttDag(Number(seg[1])) : null;
     if (dag && svar.ok) startKutt(dag);
     return svar;
-  } catch {
-    return ugyldig ? badRequest() : serverError();
+  } catch (err) {
+    return ugyldig ? badRequest() : feilSvar(err);
   }
 }

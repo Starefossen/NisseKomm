@@ -59,6 +59,8 @@ export interface Oppføring {
   trenger?: Trenger;
   /** The agent's answer to «trenger forklaring», shown on top of the Element view. */
   forklaring?: string;
+  /** Who saved it: «hans» (guide session) or «agent:<navn>» (Bearer). */
+  av?: string;
 }
 
 /** `hash`: content hash; "*" = nothing to version (code, missing file), "utdatert" = changed before format 2. */
@@ -75,6 +77,8 @@ export interface Element {
 export interface Lager {
   format: 2;
   sesong: number;
+  /** The newest HASH_VERSJON that wrote it: older code refuses to write (endreLager, medie.skriv_lager). */
+  hashVersjon?: number;
   elementer: Record<string, Element>;
 }
 
@@ -100,6 +104,13 @@ export function filHash(full: string, stempel: string) {
     );
   return hashCache.get(k)!;
 }
+
+/** A media file id (has an extension, no segment): a verdict needs the file to be there. */
+export const erMediefil = (id: string) =>
+  !id.includes("#") && /\/[^/]+\.[a-z0-9]{2,4}$/i.test(id);
+
+export class FinnesIkke extends Error {}
+export class LagerNyere extends Error {}
 
 /** Stamp and content hash of what an id points at now; both null when there is nothing to version. */
 async function nå(dir: string, id: string) {
@@ -332,6 +343,85 @@ async function skriv(fil: string, data: unknown) {
   }
 }
 
+/** Source files of dag/NN/tekster: the verdict's text is the same as when it was given if none changed since. */
+const TEKSTKILDER = [
+  "src/data/uke1_oppdrag.json",
+  "src/data/uke2_oppdrag.json",
+  "src/data/uke3_oppdrag.json",
+  "src/data/uke4_oppdrag.json",
+  "src/data/statisk_innhold.json",
+];
+async function teksterUendret(siden: string | undefined) {
+  if (!siden) return false;
+  const { execFile } = await import("node:child_process");
+  const git = (...a: string[]) =>
+    new Promise<string>((ok, feil) =>
+      execFile("git", a, { cwd: process.cwd() }, (e, ut) =>
+        e ? feil(e) : ok(ut),
+      ),
+    );
+  try {
+    const logg = await git(
+      "log",
+      "--format=%H",
+      `--since=${siden}`,
+      "--",
+      ...TEKSTKILDER,
+    );
+    const skitten = await git("status", "--porcelain", "--", ...TEKSTKILDER);
+    return !logg.trim() && !skitten.trim();
+  } catch {
+    return false; // no git (the pod): «ny versjon», Hans looks again
+  }
+}
+
+/**
+ * Verdicts with hash "*" that should have had one (fable r3 #5): on a media file
+ * missing when it was given, it becomes «ny versjon» if the file is there now and
+ * goes to historikk if not; dag/NN/tekster gets its text hash, restamped when
+ * the source has not changed since the verdict (git), else «ny versjon».
+ * Idempotent: afterwards no such "*" is left.
+ */
+export async function ryddAlltid(
+  dir: string,
+  l: Lager,
+  uendret = teksterUendret,
+) {
+  const ut = { nyVersjon: 0, fjernet: 0, restemplet: 0 };
+  for (const e of Object.values(l.elementer))
+    for (const v of [...e.vurderinger]) {
+      if (v.hash !== ALLTID) continue;
+      if (erMediefil(v.fil)) {
+        e.historikk.push({ ...v, merknad: "vurdert mens filen manglet" });
+        if ((await nå(dir, v.fil)).stempel === null) {
+          e.vurderinger.splice(e.vurderinger.indexOf(v), 1);
+          ut.fjernet++;
+        } else {
+          v.hash = UTDATERT;
+          ut.nyVersjon++;
+        }
+      } else if (/^dag\/\d\d\/tekster$/.test(v.fil)) {
+        const tekst = await øyeblikkTekst(v.fil);
+        const hash = await versjonAv(dir, v.fil);
+        if (tekst == null || !hash) continue;
+        e.historikk.push({ ...v, merknad: "fikk innholdshash (tekster)" });
+        if (await uendret(v.oppdatert)) {
+          Object.assign(v, {
+            hash,
+            versjon: hash,
+            tekst,
+            hashVersjon: HASH_VERSJON,
+          });
+          ut.restemplet++;
+        } else {
+          v.hash = UTDATERT;
+          ut.nyVersjon++;
+        }
+      }
+    }
+  return ut;
+}
+
 /** Read the store; a format-1 file is backed up to _arkiv/<date>/ and migrated on first read. */
 export async function lesLager(dir: string, fil = path.join(dir, FIL)) {
   let data: unknown;
@@ -343,8 +433,14 @@ export async function lesLager(dir: string, fil = path.join(dir, FIL)) {
     throw err;
   }
   if ((data as Lager).format === 2) {
-    await restemple(dir, data as Lager);
-    return data as Lager;
+    const l = data as Lager;
+    if (l.sesong !== SESONG)
+      console.warn(`${fil}: sesong ${l.sesong}, koden er for ${SESONG}`);
+    await restemple(dir, l);
+    const r = await ryddAlltid(dir, l);
+    if (r.nyVersjon + r.fjernet + r.restemplet)
+      console.warn(`${fil}: «*»-vurderinger ryddet`, r);
+    return l;
   }
   const lager = await migrer(dir, data as Flat);
   const dato = new Date(Date.now()).toISOString().slice(0, 10);
@@ -390,6 +486,20 @@ export async function medLås<T>(fil: string, f: () => Promise<T>): Promise<T> {
   }
 }
 
+/**
+ * A dev server writes only to the media of its own checkout: a worktree hot-reloading
+ * against Hans' public/ once rolled his verdicts back (13:58–14:06).
+ */
+export function skrivbart(dir: string) {
+  if (process.env.NODE_ENV !== "development") return;
+  if (process.env.NISSEKOMM_TILLAT_EKSTERN_MEDIA === "1") return;
+  const rel = path.relative(process.cwd(), path.resolve(dir));
+  if (rel.startsWith("..") || path.isAbsolute(rel))
+    throw new LagerNyere(
+      `MEDIA_DIR ${dir} ligger utenfor ${process.cwd()}: sett NISSEKOMM_TILLAT_EKSTERN_MEDIA=1 for å skrive dit`,
+    );
+}
+
 // One writer at a time: «Godkjenn alle på dagen» posts in parallel.
 let kø: Promise<unknown> = Promise.resolve();
 export function endreLager<T>(
@@ -399,8 +509,14 @@ export function endreLager<T>(
 ): Promise<T> {
   const svar = kø.then(() =>
     medLås(fil, async () => {
+      skrivbart(dir);
       const l = await lesLager(dir, fil);
+      if ((l.hashVersjon ?? 0) > HASH_VERSJON)
+        throw new LagerNyere(
+          `koden er eldre enn lageret: ${fil} har hashVersjon ${l.hashVersjon}, koden ${HASH_VERSJON}`,
+        );
       const ut = await f(l);
+      l.hashVersjon = HASH_VERSJON;
       await skriv(fil, l);
       return ut;
     }),
@@ -435,6 +551,9 @@ export async function settVurdering(
   const n = sett
     ? { stempel: sett, hash: async () => sett }
     : await nå(dir, fil);
+  // A verdict on nothing would get hash "*" and approve whatever lands there later.
+  if (!sett && n.stempel === null && erMediefil(fil))
+    throw new FinnesIkke(`${fil}: filen finnes ikke`);
   const tekst = sett ? null : await øyeblikkTekst(fil);
   const v = ren<Vurdering>({
     ...o,

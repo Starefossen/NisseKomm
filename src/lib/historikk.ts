@@ -3,7 +3,7 @@ import { readFile, readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { versionKey } from "./media-status";
-import { lesLager, type Vurdering } from "./vurdering-lager";
+import { SESONG, lesLager, type Vurdering } from "./vurdering-lager";
 import { TRENGER } from "./trenger";
 
 /**
@@ -45,10 +45,11 @@ function vurderingLinjer(v: Vurdering, gammel: boolean): Hendelse[] {
   if (v.vurdering || v.notat || v.tagger?.length)
     ut.push({
       t: v.oppdatert ?? "",
-      hvem: "Hans",
+      hvem: v.av?.startsWith("agent:") ? "agent" : "Hans",
       hva: "vurdering",
       tekst: [
         `${v.vurdering ?? "notat"}${seg ? ` ${seg}` : ""}${gammel ? " (erstattet)" : ""}`,
+        v.av?.startsWith("agent:") && `av ${v.av}`,
         v.notat && `«${v.notat}»`,
         v.tagger?.length && `merker: ${v.tagger.join(", ")}`,
         v.tid != null && `ved ${v.tid} s`,
@@ -155,13 +156,13 @@ async function versjoner(dir: string, key: string): Promise<Hendelse[]> {
 export function kildeFor(id: string): string | null {
   const d = Number(id.match(/dag[-/](\d+)/)?.[1]);
   if (/^dag\/\d+\/rampestrek$/.test(id))
-    return "/^## 8[.]/,/^## 9[.]/:docs/historie-2026.md";
+    return `/^## 8[.]/,/^## 9[.]/:docs/historie-${SESONG}.md`;
   if (/^dag\/\d+\/[a-z]+$/.test(id))
-    return `/^### Dag ${d} [(]/,/^##/:docs/gaater-2026.md`;
+    return `/^### Dag ${d} [(]/,/^##/:docs/gaater-${SESONG}.md`;
   if (juliusDag(id))
-    return `/^## Dag ${d} [(]/,/^## /:docs/manus/julius-2026.md`;
+    return `/^## Dag ${d} [(]/,/^## /:docs/manus/julius-${SESONG}.md`;
   if (/^(manus\/radio|audio\/rampenissen)\/dag-\d+/.test(id))
-    return `/^## Dag ${d} [(]/,/^## /:docs/manus/rampenissen-radio-2026.md`;
+    return `/^## Dag ${d} [(]/,/^## /:docs/manus/rampenissen-radio-${SESONG}.md`;
   return null;
 }
 

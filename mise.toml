@@ -28,7 +28,9 @@ cat <<EOF
    • Hele sesongen automatisk: mise run test:gjennomspilling
 ================================================================================
 EOF
-if DB=$(mise run dev:pg 2>/dev/null | tail -1); then export "$DB"
+# A worktree never shares nissekomm-pg with the main checkout: its own file store.
+if [ "$(git rev-parse --git-dir)" != "$(git rev-parse --git-common-dir)" ]; then echo "Worktree – bruker filbutikk, ikke nissekomm-pg"; export DEV_STORE_FILE="${DEV_STORE_FILE:-.data/dev-store.json}"
+elif DB=$(mise run dev:pg 2>/dev/null | tail -1); then export "$DB"
 else echo "Postgres utilgjengelig (Colima kjører ikke) – bruker filbutikk"; export DEV_STORE_FILE="${DEV_STORE_FILE:-.data/dev-store.json}"; fi
 KID_CODE="${KID_CODE:-snø lykt rein}" \
 PARENT_CODE="${PARENT_CODE:-NORDPOL-DEV2026}" \
@@ -192,7 +194,7 @@ run = "scripts/port.sh"
 
 [tasks."test:gjennomspilling:webkit"]
 description = "Spill gjennom dager i WebKit med iPad-oppsett (1180x820 landscape)"
-env = { MEDIA_DIR = "/Users/hans/go/src/github.com/starefossen/NisseKomm/public" }
+env = { MEDIA_DIR = "{{config_root}}/public" }
 run = "node scripts/gjennomspilling-webkit.mjs"
 
 [tasks.strekark]

@@ -8,7 +8,7 @@ import {
   jest,
 } from "@jest/globals";
 import { createHash } from "node:crypto";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { NextRequest } from "next/server";
@@ -41,6 +41,14 @@ beforeEach(async () => {
   process.env.MCP_DEV_TOKEN = "read:readtoken1,parent:parenttoken1";
   // The raw clip is read from cwd/assets/out; a checkout with real takes must not leak in.
   jest.spyOn(process, "cwd").mockReturnValue(testDir);
+  // Verdicts need the file to exist (fable r3 #5).
+  for (const f of [
+    ...[1, 2, 3, 5].map((d) => `video/julius/dag-0${d}.mp4`),
+    "audio/rampenissen/dag-02.mp3",
+  ]) {
+    mkdirSync(path.dirname(path.join(testDir, f)), { recursive: true });
+    writeFileSync(path.join(testDir, f), f);
+  }
   memoryStore.reset();
   for (const role of ["kid", "parent"] as const) {
     await memoryStore.setSession(sha(role), {

@@ -20,7 +20,14 @@ import { vurderTast } from "./vurdering";
  * its note), so the one-click rules stay in the box.
  */
 
-type Bilde = { src: string; alt: string; gammel?: string; vurderId?: string };
+type Bilde = {
+  src: string;
+  alt: string;
+  gammel?: string;
+  vurderId?: string;
+  /** An older version of the element: G/O/L/? must not judge the current file from here. */
+  gammelVersjon?: boolean;
+};
 
 export const pikselkunst = (src: string, bredde?: number) =>
   /spill\/piksel|\/ikon\/|ikon-/.test(src) || (!!bredde && bredde <= 256);
@@ -32,6 +39,7 @@ const lesBilde = (el: HTMLElement): Bilde => ({
   alt: el.dataset.lysbordAlt ?? "",
   gammel: el.dataset.lysbordGammel || undefined,
   vurderId: el.dataset.lysbordVurder || undefined,
+  gammelVersjon: el.dataset.lysbordGammelversjon === "1",
 });
 
 function gruppe(el: HTMLElement): HTMLElement[] {
@@ -52,6 +60,7 @@ export function LysbordBilde({
   gruppe: g = "side",
   gammel,
   vurderId,
+  gammelVersjon,
   klikk = true,
   loading,
   onError,
@@ -63,6 +72,7 @@ export function LysbordBilde({
   /** An older version: V swaps to it in the lightbox. */
   gammel?: string;
   vurderId?: string;
+  gammelVersjon?: boolean;
   /** False where a click means something else (the grid selects); F still opens. */
   klikk?: boolean;
   loading?: "lazy";
@@ -120,6 +130,7 @@ export function LysbordBilde({
         data-lysbord-alt={alt}
         data-lysbord-gammel={gammel ?? ""}
         data-lysbord-vurder={vurderId ?? ""}
+        data-lysbord-gammelversjon={gammelVersjon ? "1" : ""}
         onClick={klikk ? (ev) => åpne(ev.currentTarget) : undefined}
         className={`${className ?? ""} ${klikk ? "cursor-zoom-in" : ""} ${pikselkunst(src) ? "[image-rendering:pixelated]" : ""}`}
       />
@@ -198,8 +209,14 @@ export function Lysbord({
     if (!neste) setPan({ x: 0, y: 0 });
   }, [s, skala]);
 
+  // An old version on screen (its own image, or V on the new one): never judged from here.
+  const gammelPåSkjerm = !!b.gammelVersjon || (visGammel && !!b.gammel);
   const vurder = useCallback(
     (tast: string) => {
+      if (gammelPåSkjerm) {
+        setMelding("Gammel versjon, kan ikke vurderes");
+        return true;
+      }
       if (!b.vurderId) return false;
       if (tast === "l") {
         lukk();
@@ -223,7 +240,7 @@ export function Lysbord({
       }, 200);
       return true;
     },
-    [b.vurderId, lukk],
+    [b.vurderId, lukk, gammelPåSkjerm],
   );
 
   useEffect(() => {
@@ -457,7 +474,12 @@ export function Lysbord({
         Z zoom · hjul/klyp · dra panorerer · Shift lupe
         {b.gammel ? " · V gammel/ny" : ""}
         {liste.length > 1 ? " · ←/→ bla" : ""}
-        {b.vurderId ? " · G/O/L/? vurder" : ""} · Esc lukker
+        {gammelPåSkjerm
+          ? " · gammel versjon, kan ikke vurderes"
+          : b.vurderId
+            ? " · G/O/L/? vurder"
+            : ""}{" "}
+        · Esc lukker
       </p>
     </div>
   );

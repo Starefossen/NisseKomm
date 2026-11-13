@@ -39,8 +39,10 @@ from pathlib import Path
 # NISSEKOMM_ROOT: use another checkout's assets (a dry run from a worktree against the real refs)
 ROOT = Path(os.environ.get("NISSEKOMM_ROOT") or Path(__file__).resolve().parents[2]).resolve()
 BIN = ROOT / "assets" / "bin"
-JULIUS_MS = "docs/manus/julius-2026.md"
-RAMPE_MS = "docs/manus/rampenissen-radio-2026.md"
+SESONG = 2026  # = SESONG in src/lib/vurdering-lager.ts
+HASH_VERSJON = 3  # = HASH_VERSJON in src/lib/vurdering-versjon.ts
+JULIUS_MS = f"docs/manus/julius-{SESONG}.md"
+RAMPE_MS = f"docs/manus/rampenissen-radio-{SESONG}.md"
 
 
 def entity(ent: str, root: Path = ROOT) -> dict:
@@ -86,7 +88,10 @@ def vurdering_fil(media: Path = None) -> Path:
 
 def les_lager(f: Path) -> dict:
     """The verdict store as stored: format 2 (src/lib/vurdering-lager.ts, which migrates format 1 on first read)."""
-    return json.loads(f.read_text()) if f.exists() else {}
+    data = json.loads(f.read_text()) if f.exists() else {}
+    if data.get("format") == 2 and data.get("sesong") != SESONG:
+        print(f"advarsel: {f} er sesong {data.get('sesong')}, koden er for {SESONG}", file=sys.stderr)
+    return data
 
 
 @contextmanager
@@ -114,6 +119,10 @@ def lås(f: Path, vent: float = 10.0):
 
 
 def skriv_lager(f: Path, data: dict):
+    # Older code must not overwrite a store a newer hash definition wrote (a stale checkout rolled verdicts back).
+    lagret = json.loads(f.read_text()).get("hashVersjon", 0) if f.exists() else 0
+    if max(lagret, data.get("hashVersjon", 0)) > HASH_VERSJON:
+        raise SystemExit(f"koden er eldre enn lageret: {f} har hashVersjon {lagret}, medie.py {HASH_VERSJON}")
     tmp = f.with_suffix(f".tmp.{os.getpid()}")
     try:
         tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
@@ -246,9 +255,11 @@ def radio_avled(media: Path, root: Path = ROOT) -> list:
             if (id in vurd or not lyd or lyd.get("vurdering") not in ("godkjent", "ok") or not p.exists()
                     or lyd["hash"] != sha(p.read_bytes())[:12] or status(p, fil, root)[0] != CURRENT):
                 continue
-            el[id] = {"vurderinger": [{"vurdering": "godkjent", "oppdatert": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            e = el.setdefault(id, {"vurderinger": [], "historikk": []})
+            e["historikk"] += e["vurderinger"]  # a cleared or earlier verdict stays in the history
+            e["vurderinger"] = [{"vurdering": "godkjent", "av": "agent:medie.py", "oppdatert": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                                        "versjon": m["hash"], "hash": m["hash"], "fil": id,
-                                       "kilde": "avledet fra godkjent lydklipp"}], "historikk": []}
+                                       "kilde": "avledet fra godkjent lydklipp"}]
             nye.append(id)
         if nye:
             skriv_lager(f, data)
@@ -262,8 +273,8 @@ def strek_text(day: int, root: Path = ROOT) -> str:
 
 
 def oppsett_text(day: int, root: Path = ROOT) -> str:
-    """The **Oppsettskisse:** line of one day in docs/gaater-2026.md ('' if none)."""
-    m = re.search(rf"^### Dag {day} .*?^- \*\*Oppsettskisse:\*\* (.+?)$", (root / "docs/gaater-2026.md").read_text(), re.S | re.M)
+    """The **Oppsettskisse:** line of one day in docs/gaater-<SESONG>.md ('' if none)."""
+    m = re.search(rf"^### Dag {day} .*?^- \*\*Oppsettskisse:\*\* (.+?)$", (root / f"docs/gaater-{SESONG}.md").read_text(), re.S | re.M)
     return m[1].strip() if m and "\n### " not in m[0] else ""
 
 
@@ -771,14 +782,30 @@ def test_radio_avled():
             write("rampenissen-tts.sh", d / fil, RAMPE_MS, f"Dag {day}", "m")
             el[fil] = {"vurderinger": [{"vurdering": v, "hash": sha(b"lyd%d" % day)[:12], "fil": fil}], "historikk": []}
         (d / "audio/rampenissen/dag-07.mp3").write_bytes(b"annen")  # the approved take was replaced
+        el[radio_id(5)] = {"vurderinger": [], "historikk": [{"vurdering": "lag_paa_nytt", "notat": "gammel", "hash": "x", "fil": radio_id(5)}]}
         skriv_lager(vurdering_fil(d), {"format": 2, "sesong": 2026, "elementer": el})
         assert radio_avled(d) == [radio_id(5)] and radio_avled(d) == []
+        assert les_lager(vurdering_fil(d))["elementer"][radio_id(5)]["historikk"][0]["notat"] == "gammel"
         v = vurderinger(vurdering_fil(d))[radio_id(5)]
         assert v["kilde"] == "avledet fra godkjent lydklipp" and godkjent(vurderinger(vurdering_fil(d)), radio_id(5), radio_manus()["5"]["hash"])
 
 
+def test_eldre_kode():
+    """A store stamped by a newer hash definition refuses this code's write."""
+    with __import__("tempfile").TemporaryDirectory() as t:
+        f = Path(t) / "media-vurdering.json"
+        f.write_text(json.dumps({"format": 2, "sesong": SESONG, "hashVersjon": HASH_VERSJON + 1, "elementer": {}}))
+        try:
+            skriv_lager(f, {"format": 2, "sesong": SESONG, "elementer": {}})
+            raise AssertionError("skrev over et nyere lager")
+        except SystemExit as e:
+            assert "koden er eldre enn lageret" in str(e)
+        assert json.loads(f.read_text())["hashVersjon"] == HASH_VERSJON + 1
+
+
 def selftest():
     test_radio_avled()
+    test_eldre_kode()
     with __import__("tempfile").TemporaryDirectory() as t:
         d = Path(t)
         for n in ("a.mp4", "a.mp4.meta.json", "a.jpg", "a.old-1.mp4"):
