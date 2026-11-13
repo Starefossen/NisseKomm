@@ -891,10 +891,10 @@
  "16": [
   {
    "s": 1,
-   "hash": "7d32b7bb4033",
+   "hash": "cf26b2e2ea6d",
    "key": [
     "Gooood morgen, Snøfall! Morgensangen, tredje forsøk: God morgen, kopp. God morgen, bok. God morgen, lampe… nei, nå … glitcher den? Sier man det?",
-    14,
+    15,
     "Dirigerer med venstre pekefinger, ser over skulderen opp mot vegglampen og slår oppgitt ut med hånden. Kuldes påvirkning: Svak knitring."
    ],
    "ord": 22,
@@ -905,9 +905,9 @@
   },
   {
    "s": 2,
-   "hash": "909dc8eed388",
+   "hash": "d7c936c7c328",
    "key": [
-    "I natt snudde Vintervokteren samlebåndet. Alt i én haug, ingenting ødelagt. Orakelet hvisker at jeg må følge med på vinduet i natt.",
+    "I natt snudde Vintervokteren samlebåndet. Alt i én haug, ingenting ødelagt. Orakelet hvisker at jeg må følge med på vinduet i kveld.",
     15,
     "Snurrer venstre hånd baklengs, stopper, så nikker han mot vinduet bak seg. Kuldes påvirkning: Svak knitring."
    ],
@@ -1005,9 +1005,9 @@
   },
   {
    "s": 2,
-   "hash": "b4acca4523ec",
+   "hash": "fde0d0df7ab2",
    "key": [
-    "I natt fløy Trixter over Nordtoppen i uvær. Rampenissen holdt seg fast i lua hans. Nå spiser Trixter med hjelm.",
+    "I natt fløy Trixter rundt Ulriken i uvær. Rampenissen holdt seg fast i geviret hans. Nå spiser Trixter med hjelm.",
     14,
     "Senker venstre hånd flatt over bordet som en slede og lar den hoppe, så banker han seg lett i hodet og ler. Kuldes påvirkning: Svak knitring."
    ],
@@ -1095,10 +1095,10 @@
  "20": [
   {
    "s": 1,
-   "hash": "80bf0b1d49da",
+   "hash": "db4c110177c4",
    "key": [
     "God morgen, Snøfall, og god fjerde søndag i advent. Frostgraden er åttiåtte prosent. I morgen kommer Kulde helt fram til huset deres.",
-    14,
+    15,
     "Lener seg nærmere mikrofonen og snakker rolig og tydelig, venstre hånd stille på bordet. Kuldes påvirkning: Svak knitring."
    ],
    "ord": 22,
@@ -1361,10 +1361,10 @@
   },
   {
    "s": 2,
-   "hash": "090c4a419f46",
+   "hash": "d3c2a2e7823d",
    "key": [
     "I natt fløy sleden over grotten. Isen tiner, og fargen kom tilbake. Krystallet sprakk i tre. Én bit til hver av dere.",
-    14,
+    15,
     "Holder tre små lilla ametystklynger i venstre håndflate, blåser forsiktig på dem, smiler. Mikrofonen i høyre hånd. Ingen svevende eller glødende effekt. Rommet er som i referansebildet. Kuldes påvirkning: Rent bilde og ren lyd."
    ],
    "ord": 22,

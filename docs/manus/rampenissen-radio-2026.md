@@ -393,14 +393,14 @@ Ord = talte ord i klippet. Sek = ord × 0,44 (målt tempo på dag 1–5). «Kode
 | 7   | KULDE        | 109 | 45  | 06      | ok, med merknad | «Det som skurrer, er kaldt» er låst storyboardlinje; navnet sies ikke                                                          |
 | 8   | KRETSKORT    | 100 | 42  | 06      | ok              | Slang 1 av 2                                                                                                                   |
 | 9   | 24           | 100 | 42  | 06      | ok              | Ingen antall eller armer                                                                                                       |
-| 10  | SPEKTER      | 109 | 45  | 06      | ok              | «rundt i stua» fra historiedok. er tatt ut                                                                                     |
+| 10  | SPEKTER      | 107 | 45  | 06      | ok              | «rundt i stua» fra historiedok. er tatt ut                                                                                     |
 | 11  | 75           | 101 | 42  | 06      | ok              |                                                                                                                                |
-| 12  | MELODI       | 110 | 46  | 09      | ok              | Glassene nevnes ikke                                                                                                           |
+| 12  | MELODI       | 109 | 45  | 09      | ok              | Glassene nevnes ikke                                                                                                           |
 | 13  | SAFRAN       | 105 | 44  | 09      | ok              |                                                                                                                                |
 | 14  | ORIGAMI      | 112 | 47  | 06      | ok              |                                                                                                                                |
 | 15  | KARAMELL     | 110 | 46  | 06      | ok              | Verken sukker eller sirup nevnes                                                                                               |
 | 16  | SORTERING    | 110 | 46  | 06      | ok              | «ryddet», aldri «sortere»                                                                                                      |
-| 17  | NORDLYS      | 103 | 43  | 06      | ok              | «et svar i natt»; aldri «grønt», «himmel», «nord» + «lys»                                                                      |
+| 17  | NORDLYS      | 108 | 45  | 06      | ok              | «et svar i natt»; aldri «grønt», «himmel», «nord» + «lys»                                                                      |
 | 18  | TURBULENS    | 106 | 44  | 06      | ok              | «hoppet», ikke «ristet»                                                                                                        |
 | 19  | GULROT       | 109 | 45  | 09      | ok              | «førti av dem», aldri hva                                                                                                      |
 | 20  | TURBO        | 110 | 46  | 09      | ok              | Slang 2 av 2; varme inne, ingen ute                                                                                            |
@@ -409,7 +409,7 @@ Ord = talte ord i klippet. Sek = ord × 0,44 (målt tempo på dag 1–5). «Kode
 | 23  | STJERNEKLART | 111 | 46  | 06      | ok              |                                                                                                                                |
 | 24  | JULEMAGI     | 149 | 62  | 06      | ok              | «God jul» er høytidsnavnet Julius selv ber dem sette foran; sendt fra Snøfall, ingen strek; 50–65 s, Birk og Lyng før og etter |
 
-Sum: 2 669 ord, snitt 111 per dag (cirka 46 s).
+Sum: 2 671 ord, snitt 111 per dag (cirka 46 s).
 
 ---
 

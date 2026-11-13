@@ -1,67 +1,42 @@
 [
   {
     "id": "floke",
-    "navn": [
-      "Floke"
-    ],
+    "navn": ["Floke"],
     "pronomen": "hun",
     "fra_dag": 4,
-    "ikke": [
-      "Knerten",
-      "Flokke"
-    ]
+    "ikke": ["Knerten", "Flokke"]
   },
   {
     "id": "frida",
-    "navn": [
-      "Frida"
-    ],
+    "navn": ["Frida"],
     "pronomen": "hun",
     "fra_dag": 25,
     "ikke": []
   },
   {
     "id": "froya",
-    "navn": [
-      "Frøya"
-    ],
+    "navn": ["Frøya"],
     "pronomen": "hun",
     "fra_dag": 25,
-    "ikke": [
-      "Frøja",
-      "Freya",
-      "Freja"
-    ]
+    "ikke": ["Frøja", "Freya", "Freja"]
   },
   {
     "id": "hjerterud",
-    "navn": [
-      "Hjerterud"
-    ],
+    "navn": ["Hjerterud"],
     "pronomen": "hun",
     "fra_dag": 1,
-    "ikke": [
-      "Nissemor",
-      "Mor Nisse"
-    ]
+    "ikke": ["Nissemor", "Mor Nisse"]
   },
   {
     "id": "iq",
-    "navn": [
-      "IQ"
-    ],
+    "navn": ["IQ"],
     "pronomen": "han",
     "fra_dag": 1,
-    "ikke": [
-      "I.Q.",
-      "Iq"
-    ]
+    "ikke": ["I.Q.", "Iq"]
   },
   {
     "id": "julius",
-    "navn": [
-      "Julius"
-    ],
+    "navn": ["Julius"],
     "pronomen": "han",
     "fra_dag": 1,
     "ikke": [
@@ -77,87 +52,58 @@
   },
   {
     "id": "pil",
-    "navn": [
-      "Pil",
-      "PIL"
-    ],
+    "navn": ["Pil", "PIL"],
     "pronomen": "han",
     "fra_dag": 1,
-    "ikke": [
-      "Pila",
-      "jenta Pil",
-      "Pil, hun"
-    ]
+    "ikke": ["Pila", "jenta Pil", "Pil, hun"]
   },
   {
     "id": "portvokterne",
-    "navn": [
-      "Portvokterne i Snøfall"
-    ],
+    "navn": ["Portvokterne i Snøfall"],
     "pronomen": "de",
     "fra_dag": 25,
     "ikke": []
   },
   {
     "id": "rampenissen",
-    "navn": [
-      "Rampenissen"
-    ],
+    "navn": ["Rampenissen"],
     "pronomen": "han",
     "fra_dag": 1,
-    "ikke": [
-      "Rampe-nissen",
-      "RampeNissen"
-    ]
+    "ikke": ["Rampe-nissen", "RampeNissen"]
   },
   {
     "id": "ruth",
-    "navn": [
-      "Ruth"
-    ],
+    "navn": ["Ruth"],
     "pronomen": "hun",
     "fra_dag": 25,
     "ikke": []
   },
   {
     "id": "selma",
-    "navn": [
-      "Selma"
-    ],
+    "navn": ["Selma"],
     "pronomen": "hun",
     "fra_dag": 25,
     "ikke": []
   },
   {
     "id": "selmas-far",
-    "navn": [
-      "Selmas far"
-    ],
+    "navn": ["Selmas far"],
     "pronomen": "han",
     "fra_dag": 25,
     "ikke": []
   },
   {
     "id": "trixter",
-    "navn": [
-      "Trixter"
-    ],
+    "navn": ["Trixter"],
     "pronomen": "han",
     "fra_dag": 1,
     "ikke": []
   },
   {
     "id": "winter",
-    "navn": [
-      "Winter",
-      "Ole Winter"
-    ],
+    "navn": ["Winter", "Ole Winter"],
     "pronomen": "han",
     "fra_dag": 1,
-    "ikke": [
-      "Ole Vinter",
-      "fru Winter",
-      "frøken Winter"
-    ]
+    "ikke": ["Ole Vinter", "fru Winter", "frøken Winter"]
   }
 ]
