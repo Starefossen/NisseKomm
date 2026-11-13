@@ -9,7 +9,13 @@ import {
 } from "node:fs/promises";
 import path from "node:path";
 import { variantOf, versionKey } from "./media-status";
-import { versjonAv } from "./vurdering-versjon";
+import {
+  endreLager,
+  flat,
+  flyttFiler,
+  lesLager,
+  stemple,
+} from "./vurdering-lager";
 
 /**
  * «Ta i bruk vN»: the plain file becomes <name>.old-N.<ext>, <name>-vN.<ext> the
@@ -22,9 +28,7 @@ export async function taIBruk(dir: string, kandidat: string) {
   const key = versionKey(kandidat);
   const n = variantOf(kandidat);
   if (!n || key === kandidat) throw new Error("ikke en -vN-kandidat");
-  const vurdPath = path.join(dir, "media-vurdering.json");
-  const vurd: Record<string, { vurdering?: string; versjon?: string }> =
-    await readJson(vurdPath, {});
+  const vurd = flat(await lesLager(dir));
   if (vurd[kandidat]?.vurdering !== "godkjent")
     throw new Error(`${kandidat} er ikke godkjent`);
 
@@ -95,16 +99,11 @@ export async function taIBruk(dir: string, kandidat: string) {
 
   const flyttet = new Map(flytt.map(([f, t]) => [f, t]));
   const ny = (p: string) => flyttet.get(p) ?? p;
-  // Re-read: the verdict route may have written while the files moved.
-  const vurdNå: typeof vurd = await readJson(vurdPath, {});
-  const flyttetVurd = Object.fromEntries(
-    Object.entries(vurdNå).map(([p, v]) => [ny(p), v]),
-  );
-  // Stamp the promoted file as reviewed, so its godkjent keeps counting.
-  const versjon = await versjonAv(dir, key);
-  if (flyttetVurd[key] && versjon)
-    flyttetVurd[key] = { ...flyttetVurd[key], versjon };
-  await writeJson(vurdPath, flyttetVurd);
+  // The verdicts follow the files; the promoted one counts as given to the file now in use.
+  await endreLager(dir, async (l) => {
+    flyttFiler(l, ny);
+    await stemple(dir, l, key);
+  });
 
   const invPath = path.join(dir, "media-inventar.json");
   const inv = await readJson<

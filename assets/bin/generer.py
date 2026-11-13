@@ -92,27 +92,14 @@ def media_dir() -> Path:
 
 
 def vurdering_path(media: Path = None) -> Path:
-    return (media or media_dir()) / "media-vurdering.json"
+    return medie.vurdering_fil(media or media_dir())
 
 
 def load_vurderinger(path: Path) -> dict:
-    if not path.exists():
-        return {}
     try:
-        return json.loads(path.read_text())
+        return medie.vurderinger(path)
     except Exception:
         return {}
-
-
-def save_vurderinger(path: Path, data: dict):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_suffix(f".tmp.{os.getpid()}")
-    try:
-        tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
-        tmp.replace(path)
-    except Exception:
-        tmp.unlink(missing_ok=True)
-        raise
 
 
 def is_redo(v) -> bool:
@@ -305,14 +292,8 @@ def run(q, state_path: Path, maks=None, stopp_etter=None, runner=run_cmd, check=
             s["elementer"][item_id] = {"status": "ferdig" if ok else "feilet", "forespørsler": sent,
                                        "tid": datetime.now().isoformat(timespec="seconds")}
             if ok and redo:
-                if isinstance(vurderinger.get(item_p), dict):
-                    vurderinger[item_p].pop("vurdering", None)
-                    vurderinger[item_p].pop("status", None)
-                    if not vurderinger[item_p]:
-                        vurderinger.pop(item_p, None)
-                else:
-                    vurderinger.pop(item_p, None)
-                save_vurderinger(vpath, vurderinger)
+                medie.fjern_vurdering(vpath, item_p)
+                vurderinger = load_vurderinger(vpath)
             if limit:
                 m = RETRY_RE.search(out)
                 wait = f", prøv igjen om {m.group(1) or m.group(2)} s" if m else ", prøv igjen etter at kvoten nullstilles (ca. 09:00)"

@@ -1,10 +1,11 @@
 /** @jest-environment node */
 import { describe, it, expect } from "@jest/globals";
-import { mkdtemp, mkdir, readFile, utimes, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, utimes, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { medVersjon, versjonAv } from "./vurdering-versjon";
 import { taIBruk } from "./media-promote";
+import { flat, lesLager, visning } from "./vurdering-lager";
 import { familie, type StatusKilde } from "./media-status";
 import { tilstand } from "@/app/nissemor-guide/gjennomgang/elementer";
 
@@ -107,14 +108,12 @@ describe("vurdering-versjon", () => {
       }),
     );
     await taIBruk(dir, "strek/dag01-v2.png");
-    const vurd = JSON.parse(
-      await readFile(path.join(dir, "media-vurdering.json"), "utf8"),
-    );
+    const vurd = flat(await lesLager(dir));
     expect(vurd["strek/dag01.png"].versjon).toBe(
       await versjonAv(dir, "strek/dag01.png"),
     );
-    expect((await medVersjon(dir, vurd))["strek/dag01.png"].vurdering).toBe(
-      "godkjent",
-    );
+    expect(
+      (await visning(dir, await lesLager(dir)))["strek/dag01.png"].vurdering,
+    ).toBe("godkjent");
   });
 });

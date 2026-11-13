@@ -3,6 +3,7 @@ import { mkdtemp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { taIBruk } from "./media-promote";
+import { flat, lesLager } from "./vurdering-lager";
 
 async function oppsett(vurd: Record<string, unknown>) {
   const dir = await mkdtemp(path.join(tmpdir(), "ta-i-bruk-"));
@@ -47,9 +48,7 @@ describe("taIBruk", () => {
     expect(await les("dag-01.old-2.jpg")).toBe("dag-01.jpg");
     expect(await les("dag-01.old-1.mp4")).toBe("dag-01.old-1.mp4");
     expect((await readdir(j)).filter((f) => f.includes("-v4"))).toEqual([]);
-    const vurd = JSON.parse(
-      await readFile(path.join(dir, "media-vurdering.json"), "utf8"),
-    );
+    const vurd = flat(await lesLager(dir));
     expect(vurd).toEqual({
       "video/julius/dag-01.old-2.mp4": { notat: "munn" },
       "video/julius/dag-01.mp4": {
@@ -124,9 +123,7 @@ describe("taIBruk", () => {
     expect(JSON.parse(await les("dag-01.mp4.meta.json"))).toEqual({
       fra_versjon: 4,
     });
-    const vurd = JSON.parse(
-      await readFile(path.join(dir, "media-vurdering.json"), "utf8"),
-    );
+    const vurd = flat(await lesLager(dir));
     expect(vurd["video/julius/dag-01.old-4.mp4"]).toEqual({
       vurdering: "lag_paa_nytt",
     });

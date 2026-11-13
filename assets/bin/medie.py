@@ -74,10 +74,68 @@ def innholds_hash(obj) -> str:
     return sha(json.dumps(obj, ensure_ascii=False, separators=(",", ":")))[:12]
 
 
-def vurderinger() -> dict:
-    """Hans' verdicts from the guide (MEDIA_DIR/media-vurdering.json); {} when there are none."""
-    f = Path(os.environ.get("MEDIA_DIR") or ROOT / "public") / "media-vurdering.json"
+def vurdering_fil(media: Path = None) -> Path:
+    return Path(media or os.environ.get("MEDIA_DIR") or ROOT / "public") / "media-vurdering.json"
+
+
+def les_lager(f: Path) -> dict:
+    """The verdict store as stored: format 2 (src/lib/vurdering-lager.ts, which migrates format 1 on first read)."""
     return json.loads(f.read_text()) if f.exists() else {}
+
+
+def skriv_lager(f: Path, data: dict):
+    tmp = f.with_suffix(f".tmp.{os.getpid()}")
+    try:
+        tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+        tmp.replace(f)
+    except Exception:
+        tmp.unlink(missing_ok=True)
+        raise
+
+
+def flat(data: dict) -> dict:
+    """{fil: {vurdering, notat, oppdatert, versjon}} from either format, without the version check."""
+    if data.get("format") != 2:
+        return data
+    return {v["fil"]: {k: x for k, x in v.items() if k not in ("hash", "fil")}
+            for e in data["elementer"].values() for v in e["vurderinger"]}
+
+
+def vurderinger(f: Path = None) -> dict:
+    """Hans' verdicts from the guide by file/id; {} when there are none."""
+    return flat(les_lager(f or vurdering_fil()))
+
+
+def fjern_vurdering(f: Path, id: str):
+    """A redo is done: the verdict goes to historikk, the note stays."""
+    data = les_lager(f)
+    if data.get("format") != 2:
+        v = data.get(id)
+        if isinstance(v, dict):
+            v.pop("vurdering", None)
+            v.pop("status", None)
+        if not isinstance(v, dict) or not v:
+            data.pop(id, None)
+    else:
+        for e in data["elementer"].values():
+            for v in [v for v in e["vurderinger"] if v["fil"] == id]:
+                e["historikk"].append(dict(v))
+                v.pop("vurdering", None)
+                if not v.get("notat"):
+                    e["vurderinger"].remove(v)
+    skriv_lager(f, data)
+
+
+def flytt_vurderinger(f: Path, ny: dict):
+    """Files renamed on disk: verdicts follow (format 2 keeps their hash; -vN and .old-N stay in one element)."""
+    data = les_lager(f)
+    if data.get("format") != 2:
+        data = {ny.get(k, k): v for k, v in data.items()}
+    else:
+        for e in data["elementer"].values():
+            for v in e["vurderinger"] + e["historikk"]:
+                v["fil"] = ny.get(v["fil"], v["fil"])
+    skriv_lager(f, data)
 
 
 def godkjent(vurd: dict, id: str, versjon: str) -> bool:
@@ -590,6 +648,15 @@ def selftest():
         unarchive(par)
         assert (d / "a.mp4").exists() and (d / "a.jpg").exists() and not (d / "a.old-2.mp4").exists()
         assert archive(d / "missing.mp4") == []
+        # format 2 store: redo cleared to historikk, renames keep the hash
+        vf = d / "media-vurdering.json"
+        skriv_lager(vf, {"format": 2, "sesong": 2026, "elementer": {"a.mp4": {"historikk": [], "vurderinger": [
+            {"hash": "h1", "fil": "a-v2.mp4", "vurdering": "godkjent"},
+            {"hash": "h0", "fil": "a.mp4", "vurdering": "lag_paa_nytt", "notat": "munn"}]}}})
+        fjern_vurdering(vf, "a.mp4")
+        flytt_vurderinger(vf, {"a.mp4": "a.old-1.mp4", "a-v2.mp4": "a.mp4"})
+        assert vurderinger(vf) == {"a.mp4": {"vurdering": "godkjent"}, "a.old-1.mp4": {"notat": "munn"}}
+        assert len(les_lager(vf)["elementer"]["a.mp4"]["historikk"]) == 1
     import tempfile
     with tempfile.TemporaryDirectory() as d:
         r = Path(d)
@@ -794,15 +861,12 @@ def rydd_kandidater(media: Path) -> list:
         except ValueError:
             pass
         ny = dict(par)
-        for navn in ("media-vurdering.json", "media-inventar.json"):
-            p = media / navn
-            if not p.exists() or not par:
-                continue
+        if par and vurdering_fil(media).exists():
+            flytt_vurderinger(vurdering_fil(media), ny)
+        p = media / "media-inventar.json"
+        if par and p.exists():
             data = json.loads(p.read_text())
-            if isinstance(data, dict):
-                data = {ny.get(k, k): v for k, v in data.items()}
-            else:
-                data = [{**r, "path": ny[r["path"]], "status": "arkiv"} if r.get("path") in ny else r for r in data]
+            data = [{**r, "path": ny[r["path"]], "status": "arkiv"} if r.get("path") in ny else r for r in data]
             p.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
         moved = [f"{a} -> {b}" for a, b in par if a.endswith("." + ext)]
         if moved:

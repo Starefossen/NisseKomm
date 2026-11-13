@@ -895,18 +895,9 @@ export const TOOLS: Record<string, Tool> = {
       const fra = typeof siden === "string" ? Date.parse(siden) : NaN;
       if (typeof siden === "string" && Number.isNaN(fra))
         throw new ArgError("ugyldig argument: siden");
-      let alle: Record<
-        string,
-        { vurdering?: string; notat?: string; oppdatert?: string }
-      > = {};
-      try {
-        alle = JSON.parse(
-          await readFile(path.join(mediaDir(), "media-vurdering.json"), "utf8"),
-        );
-      } catch {}
       // Changed since the verdict: shown as «(ny versjon)» and counted as open.
-      const { medVersjon } = await import("@/lib/vurdering-versjon");
-      const sett = await medVersjon(mediaDir(), alle);
+      const { lesLager, visning } = await import("@/lib/vurdering-lager");
+      const sett = await visning(mediaDir(), await lesLager(mediaDir()));
       const rader = Object.entries(sett)
         .filter(([id]) => typeof prefiks !== "string" || id.startsWith(prefiks))
         .filter(

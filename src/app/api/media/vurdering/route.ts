@@ -1,8 +1,15 @@
-import { mkdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { NextRequest } from "next/server";
 import { authorizeMedia, mediaDir } from "@/lib/media-server";
-import { medVersjon, versjonAv, type Forrige } from "@/lib/vurdering-versjon";
+import { versionKey } from "@/lib/media-status";
+import type { Forrige } from "@/lib/vurdering-versjon";
+import {
+  endreLager,
+  lesLager,
+  oppføring,
+  settVurdering,
+  visning,
+} from "@/lib/vurdering-lager";
 
 /** «ok» = usable with flaws; its note is a lesson for later generation. */
 export type Verdikt = "godkjent" | "ok" | "lag_paa_nytt";
@@ -43,30 +50,14 @@ function isSafePath(p: string): boolean {
 export async function GET(req: NextRequest) {
   const denied = await authorizeMedia(req);
   if (denied) return denied;
-
-  const file = path.join(mediaDir(), "media-vurdering.json");
   try {
-    const data = await readFile(file, "utf8");
-    return Response.json(await medVersjon(mediaDir(), JSON.parse(data)));
-  } catch (err: unknown) {
-    const code = (err as NodeJS.ErrnoException).code;
-    if (code === "ENOENT") {
-      return Response.json({});
-    }
+    return Response.json(await visning(mediaDir(), await lesLager(mediaDir())));
+  } catch {
     return serverError();
   }
 }
 
-// «Godkjenn alle på dagen» posts in parallel; read-modify-write must not interleave.
-let kø: Promise<unknown> = Promise.resolve();
-
 export async function POST(req: NextRequest) {
-  const svar = kø.then(() => lagre(req));
-  kø = svar.catch(() => {});
-  return svar;
-}
-
-async function lagre(req: NextRequest) {
   const denied = await authorizeMedia(req);
   if (denied) return denied;
 
@@ -105,60 +96,42 @@ async function lagre(req: NextRequest) {
   }
 
   const dir = mediaDir();
-  const target = path.join(dir, "media-vurdering.json");
-
-  let current: MediaVurderinger = {};
-  try {
-    const text = await readFile(target, "utf8");
-    current = JSON.parse(text);
-  } catch (err: unknown) {
-    const code = (err as NodeJS.ErrnoException).code;
-    if (code !== "ENOENT") {
-      current = {};
-    }
-  }
-
   // Real wall-clock time: TIDSMASKIN mocks date-utils, and review notes need the actual time.
   const now = new Date(Date.now()).toISOString();
-  const prev = current[cleanPath] || {};
-
-  const nextVerdict =
-    vurdering !== undefined
-      ? (vurdering as Verdikt | null | "")
-      : prev.vurdering;
-
-  const nextNote =
-    notat !== undefined ? (notat as string).trim() : (prev.notat ?? "");
-
-  // A redo without a note tells the generator nothing.
-  if (nextVerdict === "lag_paa_nytt" && !nextNote) return badRequest();
-
-  if (!nextVerdict && !nextNote) {
-    delete current[cleanPath];
-  } else {
-    const versjon = await versjonAv(dir, cleanPath);
-    current[cleanPath] = {
-      ...(nextVerdict ? { vurdering: nextVerdict } : {}),
-      ...(nextNote ? { notat: nextNote } : {}),
-      oppdatert: now,
-      ...(versjon ? { versjon } : {}),
-    };
-  }
-
-  const tmp = `${target}.${process.pid}.${Date.now()}.tmp`;
+  let ugyldig = false;
   try {
-    await mkdir(path.dirname(target), { recursive: true });
-    await writeFile(tmp, JSON.stringify(current, null, 2) + "\n");
-    await rename(tmp, target);
+    return await endreLager(dir, async (l) => {
+      const prev =
+        l.elementer[versionKey(cleanPath)]?.vurderinger.find(
+          (v) => v.fil === cleanPath,
+        ) ?? {};
+      const nextVerdict =
+        vurdering !== undefined
+          ? (vurdering as Verdikt | null | "")
+          : (prev as MediaVurderingItem).vurdering;
+      const nextNote =
+        notat !== undefined
+          ? (notat as string).trim()
+          : ((prev as MediaVurderingItem).notat ?? "");
+      // A redo without a note tells the generator nothing.
+      if (nextVerdict === "lag_paa_nytt" && !nextNote) {
+        ugyldig = true;
+        throw new Error("lag_paa_nytt uten notat");
+      }
+      const v = await settVurdering(dir, l, cleanPath, {
+        ...(nextVerdict ? { vurdering: nextVerdict } : {}),
+        ...(nextNote ? { notat: nextNote } : {}),
+        oppdatert: now,
+      });
+      const entry = v && oppføring(v);
+      return Response.json({
+        ok: true,
+        path: cleanPath,
+        entry,
+        vurderinger: await visning(dir, l),
+      });
+    });
   } catch {
-    await unlink(tmp).catch(() => {});
-    return serverError();
+    return ugyldig ? badRequest() : serverError();
   }
-
-  return Response.json({
-    ok: true,
-    path: cleanPath,
-    entry: current[cleanPath] ?? null,
-    vurderinger: await medVersjon(dir, current),
-  });
 }
