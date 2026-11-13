@@ -6,11 +6,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { GuideSide, Kort, type Sesong } from "../_kveld/felles";
 import { TaIBruk, kilde } from "../media/kort";
-import { DagManus } from "./visning";
+import { DagManus, DagManusFremdrift } from "./visning";
 import { Rutenett } from "./rutenett";
 import { besøk, lesHistorikk, skrivHistorikk, tilbake } from "./historikk";
 import {
   CELLE,
+  SegmentBar,
   StatusBrikke,
   useCelle,
   useData,
@@ -890,22 +891,53 @@ function Vurdering({
         <section
           aria-label="Vurdering"
           data-testid="vurderingsboks"
-          className="grid grid-cols-1 lg:grid-cols-[minmax(0,22rem)_1fr] items-start gap-x-4 gap-y-1 py-2 border-t border-(--neon-green)/20"
+          className="flex flex-col gap-1 py-1 border-t border-(--neon-green)/20"
         >
-          <div className="flex items-center gap-2 min-w-0 min-h-11">
-            <h2 className="text-xl text-(--gold) truncate" title={e.id}>
+          <div className="flex flex-wrap items-center gap-x-3 min-w-0">
+            <h2 className="text-xl text-(--gold) truncate min-w-0" title={e.id}>
               {e.tittel}
             </h2>
-            <StatusBrikke c={celleData(e)} href={href(e.id, "")} />
-            {e.dag && (
-              <Link
-                href={`/nissemor-guide/dag/${e.dag}`}
-                title={`Hele dag ${e.dag}`}
-                className="h-11 shrink-0 inline-flex items-center px-1 text-sm underline whitespace-nowrap"
-              >
-                dag {e.dag}
-              </Link>
+            <StatusBrikke c={celleData(e)} href={href(e.id, "")} pille />
+            {!ikkeLaget && segStatus?.segs ? (
+              <SegmentBar
+                segs={segStatus.segs}
+                velg={(s) =>
+                  document
+                    .querySelector<HTMLButtonElement>(`[data-seg="${s}"]`)
+                    ?.click()
+                }
+              />
+            ) : (
+              !ikkeLaget &&
+              !segStatus &&
+              !egenVurdering(e.id) && (
+                <DagManusFremdrift n={e.dag ?? Number(e.id.slice(-2))} />
+              )
             )}
+            <span className="ml-auto flex items-center gap-3 text-sm whitespace-nowrap">
+              <button
+                type="button"
+                onClick={() => {
+                  const h = document.getElementById(
+                    "historikk",
+                  ) as HTMLDetailsElement | null;
+                  if (!h) return;
+                  h.open = true;
+                  h.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="min-h-11 underline"
+              >
+                historikk
+              </button>
+              {e.dag && (
+                <Link
+                  href={`/nissemor-guide/dag/${e.dag}`}
+                  className="min-h-11 inline-flex items-center underline"
+                >
+                  hele dag {e.dag}
+                </Link>
+              )}
+            </span>
           </div>
           <div className="min-w-0">
             {ikkeLaget ? (

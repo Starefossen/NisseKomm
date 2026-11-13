@@ -22,6 +22,7 @@ import { utskriftHref, utskriftTittel } from "../printout/filer";
 import { lagre, slug, SkjulVurder, useVurderinger, Vurder } from "../vurdering";
 import type { Element } from "./elementer";
 import { SegmentStripe } from "./segmentstripe";
+import { SegmentBar } from "./celle";
 import { BildeVersjoner } from "./bilder";
 import { LysbordBilde } from "../lysbord";
 
@@ -73,7 +74,11 @@ function Manus({ d, port }: { d: Dag; port?: boolean }) {
           const m = d.manusport[i];
           const varsler = m?.varsler ?? s.varsler;
           return (
-            <li key={i} className="border border-(--neon-green)/40 p-2">
+            <li
+              key={i}
+              id={m ? `manus-s${m.s}` : undefined}
+              className="border border-(--neon-green)/40 p-2 scroll-mt-40"
+            >
               <p>
                 <span className="text-(--gold)">{i + 1}.</span> «
                 {ren(s.replikk)}»
@@ -113,17 +118,37 @@ export function alleOppfylt(
   return v.includes("ok") ? "ok" : "godkjent";
 }
 
+/** Row 1 of a script day's box: one box per segment, a click scrolls to it. */
+export function DagManusFremdrift({ n }: { n: number }) {
+  const d = useDag(n);
+  const alle = useVurderinger();
+  if (!d || !alle) return null;
+  const dagId = `manus/julius/dag-${String(n).padStart(2, "0")}`;
+  return (
+    <SegmentBar
+      segs={d.manusport.map((m) => ({
+        s: m.s,
+        v: alle[`${dagId}#s${m.s}`]?.vurdering,
+      }))}
+      velg={(s) =>
+        document
+          .getElementById(`manus-s${s}`)
+          ?.scrollIntoView({ behavior: "smooth" })
+      }
+    />
+  );
+}
+
 export function DagManus({ n }: { n: number }) {
   const d = useDag(n);
   const alle = useVurderinger();
   const { status, lagrer, kjør } = useLagring();
   const dagId = `manus/julius/dag-${String(n).padStart(2, "0")}`;
   const [notat, setNotat] = useState<string | null>(null);
-  if (!d || !alle) return <p>Laster …</p>;
+  if (!d || !alle) return <p className="min-h-11">Laster …</p>;
   const id = (s: number) => `${dagId}#s${s}`;
   const v = (s: number) => alle[id(s)]?.vurdering;
   const segs = d.manusport.map((m) => m.s);
-  const godkjent = segs.filter((s) => ["godkjent", "ok"].includes(v(s) ?? ""));
   const nytt = segs.filter((s) => v(s) === "lag_paa_nytt");
   const alleTil = (verdikt: "godkjent" | "ok") => {
     const rest = segs.filter(
@@ -145,55 +170,49 @@ export function DagManus({ n }: { n: number }) {
   const tekst = notat ?? alle[dagId]?.notat ?? "";
   const oppfylt = alleOppfylt(segs.map(v));
   const alleKnapp = (k: "godkjent" | "ok") =>
-    `min-h-11 min-w-28 px-4 font-bold border-2 ${oppfylt === k ? "bg-(--gold) text-black border-(--gold)" : "border-(--neon-green) hover:bg-(--neon-green)/20"}`;
+    `min-h-11 px-3 text-base font-bold border whitespace-nowrap ${oppfylt === k ? "bg-(--gold) text-black border-(--gold)" : "border-(--neon-green)/60 hover:bg-(--neon-green)/20"}`;
   return (
-    <div id="vurdering-dagmanus" className="flex flex-wrap items-center gap-2">
-      <p data-testid="manus-status" className="min-h-11 flex items-center">
-        <span className="text-(--gold)">
-          {godkjent.length} av {segs.length} godkjent
+    <div
+      id="vurdering-dagmanus"
+      className="flex flex-wrap sm:flex-nowrap items-center gap-1"
+    >
+      <button
+        type="button"
+        data-alle="godkjent"
+        disabled={lagrer}
+        aria-pressed={oppfylt === "godkjent"}
+        onClick={() => alleTil("godkjent")}
+        className={alleKnapp("godkjent")}
+      >
+        {oppfylt === "godkjent" ? "✓ Alle godkjent" : "Godkjenn alle (G)"}
+      </button>
+      <button
+        type="button"
+        data-alle="ok"
+        disabled={lagrer}
+        aria-pressed={oppfylt === "ok"}
+        onClick={() => alleTil("ok")}
+        className={alleKnapp("ok")}
+      >
+        {oppfylt === "ok" ? "◐ Alle OK" : "OK på alle (O)"}
+      </button>
+      {nytt.length > 0 && (
+        <span className="text-sm text-(--christmas-red) whitespace-nowrap">
+          {nytt.map((s) => `s${s}`).join(", ")} lag på nytt
         </span>
-        {nytt.length > 0 && (
-          <span className="text-(--christmas-red)">
-            {" "}
-            · {nytt.map((s) => `s${s}`).join(", ")} lag på nytt
-          </span>
-        )}
-      </p>
-      <div className="flex flex-wrap items-center gap-2">
-        <button
-          type="button"
-          data-alle="godkjent"
-          disabled={lagrer}
-          aria-pressed={oppfylt === "godkjent"}
-          onClick={() => alleTil("godkjent")}
-          className={alleKnapp("godkjent")}
-        >
-          {oppfylt === "godkjent"
-            ? "✓ Alle godkjent"
-            : "Godkjenn alle segmentene"}
-        </button>
-        <button
-          type="button"
-          data-alle="ok"
-          disabled={lagrer}
-          aria-pressed={oppfylt === "ok"}
-          onClick={() => alleTil("ok")}
-          className={alleKnapp("ok")}
-        >
-          {oppfylt === "ok" ? "◐ Alle OK" : "OK på alle"}
-        </button>
-        <input
-          type="text"
-          value={tekst}
-          placeholder="Notat for dagen (påvirker ikke porten), Enter lagrer"
-          onChange={(e) => setNotat(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") void kjør(() => lagre(dagId, null, tekst));
-          }}
-          className="flex-1 min-w-48 min-h-11 bg-black border-2 border-(--neon-green) px-3 text-sm"
-        />
-        <Lagremelding status={status} className="text-sm" />
-      </div>
+      )}
+      <input
+        type="text"
+        value={tekst}
+        aria-label="Notat for dagen (Enter lagrer)"
+        placeholder="Notat for dagen (påvirker ikke porten), Enter lagrer"
+        onChange={(e) => setNotat(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") void kjør(() => lagre(dagId, null, tekst));
+        }}
+        className="order-last sm:order-none basis-full sm:basis-auto sm:flex-1 min-w-0 min-h-11 bg-black border border-(--neon-green)/60 px-2 text-base focus:outline-none focus:border-(--gold)"
+      />
+      <Lagremelding status={status} className="text-sm" />
     </div>
   );
 }
@@ -563,6 +582,7 @@ export function Historikk({ id }: { id: string }) {
   return (
     <details
       className="my-4 border-t border-(--neon-green)/40"
+      id="historikk"
       data-testid="historikk"
       onToggle={(ev) => {
         if (!(ev.currentTarget as HTMLDetailsElement).open || h) return;

@@ -82,6 +82,8 @@ export interface VideoStatus {
   tekst: string;
   /** The final verdict once every segment and the whole video are judged usable. */
   slutt?: "godkjent" | "ok";
+  /** Each segment's verdict, for the review box's segment bar. */
+  segs?: { s: number; v?: string }[];
 }
 
 const mmss = (t: number) =>

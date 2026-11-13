@@ -151,6 +151,15 @@ export function Vurder({ id }: { id: string }) {
   if (status) return <div className="mt-2 flex">{status(id)}</div>;
   if (!alle) return null;
   const v: MediaVurderingItem | undefined = alle[id];
+  return <VurderBoks key={id} id={id} v={v} />;
+}
+
+/** Row 2: verdict buttons, note and «Merker ▸»; the tags drop to a row of their own only when open. */
+function VurderBoks({ id, v }: { id: string; v?: MediaVurderingItem }) {
+  const [åpen, setÅpen] = useState(false);
+  const merker = taggerFor(id).length > 0;
+  // Open while the note has focus or a tag/timecode is set.
+  const vis = åpen || (v?.tagger?.length ?? 0) > 0 || v?.tid !== undefined;
   return (
     // Keyed by id: Neste must never carry a note, tags or feedback to the next item.
     <div
@@ -163,8 +172,20 @@ export function Vurder({ id }: { id: string }) {
         onSave={(verdict, notat) => lagre(id, verdict, notat ?? "")}
         onBehold={() => post({ path: id, behold: true })}
         onTrenger={(hva, notat) => lagreTrenger(id, hva, notat)}
+        ekstra={
+          merker && (
+            <button
+              type="button"
+              aria-expanded={vis}
+              onClick={() => setÅpen(!åpen)}
+              className="min-h-11 px-1 text-sm text-(--neon-green)/80 underline whitespace-nowrap"
+            >
+              Merker {vis ? "▾" : "▸"}
+            </button>
+          )
+        }
       />
-      <Tagger id={id} v={v} />
+      <Tagger id={id} v={v} vis={vis} />
     </div>
   );
 }
@@ -174,29 +195,26 @@ const spillerTid = () =>
   document.querySelector<HTMLMediaElement>("video, audio")?.currentTime;
 
 /** Quick tags (⇧1–9) and a timecode (T) for one verdict, saved at once. */
-function Tagger({ id, v }: { id: string; v?: MediaVurderingItem }) {
+function Tagger({
+  id,
+  v,
+  vis,
+}: {
+  id: string;
+  v?: MediaVurderingItem;
+  vis: boolean;
+}) {
   const liste = taggerFor(id);
   const { status, kjør } = useLagring();
-  const [åpen, setÅpen] = useState(false);
   if (!liste.length) return null;
   const valgt = v?.tagger ?? [];
-  // Folded behind «Merker ▸»; open while the note has focus or a tag/timecode is set.
-  const vis = åpen || valgt.length > 0 || v?.tid !== undefined;
   const send = (o: Parameters<typeof lagreTagger>[1]) =>
     void kjør(() => lagreTagger(id, o));
   return (
-    <div className="flex flex-wrap items-center gap-1 mt-1 text-base">
-      <button
-        type="button"
-        aria-expanded={vis}
-        onClick={() => setÅpen(!åpen)}
-        className="min-h-11 px-1 text-sm text-(--neon-green)/80 underline"
-      >
-        Merker {vis ? "▾" : "▸"}
-      </button>
-      <span
-        className={`${vis ? "flex" : "hidden group-focus-within:flex"} flex-wrap items-center gap-1`}
-      >
+    <div
+      className={`${vis ? "flex" : "hidden group-focus-within:flex"} flex-wrap items-center gap-1 mt-1 text-base`}
+    >
+      <span className="flex flex-wrap items-center gap-1">
         {liste.map((t, i) => {
           const på = valgt.includes(t);
           return (
