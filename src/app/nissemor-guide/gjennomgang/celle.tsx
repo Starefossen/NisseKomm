@@ -133,12 +133,30 @@ export function StatusBrikke({
   c,
   href,
   dempet = false,
+  pille = false,
 }: {
   c: CelleData;
   href: string;
   dempet?: boolean;
+  /** One text line high, for the review box's header (the hit area stays 44 px). */
+  pille?: boolean;
 }) {
   const [ord, farge] = CELLE[c.status];
+  if (pille)
+    return (
+      <Link
+        href={href}
+        data-status={c.status}
+        title={`i bruk ${c.celle}${c.notat ? ` – ${c.notat}` : ""}`}
+        className="inline-flex items-center min-h-11 shrink-0 whitespace-nowrap hover:opacity-70"
+      >
+        <span className={`px-2 rounded-full text-base leading-6 ${farge}`}>
+          {c.ord ?? ord}
+          {c.kandidat && ` ${c.kandidat}`}
+          {c.arbeid && " · under arbeid"}
+        </span>
+      </Link>
+    );
   return (
     <Link
       href={href}
@@ -193,4 +211,45 @@ function MedStatus({
     ) : null;
   };
   return <StatusI.Provider value={fn}>{children}</StatusI.Provider>;
+}
+
+const SEG_FARGE: Record<string, string> = {
+  godkjent: "bg-(--gold)",
+  ok: "bg-amber-300",
+  kutt: "bg-(--cold-blue)",
+  lag_paa_nytt: "bg-(--christmas-red)",
+};
+
+/** «4 av 5 godkjent» as one small box per segment; a click jumps to it. */
+export function SegmentBar({
+  segs,
+  velg,
+}: {
+  segs: { s: number; v?: string }[];
+  velg: (s: number) => void;
+}) {
+  const ferdig = segs.filter((x) => x.v === "godkjent" || x.v === "ok");
+  return (
+    <span data-testid="manus-status" className="inline-flex items-center gap-2">
+      <span className="inline-flex">
+        {segs.map((x) => (
+          <button
+            key={x.s}
+            type="button"
+            title={`s${x.s}: ${x.v?.replace(/_/g, " ") ?? "ikke vurdert"}`}
+            aria-label={`Segment ${x.s}`}
+            onClick={() => velg(x.s)}
+            className="h-11 w-5 inline-flex items-center justify-center hover:opacity-70"
+          >
+            <span
+              className={`block h-3 w-3.5 border border-(--neon-green)/50 ${SEG_FARGE[x.v ?? ""] ?? "bg-(--gray)"}`}
+            />
+          </button>
+        ))}
+      </span>
+      <span className="text-sm text-(--gold) whitespace-nowrap">
+        {ferdig.length} av {segs.length} godkjent
+      </span>
+    </span>
+  );
 }

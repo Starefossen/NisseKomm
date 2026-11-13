@@ -130,6 +130,8 @@ export function SegmentStripe({
   const status =
     segs?.length && alle ? videoStatus(segs, (n) => vurd(n), alle[path]) : null;
   const statusTekst = status?.tekst;
+  const segVurd = segs?.map((x) => ({ s: x.s, v: vurd(x.s)?.vurdering }));
+  const segNøkkel = JSON.stringify(segVurd);
   const dag = Number(path.match(/dag-(\d+)/)?.[1]);
   const harKutt = !!segs?.some((x) => vurd(x.s)?.vurdering === "kutt");
   // The server cuts on its own after a ✂ is saved; show how it goes.
@@ -156,11 +158,11 @@ export function SegmentStripe({
     };
   }, [dag, harKutt, nyttKutt]);
   useEffect(() => {
-    meld(status);
+    meld(status && { ...status, segs: segVurd });
     return () => meld(null);
-    // The text carries the whole status.
+    // The text and the verdict list carry the whole status.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [statusTekst, status?.slutt, meld]);
+  }, [statusTekst, status?.slutt, segNøkkel, meld]);
 
   const spill = (fra: number, til: number | null) => {
     const v = video.current;

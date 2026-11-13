@@ -489,8 +489,8 @@ export function Vurderingsknapper({
             ✕
           </button>
         )}
-        <Lagremelding status={status} className="text-sm" />
         {ekstra}
+        <Lagremelding status={status} className="text-sm" />
       </div>
 
       {vurdering?.forrige && (
