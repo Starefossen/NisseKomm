@@ -16,7 +16,6 @@ export type Celle =
   | "ikke_vurdert"
   | "ny_versjon"
   | "lag_paa_nytt"
-  | "utdatert"
   | "mangler"
   | "valgfri";
 
@@ -27,7 +26,6 @@ export const MERKE: Record<Celle, [string, string, string]> = {
   ikke_vurdert: ["○", "text-(--neon-green)/70", "ikke vurdert"],
   ny_versjon: ["○", "text-(--neon-green)/70", "ny versjon, ikke vurdert"],
   lag_paa_nytt: ["↻", "text-amber-400", "lag på nytt"],
-  utdatert: ["!", "text-(--cold-blue)", "utdatert"],
   mangler: ["✗", "text-(--christmas-red)", "mangler"],
   valgfri: ["○", "text-(--gray)", "valgfri – ikke laget"],
 };
@@ -39,7 +37,6 @@ export const FORKLARING =
 export const VERST: Celle[] = [
   "mangler",
   "lag_paa_nytt",
-  "utdatert",
   "ny_versjon",
   "ikke_vurdert",
   "valgfri",
@@ -84,15 +81,17 @@ export interface StatusKilde {
     }
   >;
   /** Inventory status per path (media-inventar.json). */
-  inventar?: Map<string, { status: string }>;
+  inventar?: Map<string, { status: string; date?: string }>;
 }
 
 export interface Versjon {
   path: string;
   navn: string;
   celle: Celle;
-  /** The review verdict alone: «utdatert» still reads as not reviewed here. */
+  /** The review verdict alone (same as celle unless the file is missing). */
   vurdert: Celle;
+  /** «prompt endret 2026-11-12»: a hint only. An approved file stays approved (Hans 13 Nov). */
+  utdatert?: string;
   notat?: string;
 }
 
@@ -182,16 +181,16 @@ export function versjon(path: string, k: StatusKilde): Versjon {
     ? k.inventar?.get(path)?.status === "valgfri"
       ? "valgfri"
       : "mangler"
-    : v?.vurdering && celleAv(v) === "lag_paa_nytt"
-      ? "lag_paa_nytt"
-      : k.inventar?.get(path)?.status === "stale"
-        ? "utdatert"
-        : celleAv(v);
+    : vurdert;
+  const inv = k.inventar?.get(path);
   return {
     path,
     navn: versjonsnavn(path),
     celle,
     vurdert,
+    ...(finnes && inv?.status === "stale"
+      ? { utdatert: `prompt endret${inv.date ? ` ${inv.date}` : ""}` }
+      : {}),
     notat: v?.notat ?? forrigeTekst(v),
   };
 }

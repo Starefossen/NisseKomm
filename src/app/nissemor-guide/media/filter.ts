@@ -75,18 +75,19 @@ export interface Rad {
 
 export function radAv(f: Familie): Rad {
   const v = f.kandidat ?? f.iBruk;
-  // A missing file has nothing to review; «utdatert» is an action, the verdict
-  // underneath still counts (an old file nobody reviewed is still to do).
-  const c =
-    v.celle === "mangler" || v.celle === "valgfri" ? v.celle : v.vurdert;
+  const c = v.celle;
   return {
     path: f.key,
     tilstand: c,
     handling: [
       ...(f.kanTaIBruk ? ["klar"] : []),
-      ...f.versjoner
-        .map((v) => v.celle)
-        .filter((x) => x === "utdatert" || x === "mangler" || x === "valgfri"),
+      ...f.versjoner.flatMap((v) =>
+        v.utdatert
+          ? ["utdatert"]
+          : v.celle === "mangler" || v.celle === "valgfri"
+            ? [v.celle]
+            : [],
+      ),
     ],
     type: typeAv(f.key),
     dag: dagAv(f.key),

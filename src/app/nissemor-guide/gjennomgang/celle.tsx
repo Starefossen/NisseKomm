@@ -57,7 +57,7 @@ export const CELLE: Record<Fremdrift, [string, string]> = {
 const statusAvCelle = (c: ReturnType<typeof tilstand>["celle"]): Fremdrift =>
   c === "godkjent" || c === "ok" || c === "mangler" || c === "valgfri"
     ? c
-    : c === "lag_paa_nytt" || c === "utdatert"
+    : c === "lag_paa_nytt"
       ? "agent"
       : "venter";
 
@@ -98,9 +98,8 @@ export function useCelle(d: Data, sesong: Sesong) {
       if (vs.steg === "vurder" && st === "venter")
         ord = `● ${ok}/${segs.length} ✓`;
     }
-    const kand = e.media.length
-      ? celleFor(e.media, k).familie?.kandidat
-      : undefined;
+    const fam = e.media.length ? celleFor(e.media, k).familie : undefined;
+    const kand = fam?.kandidat;
     return {
       e,
       status: st,
@@ -109,7 +108,9 @@ export function useCelle(d: Data, sesong: Sesong) {
         ? `+${kand.navn} ${MERKE[kand.celle][0]}${brukbar(kand.celle) ? " klar" : ""}`
         : undefined,
       notat: ti.notat,
-      celle: MERKE[ti.celle][2],
+      celle:
+        MERKE[ti.celle][2] +
+        (fam?.iBruk.utdatert ? ` · ${fam.iBruk.utdatert}` : ""),
     };
   };
 }

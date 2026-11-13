@@ -3,6 +3,7 @@ import { PRIS } from "@/lib/forbruk";
 import {
   brukbar,
   celleAv,
+  celleFor,
   familie,
   versionKey,
   type StatusKilde,
@@ -147,8 +148,11 @@ export function byggKo(
   // Media families: every file an element shows, and every file with a verdict.
   const familier = new Set<string>();
   for (const e of liste) for (const p of e.media) familier.add(versionKey(p));
+  // A verdict on a file that is gone (no file, no inventory job) is history, not a queue item.
+  const kjente = new Set(k.filer.map((f) => versionKey(f.path)));
   for (const id of Object.keys(vurd))
-    if (/\.\w+$/.test(id) && !id.includes("#")) familier.add(versionKey(id));
+    if (/\.\w+$/.test(id) && !id.includes("#") && kjente.has(versionKey(id)))
+      familier.add(versionKey(id));
 
   // A segmented Julius video waits on its segments (videoStatus): its own line
   // only once they are all ✓/◐ («Klar for hele videoen»).
@@ -216,6 +220,9 @@ export function byggKo(
         continue;
       }
       if (!brukbar(celleAv(mv))) {
+        // The clip has its own line too, so its element is in the tab it is counted in.
+        if (elementId)
+          venter.push({ ...linje, hva: "venter på radiomanuset" });
         venter.push({
           id: mid,
           tittel: `Radiomanus dag ${Number(radio)}`,
@@ -265,6 +272,9 @@ export function byggKo(
     const dagSeksjon = e.id.startsWith("dag/") && !!e.dag;
     if ((e.media.length && !dagSeksjon) || e.id.startsWith("manus/")) continue;
     const v = vurd[e.id];
+    // Without its own verdict a section with a file (rampestrek, its sketch) inherits the
+    // file's: the family loop above gives it its one line, or none when the file is approved.
+    if (!v && e.media.length) continue;
     const linje = {
       id: e.id,
       tittel: e.tittel,
@@ -515,7 +525,12 @@ export function elementStatus(
   s: Pick<Partial<KoServer>, "manus" | "duplikater"> = {},
 ): Fremdrift {
   const manus = s.manus ?? {};
-  const c = tilstand(e, k).celle;
+  const iBruk = tilstand(e, k).celle;
+  // An approved candidate is Hans' verdict on the item: what is left is «Ta i bruk», no review.
+  const kand = e.media.length
+    ? celleFor(e.media, k).familie?.kandidat
+    : undefined;
+  const c = kand && brukbar(kand.celle) && !brukbar(iBruk) ? kand.celle : iBruk;
   if (c === "valgfri") return "valgfri";
   if (agent.has(e.id)) return "agent";
   if (venter.has(e.id)) return "venter";
@@ -535,7 +550,13 @@ export function elementStatus(
   if (c === "mangler" || c === "godkjent" || c === "ok") return c;
   // A Julius script is judged per segment: out of both queues means every segment passed.
   if (/^manus\/julius\//.test(e.id)) return "godkjent";
-  if (c === "lag_paa_nytt" || c === "utdatert") return "agent";
+  // A radio script without its own verdict: an approved clip approved it (medie.py does the same).
+  const radio = e.id.match(/^manus\/radio\/dag-(\d+)$/)?.[1];
+  if (radio && !k.vurderinger[e.id]) {
+    const klipp = celleFor([`audio/rampenissen/dag-${radio}.mp3`], k).celle;
+    if (brukbar(klipp)) return klipp;
+  }
+  if (c === "lag_paa_nytt") return "agent";
   // A byte-identical copy of another file: nothing to judge.
   return e.media.some((p) => s.duplikater?.includes(p)) ? "ikke" : "venter";
 }

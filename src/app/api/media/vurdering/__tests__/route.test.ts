@@ -584,6 +584,14 @@ describe("API /api/media/vurdering - Trenger mer", () => {
     expect(r.entry.trenger).toBeUndefined();
   });
 
+  it("a verdict while «Trenger mer» is open closes it (one G, not two)", async () => {
+    await send({ path: id, trenger: { hva: "skisse" } });
+    const r = await (await send({ path: id, vurdering: "godkjent" })).json();
+    expect(r.entry.vurdering).toBe("godkjent");
+    expect(r.entry.trenger).toBeUndefined();
+    expect(r.entry.merknad).toBe("trenger lukket av dom");
+  });
+
   it("asks without any verdict, and a sketch delivers with levert", async () => {
     let r = await (await send({ path: id, trenger: { hva: "skisse" } })).json();
     expect(r.entry.vurdering).toBeUndefined();

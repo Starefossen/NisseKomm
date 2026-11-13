@@ -1,7 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
 import { byggKo, elementStatus, fremdrift, type KoServer } from "./ko";
 import { videoStatus } from "@/lib/segmenter";
-import type { Element } from "./elementer";
+import { tilstand, type Element } from "./elementer";
 
 const server = (o: Partial<KoServer> = {}): KoServer => ({
   forbruk: { brukt: 0, igjen: 2000, budsjett: 2000, fra: "2026-11-13" },
@@ -57,11 +57,8 @@ describe("byggKo", () => {
       server(),
     );
     // dag-03's s2 is ✗: the video waits on the agent, not on Hans (videoStatus).
-    expect(ko.venter.map((l) => l.id)).toEqual([
-      "dag/02/rampestrek",
-      "manus/julius/dag-14",
-    ]);
-    expect(ko.venter[0].hva).toBe("aldri vurdert");
+    // The missing sketch is rampestrek's one line (Hos agent), not also «aldri vurdert».
+    expect(ko.venter.map((l) => l.id)).toEqual(["manus/julius/dag-14"]);
     expect(ko.segmenter).toBe(1);
     expect(ko.agent.map((l) => [l.id, l.pris])).toEqual([
       ["dag/02/rampestrek", 1.4],
@@ -126,9 +123,12 @@ describe("byggKo", () => {
       server({ manus: {} }),
     );
     // 05 approved clip: no script line; 06 remake waits on the script; 08 missing too; 07 goes to the agent.
+    // The clip keeps its own line («venter på radiomanuset»): its element is counted in this tab.
     expect(ko.venter.map((l) => l.id)).toEqual([
       "manus/radio/dag-06",
+      "audio/rampenissen/dag-06.mp3",
       "manus/radio/dag-08",
+      "audio/rampenissen/dag-08.mp3",
     ]);
     expect(ko.agent.map((l) => l.id)).toEqual(["audio/rampenissen/dag-07.mp3"]);
   });
@@ -155,9 +155,12 @@ describe("byggKo", () => {
       server({ manus: {} }),
     );
     // 01 unjudged clip; 02 approved clip, unapproved script unchanged: out; 03 script changed.
+    // The clip keeps its own line («venter på radiomanuset»): its element is counted in this tab.
     expect(ko.venter.map((l) => l.id)).toEqual([
       "manus/radio/dag-01",
+      "audio/rampenissen/dag-01.mp3",
       "manus/radio/dag-03",
+      "audio/rampenissen/dag-03.mp3",
     ]);
   });
   it("lists flagged segments and scripts changed after the video", () => {
@@ -493,5 +496,79 @@ describe("one status everywhere", () => {
     expect(v?.hva).toBe("Ny info: forklaring lagt til");
     expect(status["dag/05/gaatekart"]).toBe("venter");
     expect(ko.trengerTelling).toEqual({ skisse: 1, forklaring: 1 });
+  });
+});
+
+describe("round 3: no loop", () => {
+  const el = (id: string, dag: number, gruppe: string, media: string[] = []) =>
+    ({ id, gruppe, tittel: id, dag, media }) as Element;
+  const liste: Element[] = [
+    el("dag/04/rampestrek", 4, "rampestrek", ["strek/dag04.png"]),
+    el("dag/10/rampestrek", 10, "rampestrek", ["strek/dag10.png"]),
+    el("video/julius/dag-05.mp4", 5, "julius", ["video/julius/dag-05.mp4"]),
+    el("audio/rampenissen/dag-06.mp3", 6, "radio", [
+      "audio/rampenissen/dag-06.mp3",
+    ]),
+    el("manus/radio/dag-06", 6, "Radio-manus"),
+    el("audio/rampenissen/dag-07.mp3", 7, "radio", [
+      "audio/rampenissen/dag-07.mp3",
+    ]),
+    el("manus/radio/dag-07", 7, "Radio-manus"),
+    el("dag/08/kveld", 8, "oppsett"),
+  ];
+  const k = {
+    filer: [
+      f("strek/dag04.png"),
+      f("strek/dag10.png"),
+      f("strek/dag10-v1.png"),
+      f("video/julius/dag-05.mp4"),
+      f("audio/rampenissen/dag-06.mp3"),
+      f("audio/rampenissen/dag-07.mp3"),
+    ],
+    vurderinger: {
+      "strek/dag04.png": { vurdering: "godkjent" as const },
+      "strek/dag10-v1.png": { vurdering: "godkjent" as const },
+      "video/julius/dag-05.mp4": { vurdering: "godkjent" as const },
+      "audio/rampenissen/dag-07.mp3": { vurdering: "godkjent" as const },
+      // A file that is gone: history, not a queue line.
+      "spill/retro/borte.png": { vurdering: "godkjent" as const },
+    },
+    inventar: new Map([
+      ["video/julius/dag-05.mp4", { status: "stale", date: "2026-11-12" }],
+    ]),
+  };
+  const s = server({ manus: {} });
+  const ko = byggKo(liste, k, s);
+  const fd = fremdrift(liste, k, ko, s);
+  const status = Object.fromEntries(fd.poster.map((p) => [p.id, p.status]));
+
+  it("rampestrek inherits its approved sketch: no «aldri vurdert»", () => {
+    expect(status["dag/04/rampestrek"]).toBe("godkjent");
+    expect(tilstand(liste[0], k).tekst).toBe("godkjent (fra skissen)");
+    expect(ko.venter.map((l) => l.id)).not.toContain("dag/04/rampestrek");
+  });
+
+  it("approved stays approved when its prompt changed: no agent line", () => {
+    expect(status["video/julius/dag-05.mp4"]).toBe("godkjent");
+    expect(ko.agent).toEqual([]);
+  });
+
+  it("every element in «agent»/«venter» has a queue line, and every line an element", () => {
+    const ider = new Set(liste.map((e) => e.id));
+    const a = new Set(ko.agent.map((l) => l.id));
+    const v = new Set(ko.venter.map((l) => l.id).filter((x) => !a.has(x)));
+    for (const x of [...a, ...v]) expect(ider).toContain(x);
+    expect(fd.total.telling.agent).toBe(a.size);
+    expect(fd.total.telling.venter).toBe(v.size);
+    for (const p of fd.poster)
+      if (p.status === "agent" || p.status === "venter")
+        expect([p.id, (p.status === "agent" ? a : v).has(p.id)]).toEqual([
+          p.id,
+          true,
+        ]);
+    // Approved candidate = done; a radio script with an approved clip = done.
+    expect(status["dag/10/rampestrek"]).toBe("godkjent");
+    expect(status["manus/radio/dag-07"]).toBe("godkjent");
+    expect(status["audio/rampenissen/dag-06.mp3"]).toBe("venter");
   });
 });

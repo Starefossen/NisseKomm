@@ -14,6 +14,7 @@ import {
   linjeDiff,
   seksjonsTekst,
   versjonAv,
+  utsnitt,
 } from "./vurdering-versjon";
 import { kveldDag } from "./guide-sesong";
 
@@ -43,7 +44,12 @@ describe("seksjonsvurderinger", () => {
     const l = ny();
     await settVurdering(dir, l, ID, { vurdering: "godkjent" });
     const v = l.elementer[ID].vurderinger[0];
-    expect(v.tekst).toBe(await seksjonsTekst(ID));
+    // The snapshot is the whole day block, cut at read time: a new field definition
+    // can widen or narrow the section without making the verdict stale.
+    expect(v.tekst).toBe(await seksjonsTekst(ID, true));
+    expect(v.tekst).toContain("**Brikke H:**");
+    expect(await seksjonsTekst(ID)).not.toContain("**Brikke H:**");
+    expect(utsnitt(ID, v.tekst!)).toBe(await seksjonsTekst(ID));
     expect((await visning(dir, l))[ID].vurdering).toBe("godkjent");
     expect("tekst" in (await visning(dir, l))[ID]).toBe(false);
     // As if the doc said something else when Hans approved it.

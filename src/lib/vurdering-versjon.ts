@@ -76,16 +76,21 @@ const tekstAv = (x: unknown): string =>
  * bake, never chips, links or other derived UI), or null for sections that
  * are code. Stored with the verdict, so a change shows as a diff.
  */
-export async function seksjonsTekst(id: string): Promise<string | null> {
+export async function seksjonsTekst(
+  id: string,
+  /** The whole day block, uncut: the snapshot, so a new field definition never stales it. */
+  hel = false,
+): Promise<string | null> {
+  const kutt = (t: string) => (hel ? t : utsnitt(id, t)) || null;
   // Lazy: guide-sesong pulls in the whole game; media-promote only needs files.
   const { forSesongen, gaatekartKilde, historien, kveldKilde } =
     await import("./guide-sesong");
   const [side, a, b] = id.split("/");
   if (side === "dag") {
     if (b === "gaatekart")
-      return utsnitt(id, gaatekartKilde(Number(a))) || null;
+      return kutt(gaatekartKilde(Number(a)));
     if (["kveld", "utskrifter", "rampestrek"].includes(b))
-      return utsnitt(id, kveldKilde(Number(a))) || null;
+      return kutt(kveldKilde(Number(a)));
     return null;
   }
   if (side === "historien") {
@@ -151,7 +156,7 @@ export async function øyeblikkTekst(id: string): Promise<string | null> {
         ? k.map(String).join("\n")
         : String(k);
   }
-  return seksjonsTekst(id).catch(() => null);
+  return seksjonsTekst(id, true).catch(() => null);
 }
 
 /** What a verdict on a non-file id is given to: a manus key or a section's source text. */
@@ -211,17 +216,13 @@ export async function versjonAv(dir: string, id: string) {
   // `video/julius/dag-14#s3`: the raw clip's bytes, as julius-dag.py's segment lock reads them.
   const klipp = id.match(/^video\/julius\/dag-(\d+)#s(\d+)$/);
   if (klipp) {
-    const raw = path.join(
-      process.cwd(),
-      "assets/out",
-      `dag${klipp[1]}-${klipp[2]}.raw.mp4`,
-    );
-    // Without assets/out (the lan pod): the raw hash the newest join recorded.
-    return readFile(raw).then(
-      kort,
-      async () =>
-        (await segmentRaws(dir, Number(klipp[1]), Number(klipp[2])))[0] ?? null,
-    );
+    const [dag, s] = [Number(klipp[1]), Number(klipp[2])];
+    // The joined video's segmenter.json first: assets/out holds scratch takes that may not be in it.
+    const fraJoin = (await segmentRaws(dir, dag, s))[0];
+    if (fraJoin) return fraJoin;
+    return readFile(
+      path.join(process.cwd(), "assets/out", `dag${klipp[1]}-${klipp[2]}.raw.mp4`),
+    ).then(kort, () => null);
   }
   try {
     const innhold = await seksjonsInnhold(id);

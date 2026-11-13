@@ -144,6 +144,11 @@ describe("naboer (N/P)", () => {
     expect(naboer(liste, liste, "a", null).neste?.id).toBe("b");
     expect(naboer(liste, liste, "a", ["d", "a", "c"]).neste?.id).toBe("c");
   });
+
+  it("N after G (item left the queue) moves on, not back to skipped items", () => {
+    // b was skipped, c just approved and gone from the queue: next is d, not b.
+    expect(naboer(liste, liste, "c", ["b", "d"]).neste?.id).toBe("d");
+  });
 });
 
 describe("tilstand", () => {

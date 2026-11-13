@@ -16,6 +16,7 @@ import {
   gjeldende,
   lesLager,
   stemple,
+  type Lager,
 } from "./vurdering-lager";
 
 /**
@@ -212,4 +213,51 @@ async function writeJson(p: string, data: unknown) {
   const tmp = `${p}.${process.pid}.${Date.now()}.tmp`;
   await writeFile(tmp, JSON.stringify(data, null, 2) + "\n");
   await rename(tmp, p);
+}
+
+/**
+ * Julius videos approved whole before segment review (Hans 13 Nov): an approved/OK
+ * verdict on the joined video counts as the same verdict on each of its segments.
+ * Writes the missing segment verdicts onto `l` (given to the raw take in the
+ * segmenter.json), marked «arvet fra hele videoen». Returns the ids written.
+ */
+export async function arvFraHeleVideoen(dir: string, l: Lager) {
+  const ut: string[] = [];
+  const nå = new Date(Date.now()).toISOString();
+  for (const [key, e] of Object.entries(l.elementer)) {
+    if (!/^video\/julius\/dag-\d+\.mp4$/.test(key)) continue;
+    for (const v of [...e.vurderinger]) {
+      if (v.vurdering !== "godkjent" && v.vurdering !== "ok") continue;
+      if (!(await gjeldende(dir, v))) continue;
+      const segmenter = await readFile(
+        path.join(dir, v.fil.replace(/\.mp4$/, ".segmenter.json")),
+        "utf8",
+      )
+        .then((t) => JSON.parse(t) as Segment[])
+        .catch(() => []);
+      const id = (s: number) => segmentId(v.fil, s);
+      // Only a video whose segments nobody has judged: segment review wins once it started.
+      if (!segmenter.length || segmenter.some((x) => l.elementer[id(x.s)]))
+        continue;
+      for (const x of segmenter) {
+        const hash = x.raw ?? "*";
+        l.elementer[id(x.s)] = {
+          vurderinger: [
+            {
+              vurdering: v.vurdering,
+              ...(v.notat ? { notat: v.notat } : {}),
+              oppdatert: nå,
+              versjon: hash,
+              hash,
+              fil: id(x.s),
+              merknad: "arvet fra hele videoen",
+            },
+          ],
+          historikk: [],
+        };
+        ut.push(id(x.s));
+      }
+    }
+  }
+  return ut;
 }

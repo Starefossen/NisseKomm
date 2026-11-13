@@ -1,6 +1,7 @@
 import type { MediaVurderinger } from "@/app/api/media/vurdering/route";
 import {
   MERKE,
+  brukbar,
   versionRank,
   versionKey,
   celleAv,
@@ -141,11 +142,23 @@ export function ekstraRader(
       r("Sledeflukt", `sledeflukt/${e.id}`, `Etappe ${i + 1}: ${e.navn}`),
     ),
     r("Sledeflukt", "sledeflukt/fri", "Fri flyging"),
-    ...(filer ?? [])
-      .map((f) => f.path)
-      .filter((p) => /^video\/tv\/.*\.mp4$/.test(p))
+    // One item per loop: -vN and .old-N fold into the plain name's family.
+    ...[
+      ...new Set(
+        (filer ?? [])
+          .map((f) => f.path)
+          .filter((p) => /^video\/tv\/.*\.mp4$/.test(p))
+          .map(versionKey),
+      ),
+    ]
       .sort()
-      .map((p) => r("Snøfall TV", p, p.slice(9), [p])),
+      .map((key) => ({
+        ...r("Snøfall TV", key, key.slice(9), [key]),
+        eldre: (filer ?? [])
+          .map((f) => f.path)
+          .filter((p) => p !== key && versionKey(p) === key)
+          .sort((a, b) => versionRank(b) - versionRank(a)),
+      })),
     r("Finale", "finale", "Dag 24: snill liste og diplom"),
     r("Symboler og krypto", "symboler", "Symbolkortene"),
     ...Array.from({ length: krypto }, (_, i) =>
@@ -263,7 +276,14 @@ export function tilstand(
   // as the buttons below do; the sketch's status is the fallback.
   if (e.media.length && !egen?.vurdering && !egen?.forrige) {
     const { celle, familie } = celleFor(e.media, k);
-    return { celle, tekst: familie!.tekst, notat: familie!.iBruk.notat };
+    const arvet = e.id.startsWith("dag/") && brukbar(celle);
+    return {
+      celle,
+      tekst: arvet
+        ? `${MERKE[celle][2]} (fra skissen)`
+        : familie!.tekst,
+      notat: familie!.iBruk.notat,
+    };
   }
   const v = k.vurderinger[e.id];
   // Old entries hold «Lag på nytt» as display text.
@@ -307,9 +327,16 @@ export function naboer(
 ) {
   const finn = (x?: string) => (x ? alle.find((e) => e.id === x) : undefined);
   const i = ko ? ko.indexOf(id) : -1;
-  const nesteKo = finn(
-    ko ? (i >= 0 ? ko[i + 1] : ko.find((x) => x !== id)) : undefined,
-  );
+  // Not in the queue (G just took it out): the first queue item after it in `alle`,
+  // so N moves on instead of jumping back to the items skipped before it.
+  const etter = () => {
+    const j = alle.findIndex((e) => e.id === id);
+    const sett = new Set(ko);
+    return [...alle.slice(j + 1), ...alle.slice(0, j + 1)].find(
+      (e) => e.id !== id && sett.has(e.id),
+    )?.id;
+  };
+  const nesteKo = finn(ko ? (i >= 0 ? ko[i + 1] : etter()) : undefined);
   const nabo = naboI(filtrert, id, 1);
   return {
     neste: nesteKo ?? nabo.e,

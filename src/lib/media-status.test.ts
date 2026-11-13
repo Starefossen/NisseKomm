@@ -26,7 +26,11 @@ const k: StatusKilde = {
     "video/julius/dag-03.mp4": { vurdering: "godkjent" },
     "video/julius/dag-03-v5.mp4": { vurdering: "godkjent" },
   },
-  inventar: new Map([["video/julius/dag-02.mp4", { status: "stale" }]]),
+  inventar: new Map([
+    ["video/julius/dag-02.mp4", { status: "stale" }],
+    // Approved, then its prompt changed: still ✓.
+    ["video/julius/dag-03.mp4", { status: "stale", date: "2026-11-12" }],
+  ]),
 };
 
 describe("familie etter ta i bruk", () => {
@@ -61,7 +65,11 @@ describe("media-status", () => {
       "v3",
       "gjeldende versjon",
     ]);
-    expect(familie("video/julius/dag-02.mp4", k).tekst).toBe("! → v4 ✓");
+    // Stale is a hint, never a state (Hans 13 Nov).
+    expect(familie("video/julius/dag-02.mp4", k).tekst).toBe("○ → v4 ✓");
+    expect(familie("video/julius/dag-02.mp4", k).iBruk.utdatert).toBe(
+      "prompt endret",
+    );
     expect(familie("video/julius/dag-03.mp4", k).tekst).toBe("✓ → v5 ✓");
     expect(familie("video/julius/dag-04.mp4", k).tekst).toBe("✗");
   });

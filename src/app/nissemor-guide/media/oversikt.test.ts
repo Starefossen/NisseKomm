@@ -250,7 +250,7 @@ describe("dagstabell", () => {
       "godkjent",
       "lag_paa_nytt",
       "mangler", // only a candidate: nothing in use
-      "utdatert",
+      "ikke_vurdert", // stale is only a hint
       "ikke_vurdert",
       "mangler",
     ]);

@@ -2,7 +2,7 @@ import { describe, it, expect } from "@jest/globals";
 import { mkdtemp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { taIBruk } from "./media-promote";
+import { arvFraHeleVideoen, taIBruk } from "./media-promote";
 import { flat, lesLager } from "./vurdering-lager";
 
 async function oppsett(vurd: Record<string, unknown>) {
@@ -193,5 +193,35 @@ describe("taIBruk", () => {
       "ikke godkjent",
     );
     expect((await readdir(j)).sort()).toEqual(før);
+  });
+});
+
+describe("arvFraHeleVideoen", () => {
+  it("an approved whole video gives its verdict to unjudged segments, and Ta i bruk then works", async () => {
+    const { dir, j } = await oppsett({
+      "video/julius/dag-01-v4.mp4": { vurdering: "ok", notat: "fin" },
+    });
+    await writeFile(
+      path.join(j, "dag-01-v4.segmenter.json"),
+      JSON.stringify([
+        { s: 1, raw: "aaa" },
+        { s: 2, raw: "bbb" },
+      ]),
+    );
+    await expect(taIBruk(dir, "video/julius/dag-01-v4.mp4")).rejects.toThrow(
+      /ikke godkjent/,
+    );
+    const l = await lesLager(dir);
+    expect(await arvFraHeleVideoen(dir, l)).toEqual([
+      "video/julius/dag-01#s1",
+      "video/julius/dag-01#s2",
+    ]);
+    expect(l.elementer["video/julius/dag-01#s2"].vurderinger[0]).toMatchObject(
+      { vurdering: "ok", hash: "bbb", merknad: "arvet fra hele videoen" },
+    );
+    // Second run: nothing new.
+    expect(await arvFraHeleVideoen(dir, l)).toEqual([]);
+    await writeFile(path.join(dir, "media-vurdering.json"), JSON.stringify(l));
+    await taIBruk(dir, "video/julius/dag-01-v4.mp4");
   });
 });
