@@ -2,7 +2,8 @@
 import { Vurder } from "../../vurdering";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
+import { diagramKanter } from "@/lib/gaate-diagram";
 import { utskriftHref, utskriftTittel } from "../../printout/filer";
 import type { Bit, gaatekart, kveldDag } from "@/lib/guide-sesong";
 
@@ -73,6 +74,284 @@ function Kolonne({
     <div className="border border-(--neon-green)/50 p-2">
       <h3 className="text-xl text-(--gold) mb-2">{tittel}</h3>
       <ul className="space-y-2">{children}</ul>
+    </div>
+  );
+}
+
+// Prints that are not riddle pieces (props, keepsakes, tools).
+const OVRIG =
+  /gravskilt|fortskilt|serviettfugl|losepengebrev|diplom|frakt|ferdskriver|flylogg|testark|rodfilter|runetavle|operasjonsbrett|krystallkort/;
+/** The H piece a print carries: the first one naming a card, sheet or slip. */
+export const utskriftBit = (
+  hjemme: { id: string; tekst: string }[],
+  navn: string,
+) => {
+  // «dag09-krystallark» → «krys»: the piece that names the printed thing wins.
+  const ord = navn.replace(/^dag\d+-/, "").slice(0, 4);
+  return (
+    hjemme.find((b) => b.tekst.toLowerCase().includes(ord))?.id ??
+    hjemme.find((b) =>
+      /kort|ark\b|arket|lapp|strimmel|stjerne|fugl|A[3-7]/i.test(b.tekst),
+    )?.id ??
+    hjemme[0]?.id
+  );
+};
+
+/** First sheet of a print, scaled down; a click opens it 1:1. Parent-only route, server-rendered. */
+function Miniatyr({ navn }: { navn: string }) {
+  const dlg = useRef<HTMLDialogElement>(null);
+  const src = `${utskriftHref(navn)}?bare=1`;
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => dlg.current?.showModal()}
+        className="block w-40 h-[226px] overflow-hidden border border-(--neon-green) bg-white shrink-0"
+        title={`Vis ${utskriftTittel(navn)} i full størrelse`}
+      >
+        <iframe
+          src={src}
+          title={utskriftTittel(navn)}
+          loading="lazy"
+          tabIndex={-1}
+          className="pointer-events-none origin-top-left border-0"
+          style={{ width: 794, height: 1123, transform: "scale(0.2015)" }}
+        />
+      </button>
+      <dialog
+        ref={dlg}
+        className="m-auto w-[min(860px,96vw)] h-[92vh] p-0 bg-black border-2 border-(--gold) backdrop:bg-black/80"
+        onClick={(e) => e.target === dlg.current && dlg.current?.close()}
+      >
+        <div className="flex justify-between items-center p-2 text-(--gold)">
+          <span>{utskriftTittel(navn)}</span>
+          <button
+            type="button"
+            className="min-h-11 px-3 border border-(--gold)"
+            onClick={() => dlg.current?.close()}
+          >
+            Lukk
+          </button>
+        </div>
+        {/* 1:1, scrolls inside */}
+        <iframe
+          src={src}
+          title={utskriftTittel(navn)}
+          className="w-full h-[calc(92vh-60px)] bg-white border-0"
+        />
+      </dialog>
+    </>
+  );
+}
+
+/** strek/oppsett-dagNN.png (medier.json oppsett/dagNN, from gaater «Oppsettskisse»); nothing while missing. */
+function Oppsettskisse({ dag }: { dag: number }) {
+  const [finnes, setFinnes] = useState(true);
+  const fil = `strek/oppsett-dag${String(dag).padStart(2, "0")}.png`;
+  if (!finnes) return null;
+  return (
+    <figure className="w-48 md:w-56 shrink-0" data-testid="oppsettskisse">
+      <a
+        href={`/media/${fil}`}
+        target="_blank"
+        rel="noreferrer"
+        title="Åpne i full størrelse"
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element -- MEDIA_DIR, not in the build */}
+        <img
+          src={`/media/${fil}`}
+          alt="Oppsettskisse"
+          className="w-full bg-white"
+          onError={() => setFinnes(false)}
+        />
+      </a>
+      <figcaption className="text-sm">Oppsettskisse</figcaption>
+      <Vurder id={fil} />
+    </figure>
+  );
+}
+
+const kort = (s: string, n: number) =>
+  s.length > n ? `${s.slice(0, n - 1)}…` : s;
+
+/** Pieces → steps → answer, with the references the steps make (dashed = guessed). */
+function Flytdiagram({
+  k,
+  steg,
+  vis,
+  kode,
+  t,
+  utskrifter,
+}: {
+  k: ReturnType<typeof gaatekart>;
+  steg: string[];
+  vis: boolean;
+  kode?: string;
+  t: (s: string) => string;
+  utskrifter: string[];
+}) {
+  const biter = [...k.hjemme, ...k.skjerm];
+  const { kanter, ubrukt, stegUten } = diagramKanter(steg, k.hjemme, k.skjerm);
+  const RAD = 40;
+  const bitY = (i: number) => 20 + i * RAD;
+  const stegRad = (biter.length * RAD) / Math.max(steg.length, 1);
+  const stegY = (i: number) => 20 + i * stegRad + (stegRad - RAD) / 2;
+  const h = Math.max(biter.length, steg.length) * RAD + 20;
+  const merket = new Set(utskrifter.map((u) => utskriftBit(k.hjemme, u)));
+  const ren = (s: string) =>
+    kort(
+      skjulRad(t(s), vis)
+        .replace(/\*\*(.+?)\*\*/g, (_, x: string) =>
+          vis ? x : "▢".repeat(x.length),
+        )
+        .replace(/`/g, ""),
+      48,
+    );
+  return (
+    <div className="mb-3" data-testid="gaate-diagram">
+      <h3 className="text-xl text-(--gold) mb-1">Flyt</h3>
+      <div className="overflow-x-auto">
+        <svg
+          viewBox={`0 0 900 ${h}`}
+          className="min-w-[520px] w-full font-retro"
+          role="img"
+          aria-label={`Brikker til steg til svar. ${ubrukt.length} brikker brukes ikke.`}
+        >
+          {kanter.map((e) => {
+            const i = biter.findIndex((b) => b.id === e.bit);
+            const y1 = bitY(i) + 15,
+              y2 = stegY(e.steg) + 15;
+            return (
+              <path
+                key={`${e.steg}-${e.bit}`}
+                d={`M250 ${y1} C300 ${y1} 290 ${y2} 340 ${y2}`}
+                fill="none"
+                stroke={
+                  e.bit.startsWith("H") ? "var(--gold)" : "var(--cold-blue)"
+                }
+                strokeWidth={1.5}
+                strokeDasharray={e.sikker ? undefined : "5 4"}
+                opacity={0.8}
+              />
+            );
+          })}
+          {steg.map((_, i) => (
+            <path
+              key={i}
+              d={`M660 ${stegY(i) + 15} C690 ${stegY(i) + 15} 690 ${h / 2} 720 ${h / 2}`}
+              fill="none"
+              stroke="var(--neon-green)"
+              strokeWidth={1}
+              opacity={0.5}
+            />
+          ))}
+          {biter.map((b, i) => {
+            const rod = ubrukt.includes(b.id);
+            const farge = b.id.startsWith("H")
+              ? "var(--gold)"
+              : "var(--cold-blue)";
+            return (
+              <g key={b.id}>
+                <rect
+                  x={4}
+                  y={bitY(i)}
+                  width={246}
+                  height={30}
+                  fill="black"
+                  stroke={rod ? "var(--christmas-red)" : farge}
+                  strokeWidth={rod ? 2 : 1}
+                />
+                <rect x={4} y={bitY(i)} width={5} height={30} fill={farge} />
+                <text x={14} y={bitY(i) + 20} fontSize={15} fill={farge}>
+                  {b.id}
+                  <tspan
+                    fill={rod ? "var(--christmas-red)" : "var(--neon-green)"}
+                  >
+                    {" "}
+                    {kort(
+                      b.id === "S0"
+                        ? "NisseMail i dag"
+                        : b.tekst
+                          ? ren(b.tekst)
+                          : (b.hvor ?? ""),
+                      27,
+                    )}
+                  </tspan>
+                </text>
+                {merket.has(b.id) && (
+                  <a href="#utskrifter">
+                    <text
+                      x={232}
+                      y={bitY(i) + 20}
+                      fontSize={15}
+                      fill="var(--gold)"
+                    >
+                      ⎙<title>Utskrift</title>
+                    </text>
+                  </a>
+                )}
+              </g>
+            );
+          })}
+          {steg.map((s, i) => {
+            const rod = stegUten.includes(i);
+            return (
+              <g key={i}>
+                <rect
+                  x={340}
+                  y={stegY(i)}
+                  width={320}
+                  height={30}
+                  fill="black"
+                  stroke={rod ? "var(--christmas-red)" : "var(--neon-green)"}
+                  strokeWidth={rod ? 2 : 1}
+                />
+                <text
+                  x={348}
+                  y={stegY(i) + 20}
+                  fontSize={15}
+                  fill={rod ? "var(--christmas-red)" : "var(--neon-green)"}
+                >
+                  {i + 1}) {ren(s)}
+                  <title>{t(s)}</title>
+                </text>
+              </g>
+            );
+          })}
+          <rect
+            x={720}
+            y={h / 2 - 20}
+            width={170}
+            height={40}
+            fill="black"
+            stroke="var(--gold)"
+            strokeWidth={2}
+          />
+          <text
+            x={805}
+            y={h / 2 + 7}
+            fontSize={20}
+            textAnchor="middle"
+            fill="var(--gold)"
+          >
+            {vis && kode ? kode : "SVAR ▢▢▢"}
+          </text>
+        </svg>
+      </div>
+      {(ubrukt.length > 0 || stegUten.length > 0) && (
+        <p
+          className="text-(--christmas-red) text-sm"
+          data-testid="gaate-ubrukt"
+        >
+          {ubrukt.length > 0 &&
+            `${ubrukt.length} ${ubrukt.length === 1 ? "brikke brukes" : "brikker brukes"} ikke: ${ubrukt.join(", ")}. `}
+          {stegUten.length > 0 &&
+            `Steg uten brikke: ${stegUten.map((i) => i + 1).join(", ")}.`}
+        </p>
+      )}
+      <p className="text-xs opacity-60">
+        Stiplet linje: usikker kobling (bare ett felles ord).
+      </p>
     </div>
   );
 }
@@ -169,6 +448,19 @@ export function Gaatekart({
           </p>
         </div>
       )}
+      <div className="flex flex-col lg:flex-row gap-3 items-start">
+        <div className="flex-1 min-w-0 w-full">
+          <Flytdiagram
+            k={k}
+            steg={d.slikLoses}
+            vis={vis}
+            kode={kode}
+            t={t}
+            utskrifter={d.utskrifter.filter((u) => !OVRIG.test(u))}
+          />
+        </div>
+        <Oppsettskisse dag={d.dag} />
+      </div>
       <div className="grid md:grid-cols-2 gap-3">
         <Kolonne tittel="Hjemme (fra Rampenissen)">
           {k.hjemme.map((b) => (
@@ -178,11 +470,27 @@ export function Gaatekart({
             </li>
           ))}
           {d.utskrifter.map((u) => (
-            <li key={u} className="text-sm">
-              Utskrift:{" "}
-              <Link href={utskriftHref(u)} className="underline">
-                {utskriftTittel(u)}
-              </Link>
+            <li
+              key={u}
+              id={u === d.utskrifter[0] ? "utskrifter" : undefined}
+              className="text-sm flex gap-2 items-start scroll-mt-4"
+            >
+              <Miniatyr navn={u} />
+              <span>
+                ⎙{" "}
+                <Link href={utskriftHref(u)} className="underline">
+                  {utskriftTittel(u)}
+                </Link>
+                {OVRIG.test(u) ? (
+                  <span className="block opacity-60">
+                    øvrig (ikke en brikke)
+                  </span>
+                ) : (
+                  <span className="block">
+                    bærer {utskriftBit(k.hjemme, u)}
+                  </span>
+                )}
+              </span>
             </li>
           ))}
         </Kolonne>

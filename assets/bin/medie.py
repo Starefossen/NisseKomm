@@ -261,13 +261,20 @@ def strek_text(day: int, root: Path = ROOT) -> str:
     return m[1].strip() if m and "\n## " not in m[0] else ""
 
 
+def oppsett_text(day: int, root: Path = ROOT) -> str:
+    """The **Oppsettskisse:** line of one day in docs/gaater-2026.md ('' if none)."""
+    m = re.search(rf"^### Dag {day} .*?^- \*\*Oppsettskisse:\*\* (.+?)$", (root / "docs/gaater-2026.md").read_text(), re.S | re.M)
+    return m[1].strip() if m and "\n### " not in m[0] else ""
+
+
 def fill_day(text: str, day, root: Path = ROOT) -> str:
-    """A template for one day: {{strek}} = that day's Strek line, then the usual placeholders."""
+    """A template for one day: {{strek}} = that day's Strek line, {{oppsett}} its Oppsettskisse, then the usual placeholders."""
     if not day:
         return fill(text, root)
     strek = strek_text(int(day), root)
+    oppsett = oppsett_text(int(day), root) if "{{oppsett}}" in text else ""
     # again after fill: an included template (prompts/strek/skisse) carries its own {{strek}}
-    return fill(text.replace("{{strek}}", strek), root).replace("{{strek}}", strek)
+    return fill(text.replace("{{strek}}", strek).replace("{{oppsett}}", oppsett), root).replace("{{strek}}", strek)
 
 
 FLYTTET = "assets/flyttet.json"  # old -> new path of moved prompts, stills and refs

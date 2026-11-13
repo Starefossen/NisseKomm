@@ -144,7 +144,7 @@ export function kveldDag(n: number) {
       blokk.match(new RegExp(`^- \\*\\*${k}[^:]*:\\*\\* (.+)$`, "m"))?.[1] ??
         "",
     );
-  const oppsett = felt("Oppsett");
+  const oppsett = felt("Oppsett(?!skisse)");
   const utskrifterTekst = felt("Utskrifter");
   const s = strekTabell().get(n) ?? [];
   const kort = tabellPerDag(del("historie", "8.1 Korte former")).get(n) ?? [];

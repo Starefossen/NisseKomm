@@ -22,8 +22,10 @@ const FLYTTET: Record<string, string> = {
 
 export default async function Utskriftside({
   params,
+  searchParams,
 }: {
   params: Promise<{ fil: string }>;
+  searchParams: Promise<{ bare?: string }>;
 }) {
   if (!(await harRolle("parent")))
     return (
@@ -35,6 +37,13 @@ export default async function Utskriftside({
   if (FLYTTET[fil])
     permanentRedirect(`/nissemor-guide/printout/${FLYTTET[fil]}`);
   const Side = SIDER_01_12[fil] ?? SIDER_17_24[fil];
+  // ?bare=1: only the sheets, for the Gåtekart preview (no nav, no instruction box).
+  if (Side && (await searchParams).bare)
+    return (
+      <div className="bg-white [&_.print\:hidden]:hidden">
+        <Side />
+      </div>
+    );
   if (Side)
     return (
       <div className="min-h-screen bg-(--dark-crt) p-8 print:min-h-0 print:bg-white print:p-0">

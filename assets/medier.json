@@ -928,6 +928,15 @@
     "ut": "spill/piksel/ikon/talgstump.png",
     "mal": "assets/prompts/spill/ikon/talgstump.txt"
   },
+  "oppsett/dag04": {
+    "generator": "still",
+    "dag": 4,
+    "format": "1:1",
+    "ut": "strek/oppsett-dag04.png",
+    "bilde": "characters/rampenissen#ekte",
+    "mal": "assets/prompts/strek/oppsett.txt",
+    "notat": "oppsettskisse av gåta (Gåtekart i guiden, dag N); Oppsettskisse-linjen i docs/gaater-2026.md"
+  },
   "strek/dag01": {
     "generator": "still",
     "dag": 1,
