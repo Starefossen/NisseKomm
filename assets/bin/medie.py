@@ -29,6 +29,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -533,7 +534,7 @@ def plain(key: str) -> str:
     return VERSION.sub(r"\2", key)
 
 
-def archive(path: Path) -> list:
+def archive(path: Path, kopier=False) -> list:
     """Move the file in use to <name>.old-N.<ext> (next free N) with sidecar and poster jpg, before a
     generator overwrites it. Returns [(from, to)] so a failed run can undo it with unarchive."""
     if not path.exists():
@@ -551,8 +552,32 @@ def archive(path: Path) -> list:
         if (seg := path.parent / f"{path.stem}{side}").exists():
             par.append((seg, path.parent / f"{path.stem}.old-{n}{side}"))
     for a, b in par:
-        os.rename(a, b)
+        shutil.copy2(a, b) if kopier else os.rename(a, b)  # copy: a kill mid-run leaves the old file in place
     return par
+
+
+def signatur(path: Path):
+    try:
+        st = path.stat()
+        return st.st_size, st.st_mtime_ns
+    except FileNotFoundError:
+        return None
+
+
+def avslutt_arkiv(par: list, path: Path, for_, ok: bool):
+    """Settle a copy-archive: keep the .old-N copies only when the run succeeded and wrote a new file;
+    otherwise drop them, and after a failed or killed run put the old files back (tmp + atomic rename)."""
+    if not par:
+        return
+    skrevet = signatur(path) != for_
+    for a, b in par:
+        if not b.exists() or (ok and skrevet):
+            continue
+        if not ok:  # the target may be half-written
+            tmp = a.with_name(a.name + ".tmp")
+            shutil.copy2(b, tmp)
+            os.replace(tmp, a)
+        b.unlink()
 
 
 def unarchive(par: list):

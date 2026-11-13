@@ -28,9 +28,11 @@ import json
 import os
 import re
 import shlex
+import signal
 import subprocess
 import sys
 import tempfile
+import threading
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -193,7 +195,7 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
     vurd = vurderinger or {}
     q = []
 
-    def should_queue(p: str, current_status, item_id: str = "") -> bool:
+    def should_queue(p: str, current_status, item_id: str = "", avledet=()) -> bool:
         v = vurd.get(p)
         if force:
             return True
@@ -210,6 +212,10 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
         if godkjent:
             f = godkjent[0]
             rapport["utdatert"].append((item_id, "; ".join(medie.status(media_dir() / f, f, root)[1]) or f"{f} endret"))
+            return False
+        # a photo whose pixel scene is approved is only the fallback; approved stays approved, never remake it
+        if (f := next((a for a in avledet if is_approved(vurd.get(a))), None)):
+            rapport["utdatert"].append((item_id, f"erstattet av godkjent {f}"))
             return False
         return True
 
@@ -242,7 +248,8 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
             if MEDIER[f"{cat}/{n}"].get("dag", 0) > til_dag:  # a per-day sketch: only up to --til-dag
                 continue
             # not every image is in the inventory (media.ts manifest); then ask its sidecar
-            if not should_queue(p, st.get(p) or medie.status(media_dir() / p, p, ROOT)[0], f"{cat}:{n}"):
+            if not should_queue(p, st.get(p) or medie.status(media_dir() / p, p, ROOT)[0], f"{cat}:{n}",
+                                [f"spill/piksel/{n}.png"] if cat == "spill" else ()):
                 continue
             prompt, img, refs = medie.render(f"{cat}/{n}", ROOT, MEDIER)
             refs = [str(infile(r, root)) for r in refs]
@@ -300,6 +307,10 @@ def done(item_id, root: Path, media: Path) -> bool:
     return medie.status(media / path, path, root)[0] == medie.CURRENT
 
 
+def sigterm_som_unntak(*_):
+    raise KeyboardInterrupt("SIGTERM")
+
+
 def run(q, state_path: Path, maks=None, stopp_etter=None, runner=run_cmd, check=None,
         vurdering_fil: Path = None):
     """Run the queue; returns the exit code (0 done/stopped, 1 an item failed, 75 limit)."""
@@ -310,6 +321,8 @@ def run(q, state_path: Path, maks=None, stopp_etter=None, runner=run_cmd, check=
     today = quota_day()
     budget = min(DAY_LIMIT, maks if maks is not None else DAY_LIMIT)
     log = Path(tempfile.mkstemp(prefix="generer-", suffix=".logg")[1])
+    if threading.current_thread() is threading.main_thread():
+        signal.signal(signal.SIGTERM, sigterm_som_unntak)
     env = {**os.environ, "GENERER_LOGG": str(log)}
     try:
         for item_id, cat, est, cmd in q:
@@ -329,9 +342,13 @@ def run(q, state_path: Path, maks=None, stopp_etter=None, runner=run_cmd, check=
             print(f"▶ {item_id} (anslag {est:g} videoforespørsler, {used} brukt i dag)")
             before = len(log.read_text().splitlines())
             # the generators overwrite the plain name; keep what is replaced as .old-N
-            par = medie.archive(media_dir() / item_p) if item_p and item_id not in TESTS else []
-            rc, out = runner(cmd, env)
-            medie.unarchive(par)  # no-op when the run wrote a new file
+            mal = media_dir() / item_p if item_p and item_id not in TESTS else None
+            par, for_ = (medie.archive(mal, kopier=True), medie.signatur(mal)) if mal else ([], None)
+            rc, out = -1, ""
+            try:
+                rc, out = runner(cmd, env)
+            finally:  # also on SIGTERM (sigterm_som_unntak): a killed run puts the old file back
+                medie.avslutt_arkiv(par, mal, for_, rc == 0)
             sent = len(log.read_text().splitlines()) - before
             if rc == forbruk.EXIT_BUDSJETT:  # a script's own guard (images, TTS) stopped
                 save_state(state_path, s)
@@ -478,6 +495,36 @@ def selftest():
         assert sorted(i[0] for i in qp if i[1] == "spill") == sorted(f"spill:{n}" for n in SPILL)
         assert all(i[2] == 0 for i in qp if i[1] == "spill") and item_path("spill:torget") == "spill/torget.jpg"
         assert item_path("slede:muren") == "feed/slede-muren.jpg"
+        # a spill photo is archived by copy: .old-N after a good run, the old file back after a failed or killed one
+        n0 = SPILL[0]
+        foto = Path(os.environ["MEDIA_DIR"]) / f"spill/{n0}.jpg"
+        foto.parent.mkdir(parents=True, exist_ok=True)
+
+        def kjor(tekst, rc=0, avbryt=False):
+            def r(cmd, env):
+                foto.write_text(tekst)
+                if avbryt:
+                    raise KeyboardInterrupt
+                return rc, ""
+            try:
+                run([(f"spill:{n0}", "spill", 0, ["x"])], root / "t_arkiv.json", runner=r, check=lambda i: True,
+                    vurdering_fil=root / "v_arkiv.json")
+            except KeyboardInterrupt:
+                pass
+        foto.write_text("gammel")
+        kjor("ny")
+        old = foto.with_name(f"{n0}.old-1.jpg")
+        assert foto.read_text() == "ny" and old.read_text() == "gammel"
+        old.unlink()
+        for kw in ({"rc": 1}, {"avbryt": True}):
+            kjor("halv", **kw)
+            assert foto.read_text() == "ny" and not old.exists() and not foto.with_name(foto.name + ".tmp").exists(), kw
+        # plan: a photo whose pixel scene is approved is «utdatert», never «kan kjøres»
+        foto.unlink()
+        rapp = {}
+        qa = queue([r for r in rows if r["path"] != f"spill/{n0}.jpg"], [], root, til_dag=0, rapport=rapp,
+                   vurderinger={f"spill/piksel/{n0}.png": {"vurdering": "godkjent"}})
+        assert f"spill:{n0}" not in [i[0] for i in qa] and f"spill:{n0}" in [u[0] for u in rapp["utdatert"]], rapp
         assert item_path("portrett:winter") == "spill/portrett-winter.png"
         # pixel-art scenes: their own category, read the shown photo from MEDIA_DIR (public/…) and convert to png
         assert item_path("spill-piksel:torget") == "spill/piksel/torget.png"
