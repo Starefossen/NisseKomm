@@ -539,3 +539,56 @@ describe("API /api/media/vurdering - Functionality", () => {
     expect(bodyEmpty.entry).toBeNull();
   });
 });
+
+describe("API /api/media/vurdering - Trenger mer", () => {
+  const auth = { cookie: "__Host-nissekomm-guide=parent" };
+  const send = async (body: unknown) => POST(makeReq("POST", body, auth));
+  const id = "dag/04/gaatekart";
+
+  it("rejects bad requests", async () => {
+    for (const b of [
+      { path: id, trenger: { hva: "dans" } },
+      { path: id, trenger: "skisse" },
+      { path: id, trenger: { hva: "skisse", notat: 5 } },
+      { path: id, forklaring: 3 },
+      { path: id, levert: "ja" },
+      { path: id, levert: true },
+      { path: "dag/99/gaatekart", trenger: { hva: "skisse" } },
+    ])
+      expect((await send(b)).status).toBe(400);
+  });
+
+  it("round trip: ask, deliver, judge; the verdict stays", async () => {
+    await send({ path: id, vurdering: "ok", notat: "litt tynt" });
+    let r = await (
+      await send({
+        path: id,
+        trenger: { hva: "forklaring", notat: "hvorfor?" },
+      })
+    ).json();
+    expect(r.entry.vurdering).toBe("ok");
+    expect(r.entry.notat).toBe("litt tynt");
+    expect(r.entry.trenger).toMatchObject({
+      hva: "forklaring",
+      notat: "hvorfor?",
+    });
+    expect(r.entry.trenger.levert).toBeUndefined();
+    r = await (await send({ path: id, forklaring: "Fordi." })).json();
+    expect(r.entry.forklaring).toBe("Fordi.");
+    expect(r.entry.trenger.levert).toBeTruthy();
+    expect(r.entry.vurdering).toBe("ok");
+    r = await (await send({ path: id, vurdering: "godkjent" })).json();
+    expect(r.entry.trenger.lest).toBeTruthy();
+    expect(r.entry.forklaring).toBe("Fordi.");
+    r = await (await send({ path: id, trenger: null })).json();
+    expect(r.entry.trenger).toBeUndefined();
+  });
+
+  it("asks without any verdict, and a sketch delivers with levert", async () => {
+    let r = await (await send({ path: id, trenger: { hva: "skisse" } })).json();
+    expect(r.entry.vurdering).toBeUndefined();
+    expect(r.vurderinger[id].trenger.hva).toBe("skisse");
+    r = await (await send({ path: id, levert: true })).json();
+    expect(r.entry.trenger.levert).toBeTruthy();
+  });
+});

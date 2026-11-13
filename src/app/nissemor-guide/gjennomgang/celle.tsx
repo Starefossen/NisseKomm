@@ -1,14 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { brukbar, celleAv, celleFor, MERKE } from "@/lib/media-status";
 import { videoStatus } from "@/lib/segmenter";
 import type { Laerdom } from "@/lib/laerdom";
 import { useSesong, type Sesong } from "../_kveld/felles";
 import { kilde, useMediaData } from "../media/kort";
-import { useVurderinger } from "../vurdering";
+import { StatusI, useVurderinger } from "../vurdering";
+import { versionKey } from "@/lib/media-status";
 import { alleElementer, tilstand, type Element } from "./elementer";
 import { byggKo, fremdrift, type Fremdrift, type KoServer } from "./ko";
 
@@ -37,7 +38,7 @@ export function useKo(d: Data, sesong: Sesong) {
   const liste = alleElementer("dag", sesong, d.media.files, d.krypto);
   const k = { ...kilde(d.media), vurderinger: d.vurd ?? {} };
   const ko = d.server ? byggKo(liste, k, d.server) : null;
-  const fd = ko ? fremdrift(liste, k, ko) : null;
+  const fd = ko ? fremdrift(liste, k, ko, d.server ?? {}) : null;
   return { liste, ko, fd };
 }
 
@@ -48,8 +49,8 @@ export const CELLE: Record<Fremdrift, [string, string]> = {
   venter: ["● se på", "bg-(--cold-blue) text-black"],
   agent: ["✗ fikses", "bg-(--christmas-red) text-white"],
   mangler: ["mangler", "bg-(--gray) text-black"],
-  utenfor: ["○ utenfor køen", "bg-(--gray)/60 text-black"],
   valgfri: ["valgfri", "bg-(--gray)/30"],
+  ikke: ["ikke aktuelt", "bg-(--gray)/30"],
 };
 
 /** Without the queue (still loading): the verdict alone. */
@@ -81,7 +82,7 @@ export function useCelle(d: Data, sesong: Sesong) {
   );
   return (e: Element): CelleData => {
     const ti = tilstand(e, k);
-    let st = status.get(e.id) ?? statusAvCelle(ti.celle);
+    const st = status.get(e.id) ?? statusAvCelle(ti.celle);
     let ord: string | undefined;
     // A segmented Julius day: «3/4 ✓», or the cut/take the worst segment waits for.
     const segs = e.gruppe === "julius" && e.dag ? d.server?.manus[e.dag] : null;
@@ -93,12 +94,9 @@ export function useCelle(d: Data, sesong: Sesong) {
         (n) => vurd[sid(n)],
       );
       const ok = segs.filter((n) => brukbar(celleAv(vurd[sid(n)]))).length;
-      if (vs.steg === "kutt" || vs.steg === "nytt") st = "agent";
       if (vs.steg === "kutt") ord = "✗ kuttes";
-      if (vs.steg === "vurder") {
-        st = "venter";
+      if (vs.steg === "vurder" && st === "venter")
         ord = `● ${ok}/${segs.length} ✓`;
-      }
     }
     const kand = e.media.length
       ? celleFor(e.media, k).familie?.kandidat
@@ -107,7 +105,9 @@ export function useCelle(d: Data, sesong: Sesong) {
       e,
       status: st,
       ord,
-      kandidat: kand ? `+${kand.navn} ${MERKE[kand.celle][0]}` : undefined,
+      kandidat: kand
+        ? `+${kand.navn} ${MERKE[kand.celle][0]}${brukbar(kand.celle) ? " klar" : ""}`
+        : undefined,
       notat: ti.notat,
       celle: MERKE[ti.celle][2],
     };
@@ -136,4 +136,42 @@ export function StatusBrikke({
       {c.kandidat && <span className="text-sm">{c.kandidat}</span>}
     </Link>
   );
+}
+
+/** The day view's status cells: each id → its element's StatusBrikke, linked into Gjennomgang. */
+export function DagStatus({ children }: { children: ReactNode }) {
+  const d = useData();
+  if (!d.sesong || !d.vurd || !d.media.files)
+    return <StatusI.Provider value={() => null}>{children}</StatusI.Provider>;
+  return (
+    <MedStatus d={d} sesong={d.sesong}>
+      {children}
+    </MedStatus>
+  );
+}
+
+function MedStatus({
+  d,
+  sesong,
+  children,
+}: {
+  d: Data;
+  sesong: Sesong;
+  children: ReactNode;
+}) {
+  const celle = useCelle(d, sesong);
+  const liste = alleElementer("dag", sesong, d.media.files, d.krypto);
+  const fn = (id: string) => {
+    const e = liste.find(
+      (x) =>
+        x.id === id || x.media.some((p) => versionKey(p) === versionKey(id)),
+    );
+    return e ? (
+      <StatusBrikke
+        c={celle(e)}
+        href={`/nissemor-guide/gjennomgang?id=${encodeURIComponent(e.id)}${e.dag ? `&dag=${e.dag}` : ""}`}
+      />
+    ) : null;
+  };
+  return <StatusI.Provider value={fn}>{children}</StatusI.Provider>;
 }

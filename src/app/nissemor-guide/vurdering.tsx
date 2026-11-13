@@ -5,6 +5,7 @@ import {
   useContext,
   useEffect,
   useRef,
+  useState,
   useSyncExternalStore,
   type ReactNode,
 } from "react";
@@ -62,6 +63,10 @@ export const lagreTagger = (
   o: { tagger?: string[]; tid?: number | null },
 ) => post({ path: id, ...o });
 
+/** «Trenger mer»: what is missing (null withdraws); the verdict stays. */
+export const lagreTrenger = (id: string, hva: string | null, notat: string) =>
+  post({ path: id, trenger: hva ? { hva, notat } : null });
+
 /** ✂ on a Julius segment; the note stays as saved. */
 export const lagreKutt = (id: string, kutt: Kutt) =>
   post({ path: id, vurdering: "kutt", kutt });
@@ -99,22 +104,45 @@ export const slug = (s: string) =>
 /** Gjennomgang renders its own buttons; sections embedded there hide theirs. */
 export const SkjulVurder = createContext(false);
 
+/**
+ * The day view shows a status cell per section instead of buttons (the guide is
+ * for the evening; judging happens in Gjennomgang). Its provider maps an id to the cell.
+ */
+export const StatusI = createContext<((id: string) => ReactNode) | null>(null);
+
+/** The status cells for some ids (the day view's media), one per element. */
+export function StatusFor({ ids }: { ids: string[] }) {
+  const fn = useContext(StatusI);
+  if (!fn) return null;
+  return (
+    <div className="flex flex-wrap gap-1 mb-2">
+      {ids.map((id) => (
+        <span key={id}>{fn(id)}</span>
+      ))}
+    </div>
+  );
+}
+
 /** Godkjent / Lag på nytt + note for one guide section. */
 export function Vurder({ id }: { id: string }) {
   const alle = useVurderinger();
-  if (useContext(SkjulVurder) || !alle) return null;
+  const status = useContext(StatusI);
+  if (useContext(SkjulVurder)) return null;
+  if (status) return <div className="mt-2">{status(id)}</div>;
+  if (!alle) return null;
   const v: MediaVurderingItem | undefined = alle[id];
   return (
     // Keyed by id: Neste must never carry a note, tags or feedback to the next item.
     <div
       key={id}
       id={`vurdering-${id.split("/").at(-1)}`}
-      className="mt-3 scroll-mt-4"
+      className="group scroll-mt-4"
     >
       <Vurderingsknapper
         vurdering={v}
         onSave={(verdict, notat) => lagre(id, verdict, notat ?? "")}
         onBehold={() => post({ path: id, behold: true })}
+        onTrenger={(hva, notat) => lagreTrenger(id, hva, notat)}
       />
       <Tagger id={id} v={v} />
     </div>
@@ -129,55 +157,70 @@ const spillerTid = () =>
 function Tagger({ id, v }: { id: string; v?: MediaVurderingItem }) {
   const liste = taggerFor(id);
   const { status, kjør } = useLagring();
+  const [åpen, setÅpen] = useState(false);
   if (!liste.length) return null;
   const valgt = v?.tagger ?? [];
+  // Folded behind «Merker ▸»; open while the note has focus or a tag/timecode is set.
+  const vis = åpen || valgt.length > 0 || v?.tid !== undefined;
   const send = (o: Parameters<typeof lagreTagger>[1]) =>
     void kjør(() => lagreTagger(id, o));
   return (
-    <div className="flex flex-wrap items-center gap-2 mt-2 text-base">
-      {liste.map((t, i) => {
-        const på = valgt.includes(t);
-        return (
+    <div className="flex flex-wrap items-center gap-1 mt-1 text-base">
+      <button
+        type="button"
+        aria-expanded={vis}
+        onClick={() => setÅpen(!åpen)}
+        className="min-h-11 px-1 text-sm text-(--neon-green)/80 underline"
+      >
+        Merker {vis ? "▾" : "▸"}
+      </button>
+      <span
+        className={`${vis ? "flex" : "hidden group-focus-within:flex"} flex-wrap items-center gap-1`}
+      >
+        {liste.map((t, i) => {
+          const på = valgt.includes(t);
+          return (
+            <button
+              key={t}
+              type="button"
+              data-tagg={i + 1}
+              aria-pressed={på}
+              onClick={() =>
+                send({
+                  tagger: på ? valgt.filter((x) => x !== t) : [...valgt, t],
+                })
+              }
+              className={`min-h-11 px-2 border ${på ? "bg-(--cold-blue) text-black border-(--cold-blue)" : "border-(--neon-green)/50"}`}
+            >
+              <span className="text-sm opacity-70">⇧{i + 1}</span> {t}
+            </button>
+          );
+        })}
+        {taggType(id) !== "bilde" && (
           <button
-            key={t}
             type="button"
-            data-tagg={i + 1}
-            aria-pressed={på}
-            onClick={() =>
-              send({
-                tagger: på ? valgt.filter((x) => x !== t) : [...valgt, t],
-              })
-            }
-            className={`min-h-11 px-2 border ${på ? "bg-(--cold-blue) text-black border-(--cold-blue)" : "border-(--neon-green)/50"}`}
+            data-tid
+            onClick={() => {
+              const t = spillerTid();
+              if (t !== undefined) send({ tid: t });
+            }}
+            className="min-h-11 px-2 border border-(--neon-green)/50"
           >
-            <span className="text-sm opacity-70">⇧{i + 1}</span> {t}
+            <span className="text-sm opacity-70">T</span>{" "}
+            {v?.tid !== undefined ? `@${tidTekst(v.tid)}` : "tidskode"}
           </button>
-        );
-      })}
-      {taggType(id) !== "bilde" && (
-        <button
-          type="button"
-          data-tid
-          onClick={() => {
-            const t = spillerTid();
-            if (t !== undefined) send({ tid: t });
-          }}
-          className="min-h-11 px-2 border border-(--neon-green)/50"
-        >
-          <span className="text-sm opacity-70">T</span>{" "}
-          {v?.tid !== undefined ? `@${tidTekst(v.tid)}` : "tidskode"}
-        </button>
-      )}
-      {v?.tid !== undefined && (
-        <button
-          type="button"
-          onClick={() => send({ tid: null })}
-          className="min-h-11 px-2 underline text-sm"
-          aria-label="Fjern tidskode"
-        >
-          ✕
-        </button>
-      )}
+        )}
+        {v?.tid !== undefined && (
+          <button
+            type="button"
+            onClick={() => send({ tid: null })}
+            className="min-h-11 px-2 underline text-sm"
+            aria-label="Fjern tidskode"
+          >
+            ✕
+          </button>
+        )}
+      </span>
       <Lagremelding status={status} />
     </div>
   );
@@ -213,6 +256,8 @@ export function vurderTast(tast: string, id: string): boolean {
     boks?.querySelector<HTMLButtonElement>(`[data-verdikt="${v}"]`)?.click();
   if (tast === "g") knapp("godkjent");
   else if (tast === "o") knapp("ok");
+  else if (tast === "?")
+    boks?.querySelector<HTMLButtonElement>("[data-trenger]")?.click();
   else if (tast === "l") {
     const felt = boks?.querySelector<HTMLInputElement>("input");
     if (felt) {

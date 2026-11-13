@@ -37,6 +37,7 @@ import { Innhold } from "./visning";
 import { SegmentStatus } from "./segmentstripe";
 import type { VideoStatus } from "@/lib/segmenter";
 import { taggTelling } from "@/lib/vurdering-tagger";
+import { TRENGER, type TrengerHva } from "@/lib/trenger";
 import {
   FREMDRIFT,
   type Fremdrift,
@@ -269,6 +270,14 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
       )}
       {fane === "laerdom" && (
         <div data-testid="tagg-telling">
+          {Object.keys(ko.trengerTelling).length > 0 && (
+            <p data-testid="trenger-telling">
+              <span className="text-(--gold)">Trenger mer:</span>{" "}
+              {Object.entries(ko.trengerTelling)
+                .map(([h, n]) => `${TRENGER[h as TrengerHva]} ${n}`)
+                .join(" · ")}
+            </p>
+          )}
           {taggTelling(d.vurd ?? {}).map(([t, n]) => (
             <p key={t}>
               <span className="text-(--gold)">Merker {t}:</span>{" "}
@@ -392,8 +401,8 @@ function Matrise({
       ["venter", "se på"],
       ["agent", "fikses"],
       ["mangler", "mangler"],
-      ["utenfor", "utenfor køen"],
       ["valgfri", "valgfri"],
+      ["ikke", "ikke aktuelt"],
     ];
     return ord
       .filter(([s]) => n[s])
@@ -560,16 +569,19 @@ function Vurdering({
     settUtvalg(ny);
   };
   const gruppe = sp.get("gr");
-  const typeFilter = !!gruppe || (valgtHer && (!!u.t || u.s === "alle"));
+  const dagF = Number(sp.get("dag")) || 0;
+  const typeFilter =
+    !!dagF || !!gruppe || (valgtHer && (!!u.t || u.s === "alle"));
   const lenke = useCallback(
     (x: string) =>
       href(
         x,
         (typeFilter ? utvalgUrl(u) : "") +
           (gruppe ? `&gr=${encodeURIComponent(gruppe)}` : "") +
+          (dagF ? `&dag=${dagF}` : "") +
           (fane ? `&k=${fane}` : ""),
       ),
-    [typeFilter, u, fane, gruppe],
+    [typeFilter, u, fane, gruppe, dagF],
   );
   // A segmented Julius video: its status comes from the segments (SegmentStripe).
   const [segStatus, setSegStatus] = useState<VideoStatus | null>(null);
@@ -591,10 +603,15 @@ function Vurdering({
   const filtrert = synlige.filter(
     (x) =>
       x === e ||
-      (gr ? x.gruppe === gr : passerUtvalg(u, x, tilstand(x, k).celle)),
+      (dagF
+        ? x.dag === dagF
+        : gr
+          ? x.gruppe === gr
+          : passerUtvalg(u, x, tilstand(x, k).celle)),
   );
   const fi = filtrert.indexOf(e);
   const { ko } = useKo(d, sesong);
+  const cellen = useCelle(d, sesong);
   const koIder = (ko?.venter ?? [])
     .map((l) => l.id)
     .filter((x, j, a) => a.indexOf(x) === j && liste.some((y) => y.id === x));
@@ -614,11 +631,13 @@ function Vurdering({
   const nabo = { rundt: nav.rundt };
   const nesteNavn = nesteIKo
     ? "Neste i køen"
-    : gruppe
-      ? `Neste i ${gruppe.toLowerCase()}`
-      : typeFilter && u.t
-        ? `Neste ${u.t === "julius" ? "Julius" : typeNavn(u.t).toLowerCase()}`
-        : "Neste uvurdert";
+    : dagF
+      ? `Neste i dag ${dagF}`
+      : gruppe
+        ? `Neste i ${gruppe.toLowerCase()}`
+        : typeFilter && u.t
+          ? `Neste ${u.t === "julius" ? "Julius" : typeNavn(u.t).toLowerCase()}`
+          : "Neste uvurdert";
 
   const eid = e?.id;
   useEffect(() => {
@@ -666,7 +685,9 @@ function Vurdering({
         ev.preventDefault();
       } else if (
         egenVurdering(id) &&
-        (taggTast(ev, id) || (!ev.shiftKey && vurderTast(tast, id)))
+        (taggTast(ev, id) ||
+          ((!ev.shiftKey || ev.key === "?") &&
+            vurderTast(ev.key === "?" ? "?" : tast, id)))
       )
         ev.preventDefault();
       else if (tast === "n" && ev.shiftKey && nesteUv)
@@ -679,6 +700,7 @@ function Vurdering({
   }, [id, neste, nesteUv, forrige, router, lenke, gåTilbake]);
 
   if (!e) return <p>Fant ikke {id}.</p>;
+  const celleData = cellen;
   const st = tilstand(e, k);
   const ikkeLaget =
     e.media.length > 0 &&
@@ -688,116 +710,151 @@ function Vurdering({
     );
   return (
     <>
-      <nav
-        aria-label="Gjennomgang"
-        className="sticky top-0 z-20 flex flex-wrap items-center gap-x-3 gap-y-1 bg-black/95 border-b border-(--neon-green)/40 py-1"
-      >
-        <div className="flex items-center gap-1 text-base">
-          <Link
-            href={fane ? `${SIDE}?k=${fane}` : SIDE}
-            className="min-h-11 inline-flex items-center px-2 underline"
-          >
-            ‹ Kø
-          </Link>
-          <Link
-            href={forrige ? lenke(forrige.id) : "#"}
-            aria-disabled={!forrige}
-            title="Forrige i lista ([ eller Shift+P). P går tilbake til det du så sist."
-            aria-label="Forrige i lista ([)"
-            className={`${pil} ${forrige ? "" : "pointer-events-none opacity-30"}`}
-          >
-            ‹
-          </Link>
-          <span className="px-1 whitespace-nowrap">
-            {nesteIKo
-              ? `${iKo + 1} av ${koIder.length}`
-              : `${fi + 1} av ${filtrert.length}`}
-          </span>
-          <Link
-            href={neste ? lenke(neste.id) : "#"}
-            aria-disabled={!neste}
-            title={`${nesteNavn} (N eller ])${nabo.rundt && !nesteIKo ? " · tilbake til start" : ""}`}
-            aria-label={`${nesteNavn} (N)`}
-            className={`${pil} ${neste ? "border-(--gold)" : "pointer-events-none opacity-30"}`}
-          >
-            ›
-          </Link>
-          <span className="text-sm text-(--neon-green)/70 whitespace-nowrap">
-            {nesteNavn.toLowerCase()}
-            {e &&
-              !gr &&
-              !nesteIKo &&
-              !passerUtvalg(u, e, tilstand(e, k).celle) &&
-              " · utenfor filteret"}
-          </span>
-          {harForrigeSett && (
-            <button
-              type="button"
-              onClick={gåTilbake}
-              title="Tilbake til det du så sist (P), som nettleserens tilbake"
-              className="min-h-11 px-2 text-sm underline"
+      <div className="sticky top-0 z-20 bg-black/95 border-b border-(--neon-green)/40">
+        <nav
+          aria-label="Gjennomgang"
+          className="flex flex-wrap items-center gap-x-3 gap-y-1 py-1"
+        >
+          <div className="flex items-center gap-1 text-base">
+            <Link
+              href={
+                dagF
+                  ? `/nissemor-guide/dag/${dagF}`
+                  : fane
+                    ? `${SIDE}?k=${fane}`
+                    : SIDE
+              }
+              data-testid="tilbake"
+              className="min-h-11 inline-flex items-center px-2 underline"
             >
-              ↶ Sist sett (P)
-            </button>
-          )}
-        </div>
-        <div className="flex flex-wrap items-center gap-2 ml-auto text-base">
-          <UtvalgValg
-            u={u}
-            sett={settU}
-            liste={liste}
-            gjenstaar={(x) => GJENSTAAR.includes(tilstand(x, k).celle)}
-          />
-          <label className="flex items-center gap-1">
-            Rekkefølge
-            <select
-              value={rekkefolge}
-              onChange={(ev) => {
-                const v = ev.target.value as "dag" | "kolonne";
-                localStorage.setItem(REKKEFOLGE, v);
-                setRekkefolge(v);
-              }}
-              className={liten}
+              {dagF ? `‹ Dag ${dagF}` : "‹ Kø"}
+            </Link>
+            <Link
+              href={forrige ? lenke(forrige.id) : "#"}
+              aria-disabled={!forrige}
+              title="Forrige i lista ([ eller Shift+P). P går tilbake til det du så sist."
+              aria-label="Forrige i lista ([)"
+              className={`${pil} ${forrige ? "" : "pointer-events-none opacity-30"}`}
             >
-              <option value="dag">dag</option>
-              <option value="kolonne">kolonne</option>
-            </select>
-          </label>
-        </div>
-      </nav>
-      <Kort tittel={e.tittel}>
-        <p className="text-base break-all">
-          <span className={MERKE[st.celle][1]}>
-            {st.tekst} gjeldende versjon: {MERKE[st.celle][2]}
-          </span>{" "}
-          · {e.id} · {i + 1} av {liste.length}
-          {e.dag && (
-            <>
-              {" · "}
-              <Link href={`/nissemor-guide/dag/${e.dag}`} className="underline">
+              ‹
+            </Link>
+            <span className="px-1 whitespace-nowrap">
+              {nesteIKo
+                ? `${iKo + 1} av ${koIder.length}`
+                : `${fi + 1} av ${filtrert.length}`}
+            </span>
+            <Link
+              href={neste ? lenke(neste.id) : "#"}
+              aria-disabled={!neste}
+              title={`${nesteNavn} (N eller ])${nabo.rundt && !nesteIKo ? " · tilbake til start" : ""}`}
+              aria-label={`${nesteNavn} (N)`}
+              className={`${pil} ${neste ? "border-(--gold)" : "pointer-events-none opacity-30"}`}
+            >
+              ›
+            </Link>
+            <span className="text-sm text-(--neon-green)/70 whitespace-nowrap">
+              {nesteNavn.toLowerCase()}
+              {e &&
+                !gr &&
+                !nesteIKo &&
+                !passerUtvalg(u, e, tilstand(e, k).celle) &&
+                " · utenfor filteret"}
+            </span>
+            {e.dag && (
+              <Link
+                href={`/nissemor-guide/dag/${e.dag}`}
+                className="min-h-11 inline-flex items-center px-1 text-sm underline"
+              >
                 hele dag {e.dag}
               </Link>
-            </>
-          )}
-        </p>
-        {ikkeLaget ? (
-          <IkkeLaget e={e} valgfri={st.celle === "valgfri"} server={d.server} />
-        ) : segStatus ? (
-          <p className="text-(--gold)">Status: {segStatus.tekst}</p>
-        ) : egenVurdering(e.id) ? (
-          <Vurder id={e.id} />
-        ) : (
-          <DagManus n={e.dag ?? Number(e.id.slice(-2))} />
-        )}
-        {!ikkeLaget &&
-          (!segStatus || segStatus.slutt) &&
-          e.media.map((p) => <TaIBruk key={p} path={p} data={d.media} />)}
-        <p className="text-base text-(--neon-green)/80">
-          Tastatur: G godkjent · O OK · L lag på nytt (skriv notat, Enter
-          lagrer) · ⇧1–9 merke · T tidskode · N/] neste · ⇧N neste uvurdert · [
-          eller ⇧P forrige i lista · P tilbake til sist sett
-        </p>
-      </Kort>
+            )}
+            {harForrigeSett && (
+              <button
+                type="button"
+                onClick={gåTilbake}
+                title="Tilbake til det du så sist (P), som nettleserens tilbake"
+                className="min-h-11 px-2 text-sm underline"
+              >
+                ↶ Sist sett (P)
+              </button>
+            )}
+          </div>
+          <div className="flex flex-wrap items-center gap-2 ml-auto text-base">
+            <UtvalgValg
+              u={u}
+              sett={settU}
+              liste={liste}
+              gjenstaar={(x) => GJENSTAAR.includes(tilstand(x, k).celle)}
+            />
+            <label className="flex items-center gap-1">
+              Rekkefølge
+              <select
+                value={rekkefolge}
+                onChange={(ev) => {
+                  const v = ev.target.value as "dag" | "kolonne";
+                  localStorage.setItem(REKKEFOLGE, v);
+                  setRekkefolge(v);
+                }}
+                className={liten}
+              >
+                <option value="dag">dag</option>
+                <option value="kolonne">kolonne</option>
+              </select>
+            </label>
+          </div>
+        </nav>
+        <section
+          aria-label="Vurdering"
+          data-testid="vurderingsboks"
+          className="flex flex-wrap lg:flex-nowrap items-start gap-x-3 gap-y-1 py-1 border-t border-(--neon-green)/20"
+        >
+          <div className="flex items-center gap-2 min-w-0 lg:max-w-[40%]">
+            <h2 className="text-xl text-(--gold) truncate" title={e.id}>
+              {e.tittel}
+            </h2>
+            <StatusBrikke c={celleData(e)} href={href(e.id, "")} />
+          </div>
+          <div className="flex-1 min-w-0">
+            {ikkeLaget ? (
+              <IkkeLaget
+                e={e}
+                valgfri={st.celle === "valgfri"}
+                server={d.server}
+              />
+            ) : segStatus ? (
+              <p className="text-(--gold) min-h-11 flex items-center">
+                Status: {segStatus.tekst}
+              </p>
+            ) : egenVurdering(e.id) ? (
+              <Vurder id={e.id} />
+            ) : (
+              <DagManus n={e.dag ?? Number(e.id.slice(-2))} />
+            )}
+          </div>
+          <details className="relative">
+            <summary
+              className="list-none min-h-11 min-w-11 inline-flex items-center justify-center border border-(--neon-green)/60 cursor-pointer"
+              title="Tastatur"
+              aria-label="Tastatur"
+            >
+              Taster
+            </summary>
+            <p className="absolute right-0 z-30 w-80 p-2 bg-black border border-(--neon-green) text-base">
+              G godkjent · O OK · L lag på nytt (skriv notat, Enter lagrer) · ?
+              trenger mer · ⇧1–9 merke · T tidskode · N/] neste · ⇧N neste
+              uvurdert · [ eller ⇧P forrige i lista · P tilbake til sist sett
+            </p>
+          </details>
+        </section>
+      </div>
+      {vurd[e.id]?.forklaring && (
+        <Kort tittel="Forklaring fra agenten" farge="border-(--cold-blue)">
+          <p className="whitespace-pre-line">{vurd[e.id].forklaring}</p>
+        </Kort>
+      )}
+      {!ikkeLaget &&
+        (!segStatus || segStatus.slutt) &&
+        e.media.map((p) => <TaIBruk key={p} path={p} data={d.media} />)}
       <SkjulVurder.Provider value>
         <SegmentStatus.Provider value={setSegStatus}>
           {!ikkeLaget && <Innhold key={e.id} e={e} sesong={sesong} />}
@@ -844,7 +901,16 @@ function Gjennomgang() {
   const d = useData();
   if (!d.sesong || !d.vurd || !d.media.files)
     return <p>Laster … (bare på hjemmenettet)</p>;
-  if (id) return <Vurdering id={id} d={d} sesong={d.sesong} />;
+  // «Vurder dag N →» from the day view: the day's first item, N/P inside the day.
+  const dagF = Number(sp.get("dag")) || 0;
+  const forsteIDag =
+    dagF && !id
+      ? alleElementer("dag", d.sesong, d.media.files, d.krypto).find(
+          (e) => e.dag === dagF,
+        )?.id
+      : undefined;
+  if (id || forsteIDag)
+    return <Vurdering id={(id ?? forsteIDag)!} d={d} sesong={d.sesong} />;
   return (
     <>
       <h1 className="text-4xl font-bold text-(--gold) text-center">

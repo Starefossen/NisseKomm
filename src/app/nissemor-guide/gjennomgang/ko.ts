@@ -8,6 +8,7 @@ import {
   type StatusKilde,
 } from "@/lib/media-status";
 import { segmentHint, videoStatus } from "@/lib/segmenter";
+import { TRENGER, type TrengerHva } from "@/lib/trenger";
 import { dagAv, typeAv } from "../media/filter";
 import { juliusFiles } from "../media/oversikt";
 import { tilstand, type Element } from "./elementer";
@@ -97,6 +98,30 @@ export function omtak(
   };
 }
 
+/** What the agent delivers for «Trenger mer»; only a sketch costs (one image call). */
+export function trengerJobb(
+  id: string,
+  hva: TrengerHva,
+  jobber: Record<string, string>,
+): { kommando: string; pris: number } {
+  const svar = `POST /api/media/vurdering {"path":"${id}",`;
+  if (hva === "skisse") {
+    const dag = dagFor(id);
+    const jobb =
+      jobber[versionKey(id)] ?? (dag ? `strek/dag${pad(dag)}` : undefined);
+    return {
+      kommando: `${jobb ? `python3 assets/bin/generer.py kjør --bare ${jobb} --force` : `skisse til ${id}`}, så ${svar}"levert":true}`,
+      pris: PRIS.bilde,
+    };
+  }
+  if (hva === "forklaring")
+    return { kommando: `${svar}"forklaring":"…"}`, pris: 0 };
+  return {
+    kommando: `lag ${TRENGER[hva]} for ${id}, så ${svar}"levert":true}`,
+    pris: 0,
+  };
+}
+
 const sorter = (a: Linje, b: Linje) =>
   (a.dag ?? 99) - (b.dag ?? 99) ||
   a.type.localeCompare(b.type) ||
@@ -154,6 +179,13 @@ export function byggKo(
     const elementId = liste.find((e) =>
       e.media.some((p) => versionKey(p) === key),
     )?.id;
+    // A day section judged as a whole (Rampestrek with its sketch) is not held back by its file.
+    if (
+      elementId?.startsWith("dag/") &&
+      vurd[elementId]?.vurdering &&
+      !v?.vurdering
+    )
+      continue;
     const linje = {
       id: elementId ?? ny.path,
       tittel: tittel.get(elementId ?? "") ?? ny.path,
@@ -252,7 +284,7 @@ export function byggKo(
         ...linje,
         hva: v.forrige ? "ny versjon" : "notat uten vurdering",
       });
-    else if (!v && dagSeksjon) venter.push({ ...linje, hva: "aldri vurdert" });
+    else if (!v) venter.push({ ...linje, hva: "aldri vurdert" });
   }
 
   // Script gate: days without a video wait on their segments, then on the video call.
@@ -395,6 +427,30 @@ export function byggKo(
     }
   }
 
+  // «Trenger mer»: open requests are the agent's, delivered ones come back to Hans.
+  const trengerTelling: Partial<Record<TrengerHva, number>> = {};
+  for (const [id, v] of Object.entries(vurd)) {
+    const t = v.trenger;
+    if (!t) continue;
+    trengerTelling[t.hva] = (trengerTelling[t.hva] ?? 0) + 1;
+    const el = liste.find((e) => e.id === id || e.media.includes(id))?.id ?? id;
+    const linje = {
+      id: el,
+      tittel: tittel.get(el) ?? id,
+      type: typeFor(id),
+      dag: dagFor(id),
+      notat: t.notat,
+    };
+    if (!t.levert)
+      agent.push({
+        ...linje,
+        hva: `trenger ${TRENGER[t.hva]}`,
+        ...trengerJobb(id, t.hva, s.jobber),
+      });
+    else if (!t.lest)
+      venter.push({ ...linje, hva: `Ny info: ${TRENGER[t.hva]} lagt til` });
+  }
+
   const behandlet = new Set([
     ...(s.laerdom?.avvist ?? []),
     ...(s.laerdom?.regler.flatMap((r) => r.kilder) ?? []),
@@ -419,6 +475,7 @@ export function byggKo(
     agent: agent.sort(sorter),
     laerdom: laerdom.sort(sorter),
     segmenter,
+    trengerTelling,
   };
 }
 
@@ -428,8 +485,8 @@ export const FREMDRIFT = [
   ["venter", "Venter på deg", "bg-(--cold-blue)"],
   ["agent", "Hos agent", "bg-(--christmas-red)"],
   ["mangler", "Mangler", "bg-(--gray)"],
-  ["utenfor", "Utenfor køen", "bg-(--gray)/60"],
   ["valgfri", "Valgfri", "bg-(--gray)/30"],
+  ["ikke", "Ikke aktuelt", "bg-(--gray)/30"],
 ] as const;
 export type Fremdrift = (typeof FREMDRIFT)[number][0];
 
@@ -446,6 +503,44 @@ export function fremdriftGruppe(e: Element): string {
 }
 
 /**
+ * One element's status, the same in the matrix, the progress bar and the
+ * Element view: a queue line wins (Hos agent over Venter), a segmented Julius
+ * video follows its segments (videoStatus), else the verdict on what is in use.
+ */
+export function elementStatus(
+  e: Element,
+  k: StatusKilde & { vurderinger: MediaVurderinger },
+  agent: Set<string>,
+  venter: Set<string>,
+  s: Pick<Partial<KoServer>, "manus" | "duplikater"> = {},
+): Fremdrift {
+  const manus = s.manus ?? {};
+  const c = tilstand(e, k).celle;
+  if (c === "valgfri") return "valgfri";
+  if (agent.has(e.id)) return "agent";
+  if (venter.has(e.id)) return "venter";
+  const segs = e.gruppe === "julius" && e.dag ? manus[e.dag] : undefined;
+  const sid = (n: number) => `video/julius/dag-${pad(e.dag!)}#s${n}`;
+  if (segs?.length && segs.some((n) => k.vurderinger[sid(n)])) {
+    const vs = videoStatus(
+      segs.map((n) => ({ s: n })),
+      (n) => k.vurderinger[sid(n)],
+      k.vurderinger[e.media.find((p) => k.vurderinger[p]) ?? ""],
+    );
+    if (vs.steg === "nytt" || vs.steg === "kutt") return "agent";
+    if (vs.steg === "ferdig")
+      return vs.tekst.startsWith("◐") ? "ok" : "godkjent";
+    if (vs.steg !== "klar" || !brukbar(c)) return "venter";
+  }
+  if (c === "mangler" || c === "godkjent" || c === "ok") return c;
+  // A Julius script is judged per segment: out of both queues means every segment passed.
+  if (/^manus\/julius\//.test(e.id)) return "godkjent";
+  if (c === "lag_paa_nytt" || c === "utdatert") return "agent";
+  // A byte-identical copy of another file: nothing to judge.
+  return e.media.some((p) => s.duplikater?.includes(p)) ? "ikke" : "venter";
+}
+
+/**
  * Every element in exactly one bucket, from the same queue byggKo makes, so
  * «Venter på deg» and «Hos agent» are exactly the tabs' elements (an element
  * in both counts as Hos agent; the tabs show these numbers). Besides them:
@@ -457,29 +552,15 @@ export function fremdrift(
   liste: Element[],
   k: StatusKilde & { vurderinger: MediaVurderinger },
   ko: { venter: Linje[]; agent: Linje[] },
+  s: Pick<Partial<KoServer>, "manus" | "duplikater"> = {},
 ) {
   const agent = new Set(ko.agent.map((l) => l.id));
   const venter = new Set(ko.venter.map((l) => l.id));
-  const poster: (Element & { status: Fremdrift; type: string })[] = [];
-  for (const e of liste) {
-    const c = tilstand(e, k).celle;
-    const status: Fremdrift =
-      c === "valgfri"
-        ? "valgfri"
-        : agent.has(e.id)
-          ? "agent"
-          : venter.has(e.id)
-            ? "venter"
-            : c === "mangler"
-              ? "mangler"
-              : c === "godkjent" || c === "ok"
-                ? c
-                : // A Julius script is judged per segment: out of both queues means every segment passed.
-                  /^manus\/julius\//.test(e.id)
-                  ? "godkjent"
-                  : "utenfor";
-    poster.push({ ...e, status, type: fremdriftGruppe(e) });
-  }
+  const poster = liste.map((e) => ({
+    ...e,
+    status: elementStatus(e, k, agent, venter, s),
+    type: fremdriftGruppe(e),
+  }));
   const telling = (ps: typeof poster) =>
     Object.fromEntries(
       FREMDRIFT.map(([st]) => [st, ps.filter((p) => p.status === st).length]),

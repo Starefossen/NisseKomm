@@ -5,6 +5,7 @@
  * solution tool.
  */
 import { taggLinje } from "@/lib/vurdering-tagger";
+import { trengerLinje } from "@/lib/trenger";
 import uke1 from "@/data/uke1_oppdrag.json";
 import uke2 from "@/data/uke2_oppdrag.json";
 import uke3 from "@/data/uke3_oppdrag.json";
@@ -900,7 +901,9 @@ export const TOOLS: Record<string, Tool> = {
           (b.oppdatert ?? "").localeCompare(a.oppdatert ?? ""),
         );
       const aapne = rader.filter(
-        ([, v]) => v.vurdering !== "godkjent" && v.vurdering !== "ok",
+        ([, v]) =>
+          (v.vurdering !== "godkjent" && v.vurdering !== "ok") ||
+          (!!v.trenger && !v.trenger.lest),
       );
       const vis = status === "alle" ? rader : aapne;
       // Media ids get the same cell as the guide: the file in use, «→ vN».
@@ -925,7 +928,7 @@ export const TOOLS: Record<string, Tool> = {
           : "";
       const linjer = vis.map(
         ([id, v]) =>
-          `${id} | ${v.forrige ? `(ny versjon) forrige: ${v.forrige.vurdering}` : (v.vurdering ?? "-")} | ${(v.oppdatert ?? "").slice(0, 16).replace("T", " ")} | ${(v.forrige?.notat ?? v.notat ?? "").replace(/\s*\n\s*/g, " / ")}${taggLinje(v)}${celle(id)}${segmentHint(id, v.vurdering)}`,
+          `${id} | ${v.forrige ? `(ny versjon) forrige: ${v.forrige.vurdering}` : (v.vurdering ?? "-")} | ${(v.oppdatert ?? "").slice(0, 16).replace("T", " ")} | ${(v.forrige?.notat ?? v.notat ?? "").replace(/\s*\n\s*/g, " / ")}${taggLinje(v)}${trengerLinje(v.trenger)}${celle(id)}${segmentHint(id, v.vurdering)}`,
       );
       // OK with a note: usable, but the note is a lesson for the next generation.
       const laerdom =

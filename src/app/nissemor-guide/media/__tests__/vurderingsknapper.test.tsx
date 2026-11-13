@@ -125,4 +125,53 @@ describe("Vurderingsknapper", () => {
     expect(onSave).toHaveBeenCalledWith("lag_paa_nytt", "for mørk");
     expect(l.disabled).toBe(false);
   });
+
+  it("ett klikk på G med notat i feltet, ingen «Lagre notat»-knapp", async () => {
+    act(() => felt().focus());
+    skriv("fin");
+    const g = boks.querySelector<HTMLButtonElement>(
+      '[data-verdikt="godkjent"]',
+    )!;
+    act(() => g.focus());
+    act(() => g.click());
+    await flush();
+    expect(onSave).toHaveBeenCalledTimes(1);
+    expect(onSave).toHaveBeenCalledWith("godkjent", "fin");
+    expect(boks.textContent).not.toContain("Lagre notat");
+  });
+});
+
+describe("Trenger mer (?)", () => {
+  it("? åpner menyen; et valg lagrer hva og notat, uten å røre vurderingen", async () => {
+    const onTrenger = jest.fn<(h: string | null, n: string) => Promise<void>>();
+    onTrenger.mockResolvedValue(undefined);
+    act(() =>
+      root.render(
+        <Vurderingsknapper
+          onSave={onSave}
+          onTrenger={onTrenger}
+          vurdering={{ vurdering: "ok" }}
+        />,
+      ),
+    );
+    act(() => vurderTast("?", "dag/04/gaatekart"));
+    const notat = boks.querySelector<HTMLInputElement>(
+      '[aria-label="Notat til agenten"]',
+    )!;
+    act(() => {
+      Object.getOwnPropertyDescriptor(
+        HTMLInputElement.prototype,
+        "value",
+      )!.set!.call(notat, "hvor står den?");
+      notat.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+    act(() =>
+      boks
+        .querySelector<HTMLButtonElement>('[data-trenger-hva="skisse"]')!
+        .click(),
+    );
+    await flush();
+    expect(onTrenger).toHaveBeenCalledWith("skisse", "hvor står den?");
+    expect(onSave).not.toHaveBeenCalled();
+  });
 });

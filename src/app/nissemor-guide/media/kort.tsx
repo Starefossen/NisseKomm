@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import { mediaUrl, type MediaStatus } from "@/lib/media";
+import { TRENGER, type TrengerHva } from "@/lib/trenger";
 import { variantLabel } from "./oversikt";
 import {
   MERKE,
@@ -269,17 +270,12 @@ export function ReviewItemCard({
 }
 
 const KNAPPER: [Verdikt, string, string, string][] = [
-  [
-    "godkjent",
-    "Godkjent",
-    "[✓] Godkjent",
-    "bg-(--gold) text-black border-(--gold)",
-  ],
-  ["ok", "OK", "[◐] OK", "bg-amber-300 text-black border-amber-300"],
+  ["godkjent", "G ✓", "G ✓", "bg-(--gold) text-black border-(--gold)"],
+  ["ok", "O ◐", "O ◐", "bg-amber-300 text-black border-amber-300"],
   [
     "lag_paa_nytt",
-    "Lag på nytt",
-    "[!] Lag på nytt",
+    "L ✗",
+    "L ✗",
     "bg-(--christmas-red) text-white border-(--christmas-red)",
   ],
 ];
@@ -351,11 +347,14 @@ export function Vurderingsknapper({
   vurdering,
   onSave,
   onBehold,
+  onTrenger,
   ekstra,
 }: {
   vurdering?: MediaVurderingItem;
   /** «Behold forrige vurdering» when the change can't be shown. */
   onBehold?: () => Promise<void>;
+  /** «Trenger mer» (?): what is missing before Hans can judge; null withdraws. */
+  onTrenger?: (hva: TrengerHva | null, notat: string) => Promise<void>;
   /** Rejects with the reason shown in «Ikke lagret: …». */
   onSave: (v: Verdikt | null, note?: string) => Promise<void>;
   ekstra?: ReactNode;
@@ -405,70 +404,48 @@ export function Vurderingsknapper({
         ? "Hva kunne vært bedre?"
         : "Kort notat...";
 
+  const navn: Record<string, string> = {
+    godkjent: "Godkjent",
+    ok: "OK",
+    lag_paa_nytt: "Lag på nytt",
+  };
   return (
     <div
-      className="mt-3 pt-2 border-t border-(--neon-green)/30 flex flex-col gap-2"
+      className="flex flex-col gap-1"
       onPointerDownCapture={(e) => {
         knappTrykk.current = !!(e.target as HTMLElement).closest(
-          "[data-verdikt], [data-fjern]",
+          "[data-verdikt], [data-fjern], [data-trenger]",
         );
       }}
     >
-      <div className="flex flex-wrap items-center gap-2">
-        {KNAPPER.map(([v, tekst, valgt, farge]) => (
+      <div className="flex flex-wrap sm:flex-nowrap items-center gap-1">
+        {KNAPPER.map(([v, tekst, , farge]) => (
           <button
             key={v}
             type="button"
             data-verdikt={v}
+            title={navn[v]}
+            aria-label={navn[v]}
+            aria-pressed={currentVerdict === v}
             // Never disabled: a click while a save runs is its own save, not lost.
             onClick={() => lagre(currentVerdict === v ? null : v)}
-            className={`min-h-11 min-w-28 px-4 py-2 font-bold cursor-pointer transition-colors border-2 ${
+            className={`min-h-11 min-w-11 px-2 text-base font-bold cursor-pointer border ${
               currentVerdict === v
                 ? farge
-                : "border-(--neon-green) text-(--neon-green) hover:bg-(--neon-green)/20"
+                : "border-(--neon-green)/60 text-(--neon-green) hover:bg-(--neon-green)/20"
             }`}
           >
-            {currentVerdict === v ? valgt : tekst}
+            {tekst}
           </button>
         ))}
-
-        {currentVerdict && (
-          <button
-            type="button"
-            data-fjern
-            onClick={() => lagre(null)}
-            className="min-h-11 px-3 py-2 text-sm text-(--neon-green)/70 underline cursor-pointer hover:text-(--neon-green)"
-          >
-            Fjern valg
-          </button>
+        {onTrenger && (
+          <TrengerValg vurdering={vurdering} onTrenger={onTrenger} />
         )}
-
-        <Lagremelding status={status} className="text-sm ml-auto" />
-
-        {ekstra}
-      </div>
-
-      {vurdering?.forrige && (
-        <div className="text-sm text-(--cold-blue)">
-          <p>○ Ny versjon, ikke vurdert. {forrigeTekst(vurdering)}</p>
-          <HvaEndret
-            f={vurdering.forrige}
-            behold={onBehold && (() => void kjør(onBehold))}
-          />
-        </div>
-      )}
-
-      {mal === "lag_paa_nytt" && !note.trim() && (
-        <p role="alert" className="text-sm text-(--christmas-red)">
-          Skriv hva som må endres
-        </p>
-      )}
-
-      <div className="flex flex-wrap sm:flex-nowrap gap-2 items-center mt-1">
         <input
           ref={felt}
           type="text"
           value={note}
+          aria-label="Notat (Enter lagrer)"
           placeholder={plassholder}
           onChange={(e) => setNote(e.target.value)}
           onFocus={(e) => {
@@ -492,18 +469,120 @@ export function Vurderingsknapper({
           onKeyDown={(e) => {
             if (e.key === "Enter") lagre(mal ?? currentVerdict);
           }}
-          className="w-full min-h-11 bg-black border-2 border-(--neon-green) px-3 text-sm text-(--neon-green) focus:outline-none focus:border-(--gold)"
+          className="order-last sm:order-none basis-full sm:basis-auto sm:flex-1 min-w-0 min-h-11 bg-black border border-(--neon-green)/60 px-2 text-base text-(--neon-green) focus:outline-none focus:border-(--gold)"
         />
-        <button
-          type="button"
-          onClick={() => lagre(mal ?? currentVerdict)}
-          data-fjern
-          className="min-h-11 min-w-28 px-4 py-2 border-2 border-(--neon-green) hover:bg-(--neon-green)/20 text-sm font-bold cursor-pointer"
-        >
-          Lagre notat
-        </button>
+        {currentVerdict && (
+          <button
+            type="button"
+            data-fjern
+            onClick={() => lagre(null)}
+            title="Fjern valg"
+            aria-label="Fjern valg"
+            className="min-h-11 min-w-11 text-(--neon-green)/70 cursor-pointer hover:text-(--neon-green)"
+          >
+            ✕
+          </button>
+        )}
+        <Lagremelding status={status} className="text-sm" />
+        {ekstra}
       </div>
+
+      {vurdering?.forrige && (
+        <div className="text-sm text-(--cold-blue)">
+          <p>○ Ny versjon, ikke vurdert. {forrigeTekst(vurdering)}</p>
+          <HvaEndret
+            f={vurdering.forrige}
+            behold={onBehold && (() => void kjør(onBehold))}
+          />
+        </div>
+      )}
+
+      {mal === "lag_paa_nytt" && !note.trim() && (
+        <p role="alert" className="text-sm text-(--christmas-red)">
+          Skriv hva som må endres
+        </p>
+      )}
     </div>
+  );
+}
+
+/** «?»: a small menu of what is missing, plus an optional note; saved at once. */
+function TrengerValg({
+  vurdering,
+  onTrenger,
+}: {
+  vurdering?: MediaVurderingItem;
+  onTrenger: (hva: TrengerHva | null, notat: string) => Promise<void>;
+}) {
+  const [åpen, setÅpen] = useState(false);
+  const [notat, setNotat] = useState("");
+  const { status, kjør } = useLagring();
+  const t = vurdering?.trenger;
+  const velg = (hva: TrengerHva | null) => {
+    setÅpen(false);
+    void kjør(() => onTrenger(hva, notat));
+  };
+  return (
+    <span className="relative">
+      <button
+        type="button"
+        data-trenger
+        title="Trenger mer (?)"
+        aria-label="Trenger mer"
+        aria-expanded={åpen}
+        onClick={() => setÅpen(!åpen)}
+        className={`min-h-11 min-w-11 px-2 text-base font-bold cursor-pointer border ${
+          t && !t.lest
+            ? "bg-(--cold-blue) text-black border-(--cold-blue)"
+            : "border-(--neon-green)/60 hover:bg-(--neon-green)/20"
+        }`}
+      >
+        ?
+      </button>
+      <Lagremelding status={status} className="text-sm" />
+      {åpen && (
+        <span
+          role="menu"
+          className="absolute z-30 left-0 top-full mt-1 flex flex-col gap-1 w-72 p-2 bg-black border border-(--cold-blue)"
+        >
+          <span className="text-sm text-(--cold-blue)">
+            Trenger mer før jeg kan vurdere:
+          </span>
+          <input
+            type="text"
+            value={notat}
+            autoFocus
+            placeholder="Valgfritt notat"
+            aria-label="Notat til agenten"
+            onChange={(e) => setNotat(e.target.value)}
+            onKeyDown={(e) => e.key === "Escape" && setÅpen(false)}
+            className="min-h-11 bg-black border border-(--neon-green)/60 px-2 text-base"
+          />
+          {(Object.keys(TRENGER) as TrengerHva[]).map((h) => (
+            <button
+              key={h}
+              type="button"
+              role="menuitem"
+              data-trenger-hva={h}
+              onClick={() => velg(h)}
+              className="min-h-11 px-2 text-left border border-(--neon-green)/40 hover:bg-(--neon-green)/20"
+            >
+              {TRENGER[h]}
+              {h === "skisse" ? " (~1,4 kr)" : ""}
+            </button>
+          ))}
+          {t && (
+            <button
+              type="button"
+              onClick={() => velg(null)}
+              className="min-h-11 px-2 text-left underline text-sm"
+            >
+              Trekk tilbake
+            </button>
+          )}
+        </span>
+      )}
+    </span>
   );
 }
 

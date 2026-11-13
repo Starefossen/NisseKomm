@@ -16,6 +16,7 @@ import {
 } from "@/lib/vurdering-lager";
 import { taggerFor } from "@/lib/vurdering-tagger";
 import type { Kutt } from "@/lib/segmenter";
+import { TRENGER, type Trenger } from "@/lib/trenger";
 import { kuttDag, startKutt } from "@/lib/kutt-jobb";
 
 /** «ok» = usable with flaws; its note is a lesson for later generation. */
@@ -34,6 +35,8 @@ export interface MediaVurderingItem {
   tid?: number;
   kutt?: Kutt;
   kuttsjekk?: Kutt;
+  trenger?: Trenger;
+  forklaring?: string;
 }
 
 export type MediaVurderinger = Record<string, MediaVurderingItem>;
@@ -94,6 +97,9 @@ export async function POST(req: NextRequest) {
     raw,
     kutt,
     behold,
+    trenger,
+    forklaring,
+    levert,
   } = body as Record<string, unknown>;
 
   if (typeof relPath !== "string" || !isSafePath(relPath)) {
@@ -133,6 +139,22 @@ export async function POST(req: NextRequest) {
   ) {
     return badRequest();
   }
+
+  // «Trenger mer»: {hva, notat?} asks, null withdraws; the agent answers with `forklaring` or `levert`.
+  const tr = trenger as { hva?: unknown; notat?: unknown } | null | undefined;
+  if (
+    (tr !== undefined &&
+      tr !== null &&
+      (typeof tr !== "object" ||
+        typeof tr.hva !== "string" ||
+        !Object.hasOwn(TRENGER, tr.hva) ||
+        (tr.notat !== undefined &&
+          (typeof tr.notat !== "string" || tr.notat.length > 1000)))) ||
+    (forklaring !== undefined &&
+      (typeof forklaring !== "string" || forklaring.length > 4000)) ||
+    (levert !== undefined && levert !== true)
+  )
+    return badRequest();
 
   // ✂ needs a direction and a point inside the take; only Julius segments have takes to cut.
   const segId = /^video\/julius\/dag-\d+#s\d+$/.test(cleanPath);
@@ -209,7 +231,34 @@ export async function POST(req: NextRequest) {
         tagger !== undefined ? [...new Set(tagger as string[])] : p.tagger;
       const nesteTid =
         tid !== undefined ? (tid as number | null) : (p.tid ?? null);
+      const forkl =
+        forklaring !== undefined
+          ? (forklaring as string).trim()
+          : (p.forklaring ?? "");
+      let tb: Trenger | undefined =
+        tr === null
+          ? undefined
+          : tr
+            ? {
+                hva: tr.hva as Trenger["hva"],
+                ...(typeof tr.notat === "string" && tr.notat.trim()
+                  ? { notat: tr.notat.trim() }
+                  : {}),
+                når: now,
+              }
+            : p.trenger;
+      // Delivered: an explanation or a sketch (`levert`). A verdict after that marks it read.
+      if (levert && !tb) {
+        ugyldig = true;
+        throw new Error("levert uten trenger");
+      }
+      if (tb && !tb.levert && (levert || (forklaring !== undefined && forkl)))
+        tb = { ...tb, levert: now };
+      if (tb?.levert && !tb.lest && vurdering !== undefined && !tr)
+        tb = { ...tb, lest: now };
       const felt: Oppføring = {
+        ...(tb ? { trenger: tb } : {}),
+        ...(forkl ? { forklaring: forkl } : {}),
         ...(nesteTagger?.length ? { tagger: nesteTagger } : {}),
         ...(nesteTid !== null ? { tid: Math.round(nesteTid * 10) / 10 } : {}),
         ...(nextVerdict ? { vurdering: nextVerdict } : {}),

@@ -1,5 +1,6 @@
 import { describe, it, expect } from "@jest/globals";
-import { byggKo, fremdrift, type KoServer } from "./ko";
+import { byggKo, elementStatus, fremdrift, type KoServer } from "./ko";
+import { videoStatus } from "@/lib/segmenter";
 import type { Element } from "./elementer";
 
 const server = (o: Partial<KoServer> = {}): KoServer => ({
@@ -338,7 +339,7 @@ describe("byggKo", () => {
       venter: 2,
       agent: 1,
       mangler: 1,
-      utenfor: 0,
+      ikke: 0,
       valgfri: 0,
     });
     // The bar's two queue segments are exactly the tabs' element sets.
@@ -355,7 +356,7 @@ describe("byggKo", () => {
     expect(fd.total.telling.venter).toBe(venterIder.size);
   });
 
-  it("an unjudged duplicate is no queue line, so the bar shows it as «Utenfor køen», not «Venter»", () => {
+  it("an unjudged duplicate is no queue line, so the bar shows it as «Ikke aktuelt», not «Venter»", () => {
     const liste: Element[] = [
       {
         id: "strek/dag02.png",
@@ -372,8 +373,9 @@ describe("byggKo", () => {
       server({ manus: {}, duplikater: ["strek/dag02.png"] }),
     );
     expect(ko.venter).toEqual([]);
-    expect(fremdrift(liste, k, ko).total.telling.venter).toBe(0);
-    expect(fremdrift(liste, k, ko).total.telling.utenfor).toBe(1);
+    const s = { duplikater: ["strek/dag02.png"] };
+    expect(fremdrift(liste, k, ko, s).total.telling.venter).toBe(0);
+    expect(fremdrift(liste, k, ko, s).total.telling.ikke).toBe(1);
   });
 
   it("an optional file nobody made is no queue line, only «valgfri» in the progress bar", () => {
@@ -397,5 +399,99 @@ describe("byggKo", () => {
     const fd = fremdrift(liste, k, ko);
     expect(fd.total.telling.valgfri).toBe(1);
     expect(fd.total.telling.mangler).toBe(0);
+  });
+});
+
+describe("one status everywhere", () => {
+  const liste: Element[] = [
+    {
+      id: "video/julius/dag-01.mp4",
+      gruppe: "julius",
+      tittel: "Dag 1: Julius",
+      dag: 1,
+      media: ["video/julius/dag-01.mp4"],
+    },
+    {
+      id: "dag/03/rampestrek",
+      gruppe: "rampestrek",
+      tittel: "Dag 3: Rampestrek",
+      dag: 3,
+      media: ["strek/dag03.png"],
+    },
+    {
+      id: "dag/04/gaatekart",
+      gruppe: "gaate",
+      tittel: "Dag 4: Gåte",
+      dag: 4,
+      media: [],
+    },
+    {
+      id: "dag/05/gaatekart",
+      gruppe: "gaate",
+      tittel: "Dag 5: Gåte",
+      dag: 5,
+      media: [],
+    },
+  ];
+  const vurderinger = {
+    "video/julius/dag-01#s1": { vurdering: "godkjent" as const },
+    "video/julius/dag-01#s2": { vurdering: "ok" as const },
+    "video/julius/dag-01.mp4": { vurdering: "godkjent" as const },
+    "dag/03/rampestrek": { vurdering: "godkjent" as const },
+    "dag/04/gaatekart": {
+      vurdering: "ok" as const,
+      trenger: { hva: "skisse" as const, når: "2026-11-13T10:00:00Z" },
+    },
+    "dag/05/gaatekart": {
+      vurdering: "godkjent" as const,
+      forklaring: "Fordi.",
+      trenger: {
+        hva: "forklaring" as const,
+        når: "2026-11-13T10:00:00Z",
+        levert: "2026-11-13T11:00:00Z",
+      },
+    },
+  };
+  const k = {
+    filer: [f("video/julius/dag-01.mp4"), f("strek/dag03.png")],
+    vurderinger,
+  };
+  const s = server({ manus: { "1": [1, 2] } });
+  const ko = byggKo(liste, k, s);
+  const fd = fremdrift(liste, k, ko, s);
+  const status = Object.fromEntries(fd.poster.map((p) => [p.id, p.status]));
+
+  it("the matrix (fremdrift) and the Element view (elementStatus) agree for every id", () => {
+    const agent = new Set(ko.agent.map((l) => l.id));
+    const venter = new Set(ko.venter.map((l) => l.id));
+    for (const e of liste)
+      expect(status[e.id]).toBe(elementStatus(e, k, agent, venter, s));
+    expect(Object.values(status)).not.toContain("utenfor");
+  });
+
+  it("a finished segmented Julius video is OK like the segment status says", () => {
+    const vs = videoStatus(
+      [{ s: 1 }, { s: 2 }],
+      (n) =>
+        vurderinger[`video/julius/dag-01#s${n}` as "video/julius/dag-01#s1"],
+      vurderinger["video/julius/dag-01.mp4"],
+    );
+    expect(vs.tekst).toMatch(/^◐ OK/);
+    expect(status["video/julius/dag-01.mp4"]).toBe("ok");
+  });
+
+  it("an approved section is not held back by its unjudged sketch file", () => {
+    expect(status["dag/03/rampestrek"]).toBe("godkjent");
+  });
+
+  it("Trenger mer: open goes to the agent with a price, delivered comes back as Ny info", () => {
+    const a = ko.agent.find((l) => l.id === "dag/04/gaatekart");
+    expect(a?.hva).toBe("trenger skisse");
+    expect(a?.pris).toBe(1.4);
+    expect(status["dag/04/gaatekart"]).toBe("agent");
+    const v = ko.venter.find((l) => l.id === "dag/05/gaatekart");
+    expect(v?.hva).toBe("Ny info: forklaring lagt til");
+    expect(status["dag/05/gaatekart"]).toBe("venter");
+    expect(ko.trengerTelling).toEqual({ skisse: 1, forklaring: 1 });
   });
 });

@@ -24,6 +24,7 @@ import {
   øyeblikkTekst,
   type Forrige,
 } from "./vurdering-versjon";
+import type { Trenger } from "./trenger";
 
 /**
  * MEDIA_DIR/media-vurdering.json, format 2 (design: review-ui-design.md §2).
@@ -53,6 +54,10 @@ export interface Oppføring {
   hashVersjon?: number;
   /** Why the verdict was moved, e.g. «gjenopprettet: hashdefinisjon endret». */
   merknad?: string;
+  /** «Trenger mer» (?): what Hans needs before he can judge; not a verdict. */
+  trenger?: Trenger;
+  /** The agent's answer to «trenger forklaring», shown on top of the Element view. */
+  forklaring?: string;
 }
 
 /** `hash`: content hash; "*" = nothing to version (code, missing file), "utdatert" = changed before format 2. */
@@ -157,6 +162,8 @@ export async function visning(dir: string, lager: Lager) {
                   ...(await hvaEndret(dir, v)),
                 },
                 oppdatert: o.oppdatert,
+                ...(o.trenger ? { trenger: o.trenger } : {}),
+                ...(o.forklaring ? { forklaring: o.forklaring } : {}),
               }
             : o;
       }),
@@ -409,7 +416,14 @@ export async function settVurdering(
   });
   e.historikk.push(...e.vurderinger.filter((v) => v.fil === fil));
   e.vurderinger = e.vurderinger.filter((v) => v.fil !== fil);
-  if (!o.vurdering && !o.notat && !o.tagger?.length) return null;
+  if (
+    !o.vurdering &&
+    !o.notat &&
+    !o.tagger?.length &&
+    !o.trenger &&
+    !o.forklaring
+  )
+    return null;
   const n = sett
     ? { stempel: sett, hash: async () => sett }
     : await nå(dir, fil);
