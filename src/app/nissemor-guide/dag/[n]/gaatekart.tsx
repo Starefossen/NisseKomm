@@ -4,6 +4,7 @@ import { Vurder } from "../../vurdering";
 import Link from "next/link";
 import { useRef, useState, type ReactNode } from "react";
 import { diagramKanter } from "@/lib/gaate-diagram";
+import { losningstavle, type Kilde } from "@/lib/losningstavle";
 import { LysbordBilde } from "../../lysbord";
 import { utskriftHref, utskriftTittel } from "../../printout/filer";
 import type { Bit, gaatekart, kveldDag } from "@/lib/guide-sesong";
@@ -455,6 +456,85 @@ function Flytdiagram({
   );
 }
 
+const FARGE: Record<Kilde, string> = {
+  hus: "border-(--gold) bg-(--gold) text-black",
+  skjerm: "border-(--cold-blue) bg-(--cold-blue) text-black",
+  resonnert: "border-gray-500 bg-gray-700 text-white",
+  ukjent: "border-dashed border-gray-500 text-gray-400",
+};
+
+/** Where each character of the code comes from; parent-only, under «Vis fasit». */
+function Losningstavle({
+  kode,
+  k,
+  steg,
+  t,
+}: {
+  kode: string;
+  k: ReturnType<typeof gaatekart>;
+  steg: string[];
+  t: (s: string) => string;
+}) {
+  const l = losningstavle(kode, steg, k.hjemme, k.skjerm);
+  const sitat = l.lukk?.sitat
+    ? `«${t(l.lukk.sitat).slice(0, 70)}${l.lukk.sitat.length > 70 ? "…" : ""}»`
+    : "";
+  return (
+    <div
+      data-testid="losningstavle"
+      className="border-2 border-(--neon-green) p-2 mt-3"
+    >
+      <h3 className="text-xl text-(--gold)">Løsningstavle</h3>
+      <div className="flex flex-wrap gap-1 my-2">
+        {l.celler.map((c, i) =>
+          c.tegn === " " ? (
+            <span key={i} className="w-3" />
+          ) : (
+            <span
+              key={i}
+              className={`flex flex-col items-center justify-center w-10 h-12 border-2 ${FARGE[c.kilde]}`}
+              title={c.kilde === "ukjent" ? "kilde ukjent" : c.kilde}
+            >
+              <span className="text-2xl leading-none">{c.tegn}</span>
+              <span className="text-xs leading-none">
+                {c.bit ?? (c.kilde === "ukjent" ? "?" : "")}
+              </span>
+            </span>
+          ),
+        )}
+      </div>
+      <p>
+        Barna har etter brikkene:{" "}
+        <span className="tracking-widest">{l.kjent}</span>
+      </p>
+      {l.lukk && (
+        <p className="text-sm">
+          Steg {l.lukk.steg}
+          {l.lukk.biter.length > 0 && ` · ${l.lukk.biter.join(", ")}`}
+          {sitat && `: ${sitat}`} → {kode}
+        </p>
+      )}
+      <p className="text-sm">
+        Hjemme gir {l.hus} av {l.lengde}, skjermen {l.skjerm} av {l.lengde},
+        resten resonnert
+      </p>
+      <p className="text-xs opacity-60">
+        Gull: hjemme · blå: skjermen · grå: resonnert · stiplet: kilde ukjent
+      </p>
+      {l.varsler.map((v) => (
+        <p
+          key={v.tekst}
+          className={
+            v.niva === "rod" ? "text-(--christmas-red)" : "text-amber-400"
+          }
+        >
+          {v.tekst}
+        </p>
+      ))}
+    </div>
+  );
+}
+
 /** Where each piece of the day's riddle is, at home and in the app. `t` hides the code. */
 export function Gaatekart({
   vid,
@@ -650,6 +730,9 @@ export function Gaatekart({
         <h4 className="text-lg text-(--christmas-red)">Hvis noe er borte</h4>
         <p>{t(d.reserve)}</p>
       </details>
+      {vis && kode && (
+        <Losningstavle kode={kode} k={k} steg={d.slikLoses} t={t} />
+      )}
       {vis && kode && (
         <div
           data-testid="gaate-fasit"
