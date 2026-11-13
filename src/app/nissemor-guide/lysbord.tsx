@@ -320,8 +320,7 @@ export function Lysbord({
         z: s * 3,
       }
     : null;
-  const knapp =
-    "min-h-11 min-w-11 px-2 border-2 border-(--neon-green) bg-black";
+  const knapp = "min-h-11 min-w-11 px-2 border-2 border-(--neon-green)";
   const nivåNavn = (n: number | null) =>
     n === null ? "Tilpass" : n === 1 ? "1:1" : `${n}×`;
 
@@ -335,7 +334,7 @@ export function Lysbord({
       data-skala={s.toFixed(3)}
       data-pan={`${pan.x},${pan.y}`}
       data-vis={visGammel ? "gammel" : "ny"}
-      className="fixed inset-0 z-[1000] flex flex-col bg-black/95 text-(--neon-green)"
+      className="fixed inset-0 z-[1000] flex flex-col bg-black text-(--neon-green)"
     >
       <div className="flex flex-wrap items-center gap-2 p-2 text-base">
         {[null, ...NIVÅER].map((n) => (
@@ -347,7 +346,7 @@ export function Lysbord({
               setSkala(n);
               setPan({ x: 0, y: 0 });
             }}
-            className={`${knapp} ${skala === n ? "bg-(--neon-green) text-black" : ""}`}
+            className={`${knapp} ${skala === n ? "bg-(--neon-green) text-black" : "bg-black"}`}
           >
             {nivåNavn(n)}
           </button>
@@ -356,7 +355,7 @@ export function Lysbord({
           type="button"
           aria-pressed={lupe}
           onClick={() => setLupe(!lupe)}
-          className={`${knapp} ${lupe ? "bg-(--neon-green) text-black" : ""}`}
+          className={`${knapp} ${lupe ? "bg-(--neon-green) text-black" : "bg-black"}`}
         >
           LUPE
         </button>
