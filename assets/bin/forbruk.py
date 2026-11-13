@@ -3,6 +3,7 @@
 
   forbruk.py logg <type> <modell> <skript> <element>   append a line (shell scripts call this at the call site)
   forbruk.py sjekk <type> [antall]                     exit 78 if estimate since BUDSJETT_FRA + this would pass BUDSJETT
+  forbruk.py splitt-video                              split the estimated «video» line into julius / loop / ukjent from assets/out
   forbruk.py rapport                                   today, this week, since BUDSJETT_FRA, calls per type
   forbruk.py --selvtest
 
@@ -79,6 +80,26 @@ def rapport():
         print("Linjer merket «estimert» er rekonstruert, ikke målt.")
 
 
+def splitt_video(rs, filer):
+    """Replace the estimated video line (no script split) by julius.sh, loop.sh and an «ukjent» remainder.
+
+    `filer`: raw take names. Evidence counts only originals: .best/.raw.raw/.forrige are copies of a take.
+    The total stays the old estimate; what no file explains is «ukjent» (copies, overwritten or deleted takes)."""
+    orig = [f for f in filer if not any(x in f for x in (".best.", ".raw.raw", ".forrige"))]
+    julius = sum(f.startswith("dag") for f in orig)
+    rest = []
+    for r in rs:
+        if r["type"] == "video" and r.get("estimert") and r["skript"] == "julius.sh/loop.sh":
+            tv = len(orig) - julius
+            deler = (("julius.sh", julius, f"{julius} dagNN-N.raw.mp4 (originaler) 12.11"),
+                     ("loop.sh", tv, f"{tv} TV-loop .raw.mp4 (originaler) 12.11"),
+                     ("ukjent", r["antall"] - julius - tv, "rest: kopier (.best), overskrevne eller slettede takes"))
+            rest += [{**r, "skript": k, "antall": n, "element": e} for k, n, e in deler if n > 0]
+        else:
+            rest.append(r)
+    return rest
+
+
 def selvtest():
     import tempfile
     global LOGG, BUDSJETT_FRA
@@ -95,6 +116,10 @@ def selvtest():
         logg("tts", "m", "t", "x", tokens=5, estimert=True, t="2000-01-01T00:00:00")
         assert len(siden(date.today())) == 117 and len(rader()) == 118
         rapport()
+    r0 = {"t": "t", "type": "video", "skript": "julius.sh/loop.sh", "antall": 10, "estimert": True, "element": "x"}
+    ut = splitt_video([r0], ["dag01-1.raw.mp4", "dag01-1.best.raw.mp4", "kontor.raw.mp4", "kontor.raw.raw.mp4"])
+    assert [(r["skript"], r["antall"]) for r in ut] == [("julius.sh", 1), ("loop.sh", 1), ("ukjent", 8)] and kostnad(ut) == 170
+    assert splitt_video(ut, []) == ut  # idempotent
     print("selvtest ok")
 
 
@@ -109,6 +134,12 @@ if __name__ == "__main__":
         if m:
             print(m, file=sys.stderr)
             sys.exit(EXIT_BUDSJETT)
+    elif a[:1] == ["splitt-video"]:
+        filer = [f.name for f in (ROOT / "assets/out").rglob("*.raw.mp4") if date.fromtimestamp(f.stat().st_mtime) == date(2026, 11, 12)]
+        ny = splitt_video(rader(), filer)
+        LOGG.with_suffix(".jsonl.før-splitt").write_text(LOGG.read_text())
+        LOGG.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in ny))
+        print(*[(r["skript"], r["antall"]) for r in ny if r["type"] == "video" and r.get("estimert")])
     elif a[:1] == ["rapport"]:
         rapport()
     else:

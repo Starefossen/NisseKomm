@@ -258,6 +258,28 @@ describe("API /api/media/vurdering - Functionality", () => {
     });
   });
 
+  it("stamps real time even when the app mocks the date", async () => {
+    process.env.NEXT_PUBLIC_MOCK_MONTH = "12";
+    process.env.NEXT_PUBLIC_MOCK_DAY = "10";
+    try {
+      const before = Date.now();
+      const res = await POST(
+        makeReq(
+          "POST",
+          { path: "video/julius/dag-01.mp4", vurdering: "godkjent" },
+          auth,
+        ),
+      );
+      const { entry } = await res.json();
+      const t = Date.parse(entry.oppdatert);
+      expect(t).toBeGreaterThanOrEqual(before);
+      expect(t).toBeLessThanOrEqual(Date.now());
+    } finally {
+      delete process.env.NEXT_PUBLIC_MOCK_MONTH;
+      delete process.env.NEXT_PUBLIC_MOCK_DAY;
+    }
+  });
+
   it("rejects lag på nytt without a note and accepts ok", async () => {
     const uten = await POST(
       makeReq(
