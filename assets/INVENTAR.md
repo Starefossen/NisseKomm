@@ -12,7 +12,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | tv | 20 | 4 | 0 | 0 | 15 | 0 | 18 |
 | port | 4 | 0 | 0 | 0 | 0 | 0 | 9 |
 | feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
-| spill | 56 | 3 | 0 | 4 | 0 | 0 | 32 |
+| spill | 56 | 3 | 0 | 4 | 0 | 0 | 33 |
 | strek | 15 | 14 | 0 | 0 | 0 | 2 | 14 |
 
 ## julius
@@ -345,6 +345,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/portrett-hjerterud.old-5.png | 0.0 MB | 2026-11-13 | - kildeteksten er endret: assets/prompts/portrett/hjerterud.txt; ikke i manifestet |
 | spill/portrett-julius.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/julius.txt; ikke i manifestet |
 | spill/portrett-julius.old-2.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/julius.txt; referansebildet er endret: assets/characters/julius/ref-portrett.jpg; ikke i manifestet |
+| spill/portrett-julius.old-3.png | 0.0 MB | 2026-11-13 | - kildeteksten er endret: assets/prompts/portrett/julius.txt; ikke i manifestet |
 
 ## strek
 
