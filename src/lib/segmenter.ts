@@ -1,3 +1,5 @@
+import { PRIS } from "./forbruk";
+
 /** One entry of dag-NN-vN.segmenter.json (julius-dag.py writes it at the join, `segmenter` back-fills it). */
 export interface Segment {
   s: number;
@@ -64,4 +66,65 @@ export function flaggTid(seg: Segment, flagg: string) {
   }
   if (flagg.startsWith("ekstra")) return Math.max(seg.start, seg.slutt - 3);
   return seg.start;
+}
+
+/** ✂ on a segment: cut the take at `t` s from the segment's start; «slutt» drops what comes after, «start» what comes before. */
+export interface Kutt {
+  retning: "slutt" | "start";
+  t: number;
+}
+
+type Dom = { vurdering?: string; kutt?: Kutt; kuttsjekk?: Kutt };
+
+export interface VideoStatus {
+  /** nytt/kutt = with an agent; vurder/klar = waiting on Hans; ferdig = can be taken into use. */
+  steg: "nytt" | "kutt" | "vurder" | "klar" | "ferdig";
+  tekst: string;
+  /** The final verdict once every segment and the whole video are judged usable. */
+  slutt?: "godkjent" | "ok";
+}
+
+const mmss = (t: number) =>
+  `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
+
+/**
+ * Video status = the worst segment (statusmodell.md): ✗ → new take, ✂ → cut,
+ * unjudged → N of M, all ✓/◐ → the whole video, then the final verdict.
+ */
+export function videoStatus(
+  segs: { s: number; start?: number }[],
+  dom: (s: number) => Dom | undefined,
+  hele?: Dom,
+): VideoStatus {
+  const med = (v: string) => segs.filter((x) => dom(x.s)?.vurdering === v);
+  const nytt = med("lag_paa_nytt");
+  if (nytt.length)
+    return {
+      steg: "nytt",
+      tekst: `Venter på nytt opptak: ${nytt.map((x) => `s${x.s}`).join(", ")} (${PRIS.video * nytt.length} kr)`,
+    };
+  const kutt = med("kutt");
+  if (kutt.length)
+    return {
+      steg: "kutt",
+      tekst: `Venter på kutt: ${kutt
+        .map((x) => {
+          const k = dom(x.s)?.kutt;
+          return `s${x.s}${k ? ` @${mmss((x.start ?? 0) + k.t)}` : ""}`;
+        })
+        .join(", ")}`,
+    };
+  const brukbar = (v?: string) => v === "godkjent" || v === "ok";
+  const vurdert = segs.filter((x) => brukbar(dom(x.s)?.vurdering)).length;
+  if (vurdert < segs.length)
+    return { steg: "vurder", tekst: `${vurdert} av ${segs.length} vurdert` };
+  if (!brukbar(hele?.vurdering))
+    return { steg: "klar", tekst: "Klar for hele videoen" };
+  const ok =
+    hele?.vurdering === "ok" || segs.some((x) => dom(x.s)?.vurdering === "ok");
+  return {
+    steg: "ferdig",
+    tekst: ok ? "◐ OK, kan tas i bruk" : "✓ Godkjent, kan tas i bruk",
+    slutt: ok ? "ok" : "godkjent",
+  };
 }

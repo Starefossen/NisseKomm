@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Icons } from "@/lib/icons";
 import { sim } from "@/lib/simulation";
 import {
@@ -38,6 +39,9 @@ export function Tidsmaskin() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // The guide is the parents' tool: no time machine and no Next dev badge there (iframes included).
+  const guide = usePathname()?.startsWith("/nissemor-guide");
+  if (guide) return <style>{"nextjs-portal{display:none!important}"}</style>;
   if (!isTimeMachineEnabled()) return null;
 
   const openPanel = () => {

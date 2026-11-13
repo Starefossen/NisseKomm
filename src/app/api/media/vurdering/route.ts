@@ -13,9 +13,11 @@ import {
   visning,
 } from "@/lib/vurdering-lager";
 import { taggerFor } from "@/lib/vurdering-tagger";
+import type { Kutt } from "@/lib/segmenter";
 
 /** «ok» = usable with flaws; its note is a lesson for later generation. */
-export type Verdikt = "godkjent" | "ok" | "lag_paa_nytt";
+/** «kutt» (✂, Julius segments only) = trim the take at `kutt`, no new call. */
+export type Verdikt = "godkjent" | "ok" | "lag_paa_nytt" | "kutt";
 
 export interface MediaVurderingItem {
   vurdering?: Verdikt;
@@ -27,10 +29,13 @@ export interface MediaVurderingItem {
   forrige?: Forrige;
   tagger?: string[];
   tid?: number;
+  kutt?: Kutt;
+  kuttsjekk?: Kutt;
 }
 
 export type MediaVurderinger = Record<string, MediaVurderingItem>;
 
+const p0 = (v: Partial<Vurdering>) => v as MediaVurderingItem;
 const badRequest = () => new Response("Ugyldig forespørsel", { status: 400 });
 const serverError = () => new Response("Serverfeil", { status: 500 });
 
@@ -84,6 +89,7 @@ export async function POST(req: NextRequest) {
     tagger,
     tid,
     raw,
+    kutt,
   } = body as Record<string, unknown>;
 
   if (typeof relPath !== "string" || !isSafePath(relPath)) {
@@ -92,7 +98,7 @@ export async function POST(req: NextRequest) {
 
   const cleanPath = relPath.trim();
 
-  const allowedVerdicts = ["godkjent", "ok", "lag_paa_nytt", null, ""];
+  const allowedVerdicts = ["godkjent", "ok", "lag_paa_nytt", "kutt", null, ""];
   if (
     vurdering !== undefined &&
     !allowedVerdicts.includes(vurdering as string | null)
@@ -121,6 +127,22 @@ export async function POST(req: NextRequest) {
   ) {
     return badRequest();
   }
+
+  // ✂ needs a direction and a point inside the take; only Julius segments have takes to cut.
+  const segId = /^video\/julius\/dag-\d+#s\d+$/.test(cleanPath);
+  const k = kutt as Kutt | undefined;
+  if (
+    (kutt !== undefined && vurdering !== "kutt") ||
+    (vurdering === "kutt" && !segId) ||
+    (k !== undefined &&
+      (!k ||
+        typeof k !== "object" ||
+        !["slutt", "start"].includes(k.retning) ||
+        typeof k.t !== "number" ||
+        !(k.t > 0) ||
+        k.t > 600))
+  )
+    return badRequest();
 
   const dir = mediaDir();
   // A segment verdict belongs to the take Hans watched (the video's segmenter.json),
@@ -151,6 +173,11 @@ export async function POST(req: NextRequest) {
         notat !== undefined
           ? (notat as string).trim()
           : ((prev as MediaVurderingItem).notat ?? "");
+      // ✂ without a point (a note saved on it keeps the stored one) cuts nothing.
+      if (nextVerdict === "kutt" && !k && !p0(prev).kutt) {
+        ugyldig = true;
+        throw new Error("kutt uten tid");
+      }
       // A redo without a note tells the generator nothing.
       if (nextVerdict === "lag_paa_nytt" && !nextNote) {
         ugyldig = true;
@@ -166,6 +193,15 @@ export async function POST(req: NextRequest) {
         ...(nesteTid !== null ? { tid: Math.round(nesteTid * 10) / 10 } : {}),
         ...(nextVerdict ? { vurdering: nextVerdict } : {}),
         ...(nextNote ? { notat: nextNote } : {}),
+        ...(nextVerdict === "kutt"
+          ? {
+              kutt: k
+                ? { retning: k.retning, t: Math.round(k.t * 100) / 100 }
+                : p.kutt,
+            }
+          : {}),
+        // The cut check stays until Hans gives the cut take a verdict.
+        ...(!nextVerdict && p.kuttsjekk ? { kuttsjekk: p.kuttsjekk } : {}),
         oppdatert: now,
       };
       // Tags, time or a note alone never re-give the verdict: it keeps the hash it

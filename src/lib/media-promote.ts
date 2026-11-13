@@ -9,6 +9,7 @@ import {
 } from "node:fs/promises";
 import path from "node:path";
 import { variantOf, versionKey } from "./media-status";
+import { segmentId, type Segment } from "./segmenter";
 import {
   endreLager,
   flyttFiler,
@@ -38,6 +39,27 @@ export async function taIBruk(dir: string, kandidat: string) {
       `${kandidat} er endret etter at den ble godkjent: vurder den på nytt før du tar den i bruk`,
     );
 
+  // A segmented Julius video is usable only when every segment is (statusmodell.md):
+  // ✓/◐ on the take that is in this video.
+  const segmenter = await readFile(
+    path.join(dir, kandidat.replace(/\.mp4$/, ".segmenter.json")),
+    "utf8",
+  )
+    .then((t) => JSON.parse(t) as Segment[])
+    .catch(() => []);
+  const åpne = segmenter.filter((x) => {
+    const id = segmentId(kandidat, x.s);
+    const d = lager.elementer[id]?.vurderinger.find((y) => y.fil === id);
+    return !(
+      (d?.vurdering === "godkjent" || d?.vurdering === "ok") &&
+      (!x.raw || d.hash === x.raw)
+    );
+  });
+  if (åpne.length)
+    throw new Error(
+      `${kandidat}: ${åpne.map((x) => `s${x.s}`).join(", ")} er ikke godkjent`,
+    );
+
   const ext = path.extname(key);
   const stem = key.slice(0, -ext.length);
   const folder = path.join(dir, path.dirname(key));
@@ -61,7 +83,10 @@ export async function taIBruk(dir: string, kandidat: string) {
       ["", ".meta.json"].map((side) => [from + e + side, to + e + side]),
     ),
     ...(ext === ".mp4"
-      ? [[`${from}.segmenter.json`, `${to}.segmenter.json`]]
+      ? [
+          [`${from}.segmenter.json`, `${to}.segmenter.json`],
+          [`${from}.lyd.json`, `${to}.lyd.json`],
+        ]
       : []),
   ];
   const has = (rel: string) => names.includes(path.basename(rel));

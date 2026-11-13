@@ -9,8 +9,11 @@ import path from "path";
  */
 
 const PICTO = /\p{Extended_Pictographic}/u;
-// "file:char" pairs that must stay; empty for now.
-const ALLOW = new Set<string>();
+// "file:char" pairs that must stay. ✂ is the cut verdict in Hans' status model
+// (statusmodell.md); the guide forces text presentation with U+FE0E.
+const ALLOW = new Set<string>([
+  "app/nissemor-guide/gjennomgang/segmentstripe.tsx:✂",
+]);
 
 const ROOT = path.join(__dirname, "../..");
 

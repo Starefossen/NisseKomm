@@ -2,7 +2,7 @@ import { describe, it, expect, jest } from "@jest/globals";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { SegmentStripe } from "../segmentstripe";
-import { flaggTid, ordDiff, type Segment } from "@/lib/segmenter";
+import { flaggTid, ordDiff, videoStatus, type Segment } from "@/lib/segmenter";
 
 const svar = (x: unknown) =>
   ({ ok: true, json: async () => x }) as unknown as Response;
@@ -51,6 +51,42 @@ describe("ordDiff og flaggTid", () => {
   });
 });
 
+describe("videoStatus", () => {
+  const segs = [
+    { s: 1, start: 0 },
+    { s: 2, start: 20 },
+    { s: 3, start: 40 },
+  ];
+  const st = (d: Record<number, object>, hele?: object) =>
+    videoStatus(segs, (n) => d[n], hele);
+  it("verste segment bestemmer", () => {
+    expect(
+      st({
+        1: { vurdering: "lag_paa_nytt" },
+        2: { vurdering: "kutt", kutt: { retning: "slutt", t: 11 } },
+      }),
+    ).toEqual({ steg: "nytt", tekst: "Venter på nytt opptak: s1 (17 kr)" });
+    expect(
+      st({ 2: { vurdering: "kutt", kutt: { retning: "slutt", t: 11 } } }).tekst,
+    ).toBe("Venter på kutt: s2 @0:31");
+    expect(st({ 1: { vurdering: "ok" }, 2: { kuttsjekk: {} } }).tekst).toBe(
+      "1 av 3 vurdert",
+    );
+    const alle = {
+      1: { vurdering: "godkjent" },
+      2: { vurdering: "ok" },
+      3: { vurdering: "godkjent" },
+    };
+    expect(st(alle).steg).toBe("klar");
+    expect(st(alle, { vurdering: "godkjent" }).slutt).toBe("ok");
+    expect(
+      st({ ...alle, 2: { vurdering: "godkjent" } }, { vurdering: "godkjent" })
+        .slutt,
+    ).toBe("godkjent");
+    expect(st(alle, { vurdering: "lag_paa_nytt" }).steg).toBe("klar");
+  });
+});
+
 describe("SegmentStripe", () => {
   it("én brikke per segment, egen vurdering, tastene virker på valgt segment", async () => {
     const poster: unknown[] = [];
@@ -82,8 +118,8 @@ describe("SegmentStripe", () => {
     await act(async () => {});
     expect(
       boks.querySelector('[data-testid="segment-sum"]')!.textContent,
-    ).toContain("1 av 2 segmenter godkjent");
-    expect(boks.querySelectorAll('[role="tab"]')).toHaveLength(3);
+    ).toContain("1 av 2 vurdert");
+    expect(boks.querySelectorAll("[data-seg]")).toHaveLength(2);
     const tast = (key: string) =>
       act(async () => {
         window.dispatchEvent(
@@ -108,6 +144,20 @@ describe("SegmentStripe", () => {
     expect(side).not.toHaveBeenCalledWith(
       expect.objectContaining({ key: "g" }),
     );
+    // ✂: K stores the cut at the player's time inside the segment.
+    boks.querySelector("video")!.currentTime = 12;
+    await tast("k");
+    expect(poster.at(-1)).toEqual({
+      path: "video/julius/dag-13#s2",
+      vurdering: "kutt",
+      kutt: { retning: "slutt", t: 4.25 },
+      raw: "r2",
+    });
+    // A click on the timeline selects the segment there.
+    await act(async () => {
+      boks.querySelector<HTMLButtonElement>('[data-seg="1"]')!.click();
+    });
+    expect(boks.textContent).toContain("Spill s1");
     await tast("Escape");
     await tast("g");
     expect(side).toHaveBeenCalledWith(expect.objectContaining({ key: "g" }));
