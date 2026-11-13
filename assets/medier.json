@@ -656,13 +656,22 @@
     "mal": "assets/prompts/tv/snofall-landsby/port-julius.txt",
     "anker": "locations/porten#standard"
   },
+  "still/port-hjerterud": {
+    "generator": "mellomstill",
+    "sted": "porten",
+    "ut": "assets/out/stills/porten/still-hjerterud.jpg",
+    "bilde": "locations/porten#standard",
+    "mal": "assets/prompts/tv/snofall-landsby/port-hjerterud.still.txt",
+    "refs": ["characters/hjerterud#portrett"]
+  },
   "tv/port-hjerterud": {
     "generator": "loop",
     "sted": "porten",
     "ut": "video/tv/port-hjerterud.mp4",
-    "bilde": "locations/porten#standard",
+    "bilde": "still/port-hjerterud",
     "mal": "assets/prompts/tv/snofall-landsby/port-hjerterud.txt",
-    "anker": true
+    "anker": "locations/porten#standard",
+    "notat": "Som port-iq: mellomstill med Hjerterud liten i døråpningen, dørene åpne innover, start = slutt"
   },
   "still/port-iq": {
     "generator": "mellomstill",
