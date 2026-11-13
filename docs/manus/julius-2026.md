@@ -406,7 +406,7 @@ Kulde-nivå 2. Lampen flakker, lyden faller ut og bildet fryser i segment 2 (ett
 
 Kulde-nivå 1. Svak knitring, ett juletrelys slukner i segment 2 (etterarbeid). Ingen omtale av lykten på Landås (betinget innhold, bare i PS). Kroken fra dag 16 (vinduet) løses i segment 2. Skjæret i vinduet står i prompten som ønske, ikke som krav, og uten farge: ingen sier «grønt» før koden (13.11). Rapporten fra Rampenissen står i åpningen. Fire segmenter: brikken delt over 3–4.
 
-1. **Replikk:** «Goooood morgen, Snøfall! Rampenissen rapporterer: «Kidnappa av kosedyra. Dem vil ha pepperkakan.» Jeg hadde gitt dem pepperkakene.»
+1. **Replikk:** «Goooood morgen, Snøfall! Rampenissen rapporterer: «Fanga av kosedyra. Dem vil ha pepperkakan.» Jeg hadde gitt dem pepperkakene.»
    - Varighet: 12 s (17 ord)
    - Handling: Legger venstre pekefinger på det øverste arket i brevbunken og leser fra det. Arket blir liggende.
    - Kulde: Svak knitring.
