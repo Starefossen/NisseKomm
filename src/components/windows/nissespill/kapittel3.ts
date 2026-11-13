@@ -86,7 +86,7 @@ export const KAPITTEL_3: Kapittel = {
       tittel: "Lyset langs hylla",
       flagg: "krystall_satt",
       tekst:
-        "Den siste krystallen vrir seg på plass, og lyset hopper. Krystall etter krystall, bortover den nederste hylla, helt til veggen. Én hylle av hundre lyser gull. Resten er mørkt. " +
+        "Den siste krystallen vrir seg på plass, og lyset hopper. Krystall etter krystall, bortover den nederste hylla, helt til veggen. Lyset når helt bort til den store krystallen. Rundt foten ligger noe rødt. Én hylle av hundre lyser gull. Resten er mørkt. " +
         R +
         "«Ei hylle. Det e ikkje heile grotta. Men det e ei hylle meir enn i går. Resten må nån andre ta.»",
       rutenett: ["L.M", "L|L", "S.L"],
@@ -912,7 +912,7 @@ export const KAPITTEL_3: Kapittel = {
       maal: "Finn noe som skjermer et lys mot trekk. Spør Hjerterud.",
       tips: [
         R +
-          "«Trekken der nede blås ut alt. Hjerterud veit sikkert ka gruvefolk gjord med lys i trekk. Spør ho. Ho sitt rett der og skriv.»",
+          "«Trekken der nede blås ut alt. Hjerterud veit sikkert ka gruvefolk gjord med lys i trekk. Spør ho. Ho sitt rett der med bollan.»",
         R +
           "«Hjerterud snakka om netting rundt flammen, og så såg ho på tekoppen sin. Ka heng det på en tekopp som e av messing og full av hull?»",
         R +
@@ -966,7 +966,7 @@ export const KAPITTEL_3: Kapittel = {
         R +
           "«Lyset går bare ut der den slipte sida peke. Start nederst ved S og vri hver krystall te lyset treff neste. Hjørnekrystallan snur lyset, den rette sende det videre.»",
         R +
-          "«Fra S: opp te hjørnet, snu det mot høyre, gjennom den rette, og hjørnet øverst te høyre snur det opp te M. Dem to andre hjørnan e bare pynt.»",
+          "«Fra S: opp te hjørnet, snu det mot høyre, gjennom den rette, og hjørnet te høyre snur det opp te M. Dem to andre hjørnan e bare pynt.»",
       ],
     },
     {

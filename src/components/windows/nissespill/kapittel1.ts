@@ -74,7 +74,7 @@ export const KAPITTEL_1: Kapittel = {
       id: "syltetoey",
       navn: "IQs syltetøyglass",
       ikon: "potion",
-      se: "Et glass rød syltetøy med lappen «MITT. – IQ». Under lappen står det med mindre skrift: «JA, OGSÅ DU, RAMPENISSEN». Rødt, vått og dessverre eid av noen.",
+      se: "Et glass rødt syltetøy med lappen «MITT. – IQ». Under lappen står det med mindre skrift: «JA, OGSÅ DU, RAMPENISSEN». Rødt, vått og dessverre eid av noen.",
     },
   },
   fjaerBelonning:
@@ -114,9 +114,9 @@ export const KAPITTEL_1: Kapittel = {
       tittel: "Postkortet på luka",
       flagg: "k1_ferdig",
       tekst:
-        "Siste bit glir på plass, og torget er helt igjen. KLIKK. Luka svinger opp. Inni ligger garnkurven, og oppi den: lykkebjella. Den klinger ikke. Den gnistrer. Kurven er full av ull, men det røde nøstet er borte. Bare en ende ligger igjen, stiv av rim. " +
+        "Siste bit glir på plass, og torget er helt igjen. KLIKK. Luka svinger opp. Inni ligger garnkurven, og oppi den: lykkebjella. Den klinger ikke. Den gnistrer. Kurven er full av ull, men halve det røde nøstet er borte. Tråden er røket, og enden er stiv av rim. " +
         R +
-        "«BJELLA MI! Og kurven lukte fortsatt mæ. Det e et kompliment. Men kor e det røde nøstet? Det va det finaste æ hadde. Æ leite seinar.»",
+        "«BJELLA MI! Og kurven lukte fortsatt mæ. Det e et kompliment. Men kor e resten av det røde nøstet? Det va det finaste æ hadde. Æ leite seinar.»",
       bilde: "spill/piksel/torget.png",
       trekk: 14,
     },
@@ -687,7 +687,7 @@ export const KAPITTEL_1: Kapittel = {
           se:
             "En svær, buet ovn av leire og stein med bjørkeved som gløder inni. Det er det varmeste stedet i Snøfall, og om vinteren sover katten, Pil og tre hansker oppå den. " +
             R +
-            "«Sjå på den ovnen der! Den e så varm og god at til og med Vintervokteren hadde smelta om han stakk nesa inn.»",
+            "«Sjå på den ovnen der! Den e så varm og god at til og med Winter hadde tatt av sæ skjerfet om han stakk nesa inn.»",
           prat: "Du sier «hei» inn i ovnsluka. Noe oppå ovnen svarer med å strekke seg. Det er katten. Eller Pil. Begge svarer sånn.",
           bruk:
             "Du nærmer deg luka. Det er varmt. Veldig varmt. Fjærene dine krøller seg. " +
@@ -741,7 +741,7 @@ export const KAPITTEL_1: Kapittel = {
           se:
             "Store glasskrukker med mel, sukker og kardemomme. Det er et lite fotavtrykk i melet ved siden av. Det har tre tær og hører til en ugle. " +
             R +
-            "«Krukke på krukke med hvetemel og kardemomme. Hvis Lille-Pjokk velte ei sånn, kommer han til å se ut som en snøball resten av desember!»",
+            "«Krukke på krukke med hvetemel og kardemomme. Om Lille-Pjokk velte ei sånn, kjem han te å sjå ut som en snøball resten av desember!»",
           bruk: "Du dytter nebbet i ei krukke. Hvitt nebb. Hjerterud ler så krukkene klirrer. «Nå ser du ut som en snøugle!»",
         },
         {
@@ -761,7 +761,7 @@ export const KAPITTEL_1: Kapittel = {
           se:
             "Ei lita, rav-glasert krukke med gyllen sirup og ei treøse i. Det renner en tråd ned på bordet. Den har rent der siden i fjor. " +
             R +
-            "«Aha! Ekte, klissete nissesirup! Én dråpe av det der på et tørt knekkebrød, så kan du lokke med deg sjølvaste Rudolf helt til Fauske!»",
+            "«Aha! Ekte, klissete nissesirup! Én dråpe av det der på et tørt knekkebrød, så kan du lokke med deg sjølvaste Rudolf heilt te Fauske!»",
           bruk: "Du stikker nebbet i sirupen. Det sitter fast. Det sitter fast lenge. Hjerterud løsner deg med tresleiva. «Sirup er for knekkebrød, vennen. Ikke for ugler.»",
         },
         {
@@ -1044,7 +1044,7 @@ export const KAPITTEL_1: Kapittel = {
           smart: "se",
           se: "En firkantet luke i gulvet med stigen ned. Fra åpningen kommer det kald luft og lyden av Winter som kremter ved postkassen. Lyden bærer godt oppover. Det vet han.",
           prat: "Du roper «hallo» ned gjennom luka. Nede på torget svarer Winter: «Ikkje rop i luka.» Han så ikke opp. Han trengte ikke.",
-          bruk: "Du titter ned gjennom luka. Mørkt, så lysere, så torget. Og øverst på postkassen, Winters flosshatt sett ovenfra. Nei. Han har ikke hatt på seg i dag. Det er skriveplata.",
+          bruk: "Du titter ned gjennom luka. Mørkt, så lysere, så torget. Og øverst på postkassen, Winters flosshatt sett ovenfra. Tømming av postkassen er en offisiell anledning. Det meste er det, for Winter.",
         },
         {
           id: "urskiva",
@@ -1142,7 +1142,7 @@ export const KAPITTEL_1: Kapittel = {
           prat:
             "Du uler lavt mot klementinene. " +
             R +
-            "«Ikkje snakk te dem. Æ har snakka te en klementin. Ho svare ikkje, men ho ser ut som ho vett nåkka.»",
+            "«Ikkje snakk te dem. Æ har snakka te en klementin. Ho svare ikkje, men ho ser ut som ho veit nåkka.»",
           rect: { x: 17, y: 83, w: 19, h: 17 },
           smart: "se",
           se:
@@ -1491,7 +1491,7 @@ export const KAPITTEL_1: Kapittel = {
         },
         bolle: {
           tekst:
-            "Hjerterud legger en bolle på disken før du er ferdig med å spørre. «Kanel, nystekt, med perlesukker. Den er din. Ikke til Winter, ikke til IQ, din. Og hvis Rampenissen sier noe, så si at jeg sender en til ham også. I posten. Når posten går igjen.»",
+            "Hjerterud legger en bolle på bordet før du er ferdig med å spørre. «Kanel, nystekt, med perlesukker. Den er din. Ikke til Winter, ikke til IQ, din. Og hvis Rampenissen sier noe, så si at jeg sender en til ham også. I posten. Når posten går igjen.»",
           rampenissen:
             "«I POSTEN? Ho veit at Winter har postkassa! Det e en vits. Ho vitse om mæ. Æ e stolt.»",
           valg: [{ tekst: "Takk!" }],

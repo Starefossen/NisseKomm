@@ -37,7 +37,7 @@ export const KAPITTEL_2: Kapittel = {
   ],
   utro:
     R +
-    "«Antenna peke mot Landås, bildet e skarpt, og Rudolf tygg på knekkebrød i stedet for kabel. Dokker e gode! IQ ska lage ei egen hylle te knekkebrødet, med lås. Rudolf har allerede sett på låsen. Neste gang treng æ hjelp med nåkka ... mørkt. Over og ut!»",
+    "«Antenna peke mot Landås, bildet e skarpt, og Rudolf tygg på knekkebrød i stedet for kabel. Dokker e gode! IQ ska lage ei egen hylle te knekkebrødet, med lås. Rudolf har allerede sett på låsen. Men antenna e skjør. Æ veit ikkje kor lenge ho står rett, for det som sende rimet, e ikkje ferdig. Neste gang treng æ hjelp med nåkka ... mørkt. Over og ut!»",
   gjenstander: {
     blikkboks: {
       id: "blikkboks",
@@ -91,7 +91,7 @@ export const KAPITTEL_2: Kapittel = {
       id: "haandvarmer",
       navn: "IQs håndvarmer",
       ikon: "heart",
-      se: "Ei lita pose med lappen «RIST FOR VARME». Du rister. Den blir lunken. Det er alt den har å by på. Den har vært brukt. Mange ganger.",
+      se: "En liten pose med lappen «RIST FOR VARME». Du rister. Den blir lunken. Det er alt den har å by på. Den har vært brukt. Mange ganger.",
     },
   },
   fjaerBelonning:
@@ -228,7 +228,7 @@ export const KAPITTEL_2: Kapittel = {
             },
             {
               tekst:
-                "Du drar i skiva. Den står bom fast. Noe nede ved foten av masta holder igjen, og det noe har en reinsdyr foran seg.",
+                "Du drar i skiva. Den står bom fast. Noe nede ved foten av masta holder igjen, og det noe har et reinsdyr foran seg.",
             },
           ],
           bruker: [
@@ -458,7 +458,7 @@ export const KAPITTEL_2: Kapittel = {
             },
             {
               tekst:
-                "Ei lita trehytte med ett vindu som lyser gult og en hengelås med tre tallhjul på døra. Skilt: «ANTENNEHYTTA. KODE: TELL LAMPER PÅ MASTA, KABLER I SNØEN, REINSDYR. IKKE SI DET TIL NOEN. – IQ». Skiltet sier det til alle.",
+                "Ei lita trehytte med ett vindu som lyser gult og en hengelås med tre tallhjul på døra. Skilt: «ANTENNEHYTTA. KODE: TELL LAMPER PÅ MASTA, TYKKE SVARTE KABLER FRA HYTTA TIL MASTA, REINSDYR. IKKE SI DET TIL NOEN. – IQ». Skiltet sier det til alle.",
             },
           ],
           bruk: [
@@ -500,7 +500,7 @@ export const KAPITTEL_2: Kapittel = {
             },
             {
               tekst:
-                "Ved siden av der boksen står, ligger ei lita pose: «RIST FOR VARME». IQ har tydeligvis sittet her og frosset. På lampa henger en lapp: «LANDÅS 90,0. IKKE RØR RATTET. – IQ». Noen har rørt rattet.",
+                "Ved siden av der boksen står, ligger en liten pose: «RIST FOR VARME». IQ har tydeligvis sittet her og frosset. På lampa henger en lapp: «LANDÅS 90,0. IKKE RØR RATTET. – IQ». Noen har rørt rattet.",
             },
           ],
           ta: {
@@ -845,7 +845,7 @@ export const KAPITTEL_2: Kapittel = {
           bruk: "Du trykker på knappen. Gløden blir sterkere. Innenfra døra: «Var det knappen? Det var knappen.» Du trekker vingen til deg.",
           prat:
             R +
-            "«Æ spurte korsen den virke. Én gang. IQ snakka i to tima. Æ veit fortsatt ikkje. Men æ veit mye om spola.»",
+            "«Æ spurte kossen den virke. Én gang. IQ snakka i to tima. Æ veit fortsatt ikkje. Men æ veit mye om spola.»",
         },
       ],
     },
@@ -903,7 +903,7 @@ export const KAPITTEL_2: Kapittel = {
         },
         antenne: {
           tekst:
-            "«Jeg VET det! Tannhjulet som snur antenna er frosset fast. Det er ikke vanlig is. Det er rimen fra linja, den samme som har krøpet nedover alt mitt siden første desember. Og Rudolf har klødd seg på masta, så peileskiva peker på skogen. Tannhjulet må tines med noe varmt. Ikke en kaffekopp, den er kald før du er ute av døra. Metall. Som holder på varmen.»",
+            "«Jeg VET det! Tannhjulet som snur antenna er frosset fast. Det er ikke vanlig is. Det er rimet fra linja, den samme som har krøpet nedover alt mitt siden første desember. Og Rudolf har klødd seg på masta, så peileskiva peker på skogen. Tannhjulet må tines med noe varmt. Ikke en kaffekopp, den er kald før du er ute av døra. Metall. Som holder på varmen.»",
           rampenissen:
             "«Nåkka av metall, og varmt. Og nåkka å hold det med, for æ kjenne IQ sine varme ting. Dem e varme på en personlig måte.»",
           valg: [
@@ -970,7 +970,7 @@ export const KAPITTEL_2: Kapittel = {
         R +
           "«Nåkka av metall som hold på varmen, sa IQ. Boksen hans ligg i hytta ved antenna. Men døra har kodelås, og skiltet på døra sei meir enn det burde.»",
         R +
-          "«Skiltet sei TELL. Lamper på masta, kabler i snøen, reinsdyr. SE på lampa, SE på kablan, og tell reinsdyr. Det går fort.»",
+          "«Skiltet sei TELL. Lamper på masta, dem tykke svarte kablan fra hytta te masta, reinsdyr. Alt det andre i snøen telle ikkje. SE på lampa, SE på kablan, og tell reinsdyr. Det går fort.»",
         R +
           "«Ei lampe, tre kabla, en Rudolf. BRUK hytta og still hjulan på 1, 3 og 1.»",
       ],

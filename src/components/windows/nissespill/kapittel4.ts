@@ -37,7 +37,7 @@ export const KAPITTEL_4: Kapittel = {
   ],
   utro:
     R +
-    "«Briller, bjelle, port. Tre av tre, i den rekkefølgen dokker valgte sjøl. Winter godtok det. WINTER. Lykkebjella heng der ho ska. Sleden finn fram uansett, sei IQ, Winter har tall og Trixter har kart. Men no finn den fram med LYKKE. Det va dokker som gjord det. Æ må gå og finn ei klementin. Det e nåkka i øyet. Over og ut. Og god jul!»",
+    "«Briller, bjelle, port. Tre av tre, i den rekkefølgen dokker valgte sjøl. Winter godtok det. WINTER. Lykkebjella heng der ho ska. Og brevan ligg bunde med garnet mitt, klar te porten i Muren. Æ sei ikkje meir om det. Sleden finn fram uansett, sei IQ, Winter har tall og Trixter har kart. Men no finn den fram med LYKKE. Det va dokker som gjord det. Æ må gå og finn ei klementin. Det e nåkka i øyet. Over og ut. Og god jul!»",
   gjenstander: {
     fjaerpenn: {
       id: "fjaerpenn",
@@ -84,15 +84,15 @@ export const KAPITTEL_4: Kapittel = {
     },
     fiskesnoere: {
       id: "fiskesnoere",
-      navn: "Magnet i hyssing",
+      navn: "Magnet i rødt garn",
       ikon: "fish",
-      se: "Hestesko-magneten knyttet fast i enden av den røde hyssingen. Ei fiskestang for ting som ikke er fisk. Det er de beste fiskestengene.",
+      se: "Hestesko-magneten knyttet fast i enden av det røde garnet. Ei fiskestang for ting som ikke er fisk. Det er de beste fiskestengene.",
     },
     bjelle: {
       id: "bjelle",
       navn: "Lykkebjella",
       ikon: "bell",
-      se: "Rampenissens lykkebjelle av messing, med en jernring i toppen og den røde garntråden fra garnkurven. Litt støv, litt vedflis, én nøtt som satt fast. Den gnistrer fortsatt. Nøtta gjør ikke det.",
+      se: "Rampenissens lykkebjelle av messing, med en jernring i toppen og den lille garnstumpen sin. Litt støv, litt vedflis, én nøtt som satt fast. Den gnistrer fortsatt. Nøtta gjør ikke det.",
     },
     talgstump: {
       id: "talgstump",
@@ -137,7 +137,7 @@ export const KAPITTEL_4: Kapittel = {
       b: "hyssing",
       gir: "fiskesnoere",
       tekst:
-        "Du knytter hyssingen rundt magneten med en dobbel knute. Floke strammer med nebbet. " +
+        "Du knytter garnet rundt magneten med en dobbel knute. Floke strammer med nebbet. " +
         R +
         "«Fiskestang! Æ fiska en gang. Æ fikk en sokk. Det va min egen sokk. Æ hadde den på mæ da æ kasta ut.»",
     },
@@ -278,7 +278,7 @@ export const KAPITTEL_4: Kapittel = {
               flagg: "bjelle_montert",
               forbruker: true,
               tekst:
-                "Du knytter lykkebjella fast i tømmene med den røde garntråden. Den klinger ikke. Den gnistrer. Winter krysser av punkt to uten å se opp. " +
+                "Du knytter lykkebjella fast i tømmene med den lille garnstumpen sin. Den klinger ikke. Den gnistrer. Winter krysser av punkt to uten å se opp. " +
                 R +
                 "«BJELLA MI! På sleden! No har han LYKKA med sæ heile veien. Te stua dokkers, meine æ. Det e det samme.»",
             },
@@ -343,7 +343,7 @@ export const KAPITTEL_4: Kapittel = {
             bjelle:
               "Du henger bjella på hengslet. Nå hyler det med bjelle på. Winter: «Nei.» " +
               R +
-              "«NEI.» Dem e enige. Dem veit det ikkje. Det e første gang.",
+              "«NEI.» De er enige. De vet det ikke. Det er første gang.",
             fjaerpenn:
               "Du stikker fjærpennen i hengslet. Grønt blekk på rust. Nå er det et rustent, hylende, grønt hengsel.",
           },
@@ -375,6 +375,8 @@ export const KAPITTEL_4: Kapittel = {
             },
           ],
           feil: {
+            hyssing:
+              "Winter ser på garnet. «Utlån fra arkivet, stemplet av meg. Brevene skal inn gjennom porten i Muren i natt. Ikkje denne porten. Den andre. Garnet skal tilbake rundt bunken. Eg har ført det opp.»",
             bjelle:
               "Du viser Winter bjella. «Punkt to henger på sleden, ikkje på meg. Eg er ikkje en slede. Eg har sjekket.»",
             briller:
@@ -408,18 +410,18 @@ export const KAPITTEL_4: Kapittel = {
         },
         {
           id: "muren",
-          navn: "Muren",
+          navn: "Bymuren",
           rect: { x: 0, y: 50, w: 36, h: 24 },
           smart: "se",
           se: "Bymuren: en lav steinmur med snø på toppen, bygd for tre hundre år siden sammen med porten. Steinen er varm der sola har vært. Det har den ikke vært på lenge. Steinen husker likevel.",
-          prat: "Du sier «hei» til muren. Steinen sier ingenting, men det er en varm stillhet. Tre hundre år med folk som gikk forbi og sa hei, det setter seg.",
+          prat: "Du sier «hei» til bymuren. Steinen sier ingenting, men det er en varm stillhet. Tre hundre år med folk som gikk forbi og sa hei, det setter seg.",
         },
         {
           id: "muren_h",
-          navn: "Muren til høyre",
+          navn: "Bymuren til høyre",
           rect: { x: 66, y: 46, w: 34, h: 12 },
           smart: "se",
-          se: "Muren fortsetter mot høyre, med snø på toppen og et gjerde av staur over. Ved porten er steinen slitt blank der en arm pleier å hvile. Winters arm. Han lener seg der når han venter. Han venter mye.",
+          se: "Bymuren fortsetter mot høyre, med snø på toppen og et gjerde av staur over. Ved porten er steinen slitt blank der en arm pleier å hvile. Winters arm. Han lener seg der når han venter. Han venter mye.",
         },
         {
           id: "veien",
@@ -524,7 +526,7 @@ export const KAPITTEL_4: Kapittel = {
             item: "bjelle",
             hvis: "snoere_fram",
             tekst:
-              "Du drar forsiktig opp, og der kommer lykkebjella, med rød garntråd, litt vedflis og en liten merkelapp som klirrer mot magneten. Lappen glipper og lander på gulvet. Garnet går tilbake rundt bunken. " +
+              "Du drar forsiktig opp, og der kommer lykkebjella, med garnstumpen sin, litt vedflis og en liten merkelapp som klirrer mot magneten. Lappen glipper og lander på gulvet. Garnet går tilbake rundt bunken. " +
               R +
               "«DER E HO! Æ visste det. Æ visste det ikkje. Men æ håpa høgt.»",
           },
@@ -556,7 +558,7 @@ export const KAPITTEL_4: Kapittel = {
             magnet:
               "Du slipper magneten ned i sprekken. KLIKK, den sitter fast i bjella der nede. Og du når ikke ned. Floke river den opp igjen med nebbet, med nød og neppe. Du trenger noe å senke den ned MED. Og dra opp med.",
             hyssing:
-              "Du senker hyssingen ned. Den henger der og gjør ingenting. Bjella er ikke imponert. Noe må sitte i enden. Noe bjeller liker.",
+              "Du senker garnet ned. Den henger der og gjør ingenting. Bjella er ikke imponert. Noe må sitte i enden. Noe bjeller liker.",
             fjaerpenn:
               "Du stikker fjærpennen ned i sprekken. Det kiler bjella. Den ler ikke. Bjeller ler ikke, de ringer, og denne gjør ikke det engang.",
             klementin:
@@ -676,11 +678,11 @@ export const KAPITTEL_4: Kapittel = {
             {
               hvis: "tok_magnet",
               tekst:
-                "Taletrakten og skapet med plugger. Tre lapper ligger på skapet nå som magneten er borte. Den øverste: «RING LANDÅS JULAFTEN. IKKE GLEM.» Den nederste: «IKKE GLEM LAPPEN.»",
+                "Taletrakten og skapet med plugger. Tre lapper ligger på skapet nå som magneten er borte. Den øverste: «RING BERGEN JULAFTEN. IKKE GLEM.» Den nederste: «IKKE GLEM LAPPEN.»",
             },
             {
               tekst:
-                "Taletrakten og skapet med plugger. På skapdøra holder en rød hestesko-magnet tre lapper fast. Den øverste: «RING LANDÅS JULAFTEN. IKKE GLEM.» Magneten holder godt. Den holder alt av jern i nærheten. Den holder nesten i Floke.",
+                "Taletrakten og skapet med plugger. På skapdøra holder en rød hestesko-magnet tre lapper fast. Den øverste: «RING BERGEN JULAFTEN. IKKE GLEM.» Magneten holder godt. Den holder alt av jern i nærheten. Den holder nesten i Floke.",
             },
           ],
           ta: {
@@ -697,6 +699,11 @@ export const KAPITTEL_4: Kapittel = {
           smart: "bruk",
           se: [
             {
+              hvis: "tok_bjelle",
+              tekst:
+                "Bunken er bundet igjen med det røde garnet, med portstempelet midt på. Klar til i natt. {{brev}}",
+            },
+            {
               hvis: "tok_hyssing",
               tekst:
                 "Brevbunken fra Bergen ligger løs nå. Den holder seg likevel. Brevene liker hverandre. De er fra samme by. {{brev}}",
@@ -709,11 +716,19 @@ export const KAPITTEL_4: Kapittel = {
           ta: {
             item: "hyssing",
             tekst:
-              "Du løsner den røde hyssingen fra bunken og vikler den opp. Lang. Sterk. Brevene blir liggende pent. De har vært på reise, de vet hvordan man oppfører seg. " +
+              "Du løsner det røde garnet fra bunken og vikler den opp. Lang. Sterk. Brevene blir liggende pent. De har vært på reise, de vet hvordan man oppfører seg. " +
               R +
               "«Æ ga dem resten av nøstet. Det har jo halve fra før. Da kjenne det igjen garnet. Lån det, men legg det tilbake!»",
           },
-          bruk: "Brevene ligger løst og pent. Du lar dem ligge. {{brev}}",
+          bruk: [
+            {
+              hvis: "tok_bjelle",
+              tekst: "Bunken er bundet og klar. Du lar den ligge. {{brev}}",
+            },
+            {
+              tekst: "Brevene ligger løst og pent. Du lar dem ligge. {{brev}}",
+            },
+          ],
         },
         {
           id: "boka",
@@ -817,7 +832,7 @@ export const KAPITTEL_4: Kapittel = {
             noett:
               "Du legger nøtta ved siden av fuglen. Hun ser på den. Rund, ja. Blank? Hun ser på deg. Hun ser på nøtta. Hun dytter den utfor kanten med nebbet. Den triller under vedkassa. Hun har standarder, og de er blanke.",
             hyssing:
-              "Du legger hyssingen rundt fuglen. Hun ser på den som om du har gitt henne et skjerf. Det er ikke helt feil. Hun ser litt ut som Winter nå.",
+              "Du legger garnet rundt fuglen. Hun ser på den som om du har gitt henne et skjerf. Det er ikke helt feil. Hun ser litt ut som Winter nå.",
             magnet:
               "Brevfugler er ikke magnetiske. Du sjekket. Nå vet du. Hun vet også. Hun er ikke fornøyd med å vite det.",
             fiskesnoere:
@@ -881,7 +896,7 @@ export const KAPITTEL_4: Kapittel = {
             {
               hvis: "k4_ferdig",
               tekst:
-                "«Avgangslisten er komplett. Tre av tre. Eg har aldri hatt tre av tre. Eg vet ikkje helt ka eg skal gjøre med hendene. Eg tror eg skal ta av en runde til.»",
+                "«Avgangslisten er komplett. Tre av tre. Eg har aldri hatt tre av tre. Eg vet ikkje helt hva eg skal gjøre med hendene. Eg tror eg skal ta av en runde til.»",
             },
             {
               hvis: "klar_til_stempel",
@@ -948,7 +963,7 @@ export const KAPITTEL_4: Kapittel = {
         },
         rekorder: {
           tekst:
-            "«Baksiden er IQs register for sledesimulatoren. Han flyr ikkje selv, så eg fører den. {{rekorder}} Eg fører alt. Nokon må.»",
+            "«Baksiden er IQs register for sledesimulatoren. Han flyr ikkje selv, så eg fører den. {{rekorder}} Eg fører alt. Noen må.»",
         },
         liste: {
           tekst:
@@ -983,7 +998,7 @@ export const KAPITTEL_4: Kapittel = {
         },
         skjerf: {
           tekst:
-            "Winter ser ned på skjerfet. «To runder i dag. Det er mildere. Eg vet ikkje korfor. Det er ingen paragraf for det.» Han retter på skriveplata. «Eg har det bra. Takk for at du spurte. Ingen spør. Eg har et skjema for det, og det er tomt.»",
+            "Winter ser ned på skjerfet. «To runder i dag. Det er mildere. Eg vet ikkje hvorfor. Det er ingen paragraf for det.» Han retter på skriveplata. «Eg har det bra. Takk for at du spurte. Ingen spør. Eg har et skjema for det, og det er tomt.»",
           rampenissen:
             "«Han har tatt av en runde! Det e tøvær i Winter! Nån må ring IQ, det e sikkert vitenskap.»",
           valg: [{ tekst: "Vi spør igjen i morgen." }],
@@ -1053,7 +1068,7 @@ export const KAPITTEL_4: Kapittel = {
         },
         briller: {
           tekst:
-            "«Ved boka. Under den brevfuglen. Hun kom med et brev fra Landås i natt, så brillene mine, og bestemte at de var et egg. Jeg har ikke hjerte til å jage henne. Hun har fløyet langt. Og hun har et godt nebb.»",
+            "«Ved boka. Under den brevfuglen. Hun kom med et brev fra Bergen i natt, så brillene mine, og bestemte at de var et egg. Jeg har ikke hjerte til å jage henne. Hun har fløyet langt. Og hun har et godt nebb.»",
           rampenissen:
             "«Brevfugla ruge på alt som e rundt og blankt. Vil du ha nåkka fra ei brevfugl, må du gi ho nåkka ho like bedre. Det e sånn med alle.»",
           valg: [{ tekst: "Vi finner noe hun liker bedre." }],
@@ -1099,9 +1114,8 @@ export const KAPITTEL_4: Kapittel = {
         R +
           "«Bjella ligg bak vedkassa hos Julius. For trangt for hender og ugler. Men ikkje for nåkka på ei snor, med nåkka i enden som bjella heng sæ fast på.»",
         R +
-          "«Magneten på skapet ved taletrakten, og den røde hyssingen rundt brevbunken. I lag blir det ei fiskestang.»",
-        R +
-          "«Kombiner magneten og hyssingen, og bruk fiskestanga på vedkassa.»",
+          "«Magneten på skapet ved taletrakten, og det røde garnet rundt brevbunken. I lag blir det ei fiskestang.»",
+        R + "«Kombiner magneten og garnet, og bruk fiskestanga på vedkassa.»",
       ],
     },
     {
@@ -1115,7 +1129,7 @@ export const KAPITTEL_4: Kapittel = {
         R +
           "«Start øverst ved S. Hver kubbe har to åpninga. Vipp dem te åpninga peke mot neste kubbe, heilt ned te M.»",
         R +
-          "«Fra S rett ned, så te høyre, så ned gjennom den rette kubben, og det nederste hjørnet snur te høyre inn på M. Dem to andre kubban e bare i veien.»",
+          "«Fra S rett ned, så te høyre, så ned gjennom den rette kubben, og det nederste hjørnet snur te høyre inn på M. Den siste kubben e bare i veien.»",
       ],
     },
     {
