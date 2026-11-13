@@ -1,0 +1,1409 @@
+{
+ "1": [
+  {
+   "s": 1,
+   "hash": "cbddc95002bc",
+   "key": [
+    "Ja… hallo? Er det liv i jernvaren? Gooood morgen, Snøfall! Kristian, Håkon og Hanna! I natt åpnet IQ direktelinjen til stua deres.",
+    15,
+    "Banker to ganger på mikrofonen med venstre pekefinger, lytter, så lyser han opp. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 22,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "4db5273e6d5f",
+   "key": [
+    "Det første IQ sendte ned fra verkstedet, var Hjerteruds niste: tre esker klementiner. Rampenissen havnet under eskene. Dere så hvordan det endte.",
+    15,
+    "Holder venstre hånd opp som om han har en klementin i den, skreller den med tommelen, lukter på fingrene og smiler. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 22,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "d02c8b03797b",
+   "key": [
+    "Det dere ser, er NisseKomm, hovedkvarteret vårt. Alt som skjer i Snøfall, kommer ned linjen til dere: TV-en, brevene og meg.",
+    15,
+    "Følger en ledning på sentralbordet med venstre pekefinger, fra tavla og ut mot kanten, og legger hånden på brystet på «og meg». Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 21,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "672965564598",
+   "key": [
+    "Advent betyr ankomst. Julen er på vei, og Rampenissen kom først. Derfor teller vi dagene i stedet for å hoppe til julaften.",
+    15,
+    "Blar i den store boka med venstre hånd, legger den flat på siden. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 22,
+   "laast": false,
+   "varsler": [
+    "arket løftes: Blar i den store boka med venstre hånd, legger den flat på siden."
+   ]
+  },
+  {
+   "s": 5,
+   "hash": "92b2ccb836f4",
+   "key": [
+    "Men linjen er ikke helt i orden ennå. Bærebølgen hakker, og Orakelet sier det ligger noe under lyden. Noe som lytter.",
+    15,
+    "Lener seg nærmere mikrofonen, senker stemmen på «noe som lytter». Kuldes påvirkning: Knitringen blir tydeligere i to sekunder, så normal."
+   ],
+   "ord": 21,
+   "laast": false,
+   "varsler": [
+    "taleregi i Handling: Lener seg nærmere mikrofonen, senker stemmen på «noe som lytter».",
+    "kort halesetning kan falle bort: «Noe som lytter.»"
+   ]
+  },
+  {
+   "s": 6,
+   "hash": "65f9802898ae",
+   "key": [
+    "I år trenger jeg dere. Om natten legger rimet seg på linjen. IQ teller det i prosent. Hver kode holder linjen varm.",
+    15,
+    "Legger venstre hånd rundt trekoppen og holder den der, som for å varme seg, til «varm». Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 22,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 7,
+   "hash": "305fce875b12",
+   "key": [
+    "Når linjen bærer, roper IQ ett ord fra verkstedet. Det er det ordet radioen deres leter etter når den skurrer, rett før stemmen kommer gjennom.",
+    15,
+    "Peker mot taket der IQ holder til, så holder han venstre hånd bak øret. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 25,
+   "laast": true,
+   "varsler": [
+    "25 ord trenger 16.5 s med 2 s hale, bestilt 15 s"
+   ]
+  },
+  {
+   "s": 8,
+   "hash": "0151cbaedd18",
+   "key": [
+    "Ta vare på hverandre, og ikke spis snø. Julius over og ut… hvis mikrofonen slipper hånda mi. Ha en riktig fin dag!",
+    15,
+    "Humrer, ser ned på mikrofonen i høyre hånd og vrikker på håndleddet som om den sitter fast; fingrene holder hele tiden rundt håndtaket. Ler. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 22,
+   "laast": false,
+   "varsler": []
+  }
+ ],
+ "2": [
+  {
+   "s": 1,
+   "hash": "0144d44a9e80",
+   "key": [
+    "Goooood morgen, Snøfall! Og ekstra god morgen til dere tre med sovesveis. Det har jeg også. Andre desember, favorittdagen min.",
+    14,
+    "Stryker seg over sitt eget skallete hode med venstre hånd og ler lavt. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "377bf8a15012",
+   "key": [
+    "Jeg har laget en morgensang: God morgen, kopp. God morgen, bok. God morgen, ledninger… nei. Nå røk rimet. Vi tar den senere.",
+    15,
+    "Dirigerer med venstre pekefinger i takt, stopper midt i, slår ut med hånden og ler av seg selv. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 22,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "cae553bc3a04",
+   "key": [
+    "I natt koblet IQ kaffetrakteren på forsterkeren. Tre sikringer røk, og Kanal to ble mørk. IQ skylder på været. Det var trakteren.",
+    15,
+    "Rister på hodet med et skjevt smil, slår ut med venstre hånd. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 22,
+   "laast": false,
+   "varsler": [
+    "kort halesetning kan falle bort: «Det var trakteren.»"
+   ]
+  },
+  {
+   "s": 4,
+   "hash": "2c9ecc455737",
+   "key": [
+    "Vi kaster ingenting her. Går noe i stykker, åpner vi det og ser hvorfor. Reparerte ting har historie. IQ har én regel.",
+    15,
+    "Legger venstre hånd på sentralbordet ved siden av seg og lar den ligge. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 22,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 5,
+   "hash": "07f9416aa6d8",
+   "key": [
+    "IQs regel er enkel: finn alle sikringene, og legg tallene sammen. Summen er koden til sikringsskapet. Ha en riktig fin dag!",
+    15,
+    "Holder opp én finger på venstre hånd, så samler han fingrene til en knyttneve, og vinker kort. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 21,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "3": [
+  {
+   "s": 1,
+   "hash": "e2b412c7eae0",
+   "key": [
+    "Ja, hallo? Der kom lyset på. Gooood morgen, Snøfall! Lampen er sen i dag, akkurat som meg. Strekk armene i været, dere.",
+    15,
+    "Myser mot lampen, så strekker han venstre arm rett opp over hodet og stønner fornøyd. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 22,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "62c065477c8d",
+   "key": [
+    "Hanna, kan du tegne en stjerne i lufta? Pil, lærlingen til IQ, tegnet ti stjerner på arket i natt. Ingen er like.",
+    15,
+    "Tegner en stjerne i luften med venstre hånd, så ser han ned på brevbunken foran seg og smiler. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 22,
+   "laast": false,
+   "varsler": [
+    "kort halesetning kan falle bort: «Ingen er like.»"
+   ]
+  },
+  {
+   "s": 3,
+   "hash": "ae98ab664cb0",
+   "key": [
+    "I natt kom det rimmønster på linjen. Orakelet så et blått glimt på åttifem komma null. Et sted vi ikke sender fra.",
+    15,
+    "Legger venstre hånd flatt på den åpne boka, sitter helt stille. Kuldes påvirkning: Svak knitring, ett blått blaff over hele bildet på «blått glimt»."
+   ],
+   "ord": 22,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "86b46ed28687",
+   "key": [
+    "Hør nå godt etter, dere tre. Pil holdt glassbiten mot lyset, og hele regnbuen falt på gulvet. Jeg sto midt i den.",
+    15,
+    "Lener seg inn mot mikrofonen og peker med venstre hånd over skulderen mot vegglampen, holder pekefingeren der. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 22,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 5,
+   "hash": "0a13f089155a",
+   "key": [
+    "IQ sa navnet på en sånn glassbit tre ganger. Det er ikke et speil og ikke en lupe. Ha en riktig fin dag, dere tre!",
+    15,
+    "Legger venstre hånd flatt på den åpne boka og lar den ligge, smiler. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 25,
+   "laast": true,
+   "varsler": [
+    "25 ord trenger 16.5 s med 2 s hale, bestilt 15 s"
+   ]
+  }
+ ],
+ "4": [
+  {
+   "s": 1,
+   "hash": "f266543c2615",
+   "key": [
+    "Gooood morgen, Snøfall! Fjerde desember. Hjerterud har skrevet lapp til meg: husk votter. Og til deg, Håkon: husk lua.",
+    14,
+    "Løfter et ark fra brevbunken med venstre hånd, holder det langt fra øynene, ler på «Håkon» og legger det ned på siste ord. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 19,
+   "laast": false,
+   "varsler": [
+    "arket løftes: Løfter et ark fra brevbunken med venstre hånd, holder det langt fra øynene, ler på «Håkon» og legger det ned på siste ord."
+   ]
+  },
+  {
+   "s": 2,
+   "hash": "86e27ed47a87",
+   "key": [
+    "I natt mistet Rudolf retningen i tåken over fjorden. Han landet i en snøfonn, med nesa først. Hør nå.",
+    14,
+    "Lager en liten bue med venstre hånd som ender i bordplaten, ler, så løfter han pekefingeren på «Hør nå». Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 19,
+   "laast": false,
+   "varsler": [
+    "kort halesetning kan falle bort: «Hør nå.»"
+   ]
+  },
+  {
+   "s": 3,
+   "hash": "decd3f928390",
+   "key": [
+    "Rudolf trenger det samme som sjøfolk har hatt med seg: det som peker samme vei uansett hvor man snur seg.",
+    14,
+    "Snur seg i stolen til begge sider mens venstre pekefinger står stille i luften. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "71a782c6682a",
+   "key": [
+    "Det er ikke et kart og ikke en stjerne. Sjøfolk hadde den i lomma, Rudolf har den i nesa. Ha en fin dag!",
+    15,
+    "Rister på hodet to ganger, klapper seg på brystet med venstre hånd, så på nesen, ler. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 23,
+   "laast": true,
+   "varsler": [
+    "23 ord trenger 15.3 s med 2 s hale, bestilt 15 s"
+   ]
+  }
+ ],
+ "5": [
+  {
+   "s": 1,
+   "hash": "e88e18954338",
+   "key": [
+    "Gooood morgen, Snøfall! Rampenissen rapporterer: «Marshmallowkrig. Én bamse såra.» Med plaster! Jeg sier det er trening.",
+    12,
+    "Løfter et ark fra brevbunken med venstre hånd, leser, ler og legger det ned. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 16,
+   "laast": false,
+   "varsler": [
+    "arket løftes: Løfter et ark fra brevbunken med venstre hånd, leser, ler og legger det ned."
+   ]
+  },
+  {
+   "s": 2,
+   "hash": "3cbb1ca4fd59",
+   "key": [
+    "I natt kom årets første brevfugl. Winter stoler ikke på linjen, for noen lytter. Nå skriver han i hemmelig skrift.",
+    14,
+    "Løfter en liten brettet papirfugl av en kremfarget konvolutt fra brevbunken med venstre hånd, ingen levende fugl, viser den kort fram og legger den tilbake på bunken, så lar han hånden ligge flatt på den. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": [
+    "arket løftes: Løfter en liten brettet papirfugl av en kremfarget konvolutt fra brevbunken med venstre hånd, ingen levende fugl, viser den kort fram og legger den tilbake på bunken, så lar han hånden ligge flatt på den."
+   ]
+  },
+  {
+   "s": 3,
+   "hash": "5796320b0a45",
+   "key": [
+    "Winter flyttet hver bokstav så mange skritt fram som IQ sprengte sikringer onsdag. Dere må gå så mange tilbake.",
+    14,
+    "Går noen små skritt med to fingre på venstre hånd over bordplaten uten å telle høyt, så tilbake igjen. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 19,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "14add7b9ddd7",
+   "key": [
+    "Husk at vårt alfabet slutter på Å. Se til at brevfuglen har det bra i natt. Ha en fin lørdag!",
+    14,
+    "Tegner en liten ring i luften med venstre pekefinger, så lener han seg inn som om han sier noe hemmelig, og smiler. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "6": [
+  {
+   "s": 1,
+   "hash": "26a5c5505571",
+   "key": [
+    "Gooood morgen, Snøfall!",
+    5,
+    "Løfter venstre hånd i en stor, rolig vinkende hilsen og smiler. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 3,
+   "laast": false,
+   "varsler": [
+    "kort halesetning kan falle bort: «Gooood morgen, Snøfall!»"
+   ]
+  },
+  {
+   "s": 2,
+   "hash": "0ef012926f4b",
+   "key": [
+    "Det er søndag. Andre søndag i advent. Rampenissen rapporterer: «Æ laga snøengla i mel.» Hjerterud sukket.",
+    12,
+    "Holder opp to fingre på venstre hånd, så løfter han et ark fra brevbunken, leser, ler og legger det ned. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 16,
+   "laast": false,
+   "varsler": [
+    "arket løftes: Holder opp to fingre på venstre hånd, så løfter han et ark fra brevbunken, leser, ler og legger det ned."
+   ]
+  },
+  {
+   "s": 3,
+   "hash": "89b2c500d491",
+   "key": [
+    "I natt sa Orakelet at det som fryser linjen, tåler ikke lys. IQ hengte juletrelys rundt antennen ved tjernet.",
+    14,
+    "Nikker mot juletreet til venstre og holder blikket der, smiler. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 19,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "3cee43358da1",
+   "key": [
+    "Og nå dagens ord, Håkon. Barna bar noe mellom gårdene da det var som mørkest.",
+    11,
+    "Løfter venstre hånd som om han bærer noe i en hank, og holder den slik hele segmentet. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 15,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 5,
+   "hash": "c641f2585a9a",
+   "key": [
+    "Det var ikke et bål og ikke et stearinlys. Det hadde hank, så man kunne henge det fra seg. Ha en riktig fin søndag!",
+    15,
+    "Henger det usynlige på en usynlig krok med venstre hånd, så vinker han kort. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 24,
+   "laast": true,
+   "varsler": [
+    "24 ord trenger 15.9 s med 2 s hale, bestilt 15 s",
+    "mime (tingen dukker opp): Henger det usynlige på en usynlig krok med venstre hånd, så vinker han kort."
+   ]
+  }
+ ],
+ "7": [
+  {
+   "s": 1,
+   "hash": "927d46c8b2d4",
+   "key": [
+    "Gooood morgen, Snøfall! Brrr. Jeg fryser på kontoret. Rim på innsiden av vinduet! Hopp, dere, så dere blir varme.",
+    14,
+    "Gnir venstre hånd mot overarmen, ser over skulderen mot vinduet, så hopper han litt i stolen. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 19,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "8910be423999",
+   "key": [
+    "I natt fanget Orakelet opp en stemme på åttifem. Den kaller seg… ja. Orakelet skrev navnet med tegnene i hjørnet av kortene.",
+    15,
+    "Peker med venstre pekefinger i hjørnet av det øverste arket i brevbunken uten å løfte det, stopper opp på «kaller seg». Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 22,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "7ed8e1697e72",
+   "key": [
+    "Hør nå, Håkon. Navnet er det motsatte av det Hjerterud har i ovnen akkurat nå. Ikke bollene.",
+    12,
+    "Lener seg inn mot mikrofonen, rister på hodet på «Ikke bollene». Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 17,
+   "laast": true,
+   "varsler": [
+    "kort halesetning kan falle bort: «Ikke bollene.»"
+   ]
+  },
+  {
+   "s": 4,
+   "hash": "92fa12b79877",
+   "key": [
+    "Tenk på ovnen. Det som slår mot ansiktet når hun åpner ovnsdøra. Orakelet viser Frostgraden fra i dag. Vi ses!",
+    14,
+    "Vifter venstre hånd foran ansiktet som fra ovnsvarme, så legger han hånden rundt trekoppen og nikker rolig. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "8": [
+  {
+   "s": 1,
+   "hash": "c87fb773db2b",
+   "key": [
+    "Gooooood morgen, Snøfall! Uke én er unnagjort. Rampenissen rapporterer: «Æ bygde et Sigma-tårn av frokostblanding.» Ingen vet hva Sigma betyr.",
+    14,
+    "Løfter et ark fra brevbunken med venstre hånd, holder det langt fra øynene, trekker på skuldrene og legger det ned. Kuldes påvirkning: synlig pust, svak knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": [
+    "arket løftes: Løfter et ark fra brevbunken med venstre hånd, holder det langt fra øynene, trekker på skuldrene og legger det ned."
+   ]
+  },
+  {
+   "s": 2,
+   "hash": "5ec664b2b338",
+   "key": [
+    "I natt satt IQ med loddebolten og bygde noe mot det kalde. Bare lamper med strøm lyser, sier han.",
+    14,
+    "Peker mot taket der verkstedet er med venstre hånd, og holder pekefingeren der til siste setning, der han knipser som en bryter. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 19,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "5daf1b9f02d6",
+   "key": [
+    "Hør nå, Kristian. Dagens ord er det IQ holder hele natten: den lille grønne plata alle ledningene sitter fast på.",
+    14,
+    "Lener seg inn, former et lite rektangel med tommel og pekefinger på venstre hånd og holder det. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "d2cde88d0d42",
+   "key": [
+    "Den lille plata: IQ lodder på den, sover på den og kaller den to ord i ett. Vi ses!",
+    14,
+    "Legger kinnet på venstre hånd som på en pute, så vinker han kort. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 19,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "9": [
+  {
+   "s": 1,
+   "hash": "c91b40318f8b",
+   "key": [
+    "Gooood morgen, Snøfall! Morgensangen, andre forsøk: God morgen, kopp. God morgen, bok. God morgen, Håkon, Hanna, Kristian. God morgen, Pil!",
+    14,
+    "Dirigerer med venstre pekefinger, nikker mot koppen og boka, så ut mot lytterne, fornøyd. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": [
+    "kort halesetning kan falle bort: «God morgen, Pil!»"
+   ]
+  },
+  {
+   "s": 2,
+   "hash": "229511a42712",
+   "key": [
+    "I natt la Kulde falske krystaller i radaren. Jeg gikk på dem. Pil ble lurt to ganger, så telte han.",
+    14,
+    "Legger venstre hånd flatt på boka og blir alvorlig, så ler han kort av seg selv. Kuldes påvirkning: Knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "fd9967ea6e5b",
+   "key": [
+    "Pil satte seg ned med lupen, Håkon. Pil telte armene tre ganger. Seks hver gang på de ekte.",
+    13,
+    "Teller på fingrene på venstre hånd, én og én, langsomt, og nikker på den siste. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 18,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "68f700b9d41c",
+   "key": [
+    "De falske hadde feil tall, og de var lette å kjenne igjen når man først så etter. Vi ses!",
+    14,
+    "Banker lett på bordet med venstre hånd på «feil tall», smiler og vinker kort. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 19,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "10": [
+  {
+   "s": 1,
+   "hash": "8a0da364b372",
+   "key": [
+    "Hallo? Hører dere meg? God morgen, Snøfall. Linjen er dårlig. Jeg snakker langsomt og sier det viktigste to ganger.",
+    14,
+    "Holder mikrofonen tett inntil munnen, banker på den med venstre pekefinger. Kuldes påvirkning: Kraftig knitring."
+   ],
+   "ord": 19,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "229c05c9db85",
+   "key": [
+    "I natt tok Kulde fargene. Fra linjen, fra Snøfall TV og fra skjermen hos dere. Bare juletreet holder litt igjen.",
+    14,
+    "Ser seg rundt i rommet, ser ned på sin egen venstre hånd, så mot juletreet. Kuldes påvirkning: Kraftig knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "3c0dfdbafa24",
+   "key": [
+    "Hør nå godt, Kristian. Alle fargene på rekke, slik regnbuen stiller dem opp. IQ har ett ord for hele rekka.",
+    14,
+    "Tegner en bue i luften med venstre hånd. Kuldes påvirkning: Knitring."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "2a4746555a7b",
+   "key": [
+    "IQ sier ordet når han er stolt. Én gang til: alle fargene på rekke, slik regnbuen stiller dem opp. Vi ses!",
+    15,
+    "Tegner buen en gang til, langsommere, ser bestemt ut, så vinker han kort. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 21,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "11": [
+  {
+   "s": 1,
+   "hash": "95a8367a4826",
+   "key": [
+    "Gooood morgen, Snøfall! Rampenissen rapporterer: «Æ e en bakt potet. I folie.» Hjerterud spurte om han var ferdigstekt. Jeg lo.",
+    14,
+    "Løfter et ark fra brevbunken med venstre hånd, leser, ler lavt og legger det ned. Kuldes påvirkning: Knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": [
+    "arket løftes: Løfter et ark fra brevbunken med venstre hånd, leser, ler lavt og legger det ned.",
+    "kort halesetning kan falle bort: «Jeg lo.»"
+   ]
+  },
+  {
+   "s": 2,
+   "hash": "8c2c519ef619",
+   "key": [
+    "I natt delte Kulde senderen i tre, og antennen ved tjernet er full av is. Lytt godt, Kristian.",
+    13,
+    "Peker bak seg mot vinduet med venstre hånd og holder pekefingeren der. Kuldes påvirkning: Knitring øker."
+   ],
+   "ord": 18,
+   "laast": false,
+   "varsler": [
+    "kort halesetning kan falle bort: «Lytt godt, Kristian.»"
+   ]
+  },
+  {
+   "s": 3,
+   "hash": "71f05af281d9",
+   "key": [
+    "IQ har en regel: alt han bygger ender på fem. Tre sendere er hans. Kulde satte ut sine egne.",
+    14,
+    "Tre fingre på venstre hånd, så fem, så legger han hånden flat på bordet. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 19,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "8a1362ea4aad",
+   "key": [
+    "Ikke gang IQs sendere. Legg dem sammen, så finner dere oss. Vi hører dere i biter. Vi er her. Vi ses!",
+    15,
+    "Rister på hodet, så legger han venstre hånd flatt på bordet foran seg og ser rolig fram. Kuldes påvirkning: Knitring."
+   ],
+   "ord": 21,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "12": [
+  {
+   "s": 1,
+   "hash": "1d4491e9c0c8",
+   "key": [
+    "Goooood morgen, Snøfall! Rampenissen rapporterer: «Æ laga lydbølge av dorull.» Jeg lo så trekoppen hoppet.",
+    11,
+    "Legger venstre pekefinger på det øverste arket i brevbunken og leser fra det. Arket blir liggende. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 15,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "f905790c00d0",
+   "key": [
+    "I natt nynnet Hjerterud ved slusen. Isen sprakk, og noe svarte. Rampenissen hørte det først, og jeg trodde ham ikke.",
+    14,
+    "Ser ned og stryker seg over skjegget med venstre hånd, litt flau, hele segmentet. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "1375cc0c8a1a",
+   "key": [
+    "Hør nå, Håkon. Hjerterud nynnet tre toner ved slusen, den dypeste først. Ingen ord.",
+    11,
+    "Holder venstre hånd lavt, så litt høyere, så høyest, som tre trappetrinn. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 14,
+   "laast": true,
+   "varsler": [
+    "kort halesetning kan falle bort: «Ingen ord.»"
+   ]
+  },
+  {
+   "s": 4,
+   "hash": "37c9b25ac21b",
+   "key": [
+    "Hør: bare det tonene lager når de kommer etter hverandre. Isen kjente det igjen. I kveld sier jeg unnskyld. Vi ses!",
+    15,
+    "Gjør trappetrinnene en gang til med venstre hånd, så legger han hånden på brystet på «unnskyld», og vinker kort. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 21,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "13": [
+  {
+   "s": 1,
+   "hash": "509a603f5519",
+   "key": [
+    "Gooood Lucia-morgen, Snøfall! Rampenissen rapporterer: «Elleve lussekatta. Æ e død no.» Jeg tror Hjerterud teller bollene mine nå.",
+    13,
+    "Legger venstre pekefinger på det øverste arket i brevbunken og leser fra det. Arket blir liggende. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 18,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "1a8194063628",
+   "key": [
+    "I natt så Kulde på Lucia-lysene gjennom linjen. Den tok ingenting, den bare så. Jeg vet ikke hva jeg tror.",
+    14,
+    "Blir stille, ser mot vinduet, snur seg sakte tilbake. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "ebf6766e239c",
+   "key": [
+    "Hør nå, Kristian. Det gule i bollene er krydderet fra en krokus. Tre tråder per blomst, plukket for hånd.",
+    14,
+    "Gnir tommel mot pekefinger på venstre hånd. Snakker tydelig. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 19,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "9b7cfac9447e",
+   "key": [
+    "Tre tråder er lite. Derfor koster det mer enn gull, og derfor låser Hjerterud det inn. Ha en fin dag!",
+    14,
+    "Vrir den tomme venstre hånden én gang i lufta, smiler og vinker kort. Kuldes påvirkning: Synlig pust, svak knitring."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "14": [
+  {
+   "s": 1,
+   "hash": "1077cbb3565a",
+   "key": [
+    "Ja, hallo? Mikrofonen falt ut. Der, ja. Gooood morgen, Snøfall! Mikrofonen er like sta som meg.",
+    12,
+    "Banker én gang på mikrofonhodet med venstre pekefinger og slår ut med hånden. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 16,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "1d9312f0e59c",
+   "key": [
+    "Hør nå, Kristian. I natt åpnet Winter brevfuglene. Én blå fugl hadde ingen sendt. Den sitter i karmen min nå.",
+    14,
+    "Nikker kort over skulderen mot vinduet og vender tilbake til mikrofonen. Vinduskarmen er som i referansebildet. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "af997367ff17",
+   "key": [
+    "Winter har ett ord for å gi et flatt ark vinger uten saks og lim, bare ved å bøye det.",
+    14,
+    "Holder venstre hånd flatt og bøyer fingrene opp som en vinge på «bøye det». Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "46d1412966c0",
+   "key": [
+    "Winter er lur. Han uttaler det feil med vilje, så ingen på linjen skal forstå. Ha en fin dag!",
+    14,
+    "Legger venstre hånd flatt på brevbunken, nikker mot vinduet og smiler. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 19,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "15": [
+  {
+   "s": 1,
+   "hash": "e482d1e1db0c",
+   "key": [
+    "God morgen, Snøfall. Jeg skal være kort. Det har vært en lang natt, og ingen av oss har sovet.",
+    14,
+    "Sitter tyngre i stolen enn vanlig, venstre hånd hviler på den åpne boka. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 19,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "1533ed6c2849",
+   "key": [
+    "For lenge siden bodde Fargesamleren her og samlet de første iskrystallene. IQ bygde noe som holder dem kalde, under Nordtoppen.",
+    14,
+    "Stryker langsomt over siden i boka med venstre hånd, blar ikke. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "836541f1fc88",
+   "key": [
+    "I natt fant IQ notatboken. Det han bygde, heter Vintervokteren og sender på åttifem. Da strømmen røk, sto det alene.",
+    14,
+    "Lar venstre hånd ligge stille på boka, ser lenge ned på den. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "e72f584155e0",
+   "key": [
+    "Hør nå. Hjerterud prøvde å varme opp IQ med noe søtt hun koker i den store gryta si.",
+    13,
+    "Fører den tomme venstre hånden i små sirkler over bordet. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 18,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 5,
+   "hash": "cfa674b58fde",
+   "key": [
+    "Det søte blir hardt når det kjølner. IQ spiste ikke engang det. Vær snille med IQ i dag. Vi ses.",
+    14,
+    "Lar hånden falle fra gryta, legger den rundt trekoppen, ser ned, så opp igjen. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "16": [
+  {
+   "s": 1,
+   "hash": "bb91350f2dde",
+   "key": [
+    "Gooood morgen, Snøfall! Morgensangen, tredje forsøk: God morgen, kopp. God morgen, bok. God morgen, lampe… nei, nå flakker den.",
+    14,
+    "Dirigerer med venstre pekefinger, ser over skulderen opp mot vegglampen og slår oppgitt ut med hånden. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 19,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "3d35133ed317",
+   "key": [
+    "I natt snudde Vintervokteren samlebåndet. Alt ligger i én haug, ingenting er ødelagt. Orakelet vil ha meg i vinduet.",
+    14,
+    "Snurrer venstre hånd baklengs, stopper, så nikker han mot vinduet bak seg. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 19,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "22048287a763",
+   "key": [
+    "Hør nå godt etter, Håkon. Winter har ett ord for å få hver pakke dit den skal.",
+    12,
+    "Flytter den tomme venstre hånden fra ett sted på bordet til et annet. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 17,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "96b65c12dc3f",
+   "key": [
+    "Winter har ordet på et skilt over døra si. I natt lå skiltet under haugen. Ha en riktig fin dag!",
+    14,
+    "Tegner et skilt i luften med venstre hånd, så peker han opp bak seg, der skiltet ville hengt, og vinker kort. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "17": [
+  {
+   "s": 1,
+   "hash": "8e85dd963401",
+   "key": [
+    "Goooood morgen, Snøfall! Rampenissen rapporterer: «Kidnappa av kosedyra. Dem vil ha pepperkakan.» Jeg hadde gitt dem pepperkakene.",
+    12,
+    "Legger venstre pekefinger på det øverste arket i brevbunken og leser fra det. Arket blir liggende. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 17,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "be1c4aed73be",
+   "key": [
+    "I natt sto jeg i vinduet, slik Orakelet ba om. Grotten svarte: det glødet over lyktene ved antennen.",
+    13,
+    "Ser over skulderen mot vinduet et øyeblikk og vender tilbake til mikrofonen. Kuldes påvirkning: Svak knitring, et svakt skjær i vinduet."
+   ],
+   "ord": 18,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "856285f0f641",
+   "key": [
+    "De gamle hadde et navn på det som glødet i natt. De sa at noen snakket når det kom.",
+    14,
+    "Holder venstre hånd bak øret, lukker øynene et øyeblikk. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 19,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "6ec9133c23d3",
+   "key": [
+    "Nissene sier lyset er brev som kommer tilbake. Det kommer bare når det er kaldt og mørkt nok. Vi ses!",
+    14,
+    "Legger venstre hånd på brevbunken og lar den ligge. Vinker kort på «Vi ses». Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "18": [
+  {
+   "s": 1,
+   "hash": "e7e1bcd459e6",
+   "key": [
+    "Gooood morgen, Snøfall! Fredag! Rist på dere, sånn som sleden gjorde i natt. Sånn, ja. Trixter har ikke sovet.",
+    14,
+    "Rister på skuldrene med venstre hånd i været, ler, setter seg til rette. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 19,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "b4acca4523ec",
+   "key": [
+    "I natt fløy Trixter over Nordtoppen i uvær. Rampenissen holdt seg fast i lua hans. Nå spiser Trixter med hjelm.",
+    14,
+    "Senker venstre hånd flatt over bordet som en slede og lar den hoppe, så banker han seg lett i hodet og ler. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "b1e53b90d396",
+   "key": [
+    "Når lufta får sleden til å hoppe og riste uten at noen ser hvorfor, har Trixter ett ord for det.",
+    14,
+    "Lar venstre hånd hoppe over bordet som en slede, hele segmentet. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "6c22e36e2c8f",
+   "key": [
+    "Trixter sier ordet med sammenbitte tenner. Rampenissen sa «aldri igjen». Det sa han i fjor også. Ha en fin fredag!",
+    14,
+    "Knytter venstre hånd på bordet og smiler skjevt. Snakker tydelig med åpen munn. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "19": [
+  {
+   "s": 1,
+   "hash": "f173e4853277",
+   "key": [
+    "Gooood morgen, Snøfall. Hysj. Hører dere det? Ingenting knitrer. Første gang siden første desember. Hanna, kan du være helt stille?",
+    14,
+    "Løfter venstre pekefinger og lytter, senker den igjen. Kuldes påvirkning: Lyden er ren."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "31a80224c2f7",
+   "key": [
+    "I natt lyste det grønne over Nordtoppen igjen. Men i verkstedet smalt det. IQ bygde en automat. Den eksploderte.",
+    14,
+    "Nikker rolig mot vinduet, så peker han opp mot taket der verkstedet er, og slår ut med hånden på «eksploderte». Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 19,
+   "laast": true,
+   "varsler": [
+    "kort halesetning kan falle bort: «Den eksploderte.»"
+   ]
+  },
+  {
+   "s": 3,
+   "hash": "230f39cfd357",
+   "key": [
+    "Drivstoffet, Håkon. Det oransje drivstoffet Rudolf vil ha før hver tur, og som IQ nå har førti for lite av.",
+    14,
+    "Teller på fingrene på venstre hånd og rister på hodet. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "04b9e42de163",
+   "key": [
+    "Drivstoffet vokser med toppen opp og resten nede i jorda. I morgen trenger jeg dere uthvilt. Ha en fin dag!",
+    14,
+    "Peker ned under bordet med venstre hånd, lener seg tilbake, puster synlig ut. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "20": [
+  {
+   "s": 1,
+   "hash": "91fae99fce1a",
+   "key": [
+    "God morgen, Snøfall, og god fjerde advent. Frostgraden er åttiåtte prosent. I morgen kommer Kulde helt fram til huset deres.",
+    14,
+    "Lener seg nærmere mikrofonen og snakker rolig og tydelig, venstre hånd stille på bordet. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "6b223e199a79",
+   "key": [
+    "Kulde vil ikke skade. Kulde vil dit lyset er. Finn åtte bøker med Rampenissen i dag. Bøker holder på varmen.",
+    14,
+    "Legger venstre hånd flatt på den store boka og lar den ligge. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "952ebc28fd28",
+   "key": [
+    "Hør nå, Kristian. IQ ga sledemotoren det samme som biler får når de skal forbi noen i bakken.",
+    13,
+    "Retter seg opp, peker mot taket der verkstedet er, med venstre hånd, og holder pekefingeren der. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 18,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "840a5097ec0e",
+   "key": [
+    "IQ elsker ordet. Han roper det hver gang motoren starter, og motoren hviner tilbake. IQ bygger en mur i natt.",
+    14,
+    "Kaster venstre hånd i været som IQ, så tegner han en firkant på bordet med fingeren. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 5,
+   "hash": "5f563487c039",
+   "key": [
+    "Jeg har bedt om én port. Den står der jeg tegnet sirkelen på Trixters kart. Se på kartet, Kristian. Vi ses.",
+    15,
+    "Tegner en liten sirkel på bordet med venstre pekefinger og lar fingeren stå der, ser rolig fram. Kuldes påvirkning: Svak knitring, men lampen står."
+   ],
+   "ord": 21,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "21": [
+  {
+   "s": 1,
+   "hash": "ebd037fda38c",
+   "key": [
+    "I natt nådde Kulde huset. IQ bygde et vern, ikke mot noen. Det holder varmen inne, så vi kan dele.",
+    14,
+    "Sitter nesten urørlig, venstre hånd rundt trekoppen som for å holde på varmen. Kuldes påvirkning: Pusten står som røyk, svak knitring."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "86d220f0f57f",
+   "key": [
+    "I dag er det vintersolverv, den mørkeste dagen. Folk tente bål denne natten, for de visste at lyset snur.",
+    14,
+    "Venstre hånd flat på bordet, stemmen er rolig. Kuldes påvirkning: Pusten står som røyk, svak knitring."
+   ],
+   "ord": 19,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "13dfa9fc9159",
+   "key": [
+    "Hør nå, for her kommer dagens ord. IQ bygde en vegg av varme rundt linjen. Veggen har et navn.",
+    14,
+    "Tegner en linje over bordet med venstre håndkant og holder hånden der. Kuldes påvirkning: Synlig pust, men lyden er klar, svak knitring."
+   ],
+   "ord": 19,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "e5f93da5d079",
+   "key": [
+    "Gamle byer med trehus har samme slags vegg mellom husene, og kaller den etter det den skal stoppe.",
+    13,
+    "Peker på linjen han tegnet, holder blikket der. Kuldes påvirkning: Svak knitring."
+   ],
+   "ord": 18,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 5,
+   "hash": "c455a95f4bba",
+   "key": [
+    "Jeg lot ham la én port stå åpen, inn mot grotten, med varme i. Kom hjem i kveld. Vi er her.",
+    15,
+    "Åpner en liten glipe i linjen med to fingre på venstre hånd, ser opp og smiler. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 21,
+   "laast": true,
+   "varsler": [
+    "kort halesetning kan falle bort: «Vi er her.»"
+   ]
+  }
+ ],
+ "22": [
+  {
+   "s": 1,
+   "hash": "54b45f3a560f",
+   "key": [
+    "Gooooood morgen, Snøfall! I dag åpner Snill-listen. Snill er ikke å adlyde. Snill er å gå til den som står utenfor.",
+    15,
+    "Legger venstre hånd på den åpne boka og lar den ligge. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 21,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "e0d82ab0258f",
+   "key": [
+    "I natt kom ingenting gjennom porten, men Orakelet sier det er varmere der nede. Winter vil ha stedet i tall.",
+    14,
+    "Legger venstre hånd flatt på brevbunken og trommer lett med fingrene. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 20,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "32a2e534f63a",
+   "key": [
+    "Hør nå, Kristian. Winter skriver tall i stedet for bokstaver når noe er viktig. Han har en regel.",
+    13,
+    "Peker på det øverste arket i bunken med venstre pekefinger uten å løfte det, holder fingeren der. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 18,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "5dda87be7473",
+   "key": [
+    "A er alltid først, og så følger resten, helt til de tre siste som bare vi i nord har.",
+    14,
+    "Skriver i luften med venstre hånd, teller videre med fingeren bortover bordet. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 19,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 5,
+   "hash": "727f923ab397",
+   "key": [
+    "Winter er forsiktig også. Og han legger alltid tre til hvert tall, for sikkerhets skyld. Trekk dem fra. Vi ses!",
+    14,
+    "Holder opp tre fingre på venstre hånd, lukker dem, legger hånden på brevbunken og vinker kort. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": [
+    "arket løftes: Holder opp tre fingre på venstre hånd, lukker dem, legger hånden på brevbunken og vinker kort."
+   ]
+  }
+ ],
+ "23": [
+  {
+   "s": 1,
+   "hash": "c2ba160ce7b8",
+   "key": [
+    "God morgen, Snøfall. Lille julaften. Rampenissen rapporterer: «Æ bare kikka litt på en pakke.» Litt! Teipen var tom etterpå.",
+    14,
+    "Legger venstre pekefinger på det øverste arket i brevbunken og leser fra det. Arket blir liggende. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 19,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 2,
+   "hash": "6aa3e2352fa5",
+   "key": [
+    "I natt så Orakelet i grotten. Noe der nede venter på lys. I kveld flyr sleden lavt over grotten.",
+    14,
+    "Senker venstre hånd flatt over bordet som en slede, langsomt, og lar den gli hele segmentet. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 19,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "c71911dc59db",
+   "key": [
+    "Trixter pakker sleden. Hør nå godt etter. Orakelet meldte flyværet i ett ord. Ikke en sky, ikke én.",
+    13,
+    "Ser opp mot taket og holder blikket der, venstre hånd rolig på bordet. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 18,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "14b18f979a3b",
+   "key": [
+    "Været har et ord for en natt der alt som blinker der oppe er synlig hele veien.",
+    12,
+    "Blunker med fingrene på venstre hånd mot taket, holder dem der. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 17,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 5,
+   "hash": "4375378ca955",
+   "key": [
+    "Ordet begynner med det som blinker. I morgen er det jul, og da forteller jeg det siste. Sov godt!",
+    14,
+    "Blunker med fingrene en gang til, så legger han venstre hånd rundt trekoppen uten hast og smiler. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 19,
+   "laast": true,
+   "varsler": []
+  }
+ ],
+ "24": [
+  {
+   "s": 1,
+   "hash": "a85d56d0163d",
+   "key": [
+    "Gooood morgen, Snøfall, og god jul! God morgen, kopp. God morgen, bok. God morgen, Kristian, Håkon, Hanna. Den satt!",
+    14,
+    "Dirigerer med venstre pekefinger, nikker til koppen og boka, så ut mot lytterne, og ler høyt og lykkelig. Kuldes påvirkning: Alle lys tent."
+   ],
+   "ord": 19,
+   "laast": false,
+   "varsler": [
+    "kort halesetning kan falle bort: «Den satt!»"
+   ]
+  },
+  {
+   "s": 2,
+   "hash": "86956ad5d3b4",
+   "key": [
+    "I natt fløy sleden over grotten. Isen tiner. Den blå fuglen fløy hjem. Krystallet ligger under treet deres.",
+    13,
+    "Nikker kort over skulderen mot vinduet og smiler. Rommet er som i referansebildet. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 18,
+   "laast": false,
+   "varsler": []
+  },
+  {
+   "s": 3,
+   "hash": "811aacd13c53",
+   "key": [
+    "Dere har laget noe hele desember uten å vite det. Ikke koden, den tastet dere. Ikke varmen, den kom fra ovnen.",
+    15,
+    "Peker ut av bildet med venstre hånd, mot dem. Rister rolig på hodet to ganger. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 21,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 4,
+   "hash": "3b6457d27335",
+   "key": [
+    "Det trollmenn later som de har, og som dere faktisk har hatt: tre søsken som holder sammen i mørket.",
+    14,
+    "Holder opp tre fingre på venstre hånd og lukker dem langsomt til en knyttneve. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 19,
+   "laast": true,
+   "varsler": []
+  },
+  {
+   "s": 5,
+   "hash": "6e9753153731",
+   "key": [
+    "Og Hjerterud setter alltid navnet på høytiden foran ordet, slik hun gjør med grøten og treet. God jul, dere tre!",
+    14,
+    "Lener seg tilbake, lykkelig, løfter trekoppen med venstre hånd som en skål. Kuldes påvirkning: Rent bilde og ren lyd."
+   ],
+   "ord": 20,
+   "laast": true,
+   "varsler": []
+  }
+ ]
+}

@@ -10,6 +10,7 @@ import path from "node:path";
 import { getOppdrag as getQuestByDay } from "./oppdrag";
 import statisk from "@/data/statisk_innhold.json";
 import bakt from "@/data/guide-innhold.json";
+import juliusManus from "@/data/julius-manus.json";
 import { opplasingerPaaDag } from "./opplasinger";
 import { KAPITLER } from "@/components/windows/nissespill/kapitler";
 import { ETAPPER } from "@/components/windows/snofall-tv/slede";
@@ -172,6 +173,10 @@ export async function dagInnhold(dag: number) {
     delsystemer: delsystemer(dag),
     varden: varden(dag),
     julius: parseJulius(julius, dag),
+    /** Per segment: review hash and julius-dag.py's lint (python3 assets/bin/julius-dag.py manus). */
+    manusport:
+      (juliusManus as Record<string, (typeof juliusManus)["1"]>)[String(dag)] ??
+      [],
     radio: parseRadio(radio, dag),
     oppdrag: q ?? null,
     filer: dagFiler(dag, q?.reveals?.files ?? []),

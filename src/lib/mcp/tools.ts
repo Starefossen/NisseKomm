@@ -87,6 +87,15 @@ export function earnedCodes(state: State, at?: Date): Set<string> {
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
+/** `…/dag-14#s3` verdicts: what the agent runs next (julius-dag.py's script gate and segment lock). */
+export function segmentHint(id: string, vurdering?: string) {
+  const m = id.match(/^(manus|video)\/julius\/dag-(\d+)#s(\d+)$/);
+  if (!m || vurdering !== "lag_paa_nytt") return "";
+  return m[1] === "manus"
+    ? ` → endre segment ${m[3]} i docs/manus/julius-2026.md, så python3 assets/bin/julius-dag.py manus`
+    : ` → python3 assets/bin/julius-dag.py ${Number(m[2])} --suffix -vN --segment ${m[3]}`;
+}
+
 const OSLO = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Europe/Oslo",
   hourCycle: "h23",
@@ -932,7 +941,7 @@ export const TOOLS: Record<string, Tool> = {
           : "";
       const linjer = vis.map(
         ([id, v]) =>
-          `${id} | ${v.forrige ? `(ny versjon) forrige: ${v.forrige.vurdering}` : (v.vurdering ?? "-")} | ${(v.oppdatert ?? "").slice(0, 16).replace("T", " ")} | ${(v.forrige?.notat ?? v.notat ?? "").replace(/\s*\n\s*/g, " / ")}${celle(id)}`,
+          `${id} | ${v.forrige ? `(ny versjon) forrige: ${v.forrige.vurdering}` : (v.vurdering ?? "-")} | ${(v.oppdatert ?? "").slice(0, 16).replace("T", " ")} | ${(v.forrige?.notat ?? v.notat ?? "").replace(/\s*\n\s*/g, " / ")}${celle(id)}${segmentHint(id, v.vurdering)}`,
       );
       // OK with a note: usable, but the note is a lesson for the next generation.
       const laerdom =

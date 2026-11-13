@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
 """Make one Julius video diary entry from the locked script.
 
-Usage: julius-dag.py <dag> [--suffix -v3] [--extend] [--dry-run] [--force] [--alle] [--join-only] [--refilter] [--chain] [--forsøk N] [--over-budsjett] [--cutaway <klipp.mp4>[:kutt[:sek]]]... [--manus <fil>] [--dest <mappe>] [--plakat <bilde>] [--upload <base-url>]
+Usage: julius-dag.py <dag> [--suffix -v3] [--segment N]... [--uten-manusgodkjenning] [--extend] [--dry-run] [--force] [--alle] [--join-only] [--refilter] [--chain] [--forsøk N] [--over-budsjett] [--cutaway <klipp.mp4>[:kutt[:sek]]]... [--manus <fil>] [--dest <mappe>] [--plakat <bilde>] [--upload <base-url>]
        julius-dag.py lint [dag ...]      segments over 22 words (locked brikke exempt), timing budget
+       julius-dag.py manus [--sjekk]      bake src/data/julius-manus.json (review hash and lint per segment)
        julius-dag.py selftest
+
+Script gate: a segment that would cost a video call needs its script approved (godkjent/ok) in the guide,
+id manus/julius/dag-NN#sK, on the current hash of [line, secs, action] (the take.json key). Otherwise it stops
+and lists what is missing. --uten-manusgodkjenning skips the gate: use it ONLY when Hans has said yes explicitly.
+Segment lock: a segment whose clip is approved (video/julius/dag-NN#sK, godkjent/ok on the raw clip's hash)
+is never remade, not even with --alle. --segment N (repeatable) remakes only those segments and keeps the rest.
+The join writes dag-NN-vN.segmenter.json next to the video (timecodes, take hash, transcript, flags).
 
 Skips a day whose video is current (see medie.py) unless --force.
 
@@ -348,6 +356,64 @@ Venstre hånd er tom hvis ikke handlingen sier at han tar i noe på bordet.
 Ingenting han snakker om, dukker opp i bildet. Bordet og vinduskarmen er som i referansebildet hele klippet."""
 
 
+MANUS_JSON = ROOT / "src" / "data" / "julius-manus.json"
+
+
+def take_key(line: str, secs: int, action: str, kulde: str, locked: bool) -> list:
+    """What a clip was made from (take.json); its medie.innholds_hash is the script's review version."""
+    return [line, secs, f"{action} Kuldes påvirkning: {kulde_fx(kulde, line, locked, secs, False)[4]}"]
+
+
+def manus_id(day: int, i: int) -> str:
+    return f"manus/julius/dag-{day:02d}#s{i}"
+
+
+def video_id(day: int, i: int) -> str:
+    return f"video/julius/dag-{day:02d}#s{i}"
+
+
+def segment_varsler(line: str, secs: int, action: str, locked: bool) -> list:
+    """The lint lines for one segment, as `lint` prints them."""
+    n, out = wcount(line), []
+    if n > MAX_WORDS and not locked:
+        out.append(f"{n} ord (maks {MAX_WORDS})")
+    if (t := timing(line, secs)):
+        out.append(t)
+    w, block = warnings(line, action, locked)
+    return out + w + [f"STOPPER: {b}" for b in block]
+
+
+def bake_manus() -> dict:
+    """{dag: [{s, hash, key, ord, laast, varsler}]} for the guide's script review (src/data/julius-manus.json)."""
+    out = {}
+    for day in range(1, 25):
+        out[str(day)] = [{"s": i, "hash": medie.innholds_hash(k := take_key(*seg)), "key": k, "ord": wcount(seg[0]),
+                          "laast": seg[4], "varsler": segment_varsler(seg[0], seg[1], seg[2], seg[4])}
+                         for i, seg in enumerate(medie.julius_segments(day), 1)]
+    return out
+
+
+def port(day: int, keys: list, vurd: dict, raw: dict, trenger: set):
+    """(locked, missing): segments whose clip is approved on its raw hash (never remade), and segments in
+    `trenger` (would cost a call) whose script is not approved on the current hash."""
+    locked = {i for i in range(1, len(keys) + 1) if raw.get(i) and medie.godkjent(vurd, video_id(day, i), raw[i])}
+    missing = [i for i, k in enumerate(keys, 1)
+               if i in trenger and i not in locked and not medie.godkjent(vurd, manus_id(day, i), medie.innholds_hash(k))]
+    return locked, missing
+
+
+def sidefil(keys: list, tider: list, raw: dict, sjekk: dict) -> list:
+    """dag-NN-vN.segmenter.json: one entry per segment with its place in the joined video."""
+    return [{"s": i, "start": round(a, 2), "slutt": round(b, 2), "hash": medie.innholds_hash(k), "raw": raw.get(i),
+             "replikk": k[0], "hørt": sjekk.get(i, {}).get("hørt"), "dekning": sjekk.get(i, {}).get("dekning"),
+             "flagg": sjekk.get(i, {}).get("flagg", [])}
+            for i, (k, (a, b)) in enumerate(zip(keys, tider), 1)]
+
+
+def raw_hash(p: Path):
+    return medie.sha(p.read_bytes())[:12] if p.exists() else None
+
+
 def chained(i: int, argv) -> bool:
     """Start from the previous segment's last frame? Off by default: a wrong mic hand spread through the chain."""
     return "--chain" in argv and i > 1 and bool((i - 1) % RESET)
@@ -371,26 +437,45 @@ def main():
     suffix = sys.argv[sys.argv.index("--suffix") + 1] if "--suffix" in sys.argv else ""
     promo = "--manus" in sys.argv  # promo: own script, not in the media inventory
     dest = Path(arg("--dest") or DEST) / f"dag-{day:02d}{suffix}.mp4"
-    if not dry and not promo and "--force" not in sys.argv and medie.status(dest)[0] == medie.CURRENT:
+    valgt = {int(sys.argv[k + 1]) for k, a in enumerate(sys.argv) if a == "--segment"}
+    if not dry and not promo and not valgt and "--force" not in sys.argv and medie.status(dest)[0] == medie.CURRENT:
         print(f"{dest} er oppdatert; --force for å lage den på nytt")
         return
     names, flagged = [], []
+    keys = [take_key(*seg) for seg in segs]
+    raws = {i: raw_hash(OUT / f"dag{day:02d}-{i}.raw.mp4") for i in range(1, len(segs) + 1)}
+
+    def trenger(i):  # superset of the segments that may cost a call
+        take, clip = OUT / f"dag{day:02d}-{i}.take.json", OUT / f"dag{day:02d}-{i}.mp4"
+        if valgt:
+            return i in valgt
+        return "--alle" in sys.argv or not clip.exists() or not take.exists() or json.loads(take.read_text()) != keys[i - 1]
+
+    locked_ok, missing = port(day, keys, medie.vurderinger(), raws, {i for i in raws if trenger(i)})
+    offline = dry or "--join-only" in sys.argv or "--refilter" in sys.argv
+    if missing and not offline and not promo and "--uten-manusgodkjenning" not in sys.argv:
+        sys.exit(f"Stoppet: manus ikke godkjent for dag {day} segment {', '.join(map(str, missing))}.\n"
+                 + "".join(f"  {manus_id(day, i)}: «{keys[i - 1][0][:70]}»\n" for i in missing)
+                 + f"Godkjenn i guiden: /nissemor-guide/gjennomgang?id=manus/julius/dag-{day:02d}")
     for i, (line, secs, action, kulde, locked) in enumerate(segs, 1):
         name = f"dag{day:02d}-{i}"
         names.append(name)
         print(f"{name} ({secs} s): {line}")
         if (w := timing(line, secs)):
             print(f"  TIDSBUDSJETT {name}: {w}")
-        if dry or "--join-only" in sys.argv or "--refilter" in sys.argv:
+        if offline:
             continue
         clip = OUT / f"{name}.mp4"
         raw = OUT / f"{name}.raw.mp4"  # check the unfiltered audio; the radio filter hurts transcription
-        act = f"{action} Kuldes påvirkning: {kulde_fx(kulde, line, locked, secs, False)[4]}"
-        if dry:
-            print("  PROMPT-HANDLING: " + act + BLOKK + (" " + END if i == len(segs) else ""))
+        key = keys[i - 1]
+        act = key[2]
         take = OUT / f"{name}.take.json"
-        key = [line, secs, act]
-        if "--alle" not in sys.argv and clip.exists():
+        if i in locked_ok or (valgt and i not in valgt):
+            if not clip.exists():
+                sys.exit(f"{name}: klippet mangler, kan ikke beholdes")
+            print("  video godkjent, låst" if i in locked_ok else "  ikke valgt med --segment, beholdt")
+            continue
+        if "--alle" not in sys.argv and i not in valgt and clip.exists():
             # accepted earlier with this exact line and action: don't pay for another take
             if take.exists() and json.loads(take.read_text()) == key:
                 print("  uendret og godkjent tidligere, beholdt")
@@ -447,6 +532,7 @@ def main():
         # ponytail: falls back to the best take instead of aborting; check flagged clips by hand
         for ext in ("mp4", "raw.mp4"):
             shutil.copy(OUT / f"{name}.best.{ext}", OUT / f"{name}.{ext}")
+        (OUT / f"{name}.sjekk.json").write_text(json.dumps({"hørt": best[2], "dekning": round(best[0][2], 2), "flagg": best[1] or []}, ensure_ascii=False))
         if best[1] or best[0][2] < MIN_COVERAGE:
             print(f"  ADVARSEL {name}: beste versjon {best[0][2]:.0%}, feil: {best[1]}")
             flagged.append(f"{name}: {best[0][2]:.0%} hørt; {'; '.join(best[1]) or 'under grensen'}\n  hørt: {best[2]}")
@@ -468,7 +554,10 @@ def main():
         if a == "--cutaway":
             f, k, s = (sys.argv[i + 1].split(":") + ["", ""])[:3]
             cuts.append((f, int(k) if k else worst_cut([OUT / f"{n}.raw.mp4" for n in names]), float(s or CUTAWAY)))
-    join([OUT / f"{n}.mp4" for n in names], dest, [(s[3], s[0], s[4]) for s in segs], cuts, arg("--plakat"), "--no-trim" not in sys.argv, "--no-outro" not in sys.argv)
+    tider = join([OUT / f"{n}.mp4" for n in names], dest, [(s[3], s[0], s[4]) for s in segs], cuts, arg("--plakat"), "--no-trim" not in sys.argv, "--no-outro" not in sys.argv)
+    sjekk = {i: json.loads(f.read_text()) for i, n in enumerate(names, 1) if (f := OUT / f"{n}.sjekk.json").exists()}
+    raws = {i: raw_hash(OUT / f"{n}.raw.mp4") for i, n in enumerate(names, 1)}
+    (dest.parent / f"{dest.stem}.segmenter.json").write_text(json.dumps(sidefil(keys, tider, raws, sjekk), ensure_ascii=False, indent=1) + "\n")
     subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-ss", "3", "-i", str(dest), "-frames:v", "1",
                     "-q:v", "3", str(dest.with_suffix(".jpg"))], check=True)
     if not promo:
@@ -718,9 +807,43 @@ def join(segs, dest: Path, kulde=None, cutaways=(), plakat=None, trim=True, outr
          "-movflags", "+faststart", str(dest)],
         check=True,
     )
+    return tidskoder([b - a for a, b in span] if span else dur)
+
+
+def tidskoder(dur) -> list:
+    """(start, end) of each segment in the joined video: each cut overlaps the next by XFADE."""
+    starts = [sum(dur[:k]) - k * XFADE for k in range(len(dur))]
+    return [(a, a + d) for a, d in zip(starts, dur)]
+
+
+def test_port():
+    """Gate, lock, hash and sidecar without files or API (julius-dag.py test-port; jest runs it)."""
+    keys = [take_key("Hei, Snøfall.", 8, "Smiler.", "Svak knitring.", False), take_key("Vi ses.", 6, "Vinker.", "", False)]
+    assert keys[0][2] == "Smiler. Kuldes påvirkning: Svak knitring."
+    h = [medie.innholds_hash(k) for k in keys]
+    assert h[0] == medie.sha(json.dumps(keys[0], ensure_ascii=False, separators=(",", ":")))[:12] and len(h[0]) == 12
+    ok = lambda v, ver: {"vurdering": v, "versjon": ver}
+    assert port(14, keys, {}, {}, {1, 2}) == (set(), [1, 2])  # nothing approved: refuses both
+    vurd = {manus_id(14, 1): ok("godkjent", h[0]), manus_id(14, 2): ok("ok", h[1])}
+    assert port(14, keys, vurd, {}, {1, 2}) == (set(), [])  # godkjent and ok both let it through
+    assert port(14, keys, {manus_id(14, 1): ok("godkjent", "gammel")}, {}, {1}) == (set(), [1])  # text changed
+    assert port(14, keys, {manus_id(14, 1): ok("lag_paa_nytt", h[0])}, {}, {1}) == (set(), [1])
+    assert port(14, keys, {}, {}, set()) == (set(), [])  # nothing to make, nothing to approve
+    lås = {video_id(14, 2): ok("godkjent", "rawhash")}
+    assert port(14, keys, lås, {2: "rawhash"}, {1, 2}) == ({2}, [1])  # approved clip: locked, gate skips it
+    assert port(14, keys, lås, {2: "nyttklipp"}, {2}) == (set(), [2])  # another clip: not locked
+    assert manus_id(4, 3) == "manus/julius/dag-04#s3"
+    t = tidskoder([4.0, 5.0, 3.0])
+    assert t == [(0.0, 4.0), (3.75, 8.75), (8.5, 11.5)]
+    side = sidefil(keys, t[:2], {1: "abc"}, {1: {"hørt": "hei snøfall", "dekning": 1.0, "flagg": []}})
+    assert side[0] == {"s": 1, "start": 0.0, "slutt": 4.0, "hash": h[0], "raw": "abc", "replikk": "Hei, Snøfall.",
+                       "hørt": "hei snøfall", "dekning": 1.0, "flagg": []}
+    assert side[1]["raw"] is None and side[1]["hørt"] is None and side[1]["flagg"] == []
+    assert segment_varsler("ord " * 30, 10, "Hvisker.", True)[-1].startswith("STOPPER")
 
 
 def selftest():
+    test_port()
     assert wcount("Lucia-morgen i TV-en, ja") == 4 and len(words("Lucia-morgen")) == 2
     assert tail_missing("ja hallo IQ sier linjen", "IQ sier linjen er åpen.") == ["er", "åpen"]
     assert tail_missing("IQ sier linjen er åpen", "IQ sier linjen er åpen.") == []
@@ -812,6 +935,13 @@ if __name__ == "__main__":
     ATTEMPTS = int(arg("--forsøk") or ATTEMPTS)
     if sys.argv[1:] == ["selftest"]:
         selftest()
+    elif sys.argv[1:] == ["test-port"]:
+        test_port()
+    elif sys.argv[1:2] == ["manus"]:
+        tekst = json.dumps(bake_manus(), ensure_ascii=False, indent=1) + "\n"
+        if "--sjekk" in sys.argv:
+            sys.exit(0 if MANUS_JSON.exists() and MANUS_JSON.read_text() == tekst else "src/data/julius-manus.json er utdatert: python3 assets/bin/julius-dag.py manus")
+        MANUS_JSON.write_text(tekst)
     elif sys.argv[1:2] == ["lint"]:
         sys.exit(1 if lint([int(d) for d in sys.argv[2:]] or range(1, 25)) else 0)
     elif "--extend" in sys.argv:

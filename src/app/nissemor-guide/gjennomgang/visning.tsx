@@ -15,7 +15,7 @@ import { Handleliste } from "../_kveld/handel";
 import { Markdown } from "../historien/markdown";
 import { Gaatekart } from "../dag/[n]/gaatekart";
 import { utskriftHref, utskriftTittel } from "../printout/filer";
-import { slug } from "../vurdering";
+import { lagre, slug, SkjulVurder, useVurderinger, Vurder } from "../vurdering";
 import type { Element } from "./elementer";
 
 type Dag = Awaited<ReturnType<typeof dagInnhold>>;
@@ -49,33 +49,64 @@ function useDag(n: number | undefined) {
   return dag?.dag === n ? dag : null;
 }
 
-function Manus({ j }: { j: Dag["julius"] }) {
+/** Script per segment; with `port` each segment gets its own verdict (julius-dag.py's script gate). */
+function Manus({ d, port }: { d: Dag; port?: boolean }) {
+  const j = d.julius;
+  const alle = useVurderinger();
+  const [feil, setFeil] = useState("");
   if (!j) return <p>Ikke noe manus for dagen.</p>;
+  const id = (s: number) =>
+    `manus/julius/dag-${String(d.dag).padStart(2, "0")}#s${s}`;
+  const åpne = d.manusport.filter(
+    (m) => !["godkjent", "ok"].includes(alle?.[id(m.s)]?.vurdering ?? ""),
+  );
   return (
-    <>
+    <SkjulVurder.Provider value={!port}>
       <p className="text-sm text-(--cold-blue) whitespace-pre-wrap mb-2">
         {ren(j.intro)}
       </p>
+      {port && alle && åpne.length > 0 && (
+        <button
+          className="border border-(--gold) text-(--gold) px-3 min-h-11 mb-2"
+          onClick={() =>
+            Promise.all(åpne.map((m) => lagre(id(m.s), "godkjent", ""))).catch(
+              (e: Error) => setFeil(e.message),
+            )
+          }
+        >
+          Godkjenn alle på dagen ({åpne.length})
+        </button>
+      )}
+      {feil && <p className="text-(--christmas-red)">Ikke lagret: {feil}</p>}
       <ol className="space-y-2">
-        {j.segmenter.map((s, i) => (
-          <li key={i} className="border border-(--neon-green)/40 p-2">
-            <p>
-              <span className="text-(--gold)">{i + 1}.</span> «{ren(s.replikk)}»
-            </p>
-            <p className="text-sm">
-              {s.ord} ord · {s.sek} s{s.laast && " · låst brikke"}
-              {s.varsler.length > 0 && (
-                <span className="text-(--christmas-red)">
-                  {" "}
-                  · {s.varsler.join("; ")}
-                </span>
-              )}
-            </p>
-            <p className="text-sm">Handling: {ren(s.handling)}</p>
-          </li>
-        ))}
+        {j.segmenter.map((s, i) => {
+          const m = d.manusport[i];
+          const varsler = m?.varsler ?? s.varsler;
+          return (
+            <li key={i} className="border border-(--neon-green)/40 p-2">
+              <p>
+                <span className="text-(--gold)">{i + 1}.</span> «
+                {ren(s.replikk)}»
+              </p>
+              <p className="text-sm">
+                {s.ord} ord · {s.sek} s
+                {s.laast && (
+                  <span className="text-(--gold)"> · låst gåtebrikke</span>
+                )}
+                {varsler.length > 0 && (
+                  <span className="text-(--christmas-red)">
+                    {" "}
+                    · {varsler.join("; ")}
+                  </span>
+                )}
+              </p>
+              <p className="text-sm">Handling: {ren(s.handling)}</p>
+              {port && m && <Vurder id={id(m.s)} />}
+            </li>
+          );
+        })}
       </ol>
-    </>
+    </SkjulVurder.Provider>
   );
 }
 
@@ -147,10 +178,10 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
           {videoer.find((v) => v.dag === n)?.transkripsjon}
         </Felt>
         <h3 className="text-(--gold)">Manus</h3>
-        <Manus j={dag.julius} />
+        <Manus d={dag} />
       </>
     );
-  if (dag && manusDag) return <Manus j={dag.julius} />;
+  if (dag && manusDag) return <Manus d={dag} port />;
   if (dag && e.gruppe === "radio")
     return (
       <>

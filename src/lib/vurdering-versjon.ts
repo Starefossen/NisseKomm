@@ -14,8 +14,11 @@ export interface Forrige {
   oppdatert?: string;
 }
 
-const kort = (s: string) =>
+const kort = (s: string | Buffer) =>
   createHash("sha256").update(s).digest("hex").slice(0, 12);
+
+/** Version of any reviewed item from its content; same as medie.innholds_hash in python. */
+export const innholdsHash = (innhold: unknown) => kort(JSON.stringify(innhold));
 
 const slug = (s: string) =>
   s
@@ -29,6 +32,16 @@ async function seksjonsInnhold(id: string): Promise<unknown> {
   const { forSesongen, gaatekart, historien, kveldDag } =
     await import("./guide-sesong");
   const [side, a, b] = id.split("/");
+  // `manus/julius/dag-14#s3`: the take.json key julius-dag.py bakes (python manus).
+  const seg = id.match(/^manus\/julius\/dag-(\d+)#s(\d+)$/);
+  if (seg) {
+    const { default: manus } = await import("@/data/julius-manus.json");
+    return (
+      (manus as Record<string, { s: number; key: unknown }[]>)[
+        String(Number(seg[1]))
+      ]?.find((x) => x.s === Number(seg[2]))?.key ?? null
+    );
+  }
   if (side === "dag") {
     if (b === "gaatekart") return gaatekart(Number(a));
     // ponytail: kveld, utskrifter and rampestrek share one day block; split it if one flags the others too often.
@@ -47,9 +60,19 @@ export async function versjonAv(dir: string, id: string) {
   const info = await stat(path.join(dir, id)).catch(() => null);
   if (info?.isFile()) return `${info.size}-${Math.round(info.mtimeMs)}`;
   if (info) return null;
+  // `video/julius/dag-14#s3`: the raw clip's bytes, as julius-dag.py's segment lock reads them.
+  const klipp = id.match(/^video\/julius\/dag-(\d+)#s(\d+)$/);
+  if (klipp) {
+    const raw = path.join(
+      process.cwd(),
+      "assets/out",
+      `dag${klipp[1]}-${klipp[2]}.raw.mp4`,
+    );
+    return readFile(raw).then(kort, () => null);
+  }
   try {
     const innhold = await seksjonsInnhold(id);
-    return innhold == null ? null : kort(JSON.stringify(innhold));
+    return innhold == null ? null : innholdsHash(innhold);
   } catch {
     return null;
   }

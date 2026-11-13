@@ -69,6 +69,23 @@ def sha(data) -> str:
     return hashlib.sha256(data if isinstance(data, bytes) else data.encode()).hexdigest()
 
 
+def innholds_hash(obj) -> str:
+    """Version of a reviewed item from its content; same as innholdsHash in src/lib/vurdering-versjon.ts."""
+    return sha(json.dumps(obj, ensure_ascii=False, separators=(",", ":")))[:12]
+
+
+def vurderinger() -> dict:
+    """Hans' verdicts from the guide (MEDIA_DIR/media-vurdering.json); {} when there are none."""
+    f = Path(os.environ.get("MEDIA_DIR") or ROOT / "public") / "media-vurdering.json"
+    return json.loads(f.read_text()) if f.exists() else {}
+
+
+def godkjent(vurd: dict, id: str, versjon: str) -> bool:
+    """Approved (godkjent or ok) on exactly this version: any other version counts as not reviewed."""
+    v = vurd.get(id) or {}
+    return v.get("vurdering") in ("godkjent", "ok") and v.get("versjon") == versjon
+
+
 def julius_segments(day: int, root: Path = ROOT, ms: str = JULIUS_MS, text: str = None):
     """[(line, secs, action, kulde, locked)] for one day of the Julius script; [] if the day is missing.
 
