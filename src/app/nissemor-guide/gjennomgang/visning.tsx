@@ -19,6 +19,7 @@ import { utskriftHref, utskriftTittel } from "../printout/filer";
 import { lagre, slug, SkjulVurder, useVurderinger, Vurder } from "../vurdering";
 import type { Element } from "./elementer";
 import { SegmentStripe } from "./segmentstripe";
+import { BildeVersjoner } from "./bilder";
 
 type Dag = Awaited<ReturnType<typeof dagInnhold>>;
 
@@ -148,7 +149,14 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
   const q = dag?.oppdrag;
 
   if (dag && e.gruppe === "rampestrek")
-    return <Rampestrek n={n!} d={dag.kveld} t={t} />;
+    return (
+      <>
+        {!!e.eldre?.length && (
+          <BildeVersjoner filer={[...e.media, ...e.eldre]} />
+        )}
+        <Rampestrek n={n!} d={dag.kveld} t={t} />
+      </>
+    );
   if (dag && e.gruppe === "gaate" && dag.kveld)
     return (
       <Gaatekart

@@ -1,6 +1,8 @@
 import type { MediaVurderinger } from "@/app/api/media/vurdering/route";
 import {
   MERKE,
+  versionRank,
+  versionKey,
   celleAv,
   celleFor,
   forrigeTekst,
@@ -73,7 +75,17 @@ export function dagElement(
   });
   switch (kol) {
     case "rampestrek":
-      return e(`dag/${dd}/rampestrek`, [`strek/dag${dd}.png`]);
+      return {
+        ...e(`dag/${dd}/rampestrek`, [`strek/dag${dd}.png`]),
+        eldre: (filer ?? [])
+          .map((f) => f.path)
+          .filter(
+            (p) =>
+              p !== `strek/dag${dd}.png` &&
+              versionKey(p) === `strek/dag${dd}.png`,
+          )
+          .sort((a, b) => versionRank(b) - versionRank(a)),
+      };
     case "gaate":
       return e(`dag/${dd}/gaatekart`);
     case "julius": {

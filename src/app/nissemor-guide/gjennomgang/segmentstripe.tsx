@@ -10,7 +10,13 @@ import {
   type Segment,
 } from "@/lib/segmenter";
 import type { MediaVurderingItem } from "@/app/api/media/vurdering/route";
-import { SkjulVurder, useVurderinger, Vurder, vurderTast } from "../vurdering";
+import {
+  SkjulVurder,
+  taggTast,
+  useVurderinger,
+  Vurder,
+  vurderTast,
+} from "../vurdering";
 
 const MERKE: Record<string, [string, string]> = {
   godkjent: ["✓", "text-(--gold)"],
@@ -75,7 +81,9 @@ export function SegmentStripe({
       const tast = ev.key.toLowerCase();
       const nr = Number(tast);
       let tatt = true;
-      if (nr >= 1 && segs.some((s) => s.s === nr)) setValgt(nr);
+      if (seg && taggTast(ev, segmentId(path, seg.s))) tatt = true;
+      else if (ev.shiftKey) tatt = false;
+      else if (nr >= 1 && segs.some((s) => s.s === nr)) setValgt(nr);
       else if (tast === "escape") setValgt(null);
       else if (tast === " ") {
         const v = video.current;
@@ -213,8 +221,8 @@ export function SegmentStripe({
         </div>
       )}
       <p className="text-base text-(--neon-green)/80">
-        Segmenter: 1–{segs.length} velg · mellomrom spill · G/O/L på valgt
-        segment · Esc tilbake til skjøten
+        Segmenter: 1–{segs.length} velg · mellomrom spill · G/O/L, ⇧1–9 merke og
+        T tidskode på valgt segment · Esc tilbake til skjøten
       </p>
     </div>
   );

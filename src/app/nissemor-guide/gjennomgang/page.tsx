@@ -9,7 +9,13 @@ import { GuideSide, Kort, useSesong, type Sesong } from "../_kveld/felles";
 import { TaIBruk, kilde, useMediaData } from "../media/kort";
 import { brukbar, FORKLARING, MERKE } from "@/lib/media-status";
 import { GJENSTAAR } from "../media/filter";
-import { SkjulVurder, Vurder, useVurderinger, vurderTast } from "../vurdering";
+import {
+  SkjulVurder,
+  Vurder,
+  taggTast,
+  useVurderinger,
+  vurderTast,
+} from "../vurdering";
 import {
   KOLONNER,
   alleElementer,
@@ -21,6 +27,7 @@ import {
   type Tilstand,
 } from "./elementer";
 import { Innhold } from "./visning";
+import { taggTelling } from "@/lib/vurdering-tagger";
 import { byggKo, type KoServer, type Linje } from "./ko";
 
 const SIDE = "/nissemor-guide/gjennomgang";
@@ -187,6 +194,16 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
         <p className="text-base">
           Herav {ko.segmenter} manussegmenter på dager uten video.
         </p>
+      )}
+      {fane === "laerdom" && (
+        <div data-testid="tagg-telling">
+          {taggTelling(d.vurd ?? {}).map(([t, n]) => (
+            <p key={t}>
+              <span className="text-(--gold)">Merker {t}:</span>{" "}
+              {n.map(([x, k]) => `${x} ${k}`).join(" · ")}
+            </p>
+          ))}
+        </div>
       )}
       {linjer.length === 0 && <p>Ingenting her.</p>}
       {grupper.map((g) => (
@@ -422,7 +439,8 @@ function Vurdering({
       )
         return;
       const tast = ev.key.toLowerCase();
-      if (vurderTast(tast, id)) ev.preventDefault();
+      if (taggTast(ev, id) || (!ev.shiftKey && vurderTast(tast, id)))
+        ev.preventDefault();
       else if (tast === "n" && neste) router.push(href(neste.id));
       else if (tast === "p" && forrige) router.push(href(forrige.id));
     };
@@ -486,7 +504,7 @@ function Vurdering({
         ))}
         <p className="text-base text-(--neon-green)/80">
           Tastatur: G godkjent · O OK · L lag på nytt (skriv notat, Enter
-          lagrer) · N neste · P forrige
+          lagrer) · ⇧1–9 merke · T tidskode · N neste · P forrige
         </p>
       </Kort>
       <SkjulVurder.Provider value>

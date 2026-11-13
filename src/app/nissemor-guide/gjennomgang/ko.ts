@@ -11,6 +11,7 @@ import { segmentHint } from "@/lib/segmenter";
 import { dagAv, typeAv } from "../media/filter";
 import { juliusFiles } from "../media/oversikt";
 import type { Element } from "./elementer";
+import { taggLinje } from "@/lib/vurdering-tagger";
 
 /**
  * Gjennomgang's queue, derived from files and verdicts (no state of its own):
@@ -45,7 +46,10 @@ const typeFor = (id: string) =>
 const dagFor = (id: string) =>
   id.startsWith("dag/") ? Number(id.split("/")[1]) : dagAv(id);
 const notatAv = (v?: MediaVurderinger[string]) =>
-  (v?.notat ?? v?.forrige?.notat)?.replace(/\s*\n\s*/g, " / ");
+  (
+    (v?.notat ?? v?.forrige?.notat ?? "").replace(/\s*\n\s*/g, " / ") +
+    taggLinje(v)
+  ).trim() || undefined;
 
 /** What the agent runs to remake a media file, and what it costs. */
 export function omtak(

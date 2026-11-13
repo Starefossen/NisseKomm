@@ -30,6 +30,9 @@ export interface Oppføring {
   oppdatert?: string;
   /** What was reviewed when it was saved: size-mtime for files, the section/segment hash otherwise. */
   versjon?: string;
+  /** Quick tags (src/data/vurdering-tagger.json) and a timecode in seconds. */
+  tagger?: string[];
+  tid?: number;
 }
 
 /** `hash`: content hash; "*" = nothing to version (code, missing file), "utdatert" = changed before format 2. */
@@ -259,7 +262,7 @@ export async function settVurdering(
   });
   e.historikk.push(...e.vurderinger.filter((v) => v.fil === fil));
   e.vurderinger = e.vurderinger.filter((v) => v.fil !== fil);
-  if (!o.vurdering && !o.notat) return null;
+  if (!o.vurdering && !o.notat && !o.tagger?.length) return null;
   const n = await nå(dir, fil);
   const v = ren<Vurdering>({
     ...o,

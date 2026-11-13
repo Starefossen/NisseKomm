@@ -59,7 +59,7 @@ export const variantOf = (path: string) =>
   Number(path.match(/-v(\d+)\.\w+$/)?.[1] ?? 0);
 
 /** .old-N oldest (higher N newer), the plain name next, then -vN by N. */
-const versionRank = (path: string) => {
+export const versionRank = (path: string) => {
   const old = path.match(/\.old-(\d+)\.\w+$/);
   if (old) return -1 / (1 + Number(old[1]));
   return path === versionKey(path) ? 0.5 : variantOf(path);

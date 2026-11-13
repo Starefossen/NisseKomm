@@ -10,6 +10,7 @@ import {
   settVurdering,
   visning,
 } from "@/lib/vurdering-lager";
+import { taggerFor } from "@/lib/vurdering-tagger";
 
 /** «ok» = usable with flaws; its note is a lesson for later generation. */
 export type Verdikt = "godkjent" | "ok" | "lag_paa_nytt";
@@ -22,6 +23,8 @@ export interface MediaVurderingItem {
   versjon?: string;
   /** Set when served: the verdict given to an earlier version. */
   forrige?: Forrige;
+  tagger?: string[];
+  tid?: number;
 }
 
 export type MediaVurderinger = Record<string, MediaVurderingItem>;
@@ -72,7 +75,13 @@ export async function POST(req: NextRequest) {
     return badRequest();
   }
 
-  const { path: relPath, vurdering, notat } = body as Record<string, unknown>;
+  const {
+    path: relPath,
+    vurdering,
+    notat,
+    tagger,
+    tid,
+  } = body as Record<string, unknown>;
 
   if (typeof relPath !== "string" || !isSafePath(relPath)) {
     return badRequest();
@@ -91,6 +100,21 @@ export async function POST(req: NextRequest) {
   if (
     notat !== undefined &&
     (typeof notat !== "string" || notat.length > 1000)
+  ) {
+    return badRequest();
+  }
+
+  const lov = taggerFor(cleanPath.trim());
+  if (
+    tagger !== undefined &&
+    (!Array.isArray(tagger) || tagger.some((t) => !lov.includes(t)))
+  ) {
+    return badRequest();
+  }
+  if (
+    tid !== undefined &&
+    tid !== null &&
+    (typeof tid !== "number" || !(tid >= 0) || tid > 36000)
   ) {
     return badRequest();
   }
@@ -118,7 +142,14 @@ export async function POST(req: NextRequest) {
         ugyldig = true;
         throw new Error("lag_paa_nytt uten notat");
       }
+      const p = prev as MediaVurderingItem;
+      const nesteTagger =
+        tagger !== undefined ? [...new Set(tagger as string[])] : p.tagger;
+      const nesteTid =
+        tid !== undefined ? (tid as number | null) : (p.tid ?? null);
       const v = await settVurdering(dir, l, cleanPath, {
+        ...(nesteTagger?.length ? { tagger: nesteTagger } : {}),
+        ...(nesteTid !== null ? { tid: Math.round(nesteTid * 10) / 10 } : {}),
         ...(nextVerdict ? { vurdering: nextVerdict } : {}),
         ...(nextNote ? { notat: nextNote } : {}),
         oppdatert: now,

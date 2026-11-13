@@ -1,0 +1,15 @@
+{
+  "julius": [
+    "mikrofon",
+    "pause",
+    "kutt",
+    "mumling",
+    "latter",
+    "rekvisitt",
+    "kanon",
+    "tekst"
+  ],
+  "tv": ["størrelse", "bevegelse", "fading", "zoom", "kanon"],
+  "bilde": ["anatomi", "piler", "tekst-i-bilde", "stil", "kanon"],
+  "radio": ["uttale", "engelsk", "lengde", "tekst"]
+}
