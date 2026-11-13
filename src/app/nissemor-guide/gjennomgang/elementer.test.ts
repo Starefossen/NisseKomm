@@ -10,6 +10,7 @@ import {
   naboer,
   type Element,
   nyesteVersjon,
+  tilstand,
 } from "./elementer";
 import type { Sesong } from "../_kveld/felles";
 
@@ -142,5 +143,22 @@ describe("naboer (N/P)", () => {
       }
     expect(naboer(liste, liste, "a", null).neste?.id).toBe("b");
     expect(naboer(liste, liste, "a", ["d", "a", "c"]).neste?.id).toBe("c");
+  });
+});
+
+describe("tilstand", () => {
+  it("a section's own verdict wins over its sketch (rolled back in df5dd47)", () => {
+    const e = {
+      id: "dag/04/rampestrek",
+      gruppe: "rampestrek",
+      tittel: "",
+      media: ["strek/dag04.png"],
+    };
+    const k = {
+      filer: [{ path: "strek/dag04.png", size: 1 }],
+      vurderinger: { "dag/04/rampestrek": { vurdering: "godkjent" } },
+    };
+    expect(tilstand(e, k).celle).toBe("godkjent");
+    expect(tilstand(e, { ...k, vurderinger: {} }).celle).not.toBe("godkjent");
   });
 });

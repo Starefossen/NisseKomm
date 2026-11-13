@@ -245,6 +245,7 @@ STORAGE_BACKEND=                         # server | localStorage; unset = server
 4. Test in browser (use `NEXT_PUBLIC_TEST_MODE=true` for testing all days)
 5. Run `pnpm check` before finishing session
 6. Update this document if you changed architecture/patterns
+7. After a rebase or conflict, before pushing: `node scripts/sjekk-tilbakerulling.mjs` lists lines your commits remove that other commits added in the last 24 h; each hit must be intended (df5dd47 rolled back e1f6ee6 this way)
 
 **Neste sesong** (januar, fra review av vurderingsriggen): `SESONG = 2026` i `vurdering-lager.ts` og `"sesong": 2026` i medie.py; `docs/manus/*-2026.md`, `historie-2026.md`, `gaater-2026.md` hardkodet i skript og guide-sesong.ts; forbruk «siden 13.11» og budsjett 2000 NOK.
 
