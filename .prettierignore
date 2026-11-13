@@ -30,3 +30,4 @@ src/data/radio-manus.json
 
 # Agent scratch (dev server, media clone)
 .tmp
+.tmp-*

@@ -74,3 +74,4 @@ public/video/julius/
 
 # Agent scratch (dev server, media clone)
 .tmp
+.tmp-*

@@ -9,7 +9,7 @@ const createJestConfig = nextJest({
 // Add any custom config to be passed to Jest
 const customJestConfig = {
   // agent worktrees live under .claude/ and must not be picked up as tests or modules
-  modulePathIgnorePatterns: ["<rootDir>/.claude/"],
+  modulePathIgnorePatterns: ["<rootDir>/.claude/", "<rootDir>/.tmp"],
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   testEnvironment: "jsdom",
   testTimeout: 15000,

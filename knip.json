@@ -13,5 +13,5 @@
       "src/middleware.{ts,tsx}"
     ]
   },
-  "ignore": [".claude/**"]
+  "ignore": [".claude/**", ".tmp/**", ".tmp-*/**"]
 }

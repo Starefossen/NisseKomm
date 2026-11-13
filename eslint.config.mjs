@@ -15,6 +15,9 @@ const eslintConfig = defineConfig([
   globalIgnores([
     // agent worktrees under .claude/ are separate checkouts
     ".claude/**",
+    // agents' scratch folders and worktrees inside the checkout
+    ".tmp/**",
+    ".tmp-*/**",
     // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
