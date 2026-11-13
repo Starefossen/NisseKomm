@@ -12,7 +12,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | tv | 20 | 4 | 0 | 0 | 15 | 0 | 18 |
 | port | 3 | 0 | 0 | 1 | 0 | 0 | 9 |
 | feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
-| spill | 54 | 5 | 0 | 4 | 0 | 0 | 25 |
+| spill | 56 | 3 | 0 | 4 | 0 | 0 | 28 |
 | strek | 15 | 14 | 0 | 0 | 0 | 2 | 14 |
 
 ## julius
@@ -268,7 +268,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/julebodene.png | 1.5 MB | 2026-11-13 | ✓ |
 | spill/piksel/kart.png | 1.6 MB | 2026-11-12 | ✓ |
 | spill/portrett-winter.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/portrett-hjerterud.png | 0.0 MB | 2026-11-13 | ⚠ referansebildet er endret: assets/characters/hjerterud/ref-portrett.jpg |
+| spill/portrett-hjerterud.png | 0.0 MB | 2026-11-13 | ✓ |
 | spill/portrett-iq.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/portrett-julius.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/julius/ref-portrett.jpg |
 | spill/portrett-floke.png | 0.0 MB | 2026-11-12 | ✓ |
@@ -277,7 +277,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/figur/rudolf-busk.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/tannhjul.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/peileskive.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/piksel/figur/hjerterud.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/hjerterud/ref-portrett.jpg |
+| spill/piksel/figur/hjerterud.png | 0.0 MB | 2026-11-13 | ✓ |
 | spill/piksel/figur/julius.png | 0.0 MB | 2026-11-12 | ⚠ referansebildet er endret: assets/characters/julius/ref-portrett.jpg; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png |
 | spill/piksel/figur/brevfugl.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/figur/winter.png | 0.0 MB | 2026-11-12 | ✓ |
@@ -287,7 +287,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/ikon/kaffekopp.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/ikon/baersaft.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/ikon/skjema.png | 0.0 MB | 2026-11-12 | ✓ |
-| spill/piksel/ikon/skjema_signert.png | 0.0 MB | 2026-11-12 | ✓ |
+| spill/piksel/ikon/skjema_signert.png | 0.0 MB | 2026-11-13 | ✓ |
 | spill/piksel/ikon/bolle.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/ikon/syltetoey.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/piksel/ikon/blikkboks.png | 0.0 MB | 2026-11-12 | ✓ |
@@ -317,6 +317,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/figur/hjerterud.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/hjerterud.txt; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/julius-kontor.png; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png; ikke i manifestet |
 | spill/piksel/figur/hjerterud.old-2.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/hjerterud.txt; referansebildet er endret: public/spill/piksel/julius-kontor.png; referansebildet er endret: public/spill/piksel/kafe.png; ikke i manifestet |
 | spill/piksel/figur/hjerterud.old-3.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/hjerterud.txt; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/portrett-hjerterud.png; ikke i manifestet |
+| spill/piksel/figur/hjerterud.old-4.png | 0.0 MB | 2026-11-12 | - referansebildet er endret: assets/characters/hjerterud/ref-portrett.jpg; ikke i manifestet |
 | spill/piksel/figur/julius.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/julius.txt; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/julius-kontor.png; ikke i manifestet |
 | spill/piksel/figur/julius.old-2.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/figur/julius.txt; referansebildet er endret: public/spill/piksel/julius-kontor.png; referansebildet er endret: assets/characters/julius/ref-portrett.jpg; ikke i manifestet |
 | spill/piksel/ikon/baersaft.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/baersaft.txt; ikke i manifestet |
@@ -324,6 +325,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/ikon/fiskesnoere.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/fiskesnoere.txt; ikke i manifestet |
 | spill/piksel/ikon/skjema.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/skjema.txt; ikke i manifestet |
 | spill/piksel/ikon/skjema_signert.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/skjema_signert.txt; ikke i manifestet |
+| spill/piksel/ikon/skjema_signert.old-2.png | 0.0 MB | 2026-11-13 | - ikke i manifestet |
 | spill/piksel/ikon/tesil.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/tesil.txt; ikke i manifestet |
 | spill/piksel/ikon/tesil_lanterne.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/tesil_lanterne.txt; ikke i manifestet |
 | spill/piksel/iq-verksted.old-1.png | 1.3 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-iq-verksted.txt; ikke i manifestet |
@@ -337,6 +339,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/portrett-hjerterud.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/hjerterud.txt; referansebildet er endret: /Users/hans/go/src/github.com/starefossen/NisseKomm/public/spill/piksel/kafe.png; ikke i manifestet |
 | spill/portrett-hjerterud.old-2.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/hjerterud.txt; referansebildet er endret: public/spill/piksel/kafe.png; ikke i manifestet |
 | spill/portrett-hjerterud.old-3.png | 0.0 MB | 2026-11-13 | - referansebildet er endret: assets/characters/hjerterud/ref-portrett.jpg; ikke i manifestet |
+| spill/portrett-hjerterud.old-4.png | 0.0 MB | 2026-11-13 | - referansebildet er endret: assets/characters/hjerterud/ref-portrett.jpg; ikke i manifestet |
 | spill/portrett-julius.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/portrett/julius.txt; ikke i manifestet |
 
 ## strek

@@ -799,7 +799,7 @@
     "mal": "assets/prompts/spill/ikon/skjema.txt"
   },
   "spill-ikon/skjema_signert": {
-    "generator": "ikon",
+    "generator": "hånd",
     "ut": "spill/piksel/ikon/skjema_signert.png",
     "mal": "assets/prompts/spill/ikon/skjema_signert.txt"
   },
