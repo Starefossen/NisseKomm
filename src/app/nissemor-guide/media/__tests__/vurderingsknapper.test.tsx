@@ -111,4 +111,18 @@ describe("Vurderingsknapper", () => {
     );
     expect(knapp.className).toBe(før);
   });
+
+  it("ett klikk på Lag på nytt med notat i feltet: én lagring med vurdering og notat", async () => {
+    act(() => felt().focus());
+    skriv("for mørk");
+    const l = boks.querySelector<HTMLButtonElement>(
+      '[data-verdikt="lag_paa_nytt"]',
+    )!;
+    act(() => l.focus()); // the blur a real click causes
+    act(() => l.click());
+    await flush();
+    expect(onSave).toHaveBeenCalledTimes(1);
+    expect(onSave).toHaveBeenCalledWith("lag_paa_nytt", "for mørk");
+    expect(l.disabled).toBe(false);
+  });
 });

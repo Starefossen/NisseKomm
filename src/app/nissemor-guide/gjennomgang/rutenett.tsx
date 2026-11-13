@@ -36,7 +36,7 @@ export function Rutenett({
   const [notat, setNotat] = useState("");
   const [mangler, setMangler] = useState(false);
   const felt = useRef<HTMLInputElement>(null);
-  const { status, lagrer, kjør } = useLagring();
+  const { status, kjør } = useLagring();
 
   const velg = (i: number, shift: boolean) => {
     const ny = new Set(valgt);
@@ -50,7 +50,7 @@ export function Rutenett({
   };
 
   const send = (v: Verdikt) => {
-    if (!valgt.size || lagrer) return;
+    if (!valgt.size) return;
     if (v === "lag_paa_nytt" && !notat.trim()) {
       setMangler(true);
       felt.current?.focus();
@@ -110,7 +110,7 @@ export function Rutenett({
             key={v}
             type="button"
             data-verdikt={v}
-            disabled={!valgt.size || lagrer}
+            disabled={!valgt.size}
             onClick={() => send(v)}
             className="min-h-11 px-3 border-2 border-(--neon-green) hover:bg-(--neon-green)/20 disabled:opacity-40"
           >

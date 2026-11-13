@@ -8,6 +8,7 @@ import { GuideSide, Kort, type Sesong } from "../_kveld/felles";
 import { TaIBruk, kilde } from "../media/kort";
 import { DagManus } from "./visning";
 import { Rutenett } from "./rutenett";
+import { besøk, lesHistorikk, skrivHistorikk, tilbake } from "./historikk";
 import {
   CELLE,
   StatusBrikke,
@@ -52,60 +53,108 @@ const href = (id: string, ekstra = "") =>
   `${SIDE}?id=${encodeURIComponent(id)}${ekstra}`;
 const UTVALG_NOKKEL = "nissekomm-guide-gjennomgang-utvalg";
 
-// Quick choices, the same as the media page's «Hva gjenstår» and type chips.
-const UTVALG = [
-  ["gjenstaar", "Hva gjenstår"],
-  ["julius", "Bare Julius"],
-  ["radio", "Bare Radio"],
-  ["rampestrek", "Bare Rampestrek"],
-  ["alle", "Alt"],
-] as const;
-type Utvalg = (typeof UTVALG)[number][0];
+/**
+ * Filter: Status (Gjenstår | Alt) and Type (an element's `gruppe`, from the
+ * type registry). URL `?f=gjenstaar|alle&t=<gruppe>`; an old `?f=julius`
+ * still means type Julius.
+ */
+interface Utvalg {
+  s: "gjenstaar" | "alle";
+  t: string | null;
+}
+const KOLONNE_NAVN: Record<string, string> = Object.fromEntries(KOLONNER);
+export const typeNavn = (g: string) => KOLONNE_NAVN[g] ?? g;
 
 const passerUtvalg = (u: Utvalg, e: Element, celle: Tilstand) =>
-  u === "alle" ||
-  (u === "gjenstaar" ? GJENSTAAR.includes(celle) : e.gruppe === u);
+  (u.s === "alle" || GJENSTAAR.includes(celle)) && (!u.t || e.gruppe === u.t);
 
-/** From `?f=`, else the last one used, else everything. */
+function lesUtvalg(f: string | null, t: string | null): Utvalg {
+  if (f && f !== "gjenstaar" && f !== "alle") return { s: "alle", t: f };
+  return { s: f === "gjenstaar" ? "gjenstaar" : "alle", t };
+}
+const utvalgUrl = (u: Utvalg) =>
+  `&f=${u.s}${u.t ? `&t=${encodeURIComponent(u.t)}` : ""}`;
+
+/** From `?f=`/`?t=`, else the last one used, else everything. */
 function useUtvalg(): [Utvalg, (u: Utvalg) => void] {
-  const fraUrl = useSearchParams().get("f");
+  const sp = useSearchParams();
   const [u, setU] = useState<Utvalg>(() => {
-    const v = fraUrl ?? localStorage.getItem(UTVALG_NOKKEL);
-    return UTVALG.some(([k]) => k === v) ? (v as Utvalg) : "alle";
+    if (sp.has("f")) return lesUtvalg(sp.get("f"), sp.get("t"));
+    const [f, t] = (localStorage.getItem(UTVALG_NOKKEL) ?? "alle").split("|");
+    return lesUtvalg(f, t || null);
   });
   const sett = (ny: Utvalg) => {
-    localStorage.setItem(UTVALG_NOKKEL, ny);
+    localStorage.setItem(UTVALG_NOKKEL, `${ny.s}|${ny.t ?? ""}`);
     const url = new URL(location.href);
-    url.searchParams.set("f", ny);
+    url.searchParams.set("f", ny.s);
+    if (ny.t) url.searchParams.set("t", ny.t);
+    else url.searchParams.delete("t");
     history.replaceState(history.state, "", url);
     setU(ny);
   };
   return [u, sett];
 }
 
-// N/P label when a type filter is chosen: «Neste rampestrek (N)».
-const NAVN = Object.fromEntries(
-  UTVALG.map(([k, n]) => [k, n.replace("Bare ", "")]),
-);
+const liten =
+  "min-h-11 appearance-none bg-black border border-(--neon-green)/60 px-2 text-base";
 
-function UtvalgValg({ u, sett }: { u: Utvalg; sett: (u: Utvalg) => void }) {
+/** Status as a two-way switch, Type as a dropdown with what remains per type. */
+function UtvalgValg({
+  u,
+  sett,
+  liste,
+  gjenstaar,
+}: {
+  u: Utvalg;
+  sett: (u: Utvalg) => void;
+  liste: Element[];
+  gjenstaar: (e: Element) => boolean;
+}) {
+  const typer = [...new Set(liste.map((e) => e.gruppe))];
+  const igjen = (g: string) =>
+    liste.filter((e) => e.gruppe === g && gjenstaar(e)).length;
   return (
-    <div className="flex flex-wrap gap-2">
-      {UTVALG.map(([k, navn]) => (
-        <button
-          key={k}
-          type="button"
-          aria-pressed={u === k}
-          onClick={() => sett(k)}
-          className={`${knapp} text-lg ${u === k ? "bg-(--gold) text-black border-(--gold)" : ""}`}
+    <div className="flex flex-wrap items-center gap-2 text-base">
+      <div role="group" aria-label="Status" className="inline-flex">
+        {(
+          [
+            ["gjenstaar", "Gjenstår"],
+            ["alle", "Alt"],
+          ] as const
+        ).map(([k, navn]) => (
+          <button
+            key={k}
+            type="button"
+            aria-pressed={u.s === k}
+            onClick={() => sett({ ...u, s: k })}
+            className={`min-h-11 px-2 border border-(--neon-green)/60 ${u.s === k ? "bg-(--gold) text-black border-(--gold)" : "hover:bg-(--neon-green)/20"}`}
+          >
+            {navn}
+          </button>
+        ))}
+      </div>
+      <label className="flex items-center gap-1">
+        Type
+        <select
+          aria-label="Type"
+          value={u.t ?? ""}
+          onChange={(ev) => sett({ ...u, t: ev.target.value || null })}
+          className={liten}
         >
-          {navn}
-        </button>
-      ))}
+          <option value="">Alle ({liste.filter(gjenstaar).length})</option>
+          {typer.map((g) => (
+            <option key={g} value={g}>
+              {typeNavn(g)} ({igjen(g)})
+            </option>
+          ))}
+        </select>
+      </label>
     </div>
   );
 }
 
+const pil =
+  "min-h-11 min-w-11 inline-flex items-center justify-center border border-(--neon-green)/60 text-xl hover:bg-(--neon-green)/20";
 const knapp =
   "inline-flex items-center justify-center min-h-11 min-w-11 px-3 border-2 border-(--neon-green) hover:bg-(--neon-green)/20";
 
@@ -293,7 +342,7 @@ function Celle({
     );
   return (
     <td className="p-0.5 text-center">
-      <StatusBrikke c={c} href={href(c.e.id, `&f=${f}`)} dempet={dempet} />
+      <StatusBrikke c={c} href={href(c.e.id, f)} dempet={dempet} />
     </td>
   );
 }
@@ -318,9 +367,15 @@ function Matrise({
   const celle = (e: Element | null) => (
     <Celle
       key={e?.id}
-      f={u}
+      f={utvalgUrl(u)}
       dempet={!!e && !vis(e)}
-      c={e && (vis(e) || u === "gjenstaar") ? data(e) : null}
+      c={
+        e &&
+        (vis(e) ||
+          (u.s === "gjenstaar" && (!u.t || (e as Element).gruppe === u.t)))
+          ? data(e)
+          : null
+      }
     />
   );
   const telling = (rad: (Element | null)[]) => {
@@ -343,14 +398,12 @@ function Matrise({
       .map(([s, w]) => `${n[s]} ${w}`)
       .join(" · ");
   };
-  const kolonner = KOLONNER.filter(
-    ([k]) => u === "alle" || u === "gjenstaar" || u === k,
-  );
+  const kolonner = KOLONNER.filter(([k]) => !u.t || u.t === k);
   const alle = alleElementer("dag", sesong, d.media.files, d.krypto);
   const utvalgt = alle.filter(vis);
   const ok = alle.filter((e) => brukbar(t(e))).length;
   const ekstra = ekstraRader(sesong, d.media.files, d.krypto).filter(
-    (e) => KOLONNER.every(([k]) => k !== u) && vis(e),
+    (e) => KOLONNER.every(([k]) => k !== u.t) && vis(e),
   );
   const grupper = [...new Set(ekstra.map((e) => e.gruppe))];
   const dager = Array.from({ length: 24 }, (_, i) => i + 1).filter((n) =>
@@ -360,7 +413,12 @@ function Matrise({
 
   return (
     <>
-      <UtvalgValg u={u} sett={settU} />
+      <UtvalgValg
+        u={u}
+        sett={settU}
+        liste={alle}
+        gjenstaar={(e) => GJENSTAAR.includes(t(e)!)}
+      />
       <Kort tittel={`${ok} av ${alle.length} godkjent`} farge="border-(--gold)">
         <div className="h-4 border-2 border-(--neon-green)">
           <div
@@ -375,7 +433,7 @@ function Matrise({
           (notatet vises når du holder over). {FORKLARING}
         </p>
         {forste && (
-          <Link href={href(forste.id, `&f=${u}`)} className={knapp}>
+          <Link href={href(forste.id, utvalgUrl(u))} className={knapp}>
             Start: neste uvurdert ({forste.tittel})
           </Link>
         )}
@@ -440,7 +498,9 @@ function Matrise({
               <Rutenett
                 rad={rad}
                 data={data}
-                lenke={(e) => href(e.id, `&f=${u}&gr=${encodeURIComponent(g)}`)}
+                lenke={(e) =>
+                  href(e.id, `${utvalgUrl(u)}&gr=${encodeURIComponent(g)}`)
+                }
                 uvurdert={(e) => !vurd[e.id]?.vurdering}
               />
             ) : (
@@ -453,7 +513,7 @@ function Matrise({
                     >
                       <td className="p-1">
                         <Link
-                          href={href(e.id, `&f=${u}`)}
+                          href={href(e.id, utvalgUrl(u))}
                           className="underline break-all"
                         >
                           {e.tittel}
@@ -498,12 +558,12 @@ function Vurdering({
     settUtvalg(ny);
   };
   const gruppe = sp.get("gr");
-  const typeFilter = !!gruppe || (valgtHer && u !== "gjenstaar");
+  const typeFilter = !!gruppe || (valgtHer && (!!u.t || u.s === "alle"));
   const lenke = useCallback(
     (x: string) =>
       href(
         x,
-        (typeFilter ? `&f=${u}` : "") +
+        (typeFilter ? utvalgUrl(u) : "") +
           (gruppe ? `&gr=${encodeURIComponent(gruppe)}` : "") +
           (fane ? `&k=${fane}` : ""),
       ),
@@ -522,7 +582,7 @@ function Vurdering({
   const e = liste[i];
   // N/P skip optional files nobody has made, unless the filter is «Alt».
   const synlige = liste.filter(
-    (x) => x === e || u === "alle" || tilstand(x, k).celle !== "valgfri",
+    (x) => x === e || u.s === "alle" || tilstand(x, k).celle !== "valgfri",
   );
   // From a grid (`gr=`): N/P stay inside that group.
   const gr = sp.get("gr");
@@ -556,9 +616,23 @@ function Vurdering({
     ? "Neste i køen"
     : gruppe
       ? `Neste i ${gruppe.toLowerCase()}`
-      : typeFilter && u !== "alle"
-        ? `Neste ${u === "julius" ? NAVN[u] : NAVN[u].toLowerCase()}`
+      : typeFilter && u.t
+        ? `Neste ${u.t === "julius" ? "Julius" : typeNavn(u.t).toLowerCase()}`
         : "Neste uvurdert";
+
+  const eid = e?.id;
+  useEffect(() => {
+    if (eid) skrivHistorikk(besøk(lesHistorikk(), eid));
+  }, [eid]);
+  // P: back to the item viewed before, wherever it sits in the list.
+  const gåTilbake = useCallback(() => {
+    const [s, mål] = tilbake(lesHistorikk());
+    if (!mål) return;
+    skrivHistorikk(s);
+    router.push(lenke(mål));
+  }, [router, lenke]);
+  const harForrigeSett =
+    typeof window !== "undefined" && lesHistorikk().length > 1;
 
   useEffect(() => {
     const ned = (ev: KeyboardEvent) => {
@@ -571,6 +645,16 @@ function Vurdering({
       )
         return;
       const tast = ev.key.toLowerCase();
+      if ((ev.key === "[" || (tast === "p" && ev.shiftKey)) && forrige) {
+        ev.preventDefault();
+        router.push(lenke(forrige.id));
+        return;
+      }
+      if (ev.key === "]" && neste) {
+        ev.preventDefault();
+        router.push(lenke(neste.id));
+        return;
+      }
       const alleKnapp = egenVurdering(id)
         ? null
         : document.querySelector<HTMLButtonElement>(
@@ -588,11 +672,11 @@ function Vurdering({
       else if (tast === "n" && ev.shiftKey && nesteUv)
         router.push(lenke(nesteUv.id));
       else if (tast === "n" && neste) router.push(lenke(neste.id));
-      else if (tast === "p" && forrige) router.push(lenke(forrige.id));
+      else if (tast === "p") gåTilbake();
     };
     window.addEventListener("keydown", ned);
     return () => window.removeEventListener("keydown", ned);
-  }, [id, neste, nesteUv, forrige, router, lenke]);
+  }, [id, neste, nesteUv, forrige, router, lenke, gåTilbake]);
 
   if (!e) return <p>Fant ikke {id}.</p>;
   const st = tilstand(e, k);
@@ -604,38 +688,82 @@ function Vurdering({
     );
   return (
     <>
-      <nav className="flex flex-wrap items-center gap-2">
-        <Link href={fane ? `${SIDE}?k=${fane}` : SIDE} className={knapp}>
-          ‹ Køen
-        </Link>
-        {forrige && (
-          <Link href={lenke(forrige.id)} className={knapp}>
-            Forrige (P)
-          </Link>
-        )}
-        {neste && (
-          <Link href={lenke(neste.id)} className={`${knapp} border-(--gold)`}>
-            {nesteNavn} (N)
-            {!nesteIKo && ` · ${fi + 1} av ${filtrert.length}`}
-            {nabo.rundt && !nesteIKo && " · tilbake til start"}
-          </Link>
-        )}
-        <UtvalgValg u={u} sett={settU} />
-        <label className="flex items-center gap-2 min-h-11 ml-auto text-base">
-          Rekkefølge
-          <select
-            value={rekkefolge}
-            onChange={(ev) => {
-              const v = ev.target.value as "dag" | "kolonne";
-              localStorage.setItem(REKKEFOLGE, v);
-              setRekkefolge(v);
-            }}
-            className="min-h-11 bg-black border-2 border-(--neon-green) px-2"
+      <nav
+        aria-label="Gjennomgang"
+        className="sticky top-0 z-20 flex flex-wrap items-center gap-x-3 gap-y-1 bg-black/95 border-b border-(--neon-green)/40 py-1"
+      >
+        <div className="flex items-center gap-1 text-base">
+          <Link
+            href={fane ? `${SIDE}?k=${fane}` : SIDE}
+            className="min-h-11 inline-flex items-center px-2 underline"
           >
-            <option value="dag">dag for dag</option>
-            <option value="kolonne">kolonne for kolonne</option>
-          </select>
-        </label>
+            ‹ Kø
+          </Link>
+          <Link
+            href={forrige ? lenke(forrige.id) : "#"}
+            aria-disabled={!forrige}
+            title="Forrige i lista ([ eller Shift+P). P går tilbake til det du så sist."
+            aria-label="Forrige i lista ([)"
+            className={`${pil} ${forrige ? "" : "pointer-events-none opacity-30"}`}
+          >
+            ‹
+          </Link>
+          <span className="px-1 whitespace-nowrap">
+            {nesteIKo
+              ? `${iKo + 1} av ${koIder.length}`
+              : `${fi + 1} av ${filtrert.length}`}
+          </span>
+          <Link
+            href={neste ? lenke(neste.id) : "#"}
+            aria-disabled={!neste}
+            title={`${nesteNavn} (N eller ])${nabo.rundt && !nesteIKo ? " · tilbake til start" : ""}`}
+            aria-label={`${nesteNavn} (N)`}
+            className={`${pil} ${neste ? "border-(--gold)" : "pointer-events-none opacity-30"}`}
+          >
+            ›
+          </Link>
+          <span className="text-sm text-(--neon-green)/70 whitespace-nowrap">
+            {nesteNavn.toLowerCase()}
+            {e &&
+              !gr &&
+              !nesteIKo &&
+              !passerUtvalg(u, e, tilstand(e, k).celle) &&
+              " · utenfor filteret"}
+          </span>
+          {harForrigeSett && (
+            <button
+              type="button"
+              onClick={gåTilbake}
+              title="Tilbake til det du så sist (P), som nettleserens tilbake"
+              className="min-h-11 px-2 text-sm underline"
+            >
+              ↶ Sist sett (P)
+            </button>
+          )}
+        </div>
+        <div className="flex flex-wrap items-center gap-2 ml-auto text-base">
+          <UtvalgValg
+            u={u}
+            sett={settU}
+            liste={liste}
+            gjenstaar={(x) => GJENSTAAR.includes(tilstand(x, k).celle)}
+          />
+          <label className="flex items-center gap-1">
+            Rekkefølge
+            <select
+              value={rekkefolge}
+              onChange={(ev) => {
+                const v = ev.target.value as "dag" | "kolonne";
+                localStorage.setItem(REKKEFOLGE, v);
+                setRekkefolge(v);
+              }}
+              className={liten}
+            >
+              <option value="dag">dag</option>
+              <option value="kolonne">kolonne</option>
+            </select>
+          </label>
+        </div>
       </nav>
       <Kort tittel={e.tittel}>
         <p className="text-base break-all">
@@ -666,8 +794,8 @@ function Vurdering({
           e.media.map((p) => <TaIBruk key={p} path={p} data={d.media} />)}
         <p className="text-base text-(--neon-green)/80">
           Tastatur: G godkjent · O OK · L lag på nytt (skriv notat, Enter
-          lagrer) · ⇧1–9 merke · T tidskode · N neste · ⇧N neste uvurdert · P
-          forrige
+          lagrer) · ⇧1–9 merke · T tidskode · N/] neste · ⇧N neste uvurdert · [
+          eller ⇧P forrige i lista · P tilbake til sist sett
         </p>
       </Kort>
       <SkjulVurder.Provider value>

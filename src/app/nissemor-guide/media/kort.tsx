@@ -294,12 +294,10 @@ export async function sjekkSvar(res: Response): Promise<void> {
 /** Godkjent / OK / Lag på nytt + note, saved together; shared by media cards and guide sections. */
 export function Vurderingsknapper({
   vurdering,
-  isSaving,
   onSave,
   ekstra,
 }: {
   vurdering?: MediaVurderingItem;
-  isSaving?: boolean;
   /** Rejects with the reason shown in «Ikke lagret: …». */
   onSave: (v: Verdikt | null, note?: string) => Promise<void>;
   ekstra?: ReactNode;
@@ -309,12 +307,11 @@ export function Vurderingsknapper({
   const currentVerdict = (
     valgt === undefined ? (vurdering?.vurdering ?? null) : valgt
   ) as Verdikt | null;
-  const { status, lagrer: sender, kjør } = useLagring();
+  const { status, kjør } = useLagring();
   const send = (v: Verdikt | null, n: string) => {
     setValgt(v);
     void kjør(() => onSave(v, n)).then(() => setValgt(undefined));
   };
-  const lagrer = isSaving || sender;
   const [note, setNote] = useState(vurdering?.notat ?? "");
   // Leaving the item (Neste, N/P) with an unsaved note: save it on this item, not the next.
   const ulagret = useRef<(() => void) | null>(null);
@@ -328,6 +325,9 @@ export function Vurderingsknapper({
   // Set by the Lag på nytt button or key L: Enter in the note saves that verdict.
   const [mal, setMal] = useState<Verdikt | null>(null);
   const felt = useRef<HTMLInputElement>(null);
+  // Safari never focuses a clicked button, so blur can't see where focus went:
+  // a press on a verdict button marks the blur as part of that click.
+  const knappTrykk = useRef(false);
 
   const lagre = (v: Verdikt | null) => {
     if (v === "lag_paa_nytt" && !note.trim()) {
@@ -348,15 +348,22 @@ export function Vurderingsknapper({
         : "Kort notat...";
 
   return (
-    <div className="mt-3 pt-2 border-t border-(--neon-green)/30 flex flex-col gap-2">
+    <div
+      className="mt-3 pt-2 border-t border-(--neon-green)/30 flex flex-col gap-2"
+      onPointerDownCapture={(e) => {
+        knappTrykk.current = !!(e.target as HTMLElement).closest(
+          "[data-verdikt], [data-fjern]",
+        );
+      }}
+    >
       <div className="flex flex-wrap items-center gap-2">
         {KNAPPER.map(([v, tekst, valgt, farge]) => (
           <button
             key={v}
             type="button"
             data-verdikt={v}
+            // Never disabled: a click while a save runs is its own save, not lost.
             onClick={() => lagre(currentVerdict === v ? null : v)}
-            disabled={lagrer}
             className={`min-h-11 min-w-28 px-4 py-2 font-bold cursor-pointer transition-colors border-2 ${
               currentVerdict === v
                 ? farge
@@ -370,8 +377,8 @@ export function Vurderingsknapper({
         {currentVerdict && (
           <button
             type="button"
+            data-fjern
             onClick={() => lagre(null)}
-            disabled={lagrer}
             className="min-h-11 px-3 py-2 text-sm text-(--neon-green)/70 underline cursor-pointer hover:text-(--neon-green)"
           >
             Fjern valg
@@ -406,7 +413,17 @@ export function Vurderingsknapper({
             if (e.currentTarget.dataset.mal === "lag_paa_nytt")
               setMal("lag_paa_nytt");
           }}
-          onBlur={() => {
+          onBlur={(e) => {
+            // Focus moving to a verdict button: that click saves verdict and note together.
+            const til = e.relatedTarget as HTMLElement | null;
+            const trykk = knappTrykk.current;
+            knappTrykk.current = false;
+            if (
+              trykk ||
+              til?.closest("[data-verdikt]") ||
+              til?.closest("[data-fjern]")
+            )
+              return;
             if (!mal && note !== (vurdering?.notat ?? ""))
               send(currentVerdict, note);
           }}
@@ -418,7 +435,7 @@ export function Vurderingsknapper({
         <button
           type="button"
           onClick={() => lagre(mal ?? currentVerdict)}
-          disabled={lagrer}
+          data-fjern
           className="min-h-11 min-w-28 px-4 py-2 border-2 border-(--neon-green) hover:bg-(--neon-green)/20 text-sm font-bold cursor-pointer"
         >
           Lagre notat
