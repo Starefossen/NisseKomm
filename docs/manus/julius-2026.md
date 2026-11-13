@@ -1,6 +1,6 @@
 # Julius' videodagbok 2026 – manus
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Tittel dag 5 («Skriften på vingen») endret 13.11 etter ja fra Hans; replikkene er uendret. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans. Dag 5 seg 1 og dag 6 seg 1 endret 13.11 etter ja fra Hans (for lange for 15 s). Dag 8 seg 4, dag 10 seg 4 og dag 11 seg 2–4 endret 13.11 etter ja fra Hans. Dag 15 seg 4–5, dag 16 seg 3–4, dag 17 seg 2–4 og dag 21 seg 1 og 4 endret 13.11 etter ja fra Hans (replikken gir ikke ordet alene; huset trengs). Dag 17 seg 2–3 endret igjen 13.11 etter ja fra Hans («lys» bare én gang). Tittel dag 5 og 17 endret 13.11 etter ja fra Hans. Dag 6 seg 1 delt i to (hilsenen alene), dag 7 seg 2 («en stemme») og dag 12 seg 1 (kortere) endret 13.11 etter ja fra Hans. Dag 12 seg 1 og dag 13–24 (herdingsplanen §4, A- og B-lista: rapportsegmentene, haler, taleregi og mime i Handling, brikkene 15-5, 18-4 og 19-4) endret 13.11 etter ja fra Hans.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Hilsen «God [tall] søndag i advent» (ikke «God [tall]. advent») endret 13.11 etter ja fra Hans. Tittel dag 5 («Skriften på vingen») endret 13.11 etter ja fra Hans; replikkene er uendret. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans. Dag 5 seg 1 og dag 6 seg 1 endret 13.11 etter ja fra Hans (for lange for 15 s). Dag 8 seg 4, dag 10 seg 4 og dag 11 seg 2–4 endret 13.11 etter ja fra Hans. Dag 15 seg 4–5, dag 16 seg 3–4, dag 17 seg 2–4 og dag 21 seg 1 og 4 endret 13.11 etter ja fra Hans (replikken gir ikke ordet alene; huset trengs). Dag 17 seg 2–3 endret igjen 13.11 etter ja fra Hans («lys» bare én gang). Tittel dag 5 og 17 endret 13.11 etter ja fra Hans. Dag 6 seg 1 delt i to (hilsenen alene), dag 7 seg 2 («en stemme») og dag 12 seg 1 (kortere) endret 13.11 etter ja fra Hans. Dag 12 seg 1 og dag 13–24 (herdingsplanen §4, A- og B-lista: rapportsegmentene, haler, taleregi og mime i Handling, brikkene 15-5, 18-4 og 19-4) endret 13.11 etter ja fra Hans.
 
 **Revisjon 10. november (vanskelighet, godkjent):** nye segmenter dag 5/4, 7/3, 7/5, 8/3, 9/4, 11/4 og 11/5 (nytt), 20/5. Etter uavhengig gjennomgang også 4/4, 4/5, 12/4, 12/5, 14/4, 14/5, 18/4, 18/5 (brikken ga ordet alene). Brikkene står ordrett som i `gaater-2026.md` etter revisjonen.
 
@@ -469,7 +469,7 @@ Kulde-nivå 0. Helt rent bilde og ren lyd for første gang siden dag 1 (ingen fi
 
 Kulde-nivå 2. Bildet flimrer (lampen flakker, etterarbeid), og juletrelysene slukner i segment 5. Varselet i segment 1, bøkene (som på radioen og i e-posten) i 2, brikken i segment 3–4, porten og en rolig avskjed i 5. Ingen tull i dag; stemmen er rolig og nær. Fem segmenter.
 
-1. **Replikk:** «God morgen, Snøfall, og god fjerde advent. Frostgraden er åttiåtte prosent. I morgen kommer Kulde helt fram til huset deres.»
+1. **Replikk:** «God morgen, Snøfall, og god fjerde søndag i advent. Frostgraden er åttiåtte prosent. I morgen kommer Kulde helt fram til huset deres.»
    - Varighet: 14 s (20 ord)
    - Handling: Lener seg nærmere mikrofonen og snakker rolig og tydelig, venstre hånd stille på bordet.
    - Kulde: Svak knitring. Lampen flakker på «huset».
