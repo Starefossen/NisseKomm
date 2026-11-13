@@ -7,6 +7,11 @@ Usage:
                   [--maks-forespørsler N] [--stopp-etter julius:5] [--force] [--over-budsjett]
   generer.py --selvtest
 
+plan shows three separate lists: what can run now (counted, with a NOK estimate from forbruk.PRIS), what waits
+(script not approved for the day, missing photo or input; counted separately) and approved files whose inputs
+changed («utdatert», kept, never counted). An item with a -vN candidate made from today's inputs is done. Julius
+counts only segments without a take for the current script (julius-dag.py behov).
+
 Order: (a) named tests, (b) Julius days ✗/⚠, (c) Rampenissen ✗/⚠, (d) TV loops and
 events, (e) gate entrances, (f) the hidden NisseMusikk track, (g) sleigh horizons, Ugleposten
 stills and pixel scenes, portraits (images, 0 video requests). ✓ current and ? unknown
@@ -34,6 +39,11 @@ sys.path.insert(0, str(Path(__file__).parent))
 import forbruk  # noqa: E402
 import inventar  # noqa: E402
 import medie  # noqa: E402
+import importlib.util  # noqa: E402
+
+_spec = importlib.util.spec_from_file_location("julius_dag", Path(__file__).parent / "julius-dag.py")
+julius_dag = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(julius_dag)
 
 ROOT = medie.ROOT
 BIN = Path(__file__).resolve().parent  # the scripts next to this file, also when NISSEKOMM_ROOT points elsewhere
@@ -109,7 +119,7 @@ def is_redo(v) -> bool:
 
 def is_approved(v) -> bool:
     val = (v.get("vurdering") or v.get("status")) if isinstance(v, dict) else v
-    return val in ("godkjent", "approved")
+    return val in ("godkjent", "approved", "ok")
 
 
 def item_path(item_id: str) -> str:
@@ -151,28 +161,57 @@ def tv_jobs():
 VENTER = set()  # item ids held back from the queue
 
 
+def familie(p: str) -> list:
+    """The plain file and its -vN candidates that exist (media paths); .old-N is history, not a candidate."""
+    f = media_dir() / p
+    kand = sorted(x for x in f.parent.glob(f"{f.stem}-v*{f.suffix}")
+                  if re.fullmatch(r"-v\d+", x.name[len(f.stem):len(x.name) - len(f.suffix)]))
+    return ([p] if f.exists() else []) + [str(x.relative_to(media_dir())) for x in kand]
+
+
+def nok(cat: str, est: float) -> float:
+    """NOK estimate from forbruk.PRIS: video requests, else one image or one TTS call."""
+    if est:
+        return est * forbruk.PRIS["video"]
+    return forbruk.PRIS["tts"] if cat in ("rampenissen", "musikk") else forbruk.PRIS["bilde"] if cat in IMAGE_CATS else 0
+
+
 def infile(path: str, root: Path) -> Path:
     """A job input on disk. public/… in medier.json is a finished media file, so it lives in MEDIA_DIR
     (which defaults to <root>/public); everything else is relative to the checkout."""
     return media_dir() / path[len("public/"):] if path.startswith("public/") else root / path
 
 
-def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force=False, valgfri=False):
-    """[(id, category, estimated video requests, command)] in priority order."""
+def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force=False, valgfri=False, rapport=None, sjekk_inndata=False):
+    """[(id, category, estimated video requests, command)] in priority order.
+    `rapport` (a dict) collects what plan shows besides the queue: «venter» [(id, cat, est, why)] for items that
+    cannot run now, «utdatert» [(id, why)] for approved files whose inputs changed (kept, never remade)."""
+    rapport = rapport if rapport is not None else {}
+    rapport["venter"], rapport["utdatert"] = [], []
     st = {r["path"]: r["status"] for r in rows}
     todo = (medie.MISSING, medie.STALE) + ((medie.VALGFRI,) if valgfri else ())
     vurd = vurderinger or {}
     q = []
 
-    def should_queue(p: str, current_status) -> bool:
+    def should_queue(p: str, current_status, item_id: str = "") -> bool:
         v = vurd.get(p)
-        if is_redo(v):
-            return True
-        if is_approved(v) and not force:
-            return False
         if force:
             return True
-        return current_status in todo
+        fam = familie(p)
+        cand = [f for f in fam if f != p]
+        ok = [f for f in cand if medie._status(media_dir() / f, "", root)[0] == medie.CURRENT]
+        if is_redo(v):
+            # a current candidate made after the verdict is the answer to it
+            return not any(datetime.fromtimestamp((media_dir() / f).stat().st_mtime).astimezone().isoformat() > v.get("oppdatert", "")
+                           for f in ok) if isinstance(v, dict) else True
+        if ok or current_status not in todo:
+            return False
+        godkjent = [f for f in [p, *cand] if is_approved(vurd.get(f))]
+        if godkjent:
+            f = godkjent[0]
+            rapport["utdatert"].append((item_id, "; ".join(medie.status(media_dir() / f, f, root)[1]) or f"{f} endret"))
+            return False
+        return True
 
     for name, t in TESTS.items():
         p = f"assets/out/{name}.mp4"
@@ -181,15 +220,20 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
     for d in range(1, til_dag + 1):
         segs = medie.julius_segments(d, root)
         p = f"video/julius/dag-{d:02d}.mp4"
-        if segs and should_queue(p, st.get(p, medie.MISSING)):
-            q.append((f"julius:{d}", "julius", len(segs) * RETRY, ["python3", str(BIN / "julius-dag.py"), str(d)]))
+        if segs and should_queue(p, st.get(p, medie.MISSING), f"julius:{d}"):
+            # only segments without a take for today's script cost a call; the script gate can stop the whole day
+            need, why = julius_dag.behov(d, vurd, root)
+            if why:
+                rapport["venter"].append((f"julius:{d}", "julius", len(need) * RETRY, "; ".join(why)))
+            else:
+                q.append((f"julius:{d}", "julius", len(need) * RETRY, ["python3", str(BIN / "julius-dag.py"), str(d)]))
     for d in range(1, til_dag + 1):
         p = f"audio/rampenissen/dag-{d:02d}.mp3"
-        if medie.rampenissen_text(d, root) and should_queue(p, st.get(p, medie.MISSING)):
+        if medie.rampenissen_text(d, root) and should_queue(p, st.get(p, medie.MISSING), f"rampenissen:{d}"):
             q.append((f"rampenissen:{d}", "rampenissen", 0, ["bash", str(BIN / "rampenissen-tts.sh"), str(d)]))
     for n in tv_names:
         p = f"video/tv/{n}.mp4"
-        if should_queue(p, st.get(p, medie.MISSING)):
+        if should_queue(p, st.get(p, medie.MISSING), f"tv:{n}" if not n.startswith("port-") else f"port:{n}"):
             cat = "port" if n.startswith("port-") else "tv"
             q.append((f"{cat}:{n}", cat, RETRY, ["bash", str(BIN / "tv-loops.sh"), "--bare", n]))
     for cat in IMAGE_CATS:
@@ -198,10 +242,13 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
             if MEDIER[f"{cat}/{n}"].get("dag", 0) > til_dag:  # a per-day sketch: only up to --til-dag
                 continue
             # not every image is in the inventory (media.ts manifest); then ask its sidecar
-            if not should_queue(p, st.get(p) or medie.status(media_dir() / p, p, ROOT)[0]):
+            if not should_queue(p, st.get(p) or medie.status(media_dir() / p, p, ROOT)[0], f"{cat}:{n}"):
                 continue
             prompt, img, refs = medie.render(f"{cat}/{n}", ROOT, MEDIER)
             refs = [str(infile(r, root)) for r in refs]
+            if sjekk_inndata and (gone := [Path(f).name for f in refs + ([str(infile(img, root))] if img else []) if not Path(f).is_file()]):
+                rapport["venter"].append((f"{cat}:{n}", cat, 0, "mangler inndata: " + ", ".join(gone)))
+                continue
             if cat == "portrett":
                 cmd = [PORTRETT_SH, "_", "", str(root / prompt), str(media_dir() / p), str(BIN),
                        str(root / "assets/out"), *refs]
@@ -217,7 +264,7 @@ def queue(rows, tv_names, root: Path = ROOT, til_dag=24, vurderinger=None, force
                 cmd = [sh, "_", str(infile(img, root)), str(root / prompt), str(media_dir() / p), str(BIN), *refs]
             q.append((f"{cat}:{n}", cat, 0, ["bash", "-c", *cmd]))
     p_music = "music/rampenissen-synger.mp3"
-    if should_queue(p_music, st.get(p_music, medie.MISSING)):
+    if should_queue(p_music, st.get(p_music, medie.MISSING), "musikk:rampenissen-synger"):
         q.append(("musikk:rampenissen-synger", "musikk", 0, ["bash", str(BIN / "rampenissen-tts.sh"), "synger"]))
     return [j for j in q if j[0] not in VENTER]
 
@@ -319,14 +366,27 @@ def run(q, state_path: Path, maks=None, stopp_etter=None, runner=run_cmd, check=
     return 0
 
 
-def plan(q, used: int):
-    total = 0.0
+def plan(q, used: int, rapport=None):
+    """The queue that can run now, then what waits (not counted), then approved-but-outdated (not counted)."""
+    rapport = rapport or {}
+    total = kr = 0.0
+    print("KAN KJØRES NÅ")
     for item_id, cat, est, _ in q:
         total += est
-        print(f"{item_id:38} {est:5g}   sum {total:6g}")
+        kr += nok(cat, est)
+        print(f"  {item_id:38} {est:5g}   sum {total:6g}")
     days = -(-total // DAY_LIMIT) if total else 0
-    print(f"\n{len(q)} elementer, ca. {total:g} videoforespørsler (×{RETRY} for nye forsøk); "
-          f"{used} brukt i dag av {DAY_LIMIT}, {days:g} dag(er) med full kvote.")
+    print(f"  = {len(q)} elementer, ca. {total:g} videoforespørsler (anslag inkl. ×{RETRY} for nye forsøk), "
+          f"ca. {kr:.0f} NOK; {used} brukt i dag av {DAY_LIMIT}, {days:g} dag(er) med full kvote.")
+    venter = rapport.get("venter", [])
+    vt, vk = sum(e for _, _, e, _ in venter), sum(nok(c, e) for _, c, e, _ in venter)
+    print(f"\nVENTER PÅ (telles ikke med): {len(venter)} elementer, ca. {vt:g} videoforespørsler, ca. {vk:.0f} NOK")
+    for item_id, _, est, why in venter:
+        print(f"  {item_id:38} {est:5g}   venter på: {why}")
+    ut = rapport.get("utdatert", [])
+    print(f"\nUTDATERT (godkjent, lages ikke; telles ikke med): {len(ut)} elementer")
+    for item_id, why in ut:
+        print(f"  {item_id:38} {why}")
 
 
 def dry_run(q):
@@ -364,11 +424,13 @@ def main(argv):
     force = "--force" in argv
     vpath = vurdering_path()
     vurd = load_vurderinger(vpath)
-    q = queue(inventar.scan(media_dir()), tv_jobs(), til_dag=til, vurderinger=vurd, force=force, valgfri=bool(bare))
+    rapport = {}
+    q = queue(inventar.scan(media_dir()), tv_jobs(), til_dag=til, vurderinger=vurd, force=force, valgfri=bool(bare), rapport=rapport,
+               sjekk_inndata=argv[0] == "plan")
     if bare:
         q = [i for i in q if bare in (i[1], i[0])]  # a category (port) or an item id (port:port-winter)
     if argv[0] == "plan":
-        plan(q, load_state(STATE)["forespørsler"].get(quota_day(), 0))
+        plan(q, load_state(STATE)["forespørsler"].get(quota_day(), 0), rapport)
         return 0
     if "--tørrkjør" in argv:
         return dry_run(q)
@@ -399,8 +461,13 @@ def selftest():
                 *({"path": f"spill/portrett-{n}.png", "status": medie.CURRENT} for n in PORTRETT),
                 *({"path": f"spill/piksel/figur/{n}.png", "status": medie.CURRENT} for n in FIGUR),
                 *({"path": f"spill/piksel/ikon/{n}.png", "status": medie.CURRENT} for n in IKON),
-                *({"path": f"strek/{n}.png", "status": medie.CURRENT} for n in STREK)]
-        q = queue(rows, ["landsby-rolig", "landsby-morgen", "port-iq"], root)
+                *({"path": f"strek/{n}.png", "status": medie.CURRENT} for n in STREK),
+                *({"path": f"strek/oppsett-{n}.png", "status": medie.CURRENT} for n in OPPSETT)]
+        def manus_ok(days):  # the guide's script approval, on the current hash of each segment
+            return {julius_dag.manus_id(d, i): {"vurdering": "godkjent", "versjon": medie.innholds_hash(julius_dag.take_key(*seg))}
+                    for d in days for i, seg in enumerate(medie.julius_segments(d, root), 1)}
+        ok = manus_ok((1, 2, 3))
+        q = queue(rows, ["landsby-rolig", "landsby-morgen", "port-iq"], root, vurderinger=ok)
         assert [i[0] for i in q] == ["test-klementin", "julius:2", "julius:3", "tv:landsby-morgen", "port:port-iq"], q
         strek = [r for r in rows if r["path"] not in ("strek/dag02.png", "strek/dag09.png")]
         assert [i[0] for i in queue(strek, [], root, til_dag=5) if i[1] == "strek"] == ["strek:dag02"]
@@ -416,7 +483,7 @@ def selftest():
         assert item_path("spill-piksel:torget") == "spill/piksel/torget.png"
         qx = queue([r for r in rows if r["path"] != "spill/piksel/torget.png"], [], root, til_dag=0)
         (px,) = [i for i in qx if i[1] == "spill-piksel"]
-        assert px[0] == "spill-piksel:torget" and px[3][2].endswith(PIKSEL_SH) and "LAERDOM_TYPE=spill;" in px[3][2] and px[3][4] == str(root / "media/spill/torget.jpg"), px
+        assert px[0] == "spill-piksel:torget" and px[3][2].endswith(PIKSEL_SH) and "LAERDOM_TYPE=bilde;" in px[3][2] and px[3][4] == str(root / "media/spill/torget.jpg"), px
         assert infile("assets/x.jpg", root) == root / "assets/x.jpg"
         qr = queue([r for r in rows if r["path"] != "spill/portrett-winter.png"], [], root, til_dag=0)
         assert [i[0] for i in qr if i[1] == "portrett"] == ["portrett:winter"], qr
@@ -460,6 +527,7 @@ def selftest():
 
         # media-vurdering: queue honours verdicts and removes mark on success
         v_test = {
+            **ok,
             "video/julius/dag-01.mp4": {"vurdering": "lag_paa_nytt"},
             "video/julius/dag-03.mp4": {"vurdering": "godkjent"},
         }
@@ -482,6 +550,33 @@ def selftest():
         v_after = json.loads(v_file.read_text())
         assert "vurdering" not in v_after.get("video/julius/dag-01.mp4", {})
         assert v_after.get("video/julius/dag-01.mp4", {}).get("notat") == "fikse"
+        # plan: the script gate holds a day back with the reason, and the day is not counted as ready
+        rap = {}
+        qg = queue(rows, [], root, vurderinger={}, rapport=rap)
+        assert "julius:2" not in [i[0] for i in qg]
+        assert [(v[0], v[2], "manus ikke godkjent" in v[3]) for v in rap["venter"] if v[1] == "julius"] == \
+            [("julius:2", 1.5, True), ("julius:3", 1.5, True)], rap["venter"]
+        # takes for today's script are done: only the segment without one counts (julius:2 has 1 segment)
+        out = root / "assets/out"
+        out.mkdir(parents=True)
+        (out / "dag02-1.take.json").write_text(json.dumps(julius_dag.take_key(*medie.julius_segments(2, root)[0])))
+        (out / "dag02-1.mp4").write_text("x")
+        assert julius_dag.behov(2, ok, root) == ([], []) and julius_dag.behov(3, ok, root) == ([1], [])
+        qt = queue(rows, [], root, vurderinger=ok)
+        assert [i[2] for i in qt if i[0] == "julius:2"] == [0] and [i[2] for i in qt if i[0] == "julius:3"] == [1.5], qt
+        # a -vN candidate made from today's source is done; an approved stale one is «utdatert», both left out
+        vid = root / "media/video/tv"
+        vid.mkdir(parents=True)
+        (root / "docs/x.md").write_text("x")
+        (vid / "landsby-morgen-v1.mp4").write_text("x")
+        medie.write("still.sh", vid / "landsby-morgen-v1.mp4", "docs/x.md", None, "m", root=root)
+        (root / "media/video/julius").mkdir(parents=True)
+        (root / "media/video/julius/dag-03-v2.mp4").write_text("x")
+        rap = {}
+        qf = queue(rows, ["landsby-morgen"], root, vurderinger={"video/julius/dag-03-v2.mp4": {"vurdering": "ok"}, **ok}, rapport=rap)
+        assert "tv:landsby-morgen" not in [i[0] for i in qf] and "julius:3" not in [i[0] for i in qf], qf
+        assert [u[0] for u in rap["utdatert"]] == ["julius:3"], rap
+        assert nok("julius", 3) == 3 * forbruk.PRIS["video"] and nok("rampenissen", 0) == forbruk.PRIS["tts"]
         os.environ.pop("MEDIA_DIR")
         if old_media is not None:
             os.environ["MEDIA_DIR"] = old_media

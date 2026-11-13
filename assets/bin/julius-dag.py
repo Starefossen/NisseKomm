@@ -513,6 +513,37 @@ def last_frame(clip: Path, out: Path) -> Path:
 
 
 # ponytail: word-set overlap, not alignment; catches dropped clauses, not swapped word order
+def trenger_segment(day: int, i: int, key: list, alle: bool = False, out: Path = None) -> bool:
+    """Superset of the segments that may cost a call: no clip, or no take for exactly this line and action."""
+    out = out or OUT
+    take, clip = out / f"dag{day:02d}-{i}.take.json", out / f"dag{day:02d}-{i}.mp4"
+    return alle or not clip.exists() or not take.exists() or json.loads(take.read_text()) != key
+
+
+def trenger_foto(action: str) -> bool:
+    """The segment shows the three crystals (amethyst clusters since 13 Nov), so Hans' photo is a reference image."""
+    return bool(re.search(r"bergkrystall|ametyst", action, re.I))
+
+
+def behov(day: int, vurd: dict, root: Path = ROOT):
+    """What a run of this day would still pay for, for generer.py plan: (segments to make, why the day waits).
+    The script gate and the missing crystal photo stop the whole day before any call is made."""
+    out = root / "assets" / "out"
+    segs = medie.julius_segments(day, root)
+    keys = [take_key(*seg) for seg in segs]
+    raws = {i: raw_hash(out / f"dag{day:02d}-{i}.raw.mp4") for i in range(1, len(segs) + 1)}
+    trenger = {i for i in raws if trenger_segment(day, i, keys[i - 1], out=out)}
+    locked, missing = port(day, keys, vurd, raws, trenger)
+    need = sorted(trenger - locked)
+    why = []
+    if missing:
+        why.append(f"manus ikke godkjent (s{', s'.join(map(str, missing))})")
+    foto = root / "assets" / "objects" / "krystall" / "foto.jpg"
+    if any(trenger_foto(keys[i - 1][2]) for i in need) and not foto.exists():
+        why.append(f"mangler {foto.relative_to(root)}")
+    return need, why
+
+
 MIN_COVERAGE = 0.9
 ATTEMPTS = 1  # takes per segment; a flagged clip is seen and heard before anyone pays for take 2 (--forsøk N)
 
@@ -533,10 +564,7 @@ def main():
     raws = {i: raw_hash(OUT / f"dag{day:02d}-{i}.raw.mp4") for i in range(1, len(segs) + 1)}
 
     def trenger(i):  # superset of the segments that may cost a call
-        take, clip = OUT / f"dag{day:02d}-{i}.take.json", OUT / f"dag{day:02d}-{i}.mp4"
-        if valgt:
-            return i in valgt
-        return "--alle" in sys.argv or not clip.exists() or not take.exists() or json.loads(take.read_text()) != keys[i - 1]
+        return i in valgt if valgt else trenger_segment(day, i, keys[i - 1], "--alle" in sys.argv)
 
     offline = dry or "--join-only" in sys.argv or "--refilter" in sys.argv
     if offline or promo:
@@ -571,7 +599,7 @@ def main():
                 take.write_text(json.dumps(key))
                 continue
         env = dict(os.environ)
-        if "bergkrystall" in act.lower():  # day 24 s2: Hans' photo of the three crystals is the object reference
+        if trenger_foto(act):  # day 24 s2: Hans' photo of the three crystals is the object reference
             foto = ROOT / "assets" / "objects" / "krystall" / "foto.jpg"
             if not foto.exists():
                 sys.exit(f"{name}: mangler foto av krystallene ({foto.relative_to(ROOT)}); Hans kjøper tre bergkrystaller og tar bildet først")
