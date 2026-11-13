@@ -383,14 +383,14 @@ Kulde-nivå 1. Lampen flakker svakt (etterarbeid). Julius er stillere og langsom
 
 ## Dag 16 (on) – Pakkesentralen i Spinn · SORTERING · bonus
 
-Kulde-nivå 2. Lampen flakker, lyden faller ut og bildet fryser i segment 2 (etterarbeid). Morgensangen, tredje forsøk, stoppes av lampen. Kroken i segment 2 (Orakelet vil ha Julius i vinduet) løses dag 17. Fire segmenter: brikken delt over 3–4.
+Kulde-nivå 2. Lampen flakker, lyden faller ut og bildet fryser i segment 2 (etterarbeid). Morgensangen, tredje forsøk, stoppes av lampen. Kroken i segment 2 (Julius skal følge med på vinduet i natt; endret 13.11 etter ja fra Hans) løses dag 17. Fire segmenter: brikken delt over 3–4.
 
-1. **Replikk:** «Gooood morgen, Snøfall! Morgensangen, tredje forsøk: God morgen, kopp. God morgen, bok. God morgen, lampe… nei, nå flakker den.»
-   - Varighet: 14 s (19 ord)
+1. **Replikk:** «Gooood morgen, Snøfall! Morgensangen, tredje forsøk: God morgen, kopp. God morgen, bok. God morgen, lampe… nei, nå … glitcher den? Sier man det?»
+   - Varighet: 14 s (22 ord)
    - Handling: Dirigerer med venstre pekefinger, ser over skulderen opp mot vegglampen og slår oppgitt ut med hånden.
    - Kulde: Svak knitring. Lampen flakker på «lampe».
-2. **Replikk:** «I natt snudde Vintervokteren samlebåndet. Alt ligger i én haug, ingenting er ødelagt. Orakelet vil ha meg i vinduet.»
-   - Varighet: 14 s (19 ord)
+2. **Replikk:** «I natt snudde Vintervokteren samlebåndet. Alt i én haug, ingenting ødelagt. Orakelet hvisker at jeg må følge med på vinduet i natt.»
+   - Varighet: 15 s (21 ord)
    - Handling: Snurrer venstre hånd baklengs, stopper, så nikker han mot vinduet bak seg.
    - Kulde: Svak knitring. Lyden faller ut et øyeblikk, bildet fryser på «haug».
 3. **Replikk:** «Hør nå godt etter, Håkon. Winter har ett ord for å få hver pakke dit den skal.»

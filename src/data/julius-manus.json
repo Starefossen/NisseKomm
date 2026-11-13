@@ -891,25 +891,27 @@
  "16": [
   {
    "s": 1,
-   "hash": "bb91350f2dde",
+   "hash": "7d32b7bb4033",
    "key": [
-    "Gooood morgen, Snøfall! Morgensangen, tredje forsøk: God morgen, kopp. God morgen, bok. God morgen, lampe… nei, nå flakker den.",
+    "Gooood morgen, Snøfall! Morgensangen, tredje forsøk: God morgen, kopp. God morgen, bok. God morgen, lampe… nei, nå … glitcher den? Sier man det?",
     14,
     "Dirigerer med venstre pekefinger, ser over skulderen opp mot vegglampen og slår oppgitt ut med hånden. Kuldes påvirkning: Svak knitring."
    ],
-   "ord": 19,
+   "ord": 22,
    "laast": false,
-   "varsler": []
+   "varsler": [
+    "kort halesetning kan falle bort: «Sier man det?»"
+   ]
   },
   {
    "s": 2,
-   "hash": "3d35133ed317",
+   "hash": "909dc8eed388",
    "key": [
-    "I natt snudde Vintervokteren samlebåndet. Alt ligger i én haug, ingenting er ødelagt. Orakelet vil ha meg i vinduet.",
-    14,
+    "I natt snudde Vintervokteren samlebåndet. Alt i én haug, ingenting ødelagt. Orakelet hvisker at jeg må følge med på vinduet i natt.",
+    15,
     "Snurrer venstre hånd baklengs, stopper, så nikker han mot vinduet bak seg. Kuldes påvirkning: Svak knitring."
    ],
-   "ord": 19,
+   "ord": 22,
    "laast": false,
    "varsler": []
   },
