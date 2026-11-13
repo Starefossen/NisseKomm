@@ -56,35 +56,15 @@ function useDag(n: number | undefined) {
 /** Script per segment; with `port` each segment gets its own verdict (julius-dag.py's script gate). */
 function Manus({ d, port }: { d: Dag; port?: boolean }) {
   const j = d.julius;
-  const alle = useVurderinger();
-  const { status, lagrer, kjør } = useLagring();
   if (!j) return <p>Ikke noe manus for dagen.</p>;
   const id = (s: number) =>
     `manus/julius/dag-${String(d.dag).padStart(2, "0")}#s${s}`;
-  const åpne = d.manusport.filter(
-    (m) => !["godkjent", "ok"].includes(alle?.[id(m.s)]?.vurdering ?? ""),
-  );
   return (
     <SkjulVurder.Provider value={!port}>
       <p className="text-sm text-(--cold-blue) whitespace-pre-wrap mb-2">
         {ren(j.intro)}
       </p>
-      {port && alle && åpne.length > 0 && (
-        <button
-          className="border border-(--gold) text-(--gold) px-3 min-h-11 mb-2"
-          disabled={lagrer}
-          onClick={() =>
-            void kjør(
-              () =>
-                Promise.all(åpne.map((m) => lagre(id(m.s), "godkjent", ""))),
-              `✓ ${åpne.length} godkjent`,
-            )
-          }
-        >
-          Godkjenn alle på dagen ({åpne.length})
-        </button>
-      )}
-      <Lagremelding status={status} className="ml-2" />
+
       <ol className="space-y-2">
         {j.segmenter.map((s, i) => {
           const m = d.manusport[i];
@@ -114,6 +94,99 @@ function Manus({ d, port }: { d: Dag; port?: boolean }) {
         })}
       </ol>
     </SkjulVurder.Provider>
+  );
+}
+
+/**
+ * The top of a Julius script day: no verdict of its own. Status comes from the
+ * segments; Godkjent/OK set every segment not marked Lag på nytt (the gate reads
+ * #sK); the note is a day note on `manus/julius/dag-NN` and never opens the gate.
+ */
+export function DagManus({ n }: { n: number }) {
+  const d = useDag(n);
+  const alle = useVurderinger();
+  const { status, lagrer, kjør } = useLagring();
+  const dagId = `manus/julius/dag-${String(n).padStart(2, "0")}`;
+  const [notat, setNotat] = useState<string | null>(null);
+  if (!d || !alle) return <p>Laster …</p>;
+  const id = (s: number) => `${dagId}#s${s}`;
+  const v = (s: number) => alle[id(s)]?.vurdering;
+  const segs = d.manusport.map((m) => m.s);
+  const godkjent = segs.filter((s) => ["godkjent", "ok"].includes(v(s) ?? ""));
+  const nytt = segs.filter((s) => v(s) === "lag_paa_nytt");
+  const alleTil = (verdikt: "godkjent" | "ok") => {
+    const rest = segs.filter(
+      (s) => v(s) !== "lag_paa_nytt" && v(s) !== verdikt,
+    );
+    if (
+      nytt.length &&
+      !confirm(`${nytt.length} er Lag på nytt — godkjenn resten?`)
+    )
+      return;
+    void kjør(
+      () =>
+        Promise.all(
+          rest.map((s) => lagre(id(s), verdikt, alle[id(s)]?.notat ?? "")),
+        ),
+      `✓ ${rest.length} ${verdikt === "ok" ? "OK" : "godkjent"}`,
+    );
+  };
+  const tekst = notat ?? alle[dagId]?.notat ?? "";
+  return (
+    <div id="vurdering-dagmanus" className="mt-3 flex flex-col gap-2">
+      <p data-testid="manus-status">
+        <span className="text-(--gold)">
+          {godkjent.length} av {segs.length} godkjent
+        </span>
+        {nytt.length > 0 && (
+          <span className="text-(--christmas-red)">
+            {" "}
+            · {nytt.map((s) => `s${s}`).join(", ")} lag på nytt
+          </span>
+        )}
+      </p>
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          data-alle="godkjent"
+          disabled={lagrer}
+          onClick={() => alleTil("godkjent")}
+          className="min-h-11 min-w-28 px-4 font-bold border-2 border-(--neon-green) hover:bg-(--neon-green)/20"
+        >
+          Godkjenn alle segmentene
+        </button>
+        <button
+          type="button"
+          data-alle="ok"
+          disabled={lagrer}
+          onClick={() => alleTil("ok")}
+          className="min-h-11 min-w-28 px-4 font-bold border-2 border-(--neon-green) hover:bg-(--neon-green)/20"
+        >
+          OK på alle
+        </button>
+        <Lagremelding status={status} className="text-sm ml-auto" />
+      </div>
+      <div className="flex gap-2">
+        <input
+          type="text"
+          value={tekst}
+          placeholder="Notat for dagen (påvirker ikke porten)"
+          onChange={(e) => setNotat(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") void kjør(() => lagre(dagId, null, tekst));
+          }}
+          className="w-full min-h-11 bg-black border-2 border-(--neon-green) px-3 text-sm"
+        />
+        <button
+          type="button"
+          disabled={lagrer}
+          onClick={() => void kjør(() => lagre(dagId, null, tekst))}
+          className="min-h-11 min-w-28 px-4 border-2 border-(--neon-green) text-sm font-bold"
+        >
+          Lagre notat
+        </button>
+      </div>
+    </div>
   );
 }
 

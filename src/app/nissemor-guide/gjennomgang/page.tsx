@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { GuideSide, Kort, useSesong, type Sesong } from "../_kveld/felles";
 import { TaIBruk, kilde, useMediaData } from "../media/kort";
+import { DagManus } from "./visning";
 import { brukbar, FORKLARING, MERKE } from "@/lib/media-status";
 import { GJENSTAAR } from "../media/filter";
 import {
@@ -442,7 +443,16 @@ function Vurdering({
       )
         return;
       const tast = ev.key.toLowerCase();
-      if (
+      const alleKnapp = egenVurdering(id)
+        ? null
+        : document.querySelector<HTMLButtonElement>(
+            `#vurdering-dagmanus [data-alle="${tast === "g" ? "godkjent" : tast === "o" ? "ok" : "-"}"]`,
+          );
+      // A script day: G/O approve every segment (the segment boxes take their own keys first).
+      if (!ev.shiftKey && alleKnapp) {
+        alleKnapp.click();
+        ev.preventDefault();
+      } else if (
         egenVurdering(id) &&
         (taggTast(ev, id) || (!ev.shiftKey && vurderTast(tast, id)))
       )
@@ -507,10 +517,7 @@ function Vurdering({
         {egenVurdering(e.id) ? (
           <Vurder id={e.id} />
         ) : (
-          <p className="text-(--cold-blue)">
-            Manus vurderes per segment under (G/O/L på hvert segment, eller
-            «Godkjenn alle på dagen»).
-          </p>
+          <DagManus n={e.dag ?? Number(e.id.slice(-2))} />
         )}
         {e.media.map((p) => (
           <TaIBruk key={p} path={p} data={d.media} />
