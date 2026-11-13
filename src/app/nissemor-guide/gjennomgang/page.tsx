@@ -260,7 +260,9 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
                   >
                     {l.tittel}
                   </Link>{" "}
-                  <span>{l.hva}</span>
+                  <span className={l.feil ? "text-(--christmas-red)" : ""}>
+                    {l.hva}
+                  </span>
                   {l.notat && <p className="text-base">«{l.notat}»</p>}
                   {fane === "laerdom" && <Forslag l={l} ny={d.settLaerdom} />}
                   {l.kommando && (

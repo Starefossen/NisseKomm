@@ -14,6 +14,7 @@ import {
 } from "@/lib/vurdering-lager";
 import { taggerFor } from "@/lib/vurdering-tagger";
 import type { Kutt } from "@/lib/segmenter";
+import { kuttDag, startKutt } from "@/lib/kutt-jobb";
 
 /** «ok» = usable with flaws; its note is a lesson for later generation. */
 /** «kutt» (✂, Julius segments only) = trim the take at `kutt`, no new call. */
@@ -160,7 +161,7 @@ export async function POST(req: NextRequest) {
   const now = new Date(Date.now()).toISOString();
   let ugyldig = false;
   try {
-    return await endreLager(dir, async (l) => {
+    const svar = await endreLager(dir, async (l) => {
       const lagret = l.elementer[versionKey(cleanPath)]?.vurderinger.find(
         (v) => v.fil === cleanPath,
       );
@@ -237,6 +238,10 @@ export async function POST(req: NextRequest) {
         vurderinger: await visning(dir, l),
       });
     });
+    // Saved ✂ cuts at once (authorizeMedia above: lan mode and a parent only).
+    const dag = seg && vurdering === "kutt" ? kuttDag(Number(seg[1])) : null;
+    if (dag && svar.ok) startKutt(dag);
+    return svar;
   } catch {
     return ugyldig ? badRequest() : serverError();
   }

@@ -153,9 +153,20 @@ describe("SegmentStripe", () => {
     expect(side).not.toHaveBeenCalledWith(
       expect.objectContaining({ key: "g" }),
     );
-    // ✂: K stores the cut at the player's time inside the segment.
+    // ✂: K only draws the cut; Esc drops it, Enter saves it at the player's time inside the segment.
+    const antall = poster.length;
     boks.querySelector("video")!.currentTime = 12;
     await tast("k");
+    expect(poster).toHaveLength(antall);
+    expect(boks.querySelector('[data-testid="utkast-strek"]')).not.toBeNull();
+    expect(boks.querySelector('[data-testid="utkast-bort"]')).not.toBeNull();
+    expect(boks.textContent).toContain("Fjern resten (etter her)");
+    expect(boks.textContent).toContain("Lagre kutt");
+    await tast("Escape");
+    expect(boks.querySelector('[data-testid="utkast-strek"]')).toBeNull();
+    expect(poster).toHaveLength(antall);
+    await tast("k");
+    await tast("Enter");
     expect(poster.at(-1)).toEqual({
       path: "video/julius/dag-13#s2",
       vurdering: "kutt",

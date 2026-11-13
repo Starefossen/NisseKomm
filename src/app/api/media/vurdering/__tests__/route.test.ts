@@ -1,5 +1,12 @@
 /** @jest-environment node */
-import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  jest,
+} from "@jest/globals";
 import { createHash } from "node:crypto";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -272,6 +279,47 @@ describe("API /api/media/vurdering - Functionality", () => {
     const all = await (await GET(makeReq("GET", undefined, auth))).json();
     expect(all[fil].vurdering).toBeUndefined();
     expect(all[fil].forrige).toMatchObject({ vurdering: "godkjent" });
+  });
+
+  it("a saved ✂ starts the cut for that day; kid and public mode never do", async () => {
+    const fs = await import("node:fs");
+    // A stand-in julius-dag.py in a scratch root: its log shows the arguments it got.
+    const rot = fs.mkdtempSync(path.join(testDir, "rot-"));
+    fs.mkdirSync(path.join(rot, "assets/bin"), { recursive: true });
+    fs.mkdirSync(path.join(rot, "assets/out"));
+    fs.writeFileSync(
+      path.join(rot, "assets/bin/julius-dag.py"),
+      "import sys\nprint(sys.argv[1:])\n",
+    );
+    const cwd = jest.spyOn(process, "cwd").mockReturnValue(rot);
+    const exit = path.join(rot, "assets/out/kutt-14.exit");
+    const id = "video/julius/dag-14#s3";
+    const kutt = {
+      path: id,
+      vurdering: "kutt",
+      kutt: { retning: "slutt", t: 4 },
+    };
+    try {
+      const kid = await POST(
+        makeReq("POST", kutt, { cookie: "__Host-nissekomm=kid" }),
+      );
+      expect(kid.status).toBe(403);
+      await POST(makeReq("POST", { path: id, vurdering: "godkjent" }, auth));
+      process.env.NISSEKOMM_MODE = "public";
+      expect((await POST(makeReq("POST", kutt, auth))).status).toBe(404);
+      process.env.NISSEKOMM_MODE = "lan";
+      expect(fs.existsSync(path.join(rot, "assets/out/kutt-14.log"))).toBe(
+        false,
+      );
+      expect((await POST(makeReq("POST", kutt, auth))).status).toBe(200);
+      for (let i = 0; i < 60 && !fs.existsSync(exit); i++)
+        await new Promise((r) => setTimeout(r, 50));
+      expect(
+        fs.readFileSync(path.join(rot, "assets/out/kutt-14.log"), "utf8"),
+      ).toContain("['14', '--kutt']");
+    } finally {
+      cwd.mockRestore();
+    }
   });
 
   it("a cut check outlives notes and ends with the next verdict", async () => {

@@ -3,6 +3,7 @@ import path from "node:path";
 import type { NextRequest } from "next/server";
 import manus from "@/data/julius-manus.json";
 import { forbruk } from "@/lib/forbruk";
+import { kuttStatus } from "@/lib/kutt-jobb";
 import { authorizeMedia, mediaDir, mediaStatus } from "@/lib/media-server";
 import { versionKey } from "@/lib/media-status";
 import type { KoServer } from "@/app/nissemor-guide/gjennomgang/ko";
@@ -78,8 +79,15 @@ export async function GET(req: NextRequest) {
       segtid[d] = segs.map(({ s, start, slutt }) => ({ s, start, slutt }));
     }),
   );
+  // Automatic cuts that failed: a red line in «Hos agent» with the log path.
+  const kuttFeil: Record<string, string> = {};
+  for (let d = 1; d <= 24; d++) {
+    const k = kuttStatus(d);
+    if (k.status === "feil") kuttFeil[d] = k.logg;
+  }
   return Response.json({
     flagg,
+    kuttFeil,
     segtid,
     laerdom: await lesLaerdom(),
     forbruk: forbruk(await readFile(logg, "utf8").catch(() => "")),

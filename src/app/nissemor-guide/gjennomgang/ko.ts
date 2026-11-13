@@ -30,6 +30,8 @@ export interface Linje {
   kommando?: string;
   /** NOK for a retake (PRIS). */
   pris?: number;
+  /** Shown in red: something broke. */
+  feil?: boolean;
   /** Segment to open in the segment strip (`&s=`). */
   seg?: number;
 }
@@ -43,6 +45,8 @@ export interface KoServer {
   manus: Record<string, number[]>;
   /** Machine flags per segment of the Julius video in use, by day. */
   flagg?: Record<string, { s: number; flagg: string[] }[]>;
+  /** Days whose automatic cut failed → log path. */
+  kuttFeil?: Record<string, string>;
   /** Segment times in the video in use, by day: where a cut check points. */
   segtid?: Record<string, { s: number; start: number; slutt: number }[]>;
   /** assets/laerdom.json: suggestions already made rules or turned down leave Lærdom. */
@@ -308,6 +312,19 @@ export function byggKo(
         pris: PRIS.video * segs.length,
       });
   }
+
+  for (const [d, logg] of Object.entries(s.kuttFeil ?? {}))
+    agent.push({
+      id:
+        liste.find((e) => e.gruppe === "julius" && e.dag === Number(d))?.id ??
+        `video/julius/dag-${pad(Number(d))}.mp4`,
+      tittel: `Julius dag ${Number(d)}`,
+      type: "julius",
+      dag: Number(d),
+      hva: `kuttet feilet, se ${logg}`,
+      feil: true,
+      pris: 0,
+    });
 
   // Video segment retakes (the segment strip).
   for (const [id, v] of Object.entries(vurd)) {

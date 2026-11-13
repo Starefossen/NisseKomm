@@ -209,6 +209,16 @@ describe("byggKo", () => {
     );
   });
 
+  it("a failed automatic cut is a red line in Hos agent with the log path", () => {
+    const ko = byggKo(
+      liste,
+      { filer, vurderinger: {} },
+      server({ kuttFeil: { "3": "assets/out/kutt-03.log" } }),
+    );
+    const l = ko.agent.find((x) => x.hva.includes("kutt-03.log"));
+    expect(l).toMatchObject({ feil: true, dag: 3, pris: 0 });
+  });
+
   it("never-reviewed day sections wait on Hans by day; Lærdom drops ruled and rejected ids", () => {
     const sek = (dag: number, gruppe: string, id: string): Element => ({
       id: `dag/${String(dag).padStart(2, "0")}/${id}`,

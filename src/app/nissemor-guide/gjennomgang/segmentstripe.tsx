@@ -91,6 +91,18 @@ export function SegmentStripe({
   const alle = useVurderinger();
   const meld = useContext(SegmentStatus);
   const kuttLagring = useLagring();
+  // K only draws the cut on the timeline; «Lagre kutt» (Enter) is what writes ✂.
+  const [utkastRå, setUtkast] = useState<{
+    s: number;
+    retning: Kutt["retning"];
+    t: number;
+  } | null>(null);
+  // A draft belongs to the segment it was drawn on.
+  const utkast = utkastRå && utkastRå.s === valgt ? utkastRå : null;
+  const [kuttSt, setKuttSt] = useState<{ status: string; logg: string } | null>(
+    null,
+  );
+  const [nyttKutt, setNyttKutt] = useState(false);
 
   useEffect(() => {
     let aktiv = true;
@@ -117,6 +129,24 @@ export function SegmentStripe({
   const status =
     segs?.length && alle ? videoStatus(segs, (n) => vurd(n), alle[path]) : null;
   const statusTekst = status?.tekst;
+  const dag = Number(path.match(/dag-(\d+)/)?.[1]);
+  const harKutt = !!segs?.some((x) => vurd(x.s)?.vurdering === "kutt");
+  // The server cuts on its own after a ✂ is saved; show how it goes.
+  useEffect(() => {
+    if (!dag || !(harKutt || nyttKutt)) return;
+    let aktiv = true;
+    const hent = () =>
+      fetch(`/api/media/kutt?dag=${dag}`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((x) => aktiv && x && setKuttSt(x))
+        .catch(() => {});
+    hent();
+    const id = setInterval(hent, 3000);
+    return () => {
+      aktiv = false;
+      clearInterval(id);
+    };
+  }, [dag, harKutt, nyttKutt]);
   useEffect(() => {
     meld(status);
     return () => meld(null);
@@ -136,14 +166,30 @@ export function SegmentStripe({
   const kutt = (retning: Kutt["retning"]) => {
     const v = video.current;
     if (!seg || !v) return;
-    const t = Math.round((v.currentTime - seg.start) * 100) / 100;
+    if (!(v.currentTime > seg.start && v.currentTime < seg.slutt)) {
+      void kuttLagring.kjør(async () => {
+        throw new Error(`spol til et punkt inne i s${seg.s} først`);
+      }, "");
+      return;
+    }
+    setUtkast({ s: seg.s, retning, t: v.currentTime });
+  };
+  const hørKutt = () => {
+    if (!utkast) return;
+    if (utkast.retning === "slutt") spill(utkast.t - 3, utkast.t);
+    else spill(utkast.t, utkast.t + 3);
+  };
+  const lagreUtkast = () => {
+    if (!utkast || !seg) return;
+    const u = utkast;
+    const t = Math.round((u.t - seg.start) * 100) / 100;
+    setUtkast(null);
     void kuttLagring.kjør(
       async () => {
-        if (!(t > 0 && v.currentTime < seg.slutt))
-          throw new Error(`spol til et punkt inne i s${seg.s} først`);
-        await lagreKutt(segmentId(path, seg.s), { retning, t });
+        await lagreKutt(segmentId(path, u.s), { retning: u.retning, t });
+        setNyttKutt(true);
       },
-      `✂︎ kutt ${retning === "slutt" ? "slutt fra" : "start til"} ${tid(v.currentTime)}`,
+      `✂︎ fjern ${u.retning === "slutt" ? "resten etter" : "starten før"} ${tid(u.t)}`,
     );
   };
 
@@ -161,7 +207,10 @@ export function SegmentStripe({
       const tast = ev.key.toLowerCase();
       const nr = Number(tast);
       let tatt = true;
-      if (seg && taggTast(ev, segmentId(path, seg.s))) tatt = true;
+      if (utkast && (tast === "enter" || tast === "escape")) {
+        if (tast === "enter") lagreUtkast();
+        else setUtkast(null);
+      } else if (seg && taggTast(ev, segmentId(path, seg.s))) tatt = true;
       else if (seg && tast === "k") kutt(ev.shiftKey ? "start" : "slutt");
       else if (ev.shiftKey) tatt = false;
       else if (nr >= 1 && segs.some((s) => s.s === nr)) setValgt(nr);
@@ -312,6 +361,27 @@ export function SegmentStripe({
               style={{ left: pst(k.t) }}
             />
           ))}
+          {utkast && (
+            <>
+              <span
+                data-testid="utkast-bort"
+                className="absolute top-0 bottom-0 z-10 bg-(--gray)/80 pointer-events-none"
+                style={
+                  utkast.retning === "slutt"
+                    ? { left: pst(utkast.t), width: pst(seg!.slutt - utkast.t) }
+                    : {
+                        left: pst(seg!.start),
+                        width: pst(utkast.t - seg!.start),
+                      }
+                }
+              />
+              <span
+                data-testid="utkast-strek"
+                className="absolute -top-2 -bottom-2 z-10 w-0.5 bg-(--cold-blue) pointer-events-none"
+                style={{ left: pst(utkast.t) }}
+              />
+            </>
+          )}
           <span
             className="absolute top-0 bottom-0 w-0.5 bg-white pointer-events-none"
             style={{ left: pst(nå) }}
@@ -319,14 +389,14 @@ export function SegmentStripe({
         </div>
         {peker && (
           <span
-            className="absolute -bottom-6 text-sm bg-black px-1 whitespace-nowrap pointer-events-none z-10"
+            className="absolute bottom-full mb-1 text-sm bg-black px-1 whitespace-nowrap pointer-events-none z-20"
             style={{ left: peker.x }}
           >
             {tid(peker.t)} {segmentVed(segs, peker.t).replikk.slice(0, 60)}
           </span>
         )}
       </div>
-      <div className="flex flex-wrap items-center gap-2 mt-6">
+      <div className="flex flex-wrap items-center gap-2 mt-2">
         <span className="text-(--gold)" data-testid="segment-sum">
           {status?.tekst}
         </span>
@@ -342,6 +412,21 @@ export function SegmentStripe({
           Hele videoen
         </button>
       </div>
+      {kuttSt?.status === "kjorer" && (
+        <p data-testid="kutter" className="text-(--cold-blue)">
+          Kutter …
+        </p>
+      )}
+      {kuttSt?.status === "feil" && (
+        <p data-testid="kutt-feil" className="text-(--christmas-red)">
+          Kuttet feilet. Se {kuttSt.logg}
+        </p>
+      )}
+      {kuttSt?.status === "ferdig" && harKutt && (
+        <p className="text-(--cold-blue)">
+          Kuttet er gjort; den nye versjonen ligger i køen som kuttsjekk.
+        </p>
+      )}
       {seg ? (
         <div className="border border-(--neon-green)/40 p-2 space-y-2 mt-2">
           <div className="flex flex-wrap items-center gap-2">
@@ -371,15 +456,43 @@ export function SegmentStripe({
               onClick={() => kutt("slutt")}
               className="min-h-11 px-3 border-2 border-(--cold-blue)/60"
             >
-              ✂︎ Kutt slutt her (K)
+              ✂︎ Fjern resten (etter her) (K)
             </button>
             <button
               type="button"
               onClick={() => kutt("start")}
               className="min-h-11 px-3 border-2 border-(--cold-blue)/60"
             >
-              ✂︎ Kutt start her (⇧K)
+              ✂︎ Fjern starten (før her) (⇧K)
             </button>
+            {utkast && (
+              <>
+                <button
+                  type="button"
+                  data-testid="utkast-hor"
+                  onClick={hørKutt}
+                  className="min-h-11 px-3 border-2 border-(--cold-blue) text-(--cold-blue)"
+                >
+                  Hør
+                </button>
+                <button
+                  type="button"
+                  data-testid="utkast-lagre"
+                  onClick={lagreUtkast}
+                  className="min-h-11 px-3 border-2 border-(--gold) bg-(--gold)/20"
+                >
+                  Lagre kutt (Enter)
+                </button>
+                <button
+                  type="button"
+                  data-testid="utkast-avbryt"
+                  onClick={() => setUtkast(null)}
+                  className="min-h-11 px-3 border-2 border-(--neon-green)/50"
+                >
+                  Avbryt (Esc)
+                </button>
+              </>
+            )}
             <Lagremelding status={kuttLagring.status} />
           </div>
           {lytt && (
@@ -392,9 +505,7 @@ export function SegmentStripe({
           {v?.vurdering === "kutt" && v.kutt && (
             <p className="text-(--cold-blue) break-all">
               ✂︎ Kutt {v.kutt.retning === "slutt" ? "slutt fra" : "start til"}{" "}
-              {tid(seg.start + v.kutt.t)}. Agentene kjører: python3
-              assets/bin/julius-dag.py {Number(path.match(/dag-(\d+)/)?.[1])}{" "}
-              --kutt (0 kr)
+              {tid(seg.start + v.kutt.t)}. Serveren kutter selv (0 kr).
             </p>
           )}
           <p>
@@ -465,8 +576,9 @@ export function SegmentStripe({
       )}
       <p className="text-base text-(--neon-green)/80">
         1–{segs.length} velg segment · klikk på tidslinjen spoler · mellomrom
-        spill · G/O/L, K kutt slutt, ⇧K kutt start, ⇧1–9 merke og T tidskode på
-        valgt segment · Esc hele videoen
+        spill · G/O/L, K fjern resten (etter her), ⇧K fjern starten (før her),
+        Enter lagrer kuttet, Esc avbryter, ⇧1–9 merke og T tidskode på valgt
+        segment · Esc hele videoen
       </p>
     </div>
   );
