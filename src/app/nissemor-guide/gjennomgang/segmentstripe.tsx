@@ -129,7 +129,7 @@ export function SegmentStripe({
       />
       <p className="mt-2 text-(--gold)" data-testid="segment-sum">
         {godkjent} av {segs.length} segmenter godkjent · videoens egen vurdering
-        over = skjøten (overganger, slutt)
+        over gjelder hele videoen (overganger, slutt)
       </p>
       <div className="flex flex-wrap gap-2 my-2" role="tablist">
         {segs.map((s) => {
@@ -156,7 +156,7 @@ export function SegmentStripe({
           onClick={() => setValgt(null)}
           className={`min-h-11 px-3 border-2 ${valgt === null ? "border-(--gold) bg-(--gold)/20" : "border-(--neon-green)/50"}`}
         >
-          skjøt
+          Hele videoen
         </button>
       </div>
       {seg && (
@@ -222,7 +222,7 @@ export function SegmentStripe({
       )}
       <p className="text-base text-(--neon-green)/80">
         Segmenter: 1–{segs.length} velg · mellomrom spill · G/O/L, ⇧1–9 merke og
-        T tidskode på valgt segment · Esc tilbake til skjøten
+        T tidskode på valgt segment · Esc tilbake til hele videoen
       </p>
     </div>
   );
