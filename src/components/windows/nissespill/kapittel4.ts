@@ -71,9 +71,16 @@ export const KAPITTEL_4: Kapittel = {
     },
     hyssing: {
       id: "hyssing",
-      navn: "Rød hyssing",
+      navn: "Rødt garn",
       ikon: "spinner",
-      se: "En lang rød tråd fra brevbunken. Sterk nok til å holde hundre brev fra Bergen sammen, og de er tunge av regn og lange av hilsener.",
+      se: "Rødt garn fra kurven til Rampenissen. Det holdt sammen en brevbunke med lapp: «UTLÅN FRA ARKIVET. Leveres gjennom porten i Muren.» Winters portstempel står midt på. Garnet må tilbake før i natt.",
+    },
+    fuglemerke: {
+      id: "fuglemerke",
+      navn: "Merkelapp uten avsender",
+      ikon: "bookmark",
+      se: "Winters merkelapp for brevfugler, kremhvitt papir med en malje av jern. Ankomst er fylt ut. Avsender står tom. I det tomme feltet har rimet tegnet noe: ᚱ:K",
+      funnet: "En merkelapp fra en brevfugl. Den er kald.",
     },
     fiskesnoere: {
       id: "fiskesnoere",
@@ -358,6 +365,15 @@ export const KAPITTEL_4: Kapittel = {
           snakk: "winter",
           se: "Winter står ved høyre portstolpe med flosshatt, skriveplate og blyant. Flosshatten er for porten. Han har den bare her og ved offisielle anledninger, og i dag er det begge deler. To runder med skjerf i dag. Bare to. Blyanten er spisset til en nål, og reserveblyanten er spisset til en mindre nål.",
           bruk: "Du prikker Winter på armen. Han noterer: «Prikket. Igjen. Kl. 17.12.» Han har en egen side for prikk. Den er nesten full.",
+          bruker: [
+            {
+              item: "fuglemerke",
+              tekst:
+                "Winter ser lenge på lappen. «Avsenderfeltet er tomt. Eg lot det stå tomt i arkivet også. Det er første gang. Én bokstav er ikkje en adresse. Men det er en begynnelse.» " +
+                R +
+                "«Samme tegnet som i skåret! Dokker såg det, æ såg det. Vi sei ingenting. Vi bare veit det.»",
+            },
+          ],
           feil: {
             bjelle:
               "Du viser Winter bjella. «Punkt to henger på sleden, ikkje på meg. Eg er ikkje en slede. Eg har sjekket.»",
@@ -453,6 +469,11 @@ export const KAPITTEL_4: Kapittel = {
                 R +
                 "«Han ser! Han ser lista! Han ser alt! Æ må gjømme klementinskallet.»",
             },
+            {
+              item: "fuglemerke",
+              tekst:
+                "Julius holder lappen helt inntil nesa. «Den blå satt i vinduet mitt. Jeg lurte på hvor lappen ble av. Behold den, Floke.»",
+            },
           ],
           feil: {
             klementin:
@@ -503,7 +524,7 @@ export const KAPITTEL_4: Kapittel = {
             item: "bjelle",
             hvis: "snoere_fram",
             tekst:
-              "Du drar forsiktig opp, og der kommer lykkebjella, med rød garntråd, litt vedflis og ei nøtt som har hengt seg på. " +
+              "Du drar forsiktig opp, og der kommer lykkebjella, med rød garntråd, litt vedflis og en liten merkelapp som klirrer mot magneten. Lappen glipper og lander på gulvet. Garnet går tilbake rundt bunken. " +
               R +
               "«DER E HO! Æ visste det. Æ visste det ikkje. Men æ håpa høgt.»",
           },
@@ -543,6 +564,20 @@ export const KAPITTEL_4: Kapittel = {
             noett:
               "Du triller nøtta inn i sprekken. Den finner en venn der nede. Nå er de to nøtter. Du har ikke hjelp av noen av dem.",
           },
+        },
+        {
+          id: "merkelappen",
+          navn: "Merkelappen på gulvet",
+          rect: { x: 16, y: 90, w: 8, h: 8 },
+          smart: "bruk",
+          vis: { hvis: "tok_bjelle", uten: "tok_fuglemerke" },
+          se: "En liten kremhvit lapp på gulvet ved vedkassa. Den kom opp sammen med bjella.",
+          ta: {
+            item: "fuglemerke",
+            tekst:
+              "Du plukker opp merkelappen med nebbet. Den er kald, kaldere enn gulvet.",
+          },
+          bruk: "Gulvet er tomt her nå.",
         },
         {
           id: "sprekken",
@@ -668,13 +703,15 @@ export const KAPITTEL_4: Kapittel = {
             },
             {
               tekst:
-                "Brev til Julius, bundet med en lang rød hyssing. Bunken fra Bergen er tykkest. Den er alltid tykkest. Hyssingen er lang nok til å gå rundt tre ganger og ned i en sprekk. {{brev}}",
+                "Brev til Julius. Den tykkeste bunken er bundet med rødt garn og har en lapp med Winters portstempel: den skal inn gjennom porten i Muren i natt. Julius har lest dem. Nå vil han at flere skal få lese. {{brev}}",
             },
           ],
           ta: {
             item: "hyssing",
             tekst:
-              "Du løsner den røde hyssingen fra bunken og vikler den opp. Lang. Sterk. Brevene blir liggende pent. De har vært på reise, de vet hvordan man oppfører seg.",
+              "Du løsner den røde hyssingen fra bunken og vikler den opp. Lang. Sterk. Brevene blir liggende pent. De har vært på reise, de vet hvordan man oppfører seg. " +
+              R +
+              "«Æ ga dem resten av nøstet. Det har jo halve fra før. Da kjenne det igjen garnet. Lån det, men legg det tilbake!»",
           },
           bruk: "Brevene ligger løst og pent. Du lar dem ligge. {{brev}}",
         },
@@ -758,6 +795,11 @@ export const KAPITTEL_4: Kapittel = {
               hvis: "fugl_kilt",
               tekst:
                 "Du kiler henne igjen. Hun fniser igjen. Brillene glimter igjen. Hun setter seg igjen. Dette kan dere holde på med hele kvelden. Hun har ingen planer.",
+            },
+            {
+              item: "fuglemerke",
+              tekst:
+                "Du viser fuglen merkelappen. Hun ser på den og flytter seg en tomme unna. Den er ikke hennes. Hun har sin egen.",
             },
             {
               item: "klementin",

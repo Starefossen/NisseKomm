@@ -114,9 +114,9 @@ export const KAPITTEL_1: Kapittel = {
       tittel: "Postkortet på luka",
       flagg: "k1_ferdig",
       tekst:
-        "Siste bit glir på plass, og torget er helt igjen. KLIKK. Luka svinger opp. Inni ligger garnkurven, og oppi den: lykkebjella. Den klinger ikke. Den gnistrer. " +
+        "Siste bit glir på plass, og torget er helt igjen. KLIKK. Luka svinger opp. Inni ligger garnkurven, og oppi den: lykkebjella. Den klinger ikke. Den gnistrer. Kurven er full av ull, men det røde nøstet er borte. Bare en ende ligger igjen, stiv av rim. " +
         R +
-        "«BJELLA MI! Og kurven lukte fortsatt mæ. Det e et kompliment. Æ tar det som et kompliment.»",
+        "«BJELLA MI! Og kurven lukte fortsatt mæ. Det e et kompliment. Men kor e det røde nøstet? Det va det finaste æ hadde. Æ leite seinar.»",
       bilde: "spill/piksel/torget.png",
       trekk: 14,
     },
@@ -1229,7 +1229,7 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Himmelen",
           rect: { x: 25, y: 0, w: 28, h: 18 },
           smart: "se",
-          se: "Stjerner mellom bodtakene og ett lite, mørkt punkt som flytter seg. En brevfugl på vei til postkassen, med noe i nebbet som er større enn nebbet. De klarer det alltid.",
+          se: "Stjerner mellom bodtakene og ett lite, mørkt punkt som flytter seg. En brevfugl på vei til postkassen, med noe i nebbet som er større enn nebbet. De klarer det alltid. I foten blafrer en liten merkelapp. Winter merker alle som lander.",
           prat: "Du uler mot brevfuglen der oppe. Den svinger én gang over bodene og flyr videre. Det var en hilsen. Brevfugler hilser kort, de har mye å bære.",
         },
         {

@@ -61,13 +61,14 @@ export const KAPITTEL_3: Kapittel = {
       id: "tesil_lanterne",
       navn: "Tesil-lanterne",
       ikon: "lightbulb",
-      se: "Stearinlyset står inni tesilen med lokket på. Flammen lyser gjennom hundre små hull. Du puster på den. Den bryr seg ikke. Du puster hardere. Den bryr seg fortsatt ikke. Messingen blir varm på utsiden.",
+      se: "Stearinlyset står inni tesilen med lokket på. Flammen lyser gjennom hundre små hull. Du puster på den. Den bryr seg ikke. Du puster hardere. Den bryr seg fortsatt ikke. Messingen blir varm på utsiden. Nede i grotta får lyset et skjær i kanten, verken gull eller blått. Det er borte før du rekker å kalle det noe.",
     },
     krystallskaar: {
       id: "krystallskaar",
       navn: "Klart krystallskår",
       ikon: "diamond-gem",
-      se: "Et skår av klar krystall, stort som en fyrstikkeske og fortsatt kaldt etter rimet. Holder du det mot et lys, kommer lyset ut på den andre siden. Større. Det er ikke lupe-større. Det er noe annet.",
+      se: "Et skår av klar krystall, stort som en fyrstikkeske og fortsatt kaldt etter rimet. Holder du det mot et lys, kommer lyset ut på den andre siden. Større. Det er ikke lupe-større. Det er noe annet. Dypt inne i skåret sitter ett tegn av rim, tynt som et hårstrå. Det er ikke risset. Det har vokst der: ᚱ:K",
+      funnet: "Et klart skår fra hylla. Det er noe inni.",
     },
     lupe: {
       id: "lupe",
@@ -615,9 +616,9 @@ export const KAPITTEL_3: Kapittel = {
               flagg: "skaar_satt",
               forbruker: true,
               tekst:
-                "Du setter skåret foran lanterna, vendt mot den klare hylla. Lyset går gjennom det, større, og treffer den første klare krystallen. Den neste er mørk: lyset går ut på skrå, mot veggen. " +
+                "Du setter skåret foran lanterna, vendt mot den klare hylla. Lyset går gjennom det, større, og treffer den første klare krystallen. Den neste er mørk: lyset går ut på skrå, mot veggen. I kanten av strålen ligger det samme skjæret igjen. Krystallen har ikke alltid vært klar. " +
                 R +
-                "«Dem må SNUS! Hylle for hylle, så lyset finn neste. Dem e bygd te å vris.»",
+                "«Dem må SNUS! Hylle for hylle, så lyset finn neste. Dem e bygd te å vris. Og såg dokker kanten på lyset? Den fargen har æ ikkje sett på lenge. Æ sei ikkje ka den heite. Æ e ikkje sikker på at æ får lov.»",
             },
             {
               item: "krystallskaar",
@@ -646,8 +647,11 @@ export const KAPITTEL_3: Kapittel = {
           navn: "Den store krystallen",
           rect: { x: 0, y: 56, w: 14, h: 44 },
           smart: "se",
-          se: "En krystall høyere enn Floke, med en lapp nederst: «NR. 1». Den første. Noen begynte her, en gang, med stor tro på det. Lappen er skrevet med samme skrift som lappen på IQs dør. Yngre skrift. Samme hånd.",
-          prat: "Du hvisker «nummer én» til den store krystallen. Lyset inni den flytter seg litt, som om den hørte navnet sitt. Det gjorde den sikkert ikke. Du går likevel litt lenger unna.",
+          se: "En krystall høyere enn Floke, med en lapp nederst: «NR. 1». Den første. Noen begynte her, en gang, med stor tro på det. Lappen er skrevet med samme skrift som lappen på IQs dør. Yngre skrift. Samme hånd. Rundt foten er det viklet en rød tråd, mange ganger og veldig pent. Noen har hatt god tid.",
+          prat:
+            "Du hvisker «nummer én» til den store krystallen. Lyset inni den flytter seg litt, som om den hørte navnet sitt. Det gjorde den sikkert ikke. Du går likevel litt lenger unna. " +
+            R +
+            "«Garnet mitt. Det har pynta sæ med det. La det ligg. Æ har meir.»",
         },
         {
           id: "hoyrekrystallen",

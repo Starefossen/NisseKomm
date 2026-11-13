@@ -43,6 +43,10 @@
     {
       "fra_dag": 14,
       "tekst": "den blå fuglen er unntaket: ingen har sendt den, den kom fra Krystallgrotten med Vintervokterens brev fryst fast til vingen, og den flyr hjem til grotten dag 24"
+    },
+    {
+      "fra_dag": 1,
+      "tekst": "Winter setter en merkelapp av kremhvitt papir med jernmalje i foten på alle fugler som lander (ankomst og avsender); den blå fuglens lapp har tomt avsenderfelt, bare frostrunen K i rim"
     }
   ],
   "ikke": [

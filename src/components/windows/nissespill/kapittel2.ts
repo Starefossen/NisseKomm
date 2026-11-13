@@ -548,8 +548,11 @@ export const KAPITTEL_2: Kapittel = {
           navn: "Kablene",
           rect: { x: 28, y: 80, w: 30, h: 18 },
           smart: "se",
-          se: "Tre tykke svarte kabler slynger seg over snøen fra hytta til masta. Én av dem har merker. Bittemerker. Store. Med mellomrom som passer akkurat til en reinsdyrkjeft, hvis noen skulle lure.",
-          prat: "Du hvisker til kablene om å holde ut. De ligger stille i snøen. Én av dem har bittemerker og et uttrykk av å ha holdt ut lenge nok.",
+          se: "Tre tykke svarte kabler slynger seg over snøen fra hytta til masta. Én av dem har merker. Bittemerker. Store. Med mellomrom som passer akkurat til en reinsdyrkjeft, hvis noen skulle lure. Langs den ene kabelen ligger en rød tråd frosset inn i rimet. Den er stram, som om noe drar i den andre enden.",
+          prat:
+            "Du hvisker til kablene om å holde ut. De ligger stille i snøen. Én av dem har bittemerker og et uttrykk av å ha holdt ut lenge nok. " +
+            R +
+            "«Det der e GARNET mitt! Nån har dratt det heilt hit og videre. Æ veit ikkje kem. Æ har en mistanke. Den har ikkje skjerf.»",
           bruk: "Du drar i en kabel. Inne i hytta sier noe «pling». Du slipper kabelen. Det sier «pling» igjen. Det var ikke deg.",
         },
         {
