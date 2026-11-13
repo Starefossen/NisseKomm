@@ -326,6 +326,31 @@ def plain(key: str) -> str:
     return VERSION.sub(r"\2", key)
 
 
+def archive(path: Path) -> list:
+    """Move the file in use to <name>.old-N.<ext> (next free N) with sidecar and poster jpg, before a
+    generator overwrites it. Returns [(from, to)] so a failed run can undo it with unarchive."""
+    if not path.exists():
+        return []
+    n = 1
+    while any((path.parent / f"{path.stem}.old-{n}{e}").exists() for e in (path.suffix, ".jpg")):
+        n += 1
+    par = []
+    for e in {path.suffix, ".jpg"} if path.suffix == ".mp4" else {path.suffix}:
+        for side in ("", ".meta.json"):
+            a = path.parent / f"{path.stem}{e}{side}"
+            if a.exists():
+                par.append((a, path.parent / f"{path.stem}.old-{n}{e}{side}"))
+    for a, b in par:
+        os.rename(a, b)
+    return par
+
+
+def unarchive(par: list):
+    for a, b in par:
+        if not a.exists():
+            os.rename(b, a)
+
+
 def bakfyll(media: Path, root: Path = ROOT):
     """Write a sidecar (bakfylt, no prompt hash) for each media file under media that has none."""
     table = {j["ut"]: j for j in jobs(root).values() if j.get("ut")}
@@ -538,6 +563,16 @@ def write_entiteter(root: Path = ROOT, check=False) -> bool:
 
 
 def selftest():
+    with __import__("tempfile").TemporaryDirectory() as t:
+        d = Path(t)
+        for n in ("a.mp4", "a.mp4.meta.json", "a.jpg", "a.old-1.mp4"):
+            (d / n).write_text(n)
+        par = archive(d / "a.mp4")
+        assert not (d / "a.mp4").exists() and (d / "a.old-2.mp4").read_text() == "a.mp4"
+        assert (d / "a.old-2.mp4.meta.json").exists() and (d / "a.old-2.jpg").exists()
+        unarchive(par)
+        assert (d / "a.mp4").exists() and (d / "a.jpg").exists() and not (d / "a.old-2.mp4").exists()
+        assert archive(d / "missing.mp4") == []
     import tempfile
     with tempfile.TemporaryDirectory() as d:
         r = Path(d)

@@ -291,7 +291,10 @@ def run(q, state_path: Path, maks=None, stopp_etter=None, runner=run_cmd, check=
                 return forbruk.EXIT_BUDSJETT
             print(f"▶ {item_id} (anslag {est:g} videoforespørsler, {used} brukt i dag)")
             before = len(log.read_text().splitlines())
+            # the generators overwrite the plain name; keep what is replaced as .old-N
+            par = medie.archive(media_dir() / item_p) if item_p and item_id not in TESTS else []
             rc, out = runner(cmd, env)
+            medie.unarchive(par)  # no-op when the run wrote a new file
             sent = len(log.read_text().splitlines()) - before
             if rc == forbruk.EXIT_BUDSJETT:  # a script's own guard (images, TTS) stopped
                 save_state(state_path, s)
