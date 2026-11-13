@@ -28,7 +28,7 @@ import {
   egenVurdering,
   ekstraRader,
   nesteUvurdert,
-  naboI,
+  naboer,
   tilstand,
   type Element,
   type Tilstand,
@@ -254,7 +254,8 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
             onClick={() => setValgt(0)}
             className={`${knapp} text-lg ${!st && fane === k ? "bg-(--gold) text-black border-(--gold)" : ""}`}
           >
-            {navn} ({ko[k].length})
+            {/* Same number as the progress bar: elements, not lines (a video can have several segment lines). */}
+            {navn} ({k === "laerdom" ? ko[k].length : fd!.total.telling[k]})
           </Link>
         ))}
       </nav>
@@ -391,6 +392,7 @@ function Matrise({
       ["venter", "se på"],
       ["agent", "fikses"],
       ["mangler", "mangler"],
+      ["utenfor", "utenfor køen"],
       ["valgfri", "valgfri"],
     ];
     return ord
@@ -592,26 +594,24 @@ function Vurdering({
       (gr ? x.gruppe === gr : passerUtvalg(u, x, tilstand(x, k).celle)),
   );
   const fi = filtrert.indexOf(e);
-  const si = synlige.indexOf(e);
-  const forrige = typeFilter
-    ? naboI(filtrert, e?.id ?? "", -1).e
-    : synlige[si - 1];
   const { ko } = useKo(d, sesong);
   const koIder = (ko?.venter ?? [])
     .map((l) => l.id)
     .filter((x, j, a) => a.indexOf(x) === j && liste.some((y) => y.id === x));
   const iKo = koIder.indexOf(e?.id ?? "");
-  // From the queue, «Neste» is the next line waiting for Hans.
-  const nesteIKo = typeFilter
-    ? undefined
-    : iKo >= 0
-      ? koIder[iKo + 1]
-      : koIder.find((x) => x !== e?.id);
   // «Neste uvurdert» stays inside the chosen quick choice; the current item always counts.
   const nesteUv = nesteUvurdert(filtrert, e?.id ?? id, vurd);
-  // N goes from where you stand in the filtered, sorted list; Shift+N jumps to the next unreviewed.
-  const nabo = naboI(filtrert, e?.id ?? "", 1);
-  const neste = nesteIKo ? liste.find((x) => x.id === nesteIKo) : nabo.e;
+  // From the queue, N/P follow the lines waiting for Hans; with a filter or under «Alt», the
+  // filtered, sorted list. Either way one order, so P undoes N. Shift+N jumps to the next unreviewed.
+  const nav = naboer(
+    filtrert,
+    liste,
+    e?.id ?? "",
+    typeFilter || u.s === "alle" ? null : koIder,
+  );
+  const { neste, forrige } = nav;
+  const nesteIKo = nav.iKo;
+  const nabo = { rundt: nav.rundt };
   const nesteNavn = nesteIKo
     ? "Neste i køen"
     : gruppe

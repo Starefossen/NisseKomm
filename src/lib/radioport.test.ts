@@ -12,6 +12,14 @@ describe("radioport (rampenissen-tts.sh)", () => {
       expect(innholdsHash(m.tekst)).toBe(m.hash);
   });
 
+  it("--force on an existing clip makes a candidate -vN, never touches the plain file (rampenissen-tts.sh selftest)", () => {
+    expect(
+      execFileSync("bash", ["assets/bin/rampenissen-tts.sh", "selftest"], {
+        env: { ...process.env, GEMINI_API_KEY: "test" },
+      }).toString(),
+    ).toContain("ok");
+  });
+
   it("src/data/radio-manus.json matches docs/manus (python3 assets/bin/medie.py radio-manus)", () => {
     execFileSync("python3", ["assets/bin/medie.py", "radio-manus", "--sjekk"]);
   });

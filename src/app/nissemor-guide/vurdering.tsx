@@ -111,22 +111,6 @@ export function Vurder({ id }: { id: string }) {
       id={`vurdering-${id.split("/").at(-1)}`}
       className="mt-3 scroll-mt-4"
     >
-      {!!v?.forrige?.endringer?.length && (
-        <div className="mb-2 border-2 border-(--cold-blue) p-2 text-sm">
-          <p className="text-(--cold-blue)">
-            Endret siden du{" "}
-            {v.forrige.vurdering === "godkjent" ? "godkjente" : "vurderte den"}:
-          </p>
-          {v.forrige.endringer.map((d, i) => (
-            <p
-              key={i}
-              className={`whitespace-pre-wrap break-words ${d.t === "+" ? "text-(--aurora) bg-(--aurora)/10" : "text-(--christmas-red) line-through"}`}
-            >
-              {d.t} {d.l}
-            </p>
-          ))}
-        </div>
-      )}
       <Vurderingsknapper
         vurdering={v}
         onSave={(verdict, notat) => lagre(id, verdict, notat ?? "")}

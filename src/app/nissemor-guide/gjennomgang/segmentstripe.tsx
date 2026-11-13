@@ -21,8 +21,10 @@ import {
 } from "@/lib/segmenter";
 import type { MediaVurderingItem } from "@/app/api/media/vurdering/route";
 import { Lagremelding, useLagring } from "../lagring";
+import type { KuttStatus } from "@/lib/kutt-jobb";
 import {
   lagreKutt,
+  lastVurderinger,
   settTagning,
   SkjulVurder,
   taggTast,
@@ -99,9 +101,8 @@ export function SegmentStripe({
   } | null>(null);
   // A draft belongs to the segment it was drawn on.
   const utkast = utkastRå && utkastRå.s === valgt ? utkastRå : null;
-  const [kuttSt, setKuttSt] = useState<{ status: string; logg: string } | null>(
-    null,
-  );
+  const [kuttSt, setKuttSt] = useState<KuttStatus | null>(null);
+  const sistKutt = useRef<string | null>(null);
   const [nyttKutt, setNyttKutt] = useState(false);
 
   useEffect(() => {
@@ -138,7 +139,14 @@ export function SegmentStripe({
     const hent = () =>
       fetch(`/api/media/kutt?dag=${dag}`)
         .then((r) => (r.ok ? r.json() : null))
-        .then((x) => aktiv && x && setKuttSt(x))
+        .then((x: KuttStatus | null) => {
+          if (!aktiv || !x) return;
+          // The cut moved the verdicts to the new take: fetch them, or the old ✂ still reads «Venter på kutt».
+          if (sistKutt.current === "kjorer" && x.status !== "kjorer")
+            lastVurderinger();
+          sistKutt.current = x.status;
+          setKuttSt(x);
+        })
         .catch(() => {});
     hent();
     const id = setInterval(hent, 3000);
@@ -414,19 +422,43 @@ export function SegmentStripe({
       </div>
       {kuttSt?.status === "kjorer" && (
         <p data-testid="kutter" className="text-(--cold-blue)">
-          Kutter …
+          Kutter …{kuttSt.ko && " Et nytt kutt er i kø."}{" "}
+          <button
+            type="button"
+            className="min-h-11 px-3 border-2 border-(--christmas-red) text-(--christmas-red)"
+            onClick={() =>
+              void fetch(`/api/media/kutt?dag=${dag}`, { method: "DELETE" })
+                .then((r) => (r.ok ? r.json() : null))
+                .then((x: KuttStatus | null) => x && setKuttSt(x))
+                .catch(() => {})
+            }
+          >
+            Avbryt
+          </button>
         </p>
+      )}
+      {kuttSt?.ko && kuttSt.status !== "kjorer" && (
+        <p className="text-(--cold-blue)">Kutt i kø …</p>
       )}
       {kuttSt?.status === "feil" && (
         <p data-testid="kutt-feil" className="text-(--christmas-red)">
           Kuttet feilet. Se {kuttSt.logg}
         </p>
       )}
-      {kuttSt?.status === "ferdig" && harKutt && (
-        <p className="text-(--cold-blue)">
-          Kuttet er gjort; den nye versjonen ligger i køen som kuttsjekk.
-        </p>
-      )}
+      {kuttSt?.status === "ferdig" &&
+        !kuttSt.ko &&
+        kuttSt.ny &&
+        kuttSt.ny !== path && (
+          <p data-testid="kutt-ferdig" className="text-(--cold-blue)">
+            Kuttet er gjort; den nye versjonen venter på kuttsjekk.{" "}
+            <a
+              href={`/nissemor-guide/gjennomgang?id=${encodeURIComponent(kuttSt.ny)}`}
+              className="underline text-(--gold)"
+            >
+              Åpne v{kuttSt.ny.match(/-v(\d+)\.mp4$/)?.[1]} →
+            </a>
+          </p>
+        )}
       {seg ? (
         <div className="border border-(--neon-green)/40 p-2 space-y-2 mt-2">
           <div className="flex flex-wrap items-center gap-2">

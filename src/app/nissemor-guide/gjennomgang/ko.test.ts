@@ -338,8 +338,42 @@ describe("byggKo", () => {
       venter: 2,
       agent: 1,
       mangler: 1,
+      utenfor: 0,
       valgfri: 0,
     });
+    // The bar's two queue segments are exactly the tabs' element sets.
+    const ider = new Set(liste.map((e) => e.id));
+    const agentIder = new Set(
+      ko.agent.map((l) => l.id).filter((x) => ider.has(x)),
+    );
+    const venterIder = new Set(
+      ko.venter
+        .map((l) => l.id)
+        .filter((x) => ider.has(x) && !agentIder.has(x)),
+    );
+    expect(fd.total.telling.agent).toBe(agentIder.size);
+    expect(fd.total.telling.venter).toBe(venterIder.size);
+  });
+
+  it("an unjudged duplicate is no queue line, so the bar shows it as «Utenfor køen», not «Venter»", () => {
+    const liste: Element[] = [
+      {
+        id: "strek/dag02.png",
+        gruppe: "rampestrek",
+        tittel: "S2",
+        dag: 2,
+        media: ["strek/dag02.png"],
+      },
+    ];
+    const k = { filer: [f("strek/dag02.png")], vurderinger: {} };
+    const ko = byggKo(
+      liste,
+      k,
+      server({ manus: {}, duplikater: ["strek/dag02.png"] }),
+    );
+    expect(ko.venter).toEqual([]);
+    expect(fremdrift(liste, k, ko).total.telling.venter).toBe(0);
+    expect(fremdrift(liste, k, ko).total.telling.utenfor).toBe(1);
   });
 
   it("an optional file nobody made is no queue line, only «valgfri» in the progress bar", () => {

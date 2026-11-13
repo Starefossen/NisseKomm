@@ -164,9 +164,9 @@ def coverage(clip: Path, line: str):
     for wait in (0, 30, 90, 180):  # the API answers 503/429 under load
         time.sleep(wait)
         try:
-            text = json.load(urllib.request.urlopen(req))["candidates"][0]["content"]["parts"][-1]["text"]
+            text = json.load(urllib.request.urlopen(req, timeout=60))["candidates"][0]["content"]["parts"][-1]["text"]
             break
-        except urllib.error.URLError as e:
+        except (urllib.error.URLError, TimeoutError) as e:
             body = e.read().decode(errors="replace") if hasattr(e, "read") else ""
             if "requests per day" in body or "per day" in body:
                 sys.exit("Stoppet: dagsgrensen for Gemini er nådd (requests per day)")
@@ -335,9 +335,9 @@ def audit(clip: Path):
     for wait in (0, 30, 90):
         time.sleep(wait)
         try:
-            r = json.loads(json.load(urllib.request.urlopen(req))["candidates"][0]["content"]["parts"][-1]["text"])
+            r = json.loads(json.load(urllib.request.urlopen(req, timeout=120))["candidates"][0]["content"]["parts"][-1]["text"])
             break
-        except (urllib.error.URLError, KeyError, ValueError) as e:
+        except (urllib.error.URLError, TimeoutError, KeyError, ValueError) as e:
             body = e.read().decode(errors="replace") if hasattr(e, "read") else ""
             if "requests per day" in body or "per day" in body:
                 sys.exit("Stoppet: dagsgrensen for Gemini er nådd (requests per day)")
@@ -972,13 +972,20 @@ def kutt_klipp(raw: Path, clip: Path, retning: str, t: float) -> dict:
     The old takes stay as <navn>.før-kutt-<hash>.*. Returns {punkt, flagg}."""
     punkt = round(kuttpunkt(t, stillhet(raw)), 2)
     gammel = raw_hash(raw)
-    for f in (raw, clip):
-        kopi = f.with_name(f.name.replace(".", f".før-kutt-{gammel}.", 1))
-        if not kopi.exists():
-            shutil.copy(f, kopi)
-        tmp = f.with_name(f"{f.stem}.kutt.mp4")
-        trim(kopi, tmp, retning, punkt)
-        tmp.replace(f)
+    tmp = {}
+    try:  # both trims first, then the swap: a failed trim leaves both takes as they were
+        for f in (raw, clip):
+            kopi = f.with_name(f.name.replace(".", f".før-kutt-{gammel}.", 1))
+            if not kopi.exists():
+                shutil.copy(f, kopi)
+            tmp[f] = f.with_name(f"{f.stem}.kutt.mp4")
+            trim(kopi, tmp[f], retning, punkt)
+    except BaseException:
+        for t in tmp.values():
+            t.unlink(missing_ok=True)
+        raise
+    for f, t in tmp.items():
+        t.replace(f)
     dur = seconds(raw)
     db = nivå_ved(raw, dur - KUTT_FADE - 0.08) if retning == "slutt" else nivå_ved(raw, KUTT_FADE)
     flagg = [f"kutt midt i ord? ({db:.0f} dB ved kuttet)"] if db > MIDT_I_ORD else []
@@ -990,11 +997,54 @@ def neste_suffix(day: int, dest: Path) -> str:
     return f"-v{max(n, default=1) + 1}"
 
 
-def arvet_dom(historikk: list, kutt_v: dict) -> str:
-    """The latest ✓/◐ Hans gave this take before the ✂, else ◐."""
+def arvet_dom(historikk: list, kutt_v: dict, flagg: list):
+    """The latest ✓/◐ Hans gave this take before the ✂, only when the cut's machine check is clean; else None
+    (no verdict: only the cut check waits, and «Ta i bruk» refuses until Hans gives G)."""
     før = [x["vurdering"] for x in historikk
            if x.get("vurdering") in ("godkjent", "ok") and x.get("versjon") == kutt_v.get("versjon")]
-    return før[-1] if før else "ok"
+    return før[-1] if før and not flagg else None
+
+
+def flett_flagg(gamle: list, nye: list, retning: str, punkt: float) -> list:
+    """The take's earlier audit flags that survive the cut («MM:SS hva»: before the point on an end cut, after it
+    and shifted on a start cut; untimed audit flags stay), then the cut's own check. Transcript flags are redone."""
+    ut = []
+    for f in gamle:
+        if m := re.match(r"(\d+):(\d\d) (.*)", f):
+            t = int(m[1]) * 60 + int(m[2])
+            if retning == "slutt" and t < punkt:
+                ut.append(f)
+            elif retning == "start" and t >= punkt:
+                ut.append(f"{int((t - punkt) // 60):02d}:{int((t - punkt) % 60):02d} {m[3]}")
+        elif not f.startswith(("mangler:", "ekstra ord:", "kutt midt i ord")):
+            ut.append(f)
+    return ut + [f for f in nye if f not in ut]
+
+
+@__import__("contextlib").contextmanager
+def angre_ved_feil(filer: list, nye=lambda: []):
+    """Copies of `filer` beside them; on any failure (also SIGTERM from «Avbryt») they are put back by rename
+    and the files `nye()` lists are removed, so the ✂ can simply run again."""
+    kopier = {}
+    for f in filer:
+        kopier[f] = f.with_name(f.name + ".angre") if f.exists() else None
+        if kopier[f]:
+            shutil.copy2(f, kopier[f])
+    try:
+        yield
+    except BaseException:
+        for f, k in kopier.items():
+            if k:
+                os.replace(k, f)
+            else:
+                f.unlink(missing_ok=True)
+        for g in nye():
+            g.unlink(missing_ok=True)
+        print("Kuttet feilet eller ble avbrutt: tagningene er satt tilbake")
+        raise
+    for k in kopier.values():
+        if k:
+            k.unlink()
 
 
 def kutt_dag(day: int):
@@ -1006,52 +1056,71 @@ def kutt_dag(day: int):
     jobber = [(i, v) for i in range(1, len(segs) + 1) if (v := vurd.get(video_id(day, i)) or {}).get("vurdering") == "kutt"]
     if not jobber:
         sys.exit(f"Ingen ✂ på dag {day}")
-    gjort = {}
-    for i, v in jobber:
-        name = f"dag{day:02d}-{i}"
-        raw, clip = OUT / f"{name}.raw.mp4", OUT / f"{name}.mp4"
-        if raw_hash(raw) != v.get("versjon"):
-            sys.exit(f"Stoppet: {raw} er ikke tagningen Hans satte ✂ på ({v.get('versjon')})")
-        k = v["kutt"]
-        # Hans' point is in the joined video, counted from where the join starts the segment (speech_span).
-        t = speech_span(clip, seconds(clip))[0] + float(k["t"])
-        r = kutt_klipp(raw, clip, k["retning"], t)
-        line = segs[i - 1][0]
-        c, text, missing, extra = coverage(raw, line)
-        flagg = r["flagg"] + ([f"mangler: {' '.join(missing)}"] if missing else []) + ([f"ekstra ord: {extra}"] if extra else [])
-        (OUT / f"{name}.sjekk.json").write_text(json.dumps({"hørt": text, "dekning": round(c or 0, 2), "flagg": flagg}, ensure_ascii=False))
-        print(f"{name}: kuttet {k['retning']} ved {r['punkt']:.2f} s i tagningen (bedt om {t:.2f}); hørt: {text}; flagg: {flagg or 'ingen'}")
-        gjort[i] = (v, r)
+    import signal
+
+    signal.signal(signal.SIGTERM, lambda *_: sys.exit(143))  # «Avbryt»: roll back like any other failure
     dest = Path(arg("--dest") or DEST)
     suffix = arg("--suffix") or neste_suffix(day, dest)
-    subprocess.run([sys.executable, __file__, str(day), "--join-only", "--suffix", suffix,
-                    *(["--dest", arg("--dest")] if arg("--dest") else [])], check=True)
+    ny_glob = lambda: set(dest.glob(f"dag-{day:02d}{suffix}.*"))
+    fantes = ny_glob()
+    filer = [OUT / f"dag{day:02d}-{i}.{e}" for i, _ in jobber for e in ("raw.mp4", "mp4", "sjekk.json")]
+    gjort = {}
+    with angre_ved_feil(filer, lambda: ny_glob() - fantes):
+        for i, v in jobber:
+            name = f"dag{day:02d}-{i}"
+            raw, clip = OUT / f"{name}.raw.mp4", OUT / f"{name}.mp4"
+            if raw_hash(raw) != v.get("versjon"):
+                sys.exit(f"Stoppet: {raw} er ikke tagningen Hans satte ✂ på ({v.get('versjon')})")
+            k = v["kutt"]
+            # Hans' point is in the joined video, counted from where the join starts the segment (speech_span).
+            t = speech_span(clip, seconds(clip))[0] + float(k["t"])
+            r = kutt_klipp(raw, clip, k["retning"], t)
+            line = segs[i - 1][0]
+            c, text, missing, extra = coverage(raw, line)
+            nye = r["flagg"] + ([f"mangler: {' '.join(missing)}"] if missing else []) + ([f"ekstra ord: {extra}"] if extra else [])
+            sf = OUT / f"{name}.sjekk.json"
+            gamle = json.loads(sf.read_text()).get("flagg", []) if sf.exists() else []
+            flagg = flett_flagg(gamle, nye, k["retning"], r["punkt"])
+            sf.write_text(json.dumps({"hørt": text, "dekning": round(c or 0, 2), "flagg": flagg}, ensure_ascii=False))
+            print(f"{name}: kuttet {k['retning']} ved {r['punkt']:.2f} s i tagningen (bedt om {t:.2f}); hørt: {text}; flagg: {flagg or 'ingen'}")
+            gjort[i] = (v, r, nye)
+        subprocess.run([sys.executable, __file__, str(day), "--join-only", "--suffix", suffix,
+                        *(["--dest", arg("--dest")] if arg("--dest") else [])], check=True)
+        lagre_kutt(f, day, gjort)
+    print(dest / f"dag-{day:02d}{suffix}.mp4")
+
+
+def lagre_kutt(f: Path, day: int, gjort: dict):
     nå = __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
     with medie.lås(f):
         data = medie.les_lager(f)
         if data.get("format") != 2:
             sys.exit(f"Stoppet: {f} er ikke format 2")
-        for i, (v, r) in gjort.items():
+        for i, (v, r, nye) in gjort.items():
             id = video_id(day, i)
             e = data["elementer"].setdefault(id, {"vurderinger": [], "historikk": []})
             e["historikk"] += [x for x in e["vurderinger"] if x["fil"] == id]
             e["vurderinger"] = [x for x in e["vurderinger"] if x["fil"] != id]
             ny = raw_hash(OUT / f"dag{day:02d}-{i}.raw.mp4")
-            # The cut only removes: the take inherits the verdict it had before ✂ (◐ if none), the note and tags
-            # carry over; Hans hears the cut once (G/L), so the check waits as «kuttsjekk».
+            # The cut only removes: the take inherits the ✓/◐ it had before ✂ when the cut's check is clean (else
+            # no verdict); note and tags carry over; Hans hears the cut once (G/L), so the check waits as «kuttsjekk».
             e["vurderinger"].append({k: x for k, x in {
-                "vurdering": arvet_dom(e["historikk"], v), "notat": v.get("notat"), "tagger": v.get("tagger"),
+                "vurdering": arvet_dom(e["historikk"], v, nye), "notat": v.get("notat"), "tagger": v.get("tagger"),
                 "kuttsjekk": v["kutt"], "oppdatert": nå,
                 "versjon": ny, "hash": ny, "fil": id}.items() if x})
         medie.skriv_lager(f, data)
-    print(dest / f"dag-{day:02d}{suffix}.mp4")
 
 
 def test_arv():
     h = [{"vurdering": "godkjent", "versjon": "a"}, {"vurdering": "lag_paa_nytt", "versjon": "a"},
          {"vurdering": "ok", "versjon": "b"}, {"versjon": "a"}]
-    assert arvet_dom(h, {"versjon": "a"}) == "godkjent" and arvet_dom(h, {"versjon": "b"}) == "ok"
-    assert arvet_dom(h, {"versjon": "c"}) == "ok" and arvet_dom([], {"versjon": "a"}) == "ok"
+    assert arvet_dom(h, {"versjon": "a"}, []) == "godkjent" and arvet_dom(h, {"versjon": "b"}, []) == "ok"
+    assert arvet_dom(h, {"versjon": "c"}, []) is None and arvet_dom([], {"versjon": "a"}, []) is None
+    assert arvet_dom(h, {"versjon": "a"}, ["kutt midt i ord? (-20 dB ved kuttet)"]) is None  # flagged: no verdict
+    gamle = ["00:01 bok forsvinner", "00:05 ekstra finger", "mikrofonen svever eller forsvinner", "mangler: hei"]
+    assert flett_flagg(gamle, ["mangler: ja"], "slutt", 3.0) == [
+        "00:01 bok forsvinner", "mikrofonen svever eller forsvinner", "mangler: ja"]
+    assert flett_flagg(gamle, [], "start", 2.0) == ["00:03 ekstra finger", "mikrofonen svever eller forsvinner"]
     import tempfile
     d = Path(tempfile.mkdtemp())
     seg = lambda raw, flagg: json.dumps([{"s": 1, "raw": raw, "flagg": flagg, "hørt": "x", "dekning": 0.5}])
@@ -1061,6 +1130,21 @@ def test_arv():
     assert arv_sjekk(ny, {1: "r1"}, {})[1]["flagg"] == ["nyere"]  # newest earlier join wins
     assert arv_sjekk(ny, {1: "r2"}, {}) == {}  # another take: nothing carried
     assert arv_sjekk(ny, {1: "r1"}, {1: {"flagg": []}}) == {1: {"flagg": []}}  # own check beats the old flags
+    a, b = d / "a.mp4", d / "b.json"
+    a.write_text("før")
+    try:  # a failure (or SIGTERM) halfway: the take is put back and the half-made join removed
+        with angre_ved_feil([a, b], lambda: [d / "dag-13-v5.mp4"]):
+            a.write_text("halvkuttet")
+            b.write_text("{}")
+            (d / "dag-13-v5.mp4").write_text("halv")
+            raise SystemExit(143)
+    except SystemExit:
+        pass
+    assert a.read_text() == "før" and not b.exists() and not (d / "dag-13-v5.mp4").exists()
+    assert not (d / "a.mp4.angre").exists()
+    with angre_ved_feil([a]):
+        a.write_text("kuttet")
+    assert a.read_text() == "kuttet" and not (d / "a.mp4.angre").exists()
     shutil.rmtree(d)
     print("test_arv ok")
 
@@ -1219,6 +1303,7 @@ if __name__ == "__main__":
         selftest()
     elif sys.argv[1:] == ["test-port"]:
         test_port()
+        test_arv()
     elif sys.argv[1:2] == ["manus"]:
         tekst = json.dumps(bake_manus(), ensure_ascii=False, indent=1) + "\n"
         if "--sjekk" in sys.argv:

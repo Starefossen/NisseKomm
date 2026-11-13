@@ -48,6 +48,7 @@ export const CELLE: Record<Fremdrift, [string, string]> = {
   venter: ["● se på", "bg-(--cold-blue) text-black"],
   agent: ["✗ fikses", "bg-(--christmas-red) text-white"],
   mangler: ["mangler", "bg-(--gray) text-black"],
+  utenfor: ["○ utenfor køen", "bg-(--gray)/60 text-black"],
   valgfri: ["valgfri", "bg-(--gray)/30"],
 };
 

@@ -7,6 +7,8 @@ import {
   egenVurdering,
   nesteUvurdert,
   naboI,
+  naboer,
+  type Element,
   nyesteVersjon,
 } from "./elementer";
 import type { Sesong } from "../_kveld/felles";
@@ -121,5 +123,24 @@ describe("dekning", () => {
       ids.map((i) => vurd[i].vurdering ?? "åpen").sort();
     const alle = Object.keys(vurd);
     expect(telling(alle.filter(nåbar))).toEqual(telling(alle));
+  });
+});
+
+describe("naboer (N/P)", () => {
+  const el = (id: string): Element => ({
+    id,
+    gruppe: "g",
+    tittel: id,
+    media: [],
+  });
+  const liste = ["a", "b", "c", "d"].map(el);
+  it("P undoes N, both from the queue and from the list («Alt» passes no queue)", () => {
+    for (const ko of [["d", "a", "c"], null])
+      for (const x of ["a", "c"]) {
+        const n = naboer(liste, liste, x, ko).neste!;
+        expect(naboer(liste, liste, n.id, ko).forrige?.id).toBe(x);
+      }
+    expect(naboer(liste, liste, "a", null).neste?.id).toBe("b");
+    expect(naboer(liste, liste, "a", ["d", "a", "c"]).neste?.id).toBe("c");
   });
 });

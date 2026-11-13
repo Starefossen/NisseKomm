@@ -47,6 +47,16 @@ export async function taIBruk(dir: string, kandidat: string) {
   )
     .then((t) => JSON.parse(t) as Segment[])
     .catch(() => []);
+  const dom = (s: number) => {
+    const id = segmentId(kandidat, s);
+    return lager.elementer[id]?.vurderinger.find((y) => y.fil === id);
+  };
+  // An open cut check (✂ done, Hans has not heard it with G) is not usable (Hans 13 Nov).
+  const kuttsjekk = segmenter.filter((x) => dom(x.s)?.kuttsjekk);
+  if (kuttsjekk.length)
+    throw new Error(
+      `${kandidat}: ${kuttsjekk.map((x) => `s${x.s}`).join(", ")} venter på kuttsjekk (hør kuttet og gi G først)`,
+    );
   const åpne = segmenter.filter((x) => {
     const id = segmentId(kandidat, x.s);
     const d = lager.elementer[id]?.vurderinger.find((y) => y.fil === id);

@@ -428,6 +428,7 @@ export const FREMDRIFT = [
   ["venter", "Venter på deg", "bg-(--cold-blue)"],
   ["agent", "Hos agent", "bg-(--christmas-red)"],
   ["mangler", "Mangler", "bg-(--gray)"],
+  ["utenfor", "Utenfor køen", "bg-(--gray)/60"],
   ["valgfri", "Valgfri", "bg-(--gray)/30"],
 ] as const;
 export type Fremdrift = (typeof FREMDRIFT)[number][0];
@@ -445,9 +446,12 @@ export function fremdriftGruppe(e: Element): string {
 }
 
 /**
- * Every element in exactly one bucket, from the same queue byggKo makes:
- * missing file → Mangler, in «Hos agent» or rejected → Hos agent, in
- * «Venter på deg» → Venter, else the verdict. Optional unmade items are «valgfri».
+ * Every element in exactly one bucket, from the same queue byggKo makes, so
+ * «Venter på deg» and «Hos agent» are exactly the tabs' elements (an element
+ * in both counts as Hos agent; the tabs show these numbers). Besides them:
+ * Mangler = a missing file no queue line covers, Utenfor køen = neither a
+ * verdict nor a queue line (e.g. rejected but no agent line), the verdict
+ * otherwise. Optional unmade items are «valgfri».
  */
 export function fremdrift(
   liste: Element[],
@@ -462,18 +466,18 @@ export function fremdrift(
     const status: Fremdrift =
       c === "valgfri"
         ? "valgfri"
-        : c === "mangler"
-          ? "mangler"
-          : agent.has(e.id) || c === "lag_paa_nytt" || c === "utdatert"
-            ? "agent"
-            : venter.has(e.id)
-              ? "venter"
+        : agent.has(e.id)
+          ? "agent"
+          : venter.has(e.id)
+            ? "venter"
+            : c === "mangler"
+              ? "mangler"
               : c === "godkjent" || c === "ok"
                 ? c
                 : // A Julius script is judged per segment: out of both queues means every segment passed.
                   /^manus\/julius\//.test(e.id)
                   ? "godkjent"
-                  : "venter";
+                  : "utenfor";
     poster.push({ ...e, status, type: fremdriftGruppe(e) });
   }
   const telling = (ps: typeof poster) =>

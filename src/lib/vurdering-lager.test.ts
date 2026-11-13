@@ -9,6 +9,7 @@ import {
   flat,
   lesLager,
   migrer,
+  nyesteSegmenter,
   settVurdering,
   visning,
   type Flat,
@@ -195,4 +196,20 @@ for i in range(25):
     expect(ider.filter((k) => k.startsWith("ts"))).toHaveLength(25);
     expect(existsSync(`${fil}.lock`)).toBe(false);
   }, 30_000);
+});
+
+describe("nyesteSegmenter", () => {
+  it("reads the newest candidate's flags, not only the plain name's", async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), "nyeste-seg-"));
+    const j = path.join(dir, "video/julius");
+    await mkdir(j, { recursive: true });
+    const seg = (flagg: string[]) => JSON.stringify([{ s: 1, flagg }]);
+    await writeFile(path.join(j, "dag-06.segmenter.json"), seg([]));
+    await writeFile(path.join(j, "dag-06-v2.segmenter.json"), seg(["a"]));
+    await writeFile(path.join(j, "dag-06-v10.segmenter.json"), seg(["ny"]));
+    await writeFile(path.join(j, "dag-06.old-3.segmenter.json"), seg(["gml"]));
+    await writeFile(path.join(j, "dag-16-v11.segmenter.json"), seg(["x"]));
+    expect(await nyesteSegmenter(dir, 6)).toEqual([{ s: 1, flagg: ["ny"] }]);
+    expect(await nyesteSegmenter(dir, 7)).toEqual([]);
+  });
 });

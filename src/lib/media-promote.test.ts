@@ -155,6 +155,37 @@ describe("taIBruk", () => {
     );
   });
 
+  it("nekter en kandidat med åpen kuttsjekk (409-meldingen), og godtar etter G", async () => {
+    const { dir, j } = await oppsett({});
+    const { endreLager, settVurdering } = await import("./vurdering-lager");
+    const kand = "video/julius/dag-01-v4.mp4";
+    await writeFile(
+      path.join(j, "dag-01-v4.segmenter.json"),
+      JSON.stringify([{ s: 1, raw: "r1", start: 0, slutt: 3 }]),
+    );
+    await endreLager(dir, async (l) => {
+      await settVurdering(dir, l, kand, { vurdering: "godkjent" });
+      await settVurdering(
+        dir,
+        l,
+        "video/julius/dag-01#s1",
+        { vurdering: "ok", kuttsjekk: { retning: "slutt", t: 2 } },
+        "r1",
+      );
+    });
+    await expect(taIBruk(dir, kand)).rejects.toThrow(/s1 venter på kuttsjekk/);
+    await endreLager(dir, (l) =>
+      settVurdering(
+        dir,
+        l,
+        "video/julius/dag-01#s1",
+        { vurdering: "godkjent" },
+        "r1",
+      ),
+    );
+    await taIBruk(dir, kand);
+  });
+
   it("nekter en kandidat som ikke er godkjent, og rører ingenting", async () => {
     const { dir, j } = await oppsett({});
     const før = (await readdir(j)).sort();

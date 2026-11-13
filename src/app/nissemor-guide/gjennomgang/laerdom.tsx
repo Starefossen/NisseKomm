@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { Endring, Laerdom } from "@/lib/laerdom";
 import { Lagremelding, useLagring } from "../lagring";
 import type { Linje } from "./ko";
+import { taggType } from "@/lib/vurdering-tagger";
 
 const knapp =
   "inline-flex items-center justify-center min-h-11 min-w-11 px-3 border-2 border-(--neon-green) hover:bg-(--neon-green)/20";
@@ -23,16 +24,20 @@ export function Forslag({ l, ny }: { l: Linje; ny: (d: Laerdom) => void }) {
   const [tekst, setTekst] = useState<string | null>(null);
   const { status, lagrer, kjør } = useLagring();
   const gjør = (e: Endring) => kjør(async () => ny(await send(e)));
-  if (tekst === null)
+  // A rule needs a type the generators read (vurdering-tagger.json); other notes can only be dismissed.
+  const type = taggType(l.id);
+  if (tekst === null || !type)
     return (
       <div className="flex flex-wrap gap-2 items-center">
-        <button
-          type="button"
-          className={knapp}
-          onClick={() => setTekst(`unngå: ${l.notat ?? ""}`)}
-        >
-          Gjør til regel
-        </button>
+        {type && (
+          <button
+            type="button"
+            className={knapp}
+            onClick={() => setTekst(`unngå: ${l.notat ?? ""}`)}
+          >
+            Gjør til regel
+          </button>
+        )}
         <button
           type="button"
           className={knapp}
@@ -49,11 +54,11 @@ export function Forslag({ l, ny }: { l: Linje; ny: (d: Laerdom) => void }) {
       className="flex flex-wrap gap-2 items-center"
       onSubmit={(ev) => {
         ev.preventDefault();
-        gjør({ handling: "regel", type: l.type, regel: tekst, kilder: [l.id] });
+        gjør({ handling: "regel", type, regel: tekst, kilder: [l.id] });
       }}
     >
       <label className="flex-1 min-w-64">
-        <span className="sr-only">Regel for {l.type}</span>
+        <span className="sr-only">Regel for {type}</span>
         <input
           autoFocus
           value={tekst}
@@ -68,7 +73,7 @@ export function Forslag({ l, ny }: { l: Linje; ny: (d: Laerdom) => void }) {
         className={knapp}
         disabled={lagrer || !tekst.trim()}
       >
-        Lagre regel ({l.type})
+        Lagre regel ({type})
       </button>
       <button type="button" className={knapp} onClick={() => setTekst(null)}>
         Avbryt

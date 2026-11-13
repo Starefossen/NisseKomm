@@ -5,7 +5,8 @@
 # Script gate: refuses TTS unless manus/radio/dag-NN is approved in the guide on today's text (medie.py radio-port).
 # --uten-manusgodkjenning skips it: use it ONLY when Hans has said yes explicitly.
 # --dry-run prints the director's notes (with the «Unngå:» block) and text, no call.
-# Skips a day whose clip is current (medie.py) unless --force; writes dag-NN.mp3.meta.json.
+# Skips a day whose clip is current (medie.py) unless --force; writes dag-NN.mp3.meta.json. With a clip already there,
+# the new one is a candidate dag-NN-vN.mp3 (the plain file is never touched); «Ta i bruk» promotes it, like Julius.
 set -euo pipefail
 source "$(dirname "$0")/_key.sh"
 FORCE=; UTEN=; DRY=
@@ -18,18 +19,20 @@ done
 # by the TTS model (400), so use the director's-notes/transcript layout Google documents: only TRANSCRIPT is spoken.
 # In that layout the model follows the style more weakly (lower, slower, less nordlandsk: dag 6/14, 13 Nov), so the notes
 # repeat pitch, tempo and dialect. A Norwegian style line was read aloud instead (test 13 Nov), so it stays English.
+# The next free candidate beside $1: <stem>-vN.mp3 with N one above the highest (at least 2).
+kandidat() {
+  local s=${1%.mp3} n=1 f
+  for f in "$s"-v*.mp3; do [[ $f =~ -v([0-9]+)\.mp3$ ]] && ((BASH_REMATCH[1] > n)) && n=${BASH_REMATCH[1]}; done
+  echo "$s-v$((n + 1)).mp3"
+}
 prompt() { printf "### DIRECTOR'S NOTES (never read aloud)\n%s\nKeep the pitch high and the tempo quick and bouncy; strong nordlandsk dialect throughout.\n\n#### TRANSCRIPT\n%s" "$STIL" "$1"; }
 if [ "${1:-}" = selftest ]; then
   p=$(STIL=S prompt "Hei.")
   [[ $p == *"(never read aloud)"$'\n'S$'\n'*"pitch high"*$'\n\n'"#### TRANSCRIPT"$'\n'Hei. ]] || { echo "$p"; exit 1; }
-  # archive + undo without a TTS call: arkiver moves the clip to .old-1, a failed run (no new file) brings it back
-  t=$(mktemp -d); m="python3 $(dirname "$0")/medie.py"; echo gammel > "$t/dag-01.mp3"; echo '{}' > "$t/dag-01.mp3.meta.json"
-  $m arkiver "$t/dag-01.mp3"
-  [ ! -e "$t/dag-01.mp3" ] && [ "$(cat "$t/dag-01.old-1.mp3")" = gammel ] && [ -e "$t/dag-01.old-1.mp3.meta.json" ] || { echo "arkiver feilet"; exit 1; }
-  $m angre "$t/dag-01.mp3"
-  [ "$(cat "$t/dag-01.mp3")" = gammel ] && [ -e "$t/dag-01.mp3.meta.json" ] && [ ! -e "$t/dag-01.old-1.mp3" ] || { echo "angre feilet"; exit 1; }
-  $m arkiver "$t/dag-01.mp3"; echo ny > "$t/dag-01.mp3"; $m angre "$t/dag-01.mp3"  # new file wins: nothing is overwritten
-  [ "$(cat "$t/dag-01.mp3")" = ny ] || { echo "angre overskrev ny fil"; exit 1; }
+  t=$(mktemp -d)
+  [ "$(kandidat "$t/dag-01.mp3")" = "$t/dag-01-v2.mp3" ] || { echo "kandidat uten -vN feilet"; exit 1; }
+  touch "$t/dag-01-v2.mp3" "$t/dag-01-v10.mp3"
+  [ "$(kandidat "$t/dag-01.mp3")" = "$t/dag-01-v11.mp3" ] || { echo "kandidat etter -v10 feilet"; exit 1; }
   rm -rf "$t"; echo ok; exit 0
 fi
 D=$1; V=${2:-Fenrir}; O="$ROOT/public/audio/rampenissen"; T="$ROOT/assets/out/rampenissen"; mkdir -p "$O" "$T"
@@ -46,11 +49,10 @@ if [ "$D" = synger ]; then text=$(cat "$SRC"); else text=$($M tekst rampenissen 
 [ "$D" = synger ] || [ -n "$UTEN" ] || [ -n "$DRY" ] || $M radio-port "$D"
 STIL="$STIL$($M unngaa radio)"  # Hans' rules from Lærdom; the sidecar records them beside prompt_version
 [ -n "$DRY" ] && { prompt "$text"; echo; exit 0; }  # --dry-run: the prompt, no call
-# --force overwrites the plain name: keep the old clip as .old-N, and put it back if this run leaves no good new file.
-if [ -f "$F" ]; then
-  $M arkiver "$F"
-  trap '[ $? = 0 ] || { rm -f "$F" "$F.meta.json"; $M angre "$F"; }' EXIT
-fi
+# --force on a clip that exists makes a candidate; the plain file stays as it is (even on SIGKILL). A failed run
+# leaves no half-written candidate.
+[ -f "$F" ] && F=$(kandidat "$F")
+trap '[ $? = 0 ] || rm -f "$F" "$F.meta.json"' EXIT
 # English read aloud at the start (radio-start.sh): one new try, at most 2 TTS calls.
 for forsok in 1 2; do
   bruk tts gemini-3.8-flash-tts "$F"

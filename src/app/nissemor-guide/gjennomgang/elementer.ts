@@ -258,10 +258,7 @@ export function tilstand(
   e: Element,
   k: StatusKilde,
 ): { celle: Celle; tekst: string; notat?: string } {
-  const egen = e.media.includes(e.id) ? undefined : k.vurderinger[e.id];
-  // A section with its own verdict (rampestrek next to its sketch) shows that verdict,
-  // as the buttons below do; the sketch's status is the fallback.
-  if (e.media.length && !egen?.vurdering && !egen?.forrige) {
+  if (e.media.length) {
     const { celle, familie } = celleFor(e.media, k);
     return { celle, tekst: familie!.tekst, notat: familie!.iBruk.notat };
   }
@@ -292,4 +289,30 @@ export function naboI(
   if (i < 0 || liste.length < 2) return { rundt: false };
   const j = (i + steg + liste.length) % liste.length;
   return { e: liste[j], rundt: steg === 1 ? j < i : j > i };
+}
+
+/**
+ * N/] and P/[ from one order, so they are always inverses: the queue's ids
+ * (`ko`, from «Venter på deg») when given, else the filtered list. Under «Alt»
+ * the caller passes no queue.
+ */
+export function naboer(
+  filtrert: Element[],
+  alle: Element[],
+  id: string,
+  ko: string[] | null,
+) {
+  const finn = (x?: string) => (x ? alle.find((e) => e.id === x) : undefined);
+  const i = ko ? ko.indexOf(id) : -1;
+  const nesteKo = finn(
+    ko ? (i >= 0 ? ko[i + 1] : ko.find((x) => x !== id)) : undefined,
+  );
+  const nabo = naboI(filtrert, id, 1);
+  return {
+    neste: nesteKo ?? nabo.e,
+    forrige:
+      (ko && i > 0 ? finn(ko[i - 1]) : undefined) ?? naboI(filtrert, id, -1).e,
+    iKo: !!nesteKo,
+    rundt: !nesteKo && nabo.rundt,
+  };
 }

@@ -136,26 +136,6 @@ export const RESERVESETT: Record<number, string> = {
   23: "dag23-stjerner",
 };
 
-/**
- * The source lines behind tonight's sections (kveld, utskrifter, rampestrek):
- * what a verdict is given to. Raw doc text, so chips, links and other
- * derived UI never make a reviewed section «ny versjon».
- */
-export function kveldKilde(n: number) {
-  const rad = (t: string) =>
-    tabell(t)
-      .find((r) => Number(r[0]) === n)
-      ?.join(" | ") ?? "";
-  return [
-    dagBlokk(del("gaater", "Dag for dag"), n),
-    rad(del("historie", "8. Rampestreker").split("### 8.1 ")[0]),
-    rad(del("historie", "8.1 Korte former")),
-    kveldRad(n),
-  ]
-    .join("\n")
-    .trim();
-}
-
 export function kveldDag(n: number) {
   const blokk = dagBlokk(del("gaater", "Dag for dag"), n);
   if (!blokk) return null;
@@ -812,17 +792,6 @@ export function gaatekart(n: number) {
     husProsent: Number.isFinite(hus) ? hus : null,
   };
 }
-
-/** The Gåtekart's source: the day's gaater block and the text of every piece, without labels. */
-export const gaatekartKilde = (n: number) => {
-  const g = gaatekart(n);
-  return [
-    dagBlokk(del("gaater", "Dag for dag"), n),
-    ...[...g.hjemme, ...g.skjerm].map((b) => b.tekst),
-  ]
-    .join("\n")
-    .trim();
-};
 
 /** One row per day for the season map under Dager. */
 export const sesongKart = () =>

@@ -167,6 +167,30 @@ describe("API /api/media/vurdering - Validation", () => {
     }
   });
 
+  it("rejects ids that name nothing (day 99, a segment the script lacks, an unknown guide id)", async () => {
+    for (const p of [
+      "video/julius/dag-99#s1",
+      "video/julius/dag-13#s9",
+      "video/julius/dag-99.mp4",
+      "dag/31/kveld",
+      "noe/helt/annet",
+      "video/julius/dag-13.mp4#s1",
+    ]) {
+      const res = await POST(
+        makeReq("POST", { path: p, vurdering: "godkjent" }, auth),
+      );
+      expect(res.status).toBe(400);
+    }
+    const ok = await POST(
+      makeReq(
+        "POST",
+        { path: "dag/04/gaatekart", vurdering: "godkjent" },
+        auth,
+      ),
+    );
+    expect(ok.status).toBe(200);
+  });
+
   it("rejects unrecognized verdicts with 400", async () => {
     for (const badVerdict of ["approved", "redo", "OK", 42, true]) {
       const res = await POST(

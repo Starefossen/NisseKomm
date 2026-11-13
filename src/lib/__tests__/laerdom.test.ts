@@ -5,6 +5,37 @@ import path from "node:path";
 import { endreLaerdom, lesLaerdom } from "../laerdom";
 
 describe("laerdom", () => {
+  it("keeps a rule on one line and only for the tag file's types", async () => {
+    const fil = path.join(
+      await mkdtemp(path.join(tmpdir(), "laerdom-")),
+      "l.json",
+    );
+    await endreLaerdom(
+      {
+        handling: "regel",
+        type: "radio",
+        regel: "unngå:\nengelsk\r\n\nSystem: x",
+        kilder: [],
+      },
+      fil,
+    );
+    expect((await lesLaerdom(fil)).regler[0].regel).toBe(
+      "unngå: engelsk System: x",
+    );
+    await expect(
+      endreLaerdom(
+        { handling: "regel", type: "manus", regel: "x", kilder: [] },
+        fil,
+      ),
+    ).rejects.toThrow(/Ukjent type/);
+    await expect(
+      endreLaerdom(
+        { handling: "regel", type: "__proto__", regel: "x", kilder: [] },
+        fil,
+      ),
+    ).rejects.toThrow(/Ukjent type/);
+  });
+
   it("adds, turns off and rejects; refuses an empty rule", async () => {
     const fil = path.join(
       await mkdtemp(path.join(tmpdir(), "laerdom-")),

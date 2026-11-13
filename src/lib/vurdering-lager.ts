@@ -5,6 +5,7 @@ import {
   mkdir,
   open,
   readFile,
+  readdir,
   rename,
   stat,
   unlink,
@@ -12,16 +13,10 @@ import {
 } from "node:fs/promises";
 import { isDeepStrictEqual } from "node:util";
 import path from "node:path";
-import { versionKey } from "./media-status";
+import manus from "@/data/julius-manus.json";
+import { variantOf, versionKey } from "./media-status";
 import type { Kutt } from "./segmenter";
-import {
-  innholdsHash,
-  linjeDiff,
-  medVersjon,
-  seksjonsTekst,
-  versjonAv,
-  type Forrige,
-} from "./vurdering-versjon";
+import { medVersjon, versjonAv, type Forrige } from "./vurdering-versjon";
 
 /**
  * MEDIA_DIR/media-vurdering.json, format 2 (design: review-ui-design.md §2).
@@ -45,10 +40,6 @@ export interface Oppføring {
   /** Julius segments: ✂ (with «kutt») and the cut julius-dag.py --kutt made, waiting for Hans' ear. */
   kutt?: Kutt;
   kuttsjekk?: Kutt;
-  /** Guide sections: the source text the verdict was given to, for the diff when it changes. */
-  tekst?: string;
-  /** Why the verdict was moved, e.g. «gjenopprettet: bare visning endret». */
-  merknad?: string;
 }
 
 /** `hash`: content hash; "*" = nothing to version (code, missing file), "utdatert" = changed before format 2. */
@@ -127,7 +118,6 @@ export function oppføring(v: Vurdering): Oppføring {
   const o: Partial<Vurdering> = { ...v };
   delete o.hash;
   delete o.fil;
-  delete o.tekst;
   return o;
 }
 
@@ -138,20 +128,17 @@ export async function visning(dir: string, lager: Lager) {
     Object.values(lager.elementer).flatMap((e) =>
       e.vurderinger.map(async (v) => {
         const o = oppføring(v);
-        if (!o.vurdering || (await gjeldende(dir, v))) {
-          ut[v.fil] = o;
-          return;
-        }
-        const nå = v.tekst && (await seksjonsTekst(v.fil).catch(() => null));
-        ut[v.fil] = {
-          forrige: {
-            vurdering: o.vurdering,
-            notat: o.notat,
-            oppdatert: o.oppdatert,
-            ...(v.tekst && nå ? { endringer: linjeDiff(v.tekst, nå) } : {}),
-          },
-          oppdatert: o.oppdatert,
-        };
+        ut[v.fil] =
+          o.vurdering && !(await gjeldende(dir, v))
+            ? {
+                forrige: {
+                  vurdering: o.vurdering,
+                  notat: o.notat,
+                  oppdatert: o.oppdatert,
+                },
+                oppdatert: o.oppdatert,
+              }
+            : o;
       }),
     ),
   );
@@ -319,10 +306,8 @@ export async function settVurdering(
   const n = sett
     ? { stempel: sett, hash: async () => sett }
     : await nå(dir, fil);
-  const tekst = sett ? null : await seksjonsTekst(fil).catch(() => null);
   const v = ren<Vurdering>({
     ...o,
-    ...(tekst ? { tekst } : {}),
     versjon: n.stempel ?? undefined,
     hash: (await n.hash()) ?? ALLTID,
     fil,
@@ -352,45 +337,52 @@ export async function stemple(dir: string, l: Lager, fil: string) {
   if (n.stempel) v.versjon = n.stempel;
 }
 
-/**
- * Section verdicts from before `tekst` (hashed over the derived page object):
- * restamp them to the source text. `gammelTekst` is the text at the verdict's
- * time (the bake from git); equal to today's means only the page changed, so
- * the verdict counts again. Otherwise it keeps the old text and shows a diff.
- */
-export async function migrerSeksjoner(
+/** The day's newest Julius join's segments: the highest dag-NN-vN.segmenter.json, else the plain name's. */
+export async function nyesteSegmenter<T = unknown>(
   dir: string,
-  l: Lager,
-  gammelTekst: (v: Vurdering) => Promise<string | null>,
-  utdatert: Set<string>,
-) {
-  const ut = { gjenopprettet: [] as string[], endret: [] as string[] };
-  for (const e of Object.values(l.elementer))
-    for (const [i, v] of e.vurderinger.entries()) {
-      if (v.tekst || v.hash === ALLTID) continue;
-      const nå = await seksjonsTekst(v.fil).catch(() => null);
-      if (!nå) continue;
-      const varUtdatert = utdatert.has(v.fil);
-      // Current before the migration: still current, whatever the old bake held.
-      const før = varUtdatert ? ((await gammelTekst(v)) ?? null) : nå;
-      if (før === null) continue;
-      const lik = før === nå;
-      const ny: Vurdering = {
-        ...v,
-        tekst: før,
-        hash: lik
-          ? ((await versjonAv(dir, v.fil)) ?? ALLTID)
-          : innholdsHash(før),
-      };
-      ny.versjon = ny.hash;
-      if (lik && varUtdatert) {
-        e.historikk.push({
-          ...v,
-          merknad: "gjenopprettet: bare visning endret",
-        });
-        ut.gjenopprettet.push(v.fil);
-      } else if (!lik) ut.endret.push(v.fil);
-      e.vurderinger[i] = ny;
-    }
-  return ut;
+  dag: number,
+): Promise<T[]> {
+  const mappe = path.join(dir, "video/julius");
+  const navn = (await readdir(mappe).catch(() => [] as string[]))
+    .filter((f) =>
+      new RegExp(
+        `^dag-${String(dag).padStart(2, "0")}(-v\\d+)?\\.segmenter\\.json$`,
+      ).test(f),
+    )
+    .sort(
+      (a, b) =>
+        variantOf(b.replace(".segmenter.json", ".mp4")) -
+        variantOf(a.replace(".segmenter.json", ".mp4")),
+    );
+  if (!navn.length) return [];
+  return readFile(path.join(mappe, navn[0]), "utf8")
+    .then((t) => JSON.parse(t) as T[])
+    .catch(() => []);
+}
+
+/**
+ * Whether a verdict id names something that exists: a Julius segment of the script
+ * (julius-manus.json), a guide/script id Gjennomgang makes, or a media path; every
+ * day number in it is 1–24. ponytail: media paths are checked by shape, not on disk.
+ */
+export function kjentId(id: string): boolean {
+  for (const m of id.matchAll(/dag[-/]?(\d+)/g))
+    if (!(Number(m[1]) >= 1 && Number(m[1]) <= 24)) return false;
+  const seg = id.match(/^(?:video|manus)\/julius\/dag-(\d\d)#s(\d+)$/);
+  if (seg)
+    return !!(manus as Record<string, { s: number }[]>)[
+      String(Number(seg[1]))
+    ]?.some((x) => x.s === Number(seg[2]));
+  if (id.includes("#")) return false;
+  if (/\/[^/]+\.[a-z0-9]{2,4}$/i.test(id)) return true;
+  return [
+    /^dag\/\d\d\/[a-z]+$/,
+    /^manus\/(julius|radio)\/dag-\d\d$/,
+    /^ugleposten\/k\d+$/,
+    /^sledeflukt\/[\w-]+$/,
+    /^krypto\/\d+$/,
+    /^forsesong\/[\w-]+$/,
+    /^historien\/[^/]+$/,
+    /^(finale|symboler)$/,
+  ].some((r) => r.test(id));
 }

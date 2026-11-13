@@ -1,6 +1,7 @@
 import { readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { medLås } from "./vurdering-lager";
+import { TAGGER } from "./vurdering-tagger";
 
 /**
  * assets/laerdom.json (in git, season-independent): Hans' approved rules per
@@ -39,9 +40,12 @@ export function endreLaerdom(e: Endring, fil = laerdomFil()) {
   return medLås(fil, async () => {
     const d = await lesLaerdom(fil);
     if (e.handling === "regel") {
-      const regel = e.regel.trim();
-      if (!regel || regel.length > 200 || !e.type)
+      // One line: medie.py puts each rule on its own line in the prompt's «Unngå:» block.
+      const regel = e.regel.replace(/\s+/g, " ").trim();
+      if (!regel || regel.length > 200)
         throw new Error("Regelen må ha tekst (høyst 200 tegn)");
+      if (!Object.hasOwn(TAGGER, e.type))
+        throw new Error(`Ukjent type: ${e.type}`);
       d.regler.push({
         type: e.type,
         regel,

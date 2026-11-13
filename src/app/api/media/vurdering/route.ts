@@ -5,6 +5,7 @@ import { versionKey } from "@/lib/media-status";
 import { segmentRaws, type Forrige } from "@/lib/vurdering-versjon";
 import {
   endreLager,
+  kjentId,
   lesLager,
   oppføring,
   type Oppføring,
@@ -98,6 +99,8 @@ export async function POST(req: NextRequest) {
   }
 
   const cleanPath = relPath.trim();
+  // A verdict on something that does not exist (video/julius/dag-99#s1) would sit in the store forever.
+  if (!kjentId(cleanPath)) return badRequest();
 
   const allowedVerdicts = ["godkjent", "ok", "lag_paa_nytt", "kutt", null, ""];
   if (
@@ -219,7 +222,6 @@ export async function POST(req: NextRequest) {
           hash: gammel.hash,
           fil: gammel.fil,
           ...(gammel.versjon ? { versjon: gammel.versjon } : {}),
-          ...(gammel.tekst ? { tekst: gammel.tekst } : {}),
           ...felt,
         };
         e.vurderinger = e.vurderinger.map((x) => (x === gammel ? v! : x));

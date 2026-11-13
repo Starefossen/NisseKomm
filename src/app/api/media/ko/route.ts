@@ -7,7 +7,12 @@ import { kuttStatus } from "@/lib/kutt-jobb";
 import { authorizeMedia, mediaDir, mediaStatus } from "@/lib/media-server";
 import { versionKey } from "@/lib/media-status";
 import type { KoServer } from "@/app/nissemor-guide/gjennomgang/ko";
-import { filHash, flat, lesLager } from "@/lib/vurdering-lager";
+import {
+  filHash,
+  flat,
+  lesLager,
+  nyesteSegmenter,
+} from "@/lib/vurdering-lager";
 import { lesLaerdom } from "@/lib/laerdom";
 
 /** The queue's server half: budget, duplicate files and image job ids (assets/ only exists in a checkout). */
@@ -53,25 +58,17 @@ export async function GET(req: NextRequest) {
       .filter(([, j]) => j.ut)
       .map(([k, j]) => [j.ut!, k.replace("/", ":")]),
   );
-  // Machine flags per segment of the video in use (the plain name's segmenter.json).
+  // Machine flags per segment of the day's newest join (a candidate -vN before the plain name).
   const flagg: KoServer["flagg"] = {};
   const segtid: NonNullable<KoServer["segtid"]> = {};
   await Promise.all(
     Object.keys(manus).map(async (d) => {
-      const segs = await readFile(
-        path.join(dir, `video/julius/dag-${d.padStart(2, "0")}.segmenter.json`),
-        "utf8",
-      )
-        .then(
-          (t) =>
-            JSON.parse(t) as {
-              s: number;
-              start: number;
-              slutt: number;
-              flagg?: string[];
-            }[],
-        )
-        .catch(() => []);
+      const segs = await nyesteSegmenter<{
+        s: number;
+        start: number;
+        slutt: number;
+        flagg?: string[];
+      }>(dir, Number(d));
       const f = segs
         .filter((x) => x.flagg?.length)
         .map((x) => ({ s: x.s, flagg: x.flagg! }));

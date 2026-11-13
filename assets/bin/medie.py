@@ -346,8 +346,9 @@ def prompt_version(generator: str, root: Path = ROOT):
 LAERDOM = "assets/laerdom.json"
 UNNGAA_MAKS = 8
 # typeAv in src/app/nissemor-guide/media/filter.ts: the type a rule in Lærdom is filed under
-_TYPER = (("video/julius/", "julius"), ("audio/rampenissen/", "radio"), ("video/tv/", "tv"), ("strek/", "strek"),
-          ("portrett", "portrett"), ("spill/", "spill"), ("promo/", "promo"), ("feed/", "feed"), ("music/", "feed"))
+# The types are vurdering-tagger.json's (the guide only saves rules for those): every image is «bilde».
+_TYPER = (("video/julius/", "julius"), ("audio/rampenissen/", "radio"), ("video/tv/", "tv"), ("strek/", "bilde"),
+          ("portrett", "bilde"), ("spill/", "bilde"))
 
 
 def laerdom_type(out) -> str:
@@ -939,10 +940,10 @@ def selftest():
         assert unngaa("tv", r) == ""
         regler = [{"type": "tv", "regel": f"unngå: {i}", "dato": f"2026-11-{10 + i % 3}", "aktiv": True} for i in range(10)]
         (r / LAERDOM).write_text(json.dumps({"regler": regler + [{"type": "tv", "regel": "av", "dato": "2026-12-01", "aktiv": False},
-                                                                  {"type": "strek", "regel": "s", "dato": "2026-12-01", "aktiv": True}]}))
+                                                                  {"type": "bilde", "regel": "s", "dato": "2026-12-01", "aktiv": True}]}))
         assert unngaa_regler("tv", r) == ["unngå: 8", "unngå: 5", "unngå: 2", "unngå: 7", "unngå: 4", "unngå: 1", "unngå: 9", "unngå: 6"]
-        assert unngaa("strek", r) == "\n\nUnngå:\n- s"
-        assert laerdom_type("/x/public/strek/dag02.png") == "strek" and laerdom_type("/m/video/tv/a.mp4") == "tv"
+        assert unngaa("bilde", r) == "\n\nUnngå:\n- s"
+        assert laerdom_type("/x/public/strek/dag02.png") == "bilde" and laerdom_type("/m/video/tv/a.mp4") == "tv"
         write("still.sh", r / "public/strek/dag02.png", "assets/prompts/strek/skisse.txt", None, "m", root=r)
         side = json.loads((r / "public/strek/dag02.png.meta.json").read_text())
         assert side["unngaa"] == ["s"] and side["prompt_version"] is None, side

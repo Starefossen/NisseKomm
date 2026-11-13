@@ -10,7 +10,7 @@ import {
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { kuttDag, kuttStatus, startKutt } from "./kutt-jobb";
+import { avbrytKutt, kuttDag, kuttStatus, startKutt } from "./kutt-jobb";
 
 let rot: string;
 const skript = (kode: string) =>
@@ -62,6 +62,34 @@ describe("kutt-jobb", () => {
     skript("pass\n");
     expect(await startKutt(5).klar).toBe(0);
     expect(kuttStatus(5).status).toBe("ferdig");
+  });
+
+  it("a ✂ saved while a run is going queues a second run instead of being dropped", async () => {
+    const { readFileSync } = await import("node:fs");
+    const teller = path.join(rot, "n");
+    skript(
+      `open(${JSON.stringify(teller)}, "a").write("x")\ntime.sleep(0.5)\nprint("/m/video/julius/dag-13-v3.mp4")\n`,
+    );
+    const a = startKutt(13);
+    const b = startKutt(13);
+    expect(b).toEqual({ startet: false, ko: true });
+    expect(kuttStatus(13).ko).toBe(true);
+    expect(await a.klar).toBe(0);
+    expect(readFileSync(teller, "utf8")).toBe("xx");
+    expect(kuttStatus(13)).toEqual({
+      status: "ferdig",
+      logg: "assets/out/kutt-13.log",
+      ny: "video/julius/dag-13-v3.mp4",
+    });
+  });
+
+  it("Avbryt and the time limit kill the run", async () => {
+    skript("time.sleep(30)\n");
+    const a = startKutt(7);
+    expect(avbrytKutt(7)).toBe(true);
+    expect(await a.klar).toBe(1);
+    expect(kuttStatus(7).status).toBe("feil");
+    expect(await startKutt(7, 200).klar).toBe(1);
   });
 
   it("without assets/ (the image) nothing starts", () => {
