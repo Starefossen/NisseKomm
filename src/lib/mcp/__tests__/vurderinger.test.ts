@@ -30,6 +30,11 @@ writeFileSync(
       oppdatert: "2026-11-09T09:30:00.000Z",
       versjon: "000000000000",
     },
+    // Day level of a Julius script: only #sK counts, so this one is not listed.
+    "manus/julius/dag-15": {
+      vurdering: "lag_paa_nytt",
+      oppdatert: "2026-11-13T12:00:00.000Z",
+    },
     "historien/slutt": {
       vurdering: "ok",
       notat: "litt lang",

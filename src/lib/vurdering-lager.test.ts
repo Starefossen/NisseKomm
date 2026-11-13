@@ -13,6 +13,7 @@ import {
   ryddAlltid,
   SESONG,
   settVurdering,
+  utvidSnapshots,
   skrivbart,
   visning,
   type Flat,
@@ -273,6 +274,76 @@ describe("fable r3: «*» og eldre kode", () => {
       fjernet: 0,
       restemplet: 0,
     });
+  });
+
+  it("manus/julius/dag-NN med «*» går til historikk (dagnivå erstattet av segmenter)", async () => {
+    const dir = await mappe({});
+    const id = "manus/julius/dag-15";
+    const l: Lager = {
+      format: 2,
+      sesong: 2026,
+      elementer: {
+        [id]: {
+          vurderinger: [{ hash: "*", fil: id, vurdering: "godkjent" }],
+          historikk: [],
+        },
+      },
+    };
+    await ryddAlltid(dir, l);
+    expect(l.elementer[id].vurderinger).toHaveLength(0);
+    expect(l.elementer[id].historikk[0].merknad).toBe(
+      "dagnivå erstattet av segmenter",
+    );
+    await ryddAlltid(dir, l);
+    expect(l.elementer[id].historikk).toHaveLength(1);
+  });
+
+  it("utvidSnapshots: avklippet snapshot blir hele dagsblokken når utsnittet stemmer nøyaktig", async () => {
+    const { øyeblikkTekst, utsnitt } = await import("./vurdering-versjon");
+    const { seksjon } = await import("./guide-sesong");
+    const { dagBlokk } = await import("./guide-innhold");
+    const { default: bakt } = await import("@/data/guide-innhold.json");
+    const gaater = (bakt as Record<string, string>)["docs/gaater-2026.md"];
+    const blokk = dagBlokk(seksjon(gaater, "Dag for dag"), 1);
+    // The bake at the verdict's time had one more field, which kveld does not show.
+    const gammel = blokk.replace("\n", "\n- **Oppsettskisse:** gammel\n");
+    const gammelMd = gaater.replace(blokk, () => gammel);
+    const hel = (await øyeblikkTekst("dag/01/kveld"))!;
+    const snitt = utsnitt("dag/01/kveld", hel);
+    const mk = (fil: string, tekst: string): Lager => ({
+      format: 2,
+      sesong: 2026,
+      elementer: {
+        [fil]: {
+          vurderinger: [
+            {
+              hash: "x",
+              fil,
+              vurdering: "godkjent",
+              tekst,
+              oppdatert: "2026-11-13T10:00:00Z",
+            },
+          ],
+          historikk: [],
+        },
+      },
+    });
+    const l = mk("dag/01/kveld", snitt);
+    expect(await utvidSnapshots(l, async () => gammelMd)).toEqual([
+      "dag/01/kveld",
+    ]);
+    const v = l.elementer["dag/01/kveld"].vurderinger[0];
+    expect(v.tekst).toContain("Oppsettskisse:** gammel");
+    // Cut back it is the stored text, so a wider FELT.kveld cannot stale it.
+    expect(utsnitt("dag/01/kveld", v.tekst!)).toBe(snitt);
+    expect(l.elementer["dag/01/kveld"].historikk[0].merknad).toBe(
+      "snapshot utvidet",
+    );
+    // Idempotent.
+    expect(await utvidSnapshots(l, async () => gammelMd)).toEqual([]);
+    // A cut that does not match what the old bake gives is left alone.
+    const l2 = mk("dag/01/kveld", snitt + "\nannet");
+    expect(await utvidSnapshots(l2, async () => gammelMd)).toEqual([]);
   });
 
   it("endreLager nekter å skrive når lageret er fra nyere kode, og stempler hashVersjon", async () => {

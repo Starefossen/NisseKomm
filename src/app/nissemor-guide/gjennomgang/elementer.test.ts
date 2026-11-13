@@ -151,6 +151,27 @@ describe("naboer (N/P)", () => {
   });
 });
 
+describe("naboer: one order", () => {
+  it("the queue follows the list's order, so N after G goes to the same item as N before it", () => {
+    const l = ["dag/05/x", "dag/06/kveld", "dag/06/gaatekart", "dag/07/x"].map(
+      (id): Element => ({ id, gruppe: "g", tittel: id, media: [] }),
+    );
+    // Queue order differs from the list (by type first): 07 before 06.
+    const ko = ["dag/07/x", "dag/06/gaatekart", "dag/06/kveld"];
+    expect(naboer(l, l, "dag/05/x", ko).neste?.id).toBe("dag/06/kveld");
+    expect(naboer(l, l, "dag/06/gaatekart", ko).neste?.id).toBe("dag/07/x");
+    // G on kveld took it out of the queue: next stays on day 6.
+    expect(
+      naboer(
+        l,
+        l,
+        "dag/06/kveld",
+        ko.filter((x) => x !== "dag/06/kveld"),
+      ).neste?.id,
+    ).toBe("dag/06/gaatekart");
+  });
+});
+
 describe("tilstand", () => {
   it("a section's own verdict wins over its sketch (rolled back in df5dd47)", () => {
     const e = {

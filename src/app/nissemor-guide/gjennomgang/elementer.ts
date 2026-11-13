@@ -321,8 +321,11 @@ export function naboer(
   filtrert: Element[],
   alle: Element[],
   id: string,
-  ko: string[] | null,
+  koRå: string[] | null,
 ) {
+  // The queue in `alle`'s order (day, then the chosen column), so N after G and N before it agree.
+  const pos = (x: string) => alle.findIndex((e) => e.id === x);
+  const ko = koRå && [...koRå].sort((a, b) => pos(a) - pos(b));
   const finn = (x?: string) => (x ? alle.find((e) => e.id === x) : undefined);
   const i = ko ? ko.indexOf(id) : -1;
   // Not in the queue (G just took it out): the first queue item after it in `alle`,

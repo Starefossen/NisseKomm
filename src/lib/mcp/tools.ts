@@ -905,6 +905,8 @@ export const TOOLS: Record<string, Tool> = {
       const sett = await visning(mediaDir(), await lesLager(mediaDir()));
       const rader = Object.entries(sett)
         .filter(([id]) => typeof prefiks !== "string" || id.startsWith(prefiks))
+        // Julius scripts count per segment (#sK); the day level is no verdict of its own.
+        .filter(([id]) => !/^manus\/julius\/dag-\d+$/.test(id))
         .filter(
           ([, v]) => Number.isNaN(fra) || Date.parse(v.oppdatert ?? "") > fra,
         )

@@ -391,7 +391,12 @@ export async function ryddAlltid(
   for (const e of Object.values(l.elementer))
     for (const v of [...e.vurderinger]) {
       if (v.hash !== ALLTID) continue;
-      if (erMediefil(v.fil)) {
+      if (/^manus\/julius\/dag-\d+$/.test(v.fil)) {
+        // Only the segments (#sK) count; the day level was replaced by them.
+        e.historikk.push({ ...v, merknad: "dagnivå erstattet av segmenter" });
+        e.vurderinger.splice(e.vurderinger.indexOf(v), 1);
+        ut.fjernet++;
+      } else if (erMediefil(v.fil)) {
         e.historikk.push({ ...v, merknad: "vurdert mens filen manglet" });
         if ((await nå(dir, v.fil)).stempel === null) {
           e.vurderinger.splice(e.vurderinger.indexOf(v), 1);
@@ -422,6 +427,108 @@ export async function ryddAlltid(
   return ut;
 }
 
+/** The gaater doc as baked into the newest commit of the bake at or before `tid`, or null (no git). */
+const gammelGaater = new Map<string, Promise<string | null>>();
+async function gaaterVed(tid: string): Promise<string | null> {
+  if (!gammelGaater.has(tid))
+    gammelGaater.set(
+      tid,
+      (async () => {
+        const { execFile } = await import("node:child_process");
+        const git = (...a: string[]) =>
+          new Promise<string>((ok, feil) =>
+            execFile(
+              "git",
+              a,
+              { cwd: process.cwd(), maxBuffer: 1 << 28 },
+              (e, ut) => (e ? feil(e) : ok(ut)),
+            ),
+          );
+        try {
+          const BAKE = "src/data/guide-innhold.json";
+          const h = (
+            await git("log", "-1", "--format=%H", `--until=${tid}`, "--", BAKE)
+          ).trim();
+          if (!h) return null;
+          return JSON.parse(await git("show", `${h}:${BAKE}`))[
+            "docs/gaater-2026.md"
+          ];
+        } catch {
+          return null;
+        }
+      })(),
+    );
+  return gammelGaater.get(tid)!;
+}
+
+/**
+ * Day-section verdicts whose snapshot is the cut text (before the whole day block
+ * was stored): rebuild the whole block with the day's gaater block as the bake had
+ * it when the verdict was given, and keep it only if cutting it gives back exactly
+ * the stored text. A later field change then no longer reads as «ny versjon».
+ * Idempotent: a whole snapshot rebuilds to itself and is left alone.
+ */
+const utvidMinne = new Map<string, string | null>();
+export async function utvidSnapshots(
+  l: Lager,
+  gaater: (tid: string) => Promise<string | null> = gaaterVed,
+) {
+  const ut: string[] = [];
+  // Loaded on the first verdict that needs it: guide-sesong pulls in the whole game.
+  let hjelp: Promise<{
+    seksjon: (t: string, tittel: string) => string;
+    dagBlokk: (t: string, d: number) => string;
+    nå: string;
+  }> | null = null;
+  const last = () =>
+    (hjelp ??= (async () => {
+      const { seksjon } = await import("./guide-sesong");
+      const { dagBlokk } = await import("./guide-innhold");
+      const { default: bakt } = await import("@/data/guide-innhold.json");
+      const nå = seksjon(
+        (bakt as Record<string, string>)["docs/gaater-2026.md"] ?? "",
+        "Dag for dag",
+      );
+      return { seksjon, dagBlokk, nå };
+    })());
+  for (const e of Object.values(l.elementer))
+    for (const v of e.vurderinger) {
+      const m = v.fil.match(
+        /^dag\/(\d+)\/(kveld|gaatekart|rampestrek|utskrifter)$/,
+      );
+      if (!m || v.tekst == null || !v.oppdatert) continue;
+      // Same answer on every read until the store is written: asked once per verdict.
+      const nøkkel = `${v.fil}|${v.oppdatert}|${v.tekst.length}`;
+      const husk = utvidMinne.get(nøkkel);
+      if (husk !== undefined) {
+        if (husk) {
+          e.historikk.push({ ...v, merknad: "snapshot utvidet" });
+          v.tekst = husk;
+          ut.push(v.fil);
+        }
+        continue;
+      }
+      utvidMinne.set(nøkkel, null);
+      const hel = await øyeblikkTekst(v.fil);
+      const md = await gaater(v.oppdatert);
+      if (hel == null || md == null) continue;
+      const h = await last().catch(() => null);
+      if (!h) continue;
+      const { seksjon, dagBlokk, nå } = h;
+      const gammel = dagBlokk(seksjon(md, "Dag for dag"), Number(m[1]));
+      const dagNå = dagBlokk(nå, Number(m[1]));
+      if (!gammel || !dagNå) continue;
+      const kandidat = hel.replace(dagNå, () => gammel);
+      if (kandidat === v.tekst || utsnitt(v.fil, kandidat) !== v.tekst)
+        continue;
+      utvidMinne.set(nøkkel, kandidat);
+      e.historikk.push({ ...v, merknad: "snapshot utvidet" });
+      v.tekst = kandidat;
+      ut.push(v.fil);
+    }
+  return ut;
+}
+
 /** Read the store; a format-1 file is backed up to _arkiv/<date>/ and migrated on first read. */
 export async function lesLager(dir: string, fil = path.join(dir, FIL)) {
   let data: unknown;
@@ -438,6 +545,7 @@ export async function lesLager(dir: string, fil = path.join(dir, FIL)) {
       console.warn(`${fil}: sesong ${l.sesong}, koden er for ${SESONG}`);
     await restemple(dir, l);
     const r = await ryddAlltid(dir, l);
+    await utvidSnapshots(l);
     if (r.nyVersjon + r.fjernet + r.restemplet)
       console.warn(`${fil}: «*»-vurderinger ryddet`, r);
     return l;
