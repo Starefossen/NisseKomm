@@ -10,7 +10,7 @@ import {
 import { segmentHint } from "@/lib/segmenter";
 import { dagAv, typeAv } from "../media/filter";
 import { juliusFiles } from "../media/oversikt";
-import type { Element } from "./elementer";
+import { tilstand, type Element } from "./elementer";
 import { taggLinje } from "@/lib/vurdering-tagger";
 import type { Laerdom } from "@/lib/laerdom";
 
@@ -226,8 +226,7 @@ export function byggKo(
         ...linje,
         hva: v.forrige ? "ny versjon" : "notat uten vurdering",
       });
-    else if (!v && dagSeksjon)
-      venter.push({ ...linje, hva: "aldri vurdert" });
+    else if (!v && dagSeksjon) venter.push({ ...linje, hva: "aldri vurdert" });
   }
 
   // Script gate: days without a video wait on their segments, then on the video call.
@@ -348,5 +347,76 @@ export function byggKo(
     agent: agent.sort(sorter),
     laerdom: laerdom.sort(sorter),
     segmenter,
+  };
+}
+
+export const FREMDRIFT = [
+  ["godkjent", "Godkjent", "bg-(--gold)"],
+  ["ok", "OK", "bg-amber-300"],
+  ["venter", "Venter på deg", "bg-(--cold-blue)"],
+  ["agent", "Hos agent", "bg-(--christmas-red)"],
+  ["mangler", "Mangler", "bg-(--gray)"],
+] as const;
+export type Fremdrift = (typeof FREMDRIFT)[number][0];
+
+/** The progress bar's bucket for an element (Julius per video until the segment status model lands). */
+export function fremdriftGruppe(e: Element): string {
+  if (e.gruppe === "julius") return "Julius";
+  if (e.id.startsWith("manus/")) return "Manus";
+  if (e.gruppe === "Snøfall TV" || e.gruppe === "Promo") return "TV og promo";
+  if (e.gruppe === "radio") return "Radio";
+  if (e.gruppe === "rampestrek") return "Skisser";
+  if (e.gruppe === "utskrifter") return "Utskrifter";
+  if (e.media.some((p) => /\.(png|jpe?g)$/.test(p))) return "Bilder";
+  return "Guideseksjoner";
+}
+
+/**
+ * Every element in exactly one bucket, from the same queue byggKo makes:
+ * missing file → Mangler, in «Hos agent» or rejected → Hos agent, in
+ * «Venter på deg» → Venter, else the verdict. Optional items are left out.
+ */
+export function fremdrift(
+  liste: Element[],
+  k: StatusKilde & { vurderinger: MediaVurderinger },
+  ko: { venter: Linje[]; agent: Linje[] },
+) {
+  const agent = new Set(ko.agent.map((l) => l.id));
+  const venter = new Set(ko.venter.map((l) => l.id));
+  const poster: (Element & { status: Fremdrift; type: string })[] = [];
+  for (const e of liste) {
+    const c = tilstand(e, k).celle;
+    if (c === "valgfri") continue;
+    const status: Fremdrift =
+      c === "mangler"
+        ? "mangler"
+        : agent.has(e.id) || c === "lag_paa_nytt" || c === "utdatert"
+          ? "agent"
+          : venter.has(e.id)
+            ? "venter"
+            : c === "godkjent" || c === "ok"
+              ? c
+              : // A Julius script is judged per segment: out of both queues means every segment passed.
+                /^manus\/julius\//.test(e.id)
+                ? "godkjent"
+                : "venter";
+    poster.push({ ...e, status, type: fremdriftGruppe(e) });
+  }
+  const telling = (ps: typeof poster) =>
+    Object.fromEntries(
+      FREMDRIFT.map(([st]) => [st, ps.filter((p) => p.status === st).length]),
+    ) as Record<Fremdrift, number>;
+  const typer = [...new Set(poster.map((p) => p.type))];
+  return {
+    poster,
+    total: {
+      navn: "Hele sesongen",
+      n: poster.length,
+      telling: telling(poster),
+    },
+    typer: typer.map((t) => {
+      const ps = poster.filter((p) => p.type === t);
+      return { navn: t, n: ps.length, telling: telling(ps) };
+    }),
   };
 }

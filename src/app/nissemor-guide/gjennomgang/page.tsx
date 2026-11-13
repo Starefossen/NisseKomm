@@ -30,7 +30,8 @@ import {
 } from "./elementer";
 import { Innhold } from "./visning";
 import { taggTelling } from "@/lib/vurdering-tagger";
-import { byggKo, type KoServer, type Linje } from "./ko";
+import { byggKo, FREMDRIFT, fremdrift, type KoServer, type Linje } from "./ko";
+import { Fremdriftslinjer } from "./fremdrift";
 import { Forslag, Regler } from "./laerdom";
 import type { Laerdom } from "@/lib/laerdom";
 
@@ -137,7 +138,19 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
     ? (fraUrl as Fane)
     : "venter";
   const [valgt, setValgt] = useState(0);
-  const linjer: Linje[] = ko ? ko[fane] : [];
+  const sp = useSearchParams();
+  const st = FREMDRIFT.find(([k]) => k === sp.get("s"));
+  const g = sp.get("g");
+  const fd = ko
+    ? fremdrift(liste, { ...kilde(d.media), vurderinger: d.vurd ?? {} }, ko)
+    : null;
+  const linjer: Linje[] = !ko
+    ? []
+    : st
+      ? fd!.poster
+          .filter((p) => p.status === st[0] && (!g || p.type === g))
+          .map((p) => ({ ...p, hva: `${st[1]} · ${p.type}` }))
+      : ko[fane];
   const lenke = (l: Linje) =>
     liste.some((e) => e.id === l.id)
       ? href(l.id) + (l.seg ? `&s=${l.seg}` : "")
@@ -184,15 +197,25 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
         </span>{" "}
         igjen av {kr(f.budsjett)} kr
       </p>
+      {fd && <Fremdriftslinjer total={fd.total} typer={fd.typer} side={SIDE} />}
+      {st && (
+        <p className="text-lg">
+          Viser {st[1].toLowerCase()}
+          {g ? ` · ${g}` : ""} ({linjer.length}).{" "}
+          <Link href={SIDE} className="underline text-(--gold)">
+            Tilbake til køen
+          </Link>
+        </p>
+      )}
       <nav className="flex flex-wrap gap-2" role="tablist">
         {FANER.map(([k, navn]) => (
           <Link
             key={k}
             role="tab"
-            aria-selected={fane === k}
+            aria-selected={!st && fane === k}
             href={`${SIDE}?k=${k}`}
             onClick={() => setValgt(0)}
-            className={`${knapp} text-lg ${fane === k ? "bg-(--gold) text-black border-(--gold)" : ""}`}
+            className={`${knapp} text-lg ${!st && fane === k ? "bg-(--gold) text-black border-(--gold)" : ""}`}
           >
             {navn} ({ko[k].length})
           </Link>

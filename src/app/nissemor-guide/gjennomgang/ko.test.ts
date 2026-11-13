@@ -1,5 +1,5 @@
 import { describe, it, expect } from "@jest/globals";
-import { byggKo, type KoServer } from "./ko";
+import { byggKo, fremdrift, type KoServer } from "./ko";
 import type { Element } from "./elementer";
 
 const server = (o: Partial<KoServer> = {}): KoServer => ({
@@ -208,5 +208,78 @@ describe("byggKo", () => {
       "strek/dag05.png",
       "dag/12/gaatekart",
     ]);
+  });
+
+  it("progress: every element in one bucket, counts sum to the total", () => {
+    const liste: Element[] = [
+      {
+        id: "video/julius/dag-03.mp4",
+        gruppe: "julius",
+        tittel: "J3",
+        dag: 3,
+        media: ["video/julius/dag-03.mp4"],
+      },
+      {
+        id: "video/julius/dag-20.mp4",
+        gruppe: "julius",
+        tittel: "J20",
+        dag: 20,
+        media: ["video/julius/dag-20.mp4"],
+      },
+      {
+        id: "dag/02/tekster",
+        gruppe: "tekster",
+        tittel: "T2",
+        dag: 2,
+        media: [],
+      },
+      {
+        id: "dag/04/tekster",
+        gruppe: "tekster",
+        tittel: "T4",
+        dag: 4,
+        media: [],
+      },
+      {
+        id: "dag/05/kveld",
+        gruppe: "oppsett",
+        tittel: "K5",
+        dag: 5,
+        media: [],
+      },
+      {
+        id: "dag/06/kveld",
+        gruppe: "oppsett",
+        tittel: "K6",
+        dag: 6,
+        media: [],
+      },
+    ];
+    const k = {
+      filer: [
+        f("video/julius/dag-03.mp4"),
+        { path: "video/julius/dag-20.mp4", size: null },
+      ],
+      vurderinger: {
+        "video/julius/dag-03.mp4": { vurdering: "godkjent" as const },
+        "dag/04/tekster": { vurdering: "ok" as const },
+        "dag/05/kveld": { vurdering: "lag_paa_nytt" as const, notat: "x" },
+      },
+    };
+    const ko = byggKo(liste, k, server({ manus: {} }));
+    const fd = fremdrift(liste, k, ko);
+    const sum = (t: Record<string, number>) =>
+      Object.values(t).reduce((a, b) => a + b, 0);
+    expect(fd.total.n).toBe(liste.length);
+    expect(sum(fd.total.telling)).toBe(fd.total.n);
+    for (const t of fd.typer) expect(sum(t.telling)).toBe(t.n);
+    expect(fd.typer.reduce((a, t) => a + t.n, 0)).toBe(fd.total.n);
+    expect(fd.total.telling).toEqual({
+      godkjent: 1,
+      ok: 1,
+      venter: 2,
+      agent: 1,
+      mangler: 1,
+    });
   });
 });
