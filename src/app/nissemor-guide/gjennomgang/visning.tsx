@@ -534,3 +534,65 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
   }
   return null;
 }
+
+/** As lib/historikk.ts serves it (server-only, so not imported here). */
+type Hendelse = {
+  t: string;
+  hvem: "Hans" | "agent" | "maskin";
+  hva: string;
+  tekst: string;
+  diff?: string;
+};
+const HVEM_FARGE = {
+  Hans: "text-(--gold)",
+  agent: "text-(--cold-blue)",
+  maskin: "text-(--gray)",
+} as const;
+
+/** «Historikk ▸»: folded, fetched on first open, newest first. */
+export function Historikk({ id }: { id: string }) {
+  const [h, setH] = useState<Hendelse[] | null | "feil">(null);
+  return (
+    <details
+      className="my-4 border-t border-(--neon-green)/40"
+      data-testid="historikk"
+      onToggle={(ev) => {
+        if (!(ev.currentTarget as HTMLDetailsElement).open || h) return;
+        fetch(`/api/media/historikk?id=${encodeURIComponent(id)}`)
+          .then((r) => (r.ok ? r.json() : Promise.reject()))
+          .then(setH, () => setH("feil"));
+      }}
+    >
+      <summary className="min-h-11 py-2 cursor-pointer text-xl">
+        Historikk
+      </summary>
+      {h === null ? (
+        <p>Laster …</p>
+      ) : h === "feil" ? (
+        <p className="text-(--christmas-red)">Fikk ikke hentet historikken.</p>
+      ) : !h.length ? (
+        <p>Ingen historikk ennå.</p>
+      ) : (
+        <ol className="space-y-1 text-base">
+          {h.map((x, i) => (
+            <li key={i} className="break-words">
+              <span className="opacity-70">
+                {x.t.slice(0, 16).replace("T", " ")}
+              </span>{" "}
+              <span className={HVEM_FARGE[x.hvem]}>{x.hvem}</span> · {x.hva} ·{" "}
+              {x.tekst}
+              {x.diff && (
+                <details>
+                  <summary className="min-h-11 py-2 cursor-pointer">
+                    Diff
+                  </summary>
+                  <pre className="whitespace-pre-wrap text-sm">{x.diff}</pre>
+                </details>
+              )}
+            </li>
+          ))}
+        </ol>
+      )}
+    </details>
+  );
+}

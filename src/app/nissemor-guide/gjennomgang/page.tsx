@@ -33,7 +33,7 @@ import {
   type Element,
   type Tilstand,
 } from "./elementer";
-import { Innhold } from "./visning";
+import { Historikk, Innhold } from "./visning";
 import { SegmentStatus } from "./segmentstripe";
 import type { VideoStatus } from "@/lib/segmenter";
 import { taggTelling } from "@/lib/vurdering-tagger";
@@ -860,6 +860,7 @@ function Vurdering({
           {!ikkeLaget && <Innhold key={e.id} e={e} sesong={sesong} />}
         </SegmentStatus.Provider>
       </SkjulVurder.Provider>
+      <Historikk key={`h-${e.id}`} id={e.id} />
     </>
   );
 }

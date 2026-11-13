@@ -876,16 +876,27 @@ export const TOOLS: Record<string, Tool> = {
   list_vurderinger: {
     level: "parent",
     description:
-      "Hans' vurderinger fra guiden, én linje per element: id | vurdering | oppdatert | notat (| gjeldende versjon: cellen fra media-status for mediefiler). status «åpne» (standard, alt som ikke er godkjent eller ok) eller «alle» (ok med notat også samlet under «lærdom»); siden = ISO-tid; prefiks = id-start.",
+      "Hans' vurderinger fra guiden, én linje per element: id | vurdering | oppdatert | notat (| gjeldende versjon: cellen fra media-status for mediefiler). status «åpne» (standard, alt som ikke er godkjent eller ok) eller «alle» (ok med notat også samlet under «lærdom»); siden = ISO-tid; prefiks = id-start; historikk = ett elements id gir dets historikk i stedet (tid | Hans/agent/maskin | hva | tekst, nyeste først).",
     inputSchema: {
       type: "object",
       properties: {
         status: { type: "string", enum: ["åpne", "alle"] },
         siden: { type: "string" },
         prefiks: { type: "string" },
+        historikk: { type: "string" },
       },
     },
-    run: async ({ status, siden, prefiks }) => {
+    run: async ({ status, siden, prefiks, historikk: hid }) => {
+      if (typeof hid === "string") {
+        const { kjentId } = await import("@/lib/vurdering-lager");
+        if (!kjentId(hid) || hid.includes(".."))
+          throw new ArgError("ugyldig argument: historikk");
+        const { historikk, historikkTekst } = await import("@/lib/historikk");
+        return historikkTekst(await historikk(mediaDir(), hid)).slice(
+          0,
+          MAX_RESPONSE_BYTES / 2,
+        );
+      }
       const fra = typeof siden === "string" ? Date.parse(siden) : NaN;
       if (typeof siden === "string" && Number.isNaN(fra))
         throw new ArgError("ugyldig argument: siden");

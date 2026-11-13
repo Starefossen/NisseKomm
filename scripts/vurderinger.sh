@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Hans' vurderinger fra guiden via MCP-verktøyet list_vurderinger.
-# Bruk: mise run vurderinger [--alle] [--siden ISO] [--nye] [--prefiks P]
+# Bruk: mise run vurderinger [--alle] [--siden ISO] [--nye] [--prefiks P] [--historikk ID]
 set -euo pipefail
 URL=${MCP_URL:-http://localhost:3000/mcp}
 TOKEN=${MCP_TOKEN:-parenttoken1}
@@ -12,6 +12,7 @@ while [[ $# -gt 0 ]]; do
     --alle) args=$(jq -c '.status="alle"' <<<"$args") ;;
     --siden) filter=1; args=$(jq -c --arg v "$2" '.siden=$v' <<<"$args"); shift ;;
     --prefiks) filter=1; args=$(jq -c --arg v "$2" '.prefiks=$v' <<<"$args"); shift ;;
+    --historikk) filter=1; args=$(jq -c --arg v "$2" '.historikk=$v' <<<"$args"); shift ;;
     --nye) nye=1; [[ -f $SIST ]] && args=$(jq -c --arg v "$(cat "$SIST")" '.siden=$v' <<<"$args") ;;
     *) echo "ukjent: $1" >&2; exit 2 ;;
   esac
