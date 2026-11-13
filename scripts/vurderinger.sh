@@ -6,12 +6,13 @@ URL=${MCP_URL:-http://localhost:3000/mcp}
 TOKEN=${MCP_TOKEN:-parenttoken1}
 SIST=${XDG_CACHE_HOME:-$HOME/.cache}/nissekomm/vurderinger-sist
 args='{}'
+nye=0 filter=0
 while [[ $# -gt 0 ]]; do
   case $1 in
     --alle) args=$(jq -c '.status="alle"' <<<"$args") ;;
-    --siden) args=$(jq -c --arg v "$2" '.siden=$v' <<<"$args"); shift ;;
-    --prefiks) args=$(jq -c --arg v "$2" '.prefiks=$v' <<<"$args"); shift ;;
-    --nye) [[ -f $SIST ]] && args=$(jq -c --arg v "$(cat "$SIST")" '.siden=$v' <<<"$args") ;;
+    --siden) filter=1; args=$(jq -c --arg v "$2" '.siden=$v' <<<"$args"); shift ;;
+    --prefiks) filter=1; args=$(jq -c --arg v "$2" '.prefiks=$v' <<<"$args"); shift ;;
+    --nye) nye=1; [[ -f $SIST ]] && args=$(jq -c --arg v "$(cat "$SIST")" '.siden=$v' <<<"$args") ;;
     *) echo "ukjent: $1" >&2; exit 2 ;;
   esac
   shift
@@ -21,4 +22,5 @@ body=$(jq -nc --argjson a "$args" '{jsonrpc:"2.0",id:1,method:"tools/call",param
 svar=$(curl -fsS "$URL" -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' \
   -H 'Accept: application/json, text/event-stream' -d "$body" | sed -n 's/^data: //;/^{/p')
 jq -er 'if .error then error(.error.message) elif .result.isError then error(.result.content[0].text) else .result.content[0].text end' <<<"$svar"
-mkdir -p "$(dirname "$SIST")" && echo "$start" >"$SIST"
+# Only a plain --nye run has seen everything new; a filtered one must not move the marker.
+if [[ $nye == 1 && $filter == 0 ]]; then mkdir -p "$(dirname "$SIST")" && echo "$start" >"$SIST"; fi

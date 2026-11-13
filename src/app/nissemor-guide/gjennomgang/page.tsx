@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { GuideSide, Kort, useSesong, type Sesong } from "../_kveld/felles";
 import { TaIBruk, kilde, useMediaData } from "../media/kort";
+import { DagManus } from "./visning";
 import { brukbar, FORKLARING, MERKE } from "@/lib/media-status";
 import { GJENSTAAR } from "../media/filter";
 import {
@@ -20,6 +21,7 @@ import {
   KOLONNER,
   alleElementer,
   dagElement,
+  egenVurdering,
   ekstraRader,
   nesteUvurdert,
   tilstand,
@@ -133,7 +135,9 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
   const [valgt, setValgt] = useState(0);
   const linjer: Linje[] = ko ? ko[fane] : [];
   const lenke = (l: Linje) =>
-    liste.some((e) => e.id === l.id) ? href(l.id) : "/nissemor-guide/media";
+    liste.some((e) => e.id === l.id)
+      ? href(l.id) + (l.seg ? `&s=${l.seg}` : "")
+      : "/nissemor-guide/media";
 
   useEffect(() => {
     const ned = (ev: KeyboardEvent) => {
@@ -439,7 +443,19 @@ function Vurdering({
       )
         return;
       const tast = ev.key.toLowerCase();
-      if (taggTast(ev, id) || (!ev.shiftKey && vurderTast(tast, id)))
+      const alleKnapp = egenVurdering(id)
+        ? null
+        : document.querySelector<HTMLButtonElement>(
+            `#vurdering-dagmanus [data-alle="${tast === "g" ? "godkjent" : tast === "o" ? "ok" : "-"}"]`,
+          );
+      // A script day: G/O approve every segment (the segment boxes take their own keys first).
+      if (!ev.shiftKey && alleKnapp) {
+        alleKnapp.click();
+        ev.preventDefault();
+      } else if (
+        egenVurdering(id) &&
+        (taggTast(ev, id) || (!ev.shiftKey && vurderTast(tast, id)))
+      )
         ev.preventDefault();
       else if (tast === "n" && neste) router.push(href(neste.id));
       else if (tast === "p" && forrige) router.push(href(forrige.id));
@@ -498,7 +514,11 @@ function Vurdering({
             </>
           )}
         </p>
-        <Vurder id={e.id} />
+        {egenVurdering(e.id) ? (
+          <Vurder id={e.id} />
+        ) : (
+          <DagManus n={e.dag ?? Number(e.id.slice(-2))} />
+        )}
         {e.media.map((p) => (
           <TaIBruk key={p} path={p} data={d.media} />
         ))}

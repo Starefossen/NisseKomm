@@ -2,11 +2,13 @@ import path from "node:path";
 import type { NextRequest } from "next/server";
 import { authorizeMedia, mediaDir } from "@/lib/media-server";
 import { versionKey } from "@/lib/media-status";
-import type { Forrige } from "@/lib/vurdering-versjon";
+import { segmentRaws, type Forrige } from "@/lib/vurdering-versjon";
 import {
   endreLager,
   lesLager,
   oppføring,
+  type Oppføring,
+  type Vurdering,
   settVurdering,
   visning,
 } from "@/lib/vurdering-lager";
@@ -81,6 +83,7 @@ export async function POST(req: NextRequest) {
     notat,
     tagger,
     tid,
+    raw,
   } = body as Record<string, unknown>;
 
   if (typeof relPath !== "string" || !isSafePath(relPath)) {
@@ -120,15 +123,26 @@ export async function POST(req: NextRequest) {
   }
 
   const dir = mediaDir();
+  // A segment verdict belongs to the take Hans watched (the video's segmenter.json),
+  // not to whatever raw clip assets/out holds now.
+  const seg = cleanPath.match(/^video\/julius\/dag-(\d+)#s(\d+)$/);
+  if (raw !== undefined) {
+    if (
+      !seg ||
+      typeof raw !== "string" ||
+      !(await segmentRaws(dir, Number(seg[1]), Number(seg[2]))).includes(raw)
+    )
+      return badRequest();
+  }
   // Real wall-clock time: TIDSMASKIN mocks date-utils, and review notes need the actual time.
   const now = new Date(Date.now()).toISOString();
   let ugyldig = false;
   try {
     return await endreLager(dir, async (l) => {
-      const prev =
-        l.elementer[versionKey(cleanPath)]?.vurderinger.find(
-          (v) => v.fil === cleanPath,
-        ) ?? {};
+      const lagret = l.elementer[versionKey(cleanPath)]?.vurderinger.find(
+        (v) => v.fil === cleanPath,
+      );
+      const prev: Partial<Vurdering> = lagret ?? {};
       const nextVerdict =
         vurdering !== undefined
           ? (vurdering as Verdikt | null | "")
@@ -147,13 +161,35 @@ export async function POST(req: NextRequest) {
         tagger !== undefined ? [...new Set(tagger as string[])] : p.tagger;
       const nesteTid =
         tid !== undefined ? (tid as number | null) : (p.tid ?? null);
-      const v = await settVurdering(dir, l, cleanPath, {
+      const felt: Oppføring = {
         ...(nesteTagger?.length ? { tagger: nesteTagger } : {}),
         ...(nesteTid !== null ? { tid: Math.round(nesteTid * 10) / 10 } : {}),
         ...(nextVerdict ? { vurdering: nextVerdict } : {}),
         ...(nextNote ? { notat: nextNote } : {}),
         oppdatert: now,
-      });
+      };
+      // Tags, time or a note alone never re-give the verdict: it keeps the hash it
+      // was given to, so on new content it still reads «ny versjon».
+      const gammel = vurdering === undefined && lagret ? lagret : null;
+      let v: Vurdering | null;
+      if (gammel) {
+        const e = l.elementer[versionKey(cleanPath)];
+        e.historikk.push({ ...gammel });
+        v = {
+          hash: gammel.hash,
+          fil: gammel.fil,
+          ...(gammel.versjon ? { versjon: gammel.versjon } : {}),
+          ...felt,
+        };
+        e.vurderinger = e.vurderinger.map((x) => (x === gammel ? v! : x));
+      } else
+        v = await settVurdering(
+          dir,
+          l,
+          cleanPath,
+          felt,
+          raw as string | undefined,
+        );
       const entry = v && oppføring(v);
       return Response.json({
         ok: true,

@@ -11,8 +11,8 @@ import path from "node:path";
 import { variantOf, versionKey } from "./media-status";
 import {
   endreLager,
-  flat,
   flyttFiler,
+  gjeldende,
   lesLager,
   stemple,
 } from "./vurdering-lager";
@@ -28,9 +28,15 @@ export async function taIBruk(dir: string, kandidat: string) {
   const key = versionKey(kandidat);
   const n = variantOf(kandidat);
   if (!n || key === kandidat) throw new Error("ikke en -vN-kandidat");
-  const vurd = flat(await lesLager(dir));
-  if (vurd[kandidat]?.vurdering !== "godkjent")
+  const lager = await lesLager(dir);
+  const v = lager.elementer[key]?.vurderinger.find((x) => x.fil === kandidat);
+  // «ok» = usable with flaws, counts as approved (brukbar in media-status.ts).
+  if (v?.vurdering !== "godkjent" && v?.vurdering !== "ok")
     throw new Error(`${kandidat} er ikke godkjent`);
+  if (!(await gjeldende(dir, v)))
+    throw new Error(
+      `${kandidat} er endret etter at den ble godkjent: vurder den på nytt før du tar den i bruk`,
+    );
 
   const ext = path.extname(key);
   const stem = key.slice(0, -ext.length);

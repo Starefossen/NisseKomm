@@ -71,3 +71,6 @@ public/video/julius/
 /public/promo/
 /public/_arkiv/
 .data/
+
+# Agent scratch (dev server, media clone)
+.tmp

@@ -245,6 +245,10 @@ STORAGE_BACKEND=                         # server | localStorage; unset = server
 5. Run `pnpm check` before finishing session
 6. Update this document if you changed architecture/patterns
 
+**Neste sesong** (januar, fra review av vurderingsriggen): `SESONG = 2026` i `vurdering-lager.ts` og `"sesong": 2026` i medie.py; `docs/manus/*-2026.md`, `historie-2026.md`, `gaater-2026.md` hardkodet i skript og guide-sesong.ts; forbruk «siden 13.11» og budsjett 2000 NOK.
+
+**Vurderingslageret**: `media-vurdering.json.lock` (O_EXCL) deles av `medLås` i vurdering-lager.ts og `medie.lås`; alle skrivinger er tmp+rename. Tagger/tid/notat alene endrer aldri vurdering eller versjonsstempel. Segmentvurderinger stemples med råklippets hash fra videoens segmenter.json (det Hans så); «Ta i bruk» nekter når vurderingen ikke gjelder filen slik den er nå (`ok` teller). Lagreknapper i guiden bruker `useLagring`/`Lagremelding` (`nissemor-guide/lagring.tsx`); `node scripts/lagring-webkit.mjs` (BASE_URL) sjekker tilbakemeldingen i WebKit.
+
 ## Future Enhancements
 
 **Planned Features** (Phase 2+):

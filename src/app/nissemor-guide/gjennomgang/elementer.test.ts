@@ -1,5 +1,10 @@
 import { describe, expect, it } from "@jest/globals";
-import { alleElementer, nesteUvurdert, nyesteVersjon } from "./elementer";
+import {
+  alleElementer,
+  egenVurdering,
+  nesteUvurdert,
+  nyesteVersjon,
+} from "./elementer";
 import type { Sesong } from "../_kveld/felles";
 
 const sesong = {
@@ -25,6 +30,9 @@ describe("gjennomgang", () => {
     expect(ids).toContain("dag/01/utskrifter");
     expect(ids).toContain("audio/rampenissen/dag-04.mp3");
     expect(ids).toContain("manus/julius/dag-24");
+    expect(ids).toContain("manus/julius/dag-01");
+    expect(egenVurdering("manus/julius/dag-01")).toBe(false);
+    expect(egenVurdering("manus/julius/dag-01#s2")).toBe(true);
     expect(ids).toContain("krypto/3");
     expect(ids).toContain("promo/julius-promo-A.mp4");
   });

@@ -107,6 +107,10 @@ export function dagElement(
   }
 }
 
+/** A Julius script day is judged per segment (#sK, the gate julius-dag.py reads), never as a whole. */
+export const egenVurdering = (id: string) =>
+  !/^manus\/julius\/dag-\d+$/.test(id);
+
 /** Sections below the matrix, in display order. */
 export function ekstraRader(
   sesong: Sesong,
@@ -120,8 +124,8 @@ export function ekstraRader(
     media: string[] = [],
   ) => ({ id, gruppe, tittel, media }) as Element;
   return [
-    ...Array.from({ length: 21 }, (_, i) =>
-      r("Julius-manus", `manus/julius/dag-${pad(i + 4)}`, `Manus dag ${i + 4}`),
+    ...Array.from({ length: 24 }, (_, i) =>
+      r("Julius-manus", `manus/julius/dag-${pad(i + 1)}`, `Manus dag ${i + 1}`),
     ),
     ...Array.from({ length: 24 }, (_, i) =>
       r(

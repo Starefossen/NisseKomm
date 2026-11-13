@@ -134,6 +134,27 @@ describe("taIBruk", () => {
     ).toContain("dag-01-v3.mp4 -> video/julius/dag-01.old-4.mp4");
   });
 
+  it("nekter en kandidat som er endret etter godkjenningen, og godtar ok", async () => {
+    const { dir, j } = await oppsett({});
+    const { endreLager, settVurdering } = await import("./vurdering-lager");
+    const kand = "video/julius/dag-01-v4.mp4";
+    await endreLager(dir, (l) =>
+      settVurdering(dir, l, kand, { vurdering: "ok" }),
+    );
+    await writeFile(path.join(j, "dag-01-v4.mp4"), "en annen tagning");
+    await expect(taIBruk(dir, kand)).rejects.toThrow(/endret etter/);
+    expect(await readFile(path.join(j, "dag-01.mp4"), "utf8")).toBe(
+      "dag-01.mp4",
+    );
+    await endreLager(dir, (l) =>
+      settVurdering(dir, l, kand, { vurdering: "ok" }),
+    );
+    await taIBruk(dir, kand);
+    expect(await readFile(path.join(j, "dag-01.mp4"), "utf8")).toBe(
+      "en annen tagning",
+    );
+  });
+
   it("nekter en kandidat som ikke er godkjent, og rører ingenting", async () => {
     const { dir, j } = await oppsett({});
     const før = (await readdir(j)).sort();

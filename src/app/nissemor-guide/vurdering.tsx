@@ -5,7 +5,6 @@ import {
   useContext,
   useEffect,
   useRef,
-  useState,
   useSyncExternalStore,
   type ReactNode,
 } from "react";
@@ -14,6 +13,7 @@ import type {
   MediaVurderinger,
 } from "@/app/api/media/vurdering/route";
 import { sjekkSvar, Vurderingsknapper } from "./media/kort";
+import { Lagremelding, useLagring } from "./lagring";
 import { taggerFor, taggType, tidTekst } from "@/lib/vurdering-tagger";
 
 // Guide sections share the media verdict file: ids like `dag/04/gaatekart`
@@ -61,7 +61,12 @@ export const lagreTagger = (
   o: { tagger?: string[]; tid?: number | null },
 ) => post({ path: id, ...o });
 
-async function post(body: object) {
+/** Segment id → the raw take hash in the video on screen (SegmentStripe fills it). */
+export const settTagning = new Map<string, string>();
+
+async function post(body: { path: string; [k: string]: unknown }) {
+  const raw = settTagning.get(body.path);
+  if (raw) body = { ...body, raw } as typeof body;
   const r = await fetch("/api/media/vurdering", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -72,6 +77,12 @@ async function post(body: object) {
   await sjekkSvar(r);
   data = (await r.json()).vurderinger;
   varsle();
+}
+
+/** Fetch the verdicts again (after Ta i bruk moved them). */
+export function lastVurderinger() {
+  lastet = false;
+  last();
 }
 
 export const slug = (s: string) =>
@@ -89,7 +100,12 @@ export function Vurder({ id }: { id: string }) {
   if (useContext(SkjulVurder) || !alle) return null;
   const v: MediaVurderingItem | undefined = alle[id];
   return (
-    <div id={`vurdering-${id.split("/").at(-1)}`} className="mt-3 scroll-mt-4">
+    // Keyed by id: Neste must never carry a note, tags or feedback to the next item.
+    <div
+      key={id}
+      id={`vurdering-${id.split("/").at(-1)}`}
+      className="mt-3 scroll-mt-4"
+    >
       <Vurderingsknapper
         vurdering={v}
         onSave={(verdict, notat) => lagre(id, verdict, notat ?? "")}
@@ -106,13 +122,11 @@ const spillerTid = () =>
 /** Quick tags (⇧1–9) and a timecode (T) for one verdict, saved at once. */
 function Tagger({ id, v }: { id: string; v?: MediaVurderingItem }) {
   const liste = taggerFor(id);
-  const [feil, setFeil] = useState("");
+  const { status, kjør } = useLagring();
   if (!liste.length) return null;
   const valgt = v?.tagger ?? [];
-  const send = (o: Parameters<typeof lagreTagger>[1]) => {
-    setFeil("");
-    lagreTagger(id, o).catch((e: Error) => setFeil(e.message));
-  };
+  const send = (o: Parameters<typeof lagreTagger>[1]) =>
+    void kjør(() => lagreTagger(id, o));
   return (
     <div className="flex flex-wrap items-center gap-2 mt-2 text-base">
       {liste.map((t, i) => {
@@ -158,9 +172,7 @@ function Tagger({ id, v }: { id: string; v?: MediaVurderingItem }) {
           ✕
         </button>
       )}
-      {feil && (
-        <span className="text-(--christmas-red)">Ikke lagret: {feil}</span>
-      )}
+      <Lagremelding status={status} />
     </div>
   );
 }
