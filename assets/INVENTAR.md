@@ -12,7 +12,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | tv | 19 | 5 | 0 | 0 | 15 | 0 | 17 |
 | port | 2 | 1 | 0 | 1 | 0 | 0 | 9 |
 | feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
-| spill | 55 | 4 | 0 | 4 | 0 | 1 | 24 |
+| spill | 56 | 3 | 0 | 4 | 0 | 0 | 25 |
 | strek | 10 | 14 | 0 | 0 | 0 | 2 | 9 |
 
 ## julius
@@ -242,7 +242,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/kafe.png | 1.3 MB | 2026-11-12 | ✓ |
 | spill/piksel/pakkesentralen.png | 1.4 MB | 2026-11-11 | ✓ |
 | spill/piksel/klokketarnet.png | 1.4 MB | 2026-11-11 | ✓ |
-| spill/piksel/julebodene.png | 1.4 MB | 2026-11-12 | ⚠ kildeteksten er endret: assets/prompts/spill/piksel-julebodene.txt |
+| spill/piksel/julebodene.png | 1.5 MB | 2026-11-13 | ✓ |
 | spill/piksel/kart.png | 1.6 MB | 2026-11-12 | ✓ |
 | spill/portrett-winter.png | 0.0 MB | 2026-11-12 | ✓ |
 | spill/portrett-hjerterud.png | 0.0 MB | 2026-11-13 | ✓ |
@@ -304,9 +304,9 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | spill/piksel/ikon/tesil.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/tesil.txt; ikke i manifestet |
 | spill/piksel/ikon/tesil_lanterne.old-1.png | 0.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/ikon/tesil_lanterne.txt; ikke i manifestet |
 | spill/piksel/iq-verksted.old-1.png | 1.3 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-iq-verksted.txt; ikke i manifestet |
-| spill/piksel/julebodene-v2.png | 1.5 MB | 2026-11-13 | ◇ ikke i manifestet |
 | spill/piksel/julebodene.old-1.png | 1.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-julebodene.txt; ikke i manifestet |
 | spill/piksel/julebodene.old-2.png | 1.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-julebodene.txt; ikke i manifestet |
+| spill/piksel/julebodene.old-3.png | 1.4 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-julebodene.txt; ikke i manifestet |
 | spill/piksel/julius-kontor.old-1.png | 1.1 MB | 2026-11-11 | - kildeteksten er endret: assets/prompts/spill/piksel-julius-kontor.txt; ikke i manifestet |
 | spill/piksel/kafe.old-1.png | 1.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-kafe.txt; ikke i manifestet |
 | spill/piksel/kafe.old-2.png | 1.5 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/spill/piksel-kafe.txt; ikke i manifestet |
