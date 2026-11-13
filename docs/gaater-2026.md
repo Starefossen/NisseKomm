@@ -2,7 +2,7 @@
 
 Steg 1 i byggerekkefølgen. Kilder: `docs/historie-2026.md` (låst), `docs/storyboard-2026.md`, `CONTENT_GUIDE.md` og kodene i `src/data/uke1–4_oppdrag.json`. Ingen kode er endret. Historiebeats er ikke rørt; det som er bestemt her, er hvordan hver dags to brikker ser ut, hva de faktisk gjør med dem, og hva en forelder må ha klart.
 
-**Status: LÅST 10. november 2026.** De seks avgjørelsene i (d) er godtatt av Hans, og uavhengig gjennomgang (21 funn) er innarbeidet. Endringer krever eksplisitt ja. Endret etter ja fra Hans 10. november; materiallister rettet 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 8, 10 og 13 endret 13.11 etter ja fra Hans. Vanskelighet strammet (dag 5 og 17 tittel, dag 9 utskrift, dag 15, 16, 17 og 21 Brikke S) endret 13.11 etter ja fra Hans. Brevfuglenes kanon (13.11): tittel dag 5 «Skriften på vingen» og brevfugl-linjene dag 5 og 14 endret 13.11 etter ja fra Hans. Feltet «Sjekkliste» lagt til per dag 12.11 etter ønske fra Hans; gåtene er ikke endret. Feltet «Oppsettskisse» (dag 4, 12, 15, 16, 21) endret 13.11 etter ja fra Hans; gåta er ikke endret. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`. Byggeplanen for dag 1 med ukedagene i 2026, utskrift av alt i november («Ta fram» i kveldslistene), oransje papir, suvenirene til dag 24, fersk klementin dag 24 og småfeil i sjekklistene dag 6, 16, 23 og 24 endret 13.11 etter ja fra Hans.
+**Status: LÅST 10. november 2026.** De seks avgjørelsene i (d) er godtatt av Hans, og uavhengig gjennomgang (21 funn) er innarbeidet. Endringer krever eksplisitt ja. Endret etter ja fra Hans 10. november; materiallister rettet 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 8, 10 og 13 endret 13.11 etter ja fra Hans. Vanskelighet strammet (dag 5 og 17 tittel, dag 9 utskrift, dag 15, 16, 17 og 21 Brikke S) endret 13.11 etter ja fra Hans. Brevfuglenes kanon (13.11): tittel dag 5 «Skriften på vingen» og brevfugl-linjene dag 5 og 14 endret 13.11 etter ja fra Hans. Feltet «Sjekkliste» lagt til per dag 12.11 etter ønske fra Hans; gåtene er ikke endret. Feltet «Oppsettskisse» (dag 4, 12, 15, 16, 21) endret 13.11 etter ja fra Hans; gåta er ikke endret. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`. Byggeplanen for dag 1 med ukedagene i 2026, utskrift av alt i november («Ta fram» i kveldslistene), oransje papir, suvenirene til dag 24, fersk klementin dag 24 og småfeil i sjekklistene dag 6, 16, 23 og 24 endret 13.11 etter ja fra Hans. Sjekkliste dag 6 og 16 og (c) 23. des (siste gjennomgang) endret 13.11 etter ja fra Hans.
 
 **Revisjon 10. november 2026 (vanskelighet).** Godkjent av Hans: gåtene er for Kristian (12) og Håkon (9); Hanna (5) har valgfrie roller som aldri blokkerer. To meta-gåter (Frostrunene, Trixters kart), blindspor med feil bokstav der Julius' setning avgjør, og hevet nivå på 21 dager. Alle koder, brikke H + S, taket på 40 % og oppsett under 5 minutter på hverdager står. Julius-videoene dag 2–4 er ferdige og uendret. Standardvalg merket «standardvalg, kan endres» i (e).
 
@@ -194,7 +194,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Sjekkliste:**
   - Ta fram: `dag06-silhuetter.pdf`
   - Teip silhuettene på ispinner og legg dem i papprullen
-  - Papprullen, mobilen med lyset på og rødt hjerte-kort i gangen
+  - Papprullen, en liten lommelampe og rødt hjerte-kort i gangen
   - Lapp i melet: «Jeg har laget et instrument! … – R»
   - Rampestrek: snøengler i 1 dl mel på et stekebrett, kjøkkenbordet
 - **Materialer:** 3 ispinner, teip, papprull, mobillykt, hjerte-kortet.
@@ -419,7 +419,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Sjekkliste:**
   - Ta fram: `dag16-hyllelapper.pdf`
   - Fjernkontrollen med O i brødboksen, tannbørsteglasset med E i bestikkskuffen
-  - Brødposen med I i TV-benken, ostehøvelen med K på badehyllen
+  - Brødposen med I i TV-benken, ostehøvelen med K i badeskapet
   - Tallapper: 2 i TV-benken, 5 på badehyllen, 7 i brødboksen
   - Rutekortet i brødboksen, lapp på lokket: «Jeg har ryddet! … – R»
   - Syltetøyglass og batterilys til lykten i vinduet mot nord (bonus)
@@ -785,7 +785,7 @@ Sum: 44 sider obligatorisk (29 tykt, 12 vanlig, 3 symbolkort-sider) pluss 2 valg
 | 20. des     | Åtte ryggkort på bøkene, `U · 7` inne i bok 5, ❄-kort inne i bok 3, bok 3 på gløtt                                                                                                                                                                                      |
 | 21. des     | Tre sokker med lapper, måne-kort i Hannas                                                                                                                                                                                                                               |
 | 22. des     | Heng de tolv ferdige stjernene, Rampenissen med måne-kort                                                                                                                                                                                                               |
-| 23. des     | Koffert med perle, filter og båndbit (tegnlapper); rutekort og reservelapper i konvolutten; krystall med runekort under treet                                                                                                                                           |
+| 23. des     | Koffert med perle, filter og båndbit (tegnlapper); rutekort og reservelapper i konvolutten; tre ametystklynger, runekortet og en fersk klementin under treet                                                                                                            |
 
 Legg perlen (3. des.), filteret (10. des.) og en bit av båndet (17. des.) i konvolutten merket «24» samme kveld. Reservelappene dekker uansett.
 

@@ -718,7 +718,7 @@ export const KAPITTEL_4: Kapittel = {
           ta: {
             item: "hyssing",
             tekst:
-              "Du løsner det røde garnet fra bunken og vikler det opp. Lang. Sterk. Brevene blir liggende pent. De har vært på reise, de vet hvordan man oppfører seg. " +
+              "Du løsner det røde garnet fra bunken og vikler det opp. Langt. Sterkt. Brevene blir liggende pent. De har vært på reise, de vet hvordan man oppfører seg. " +
               R +
               "«Æ ga dem resten av nøstet. Det har jo halve fra før. Da kjenne det igjen garnet. Lån det, men legg det tilbake!»",
           },

@@ -277,17 +277,15 @@
   },
   {
    "s": 4,
-   "hash": "71a782c6682a",
+   "hash": "14bb1d34b5d3",
    "key": [
-    "Det er ikke et kart og ikke en stjerne. Sjøfolk hadde den i lomma, Rudolf har den i nesa. Ha en fin dag!",
+    "Det er ikke et kart og ikke en stjerne. Sjøfolk hadde den i lomma, Rudolf har den i nesa. Vi ses!",
     15,
     "Rister på hodet to ganger, klapper seg på brystet med venstre hånd, så på nesen, ler. Kuldes påvirkning: Svak knitring."
    ],
-   "ord": 23,
+   "ord": 21,
    "laast": true,
-   "varsler": [
-    "23 ord trenger 15.3 s med 2 s hale, bestilt 15 s"
-   ]
+   "varsler": []
   }
  ],
  "5": [
@@ -399,16 +397,15 @@
   },
   {
    "s": 5,
-   "hash": "c641f2585a9a",
+   "hash": "bc309561dd94",
    "key": [
-    "Det var ikke et bål og ikke et stearinlys. Det hadde hank, så man kunne henge det fra seg. Ha en riktig fin søndag!",
+    "Det var ikke et bål og ikke et stearinlys. Det hadde hank, så man kunne henge det fra seg. Vi ses!",
     15,
     "Henger det usynlige på en usynlig krok med venstre hånd, så vinker han kort. Kuldes påvirkning: Svak knitring."
    ],
-   "ord": 24,
+   "ord": 21,
    "laast": true,
    "varsler": [
-    "24 ord trenger 15.9 s med 2 s hale, bestilt 15 s",
     "mime (tingen dukker opp): Henger det usynlige på en usynlig krok med venstre hånd, så vinker han kort."
    ]
   }

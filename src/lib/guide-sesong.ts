@@ -616,9 +616,17 @@ export function varden(n: number) {
   return { uloest: kjor(n - 1), loest: kjor(n) };
 }
 
-/** Story-board summary of the day: «Dag N» under storyboard §3. */
+/**
+ * Story-board summary of the day: «Dag N» under storyboard §3, without the
+ * riddle. The storyboard's «Gåte.» paragraphs and «Brikke S» quotes are the
+ * 10.11 draft; the riddle's source is gaater (the Gåtekart above it).
+ */
 export const sammendrag = (n: number) =>
-  ren(dagBlokk(del("storyboard", "3. Dag for dag"), n));
+  ren(
+    dagBlokk(del("storyboard", "3. Dag for dag"), n)
+      .replace(/^\*\*Gåte\.\*\*.*\n*/m, "")
+      .replace(/ ?Brikke S: «[^»]*»\.?/g, ""),
+  );
 
 // --- Gåtekart (riddle map) ---------------------------------------------
 

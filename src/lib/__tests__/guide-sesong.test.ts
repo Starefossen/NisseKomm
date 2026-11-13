@@ -139,3 +139,15 @@ describe("reservesett", () => {
     });
   });
 });
+
+it.each([5, 18, 24])("dag %i: sammendrag har ikke utkastets gåte", (n) => {
+  const s = sammendrag(n);
+  for (const gml of [
+    "V M S J L F O",
+    "T _ R B _ L _ N S",
+    "J U L E _ _ _ _",
+    "Gåte.",
+    "Brikke S",
+  ])
+    expect(s).not.toContain(gml);
+});

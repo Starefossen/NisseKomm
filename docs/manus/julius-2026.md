@@ -1,6 +1,6 @@
 # Julius' videodagbok 2026 – manus
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Hilsen «God [tall] søndag i advent» (ikke «God [tall]. advent») endret 13.11 etter ja fra Hans. Tittel dag 5 («Skriften på vingen») endret 13.11 etter ja fra Hans; replikkene er uendret. Dag 16 seg 2 («i kveld») og dag 18 seg 2 («rundt Ulriken», «geviret» etter Trixter-kanonen) endret 13.11 etter ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans. Dag 5 seg 1 og dag 6 seg 1 endret 13.11 etter ja fra Hans (for lange for 15 s). Dag 8 seg 4, dag 10 seg 4 og dag 11 seg 2–4 endret 13.11 etter ja fra Hans. Dag 15 seg 4–5, dag 16 seg 3–4, dag 17 seg 2–4 og dag 21 seg 1 og 4 endret 13.11 etter ja fra Hans (replikken gir ikke ordet alene; huset trengs). Dag 17 seg 2–3 endret igjen 13.11 etter ja fra Hans («lys» bare én gang). Tittel dag 5 og 17 endret 13.11 etter ja fra Hans. Dag 6 seg 1 delt i to (hilsenen alene), dag 7 seg 2 («en stemme») og dag 12 seg 1 (kortere) endret 13.11 etter ja fra Hans. Dag 12 seg 1 og dag 13–24 (herdingsplanen §4, A- og B-lista: rapportsegmentene, haler, taleregi og mime i Handling, brikkene 15-5, 18-4 og 19-4) endret 13.11 etter ja fra Hans.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Hilsen «God [tall] søndag i advent» (ikke «God [tall]. advent») endret 13.11 etter ja fra Hans. Tittel dag 5 («Skriften på vingen») endret 13.11 etter ja fra Hans; replikkene er uendret. Dag 16 seg 2 («i kveld») og dag 18 seg 2 («rundt Ulriken», «geviret» etter Trixter-kanonen) endret 13.11 etter ja fra Hans. Kjør `python3 scripts/manus-check.py` etter endringer. Dag 2 seg 5, dag 4 seg 4 og dag 6 seg 3–4 endret 13.11 etter ja fra Hans. Dag 5 seg 1 og dag 6 seg 1 endret 13.11 etter ja fra Hans (for lange for 15 s). Dag 8 seg 4, dag 10 seg 4 og dag 11 seg 2–4 endret 13.11 etter ja fra Hans. Dag 15 seg 4–5, dag 16 seg 3–4, dag 17 seg 2–4 og dag 21 seg 1 og 4 endret 13.11 etter ja fra Hans (replikken gir ikke ordet alene; huset trengs). Dag 17 seg 2–3 endret igjen 13.11 etter ja fra Hans («lys» bare én gang). Tittel dag 5 og 17 endret 13.11 etter ja fra Hans. Dag 6 seg 1 delt i to (hilsenen alene), dag 7 seg 2 («en stemme») og dag 12 seg 1 (kortere) endret 13.11 etter ja fra Hans. Dag 12 seg 1 og dag 13–24 (herdingsplanen §4, A- og B-lista: rapportsegmentene, haler, taleregi og mime i Handling, brikkene 15-5, 18-4 og 19-4) endret 13.11 etter ja fra Hans. Avskjeden i 4-4 og 6-5 forkortet til «Vi ses!» (siste gjennomgang) endret 13.11 etter ja fra Hans.
 
 **Revisjon 10. november (vanskelighet, godkjent):** nye segmenter dag 5/4, 7/3, 7/5, 8/3, 9/4, 11/4 og 11/5 (nytt), 20/5. Etter uavhengig gjennomgang også 4/4, 4/5, 12/4, 12/5, 14/4, 14/5, 18/4, 18/5 (brikken ga ordet alene). Brikkene står ordrett som i `gaater-2026.md` etter revisjonen.
 
@@ -137,7 +137,7 @@ Kulde-nivå 1. Svak knitring, lett snø. Lappen fra Hjerterud er et ark fra brev
    - Varighet: 14 s (20 ord) · låst
    - Handling: Snur seg i stolen til begge sider mens venstre pekefinger står stille i luften.
    - Kulde: Svak knitring.
-4. **Replikk:** «Det er ikke et kart og ikke en stjerne. Sjøfolk hadde den i lomma, Rudolf har den i nesa. Ha en fin dag!»
+4. **Replikk:** «Det er ikke et kart og ikke en stjerne. Sjøfolk hadde den i lomma, Rudolf har den i nesa. Vi ses!»
    - Varighet: 15 s (23 ord) · låst
    - Handling: Rister på hodet to ganger, klapper seg på brystet med venstre hånd, så på nesen, ler.
    - Kulde: Svak knitring, klikk.
@@ -183,7 +183,7 @@ Kulde-nivå 1. Svak knitring. Rapporten fra Rampenissen står i åpningen. Fem s
    - Varighet: 11 s (15 ord) · låst
    - Handling: Løfter venstre hånd som om han bærer noe i en hank, og holder den slik hele segmentet.
    - Kulde: Svak knitring.
-5. **Replikk:** «Det var ikke et bål og ikke et stearinlys. Det hadde hank, så man kunne henge det fra seg. Ha en riktig fin søndag!»
+5. **Replikk:** «Det var ikke et bål og ikke et stearinlys. Det hadde hank, så man kunne henge det fra seg. Vi ses!»
    - Varighet: 15 s (24 ord) · låst
    - Handling: Henger det usynlige på en usynlig krok med venstre hånd, så vinker han kort.
    - Kulde: Svak knitring, klikk.
