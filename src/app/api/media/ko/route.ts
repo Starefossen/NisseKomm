@@ -54,22 +54,33 @@ export async function GET(req: NextRequest) {
   );
   // Machine flags per segment of the video in use (the plain name's segmenter.json).
   const flagg: KoServer["flagg"] = {};
+  const segtid: NonNullable<KoServer["segtid"]> = {};
   await Promise.all(
     Object.keys(manus).map(async (d) => {
       const segs = await readFile(
         path.join(dir, `video/julius/dag-${d.padStart(2, "0")}.segmenter.json`),
         "utf8",
       )
-        .then((t) => JSON.parse(t) as { s: number; flagg?: string[] }[])
+        .then(
+          (t) =>
+            JSON.parse(t) as {
+              s: number;
+              start: number;
+              slutt: number;
+              flagg?: string[];
+            }[],
+        )
         .catch(() => []);
       const f = segs
         .filter((x) => x.flagg?.length)
         .map((x) => ({ s: x.s, flagg: x.flagg! }));
       if (f.length) flagg[d] = f;
+      segtid[d] = segs.map(({ s, start, slutt }) => ({ s, start, slutt }));
     }),
   );
   return Response.json({
     flagg,
+    segtid,
     laerdom: await lesLaerdom(),
     forbruk: forbruk(await readFile(logg, "utf8").catch(() => "")),
     duplikater,

@@ -69,9 +69,18 @@ describe("videoStatus", () => {
     expect(
       st({ 2: { vurdering: "kutt", kutt: { retning: "slutt", t: 11 } } }).tekst,
     ).toBe("Venter på kutt: s2 @0:31");
-    expect(st({ 1: { vurdering: "ok" }, 2: { kuttsjekk: {} } }).tekst).toBe(
-      "1 av 3 vurdert",
-    );
+    expect(st({ 1: { vurdering: "ok" }, 2: { kuttsjekk: {} } })).toEqual({
+      steg: "vurder",
+      tekst: "Kuttsjekk: s2",
+    });
+    // The cut take keeps its inherited verdict: only the check is left.
+    expect(
+      st({
+        1: { vurdering: "godkjent" },
+        2: { vurdering: "ok", kuttsjekk: {} },
+        3: { vurdering: "godkjent" },
+      }).steg,
+    ).toBe("vurder");
     const alle = {
       1: { vurdering: "godkjent" },
       2: { vurdering: "ok" },

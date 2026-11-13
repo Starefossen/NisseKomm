@@ -189,6 +189,26 @@ describe("byggKo", () => {
     );
   });
 
+  it("a pending cut check waits on Hans with the time, and is not an agent job", () => {
+    const ko = byggKo(
+      liste,
+      {
+        filer,
+        vurderinger: {
+          "video/julius/dag-03#s2": {
+            vurdering: "ok",
+            kuttsjekk: { retning: "slutt", t: 4 },
+          },
+        },
+      },
+      server({ segtid: { "3": [{ s: 2, start: 20, slutt: 29.4 }] } }),
+    );
+    expect(ko.venter.map((l) => l.hva)).toContain("dag 3 s2: hør kuttet @0:29");
+    expect(ko.agent.some((l) => l.seg === 2 || l.hva.includes("kutt"))).toBe(
+      false,
+    );
+  });
+
   it("never-reviewed day sections wait on Hans by day; Lærdom drops ruled and rejected ids", () => {
     const sek = (dag: number, gruppe: string, id: string): Element => ({
       id: `dag/${String(dag).padStart(2, "0")}/${id}`,

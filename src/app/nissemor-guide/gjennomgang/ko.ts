@@ -43,6 +43,8 @@ export interface KoServer {
   manus: Record<string, number[]>;
   /** Machine flags per segment of the Julius video in use, by day. */
   flagg?: Record<string, { s: number; flagg: string[] }[]>;
+  /** Segment times in the video in use, by day: where a cut check points. */
+  segtid?: Record<string, { s: number; start: number; slutt: number }[]>;
   /** assets/laerdom.json: suggestions already made rules or turned down leave Lærdom. */
   laerdom?: Laerdom;
 }
@@ -310,7 +312,25 @@ export function byggKo(
   // Video segment retakes (the segment strip).
   for (const [id, v] of Object.entries(vurd)) {
     const m = id.match(/^video\/julius\/dag-(\d+)#s(\d+)$/);
-    if (!m || !v.vurdering || brukbar(celleAv(v))) continue;
+    if (!m) continue;
+    if (v.kuttsjekk) {
+      const dag = Number(m[1]);
+      const sg = s.segtid?.[dag]?.find((x) => x.s === Number(m[2]));
+      const t = sg
+        ? v.kuttsjekk.retning === "slutt"
+          ? sg.slutt
+          : sg.start
+        : undefined;
+      venter.push({
+        id: liste.find((e) => e.gruppe === "julius" && e.dag === dag)?.id ?? id,
+        tittel: `Julius dag ${dag}, segment ${m[2]}`,
+        type: "julius",
+        dag,
+        seg: Number(m[2]),
+        hva: `dag ${dag} s${m[2]}: hør kuttet${t === undefined ? "" : ` @${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`}`,
+      });
+    }
+    if (!v.vurdering || brukbar(celleAv(v))) continue;
     if (v.vurdering === "kutt") {
       agent.push({
         id:

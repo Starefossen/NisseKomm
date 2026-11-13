@@ -114,6 +114,13 @@ export function videoStatus(
         })
         .join(", ")}`,
     };
+  // The cut take carries the old verdict; Hans still hears the cut (G/L).
+  const sjekk = segs.filter((x) => dom(x.s)?.kuttsjekk);
+  if (sjekk.length)
+    return {
+      steg: "vurder",
+      tekst: `Kuttsjekk: ${sjekk.map((x) => `s${x.s}`).join(", ")}`,
+    };
   const brukbar = (v?: string) => v === "godkjent" || v === "ok";
   const vurdert = segs.filter((x) => brukbar(dom(x.s)?.vurdering)).length;
   if (vurdert < segs.length)

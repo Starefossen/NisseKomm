@@ -274,6 +274,43 @@ describe("API /api/media/vurdering - Functionality", () => {
     expect(all[fil].forrige).toMatchObject({ vurdering: "godkjent" });
   });
 
+  it("a cut check outlives notes and ends with the next verdict", async () => {
+    const fs = await import("node:fs/promises");
+    const id = "video/julius/dag-14#s3";
+    await fs.writeFile(
+      path.join(testDir, "media-vurdering.json"),
+      JSON.stringify({
+        format: 2,
+        sesong: 2026,
+        elementer: {
+          [id]: {
+            historikk: [],
+            vurderinger: [
+              {
+                fil: id,
+                hash: "h",
+                versjon: "aaaaaaaaaaaa",
+                vurdering: "ok",
+                kuttsjekk: { retning: "slutt", t: 4 },
+              },
+            ],
+          },
+        },
+      }),
+    );
+    const get = async () =>
+      (await (await GET(makeReq("GET", undefined, auth))).json())[id];
+    await POST(makeReq("POST", { path: id, notat: "hørt" }, auth));
+    expect(await get()).toMatchObject({
+      vurdering: "ok",
+      kuttsjekk: { retning: "slutt" },
+    });
+    await POST(makeReq("POST", { path: id, vurdering: "godkjent" }, auth));
+    const d = await get();
+    expect(d.vurdering).toBe("godkjent");
+    expect(d.kuttsjekk).toBeUndefined();
+  });
+
   it("stamps a segment verdict with the take that was watched", async () => {
     const fs = await import("node:fs/promises");
     const j = path.join(testDir, "video/julius");

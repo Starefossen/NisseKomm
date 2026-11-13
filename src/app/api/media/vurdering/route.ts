@@ -200,8 +200,11 @@ export async function POST(req: NextRequest) {
                 : p.kutt,
             }
           : {}),
-        // The cut check stays until Hans gives the cut take a verdict.
-        ...(!nextVerdict && p.kuttsjekk ? { kuttsjekk: p.kuttsjekk } : {}),
+        // The cut check stays (the cut take already carries the old verdict) until Hans
+        // gives an explicit one: G ends it, L or a new ✂ replaces the verdict.
+        ...(vurdering === undefined && p.kuttsjekk
+          ? { kuttsjekk: p.kuttsjekk }
+          : {}),
         oppdatert: now,
       };
       // Tags, time or a note alone never re-give the verdict: it keeps the hash it

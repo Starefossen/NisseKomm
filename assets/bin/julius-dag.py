@@ -433,6 +433,25 @@ def sidefil(keys: list, tider: list, raw: dict, sjekk: dict) -> list:
             for i, (k, (a, b)) in enumerate(zip(keys, tider), 1)]
 
 
+def arv_sjekk(dest: Path, raws: dict, sjekk: dict) -> dict:
+    """Segments without a sjekk.json keep the flags of the newest earlier join of the same take (same raw hash)."""
+    def versjon(f):
+        return int(m[1]) if (m := re.search(r"-v(\d+)\.segmenter\.json$", f.name)) else 1
+    egen = dest.parent / f"{dest.stem}.segmenter.json"
+    tidligere = sorted((f for f in dest.parent.glob(f"{dest.name.split('-v')[0].removesuffix('.mp4')}*.segmenter.json") if f != egen),
+                       key=versjon, reverse=True)
+    ut = dict(sjekk)
+    for i, h in raws.items():
+        if i in ut:
+            continue
+        for f in tidligere:
+            gammel = next((x for x in json.loads(f.read_text()) if x["s"] == i and x.get("raw") == h), None)
+            if gammel:
+                ut[i] = {k: gammel[k] for k in ("hørt", "dekning", "flagg") if gammel.get(k) is not None}
+                break
+    return ut
+
+
 def flagg_fra_fil(day: int, suffix: str) -> dict:
     """{segment: {hørt, dekning, flagg}} from dagNN<suffix>-flagget.txt (the check's log before sjekk.json existed)."""
     f = OUT / f"dag{day:02d}{suffix}-flagget.txt"
@@ -625,6 +644,7 @@ def main():
     tider = join([OUT / f"{n}.mp4" for n in names], dest, [(s[3], s[0], s[4]) for s in segs], cuts, arg("--plakat"), "--no-trim" not in sys.argv, "--no-outro" not in sys.argv)
     sjekk = {i: json.loads(f.read_text()) for i, n in enumerate(names, 1) if (f := OUT / f"{n}.sjekk.json").exists()}
     raws = {i: raw_hash(OUT / f"{n}.raw.mp4") for i, n in enumerate(names, 1)}
+    sjekk = arv_sjekk(dest, raws, sjekk)
     (dest.parent / f"{dest.stem}.segmenter.json").write_text(json.dumps(sidefil(keys, tider, raws, sjekk), ensure_ascii=False, indent=1) + "\n")
     lyd_kurve(dest)
     subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-ss", "3", "-i", str(dest), "-frames:v", "1",
@@ -970,6 +990,13 @@ def neste_suffix(day: int, dest: Path) -> str:
     return f"-v{max(n, default=1) + 1}"
 
 
+def arvet_dom(historikk: list, kutt_v: dict) -> str:
+    """The latest ✓/◐ Hans gave this take before the ✂, else ◐."""
+    før = [x["vurdering"] for x in historikk
+           if x.get("vurdering") in ("godkjent", "ok") and x.get("versjon") == kutt_v.get("versjon")]
+    return før[-1] if før else "ok"
+
+
 def kutt_dag(day: int):
     """✂ verdicts on the day's segments: trim each take at Hans' point (no new video call), check the trimmed
     segment (transcription only, ~0.1 kr), join a new -vN and give the cut take a «kuttsjekk» with the old note."""
@@ -1010,12 +1037,32 @@ def kutt_dag(day: int):
             e["historikk"] += [x for x in e["vurderinger"] if x["fil"] == id]
             e["vurderinger"] = [x for x in e["vurderinger"] if x["fil"] != id]
             ny = raw_hash(OUT / f"dag{day:02d}-{i}.raw.mp4")
-            # The cut only removes: the note and tags carry over; Hans hears the cut once (G/L).
+            # The cut only removes: the take inherits the verdict it had before ✂ (◐ if none), the note and tags
+            # carry over; Hans hears the cut once (G/L), so the check waits as «kuttsjekk».
             e["vurderinger"].append({k: x for k, x in {
-                "notat": v.get("notat"), "tagger": v.get("tagger"), "kuttsjekk": v["kutt"], "oppdatert": nå,
+                "vurdering": arvet_dom(e["historikk"], v), "notat": v.get("notat"), "tagger": v.get("tagger"),
+                "kuttsjekk": v["kutt"], "oppdatert": nå,
                 "versjon": ny, "hash": ny, "fil": id}.items() if x})
         medie.skriv_lager(f, data)
     print(dest / f"dag-{day:02d}{suffix}.mp4")
+
+
+def test_arv():
+    h = [{"vurdering": "godkjent", "versjon": "a"}, {"vurdering": "lag_paa_nytt", "versjon": "a"},
+         {"vurdering": "ok", "versjon": "b"}, {"versjon": "a"}]
+    assert arvet_dom(h, {"versjon": "a"}) == "godkjent" and arvet_dom(h, {"versjon": "b"}) == "ok"
+    assert arvet_dom(h, {"versjon": "c"}) == "ok" and arvet_dom([], {"versjon": "a"}) == "ok"
+    import tempfile
+    d = Path(tempfile.mkdtemp())
+    seg = lambda raw, flagg: json.dumps([{"s": 1, "raw": raw, "flagg": flagg, "hørt": "x", "dekning": 0.5}])
+    (d / "dag-13-v2.segmenter.json").write_text(seg("r1", ["mangler: a"]))
+    (d / "dag-13-v3.segmenter.json").write_text(seg("r1", ["nyere"]))
+    ny = d / "dag-13-v4.mp4"
+    assert arv_sjekk(ny, {1: "r1"}, {})[1]["flagg"] == ["nyere"]  # newest earlier join wins
+    assert arv_sjekk(ny, {1: "r2"}, {}) == {}  # another take: nothing carried
+    assert arv_sjekk(ny, {1: "r1"}, {1: {"flagg": []}}) == {1: {"flagg": []}}  # own check beats the old flags
+    shutil.rmtree(d)
+    print("test_arv ok")
 
 
 def test_kutt():
@@ -1078,6 +1125,7 @@ def test_port():
 def selftest():
     test_port()
     test_kutt()
+    test_arv()
     assert wcount("Lucia-morgen i TV-en, ja") == 4 and len(words("Lucia-morgen")) == 2
     assert tail_missing("ja hallo IQ sier linjen", "IQ sier linjen er åpen.") == ["er", "åpen"]
     assert tail_missing("IQ sier linjen er åpen", "IQ sier linjen er åpen.") == []
@@ -1182,6 +1230,7 @@ if __name__ == "__main__":
                 print(f)
     elif sys.argv[1:] == ["test-kutt"]:
         test_kutt()
+        test_arv()
     elif sys.argv[1:2] == ["lyd"]:
         for d in [int(x) for x in sys.argv[2:] if x.isdigit()] or range(1, 25):
             for v in sorted(Path(arg("--dest") or DEST).glob(f"dag-{d:02d}*.mp4")):
