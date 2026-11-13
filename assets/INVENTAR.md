@@ -6,7 +6,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Type | ✓ | ⚠ | ? | ✗ | ○ | ◇ | - |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| julius | 4 | 8 | 0 | 12 | 0 | 21 | 6 |
+| julius | 4 | 8 | 0 | 12 | 0 | 22 | 6 |
 | rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 11 |
 | music | 13 | 0 | 0 | 1 | 0 | 0 | 0 |
 | tv | 20 | 4 | 0 | 0 | 15 | 0 | 17 |
@@ -60,7 +60,8 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-06-v3.mp4 | 8.4 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
 | video/julius/dag-06-v4.mp4 | 8.7 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
 | video/julius/dag-06-v5.mp4 | 8.7 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
-| video/julius/dag-06-v6.mp4 | 8.7 MB | 2026-11-13 | ◇ ikke i manifestet |
+| video/julius/dag-06-v6.mp4 | 8.7 MB | 2026-11-13 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
+| video/julius/dag-06-v7.mp4 | 8.7 MB | 2026-11-13 | ◇ ikke i manifestet |
 | video/julius/dag-07-v2.mp4 | 8.6 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 7; ikke i manifestet |
 | video/julius/dag-07-v3.mp4 | 8.9 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-08-v2.mp4 | 9.7 MB | 2026-11-12 | ◇ ikke i manifestet |
