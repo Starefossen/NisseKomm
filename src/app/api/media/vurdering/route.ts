@@ -219,6 +219,7 @@ export async function POST(req: NextRequest) {
           hash: gammel.hash,
           fil: gammel.fil,
           ...(gammel.versjon ? { versjon: gammel.versjon } : {}),
+          ...(gammel.tekst ? { tekst: gammel.tekst } : {}),
           ...felt,
         };
         e.vurderinger = e.vurderinger.map((x) => (x === gammel ? v! : x));

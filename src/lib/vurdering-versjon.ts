@@ -12,6 +12,40 @@ export interface Forrige {
   vurdering?: string;
   notat?: string;
   oppdatert?: string;
+  /** Guide sections: lines removed (-) and added (+) since the verdict. */
+  endringer?: Endring[];
+}
+
+export interface Endring {
+  t: "+" | "-";
+  l: string;
+}
+
+/** Changed lines only, from a plain LCS: section texts are a few dozen lines. */
+export function linjeDiff(før: string, nå: string): Endring[] {
+  const a = før.split("\n");
+  const b = nå.split("\n");
+  const L = Array.from({ length: a.length + 1 }, () =>
+    new Array<number>(b.length + 1).fill(0),
+  );
+  for (let i = a.length - 1; i >= 0; i--)
+    for (let j = b.length - 1; j >= 0; j--)
+      L[i][j] =
+        a[i] === b[j]
+          ? L[i + 1][j + 1] + 1
+          : Math.max(L[i + 1][j], L[i][j + 1]);
+  const ut: Endring[] = [];
+  let i = 0;
+  let j = 0;
+  while (i < a.length || j < b.length) {
+    if (i < a.length && j < b.length && a[i] === b[j]) {
+      i++;
+      j++;
+    } else if (j >= b.length || (i < a.length && L[i + 1][j] >= L[i][j + 1]))
+      ut.push({ t: "-", l: a[i++] });
+    else ut.push({ t: "+", l: b[j++] });
+  }
+  return ut;
 }
 
 const kort = (s: string | Buffer) =>
@@ -26,12 +60,40 @@ const slug = (s: string) =>
     .replace(/[^a-z0-9æøå§.]+/g, "-")
     .replace(/^-|-$/g, "");
 
-/** The baked text behind a guide section, or null for sections that are code. */
-async function seksjonsInnhold(id: string): Promise<unknown> {
+const tekstAv = (x: unknown): string =>
+  typeof x === "string"
+    ? x
+    : x && typeof x === "object"
+      ? Object.values(x).map(tekstAv).filter(Boolean).join("\n")
+      : "";
+
+/**
+ * The source text a guide-section verdict is given to (doc text from the
+ * bake, never chips, links or other derived UI), or null for sections that
+ * are code. Stored with the verdict, so a change shows as a diff.
+ */
+export async function seksjonsTekst(id: string): Promise<string | null> {
   // Lazy: guide-sesong pulls in the whole game; media-promote only needs files.
-  const { forSesongen, gaatekart, historien, kveldDag } =
+  const { forSesongen, gaatekartKilde, historien, kveldKilde } =
     await import("./guide-sesong");
   const [side, a, b] = id.split("/");
+  if (side === "dag") {
+    if (b === "gaatekart") return gaatekartKilde(Number(a)) || null;
+    // ponytail: kveld, utskrifter and rampestrek share one day's source; split it if one flags the others too often.
+    if (["kveld", "utskrifter", "rampestrek"].includes(b))
+      return kveldKilde(Number(a)) || null;
+    return null;
+  }
+  if (side === "historien") {
+    const h = historien().find((h) => slug(h.tittel) === a);
+    return h ? tekstAv(h) : null;
+  }
+  if (side === "forsesong") return tekstAv(forSesongen());
+  return null;
+}
+
+/** What a verdict on a non-file id is given to: a manus key or a section's source text. */
+async function seksjonsInnhold(id: string): Promise<unknown> {
   // `manus/julius/dag-14#s3`: the take.json key julius-dag.py bakes (python manus).
   const seg = id.match(/^manus\/julius\/dag-(\d+)#s(\d+)$/);
   if (seg) {
@@ -51,17 +113,7 @@ async function seksjonsInnhold(id: string): Promise<unknown> {
         ?.tekst ?? null
     );
   }
-  if (side === "dag") {
-    if (b === "gaatekart") return gaatekart(Number(a));
-    // ponytail: kveld, utskrifter and rampestrek share one day block; split it if one flags the others too often.
-    if (["kveld", "utskrifter", "rampestrek"].includes(b))
-      return kveldDag(Number(a));
-    return null;
-  }
-  if (side === "historien")
-    return historien().find((h) => slug(h.tittel) === a) ?? null;
-  if (side === "forsesong") return forSesongen();
-  return null;
+  return seksjonsTekst(id);
 }
 
 /** Segment s's raw hashes in every dag-NN*.segmenter.json under dir, newest join first. */

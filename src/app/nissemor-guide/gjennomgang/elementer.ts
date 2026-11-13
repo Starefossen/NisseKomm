@@ -258,7 +258,10 @@ export function tilstand(
   e: Element,
   k: StatusKilde,
 ): { celle: Celle; tekst: string; notat?: string } {
-  if (e.media.length) {
+  const egen = k.vurderinger[e.id];
+  // A section with its own verdict (rampestrek next to its sketch) shows that verdict,
+  // as the buttons below do; the sketch's status is the fallback.
+  if (e.media.length && !egen?.vurdering && !egen?.forrige) {
     const { celle, familie } = celleFor(e.media, k);
     return { celle, tekst: familie!.tekst, notat: familie!.iBruk.notat };
   }
