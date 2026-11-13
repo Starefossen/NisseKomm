@@ -1,6 +1,6 @@
 /** @jest-environment node */
 import { describe, it, expect } from "@jest/globals";
-import { RESERVESETT, forSesongen, kveldDag } from "../guide-sesong";
+import { forSesongen, kveldDag } from "../guide-sesong";
 import { getAllOppdrag } from "../oppdrag";
 import {
   UTSKRIFTER,
@@ -33,15 +33,16 @@ describe("kveldens sjekkliste (gaater-2026.md, feltet «Sjekkliste»)", () => {
         for (const [, u] of l.matchAll(FIL))
           expect(UTSKRIFTER as readonly string[]).toContain(u);
       }
-      // Day 1 is printed on 28 Nov, from the pre-season list.
-      if (n > 1) expect(linjer[0]).toMatch(/^Skriv ut/);
+      // Everything is printed in November; the evening list only fetches it.
+      if (n > 1) expect(linjer[0]).toMatch(/^Ta fram/);
+      expect(linjer.filter((l) => l.startsWith("Skriv ut"))).toEqual([]);
       expect(linjer.filter((l) => l.startsWith("Rampestrek: "))).toHaveLength(
         1,
       );
     },
   );
 
-  it("reservesett står bare der beslutningen 13.11 krever det", () => {
+  it("ingen utskrift i kveldslistene; reservesettene skrives ut i november", () => {
     const dag1 = forSesongen().sjekkliste.flatMap((g) => g.punkter);
     for (const l of dag1)
       for (const [, u] of l.matchAll(FIL))
@@ -50,8 +51,7 @@ describe("kveldens sjekkliste (gaater-2026.md, feltet «Sjekkliste»)", () => {
       const linje = (n === 1 ? dag1 : kveldDag(n)!.sjekkliste).filter((l) =>
         l.startsWith("Skriv ut reservesett: "),
       );
-      expect([n, linje.length]).toEqual([n, RESERVESETT[n] ? 1 : 0]);
-      if (RESERVESETT[n]) expect(linje[0]).toContain(`${RESERVESETT[n]}.pdf`);
+      expect([n, linje.length]).toEqual([n, 0]);
     }
   });
 });

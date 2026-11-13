@@ -51,7 +51,7 @@ export default function Dag01Linjekort() {
       ]}
       instruks={{
         klipp: "linjekortet (A6), konvoluttpåskriften og de to små lappene.",
-        hvor: "Fredag 28. november: skriv passordet til appen på linja med tusj, legg kortet i C6-konvolutten og lim påskriften på. Konvolutten øverst i ferdskriveren. «LINJE 90,0» teipes under TV-foten søndag kveld, «RESERVE – IQ» på klementinen i ferdskriveren.",
+        hvor: "Lørdag 28. november: skriv passordet til appen på linja med tusj, legg kortet i C6-konvolutten og lim påskriften på. Konvolutten øverst i ferdskriveren. «LINJE 90,0» teipes under TV-foten mandag kveld, «RESERVE – IQ» på klementinen i ferdskriveren.",
       }}
     />
   );

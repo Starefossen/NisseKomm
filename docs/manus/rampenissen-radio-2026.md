@@ -1,6 +1,6 @@
 # Rampenissen på Morgenrådet 2026 – radioklipp
 
-**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Hilsen «God [tall] søndag i advent» (ikke «God [tall]. advent») endret 13.11 etter ja fra Hans. Dag 24: tre lilla ametystklynger og fargen som kommer tilbake (13.11, etter ja fra Hans). Tittel dag 5 («Skriften på vingen») og én linje i klipp dag 14 (postkassen) endret 13.11 etter ja fra Hans; lyden for dag 14 er spilt inn på nytt. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Strek-linjene dag 13 og 20 endret 13.11 etter ja fra Hans. Klipp dag 17 og 22 og `reaksjon_hint` dag 17 endret 13.11 etter ja fra Hans (klippene røpet svaret); lyden for dag 17 og 22 må lages på nytt. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «død. Nesten.», 15 skåla, 23 tempus) etter ja fra Hans. Klargjort for TTS 11. november etter ja fra Hans: lengde og bekreftelser (dag 6, 14, 15, 24), tallet i dag 8, Hanna i dag 21, apokope (7, 16, 17, 18, 22), dag 23 tempus. Dag 24 skrevet om 11. november etter ja fra Hans: sendt fra Snøfall etter hjemkomsten, hilsener fra de andre, rapporten levert (se `docs/beslutninger.md`). Utvidet 12. november etter ja fra Hans: dag 1 er sesongåpning (60–75 s), dag 24 litt lengre (50–65 s), Birk og Lyng får introduksjon og reaksjon dag 1 og 24 og én reaksjonslinje (`reaksjon_hint`) på utvalgte dager, og førsesongen 24.–30. november står nederst. Lyd for dag 1 og 24 må lages på nytt; Hans leser teksten først. `rampestrek_hint` og `utfordring_hint` for alle 24 dager lagt til 13.11 etter ja fra Hans. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`. Dag 24: «tre krystallbiter» (ikke «krystallet») i NisseMail, brevfuglbrevet og radioklippet endret 13.11 etter ja fra Hans.
+**Status: LÅST 10. november 2026 (steg 2).** Endringer krever eksplisitt ja fra Hans. Hilsen «God [tall] søndag i advent» (ikke «God [tall]. advent») endret 13.11 etter ja fra Hans. Dag 24: tre lilla ametystklynger og fargen som kommer tilbake (13.11, etter ja fra Hans). Tittel dag 5 («Skriften på vingen») og én linje i klipp dag 14 (postkassen) endret 13.11 etter ja fra Hans; lyden for dag 14 er spilt inn på nytt. Klipp dag 8, 10, 12, 14, 17, 23 og 24 og `reaksjon_hint` dag 7 endret 13.11 etter ja fra Hans (gjennomgangen av talemanus); lyden for disse må lages på nytt. Kjør `python3 scripts/manus-check.py` etter endringer. Klippene ble satt om til nordlandsk 10. november 2026 (etter ja fra Hans); innholdet er uendret. Endret etter ja fra Hans 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Strek-linjene dag 13 og 20 endret 13.11 etter ja fra Hans. Klipp dag 17 og 22 og `reaksjon_hint` dag 17 endret 13.11 etter ja fra Hans (klippene røpet svaret); lyden for dag 17 og 22 må lages på nytt. Flyt rettet 11. november (dag 6 strek/instrument, 9 kortet, 12 tidsanker, 13 «død. Nesten.», 15 skåla, 23 tempus) etter ja fra Hans. Klargjort for TTS 11. november etter ja fra Hans: lengde og bekreftelser (dag 6, 14, 15, 24), tallet i dag 8, Hanna i dag 21, apokope (7, 16, 17, 18, 22), dag 23 tempus. Dag 24 skrevet om 11. november etter ja fra Hans: sendt fra Snøfall etter hjemkomsten, hilsener fra de andre, rapporten levert (se `docs/beslutninger.md`). Utvidet 12. november etter ja fra Hans: dag 1 er sesongåpning (60–75 s), dag 24 litt lengre (50–65 s), Birk og Lyng får introduksjon og reaksjon dag 1 og 24 og én reaksjonslinje (`reaksjon_hint`) på utvalgte dager, og førsesongen 24.–30. november står nederst. Lyd for dag 1 og 24 må lages på nytt; Hans leser teksten først. `rampestrek_hint` og `utfordring_hint` for alle 24 dager lagt til 13.11 etter ja fra Hans. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`. Dag 24: «tre krystallbiter» (ikke «krystallet») i NisseMail, brevfuglbrevet og radioklippet endret 13.11 etter ja fra Hans.
 
 Steg 2. Kilder (låst): `docs/historie-2026.md` (§3.3, §4, §8), `docs/storyboard-2026.md` (§2 kunnskapstidslinje, §3 radiolinjer), `docs/gaater-2026.md`. Format: `varden-morgenradet.md`.
 
@@ -124,7 +124,7 @@ _Skjerm-kort fra Orakelet om morgenen._
 
 **intro_hint:** «Vi har en melding fra en som ikke kan bevege armene. Han sier det er midlertidig.»
 
-**reaksjon_hint:** «Birk: Det som skurrer, e kaldt, sa han. Mottakeren min på loftet skurrer òg mest når det fryser. Eg hadde ikkje tenkt på det før no.»
+**reaksjon_hint:** «Birk: Mottakeren min på loftet skurrer mest om natten. Eg hadde ikkje tenkt på det før no.»
 
 **rampestrek_hint:** «Rampenissen er fastfryst på innsiden av fryserdøra, med rim, istapper og votter som står rett ut.»
 
@@ -136,7 +136,7 @@ _Skjerm-kort fra Orakelet om morgenen._
 
 **Merk:** Slang 1 av 2.
 
-**Klipp:** «Hallo fra toppen! Rampenissen, høyde: alle frokostblandingan i huset. Uke én e ferdig, folkens! Og navnet e ute, dokker veit kem æ meine, den med dem kalde fingran. IQ feire med å bygg nåkka. Han har ikkje sove. Æ feira med å bygg nåkka. Mitt e høgare, sjø. Mitt har skilt. Mitt e, og æ sei det med respekt, sigma. Det e litt frokostblanding på golvet, men det e fordi tårnet trengt støtte. Øsa e flaggstang. Ikkje dytt. Æ meine det. Hjerterud sei frokost e dagens viktigaste måltid, og no e den også dagens høgaste. Hilsen fra toppen. Ikkje dytt!»
+**Klipp:** «Hallo fra toppen! Rampenissen, høgde: alle frokostblandingan i huset. Uke én e ferdig, folkens! Og navnet e ute, dokker veit kem æ meine, den med dem kalde fingran. IQ feire med å bygg nåkka. Han har ikkje sove. Æ feira med å bygg nåkka. Mitt e høgare, sjø. Mitt har skilt. Mitt e, og æ sei det med respekt, sigma. Det e litt frokostblanding på golvet, men det e fordi tårnet trengt støtte. Øsa e flaggstang. Ikkje dytt. Æ meine det. Hjerterud sei frokost e dagens viktigaste måltid, og no e den også dagens høgaste. Hilsen fra toppen. Ikkje dytt!»
 
 **intro_hint:** «Noen ringer inn fra en høyde. En veldig lokal høyde.»
 
@@ -162,7 +162,7 @@ _Skjerm-kort fra Orakelet om morgenen._
 
 _Skjerm er grå fra 05:30._
 
-**Klipp:** «Høre dokker mæ? Skjermen dokkers e GRÅ. Æ såg det klokka fire i natt, og herregud, æ blei så redd at æ gjord nåkka. Æ gjømt alle fargan æ fant. Nån på mæ, resten gjømt i stua. Hendan, nesa, halve ansiktet. No e æ den mest fargerike tingen i huset, og det e et ansvar. Mamma og pappa fikk bart på bildet, men det e en post-it, det går av, æ sjekka. Kulde har tatt fargan fra Snøfall TV også. Alt e grått der oppe. Hjerterud bake grå bolla. IQ sei dokker e dem einaste med farga igjen. Så pass på dem. Ikkje vask mæ. Æ meine det. Over.»
+**Klipp:** «Høre dokker mæ? Skjermen dokkers e GRÅ. Æ såg det klokka fire i natt, og herregud, æ blei så redd at æ gjord nåkka. Æ gjømt alle fargan æ fant. Nån på mæ, resten gjømt. Hendan, nesa, halve ansiktet. No e æ den mest fargerike tingen i huset, og det e et ansvar. Mamma og pappa fikk bart på bildet, men det e en post-it, det går av, æ sjekka. Kulde har tatt fargan fra Snøfall TV også. Alt e grått der oppe. Hjerterud bake grå bolla. IQ sei dokker e dem einaste med farga igjen. Så pass på dem. Ikkje vask mæ. Æ meine det. Over.»
 
 **intro_hint:** «Han sier han er den mest fargerike tingen i huset i dag. Han høres bekymret ut.»
 
@@ -192,7 +192,7 @@ _Skjerm er grå fra 05:30._
 
 **Merk:** Helg, 09-sendingen.
 
-**Klipp:** «God lørdag. Æ snakke lavt i dag. Æ hørt nåkka sukk i isen i natt. Ikkje knurr. Ikkje fres. Sukk. Sånn som når en e aleina og trur ingen høre. Julius sa i går kveld at æ innbilt mæ det. Hjerterud sa ingenting, ho bare nynna og gikk ned mot slusa med lykt. Æ veit ka æ hørt. Så æ prøvd å lag ei lydbølge, ei stor ei, for å send lyd tilbake. Det blei en dorull. Heile dorullen. Fra badet til kjøkkenet. Det e vitenskap, ikkje rot. Antenna i Snøfall står rett igjen, forresten, takka være dokker. IQ har sagt takk tolv ganga. Hør etter i dag. Hør ordentlig.»
+**Klipp:** «God lørdag. Æ snakke lavt i dag. Æ hørt nåkka sukk i isen i natt. Ikkje knurr. Ikkje fres. Sukk. Sånn som når en e aleina og trur ingen høre. Julius sa i natt at æ innbilt mæ det. Hjerterud sa ingenting, ho bare nynna og gikk ned mot slusa med lykt. Æ veit ka æ hørt. Så æ prøvd å lag ei lydbølge, ei stor ei, for å send lyd tilbake. Det blei en dorull. Heile dorullen. Fra badet til kjøkkenet. Det e vitenskap, ikkje rot. Antenna i Snøfall står rett igjen, forresten, takka være dokker. IQ har sagt takk tolv ganga. Hør etter i dag. Hør ordentlig.»
 
 **intro_hint:** «En som hørte noe i natt. Han vil at vi skal snakke lavt.»
 
@@ -220,7 +220,7 @@ _Skjerm er grå fra 05:30._
 
 **Strek:** alle kjøkkenserviettene brettet til skjeve fugler, sitter selv i en papirbåt (A3 eller avis) i den tørre vasken.
 
-**Klipp:** «Mandag, og æ e ikkje død lenger, det gikk over. Rampenissen her, fra en båt. En papirbåt. I vasken. Den e tørr, slapp av. Hjerterud fikk krydderet sitt igjen i går, takka være dokker. Winter åpna brevfuglan i natt! Postkassen va så full at lokket sto rett opp. Og så kom det én fugl ingen hadde sendt. Blå. Den satte sæ i vinduskarmen til Julius og sa ingenting. Winter vil legg den i ei eske med et håndkle over, sånn en gjør med redde fugla. Den blei sittanes. Æ blei inspirert og bretta alle serviettan dokkers til fugla. Dem e litt skjeive. Dem fly ikkje. Men dem prøve, og det telle. Over.»
+**Klipp:** «Mandag, og æ e ikkje død lenger, det gikk over. Rampenissen her, fra en båt. En papirbåt. I vasken. Den e tørr, slapp av. Hjerterud fikk krydderet sitt igjen i går, takka være dokker. Winter åpna brevfuglan i natt! Postkassa va så full at lokket sto rett opp. Og så kom det én fugl ingen hadde sendt. Blå. Den satte sæ i vinduskarmen til Julius og sa ingenting. Winter vil legg den i ei eske med et håndkle over, sånn en gjør med redde fugla. Den blei sittanes. Æ blei inspirert og bretta alle serviettan dokkers til fugla. Dem e litt skjeive. Dem fly ikkje. Men dem prøve, og det telle. Over.»
 
 **intro_hint:** «Dagens gjest ringer fra en båt. En veldig liten båt.»
 
@@ -262,7 +262,7 @@ _Skjerm er grå fra 05:30._
 
 **Strek:** kidnappet av kosedyrene, bundet til en stol med grønt gavebånd, løsepengebrev «GI OSS ALLE PEPPERKAKENE. ELLERS.»
 
-**Klipp:** «Dette e Rampenissen, og æ e kidnappa. Av kosedyra. Dem har bunde mæ til en stol med gavebånd og skreve et kravbrev med utklipte bokstava. Dem vil ha alle pepperkakan. Ellers. Det står bare «ellers». Æ veit ikkje ka som skjer ellers. Men hør, det viktigaste: det kom et svar i natt. Æ såg det fra stolen. Ikkje en bil. Ikkje ei lampe. Nåkka heilt anna, ka du sei! IQ sei det kom fra grotta. Et svar fra grotta, på lyktan ved antenna. Første gang nåkka svare. Æ fikk gåsehud under båndet. Send pepperkaka. Og nån som kan dra i ei sløyfe. Over.»
+**Klipp:** «Dette e Rampenissen, og æ e kidnappa. Av kosedyra. Dem har bunde mæ til en stol med gavebånd og skreve et kravbrev med utklipte bokstava. Dem vil ha alle pepperkakan. Ellers. Det står bare «ellers». Æ veit ikkje ka som skjer ellers. Men hør, det viktigaste: det kom et svar i natt. Æ såg det fra stolen. Ikkje en bil. Ikkje ei lampe. Nåkka heilt anna, ka du sei! IQ sei det kom fra grotta. Et svar fra grotta, på lyktan ved antenna. Første gang nåkka svare så vi kan se det. Æ fikk gåsehud under båndet. Send pepperkaka. Og nån som kan dra i ei sløyfe. Over.»
 
 **intro_hint:** «Vi har mottatt et løsepengekrav. Og offeret ringer selv.»
 
@@ -348,7 +348,7 @@ _Skjerm er grå fra 05:30._
 
 **Strek:** pakket opp et hjørne av en gave, teipet igjen med altfor mye teip, sitter i treet som pynt.
 
-**Klipp:** «Lille julaften! Rampenissen her, fra treet. Æ sitt i juletreet. Som pynt. Frivillig. Det har ingenting å gjør med at en gave fikk et lite hull i hjørnet i natt. Det e teipa. Med mye teip. Det e meir teip enn gave no, og æ har dårlig samvittighet, og derfor sitt æ her og tenke. Men hør: i natt ska dem fly. Over Nordtoppen. Med alle lysan på. Julius sa dem ska fly lavt over grotta, så den som e der nede får se. Trixter pakke sleden no. Rudolf har spist. Æ gråte ikkje. Det e teip i øya mine. Navna dokkers sto på lista i går. Æ såg dem. Over.»
+**Klipp:** «Lille julaften! Rampenissen her, fra treet. Æ sitt i juletreet. Som pynt. Frivillig. Det har ingenting å gjør med at en gave fikk et lite hull i hjørnet i natt. Det e teipa. Med mye teip. Det e meir teip enn gave no, og æ har dårlig samvittighet, og derfor sitt æ her og tenke. Men hør: i kveld ska dem fly. Over Nordtoppen. Med alle lysan på. Julius sa dem ska fly lavt over grotta, så den som e der nede får se. Trixter pakke sleden no. Rudolf har spist. Æ gråte ikkje. Det e teip i øya mine. Navna dokkers sto på lista i går. Æ såg dem. Over.»
 
 **intro_hint:** «Han ringer fra et tre. Han sier han er pynt.»
 
@@ -366,7 +366,7 @@ _Skjerm er grå fra 05:30._
 
 **Lydregi:** landsbylyd lavt bak hele klippet (bjeller, en dør, verkstedet til IQ); ingen skurr.
 
-**Klipp:** «God morra, og god jul! Det e Rampenissen, og æ e heime. På loftet i Snøfall, i garnkurven. Trixter la tre lilla klynga under treet dokkers i natt, og fargan e tilbake. Æ hoppa bakpå. Ingen vekking; sånn kom æ også. Det drypp fra grotta under Nordtoppen, og ingen e redd for det lenger. Rapporten e levert. Julius las ho med brilla på, og dokker sto på lista, alle tre. Hilsena: IQ sei linja holdt, og at han aldri va bekymra. Han va bekymra. Hjerterud sei takk for at dokker spiste klementinan. Winter sei tallan stemte. Trixter sei æ va tung bakpå. Julius sei sitt sjøl i dag. Brevet mitt heng der æ satt. Hylla e tom, og det e meininga. Men vess det knitre litt på linja i kveld, så e det mæ. Takk for fruktskåla. God jul, Kristian, Håkon og Hanna. Te neste år. Over og ut.»
+**Klipp:** «God morra, og god jul! Det e Rampenissen, og æ e heime. På loftet i Snøfall, i garnkurven. Trixter la tre lilla klynga under treet dokkers i natt, og fargen e tilbake. Æ hoppa bakpå. Ingen vekking; sånn kom æ også. Det drypp fra grotta under Nordtoppen, og ingen e redd for det lenger. Rapporten e levert. Julius las den med brilla på, og dokker sto på lista, alle tre. Hilsena: IQ sei linja holdt, og at han aldri va bekymra. Han va bekymra. Hjerterud sei takk for at dokker spiste klementinan. Winter sei tallan stemte. Trixter sei æ va tung bakpå. Julius sei sitt sjøl i dag. Brevet mitt heng der æ satt. Hylla e tom, og det e meininga. Men vess det knitre litt på linja i kveld, så e det mæ. Takk for fruktskåla. God jul, Kristian, Håkon og Hanna. Te neste år. Over og ut.»
 
 **intro_hint:** «Birk: Siste melding fra gjesten vår i år. Han ringer hjemmefra, sier han. Vi vet ikkje kor det e. Lyng: Eg fant det aldri på kartet. Eg leita hele desember.»
 
@@ -389,7 +389,7 @@ Ord = talte ord i klippet. Sek = ord × 0,44 (målt tempo på dag 1–5). «Kode
 | 3   | PRISME       | 105 | 44  | 06      | ok              |                                                                                                                                |
 | 4   | KOMPASS      | 115 | 48  | 06      | ok              | «Jeg har laget en pil. Av noe.» (låst storyboard), ingen plass                                                                 |
 | 5   | ULRIKEN      | 107 | 45  | 09      | ok              | Fuglen nevnes uten sted                                                                                                        |
-| 6   | LYKT         | 110 | 46  | 09      | ok              | Storyboardets «lommelykten» er byttet til «den lille lampen», som i e-posten                                                   |
+| 6   | LYKT         | 109 | 45  | 09      | ok              | Storyboardets «lommelykten» er byttet til «den lille lampen», som i e-posten                                                   |
 | 7   | KULDE        | 109 | 45  | 06      | ok, med merknad | «Det som skurrer, er kaldt» er låst storyboardlinje; navnet sies ikke                                                          |
 | 8   | KRETSKORT    | 100 | 42  | 06      | ok              | Slang 1 av 2                                                                                                                   |
 | 9   | 24           | 100 | 42  | 06      | ok              | Ingen antall eller armer                                                                                                       |
@@ -397,19 +397,19 @@ Ord = talte ord i klippet. Sek = ord × 0,44 (målt tempo på dag 1–5). «Kode
 | 11  | 75           | 101 | 42  | 06      | ok              |                                                                                                                                |
 | 12  | MELODI       | 110 | 46  | 09      | ok              | Glassene nevnes ikke                                                                                                           |
 | 13  | SAFRAN       | 105 | 44  | 09      | ok              |                                                                                                                                |
-| 14  | ORIGAMI      | 111 | 46  | 06      | ok              |                                                                                                                                |
+| 14  | ORIGAMI      | 112 | 47  | 06      | ok              |                                                                                                                                |
 | 15  | KARAMELL     | 110 | 46  | 06      | ok              | Verken sukker eller sirup nevnes                                                                                               |
 | 16  | SORTERING    | 110 | 46  | 06      | ok              | «ryddet», aldri «sortere»                                                                                                      |
 | 17  | NORDLYS      | 103 | 43  | 06      | ok              | «et svar i natt»; aldri «grønt», «himmel», «nord» + «lys»                                                                      |
 | 18  | TURBULENS    | 106 | 44  | 06      | ok              | «hoppet», ikke «ristet»                                                                                                        |
 | 19  | GULROT       | 109 | 45  | 09      | ok              | «førti av dem», aldri hva                                                                                                      |
-| 20  | TURBO        | 108 | 45  | 09      | ok              | Slang 2 av 2; varme inne, ingen ute                                                                                            |
+| 20  | TURBO        | 110 | 46  | 09      | ok              | Slang 2 av 2; varme inne, ingen ute                                                                                            |
 | 21  | BRANNMUR     | 113 | 47  | 06      | ok, med merknad | «bokmuren»/«muren» er låst framing; første ledd sies ikke                                                                      |
 | 22  | LANDÅS       | 108 | 45  | 06      | ok              | Verken stedsnavn eller «hvor dere bor» (13.11); «landingen» byttet til «julenatt»                                              |
 | 23  | STJERNEKLART | 111 | 46  | 06      | ok              |                                                                                                                                |
-| 24  | JULEMAGI     | 144 | 60  | 06      | ok              | «God jul» er høytidsnavnet Julius selv ber dem sette foran; sendt fra Snøfall, ingen strek; 50–65 s, Birk og Lyng før og etter |
+| 24  | JULEMAGI     | 149 | 62  | 06      | ok              | «God jul» er høytidsnavnet Julius selv ber dem sette foran; sendt fra Snøfall, ingen strek; 50–65 s, Birk og Lyng før og etter |
 
-Sum: 2 662 ord, snitt 111 per dag (cirka 46 s).
+Sum: 2 669 ord, snitt 111 per dag (cirka 46 s).
 
 ---
 

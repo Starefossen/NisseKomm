@@ -61,7 +61,7 @@ export const KAPITTEL_3: Kapittel = {
       id: "tesil_lanterne",
       navn: "Tesil-lanterne",
       ikon: "lightbulb",
-      se: "Stearinlyset står inni tesilen med lokket på. Flammen lyser gjennom hundre små hull. Du puster på den. Den bryr seg ikke. Du puster hardere. Den bryr seg fortsatt ikke. Messingen blir varm på utsiden. Nede i grotta får lyset et skjær i kanten, verken gull eller blått. Det er borte før du rekker å kalle det noe.",
+      se: "Stearinlyset står inni tesilen med lokket på. Flammen lyser gjennom hundre små hull. Du puster på den. Den bryr seg ikke. Du puster hardere. Den bryr seg fortsatt ikke. Messingen blir varm på utsiden.",
     },
     krystallskaar: {
       id: "krystallskaar",
@@ -616,7 +616,7 @@ export const KAPITTEL_3: Kapittel = {
               flagg: "skaar_satt",
               forbruker: true,
               tekst:
-                "Du setter skåret foran lanterna, vendt mot den klare hylla. Lyset går gjennom det, større, og treffer den første klare krystallen. Den neste er mørk: lyset går ut på skrå, mot veggen. I kanten av strålen ligger det samme skjæret igjen. Krystallen har ikke alltid vært klar. " +
+                "Du setter skåret foran lanterna, vendt mot den klare hylla. Lyset går gjennom det, større, og treffer den første klare krystallen. Den neste er mørk: lyset går ut på skrå, mot veggen. I kanten av strålen ligger et skjær, verken gull eller blått. Det er borte før du rekker å kalle det noe. Krystallen har ikke alltid vært klar. " +
                 R +
                 "«Dem må SNUS! Hylle for hylle, så lyset finn neste. Dem e bygd te å vris. Og såg dokker kanten på lyset? Den fargen har æ ikkje sett på lenge. Æ sei ikkje ka den heite. Æ e ikkje sikker på at æ får lov.»",
             },

@@ -58,8 +58,16 @@ function Forberedelser() {
         <Avkrysning punkter={INNEN_25_NOV} {...avkrysning} />
       </Kort>
 
+      <Kort tittel="Handleliste" farge="border-(--cold-blue)">
+        <p className="opacity-80">{HANDLELISTE_INTRO}</p>
+        <Handleliste varer={HANDLELISTE} />
+        <p>
+          <b>Sum:</b> {HANDLELISTE_SUM}
+        </p>
+      </Kort>
+
       {SJEKKLISTE_DAG1.map((s) => {
-        // «Fre 28. nov» ↔ «Fredag 28. (cirka 50 min, …)» in the build plan.
+        // «Lør 28. nov» ↔ «Lørdag 28. (cirka 45 min …)» in the build plan.
         const plan = BYGGEPLAN.find((b) =>
           b.tittel.toLowerCase().startsWith(s.tittel.slice(0, 3).toLowerCase()),
         );
@@ -89,14 +97,6 @@ function Forberedelser() {
         );
       })}
       <p className="opacity-80">{MORGEN_1_DES}</p>
-
-      <Kort tittel="Handleliste" farge="border-(--cold-blue)">
-        <p className="opacity-80">{HANDLELISTE_INTRO}</p>
-        <Handleliste varer={HANDLELISTE} />
-        <p>
-          <b>Sum:</b> {HANDLELISTE_SUM}
-        </p>
-      </Kort>
     </>
   );
 }

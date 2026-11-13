@@ -157,7 +157,7 @@ export default function Dag01Frakt() {
       ]}
       instruks={{
         klipp: "4 fraktetiketter, 4 SKJØRT-merker og 8 stempler.",
-        hvor: "Lørdag 29. november: lim med limstift på klementineskene og de tomme eskene. Nummerer etikettene for hånd: SENDING 1 AV 4 osv. «TRYKKSKADET» skjevt over revnen på den revnede esken; de andre stemplene limes skjevt der det passer.",
+        hvor: "Søndag 29. november: lim med limstift på klementineskene og de tomme eskene. Nummerer etikettene for hånd: SENDING 1 AV 4 osv. «TRYKKSKADET» skjevt over revnen på den revnede esken; de andre stemplene limes skjevt der det passer.",
       }}
     />
   );

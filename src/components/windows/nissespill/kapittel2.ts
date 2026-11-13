@@ -903,7 +903,7 @@ export const KAPITTEL_2: Kapittel = {
         },
         antenne: {
           tekst:
-            "«Jeg VET det! Tannhjulet som snur antenna er frosset fast. Det er ikke vanlig is. Det er rimet fra linja, den samme som har krøpet nedover alt mitt siden første desember. Og Rudolf har klødd seg på masta, så peileskiva peker på skogen. Tannhjulet må tines med noe varmt. Ikke en kaffekopp, den er kald før du er ute av døra. Metall. Som holder på varmen.»",
+            "«Jeg VET det! Tannhjulet som snur antenna er frosset fast. Det er ikke vanlig is. Det er rimet fra linja, det samme som har krøpet nedover alt mitt siden første desember. Og Rudolf har klødd seg på masta, så peileskiva peker på skogen. Tannhjulet må tines med noe varmt. Ikke en kaffekopp, den er kald før du er ute av døra. Metall. Som holder på varmen.»",
           rampenissen:
             "«Nåkka av metall, og varmt. Og nåkka å hold det med, for æ kjenne IQ sine varme ting. Dem e varme på en personlig måte.»",
           valg: [

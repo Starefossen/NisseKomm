@@ -214,6 +214,14 @@ Generated from `assets/characters/<id>/entitet.md`, the one source for look, per
 - **Forhold:** julius: sønnen hans; selma: faren hennes
 - **Aldri:**
 
+#### Trixter (`assets/characters/trixter/entitet.md`)
+
+- **Navn:** Trixter; **pronomen:** han; **fra dag:** 1
+- **Personlighet:** Rolig, stolt av sleden sin og glad i dårlig vær. Tar ting på alvor som andre ler av, som vind og kurs.
+- **Stemme:** Korte meldinger i loggen, som en pilot: «Rister, men holder.» Ingen replikker i video eller radio; andre forteller om ham.
+- **Forhold:** julius: Julius' favorittrein; leder sleden; rudolf: flyr foran; Rudolf følger etter og får gjesteroller; rampenissen: Rampenissen sitter bakpå sleden hans, til Landås og hjem igjen; portvokterne: står vakt med dem i nisseform, inne i hagen
+- **Aldri:**
+
 #### Winter (`assets/characters/winter/entitet.md`)
 
 - **Navn:** Winter, Ole Winter; **pronomen:** han; **fra dag:** 1

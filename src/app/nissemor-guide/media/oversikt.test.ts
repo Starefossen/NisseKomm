@@ -107,7 +107,8 @@ describe("lookThrough", () => {
 
   it("day 17: northern lights over the village, hijack on 85,0", () => {
     const v = src(17, false);
-    expect(v["1-90"].src).toBe("/media/video/tv/landsby-nordlys.mp4");
+    expect(v["1-90"].src).not.toBe("/media/video/tv/landsby-nordlys.mp4");
+    expect(src(17, true)["1-90"].src).toBe("/media/video/tv/landsby-nordlys.mp4");
     expect(v["4-85"].src).toBe("/media/video/tv/grotte-dag15.mp4");
     expect(v["4-85"].fx.hijack).toBe(true);
   });

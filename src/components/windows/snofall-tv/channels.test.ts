@@ -77,8 +77,11 @@ describe("Snøfall TV channel video source mappings", () => {
       );
     });
 
-    it("shows landsby-nordlys on day 17", () => {
-      expect(channelSource(1, 17, 12, FREQ_HOME)).toBe(
+    it("shows landsby-nordlys on day 17 once solved, not before", () => {
+      expect(channelSource(1, 17, 12, FREQ_HOME, true)).toBe(
+        mediaUrl("video/tv/landsby-nordlys.mp4"),
+      );
+      expect(channelSource(1, 17, 12, FREQ_HOME)).not.toBe(
         mediaUrl("video/tv/landsby-nordlys.mp4"),
       );
     });

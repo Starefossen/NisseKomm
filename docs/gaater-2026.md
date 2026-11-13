@@ -2,7 +2,7 @@
 
 Steg 1 i byggerekkefølgen. Kilder: `docs/historie-2026.md` (låst), `docs/storyboard-2026.md`, `CONTENT_GUIDE.md` og kodene i `src/data/uke1–4_oppdrag.json`. Ingen kode er endret. Historiebeats er ikke rørt; det som er bestemt her, er hvordan hver dags to brikker ser ut, hva de faktisk gjør med dem, og hva en forelder må ha klart.
 
-**Status: LÅST 10. november 2026.** De seks avgjørelsene i (d) er godtatt av Hans, og uavhengig gjennomgang (21 funn) er innarbeidet. Endringer krever eksplisitt ja. Endret etter ja fra Hans 10. november; materiallister rettet 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 8, 10 og 13 endret 13.11 etter ja fra Hans. Vanskelighet strammet (dag 5 og 17 tittel, dag 9 utskrift, dag 15, 16, 17 og 21 Brikke S) endret 13.11 etter ja fra Hans. Brevfuglenes kanon (13.11): tittel dag 5 «Skriften på vingen» og brevfugl-linjene dag 5 og 14 endret 13.11 etter ja fra Hans. Feltet «Sjekkliste» lagt til per dag 12.11 etter ønske fra Hans; gåtene er ikke endret. Feltet «Oppsettskisse» (dag 4, 12, 15, 16, 21) endret 13.11 etter ja fra Hans; gåta er ikke endret. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`.
+**Status: LÅST 10. november 2026.** De seks avgjørelsene i (d) er godtatt av Hans, og uavhengig gjennomgang (21 funn) er innarbeidet. Endringer krever eksplisitt ja. Endret etter ja fra Hans 10. november; materiallister rettet 10. november. Kontinuitet rettet 11. november etter ja fra Hans. Dag 6, 8, 10 og 13 endret 13.11 etter ja fra Hans. Vanskelighet strammet (dag 5 og 17 tittel, dag 9 utskrift, dag 15, 16, 17 og 21 Brikke S) endret 13.11 etter ja fra Hans. Brevfuglenes kanon (13.11): tittel dag 5 «Skriften på vingen» og brevfugl-linjene dag 5 og 14 endret 13.11 etter ja fra Hans. Feltet «Sjekkliste» lagt til per dag 12.11 etter ønske fra Hans; gåtene er ikke endret. Feltet «Oppsettskisse» (dag 4, 12, 15, 16, 21) endret 13.11 etter ja fra Hans; gåta er ikke endret. Rampestrekene samlet til én kilde 13.11 etter ja fra Hans: teksten skrives fra `historie-2026.md` §8 og §8.1 av `scripts/oppdrag-innhold.py`. Byggeplanen for dag 1 med ukedagene i 2026, utskrift av alt i november («Ta fram» i kveldslistene), oransje papir, suvenirene til dag 24, fersk klementin dag 24 og småfeil i sjekklistene dag 6, 16, 23 og 24 endret 13.11 etter ja fra Hans.
 
 **Revisjon 10. november 2026 (vanskelighet).** Godkjent av Hans: gåtene er for Kristian (12) og Håkon (9); Hanna (5) har valgfrie roller som aldri blokkerer. To meta-gåter (Frostrunene, Trixters kart), blindspor med feil bokstav der Julius' setning avgjør, og hevet nivå på 21 dager. Alle koder, brikke H + S, taket på 40 % og oppsett under 5 minutter på hverdager står. Julius-videoene dag 2–4 er ferdige og uendret. Standardvalg merket «standardvalg, kan endres» i (e).
 
@@ -104,7 +104,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 3.
 - **Oppsett:** 3 min.
 - **Sjekkliste:**
-  - Skriv ut: `dag02-tallkort.pdf`
+  - Ta fram: `dag02-tallkort.pdf`
   - Teip ett kort under hver av tre spisestoler
   - Lapp i sukkerskålen: «Tre sikringer røk … Krabb! – R»
   - Rampestrek: Rampenissen i sukkerskålen med teskje og sukker rundt munnen
@@ -125,8 +125,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 3.
 - **Oppsett:** 4 min. Test såpeskrift i november.
 - **Sjekkliste:**
-  - Skriv ut: `dag03-frostlapp.pdf`
-  - Skriv ut reservesett: `dag03-frostlapp.pdf`
+  - Ta fram: `dag03-frostlapp.pdf`
   - Skriv `_ _ Ƨ _ Я _` på badespeilet med q-tips og oppvaskmiddel
   - Lapp ved speilet: «Pust på meg.»
   - Vinduskarmen: glassperle, grønt hjerte-kort, konvolutt «ETTER KODEN – IQ» med frostkortet
@@ -149,8 +148,8 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 3.
 - **Oppsett:** 5 min (sju sko i ring, sju kort, kosedyr i ring bak).
 - **Sjekkliste:**
-  - Skriv ut: `dag04-skokort.pdf`
-  - Skriv ut reservesett: `dag04-skokort.pdf`
+  - Ta fram: `dag04-skokort.pdf`
+  - Legg perlen fra i går i konvolutt 24
   - Sett sju sko i ring i gangen, kosedyrene i ring utenfor
   - Ett kort i hver sko, etter prikkene bak, med klokka fra pappas
   - Rampestrek: Rampenissen i pappas sko med pappas solbriller
@@ -171,8 +170,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 4.
 - **Oppsett:** 6 min.
 - **Sjekkliste:**
-  - Skriv ut: `dag05-brevfugl.pdf`, `alfabetstrimmel.pdf`
-  - Skriv ut reservesett: `alfabetstrimmel.pdf`
+  - Ta fram: `dag05-brevfugl.pdf`, `alfabetstrimmel.pdf`
   - Brett fuglen og gjem den høyt i stua
   - Legg alfabetstrimmelen og trehopperen ved fuglen
   - Lapp ved marshmallowfortet: «Årets første brevfugl landet i natt … – R»
@@ -194,10 +192,9 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 2.
 - **Oppsett:** 5 min kvelden før (silhuettene klippes i november).
 - **Sjekkliste:**
-  - Skriv ut: `dag06-silhuetter.pdf`
-  - Skriv ut reservesett: `dag06-silhuetter.pdf`
+  - Ta fram: `dag06-silhuetter.pdf`
   - Teip silhuettene på ispinner og legg dem i papprullen
-  - Papprullen, en lampe og rødt hjerte-kort i gangen
+  - Papprullen, en mobillykt og rødt hjerte-kort i gangen
   - Lapp i melet: «Jeg har laget et instrument! … – R»
   - Rampestrek: snøengler i 1 dl mel på et stekebrett, kjøkkenbordet
 - **Materialer:** 3 ispinner, teip, papprull, mobillykt, hjerte-kortet.
@@ -217,8 +214,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 4.
 - **Oppsett:** 3 min kvelden før, pluss frysetid. **Legg begeret i fryseren senest søndag 6. kl. 20.**
 - **Sjekkliste:**
-  - Skriv ut: `dag07-frostlapp.pdf`
-  - Skriv ut reservesett: `dag07-frostlapp.pdf`
+  - Ta fram: `dag07-frostlapp.pdf`
   - Senest kl. 20: frys kortet i zip-pose i 1 cm vann
   - Lapp teipet på begeret: «Tin meg! Lunkent vann, og en voksen. – R»
   - Rampestrek: fastfryst i fryserdøra, lua inne i fryseren, vottene rett ut
@@ -239,7 +235,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 4.
 - **Oppsett:** 3 min.
 - **Sjekkliste:**
-  - Skriv ut: `dag08-lamper.pdf`
+  - Ta fram: `dag08-lamper.pdf`
   - Legg arket på toppen av tårnet
   - Lapp på tårnet: «IQs ark ligger på toppen … Ingen klatring! – R»
   - Rampestrek: tårn av frokostpakker, skilt «SIGMA-TÅRN», Rampenissen på toppen med suppeøse
@@ -260,7 +256,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 4.
 - **Oppsett:** 5 min (klipp ni krystaller, heng opp).
 - **Sjekkliste:**
-  - Skriv ut: `dag09-krystallark.pdf`
+  - Ta fram: `dag09-krystallark.pdf`
   - Klipp ut de ni krystallene og heng dem på kjøleskapsdøra
   - Blått hjerte-kort mellom krystallene
   - Rampestrek: Rampenissen i grønnsaksskuffen, bare beina stikker ut
@@ -281,7 +277,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 4.
 - **Oppsett:** 6 min (gjem åtte kort, legg fram filteret). Filter og testark lages i november som før.
 - **Sjekkliste:**
-  - Skriv ut i farge: `dag10-fargekort.pdf`
+  - Ta fram: `dag10-fargekort.pdf`
   - Gjem de åtte fargekortene lavt og høyt i stua
   - Legg rødfilteret ved tusjene
   - Lapp i Rampenissens hånd: «Kulde tok fargene! … Se gjennom det. – R»
@@ -303,7 +299,8 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 3.
 - **Oppsett:** 5 min.
 - **Sjekkliste:**
-  - Skriv ut: `dag11-tallkort.pdf`
+  - Ta fram: `dag11-tallkort.pdf`
+  - Legg filteret fra i går i konvolutt 24
   - Stua, under en pute: kortene 15 og 40
   - Kjøkkenet, i brødboksen: kortet 25
   - Gangen: 35 i Hannas jakkelomme, 20 i pappas
@@ -328,8 +325,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 4.
 - **Oppsett:** 4 min.
 - **Sjekkliste:**
-  - Skriv ut: `dag12-frostlapp-tredelt.pdf`
-  - Skriv ut reservesett: `dag12-frostlapp-tredelt.pdf`
+  - Ta fram: `dag12-frostlapp-tredelt.pdf`
   - Tre like glass: 2, 5 og 9 cm vann. Krus, teskje
   - Biter nederst, forsiden inn: E dypest, O midterst, tom grunnest, A kruset
   - Grønt sol-kort mot det midterste glasset
@@ -352,8 +348,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 4.
 - **Oppsett:** 4 min.
 - **Sjekkliste:**
-  - Skriv ut: `dag13-krydderkort.pdf`, `dag13-gravskilt.pdf`
-  - Skriv ut reservesett: `dag13-krydderkort.pdf`
+  - Ta fram: `dag13-krydderkort.pdf`, `dag13-gravskilt.pdf`
   - Ett kort i hver krydderpose: like mange ruter som bokstaver i krydderet
   - Posene og en lussekatt på servietten ved Rampenissen
   - Gravskiltet med lappen bak Rampenissen
@@ -375,7 +370,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 3.
 - **Oppsett:** 3 min.
 - **Sjekkliste:**
-  - Skriv ut: `dag14-brettark.pdf`
+  - Ta fram: `dag14-brettark.pdf`
   - Brett en papirbåt og sett den i den tørre vasken
   - Rull brettarket sammen og legg det i båten
   - Mobillykt klar ved vasken
@@ -398,7 +393,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 4.
 - **Oppsett:** 5 min.
 - **Sjekkliste:**
-  - Skriv ut: `dag15-redskapskort.pdf`
+  - Ta fram: `dag15-redskapskort.pdf`
   - Gryte, sleiv, visp, kjevle og øse på benken
   - Kort under: gryte A, sleiv M, visp L, kjevle og øse ❄
   - Fotsporstrimler fra skålen til alle fem; de korte mot kjevle og øse
@@ -423,9 +418,9 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 3.
 - **Oppsett:** 4 min utover streken.
 - **Sjekkliste:**
-  - Skriv ut: `dag16-hyllelapper.pdf`
+  - Ta fram: `dag16-hyllelapper.pdf`
   - Fjernkontrollen med O i brødboksen, tannbørsteglasset med E i bestikkskuffen
-  - Brødposen med I i TV-benken, ostehøvelen med K i badeskapet
+  - Brødposen med I i TV-benken, ostehøvelen med K på badehyllen
   - Tallapper: 2 i TV-benken, 5 på badehyllen, 7 i brødboksen
   - Rutekortet i brødboksen, lapp på lokket: «Jeg har ryddet! … – R»
   - Syltetøyglass og batterilys til lykten i vinduet mot nord (bonus)
@@ -447,7 +442,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 3.
 - **Oppsett:** 4 min (merk båndet, teip kortene, bind).
 - **Sjekkliste:**
-  - Skriv ut: `dag17-baandkort.pdf`, `dag17-losepengebrev.pdf`
+  - Ta fram: `dag17-baandkort.pdf`, `dag17-losepengebrev.pdf`
   - Sett sju sølvmerker med lik avstand på 1,5 m grønt bånd
   - Tegn en sløyfe på båndet før merke 1
   - Teip kortene ved merkene: O på 2, L på 5, ❄ på resten
@@ -471,8 +466,8 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 3.
 - **Oppsett:** 4 min.
 - **Sjekkliste:**
-  - Skriv ut: `dag18-rosinkort.pdf`
-  - Skriv ut reservesett: `dag18-rosinkort.pdf`
+  - Ta fram: `dag18-rosinkort.pdf`
+  - Legg en bit av båndet fra i går i konvolutt 24
   - Rosinspor på gråpapir fra ytterdøra mot kjøleskapet, fire servietter med kort under
   - Rosiner på hver serviett: like mange som prikkene bak kortet
   - Rutekortet i pappas jakkelomme med Rampenissen, blått sol-kort i den andre
@@ -495,7 +490,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 2.
 - **Oppsett:** 6 min (helg).
 - **Sjekkliste:**
-  - Skriv ut: `dag19-bevislapper.pdf`
+  - Ta fram: `dag19-bevislapper.pdf`
   - Pakk fire gulrøtter i folie; hyssing med merkelapp rundt tre
   - Pakkene: U · 2 i stua, O · 5 på kjøkkenet, ❄ · 3 i gangen
   - Teipomriss på kjøkkengulvet, med rutearket og «BEVIS»-pakken i
@@ -518,8 +513,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 3.
 - **Oppsett:** 4 min utover fortet (teppe over to stoler, popcorn i skål).
 - **Sjekkliste:**
-  - Skriv ut: `dag20-putekort.pdf`, `dag20-fortskilt.pdf`
-  - Skriv ut reservesett: `dag20-putekort.pdf`
+  - Ta fram: `dag20-putekort.pdf`, `dag20-fortskilt.pdf`
   - Fem puter i tydelig ulik størrelse, hulter til bulter i fortet
   - Kort etter prikkene bak: 1 under største pute, måne-kortet under minste
   - Lapp ved inngangen: «Putene lå etter størrelse … Så veltet jeg. Unnskyld. – R»
@@ -543,7 +537,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 5.
 - **Oppsett:** 4 min (åtte ryggkort, to kort i to bøker). Ingenting digitalt kvelden før.
 - **Sjekkliste:**
-  - Skriv ut: `dag21-portkort.pdf`
+  - Ta fram: `dag21-portkort.pdf`
   - Åtte bøker som lav mur foran skjermen
   - Teip ryggkortene på bøkene etter rutetallet, fra venstre
   - Kortet U · 7 inne i bok 5
@@ -566,7 +560,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 4.
 - **Oppsett:** 5 min.
 - **Sjekkliste:**
-  - Skriv ut: `dag22-sokkelapper.pdf`
+  - Ta fram: `dag22-sokkelapper.pdf`
   - Sett sokkemerkene 1, 2 og 3 på tre julesokker
   - Sokk 1 i stua (1a, 1b), sokk 2 på kjøkkenet (2a, 2b)
   - Sokk 3 (Hannas) i gangen: 3a, 3b og rødt måne-kort
@@ -590,11 +584,9 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 4.
 - **Oppsett:** 3 min (klipping og tråd i november).
 - **Sjekkliste:**
-  - Skriv ut: `dag23-stjerner.pdf`
-  - Skriv ut reservesett: `dag23-stjerner.pdf`
+  - Ta fram: `dag23-stjerner.pdf`
   - Heng de tolv stjernene i treet, de laveste i Hannas høyde
   - Rampenissen i treet med blått måne-kort
-  - Hyssing til stjernene
   - Rampestrek: en gave under treet teipet igjen med altfor mye teip
 - **Materialer:** hyssing, stjernearket, måne-kortet.
 - **Utskrifter:** `dag23-stjerner.pdf` (1 side, tykt papir, tolv stjerner med romertall bak).
@@ -607,18 +599,19 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Brikke H:** pappesken med sløyfe ved konvolutten: perlen med lapp `tegn U · 2`, filteret `tegn E · 4`, båndbiten `tegn G · 7`. I gullkonvolutten: avskjedsbrevet, rutekort med åtte ruter og alltid de tre reservelappene (samme tegn og tall, «IQs kopi»). De tre små ametystklyngene (lilla, hver i sin lille eske, én til hvert barn) under treet med runekortet.
 - **Brikke S:** Julius: «Dere har laget noe hele desember uten å vite det. Ikke koden, den tastet dere. Ikke varmen, den kom fra ovnen. Det trollmenn later som de har, og som dere faktisk har hatt: tre søsken som holder sammen i mørket. Og Hjerterud setter alltid navnet på høytiden foran ordet, slik hun gjør med grøten og treet.»
 - **Slik løses den:** 1) Kofferten åpnes; de tre tingene kjennes igjen. 2) H9 leser avskjedsbrevet høyt og legger lappene i rutekortet; K12 slår opp tegnene: `_ U _ E _ _ G _`. 3) Høytiden foran + det trollmenn later som de har. JULE + MAGI. Brevet i Brevfugler tiner, Snill-listen med finale, diplom, merket Snøfalls venn. 4) Runekortet ved krystallet leses sammen.
-- **Hint:** 1) «Hva ligger i esken med sløyfe? Kjenner dere igjen tingene?» Hanna kan si hvilken dag hver ting kommer fra. [Pappesken ved gullkonvolutten] 2) «Håkon, les brevet fra Rampenissen høyt. Hva mer ligger i konvolutten? Og hva står på lappene som henger på tingene?» [NisseMail i dag: «rutekortet ligger i konvolutten, lappene har tegn»] 3) «Slå opp tegnene på runetavla, og skriv bokstavene i rutene med samme tall.» 4) «Åtte ruter, U som nummer to, E som nummer fire og G som nummer sju. Julius sier to ting. Hva setter Hjerterud foran grøten og treet? Og hva later trollmenn som de har?» [Julius-videoen, segment 4 og 5]
+- **Hint:** 1) «Hva ligger i esken med sløyfe? Kjenner dere igjen tingene?» Hanna kan si hvilken dag hver ting kommer fra. [Pappesken under treet] 2) «Håkon, les brevet fra Rampenissen høyt. Hva mer ligger i konvolutten? Og hva står på lappene som henger på tingene?» [NisseMail i dag: «rutekortet ligger i konvolutten, lappene har tegn»] 3) «Slå opp tegnene på runetavla, og skriv bokstavene i rutene med samme tall.» 4) «Åtte ruter, U som nummer to, E som nummer fire og G som nummer sju. Julius sier to ting. Hva setter Hjerterud foran grøten og treet? Og hva later trollmenn som de har?» [Julius-videoen, segment 4 og 5]
 - **Hanna (hvis hun vil):** åpner kofferten og sier hvilken dag hver ting kommer fra.
 - **Andel per flate:** hus 3 av 8 (38 %), for den som har tavla. Video: to ledd uten å si noen av dem.
 - **Vanskelighet:** 3.
 - **Oppsett:** 4 min.
 - **Sjekkliste:**
-  - Skriv ut: `dag24-suvenirlapper.pdf`, `dag24-krystallkort.pdf`, `diplom.pdf`
+  - Ta fram: `dag24-suvenirlapper.pdf`, `dag24-krystallkort.pdf`, `diplom.pdf`
   - Pappesken med sløyfe: perlen (U · 2), filteret (E · 4), båndbiten (G · 7)
   - Gullkonvolutten i treet: avskjedsbrev, rutekort, tre reservelapper
-  - Tre ametystklynger i eske, runekortet og klementinen under treet
+  - Tre ametystklynger, runekortet og en fersk klementin under treet
+  - Legg bort Rampenissen (han reiste i natt)
   - Rampestrek: Rampenissen er borte; pappesken står under treet som koffert
-- **Materialer:** liten pappeske (den tomme fraktesken fra dag 1), sløyfe, gullkonvolutt, perlen, filteret og båndbiten, tre små ametystklynger i eske (ca. 3–4 cm), runekortet, og den siste klementinen fra Hjerteruds proviant ved siden av klyngene (uten lapp, så den ikke forveksles med merkelappene).
+- **Materialer:** liten pappeske (den tomme fraktesken fra dag 1), sløyfe, gullkonvolutt, perlen, filteret og båndbiten, tre små ametystklynger i eske (ca. 3–4 cm), runekortet, og den siste klementinen fra Hjerteruds proviant (kjøp en fersk; reserveklementinen fra dag 1 spises i uke 1) ved siden av klyngene (uten lapp, så den ikke forveksles med merkelappene).
 - **Utskrifter:** `dag24-suvenirlapper.pdf` (1 side, tykt papir, 3 lapper med tegn, rutekort, 3 reservelapper), `dag24-krystallkort.pdf` (1 side, tykt papir) og diplomene «Snøfalls venn» (3 sider).
 - **Reserve:** Reservelappene ligger i konvolutten. Mangler tavla et tegn, står de tre bokstavene i Nissemor-guiden; julaften er ikke dagen for å stå fast.
 
@@ -679,7 +672,8 @@ Nettbudsjett: 1 000 kr inkludert frakt. Her er bare én post satt til nett, og b
 | Aluminiumsfolie                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | 1 rull   | 11, 19               | hjemme                                                                                                                                                                         | 0             |                                                                         | folie                |
 | Mel, sukker, sirup, kanel, nellik                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | litt     | 2, 6, 13, 15         | hjemme                                                                                                                                                                         | 0             |                                                                         |                      |
 | Banan, servietter, oppvaskmiddel, q-tips, tannkrem                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |          | 1, 3, 13, 14, 18     | hjemme                                                                                                                                                                         | 0             |                                                                         |                      |
-| Klementiner, 2,3 kg-esker (faste frukter; spises uke 1–2)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | 3 esker  | 1 (scene), 24        | lokalt, kjøp 29. nov                                                                                                                                                           | 210–250 kr    |                                                                         |                      |
+| Klementiner, 2,3 kg-esker (faste frukter; spises uke 1–2, også reserveklementinen)                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | 3 esker  | 1 (scene)            | lokalt, kjøp 28. nov                                                                                                                                                           | 210–250 kr    |                                                                         |                      |
+| Klementin, fersk (kjøpes uka før jul; til dag 24)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | 1        | 24                   | lokalt                                                                                                                                                                         | 5 kr          |                                                                         | klementin            |
 | Tomme klementinesker (be butikken)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | 3–4      | 1                    | lokalt, gratis                                                                                                                                                                 | 0             |                                                                         |                      |
 | **Hobby og småting (Panduro)**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |          |                      |                                                                                                                                                                                |               |                                                                         |                      |
 | Tykt papir 160–200 g, A4                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | 50 ark   | alle kort            | lokalt                                                                                                                                                                         | 70 kr         | https://www.panduro.com/nb-no/search?q=kartong%20A4%20180 (søk)         |                      |
@@ -757,43 +751,42 @@ Sum: 44 sider obligatorisk (29 tykt, 12 vanlig, 3 symbolkort-sider) pluss 2 valg
 **Innen 25. november**
 
 - Kjøp alt under «lokalt» i handlelisten. Velg de tre ametystklyngene innen 25. november (steinbutikk, ca. 50–150 kr, eller nett som reserve).
-- Skriv ut hele PDF-en og symbolkortene. Klipp alle kort og legg dem i 24 konvolutter merket med dag. Legg `runer-fasit.pdf` i Nissemor-mappen, aldri på brettet. Dag 1-utskriftene (runetavle, linjekort, frakt, ferdskriver, flylogg, brett) legges i konvolutt «1» til 28. november.
-- Kjøp svart kraftpapir (2 ark) og oransje teip til ferdskriveren; finn fram skoeske med lokk, lyst laken, klesvaskkurv. Klementinene kjøpes først 29. november.
+- Skriv ut hele PDF-en og symbolkortene. Klipp alle kort og legg dem i 24 konvolutter merket med dag. Reservesettene skrives ut samtidig og legges i samme konvolutt; kveldslista sier bare «Ta fram». Legg `runer-fasit.pdf` i Nissemor-mappen, aldri på brettet. Dag 1-utskriftene (runetavle, linjekort, frakt, ferdskriver, flylogg, brett) legges i konvolutt «1» til 28. november.
+- Finn fram skoeske med lokk, lyst laken, klesvaskkurv til ferdskriveren og skredet (svart kraftpapir og oransje papir står i handlelisten). Klementinene kjøpes først 28. november.
 - Lag rødfilteret (cellofan i papprammen). Test det mot `dag10-testark.pdf`; svikter det, skriv kortene for hånd (blå kulepenn under rød tusj).
 - Klipp de tre silhuettene (dag 6) og teip dem på ispinner. Klipp de tolv stjernene (dag 23) og tre hyssing i dem.
 - Test tre ting på én kveld: såpeskrift på speilet (dag 3, med varmt vann i vasken), gjennomlys av brettarket med mobillykt (dag 14), skyggene mot veggen (dag 6).
 - Brett papirfuglen (dag 5) og skriv XOULNHQ på vingen.
-- Kjøp en liten konvolutt ekte safran til dag 13.
 - Legg frostkortet for dag 7 i zip-pose.
 
 **Kveld for kveld** (gåten; streken fra §8 kommer i tillegg)
 
-| Kveld       | Gjør                                                                                                                                                                                                                                                                         |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 28.–30. nov | **Dag 1-scenen**, se «Dag 1: byggeplan»: fredag ferdskriver og utskrifter (50 min), lørdag klementiner, etiketter og tråd (25 min), søndag kveld plassering (25–30 min): skred, tråd med seks kort, to løse kort i elva, ferdskriver med konvolutt, logg, runetavle og brett |
-| 1. des      | Tre romertallkort under stoler                                                                                                                                                                                                                                               |
-| 2. des      | Speilvendt såpeskrift på speilet, perle og hjerte-kort i vinduskarmen                                                                                                                                                                                                        |
-| 3. des      | Sju sko i ring, kort i hver                                                                                                                                                                                                                                                  |
-| 4. des      | Gjem fuglen høyt, legg strimmelen ved                                                                                                                                                                                                                                        |
-| 5. des      | Silhuettene i papprullen, lommelykt og hjerte-kort i gangen                                                                                                                                                                                                                  |
-| 6. des      | **Kl. 20: plastbeger med kortet i fryseren.** Lua og vottene ved                                                                                                                                                                                                             |
-| 7. des      | Lampekortet på toppen av tårnet                                                                                                                                                                                                                                              |
-| 8. des      | Ni krystaller og hjerte-kort på kjøleskapet                                                                                                                                                                                                                                  |
-| 9. des      | Åtte fargekort gjemt i stua, filteret ved tusjene                                                                                                                                                                                                                            |
-| 10. des     | Fem tallkort i tre rom; folie klar til bonus                                                                                                                                                                                                                                 |
-| 11. des     | Tre glass med vann og ett krus, kortbiter teipet utenpå, sol-kort                                                                                                                                                                                                            |
-| 12. des     | Fire krydderposer med kort, lussekatt                                                                                                                                                                                                                                        |
-| 13. des     | Brettarket rullet i papirbåten                                                                                                                                                                                                                                               |
-| 14. des     | Lapper under gryte, sleiv, visp (bokstav) og kjevle, øse (❄); to spor som stopper; rydd bort sukker og sirup; rutekort og sol-kort ved skålen                                                                                                                                |
-| 15. des     | Fire bokstavlapper på ting, tre tallapper på plasser, rutekort i brødboksen; syltetøyglass og batterilys fram                                                                                                                                                                |
-| 16. des     | Merk båndet med sølvpenn, teip de sju tegnkortene på, bind Rampenissen med én sløyfe                                                                                                                                                                                         |
-| 17. des     | Rosinspor med fire hauger, rutekort og sol-kort i jakken                                                                                                                                                                                                                     |
-| 18. des     | Tre foliepakker i tre rom, «BEVIS»-pakke på ruteark                                                                                                                                                                                                                          |
-| 19. des     | Fem puter i ulik størrelse med kort inne i fortet, i rot; måne-kort under den minste; finn fram 8 bøker                                                                                                                                                                      |
-| 20. des     | Åtte ryggkort på bøkene, `U · 7` inne i bok 5, ❄-kort inne i bok 3, bok 3 på gløtt                                                                                                                                                                                           |
-| 21. des     | Tre sokker med lapper, måne-kort i Hannas                                                                                                                                                                                                                                    |
-| 22. des     | Heng de tolv ferdige stjernene, Rampenissen med måne-kort                                                                                                                                                                                                                    |
-| 23. des     | Koffert med perle, filter og båndbit (tegnlapper); rutekort og reservelapper i konvolutten; krystall med runekort under treet                                                                                                                                                |
+| Kveld       | Gjør                                                                                                                                                                                                                                                                    |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 28.–30. nov | **Dag 1-scenen**, se «Dag 1: byggeplan»: lørdag ferdskriver, utskrifter og handel (45 min), søndag etiketter og tråd (25 min), mandag kveld plassering (25–30 min): skred, tråd med seks kort, to løse kort i elva, ferdskriver med konvolutt, logg, runetavle og brett |
+| 1. des      | Tre romertallkort under stoler                                                                                                                                                                                                                                          |
+| 2. des      | Speilvendt såpeskrift på speilet, perle og hjerte-kort i vinduskarmen                                                                                                                                                                                                   |
+| 3. des      | Sju sko i ring, kort i hver                                                                                                                                                                                                                                             |
+| 4. des      | Gjem fuglen høyt, legg strimmelen ved                                                                                                                                                                                                                                   |
+| 5. des      | Silhuettene i papprullen, mobillykt og hjerte-kort i gangen                                                                                                                                                                                                             |
+| 6. des      | **Kl. 20: plastbeger med kortet i fryseren.** Lua og vottene ved                                                                                                                                                                                                        |
+| 7. des      | Lampekortet på toppen av tårnet                                                                                                                                                                                                                                         |
+| 8. des      | Ni krystaller og hjerte-kort på kjøleskapet                                                                                                                                                                                                                             |
+| 9. des      | Åtte fargekort gjemt i stua, filteret ved tusjene                                                                                                                                                                                                                       |
+| 10. des     | Fem tallkort i tre rom; folie klar til bonus                                                                                                                                                                                                                            |
+| 11. des     | Tre glass med vann og ett krus, kortbiter teipet utenpå, sol-kort                                                                                                                                                                                                       |
+| 12. des     | Fire krydderposer med kort, lussekatt                                                                                                                                                                                                                                   |
+| 13. des     | Brettarket rullet i papirbåten                                                                                                                                                                                                                                          |
+| 14. des     | Lapper under gryte, sleiv, visp (bokstav) og kjevle, øse (❄); to spor som stopper; rydd bort sukker og sirup; rutekort og sol-kort ved skålen                                                                                                                           |
+| 15. des     | Fire bokstavlapper på ting, tre tallapper på plasser, rutekort i brødboksen; syltetøyglass og batterilys fram                                                                                                                                                           |
+| 16. des     | Merk båndet med sølvpenn, teip de sju tegnkortene på, bind Rampenissen med én sløyfe                                                                                                                                                                                    |
+| 17. des     | Rosinspor med fire hauger, rutekort og sol-kort i jakken                                                                                                                                                                                                                |
+| 18. des     | Tre foliepakker i tre rom, «BEVIS»-pakke på ruteark                                                                                                                                                                                                                     |
+| 19. des     | Fem puter i ulik størrelse med kort inne i fortet, i rot; måne-kort under den minste; finn fram 8 bøker                                                                                                                                                                 |
+| 20. des     | Åtte ryggkort på bøkene, `U · 7` inne i bok 5, ❄-kort inne i bok 3, bok 3 på gløtt                                                                                                                                                                                      |
+| 21. des     | Tre sokker med lapper, måne-kort i Hannas                                                                                                                                                                                                                               |
+| 22. des     | Heng de tolv ferdige stjernene, Rampenissen med måne-kort                                                                                                                                                                                                               |
+| 23. des     | Koffert med perle, filter og båndbit (tegnlapper); rutekort og reservelapper i konvolutten; krystall med runekort under treet                                                                                                                                           |
 
 Legg perlen (3. des.), filteret (10. des.) og en bit av båndet (17. des.) i konvolutten merket «24» samme kveld. Reservelappene dekker uansett.
 
@@ -803,14 +796,14 @@ Klementinskredet og ferdskriveren, godkjent av Hans 10. november. Gåten står u
 
 ### Mengde
 
-En familie på fem spiser 6–7 klementiner om dagen i desember, cirka 45 i uka. Frukt som har ligget på gulvet bør spises innen to uker: **3 esker à 2,3 kg = cirka 90 klementiner (210–250 kr)**, kjøpt 29. november, faste frukter. Fjerde eske kjøpes etter 7. desember bare hvis de tre er spist; bløte frukter blir juice helgen 5.–6. Fordeling på scenen: revnet eske 15 · delta foran åpningen 20 · elva 35 · haugen 20.
+En familie på fem spiser 6–7 klementiner om dagen i desember, cirka 45 i uka. Frukt som har ligget på gulvet bør spises innen to uker: **3 esker à 2,3 kg = cirka 90 klementiner (210–250 kr)**, kjøpt 28. november, faste frukter. Fjerde eske kjøpes etter 7. desember bare hvis de tre er spist; bløte frukter blir juice helgen 5.–6. Fordeling på scenen: revnet eske 15 · delta foran åpningen 20 · elva 35 · haugen 20.
 
 90 klementiner tett i ett lag dekker bare 0,3 m². Skredet bygges av volum under og overflate oppå: (1) **skråning**: klesvaskkurv opp-ned eller to sofaputer inntil TV-benken under et lyst laken, 40–50 cm høyt; (2) **elv, ikke dam**: lakenet brettes til en renne 30–35 cm bred og 2,5–3 m lang mot stuedøra, 2–3 klementiner i bredden med 6–8 cm mellomrom og lakenfolder mellom; (3) **revnet eske**: øverst på skråningen, kortsiden skåret opp og bøyd ut, stappet med avispapir til 3 cm under kanten, ett lag frukt oppå som velter ut; (4) **haugen**: et sammenrullet badehåndkle under lakenet nederst i elva, 20 cm høyt, med fruktskålen oppå; (5) **last i bakgrunnen**: 3–4 tomme klementinesker fra butikken, stablet på TV-benken med etiketter.
 
 ### Rekvisitter
 
 - **Fraktesker (4–5).** Klementineskene selv (30 × 20 × 10 cm eller kartong 32 × 22 × 12), alternativt skoesker. Én revnet (se over), 3–4 tomme stablet. Etiketter fra `dag01-frakt.pdf`, limt med limstift: fraktetikett A5 (Snøfall-logo: sirkel med snøkrystall og «SNØFALL FRAKT» rundt; «FRA: Verkstedet, Snøfall · Linje 90,0 MHz» / «TIL: Rampenissen c/o K12 · H9 · H5, Landås»; «INNHOLD: VITAMIN C, 2,3 KG»; «SENDING 1 AV 4» nummerert 1–4; falsk strekkode «90.0-SNF-0112»), SKJØRT-merke A6 i rød ramme («SKJØRT – VITAMIN C TIL LANDÅS · DENNE SIDE OPP ↑»), stempler limt skjevt: «TRYKKSKADET» (rød, på den revnede), «KONTROLLERT – IQ» (blå sirkel), «HASTER · ADVENT».
-- **Ferdskriveren.** Skoeske med løst lokk (cirka 33 × 20 × 12 cm), eske og lokk kledd hver for seg i svart kraftpapir (brettet som gavepapir, limt på innsiden; alternativ svart søppelsekk; ikke maling). To oransje striper 4–5 cm brede, 6 cm fra hver ende, av oransje gaffateip eller oransje papir, over lokket og skåret rent langs lokkekanten med tapetkniv. Merker fra `dag01-ferdskriver.pdf`: topp «FERDSKRIVER · SNØFALL LUFTFART · FLIGHT RECORDER · IKKE ÅPNE UTEN K12 · H9 · H5», langside «IKKE KAST I HAVET · OM FUNNET, LEVER TIL IQ», kortside «LINJE 90,0 MHz · NEDSTIGNING 01.12 · KL. 00:04», serienummer «SNF-FDR-2026-001». Forsegling: én strimmel maskeringsteip over lokkekanten med «FORSEGLET – IQ». Innhold i rekkefølge: (1) IQs C6-konvolutt «K12 · H9 · H5 – ÅPNES FØRST» med linjekortet (`dag01-linjekort.pdf`, A6 tykt: «DIREKTELINJEN · 90,0 MHz · PASSORD TIL NISSEKOMM:» og passordet skrevet med tusj, «Skriv det inn når skjermen spør. Hvis linjen skurrer, er det ikke dere. Det jobber vi med. – IQ»); (2) flyloggen (`dag01-flylogg.pdf`), papirstrimmel 7 × 40 cm rullet med binders, teleksrull i monospace: «SNØFALL LUFTFART – LOGG LINJE 90,0 / 30.11 23:52 LINJE ÅPNET. BÆREBØLGE 90,0 OK / 30.11 23:58 LAST SLUPPET: VITAMIN C, 3 KOLLI / 01.12 00:04 NISSE SLUPPET. FALLSKJERM: SERVIETT / 01.12 00:05 LANDING. UNDERLAG: MYKT. GULT. BUET. / 01.12 00:06 BÆREBØLGE 90,0 … 90,0 … 85,0 ? … 90,0 / 01.12 00:07 ORAKELET: NOE LYTTER. OVERVÅKES. / 01.12 00:08 LOGG SLUTT»; (3) runetavla (`runetavle.pdf`) og operasjonsbrettet (`operasjonsbrett.pdf`, A3 brettet i fire: «OPERASJON DIREKTELINJEN», ni ruter med datoene 3, 6, 9, 12, 15, 18, 20, 22, 23 for symbolkortene, en linje med seks tomme sirkler 1, 7, 12, 15, 21, 24 uten navn) med et ark på seks runde gullklistremerker; (4) én klementin med lapp «RESERVE – IQ». Ingen bokstaver fra koden, ingen steder i huset.
+- **Ferdskriveren.** Skoeske med løst lokk (cirka 33 × 20 × 12 cm), eske og lokk kledd hver for seg i svart kraftpapir (brettet som gavepapir, limt på innsiden; alternativ svart søppelsekk; ikke maling). To oransje striper 4–5 cm brede, 6 cm fra hver ende, av oransje papir, over lokket og skåret rent langs lokkekanten med tapetkniv. Merker fra `dag01-ferdskriver.pdf`: topp «FERDSKRIVER · SNØFALL LUFTFART · FLIGHT RECORDER · IKKE ÅPNE UTEN K12 · H9 · H5», langside «IKKE KAST I HAVET · OM FUNNET, LEVER TIL IQ», kortside «LINJE 90,0 MHz · NEDSTIGNING 01.12 · KL. 00:04», serienummer «SNF-FDR-2026-001». Forsegling: én strimmel maskeringsteip over lokkekanten med «FORSEGLET – IQ». Innhold i rekkefølge: (1) IQs C6-konvolutt «K12 · H9 · H5 – ÅPNES FØRST» med linjekortet (`dag01-linjekort.pdf`, A6 tykt: «DIREKTELINJEN · 90,0 MHz · PASSORD TIL NISSEKOMM:» og passordet skrevet med tusj, «Skriv det inn når skjermen spør. Hvis linjen skurrer, er det ikke dere. Det jobber vi med. – IQ»); (2) flyloggen (`dag01-flylogg.pdf`), papirstrimmel 7 × 40 cm rullet med binders, teleksrull i monospace: «SNØFALL LUFTFART – LOGG LINJE 90,0 / 30.11 23:52 LINJE ÅPNET. BÆREBØLGE 90,0 OK / 30.11 23:58 LAST SLUPPET: VITAMIN C, 3 KOLLI / 01.12 00:04 NISSE SLUPPET. FALLSKJERM: SERVIETT / 01.12 00:05 LANDING. UNDERLAG: MYKT. GULT. BUET. / 01.12 00:06 BÆREBØLGE 90,0 … 90,0 … 85,0 ? … 90,0 / 01.12 00:07 ORAKELET: NOE LYTTER. OVERVÅKES. / 01.12 00:08 LOGG SLUTT»; (3) runetavla (`runetavle.pdf`) og operasjonsbrettet (`operasjonsbrett.pdf`, A3 brettet i fire: «OPERASJON DIREKTELINJEN», ni ruter med datoene 3, 6, 9, 12, 15, 18, 20, 22, 23 for symbolkortene, en linje med seks tomme sirkler 1, 7, 12, 15, 21, 24 uten navn) med et ark på seks runde gullklistremerker; (4) én klementin med lapp «RESERVE – IQ». Ingen bokstaver fra koden, ingen steder i huset.
 - **Rampenissen i haugen.** Fruktskålen på håndklehaugen nederst i elva, 2,5–3 m fra TV-en, der barna ser luen først. Banan i skålen som pute, serviett som dyne. Dorullhylse inni luen så den står 10 cm over fruktene. Én arm opp som et vink (binders i ermet); den røde tråden knyttet rundt håndleddet. 15–20 klementiner over og rundt skålen til bare luen og armen er fri.
 - **Serviettfallskjermen.** Én hvit serviett 33 × 33 cm, 25 cm rødt garn i hvert hjørne, samlet i en hårstrikk rundt magen hans. Draperes halvt sammensunket bak haugen, ett hjørne under en klementin.
 - **Tråden og kortene (gåten).** 3,5–4 m rødt garn fra under TV-foten (lapp «LINJE 90,0», A8) ned skråningen, langs elvas høyre kant, til håndleddet. Seks A7-kort med klesklyper, første 40 cm fra TV-en, deretter cirka 55 cm mellomrom, siste 30 cm før håndleddet; én klementin under hver klype så kortet står opp. De to løse kortene E og T uten klype ligger i elva mellom fruktene. Tråden teipes til lakenet på tre punkter under klementiner. Ingen sløyfer eller kryss.
@@ -820,27 +813,27 @@ Trygghet for Hanna: alt i gulvhøyde, ingenting i halshøyde, ingen frukt i trap
 
 ### Byggeplan 28.–30. november
 
-**Fredag 28. (cirka 50 min, etter leggetid)**
+**Lørdag 28. (cirka 45 min + handel, etter leggetid)**
 
-| Steg                                                                                                                                                                                               | Min |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| Skriv ut `dag01-frakt.pdf` (4 s.), `dag01-ferdskriver.pdf`, `dag01-linjekort.pdf` (tykt), `dag01-flylogg.pdf`, `operasjonsbrett.pdf`, `dag01-tradkort.pdf` (tykt, tosidig), `runetavle.pdf` (tykt) | 10  |
-| Klipp etiketter, merker, stempler, kort og loggstrimler; lim loggen til én strimmel, rull med binders                                                                                              | 10  |
-| Ferdskriveren: kle eske og lokk i svart, to oransje striper, skjær stripene langs lokkekanten, lim merkene, skriv serienummer                                                                      | 20  |
-| Linjekortet: skriv passordet med tusj, i konvolutt med påskrift. Legg konvolutt, logg, runetavle, brett og klistremerker i ferdskriveren; lokk på, ikke forsegl                                    | 5   |
-| Fallskjermen: serviett, fire garnbiter, hårstrikk                                                                                                                                                  | 5   |
+| Steg                                                                                                                                                                                                             | Min |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| Handel: 3 esker klementiner (faste), be om 3–4 tomme esker                                                                                                                                                       | –   |
+| Ta fram konvolutt «1»: `dag01-frakt.pdf` (4 s.), `dag01-ferdskriver.pdf`, `dag01-linjekort.pdf` (tykt), `dag01-flylogg.pdf`, `operasjonsbrett.pdf`, `dag01-tradkort.pdf` (tykt, tosidig), `runetavle.pdf` (tykt) | 5   |
+| Klipp etiketter, merker, stempler, kort og loggstrimler; lim loggen til én strimmel, rull med binders                                                                                                            | 10  |
+| Ferdskriveren: kle eske og lokk i svart, to oransje striper, skjær stripene langs lokkekanten, lim merkene, skriv serienummer                                                                                    | 20  |
+| Linjekortet: skriv passordet med tusj, i konvolutt med påskrift. Legg konvolutt, logg, runetavle, brett og klistremerker i ferdskriveren; lokk på, ikke forsegl                                                  | 5   |
+| Fallskjermen: serviett, fire garnbiter, hårstrikk                                                                                                                                                                | 5   |
 
-**Lørdag 29. (cirka 25 min + handel)**
+**Søndag 29. (cirka 25 min)**
 
 | Steg                                                                                                                                                                   | Min |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| Handel: 3 esker klementiner (faste), be om 3–4 tomme esker                                                                                                             | –   |
 | Lim fraktetikett, SKJØRT og stempler på alle 6–7 esker; nummerer «SENDING 1 AV 4» osv.                                                                                 | 10  |
 | Revnet eske: velg én tom, skjær opp kortsiden og hjørnet, bøy flaket ut, «TRYKKSKADET» skjevt over revnen, stapp med avispapir                                         | 5   |
 | Tråden: klyp de seks kortene fast i riktig rekkefølge og avstand på 4 m garn, vikle rundt en pappbit merket «TV-ENDE»; de to løse kortene i en konvolutt               | 5   |
 | Pose «30. nov»: ferdskriver, tråd, løse kort, fallskjerm, hårstrikk, dorullhylse, maskeringsteip, binders; tomme esker stablet. Fulle esker i boden, ikke på kjøkkenet | 5   |
 
-**Søndag 30., etter at barna sover (cirka 30 min)**
+**Mandag 30., etter at barna sover (cirka 30 min)**
 
 | #   | Steg                                                                                                                                                                                                                                                                         | Min |
 | --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
@@ -864,26 +857,24 @@ Guiden viser denne lista på «Før sesongen», én gruppe per dato. `x.pdf` bli
 ```
 Før 28. nov
 [ ] Bestem passordet til appen (A1)
-[ ] Kjøp svart papir (2 ark) og oransje teip (1 rull)
+[ ] Kjøp svart papir (2 ark) og oransje papir (1–2 ark)
 [ ] Finn skoeske, laken, klesvaskkurv eller puter, håndkle og fruktskål
 
-Fre 28. nov
-[ ] Skriv ut på tykt papir: `dag01-tradkort.pdf`, `dag01-linjekort.pdf`, `runetavle.pdf`, `operasjonsbrett.pdf`
-[ ] Skriv ut på vanlig papir: `dag01-frakt.pdf`, `dag01-ferdskriver.pdf`, `dag01-flylogg.pdf`
-[ ] Skriv ut reservesett: `dag01-tradkort.pdf`, `runetavle.pdf`
+Lør 28. nov
+[ ] Kjøp 3 esker klementiner (faste), be om 3–4 tomme esker
+[ ] Ta fram konvolutt «1»: `dag01-tradkort.pdf`, `dag01-linjekort.pdf`, `runetavle.pdf`, `operasjonsbrett.pdf`, `dag01-frakt.pdf`, `dag01-ferdskriver.pdf`, `dag01-flylogg.pdf`
 [ ] Kle ferdskriveren: svart papir, striper, merker, serienummer
 [ ] Skriv passordet på linjekortet
 [ ] Fyll ferdskriveren: konvolutt med linjekort, flylogg, runetavle, brett, 6 klistremerker, 1 klementin «RESERVE»
 [ ] Knyt fallskjermen
 
-Lør 29. nov
-[ ] Kjøp 3 esker klementiner (faste), be om 3–4 tomme esker
+Søn 29. nov
 [ ] Lim etiketter, SKJØRT og stempler på alle esker, «TRYKKSKADET» på den revnede
 [ ] Skjær opp og stapp den revnede esken
 [ ] Klyp 6 kort på tråden fra TV-enden: ❄ I ❄ N ❄ ❄, prikker bak; E og T løse
 [ ] Pakk posen «30. nov», gjem de fulle eskene
 
-Søn 30. nov, kveld
+Man 30. nov, kveld
 [ ] Rydd banen, teip lakenet
 [ ] Bygg skråning, renne og haug
 [ ] Stable eskene, den revnede øverst
@@ -893,8 +884,9 @@ Søn 30. nov, kveld
 [ ] Forsegl ferdskriveren, legg den i deltaet
 [ ] Sjekk fra døra på huk, ta bilde, slukk lyset
 
-Man 1. des, etter koden
+Tir 1. des, etter koden
 [ ] Frukt i esker, til kjøkkenet; én eske «SNØFALL FORRÅD» ved TV-en
+[ ] Ta vare på én liten frakteske til dag 24
 [ ] Heng runetavle og brett på veggen, sett klistremerke 1
 [ ] Sett ferdskriveren ved skjermen (postkasse)
 [ ] Rist lakenet, ta teipen av gulvet

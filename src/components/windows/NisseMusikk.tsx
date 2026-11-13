@@ -237,7 +237,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
           <div className="border-4 border-(--neon-green) bg-black p-4 space-y-3">
             <div className="text-center space-y-1">
               <div className="text-base text-(--cold-blue) tracking-wider">
-                {isPlaying ? "NÅ SPILLER PÅ 90.0 MHz" : "VALGT SPOR"}
+                {isPlaying ? "NÅ SPILLER PÅ 90,0 MHz" : "VALGT SPOR"}
               </div>
               <div className="text-2xl text-(--neon-green) font-bold tracking-wider">
                 {track.title}

@@ -377,6 +377,8 @@ export const KAPITTEL_4: Kapittel = {
           feil: {
             hyssing:
               "Winter ser på garnet. «Utlån fra arkivet, stemplet av meg. Brevene skal inn gjennom porten i Muren i natt. Ikkje denne porten. Den andre. Garnet skal tilbake rundt bunken. Eg har ført det opp.»",
+            fiskesnoere:
+              "Winter ser på garnet i enden av magneten. «Utlån fra arkivet, stemplet av meg. Brevene skal inn gjennom porten i Muren i natt. Ikkje denne porten. Den andre. Garnet skal tilbake rundt bunken. Eg har ført det opp.»",
             bjelle:
               "Du viser Winter bjella. «Punkt to henger på sleden, ikkje på meg. Eg er ikkje en slede. Eg har sjekket.»",
             briller:
@@ -558,7 +560,7 @@ export const KAPITTEL_4: Kapittel = {
             magnet:
               "Du slipper magneten ned i sprekken. KLIKK, den sitter fast i bjella der nede. Og du når ikke ned. Floke river den opp igjen med nebbet, med nød og neppe. Du trenger noe å senke den ned MED. Og dra opp med.",
             hyssing:
-              "Du senker garnet ned. Den henger der og gjør ingenting. Bjella er ikke imponert. Noe må sitte i enden. Noe bjeller liker.",
+              "Du senker garnet ned. Det henger der og gjør ingenting. Bjella er ikke imponert. Noe må sitte i enden. Noe bjeller liker.",
             fjaerpenn:
               "Du stikker fjærpennen ned i sprekken. Det kiler bjella. Den ler ikke. Bjeller ler ikke, de ringer, og denne gjør ikke det engang.",
             klementin:
@@ -716,7 +718,7 @@ export const KAPITTEL_4: Kapittel = {
           ta: {
             item: "hyssing",
             tekst:
-              "Du løsner det røde garnet fra bunken og vikler den opp. Lang. Sterk. Brevene blir liggende pent. De har vært på reise, de vet hvordan man oppfører seg. " +
+              "Du løsner det røde garnet fra bunken og vikler det opp. Lang. Sterk. Brevene blir liggende pent. De har vært på reise, de vet hvordan man oppfører seg. " +
               R +
               "«Æ ga dem resten av nøstet. Det har jo halve fra før. Da kjenne det igjen garnet. Lån det, men legg det tilbake!»",
           },
@@ -798,7 +800,7 @@ export const KAPITTEL_4: Kapittel = {
           bruker: [
             {
               item: "fjaerpenn",
-              uten: "fugl_kilt",
+              alle: [{ uten: "fugl_kilt" }, { uten: "tok_briller" }],
               flagg: "fugl_kilt",
               tekst:
                 "Du kiler fuglen under vingen med fjærpennen. Hun fniser og letter en centimeter. Under henne: Julius' briller! Runde og blanke. Så setter hun seg igjen. " +
@@ -807,9 +809,15 @@ export const KAPITTEL_4: Kapittel = {
             },
             {
               item: "fjaerpenn",
-              hvis: "fugl_kilt",
+              alle: [{ hvis: "fugl_kilt" }, { uten: "tok_briller" }],
               tekst:
                 "Du kiler henne igjen. Hun fniser igjen. Brillene glimter igjen. Hun setter seg igjen. Dette kan dere holde på med hele kvelden. Hun har ingen planer.",
+            },
+            {
+              item: "fjaerpenn",
+              hvis: "tok_briller",
+              tekst:
+                "Du kiler henne. Hun fniser og letter en centimeter. Under henne: klementinen. Hun setter seg igjen. Den er hennes nå.",
             },
             {
               item: "fuglemerke",
@@ -832,7 +840,7 @@ export const KAPITTEL_4: Kapittel = {
             noett:
               "Du legger nøtta ved siden av fuglen. Hun ser på den. Rund, ja. Blank? Hun ser på deg. Hun ser på nøtta. Hun dytter den utfor kanten med nebbet. Den triller under vedkassa. Hun har standarder, og de er blanke.",
             hyssing:
-              "Du legger garnet rundt fuglen. Hun ser på den som om du har gitt henne et skjerf. Det er ikke helt feil. Hun ser litt ut som Winter nå.",
+              "Du legger garnet rundt fuglen. Hun ser på det som om du har gitt henne et skjerf. Det er ikke helt feil. Hun ser litt ut som Winter nå.",
             magnet:
               "Brevfugler er ikke magnetiske. Du sjekket. Nå vet du. Hun vet også. Hun er ikke fornøyd med å vite det.",
             fiskesnoere:

@@ -247,7 +247,9 @@ export function channelSource(
   switch (channel) {
     case 1:
       if (day === 24 && solved) return mediaUrl("video/tv/landsby-dag24.mp4");
-      if (day === 17) return mediaUrl("video/tv/landsby-nordlys.mp4");
+      // The lights are the answer; the sky stays quiet until the code is in.
+      if (day === 17 && solved)
+        return mediaUrl("video/tv/landsby-nordlys.mp4");
       if (day === 18) return mediaUrl("video/tv/landsby-storm.mp4");
       {
         const currentPhase = phaseAt(hour).phase;

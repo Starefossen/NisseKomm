@@ -40,7 +40,7 @@ export default function Dag01Tradkort() {
         hjorne: true,
         klipp:
           "åtte kort langs de stiplede linjene. Kort 1–6 har prikker bak (1–6); E og T har ingen.",
-        hvor: "Lørdag 29. november: klyp kort 1–6 på 4 m rødt garn i rekkefølge fra TV-enden (krystall, I, krystall, N, krystall, krystall), første 40 cm fra TV-en, så cirka 55 cm mellom. Søndag kveld: tråden fra TV-foten til Rampenissens arm, kortene opp. E og T løse mellom klementinene i elva, uten klype.",
+        hvor: "Søndag 29. november: klyp kort 1–6 på 4 m rødt garn i rekkefølge fra TV-enden (krystall, I, krystall, N, krystall, krystall), første 40 cm fra TV-en, så cirka 55 cm mellom. Mandag kveld: tråden fra TV-foten til Rampenissens arm, kortene opp. E og T løse mellom klementinene i elva, uten klype.",
       }}
     />
   );

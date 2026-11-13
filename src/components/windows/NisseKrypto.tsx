@@ -321,7 +321,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                         : mediaUrl("feed/julius-kontor.jpg");
                   const camTag =
                     challenge.challengeId === "frosne-koder"
-                      ? "KRYPTO-LÅS 01 // 85.0 MHz IS-KODE"
+                      ? "KRYPTO-LÅS 01 // 85,0 MHz IS-KODE"
                       : challenge.challengeId === "stjernetegn"
                         ? "KRYPTO-LÅS 02 // STJERNE-NAVIGASJON"
                         : "KRYPTO-LÅS 03 // SNØFALLS HJERTE";

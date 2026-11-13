@@ -57,7 +57,7 @@ export default function Dag01Ferdskriver() {
       ]}
       instruks={{
         klipp: "tre merker og to «FORSEGLET»-strimler.",
-        hvor: "Fredag 28. november, når skoesken er kledd i svart med to oransje striper: toppmerket på lokket, langsidemerket på esken, kortsidemerket i enden. Søndag kveld limes én «FORSEGLET – IQ» på maskeringsteipen over lokkekanten (den andre er reserve).",
+        hvor: "Lørdag 28. november, når skoesken er kledd i svart med to oransje striper: toppmerket på lokket, langsidemerket på esken, kortsidemerket i enden. Mandag kveld limes én «FORSEGLET – IQ» på maskeringsteipen over lokkekanten (den andre er reserve).",
       }}
     />
   );

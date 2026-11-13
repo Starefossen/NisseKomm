@@ -95,7 +95,7 @@ export const STEDER: readonly Sted[] = [
     z: 0,
     r: 1800,
     dag: 8,
-    radio: "Snøfall! Husan har piper, og pipan vil ha pakka.",
+    radio: "Snøfall! Husan har pipa, og pipan vil ha pakka.",
   },
   {
     id: "antenne",

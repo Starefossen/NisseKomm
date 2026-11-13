@@ -292,7 +292,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
     dag: 24,
     navn: "Julenatt over grotten",
     intro:
-      "Klar himmel. Fly lavt over grotten så lyset når ned, så setter vi kursen mot Landås.",
+      "Klar himmel. Fly lavt over grotten så lyset når ned, så setter vi kursen mot Bergen.",
     lengde: 70000,
     fart: 1000,
     blanding: {
@@ -1220,27 +1220,27 @@ export const RADIO: Record<string, readonly string[]> = {
     "Snø i ansiktet e bra for huden, sei Hjerterud.",
     "Æ sa et ord Julius ikkje like. Inni mæ.",
     "Æ e cooked. Sleden e cooked. Rudolf e medium.",
-    "Ikkje crash out no. Det va bare et tre.",
+    "Ikkje crash out no. Det va bare et tre. Eller et fjell.",
   ],
   nesten: [
-    "Nesten! Æ telte den, men IQ gjord det ikkje.",
+    "Nesten! Æ telt den, men IQ gjord det ikkje.",
     "Så nære at ringen blei nervøs.",
   ],
   levering: [
-    "Rett i pipa! Dem får sot på gaven, men gave e gave.",
+    "Rett i pipa! Dem får sot på gava, men gave e gave.",
     "Bra jobba! Kaffen te pappaen der inne blei akkurat svart.",
     "Rett i pipa! Pluss tusen aura. Æ har telt.",
   ],
   pakkebom: [
     "Pakken ligg i snøen. Nån finn den te påske.",
     "Oi. Det der va ikkje pipa. Det va en hage.",
-    "Minus aura. Hagen fikk gaven. Hagen sei takk.",
+    "Minus aura. Hagen fikk gava. Hagen sei takk.",
   ],
   rekke: [
     "Fem på rad! Du e locked in. Æ e locked ute, æ står på trappa.",
     "Trixter e heilt locked in. Ikkje snakk te han no.",
   ],
-  utfordring: ["Utfordring klart! Æ sei det på Morgenrådet i morra."],
+  utfordring: ["Utfordring klart! Æ sei det te bamsan. Dem e imponert."],
   mål: [
     "I mål! Trixter vil ha nåkka godt og æ vil ha kaffe.",
     "Landa! IQ nikke. Det e det nærmaste han kjem et smil.",
@@ -1250,7 +1250,7 @@ export const RADIO: Record<string, readonly string[]> = {
   sprang: ["SPRANG! Hold dæ fast, det her e ikkje lov på jorda."],
   port: ["Gjennom porten! Varmen slapp dæ inn."],
   låst: [
-    "Stengt! Det der åpne seinar, sei IQ. Fly ein annen plass så lenge.",
+    "Stengt! Det der åpne seinare, sei IQ. Fly en anna plass så lenge.",
     "Låst, sjø. Kom tilbake når dagen kjem.",
     "Æ prøvd å rizze låsen. Låsen va ikkje interessert.",
   ],

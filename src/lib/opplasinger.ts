@@ -126,7 +126,7 @@ function bygg(): Opplasing[] {
     const liste = `${navn.slice(0, -1).join(", ")} og ${navn.at(-1)}`;
     dagens.forEach((o) => delete o.varsel);
     const baerer = dagens.find((o) => o.etterKode) ?? dagens[dagens.length - 1];
-    baerer.varsel = `RAMPENISSEN: ${tall[dagens.length - 2] ?? dagens.length} ting på én dag: ${liste}. IQ sei det e tilfeldig. Æ trur han har drukke for mye kaffe.`;
+    baerer.varsel = `RAMPENISSEN: ${tall[dagens.length - 2] ?? dagens.length} ting på én dag: ${liste}. IQ sei det e tilfeldig. Æ trur han har drukke for mykje kaffe.`;
     baerer.etterKode = true;
   }
   return alle;
@@ -194,7 +194,7 @@ const PUFF: Record<2 | 3 | 4, string[]> = {
 
 // After Julius' video, until today's mail is read (JuliusVideo)
 const MAIL_PUFF = [
-  "RAMPENISSEN: Æ har skrevet te dokker! Ligg i NisseMail. Les den før dokker gjør nåkka anna.",
+  "RAMPENISSEN: Æ har skrive te dokker! Ligg i NisseMail. Les den før dokker gjør nåkka anna.",
   "RAMPENISSEN: Ferdig med Julius? Bra. No ligg det et brev fra mæ og vente.",
   "RAMPENISSEN: Psst. Æ har sendt dokker en melding. Den e viktigare enn den ser ut.",
 ];

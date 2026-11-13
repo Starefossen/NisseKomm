@@ -72,7 +72,7 @@ export default function Dag01Flylogg() {
         klipp: "de to strimlene. Lim enden av del 1 over limfeltet på del 2.",
         brett:
           "ikke brett: rull strimmelen fra slutten og hold den med en binders.",
-        hvor: "Fredag 28. november i ferdskriveren, etter IQs konvolutt.",
+        hvor: "Lørdag 28. november i ferdskriveren, etter IQs konvolutt.",
       }}
     />
   );

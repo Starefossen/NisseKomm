@@ -167,7 +167,7 @@
         {
           "navn": "dagens_oppdrag.txt",
           "type": "fil",
-          "innhold": "SLIK VIRKER NISSEKOMM\n\n1. Finn det Rampenissen har lagt igjen i huset.\n2. Les Rampenissens e-post i NisseMail.\n3. Se dagens video fra Julius. Siste setning er viktig.\n4. Bruk det du fant i huset og det Julius sier. Skriv koden i KodeTerminal.\n5. Hvert kort har et tegn i hjørnet. Det er Snøfalls gamle skrift: ett tegn, én bokstav. Fyll inn tavla når dere vet hvilken.\n\nIngen av delene holder alene."
+          "innhold": "SLIK VIRKER NISSEKOMM\n\n1. Finn det Rampenissen har lagt igjen i huset.\n2. Se dagens video fra Julius. Siste setning er viktig.\n3. Les Rampenissens e-post i NisseMail.\n4. Bruk det du fant i huset og det Julius sier. Skriv koden i KodeTerminal.\n5. Hvert kort har et tegn i hjørnet. Det er Snøfalls gamle skrift: ett tegn, én bokstav. Fyll inn tavla når dere vet hvilken.\n\nIngen av delene holder alene."
         }
       ]
     },
@@ -178,12 +178,12 @@
         {
           "navn": "config.sys",
           "type": "fil",
-          "innhold": "[NISSEKJERNE 4.2 - LANDÅS EDITION]\n\nKONFIGURASJON:\n- Operasjon: Spøkelseskode\n- Feltstasjon: Landås, Bergen\n- Agenter: Kristian (Senior-Krypto), Håkon (Felt-Agent), Hanna (Sjefs-Speider)\n- Videolink: Snøfall TV 4-Kanals Billedrør\n- Hjemmebro: Skjerm + Fleet aktivert\n\nSTATUS: OVERVÅKER IS-TRAFIKK"
+          "innhold": "[NISSEKJERNE 4.2 - LANDÅS EDITION]\n\nKONFIGURASJON:\n- Operasjon: Spøkelseskode\n- Feltstasjon: Landås, Bergen\n- Agenter: Kristian (Senior-Krypto), Håkon (Felt-Agent), Hanna (Sjefs-Speider)\n- Videolink: Snøfall TV 4-Kanals Billedrør\n- Hjemmebro: skjermen på kjøkkenet\n\nSTATUS: OVERVÅKER IS-TRAFIKK"
         },
         {
           "navn": "readme.txt",
           "type": "fil",
-          "innhold": "Velkommen tilbake til NisseKomm!\n\nI år har IQ oppgradert kommandosenteret med direkte video på SNØFALL TV.\nMen pass på: En mystisk digital frost prøver å låse kanaler og stjele farger.\n\nHeldigvis har vi våre tre beste agenter i Bergen på saken!"
+          "innhold": "NISSEKOMM – LES MEG\n\nIQ har lagt en direktelinje fra Snøfall til stua deres: Snøfall TV, NisseMail og video fra Julius. Linjen er ny. Hvis noe skurrer, er det ikke dere.\n\n– IQ"
         },
         {
           "navn": "om-snofall.txt",
@@ -548,7 +548,7 @@
     },
     {
       "fra_dag": 14,
-      "tekst": "WINTER: Brevfuglene er åpnet. Én blå fugl ingen har sendt."
+      "tekst": "WINTER: Postkassen er tømt. Én blå fugl ingen har sendt."
     },
     {
       "fra_dag": 16,
@@ -563,7 +563,7 @@
       "tekst": "WINTER: Hyllene stemmer igjen. Rampenissen er ute av brødboksen."
     },
     {
-      "fra_dag": 17,
+      "fra_dag": 18,
       "tekst": "ORAKELET: Grønt lys over polarhimmelen i natt. Første signal tilbake."
     },
     {
@@ -584,7 +584,7 @@
     },
     {
       "fra_dag": 22,
-      "tekst": "WINTER: Snill-listen er åpen. Jeg trenger stedet i tall."
+      "tekst": "WINTER: Snill-listen er åpen. Én rubrikk mangler. Jeg godtar bare tall."
     },
     {
       "fra_dag": 24,
@@ -592,7 +592,7 @@
     },
     {
       "fra_dag": 24,
-      "tekst": "JULIUS: Landet på Landås. God jul."
+      "tekst": "TRIXTER: Landet i Bergen i natt. Tre esker levert. Én nisse med hjem."
     }
   ]
 }
