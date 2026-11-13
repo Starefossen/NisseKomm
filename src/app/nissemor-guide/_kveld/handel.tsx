@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import { StorageManager } from "@/lib/storage";
 import type { VareTreff, handleliste } from "@/lib/guide-sesong";
 import { useSynk } from "./felles";
+import { Lagremelding, useLagring } from "../lagring";
 
 type Status = "kjopt" | "hjemme";
 type Vare = ReturnType<typeof handleliste>[number];
@@ -33,27 +34,46 @@ export function useHandlet() {
 
 type Handlet = ReturnType<typeof useHandlet>;
 
+const NESTE = { mangler: "kjopt", kjopt: "hjemme", hjemme: null } as const;
+const CHIP = {
+  mangler: ["○ mangler", "border-(--cold-blue) text-(--cold-blue)"],
+  kjopt: ["✓ kjøpt", "border-(--gold) text-(--gold)"],
+  hjemme: ["⌂ hjemme", "border-gray-500 text-gray-400"],
+} as const;
+
+/** Chip tight after the word; click cycles mangler, kjøpt, hjemme (synced). */
 function VareKnapp({ v, h }: { v: VareTreff; h: Handlet }) {
-  const s = h.status(v.id, v.vare);
+  const s = h.status(v.id, v.vare) ?? "mangler";
+  const { status, kjør } = useLagring();
+  const [tekst, farge] = CHIP[s];
   return (
-    <button
-      type="button"
-      title={`${v.vare}: ${s === "hjemme" ? "har hjemme" : s ? "kjøpt" : "mangler"}`}
-      aria-label={`${v.vare} ${s ? "kjøpt" : "mangler"}`}
-      className={`inline-flex items-center justify-center min-w-11 min-h-11 -my-3 align-middle ${s ? "text-(--gold)" : "text-(--cold-blue)"}`}
-      onClick={(e) => {
-        e.preventDefault();
-        h.sett(v.id, v.vare, s ? null : "kjopt");
-      }}
-    >
-      {s ? "✓" : "○"}
-    </button>
+    <>
+      {/* Vertical padding makes the 44 px target; the negative margin keeps the line height. */}
+      <button
+        type="button"
+        title={v.vare}
+        aria-label={`${v.vare}: ${tekst}`}
+        data-vare={v.id}
+        className="inline-block whitespace-nowrap align-baseline -my-3 py-3"
+        onClick={(e) => {
+          e.preventDefault();
+          void kjør(async () => h.sett(v.id, v.vare, NESTE[s]));
+        }}
+      >
+        <span className={`border px-1 text-base ${farge}`}>[{tekst}]</span>
+      </button>
+      {status && (
+        <span className="fixed bottom-4 right-4 z-50 bg-black px-2">
+          <Lagremelding status={status} />
+        </span>
+      )}
+    </>
   );
 }
 
 const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-/** Draws `s` with ✓/○ after every word the server matched to a shopping item. */
+/** Draws `s` with a status chip after every word the server matched to a shopping item. */
 export function medVarer(treff: VareTreff[], h: Handlet) {
   const ord = new Map(treff.flatMap((v) => v.ord.map((o) => [o, v] as const)));
   if (!ord.size) return (s: ReactNode) => s;
