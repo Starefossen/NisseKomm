@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Verdikt } from "@/app/api/media/vurdering/route";
 import { mediaUrl } from "@/lib/media";
 import { Lagremelding, useLagring } from "../lagring";
+import { LysbordBilde } from "../lysbord";
 import { lagre } from "../vurdering";
 import { CELLE, type CelleData } from "./celle";
 import type { Element } from "./elementer";
@@ -151,10 +152,11 @@ export function Rutenett({
                 className={`block w-full aspect-square p-1 ${CELLE[c.status][1]}`}
                 title={`${e.tittel}: ${CELLE[c.status][0]}${c.notat ? ` – ${c.notat}` : ""}`}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element -- MEDIA_DIR, not in the build */}
-                <img
+                <LysbordBilde
+                  klikk={false}
+                  gruppe="rutenett"
                   src={mediaUrl(e.id)}
-                  alt=""
+                  alt={e.tittel}
                   loading="lazy"
                   className="w-full h-full object-contain bg-black [image-rendering:pixelated]"
                 />
@@ -171,7 +173,8 @@ export function Rutenett({
       </ul>
       <p className="text-base text-(--neon-green)/80">
         Klikk velger, Shift-klikk velger et område. G/O/L gir alle valgte samme
-        vurdering (L krever notat). Navnet åpner ett element.
+        vurdering (L krever notat). Navnet åpner ett element. F viser bildet i
+        lysbordet (←/→ blar).
       </p>
     </div>
   );

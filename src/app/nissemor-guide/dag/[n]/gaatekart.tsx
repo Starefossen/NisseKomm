@@ -4,6 +4,7 @@ import { Vurder } from "../../vurdering";
 import Link from "next/link";
 import { useRef, useState, type ReactNode } from "react";
 import { diagramKanter } from "@/lib/gaate-diagram";
+import { LysbordBilde } from "../../lysbord";
 import { utskriftHref, utskriftTittel } from "../../printout/filer";
 import type { Bit, gaatekart, kveldDag } from "@/lib/guide-sesong";
 
@@ -151,20 +152,14 @@ function Oppsettskisse({ dag }: { dag: number }) {
   if (!finnes) return null;
   return (
     <figure className="w-48 md:w-56 shrink-0" data-testid="oppsettskisse">
-      <a
-        href={`/media/${fil}`}
-        target="_blank"
-        rel="noreferrer"
-        title="Åpne i full størrelse"
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element -- MEDIA_DIR, not in the build */}
-        <img
-          src={`/media/${fil}`}
-          alt="Oppsettskisse"
-          className="w-full bg-white"
-          onError={() => setFinnes(false)}
-        />
-      </a>
+      <LysbordBilde
+        gruppe="skisser"
+        src={`/media/${fil}`}
+        alt="Oppsettskisse"
+        vurderId={fil}
+        className="w-full bg-white"
+        onError={() => setFinnes(false)}
+      />
       <figcaption className="text-sm">Oppsettskisse</figcaption>
       <Vurder id={fil} />
     </figure>

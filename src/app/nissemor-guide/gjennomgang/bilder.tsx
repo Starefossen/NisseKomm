@@ -4,18 +4,24 @@ import { useEffect, useState } from "react";
 import { mediaUrl } from "@/lib/media";
 import { versionRank, versjonsnavn } from "@/lib/media-status";
 import { useVurderinger } from "../vurdering";
+import { LysbordBilde } from "../lysbord";
 
 /**
  * New beside old for an image with earlier versions: the newest (-vN, else the
  * plain one) against the next. V flips to one image at a time and switches
- * between them; a click zooms to 1:1, nearest-neighbour for pixel art.
+ * between them; a click opens the lightbox, where V swaps at the same zoom.
  */
-export function BildeVersjoner({ filer }: { filer: string[] }) {
+export function BildeVersjoner({
+  filer,
+  vurderId,
+}: {
+  filer: string[];
+  vurderId?: string;
+}) {
   const sortert = [...filer].sort((a, b) => versionRank(b) - versionRank(a));
   const ny = sortert[0];
   const [gammel, setGammel] = useState(sortert[1]);
   const [vis, setVis] = useState<"side" | "ny" | "gammel">("side");
-  const [zoom, setZoom] = useState(false);
   const alle = useVurderinger();
 
   useEffect(() => {
@@ -44,15 +50,14 @@ export function BildeVersjoner({ filer }: { filer: string[] }) {
           {rolle === "ny" ? "Ny" : "Gammel"}: {versjonsnavn(p)}
           <span className="block text-sm break-all">{p}</span>
         </figcaption>
-        <div className={zoom ? "overflow-auto max-h-[80vh]" : ""}>
-          {/* eslint-disable-next-line @next/next/no-img-element -- MEDIA_DIR */}
-          <img
-            src={mediaUrl(p)}
-            alt={p}
-            onClick={() => setZoom((z) => !z)}
-            className={`border border-(--neon-green)/40 [image-rendering:pixelated] ${zoom ? "max-w-none cursor-zoom-out" : "w-full cursor-zoom-in"}`}
-          />
-        </div>
+        <LysbordBilde
+          src={mediaUrl(p)}
+          alt={p}
+          gruppe="versjoner"
+          gammel={mediaUrl(p === ny ? gammel : ny)}
+          vurderId={vurderId}
+          className="w-full border border-(--neon-green)/40"
+        />
         {rolle === "gammel" && (v?.vurdering || v?.notat) && (
           <p className="text-sm" data-testid="gammel-vurdering">
             Vurdert: {v.vurdering ?? "–"}
@@ -90,7 +95,7 @@ export function BildeVersjoner({ filer }: { filer: string[] }) {
           </button>
         )}
         <span className="text-(--neon-green)/80">
-          V bytt gammel/ny · klikk = 1:1
+          V bytt gammel/ny · klikk/F = lysbord
         </span>
       </div>
       <div className="flex gap-2">

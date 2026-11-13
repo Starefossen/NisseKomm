@@ -21,6 +21,7 @@ import { lagre, slug, SkjulVurder, useVurderinger, Vurder } from "../vurdering";
 import type { Element } from "./elementer";
 import { SegmentStripe } from "./segmentstripe";
 import { BildeVersjoner } from "./bilder";
+import { LysbordBilde } from "../lysbord";
 
 type Dag = Awaited<ReturnType<typeof dagInnhold>>;
 
@@ -190,7 +191,7 @@ export function DagManus({ n }: { n: number }) {
   );
 }
 
-function Spiller({ path }: { path: string }) {
+function Spiller({ path, vurderId }: { path: string; vurderId?: string }) {
   if (path.endsWith(".mp3"))
     return <audio src={mediaUrl(path)} controls className="w-full min-h-11" />;
   if (path.endsWith(".mp4"))
@@ -203,11 +204,11 @@ function Spiller({ path }: { path: string }) {
       />
     );
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- MEDIA_DIR, not in the build
-    <img
+    <LysbordBilde
       src={mediaUrl(path)}
       alt={path}
-      className="max-h-72 min-h-32 border border-(--neon-green)/40 [image-rendering:pixelated]"
+      vurderId={vurderId}
+      className="max-h-72 min-h-32 border border-(--neon-green)/40"
     />
   );
 }
@@ -229,7 +230,7 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
     return (
       <>
         {!!e.eldre?.length && (
-          <BildeVersjoner filer={[...e.media, ...e.eldre]} />
+          <BildeVersjoner filer={[...e.media, ...e.eldre]} vurderId={e.id} />
         )}
         <Rampestrek
           n={n!}
@@ -256,7 +257,7 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
       <>
         <p className="text-sm break-all">{e.id}</p>
         <SegmentStripe path={e.id}>
-          <Spiller path={e.id} />
+          <Spiller path={e.id} vurderId={e.id} />
         </SegmentStripe>
         {!!e.eldre?.length && (
           <details className="my-2">
@@ -300,7 +301,7 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
   if (dag && e.gruppe === "radio")
     return (
       <>
-        <Spiller path={e.id} />
+        <Spiller path={e.id} vurderId={e.id} />
         <Link
           className={lenke}
           href={`/nissemor-guide/gjennomgang?id=${encodeURIComponent(`manus/radio/dag-${String(n).padStart(2, "0")}`)}`}
@@ -393,8 +394,8 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {k.scener.map((s) => (
             <figure key={s.id}>
-              {/* eslint-disable-next-line @next/next/no-img-element -- MEDIA_DIR */}
-              <img
+              <LysbordBilde
+                gruppe="scener"
                 src={mediaUrl(piksel(s.bilde))}
                 alt={s.navn}
                 loading="lazy"
@@ -415,8 +416,8 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
             ]),
           ].map(([p, navn]) => (
             <figure key={p} className="w-20 text-center text-sm">
-              {/* eslint-disable-next-line @next/next/no-img-element -- MEDIA_DIR */}
-              <img
+              <LysbordBilde
+                gruppe="ikoner"
                 src={mediaUrl(p)}
                 alt={navn}
                 loading="lazy"
@@ -441,7 +442,7 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
       </>
     );
   }
-  if (e.gruppe === "Snøfall TV") return <Spiller path={e.id} />;
+  if (e.gruppe === "Snøfall TV") return <Spiller path={e.id} vurderId={e.id} />;
   if (del === "finale")
     return (
       <>
@@ -515,7 +516,7 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
     const x = e.id.match(/julius-promo-([AB])/)?.[1];
     return (
       <>
-        <Spiller path={e.id} />
+        <Spiller path={e.id} vurderId={e.id} />
         <p className="whitespace-pre-wrap mt-2">
           {ren(sesong.promo.find((p) => p.id === x)?.tekst)}
         </p>
@@ -526,9 +527,9 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
   if (e.media.length) {
     const bilde = /\.(png|jpe?g|webp)$/.test(e.id);
     return bilde && e.eldre?.length ? (
-      <BildeVersjoner filer={[e.id, ...e.eldre]} />
+      <BildeVersjoner filer={[e.id, ...e.eldre]} vurderId={e.id} />
     ) : (
-      <Spiller path={e.id} />
+      <Spiller path={e.id} vurderId={e.id} />
     );
   }
   return null;

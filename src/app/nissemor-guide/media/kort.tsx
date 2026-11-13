@@ -1,6 +1,7 @@
 "use client";
 
 import { Lagremelding, useLagring } from "../lagring";
+import { LysbordBilde } from "../lysbord";
 import { lastVurderinger, useVurderinger } from "../vurdering";
 import type { Forrige } from "@/lib/vurdering-versjon";
 import {
@@ -150,12 +151,11 @@ function InlinePlayer({ path, missing }: { path: string; missing: boolean }) {
 
   return (
     <div className="my-2 flex justify-center bg-black/60 p-2 border border-(--neon-green)/40">
-      {/* eslint-disable-next-line @next/next/no-img-element -- served from MEDIA_DIR */}
-      <img
+      <LysbordBilde
+        gruppe="filer"
         src={src}
         alt={path}
         loading="lazy"
-        decoding="async"
         className="max-h-72 min-h-24 w-auto object-contain"
       />
     </div>

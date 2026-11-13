@@ -1,5 +1,6 @@
 "use client";
 
+import { LysbordBilde } from "../../lysbord";
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { GameEngine } from "@/lib/game-engine";
@@ -298,20 +299,14 @@ function Skisse({ n, mangler }: { n: number; mangler?: boolean }) {
       </div>
     ) : null;
   return (
-    <a
-      href={src}
-      target="_blank"
-      rel="noreferrer"
-      className="order-last w-40 md:float-right md:mb-2 md:ml-4 md:w-60"
-      title="Åpne i full størrelse"
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element -- MEDIA_DIR, not in the build */}
-      <img
+    <div className="order-last w-40 md:float-right md:mb-2 md:ml-4 md:w-60">
+      <LysbordBilde
+        gruppe="skisser"
         src={src}
         alt="Skisse av rampestreken"
         className="aspect-square w-full border border-(--neon-green) bg-white"
         onError={() => setFinnes(false)}
       />
-    </a>
+    </div>
   );
 }
