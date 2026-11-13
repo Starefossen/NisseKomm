@@ -45,6 +45,8 @@ TV-serien er bakgrunn for universet. Årets historie bygger ikke på den, og ing
 
 **Snøfall 2 (2023): ny trussel og delt ansvar.** Noen år senere er Selma, Pil og Frida tenåringer. Ruth er alvorlig syk i VU. En ny trussel rammer magien og naturen, blant annet en skygge og en kulde som truer juleforberedelsene, og Snøfall må finne ut hvem som skal bære ansvaret når Julius blir eldre. Winter er tilbake som byråkrat og regelrytter, stiv og nervøs for nye feil, og prøver å vise at han er til å stole på. Ungdommene samarbeider på tvers av VU og Snøfall med IQs oppfinnelser, Hjerteruds omsorg og Frøyas arkiver. Julemagi handler om fellesskap og tillit, ikke om én person med makt. Til slutt er de voksne (Julius, Winter, IQ, Hjerterud, Frøya) et sammensveiset, litt eksentrisk lag.
 
+**2025: Mørket kom tilbake.** I fjor kom Mørket tilbake, og barna i familien (Kristian, Håkon og Hanna) slo det på nytt. Det er dette `docs/historie-2026.md` §1 mener med «da barna slo Mørket i fjor». Strømstøtet den gangen kuttet forbindelsen til Krystallgrotten, og slik begynner årets historie.
+
 **Slik brukes det hos oss.** Winter i 2026 er vår Winter: lojal og pedantisk. Fristelsen fra Mørkeboka er historie fra sesong 1, og den er løst. Mørket er mørke, ikke kulde. Skyggen og kulden i sesong 2 hører til sesong 2. Kulde i 2026 er Vintervokteren, IQs program i grotten, og ingen fiende.
 
 **Tre veier mellom Snøfall og VU.** Hullet i hekken er for folk (Selma). Nordlyset er for brevfuglene. Portkorridoren er for sleden.

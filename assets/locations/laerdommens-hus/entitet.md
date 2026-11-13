@@ -40,7 +40,7 @@ Står i `beskrivelse.txt` (`{{locations/laerdommens-hus}}`), skrevet etter `ref.
 
 ## Det som står der (Hans 13.11)
 
-- **Snøfalls Store Krønike** på lesepulten: historien om Snøfall, Vintervokterne, lysets magi og alle tidligere julenisser, skrevet med gullblekk.
+- **Snøfalls Store Krønike** på lesepulten: historien om Snøfall, Portvokterne, lysets magi og alle tidligere julenisser, skrevet med gullblekk.
 - **Slektstreet og Minnebøkene:** familiene i Snøfall, også de som forsvant gjennom hullet i hekken til Verden Utenfor (VU).
 - **«Levende» bøker** som hvisker og klapper seg sammen for urene hender, oppslagsverk over vekster og sopp fra Krystallgrotten, og kartruller som bare viser veien i ekte stjernestøv.
 - **Frøyas skrivebord:** fjærpenner, blekkhus i farget glass, lakksegl, astrolabium i messing og en skål med tørkede klementinskall.

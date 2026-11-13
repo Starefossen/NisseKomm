@@ -41,6 +41,8 @@ De andre krønikene i Lærdommens hus handler om juleglede, lys, tradisjoner og 
 
 I Snøfall 1 brukte Winter forbudt kunnskap fra Mørkeboka for å bli neste julenisse, og slapp Mørket løs. Selma, Pil og Frida overvant det. Winter fikk en lærepenge. Det er historie og er løst: i 2026 er han lojal.
 
+Mørket kom tilbake i 2025, og barna i familien slo det på nytt («da barna slo Mørket i fjor», `docs/historie-2026.md` §1).
+
 Mørket er mørke, ikke kulde. Hans' tekst om boka kaller det «den farlige, kalde kraften»; skriv det som mørke, så det ikke blandes med Kulde i 2026, som ikke er ond. Hele seriebakgrunnen står i `assets/locations/snofall-landsby/entitet.md`.
 
 ## Mulig hotspot (ikke i år)

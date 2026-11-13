@@ -14,7 +14,7 @@
   "fakta": [
     {
       "fra_dag": 25,
-      "tekst": "Vintervokterne eller Portvokterne, med Trixter og andre vakter, vokter grensene mellom Snøfall og Verden Utenfor (VU)"
+      "tekst": "Portvokterne i Snøfall, med Trixter og andre vakter, vokter grensene mellom Snøfall og Verden Utenfor (VU)"
     },
     {
       "fra_dag": 25,
@@ -39,4 +39,4 @@ Ikke beskrevet av Hans ennå.
 
 ## Navnene
 
-Hans kaller dem «Vintervokterne / Portvokterne». I 2026 er Vintervokteren navnet på Kulde (programmet i Krystallgrotten), og Portvokter er et merke barna får dag 21. Derfor står bare «Portvokterne i Snøfall» i `navn`, så testen ikke forveksler dem. Hans avgjør navnet.
+De heter «Portvokterne i Snøfall» (Hans 13.11.2026). Hans' første tekst kalte dem også «Vintervokterne»; det navnet brukes ikke om dem, for Vintervokteren er IQs program i Krystallgrotten (Kulde). Portvokter er dessuten merket barna får dag 21.
