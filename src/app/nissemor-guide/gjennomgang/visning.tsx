@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Lagremelding, useLagring } from "../lagring";
 import { useEffect, useState, type ReactNode } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { mediaUrl } from "@/lib/media";
@@ -56,7 +57,7 @@ function useDag(n: number | undefined) {
 function Manus({ d, port }: { d: Dag; port?: boolean }) {
   const j = d.julius;
   const alle = useVurderinger();
-  const [feil, setFeil] = useState("");
+  const { status, lagrer, kjør } = useLagring();
   if (!j) return <p>Ikke noe manus for dagen.</p>;
   const id = (s: number) =>
     `manus/julius/dag-${String(d.dag).padStart(2, "0")}#s${s}`;
@@ -71,16 +72,19 @@ function Manus({ d, port }: { d: Dag; port?: boolean }) {
       {port && alle && åpne.length > 0 && (
         <button
           className="border border-(--gold) text-(--gold) px-3 min-h-11 mb-2"
+          disabled={lagrer}
           onClick={() =>
-            Promise.all(åpne.map((m) => lagre(id(m.s), "godkjent", ""))).catch(
-              (e: Error) => setFeil(e.message),
+            void kjør(
+              () =>
+                Promise.all(åpne.map((m) => lagre(id(m.s), "godkjent", ""))),
+              `✓ ${åpne.length} godkjent`,
             )
           }
         >
           Godkjenn alle på dagen ({åpne.length})
         </button>
       )}
-      {feil && <p className="text-(--christmas-red)">Ikke lagret: {feil}</p>}
+      <Lagremelding status={status} className="ml-2" />
       <ol className="space-y-2">
         {j.segmenter.map((s, i) => {
           const m = d.manusport[i];

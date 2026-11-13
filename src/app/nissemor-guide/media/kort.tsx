@@ -1,5 +1,7 @@
 "use client";
 
+import { Lagremelding, useLagring } from "../lagring";
+import { lagre, lastVurderinger, useVurderinger } from "../vurdering";
 import {
   useCallback,
   useEffect,
@@ -322,32 +324,22 @@ export function Vurderingsknapper({
   const currentVerdict = (
     valgt === undefined ? (vurdering?.vurdering ?? null) : valgt
   ) as Verdikt | null;
-  const [status, setStatus] = useState<
-    { s: "lagrer" } | { s: "lagret" } | { s: "feil"; grunn: string } | null
-  >(null);
-  const tidtaker = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const { status, lagrer: sender, kjør } = useLagring();
   const send = (v: Verdikt | null, n: string) => {
-    clearTimeout(tidtaker.current);
     setValgt(v);
-    setStatus({ s: "lagrer" });
-    onSave(v, n).then(
-      () => {
-        setValgt(undefined);
-        setStatus({ s: "lagret" });
-        tidtaker.current = setTimeout(() => setStatus(null), 2000);
-      },
-      (e: unknown) => {
-        setValgt(undefined);
-        setStatus({
-          s: "feil",
-          grunn: e instanceof Error ? e.message : "ukjent feil",
-        });
-      },
-    );
+    void kjør(() => onSave(v, n)).then(() => setValgt(undefined));
   };
-  useEffect(() => () => clearTimeout(tidtaker.current), []);
-  const lagrer = isSaving || status?.s === "lagrer";
+  const lagrer = isSaving || sender;
   const [note, setNote] = useState(vurdering?.notat ?? "");
+  // Leaving the item (Neste, N/P) with an unsaved note: save it on this item, not the next.
+  const ulagret = useRef<(() => void) | null>(null);
+  useEffect(() => {
+    ulagret.current =
+      note !== (vurdering?.notat ?? "") && note.trim()
+        ? () => void onSave(currentVerdict, note).catch(() => {})
+        : null;
+  });
+  useEffect(() => () => ulagret.current?.(), []);
   // Set by the Lag på nytt button or key L: Enter in the note saves that verdict.
   const [mal, setMal] = useState<Verdikt | null>(null);
   const felt = useRef<HTMLInputElement>(null);
@@ -401,17 +393,7 @@ export function Vurderingsknapper({
           </button>
         )}
 
-        <span aria-live="polite" className="text-sm ml-auto">
-          {lagrer ? (
-            <span className="text-(--gold) animate-pulse">Lagrer…</span>
-          ) : status?.s === "lagret" ? (
-            <span className="text-(--gold)">✓ Lagret</span>
-          ) : status?.s === "feil" ? (
-            <span className="text-(--christmas-red)">
-              Ikke lagret: {status.grunn}
-            </span>
-          ) : null}
-        </span>
+        <Lagremelding status={status} className="text-sm ml-auto" />
 
         {ekstra}
       </div>
@@ -467,15 +449,15 @@ export function useMediaData() {
   const [unavailable, setUnavailable] = useState(false);
   const [message, setMessage] = useState("");
   const [inventar, setInventar] = useState<Map<string, Inventar>>(new Map());
-  const [vurderinger, setVurderinger] = useState<MediaVurderinger>({});
+  // One verdict store for the whole guide: a save anywhere updates every view.
+  const vurderinger: MediaVurderinger = useVurderinger() ?? {};
   const [savingMap, setSavingMap] = useState<Record<string, boolean>>({});
 
   const load = useCallback(async () => {
     try {
-      const [resMedia, resInv, resVurd] = await Promise.all([
+      const [resMedia, resInv] = await Promise.all([
         fetch("/api/media"),
         fetch("/api/media/inventar"),
-        fetch("/api/media/vurdering"),
       ]);
 
       if (!resMedia.ok) {
@@ -499,11 +481,6 @@ export function useMediaData() {
         );
       }
       setFiles(list);
-
-      if (resVurd.ok) {
-        const v: MediaVurderinger = await resVurd.json();
-        setVurderinger(v);
-      }
     } catch {
       setUnavailable(true);
     }
@@ -535,24 +512,7 @@ export function useMediaData() {
   ) => {
     setSavingMap((prev) => ({ ...prev, [path]: true }));
     try {
-      const res = await fetch("/api/media/vurdering", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ path, vurdering: v, notat: note }),
-      }).catch(() => {
-        throw new Error("får ikke svar fra serveren");
-      });
-      await sjekkSvar(res);
-      const data = await res.json();
-      setVurderinger((prev) => {
-        const next = { ...prev };
-        if (!data.entry) {
-          delete next[path];
-        } else {
-          next[path] = data.entry;
-        }
-        return next;
-      });
+      await lagre(path, v, note ?? "");
     } finally {
       setSavingMap((prev) => ({ ...prev, [path]: false }));
     }
@@ -560,16 +520,20 @@ export function useMediaData() {
 
   /** Promote the approved candidate of a version family (POST /api/media/ta-i-bruk). */
   const taIBruk = async (key: string, kandidat: string) => {
-    setMessage(`Tar i bruk ${kandidat} ...`);
     const res = await fetch("/api/media/ta-i-bruk", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ kandidat }),
+    }).catch(() => {
+      throw new Error("får ikke svar fra serveren");
     });
-    setMessage(
-      res.ok ? `${kandidat} er nå ${key}` : `Feil: ${await res.text()}`,
-    );
-    load();
+    try {
+      await sjekkSvar(res);
+    } finally {
+      await load();
+      lastVurderinger();
+    }
+    setMessage(`${kandidat} er nå ${key}`);
   };
 
   return {
@@ -602,23 +566,34 @@ export function TaIBruk({
   data: ReturnType<typeof useMediaData>;
 }) {
   const f = familie(path, kilde(data));
-  if (data.unavailable || !f.kanTaIBruk || !f.kandidat) return null;
+  const { status, lagrer, kjør } = useLagring();
+  // After a promotion the button goes away; the result stays until the next action.
+  if (data.unavailable || ((!f.kanTaIBruk || !f.kandidat) && !status))
+    return null;
   const k = f.kandidat;
+  if (!k || !f.kanTaIBruk) return <Lagremelding status={status} />;
   return (
-    <button
-      type="button"
-      onClick={() => {
-        if (
-          confirm(
-            `Erstatte ${f.key} med ${k.path}? Den gamle beholdes som .old-N.`,
+    <span className="inline-flex flex-wrap items-center gap-2">
+      <button
+        type="button"
+        disabled={lagrer}
+        onClick={() => {
+          if (
+            confirm(
+              `Erstatte ${f.key} med ${k.path}? Den gamle beholdes som .old-N.`,
+            )
           )
-        )
-          data.taIBruk(f.key, k.path);
-      }}
-      className="min-h-11 px-4 my-2 border-2 border-(--gold) text-(--gold) hover:bg-(--gold)/20 font-bold cursor-pointer"
-    >
-      Ta i bruk {k.navn}
-    </button>
+            void kjør(
+              () => data.taIBruk(f.key, k.path),
+              `✓ ${k.navn} er tatt i bruk`,
+            );
+        }}
+        className="min-h-11 px-4 my-2 border-2 border-(--gold) text-(--gold) hover:bg-(--gold)/20 font-bold cursor-pointer"
+      >
+        Ta i bruk {k.navn}
+      </button>
+      <Lagremelding status={status} />
+    </span>
   );
 }
 

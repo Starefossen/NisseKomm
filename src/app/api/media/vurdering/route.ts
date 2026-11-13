@@ -139,10 +139,10 @@ export async function POST(req: NextRequest) {
   let ugyldig = false;
   try {
     return await endreLager(dir, async (l) => {
-      const prev =
-        l.elementer[versionKey(cleanPath)]?.vurderinger.find(
-          (v) => v.fil === cleanPath,
-        ) ?? {};
+      const lagret = l.elementer[versionKey(cleanPath)]?.vurderinger.find(
+        (v) => v.fil === cleanPath,
+      );
+      const prev: Partial<Vurdering> = lagret ?? {};
       const nextVerdict =
         vurdering !== undefined
           ? (vurdering as Verdikt | null | "")
@@ -170,7 +170,7 @@ export async function POST(req: NextRequest) {
       };
       // Tags, time or a note alone never re-give the verdict: it keeps the hash it
       // was given to, so on new content it still reads «ny versjon».
-      const gammel = vurdering === undefined && "hash" in prev ? prev : null;
+      const gammel = vurdering === undefined && lagret ? lagret : null;
       let v: Vurdering | null;
       if (gammel) {
         const e = l.elementer[versionKey(cleanPath)];
