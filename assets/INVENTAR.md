@@ -6,13 +6,13 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Type | ✓ | ⚠ | ? | ✗ | ○ | ◇ | - |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| julius | 4 | 8 | 0 | 12 | 0 | 33 | 6 |
-| rampenissen | 22 | 2 | 6 | 0 | 0 | 0 | 13 |
+| julius | 4 | 8 | 0 | 12 | 0 | 39 | 6 |
+| rampenissen | 16 | 8 | 6 | 0 | 0 | 0 | 13 |
 | music | 13 | 0 | 0 | 1 | 0 | 0 | 0 |
 | tv | 20 | 4 | 0 | 0 | 15 | 0 | 18 |
 | port | 4 | 0 | 0 | 0 | 0 | 0 | 9 |
 | feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
-| spill | 54 | 6 | 0 | 4 | 0 | 3 | 48 |
+| spill | 55 | 6 | 1 | 2 | 0 | 3 | 48 |
 | strek | 15 | 14 | 0 | 0 | 0 | 2 | 14 |
 
 ## julius
@@ -24,7 +24,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-03.mp4 | 4.4 MB | 2026-11-11 | ✓ |
 | video/julius/dag-04.mp4 | 4.4 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 4; promptversjonen er endret |
 | video/julius/dag-05.mp4 | 4.3 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 5; promptversjonen er endret |
-| video/julius/dag-06.mp4 | 10.3 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (47 % ordlikhet) |
+| video/julius/dag-06.mp4 | 10.3 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (46 % ordlikhet) |
 | video/julius/dag-07.mp4 | 10.5 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (50 % ordlikhet) |
 | video/julius/dag-08.mp4 | 10.6 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (43 % ordlikhet) |
 | video/julius/dag-09.mp4 | 10.4 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (46 % ordlikhet) |
@@ -62,26 +62,32 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-06-v5.mp4 | 8.7 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
 | video/julius/dag-06-v6.mp4 | 8.7 MB | 2026-11-13 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
 | video/julius/dag-06-v7.mp4 | 8.7 MB | 2026-11-13 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
-| video/julius/dag-06-v8.mp4 | 8.6 MB | 2026-11-13 | ◇ ikke i manifestet |
+| video/julius/dag-06-v8.mp4 | 8.6 MB | 2026-11-13 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
+| video/julius/dag-06-v9.mp4 | 8.6 MB | 2026-11-13 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
 | video/julius/dag-07-v2.mp4 | 8.6 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 7; ikke i manifestet |
 | video/julius/dag-07-v3.mp4 | 8.9 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-08-v2.mp4 | 9.7 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-09-v2.mp4 | 9.6 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-10-v2.mp4 | 9.6 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-11.old-1.mp4 | 10.1 MB | 2026-11-10 | - laget før manusrevisjonen (53 % ordlikhet); ikke i manifestet |
+| video/julius/dag-12-v2.mp4 | 8.5 MB | 2026-11-13 | ◇ ikke i manifestet |
 | video/julius/dag-12.old-1.mp4 | 10.5 MB | 2026-11-10 | - laget før manusrevisjonen (41 % ordlikhet); ikke i manifestet |
 | video/julius/dag-12.old-2.mp4 | 8.4 MB | 2026-11-12 | - kildeteksten er endret: docs/manus/julius-2026.md Dag 12; ikke i manifestet |
 | video/julius/dag-13-v2.mp4 | 8.7 MB | 2026-11-13 | ◇ ikke i manifestet |
 | video/julius/dag-13-v3.mp4 | 8.3 MB | 2026-11-13 | ◇ ikke i manifestet |
+| video/julius/dag-13-v4.mp4 | 8.3 MB | 2026-11-13 | ◇ ikke i manifestet |
 | video/julius/dag-14-v3.mp4 | 8.6 MB | 2026-11-13 | ◇ ikke i manifestet |
 | video/julius/dag-15-v1.mp4 | 8.9 MB | 2026-11-13 | ◇ ikke i manifestet |
-| video/julius/dag-16-v1.mp4 | 9.9 MB | 2026-11-13 | ◇ ikke i manifestet |
+| video/julius/dag-16-v1.mp4 | 9.9 MB | 2026-11-13 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 16; ikke i manifestet |
 | video/julius/dag-17-v1.mp4 | 7.8 MB | 2026-11-13 | ◇ ikke i manifestet |
-| video/julius/dag-18-v1.mp4 | 10.0 MB | 2026-11-13 | ◇ ikke i manifestet |
+| video/julius/dag-17-v2.mp4 | 7.6 MB | 2026-11-13 | ◇ ikke i manifestet |
+| video/julius/dag-18-v1.mp4 | 10.0 MB | 2026-11-13 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 18; ikke i manifestet |
 | video/julius/dag-19-v1.mp4 | 9.2 MB | 2026-11-13 | ◇ ikke i manifestet |
+| video/julius/dag-19-v2.mp4 | 9.3 MB | 2026-11-13 | ◇ ikke i manifestet |
 | video/julius/dag-21-v1.mp4 | 10.9 MB | 2026-11-13 | ◇ ikke i manifestet |
 | video/julius/dag-22-v1.mp4 | 9.8 MB | 2026-11-13 | ◇ ikke i manifestet |
 | video/julius/dag-23-v1.mp4 | 9.4 MB | 2026-11-13 | ◇ ikke i manifestet |
+| video/julius/dag-23-v2.mp4 | 9.8 MB | 2026-11-13 | ◇ ikke i manifestet |
 
 ## rampenissen
 
@@ -94,22 +100,22 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | audio/rampenissen/dag-05.mp3 | 0.6 MB | 2026-11-13 | ✓ |
 | audio/rampenissen/dag-06.mp3 | 0.7 MB | 2026-11-13 | ✓ |
 | audio/rampenissen/dag-07.mp3 | 0.7 MB | 2026-11-11 | ✓ |
-| audio/rampenissen/dag-08.mp3 | 0.6 MB | 2026-11-11 | ✓ |
+| audio/rampenissen/dag-08.mp3 | 0.6 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 8 |
 | audio/rampenissen/dag-09.mp3 | 0.7 MB | 2026-11-13 | ✓ |
-| audio/rampenissen/dag-10.mp3 | 0.6 MB | 2026-11-13 | ✓ |
+| audio/rampenissen/dag-10.mp3 | 0.6 MB | 2026-11-13 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 10 |
 | audio/rampenissen/dag-11.mp3 | 0.6 MB | 2026-11-11 | ✓ |
-| audio/rampenissen/dag-12.mp3 | 0.8 MB | 2026-11-11 | ✓ |
+| audio/rampenissen/dag-12.mp3 | 0.8 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 12 |
 | audio/rampenissen/dag-13.mp3 | 0.9 MB | 2026-11-11 | ✓ |
-| audio/rampenissen/dag-14.mp3 | 0.8 MB | 2026-11-13 | ✓ |
+| audio/rampenissen/dag-14.mp3 | 0.8 MB | 2026-11-13 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 14 |
 | audio/rampenissen/dag-15.mp3 | 0.6 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-16.mp3 | 0.7 MB | 2026-11-11 | ✓ |
-| audio/rampenissen/dag-17.mp3 | 0.7 MB | 2026-11-13 | ✓ |
+| audio/rampenissen/dag-17.mp3 | 0.7 MB | 2026-11-13 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 17 |
 | audio/rampenissen/dag-18.mp3 | 0.7 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-19.mp3 | 0.8 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-20.mp3 | 0.7 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 20 |
 | audio/rampenissen/dag-21.mp3 | 0.8 MB | 2026-11-13 | ✓ |
 | audio/rampenissen/dag-22.mp3 | 0.7 MB | 2026-11-12 | ✓ |
-| audio/rampenissen/dag-23.mp3 | 0.7 MB | 2026-11-11 | ✓ |
+| audio/rampenissen/dag-23.mp3 | 0.7 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 23 |
 | audio/rampenissen/dag-24.mp3 | 1.0 MB | 2026-11-12 | ⚠ kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 24 |
 | audio/rampenissen/_ab/dag14-A-1.mp3 | 0.2 MB | 2026-11-13 | ? ikke i manifestet |
 | audio/rampenissen/_ab/dag14-A-2.mp3 | 0.2 MB | 2026-11-13 | ? ikke i manifestet |
@@ -121,12 +127,12 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | audio/rampenissen/dag-05.old-1.mp3 | 0.9 MB | 2026-11-11 | - ikke i manifestet |
 | audio/rampenissen/dag-06.old-1.mp3 | 0.6 MB | 2026-11-13 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 6; ikke i manifestet |
 | audio/rampenissen/dag-09.old-1.mp3 | 1.0 MB | 2026-11-11 | - ikke i manifestet |
-| audio/rampenissen/dag-10.old-1.mp3 | 0.8 MB | 2026-11-11 | - ikke i manifestet |
+| audio/rampenissen/dag-10.old-1.mp3 | 0.8 MB | 2026-11-11 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 10; ikke i manifestet |
 | audio/rampenissen/dag-14.old-1.mp3 | 0.9 MB | 2026-11-13 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 14; ikke i manifestet |
-| audio/rampenissen/dag-14.old-2.mp3 | 0.8 MB | 2026-11-13 | - ikke i manifestet |
-| audio/rampenissen/dag-14.old-3.mp3 | 0.9 MB | 2026-11-13 | - ikke i manifestet |
+| audio/rampenissen/dag-14.old-2.mp3 | 0.8 MB | 2026-11-13 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 14; ikke i manifestet |
+| audio/rampenissen/dag-14.old-3.mp3 | 0.9 MB | 2026-11-13 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 14; ikke i manifestet |
 | audio/rampenissen/dag-17.old-1.mp3 | 0.8 MB | 2026-11-11 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 17; ikke i manifestet |
-| audio/rampenissen/dag-17.old-2.mp3 | 1.0 MB | 2026-11-12 | - ikke i manifestet |
+| audio/rampenissen/dag-17.old-2.mp3 | 1.0 MB | 2026-11-12 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 17; ikke i manifestet |
 | audio/rampenissen/dag-21.old-1.mp3 | 0.9 MB | 2026-11-11 | - ikke i manifestet |
 | audio/rampenissen/dag-22.old-1.mp3 | 0.6 MB | 2026-11-11 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 22; ikke i manifestet |
 | audio/rampenissen/dag-24.old-1.mp3 | 0.7 MB | 2026-11-12 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 24; ikke i manifestet |
@@ -250,8 +256,8 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Fil | Størrelse | Dato | Status |
 |---|---:|---|---|
-| spill/iq-verksted.jpg |  |  | ✗ |
-| spill/julius-kontor.jpg |  |  | ✗ |
+| spill/iq-verksted.jpg | 0.8 MB | 2026-11-13 | ✓ |
+| spill/julius-kontor.jpg | 0.7 MB | 2026-11-13 | ? |
 | spill/antenne-tarn.jpg |  |  | ✗ |
 | spill/kulde-grotte.jpg |  |  | ✗ |
 | spill/torget.jpg | 0.3 MB | 2026-11-11 | ✓ |
