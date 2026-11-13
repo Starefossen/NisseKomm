@@ -67,8 +67,8 @@ Bare lesing. Ingen kode er endret. Grunnlag: `kapittel1–4.ts`, `motor.ts`, `mi
 
 ## Beslutninger for Hans
 
-1. **«Vintervokteren» i ovnslinjen på dag 4** (din egen linje). Bytte til Winter og skjerfet, eller la stå? *Anbefaling: bytt.* Navnet er avsløringen på dag 15.
-2. **To porter i K4.** Døpe om bymur-hotspotene og gi Winter en replikk om portstempelet? *Anbefaling: ja.* Ellers tror barna at brevene skal ut byporten.
-3. **Landås før dag 22 er løst.** Bytte K4s to steder til «Bergen», og la K1 og K2 stå? *Anbefaling: ja.* K2 kan ikke skrives om uten å miste L-en på peileskiva, og ordet er barnas egen adresse uansett.
-4. **K2 og dag 11.** Én setning i utroen, eller flytte åpningen til dag 11? *Anbefaling: setningen.* Barna spiller over flere dager, og dag 10 er alt tegnet inn i opplåsingene.
-5. **Garnet i K3 på hovedveien** (funn 6), eller fortsatt bare for dem som leter? *Anbefaling: en halv setning på hovedveien.* Uten den kommer K4-gaven uten forvarsel for dem som ikke trykket på NR. 1.
+1. **«Vintervokteren» i ovnslinjen på dag 4** (din egen linje). Bytte til Winter og skjerfet, eller la stå? _Anbefaling: bytt._ Navnet er avsløringen på dag 15.
+2. **To porter i K4.** Døpe om bymur-hotspotene og gi Winter en replikk om portstempelet? _Anbefaling: ja._ Ellers tror barna at brevene skal ut byporten.
+3. **Landås før dag 22 er løst.** Bytte K4s to steder til «Bergen», og la K1 og K2 stå? _Anbefaling: ja._ K2 kan ikke skrives om uten å miste L-en på peileskiva, og ordet er barnas egen adresse uansett.
+4. **K2 og dag 11.** Én setning i utroen, eller flytte åpningen til dag 11? _Anbefaling: setningen._ Barna spiller over flere dager, og dag 10 er alt tegnet inn i opplåsingene.
+5. **Garnet i K3 på hovedveien** (funn 6), eller fortsatt bare for dem som leter? _Anbefaling: en halv setning på hovedveien._ Uten den kommer K4-gaven uten forvarsel for dem som ikke trykket på NR. 1.

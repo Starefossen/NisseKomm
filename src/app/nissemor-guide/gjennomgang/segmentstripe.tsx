@@ -469,7 +469,7 @@ export function SegmentStripe({
               onClick={() => spill(seg.start, seg.slutt)}
               className="min-h-11 px-3 border-2 border-(--neon-green)"
             >
-              ▶ Hør segmentet s{seg.s} ({tid(seg.start)}–{tid(seg.slutt)})
+              Hør segmentet s{seg.s} ({tid(seg.start)}–{tid(seg.slutt)})
             </button>
             {lytt && (
               <button

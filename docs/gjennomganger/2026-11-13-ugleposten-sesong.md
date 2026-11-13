@@ -4,7 +4,7 @@ Plan, 13.11.2026. Ingen kode er endret. Lest: `kapittel1–4.ts`, `motor.ts`, `k
 
 ## Viktigste funn
 
-- **Retning 4 kolliderer med PS dag 22** hvis bunken har kommet *ut* gjennom Murens port: «Ingenting har kommet gjennom porten ennå.» Bunken må være på vei *inn*. Se beslutning 2.
+- **Retning 4 kolliderer med PS dag 22** hvis bunken har kommet _ut_ gjennom Murens port: «Ingenting har kommet gjennom porten ennå.» Bunken må være på vei _inn_. Se beslutning 2.
 - **«Lilla» sies første gang dag 24** (mail, radio, video). K3 åpner dag 16. Fargen kan vises, men ikke navngis. Se beslutning 1.
 - K4 har allerede en byport og en bymur (300 år, ikke IQs mur). Nye tekster skriver alltid «porten i Muren» om IQs port, så de to ikke blandes.
 - Alt kan gjøres som tekst pluss én ny gjenstand. Ingen gåte, flagg eller id endres.
@@ -20,12 +20,12 @@ Ugleposten forteller det hovedhistorien ikke har plass til: hva som skjer med de
 
 Fire tråder:
 
-| Tråd | Så | Vokser | Betaler seg |
-| --- | --- | --- | --- |
-| Det røde garnet (4) | K1: nøstet mangler | K2: tråd i rimet. K3: viklet rundt krystall NR. 1 | K4: resten gis bort, rundt bunken med portstempel |
-| Runen (3) | K1/K2 har alt runelapper fra IQ | K3: én svak rune inne i skåret | K4: samme rune i avsenderfeltet på merkelappen |
-| Merkelappen (2) | K1: brevfuglen over bodene har en lapp i foten | K3: Winter har «aldri fått en fugl uten avsender» (PS dag 14) | K4: magneten får opp lappen |
-| Fargen (1) | Dag 10: fargene forsvant | K3: skjær i kanten av lanternelyset | Dag 24: ametystene. Ugleposten sier aldri navnet |
+| Tråd                | Så                                             | Vokser                                                        | Betaler seg                                       |
+| ------------------- | ---------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------- |
+| Det røde garnet (4) | K1: nøstet mangler                             | K2: tråd i rimet. K3: viklet rundt krystall NR. 1             | K4: resten gis bort, rundt bunken med portstempel |
+| Runen (3)           | K1/K2 har alt runelapper fra IQ                | K3: én svak rune inne i skåret                                | K4: samme rune i avsenderfeltet på merkelappen    |
+| Merkelappen (2)     | K1: brevfuglen over bodene har en lapp i foten | K3: Winter har «aldri fått en fugl uten avsender» (PS dag 14) | K4: magneten får opp lappen                       |
+| Fargen (1)          | Dag 10: fargene forsvant                       | K3: skjær i kanten av lanternelyset                           | Dag 24: ametystene. Ugleposten sier aldri navnet  |
 
 ## (b) Endringer per kapittel
 
@@ -64,27 +64,27 @@ Rampenissen er nordlandsk, resten bokmål. Tekstene er utkast og språkvaskes f�
 
 ### Ikoner (fire bilder)
 
-| Ikon | Endring |
-| --- | --- |
-| `tesil_lanterne` | Svakt fiolett ytterst i lysskjæret, flammen fortsatt gul |
-| `krystallskaar` | En svak rimstrek inni. Ikke en lesbar rune, den tegner RuneText |
-| `hyssing` | Rødt garn med kremhvit lapp og rundt stempel |
-| `fuglemerke` (ny) | Kremhvit papirlapp med jernmalje og rim i kanten |
+| Ikon              | Endring                                                         |
+| ----------------- | --------------------------------------------------------------- |
+| `tesil_lanterne`  | Svakt fiolett ytterst i lysskjæret, flammen fortsatt gul        |
+| `krystallskaar`   | En svak rimstrek inni. Ikke en lesbar rune, den tegner RuneText |
+| `hyssing`         | Rødt garn med kremhvit lapp og rundt stempel                    |
+| `fuglemerke` (ny) | Kremhvit papirlapp med jernmalje og rim i kanten                |
 
 Alle må kunne leses i 32×32. Lages som `-vN` og godkjennes i Gjennomgang.
 
 ## (c) Tidssjekk
 
-| Element | Vises dag | Hovedhistorien da | Risiko | Tiltak |
-| --- | --- | --- | --- | --- |
-| Nøstet mangler (K1) | 4 | Etter M1. Navnet kommer dag 7 | «kulde», «lykt», «kompass», 24, 75 | Bare «rim» og «frost» |
-| Tråd i rimet (K2) | 10 | Etter M2. Koden SPEKTER samme dag | Kodeord dag 10–24 | Navnet Kulde er lov, slik K2 alt gjør |
-| Fiolett skjær (K3) | 16 | Etter M4. «Lilla» sies dag 24 | Røper gaven for tidlig | Aldri «lilla», «fiolett», «ametyst» i tekst |
-| Runen K (K3) | 16 | K læres dag 4 og dag 7 | Ulært rune | RuneText viser frost av seg selv. Ikonet har ingen lesbar rune |
-| Tråd rundt NR. 1 (K3) | 16 | Dag 17 er NORDLYS, dag 16 er SORTERING | Kodeord | Ikke «nordlys» eller «sortering». Bruk «lanterne», som i dag |
-| Bunken og portstempelet (K4) | 22 | Etter M5. PS dag 22: ingenting har kommet ut | Motsier PS, tar takken dag 24 | Bunken skal inn. Ingen svarer, ingen takker |
-| Merkelappen (K4) | 22 | Dag 23 forteller sannheten | Forklarer for mye | Ett tegn, ingen forklaring. Ikke bruk hjulordene SETT, LEST, HENGT, SMURT, TALT |
-| K4 generelt | 22 | Kapittelet åpner på dato | Nevner åpen port om dag 21 er uløst | Godtas. Frostmodus dag 21 stenger alt til koden er inne |
+| Element                      | Vises dag | Hovedhistorien da                            | Risiko                              | Tiltak                                                                          |
+| ---------------------------- | --------- | -------------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------- |
+| Nøstet mangler (K1)          | 4         | Etter M1. Navnet kommer dag 7                | «kulde», «lykt», «kompass», 24, 75  | Bare «rim» og «frost»                                                           |
+| Tråd i rimet (K2)            | 10        | Etter M2. Koden SPEKTER samme dag            | Kodeord dag 10–24                   | Navnet Kulde er lov, slik K2 alt gjør                                           |
+| Fiolett skjær (K3)           | 16        | Etter M4. «Lilla» sies dag 24                | Røper gaven for tidlig              | Aldri «lilla», «fiolett», «ametyst» i tekst                                     |
+| Runen K (K3)                 | 16        | K læres dag 4 og dag 7                       | Ulært rune                          | RuneText viser frost av seg selv. Ikonet har ingen lesbar rune                  |
+| Tråd rundt NR. 1 (K3)        | 16        | Dag 17 er NORDLYS, dag 16 er SORTERING       | Kodeord                             | Ikke «nordlys» eller «sortering». Bruk «lanterne», som i dag                    |
+| Bunken og portstempelet (K4) | 22        | Etter M5. PS dag 22: ingenting har kommet ut | Motsier PS, tar takken dag 24       | Bunken skal inn. Ingen svarer, ingen takker                                     |
+| Merkelappen (K4)             | 22        | Dag 23 forteller sannheten                   | Forklarer for mye                   | Ett tegn, ingen forklaring. Ikke bruk hjulordene SETT, LEST, HENGT, SMURT, TALT |
+| K4 generelt                  | 22        | Kapittelet åpner på dato                     | Nevner åpen port om dag 21 er uløst | Godtas. Frostmodus dag 21 stenger alt til koden er inne                         |
 
 Kodeord som ikke må stå i ny tekst, heller ikke inni andre ord: K1–K4 STJERNEKLART og JULEMAGI. K1–K3 også BRANNMUR, TURBO, GULROT, TURBULENS, NORDLYS, SORTERING. K1–K2 også KARAMELL, ORIGAMI, SAFRAN, MELODI, SPEKTER. K1 også KRETSKORT, KULDE, LYKT, ULRIKEN, KOMPASS. `kodelekkasje.test.ts` fanger dette. «Landås» er unntatt i testen, men er koden dag 22: ikke legg til flere.
 
@@ -111,7 +111,7 @@ Omfang: rundt 40 tekstlinjer i fire filer og 20 linjer ny data. Én agent, én P
 
 ## (f) Beslutninger for Hans
 
-1. **Fargen i K3.** Vise et svakt fiolett skjær i ikonet og én setning uten fargenavn, eller vente til etter dag 24? *Anbefaling: vis det uten navn.* Barna kjenner igjen fargen på julaften, og gaven er fortsatt en overraskelse.
-2. **Bunken og porten i Muren.** Inn eller ut? *Anbefaling: inn.* Julius sender brevene ned, og Rampenissen gir garnet. Ut motsier PS dag 22 og tar takken fra dag 24. Dette er et lite tillegg til en låst historie og trenger ja.
-3. **Garnet som Kulde har dratt til seg (K1–K3).** Nytt lite faktum: frosten tok det røde nøstet langs linjen. *Anbefaling: ja.* Det er det som gjør K4 til en gave og ikke bare en lapp. Uten dette blir retning 4 stående alene.
-4. **Merkelappen.** Egen gjenstand som hører til den blå fuglen, med ny kanon (Winter merker alle fugler som lander), eller bare en setning i teksten om bjella? *Anbefaling: egen gjenstand.* Funnkortet og ikonet er selve belønningen. Runen blir K, ikke et ord: Kulde skriver alt «SE MEG» og «ALENE» i runer på Snøfall TV (dag 10 og 13), og ett tegn er nok.
+1. **Fargen i K3.** Vise et svakt fiolett skjær i ikonet og én setning uten fargenavn, eller vente til etter dag 24? _Anbefaling: vis det uten navn._ Barna kjenner igjen fargen på julaften, og gaven er fortsatt en overraskelse.
+2. **Bunken og porten i Muren.** Inn eller ut? _Anbefaling: inn._ Julius sender brevene ned, og Rampenissen gir garnet. Ut motsier PS dag 22 og tar takken fra dag 24. Dette er et lite tillegg til en låst historie og trenger ja.
+3. **Garnet som Kulde har dratt til seg (K1–K3).** Nytt lite faktum: frosten tok det røde nøstet langs linjen. _Anbefaling: ja._ Det er det som gjør K4 til en gave og ikke bare en lapp. Uten dette blir retning 4 stående alene.
+4. **Merkelappen.** Egen gjenstand som hører til den blå fuglen, med ny kanon (Winter merker alle fugler som lander), eller bare en setning i teksten om bjella? _Anbefaling: egen gjenstand._ Funnkortet og ikonet er selve belønningen. Runen blir K, ikke et ord: Kulde skriver alt «SE MEG» og «ALENE» i runer på Snøfall TV (dag 10 og 13), og ett tegn er nok.

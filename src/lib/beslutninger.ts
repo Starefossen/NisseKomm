@@ -133,12 +133,14 @@ export function svarBeslutning(
     const md = path.join(rot, MD_FIL);
     const før = await readFile(md, "utf8").catch(() => "");
     const linje = `- ${dato}: ${b.spørsmål.replace(/\s+/g, " ")} Svar: ${b.valg[valg].replace(/\s+/g, " ")}${hvorfor ? ` Hvorfor: ${hvorfor.replace(/\s+/g, " ")}` : ""}\n`;
+    // A blank line before the first item under the section, none between items (prettier's form).
+    const sist = før.trimEnd().split("\n").at(-1) ?? "";
+    const hode = før.includes(MD_SEKSJON)
+      ? ""
+      : `${før.endsWith("\n") || !før ? "" : "\n"}\n${MD_SEKSJON}\n`;
     await appendFile(
       md,
-      (før.includes(MD_SEKSJON)
-        ? ""
-        : `${før.endsWith("\n") || !før ? "" : "\n"}\n${MD_SEKSJON}\n\n`) +
-        linje,
+      `${hode || før.endsWith("\n") ? "" : "\n"}${hode}${sist.startsWith("- ") && !hode ? "" : "\n"}${linje}`,
     );
     return b;
   });

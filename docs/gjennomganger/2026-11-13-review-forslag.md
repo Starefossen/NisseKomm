@@ -15,6 +15,7 @@ Kun lesing. Ingen kode endret, ingen betalte kall.
    endrer manus eller sletter take og kjører på nytt.
 
 Tall:
+
 - `forbruk.jsonl`: 111 linjer, 10 videokall, 92 transkripsjoner, 5 TTS, 4 bilder (loggen startet 12.11,
   så eldre forbruk mangler). Dag 13 alene: 5 videokall.
 - `media-vurdering.json`: 22 Julius-vurderinger. Dag 1, 2, 3, 5 og 6 har gått 3–8 runder (dag06 er på v8).
@@ -24,6 +25,7 @@ Tall:
   altså det Hans ellers må høre selv.
 
 Sløsing:
+
 - Hans ser 60–75 s video for å finne én feil på 15 s. Ved godkjenning av ny versjon må han se alt på nytt,
   også de 3–4 segmentene som er like (gjenbrukte råklipp). v6/v7 av dag 6 ser ut som nye versjoner,
   men skiller seg bare i ett segment.
@@ -62,11 +64,12 @@ versjon = vurderingen står. Nytt klipp = «ny versjon, ikke vurdert», bare for
 i `join` (span per segment etter trim og krysstoning). Ingen nye betalte kall: tallene kommer fra kjøringen.
 
 **Segmentstripe under spilleren** (i `media/kort.tsx` og Gjennomgang, bare når sidefila finnes):
+
 - én rad per segment: ▶ (spiller fra `start` til `slutt`), status, G/O/L, notatfelt;
 - manus mot hørt tekst, ord som mangler i rødt, ekstra ord i gult (ord-diff, ingen ny avhengighet);
 - revisjonsfunn med tidskode som lenke (`video.currentTime = start + t`);
 - segmenter med samme hash som en godkjent vurdering vises grå med «✓ godkjent i v6» og trenger ikke ses.
-Tastene G/O/L/N/P virker på valgt segment; piltast opp/ned bytter segment.
+  Tastene G/O/L/N/P virker på valgt segment; piltast opp/ned bytter segment.
 
 **Lag på nytt for ett segment.** Finnes nesten: et segment uten gyldig `take.json` lages på nytt ved neste
 kjøring, ellers gjenbrukes det. Det mangler et flagg som tvinger ett segment. Forslag:
@@ -89,17 +92,18 @@ kall på godkjente segmenter. Med 11 dager igjen og typisk 2–3 runder: anslag 
 
 ## 3. Andre forbedringer (gevinst / innsats)
 
-| # | Tiltak | Gevinst | Innsats |
-|---|---|---|---|
-| 1 | Vis flaggfila på kortet (`dagNN-vN-flagget.txt`, rød boks «Maskinen fant: …») | Høy | S |
-| 2 | Skjul duplikater: samme innholdshash som forrige versjon → «identisk med v6», ikke i køen | Høy | S |
-| 3 | Dagens kø: bare nye/flaggede, sortert på dag, «neste» etter lagring (Gjennomgang har det meste) | Høy | S |
-| 4 | Hurtigmerker ved notat: `klipp`, `mikrofon`, `volum`, `pause`, `uttale`, `manus` + tidskode fra spilleren (knapp «@0:42») | Middels | S |
-| 5 | Merker blir «unngå»-regler: `mikrofon` 2+ ganger → forslag i `julius-dag.py` sin regelliste (linje ~190), agent godkjenner | Middels | M |
-| 6 | Side ved side gammel/ny for samme segment (to `<video>`, synkron start) | Middels | S |
-| 7 | Batch-godkjenning: «Godkjenn alle uten flagg» i filteret | Lav–middels | S |
+| #   | Tiltak                                                                                                                     | Gevinst     | Innsats |
+| --- | -------------------------------------------------------------------------------------------------------------------------- | ----------- | ------- |
+| 1   | Vis flaggfila på kortet (`dagNN-vN-flagget.txt`, rød boks «Maskinen fant: …»)                                              | Høy         | S       |
+| 2   | Skjul duplikater: samme innholdshash som forrige versjon → «identisk med v6», ikke i køen                                  | Høy         | S       |
+| 3   | Dagens kø: bare nye/flaggede, sortert på dag, «neste» etter lagring (Gjennomgang har det meste)                            | Høy         | S       |
+| 4   | Hurtigmerker ved notat: `klipp`, `mikrofon`, `volum`, `pause`, `uttale`, `manus` + tidskode fra spilleren (knapp «@0:42»)  | Middels     | S       |
+| 5   | Merker blir «unngå»-regler: `mikrofon` 2+ ganger → forslag i `julius-dag.py` sin regelliste (linje ~190), agent godkjenner | Middels     | M       |
+| 6   | Side ved side gammel/ny for samme segment (to `<video>`, synkron start)                                                    | Middels     | S       |
+| 7   | Batch-godkjenning: «Godkjenn alle uten flagg» i filteret                                                                   | Lav–middels | S       |
 
 Forbilder (bare det som passer):
+
 - Frame.io/SyncSketch: notat festet til tidskode, klikk hopper dit. Det er punkt 4.
 - ShotGrid: vurdering per «shot» (segment) og versjon, godkjent shot låses. Det er hovedforslaget.
 - Prodigy: én ting om gangen, tastatur, maskinens forslag ferdig utfylt. Det er punkt 1 og 3.

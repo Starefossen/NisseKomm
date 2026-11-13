@@ -19,7 +19,7 @@ Hans' føring er fulgt: forslag bare der noe er galt. Hvert funn er merket **fei
 
 2. **feil · dag 15 · julius_ps · synlige understreker.** «man skal stå _ved_ gryta, ikke _i_ den» vises med understrekene, fordi `JuliusVideo.tsx` skriver PS som ren tekst. Forslag: «man skal stå ved gryta, ikke oppi den.»
 
-3. **feil · dag 13 · NisseMail · motsier video, fil og Kuldes egen linje.** «Kulde satt og så på lysene i verkstedet hele natten.» Julius, `lucia-tradisjon.txt`, PS og spøkelsesbildet sier alle at Kulde så lysene *gjennom linjen*. Kulde er under Nordtoppen og kommer ikke fram før dag 21. Forslag: «Kulde så på lysene våre gjennom linjen hele natten. Bare så.»
+3. **feil · dag 13 · NisseMail · motsier video, fil og Kuldes egen linje.** «Kulde satt og så på lysene i verkstedet hele natten.» Julius, `lucia-tradisjon.txt`, PS og spøkelsesbildet sier alle at Kulde så lysene _gjennom linjen_. Kulde er under Nordtoppen og kommer ikke fram før dag 21. Forslag: «Kulde så på lysene våre gjennom linjen hele natten. Bare så.»
 
 4. **feil · dag 1 · `/SYSTEM/readme.txt` · røper dag 10.** «En mystisk digital frost prøver å låse kanaler og stjele farger» er synlig fra dag 1. Filen står som «ikke rørt» i app-tekster D og har fjorårets tone («Velkommen tilbake», «våre tre beste agenter»). Forslag: «NISSEKOMM – LES MEG. IQ har lagt en direktelinje fra Snøfall til stua deres: Snøfall TV, NisseMail og video fra Julius. Linjen er ny. Hvis noe skurrer, er det ikke dere. – IQ»
 

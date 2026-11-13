@@ -60,10 +60,6 @@ function useDag(n: number | undefined) {
 
 /** Script per segment; with `port` each segment gets its own verdict (julius-dag.py's script gate). */
 function Manus({ d, port }: { d: Dag; port?: boolean }) {
-  const j = d.julius;
-  if (!j) return <p>Ikke noe manus for dagen.</p>;
-  const id = (s: number) =>
-    `manus/julius/dag-${String(d.dag).padStart(2, "0")}#s${s}`;
   // What the video in use says per segment: a script read before a retake shows what changes.
   const [hørt, setHørt] = useState<Record<number, string>>({});
   useEffect(() => {
@@ -81,6 +77,10 @@ function Manus({ d, port }: { d: Dag; port?: boolean }) {
       )
       .catch(() => {});
   }, [d.dag, port]);
+  const j = d.julius;
+  if (!j) return <p>Ikke noe manus for dagen.</p>;
+  const id = (s: number) =>
+    `manus/julius/dag-${String(d.dag).padStart(2, "0")}#s${s}`;
   return (
     <SkjulVurder.Provider value={!port}>
       <p className="text-sm text-(--cold-blue) whitespace-pre-wrap mb-2">

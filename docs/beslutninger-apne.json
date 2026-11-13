@@ -17,10 +17,7 @@
     "spørsmål": "ULRIKEN: skal en tekst si hvorfor Winter skrev ordet på vingen?",
     "kontekst": "Barna dekoder Winters ord på vingen dag 5, men ingen tekst sier hvorfor han skrev det. Fjellet kommer igjen dag 18 og på kartet. En halv setning i PS dag 5 holder. (L6.)",
     "lenker": ["dag/05/tekster", "dag/18/tekster"],
-    "valg": [
-      "Legg til en halv setning i PS dag 5",
-      "La det stå som nå"
-    ],
+    "valg": ["Legg til en halv setning i PS dag 5", "La det stå som nå"],
     "anbefalt": 0,
     "av": "agent:siste-gjennomgang",
     "opprettet": "2026-11-13T12:00:00.000Z"

@@ -5,6 +5,7 @@ Bare lesing. Ingen endringer, ingen betalte kall. Lest: `docs/manus/julius-2026.
 Revidert etter Hans' beskjed: forslag bare der noe faktisk er feil. Hvert forslag er merket **feil** (lekkasje, kontinuitetsbrudd, uklart for alderen, ute av karakter, modellteknisk). Forslag som bare var **smak**, er tatt ut. Alle forslag er minste mulige inngrep og beholder vitsen og stemmen.
 
 **Hva som er laget (sjekket mot sidecar-hash):**
+
 - Julius: video med gjeldende manus finnes for dag 1–3, 5–19 og 21–23 (de fleste som kandidater). Dag 4 er utdatert (seg 4 endret 13.11). Dag 20 og 24 er ikke laget.
 - Radio: alle 24 klipp finnes. Dag 20 og 24 er utdatert mot manus og må leses inn på nytt uansett. Resten stemmer.
 - «Laget» under betyr at endringen koster ett nytt videosegment (Julius) eller én ny TTS-lesing (radio, billig).
@@ -26,19 +27,21 @@ Revidert etter Hans' beskjed: forslag bare der noe faktisk er feil. Hvert forsla
 ### Høy
 
 **H1. feil (modellteknisk): Rampenissens nordlandske sitat faller ut av Julius-videoen. Dag 6-2, 12-1, 13-1, 17-1, 23-1. Laget, alle fem flagget.**
+
 - 23-1 mistet «Rampenissen rapporterer», så det høres ut som Julius selv kikket på pakken.
 - 12-1 ble «Jeg lager lydbølge av dorull» (Julius' egen strek).
 - 17-1 mistet «Dem vil ha pepperkakan», så «Jeg hadde gitt dem pepperkakene» henger i lufta.
 - 6-2 mistet hele sitatet. 13-1 mistet «Æ e død no».
-Sitatene er selve poenget (Rampenissens stemme inn i Julius' kontor), så manus bør stå. Forslag: ta de fem om med uendret tekst først. Dag 5, 8 og 11 viser at det går. Bare hvis et segment feiler én gang til, byttes det til indirekte tale som nødløsning, for eksempel 23-1: «…Rampenissen rapporterer at han bare kikket litt på en pakke. Litt! Teipen var tom etterpå.»
+  Sitatene er selve poenget (Rampenissens stemme inn i Julius' kontor), så manus bør stå. Forslag: ta de fem om med uendret tekst først. Dag 5, 8 og 11 viser at det går. Bare hvis et segment feiler én gang til, byttes det til indirekte tale som nødløsning, for eksempel 23-1: «…Rampenissen rapporterer at han bare kikket litt på en pakke. Litt! Teipen var tom etterpå.»
 
 **H2. feil (kontinuitet): Dag 18, Julius sier Nordtoppen, radioen og tittelen sier Ulriken. Laget (18-v1).**
 Rampenissen bor på Landås hele desember (beslutning 11.11) og kan ikke ha vært over Nordtoppen. Minste inngrep i 18-2, vitsen står: «I natt fløy Trixter rundt Ulriken i uvær. Rampenissen holdt seg fast i lua hans. Nå spiser Trixter med hjelm.»
 
 **H3. feil (modellteknisk): to låste brikker ble hørt slik at hintet endres. Laget. Ny tagning, ingen tekstendring.**
+
 - 23-5: «Ordet begynner med det som blinker» ble «Nå begynner vi med det som blinker». Instruksen forsvinner.
 - 19-3: «førti for lite av» ble «førti liter av».
-Låste med feilhøring som ikke endrer hintet: 16-3 («hver pakke» → «vær pakket»), 17-4 («Nissene sier lyset» → «Nissesilys»), 18-3 («lufta får sleden» → «lysten forleder»), 23-4 («Været har et ord» → «Hva er har et ord»). Hans bør høre dem før de tas i bruk.
+  Låste med feilhøring som ikke endrer hintet: 16-3 («hver pakke» → «vær pakket»), 17-4 («Nissene sier lyset» → «Nissesilys»), 18-3 («lufta får sleden» → «lysten forleder»), 23-4 («Været har et ord» → «Hva er har et ord»). Hans bør høre dem før de tas i bruk.
 
 ### Middels
 
@@ -49,6 +52,7 @@ Låste med feilhøring som ikke endrer hintet: 16-3 («hver pakke» → «vær p
 Julius 12-2 (laget, i bruk): «Isen sprakk, og noe svarte.» Radio 17 (laget): «Første gang nåkka svare.» Billigst i radio 17: «Første gang nåkka svare så vi kan se det.»
 
 **M3. feil (kanon og dialekt): Dag 24, radio. Lyden er utdatert, så det er gratis nå.**
+
 - «og fargan e tilbake» (flertall) gjentar dag 11 («dokker fikk fargan tilbake i går»). Beslutningen 13.11 gjelder krystallets farge: «og fargen e tilbake».
 - «Julius las ho med brilla på»: rapporten er hankjønn. «las den».
 

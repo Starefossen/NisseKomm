@@ -181,4 +181,3 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 ## Besvart i Gjennomgang
 
 Svar Hans gir på beslutninger i Gjennomgang (`docs/beslutninger-apne.json`) legges til her automatisk.
-

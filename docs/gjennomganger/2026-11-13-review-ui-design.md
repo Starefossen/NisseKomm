@@ -6,13 +6,13 @@ De vurderes ikke på nytt; godkjent forblir godkjent. Det erstatter «la dag 1�
 
 ## 1. Dagens sider og hvor de overlapper
 
-| Side | Hva Hans gjør der | Overlapp |
-|---|---|---|
-| Media (`/media`) | Ser filer, filtrerer («Hva gjenstår»), vurderer på kortet, «Ta i bruk vN» | Vurdering finnes også i Gjennomgang. Filteret finnes i to utgaver (`filter.ts` og `UTVALG`). |
-| Gjennomgang | Matrise 24 dager × 7 kolonner + ekstrarader, `?id=` åpner ett element med tastene G/O/L/N/P | Eneste sted med guideseksjoner og medier sammen, men viser ikke flagg, segmenter eller forbruk. |
-| Vurderinger | Liste over alt som ikke er godkjent, nyeste først | Samme data som «Hva gjenstår», uten forhåndsvisning. Blander «venter på Hans» og «venter på agent». |
-| Dagvisningen | `Vurder` på delsystemer og Varden; gåtekart, kveld og strek vurderes i Gjennomgang | Samme id-er, annen inngang. Viser ikke medienes status samlet. |
-| Bibliotek | Lenker til Gjennomgang, Media, Vurderinger, entiteter, merker | Ren meny. |
+| Side             | Hva Hans gjør der                                                                           | Overlapp                                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Media (`/media`) | Ser filer, filtrerer («Hva gjenstår»), vurderer på kortet, «Ta i bruk vN»                   | Vurdering finnes også i Gjennomgang. Filteret finnes i to utgaver (`filter.ts` og `UTVALG`).        |
+| Gjennomgang      | Matrise 24 dager × 7 kolonner + ekstrarader, `?id=` åpner ett element med tastene G/O/L/N/P | Eneste sted med guideseksjoner og medier sammen, men viser ikke flagg, segmenter eller forbruk.     |
+| Vurderinger      | Liste over alt som ikke er godkjent, nyeste først                                           | Samme data som «Hva gjenstår», uten forhåndsvisning. Blander «venter på Hans» og «venter på agent». |
+| Dagvisningen     | `Vurder` på delsystemer og Varden; gåtekart, kveld og strek vurderes i Gjennomgang          | Samme id-er, annen inngang. Viser ikke medienes status samlet.                                      |
+| Bibliotek        | Lenker til Gjennomgang, Media, Vurderinger, entiteter, merker                               | Ren meny.                                                                                           |
 
 Hopping i dag: en Julius-runde krever Media (se video) → terminal (flaggfil) → Gjennomgang (manus) →
 Media («Ta i bruk»). Ingen side svarer på «hva venter på meg nå?» uten at Hans velger filter først.
@@ -55,14 +55,14 @@ Element
 
 **Steg regnes ut, de lagres ikke.** Bare vurderingene lagres. Resten kommer av fakta på disk:
 
-| Steg | Fakta |
-|---|---|
-| 1 Utkast | kildetekst/prompt finnes, ingen gyldig vurdering av den |
-| 2 Manus godkjent | `manus/…` eller `prompt/…` har godkjent/ok på gjeldende hash (bare typer med manusport) |
-| 3 Generert | fil + sidefil (`.meta.json`) finnes |
-| 4 Maskinsjekket | `segmenter.json`/flaggfil/inventarstatus finnes. Typer uten sjekk hopper over. |
-| 5 Godkjent av Hans | godkjent/ok på hashen til nyeste versjon |
-| 6 I bruk | filen uten -vN har den godkjente hashen |
+| Steg               | Fakta                                                                                   |
+| ------------------ | --------------------------------------------------------------------------------------- |
+| 1 Utkast           | kildetekst/prompt finnes, ingen gyldig vurdering av den                                 |
+| 2 Manus godkjent   | `manus/…` eller `prompt/…` har godkjent/ok på gjeldende hash (bare typer med manusport) |
+| 3 Generert         | fil + sidefil (`.meta.json`) finnes                                                     |
+| 4 Maskinsjekket    | `segmenter.json`/flaggfil/inventarstatus finnes. Typer uten sjekk hopper over.          |
+| 5 Godkjent av Hans | godkjent/ok på hashen til nyeste versjon                                                |
+| 6 I bruk           | filen uten -vN har den godkjente hashen                                                 |
 
 Sidetilstander: «lag på nytt», «utdatert» (kilden endret etter generering), «mangler».
 **Hvem har ballen** regnes også ut: Hans har steg 1, 3–4 og «godkjent, ikke tatt i bruk». Agenten har
@@ -71,18 +71,18 @@ elementet tilbake til Hans av seg selv (det gjør `ny_versjon` allerede).
 
 **Typeregister** (`src/lib/vurdering-typer.ts`, én tabell; `typeAv` i `filter.ts` og `KOLONNER` flyttes hit):
 
-| Type | Visning | Manusport | Maskinsjekk | Merker | Omtak |
-|---|---|---|---|---|---|
-| Manussegment (Julius) | tekst | er porten | lint, ordtall, tid | manus, lengde, tone | rediger manus |
-| Julius-segment | video (del) | ja | manus mot hørt, revisjon | klipp, mikrofon, volum, pause, uttale | `julius-dag.py N --segment S` |
-| Julius-video (skjøt) | video | – | varighet, overganger | overgang, slutt | skjøt på nytt (gratis) |
-| TV-loop | video (loop) | prompt | – | loop-hopp, stil, figur | `tv-loops.sh` |
-| Radio | lyd | manus | varighet | uttale, tempo, dialekt | `rampenissen-tts.sh` |
-| Rampestrek, pikselscene, portrett, ikon, figur | bilde | prompt | utdatert-sjekk | stil, figur, tekst i bildet, utsnitt | `generer.py <jobb>` |
-| Musikk/feed | lyd/bilde | – | – | – | hånd |
-| Utskrift | side (iframe) | – | tester | skrivefeil, layout | kode/tekst |
-| Guideseksjon (gåtekart, kveld, historien …) | side | – | tester | fakta, språk | tekst |
-| Spilldel (Ugleposten-kapittel, etappe) | lenke + notat | – | tester | – | kode (ingen hash) |
+| Type                                           | Visning       | Manusport | Maskinsjekk              | Merker                                | Omtak                         |
+| ---------------------------------------------- | ------------- | --------- | ------------------------ | ------------------------------------- | ----------------------------- |
+| Manussegment (Julius)                          | tekst         | er porten | lint, ordtall, tid       | manus, lengde, tone                   | rediger manus                 |
+| Julius-segment                                 | video (del)   | ja        | manus mot hørt, revisjon | klipp, mikrofon, volum, pause, uttale | `julius-dag.py N --segment S` |
+| Julius-video (skjøt)                           | video         | –         | varighet, overganger     | overgang, slutt                       | skjøt på nytt (gratis)        |
+| TV-loop                                        | video (loop)  | prompt    | –                        | loop-hopp, stil, figur                | `tv-loops.sh`                 |
+| Radio                                          | lyd           | manus     | varighet                 | uttale, tempo, dialekt                | `rampenissen-tts.sh`          |
+| Rampestrek, pikselscene, portrett, ikon, figur | bilde         | prompt    | utdatert-sjekk           | stil, figur, tekst i bildet, utsnitt  | `generer.py <jobb>`           |
+| Musikk/feed                                    | lyd/bilde     | –         | –                        | –                                     | hånd                          |
+| Utskrift                                       | side (iframe) | –         | tester                   | skrivefeil, layout                    | kode/tekst                    |
+| Guideseksjon (gåtekart, kveld, historien …)    | side          | –         | tester                   | fakta, språk                          | tekst                         |
+| Spilldel (Ugleposten-kapittel, etappe)         | lenke + notat | –         | tester                   | –                                     | kode (ingen hash)             |
 
 Ny sesong = ny `sesong`-verdi, nytt lager og nye kilder. Typeregisteret og visningene står urørt.
 Ingenting i modellen kjenner «24 dager» eller «Julius»; det ligger i sesongens elementliste.
@@ -177,29 +177,29 @@ festet nederst (G/O/L), sveip til siden = neste/forrige. Ikke side ved side: `V`
 
 **Før 1. desember** (skal lønne seg på dag 14–24 og omtak):
 
-| # | Hva | Innsats |
-|---|---|---|
-| 1 | Manusport, sidefil `segmenter.json`, `--segment`, lås (pågår). Vurderinger via én funksjon i `medie.py`. | S–M |
-| 2 | Format 2 + flytteskript + kontrolltest + dagens API-form som visning. Rett etter fase 1, før stripa. | M |
-| 3 | Elementvisning for Julius: segmentstripe, manus mot hørt, flagg, merker og tidskode | M |
-| 4 | Kø som forside i Gjennomgang (to faner), identiske versjoner skjult, Vurderinger-siden omdirigert | S |
-| 5 | Forbrukslinje i køen og pris ved «Lag på nytt» | S |
-| 6 | Bilde: gammel/ny med `V` og zoom (gjenstående piksel, ikon, strek) | S |
+| #   | Hva                                                                                                      | Innsats |
+| --- | -------------------------------------------------------------------------------------------------------- | ------- |
+| 1   | Manusport, sidefil `segmenter.json`, `--segment`, lås (pågår). Vurderinger via én funksjon i `medie.py`. | S–M     |
+| 2   | Format 2 + flytteskript + kontrolltest + dagens API-form som visning. Rett etter fase 1, før stripa.     | M       |
+| 3   | Elementvisning for Julius: segmentstripe, manus mot hørt, flagg, merker og tidskode                      | M       |
+| 4   | Kø som forside i Gjennomgang (to faner), identiske versjoner skjult, Vurderinger-siden omdirigert        | S       |
+| 5   | Forbrukslinje i køen og pris ved «Lag på nytt»                                                           | S       |
+| 6   | Bilde: gammel/ny med `V` og zoom (gjenstående piksel, ikon, strek)                                       | S       |
 
 Rekkefølgen 2 før 3 er med vilje: stripa bygges én gang, på den nye modellen. Glipper tiden, tåler 4–6 å vente;
 1–3 gir gevinsten på videokallene.
 
 **Januar–oktober 2027:**
 
-| Hva | Innsats |
-|---|---|
-| Typeregisteret fullt ut; matrisen og filtrene leser det, `KOLONNER`/`typeAv` slettes | M |
-| Media blir «Filer»: vurderingsknappene bort derfra, bare versjoner, «Ta i bruk», arkiv | S |
-| Sesongvelger: 2026 som lesbart arkiv, 2027 som ny sesong (nytt lager, samme rigg) | M |
-| Manusport for TV-looper, bilder og radio (`prompt/<jobb>`, `manus/radio/…`) | S |
-| `laerdom.json` + regelforslag i køen + `unngaa()` i alle generatorer | M |
-| Lydvisning med manus mot hørt for radio; batch «godkjenn alle uten flagg» | S |
-| Dagvisningens statuslinje; iPhone-utgaven pusset | S |
+| Hva                                                                                    | Innsats |
+| -------------------------------------------------------------------------------------- | ------- |
+| Typeregisteret fullt ut; matrisen og filtrene leser det, `KOLONNER`/`typeAv` slettes   | M       |
+| Media blir «Filer»: vurderingsknappene bort derfra, bare versjoner, «Ta i bruk», arkiv | S       |
+| Sesongvelger: 2026 som lesbart arkiv, 2027 som ny sesong (nytt lager, samme rigg)      | M       |
+| Manusport for TV-looper, bilder og radio (`prompt/<jobb>`, `manus/radio/…`)            | S       |
+| `laerdom.json` + regelforslag i køen + `unngaa()` i alle generatorer                   | M       |
+| Lydvisning med manus mot hørt for radio; batch «godkjenn alle uten flagg»              | S       |
+| Dagvisningens statuslinje; iPhone-utgaven pusset                                       | S       |
 
 **Bygger vi ikke:**
 

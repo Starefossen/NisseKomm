@@ -6,31 +6,32 @@ Bare lesing. Ingen kode er endret. Grunnlag: main d65bd9a, `kapittel1–4.ts`, `
 
 ## 1. Rettingene, punkt for punkt
 
-| Punkt | Rettet | Merknad |
-|---|---|---|
-| 1 Vintervokteren i K1 | Ja | Ovnen sier Winter og skjerfet. Ordet finnes ikke lenger i barnesynlig K1-tekst. |
-| 2 To porter i K4 | Delvis | «Bymuren» er på plass, og Winter forklarer portstempelet. Men linja ligger bare på `hyssing`, se funn A. |
-| 3 Hyssing/garn | Ja | Navn, tekster og tips sier garn. Tre pronomen ble hengende, se funn B. |
-| 4 Garnet lukkes | Ja | Bunken bindes (`tok_bjelle`), bjella har «garnstumpen sin», utroen nevner brevene. Fiskestanga forsvinner fra lomma. |
-| 5 Halve nøstet | Ja | K1 «halve det røde nøstet er borte» stemmer med K4 «Det har jo halve fra før». |
-| 6 Garnet på hovedveien i K3 | Ja | «Rundt foten ligger noe rødt» står i løsningsteksten til lysveien. I K2 sto tråden alt i SE på kablene. |
-| 8 K2 mot dag 11 | Ja | Utroen: antenna er skjør, «det som sende rimet, e ikkje ferdig». |
-| 9 Hengelåsen | Delvis | Skiltet og tips 2 peker nå på de tykke svarte kablene mellom hytta og masta. I bildet ser bunten ut som tre–fire streker. SE-teksten sier tre. Godt nok. |
-| 10 Bergen før dag 22 | Ja | Lappen, Julius og bunken sier Bergen. K1 og K2 står, som anbefalt. |
-| 13 Språkfeil | Ja | Alle fem. |
-| 14 Tips | Ja | Alle tre. |
-| 15 Winters dialekt | Ja | «hva», «hvorfor», «Noen». |
-| 16 Rampenissens småsprik | Delvis | Kafélinjene, «veit», «kossen» rettet. «Æ sir ikkje ka» står i motorens felles hviskelinje. La stå. |
-| 17 Flosshatten | Ja | |
-| 18 Disken | Ja | |
-| 7, 11, 22, 23 | Hoppet over | Se del 3. |
-| 12, 19, 20, 21 | Urørt | Som anbefalt eller uten forslag. |
+| Punkt                       | Rettet      | Merknad                                                                                                                                                  |
+| --------------------------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 Vintervokteren i K1       | Ja          | Ovnen sier Winter og skjerfet. Ordet finnes ikke lenger i barnesynlig K1-tekst.                                                                          |
+| 2 To porter i K4            | Delvis      | «Bymuren» er på plass, og Winter forklarer portstempelet. Men linja ligger bare på `hyssing`, se funn A.                                                 |
+| 3 Hyssing/garn              | Ja          | Navn, tekster og tips sier garn. Tre pronomen ble hengende, se funn B.                                                                                   |
+| 4 Garnet lukkes             | Ja          | Bunken bindes (`tok_bjelle`), bjella har «garnstumpen sin», utroen nevner brevene. Fiskestanga forsvinner fra lomma.                                     |
+| 5 Halve nøstet              | Ja          | K1 «halve det røde nøstet er borte» stemmer med K4 «Det har jo halve fra før».                                                                           |
+| 6 Garnet på hovedveien i K3 | Ja          | «Rundt foten ligger noe rødt» står i løsningsteksten til lysveien. I K2 sto tråden alt i SE på kablene.                                                  |
+| 8 K2 mot dag 11             | Ja          | Utroen: antenna er skjør, «det som sende rimet, e ikkje ferdig».                                                                                         |
+| 9 Hengelåsen                | Delvis      | Skiltet og tips 2 peker nå på de tykke svarte kablene mellom hytta og masta. I bildet ser bunten ut som tre–fire streker. SE-teksten sier tre. Godt nok. |
+| 10 Bergen før dag 22        | Ja          | Lappen, Julius og bunken sier Bergen. K1 og K2 står, som anbefalt.                                                                                       |
+| 13 Språkfeil                | Ja          | Alle fem.                                                                                                                                                |
+| 14 Tips                     | Ja          | Alle tre.                                                                                                                                                |
+| 15 Winters dialekt          | Ja          | «hva», «hvorfor», «Noen».                                                                                                                                |
+| 16 Rampenissens småsprik    | Delvis      | Kafélinjene, «veit», «kossen» rettet. «Æ sir ikkje ka» står i motorens felles hviskelinje. La stå.                                                       |
+| 17 Flosshatten              | Ja          |                                                                                                                                                          |
+| 18 Disken                   | Ja          |                                                                                                                                                          |
+| 7, 11, 22, 23               | Hoppet over | Se del 3.                                                                                                                                                |
+| 12, 19, 20, 21              | Urørt       | Som anbefalt eller uten forslag.                                                                                                                         |
 
 ## 2. Nye funn
 
 **A. K4: Winters portlinje treffer få (middels).** Linja ligger i `feil.hyssing` på Winter. Garnet er løst i lomma bare fra barna tar det til de knytter det til magneten, og begge ligger på kontoret. De fleste går ned til porten med fiskestanga, og den gir et vanlig skuldertrekk. Forslag: samme linje i `feil.fiskesnoere`, med «Winter ser på garnet i enden av magneten.» først.
 
 **B. K4 og K2: pronomen etter byttet til garn (lav, mekanisk).**
+
 - `brevbunken.ta`: «løsner det røde garnet … og vikler den opp» → «det».
 - vedkassa `feil.hyssing`: «Du senker garnet ned. Den henger der» → «Det».
 - brevfuglen `feil.hyssing`: «Hun ser på den som om» → «det».
@@ -59,6 +60,6 @@ Hun leser ikke, så det må være noe hun kan trykke på eller telle, og som noe
 
 ## Beslutninger for Hans
 
-1. **Skjæret i K3 (punkt 7).** Agenten hoppet over det med vilje. *Anbefaling: rett.* Uten det viser sokkelen til noe barna ikke har lest.
-2. **Hanna-grepene.** Alle tre, bare fjærspeideren, eller ingen? *Anbefaling: 1 og 2.* De er tre setninger. Lydordene (3) rører ti tekster og kan vente til du har sett henne spille K1.
-3. **Funn A–C rettes uten ny runde?** *Anbefaling: ja.* Ren tekst og to vilkår, dekket av testene som finnes.
+1. **Skjæret i K3 (punkt 7).** Agenten hoppet over det med vilje. _Anbefaling: rett._ Uten det viser sokkelen til noe barna ikke har lest.
+2. **Hanna-grepene.** Alle tre, bare fjærspeideren, eller ingen? _Anbefaling: 1 og 2._ De er tre setninger. Lydordene (3) rører ti tekster og kan vente til du har sett henne spille K1.
+3. **Funn A–C rettes uten ny runde?** _Anbefaling: ja._ Ren tekst og to vilkår, dekket av testene som finnes.

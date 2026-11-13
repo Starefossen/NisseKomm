@@ -28,6 +28,7 @@ Forslag: én linje i sjekklista for dag 4, 11 og 18 («Legg perlen / filteret / 
 «1 klementin RESERVE» legges i ferdskriveren 28.11, og dag 24 bruker «den siste klementinen fra Hjerteruds proviant». Den er tørr eller mugnet til jul. Forslag: sjekklista dag 24 sier «en fersk klementin (den siste fra provianten)», og reserveklementinen spises i uke 1.
 
 **A6. Lav, feil: småfeil i sjekklistene.**
+
 - Dag 23: «Hyssing til stjernene» står etter «Heng de tolv stjernene», og hyssingen er allerede tredd i november. Fjern linjen.
 - Dag 16: ostehøvelen ligger «i badeskapet», tallappen 5 «på badehyllen», og skissen sier «badehylle». Det er samme sted. Bruk ett ord.
 - Dag 6: «en lampe» (sjekkliste), «lommelykt» (c), «mobillykt» (materialer). Skriv «mobillykt» alle steder.
@@ -36,9 +37,11 @@ Forslag: én linje i sjekklista for dag 4, 11 og 18 («Legg perlen / filteret / 
 - /forberedelser: handlelisten ligger nederst, etter kortet «Innen 25. november», som begynner med «Kjøp alt under lokalt». Flytt den opp under det kortet. Safran og svart papir står i tillegg som egne kjøpepunkter.
 
 ### Hintene
+
 Trappen holder. Trinn 1–3 peker på sted, observasjon og kobling uten å gi bokstaver. Trinn 4 gir posisjoner og en definisjon, men aldri ordet, og det er riktig nivå for et siste dytt. Ingen funn. Krypto 2 står under B5.
 
 ### Må ikke røres
+
 - Lappene fra Rampenissen («Krabb! – R», «Så veltet jeg. Unnskyld. – R») og streker som bærer brikken.
 - Den mørke humoren i §8: egen begravelse («HAN SPISTE 11.»), løsepengebrevet («GI OSS ALLE PEPPERKAKENE. ELLERS.»), teipomrisset, «reinsdyrbæsjen».
 - «Hanna (hvis hun vil)» på hver dag og bakt inn i hintreplikkene.
@@ -59,15 +62,17 @@ Linje 587, `fra_dag: 22`: «WINTER: Snill-listen er åpen. Jeg trenger stedet i 
 Forslag: «WINTER: Snill-listen er åpen. Én rubrikk mangler. Jeg godtar bare tall.» Det beholder pedanteriet uten å si «sted».
 
 **B3. Middels, feil (kanon): «Landås» før dag 22 er løst.**
+
 - Loggen linje 595, `fra_dag: 24`: «JULIUS: Landet på Landås. God jul.» Vises julaften uansett om dag 22 er løst.
 - Introen til etappen «Julenatt over grotten» (`slede.ts`): «… så setter vi kursen mot Landås.» Styres bare av dag 24.
-Fri flyging gjør det riktig («LANDÅS» bare med dag 22 løst, ellers «BERGEN»). Testen har LANDÅS på en tillatt-liste, så den fanger det ikke. Dette gjelder bare en familie som ligger etter. Forslag: «Bergen» begge steder, eller samme vilkår som i fri flyging.
+  Fri flyging gjør det riktig («LANDÅS» bare med dag 22 løst, ellers «BERGEN»). Testen har LANDÅS på en tillatt-liste, så den fanger det ikke. Dette gjelder bare en familie som ligger etter. Forslag: «Bergen» begge steder, eller samme vilkår som i fri flyging.
 
 **B4. Middels, feil (løfte som ikke holdes): radiolinjen `utfordring`.**
 `RADIO.utfordring`: «Utfordring klart! Æ sei det på Morgenrådet i morra.» Klippene er spilt inn på forhånd, og jeg fant ingen sledefelter i `src/lib/mcp/`, så Birk og Lyng får neppe vite om utfordringen. En tolvåring vil vente på det. Koordinator bør bekrefte hva `get_kid_context` faktisk sender.
 Forslag: «Utfordring klart! Æ sei det te bamsan. Dem e imponert.»
 
 **B5. Lav, feil: småting.**
+
 - Dialekt mot «Skrivemåte» i radiomanuset, i `RADIO`/`STEDER`: «Æ telte den» → «telt», «Fly ein annen plass» → «en anna plass», «seinar» → «seinare», «gaven» → «gava», «Husan har piper» → «pipa». Bare bøyning, ikke innhold.
 - `RADIO.krasj`: «Det va bare et tre.» kommer også når sleden treffer en tind eller Muren. Forslag: «Det va bare et tre. Eller et fjell.»
 - Frekvenser med punktum: «85.0 MHz» (`NisseKrypto.tsx` linje 324) og «90.0 MHz» (`NisseMusikk.tsx` linje 240). Ellers står det «85,0» og «90,0».
@@ -78,6 +83,7 @@ Forslag: «Utfordring klart! Æ sei det te bamsan. Dem e imponert.»
 HUD-teksten og `RADIO.fugl` («Brevfugl i sekken!», «Du fanga en brevfugl. Den hadde post te Julius.»). Fuglene er barnas egne brev på vei til postkassen på Torget, så å fange dem stopper posten. Bare HUD-ordet skurrer: «BREVFUGL FULGT +80» ville holde. Replikkene er gode og bør stå. Se beslutning 3.
 
 ### Sjekket uten funn
+
 - Ametyst og «lilla» finnes bare i dag 24-tekster og i tinebrevet (`Brevfugler.tsx`, vises etter dag 24-koden).
 - Ingen leketøysfabrikk. «GAVER PAKKET … i pakkesentralen» er riktig. Hjerterud er riktig brukt overalt; ingen «Nissemor» i barnetekst.
 - «Vintervokteren» i Brevfugler vises først etter tining. Kuldes navn på K-kanalen brenner inn først etter koden dag 7 (dekket av test). Måleren «KULDE PÅ 85,0» er trygg fordi NisseStats åpner dag 16.
@@ -85,6 +91,7 @@ HUD-teksten og `RADIO.fugl` («Brevfugl i sekken!», «Du fanga en brevfugl. Den
 - Trixter leder sleden og Rudolf har gjesteroller, i tråd med beslutningen 11.11.
 
 ### Må ikke røres
+
 - Slangen i `RADIO`: «Æ e cooked. Sleden e cooked. Rudolf e medium.», «Æ e locked ute, æ står på trappa.», «Chat e bamsan. Dem såg det.», «Æ prøvd å rizze låsen. Låsen va ikkje interessert.», «AURA-GJELD. Æ BETALE.» Alt er på Hans' liste over gjeldende slang, og vitsen er at Rampenissen bommer litt.
 - «Æ håpe den ikkje bæsja på pakkan» og «Æ sa et ord Julius ikkje like. Inni mæ.»
 - Kuldes linjer på 85,0: «Jeg snudde båndet til Winter. Nå ser han hit.», «Lysene deres. Jeg husker ikke når jeg så lys sist.» Uhyggen er dosert for en niåring og avslører ingenting.

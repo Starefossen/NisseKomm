@@ -22,15 +22,15 @@ Feilene (H1, M1–M4, L1–L4) er rettet 13.11. Disse fire står urørt til du a
 
 Alle foreslåtte rettinger er inne og stemmer. Avvikene agentene gjorde:
 
-| Avvik | Dom |
-|---|---|
-| 18-2 «holdt seg fast i geviret hans» | Holder. Radio og mail sier «Æ satt bakpå … og æ fløy», så han kan ha havnet i geviret. Hjelmen har fortsatt en grunn, og entiteten sier det samme. |
-| Radio 12 «Julius sa i natt» | Holder. Sukk, Julius, Hjerterud til slusa, i den rekkefølgen, og stemmer med Julius 12-2 og 12-4. Merknaden i Julius-manus dag 12 siterer fortsatt «i går kveld» (bare merknad). |
-| Sjekkliste dag 6 «mobilen med lyset på» | **Feil**, se M1. |
-| Logg 24. des. «TRIXTER: Landet i Bergen i natt. Tre esker levert. Én nisse med hjem.» | Holder. «Bergen» er riktig for en familie som ikke har løst dag 22. |
-| Utskrift i november, «Ta fram» | Holder i sjekklistene, (c) og byggeplanen. Ukedagene 28.–30.11 og 1.12 er riktige i gaater og de fem utskriftene. Én rad henger igjen, se L4. |
-| Trixter: rein, nisse i hagen | Holder. Entiteten finnes, og ingen barnetekst motsier den. Barna får aldri regelen forklart; det går bra så lenge de kjenner serien. |
-| Ugleposten runde 2 (A, B, C og skjæret i K3) | Inne. Én rest, se L2. |
+| Avvik                                                                                 | Dom                                                                                                                                                                              |
+| ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 18-2 «holdt seg fast i geviret hans»                                                  | Holder. Radio og mail sier «Æ satt bakpå … og æ fløy», så han kan ha havnet i geviret. Hjelmen har fortsatt en grunn, og entiteten sier det samme.                               |
+| Radio 12 «Julius sa i natt»                                                           | Holder. Sukk, Julius, Hjerterud til slusa, i den rekkefølgen, og stemmer med Julius 12-2 og 12-4. Merknaden i Julius-manus dag 12 siterer fortsatt «i går kveld» (bare merknad). |
+| Sjekkliste dag 6 «mobilen med lyset på»                                               | **Feil**, se M1.                                                                                                                                                                 |
+| Logg 24. des. «TRIXTER: Landet i Bergen i natt. Tre esker levert. Én nisse med hjem.» | Holder. «Bergen» er riktig for en familie som ikke har løst dag 22.                                                                                                              |
+| Utskrift i november, «Ta fram»                                                        | Holder i sjekklistene, (c) og byggeplanen. Ukedagene 28.–30.11 og 1.12 er riktige i gaater og de fem utskriftene. Én rad henger igjen, se L4.                                    |
+| Trixter: rein, nisse i hagen                                                          | Holder. Entiteten finnes, og ingen barnetekst motsier den. Barna får aldri regelen forklart; det går bra så lenge de kjenner serien.                                             |
+| Ugleposten runde 2 (A, B, C og skjæret i K3)                                          | Inne. Én rest, se L2.                                                                                                                                                            |
 
 ## 2. Funn
 
@@ -63,18 +63,19 @@ Kjente rester som ikke er nye: Julius 8-1 «Æ bygde» (filmet, rettes ved omtak
 
 ## 3. Kanon fra 13.11
 
-| Beslutning | Status |
-|---|---|
-| Brevfuglene, alternativ A | Holder i mail, PS, varsler, filer, radio, Sledeflukt og Ugleposten. Julius 5-2 og 14-2 er nøytrale. |
-| Ametyst, «fargen kom tilbake» | Holder: Julius 24-2, mail, PS, tinebrevet, finalen. «Lilla» står ingen steder før dag 24. Se M4. |
-| «God N søndag i advent» | Holder dag 6, 13 og 20 i alle flater. Unntak: L1. |
-| Hjerterud | Holder. Bare K1 nevner forkleet, og det stemmer med portrettet. |
-| Trixter | Holder. |
-| Ingen leketøysfabrikk | Holder. |
-| Mørket kom tilbake i 2025 | Holder: `hjertets-hemmelighet.txt` og notatboken. Mørket nevnes ellers ikke. |
-| Tre veier | Ingen barnetekst motsier dem. Rampenissen kom ned linjen (årets premiss) og drar hjem med sleden. |
+| Beslutning                    | Status                                                                                              |
+| ----------------------------- | --------------------------------------------------------------------------------------------------- |
+| Brevfuglene, alternativ A     | Holder i mail, PS, varsler, filer, radio, Sledeflukt og Ugleposten. Julius 5-2 og 14-2 er nøytrale. |
+| Ametyst, «fargen kom tilbake» | Holder: Julius 24-2, mail, PS, tinebrevet, finalen. «Lilla» står ingen steder før dag 24. Se M4.    |
+| «God N søndag i advent»       | Holder dag 6, 13 og 20 i alle flater. Unntak: L1.                                                   |
+| Hjerterud                     | Holder. Bare K1 nevner forkleet, og det stemmer med portrettet.                                     |
+| Trixter                       | Holder.                                                                                             |
+| Ingen leketøysfabrikk         | Holder.                                                                                             |
+| Mørket kom tilbake i 2025     | Holder: `hjertets-hemmelighet.txt` og notatboken. Mørket nevnes ellers ikke.                        |
+| Tre veier                     | Ingen barnetekst motsier dem. Rampenissen kom ned linjen (årets premiss) og drar hjem med sleden.   |
 
 To ting Hans bør vite når han leser, ingen av dem er feil å rette:
+
 - **Julius 24-2** holder de tre klyngene i hånda samme morgen som de ligger under treet på Landås. Det er Hans' eget valg fra 13.11.
 - **Nordlyset** er brevfuglenes vei i entiteten, men dag 17 er det grottens første svar. Barna ser ikke regelen før dag 17, og Julius 17-4 («brev som kommer tilbake») binder dem sammen.
 
@@ -83,6 +84,7 @@ To ting Hans bør vite når han leser, ingen av dem er feil å rette:
 ## 4. Klart til lås og ikke
 
 **Klart:**
+
 - Julius dag 1–3, 5, 7–24 (replikkene)
 - Radio dag 1–24 (klippene) og førsesongen
 - Mail, PS, varsler, filer og logg for alle dager unntatt punktene under
@@ -91,6 +93,7 @@ To ting Hans bør vite når han leser, ingen av dem er feil å rette:
 - Historie §1–§9 og entitetene
 
 **Har feil igjen:**
+
 - Guidens dagvisning (H1)
 - Sjekkliste dag 6 (M1)
 - Julius 4-4 og 6-5, bare avskjeden (M2)
