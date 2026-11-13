@@ -228,6 +228,8 @@ export async function arvFraHeleVideoen(dir: string, l: Lager) {
     if (!/^video\/julius\/dag-\d+\.mp4$/.test(key)) continue;
     for (const v of [...e.vurderinger]) {
       if (v.vurdering !== "godkjent" && v.vurdering !== "ok") continue;
+      // A replaced take's segments are not the ones in use.
+      if (/\.old-\d+\.mp4$/.test(v.fil)) continue;
       if (!(await gjeldende(dir, v))) continue;
       const segmenter = await readFile(
         path.join(dir, v.fil.replace(/\.mp4$/, ".segmenter.json")),
