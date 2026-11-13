@@ -128,7 +128,7 @@ export function Vurder({ id }: { id: string }) {
   const alle = useVurderinger();
   const status = useContext(StatusI);
   if (useContext(SkjulVurder)) return null;
-  if (status) return <div className="mt-2">{status(id)}</div>;
+  if (status) return <div className="mt-2 flex">{status(id)}</div>;
   if (!alle) return null;
   const v: MediaVurderingItem | undefined = alle[id];
   return (
