@@ -183,7 +183,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 
 - **Kode:** LYKT (uendret).
 - **Mekanikk:** skyggefigurer, velg riktig. Uendret: taket tillater bare 1 av 4 bokstaver, så valget mellom figurene er gåten. Kortene får tegn (Y læres bare her).
-- **Brikke H:** tre silhuetter (stearinlys, bål, lykt med hank) i papprullen med lommelykten, ved det røde hjerte-kortet. Bakside lykt: `_ Y _ _` med tegn i alle fire hjørner. Bakside stearinlys `_ A _ _` og bål `_ O _ _`: tegn bare ved den synlige bokstaven (blindspor lærer ingen tegn for ❄). Lapp fra Rampenissen (i melet ved Rampenissen, håndskrevet): «Jeg har laget et instrument! Det ligger i en papprull i gangen, sammen med lampen. Slukk lyset og lys mot veggen, én om gangen. – R»
+- **Brikke H:** tre silhuetter (stearinlys, bål, lykt med hank) i papprullen med mobillykten, ved det røde hjerte-kortet. Bakside lykt: `_ Y _ _` med tegn i alle fire hjørner. Bakside stearinlys `_ A _ _` og bål `_ O _ _`: tegn bare ved den synlige bokstaven (blindspor lærer ingen tegn for ❄). Lapp fra Rampenissen (i melet ved Rampenissen, håndskrevet): «Jeg har laget et instrument! Det ligger i en papprull i gangen, sammen med lampen. Slukk lyset og lys mot veggen, én om gangen. – R»
 - **Brikke S:** Julius: «Barna bar noe mellom gårdene da det var som mørkest. Det var ikke et bål og ikke et stearinlys. Det hadde hank, så man kunne henge det fra seg.»
 - **Slik løses den:** 1) H9 finner rullen, slukker lyset og holder én silhuett av gangen mot veggen med mobillykten bak. 2) Julius' «med hank» avgjør hvilken bakside som teller. 3) `_ Y _ _`, fire bokstaver, med hank. LYKT. 4) Tegnene for L, Y, K, T føres på tavla.
 - **Hint:** 1) «Har dere funnet lappen i melet? Rampenissen har laget noe av en papprull og lampen deres.» [Kjøkkenet: lappen i melet ved Rampenissen] 2) «Slukk lyset og lys mot veggen, én figur om gangen. Hva er skyggene?» Hanna kan si hva hun ser. «Snu figurene etterpå. Hva står på baksiden?» 3) «Tre figurer, men bare én bakside teller. Hva bar barna mellom gårdene, sier Julius? Og hva var det ikke?» [Julius-videoen, segment 3 og 4] 4) «Fire ruter med Y som nummer to. Hva lyser, har hank og kan henges fra seg?»
@@ -194,7 +194,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Sjekkliste:**
   - Ta fram: `dag06-silhuetter.pdf`
   - Teip silhuettene på ispinner og legg dem i papprullen
-  - Papprullen, en mobillykt og rødt hjerte-kort i gangen
+  - Papprullen, mobilen med lyset på og rødt hjerte-kort i gangen
   - Lapp i melet: «Jeg har laget et instrument! … – R»
   - Rampestrek: snøengler i 1 dl mel på et stekebrett, kjøkkenbordet
 - **Materialer:** 3 ispinner, teip, papprull, mobillykt, hjerte-kortet.
@@ -299,8 +299,7 @@ Kostnad: null minutter kveld for kveld. Utskrifter: `runetavle.pdf` (barna) og `
 - **Vanskelighet:** 3.
 - **Oppsett:** 5 min.
 - **Sjekkliste:**
-  - Ta fram: `dag11-tallkort.pdf`
-  - Legg filteret fra i går i konvolutt 24
+  - Ta fram: `dag11-tallkort.pdf`; filteret fra i går i konvolutt 24
   - Stua, under en pute: kortene 15 og 40
   - Kjøkkenet, i brødboksen: kortet 25
   - Gangen: 35 i Hannas jakkelomme, 20 i pappas

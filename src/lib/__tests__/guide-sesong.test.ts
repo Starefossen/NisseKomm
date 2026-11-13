@@ -71,7 +71,7 @@ describe("guide-sesong", () => {
   it("har forberedelser, handleliste og førsesongsradio", () => {
     const f = forSesongen();
     expect(f.innen25.length).toBeGreaterThan(5);
-    expect(f.byggeplan.map((b) => b.steg.length)).toEqual([5, 5, 10]);
+    expect(f.byggeplan.map((b) => b.steg.length)).toEqual([6, 4, 10]);
     expect(f.sjekkliste).toHaveLength(5);
     expect(f.handleliste.varer.length).toBeGreaterThan(20);
     expect(f.handleliste.sum).toMatch(/kr/);
