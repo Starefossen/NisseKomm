@@ -23,8 +23,12 @@ Single continuous shot, no scene cuts. Do not add, remove or change any object. 
 jq -n --arg p "$P" --arg secs "$SECS" --arg prev "$PREV" \
   '{model:"gemini-omni-1.2-flash",previous_interaction_id:$prev,input:[{type:"text",text:$p}],response_format:{type:"video",duration:($secs+"s")}}' > "$D/$NAME.req.json"
 else
+# KRYSTALL_FOTO: Hans' photo of the objects Julius holds, as a second reference image
+[ -n "${KRYSTALL_FOTO:-}" ] && P="$P
+Det andre bildet viser de tre bergkrystallene han holder i venstre håndflate: samme tre biter, samme form og farge."
 jq -n --arg p "$P" --arg secs "$SECS" --rawfile img <(base64 -i "${REF:-$A/characters/julius/ref-v3.jpg}" | tr -d '\n') \
-  '{model:"gemini-omni-1.2-flash",input:[{type:"image",data:$img,mime_type:"image/jpeg"},{type:"text",text:$p}],response_format:{type:"video",duration:($secs+"s")}}' > "$D/$NAME.req.json"
+  --rawfile img2 <(if [ -n "${KRYSTALL_FOTO:-}" ]; then base64 -i "$KRYSTALL_FOTO" | tr -d '\n'; fi) \
+  '{model:"gemini-omni-1.2-flash",input:([{type:"image",data:$img,mime_type:"image/jpeg"}] + (if $img2 != "" then [{type:"image",data:$img2,mime_type:"image/jpeg"}] else [] end) + [{type:"text",text:$p}]),response_format:{type:"video",duration:($secs+"s")}}' > "$D/$NAME.req.json"
 fi
 bruk video gemini-omni-1.2-flash "$NAME"
 curl -s "https://generativelanguage.googleapis.com/v1beta/interactions" -H "x-goog-api-key: $K" -H 'Content-Type: application/json' -d @"$D/$NAME.req.json" > "$D/$NAME.resp.json"

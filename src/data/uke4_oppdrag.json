@@ -177,7 +177,7 @@
     "skjerm_teaser": "God jul! Det ble en fin desember i Snøfall.",
     "nissemail_tekst": "Jeg er hjemme i Snøfall. Trixter la krystallet under treet deres i natt, og jeg hoppet bakpå da han dro. Ingen vekking; det var sånn jeg kom også. Brevet mitt henger der jeg satt. Håkon: les det høyt. Kristian: rutekortet ligger i konvolutten, lappene har tegn, og Julius sier resten. Hanna, hvis du vil: du vet hvilken dag hver ting i esken kommer fra. Takk for lånet av fruktskålen. Og takk for alt. – Rampenissen",
     "rampenissen_rampestrek": "Borte. Reiste i natt, like brått som han kom (bakpå Trixters slede). Der han satt i treet henger gullkonvolutten med avskjedsbrevet, og under treet står den lille pappesken med sløyfe som pakket koffert.",
-    "fysisk_hint": "Dukken legges bort natt til 24. Pappesken med sløyfe under treet, konvolutten i treet der han satt: perlen (dag 3) med lapp `tegn U · 2`, rødfilteret (dag 10) `tegn E · 4`, båndbiten (dag 17) `tegn G · 7` (`dag24-suvenirlapper.pdf`). I konvolutten: avskjedsbrevet, rutekort med åtte ruter og **alltid** de tre reservelappene («IQs kopi») under brevet. Krystallet som ikke smelter under treet, med `dag24-krystallkort.pdf`: «TAKK FOR LYSET» i tegn. Løsning: Håkon leser brevet og legger lappene, Kristian slår opp tegnene: `_ U _ E _ _ G _`. Julius: høytiden foran, pluss det trollmenn later som de har. Kode JULEMAGI. Så brevet i Brevfugler, finale, diplom, merket Snøfalls venn. Lett med vilje; mangler tavla et tegn, er bokstavene U, E, G. Hanna, hvis hun vil: åpner kofferten og sier hvilken dag hver ting kommer fra.",
+    "fysisk_hint": "Dukken legges bort natt til 24. Pappesken med sløyfe under treet, konvolutten i treet der han satt: perlen (dag 3) med lapp `tegn U · 2`, rødfilteret (dag 10) `tegn E · 4`, båndbiten (dag 17) `tegn G · 7` (`dag24-suvenirlapper.pdf`). I konvolutten: avskjedsbrevet, rutekort med åtte ruter og **alltid** de tre reservelappene («IQs kopi») under brevet. De tre bergkrystallene (én til hvert barn) under treet, med `dag24-krystallkort.pdf`: «TAKK FOR LYSET» i tegn. Løsning: Håkon leser brevet og legger lappene, Kristian slår opp tegnene: `_ U _ E _ _ G _`. Julius: høytiden foran, pluss det trollmenn later som de har. Kode JULEMAGI. Så brevet i Brevfugler, finale, diplom, merket Snøfalls venn. Lett med vilje; mangler tavla et tegn, er bokstavene U, E, G. Hanna, hvis hun vil: åpner kofferten og sier hvilken dag hver ting kommer fra.",
     "materialer_nødvendig": [
       "liten pappeske (den tomme fraktesken fra dag 1)",
       "sløyfe",
@@ -187,7 +187,7 @@
       "dag24-suvenirlapper.pdf",
       "dag24-krystallkort.pdf",
       "diplomene «Snøfalls venn» (3)",
-      "iskrystall i glass eller akryl"
+      "tre klare bergkrystaller"
     ],
     "beste_rom": "Under juletreet",
     "oppsett_tid": "moderat",

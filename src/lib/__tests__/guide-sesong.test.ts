@@ -114,7 +114,7 @@ describe("reservesett", () => {
         expect.arrayContaining([
           "klementiner",
           "maskeringsteip",
-          "iskrystall-som-ikke-smelter",
+          "bergkrystall",
           "runde-gullklistremerker",
         ]),
       );

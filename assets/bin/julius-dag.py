@@ -571,6 +571,11 @@ def main():
                 take.write_text(json.dumps(key))
                 continue
         env = dict(os.environ)
+        if "bergkrystall" in act.lower():  # day 24 s2: Hans' photo of the three crystals is the object reference
+            foto = ROOT / "assets" / "objects" / "krystall" / "foto.jpg"
+            if not foto.exists():
+                sys.exit(f"{name}: mangler foto av krystallene ({foto.relative_to(ROOT)}); Hans kjøper tre bergkrystaller og tar bildet først")
+            env["KRYSTALL_FOTO"] = str(foto)
         if chained(i, sys.argv):
             env["REF"] = str(last_frame(OUT / f"dag{day:02d}-{i - 1}.raw.mp4", OUT / f"{name}.start.jpg"))
         act += BLOKK

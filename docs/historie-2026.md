@@ -20,7 +20,7 @@ Beslutninger som ligger til grunn: Julius-video hver dag (24 bekreftet), åpnes 
 
 **Hva som står på spill.** Frostgraden. Hver natt stiger frosten i serverrommet (vises i sidepanelet som prosent); hver kode senker den. Uke for uke tar Kulde noe nytt: linjen (uke 1), navnet, fargene og lyden (uke 2), brevene og pakkene (uke 3), huset (uke 4). Hvis frosten når 100 % på vintersolverv, fryser linjen for godt og sleden finner ikke Landås.
 
-**Hvordan det løses.** Barna hjelper IQ å bygge muren med porten åpen (dag 21) og forstår det (dag 23, siste dekryptering). IQ bygger muren med én port åpen inn mot grotten, med varme i. Julius flyr over Nordtoppen julenatt med lys. Vintervokteren takker med et iskrystall som ikke smelter.
+**Hvordan det løses.** Barna hjelper IQ å bygge muren med porten åpen (dag 21) og forstår det (dag 23, siste dekryptering). IQ bygger muren med én port åpen inn mot grotten, med varme i. Julius flyr over Nordtoppen julenatt med lys. Vintervokteren takker med tre biter av arkivets krystall, klar bergkrystall, én til hvert barn. De smelter ikke.
 
 **Moral, uten å si den høyt.** Kulde er ikke ondskap, det er fravær av varme. Samhold, lys og å bli sett er det som virker. Barna skal merke det, ikke få det forklart.
 
@@ -37,7 +37,7 @@ Seks hendelser barna skal huske. Alt annet er dager imellom.
 | M3  | 12 (lø) | **Sukket i isen**   | Melodien sprekker isen på slusen. Første dekryptering: «blått hjerte er kulde og sorg. Det høres ikke sint ut. Det høres alene ut.» | `frosne-koder.txt`, merke 1               |
 | M4  | 15 (ti) | **Vintervokteren**  | Fargesamlerens notatbok forteller hvem Kulde var og hvem som bygde det. IQ blir stille.                                             | Resten av Fargesamlerens arkiv            |
 | M5  | 21 (ma) | **Muren og porten** | Vintersolverv. Skjermen hjemme er fryst. Muren holder. IQ lar én port stå åpen.                                                     | Fargene hjemme, merke 2                   |
-| M6  | 24 (to) | **Tøvær**           | Sleden har fløyet over grotten med lys. Et krystall som ikke smelter ligger under treet.                                            | Snill-listen med finale, merke 3, diplom  |
+| M6  | 24 (to) | **Tøvær**           | Sleden har fløyet over grotten med lys. Arkivets krystall har sprukket i tre klare bergkrystaller, én til hvert barn, under treet.  | Snill-listen med finale, merke 3, diplom  |
 
 Dag 23 er sannheten (siste dekryptering forteller hele historien), men barna opplever den som opptakten til M6, ikke som egen milepæl.
 
@@ -183,7 +183,7 @@ Fjernes: `antenne-ingenior`, `inventar-ekspert`, `oppfinner-assistent`, `morket-
 - **De tre dekrypterte filene** (12, 18, 23) er historiens tre avsløringer, ikke gratulasjoner.
 - **Fargene som kommer tilbake** på skjermen dag 10 og 21.
 - **PS fra Julius** under videoen etter hver kode.
-- **Dag 24:** Snill-listen med Julius' finalehilsen, ett utskrevet diplom per barn («Snøfalls venn», fra `print_materials`), og krystallet under treet.
+- **Dag 24:** Snill-listen med Julius' finalehilsen, ett utskrevet diplom per barn («Snøfalls venn», fra `print_materials`), og de tre bergkrystallene under treet (én til hvert barn).
 
 ## 6. Frost dag 10 og 21
 
@@ -207,7 +207,7 @@ Alle spørsmål fra forrige runde er besvart: ingen videosperre, men autoåpning
 
 **Ingen gjenstående historievalg.** Frosten varer til koden er løst (nødstopp 20:00), iMac-gråtone søndag 20 er bestemt, rampestrekene i §8 er godkjent i retning. Storyboard-gjennomgangen lukket kausaliteten dag 16–17, tonen dag 15–23 og kunnskapstidslinjen (§3.6b). Fire bekreftelser gjenstår for mennesket, alle uten ny tekst: kunnskapstidslinjen slik den står, brikketaket 40 % som hard grense i steg 1, nordlyset dag 17 som svar på antennelyktene, og SQLite som fremdriftslager før frost-endepunktet bygges.
 
-**Neste steg, i rekkefølge:** `eventyr.json` (én ID) og `merker.json` (tre merker); de 24 e-postene; de 24 videomanusene med brikke S låst mot koden; de 24 Rampenissen-klippene; NisseNet-filene uten fasit; kalenderhendelsene og Skjerm-kortene; tilstandsendepunkt og frostmodus i NisseKomm, deretter Skjerm-siden. Gåtene merket i §4 tas i gåtegjennomgangen (steg 1). Innkjøp: rødt cellofan, papprull, batterilys, syltetøyglass og bakepapir, aluminiumsfolie, én glassperle, 9 symbolkort, bokstavkort og rødt garn (1), post-it (10, 21), sølvpenn (17), maskeringsteip (19), 3 esker klementiner, svart kraftpapir og oransje teip til dag 1-scenen (1), ett iskrystall i glass eller akryl som ikke smelter (24).
+**Neste steg, i rekkefølge:** `eventyr.json` (én ID) og `merker.json` (tre merker); de 24 e-postene; de 24 videomanusene med brikke S låst mot koden; de 24 Rampenissen-klippene; NisseNet-filene uten fasit; kalenderhendelsene og Skjerm-kortene; tilstandsendepunkt og frostmodus i NisseKomm, deretter Skjerm-siden. Gåtene merket i §4 tas i gåtegjennomgangen (steg 1). Innkjøp: rødt cellofan, papprull, batterilys, syltetøyglass og bakepapir, aluminiumsfolie, én glassperle, 9 symbolkort, bokstavkort og rødt garn (1), post-it (10, 21), sølvpenn (17), maskeringsteip (19), 3 esker klementiner, svart kraftpapir og oransje teip til dag 1-scenen (1), tre klare bergkrystaller, 3–5 cm (24).
 
 ## 8. Rampestreker 2026
 
