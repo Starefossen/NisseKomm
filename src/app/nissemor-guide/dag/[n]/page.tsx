@@ -159,6 +159,7 @@ function DagInnhold() {
                 d={dag.kveld}
                 epost={q?.nissemail_tekst ?? ""}
                 vis={vis}
+                kode={q?.kode}
                 t={(s) => skjul(s, q?.kode, vis)}
               />
             )}

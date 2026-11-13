@@ -35,6 +35,20 @@ function Bokstaver({ tekst, vis }: { tekst: string; vis: boolean }) {
   );
 }
 
+/** «steg → steg → KODE»: «Slik løses den» without the blind alleys in parentheses. */
+export const fasitKjede = (steg: string[], kode: string) =>
+  [
+    ...steg.map((x) =>
+      x
+        .replace(/\([^)]*\)/g, "")
+        .replace(/\s+/g, " ")
+        .trim(),
+    ),
+    kode,
+  ]
+    .filter(Boolean)
+    .join(" → ");
+
 /** Marks the quoted sentence inside a longer text (mail, PS, transcript). */
 function Merket({ tekst, sitat }: { tekst: string; sitat?: string }) {
   const i = sitat ? tekst.indexOf(sitat) : -1;
@@ -71,7 +85,10 @@ export function Gaatekart({
   epost,
   vis,
   t,
+  kode,
 }: {
+  /** The day's code, from the parent-only API; shown in «Fasit» when `vis`. */
+  kode?: string;
   vid: string;
   k: ReturnType<typeof gaatekart>;
   d: NonNullable<ReturnType<typeof kveldDag>>;
@@ -226,6 +243,18 @@ export function Gaatekart({
         <h4 className="text-lg text-(--christmas-red)">Hvis noe er borte</h4>
         <p>{t(d.reserve)}</p>
       </details>
+      {vis && kode && (
+        <div
+          data-testid="gaate-fasit"
+          className="border-2 border-(--gold) p-2 mt-3"
+        >
+          <h3 className="text-xl text-(--gold)">Fasit</h3>
+          <p>
+            Kode: <strong className="text-(--gold)">{kode}</strong>
+          </p>
+          <p className="text-sm">{fasitKjede(d.slikLoses, kode)}</p>
+        </div>
+      )}
       <Vurder id={vid} />
     </section>
   );

@@ -247,6 +247,7 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
         d={dag.kveld}
         epost={q?.nissemail_tekst ?? ""}
         vis
+        kode={q?.kode}
         t={(s) => s}
       />
     );
