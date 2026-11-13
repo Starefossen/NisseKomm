@@ -57,7 +57,16 @@ export async function GET(req: NextRequest) {
   }
 }
 
+// «Godkjenn alle på dagen» posts in parallel; read-modify-write must not interleave.
+let kø: Promise<unknown> = Promise.resolve();
+
 export async function POST(req: NextRequest) {
+  const svar = kø.then(() => lagre(req));
+  kø = svar.catch(() => {});
+  return svar;
+}
+
+async function lagre(req: NextRequest) {
   const denied = await authorizeMedia(req);
   if (denied) return denied;
 
