@@ -359,16 +359,17 @@
   },
   {
    "s": 2,
-   "hash": "0ef012926f4b",
+   "hash": "aeea4f968683",
    "key": [
-    "Det er søndag. Andre søndag i advent. Rampenissen rapporterer: «Æ laga snøengla i mel.» Hjerterud sukket.",
-    12,
+    "Det er søndag. Andre søndag i advent. Rampenissen rapporterer at han har laget snøengler i mel. Hjerterud sukket.",
+    13,
     "Holder opp to fingre på venstre hånd, så løfter han et ark fra brevbunken, leser, ler og legger det ned. Kuldes påvirkning: Svak knitring."
    ],
-   "ord": 16,
+   "ord": 18,
    "laast": false,
    "varsler": [
-    "arket løftes: Holder opp to fingre på venstre hånd, så løfter han et ark fra brevbunken, leser, ler og legger det ned."
+    "arket løftes: Holder opp to fingre på venstre hånd, så løfter han et ark fra brevbunken, leser, ler og legger det ned.",
+    "kort halesetning kan falle bort: «Hjerterud sukket.»"
    ]
   },
   {
@@ -465,9 +466,9 @@
  "8": [
   {
    "s": 1,
-   "hash": "c87fb773db2b",
+   "hash": "e2fa8e9d4234",
    "key": [
-    "Gooooood morgen, Snøfall! Uke én er unnagjort. Rampenissen rapporterer: «Æ bygde et Sigma-tårn av frokostblanding.» Ingen vet hva Sigma betyr.",
+    "Gooooood morgen, Snøfall! Uke én er unnagjort. Rampenissen rapporterer: «Jeg bygde et Sigma-tårn av frokostblanding.» Ingen vet hva Sigma betyr.",
     14,
     "Løfter et ark fra brevbunken med venstre hånd, holder det langt fra øynene, trekker på skuldrene og legger det ned. Kuldes påvirkning: synlig pust, svak knitring."
    ],
@@ -619,9 +620,9 @@
  "11": [
   {
    "s": 1,
-   "hash": "95a8367a4826",
+   "hash": "a8932e6c06bb",
    "key": [
-    "Gooood morgen, Snøfall! Rampenissen rapporterer: «Æ e en bakt potet. I folie.» Hjerterud spurte om han var ferdigstekt. Jeg lo.",
+    "Gooood morgen, Snøfall! Rampenissen rapporterer: «Jeg er en bakt potet. I folie.» Hjerterud spurte om han var ferdigstekt. Jeg lo.",
     14,
     "Løfter et ark fra brevbunken med venstre hånd, leser, ler lavt og legger det ned. Kuldes påvirkning: Knitring."
    ],
@@ -674,9 +675,9 @@
  "12": [
   {
    "s": 1,
-   "hash": "1d4491e9c0c8",
+   "hash": "b56aaebbc84d",
    "key": [
-    "Goooood morgen, Snøfall! Rampenissen rapporterer: «Æ laga lydbølge av dorull.» Jeg lo så trekoppen hoppet.",
+    "Goooood morgen, Snøfall! Rampenissen rapporterer: «Jeg lager lydbølger av dorull.» Jeg lo så trekoppen hoppet.",
     11,
     "Legger venstre pekefinger på det øverste arket i brevbunken og leser fra det. Arket blir liggende. Kuldes påvirkning: Synlig pust, svak knitring."
    ],
@@ -726,13 +727,13 @@
  "13": [
   {
    "s": 1,
-   "hash": "509a603f5519",
+   "hash": "d5c8d1585978",
    "key": [
-    "Gooood Lucia-morgen, Snøfall! Rampenissen rapporterer: «Elleve lussekatta. Æ e død no.» Jeg tror Hjerterud teller bollene mine nå.",
-    13,
+    "Gooood Lucia-morgen, Snøfall! Rampenissen rapporterer elleve lussekatter. Jeg tror Hjerterud teller bollene mine nå.",
+    11,
     "Legger venstre pekefinger på det øverste arket i brevbunken og leser fra det. Arket blir liggende. Kuldes påvirkning: Synlig pust, svak knitring."
    ],
-   "ord": 18,
+   "ord": 14,
    "laast": false,
    "varsler": []
   },
@@ -1282,9 +1283,9 @@
  "23": [
   {
    "s": 1,
-   "hash": "c2ba160ce7b8",
+   "hash": "e0b8b2a69bbd",
    "key": [
-    "God morgen, Snøfall. Lille julaften. Rampenissen rapporterer: «Æ bare kikka litt på en pakke.» Litt! Teipen var tom etterpå.",
+    "God morgen, Snøfall. Lille julaften. Rampenissen rapporterer: «Jeg bare kikket litt på en pakke.» Litt! Teipen var tom etterpå.",
     14,
     "Legger venstre pekefinger på det øverste arket i brevbunken og leser fra det. Arket blir liggende. Kuldes påvirkning: Rent bilde og ren lyd."
    ],

@@ -162,7 +162,7 @@ Generated from `assets/characters/<id>/entitet.md`, the one source for look, per
 
 - **Navn:** Julius; **pronomen:** han; **fra dag:** 1
 - **Personlighet:** Klok, varm og jordnær, en bestefar og travel håndverker. Av og til oppgitt over Rampenissen og over teknikk som svikter. Bryr seg om hvordan det går med barna.
-- **Stemme:** Faderlig og vennlig, med autoritet uten å bli kald. Takker barna. Reflekterende i videologgen. Snakker inn i mikrofonen som i en radiosending, ikke inn i kameraet. Gir aldri koden selv; han peker på regelen eller ordet (historie-2026 §3.4).
+- **Stemme:** Faderlig og vennlig, med autoritet uten å bli kald. Takker barna. Reflekterende i videologgen. Snakker inn i mikrofonen som i en radiosending, ikke inn i kameraet. Gir aldri koden selv; han peker på regelen eller ordet (historie-2026 §3.4). Snakker alltid bokmål; gjengir Rampenissen på bokmål, aldri nordlandsk (som referat eller bokmålssitat). Nordlandsk er Rampenissens stemme.
 - **Forhold:** rampenissen: sjef; oppgitt, men glad i ham; iq: stoler på oppfinnelsene; winter: sekretær; lar ham passe papirene; hjerterud: venn; drikker kakaoen hennes
 - **Aldri:** «Julenissen Julius», «julenisse-Julius», «leketøysfabrikk», «leketøysfabrikken», «leketøyfabrikk», «leketøyfabrikken», «nissene lager leker», «verkstedet der lekene lages»
 

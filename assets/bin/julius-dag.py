@@ -209,9 +209,16 @@ VARSEL = {
 }
 
 
+# Julius always speaks bokmål, also when he quotes Rampenissen (Hans 13.11); nordlandsk is Rampenissen's voice.
+# ponytail: word list, not dialect detection; add a word when one slips through
+NORDLANDSK = re.compile(r"\b(æ|mæ|dæ|sæ|dokker|ikkje|itj|kjem|koffer|nåkka|ska|kor|no|e)\b", re.I)
+
+
 def warnings(line: str, action: str, locked: bool):
     """(warnings, blocking) for one segment."""
     w, block = [f"{k}: {action}" for k, rx in VARSEL.items() if rx.search(action)], []
+    if nl := sorted({m.lower() for m in NORDLANDSK.findall(line)}):
+        w.append(f"nordlandsk i Julius' munn ({', '.join(nl)}): gjengi Rampenissen på bokmål")
     if TALEREGI.search(action):
         (block if locked else w).append(f"taleregi i Handling: {action}")
     last = re.split(r"(?<=[.!?])\s+", spoken(line).strip())[-1]
@@ -1252,6 +1259,8 @@ def selftest():
     assert heard_as("goooood", ["god"]) and heard_as("gooood", ["godt"]) and heard_as("sees", ["ses"])
     assert check("God morgen Snøfall. Rampenissen rapporterer: E laget lydbølger. Jeg lo så trekoppen hoppet.",
                  "Goooood morgen, Snøfall! Rampenissen rapporterer: «Æ laga lydbølge av dorull.» Jeg lo så trekoppen hoppet.")[0] == 1.0
+    assert "nordlandsk" in " ".join(warnings("Rampenissen rapporterer: «Æ e død no.» Vi ses.", "", False)[0])
+    assert not any("nordlandsk" in x for x in warnings("Rampenissen rapporterer at han er død nå. Vi ses.", "", False)[0])
     assert check("I natt fant Iku notatboken", "I natt fant IQ notatboken.")[0] == 1.0
     assert check("I natt fant I Q notatboken", "I natt fant IQ notatboken.")[0] == 1.0
     c, miss, extra = check("Vi ses. Vi ses. Det var det hele, du.", "Ha en fin dag. Vi ses.")

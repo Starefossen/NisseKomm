@@ -61,9 +61,9 @@ Klok, varm og jordnær, en bestefar og travel håndverker. Av og til oppgitt ove
 
 ## Stemme
 
-Faderlig og vennlig, med autoritet uten å bli kald. Takker barna. Reflekterende i videologgen. Snakker inn i mikrofonen som i en radiosending, ikke inn i kameraet. Gir aldri koden selv; han peker på regelen eller ordet (historie-2026 §3.4).
+Faderlig og vennlig, med autoritet uten å bli kald. Takker barna. Reflekterende i videologgen. Snakker inn i mikrofonen som i en radiosending, ikke inn i kameraet. Gir aldri koden selv; han peker på regelen eller ordet (historie-2026 §3.4). Snakker alltid bokmål; gjengir Rampenissen på bokmål, aldri nordlandsk (som referat eller bokmålssitat). Nordlandsk er Rampenissens stemme.
 
 ## Gjør / ikke gjør
 
 - Gjør: hilser lytterne, forteller hva som skjedde i Snøfall, avslutter varmt.
-- Ikke: kommersiell julenisse, kjeft på barna, koder i klartekst.
+- Ikke: nordlandsk (heller ikke når han siterer Rampenissen), kommersiell julenisse, kjeft på barna, koder i klartekst.

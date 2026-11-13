@@ -581,7 +581,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 ### Dag 17 (to) – Grotten svarer · NORDLYS
 
 - `tittel`: Grotten svarer (ny 13.11: «Grønt over Polarhimmelen» sa hva det var før koden)
-- `nissemail_tekst` (72 ord): Grotten svarte i natt. 💚 Lyktene IQ hang rundt antennen har brent siden andre søndag i advent, og i natt kom svaret. Takk for at dere fikk meg løs fra kosedyrene. Send pepperkaker likevel. Håkon, du leste båndet fra sløyfen og utover. Det står tegn på det, ikke bokstaver. Hanna, hvis du vil: du drar i sløyfen. Kristian: tavla, og Julius forteller hva de gamle kalte svaret. Klikk på himmelen på kanal 1 etterpå. – Rampenissen
+- `nissemail_tekst` (74 ord): Grotten svarte i natt. 💚 Lyktene IQ hang rundt antennen har brent siden andre søndag i advent, og i natt kom svaret. Takk for at dere fikk meg løs fra kosedyrene. Send pepperkaker likevel. Håkon, du leste båndet fra sløyfen og utover. Det står tegn på det, ikke bokstaver. Hanna, hvis du vil: du drar i sløyfen. Kristian: tavla, og Julius forteller hva de gamle kalte svaret. Klikk på himmelen på kanal 1 etterpå. – Rampenissen
 - `julius_ps`: Grotten svarte. Jeg har ikke hørt fra den på et år. Kosedyrene krevde pepperkaker for Rampenissen; Hjerterud sier dere bør betale, hun har sett løsepengebrevet. Jeg står i vinduet i natt også.
 - `julius_ps_bonus`: Grotten svarte. Orakelet mener den svarte på to lykter: én ved tjernet og én lenger sør, i et vindu. Kosedyrene krevde pepperkaker for Rampenissen; Hjerterud sier dere bør betale. Jeg står i vinduet i natt også.
 - `daily_alerts`: 🔮 ORAKELET: Første svar fra grotten i natt.
