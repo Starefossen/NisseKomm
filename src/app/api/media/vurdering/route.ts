@@ -8,6 +8,7 @@ import {
   kjentId,
   lesLager,
   oppføring,
+  stemple,
   type Oppføring,
   type Vurdering,
   settVurdering,
@@ -92,6 +93,7 @@ export async function POST(req: NextRequest) {
     tid,
     raw,
     kutt,
+    behold,
   } = body as Record<string, unknown>;
 
   if (typeof relPath !== "string" || !isSafePath(relPath)) {
@@ -160,6 +162,21 @@ export async function POST(req: NextRequest) {
     )
       return badRequest();
   }
+  // «Behold forrige vurdering»: the change can't be shown, Hans says the verdict still holds.
+  if (behold === true) {
+    try {
+      return await endreLager(dir, async (l) => {
+        const e = l.elementer[versionKey(cleanPath)];
+        const v = e?.vurderinger.find((x) => x.fil === cleanPath);
+        if (!v) return badRequest();
+        e.historikk.push({ ...v, merknad: "beholdt: endring ukjent" });
+        await stemple(dir, l, cleanPath);
+        return Response.json({ ok: true, vurderinger: await visning(dir, l) });
+      });
+    } catch {
+      return serverError();
+    }
+  }
   // Real wall-clock time: TIDSMASKIN mocks date-utils, and review notes need the actual time.
   const now = new Date(Date.now()).toISOString();
   let ugyldig = false;
@@ -222,6 +239,9 @@ export async function POST(req: NextRequest) {
           hash: gammel.hash,
           fil: gammel.fil,
           ...(gammel.versjon ? { versjon: gammel.versjon } : {}),
+          ...(gammel.tekst != null
+            ? { tekst: gammel.tekst, hashVersjon: gammel.hashVersjon }
+            : {}),
           ...felt,
         };
         e.vurderinger = e.vurderinger.map((x) => (x === gammel ? v! : x));

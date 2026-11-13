@@ -2,6 +2,7 @@
 
 import { Lagremelding, useLagring } from "../lagring";
 import { lastVurderinger, useVurderinger } from "../vurdering";
+import type { Forrige } from "@/lib/vurdering-versjon";
 import {
   useCallback,
   useEffect,
@@ -291,13 +292,70 @@ export async function sjekkSvar(res: Response): Promise<void> {
   throw new Error(tekst || `feil ${res.status}`);
 }
 
+const kb = (n: number) => `${Math.round(n / 1024)} kB`;
+
+/** «Ny versjon» always says what changed: a text diff, a swapped file, or that it is unknown. */
+function HvaEndret({ f, behold }: { f: Forrige; behold?: () => void }) {
+  if (f.endringer)
+    return f.endringer.length ? (
+      <div className="mt-1 border-2 border-(--cold-blue) p-2">
+        {f.endringer.map((d, i) => (
+          <p
+            key={i}
+            className={`whitespace-pre-wrap break-words ${d.t === "+" ? "text-(--aurora) bg-(--aurora)/10" : "text-(--christmas-red) line-through"}`}
+          >
+            {d.t} {d.l}
+          </p>
+        ))}
+      </div>
+    ) : null;
+  if (f.fil)
+    return (
+      <p>
+        Filen er byttet {f.fil.byttet.slice(0, 10)},{" "}
+        {f.fil.før != null ? `${kb(f.fil.før)} → ` : ""}
+        {kb(f.fil.etter)}
+        {f.fil.gammel && (
+          <>
+            {" · "}
+            <a
+              className="underline"
+              href={mediaUrl(f.fil.gammel)}
+              target="_blank"
+              rel="noreferrer"
+            >
+              forrige versjon
+            </a>
+          </>
+        )}
+      </p>
+    );
+  return (
+    <p className="flex flex-wrap items-center gap-2">
+      Endring ukjent (mangler grunnlag).
+      {behold && (
+        <button
+          type="button"
+          onClick={behold}
+          className="min-h-11 px-3 border-2 border-(--cold-blue) cursor-pointer hover:bg-(--cold-blue)/20"
+        >
+          Behold forrige vurdering
+        </button>
+      )}
+    </p>
+  );
+}
+
 /** Godkjent / OK / Lag på nytt + note, saved together; shared by media cards and guide sections. */
 export function Vurderingsknapper({
   vurdering,
   onSave,
+  onBehold,
   ekstra,
 }: {
   vurdering?: MediaVurderingItem;
+  /** «Behold forrige vurdering» when the change can't be shown. */
+  onBehold?: () => Promise<void>;
   /** Rejects with the reason shown in «Ikke lagret: …». */
   onSave: (v: Verdikt | null, note?: string) => Promise<void>;
   ekstra?: ReactNode;
@@ -391,9 +449,13 @@ export function Vurderingsknapper({
       </div>
 
       {vurdering?.forrige && (
-        <p className="text-sm text-(--cold-blue)">
-          ○ Ny versjon, ikke vurdert. {forrigeTekst(vurdering)}
-        </p>
+        <div className="text-sm text-(--cold-blue)">
+          <p>○ Ny versjon, ikke vurdert. {forrigeTekst(vurdering)}</p>
+          <HvaEndret
+            f={vurdering.forrige}
+            behold={onBehold && (() => void kjør(onBehold))}
+          />
+        </div>
       )}
 
       {mal === "lag_paa_nytt" && !note.trim() && (

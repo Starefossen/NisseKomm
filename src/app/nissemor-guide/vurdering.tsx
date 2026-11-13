@@ -69,7 +69,7 @@ export const lagreKutt = (id: string, kutt: Kutt) =>
 /** Segment id → the raw take hash in the video on screen (SegmentStripe fills it). */
 export const settTagning = new Map<string, string>();
 
-async function post(body: { path: string; [k: string]: unknown }) {
+export async function post(body: { path: string; [k: string]: unknown }) {
   const raw = settTagning.get(body.path);
   if (raw) body = { ...body, raw } as typeof body;
   const r = await fetch("/api/media/vurdering", {
@@ -114,6 +114,7 @@ export function Vurder({ id }: { id: string }) {
       <Vurderingsknapper
         vurdering={v}
         onSave={(verdict, notat) => lagre(id, verdict, notat ?? "")}
+        onBehold={() => post({ path: id, behold: true })}
       />
       <Tagger id={id} v={v} />
     </div>

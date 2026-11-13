@@ -16,7 +16,14 @@ import path from "node:path";
 import manus from "@/data/julius-manus.json";
 import { variantOf, versionKey } from "./media-status";
 import type { Kutt } from "./segmenter";
-import { medVersjon, versjonAv, type Forrige } from "./vurdering-versjon";
+import {
+  HASH_VERSJON,
+  linjeDiff,
+  medVersjon,
+  versjonAv,
+  øyeblikkTekst,
+  type Forrige,
+} from "./vurdering-versjon";
 
 /**
  * MEDIA_DIR/media-vurdering.json, format 2 (design: review-ui-design.md §2).
@@ -40,6 +47,12 @@ export interface Oppføring {
   /** Julius segments: ✂ (with «kutt») and the cut julius-dag.py --kutt made, waiting for Hans' ear. */
   kutt?: Kutt;
   kuttsjekk?: Kutt;
+  /** Sections and scripts: the text the verdict was given to, for the diff when it changes. */
+  tekst?: string;
+  /** Which definition of a non-file hash `hash` was made under (HASH_VERSJON); none = 1. */
+  hashVersjon?: number;
+  /** Why the verdict was moved, e.g. «gjenopprettet: hashdefinisjon endret». */
+  merknad?: string;
 }
 
 /** `hash`: content hash; "*" = nothing to version (code, missing file), "utdatert" = changed before format 2. */
@@ -97,6 +110,11 @@ async function nå(dir: string, id: string) {
 /** Is the verdict still given to what the file holds now? */
 export async function gjeldende(dir: string, v: Vurdering) {
   if (v.hash === ALLTID) return true;
+  // A snapshot decides on its own: no change to how hashes are made can make it stale.
+  if (v.tekst != null) {
+    const t = await øyeblikkTekst(v.fil);
+    if (t != null) return t === v.tekst;
+  }
   if (v.hash === UTDATERT) return false;
   const n = await nå(dir, v.fil);
   if (n.stempel === null) return true;
@@ -118,6 +136,7 @@ export function oppføring(v: Vurdering): Oppføring {
   const o: Partial<Vurdering> = { ...v };
   delete o.hash;
   delete o.fil;
+  delete o.tekst;
   return o;
 }
 
@@ -135,6 +154,7 @@ export async function visning(dir: string, lager: Lager) {
                   vurdering: o.vurdering,
                   notat: o.notat,
                   oppdatert: o.oppdatert,
+                  ...(await hvaEndret(dir, v)),
                 },
                 oppdatert: o.oppdatert,
               }
@@ -142,6 +162,82 @@ export async function visning(dir: string, lager: Lager) {
       }),
     ),
   );
+  return ut;
+}
+
+/**
+ * What changed since a verdict that no longer counts: the text diff (sections,
+ * scripts), the file swap (media: date, size before → after, the old file), or
+ * `ukjent` when there is nothing to compare against.
+ */
+export async function hvaEndret(
+  dir: string,
+  v: Vurdering,
+): Promise<Pick<Forrige, "endringer" | "fil" | "ukjent">> {
+  if (v.tekst != null) {
+    const t = await øyeblikkTekst(v.fil);
+    if (t != null) return { endringer: linjeDiff(v.tekst, t) };
+  }
+  const full = path.join(dir, v.fil);
+  const info = await stat(full).catch(() => null);
+  if (info?.isFile()) {
+    const før = v.versjon?.match(/^(\d+)-\d+$/);
+    const ext = path.extname(v.fil);
+    const stamme = path.basename(v.fil, ext);
+    const gamle = (await readdir(path.dirname(full)).catch(() => []))
+      .filter((f) => f.startsWith(`${stamme}.old-`) && f.endsWith(ext))
+      .sort(
+        (a, b) =>
+          parseInt(b.slice(stamme.length + 5)) -
+          parseInt(a.slice(stamme.length + 5)),
+      );
+    if (før || gamle.length)
+      return {
+        fil: {
+          byttet: new Date(info.mtimeMs).toISOString(),
+          etter: info.size,
+          ...(før ? { før: Number(før[1]) } : {}),
+          ...(gamle.length
+            ? { gammel: path.posix.join(path.posix.dirname(v.fil), gamle[0]) }
+            : {}),
+        },
+      };
+  }
+  return { ukjent: true };
+}
+
+/**
+ * Restamp verdicts made under an older hash definition whose snapshot is still
+ * today's text: the definition moved, the content did not. Pure over `l`, so
+ * lesLager applies it on every read and the next write keeps it.
+ */
+export async function restemple(
+  dir: string,
+  l: Lager,
+  def: {
+    versjon: number;
+    hash: (id: string) => Promise<string | null>;
+  } = { versjon: HASH_VERSJON, hash: (id) => versjonAv(dir, id) },
+) {
+  const ut: string[] = [];
+  for (const e of Object.values(l.elementer))
+    for (const [i, v] of e.vurderinger.entries()) {
+      if (v.tekst == null || (v.hashVersjon ?? 1) === def.versjon) continue;
+      if ((await øyeblikkTekst(v.fil)) !== v.tekst) continue;
+      const hash = await def.hash(v.fil);
+      if (!hash) continue;
+      e.historikk.push({
+        ...v,
+        merknad: "gjenopprettet: hashdefinisjon endret",
+      });
+      e.vurderinger[i] = {
+        ...v,
+        hash,
+        versjon: hash,
+        hashVersjon: def.versjon,
+      };
+      ut.push(v.fil);
+    }
   return ut;
 }
 
@@ -196,7 +292,15 @@ export async function migrer(dir: string, gammel: Flat): Promise<Lager> {
   const forventet = Object.fromEntries(
     Object.entries(json(før) as Flat).map(([k, v]) => [k, ren(v)]),
   );
-  if (!isDeepStrictEqual(json(await visning(dir, lager)), forventet))
+  // What changed (hvaEndret) is new in format 2; the verdicts themselves must match.
+  const vist = json(await visning(dir, lager)) as Record<
+    string,
+    { forrige?: Record<string, unknown> }
+  >;
+  for (const o of Object.values(vist))
+    if (o.forrige)
+      for (const k of ["endringer", "fil", "ukjent"]) delete o.forrige[k];
+  if (!isDeepStrictEqual(vist, forventet))
     throw new Error("migrering: visningen endret seg");
   return lager;
 }
@@ -223,7 +327,10 @@ export async function lesLager(dir: string, fil = path.join(dir, FIL)) {
       return { format: 2, sesong: SESONG, elementer: {} } as Lager;
     throw err;
   }
-  if ((data as Lager).format === 2) return data as Lager;
+  if ((data as Lager).format === 2) {
+    await restemple(dir, data as Lager);
+    return data as Lager;
+  }
   const lager = await migrer(dir, data as Flat);
   const dato = new Date(Date.now()).toISOString().slice(0, 10);
   const arkiv = path.join(dir, "_arkiv", dato);
@@ -306,8 +413,10 @@ export async function settVurdering(
   const n = sett
     ? { stempel: sett, hash: async () => sett }
     : await nå(dir, fil);
+  const tekst = sett ? null : await øyeblikkTekst(fil);
   const v = ren<Vurdering>({
     ...o,
+    ...(tekst != null ? { tekst, hashVersjon: HASH_VERSJON } : {}),
     versjon: n.stempel ?? undefined,
     hash: (await n.hash()) ?? ALLTID,
     fil,
@@ -335,6 +444,8 @@ export async function stemple(dir: string, l: Lager, fil: string) {
   const n = await nå(dir, fil);
   v.hash = (await n.hash()) ?? ALLTID;
   if (n.stempel) v.versjon = n.stempel;
+  const tekst = await øyeblikkTekst(fil);
+  if (tekst != null) Object.assign(v, { tekst, hashVersjon: HASH_VERSJON });
 }
 
 /** The day's newest Julius join's segments: the highest dag-NN-vN.segmenter.json, else the plain name's. */
