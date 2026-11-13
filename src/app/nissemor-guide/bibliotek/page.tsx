@@ -83,7 +83,7 @@ function EntitetKort({
           href="/nissemor-guide/media"
           className="inline-flex items-center min-h-11 underline"
         >
-          Til mediesiden
+          Til Filer
         </Link>
       </div>
     </details>
@@ -92,7 +92,7 @@ function EntitetKort({
 
 const SIDER = [
   ["/nissemor-guide/printout", "Utskrifter"],
-  ["/nissemor-guide/media", "Media"],
+  ["/nissemor-guide/media", "Filer"],
   ["/nissemor-guide/brevfugler", "Brev fra barna"],
   ["/nissemor-guide/symboler", "Symbolkort med QR-koder"],
   ["/nissemor-guide/forberedelser", "Forberedelser og handleliste"],

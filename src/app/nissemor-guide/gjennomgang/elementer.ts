@@ -172,7 +172,61 @@ export function ekstraRader(
         [fil],
       );
     }),
+    ...filRader(filer),
   ];
+}
+
+/** A file's own section in Gjennomgang, by path; the grid groups come first. */
+export const FILGRUPPER: [RegExp, string][] = [
+  [/^spill\/piksel\/ikon\//, "Ikoner"],
+  [/^spill\/piksel\/figur\//, "Figurer"],
+  [/^spill\/piksel\//, "Pikselscener"],
+  [/^spill\/portrett-/, "Portretter"],
+  [/^spill\//, "Spillbilder"],
+  [/^feed\//, "Stillbilder"],
+  [/^music\//, "Musikk"],
+  [/^retro\//, "Retro"],
+];
+/** Groups shown as a thumbnail grid with batch verdicts. */
+export const RUTENETT = new Set([
+  "Ikoner",
+  "Figurer",
+  "Pikselscener",
+  "Portretter",
+]);
+
+/** Families the day columns, TV and promo already hold. */
+const dekket = (key: string) =>
+  /^(video\/julius\/dag-\d+\.mp4|audio\/rampenissen\/dag-\d+\.mp3|strek\/dag\d+\.png|video\/tv\/.*\.mp4|promo\/julius-promo-[AB]\.mp4)$/.test(
+    key,
+  );
+
+/**
+ * Every other media file, one element per version family: the id is the
+ * newest version (the candidate to judge), the rest are `eldre`.
+ */
+export function filRader(filer: { path: string }[] | null): Element[] {
+  const fam = new Map<string, string[]>();
+  for (const { path: p } of filer ?? []) {
+    const key = versionKey(p);
+    if (p.startsWith("_arkiv/") || dekket(key)) continue;
+    fam.set(key, [...(fam.get(key) ?? []), p]);
+  }
+  return [...fam]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, ps]) => {
+      const [id, ...eldre] = ps.sort((a, b) => versionRank(b) - versionRank(a));
+      const gruppe =
+        FILGRUPPER.find(([r]) => r.test(key))?.[1] ??
+        `Andre: ${key.split("/")[0]}`;
+      return {
+        id,
+        gruppe,
+        tittel: key.split("/").pop()!,
+        media: [id],
+        eldre,
+      };
+    });
 }
 
 /** Every element: by day (day 1 all columns, day 2 …) or by column; extras last. */

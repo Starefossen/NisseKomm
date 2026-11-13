@@ -1,4 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
+import { existsSync, readFileSync } from "fs";
+import path from "path";
+import { versionKey } from "@/lib/media-status";
 import {
   alleElementer,
   egenVurdering,
@@ -68,5 +71,55 @@ describe("naboI", () => {
     const slutt = naboI(strek, "dag/24/rampestrek", 1);
     expect(slutt.e?.dag).toBe(1);
     expect(slutt.rundt).toBe(true);
+  });
+});
+
+describe("dekning", () => {
+  // Real inventory when present (gitignored), else one path per kind.
+  const inv = path.join(process.cwd(), "public/media-inventar.json");
+  const filer: { path: string; size: number | null }[] = existsSync(inv)
+    ? JSON.parse(readFileSync(inv, "utf8"))
+    : [
+        "video/julius/dag-01.mp4",
+        "video/julius/dag-01-v2.mp4",
+        "audio/rampenissen/dag-03.mp3",
+        "video/tv/landsby-rolig.mp4",
+        "video/tv/port-aapen.mp4",
+        "strek/dag01.old-2.png",
+        "strek/dag10-v1.png",
+        "spill/piksel/ikon/bolle.png",
+        "spill/piksel/ikon/tesil.old-1.png",
+        "spill/piksel/figur/julius.png",
+        "spill/piksel/kafe.png",
+        "spill/portrett-iq.png",
+        "spill/torget.jpg",
+        "feed/landsby-rolig.jpg",
+        "music/rampenissen-synger.mp3",
+        "promo/julius-promo-A-v2.mp4",
+      ].map((p) => ({ path: p, size: 1 }));
+  const liste = alleElementer("dag", sesong, filer, 3);
+  const nåbar = (p: string) =>
+    liste.some((e) =>
+      [e.id, ...e.media, ...(e.eldre ?? [])].some(
+        (x) => x === p || versionKey(x) === versionKey(p),
+      ),
+    );
+
+  it("every inventory file is an item in Gjennomgang", () => {
+    expect(filer.map((f) => f.path).filter((p) => !nåbar(p))).toEqual([]);
+    expect(
+      liste.find((e) => e.id === "spill/piksel/ikon/bolle.png")?.gruppe,
+    ).toBe("Ikoner");
+  });
+
+  it("no verdict is orphaned: open set and counts unchanged", () => {
+    const verdikt = ["godkjent", "ok", "lag_paa_nytt", undefined];
+    const vurd = Object.fromEntries(
+      filer.map((f, i) => [f.path, { vurdering: verdikt[i % 4] }]),
+    );
+    const telling = (ids: string[]) =>
+      ids.map((i) => vurd[i].vurdering ?? "åpen").sort();
+    const alle = Object.keys(vurd);
+    expect(telling(alle.filter(nåbar))).toEqual(telling(alle));
   });
 });

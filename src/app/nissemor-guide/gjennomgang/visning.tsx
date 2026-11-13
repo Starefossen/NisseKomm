@@ -207,7 +207,7 @@ function Spiller({ path }: { path: string }) {
     <img
       src={mediaUrl(path)}
       alt={path}
-      className="max-h-72 border border-(--neon-green)/40"
+      className="max-h-72 min-h-32 border border-(--neon-green)/40 [image-rendering:pixelated]"
     />
   );
 }
@@ -520,6 +520,15 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
           {ren(sesong.promo.find((p) => p.id === x)?.tekst)}
         </p>
       </>
+    );
+  }
+  // Files with no section of their own (icons, figures, portraits, music …).
+  if (e.media.length) {
+    const bilde = /\.(png|jpe?g|webp)$/.test(e.id);
+    return bilde && e.eldre?.length ? (
+      <BildeVersjoner filer={[e.id, ...e.eldre]} />
+    ) : (
+      <Spiller path={e.id} />
     );
   }
   return null;

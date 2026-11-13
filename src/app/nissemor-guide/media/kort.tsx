@@ -1,7 +1,7 @@
 "use client";
 
 import { Lagremelding, useLagring } from "../lagring";
-import { lagre, lastVurderinger, useVurderinger } from "../vurdering";
+import { lastVurderinger, useVurderinger } from "../vurdering";
 import {
   useCallback,
   useEffect,
@@ -163,9 +163,6 @@ function InlinePlayer({ path, missing }: { path: string; missing: boolean }) {
 export function ReviewItemCard({
   file,
   inventar,
-  vurdering,
-  isSaving,
-  onSaveVerdict,
   onUpload,
   iBruk,
   merknad,
@@ -175,13 +172,6 @@ export function ReviewItemCard({
   iBruk?: boolean;
   merknad?: string;
   inventar?: Inventar;
-  vurdering?: MediaVurderingItem;
-  isSaving?: boolean;
-  onSaveVerdict: (
-    path: string,
-    v: Verdikt | null,
-    note?: string,
-  ) => Promise<void>;
   onUpload: (path: string, file: File) => void;
 }) {
   const missing = file.size === null;
@@ -258,26 +248,21 @@ export function ReviewItemCard({
       {/* Inline Player */}
       <InlinePlayer path={file.path} missing={missing} />
 
-      <Vurderingsknapper
-        vurdering={vurdering}
-        isSaving={isSaving}
-        onSave={(v, note) => onSaveVerdict(file.path, v, note)}
-        ekstra={
-          <label className="min-h-11 flex items-center cursor-pointer underline ml-auto text-sm">
-            {missing ? "Last opp fil" : "Erstatt fil"}
-            <input
-              type="file"
-              accept={TYPES[ext(file.path)]}
-              className="sr-only"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) onUpload(file.path, f);
-                e.target.value = "";
-              }}
-            />
-          </label>
-        }
-      />
+      <div className="flex justify-end">
+        <label className="min-h-11 flex items-center cursor-pointer underline text-sm">
+          {missing ? "Last opp fil" : "Erstatt fil"}
+          <input
+            type="file"
+            accept={TYPES[ext(file.path)]}
+            className="sr-only"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) onUpload(file.path, f);
+              e.target.value = "";
+            }}
+          />
+        </label>
+      </div>
     </div>
   );
 }
@@ -443,7 +428,7 @@ export function Vurderingsknapper({
   );
 }
 
-/** Files, inventory and verdicts, plus upload and verdict saving. */
+/** Files, inventory and verdicts, plus upload and Ta i bruk. */
 export function useMediaData() {
   const [files, setFiles] = useState<MediaStatus[] | null>(null);
   const [unavailable, setUnavailable] = useState(false);
@@ -451,7 +436,6 @@ export function useMediaData() {
   const [inventar, setInventar] = useState<Map<string, Inventar>>(new Map());
   // One verdict store for the whole guide: a save anywhere updates every view.
   const vurderinger: MediaVurderinger = useVurderinger() ?? {};
-  const [savingMap, setSavingMap] = useState<Record<string, boolean>>({});
 
   const load = useCallback(async () => {
     try {
@@ -505,19 +489,6 @@ export function useMediaData() {
     load();
   };
 
-  const handleSaveVerdict = async (
-    path: string,
-    v: Verdikt | null,
-    note?: string,
-  ) => {
-    setSavingMap((prev) => ({ ...prev, [path]: true }));
-    try {
-      await lagre(path, v, note ?? "");
-    } finally {
-      setSavingMap((prev) => ({ ...prev, [path]: false }));
-    }
-  };
-
   /** Promote the approved candidate of a version family (POST /api/media/ta-i-bruk). */
   const taIBruk = async (key: string, kandidat: string) => {
     const res = await fetch("/api/media/ta-i-bruk", {
@@ -544,9 +515,7 @@ export function useMediaData() {
     setMessage,
     inventar,
     vurderinger,
-    savingMap,
     upload,
-    handleSaveVerdict,
   };
 }
 
@@ -606,8 +575,11 @@ export function MediaListe({
   paths,
   data,
   melding = true,
+  status,
 }: {
   paths: string[];
+  /** The status chip for a family (Filer passes Gjennomgang's matrix cell). */
+  status?: (key: string) => ReactNode;
   data: ReturnType<typeof useMediaData>;
   /** Show the save/upload message under the list. */
   melding?: boolean;
@@ -628,9 +600,6 @@ export function MediaListe({
       key={f.path}
       file={f}
       inventar={data.inventar.get(f.path)}
-      vurdering={data.vurderinger[f.path]}
-      isSaving={data.savingMap[f.path]}
-      onSaveVerdict={data.handleSaveVerdict}
       onUpload={data.upload}
       iBruk={iBruk}
       merknad={merknad}
@@ -643,9 +612,21 @@ export function MediaListe({
         .map((v) => ({ v, fam: familie(v.key, k) }))
         .map(({ v, fam }) => (
           <div key={v.key}>
-            <p className="text-base">
-              {fam.tekst} · gjeldende versjon: {MERKE[fam.celle][2]}
-            </p>
+            <div className="flex flex-wrap items-center gap-3 text-base">
+              {status ? (
+                status(v.key)
+              ) : (
+                <span>
+                  {fam.tekst} · gjeldende versjon: {MERKE[fam.celle][2]}
+                </span>
+              )}
+              <a
+                href={`/nissemor-guide/gjennomgang?id=${encodeURIComponent(v.key)}`}
+                className="underline text-(--gold) min-h-11 inline-flex items-center"
+              >
+                Vurder i Gjennomgang →
+              </a>
+            </div>
             <TaIBruk path={v.key} data={data} />
             {card(v.newest, v.newest.path === v.key)}
             {v.older.length > 0 && (

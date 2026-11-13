@@ -4,27 +4,24 @@ import { versionKey } from "../media/oversikt";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { GameEngine } from "@/lib/game-engine";
-import { GuideSide, Kort, useSesong, type Sesong } from "../_kveld/felles";
-import { TaIBruk, kilde, useMediaData } from "../media/kort";
+import { GuideSide, Kort, type Sesong } from "../_kveld/felles";
+import { TaIBruk, kilde } from "../media/kort";
 import { DagManus } from "./visning";
+import { Rutenett } from "./rutenett";
 import {
-  brukbar,
-  celleAv,
-  celleFor,
-  FORKLARING,
-  MERKE,
-} from "@/lib/media-status";
+  CELLE,
+  StatusBrikke,
+  useCelle,
+  useData,
+  useKo,
+  type CelleData,
+} from "./celle";
+import { brukbar, FORKLARING, MERKE } from "@/lib/media-status";
 import { GJENSTAAR } from "../media/filter";
-import {
-  SkjulVurder,
-  Vurder,
-  taggTast,
-  useVurderinger,
-  vurderTast,
-} from "../vurdering";
+import { SkjulVurder, Vurder, taggTast, vurderTast } from "../vurdering";
 import {
   KOLONNER,
+  RUTENETT,
   alleElementer,
   dagElement,
   egenVurdering,
@@ -38,12 +35,9 @@ import {
 import { Innhold } from "./visning";
 import { SegmentStatus } from "./segmentstripe";
 import type { VideoStatus } from "@/lib/segmenter";
-import { videoStatus } from "@/lib/segmenter";
 import { taggTelling } from "@/lib/vurdering-tagger";
 import {
-  byggKo,
   FREMDRIFT,
-  fremdrift,
   type Fremdrift,
   omtak,
   type KoServer,
@@ -51,7 +45,6 @@ import {
 } from "./ko";
 import { Fremdriftslinjer } from "./fremdrift";
 import { Forslag, Regler } from "./laerdom";
-import type { Laerdom } from "@/lib/laerdom";
 
 const SIDE = "/nissemor-guide/gjennomgang";
 const REKKEFOLGE = "nissekomm-guide-gjennomgang-rekkefolge";
@@ -116,33 +109,6 @@ function UtvalgValg({ u, sett }: { u: Utvalg; sett: (u: Utvalg) => void }) {
 const knapp =
   "inline-flex items-center justify-center min-h-11 min-w-11 px-3 border-2 border-(--neon-green) hover:bg-(--neon-green)/20";
 
-function useData() {
-  const sesong = useSesong();
-  const media = useMediaData();
-  const vurd = useVurderinger();
-  const krypto = GameEngine.getAllQuests().filter(
-    (q) => q.decryption_challenge,
-  ).length;
-  const [server, setServer] = useState<KoServer | null>(null);
-  useEffect(() => {
-    fetch("/api/media/ko")
-      .then((r) => (r.ok ? r.json() : null))
-      .then(setServer)
-      .catch(() => setServer(null));
-  }, []);
-  const settLaerdom = (laerdom: Laerdom) =>
-    setServer((s) => (s ? { ...s, laerdom } : s));
-  return { sesong, media, vurd, krypto, server, settLaerdom };
-}
-
-function useKo(d: ReturnType<typeof useData>, sesong: Sesong) {
-  const liste = alleElementer("dag", sesong, d.media.files, d.krypto);
-  const ko = d.server
-    ? byggKo(liste, { ...kilde(d.media), vurderinger: d.vurd ?? {} }, d.server)
-    : null;
-  return { liste, ko };
-}
-
 const FANER = [
   ["venter", "Venter på deg"],
   ["agent", "Hos agent"],
@@ -156,7 +122,7 @@ const kr = (n: number) =>
 /** The queue: what waits for Hans, what waits for an agent, and the lessons. */
 function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
   const router = useRouter();
-  const { liste, ko } = useKo(d, sesong);
+  const { liste, ko, fd } = useKo(d, sesong);
   const fraUrl = useSearchParams().get("k");
   const fane: Fane = FANER.some(([f]) => f === fraUrl)
     ? (fraUrl as Fane)
@@ -165,9 +131,7 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
   const sp = useSearchParams();
   const st = FREMDRIFT.find(([k]) => k === sp.get("s"));
   const g = sp.get("g");
-  const fd = ko
-    ? fremdrift(liste, { ...kilde(d.media), vurderinger: d.vurd ?? {} }, ko)
-    : null;
+
   const linjer: Linje[] = !ko
     ? []
     : st
@@ -308,38 +272,15 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
   );
 }
 
-/** Cell words and fills, the same colours as the progress bar. */
-const CELLE: Record<Fremdrift, [string, string]> = {
-  godkjent: ["✓ godkjent", "bg-(--gold) text-black"],
-  ok: ["◐ OK", "bg-amber-300 text-black"],
-  venter: ["● se på", "bg-(--cold-blue) text-black"],
-  agent: ["✗ fikses", "bg-(--christmas-red) text-white"],
-  mangler: ["mangler", "bg-(--gray) text-black"],
-  valgfri: ["valgfri", "bg-(--gray)/30"],
-};
-
-/** Without the queue (still loading): the verdict alone. */
-const statusAvCelle = (c: ReturnType<typeof tilstand>["celle"]): Fremdrift =>
-  c === "godkjent" || c === "ok" || c === "mangler" || c === "valgfri"
-    ? c
-    : c === "lag_paa_nytt" || c === "utdatert"
-      ? "agent"
-      : "venter";
-
-interface CelleData {
-  e: Element;
-  status: Fremdrift;
-  /** «✗ kuttes» or a Julius progress line, replacing the status word. */
-  ord?: string;
-  /** «+v4 ✓»: a newer candidate under the main status. */
-  kandidat?: string;
-  notat?: string;
-  celle: string;
-  /** Finished and outside «Hva gjenstår»: still shown, dimmed. */
-  dempet: boolean;
-}
-
-function Celle({ c, f }: { c: CelleData | null; f: Utvalg }) {
+function Celle({
+  c,
+  f,
+  dempet,
+}: {
+  c: CelleData | null;
+  f: string;
+  dempet?: boolean;
+}) {
   // «–» only where the column doesn't apply to the day.
   if (!c)
     return (
@@ -350,17 +291,9 @@ function Celle({ c, f }: { c: CelleData | null; f: Utvalg }) {
         –
       </td>
     );
-  const [ord, farge] = CELLE[c.status];
   return (
     <td className="p-0.5 text-center">
-      <Link
-        href={href(c.e.id, `&f=${f}`)}
-        title={`${c.e.tittel}: i bruk ${c.celle}${c.notat ? ` – ${c.notat}` : ""}`}
-        className={`flex flex-col items-center justify-center min-h-11 min-w-11 px-1 whitespace-nowrap hover:opacity-70 ${farge} ${c.dempet ? "opacity-40" : ""}`}
-      >
-        {c.ord ?? ord}
-        {c.kandidat && <span className="text-sm">{c.kandidat}</span>}
-      </Link>
+      <StatusBrikke c={c} href={href(c.e.id, `&f=${f}`)} dempet={dempet} />
     </td>
   );
 }
@@ -379,50 +312,14 @@ function Matrise({
   const [u, settU] = useUtvalg();
   const vis = (e: Element | null): e is Element =>
     !!e && passerUtvalg(u, e, t(e)!);
-  const { liste: dagListe, ko } = useKo(d, sesong);
-  // The same status as the progress bar, so a cell and the bar never disagree.
-  const status = new Map<string, Fremdrift>(
-    (ko ? fremdrift(dagListe, k, ko).poster : []).map((x) => [x.id, x.status]),
-  );
-  const data = (e: Element): CelleData => {
-    const ti = tilstand(e, k);
-    let st = status.get(e.id) ?? statusAvCelle(ti.celle);
-    let ord: string | undefined;
-    // A segmented Julius day: «3/4 ✓», or the cut/take the worst segment waits for.
-    const segs = e.gruppe === "julius" && e.dag ? d.server?.manus[e.dag] : null;
-    const sid = (n: number) =>
-      `video/julius/dag-${String(e.dag).padStart(2, "0")}#s${n}`;
-    if (segs?.length && segs.some((n) => vurd[sid(n)])) {
-      const vs = videoStatus(
-        segs.map((s) => ({ s })),
-        (n) => vurd[sid(n)],
-      );
-      const ok = segs.filter((n) => brukbar(celleAv(vurd[sid(n)]))).length;
-      if (vs.steg === "kutt" || vs.steg === "nytt") st = "agent";
-      if (vs.steg === "kutt") ord = "✗ kuttes";
-      if (vs.steg === "vurder") {
-        st = "venter";
-        ord = `● ${ok}/${segs.length} ✓`;
-      }
-    }
-    const kand = e.media.length
-      ? celleFor(e.media, k).familie?.kandidat
-      : undefined;
-    return {
-      e,
-      status: st,
-      ord,
-      kandidat: kand ? `+${kand.navn} ${MERKE[kand.celle][0]}` : undefined,
-      notat: ti.notat,
-      celle: MERKE[ti.celle][2],
-      dempet: !vis(e),
-    };
-  };
+  const celleData = useCelle(d, sesong);
+  const data = (e: Element) => celleData(e);
   // Outside «Hva gjenstår» a finished cell is dimmed, not blanked; other filters keep their columns.
   const celle = (e: Element | null) => (
     <Celle
       key={e?.id}
       f={u}
+      dempet={!!e && !vis(e)}
       c={e && (vis(e) || u === "gjenstaar") ? data(e) : null}
     />
   );
@@ -539,23 +436,35 @@ function Matrise({
             key={g}
             tittel={`${g} (${rad.filter((e) => brukbar(t(e))).length}/${rad.length})`}
           >
-            <table className="w-full">
-              <tbody>
-                {rad.map((e) => (
-                  <tr key={e.id} className="border-t border-(--neon-green)/30">
-                    <td className="p-1">
-                      <Link
-                        href={href(e.id, `&f=${u}`)}
-                        className="underline break-all"
-                      >
-                        {e.tittel}
-                      </Link>
-                    </td>
-                    {celle(e)}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            {RUTENETT.has(g) ? (
+              <Rutenett
+                rad={rad}
+                data={data}
+                lenke={(e) => href(e.id, `&f=${u}&gr=${encodeURIComponent(g)}`)}
+                uvurdert={(e) => !vurd[e.id]?.vurdering}
+              />
+            ) : (
+              <table className="w-full">
+                <tbody>
+                  {rad.map((e) => (
+                    <tr
+                      key={e.id}
+                      className="border-t border-(--neon-green)/30"
+                    >
+                      <td className="p-1">
+                        <Link
+                          href={href(e.id, `&f=${u}`)}
+                          className="underline break-all"
+                        >
+                          {e.tittel}
+                        </Link>
+                      </td>
+                      {celle(e)}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </Kort>
         );
       })}
@@ -588,11 +497,17 @@ function Vurdering({
     setValgtHer(true);
     settUtvalg(ny);
   };
-  const typeFilter = valgtHer && u !== "gjenstaar";
+  const gruppe = sp.get("gr");
+  const typeFilter = !!gruppe || (valgtHer && u !== "gjenstaar");
   const lenke = useCallback(
     (x: string) =>
-      href(x, (typeFilter ? `&f=${u}` : "") + (fane ? `&k=${fane}` : "")),
-    [typeFilter, u, fane],
+      href(
+        x,
+        (typeFilter ? `&f=${u}` : "") +
+          (gruppe ? `&gr=${encodeURIComponent(gruppe)}` : "") +
+          (fane ? `&k=${fane}` : ""),
+      ),
+    [typeFilter, u, fane, gruppe],
   );
   // A segmented Julius video: its status comes from the segments (SegmentStripe).
   const [segStatus, setSegStatus] = useState<VideoStatus | null>(null);
@@ -609,8 +524,12 @@ function Vurdering({
   const synlige = liste.filter(
     (x) => x === e || u === "alle" || tilstand(x, k).celle !== "valgfri",
   );
+  // From a grid (`gr=`): N/P stay inside that group.
+  const gr = sp.get("gr");
   const filtrert = synlige.filter(
-    (x) => x === e || passerUtvalg(u, x, tilstand(x, k).celle),
+    (x) =>
+      x === e ||
+      (gr ? x.gruppe === gr : passerUtvalg(u, x, tilstand(x, k).celle)),
   );
   const fi = filtrert.indexOf(e);
   const si = synlige.indexOf(e);
@@ -635,9 +554,11 @@ function Vurdering({
   const neste = nesteIKo ? liste.find((x) => x.id === nesteIKo) : nabo.e;
   const nesteNavn = nesteIKo
     ? "Neste i køen"
-    : typeFilter && u !== "alle"
-      ? `Neste ${u === "julius" ? NAVN[u] : NAVN[u].toLowerCase()}`
-      : "Neste uvurdert";
+    : gruppe
+      ? `Neste i ${gruppe.toLowerCase()}`
+      : typeFilter && u !== "alle"
+        ? `Neste ${u === "julius" ? NAVN[u] : NAVN[u].toLowerCase()}`
+        : "Neste uvurdert";
 
   useEffect(() => {
     const ned = (ev: KeyboardEvent) => {
