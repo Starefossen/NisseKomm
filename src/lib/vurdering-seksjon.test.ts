@@ -47,11 +47,13 @@ describe("seksjonsvurderinger", () => {
     expect((await visning(dir, l))[ID].vurdering).toBe("godkjent");
     expect("tekst" in (await visning(dir, l))[ID]).toBe(false);
     // As if the doc said something else when Hans approved it.
-    v.tekst = `${v.tekst}\nen gammel linje`;
+    v.tekst = `${v.tekst}\n3 | en gammel linje`;
     v.hash = v.versjon = "aaaaaaaaaaaa";
     const ut = (await visning(dir, l))[ID];
     expect(ut.vurdering).toBeUndefined();
-    expect(ut.forrige?.endringer).toEqual([{ t: "-", l: "en gammel linje" }]);
+    expect(ut.forrige?.endringer).toEqual([
+      { t: "-", l: "3 | en gammel linje" },
+    ]);
   });
 
   it("ny hashdefinisjon gjør 0 vurderinger utdatert", async () => {
@@ -87,11 +89,11 @@ describe("seksjonsvurderinger", () => {
     const dir = await mappe();
     const l = ny();
     await settVurdering(dir, l, ID, { vurdering: "godkjent" });
-    l.elementer[ID].vurderinger[0].tekst += "\nendret";
+    l.elementer[ID].vurderinger[0].tekst += "\n3 | endret";
     delete l.elementer[ID].vurderinger[0].hashVersjon;
     expect(await restemple(dir, l)).toEqual([]);
     expect((await visning(dir, l))[ID].forrige?.endringer).toEqual([
-      { t: "-", l: "endret" },
+      { t: "-", l: "3 | endret" },
     ]);
   });
 
