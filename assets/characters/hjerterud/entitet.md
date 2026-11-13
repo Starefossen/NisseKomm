@@ -19,11 +19,11 @@
     },
     {
       "fra_dag": 1,
-      "tekst": "rundt 45–50 år; varm brun hud, krøllete brunt hår med lysere tupper under et rustrødt skaut med en løs ende over skulderen, bredt og varmt smil"
+      "tekst": "gyllen hudtone med lette fregner, mørke øyne, varmt smil med synlige tenner; mørkt, fyldig og krøllete hår samlet opp under et bredt, rustrødt tøyskaut med en tøyende langs nakken"
     },
     {
       "fra_dag": 1,
-      "tekst": "går i kremhvit linbluse med åpen krage og et grovt, sennepsgult sekkestrieforkle med melflekker"
+      "tekst": "går i løs, kremhvit linskjorte med V-utringning og et grovt, vevd, sennepsgult forkle med frynsete kanter og hvetemel på brystet"
     },
     {
       "fra_dag": 1,
