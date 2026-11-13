@@ -79,7 +79,7 @@ export interface CelleData {
   kandidat?: string;
   notat?: string;
   celle: string;
-  /** «⚙ agent · hva · siden 14:32» while an agent works on it. */
+  /** «agent · hva · siden 14:32» while an agent works on it. */
   arbeid?: string;
 }
 
@@ -150,7 +150,7 @@ export function StatusBrikke({
       {c.kandidat && <span className="text-sm">{c.kandidat}</span>}
       {c.arbeid && (
         <span className="text-sm" title={c.arbeid}>
-          ⚙ under arbeid
+          · under arbeid
         </span>
       )}
     </Link>

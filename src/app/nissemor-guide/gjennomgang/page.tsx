@@ -998,7 +998,7 @@ function Sloyfe({
           data-testid="under-arbeid"
           className={arb.stoppet ? "text-(--christmas-red)" : "text-(--gold)"}
         >
-          ⚙ Under arbeid: {arbeidTekst(arb)}
+          Under arbeid: {arbeidTekst(arb)}
         </p>
       )}
       {spm && (
