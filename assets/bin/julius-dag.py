@@ -395,7 +395,8 @@ def main():
             if take.exists() and json.loads(take.read_text()) == key:
                 print("  uendret og godkjent tidligere, beholdt")
                 continue
-            if not speech_at_end(raw) and (coverage(raw, line)[0] or 0) >= MIN_COVERAGE:
+            # a take.json with another line means the clip is for the old text: never accept it by coverage
+            if not take.exists() and not speech_at_end(raw) and (coverage(raw, line)[0] or 0) >= MIN_COVERAGE:
                 take.write_text(json.dumps(key))
                 continue
         env = dict(os.environ)

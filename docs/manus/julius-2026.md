@@ -171,8 +171,8 @@ Kulde-nivå 1. Svak knitring. Rapporten fra Rampenissen står i åpningen. Fem s
    - Varighet: 5 s (3 ord)
    - Handling: Løfter venstre hånd i en stor, rolig vinkende hilsen og smiler.
    - Kulde: Svak knitring.
-2. **Replikk:** «Det er andre søndag i advent i dag. Rampenissen rapporterer: «Æ laga snøengla i mel.» Hjerterud sukket.»
-   - Varighet: 12 s (17 ord) · endret 13.11 etter ja fra Hans
+2. **Replikk:** «Det er søndag. Andre søndag i advent. Rampenissen rapporterer: «Æ laga snøengla i mel.» Hjerterud sukket.»
+   - Varighet: 12 s (16 ord) · endret 13.11 etter ja fra Hans
    - Handling: Holder opp to fingre på venstre hånd, så løfter han et ark fra brevbunken, leser, ler og legger det ned.
    - Kulde: Svak knitring.
 3. **Replikk:** «I natt sa Orakelet at det som fryser linjen, tåler ikke lys. IQ hengte juletrelys rundt antennen ved tjernet.»
