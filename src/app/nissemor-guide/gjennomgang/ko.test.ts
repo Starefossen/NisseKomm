@@ -338,6 +338,30 @@ describe("byggKo", () => {
       venter: 2,
       agent: 1,
       mangler: 1,
+      valgfri: 0,
     });
+  });
+
+  it("an optional file nobody made is no queue line, only «valgfri» in the progress bar", () => {
+    const liste: Element[] = [
+      {
+        id: "video/tv/landsby-tarnklokke.mp4",
+        gruppe: "Snøfall TV",
+        tittel: "Tårnklokke",
+        media: ["video/tv/landsby-tarnklokke.mp4"],
+      },
+    ];
+    const k = {
+      filer: [{ path: "video/tv/landsby-tarnklokke.mp4", size: null }],
+      vurderinger: {},
+      inventar: new Map([
+        ["video/tv/landsby-tarnklokke.mp4", { status: "valgfri" }],
+      ]),
+    } as unknown as Parameters<typeof byggKo>[1];
+    const ko = byggKo(liste, k, server({ manus: {} }));
+    expect([...ko.venter, ...ko.agent]).toEqual([]);
+    const fd = fremdrift(liste, k, ko);
+    expect(fd.total.telling.valgfri).toBe(1);
+    expect(fd.total.telling.mangler).toBe(0);
   });
 });

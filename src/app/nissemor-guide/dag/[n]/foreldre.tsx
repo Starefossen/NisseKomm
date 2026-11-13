@@ -221,10 +221,13 @@ export function Rampestrek({
   n,
   d,
   t,
+  gjennomgang,
 }: {
   n: number;
   d: ReturnType<typeof kveldDag>;
   t: (s: string) => string;
+  /** Review view: title, scene and checklist, and no sketch here when the comparison shows it. */
+  gjennomgang?: { medVersjoner: boolean };
 }) {
   const handlet = useHandlet();
   if (!d) return null;
@@ -235,8 +238,21 @@ export function Rampestrek({
     >
       {/* Sketch floats right of the text on desktop; on a phone it sits small under it */}
       <div className="flex flex-col gap-4 md:flow-root">
-        <Skisse key={n} n={n} />
+        {!gjennomgang?.medVersjoner && (
+          <Skisse key={n} n={n} mangler={!!gjennomgang} />
+        )}
         <div className="space-y-2">
+          {gjennomgang && (
+            <>
+              <p className="text-(--gold)">{d.strek.tittel}</p>
+              <p>
+                <b>Tegnbar:</b> {d.strek.tegnbar}
+              </p>
+              <p>
+                <b>Sjekkliste:</b> {d.strek.sjekk}
+              </p>
+            </>
+          )}
           <p>{t(d.strek.tekst)}</p>
           <p>
             <b>Materialer:</b> {medVarer(d.varer, handlet)(d.strek.materialer)}
@@ -267,10 +283,20 @@ export function Rampestrek({
 }
 
 /** strek/dagNN.png from MEDIA_DIR (assets/medier.json); nothing while it doesn't exist. */
-function Skisse({ n }: { n: number }) {
+function Skisse({ n, mangler }: { n: number; mangler?: boolean }) {
   const [finnes, setFinnes] = useState(true);
-  const src = `/media/strek/dag${String(n).padStart(2, "0")}.png`;
-  if (!finnes) return null;
+  const dd = String(n).padStart(2, "0");
+  const src = `/media/strek/dag${dd}.png`;
+  if (!finnes)
+    return mangler ? (
+      <div className="order-last md:float-right md:ml-4 md:w-72 border-2 border-(--christmas-red) p-2 text-base">
+        <p className="text-(--christmas-red)">Skisse mangler</p>
+        <p className="break-all">strek/dag{dd}</p>
+        <code className="break-all text-(--cold-blue)">
+          python3 assets/bin/generer.py kjør --bare strek/dag{dd} --force
+        </code>
+      </div>
+    ) : null;
   return (
     <a
       href={src}

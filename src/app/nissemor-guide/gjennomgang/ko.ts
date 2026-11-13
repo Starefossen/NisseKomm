@@ -197,8 +197,9 @@ export function byggKo(
         continue;
       }
     }
+    // An optional file nobody has made waits on no one.
+    if (ny.celle === "valgfri") continue;
     if (ny.celle === "mangler") {
-      if (k.inventar?.get(ny.path)?.status === "valgfri") continue;
       agent.push({
         ...linje,
         hva: "ikke laget",
@@ -427,6 +428,7 @@ export const FREMDRIFT = [
   ["venter", "Venter på deg", "bg-(--cold-blue)"],
   ["agent", "Hos agent", "bg-(--christmas-red)"],
   ["mangler", "Mangler", "bg-(--gray)"],
+  ["valgfri", "Valgfri", "bg-(--gray)/30"],
 ] as const;
 export type Fremdrift = (typeof FREMDRIFT)[number][0];
 
@@ -445,7 +447,7 @@ export function fremdriftGruppe(e: Element): string {
 /**
  * Every element in exactly one bucket, from the same queue byggKo makes:
  * missing file → Mangler, in «Hos agent» or rejected → Hos agent, in
- * «Venter på deg» → Venter, else the verdict. Optional items are left out.
+ * «Venter på deg» → Venter, else the verdict. Optional unmade items are «valgfri».
  */
 export function fremdrift(
   liste: Element[],
@@ -457,20 +459,21 @@ export function fremdrift(
   const poster: (Element & { status: Fremdrift; type: string })[] = [];
   for (const e of liste) {
     const c = tilstand(e, k).celle;
-    if (c === "valgfri") continue;
     const status: Fremdrift =
-      c === "mangler"
-        ? "mangler"
-        : agent.has(e.id) || c === "lag_paa_nytt" || c === "utdatert"
-          ? "agent"
-          : venter.has(e.id)
-            ? "venter"
-            : c === "godkjent" || c === "ok"
-              ? c
-              : // A Julius script is judged per segment: out of both queues means every segment passed.
-                /^manus\/julius\//.test(e.id)
-                ? "godkjent"
-                : "venter";
+      c === "valgfri"
+        ? "valgfri"
+        : c === "mangler"
+          ? "mangler"
+          : agent.has(e.id) || c === "lag_paa_nytt" || c === "utdatert"
+            ? "agent"
+            : venter.has(e.id)
+              ? "venter"
+              : c === "godkjent" || c === "ok"
+                ? c
+                : // A Julius script is judged per segment: out of both queues means every segment passed.
+                  /^manus\/julius\//.test(e.id)
+                  ? "godkjent"
+                  : "venter";
     poster.push({ ...e, status, type: fremdriftGruppe(e) });
   }
   const telling = (ps: typeof poster) =>

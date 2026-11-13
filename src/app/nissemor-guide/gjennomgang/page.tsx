@@ -3,12 +3,18 @@
 import { versionKey } from "../media/oversikt";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { GuideSide, Kort, useSesong, type Sesong } from "../_kveld/felles";
 import { TaIBruk, kilde, useMediaData } from "../media/kort";
 import { DagManus } from "./visning";
-import { brukbar, FORKLARING, MERKE } from "@/lib/media-status";
+import {
+  brukbar,
+  celleAv,
+  celleFor,
+  FORKLARING,
+  MERKE,
+} from "@/lib/media-status";
 import { GJENSTAAR } from "../media/filter";
 import {
   SkjulVurder,
@@ -31,15 +37,25 @@ import {
 import { Innhold } from "./visning";
 import { SegmentStatus } from "./segmentstripe";
 import type { VideoStatus } from "@/lib/segmenter";
+import { videoStatus } from "@/lib/segmenter";
 import { taggTelling } from "@/lib/vurdering-tagger";
-import { byggKo, FREMDRIFT, fremdrift, type KoServer, type Linje } from "./ko";
+import {
+  byggKo,
+  FREMDRIFT,
+  fremdrift,
+  type Fremdrift,
+  omtak,
+  type KoServer,
+  type Linje,
+} from "./ko";
 import { Fremdriftslinjer } from "./fremdrift";
 import { Forslag, Regler } from "./laerdom";
 import type { Laerdom } from "@/lib/laerdom";
 
 const SIDE = "/nissemor-guide/gjennomgang";
 const REKKEFOLGE = "nissekomm-guide-gjennomgang-rekkefolge";
-const href = (id: string) => `${SIDE}?id=${encodeURIComponent(id)}`;
+const href = (id: string, ekstra = "") =>
+  `${SIDE}?id=${encodeURIComponent(id)}${ekstra}`;
 const UTVALG_NOKKEL = "nissekomm-guide-gjennomgang-utvalg";
 
 // Quick choices, the same as the media page's «Hva gjenstår» and type chips.
@@ -72,6 +88,11 @@ function useUtvalg(): [Utvalg, (u: Utvalg) => void] {
   };
   return [u, sett];
 }
+
+// N/P label when a type filter is chosen: «Neste rampestrek (N)».
+const NAVN = Object.fromEntries(
+  UTVALG.map(([k, n]) => [k, n.replace("Bare ", "")]),
+);
 
 function UtvalgValg({ u, sett }: { u: Utvalg; sett: (u: Utvalg) => void }) {
   return (
@@ -155,7 +176,7 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
       : ko[fane];
   const lenke = (l: Linje) =>
     liste.some((e) => e.id === l.id)
-      ? href(l.id) + (l.seg ? `&s=${l.seg}` : "")
+      ? href(l.id, (l.seg ? `&s=${l.seg}` : "") + (st ? "" : `&k=${fane}`))
       : "/nissemor-guide/media";
 
   useEffect(() => {
@@ -286,23 +307,58 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
   );
 }
 
-function Celle({
-  e,
-  t,
-}: {
-  e: Element | null;
-  t: ReturnType<typeof tilstand> | null;
-}) {
-  if (!e || !t) return <td className="p-1 text-center opacity-40">–</td>;
-  const [, farge, navn] = MERKE[t.celle];
-  return (
-    <td className="p-0 text-center">
-      <Link
-        href={href(e.id)}
-        title={`${e.tittel}: i bruk ${navn}${t.notat ? ` – ${t.notat}` : ""}`}
-        className={`flex items-center justify-center min-h-11 min-w-11 px-1 whitespace-nowrap hover:bg-(--neon-green)/20 ${farge}`}
+/** Cell words and fills, the same colours as the progress bar. */
+const CELLE: Record<Fremdrift, [string, string]> = {
+  godkjent: ["✓ godkjent", "bg-(--gold) text-black"],
+  ok: ["◐ OK", "bg-amber-300 text-black"],
+  venter: ["● se på", "bg-(--cold-blue) text-black"],
+  agent: ["✗ fikses", "bg-(--christmas-red) text-white"],
+  mangler: ["mangler", "bg-(--gray) text-black"],
+  valgfri: ["valgfri", "bg-(--gray)/30"],
+};
+
+/** Without the queue (still loading): the verdict alone. */
+const statusAvCelle = (c: ReturnType<typeof tilstand>["celle"]): Fremdrift =>
+  c === "godkjent" || c === "ok" || c === "mangler" || c === "valgfri"
+    ? c
+    : c === "lag_paa_nytt" || c === "utdatert"
+      ? "agent"
+      : "venter";
+
+interface CelleData {
+  e: Element;
+  status: Fremdrift;
+  /** «✂ kuttes» or a Julius progress line, replacing the status word. */
+  ord?: string;
+  /** «+v4 ✓»: a newer candidate under the main status. */
+  kandidat?: string;
+  notat?: string;
+  celle: string;
+  /** Finished and outside «Hva gjenstår»: still shown, dimmed. */
+  dempet: boolean;
+}
+
+function Celle({ c, f }: { c: CelleData | null; f: Utvalg }) {
+  // «–» only where the column doesn't apply to the day.
+  if (!c)
+    return (
+      <td
+        className="p-1 text-center opacity-40"
+        title="Ikke aktuelt denne dagen"
       >
-        {t.tekst}
+        –
+      </td>
+    );
+  const [ord, farge] = CELLE[c.status];
+  return (
+    <td className="p-0.5 text-center">
+      <Link
+        href={href(c.e.id, `&f=${f}`)}
+        title={`${c.e.tittel}: i bruk ${c.celle}${c.notat ? ` – ${c.notat}` : ""}`}
+        className={`flex flex-col items-center justify-center min-h-11 min-w-11 px-1 whitespace-nowrap hover:opacity-70 ${farge} ${c.dempet ? "opacity-40" : ""}`}
+      >
+        {c.ord ?? ord}
+        {c.kandidat && <span className="text-sm">{c.kandidat}</span>}
       </Link>
     </td>
   );
@@ -322,9 +378,71 @@ function Matrise({
   const [u, settU] = useUtvalg();
   const vis = (e: Element | null): e is Element =>
     !!e && passerUtvalg(u, e, t(e)!);
-  const celle = (e: Element | null) => (
-    <Celle key={e?.id} e={vis(e) ? e : null} t={vis(e) ? tt(e) : null} />
+  const { liste: dagListe, ko } = useKo(d, sesong);
+  // The same status as the progress bar, so a cell and the bar never disagree.
+  const status = new Map<string, Fremdrift>(
+    (ko ? fremdrift(dagListe, k, ko).poster : []).map((x) => [x.id, x.status]),
   );
+  const data = (e: Element): CelleData => {
+    const ti = tilstand(e, k);
+    let st = status.get(e.id) ?? statusAvCelle(ti.celle);
+    let ord: string | undefined;
+    // A segmented Julius day: «3/4 ✓», or the cut/take the worst segment waits for.
+    const segs = e.gruppe === "julius" && e.dag ? d.server?.manus[e.dag] : null;
+    const sid = (n: number) =>
+      `video/julius/dag-${String(e.dag).padStart(2, "0")}#s${n}`;
+    if (segs?.length && segs.some((n) => vurd[sid(n)])) {
+      const vs = videoStatus(
+        segs.map((s) => ({ s })),
+        (n) => vurd[sid(n)],
+      );
+      const ok = segs.filter((n) => brukbar(celleAv(vurd[sid(n)]))).length;
+      if (vs.steg === "kutt") ((st = "agent"), (ord = "✂ kuttes"));
+      else if (vs.steg === "nytt") st = "agent";
+      else if (vs.steg === "vurder")
+        ((st = "venter"), (ord = `● ${ok}/${segs.length} ✓`));
+    }
+    const kand = e.media.length
+      ? celleFor(e.media, k).familie?.kandidat
+      : undefined;
+    return {
+      e,
+      status: st,
+      ord,
+      kandidat: kand ? `+${kand.navn} ${MERKE[kand.celle][0]}` : undefined,
+      notat: ti.notat,
+      celle: MERKE[ti.celle][2],
+      dempet: !vis(e),
+    };
+  };
+  // Outside «Hva gjenstår» a finished cell is dimmed, not blanked; other filters keep their columns.
+  const celle = (e: Element | null) => (
+    <Celle
+      key={e?.id}
+      f={u}
+      c={e && (vis(e) || u === "gjenstaar") ? data(e) : null}
+    />
+  );
+  const telling = (rad: (Element | null)[]) => {
+    const n: Partial<Record<Fremdrift, number>> = {};
+    for (const e of rad)
+      if (e) {
+        const s = data(e).status;
+        n[s] = (n[s] ?? 0) + 1;
+      }
+    const ord: [Fremdrift, string][] = [
+      ["godkjent", "✓"],
+      ["ok", "◐"],
+      ["venter", "se på"],
+      ["agent", "fikses"],
+      ["mangler", "mangler"],
+      ["valgfri", "valgfri"],
+    ];
+    return ord
+      .filter(([s]) => n[s])
+      .map(([s, w]) => `${n[s]} ${w}`)
+      .join(" · ");
+  };
   const kolonner = KOLONNER.filter(
     ([k]) => u === "alle" || u === "gjenstaar" || u === k,
   );
@@ -357,25 +475,38 @@ function Matrise({
           (notatet vises når du holder over). {FORKLARING}
         </p>
         {forste && (
-          <Link href={href(forste.id)} className={knapp}>
+          <Link href={href(forste.id, `&f=${u}`)} className={knapp}>
             Start: neste uvurdert ({forste.tittel})
           </Link>
         )}
       </Kort>
+      <p className="flex flex-wrap gap-2 text-base" data-testid="forklaring">
+        {FREMDRIFT.map(([s]) => (
+          <span key={s} className={`px-2 ${CELLE[s][1]}`}>
+            {CELLE[s][0]}
+          </span>
+        ))}
+        <span className="px-2 border border-(--neon-green)/40">
+          – ikke aktuelt denne dagen
+        </span>
+        <span className="px-2 border border-(--neon-green)/40 opacity-40">
+          dempet: ferdig, skjult av «Hva gjenstår»
+        </span>
+      </p>
       <div className="overflow-x-auto">
         <table className="border-collapse text-lg w-full">
           <thead>
             <tr className="text-(--gold)">
               <th className="p-1 text-left">Dag</th>
               {kolonner.map(([k, navn]) => {
-                const rad = dager
-                  .map((n) => dagElement(k, n, sesong, d.media.files))
-                  .filter(Boolean);
+                const rad = Array.from({ length: 24 }, (_, i) =>
+                  dagElement(k, i + 1, sesong, d.media.files),
+                );
                 return (
                   <th key={k} className="p-1">
                     {navn}
                     <span className="block text-sm text-(--neon-green)/80">
-                      {rad.filter((e) => brukbar(t(e))).length}/{rad.length}
+                      {telling(rad)}
                     </span>
                   </th>
                 );
@@ -410,7 +541,10 @@ function Matrise({
                 {rad.map((e) => (
                   <tr key={e.id} className="border-t border-(--neon-green)/30">
                     <td className="p-1">
-                      <Link href={href(e.id)} className="underline break-all">
+                      <Link
+                        href={href(e.id, `&f=${u}`)}
+                        className="underline break-all"
+                      >
                         {e.tittel}
                       </Link>
                     </td>
@@ -441,7 +575,22 @@ function Vurdering({
   );
   // Gjennomgang only mounts this once the verdicts have loaded.
   const vurd = d.vurd!;
-  const [u, settU] = useUtvalg();
+  const [u, settUtvalg] = useUtvalg();
+  const sp = useSearchParams();
+  const fane = sp.get("k");
+  // A filter counts once it is in the URL (from the overview) or has been clicked here;
+  // arriving from the queue has none, so N stays «Neste i køen».
+  const [valgtHer, setValgtHer] = useState(() => sp.has("f"));
+  const settU = (ny: Utvalg) => {
+    setValgtHer(true);
+    settUtvalg(ny);
+  };
+  const typeFilter = valgtHer && u !== "gjenstaar";
+  const lenke = useCallback(
+    (x: string) =>
+      href(x, (typeFilter ? `&f=${u}` : "") + (fane ? `&k=${fane}` : "")),
+    [typeFilter, u, fane],
+  );
   // A segmented Julius video: its status comes from the segments (SegmentStripe).
   const [segStatus, setSegStatus] = useState<VideoStatus | null>(null);
   const k = { ...kilde(d.media), vurderinger: vurd };
@@ -453,21 +602,39 @@ function Vurdering({
       ? eksakt
       : liste.findIndex((e) => versionKey(e.id) === versionKey(id));
   const e = liste[i];
-  const forrige = liste[i - 1];
+  // N/P skip optional files nobody has made, unless the filter is «Alt».
+  const synlige = liste.filter(
+    (x) => x === e || u === "alle" || tilstand(x, k).celle !== "valgfri",
+  );
+  const filtrert = synlige.filter(
+    (x) => x === e || passerUtvalg(u, x, tilstand(x, k).celle),
+  );
+  const fi = filtrert.indexOf(e);
+  const si = synlige.indexOf(e);
+  const forrige = typeFilter ? filtrert.at(fi - 1) : synlige[si - 1];
   const { ko } = useKo(d, sesong);
   const koIder = (ko?.venter ?? [])
     .map((l) => l.id)
     .filter((x, j, a) => a.indexOf(x) === j && liste.some((y) => y.id === x));
   const iKo = koIder.indexOf(e?.id ?? "");
   // From the queue, «Neste» is the next line waiting for Hans.
-  const nesteIKo = iKo >= 0 ? koIder[iKo + 1] : koIder.find((x) => x !== e?.id);
+  const nesteIKo = typeFilter
+    ? undefined
+    : iKo >= 0
+      ? koIder[iKo + 1]
+      : koIder.find((x) => x !== e?.id);
   // «Neste uvurdert» stays inside the chosen quick choice; the current item always counts.
-  const nesteUv = nesteUvurdert(
-    liste.filter((x) => x === e || passerUtvalg(u, x, tilstand(x, k).celle)),
-    e?.id ?? id,
-    vurd,
-  );
-  const neste = nesteIKo ? liste.find((x) => x.id === nesteIKo) : nesteUv;
+  const nesteUv = nesteUvurdert(filtrert, e?.id ?? id, vurd);
+  // A type filter: next unreviewed in it, else simply the next in it.
+  const neste = nesteIKo
+    ? liste.find((x) => x.id === nesteIKo)
+    : (nesteUv ??
+      (typeFilter ? filtrert[(fi + 1) % filtrert.length] : undefined));
+  const nesteNavn = nesteIKo
+    ? "Neste i køen"
+    : typeFilter && u !== "alle"
+      ? `Neste ${u === "julius" ? NAVN[u] : NAVN[u].toLowerCase()}`
+      : "Neste uvurdert";
 
   useEffect(() => {
     const ned = (ev: KeyboardEvent) => {
@@ -494,29 +661,35 @@ function Vurdering({
         (taggTast(ev, id) || (!ev.shiftKey && vurderTast(tast, id)))
       )
         ev.preventDefault();
-      else if (tast === "n" && neste) router.push(href(neste.id));
-      else if (tast === "p" && forrige) router.push(href(forrige.id));
+      else if (tast === "n" && neste) router.push(lenke(neste.id));
+      else if (tast === "p" && forrige) router.push(lenke(forrige.id));
     };
     window.addEventListener("keydown", ned);
     return () => window.removeEventListener("keydown", ned);
-  }, [id, neste, forrige, router]);
+  }, [id, neste, forrige, router, lenke]);
 
   if (!e) return <p>Fant ikke {id}.</p>;
   const st = tilstand(e, k);
+  const ikkeLaget =
+    e.media.length > 0 &&
+    !e.id.startsWith("dag/") &&
+    !e.media.some((m) =>
+      d.media.files?.some((f) => f.path === m && f.size !== null),
+    );
   return (
     <>
       <nav className="flex flex-wrap items-center gap-2">
-        <Link href={SIDE} className={knapp}>
+        <Link href={fane ? `${SIDE}?k=${fane}` : SIDE} className={knapp}>
           ‹ Køen
         </Link>
         {forrige && (
-          <Link href={href(forrige.id)} className={knapp}>
+          <Link href={lenke(forrige.id)} className={knapp}>
             Forrige (P)
           </Link>
         )}
         {neste && (
-          <Link href={href(neste.id)} className={`${knapp} border-(--gold)`}>
-            {nesteIKo ? "Neste i køen" : "Neste uvurdert"} (N)
+          <Link href={lenke(neste.id)} className={`${knapp} border-(--gold)`}>
+            {nesteNavn} (N)
           </Link>
         )}
         <UtvalgValg u={u} sett={settU} />
@@ -551,14 +724,17 @@ function Vurdering({
             </>
           )}
         </p>
-        {segStatus ? (
+        {ikkeLaget ? (
+          <IkkeLaget e={e} valgfri={st.celle === "valgfri"} server={d.server} />
+        ) : segStatus ? (
           <p className="text-(--gold)">Status: {segStatus.tekst}</p>
         ) : egenVurdering(e.id) ? (
           <Vurder id={e.id} />
         ) : (
           <DagManus n={e.dag ?? Number(e.id.slice(-2))} />
         )}
-        {(!segStatus || segStatus.slutt) &&
+        {!ikkeLaget &&
+          (!segStatus || segStatus.slutt) &&
           e.media.map((p) => <TaIBruk key={p} path={p} data={d.media} />)}
         <p className="text-base text-(--neon-green)/80">
           Tastatur: G godkjent · O OK · L lag på nytt (skriv notat, Enter
@@ -567,10 +743,40 @@ function Vurdering({
       </Kort>
       <SkjulVurder.Provider value>
         <SegmentStatus.Provider value={setSegStatus}>
-          <Innhold key={e.id} e={e} sesong={sesong} />
+          {!ikkeLaget && <Innhold key={e.id} e={e} sesong={sesong} />}
         </SegmentStatus.Provider>
       </SkjulVurder.Provider>
     </>
+  );
+}
+
+/** A media element whose file doesn't exist: no player, no verdict, just what it takes to make it. */
+function IkkeLaget({
+  e,
+  valgfri,
+  server,
+}: {
+  e: Element;
+  valgfri: boolean;
+  server: KoServer | null;
+}) {
+  const jobber = server?.jobber ?? {};
+  const jobb = jobber[versionKey(e.media[0])];
+  const { kommando, pris } = omtak(e.media[0], jobber, 0);
+  return (
+    <div
+      data-testid="ikke-laget"
+      className="border-2 border-(--gray) p-3 space-y-1"
+    >
+      <p className="text-xl text-(--gold)">
+        Ikke laget{valgfri ? " · valgfri" : ""}
+      </p>
+      <p className="text-base break-all">Jobb: {jobb ?? e.media[0]}</p>
+      <p className="text-base">Pris ca. {pris} kr</p>
+      <code className="block break-all text-(--cold-blue)">
+        {jobb ? `python3 assets/bin/generer.py kjør --bare ${jobb}` : kommando}
+      </code>
+    </div>
   );
 }
 

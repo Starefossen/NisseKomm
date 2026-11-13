@@ -231,7 +231,12 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
         {!!e.eldre?.length && (
           <BildeVersjoner filer={[...e.media, ...e.eldre]} />
         )}
-        <Rampestrek n={n!} d={dag.kveld} t={t} />
+        <Rampestrek
+          n={n!}
+          d={dag.kveld}
+          t={t}
+          gjennomgang={{ medVersjoner: !!e.eldre?.length }}
+        />
       </>
     );
   if (dag && e.gruppe === "gaate" && dag.kveld)

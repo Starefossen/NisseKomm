@@ -147,6 +147,7 @@ export function kveldDag(n: number) {
   const oppsett = felt("Oppsett");
   const utskrifterTekst = felt("Utskrifter");
   const s = strekTabell().get(n) ?? [];
+  const kort = tabellPerDag(del("historie", "8.1 Korte former")).get(n) ?? [];
   const sjekkliste = [
     ...(
       blokk.match(/^- \*\*Sjekkliste:\*\*\n((?:  - .+\n)+)/m)?.[1] ?? ""
@@ -190,6 +191,10 @@ export function kveldDag(n: number) {
       materialer: ren(s[4] ?? ""),
       minutter: Number(s[5] ?? 0),
       brikke: s[6] ?? "",
+      // historie §8.1: title on the sheet, the scene to draw, the checklist line.
+      tittel: ren(kort[1] ?? ""),
+      tegnbar: ren(kort[2] ?? ""),
+      sjekk: ren(kort[3] ?? ""),
     },
   };
 }
