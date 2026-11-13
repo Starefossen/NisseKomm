@@ -183,10 +183,7 @@
     "generator": "portrett",
     "ut": "spill/portrett-julius.png",
     "mal": "assets/prompts/portrett/julius.txt",
-    "refs": [
-      "public/spill/piksel/klokketarnet.png",
-      "characters/julius#portrett"
-    ],
+    "refs": ["public/spill/piksel/klokketarnet.png", "characters/julius#santa"],
     "notat": "pikselportrett (prompts/portrett/piksel-stil); portrett.sh lager 1024², piksel.sh skalerer til 96 px"
   },
   "portrett/floke": {
@@ -754,7 +751,7 @@
     "mal": "assets/prompts/spill/figur/julius.txt",
     "refs": [
       "public/spill/piksel/julius-kontor.png",
-      "characters/julius#portrett",
+      "characters/julius#santa",
       "public/spill/piksel/kafe.png"
     ]
   },
