@@ -1138,18 +1138,18 @@ export const KAPITTEL_1: Kapittel = {
         },
         {
           id: "klementinene",
-          navn: "Lekekassa",
+          navn: "Klementinkassa",
           prat:
-            "Du uler lavt mot trehestene. " +
+            "Du uler lavt mot klementinene. " +
             R +
-            "«Ikkje snakk te dem. Æ har snakka te en trehest. Han svare ikkje, men han ser ut som han vett nåkka.»",
+            "«Ikkje snakk te dem. Æ har snakka te en klementin. Ho svare ikkje, men ho ser ut som ho vett nåkka.»",
           rect: { x: 17, y: 83, w: 19, h: 17 },
           smart: "se",
           se:
-            "En trekasse med gamle leker: trehester og en kjelke, slitt blanke av mange hender. Det er en fordypning i kassa, akkurat stor nok til en nisse på tretti centimeter. " +
+            "En trekasse full av klementiner, med grønne blad på. Det er en fordypning midt i kassa, akkurat stor nok til en nisse på tretti centimeter. " +
             R +
-            "«Æ har aldri ligge i den kassa. Æ har ligge VED SIDA av den kassa. Det e en viktig forskjell for en som ser ut som et leketøy.»",
-          bruk: "Du dytter en trehest med nebbet. Den triller ut av kassa, over snøen og stopper mot boden til høyre. Bodnissen til høyre tar den opp, smiler og setter den på disken sin. Han selger ikke leker. Nå gjør han det.",
+            "«Æ har aldri ligge i den kassa. Æ har ligge VED SIDA av den kassa. Det e en viktig forskjell for en som lukte klementin.»",
+          bruk: "Du dytter en klementin med nebbet. Den triller ut av kassa, over snøen og stopper mot boden til høyre. Bodnissen til høyre tar den opp, smiler og legger den på disken sin. Han selger ikke klementiner. Nå gjør han det.",
         },
         {
           id: "vottene",

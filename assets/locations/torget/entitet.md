@@ -21,7 +21,7 @@
 
 ## Kanon (Hans, 13.11.2026)
 
-Hans' tekst kaller innsamlingsstedet «brevsamleren på torget». Ellers heter det postkassen (`assets/objects/postkasse`), også i Hans' kanon om brevfuglene samme dag. Hans avgjør om det er samme ting.
+Barnas ønsker samles inn i postkassen på torget (`assets/objects/postkasse`). «Brevsamleren» i Hans' tekst er postkassen, og navnet er «postkassen».
 
 ## Utseende
 

@@ -66,6 +66,8 @@ Ingen i Snøfall sender egne brevfugler. Winter og Julius tar imot dem.
 
 Den blå fuglen (dag 14–24) bryter regelen, og det er poenget: «én fugl ingen hadde sendt». Den kom fra grotten, ikke fra et barn.
 
+Nordlyset er brevfuglenes vei. Folk går gjennom Hullet i hekken (`assets/locations/portalen`), og sleden bruker portkorridoren.
+
 ## Slik vises det
 
 - BREVFUGLER-vinduet: barnas fugler flyr opp over Snøfall («N brev er på vei til Julius»).

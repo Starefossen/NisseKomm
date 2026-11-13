@@ -23,6 +23,10 @@
     {
       "fra_dag": 25,
       "tekst": "Frøya og Julius vet at den ikke må åpnes av uforsiktige hender: den skremmer barn, og kunnskapen kan vekke krefter som burde få hvile"
+    },
+    {
+      "fra_dag": 25,
+      "tekst": "sesong 1: Winter brukte kunnskap fra boka og slapp Mørket løs; Selma, Pil og Frida overvant det"
     }
   ],
   "ikke": ["Mørkeboken", "Mørkets bok"]
@@ -33,12 +37,11 @@
 
 De andre krønikene i Lærdommens hus handler om juleglede, lys, tradisjoner og landsbyens historie. Mørkeboka bærer kunnskapen om skyggesiden: Mørket. Det nærer seg på frykt, ensomhet, svik og maktbegjær. Boka er låst ned eller gjemt, og Frøya og Julius vokter den.
 
-## Uavklart mot 2026-historien
+## Winter og Mørkeboka (sesong 1)
 
-Hans' tekst sier to ting som ikke er skrevet inn som fakta, fordi de må veies mot Spøkelseskoden først:
+I Snøfall 1 brukte Winter forbudt kunnskap fra Mørkeboka for å bli neste julenisse, og slapp Mørket løs. Selma, Pil og Frida overvant det. Winter fikk en lærepenge. Det er historie og er løst: i 2026 er han lojal.
 
-- «Winter og fristelsen: hemmelighetene rundt Mørket blir farlige når Winter lar seg drive av sjalusi og et desperat ønske om å bli den nye julenissen; kunnskapen utnytter svakhetene hans.» Winter i 2026 er lojal og pedantisk, «aldri kald eller uvennlig».
-- Mørket kalles «den farlige, kalde kraften». I 2026 er kulden Vintervokteren, og dag 7 lærer barna at kulde ikke er ondskap.
+Mørket er mørke, ikke kulde. Hans' tekst om boka kaller det «den farlige, kalde kraften»; skriv det som mørke, så det ikke blandes med Kulde i 2026, som ikke er ond. Hele seriebakgrunnen står i `assets/locations/snofall-landsby/entitet.md`.
 
 ## Mulig hotspot (ikke i år)
 

@@ -25,6 +25,10 @@
     {
       "fra_dag": 25,
       "tekst": "forsyner Snøfall med magisk-mekaniske løsninger"
+    },
+    {
+      "fra_dag": 25,
+      "tekst": "lager innretninger, ikke gaver"
     }
   ]
 }
@@ -32,7 +36,7 @@
 
 ## Kanon (Hans, 13.11.2026)
 
-Faktaene med `fra_dag` 25 er kanon fra Hans. Hans' tekst sier også at Julius fordeler oppgaver til verkstedet, «gaver og magiske innretninger». Det er ikke skrevet som fakta, fordi Hans samme kveld sa at ingen lager leker i Snøfall (`assets/locations/snofall-landsby/entitet.md`). Hans avgjør hva «gaver» betyr her.
+Verkstedet lager innretninger, ikke gaver. Faktaene med `fra_dag` 25 er kanon fra Hans og ikke med i årets historie.
 
 ## Utseende
 

@@ -40,4 +40,4 @@ Ikke beskrevet av Hans ennå.
 
 ## Navnet
 
-Hans' tekst kaller ham Håkon. Navnet står ikke i `navn`, for det er også navnet til sønnen i familien (9 år), som nevnes i tekst barna ser hver dag, og `docs/beslutninger.md` sier «Serie-Håkon brukes ikke, fordi han har samme navn som sønnen». Hans avgjør om han skal hete Håkon i tekst barna ser.
+I serien heter han Håkon. Hos oss heter han «Selmas far» eller «Julius' sønn» i all tekst, fordi Håkon er navnet til sønnen i familien (Hans 13.11.2026; `docs/beslutninger.md`: «Serie-Håkon brukes ikke»).

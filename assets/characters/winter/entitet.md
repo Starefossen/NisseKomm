@@ -39,6 +39,10 @@
     {
       "fra_dag": 22,
       "tekst": "skriver tall for bokstaver; A er alltid først"
+    },
+    {
+      "fra_dag": 25,
+      "tekst": "bakgrunn fra Snøfall 1: regnet med å bli neste julenisse, brukte Mørkeboka og slapp Mørket løs; fikk en lærepenge og er lojal siden. Nevnes ikke i 2026"
     }
   ],
   "ikke": ["Ole Vinter", "fru Winter", "frøken Winter"]
@@ -52,6 +56,10 @@ Står i `beskrivelse.txt` ved siden av denne filen og brukes ordrett i bildeprom
 ## Personlighet
 
 Pedantisk og formell. Arkivet over barnas juleønsker er hovedjobben hans, og det viktigste han vet om. Aldri kald eller uvennlig: han brenner for at alt skal bli riktig, og blir synlig lettet, nesten mild, når alt er godkjent.
+
+## Bakgrunn (serien)
+
+I Snøfall 1 lot han seg friste av Mørkeboka. Han ble ydmyket og er siden lojal, om enn stiv og nervøs for nye feil. Vår Winter i 2026 er den lojale. Se `assets/locations/snofall-landsby/entitet.md`.
 
 ## Stemme
 

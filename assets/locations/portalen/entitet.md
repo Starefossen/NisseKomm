@@ -13,11 +13,11 @@
     },
     {
       "fra_dag": 25,
-      "tekst": "brevene som legges i brevsamleren på torget, og julemagien, passerer her"
+      "tekst": "Selma tar steget inn i Snøfall her"
     },
     {
       "fra_dag": 25,
-      "tekst": "Selma tar steget inn i Snøfall her"
+      "tekst": "veien for folk mellom Snøfall og VU; brevfuglene flyr gjennom nordlyset, og sleden bruker portkorridoren"
     }
   ]
 }
@@ -25,7 +25,7 @@
 
 ## Kanon (Hans, 13.11.2026)
 
-En skjult, snødekt passasje i skogkanten mellom Snøfall og Verden Utenfor. Brevene og julemagien passerer her, og det var her Selma kom inn. Portvokterne vokter den.
+En skjult, snødekt passasje i skogkanten mellom Snøfall og Verden Utenfor. Dette er veien for folk, og det var her Selma kom inn. Brevfuglene flyr gjennom nordlyset, og sleden bruker portkorridoren. Portvokterne vokter den.
 
 ## Rolle i spillet
 
