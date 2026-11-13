@@ -328,7 +328,7 @@ const statusAvCelle = (c: ReturnType<typeof tilstand>["celle"]): Fremdrift =>
 interface CelleData {
   e: Element;
   status: Fremdrift;
-  /** «✂ kuttes» or a Julius progress line, replacing the status word. */
+  /** «✗ kuttes» or a Julius progress line, replacing the status word. */
   ord?: string;
   /** «+v4 ✓»: a newer candidate under the main status. */
   kandidat?: string;
@@ -397,7 +397,7 @@ function Matrise({
         (n) => vurd[sid(n)],
       );
       const ok = segs.filter((n) => brukbar(celleAv(vurd[sid(n)]))).length;
-      if (vs.steg === "kutt") ((st = "agent"), (ord = "✂ kuttes"));
+      if (vs.steg === "kutt") ((st = "agent"), (ord = "✗ kuttes"));
       else if (vs.steg === "nytt") st = "agent";
       else if (vs.steg === "vurder")
         ((st = "venter"), (ord = `● ${ok}/${segs.length} ✓`));
