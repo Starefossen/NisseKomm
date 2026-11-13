@@ -6,10 +6,10 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 
 | Type | ✓ | ⚠ | ? | ✗ | ○ | ◇ | - |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| julius | 4 | 8 | 0 | 12 | 0 | 22 | 6 |
-| rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 11 |
+| julius | 4 | 8 | 0 | 12 | 0 | 23 | 6 |
+| rampenissen | 24 | 0 | 0 | 0 | 0 | 0 | 12 |
 | music | 13 | 0 | 0 | 1 | 0 | 0 | 0 |
-| tv | 20 | 4 | 0 | 0 | 15 | 0 | 17 |
+| tv | 20 | 4 | 0 | 0 | 15 | 0 | 18 |
 | port | 3 | 0 | 0 | 1 | 0 | 0 | 9 |
 | feed | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
 | spill | 56 | 3 | 0 | 4 | 0 | 0 | 25 |
@@ -24,7 +24,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-03.mp4 | 4.4 MB | 2026-11-11 | ✓ |
 | video/julius/dag-04.mp4 | 4.4 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 4; promptversjonen er endret |
 | video/julius/dag-05.mp4 | 4.3 MB | 2026-11-11 | ⚠ kildeteksten er endret: docs/manus/julius-2026.md Dag 5; promptversjonen er endret |
-| video/julius/dag-06.mp4 | 10.3 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (49 % ordlikhet) |
+| video/julius/dag-06.mp4 | 10.3 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (47 % ordlikhet) |
 | video/julius/dag-07.mp4 | 10.5 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (50 % ordlikhet) |
 | video/julius/dag-08.mp4 | 10.6 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (43 % ordlikhet) |
 | video/julius/dag-09.mp4 | 10.4 MB | 2026-11-10 | ⚠ laget før manusrevisjonen (46 % ordlikhet) |
@@ -61,7 +61,8 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/julius/dag-06-v4.mp4 | 8.7 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
 | video/julius/dag-06-v5.mp4 | 8.7 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
 | video/julius/dag-06-v6.mp4 | 8.7 MB | 2026-11-13 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
-| video/julius/dag-06-v7.mp4 | 8.7 MB | 2026-11-13 | ◇ ikke i manifestet |
+| video/julius/dag-06-v7.mp4 | 8.7 MB | 2026-11-13 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 6; ikke i manifestet |
+| video/julius/dag-06-v8.mp4 | 8.6 MB | 2026-11-13 | ◇ ikke i manifestet |
 | video/julius/dag-07-v2.mp4 | 8.6 MB | 2026-11-12 | ◇ kildeteksten er endret: docs/manus/julius-2026.md Dag 7; ikke i manifestet |
 | video/julius/dag-07-v3.mp4 | 8.9 MB | 2026-11-12 | ◇ ikke i manifestet |
 | video/julius/dag-08-v2.mp4 | 9.7 MB | 2026-11-12 | ◇ ikke i manifestet |
@@ -89,7 +90,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | audio/rampenissen/dag-11.mp3 | 0.6 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-12.mp3 | 0.8 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-13.mp3 | 0.9 MB | 2026-11-11 | ✓ |
-| audio/rampenissen/dag-14.mp3 | 0.8 MB | 2026-11-13 | ✓ |
+| audio/rampenissen/dag-14.mp3 | 0.9 MB | 2026-11-13 | ✓ |
 | audio/rampenissen/dag-15.mp3 | 0.6 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-16.mp3 | 0.7 MB | 2026-11-11 | ✓ |
 | audio/rampenissen/dag-17.mp3 | 0.7 MB | 2026-11-13 | ✓ |
@@ -106,6 +107,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | audio/rampenissen/dag-09.old-1.mp3 | 1.0 MB | 2026-11-11 | - ikke i manifestet |
 | audio/rampenissen/dag-10.old-1.mp3 | 0.8 MB | 2026-11-11 | - ikke i manifestet |
 | audio/rampenissen/dag-14.old-1.mp3 | 0.9 MB | 2026-11-13 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 14; ikke i manifestet |
+| audio/rampenissen/dag-14.old-2.mp3 | 0.8 MB | 2026-11-13 | - ikke i manifestet |
 | audio/rampenissen/dag-17.old-1.mp3 | 0.8 MB | 2026-11-11 | - kildeteksten er endret: docs/manus/rampenissen-radio-2026.md Dag 17; ikke i manifestet |
 | audio/rampenissen/dag-17.old-2.mp3 | 1.0 MB | 2026-11-12 | - ikke i manifestet |
 | audio/rampenissen/dag-21.old-1.mp3 | 0.9 MB | 2026-11-11 | - ikke i manifestet |
@@ -148,7 +150,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/tv/verksted-tom.mp4 | 0.4 MB | 2026-11-10 | ✓ |
 | video/tv/kontor-julius.mp4 | 2.8 MB | 2026-11-12 | ✓ |
 | video/tv/kontor-tom.mp4 | 3.4 MB | 2026-11-12 | ✓ |
-| video/tv/kontor-dag14.mp4 | 2.5 MB | 2026-11-13 | ✓ |
+| video/tv/kontor-dag14.mp4 | 3.1 MB | 2026-11-13 | ✓ |
 | video/tv/antenne-rolig.mp4 | 0.3 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/antenne-dag11.mp4 | 0.3 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
 | video/tv/grotte-rolig.mp4 | 0.4 MB | 2026-11-10 | ✓ beholdt (laget før sidefiler) |
@@ -176,6 +178,7 @@ Generert av `mise run inventar` (assets/bin/inventar.py). Ikke rediger for hånd
 | video/tv/landsby-natt-reinsdyr.mp4 |  |  | ○ |
 | video/tv/kontor-dag14.old-1.mp4 | 0.3 MB | 2026-11-10 | - ikke i manifestet |
 | video/tv/kontor-dag14.old-2.mp4 | 3.0 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/julius-kontor/dag14.txt; referansebildet er endret: assets/out/stills/julius-kontor/still-dag14.jpg; ikke i manifestet |
+| video/tv/kontor-dag14.old-3.mp4 | 2.5 MB | 2026-11-13 | - kildeteksten er endret: assets/prompts/tv/julius-kontor/dag14.txt; ikke i manifestet |
 | video/tv/kontor-julius.old-1.mp4 | 0.4 MB | 2026-11-10 | - ikke i manifestet |
 | video/tv/kontor-julius.old-2.mp4 | 2.6 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/julius-kontor/vidvinkel-ref.txt; referansebildet er endret: assets/out/stills/julius-kontor/still-julius.jpg; ikke i manifestet |
 | video/tv/kontor-julius.old-3.mp4 | 2.9 MB | 2026-11-12 | - kildeteksten er endret: assets/prompts/tv/julius-kontor/vidvinkel-ref.txt; referansebildet er endret: assets/out/stills/julius-kontor/still-julius.jpg; ikke i manifestet |
