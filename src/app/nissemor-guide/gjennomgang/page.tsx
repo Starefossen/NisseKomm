@@ -30,6 +30,7 @@ import {
   egenVurdering,
   ekstraRader,
   nesteUvurdert,
+  naboI,
   tilstand,
   type Element,
   type Tilstand,
@@ -397,10 +398,12 @@ function Matrise({
         (n) => vurd[sid(n)],
       );
       const ok = segs.filter((n) => brukbar(celleAv(vurd[sid(n)]))).length;
-      if (vs.steg === "kutt") ((st = "agent"), (ord = "✗ kuttes"));
-      else if (vs.steg === "nytt") st = "agent";
-      else if (vs.steg === "vurder")
-        ((st = "venter"), (ord = `● ${ok}/${segs.length} ✓`));
+      if (vs.steg === "kutt" || vs.steg === "nytt") st = "agent";
+      if (vs.steg === "kutt") ord = "✗ kuttes";
+      if (vs.steg === "vurder") {
+        st = "venter";
+        ord = `● ${ok}/${segs.length} ✓`;
+      }
     }
     const kand = e.media.length
       ? celleFor(e.media, k).familie?.kandidat
@@ -611,7 +614,9 @@ function Vurdering({
   );
   const fi = filtrert.indexOf(e);
   const si = synlige.indexOf(e);
-  const forrige = typeFilter ? filtrert.at(fi - 1) : synlige[si - 1];
+  const forrige = typeFilter
+    ? naboI(filtrert, e?.id ?? "", -1).e
+    : synlige[si - 1];
   const { ko } = useKo(d, sesong);
   const koIder = (ko?.venter ?? [])
     .map((l) => l.id)
@@ -625,11 +630,9 @@ function Vurdering({
       : koIder.find((x) => x !== e?.id);
   // «Neste uvurdert» stays inside the chosen quick choice; the current item always counts.
   const nesteUv = nesteUvurdert(filtrert, e?.id ?? id, vurd);
-  // A type filter: next unreviewed in it, else simply the next in it.
-  const neste = nesteIKo
-    ? liste.find((x) => x.id === nesteIKo)
-    : (nesteUv ??
-      (typeFilter ? filtrert[(fi + 1) % filtrert.length] : undefined));
+  // N goes from where you stand in the filtered, sorted list; Shift+N jumps to the next unreviewed.
+  const nabo = naboI(filtrert, e?.id ?? "", 1);
+  const neste = nesteIKo ? liste.find((x) => x.id === nesteIKo) : nabo.e;
   const nesteNavn = nesteIKo
     ? "Neste i køen"
     : typeFilter && u !== "alle"
@@ -661,12 +664,14 @@ function Vurdering({
         (taggTast(ev, id) || (!ev.shiftKey && vurderTast(tast, id)))
       )
         ev.preventDefault();
+      else if (tast === "n" && ev.shiftKey && nesteUv)
+        router.push(lenke(nesteUv.id));
       else if (tast === "n" && neste) router.push(lenke(neste.id));
       else if (tast === "p" && forrige) router.push(lenke(forrige.id));
     };
     window.addEventListener("keydown", ned);
     return () => window.removeEventListener("keydown", ned);
-  }, [id, neste, forrige, router, lenke]);
+  }, [id, neste, nesteUv, forrige, router, lenke]);
 
   if (!e) return <p>Fant ikke {id}.</p>;
   const st = tilstand(e, k);
@@ -690,6 +695,8 @@ function Vurdering({
         {neste && (
           <Link href={lenke(neste.id)} className={`${knapp} border-(--gold)`}>
             {nesteNavn} (N)
+            {!nesteIKo && ` · ${fi + 1} av ${filtrert.length}`}
+            {nabo.rundt && !nesteIKo && " · tilbake til start"}
           </Link>
         )}
         <UtvalgValg u={u} sett={settU} />
@@ -738,7 +745,8 @@ function Vurdering({
           e.media.map((p) => <TaIBruk key={p} path={p} data={d.media} />)}
         <p className="text-base text-(--neon-green)/80">
           Tastatur: G godkjent · O OK · L lag på nytt (skriv notat, Enter
-          lagrer) · ⇧1–9 merke · T tidskode · N neste · P forrige
+          lagrer) · ⇧1–9 merke · T tidskode · N neste · ⇧N neste uvurdert · P
+          forrige
         </p>
       </Kort>
       <SkjulVurder.Provider value>

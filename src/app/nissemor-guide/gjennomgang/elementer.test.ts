@@ -3,6 +3,7 @@ import {
   alleElementer,
   egenVurdering,
   nesteUvurdert,
+  naboI,
   nyesteVersjon,
 } from "./elementer";
 import type { Sesong } from "../_kveld/felles";
@@ -50,5 +51,22 @@ describe("gjennomgang", () => {
         { path: "promo/julius-promo-A-v2.mp4" },
       ]),
     ).toBe("promo/julius-promo-A-v2.mp4");
+  });
+});
+
+describe("naboI", () => {
+  const strek = Array.from({ length: 24 }, (_, i) => ({
+    id: `dag/${String(i + 1).padStart(2, "0")}/rampestrek`,
+    gruppe: "rampestrek",
+    tittel: `Dag ${i + 1}`,
+    dag: i + 1,
+    media: [],
+  }));
+  it("N from day 7 gives day 8, not day 1; wraps at the end", () => {
+    expect(naboI(strek, "dag/07/rampestrek", 1).e?.dag).toBe(8);
+    expect(naboI(strek, "dag/07/rampestrek", -1).e?.dag).toBe(6);
+    const slutt = naboI(strek, "dag/24/rampestrek", 1);
+    expect(slutt.e?.dag).toBe(1);
+    expect(slutt.rundt).toBe(true);
   });
 });

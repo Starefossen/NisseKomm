@@ -224,3 +224,15 @@ export function nesteUvurdert(
   const rundt = [...liste.slice(i + 1), ...liste.slice(0, i + 1)];
   return rundt.find((e) => e.id !== id && !vurd[e.id]?.vurdering);
 }
+
+/** The item `steg` places from `id` in `liste` (+1 next, -1 previous), wrapping at the ends. */
+export function naboI(
+  liste: Element[],
+  id: string,
+  steg: 1 | -1,
+): { e?: Element; rundt: boolean } {
+  const i = liste.findIndex((e) => e.id === id);
+  if (i < 0 || liste.length < 2) return { rundt: false };
+  const j = (i + steg + liste.length) % liste.length;
+  return { e: liste[j], rundt: steg === 1 ? j < i : j > i };
+}
