@@ -96,4 +96,37 @@ describe("byggKo", () => {
       pris: 34,
     });
   });
+
+  it("radio: only a clip to make or remake waits on its script", () => {
+    const r = (d: string): Element => ({
+      id: `audio/rampenissen/dag-${d}.mp3`,
+      gruppe: "radio",
+      tittel: `Dag ${Number(d)}: Radio`,
+      dag: Number(d),
+      media: [`audio/rampenissen/dag-${d}.mp3`],
+    });
+    const ko = byggKo(
+      [r("05"), r("06"), r("07"), r("08")],
+      {
+        filer: [
+          f("audio/rampenissen/dag-05.mp3"),
+          f("audio/rampenissen/dag-06.mp3"),
+          f("audio/rampenissen/dag-07.mp3"),
+        ],
+        vurderinger: {
+          "audio/rampenissen/dag-05.mp3": { vurdering: "godkjent" },
+          "audio/rampenissen/dag-06.mp3": { vurdering: "lag_paa_nytt" },
+          "audio/rampenissen/dag-07.mp3": { vurdering: "lag_paa_nytt" },
+          "manus/radio/dag-07": { vurdering: "godkjent" },
+        },
+      },
+      server({ manus: {} }),
+    );
+    // 05 approved clip: no script line; 06 remake waits on the script; 08 missing too; 07 goes to the agent.
+    expect(ko.venter.map((l) => l.id)).toEqual([
+      "manus/radio/dag-06",
+      "manus/radio/dag-08",
+    ]);
+    expect(ko.agent.map((l) => l.id)).toEqual(["audio/rampenissen/dag-07.mp3"]);
+  });
 });

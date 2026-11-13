@@ -8,6 +8,7 @@ import { KAPITLER } from "@/components/windows/nissespill/kapitler";
 import { ETAPPER } from "@/components/windows/snofall-tv/slede";
 import { GrandFinaleModal } from "@/components/ui/GrandFinaleModal";
 import videoer from "@/data/julius_videoer.json";
+import radioManus from "@/data/radio-manus.json";
 import type { dagInnhold } from "@/lib/guide-innhold";
 import type { Sesong } from "../_kveld/felles";
 import { Foreldredel, Rampestrek } from "../dag/[n]/foreldre";
@@ -136,7 +137,9 @@ function Spiller({ path }: { path: string }) {
 /** Only what it takes to judge one element. */
 export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
   const manusDag = e.id.match(/^manus\/julius\/dag-(\d+)/)?.[1];
-  const n = e.dag ?? (manusDag ? Number(manusDag) : undefined);
+  const radioDag = e.id.match(/^manus\/radio\/dag-(\d+)$/)?.[1];
+  const n =
+    e.dag ?? (manusDag || radioDag ? Number(manusDag ?? radioDag) : undefined);
   const dag = useDag(n);
   const [finale, setFinale] = useState(false);
   const t = (s: string) => ren(s);
@@ -185,6 +188,24 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
       </>
     );
   if (dag && manusDag) return <Manus d={dag} port />;
+  if (dag && radioDag) {
+    const m = (
+      radioManus as Record<string, { tekst: string; ord: number; sek: number }>
+    )[String(n)];
+    return (
+      <>
+        <p className="text-sm">
+          {m?.ord ?? 0} ord · ca. {m?.sek ?? 0} s
+        </p>
+        <Felt k="Klipp (det TTS leser)">{m?.tekst}</Felt>
+        <Felt k="Strek">
+          <span className="text-(--gold)">{ren(dag.radio?.strek)}</span>
+        </Felt>
+        <Felt k="Rampestrek (Varden)">{ren(dag.radio?.rampestrek_hint)}</Felt>
+        <Felt k="Lydregi">{ren(dag.radio?.lydregi)}</Felt>
+      </>
+    );
+  }
   if (dag && e.gruppe === "radio")
     return (
       <>

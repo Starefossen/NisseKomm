@@ -26,3 +26,4 @@ assets/INVENTAR.md
 # baked by scripts/oppdrag-klient.mjs
 src/data/oppdrag-klient.json
 src/data/julius-manus.json
+src/data/radio-manus.json

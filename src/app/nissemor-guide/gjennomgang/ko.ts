@@ -130,6 +130,41 @@ export function byggKo(
       dag,
       notat: notatAv(v),
     };
+    // Radio gate: a clip to make or remake waits on its script first (rampenissen-tts.sh refuses without it).
+    const radio = key.match(/^audio\/rampenissen\/dag-(\d+)\.mp3$/)?.[1];
+    const lagRadio =
+      ny.celle === "mangler" || (!!v?.vurdering && !brukbar(celleAv(v)));
+    if (radio && lagRadio) {
+      const mid = `manus/radio/dag-${radio}`;
+      const mv = vurd[mid];
+      if (mv?.vurdering && !brukbar(celleAv(mv))) {
+        agent.push({
+          id: mid,
+          tittel: `Radiomanus dag ${Number(radio)}`,
+          type: "manus",
+          dag,
+          hva: "lag på nytt",
+          notat: notatAv(mv),
+          pris: 0,
+          kommando:
+            "endre klippet i docs/manus/rampenissen-radio-2026.md, så python3 assets/bin/medie.py radio-manus",
+        });
+        continue;
+      }
+      if (!brukbar(celleAv(mv))) {
+        venter.push({
+          id: mid,
+          tittel: `Radiomanus dag ${Number(radio)}`,
+          type: "manus",
+          dag,
+          notat: notatAv(mv),
+          hva: mv?.forrige
+            ? "manus endret, radio må lages på nytt"
+            : "manus før radio",
+        });
+        continue;
+      }
+    }
     if (ny.celle === "mangler") {
       if (k.inventar?.get(ny.path)?.status === "valgfri") continue;
       agent.push({

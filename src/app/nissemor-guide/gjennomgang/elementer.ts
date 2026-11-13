@@ -111,6 +111,13 @@ export function ekstraRader(
     ...Array.from({ length: 21 }, (_, i) =>
       r("Julius-manus", `manus/julius/dag-${pad(i + 4)}`, `Manus dag ${i + 4}`),
     ),
+    ...Array.from({ length: 24 }, (_, i) =>
+      r(
+        "Radio-manus",
+        `manus/radio/dag-${pad(i + 1)}`,
+        `Radiomanus dag ${i + 1}`,
+      ),
+    ),
     ...KAPITLER.map((k) =>
       r("Ugleposten", `ugleposten/k${k.n}`, `Kapittel ${k.n}: ${k.tittel}`),
     ),

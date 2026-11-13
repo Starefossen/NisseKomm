@@ -42,6 +42,15 @@ async function seksjonsInnhold(id: string): Promise<unknown> {
       ]?.find((x) => x.s === Number(seg[2]))?.key ?? null
     );
   }
+  // `manus/radio/dag-05`: the text rampenissen-tts.sh speaks (python3 assets/bin/medie.py radio-manus).
+  const radio = id.match(/^manus\/radio\/dag-(\d+)$/);
+  if (radio) {
+    const { default: r } = await import("@/data/radio-manus.json");
+    return (
+      (r as Record<string, { tekst: string }>)[String(Number(radio[1]))]
+        ?.tekst ?? null
+    );
+  }
   if (side === "dag") {
     if (b === "gaatekart") return gaatekart(Number(a));
     // ponytail: kveld, utskrifter and rampestrek share one day block; split it if one flags the others too often.

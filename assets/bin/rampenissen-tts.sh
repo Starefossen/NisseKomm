@@ -2,13 +2,15 @@
 # rampenissen-tts.sh <dag> [stemme] [--force]: Rampenissen's radio clip from the locked script, via Gemini TTS.
 # Writes public/audio/rampenissen/dag-NN.mp3. Default voice: Fenrir, nordnorsk delivery, +4 semitones, -16 LUFS
 # (Hans chose it 10 Nov). The clips are written in nordlandsk (Bodø/Salten) since 10 Nov; see «Skrivemåte» in the script.
+# Script gate: refuses TTS unless manus/radio/dag-NN is approved in the guide on today's text (medie.py radio-port).
+# --uten-manusgodkjenning skips it: use it ONLY when Hans has said yes explicitly.
 # Skips a day whose clip is current (medie.py) unless --force; writes dag-NN.mp3.meta.json.
 set -euo pipefail
 source "$(dirname "$0")/_key.sh"
-FORCE=
+FORCE=; UTEN=
 ARGS=()
 for a in "$@"; do
-  [ "$a" = --force ] && FORCE=1 || ARGS+=("$a")
+  case $a in --force) FORCE=1 ;; --uten-manusgodkjenning) UTEN=1 ;; *) ARGS+=("$a") ;; esac
 done
 [ ${#ARGS[@]} -gt 0 ] && set -- "${ARGS[@]}" || set --
 D=$1; V=${2:-Fenrir}; O="$ROOT/public/audio/rampenissen"; T="$ROOT/assets/out/rampenissen"; mkdir -p "$O" "$T"
@@ -22,6 +24,7 @@ fi
 [ -z "$FORCE" ] && $M status "$F" >/dev/null && { echo "$F er oppdatert; --force for å lage den på nytt"; exit 0; }
 if [ "$D" = synger ]; then text=$(cat "$SRC"); else text=$($M tekst rampenissen "$D"); fi
 [ -n "$text" ] || { echo "Fant ikke klipp for dag $D"; exit 1; }
+[ "$D" = synger ] || [ -n "$UTEN" ] || $M radio-port "$D"
 bruk tts gemini-3.8-flash-tts "$F"
 # The style as plain prose before the text was sometimes read aloud (days 5, 9, 10, 17, 21). systemInstruction is refused
 # by the TTS model (400), so use the director's-notes/transcript layout Google documents: only TRANSCRIPT is spoken.

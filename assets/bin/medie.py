@@ -19,6 +19,9 @@ CLI (for the shell generators):
   medie.py inndata                        every job's template, image, refs exist; exit 1 if one is missing
   medie.py entiteter [--sjekk]            src/data/entiteter.json + CONTENT_GUIDE block from characters/*/entitet.md
   medie.py rydd-kandidater [mediemappe]  once: archive -vK older than a promoted file (media-promoteringer.log)
+  medie.py radio-manus [--sjekk]          bake src/data/radio-manus.json (script gate hash per day)
+  medie.py radio-port <dag>               exit 1 unless manus/radio/dag-NN is approved on today's text
+  medie.py radio-avled [mediemappe]       once: approve the script of each approved, current radio clip
   medie.py --selvtest
 """
 import hashlib
@@ -178,6 +181,48 @@ def rampenissen_text(day: int, root: Path = ROOT) -> str:
         if on and line.startswith("**Klipp:** «"):
             out.append(re.sub(r"»$", "", line[len("**Klipp:** «"):]))
     return "\n".join(out)
+
+
+RADIO_MANUS = "src/data/radio-manus.json"
+ORD_PER_SEK = 2.4  # scripts/manus-check.py's radio estimate
+
+
+def radio_id(day: int) -> str:
+    return f"manus/radio/dag-{day:02d}"
+
+
+def radio_manus(root: Path = ROOT) -> dict:
+    """{dag: {hash, tekst, ord, sek}}: the text rampenissen-tts.sh speaks; its innholds_hash is the review version."""
+    out = {}
+    for d in range(1, 25):
+        t = rampenissen_text(d, root)
+        if t:
+            n = len(t.split())
+            out[str(d)] = {"hash": innholds_hash(t), "tekst": t, "ord": n, "sek": round(n / ORD_PER_SEK)}
+    return out
+
+
+def radio_avled(media: Path, root: Path = ROOT) -> list:
+    """Days whose clip is approved on the file there now and made from today's text: their script counts approved."""
+    f = vurdering_fil(media)
+    data = les_lager(f)
+    if data.get("format") != 2:
+        raise SystemExit("media-vurdering.json er ikke format 2: åpne guiden én gang først")
+    vurd, el, nye = flat(data), data["elementer"], []
+    for d, m in radio_manus(root).items():
+        fil, id = f"audio/rampenissen/dag-{int(d):02d}.mp3", radio_id(int(d))
+        lyd = next((v for e in el.values() for v in e["vurderinger"] if v["fil"] == fil), None)
+        p = media / fil
+        if (id in vurd or not lyd or lyd.get("vurdering") not in ("godkjent", "ok") or not p.exists()
+                or lyd["hash"] != sha(p.read_bytes())[:12] or status(p, fil, root)[0] != CURRENT):
+            continue
+        el[id] = {"vurderinger": [{"vurdering": "godkjent", "oppdatert": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                                   "versjon": m["hash"], "hash": m["hash"], "fil": id,
+                                   "kilde": "avledet fra godkjent lydklipp"}], "historikk": []}
+        nye.append(id)
+    if nye:
+        skriv_lager(f, data)
+    return nye
 
 
 def strek_text(day: int, root: Path = ROOT) -> str:
@@ -639,7 +684,26 @@ def write_entiteter(root: Path = ROOT, check=False) -> bool:
     return ok
 
 
+def test_radio_avled():
+    """An approved, current clip approves its script once; a rejected or stale one does not."""
+    with __import__("tempfile").TemporaryDirectory() as t:
+        d = Path(t)
+        (d / "audio/rampenissen").mkdir(parents=True)
+        el = {}
+        for day, v in ((5, "godkjent"), (6, "lag_paa_nytt"), (7, "ok")):
+            fil = f"audio/rampenissen/dag-{day:02d}.mp3"
+            (d / fil).write_bytes(b"lyd%d" % day)
+            write("rampenissen-tts.sh", d / fil, RAMPE_MS, f"Dag {day}", "m")
+            el[fil] = {"vurderinger": [{"vurdering": v, "hash": sha(b"lyd%d" % day)[:12], "fil": fil}], "historikk": []}
+        (d / "audio/rampenissen/dag-07.mp3").write_bytes(b"annen")  # the approved take was replaced
+        skriv_lager(vurdering_fil(d), {"format": 2, "sesong": 2026, "elementer": el})
+        assert radio_avled(d) == [radio_id(5)] and radio_avled(d) == []
+        v = vurderinger(vurdering_fil(d))[radio_id(5)]
+        assert v["kilde"] == "avledet fra godkjent lydklipp" and godkjent(vurderinger(vurdering_fil(d)), radio_id(5), radio_manus()["5"]["hash"])
+
+
 def selftest():
+    test_radio_avled()
     with __import__("tempfile").TemporaryDirectory() as t:
         d = Path(t)
         for n in ("a.mp4", "a.mp4.meta.json", "a.jpg", "a.old-1.mp4"):
@@ -926,6 +990,23 @@ def main(argv):
             print(f"{a} -> {b}")
     elif cmd == "--selvtest":
         selftest()
+    elif cmd == "radio-manus":
+        tekst = json.dumps(radio_manus(), ensure_ascii=False, indent=1) + "\n"
+        if "--sjekk" in args:
+            sys.exit(0 if (ROOT / RADIO_MANUS).exists() and (ROOT / RADIO_MANUS).read_text() == tekst
+                     else f"{RADIO_MANUS} er utdatert: python3 assets/bin/medie.py radio-manus")
+        (ROOT / RADIO_MANUS).write_text(tekst)
+    elif cmd == "radio-port":
+        d = int(args[0])
+        m = radio_manus().get(str(d))
+        if not m:
+            sys.exit(f"Fant ikke klipp for dag {d}")
+        if not godkjent(vurderinger(), radio_id(d), m["hash"]):
+            sys.exit(f"Stoppet: radiomanus ikke godkjent for dag {d} ({radio_id(d)}, hash {m['hash']}).\n"
+                     f"Godkjenn i guiden: /nissemor-guide/gjennomgang?id={radio_id(d)}")
+    elif cmd == "radio-avled":
+        media = Path(args[0] if args else os.environ.get("MEDIA_DIR", ROOT / "public"))
+        print(*radio_avled(media) or ["ingen nye"], sep="\n")
     elif cmd == "statusjson":  # <mediemappe> <nøkkel>: one inventory row's status, for ta-i-bruk
         try:
             st, why = status(Path(args[0]) / args[1], args[1])

@@ -105,6 +105,10 @@ run = "python3 assets/bin/inventar.py --selvtest && python3 assets/bin/inventar.
 description = "Forbruk: betalte Gemini-anrop i dag, denne uka og siden 13.11 mot budsjettet (2000 NOK)"
 run = "python3 assets/bin/forbruk.py --selvtest >/dev/null && python3 assets/bin/forbruk.py rapport"
 
+[tasks.tall]
+description = "Tall til oppsummeringen: forsøk per godkjent, NOK per godkjent videominutt, vurderingsrunder, før/etter manusporten; skriver assets/out/tall-<uke>.json"
+run = "python3 assets/bin/tall.py --selvtest >/dev/null && python3 assets/bin/tall.py"
+
 [tasks."media:plan"]
 description = "Mediekø: vis hva som lages, i rekkefølge, med anslag for videoforespørsler"
 run = "python3 assets/bin/generer.py --selvtest >/dev/null && python3 assets/bin/generer.py plan"
