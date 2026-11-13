@@ -27,18 +27,7 @@ import { STEDER } from "@/components/windows/snofall-tv/vidda";
 import { UTSKRIFTER } from "@/app/nissemor-guide/printout/filer";
 import { KAPITLER } from "@/components/windows/nissespill/kapitler";
 
-let filer: Record<string, string> = bakt;
-
-/** Run `f` against another bake (an old guide-innhold.json from git): the verdict migration. */
-export function medBake<T>(b: Record<string, string>, f: () => T): T {
-  const før = filer;
-  filer = b;
-  try {
-    return f();
-  } finally {
-    filer = før;
-  }
-}
+const filer: Record<string, string> = bakt;
 
 export const DOK = {
   historie: "docs/historie-2026.md",

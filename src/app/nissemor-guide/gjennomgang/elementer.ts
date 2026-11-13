@@ -258,7 +258,7 @@ export function tilstand(
   e: Element,
   k: StatusKilde,
 ): { celle: Celle; tekst: string; notat?: string } {
-  const egen = k.vurderinger[e.id];
+  const egen = e.media.includes(e.id) ? undefined : k.vurderinger[e.id];
   // A section with its own verdict (rampestrek next to its sketch) shows that verdict,
   // as the buttons below do; the sketch's status is the fallback.
   if (e.media.length && !egen?.vurdering && !egen?.forrige) {
