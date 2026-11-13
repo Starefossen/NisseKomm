@@ -344,8 +344,11 @@ export function byggKo(
         hva: `${venterHer.length} av ${segs.length} segmenter venter`,
       });
     else if (!åpne.length)
+      // The video is what is missing: the line is the Julius element's, so the script reads ✓.
       agent.push({
-        id,
+        id:
+          liste.find((e) => e.gruppe === "julius" && e.dag === dag)?.id ??
+          `video/julius/dag-${pad(dag)}.mp4`,
         tittel: `Julius dag ${dag}`,
         type: "julius",
         dag,

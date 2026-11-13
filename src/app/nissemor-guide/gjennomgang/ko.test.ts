@@ -94,7 +94,30 @@ describe("byggKo", () => {
     expect(ko.agent.find((l) => l.dag === 14)).toMatchObject({
       kommando: "python3 assets/bin/julius-dag.py 14",
       pris: 34,
+      id: "video/julius/dag-14.mp4",
     });
+    // The script itself is done: ✓ godkjent, not «fikses» from the video's line.
+    const manus: Element = {
+      id: "manus/julius/dag-14",
+      gruppe: "Julius-manus",
+      tittel: "Manus dag 14",
+      dag: 14,
+      media: [],
+    };
+    const fd = fremdrift(
+      [manus],
+      {
+        filer,
+        vurderinger: {
+          "manus/julius/dag-14": { vurdering: "lag_paa_nytt" },
+          "manus/julius/dag-14#s1": { vurdering: "godkjent" },
+          "manus/julius/dag-14#s2": { vurdering: "ok" },
+        },
+      },
+      ko,
+      server(),
+    );
+    expect(fd.poster[0].status).toBe("godkjent");
   });
 
   it("radio: only a clip to make or remake waits on its script", () => {

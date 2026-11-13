@@ -96,8 +96,28 @@ function useUtvalg(): [Utvalg, (u: Utvalg) => void] {
   return [u, sett];
 }
 
-const liten =
-  "min-h-11 appearance-none bg-black border border-(--neon-green)/60 px-2 text-base";
+/** A compact select with its label inside the frame: «Type: Alle ▾». */
+function Valg({
+  navn,
+  children,
+  ...p
+}: { navn: string } & React.SelectHTMLAttributes<HTMLSelectElement>) {
+  return (
+    <label className="relative inline-flex items-center h-11 border border-(--neon-green)/60 pl-2 hover:bg-(--neon-green)/10 whitespace-nowrap">
+      <span className="text-(--neon-green)/70">{navn}:</span>
+      <select
+        aria-label={navn}
+        {...p}
+        className="appearance-none bg-transparent h-full pl-1 pr-6 cursor-pointer [field-sizing:content] [&>option]:bg-black"
+      >
+        {children}
+      </select>
+      <span aria-hidden className="pointer-events-none absolute right-2">
+        ▾
+      </span>
+    </label>
+  );
+}
 
 /** Status as a two-way switch, Type as a dropdown with what remains per type. */
 function UtvalgValg({
@@ -116,7 +136,11 @@ function UtvalgValg({
     liste.filter((e) => e.gruppe === g && gjenstaar(e)).length;
   return (
     <div className="flex flex-wrap items-center gap-2 text-base">
-      <div role="group" aria-label="Status" className="inline-flex">
+      <div
+        role="group"
+        aria-label="Status"
+        className="inline-flex h-11 border border-(--neon-green)/60"
+      >
         {(
           [
             ["gjenstaar", "Gjenstår"],
@@ -128,34 +152,30 @@ function UtvalgValg({
             type="button"
             aria-pressed={u.s === k}
             onClick={() => sett({ ...u, s: k })}
-            className={`min-h-11 px-2 border border-(--neon-green)/60 ${u.s === k ? "bg-(--gold) text-black border-(--gold)" : "hover:bg-(--neon-green)/20"}`}
+            className={`min-w-11 px-3 ${u.s === k ? "bg-(--gold) text-black" : "hover:bg-(--neon-green)/20"}`}
           >
             {navn}
           </button>
         ))}
       </div>
-      <label className="flex items-center gap-1">
-        Type
-        <select
-          aria-label="Type"
-          value={u.t ?? ""}
-          onChange={(ev) => sett({ ...u, t: ev.target.value || null })}
-          className={liten}
-        >
-          <option value="">Alle ({liste.filter(gjenstaar).length})</option>
-          {typer.map((g) => (
-            <option key={g} value={g}>
-              {typeNavn(g)} ({igjen(g)})
-            </option>
-          ))}
-        </select>
-      </label>
+      <Valg
+        navn="Type"
+        value={u.t ?? ""}
+        onChange={(ev) => sett({ ...u, t: ev.target.value || null })}
+      >
+        <option value="">Alle ({liste.filter(gjenstaar).length})</option>
+        {typer.map((g) => (
+          <option key={g} value={g}>
+            {typeNavn(g)} ({igjen(g)})
+          </option>
+        ))}
+      </Valg>
     </div>
   );
 }
 
 const pil =
-  "min-h-11 min-w-11 inline-flex items-center justify-center border border-(--neon-green)/60 text-xl hover:bg-(--neon-green)/20";
+  "h-11 w-11 shrink-0 inline-flex items-center justify-center border border-(--neon-green)/60 text-xl hover:bg-(--neon-green)/20";
 const knapp =
   "inline-flex items-center justify-center min-h-11 min-w-11 px-3 border-2 border-(--neon-green) hover:bg-(--neon-green)/20";
 
@@ -627,6 +647,7 @@ function Vurdering({
     typeFilter || u.s === "alle" ? null : koIder,
   );
   const { neste, forrige } = nav;
+  const [filterÅpen, setFilterÅpen] = useState(false);
   const nesteIKo = nav.iKo;
   const nabo = { rundt: nav.rundt };
   const nesteNavn = nesteIKo
@@ -702,6 +723,13 @@ function Vurdering({
   if (!e) return <p>Fant ikke {id}.</p>;
   const celleData = cellen;
   const st = tilstand(e, k);
+  const posisjon = nesteIKo
+    ? iKo >= 0
+      ? `${iKo + 1} / ${koIder.length}`
+      : `utenfor køen · ${koIder.length} igjen`
+    : !gr && !dagF && !passerUtvalg(u, e, st.celle)
+      ? `utenfor filteret · ${filtrert.length - 1} igjen`
+      : `${fi + 1} / ${filtrert.length}`;
   const ikkeLaget =
     e.media.length > 0 &&
     !e.id.startsWith("dag/") &&
@@ -713,22 +741,22 @@ function Vurdering({
       <div className="sticky top-0 z-20 bg-black/95 border-b border-(--neon-green)/40">
         <nav
           aria-label="Gjennomgang"
-          className="flex flex-wrap items-center gap-x-3 gap-y-1 py-1"
+          className="relative flex items-center gap-1.5 sm:gap-3 h-14 text-base"
         >
-          <div className="flex items-center gap-1 text-base">
-            <Link
-              href={
-                dagF
-                  ? `/nissemor-guide/dag/${dagF}`
-                  : fane
-                    ? `${SIDE}?k=${fane}`
-                    : SIDE
-              }
-              data-testid="tilbake"
-              className="min-h-11 inline-flex items-center px-2 underline"
-            >
-              {dagF ? `‹ Dag ${dagF}` : "‹ Kø"}
-            </Link>
+          <Link
+            href={
+              dagF
+                ? `/nissemor-guide/dag/${dagF}`
+                : fane
+                  ? `${SIDE}?k=${fane}`
+                  : SIDE
+            }
+            data-testid="tilbake"
+            className="h-11 shrink-0 inline-flex items-center px-2 border border-(--neon-green)/60 hover:bg-(--neon-green)/20 whitespace-nowrap"
+          >
+            {dagF ? `‹ Dag ${dagF}` : "‹ Kø"}
+          </Link>
+          <div className="flex items-center shrink-0">
             <Link
               href={forrige ? lenke(forrige.id) : "#"}
               aria-disabled={!forrige}
@@ -738,83 +766,100 @@ function Vurdering({
             >
               ‹
             </Link>
-            <span className="px-1 whitespace-nowrap">
-              {nesteIKo
-                ? `${iKo + 1} av ${koIder.length}`
-                : `${fi + 1} av ${filtrert.length}`}
+            <span
+              data-testid="posisjon"
+              title={`${nesteNavn}: N`}
+              className="h-11 inline-flex items-center justify-center min-w-20 px-2 border-y border-(--neon-green)/60 tabular-nums whitespace-nowrap"
+            >
+              {posisjon}
             </span>
             <Link
               href={neste ? lenke(neste.id) : "#"}
               aria-disabled={!neste}
               title={`${nesteNavn} (N eller ])${nabo.rundt && !nesteIKo ? " · tilbake til start" : ""}`}
               aria-label={`${nesteNavn} (N)`}
-              className={`${pil} ${neste ? "border-(--gold)" : "pointer-events-none opacity-30"}`}
+              className={`${pil} ${neste ? "border-(--gold) text-(--gold)" : "pointer-events-none opacity-30"}`}
             >
               ›
             </Link>
-            <span className="text-sm text-(--neon-green)/70 whitespace-nowrap">
-              {nesteNavn.toLowerCase()}
-              {e &&
-                !gr &&
-                !nesteIKo &&
-                !passerUtvalg(u, e, tilstand(e, k).celle) &&
-                " · utenfor filteret"}
-            </span>
-            {e.dag && (
-              <Link
-                href={`/nissemor-guide/dag/${e.dag}`}
-                className="min-h-11 inline-flex items-center px-1 text-sm underline"
-              >
-                hele dag {e.dag}
-              </Link>
-            )}
-            {harForrigeSett && (
-              <button
-                type="button"
-                onClick={gåTilbake}
-                title="Tilbake til det du så sist (P), som nettleserens tilbake"
-                className="min-h-11 px-2 text-sm underline"
-              >
-                ↶ Sist sett (P)
-              </button>
-            )}
           </div>
-          <div className="flex flex-wrap items-center gap-2 ml-auto text-base">
+          {harForrigeSett && (
+            <button
+              type="button"
+              onClick={gåTilbake}
+              title="Tilbake til det du så sist (P), som nettleserens tilbake"
+              aria-label="Sist sett (P)"
+              className={pil}
+            >
+              ↶
+            </button>
+          )}
+          <button
+            type="button"
+            aria-expanded={filterÅpen}
+            onClick={() => setFilterÅpen(!filterÅpen)}
+            className="sm:hidden h-11 px-2 ml-auto border border-(--neon-green)/60 whitespace-nowrap"
+          >
+            Filter ▾
+          </button>
+          <div
+            className={`${filterÅpen ? "flex" : "hidden"} absolute top-full right-0 z-30 flex-col items-stretch gap-2 p-2 bg-black border border-(--neon-green) sm:static sm:flex sm:flex-row sm:items-center sm:p-0 sm:border-0 sm:bg-transparent sm:flex-1 sm:justify-end`}
+          >
             <UtvalgValg
               u={u}
               sett={settU}
               liste={liste}
               gjenstaar={(x) => GJENSTAAR.includes(tilstand(x, k).celle)}
             />
-            <label className="flex items-center gap-1">
-              Rekkefølge
-              <select
-                value={rekkefolge}
-                onChange={(ev) => {
-                  const v = ev.target.value as "dag" | "kolonne";
-                  localStorage.setItem(REKKEFOLGE, v);
-                  setRekkefolge(v);
-                }}
-                className={liten}
-              >
-                <option value="dag">dag</option>
-                <option value="kolonne">kolonne</option>
-              </select>
-            </label>
+            <Valg
+              navn="Sortér"
+              value={rekkefolge}
+              onChange={(ev) => {
+                const v = ev.target.value as "dag" | "kolonne";
+                localStorage.setItem(REKKEFOLGE, v);
+                setRekkefolge(v);
+              }}
+            >
+              <option value="dag">dag</option>
+              <option value="kolonne">kolonne</option>
+            </Valg>
           </div>
+          <details className="relative shrink-0">
+            <summary
+              className="list-none h-11 w-11 inline-flex items-center justify-center border border-(--neon-green)/60 cursor-pointer hover:bg-(--neon-green)/20"
+              title="Taster"
+              aria-label="Taster"
+            >
+              ?
+            </summary>
+            <p className="absolute right-0 top-full z-30 w-80 max-w-[90vw] p-2 bg-black border border-(--neon-green) text-base">
+              G godkjent · O OK · L lag på nytt (skriv notat, Enter lagrer) · ?
+              trenger mer · ⇧1–9 merke · T tidskode · N/] neste · ⇧N neste
+              uvurdert · [ eller ⇧P forrige i lista · P tilbake til sist sett
+            </p>
+          </details>
         </nav>
         <section
           aria-label="Vurdering"
           data-testid="vurderingsboks"
-          className="flex flex-wrap lg:flex-nowrap items-start gap-x-3 gap-y-1 py-1 border-t border-(--neon-green)/20"
+          className="grid grid-cols-1 lg:grid-cols-[minmax(0,22rem)_1fr] items-start gap-x-4 gap-y-1 py-2 border-t border-(--neon-green)/20"
         >
-          <div className="flex items-center gap-2 min-w-0 basis-full lg:basis-auto lg:max-w-[40%]">
+          <div className="flex items-center gap-2 min-w-0 min-h-11">
             <h2 className="text-xl text-(--gold) truncate" title={e.id}>
               {e.tittel}
             </h2>
             <StatusBrikke c={celleData(e)} href={href(e.id, "")} />
+            {e.dag && (
+              <Link
+                href={`/nissemor-guide/dag/${e.dag}`}
+                title={`Hele dag ${e.dag}`}
+                className="h-11 shrink-0 inline-flex items-center px-1 text-sm underline whitespace-nowrap"
+              >
+                dag {e.dag}
+              </Link>
+            )}
           </div>
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0">
             {ikkeLaget ? (
               <IkkeLaget
                 e={e}
@@ -831,20 +876,6 @@ function Vurdering({
               <DagManus n={e.dag ?? Number(e.id.slice(-2))} />
             )}
           </div>
-          <details className="relative">
-            <summary
-              className="list-none min-h-11 min-w-11 inline-flex items-center justify-center border border-(--neon-green)/60 cursor-pointer"
-              title="Tastatur"
-              aria-label="Tastatur"
-            >
-              Taster
-            </summary>
-            <p className="absolute right-0 z-30 w-80 p-2 bg-black border border-(--neon-green) text-base">
-              G godkjent · O OK · L lag på nytt (skriv notat, Enter lagrer) · ?
-              trenger mer · ⇧1–9 merke · T tidskode · N/] neste · ⇧N neste
-              uvurdert · [ eller ⇧P forrige i lista · P tilbake til sist sett
-            </p>
-          </details>
         </section>
       </div>
       {vurd[e.id]?.forklaring && (

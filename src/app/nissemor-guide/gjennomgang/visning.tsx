@@ -103,6 +103,14 @@ function Manus({ d, port }: { d: Dag; port?: boolean }) {
  * segments; Godkjent/OK set every segment not marked Lag på nytt (the gate reads
  * #sK); the note is a day note on `manus/julius/dag-NN` and never opens the gate.
  */
+/** Which «alle» button is met: every segment ✓ → godkjent; all ✓/◐ with a ◐ → ok. */
+export function alleOppfylt(
+  v: (string | undefined)[],
+): "godkjent" | "ok" | null {
+  if (!v.length || !v.every((x) => x === "godkjent" || x === "ok")) return null;
+  return v.includes("ok") ? "ok" : "godkjent";
+}
+
 export function DagManus({ n }: { n: number }) {
   const d = useDag(n);
   const alle = useVurderinger();
@@ -129,13 +137,16 @@ export function DagManus({ n }: { n: number }) {
         Promise.all(
           rest.map((s) => lagre(id(s), verdikt, alle[id(s)]?.notat ?? "")),
         ),
-      `✓ ${rest.length} ${verdikt === "ok" ? "OK" : "godkjent"}`,
+      `✓ Lagret (${rest.length})`,
     );
   };
   const tekst = notat ?? alle[dagId]?.notat ?? "";
+  const oppfylt = alleOppfylt(segs.map(v));
+  const alleKnapp = (k: "godkjent" | "ok") =>
+    `min-h-11 min-w-28 px-4 font-bold border-2 ${oppfylt === k ? "bg-(--gold) text-black border-(--gold)" : "border-(--neon-green) hover:bg-(--neon-green)/20"}`;
   return (
-    <div id="vurdering-dagmanus" className="mt-3 flex flex-col gap-2">
-      <p data-testid="manus-status">
+    <div id="vurdering-dagmanus" className="flex flex-wrap items-center gap-2">
+      <p data-testid="manus-status" className="min-h-11 flex items-center">
         <span className="text-(--gold)">
           {godkjent.length} av {segs.length} godkjent
         </span>
@@ -151,41 +162,35 @@ export function DagManus({ n }: { n: number }) {
           type="button"
           data-alle="godkjent"
           disabled={lagrer}
+          aria-pressed={oppfylt === "godkjent"}
           onClick={() => alleTil("godkjent")}
-          className="min-h-11 min-w-28 px-4 font-bold border-2 border-(--neon-green) hover:bg-(--neon-green)/20"
+          className={alleKnapp("godkjent")}
         >
-          Godkjenn alle segmentene
+          {oppfylt === "godkjent"
+            ? "✓ Alle godkjent"
+            : "Godkjenn alle segmentene"}
         </button>
         <button
           type="button"
           data-alle="ok"
           disabled={lagrer}
+          aria-pressed={oppfylt === "ok"}
           onClick={() => alleTil("ok")}
-          className="min-h-11 min-w-28 px-4 font-bold border-2 border-(--neon-green) hover:bg-(--neon-green)/20"
+          className={alleKnapp("ok")}
         >
-          OK på alle
+          {oppfylt === "ok" ? "◐ Alle OK" : "OK på alle"}
         </button>
-        <Lagremelding status={status} className="text-sm ml-auto" />
-      </div>
-      <div className="flex gap-2">
         <input
           type="text"
           value={tekst}
-          placeholder="Notat for dagen (påvirker ikke porten)"
+          placeholder="Notat for dagen (påvirker ikke porten), Enter lagrer"
           onChange={(e) => setNotat(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") void kjør(() => lagre(dagId, null, tekst));
           }}
-          className="w-full min-h-11 bg-black border-2 border-(--neon-green) px-3 text-sm"
+          className="flex-1 min-w-48 min-h-11 bg-black border-2 border-(--neon-green) px-3 text-sm"
         />
-        <button
-          type="button"
-          disabled={lagrer}
-          onClick={() => void kjør(() => lagre(dagId, null, tekst))}
-          className="min-h-11 min-w-28 px-4 border-2 border-(--neon-green) text-sm font-bold"
-        >
-          Lagre notat
-        </button>
+        <Lagremelding status={status} className="text-sm" />
       </div>
     </div>
   );
