@@ -10,7 +10,7 @@ import { DagStatus } from "../../gjennomgang/celle";
 import { juliusFiles } from "../../media/oversikt";
 import type { dagInnhold } from "@/lib/guide-innhold";
 import { Foreldredel, Rampestrek } from "./foreldre";
-import { Gaatekart } from "./gaatekart";
+import { Gaatekart, skjul } from "./gaatekart";
 import { Lukkbar, StatusFor, useVisVurdering, Vurder } from "../../vurdering";
 
 type Dag = Awaited<ReturnType<typeof dagInnhold>>;
@@ -18,13 +18,6 @@ type Dag = Awaited<ReturnType<typeof dagInnhold>>;
 const box = "border-2 border-(--neon-green) bg-black p-3 sm:p-4 mb-4";
 const knapp =
   "flex items-center justify-center min-h-11 min-w-11 px-3 border-2 border-(--neon-green) hover:bg-(--neon-green)/20";
-
-/** Hides the day's code in every text until «Vis fasit» is on. */
-function skjul(tekst: string, kode: string | undefined, vis: boolean) {
-  if (vis || !kode) return tekst;
-  const esc = kode.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return tekst.replace(new RegExp(esc, "gi"), "•".repeat(kode.length));
-}
 
 const SKJUL_KEY = "nissekomm-guide-skjul-fasit";
 
