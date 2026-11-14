@@ -36,11 +36,6 @@ import {
 import { isFrostDay, type FrostMode } from "./frost";
 import { findFileNode } from "./utils/file-tree-utils";
 import {
-  convertDailyAlerts,
-  sortAlertsByPriority,
-  generateAlertTimestamp,
-} from "./generators/alert-generator";
-import {
   getAllSymbols,
   collectSymbolByCode,
   getSymbolShortCode,
@@ -53,6 +48,8 @@ import * as quests from "./systems/quest-system";
 import * as frost from "./systems/frost-system";
 import * as slede from "./systems/slede-system";
 import * as brev from "./systems/brev-system";
+import * as opplasing from "./systems/opplasing-system";
+import type { IntroId } from "./systems/opplasing-system";
 
 export { runerFor } from "./systems/frost-system";
 import type {
@@ -82,16 +79,7 @@ export type MetricDisplayType =
   | "gauge"
   | "binary"
   | "hexgrid";
-import {
-  FJAER_MAAL,
-  FJAER_VARSEL,
-  OPPLASINGER,
-  nivaa,
-  puffTekst,
-  settNokkel,
-  type Nivaa,
-  type Opplasing,
-} from "./opplasinger";
+import type { Nivaa, Opplasing } from "./opplasinger";
 
 const ALL_QUESTS = getAllQuests();
 
@@ -126,9 +114,6 @@ async function kodeSjekkServer(dag: number, kode: string): Promise<KodeSvar> {
   if (!r.ok) throw new Error(`kode: ${r.status}`);
   return r.json();
 }
-
-type IntroId =
-  "boot" | "tail" | "brev-tint" | `ny-${string}` | `ugle-k${number}`;
 
 export class GameEngine {
   private static dependencies: GameEngineDependencies = {};
@@ -245,7 +230,7 @@ export class GameEngine {
 
   /** One-off sequences: day-1 opener (T14) "boot" after the password and "tail" after Julius' video; "brev-tint" is Brevfugler's day-24 thaw; "ugle-k<n>" is Ugleposten's chapter opener. */
   static isIntroSeen(id: IntroId): boolean {
-    return StorageManager.getIntrosSeen().includes(id);
+    return opplasing.isIntroSeen(id);
   }
 
   static markIntroSeen(id: IntroId): void {
@@ -254,39 +239,22 @@ export class GameEngine {
 
   /** Nudge level for one unlock today (lib/opplasinger.ts). */
   static getOpplasingNivaa(o: Opplasing, day = getCurrentDay()): Nivaa {
-    return nivaa(
-      o,
-      day,
-      this.isQuestCompleted(day),
-      this.isIntroSeen(settNokkel(o)),
-    );
+    return opplasing.getOpplasingNivaa(o, day);
   }
 
   /** Unlocks on a day a child may see now (after-code ones wait for the code). */
   static getOpplasinger(day: number, vindu?: string): Opplasing[] {
-    return OPPLASINGER.filter(
-      (o) =>
-        o.dag === day &&
-        (!vindu || o.vindu === vindu) &&
-        (!o.etterKode || this.isQuestCompleted(day)),
-    );
+    return opplasing.getOpplasinger(day, vindu);
   }
 
   /** Highest nudge level among a window's unlocks (home tile). */
   static getNyttNivaa(vindu: string, day = getCurrentDay()): Nivaa {
-    if (getCurrentMonth() !== 12) return 0;
-    return OPPLASINGER.filter((o) => o.vindu === vindu).reduce<Nivaa>(
-      (m, o) => Math.max(m, this.getOpplasingNivaa(o, day)) as Nivaa,
-      0,
-    );
+    return opplasing.getNyttNivaa(vindu, day);
   }
 
   /** Opening a window counts as having seen everything unlocked in it so far. */
   static markOpplasingerSett(vindu: string, day = getCurrentDay()) {
-    this.markIntroSeen(`ny-${vindu}`);
-    OPPLASINGER.filter((o) => o.vindu === vindu && o.dag <= day).forEach((o) =>
-      this.markIntroSeen(settNokkel(o)),
-    );
+    return opplasing.markOpplasingerSett(vindu, day);
   }
 
   /** Adventure (Ugleposten) save; null until the first move. */
@@ -300,7 +268,7 @@ export class GameEngine {
 
   /** Owl feathers found in Ugleposten (all chapters); FJAER_MAAL opens a MORO file. */
   static getUglefjaer(): number {
-    return this.getEventyrSave()?.fjaer?.length ?? 0;
+    return opplasing.getUglefjaer();
   }
 
   /** IQs sledesimulator: best score and bells per stage id, and per «Navn/etappe». */
@@ -897,71 +865,7 @@ export class GameEngine {
     day: number,
     completedDays: Set<number> = this.getCompletedDays(),
   ): Varsel[] {
-    const alerts: Varsel[] = [];
-    const dailyAlertsData = (
-      statiskInnhold as unknown as {
-        daily_alerts: Array<{
-          day: number;
-          tekst: string;
-          type: "info" | "advarsel" | "kritisk";
-          etterKode?: boolean;
-        }>;
-      }
-    ).daily_alerts.filter((a) => !a.etterKode || completedDays.has(a.day));
-
-    alerts.push(...convertDailyAlerts(dailyAlertsData, day));
-
-    // Unlock alerts on their day, then at most one nudge per unopened item today
-    const unlocks = OPPLASINGER.filter((o) => o.varsel).map((o) => ({
-      day: o.dag,
-      tekst: o.varsel!,
-      type: "info" as const,
-      etterKode: o.etterKode,
-    }));
-    const synlige = unlocks.filter(
-      (a) => !a.etterKode || completedDays.has(a.day),
-    );
-    alerts.push(...convertDailyAlerts(synlige, day));
-    // One unlock line a day: today's alert if there is one, otherwise a nudge
-    // for the stalest unopened item, below the day's story lines
-    const puff = synlige.some((a) => a.day === day)
-      ? null
-      : OPPLASINGER.map((o) =>
-          puffTekst(
-            o,
-            nivaa(
-              o,
-              day,
-              completedDays.has(day),
-              this.isIntroSeen(settNokkel(o)),
-            ),
-            day,
-          ),
-        ).find(Boolean);
-    if (puff)
-      alerts.push({
-        tekst: puff,
-        type: "info",
-        tidspunkt: generateAlertTimestamp(),
-        day,
-      });
-    // Eight owl feathers: Rampenissen points to the new MORO file until it is opened
-    if (
-      this.getUglefjaer() >= FJAER_MAAL &&
-      !this.isIntroSeen("ny-nissenet-fjaer")
-    )
-      alerts.push({
-        tekst: FJAER_VARSEL,
-        type: "info",
-        tidspunkt: generateAlertTimestamp(),
-        day,
-      });
-
-    // Newest day first, priority as tiebreaker
-    sortAlertsByPriority(alerts);
-
-    // 6. Return max 8 alerts
-    return alerts.slice(0, 8);
+    return opplasing.getDailyAlerts(day, completedDays);
   }
 
   /**
