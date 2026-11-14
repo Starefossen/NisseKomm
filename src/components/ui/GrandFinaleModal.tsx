@@ -1,127 +1,160 @@
 "use client";
 
 import { fyll } from "@/lib/navn";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import Image from "next/image";
+import { RetroModal } from "./RetroModal";
 
 interface GrandFinaleModalProps {
   onClose: () => void;
 }
+
+/** Hidden stages keep their place, so the window never jumps as they appear. */
+const trinn = (synlig: boolean) =>
+  synlig ? "animate-[fadeIn_0.8s_ease-out]" : "invisible";
 
 /**
  * Day 24 finale: thaw (tøvær), four stages. Text from app-tekster-2026.md A9.
  */
 export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
   const [stage, setStage] = useState(1);
+  const stages = useRef<(HTMLDivElement | null)[]>([]);
+  const godJul = useRef<HTMLButtonElement>(null);
 
   const playerNames = GameEngine.getPlayerNames();
-  const symbols = GameEngine.getCollectedSymbols().length;
-  const decryptions = GameEngine.getSolvedDecryptions().length;
-  const bonus = GameEngine.getProgressionSummary().bonusOppdrag.completed;
+  const tall = [
+    [GameEngine.getCollectedSymbols().length, "symboler"],
+    [GameEngine.getSolvedDecryptions().length, "dekrypteringer"],
+    [GameEngine.getProgressionSummary().bonusOppdrag.completed, "bonus"],
+  ] as const;
   const badge = GameEngine.getBadge("snofalls-venn");
 
   useEffect(() => {
     SoundManager.playSound("success");
 
     const timers = [2000, 4000, 6000].map((ms, i) =>
-      setTimeout(() => setStage(i + 2), ms),
+      setTimeout(() => setStage((s) => Math.max(s, i + 2)), ms),
     );
     return () => timers.forEach(clearTimeout);
   }, []);
 
+  // On a phone the later stages are below the fold: follow the story down
+  useEffect(() => {
+    stages.current[stage]?.scrollIntoView?.({
+      block: "nearest",
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
+    if (stage === 4) godJul.current?.focus({ preventScroll: true });
+  }, [stage]);
+
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="finale-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-    >
-      <div className="relative max-w-3xl w-full max-h-full overflow-y-auto border-8 border-(--gold) bg-(--dark-crt) p-8 animate-[scale-in_0.5s_ease-out]">
-        <div className="space-y-6 text-center">
-          {/* 1: Thaw */}
-          <div>
-            <h1
-              id="finale-title"
-              className="text-6xl font-bold text-(--gold) tracking-widest animate-[gold-flash_2s_ease-in-out_infinite]"
-            >
-              TØVÆR
-            </h1>
-            <div className="text-xl text-(--cold-blue) mt-2">
-              24. desember · Frostgrad 0 %
-            </div>
+    <RetroModal title="24. DESEMBER · FROSTGRAD 0 %" onClose={onClose} gull>
+      {/* A tap anywhere skips the wait */}
+      <div className="space-y-3 text-center" onClick={() => setStage(4)}>
+        {/* 1: Thaw */}
+        <div className="relative overflow-hidden py-2">
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-linear-to-r from-transparent via-(--aurora)/40 to-transparent opacity-0 animate-[aurora-wash_4s_ease-out_0.3s]"
+          />
+          <h1 className="relative text-6xl md:text-7xl leading-none text-(--gold) tracking-widest [text-shadow:0_0_24px_color-mix(in_oklab,var(--gold)_60%,transparent)] animate-[flicker-in_0.8s_ease-out]">
+            TØVÆR
+          </h1>
+        </div>
+
+        {/* 2: The nice list */}
+        <div
+          ref={(el) => {
+            stages.current[2] = el;
+          }}
+          className={`space-y-2 ${trinn(stage >= 2)}`}
+        >
+          <div className="text-xl tracking-wider">
+            JULIUS SKREV NAVNENE SELV
           </div>
+          <div className="text-3xl uppercase tracking-wider text-(--gold) border-2 border-(--gold) px-4 py-2 bg-(--gold)/10">
+            {/* Skipped name entry still gets a named list */}
+            {playerNames.length > 0
+              ? playerNames.join(" · ")
+              : fyll("Kristian · Håkon · Hanna")}
+          </div>
+          <div className="text-base opacity-80">
+            22. desember, for hånd, én gang.
+          </div>
+        </div>
 
-          {/* 2: The nice list */}
-          {stage >= 2 && (
-            <div className="animate-[scale-in_0.5s_ease-out] space-y-3">
-              <div className="text-2xl text-(--neon-green)">
-                JULIUS SKREV NAVNENE SELV
-              </div>
-              <div className="text-2xl text-(--gold) border-4 border-(--gold) p-4 bg-(--gold)/10">
-                {/* Skipped name entry still gets a named list */}
-                {playerNames.length > 0
-                  ? playerNames.join(" · ")
-                  : fyll("Kristian · Håkon · Hanna")}
-              </div>
-              <div className="text-base opacity-80">
-                22. desember, for hånd, én gang.
-              </div>
-            </div>
-          )}
-
-          {/* 3: What happened */}
-          {stage >= 3 && (
-            <div className="animate-[scale-in_0.5s_ease-out] border-4 border-(--cold-blue) p-6 bg-(--cold-blue)/10 space-y-2 text-lg">
-              <p>Linjen holdt. 24 dager.</p>
-              <p>Isen sukket, og dere hørte det.</p>
-              <p>Muren holder. Porten står åpen.</p>
-              <p>
-                Sleden fløy over grotten med alle lysene på. Noe blått fløy opp
-                og møtte den.
-              </p>
-              <p className="text-base opacity-70 pt-2">
-                {symbols} symboler · {decryptions} dekrypteringer · {bonus}{" "}
-                bonus
-              </p>
-            </div>
-          )}
-
-          {/* 4: The badge and goodbye */}
-          {stage >= 4 && (
-            <div className="animate-[fadeIn_1s_ease-out] space-y-4">
-              {badge && (
-                <div className="flex flex-col items-center gap-2">
-                  <Image
-                    src={`/badges/${badge.ikon}`}
-                    alt={badge.navn}
-                    width={96}
-                    height={96}
-                  />
-                  <div className="text-3xl font-bold text-(--gold) tracking-wider">
-                    {badge.navn.toUpperCase()}
-                  </div>
-                </div>
-              )}
-              <p className="text-xl">Det er ikke kaldt der nede lenger.</p>
-              <p className="text-xl">
-                Under treet ligger noe fra Vintervokteren. Det smelter ikke.
-              </p>
-              <p className="text-base opacity-70">
-                Diplom: Nissemor-guiden → Utskrifter
-              </p>
-              <button
-                autoFocus
-                onClick={onClose}
-                className="mt-4 px-8 py-4 min-h-11 bg-(--gold) border-4 border-(--gold) text-black font-bold text-2xl hover:opacity-80"
+        {/* 3: What happened */}
+        <div
+          ref={(el) => {
+            stages.current[3] = el;
+          }}
+          className={`border-2 border-(--brass) bg-(--crt-bg) ${trinn(stage >= 3)}`}
+        >
+          <div className="px-4 py-3 text-lg leading-snug">
+            <p>Linjen holdt. 24 dager.</p>
+            <p>Isen sukket, og dere hørte det.</p>
+            <p>Muren holder. Porten står åpen.</p>
+            <p>
+              Sleden fløy over grotten med alle lysene på. Noe blått fløy opp og
+              møtte den.
+            </p>
+          </div>
+          <div className="grid grid-cols-3 border-t-2 border-(--brass)">
+            {tall.map(([n, navn], i) => (
+              <div
+                key={navn}
+                className={`py-1.5 ${i ? "border-l-2 border-(--brass)" : ""}`}
               >
-                GOD JUL
-              </button>
+                <div className="text-3xl leading-none text-(--cold-blue)">
+                  {n}
+                </div>
+                <div className="text-base opacity-80">{navn}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 4: The badge and goodbye */}
+        <div
+          ref={(el) => {
+            stages.current[4] = el;
+          }}
+          className={`space-y-3 pb-2 ${trinn(stage >= 4)}`}
+        >
+          {badge && (
+            <div className="flex items-center justify-center gap-4">
+              <Image
+                src={`/badges/${badge.ikon}`}
+                alt=""
+                width={64}
+                height={64}
+                className="drop-shadow-[0_0_12px_color-mix(in_oklab,var(--gold)_60%,transparent)]"
+              />
+              <div className="text-3xl md:text-4xl text-(--gold) tracking-wider">
+                {badge.navn.toUpperCase()}
+              </div>
             </div>
           )}
+          <div className="text-lg">
+            <p>Det er ikke kaldt der nede lenger.</p>
+            <p>Under treet ligger noe fra Vintervokteren. Det smelter ikke.</p>
+          </div>
+          <p className="text-base opacity-70">
+            Diplom: Nissemor-guiden → Utskrifter
+          </p>
+          <button
+            ref={godJul}
+            onClick={onClose}
+            className="min-h-12 px-10 py-2 bg-(--gold) border-2 border-(--gold) text-black font-bold text-2xl tracking-wider hover:bg-transparent hover:text-(--gold) transition-colors animate-[gold-glow_2s_ease-in-out_3]"
+          >
+            GOD JUL
+          </button>
         </div>
       </div>
-    </div>
+    </RetroModal>
   );
 }

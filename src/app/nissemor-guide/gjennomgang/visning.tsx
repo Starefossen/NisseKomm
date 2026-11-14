@@ -11,6 +11,7 @@ import { mediaUrl } from "@/lib/media";
 import { KAPITLER } from "@/components/windows/nissespill/kapitler";
 import { ETAPPER } from "@/components/windows/snofall-tv/slede";
 import { GrandFinaleModal } from "@/components/ui/GrandFinaleModal";
+import { NameEntryModal } from "@/components/ui/NameEntryModal";
 import videoer from "@/data/julius_videoer.json";
 import radioManus from "@/data/radio-manus.json";
 import { fyllDyp, vedNavn } from "@/lib/navn";
@@ -314,6 +315,7 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
     e.dag ?? (manusDag || radioDag ? Number(manusDag ?? radioDag) : undefined);
   const dag = useDag(n);
   const [finale, setFinale] = useState(false);
+  const [snillListe, setSnillListe] = useState(false);
   const t = (s: string) => ren(s);
 
   if (n && !dag) return <p>Laster …</p>;
@@ -542,6 +544,17 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
           Vis finalen
         </button>
         {finale && <GrandFinaleModal onClose={() => setFinale(false)} />}
+        <button
+          type="button"
+          onClick={() => setSnillListe(true)}
+          className="min-h-11 px-4 ml-4 border-2 border-(--neon-green) hover:bg-(--neon-green)/20"
+        >
+          Vis snill-listen (dag 22)
+        </button>
+        {/* Preview only: the names are not saved from here */}
+        {snillListe && (
+          <NameEntryModal onComplete={() => setSnillListe(false)} />
+        )}
         <Link
           href="/nissemor-guide/printout/diplom"
           className={`${lenke} ml-4`}
