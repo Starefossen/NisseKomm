@@ -167,16 +167,16 @@ Hvilke tråder hver dag hører til, for Sesongkartet. Id-er: `vokter` (Kulde, vi
 
 | Dag | Tråder                       |
 | --- | ---------------------------- |
-| 1   | iq                           |
+| 1   | vokter, iq                   |
 | 2   | iq                           |
-| 3   | vokter, farge                |
+| 3   | vokter                       |
 | 4   | vokter                       |
-| 5   | brevfugl, iq                 |
+| 5   | brevfugl                     |
 | 6   | vokter                       |
 | 7   | vokter, brevfugl             |
 | 8   | iq                           |
 | 9   | vokter                       |
-| 10  | vokter, iq, farge            |
+| 10  | vokter, farge                |
 | 11  | vokter, iq                   |
 | 12  | vokter                       |
 | 13  | vokter                       |
@@ -184,12 +184,12 @@ Hvilke tråder hver dag hører til, for Sesongkartet. Id-er: `vokter` (Kulde, vi
 | 15  | vokter, iq, farge            |
 | 16  | vokter                       |
 | 17  | vokter                       |
-| 18  | vokter, brevfugl             |
+| 18  | vokter                       |
 | 19  | iq                           |
 | 20  | vokter, iq, mur              |
 | 21  | vokter, iq, farge, mur       |
-| 22  | brevfugl                     |
-| 23  | vokter, mur                  |
+| 22  | vokter, mur                  |
+| 23  | vokter, farge, mur           |
 | 24  | vokter, brevfugl, farge, mur |
 
 ## 5. Belønninger
