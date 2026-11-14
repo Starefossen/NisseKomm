@@ -621,10 +621,9 @@ export function Gaatekart({
             <li
               key={u}
               id={u === d.utskrifter[0] ? "utskrifter" : undefined}
-              className="text-sm flex gap-2 items-start scroll-mt-4"
+              className="text-sm space-y-1 scroll-mt-4"
             >
-              <UtskriftMiniatyr navn={u} h={226} />
-              <span>
+              <span className="block">
                 ⎙{" "}
                 <Link href={utskriftHref(u)} className="underline">
                   {utskriftTittel(u)}
@@ -639,6 +638,7 @@ export function Gaatekart({
                   </span>
                 )}
               </span>
+              <UtskriftMiniatyr navn={u} />
             </li>
           ))}
         </Kolonne>

@@ -1,13 +1,13 @@
 "use client";
 /*
- * The one preview of a print: only the sheets as they print (`?bare=1`), every
- * side in a row, scaled so a whole A4 is `h` px high; the strip scrolls
- * sideways when it is wider than its place. A click opens it 1:1.
+ * The one preview of a print: only the white sheets as they print (`?bare=1`),
+ * every side shown whole, at most `kol` beside each other, each `h` px high
+ * and smaller when the place is narrower. A click opens it 1:1.
  */
 import { useEffect, useRef, useState } from "react";
 import { utskriftHref, utskriftTittel } from "./filer";
 
-// A4 at 96 dpi and the gap between sheets (gap-6 in BARE).
+// A4 at 96 dpi and the gap between sheets (Bare in Utskrift.tsx).
 const B = 794;
 const H = 1123;
 const GLIPE = 24;
@@ -15,13 +15,17 @@ const GLIPE = 24;
 export function UtskriftMiniatyr({
   navn,
   h = 226,
+  kol = 2,
 }: {
   navn: string;
   h?: number;
+  kol?: number;
 }) {
   const dlg = useRef<HTMLDialogElement>(null);
+  const figur = useRef<HTMLElement>(null);
   const ramme = useRef<HTMLIFrameElement>(null);
   const [info, setInfo] = useState({ sider: 1, papir: "" });
+  const [plass, setPlass] = useState(0);
   const src = `${utskriftHref(navn)}?bare=1`;
   const tittel = utskriftTittel(navn);
 
@@ -44,30 +48,38 @@ export function UtskriftMiniatyr({
     return () => clearInterval(t);
   }, [lastet]);
 
-  const k = h / H;
-  const bredde = info.sider * B + (info.sider - 1) * GLIPE;
+  useEffect(() => {
+    const o = new ResizeObserver(([e]) => setPlass(e.contentRect.width));
+    o.observe(figur.current!);
+    return () => o.disconnect();
+  }, []);
+
+  // The frame is exactly `iRad` sheets wide, so the page wraps the rest itself.
+  const iRad = Math.min(kol, info.sider);
+  const rader = Math.ceil(info.sider / iRad);
+  const b = iRad * B + (iRad - 1) * GLIPE;
+  const hoyde = rader * H + (rader - 1) * GLIPE;
+  const k = Math.min(h / H, plass ? plass / b : 1);
   return (
-    <figure className="max-w-full min-w-0" data-testid="utskrift-miniatyr">
-      <div className="max-w-full overflow-x-auto">
-        <button
-          type="button"
-          onClick={() => dlg.current?.showModal()}
-          className="block overflow-hidden border border-(--neon-green) bg-white"
-          style={{ width: Math.round(bredde * k), height: h }}
-          title={`Vis ${tittel} i full størrelse`}
-        >
-          <iframe
-            ref={ramme}
-            src={src}
-            title={tittel}
-            loading="lazy"
-            tabIndex={-1}
-            onLoad={() => setLastet((n) => n + 1)}
-            className="pointer-events-none origin-top-left border-0 max-w-none"
-            style={{ width: bredde, height: H, transform: `scale(${k})` }}
-          />
-        </button>
-      </div>
+    <figure ref={figur} className="w-full" data-testid="utskrift-miniatyr">
+      <button
+        type="button"
+        onClick={() => dlg.current?.showModal()}
+        className="block overflow-hidden"
+        style={{ width: Math.floor(b * k), height: Math.floor(hoyde * k) }}
+        title={`Vis ${tittel} i full størrelse`}
+      >
+        <iframe
+          ref={ramme}
+          src={src}
+          title={tittel}
+          loading="lazy"
+          tabIndex={-1}
+          onLoad={() => setLastet((n) => n + 1)}
+          className="pointer-events-none origin-top-left border-0 max-w-none"
+          style={{ width: b, height: hoyde, transform: `scale(${k})` }}
+        />
+      </button>
       {info.papir && (
         <figcaption className="text-xs opacity-70 mt-1">
           {info.papir}
@@ -93,7 +105,7 @@ export function UtskriftMiniatyr({
           src={src}
           title={tittel}
           loading="lazy"
-          className="w-full h-[calc(92vh-60px)] bg-white border-0"
+          className="w-full h-[calc(92vh-60px)] border-0"
         />
       </dialog>
     </figure>

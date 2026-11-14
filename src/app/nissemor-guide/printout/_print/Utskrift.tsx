@@ -169,11 +169,23 @@ function A3Halv({ p, halv }: { p: Plass; halv: "topp" | "bunn" }) {
 }
 
 /**
- * Wrapper classes for `?bare=1` (UtskriftMiniatyr): only the sheets, side by
- * side with a gap; they wrap to one column in a narrow frame.
+ * Wrapper for `?bare=1` (UtskriftMiniatyr): only the sheets, side by side with
+ * a gap; they wrap when the frame is narrower. Inline CSS, not Tailwind
+ * classes: a browser holding an older stylesheet must still hide the box.
  */
-export const BARE =
-  "min-h-screen bg-neutral-400 [&_[data-instruks]]:hidden [&_[data-utskrift]]:flex [&_[data-utskrift]]:flex-wrap [&_[data-utskrift]]:gap-6 [&_[data-utskrift]>div]:mb-0";
+export function Bare({ children }: { children: ReactNode }) {
+  return (
+    <div data-bare>
+      <style>
+        {`html:has([data-bare]), html:has([data-bare]) body { background: transparent !important; }
+[data-bare] [data-instruks] { display: none !important; }
+[data-bare] [data-utskrift] { display: flex; flex-wrap: wrap; gap: 24px; }
+[data-bare] [data-utskrift] > div { margin: 0 !important; }`}
+      </style>
+      {children}
+    </div>
+  );
+}
 
 const PAPIR = { vanlig: "vanlig papir (80 g)", tykt: "tykt papir (160–200 g)" };
 

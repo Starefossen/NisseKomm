@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { GameEngine } from "@/lib/game-engine";
-import { BARE, Utskrift } from "../_print/Utskrift";
+import { Bare, Utskrift } from "../_print/Utskrift";
 
 /** Diploma «Snøfalls venn», one A4 per child, handed out on day 24. */
 export function Diplom() {
@@ -55,9 +55,9 @@ function Side() {
   const bare = !!useSearchParams().get("bare");
   if (bare)
     return (
-      <div className={BARE}>
+      <Bare>
         <Diplom />
-      </div>
+      </Bare>
     );
   return (
     <div className="min-h-screen bg-(--dark-crt) p-8 print:min-h-0 print:bg-white print:p-0">

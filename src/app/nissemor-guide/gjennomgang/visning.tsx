@@ -433,13 +433,13 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
     return (
       <>
         <p>{ren(dag.kveld?.utskrifterTekst)}</p>
-        <div className="flex flex-wrap gap-3">
+        <div className="grid sm:grid-cols-2 gap-3">
           {filer.map((u) => (
-            <div key={u} className="max-w-full min-w-0">
+            <div key={u}>
               <Link href={utskriftHref(u)} className={lenke}>
                 {utskriftTittel(u)}
               </Link>
-              <UtskriftMiniatyr navn={u} h={400} />
+              <UtskriftMiniatyr navn={u} h={300} />
             </div>
           ))}
         </div>
