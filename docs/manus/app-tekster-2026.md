@@ -467,7 +467,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
   >
   > Hjerterud nynnet. Tre toner, den dypeste først. Isen på slusen sprakk.
   >
-  > Jeg lyttet inn i sprekken. Noe svarte. Jeg har sortert det etter hjertene:
+  > Jeg lyttet inn i sprekken. Noe svarte. Jeg har ordnet det etter hjertene:
   >
   > Rødt hjerte er varme. Det var Hjerteruds toner.
   > Grønt hjerte er håp. Det var isen som sprakk.

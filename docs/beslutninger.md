@@ -188,6 +188,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - 2026-11-14: Bloggen kan nevne Gemini-modellene ved navn og at 2025 var første versjon, men ikke budsjettbeløpet. Hvorfor: modellene er det andre kan lære av; pengene er privat.
 - 2026-11-14: Fra Varden går det en daglig «alt OK»-push før 1. desember. Hvorfor: stille betyr at noe er galt, og det skal vises før sesongen starter.
 - 2026-11-14: De store filene deles nå, og backloggen tas nå: romjul med én definisjon, CSP i report-only og revisjon av pg-låsene. Hvorfor: rydde før 1. desember, ikke midt i sesongen.
+- 2026-11-14: Verbstammen «sorter-» (sorterer, sortert, sortere) står ikke i barnesynlig tekst før dag 16; `kodelekkasje.test.ts` håndhever det. Hvorfor: den ligger for nær dagens kode.
 
 ## Besvart i Gjennomgang
 

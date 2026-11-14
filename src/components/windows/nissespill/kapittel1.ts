@@ -818,7 +818,7 @@ export const KAPITTEL_1: Kapittel = {
           prat: "Du spør hyllene om de har et 4112-B til overs. Lappen svarer for dem: IQ har alle. IQ har alltid alle.",
           feil: {
             skjema:
-              "Du prøver å legge skjemaet tilbake på plassen sin. Nei. Det er DITT skjema nå. Winter vil ha det utfylt, ikke sortert bort.",
+              "Du prøver å legge skjemaet tilbake på plassen sin. Nei. Det er DITT skjema nå. Winter vil ha det utfylt, ikke lagt bort.",
           },
         },
         {
@@ -848,7 +848,7 @@ export const KAPITTEL_1: Kapittel = {
           navn: "Maskinen",
           rect: { x: 38, y: 0, w: 28, h: 86 },
           smart: "se",
-          se: "Winters stolthet: en messingmaskin med tre trakter, fire hjul og en liten luke merket «VENTER». Den sorterer pakker etter vekt, adresse, lukt og paragraf. Mest paragraf. Alt som er i tvil, går i «VENTER». «VENTER» er full.",
+          se: "Winters stolthet: en messingmaskin med tre trakter, fire hjul og en liten luke merket «VENTER». Den ordner pakker etter vekt, adresse, lukt og paragraf. Mest paragraf. Alt som er i tvil, går i «VENTER». «VENTER» er full.",
           bruk:
             "Du drar i spaken. Maskinen tenker seg om, sukker med damp og slipper en pakke ned i «VENTER». Utenfra, gjennom vinduet, roper Winter: «Eg hørte det!» " +
             R +

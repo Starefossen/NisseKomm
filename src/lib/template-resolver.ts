@@ -45,7 +45,7 @@ const ABSURD_REASONS = [
   "Reparerte farfars gamle radio med tannpirkere og håpløshet",
   "Lagde frokost på seng til hele familien (uten å søle én dråpe)",
   "Gikk tur med nabohunden i regn, snø OG hagl (samme dag)",
-  "Sorterte søppel så nøye at kommunen sendte takkebrev",
+  "Ryddet i søpla så nøye at kommunen sendte takkebrev",
   "Lærte papegøyen høflige ord i stedet for banneord",
   "Byttet ut sukker med stevia i mormors kaker (ingen merket det)",
   "Hjalp postmannen å bære pakker i tre timer (uten å snoke)",

@@ -312,7 +312,7 @@
         {
           "navn": "frosne-koder.txt",
           "type": "fil",
-          "innhold": "ORAKELETS LOGG FRA SLUSEN – 12. DESEMBER, 02:40\n\nHjerterud nynnet. Tre toner, den dypeste først. Isen på slusen sprakk.\n\nJeg lyttet inn i sprekken. Noe svarte. Jeg har sortert det etter hjertene:\n\nRødt hjerte er varme. Det var Hjerteruds toner.\nGrønt hjerte er håp. Det var isen som sprakk.\nBlått hjerte er kulde og sorg. Det var det som svarte.\n\nDet høres ikke sint ut. Det høres alene ut.\n\nJeg sier ikke dette til IQ ennå. Han vil ikke høre det.\n\n– Orakelet",
+          "innhold": "ORAKELETS LOGG FRA SLUSEN – 12. DESEMBER, 02:40\n\nHjerterud nynnet. Tre toner, den dypeste først. Isen på slusen sprakk.\n\nJeg lyttet inn i sprekken. Noe svarte. Jeg har ordnet det etter hjertene:\n\nRødt hjerte er varme. Det var Hjerteruds toner.\nGrønt hjerte er håp. Det var isen som sprakk.\nBlått hjerte er kulde og sorg. Det var det som svarte.\n\nDet høres ikke sint ut. Det høres alene ut.\n\nJeg sier ikke dette til IQ ennå. Han vil ikke høre det.\n\n– Orakelet",
           "unlockConditions": {
             "requiresSolvedDecryption": "frosne-koder"
           }

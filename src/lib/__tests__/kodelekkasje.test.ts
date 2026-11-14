@@ -18,12 +18,14 @@ const ALLOWED = new Set(["LANDÅS"]);
 const KNOWN = new Set<string>([]);
 
 // Inflected forms that do not contain the code as written. Related words of
-// another class («sortere» for SORTERING) are everyday verbs and do not count.
+// another class are everyday words and do not count, except the stem
+// «sorter-» (Hans 14.11: too close to day 16's code).
 const FORMER: Record<string, string[]> = {
   GULROT: ["gulrøt"],
   STJERNEKLART: ["stjerneklar"],
   KULDE: ["kulda"],
   TURBULENS: ["turbulent"],
+  SORTERING: ["sorter"],
 };
 
 // «Nord-lys» and «Nord\u00ADlys» read as one word
