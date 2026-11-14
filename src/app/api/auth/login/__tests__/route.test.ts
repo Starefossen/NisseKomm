@@ -16,6 +16,8 @@ import { hasRole } from "@/lib/auth";
 import * as logoutRoute from "../../logout/route";
 
 const ORIGIN = "https://nissekomm.no";
+// Client address as the trusted proxy would append it.
+let ip = "10.0.0.1";
 
 async function login(
   body: unknown,
@@ -33,6 +35,7 @@ async function login(
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
         "X-Forwarded-Proto": proto,
+        "X-Forwarded-For": `6.6.6.6, ${ip}`,
       };
       if (origin) headers.Origin = origin;
       if (cookie) headers.Cookie = cookie;
@@ -59,6 +62,7 @@ beforeEach(() => {
   env.NISSEKOMM_MODE = "lan";
   env.TRUST_PROXY = "1";
   memoryStore.reset();
+  ip = "10.0.0.1";
 });
 
 describe("POST /api/auth/login", () => {
@@ -178,18 +182,43 @@ describe("POST /api/auth/login", () => {
     expect(res.cookie).toBeNull();
   });
 
-  it("throttles to 1/s after 20 failures but still lets the kids in", async () => {
-    for (let i = 0; i < 21; i++) {
-      expect((await login({ code: `feil ${i}` })).status).toBe(401);
+  it("answers 429 past the IP limit without locking out another IP", async () => {
+    ip = "6.6.6.6";
+    const codes = Array.from({ length: 400 }, (_, i) => `feil ${i}`);
+    const statuses = [];
+    for (const code of codes) statuses.push((await login({ code })).status);
+    expect(statuses.filter((s) => s === 401)).toHaveLength(10);
+    expect(statuses.filter((s) => s === 429)).toHaveLength(390);
+    // Even the right code waits out the window from the flooding IP.
+    expect((await login({ code: "snø lykt elg" })).status).toBe(429);
+    ip = "10.0.0.2";
+    expect((await login({ code: "snø lykt elg" })).status).toBe(200);
+  });
+
+  it("counts a parallel burst before comparing", async () => {
+    ip = "6.6.6.7";
+    const res = await Promise.all(
+      Array.from({ length: 30 }, (_, i) => login({ code: `feil ${i}` })),
+    );
+    expect(res.filter((r) => r.status === 401)).toHaveLength(10);
+    expect(res.filter((r) => r.status === 429)).toHaveLength(20);
+  });
+
+  it("past the global limit only lets in IPs with no earlier attempt", async () => {
+    for (let i = 0; i < 200; i++) {
+      ip = `7.0.${i >> 8}.${i & 255}`;
+      expect((await login({ code: "feil" })).status).toBe(401);
     }
-    const start = Date.now();
-    const [a, b] = await Promise.all([
-      login({ code: "feil igjen" }),
-      login({ code: "snø lykt elg" }),
-    ]);
-    expect(a.status).toBe(401);
-    expect(b.status).toBe(200);
-    expect(Date.now() - start).toBeGreaterThanOrEqual(1900);
+    ip = "7.0.0.1"; // already failed once in this window
+    expect((await login({ code: "snø lykt elg" })).status).toBe(429);
+    ip = "10.9.9.9";
+    expect((await login({ code: "snø lykt elg" })).status).toBe(200);
+  });
+
+  it("rejects an Origin with the wrong scheme on https", async () => {
+    expect(
+      (await login({ code: "snø lykt elg" }, "http://nissekomm.no")).status,
+    ).toBe(403);
   });
 
   it("rejects cross-origin, missing origin and oversized bodies", async () => {

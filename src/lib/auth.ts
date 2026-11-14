@@ -18,7 +18,10 @@ const COOKIE_BASE: Record<Role, string> = {
 };
 // X-Forwarded-Proto is client-controlled unless a proxy overwrites it, so it
 // only counts with TRUST_PROXY=1 (set it behind a TLS-terminating proxy).
+// The public production app is always https: a client-sent "http" there must
+// not downgrade the cookie or the Origin check.
 function isHttps(request: NextRequest): boolean {
+  if (process.env.NODE_ENV === "production" && !isLanMode()) return true;
   const proto =
     process.env.TRUST_PROXY === "1"
       ? request.headers.get("x-forwarded-proto")?.split(",")[0].trim()
@@ -43,10 +46,10 @@ const MAX_AGE: Record<Role, number> = {
   kid: 45 * 24 * 60 * 60,
   parent: 12 * 60 * 60,
 };
-const MAX_FAILURES = 20;
+const IP_LIMIT = 10;
+const GLOBAL_LIMIT = 200;
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_BODY = 16 * 1024;
-const THROTTLE_MS = 1000;
 
 /** Lowercase, trim, and treat runs of spaces or hyphens as one separator. */
 export function normalizeCode(code: string): string {
@@ -95,6 +98,12 @@ export async function hasRole(
   return false;
 }
 
+/** Hash of the request's first session cookie, a stable per-session key. */
+export function sessionId(request: NextRequest): string {
+  const t = [...sessionTokens(request, "parent"), ...sessionTokens(request, "kid")][0];
+  return t ? sha256(t) : "ingen";
+}
+
 export const isRole = (v: unknown): v is Role => v === "kid" || v === "parent";
 
 function clearCookies(response: NextResponse, role: Role, schemes: boolean[]) {
@@ -131,6 +140,24 @@ export async function endSessions(
 export const jsonError = (error: string, status: number) =>
   NextResponse.json({ error }, { status });
 
+function sameOrigin(request: NextRequest, o: URL | null, host: string | null) {
+  if (!o || o.host !== host) return false;
+  return !isHttps(request) || o.protocol === "https:";
+}
+
+/** Same-origin check alone, for bodyless writes such as DELETE. */
+export function checkOrigin(request: NextRequest): NextResponse | null {
+  let o: URL | null = null;
+  try {
+    o = new URL(request.headers.get("origin") ?? "");
+  } catch {
+    // missing or malformed
+  }
+  return sameOrigin(request, o, request.headers.get("host"))
+    ? null
+    : jsonError("Ugyldig forespørsel", 403);
+}
+
 /** Same-origin POST with a small JSON object body, or an error response. */
 export async function readJsonBody(
   request: NextRequest,
@@ -138,13 +165,13 @@ export async function readJsonBody(
   const origin = request.headers.get("origin");
   // Host only: the gateway enforces Host == SNI; X-Forwarded-Host is client-set.
   const host = request.headers.get("host");
-  let originHost: string | null = null;
+  let originUrl: URL | null = null;
   try {
-    originHost = origin ? new URL(origin).host : null;
+    originUrl = origin ? new URL(origin) : null;
   } catch {
     // malformed Origin is rejected below
   }
-  if (!originHost || originHost !== host) {
+  if (!sameOrigin(request, originUrl, host)) {
     return jsonError("Ugyldig forespørsel", 403);
   }
   const length = Number(request.headers.get("content-length"));
@@ -161,25 +188,53 @@ export async function readJsonBody(
   return jsonError("Ugyldig forespørsel", 400);
 }
 
-let throttle: Promise<void> = Promise.resolve();
-const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+/**
+ * The client's address. Behind a trusted proxy (TRUST_PROXY=1) that is the
+ * right-most X-Forwarded-For hop, the one the proxy appended itself; the
+ * entries left of it are client-set. Without one, Next's own header can't be
+ * told apart from a client's, so every caller shares one bucket.
+ */
+export function clientIp(request: NextRequest): string {
+  if (process.env.TRUST_PROXY !== "1") return "direkte";
+  // ponytail: one trusted hop; count from the right if a second proxy is added
+  const hops = request.headers.get("x-forwarded-for")?.split(",") ?? [];
+  return hops.at(-1)?.trim() || "ukjent";
+}
+
+export type CheckResult = Role | null | { retryAfter: number };
 
 /**
- * Checks a code against both env codes. Past 20 failures in 10 minutes,
- * attempts queue behind one chain at 1/s: brute force stays impractical
- * and the kids still get in.
+ * Checks a code against both env codes. Every attempt is counted before the
+ * comparison (a parallel burst can't slip past the count) and a success
+ * clears its IP. Past IP_LIMIT an IP gets 429; past GLOBAL_LIMIT only IPs
+ * with no earlier attempt in the window get through, so a flood from many
+ * addresses never locks out a family member who hasn't mistyped.
  */
-export async function checkCode(code: string): Promise<Role | null> {
-  if ((await getStore().failureCount(WINDOW_MS)) > MAX_FAILURES) {
-    await (throttle = throttle.then(() => sleep(THROTTLE_MS)));
+export async function checkCode(
+  code: string,
+  request: NextRequest,
+  role_hint = "",
+): Promise<CheckResult> {
+  const ip = clientIp(request);
+  const store = getStore();
+  const n = await store.hit(`ip:${ip}`, WINDOW_MS);
+  const retryAfter = { retryAfter: WINDOW_MS / 1000 };
+  if (n > IP_LIMIT) return retryAfter;
+  if ((await store.hit("global", WINDOW_MS)) > GLOBAL_LIMIT && n > 1) {
+    return retryAfter;
   }
   const input = hashCode(code);
   // Both comparisons always run so timing doesn't reveal which code matched.
   const kid = matches(input, process.env.KID_CODE);
   const parent = matches(input, process.env.PARENT_CODE) && isLanMode();
-  if (parent) return "parent";
-  if (kid) return "kid";
-  await getStore().addFailure(WINDOW_MS);
+  const role = parent ? "parent" : kid ? "kid" : null;
+  if (role) {
+    await store.clearHits(`ip:${ip}`);
+    return role;
+  }
+  console.warn(
+    `[auth] feil innlogging ip=${ip} rolle=${role_hint || "?"} tid=${new Date().toISOString()}`,
+  );
   return null;
 }
 

@@ -146,8 +146,16 @@ describe("Postgres store (pg-mem)", () => {
     await store.deleteSession("h");
     expect(await store.getSession("h")).toBeNull();
 
-    await store.addFailure(60_000);
-    expect(await store.addFailure(60_000)).toBe(2);
+    await store.hit("ip:a", 60_000);
+    expect(await store.hit("ip:a", 60_000)).toBe(2);
+    await store.clearHits("ip:a");
+    expect(await store.hit("ip:a", 60_000)).toBe(1);
+    const burst = await Promise.all(
+      Array.from({ length: 20 }, () => store.hit("ip:b", 60_000)),
+    );
+    expect(burst.sort((x, y) => x - y)).toEqual(
+      Array.from({ length: 20 }, (_, i) => i + 1),
+    );
 
     await store.putState("nissekomm-julius-watched", null, true);
     expect((await store.getState())["state-version"]).toBe(1);

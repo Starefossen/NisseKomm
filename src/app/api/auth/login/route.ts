@@ -18,7 +18,17 @@ export async function POST(request: NextRequest) {
     if (typeof body.code !== "string" || !body.code.trim()) {
       return jsonError("Ugyldig kode", 400);
     }
-    const role = await checkCode(body.code);
+    // Which login page the attempt came from, for the failure log only.
+    const side = request.headers.get("referer")?.includes("/nissemor-guide")
+      ? "parent"
+      : "kid";
+    const role = await checkCode(body.code, request, side);
+    if (role && typeof role === "object") {
+      return NextResponse.json(
+        { error: "For mange forsøk. Vent litt og prøv igjen." },
+        { status: 429, headers: { "Retry-After": String(role.retryAfter) } },
+      );
+    }
     if (!role) return jsonError("Ugyldig kode", 401);
 
     // The kid code doubles as {{KID_CODE}} in puzzles, so the client keeps it.

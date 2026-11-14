@@ -10,7 +10,13 @@
  * (day solved, bonus approved, frost off) fan out through notify().
  */
 import { NextRequest, NextResponse } from "next/server";
-import { hasRole, jsonError, readJsonBody } from "@/lib/auth";
+import {
+  checkOrigin,
+  hasRole,
+  jsonError,
+  readJsonBody,
+  sessionId,
+} from "@/lib/auth";
 import {
   STATE_KEYS,
   VERSION_KEY,
@@ -55,6 +61,9 @@ export async function GET(request: NextRequest) {
   );
 }
 
+const PUT_PER_MIN = 60;
+const MAX_KEY_BYTES = 512 * 1024;
+
 export async function PUT(request: NextRequest) {
   if (storageBackend() !== "server")
     return new NextResponse(null, { status: 204 });
@@ -62,6 +71,8 @@ export async function PUT(request: NextRequest) {
     return jsonError("Ikke innlogget", 401);
   const body = await readJsonBody(request);
   if (body instanceof NextResponse) return body;
+  if ((await getStore().hit(`put:${sessionId(request)}`, 60_000)) > PUT_PER_MIN)
+    return jsonError("For mange lagringer", 429);
   const { key, value, replace, version } = body;
   if (typeof key !== "string" || !STATE_KEYS.has(key) || value === undefined) {
     return jsonError("Ugyldig nøkkel", 400);
@@ -77,6 +88,10 @@ export async function PUT(request: NextRequest) {
   const store = getStore();
   const state = await store.getState();
   const current = Number(state[VERSION_KEY] ?? 0);
+  // A merge can at most add the two together.
+  const size = (v: unknown) => JSON.stringify(v ?? null).length;
+  if (replace !== true && size(state[key]) + size(value) > MAX_KEY_BYTES)
+    return jsonError("For mye data", 413);
   // ponytail: check-then-write race between two PUTs; fine for one family.
   if (typeof version === "number" && version < current) {
     return NextResponse.json(
@@ -100,6 +115,8 @@ export async function DELETE(request: NextRequest) {
       ? jsonError("Bare for foreldre", 403)
       : jsonError("Ikke innlogget", 401);
   }
+  const nei = checkOrigin(request);
+  if (nei) return nei;
   await resetState();
   return NextResponse.json({ reset: true });
 }
