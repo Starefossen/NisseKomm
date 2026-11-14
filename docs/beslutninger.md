@@ -182,7 +182,6 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - 2026-11-14: Merkevarselet vises én gang på hver skjerm, også når merket ble vunnet på en annen. Merker, kryptofiler og moduler avledes fra synkede løsninger. Hvorfor: skjermen som løste, var den eneste som delte ut og viste merket.
 - 2026-11-14: Sesongbytte og nullstilling arkiverer alltid familiens fremdrift på serveren først (kv_arkiv), og skjermene sletter aldri serverdata selv. Hvorfor: brev, rekorder og merker skal bli «minner», ikke forsvinne ved neste SEASON.
 - 2026-11-14: Nissemor-guiden blir en PWA med web push (I kveld kl. 20, løst kode, feil, agent som trenger svar). Barneappen får ingen service worker. Hvorfor: foreldrene skal få varsel på telefonen uten å åpne guiden.
-  ||||||| parent of ec5e84b (README: ingen spoilere, sesongen 2026, skjermbilder; beslutning om offentlig repo)
 - 2026-11-14: Repoet forblir offentlig selv om koder, svar, historien og barnas navn er lesbare der. Hvorfor: Hans aksepterer risikoen; README ber om ingen spoilere.
 
 ## Besvart i Gjennomgang
