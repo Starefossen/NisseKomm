@@ -24,7 +24,7 @@ import {
   frostModeFor,
   isFrostDay,
 } from "@/lib/frost";
-import { getStore, resetState } from "@/lib/db";
+import { arkiverOgNullstill, getStore } from "@/lib/db";
 import { mediaUrl } from "@/lib/media";
 import {
   LANDSBY_EVENT_SECONDS,
@@ -1197,7 +1197,7 @@ export const TOOLS: Record<string, Tool> = {
     description: "Nullstill all delt spilltilstand.",
     inputSchema: { type: "object", properties: {} },
     run: async () => {
-      await resetState();
+      await arkiverOgNullstill("mcp");
       return { reset: true };
     },
   },

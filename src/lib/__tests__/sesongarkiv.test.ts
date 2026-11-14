@@ -309,3 +309,14 @@ describe("minner", () => {
     expect(m).toMatchObject({ brev: {}, merker: [], dagerLøst: [] });
   });
 });
+
+it("the MCP reset tool archives before it clears", async () => {
+  const { callTool } = await import("../mcp/tools");
+  const { getStore } = await import("../db");
+  const store = getStore();
+  await store.putState("nissekomm-intros-seen", ["mcp"], true);
+  await callTool("parent", "reset");
+  const liste = await store.arkiv(SEASON);
+  expect(liste.at(-1)?.grunn).toBe("mcp");
+  expect((await store.getState())["nissekomm-intros-seen"] ?? null).toBeNull();
+});

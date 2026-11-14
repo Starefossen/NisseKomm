@@ -9,7 +9,9 @@ import {
   fjernSub,
   kveldMelding,
   lagreSub,
+  lekkerTekst,
   lesSubs,
+  pushVert,
   renskSub,
   sendKveld,
 } from "@/lib/notify/push";
@@ -25,22 +27,57 @@ describe("push subscriptions", () => {
   it("validates and keeps only known types", () => {
     expect(sub("http://x")).toBeNull();
     expect(renskSub({ subscription: { endpoint: "https://x" } })).toBeNull();
-    expect(sub("https://x", ["kode", "tull"])?.typer).toEqual(["kode"]);
-    expect(sub("https://x")?.typer).toEqual(["kveld", "kode", "feil", "agent"]);
+    expect(
+      sub("https://web.push.apple.com/x", ["kode", "tull"])?.typer,
+    ).toEqual(["kode"]);
+    expect(sub("https://web.push.apple.com/x")?.typer).toEqual([
+      "kveld",
+      "kode",
+      "feil",
+      "agent",
+    ]);
+  });
+
+  it("allows only the browser push services (SSRF)", () => {
+    for (const ok of [
+      "https://web.push.apple.com/abc",
+      "https://fcm.googleapis.com/fcm/send/abc",
+      "https://updates.push.services.mozilla.com/wpush/v2/abc",
+      "https://wns2-db5p.notify.windows.com/w/?token=abc",
+    ])
+      expect(pushVert(ok)).toBe(true);
+    for (const nei of [
+      "https://localhost/x",
+      "https://10.0.0.1/x",
+      "https://fcm.googleapis.com.evil.no/x",
+      "https://evilpush.apple.com/x",
+      "https://fcm.googleapis.com:8443/x",
+      "http://fcm.googleapis.com/x",
+    ])
+      expect(pushVert(nei)).toBe(false);
+  });
+
+  it("agent text filter catches names and word codes", () => {
+    expect(lekkerTekst("Se på dag 4", ["Kristian"], ["NORDLYS"])).toBe(false);
+    expect(lekkerTekst("hei kristian", ["Kristian"], ["NORDLYS"])).toBe(true);
+    expect(lekkerTekst("koden er nordlys", ["Kristian"], ["NORDLYS"])).toBe(
+      true,
+    );
+    expect(lekkerTekst("dag 12", [], ["12"])).toBe(false);
   });
 
   it("stores one per device and removes", async () => {
     const store = createMemoryStore();
-    await lagreSub(store, sub("https://a", ["kode"])!);
-    await lagreSub(store, sub("https://a", ["kveld"])!);
-    await lagreSub(store, sub("https://b")!);
+    await lagreSub(store, sub("https://fcm.googleapis.com/a", ["kode"])!);
+    await lagreSub(store, sub("https://fcm.googleapis.com/a", ["kveld"])!);
+    await lagreSub(store, sub("https://fcm.googleapis.com/b")!);
     expect((await lesSubs(store)).map((s) => [s.endpoint, s.typer])).toEqual([
-      ["https://a", ["kveld"]],
-      ["https://b", ["kveld", "kode", "feil", "agent"]],
+      ["https://fcm.googleapis.com/a", ["kveld"]],
+      ["https://fcm.googleapis.com/b", ["kveld", "kode", "feil", "agent"]],
     ]);
-    await fjernSub(store, "https://a");
+    await fjernSub(store, "https://fcm.googleapis.com/a");
     expect((await lesSubs(store)).map((s) => s.endpoint)).toEqual([
-      "https://b",
+      "https://fcm.googleapis.com/b",
     ]);
   });
 });
@@ -60,16 +97,13 @@ describe("20:00 I kveld", () => {
     expect(kveldMelding(new Date("2026-12-07T19:30:00Z"), () => 0)).toBeNull();
   });
 
-  it("sends once per date", async () => {
+  it("does not use up the evening when nothing was delivered", async () => {
     const store = createMemoryStore();
-    const t = new Date("2026-12-07T19:05:00Z");
-    expect(await sendKveld(store, ting, t)).toBe(true);
-    expect(await sendKveld(store, ting, new Date("2026-12-07T21:00:00Z"))).toBe(
+    // No VAPID keys in tests: sendPush delivers nothing.
+    expect(await sendKveld(store, ting, new Date("2026-12-07T19:05:00Z"))).toBe(
       false,
     );
-    expect(await sendKveld(store, ting, new Date("2026-12-08T19:05:00Z"))).toBe(
-      true,
-    );
+    expect(await store.hit("nissekomm-push-sendt:2026-12-07", 1000)).toBe(1);
   });
 
   it("counts every evening's checklist", () => {

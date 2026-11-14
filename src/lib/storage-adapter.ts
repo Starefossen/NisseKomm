@@ -174,6 +174,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     super();
   }
   private live = false;
+  private polling = false;
   private version = 0;
   private reset: unknown = null;
   private pending = new Map<string, Pending>();
@@ -187,7 +188,8 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
   async start(onChange?: () => void): Promise<void> {
     if (onChange) this.onChange = onChange;
     if (this.live) {
-      await this.pull();
+      // After a re-login: send what a 401 held back.
+      if (await this.pull()) void this.flush();
       return;
     }
     // Progress made offline must not be overwritten by the first pull.
@@ -217,8 +219,12 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     }
     for (const [k, v] of offline) if (v != null) this.queue(k, v, false);
     // pull() keeps pending keys, so a stuck write never stops the polling.
+    // Concurrent start() calls can all get here: register the poll once.
+    if (this.polling) return;
+    this.polling = true;
     const poll = () => {
-      if (!this.flushing) this.pull().catch(() => {});
+      if (!this.flushing && getSyncStatus() !== "utlogget")
+        this.pull().catch(() => {});
     };
     // ponytail: 30 s polling; push (SSE) if screens must react faster.
     setInterval(poll, 30_000);
@@ -342,9 +348,15 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
         }
         // Refused for good (400, 413 too big, 403 on the codes, ...): drop
         // only this key, the server's value wins and the others go on.
-        // 401, 408, 429 and any other 403 (Origin/Host) are retried.
-        const forbigående = [401, 403, 408, 409, 429].includes(res.status);
-        if (res.status === 401) setSyncStatus("utlogget");
+        // Session gone: stop until login (start() runs again then); the
+        // keys stay unsynced in localStorage.
+        if (res.status === 401) {
+          setSyncStatus("utlogget");
+          this.markUnsynced([...this.pending.keys()], true);
+          return;
+        }
+        // 408, 429 and any other 403 (Origin/Host) are retried.
+        const forbigående = [403, 408, 409, 429].includes(res.status);
         if (
           (res.status >= 400 && res.status < 500 && !forbigående) ||
           (res.status === 403 && key === CODES_KEY)

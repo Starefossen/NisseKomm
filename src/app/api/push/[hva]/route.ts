@@ -9,7 +9,9 @@ import { jsonError, readJsonBody } from "@/lib/auth";
 import { getStore } from "@/lib/db";
 import { authorizeMedia } from "@/lib/media-server";
 import { antallKveldTing } from "@/lib/guide-sesong";
-import { sendKveld, sendPush } from "@/lib/notify/push";
+import { lekkerTekst, sendKveld, sendPush } from "@/lib/notify/push";
+import { FAMILIE } from "@/lib/familie";
+import { getAllOppdrag } from "@/lib/oppdrag";
 
 export const dynamic = "force-dynamic";
 
@@ -50,10 +52,20 @@ export async function POST(
     return Response.json({ sendt: await sendKveld(store, antallKveldTing) });
   if (hva === "agent") {
     const tekst = kutt(body.tekst, 300);
+    const tittel = kutt(body.tittel, 80) || "En agent trenger svar";
     if (!tekst) return jsonError("Ugyldig forespørsel", 400);
+    // Push text shows on a lock screen: no names, no codes.
+    if (
+      lekkerTekst(
+        `${tittel} ${tekst}`,
+        [...FAMILIE.barn, FAMILIE.hjem],
+        getAllOppdrag().map((o) => o.kode),
+      )
+    )
+      return jsonError("Varselet nevner et navn eller en kode", 400);
     const n = await sendPush(store, {
       type: "agent",
-      title: kutt(body.tittel, 80) || "En agent trenger svar",
+      title: tittel,
       body: tekst,
       url: "/nissemor-guide/vurderinger",
     });

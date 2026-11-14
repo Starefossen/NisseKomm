@@ -27,6 +27,33 @@ export async function lesSubs(store: Store): Promise<PushSub[]> {
   return Array.isArray(v) ? (v as PushSub[]) : [];
 }
 
+// SSRF guard: web-push POSTs to the endpoint, so only the browser push services.
+const PUSH_VERTER =
+  /^(?:[a-z0-9-]+\.)*(?:push\.apple\.com|notify\.windows\.com)$|^(?:fcm\.googleapis\.com|updates\.push\.services\.mozilla\.com)$/;
+export function pushVert(endpoint: string): boolean {
+  try {
+    const u = new URL(endpoint);
+    return u.protocol === "https:" && !u.port && PUSH_VERTER.test(u.hostname);
+  } catch {
+    return false;
+  }
+}
+
+/** True when a text names a kid, the home or a word code (agent push filter). */
+export function lekkerTekst(
+  tekst: string,
+  navn: string[],
+  koder: string[],
+): boolean {
+  const t = tekst.toUpperCase();
+  return (
+    navn.some((n) => t.includes(n.toUpperCase())) ||
+    koder
+      .filter((k) => !/^\d{1,2}$/.test(k))
+      .some((k) => new RegExp(`\\b${k.toUpperCase()}\\b`, "u").test(t))
+  );
+}
+
 /** Validates a browser PushSubscription JSON plus chosen types. */
 export function renskSub(body: Record<string, unknown>): PushSub | null {
   const s = body.subscription as Record<string, unknown> | undefined;
@@ -34,7 +61,7 @@ export function renskSub(body: Record<string, unknown>): PushSub | null {
   const endpoint = s?.endpoint;
   if (
     typeof endpoint !== "string" ||
-    !/^https:\/\//.test(endpoint) ||
+    !pushVert(endpoint) ||
     endpoint.length > 1000 ||
     typeof keys?.p256dh !== "string" ||
     typeof keys?.auth !== "string"
@@ -51,18 +78,23 @@ export function renskSub(body: Record<string, unknown>): PushSub | null {
   };
 }
 
-// ponytail: read-modify-write with replace; two devices subscribing in the same instant can lose one (re-tap fixes it).
+const subsIn = (state: Record<string, unknown>): PushSub[] =>
+  Array.isArray(state[PUSH_KEY]) ? (state[PUSH_KEY] as PushSub[]) : [];
+
+// Under store.låst: no lost subscription when devices race, no version bump.
 export async function lagreSub(store: Store, sub: PushSub) {
-  const liste = (await lesSubs(store)).filter(
-    (s) => s.endpoint !== sub.endpoint,
-  );
-  await store.putState(PUSH_KEY, [...liste, sub].slice(-20), true);
+  await store.låst(async (tx) => {
+    const liste = subsIn(tx.state).filter((s) => s.endpoint !== sub.endpoint);
+    await tx.skriv({ [PUSH_KEY]: [...liste, sub].slice(-20) });
+  });
 }
 
-export async function fjernSub(store: Store, endpoint: string) {
-  const liste = await lesSubs(store);
-  const ny = liste.filter((s) => s.endpoint !== endpoint);
-  if (ny.length !== liste.length) await store.putState(PUSH_KEY, ny, true);
+export async function fjernSub(store: Store, ...endpoints: string[]) {
+  await store.låst(async (tx) => {
+    const liste = subsIn(tx.state);
+    const ny = liste.filter((s) => !endpoints.includes(s.endpoint));
+    if (ny.length !== liste.length) await tx.skriv({ [PUSH_KEY]: ny });
+  });
 }
 
 export interface PushMelding {
@@ -96,6 +128,7 @@ export async function sendPush(
     tag: m.type,
   });
   let ok = 0;
+  const borte: string[] = [];
   await Promise.all(
     subs.map(async (s) => {
       try {
@@ -103,11 +136,12 @@ export async function sendPush(
         ok++;
       } catch (e) {
         const code = (e as { statusCode?: number }).statusCode;
-        if (code === 404 || code === 410) await fjernSub(store, s.endpoint);
+        if (code === 404 || code === 410) borte.push(s.endpoint);
         else console.error("[push] feilet", code ?? e);
       }
     }),
   );
+  if (borte.length) await fjernSub(store, ...borte);
   return ok;
 }
 
@@ -170,8 +204,10 @@ export async function sendKveld(
   if (!m) return false;
   const dato = osloNå(nå).dato;
   // The hit counter is atomic in Postgres: the first caller of the day wins.
-  if ((await store.hit(`${PUSH_SENT_KEY}:${dato}`, 36 * 3600_000)) > 1)
-    return false;
-  await sendPush(store, m);
-  return true;
+  const nøkkel = `${PUSH_SENT_KEY}:${dato}`;
+  // The hit claims the evening atomically; released when nothing was delivered.
+  if ((await store.hit(nøkkel, 36 * 3600_000)) > 1) return false;
+  if (await sendPush(store, m)) return true;
+  await store.clearHits(nøkkel);
+  return false;
 }

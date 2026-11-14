@@ -1,7 +1,10 @@
 // Nissemor-guiden service worker, scope /nissemor-guide/.
 // Caches only hashed static assets and the offline page. Pages and /api/*
 // always go to the network and are never stored: they hold codes and verdicts.
-const CACHE = "nissemor-v1";
+// Bump the version to drop every older cache on activate; within a version
+// the static cache is trimmed to the newest MAX entries (old builds' hashes).
+const CACHE = "nissemor-v2";
+const MAX = 300;
 const OFFLINE = "/nissemor-guide/offline.html";
 
 self.addEventListener("install", (e) => {
@@ -40,7 +43,18 @@ self.addEventListener("fetch", (e) => {
           (hit) =>
             hit ||
             fetch(req).then((res) => {
-              if (res.ok) c.put(req, res.clone());
+              if (res.ok)
+                c.put(req, res.clone()).then(() =>
+                  c
+                    .keys()
+                    .then((ks) =>
+                      Promise.all(
+                        ks
+                          .slice(0, Math.max(0, ks.length - MAX))
+                          .map((k) => c.delete(k)),
+                      ),
+                    ),
+                );
               return res;
             }),
         ),
