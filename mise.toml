@@ -145,7 +145,7 @@ docker build --platform linux/amd64 -t nissekomm:local .
 """
 
 [tasks."image:push"]
-description = "Bygg og push linux/amd64-image til registry.intern.flaatten.org:5000 (:<git-sha> og :latest); krever rent tre"
+description = "Bygg og push linux/amd64-image til registry.intern.flaatten.org:5000 (:<git-sha>, uforanderlige tagger); krever rent tre"
 run = """
 #!/usr/bin/env bash
 set -euo pipefail
@@ -155,7 +155,7 @@ if env | grep -qE '^NEXT_PUBLIC_(MOCK_|TEST_MODE)'; then echo "Fjern NEXT_PUBLIC
 node scripts/sjekk-klientkoder.mjs --build
 SHA=$(git rev-parse --short=12 HEAD)
 REPO=registry.intern.flaatten.org:5000/nissekomm
-docker buildx build --platform linux/amd64 --build-arg GIT_SHA="$SHA" -t "$REPO:$SHA" -t "$REPO:latest" --push .
+docker buildx build --platform linux/amd64 --build-arg GIT_SHA="$SHA" -t "$REPO:$SHA" --push .
 echo "$REPO:$SHA"
 """
 

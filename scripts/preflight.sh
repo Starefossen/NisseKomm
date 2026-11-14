@@ -28,5 +28,5 @@ Før utrulling (Varden, manuelt):
   1. Mediesynk: er MEDIA_DIR i klyngen oppdatert med nye/«tatt i bruk»-filer? (videoer, strek/, audio/)
   2. pg_dump av prod før ny versjon, f.eks.:
        pg_dump "\$DATABASE_URL" -Fc -f nissekomm-\$(date +%Y%m%d-%H%M)-før-$(git rev-parse --short=12 HEAD).dump
-  3. Ruller ut taggen over (ikke :latest), og sjekk etterpå at /api/health svarer sha=$(git rev-parse --short=12 HEAD)
+  3. Ruller ut taggen over, og sjekk etterpå at /api/health svarer sha=$(git rev-parse --short=12 HEAD)
 T
