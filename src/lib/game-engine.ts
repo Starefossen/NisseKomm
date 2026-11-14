@@ -26,7 +26,6 @@ import { getEventyr, getEventyrDays, getEventyrForDay } from "./eventyr";
 import {
   getCurrentDay,
   getCurrentMonth,
-  getISOString,
   getCurrentDate,
   christmasCountdown,
 } from "./date-utils";
@@ -55,7 +54,13 @@ import {
   addCollectedSymbol,
   clearCollectedSymbols,
 } from "./systems/symbol-system";
-import { ALLE_RUNER, getAllQuests, getQuestByDay } from "./data-loader";
+import * as quests from "./systems/quest-system";
+import type {
+  GameState,
+  QuestResult,
+  ContentUnlockResult,
+} from "./systems/quest-system";
+import { ALLE_RUNER, getAllQuests } from "./data-loader";
 import {
   Badge,
   Oppdrag,
@@ -89,38 +94,6 @@ import {
 } from "./opplasinger";
 
 const ALL_QUESTS = getAllQuests();
-
-interface GameState {
-  completedQuests: Set<number>;
-  submittedCodes: string[];
-  completedBonusOppdrag: Set<number>;
-  unlockedModules: Set<string>;
-  viewedMainEmails: Set<number>;
-  viewedBonusOppdragEmails: Set<number>;
-  unlockedTopics: Map<string, number>;
-  santaLetters: Array<{ day: number; content: string }>;
-  completedEventyr: Set<string>;
-}
-
-interface QuestResult {
-  success: boolean;
-  isNewCompletion: boolean;
-  message: string;
-  /** A bonus quest's parent code was typed: the day it approves. */
-  bonusDag?: number;
-  /** Too many tries: seconds to wait (the server's rate limit). */
-  ventSek?: number;
-  /** The check never got an answer (network, server error): not a wrong code. */
-  nettfeil?: boolean;
-  /** 401: the session is gone, the app shows the login again. */
-  utlogget?: boolean;
-}
-
-interface ContentUnlockResult {
-  files: string[];
-  symbols: Array<{ symbolId: string; symbolIcon: string; description: string }>;
-  topics: string[];
-}
 
 interface DecryptionValidationResult {
   correct: boolean;
@@ -200,77 +173,7 @@ export class GameEngine {
    * Load complete game state from storage
    */
   static loadGameState(): GameState {
-    if (typeof window === "undefined") {
-      return this.getEmptyState();
-    }
-
-    const submittedCodes = StorageManager.getSubmittedCodes();
-    const allQuests = ALL_QUESTS;
-
-    const completedQuests = new Set<number>();
-    // Every entry has its day: the server writes it (api/kode, api/state).
-    submittedCodes.forEach((entry) => {
-      if (entry.day !== undefined) completedQuests.add(entry.day);
-    });
-
-    const completedBonusOppdrag = new Set<number>();
-
-    allQuests.forEach((quest) => {
-      if (quest.bonusoppdrag) {
-        const isCompleted = this.isBonusOppdragCompleted(quest);
-        if (isCompleted) {
-          completedBonusOppdrag.add(quest.dag);
-        }
-      }
-    });
-
-    // Compute eventyr completion using total phase count from getEventyrDays
-    const eventyrIds = new Set<string>();
-    allQuests.forEach((quest) => {
-      if (quest.eventyr) {
-        eventyrIds.add(quest.eventyr.id);
-      }
-    });
-
-    const completedEventyrList: string[] = [];
-    eventyrIds.forEach((eventyrId) => {
-      const allDaysForEventyr = getEventyrDays(eventyrId);
-      if (
-        allDaysForEventyr.length > 0 &&
-        allDaysForEventyr.every((day) => completedQuests.has(day))
-      ) {
-        completedEventyrList.push(eventyrId);
-      }
-    });
-
-    return {
-      completedQuests,
-      submittedCodes: submittedCodes.map((c) => c.kode),
-      completedBonusOppdrag,
-      unlockedModules: new Set(this.modulesFor(completedQuests)),
-      viewedMainEmails: StorageManager.getViewedEmails(),
-      viewedBonusOppdragEmails: StorageManager.getViewedBonusOppdragEmails(),
-      unlockedTopics: StorageManager.getUnlockedTopics(),
-      santaLetters: StorageManager.getSantaLetters(),
-      completedEventyr: new Set(completedEventyrList),
-    };
-  }
-
-  /**
-   * Get empty/initial game state
-   */
-  private static getEmptyState(): GameState {
-    return {
-      completedQuests: new Set(),
-      submittedCodes: [],
-      completedBonusOppdrag: new Set(),
-      unlockedModules: new Set(),
-      viewedMainEmails: new Set(),
-      viewedBonusOppdragEmails: new Set(),
-      unlockedTopics: new Map(),
-      santaLetters: [],
-      completedEventyr: new Set(),
-    };
+    return quests.loadGameState();
   }
 
   /**
@@ -330,53 +233,21 @@ export class GameEngine {
    * sim.solveUntil with the codes from /api/kode/fasit).
    */
   static recordSolve(day: number, kode: string): QuestResult {
-    const currentState = this.loadGameState();
-    const isNewCompletion = !currentState.completedQuests.has(day);
-
-    if (!isNewCompletion) {
-      // The solve may have reached this screen by sync (lost reply, other
-      // screen): badges are derived, so award what is due.
-      BadgeManager.checkAndAwardAllEligibleBadges();
-      return {
-        success: true,
-        isNewCompletion: false,
-        message: "KODEN ER ALLEREDE REGISTRERT",
-      };
-    }
-
-    StorageManager.addSubmittedCode({
-      kode,
-      dato: getISOString(),
-      day, // Store day for reliable matching
-    });
-
-    StorageManager.resetFailedAttempts(day);
-
-    this.processContentUnlocks(day);
-
-    BadgeManager.checkAndAwardAllEligibleBadges();
-
-    return {
-      success: true,
-      isNewCompletion: true,
-      message: "KODE AKSEPTERT!",
-    };
+    return quests.recordSolve(day, kode);
   }
 
   /**
    * Check if a quest day is completed
    */
   static isQuestCompleted(day: number): boolean {
-    const state = this.loadGameState();
-    return state.completedQuests.has(day);
+    return quests.isQuestCompleted(day);
   }
 
   /**
    * Get total number of completed quests
    */
   static getCompletedQuestCount(): number {
-    const state = this.loadGameState();
-    return state.completedQuests.size;
+    return quests.getCompletedQuestCount();
   }
 
   static isJuliusVideoWatched(day: number): boolean {
@@ -575,8 +446,7 @@ export class GameEngine {
   }
 
   static getCompletedDays(): Set<number> {
-    const state = this.loadGameState();
-    return state.completedQuests;
+    return quests.getCompletedDays();
   }
 
   static getSubmittedCodes(): InnsendelseLog[] {
@@ -603,9 +473,7 @@ export class GameEngine {
    * Check if a bonus quest is completed
    */
   static isBonusOppdragCompleted(quest: Oppdrag): boolean {
-    if (!quest.bonusoppdrag) return false;
-
-    return StorageManager.isBonusOppdragCompleted(quest.dag);
+    return quests.isBonusOppdragCompleted(quest);
   }
 
   /**
@@ -624,26 +492,7 @@ export class GameEngine {
    * "krypto mangler" variant while the day's decryption is still unsolved
    */
   static getJuliusPs(day: number): string | undefined {
-    const quest = getQuestByDay(day);
-    if (!quest) return undefined;
-    if (quest.julius_ps_krypto_mangler) {
-      // The most recent decryption before this day (day 20: stjernetegn)
-      const latest = ALL_QUESTS.filter(
-        (q) => q.dag <= day && q.decryption_challenge,
-      ).at(-1)?.decryption_challenge;
-      if (latest && !StorageManager.isDecryptionSolved(latest.challengeId)) {
-        return quest.julius_ps_krypto_mangler;
-      }
-    }
-    if (quest.julius_ps_bonus && this.isLyktBonusCompleted(day)) {
-      return quest.julius_ps_bonus;
-    }
-    return quest.julius_ps;
-  }
-
-  // Day 11 PS follows its own bonus; days 16-19 follow the lantern (day 16)
-  private static isLyktBonusCompleted(day: number): boolean {
-    return StorageManager.isBonusOppdragCompleted(day >= 16 ? 16 : day);
+    return quests.getJuliusPs(day);
   }
 
   /**
@@ -660,36 +509,16 @@ export class GameEngine {
     return this.getUnlockedModules().includes(moduleId);
   }
 
-  /**
-   * Derived, never stored, so a season reset on one screen applies on all:
-   * a day's modules open on its morning in December (storyboard S1), or
-   * once the day is solved.
-   */
-  private static modulesFor(solved: Set<number>): string[] {
-    const des = getCurrentMonth() === 12;
-    const day = getCurrentDay();
-    return ALL_QUESTS.filter(
-      (q) => solved.has(q.dag) || (des && q.dag <= day),
-    ).flatMap((q) => q.reveals?.modules ?? []);
-  }
-
   /** December day a module opens (its quest's reveals), null if never. */
   static getModuleUnlockDay(moduleId: string): number | null {
-    return (
-      ALL_QUESTS.find((q) => q.reveals?.modules?.includes(moduleId))?.dag ??
-      null
-    );
+    return quests.getModuleUnlockDay(moduleId);
   }
 
   /**
    * Get all unlocked modules
    */
   static getUnlockedModules(): string[] {
-    if (typeof window === "undefined") return [];
-    const solved = new Set(
-      StorageManager.getSubmittedCodes().map((c) => c.day),
-    );
-    return [...new Set(this.modulesFor(solved as Set<number>))];
+    return quests.getUnlockedModules();
   }
 
   static markEmailAsViewed(day: number, isBonusOppdrag: boolean = false): void {
@@ -749,22 +578,7 @@ export class GameEngine {
    * Process content unlocks when a quest is completed
    */
   static processContentUnlocks(day: number): void {
-    const quest = getQuestByDay(day);
-    if (!quest || !quest.reveals) return;
-
-    if (quest.reveals.files) {
-      quest.reveals.files.forEach((fileId) => {
-        StorageManager.addUnlockedFile(fileId);
-      });
-    }
-
-    if (quest.reveals.topics) {
-      quest.reveals.topics.forEach((topic) => {
-        StorageManager.unlockTopic(topic, day);
-      });
-    }
-
-    // Symbols require physical collection (QR scanning or parent addition)
+    return quests.processContentUnlocks(day);
   }
 
   /**
@@ -919,16 +733,7 @@ export class GameEngine {
    * Get newly unlocked content for a completed quest
    */
   static getNewlyUnlockedContent(day: number): ContentUnlockResult {
-    const quest = getQuestByDay(day);
-    if (!quest || !quest.reveals) {
-      return { files: [], symbols: [], topics: [] };
-    }
-
-    return {
-      files: quest.reveals.files || [],
-      symbols: quest.symbol_clue ? [quest.symbol_clue] : [],
-      topics: quest.reveals.topics || [],
-    };
+    return quests.getNewlyUnlockedContent(day);
   }
 
   /**
@@ -1078,8 +883,7 @@ export class GameEngine {
    * Get progression percentage (0-100)
    */
   static getProgressionPercentage(): number {
-    const completed = this.getCompletedQuestCount();
-    return Math.round((completed / 24) * 100);
+    return quests.getProgressionPercentage();
   }
 
   /**
@@ -1107,41 +911,7 @@ export class GameEngine {
    * Get detailed progression summary
    */
   static getProgressionSummary() {
-    const state = this.loadGameState();
-    const allQuests = ALL_QUESTS;
-
-    const bonusOppdragAvailable = allQuests.filter(
-      (q) => q.bonusoppdrag,
-    ).length;
-    const bonusOppdragCompleted = state.completedBonusOppdrag.size;
-
-    // Get badge counts from BadgeManager (centralized badge system)
-    const allBadges = BadgeManager.getAllBadges();
-    const earnedBadges = BadgeManager.getEarnedBadges();
-
-    return {
-      mainQuests: {
-        completed: state.completedQuests.size,
-        total: 24,
-        percentage: this.getProgressionPercentage(),
-      },
-      bonusOppdrag: {
-        completed: bonusOppdragCompleted,
-        available: bonusOppdragAvailable,
-        percentage: Math.round(
-          (bonusOppdragCompleted / bonusOppdragAvailable) * 100,
-        ),
-      },
-      badges: {
-        earned: earnedBadges.length,
-        total: allBadges.length,
-      },
-      modules: {
-        unlocked: state.unlockedModules.size,
-        total: 7, // NISSEKRYPTO, SYMBOLSKANNER, NISSESPILL, SLEDEFLUKT, NISSEMUSIKK, BREVFUGLER, NISSESTATS
-      },
-      isComplete: this.isGameComplete(),
-    };
+    return quests.getProgressionSummary();
   }
 
   /**
