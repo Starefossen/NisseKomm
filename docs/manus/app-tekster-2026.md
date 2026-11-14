@@ -289,7 +289,7 @@ Per dag: felt i rekkefølgen `tittel` · `nissemail_tekst` · `julius_ps` · `da
 
 - `tittel`: Skriften på vingen
 - `nissemail_tekst` (82 ord): Det har vært krig i stua. 🍬 Jeg og kosedyrene, marshmallows, hvert vårt fort. Og: brevfuglen jeg sendte til Julius, årets første, kom hjem i natt. Winter har skrevet noe rart på vingen, for han er sikker på at noen leser alt som flyr over linjen. Fant dere fuglen, og hopperen ved den? Hanna, hvis du vil: du legger hopperen inntil. Kristian: Winter har en regel for det han skrev. Julius sier den, men ikke med tall. Dere har hørt tallet før. – Rampenissen
-- `julius_ps`: Marshmallows i sofaen, marshmallows i gardinene, én bamse med plaster. Rampenissen kaller det «forsvar av linjen». Winter er lettet over at fuglen kom fram; han skriver alt kryptert fra nå, og på vingen sto Ulriken, fjellet fuglene styrer etter når de skal til dere.
+- `julius_ps`: Marshmallows i sofaen, marshmallows i gardinene, én bamse med plaster. Rampenissen kaller det «forsvar av linjen». Winter er lettet over at fuglen kom fram; han skriver alt kryptert fra nå, og på vingen sto Ulriken, fjellet fuglene deres styrer etter når de letter hjemmefra.
 - `daily_alerts`: 📋 WINTER: Første brevfugl over Bergen. Alt jeg skriver er kryptert fra nå.
 - NisseNet: `SNOFALL-HISTORIER/alfabet.txt` **ny** (`afterDay: 5`, brukes igjen dag 22):
 

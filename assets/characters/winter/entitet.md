@@ -34,7 +34,7 @@
     },
     {
       "fra_dag": 5,
-      "tekst": "skrev Ulriken på vingen: fjellet brevfuglene styrer etter når de skal til barna"
+      "tekst": "skrev Ulriken på vingen: fjellet barnas brevfugler styrer etter når de letter hjemmefra"
     },
     {
       "fra_dag": 16,
