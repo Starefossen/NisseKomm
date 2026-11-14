@@ -11,7 +11,9 @@ import { Utskrift } from "../_print/Utskrift";
 export function Diplom() {
   const [navn] = useState<string[]>(() => {
     const lagret = GameEngine.getPlayerNames();
-    return lagret.length > 0 ? lagret : ["Kristian", "Håkon", "Hanna"].map(fyll);
+    return lagret.length > 0
+      ? lagret
+      : ["Kristian", "Håkon", "Hanna"].map(fyll);
   });
   return (
     <Utskrift

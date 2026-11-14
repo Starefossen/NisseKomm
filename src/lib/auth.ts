@@ -100,7 +100,10 @@ export async function hasRole(
 
 /** Hash of the request's first session cookie, a stable per-session key. */
 export function sessionId(request: NextRequest): string {
-  const t = [...sessionTokens(request, "parent"), ...sessionTokens(request, "kid")][0];
+  const t = [
+    ...sessionTokens(request, "parent"),
+    ...sessionTokens(request, "kid"),
+  ][0];
   return t ? sha256(t) : "ingen";
 }
 

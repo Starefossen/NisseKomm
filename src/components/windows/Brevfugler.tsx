@@ -154,10 +154,12 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
 
   const dagensFugler = letters.filter((l) => l.day === dag && l.from);
   const skrivere = SKRIVERE.map((s) => ({ ...s, navn: fyll(s.navn) }));
-  const perSkriver = skrivere.map(({ navn }) => ({
-    navn,
-    antall: letters.filter((l) => l.from === navn).length,
-  })).filter((s) => s.antall > 0);
+  const perSkriver = skrivere
+    .map(({ navn }) => ({
+      navn,
+      antall: letters.filter((l) => l.from === navn).length,
+    }))
+    .filter((s) => s.antall > 0);
   const blaFugl = frossent && dag >= BLA_FUGL_FRA_DAG;
 
   return (
