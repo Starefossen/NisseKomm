@@ -1,6 +1,7 @@
 "use client";
 
 import { lastFamilie } from "@/lib/navn";
+import { StorageManager } from "@/lib/storage";
 import {
   useState,
   useCallback,
@@ -214,7 +215,10 @@ export function GuideAuth({
   const { authenticated, isLoading, logout, setAuthenticated } = authState;
 
   const handleLoginSuccess = useCallback(() => {
-    void lastFamilie().then(() => setAuthenticated(true));
+    // sync(): a tab that got a 401 pulls again and sends what it held back.
+    void Promise.all([StorageManager.sync(), lastFamilie()]).then(() =>
+      setAuthenticated(true),
+    );
   }, [setAuthenticated]);
 
   if (isLoading) {

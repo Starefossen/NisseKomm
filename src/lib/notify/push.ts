@@ -202,6 +202,8 @@ export function kveldMelding(
   };
 }
 
+const KVELD_FORSØK = 3;
+
 /** Sends tonight's message once per Oslo date. Returns whether it sent now. */
 export async function sendKveld(
   store: Store,
@@ -216,6 +218,9 @@ export async function sendKveld(
   // The hit claims the evening atomically; released when nothing was delivered.
   if ((await store.hit(nøkkel, 36 * 3600_000)) > 1) return false;
   if (await sendPush(store, m)) return true;
-  await store.clearHits(nøkkel);
+  // The minute timer calls again: three tries a day, then the claim stays.
+  if ((await store.hit(`${nøkkel}:forsøk`, 36 * 3600_000)) < KVELD_FORSØK)
+    await store.clearHits(nøkkel);
+  else console.warn(`[push] kveld ${dato}: ingen levert, gir opp for i dag`);
   return false;
 }

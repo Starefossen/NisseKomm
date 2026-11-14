@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import { describe, expect, it } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
 import { createMemoryStore } from "@/lib/db";
 import { getAllOppdrag } from "@/lib/oppdrag";
 import { antallKveldTing } from "@/lib/guide-sesong";
@@ -113,6 +113,20 @@ describe("20:00 I kveld", () => {
       false,
     );
     expect(await store.hit("nissekomm-push-sendt:2026-12-07", 1000)).toBe(1);
+  });
+
+  it("gives up after three evenings' tries with nothing delivered", async () => {
+    const store = createMemoryStore();
+    const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const nå = new Date("2026-12-07T19:05:00Z");
+    for (let i = 0; i < 5; i++)
+      expect(await sendKveld(store, ting, nå)).toBe(false);
+    // The claim stays after try three, so tries four and five stop at it.
+    expect(
+      await store.hit("nissekomm-push-sendt:2026-12-07:forsøk", 1000),
+    ).toBe(4);
+    expect(warn).toHaveBeenCalledTimes(1);
+    warn.mockRestore();
   });
 
   it("counts every evening's checklist", () => {

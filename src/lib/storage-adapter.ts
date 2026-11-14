@@ -222,15 +222,26 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     // Concurrent start() calls can all get here: register the poll once.
     if (this.polling) return;
     this.polling = true;
-    const poll = () => {
-      if (!this.flushing && getSyncStatus() !== "utlogget")
-        this.pull().catch(() => {});
+    let tikk = 0;
+    const poll = (fokus = false) => {
+      if (this.flushing) return;
+      // Logged out: the session may come back without this tab's login
+      // (another tab, the guide), so ask on focus and every 60 s. A 401
+      // changes nothing; a 200 is «ok» again and sends what was held back.
+      const ute = getSyncStatus() === "utlogget";
+      if (ute && !fokus && ++tikk % 2) return;
+      this.pull()
+        .then((ok) => {
+          if (ok && ute) void this.flush();
+        })
+        .catch(() => {});
     };
     // ponytail: 30 s polling; push (SSE) if screens must react faster.
     setInterval(poll, 30_000);
     document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") poll();
+      if (document.visibilityState === "visible") poll(true);
     });
+    window.addEventListener("focus", () => poll(true));
   }
 
   /**

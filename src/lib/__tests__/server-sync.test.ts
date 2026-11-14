@@ -330,6 +330,42 @@ describe("dead session and 5xx at startup", () => {
     expect((await store.getState())[KEY]).toEqual([7, 8]);
   });
 
+  it("logged out: a session restored elsewhere is found on focus or within 60 s", async () => {
+    const a = new ServerSyncAdapter();
+    await a.start();
+    const ok = global.fetch;
+    const ut = jest.fn(async () => ({ ok: false, status: 401 }) as Response);
+    global.fetch = ut as unknown as typeof fetch;
+    a.set(KEY, [7]);
+    await flush(a);
+    expect(getSyncStatus()).toBe("utlogget");
+
+    // Still asks, but only every 60 s.
+    await jest.advanceTimersByTimeAsync(400);
+    const n = ut.mock.calls.length;
+    await jest.advanceTimersByTimeAsync(120_000);
+    expect(ut.mock.calls.length).toBe(n + 2);
+    expect(getSyncStatus()).toBe("utlogget");
+
+    // The session is back (another tab logged in): focus pulls and flushes.
+    global.fetch = ok;
+    window.dispatchEvent(new Event("focus"));
+    await jest.advanceTimersByTimeAsync(0);
+    expect(getSyncStatus()).toBe("ok");
+    await jest.advanceTimersByTimeAsync(400);
+    expect((await store.getState())[KEY]).toEqual([7]);
+
+    // And without focus: the 60 s tick does the same.
+    global.fetch = ut as unknown as typeof fetch;
+    a.set(KEY, [7, 8]);
+    await flush(a);
+    expect(getSyncStatus()).toBe("utlogget");
+    global.fetch = ok;
+    await jest.advanceTimersByTimeAsync(61_000);
+    expect(getSyncStatus()).toBe("ok");
+    expect((await store.getState())[KEY]).toEqual([7, 8]);
+  });
+
   it("a 401 from /api/kode says log in again, not wrong code", async () => {
     global.fetch = jest.fn(
       async () => ({ ok: false, status: 401 }) as Response,

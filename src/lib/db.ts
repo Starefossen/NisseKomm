@@ -81,6 +81,13 @@ export interface Store {
     replace?: boolean,
     forventet?: number | null,
   ): Promise<unknown>;
+  /** putState plus the version after the write, read under the same lock. */
+  putStateV(
+    key: string,
+    value: unknown,
+    replace?: boolean,
+    forventet?: number | null,
+  ): Promise<{ value: unknown; version: number }>;
   getSession(hash: string): Promise<Session | null>;
   setSession(hash: string, s: Session): Promise<void>;
   deleteSession(hash: string): Promise<void>;
@@ -265,14 +272,17 @@ export function createMemoryStore(file?: string): Store & { reset(): void } {
       save();
     },
     getState: () => serie(() => Object.fromEntries(kv)),
-    putState: (key, value, replace = false, forventet) =>
+    async putState(...a) {
+      return (await this.putStateV(...a)).value;
+    },
+    putStateV: (key, value, replace = false, forventet) =>
       serie(() => {
         sjekkVersjon(forventet, kv.get(VERSION_KEY), kv.get(RESET_KEY));
         const stored = replace ? value : mergeValue(key, kv.get(key), value);
         kv.set(key, stored);
         if (replace) kv.set(VERSION_KEY, Number(kv.get(VERSION_KEY) ?? 0) + 1);
         save();
-        return stored;
+        return { value: stored, version: Number(kv.get(VERSION_KEY) ?? 0) };
       }),
     getSession: (hash) => serie(() => sessions.get(hash) ?? null),
     setSession: (hash, s) =>
@@ -425,7 +435,10 @@ export function createPgStore(pool: Pool): Store {
       const r = await pool.query("SELECT key, value FROM kv");
       return Object.fromEntries(r.rows.map((row) => [row.key, row.value]));
     },
-    async putState(key, value, replace = false, forventet) {
+    async putState(...a) {
+      return (await this.putStateV(...a)).value;
+    },
+    async putStateV(key, value, replace = false, forventet) {
       const c = await pool.connect();
       const update = async (k: string, fn: (old: unknown) => unknown) => {
         await c.query(
@@ -447,22 +460,27 @@ export function createPgStore(pool: Pool): Store {
         await c.query("BEGIN");
         await c.query("SET LOCAL lock_timeout = '5s'");
         await c.query("SELECT pg_advisory_xact_lock_shared($1)", [LOCK_ID]);
-        if (forventet !== undefined) {
-          // FOR UPDATE on the version row: a reset or restore that bumps it
-          // either finished before (we see it) or waits for this write.
-          const r = await c.query(
-            "SELECT key, value FROM kv WHERE key IN ($1, $2) FOR UPDATE",
-            [VERSION_KEY, RESET_KEY],
-          );
-          const m = Object.fromEntries(r.rows.map((x) => [x.key, x.value]));
-          sjekkVersjon(forventet, m[VERSION_KEY], m[RESET_KEY]);
-        }
+        // FOR UPDATE on the version row: a reset or restore that bumps it
+        // either finished before (we see it) or waits for this write. Every
+        // write takes it first, then its key: one lock order, no deadlock
+        // between a versioned PUT and an unversioned replace.
+        const r = await c.query(
+          "SELECT key, value FROM kv WHERE key IN ($1, $2) FOR UPDATE",
+          [VERSION_KEY, RESET_KEY],
+        );
+        const m = Object.fromEntries(r.rows.map((x) => [x.key, x.value]));
+        sjekkVersjon(forventet, m[VERSION_KEY], m[RESET_KEY]);
         const stored = await update(key, (old) =>
           replace ? value : mergeValue(key, old, value),
         );
-        if (replace) await update(VERSION_KEY, (n) => Number(n ?? 0) + 1);
+        let version = Number(m[VERSION_KEY] ?? 0);
+        if (replace)
+          version = (await update(
+            VERSION_KEY,
+            (n) => Number(n ?? 0) + 1,
+          )) as number;
         await c.query("COMMIT");
-        return stored;
+        return { value: stored, version };
       } catch (e) {
         await c.query("ROLLBACK").catch(() => {});
         throw e;

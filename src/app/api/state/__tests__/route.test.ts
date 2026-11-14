@@ -190,15 +190,59 @@ describe("Postgres store (pg-mem)", () => {
   });
 
   it("a lock timeout answers 503 with Retry-After", async () => {
-    const orig = memoryStore.putState;
-    memoryStore.putState = async () => {
+    const orig = memoryStore.putStateV;
+    memoryStore.putStateV = async () => {
       throw Object.assign(new Error("lock timeout"), { code: "55P03" });
     };
     try {
       const r = await call("PUT", { key: "nissekomm-intros-seen", value: [] });
       expect(r.status).toBe(503);
     } finally {
-      memoryStore.putState = orig;
+      memoryStore.putStateV = orig;
+    }
+  });
+
+  it("returns the version of its own write, not one read before the lock", async () => {
+    // A replace elsewhere lands between the route's read and its write.
+    const orig = memoryStore.getState;
+    memoryStore.getState = async () => {
+      const s = await orig();
+      await memoryStore.putState("nissekomm-julius-watched", [1], true);
+      return s;
+    };
+    try {
+      const r = await call("PUT", { key: "nissekomm-intros-seen", value: [] });
+      const { version } = r.json as { version: number };
+      memoryStore.getState = orig;
+      expect(version).toBe((await orig())["state-version"]);
+      expect(version).toBeGreaterThan(0);
+    } finally {
+      memoryStore.getState = orig;
+    }
+  });
+
+  it("locks the version row before the key on every write (one lock order)", async () => {
+    for (const forventet of [0, undefined]) {
+      const sql: [string, unknown[]?][] = [];
+      const c = {
+        query: async (q: string, p?: unknown[]) => {
+          sql.push([q, p]);
+          return { rows: [] };
+        },
+        release: () => {},
+      };
+      const store = createPgStore({
+        connect: async () => c,
+      } as unknown as Pool);
+      await store.putState("nissekomm-intros-seen", ["a"], true, forventet);
+      const låst = sql
+        .filter(([q]) => q.includes("FOR UPDATE"))
+        .map(([, p]) => p?.[0]);
+      expect(låst).toEqual([
+        "state-version",
+        "nissekomm-intros-seen",
+        "state-version",
+      ]);
     }
   });
 

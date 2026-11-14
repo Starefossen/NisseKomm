@@ -97,19 +97,21 @@ export async function PUT(request: NextRequest) {
   await sjekkSesong();
   const store = getStore();
   const state = await store.getState();
-  const current = Number(state[VERSION_KEY] ?? 0);
   // A merge can at most add the two together.
   const size = (v: unknown) => JSON.stringify(v ?? null).length;
   if (replace !== true && size(state[key]) + size(value) > MAX_KEY_BYTES)
     return jsonError("For mye data", 413);
   let stored: unknown;
+  let ny: number;
   try {
-    stored = await store.putState(
+    // The version comes from the write's own transaction: one read before
+    // the lock could be older than a replace that landed in between.
+    ({ value: stored, version: ny } = await store.putStateV(
       key,
       value,
       replace === true,
       typeof version === "number" ? version : null,
-    );
+    ));
   } catch (e) {
     if (e instanceof VersjonsKonflikt)
       return NextResponse.json(
@@ -120,10 +122,7 @@ export async function PUT(request: NextRequest) {
     throw e;
   }
   for (const n of eventsForWrite(key, state[key], stored)) void notify(n);
-  return NextResponse.json({
-    value: stored,
-    version: replace === true ? current + 1 : current,
-  });
+  return NextResponse.json({ value: stored, version: ny });
 }
 
 const opptatt = () =>
