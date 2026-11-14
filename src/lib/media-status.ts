@@ -49,6 +49,7 @@ export const brukbar = (c?: Celle) => c === "godkjent" || c === "ok";
 export const verst = (c: Celle[]) =>
   VERST.find((v) => c.includes(v)) ?? "godkjent";
 
+/** The one version key; assets/bin/medie.py VERSION mirrors it, both tested on versjonsnokkel.json. */
 export const versionKey = (path: string) =>
   path.replace(/(?:-v\d+|\.old-\d+)(\.\w+)$/, "$1");
 

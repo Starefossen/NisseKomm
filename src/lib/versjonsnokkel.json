@@ -1,0 +1,30 @@
+{
+  "_om": "Fil → filen i bruk (versionKey i media-status.ts, VERSION i assets/bin/medie.py). Begge testene leser denne tabellen.",
+  "tilfeller": [
+    ["video/julius/dag-01.mp4", "video/julius/dag-01.mp4"],
+    ["video/julius/dag-01-v3.mp4", "video/julius/dag-01.mp4"],
+    ["video/julius/dag-01.old-2.mp4", "video/julius/dag-01.mp4"],
+    ["strek/dag05-v2.png", "strek/dag05.png"],
+    ["strek/dag05.old-1.png", "strek/dag05.png"],
+    ["video/julius/dag-01-v3.jpg", "video/julius/dag-01.jpg"],
+    ["video/julius/dag-01.jpg", "video/julius/dag-01.jpg"],
+    [
+      "video/julius/dag-01-v3.mp4.meta.json",
+      "video/julius/dag-01-v3.mp4.meta.json"
+    ],
+    ["video/julius/dag-01.mp4.meta.json", "video/julius/dag-01.mp4.meta.json"],
+    ["video/julius/dag-01-v3.lyd.json", "video/julius/dag-01-v3.lyd.json"],
+    [
+      "video/julius/dag-01-v3.segmenter.json",
+      "video/julius/dag-01-v3.segmenter.json"
+    ],
+    [
+      "video/julius/dag-01.segmenter.json",
+      "video/julius/dag-01.segmenter.json"
+    ],
+    ["dag01-3.raw.mp4", "dag01-3.raw.mp4"],
+    ["strek/dag01.v-feil.png", "strek/dag01.v-feil.png"],
+    ["dag/04/gaatekart", "dag/04/gaatekart"],
+    ["video/julius/dag-01-v3.mp4#s2", "video/julius/dag-01-v3.mp4#s2"]
+  ]
+}

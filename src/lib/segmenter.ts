@@ -1,4 +1,5 @@
 import { PRIS } from "./forbruk";
+import { versionKey } from "./media-status";
 
 /** One entry of dag-NN-vN.segmenter.json (julius-dag.py writes it at the join, `segmenter` back-fills it). */
 export interface Segment {
@@ -15,7 +16,7 @@ export interface Segment {
 
 /** `video/julius/dag-13-v2.mp4` → `video/julius/dag-13#s3`: the segment verdict id julius-dag.py's lock reads. */
 export const segmentId = (video: string, s: number) =>
-  `${video.replace(/(-v\d+|\.old-\d+)?\.mp4$/, "")}#s${s}`;
+  `${versionKey(video).replace(/\.mp4$/, "")}#s${s}`;
 
 /** `…/dag-14#s3` verdicts: what the agent runs next (julius-dag.py's script gate and segment lock). */
 export function segmentHint(id: string, vurdering?: string) {

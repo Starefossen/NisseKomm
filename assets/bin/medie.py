@@ -525,7 +525,7 @@ MEDIA_DIRS = ("video", "audio", "music", "feed", "strek", "spill", "promo", "ico
 
 # Versions of one media file. The plain name (dag-01.mp4) is the file in use; a newer candidate is
 # <name>-vN.<ext> (dag-01-v3.mp4); a replaced or rejected file is <name>.old-N.<ext> (dag-01.old-1.mp4).
-# Nothing else: oversikt.ts (versionKey) groups exactly these on the media page.
+# Nothing else: mirrors versionKey in src/lib/media-status.ts; both are tested on src/lib/versjonsnokkel.json.
 VERSION = re.compile(r"(-v\d+|\.old-\d+)(\.\w+)$")
 
 
@@ -954,9 +954,8 @@ def selftest():
         poster = json.loads((r / "public/video/julius/dag-07.jpg.meta.json").read_text())
         assert poster["avledet_fra"] == "video/julius/dag-07.mp4"
         assert json.loads((r / "public/icons/a.svg.meta.json").read_text())["generator"].startswith("hånd")
-        assert plain("video/julius/dag-01-v3.mp4") == plain("promo/a.old-2.mp4".replace("promo/a", "video/julius/dag-01")) \
-            == "video/julius/dag-01.mp4"
-        assert plain("strek/dag01.v-feil.png") == "strek/dag01.v-feil.png"  # not the convention
+        for fil, nøkkel in json.loads((Path(__file__).resolve().parents[2] / "src/lib/versjonsnokkel.json").read_text())["tilfeller"]:
+            assert plain(fil) == nøkkel, (fil, plain(fil), nøkkel)
         # a per-day template passed as is ({{strek}}): the job writing that file gives the day
         (r / RAMPE_MS).parent.mkdir(parents=True, exist_ok=True)
         (r / RAMPE_MS).write_text("## Dag 2 (x)\n**Strek:** Sokker på lampa.\n## Dag 3 (y)\n")

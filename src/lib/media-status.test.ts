@@ -1,5 +1,13 @@
 import { describe, it, expect } from "@jest/globals";
-import { brukbar, celleFor, familie, type StatusKilde } from "./media-status";
+import {
+  brukbar,
+  celleFor,
+  familie,
+  versionKey,
+  type StatusKilde,
+} from "./media-status";
+import { segmentId } from "./segmenter";
+import nøkler from "./versjonsnokkel.json";
 import {
   dagElement,
   tilstand,
@@ -101,5 +109,22 @@ describe("media-status", () => {
     expect(
       brukbar("ok") && brukbar("godkjent") && !brukbar("lag_paa_nytt"),
     ).toBe(true);
+  });
+});
+
+describe("versionKey", () => {
+  it.each(nøkler.tilfeller)(
+    "%s → %s (same table as medie.py VERSION)",
+    (fil, nøkkel) => {
+      expect(versionKey(fil)).toBe(nøkkel);
+    },
+  );
+  it("segmentId folds versions", () => {
+    expect(segmentId("video/julius/dag-13-v2.mp4", 3)).toBe(
+      "video/julius/dag-13#s3",
+    );
+    expect(segmentId("video/julius/dag-13.old-1.mp4", 3)).toBe(
+      "video/julius/dag-13#s3",
+    );
   });
 });

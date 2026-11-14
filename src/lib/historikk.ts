@@ -299,7 +299,7 @@ async function maskinsjekk(
 /** Calls in assets/out/forbruk.jsonl whose element names this id, summed with forbruk.py's prices. */
 async function kostnad(id: string, repo: string): Promise<Hendelse[]> {
   const base = path.basename(id.replace(/#.*/, ""));
-  const stamme = base.replace(/(-v\d+|\.old-\d+)?\.\w+$/, "");
+  const stamme = versionKey(base).replace(/\.\w+$/, "");
   const dag = juliusDag(id);
   const s = id.match(/#s(\d+)$/)?.[1];
   const treff = (e: string) =>
