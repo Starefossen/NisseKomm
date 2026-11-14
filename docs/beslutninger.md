@@ -177,6 +177,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - 2026-11-13: Feilene i siste gjennomgang før manuslås (H1, M1–M4, L1–L4) er rettet; guidens «Dagen i storyboardet» viser ikke lenger utkastets gåte. Julius 4-4 og 6-5 er ikke godkjent i porten før Hans har lest dem. Hvorfor: guiden ga feil hint, og avskjedene var for lange for modellen.
 - 2026-11-13: Julius snakker aldri nordlandsk, heller ikke når han siterer Rampenissen; han gjengir ham på bokmål (6-2, 8-1, 11-1, 12-1, 13-1, 23-1 rettet, lint varsler). Hvorfor: nordlandsk er Rampenissens stemme, og videomodellen gjorde det til bokmål uansett.
 - 2026-11-13: Valg til Hans legges som beslutning i Gjennomgang (`docs/beslutninger-apne.json`), ikke i chat eller rapporter. Hvorfor: Hans vil gjøre all gjennomgang fra Nissemor-guiden.
+- 2026-11-14: Barneappen: symbolgrønt er ekte grønt som på kortene, spillene viser «Snu skjermen» på stående iPad, riktig kode viser PS fra Julius og «Åpne Dagbok». Hvorfor: barna sto fast på disse punktene i UI-gjennomgangen.
 
 ## Besvart i Gjennomgang
 
