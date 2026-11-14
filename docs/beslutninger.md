@@ -180,6 +180,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - 2026-11-14: Barneappen: symbolgrønt er ekte grønt som på kortene, spillene viser «Snu skjermen» på stående iPad, riktig kode viser PS fra Julius og «Åpne Dagbok». Hvorfor: barna sto fast på disse punktene i UI-gjennomgangen.
 - 2026-11-14: Appen er åpen som dag 24 fra 25.12 til og med 31.1 (tilgang, kodesjekk og MCP), stengt fra 1.2. Hvorfor: barna ser videoene om igjen i januar, og tre ulike romjulsregler ga feil.
 - 2026-11-14: Merkevarselet vises én gang på hver skjerm, også når merket ble vunnet på en annen. Merker, kryptofiler og moduler avledes fra synkede løsninger. Hvorfor: skjermen som løste, var den eneste som delte ut og viste merket.
+- 2026-11-14: Sesongbytte og nullstilling arkiverer alltid familiens fremdrift på serveren først (kv_arkiv), og skjermene sletter aldri serverdata selv. Hvorfor: brev, rekorder og merker skal bli «minner», ikke forsvinne ved neste SEASON.
 
 ## Besvart i Gjennomgang
 

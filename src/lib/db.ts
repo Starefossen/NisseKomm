@@ -9,6 +9,8 @@ import path from "node:path";
 import { Pool } from "pg";
 import {
   RESET_KEY,
+  SEASON,
+  SEASON_KEY,
   SERVER_KEYS,
   SYNCED_KEYS,
   VERSION_KEY,
@@ -30,6 +32,23 @@ export function storageBackend(): "server" | "localStorage" {
 }
 
 export { mergeValue };
+
+/** A copy of the shared state, taken before anything clears it. */
+export type Arkiv = {
+  sesong: number;
+  /** «sesongskifte» (once per season), «nullstilling» or «manuell» */
+  grunn: string;
+  arkivert: string;
+  data: Record<string, unknown>;
+};
+
+/** The family's game state: synced and server keys that hold something. */
+export function arkivData(state: Record<string, unknown>) {
+  const keys = new Set<string>([...STATE_KEYS, ...SERVER_KEYS]);
+  return Object.fromEntries(
+    Object.entries(state).filter(([k, v]) => keys.has(k) && v != null),
+  );
+}
 
 export interface Store {
   getState(): Promise<Record<string, unknown>>;
@@ -54,6 +73,18 @@ export interface Store {
    * was bound to `path` and unexpired. Atomic: a ticket works once.
    */
   consumeTicket(hash: string, path: string): Promise<boolean>;
+  /**
+   * Appends a snapshot of the game state for `sesong`. bareEnGang: skip (and
+   * return the existing one) if this season already has a snapshot with this
+   * grunn. Returns null when there was nothing to archive.
+   */
+  arkiver(
+    sesong: number,
+    grunn: string,
+    bareEnGang?: boolean,
+  ): Promise<Arkiv | null>;
+  /** Every snapshot of a season, oldest first. */
+  arkiv(sesong: number): Promise<Arkiv[]>;
 }
 
 const ticketOk = (t: unknown, path: string) => {
@@ -68,14 +99,29 @@ type Dump = { kv: [string, unknown][]; sessions: [string, Session][] };
 export function createMemoryStore(
   init?: Dump,
   onChange?: (d: Dump) => void,
+  arkivFil?: (sesong: number) => string,
 ): Store & { reset(): void } {
   let kv = new Map<string, unknown>(init?.kv);
+  let arkiver = new Map<number, Arkiv[]>();
+  const lesArkiv = (s: number): Arkiv[] => {
+    if (!arkivFil) return arkiver.get(s) ?? [];
+    try {
+      return JSON.parse(fs.readFileSync(arkivFil(s), "utf8"));
+    } catch {
+      return [];
+    }
+  };
+  const skrivArkiv = (s: number, liste: Arkiv[]) => {
+    if (!arkivFil) return void arkiver.set(s, liste);
+    skrivAtomisk(arkivFil(s), JSON.stringify(liste, null, 1));
+  };
   let sessions = new Map<string, Session>(init?.sessions);
   let hits = new Map<string, { n: number; until: number }>();
   const save = () => onChange?.({ kv: [...kv], sessions: [...sessions] });
   return {
     reset() {
       kv = new Map();
+      arkiver = new Map();
       sessions = new Map();
       hits = new Map();
       save();
@@ -110,6 +156,19 @@ export function createMemoryStore(
       save();
       return ticketOk(t, path);
     },
+    async arkiver(sesong, grunn, bareEnGang = false) {
+      const liste = lesArkiv(sesong);
+      const før = bareEnGang && liste.find((a) => a.grunn === grunn);
+      if (før) return før;
+      const data = arkivData(Object.fromEntries(kv));
+      if (!Object.keys(data).length) return null;
+      const a = { sesong, grunn, arkivert: new Date().toISOString(), data };
+      skrivArkiv(sesong, [...liste, structuredClone(a)]);
+      return a;
+    },
+    async arkiv(sesong) {
+      return structuredClone(lesArkiv(sesong));
+    },
     async hit(key, w) {
       return (await this.hits(key, w)).n;
     },
@@ -132,16 +191,23 @@ export function createMemoryStore(
  * progress across restarts. Written via tmp + rename so a crash never leaves
  * half a file.
  */
+function skrivAtomisk(file: string, text: string) {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(`${file}.tmp`, text);
+  fs.renameSync(`${file}.tmp`, file);
+}
+
+/** Archives go beside it as arkiv-<sesong>.json. */
 export function createFileStore(file: string): Store & { reset(): void } {
   let init: Dump | undefined;
   try {
     init = JSON.parse(fs.readFileSync(file, "utf8"));
   } catch {}
-  return createMemoryStore(init, (d) => {
-    fs.mkdirSync(path.dirname(file), { recursive: true });
-    fs.writeFileSync(`${file}.tmp`, JSON.stringify(d));
-    fs.renameSync(`${file}.tmp`, file);
-  });
+  return createMemoryStore(
+    init,
+    (d) => skrivAtomisk(file, JSON.stringify(d)),
+    (s) => path.join(path.dirname(file), `arkiv-${s}.json`),
+  );
 }
 
 const MIGRATION = `
@@ -158,6 +224,14 @@ CREATE TABLE IF NOT EXISTS sessions (
 CREATE TABLE IF NOT EXISTS auth_failures (at timestamptz NOT NULL);
 CREATE INDEX IF NOT EXISTS sessions_expires ON sessions (expires);
 CREATE INDEX IF NOT EXISTS auth_failures_at ON auth_failures (at);
+CREATE TABLE IF NOT EXISTS kv_arkiv (
+  id       bigserial PRIMARY KEY,
+  sesong   int NOT NULL,
+  grunn    text NOT NULL,
+  arkivert timestamptz NOT NULL DEFAULT now(),
+  data     jsonb NOT NULL
+);
+CREATE INDEX IF NOT EXISTS kv_arkiv_sesong ON kv_arkiv (sesong);
 CREATE TABLE IF NOT EXISTS auth_hits (
   key   text PRIMARY KEY,
   n     int NOT NULL,
@@ -244,6 +318,62 @@ export function createPgStore(pool: Pool): Store {
       );
       return ticketOk(r.rows[0]?.value, path);
     },
+    async arkiver(sesong, grunn, bareEnGang = false) {
+      const c = await pool.connect();
+      const rad = (r: {
+        sesong: number;
+        grunn: string;
+        arkivert: Date;
+        data: Record<string, unknown>;
+      }): Arkiv => ({ ...r, arkivert: new Date(r.arkivert).toISOString() });
+      try {
+        await c.query("BEGIN");
+        // Two pods changing season at once must not both archive.
+        await c.query("SELECT pg_advisory_xact_lock($1, $2)", [
+          LOCK_ID,
+          sesong,
+        ]);
+        if (bareEnGang) {
+          const r = await c.query(
+            "SELECT sesong, grunn, arkivert, data FROM kv_arkiv WHERE sesong = $1 AND grunn = $2 ORDER BY id LIMIT 1",
+            [sesong, grunn],
+          );
+          if (r.rows[0]) {
+            await c.query("COMMIT");
+            return rad(r.rows[0]);
+          }
+        }
+        const kv = await c.query("SELECT key, value FROM kv");
+        const data = arkivData(
+          Object.fromEntries(kv.rows.map((row) => [row.key, row.value])),
+        );
+        if (!Object.keys(data).length) {
+          await c.query("COMMIT");
+          return null;
+        }
+        const r = await c.query(
+          "INSERT INTO kv_arkiv (sesong, grunn, data) VALUES ($1, $2, $3) RETURNING sesong, grunn, arkivert, data",
+          [sesong, grunn, JSON.stringify(data)],
+        );
+        await c.query("COMMIT");
+        return rad(r.rows[0]);
+      } catch (e) {
+        await c.query("ROLLBACK").catch(() => {});
+        throw e;
+      } finally {
+        c.release();
+      }
+    },
+    async arkiv(sesong) {
+      const r = await pool.query(
+        "SELECT sesong, grunn, arkivert, data FROM kv_arkiv WHERE sesong = $1 ORDER BY id",
+        [sesong],
+      );
+      return r.rows.map((row) => ({
+        ...row,
+        arkivert: new Date(row.arkivert).toISOString(),
+      }));
+    },
     // One UPSERT takes the row lock, so a parallel burst counts every hit.
     async hit(key, w) {
       return (await this.hits(key, w)).n;
@@ -280,6 +410,50 @@ export async function resetState(store: Store = getStore()): Promise<void> {
   }
   // Tells a stale screen this 409 was a reset, so it drops its pending writes.
   await store.putState(RESET_KEY, (await store.getState())[VERSION_KEY]);
+}
+
+/**
+ * Season reset with the archive first: no snapshot, no reset (a failed
+ * archive throws before anything is cleared).
+ */
+export async function arkiverOgNullstill(
+  grunn: string,
+  sesong = SEASON,
+  store: Store = getStore(),
+): Promise<Arkiv | null> {
+  const a = await store.arkiver(sesong, grunn, grunn === "sesongskifte");
+  console.log(
+    `Sesong ${sesong}: ${grunn}, ${a ? `arkivert ${a.arkivert} (${Object.keys(a.data).length} nøkler)` : "ingenting å arkivere"}, nullstiller`,
+  );
+  await resetState(store);
+  return a;
+}
+
+let sesongSjekk: Promise<void> | undefined;
+/**
+ * Runs before state is served. A stored season older than SEASON means a new
+ * build started a new season: archive (once per season), then clear. No
+ * marker yet means the state is this season's (servers from before the
+ * marker existed): just stamp it.
+ */
+export function sjekkSesong(store: Store = getStore()): Promise<void> {
+  // ponytail: per-process memo; two replicas rely on the archive's advisory lock.
+  return (sesongSjekk ??= (async () => {
+    const s = (await store.getState())[SEASON_KEY];
+    if (s === SEASON) return;
+    if (typeof s === "number" && s < SEASON)
+      await arkiverOgNullstill("sesongskifte", s, store);
+    if (typeof s !== "number" || s < SEASON)
+      await store.putState(SEASON_KEY, SEASON);
+  })().catch((e) => {
+    sesongSjekk = undefined;
+    throw e;
+  }));
+}
+
+/** Tests: forget that this process has checked the season. */
+export function glemSesongSjekk() {
+  sesongSjekk = undefined;
 }
 
 export const memoryStore = createMemoryStore();

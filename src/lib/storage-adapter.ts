@@ -130,6 +130,14 @@ export const SYNCED_KEYS = new Set([
 const CODES_KEY = "nissekomm-codes";
 /** Written by MCP (set_frost, skip_day); clients only read them. */
 export const SERVER_KEYS = ["frost-override", "day-offset"];
+/**
+ * The season this build plays. Bumping it starts a new season: the server
+ * archives the old state before clearing it (sjekkSesong in db.ts), and each
+ * screen drops its local cache (StorageManager.ensureSeason).
+ */
+export const SEASON = 2026;
+/** Server-only: the season the shared state belongs to. */
+export const SEASON_KEY = "state-sesong";
 /** Bumped by every replacing write; an older client must re-fetch. */
 export const VERSION_KEY = "state-version";
 /** Set by a season reset (DELETE /api/state); only a new value may drop local writes. */

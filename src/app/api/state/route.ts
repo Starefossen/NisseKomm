@@ -4,7 +4,8 @@
  *                 { value, version } after merging; replace overwrites.
  *                 409 { version, reset } when `version` is older than the
  *                 stored one; `reset` is the marker of the last season reset.
- * DELETE /api/state  Parent only: season reset for every screen (resetState).
+ * DELETE /api/state  Parent only: archives the state (kv_arkiv), then the
+ *                 season reset for every screen. No archive, no reset.
  * GET/PUT require a kid or parent session; 204 (sync off) with STORAGE_BACKEND=localStorage.
  * Writes that mark a game moment
  * (day solved, bonus approved, frost off) fan out through notify().
@@ -20,8 +21,9 @@ import {
 import {
   STATE_KEYS,
   VERSION_KEY,
+  arkiverOgNullstill,
   getStore,
-  resetState,
+  sjekkSesong,
   storageBackend,
 } from "@/lib/db";
 import { RESET_KEY, SERVER_KEYS } from "@/lib/storage-adapter";
@@ -37,6 +39,7 @@ export async function GET(request: NextRequest) {
     return new NextResponse(null, { status: 204 });
   if (!(await hasRole(request, "kid", "parent")))
     return jsonError("Ikke innlogget", 401);
+  await sjekkSesong();
   const state = await getStore().getState();
   const now = getServerDate(state["day-offset"]);
   const frost = frostOnEvent(
@@ -119,6 +122,6 @@ export async function DELETE(request: NextRequest) {
   }
   const nei = checkOrigin(request);
   if (nei) return nei;
-  await resetState();
-  return NextResponse.json({ reset: true });
+  const a = await arkiverOgNullstill("nullstilling");
+  return NextResponse.json({ reset: true, arkivert: a?.arkivert ?? null });
 }

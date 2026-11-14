@@ -74,31 +74,92 @@ const knapp =
 const felt =
   "bg-black border border-(--neon-green) text-(--neon-green) min-h-11 px-2";
 
-function Nullstill() {
-  const [sikker, setSikker] = useState(false);
-  const [ferdig, setFerdig] = useState(false);
-  if (ferdig)
-    return <p className="text-(--gold)">All fremdrift er nullstilt.</p>;
+function Arkiver() {
+  const [melding, setMelding] = useState("");
   return (
     <div className="flex flex-wrap items-center gap-2">
       <button
-        className="px-4 min-h-11 border-2 border-(--christmas-red) text-(--christmas-red) hover:bg-(--christmas-red)/20"
+        className={knapp}
+        onClick={async () => {
+          const r = await fetch("/api/state/arkiv", { method: "POST" });
+          const d = await r.json().catch(() => ({}));
+          setMelding(
+            !r.ok
+              ? `Feil: ${d.error ?? r.status}`
+              : d.arkivert
+                ? `Arkivert ${new Date(d.arkivert).toLocaleString("nb-NO")} (${d.nøkler} nøkler).`
+                : "Ingenting å arkivere ennå.",
+          );
+        }}
+      >
+        Arkiver sesongen nå
+      </button>
+      {melding && <p className="w-full">{melding}</p>}
+      <p className="w-full">
+        Tar en kopi av hele familiens fremdrift (brev, rekorder, merker,
+        Ugleposten) på serveren. Nullstilling og nytt sesongår gjør det av seg
+        selv.
+      </p>
+    </div>
+  );
+}
+
+const BEKREFT = "NULLSTILL";
+
+function Nullstill() {
+  const [sikker, setSikker] = useState(false);
+  const [ord, setOrd] = useState("");
+  const [ferdig, setFerdig] = useState(false);
+  const [feil, setFeil] = useState("");
+  if (ferdig)
+    return (
+      <p className="text-(--gold)">
+        All fremdrift er nullstilt. En kopi ligger i arkivet.
+      </p>
+    );
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {sikker && (
+        <input
+          value={ord}
+          onChange={(e) => setOrd(e.target.value)}
+          className={felt}
+          aria-label={`Skriv ${BEKREFT} for å bekrefte`}
+          placeholder={BEKREFT}
+          autoFocus
+        />
+      )}
+      <button
+        className="px-4 min-h-11 border-2 border-(--christmas-red) text-(--christmas-red) hover:bg-(--christmas-red)/20 disabled:opacity-40"
+        disabled={sikker && ord.trim().toUpperCase() !== BEKREFT}
         onClick={async () => {
           if (!sikker) return setSikker(true);
-          await sim.reset();
-          setFerdig(true);
+          try {
+            await sim.reset();
+            setFerdig(true);
+          } catch (e) {
+            setFeil((e as Error).message);
+          }
         }}
       >
         {sikker ? "Ja, nullstill alt" : "Nullstill all fremdrift"}
       </button>
       {sikker && (
-        <button className={knapp} onClick={() => setSikker(false)}>
+        <button
+          className={knapp}
+          onClick={() => {
+            setSikker(false);
+            setOrd("");
+          }}
+        >
           Avbryt
         </button>
       )}
+      {feil && <p className="w-full text-(--christmas-red)">{feil}</p>}
       <p className="w-full">
-        Gjelder alle skjermer for hele familien. Innlogging og klokkeslett
-        beholdes.
+        Gjelder alle skjermer for hele familien. Serveren arkiverer alt først.
+        Innlogging og klokkeslett beholdes.
+        {sikker && ` Skriv ${BEKREFT} for å bekrefte.`}
       </p>
     </div>
   );
@@ -308,6 +369,9 @@ export default function InnstillingerSide() {
       </Kort>
       <Kort tittel="Feil fra skjermene" farge="border-(--christmas-red)">
         <FeilFraSkjermene />
+      </Kort>
+      <Kort tittel="Arkiv" farge="border-(--gold)">
+        <Arkiver />
       </Kort>
       <Kort tittel="Ny sesong" farge="border-(--christmas-red)">
         <Nullstill />

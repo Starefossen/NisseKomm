@@ -27,6 +27,22 @@ describe("sesongmarkør", () => {
     expect(localStorage.getItem("nissekomm-season")).toBe("2026");
   });
 
+  it("never sends the wipe to the server (it archives and clears itself)", () => {
+    localStorage.setItem(
+      "nissekomm-santa-letters",
+      '[{"day":1,"content":"x"}]',
+    );
+    jest.isolateModules(() => {
+      /* eslint-disable @typescript-eslint/no-require-imports */
+      const a = require("../storage-adapter");
+      const remove = jest.spyOn(a.LocalStorageAdapter.prototype, "remove");
+      require("../storage").StorageManager.getSantaLetters();
+      /* eslint-enable @typescript-eslint/no-require-imports */
+      expect(remove).not.toHaveBeenCalled();
+    });
+    expect(localStorage.getItem("nissekomm-santa-letters")).toBeNull();
+  });
+
   it("keeps this season's progress across reloads", () => {
     freshStorage().addSantaLetter(3, "hei");
     expect(freshStorage().getSantaLetters()).toHaveLength(1);

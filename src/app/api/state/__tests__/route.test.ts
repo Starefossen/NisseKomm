@@ -12,6 +12,7 @@ import { newDb, DataType } from "pg-mem";
 import type { Pool } from "pg";
 import * as stateRoute from "../route";
 import { createPgStore, memoryStore, mergeValue, migrate } from "@/lib/db";
+import { SEASON } from "@/lib/storage-adapter";
 
 process.env.STORAGE_BACKEND = "server";
 const TOKEN = "test-token";
@@ -239,6 +240,10 @@ describe("/api/state removals and validation", () => {
     const state = (await call("GET")).json as Record<string, unknown>;
     expect(state["nissekomm-codes"]).toBeNull();
     expect(state["state-version"]).toBeGreaterThan(0);
+    // Archived before the reset.
+    const [a] = await memoryStore.arkiv(SEASON);
+    expect(a.grunn).toBe("nullstilling");
+    expect(a.data["nissekomm-codes"]).toEqual([{ kode: "X", day: 1 }]);
     delete process.env.NISSEKOMM_MODE;
   });
 

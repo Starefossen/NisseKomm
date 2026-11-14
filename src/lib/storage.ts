@@ -18,6 +18,7 @@ import {
   ServerSyncAdapter,
   SYNCED_KEYS,
   type StorageAdapter,
+  SEASON,
 } from "./storage-adapter";
 
 /**
@@ -98,8 +99,6 @@ const KEYS = {
   SEASON: "nissekomm-season",
 } as const;
 
-const SEASON = 2026;
-
 // Everything a season builds up. Login and sound settings survive a new season.
 const SEASON_KEYS = Object.values(KEYS).filter(
   (k) =>
@@ -128,12 +127,16 @@ export class StorageManager {
   );
   private static seasonChecked = false;
 
-  /** Last year's progress must not carry over: wipe it once when the season changes. */
+  /**
+   * Last year's progress must not carry over: drop this screen's cache once
+   * when the season changes. Local only: the server archives and clears the
+   * shared state itself (sjekkSesong), so a screen never deletes server data.
+   */
   private static ensureSeason(): void {
     if (this.seasonChecked || typeof window === "undefined") return;
     this.seasonChecked = true;
     if (this.adapter.get<number | null>(KEYS.SEASON, null) === SEASON) return;
-    SEASON_KEYS.forEach((k) => this.adapter.remove(k));
+    SEASON_KEYS.forEach((k) => localStorage.removeItem(k));
     this.adapter.set(KEYS.SEASON, SEASON);
   }
 
