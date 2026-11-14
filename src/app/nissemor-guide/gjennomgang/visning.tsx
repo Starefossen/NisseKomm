@@ -523,7 +523,7 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
     return (
       <>
         {s && <Felt k={`${s.navn} (fra dag ${s.dag})`}>{s.intro}</Felt>}
-        {s && <Spiller path={`feed/slede-${s.id}.jpg`} />}
+        {s && <Spiller path={s.horisont.fil} />}
         <Link href={`/dev/sledeflukt?dag=24`} className={lenke}>
           Fly i /dev/sledeflukt
         </Link>
