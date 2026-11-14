@@ -55,6 +55,7 @@ export const SEKSJONER: readonly [keyof typeof DOK, string][] = [
   ["historie", "3.6 Barnas faste roller"],
   ["historie", "3.6b Tre regler"],
   ["historie", "3.7 Varden"],
+  ["historie", "4b. Tråder"],
   ["historie", "5. Belønninger"],
   ["historie", "6. Frost"],
   ["historie", "8. Rampestreker"],
@@ -881,14 +882,27 @@ const UKEDAG: Record<string, string> = {
   sø: "søndag",
 };
 
-/** Threads the season map lights up on hover: the days whose texts name them. */
-const TRAADER: [id: string, navn: string, mønster: RegExp][] = [
-  ["vokter", "Kulde", /kulde|85,0|vintervokter/i],
-  ["fugl", "Brevfuglene", /brevfugl|blå fugl|blåfugl/i],
-  ["iq", "IQ", /\bIQ\b/],
-  ["ametyst", "Fargen og ametysten", /ametyst|farge/i],
-  ["mur", "Muren og porten", /\bmur(en)?\b|porten/i],
+/** Threads the season map lights up on hover; days per thread in historie §4b. */
+const TRAADER: [id: string, navn: string][] = [
+  ["vokter", "Kulde"],
+  ["brevfugl", "Brevfuglene"],
+  ["iq", "IQ"],
+  ["farge", "Fargen og ametysten"],
+  ["mur", "Muren og porten"],
 ];
+
+/** historie §4b: thread ids per day. */
+export const traaderPerDag = () =>
+  new Map(
+    [...tabellPerDag(del("historie", "4b. Tråder"))].map(([d, r]) => [
+      d,
+      (r[1] ?? "")
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean),
+    ]),
+  );
+export const TRAAD_IDER = TRAADER.map(([id]) => id);
 
 const forsteSetning = (s: string) => s.match(/^[^]+?[.!?»](?=\s|$)/)?.[0] ?? s;
 
@@ -903,6 +917,7 @@ export function sesongLinje(fasit: boolean) {
   const runer = (d: number) =>
     runerFor(dager(d), (x) => getQuestByDay(x)?.kode);
   const krypto = getAllOppdrag().filter((q) => q.decryption_challenge);
+  const traader = traaderPerDag();
   const dagerUt = getAllOppdrag()
     .filter((q) => q.dag <= 24)
     .map((q) => {
@@ -924,7 +939,6 @@ export function sesongLinje(fasit: boolean) {
             );
       const beat = ren(rad[3] ?? "").replace(/^M\d \S+\.\s*/, "");
       const sam = sammendrag(n);
-      const kilde = [beat, sam, strek[n - 1], q.tittel].join(" ");
       const ukedag = UKEDAG[ren(rad[1] ?? "")] ?? "";
       const nye = [...runer(n)].filter((r) => !runer(n - 1).has(r));
       const modus = frostModeFor({
@@ -966,7 +980,7 @@ export function sesongLinje(fasit: boolean) {
         bonusKode: fasit ? q.bonusoppdrag?.foreldre_kode : undefined,
         snilleliste: n >= 22,
         strek: strek[n - 1],
-        traader: TRAADER.filter(([, , m]) => m.test(kilde)).map(([id]) => id),
+        traader: traader.get(n) ?? [],
         kode: fasit ? q.kode : undefined,
       };
     });

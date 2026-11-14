@@ -8,6 +8,8 @@ import {
   DOK,
   RESERVESETT,
   SEKSJONER,
+  TRAAD_IDER,
+  traaderPerDag,
   delsystemer,
   forSesongen,
   handleliste,
@@ -171,5 +173,19 @@ describe("sesongLinje", () => {
   it("names symbol cards in Norwegian, not by id", () => {
     for (const s of sesongLinje(false).baner.symboler)
       expect(s.tittel).toMatch(/^\S+ (hjerte|sol|måne)$/);
+  });
+});
+
+describe("tråder (historie §4b)", () => {
+  const per = traaderPerDag();
+  it("dekker alle 24 dager med kjente id-er", () => {
+    expect([...per.keys()].sort((a, b) => a - b)).toEqual(
+      Array.from({ length: 24 }, (_, i) => i + 1),
+    );
+    for (const ids of per.values())
+      for (const id of ids) expect(TRAAD_IDER).toContain(id);
+  });
+  it.each(TRAAD_IDER)("tråden %s har minst én dag", (id) => {
+    expect([...per.values()].some((ids) => ids.includes(id))).toBe(true);
   });
 });

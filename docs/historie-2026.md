@@ -161,6 +161,37 @@ Jakt: 8 dager (2, 4, 5, 6, 10, 11, 19, 22). Oppsett over 5 minutter: 2, 4, 6, 9,
 
 **Gåter som tas i steg 1 (gåtegjennomgangen):** 1 (bokstavkort eller skjelett), 6 (skyggefigur i stedet for bokstavprojeksjon), 10 (rødfilteret innenfor brikketaket), 23 og 24 (brikken i videoen må være entydig for et 9-årig øre), og alle orddager der skjelettet i storyboardet gir mer enn 40 % (3, 4, 8, 12–21). I samme runde får Hanna en kodebærende handling på dag 4, 5, 6, 8, 13, 14, 15, 16, 17, 18 og 24, eller symbolkortet erklæres som hennes bidrag. Dag 9 er løst (ekte/falske krystaller med tydelige feil).
 
+## 4b. Tråder
+
+Hvilke tråder hver dag hører til, for Sesongkartet. Id-er: `vokter` (Kulde, vintervokteren), `brevfugl` (Brevfuglene), `iq` (IQ), `farge` (Fargen og ametysten), `mur` (Muren og porten).
+
+| Dag | Tråder                       |
+| --- | ---------------------------- |
+| 1   | iq                           |
+| 2   | iq                           |
+| 3   | vokter, farge                |
+| 4   | vokter                       |
+| 5   | brevfugl, iq                 |
+| 6   | vokter                       |
+| 7   | vokter, brevfugl             |
+| 8   | iq                           |
+| 9   | vokter                       |
+| 10  | vokter, iq, farge            |
+| 11  | vokter, iq                   |
+| 12  | vokter                       |
+| 13  | vokter                       |
+| 14  | brevfugl, vokter             |
+| 15  | vokter, iq, farge            |
+| 16  | vokter                       |
+| 17  | vokter                       |
+| 18  | vokter, brevfugl             |
+| 19  | iq                           |
+| 20  | vokter, iq, mur              |
+| 21  | vokter, iq, farge, mur       |
+| 22  | brevfugl                     |
+| 23  | vokter, mur                  |
+| 24  | vokter, brevfugl, farge, mur |
+
 ## 5. Belønninger
 
 I dag: sju merker, fem eventyr-belønninger, to bonusmerker, hemmelige filer og modulåpninger. Det er for mye til at noe av det betyr noe. Forslag:
