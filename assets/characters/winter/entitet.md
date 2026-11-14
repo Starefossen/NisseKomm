@@ -33,6 +33,10 @@
       "tekst": "flyttet hver bokstav på brevfuglen så mange skritt fram som IQ sprengte sikringer"
     },
     {
+      "fra_dag": 5,
+      "tekst": "skrev Ulriken på vingen: fjellet brevfuglene styrer etter når de skal til barna"
+    },
+    {
       "fra_dag": 16,
       "tekst": "pakkesentralen spinner; sortering er hans ord"
     },
