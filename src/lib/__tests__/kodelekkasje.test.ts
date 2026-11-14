@@ -15,7 +15,14 @@ const ALLOWED = new Set(["LANDÅS"]);
 
 // Locked texts that mention a later code in passing. Listed so a new leak
 // still fails; each one is a question for Hans, not a fix.
-const KNOWN = new Set<string>([]);
+const KNOWN = new Set<string>([
+  // Fallback when the day's video file is missing; the playthrough waits for it
+  "SIGNAL i komponent modules/JuliusVideo.tsx",
+  // Canvas text gated in channels.ts: «SIGNAL OVERTATT» with the hijack from
+  // day 3, the signature only on day 7 once it is solved
+  "SIGNAL i komponent windows/snofall-tv/LiveCam.tsx",
+  "KULDE i komponent windows/snofall-tv/LiveCam.tsx",
+]);
 
 // Inflected forms that do not contain the code as written. Related words of
 // another class are everyday words and do not count, except the stem

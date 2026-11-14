@@ -31,8 +31,10 @@ import {
   CHANNELS,
   KULDE_INTERCEPTS,
 } from "@/components/windows/snofall-tv/channels";
+import { GAMES } from "@/components/windows/snofall-tv/hud";
 import fs from "fs";
 import path from "path";
+import ts from "typescript";
 
 export const quests = getAllOppdrag();
 
@@ -224,37 +226,80 @@ for (const s of STEDER)
 addAlltid(25, "slede bergen", steder({ dag: 24, bergen: true, hjem: false }));
 addAlltid(23, "slede landås", steder({ dag: 24, bergen: true, hjem: true }));
 
-// Inline strings in components: every literal and JSX text in the file, from the
-// day the window can first show it (stricter than per-string gating). Not in
-// `alltid`: the pattern also catches code between `>` and `<` (a canvas named
-// after a day-4 code word), which is noise there.
-const kilde = (fil: string) =>
-  fs.readFileSync(path.join(__dirname, "../../..", fil), "utf8");
-export const literaler = (src: string) =>
-  (
-    src.match(/"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|`[^`]*`|>[^<>{}]+</g) ??
-    []
-  )
-    // shown text has a capital letter; paths, urls and class names do not count
-    .filter((s) => /\p{Lu}/u.test(s) && !/\/|\.(mp4|png|jpg|webm|mp3)/.test(s))
-    .join("\n");
-add(1, "Day1Opener", literaler(kilde("src/components/ui/Day1Opener.tsx")));
-add(
-  8,
-  "Sledeflukt",
-  literaler(kilde("src/components/windows/sledeflukt/Sledeflukt.tsx")),
-);
-add(
-  8,
-  "FriFlyging",
-  literaler(kilde("src/components/windows/sledeflukt/FriFlyging.tsx")),
-);
+// Inline strings in components: every string literal, template part and JSX
+// text of every kid component, from the day its window can first show it
+// (stricter than per-string gating), so day d's own code is checked before it
+// is solved. Read from the syntax tree, so identifiers never count.
+const KOMPONENTER = path.join(__dirname, "../../components");
+export const literaler = (src: string) => {
+  const ut: string[] = [];
+  const gå = (n: ts.Node) => {
+    if (ts.isImportDeclaration(n)) return;
+    if (
+      ts.isStringLiteralLike(n) ||
+      ts.isJsxText(n) ||
+      ts.isTemplateHead(n) ||
+      ts.isTemplateMiddleOrTemplateTail(n)
+    )
+      ut.push(n.text);
+    ts.forEachChild(n, gå);
+  };
+  gå(
+    ts.createSourceFile(
+      "x.tsx",
+      src,
+      ts.ScriptTarget.Latest,
+      false,
+      ts.ScriptKind.TSX,
+    ),
+  );
+  return (
+    ut
+      // shown text has a capital letter; paths, urls and class names do not count
+      .filter(
+        (s) =>
+          /\p{Lu}/u.test(s) && !/^\S*\/\S*$|\.(mp4|png|jpg|webm|mp3)/.test(s),
+      )
+      .join("\n")
+  );
+};
+const tsx = (dir: string): string[] =>
+  fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory())
+      return ["__tests__", "nissemor"].includes(e.name) ? [] : tsx(p);
+    return /(?<!\.test)\.tsx$/.test(e.name) ? [p] : [];
+  });
+// First day a folder or file can show (first match wins); the rest from day 1.
+const KOMPONENT_DAG: [string, number][] = [
+  ["windows/nissespill/", KAPITLER[0].dag],
+  ["windows/sledeflukt/", 8],
+  ["windows/snofall-tv/MiniGames.tsx", Math.min(...GAMES.map((g) => g[2]))],
+];
+// Numbers are everywhere in UI code (sizes, SVG paths, «24 OPPDRAG»), so number
+// codes are checked only in the files that were clean from the start.
+const MED_TALL = /Day1Opener|Sledeflukt|FriFlyging|NisseStats/;
+for (const fil of tsx(KOMPONENTER)) {
+  const rel = path.relative(KOMPONENTER, fil);
+  // «Nissemor-guiden» is the parent guide's name (finale link), not Hjerterud
+  const tekst = literaler(fs.readFileSync(fil, "utf8")).replaceAll(
+    "Nissemor-guiden",
+    "",
+  );
+  add(
+    KOMPONENT_DAG.find(([p]) => rel.startsWith(p))?.[1] ?? 1,
+    `komponent ${rel}`,
+    MED_TALL.test(rel) ? tekst : tekst.replace(/\d/g, ""),
+  );
+}
+// TEKNISK HUD: a toy's button label shows (greyed) from its day, before the code
+for (const [, navn, dag] of GAMES) add(dag, `TEKNISK HUD ${navn}`, navn);
 for (const [d, t] of Object.entries(KULDE_INTERCEPTS))
   add(Number(d), `Snøfall TV Kulde dag ${d}`, t);
 addAlltid(1, "Snøfall TV kanaler", CHANNELS.map((c) => c.name).join(" "));
 
 // NisseStats (reveals day 16, open from that morning): each metric from its
-// unlock_day, the log from each line's fra_dag, the window's own literals.
+// unlock_day, the log from each line's fra_dag.
 const NISSESTATS_DAG = quests.find((q) =>
   q.reveals?.modules?.includes("NISSESTATS"),
 )!.dag;
@@ -270,8 +315,3 @@ for (const f of statisk.nissestats_feed)
     `NisseStats logg dag ${f.fra_dag}`,
     f.tekst,
   );
-add(
-  NISSESTATS_DAG,
-  "NisseStats",
-  literaler(kilde("src/components/windows/NisseStats.tsx")),
-);

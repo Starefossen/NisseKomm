@@ -118,7 +118,7 @@ function bygg(): Opplasing[] {
   ].sort((a, b) => a.dag - b.dag);
 
   // A day that opens three things gets one line instead of three, after the
-  // code since a HUD toy may be among them (day 16: NISSESTATS, chapter 3, Sorterer)
+  // code since a HUD toy may be among them (day 16: NISSESTATS, chapter 3, Pakkerobot)
   for (const dag of new Set(alle.map((o) => o.dag))) {
     const dagens = alle.filter((o) => o.dag === dag);
     if (dagens.length < 3) continue;

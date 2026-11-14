@@ -97,9 +97,9 @@ export function MiniGames({
           done="PORTEN HOLDER!"
         />
       )}
-      {game === "sorterer" && (
+      {game === "pakkerobot" && (
         <>
-          <div>Sorter pakkene ({sorted}/4):</div>
+          <div>Ordne pakkene ({sorted}/4):</div>
           <div className="grid grid-cols-4 gap-2">
             {["TOG", "BAMSE", "BYGGESETT", "MALING"].map((n) => (
               <button

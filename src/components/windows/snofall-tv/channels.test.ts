@@ -283,7 +283,7 @@ describe("day gates", () => {
     const ids = (d: number) => gamesFor(d).map(([id]) => id);
     expect(ids(7)).toEqual([]);
     expect(ids(8)).toEqual(["kretslop", "slede"]);
-    expect(ids(17)).toEqual(["kretslop", "sorterer", "slede"]);
+    expect(ids(17)).toEqual(["kretslop", "pakkerobot", "slede"]);
     expect(ids(18)).not.toContain("sentrifuge");
     expect(ids(19)).toContain("sentrifuge");
     expect(ids(21)).toContain("porten");

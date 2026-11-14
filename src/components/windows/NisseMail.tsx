@@ -450,7 +450,7 @@ export function NisseMail({
                           <span>
                             {selectedMission.dag === 11
                               ? "CAM 04 // ANTENNETÅRNET [KRISE]"
-                              : "CAM 02 // PAKKE-SORTERER [KRISE]"}
+                              : "CAM 02 // PAKKE-ROBOT [KRISE]"}
                           </span>
                         </div>
                         <div className="bg-black/80 px-2 py-0.5 border border-(--gold)/50 text-(--gold)">
