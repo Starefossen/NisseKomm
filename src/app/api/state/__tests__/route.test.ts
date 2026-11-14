@@ -71,6 +71,24 @@ describe("/api/state", () => {
     expect((await call("GET")).json).toEqual({});
   });
 
+  it("takes a season of letters past the 16 KB body limit, not past 600 KB", async () => {
+    const brev = Array.from({ length: 72 }, (_, i) => ({
+      day: (i % 24) + 1,
+      content: "Kjære Julius! ".repeat(18),
+    }));
+    const put = await call("PUT", {
+      key: "nissekomm-santa-letters",
+      value: brev,
+    });
+    expect(put.status).toBe(200);
+    const stor = await call("PUT", {
+      key: "nissekomm-santa-letters",
+      value: [{ day: 1, content: "x".repeat(700 * 1024) }],
+      replace: true,
+    });
+    expect(stor.status).toBe(413);
+  });
+
   it("merges a list key from two screens", async () => {
     await call("PUT", { key: "nissekomm-julius-watched", value: [1] });
     await call("PUT", { key: "nissekomm-julius-watched", value: [2] });

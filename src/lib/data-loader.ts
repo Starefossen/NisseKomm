@@ -5,6 +5,8 @@
  */
 import type { Oppdrag } from "@/types/innhold";
 import klient from "@/data/oppdrag-klient.json";
+import { fyllDyp, vedNavn } from "@/lib/navn";
+vedNavn(() => fyllDyp(klient));
 
 const ALL_QUESTS = klient.oppdrag as Oppdrag[];
 

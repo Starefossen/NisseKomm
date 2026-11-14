@@ -1,4 +1,6 @@
 import data from "@/data/tidbits.json";
+import { fyllDyp, vedNavn } from "@/lib/navn";
+vedNavn(() => fyllDyp(data));
 import type { Tidbit, Tidbits } from "@/types/tidbits";
 
 /** Content only; schema in docs/tidbits.md. */

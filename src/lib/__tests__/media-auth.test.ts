@@ -177,6 +177,8 @@ test("kid folders need a session and open day files up to today", async () => {
   mkdirSync(path.join(dir, "feed"));
   for (const f of ["dag-03.mp4", "dag-04.mp4"])
     writeFileSync(path.join(dir, "video", "julius", f), "0123456789");
+  mkdirSync(path.join(dir, "video", "tv"));
+  writeFileSync(path.join(dir, "video", "tv", "grotte-dag24.mp4"), "x");
   writeFileSync(path.join(dir, "feed", "landsby-rolig.jpg"), "x");
   writeFileSync(path.join(dir, "feed", "julius-kontor.jpg"), "x");
   process.env.MEDIA_DIR = dir;
@@ -192,7 +194,8 @@ test("kid folders need a session and open day files up to today", async () => {
   const { GET } = await import("../../app/media/[...path]/route");
   const get = async (p: string, cookie?: string, range?: string) => {
     const headers: Record<string, string> = {};
-    if (cookie) headers.cookie = cookie;
+    if (cookie?.startsWith("Bearer ")) headers.authorization = cookie;
+    else if (cookie) headers.cookie = cookie;
     if (range) headers.range = range;
     return (
       await GET(new NextRequest(`http://lan/media/${p}`, { headers }), {
@@ -215,6 +218,18 @@ test("kid folders need a session and open day files up to today", async () => {
     }
     process.env.NISSEKOMM_MODE = "lan";
     expect(await get("video/julius/dag-04.mp4", parent)).toBe(200);
+    expect(await get("video/tv/grotte-dag24.mp4", kid)).toBe(403);
+    // Varden's MCP token: parent as a parent cookie, read per the day gate.
+    expect(await get("video/julius/dag-04.mp4", "Bearer parenttoken1")).toBe(
+      200,
+    );
+    expect(await get("video/julius/dag-03.mp4", "Bearer readtoken1")).toBe(200);
+    expect(await get("video/julius/dag-04.mp4", "Bearer readtoken1")).toBe(403);
+    expect(await get("video/julius/dag-03.mp4", "Bearer feil-token")).toBe(401);
+    process.env.NISSEKOMM_MODE = "public";
+    expect(await get("video/julius/dag-04.mp4", "Bearer parenttoken1")).toBe(
+      401,
+    );
   } finally {
     jest.useRealTimers();
     delete process.env.MEDIA_DIR;

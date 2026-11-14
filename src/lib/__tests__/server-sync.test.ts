@@ -159,6 +159,56 @@ describe("ServerSyncAdapter", () => {
     expect((await store.getState())["nissekomm-codes"]).toBeUndefined();
   });
 
+  it("syncs a season of letters (72 × ~19 KB) in one key", async () => {
+    const a = new ServerSyncAdapter();
+    await a.start();
+    const brev = Array.from({ length: 72 }, (_, i) => ({
+      day: (i % 24) + 1,
+      from: ["Kristian", "Håkon", "Hanna"][i % 3],
+      content: "Kjære Julius! ".repeat(18),
+    }));
+    expect(JSON.stringify(brev).length).toBeGreaterThan(19_000);
+    a.set("nissekomm-santa-letters", brev);
+    await flush(a);
+    expect((await store.getState())["nissekomm-santa-letters"]).toHaveLength(
+      72,
+    );
+  });
+
+  it("a 413 on one key drops only it; the others sync and polling goes on", async () => {
+    const a = new ServerSyncAdapter();
+    await a.start();
+    const puts: string[] = [];
+    global.fetch = jest.fn(async (url: unknown, init?: RequestInit) => {
+      if (init?.method !== "PUT") return fakeFetch(url, init);
+      const { key } = JSON.parse(String(init.body));
+      puts.push(key);
+      if (key === "nissekomm-santa-letters")
+        return { ok: false, status: 413, json: async () => ({}) } as Response;
+      return fakeFetch(url, init);
+    }) as unknown as typeof fetch;
+    const err = jest.spyOn(console, "error").mockImplementation(() => {});
+    a.set("nissekomm-santa-letters", [{ day: 1, content: "x" }]);
+    a.set(KEY, [9]);
+    await flush(a);
+    expect((await store.getState())[KEY]).toEqual([9]);
+    await jest.advanceTimersByTimeAsync(5000);
+    expect(puts.filter((k) => k === "nissekomm-santa-letters")).toHaveLength(1);
+    expect(err).toHaveBeenCalled();
+    err.mockRestore();
+  });
+
+  it("a pull keeps a pending local write", async () => {
+    const a = new ServerSyncAdapter();
+    await a.start();
+    await store.putState(KEY, [1]);
+    a.set(KEY, [1, 2]);
+    await a.pull();
+    expect(a.get(KEY, [])).toEqual([1, 2]);
+    await flush(a);
+    expect((await store.getState())[KEY]).toEqual([1, 2]);
+  });
+
   it("a 403 drops only a codes clear; any other 403 keeps retrying", async () => {
     const a = new ServerSyncAdapter();
     await a.start();

@@ -164,6 +164,7 @@ export function checkOrigin(request: NextRequest): NextResponse | null {
 /** Same-origin POST with a small JSON object body, or an error response. */
 export async function readJsonBody(
   request: NextRequest,
+  maxBody = MAX_BODY,
 ): Promise<Record<string, unknown> | NextResponse> {
   const origin = request.headers.get("origin");
   // Host only: the gateway enforces Host == SNI; X-Forwarded-Host is client-set.
@@ -178,7 +179,7 @@ export async function readJsonBody(
     return jsonError("Ugyldig forespørsel", 403);
   }
   const length = Number(request.headers.get("content-length"));
-  if (!length || length > MAX_BODY) {
+  if (!length || length > maxBody) {
     return jsonError("Ugyldig forespørsel", 413);
   }
   const text = await request.text();
@@ -192,26 +193,37 @@ export async function readJsonBody(
 }
 
 /**
- * The client's address. Behind a trusted proxy (TRUST_PROXY=1) that is the
- * right-most X-Forwarded-For hop, the one the proxy appended itself; the
- * entries left of it are client-set. Without one, Next's own header can't be
- * told apart from a client's, so every caller shares one bucket.
+ * The client's address. Behind TRUST_PROXY=1, each of the TRUSTED_PROXY_HOPS
+ * proxies (default 1) appends the address it saw to X-Forwarded-For, so the
+ * client is the entry that many places from the right; everything left of it
+ * is client-set. Without a trusted proxy, or with too few entries, the caller
+ * is unknown and shares one bucket.
  */
 export function clientIp(request: NextRequest): string {
-  if (process.env.TRUST_PROXY !== "1") return "direkte";
-  // ponytail: one trusted hop; count from the right if a second proxy is added
+  if (process.env.TRUST_PROXY !== "1") return DELT;
+  const n = Math.max(1, Number(process.env.TRUSTED_PROXY_HOPS) || 1);
   const hops = request.headers.get("x-forwarded-for")?.split(",") ?? [];
-  return hops.at(-1)?.trim() || "ukjent";
+  return (hops.length >= n && hops.at(-n)?.trim()) || DELT;
 }
 
 export type CheckResult = Role | null | { retryAfter: number };
 
+const DELT = "delt";
+const SAKTE_MS = 1000;
+const SAKTE_MAKS_MS = 5000;
+// Next free slot for a wrong guess per shared bucket.
+// ponytail: per process; one replica in production.
+const neste = new Map<string, number>();
+const sov = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 /**
- * Checks a code against both env codes. Every attempt is counted before the
- * comparison (a parallel burst can't slip past the count) and a success
- * clears its IP. Past IP_LIMIT an IP gets 429; past GLOBAL_LIMIT only IPs
- * with no earlier attempt in the window get through, so a flood from many
- * addresses never locks out a family member who hasn't mistyped.
+ * Checks a code against both env codes. The correct code always gets in:
+ * the limits only slow down guessing. Every attempt is counted before the
+ * comparison (a parallel burst can't slip past the count). A wrong code from
+ * a known address past IP_LIMIT, or a new one past GLOBAL_LIMIT, gets 429
+ * until its window ends. A shared bucket (no trusted proxy) never locks,
+ * since that would lock the family out; wrong guesses there are answered at
+ * most one a second, each waiting at most SAKTE_MAKS_MS.
  */
 export async function checkCode(
   code: string,
@@ -220,24 +232,35 @@ export async function checkCode(
 ): Promise<CheckResult> {
   const ip = clientIp(request);
   const store = getStore();
-  const n = await store.hit(`ip:${ip}`, WINDOW_MS);
-  const retryAfter = { retryAfter: WINDOW_MS / 1000 };
-  if (n > IP_LIMIT) return retryAfter;
-  if ((await store.hit("global", WINDOW_MS)) > GLOBAL_LIMIT && n > 1) {
-    return retryAfter;
-  }
+  const delt = ip === DELT;
+  const { n, until } = delt
+    ? { n: 0, until: 0 }
+    : await store.hits(`ip:${ip}`, WINDOW_MS);
+  const global = await store.hits("global", WINDOW_MS);
   const input = hashCode(code);
   // Both comparisons always run so timing doesn't reveal which code matched.
   const kid = matches(input, process.env.KID_CODE);
   const parent = matches(input, process.env.PARENT_CODE) && isLanMode();
   const role = parent ? "parent" : kid ? "kid" : null;
   if (role) {
-    await store.clearHits(`ip:${ip}`);
+    if (!delt) await store.clearHits(`ip:${ip}`);
     return role;
   }
   console.warn(
-    `[auth] feil innlogging ip=${ip} rolle=${role_hint || "?"} tid=${new Date().toISOString()}`,
+    `[auth] feil innlogging ip=${ip} xff=${JSON.stringify(request.headers.get("x-forwarded-for") ?? "")} rolle=${role_hint || "?"} tid=${new Date().toISOString()}`,
   );
+  const vent = (t: number) => ({
+    retryAfter: Math.max(1, Math.ceil((t - Date.now()) / 1000)),
+  });
+  if (delt) {
+    const nå = Date.now();
+    const slot = Math.max(nå, neste.get(ip) ?? 0);
+    neste.set(ip, Math.min(slot, nå + SAKTE_MAKS_MS) + SAKTE_MS);
+    await sov(Math.min(slot - nå, SAKTE_MAKS_MS));
+    return null;
+  }
+  if (n > IP_LIMIT) return vent(until);
+  if (global.n > GLOBAL_LIMIT && n > 1) return vent(global.until);
   return null;
 }
 

@@ -5,6 +5,8 @@ import { useRef, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { getAdventDay, getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
 import transcripts from "@/data/julius_videoer.json";
+import { fyllDyp, vedNavn } from "@/lib/navn";
+vedNavn(() => fyllDyp(transcripts));
 import { Day1Tail } from "../ui/Day1Opener";
 import { mailPuffTekst } from "@/lib/opplasinger";
 

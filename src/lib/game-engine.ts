@@ -13,7 +13,7 @@
  * 5. Testable - Pure functions for game logic, side effects isolated
  */
 
-import { fyll } from "@/lib/navn";
+import { fyll, fyllDyp, vedNavn } from "@/lib/navn";
 import {
   StorageManager,
   type EventyrSave,
@@ -64,6 +64,7 @@ import {
   DecryptionSymbol,
 } from "@/types/innhold";
 import statiskInnhold from "@/data/statisk_innhold.json";
+vedNavn(() => fyllDyp(statiskInnhold));
 import { KULDE_INTERCEPTS } from "@/components/windows/snofall-tv/channels";
 
 export type MetricDisplayType =
@@ -435,7 +436,13 @@ export class GameEngine {
 
   /** IQs sledesimulator: best score and bells per stage id, and per «Navn/etappe». */
   static getSledeResultater(): Record<string, SledeResultat> {
-    return StorageManager.getSledeResultater();
+    // Keys «Navn/etappe»: an older build may have stored a name token.
+    return Object.fromEntries(
+      Object.entries(StorageManager.getSledeResultater()).map(([k, v]) => [
+        fyll(k),
+        v,
+      ]),
+    );
   }
 
   /** A player's best runs by stage id (empty when nobody is chosen). */
@@ -486,7 +493,8 @@ export class GameEngine {
 
   /** Last player chosen on this screen; UI state, not game state. */
   static getSledeSpiller(): string | null {
-    return StorageManager.getSledeSpiller();
+    const s = StorageManager.getSledeSpiller();
+    return s && fyll(s);
   }
 
   static setSledeSpiller(navn: string | null): void {
@@ -696,7 +704,9 @@ export class GameEngine {
   }
 
   static getSantaLetters(): SantaLetter[] {
-    return StorageManager.getSantaLetters();
+    return StorageManager.getSantaLetters().map((l) =>
+      l.from ? { ...l, from: fyll(l.from) } : l,
+    );
   }
 
   static addSantaLetter(day: number, content: string, from?: string): void {
@@ -990,7 +1000,7 @@ export class GameEngine {
   }
 
   static getPlayerNames(): string[] {
-    return StorageManager.getPlayerNames();
+    return StorageManager.getPlayerNames().map(fyll);
   }
 
   static setPlayerNames(names: string[]): void {

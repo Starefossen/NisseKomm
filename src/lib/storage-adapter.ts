@@ -189,10 +189,9 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
       offline.length = 0;
     }
     for (const [k, v] of offline) if (v != null) this.queue(k, v, false);
+    // pull() keeps pending keys, so a stuck write never stops the polling.
     const poll = () => {
-      if (!this.pending.size && !this.flushing) {
-        this.pull().catch(() => {});
-      }
+      if (!this.flushing) this.pull().catch(() => {});
     };
     // ponytail: 30 s polling; push (SSE) if screens must react faster.
     setInterval(poll, 30_000);
@@ -207,6 +206,8 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     if (res.status !== 200) return false;
     const state = (await res.json()) as Record<string, unknown>;
     for (const k of [...SYNCED_KEYS, ...SERVER_KEYS]) {
+      // A local write still on its way wins; the server merges it on PUT.
+      if (this.pending.has(k)) continue;
       if (state[k] == null) super.remove(k);
       else super.set(k, state[k]);
     }
@@ -294,9 +295,15 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
           retry = true;
           break;
         }
-        // 400, or 403 on the codes (a kid clearing them): this key was refused; drop
-        // only it, the server's value wins.
-        if (res.status === 400 || (res.status === 403 && key === CODES_KEY)) {
+        // Refused for good (400, 413 too big, 403 on the codes, ...): drop
+        // only this key, the server's value wins and the others go on.
+        // 401, 408, 429 and any other 403 (Origin/Host) are retried.
+        const forbigående = [401, 403, 408, 409, 429].includes(res.status);
+        if (
+          (res.status >= 400 && res.status < 500 && !forbigående) ||
+          (res.status === 403 && key === CODES_KEY)
+        ) {
+          console.error(`[sync] ${key} avvist (${res.status})`);
           if (this.pending.get(key) === p) {
             this.pending.delete(key);
             this.markUnsynced([key], false);
@@ -317,9 +324,10 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
           this.version = c.version;
           break;
         }
+        // Retried later, without holding back the keys after it.
         if (!res.ok) {
           retry = true;
-          break;
+          continue;
         }
         const body = (await res.json()) as { value: unknown; version: number };
         this.version = body.version;
@@ -330,7 +338,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
           else super.set(key, body.value);
         }
       }
-      this.retryMs = 1000;
+      if (!retry) this.retryMs = 1000;
     } catch {
       // A proxy's HTML error page instead of JSON: retry, never stall sync.
       retry = true;

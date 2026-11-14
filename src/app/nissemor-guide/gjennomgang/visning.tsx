@@ -12,6 +12,8 @@ import { ETAPPER } from "@/components/windows/snofall-tv/slede";
 import { GrandFinaleModal } from "@/components/ui/GrandFinaleModal";
 import videoer from "@/data/julius_videoer.json";
 import radioManus from "@/data/radio-manus.json";
+import { fyllDyp, vedNavn } from "@/lib/navn";
+vedNavn(() => [videoer, radioManus].forEach(fyllDyp));
 import type { dagInnhold } from "@/lib/guide-innhold";
 import type { Sesong } from "../_kveld/felles";
 import { Foreldredel, Rampestrek } from "../dag/[n]/foreldre";

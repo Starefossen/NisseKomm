@@ -1,7 +1,7 @@
 "use client";
 
-import { fyll, harTegn, settFamilie } from "@/lib/navn";
-import { useEffect, useState } from "react";
+import { fyll } from "@/lib/navn";
+import { useState } from "react";
 import { Icons } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
 
@@ -14,19 +14,6 @@ export function NameEntryModal({ onComplete }: NameEntryModalProps) {
     ["Kristian", "Håkon", "Hanna"].map(fyll),
   );
   const [currentIndex, setCurrentIndex] = useState(0);
-  // The names come from the server after login, never from the bundle.
-  useEffect(() => {
-    if (!names.some(harTegn)) return;
-    fetch("/api/familie")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((f) => {
-        if (!f) return;
-        settFamilie(f);
-        setNames(f.barn);
-      })
-      .catch(() => {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleNameChange = (index: number, value: string) => {
     const newNames = [...names];

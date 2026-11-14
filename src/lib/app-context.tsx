@@ -13,6 +13,7 @@ import { GameEngine } from "./game-engine";
 import { getCurrentDay } from "./date-utils";
 import { getSessionId, clearSessionId } from "./auth-cookies";
 import { CalendarEvent } from "@/types/innhold";
+import { lastFamilie } from "./navn";
 
 /**
  * Application State Context
@@ -113,8 +114,9 @@ export function AppProvider({ children }: AppProviderProps) {
       );
 
       await StorageManager.setAuthenticated(true);
-      // Shared state before the first render of game state
-      await StorageManager.sync(refreshGameState);
+      // Shared state and the family's names before the first render of game
+      // state: nothing that shows or compares a name runs without them.
+      await Promise.all([StorageManager.sync(refreshGameState), lastFamilie()]);
 
       // Refresh game state
       refreshGameState();
@@ -166,7 +168,10 @@ export function AppProvider({ children }: AppProviderProps) {
 
         console.debug("[AppContext] Session restored successfully");
       } else if (StorageManager.isAuthenticated()) {
-        await StorageManager.sync(refreshGameState);
+        await Promise.all([
+          StorageManager.sync(refreshGameState),
+          lastFamilie(),
+        ]);
         setIsAuthenticated(true);
         refreshGameState();
       }

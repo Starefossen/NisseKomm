@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const NAVN = /Kristian|KRISTIAN|Håkon|HÅKON|Hanna|HANNA|Landås|LANDÅS/;
+const NAVN = /kristian|håkon|hanna|landås/i;
 
 const nextConfig: NextConfig = {
   // AGENTS.md is maintained by hand; stop next dev from appending its own block

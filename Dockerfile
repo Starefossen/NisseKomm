@@ -20,7 +20,8 @@ RUN pnpm build \
 
 FROM node:24-alpine
 WORKDIR /app
-ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=8080 HOSTNAME=0.0.0.0
+# The day turns at midnight in Norway, not UTC (Node carries its own tz data).
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=8080 HOSTNAME=0.0.0.0 TZ=Europe/Oslo
 COPY --from=build --chown=node:node /app/.next/standalone ./
 USER node
 EXPOSE 8080

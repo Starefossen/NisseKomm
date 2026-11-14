@@ -7,6 +7,8 @@
  */
 
 import eventyrData from "@/data/eventyr.json";
+import { fyllDyp, vedNavn } from "@/lib/navn";
+vedNavn(() => fyllDyp(eventyrData));
 import merkerData from "@/data/merker.json";
 import type { EventyrData, Eventyr } from "@/types/innhold";
 import { getAllQuests as getAllOppdrag } from "@/lib/data-loader";

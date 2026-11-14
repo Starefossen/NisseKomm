@@ -1,4 +1,5 @@
 "use client";
+import { fyll } from "@/lib/navn";
 import { Vurder } from "../../vurdering";
 
 import Link from "next/link";
@@ -730,7 +731,7 @@ export function Gaatekart({
           })}
         </ol>
         <p>
-          <b>Hanna (hvis hun vil):</b> {t(d.hanna)}
+          <b>{fyll("Hanna (hvis hun vil):")}</b> {t(d.hanna)}
         </p>
         <h4 className="text-lg text-(--christmas-red)">Hvis noe er borte</h4>
         <p>{t(d.reserve)}</p>

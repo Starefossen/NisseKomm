@@ -46,6 +46,8 @@ export interface Store {
    * window (a new window starts when the old one has run out).
    */
   hit(key: string, windowMs: number): Promise<number>;
+  /** hit() plus when the window ends (ms since epoch). */
+  hits(key: string, windowMs: number): Promise<{ n: number; until: number }>;
   clearHits(key: string): Promise<void>;
   /**
    * Deletes the upload ticket `upload-ticket:<hash>` and returns true if it
@@ -109,12 +111,15 @@ export function createMemoryStore(
       return ticketOk(t, path);
     },
     async hit(key, w) {
+      return (await this.hits(key, w)).n;
+    },
+    async hits(key, w) {
       const now = Date.now();
       for (const [k, h] of hits) if (h.until <= now) hits.delete(k);
       const h = hits.get(key) ?? { n: 0, until: now + w };
       h.n++;
       hits.set(key, h);
-      return h.n;
+      return { ...h };
     },
     async clearHits(key) {
       hits.delete(key);
@@ -241,6 +246,9 @@ export function createPgStore(pool: Pool): Store {
     },
     // One UPSERT takes the row lock, so a parallel burst counts every hit.
     async hit(key, w) {
+      return (await this.hits(key, w)).n;
+    },
+    async hits(key, w) {
       await pool.query("DELETE FROM auth_hits WHERE until < now()");
       const r = await pool.query(
         `INSERT INTO auth_hits (key, n, until)
@@ -248,10 +256,13 @@ export function createPgStore(pool: Pool): Store {
          ON CONFLICT (key) DO UPDATE SET
            n = CASE WHEN auth_hits.until < now() THEN 1 ELSE auth_hits.n + 1 END,
            until = CASE WHEN auth_hits.until < now() THEN EXCLUDED.until ELSE auth_hits.until END
-         RETURNING n`,
+         RETURNING n, until`,
         [key, new Date(Date.now() + w)],
       );
-      return r.rows[0].n as number;
+      return {
+        n: r.rows[0].n as number,
+        until: new Date(r.rows[0].until).getTime(),
+      };
     },
     async clearHits(key) {
       await pool.query("DELETE FROM auth_hits WHERE key = $1", [key]);

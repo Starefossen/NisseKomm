@@ -6,7 +6,7 @@
 import "next-test-api-route-handler";
 
 import { testApiHandler } from "next-test-api-route-handler";
-import { describe, it, expect, beforeEach } from "@jest/globals";
+import { describe, it, expect, beforeEach, jest } from "@jest/globals";
 import { createHash } from "node:crypto";
 import { NextRequest } from "next/server";
 import * as loginRoute from "../route";
@@ -19,6 +19,9 @@ const ORIGIN = "https://nissekomm.no";
 // Client address as the trusted proxy would append it.
 let ip = "10.0.0.1";
 
+// What the client itself sends; the trusted proxy appends `ip`.
+let forged = "6.6.6.6";
+
 async function login(
   body: unknown,
   origin: string | null = ORIGIN,
@@ -26,7 +29,13 @@ async function login(
   cookie?: string,
 ) {
   let result:
-    { status: number; text: string; cookie: string | null } | undefined;
+    | {
+        status: number;
+        text: string;
+        cookie: string | null;
+        retry: string | null;
+      }
+    | undefined;
   await testApiHandler({
     appHandler: loginRoute,
     // Fixed Host so the same-origin check holds without TRUST_PROXY too.
@@ -35,7 +44,7 @@ async function login(
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
         "X-Forwarded-Proto": proto,
-        "X-Forwarded-For": `6.6.6.6, ${ip}`,
+        "X-Forwarded-For": `${forged}, ${ip}`,
       };
       if (origin) headers.Origin = origin;
       if (cookie) headers.Cookie = cookie;
@@ -48,6 +57,7 @@ async function login(
         status: res.status,
         text: await res.text(),
         cookie: res.headers.get("set-cookie"),
+        retry: res.headers.get("retry-after"),
       };
     },
   });
@@ -61,8 +71,10 @@ beforeEach(() => {
   env.PARENT_CODE = "bjelle kakao reinsdyr vott";
   env.NISSEKOMM_MODE = "lan";
   env.TRUST_PROXY = "1";
+  delete env.TRUSTED_PROXY_HOPS;
   memoryStore.reset();
   ip = "10.0.0.1";
+  forged = "6.6.6.6";
 });
 
 describe("POST /api/auth/login", () => {
@@ -189,10 +201,66 @@ describe("POST /api/auth/login", () => {
     for (const code of codes) statuses.push((await login({ code })).status);
     expect(statuses.filter((s) => s === 401)).toHaveLength(10);
     expect(statuses.filter((s) => s === 429)).toHaveLength(390);
-    // Even the right code waits out the window from the flooding IP.
-    expect((await login({ code: "snø lykt elg" })).status).toBe(429);
+    // The right code always gets in, even from a locked IP.
+    expect((await login({ code: "snø lykt elg" })).status).toBe(200);
     ip = "10.0.0.2";
     expect((await login({ code: "snø lykt elg" })).status).toBe(200);
+  });
+
+  it("Retry-After is the time left in the window", async () => {
+    ip = "6.6.6.8";
+    for (let i = 0; i < 10; i++) await login({ code: `feil ${i}` });
+    const t0 = Date.now();
+    jest.useFakeTimers({
+      now: t0 + 4 * 60_000,
+      doNotFake: ["nextTick", "setImmediate", "queueMicrotask"],
+    });
+    try {
+      const res = await login({ code: "feil igjen" });
+      expect(res.status).toBe(429);
+      const s = Number(res.retry);
+      expect(s).toBeGreaterThan(5 * 60);
+      expect(s).toBeLessThanOrEqual(6 * 60 + 1);
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
+  it("a forged X-Forwarded-For entry can't pick another bucket", async () => {
+    ip = "6.6.6.9";
+    for (let i = 0; i < 10; i++) await login({ code: `feil ${i}` });
+    // The client claims to be 10.0.0.1; the proxy appended 6.6.6.9.
+    forged = "10.0.0.1";
+    expect((await login({ code: "feil" })).status).toBe(429);
+    // And it can't lock out the address it names.
+    ip = "10.0.0.1";
+    forged = "1.1.1.1";
+    expect((await login({ code: "feil" })).status).toBe(401);
+  });
+
+  it("TRUSTED_PROXY_HOPS counts proxies from the right", async () => {
+    env.TRUSTED_PROXY_HOPS = "2";
+    // `${forged}, ${ip}`: with two proxies the client is `forged`.
+    forged = "8.8.8.8";
+    for (let i = 0; i < 10; i++) {
+      ip = `10.1.0.${i}`;
+      await login({ code: `feil ${i}` });
+    }
+    ip = "10.1.0.99";
+    expect((await login({ code: "feil" })).status).toBe(429);
+  });
+
+  it("a shared bucket slows wrong codes down but never locks", async () => {
+    delete env.TRUST_PROXY;
+    const t0 = Date.now();
+    const res = [];
+    for (let i = 0; i < 3; i++)
+      res.push((await login({ code: `feil ${i}` })).status);
+    expect(res).toEqual([401, 401, 401]);
+    expect(Date.now() - t0).toBeGreaterThanOrEqual(1500);
+    const t1 = Date.now();
+    expect((await login({ code: "snø lykt elg" })).status).toBe(200);
+    expect(Date.now() - t1).toBeLessThan(500);
   });
 
   it("counts a parallel burst before comparing", async () => {
@@ -210,7 +278,8 @@ describe("POST /api/auth/login", () => {
       expect((await login({ code: "feil" })).status).toBe(401);
     }
     ip = "7.0.0.1"; // already failed once in this window
-    expect((await login({ code: "snø lykt elg" })).status).toBe(429);
+    expect((await login({ code: "feil igjen" })).status).toBe(429);
+    expect((await login({ code: "snø lykt elg" })).status).toBe(200);
     ip = "10.9.9.9";
     expect((await login({ code: "snø lykt elg" })).status).toBe(200);
   });

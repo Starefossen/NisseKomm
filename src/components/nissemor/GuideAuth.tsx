@@ -1,5 +1,6 @@
 "use client";
 
+import { lastFamilie } from "@/lib/navn";
 import {
   useState,
   useCallback,
@@ -60,6 +61,7 @@ function useStandaloneGuideAuth(enabled = true): GuideAuthState {
         if (response.ok) {
           const data = (await response.json()) as { role: string | null };
           if (data.role === "parent") {
+            await lastFamilie();
             setAuthenticated(true);
             setIsLoading(false);
             return;
@@ -212,7 +214,7 @@ export function GuideAuth({
   const { authenticated, isLoading, logout, setAuthenticated } = authState;
 
   const handleLoginSuccess = useCallback(() => {
-    setAuthenticated(true);
+    void lastFamilie().then(() => setAuthenticated(true));
   }, [setAuthenticated]);
 
   if (isLoading) {

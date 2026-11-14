@@ -1,5 +1,6 @@
 "use client";
 
+import { fyll } from "@/lib/navn";
 import { useEffect, useState } from "react";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
@@ -62,7 +63,7 @@ export function GrandFinaleModal({ onClose }: GrandFinaleModalProps) {
                 {/* Skipped name entry still gets a named list */}
                 {playerNames.length > 0
                   ? playerNames.join(" · ")
-                  : "Kristian · Håkon · Hanna"}
+                  : fyll("Kristian · Håkon · Hanna")}
               </div>
               <div className="text-base opacity-80">
                 22. desember, for hånd, én gang.

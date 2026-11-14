@@ -7,6 +7,7 @@ import { KAPITTEL_1 } from "./kapittel1";
 import { KAPITTEL_2 } from "./kapittel2";
 import { KAPITTEL_3 } from "./kapittel3";
 import { KAPITTEL_4 } from "./kapittel4";
+import { fyllDyp, vedNavn } from "@/lib/navn";
 import type { Kapittel } from "./motor";
 
 export const KAPITLER: Kapittel[] = [
@@ -15,6 +16,7 @@ export const KAPITLER: Kapittel[] = [
   KAPITTEL_3,
   KAPITTEL_4,
 ];
+vedNavn(() => fyllDyp(KAPITLER));
 
 export const kapittel = (n: number) =>
   KAPITLER.find((k) => k.n === n) ?? KAPITTEL_1;

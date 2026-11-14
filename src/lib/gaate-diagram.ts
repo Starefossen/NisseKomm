@@ -2,6 +2,7 @@
  * Which pieces each «Slik løses den» step uses, for the Gåtekart flow diagram.
  * Pure: takes the step texts and the piece list of `gaatekart(n)`.
  */
+import { fyll } from "@/lib/navn";
 export interface DiagramBit {
   id: string;
   tekst: string;
@@ -17,18 +18,21 @@ export interface Kant {
 
 // Display text now says «Håkon (9)», but raw docs still use H9/K12; they are the kids (Håkon 9, Kristian 12), never piece ids.
 const BARN = new Set(["H9", "K12", "K4", "K1", "K2", "K3"]);
-const STOPP = new Set(
-  "det som med for til fra har den dem ved alle uten eller men når hva hvor kan skal vil ikke hun han seg sin sine der her hos inn opp ned nok bak foran hele etter julius rampenissen koden tegnene tegn føres tavla bokstaver bokstav hver finner legger leser ordet skriver husker åpnes åpner lappen kortet kortene ligger under ruter rutene samme første andre tredje alltid aldri noen ingen bare også mellom inntil etterpå deres hvert hvilken uansett sammen begge håkon kristian hanna".split(
-    " ",
-  ),
-);
+// Lazy: in the browser the names are tokens until login (lib/navn.ts).
+let stopp: Set<string> | null = null;
+const STOPP = () =>
+  (stopp ??= new Set(
+    fyll(
+      "det som med for til fra har den dem ved alle uten eller men når hva hvor kan skal vil ikke hun han seg sin sine der her hos inn opp ned nok bak foran hele etter julius rampenissen koden tegnene tegn føres tavla bokstaver bokstav hver finner legger leser ordet skriver husker åpnes åpner lappen kortet kortene ligger under ruter rutene samme første andre tredje alltid aldri noen ingen bare også mellom inntil etterpå deres hvert hvilken uansett sammen begge håkon kristian hanna",
+    ).split(" "),
+  ));
 const stamme = (s: string) =>
   new Set(
     s
       .toLowerCase()
       .replace(/\*\*|`/g, "")
       .match(/[a-zæøå]{3,}/g)
-      ?.filter((w) => !STOPP.has(w))
+      ?.filter((w) => !STOPP().has(w))
       .map((w) => w.slice(0, 4)) ?? [],
   );
 // «sko 3», «bok 5», «sokk 3», «lampe 4»: a numbered thing named in both texts.

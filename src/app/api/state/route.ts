@@ -63,13 +63,15 @@ export async function GET(request: NextRequest) {
 
 const PUT_PER_MIN = 60;
 const MAX_KEY_BYTES = 512 * 1024;
+const MAX_PUT_BODY = 600 * 1024;
 
 export async function PUT(request: NextRequest) {
   if (storageBackend() !== "server")
     return new NextResponse(null, { status: 204 });
   if (!(await hasRole(request, "kid", "parent")))
     return jsonError("Ikke innlogget", 401);
-  const body = await readJsonBody(request);
+  // One key can hold a season of letters; the other routes keep 16 KB.
+  const body = await readJsonBody(request, MAX_PUT_BODY);
   if (body instanceof NextResponse) return body;
   if ((await getStore().hit(`put:${sessionId(request)}`, 60_000)) > PUT_PER_MIN)
     return jsonError("For mange lagringer", 429);
