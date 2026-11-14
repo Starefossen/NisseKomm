@@ -26,6 +26,7 @@ import {
 import { STEDER } from "@/components/windows/snofall-tv/vidda";
 import { UTSKRIFTER } from "@/app/nissemor-guide/printout/filer";
 import { KAPITLER } from "@/components/windows/nissespill/kapitler";
+import { opplasingerPaaDag } from "./opplasinger";
 
 const filer: Record<string, string> = bakt;
 
@@ -867,3 +868,158 @@ export const sesongKart = () =>
 export function antallKveldTing(n: number): number {
   return kveldDag(n)?.sjekkliste.length ?? 0;
 }
+
+// --- Sesongkart (the season at a glance) -------------------------------
+
+const UKEDAG: Record<string, string> = {
+  ma: "mandag",
+  ti: "tirsdag",
+  on: "onsdag",
+  to: "torsdag",
+  fr: "fredag",
+  lø: "lørdag",
+  sø: "søndag",
+};
+
+/** Threads the season map lights up on hover: the days whose texts name them. */
+const TRAADER: [id: string, navn: string, mønster: RegExp][] = [
+  ["vokter", "Kulde", /kulde|85,0|vintervokter/i],
+  ["fugl", "Brevfuglene", /brevfugl|blå fugl|blåfugl/i],
+  ["iq", "IQ", /\bIQ\b/],
+  ["ametyst", "Fargen og ametysten", /ametyst|farge/i],
+  ["mur", "Muren og porten", /\bmur(en)?\b|porten/i],
+];
+
+const forsteSetning = (s: string) => s.match(/^[^]+?[.!?»](?=\s|$)/)?.[0] ?? s;
+
+/**
+ * The whole season for /nissemor-guide/sesong: one row per day plus lanes for
+ * the side stories. Codes (and the runes they teach) only with `fasit`; each
+ * day's own texts mask its code otherwise, like the day view.
+ */
+export function sesongLinje(fasit: boolean) {
+  const dagTab = tabellPerDag(del("historie", "4. Dag for dag"));
+  const strek = strekTitler();
+  const runer = (d: number) =>
+    runerFor(dager(d), (x) => getQuestByDay(x)?.kode);
+  const krypto = getAllOppdrag().filter((q) => q.decryption_challenge);
+  const dagerUt = getAllOppdrag()
+    .filter((q) => q.dag <= 24)
+    .map((q) => {
+      const n = q.dag;
+      const rad = dagTab.get(n) ?? [];
+      const koder = [q.kode, q.bonusoppdrag?.foreldre_kode].filter(
+        (k): k is string => !!k,
+      );
+      const skjul = (s: string) =>
+        fasit
+          ? s
+          : koder.reduce(
+              (t, k) =>
+                t.replace(
+                  new RegExp(k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"),
+                  "•".repeat(k.length),
+                ),
+              s,
+            );
+      const beat = ren(rad[3] ?? "").replace(/^M\d \S+\.\s*/, "");
+      const sam = sammendrag(n);
+      const kilde = [beat, sam, strek[n - 1], q.tittel].join(" ");
+      const ukedag = UKEDAG[ren(rad[1] ?? "")] ?? "";
+      const nye = [...runer(n)].filter((r) => !runer(n - 1).has(r));
+      const modus = frostModeFor({
+        day: n,
+        month: 12,
+        hour: 10,
+        solved: false,
+        disabled: false,
+      });
+      return {
+        dag: n,
+        ukedag,
+        tittel: skjul(kveldDag(n)?.tittel.split(" · ")[0] ?? q.tittel),
+        type: q.bonusoppdrag
+          ? "bonus"
+          : /lørdag|søndag/.test(ukedag)
+            ? "helg"
+            : "jakt",
+        beat: skjul(beat),
+        sammendrag: skjul(sam.replace(/^#.*\n+/, "")),
+        frost: [
+          frostLevelFor(n, false),
+          frostLevelFor(n, true),
+          frostLevelFor(n, true, true),
+        ],
+        frostmodus: modus.level,
+        nyeRuner: fasit ? nye : [],
+        antallNyeRuner: nye.length,
+        runelinje: fasit ? (KULDE_RUNER[n] ?? null) : null,
+        opplasinger: opplasingerPaaDag(n).map((o) => o.tekst),
+        bonus: q.bonusoppdrag
+          ? skjul(
+              `${q.bonusoppdrag.tittel}: ${forsteSetning(q.bonusoppdrag.beskrivelse)}`,
+            )
+          : null,
+        bonusKode: fasit ? q.bonusoppdrag?.foreldre_kode : undefined,
+        snilleliste: n >= 22,
+        strek: strek[n - 1],
+        traader: TRAADER.filter(([, , m]) => m.test(kilde)).map(([id]) => id),
+        kode: fasit ? q.kode : undefined,
+      };
+    });
+  return {
+    eventyr: {
+      navn: eventyr.eventyr[0].navn,
+      beskrivelse: eventyr.eventyr[0].beskrivelse,
+    },
+    milepaeler: eventyr.eventyr[0].milepaeler.map((m, i) => ({
+      id: `M${i + 1}`,
+      ...m,
+    })),
+    traader: TRAADER.map(([id, navn]) => ({ id, navn })),
+    forsesong: Object.entries(radioHint.host).map(([dato, tekst]) => ({
+      dato,
+      tekst,
+    })),
+    dager: dagerUt,
+    baner: {
+      ugleposten: KAPITLER.map((k) => ({
+        dag: k.dag,
+        tittel: `K${k.n} ${k.tittel}`,
+        tekst: k.teaser ?? "",
+      })),
+      sledeflukt: [
+        ...ETAPPER.map((e) => ({
+          dag: e.dag,
+          tittel: e.navn,
+          tekst: "Ny etappe",
+        })),
+        ...STEDER.map((s) => ({
+          dag: s.dag,
+          tittel: s.navn,
+          tekst: "Nytt sted i fri flyging",
+        })),
+      ].sort((a, b) => a.dag - b.dag),
+      symboler: [
+        ...getAllOppdrag()
+          .filter((q) => q.symbol_clue)
+          .map((q) => ({
+            dag: q.dag,
+            tittel: `Symbolkort ${q.symbol_clue!.symbolId}`,
+            tekst: "Fysisk kort med QR og kortkode",
+          })),
+        ...krypto.map((q, i) => ({
+          dag: q.dag,
+          tittel: `NisseKrypto ${i + 1}`,
+          tekst: `Dekryptering med ${q.decryption_challenge!.requiredSymbols.length} symboler`,
+        })),
+      ].sort((a, b) => a.dag - b.dag),
+      strek: dagerUt.map((d) => ({
+        dag: d.dag,
+        tittel: d.strek,
+        tekst: "Rampestrek kvelden før",
+      })),
+    },
+  };
+}
+export type SesongLinje = ReturnType<typeof sesongLinje>;

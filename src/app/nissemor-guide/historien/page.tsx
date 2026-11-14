@@ -47,6 +47,12 @@ export default function HistorienSide() {
         Dette er bakgrunnen for sesongen, hentet fra historie- og
         storyboard-dokumentene. Hver dag står i Dager.
       </p>
+      <Link
+        href="/nissemor-guide/sesong"
+        className="block min-h-11 p-2 border-2 border-(--gold) text-center"
+      >
+        Sesongkart: hele desember på én side
+      </Link>
       <Historien />
     </GuideSide>
   );

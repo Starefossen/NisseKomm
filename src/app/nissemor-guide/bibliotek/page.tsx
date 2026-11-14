@@ -93,6 +93,7 @@ function EntitetKort({
 }
 
 const SIDER = [
+  ["/nissemor-guide/sesong", "Sesongkart"],
   ["/nissemor-guide/gjennomganger", "Gjennomganger (rapportene)"],
   ["/nissemor-guide/printout", "Utskrifter"],
   ["/nissemor-guide/media", "Filer"],

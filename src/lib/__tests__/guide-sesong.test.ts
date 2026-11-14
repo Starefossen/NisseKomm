@@ -4,6 +4,7 @@ import bakt from "@/data/guide-innhold.json";
 import { getAllOppdrag } from "@/lib/oppdrag";
 import { nyeRuner } from "@/lib/runeorden";
 import {
+  sesongLinje,
   DOK,
   RESERVESETT,
   SEKSJONER,
@@ -150,4 +151,21 @@ it.each([5, 18, 24])("dag %i: sammendrag har ikke utkastets gåte", (n) => {
     "Brikke S",
   ])
     expect(s).not.toContain(gml);
+});
+
+describe("sesongLinje", () => {
+  it("has all 24 days and no code without fasit", () => {
+    const uten = sesongLinje(false);
+    expect(uten.dager.map((d) => d.dag)).toEqual(
+      Array.from({ length: 24 }, (_, i) => i + 1),
+    );
+    for (const d of uten.dager) {
+      const q = getAllOppdrag().find((o) => o.dag === d.dag)!;
+      const tekst = JSON.stringify(d).toLowerCase();
+      expect(tekst).not.toContain(q.kode.toLowerCase());
+      if (q.bonusoppdrag)
+        expect(tekst).not.toContain(q.bonusoppdrag.foreldre_kode.toLowerCase());
+    }
+    expect(sesongLinje(true).dager[0].kode).toBe(getAllOppdrag()[0].kode);
+  });
 });
