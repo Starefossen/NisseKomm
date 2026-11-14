@@ -1,4 +1,5 @@
 "use client";
+import { rivaler, slårJulius } from "../snofall-tv/rangering";
 import { NyttIDag } from "@/components/ui/NyttIDag";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -396,7 +397,7 @@ function Etappeflukt({
       setMelding({ tekst, farge, id: ++id });
 
     /** Rampenissen cuts in at most every six seconds; near misses only now and then. */
-    const radioen = (h: Hendelse | "rekke", now: number) => {
+    const radioen = (h: Hendelse | "rekke" | "julius", now: number) => {
       if (now < radioTil) return;
       if (h === "nesten" && radioN % 3) return;
       const l = radiolinje(h, radioN);
@@ -656,6 +657,10 @@ function Etappeflukt({
             spillerRef.current,
             sim.s.utfordringKlart ? day : undefined,
           );
+          if (sim.s.ferdig && slårJulius(e, sim.s.poeng)) {
+            radioTil = 0;
+            radioen("julius", t);
+          }
           setResultat({
             poeng: sim.s.poeng,
             bjeller: b,
@@ -1350,6 +1355,14 @@ function Etappeflukt({
                           {n.toUpperCase()}
                         </th>
                       ))}
+                      {["JULIUS", "WINTER", "PIL"].map((n) => (
+                        <th
+                          key={n}
+                          className="px-2 font-normal text-right text-(--cold-blue)"
+                        >
+                          {n}
+                        </th>
+                      ))}
                     </tr>
                   </thead>
                   <tbody>
@@ -1372,6 +1385,14 @@ function Etappeflukt({
                             </td>
                           ),
                         )}
+                        {rivaler(e).map((r) => (
+                          <td
+                            key={r.navn}
+                            className="px-2 text-right text-(--cold-blue)"
+                          >
+                            {r.poeng}
+                          </td>
+                        ))}
                       </tr>
                     ))}
                   </tbody>
@@ -1700,35 +1721,54 @@ function Rekordliste({
   spiller: string | null;
   tur: { poeng: number; bjeller: number };
 }) {
-  const rader: [
-    string,
-    { poeng: number; bjeller: number } | undefined,
-    boolean,
-  ][] = [
+  type Rad = {
+    navn: string;
+    poeng: number;
+    tegn: string;
+    denne?: boolean;
+    om?: string;
+  };
+  const barn: Rad[] = [
     ...spillere().map(
-      (
-        n,
-      ): [string, { poeng: number; bjeller: number } | undefined, boolean] => [
-        n.toUpperCase(),
-        alle[`${n}/${etappe.id}`],
-        false,
-      ],
+      (n) => [n.toUpperCase(), alle[`${n}/${etappe.id}`]] as const,
     ),
-    ["FAMILIEN", alle[etappe.id], false],
-    [`DENNE TUREN${spiller ? ` (${spiller.toUpperCase()})` : ""}`, tur, true],
-  ];
+    ["FAMILIEN", alle[etappe.id]] as const,
+  ].map(([navn, r]) => ({
+    navn,
+    poeng: r?.poeng ?? -1,
+    tegn: r ? bjelletegn(r.bjeller) : "",
+  }));
+  barn.push({
+    navn: `DENNE TUREN${spiller ? ` (${spiller.toUpperCase()})` : ""}`,
+    poeng: tur.poeng,
+    tegn: bjelletegn(tur.bjeller),
+    denne: true,
+  });
+  // Rivals from Snøfall rank among the kids; a tie goes to the kids.
+  const rader: Rad[] = [
+    ...barn,
+    ...rivaler(etappe).map((r) => ({
+      navn: r.navn.toUpperCase(),
+      poeng: r.poeng,
+      tegn: "",
+      om: r.om,
+    })),
+  ].sort((a, b) => b.poeng - a.poeng || Number(!!a.om) - Number(!!b.om));
   return (
     <div className="mx-auto w-fit text-base leading-tight tabular-nums text-left">
       <div className="text-sm opacity-70 text-center">
         REKORDER · {etappe.navn.toUpperCase()}
       </div>
-      {rader.map(([navn, r, denne]) => (
+      {rader.map((r) => (
         <div
-          key={navn}
-          className={`flex gap-3 justify-between px-1 ${denne ? "bg-(--gold) text-black" : ""}`}
+          key={r.navn}
+          className={`flex gap-3 justify-between px-1 ${r.denne ? "bg-(--gold) text-black" : r.om ? "text-(--cold-blue)" : ""}`}
         >
-          <span>{navn}</span>
-          <span>{r ? `${r.poeng} ${bjelletegn(r.bjeller)}` : "–"}</span>
+          <span>
+            {r.navn}
+            {r.om && <span className="text-sm opacity-70"> · {r.om}</span>}
+          </span>
+          <span>{r.poeng < 0 ? "–" : `${r.poeng} ${r.tegn}`}</span>
         </div>
       ))}
     </div>
