@@ -742,6 +742,9 @@ for (const day of days) {
       );
     } else check(day <= 6, `Frostgraden mangler dag ${day}`);
     await shot(`dag-${String(day).padStart(2, "0")}-etter.png`);
+    // Name tokens left on screen: data that never got the family's names.
+    const tegn = (await text()).match(/\{\{(?:B[123]|HJEM|b[123]|hjem)\^?\}\}/);
+    check(!tegn, `navnetegn på skjermen: ${tegn?.[0]}`);
     for (const e of errors) fails.push(e.slice(0, 300));
     results.push({
       day,
