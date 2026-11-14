@@ -13,7 +13,7 @@
  * 5. Testable - Pure functions for game logic, side effects isolated
  */
 
-import { fyll, fyllDyp, vedNavn } from "@/lib/navn";
+import { fyllDyp, vedNavn } from "@/lib/navn";
 import {
   StorageManager,
   type EventyrSave,
@@ -51,6 +51,8 @@ import {
 } from "./systems/symbol-system";
 import * as quests from "./systems/quest-system";
 import * as frost from "./systems/frost-system";
+import * as slede from "./systems/slede-system";
+import * as brev from "./systems/brev-system";
 
 export { runerFor } from "./systems/frost-system";
 import type {
@@ -303,24 +305,14 @@ export class GameEngine {
 
   /** IQs sledesimulator: best score and bells per stage id, and per «Navn/etappe». */
   static getSledeResultater(): Record<string, SledeResultat> {
-    // Keys «Navn/etappe»: an older build may have stored a name token.
-    return Object.fromEntries(
-      Object.entries(StorageManager.getSledeResultater()).map(([k, v]) => [
-        fyll(k),
-        v,
-      ]),
-    );
+    return slede.getSledeResultater();
   }
 
   /** A player's best runs by stage id (empty when nobody is chosen). */
   static getSledeResultaterFor(
     spiller: string | null,
   ): Record<string, SledeResultat> {
-    if (!spiller) return {};
-    const ut: Record<string, SledeResultat> = {};
-    for (const [k, r] of Object.entries(this.getSledeResultater()))
-      if (k.startsWith(`${spiller}/`)) ut[k.slice(spiller.length + 1)] = r;
-    return ut;
+    return slede.getSledeResultaterFor(spiller);
   }
 
   /**
@@ -336,36 +328,22 @@ export class GameEngine {
     spiller?: string | null,
     utfordringDag?: number,
   ): SledeResultat {
-    spiller = spiller && fyll(spiller);
-    const alle = this.getSledeResultater();
-    // One whole run is kept: most bells, then most points. A failed run
-    // (0 bells) still counts as a best score until a finished one beats it.
-    const beste = (prev: SledeResultat | undefined) =>
-      prev &&
-      (prev.bjeller > bjeller ||
-        (prev.bjeller === bjeller && prev.poeng >= poeng))
-        ? prev
-        : { poeng, bjeller };
-    const fam = beste(alle[etappe]);
-    if (fam !== alle[etappe]) StorageManager.setSledeResultat(etappe, fam);
-    if (!spiller) return fam;
-    const id = `${spiller}/${etappe}`;
-    const dag = utfordringDag ?? alle[id]?.utfordringDag;
-    const egen = { ...beste(alle[id]), utfordringDag: dag };
-    if (dag === undefined) delete egen.utfordringDag;
-    if (JSON.stringify(egen) !== JSON.stringify(alle[id]))
-      StorageManager.setSledeResultat(id, egen);
-    return egen;
+    return slede.recordSledeResultat(
+      etappe,
+      poeng,
+      bjeller,
+      spiller,
+      utfordringDag,
+    );
   }
 
   /** Last player chosen on this screen; UI state, not game state. */
   static getSledeSpiller(): string | null {
-    const s = StorageManager.getSledeSpiller();
-    return s && fyll(s);
+    return slede.getSledeSpiller();
   }
 
   static setSledeSpiller(navn: string | null): void {
-    StorageManager.setSledeSpiller(navn && fyll(navn));
+    return slede.setSledeSpiller(navn);
   }
 
   static getSkjermId(): string {
@@ -510,13 +488,11 @@ export class GameEngine {
   }
 
   static getSantaLetters(): SantaLetter[] {
-    return StorageManager.getSantaLetters().map((l) =>
-      l.from ? { ...l, from: fyll(l.from) } : l,
-    );
+    return brev.getSantaLetters();
   }
 
   static addSantaLetter(day: number, content: string, from?: string): void {
-    StorageManager.addSantaLetter(day, content, from && fyll(from));
+    return brev.addSantaLetter(day, content, from);
   }
 
   /**
@@ -782,11 +758,11 @@ export class GameEngine {
   }
 
   static getPlayerNames(): string[] {
-    return StorageManager.getPlayerNames().map(fyll);
+    return brev.getPlayerNames();
   }
 
   static setPlayerNames(names: string[]): void {
-    StorageManager.setPlayerNames(names.map(fyll));
+    return brev.setPlayerNames(names);
   }
 
   static addEarnedBadge(badgeId: string): void {
