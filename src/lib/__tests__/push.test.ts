@@ -44,12 +44,17 @@ describe("push subscriptions", () => {
       "https://fcm.googleapis.com/fcm/send/abc",
       "https://updates.push.services.mozilla.com/wpush/v2/abc",
       "https://wns2-db5p.notify.windows.com/w/?token=abc",
+      "https://jmt17.google.com/fcm/send/abc",
     ])
       expect(pushVert(ok)).toBe(true);
     for (const nei of [
       "https://localhost/x",
       "https://10.0.0.1/x",
       "https://fcm.googleapis.com.evil.no/x",
+      "https://storage.googleapis.com/x",
+      "https://android.googleapis.com/gcm/send/x",
+      "https://www.google.com/x",
+      "https://x.jmt17.google.com/x",
       "https://evilpush.apple.com/x",
       "https://fcm.googleapis.com:8443/x",
       "http://fcm.googleapis.com/x",
@@ -64,6 +69,10 @@ describe("push subscriptions", () => {
       true,
     );
     expect(lekkerTekst("dag 12", [], ["12"])).toBe(false);
+    expect(lekkerTekst("koden er ørn.", [], ["ØRN"])).toBe(true);
+    expect(lekkerTekst("ta med snø", [], ["SNØ"])).toBe(true);
+    expect(lekkerTekst("ÅRE!", [], ["ÅRE"])).toBe(true);
+    expect(lekkerTekst("snøfall og bjørnen", [], ["SNØ", "ØRN"])).toBe(false);
   });
 
   it("stores one per device and removes", async () => {

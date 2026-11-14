@@ -28,8 +28,10 @@ export async function lesSubs(store: Store): Promise<PushSub[]> {
 }
 
 // SSRF guard: web-push POSTs to the endpoint, so only the browser push services.
+// FCM is exactly fcm.googleapis.com and jmt17.google.com (newer Chrome); no
+// other googleapis.com/google.com host is a push service.
 const PUSH_VERTER =
-  /^(?:[a-z0-9-]+\.)*(?:push\.apple\.com|notify\.windows\.com)$|^(?:fcm\.googleapis\.com|updates\.push\.services\.mozilla\.com)$/;
+  /^(?:[a-z0-9-]+\.)*(?:push\.apple\.com|notify\.windows\.com)$|^(?:fcm\.googleapis\.com|jmt17\.google\.com|updates\.push\.services\.mozilla\.com)$/;
 export function pushVert(endpoint: string): boolean {
   try {
     const u = new URL(endpoint);
@@ -50,7 +52,13 @@ export function lekkerTekst(
     navn.some((n) => t.includes(n.toUpperCase())) ||
     koder
       .filter((k) => !/^\d{1,2}$/.test(k))
-      .some((k) => new RegExp(`\\b${k.toUpperCase()}\\b`, "u").test(t))
+      // \\b is ASCII-only: a code starting or ending in Æ/Ø/Å would slip through.
+      .some((k) =>
+        new RegExp(
+          `(?<![\\p{L}\\p{N}])${k.toUpperCase()}(?![\\p{L}\\p{N}])`,
+          "u",
+        ).test(t),
+      )
   );
 }
 
