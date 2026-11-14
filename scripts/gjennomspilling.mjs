@@ -557,8 +557,15 @@ for (const day of days) {
 
     // Snill-listen: asked on 22, once more on 23 if skipped, never over the finale on 24
     if (day >= 22) {
-      const asked = (await text()).includes("HOPP OVER");
       const expected = day === 22 || (day === 23 && !namesGiven);
+      // The dialog opens 2 s after the solve; give a slow dev server a margin.
+      if (expected)
+        await waitFor(
+          async () => (await text()).includes("HOPP OVER"),
+          4000,
+          "navnedialog",
+        ).catch(() => {});
+      const asked = (await text()).includes("HOPP OVER");
       check(
         asked === expected,
         `navnedialogen ${asked ? "vises" : "mangler"} dag ${day}`,
