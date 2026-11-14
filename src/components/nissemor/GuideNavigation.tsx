@@ -53,6 +53,7 @@ export function GuideNavigation() {
     ["/nissemor-guide/sok", "Søk", sti === "/nissemor-guide/sok"],
   ] as const;
   const tannhjul = sti === "/nissemor-guide/innstillinger";
+  const kart = sti === "/nissemor-guide/sesong";
   const fane = (aktiv: boolean) =>
     `flex items-center justify-center px-2 sm:px-3 min-h-11 min-w-11 border-2 whitespace-nowrap ${
       aktiv
@@ -89,7 +90,19 @@ export function GuideNavigation() {
         ))}
         <li className="ml-auto">
           <Link
+            href="/nissemor-guide/sesong"
+            aria-label="Sesongkart"
+            title="Sesongkart"
+            aria-current={kart ? "page" : undefined}
+            className={fane(kart)}
+          >
+            <Icon name="map" size={24} color={kart ? "gray" : "green"} />
+          </Link>
+        </li>
+        <li>
+          <Link
             href="/nissemor-guide/innstillinger"
+            title="Innstillinger"
             aria-label="Innstillinger"
             aria-current={tannhjul ? "page" : undefined}
             className={fane(tannhjul)}

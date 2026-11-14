@@ -42,9 +42,11 @@ function sessionTokens(request: NextRequest, role: Role): string[] {
     .map((n) => request.cookies.get(n)?.value)
     .filter((t): t is string => !!t);
 }
+// The guide only exists in lan mode, on the family's own network: 12 hours
+// made Hans log in again every morning, so it lasts as long as the kids'.
 const MAX_AGE: Record<Role, number> = {
   kid: 45 * 24 * 60 * 60,
-  parent: 12 * 60 * 60,
+  parent: 45 * 24 * 60 * 60,
 };
 const IP_LIMIT = 10;
 const GLOBAL_LIMIT = 200;

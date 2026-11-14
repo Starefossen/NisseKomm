@@ -100,12 +100,6 @@ function DagInnhold() {
               Vurder dag {n} →
             </Link>
           )}
-          <Link
-            href="/nissemor-guide/sesong"
-            className={`${knapp} float-right`}
-          >
-            Sesongkart
-          </Link>
           <nav aria-label="Dager" className="flex items-center gap-2 mb-3">
             <Link
               href={`/nissemor-guide/dag/${Math.max(1, n - 1)}`}
