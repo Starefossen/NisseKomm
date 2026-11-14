@@ -4,7 +4,12 @@ import Link from "next/link";
 import { Fragment, useEffect, useState, type ReactNode } from "react";
 import { Icon, symbolFarge, type IconColor } from "@/lib/icons";
 import { GuideSide } from "../_kveld/felles";
-import { getCurrentDay, getCurrentMonth } from "@/lib/date-utils";
+import {
+  getCurrentDate,
+  getCurrentDay,
+  getCurrentMonth,
+  isRomjul,
+} from "@/lib/date-utils";
 import type { SesongLinje } from "@/lib/guide-sesong";
 
 type Dag = SesongLinje["dager"][number];
@@ -273,7 +278,7 @@ function FrostKurve({
   );
 }
 
-function Symbol({ e }: { e: Element }) {
+function SymbolIkon({ e }: { e: Element }) {
   return e.ikon ? (
     <Icon
       name={e.ikon}
@@ -312,7 +317,12 @@ function Kart() {
   if (!data) return <p>Laster …</p>;
   // A locked thread wins; hover only previews (touch has no hover, so click locks)
   const traad = laast ?? forhånd;
-  const idag = getCurrentMonth() === 12 ? getCurrentDay() : 0;
+  // Outside 1–24 Dec «I dag» marks the pre-season radio day or the romjul tail, never a day column
+  const nå = getCurrentDate();
+  const romjul = isRomjul(nå);
+  const idag = !romjul && getCurrentMonth() === 12 ? getCurrentDay() : 0;
+  const iDagNov =
+    nå.getMonth() === 10 ? `-11-${String(nå.getDate()).padStart(2, "0")}` : "";
   const vis = (f: Filter[]) => filter === "alt" || f.includes(filter);
   const lys = (d: Dag) => !traad || d.traader.includes(traad);
   const banerFor = (d: number) =>
@@ -332,7 +342,7 @@ function Kart() {
   const Hode = ({ d }: { d: Dag }) => {
     const m = data.milepaeler.find((x) => x.dag === d.dag);
     return (
-      <div className="h-36 flex flex-col gap-0.5">
+      <div className="md:h-36 flex flex-col gap-0.5">
         <div className="flex items-baseline gap-1 flex-wrap">
           <button
             type="button"
@@ -372,7 +382,7 @@ function Kart() {
             className="mt-auto self-start text-xs px-1 border border-(--gold) text-(--gold)"
             title="Kode (fasit)"
           >
-            ⚿ {d.kode}
+            KODE {d.kode}
           </span>
         )}
       </div>
@@ -432,7 +442,7 @@ function Kart() {
       title={`${b.navn}: ${e.tittel.replace(/^K(\d+)/, "Kapittel $1:")}`}
     >
       {navn && <span className="opacity-60">{b.navn}: </span>}
-      <Symbol e={e} />
+      <SymbolIkon e={e} />
       <span className="line-clamp-2 inline">{e.tittel}</span>
     </button>
   );
@@ -451,10 +461,18 @@ function Kart() {
     ...BANER.filter((b) => vis(b.filtre)).map((b) => ({
       navn: b.navn,
       hoy: "h-14",
-      celle: (d: Dag) =>
-        data.baner[b.id]
-          .filter((e) => e.dag === d.dag)
-          .map((e) => <BaneTing key={e.tittel} b={b} e={e} />),
+      celle: (d: Dag) => {
+        const t = data.baner[b.id].filter((e) => e.dag === d.dag);
+        if (t.length < 2)
+          return t.map((e) => <BaneTing key={e.tittel} b={b} e={e} />);
+        // Several on one day (Sledeflukt day 8): one chip keeps the row height fixed
+        const e = {
+          ...t[0],
+          tittel: `${t[0].tittel} +${t.length - 1}`,
+          tekst: t.map((x) => `${x.tittel}: ${x.tekst}`).join(" · "),
+        };
+        return <BaneTing b={b} e={e} />;
+      },
     })),
   ];
   const etikett =
@@ -511,7 +529,7 @@ function Kart() {
             Ikonene i «Åpner»: moduler og kapitler som åpner den dagen (hold
             over for liste)
           </li>
-          <li>★ Bonus: bonusoppdrag · ⚿: dagens kode (bare med fasit)</li>
+          <li>★ Bonus: bonusoppdrag · KODE: dagens kode (bare med fasit)</li>
           <li>Jakt / Helg / Bonus: dagtype · I DAG: dagens kolonne</li>
         </ul>
       </details>
@@ -553,9 +571,10 @@ function Kart() {
                 key={r.dato}
                 type="button"
                 onClick={() => setValgt({ t: "radio", ...r })}
-                className={`${knapp} shrink-0`}
+                className={`${knapp} shrink-0 ${iDagNov && r.dato.endsWith(iDagNov) ? "border-(--gold) text-(--gold)" : ""}`}
               >
                 {r.dato.slice(8)}. nov
+                {iDagNov && r.dato.endsWith(iDagNov) && " · I DAG"}
               </button>
             ))}
           </div>
@@ -582,7 +601,9 @@ function Kart() {
             className="px-2 py-1 text-sm opacity-70 border-l-2 border-dashed border-(--neon-green)/40"
             style={{ gridColumn: 26, gridRow: `1 / span ${antallRader}` }}
           >
-            <p className="text-(--gold) text-base">Romjul</p>
+            <p className="text-(--gold) text-base">
+              Romjul{romjul && " · I DAG"}
+            </p>
             <p>Alt er åpent som dag 24, ut januar.</p>
           </div>
           {vis(["rod"]) && (
@@ -652,7 +673,7 @@ function Kart() {
             </li>
           ))}
           <li className="border-2 border-dashed border-(--neon-green)/40 p-2 text-sm opacity-70">
-            Romjul: alt er åpent som dag 24, ut januar.
+            {romjul && "I DAG · "}Romjul: alt er åpent som dag 24, ut januar.
           </li>
         </ol>
       </div>
