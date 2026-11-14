@@ -191,7 +191,7 @@ function Panel({
 function Kart() {
   const [fasit, setFasitState] = useState(
     () =>
-      typeof window === "undefined" || localStorage.getItem(SKJUL_KEY) !== "1",
+      typeof window !== "undefined" && localStorage.getItem(SKJUL_KEY) === "0",
   );
   const setFasit = (v: boolean) => {
     localStorage.setItem(SKJUL_KEY, v ? "0" : "1");

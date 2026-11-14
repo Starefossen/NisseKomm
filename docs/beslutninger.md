@@ -183,6 +183,7 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - 2026-11-14: Sesongbytte og nullstilling arkiverer alltid familiens fremdrift på serveren først (kv_arkiv), og skjermene sletter aldri serverdata selv. Hvorfor: brev, rekorder og merker skal bli «minner», ikke forsvinne ved neste SEASON.
 - 2026-11-14: Nissemor-guiden blir en PWA med web push (I kveld kl. 20, løst kode, feil, agent som trenger svar). Barneappen får ingen service worker. Hvorfor: foreldrene skal få varsel på telefonen uten å åpne guiden.
 - 2026-11-14: Repoet forblir offentlig selv om koder, svar, historien og barnas navn er lesbare der. Hvorfor: Hans aksepterer risikoen; README ber om ingen spoilere.
+- 2026-11-14: Fasit (koden, svaret og bokstavene) er skjult som standard i dagvisningen, gåtekartet og Sesongkartet; den vises først etter «Vis fasit», og valget huskes per enhet. Hvorfor: barn kan stå ved siden av, og svaret skal ikke vises ved et uhell.
 
 ## Besvart i Gjennomgang
 

@@ -44,11 +44,11 @@ function DagInnhold() {
   const visVurdering = useVisVurdering();
   const [dag, setDag] = useState<Dag | null>(null);
   const [feil, setFeil] = useState(false);
-  // Parent guide: answers show unless «Skjul fasit» was chosen (kids nearby).
+  // Answers stay hidden until «Vis fasit» is clicked; the choice is kept per device ("0" = shown).
   // GuideAuth mounts this only on the client, after login.
   const [vis, setVisState] = useState(
     () =>
-      typeof window === "undefined" || localStorage.getItem(SKJUL_KEY) !== "1",
+      typeof window !== "undefined" && localStorage.getItem(SKJUL_KEY) === "0",
   );
   const setVis = (v: boolean) => {
     localStorage.setItem(SKJUL_KEY, v ? "0" : "1");
