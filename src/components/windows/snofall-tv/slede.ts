@@ -1262,6 +1262,10 @@ export const RADIO: Record<string, readonly string[]> = {
     "Lenger enn det her flyg vi ikkje i kveld. Snu!",
   ],
   grotte: ["Lyset nådde ned i grotta! Krystallan blinke."],
+  julius: [
+    "Dokker slo jo Julius sjøl! Ikkje sei det te han.",
+    "Forbi Julius! Han kjem te å telle det to gang.",
+  ],
 };
 
 /** The n-th radio line for an event, or null when Rampenissen has nothing to say. */
