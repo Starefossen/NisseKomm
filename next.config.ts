@@ -34,9 +34,10 @@ const nextConfig: NextConfig = {
             key: "Strict-Transport-Security",
             value: "max-age=15552000; includeSubDomains",
           },
-          { key: "X-Frame-Options", value: "DENY" },
+          // 'self': the guide frames its own printout pages (thumbnails, 1:1 dialog)
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
           // ponytail: frame-ancestors only; a full CSP needs the inline styles and WebGL audited
-          { key: "Content-Security-Policy", value: "frame-ancestors 'none'" },
+          { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
           {
             // ponytail: report-only, read in the console; enforce once clean.
             key: "Content-Security-Policy-Report-Only",
@@ -57,7 +58,6 @@ const nextConfig: NextConfig = {
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
-              "frame-ancestors 'none'",
             ].join("; "),
           },
           { key: "X-Content-Type-Options", value: "nosniff" },
