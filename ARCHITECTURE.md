@@ -230,6 +230,7 @@ The codebase follows a strict **Facade Pattern** with clear boundaries between U
    - UI components MUST call GameEngine methods, NEVER StorageManager directly
    - Provides type-safe accessor methods for reading game state
    - Delegates to specialized domain systems for cohesive features
+   - Holds no logic of its own for these: each method is a one-line call into `lib/systems/`, so the UI imports only GameEngine
    - Examples: `submitCode()`, `getCompletedDays()`, `getSolvedDecryptions()`
 
 2. **Domain Systems** (`lib/systems/`, `lib/generators/`, `lib/validators/`)
@@ -238,6 +239,13 @@ The codebase follows a strict **Facade Pattern** with clear boundaries between U
    - Can be imported directly by GameEngine or UI when appropriate
    - Examples:
      - `symbol-system.ts` - Symbol collection and validation
+     - `quest-system.ts` - Game state, solves, modules, Julius' PS, progression
+     - `frost-system.ts` - Frost level and mode, learned runes (`runerFor`)
+     - `slede-system.ts` - Sledeflukt results per stage and player
+     - `brev-system.ts` - Letters to Julius and player names
+     - `opplasing-system.ts` - Seen intros, unlocks and daily alerts
+     - `krypto-system.ts` - NisseKrypto challenges and NisseNet files
+     - `stats-system.ts` - NisseStats metrics
      - `alert-generator.ts` - Dynamic alert creation
      - `quest-validator.ts` - Quest data validation
      - `badge-system.ts` (`lib/badge-system.ts`) - Achievement tracking
