@@ -560,7 +560,7 @@ export function LiveCam({
       if (hjAmount > 0.5 || p.frozen) {
         ctx.font = `${fs * 1.6}px ${font}`;
         ctx.fillStyle = `rgba(170,210,255,${p.frozen ? 0.9 : 0.5 + 0.5 * Math.random()})`;
-        const line = p.ghostLine ?? "SIGNAL OVERTATT";
+        const line = p.ghostLine ?? "SENDING OVERTATT";
         ctx.fillText(line, W / 2 + (p.frozen ? 0 : rand(-3, 3)), H * 0.42);
       }
       // Day 7: the name burns in for a few seconds after tuning in.
