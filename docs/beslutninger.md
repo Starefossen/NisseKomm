@@ -194,3 +194,8 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 ## Besvart i Gjennomgang
 
 Svar Hans gir på beslutninger i Gjennomgang (`docs/beslutninger-apne.json`) legges til her automatisk.
+
+- 2026-11-14: Batteriene ved antennen: skal noe lukke tråden etter 20. desember? Svar: Legg til logglinje dag 21: «IQ: Batteriene ved antennen byttet. Tredje gang.»
+- 2026-11-14: Kalenderlinjen dag 21: «Rampenissen sov gjennom hele. Snorket i D-dur.» Svar: Bytt til en linje som passer med vakta
+- 2026-11-14: PS dag 17: «Jeg har ikke hørt fra den på et år»? Svar: Bytt til «Det er første gang den svarer på noe vi har gjort.»
+- 2026-11-14: ULRIKEN: skal en tekst si hvorfor Winter skrev ordet på vingen? Svar: Legg til en halv setning i PS dag 5
