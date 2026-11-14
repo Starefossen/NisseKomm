@@ -61,15 +61,29 @@ export function GuideNavigation() {
     }`;
   return (
     <nav className="max-w-4xl mx-auto mb-6 print:hidden font-retro">
-      <ul className="flex gap-1 sm:gap-2 text-base sm:text-lg overflow-x-auto">
+      {/* Wraps on a phone: seven tabs don't fit in 390 px, and a hidden scroll hides Søk and the gear. */}
+      <ul className="flex flex-wrap gap-1 sm:gap-2 text-base sm:text-lg">
         {faner.map(([href, navn, aktiv]) => (
           <li key={navn}>
             <Link
               href={href}
               aria-current={aktiv ? "page" : undefined}
+              aria-label={navn}
               className={fane(aktiv)}
             >
-              {navn}
+              {navn === "Søk" ? (
+                <>
+                  <Icon
+                    name="search"
+                    size={20}
+                    color={aktiv ? "gray" : "green"}
+                    className="sm:hidden"
+                  />
+                  <span className="hidden sm:inline">Søk</span>
+                </>
+              ) : (
+                navn
+              )}
             </Link>
           </li>
         ))}

@@ -283,6 +283,7 @@ export function SegmentStripe({
       <video
         ref={video}
         src={mediaUrl(path)}
+        preload="metadata"
         controls
         onLoadedMetadata={(e) => setLengde(e.currentTarget.duration || 0)}
         onTimeUpdate={(e) => {

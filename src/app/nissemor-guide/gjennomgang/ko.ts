@@ -679,6 +679,8 @@ export function elementStatus(
     : undefined;
   const c = kand && brukbar(kand.celle) && !brukbar(iBruk) ? kand.celle : iBruk;
   if (c === "valgfri") return "valgfri";
+  // A new version the agent delivered puts the ball with Hans, whatever the old line said.
+  if (iBruk === "ny_versjon") return "venter";
   if (agent.has(e.id)) return "agent";
   if (venter.has(e.id)) return "venter";
   const segs = e.gruppe === "julius" && e.dag ? manus[e.dag] : undefined;

@@ -170,7 +170,7 @@ function ParentLoginForm({ onSuccess }: { onSuccess: () => void }) {
               type="text"
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              placeholder="ord ord ord ord"
+              placeholder="foreldrekode"
               className="w-full p-3 bg-black border-2 border-(--neon-green) text-(--neon-green) font-mono text-xl placeholder:text-(--neon-green)/30 focus:outline-none focus:border-(--gold)"
               autoComplete="off"
               autoFocus

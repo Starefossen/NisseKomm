@@ -70,7 +70,7 @@ describe("media-status", () => {
       "prompt endret",
     );
     expect(familie("video/julius/dag-03.mp4", k).tekst).toBe("✓ → v5 ✓");
-    expect(familie("video/julius/dag-04.mp4", k).tekst).toBe("✗");
+    expect(familie("video/julius/dag-04.mp4", k).tekst).toBe("⊘");
   });
 
   it("celleFor og Gjennomgang gir samme celle", () => {

@@ -11,7 +11,7 @@ import { juliusFiles } from "../../media/oversikt";
 import type { dagInnhold } from "@/lib/guide-innhold";
 import { Foreldredel, Rampestrek } from "./foreldre";
 import { Gaatekart } from "./gaatekart";
-import { Lukkbar, StatusFor, Vurder } from "../../vurdering";
+import { Lukkbar, StatusFor, useVisVurdering, Vurder } from "../../vurdering";
 
 type Dag = Awaited<ReturnType<typeof dagInnhold>>;
 
@@ -47,6 +47,8 @@ function Seksjon({
 
 function DagInnhold() {
   const n = Number(useParams<{ n: string }>().n);
+  const gyldig = Number.isInteger(n) && n >= 1 && n <= 24;
+  const visVurdering = useVisVurdering();
   const [dag, setDag] = useState<Dag | null>(null);
   const [feil, setFeil] = useState(false);
   // Parent guide: answers show unless «Skjul fasit» was chosen (kids nearby).
@@ -96,13 +98,15 @@ function DagInnhold() {
       <div className="min-h-screen bg-(--dark-crt) text-(--neon-green) font-retro p-3 sm:p-4 md:p-8">
         <GuideNavigation />
         <div className="max-w-4xl mx-auto text-lg">
-          <Link
-            href={`/nissemor-guide/gjennomgang?dag=${n}`}
-            data-testid="vurder-dag"
-            className={`${knapp} float-right`}
-          >
-            Vurder dag {n} →
-          </Link>
+          {visVurdering && gyldig && (
+            <Link
+              href={`/nissemor-guide/gjennomgang?dag=${n}`}
+              data-testid="vurder-dag"
+              className={`${knapp} float-right`}
+            >
+              Vurder dag {n} →
+            </Link>
+          )}
           <nav aria-label="Dager" className="flex items-center gap-2 mb-3">
             <Link
               href={`/nissemor-guide/dag/${Math.max(1, n - 1)}`}
@@ -133,8 +137,10 @@ function DagInnhold() {
             </Link>
           </nav>
 
-          {feil && <p className="text-(--christmas-red)">Fant ikke dagen.</p>}
-          {!dag && !feil && <p>Laster …</p>}
+          {(feil || !gyldig) && (
+            <p className="text-(--christmas-red)">Fant ikke dagen.</p>
+          )}
+          {!dag && !feil && gyldig && <p>Laster …</p>}
 
           {dag && (
             <>
@@ -159,6 +165,8 @@ function DagInnhold() {
                 </div>
               </header>
 
+              <Foreldredel n={n} d={dag.kveld} t={t} />
+
               <Rampestrek n={n} d={dag.kveld} t={t} />
 
               {dag.kveld && (
@@ -182,8 +190,6 @@ function DagInnhold() {
                 </p>
               </details>
 
-              <Foreldredel n={n} d={dag.kveld} t={t} kode={q?.kode} />
-
               <Lukkbar
                 id="delsystemer"
                 tittel="Delsystemer i dag"
@@ -202,7 +208,7 @@ function DagInnhold() {
 
               <Lukkbar
                 id="varden"
-                tittel="Varden (get_kid_context)"
+                tittel="Det hjemmeassistenten ser"
                 className={box}
               >
                 <p className="text-sm mb-2">
@@ -230,151 +236,155 @@ function DagInnhold() {
                 <Vurder id={`dag/${dd}/varden`} />
               </Lukkbar>
 
-              <h2 className="text-2xl text-(--gold) mt-8 mb-2">
-                Manus og media for dagen
-              </h2>
-              <Seksjon tittel="Julius' video">
-                <StatusFor ids={juliusFiles(n, media.files).slice(0, 1)} />
-                {dag.julius ? (
-                  <>
-                    <p className="text-sm text-(--cold-blue) whitespace-pre-wrap mb-3">
-                      {t(dag.julius.intro)}
-                    </p>
-                    <ol className="space-y-3">
-                      {dag.julius.segmenter.map((s, i) => (
-                        <li
-                          key={i}
-                          className="border border-(--neon-green)/40 p-2"
-                        >
-                          <p>
-                            <span className="text-(--gold)">{i + 1}.</span> «
-                            {t(s.replikk)}»
-                          </p>
-                          <p className="text-sm mt-1">
-                            {s.ord} ord · {s.sek} s{s.laast && " · låst brikke"}
-                            {s.varsler.length === 0 ? (
-                              <span className="text-(--gold)">
-                                {" "}
-                                · innenfor budsjett
-                              </span>
-                            ) : (
-                              <span className="text-(--christmas-red)">
-                                {" "}
-                                · {s.varsler.join("; ")}
-                              </span>
-                            )}
-                          </p>
-                          <p className="text-sm">Handling: {t(s.handling)}</p>
-                          <p className="text-sm text-(--cold-blue)">
-                            Kulde: {t(s.kulde)}
-                          </p>
-                        </li>
-                      ))}
-                    </ol>
-                  </>
-                ) : (
-                  <p>Ikke noe manus for dagen.</p>
-                )}
-              </Seksjon>
-
-              <Seksjon tittel="Rampenissens radio">
-                <StatusFor ids={[dag.medier[1]]} />
-                {dag.radio && (
-                  <dl className="space-y-2">
-                    {[
-                      ["Strek", dag.radio.strek],
-                      ["Rekvisitter", q?.materialer_nødvendig.join(" · ")],
-                      ["Introlinje", dag.radio.intro_hint],
-                      ["Reaksjon", dag.radio.reaksjon_hint],
-                      ["Lydregi", dag.radio.lydregi],
-                      ["Klipp", dag.radio.klipp],
-                    ]
-                      .filter(([, v]) => v)
-                      .map(([k, v]) => (
-                        <div key={k}>
-                          <dt className="text-(--gold)">{k}</dt>
-                          <dd>{t(v)}</dd>
-                        </div>
-                      ))}
-                  </dl>
-                )}
-              </Seksjon>
-
-              {q && (
-                <>
-                  <Seksjon tittel="NisseMail">
-                    <p className="whitespace-pre-wrap">
-                      {t(q.nissemail_tekst)}
-                    </p>
-                  </Seksjon>
-                  <Seksjon tittel="Julius' PS">
-                    {ps
-                      .filter(([, v]) => v)
-                      .map(([k, v]) => (
-                        <p key={k} className="mb-2">
-                          <span className="text-(--gold)">{k}: </span>
-                          {t(v)}
-                        </p>
-                      ))}
-                  </Seksjon>
-                  <Seksjon tittel="Varsler">
-                    {dag.varsler.length === 0 && <p>Ingen.</p>}
-                    {dag.varsler.map((a, i) => (
-                      <p key={i}>{t(a.tekst)}</p>
-                    ))}
-                  </Seksjon>
-                  <Seksjon tittel="Spor og brikke">
-                    <p className="mb-2">
-                      <span className="text-(--gold)">Rampestrek: </span>
-                      {t(q.rampenissen_rampestrek)}
-                    </p>
-                    <p className="mb-2">
-                      <span className="text-(--gold)">Fysisk spor: </span>
-                      {t(q.fysisk_hint)}
-                    </p>
-                    <p className="text-sm">
-                      Rom: {q.beste_rom} · Oppsett: {q.oppsett_tid}
-                    </p>
-                  </Seksjon>
-                </>
-              )}
-
-              <Seksjon tittel="Låses opp i dag">
-                {dag.opplasinger.length === 0 && <p>Ingenting nytt.</p>}
-                {dag.opplasinger.map((o, i) => (
-                  <p key={i} className="mb-1">
-                    {t(o.tekst)}
-                    {o.varsel && (
-                      <span className="block text-sm text-(--cold-blue)">
-                        {t(o.varsel)}
-                      </span>
-                    )}
-                  </p>
-                ))}
-              </Seksjon>
-
-              {(dag.kapitler.length > 0 || dag.etapper.length > 0) && (
-                <Seksjon tittel="Spill">
-                  {dag.kapitler.map((k) => (
-                    <div key={k.n} className="mb-3">
-                      <h3 className="text-(--gold)">
-                        Ugleposten kapittel {k.n}: {k.tittel}
-                        {!k.klar && " (skisse)"}
-                      </h3>
-                      {k.intro.map((l, i) => (
-                        <p key={i}>{t(l)}</p>
-                      ))}
-                    </div>
-                  ))}
-                  {dag.etapper.map((e) => (
-                    <div key={e.id} className="mb-3">
-                      <h3 className="text-(--gold)">Sledeflukt: {e.navn}</h3>
-                      <p>{t(e.intro)}</p>
-                    </div>
-                  ))}
-                  <StatusFor ids={dag.medier.slice(2)} />
+              <Lukkbar
+                id="manus"
+                tittel="Manus og media for dagen"
+                className={box}
+              >
+                <Seksjon tittel="Julius' video">
+                  <StatusFor ids={juliusFiles(n, media.files).slice(0, 1)} />
+                  {dag.julius ? (
+                    <>
+                      <p className="text-sm text-(--cold-blue) whitespace-pre-wrap mb-3">
+                        {t(dag.julius.intro)}
+                      </p>
+                      <ol className="space-y-3">
+                        {dag.julius.segmenter.map((s, i) => (
+                          <li
+                            key={i}
+                            className="border border-(--neon-green)/40 p-2"
+                          >
+                            <p>
+                              <span className="text-(--gold)">{i + 1}.</span> «
+                              {t(s.replikk)}»
+                            </p>
+                            <p className="text-sm mt-1">
+                              {s.ord} ord · {s.sek} s
+                              {s.laast && " · låst brikke"}
+                              {s.varsler.length === 0 ? (
+                                <span className="text-(--gold)">
+                                  {" "}
+                                  · innenfor budsjett
+                                </span>
+                              ) : (
+                                <span className="text-(--christmas-red)">
+                                  {" "}
+                                  · {s.varsler.join("; ")}
+                                </span>
+                              )}
+                            </p>
+                            <p className="text-sm">Handling: {t(s.handling)}</p>
+                            <p className="text-sm text-(--cold-blue)">
+                              Kulde: {t(s.kulde)}
+                            </p>
+                          </li>
+                        ))}
+                      </ol>
+                    </>
+                  ) : (
+                    <p>Ikke noe manus for dagen.</p>
+                  )}
                 </Seksjon>
-              )}
+
+                <Seksjon tittel="Rampenissens radio">
+                  <StatusFor ids={[dag.medier[1]]} />
+                  {dag.radio && (
+                    <dl className="space-y-2">
+                      {[
+                        ["Strek", dag.radio.strek],
+                        ["Rekvisitter", q?.materialer_nødvendig.join(" · ")],
+                        ["Introlinje", dag.radio.intro_hint],
+                        ["Reaksjon", dag.radio.reaksjon_hint],
+                        ["Lydregi", dag.radio.lydregi],
+                        ["Klipp", dag.radio.klipp],
+                      ]
+                        .filter(([, v]) => v)
+                        .map(([k, v]) => (
+                          <div key={k}>
+                            <dt className="text-(--gold)">{k}</dt>
+                            <dd>{t(v)}</dd>
+                          </div>
+                        ))}
+                    </dl>
+                  )}
+                </Seksjon>
+
+                {q && (
+                  <>
+                    <Seksjon tittel="NisseMail">
+                      <p className="whitespace-pre-wrap">
+                        {t(q.nissemail_tekst)}
+                      </p>
+                    </Seksjon>
+                    <Seksjon tittel="Julius' PS">
+                      {ps
+                        .filter(([, v]) => v)
+                        .map(([k, v]) => (
+                          <p key={k} className="mb-2">
+                            <span className="text-(--gold)">{k}: </span>
+                            {t(v)}
+                          </p>
+                        ))}
+                    </Seksjon>
+                    <Seksjon tittel="Varsler">
+                      {dag.varsler.length === 0 && <p>Ingen.</p>}
+                      {dag.varsler.map((a, i) => (
+                        <p key={i}>{t(a.tekst)}</p>
+                      ))}
+                    </Seksjon>
+                    <Seksjon tittel="Spor og brikke">
+                      <p className="mb-2">
+                        <span className="text-(--gold)">Rampestrek: </span>
+                        {t(q.rampenissen_rampestrek)}
+                      </p>
+                      <p className="mb-2">
+                        <span className="text-(--gold)">Fysisk spor: </span>
+                        {t(q.fysisk_hint)}
+                      </p>
+                      <p className="text-sm">
+                        Rom: {q.beste_rom} · Oppsett: {q.oppsett_tid}
+                      </p>
+                    </Seksjon>
+                  </>
+                )}
+
+                <Seksjon tittel="Låses opp i dag">
+                  {dag.opplasinger.length === 0 && <p>Ingenting nytt.</p>}
+                  {dag.opplasinger.map((o, i) => (
+                    <p key={i} className="mb-1">
+                      {t(o.tekst)}
+                      {o.varsel && (
+                        <span className="block text-sm text-(--cold-blue)">
+                          {t(o.varsel)}
+                        </span>
+                      )}
+                    </p>
+                  ))}
+                </Seksjon>
+
+                {(dag.kapitler.length > 0 || dag.etapper.length > 0) && (
+                  <Seksjon tittel="Spill">
+                    {dag.kapitler.map((k) => (
+                      <div key={k.n} className="mb-3">
+                        <h3 className="text-(--gold)">
+                          Ugleposten kapittel {k.n}: {k.tittel}
+                          {!k.klar && " (skisse)"}
+                        </h3>
+                        {k.intro.map((l, i) => (
+                          <p key={i}>{t(l)}</p>
+                        ))}
+                      </div>
+                    ))}
+                    {dag.etapper.map((e) => (
+                      <div key={e.id} className="mb-3">
+                        <h3 className="text-(--gold)">Sledeflukt: {e.navn}</h3>
+                        <p>{t(e.intro)}</p>
+                      </div>
+                    ))}
+                    <StatusFor ids={dag.medier.slice(2)} />
+                  </Seksjon>
+                )}
+              </Lukkbar>
             </>
           )}
         </div>

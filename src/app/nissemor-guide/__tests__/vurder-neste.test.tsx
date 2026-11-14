@@ -1,4 +1,4 @@
-import { describe, it, expect, jest } from "@jest/globals";
+import { beforeEach, describe, it, expect, jest } from "@jest/globals";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { Vurder } from "../vurdering";
@@ -9,6 +9,9 @@ import { Vurder } from "../vurdering";
 
 const svar = (x: unknown) =>
   ({ ok: true, json: async () => x }) as unknown as Response;
+
+// Gjennomgang always shows the buttons; outside it (here: no pathname) the setting must be on.
+beforeEach(() => localStorage.setItem("nissekomm-guide-vis-vurdering", "1"));
 
 describe("Vurder ved Neste", () => {
   it("tømmer notatet for neste element og lagrer det ulagrede på det forrige", async () => {

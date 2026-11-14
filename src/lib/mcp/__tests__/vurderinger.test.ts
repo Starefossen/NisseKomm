@@ -57,7 +57,7 @@ describe("list_vurderinger", () => {
     expect(await callTool("parent", "list_vurderinger")).toBe(
       "3 åpne av 5\n" +
         "dag/04/gaatekart | - | 2026-11-11 09:30 | sjekk\n" +
-        "video/julius/dag-01-v3.mp4 | lag_paa_nytt | 2026-11-10 08:00 | for mørk / lyd hakker | gjeldende versjon: ✗ → v3 ↻\n" +
+        "video/julius/dag-01-v3.mp4 | lag_paa_nytt | 2026-11-10 08:00 | for mørk / lyd hakker | gjeldende versjon: ⊘ → v3 ✗\n" +
         "dag/05/gaatekart | (ny versjon) forrige: godkjent | 2026-11-09 09:30 | fin",
     );
   });

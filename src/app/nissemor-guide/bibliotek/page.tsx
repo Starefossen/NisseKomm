@@ -6,6 +6,7 @@ import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { GameEngine } from "@/lib/game-engine";
 import { MediaListe, useMediaData } from "../media/kort";
+import { useVisVurdering } from "../vurdering";
 import type { bibliotek } from "@/lib/guide-innhold";
 
 type Entitet = Awaited<ReturnType<typeof bibliotek>>[number];
@@ -24,6 +25,7 @@ function EntitetKort({
   media: ReturnType<typeof useMediaData>;
 }) {
   const ut = e.medier.flatMap((m) => (m.ut ? [m.ut] : []));
+  const visVurdering = useVisVurdering();
   return (
     <details
       id={e.id}
@@ -71,7 +73,7 @@ function EntitetKort({
             </li>
           ))}
         </ul>
-        {ut.length > 0 && (
+        {visVurdering && ut.length > 0 && (
           <details>
             <summary className="min-h-11 flex items-center cursor-pointer text-(--gold)">
               Vis medier med status
@@ -120,6 +122,7 @@ function Merker() {
 }
 
 function BibliotekInnhold() {
+  const visVurdering = useVisVurdering();
   const [liste, setListe] = useState<Entitet[] | null>(null);
   const [feil, setFeil] = useState(false);
   const media = useMediaData();
@@ -150,12 +153,14 @@ function BibliotekInnhold() {
       <GuideNavigation />
       <div className="max-w-4xl mx-auto text-lg">
         <h1 className="text-3xl mb-4">Bibliotek</h1>
-        <Link
-          href="/nissemor-guide/gjennomgang"
-          className="flex items-center min-h-11 px-3 mb-2 border-4 border-(--gold) text-(--gold) text-2xl hover:bg-(--gold)/20"
-        >
-          Gjennomgang: hele sesongen, celle for celle
-        </Link>
+        {visVurdering && (
+          <Link
+            href="/nissemor-guide/gjennomgang"
+            className="flex items-center min-h-11 px-3 mb-2 border-4 border-(--gold) text-(--gold) text-2xl hover:bg-(--gold)/20"
+          >
+            Gjennomgang: hele sesongen, celle for celle
+          </Link>
+        )}
         <ul className="grid sm:grid-cols-2 gap-2 mb-6">
           {SIDER.map(([href, navn]) => (
             <li key={href}>

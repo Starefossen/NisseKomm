@@ -55,14 +55,11 @@ export function Foreldredel({
   d,
   t,
   bareKveld,
-  kode = "",
 }: {
   n: number;
-  /** The day code, from the parent-only /api/guide/dag/N. */
-  kode?: string;
   d: ReturnType<typeof kveldDag>;
   t: (s: string) => string;
-  /** Gjennomgang: tonight's checklist only. */
+  /** Gjennomgang: tonight's checklist only. The answer is in the Gåtekart. */
   bareKveld?: boolean;
 }) {
   useSynk();
@@ -89,56 +86,6 @@ export function Foreldredel({
 
   return (
     <>
-      {!bareKveld && (
-        <Seksjon
-          id="status"
-          tittel="Status"
-          farge={lost ? "border-(--gold)" : "border-(--cold-blue)"}
-        >
-          <p className="text-2xl">
-            {lost ? (
-              <span className="text-(--gold)">
-                ✓ Løst{nar && ` ${klokka(nar)}`}
-              </span>
-            ) : (
-              <span>Ikke løst ennå</span>
-            )}
-          </p>
-          <p>
-            Feil forsøk: {feil}
-            {feil >= 3 && " (terminalen viser nå tipset fra Julius)"}
-          </p>
-          {symbol && (
-            <p>
-              Symbolkort ({symbol.description}):{" "}
-              {funnet ? "funnet ✓" : "ikke skannet ennå"}
-            </p>
-          )}
-          {bonus && (
-            <p>
-              Bonus ({bonus.tittel}): {bonusOk ? "godkjent ✓" : "ikke godkjent"}{" "}
-              <a href="#bonus" className={lenke}>
-                til bonus
-              </a>
-            </p>
-          )}
-        </Seksjon>
-      )}
-      {!bareKveld && (
-        <Seksjon id="fasit" tittel="Fasit" farge="border-(--gold)">
-          <p>
-            <b>Kode:</b> <span className="text-(--gold)">{f(kode)}</span>
-          </p>
-          <p>{f(d.mekanikk)}</p>
-          <p>
-            <b>I huset:</b> {f(d.brikkeH)}
-          </p>
-          <p>
-            <b>Fra Julius:</b> {f(d.brikkeS)}
-          </p>
-        </Seksjon>
-      )}
-
       <Seksjon id="kveld" tittel={`I kveld: klar til dag ${n}`}>
         <p>Avkrysningen deles med den andre forelderen.</p>
         <Avkrysning
@@ -176,6 +123,41 @@ export function Foreldredel({
         <Vurder id={`dag/${dd}/kveld`} />
       </Seksjon>
 
+      {!bareKveld && (
+        <Seksjon
+          id="status"
+          tittel="Status"
+          farge={lost ? "border-(--gold)" : "border-(--cold-blue)"}
+        >
+          <p className="text-2xl">
+            {lost ? (
+              <span className="text-(--gold)">
+                ✓ Løst{nar && ` ${klokka(nar)}`}
+              </span>
+            ) : (
+              <span>Ikke løst ennå</span>
+            )}
+          </p>
+          <p>
+            Feil forsøk: {feil}
+            {feil >= 3 && " (terminalen viser nå tipset fra Julius)"}
+          </p>
+          {symbol && (
+            <p>
+              Symbolkort ({symbol.description}):{" "}
+              {funnet ? "funnet ✓" : "ikke skannet ennå"}
+            </p>
+          )}
+          {bonus && (
+            <p>
+              Bonus ({bonus.tittel}): {bonusOk ? "godkjent ✓" : "ikke godkjent"}{" "}
+              <a href="#bonus" className={lenke}>
+                til bonus
+              </a>
+            </p>
+          )}
+        </Seksjon>
+      )}
       {bonus && !bareKveld && (
         <Seksjon id="bonus" tittel={`Bonus: ${bonus.tittel}`}>
           <p>{bonus.fysisk_oppgave}</p>

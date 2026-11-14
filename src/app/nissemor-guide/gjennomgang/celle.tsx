@@ -8,7 +8,7 @@ import { videoStatus } from "@/lib/segmenter";
 import type { Laerdom } from "@/lib/laerdom";
 import { useSesong, type Sesong } from "../_kveld/felles";
 import { kilde, useMediaData } from "../media/kort";
-import { StatusI, useVurderinger } from "../vurdering";
+import { StatusI, useVisVurdering, useVurderinger } from "../vurdering";
 import { versionKey } from "@/lib/media-status";
 import { alleElementer, tilstand, type Element } from "./elementer";
 import {
@@ -55,9 +55,9 @@ export function useKo(d: Data, sesong: Sesong) {
 export const CELLE: Record<Fremdrift, [string, string]> = {
   godkjent: ["✓ godkjent", "bg-(--gold) text-black"],
   ok: ["◐ OK", "bg-amber-300 text-black"],
-  venter: ["● se på", "bg-(--cold-blue) text-black"],
-  agent: ["✗ fikses", "bg-(--christmas-red) text-white"],
-  mangler: ["mangler", "bg-(--gray) text-black"],
+  venter: ["● Venter på deg", "bg-(--cold-blue) text-black"],
+  agent: ["✗ Hos agent", "bg-(--christmas-red) text-white"],
+  mangler: ["⊘ mangler", "bg-(--gray) text-black"],
   valgfri: ["valgfri", "bg-(--gray)/30"],
   ikke: ["ikke aktuelt", "bg-(--gray)/30"],
 };
@@ -73,7 +73,7 @@ const statusAvCelle = (c: ReturnType<typeof tilstand>["celle"]): Fremdrift =>
 export interface CelleData {
   e: Element;
   status: Fremdrift;
-  /** «✗ kuttes» or a Julius progress line, replacing the status word. */
+  /** «kuttes» or a Julius progress line, replacing the status word. */
   ord?: string;
   /** «+v4 ✓»: a newer candidate under the main status. */
   kandidat?: string;
@@ -105,7 +105,7 @@ export function useCelle(d: Data, sesong: Sesong) {
         (n) => vurd[sid(n)],
       );
       const ok = segs.filter((n) => brukbar(celleAv(vurd[sid(n)]))).length;
-      if (vs.steg === "kutt") ord = "✗ kuttes";
+      if (vs.steg === "kutt") ord = "kuttes";
       if (vs.steg === "vurder" && st === "venter")
         ord = `● ${ok}/${segs.length} ✓`;
     }
@@ -178,7 +178,8 @@ export function StatusBrikke({
 /** The day view's status cells: each id → its element's StatusBrikke, linked into Gjennomgang. */
 export function DagStatus({ children }: { children: ReactNode }) {
   const d = useData();
-  if (!d.sesong || !d.vurd || !d.media.files)
+  const vis = useVisVurdering();
+  if (!vis || !d.sesong || !d.vurd || !d.media.files)
     return <StatusI.Provider value={() => null}>{children}</StatusI.Provider>;
   return (
     <MedStatus d={d} sesong={d.sesong}>

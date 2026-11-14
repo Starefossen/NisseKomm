@@ -264,13 +264,23 @@ export function DagManus({ n }: { n: number }) {
 }
 
 function Spiller({ path, vurderId }: { path: string; vurderId?: string }) {
+  // Older versions (no vurderId) load nothing until played: WebKit preloads every <video> otherwise.
+  const preload = vurderId ? "metadata" : "none";
   if (path.endsWith(".mp3"))
-    return <audio src={mediaUrl(path)} controls className="w-full min-h-11" />;
+    return (
+      <audio
+        src={mediaUrl(path)}
+        preload={preload}
+        controls
+        className="w-full min-h-11"
+      />
+    );
   if (path.endsWith(".mp4"))
     return (
       <video
         key={path}
         src={mediaUrl(path)}
+        preload={preload}
         controls
         className="w-full max-h-[60vh] bg-black border border-(--neon-green)/40"
       />

@@ -133,14 +133,16 @@ export function Avkrysning({
 export function Kort({
   tittel,
   farge = "border-(--neon-green)",
+  id,
   children,
 }: {
   tittel: string;
   farge?: string;
+  id?: string;
   children: ReactNode;
 }) {
   return (
-    <section className={`border-4 p-4 space-y-2 ${farge}`}>
+    <section id={id} className={`border-4 p-4 space-y-2 scroll-mt-4 ${farge}`}>
       <h2 className="text-2xl font-bold text-(--gold)">{tittel}</h2>
       {children}
     </section>

@@ -19,7 +19,7 @@ import {
   useKo,
   type CelleData,
 } from "./celle";
-import { brukbar, FORKLARING, MERKE } from "@/lib/media-status";
+import { FORKLARING } from "@/lib/media-status";
 import { GJENSTAAR } from "../media/filter";
 import { SkjulVurder, Vurder, taggTast, vurderTast } from "../vurdering";
 import {
@@ -229,6 +229,8 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
       : bareP
         ? ko.venter.filter((l) => l.prioritet)
         : ko[fane];
+  const beslutninger =
+    ko?.venter.filter((l) => l.type === "beslutning").length ?? 0;
   const antallP = new Set(
     ko?.venter.filter((l) => l.prioritet).map((l) => l.prioritet!.fil),
   ).size;
@@ -248,8 +250,9 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
       )
         return;
       const tast = ev.key.toLowerCase();
-      if (tast === "j") setValgt((i) => Math.min(i + 1, linjer.length - 1));
-      else if (tast === "k") setValgt((i) => Math.max(i - 1, 0));
+      if (tast === "n" || tast === "j")
+        setValgt((i) => Math.min(i + 1, linjer.length - 1));
+      else if (tast === "p") setValgt((i) => Math.max(i - 1, 0));
       else if (ev.key === "Enter" && linjer[valgt])
         router.push(lenke(linjer[valgt]));
       else return;
@@ -320,11 +323,8 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
             {navn} (
             {k === "laerdom" || k === "arbeid"
               ? ko[k].length
-              : fd!.total.telling[k] +
-                (k === "venter"
-                  ? ko.venter.filter((l) => l.type === "beslutning").length
-                  : 0)}
-            )
+              : fd!.total.telling[k]}
+            {k === "venter" && beslutninger > 0 && ` + ${beslutninger} spm.`})
           </Link>
         ))}
       </nav>
@@ -398,7 +398,7 @@ function Ko({ d, sesong }: { d: ReturnType<typeof useData>; sesong: Sesong }) {
         </div>
       ))}
       <p className="text-base text-(--neon-green)/80">
-        Tastatur: J neste · K forrige · Enter åpner
+        Tastatur: N neste · P forrige · Enter åpner
       </p>
     </>
   );
@@ -468,15 +468,7 @@ function Matrise({
         const s = data(e).status;
         n[s] = (n[s] ?? 0) + 1;
       }
-    const ord: [Fremdrift, string][] = [
-      ["godkjent", "✓"],
-      ["ok", "◐"],
-      ["venter", "se på"],
-      ["agent", "fikses"],
-      ["mangler", "mangler"],
-      ["valgfri", "valgfri"],
-      ["ikke", "ikke aktuelt"],
-    ];
+    const ord = FREMDRIFT.map(([s]) => [s, CELLE[s][0]] as const);
     return ord
       .filter(([s]) => n[s])
       .map(([s, w]) => `${n[s]} ${w}`)
@@ -485,7 +477,11 @@ function Matrise({
   const kolonner = KOLONNER.filter(([k]) => !u.t || u.t === k);
   const alle = alleElementer("dag", sesong, d.media.files, d.krypto);
   const utvalgt = alle.filter(vis);
-  const ok = alle.filter((e) => brukbar(t(e))).length;
+  // Same count as the queue's bar and Filer: fremdrift() over the same list.
+  const { fd } = useKo(d, sesong);
+  const ferdig = (e: Element) => ["godkjent", "ok"].includes(data(e).status);
+  const ok = fd ? fd.total.telling.godkjent + fd.total.telling.ok : 0;
+  const n = fd?.total.n ?? alle.length;
   const ekstra = ekstraRader(sesong, d.media.files, d.krypto).filter(
     (e) => KOLONNER.every(([k]) => k !== u.t) && vis(e),
   );
@@ -503,18 +499,15 @@ function Matrise({
         liste={alle}
         gjenstaar={(e) => GJENSTAAR.includes(t(e)!)}
       />
-      <Kort tittel={`${ok} av ${alle.length} godkjent`} farge="border-(--gold)">
+      <Kort tittel={`${ok} av ${n} godkjent eller OK`} farge="border-(--gold)">
         <div className="h-4 border-2 border-(--neon-green)">
           <div
             className="h-full bg-(--gold) transition-all"
-            style={{ width: `${(100 * ok) / alle.length}%` }}
+            style={{ width: `${(100 * ok) / n}%` }}
           />
         </div>
         <p className="text-base">
-          {(Object.keys(MERKE) as Tilstand[])
-            .map((c) => `${MERKE[c][0]} ${MERKE[c][2]}`)
-            .join(" · ")}{" "}
-          (notatet vises når du holder over). {FORKLARING}
+          Notatet vises når du holder over en celle. {FORKLARING}
         </p>
         {forste && (
           <Link href={href(forste.id, utvalgUrl(u))} className={knapp}>
@@ -576,7 +569,7 @@ function Matrise({
         return (
           <Kort
             key={g}
-            tittel={`${g} (${rad.filter((e) => brukbar(t(e))).length}/${rad.length})`}
+            tittel={`${g} (${rad.filter(ferdig).length}/${rad.length})`}
           >
             {RUTENETT.has(g) ? (
               <Rutenett
@@ -878,12 +871,8 @@ function Vurdering({
             </Valg>
           </div>
           <details className="relative shrink-0">
-            <summary
-              className="list-none h-11 w-11 inline-flex items-center justify-center border border-(--neon-green)/60 cursor-pointer hover:bg-(--neon-green)/20"
-              title="Taster"
-              aria-label="Taster"
-            >
-              ?
+            <summary className="list-none h-11 px-2 inline-flex items-center justify-center border border-(--neon-green)/60 cursor-pointer hover:bg-(--neon-green)/20">
+              Taster
             </summary>
             <p className="absolute right-0 top-full z-30 w-80 max-w-[90vw] p-2 bg-black border border-(--neon-green) text-base">
               G godkjent · O OK · L lag på nytt (skriv notat, Enter lagrer) · ?

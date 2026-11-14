@@ -1,4 +1,4 @@
-import { describe, it, expect, jest } from "@jest/globals";
+import { beforeEach, describe, it, expect, jest } from "@jest/globals";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { SegmentStripe } from "../segmentstripe";
@@ -33,6 +33,9 @@ const SEGS: Segment[] = [
     flagg: ["ekstra ord: sulele"],
   },
 ];
+
+// Gjennomgang always shows the buttons; outside it (here: no pathname) the setting must be on.
+beforeEach(() => localStorage.setItem("nissekomm-guide-vis-vurdering", "1"));
 
 describe("ordDiff og flaggTid", () => {
   it("markerer manglende og ekstra ord", () => {

@@ -10,7 +10,28 @@ import { StatusI, Vurder } from "../../../vurdering";
 ).IS_REACT_ACT_ENVIRONMENT = true;
 
 describe("dagvisningen vurderer ikke", () => {
+  const vis = (id: string) => {
+    const boks = document.createElement("div");
+    const root = createRoot(boks);
+    act(() =>
+      root.render(
+        <StatusI.Provider value={() => <a href="x">✓</a>}>
+          <Vurder id={id} />
+        </StatusI.Provider>,
+      ),
+    );
+    const html = boks.innerHTML;
+    act(() => root.unmount());
+    return html;
+  };
+
+  it("viser ingenting uten «Vis vurdering»", () => {
+    localStorage.removeItem("nissekomm-guide-vis-vurdering");
+    expect(vis("dag/04/kveld")).toBe("");
+  });
+
   it("Vurder i dagvisningen er en statuscelle, ingen knapper", () => {
+    localStorage.setItem("nissekomm-guide-vis-vurdering", "1");
     const boks = document.createElement("div");
     const root = createRoot(boks);
     act(() =>

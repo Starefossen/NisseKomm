@@ -11,6 +11,23 @@ import {
 } from "@/lib/date-utils";
 import { sim } from "@/lib/simulation";
 import { GuideSide, Kort } from "../_kveld/felles";
+import { settVisVurdering, useVisVurdering } from "../vurdering";
+
+function VisVurdering() {
+  const på = useVisVurdering();
+  return (
+    <label className="flex items-center gap-2 min-h-11">
+      <input
+        type="checkbox"
+        className="w-6 h-6 accent-(--gold)"
+        checked={på}
+        onChange={(e) => settVisVurdering(e.target.checked)}
+      />
+      Vis vurdering: statuscellene og lenkene til Gjennomgang på foreldresidene
+      (bare denne skjermen)
+    </label>
+  );
+}
 
 function Feilforsok() {
   const dag =
@@ -246,6 +263,9 @@ export default function InnstillingerSide() {
       </h1>
       <GuideSettings />
       <Varsler />
+      <Kort tittel="Vurdering">
+        <VisVurdering />
+      </Kort>
       <Kort tittel="Feil koder" farge="border-(--cold-blue)">
         <Feilforsok />
       </Kort>

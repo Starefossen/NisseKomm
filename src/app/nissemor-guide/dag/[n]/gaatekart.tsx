@@ -629,14 +629,19 @@ export function Gaatekart({
       )}
       <div className="flex flex-col lg:flex-row gap-3 items-start">
         <div className="flex-1 min-w-0 w-full">
-          <Flytdiagram
-            k={k}
-            steg={d.slikLoses}
-            vis={vis}
-            kode={kode}
-            t={t}
-            utskrifter={d.utskrifter.filter((u) => !OVRIG.test(u))}
-          />
+          <p className="sm:hidden text-sm opacity-80">
+            Flytdiagrammet vises på større skjerm.
+          </p>
+          <div className="hidden sm:block">
+            <Flytdiagram
+              k={k}
+              steg={d.slikLoses}
+              vis={vis}
+              kode={kode}
+              t={t}
+              utskrifter={d.utskrifter.filter((u) => !OVRIG.test(u))}
+            />
+          </div>
         </div>
         <Oppsettskisse dag={d.dag} />
       </div>
@@ -735,8 +740,9 @@ export function Gaatekart({
       )}
       {vis && kode && (
         <div
+          id="fasit"
           data-testid="gaate-fasit"
-          className="border-2 border-(--gold) p-2 mt-3"
+          className="border-2 border-(--gold) p-2 mt-3 scroll-mt-4"
         >
           <h3 className="text-xl text-(--gold)">Fasit</h3>
           <p>

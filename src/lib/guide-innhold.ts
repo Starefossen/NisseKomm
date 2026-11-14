@@ -338,17 +338,36 @@ interface Dok {
   tekst: string;
 }
 
+const MANUSNAVN: Record<keyof typeof MANUS, string> = {
+  julius: "Julius-manus",
+  radio: "Radiomanus",
+  app: "Apptekster",
+  promo: "Promomanus",
+};
+const TYPE: Record<string, string> = {
+  characters: "Karakter",
+  locations: "Sted",
+  objects: "Gjenstand",
+};
+
+/** Search reads text, not markdown: headings, bold and code marks go. */
+const somTekst = (md: string) =>
+  md.replace(/^#+\s*/gm, "").replace(/\*\*|__|`/g, "");
+
 async function dokumenter(): Promise<Dok[]> {
   const docs: Dok[] = [];
-  for (const fil of Object.values(MANUS)) {
+  for (const [nokkel, fil] of Object.entries(MANUS) as [
+    keyof typeof MANUS,
+    string,
+  ][]) {
     const md = await read(fil);
     // Split on day headings; the text before day 1 links to the file's day 1.
     for (const del of md.split(/^(?=#{2,3} Dag \d+ \()/m)) {
       const dag = Number(del.match(/^#{2,3} Dag (\d+) \(/)?.[1]);
       docs.push({
-        kilde: `${fil}${dag ? ` dag ${dag}` : ""}`,
+        kilde: `${dag ? `Dag ${dag} · ` : ""}${MANUSNAVN[nokkel]}`,
         lenke: `/nissemor-guide/dag/${dag || 1}`,
-        tekst: del,
+        tekst: somTekst(del),
       });
     }
   }
@@ -356,7 +375,7 @@ async function dokumenter(): Promise<Dok[]> {
     const q = getQuestByDay(dag);
     if (q)
       docs.push({
-        kilde: `appen dag ${dag}`,
+        kilde: `Dag ${dag} · Appen`,
         lenke: `/nissemor-guide/dag/${dag}`,
         tekst: JSON.stringify(q, null, 1),
       });
@@ -369,9 +388,9 @@ async function dokumenter(): Promise<Dok[]> {
     });
   for (const e of await bibliotek())
     docs.push({
-      kilde: `${e.type}/${e.id}`,
+      kilde: `${TYPE[e.type] ?? e.type}: ${e.navn}`,
       lenke: `/nissemor-guide/bibliotek#${e.id}`,
-      tekst: `${e.entitet}\n${e.beskrivelse}`,
+      tekst: somTekst(`${e.entitet}\n${e.beskrivelse}`),
     });
   return docs;
 }

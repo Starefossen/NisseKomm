@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+import { getCurrentMonth } from "@/lib/date-utils";
 import { Vurder } from "../vurdering";
 import {
   Avkrysning,
@@ -15,7 +17,14 @@ function Forberedelser() {
   const avkrysning = useAvkrysning("forberedelser");
   const handlet = useHandlet();
   const sesong = useSesong();
+  // Content loads after the page, so the browser misses #handleliste.
+  useEffect(() => {
+    if (sesong && location.hash)
+      document.getElementById(location.hash.slice(1))?.scrollIntoView();
+  }, [sesong]);
   if (!sesong) return <p>Laster …</p>;
+  // In December the season has started: the shopping list is what is left to use here.
+  const desember = getCurrentMonth() === 12;
   const {
     innen25: INNEN_25_NOV,
     byggeplan: BYGGEPLAN,
@@ -30,8 +39,18 @@ function Forberedelser() {
     dag1,
   } = sesong.for;
   const merk = medVarer(dag1, handlet);
+  const handleliste = (
+    <Kort id="handleliste" tittel="Handleliste" farge="border-(--cold-blue)">
+      <p className="opacity-80">{HANDLELISTE_INTRO}</p>
+      <Handleliste varer={HANDLELISTE} />
+      <p>
+        <b>Sum:</b> {HANDLELISTE_SUM}
+      </p>
+    </Kort>
+  );
   return (
     <>
+      {desember && handleliste}
       <h1 className="text-4xl font-bold text-(--gold) text-center">
         FØR SESONGEN 24.–30. NOVEMBER
       </h1>
@@ -54,16 +73,9 @@ function Forberedelser() {
         </dl>
       </Kort>
 
+      {!desember && handleliste}
       <Kort tittel="Innen 25. november">
         <Avkrysning punkter={INNEN_25_NOV} {...avkrysning} />
-      </Kort>
-
-      <Kort tittel="Handleliste" farge="border-(--cold-blue)">
-        <p className="opacity-80">{HANDLELISTE_INTRO}</p>
-        <Handleliste varer={HANDLELISTE} />
-        <p>
-          <b>Sum:</b> {HANDLELISTE_SUM}
-        </p>
       </Kort>
 
       {SJEKKLISTE_DAG1.map((s) => {

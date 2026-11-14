@@ -25,8 +25,8 @@ export const MERKE: Record<Celle, [string, string, string]> = {
   ok: ["◐", "text-amber-300", "OK"],
   ikke_vurdert: ["○", "text-(--neon-green)/70", "ikke vurdert"],
   ny_versjon: ["○", "text-(--neon-green)/70", "ny versjon, ikke vurdert"],
-  lag_paa_nytt: ["↻", "text-amber-400", "lag på nytt"],
-  mangler: ["✗", "text-(--christmas-red)", "mangler"],
+  lag_paa_nytt: ["✗", "text-amber-400", "lag på nytt"],
+  mangler: ["⊘", "text-(--christmas-red)", "mangler"],
   valgfri: ["○", "text-(--gray)", "valgfri – ikke laget"],
 };
 

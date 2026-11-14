@@ -33,6 +33,7 @@ function SokInnhold() {
             onChange={(e) => setQ(e.target.value)}
             placeholder="Manus, apptekster, Ugleposten, bibliotek"
             aria-label="Søkeord"
+            autoFocus
             className="flex-1 min-h-11 bg-black border-2 border-(--neon-green) px-3 focus:outline-none focus:border-(--gold)"
           />
           <button
@@ -43,7 +44,13 @@ function SokInnhold() {
           </button>
         </form>
         {feil && <p className="text-(--christmas-red)">Søket feilet.</p>}
-        {treff && (
+        {treff && treff.length === 0 && (
+          <p className="mb-2">
+            Ingen treff. Prøv et kortere ord, for eksempel et navn eller en
+            gjenstand.
+          </p>
+        )}
+        {treff && treff.length > 0 && (
           <p className="mb-2 text-sm">
             {treff.length} treff{treff.length >= 60 && " (viser de første)"}
           </p>

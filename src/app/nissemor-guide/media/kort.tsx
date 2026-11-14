@@ -78,7 +78,7 @@ const INVENTAR_LABEL: Record<Inventar["status"], [string, string]> = {
   current: ["[✓ Oppdatert]", "text-(--gold)"],
   stale: ["[!] Utdatert", "text-(--christmas-red)"],
   unknown: ["[?] Ukjent", "text-(--neon-green)/80"],
-  missing: ["[✗ Mangler]", "text-(--christmas-red)"],
+  missing: ["[⊘ Mangler]", "text-(--christmas-red)"],
   valgfri: ["[○ Valgfri – ikke laget]", "text-(--gray)"],
   kandidat: ["[◇ Kandidat]", "text-(--cold-blue)"],
   arkiv: ["[- Arkiv]", "text-(--gray)"],
@@ -543,7 +543,7 @@ function TrengerValg({
             : "border-(--neon-green)/60 hover:bg-(--neon-green)/20"
         }`}
       >
-        ?
+        ?<span className="hidden sm:inline font-normal"> trenger mer</span>
       </button>
       <Lagremelding status={status} className="text-sm" />
       {åpen && (

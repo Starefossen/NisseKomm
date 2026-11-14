@@ -9,6 +9,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
+import { usePathname } from "next/navigation";
 import type {
   MediaVurderingItem,
   MediaVurderinger,
@@ -142,12 +143,40 @@ export function StatusFor({ ids }: { ids: string[] }) {
   );
 }
 
+/**
+ * «Vis vurdering» (Innstillinger, per device, off by default): status cells and
+ * review links on the parent pages. The review itself lives in Gjennomgang and Filer.
+ */
+const VIS_KEY = "nissekomm-guide-vis-vurdering";
+const visLyttere = new Set<() => void>();
+export function settVisVurdering(på: boolean) {
+  localStorage.setItem(VIS_KEY, på ? "1" : "0");
+  visLyttere.forEach((l) => l());
+}
+export function useVisVurdering(): boolean {
+  const valgt = useSyncExternalStore(
+    (l) => {
+      visLyttere.add(l);
+      return () => visLyttere.delete(l);
+    },
+    () => localStorage.getItem(VIS_KEY) === "1",
+    () => false,
+  );
+  const sti = usePathname() ?? "";
+  return (
+    valgt ||
+    sti.startsWith("/nissemor-guide/gjennomgang") ||
+    sti.startsWith("/nissemor-guide/media")
+  );
+}
+
 /** Godkjent / Lag på nytt + note for one guide section. */
 export function Vurder({ id }: { id: string }) {
   const alle = useVurderinger();
   useSettVersjon(id);
   const status = useContext(StatusI);
-  if (useContext(SkjulVurder)) return null;
+  const vis = useVisVurdering();
+  if (useContext(SkjulVurder) || !vis) return null;
   if (status) return <div className="mt-2 flex">{status(id)}</div>;
   if (!alle) return null;
   const v: MediaVurderingItem | undefined = alle[id];
