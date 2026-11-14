@@ -92,6 +92,9 @@ const TYPE: Record<string, string> = {
 };
 const knapp =
   "min-h-11 px-3 border-2 border-(--neon-green) hover:bg-(--neon-green)/20";
+// Toolbar buttons: compact with a mouse, 44 px on touch
+const liten =
+  "min-h-8 pointer-coarse:min-h-11 pointer-coarse:min-w-11 px-2 text-base leading-none border border-(--neon-green) hover:bg-(--neon-green)/20";
 
 function Panel({
   v,
@@ -270,28 +273,33 @@ function FrostKurve({
       .join(" ");
   return (
     <div className={`relative ${hoy}`}>
-      <svg
-        viewBox="0 0 24 100"
-        preserveAspectRatio="none"
-        className="absolute inset-x-0 top-6 bottom-5 w-full h-[calc(100%-2.75rem)]"
+      {/* The box clips: an svg left to its 24:100 ratio would be thousands of px tall */}
+      <div
+        className="absolute inset-x-0 top-6 bottom-5 overflow-hidden"
         aria-hidden
       >
-        <polyline
-          points={punkter(0)}
-          fill="none"
-          stroke="var(--cold-blue)"
-          strokeWidth={2}
-          vectorEffect="non-scaling-stroke"
-        />
-        <polyline
-          points={punkter(1)}
-          fill="none"
-          stroke="var(--gold)"
-          strokeWidth={1}
-          strokeDasharray="4 3"
-          vectorEffect="non-scaling-stroke"
-        />
-      </svg>
+        <svg
+          viewBox="0 0 24 100"
+          preserveAspectRatio="none"
+          className="block w-full h-full"
+        >
+          <polyline
+            points={punkter(0)}
+            fill="none"
+            stroke="var(--cold-blue)"
+            strokeWidth={2}
+            vectorEffect="non-scaling-stroke"
+          />
+          <polyline
+            points={punkter(1)}
+            fill="none"
+            stroke="var(--gold)"
+            strokeWidth={1}
+            strokeDasharray="4 3"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+      </div>
       {idag > 0 && (
         <div
           className="absolute inset-y-0 w-0.5 bg-(--gold)/60"
@@ -371,6 +379,7 @@ function Kart() {
   const [laast, setLaast] = useState<string | null>(null);
   const [forhånd, setForhånd] = useState<string | null>(null);
   const [valgt, setValgt] = useState<Valgt | null>(null);
+  const [forklaring, setForklaring] = useState(false);
   useEffect(() => {
     const hent = () =>
       fetch(`/api/guide/sesongkart${fasit ? "?fasit=1" : ""}`)
@@ -641,22 +650,25 @@ function Kart() {
       <p>
         {data.eventyr.navn}: {data.eventyr.beskrivelse}
       </p>
-      <div className="flex flex-wrap gap-2 items-center">
-        {FILTRE.map(([id, navn]) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => setFilter(id)}
-            aria-pressed={filter === id}
-            className={`${knapp} ${filter === id ? "bg-(--neon-green) text-black" : ""}`}
-          >
-            {navn}
-          </button>
-        ))}
+      <div className="flex flex-wrap gap-x-3 gap-y-1 items-center">
+        <div role="group" aria-label="Visning" className="flex">
+          {FILTRE.map(([id, navn]) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setFilter(id)}
+              aria-pressed={filter === id}
+              className={`${liten} -ml-px first:ml-0 ${filter === id ? "bg-(--neon-green) text-black" : ""}`}
+            >
+              {navn}
+            </button>
+          ))}
+        </div>
         <button
           type="button"
           onClick={() => setFasit(!fasit)}
-          className={`${knapp} ${fasit ? "bg-(--gold) text-black" : ""}`}
+          aria-pressed={fasit}
+          className={`${liten} ${fasit ? "bg-(--gold) text-black" : ""}`}
         >
           {fasit ? "Skjul fasit" : "Vis fasit"}
         </button>
@@ -664,14 +676,120 @@ function Kart() {
           <button
             type="button"
             onClick={gåTilIDag}
-            className={`${knapp} hidden md:block`}
+            className={`${liten} hidden md:block`}
           >
             Gå til i dag
           </button>
         )}
+        <button
+          type="button"
+          onClick={() => setForklaring(!forklaring)}
+          aria-expanded={forklaring}
+          aria-controls="sk-forklaring"
+          className={`${liten} ${forklaring ? "bg-(--neon-green) text-black" : ""}`}
+        >
+          ? Forklaring
+        </button>
       </div>
+      {vis(["rod"]) && (
+        <div className="flex flex-wrap gap-x-3 gap-y-1 items-center text-base">
+          <div className="flex flex-wrap gap-1 items-center">
+            <span className="opacity-70">Tråder:</span>
+            {data.traader.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                data-traad={t.id}
+                onMouseEnter={() => setForhånd(t.id)}
+                onMouseLeave={() => setForhånd(null)}
+                onClick={() => {
+                  setForhånd(null);
+                  setLaast(laast === t.id ? null : t.id);
+                }}
+                aria-pressed={laast === t.id}
+                className={`${liten} border-(--cold-blue) ${laast === t.id ? "bg-(--cold-blue) text-black" : forhånd === t.id ? "bg-(--cold-blue)/30" : ""}`}
+              >
+                {laast === t.id && "● "}
+                {t.navn}
+              </button>
+            ))}
+          </div>
+          <div
+            role="group"
+            aria-label="Før sesongen: Morgenrådet"
+            className="flex flex-wrap items-center"
+          >
+            <span
+              className="opacity-70 mr-1"
+              title="Før sesongen: Morgenrådet 24.–30. november"
+            >
+              Morgenrådet nov:
+            </span>
+            {data.forsesong.map((r) => {
+              const nå = !!iDagNov && r.dato.endsWith(iDagNov);
+              return (
+                <button
+                  key={r.dato}
+                  type="button"
+                  onClick={() => setValgt({ t: "radio", ...r })}
+                  title={`Morgenrådet ${r.dato.slice(8)}. november${nå ? " · i dag" : ""}`}
+                  className={`${liten} -ml-px first:ml-0 ${nå ? "relative border-(--gold) text-(--gold)" : ""}`}
+                >
+                  {r.dato.slice(8)}.{nå && " I DAG"}
+                </button>
+              );
+            })}
+          </div>
+          {laast && (
+            <span className="text-sm opacity-70">
+              Esc eller klikk igjen for å slippe
+            </span>
+          )}
+        </div>
+      )}
+      {forklaring && (
+        <div
+          id="sk-forklaring"
+          className="border border-(--neon-green)/40 px-2"
+        >
+          <ul className="text-base py-2 list-none space-y-1">
+            <li>◆M1–M6: milepæl i historien (klikk for tekst)</li>
+            <li>K1–K4: kapittel i Ugleposten</li>
+            <li>ᚱ: nye runer etter koden (bokstavene med fasit)</li>
+            <li>
+              Frost: prosent om morgenen (blå linje, tallene under) og etter
+              koden (gul stiplet)
+            </li>
+            <li>
+              Ikonene i «Åpner»: moduler og kapitler som åpner den dagen (hold
+              over for liste)
+            </li>
+            <li>★ Bonus: bonusoppdrag · KODE: dagens kode (bare med fasit)</li>
+            <li>Jakt / Helg / Bonus: dagtype · I DAG: dagens kolonne</li>
+            <li>
+              Barnas framdrift, ved dagnummeret:{" "}
+              <span className="text-(--gold)">✓</span> koden er løst ·{" "}
+              <span className="text-(--christmas-red)">✗</span> dagen er passert
+              uten løst kode · <span className="text-amber-400">◐</span> dagens
+              kode er ikke løst ennå · «N feil»: feil forsøk på koden
+            </li>
+            <li>
+              I banene: <span className="text-(--gold)">✓</span> ferdig
+              (kapittel fullført, etappe fløyet, kort funnet, bonus godkjent) ·{" "}
+              <span className="text-amber-400">◐</span> påbegynt · ○ ikke gjort
+              · <span className="text-(--christmas-red)">○</span> kort eller
+              krypto som mangler etter dagen sin. Hold over for fjær, poeng og
+              rekorder per spiller
+            </li>
+            <li>
+              ▼ BARNA på frostlinjen: sist løste dag · ◆ milepæl nådd, ◇ ikke
+              nådd
+            </li>
+          </ul>
+        </div>
+      )}
       {fd && (
-        <p data-framdrift className="text-lg">
+        <p data-framdrift className="text-base">
           Barna: <span className="text-(--gold)">{fd.lost.length} av 24</span>{" "}
           dager løst
           {fd.sisteLost > 0 && ` (sist dag ${fd.sisteLost})`} · milepæler{" "}
@@ -680,92 +798,9 @@ function Kart() {
           av {fd.fjaer.maal}
         </p>
       )}
-      <details className="border border-(--neon-green)/40 px-2">
-        <summary className="min-h-11 py-2 cursor-pointer">Forklaring</summary>
-        <ul className="text-lg pb-2 list-none space-y-1">
-          <li>◆M1–M6: milepæl i historien (klikk for tekst)</li>
-          <li>K1–K4: kapittel i Ugleposten</li>
-          <li>ᚱ: nye runer etter koden (bokstavene med fasit)</li>
-          <li>
-            Frost: prosent om morgenen (blå linje, tallene under) og etter koden
-            (gul stiplet)
-          </li>
-          <li>
-            Ikonene i «Åpner»: moduler og kapitler som åpner den dagen (hold
-            over for liste)
-          </li>
-          <li>★ Bonus: bonusoppdrag · KODE: dagens kode (bare med fasit)</li>
-          <li>Jakt / Helg / Bonus: dagtype · I DAG: dagens kolonne</li>
-          <li>
-            Barnas framdrift, ved dagnummeret:{" "}
-            <span className="text-(--gold)">✓</span> koden er løst ·{" "}
-            <span className="text-(--christmas-red)">✗</span> dagen er passert
-            uten løst kode · <span className="text-amber-400">◐</span> dagens
-            kode er ikke løst ennå · «N feil»: feil forsøk på koden
-          </li>
-          <li>
-            I banene: <span className="text-(--gold)">✓</span> ferdig (kapittel
-            fullført, etappe fløyet, kort funnet, bonus godkjent) ·{" "}
-            <span className="text-amber-400">◐</span> påbegynt · ○ ikke gjort ·{" "}
-            <span className="text-(--christmas-red)">○</span> kort eller krypto
-            som mangler etter dagen sin. Hold over for fjær, poeng og rekorder
-            per spiller
-          </li>
-          <li>
-            ▼ BARNA på frostlinjen: sist løste dag · ◆ milepæl nådd, ◇ ikke nådd
-          </li>
-        </ul>
-      </details>
-      {vis(["rod"]) && (
-        <div className="flex flex-wrap gap-2 items-center">
-          <span>Tråder:</span>
-          {data.traader.map((t) => (
-            <button
-              key={t.id}
-              type="button"
-              data-traad={t.id}
-              onMouseEnter={() => setForhånd(t.id)}
-              onMouseLeave={() => setForhånd(null)}
-              onClick={() => {
-                setForhånd(null);
-                setLaast(laast === t.id ? null : t.id);
-              }}
-              aria-pressed={laast === t.id}
-              className={`${knapp} border-(--cold-blue) ${laast === t.id ? "bg-(--cold-blue) text-black" : forhånd === t.id ? "bg-(--cold-blue)/30" : ""}`}
-            >
-              {laast === t.id && "● "}
-              {t.navn}
-            </button>
-          ))}
-          {laast && (
-            <span className="text-sm opacity-70">
-              Esc eller klikk igjen for å slippe
-            </span>
-          )}
-        </div>
-      )}
-
-      {vis(["rod"]) && (
-        <section>
-          <h2 className="text-2xl text-(--gold)">Før sesongen: Morgenrådet</h2>
-          <div className="flex gap-2 overflow-x-auto">
-            {data.forsesong.map((r) => (
-              <button
-                key={r.dato}
-                type="button"
-                onClick={() => setValgt({ t: "radio", ...r })}
-                className={`${knapp} shrink-0 ${iDagNov && r.dato.endsWith(iDagNov) ? "border-(--gold) text-(--gold)" : ""}`}
-              >
-                {r.dato.slice(8)}. nov
-                {iDagNov && r.dato.endsWith(iDagNov) && " · I DAG"}
-              </button>
-            ))}
-          </div>
-        </section>
-      )}
 
       {/* Wide screens: full-bleed grid, lane labels stick on the left */}
-      <div className="hidden md:block w-[calc(100vw-4rem)] relative left-1/2 -translate-x-1/2 overflow-x-auto pb-2 border-y border-(--neon-green)/30">
+      <div className="hidden md:block w-[calc(100vw-4rem)] relative left-1/2 -translate-x-1/2 overflow-x-auto overflow-y-hidden pb-2 border-y border-(--neon-green)/30">
         <div
           className="grid"
           style={{ gridTemplateColumns: `7rem repeat(24, ${KOL}) 10rem` }}
