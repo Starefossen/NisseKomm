@@ -71,8 +71,16 @@ export interface Store {
   /**
    * Merges and stores; returns the stored value. replace skips the merge and
    * bumps VERSION_KEY, so screens holding the old list re-fetch.
+   * With `forventet` (a client's version; null = none sent) the version is
+   * checked under the same lock as the write: older than the stored one, or
+   * null after a season reset, throws VersjonsKonflikt and writes nothing.
    */
-  putState(key: string, value: unknown, replace?: boolean): Promise<unknown>;
+  putState(
+    key: string,
+    value: unknown,
+    replace?: boolean,
+    forventet?: number | null,
+  ): Promise<unknown>;
   getSession(hash: string): Promise<Session | null>;
   setSession(hash: string, s: Session): Promise<void>;
   deleteSession(hash: string): Promise<void>;
@@ -109,6 +117,30 @@ const ticketOk = (t: unknown, path: string) => {
 type Dump = { kv: [string, unknown][]; sessions: [string, Session][] };
 
 const vent = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+export class VersjonsKonflikt extends Error {
+  constructor(
+    readonly version: number,
+    readonly reset: unknown,
+  ) {
+    super("versjonskonflikt");
+  }
+}
+
+/** Postgres lock_timeout (55P03): the caller answers 503 and the client retries. */
+export const erLåsTimeout = (e: unknown) =>
+  (e as { code?: string })?.code === "55P03";
+
+function sjekkVersjon(
+  forventet: number | null | undefined,
+  lagret: unknown,
+  reset: unknown,
+) {
+  if (forventet === undefined) return;
+  const current = Number(lagret ?? 0);
+  const v = forventet ?? (reset != null ? 0 : current);
+  if (v < current) throw new VersjonsKonflikt(current, reset ?? null);
+}
 
 /** Cross-process lock for the dev file: mkdir is atomic. */
 async function filLås<T>(file: string, fn: () => Promise<T>): Promise<T> {
@@ -177,7 +209,14 @@ export function createMemoryStore(file?: string): Store & { reset(): void } {
     let d: Dump | undefined;
     try {
       d = JSON.parse(fs.readFileSync(file, "utf8"));
-    } catch {}
+    } catch (e) {
+      // Only a missing file is an empty store; never overwrite one we can't read.
+      if ((e as NodeJS.ErrnoException).code !== "ENOENT") {
+        const ny = `${file}.korrupt-${Date.now()}`;
+        fs.renameSync(file, ny);
+        throw new Error(`${file} kunne ikke leses (flyttet til ${ny}): ${e}`);
+      }
+    }
     kv = new Map(d?.kv);
     sessions = new Map(d?.sessions);
   };
@@ -226,8 +265,9 @@ export function createMemoryStore(file?: string): Store & { reset(): void } {
       save();
     },
     getState: () => serie(() => Object.fromEntries(kv)),
-    putState: (key, value, replace = false) =>
+    putState: (key, value, replace = false, forventet) =>
       serie(() => {
+        sjekkVersjon(forventet, kv.get(VERSION_KEY), kv.get(RESET_KEY));
         const stored = replace ? value : mergeValue(key, kv.get(key), value);
         kv.set(key, stored);
         if (replace) kv.set(VERSION_KEY, Number(kv.get(VERSION_KEY) ?? 0) + 1);
@@ -385,7 +425,7 @@ export function createPgStore(pool: Pool): Store {
       const r = await pool.query("SELECT key, value FROM kv");
       return Object.fromEntries(r.rows.map((row) => [row.key, row.value]));
     },
-    async putState(key, value, replace = false) {
+    async putState(key, value, replace = false, forventet) {
       const c = await pool.connect();
       const update = async (k: string, fn: (old: unknown) => unknown) => {
         await c.query(
@@ -405,7 +445,18 @@ export function createPgStore(pool: Pool): Store {
       };
       try {
         await c.query("BEGIN");
+        await c.query("SET LOCAL lock_timeout = '5s'");
         await c.query("SELECT pg_advisory_xact_lock_shared($1)", [LOCK_ID]);
+        if (forventet !== undefined) {
+          // FOR UPDATE on the version row: a reset or restore that bumps it
+          // either finished before (we see it) or waits for this write.
+          const r = await c.query(
+            "SELECT key, value FROM kv WHERE key IN ($1, $2) FOR UPDATE",
+            [VERSION_KEY, RESET_KEY],
+          );
+          const m = Object.fromEntries(r.rows.map((x) => [x.key, x.value]));
+          sjekkVersjon(forventet, m[VERSION_KEY], m[RESET_KEY]);
+        }
         const stored = await update(key, (old) =>
           replace ? value : mergeValue(key, old, value),
         );
@@ -453,6 +504,7 @@ export function createPgStore(pool: Pool): Store {
         // Two pods changing season at once: the second waits, then sees the
         // first one's stamp. putState holds the shared lock, so no write
         // lands between the snapshot and the clear; GETs still read.
+        await c.query("SET LOCAL lock_timeout = '5s'");
         await c.query("SELECT pg_advisory_xact_lock($1)", [LOCK_ID]);
         const kv = await c.query("SELECT key, value FROM kv");
         const svar = await fn({

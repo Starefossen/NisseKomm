@@ -28,3 +28,13 @@ test("file store survives a restart: session and state", async () => {
   expect((await c.getState())["nissekomm-codes"]).toBeNull();
   expect(await c.getSession("h")).not.toBeNull();
 });
+
+test("an unreadable store file is moved aside, never overwritten", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "nk-"));
+  const file = path.join(dir, "s.json");
+  fs.writeFileSync(file, "{halv");
+  expect(() => createFileStore(file)).toThrow(/korrupt/);
+  expect(fs.existsSync(file)).toBe(false);
+  const flyttet = fs.readdirSync(dir).find((f) => f.includes(".korrupt-"))!;
+  expect(fs.readFileSync(path.join(dir, flyttet), "utf8")).toBe("{halv");
+});

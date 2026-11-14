@@ -17,6 +17,7 @@ import {
   mergeValue,
   migrate,
   resetState,
+  VersjonsKonflikt,
 } from "@/lib/db";
 import { SEASON } from "@/lib/storage-adapter";
 
@@ -158,6 +159,49 @@ describe("Postgres store (pg-mem)", () => {
     return new MemPool() as Pool;
   }
 
+  it("checks the version under the write lock: old version after a reset is 409, nothing merged", async () => {
+    const pool = pgMemPool();
+    await migrate(pool);
+    const store = createPgStore(pool);
+    const key = "nissekomm-intros-seen";
+    await store.putState(key, ["a"], false, 0);
+    await resetState(store);
+    for (const v of [0, null])
+      await expect(store.putState(key, ["fjor"], false, v)).rejects.toThrow(
+        VersjonsKonflikt,
+      );
+    expect((await store.getState())[key]).toBeNull();
+  });
+
+  it("sets lock_timeout inside both locking transactions", async () => {
+    const sql: string[] = [];
+    const c = {
+      query: async (q: string) => {
+        sql.push(q);
+        return { rows: [] };
+      },
+      release: () => {},
+    };
+    const store = createPgStore({ connect: async () => c } as unknown as Pool);
+    await store.putState("nissekomm-intros-seen", ["a"], false, 0);
+    await store.låst(async () => null);
+    const t = sql.filter((q) => q === "SET LOCAL lock_timeout = '5s'");
+    expect(t).toHaveLength(2);
+  });
+
+  it("a lock timeout answers 503 with Retry-After", async () => {
+    const orig = memoryStore.putState;
+    memoryStore.putState = async () => {
+      throw Object.assign(new Error("lock timeout"), { code: "55P03" });
+    };
+    try {
+      const r = await call("PUT", { key: "nissekomm-intros-seen", value: [] });
+      expect(r.status).toBe(503);
+    } finally {
+      memoryStore.putState = orig;
+    }
+  });
+
   it("migrates idempotently and stores state, sessions and failures", async () => {
     const pool = pgMemPool();
     await migrate(pool);
@@ -212,6 +256,17 @@ describe("/api/state removals and validation", () => {
     });
     expect((await call("PUT", clear)).status).toBe(200);
     delete process.env.NISSEKOMM_MODE;
+  });
+
+  it("a PUT with an old version after a reset gets 409, nothing merged", async () => {
+    const key = "nissekomm-intros-seen";
+    await call("PUT", { key, value: ["a"], version: 0 });
+    await call("PUT", { key, value: null, replace: true });
+    await resetState(memoryStore);
+    expect(
+      (await call("PUT", { key, value: ["fjor"], version: 1 })).status,
+    ).toBe(409);
+    expect((await memoryStore.getState())[key]).toBeNull();
   });
 
   it("a PUT without version after a season reset gets 409", async () => {

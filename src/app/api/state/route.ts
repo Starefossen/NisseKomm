@@ -24,6 +24,8 @@ import {
   STATE_KEYS,
   VERSION_KEY,
   arkiverOgNullstill,
+  erLåsTimeout,
+  VersjonsKonflikt,
   getStore,
   sjekkSesong,
   storageBackend,
@@ -100,26 +102,35 @@ export async function PUT(request: NextRequest) {
   const size = (v: unknown) => JSON.stringify(v ?? null).length;
   if (replace !== true && size(state[key]) + size(value) > MAX_KEY_BYTES)
     return jsonError("For mye data", 413);
-  // ponytail: check-then-write race between two PUTs; fine for one family.
-  const v =
-    typeof version === "number"
-      ? version
-      : state[RESET_KEY] != null
-        ? 0
-        : current;
-  if (v < current) {
-    return NextResponse.json(
-      { version: current, reset: state[RESET_KEY] ?? null },
-      { status: 409 },
+  let stored: unknown;
+  try {
+    stored = await store.putState(
+      key,
+      value,
+      replace === true,
+      typeof version === "number" ? version : null,
     );
+  } catch (e) {
+    if (e instanceof VersjonsKonflikt)
+      return NextResponse.json(
+        { version: e.version, reset: e.reset },
+        { status: 409 },
+      );
+    if (erLåsTimeout(e)) return opptatt();
+    throw e;
   }
-  const stored = await store.putState(key, value, replace === true);
   for (const n of eventsForWrite(key, state[key], stored)) void notify(n);
   return NextResponse.json({
     value: stored,
     version: replace === true ? current + 1 : current,
   });
 }
+
+const opptatt = () =>
+  NextResponse.json(
+    { error: "Opptatt, prøv igjen" },
+    { status: 503, headers: { "Retry-After": "2" } },
+  );
 
 export async function DELETE(request: NextRequest) {
   if (storageBackend() !== "server")
@@ -131,6 +142,12 @@ export async function DELETE(request: NextRequest) {
   }
   const nei = checkOrigin(request);
   if (nei) return nei;
-  const a = await arkiverOgNullstill("nullstilling");
+  let a;
+  try {
+    a = await arkiverOgNullstill("nullstilling");
+  } catch (e) {
+    if (erLåsTimeout(e)) return opptatt();
+    throw e;
+  }
   return NextResponse.json({ reset: true, arkivert: a?.arkivert ?? null });
 }
