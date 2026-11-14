@@ -195,9 +195,11 @@ const media = (p: string) =>
 const TV_STILL: Record<string, string> = { storm: "feed/snøfall-storm.png" };
 
 /** Calendar day 1–24 in December, else null. */
+// Romjul (25.12–6.1) stays on day 24, like the app, so unsolved pieces stay hidden.
 function adventDay(d: Date): number | null {
   const { day, month } = oslo(d);
-  return month === 12 && day <= 24 ? day : null;
+  if (month === 12) return Math.min(day, 24);
+  return month === 1 && day <= 6 ? 24 : null;
 }
 
 export function getState(state: State, at?: Date) {

@@ -1,8 +1,7 @@
-import { dbOk } from "@/lib/db";
-
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  if (await dbOk()) return Response.json({ status: "ok" });
-  return Response.json({ status: "db-unavailable" }, { status: 503 });
+// Liveness only: the app plays on from the client cache when Postgres is down.
+// DB status for monitoring is /api/ready.
+export function GET() {
+  return Response.json({ status: "ok" });
 }

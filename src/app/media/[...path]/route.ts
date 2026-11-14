@@ -1,7 +1,30 @@
+import { realpath } from "node:fs/promises";
+import path from "node:path";
 import type { NextRequest } from "next/server";
-import { authorizeMedia, mediaParts, serveMedia } from "@/lib/media-server";
+import {
+  authorizeMedia,
+  mediaDir,
+  mediaParts,
+  resolveMedia,
+  serveMedia,
+} from "@/lib/media-server";
 
-const PARENT_DIRS = ["strek", "promo", "_arkiv"];
+// Default deny: only the kid app's folders are open. Everything else (strek,
+// promo, _arkiv, ...) needs a parent in lan mode. An exact match also closes
+// APFS case and Unicode folding (STREK, ſtrek, ﬆrek all open «strek»).
+const KID_DIRS = ["video", "audio", "music", "feed", "spill"];
+
+async function kidFile(parts: string[]): Promise<boolean> {
+  if (!KID_DIRS.includes(parts[0])) return false;
+  // A symlink must not lead from a kid folder into a parent-only one.
+  const abs = resolveMedia(parts);
+  if (!abs) return true; // serveMedia answers 400
+  const [real, dir] = await Promise.all([
+    realpath(abs).catch(() => null),
+    realpath(path.join(mediaDir(), parts[0])).catch(() => null),
+  ]);
+  return !real || (!!dir && real.startsWith(dir + path.sep));
+}
 
 export async function GET(
   req: NextRequest,
@@ -9,9 +32,7 @@ export async function GET(
 ) {
   const parts = mediaParts((await params).path);
   if (!parts) return new Response("Ugyldig sti", { status: 400 });
-  // Prank sketches show tonight's setup, promos show the app, _arkiv holds rejected takes: parents only (lan mode).
-  // Lowercased: MEDIA_DIR on APFS is case-insensitive.
-  if (PARENT_DIRS.includes(parts[0].toLowerCase())) {
+  if (!(await kidFile(parts))) {
     const nei = await authorizeMedia(req);
     if (nei) return nei;
   }

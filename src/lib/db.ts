@@ -315,6 +315,8 @@ function getPool(): Pool | undefined {
   return (pool ??= new Pool({
     connectionString: process.env.DATABASE_URL,
     max: 5,
+    // A blackholed DB must fail fast, not hang requests and /api/ready.
+    connectionTimeoutMillis: 2000,
   }));
 }
 
@@ -333,8 +335,7 @@ export function getStore(): Store {
       : memoryStore);
 }
 
-/** Called once from instrumentation.ts. */
-/** Health probe: true without DATABASE_URL (memory/file store), else SELECT 1. */
+/** Readiness (/api/ready): true without DATABASE_URL (memory/file store), else SELECT 1. */
 export async function dbOk(): Promise<boolean> {
   const p = getPool();
   if (!p) return true;
@@ -347,4 +348,22 @@ export async function dbOk(): Promise<boolean> {
 export async function migrateOnStartup(): Promise<void> {
   const p = getPool();
   if (p) await migrate(p);
+}
+
+/**
+ * Called from instrumentation.ts without await. Postgres down must not stop
+ * the app (kids play on from the client cache): log and retry, 5 s to 60 s.
+ */
+export async function migrateWithRetry(
+  attempt = migrateOnStartup,
+  wait = (ms: number) => new Promise((r) => setTimeout(r, ms)),
+): Promise<void> {
+  for (let ms = 5000; ; ms = Math.min(ms * 2, 60_000)) {
+    try {
+      return await attempt();
+    } catch (e) {
+      console.error(`Migrering feilet, prøver igjen om ${ms / 1000} s:`, e);
+      await wait(ms);
+    }
+  }
 }

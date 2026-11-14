@@ -118,3 +118,51 @@ test("encoded paths cannot dodge the parent-only check", async () => {
     for (const v of varianter) expect(ok).toContain(await get(v));
   }
 });
+
+test("only exact kid folders are open; folded names and symlinks are not", async () => {
+  const { mkdtempSync, mkdirSync, writeFileSync, symlinkSync } =
+    await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const path = await import("node:path");
+  const dir = mkdtempSync(path.join(tmpdir(), "media-"));
+  mkdirSync(path.join(dir, "strek"));
+  mkdirSync(path.join(dir, "audio"));
+  writeFileSync(path.join(dir, "strek", "dag01.png"), "x");
+  writeFileSync(path.join(dir, "audio", "a.mp3"), "x");
+  symlinkSync(path.join(dir, "strek"), path.join(dir, "audio", "lenke"));
+  process.env.MEDIA_DIR = dir;
+  const { GET } = await import("../../app/media/[...path]/route");
+  const get = async (seg: string[], cookie?: string) =>
+    (
+      await GET(
+        new NextRequest("http://lan/media/x", {
+          headers: cookie ? { cookie } : {},
+        }),
+        { params: Promise.resolve({ path: seg }) },
+      )
+    ).status;
+  try {
+    for (const mode of ["lan", "public"]) {
+      process.env.NISSEKOMM_MODE = mode;
+      const nei = mode === "lan" ? 401 : 404;
+      expect(await get(["audio", "a.mp3"])).toBe(200);
+      for (const seg of [
+        ["%C5%BFtrek", "dag01.png"],
+        ["%EF%AC%86rek", "dag01.png"],
+        ["Audio", "a.mp3"],
+        ["audio", "lenke", "dag01.png"],
+      ]) {
+        expect(await get(seg)).toBe(nei);
+      }
+    }
+    process.env.NISSEKOMM_MODE = "lan";
+    expect(
+      await get(
+        ["audio", "lenke", "dag01.png"],
+        "__Host-nissekomm-guide=parent",
+      ),
+    ).toBe(200);
+  } finally {
+    delete process.env.MEDIA_DIR;
+  }
+});

@@ -323,3 +323,22 @@ describe("get_kid_context", () => {
     ).toBe(10);
   });
 });
+
+describe("romjul", () => {
+  it("26.12 sees day 24: unsolved pieces hidden, no codes; 7.1 sees nothing", async () => {
+    await play(24, 22);
+    jest.setSystemTime(new Date("2026-12-26T12:00:00+01:00"));
+    const out = JSON.stringify(await kid());
+    expect(out).toContain("[skjult]");
+    for (const q of quests.filter((x) => x.dag >= 23)) {
+      if (!/^\d+$/.test(q.kode))
+        expect(out.toUpperCase()).not.toContain(q.kode.toUpperCase());
+    }
+    jest.setSystemTime(new Date("2027-01-07T12:00:00+01:00"));
+    const jan = JSON.stringify(await kid());
+    for (const q of quests) {
+      if (!/^\d+$/.test(q.kode))
+        expect(jan.toUpperCase()).not.toContain(q.kode.toUpperCase());
+    }
+  });
+});
