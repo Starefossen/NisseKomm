@@ -145,16 +145,18 @@ docker build --platform linux/amd64 -t nissekomm:local .
 """
 
 [tasks."image:push"]
-description = "Bygg og push linux/amd64-image til registry.intern.flaatten.org:5000 (:<unix-tid> og :latest)"
+description = "Bygg og push linux/amd64-image til registry.intern.flaatten.org:5000 (:<git-sha> og :latest); krever rent tre"
 run = """
 #!/usr/bin/env bash
 set -euo pipefail
 if env | grep -qE '^NEXT_PUBLIC_(MOCK_|TEST_MODE)'; then echo "Fjern NEXT_PUBLIC_MOCK_*/TEST_MODE før bygging" >&2; exit 1; fi
+# The tag must name exactly what is built: no uncommitted or untracked files
+[ -z "$(git status --porcelain)" ] || { echo "Uncommitted endringer: commit eller rydd før image:push" >&2; exit 1; }
 node scripts/sjekk-klientkoder.mjs --build
+SHA=$(git rev-parse --short=12 HEAD)
 REPO=registry.intern.flaatten.org:5000/nissekomm
-TAG="$REPO:$(date +%s)"
-docker buildx build --platform linux/amd64 -t "$TAG" -t "$REPO:latest" --push .
-echo "$TAG"
+docker buildx build --platform linux/amd64 --build-arg GIT_SHA="$SHA" -t "$REPO:$SHA" -t "$REPO:latest" --push .
+echo "$REPO:$SHA"
 """
 
 [tasks."dev:pg"]

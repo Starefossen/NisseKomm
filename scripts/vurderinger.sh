@@ -3,10 +3,16 @@
 # Bruk: mise run vurderinger [--alle] [--siden ISO] [--nye] [--prefiks P] [--historikk ID]
 #       mise run vurderinger --prioriter ID --grunn "…" [--hast] [--frist ISO] | --prioriter ID --fjern
 #       mise run vurderinger --svar ID "tekst" | --arbeid ID "hva" | --arbeid ID --ferdig | --regler TYPE | --beslutninger [--alle]
+#       mise run vurderinger --klientfeil   (feil fra skjermene, nyeste først)
 # (AGENT_NAVN navngir agenten i historikken)
 set -euo pipefail
 URL=${MCP_URL:-http://localhost:3000/mcp}
 TOKEN=${MCP_TOKEN:-parenttoken1}
+if [[ ${1:-} == --klientfeil ]]; then
+  curl -fsS "${URL%/mcp}/api/klientfeil" -H "Authorization: Bearer $TOKEN" |
+    jq -r '.[] | "\(.tid) \(.rolle) \(.rute)  \(.melding)  [\(.ua[0:60])]"'
+  exit
+fi
 SIST=${XDG_CACHE_HOME:-$HOME/.cache}/nissekomm/vurderinger-sist
 args='{}'
 tool=list_vurderinger

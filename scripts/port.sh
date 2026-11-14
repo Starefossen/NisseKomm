@@ -43,9 +43,10 @@ if git diff --name-only "$BEFORE" HEAD |
   PLAY="OK"
 fi
 
-# Advisory: lines from the last day this merge removes (a stale «ours» resolution). Read it before the push.
-TILBAKE=$(node scripts/sjekk-tilbakerulling.mjs "origin/main..HEAD" 2>&1 || true)
-[[ -n "$TILBAKE" ]] && printf 'ADVARSEL tilbakerulling (les før push):\n%s\n' "$TILBAKE"
+# Blocking: lines from the last 48 h this merge removes (a stale «ours» resolution).
+# A deliberate removal carries `Tilbakerulling-ok: <grunn>` in its commit message.
+TILBAKE=$(node scripts/sjekk-tilbakerulling.mjs "origin/main..HEAD" --streng 2>&1) ||
+  { printf '%s\n' "$TILBAKE"; undo "tilbakerulling"; }
 
 if ((DRY)); then
   git reset -q --hard # `pnpm check` runs prettier --write

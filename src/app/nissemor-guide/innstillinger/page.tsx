@@ -255,6 +255,43 @@ function LoggUt() {
   );
 }
 
+type Klientfeil = {
+  tid: string;
+  rolle: string;
+  melding: string;
+  rute: string;
+  ua: string;
+};
+
+/** Errors the screens sent to /api/klientfeil, newest first. */
+function FeilFraSkjermene() {
+  const [feil, setFeil] = useState<Klientfeil[] | null>(null);
+  useEffect(() => {
+    fetch("/api/klientfeil")
+      .then((r) => (r.ok ? r.json() : []))
+      .then(setFeil)
+      .catch(() => setFeil([]));
+  }, []);
+  if (!feil) return <p>Henter …</p>;
+  if (!feil.length) return <p>Ingen feil meldt.</p>;
+  return (
+    <ul className="flex flex-col gap-2 text-lg">
+      {feil.slice(0, 30).map((f, i) => (
+        <li key={i} className="border-b border-(--neon-green)/30 pb-1">
+          <span className="text-(--gold)">
+            {new Date(f.tid).toLocaleString("nb-NO", {
+              timeZone: "Europe/Oslo",
+            })}
+          </span>{" "}
+          {f.rolle === "kid" ? "barn" : "forelder"} · {f.rute}
+          <div className="break-words">{f.melding}</div>
+          <div className="opacity-60 text-sm break-words">{f.ua}</div>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export default function InnstillingerSide() {
   return (
     <GuideSide>
@@ -268,6 +305,9 @@ export default function InnstillingerSide() {
       </Kort>
       <Kort tittel="Feil koder" farge="border-(--cold-blue)">
         <Feilforsok />
+      </Kort>
+      <Kort tittel="Feil fra skjermene" farge="border-(--christmas-red)">
+        <FeilFraSkjermene />
       </Kort>
       <Kort tittel="Ny sesong" farge="border-(--christmas-red)">
         <Nullstill />

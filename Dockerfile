@@ -24,5 +24,8 @@ WORKDIR /app
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=8080 HOSTNAME=0.0.0.0 TZ=Europe/Oslo
 COPY --from=build --chown=node:node /app/.next/standalone ./
 USER node
+# Last, so a new commit does not bust the build cache; shown in /api/health
+ARG GIT_SHA=ukjent
+ENV GIT_SHA=$GIT_SHA
 EXPOSE 8080
 CMD ["node", "server.js"]

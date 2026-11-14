@@ -62,7 +62,8 @@ describe("read-verktøy lekker ikke koder eller hint", () => {
         (c) => !/^\d+$/.test(c) && !earned.has(c.toUpperCase()),
       );
       for (const hour of [7, 10, 21]) {
-        jest.useFakeTimers({ now: new Date(2026, 11, d, hour) });
+        // Oslo wall clock (UTC+1 in December), independent of the machine zone
+        jest.useFakeTimers({ now: new Date(Date.UTC(2026, 11, d, hour - 1)) });
         for (const tool of READ_TOOLS) {
           const out = await callTool("read", tool, {
             date: `2026-12-${String(d).padStart(2, "0")}`,
@@ -82,14 +83,14 @@ describe("read-verktøy lekker ikke koder eller hint", () => {
       "nissekomm-codes",
       solvedUpTo(7)["nissekomm-codes"],
     );
-    jest.useFakeTimers({ now: new Date(2026, 11, 8, 10) });
+    jest.useFakeTimers({ now: new Date(Date.UTC(2026, 11, 8, 9)) });
     expect(await callTool("read", "get_today_quest")).toMatch(/KULDE/i);
     memoryStore.reset();
     expect(await callTool("read", "get_today_quest")).not.toMatch(/KULDE/i);
   });
 
   it("dag 24 gir gyldig JSON med riktig dag og dato", async () => {
-    jest.useFakeTimers({ now: new Date(2026, 11, 24, 10) });
+    jest.useFakeTimers({ now: new Date(Date.UTC(2026, 11, 24, 9)) });
     expect(JSON.parse(await callTool("read", "get_state")).date).toBe(
       "2026-12-24",
     );
@@ -97,7 +98,7 @@ describe("read-verktøy lekker ikke koder eller hint", () => {
   });
 
   it("dagens oppdrag viser bare i dag", async () => {
-    jest.useFakeTimers({ now: new Date(2026, 11, 5, 10) });
+    jest.useFakeTimers({ now: new Date(Date.UTC(2026, 11, 5, 9)) });
     const q = JSON.parse(await callTool("read", "get_today_quest"));
     expect(q.day).toBe(5);
     expect(Object.keys(q).sort()).toEqual(

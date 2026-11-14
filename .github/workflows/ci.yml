@@ -6,27 +6,66 @@ on:
   pull_request:
     branches: [main]
 
+# Separate jobs so a red test never hides a code leak in the build, and vice versa.
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: pnpm/action-setup@v4
-
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
-
       - run: pnpm install --frozen-lockfile
-
       - run: pnpm typecheck
       - run: pnpm lint
       - run: pnpm knip
       - run: pnpm format:check
+      # Runner is UTC: catches tests that assume the machine runs on Oslo time
       - run: pnpm test:silent
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: next-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}
+          restore-keys: next-${{ hashFiles('pnpm-lock.yaml') }}-
       - run: pnpm build
         env:
           NISSEKOMM_MODE: public
       - run: node scripts/sjekk-klientkoder.mjs
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: scripts/py-selvtest.sh
+
+  tilbakerulling:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Warning only in CI; port.sh blocks locally with --streng
+      - name: sjekk-tilbakerulling (advarsel)
+        run: |
+          base="${{ github.event.before }}"
+          [ "${{ github.event_name }}" = pull_request ] && base="${{ github.event.pull_request.base.sha }}"
+          git cat-file -e "$base" 2>/dev/null || base=HEAD~1
+          out=$(node scripts/sjekk-tilbakerulling.mjs "$base..HEAD")
+          [ -z "$out" ] || { echo "$out"; echo "::warning::Tilbakerulling: se loggen for jobben"; }

@@ -45,7 +45,8 @@ describe("landsbyEvents", () => {
 
   it("reports the event playing at a given time", () => {
     const e = landsbyEvents(3)[10];
-    const at = new Date(2026, 11, 3, 0, 0, 0);
+    // Midnight 3 Dec in Oslo (UTC+1), independent of the machine's zone
+    const at = new Date(Date.UTC(2026, 11, 2, 23, 0, 0));
     at.setSeconds(Math.ceil(e.minute * 60) + 2);
     expect(activeLandsbyEvent(at, 3, false)?.kind).toBe(e.kind);
   });

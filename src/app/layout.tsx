@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, VT323 } from "next/font/google";
 import { AppProvider } from "@/lib/app-context";
 import { Tidsmaskin } from "@/components/ui/Tidsmaskin";
+import { Feilmelder } from "@/components/ui/Feilmelder";
 import { isLanMode } from "@/lib/mode";
 import { connection } from "next/server";
 import "./globals.css";
@@ -47,6 +48,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${vt323.variable} antialiased`}
       >
         <AppProvider>{children}</AppProvider>
+        <Feilmelder />
         {isLanMode() && <Tidsmaskin />}
       </body>
     </html>
