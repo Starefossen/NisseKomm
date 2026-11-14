@@ -168,6 +168,13 @@ function A3Halv({ p, halv }: { p: Plass; halv: "topp" | "bunn" }) {
   );
 }
 
+/**
+ * Wrapper classes for `?bare=1` (UtskriftMiniatyr): only the sheets, side by
+ * side with a gap; they wrap to one column in a narrow frame.
+ */
+export const BARE =
+  "min-h-screen bg-neutral-400 [&_[data-instruks]]:hidden [&_[data-utskrift]]:flex [&_[data-utskrift]]:flex-wrap [&_[data-utskrift]]:gap-6 [&_[data-utskrift]>div]:mb-0";
+
 const PAPIR = { vanlig: "vanlig papir (80 g)", tykt: "tykt papir (160–200 g)" };
 
 export function Utskrift({
@@ -200,15 +207,18 @@ export function Utskrift({
   });
   const a3 = ark.some((a) => a.a3);
   return (
-    <div>
+    <div data-utskrift>
       <style>
         {
           "@page { size: A4; margin: 8mm; } * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }"
         }
       </style>
-      <div className="print:hidden max-w-[210mm] mx-auto mb-6 border-2 border-(--neon-green) bg-black p-4 space-y-2 text-(--neon-green) font-retro text-xl">
+      <div
+        data-instruks
+        className="print:hidden max-w-[210mm] mx-auto mb-6 border-2 border-(--neon-green) bg-black p-4 space-y-2 text-(--neon-green) font-retro text-xl"
+      >
         <h1 className="text-4xl text-(--gold)">{utskriftTittel(navn)}</h1>
-        <p>
+        <p data-papir>
           <b>Papir:</b> {ark.length} ark A4, {PAPIR[papir]}
           {farge && ", fargeutskrift"}
           {tosidig && ", tosidig (vend på langsiden)"}.

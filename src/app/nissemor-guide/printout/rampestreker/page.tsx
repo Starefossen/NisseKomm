@@ -8,13 +8,18 @@ import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { harRolle } from "@/lib/auth-server";
 import { mediaDir } from "@/lib/media-server";
 import { Oppfrisk } from "../[fil]/Oppfrisk";
-import { Utskrift } from "../_print/Utskrift";
+import { BARE, Utskrift } from "../_print/Utskrift";
 import { strekTitler } from "@/lib/guide-sesong";
 import { strekBilder } from "@/lib/strek-bilder";
 
 export const dynamic = "force-dynamic";
 
-export default async function Rampestreker() {
+export default async function Rampestreker({
+  searchParams,
+}: {
+  searchParams: Promise<{ bare?: string }>;
+}) {
+  const bare = !!(await searchParams).bare;
   if (!(await harRolle("parent")))
     return (
       <GuideAuth>
@@ -24,10 +29,18 @@ export default async function Rampestreker() {
   const titler = strekTitler();
   const bilder = strekBilder(mediaDir());
   return (
-    <div className="min-h-screen bg-(--dark-crt) p-8 print:min-h-0 print:bg-white print:p-0">
-      <div className="max-w-4xl mx-auto mb-6 print:hidden">
-        <GuideNavigation />
-      </div>
+    <div
+      className={
+        bare
+          ? BARE
+          : "min-h-screen bg-(--dark-crt) p-8 print:min-h-0 print:bg-white print:p-0"
+      }
+    >
+      {!bare && (
+        <div className="max-w-4xl mx-auto mb-6 print:hidden">
+          <GuideNavigation />
+        </div>
+      )}
       <Utskrift
         navn="rampestreker"
         papir="vanlig"

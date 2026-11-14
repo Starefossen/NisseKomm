@@ -10,6 +10,7 @@ import { harRolle } from "@/lib/auth-server";
 import { UTSKRIFTER, utskriftTittel } from "../filer";
 import { SIDER_01_12 } from "../_print/dager01-12";
 import { SIDER_17_24 } from "../_print/dager17-24";
+import { BARE } from "../_print/Utskrift";
 import { Oppfrisk } from "./Oppfrisk";
 
 export const dynamic = "force-dynamic";
@@ -37,10 +38,10 @@ export default async function Utskriftside({
   if (FLYTTET[fil])
     permanentRedirect(`/nissemor-guide/printout/${FLYTTET[fil]}`);
   const Side = SIDER_01_12[fil] ?? SIDER_17_24[fil];
-  // ?bare=1: only the sheets, for the Gåtekart preview (no nav, no instruction box).
+  // ?bare=1: only the sheets, for UtskriftMiniatyr (no nav, no instruction box).
   if (Side && (await searchParams).bare)
     return (
-      <div className="bg-white [&_.print\:hidden]:hidden">
+      <div className={BARE}>
         <Side />
       </div>
     );

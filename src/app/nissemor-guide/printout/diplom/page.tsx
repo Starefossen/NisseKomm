@@ -2,10 +2,11 @@
 
 import { fyll } from "@/lib/navn";
 import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
 import { GameEngine } from "@/lib/game-engine";
-import { Utskrift } from "../_print/Utskrift";
+import { BARE, Utskrift } from "../_print/Utskrift";
 
 /** Diploma «Snøfalls venn», one A4 per child, handed out on day 24. */
 export function Diplom() {
@@ -50,16 +51,29 @@ export function Diplom() {
   );
 }
 
+function Side() {
+  const bare = !!useSearchParams().get("bare");
+  if (bare)
+    return (
+      <div className={BARE}>
+        <Diplom />
+      </div>
+    );
+  return (
+    <div className="min-h-screen bg-(--dark-crt) p-8 print:min-h-0 print:bg-white print:p-0">
+      <div className="max-w-4xl mx-auto mb-6 print:hidden">
+        <GuideNavigation />
+      </div>
+      <Diplom />
+    </div>
+  );
+}
+
 export default function DiplomPage() {
   return (
     <Suspense fallback={<div className="p-8">Laster ...</div>}>
       <GuideAuth>
-        <div className="min-h-screen bg-(--dark-crt) p-8 print:min-h-0 print:bg-white print:p-0">
-          <div className="max-w-4xl mx-auto mb-6 print:hidden">
-            <GuideNavigation />
-          </div>
-          <Diplom />
-        </div>
+        <Side />
       </GuideAuth>
     </Suspense>
   );

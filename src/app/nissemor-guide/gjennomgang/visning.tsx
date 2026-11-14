@@ -21,6 +21,7 @@ import { Handleliste } from "../_kveld/handel";
 import { Markdown } from "../historien/markdown";
 import { Gaatekart } from "../dag/[n]/gaatekart";
 import { utskriftHref, utskriftTittel } from "../printout/filer";
+import { UtskriftMiniatyr } from "../printout/Miniatyr";
 import { lagre, slug, SkjulVurder, useVurderinger, Vurder } from "../vurdering";
 import type { Element } from "./elementer";
 import { SegmentStripe } from "./segmentstripe";
@@ -432,18 +433,13 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
     return (
       <>
         <p>{ren(dag.kveld?.utskrifterTekst)}</p>
-        <div className="grid sm:grid-cols-2 gap-3">
+        <div className="flex flex-wrap gap-3">
           {filer.map((u) => (
-            <div key={u}>
+            <div key={u} className="max-w-full min-w-0">
               <Link href={utskriftHref(u)} className={lenke}>
                 {utskriftTittel(u)}
               </Link>
-              <iframe
-                src={utskriftHref(u)}
-                title={utskriftTittel(u)}
-                loading="lazy"
-                className="w-full h-80 bg-white border border-(--neon-green)/40"
-              />
+              <UtskriftMiniatyr navn={u} h={400} />
             </div>
           ))}
         </div>
@@ -544,11 +540,7 @@ export function Innhold({ e, sesong }: { e: Element; sesong: Sesong }) {
         >
           Diplom
         </Link>
-        <iframe
-          src="/nissemor-guide/printout/diplom"
-          title="Diplom"
-          className="w-full h-96 bg-white mt-2"
-        />
+        <UtskriftMiniatyr navn="diplom" h={400} />
       </>
     );
   if (del === "symboler")

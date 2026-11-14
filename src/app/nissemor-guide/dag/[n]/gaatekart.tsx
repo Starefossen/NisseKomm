@@ -3,11 +3,12 @@ import { fyll } from "@/lib/navn";
 import { Vurder } from "../../vurdering";
 
 import Link from "next/link";
-import { useRef, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { diagramKanter } from "@/lib/gaate-diagram";
 import { losningstavle, type Kilde } from "@/lib/losningstavle";
 import { LysbordBilde } from "../../lysbord";
 import { utskriftHref, utskriftTittel } from "../../printout/filer";
+import { UtskriftMiniatyr } from "../../printout/Miniatyr";
 import type { Bit, gaatekart, kveldDag } from "@/lib/guide-sesong";
 
 const box = "border-2 border-(--neon-green) bg-black p-3 sm:p-4 mb-4";
@@ -108,53 +109,6 @@ export const utskriftBit = (
     hjemme[0]?.id
   );
 };
-
-/** First sheet of a print, scaled down; a click opens it 1:1. Parent-only route, server-rendered. */
-function Miniatyr({ navn }: { navn: string }) {
-  const dlg = useRef<HTMLDialogElement>(null);
-  const src = `${utskriftHref(navn)}?bare=1`;
-  return (
-    <>
-      <button
-        type="button"
-        onClick={() => dlg.current?.showModal()}
-        className="block w-40 h-[226px] overflow-hidden border border-(--neon-green) bg-white shrink-0"
-        title={`Vis ${utskriftTittel(navn)} i full størrelse`}
-      >
-        <iframe
-          src={src}
-          title={utskriftTittel(navn)}
-          loading="lazy"
-          tabIndex={-1}
-          className="pointer-events-none origin-top-left border-0"
-          style={{ width: 794, height: 1123, transform: "scale(0.2015)" }}
-        />
-      </button>
-      <dialog
-        ref={dlg}
-        className="m-auto w-[min(860px,96vw)] h-[92vh] p-0 bg-black border-2 border-(--gold) backdrop:bg-black/80"
-        onClick={(e) => e.target === dlg.current && dlg.current?.close()}
-      >
-        <div className="flex justify-between items-center p-2 text-(--gold)">
-          <span>{utskriftTittel(navn)}</span>
-          <button
-            type="button"
-            className="min-h-11 px-3 border border-(--gold)"
-            onClick={() => dlg.current?.close()}
-          >
-            Lukk
-          </button>
-        </div>
-        {/* 1:1, scrolls inside */}
-        <iframe
-          src={src}
-          title={utskriftTittel(navn)}
-          className="w-full h-[calc(92vh-60px)] bg-white border-0"
-        />
-      </dialog>
-    </>
-  );
-}
 
 /** strek/oppsett-dagNN.png (medier.json oppsett/dagNN, from gaater «Oppsettskisse»); nothing while missing. */
 function Oppsettskisse({ dag }: { dag: number }) {
@@ -669,7 +623,7 @@ export function Gaatekart({
               id={u === d.utskrifter[0] ? "utskrifter" : undefined}
               className="text-sm flex gap-2 items-start scroll-mt-4"
             >
-              <Miniatyr navn={u} />
+              <UtskriftMiniatyr navn={u} h={226} />
               <span>
                 ⎙{" "}
                 <Link href={utskriftHref(u)} className="underline">
