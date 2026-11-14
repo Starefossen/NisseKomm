@@ -14,9 +14,7 @@
     {
       "type": "radio",
       "regel": "slow reading and pauses between sentences: keep the quick pace of about two and a half words per second to the last word",
-      "kilder": [
-        "audio/rampenissen/dag-14.mp3"
-      ],
+      "kilder": ["audio/rampenissen/dag-14.mp3"],
       "dato": "2026-11-15",
       "aktiv": true
     }
