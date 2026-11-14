@@ -8,6 +8,7 @@ import { hasRole, jsonError, readJsonBody, sessionId } from "@/lib/auth";
 import { getStore } from "@/lib/db";
 import { lagreKlientfeil, lesKlientfeil, renskFeil } from "@/lib/klientfeil";
 import { authorizeMedia } from "@/lib/media-server";
+import { sendPush } from "@/lib/notify/push";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +27,15 @@ export async function POST(request: NextRequest) {
   const feil = renskFeil(body, rolle, request.headers.get("user-agent") ?? "");
   if (!feil) return jsonError("Ugyldig forespørsel", 400);
   await lagreKlientfeil(store, feil);
+  // One push per 10 minutes; the list in Innstillinger has the rest.
+  if ((await store.hit("push-klientfeil", 600_000)) === 1)
+    void sendPush(store, {
+      type: "feil",
+      title: "Feil på en skjerm",
+      // No message text: it travels through Apple's push service.
+      body: `${feil.rolle === "kid" ? "Barneskjermen" : "Foreldreskjermen"} meldte en feil. Se Innstillinger.`,
+      url: "/nissemor-guide/innstillinger",
+    });
   return new Response(null, { status: 204 });
 }
 

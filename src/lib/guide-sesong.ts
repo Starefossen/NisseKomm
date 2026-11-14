@@ -862,3 +862,8 @@ export const sesongKart = () =>
         oppsett: d?.oppsett ?? "",
       };
     });
+
+/** Items on the evening checklist that sets up day n (the 20:00 push). */
+export function antallKveldTing(n: number): number {
+  return kveldDag(n)?.sjekkliste.length ?? 0;
+}

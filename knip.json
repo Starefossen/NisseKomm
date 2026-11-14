@@ -1,7 +1,7 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "ignoreDependencies": ["pixelarticons", "server-only"],
-  "entry": ["scripts/*.mjs"],
+  "entry": ["scripts/*.mjs", "public/nissemor-guide/sw.js"],
   "ignoreExportsUsedInFile": true,
   "next": {
     "entry": [

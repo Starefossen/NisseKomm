@@ -20,6 +20,10 @@ export interface Notification {
   audience: "kids" | "parents";
 }
 
+// Lazy: db pulls in pg, which jsdom tests importing this file cannot load.
+const pushPå = () =>
+  !!(process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY);
+
 type Channel = (n: Notification) => void | Promise<void>;
 
 // Enabling a channel that isn't built yet should say so, not drop silently.
@@ -37,13 +41,27 @@ export const CHANNELS: Record<string, Channel> = {
   varden: stub("varden"),
   // TODO: Skjerm card, served through MCP get_state rather than pushed.
   skjerm: stub("skjerm"),
+  // Parents' guide PWA; on whenever VAPID keys are set. Title and body only
+  // say which day was solved, never the code.
+  push: async (n) => {
+    if (n.event !== "day_solved") return;
+    const { getStore } = await import("@/lib/db");
+    const { sendPush } = await import("./push");
+    await sendPush(getStore(), {
+      type: "kode",
+      title: n.title,
+      body: "Dagens kode er løst.",
+      url: `/nissemor-guide/dag/${n.day}`,
+    });
+  },
 };
 
 export function enabledChannels(): string[] {
-  return (process.env.NOTIFY_CHANNELS ?? "")
+  const valgt = (process.env.NOTIFY_CHANNELS ?? "")
     .split(",")
     .map((s) => s.trim())
     .filter((s) => s in CHANNELS);
+  return pushPå() && !valgt.includes("push") ? [...valgt, "push"] : valgt;
 }
 
 /** Never throws: a failing channel is logged and the others still run. */

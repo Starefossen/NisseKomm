@@ -1,0 +1,30 @@
+{
+  "name": "Nissemor-guiden",
+  "short_name": "Nissemor",
+  "description": "Foreldreguiden til NisseKomm",
+  "id": "/nissemor-guide/",
+  "scope": "/nissemor-guide/",
+  "start_url": "/nissemor-guide/i-dag",
+  "display": "standalone",
+  "lang": "no",
+  "background_color": "#120c08",
+  "theme_color": "#120c08",
+  "icons": [
+    {
+      "src": "/nissemor-guide/ikon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/nissemor-guide/ikon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/nissemor-guide/ikon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -11,6 +11,7 @@ import {
 } from "@/lib/date-utils";
 import { sim } from "@/lib/simulation";
 import { GuideSide, Kort } from "../_kveld/felles";
+import { PushVarsler } from "./push";
 import { settVisVurdering, useVisVurdering } from "../vurdering";
 
 function VisVurdering() {
@@ -449,6 +450,9 @@ export default function InnstillingerSide() {
       </h1>
       <GuideSettings />
       <Varsler />
+      <Kort tittel="Varsler på telefonen" farge="border-(--gold)">
+        <PushVarsler />
+      </Kort>
       <Kort tittel="Vurdering">
         <VisVurdering />
       </Kort>

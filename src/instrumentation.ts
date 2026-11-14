@@ -16,4 +16,19 @@ export async function register() {
     const { migrateWithRetry } = await import("@/lib/db");
     void migrateWithRetry();
   }
+  if (
+    process.env.NEXT_RUNTIME === "nodejs" &&
+    process.env.VAPID_PUBLIC_KEY &&
+    process.env.NODE_ENV !== "test"
+  ) {
+    // 20:00 «I kveld» push while the pod is up; /api/push/kveld (Varden's
+    // cron) covers scale-to-zero. sendKveld is once per Oslo date either way.
+    const { getStore } = await import("@/lib/db");
+    const { sendKveld } = await import("@/lib/notify/push");
+    const { antallKveldTing } = await import("@/lib/guide-sesong");
+    setInterval(
+      () => void sendKveld(getStore(), antallKveldTing).catch(console.error),
+      60_000,
+    ).unref();
+  }
 }
