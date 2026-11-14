@@ -1,0 +1,29 @@
+{
+  "kv": [
+    [
+      "nissekomm-codes",
+      [{ "kode": "A", "dato": "2026-12-01T10:00:00Z", "day": 1 }]
+    ],
+    [
+      "nissekomm-santa-letters",
+      [{ "day": 3, "content": "Kjære Julius (fra før navn)" }]
+    ],
+    [
+      "nissekomm-slede",
+      {
+        "tundra": { "poeng": 900, "bjeller": 3 },
+        "Kristian/tundra": { "poeng": 900, "bjeller": 3 }
+      }
+    ],
+    ["nissekomm-intros-seen", ["boot", "ny-sledeflukt-8"]],
+    [
+      "nissekomm-foreldre-avkrysning",
+      { "handleliste": ["Melk"], "kveld-3": ["a"] }
+    ],
+    ["nissekomm-handlet", { "melk": "kjopt" }],
+    ["nissekomm-failed-attempts", { "3": 2 }],
+    ["nissekomm-earned-badges", [{ "badgeId": "varmebaerer", "timestamp": 1 }]],
+    ["state-version", 4]
+  ],
+  "sessions": []
+}

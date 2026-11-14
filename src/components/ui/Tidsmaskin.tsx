@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Icons } from "@/lib/icons";
 import { sim } from "@/lib/simulation";
+import { GameEngine } from "@/lib/game-engine";
+import { StorageManager } from "@/lib/storage";
 import {
   getCurrentDate,
   isTimeMachineEnabled,
@@ -24,10 +26,14 @@ export function Tidsmaskin() {
   const [hour, setHour] = useState(7);
   const [minute, setMinute] = useState(0);
 
-  // Scripted playthroughs (scripts/gjennomspilling.mjs) drive the same tools
+  // Scripted playthroughs (scripts/gjennomspilling.mjs, scripts/to-skjermer.mjs) drive the same tools
   useEffect(() => {
     if (!isTimeMachineEnabled()) return;
-    (window as unknown as { nissekomm: unknown }).nissekomm = { sim };
+    (window as unknown as { nissekomm: unknown }).nissekomm = {
+      sim,
+      GameEngine,
+      StorageManager,
+    };
   }, []);
 
   useEffect(() => {

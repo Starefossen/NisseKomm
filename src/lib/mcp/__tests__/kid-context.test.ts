@@ -325,7 +325,7 @@ describe("get_kid_context", () => {
 });
 
 describe("romjul", () => {
-  it("26.12 sees day 24: unsolved pieces hidden, no codes; 7.1 sees nothing", async () => {
+  it("26.12 and 15.1 see day 24: unsolved pieces hidden, no codes; 1.2 sees nothing", async () => {
     await play(24, 22);
     jest.setSystemTime(new Date("2026-12-26T12:00:00+01:00"));
     const out = JSON.stringify(await kid());
@@ -334,7 +334,11 @@ describe("romjul", () => {
       if (!/^\d+$/.test(q.kode))
         expect(out.toUpperCase()).not.toContain(q.kode.toUpperCase());
     }
-    jest.setSystemTime(new Date("2027-01-07T12:00:00+01:00"));
+    jest.setSystemTime(new Date("2027-01-15T12:00:00+01:00"));
+    const mid = await kid();
+    expect(mid.day).toBe(24);
+    expect(JSON.stringify(mid)).toContain("[skjult]");
+    jest.setSystemTime(new Date("2027-02-01T12:00:00+01:00"));
     const jan = JSON.stringify(await kid());
     for (const q of quests) {
       if (!/^\d+$/.test(q.kode))

@@ -237,15 +237,11 @@ export class GameEngine {
       }
     });
 
-    // Check for time-based module unlocks
-    const currentDay = getCurrentDay();
-    this.checkTimedModuleUnlocks(currentDay);
-
     return {
       completedQuests,
       submittedCodes: submittedCodes.map((c) => c.kode),
       completedBonusOppdrag,
-      unlockedModules: new Set(StorageManager.getUnlockedModules()),
+      unlockedModules: new Set(this.modulesFor(completedQuests)),
       viewedMainEmails: StorageManager.getViewedEmails(),
       viewedBonusOppdragEmails: StorageManager.getViewedBonusOppdragEmails(),
       unlockedTopics: StorageManager.getUnlockedTopics(),
@@ -323,6 +319,9 @@ export class GameEngine {
     const isNewCompletion = !currentState.completedQuests.has(day);
 
     if (!isNewCompletion) {
+      // The solve may have reached this screen by sync (lost reply, other
+      // screen): badges are derived, so award what is due.
+      BadgeManager.checkAndAwardAllEligibleBadges();
       return {
         success: true,
         isNewCompletion: false,
@@ -632,31 +631,23 @@ export class GameEngine {
   }
 
   /**
-   * Check and unlock time-based modules
-   * Modules in a day's reveals open on the morning of that day (storyboard S1),
-   * before the code is solved.
-   */
-  private static checkTimedModuleUnlocks(currentDay: number): void {
-    if (getCurrentMonth() !== 12) {
-      return;
-    }
-
-    ALL_QUESTS.forEach((quest) => {
-      if (quest.reveals?.modules && quest.dag <= currentDay) {
-        quest.reveals.modules.forEach((moduleId) => {
-          if (!StorageManager.isModuleUnlocked(moduleId)) {
-            StorageManager.unlockModule(moduleId);
-          }
-        });
-      }
-    });
-  }
-
-  /**
    * Check if a module is unlocked
    */
   static isModuleUnlocked(moduleId: string): boolean {
-    return StorageManager.isModuleUnlocked(moduleId);
+    return this.getUnlockedModules().includes(moduleId);
+  }
+
+  /**
+   * Derived, never stored, so a season reset on one screen applies on all:
+   * a day's modules open on its morning in December (storyboard S1), or
+   * once the day is solved.
+   */
+  private static modulesFor(solved: Set<number>): string[] {
+    const des = getCurrentMonth() === 12;
+    const day = getCurrentDay();
+    return ALL_QUESTS.filter(
+      (q) => solved.has(q.dag) || (des && q.dag <= day),
+    ).flatMap((q) => q.reveals?.modules ?? []);
   }
 
   /** December day a module opens (its quest's reveals), null if never. */
@@ -671,7 +662,11 @@ export class GameEngine {
    * Get all unlocked modules
    */
   static getUnlockedModules(): string[] {
-    return StorageManager.getUnlockedModules();
+    if (typeof window === "undefined") return [];
+    const solved = new Set(
+      StorageManager.getSubmittedCodes().map((c) => c.day),
+    );
+    return [...new Set(this.modulesFor(solved as Set<number>))];
   }
 
   static markEmailAsViewed(day: number, isBonusOppdrag: boolean = false): void {
@@ -741,12 +736,6 @@ export class GameEngine {
     if (quest.reveals.topics) {
       quest.reveals.topics.forEach((topic) => {
         StorageManager.unlockTopic(topic, day);
-      });
-    }
-
-    if (quest.reveals.modules) {
-      quest.reveals.modules.forEach((moduleId) => {
-        StorageManager.unlockModule(moduleId);
       });
     }
 
@@ -934,9 +923,11 @@ export class GameEngine {
 
     const conditions = fileNode.unlockConditions;
 
-    // Decrypted files open only through the challenge (handled above)
+    // Derived from the synced solve, not only the solving screen's file list.
     if (conditions.requiresSolvedDecryption) {
-      return false;
+      return StorageManager.isDecryptionSolved(
+        conditions.requiresSolvedDecryption,
+      );
     }
 
     // Check day requirement
@@ -1028,8 +1019,17 @@ export class GameEngine {
     BadgeManager.resetAllBadges();
   }
 
+  /**
+   * Badges are derived from synced solves: award what is due and celebrate
+   * what this screen has not shown yet. Idempotent; run after every sync.
+   */
+  static awardDueBadges(): void {
+    BadgeManager.checkAndAwardAllEligibleBadges();
+  }
+
   static onBadgeAwarded(callback: (badge: Badge) => void): void {
     BadgeManager.onBadgeAwarded(callback);
+    BadgeManager.announceUnseen();
   }
 
   static offBadgeAwarded(callback: (badge: Badge) => void): void {

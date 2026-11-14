@@ -71,6 +71,25 @@ export class BadgeManager {
   }
 
   /**
+   * Celebrates every earned badge this screen has not shown yet, once per
+   * screen (local seen list), also when another screen earned it. Waits for
+   * a listener (BadgeRow), so a badge synced before render is not lost.
+   */
+  static announceUnseen(): void {
+    if (!this.notificationCallbacks.length) return;
+    const seen = new Set(StorageManager.getBadgesSeen());
+    const ny = this.getEarnedBadges()
+      .map((b) => b.badgeId)
+      .filter((id) => !seen.has(id));
+    if (!ny.length) return;
+    StorageManager.setBadgesSeen([...seen, ...ny]);
+    for (const id of ny) {
+      const b = this.getBadge(id);
+      if (b) this.notifyBadgeAwarded(b);
+    }
+  }
+
+  /**
    * Get all badge definitions from merker.json
    */
   static getAllBadges(): Badge[] {
@@ -169,11 +188,8 @@ export class BadgeManager {
       }
     }
 
-    // Award the badge!
     StorageManager.addEarnedBadge(badgeId);
-
-    // Notify listeners for UI animations
-    this.notifyBadgeAwarded(badge);
+    this.announceUnseen();
 
     return {
       success: true,
@@ -197,6 +213,7 @@ export class BadgeManager {
         newlyAwarded.push(badge);
       }
     }
+    this.announceUnseen();
 
     return newlyAwarded;
   }

@@ -6,21 +6,18 @@ import {
   VERSION_KEY,
 } from "../storage-adapter";
 import { GameEngine } from "../game-engine";
+import { mergeValue } from "../state-merge";
 import { StorageManager } from "../storage";
 import { getCurrentDay } from "../date-utils";
 
-// A fake /api/state with the route's merge, replace and version rules.
-// (db.ts can't load under jsdom: pg needs Node globals.)
+// A fake /api/state with the route's replace and version rules and the
+// server's own merge (state-merge.ts; db.ts can't load under jsdom: pg).
 let kv = new Map<string, unknown>();
 const store = {
   reset: () => (kv = new Map()),
   getState: async () => Object.fromEntries(kv),
   putState: async (key: string, value: unknown, replace = false) => {
-    const old = kv.get(key);
-    const v =
-      !replace && Array.isArray(old) && Array.isArray(value)
-        ? [...new Set([...old, ...value])]
-        : value;
+    const v = replace ? value : mergeValue(key, kv.get(key), value);
     kv.set(key, v);
     if (replace) kv.set(VERSION_KEY, Number(kv.get(VERSION_KEY) ?? 0) + 1);
     return v;
@@ -257,5 +254,80 @@ describe("frost-override from the server", () => {
     await store.putState("day-offset", 1);
     await StorageManager.sync();
     expect(getCurrentDay()).toBe(11);
+  });
+});
+
+describe("two screens (kjerne K1, K4, K6)", () => {
+  it("K1: an edited letter keeps a sibling's letter on the server", async () => {
+    const L = "nissekomm-santa-letters";
+    const a = new ServerSyncAdapter();
+    await a.start();
+    const k = { day: 3, from: "Kristian", content: "Kjære Jlius" };
+    a.set(L, [k]);
+    await flush(a);
+    // Håkon's letter from the TV reaches the server; a has not pulled yet.
+    await store.putState(L, [{ day: 3, from: "Håkon", content: "Hei" }]);
+    a.set(L, [{ ...k, content: "Kjære Julius" }]);
+    await flush(a);
+    const lagret = (await store.getState())[L] as { from: string }[];
+    expect(lagret.map((x) => x.from).sort()).toEqual(["Håkon", "Kristian"]);
+  });
+
+  it("K6: a reset elsewhere clears this screen's local-only season keys", async () => {
+    const LOKAL = "nissekomm-nissenet-last-visit";
+    const a = new ServerSyncAdapter([LOKAL]);
+    await a.start();
+    localStorage.setItem(LOKAL, "20");
+    await a.pull();
+    expect(localStorage.getItem(LOKAL)).toBe("20");
+    await fakeFetch("", { method: "DELETE" });
+    await a.pull();
+    expect(localStorage.getItem(LOKAL)).toBeNull();
+  });
+
+  it("K6: modules are derived, a stale stored list is ignored", () => {
+    jest.setSystemTime(new Date(2026, 11, 1, 10, 0));
+    localStorage.setItem("nissekomm-unlocked-modules", '["SLEDEFLUKT"]');
+    expect(GameEngine.isModuleUnlocked("SLEDEFLUKT")).toBe(false);
+    jest.setSystemTime(new Date(2026, 11, 8, 10, 0));
+    expect(GameEngine.isModuleUnlocked("SLEDEFLUKT")).toBe(true);
+  });
+
+  it("K4: badges come from synced solves, celebrated once per screen", () => {
+    jest.setSystemTime(new Date(2026, 11, 24, 18, 0));
+    localStorage.setItem(
+      "nissekomm-codes",
+      JSON.stringify(
+        Array.from({ length: 24 }, (_, i) => ({
+          kode: "X",
+          dato: "",
+          day: i + 1,
+        })),
+      ),
+    );
+    localStorage.setItem(
+      "nissekomm-solved-decryptions",
+      JSON.stringify(["frosne-koder", "stjernetegn"]),
+    );
+    expect(GameEngine.recordSolve(24, "X").isNewCompletion).toBe(false);
+    const ids = StorageManager.getEarnedBadges().map((b) => b.badgeId);
+    expect(ids).toEqual(
+      expect.arrayContaining(["varmebaerer", "portvokter", "snofalls-venn"]),
+    );
+    // Crypto files follow the solved challenge, not the solving screen's list.
+    expect(GameEngine.isFileUnlocked("stjernetegn.txt", 24)).toBe(true);
+
+    // Another screen: the badges arrive by sync and show once there too.
+    localStorage.removeItem("nissekomm-badges-seen");
+    const vist: string[] = [];
+    const lytt = (b: { id: string }) => vist.push(b.id);
+    GameEngine.onBadgeAwarded(lytt);
+    GameEngine.awardDueBadges();
+    GameEngine.offBadgeAwarded(lytt);
+    expect(vist.sort()).toEqual(["portvokter", "snofalls-venn", "varmebaerer"]);
+    GameEngine.onBadgeAwarded(lytt);
+    GameEngine.awardDueBadges();
+    GameEngine.offBadgeAwarded(lytt);
+    expect(vist).toHaveLength(3);
   });
 });

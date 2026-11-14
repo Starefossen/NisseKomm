@@ -112,12 +112,12 @@ function clockDate(): Date {
 }
 
 /**
- * 25 Dec through 6 Jan: the app stays open as on 24 Dec (rewatch, no new
- * riddles), so day/month getters report 24 Dec.
+ * 25 Dec through 31 Jan: the app stays open as on 24 Dec (rewatch, no new
+ * riddles), so day/month getters report 24 Dec. Closed from 1 Feb.
  */
 export function isRomjul(d: Date): boolean {
   const m = d.getMonth();
-  return (m === 11 && d.getDate() > 24) || (m === 0 && d.getDate() <= 6);
+  return (m === 11 && d.getDate() > 24) || m === 0;
 }
 
 /**
@@ -144,9 +144,7 @@ export function getCurrentMonth(): number {
  * ponytail: Feb–Nov counts as "before"; a new season starts empty.
  */
 export function getAdventDay(): number {
-  const month = getCurrentMonth();
-  if (month === 12) return Math.min(24, getCurrentDay());
-  return month === 1 ? 24 : 0;
+  return getCurrentMonth() === 12 ? Math.min(24, getCurrentDay()) : 0;
 }
 
 /**

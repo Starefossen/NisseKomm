@@ -16,6 +16,7 @@ import { getISOString } from "./date-utils";
 import {
   createStorageAdapter,
   ServerSyncAdapter,
+  SYNCED_KEYS,
   type StorageAdapter,
 } from "./storage-adapter";
 
@@ -81,7 +82,10 @@ const KEYS = {
   NICE_LIST_LAST_VIEWED: "nissekomm-nice-list-viewed",
   JULIUS_WATCHED: "nissekomm-julius-watched",
   FROST_OFF_DAY: "nissekomm-frost-off-day",
+  // No longer written (modules are derived); kept so a season wipe clears it.
   UNLOCKED_MODULES: "nissekomm-unlocked-modules",
+  // Per screen: earned badges this screen has celebrated.
+  BADGES_SEEN: "nissekomm-badges-seen",
   SANTA_LETTERS: "nissekomm-santa-letters",
   INTROS_SEEN: "nissekomm-intros-seen",
   SLEDE: "nissekomm-slede",
@@ -119,7 +123,9 @@ interface StorageData {
  * Handles all persistence operations with type safety
  */
 export class StorageManager {
-  private static adapter: StorageAdapter = createStorageAdapter();
+  private static adapter: StorageAdapter = createStorageAdapter(
+    SEASON_KEYS.filter((k) => !SYNCED_KEYS.has(k)),
+  );
   private static seasonChecked = false;
 
   /** Last year's progress must not carry over: wipe it once when the season changes. */
@@ -377,28 +383,6 @@ export class StorageManager {
   }
 
   // ============================================================
-  // Unlockable Modules
-  // ============================================================
-
-  static getUnlockedModules(): string[] {
-    if (typeof window === "undefined") return [];
-    return this.getItem<string[]>(KEYS.UNLOCKED_MODULES, []);
-  }
-
-  static unlockModule(moduleId: string): void {
-    if (typeof window === "undefined") return;
-    const modules = this.getUnlockedModules();
-    if (!modules.includes(moduleId)) {
-      modules.push(moduleId);
-      this.setItem(KEYS.UNLOCKED_MODULES, modules);
-    }
-  }
-
-  static isModuleUnlocked(moduleId: string): boolean {
-    return this.getUnlockedModules().includes(moduleId);
-  }
-
-  // ============================================================
   // Santa Letters (BREVFUGLER Module)
   // ============================================================
 
@@ -488,6 +472,14 @@ export class StorageManager {
       badges.push({ badgeId, timestamp: Date.now() });
       this.setItem(KEYS.EARNED_BADGES, badges);
     }
+  }
+
+  static getBadgesSeen(): string[] {
+    return this.getItem<string[]>(KEYS.BADGES_SEEN, []);
+  }
+
+  static setBadgesSeen(ids: string[]): void {
+    this.setItem(KEYS.BADGES_SEEN, ids);
   }
 
   static hasEarnedBadge(badgeId: string): boolean {

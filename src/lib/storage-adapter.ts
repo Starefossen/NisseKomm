@@ -11,6 +11,7 @@
  * const value = adapter.get('key', defaultValue);
  * ```
  */
+import { shrinks } from "./state-merge";
 
 /**
  * Storage Adapter Interface
@@ -135,20 +136,6 @@ export const VERSION_KEY = "state-version";
 export const RESET_KEY = "state-reset";
 
 const json = (x: unknown) => JSON.stringify(x);
-const isObj = (x: unknown): x is Record<string, unknown> =>
-  !!x && typeof x === "object" && !Array.isArray(x);
-/**
- * True when `next` drops a list item or an object key `prev` had, so a server
- * merge would undo it. Nested values don't count: a game save drops inventory
- * items all the time, and every replace makes other screens' next write 409.
- */
-const shrinks = (prev: unknown, next: unknown) =>
-  Array.isArray(prev)
-    ? !Array.isArray(next) ||
-      prev.some((x) => !next.some((y) => json(y) === json(x)))
-    : isObj(prev) &&
-      (!isObj(next) || Object.keys(prev).some((k) => !(k in next)));
-
 type Pending = { value: unknown; replace: boolean };
 
 /** Local-only list of synced keys written while the server was unreachable. */
@@ -162,6 +149,10 @@ const RESET_SEEN_KEY = "nissekomm-state-reset-seen";
  * the server has sync off (STORAGE_BACKEND=localStorage answers 204).
  */
 export class ServerSyncAdapter extends LocalStorageAdapter {
+  /** localKeys: local-only season keys a reset elsewhere must clear here too. */
+  constructor(private localKeys: string[] = []) {
+    super();
+  }
   private live = false;
   private version = 0;
   private reset: unknown = null;
@@ -222,6 +213,8 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     const v = state[VERSION_KEY];
     this.version = typeof v === "number" ? v : 0;
     this.reset = state[RESET_KEY] ?? null;
+    if (json(this.reset) !== json(super.get<unknown>(RESET_SEEN_KEY, null)))
+      for (const k of this.localKeys) super.remove(k);
     super.set(RESET_SEEN_KEY, this.reset);
     this.onChange();
     return true;
@@ -230,7 +223,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
   set<T>(key: string, value: T): void {
     const prev = this.get<unknown>(key, null);
     super.set(key, value);
-    this.queue(key, value, shrinks(prev, value));
+    this.queue(key, value, shrinks(key, prev, value));
   }
 
   remove(key: string): void {
@@ -356,6 +349,6 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
   }
 }
 
-export function createStorageAdapter(): StorageAdapter {
-  return new ServerSyncAdapter();
+export function createStorageAdapter(localKeys?: string[]): StorageAdapter {
+  return new ServerSyncAdapter(localKeys);
 }

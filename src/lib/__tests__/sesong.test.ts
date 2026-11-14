@@ -21,14 +21,14 @@ describe("sesongmarkør", () => {
 
     const sm = freshStorage();
     expect(sm.getSubmittedCodes()).toEqual([]);
-    expect(sm.getUnlockedModules()).toEqual([]);
+    expect(localStorage.getItem("nissekomm-unlocked-modules")).toBeNull();
     expect(localStorage.getItem("nissekomm-julius-watched")).toBeNull();
     expect(sm.isSoundsEnabled()).toBe(false);
     expect(localStorage.getItem("nissekomm-season")).toBe("2026");
   });
 
   it("keeps this season's progress across reloads", () => {
-    freshStorage().unlockModule("NISSENET");
-    expect(freshStorage().getUnlockedModules()).toEqual(["NISSENET"]);
+    freshStorage().addSantaLetter(3, "hei");
+    expect(freshStorage().getSantaLetters()).toHaveLength(1);
   });
 });

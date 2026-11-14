@@ -91,6 +91,7 @@ export function AppProvider({ children }: AppProviderProps) {
   const refreshGameState = useCallback(() => {
     if (typeof window === "undefined") return;
 
+    GameEngine.awardDueBadges();
     setUnlockedModules(GameEngine.getUnlockedModules());
 
     const currentDay = getCurrentDay();

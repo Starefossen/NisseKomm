@@ -178,6 +178,8 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - 2026-11-13: Julius snakker aldri nordlandsk, heller ikke når han siterer Rampenissen; han gjengir ham på bokmål (6-2, 8-1, 11-1, 12-1, 13-1, 23-1 rettet, lint varsler). Hvorfor: nordlandsk er Rampenissens stemme, og videomodellen gjorde det til bokmål uansett.
 - 2026-11-13: Valg til Hans legges som beslutning i Gjennomgang (`docs/beslutninger-apne.json`), ikke i chat eller rapporter. Hvorfor: Hans vil gjøre all gjennomgang fra Nissemor-guiden.
 - 2026-11-14: Barneappen: symbolgrønt er ekte grønt som på kortene, spillene viser «Snu skjermen» på stående iPad, riktig kode viser PS fra Julius og «Åpne Dagbok». Hvorfor: barna sto fast på disse punktene i UI-gjennomgangen.
+- 2026-11-14: Appen er åpen som dag 24 fra 25.12 til og med 31.1 (tilgang, kodesjekk og MCP), stengt fra 1.2. Hvorfor: barna ser videoene om igjen i januar, og tre ulike romjulsregler ga feil.
+- 2026-11-14: Merkevarselet vises én gang på hver skjerm, også når merket ble vunnet på en annen. Merker, kryptofiler og moduler avledes fra synkede løsninger. Hvorfor: skjermen som løste, var den eneste som delte ut og viste merket.
 
 ## Besvart i Gjennomgang
 

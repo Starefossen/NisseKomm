@@ -13,6 +13,7 @@ import {
   SYNCED_KEYS,
   VERSION_KEY,
 } from "./storage-adapter";
+import { mergeValue } from "./state-merge";
 
 export type Role = "kid" | "parent";
 type Session = { role: Role; expires: number };
@@ -28,57 +29,7 @@ export function storageBackend(): "server" | "localStorage" {
   return process.env.DATABASE_URL ? "server" : "localStorage";
 }
 
-// Lists two screens append to at once; merged per day instead of overwritten.
-const MERGED_KEYS = new Set([
-  "nissekomm-codes",
-  "nissekomm-julius-watched",
-  "nissekomm-bonusoppdrag-completed",
-  "nissekomm-santa-letters",
-  "nissekomm-viewed-emails",
-  "nissekomm-viewed-bonusoppdrag-emails",
-  // A symbol scanned on the phone must survive the TV saving its own list.
-  "nissekomm-earned-badges",
-  "nissekomm-collected-symbols",
-  "nissekomm-solved-decryptions",
-  "nissekomm-unlocked-files",
-]);
-
-const itemId = (key: string, x: unknown) => {
-  if (x && typeof x === "object") {
-    const o = x as Record<string, unknown>;
-    // Two kids may each write a letter the same day; old letters have no from.
-    if (key === "nissekomm-santa-letters")
-      return JSON.stringify([o.day, o.from ?? null]);
-    return JSON.stringify(
-      o.day ?? o.dag ?? o.kode ?? o.badgeId ?? o.symbolId ?? o,
-    );
-  }
-  return JSON.stringify(x);
-};
-
-/**
- * Union of stored and incoming lists, incoming wins per day. Shrinking a
- * list (reset, revoked bonus) goes through putState(..., replace).
- */
-type Slede = Record<string, { poeng: number; bjeller: number }>;
-const rank = (r?: { poeng: number; bjeller: number }) =>
-  r ? r.bjeller * 1e9 + r.poeng : -1;
-
-export function mergeValue(key: string, stored: unknown, incoming: unknown) {
-  // Sledesimulator: two screens each keep their best run per stage
-  // (same order as GameEngine.recordSledeResultat: bells, then points).
-  if (key === "nissekomm-slede" && stored && incoming) {
-    const out: Slede = { ...(stored as Slede) };
-    for (const [id, r] of Object.entries(incoming as Slede))
-      if (rank(r) > rank(out[id])) out[id] = r;
-    return out;
-  }
-  if (!MERGED_KEYS.has(key) || !Array.isArray(stored)) return incoming;
-  if (!Array.isArray(incoming)) return incoming;
-  const byId = new Map(stored.map((x) => [itemId(key, x), x]));
-  for (const x of incoming) byId.set(itemId(key, x), x);
-  return [...byId.values()];
-}
+export { mergeValue };
 
 export interface Store {
   getState(): Promise<Record<string, unknown>>;

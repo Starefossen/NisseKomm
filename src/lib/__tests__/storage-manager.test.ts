@@ -194,15 +194,6 @@ describe("Storage Manager - Complex Data Types", () => {
     expect(StorageManager.isBonusOppdragCompleted(16)).toBe(false);
   });
 
-  it("should persist unlocked modules", async () => {
-    await StorageManager.setAuthenticated(true);
-
-    StorageManager.unlockModule("nissenet");
-
-    const modules = StorageManager.getUnlockedModules();
-    expect(modules).toContain("nissenet");
-  });
-
   it("should persist symbol collection", async () => {
     await StorageManager.setAuthenticated(true);
 
@@ -320,35 +311,6 @@ describe("Storage Manager - Performance", () => {
 
     const codes = StorageManager.getSubmittedCodes();
     expect(codes.length).toBe(24);
-  });
-});
-
-describe("Storage Manager - Modules", () => {
-  beforeEach(() => {
-    localStorage.clear();
-  });
-
-  it("should unlock and track modules", async () => {
-    await StorageManager.setAuthenticated(true);
-
-    expect(StorageManager.isModuleUnlocked("NISSEKRYPTO")).toBe(false);
-
-    StorageManager.unlockModule("NISSEKRYPTO");
-    expect(StorageManager.isModuleUnlocked("NISSEKRYPTO")).toBe(true);
-
-    const modules = StorageManager.getUnlockedModules();
-    expect(modules).toContain("NISSEKRYPTO");
-  });
-
-  it("should not duplicate module unlocks", async () => {
-    await StorageManager.setAuthenticated(true);
-
-    StorageManager.unlockModule("BREVFUGLER");
-    StorageManager.unlockModule("BREVFUGLER");
-    StorageManager.unlockModule("BREVFUGLER");
-
-    const modules = StorageManager.getUnlockedModules();
-    expect(modules.filter((m) => m === "BREVFUGLER").length).toBe(1);
   });
 });
 
