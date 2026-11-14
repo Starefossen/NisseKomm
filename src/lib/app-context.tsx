@@ -14,6 +14,8 @@ import { getCurrentDay } from "./date-utils";
 import { getSessionId, clearSessionId } from "./auth-cookies";
 import { CalendarEvent } from "@/types/innhold";
 import { lastFamilie } from "./navn";
+import { getSyncStatus, SYNC_EVENT } from "./storage-adapter";
+import { Frakoblet } from "@/components/ui/Frakoblet";
 
 /**
  * Application State Context
@@ -149,6 +151,23 @@ export function AppProvider({ children }: AppProviderProps) {
     refreshGameState();
   }, [refreshGameState]);
 
+  // Session gone (401 from /api/state or /api/kode): back to the login, but
+  // keep the local cache; unsynced writes go up after the next login.
+  const sessionExpired = useCallback(() => {
+    clearSessionId();
+    StorageManager.clearAuthentication();
+    setSessionIdState(null);
+    setIsAuthenticated(false);
+  }, []);
+
+  useEffect(() => {
+    const on = () => {
+      if (getSyncStatus() === "utlogget") sessionExpired();
+    };
+    window.addEventListener(SYNC_EVENT, on);
+    return () => window.removeEventListener(SYNC_EVENT, on);
+  }, [sessionExpired]);
+
   /**
    * Restore existing session on mount
    */
@@ -164,7 +183,8 @@ export function AppProvider({ children }: AppProviderProps) {
 
         setSessionIdState(existingSessionId);
         await initializeApp(existingSessionId);
-        setIsAuthenticated(true);
+        if (getSyncStatus() === "utlogget") sessionExpired();
+        else setIsAuthenticated(true);
 
         console.debug("[AppContext] Session restored successfully");
       } else if (StorageManager.isAuthenticated()) {
@@ -172,7 +192,8 @@ export function AppProvider({ children }: AppProviderProps) {
           StorageManager.sync(refreshGameState),
           lastFamilie(),
         ]);
-        setIsAuthenticated(true);
+        if (getSyncStatus() === "utlogget") sessionExpired();
+        else setIsAuthenticated(true);
         refreshGameState();
       }
 
@@ -197,7 +218,12 @@ export function AppProvider({ children }: AppProviderProps) {
     refreshGameState,
   };
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={value}>
+      {children}
+      {isAuthenticated && <Frakoblet />}
+    </AppContext.Provider>
+  );
 }
 
 // ============================================================================

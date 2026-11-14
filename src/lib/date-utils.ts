@@ -13,6 +13,8 @@
  * - NEXT_PUBLIC_MOCK_MONTH: Override current month (1-12, defaults to 12)
  */
 
+import { isLanMode } from "./mode";
+
 export interface TimeOverride {
   day: number;
   month: number; // 1-12
@@ -27,10 +29,26 @@ const TIME_OVERRIDE_KEY = "nissekomm-tidsmaskin";
  * NODE_ENV is inlined as "production", so this is false and the override
  * code is dead.
  */
+/**
+ * NEXT_PUBLIC_TEST_MODE/MOCK_* as runtime env on the public production pod
+ * would open every day on the server; there they are ignored (the build
+ * guard keeps them out of the client). Pass the literal process.env.X so
+ * the client bundle still inlines it.
+ */
+export function testEnv(value: string | undefined): string | undefined {
+  if (
+    typeof window === "undefined" &&
+    process.env.NODE_ENV === "production" &&
+    !isLanMode()
+  )
+    return undefined;
+  return value;
+}
+
 export function isTimeMachineEnabled(): boolean {
   return (
     process.env.NODE_ENV !== "production" ||
-    process.env.NEXT_PUBLIC_TEST_MODE === "true"
+    testEnv(process.env.NEXT_PUBLIC_TEST_MODE) === "true"
   );
 }
 
@@ -94,8 +112,8 @@ function clockDate(): Date {
     return d;
   }
 
-  const mockDay = process.env.NEXT_PUBLIC_MOCK_DAY;
-  const mockMonth = process.env.NEXT_PUBLIC_MOCK_MONTH;
+  const mockDay = testEnv(process.env.NEXT_PUBLIC_MOCK_DAY);
+  const mockMonth = testEnv(process.env.NEXT_PUBLIC_MOCK_MONTH);
 
   if (mockDay) {
     const day = parseInt(mockDay, 10);
@@ -152,7 +170,7 @@ export function getAdventDay(): number {
  * @param testMode - If true, bypass date restrictions for development
  */
 export function isCalendarActive(testMode: boolean = false): boolean {
-  if (testMode || process.env.NEXT_PUBLIC_TEST_MODE === "true") {
+  if (testMode || testEnv(process.env.NEXT_PUBLIC_TEST_MODE) === "true") {
     return true;
   }
 

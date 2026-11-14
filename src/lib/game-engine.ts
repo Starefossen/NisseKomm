@@ -20,6 +20,7 @@ import {
   type SantaLetter,
   type SledeResultat,
 } from "./storage";
+import { setSyncStatus } from "./storage-adapter";
 import { BadgeManager } from "./badge-system";
 import { getEventyr, getEventyrDays, getEventyrForDay } from "./eventyr";
 import {
@@ -111,6 +112,8 @@ interface QuestResult {
   ventSek?: number;
   /** The check never got an answer (network, server error): not a wrong code. */
   nettfeil?: boolean;
+  /** 401: the session is gone, the app shows the login again. */
+  utlogget?: boolean;
 }
 
 interface ContentUnlockResult {
@@ -144,7 +147,7 @@ export function runerFor(
 export type KodeSvar =
   | { ok: true; dag: number; kode: string }
   | { ok: true; bonus: number }
-  | { ok: false; ventSek?: number };
+  | { ok: false; ventSek?: number; utlogget?: boolean };
 
 /**
  * Dependencies that can be injected for testing or customization
@@ -161,6 +164,7 @@ async function kodeSjekkServer(dag: number, kode: string): Promise<KodeSvar> {
     body: JSON.stringify({ dag, kode }),
   });
   if (r.status === 429) return { ok: false, ...(await r.json()) };
+  if (r.status === 401) return { ok: false, utlogget: true };
   if (!r.ok) throw new Error(`kode: ${r.status}`);
   return r.json();
 }
@@ -287,6 +291,15 @@ export class GameEngine {
       };
     }
     if (!svar.ok) {
+      if (svar.utlogget) {
+        setSyncStatus("utlogget");
+        return {
+          success: false,
+          isNewCompletion: false,
+          message: "LOGG INN PÅ NYTT",
+          utlogget: true,
+        };
+      }
       if (svar.ventSek)
         return {
           success: false,

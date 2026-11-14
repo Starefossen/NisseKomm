@@ -4,6 +4,8 @@ import {
   SYNCED_KEYS,
   ServerSyncAdapter,
   VERSION_KEY,
+  getSyncStatus,
+  setSyncStatus,
 } from "../storage-adapter";
 import { GameEngine } from "../game-engine";
 import { mergeValue } from "../state-merge";
@@ -54,6 +56,7 @@ beforeEach(() => {
   localStorage.clear();
   store.reset();
   global.fetch = jest.fn(fakeFetch) as unknown as typeof fetch;
+  setSyncStatus("ok");
 });
 
 describe("ServerSyncAdapter", () => {
@@ -277,6 +280,65 @@ describe("ServerSyncAdapter", () => {
     jest.runOnlyPendingTimers();
     expect(global.fetch).toHaveBeenCalledTimes(1);
     expect(a.get(KEY, [])).toEqual([1]);
+  });
+});
+
+describe("dead session and 5xx at startup", () => {
+  it("a 503 at startup retries with backoff and goes live when the server answers", async () => {
+    await store.putState(KEY, [1]);
+    global.fetch = jest.fn(
+      async () => ({ ok: false, status: 503 }) as Response,
+    ) as unknown as typeof fetch;
+    const a = new ServerSyncAdapter();
+    await expect(a.start()).rejects.toThrow();
+    expect(getSyncStatus()).toBe("frakoblet");
+    await jest.advanceTimersByTimeAsync(2000); // second try, still 503
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+    global.fetch = jest.fn(fakeFetch) as unknown as typeof fetch;
+    await jest.advanceTimersByTimeAsync(4000);
+    expect(getSyncStatus()).toBe("ok");
+    expect(a.get(KEY, [])).toEqual([1]);
+  });
+
+  it("backoff stops growing at 60 s", async () => {
+    global.fetch = jest.fn(
+      async () => ({ ok: false, status: 500 }) as Response,
+    ) as unknown as typeof fetch;
+    const a = new ServerSyncAdapter();
+    await expect(a.start()).rejects.toThrow();
+    await jest.advanceTimersByTimeAsync(10 * 60_000);
+    const n = (global.fetch as jest.Mock).mock.calls.length;
+    await jest.advanceTimersByTimeAsync(60_000);
+    expect((global.fetch as jest.Mock).mock.calls.length).toBe(n + 1);
+  });
+
+  it("a 401 marks the session gone, keeps the cache, and syncs after login", async () => {
+    localStorage.setItem(KEY, JSON.stringify([7]));
+    global.fetch = jest.fn(
+      async () => ({ ok: false, status: 401 }) as Response,
+    ) as unknown as typeof fetch;
+    const a = new ServerSyncAdapter();
+    await a.start();
+    expect(getSyncStatus()).toBe("utlogget");
+    a.set(KEY, [7, 8]);
+    expect(a.get(KEY, [])).toEqual([7, 8]);
+
+    global.fetch = jest.fn(fakeFetch) as unknown as typeof fetch;
+    await a.start();
+    await flush(a);
+    expect(getSyncStatus()).toBe("ok");
+    expect((await store.getState())[KEY]).toEqual([7, 8]);
+  });
+
+  it("a 401 from /api/kode says log in again, not wrong code", async () => {
+    global.fetch = jest.fn(
+      async () => ({ ok: false, status: 401 }) as Response,
+    ) as unknown as typeof fetch;
+    const r = await GameEngine.submitCode("NOE", 1);
+    expect(r.utlogget).toBe(true);
+    expect(r.message).toBe("LOGG INN PÅ NYTT");
+    expect(GameEngine.getFailedAttempts(1)).toBe(0);
+    expect(getSyncStatus()).toBe("utlogget");
   });
 });
 

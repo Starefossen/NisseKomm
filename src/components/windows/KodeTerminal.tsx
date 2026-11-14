@@ -160,7 +160,9 @@ export function KodeTerminal({
           : 0;
 
       setFailedAttempts(currentFailedAttempts);
-      if (result.nettfeil) {
+      if (result.utlogget) {
+        setTull("Logg inn på nytt.");
+      } else if (result.nettfeil) {
         setTull("Linjen hakker, prøv igjen.");
       } else if (result.ventSek) {
         setTull("FOR MANGE FORSØK. KODETERMINALEN MÅ KJØLE SEG NED ET MINUTT.");

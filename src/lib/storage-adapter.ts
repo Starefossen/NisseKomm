@@ -143,6 +143,18 @@ export const VERSION_KEY = "state-version";
 /** Set by a season reset (DELETE /api/state); only a new value may drop local writes. */
 export const RESET_KEY = "state-reset";
 
+/** "frakoblet": server unreachable/5xx, retrying. "utlogget": session gone (401). */
+export type SyncStatus = "ok" | "frakoblet" | "utlogget";
+export const SYNC_EVENT = "nissekomm-sync";
+let syncStatus: SyncStatus = "ok";
+export const getSyncStatus = () => syncStatus;
+export function setSyncStatus(s: SyncStatus): void {
+  if (s === syncStatus) return;
+  syncStatus = s;
+  if (typeof window !== "undefined")
+    window.dispatchEvent(new Event(SYNC_EVENT));
+}
+
 const json = (x: unknown) => JSON.stringify(x);
 type Pending = { value: unknown; replace: boolean };
 
@@ -170,6 +182,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
   private retryMs = 1000;
   private onChange: () => void = () => {};
   private startRetry?: ReturnType<typeof setTimeout>;
+  private startRetryMs = 2000;
 
   async start(onChange?: () => void): Promise<void> {
     if (onChange) this.onChange = onChange;
@@ -186,10 +199,16 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     try {
       this.live = await this.pull();
     } catch (e) {
-      // Server down at boot: keep playing locally and try again later.
-      this.startRetry = setTimeout(() => void this.start(), 30_000);
+      // Server down or 5xx at boot: keep playing locally, retry with backoff.
+      setSyncStatus("frakoblet");
+      this.startRetry = setTimeout(
+        () => void this.start().catch(() => {}),
+        this.startRetryMs,
+      );
+      this.startRetryMs = Math.min(this.startRetryMs * 2, 60_000);
       throw e;
     }
+    this.startRetryMs = 2000;
     if (!this.live) return;
     // Season reset elsewhere since: the server wins.
     if (json(this.reset) !== json(seen)) {
@@ -208,10 +227,27 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     });
   }
 
-  /** Replaces the cached shared keys with the server's. False if sync is off. */
+  /**
+   * Replaces the cached shared keys with the server's. False if sync is off
+   * (204) or the session is gone (401); throws on 5xx and network errors.
+   */
   async pull(): Promise<boolean> {
-    const res = await fetch("/api/state", { credentials: "same-origin" });
-    if (res.status !== 200) return false;
+    let res: Response;
+    try {
+      res = await fetch("/api/state", { credentials: "same-origin" });
+    } catch (e) {
+      if (this.live) setSyncStatus("frakoblet");
+      throw e;
+    }
+    if (res.status === 401) {
+      setSyncStatus("utlogget");
+      return false;
+    }
+    if (res.status === 204) return false;
+    if (res.status !== 200) {
+      if (this.live) setSyncStatus("frakoblet");
+      throw new Error(`state: ${res.status}`);
+    }
     const state = (await res.json()) as Record<string, unknown>;
     for (const k of [...SYNCED_KEYS, ...SERVER_KEYS]) {
       // A local write still on its way wins; the server merges it on PUT.
@@ -222,6 +258,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     const v = state[VERSION_KEY];
     this.version = typeof v === "number" ? v : 0;
     this.reset = state[RESET_KEY] ?? null;
+    setSyncStatus("ok");
     if (json(this.reset) !== json(super.get<unknown>(RESET_SEEN_KEY, null)))
       for (const k of this.localKeys) super.remove(k);
     super.set(RESET_SEEN_KEY, this.reset);
@@ -307,6 +344,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
         // only this key, the server's value wins and the others go on.
         // 401, 408, 429 and any other 403 (Origin/Host) are retried.
         const forbigående = [401, 403, 408, 409, 429].includes(res.status);
+        if (res.status === 401) setSyncStatus("utlogget");
         if (
           (res.status >= 400 && res.status < 500 && !forbigående) ||
           (res.status === 403 && key === CODES_KEY)
