@@ -35,7 +35,7 @@ bestemt spill.
 | 14  | Stjernedrysset        | Stjerner i alle høyder                | julenatt   |
 | 18  | Kastevind-dalen       | Vind på 40 % av seksjonene, 1,6× kast | tundra     |
 | 19  | Tindeflukten          | Tinder uten lysbånd                   | nordtoppen |
-| 20  | Nordlys-strømmen      | Tinder og lysbånd (historie)          | nordtoppen |
+| 20  | Himmelstrømmen        | Tinder og lysbånd (historie)          | nordtoppen |
 | 21  | Muren og porten       | Tåke, tre porter (historie)           | muren      |
 | 24  | Julenatt over grotten | Grotte, vind (historie)               | julenatt   |
 
@@ -46,5 +46,7 @@ på. Målet 24 og 75 er dagskoder og nudges til 25/76 (`trygtTall`).
 Prinsipp: simuleringen (`slede.ts`) er ren og testet (`slede.test.ts`);
 komponenten tegner og lytter. Ingen allokering per bilde i tegneløkka, 60 fps
 på iPad. Etappenavn, intro, bjellekrav og utfordringstekst har ingen dagskoder
-(`kodelekkasje.test.ts`, `komponentlekkasje.test.ts`). Nordlys-strømmen kan
-ikke åpne før 18. desember (koden NORDLYS på dag 17).
+(`kodelekkasje.test.ts`, `komponentlekkasje.test.ts`), heller ikke koder fra
+tidligere dager: etappene åpner på dato, så et barn som henger etter ser
+navnet før koden er løst. Dag 20 het «Nordlys-strømmen» (koden på dag 17) og
+heter derfor Himmelstrømmen; id-en `nordtoppen` og rekordene er uendret.

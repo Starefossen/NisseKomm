@@ -236,7 +236,7 @@ export const ETAPPER: readonly SledeEtappe[] = [
   {
     id: "nordtoppen",
     dag: 20,
-    navn: "Nordlys-strømmen",
+    navn: "Himmelstrømmen",
     intro: "Himmelen knitrer! Fly inn i lysbåndene, de gir løft over tindene.",
     lengde: 60000,
     fart: 1000,

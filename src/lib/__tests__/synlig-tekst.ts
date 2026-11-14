@@ -43,6 +43,17 @@ const add = (from: number, where: string, text?: string) => {
   if (text) visible.push({ from, where, text });
 };
 
+/**
+ * Names and game text that open by date, not by a solved code: a child who is
+ * a day behind sees them all the same, so they may hold no code at all,
+ * whatever the day (kodelekkasje.test.ts checks them against every code).
+ */
+export const alltid: Visible[] = [];
+const addAlltid = (from: number, where: string, text?: string) => {
+  add(from, where, text);
+  if (text) alltid.push({ from, where, text });
+};
+
 // Birk and Lyng read these on air around the morning clip (get_clips).
 for (const [d, h] of Object.entries(
   radioHint.dag as Record<string, Record<string, string | undefined>>,
@@ -163,7 +174,7 @@ for (const k of KAPITLER) {
     JSON.stringify(k, (_, v) => (typeof v === "number" ? undefined : v)),
   );
   // Locked chapters show title and teaser in the list from the first chapter's day.
-  add(
+  addAlltid(
     KAPITLER[0].dag,
     `nissespill kapittel ${k.n} låst`,
     `${k.tittel} ${k.teaser ?? ""}`,
@@ -171,37 +182,52 @@ for (const k of KAPITLER) {
 }
 
 // Sledesimulator: stage name, IQ's intro and the day's challenge show on the
-// start screen from the stage's day.
+// start screen from the stage's day (a locked stage shows «LÅST · ÅPNER DAG N»
+// without its name), whether or not earlier codes are solved.
 for (const e of ETAPPER) {
-  add(e.dag, `slede ${e.id}`, `${e.navn} ${e.intro}`);
+  addAlltid(e.dag, `slede ${e.id}`, `${e.navn} ${e.intro}`);
   const varder = lagBane(e).filter((t) => t.type === "varde").length;
-  add(e.dag, `slede ${e.id} bjellekrav`, bjelleKrav(varder).join(" "));
+  addAlltid(e.dag, `slede ${e.id} bjellekrav`, bjelleKrav(varder).join(" "));
   for (let d = e.dag; d <= 24; d++) {
-    add(d, `slede ${e.id} utfordring dag ${d}`, dagensUtfordring(d, e).tekst);
+    addAlltid(
+      d,
+      `slede ${e.id} utfordring dag ${d}`,
+      dagensUtfordring(d, e).tekst,
+    );
     const l = leveringsoppdrag(d, e);
     if (l) add(d, `slede ${e.id} levering dag ${d}`, l.tekst);
   }
 }
-add(14, "slede pakkenavn", [0, 1, 2, 3].map((i) => pakkenavn([], i)).join(" "));
-add(8, "slede radio", Object.values(RADIO).flat().join(" "));
+addAlltid(
+  14,
+  "slede pakkenavn",
+  [0, 1, 2, 3].map((i) => pakkenavn([], i)).join(" "),
+);
+addAlltid(8, "slede radio", Object.values(RADIO).flat().join(" "));
 // Free flight: the vidda's places as the map and the HUD name them on day d (locked
 // ones say when they open), Rampenissen's line when each is found, Bergen past the
 // gate once day 24 is solved, and its last stop by name once day 22 is solved.
 const steder = (o: FriOpts) =>
   STEDER.map((s) => `${stedsnavn(s, o)} ${stedsnavn(s, o, true)}`).join(" ");
 for (let d = 8; d <= 24; d++)
-  add(
+  addAlltid(
     d,
     `slede vidda dag ${d}`,
     steder({ dag: d, bergen: false, hjem: false }),
   );
 for (const s of STEDER)
-  add(s.id === "bergen" ? 25 : s.dag, `slede vidda radio ${s.id}`, s.radio);
-add(25, "slede bergen", steder({ dag: 24, bergen: true, hjem: false }));
-add(23, "slede landås", steder({ dag: 24, bergen: true, hjem: true }));
+  addAlltid(
+    s.id === "bergen" ? 25 : s.dag,
+    `slede vidda radio ${s.id}`,
+    s.radio,
+  );
+addAlltid(25, "slede bergen", steder({ dag: 24, bergen: true, hjem: false }));
+addAlltid(23, "slede landås", steder({ dag: 24, bergen: true, hjem: true }));
 
 // Inline strings in components: every literal and JSX text in the file, from the
-// day the window can first show it (stricter than per-string gating).
+// day the window can first show it (stricter than per-string gating). Not in
+// `alltid`: the pattern also catches code between `>` and `<` (a canvas named
+// after a day-4 code word), which is noise there.
 const kilde = (fil: string) =>
   fs.readFileSync(path.join(__dirname, "../../..", fil), "utf8");
 export const literaler = (src: string) =>
@@ -225,7 +251,7 @@ add(
 );
 for (const [d, t] of Object.entries(KULDE_INTERCEPTS))
   add(Number(d), `Snøfall TV Kulde dag ${d}`, t);
-add(1, "Snøfall TV kanaler", CHANNELS.map((c) => c.name).join(" "));
+addAlltid(1, "Snøfall TV kanaler", CHANNELS.map((c) => c.name).join(" "));
 
 // NisseStats (reveals day 16, open from that morning): each metric from its
 // unlock_day, the log from each line's fra_dag, the window's own literals.

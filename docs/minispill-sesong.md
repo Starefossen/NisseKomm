@@ -5,7 +5,7 @@ Vurdering av sidespillene mot den låste historien (`historie-2026.md`, `gaater-
 **Det som finnes (11. november):**
 
 - **Ugleposten** (`windows/nissespill/`, på main): fire kapitler, åpner dag 4, 10, 16 og 22, 6–9 gåter og to puslespill hver, åtte uglefjær til sammen. Modulen åpner etter koden dag 4; kapitlene åpner etter dato, ikke etter dagens kode.
-- **IQs sledesimulator** (`snofall-tv/slede.ts`): på main ni etapper fra dag 8 (Tundra-testen 8, Ringløypa 9, Granskogen 12, Stjernedrysset 14, Kastevind-dalen 18, Tindeflukten 19, Nordlys-strømmen 20, Muren og porten 21, Julenatt 24), ny hver 2.–3. dag, og én daglig utfordring (varder, renflyging, stjerner, tid, rekke, nære på) med 500 bonuspoeng. Beste poeng og bjeller lagres per etappe (`nissekomm-slede`, synket).
+- **IQs sledesimulator** (`snofall-tv/slede.ts`): på main ni etapper fra dag 8 (Tundra-testen 8, Ringløypa 9, Granskogen 12, Stjernedrysset 14, Kastevind-dalen 18, Tindeflukten 19, Himmelstrømmen 20, Muren og porten 21, Julenatt 24), ny hver 2.–3. dag, og én daglig utfordring (varder, renflyging, stjerner, tid, rekke, nære på) med 500 bonuspoeng. Beste poeng og bjeller lagres per etappe (`nissekomm-slede`, synket).
 - **TEKNISK HUD** (`snofall-tv/MiniGames.tsx`): Kretsløp dag 8, Sorterer 16, Sentrifuge 19 (K2), Porten 21. Hvert er 30–60 sekunder med knapper, uten lagring. Grenen `fix/teknisk-hud` viser knappen grå før dagens kode og flytter sleden til dag 8.
 
 ## 1. Plan og tempo, dag for dag
@@ -33,7 +33,7 @@ Vurdering av sidespillene mot den låste historien (`historie-2026.md`, `gaater-
 | 17  | NORDLYS                      | U                                                                | –                                                                                      |
 | 18  | TURBULENS, krypto 2 (fr)     | **Slede: Kastevind-dalen**, U                                    | –                                                                                      |
 | 19  | GULROT, pusterom (lø)        | Sentrifuge (K2), **Slede: Tindeflukten**                         | Pusterommet har det svakeste leketøyet, så etappen ligger her.                         |
-| 20  | TURBO, 4. advent             | **Slede: Nordlys-strømmen**                                      | –                                                                                      |
+| 20  | TURBO, 4. advent             | **Slede: Himmelstrømmen**                                      | –                                                                                      |
 | 21  | BRANNMUR, M5, frost 2        | Porten (HUD), **Slede: Muren og porten**                         | Begge etter koden og begge om porten. Riktig.                                          |
 | 22  | LANDÅS, jakt, Snill-listen   | **Ugleposten K4** «Klar til avgang»                              | Største kapittel (9 gåter) på en skoledag, men det kan spilles 22–24.                  |
 | 23  | STJERNEKLART, krypto 3       | U                                                                | Riktig stille før finalen.                                                             |
@@ -43,7 +43,7 @@ Vurdering av sidespillene mot den låste historien (`historie-2026.md`, `gaater-
 
 ## 2. Integrasjon med historien og appen
 
-**Det som virker.** Ugleposten følger kunnskapstidslinjen: K2 handler om den frosne antenna (dag 10–11), K3 åpner dag 16 og vet hvem Vintervokteren er (barna lærte det dag 15), og gir et lys til grotta før muren dag 21; K4 har porten åpen og sleden pakket. Sledeetappene heter det historien heter (Nordlys-strømmen, Muren og porten, Julenatt over grotten). HUD-lekene speiler dagens kode (Kretsløp 8, Sorterer 16, Porten 21) og åpner først etter den. `kodelekkasje.test.ts` leser hvert kapittel fra sin dag og hver etappes navn og introlinje; ingen av spillene gir bokstaver eller tall.
+**Det som virker.** Ugleposten følger kunnskapstidslinjen: K2 handler om den frosne antenna (dag 10–11), K3 åpner dag 16 og vet hvem Vintervokteren er (barna lærte det dag 15), og gir et lys til grotta før muren dag 21; K4 har porten åpen og sleden pakket. Sledeetappene heter det historien heter (Himmelstrømmen, Muren og porten, Julenatt over grotten). HUD-lekene speiler dagens kode (Kretsløp 8, Sorterer 16, Porten 21) og åpner først etter den. `kodelekkasje.test.ts` leser hvert kapittel fra sin dag og hver etappes navn og introlinje; ingen av spillene gir bokstaver eller tall.
 
 **Det som mangler.** Ingen av spillene gir noe tilbake til appen:
 

@@ -1,9 +1,9 @@
-# Nordlys-strømmen
+# Himmelstrømmen
 
 ```json
 {
   "id": "nordtoppen",
-  "navn": ["Nordlys-strømmen"],
+  "navn": ["Himmelstrømmen"],
   "refs": {},
   "avledet_fra": "torget"
 }
