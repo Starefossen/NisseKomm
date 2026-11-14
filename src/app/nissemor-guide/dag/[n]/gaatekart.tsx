@@ -4,6 +4,7 @@ import { Vurder } from "../../vurdering";
 
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { diagramKanter } from "@/lib/gaate-diagram";
 import { losningstavle, type Kilde } from "@/lib/losningstavle";
 import { LysbordBilde } from "../../lysbord";
@@ -173,9 +174,12 @@ function Flytdiagram({
   const { kanter, ubrukt, stegUten } = diagramKanter(steg, k.hjemme, k.skjerm);
   // Hover, focus or tap on a card: its edges and neighbours stay lit, the rest dims.
   const [aktiv, setAktiv] = useState<string | null>(null);
+  // Full text only for a card whose text was cut; fixed to the viewport so the
+  // sideways scroll box cannot clip it, below the card when there is no room above.
   const [tips, setTips] = useState<{
     x: number;
     y: number;
+    under: boolean;
     tekst: string;
   } | null>(null);
   const RAD = 46;
@@ -202,23 +206,35 @@ function Flytdiagram({
     }
   }
   const dim = (id: string) => (aktiv && !lit.has(id) ? 0.2 : 1);
-  const kortProps = (id: string, x: number, y: number, tekst: string) => ({
+  const visTips = (el: Element, tekst: string, linjer: string[]) => {
+    const helt = (x: string) => x.replace(/\s/g, "");
+    if (helt(linjer.join("")) === helt(tekst)) return setTips(null);
+    const r = el.getBoundingClientRect();
+    const under = r.top < 140;
+    setTips({
+      x: Math.max(8, Math.min(r.left, window.innerWidth - 328)),
+      y: under ? r.bottom + 4 : r.top - 4,
+      under,
+      tekst,
+    });
+  };
+  const kortProps = (id: string, tekst: string, linjer: string[]) => ({
     tabIndex: 0,
     role: "button" as const,
     "aria-label": tekst,
     style: { cursor: "pointer", outline: "none" },
     opacity: dim(id),
-    onPointerEnter: () => {
+    onPointerEnter: (e: { currentTarget: Element }) => {
       setAktiv(id);
-      setTips({ x, y, tekst });
+      visTips(e.currentTarget, tekst, linjer);
     },
     onPointerLeave: () => {
       setAktiv(null);
       setTips(null);
     },
-    onFocus: () => {
+    onFocus: (e: { currentTarget: Element }) => {
       setAktiv(id);
-      setTips({ x, y, tekst });
+      visTips(e.currentTarget, tekst, linjer);
     },
     onBlur: () => {
       setAktiv(null);
@@ -284,7 +300,7 @@ function Flytdiagram({
               return (
                 <g
                   key={b.id}
-                  {...kortProps(id, 255, bitY(i), `${b.id} ${full}`)}
+                  {...kortProps(id, `${b.id} ${full}`, [b.id, l1, l2 ?? ""])}
                 >
                   <rect
                     x={4}
@@ -339,7 +355,7 @@ function Flytdiagram({
               return (
                 <g
                   key={i}
-                  {...kortProps(id, 330, stegY(i), `${i + 1}) ${rens(s)}`)}
+                  {...kortProps(id, `${i + 1}) ${rens(s)}`, [l1, l2 ?? ""])}
                 >
                   <rect
                     x={330}
@@ -386,19 +402,21 @@ function Flytdiagram({
               {vis && kode ? kode : "SVAR ▢▢▢"}
             </text>
           </svg>
-          {tips && (
-            <div
-              role="tooltip"
-              className="pointer-events-none absolute z-10 max-w-xs border-2 border-(--gold) bg-black p-2 text-sm text-(--neon-green)"
-              style={{
-                left: `${(tips.x / VB) * 100}%`,
-                top: `${(tips.y / h) * 100}%`,
-                transform: "translate(0, -105%)",
-              }}
-            >
-              {tips.tekst}
-            </div>
-          )}
+          {tips &&
+            createPortal(
+              <div
+                role="tooltip"
+                className="pointer-events-none fixed z-[1000] max-w-xs border-2 border-(--gold) bg-black p-2 text-sm text-(--neon-green)"
+                style={{
+                  left: tips.x,
+                  top: tips.y,
+                  transform: tips.under ? undefined : "translateY(-100%)",
+                }}
+              >
+                {tips.tekst}
+              </div>,
+              document.body,
+            )}
         </div>
       </div>
       {(ubrukt.length > 0 || stegUten.length > 0) && (
