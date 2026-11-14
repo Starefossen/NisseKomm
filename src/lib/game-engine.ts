@@ -33,12 +33,7 @@ import {
   calculateSigmoidValue,
   getMetricStatus,
 } from "./utils/metric-calculator";
-import {
-  frostLevelFor,
-  frostModeFor,
-  isFrostDay,
-  type FrostMode,
-} from "./frost";
+import { isFrostDay, type FrostMode } from "./frost";
 import { findFileNode } from "./utils/file-tree-utils";
 import {
   convertDailyAlerts,
@@ -55,6 +50,9 @@ import {
   clearCollectedSymbols,
 } from "./systems/symbol-system";
 import * as quests from "./systems/quest-system";
+import * as frost from "./systems/frost-system";
+
+export { runerFor } from "./systems/frost-system";
 import type {
   GameState,
   QuestResult,
@@ -99,21 +97,6 @@ interface DecryptionValidationResult {
   correct: boolean;
   message: string;
   correctCount: number;
-}
-
-/** Rune letters of the given solved days' codes; `kodeFor` looks a day's code up. */
-export function runerFor(
-  dager: Iterable<number>,
-  kodeFor: (dag: number) => string | undefined,
-): Set<string> {
-  const learned = new Set<string>();
-  for (const day of dager) {
-    if (day === 5 || day === 22) continue;
-    for (const ch of kodeFor(day)?.toUpperCase() ?? "")
-      if (/[A-ZÆØÅ]/.test(ch)) learned.add(ch);
-    if (day === 1) ["E", "T"].forEach((c) => learned.add(c));
-  }
-  return learned;
 }
 
 /** Answer from POST /api/kode (src/lib/kode.ts), or 429's wait. */
@@ -391,12 +374,7 @@ export class GameEngine {
 
   /** Frostgraden (0–100) for a day, or null on days 1–6 when it is hidden. */
   static getFrostLevel(day: number = getCurrentDay()): number | null {
-    const quest = ALL_QUESTS.find((q) => q.dag === day);
-    return frostLevelFor(
-      day,
-      this.isQuestCompleted(day),
-      quest ? this.isBonusOppdragCompleted(quest) : false,
-    );
+    return frost.getFrostLevel(day);
   }
 
   static isFrostDay(day: number = getCurrentDay()): boolean {
@@ -405,17 +383,7 @@ export class GameEngine {
 
   /** Frost mode right now: level 1 on day 10, 2 on day 21, 0 otherwise or once solved. */
   static getFrostMode(): FrostMode {
-    const now = getCurrentDate();
-    const day = now.getDate();
-    const o = StorageManager.getFrostOverride();
-    return frostModeFor({
-      day,
-      month: now.getMonth() + 1,
-      hour: now.getHours(),
-      solved: this.isQuestCompleted(day),
-      disabled: StorageManager.getFrostOffDay() === day,
-      override: o && new Date(o.until) > now ? o.active : undefined,
-    });
+    return frost.getFrostMode();
   }
 
   /** Parent kill switch («Frost av») for today. */
@@ -433,11 +401,7 @@ export class GameEngine {
    * Day 5 (number code) and day 22 (number cards) teach none.
    */
   static getLearnedRunes(): Set<string> {
-    const koder = StorageManager.getSubmittedCodes();
-    return runerFor(
-      this.getCompletedDays(),
-      (d) => koder.find((c) => c.day === d)?.kode,
-    );
+    return frost.getLearnedRunes();
   }
 
   /** Every rune the season teaches (all 19), for the board and the stats. */
