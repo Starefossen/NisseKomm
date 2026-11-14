@@ -33,7 +33,7 @@ Vurdering av sidespillene mot den låste historien (`historie-2026.md`, `gaater-
 | 17  | NORDLYS                      | U                                                                | –                                                                                      |
 | 18  | TURBULENS, krypto 2 (fr)     | **Slede: Kastevind-dalen**, U                                    | –                                                                                      |
 | 19  | GULROT, pusterom (lø)        | Sentrifuge (K2), **Slede: Tindeflukten**                         | Pusterommet har det svakeste leketøyet, så etappen ligger her.                         |
-| 20  | TURBO, 4. advent             | **Slede: Himmelstrømmen**                                      | –                                                                                      |
+| 20  | TURBO, 4. advent             | **Slede: Himmelstrømmen**                                        | –                                                                                      |
 | 21  | BRANNMUR, M5, frost 2        | Porten (HUD), **Slede: Muren og porten**                         | Begge etter koden og begge om porten. Riktig.                                          |
 | 22  | LANDÅS, jakt, Snill-listen   | **Ugleposten K4** «Klar til avgang»                              | Største kapittel (9 gåter) på en skoledag, men det kan spilles 22–24.                  |
 | 23  | STJERNEKLART, krypto 3       | U                                                                | Riktig stille før finalen.                                                             |
