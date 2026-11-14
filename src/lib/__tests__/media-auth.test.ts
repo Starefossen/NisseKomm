@@ -91,3 +91,30 @@ test("promo and strek under /media are parent-only", async () => {
     expect(await get(p, "nissekomm=kid")).toBe(403);
   }
 });
+
+test("encoded paths cannot dodge the parent-only check", async () => {
+  const { GET } = await import("../../app/media/[...path]/route");
+  const get = async (seg: string[]) =>
+    (
+      await GET(new NextRequest("http://lan/media/x"), {
+        params: Promise.resolve({ path: seg }),
+      })
+    ).status;
+  const varianter = [
+    ["strek%2Fdag01.png"],
+    ["strek%2fdag01.png"],
+    ["strek/dag01.png"],
+    ["STREK", "dag01.png"],
+    ["strek%5Cdag01.png"],
+    ["strek%252Fdag01.png"],
+    ["video", "..%2Fstrek", "dag01.png"],
+    ["video", "..", "promo", "julius-promo-A.mp4"],
+    ["_arkiv%2Fx.mp4"],
+  ];
+  for (const mode of ["lan", "public"]) {
+    process.env.NISSEKOMM_MODE = mode;
+    // lan: 401 proves the check ran (a bypass would reach the file lookup, 404).
+    const ok = mode === "lan" ? [400, 401] : [400, 404];
+    for (const v of varianter) expect(ok).toContain(await get(v));
+  }
+});

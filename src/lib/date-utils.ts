@@ -112,11 +112,21 @@ function clockDate(): Date {
 }
 
 /**
+ * 25 Dec through 6 Jan: the app stays open as on 24 Dec (rewatch, no new
+ * riddles), so day/month getters report 24 Dec.
+ */
+export function isRomjul(d: Date): boolean {
+  const m = d.getMonth();
+  return (m === 11 && d.getDate() > 24) || (m === 0 && d.getDate() <= 6);
+}
+
+/**
  * Get current calendar day (1-31)
  * Respects NEXT_PUBLIC_MOCK_DAY for testing
  */
 export function getCurrentDay(): number {
-  return getCurrentDate().getDate();
+  const d = getCurrentDate();
+  return isRomjul(d) ? 24 : d.getDate();
 }
 
 /**
@@ -124,7 +134,8 @@ export function getCurrentDay(): number {
  * Respects NEXT_PUBLIC_MOCK_MONTH for testing
  */
 export function getCurrentMonth(): number {
-  return getCurrentDate().getMonth() + 1; // Convert 0-based to 1-based
+  const d = getCurrentDate();
+  return isRomjul(d) ? 12 : d.getMonth() + 1;
 }
 
 /**

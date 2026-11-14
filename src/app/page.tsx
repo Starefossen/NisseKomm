@@ -362,7 +362,7 @@ export default function Home() {
               SYSTEMET ER STENGT UTENFOR JULESONEN
             </div>
             <div className="text-base opacity-70 pt-4">
-              NisseKomm er kun tilgjengelig 1. - 24. desember
+              NisseKomm er åpen fra 1. desember til 6. januar
             </div>
           </div>
         </div>

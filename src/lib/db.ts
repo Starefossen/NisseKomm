@@ -43,9 +43,12 @@ const MERGED_KEYS = new Set([
   "nissekomm-unlocked-files",
 ]);
 
-const itemId = (x: unknown) => {
+const itemId = (key: string, x: unknown) => {
   if (x && typeof x === "object") {
     const o = x as Record<string, unknown>;
+    // Two kids may each write a letter the same day; old letters have no from.
+    if (key === "nissekomm-santa-letters")
+      return JSON.stringify([o.day, o.from ?? null]);
     return JSON.stringify(
       o.day ?? o.dag ?? o.kode ?? o.badgeId ?? o.symbolId ?? o,
     );
@@ -72,8 +75,8 @@ export function mergeValue(key: string, stored: unknown, incoming: unknown) {
   }
   if (!MERGED_KEYS.has(key) || !Array.isArray(stored)) return incoming;
   if (!Array.isArray(incoming)) return incoming;
-  const byId = new Map(stored.map((x) => [itemId(x), x]));
-  for (const x of incoming) byId.set(itemId(x), x);
+  const byId = new Map(stored.map((x) => [itemId(key, x), x]));
+  for (const x of incoming) byId.set(itemId(key, x), x);
   return [...byId.values()];
 }
 
@@ -331,6 +334,16 @@ export function getStore(): Store {
 }
 
 /** Called once from instrumentation.ts. */
+/** Health probe: true without DATABASE_URL (memory/file store), else SELECT 1. */
+export async function dbOk(): Promise<boolean> {
+  const p = getPool();
+  if (!p) return true;
+  return p.query("SELECT 1").then(
+    () => true,
+    () => false,
+  );
+}
+
 export async function migrateOnStartup(): Promise<void> {
   const p = getPool();
   if (p) await migrate(p);

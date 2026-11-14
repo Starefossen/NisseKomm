@@ -4,6 +4,11 @@ export async function register() {
   process.env.TZ ??= "Europe/Oslo";
   if (process.env.NEXT_RUNTIME === "nodejs" && process.env.DATABASE_URL) {
     const { migrateOnStartup } = await import("@/lib/db");
-    await migrateOnStartup();
+    // A pod that cannot reach Postgres would answer 500 forever; exit so
+    // Kubernetes restarts it and retries.
+    await migrateOnStartup().catch((e) => {
+      console.error("Migrering feilet, avslutter:", e);
+      process.exit(1);
+    });
   }
 }

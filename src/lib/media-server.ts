@@ -127,6 +127,22 @@ export async function authorizeMedia(
   return (await hasRole(req, "kid")) ? forbidden() : unauthorized();
 }
 
+/**
+ * Decoded path segments, or null for anything odd. Runs before the access
+ * check so `strek%2Fdag01.png`, `%5C`, double encoding or `..` cannot dodge it.
+ */
+export function mediaParts(raw: string[]): string[] | null {
+  let rel: string;
+  try {
+    rel = raw.map((p) => decodeURIComponent(p)).join("/");
+  } catch {
+    return null;
+  }
+  if (/[%\\\0]/.test(rel)) return null;
+  const parts = rel.split("/").filter((p) => p && p !== ".");
+  return parts.length && !parts.includes("..") ? parts : null;
+}
+
 /** Absolute path inside MEDIA_DIR, or null if the path escapes it or has an unknown type. */
 export function resolveMedia(parts: string[], dir = mediaDir()): string | null {
   const rel = parts.join("/").normalize("NFC");

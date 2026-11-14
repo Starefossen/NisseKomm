@@ -1,13 +1,17 @@
 import type { NextRequest } from "next/server";
-import { authorizeMedia, serveMedia } from "@/lib/media-server";
+import { authorizeMedia, mediaParts, serveMedia } from "@/lib/media-server";
+
+const PARENT_DIRS = ["strek", "promo", "_arkiv"];
 
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ path: string[] }> },
 ) {
-  const parts = (await params).path;
+  const parts = mediaParts((await params).path);
+  if (!parts) return new Response("Ugyldig sti", { status: 400 });
   // Prank sketches show tonight's setup, promos show the app, _arkiv holds rejected takes: parents only (lan mode).
-  if (["strek", "promo", "_arkiv"].includes(parts[0])) {
+  // Lowercased: MEDIA_DIR on APFS is case-insensitive.
+  if (PARENT_DIRS.includes(parts[0].toLowerCase())) {
     const nei = await authorizeMedia(req);
     if (nei) return nei;
   }
