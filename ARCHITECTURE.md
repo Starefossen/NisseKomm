@@ -158,7 +158,8 @@ Game state lives on the server (PostgreSQL via `/api/state`, selected by `STORAG
 
 - **Client Storage (`StorageManager`)**: `lib/storage.ts` provides a type-safe interface over `LocalStorageAdapter`. All UI reads and writes go through `GameEngine` or `StorageManager`.
 - **Server Store (`Store`)**: `lib/db.ts` provides persistent state storage. When `DATABASE_URL` is set, it connects to PostgreSQL (with `kv`, `sessions`, and `auth_failures` tables, migrated with an advisory lock). When `DATABASE_URL` is unset, an in-memory store (`createMemoryStore()`) is used (development, testing).
-- **Season reset**: `DELETE /api/state` (parent session only) calls `resetState()`, which clears every synced key and the server-written keys (`frost-override`, `day-offset`), so all screens start over.
+- **Season reset and archive**: `DELETE /api/state` (parent session only) calls `arkiverOgNullstill()`: a snapshot goes to `kv_arkiv` first (dev file store: `.data/arkiv-<sesong>.json`), then every synced key and the server-written keys (`frost-override`, `day-offset`) are cleared, so all screens start over. Every clear, season change (`sjekkSesong`, marker `state-sesong`) and restore (`gjenopprett`, `/api/state/gjenopprett`, `mise run gjenopprett-sesong`) runs in `Store.låst`: Postgres takes one transaction under an advisory lock (`pg_advisory_xact_lock`; `putState` takes the shared variant), so no write slips in between snapshot and clear. A restore first snapshots today's state. Screens never delete server data themselves.
+- **Sync faults**: `ServerSyncAdapter` reports 401 from `/api/state` or `/api/kode` as «utlogget» (login shown again, local cache kept); 5xx or network errors at startup give «frakoblet» and a retry with backoff 2 s to 60 s (`ui/Frakoblet.tsx`). `testEnv()` in `date-utils.ts` drops `NEXT_PUBLIC_TEST_MODE` and `MOCK_*` on the server in public + production (warning in `instrumentation.ts`).
 - **State Sync (`/api/state`)**: Clients sync game progress through `GET /api/state` and `PUT /api/state`. Only whitelisted keys (`STATE_KEYS`) are allowed. Keys that can be updated concurrently across multiple screens (`MERGED_KEYS`) are merged per item/day instead of overwritten. State writes trigger notifications via `notify()`.
 
 ### StorageManager Pattern
@@ -459,7 +460,7 @@ NisseKomm serves one family with two pre-shared codes configured as environment 
 - **Constant-Time Verification**: Plaintext codes are hashed with SHA-256 and compared using `crypto.timingSafeEqual()` against the hashed environment variables.
 - **Sessions & Cookies**: On successful login via `POST /api/auth/login`, a random 32-byte token is generated. Its SHA-256 digest is stored in the server store (`Store.setSession`), and the token is issued in an HTTP-only `__Host-nissekomm` cookie (`SESSION_COOKIE`).
   - `kid` sessions expire after 45 days.
-  - `parent` sessions expire after 12 hours.
+  - `parent` sessions expire after 45 days (lan mode only).
 - **Verification & Logout**: `POST /api/auth/verify` validates the session token from the cookie against the store. `POST /api/auth/logout` removes the session from the store and clears the cookie.
 - **Brute-Force Throttling**: Failed login attempts are recorded in the store. After 20 failures in a 10-minute window, subsequent attempts are throttled at 1 request per second.
 
@@ -483,6 +484,19 @@ Media files (MP4 video, MP3 audio, CRT feeds) are served from `MEDIA_DIR` instea
 ## MCP Server
 
 `/mcp` (Streamable HTTP, `lan` mode only) is the home integration. `Authorization: Bearer` with a Kanidm JWT, validated with `jose` (`src/lib/mcp/auth.ts`). `read` tools (`get_state`, `get_clips`, `get_today_quest`, `get_progress`) never return codes or answers; `parent` tools (`give_hint`, `set_frost`, `skip_day`, `reset`, `list_assets`, `upload_asset`) are for the operator. Tools live in `src/lib/mcp/tools.ts`.
+
+## Season end (romjul)
+
+`isRomjul(d)` in `date-utils.ts` is 25 Dec through 31 Jan: day and month getters report 24 Dec, so the app stays open as on day 24 (rewatch, no new riddles; access, `/api/kode` and MCP follow). From 1 Feb it is closed.
+
+## Nissemor-guide PWA and web push
+
+- **PWA**: `src/app/nissemor-guide/layout.tsx` sets the manifest (`public/nissemor-guide/manifest.webmanifest`, start `/nissemor-guide/i-dag`). The service worker `public/nissemor-guide/sw.js` has scope `/nissemor-guide/` only (the kids' app has none) and caches just `/_next/static` and `offline.html`, never pages or `/api/*`.
+- **Web push** (`src/lib/notify/push.ts`, `web-push`): off without `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` and `VAPID_SUBJECT` (`mise run vapid`). Subscriptions per device live in the server-only kv key `nissekomm-push` (not a synced key); types `kveld`, `kode`, `feil`, `agent` are chosen in Innstillinger. Endpoints: `/api/push` (GET/POST/DELETE, parent), `POST /api/push/test`, `/api/push/kveld` (Bearer; Varden cron 20:00, the app's own timer in `instrumentation.ts` does the same once per Oslo date), `/api/push/agent {tittel, tekst}` (Bearer). Push text never contains a code or a name (`push.test.ts`).
+
+## Sesongkart
+
+`/nissemor-guide/sesong` shows the season at a glance (parent, lan). `sesongLinje(fasit)` in `lib/guide-sesong.ts` builds each day's line via `/api/guide/sesongkart`; codes and runes only with `?fasit=1`. Thread ids per day come from the table in `docs/historie-2026.md` §4b «Tråder» (`TRAADER` hover), not from regexes. Fasit is hidden by default and remembered per device.
 
 ## Notifications
 

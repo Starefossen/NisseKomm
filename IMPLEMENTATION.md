@@ -25,6 +25,7 @@ NisseKomm bridges the physical and digital worlds through 5 interconnected syste
 - [5. Symboler & NisseKrypto](#5-symboler--nissekrypto)
 - [6. Multi-Modal Broadcast, Audio & Smart-Home Bridge](#6-multi-modal-broadcast-audio--smart-home-bridge)
 - [Component Behaviors](#component-behaviors)
+- [Guide: Sesongkart and push](#guide-sesongkart-and-push)
 - [System Flows](#system-flows)
 
 ## 1. Oppdrag (Daily Quests)
@@ -703,6 +704,11 @@ The former `/api/home-bridge` route is removed. The home integration is the MCP 
 - 6 columns × 4 rows = 24 days
 - Responsive: 3 cols mobile, 4 cols tablet, 6 cols desktop
 - Equal spacing with gap
+
+## Guide: Sesongkart and push
+
+- **Sesongkart** (`/nissemor-guide/sesong`, gear icon): December on one page as swim lanes (Ugleposten, Sledeflukt, Symboler, Rampestrek), milestones, the frost curve and threads that light up on hover; «I dag» is greyed outside December. Code and runes show only after «Vis fasit».
+- **Push**: Innstillinger lets each parent device subscribe to I kveld (20:00), day solved (never the code), errors from the screens and agents that need an answer. Test button per device. Details: ARCHITECTURE.md «Nissemor-guide PWA and web push».
 
 ## System Flows
 

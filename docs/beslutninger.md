@@ -184,6 +184,10 @@ Datert logg over valg Hans har tatt. Sjekk her før du endrer noe som berøres. 
 - 2026-11-14: Nissemor-guiden blir en PWA med web push (I kveld kl. 20, løst kode, feil, agent som trenger svar). Barneappen får ingen service worker. Hvorfor: foreldrene skal få varsel på telefonen uten å åpne guiden.
 - 2026-11-14: Repoet forblir offentlig selv om koder, svar, historien og barnas navn er lesbare der. Hvorfor: Hans aksepterer risikoen; README ber om ingen spoilere.
 - 2026-11-14: Fasit (koden, svaret og bokstavene) er skjult som standard i dagvisningen, gåtekartet og Sesongkartet; den vises først etter «Vis fasit», og valget huskes per enhet. Hvorfor: barn kan stå ved siden av, og svaret skal ikke vises ved et uhell.
+- 2026-11-14: Nissemor-guiden finnes bare på LAN (`NISSEKOMM_MODE=lan`); den offentlige tjenesten viser bare barneappen. Foreldreøkten varer 45 dager, som barnas. Hvorfor: guiden viser fasit og kommer aldri ut på nettet, og foreldrene skal ikke logge inn på nytt hver kveld.
+- 2026-11-14: Bloggen kan nevne Gemini-modellene ved navn og at 2025 var første versjon, men ikke budsjettbeløpet. Hvorfor: modellene er det andre kan lære av; pengene er privat.
+- 2026-11-14: Fra Varden går det en daglig «alt OK»-push før 1. desember. Hvorfor: stille betyr at noe er galt, og det skal vises før sesongen starter.
+- 2026-11-14: De store filene deles nå, og backloggen tas nå: romjul med én definisjon, CSP i report-only og revisjon av pg-låsene. Hvorfor: rydde før 1. desember, ikke midt i sesongen.
 
 ## Besvart i Gjennomgang
 
