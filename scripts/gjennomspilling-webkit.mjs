@@ -18,12 +18,21 @@ import { join } from "node:path";
 import { webkit } from "playwright";
 
 const ROOT = new URL("..", import.meta.url).pathname;
-const SHOTS = join(ROOT, "test-results", "webkit");
+const SHOTS = join(
+  ROOT,
+  "test-results",
+  process.env.ORIENT === "portrait" ? "webkit-staaende" : "webkit",
+);
 const RAPPORT_PATH = join(SHOTS, "RAPPORT.md");
 
 const MEDIA_DIR = process.env.MEDIA_DIR ?? join(ROOT, "public");
 const KID_CODE = process.env.KID_CODE ?? "snø lykt rein";
 const PARENT_CODE = process.env.PARENT_CODE ?? "NORDPOL-DEV2026";
+// ORIENT=portrait: iPad held upright (820x1180); the games must then ask for a turn
+const PORTRAIT = process.env.ORIENT === "portrait";
+const VIEWPORT = PORTRAIT
+  ? { width: 820, height: 1180 }
+  : { width: 1180, height: 820 };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const missions = [1, 2, 3, 4]
@@ -42,7 +51,8 @@ const TV_LOOPS = {
 };
 
 // Target days: at least 1, 7, 10, 14, 21, 24 as requested
-const defaultDays = [1, 7, 10, 14, 21, 24];
+// 8 = Sledeflukt unlocked (portrait prompt), 22 = name form
+const defaultDays = [1, 7, 8, 10, 14, 22, 24];
 const days = process.env.DAYS
   ? process.env.DAYS === "all"
     ? missions.map((m) => m.dag)
@@ -126,14 +136,14 @@ rmSync(SHOTS, { recursive: true, force: true });
 mkdirSync(SHOTS, { recursive: true });
 
 console.log(
-  "Starter Playwright WebKit med iPad (1180x820 landscape, deviceScaleFactor 2, touch enabled)...",
+  `Starter Playwright WebKit med iPad (${VIEWPORT.width}x${VIEWPORT.height}, deviceScaleFactor 2, touch enabled)...`,
 );
 const browser = await webkit.launch({
   headless: process.env.HEADLESS !== "false",
 });
 
 const context = await browser.newContext({
-  viewport: { width: 1180, height: 820 },
+  viewport: VIEWPORT,
   deviceScaleFactor: 2,
   hasTouch: true,
   isMobile: true,
@@ -212,8 +222,12 @@ const closeWindow = async () => {
   return closed;
 };
 
+// A real tap, like on the iPad (a script click was lost on day 14 after a day 7 letter)
 const openApp = async (label) => {
-  if (!(await clickText(label))) throw new Error(`fant ikke ${label}-ikonet`);
+  await page
+    .locator("button", { hasText: label })
+    .first()
+    .tap({ timeout: 5000 });
   await sleep(800);
 };
 
@@ -293,7 +307,15 @@ await waitFor(
 );
 await evaluate("localStorage.clear()");
 
+// solveUntil fetches the codes from /api/kode/fasit, which needs a session
+if (days[0] > 1) {
+  await evaluate(
+    `fetch("/api/auth/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code: ${JSON.stringify(KID_CODE)} }) })`,
+  );
+}
+
 let namesGiven = false;
+let barn = null; // the kids' names, fetched from /api/familie after login
 const results = [];
 
 // Track touch targets discovered across all screens
@@ -313,20 +335,6 @@ for (let i = 0; i < days.length; i++) {
       await evaluate(async (prevDay) => {
         await window.nissekomm.sim.solveUntil(prevDay);
       }, day - 1);
-
-      // On day 22 or later, ensure Kristian is registered so the finale test passes
-      if (day >= 22 && !namesGiven) {
-        await evaluate(() => {
-          const list = JSON.parse(
-            localStorage.getItem("nissekomm-nice-list") || "[]",
-          );
-          if (!list.includes("Kristian")) {
-            list.push("Kristian");
-            localStorage.setItem("nissekomm-nice-list", JSON.stringify(list));
-          }
-        });
-        namesGiven = true;
-      }
     }
 
     await evaluate(`window.nissekomm.sim.goTo(${day}, "08:00")`);
@@ -348,6 +356,13 @@ for (let i = 0; i < days.length; i++) {
         `Innlogging: Tre-felts koden («${KID_CODE}») fungerer med sekvensiell tastaturinput og tap på LOGG INN-knappen i WebKit.`,
       );
     }
+
+    barn ??= await evaluate(async () => {
+      const r = await fetch("/api/familie");
+      return (await r.json())?.barn ?? null;
+    });
+    check(barn?.length > 0, "/api/familie gir ikke navnene etter innlogging");
+    const navn = barn?.[0] ?? "Kristian";
 
     // 2. DAY 1: Day1Boot
     if (day === 1) {
@@ -490,17 +505,36 @@ for (let i = 0; i < days.length; i++) {
       if (!allSmallTargets.has(key)) allSmallTargets.set(key, st);
     }
 
-    // Module checks
+    // Locked apps stay on the desktop (greyed, with a teaser), so check the lock, not visibility.
+    const laast = new Map(
+      JSON.parse(
+        await evaluate(
+          "JSON.stringify([...document.querySelectorAll('[data-modul]')].map(e => [e.dataset.modul, !!e.dataset.laast]))",
+        ),
+      ),
+    );
     const expected = missions
       .filter((x) => x.dag <= day)
       .flatMap((x) => x.reveals?.modules ?? []);
     for (const mod of expected)
-      check(desktop.includes(mod), `modul ${mod} mangler`);
-
+      check(laast.get(mod) === false, `modul ${mod} mangler eller er låst`);
     for (const later of missions
       .filter((x) => x.dag > day)
       .flatMap((x) => x.reveals?.modules ?? []))
-      check(!desktop.includes(later), `modul ${later} synlig for tidlig`);
+      check(laast.get(later) !== false, `modul ${later} åpen for tidlig`);
+
+    // Games are built for landscape: upright, a prompt covers them
+    if (laast.get("SLEDEFLUKT") === false) {
+      await openApp("SLEDEFLUKT");
+      check(
+        (await text()).includes("SNU SKJERMEN") === PORTRAIT,
+        PORTRAIT
+          ? "Sledeflukt viser ikke «SNU SKJERMEN» på stående iPad"
+          : "Sledeflukt viser «SNU SKJERMEN» på liggende iPad",
+      );
+      await shot(`dag-${String(day).padStart(2, "0")}-sledeflukt.png`);
+      await closeWindow();
+    }
 
     // Verify secret code words are not visible prematurely
     for (const x of missions.filter((x) => x.dag >= day)) {
@@ -589,6 +623,29 @@ for (let i = 0; i < days.length; i++) {
 
     await sleep(2500);
 
+    // Right code: PS from Julius and a way to Dagbok sit in the terminal itself
+    if (day !== 24) {
+      const ts = await text();
+      check(ts.includes("PS FRA JULIUS"), "PS-boksen mangler i KodeTerminal");
+      check(ts.includes("ÅPNE DAGBOK"), "«ÅPNE DAGBOK» mangler etter koden");
+    }
+
+    // Snill-listen: the name form opens 2 s after the day 22 code
+    if (day === 22) {
+      await waitFor(
+        async () => (await text()).includes("HOPP OVER"),
+        6000,
+        "navnedialog dag 22",
+      ).catch((e) => fails.push(e.message));
+      await page.locator("input[aria-label='Navn 1']").fill(navn);
+      check(
+        await clickText("LEGG TIL SNILL-LISTEN"),
+        "fant ikke «LEGG TIL SNILL-LISTEN»",
+      );
+      namesGiven = true;
+      await sleep(800);
+    }
+
     // 5. FINALE (Day 24)
     if (day === 24) {
       await waitFor(
@@ -599,7 +656,7 @@ for (let i = 0; i < days.length; i++) {
 
       if (namesGiven) {
         check(
-          /KRISTIAN/i.test(await text()),
+          new RegExp(navn, "i").test(await text()),
           "navnet fra snill-listen står ikke i finalen",
         );
       }
@@ -619,13 +676,13 @@ for (let i = 0; i < days.length; i++) {
         !(await text()).includes("En fugl ingen har sendt"),
         "den blå fuglen skal ikke vises i Brevfugler før dag 14",
       );
-      check(await clickText("KRISTIAN"), "fant ikke skriveren KRISTIAN");
+      check(await clickText(navn.toUpperCase()), `fant ikke skriveren ${navn}`);
       await page
         .locator("#brev-til-julius")
         .fill("Kjære Julius, vi passer på lyset.");
       check(await clickButton("SEND BREVFUGLEN"), "fant ikke SEND BREVFUGLEN");
       await waitFor(
-        () => has("[aria-label='Brevfuglen til Kristian']"),
+        () => has(`[aria-label='Brevfuglen til ${navn}']`),
         5000,
         "brevet vises ikke som fugl i Brevfugler",
       ).catch((e) => fails.push(e.message));
@@ -638,9 +695,11 @@ for (let i = 0; i < days.length; i++) {
 
     if (day === 14) {
       await openApp("BREVFUGLER");
+      const bt = await text();
       check(
-        (await text()).includes("En fugl ingen har sendt"),
-        "den blå fuglen mangler i Brevfugler dag 14",
+        bt.includes("En fugl ingen har sendt"),
+        "den blå fuglen mangler i Brevfugler dag 14: " +
+          bt.replace(/\s+/g, " ").slice(-300),
       );
       webkitObservations.css.push(
         "Brevfugler (Dag 14): Den blå mystiske brevfuglen («En fugl ingen har sendt») rendres i fuglesvermen over Snøfall.",
@@ -712,30 +771,32 @@ for (let i = 0; i < days.length; i++) {
 
 // 9. PARENT GUIDE TV REVIEW TEST
 const guideFails = [];
-try {
-  await page.goto(base + "/nissemor-guide/media", {
-    waitUntil: "domcontentloaded",
-  });
-  await waitFor(() => has("#parentCode"), 30000, "guide-innlogging");
-  await typeInto("#parentCode", PARENT_CODE);
-  await waitFor(
-    () => clickButton("Vis hendelse: Brevfugler"),
-    30000,
-    "«Vis hendelse: Brevfugler» i guiden",
-  );
-  await waitFor(
-    async () =>
-      await evaluate(
-        `!!document.querySelector('[data-testid=livecam][data-event=brevfugler]')`,
-      ),
-    8000,
-    "brevfugl-hendelsen tegnes ikke over landsby-rolig",
-  );
-  await shot("tv-hendelse-brevfugler.png");
-} catch (e) {
-  guideFails.push(e.message);
-  await shot("tv-hendelse-feil.png").catch(() => {});
-}
+// GUIDE=0 (CI): the guide check needs the video library
+if (process.env.GUIDE !== "0")
+  try {
+    await page.goto(base + "/nissemor-guide/media", {
+      waitUntil: "domcontentloaded",
+    });
+    await waitFor(() => has("#parentCode"), 30000, "guide-innlogging");
+    await typeInto("#parentCode", PARENT_CODE);
+    await waitFor(
+      () => clickButton("Vis hendelse: Brevfugler"),
+      30000,
+      "«Vis hendelse: Brevfugler» i guiden",
+    );
+    await waitFor(
+      async () =>
+        await evaluate(
+          `!!document.querySelector('[data-testid=livecam][data-event=brevfugler]')`,
+        ),
+      8000,
+      "brevfugl-hendelsen tegnes ikke over landsby-rolig",
+    );
+    await shot("tv-hendelse-brevfugler.png");
+  } catch (e) {
+    guideFails.push(e.message);
+    await shot("tv-hendelse-feil.png").catch(() => {});
+  }
 console.log(
   `${guideFails.length ? "FEIL" : "OK  "} guide: Vis hendelse${guideFails.map((f) => `\n       - ${f}`).join("")}`,
 );

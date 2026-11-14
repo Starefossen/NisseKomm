@@ -207,7 +207,7 @@ description = "Merge grener inn i main, kjør pnpm check og delt gjennomspilling
 run = "scripts/port.sh"
 
 [tasks."test:gjennomspilling:webkit"]
-description = "Spill gjennom dager i WebKit med iPad-oppsett (1180x820 landscape)"
+description = "Spill gjennom dager i WebKit med iPad-oppsett (1180x820; ORIENT=portrait gir 820x1180)"
 env = { MEDIA_DIR = "{{config_root}}/public" }
 run = "node scripts/gjennomspilling-webkit.mjs"
 
