@@ -954,7 +954,10 @@ export function sesongLinje(fasit: boolean) {
         nyeRuner: fasit ? nye : [],
         antallNyeRuner: nye.length,
         runelinje: fasit ? (KULDE_RUNER[n] ?? null) : null,
-        opplasinger: opplasingerPaaDag(n).map((o) => o.tekst),
+        opplasinger: opplasingerPaaDag(n).map((o) => ({
+          vindu: o.vindu,
+          tekst: o.tekst,
+        })),
         bonus: q.bonusoppdrag
           ? skjul(
               `${q.bonusoppdrag.tittel}: ${forsteSetning(q.bonusoppdrag.beskrivelse)}`,
@@ -1000,20 +1003,24 @@ export function sesongLinje(fasit: boolean) {
           tekst: "Nytt sted i fri flyging",
         })),
       ].sort((a, b) => a.dag - b.dag),
-      symboler: [
-        ...getAllOppdrag()
-          .filter((q) => q.symbol_clue)
-          .map((q) => ({
+      symboler: getAllOppdrag()
+        .filter((q) => q.symbol_clue)
+        .map((q) => {
+          const c = q.symbol_clue!;
+          return {
             dag: q.dag,
-            tittel: `Symbolkort ${q.symbol_clue!.symbolId}`,
-            tekst: "Fysisk kort med QR og kortkode",
-          })),
-        ...krypto.map((q, i) => ({
-          dag: q.dag,
-          tittel: `NisseKrypto ${i + 1}`,
-          tekst: `Dekryptering med ${q.decryption_challenge!.requiredSymbols.length} symboler`,
-        })),
-      ].sort((a, b) => a.dag - b.dag),
+            // «Grønt hjerte funnet i …» → «Grønt hjerte»; the id is internal
+            tittel: c.description.split(" funnet")[0],
+            tekst: c.description,
+            ikon: c.symbolIcon,
+            farge: c.symbolColor,
+          };
+        }),
+      krypto: krypto.map((q, i) => ({
+        dag: q.dag,
+        tittel: `NisseKrypto ${i + 1}`,
+        tekst: `Dekryptering med ${q.decryption_challenge!.requiredSymbols.length} symboler`,
+      })),
       strek: dagerUt.map((d) => ({
         dag: d.dag,
         tittel: d.strek,

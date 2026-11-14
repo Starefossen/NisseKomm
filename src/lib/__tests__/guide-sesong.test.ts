@@ -168,4 +168,8 @@ describe("sesongLinje", () => {
     }
     expect(sesongLinje(true).dager[0].kode).toBe(getAllOppdrag()[0].kode);
   });
+  it("names symbol cards in Norwegian, not by id", () => {
+    for (const s of sesongLinje(false).baner.symboler)
+      expect(s.tittel).toMatch(/^\S+ (hjerte|sol|måne)$/);
+  });
 });
