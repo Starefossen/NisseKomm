@@ -5,6 +5,7 @@ import { getAllOppdrag } from "@/lib/oppdrag";
 import { nyeRuner } from "@/lib/runeorden";
 import {
   sesongLinje,
+  sesongFramdrift,
   DOK,
   RESERVESETT,
   SEKSJONER,
@@ -20,6 +21,7 @@ import {
   varden,
 } from "@/lib/guide-sesong";
 import { UTSKRIFTER } from "@/app/nissemor-guide/printout/filer";
+import { KAPITLER } from "@/components/windows/nissespill/kapitler";
 
 const filer: Record<string, string> = bakt;
 
@@ -173,6 +175,103 @@ describe("sesongLinje", () => {
   it("names symbol cards in Norwegian, not by id", () => {
     for (const s of sesongLinje(false).baner.symboler)
       expect(s.tittel).toMatch(/^\S+ (hjerte|sol|måne)$/);
+  });
+});
+
+describe("sesongFramdrift", () => {
+  // Day 12 with progress: 1–11 solved except day 9, like TIDSMASKIN leaves it
+  const loste = getAllOppdrag().filter((q) => q.dag <= 11 && q.dag !== 9);
+  const state = {
+    "nissekomm-codes": loste.map((q) => ({ day: q.dag, kode: q.kode })),
+    "nissekomm-failed-attempts": { 9: 3, 12: 1 },
+    "nissekomm-bonusoppdrag-completed": [11],
+    "nissekomm-collected-symbols": loste
+      .flatMap((q) => (q.symbol_clue ? [q.symbol_clue] : []))
+      .slice(1)
+      .map((c) => ({ symbolId: c.symbolId })),
+    "nissekomm-eventyr": {
+      kapittel: 2,
+      sceneId: "x",
+      inventory: [],
+      flags: [],
+      hints: {},
+      fjaer: ["1:torget", "1:kafeen", "2:x"],
+      parkert: {
+        1: { sceneId: "y", inventory: [], flags: [KAPITLER[0].slutt] },
+      },
+    },
+    "nissekomm-slede": {
+      tundra: { poeng: 1900, bjeller: 3 },
+      "Kristian/tundra": { poeng: 1900, bjeller: 3 },
+      "Håkon/tundra": { poeng: 700, bjeller: 1 },
+    },
+  };
+  const f = sesongFramdrift(state);
+
+  it("maps solved days, wrong attempts, bonus and milestones", () => {
+    expect(f.lost).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 10, 11]);
+    expect(f.sisteLost).toBe(11);
+    expect(f.feil).toEqual({ 9: 3, 12: 1 });
+    expect(f.bonus).toEqual([11]);
+    expect(f.milepaeler).toEqual(["M1", "M2"]);
+  });
+  it("maps the side quests per lane", () => {
+    const [k1, k2, k3] = Object.values(f.baner.ugleposten);
+    expect(k1).toEqual({
+      status: "ferdig",
+      detalj: "Fullført · 2 fjær funnet her",
+    });
+    expect([k2.status, k3.status]).toEqual(["paagaar", "ikke"]);
+    expect(f.fjaer).toEqual({ funnet: 3, maal: 8 });
+    const tundra = f.baner.sledeflukt["Tundra-testen"];
+    expect(tundra.status).toBe("ferdig");
+    expect(tundra.detalj).toContain("Kristian 1900 p");
+    expect(tundra.detalj).toContain("Håkon 700 p");
+    expect(
+      Object.values(f.baner.sledeflukt).filter((x) => x.status === "ferdig"),
+    ).toHaveLength(1);
+    const kort = Object.values(f.baner.symboler);
+    expect(kort).toHaveLength(9);
+    expect(f.symboler.funnet).toBe(state["nissekomm-collected-symbols"].length);
+    expect(kort[0].status).toBe("ikke");
+    expect(kort[1].status).toBe("ferdig");
+  });
+  it("keys every lane by a title the Sesongkart shows", () => {
+    const baner = sesongLinje(false).baner;
+    for (const [bane, ting] of Object.entries(f.baner)) {
+      const titler = baner[bane as keyof typeof f.baner].map((e) => e.tittel);
+      for (const t of Object.keys(ting)) expect(titler).toContain(t);
+    }
+  });
+  it("never carries a code, also with every day solved", () => {
+    // Number codes collide with day numbers, so a marker proves that the
+    // stored `kode` field itself never leaves; word codes are checked by name.
+    // Lane keys are the plan's own titles (a stage is named after a code
+    // word), so only what the progress adds is checked: the values.
+    const f = sesongFramdrift({
+      ...state,
+      "nissekomm-codes": getAllOppdrag().map((q) => ({
+        day: q.dag,
+        kode: `${q.kode}-MERKE`,
+      })),
+    });
+    const alt = JSON.stringify({
+      ...f,
+      baner: Object.values(f.baner).map((b) => Object.values(b)),
+    }).toLowerCase();
+    expect(alt).not.toContain("merke");
+    const ord = (k: string) => /\D/.test(k);
+    for (const q of getAllOppdrag()) {
+      if (ord(q.kode)) expect(alt).not.toContain(q.kode.toLowerCase());
+      if (q.bonusoppdrag)
+        expect(alt).not.toContain(q.bonusoppdrag.foreldre_kode.toLowerCase());
+    }
+  });
+  it("is empty on an empty state", () => {
+    const tom = sesongFramdrift({});
+    expect(tom.lost).toEqual([]);
+    expect(tom.sisteLost).toBe(0);
+    expect(tom.milepaeler).toEqual([]);
   });
 });
 

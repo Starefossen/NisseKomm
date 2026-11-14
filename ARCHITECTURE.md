@@ -506,6 +506,7 @@ One definition in `date-utils.ts`: `sesongFase(d)` is `før` (November), `advent
 ## Sesongkart
 
 `/nissemor-guide/sesong` shows the season at a glance (parent, lan). `sesongLinje(fasit)` in `lib/guide-sesong.ts` builds each day's line via `/api/guide/sesongkart`; codes and runes only with `?fasit=1`. Thread ids per day come from the table in `docs/historie-2026.md` §4b «Tråder» (`TRAADER` hover), not from regexes. Fasit is hidden by default and remembered per device.
+The same response carries `framdrift`: `sesongFramdrift(state)` maps the synced state (solved days, wrong attempts, bonus, Ugleposten, Sledeflukt, symbols, krypto, milestones reached) to marks on the map, never a code.
 
 ## Notifications
 

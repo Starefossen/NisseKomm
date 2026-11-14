@@ -5,7 +5,11 @@ import { Fragment, useEffect, useState, type ReactNode } from "react";
 import { Icon, symbolFarge, type IconColor } from "@/lib/icons";
 import { GuideSide } from "../_kveld/felles";
 import { getCurrentDate, effektivDag, sesongFase } from "@/lib/date-utils";
-import type { SesongLinje } from "@/lib/guide-sesong";
+import type {
+  Framdrift,
+  SesongFramdrift,
+  SesongLinje,
+} from "@/lib/guide-sesong";
 
 type Dag = SesongLinje["dager"][number];
 type Element = {
@@ -14,6 +18,17 @@ type Element = {
   tekst: string;
   ikon?: string;
   farge?: string;
+  /** The kids' real progress on this item, when the lane has any. */
+  status?: Framdrift;
+  detalj?: string;
+};
+type Data = SesongLinje & { framdrift?: SesongFramdrift };
+type DagStatus = "lost" | "glipp" | "idag" | null;
+
+const MERKE: Record<Framdrift, [tegn: string, klasse: string, navn: string]> = {
+  ferdig: ["✓", "text-(--gold)", "ferdig"],
+  paagaar: ["◐", "text-amber-400", "påbegynt"],
+  ikke: ["○", "opacity-50", "ikke gjort"],
 };
 type Bane = keyof SesongLinje["baner"];
 type Valgt =
@@ -82,10 +97,14 @@ function Panel({
   v,
   lukk,
   fasit,
+  fd,
+  dagStatus,
 }: {
   v: Valgt;
   lukk: () => void;
   fasit: boolean;
+  fd?: SesongFramdrift;
+  dagStatus: (d: Dag) => DagStatus;
 }) {
   let tittel = "";
   let innhold: ReactNode = null;
@@ -106,6 +125,25 @@ function Panel({
         <p>
           {d.ukedag} · {TYPE[d.type]} · {d.beat}
         </p>
+        {fd && (
+          <p
+            className={
+              { lost: "text-(--gold)", glipp: "text-(--christmas-red)" }[
+                dagStatus(d) as string
+              ] ?? ""
+            }
+          >
+            Barna:{" "}
+            {{
+              lost: "✓ koden er løst",
+              glipp: "✗ ikke løst",
+              idag: "◐ ikke løst ennå",
+            }[dagStatus(d) as string] ?? "ikke åpnet ennå"}
+            {fd.feil[d.dag] > 0 && ` · ${fd.feil[d.dag]} feil forsøk`}
+            {d.bonus &&
+              ` · bonus ${fd.bonus.includes(d.dag) ? "godkjent" : "ikke godkjent"}`}
+          </p>
+        )}
         {fasit && d.kode && (
           <p className="text-(--gold)">
             Kode: {d.kode}
@@ -143,6 +181,12 @@ function Panel({
     innhold = (
       <>
         <p>{v.m.tekst}</p>
+        {fd && (
+          <p className={fd.milepaeler.includes(v.m.id) ? "text-(--gold)" : ""}>
+            Barna:{" "}
+            {fd.milepaeler.includes(v.m.id) ? "✓ nådd" : "ikke nådd ennå"}
+          </p>
+        )}
         <p>
           {lenke(`/nissemor-guide/dag/${v.m.dag}`, "Dagvisning")}
           {lenke("/nissemor-guide/historien", "Historien")}
@@ -156,6 +200,17 @@ function Panel({
       <>
         <p className="text-(--gold)">{v.e.tittel}</p>
         <p>{v.e.tekst}</p>
+        {v.e.status && (
+          <p className={MERKE[v.e.status][1]}>
+            Barna: {MERKE[v.e.status][0]} {v.e.detalj}
+            {v.bane === "ugleposten" &&
+              fd &&
+              ` · ${fd.fjaer.funnet} av ${fd.fjaer.maal} fjær i alt`}
+            {v.bane === "symboler" &&
+              fd &&
+              ` · ${fd.symboler.funnet} av ${fd.symboler.av} kort i alt`}
+          </p>
+        )}
         <p>
           {lenke(b.lenke(v.e), "Åpne")}
           {lenke(`/nissemor-guide/dag/${v.e.dag}`, "Dagvisning")}
@@ -203,7 +258,7 @@ function FrostKurve({
   velg,
   hoy,
 }: {
-  data: SesongLinje;
+  data: Data;
   idag: number;
   velg: (v: Valgt) => void;
   hoy: string;
@@ -244,18 +299,36 @@ function FrostKurve({
           aria-hidden
         />
       )}
-      {data.milepaeler.map((m) => (
-        <button
-          key={m.id}
-          type="button"
-          onClick={() => velg({ t: "milepael", m })}
-          title={`Milepæl ${m.id.slice(1)}: ${m.navn}`}
-          className="absolute top-0 -translate-x-1/2 min-h-6 px-1 text-sm bg-(--gold) text-black hover:brightness-125"
-          style={{ left: pst(m.dag) }}
+      {!!data.framdrift?.sisteLost && (
+        <div
+          data-her
+          className="absolute inset-y-0 -translate-x-1/2 flex flex-col items-center pointer-events-none"
+          style={{ left: pst(data.framdrift.sisteLost) }}
+          title={`Barna er her: sist løste dag ${data.framdrift.sisteLost}`}
         >
-          ◆{m.id}
-        </button>
-      ))}
+          <span className="mt-7 px-1 text-xs bg-(--dark-crt) border border-(--gold) text-(--gold) whitespace-nowrap">
+            ▼ BARNA
+          </span>
+          <span className="flex-1 border-l-2 border-dotted border-(--gold)" />
+        </div>
+      )}
+      {data.milepaeler.map((m) => {
+        // Without progress data every milestone stays lit, as the plan
+        const naadd = data.framdrift?.milepaeler.includes(m.id) ?? true;
+        return (
+          <button
+            key={m.id}
+            type="button"
+            onClick={() => velg({ t: "milepael", m })}
+            title={`Milepæl ${m.id.slice(1)}: ${m.navn}${data.framdrift ? (naadd ? " (nådd)" : " (ikke nådd)") : ""}`}
+            className={`absolute top-0 -translate-x-1/2 min-h-6 px-1 text-sm hover:brightness-125 ${naadd ? "bg-(--gold) text-black" : "bg-(--dark-crt) border border-(--gold)/40 text-(--gold)/50"}`}
+            style={{ left: pst(m.dag) }}
+          >
+            {naadd ? "◆" : "◇"}
+            {m.id}
+          </button>
+        );
+      })}
       {data.dager.map(
         (d) =>
           d.frost[0] !== null && (
@@ -293,16 +366,22 @@ function Kart() {
     localStorage.setItem(SKJUL_KEY, v ? "0" : "1");
     setFasitState(v);
   };
-  const [data, setData] = useState<SesongLinje | null>(null);
+  const [data, setData] = useState<Data | null>(null);
   const [filter, setFilter] = useState<Filter>("alt");
   const [laast, setLaast] = useState<string | null>(null);
   const [forhånd, setForhånd] = useState<string | null>(null);
   const [valgt, setValgt] = useState<Valgt | null>(null);
   useEffect(() => {
-    fetch(`/api/guide/sesongkart${fasit ? "?fasit=1" : ""}`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then(setData)
-      .catch(() => setData(null));
+    const hent = () =>
+      fetch(`/api/guide/sesongkart${fasit ? "?fasit=1" : ""}`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then(setData)
+        .catch(() => setData(null));
+    hent();
+    // The kids play on another screen: coming back to this tab fetches again
+    const synlig = () => document.visibilityState === "visible" && hent();
+    document.addEventListener("visibilitychange", synlig);
+    return () => document.removeEventListener("visibilitychange", synlig);
   }, [fasit]);
   useEffect(() => {
     const esc = (e: KeyboardEvent) => e.key === "Escape" && setLaast(null);
@@ -319,12 +398,31 @@ function Kart() {
   const idag = fase === "advent" ? effektivDag(nå) : 0;
   const iDagNov =
     nå.getMonth() === 10 ? `-11-${String(nå.getDate()).padStart(2, "0")}` : "";
+  const fd = data.framdrift;
+  const dagStatus = (d: Dag): DagStatus =>
+    !fd
+      ? null
+      : fd.lost.includes(d.dag)
+        ? "lost"
+        : romjul || (idag > 0 && d.dag < idag)
+          ? "glipp"
+          : d.dag === idag
+            ? "idag"
+            : null;
+  const medStatus = (bane: Bane, e: Element): Element => ({
+    ...e,
+    ...(fd?.baner as Record<string, Record<string, Partial<Element>>>)?.[
+      bane
+    ]?.[e.tittel],
+  });
   const vis = (f: Filter[]) => filter === "alt" || f.includes(filter);
   const lys = (d: Dag) => !traad || d.traader.includes(traad);
   const banerFor = (d: number) =>
     BANER.filter((b) => vis(b.filtre)).map((b) => ({
       b,
-      ting: data.baner[b.id].filter((e) => e.dag === d),
+      ting: data.baner[b.id]
+        .filter((e) => e.dag === d)
+        .map((e) => medStatus(b.id, e)),
     }));
   const chip = (aktiv = false) =>
     `block w-full text-left text-sm min-h-11 px-1 leading-tight border ${aktiv ? "border-(--gold) text-(--gold)" : "border-(--neon-green)/40"} hover:bg-(--neon-green)/20`;
@@ -335,6 +433,10 @@ function Kart() {
       block: "nearest",
     });
 
+  // Without progress data every milestone stays lit, as the plan
+  const naadd = (id: string) => fd?.milepaeler.includes(id) ?? true;
+  const feil = (d: Dag) =>
+    (fd?.feil[d.dag] ?? 0) > 0 ? ` · ${fd!.feil[d.dag]} feil forsøk` : "";
   const Hode = ({ d }: { d: Dag }) => {
     const m = data.milepaeler.find((x) => x.dag === d.dag);
     return (
@@ -347,6 +449,39 @@ function Kart() {
           >
             {d.dag}
           </button>
+          {dagStatus(d) === "lost" && (
+            <span
+              data-lost
+              className="text-xl text-(--gold)"
+              title="Barna har løst koden"
+            >
+              ✓
+            </span>
+          )}
+          {dagStatus(d) === "glipp" && (
+            <span
+              className="text-xl text-(--christmas-red)"
+              title={`Ikke løst${feil(d)}`}
+            >
+              ✗
+            </span>
+          )}
+          {dagStatus(d) === "idag" && (
+            <span
+              className="text-xl text-amber-400"
+              title={`Ikke løst ennå${feil(d)}`}
+            >
+              ◐
+            </span>
+          )}
+          {dagStatus(d) !== "lost" && (fd?.feil[d.dag] ?? 0) > 0 && (
+            <span
+              className="text-xs px-1 bg-amber-400 text-black"
+              title={`${fd!.feil[d.dag]} feil forsøk`}
+            >
+              {fd!.feil[d.dag]} feil
+            </span>
+          )}
           <span className="text-sm">{d.ukedag.slice(0, 2)}</span>
           <span className="text-xs px-1 border border-(--neon-green)/50">
             {TYPE[d.type]}
@@ -356,9 +491,10 @@ function Kart() {
               type="button"
               onClick={() => setValgt({ t: "milepael", m })}
               title={`Milepæl ${m.id.slice(1)}: ${m.navn}`}
-              className="text-xs px-1 bg-(--gold) text-black"
+              className={`text-xs px-1 ${naadd(m.id) ? "bg-(--gold) text-black" : "border border-(--gold)/40 text-(--gold)/50"}`}
             >
-              ◆{m.id}
+              {naadd(m.id) ? "◆" : "◇"}
+              {m.id}
             </button>
           )}
           {d.dag === idag && (
@@ -416,9 +552,12 @@ function Kart() {
         type="button"
         onClick={() => setValgt({ t: "dag", dag: d })}
         className={chip(true)}
-        title={d.bonus}
+        title={`${d.bonus}${fd ? (fd.bonus.includes(d.dag) ? " · godkjent" : " · ikke godkjent") : ""}`}
       >
-        ★ Bonus
+        {fd?.bonus.includes(d.dag) ? "✓" : "★"} Bonus
+        {fd && !fd.bonus.includes(d.dag) && (
+          <span className="opacity-60"> ○</span>
+        )}
       </button>
     ) : null;
 
@@ -435,8 +574,22 @@ function Kart() {
       type="button"
       onClick={() => setValgt({ t: "bane", bane: b.id, e })}
       className={chip()}
-      title={`${b.navn}: ${e.tittel.replace(/^K(\d+)/, "Kapittel $1:")}`}
+      title={`${b.navn}: ${e.tittel.replace(/^K(\d+)/, "Kapittel $1:")}${e.detalj ? ` · ${e.detalj}` : ""}`}
     >
+      {e.status && (
+        <span
+          data-status={e.status}
+          className={`mr-1 ${
+            e.status === "ikke" &&
+            (b.id === "symboler" || b.id === "krypto") &&
+            (romjul || (idag > 0 && e.dag < idag))
+              ? "text-(--christmas-red)"
+              : MERKE[e.status][1]
+          }`}
+        >
+          {MERKE[e.status][0]}
+        </span>
+      )}
       {navn && <span className="opacity-60">{b.navn}: </span>}
       <SymbolIkon e={e} />
       <span className="line-clamp-2 inline">{e.tittel}</span>
@@ -458,7 +611,9 @@ function Kart() {
       navn: b.navn,
       hoy: "h-14",
       celle: (d: Dag) => {
-        const t = data.baner[b.id].filter((e) => e.dag === d.dag);
+        const t = data.baner[b.id]
+          .filter((e) => e.dag === d.dag)
+          .map((e) => medStatus(b.id, e));
         if (t.length < 2)
           return t.map((e) => <BaneTing key={e.tittel} b={b} e={e} />);
         // Several on one day (Sledeflukt day 8): one chip keeps the row height fixed
@@ -466,6 +621,10 @@ function Kart() {
           ...t[0],
           tittel: `${t[0].tittel} +${t.length - 1}`,
           tekst: t.map((x) => `${x.tittel}: ${x.tekst}`).join(" · "),
+          detalj: t
+            .filter((x) => x.detalj)
+            .map((x) => `${x.tittel}: ${x.detalj}`)
+            .join(" · "),
         };
         return <BaneTing b={b} e={e} />;
       },
@@ -511,6 +670,16 @@ function Kart() {
           </button>
         )}
       </div>
+      {fd && (
+        <p data-framdrift className="text-lg">
+          Barna: <span className="text-(--gold)">{fd.lost.length} av 24</span>{" "}
+          dager løst
+          {fd.sisteLost > 0 && ` (sist dag ${fd.sisteLost})`} · milepæler{" "}
+          {fd.milepaeler.length} av {data.milepaeler.length} · symbolkort{" "}
+          {fd.symboler.funnet} av {fd.symboler.av} · uglefjær {fd.fjaer.funnet}{" "}
+          av {fd.fjaer.maal}
+        </p>
+      )}
       <details className="border border-(--neon-green)/40 px-2">
         <summary className="min-h-11 py-2 cursor-pointer">Forklaring</summary>
         <ul className="text-lg pb-2 list-none space-y-1">
@@ -527,6 +696,24 @@ function Kart() {
           </li>
           <li>★ Bonus: bonusoppdrag · KODE: dagens kode (bare med fasit)</li>
           <li>Jakt / Helg / Bonus: dagtype · I DAG: dagens kolonne</li>
+          <li>
+            Barnas framdrift, ved dagnummeret:{" "}
+            <span className="text-(--gold)">✓</span> koden er løst ·{" "}
+            <span className="text-(--christmas-red)">✗</span> dagen er passert
+            uten løst kode · <span className="text-amber-400">◐</span> dagens
+            kode er ikke løst ennå · «N feil»: feil forsøk på koden
+          </li>
+          <li>
+            I banene: <span className="text-(--gold)">✓</span> ferdig (kapittel
+            fullført, etappe fløyet, kort funnet, bonus godkjent) ·{" "}
+            <span className="text-amber-400">◐</span> påbegynt · ○ ikke gjort ·{" "}
+            <span className="text-(--christmas-red)">○</span> kort eller krypto
+            som mangler etter dagen sin. Hold over for fjær, poeng og rekorder
+            per spiller
+          </li>
+          <li>
+            ▼ BARNA på frostlinjen: sist løste dag · ◆ milepæl nådd, ◇ ikke nådd
+          </li>
         </ul>
       </details>
       {vis(["rod"]) && (
@@ -674,7 +861,15 @@ function Kart() {
         </ol>
       </div>
 
-      {valgt && <Panel v={valgt} lukk={() => setValgt(null)} fasit={fasit} />}
+      {valgt && (
+        <Panel
+          v={valgt}
+          lukk={() => setValgt(null)}
+          fasit={fasit}
+          fd={fd}
+          dagStatus={dagStatus}
+        />
+      )}
     </>
   );
 }

@@ -154,7 +154,7 @@ export function clockFor(sub: string): Date | undefined {
 const now = (state: State, at?: Date) =>
   at ?? getServerDate(state["day-offset"]);
 
-function solvedDays(state: State): Set<number> {
+export function solvedDays(state: State): Set<number> {
   const days = new Set<number>();
   const codes = state["nissekomm-codes"];
   if (!Array.isArray(codes)) return days;

@@ -11,7 +11,10 @@ import radioHint from "@/data/radio-hint.json";
 import { getAllOppdrag, getOppdrag as getQuestByDay } from "./oppdrag";
 import { frostLevelFor, frostModeFor } from "./frost";
 import { runerFor } from "./game-engine";
-import { getKidContext } from "./mcp/tools";
+import { getKidContext, solvedDays } from "./mcp/tools";
+import { lagMinner } from "./minner";
+import { erFullfort, erPaabegynt } from "@/components/windows/nissespill/motor";
+import type { EventyrSave } from "./storage";
 import juliusVideoer from "@/data/julius_videoer.json";
 import gaatebiter from "@/data/gaatebiter.json";
 import { dagBlokk, parseJulius } from "./guide-innhold";
@@ -26,7 +29,7 @@ import {
 import { STEDER } from "@/components/windows/snofall-tv/vidda";
 import { UTSKRIFTER } from "@/app/nissemor-guide/printout/filer";
 import { KAPITLER } from "@/components/windows/nissespill/kapitler";
-import { opplasingerPaaDag } from "./opplasinger";
+import { FJAER_MAAL, opplasingerPaaDag } from "./opplasinger";
 
 const filer: Record<string, string> = bakt;
 
@@ -1044,3 +1047,109 @@ export function sesongLinje(fasit: boolean) {
   };
 }
 export type SesongLinje = ReturnType<typeof sesongLinje>;
+
+export type Framdrift = "ferdig" | "paagaar" | "ikke";
+type BaneStatus = Record<string, { status: Framdrift; detalj: string }>;
+
+/**
+ * The kids' real progress for the Sesongkart, from the synced state. Lanes are
+ * keyed by the same `tittel` as `sesongLinje().baner`. Never a code: only days,
+ * counts and names leave here, whatever `fasit` says.
+ */
+export function sesongFramdrift(state: Record<string, unknown>) {
+  const liste = (k: string): unknown[] =>
+    Array.isArray(state[k]) ? (state[k] as unknown[]) : [];
+  const lost = [...solvedDays(state)]
+    .filter((d) => d >= 1 && d <= 24)
+    .sort((a, b) => a - b);
+  const feil = Object.fromEntries(
+    Object.entries((state["nissekomm-failed-attempts"] ?? {}) as object)
+      .map(([d, n]) => [Number(d), Number(n)] as const)
+      .filter(([d, n]) => d >= 1 && d <= 24 && n > 0),
+  );
+  const st = (ferdig: boolean, detalj: string, paagaar = false) => ({
+    status: (ferdig ? "ferdig" : paagaar ? "paagaar" : "ikke") as Framdrift,
+    detalj,
+  });
+
+  const save = (state["nissekomm-eventyr"] ?? null) as EventyrSave | null;
+  const fjaer = save?.fjaer ?? [];
+  const ugleposten: BaneStatus = {};
+  for (const k of KAPITLER) {
+    const f = fjaer.filter((x) => x.startsWith(`${k.n}:`)).length;
+    const ferdig = erFullfort(save, k);
+    const paa = erPaabegynt(save, k);
+    ugleposten[`K${k.n} ${k.tittel}`] = st(
+      ferdig,
+      `${ferdig ? "Fullført" : paa ? "Påbegynt" : "Ikke startet"} · ${f} fjær funnet her`,
+      paa,
+    );
+  }
+
+  const { familie, spillere } = lagMinner({
+    sesong: 0,
+    arkivert: "",
+    data: state,
+  }).rekorder;
+  const sledeflukt: BaneStatus = {};
+  for (const e of ETAPPER) {
+    const per = Object.entries(spillere)
+      .filter(([, r]) => r[e.id])
+      .map(
+        ([navn, r]) =>
+          `${navn} ${r[e.id].poeng} p (${r[e.id].bjeller} bjeller)`,
+      );
+    const fam = familie[e.id];
+    sledeflukt[e.navn] = st(
+      !!fam || per.length > 0,
+      fam
+        ? [
+            `Familiens beste ${fam.poeng} p (${fam.bjeller} bjeller)`,
+            ...per,
+          ].join(" · ")
+        : per.join(" · ") || "Ikke fløyet",
+    );
+  }
+
+  const funnet = new Set(
+    liste("nissekomm-collected-symbols").map((x) =>
+      String((x as { symbolId?: unknown })?.symbolId ?? ""),
+    ),
+  );
+  const dekryptert = new Set(liste("nissekomm-solved-decryptions").map(String));
+  const symboler: BaneStatus = {};
+  const krypto: BaneStatus = {};
+  let kn = 0;
+  for (const q of getAllOppdrag()) {
+    const c = q.symbol_clue;
+    if (c)
+      symboler[c.description.split(" funnet")[0]] = st(
+        funnet.has(c.symbolId),
+        funnet.has(c.symbolId) ? "Kortet er funnet" : "Kortet mangler",
+      );
+    const k = q.decryption_challenge;
+    if (k)
+      krypto[`NisseKrypto ${++kn}`] = st(
+        dekryptert.has(k.challengeId),
+        dekryptert.has(k.challengeId) ? "Løst" : "Ikke løst",
+      );
+  }
+
+  return {
+    lost,
+    sisteLost: lost.at(-1) ?? 0,
+    feil,
+    bonus: liste("nissekomm-bonusoppdrag-completed").map(Number),
+    milepaeler: eventyr.eventyr[0].milepaeler
+      .map((m, i) => (lost.includes(m.dag) ? `M${i + 1}` : ""))
+      .filter(Boolean),
+    fjaer: { funnet: fjaer.length, maal: FJAER_MAAL },
+    symboler: {
+      funnet: Object.values(symboler).filter((x) => x.status === "ferdig")
+        .length,
+      av: Object.keys(symboler).length,
+    },
+    baner: { ugleposten, sledeflukt, symboler, krypto },
+  };
+}
+export type SesongFramdrift = ReturnType<typeof sesongFramdrift>;
