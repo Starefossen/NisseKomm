@@ -7,6 +7,10 @@ import { chromium } from "playwright";
 const base = process.env.BASE_URL ?? "http://localhost:3000";
 const KID_CODE = process.env.KID_CODE ?? "snø lykt rein";
 const fails = [];
+// Unique names per run, so the script can run again against the same store.
+const run = Date.now().toString(36);
+const K = `Kristian-${run}`;
+const H = `Håkon-${run}`;
 const check = (ok, msg) => {
   console.log(`${ok ? "OK  " : "FEIL"} ${msg}`);
   if (!ok) fails.push(msg);
@@ -56,21 +60,30 @@ await reload(a);
 await reload(b);
 
 // Letters: Håkon writes on b, Kristian edits his on a without pulling first.
-await a.evaluate(() =>
-  window.nissekomm.GameEngine.addSantaLetter(3, "Kjære Jlius", "Kristian"),
+await a.evaluate(
+  (k) => window.nissekomm.GameEngine.addSantaLetter(3, "Kjære Jlius", k),
+  K,
 );
 await settle(a);
-await b.evaluate(() =>
-  window.nissekomm.GameEngine.addSantaLetter(3, "Hei Julius", "Håkon"),
+await b.evaluate(
+  (h) => window.nissekomm.GameEngine.addSantaLetter(3, "Hei Julius", h),
+  H,
 );
 await settle(b);
-await a.evaluate(() =>
-  window.nissekomm.GameEngine.saveSantaLetters([
-    { day: 3, content: "Kjære Julius", from: "Kristian" },
-  ]),
+await a.evaluate(
+  (k) =>
+    window.nissekomm.GameEngine.saveSantaLetters([
+      ...window.nissekomm.GameEngine.getSantaLetters().filter(
+        (l) => l.from !== k,
+      ),
+      { day: 3, content: "Kjære Julius", from: k },
+    ]),
+  K,
 );
 await settle(a);
-const brev = (await server(a))["nissekomm-santa-letters"] ?? [];
+const brev = ((await server(a))["nissekomm-santa-letters"] ?? []).filter(
+  (x) => x.from === K || x.from === H,
+);
 check(
   brev.length === 2 && brev.some((x) => x.content === "Kjære Julius"),
   `brev: begge brevene, det rettede med (${JSON.stringify(brev)})`,
@@ -78,37 +91,49 @@ check(
 
 // Seen marks from both screens at once.
 await Promise.all([
-  a.evaluate(() => window.nissekomm.GameEngine.markIntroSeen("ugle-k1")),
-  b.evaluate(() =>
-    window.nissekomm.GameEngine.markIntroSeen("ny-sledeflukt-8"),
-  ),
+  a.evaluate((r) => window.nissekomm.GameEngine.markIntroSeen(`a-${r}`), run),
+  b.evaluate((r) => window.nissekomm.GameEngine.markIntroSeen(`b-${r}`), run),
 ]);
 await Promise.all([settle(a), settle(b)]);
 const sett = (await server(a))["nissekomm-intros-seen"] ?? [];
 check(
-  sett.includes("ugle-k1") && sett.includes("ny-sledeflukt-8"),
+  sett.includes(`a-${run}`) && sett.includes(`b-${run}`),
   `sett-merker: begge skjermenes merker (${JSON.stringify(sett)})`,
 );
 
 // Parents tick on two phones at the same time.
 await Promise.all([
-  a.evaluate(() => window.nissekomm.StorageManager.setHandlet("melk", "kjopt")),
-  b.evaluate(() => window.nissekomm.StorageManager.setHandlet("lim", "hjemme")),
-  a.evaluate(() =>
-    window.nissekomm.StorageManager.setForeldreAvkrysning("kveld-3", ["a"]),
+  a.evaluate(
+    (r) => window.nissekomm.StorageManager.setHandlet(`melk-${r}`, "kjopt"),
+    run,
   ),
-  b.evaluate(() =>
-    window.nissekomm.StorageManager.setForeldreAvkrysning("kveld-3", ["b"]),
+  b.evaluate(
+    (r) => window.nissekomm.StorageManager.setHandlet(`lim-${r}`, "hjemme"),
+    run,
+  ),
+  a.evaluate(
+    (r) =>
+      window.nissekomm.StorageManager.setForeldreAvkrysning(`kveld-${r}`, [
+        "a",
+      ]),
+    run,
+  ),
+  b.evaluate(
+    (r) =>
+      window.nissekomm.StorageManager.setForeldreAvkrysning(`kveld-${r}`, [
+        "b",
+      ]),
+    run,
   ),
 ]);
 await Promise.all([settle(a), settle(b)]);
 const st = await server(a);
 check(
-  st["nissekomm-handlet"]?.melk === "kjopt" &&
-    st["nissekomm-handlet"]?.lim === "hjemme",
+  st["nissekomm-handlet"]?.[`melk-${run}`] === "kjopt" &&
+    st["nissekomm-handlet"]?.[`lim-${run}`] === "hjemme",
   `handleliste: begge krysset (${JSON.stringify(st["nissekomm-handlet"])})`,
 );
-const kv = st["nissekomm-foreldre-avkrysning"]?.["kveld-3"] ?? [];
+const kv = st["nissekomm-foreldre-avkrysning"]?.[`kveld-${run}`] ?? [];
 check(
   kv.includes("a") && kv.includes("b"),
   `avkrysning: begge kryssene (${JSON.stringify(kv)})`,

@@ -104,6 +104,94 @@ function Arkiver() {
   );
 }
 
+type Kopi = {
+  id: number;
+  sesong: number;
+  grunn: string;
+  arkivert: string;
+  nøkler: number;
+  brev: number;
+};
+const GJENOPPRETT = "GJENOPPRETT";
+
+function Gjenopprett() {
+  const [liste, setListe] = useState<Kopi[] | null>(null);
+  const [valgt, setValgt] = useState<number | null>(null);
+  const [ord, setOrd] = useState("");
+  const [melding, setMelding] = useState("");
+  const hent = () =>
+    fetch("/api/state/gjenopprett")
+      .then((r) => (r.ok ? r.json() : []))
+      .then(setListe)
+      .catch(() => setListe([]));
+  if (!liste)
+    return (
+      <button className={knapp} onClick={hent}>
+        Vis arkivkopier
+      </button>
+    );
+  return (
+    <div className="space-y-2 mt-4">
+      {!liste.length && <p>Ingen kopier i arkivet ennå.</p>}
+      <ul className="space-y-1">
+        {liste.map((k) => (
+          <li key={k.id}>
+            <label className="flex items-center gap-2 min-h-11">
+              <input
+                type="radio"
+                name="kopi"
+                className="w-6 h-6 accent-(--gold)"
+                checked={valgt === k.id}
+                onChange={() => setValgt(k.id)}
+              />
+              {new Date(k.arkivert).toLocaleString("nb-NO")} · {k.grunn} ·
+              sesong {k.sesong} · {k.nøkler} nøkler · {k.brev} brev
+            </label>
+          </li>
+        ))}
+      </ul>
+      {valgt != null && (
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            value={ord}
+            onChange={(e) => setOrd(e.target.value)}
+            className={felt}
+            aria-label={`Skriv ${GJENOPPRETT} for å bekrefte`}
+            placeholder={GJENOPPRETT}
+          />
+          <button
+            className="px-4 min-h-11 border-2 border-(--christmas-red) text-(--christmas-red) hover:bg-(--christmas-red)/20 disabled:opacity-40"
+            disabled={ord.trim().toUpperCase() !== GJENOPPRETT}
+            onClick={async () => {
+              const r = await fetch("/api/state/gjenopprett", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: valgt, bekreft: GJENOPPRETT }),
+              });
+              const d = await r.json().catch(() => ({}));
+              setMelding(
+                r.ok
+                  ? "Gjenopprettet. Dagens fremdrift ligger som egen kopi i arkivet. Last inn skjermene på nytt."
+                  : `Feil: ${d.error ?? r.status}`,
+              );
+              setOrd("");
+              hent();
+            }}
+          >
+            Gjenopprett denne kopien
+          </button>
+        </div>
+      )}
+      {melding && <p>{melding}</p>}
+      <p>
+        Erstatter all fremdrift, løste koder også, med kopien du velger.
+        Serveren tar først en kopi av dagens fremdrift, så du kan angre. Skriv{" "}
+        {GJENOPPRETT} for å bekrefte.
+      </p>
+    </div>
+  );
+}
+
 const BEKREFT = "NULLSTILL";
 
 function Nullstill() {
@@ -372,6 +460,7 @@ export default function InnstillingerSide() {
       </Kort>
       <Kort tittel="Arkiv" farge="border-(--gold)">
         <Arkiver />
+        <Gjenopprett />
       </Kort>
       <Kort tittel="Ny sesong" farge="border-(--christmas-red)">
         <Nullstill />

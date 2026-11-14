@@ -6,7 +6,7 @@
  */
 import { NextRequest, NextResponse } from "next/server";
 import { checkOrigin, hasRole, jsonError } from "@/lib/auth";
-import { getStore, storageBackend } from "@/lib/db";
+import { arkiver, storageBackend } from "@/lib/db";
 import { authenticate } from "@/lib/mcp/auth";
 import { lagMinner } from "@/lib/minner";
 import { SEASON } from "@/lib/storage-adapter";
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   }
   if (storageBackend() !== "server")
     return jsonError("Ingen servertilstand å arkivere", 409);
-  const a = await getStore().arkiver(SEASON, "manuell");
+  const a = await arkiver("manuell");
   console.log(`Sesong ${SEASON}: manuell arkivering ${a?.arkivert ?? "(tom)"}`);
   return NextResponse.json({
     sesong: SEASON,

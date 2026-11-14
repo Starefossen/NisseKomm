@@ -11,7 +11,13 @@ import { createHash } from "node:crypto";
 import { newDb, DataType } from "pg-mem";
 import type { Pool } from "pg";
 import * as stateRoute from "../route";
-import { createPgStore, memoryStore, mergeValue, migrate } from "@/lib/db";
+import {
+  createPgStore,
+  memoryStore,
+  mergeValue,
+  migrate,
+  resetState,
+} from "@/lib/db";
 import { SEASON } from "@/lib/storage-adapter";
 
 process.env.STORAGE_BACKEND = "server";
@@ -135,7 +141,12 @@ describe("mergeValue", () => {
 describe("Postgres store (pg-mem)", () => {
   function pgMemPool(): Pool {
     const db = newDb({ noAstCoverageCheck: true });
-    for (const name of ["pg_advisory_lock", "pg_advisory_unlock"]) {
+    for (const name of [
+      "pg_advisory_lock",
+      "pg_advisory_unlock",
+      "pg_advisory_xact_lock",
+      "pg_advisory_xact_lock_shared",
+    ]) {
       db.public.registerFunction({
         name,
         args: [DataType.integer],
@@ -201,6 +212,15 @@ describe("/api/state removals and validation", () => {
     });
     expect((await call("PUT", clear)).status).toBe(200);
     delete process.env.NISSEKOMM_MODE;
+  });
+
+  it("a PUT without version after a season reset gets 409", async () => {
+    const key = "nissekomm-intros-seen";
+    expect((await call("PUT", { key, value: ["a"] })).status).toBe(200);
+    await resetState(memoryStore);
+    const gammel = await call("PUT", { key, value: ["fjor"] });
+    expect(gammel.status).toBe(409);
+    expect((await memoryStore.getState())[key]).toBeNull();
   });
 
   it("replace shrinks a list and stale versions get 409", async () => {

@@ -8,8 +8,10 @@ import path from "node:path";
 import { newDb, DataType } from "pg-mem";
 import type { Pool } from "pg";
 import {
+  arkiver,
   arkiverOgNullstill,
   createFileStore,
+  gjenopprett,
   createMemoryStore,
   createPgStore,
   glemSesongSjekk,
@@ -54,19 +56,18 @@ async function fyll(store: Store) {
 
 function pgMemPool(): Pool {
   const db = newDb({ noAstCoverageCheck: true });
-  for (const name of ["pg_advisory_lock", "pg_advisory_unlock"])
+  for (const name of [
+    "pg_advisory_lock",
+    "pg_advisory_unlock",
+    "pg_advisory_xact_lock",
+    "pg_advisory_xact_lock_shared",
+  ])
     db.public.registerFunction({
       name,
       args: [DataType.integer],
       returns: DataType.bool,
       implementation: () => true,
     });
-  db.public.registerFunction({
-    name: "pg_advisory_xact_lock",
-    args: [DataType.integer, DataType.integer],
-    returns: DataType.bool,
-    implementation: () => true,
-  });
   const { Pool: MemPool } = db.adapters.createPg();
   return new MemPool() as Pool;
 }
@@ -93,7 +94,7 @@ const butikker: [string, () => Promise<Store>][] = [
 
 beforeEach(() => glemSesongSjekk());
 
-describe.each(butikker)("sesongskifte (%s)", (_, lag) => {
+describe.each(butikker)("sesongskifte (%s)", (navn, lag) => {
   it("archives last season once before clearing it", async () => {
     const store = await lag();
     await fyll(store);
@@ -113,7 +114,8 @@ describe.each(butikker)("sesongskifte (%s)", (_, lag) => {
     // Idempotent: a second check, or another screen, archives nothing new.
     glemSesongSjekk();
     await sjekkSesong(store);
-    expect(await store.arkiver(FJOR, "sesongskifte", true)).toEqual(a);
+    // Unchanged data: no duplicate snapshot.
+    expect(await arkiver("manuell", FJOR, store)).toBeNull();
     expect(await store.arkiv(FJOR)).toHaveLength(1);
   });
 
@@ -139,6 +141,126 @@ describe.each(butikker)("sesongskifte (%s)", (_, lag) => {
     expect(await arkiverOgNullstill("nullstilling", SEASON, store)).toBeNull();
     expect(await store.arkiv(SEASON)).toHaveLength(2);
   });
+
+  it("archives afresh when an older sesongskifte snapshot exists", async () => {
+    const store = await lag();
+    await fyll(store);
+    // An earlier attempt archived, then failed before clearing.
+    await arkiver("sesongskifte", FJOR, store);
+    const ti = Array.from({ length: 10 }, (_, i) => ({
+      day: i + 1,
+      from: "Kristian",
+      content: `brev ${i}`,
+    }));
+    await store.putState("nissekomm-santa-letters", ti, true);
+    await sjekkSesong(store);
+    const liste = await store.arkiv(FJOR);
+    expect(liste).toHaveLength(2);
+    expect(liste[1].data["nissekomm-santa-letters"]).toEqual(ti);
+    expect(await arkiver("manuell", FJOR, store)).toBeNull();
+  });
+
+  // pg-mem has no locks; the real Postgres case is ARKIV_PG_URL below.
+  const parallell = navn === "postgres" ? it.skip : it;
+  parallell(
+    "archives and clears once under parallel checks, never wiping new writes",
+    async () => {
+      const store = await lag();
+      await fyll(store);
+      const kall = Array.from({ length: 5 }, () => {
+        const p = sjekkSesong(store);
+        glemSesongSjekk();
+        return p;
+      });
+      await Promise.all(kall);
+      await store.putState("nissekomm-santa-letters", [BREV[1]], true);
+      await sjekkSesong(store);
+      expect(await store.arkiv(FJOR)).toHaveLength(1);
+      expect((await store.getState())["nissekomm-santa-letters"]).toEqual([
+        BREV[1],
+      ]);
+    },
+  );
+
+  it("restores every key of a snapshot, codes too, after a fresh snapshot", async () => {
+    const store = await lag();
+    await fyll(store);
+    await sjekkSesong(store);
+    const [fjor] = await store.arkiv(FJOR);
+    await store.putState("nissekomm-intros-seen", ["i-år"], true);
+    const r = await gjenopprett(fjor.id, store);
+    expect(r?.før?.grunn).toBe("før-gjenoppretting");
+    expect(r?.før?.data["nissekomm-intros-seen"]).toEqual(["i-år"]);
+    const state = await store.getState();
+    expect(state["nissekomm-codes"]).toEqual(fjor.data["nissekomm-codes"]);
+    expect(state["nissekomm-santa-letters"]).toEqual(BREV);
+    expect(state["nissekomm-intros-seen"]).toBeNull();
+    expect(state[SEASON_KEY]).toBe(SEASON);
+    expect(state["state-reset"]).toBe(state["state-version"]);
+    // Undo: back to today's state.
+    await gjenopprett(r!.før!.id, store);
+    expect((await store.getState())["nissekomm-intros-seen"]).toEqual(["i-år"]);
+    expect(await gjenopprett(-1, store)).toBeNull();
+  });
+});
+
+it("two file stores (two dev servers) on one file: one archive, one clear", async () => {
+  const fil = path.join(fs.mkdtempSync(path.join(tmp, "to")), "dev-store.json");
+  const a = createFileStore(fil);
+  const b = createFileStore(fil);
+  await fyll(a);
+  const pa = sjekkSesong(a);
+  glemSesongSjekk();
+  const pb = sjekkSesong(b);
+  glemSesongSjekk();
+  await Promise.all([pa, pb]);
+  await b.putState("nissekomm-santa-letters", [BREV[2]], true);
+  await sjekkSesong(a);
+  expect(await a.arkiv(FJOR)).toHaveLength(1);
+  expect((await a.getState())["nissekomm-santa-letters"]).toEqual([BREV[2]]);
+});
+
+// ARKIV_PG_URL=postgres://… (a throwaway database): two pools = two pods.
+(process.env.ARKIV_PG_URL ? it : it.skip)(
+  "real Postgres: two pods change season at once, one archive and one clear",
+  async () => {
+    const { Pool: PgPool } = await import("pg");
+    const url = process.env.ARKIV_PG_URL;
+    const p1 = new PgPool({ connectionString: url });
+    const p2 = new PgPool({ connectionString: url });
+    try {
+      await migrate(p1);
+      await p1.query("TRUNCATE kv, kv_arkiv");
+      const a = createPgStore(p1);
+      const b = createPgStore(p2);
+      await fyll(a);
+      const kall = [a, b, a, b].map((s) => {
+        const p = sjekkSesong(s);
+        glemSesongSjekk();
+        return p;
+      });
+      await Promise.all(kall);
+      await b.putState("nissekomm-santa-letters", [BREV[2]], true);
+      await sjekkSesong(a);
+      expect(await a.arkiv(FJOR)).toHaveLength(1);
+      expect((await a.getState())["nissekomm-santa-letters"]).toEqual([
+        BREV[2],
+      ]);
+    } finally {
+      await p1.end();
+      await p2.end();
+    }
+  },
+);
+
+it("an unreadable archive file stops the season change and is kept aside", async () => {
+  const dir = fs.mkdtempSync(path.join(tmp, "k"));
+  const store = createFileStore(path.join(dir, "dev-store.json"));
+  await fyll(store);
+  fs.writeFileSync(path.join(dir, `arkiv-${FJOR}.json`), "{halv");
+  await expect(sjekkSesong(store)).rejects.toThrow(/kunne ikke leses/);
+  expect(fs.readdirSync(dir).some((f) => f.includes(".korrupt-"))).toBe(true);
+  expect((await store.getState())["nissekomm-santa-letters"]).toEqual(BREV);
 });
 
 it("the file store writes arkiv-<sesong>.json beside the dev store", async () => {

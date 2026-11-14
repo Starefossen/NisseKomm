@@ -4,6 +4,8 @@
  *                 { value, version } after merging; replace overwrites.
  *                 409 { version, reset } when `version` is older than the
  *                 stored one; `reset` is the marker of the last season reset.
+ *                 Without `version` it counts as 0 once a reset has happened,
+ *                 so an old screen can't write last season into this one.
  * DELETE /api/state  Parent only: archives the state (kv_arkiv), then the
  *                 season reset for every screen. No archive, no reset.
  * GET/PUT require a kid or parent session; 204 (sync off) with STORAGE_BACKEND=localStorage.
@@ -90,6 +92,7 @@ export async function PUT(request: NextRequest) {
     if (!(await hasRole(request, "parent")))
       return jsonError("Bare for foreldre", 403);
   }
+  await sjekkSesong();
   const store = getStore();
   const state = await store.getState();
   const current = Number(state[VERSION_KEY] ?? 0);
@@ -98,7 +101,13 @@ export async function PUT(request: NextRequest) {
   if (replace !== true && size(state[key]) + size(value) > MAX_KEY_BYTES)
     return jsonError("For mye data", 413);
   // ponytail: check-then-write race between two PUTs; fine for one family.
-  if (typeof version === "number" && version < current) {
+  const v =
+    typeof version === "number"
+      ? version
+      : state[RESET_KEY] != null
+        ? 0
+        : current;
+  if (v < current) {
     return NextResponse.json(
       { version: current, reset: state[RESET_KEY] ?? null },
       { status: 409 },

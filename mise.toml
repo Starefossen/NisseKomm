@@ -194,6 +194,10 @@ run = "scripts/vurderinger.sh"
 description = "Kopi av familiens fremdrift i serverarkivet og i MEDIA_DIR/_arkiv/<dato>/ (state-<sesong>.json, minner-<sesong>.json); BASE_URL, MCP_TOKEN"
 run = "scripts/arkiver-sesong.sh"
 
+[tasks.gjenopprett-sesong]
+description = "Gjenopprett all fremdrift fra en kopi i serverarkivet (uten argument: list kopiene); --snapshot <id>, BASE_URL, MCP_TOKEN"
+run = "scripts/gjenopprett-sesong.sh"
+
 [tasks."test:gjennomspilling"]
 description = "Spill gjennom dag 1–24 i headless Chromium (DAYS=10,21 for utvalg, BASE_URL for kjørende server)"
 run = "node scripts/gjennomspilling.mjs"

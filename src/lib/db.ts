@@ -35,8 +35,10 @@ export { mergeValue };
 
 /** A copy of the shared state, taken before anything clears it. */
 export type Arkiv = {
+  /** Unique across seasons (kv_arkiv.id; the dev file uses ms timestamps). */
+  id: number;
   sesong: number;
-  /** «sesongskifte» (once per season), «nullstilling» or «manuell» */
+  /** «sesongskifte», «nullstilling», «manuell» or «før-gjenoppretting» */
   grunn: string;
   arkivert: string;
   data: Record<string, unknown>;
@@ -49,6 +51,20 @@ export function arkivData(state: Record<string, unknown>) {
     Object.entries(state).filter(([k, v]) => keys.has(k) && v != null),
   );
 }
+
+/** Exclusive access to kv and the archive (see Store.låst). */
+export type Tx = {
+  /** All of kv, read under the lock. */
+  state: Record<string, unknown>;
+  arkiv(sesong?: number): Promise<Arkiv[]>;
+  leggTil(
+    sesong: number,
+    grunn: string,
+    data: Record<string, unknown>,
+  ): Promise<Arkiv>;
+  /** Plain overwrites, no merge, no version bump. */
+  skriv(verdier: Record<string, unknown>): Promise<void>;
+};
 
 export interface Store {
   getState(): Promise<Record<string, unknown>>;
@@ -74,17 +90,13 @@ export interface Store {
    */
   consumeTicket(hash: string, path: string): Promise<boolean>;
   /**
-   * Appends a snapshot of the game state for `sesong`. bareEnGang: skip (and
-   * return the existing one) if this season already has a snapshot with this
-   * grunn. Returns null when there was nothing to archive.
+   * Runs fn alone: no other låst() or kv write (any process) runs meanwhile.
+   * Postgres: one transaction under an advisory lock with kv locked against
+   * writes; dev file: a lock file, kv re-read from disk.
    */
-  arkiver(
-    sesong: number,
-    grunn: string,
-    bareEnGang?: boolean,
-  ): Promise<Arkiv | null>;
-  /** Every snapshot of a season, oldest first. */
-  arkiv(sesong: number): Promise<Arkiv[]>;
+  låst<T>(fn: (tx: Tx) => Promise<T>): Promise<T>;
+  /** Every snapshot of a season (all seasons without one), oldest first. */
+  arkiv(sesong?: number): Promise<Arkiv[]>;
 }
 
 const ticketOk = (t: unknown, path: string) => {
@@ -96,79 +108,182 @@ const ticketOk = (t: unknown, path: string) => {
 
 type Dump = { kv: [string, unknown][]; sessions: [string, Session][] };
 
-export function createMemoryStore(
-  init?: Dump,
-  onChange?: (d: Dump) => void,
-  arkivFil?: (sesong: number) => string,
-): Store & { reset(): void } {
-  let kv = new Map<string, unknown>(init?.kv);
-  let arkiver = new Map<number, Arkiv[]>();
-  const lesArkiv = (s: number): Arkiv[] => {
-    if (!arkivFil) return arkiver.get(s) ?? [];
+const vent = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** Cross-process lock for the dev file: mkdir is atomic. */
+async function filLås<T>(file: string, fn: () => Promise<T>): Promise<T> {
+  const lås = `${file}.lock`;
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  for (let i = 0; ; i++) {
     try {
-      return JSON.parse(fs.readFileSync(arkivFil(s), "utf8"));
-    } catch {
-      return [];
+      fs.mkdirSync(lås);
+      break;
+    } catch (e) {
+      if ((e as NodeJS.ErrnoException).code !== "EEXIST") throw e;
+      // A crashed holder leaves the directory behind.
+      const st = fs.statSync(lås, { throwIfNoEntry: false });
+      if (st && Date.now() - st.mtimeMs > 30_000)
+        fs.rmSync(lås, { recursive: true, force: true });
+      else if (i > 1000) throw new Error(`Fikk ikke låsen ${lås}`);
+      else await vent(10);
     }
-  };
-  const skrivArkiv = (s: number, liste: Arkiv[]) => {
-    if (!arkivFil) return void arkiver.set(s, liste);
-    skrivAtomisk(arkivFil(s), JSON.stringify(liste, null, 1));
-  };
-  let sessions = new Map<string, Session>(init?.sessions);
+  }
+  try {
+    return await fn();
+  } finally {
+    fs.rmSync(lås, { recursive: true, force: true });
+  }
+}
+
+/**
+ * An unreadable archive must never read as empty and be overwritten: move it
+ * aside and stop.
+ */
+function lesArkivFil(file: string): Arkiv[] {
+  let tekst: string;
+  try {
+    tekst = fs.readFileSync(file, "utf8");
+  } catch (e) {
+    if ((e as NodeJS.ErrnoException).code === "ENOENT") return [];
+    throw e;
+  }
+  try {
+    const liste = JSON.parse(tekst);
+    if (!Array.isArray(liste)) throw new Error("ikke en liste");
+    return liste.map((a: Arkiv) => ({
+      ...a,
+      id: a.id ?? Date.parse(a.arkivert),
+    }));
+  } catch (e) {
+    const ny = `${file}.korrupt-${Date.now()}`;
+    fs.renameSync(file, ny);
+    throw new Error(
+      `Arkivet ${file} kunne ikke leses (flyttet til ${ny}): ${e}`,
+    );
+  }
+}
+
+/** In memory, or mirrored to `file` (with arkiv-<sesong>.json beside it). */
+export function createMemoryStore(file?: string): Store & { reset(): void } {
+  let kv = new Map<string, unknown>();
+  let sessions = new Map<string, Session>();
+  let arkiver: Arkiv[] = [];
   let hits = new Map<string, { n: number; until: number }>();
-  const save = () => onChange?.({ kv: [...kv], sessions: [...sessions] });
+  const dir = file && path.dirname(file);
+  const arkivFil = (s: number) => path.join(dir!, `arkiv-${s}.json`);
+
+  const last = () => {
+    if (!file) return;
+    let d: Dump | undefined;
+    try {
+      d = JSON.parse(fs.readFileSync(file, "utf8"));
+    } catch {}
+    kv = new Map(d?.kv);
+    sessions = new Map(d?.sessions);
+  };
+  const save = () => {
+    if (file)
+      skrivAtomisk(
+        file,
+        JSON.stringify({ kv: [...kv], sessions: [...sessions] }),
+      );
+  };
+  const alleArkiv = (sesong?: number): Arkiv[] => {
+    if (!dir)
+      return arkiver.filter((a) => sesong == null || a.sesong === sesong);
+    if (sesong != null) return lesArkivFil(arkivFil(sesong));
+    const filer = fs.existsSync(dir)
+      ? fs.readdirSync(dir).filter((f) => /^arkiv-\d+\.json$/.test(f))
+      : [];
+    return filer
+      .flatMap((f) => lesArkivFil(path.join(dir, f)))
+      .sort((a, b) => a.arkivert.localeCompare(b.arkivert) || a.id - b.id);
+  };
+
+  // One operation at a time in this process; the dev file adds a lock across
+  // processes and re-reads kv, so two dev servers see each other's writes.
+  let kø: Promise<unknown> = Promise.resolve();
+  const serie = <T>(fn: () => T | Promise<T>): Promise<T> => {
+    const kjør = async () => {
+      if (!file) return fn();
+      return filLås(file, async () => {
+        last();
+        return fn();
+      });
+    };
+    const p = kø.then(kjør);
+    kø = p.catch(() => {});
+    return p;
+  };
+  last();
+
   return {
     reset() {
       kv = new Map();
-      arkiver = new Map();
+      arkiver = [];
       sessions = new Map();
       hits = new Map();
       save();
     },
-    async getState() {
-      return Object.fromEntries(kv);
-    },
-    async putState(key, value, replace = false) {
-      const stored = replace ? value : mergeValue(key, kv.get(key), value);
-      kv.set(key, stored);
-      if (replace) kv.set(VERSION_KEY, Number(kv.get(VERSION_KEY) ?? 0) + 1);
-      save();
-      return stored;
-    },
-    async getSession(hash) {
-      return sessions.get(hash) ?? null;
-    },
-    async setSession(hash, s) {
-      for (const [h, o] of sessions)
-        if (o.expires < Date.now()) sessions.delete(h);
-      sessions.set(hash, s);
-      save();
-    },
-    async deleteSession(hash) {
-      sessions.delete(hash);
-      save();
-    },
-    async consumeTicket(hash, path) {
-      const key = `upload-ticket:${hash}`;
-      const t = kv.get(key);
-      kv.delete(key);
-      save();
-      return ticketOk(t, path);
-    },
-    async arkiver(sesong, grunn, bareEnGang = false) {
-      const liste = lesArkiv(sesong);
-      const før = bareEnGang && liste.find((a) => a.grunn === grunn);
-      if (før) return før;
-      const data = arkivData(Object.fromEntries(kv));
-      if (!Object.keys(data).length) return null;
-      const a = { sesong, grunn, arkivert: new Date().toISOString(), data };
-      skrivArkiv(sesong, [...liste, structuredClone(a)]);
-      return a;
-    },
-    async arkiv(sesong) {
-      return structuredClone(lesArkiv(sesong));
-    },
+    getState: () => serie(() => Object.fromEntries(kv)),
+    putState: (key, value, replace = false) =>
+      serie(() => {
+        const stored = replace ? value : mergeValue(key, kv.get(key), value);
+        kv.set(key, stored);
+        if (replace) kv.set(VERSION_KEY, Number(kv.get(VERSION_KEY) ?? 0) + 1);
+        save();
+        return stored;
+      }),
+    getSession: (hash) => serie(() => sessions.get(hash) ?? null),
+    setSession: (hash, s) =>
+      serie(() => {
+        for (const [h, o] of sessions)
+          if (o.expires < Date.now()) sessions.delete(h);
+        sessions.set(hash, s);
+        save();
+      }),
+    deleteSession: (hash) =>
+      serie(() => {
+        sessions.delete(hash);
+        save();
+      }),
+    consumeTicket: (hash, path) =>
+      serie(() => {
+        const key = `upload-ticket:${hash}`;
+        const t = kv.get(key);
+        kv.delete(key);
+        save();
+        return ticketOk(t, path);
+      }),
+    låst: (fn) =>
+      serie(() =>
+        fn({
+          state: structuredClone(Object.fromEntries(kv)),
+          arkiv: async (sesong) => structuredClone(alleArkiv(sesong)),
+          async leggTil(sesong, grunn, data) {
+            const forrige = Math.max(0, ...alleArkiv().map((a) => a.id));
+            const a: Arkiv = {
+              id: dir ? Math.max(Date.now(), forrige + 1) : forrige + 1,
+              sesong,
+              grunn,
+              arkivert: new Date().toISOString(),
+              data: structuredClone(data),
+            };
+            if (dir)
+              skrivAtomisk(
+                arkivFil(sesong),
+                JSON.stringify([...alleArkiv(sesong), a], null, 1),
+              );
+            else arkiver.push(a);
+            return structuredClone(a);
+          },
+          async skriv(verdier) {
+            for (const [k, v] of Object.entries(verdier)) kv.set(k, v);
+            save();
+          },
+        }),
+      ),
+    arkiv: (sesong) => serie(() => structuredClone(alleArkiv(sesong))),
     async hit(key, w) {
       return (await this.hits(key, w)).n;
     },
@@ -186,28 +301,20 @@ export function createMemoryStore(
   };
 }
 
-/**
- * Memory store mirrored to a JSON file, so `mise run dev` keeps sessions and
- * progress across restarts. Written via tmp + rename so a crash never leaves
- * half a file.
- */
+/** Written via tmp + rename so a crash never leaves half a file. */
 function skrivAtomisk(file: string, text: string) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.writeFileSync(`${file}.tmp`, text);
-  fs.renameSync(`${file}.tmp`, file);
+  const tmp = `${file}.${process.pid}.tmp`;
+  fs.writeFileSync(tmp, text);
+  fs.renameSync(tmp, file);
 }
 
-/** Archives go beside it as arkiv-<sesong>.json. */
+/**
+ * Memory store mirrored to a JSON file, so `mise run dev` keeps sessions and
+ * progress across restarts. Archives go beside it as arkiv-<sesong>.json.
+ */
 export function createFileStore(file: string): Store & { reset(): void } {
-  let init: Dump | undefined;
-  try {
-    init = JSON.parse(fs.readFileSync(file, "utf8"));
-  } catch {}
-  return createMemoryStore(
-    init,
-    (d) => skrivAtomisk(file, JSON.stringify(d)),
-    (s) => path.join(path.dirname(file), `arkiv-${s}.json`),
-  );
+  return createMemoryStore(file);
 }
 
 const MIGRATION = `
@@ -252,6 +359,26 @@ export async function migrate(pool: Pool): Promise<void> {
   }
 }
 
+const ARKIV_KOL = "id, sesong, grunn, arkivert, data";
+const arkivRad = (r: Arkiv & { arkivert: Date | string }): Arkiv => ({
+  ...r,
+  id: Number(r.id),
+  arkivert: new Date(r.arkivert).toISOString(),
+});
+async function lesArkiv(
+  q: Pick<Pool, "query">,
+  sesong?: number,
+): Promise<Arkiv[]> {
+  const r =
+    sesong == null
+      ? await q.query(`SELECT ${ARKIV_KOL} FROM kv_arkiv ORDER BY id`)
+      : await q.query(
+          `SELECT ${ARKIV_KOL} FROM kv_arkiv WHERE sesong = $1 ORDER BY id`,
+          [sesong],
+        );
+  return r.rows.map(arkivRad);
+}
+
 export function createPgStore(pool: Pool): Store {
   return {
     async getState() {
@@ -278,6 +405,7 @@ export function createPgStore(pool: Pool): Store {
       };
       try {
         await c.query("BEGIN");
+        await c.query("SELECT pg_advisory_xact_lock_shared($1)", [LOCK_ID]);
         const stored = await update(key, (old) =>
           replace ? value : mergeValue(key, old, value),
         );
@@ -318,45 +446,36 @@ export function createPgStore(pool: Pool): Store {
       );
       return ticketOk(r.rows[0]?.value, path);
     },
-    async arkiver(sesong, grunn, bareEnGang = false) {
+    async låst(fn) {
       const c = await pool.connect();
-      const rad = (r: {
-        sesong: number;
-        grunn: string;
-        arkivert: Date;
-        data: Record<string, unknown>;
-      }): Arkiv => ({ ...r, arkivert: new Date(r.arkivert).toISOString() });
       try {
         await c.query("BEGIN");
-        // Two pods changing season at once must not both archive.
-        await c.query("SELECT pg_advisory_xact_lock($1, $2)", [
-          LOCK_ID,
-          sesong,
-        ]);
-        if (bareEnGang) {
-          const r = await c.query(
-            "SELECT sesong, grunn, arkivert, data FROM kv_arkiv WHERE sesong = $1 AND grunn = $2 ORDER BY id LIMIT 1",
-            [sesong, grunn],
-          );
-          if (r.rows[0]) {
-            await c.query("COMMIT");
-            return rad(r.rows[0]);
-          }
-        }
+        // Two pods changing season at once: the second waits, then sees the
+        // first one's stamp. putState holds the shared lock, so no write
+        // lands between the snapshot and the clear; GETs still read.
+        await c.query("SELECT pg_advisory_xact_lock($1)", [LOCK_ID]);
         const kv = await c.query("SELECT key, value FROM kv");
-        const data = arkivData(
-          Object.fromEntries(kv.rows.map((row) => [row.key, row.value])),
-        );
-        if (!Object.keys(data).length) {
-          await c.query("COMMIT");
-          return null;
-        }
-        const r = await c.query(
-          "INSERT INTO kv_arkiv (sesong, grunn, data) VALUES ($1, $2, $3) RETURNING sesong, grunn, arkivert, data",
-          [sesong, grunn, JSON.stringify(data)],
-        );
+        const svar = await fn({
+          state: Object.fromEntries(kv.rows.map((r) => [r.key, r.value])),
+          arkiv: (sesong) => lesArkiv(c, sesong),
+          async leggTil(sesong, grunn, data) {
+            const r = await c.query(
+              `INSERT INTO kv_arkiv (sesong, grunn, data) VALUES ($1, $2, $3) RETURNING ${ARKIV_KOL}`,
+              [sesong, grunn, JSON.stringify(data)],
+            );
+            return arkivRad(r.rows[0]);
+          },
+          async skriv(verdier) {
+            for (const [k, v] of Object.entries(verdier))
+              await c.query(
+                `INSERT INTO kv (key, value) VALUES ($1, $2)
+                 ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = now()`,
+                [k, JSON.stringify(v ?? null)],
+              );
+          },
+        });
         await c.query("COMMIT");
-        return rad(r.rows[0]);
+        return svar;
       } catch (e) {
         await c.query("ROLLBACK").catch(() => {});
         throw e;
@@ -364,16 +483,7 @@ export function createPgStore(pool: Pool): Store {
         c.release();
       }
     },
-    async arkiv(sesong) {
-      const r = await pool.query(
-        "SELECT sesong, grunn, arkivert, data FROM kv_arkiv WHERE sesong = $1 ORDER BY id",
-        [sesong],
-      );
-      return r.rows.map((row) => ({
-        ...row,
-        arkivert: new Date(row.arkivert).toISOString(),
-      }));
-    },
+    arkiv: (sesong) => lesArkiv(pool, sesong),
     // One UPSERT takes the row lock, so a parallel burst counts every hit.
     async hit(key, w) {
       return (await this.hits(key, w)).n;
@@ -400,55 +510,127 @@ export function createPgStore(pool: Pool): Store {
   };
 }
 
+/** Every key a season reset clears. */
+const tøm = (state: Record<string, unknown>) => {
+  const v = Number(state[VERSION_KEY] ?? 0) + 1;
+  // The new version makes screens re-fetch instead of pushing old lists
+  // back; RESET_KEY tells them the 409 was a reset, so they drop pending writes.
+  return {
+    ...Object.fromEntries(
+      [...STATE_KEYS, ...SERVER_KEYS].map((k) => [k, null]),
+    ),
+    [VERSION_KEY]: v,
+    [RESET_KEY]: v,
+  };
+};
+
+/** Top-level keys sorted, so key order never makes two equal states differ. */
+const nøkkelSortert = (d: Record<string, unknown>) =>
+  JSON.stringify(
+    Object.fromEntries(
+      Object.entries(d).sort(([a], [b]) => a.localeCompare(b)),
+    ),
+  );
+
 /**
- * Season reset for the whole family. Replacing writes bump the version, so
- * screens re-fetch instead of pushing their old lists back. Sessions stay.
+ * A fresh snapshot of the state under the lock, unless it is identical to the
+ * season's newest one (then that one). Null when there is nothing to keep.
  */
-export async function resetState(store: Store = getStore()): Promise<void> {
-  for (const k of [...STATE_KEYS, ...SERVER_KEYS]) {
-    await store.putState(k, null, true);
-  }
-  // Tells a stale screen this 409 was a reset, so it drops its pending writes.
-  await store.putState(RESET_KEY, (await store.getState())[VERSION_KEY]);
+async function øyeblikk(tx: Tx, sesong: number, grunn: string) {
+  const data = arkivData(tx.state);
+  if (!Object.keys(data).length) return null;
+  const siste = (await tx.arkiv(sesong)).at(-1);
+  if (siste && nøkkelSortert(siste.data) === nøkkelSortert(data)) return siste;
+  return tx.leggTil(sesong, grunn, data);
+}
+
+/** A manual snapshot (same dedupe as before a reset). */
+export function arkiver(
+  grunn: string,
+  sesong = SEASON,
+  store: Store = getStore(),
+): Promise<Arkiv | null> {
+  return store.låst((tx) => øyeblikk(tx, sesong, grunn));
+}
+
+/** Season reset without a snapshot (MCP reset, tests). Sessions stay. */
+export function resetState(store: Store = getStore()): Promise<void> {
+  return store.låst((tx) => tx.skriv(tøm(tx.state)));
 }
 
 /**
- * Season reset with the archive first: no snapshot, no reset (a failed
- * archive throws before anything is cleared).
+ * Season reset with the archive first, in one locked step: no snapshot, no
+ * reset (a failed archive throws before anything is cleared).
  */
 export async function arkiverOgNullstill(
   grunn: string,
   sesong = SEASON,
   store: Store = getStore(),
 ): Promise<Arkiv | null> {
-  const a = await store.arkiver(sesong, grunn, grunn === "sesongskifte");
+  return store.låst(async (tx) => {
+    const a = await øyeblikk(tx, sesong, grunn);
+    logg(sesong, grunn, a);
+    await tx.skriv(tøm(tx.state));
+    return a;
+  });
+}
+
+const logg = (sesong: number, grunn: string, a: Arkiv | null) =>
   console.log(
-    `Sesong ${sesong}: ${grunn}, ${a ? `arkivert ${a.arkivert} (${Object.keys(a.data).length} nøkler)` : "ingenting å arkivere"}, nullstiller`,
+    `Sesong ${sesong}: ${grunn}, ${a ? `arkiv #${a.id} ${a.arkivert} (${Object.keys(a.data).length} nøkler)` : "ingenting å arkivere"}, nullstiller`,
   );
-  await resetState(store);
-  return a;
+
+/**
+ * Restores every key of snapshot `id`, codes included, after a fresh
+ * snapshot of today's state (grunn «før-gjenoppretting»), so the restore can
+ * itself be undone. The state is stamped as this season. Null: no such id.
+ */
+export async function gjenopprett(
+  id: number,
+  store: Store = getStore(),
+): Promise<{ fra: Arkiv; før: Arkiv | null } | null> {
+  return store.låst(async (tx) => {
+    const fra = (await tx.arkiv()).find((a) => a.id === id);
+    if (!fra) return null;
+    const før = await øyeblikk(tx, SEASON, "før-gjenoppretting");
+    await tx.skriv({
+      ...tøm(tx.state),
+      ...arkivData(fra.data),
+      [SEASON_KEY]: SEASON,
+    });
+    console.log(
+      `Gjenopprettet arkiv #${id} (sesong ${fra.sesong}, ${fra.arkivert}); før: #${før?.id ?? "-"}`,
+    );
+    return { fra, før };
+  });
 }
 
 let sesongSjekk: Promise<void> | undefined;
 /**
  * Runs before state is served. A stored season older than SEASON means a new
- * build started a new season: archive (once per season), then clear. No
- * marker yet means the state is this season's (servers from before the
- * marker existed): just stamp it.
+ * build started a new season: archive, clear and stamp in one locked step,
+ * the marker read under the same lock, so a second process sees the stamp
+ * and does nothing. No marker yet means the state is this season's (servers
+ * from before the marker existed): just stamp it.
  */
 export function sjekkSesong(store: Store = getStore()): Promise<void> {
-  // ponytail: per-process memo; two replicas rely on the archive's advisory lock.
-  return (sesongSjekk ??= (async () => {
-    const s = (await store.getState())[SEASON_KEY];
-    if (s === SEASON) return;
-    if (typeof s === "number" && s < SEASON)
-      await arkiverOgNullstill("sesongskifte", s, store);
-    if (typeof s !== "number" || s < SEASON)
-      await store.putState(SEASON_KEY, SEASON);
-  })().catch((e) => {
-    sesongSjekk = undefined;
-    throw e;
-  }));
+  return (sesongSjekk ??= store
+    .låst(async (tx) => {
+      const s = tx.state[SEASON_KEY];
+      if (s === SEASON) return;
+      if (typeof s === "number" && s > SEASON) return;
+      let ny: Record<string, unknown> = {};
+      if (typeof s === "number") {
+        const a = await øyeblikk(tx, s, "sesongskifte");
+        logg(s, "sesongskifte", a);
+        ny = tøm(tx.state);
+      }
+      await tx.skriv({ ...ny, [SEASON_KEY]: SEASON });
+    })
+    .catch((e) => {
+      sesongSjekk = undefined;
+      throw e;
+    }));
 }
 
 /** Tests: forget that this process has checked the season. */
