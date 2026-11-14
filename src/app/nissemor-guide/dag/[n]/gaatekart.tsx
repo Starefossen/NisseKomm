@@ -12,7 +12,7 @@ import type { Bit, gaatekart, kveldDag } from "@/lib/guide-sesong";
 
 const box = "border-2 border-(--neon-green) bg-black p-3 sm:p-4 mb-4";
 
-/** Hides the day's code in every text until «Vis fasit» is on (also spaced «K O M P A S S», «S, I, G, N, A, L» and «JULE + MAGI»). */
+/** Hides the day's code in every text until «Vis fasit» is on (also spaced out, comma-separated or joined with +). */
 export function skjul(tekst: string, kode: string | undefined, vis: boolean) {
   if (vis || !kode) return tekst;
   const tegn = [...kode].filter((c) => c !== " ");
