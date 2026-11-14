@@ -1,5 +1,12 @@
 import { describe, it, expect } from "@jest/globals";
-import { byggKo, elementStatus, fremdrift, type KoServer } from "./ko";
+import {
+  byggKo,
+  elementStatus,
+  fremdrift,
+  linjeHref,
+  nesteLinje,
+  type KoServer,
+} from "./ko";
 import { videoStatus } from "@/lib/segmenter";
 import { tilstand, type Element } from "./elementer";
 
@@ -593,5 +600,132 @@ describe("round 3: no loop", () => {
     expect(status["dag/10/rampestrek"]).toBe("godkjent");
     expect(status["manus/radio/dag-07"]).toBe("godkjent");
     expect(status["audio/rampenissen/dag-06.mp3"]).toBe("venter");
+  });
+});
+
+describe("beslutninger in the queue", () => {
+  const b = (slug: string, svar = false) => ({
+    slug,
+    spørsmål: slug,
+    kontekst: "k",
+    lenker: [],
+    valg: ["ja", "nei"],
+    av: "agent:test",
+    opprettet: "2026-11-14T10:00:00Z",
+    ...(svar
+      ? { svar: { valg: 0, av: "hans" as const, dato: "2026-11-14" } }
+      : {}),
+  });
+  const ko = (besvart: string[]) =>
+    byggKo(
+      [],
+      { filer: [], vurderinger: {} },
+      server({
+        manus: {},
+        beslutninger: ["a", "b", "c"].map((s) => b(s, besvart.includes(s))),
+      }),
+    ).venter;
+
+  it("an answered beslutning leaves «Venter på deg»", () => {
+    expect(ko([]).map((l) => l.id)).toEqual([
+      "beslutning/a",
+      "beslutning/b",
+      "beslutning/c",
+    ]);
+    expect(ko(["b"]).map((l) => l.id)).toEqual([
+      "beslutning/a",
+      "beslutning/c",
+    ]);
+  });
+
+  it("N goes to the next open one, also right after the answer; none at the end", () => {
+    expect(nesteLinje(ko([]), "beslutning/a")?.id).toBe("beslutning/b");
+    // a was just answered and is out of the queue: on to b, the first open one.
+    expect(nesteLinje(ko(["a"]), "beslutning/a")?.id).toBe("beslutning/b");
+    expect(nesteLinje(ko(["a", "b"]), "beslutning/c")).toBeUndefined();
+    expect(nesteLinje(ko(["a", "b", "c"]), "beslutning/c")).toBeUndefined();
+  });
+});
+
+describe("linjeHref: every queue line opens in Gjennomgang, never Filer", () => {
+  const el = (id: string, o: Partial<Element> = {}): Element => ({
+    id,
+    gruppe: "g",
+    tittel: id,
+    media: [],
+    ...o,
+  });
+  const liste = [
+    el("manus/julius/dag-04"),
+    el("manus/radio/dag-04"),
+    el("dag/04/kveld"),
+    el("video/julius/dag-03-v2.mp4", {
+      gruppe: "julius",
+      dag: 3,
+      media: ["video/julius/dag-03-v2.mp4"],
+    }),
+    el("dag/02/rampestrek", { media: ["strek/dag02.png"] }),
+  ];
+  const mål = (id: string, seg?: number) =>
+    decodeURIComponent(linjeHref({ id, seg }, liste, "&k=venter"));
+  const G = "/nissemor-guide/gjennomgang?id=";
+
+  it.each([
+    // priority / svar / spørsmål on a script segment: the day with the segment chosen
+    ["manus/julius/dag-04#s4", `${G}manus/julius/dag-04&s=4&k=venter`],
+    ["manus/julius/dag-04", `${G}manus/julius/dag-04&k=venter`],
+    ["manus/radio/dag-04", `${G}manus/radio/dag-04&k=venter`],
+    ["dag/04/kveld", `${G}dag/04/kveld&k=venter`],
+    ["beslutning/x", `${G}beslutning/x&k=venter`],
+    // kuttsjekk, retake, flag on a video segment: the day's video element
+    ["video/julius/dag-03#s2", `${G}video/julius/dag-03-v2.mp4&s=2&k=venter`],
+    // an older version or a section's file: the element that holds it
+    ["video/julius/dag-03.mp4", `${G}video/julius/dag-03-v2.mp4&k=venter`],
+    ["strek/dag02.png", `${G}dag/02/rampestrek&k=venter`],
+    // unknown to the list: still Gjennomgang
+    ["feed/ukjent.jpg", `${G}feed/ukjent.jpg&k=venter`],
+  ])("%s", (id, href) => expect(mål(id)).toBe(href));
+
+  it("a line's own seg wins (flag and kuttsjekk lines carry the element id)", () => {
+    expect(mål("video/julius/dag-03-v2.mp4", 2)).toBe(
+      `${G}video/julius/dag-03-v2.mp4&s=2&k=venter`,
+    );
+  });
+
+  it("every line byggKo makes, in every tab, links into Gjennomgang", () => {
+    const ko = byggKo(
+      liste,
+      {
+        filer: [f("video/julius/dag-03-v2.mp4"), f("løs/fil.png")],
+        vurderinger: {
+          "video/julius/dag-03#s2": { vurdering: "lag_paa_nytt" },
+          "video/julius/dag-03#s1": { vurdering: "kutt" },
+          "dag/04/kveld": { vurdering: "ok", notat: "lærdom" },
+          "manus/radio/dag-04": { vurdering: "lag_paa_nytt", notat: "x" },
+        },
+      },
+      server({
+        manus: { "3": [1, 2], "4": [1, 2, 3, 4] },
+        flagg: { "3": [{ s: 2, flagg: ["ord"] }] },
+        kuttFeil: { "3": "kutt-03.log" },
+        prioriteter: {
+          "manus/julius/dag-04#s4": {
+            fil: "manus/julius/dag-04#s4",
+            nivaa: "høy",
+            grunn: "gjennomlesing før generering",
+            av: "agent",
+            når: "2026-11-14T10:00:00Z",
+          },
+        },
+      } as Partial<KoServer>),
+    );
+    const alle = [...ko.venter, ...ko.agent, ...ko.laerdom, ...ko.arbeid];
+    expect(alle.length).toBeGreaterThan(4);
+    for (const l of alle)
+      expect(linjeHref(l, liste)).toMatch(/gjennomgang\?id=/);
+    const p = ko.venter.find((l) => l.prioritet?.fil.endsWith("#s4"))!;
+    expect(decodeURIComponent(linjeHref(p, liste))).toBe(
+      `${G}manus/julius/dag-04&s=4`,
+    );
   });
 });

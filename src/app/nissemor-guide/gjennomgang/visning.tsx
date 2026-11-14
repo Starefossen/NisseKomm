@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Lagremelding, useLagring } from "../lagring";
 import { useEffect, useState, type ReactNode } from "react";
 import { GameEngine } from "@/lib/game-engine";
@@ -80,6 +81,12 @@ function Manus({ d, port }: { d: Dag; port?: boolean }) {
       )
       .catch(() => {});
   }, [d.dag, port]);
+  // `&s=4` from a queue line: that segment, marked and scrolled to.
+  const valgt = Number(useSearchParams().get("s")) || 0;
+  useEffect(() => {
+    if (port && valgt)
+      document.getElementById(`manus-s${valgt}`)?.scrollIntoView();
+  }, [port, valgt, d.dag]);
   const j = d.julius;
   if (!j) return <p>Ikke noe manus for dagen.</p>;
   const id = (s: number) =>
@@ -98,7 +105,8 @@ function Manus({ d, port }: { d: Dag; port?: boolean }) {
             <li
               key={i}
               id={m ? `manus-s${m.s}` : undefined}
-              className="border border-(--neon-green)/40 p-2 scroll-mt-40"
+              aria-current={port && m?.s === valgt ? true : undefined}
+              className={`border p-2 scroll-mt-40 ${port && m?.s === valgt ? "border-(--gold) border-2" : "border-(--neon-green)/40"}`}
             >
               <p>
                 <span className="text-(--gold)">{i + 1}.</span> «

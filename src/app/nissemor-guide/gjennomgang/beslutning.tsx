@@ -1,29 +1,46 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { Beslutning } from "@/lib/beslutninger";
+import type { Sesong } from "../_kveld/felles";
+import { useKo, type Data } from "./celle";
+import { SIDE } from "./felles";
+import { besøk, lesHistorikk, skrivHistorikk } from "./historikk";
+import { linjeHref, nesteLinje } from "./ko";
 
-const SIDE = "/nissemor-guide/gjennomgang";
 const knapp =
   "min-h-11 px-3 py-2 border-2 text-left w-full hover:bg-(--neon-green)/20";
 
-/** One open choice: 1–4 picks an option, Enter saves with the optional «hvorfor». */
-export function BeslutningVisning({ id }: { id: string }) {
+/**
+ * One open choice: 1–4 picks an option, Enter saves with the optional «hvorfor».
+ * Reads and updates the page's queue data (`d.server`), so the answered one is
+ * gone from «Venter på deg» at once; N (and Enter once answered) opens the next line.
+ */
+export function BeslutningVisning({
+  id,
+  d,
+  sesong,
+}: {
+  id: string;
+  d: Data;
+  sesong: Sesong;
+}) {
+  const router = useRouter();
   const slug = id.replace(/^beslutning\//, "");
-  const [b, setB] = useState<Beslutning | null | "mangler">(null);
   const [valgt, setValgt] = useState<number | null>(null);
   const [hvorfor, setHvorfor] = useState("");
   const [feil, setFeil] = useState("");
+  const { liste, ko } = useKo(d, sesong);
+  const b: Beslutning | null | "mangler" = d.server
+    ? ((d.server.beslutninger ?? []).find((x) => x.slug === slug) ?? "mangler")
+    : null;
+  const neste = nesteLinje(ko?.venter ?? [], id);
+  const nesteHref = neste && linjeHref(neste, liste, "&k=venter");
 
-  useEffect(() => {
-    fetch("/api/beslutninger")
-      .then((r) => (r.ok ? r.json() : Promise.reject()))
-      .then((alle: Beslutning[]) =>
-        setB(alle.find((x) => x.slug === slug) ?? "mangler"),
-      )
-      .catch(() => setB("mangler"));
-  }, [slug]);
+  // P in the next item comes back here.
+  useEffect(() => skrivHistorikk(besøk(lesHistorikk(), id)), [id]);
 
   const lagre = async () => {
     if (valgt === null || !b || b === "mangler" || b.svar) return;
@@ -33,7 +50,13 @@ export function BeslutningVisning({ id }: { id: string }) {
       body: JSON.stringify({ id, valg: valgt, hvorfor }),
     });
     if (!r.ok) return setFeil(await r.text());
-    setB((await r.json()).beslutning);
+    const ny: Beslutning = (await r.json()).beslutning;
+    d.settServer((s) => ({
+      ...s,
+      beslutninger: (s.beslutninger ?? []).map((x) =>
+        x.slug === slug ? ny : x,
+      ),
+    }));
     setFeil("");
   };
 
@@ -44,8 +67,12 @@ export function BeslutningVisning({ id }: { id: string }) {
       const iTekst = (ev.target as HTMLElement).tagName === "TEXTAREA";
       const n = Number(ev.key);
       if (!iTekst && n >= 1 && n <= b.valg.length) setValgt(n - 1);
-      else if (ev.key === "Enter" && !ev.shiftKey) void lagre();
-      else return;
+      else if (!iTekst && ev.key.toLowerCase() === "n" && nesteHref)
+        router.push(nesteHref);
+      else if (ev.key === "Enter" && !ev.shiftKey) {
+        if (b.svar && nesteHref) router.push(nesteHref);
+        else void lagre();
+      } else return;
       ev.preventDefault();
     };
     window.addEventListener("keydown", ned);
@@ -127,8 +154,22 @@ export function BeslutningVisning({ id }: { id: string }) {
           {feil && <p className="text-(--christmas-red)">{feil}</p>}
         </>
       )}
+      {nesteHref ? (
+        <Link
+          href={nesteHref}
+          data-testid="neste"
+          className="inline-block min-h-11 px-4 py-2 border-2 border-(--gold) text-(--gold)"
+        >
+          {neste!.type === "beslutning" ? "Neste beslutning" : "Neste i køen"} →
+          (N)
+        </Link>
+      ) : (
+        b.svar && <p>Ingen flere venter på deg.</p>
+      )}
       <p className="text-base text-(--neon-green)/80">
-        1–{b.valg.length} velg · Enter lagrer · ⇧Enter ny linje
+        {b.svar
+          ? "N eller Enter: neste"
+          : `1–${b.valg.length} velg · Enter lagrer · ⇧Enter ny linje · N neste`}
       </p>
     </div>
   );

@@ -7,7 +7,14 @@ import { useCallback, useEffect, useState } from "react";
 import { Kort, type Sesong } from "../_kveld/felles";
 import { TaIBruk, kilde } from "../media/kort";
 import { DagManus, DagManusFremdrift } from "./visning";
-import { besøk, lesHistorikk, skrivHistorikk, tilbake } from "./historikk";
+import {
+  besøk,
+  fraNettleser,
+  harForrige,
+  lesHistorikk,
+  skrivHistorikk,
+  tilbake,
+} from "./historikk";
 import { SegmentBar, StatusBrikke, useCelle, useData, useKo } from "./celle";
 import { GJENSTAAR } from "../media/filter";
 import { SkjulVurder, Vurder, taggTast, vurderTast } from "../vurdering";
@@ -143,7 +150,7 @@ export function Vurdering({
 
   const eid = e?.id;
   useEffect(() => {
-    if (eid) skrivHistorikk(besøk(lesHistorikk(), eid));
+    if (eid) skrivHistorikk(besøk(lesHistorikk(), eid, fraNettleser()));
   }, [eid]);
   // P: back to the item viewed before, wherever it sits in the list.
   const gåTilbake = useCallback(() => {
@@ -152,8 +159,7 @@ export function Vurdering({
     skrivHistorikk(s);
     router.push(lenke(mål));
   }, [router, lenke]);
-  const harForrigeSett =
-    typeof window !== "undefined" && lesHistorikk().length > 1;
+  const harForrigeSett = harForrige(eid);
 
   useEffect(() => {
     const ned = (ev: KeyboardEvent) => {
@@ -238,12 +244,19 @@ export function Vurdering({
             {dagF ? `‹ Dag ${dagF}` : "‹ Kø"}
           </Link>
           <div className="flex items-center shrink-0">
+            {/* ‹ is «back»: the item viewed before; the list's previous only when nothing was. */}
             <Link
               href={forrige ? lenke(forrige.id) : "#"}
-              aria-disabled={!forrige}
-              title="Forrige i lista ([ eller Shift+P). P går tilbake til det du så sist."
-              aria-label="Forrige i lista ([)"
-              className={`${pil} ${forrige ? "" : "pointer-events-none opacity-30"}`}
+              onClick={(ev) => {
+                if (!harForrigeSett) return;
+                ev.preventDefault();
+                gåTilbake();
+              }}
+              aria-disabled={!forrige && !harForrigeSett}
+              data-testid="forrige"
+              title="Tilbake til det du så sist (P). Forrige i lista: [ eller Shift+P."
+              aria-label="Tilbake til sist sett (P)"
+              className={`${pil} ${forrige || harForrigeSett ? "" : "pointer-events-none opacity-30"}`}
             >
               ‹
             </Link>
@@ -264,17 +277,6 @@ export function Vurdering({
               ›
             </Link>
           </div>
-          {harForrigeSett && (
-            <button
-              type="button"
-              onClick={gåTilbake}
-              title="Tilbake til det du så sist (P), som nettleserens tilbake"
-              aria-label="Sist sett (P)"
-              className={pil}
-            >
-              ↶
-            </button>
-          )}
           <button
             type="button"
             aria-expanded={filterÅpen}
@@ -312,7 +314,8 @@ export function Vurdering({
             <p className="absolute right-0 top-full z-30 w-80 max-w-[90vw] p-2 bg-black border border-(--neon-green) text-base">
               G godkjent · O OK · L lag på nytt (skriv notat, Enter lagrer) · ?
               trenger mer · ⇧1–9 merke · T tidskode · N/] neste · ⇧N neste
-              uvurdert · [ eller ⇧P forrige i lista · P tilbake til sist sett
+              uvurdert · P eller ‹ tilbake til sist sett · [ eller ⇧P forrige i
+              lista
             </p>
           </details>
         </nav>

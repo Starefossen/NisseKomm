@@ -7,10 +7,16 @@ import { type Sesong } from "../_kveld/felles";
 import { useData, useKo } from "./celle";
 import { taggTelling } from "@/lib/vurdering-tagger";
 import { TRENGER, type TrengerHva } from "@/lib/trenger";
-import { FREMDRIFT, prioritetFor, prioritetTekst, type Linje } from "./ko";
+import {
+  FREMDRIFT,
+  linjeHref,
+  prioritetFor,
+  prioritetTekst,
+  type Linje,
+} from "./ko";
 import { Fremdriftslinjer } from "./fremdrift";
 import { Forslag, Regler } from "./laerdom";
-import { FANER, Fane, SIDE, href, knapp, kr } from "./felles";
+import { FANER, Fane, SIDE, knapp, kr } from "./felles";
 
 export function Ko({
   d,
@@ -55,10 +61,7 @@ export function Ko({
   const antallP = new Set(
     ko?.venter.filter((l) => l.prioritet).map((l) => l.prioritet!.fil),
   ).size;
-  const lenke = (l: Linje) =>
-    liste.some((e) => e.id === l.id) || l.id.startsWith("beslutning/")
-      ? href(l.id, (l.seg ? `&s=${l.seg}` : "") + (st ? "" : `&k=${fane}`))
-      : "/nissemor-guide/media";
+  const lenke = (l: Linje) => linjeHref(l, liste, st ? "" : `&k=${fane}`);
 
   useEffect(() => {
     const ned = (ev: KeyboardEvent) => {
@@ -94,6 +97,15 @@ export function Ko({
     fane === "laerdom" ? [...new Set(linjer.map((l) => l.type))] : [null];
   return (
     <>
+      {ko.venter[0] && (
+        <Link
+          href={linjeHref(ko.venter[0], liste, "&k=venter")}
+          data-testid="start"
+          className={`${knapp} break-all`}
+        >
+          Start: neste i køen ({ko.venter[0].tittel})
+        </Link>
+      )}
       <p className="text-lg" data-testid="budsjett">
         Forbruk siden {Number(f.fra.slice(8))}.{Number(f.fra.slice(5, 7))}.:{" "}
         <span className="text-(--gold)">{kr(f.brukt)} kr</span> brukt,{" "}

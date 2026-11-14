@@ -23,6 +23,51 @@ import type { Arbeid, Prioritet, Spørsmål, Tråd } from "@/lib/vurdering-lager
  * «Venter på deg» = Hans has something to look at, «Hos agent» = a generation
  * or an edit is next, «Lærdom» = notes on approved/OK items.
  */
+/**
+ * N from a beslutning: the line after it in «Venter på deg»; once answered (gone
+ * from the queue) the first line, where the open beslutninger sit.
+ */
+export function nesteLinje(venter: Linje[], id: string): Linje | undefined {
+  const i = venter.findIndex((l) => l.id === id);
+  return venter.slice(i + 1).find((l) => l.id !== id);
+}
+
+/**
+ * Where a queue line opens: always an item in Gjennomgang, never Filer. A segment id
+ * (`…#sK`) opens its day's element with the segment chosen (`&s=K`), a file its element.
+ */
+export function linjeMål(
+  l: Pick<Linje, "id" | "seg" | "prioritet">,
+  liste: Element[],
+): { id: string; seg?: number } {
+  const m = l.id.match(/^(.*)#s(\d+)$/);
+  const fil = m ? m[1] : l.id;
+  // A priority on one segment of the line's day opens that segment.
+  const seg =
+    l.seg ??
+    (Number((m ?? l.prioritet?.fil.match(/^(.*)#s(\d+)$/))?.[2]) || undefined);
+  const el =
+    liste.find((e) => e.id === fil) ??
+    liste.find((e) =>
+      e.media.some(
+        (x) =>
+          versionKey(x) === versionKey(fil) ||
+          versionKey(x).replace(/\.\w+$/, "") === fil,
+      ),
+    );
+  return { id: el?.id ?? fil, ...(seg ? { seg } : {}) };
+}
+
+/** The line's link: `?id=` (+ `&s=` segment), then `ekstra` (the tab). */
+export const linjeHref = (
+  l: Pick<Linje, "id" | "seg" | "prioritet">,
+  liste: Element[],
+  ekstra = "",
+) => {
+  const mål = linjeMål(l, liste);
+  return `/nissemor-guide/gjennomgang?id=${encodeURIComponent(mål.id)}${mål.seg ? `&s=${mål.seg}` : ""}${ekstra}`;
+};
+
 export interface Linje {
   /** The id the line opens (`?id=` when it is a Gjennomgang element). */
   id: string;

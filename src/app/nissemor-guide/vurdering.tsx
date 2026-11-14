@@ -185,10 +185,10 @@ export function Vurder({ id }: { id: string }) {
 
 /** Row 2: verdict buttons, note and «Merker ▸»; the tags drop to a row of their own only when open. */
 function VurderBoks({ id, v }: { id: string; v?: MediaVurderingItem }) {
-  const [åpen, setÅpen] = useState(false);
+  // null = not clicked yet: open when a tag or timecode is set. A click always wins.
+  const [åpen, setÅpen] = useState<boolean | null>(null);
   const merker = taggerFor(id).length > 0;
-  // Open while the note has focus or a tag/timecode is set.
-  const vis = åpen || (v?.tagger?.length ?? 0) > 0 || v?.tid !== undefined;
+  const vis = åpen ?? ((v?.tagger?.length ?? 0) > 0 || v?.tid !== undefined);
   return (
     // Keyed by id: Neste must never carry a note, tags or feedback to the next item.
     <div
@@ -206,7 +206,7 @@ function VurderBoks({ id, v }: { id: string; v?: MediaVurderingItem }) {
             <button
               type="button"
               aria-expanded={vis}
-              onClick={() => setÅpen(!åpen)}
+              onClick={() => setÅpen(!vis)}
               className="min-h-11 px-1 text-sm text-(--neon-green)/80 underline whitespace-nowrap"
             >
               Merker {vis ? "▾" : "▸"}
@@ -241,7 +241,7 @@ function Tagger({
     void kjør(() => lagreTagger(id, o));
   return (
     <div
-      className={`${vis ? "flex" : "hidden group-focus-within:flex"} flex-wrap items-center gap-1 mt-1 text-base`}
+      className={`${vis ? "flex" : "hidden"} flex-wrap items-center gap-1 mt-1 text-base`}
     >
       <span className="flex flex-wrap items-center gap-1">
         {liste.map((t, i) => {

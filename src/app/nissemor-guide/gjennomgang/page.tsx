@@ -26,7 +26,8 @@ function Gjennomgang() {
           (e) => e.dag === dagF,
         )?.id
       : undefined;
-  if (id?.startsWith("beslutning/")) return <BeslutningVisning id={id} />;
+  if (id?.startsWith("beslutning/"))
+    return <BeslutningVisning key={id} id={id} d={d} sesong={d.sesong} />;
   if (id || forsteIDag)
     return <Vurdering id={(id ?? forsteIDag)!} d={d} sesong={d.sesong} />;
   return (

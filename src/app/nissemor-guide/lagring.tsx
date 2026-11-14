@@ -47,15 +47,18 @@ export function Lagremelding({
   className?: string;
 }) {
   return (
+    // The slot is always there («✓ Lagret» wide), so the row never jumps when the text comes and goes.
     <span
       aria-live="polite"
       data-lagring={status?.s ?? ""}
-      className={className}
+      className={`inline-block min-w-[9ch] ${className}`}
     >
       {status?.s === "lagrer" ? (
-        <span className="text-(--gold) animate-pulse">Lagrer…</span>
+        <span className="text-(--gold) animate-pulse whitespace-nowrap">
+          Lagrer…
+        </span>
       ) : status?.s === "lagret" ? (
-        <span className="text-(--gold)">{status.tekst}</span>
+        <span className="text-(--gold) whitespace-nowrap">{status.tekst}</span>
       ) : status?.s === "feil" ? (
         <span className="text-(--christmas-red)">
           Ikke lagret: {status.grunn}
