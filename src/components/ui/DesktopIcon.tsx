@@ -60,7 +60,7 @@ export function DesktopIcon({
         ${isNew ? "border-(--gold)!" : ""}
         ${
           disabled
-            ? "border-(--gray) opacity-60 cursor-not-allowed"
+            ? "border-(--gray) cursor-not-allowed"
             : "border-transparent hover:border-(--neon-green) hover:bg-(--neon-green)/10 hover:shadow-[0_0_15px_color-mix(in_oklab,var(--brass)_40%,transparent)] active:scale-95 cursor-pointer"
         }
         ${isShaking ? "animate-[lock-shake_0.3s_ease-in-out]" : ""}
@@ -106,7 +106,7 @@ export function DesktopIcon({
         {label}
       </span>
       {teaser && (
-        <span className="text-sm leading-none whitespace-nowrap text-(--gray)">
+        <span className="text-base leading-none whitespace-nowrap text-(--gray)">
           {teaser}
         </span>
       )}

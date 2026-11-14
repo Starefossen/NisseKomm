@@ -222,7 +222,7 @@ export function NisseNetUtforsker({
           <div key={path}>
             <button
               onClick={() => toggleFolder(path)}
-              className="flex items-center gap-2 w-full text-left py-1 px-2 hover:bg-(--neon-green)/10 transition-colors"
+              className="flex items-center gap-2 w-full min-h-11 text-left py-1 px-2 hover:bg-(--neon-green)/10 transition-colors"
               style={{ paddingLeft: `${depth * 16 + 8}px` }}
             >
               {isExpanded ? (
@@ -259,7 +259,7 @@ export function NisseNetUtforsker({
               }
             }}
             className={`
-              flex items-center gap-2 w-full text-left py-1 px-2 transition-colors
+              flex items-center gap-2 w-full min-h-11 text-left py-1 px-2 transition-colors
               ${
                 selectedFile?.navn === node.navn
                   ? "bg-(--cold-blue)/20 border-l-2 border-(--cold-blue)"
@@ -394,7 +394,7 @@ export function NisseNetUtforsker({
                 ) : (
                   <div
                     aria-live="polite"
-                    className="text-base leading-relaxed whitespace-pre-wrap"
+                    className="text-lg md:text-xl leading-relaxed whitespace-pre-wrap"
                   >
                     {moro.tekst}
                   </div>
@@ -414,7 +414,7 @@ export function NisseNetUtforsker({
                   </span>
                 </div>
 
-                <div className="text-base leading-relaxed whitespace-pre-wrap">
+                <div className="text-lg md:text-xl leading-relaxed whitespace-pre-wrap">
                   {selectedFile.innhold
                     ? selectedFile.innhold
                         .split("\n")

@@ -335,7 +335,7 @@ export function NisseMusikk({ onClose, autoPlay = false }: NisseMusikkProps) {
                 value={volume}
                 onChange={handleVolumeChange}
                 aria-label="Volum"
-                className="w-28 accent-(--neon-green) cursor-pointer"
+                className="w-36 min-h-11 accent-(--neon-green) cursor-pointer"
               />
               <span className="text-base font-retro text-(--neon-green) w-10 text-right">
                 {Math.round(volume * 100)}%

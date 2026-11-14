@@ -318,6 +318,20 @@ export default function Home() {
       ? 1
       : (GameEngine.getFrostLevel() ?? 0) / 100
     : 0;
+  // iOS keyboard: Safari shrinks the visual viewport but leaves the field under the keys
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const vis = () => {
+      const el = document.activeElement;
+      if (el instanceof HTMLElement && el.matches("input, textarea")) {
+        el.scrollIntoView({ block: "center", behavior: "smooth" });
+      }
+    };
+    vv.addEventListener("resize", vis);
+    return () => vv.removeEventListener("resize", vis);
+  }, []);
+
   useEffect(() => {
     document.documentElement.style.setProperty("--frost", String(frost));
   }, [frost]);
@@ -456,6 +470,13 @@ export default function Home() {
                 <div className="flex items-center justify-center min-h-full p-3 pt-16 md:p-4 md:pt-16 lg:pt-4">
                   <div className="w-full max-w-7xl 2xl:max-w-[88rem] grid gap-2 lg:gap-4 lg:grid-cols-[2fr_3fr] lg:items-start">
                     <section className="w-full max-w-xl mx-auto">
+                      {/* Portrait: the sidebar hides behind the menu, so the newest alert shows here */}
+                      <VarselKonsoll
+                        alerts={varsler}
+                        currentDay={getCurrentDay()}
+                        max={1}
+                        className="lg:hidden mb-2 bg-(--dark-crt)"
+                      />
                       <h2 className="mb-1 text-lg tracking-wider text-(--brass)">
                         I DAG
                       </h2>

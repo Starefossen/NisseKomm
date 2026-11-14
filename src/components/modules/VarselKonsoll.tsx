@@ -8,6 +8,8 @@ import { GameEngine } from "@/lib/game-engine";
 interface VarselKonsollProps {
   alerts: Varsel[]; // Base alerts (fallback)
   currentDay?: number;
+  max?: number;
+  className?: string;
 }
 
 const COLOR = {
@@ -17,7 +19,12 @@ const COLOR = {
 } as const;
 
 /** The three latest alerts under the thermometer; still, no box (design-revisjon P2 #9, #11). */
-export function VarselKonsoll({ alerts, currentDay }: VarselKonsollProps) {
+export function VarselKonsoll({
+  alerts,
+  currentDay,
+  max = 3,
+  className = "",
+}: VarselKonsollProps) {
   const [dynamicAlerts, setDynamicAlerts] = useState<Varsel[]>(() =>
     typeof window !== "undefined"
       ? GameEngine.getDailyAlerts(currentDay || 1)
@@ -31,8 +38,8 @@ export function VarselKonsoll({ alerts, currentDay }: VarselKonsollProps) {
   }, [currentDay]);
 
   return (
-    <ul className="space-y-2 text-base" aria-label="Varsler">
-      {dynamicAlerts.slice(0, 3).map((alert, index) => {
+    <ul className={`space-y-2 text-base ${className}`} aria-label="Varsler">
+      {dynamicAlerts.slice(0, max).map((alert, index) => {
         const [icon, text, border] = COLOR[alert.type] ?? COLOR.info;
         return (
           <li

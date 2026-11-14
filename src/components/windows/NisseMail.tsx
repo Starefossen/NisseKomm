@@ -372,7 +372,7 @@ export function NisseMail({
                   SPAM - Rampenissen-filteret fanget denne
                 </div>
               </div>
-              <div className="text-lg leading-relaxed whitespace-pre-wrap">
+              <div className="text-lg md:text-xl leading-relaxed whitespace-pre-wrap">
                 {spam.tekst}
               </div>
             </div>
@@ -461,7 +461,7 @@ export function NisseMail({
 
                     {/* Crisis description */}
                     <div className="p-4 border-2 border-(--gold) bg-(--gold)/10">
-                      <div className="text-lg leading-relaxed whitespace-pre-wrap text-(--gold)">
+                      <div className="text-lg md:text-xl leading-relaxed whitespace-pre-wrap text-(--gold)">
                         {selectedMission.bonusoppdrag.beskrivelse}
                       </div>
                     </div>
@@ -599,7 +599,7 @@ export function NisseMail({
                   <div className="flex-1 lg:overflow-y-auto space-y-4 lg:min-h-0 pr-2">
                     {/* Mission description */}
                     <div className="p-4 border-2 border-(--neon-green)/50 bg-black/30">
-                      <div className="text-lg leading-relaxed whitespace-pre-wrap">
+                      <div className="text-lg md:text-xl leading-relaxed whitespace-pre-wrap">
                         {selectedMission.nissemail_tekst}
                       </div>
                     </div>
