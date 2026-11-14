@@ -1,11 +1,28 @@
 import type { NextConfig } from "next";
 
+const NAVN = /Kristian|KRISTIAN|Håkon|HÅKON|Hanna|HANNA|Landås|LANDÅS/;
+
 const nextConfig: NextConfig = {
   // AGENTS.md is maintained by hand; stop next dev from appending its own block
   agentRules: false,
   reactCompiler: true,
   output: "standalone",
   poweredByHeader: false,
+  // Browser bundles name nobody: see scripts/navn-loader.cjs.
+  turbopack: {
+    rules: Object.fromEntries(
+      ["ts", "tsx", "json"].map((ext) => [
+        `*.${ext}`,
+        {
+          condition: {
+            all: ["browser", { content: NAVN }],
+          },
+          loaders: [require.resolve("./scripts/navn-loader.cjs")],
+          as: `*.${ext}`,
+        },
+      ]),
+    ),
+  },
   async headers() {
     return [
       {

@@ -13,6 +13,7 @@
  * 5. Testable - Pure functions for game logic, side effects isolated
  */
 
+import { fyll } from "@/lib/navn";
 import {
   StorageManager,
   type EventyrSave,
@@ -461,6 +462,7 @@ export class GameEngine {
     spiller?: string | null,
     utfordringDag?: number,
   ): SledeResultat {
+    spiller = spiller && fyll(spiller);
     const alle = this.getSledeResultater();
     // One whole run is kept: most bells, then most points. A failed run
     // (0 bells) still counts as a best score until a finished one beats it.
@@ -488,7 +490,7 @@ export class GameEngine {
   }
 
   static setSledeSpiller(navn: string | null): void {
-    StorageManager.setSledeSpiller(navn);
+    StorageManager.setSledeSpiller(navn && fyll(navn));
   }
 
   static getSkjermId(): string {
@@ -698,7 +700,7 @@ export class GameEngine {
   }
 
   static addSantaLetter(day: number, content: string, from?: string): void {
-    StorageManager.addSantaLetter(day, content, from);
+    StorageManager.addSantaLetter(day, content, from && fyll(from));
   }
 
   /**
@@ -992,7 +994,7 @@ export class GameEngine {
   }
 
   static setPlayerNames(names: string[]): void {
-    StorageManager.setPlayerNames(names);
+    StorageManager.setPlayerNames(names.map(fyll));
   }
 
   static addEarnedBadge(badgeId: string): void {

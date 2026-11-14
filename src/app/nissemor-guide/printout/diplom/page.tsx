@@ -1,5 +1,6 @@
 "use client";
 
+import { fyll } from "@/lib/navn";
 import { Suspense, useState } from "react";
 import { GuideAuth } from "@/components/nissemor/GuideAuth";
 import { GuideNavigation } from "@/components/nissemor/GuideNavigation";
@@ -10,7 +11,7 @@ import { Utskrift } from "../_print/Utskrift";
 export function Diplom() {
   const [navn] = useState<string[]>(() => {
     const lagret = GameEngine.getPlayerNames();
-    return lagret.length > 0 ? lagret : ["Kristian", "Håkon", "Hanna"];
+    return lagret.length > 0 ? lagret : ["Kristian", "Håkon", "Hanna"].map(fyll);
   });
   return (
     <Utskrift

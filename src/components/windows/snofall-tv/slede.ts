@@ -6,6 +6,7 @@
  * «varde» in the code is the golden ring the sled flies through (RINGER in the HUD);
  * the name stays because saved results and stage ids use it.
  */
+import { fyll } from "@/lib/navn";
 
 export type EtappeId =
   | "tundra"
@@ -326,6 +327,8 @@ export const åpnerTekst = (dag: number) =>
 
 /** The two pilots with their own high scores (Hanna, 5, flies on a brother's name). */
 export const SPILLERE = ["Kristian", "Håkon"] as const;
+/** SPILLERE with real names in the browser (see lib/navn.ts). */
+export const spillere = () => SPILLERE.map(fyll);
 
 export type TingType =
   | "varde"

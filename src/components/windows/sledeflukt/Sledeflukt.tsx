@@ -22,7 +22,7 @@ import {
   pakkenavn,
   radiolinje,
   rekkeMult,
-  SPILLERE,
+  spillere,
   utfordringStatus,
   åpnerTekst,
   type Hendelse,
@@ -207,7 +207,7 @@ function Etappeflukt({
   // Who is flying: their own bells and best show on the start and result screens.
   const [spiller, setSpillerState] = useState<string | null>(() => {
     const s = GameEngine.getSledeSpiller();
-    return s && (SPILLERE as readonly string[]).includes(s) ? s : null;
+    return s && spillere().includes(s) ? s : null;
   });
   const spillerRef = useRef(spiller);
   const setSpiller = (n: string) => {
@@ -1345,7 +1345,7 @@ function Etappeflukt({
                   <thead>
                     <tr className="opacity-70">
                       <th className="pr-3 font-normal">ETAPPE</th>
-                      {[...SPILLERE, "FAMILIEN"].map((n) => (
+                      {[...spillere(), "FAMILIEN"].map((n) => (
                         <th key={n} className="px-2 font-normal text-right">
                           {n.toUpperCase()}
                         </th>
@@ -1356,7 +1356,7 @@ function Etappeflukt({
                     {åpne.map((e) => (
                       <tr key={e.id}>
                         <td className="pr-3">{e.navn}</td>
-                        {[...SPILLERE.map((n) => `${n}/${e.id}`), e.id].map(
+                        {[...spillere().map((n) => `${n}/${e.id}`), e.id].map(
                           (k) => (
                             <td key={k} className="px-2 text-right">
                               {alle[k] ? (
@@ -1400,7 +1400,7 @@ function Etappeflukt({
                   <span className={spiller ? "opacity-70" : "text-(--gold)"}>
                     {spørHvem ? "VELG HVEM SOM FLYR:" : "HVEM FLYR?"}
                   </span>
-                  {SPILLERE.map((n) => (
+                  {spillere().map((n) => (
                     <button
                       key={n}
                       type="button"
@@ -1446,7 +1446,7 @@ function Etappeflukt({
                 </div>
                 <div className="text-base leading-tight">«{etappe.intro}»</div>
                 <div className="text-sm opacity-80 tabular-nums leading-tight">
-                  {SPILLERE.map((n) => {
+                  {spillere().map((n) => {
                     const r = GameEngine.getSledeResultaterFor(n)[etappe.id];
                     return (
                       <span key={n} className="mx-1">
@@ -1705,7 +1705,7 @@ function Rekordliste({
     { poeng: number; bjeller: number } | undefined,
     boolean,
   ][] = [
-    ...SPILLERE.map(
+    ...spillere().map(
       (
         n,
       ): [string, { poeng: number; bjeller: number } | undefined, boolean] => [

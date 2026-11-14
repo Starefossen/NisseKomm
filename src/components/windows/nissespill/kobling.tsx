@@ -10,7 +10,7 @@
 import { GameEngine } from "@/lib/game-engine";
 import type { SantaLetter, SledeResultat } from "@/lib/storage";
 import { RuneText } from "@/components/ui/Frostrune";
-import { ETAPPER, SPILLERE } from "@/components/windows/snofall-tv/slede";
+import { ETAPPER, spillere } from "@/components/windows/snofall-tv/slede";
 import { Skriv } from "./UgleIntro";
 
 export const RUNE_LINE = "ᚱ:";
@@ -41,7 +41,7 @@ const tall = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 
 /** Winter's voice, light Bergen. Each player's best run across the stages. */
 export function rekordTekst(alle: Record<string, SledeResultat>): string {
-  const linjer = SPILLERE.flatMap((navn) => {
+  const linjer = spillere().flatMap((navn) => {
     const egne = Object.entries(alle)
       .filter(([k]) => k.startsWith(`${navn}/`))
       .map(([k, r]) => ({

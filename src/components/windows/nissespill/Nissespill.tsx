@@ -16,7 +16,7 @@ import { Portrett, Skriv, UgleIntro } from "./UgleIntro";
 import { Kartplate } from "./Kartplate";
 import { Tekst } from "./kobling";
 import { getISOString } from "@/lib/date-utils";
-import { SPILLERE } from "../snofall-tv/slede";
+import { spillere } from "../snofall-tv/slede";
 
 const DEV =
   process.env.NODE_ENV !== "production" ||
@@ -476,7 +476,7 @@ export function Nissespill({ onClose }: { onClose: () => void }) {
           {/* Per screen, shared with SLEDEFLUKT: the other screen sees who is playing */}
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xl">Hvem spiller her?</span>
-            {SPILLERE.map((n) => (
+            {spillere().map((n) => (
               <button
                 key={n}
                 type="button"

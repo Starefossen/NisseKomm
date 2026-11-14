@@ -1,5 +1,6 @@
 "use client";
 
+import { fyll } from "@/lib/navn";
 import { mediaUrl } from "@/lib/media";
 import { useEffect, useState, type CSSProperties } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
@@ -152,7 +153,8 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
   };
 
   const dagensFugler = letters.filter((l) => l.day === dag && l.from);
-  const perSkriver = SKRIVERE.map(({ navn }) => ({
+  const skrivere = SKRIVERE.map((s) => ({ ...s, navn: fyll(s.navn) }));
+  const perSkriver = skrivere.map(({ navn }) => ({
     navn,
     antall: letters.filter((l) => l.from === navn).length,
   })).filter((s) => s.antall > 0);
@@ -285,7 +287,7 @@ export function Brevfugler({ onClose }: BrevfuglerProps) {
           <div className="flex flex-col gap-2 min-h-0">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-base font-bold">HVEM SKRIVER?</span>
-              {SKRIVERE.map(({ navn, ikon }) => (
+              {skrivere.map(({ navn, ikon }) => (
                 <button
                   key={navn}
                   type="button"

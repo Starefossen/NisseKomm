@@ -1,5 +1,6 @@
 "use client";
 
+import { fyll } from "@/lib/navn";
 import { useEffect, useRef, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { SoundManager } from "@/lib/sounds";
@@ -324,7 +325,7 @@ export function FriFlyging({
         case "bergen":
           l?.fanfare();
           say(
-            o.landås ? "VELKOMMEN TIL LANDÅS" : "VELKOMMEN TIL BERGEN",
+            o.landås ? fyll("VELKOMMEN TIL LANDÅS") : "VELKOMMEN TIL BERGEN",
             "#00ff8a",
           );
           break;
