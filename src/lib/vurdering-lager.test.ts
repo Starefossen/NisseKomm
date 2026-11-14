@@ -1,10 +1,11 @@
 /** @jest-environment node */
 import { describe, it, expect } from "@jest/globals";
 import { existsSync, readFileSync } from "node:fs";
-import { mkdtemp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, utimes, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import {
+  medLås,
   endreLager,
   flat,
   lesLager,
@@ -200,6 +201,26 @@ for i in range(25):
     expect(ider.filter((k) => k.startsWith("ts"))).toHaveLength(25);
     expect(existsSync(`${fil}.lock`)).toBe(false);
   }, 30_000);
+});
+
+describe("medLås", () => {
+  it("removes a lock left over 30 s ago, like medie.lås", async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), "lås-"));
+    const fil = path.join(dir, "media-vurdering.json");
+    await writeFile(`${fil}.lock`, "");
+    const gammel = (Date.now() - 31_000) / 1000;
+    await utimes(`${fil}.lock`, gammel, gammel);
+    expect(await medLås(fil, async () => "ok")).toBe("ok");
+    expect(existsSync(`${fil}.lock`)).toBe(false);
+  });
+
+  it("waits on a fresh lock and gives up", async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), "lås-"));
+    const fil = path.join(dir, "media-vurdering.json");
+    await writeFile(`${fil}.lock`, "");
+    await expect(medLås(fil, async () => "ok")).rejects.toThrow("er låst");
+    expect(existsSync(`${fil}.lock`)).toBe(true);
+  }, 15_000);
 });
 
 describe("nyesteSegmenter", () => {

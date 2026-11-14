@@ -12,6 +12,5 @@
       "src/app/**/page.{ts,tsx}",
       "src/middleware.{ts,tsx}"
     ]
-  },
-  "ignore": [".claude/**", ".tmp/**", ".tmp-*/**"]
+  }
 }

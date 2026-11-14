@@ -12,3 +12,12 @@ public/feed
 public/music
 assets
 public/_arkiv
+# Data and parent-only media: served via /media from MEDIA_DIR behind login, never as static files
+public/media-vurdering.json
+public/media-vurdering.json.lock
+public/media-inventar.json
+public/media-promoteringer.log
+public/audio
+public/spill
+public/promo
+public/strek

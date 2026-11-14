@@ -1,11 +1,5 @@
 import type { MediaStatus } from "@/lib/media";
-import {
-  celleFor,
-  familie,
-  variantOf,
-  type Celle,
-  type StatusKilde,
-} from "@/lib/media-status";
+import { variantOf } from "@/lib/media-status";
 import { frostLevelFor, frostModeFor } from "@/lib/frost";
 import {
   CHANNELS,
@@ -19,49 +13,6 @@ import {
 } from "@/components/windows/snofall-tv/channels";
 
 const pad = (n: number) => String(n).padStart(2, "0");
-
-/** TV changes per day (historie-2026 §9). Empty files = code only. */
-const TV_EVENTS: Record<number, { name: string; files: string[] }> = {
-  1: { name: "Innsøking 85,0 → 90,0", files: [] },
-  3: { name: "Første spøkelsesbilde", files: ["video/tv/grotte-rolig.mp4"] },
-  7: { name: "Kuldes signatur", files: [] },
-  10: { name: "Fargene forsvinner", files: [] },
-  11: { name: "Antennen jammes", files: ["video/tv/antenne-dag11.mp4"] },
-  12: { name: "Sukket i isen", files: ["video/tv/grotte-dag12.mp4"] },
-  14: { name: "Brevfugl fra grotten", files: ["video/tv/kontor-dag14.mp4"] },
-  15: { name: "Vintervokteren", files: ["video/tv/grotte-dag15.mp4"] },
-  17: { name: "Nordlys", files: ["video/tv/landsby-nordlys.mp4"] },
-  18: { name: "Kastevind", files: ["video/tv/landsby-storm.mp4"] },
-  20: { name: "Varselet (flimmer)", files: [] },
-  21: { name: "Muren og porten", files: ["video/tv/grotte-dag21.mp4"] },
-  23: { name: "Sannheten", files: ["video/tv/grotte-dag23.mp4"] },
-  24: {
-    name: "Tøvær",
-    files: ["video/tv/landsby-dag24.mp4", "video/tv/grotte-dag24.mp4"],
-  },
-};
-
-export type CellState = Celle | "kode";
-
-export interface ItemStatus {
-  label: string;
-  files: string[];
-  /** Every file in use present (true for code-only TV events). */
-  ok: boolean;
-  state: CellState;
-  /** Verdict note on the file in use. */
-  note?: string;
-  /** The newer candidate and its state («→ v4 ✓»). */
-  kandidat?: { navn: string; celle: Celle };
-}
-
-export interface DayRow {
-  day: number;
-  julius: ItemStatus;
-  rampenissen: ItemStatus;
-  /** null: nothing changes on TV that day. */
-  tv: ItemStatus | null;
-}
 
 /** «Versjon vK» for a Julius variant, null for the main file. */
 export const variantLabel = (path: string) => {
@@ -80,42 +31,6 @@ export function juliusFiles(
     .filter((p) => p.startsWith(`video/julius/dag-${pad(day)}-v`))
     .sort((a, b) => variantOf(b) - variantOf(a));
   return [...variants, main];
-}
-
-export function dayRows(
-  files: MediaStatus[],
-  review: Omit<StatusKilde, "filer"> = { vurderinger: {} },
-): DayRow[] {
-  const k = { ...review, filer: files };
-  const item = (label: string, paths: string[]): ItemStatus => {
-    const { celle, familie: f } = celleFor(paths, k);
-    const state: CellState = paths.length ? celle : "kode";
-    return {
-      label,
-      files: paths,
-      ok: paths.every((p) => familie(p, k).iBruk.celle !== "mangler"),
-      state,
-      note: f?.iBruk.notat,
-      kandidat: f?.kandidat && {
-        navn: f.kandidat.navn,
-        celle: f.kandidat.celle,
-      },
-    };
-  };
-  return Array.from({ length: 24 }, (_, i) => {
-    const day = i + 1;
-    const tv = TV_EVENTS[day];
-    return {
-      day,
-      julius: item("Julius-video", [`video/julius/dag-${pad(day)}.mp4`]),
-      rampenissen: item("Rampenissen-klipp", [
-        `audio/rampenissen/dag-${pad(day)}.mp3`,
-      ]),
-      tv: tv
-        ? item(tv.files.length ? tv.name : `${tv.name} (kode)`, tv.files)
-        : null,
-    };
-  });
 }
 
 export interface ChannelView {

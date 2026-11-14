@@ -6,7 +6,6 @@ import {
   mediaPath,
 } from "@/lib/media";
 import {
-  dayRows,
   groupVersions,
   juliusFiles,
   variantLabel,
@@ -39,40 +38,6 @@ describe("manifest groups", () => {
     expect(count("rampenissen")).toBe(24);
     expect(paths).toContain("audio/rampenissen/dag-01.mp3");
     expect(paths).toContain("audio/rampenissen/dag-24.mp3");
-  });
-});
-
-describe("dayRows", () => {
-  const files = paths.map((path) => ({
-    path,
-    size:
-      path === "audio/rampenissen/dag-02.mp3" ||
-      path === "video/tv/grotte-dag24.mp4"
-        ? null
-        : 1,
-  }));
-  const rows = dayRows(files);
-
-  it("maps each day to its files and status", () => {
-    expect(rows).toHaveLength(24);
-    expect(rows[0].julius).toMatchObject({
-      files: ["video/julius/dag-01.mp4"],
-      ok: true,
-    });
-    expect(rows[1].rampenissen.ok).toBe(false);
-    expect(rows[1].tv).toBeNull();
-    expect(rows[9].tv).toMatchObject({ files: [], ok: true }); // day 10: code only
-    expect(rows[16].tv?.files).toEqual(["video/tv/landsby-nordlys.mp4"]);
-    expect(rows[23].tv?.ok).toBe(false);
-  });
-
-  it("only references manifest files", () => {
-    const all = rows.flatMap((r) => [
-      r.julius,
-      r.rampenissen,
-      r.tv ?? r.julius,
-    ]);
-    for (const f of all.flatMap((i) => i.files)) expect(paths).toContain(f);
   });
 });
 
@@ -224,43 +189,5 @@ describe("versjonsgrupper", () => {
       "video/julius/dag-01.mp4",
     ]);
     expect(g[1].newest.path).toBe("audio/rampenissen/dag-01.mp3");
-  });
-});
-
-describe("dagstabell", () => {
-  it("viser vurdering, utdatert og ny versjon", () => {
-    const f = (path: string, size: number | null = 5) => ({ path, size });
-    const rows = dayRows(
-      [
-        f("video/julius/dag-01.mp4"),
-        f("video/julius/dag-02.mp4"),
-        f("video/julius/dag-03-v4.mp4"),
-        f("video/julius/dag-04.mp4"),
-        f("video/julius/dag-05.mp4"),
-      ],
-      {
-        vurderinger: {
-          "video/julius/dag-01.mp4": { vurdering: "godkjent" },
-          "video/julius/dag-02.mp4": {
-            vurdering: "lag_paa_nytt",
-            notat: "munn",
-          },
-        },
-        inventar: new Map([["video/julius/dag-04.mp4", { status: "stale" }]]),
-      },
-    );
-    expect(rows.slice(0, 6).map((r) => r.julius.state)).toEqual([
-      "godkjent",
-      "lag_paa_nytt",
-      "mangler", // only a candidate: nothing in use
-      "ikke_vurdert", // stale is only a hint
-      "ikke_vurdert",
-      "mangler",
-    ]);
-    expect(rows[1].julius.note).toBe("munn");
-    expect(rows[2].julius.kandidat).toEqual({
-      navn: "v4",
-      celle: "ikke_vurdert",
-    });
   });
 });

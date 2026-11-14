@@ -1,6 +1,5 @@
 import { describe, it, expect } from "@jest/globals";
-import { brukbar, familie, type StatusKilde } from "./media-status";
-import { dayRows } from "@/app/nissemor-guide/media/oversikt";
+import { brukbar, celleFor, familie, type StatusKilde } from "./media-status";
 import {
   dagElement,
   tilstand,
@@ -74,16 +73,16 @@ describe("media-status", () => {
     expect(familie("video/julius/dag-04.mp4", k).tekst).toBe("✗");
   });
 
-  it("mediesiden og Gjennomgang gir samme celle", () => {
-    const rows = dayRows(k.filer, k);
+  it("celleFor og Gjennomgang gir samme celle", () => {
     const sesong = { dager: [] } as unknown as Sesong;
     for (const n of [1, 2, 3, 4]) {
       const e = dagElement("julius", n, sesong, k.filer)!;
       const g = tilstand(e, k);
-      const m = rows[n - 1].julius;
-      expect(g.celle).toBe(m.state);
-      expect(g.tekst).toBe(familie(`video/julius/dag-0${n}.mp4`, k).tekst);
-      expect(familie(e.id, k).kandidat?.navn).toBe(m.kandidat?.navn);
+      const fil = `video/julius/dag-0${n}.mp4`;
+      const m = celleFor([fil], k);
+      expect(g.celle).toBe(m.celle);
+      expect(g.tekst).toBe(familie(fil, k).tekst);
+      expect(familie(e.id, k).kandidat?.navn).toBe(m.familie?.kandidat?.navn);
     }
   });
 
