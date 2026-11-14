@@ -22,7 +22,7 @@ const LAMPER: {
 ];
 
 const BATTERI = { x: 93, y: 225 };
-// Terminals on top of the battery: live wires meet at «+», the lamp rail returns to «−».
+// Terminals on top of the battery: live wires meet at «+», the wired lamps' rail returns to «−».
 const PLUSS = { x: BATTERI.x - 14, y: BATTERI.y - 15 };
 const MINUS = { x: BATTERI.x + 14, y: BATTERI.y - 15 };
 const lampeX = (i: number) => 13 + i * 20;
@@ -59,11 +59,19 @@ function Ark8() {
         className="w-[186mm] h-[250mm] mx-auto"
         aria-hidden
       >
-        {/* Return line: one black rail through all nine lamps, down the edge to «−». */}
+        {/* Return line to «−»: a rail above the row with a drop to each wired lamp only (2, 4, 5, 7). */}
         <path
-          d={`M${lampeX(0)} ${LAMPE_Y} H184 V200 H${MINUS.x} V${MINUS.y}`}
+          d={
+            `M${lampeX(1) + 7.5} 7 H184 V200 H${MINUS.x} V${MINUS.y}` +
+            LAMPER.map((l, i) =>
+              l.ledning === "dod"
+                ? ""
+                : ` M${lampeX(i) + 7.5} 7 V${LAMPE_Y - 4}`,
+            ).join("")
+          }
           stroke="black"
           strokeWidth="1.5"
+          strokeLinecap="square"
           fill="none"
         />
         {LAMPER.map((l, i) => (
