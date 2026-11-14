@@ -87,7 +87,7 @@ export function JuliusVideo({
 
       {missing ? (
         <div className="aspect-video w-full border-4 border-(--gold)/60 bg-black flex items-center justify-center text-(--gold) text-xl animate-pulse">
-          SIGNALET ER SVAKT …
+          FORBINDELSEN ER SVAK …
         </div>
       ) : (
         <div className="relative scanline-overlay vignette">

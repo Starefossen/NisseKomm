@@ -243,7 +243,7 @@ ws.addEventListener("message", ({ data }) => {
     errors.push(
       `console.error: ${p.args.map((a) => a.value ?? a.description).join(" ")}`,
     );
-  // A missing Julius video is a designed fallback («SIGNALET ER SVAKT»), not a failure
+  // A missing Julius video is a designed fallback («FORBINDELSEN ER SVAK»), not a failure
   if (
     msg.method === "Log.entryAdded" &&
     p.entry.level === "error" &&
@@ -414,12 +414,12 @@ for (const day of days) {
           );
         })
         .catch((e) => fails.push(e.message));
-      // Without the clip in MEDIA_DIR the designed fallback «SIGNALET ER SVAKT» stands in
+      // Without the clip in MEDIA_DIR the designed fallback «FORBINDELSEN ER SVAK» stands in
       await waitFor(
         async () =>
           (await has(
             `video[aria-label="Julius' video for 1. desember"][poster$="dag-01.jpg"]`,
-          )) || (await text()).includes("SIGNALET ER SVAKT"),
+          )) || (await text()).includes("FORBINDELSEN ER SVAK"),
         8000,
         "Dagbok viser ikke Julius' video dag 1 (plakat) etter Day1Boot",
       ).catch((e) => fails.push(e.message));

@@ -393,7 +393,8 @@ for (let i = 0; i < days.length; i++) {
     if (day === 1) {
       await waitFor(
         async () =>
-          (await has("video")) || (await text()).includes("SIGNALET ER SVAKT"),
+          (await has("video")) ||
+          (await text()).includes("FORBINDELSEN ER SVAK"),
         8000,
         "Dagbok viser ikke Julius' video dag 1",
       )

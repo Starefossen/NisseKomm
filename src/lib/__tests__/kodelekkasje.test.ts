@@ -16,11 +16,13 @@ const ALLOWED = new Set(["LANDÅS"]);
 // Locked texts that mention a later code in passing. Listed so a new leak
 // still fails; each one is a question for Hans, not a fix.
 const KNOWN = new Set<string>([
-  // Fallback when the day's video file is missing; the playthrough waits for it
-  "SIGNAL i komponent modules/JuliusVideo.tsx",
-  // Canvas text gated in channels.ts: «SIGNAL OVERTATT» with the hijack from
-  // day 3, the signature only on day 7 once it is solved
+  // Canvas text, so the scan cannot see its gate. Kept because the gate is in
+  // channelEffects (channels.ts): «SIGNAL OVERTATT» needs `hijack` (85,0 MHz,
+  // day >= 3; day 3 shows its own ghost line, so the words first appear on
+  // day 4), three days after day 1's code. It follows the date, not the solve.
   "SIGNAL i komponent windows/snofall-tv/LiveCam.tsx",
+  // Kulde's name burns in only with `signature` (day === 7 && solved), i.e.
+  // after the children have typed that very word.
   "KULDE i komponent windows/snofall-tv/LiveCam.tsx",
 ]);
 

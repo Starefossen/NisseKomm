@@ -24,7 +24,7 @@ describe("JuliusVideo", () => {
       el.querySelector("video")!.dispatchEvent(new Event("error"));
     });
 
-    expect(el.textContent).toContain("SIGNALET ER SVAKT");
+    expect(el.textContent).toContain("FORBINDELSEN ER SVAK");
     expect(GameEngine.isJuliusVideoWatched(day)).toBe(false);
   });
 });
