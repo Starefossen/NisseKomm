@@ -5,19 +5,23 @@ const nextConfig: NextConfig = {
   agentRules: false,
   reactCompiler: true,
   output: "standalone",
+  poweredByHeader: false,
   async headers() {
     return [
       {
-        // Symbol scanner needs getUserMedia; default policy would deny camera
         source: "/(.*)",
-        headers: [{ key: "Permissions-Policy", value: "camera=(self)" }],
-      },
-      {
-        source: "/api/(.*)",
         headers: [
-          { key: "X-Content-Type-Options", value: "nosniff" },
+          // Symbol scanner needs getUserMedia; default policy would deny camera
+          { key: "Permissions-Policy", value: "camera=(self)" },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=15552000; includeSubDomains",
+          },
           { key: "X-Frame-Options", value: "DENY" },
-          { key: "X-XSS-Protection", value: "1; mode=block" },
+          // ponytail: frame-ancestors only; a full CSP needs the inline styles and WebGL audited
+          { key: "Content-Security-Policy", value: "frame-ancestors 'none'" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
         ],
       },
     ];
