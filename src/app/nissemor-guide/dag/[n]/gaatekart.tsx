@@ -731,7 +731,7 @@ export function Gaatekart({
           })}
         </ol>
         <p>
-          <b>{fyll("Hanna (hvis hun vil):")}</b> {t(d.hanna)}
+          <b>{fyll("Hanna (hvis hun vil):")}</b> {t(d.yngst)}
         </p>
         <h4 className="text-lg text-(--christmas-red)">Hvis noe er borte</h4>
         <p>{t(d.reserve)}</p>

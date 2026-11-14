@@ -199,7 +199,7 @@ export function kveldDag(n: number) {
       .split(/(?:^|\s)\d+\)\s+/)
       .map((x) => x.trim())
       .filter(Boolean),
-    hanna: barnenavn(felt("Hanna")),
+    yngst: barnenavn(felt("Hanna")),
     oppsett,
     /** Tonight's checklist, the only lines the guide ticks off; `x.pdf` names a print. */
     sjekkliste,

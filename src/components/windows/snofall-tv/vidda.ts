@@ -169,7 +169,7 @@ export interface FriOpts {
   /** Day 24 solved: the gate in the curtain is open and Bergen lies beyond. */
   bergen: boolean;
   /** Day 22 solved: Bergen's last stop may be called by its name. */
-  landås: boolean;
+  hjem: boolean;
   reduceMotion?: boolean;
 }
 
@@ -179,7 +179,7 @@ export const stedÅpent = (s: Sted, o: FriOpts) =>
 /** The place's name for the day: its own when open, «ÅPNER DAG N» when locked; Landås only when day 22 is solved. */
 export function stedsnavn(s: Sted, o: FriOpts, kort = false) {
   if (!stedÅpent(s, o)) return åpnerTekst(s.dag);
-  if (s.id === "bergen" && o.landås) return fyll("LANDÅS");
+  if (s.id === "bergen" && o.hjem) return fyll("LANDÅS");
   return kort ? s.kort : s.navn;
 }
 

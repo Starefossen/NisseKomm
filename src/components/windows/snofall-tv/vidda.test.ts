@@ -30,8 +30,8 @@ import {
 } from "./vidda";
 
 const still: Styring = { steer: 0, climb: 0, sprang: false };
-const dag8: FriOpts = { dag: 8, bergen: false, landås: false };
-const julaften: FriOpts = { dag: 24, bergen: true, landås: true };
+const dag8: FriOpts = { dag: 8, bergen: false, hjem: false };
+const julaften: FriOpts = { dag: 24, bergen: true, hjem: true };
 const sted = (id: string) => STEDER.find((s) => s.id === id)!;
 
 const fly = (sim: ReturnType<typeof createFri>, sek: number, inn = still) => {
@@ -124,7 +124,7 @@ describe("fri flyging på vidda", () => {
     const g = sted("grotten");
     expect(Math.abs(iKorridor(g.x, g.z).v)).toBeLessThan(1);
     expect(stedsnavn(sted("bergen"), dag8)).toBe("ÅPNER JULAFTEN");
-    expect(stedsnavn(sted("bergen"), { ...julaften, landås: false })).toBe(
+    expect(stedsnavn(sted("bergen"), { ...julaften, hjem: false })).toBe(
       "BERGEN",
     );
     expect(stedsnavn(sted("bergen"), julaften)).toBe("LANDÅS");

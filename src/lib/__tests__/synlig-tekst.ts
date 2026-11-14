@@ -193,12 +193,12 @@ for (let d = 8; d <= 24; d++)
   add(
     d,
     `slede vidda dag ${d}`,
-    steder({ dag: d, bergen: false, landås: false }),
+    steder({ dag: d, bergen: false, hjem: false }),
   );
 for (const s of STEDER)
   add(s.id === "bergen" ? 25 : s.dag, `slede vidda radio ${s.id}`, s.radio);
-add(25, "slede bergen", steder({ dag: 24, bergen: true, landås: false }));
-add(23, "slede landås", steder({ dag: 24, bergen: true, landås: true }));
+add(25, "slede bergen", steder({ dag: 24, bergen: true, hjem: false }));
+add(23, "slede landås", steder({ dag: 24, bergen: true, hjem: true }));
 
 // Inline strings in components: every literal and JSX text in the file, from the
 // day the window can first show it (stricter than per-string gating).

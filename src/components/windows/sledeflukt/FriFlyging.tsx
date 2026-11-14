@@ -165,7 +165,7 @@ export function FriFlyging({
     res: (oppløsning ?? 640) as Oppløsning,
   });
   // Bergen lies beyond the gate once day 24 is solved; its name is Landås only with day 22 solved.
-  const opts = useRef<FriOpts>({ dag: day, bergen: false, landås: false });
+  const opts = useRef<FriOpts>({ dag: day, bergen: false, hjem: false });
 
   const setFase = (f: Fase) => {
     if (f !== "spiller") lyd.current?.stop();
@@ -216,7 +216,7 @@ export function FriFlyging({
     const o: FriOpts = {
       dag: day,
       bergen: løst.has(24),
-      landås: løst.has(22),
+      hjem: løst.has(22),
       reduceMotion,
     };
     opts.current = o;
@@ -325,7 +325,7 @@ export function FriFlyging({
         case "bergen":
           l?.fanfare();
           say(
-            o.landås ? fyll("VELKOMMEN TIL LANDÅS") : "VELKOMMEN TIL BERGEN",
+            o.hjem ? fyll("VELKOMMEN TIL LANDÅS") : "VELKOMMEN TIL BERGEN",
             "#00ff8a",
           );
           break;
