@@ -129,13 +129,32 @@ function clockDate(): Date {
   return now;
 }
 
+export type SesongFase = "før" | "advent" | "romjul" | "stengt";
+
 /**
- * 25 Dec through 31 Jan: the app stays open as on 24 Dec (rewatch, no new
- * riddles), so day/month getters report 24 Dec. Closed from 1 Feb.
+ * The one definition of the season (Hans: open as day 24 through January,
+ * closed from 1 Feb). før = 1–30 Nov, advent = 1–24 Dec, romjul = 25 Dec–31 Jan
+ * (rewatch as day 24, no new riddles), stengt = Feb–Oct.
  */
+export function faseFor(month: number, day: number): SesongFase {
+  if (month === 12) return day <= 24 ? "advent" : "romjul";
+  if (month === 1) return "romjul";
+  return month === 11 ? "før" : "stengt";
+}
+
+/** Advent day whose content is out: 0 before/closed, 1–24 in advent, 24 in romjul. */
+export function dagFor(month: number, day: number): number {
+  const f = faseFor(month, day);
+  return f === "advent" ? day : f === "romjul" ? 24 : 0;
+}
+
+export const sesongFase = (d: Date = getCurrentDate()) =>
+  faseFor(d.getMonth() + 1, d.getDate());
+export const effektivDag = (d: Date = getCurrentDate()) =>
+  dagFor(d.getMonth() + 1, d.getDate());
+
 export function isRomjul(d: Date): boolean {
-  const m = d.getMonth();
-  return (m === 11 && d.getDate() > 24) || m === 0;
+  return sesongFase(d) === "romjul";
 }
 
 /**
@@ -157,12 +176,10 @@ export function getCurrentMonth(): number {
 }
 
 /**
- * Last advent day whose content is out: 0 before 1 Dec, today on 1–24 Dec,
- * 24 from 25 Dec through January (rewatching after Christmas).
- * ponytail: Feb–Nov counts as "before"; a new season starts empty.
+ * Last advent day whose content is out (see `effektivDag`).
  */
 export function getAdventDay(): number {
-  return getCurrentMonth() === 12 ? Math.min(24, getCurrentDay()) : 0;
+  return effektivDag();
 }
 
 /**

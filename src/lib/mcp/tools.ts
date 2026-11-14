@@ -17,7 +17,7 @@ import merker from "@/data/merker.json";
 import videoer from "@/data/julius_videoer.json";
 import gaatebiter from "@/data/gaatebiter.json";
 import { getAllOppdrag } from "@/lib/oppdrag";
-import { getServerDate } from "@/lib/date-utils";
+import { dagFor, getServerDate } from "@/lib/date-utils";
 import {
   FROST_UNTIL_HOUR,
   frostLevelFor,
@@ -194,12 +194,10 @@ const media = (p: string) =>
 /** Closest still per tv.state; others use the rolig still. */
 const TV_STILL: Record<string, string> = { storm: "feed/snøfall-storm.png" };
 
-/** Calendar day 1–24 in December, else null. */
-// Romjul (25.12–31.1) stays on day 24, like the app, so unsolved pieces stay hidden.
+/** Advent day in Oslo (`dagFor`: romjul = 24), else null. */
 function adventDay(d: Date): number | null {
   const { day, month } = oslo(d);
-  if (month === 12) return Math.min(day, 24);
-  return month === 1 ? 24 : null;
+  return dagFor(month, day) || null;
 }
 
 export function getState(state: State, at?: Date) {

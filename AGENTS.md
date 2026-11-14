@@ -221,6 +221,8 @@ STORAGE_BACKEND=                         # server | localStorage; unset = server
 
 **Sync faults**: `ServerSyncAdapter` sets `getSyncStatus()` (`SYNC_EVENT`): 401 from `/api/state` or `/api/kode` → «utlogget», app-context shows the login again and keeps the local cache (the code terminal says «Logg inn på nytt»); 5xx/network at startup → «frakoblet», retried with backoff 2 s → 60 s, shown by `ui/Frakoblet.tsx`. `testEnv()` in date-utils drops `NEXT_PUBLIC_TEST_MODE`/`MOCK_*` on the server in public + production (warning in `instrumentation.ts`). Browser check: `node scripts/synk-sjekk.mjs` (server with `STORAGE_BACKEND=server`).
 
+**Sesongslutt**: one definition, `sesongFase()` (før/advent/romjul/stengt) and `effektivDag()` (`faseFor`/`dagFor` for Oslo parts in MCP) in date-utils.ts; `isRomjul`, `getAdventDay`, `åpenTilDag`, MCP `adventDay` and the Sesongkart derive from it (`romjul.test.ts`).
+
 **Date Mocking**: Set `NEXT_PUBLIC_MOCK_DAY` and `NEXT_PUBLIC_MOCK_MONTH` to test specific days across entire app. In `next dev` or with `NEXT_PUBLIC_TEST_MODE=true`, the TIDSMASKIN button (bottom right) opens a panel that sets day and time live («Gå til dag med fremgang» solves earlier days via `sim.solveUntil`, «Gå til dag, løst» today too) via a localStorage override in `date-utils.ts`, and can reset progress.
 
 📖 **Complete API** → [ARCHITECTURE.md#date-handling-system](./ARCHITECTURE.md#date-handling-system)

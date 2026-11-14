@@ -4,12 +4,7 @@ import Link from "next/link";
 import { Fragment, useEffect, useState, type ReactNode } from "react";
 import { Icon, symbolFarge, type IconColor } from "@/lib/icons";
 import { GuideSide } from "../_kveld/felles";
-import {
-  getCurrentDate,
-  getCurrentDay,
-  getCurrentMonth,
-  isRomjul,
-} from "@/lib/date-utils";
+import { getCurrentDate, effektivDag, sesongFase } from "@/lib/date-utils";
 import type { SesongLinje } from "@/lib/guide-sesong";
 
 type Dag = SesongLinje["dager"][number];
@@ -319,8 +314,9 @@ function Kart() {
   const traad = laast ?? forhånd;
   // Outside 1–24 Dec «I dag» marks the pre-season radio day or the romjul tail, never a day column
   const nå = getCurrentDate();
-  const romjul = isRomjul(nå);
-  const idag = !romjul && getCurrentMonth() === 12 ? getCurrentDay() : 0;
+  const fase = sesongFase(nå);
+  const romjul = fase === "romjul";
+  const idag = fase === "advent" ? effektivDag(nå) : 0;
   const iDagNov =
     nå.getMonth() === 10 ? `-11-${String(nå.getDate()).padStart(2, "0")}` : "";
   const vis = (f: Filter[]) => filter === "alt" || f.includes(filter);

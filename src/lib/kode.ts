@@ -4,7 +4,7 @@
  */
 import "server-only";
 import { getAllOppdrag } from "./oppdrag";
-import { getServerDate, isRomjul, testEnv } from "./date-utils";
+import { effektivDag, getServerDate, testEnv } from "./date-utils";
 
 export type KodeSvar =
   | { ok: true; dag: number; kode: string } // the day's code, canonical spelling
@@ -53,7 +53,5 @@ export function feilForsøk(nøkkel: string, nå = Date.now()): void {
  */
 export function åpenTilDag(dayOffset: unknown): number {
   if (testEnv(process.env.NEXT_PUBLIC_TEST_MODE) === "true") return 24;
-  const d = getServerDate(dayOffset);
-  if (isRomjul(d)) return 24;
-  return d.getMonth() === 11 ? Math.min(24, d.getDate()) : 0;
+  return effektivDag(getServerDate(dayOffset));
 }

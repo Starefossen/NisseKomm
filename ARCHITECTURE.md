@@ -487,7 +487,7 @@ Media files (MP4 video, MP3 audio, CRT feeds) are served from `MEDIA_DIR` instea
 
 ## Season end (romjul)
 
-`isRomjul(d)` in `date-utils.ts` is 25 Dec through 31 Jan: day and month getters report 24 Dec, so the app stays open as on day 24 (rewatch, no new riddles; access, `/api/kode` and MCP follow). From 1 Feb it is closed.
+One definition in `date-utils.ts`: `sesongFase(d)` is `før` (November), `advent` (1–24 Dec), `romjul` (25 Dec–31 Jan) or `stengt` (Feb–Oct); `effektivDag(d)` is 0, the day, or 24 in romjul (rewatch as day 24, no new riddles). `faseFor`/`dagFor` take month and day, for MCP's Oslo parts. `isRomjul`, the day/month getters, `getAdventDay`, `åpenTilDag` (`/api/kode`, `/media`), MCP `adventDay` and the Sesongkart all derive from it.
 
 ## Nissemor-guide PWA and web push
 
