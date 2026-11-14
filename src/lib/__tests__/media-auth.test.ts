@@ -145,7 +145,8 @@ test("only exact kid folders are open; folded names and symlinks are not", async
     for (const mode of ["lan", "public"]) {
       process.env.NISSEKOMM_MODE = mode;
       const nei = mode === "lan" ? 401 : 404;
-      expect(await get(["audio", "a.mp3"])).toBe(200);
+      expect(await get(["audio", "a.mp3"])).toBe(401);
+      expect(await get(["audio", "a.mp3"], "__Host-nissekomm=kid")).toBe(200);
       for (const seg of [
         ["%C5%BFtrek", "dag01.png"],
         ["%EF%AC%86rek", "dag01.png"],
@@ -163,6 +164,59 @@ test("only exact kid folders are open; folded names and symlinks are not", async
       ),
     ).toBe(200);
   } finally {
+    delete process.env.MEDIA_DIR;
+  }
+});
+
+test("kid folders need a session and open day files up to today", async () => {
+  const { mkdtempSync, mkdirSync, writeFileSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const path = await import("node:path");
+  const dir = mkdtempSync(path.join(tmpdir(), "media-"));
+  mkdirSync(path.join(dir, "video", "julius"), { recursive: true });
+  mkdirSync(path.join(dir, "feed"));
+  for (const f of ["dag-03.mp4", "dag-04.mp4"])
+    writeFileSync(path.join(dir, "video", "julius", f), "0123456789");
+  writeFileSync(path.join(dir, "feed", "landsby-rolig.jpg"), "x");
+  writeFileSync(path.join(dir, "feed", "julius-kontor.jpg"), "x");
+  process.env.MEDIA_DIR = dir;
+  jest.useFakeTimers({
+    now: new Date(2026, 11, 3, 12),
+    doNotFake: ["nextTick", "setImmediate"],
+  });
+  for (const role of ["kid", "parent"] as const)
+    await memoryStore.setSession(sha(role), {
+      role,
+      expires: Date.now() + 60_000,
+    });
+  const { GET } = await import("../../app/media/[...path]/route");
+  const get = async (p: string, cookie?: string, range?: string) => {
+    const headers: Record<string, string> = {};
+    if (cookie) headers.cookie = cookie;
+    if (range) headers.range = range;
+    return (
+      await GET(new NextRequest(`http://lan/media/${p}`, { headers }), {
+        params: Promise.resolve({ path: p.split("/") }),
+      })
+    ).status;
+  };
+  const kid = "__Host-nissekomm=kid";
+  const parent = "__Host-nissekomm-guide=parent";
+  try {
+    for (const mode of ["lan", "public"]) {
+      process.env.NISSEKOMM_MODE = mode;
+      expect(await get("video/julius/dag-03.mp4")).toBe(401);
+      expect(await get("feed/landsby-rolig.jpg")).toBe(401);
+      expect(await get("feed/julius-kontor.jpg")).toBe(200);
+      expect(await get("video/julius/dag-03.mp4", kid)).toBe(200);
+      expect(await get("video/julius/dag-03.mp4", kid, "bytes=0-3")).toBe(206);
+      expect(await get("video/julius/dag-04.mp4", kid)).toBe(403);
+      expect(await get("feed/landsby-rolig.jpg", kid)).toBe(200);
+    }
+    process.env.NISSEKOMM_MODE = "lan";
+    expect(await get("video/julius/dag-04.mp4", parent)).toBe(200);
+  } finally {
+    jest.useRealTimers();
     delete process.env.MEDIA_DIR;
   }
 });

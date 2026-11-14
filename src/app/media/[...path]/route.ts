@@ -8,11 +8,21 @@ import {
   resolveMedia,
   serveMedia,
 } from "@/lib/media-server";
+import { hasRole } from "@/lib/auth";
+import { getStore } from "@/lib/db";
+import { åpenTilDag } from "@/lib/kode";
 
 // Default deny: only the kid app's folders are open. Everything else (strek,
 // promo, _arkiv, ...) needs a parent in lan mode. An exact match also closes
 // APFS case and Unicode folding (STREK, ſtrek, ﬆrek all open «strek»).
 const KID_DIRS = ["video", "audio", "music", "feed", "spill"];
+// The login screen's backdrop, shown before any session exists.
+const PUBLIC_FILES = ["feed/julius-kontor.jpg"];
+
+// Day files (dag-03.mp4, dag03-A-1.mp3) open on their day; the rest of a kid
+// folder only needs a session.
+const fileDay = (parts: string[]) =>
+  Number(parts.at(-1)?.match(/^dag-?(\d{1,2})(?!\d)/i)?.[1] ?? 0);
 
 async function kidFile(parts: string[]): Promise<boolean> {
   if (!KID_DIRS.includes(parts[0])) return false;
@@ -35,6 +45,18 @@ export async function GET(
   if (!(await kidFile(parts))) {
     const nei = await authorizeMedia(req);
     if (nei) return nei;
+  } else if (
+    !PUBLIC_FILES.includes(parts.join("/")) &&
+    !(await hasRole(req, "parent"))
+  ) {
+    if (!(await hasRole(req, "kid")))
+      return new Response("Ikke innlogget", { status: 401 });
+    const dag = fileDay(parts);
+    if (dag) {
+      const state = await getStore().getState();
+      if (dag > åpenTilDag(state["day-offset"]))
+        return new Response("Ikke ennå", { status: 403 });
+    }
   }
   return serveMedia(
     parts,
