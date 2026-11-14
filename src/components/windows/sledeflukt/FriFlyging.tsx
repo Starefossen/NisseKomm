@@ -177,6 +177,7 @@ export function FriFlyging({
     touch: touchRef,
     slipp: slippRef,
     touchHint,
+    erTouch,
     onPointer,
     slippGass,
   } = useKontroller(
@@ -1127,8 +1128,9 @@ export function FriFlyging({
               Fri flyging over Snøfall-vidda
             </div>
             <div className="text-sm opacity-60 leading-tight">
-              PILTASTER / WASD · SHIFT = FART · X = BREMS · MELLOMROM = SLIPP
-              PAKKE · ESC = PAUSE
+              {erTouch
+                ? "DRA EN FINGER FOR Å STYRE · HOLD FART ELLER BREMS · TRYKK SLIPP FOR PAKKE"
+                : "PILTASTER / WASD · SHIFT = FART · X = BREMS · MELLOMROM = SLIPP PAKKE · ESC = PAUSE"}
             </div>
             <button
               type="button"

@@ -323,6 +323,14 @@ export default function Home() {
   }, [frost]);
   const isFrozen = (windowId: string) =>
     frostMode.level === 2 && !FROST_OPEN_WINDOWS.includes(windowId);
+  const visMelding = (m: string) => {
+    setTimeout(() => setLockedMsg(null), 3500);
+    setLockedMsg(m);
+  };
+  const frossetMelding = () =>
+    visMelding(
+      "Rampenissen: «Huff, den der e frossen fast! Få inn dagens kode i KODETERMINAL, så tine vi han.»",
+    );
 
   // Today's Julius video opens by itself once per visit and day until it has been watched
   const [autoOpenedDay, setAutoOpenedDay] = useState(0);
@@ -503,8 +511,12 @@ export default function Home() {
                                 ? "motion-safe:animate-pulse"
                                 : ""
                             }
-                            isNew={GameEngine.getNyttNivaa("nordpol_tv") > 0}
+                            isNew={
+                              !isFrozen("nordpol_tv") &&
+                              GameEngine.getNyttNivaa("nordpol_tv") > 0
+                            }
                             disabled={isFrozen("nordpol_tv")}
+                            onLockedClick={frossetMelding}
                             onClick={() => handleIconClick("nordpol_tv")}
                           />
                         </div>
@@ -573,16 +585,12 @@ export default function Home() {
                                     teaser={
                                       locked ? opensIn(unlockDay) : undefined
                                     }
-                                    isNew={isNew}
+                                    isNew={isNew && !isFrozen(t.window)}
                                     onLockedClick={
                                       locked
                                         ? () => {
                                             const n = daysLeft(unlockDay);
-                                            setTimeout(
-                                              () => setLockedMsg(null),
-                                              3500,
-                                            );
-                                            setLockedMsg(
+                                            visMelding(
                                               n !== null && n <= 0
                                                 ? `Rampenissen: «Heisann, ikkje så fort! ${t.label} e klar når koden e inne.»`
                                                 : n === 1
@@ -590,7 +598,7 @@ export default function Home() {
                                                   : `${t.hint ?? "LÅST"}. Rampenissen: «Ho-ho, vent ${n ?? "nokka"} daga te!»`,
                                             );
                                           }
-                                        : undefined
+                                        : frossetMelding
                                     }
                                     onClick={() => {
                                       if (isNew)
@@ -634,6 +642,7 @@ export default function Home() {
                       // day 1 after day 24, and code and day must agree
                       currentDay={getCurrentMission().dag}
                       onCodeSubmitted={handleCodeSubmitted}
+                      onOpenDagbok={() => setOpenWindow("dagbok")}
                     />
                   )}
                   {openWindow === "nissenet" && (

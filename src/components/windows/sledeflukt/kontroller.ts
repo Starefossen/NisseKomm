@@ -38,7 +38,13 @@ export function useKontroller(
   const touch = useRef({ steer: 0, climb: 0, gass: 0 });
   const slipp = useRef(false);
   const sprang = useRef(false);
-  const [touchHint, setTouchHint] = useState(false);
+  // A touch screen gets touch help from the start, not after the first touch
+  const [erTouch] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(pointer: coarse)").matches,
+  );
+  const [touchHint, setTouchHint] = useState(erTouch);
   const cb = useRef({ spiller, påTast, påPause });
   useEffect(() => {
     cb.current = { spiller, påTast, påPause };
@@ -125,5 +131,14 @@ export function useKontroller(
     touch.current.gass = 0;
   };
 
-  return { held, touch, slipp, sprang, touchHint, onPointer, slippGass };
+  return {
+    held,
+    touch,
+    slipp,
+    sprang,
+    touchHint,
+    erTouch,
+    onPointer,
+    slippGass,
+  };
 }

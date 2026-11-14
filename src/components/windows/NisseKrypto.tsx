@@ -3,7 +3,7 @@
 import { mediaUrl } from "@/lib/media";
 import { useState, useEffect, DragEvent, TouchEvent } from "react";
 import { RetroWindow } from "../ui/RetroWindow";
-import { Icons, Icon } from "@/lib/icons";
+import { Icons, Icon, symbolFarge, symbolNavn } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 import { DecryptionSymbol } from "@/types/innhold";
@@ -406,7 +406,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                                     key={idx}
                                     name={symbol.symbolIcon}
                                     size={16}
-                                    color={symbol.symbolColor}
+                                    color={symbolFarge(symbol.symbolColor)}
                                   />
                                 ))}
                               {challenge.requiredSymbols.length > 6 && (
@@ -461,7 +461,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                         <Icon
                           name={symbol.symbolIcon}
                           size={24}
-                          color={symbol.symbolColor}
+                          color={symbolFarge(symbol.symbolColor)}
                         />
                       ) : (
                         <Icons.Lock size={16} color="gray" />
@@ -529,7 +529,7 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                       setFeedback("");
                       setPositionFeedback([]);
                     }}
-                    className="text-base border border-(--cold-blue) px-3 py-1 hover:bg-(--cold-blue)/20 transition-all tracking-wider"
+                    className="min-h-11 text-base border border-(--cold-blue) px-3 py-1 hover:bg-(--cold-blue)/20 transition-all tracking-wider"
                   >
                     ← AVBRYT
                   </button>
@@ -598,11 +598,11 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                           <Icon
                             name={symbol.symbolIcon}
                             size={32}
-                            color={symbol.symbolColor}
+                            color={symbolFarge(symbol.symbolColor)}
                             className="md:w-10 md:h-10"
                           />
-                          <div className="text-[7px] md:text-[8px] text-(--neon-green) mt-1 text-center uppercase tracking-tight">
-                            {symbol.symbolColor}
+                          <div className="text-base text-(--neon-green) mt-1 text-center leading-none">
+                            {symbolNavn[symbol.symbolColor]}
                           </div>
                         </>
                       ) : (
@@ -674,11 +674,11 @@ export function NisseKrypto({ onClose }: NisseKryptoProps) {
                             <Icon
                               name={symbol.symbolIcon}
                               size={32}
-                              color={symbol.symbolColor}
+                              color={symbolFarge(symbol.symbolColor)}
                               className="md:w-10 md:h-10"
                             />
-                            <div className="text-[7px] md:text-[8px] text-(--cold-blue) mt-1 uppercase tracking-tight">
-                              {symbol.symbolColor}
+                            <div className="text-base text-(--cold-blue) mt-1 leading-none">
+                              {symbolNavn[symbol.symbolColor]}
                             </div>
                           </>
                         ) : isUsed ? (

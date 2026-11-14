@@ -14,13 +14,17 @@ interface KodeTerminalProps {
   currentDay: number;
   /** `day` is set only when a day was newly solved (not for bonus approvals). */
   onCodeSubmitted?: (day?: number) => void;
+  onOpenDagbok?: () => void;
 }
 
 export function KodeTerminal({
   onClose,
   currentDay,
   onCodeSubmitted,
+  onOpenDagbok,
 }: KodeTerminalProps) {
+  // Julius' PS right after a new solve, so the kids see where to go next
+  const [juliusPs, setJuliusPs] = useState<string | null>(null);
   const [code, setCode] = useState("");
   const [processing, setProcessing] = useState(false);
   const [feedback, setFeedback] = useState<"success" | "error" | null>(null);
@@ -122,6 +126,7 @@ export function KodeTerminal({
 
         // Mark as solved
         setIsAlreadySolved(true);
+        setJuliusPs(GameEngine.getJuliusPs(currentDay) ?? "");
 
         // Reset failed attempts
         setFailedAttempts(0);
@@ -250,7 +255,7 @@ export function KodeTerminal({
             style={{
               animation:
                 feedback === "success"
-                  ? "gold-flash 0.5s ease-out"
+                  ? "gold-glow 0.5s ease-out"
                   : feedback === "error"
                     ? "red-shake 0.5s ease-out"
                     : "none",
@@ -299,6 +304,26 @@ export function KodeTerminal({
             </div>
           )}
         </form>
+
+        {juliusPs !== null && (
+          <div className="p-4 border-4 border-(--gold) bg-black text-(--gold) space-y-3">
+            {juliusPs && (
+              <>
+                <div className="text-lg font-bold">PS FRA JULIUS:</div>
+                <div className="text-xl leading-relaxed">{juliusPs}</div>
+              </>
+            )}
+            {onOpenDagbok && (
+              <button
+                type="button"
+                onClick={onOpenDagbok}
+                className="w-full min-h-12 px-4 py-2 text-xl font-bold tracking-wider border-4 border-(--gold) bg-(--gold) text-black hover:bg-transparent hover:text-(--gold)"
+              >
+                ÅPNE DAGBOK
+              </button>
+            )}
+          </div>
+        )}
 
         {/* Julius' terminal note after 3 failed attempts */}
         {failedAttempts >= 3 && !isAlreadySolved && (

@@ -1,6 +1,19 @@
 import { ComponentProps } from "react";
 
-export type IconColor = "green" | "red" | "gold" | "blue" | "gray" | "yellow";
+export type IconColor =
+  "green" | "red" | "gold" | "blue" | "gray" | "yellow" | "kortgronn";
+
+// The printed symbol cards are real green (#00ff00, --symbol-green); "green" in the UI is parchment
+export const symbolFarge = (c: IconColor): IconColor =>
+  c === "green" ? "kortgronn" : c;
+
+export const symbolNavn: Record<string, string> = {
+  green: "GRØNN",
+  red: "RØD",
+  blue: "BLÅ",
+  gold: "GULL",
+  gray: "GRÅ",
+};
 
 interface IconProps extends Omit<ComponentProps<"img">, "src" | "alt"> {
   name: string;
@@ -16,6 +29,8 @@ const colorFilters: Record<IconColor, string> = {
   gold: "brightness(0) saturate(100%) invert(80%) sepia(62%) saturate(1523%) hue-rotate(359deg) brightness(104%) contrast(104%)",
   blue: "brightness(0) saturate(100%) invert(75%) sepia(71%) saturate(2234%) hue-rotate(151deg) brightness(104%) contrast(101%)",
   gray: "brightness(0) saturate(100%) invert(44%) sepia(0%) saturate(0%) hue-rotate(199deg) brightness(92%) contrast(88%)",
+  kortgronn:
+    "brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%)",
   yellow:
     "brightness(0) saturate(100%) invert(96%) sepia(90%) saturate(2069%) hue-rotate(359deg) brightness(104%) contrast(104%)",
 };

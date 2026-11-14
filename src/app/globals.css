@@ -50,6 +50,8 @@
   --gray: #666666;
   /* Green only for northern lights, success blinks and LEDs */
   --aurora: #00ff8a;
+  /* Symbol cards are printed real green; NisseKrypto draws them the same */
+  --symbol-green: #00ff00;
 
   --background: var(--crt-bg);
   --foreground: var(--neon-green);
@@ -188,6 +190,17 @@
   }
   50% {
     background-color: rgba(255, 215, 0, 0.3);
+  }
+}
+
+/* On the frame, not the fill: black text on a gold button stays readable */
+@keyframes gold-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: 0 0 24px 6px rgba(255, 215, 0, 0.8);
   }
 }
 

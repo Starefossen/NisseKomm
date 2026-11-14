@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import { RetroWindow } from "../ui/RetroWindow";
-import { Icon } from "@/lib/icons";
+import { Icon, symbolFarge } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
 import { GameEngine } from "@/lib/game-engine";
 
@@ -81,7 +81,7 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
         title: "NYTT SYMBOL!",
         text: r.symbol.description,
         icon: r.symbol.symbolIcon,
-        color: r.symbol.symbolColor,
+        color: symbolFarge(r.symbol.symbolColor),
       });
     } else if (r.status === "allerede" && r.symbol) {
       SoundManager.playSound("click");
@@ -91,7 +91,7 @@ export function SymbolScanner({ onClose }: SymbolScannerProps) {
         title: "ALLEREDE SAMLET",
         text: `${r.symbol.description}: ${r.message}`,
         icon: r.symbol.symbolIcon,
-        color: r.symbol.symbolColor,
+        color: symbolFarge(r.symbol.symbolColor),
       });
     } else {
       SoundManager.playSound("error");

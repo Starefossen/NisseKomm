@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import { Icons } from "@/lib/icons";
+import { Icon, Icons } from "@/lib/icons";
 import { SoundManager } from "@/lib/sounds";
 
 interface RetroWindowProps {
@@ -47,6 +47,19 @@ export function RetroWindow({
         >
           {children}
         </div>
+        {stor && (
+          // Games are built for landscape; a portrait iPad gets a prompt instead of a cut layout
+          <div className="absolute inset-x-0 bottom-0 top-12.5 z-10 hidden [@media(orientation:portrait)_and_(pointer:coarse)]:flex flex-col items-center justify-center gap-4 bg-(--dark-crt) p-6 text-center text-(--neon-green)">
+            <div className="flex items-center gap-3">
+              <Icon name="tablet" size={64} color="gold" />
+              <Icon name="redo" size={48} color="gold" />
+            </div>
+            <div className="text-3xl tracking-wider text-(--gold)">
+              SNU SKJERMEN
+            </div>
+            <div className="text-xl">Legg iPaden på siden for å spille.</div>
+          </div>
+        )}
       </div>
     </div>
   );

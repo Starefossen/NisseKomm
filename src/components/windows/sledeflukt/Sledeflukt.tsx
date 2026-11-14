@@ -316,6 +316,7 @@ function Etappeflukt({
     slipp: slippRef,
     sprang: sprangRef,
     touchHint,
+    erTouch,
     onPointer,
     slippGass,
   } = useKontroller(
@@ -1087,6 +1088,11 @@ function Etappeflukt({
           {feil}
         </div>
       )}
+      {touchHint && fase === "nedtelling" && (
+        <div className="absolute bottom-24 inset-x-0 text-center text-(--gold) text-xl pointer-events-none">
+          DRA EN FINGER FOR Å STYRE · HOLD FART ELLER BREMS
+        </div>
+      )}
       {touchHint && fase === "spiller" && (
         <div className="absolute bottom-2 left-3 text-(--neon-green)/40 text-base pointer-events-none">
           DRA FOR Å STYRE: SIDELENGS = KURS, OPP/NED = HØYDE
@@ -1521,9 +1527,22 @@ function Etappeflukt({
                   {assist
                     ? "Assistenten holder høyden og krasjer aldri."
                     : "Tre forsøk, full kastevind."}{" "}
-                  · PILTASTER / WASD · SHIFT = FART · X = BREMS · E = SPRANG ·
-                  MELLOMROM = SLIPP PAKKE
-                  {harHus ? " · BREMS GIR TID TIL Å SIKTE" : ""} · ESC = PAUSE
+                  {erTouch ? (
+                    <>
+                      {" "}
+                      · DRA EN FINGER FOR Å STYRE: SIDELENGS = SVING, OPP/NED =
+                      HØYDE · HOLD FART ELLER BREMS · TRYKK SLIPP FOR PAKKE
+                      {harHus ? " · BREMS GIR TID TIL Å SIKTE" : ""}
+                    </>
+                  ) : (
+                    <>
+                      {" "}
+                      · PILTASTER / WASD · SHIFT = FART · X = BREMS · E = SPRANG
+                      · MELLOMROM = SLIPP PAKKE
+                      {harHus ? " · BREMS GIR TID TIL Å SIKTE" : ""} · ESC =
+                      PAUSE
+                    </>
+                  )}
                 </div>
               </>
             )}
