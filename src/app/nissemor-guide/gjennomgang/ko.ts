@@ -32,6 +32,21 @@ export function nesteLinje(venter: Linje[], id: string): Linje | undefined {
   return venter.slice(i + 1).find((l) => l.id !== id);
 }
 
+/** The element a file, a version of it or one of its segments (`…#sK`) belongs to. */
+export function elementFor(fil: string, liste: Element[]) {
+  const f = fil.replace(/#s\d+$/, "");
+  return (
+    liste.find((e) => e.id === f) ??
+    liste.find((e) =>
+      e.media.some(
+        (x) =>
+          versionKey(x) === versionKey(f) ||
+          versionKey(x).replace(/\.\w+$/, "") === f,
+      ),
+    )
+  );
+}
+
 /**
  * Where a queue line opens: always an item in Gjennomgang, never Filer. A segment id
  * (`…#sK`) opens its day's element with the segment chosen (`&s=K`), a file its element.
@@ -40,22 +55,24 @@ export function linjeMål(
   l: Pick<Linje, "id" | "seg" | "prioritet">,
   liste: Element[],
 ): { id: string; seg?: number } {
-  const m = l.id.match(/^(.*)#s(\d+)$/);
-  const fil = m ? m[1] : l.id;
   // A priority on one segment of the line's day opens that segment.
   const seg =
     l.seg ??
-    (Number((m ?? l.prioritet?.fil.match(/^(.*)#s(\d+)$/))?.[2]) || undefined);
-  const el =
-    liste.find((e) => e.id === fil) ??
-    liste.find((e) =>
-      e.media.some(
-        (x) =>
-          versionKey(x) === versionKey(fil) ||
-          versionKey(x).replace(/\.\w+$/, "") === fil,
-      ),
-    );
-  return { id: el?.id ?? fil, ...(seg ? { seg } : {}) };
+    (Number((l.id + " " + (l.prioritet?.fil ?? "")).match(/#s(\d+)/)?.[1]) ||
+      undefined);
+  return {
+    id: elementFor(l.id, liste)?.id ?? l.id.replace(/#s\d+$/, ""),
+    ...(seg ? { seg } : {}),
+  };
+}
+
+/**
+ * The elements «Venter på deg» holds, in the tab's order: what the tab counts,
+ * «Start» opens first and N walks (a beslutning has its own view).
+ */
+export function koElementer(venter: Linje[], liste: Element[]): string[] {
+  const ider = new Set(liste.map((e) => e.id));
+  return [...new Set(venter.map((l) => l.id))].filter((x) => ider.has(x));
 }
 
 /** The line's link: `?id=` (+ `&s=` segment), then `ekstra` (the tab). */
@@ -199,15 +216,15 @@ export function prioritetFor<T extends { fil: string }>(
   p: Record<string, T>,
   media: string[] = [],
 ): T | undefined {
-  return Object.values(p).find((x) => {
-    const f = x.fil.replace(/#.*/, "");
-    return (
+  // A segment id has no extension (`video/julius/dag-11#s1`): compare without it.
+  const stamme = (x: string) =>
+    versionKey(x.replace(/#.*/, "")).replace(/\.\w+$/, "");
+  return Object.values(p).find(
+    (x) =>
       x.fil === id ||
-      f === id ||
-      versionKey(f) === versionKey(id) ||
-      media.some((m) => versionKey(m) === versionKey(f))
-    );
-  });
+      stamme(x.fil) === stamme(id) ||
+      media.some((m) => stamme(m) === stamme(x.fil)),
+  );
 }
 
 /** «PRIORITERT · grunn · av agent (frist)» */
@@ -601,21 +618,17 @@ export function byggKo(
   }
 
   // Agents' replies and Hans' open questions.
-  const elFor = (fil: string) =>
-    liste.find(
-      (e) =>
-        e.id === fil ||
-        e.media.some(
-          (m) => versionKey(m) === versionKey(fil.replace(/#.*/, "")),
-        ),
-    )?.id ?? fil;
+  // A line's id is always its element's (`elementFor`), also for a segment id: the tabs'
+  // counts, the progress bar and N all key on it.
   const løs = (fil: string) => {
-    const el = elFor(fil);
+    const el = elementFor(fil, liste)?.id ?? fil;
+    const seg = Number(fil.match(/#s(\d+)$/)?.[1]) || undefined;
     return {
       id: el,
       tittel: tittel.get(el) ?? fil,
       type: typeFor(fil),
       dag: dagFor(fil),
+      ...(seg ? { seg } : {}),
     };
   };
   for (const t of Object.values(s.svar ?? {}))
@@ -643,15 +656,15 @@ export function byggKo(
     const p = prioritetFor(l.id, pr, liste.find((e) => e.id === l.id)?.media);
     if (p) l.prioritet = p;
   }
-  // A priority on something with no line yet (a script segment on a day with a video, a segment
-  // already OK): the priority is the reason to look, so it gets its own line until Hans judges it.
-  const brukt = new Set([...venter, ...agent].map((l) => l.prioritet?.fil));
+  // A priority on something with no line for Hans yet (a script segment on a day with a video, a
+  // segment already OK, only an agent line): the priority is the reason to look, so it gets its
+  // own line until Hans judges it.
+  const brukt = new Set(venter.map((l) => l.prioritet?.fil));
   for (const p of Object.values(pr))
     if (!brukt.has(p.fil))
       venter.push({
         ...løs(p.fil),
         tittel: p.fil.replace(/#s(\d+)$/, ", segment $1"),
-        seg: Number(p.fil.match(/^video\/.*#s(\d+)$/)?.[1]) || undefined,
         hva: p.grunn,
         prioritet: p,
       });
@@ -706,7 +719,7 @@ export function fremdriftGruppe(e: Element): string {
 
 /**
  * One element's status, the same in the matrix, the progress bar and the
- * Element view: a queue line wins (Hos agent over Venter), a segmented Julius
+ * Element view: a queue line wins (Venter over Hos agent: Hans looks first), a segmented Julius
  * video follows its segments (videoStatus), else the verdict on what is in use.
  */
 export function elementStatus(
@@ -726,8 +739,8 @@ export function elementStatus(
   if (c === "valgfri") return "valgfri";
   // A new version the agent delivered puts the ball with Hans, whatever the old line said.
   if (iBruk === "ny_versjon") return "venter";
-  if (agent.has(e.id)) return "agent";
   if (venter.has(e.id)) return "venter";
+  if (agent.has(e.id)) return "agent";
   const segs = e.gruppe === "julius" && e.dag ? manus[e.dag] : undefined;
   const sid = (n: number) => `video/julius/dag-${pad(e.dag!)}#s${n}`;
   if (segs?.length && segs.some((n) => k.vurderinger[sid(n)])) {
@@ -757,8 +770,9 @@ export function elementStatus(
 
 /**
  * Every element in exactly one bucket, from the same queue byggKo makes, so
- * «Venter på deg» and «Hos agent» are exactly the tabs' elements (an element
- * in both counts as Hos agent; the tabs show these numbers). Besides them:
+ * «Venter på deg» is exactly the elements of that tab's lines, the ones N walks
+ * (an element in both tabs counts as Venter på deg: Hans looks first; the tabs
+ * show these numbers). Besides them:
  * Mangler = a missing file no queue line covers, Utenfor køen = neither a
  * verdict nor a queue line (e.g. rejected but no agent line), the verdict
  * otherwise. Optional unmade items are «valgfri».

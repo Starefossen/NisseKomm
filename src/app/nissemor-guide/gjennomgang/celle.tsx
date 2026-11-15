@@ -1,14 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { GameEngine } from "@/lib/game-engine";
 import { brukbar, celleAv, celleFor, MERKE } from "@/lib/media-status";
 import { videoStatus } from "@/lib/segmenter";
 import type { Laerdom } from "@/lib/laerdom";
 import { useSesong, type Sesong } from "../_kveld/felles";
 import { kilde, useMediaData } from "../media/kort";
-import { StatusI, useVisVurdering, useVurderinger } from "../vurdering";
+import {
+  lastVurderinger,
+  StatusI,
+  useOppfrisk,
+  useVisVurdering,
+  useVurderinger,
+} from "../vurdering";
 import { versionKey } from "@/lib/media-status";
 import { alleElementer, tilstand, type Element } from "./elementer";
 import {
@@ -29,16 +41,37 @@ export function useData() {
     (q) => q.decryption_challenge,
   ).length;
   const [server, setServer] = useState<KoServer | null>(null);
-  useEffect(() => {
+  // Newest request wins; the same answer as last time renders nothing.
+  const sist = useRef({ nr: 0, tekst: "" });
+  const hentKo = useCallback(() => {
+    const n = ++sist.current.nr;
     fetch("/api/media/ko")
       .then((r) => (r.ok ? r.json() : null))
-      .then(setServer)
-      .catch(() => setServer(null));
+      .then((v: KoServer | null) => {
+        const t = JSON.stringify(v);
+        if (n !== sist.current.nr || !v || t === sist.current.tekst) return;
+        sist.current.tekst = t;
+        setServer(v);
+      })
+      .catch(() => {});
   }, []);
-  const settLaerdom = (laerdom: Laerdom) =>
-    setServer((s) => (s ? { ...s, laerdom } : s));
-  const settServer = (f: (s: KoServer) => KoServer) =>
+  // The queue's server half (priorities, questions, replies, duplicates) follows every
+  // verdict: fetched at mount and again whenever the verdicts change, here or elsewhere.
+  useEffect(hentKo, [hentKo, vurd]);
+  // New files, agents' verdicts and marks, the other tab or phone: no reload needed.
+  const { load } = media;
+  useOppfrisk(() => {
+    void load();
+    lastVurderinger();
+    hentKo();
+  });
+  // A local edit ahead of the server: the next answer always counts.
+  const settServer = (f: (s: KoServer) => KoServer) => {
+    sist.current.tekst = "";
     setServer((s) => (s ? f(s) : s));
+  };
+  const settLaerdom = (laerdom: Laerdom) =>
+    settServer((s) => ({ ...s, laerdom }));
   return { sesong, media, vurd, krypto, server, settLaerdom, settServer };
 }
 export type Data = ReturnType<typeof useData>;

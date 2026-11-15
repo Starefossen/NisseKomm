@@ -598,6 +598,7 @@ export function useMediaData() {
   const [unavailable, setUnavailable] = useState(false);
   const [message, setMessage] = useState("");
   const [inventar, setInventar] = useState<Map<string, Inventar>>(new Map());
+  const sist = useRef("");
   // One verdict store for the whole guide: a save anywhere updates every view.
   const vurderinger: MediaVurderinger = useVurderinger() ?? {};
 
@@ -613,8 +614,12 @@ export function useMediaData() {
         return;
       }
       const list: MediaStatus[] = await resMedia.json();
-      if (resInv.ok) {
-        const rows: Inventar[] = await resInv.json();
+      const rows: Inventar[] | null = resInv.ok ? await resInv.json() : null;
+      // The 30 s refresh: nothing new on disk, nothing to render again.
+      const t = JSON.stringify([list, rows]);
+      if (t === sist.current) return;
+      sist.current = t;
+      if (rows) {
         setInventar(new Map(rows.map((r) => [r.path, r])));
         // jobs in medier.json without a file yet
         const have = new Set(list.map((f) => f.path));
@@ -630,7 +635,8 @@ export function useMediaData() {
       }
       setFiles(list);
     } catch {
-      setUnavailable(true);
+      // A blip on a refresh keeps what is on screen.
+      if (!sist.current) setUnavailable(true);
     }
   }, []);
 
@@ -673,6 +679,7 @@ export function useMediaData() {
 
   return {
     files,
+    load,
     taIBruk,
     unavailable,
     message,

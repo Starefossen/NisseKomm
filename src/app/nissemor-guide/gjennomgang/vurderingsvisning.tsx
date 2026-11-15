@@ -32,6 +32,7 @@ import type { VideoStatus } from "@/lib/segmenter";
 import {
   omtak,
   arbeidTekst,
+  koElementer,
   prioritetFor,
   prioritetTekst,
   type KoServer,
@@ -120,10 +121,11 @@ export function Vurdering({
   const fi = filtrert.indexOf(e);
   const { ko } = useKo(d, sesong);
   const cellen = useCelle(d, sesong);
-  const koIder = (ko?.venter ?? [])
-    .map((l) => l.id)
-    .filter((x, j, a) => a.indexOf(x) === j && liste.some((y) => y.id === x));
+  const koIder = koElementer(ko?.venter ?? [], liste);
   const iKo = koIder.indexOf(e?.id ?? "");
+  // The queue as it was while this item was in it: where N goes once G has taken it out.
+  const [husk, setHusk] = useState<string[]>([]);
+  if (iKo >= 0 && koIder.join("\n") !== husk.join("\n")) setHusk(koIder);
   // «Neste uvurdert» stays inside the chosen quick choice; the current item always counts.
   const nesteUv = nesteUvurdert(filtrert, e?.id ?? id, vurd);
   // From the queue, N/P follow the lines waiting for Hans; with a filter or under «Alt», the
@@ -132,7 +134,9 @@ export function Vurdering({
     filtrert,
     liste,
     e?.id ?? "",
-    typeFilter || u.s === "alle" ? null : koIder,
+    // Opened from the Kø tab (`k=`) it is the queue, whatever «Alt» this browser remembers.
+    typeFilter || (u.s === "alle" && !fane) ? null : koIder,
+    husk,
   );
   const { neste, forrige } = nav;
   const [filterÅpen, setFilterÅpen] = useState(false);

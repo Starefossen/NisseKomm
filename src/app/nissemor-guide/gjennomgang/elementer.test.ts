@@ -142,7 +142,9 @@ describe("naboer (N/P)", () => {
         expect(naboer(liste, liste, n.id, ko).forrige?.id).toBe(x);
       }
     expect(naboer(liste, liste, "a", null).neste?.id).toBe("b");
+    // The queue's own order (the Kø tab's), not the list's.
     expect(naboer(liste, liste, "a", ["d", "a", "c"]).neste?.id).toBe("c");
+    expect(naboer(liste, liste, "d", ["d", "a", "c"]).neste?.id).toBe("a");
   });
 
   it("N after G (item left the queue) moves on, not back to skipped items", () => {
@@ -152,23 +154,25 @@ describe("naboer (N/P)", () => {
 });
 
 describe("naboer: one order", () => {
-  it("the queue follows the list's order, so N after G goes to the same item as N before it", () => {
+  it("N walks the queue as the Kø tab lists it; N after G goes to the same item as N before it", () => {
     const l = ["dag/05/x", "dag/06/kveld", "dag/06/gaatekart", "dag/07/x"].map(
       (id): Element => ({ id, gruppe: "g", tittel: id, media: [] }),
     );
-    // Queue order differs from the list (by type first): 07 before 06.
+    // Queue order differs from the list (a priority first): 07 before 06.
     const ko = ["dag/07/x", "dag/06/gaatekart", "dag/06/kveld"];
-    expect(naboer(l, l, "dag/05/x", ko).neste?.id).toBe("dag/06/kveld");
-    expect(naboer(l, l, "dag/06/gaatekart", ko).neste?.id).toBe("dag/07/x");
-    // G on kveld took it out of the queue: next stays on day 6.
+    expect(naboer(l, l, "dag/07/x", ko).neste?.id).toBe("dag/06/gaatekart");
+    expect(naboer(l, l, "dag/06/gaatekart", ko).forrige?.id).toBe("dag/07/x");
+    // G on the first line took it out of the queue: N and P go where they went before G.
+    const etterG = ko.slice(1);
+    expect(naboer(l, l, "dag/07/x", etterG, ko).neste?.id).toBe(
+      "dag/06/gaatekart",
+    );
     expect(
-      naboer(
-        l,
-        l,
-        "dag/06/kveld",
-        ko.filter((x) => x !== "dag/06/kveld"),
-      ).neste?.id,
-    ).toBe("dag/06/gaatekart");
+      naboer(l, l, "dag/06/gaatekart", etterG.slice(1), ko).neste?.id,
+    ).toBe("dag/06/kveld");
+    expect(naboer(l, l, "dag/06/gaatekart", ["dag/07/x"], ko).forrige?.id).toBe(
+      "dag/07/x",
+    );
   });
 });
 

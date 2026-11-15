@@ -23,19 +23,56 @@ import type { Kutt } from "@/lib/segmenter";
 // sit next to media paths in the same key space (parent-only API, lan mode).
 let data: MediaVurderinger | null = null;
 let lastet = false;
+// Counts fetches and saves: an answer older than the newest save or fetch is dropped.
+let nr = 0;
+let tekst = "";
 const lyttere = new Set<() => void>();
 const varsle = () => lyttere.forEach((l) => l());
 
 function last() {
   if (lastet) return;
   lastet = true;
+  lastVurderinger();
+}
+
+/**
+ * Fetch the verdicts again: agents, the other parent's phone and «Ta i bruk» change
+ * them too. Subscribers are told only when something changed.
+ */
+export function lastVurderinger() {
+  const n = ++nr;
   fetch("/api/media/vurdering")
     .then((r) => (r.ok ? r.json() : null))
     .then((v: MediaVurderinger | null) => {
+      const t = JSON.stringify(v);
+      if (n !== nr || !v || t === tekst) return;
+      tekst = t;
       data = v;
       varsle();
     })
     .catch(() => {});
+}
+
+/**
+ * Runs `fn` when the tab gets focus or becomes visible, and every 30 s while it is:
+ * what the guide shows of files and verdicts must not wait for a reload.
+ */
+export function useOppfrisk(fn: () => void) {
+  const f = useRef(fn);
+  useEffect(() => {
+    f.current = fn;
+  });
+  useEffect(() => {
+    const frisk = () => document.visibilityState === "visible" && f.current();
+    const id = setInterval(frisk, 30_000);
+    window.addEventListener("focus", frisk);
+    document.addEventListener("visibilitychange", frisk);
+    return () => {
+      clearInterval(id);
+      window.removeEventListener("focus", frisk);
+      document.removeEventListener("visibilitychange", frisk);
+    };
+  }, []);
 }
 
 export function useVurderinger(): MediaVurderinger | null {
@@ -106,13 +143,9 @@ export async function post(body: { path: string; [k: string]: unknown }) {
   });
   await sjekkSvar(r);
   data = (await r.json()).vurderinger;
+  nr++;
+  tekst = "";
   varsle();
-}
-
-/** Fetch the verdicts again (after Ta i bruk moved them). */
-export function lastVurderinger() {
-  lastet = false;
-  last();
 }
 
 export const slug = (s: string) =>

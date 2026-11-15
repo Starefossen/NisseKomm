@@ -3,12 +3,14 @@ import {
   byggKo,
   elementStatus,
   fremdrift,
+  koElementer,
   linjeHref,
+  linjeMål,
   nesteLinje,
   type KoServer,
 } from "./ko";
 import { videoStatus } from "@/lib/segmenter";
-import { tilstand, type Element } from "./elementer";
+import { naboer, tilstand, type Element } from "./elementer";
 
 const server = (o: Partial<KoServer> = {}): KoServer => ({
   forbruk: { brukt: 0, igjen: 2000, budsjett: 2000, fra: "2026-11-13" },
@@ -585,8 +587,8 @@ describe("round 3: no loop", () => {
 
   it("every element in «agent»/«venter» has a queue line, and every line an element", () => {
     const ider = new Set(liste.map((e) => e.id));
-    const a = new Set(ko.agent.map((l) => l.id));
-    const v = new Set(ko.venter.map((l) => l.id).filter((x) => !a.has(x)));
+    const v = new Set(ko.venter.map((l) => l.id));
+    const a = new Set(ko.agent.map((l) => l.id).filter((x) => !v.has(x)));
     for (const x of [...a, ...v]) expect(ider).toContain(x);
     expect(fd.total.telling.agent).toBe(a.size);
     expect(fd.total.telling.venter).toBe(v.size);
@@ -727,5 +729,112 @@ describe("linjeHref: every queue line opens in Gjennomgang, never Filer", () => 
     expect(decodeURIComponent(linjeHref(p, liste))).toBe(
       `${G}manus/julius/dag-04&s=4`,
     );
+  });
+});
+
+describe("one queue: tab count, list, Start and N agree", () => {
+  const el = (id: string, dag: number, gruppe: string, media: string[] = []) =>
+    ({ id, gruppe, tittel: id, dag, media }) as Element;
+  const liste: Element[] = [
+    el("dag/02/kveld", 2, "oppsett"),
+    el("video/julius/dag-08-v2.mp4", 8, "julius", [
+      "video/julius/dag-08-v2.mp4",
+    ]),
+    el("manus/julius/dag-08", 8, "Julius-manus"),
+    el("video/julius/dag-11.mp4", 11, "julius", ["video/julius/dag-11.mp4"]),
+    el("manus/julius/dag-11", 11, "Julius-manus"),
+    el("dag/12/kveld", 12, "oppsett"),
+  ];
+  const ok = { vurdering: "godkjent" as const };
+  const k = {
+    filer: [
+      f("video/julius/dag-08.mp4"),
+      f("video/julius/dag-08-v2.mp4"),
+      f("video/julius/dag-11.mp4"),
+    ],
+    vurderinger: {
+      "video/julius/dag-08-v2.mp4": ok,
+      "video/julius/dag-08#s1": ok,
+      "video/julius/dag-08#s2": ok,
+      "manus/julius/dag-08#s1": ok,
+      "manus/julius/dag-08#s2": ok,
+      "video/julius/dag-11.mp4": ok,
+      "video/julius/dag-11#s1": ok,
+      "video/julius/dag-11#s2": ok,
+      "manus/julius/dag-11#s1": ok,
+      "manus/julius/dag-11#s2": ok,
+      "dag/12/kveld": ok,
+    },
+  };
+  const p = (fil: string) => ({
+    fil,
+    nivaa: "høy" as const,
+    grunn: "lytt",
+    av: "agent:x",
+    når: "2026-11-14T10:00:00Z",
+  });
+  const s = server({
+    manus: { "8": [1, 2], "11": [1, 2] },
+    // Priorities on segments of approved items: the only reason they wait.
+    prioriteter: {
+      "video/julius/dag-11#s1": p("video/julius/dag-11#s1"),
+      "manus/julius/dag-11#s2": p("manus/julius/dag-11#s2"),
+      "video/julius/dag-08#s2": p("video/julius/dag-08#s2"),
+    },
+    // Hans asked about the same video: an agent line on the element the priority is on.
+    spørsmål: {
+      "video/julius/dag-08#s2": {
+        fil: "video/julius/dag-08#s2",
+        notat: "hvorfor?",
+        når: "2026-11-14T11:00:00Z",
+      },
+    },
+  });
+  const ko = byggKo(liste, k, s);
+  const fd = fremdrift(liste, k, ko, s);
+  const ider = koElementer(ko.venter, liste);
+
+  it("every line's id is its element's, also for a segment (`#sK` becomes `seg`)", () => {
+    const kjente = new Set(liste.map((e) => e.id));
+    for (const l of [...ko.venter, ...ko.agent, ...ko.arbeid]) {
+      expect(kjente).toContain(l.id);
+      expect(linjeMål(l, liste).id).toBe(l.id);
+    }
+    expect(ko.venter.find((l) => l.id === "manus/julius/dag-11")).toMatchObject(
+      { seg: 2, hva: "lytt" },
+    );
+  });
+
+  it("the tab's number is the elements of its lines, and the bar's blue segment", () => {
+    expect(ider).toEqual([
+      "video/julius/dag-08-v2.mp4",
+      "video/julius/dag-11.mp4",
+      "manus/julius/dag-11",
+      "dag/02/kveld",
+    ]);
+    expect(fd.total.telling.venter).toBe(ider.length);
+    expect(
+      fd.poster
+        .filter((x) => x.status === "venter")
+        .map((x) => x.id)
+        .sort(),
+    ).toEqual([...ider].sort());
+    // In both tabs (a priority for Hans, his question with the agent): Hans looks first.
+    expect(ko.agent.map((l) => l.id)).toEqual(["video/julius/dag-08-v2.mp4"]);
+    expect(fd.total.telling.agent).toBe(0);
+  });
+
+  it("«Start» opens the first, N walks the tab's order to the last, P walks back", () => {
+    expect(linjeMål(ko.venter[0], liste).id).toBe(ider[0]);
+    const gått = [ider[0]];
+    for (let i = 1; i < ider.length; i++) {
+      const n = naboer(liste, liste, gått.at(-1)!, ider);
+      expect(n.iKo).toBe(true);
+      gått.push(n.neste!.id);
+      expect(naboer(liste, liste, n.neste!.id, ider).forrige?.id).toBe(
+        gått.at(-2),
+      );
+    }
+    expect(gått).toEqual(ider);
   });
 });

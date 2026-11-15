@@ -314,35 +314,43 @@ export function naboI(
 
 /**
  * N/] and P/[ from one order, so they are always inverses: the queue's ids
- * (`ko`, from «Venter på deg») when given, else the filtered list. Under «Alt»
- * the caller passes no queue.
+ * (`ko`: «Venter på deg» in the order the Kø tab lists it, so N after «Start»
+ * is the list's second line) when given, else the filtered list. Under «Alt»
+ * the caller passes no queue. `husk` is the queue as it was while `id` was
+ * still in it.
  */
 export function naboer(
   filtrert: Element[],
   alle: Element[],
   id: string,
-  koRå: string[] | null,
+  ko: string[] | null,
+  husk: string[] = [],
 ) {
-  // The queue in `alle`'s order (day, then the chosen column), so N after G and N before it agree.
-  const pos = (x: string) => alle.findIndex((e) => e.id === x);
-  const ko = koRå && [...koRå].sort((a, b) => pos(a) - pos(b));
   const finn = (x?: string) => (x ? alle.find((e) => e.id === x) : undefined);
+  const sett = new Set(ko);
   const i = ko ? ko.indexOf(id) : -1;
-  // Not in the queue (G just took it out): the first queue item after it in `alle`,
-  // so N moves on instead of jumping back to the items skipped before it.
+  const h = husk.indexOf(id);
+  // Not in the queue (G just took it out): its old neighbours that still wait, so N goes
+  // where it would have gone before G. Never seen in the queue: the first queue item after
+  // it in `alle`, so N moves on instead of jumping back to the items skipped before it.
   const etter = () => {
+    if (h >= 0) return husk.slice(h + 1).find((x) => sett.has(x));
     const j = alle.findIndex((e) => e.id === id);
-    const sett = new Set(ko);
     return [...alle.slice(j + 1), ...alle.slice(0, j + 1)].find(
       (e) => e.id !== id && sett.has(e.id),
     )?.id;
   };
+  const før = () =>
+    i > 0
+      ? ko![i - 1]
+      : i < 0 && h > 0
+        ? husk.slice(0, h).findLast((x) => sett.has(x))
+        : undefined;
   const nesteKo = finn(ko ? (i >= 0 ? ko[i + 1] : etter()) : undefined);
   const nabo = naboI(filtrert, id, 1);
   return {
     neste: nesteKo ?? nabo.e,
-    forrige:
-      (ko && i > 0 ? finn(ko[i - 1]) : undefined) ?? naboI(filtrert, id, -1).e,
+    forrige: (ko ? finn(før()) : undefined) ?? naboI(filtrert, id, -1).e,
     iKo: !!nesteKo,
     rundt: !nesteKo && nabo.rundt,
   };
