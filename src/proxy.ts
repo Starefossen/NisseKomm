@@ -1,6 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isLanMode, isLanOnlyPath } from "@/lib/mode";
 
+export function buildCsp(nonce: string, dev = false): string {
+  return [
+    "default-src 'self'",
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'` +
+      (dev ? " 'unsafe-eval'" : ""),
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob:",
+    "media-src 'self' data: blob:",
+    "font-src 'self' data:",
+    "connect-src 'self'" + (dev ? " ws: wss:" : ""),
+    "worker-src 'self' blob:",
+    "manifest-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'self'",
+  ].join("; ");
+}
+
 export function proxy(request: NextRequest) {
   // The gate has no host redirect; target is a fixed origin, never taken from the request
   const fwd =
@@ -25,7 +44,14 @@ export function proxy(request: NextRequest) {
   if (!isLanMode() && isLanOnlyPath(request.nextUrl.pathname)) {
     return new NextResponse("Not Found", { status: 404 });
   }
-  return NextResponse.next();
+  // Next reads the nonce from the request's CSP header and stamps its inline scripts
+  const nonce = btoa(crypto.randomUUID());
+  const csp = buildCsp(nonce, process.env.NODE_ENV === "development");
+  const headers = new Headers(request.headers);
+  headers.set("Content-Security-Policy", csp);
+  const res = NextResponse.next({ request: { headers } });
+  res.headers.set("Content-Security-Policy", csp);
+  return res;
 }
 
 export const config = {

@@ -41,3 +41,14 @@ describe("www redirect", () => {
     expect(req("http://x/", h).status).toBe(301);
   });
 });
+
+describe("CSP", () => {
+  it("sets a fresh script nonce per request and no unsafe-inline scripts", () => {
+    const csp = (r: Response) => r.headers.get("content-security-policy")!;
+    const a = csp(req("http://x/", { host: "nissekomm.no" }));
+    const b = csp(req("http://x/", { host: "nissekomm.no" }));
+    expect(a).toMatch(/script-src 'self' 'nonce-[^']+' 'strict-dynamic'/);
+    expect(a).not.toMatch(/script-src[^;]*unsafe-inline/);
+    expect(a).not.toBe(b);
+  });
+});

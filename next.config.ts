@@ -36,30 +36,8 @@ const nextConfig: NextConfig = {
           },
           // 'self': the guide frames its own printout pages (thumbnails, 1:1 dialog)
           { key: "X-Frame-Options", value: "SAMEORIGIN" },
-          // ponytail: frame-ancestors only; a full CSP needs the inline styles and WebGL audited
+          // The full CSP (with a per-request script nonce) is set in src/proxy.ts
           { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
-          {
-            // ponytail: report-only, read in the console; enforce once clean.
-            key: "Content-Security-Policy-Report-Only",
-            value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-inline'" +
-                (process.env.NODE_ENV === "development"
-                  ? " 'unsafe-eval'"
-                  : ""),
-              "style-src 'self' 'unsafe-inline'",
-              "img-src 'self' data: blob:",
-              "media-src 'self' data: blob:",
-              "font-src 'self' data:",
-              "connect-src 'self'" +
-                (process.env.NODE_ENV === "development" ? " ws: wss:" : ""),
-              "worker-src 'self' blob:",
-              "manifest-src 'self'",
-              "object-src 'none'",
-              "base-uri 'self'",
-              "form-action 'self'",
-            ].join("; "),
-          },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
         ],
