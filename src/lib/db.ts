@@ -69,8 +69,9 @@ export type Tx = {
 export interface Store {
   getState(): Promise<Record<string, unknown>>;
   /**
-   * Merges and stores; returns the stored value. replace skips the merge and
-   * bumps VERSION_KEY, so screens holding the old list re-fetch.
+   * Merges and stores; returns the stored value. replace skips the merge.
+   * A write to a synced key (and any replace) bumps VERSION_KEY, so screens
+   * holding an older copy re-fetch before they write.
    * With `forventet` (a client's version; null = none sent) the version is
    * checked under the same lock as the write: older than the stored one, or
    * null after a season reset, throws VersjonsKonflikt and writes nothing.
@@ -137,6 +138,14 @@ export class VersjonsKonflikt extends Error {
 /** Postgres lock_timeout (55P03): the caller answers 503 and the client retries. */
 export const erLåsTimeout = (e: unknown) =>
   (e as { code?: string })?.code === "55P03";
+
+/**
+ * Every write to synced state gives a new version, merges too: a replace
+ * made on a copy that misses another screen's addition must get a 409 (and
+ * be rebased by the client), not wipe the addition.
+ */
+const bumper = (key: string, replace: boolean) =>
+  replace || STATE_KEYS.has(key);
 
 function sjekkVersjon(
   forventet: number | null | undefined,
@@ -280,7 +289,8 @@ export function createMemoryStore(file?: string): Store & { reset(): void } {
         sjekkVersjon(forventet, kv.get(VERSION_KEY), kv.get(RESET_KEY));
         const stored = replace ? value : mergeValue(key, kv.get(key), value);
         kv.set(key, stored);
-        if (replace) kv.set(VERSION_KEY, Number(kv.get(VERSION_KEY) ?? 0) + 1);
+        if (bumper(key, replace))
+          kv.set(VERSION_KEY, Number(kv.get(VERSION_KEY) ?? 0) + 1);
         save();
         return { value: stored, version: Number(kv.get(VERSION_KEY) ?? 0) };
       }),
@@ -480,7 +490,7 @@ export function createPgStore(pool: Pool): Store {
           replace ? value : mergeValue(key, old, value),
         );
         let version = Number(m[VERSION_KEY] ?? 0);
-        if (replace)
+        if (bumper(key, replace))
           version = (await update(
             VERSION_KEY,
             (n) => Number(n ?? 0) + 1,

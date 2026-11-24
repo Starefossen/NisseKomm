@@ -199,6 +199,8 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
   private pending = new Map<string, Pending>();
   private timer?: ReturnType<typeof setTimeout>;
   private flushing = false;
+  /** Counts applied pulls and PUTs: an answer to an older question is dropped. */
+  private epoch = 0;
   private retryMs = 1000;
   private onChange: () => void = () => {};
   private startRetry?: ReturnType<typeof setTimeout>;
@@ -277,6 +279,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
    */
   async pull(): Promise<boolean> {
     let res: Response;
+    const epoch = this.epoch;
     try {
       res = await fetch("/api/state", { credentials: "same-origin" });
     } catch (e) {
@@ -293,6 +296,10 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
       throw new Error(`state: ${res.status}`);
     }
     const state = (await res.json()) as Record<string, unknown>;
+    // Asked before a write or another pull was applied: the answer may be
+    // older than the cache, and would roll it (and the version) back.
+    if (epoch !== this.epoch) return true;
+    this.epoch++;
     const v = state[VERSION_KEY];
     const version = typeof v === "number" ? v : 0;
     const reset = state[RESET_KEY] ?? null;
@@ -488,6 +495,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
         }
         const body = (await res.json()) as { value: unknown; version: number };
         this.version = body.version;
+        this.epoch++;
         if (this.pending.get(key) === p) {
           this.pending.delete(key);
           this.markUnsynced([key], false);

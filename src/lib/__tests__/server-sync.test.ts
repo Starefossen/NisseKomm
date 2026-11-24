@@ -21,7 +21,7 @@ const store = {
   putState: async (key: string, value: unknown, replace = false) => {
     const v = replace ? value : mergeValue(key, kv.get(key), value);
     kv.set(key, v);
-    if (replace) kv.set(VERSION_KEY, Number(kv.get(VERSION_KEY) ?? 0) + 1);
+    kv.set(VERSION_KEY, Number(kv.get(VERSION_KEY) ?? 0) + 1);
     return v;
   },
 };
@@ -42,7 +42,7 @@ async function fakeFetch(_url: unknown, init?: RequestInit) {
   const stored = await store.putState(key, value, replace);
   return reply(200, {
     value: stored,
-    version: replace ? current + 1 : current,
+    version: current + 1,
   });
 }
 
@@ -349,6 +349,55 @@ describe("ServerSyncAdapter", () => {
     await jest.advanceTimersByTimeAsync(10_000);
     expect(puts).toBeLessThan(8);
     await a.clear();
+  });
+
+  it("a pull answered after a newer write is not applied", async () => {
+    const a = new ServerSyncAdapter();
+    await a.start();
+    // The GET reads the state when it is sent, and answers late.
+    let slipp!: () => void;
+    const venter = new Promise<void>((r) => (slipp = r));
+    const ok = global.fetch;
+    global.fetch = jest.fn(async (url: unknown, init?: RequestInit) => {
+      const svar = await fakeFetch(url, init);
+      if (!init?.method) await venter;
+      return svar;
+    }) as unknown as typeof fetch;
+    const sen = a.pull();
+    a.set(KEY, [1]);
+    await flush(a);
+    expect((await store.getState())[KEY]).toEqual([1]);
+    slipp();
+    await sen;
+    global.fetch = ok;
+    expect(a.get(KEY, [])).toEqual([1]);
+    // And the version did not go back: the next write needs no 409 round.
+    a.set(KEY, [1, 2]);
+    await flush(a);
+    expect((await store.getState())[KEY]).toEqual([1, 2]);
+  });
+
+  it("an untick on a copy that misses another parent's tick keeps that tick", async () => {
+    const LISTER = "nissekomm-foreldre-avkrysning";
+    const a = new ServerSyncAdapter();
+    const b = new ServerSyncAdapter();
+    await a.start();
+    await b.start();
+    a.set(LISTER, { kveld: ["x", "y"] });
+    await flush(a);
+    await b.pull();
+    const gammel = localStorage.getItem(LISTER)!;
+    a.set(LISTER, { kveld: ["x", "y"], handel: ["z"] }); // a merge, no replace
+    await flush(a);
+
+    localStorage.setItem(LISTER, gammel);
+    b.set(LISTER, { kveld: ["y"] });
+    await flush(b);
+    await jest.advanceTimersByTimeAsync(3000);
+    expect((await store.getState())[LISTER]).toEqual({
+      kveld: ["y"],
+      handel: ["z"],
+    });
   });
 
   it("a rejected key does not drop the other pending keys", async () => {

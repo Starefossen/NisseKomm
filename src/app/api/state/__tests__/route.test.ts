@@ -102,6 +102,7 @@ describe("/api/state", () => {
     await call("PUT", { key: "nissekomm-julius-watched", value: [2] });
     expect((await call("GET")).json).toEqual({
       "nissekomm-julius-watched": [1, 2],
+      "state-version": 2,
     });
   });
 });
@@ -246,6 +247,22 @@ describe("Postgres store (pg-mem)", () => {
     }
   });
 
+  it("a merge bumps the version too, so a replace made on the older copy is refused", async () => {
+    const pool = pgMemPool();
+    await migrate(pool);
+    for (const store of [createPgStore(pool), memoryStore]) {
+      const K = "nissekomm-foreldre-avkrysning";
+      const { version: v } = await store.putStateV(K, { kveld: ["x"] }, true);
+      const { version } = await store.putStateV(K, { handel: ["z"] });
+      expect(version).toBe(v + 1);
+      await expect(
+        store.putStateV(K, { kveld: [] }, true, v),
+      ).rejects.toMatchObject({ version: v + 1 });
+      // Server-only keys are not synced state: no screen needs to re-fetch.
+      expect((await store.putStateV("upload-ticket:x", 1)).version).toBe(v + 1);
+    }
+  });
+
   it("migrates idempotently and stores state, sessions and failures", async () => {
     const pool = pgMemPool();
     await migrate(pool);
@@ -256,8 +273,7 @@ describe("Postgres store (pg-mem)", () => {
     await store.putState("nissekomm-julius-watched", [3]);
     expect(await store.getState()).toEqual({
       "nissekomm-julius-watched": [1, 3],
-      // Seeded so the first write has a row to lock.
-      "state-version": 0,
+      "state-version": 2,
     });
 
     const expires = Date.now() + 60_000;
@@ -278,7 +294,7 @@ describe("Postgres store (pg-mem)", () => {
     );
 
     await store.putState("nissekomm-julius-watched", null, true);
-    expect((await store.getState())["state-version"]).toBe(1);
+    expect((await store.getState())["state-version"]).toBe(3);
   });
 });
 
@@ -289,7 +305,10 @@ describe("/api/state removals and validation", () => {
     await memoryStore.putState("nissekomm-handlet", { melk: "kjopt" });
     await memoryStore.putState("nissekomm-frost-off-day", 10);
     // The kids' app reads frost-off, never the checklists
-    expect((await call("GET")).json).toEqual({ "nissekomm-frost-off-day": 10 });
+    expect((await call("GET")).json).toEqual({
+      "nissekomm-frost-off-day": 10,
+      "state-version": 3,
+    });
     for (const [key, value] of [
       ["nissekomm-foreldre-avkrysning", {}],
       ["nissekomm-handlet", { melk: "hjemme" }],
@@ -360,14 +379,14 @@ describe("/api/state removals and validation", () => {
     const key = "nissekomm-julius-watched";
     await call("PUT", { key, value: [1, 2], version: 0 });
     const reset = await call("PUT", { key, value: null, replace: true });
-    expect(reset.json).toEqual({ value: null, version: 1 });
+    expect(reset.json).toEqual({ value: null, version: 2 });
     // A screen still on version 0 pushes its old list: refused
     const stale = await call("PUT", { key, value: [1, 2], version: 0 });
     expect(stale.status).toBe(409);
-    expect(stale.json).toEqual({ version: 1, reset: null });
+    expect(stale.json).toEqual({ version: 2, reset: null });
     expect((await call("GET")).json).toEqual({
       [key]: null,
-      "state-version": 1,
+      "state-version": 2,
     });
   });
 
