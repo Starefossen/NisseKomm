@@ -201,4 +201,4 @@ Svar Hans gir på beslutninger i Gjennomgang (`docs/beslutninger-apne.json`) leg
 - 2026-11-14: ULRIKEN: skal en tekst si hvorfor Winter skrev ordet på vingen? Svar: Legg til en halv setning i PS dag 5
 - 2026-11-15: Lampekortet dag 8: ingen runer på ❄-lampene (K, E, R, T er lært før dag 8; runer der ville gitt hele ordet uten å følge ledningene).
 - 2026-11-15: Lampekortet dag 8: batteriet får + og −; returledningen fra − går bare til lampene som lyser (2, 5, 7 og 4 via bryteren).
-- 2026-11-24: NisseKomm er bare på LAN denne sesongen (nissekomm.no svarer på hjemmenettet, ingen eksponering ut). Hvorfor: enklere og tryggere; guide-PWA og push virker bare hjemme.
+- 2026-11-24: NisseKomm er bare på LAN denne sesongen (nissekomm.no svarer på hjemmenettet, ingen eksponering ut). Følge: guide-PWA og push virker bare hjemme.
