@@ -256,6 +256,8 @@ describe("Postgres store (pg-mem)", () => {
     await store.putState("nissekomm-julius-watched", [3]);
     expect(await store.getState()).toEqual({
       "nissekomm-julius-watched": [1, 3],
+      // Seeded so the first write has a row to lock.
+      "state-version": 0,
     });
 
     const expires = Date.now() + 60_000;

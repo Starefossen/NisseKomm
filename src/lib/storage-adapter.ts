@@ -11,7 +11,7 @@
  * const value = adapter.get('key', defaultValue);
  * ```
  */
-import { shrinks } from "./state-merge";
+import { rebase, shrinks } from "./state-merge";
 
 /**
  * Storage Adapter Interface
@@ -156,7 +156,10 @@ export function setSyncStatus(s: SyncStatus): void {
 }
 
 const json = (x: unknown) => JSON.stringify(x);
-type Pending = { value: unknown; replace: boolean };
+/** base: the value this screen changed from, for a rebase on a newer server value. */
+type Pending = { value: unknown; replace: boolean; base: unknown };
+/** Without base: marked by a build that kept only the key (merged as before). */
+type Unsynced = Record<string, { base?: unknown }>;
 
 /** Local-only list of synced keys written while the server was unreachable. */
 const UNSYNCED_KEY = "nissekomm-unsynced";
@@ -177,6 +180,8 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
   private polling = false;
   private version = 0;
   private reset: unknown = null;
+  /** The last pulled state: pull() leaves pending keys alone in the cache. */
+  private server: Record<string, unknown> = {};
   private pending = new Map<string, Pending>();
   private timer?: ReturnType<typeof setTimeout>;
   private flushing = false;
@@ -193,8 +198,8 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
       return;
     }
     // Progress made offline must not be overwritten by the first pull.
-    const offline = this.unsynced().map(
-      (k) => [k, super.get<unknown>(k, null)] as const,
+    const offline = Object.entries(this.unsynced()).map(
+      ([k, u]) => [k, super.get<unknown>(k, null), u] as const,
     );
     const seen = super.get<unknown>(RESET_SEEN_KEY, null);
     clearTimeout(this.startRetry);
@@ -214,10 +219,13 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     if (!this.live) return;
     // Season reset elsewhere since: the server wins.
     if (json(this.reset) !== json(seen)) {
-      this.markUnsynced(this.unsynced(), false);
+      this.markUnsynced(Object.keys(this.unsynced()), false);
       offline.length = 0;
     }
-    for (const [k, v] of offline) if (v != null) this.queue(k, v, false);
+    for (const [k, v, u] of offline) {
+      if ("base" in u) this.requeue(k, u.base, v);
+      else if (v != null) this.queue(k, v, false, null);
+    }
     // pull() keeps pending keys, so a stuck write never stops the polling.
     // Concurrent start() calls can all get here: register the poll once.
     if (this.polling) return;
@@ -272,6 +280,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
       if (state[k] == null) super.remove(k);
       else super.set(k, state[k]);
     }
+    this.server = state;
     const v = state[VERSION_KEY];
     this.version = typeof v === "number" ? v : 0;
     this.reset = state[RESET_KEY] ?? null;
@@ -286,12 +295,13 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
   set<T>(key: string, value: T): void {
     const prev = this.get<unknown>(key, null);
     super.set(key, value);
-    this.queue(key, value, shrinks(key, prev, value));
+    this.queue(key, value, shrinks(key, prev, value), prev);
   }
 
   remove(key: string): void {
+    const prev = this.get<unknown>(key, null);
     super.remove(key);
-    this.queue(key, null, true);
+    this.queue(key, null, true, prev);
   }
 
   /** With propagate, the server clears the whole family's state (parent only). */
@@ -309,31 +319,59 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     if (this.live) await this.pull();
   }
 
-  private unsynced(): string[] {
-    return super.get<string[]>(UNSYNCED_KEY, []);
+  private unsynced(): Unsynced {
+    const u = super.get<Unsynced | string[]>(UNSYNCED_KEY, {});
+    return Array.isArray(u) ? Object.fromEntries(u.map((k) => [k, {}])) : u;
   }
 
-  private markUnsynced(keys: string[], dirty: boolean) {
-    const set = new Set(this.unsynced());
+  /** base: for a key that is not pending (written before the first pull). */
+  private markUnsynced(keys: string[], dirty: boolean, base: unknown = null) {
+    const u = this.unsynced();
     for (const k of keys) {
-      if (dirty) set.add(k);
-      else set.delete(k);
+      if (!dirty) delete u[k];
+      // The first base stands: it is what the server last gave this screen.
+      else u[k] ??= { base: this.pending.get(k)?.base ?? base };
     }
-    if (set.size) super.set(UNSYNCED_KEY, [...set]);
+    if (Object.keys(u).length) super.set(UNSYNCED_KEY, u);
     else super.remove(UNSYNCED_KEY);
   }
 
-  private queue(key: string, value: unknown, replace: boolean) {
+  /**
+   * A write made on a copy the server has moved on from (offline, or a 409):
+   * rebased on the pulled value and queued again, as replace only if it
+   * still removes something.
+   */
+  private requeue(key: string, base: unknown, mine: unknown) {
+    const theirs = this.server[key] ?? null;
+    const value = rebase(key, base, mine, theirs);
+    if (value == null) super.remove(key);
+    else super.set(key, value);
+    this.pending.delete(key);
+    // Marked again with the new base if the send fails.
+    this.markUnsynced([key], false);
+    this.queue(
+      key,
+      value,
+      value == null || shrinks(key, theirs, value),
+      theirs,
+    );
+  }
+
+  private queue(key: string, value: unknown, replace: boolean, base: unknown) {
     if (!SYNCED_KEYS.has(key)) return;
     // The server writes solves itself (POST /api/kode); clients only clear them.
     if (key === CODES_KEY && value != null) return;
     if (!this.live) {
-      // Not removals: the season wipe runs before start() and stays local.
-      if (value != null) this.markUnsynced([key], true);
+      // The season wipe is not a remove(): it clears localStorage directly.
+      this.markUnsynced([key], true, base);
       return;
     }
-    const replaced = this.pending.get(key)?.replace ?? false;
-    this.pending.set(key, { value, replace: replace || replaced });
+    const old = this.pending.get(key);
+    this.pending.set(key, {
+      value,
+      replace: replace || (old?.replace ?? false),
+      base: old ? old.base : base,
+    });
     clearTimeout(this.timer);
     this.timer = setTimeout(() => void this.flush(), 300);
   }
@@ -380,8 +418,9 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
           await this.pull().catch(() => {});
           continue;
         }
-        // 409: a season reset drops local writes; any other replacing
-        // write elsewhere just means a newer version, so send again.
+        // 409: a season reset drops local writes. Any other replacing write
+        // elsewhere removed something: pull, and send again only what this
+        // screen changed, or the stale payload would bring it back.
         if (res.status === 409) {
           const c = (await res.json()) as { version: number; reset?: unknown };
           if (json(c.reset ?? null) !== json(this.reset)) {
@@ -390,7 +429,12 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
             await this.pull().catch(() => {});
             return;
           }
-          this.version = c.version;
+          if (!(await this.pull())) {
+            this.markUnsynced([...this.pending.keys()], true);
+            return;
+          }
+          for (const [k, q] of [...this.pending])
+            this.requeue(k, q.base, q.value);
           break;
         }
         // Retried later, without holding back the keys after it.

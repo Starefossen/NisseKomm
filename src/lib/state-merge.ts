@@ -107,3 +107,56 @@ const canon = (x: unknown): string =>
  */
 export const shrinks = (key: string, prev: unknown, next: unknown) =>
   prev != null && canon(mergeValue(key, prev, next)) !== canon(next);
+
+const rebaseList = (
+  key: string,
+  base: unknown,
+  mine: unknown[],
+  theirs: unknown[],
+) => {
+  const b = new Map(
+    (Array.isArray(base) ? base : []).map((x) => [itemId(key, x), canon(x)]),
+  );
+  const m = new Map(mine.map((x) => [itemId(key, x), x]));
+  const out = new Map<string, unknown>();
+  for (const x of theirs) {
+    const id = itemId(key, x);
+    if (m.has(id) || !b.has(id)) out.set(id, x);
+  }
+  for (const [id, x] of m) if (b.get(id) !== canon(x)) out.set(id, x);
+  return [...out.values()];
+};
+
+/**
+ * Three-way merge for a write made on a stale copy: only what this screen
+ * changed (base → mine) is applied to the server's value, so an item another
+ * screen removed stays removed and what it added survives our removal.
+ * Keys without a merge rule stay last-writer-wins.
+ */
+export function rebase(
+  key: string,
+  base: unknown,
+  mine: unknown,
+  theirs: unknown,
+): unknown {
+  if (mine == null || theirs == null) return mine;
+  if (MERGED_KEYS.has(key) && Array.isArray(mine) && Array.isArray(theirs))
+    return rebaseList(key, base, mine, theirs);
+  if (
+    (FIELD_MERGED_KEYS.has(key) || key === "nissekomm-slede") &&
+    isObj(mine) &&
+    isObj(theirs)
+  ) {
+    const b = isObj(base) ? base : {};
+    const out: Record<string, unknown> = { ...theirs };
+    for (const k of Object.keys(b)) if (!(k in mine)) delete out[k];
+    for (const [k, v] of Object.entries(mine)) {
+      if (canon(b[k]) === canon(v)) continue;
+      const t = out[k];
+      out[k] =
+        Array.isArray(v) && Array.isArray(t) ? rebaseList(key, b[k], v, t) : v;
+    }
+    return out;
+  }
+  return mine;
+}

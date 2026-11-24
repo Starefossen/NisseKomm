@@ -152,6 +152,92 @@ describe("ServerSyncAdapter", () => {
     expect((await store.getState())[KEY]).toEqual([7]);
   });
 
+  it("a 409 never brings back what the other screen removed", async () => {
+    const a = new ServerSyncAdapter();
+    const b = new ServerSyncAdapter();
+    await a.start();
+    await b.start();
+    a.set(KEY, [1, 2]);
+    await flush(a);
+    a.set(KEY, [1]); // removal: replace, bumps the version
+    await flush(a);
+
+    // b has not pulled since: its cache still holds the removed item
+    localStorage.setItem(KEY, JSON.stringify([1, 2]));
+    b.set(KEY, [1, 2, 3]);
+    await flush(b);
+    await jest.advanceTimersByTimeAsync(1000);
+    expect((await store.getState())[KEY]).toEqual([1, 3]);
+    expect(b.get(KEY, [])).toEqual([1, 3]);
+  });
+
+  it("a stale untick after a 409 keeps the other parent's tick", async () => {
+    const LISTER = "nissekomm-foreldre-avkrysning";
+    const a = new ServerSyncAdapter();
+    const b = new ServerSyncAdapter();
+    await a.start();
+    await b.start();
+    a.set(LISTER, { kveld: ["x", "y"] });
+    await flush(a);
+    const gammel = localStorage.getItem(LISTER)!;
+    a.set(LISTER, { kveld: ["x", "y"], handel: ["z"] });
+    a.set("nissekomm-slede", { tundra: 1, muren: 2 });
+    await flush(a);
+    a.set("nissekomm-slede", { tundra: 1 }); // any replace bumps the version
+    await flush(a);
+
+    localStorage.setItem(LISTER, gammel);
+    b.set(LISTER, { kveld: ["y"] });
+    await flush(b);
+    await jest.advanceTimersByTimeAsync(1000);
+    expect((await store.getState())[LISTER]).toEqual({
+      kveld: ["y"],
+      handel: ["z"],
+    });
+  });
+
+  it("an untick made while the server was down survives a reload", async () => {
+    const a = new ServerSyncAdapter();
+    await a.start();
+    a.set(KEY, [1, 2]);
+    await flush(a);
+    const ok = global.fetch;
+    global.fetch = jest.fn(async (url: unknown, init?: RequestInit) => {
+      if (init?.method === "PUT") throw new Error("nede");
+      return fakeFetch(url, init);
+    }) as unknown as typeof fetch;
+    a.set(KEY, [1]);
+    await flush(a);
+    expect((await store.getState())[KEY]).toEqual([1, 2]);
+
+    // Reload: a new adapter, the server is back, another screen added 3
+    global.fetch = ok;
+    await store.putState(KEY, [3]);
+    const a2 = new ServerSyncAdapter();
+    await a2.start();
+    await flush(a2);
+    expect((await store.getState())[KEY]).toEqual([1, 3]);
+    expect(localStorage.getItem("nissekomm-unsynced")).toBeNull();
+    // The old page is gone: its listeners must not send in later tests.
+    await a.clear();
+  });
+
+  it("a removal made before the first pull reaches the server", async () => {
+    await store.putState(KEY, [1]);
+    localStorage.setItem(KEY, JSON.stringify([1]));
+    global.fetch = jest.fn(async () => {
+      throw new Error("nede");
+    }) as unknown as typeof fetch;
+    const a = new ServerSyncAdapter();
+    await expect(a.start()).rejects.toThrow();
+    a.remove(KEY);
+
+    global.fetch = jest.fn(fakeFetch) as unknown as typeof fetch;
+    await jest.advanceTimersByTimeAsync(30_000);
+    await flush(a);
+    expect((await store.getState())[KEY]).toBeNull();
+  });
+
   it("a rejected key does not drop the other pending keys", async () => {
     const a = new ServerSyncAdapter();
     await a.start();

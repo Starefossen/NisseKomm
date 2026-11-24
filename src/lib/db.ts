@@ -464,6 +464,12 @@ export function createPgStore(pool: Pool): Store {
         // either finished before (we see it) or waits for this write. Every
         // write takes it first, then its key: one lock order, no deadlock
         // between a versioned PUT and an unversioned replace.
+        // The row must exist to be locked: on a fresh database two writes
+        // would both pass the check.
+        await c.query(
+          "INSERT INTO kv (key, value) VALUES ($1, '0') ON CONFLICT (key) DO NOTHING",
+          [VERSION_KEY],
+        );
         const r = await c.query(
           "SELECT key, value FROM kv WHERE key IN ($1, $2) FOR UPDATE",
           [VERSION_KEY, RESET_KEY],

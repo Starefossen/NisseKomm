@@ -62,7 +62,9 @@ function useStandaloneGuideAuth(enabled = true): GuideAuthState {
         if (response.ok) {
           const data = (await response.json()) as { role: string | null };
           if (data.role === "parent") {
-            await lastFamilie();
+            // sync(): pages that read once on mount (letters, diploma) must
+            // not show this browser's old cache.
+            await Promise.all([StorageManager.sync(), lastFamilie()]);
             setAuthenticated(true);
             setIsLoading(false);
             return;

@@ -20,7 +20,7 @@ import {
   type Store,
 } from "../db";
 import { lagMinner } from "../minner";
-import { SEASON, SEASON_KEY } from "../storage-adapter";
+import { SEASON, SEASON_KEY, VERSION_KEY } from "../storage-adapter";
 
 const FJOR = SEASON - 1;
 const BREV = [
@@ -246,6 +246,39 @@ it("two file stores (two dev servers) on one file: one archive, one clear", asyn
       expect((await a.getState())["nissekomm-santa-letters"]).toEqual([
         BREV[2],
       ]);
+    } finally {
+      await p1.end();
+      await p2.end();
+    }
+  },
+);
+
+(process.env.ARKIV_PG_URL ? it : it.skip)(
+  "real Postgres: on a fresh database two replaces with the same version give one 409",
+  async () => {
+    const { Pool: PgPool } = await import("pg");
+    const url = process.env.ARKIV_PG_URL;
+    const p1 = new PgPool({ connectionString: url });
+    const p2 = new PgPool({ connectionString: url });
+    const K = "nissekomm-julius-watched";
+    try {
+      await migrate(p1);
+      await p1.query("TRUNCATE kv, kv_arkiv");
+      // Hold the key's row, so both writes have checked the version (no
+      // state-version row yet) before either stores anything.
+      const c = await p1.connect();
+      await c.query("BEGIN");
+      await c.query("INSERT INTO kv (key, value) VALUES ($1, 'null')", [K]);
+      const kall = Promise.allSettled([
+        createPgStore(p1).putStateV(K, [1], true, 0),
+        createPgStore(p2).putStateV(K, [2], true, 0),
+      ]);
+      await new Promise((r) => setTimeout(r, 500));
+      await c.query("COMMIT");
+      c.release();
+      const svar = await kall;
+      expect(svar.filter((s) => s.status === "rejected")).toHaveLength(1);
+      expect((await createPgStore(p1).getState())[VERSION_KEY]).toBe(1);
     } finally {
       await p1.end();
       await p2.end();
