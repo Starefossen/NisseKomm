@@ -36,6 +36,7 @@ function knitring() {
  * Rampenissen on the sled radio: a small box low on the left (clear of the
  * bars, the minimap and the buttons), one line at a
  * time; lines that arrive meanwhile wait in `kø` and `onFerdig` drops the head.
+ * z-10 keeps it above the result card, so the line at the finish is seen.
  */
 export function RadioBoks({
   kø,
@@ -65,7 +66,7 @@ export function RadioBoks({
     <div
       key={nå.id}
       role="status"
-      className="absolute bottom-2 left-12 max-w-[calc(50%-7rem)] flex gap-2 items-start border-2 border-(--brass) bg-black/85 p-1 pr-2 pointer-events-none"
+      className="absolute z-10 bottom-2 left-12 max-w-[calc(50%-7rem)] flex gap-2 items-start border-2 border-(--brass) bg-black/85 p-1 pr-2 pointer-events-none"
     >
       <div className="@max-[720px]:hidden">
         <Portrett navn="rampenissen" />

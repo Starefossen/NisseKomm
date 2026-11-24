@@ -8,6 +8,8 @@
  *                 so an old screen can't write last season into this one.
  * DELETE /api/state  Parent only: archives the state (kv_arkiv), then the
  *                 season reset for every screen. No archive, no reset.
+ * A kid-only session never gets PARENT_KEYS from GET and gets 403 on a PUT
+ * to PARENT_WRITE_KEYS.
  * GET/PUT require a kid or parent session; 204 (sync off) with STORAGE_BACKEND=localStorage.
  * Writes that mark a game moment
  * (day solved, bonus approved, frost off) fan out through notify().
@@ -30,7 +32,12 @@ import {
   sjekkSesong,
   storageBackend,
 } from "@/lib/db";
-import { RESET_KEY, SERVER_KEYS } from "@/lib/storage-adapter";
+import {
+  PARENT_KEYS,
+  PARENT_WRITE_KEYS,
+  RESET_KEY,
+  SERVER_KEYS,
+} from "@/lib/storage-adapter";
 import { getServerDate } from "@/lib/date-utils";
 import { notify } from "@/lib/notify";
 import { eventsForWrite, frostOnEvent } from "@/lib/notify/events";
@@ -63,6 +70,8 @@ export async function GET(request: NextRequest) {
     VERSION_KEY,
     RESET_KEY,
   ]);
+  if (!(await hasRole(request, "parent")))
+    for (const k of PARENT_KEYS) visible.delete(k);
   return NextResponse.json(
     Object.fromEntries(Object.entries(state).filter(([k]) => visible.has(k))),
   );
@@ -86,6 +95,8 @@ export async function PUT(request: NextRequest) {
   if (typeof key !== "string" || !STATE_KEYS.has(key) || value === undefined) {
     return jsonError("Ugyldig nøkkel", 400);
   }
+  if (PARENT_WRITE_KEYS.has(key) && !(await hasRole(request, "parent")))
+    return jsonError("Bare for foreldre", 403);
   // Solves are written only by POST /api/kode (and the lan fasit route), so
   // this PUT can't be used to test guesses; only a parent may clear the key.
   if (key === "nissekomm-codes") {

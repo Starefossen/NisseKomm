@@ -126,6 +126,20 @@ export const SYNCED_KEYS = new Set([
   "nissekomm-foreldre-avkrysning",
   "nissekomm-handlet",
 ]);
+/** Guide-only keys: /api/state never serves them to a kid-only session (checklists name hiding spots). */
+export const PARENT_KEYS = new Set([
+  "nissekomm-foreldre-avkrysning",
+  "nissekomm-handlet",
+]);
+/**
+ * Keys only a parent session may write. Frost-off is read by the kids' app.
+ * nissekomm-bonusoppdrag-completed is not here: KodeTerminal writes it after
+ * /api/kode accepts the parent code.
+ */
+export const PARENT_WRITE_KEYS = new Set([
+  ...PARENT_KEYS,
+  "nissekomm-frost-off-day",
+]);
 /** Solved codes: written on the server by /api/kode, read here. */
 const CODES_KEY = "nissekomm-codes";
 /** Written by MCP (set_frost, skip_day); clients only read them. */
@@ -404,11 +418,13 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
           this.markUnsynced([...this.pending.keys()], true);
           return;
         }
-        // 408, 429 and any other 403 (Origin/Host) are retried.
+        // 408, 429 and any other 403 (Origin/Host) are retried; a parent-only
+        // key from a kid session is refused for good.
         const forbigående = [403, 408, 409, 429].includes(res.status);
         if (
           (res.status >= 400 && res.status < 500 && !forbigående) ||
-          (res.status === 403 && key === CODES_KEY)
+          (res.status === 403 &&
+            (key === CODES_KEY || PARENT_WRITE_KEYS.has(key)))
         ) {
           console.error(`[sync] ${key} avvist (${res.status})`);
           if (this.pending.get(key) === p) {

@@ -22,10 +22,12 @@
         color: #ffd700;
         font-size: 1.6rem;
       }
-      button {
+      a {
+        display: inline-block;
         margin-top: 1.5rem;
-        min-height: 48px;
+        line-height: 48px;
         padding: 0 1.5rem;
+        text-decoration: none;
         background: #ffd700;
         color: #000;
         border: 0;
@@ -39,7 +41,8 @@
       <h1>INGEN FORBINDELSE</h1>
       <p>Nissemor-guiden får ikke kontakt med NisseKomm.</p>
       <p>Sjekk at telefonen er på hjemmenettet, og prøv igjen.</p>
-      <button onclick="location.reload()">Prøv igjen</button>
+      <!-- No script: the CSP blocks inline handlers. An empty href reloads this address. -->
+      <a href="">Prøv igjen</a>
     </main>
   </body>
 </html>

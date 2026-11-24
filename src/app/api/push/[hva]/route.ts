@@ -11,7 +11,7 @@ import { authorizeMedia } from "@/lib/media-server";
 import { antallKveldTing } from "@/lib/guide-sesong";
 import { lekkerTekst, sendKveld, sendPush } from "@/lib/notify/push";
 import { FAMILIE } from "@/lib/familie";
-import { getAllOppdrag } from "@/lib/oppdrag";
+import { alleKoder } from "@/lib/oppdrag";
 
 export const dynamic = "force-dynamic";
 
@@ -59,7 +59,7 @@ export async function POST(
       lekkerTekst(
         `${tittel} ${tekst}`,
         [...FAMILIE.barn, FAMILIE.hjem],
-        getAllOppdrag().map((o) => o.kode),
+        alleKoder(),
       )
     )
       return jsonError("Varselet nevner et navn eller en kode", 400);

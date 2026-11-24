@@ -53,3 +53,9 @@ export function getAllOppdrag(): OppdragFull[] {
 export function getOppdrag(dag: number): OppdragFull | undefined {
   return ALLE.find((o) => o.dag === dag);
 }
+
+/** Every code that must stay secret: the day codes and the bonus quests' parent codes. */
+export const alleKoder = (): string[] =>
+  getAllOppdrag().flatMap((o) =>
+    o.bonusoppdrag ? [o.kode, o.bonusoppdrag.foreldre_kode] : [o.kode],
+  );

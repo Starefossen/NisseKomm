@@ -296,6 +296,7 @@ function Etappeflukt({
       return;
     }
     setSpørHvem(false);
+    setRadio([]); // lines from the last run must not play over this one
     brev.current = GameEngine.getSantaLetters();
     simRef.current = createSim(etappe, {
       assist,

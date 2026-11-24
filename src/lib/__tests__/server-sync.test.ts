@@ -322,6 +322,22 @@ describe("ServerSyncAdapter", () => {
     expect(puts.filter((k) => k === "nissekomm-codes")).toHaveLength(1);
   });
 
+  it("a 403 on a parent-only key is final (kid session), not retried", async () => {
+    const a = new ServerSyncAdapter();
+    await a.start();
+    let puts = 0;
+    global.fetch = jest.fn(async (url: unknown, init?: RequestInit) => {
+      if (init?.method !== "PUT") return fakeFetch(url, init);
+      puts++;
+      return { ok: false, status: 403, json: async () => ({}) } as Response;
+    }) as unknown as typeof fetch;
+    a.set("nissekomm-handlet", { melk: "kjopt" });
+    await flush(a);
+    await jest.advanceTimersByTimeAsync(5000);
+    expect(puts).toBe(1);
+    expect(a.get("nissekomm-handlet", null)).toBeNull();
+  });
+
   it("retries after a non-JSON reply instead of stalling", async () => {
     const a = new ServerSyncAdapter();
     await a.start();

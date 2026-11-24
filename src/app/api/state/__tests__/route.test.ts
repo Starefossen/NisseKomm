@@ -283,6 +283,38 @@ describe("Postgres store (pg-mem)", () => {
 });
 
 describe("/api/state removals and validation", () => {
+  it("keeps parent-only keys from a kid session: hidden in GET, 403 on PUT", async () => {
+    const hemmelig = { "dag/3": { "Legg lappen bak sofaen": true } };
+    await memoryStore.putState("nissekomm-foreldre-avkrysning", hemmelig);
+    await memoryStore.putState("nissekomm-handlet", { melk: "kjopt" });
+    await memoryStore.putState("nissekomm-frost-off-day", 10);
+    // The kids' app reads frost-off, never the checklists
+    expect((await call("GET")).json).toEqual({ "nissekomm-frost-off-day": 10 });
+    for (const [key, value] of [
+      ["nissekomm-foreldre-avkrysning", {}],
+      ["nissekomm-handlet", { melk: "hjemme" }],
+      ["nissekomm-frost-off-day", 11],
+    ])
+      expect((await call("PUT", { key, value, replace: true })).status).toBe(
+        403,
+      );
+    // KodeTerminal writes this one after /api/kode accepted the parent code
+    const bonus = { key: "nissekomm-bonusoppdrag-completed", value: [11] };
+    expect((await call("PUT", bonus)).status).toBe(200);
+    process.env.NISSEKOMM_MODE = "lan";
+    await memoryStore.setSession(sha(TOKEN), {
+      role: "parent",
+      expires: Date.now() + 60_000,
+    });
+    expect((await call("GET")).json).toMatchObject({
+      "nissekomm-foreldre-avkrysning": hemmelig,
+      "nissekomm-handlet": { melk: "kjopt" },
+    });
+    const put = { key: "nissekomm-frost-off-day", value: 11, replace: true };
+    expect((await call("PUT", put)).status).toBe(200);
+    delete process.env.NISSEKOMM_MODE;
+  });
+
   it("never takes solved codes from a client (no code oracle); only a parent clears them", async () => {
     for (const value of [
       [{ kode: "JUKS", dato: "x", day: 1 }],

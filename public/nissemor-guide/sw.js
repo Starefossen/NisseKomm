@@ -3,7 +3,7 @@
 // always go to the network and are never stored: they hold codes and verdicts.
 // Bump the version to drop every older cache on activate; within a version
 // the static cache is trimmed to the newest MAX entries (old builds' hashes).
-const CACHE = "nissemor-v2";
+const CACHE = "nissemor-v3";
 const MAX = 300;
 const OFFLINE = "/nissemor-guide/offline.html";
 

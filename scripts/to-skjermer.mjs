@@ -6,6 +6,7 @@ import { chromium } from "playwright";
 
 const base = process.env.BASE_URL ?? "http://localhost:3000";
 const KID_CODE = process.env.KID_CODE ?? "snø lykt rein";
+const PARENT_CODE = process.env.PARENT_CODE ?? "NORDPOL-DEV2026";
 const fails = [];
 // Unique names per run, so the script can run again against the same store.
 const run = Date.now().toString(36);
@@ -21,14 +22,17 @@ const screen = async () => {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
   await page.goto(base);
+  // Both roles: the parents' ticks further down are refused for a kid-only session.
   await page.evaluate(
-    (code) =>
-      fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
-      }),
-    KID_CODE,
+    async (codes) => {
+      for (const code of codes)
+        await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code }),
+        });
+    },
+    [KID_CODE, PARENT_CODE],
   );
   await page.goto(base);
   await page.waitForFunction(() => !!window.nissekomm?.GameEngine, null, {

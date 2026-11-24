@@ -3,7 +3,7 @@
  */
 import { describe, expect, it, jest } from "@jest/globals";
 import { createMemoryStore } from "@/lib/db";
-import { getAllOppdrag } from "@/lib/oppdrag";
+import { alleKoder, getAllOppdrag } from "@/lib/oppdrag";
 import { antallKveldTing } from "@/lib/guide-sesong";
 import {
   fjernSub,
@@ -73,6 +73,17 @@ describe("push subscriptions", () => {
     expect(lekkerTekst("ta med snø", [], ["SNØ"])).toBe(true);
     expect(lekkerTekst("ÅRE!", [], ["ÅRE"])).toBe(true);
     expect(lekkerTekst("snøfall og bjørnen", [], ["SNØ", "ØRN"])).toBe(false);
+  });
+
+  it("agent text filter knows the bonus quests' parent codes too", () => {
+    const bonus = getAllOppdrag().flatMap(
+      (o) => o.bonusoppdrag?.foreldre_kode ?? [],
+    );
+    expect(bonus.length).toBeGreaterThan(0);
+    for (const k of bonus)
+      expect(
+        lekkerTekst(`si ${k.toLowerCase()} til barna`, [], alleKoder()),
+      ).toBe(true);
   });
 
   it("stores one per device and removes", async () => {
