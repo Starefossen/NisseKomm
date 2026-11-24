@@ -202,3 +202,5 @@ Svar Hans gir på beslutninger i Gjennomgang (`docs/beslutninger-apne.json`) leg
 - 2026-11-15: Lampekortet dag 8: ingen runer på ❄-lampene (K, E, R, T er lært før dag 8; runer der ville gitt hele ordet uten å følge ledningene).
 - 2026-11-15: Lampekortet dag 8: batteriet får + og −; returledningen fra − går bare til lampene som lyser (2, 5, 7 og 4 via bryteren).
 - 2026-11-24: NisseKomm er bare på LAN denne sesongen (nissekomm.no svarer på hjemmenettet, ingen eksponering ut). Følge: guide-PWA og push virker bare hjemme.
+- 2026-11-24: Bonusgodkjenning (dag 11 og 16) kan fortsatt skrives fra barnas økt via utviklerverktøy; Hans lar det stå til etter sesongen (lav risiko, ingen endring i kodeløpet før 1. des).
+- 2026-11-24: Next sin innebygde engelske 500-side byttes med en enkel norsk side uten script (lenke for å laste på nytt).
