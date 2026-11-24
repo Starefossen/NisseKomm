@@ -140,13 +140,11 @@ export function rebase(
   theirs: unknown,
 ): unknown {
   if (mine == null || theirs == null) return mine;
+  // Records only grow: the server's own merge keeps the best run per stage.
+  if (key === "nissekomm-slede") return mergeValue(key, theirs, mine);
   if (MERGED_KEYS.has(key) && Array.isArray(mine) && Array.isArray(theirs))
     return rebaseList(key, base, mine, theirs);
-  if (
-    (FIELD_MERGED_KEYS.has(key) || key === "nissekomm-slede") &&
-    isObj(mine) &&
-    isObj(theirs)
-  ) {
+  if (FIELD_MERGED_KEYS.has(key) && isObj(mine) && isObj(theirs)) {
     const b = isObj(base) ? base : {};
     const out: Record<string, unknown> = { ...theirs };
     for (const k of Object.keys(b)) if (!(k in mine)) delete out[k];

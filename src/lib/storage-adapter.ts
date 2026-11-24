@@ -212,9 +212,6 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
       return;
     }
     // Progress made offline must not be overwritten by the first pull.
-    const offline = Object.entries(this.unsynced()).map(
-      ([k, u]) => [k, super.get<unknown>(k, null), u] as const,
-    );
     const seen = super.get<unknown>(RESET_SEEN_KEY, null);
     clearTimeout(this.startRetry);
     try {
@@ -233,12 +230,20 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     if (!this.live) return;
     // Season reset elsewhere since: the server wins.
     if (json(this.reset) !== json(seen)) {
+      for (const k of Object.keys(this.unsynced())) this.adopt(k);
       this.markUnsynced(Object.keys(this.unsynced()), false);
-      offline.length = 0;
     }
-    for (const [k, v, u] of offline) {
+    // Read after the pull, which left these keys alone: a write made while
+    // the request was out is here too.
+    for (const [k, u] of Object.entries(this.unsynced())) {
+      const v = super.get<unknown>(k, null);
       if ("base" in u) this.requeue(k, u.base, v);
       else if (v != null) this.queue(k, v, false, null);
+      else {
+        // An old mark with nothing to send would hold the key back forever.
+        this.markUnsynced([k], false);
+        this.adopt(k);
+      }
     }
     // pull() keeps pending keys, so a stuck write never stops the polling.
     // Concurrent start() calls can all get here: register the poll once.
@@ -288,16 +293,30 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
       throw new Error(`state: ${res.status}`);
     }
     const state = (await res.json()) as Record<string, unknown>;
+    const v = state[VERSION_KEY];
+    const version = typeof v === "number" ? v : 0;
+    const reset = state[RESET_KEY] ?? null;
+    // A season reset elsewhere drops waiting writes, as a 409 would.
+    if (this.live && json(reset) !== json(this.reset)) {
+      this.markUnsynced([...this.pending.keys()], false);
+      this.pending.clear();
+    }
+    const moved = version !== this.version;
+    this.server = state;
+    this.version = version;
+    this.reset = reset;
+    // Before the first pull, writes made offline are start()'s to send.
+    const held = this.live ? {} : this.unsynced();
     for (const k of [...SYNCED_KEYS, ...SERVER_KEYS]) {
       // A local write still on its way wins; the server merges it on PUT.
-      if (this.pending.has(k)) continue;
-      if (state[k] == null) super.remove(k);
-      else super.set(k, state[k]);
+      if (this.pending.has(k) || k in held) continue;
+      this.adopt(k);
     }
-    this.server = state;
-    const v = state[VERSION_KEY];
-    this.version = typeof v === "number" ? v : 0;
-    this.reset = state[RESET_KEY] ?? null;
+    // A replace elsewhere since the write was made: sending it as it is
+    // would bring back what was removed, and with the new version no 409
+    // would stop it.
+    if (moved)
+      for (const [k, q] of [...this.pending]) this.requeue(k, q.base, q.value);
     setSyncStatus("ok");
     if (json(this.reset) !== json(super.get<unknown>(RESET_SEEN_KEY, null)))
       for (const k of this.localKeys) super.remove(k);
@@ -333,6 +352,12 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     if (this.live) await this.pull();
   }
 
+  /** The cache takes the pulled value of a key. */
+  private adopt(key: string) {
+    if (this.server[key] == null) super.remove(key);
+    else super.set(key, this.server[key]);
+  }
+
   private unsynced(): Unsynced {
     const u = super.get<Unsynced | string[]>(UNSYNCED_KEY, {});
     return Array.isArray(u) ? Object.fromEntries(u.map((k) => [k, {}])) : u;
@@ -361,8 +386,10 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     if (value == null) super.remove(key);
     else super.set(key, value);
     this.pending.delete(key);
-    // Marked again with the new base if the send fails.
-    this.markUnsynced([key], false);
+    // Still unsynced until the PUT succeeds (a reload may come first), but
+    // from now on against the value it was rebased on.
+    const u = this.unsynced();
+    if (key in u) super.set(UNSYNCED_KEY, { ...u, [key]: { base: theirs } });
     this.queue(
       key,
       value,
@@ -445,12 +472,13 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
             await this.pull().catch(() => {});
             return;
           }
+          // pull() rebases what waits on the newer version.
           if (!(await this.pull())) {
             this.markUnsynced([...this.pending.keys()], true);
             return;
           }
-          for (const [k, q] of [...this.pending])
-            this.requeue(k, q.base, q.value);
+          // Backoff: a version that keeps moving must not become a PUT loop.
+          retry = true;
           break;
         }
         // Retried later, without holding back the keys after it.
@@ -477,6 +505,7 @@ export class ServerSyncAdapter extends LocalStorageAdapter {
     if (retry) {
       // Survives a reload while the server is down.
       this.markUnsynced([...this.pending.keys()], true);
+      clearTimeout(this.timer);
       this.timer = setTimeout(() => void this.flush(), this.retryMs);
       this.retryMs = Math.min(this.retryMs * 2, 30_000);
     } else if (this.pending.size) {

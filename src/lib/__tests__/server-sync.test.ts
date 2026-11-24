@@ -238,6 +238,119 @@ describe("ServerSyncAdapter", () => {
     expect((await store.getState())[KEY]).toBeNull();
   });
 
+  it("a stale lower sled run never wipes another screen's record", async () => {
+    const SLEDE = "nissekomm-slede";
+    const a = new ServerSyncAdapter();
+    const b = new ServerSyncAdapter();
+    await a.start();
+    await b.start();
+    a.set(SLEDE, { tundra: { poeng: 100, bjeller: 1 } });
+    await flush(a);
+    const gammel = localStorage.getItem(SLEDE)!;
+    a.set(SLEDE, { tundra: { poeng: 900, bjeller: 3, utfordringDag: 8 } });
+    await flush(a);
+    a.set(KEY, [1, 2]);
+    await flush(a);
+    a.set(KEY, [1]); // any replace bumps the version
+    await flush(a);
+
+    localStorage.setItem(SLEDE, gammel);
+    b.set(SLEDE, { tundra: { poeng: 300, bjeller: 2 } });
+    await flush(b);
+    await jest.advanceTimersByTimeAsync(3000);
+    expect((await store.getState())[SLEDE]).toEqual({
+      tundra: { poeng: 900, bjeller: 3, utfordringDag: 8 },
+    });
+  });
+
+  it("a pull while a write waits rebases it like a 409 would", async () => {
+    const a = new ServerSyncAdapter();
+    const b = new ServerSyncAdapter();
+    await a.start();
+    await b.start();
+    a.set(KEY, [1, 2]);
+    await flush(a);
+    a.set(KEY, [1]);
+    await flush(a);
+
+    localStorage.setItem(KEY, JSON.stringify([1, 2]));
+    b.set(KEY, [1, 2, 3]);
+    await b.pull(); // the 30 s poll or a focus, before the debounce fires
+    await flush(b);
+    await jest.advanceTimersByTimeAsync(3000);
+    expect((await store.getState())[KEY]).toEqual([1, 3]);
+  });
+
+  it("a pull that sees a reset drops the waiting write", async () => {
+    const a = new ServerSyncAdapter();
+    const b = new ServerSyncAdapter();
+    await a.start();
+    await b.start();
+    b.set(KEY, [1, 2]);
+    await a.clear(true);
+    await b.pull();
+    await flush(b);
+    await jest.advanceTimersByTimeAsync(3000);
+    expect((await store.getState())[KEY]).toBeNull();
+    expect(b.get(KEY, "tom")).toBe("tom");
+  });
+
+  it("an offline write survives a second reload before it is sent", async () => {
+    global.fetch = jest.fn(async () => {
+      throw new Error("nede");
+    }) as unknown as typeof fetch;
+    const a = new ServerSyncAdapter();
+    await expect(a.start()).rejects.toThrow();
+    a.set(KEY, [2]);
+
+    global.fetch = jest.fn(fakeFetch) as unknown as typeof fetch;
+    const a2 = new ServerSyncAdapter();
+    await a2.start(); // queued, and the page closes before the PUT
+    const a3 = new ServerSyncAdapter();
+    await a3.start();
+    await flush(a3);
+    expect((await store.getState())[KEY]).toEqual([2]);
+    // The closed pages' listeners must not send in later tests.
+    jest.clearAllTimers();
+    await a2.clear();
+  });
+
+  it("a write made while the first pull is out is kept and sent", async () => {
+    let slipp!: () => void;
+    const venter = new Promise<void>((r) => (slipp = r));
+    global.fetch = jest.fn(async (url: unknown, init?: RequestInit) => {
+      if (!init?.method) await venter;
+      return fakeFetch(url, init);
+    }) as unknown as typeof fetch;
+    const a = new ServerSyncAdapter();
+    const start = a.start();
+    a.set(KEY, [5]);
+    slipp();
+    await start;
+    expect(a.get(KEY, [])).toEqual([5]);
+    await flush(a);
+    expect((await store.getState())[KEY]).toEqual([5]);
+  });
+
+  it("repeated 409s back off instead of hammering the server", async () => {
+    const a = new ServerSyncAdapter();
+    await a.start();
+    let puts = 0;
+    global.fetch = jest.fn(async (url: unknown, init?: RequestInit) => {
+      if (init?.method !== "PUT") return fakeFetch(url, init);
+      puts++;
+      return {
+        ok: false,
+        status: 409,
+        json: async () => ({ version: 99, reset: null }),
+      } as Response;
+    }) as unknown as typeof fetch;
+    a.set(KEY, [1]);
+    await jest.advanceTimersByTimeAsync(10_000);
+    expect(puts).toBeLessThan(8);
+    await a.clear();
+  });
+
   it("a rejected key does not drop the other pending keys", async () => {
     const a = new ServerSyncAdapter();
     await a.start();
