@@ -23,12 +23,17 @@ export async function register() {
   ) {
     // 20:00 «I kveld» push while the pod is up; /api/push/kveld (Varden's
     // cron) covers scale-to-zero. sendKveld is once per Oslo date either way.
-    const { getStore } = await import("@/lib/db");
-    const { sendKveld } = await import("@/lib/notify/push");
-    const { antallKveldTing } = await import("@/lib/guide-sesong");
-    setInterval(
-      () => void sendKveld(getStore(), antallKveldTing).catch(console.error),
-      60_000,
-    ).unref();
+    // Imported on the first tick, not at boot: guide-sesong pulls in the
+    // 900 kB guide bake, and register() runs before the server listens.
+    setInterval(async () => {
+      try {
+        const { getStore } = await import("@/lib/db");
+        const { sendKveld } = await import("@/lib/notify/push");
+        const { antallKveldTing } = await import("@/lib/guide-sesong");
+        await sendKveld(getStore(), antallKveldTing);
+      } catch (e) {
+        console.error(e);
+      }
+    }, 60_000).unref();
   }
 }
