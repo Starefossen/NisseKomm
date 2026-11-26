@@ -135,6 +135,11 @@ export class VersjonsKonflikt extends Error {
   }
 }
 
+/** By name, not instanceof: in dev a hot reload leaves the cached store
+ * throwing the old module's class, and the 409 became a 500. */
+export const erVersjonsKonflikt = (e: unknown): e is VersjonsKonflikt =>
+  (e as Error)?.message === "versjonskonflikt";
+
 /** Postgres lock_timeout (55P03): the caller answers 503 and the client retries. */
 export const erLåsTimeout = (e: unknown) =>
   (e as { code?: string })?.code === "55P03";

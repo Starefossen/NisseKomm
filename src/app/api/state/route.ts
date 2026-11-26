@@ -27,7 +27,7 @@ import {
   VERSION_KEY,
   arkiverOgNullstill,
   erLåsTimeout,
-  VersjonsKonflikt,
+  erVersjonsKonflikt,
   getStore,
   sjekkSesong,
   storageBackend,
@@ -124,7 +124,7 @@ export async function PUT(request: NextRequest) {
       typeof version === "number" ? version : null,
     ));
   } catch (e) {
-    if (e instanceof VersjonsKonflikt)
+    if (erVersjonsKonflikt(e))
       return NextResponse.json(
         { version: e.version, reset: e.reset },
         { status: 409 },
