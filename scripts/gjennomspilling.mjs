@@ -233,6 +233,11 @@ ws.addEventListener("message", ({ data }) => {
     return msg.error ? rej(new Error(msg.error.message)) : res(msg.result);
   }
   const p = msg.params;
+  if (msg.method === "Fetch.requestPaused")
+    send("Fetch.fulfillRequest", {
+      requestId: p.requestId,
+      responseCode: 204,
+    }).catch(() => {});
   if (msg.method === "Runtime.exceptionThrown")
     errors.push(
       `pageerror: ${p.exceptionDetails.exception?.description ?? p.exceptionDetails.text}`,
@@ -345,6 +350,9 @@ const wordRe = (w) =>
 await send("Page.enable");
 await send("Runtime.enable");
 await send("Log.enable");
+// Sync off (204) in this browser: a BASE_URL server with Postgres (`mise run dev`) would
+// otherwise share one saved progress between the shards and with earlier runs.
+await send("Fetch.enable", { patterns: [{ urlPattern: "*/api/state" }] });
 await send("Emulation.setDeviceMetricsOverride", {
   width: Number(process.env.WIDTH ?? 1440),
   height: Number(process.env.HEIGHT ?? 900),
