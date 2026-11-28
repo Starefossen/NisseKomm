@@ -337,7 +337,7 @@ export function SegmentStripe({
             />
           </svg>
         )}
-        <div className="relative h-8 bg-black/60 border border-(--neon-green)/30">
+        <div className="relative h-8 pointer-coarse:h-14 bg-black/60 border border-(--neon-green)/30">
           {segs.map((s, i) => {
             const fra = i ? Math.max(s.start, segs[i - 1].slutt) : s.start;
             const [m, , farge] = merke(vurd(s.s));
@@ -400,7 +400,7 @@ export function SegmentStripe({
         </div>
         {peker && (
           <span
-            className="absolute bottom-full mb-1 text-sm bg-black px-1 whitespace-nowrap pointer-events-none z-20"
+            className="pointer-coarse:hidden absolute bottom-full mb-1 text-sm bg-black px-1 whitespace-nowrap pointer-events-none z-20"
             style={{ left: peker.x }}
           >
             {tid(peker.t)} {segmentVed(segs, peker.t).replikk.slice(0, 60)}

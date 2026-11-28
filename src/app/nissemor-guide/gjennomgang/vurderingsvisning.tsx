@@ -229,7 +229,7 @@ export function Vurdering({
     );
   return (
     <>
-      <div className="sticky top-0 z-20 bg-black/95 border-b border-(--neon-green)/40">
+      <div className="sticky top-0 z-20 bg-black/95 max-sm:bg-black border-b border-(--neon-green)/40">
         <nav
           aria-label="Gjennomgang"
           className="relative flex items-center gap-1.5 sm:gap-3 h-14 text-base"
