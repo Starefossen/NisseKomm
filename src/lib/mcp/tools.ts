@@ -702,8 +702,8 @@ export const TOOLS: Record<string, Tool> = {
     run: async ({ date, dry_run_date }, c) => {
       // The dry run echoes the caller's date and reads nothing: no clock, state, clip or hint.
       if (dry_run_date !== undefined) {
-        const d = String(dry_run_date);
-        if (!/^\d{4}-\d\d-\d\d$/.test(d)) {
+        const d = dry_run_date;
+        if (typeof d !== "string" || !/^\d{4}-\d\d-\d\d$/.test(d)) {
           throw new ArgError("ugyldig argument: dry_run_date");
         }
         return {
