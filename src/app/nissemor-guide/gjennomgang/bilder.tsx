@@ -96,6 +96,13 @@ export function BildeVersjoner({
             Side ved side
           </button>
         )}
+        <button
+          type="button"
+          onClick={() => setVis((v) => (v === "gammel" ? "ny" : "gammel"))}
+          className="hidden pointer-coarse:block min-h-11 px-3 border-2 border-(--neon-green)"
+        >
+          Bytt gammel/ny
+        </button>
         <span className="text-(--neon-green)/80">
           V bytt gammel/ny · klikk/F = lysbord
         </span>
