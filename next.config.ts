@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   output: "standalone",
   poweredByHeader: false,
+  // next dev refuses its own scripts to other origins: let the review run over Tailscale (dev only).
+  allowedDevOrigins: ["100.*.*.*", "*.ts.net", "mac"],
   // Browser bundles name nobody: see scripts/navn-loader.cjs.
   turbopack: {
     rules: Object.fromEntries(
