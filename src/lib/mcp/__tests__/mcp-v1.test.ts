@@ -9,7 +9,8 @@ import {
   beforeAll,
   jest,
 } from "@jest/globals";
-import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { getAllOppdrag } from "@/lib/oppdrag";
@@ -17,6 +18,7 @@ import { memoryStore } from "@/lib/db";
 import {
   CODE_WORDS,
   MAX_RESPONSE_BYTES,
+  TEST_CLIP,
   TOOLS,
   TV_GRADE_OVERRIDE,
   callTool,
@@ -333,6 +335,42 @@ describe("get_clips", () => {
     jest.useFakeTimers({ now: at(1, 7) });
     const des = JSON.parse(await callTool("read", "get_clips"));
     expect(des).not.toHaveProperty("host_hint");
+  });
+
+  it("dry_run_date gir bare testklippet, aldri ekte innhold", async () => {
+    jest.useFakeTimers({ now: at(4, 7) });
+    const ekte = await callTool("read", "get_clips", { date: "2026-12-03" });
+    const før = JSON.stringify(await memoryStore.getState());
+    // Day 3 has a real clip and hints; a date after today is echoed too.
+    for (const d of ["2026-12-03", "2026-12-24", "2026-11-25"]) {
+      const out = JSON.parse(
+        await callTool("read", "get_clips", { dry_run_date: d, date: d }),
+      );
+      expect(out).toEqual({
+        schema_version: 1,
+        date: d,
+        dry_run: true,
+        clips: [TEST_CLIP],
+        host_hint: "TEST",
+      });
+    }
+    expect(JSON.stringify(await memoryStore.getState())).toBe(før);
+    // The committed tone is what the constants describe.
+    const buf = readFileSync(path.join("public", TEST_CLIP.url));
+    expect(createHash("sha256").update(buf).digest("hex")).toBe(
+      TEST_CLIP.sha256,
+    );
+    expect(mp3Duration(buf)).toBe(TEST_CLIP.duration_s);
+    // Without the argument the answer is as before.
+    expect(await callTool("read", "get_clips", { date: "2026-12-03" })).toBe(
+      ekte,
+    );
+    expect(ekte).not.toMatch(/dry_run|TEST|radio-test/);
+    for (const dry_run_date of ["2026-12-3", "", 20261203, null]) {
+      await expect(
+        callTool("read", "get_clips", { dry_run_date }),
+      ).rejects.toThrow("ugyldig argument: dry_run_date");
+    }
   });
 
   it("rampestrek og utfordring bare for dagens klipp", async () => {

@@ -661,6 +661,19 @@ const radioHint = radioHintJson as {
 
 const read = async () => getStore().getState();
 
+/** get_clips dry run: public/radio-test/test-klipp.mp3, a 5 s tone (the test checks sha256 and length against the file). */
+export const TEST_CLIP = {
+  id: "test-klipp",
+  url: "/radio-test/test-klipp.mp3",
+  ready: true,
+  duration_s: 5.04,
+  sha256: "abc1a8c1f74c7cf83203f4ad92eafd989c294681438aa54c0825000c9b6238e1",
+  intro_hint: "TEST",
+  reaksjon_hint: "TEST",
+  rampestrek: "TEST",
+  utfordring: "TEST",
+};
+
 export const TOOLS: Record<string, Tool> = {
   get_state: {
     level: "read",
@@ -678,12 +691,28 @@ export const TOOLS: Record<string, Tool> = {
   get_clips: {
     level: "read",
     description:
-      "Rampenissens radioklipp for en dato (YYYY-MM-DD), aldri etter i dag, med intro_hint/reaksjon_hint fra manus. rampestrek og utfordring (bare dagens klipp): det Birk og Lyng snakker om etter klippet, uten å gjette eller gi hint. host_hint: Birk og Lyngs førsesonglinjer 24.–30. november (bare dagens dato).",
+      "Rampenissens radioklipp for en dato (YYYY-MM-DD), aldri etter i dag, med intro_hint/reaksjon_hint fra manus. rampestrek og utfordring (bare dagens klipp): det Birk og Lyng snakker om etter klippet, uten å gjette eller gi hint. host_hint: Birk og Lyngs førsesonglinjer 24.–30. november (bare dagens dato). dry_run_date (YYYY-MM-DD): prøvekjøring, gir bare et testklipp (pipetone) merket TEST, aldri ekte innhold.",
     inputSchema: {
       type: "object",
-      properties: { date: { type: "string" } },
+      properties: {
+        date: { type: "string" },
+        dry_run_date: { type: "string" },
+      },
     },
-    run: async ({ date }, c) => {
+    run: async ({ date, dry_run_date }, c) => {
+      // The dry run echoes the caller's date and reads nothing: no clock, state, clip or hint.
+      if (dry_run_date !== undefined) {
+        const d = String(dry_run_date);
+        if (!/^\d{4}-\d\d-\d\d$/.test(d)) {
+          throw new ArgError("ugyldig argument: dry_run_date");
+        }
+        return {
+          date: d,
+          dry_run: true,
+          clips: [TEST_CLIP],
+          host_hint: "TEST",
+        };
+      }
       const today = isoDate(now(await read(), clockFor(c.sub)));
       const d = date === undefined ? today : String(date);
       if (!/^\d{4}-\d\d-\d\d$/.test(d)) {
